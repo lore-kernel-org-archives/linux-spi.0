@@ -1,13 +1,10 @@
-From: "Tax Law" <info-eAzYt6J0778@public.gmane.org>
-Subject: [SPAM] 小锌芯褋芯斜褘 屑懈薪懈屑懈蟹邪褑懈懈 薪邪
-	=?utf-8?B?0LvQvtCz0L7QstGL0YUg0L/Qu9Cw0YLQtdC20LXQuSDQsiDRhdC+0LvQtNC40L0=?=
-	谐邪褏
-Date: Mon, 7 Jun 2010 02:09:59 +0400
-Message-ID: <1559511550.20100607020959@ricki.ru>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?obC98NS/s9ehsQ==?= <712575-BnzALYukQ//EFxVkNaSxg9HuzzzSOjJt@public.gmane.org>
+Subject: [SPAM] 鑲℃潈婵�鍔辨硶--鐣欓┗鏍稿績浜烘墠
+Date: Tue, 8 Jun 2010 01:02:18 +0800
+Message-ID: <E1OLfiz-0005FW-Eh@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: zrx_55-k+cT0dCbe1g@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5159601503495290008=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,167 +16,219 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-0JLQvdC40LzQsNC90LjRjiDRgNGD0LrQvtCy0L7QtNC40YLQtdC70LXQuSwg0Y7RgNC40YHRgtC+
-0LIsINCx0YPRhdCz0LDQu9GC0LXRgNC+0LIsINC90LDQu9C+0LPQvtCy0YvRhSDQutC+0L3RgdGD
-0LvRjNGC0LDQvdGC0L7Qsiwg0YHQvtGC0YDRg9C00L3QuNC60L7QsiDRhNC40L3QsNC90YHQvtCy
-0L4t0Y3QutC+0L3QvtC80LjRh9C10YHQutC40YUg0L7RgtC00LXQu9C+0LIsINGB0L/QtdGG0LjQ
-sNC70LjRgdGC0L7Qsiwg0L/RgNC10LTRgdGC0LDQstC70Y/RjtGJ0LjRhSDQuNC90YLQtdGA0LXR
-gdGLINC+0YDQs9Cw0L3QuNC30LDRhtC40Lgg0LIg0L3QsNC70L7Qs9C+0LLRi9GFINC4INGB0YPQ
-tNC10LHQvdGL0YUg0L7RgNCz0LDQvdCw0YUuCiAKCjIxINC40Y7QvdGPICDRgSAgMTAgINC00L4g
-MTggLSAwMCAgfCAgICDQnNC+0YHQutCy0LAKCiAKCtCg0LjRgdC60Lgg0Lgg0L7RiNC40LHQutC4
-LCDRgdC+0LLQtdGA0YjQsNC10LzRi9C1INC/0YDQuCDQtNGA0L7QsdC70LXQvdC40Lgg0LHQuNC3
-0L3QtdGB0LAuIAoK0J/RgNC40LzQtdC90LXQvdC40LUg0YHQv9C10YbQuNCw0LvRjNC90YvRhSDR
-gNC10LbQuNC80L7QsiDQvdCw0LvQvtCz0L7QvtCx0LvQvtC20LXQvdC40Y8g0LTQu9GPINC90LDQ
-u9C+0LPQvtCy0L7Qs9C+INC/0LvQsNC90LjRgNC+0LLQsNC90LjRjwoKIAoKIAoK0JIg0L3QsNGB
-0YLQvtGP0YnQuNC5INC80L7QvNC10L3RgiDQsdC+0LvRjNGI0LjQvdGB0YLQstC+INC60L7QvNC/
-0LDQvdC40Lkg0L7Qv9GC0LjQvNC40LfQuNGA0YPQtdGCINC90LDQu9C+0LPQvtC+0LHQu9C+0LbQ
-tdC90LjRjyDQt9CwINGB0YfQtdGCINC40YHQv9C+0LvRjNC30L7QstCw0L3QuNGPINC70YzQs9C+
-0YLQvdGL0YUg0YDQtdC20LjQvNC+0LIg0L3QsNC70L7Qs9C+0L7QsdC70L7QttC10L3QuNGPLiDQ
-nNC+0LbQvdC+INC90LDQt9Cy0LDRgtGMINGC0LDQutC40LUg0LjQt9Cy0LXRgdGC0L3Ri9C1INGB
-0L/QvtGB0L7QsdGLINC60LDQuiDQuNGB0L/QvtC70YzQt9C+0LLQsNC90LjQtSDQsNGD0YLRgdGC
-0LDRhNGE0LjQvdCz0LAsINGA0LDQt9Cx0LjQstC60LAg0YLQvtGA0LPQvtCy0L7Qs9C+INC30LDQ
-u9CwINC90LAg0YfQsNGB0YLQuCwg0L/QtdGA0LXQstC+0LQg0L7QsdC+0YDQvtGC0L7QsiDQsdC1
-0Lcg0J3QlNChINC90LAg0YLQvtGA0LPQvtCy0YPRjiDQutC+0LzQv9Cw0L3QuNGOINC/0YDQuNC8
-0LXQvdGP0Y7RidGD0Y4g0KPQodCdINC4INGCLtC/LiDQn9GA0Lgg0Y3RgtC+0Lwg0L7Rh9C10L3R
-jCDRh9Cw0YHRgtC+INC60L7QvNC/0LDQvdC40Lgg0YHQvtCy0LXRgNGI0LDRjtGCINC+0YjQuNCx
-0LrQuCwg0LrQvtGC0L7RgNGL0LUg0L/QvtC30LLQvtC70Y/RjtGCINC90LDQu9C+0LPQvtCy0YvQ
-vCDQvtGA0LPQsNC90LDQvCDQv9GA0LjQt9C90LDQstCw0YLRjCDRgtCw0LrQuNC1INC/0YDQtdC+
-0LHRgNCw0LfQvtCy0LDQvdC40Y8sINC90LDQv9GA0LDQstC70LXQvdC90YvQvNC4INC40YHQutC7
-0Y7Rh9C40YLQtdC70YzQvdC+INC90LAg0L/QvtC70YPRh9C10L3QuNC1INC90LXQvtCx0L7RgdC9
-0L7QstCw0L3QvdC+0Lkg0L3QsNC70L7Qs9C+0LLQvtC5INCy0YvQs9C+0LTRiywg0YfRgtC+INCy
-0LvQtdGH0LXRgiDQv9C+0YHQu9C10LTRgdGC0LLQuNGPINC60LDQuiDQtNC70Y8g0LrQvtC80L/Q
-sNC90LjQuCwg0YLQsNC6INC4INC00LvRjyDQtdC1INGA0YPQutC+0LLQvtC00LjRgtC10LvQtdC5
-ICjQsiDQstC40LTQtSDQstC+0LfQsdGD0LbQtNC10L3QuNGPINGD0LPQvtC70L7QstC90YvRhSDQ
-tNC10LspLgoKIAoK0KbQtdC70Lgg0L7QsdGD0YfQtdC90LjRjzoKCiAgICAqINC/0L7QutCw0LfQ
-sNGC0Ywg0YHQv9C+0YHQvtCx0Ysg0L/RgNC10L7QsdGA0LDQt9C+0LLQsNC90LjRjyDRgdGC0YDR
-g9C60YLRg9GA0Ysg0LHQuNC30L3QtdGB0LAsINCyINCy0LjQtNC1INGA0LDQt9Cx0LjQstC60Lgg
-0LXQs9C+INC90LAg0YfQsNGB0YLQuCDQutCw0Log0YEg0YbQtdC70YzRjiDRg9C70YPRh9GI0LXQ
-vdC40Y8g0YPQv9GA0LDQstC70Y/QtdC80L7RgdGC0LgsINGC0LDQuiDQuCDQvtC/0YLQuNC80LjQ
-t9Cw0YbQuNC4INC90LDQu9C+0LPQvtC+0LHQu9C+0LbQtdC90LjRjzsKCiAgICAqINCy0YvRj9Cy
-0LjRgtGMINC+0YjQuNCx0LrQuCwg0L/RgNC40YHRg9GJ0LjQtSDRgtCw0LrQvtC80YMg0L/RgNC1
-0L7QsdGA0LDQt9C+0LLQsNC90LjRjjsKCiAgICAqINCy0YvRj9Cy0LjRgtGMINCy0YHQtSDQstC+
-0LfQvNC+0LbQvdGL0LUg0YDQuNGB0LrQuCDQv9GA0LXQvtCx0YDQsNC30L7QstCw0L3QuNC5LCDQ
-v9C+0YHQvNC+0YLRgNC10YLRjCDQuiDRh9C10LzRgyDQv9GA0LjQtNC40YDQsNC10YLRgdGPINC9
-0LDQu9C+0LPQvtCy0YvQuSDQvtGA0LPQsNC9INC4INC60LDQuiDQvtC9INGN0YLQviDQstGL0Y/Q
-stC70Y/QtdGCINC4INC90LDRg9GH0LjRgtGM0YHRjyDQs9GA0LDQvNC+0YLQvdC+INGB0L7QstC1
-0YDRiNCw0YLRjCDQt9Cw0LTRg9C80LDQvdC90L7QtSDQv9GA0L7RgtC40LLQvtC00LXQudGB0YLQ
-stC+0LLQsNGC0Ywg0L3QsNC70L7Qs9C+0LLQvtC80YMg0L7RgNCz0LDQvdGDINCyINC/0YDQtdC0
-0YrRj9Cy0LvRj9C10LzRi9GFINC40Lwg0L/RgNC10YLQtdC90LfQuNGP0YU7CgogICAgKiDQv9C+
-0LrQsNC30LDRgtGMINGB0LvQsNCx0YvQtSDQvNC10YHRgtCwINC00YDQvtCx0LvQtdC90LjRjyDQ
-sdC40LfQvdC10YHQsCDQutCw0Log0LjRhSDQstC40LTQuNGCINC90LDQu9C+0LPQvtCy0YvQuSDQ
-vtGA0LPQsNC9LCDQv9GA0L7QsNC90LDQu9C40LfQuNGA0L7QstCw0YLRjCDQv9C+0LTRhdC+0LTR
-iyDQpNCd0KEg0Log0L/RgNC10LTRitGP0LLQu9C10L3QuNGOINC/0YDQtdGC0LXQvdC30LjQuSDR
-gtCw0LrQuNC8INC60L7QvNC/0LDQvdC40Y/QvCwg0L/QvtGH0LXQvNGDINGC0LUg0LjQu9C4INC4
-0L3Ri9C1INC00LXQudGB0YLQstC40Y8g0L3QsNC70L7Qs9C+0LLRi9C5INC+0YDQs9Cw0L0g0L/R
-gNC40YfQuNGB0LvRj9C10YIg0Log0L3QtdC00L7QsdGA0L7RgdC+0LLQtdGB0YLQvdGL0LwuINCg
-0LDRgdGB0LzQvtGC0YDQtdGC0Ywg0L/QvtC00YXQvtC00Ysg0Log0LLRi9GP0LLQu9C10L3QuNGO
-INC/0L7Qu9GD0YfQtdC90LjRjyDQvdC10L7QsdC+0YHQvdC+0LLQsNC90L3QvtC5INC90LDQu9C+
-0LPQvtCy0L7QuSDQstGL0LPQvtC00YsuCgogICAgKiDRgNCw0YHRgdC80L7RgtGA0LXRgtGMINGB
-0L/QvtGB0L7QsdGLINC30LDRidC40YLRiyDQv9GA0LXQvtCx0YDQsNC30L7QstCw0L3QuNC5ICjQ
-utCw0Log0L3QsCDRgdGC0LDQtNC40Lgg0YHQsNC80LjRhSDQv9GA0LXQvtCx0YDQsNC30L7QstCw
-0L3QuNC5LCDRgtCw0Log0Lgg0L/QvtGB0LvQtSDQv9GA0LXQtNGK0Y/QstC70LXQvdC40Y8g0L/R
-gNC10YLQtdC90LfQuNC5INC90LDQu9C+0LPQvtCy0YvQvCDQvtGA0LPQsNC90L7QvCk7CgogICAg
-KiDRgNCw0YHRgdC80L7RgtGA0LXRgtGMINGB0L/QvtGB0L7QsdGLINC80LjQvdC40LzQuNC30LDR
-htC40Lgg0L3QsNC70L7Qs9C+0LLRi9GFINC/0LvQsNGC0LXQttC10Lkg0LIg0YXQvtC70LTQuNC9
-0LPQvtCy0YvRhSDRgdGC0YDRg9C60YLRg9GA0LDRhSDRgSDQv9GA0LjQvNC10L3QtdC90LjQtdC8
-INC70YzQs9C+0YLQvdGL0YUg0YDQtdC20LjQvNC+0Lwg0L3QsNC70L7Qs9C+0L7QsdC70L7QttC1
-0L3QuNGPLgoKIAoK0J/RgNC+0LPRgNCw0LzQvNCwINC+0LHRg9GH0LXQvdC40Y8KCiAgIDEuINCS
-0YvQstC+0LQg0YHQvtGC0YDRg9C00L3QuNC60L7Qsi4g0JDRg9GC0YHQvtGA0YHQuNC90LMuINCh
-0L/QvtGB0L7QsdGLINGA0LDQt9C00LXQu9C10L3QuNGPINC+0YDQs9Cw0L3QuNC30LDRhtC40Lgu
-CgogICAyLiDQoNCw0LfQsdC+0YAg0LTQtdC50YHRgtCy0LXQvdC90YvRhSDCq9C70LXQs9C10L3Q
-tMK7INCyINC+0LHQvtGB0L3QvtCy0LDQvdC40LUg0LTRgNC+0LHQu9C10L3QuNGPINCx0LjQt9C9
-0LXRgdCwICjQvdCwINC+0YHQvdC+0LLQtSDQv9GA0LDQutGC0LjQutC4LCDRgNC10YjQtdC90LjQ
-uSDRgdGD0LTQvtCyKS4KCiAgIDMuINCf0LXRgNC10LrQstCw0LvQuNGE0LjQutCw0YbQuNGPINCw
-0YPRgtGB0L7RgNGB0LjQvdCz0LAsINCy0L7Qt9C80LXQt9C00L3QvtCz0L4g0L7QutCw0LfQsNC9
-0LjRjyDRg9GB0LvRg9CzINCyINGC0YDRg9C00L7QstGL0LUg0L7RgtC90L7RiNC10L3QuNGPLiDQ
-oNCw0LfQsdC+0YAg0L7RiNC40LHQvtC6INC/0YDQuCDQvtGE0L7RgNC80LvQtdC90LjQuCDQtNC+
-0LrRg9C80LXQvdGC0L7Qsi4KCiAgIDQuINCQ0L3QsNC70LjQtyDQvtGI0LjQsdC+0Log0LTQvtC/
-0YPRgdC60LDQtdC80YvRhSDQv9GA0Lgg0LDRg9GC0YHQvtGA0YHQuNC90LPQtSAo0YDQsNCx0L7R
-gtCwINC+0YHRg9GJ0LXRgdGC0LLQu9GP0LXRgtGB0Y8g0LHQtdC3INGG0LXQu9C4INC40LfQstC7
-0LXRh9C10L3QuNGPINC/0YDQuNCx0YvQu9C4LCDRj9Cy0LvRj9C10YLRgdGPINC30LDQstC40YHQ
-uNC80L7QuSDQvtGCINCz0L7Qu9C+0LLQvdC+0LPQviDQv9GA0LXQtNC/0YDQuNGP0YLQuNGPINC4
-INGCLtC/LikuCgogICA1LiDQntGB0L3QvtCy0LDQvdC40Y8g0LfQsNCy0YvRiNC10L3QuNGPINGB
-0YLQvtC40LzQvtGB0YLQuCDRgNCw0LHQvtGCLCDRg9GB0LvRg9CzLCDQv9C+0LvRg9GH0LDQtdC8
-0YvRhSDQvtGCINCy0L3QvtCy0Ywg0YHQvtC30LTQsNC90L3QvtCz0L4g0L/RgNC10LTQv9GA0LjR
-j9GC0LjRjyAo0L/QvtGH0LXQvNGDINGA0LDQvdC10LUg0YLQtSDQttC1INGA0LDQsdC+0YLRiyDQ
-stGL0L/QvtC70L3Rj9C70LjRgdGMINC30LAgMTAg0YDRg9Cx0LvQtdC5LCDQsCDRgdC10LnRh9Cw
-0YEg0LfQsCAxMDA/KS4KCiAgIDYuINCg0LDQt9Cx0L7RgCDRgdC/0L7RgdC+0LHQsCDQv9C+0LfQ
-stC+0LvRj9GO0YnQtdCz0L4g0LfQsNGJ0LjRgtC40YLRjNGB0Y8g0L7RgiDQv9GA0LXRgtC10L3Q
-t9C40Lkg0L/QviDRgtGA0LDQvdGB0YTQtdGA0YLQvdC+0LzRgyDRhtC10L3QvtC+0LHRgNCw0LfQ
-vtCy0LDQvdC40Y4g0Lgg0L/RgNC40LfQvdCw0L3QuNC4INC70LjRhiDQvdC10LTQvtCx0YDQvtGB
-0L7QstC10YHRgtC90YvQvNC4LCDQsCDRgdCw0LzRgyDRgdGF0LXQvNGDINGB0L7Qt9C00LDQvdC9
-0L7QuSDQsiDRhtC10LvRj9GFINC/0L7Qu9GD0YfQtdC90LjRjyDQvdC10L7QsdC+0YHQvdC+0LLQ
-sNC90L3QvtC5INC90LDQu9C+0LPQvtCy0L7QuSDQstGL0LPQvtC00YsuCgogICA3LiDQl9Cw0YnQ
-uNGC0LAg0L7RgiDQv9C+0LrQsNC30LDQvdC40Lkv0YjQsNC90YLQsNC20LAg0YHQvtGC0YDRg9C0
-0L3QuNC60L7Qsi4KCiAgIDguINCe0LHRhdC+0LQg0L/RgNC10LTQtdC70L7QsiDQv9GA0LjQvNC1
-0L3QtdC90LjRjyDQo9Ch0J0g0YEg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40LXQvCDQtNC+0LPQ
-vtCy0L7RgNCwINC/0YDQvtGB0YLQvtCz0L4g0YLQvtCy0LDRgNC40YnQtdGB0YLQstCwLiDQm9C1
-0LPQtdC90LTRiywg0L7QsdC+0YHQvdC+0LLRi9Cy0LDRjtGJ0LjQtSDQt9Cw0LrQu9GO0YfQtdC9
-0LjQtSDRgtCw0LrQvtCz0L4g0LTQvtCz0L7QstC+0YDQsC4KCiAgIDkuINCQ0YPRgtGB0YLQsNGE
-0YTQuNC90LMgLSDQv9GA0LjQstC70LXRh9C10L3QuNC1INCy0L3QtdGI0YLQsNGC0L3QvtCz0L4g
-0YHQv9C10YbQuNCw0LvQuNGB0YLQsCDQvdCwINCy0YDQtdC80Y8g0LLRi9C/0L7Qu9C90LXQvdC4
-0Y8g0L7Qv9GA0LXQtNC10LvRkdC90L3QvtCz0L4g0L/RgNC+0LXQutGC0LAuCgogIDEwLiDQn9C+
-0LvRg9GH0LXQvdC40LUg0LrQvtC80L/QsNC90LjRj9C80Lgg0J3QlNChINC/0YDQuCDQvtC/0LvQ
-sNGC0LUg0YDQsNCx0L7Rgi/Rg9GB0LvRg9CzINCw0YPRgtGB0L7RgNGB0LXRgNCwINC90LAg0KPQ
-odCdLiDQoNC40YHQutC4INC4INGB0L/QvtGB0L7QsdGLINC30LDRidC40YLRiy4KCiAgMTEuINCf
-0L7RgtC10YDRjyDQtNC+0LrRg9C80LXQvdGC0L7Qsiwg0LrQsNC6INGB0L/QvtGB0L7QsSDQvNCw
-0LrRgdC40LzQsNC70YzQvdC+0Lkg0LfQsNGJ0LjRgtGLINC+0YIg0LLQvtC30LzQvtC20L3Ri9GF
-INC/0YDQtdGC0LXQvdC30LjQuSDQutC+0L3RgtGA0L7Qu9C40YDRg9GO0YnQuNGFINC+0YDQs9Cw
-0L3QvtCyLgoKICAxMi4g0JDQvdCw0LvQuNC3INC70LjQvNC40YLQsCDQstGL0YDRg9GH0LrQuCDQ
-v9GA0Lgg0L/RgNC40LzQtdC90LXQvdC40Lgg0KPQodCdLgoKICAxMy4g0KTQsNC60YLQuNGH0LXR
-gdC60L7QtSDQvdCw0YXQvtC20LTQtdC90LjQtSDRjtGA0LjQtNC40YfQtdGB0LrQvtCz0L4g0LvQ
-uNGG0LAg0L3QtSDQv9C+INC80LXRgdGC0YMg0YDQtdCz0LjRgdGC0YDQsNGG0LjQuCwg0LvQuNCx
-0L4g0L3QsNC70LjRh9C40LUg0L7QsdC+0YHQvtCx0LvQtdC90L3Ri9GFINC/0L7QtNGA0LDQt9C0
-0LXQu9C10L3QuNC5INC/0L4g0YHRgi4gNTUg0JPQmiDQoNCkINC60LDQuiDQvtGB0L3QvtCy0LDQ
-vdC40LUg0YPRgtGA0LDRgtGLINC/0YDQsNCy0LAg0L3QsCDQv9GA0LjQvNC10L3QtdC90LjQtSDQ
-o9Ch0J0uCgogIDE0LiDQodC+0LrRgNGL0YLQuNC1INCw0YTQuNC70LvQuNGA0L7QstCw0L3QvdC+
-0YHRgtC4OiDQuNGB0L/QvtC70YzQt9C+0LLQsNC90LjQtSDQtNC+0LLQtdGA0LXQvdC90YvRhSDQ
-u9C40YYsINC+0YTRhNGI0L7RgNC+0LIsINC90LXQutC+0LzQvNC10YDRh9C10YHQutC40YUg0L7R
-gNCz0LDQvdC40LfQsNGG0LjQuS4KCiAgMTUuINCf0LXRgNC10LTQsNGH0LAg0LjQvNGD0YnQtdGB
-0YLQstCwINC/0YDQuCDQtNGA0L7QsdC70LXQvdC40Lg6INGA0LXQvtGA0LPQsNC90LjQt9Cw0YbQ
-uNGPLCDQstC30L3QvtGBINCyINGD0YHRgtCw0LLQvdGL0Lkg0LrQsNC/0LjRgtCw0LssINC30LDQ
-udC80Ysg0Lgg0YIu0L8uINCh0YPQtNC10LHQvdCw0Y8g0L/RgNCw0LrRgtC40LrQsCwg0LLRi9GP
-0LLQu9GP0Y7RidCw0Y8g0YDQuNGB0LrQuCDQsdC10LfQstC+0LfQvNC10LfQtNC90L7QuSDQv9C1
-0YDQtdC00LDRh9C4INC40LzRg9GJ0LXRgdGC0LLQsCwg0LTQsNGA0LXQvdC40Y8uCgogIDE2LiDQ
-l9Cw0YnQuNGC0LAg0LDQutGC0LjQstC+0LIgLSDQv9GA0LDQstC40LvQviDCq9GH0LXRgtGL0YDQ
-tdGFINGD0LPQu9C+0LLCuy4KCiAgMTcuINCh0L/QvtGB0L7QsdGLINC60L7QvdGC0YDQvtC70Y8g
-0LTQvtCy0LXRgNC10L3QvdGL0YUg0LvQuNGGINC60LDQuiDRjdC70LXQvNC10L3RgiDQsdC10LfQ
-vtC/0LDRgdC90L7RgdGC0Lgg0LDQutGC0LjQstC+0LIuCgogIDE4LiDQodC/0L7RgdC+0LHRiyDR
-g9C/0YDQsNCy0LvQtdC90LjRjyDQs9GA0YPQv9C/0L7QuSDQutC+0LzQv9Cw0L3QuNC5LgoKICAx
-OS4g0J/RgNC10LfRg9C80L/RhtC40Y8g0L3QtdC00L7QsdGA0L7RgdC+0LLQtdGB0YLQvdC+0YHR
-gtC4LiDQn9GA0L7QtdC60YIg0J/QvtGB0YLQsNC90L7QstC70LXQvdC40Y8g0JLQkNChINC+INC9
-0LXQtNC+0LHRgNC+0YHQvtCy0LXRgdGC0L3QvtGB0YLQuC4KCiAgMjAuINCg0LDRgdGB0LzQvtGC
-0YDQtdC90LjQtSDQvNC10YLQvtC00LjRh9C10Log0JzQuNC90YTQuNC90LAgKNCU0KHQnykg0L4g
-0LLRi9GP0LLQu9C10L3QuNC4INC4INC/0YDQtdC00YrRj9Cy0LvQtdC90LjQuCDQv9GA0LXRgtC1
-0L3Qt9C40Lkg0Log0LrQvtC80L/QsNC90LjRj9C8INC+0YHRg9GJ0LXRgdGC0LLQuNCy0YjQuNC8
-INC00YDQvtCx0LvQtdC90LjQtSDRgdCy0L7QtdC5INGB0YLRgNGD0LrRgtGD0YDRiy4g0J3QvtCy
-0YvQtSDRgtGA0LXQsdC+0LLQsNC90LjRjyDQuiDQstGL0LXQt9C00L3Ri9C8INC/0YDQvtCy0LXR
-gNC60LDQvCDQuCDRgi7QtC4KCiAKCtCY0L3QtNC40LLQuNC00YPQsNC70YzQvdGL0LUg0LrQvtC9
-0YHRg9C70YzRgtCw0YbQuNC4INC/0L4g0LLQvtC/0YDQvtGB0LDQvCDQtNGA0L7QsdC70LXQvdC4
-0Y8g0LHQuNC30L3QtdGB0LAsINC90LDQu9C+0LPQvtCy0L7Qs9C+INC/0LvQsNC90LjRgNC+0LLQ
-sNC90LjRjyDQuCDQv9GA0LjQvNC10L3QtdC90LjRjyDRgdC/0LXRhtC40LDQu9GM0L3Ri9GFINC9
-0LDQu9C+0LPQvtCy0YvRhSDRgNC10LbQuNC80L7Qsi4KCiAKCtCh0YLQvtC40LzQvtGB0YLRjCAg
-0YPRh9Cw0YHRgtC40Y8gIC0gIDk1MDAg0YAuLCDQstC60LsuINC+0LHRg9GH0LXQvdC40LUsINC/
-0LXRh9Cw0YLQvdGL0LUg0LzQsNGC0LXRgNC40LDQu9GLLCDQvtCx0LXQtNGLLCDQutC+0YTQtS3Q
-v9Cw0YPQt9GLLiDQmNC90L7Qs9C+0YDQvtC00L3QuNC8INC/0L7QvNC+0YnRjCDQsiDQsdGA0L7Q
-vdC40YDQvtCy0LDQvdC40Lgg0L3QvtC80LXRgNC+0LIuCgogCgrQn9C+0LTRgNC+0LHQvdCw0Y8g
-0LjQvdGE0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjzogKCA0IDkgNSAp
-ICAyIDIgOSAwIDQgMyAzCgogCgogCgrQrdGC0L4g0L/QuNGB0YzQvNC+INC90L7RgdC40YIg0LjQ
-vdGE0L7RgNC80LDRhtC40L7QvdC90YvQuSDRhdCw0YDQsNC60YLQtdGALCDQuCDQvdC1INC/0YDQ
-tdC00L/QvtC70LDQs9Cw0LXRgiDQvtGC0LLQtdGC0LAuINCf0L7QttCw0LvRg9C50YHRgtCwLCDQ
-vdC1INC+0YLQstC10YfQsNC50YLQtSDQvdCwINGN0YLQviDQv9C40YHRjNC80L4KCtCV0YHQu9C4
-INCy0Ysg0YXQvtGC0LjRgtC1INC+0YLQv9C40YHQsNGC0YzRgdGPINC+0YIg0Y3RgtC+0Lkg0YDQ
-sNGB0YHRi9C70LrQuCwg0L/RgNC40YjQu9C40YLQtSDQv9C40YHRjNC80L4g0YEg0YLQtdC80L7Q
-uSB1bnN1YnNjcmliZSDQvdCwINCw0LTRgNC10YEgdW5zdWJzY3JpYmVAcmlja2kucnUKCtCS0LDR
-iCDQsNC00YDQtdGBOiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgCgrQ
-mNC70Lgg0L3QsNC20LzQuNGC0LUg0L3QsCDRgdGB0YvQu9C60YM6ICAKdW5zdWJzY3JpYmVAcmlj
-a2kucnU/c3ViamVjdD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tClRoaW5rR2VlayBhbmQgV0lSRUQncyBHZWVrRGFkIHRlYW0gdXAg
-Zm9yIHRoZSBVbHRpbWF0ZSAKR2Vla0RhZCBGYXRoZXIncyBEYXkgR2l2ZWF3YXkuIE9ORSBNQVNT
-SVZFIFBSSVpFIHRvIHRoZSAKbHVja3kgcGFyZW50YWwgdW5pdC4gIFNlZSB0aGUgcHJpemUgbGlz
-dCBhbmQgZW50ZXIgdG8gd2luOiAKaHR0cDovL3Auc2YubmV0L3NmdS90aGlua2dlZWstcHJvbW8K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+--===============5159601503495290008==
+Content-Type: text/plain
+
+“五步连贯”股权激励法--留驻核心人才
+——中国股权激励第一人薛中行博士主讲
+——为企业建立最完善的股权激励方案；参加学员均可免费获赠价值上万的 《股权激励方案设计模板》一套（包括股权制度管理办法、股权协议书、股权证书以及其他相关法律文件）。
+ 
+
+时间地点：2010年07月02-03日　深圳
+时间地点：2010年07月20-21日　上海
+时间地点：2010年07月29-30日　广州
+时间地点：2010年08月13-14日　北京
+时间地点：2010年08月20-21日　深圳
+时间地点：2010年08月24-25日　上海
+时间地点：2010年09月03-04日　青岛
+时间地点：2010年09月10-11日　北京
+
+参课对象：企业总裁、董事长、总经理、决策者、人力资源总监、财务总监及薪资福利经理、中高层管理人员、HR管理从业人员等。
+
+标准费用：
+①个人课票：￥9800元/2天/人/期（含培训、指定培训教材、午餐、茶点费等）
+②团队套票一：￥14000元（2个参会名额）/期（含培训、指定培训教材、午餐、茶点费等）
+③团队套票二：￥16000元（3个参会名额）/期（含培训、指定培训教材、午餐、茶点费等）
+④团队套票三：￥18000元（4个参会名额）/期（含培训、指定培训教材、午餐、茶点费等）
+⑤团队套票四：￥21000元（5个参会名额）/期（含培训、指定培训教材、午餐、茶点费等）
+
+--------------------------------------------------------------------------------
+
+主办单位：众人行管理咨询网 （www.9966333.com）  深圳市一二三管理咨询有限公司
+咨询报名：0755-26075365   13728719948  147-2E4VIyKY7aNBDgjK7y7TUQ@public.gmane.org  凌凌
+
+--------------------------------------------------------------------------------
+股散未必人聚，人聚则必股散
+散得巧妙，散得艺术，散得众人心服
+方能众心合一，方能企业强而事业久
+——中国股权激励第一人薛中行博士主讲
+——为企业建立最完善的股权激励方案；参加学员均可免费获赠价值上万的 《股权激励方案设计模板》一套（包括股权制度管理办法、股权协议书、股权证书以及其他相关法律文件）。
+
+课程背景：
+◆如何让新员工入职后就有归属感？
+◆如何让老员工永具激情和创造力？
+◆如何让核心员工与企业同心同德？
+◆如何让公司高管与你不离不去？
+◆如何合理设计股权激励方案？
+◆如何能让激励达到长期有效？
+◆如何优化企业股权？
+◆如何在股权被稀释的同时保持控制权和经营权的统一？
+◆如何既保持企业股权激励的功能发挥，又能将其操作与法律风险控制到一个防火墙内？……
+薛中行教授将在课上一一为您揭晓答案，手把手教您设计适合自身企业的股权激励方案。
+为您的企业打造“金手铐”，有效留住核心人才，增强企业凝聚力；
+为您的企业打造“金钥匙”，彻底激发员工潜能，加速企业实现目标、发展壮大；
+为您的企业打造“金色降落伞”，圆满解决元老退出各大难题；
+……
+目前,员工持股、年底分红等“股权激励”问题是众多企业最为关注的核心问题，薛博士“手把手”教您运用股权期权这一独特的“创富机器”,为您的企业量身打造一幅诱人的“金手铐”，开启人才价值的“金钥匙”。
+
+培训特色：
+咨询式培训---课程采取小班制授课方式,这样可以更好的保证授课效果，方便现场咨询与互动，让学员真正的能够学到、悟到、得到进而可以做到。
+创新性与唯一性---国内首家系统性的股权激励培训，先后创造了业内五个第一。
+系统性与全面性---课程从人力资本提升的角度出发结合当前的法律、法规、财务、税务等各方面内容从方案设计到激励实施都进行系统而全面的阐述。
+真实性与实用性---课程中所讲的股权设计模式都是薛博士在近十年来他亲自参与的各大中型企业的实际顾问案例中总结提炼出来的，完全都能转化运用在学员企业上。并且分享股权激励方面的众多经典案例，具有极高的学习和参考价值。
+个性化与专业性---由薛博士亲自与学员在workshop中进行一对一的辅导与交流，运用其深厚专业的学术知识与丰富的实战经验为学员“量体裁衣”，制定最佳方案  
+
+--------------------------------------------------------------------------------
+
+课程大纲：
+
+模块一、五步连贯股权激励法
+（一）股权激励“前奏曲”
+1、股权、股份与股票
+2、实股、期股与期权
+3、短期、中期与长期
+4、赠与、购买与赊账
+5、有形、无形与计量
+思考：财聚人聚VS财散人聚？朝三暮四vs朝四暮三？
+（二）股----“好的模式是成功的一半”
+1、期权模式
+2、限制性股票模式
+3、股票增值权模式
+4、虚拟股票模式
+研讨：如何根据自身情况，选择合适的股权激励模式组合？
+动态股权制的建构
+（三）人----“重在人力资本投资”
+1、对"岗"还是对"人"?
+2、从精英到员工，多大范围股权激励才合适？
+3、工作性质与股权激励：高管、核心技术人员，还是营销骨干？
+4、定人三段论
+5、股权激励留人的核心在哪里？
+思考：《劳动合同法》下如何巧用股权激励达到激励和约束知识员工的目的？
+（四）价----“人力资本可计量”
+1、如何给企业合理估值定价？上市公司的期权定价模型
+2、如何给人员合理估值定价？
+3、技术管理要素如何合理入股？
+4、如何合理设计激励杠杆？
+思考1：内部市场价格VS外部评估价格？
+思考2：唐骏的十亿身价与紫金矿业的高溢价发行有无联系？
+（五）量----“过犹不及、与时俱进”
+1、你的蛋糕有多大？
+2、从1%到10%
+3、六十年后看你的企业
+思考：如何合理分配股份、期权额度和数量？既不缺乏激励力度，又避免过度激励，稀释股权。股权激励的相对数论。
+（六）时----“嵌套与循环”
+1、生命周期vs行业特点
+2、股权激励的长周期与短周期
+3、延期支付与股权激励
+4、8年限制期
+思考：如何选择“对的时间”来完成对的事？
+研讨：金手铐是如何铸就的？
+
+模块二、股权激励方案设计技巧
+（一）股权激励成功的七个关键要素
+1、如何评价一个股权激励的成功？
+2、股权激励7要素
+（二）股权激励争议案例深度剖析
+1、TCL的股权激励：从赞许到失望
+2、光明乳业：股权激励四人行
+3、海尔高管为何辞职？
+（三）股权激励的设计环节与流程
+1、股权激励整体设计流程
+2、股权激励三阶段论
+3、如何循序渐进发展股权激励
+4、股权期权的会计处理及有关问题
+四、我们该如何设计股权激励方案？
+
+模块三、股权激励相关法律问题
+1、案例分析：股权激励四大争议案例
+2、证监会关于股权激励的有关规定
+3、上市公司股权激励案例分析
+4、财政部国税总局等有关股权激励的规定
+5、会计准则中的股份支付
+思考：如何在股权激励的同时设计限制性条款？
+
+模块四、股本设计股权治理技巧
+1、如何合理设计股权
+2、影子股票、信托股票与虚拟股票的对比。
+重点研讨：如何有效设计法律防火墙，避免股权纠纷，规避为上市造成障碍
+
+模块五、股权激励实战案例讨论会
+与薛中行博士深入探讨自身企业设计与实施股权激励方案涉及的种种实际问题。
+
+--------------------------------------------------------------------------------
+
+讲师介绍：薛中行教授
+中国股权激励第一人，薛中行博士毕业于中国著名高等学府复旦大学，在复旦大学经济管理学院接受现代经济学的培养，并多次应邀访学于英美等著名高等学府。同时出于对中国优秀古典文化的热爱，中行博士亦潜心钻研《周易》二十余载，具有现代商业经济与中国古典哲学的双重思维方式和文化底蕴。
+◇中国证监会登记结算股权激励课题组组长
+◇经济学博士、资深投资银行专家
+◇中国股权激励第一人，国内实战派股权激励专家
+◇企业“股权激励”领域的拓荒者、权威专家
+◇担任近百家企业的首席咨询顾问
+◇擅长讲授人力资源与资本运作各模块的课程，尤其是股权激励课程
+◇中山大学、浙江大学等多家著名院校客座教授，主讲股权激励课程，平均培训满意度高达95%
+◇先后创造了业内众多个第一：
+第一家系统总结了各种股权激励案例，并在此基础上提炼出国内唯一成熟可行的“五步连贯股权激励法”；
+第一家采用“股权释兵权”，为浙江一福布斯上榜企业成功解决了“元老退出”难题；
+第一家将“博弈论”的分析工具引入到中国企业咨询实际，帮助企业在战略制定、股权分配、岗位评估、企业文化方面进行独特的应用；
+第一家提出“人力资源股权化”、“人力资源证券化”概念，帮助大量企业解决员工激励难题，实现了人力资源的资本化运作；
+第一家帮助双家族企业解决了公司治理难题。
+薛博士有近20年的从业经验，组织并成功实施过众多著名企业公司的咨询项目，其中包括海尔集团、宝钢集团、中石化、中外运、交通银行、华泰证券、泰阳证券、汉王科技、海南航空、天津电力、北仑电厂、苏源集团、苏通房地产、亿达集团、长甲集团、圣马纸业、苏常柴、民丰特纸、江苏交科院、临淄信用社、鄞州银行等，在业界具有相当知名度。早年中行博士曾经任职于上海实业、华泰证券、联合证券等企业，具有丰富的企业管理、企业上市、重组并购，的实战经验；熟悉ESOP（员工持股计划）、限制性股权、业绩股票、分红权、虚拟股权、增值权等长期激励机制，在绩效评估，平衡积分卡，薪资体系方面有着成功的案例，先后为多家福布斯上榜企业提供咨询。
+
+导师授课风格：
+◇具有一流的讲师风格，亲和力强，是位极具人格魅力的讲师。
+◇在中山大学、浙江大学等EMAB主讲的股权激励课程授课满意度连续4年排名第1。
+◇深厚的理论功底和10多年近100家企业首席咨询顾问的实操经验，使其讲授的课程理论联系实际、深入浅出，与学员产生强烈共鸣；有实例、有工具，操作性极强，学能致用。
+◇倡导快乐学习。授课语言风趣幽默、注重互动、鼓励参与，深受客户和学员的欢迎。
+
+--------------------------------------------------------------------------------
+
+将以下报名表内容打印填写后传真到：0755-61351396
+
+报　　名　　回　　执
+
+参加课题：“五步连贯”股权激励法--留驻核心人才　　地点：   时间：
+
+参会单位名称：___________________________________Email：______________________　
+
+联系人：_______________电话：_____________________传真：_____________________
+　
+参加学员：_______________职务：_______________手机：_______________Email：____________
+
+参加学员：_______________职务:_______________手机：_______________Email：____________
+
+参加学员：_______________职务：_______________手机：_______________Email：____________
+
+付款方式：□现金　□支票　□转帐
+
+人数：______人参会费用：共计：______元
+
+备注
+1.收到贵司报名信息后，我们将第一时间和贵司参会联系人进行确认；
+2.在开课前一周，我们有专人给贵司发送参加培训的确认函，上面有培训报到指引，以及详细的上课地址和路线图；
+3.此课程也可以安排企业内训，欢迎来电咨询及申请排期；
+4.如对此课程有任何疑问，欢迎拨打电话向我们咨询。
+
+
+--===============5159601503495290008==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+ThinkGeek and WIRED's GeekDad team up for the Ultimate 
+GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
+lucky parental unit.  See the prize list and enter to win: 
+http://p.sf.net/sfu/thinkgeek-promo
+--===============5159601503495290008==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5159601503495290008==--

@@ -1,8 +1,8 @@
-From: "Votre Budget =?ISO-8859-1?Q?Sant=E9?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Des tarifs discounts en avant premiere
-	pour bien se couvrir
-Date: Tue,  8 Jun 2010 21:32:58 +0200 (CEST)
-Message-ID: <l3pnmr.wgdin4@front.ta271.com>
+From: "Groupe Monceau Fleurs" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Le groupe Monceau Fleurs lance un
+	emprunt obligataire
+Date: Tue,  8 Jun 2010 21:10:51 +0000 (UTC)
+Message-ID: <l3ps7u.lf4gqt@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

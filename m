@@ -1,23 +1,13 @@
-From: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH] drivers: spi-gpio: add support for
- controllers without MISO or MOSI pin
-Date: Wed, 09 Jun 2010 09:14:25 +0200
-Message-ID: <000301cb07a3$679c6ec0$36d54c40$%szyprowski@samsung.com>
-References: <1270118151-13286-1-git-send-email-m.szyprowski@samsung.com>
-	<001701cb0180$60f0b320$22d21960$%szyprowski@samsung.com>
-	<AANLkTilQ5yD16LAq4xEmXKAmrNqO8eWFh0BmHPd2cR0q@mail.gmail.com>
-	<002b01cb0218$ddab68e0$99023aa0$%szyprowski@samsung.com>
-	<AANLkTim-yZb55jAyOaQJ_pOnp-LcXh-wdzw4TKqAyfea@mail.gmail.com>
+From: v <vvoisin-elIyG9luQ85QFI55V6+gNQ@public.gmane.org>
+Subject: card based on s3C2440: s3c2410-spi
+ s3c2410-spi.0: Failed to register SPI master
+Date: Wed, 09 Jun 2010 12:57:06 +0200
+Message-ID: <4C0F7382.50209@induct.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	'David Brownell' <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	'Marek Szyprowski' <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Jassi Brar' <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <AANLkTim-yZb55jAyOaQJ_pOnp-LcXh-wdzw4TKqAyfea-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-language: pl
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,60 +20,76 @@ List-Id: linux-spi.vger.kernel.org
 
 Hello,
 
-On Wednesday, June 02, 2010 11:00 AM Jassi Brar wrote:
+I'm using a UTU2440 dev kit (http://youtiyou.com/SamsungS3C2440EK.aspx) 
+based on a s3c2440.
+I try to enable spidev device on the board.
 
-> On Wed, Jun 2, 2010 at 3:00 PM, Marek Szyprowski
-> <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> > On Tuesday, June 01, 2010 5:00 PM Grant Likely wrote:
-> >> On Tue, Jun 1, 2010 at 5:48 AM, Marek Szyprowski
-> >> <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> >> I'm not convinced this is the best approach.  I did look at it, but
-> >> decided not to merge it yet.  It adds code to the hottest path in the
-> >> spi-gpio driver (not that this driver will ever be fast, but on
-> >> bit-banged gpio, every instruction counts).
-> >
-> > If this is really a problem I can remove the 'if (SPI_{MOSI,MISO}_GPIO !=
-> > SPI_GPIO_NO_{MOSI,MISO})' checks. If we assume that the upper level of
-> the
-> > spi framework works correctly, these functions shouldn't be called if
-> > the pin is set to NO_GPIO (the master device has SPI_MASTER_NO_{TX,RX}
-> flags
-> > set).
+I add the following lines for use spi on the platform is the kernel in 
+the file:
+arch/arm/mach-s3c2440/mach-utu2440.c:
 
-Ok. I've did a research and that SPI_{MOSI,MISO}_GPIO != SPI_GPIO_NO_{MOSI,MISO}
-checks cannot be easily removed, because in each loop both getmiso() and
-setmosi() are called by the bitbang_txrx_be_* functions. I also understand that
-this part of code is really hot and should be optimized as much as possible.
+/* SPI driver info */
+static struct spi_board_info __initdata_refok utu2440_spi_board_info[] = {
+//SPI Port 0
+     {
+       .modalias    = "spidev",
+       .max_speed_hz    = 25000000, //25 MHz
+       .bus_num    = 0,
+       .chip_select    = 0,
+       .mode     = SPI_MODE_3,
+     },
+}
 
-> As I pointed in the last thread, such peculiar platforms had better
-> assign some virtual gpio
-> for such non-existent miso/mosi, rather than imposing these extra
-> checks on most of the normal platforms.
+static void utu2440_spi0_cs(struct s3c2410_spi_info *spi, int cs, int pol)
+{
+     s3c2410_gpio_setpin(S3C2410_GPG2, pol);
+}
 
-Creating a virtual gpio bank only for this case is also an overhead imho.
-GPIO SPI masters without RX line will be used by more than one machine, so
-some kind of a generic driver is imho needed.
+static struct s3c2410_spi_info utu2440_spi0_platdata = {
+     //.pin_cs = S3C2410_GPG2,
+     .board_size = ARRAY_SIZE(utu2440_spi_board_info),
+     .board_info = utu2440_spi_board_info,
+     .set_cs = utu2440_spi0_cs,
+};
 
-Notice that the spi_s3c24xx_gpio.c driver already silently handles such
-NO_RX transfers and machines that use it depends on such behavior. I expect
-that this driver will be soon removed in favor of generic spi_gpio driver,
-once plat-s3c24xx will be finally converted to use generic gpio lib.
+I activate the SPI_DEV in the kernel with the following lines in .config 
+kernel configuration:
 
-What do you think about duplicating spi_gpio driver with my proposed changes
-as spi_gpio_adv? The original spi_gpio driver won't be modified at all, so no
-performance lose will happen for machines that use it. For new machines the
-developers will be able to select weather they need a high speed transfers or
-a driver that supports some rarely used features.
+#
+# SPI support
+#
+CONFIG_SPI=y
+CONFIG_SPI_MASTER=y
 
-The other possibility would be to create a new version of the bitbang_txrx_be_*
-functions for NO_TX and NO_RX cases. Then the proper function can be assigned
-in spi_gpio_probe(). However this would increase the size of spi_gpio driver
-significantly.
+#
+# SPI Master Controller Drivers
+#
+CONFIG_SPI_BITBANG=y
+CONFIG_SPI_S3C24XX=y
+# CONFIG_SPI_S3C24XX_GPIO is not set
+
+#
+# SPI Protocol Masters
+#
+# CONFIG_SPI_AT25 is not set
+CONFIG_SPI_SPIDEV=y
+
+Unfortunately it didn't work, during the boot i have the following error:
+s3c2410-spi s3c2410-spi.0: Failed to register SPI master
+s3c2410-spi: probe of s3c2410-spi.0 failed with error -22
+
+Is somebody can help me to complete the code ?
 
 Best regards
---
-Marek Szyprowski
-Samsung Poland R&D Center
+
+Vincent
+
+PS: sorry for my poor english
+
+
+
+
+
 
 
 

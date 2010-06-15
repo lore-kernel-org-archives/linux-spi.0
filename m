@@ -1,9 +1,7 @@
-From: limited Mahatma <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Cheap sex meds online. are other
-	concentrations
-Date: Tue, 15 Jun 2010 08:29:18 +0700
-Message-ID: <E1OOKy8-0000O4-UB@sfs-ml-4.v29.ch3.sourceforge.com>
-Reply-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Votre catalogue Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] En juin, les prix se cassent pour vous !
+Date: Tue, 15 Jun 2010 05:57:12 +0000 (UTC)
+Message-ID: <l41klh.r4fprk@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,8 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-http://6d.bornear.ru/?Gautama=6761E7D4C8
 
 ------------------------------------------------------------------------------
 ThinkGeek and WIRED's GeekDad team up for the Ultimate 

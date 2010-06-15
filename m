@@ -1,7 +1,7 @@
-From: "Votre catalogue Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] En juin, les prix se cassent pour vous !
-Date: Tue, 15 Jun 2010 05:57:12 +0000 (UTC)
-Message-ID: <l41klh.r4fprk@front02.r7g.com>
+From: "Espace Vigilance" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Nouveau : le guide de la sécurité gratuit pour s'absenter sans inquietudes!
+Date: Tue, 15 Jun 2010 10:33:22 +0200 (CEST)
+Message-ID: <l41rrk.xwry1@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

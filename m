@@ -1,15 +1,20 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: On SPI bus locking API and mmc_spi
-Date: Wed, 16 Jun 2010 12:56:02 -0600
-Message-ID: <AANLkTim6WRYewPnHrNqfmC3FMyxzdiK8NEfgENuEQX6E@mail.gmail.com>
-References: <20100610122442.880918bc.ospite@studenti.unina.it>
+Subject: Re: [PATCH 0/3] davinci: spi: replace existing
+	SPI driver
+Date: Wed, 16 Jun 2010 13:34:37 -0600
+Message-ID: <AANLkTimFlv31NKSxPQMXFFf3_2lBy5SV5nJ-0tRQQqic@mail.gmail.com>
+References: <1275923348-8533-1-git-send-email-bniebuhr@efjohnson.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301E744A8C4@dbde02.ent.ti.com>
+	<BA34378D1528D04CB3C865B8BAB2472B024CCA@transmx01.transcrypt.local>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ernst Schwab <eschwab-BGeptl67XyCzQB+pC5nmwQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, "Nori,
+	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Brian Niebuhr <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100610122442.880918bc.ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+In-Reply-To: <BA34378D1528D04CB3C865B8BAB2472B024CCA-mqUZVEcnZosHtCCSzi1I5PfQPhDVBs+grNQQ6b5fDX0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,27 +25,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 10, 2010 at 4:24 AM, Antonio Ospite
-<ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org> wrote:
-> Hi,
+On Mon, Jun 14, 2010 at 1:15 PM, Brian Niebuhr <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org> wrote:
+>> Can you please post this series to SPI development list
+>> (spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org) CCing the maintainers
+>> David Brownell and Grant Likely?
 >
-> I would be interested to know about the status of the SPI bus locking
-> API, especially related to mmc_spi, I see there is some discussion from
-> February[1] mentioning a possible inclusion in 2.6.35[2], but I can't
-> find the changes in mainline nor in the git tree here:
-> http://git.secretlab.ca/?p=linux-2.6.git;a=shortlog;h=refs/heads/next-spi
+> Done
 
-The lead up to the .35 merge window was overloaded for me, so I never
-picked it up.  I'll pick it up into my -next branch for testing in the
-next week or so.
-
->
-> I have a system (pxa27x based, a Motorola A910 smartphone) which has
-> both the PMIC and the MMC on spi and I could test those patches if you
-> recap where the latest versions are.
-
-I'll send you the git tree url when I push it out.  Ping me early next
-week if you don't hear from me otherwise.
+I had to go looking for these patches.  I see that you sent them to
+spi-devel-general, but you should also cc: maintainers explicitly.
+Maintainers get a *lot* of email.  If you don't cc: me, then the
+chances are much greater that I won't see your patches in a timely
+manner.  I only saw this one because my name was in the body text
+which my filters picked up on.
 
 g.
 

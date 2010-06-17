@@ -1,11 +1,25 @@
-From: "Tecabe" <nrcxflr-z3VFle7c+6pWk0Htik3J/w@public.gmane.org>
-Subject: =?gb2312?b?tKu1vMDkyLQ=?=
-Date: Thu, 17 Jun 2010 13:23:04 +0800
-Message-ID: <14509.8154.qm@smtp114.plus.mail.sp1.yahoo.com>
+From: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] drivers: spi-gpio: add support for
+ controllers without MISO or MOSI pin
+Date: Thu, 17 Jun 2010 08:54:22 +0200
+Message-ID: <013801cb0de9$ed930f10$c8b92d30$%szyprowski@samsung.com>
+References: <1270118151-13286-1-git-send-email-m.szyprowski@samsung.com>
+	<001701cb0180$60f0b320$22d21960$%szyprowski@samsung.com>
+	<AANLkTilQ5yD16LAq4xEmXKAmrNqO8eWFh0BmHPd2cR0q@mail.gmail.com>
+	<002b01cb0218$ddab68e0$99023aa0$%szyprowski@samsung.com>
+	<AANLkTim-yZb55jAyOaQJ_pOnp-LcXh-wdzw4TKqAyfea@mail.gmail.com>
+	<000301cb07a3$679c6ec0$36d54c40$%szyprowski@samsung.com>
+	<AANLkTimT_IHfv4dKXuvTpa8M4L_MDqIvjrDPBLgzKUWn@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=hlj566_1549_62496817.8549076"
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	'David Brownell' <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	'Marek Szyprowski' <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Grant Likely' <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-reply-to: <AANLkTimT_IHfv4dKXuvTpa8M4L_MDqIvjrDPBLgzKUWn-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-language: pl
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,34 +30,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Hello,
 
-------=hlj566_1549_62496817.8549076
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
+On Wednesday, June 16, 2010 9:52 PM Grant Likely:
+
+> > The other possibility would be to create a new version of the
+> bitbang_txrx_be_*
+> > functions for NO_TX and NO_RX cases. Then the proper function can be
+> assigned
+> > in spi_gpio_probe(). However this would increase the size of spi_gpio
+> driver
+> > significantly.
+> 
+> Not that significantly, and it would keep all the relevant code
+> together.  I'm more in favor of this approach.
+
+Ok, I will prepare a new patch then.
+
+Best regards
+--
+Marek Szyprowski
+Samsung Poland R&D Center
 
 
-------=hlj566_1549_62496817.8549076
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 ThinkGeek and WIRED's GeekDad team up for the Ultimate 
 GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
 lucky parental unit.  See the prize list and enter to win: 
 http://p.sf.net/sfu/thinkgeek-promo
-------=hlj566_1549_62496817.8549076
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=hlj566_1549_62496817.8549076--

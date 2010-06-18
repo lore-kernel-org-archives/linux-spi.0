@@ -1,18 +1,13 @@
-From: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 1/2] drivers: gpio: bitbang: add support
- for SPI_MASTER_NO_{TX, RX} modes
-Date: Fri, 18 Jun 2010 08:11:03 +0200
-Message-ID: <1276841464-7984-2-git-send-email-m.szyprowski@samsung.com>
-References: <1276841464-7984-1-git-send-email-m.szyprowski@samsung.com>
+From: =?koi8-r?B?68HLINXQ0sHXzNHU2CDTz9TS1cTOycvBzck=?= <xys-mTV87CAQ8zIedp2WBT/QOw@public.gmane.org>
+Subject: =?koi8-r?b?9MHL1MnexdPLycogzcXOxcTWzcXO1Dog?=
+	=?koi8-r?b?1dDSwdfMxc7JxSDTz9TS1cTOycvBzckgxMXO2CDawSDEzsXN?=
+Date: Fri, 18 Jun 2010 15:05:58 +0400
+Message-ID: <1572802829.20100618150558@wsewomail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <1276841464-7984-1-git-send-email-m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,222 +18,88 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds a new flags argument to bitbang_txrx_be_cpha0 and
-bitbang_txrx_be_cpha1 transfer functions. This enables support for
-SPI_MASTER_NO_{TX,RX} transfer modes. The change should have no impact
-on speed of the existing drivers. bitbank_txrx_* functions are usually
-inlined into the drivers. When the argument is equal to constant zero,
-the optimizer would be able to eliminate the dead code (flags checks)
-easily. Tested on ARM and GCC 4.4.x and in all cases the checks were
-eliminated in the inlined function.
-
-Reviewed-by: Kyungmin Park <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Marek Szyprowski <m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi_bitbang_txrx.h |   16 ++++++++++------
- drivers/spi/spi_butterfly.c    |    2 +-
- drivers/spi/spi_gpio.c         |    8 ++++----
- drivers/spi/spi_lm70llp.c      |    2 +-
- drivers/spi/spi_s3c24xx_gpio.c |    8 ++++----
- drivers/spi/spi_sh_sci.c       |    8 ++++----
- 6 files changed, 24 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/spi/spi_bitbang_txrx.h b/drivers/spi/spi_bitbang_txrx.h
-index fc033bb..c16bf85 100644
---- a/drivers/spi/spi_bitbang_txrx.h
-+++ b/drivers/spi/spi_bitbang_txrx.h
-@@ -44,7 +44,7 @@
- 
- static inline u32
- bitbang_txrx_be_cpha0(struct spi_device *spi,
--		unsigned nsecs, unsigned cpol,
-+		unsigned nsecs, unsigned cpol, unsigned flags,
- 		u32 word, u8 bits)
- {
- 	/* if (cpol == 0) this is SPI_MODE_0; else this is SPI_MODE_2 */
-@@ -53,7 +53,8 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
- 	for (word <<= (32 - bits); likely(bits); bits--) {
- 
- 		/* setup MSB (to slave) on trailing edge */
--		setmosi(spi, word & (1 << 31));
-+		if ((flags & SPI_MASTER_NO_TX) == 0)
-+			setmosi(spi, word & (1 << 31));
- 		spidelay(nsecs);	/* T(setup) */
- 
- 		setsck(spi, !cpol);
-@@ -61,7 +62,8 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
- 
- 		/* sample MSB (from slave) on leading edge */
- 		word <<= 1;
--		word |= getmiso(spi);
-+		if ((flags & SPI_MASTER_NO_RX) == 0)
-+			word |= getmiso(spi);
- 		setsck(spi, cpol);
- 	}
- 	return word;
-@@ -69,7 +71,7 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
- 
- static inline u32
- bitbang_txrx_be_cpha1(struct spi_device *spi,
--		unsigned nsecs, unsigned cpol,
-+		unsigned nsecs, unsigned cpol, unsigned flags,
- 		u32 word, u8 bits)
- {
- 	/* if (cpol == 0) this is SPI_MODE_1; else this is SPI_MODE_3 */
-@@ -79,7 +81,8 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
- 
- 		/* setup MSB (to slave) on leading edge */
- 		setsck(spi, !cpol);
--		setmosi(spi, word & (1 << 31));
-+		if ((flags & SPI_MASTER_NO_TX) == 0)
-+			setmosi(spi, word & (1 << 31));
- 		spidelay(nsecs); /* T(setup) */
- 
- 		setsck(spi, cpol);
-@@ -87,7 +90,8 @@ bitbang_txrx_be_cpha1(struct spi_device *spi,
- 
- 		/* sample MSB (from slave) on trailing edge */
- 		word <<= 1;
--		word |= getmiso(spi);
-+		if ((flags & SPI_MASTER_NO_RX) == 0)
-+			word |= getmiso(spi);
- 	}
- 	return word;
- }
-diff --git a/drivers/spi/spi_butterfly.c b/drivers/spi/spi_butterfly.c
-index 8b52812..0d4ceba 100644
---- a/drivers/spi/spi_butterfly.c
-+++ b/drivers/spi/spi_butterfly.c
-@@ -156,7 +156,7 @@ butterfly_txrx_word_mode0(struct spi_device *spi,
- 		unsigned nsecs,
- 		u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
- 
- /*----------------------------------------------------------------------*/
-diff --git a/drivers/spi/spi_gpio.c b/drivers/spi/spi_gpio.c
-index 7edbd58..82b480c 100644
---- a/drivers/spi/spi_gpio.c
-+++ b/drivers/spi/spi_gpio.c
-@@ -146,25 +146,25 @@ static inline int getmiso(const struct spi_device *spi)
- static u32 spi_gpio_txrx_word_mode0(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 spi_gpio_txrx_word_mode1(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 spi_gpio_txrx_word_mode2(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 1, 0, word, bits);
- }
- 
- static u32 spi_gpio_txrx_word_mode3(struct spi_device *spi,
- 		unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 1, 0, word, bits);
- }
- 
- /*----------------------------------------------------------------------*/
-diff --git a/drivers/spi/spi_lm70llp.c b/drivers/spi/spi_lm70llp.c
-index 86fb7b5..7746a41 100644
---- a/drivers/spi/spi_lm70llp.c
-+++ b/drivers/spi/spi_lm70llp.c
-@@ -191,7 +191,7 @@ static void lm70_chipselect(struct spi_device *spi, int value)
-  */
- static u32 lm70_txrx(struct spi_device *spi, unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
- 
- static void spi_lm70llp_attach(struct parport *p)
-diff --git a/drivers/spi/spi_s3c24xx_gpio.c b/drivers/spi/spi_s3c24xx_gpio.c
-index 8979a75..be99135 100644
---- a/drivers/spi/spi_s3c24xx_gpio.c
-+++ b/drivers/spi/spi_s3c24xx_gpio.c
-@@ -64,25 +64,25 @@ static inline u32 getmiso(struct spi_device *dev)
- static u32 s3c2410_spigpio_txrx_mode0(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 s3c2410_spigpio_txrx_mode1(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 s3c2410_spigpio_txrx_mode2(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 1, 0, word, bits);
- }
- 
- static u32 s3c2410_spigpio_txrx_mode3(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 1, 0, word, bits);
- }
- 
- 
-diff --git a/drivers/spi/spi_sh_sci.c b/drivers/spi/spi_sh_sci.c
-index a511be7..5c64391 100644
---- a/drivers/spi/spi_sh_sci.c
-+++ b/drivers/spi/spi_sh_sci.c
-@@ -83,25 +83,25 @@ static inline u32 getmiso(struct spi_device *dev)
- static u32 sh_sci_spi_txrx_mode0(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 sh_sci_spi_txrx_mode1(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 0, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 0, 0, word, bits);
- }
- 
- static u32 sh_sci_spi_txrx_mode2(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha0(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha0(spi, nsecs, 1, 0, word, bits);
- }
- 
- static u32 sh_sci_spi_txrx_mode3(struct spi_device *spi,
- 				      unsigned nsecs, u32 word, u8 bits)
- {
--	return bitbang_txrx_be_cpha1(spi, nsecs, 1, word, bits);
-+	return bitbang_txrx_be_cpha1(spi, nsecs, 1, 0, word, bits);
- }
- 
- static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
--- 
-1.7.1.240.g225c
-
-
-------------------------------------------------------------------------------
-ThinkGeek and WIRED's GeekDad team up for the Ultimate 
-GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
-lucky parental unit.  See the prize list and enter to win: 
-http://p.sf.net/sfu/thinkgeek-promo
+ICAgICAg0KLQkNCa0KLQmNCn0JXQodCa0JjQmSDQnNCV0J3QldCU0JbQnNCV0J3QojoKICAgICAg
+0KPQn9Cg0JDQktCb0JXQndCY0JUg0KHQntCi0KDQo9CU0J3QmNCa0JDQnNCYINCU0JXQndCsINCX
+0JAg0JTQndCV0JwKCiAgICAgIDI4LTI5INC40Y7QvdGPICDQsy7QnNC+0YHQutCy0LAKCiAgICAg
+INCd0LDRiCDQutC+0L3RgtCw0LrRgtC90YvQuSDRgtC10LvQtdGE0L7QvTogOCAoNDk1KSA5MjEg
+MzAgMTcKCiAgICAgIC0g0J/RgNCw0LrRgtC40LrRg9C80YsgLSDQv9GA0LjQvNC10YDRiyDRgNCw
+0YHRh9C10YLQvtCyINGN0YTRhNC10LrRgtC40LLQvdGL0YUg0LfQsNGA0L/Qu9Cw0YLQvdGL0YUg
+0YHRhdC10Lwg0LTQu9GPINC70LjQvdC10LnQvdC+0LPQviDQv9C10YDRgdC+0L3QsNC70LAg0Lgg
+0YPQv9GA0LDQstC70LXQvdGH0LXRgdC60L7Qs9C+INGB0L7RgdGC0LDQstCwOyAKICAgICAgLSDQ
+odC+0YHRgtCw0LLQu9C10L3QuNC1INGE0LjRgNC80LXQvdC90YvRhSDRgdGC0LDQvdC00LDRgNGC
+0L7QsiDQvtGC0LTQtdC70LAsINC40L3RgdGC0YDRg9C80LXQvdGC0L7QsiDQuNGFINGA0LXQsNC7
+0LjQt9Cw0YbQuNC4INC4INC60L7QvdGC0YDQvtC70Y8g0L3QsNC0INC40YUg0LjRgdC/0L7Qu9C9
+0LXQvdC40LXQvCwg0L/RgNC40LXQvNGLIAogICAgICAgINC90LXQvNCw0YLQtdGA0LjQsNC70YzQ
+vdC+0Lkg0LzQvtGC0LjQstCw0YbQuNC4OyAKICAgICAgLSDQmtCw0LbQtNGL0Lkg0YPRh9Cw0YHR
+gtC90LjQuiDQv9C+0LvRg9GH0LjRgiBDRCDRgSDQvdCw0YDQsNCx0L7RgtC60LDQvNC4INC/0L4g
+0YLQtdC80LUg0YHQtdC80LjQvdCw0YDQsC4KCiAgICAgINCSINC/0YDQvtCz0YDQsNC80LzQtSDQ
+vtCx0YPRh9C10L3QuNGPOgoKICAgICAgICAgICAgMS4g0J7RgdC+0LHQtdC90L3QvtGB0YLQuCDR
+gNCw0LHQvtGC0Ysg0YDRg9C60L7QstC+0LTQuNGC0LXQu9GPLiAKICAgICAgICAgICAg0KfQtdC8
+INC/0YDQuNC90YbQuNC/0LjQsNC70YzQvdC+INC+0YLQu9C40YfQsNC10YLRgdGPINGA0LDQsdC+
+0YLQsCDQuCAKICAgICAgICAgICAg0LfQsNC00LDRh9C4INGA0YPQutC+0LLQvtC00LjRgtC10LvR
+jyDQvtGCINGA0LDQsdC+0YLRiyDQuNGB0L/QvtC70L3QuNGC0LXQu9GPLiAg0JrQsNC6INGD0LLQ
+uNC00LXRgtGMLCDRh9GC0L4g0YLRiyDQtNC10LvQsNC10YjRjCDRgNCw0LHQvtGC0YMg0L/QvtC0
+0YfQuNC90LXQvdC90L7Qs9C+IAogICAgICAgICAgICDQstC80LXRgdGC0L4g0L3QtdCz0L4g0Lgg
+0LrQsNC6INC/0LXRgNC10YHRgtCw0YLRjCDRjdGC0LjQvCDQt9Cw0L3QuNC80LDRgtGM0YHRjy4g
+0KfRgtC+INC20LTRg9GCINC+0YIgCiAgICAgICAgICAgINGA0YPQutC+0LLQvtC00LjRgtC10LvR
+jyDQv9C+0LTRgNCw0LfQtNC10LvQtdC90LjRjyAi0YHQstC10YDRhdGDIiDQuCAi0YHQvdC40LfR
+gyIuCiAgICAgICAgICAgICAgCiAgICAgICAgICAgIDIuINCn0YLQviDRj9Cy0LvRj9C10YLRgdGP
+INGA0LXQt9GD0LvRjNGC0LDRgtC+0Lwg0YDQsNCx0L7RgtGLIAogICAgICAgICAgICDQv9C+0LTR
+gNCw0LfQtNC10LvQtdC90LjRjz8gCiAgICAgICAgICAgINCX0LTRgNCw0LLRi9C5INC+0YLQstC1
+0YIg0L3QsCDRgtGA0YPQtNC90YvQuSDQstC+0L/RgNC+0YEuICAgCgogICAgICAgICAgIAogICAg
+ICAgICAgICAzLiDQp9GC0L4g0LfQsNGB0YLQsNCy0LvRj9C10YIg0L/QvtC00YDQsNC30LTQtdC7
+0LXQvdC40LUg0KDQkNCR0J7QotCQ0KLQrC4gCiAgICAgICAgICAgINCa0LvRjtGH0LXQstGL0LUg
+0YTRg9C90LrRhtC40Lgg0YDRg9C60L7QstC+0LTQuNGC0LXQu9GPOiAtINCf0LvQsNC90LjRgNC+
+0LLQsNC90LjQtSDQtNC10Y/RgtC10LvRjNC90L7RgdGC0Lgg0L/QvtC00YDQsNC30LTQtdC70LXQ
+vdC40Y8g0Lgg0YHQvtGC0YDRg9C00L3QuNC60L7Qsi4gCiAgICAgICAgICAgINCi0LXRhdC90LjQ
+utCwINC/0L7RgdGC0LDQvdC+0LLQutC4INC80LDRgdGI0YLQsNCx0L3Ri9GFINC30LDQtNCw0Ycu
+INCa0LDQuiDRg9C/0YDQsNCy0LvRj9GC0YwgCiAgICAgICAgICAgICLQmNC70YzQtdC5INCc0YPR
+gNC+0LzRhtC10LwiLiDQmtCw0Log0LTQtdC70LXQs9C40YDQvtCy0LDRgtGMINC30LDQtNCw0YfQ
+uCwg0YfRgtC+0LHRiyDQvtC90Lgg0L3QtSDQstC10YDQvdGD0LvQuNGB0YwgCiAgICAgICAgICAg
+INC6INCy0LDQvCDQsdGD0LzQtdGA0LDQvdCz0L7QvC4g0JrQsNC6INGD0L/RgNCw0LLQu9GP0YLR
+jCwg0LXRgdC70Lgg0YHQvtGC0YDRg9C00L3QuNC6IC0g0LzQsNGB0YLQtdGAINC/0L4gCiAgICAg
+ICAgICAgINC00LXQu9C10LPQuNGA0L7QstCw0L3QuNGOINCy0LDQvCDRgdCy0L7QuNGFINC/0YDQ
+vtCx0LvQtdC8LiAKICAgICAgICAgICAgLSDQntGA0LPQsNC90LjQt9Cw0YbQuNGPINGA0LDQsdC+
+0YLRiyDQsiDQvtGC0LTQtdC70LUuINCa0L7QvNCw0L3QtNCwINC4INC60L7Qu9C70LXQutGC0LjQ
+sjog0LIg0YfQtdC8IAogICAgICAgICAgICDQvtGC0LvQuNGH0LjRjyDQuCDQutCw0Log0L7QvdC4
+INCw0YPQutCw0Y7RgtGB0Y8/INCf0L7RgdGC0YDQvtC10L3QuNC1INGA0LDQsdC+0YfQuNGFINC+
+0YLQvdC+0YjQtdC90LjQuSwg0KbQntCVLCAKICAgICAgICAgICAg0J7Qv9GA0LXQtNC10LvQtdC9
+0L3QvtGB0YLRjCDQuCDQn9GA0LDQstC40LvQsCDQmNCz0YDRiy4g0JjQvdGB0YLRgNGD0LrRhtC4
+0Lgg0YLRgNC10YLRjNC10LPQviDRg9GA0L7QstC90Y8uIAogICAgICAgICAgICAtINCe0LHRg9GH
+0LXQvdC40LUg0YHQvtGC0YDRg9C00L3QuNC60L7Qsi4g0KLQtdGF0L3QvtC70L7Qs9C40Y8g0L7Q
+sdGD0YfQtdC90LjRjyDQstC90YPRgtGA0Lgg0L7RgtC00LXQu9CwLgogICAgICAgICAgICDQn9GB
+0LjRhdC+0LvQvtCz0LjRjyDQvtCx0YPRh9C10L3QuNGPINCy0LfRgNC+0YHQu9GL0YUg0LvRjtC0
+0LXQuS4gCiAgICAgICAgICAgIC0g0J3QtdC80LDRgtC10YDQuNCw0LvRjNC90LDRjyDQvNC+0YLQ
+uNCy0LDRhtC40Y8uINCn0LXQs9C+INC/0L7QvNC+0LPQsNC10YIg0LTQvtGB0YLQuNGH0Ywg0L3Q
+tdCz0LDRgtC40LLQvdCw0Y8gCiAgICAgICAgICAgINC80L7RgtC40LLQsNGG0LjRjy4g0JLQvtC/
+0YDQtdC60Lgg0L/RgdC40YXQvtC70L7Qs9Cw0Lw6INCyINC60LDQutC40YUg0YHQu9GD0YfQsNGP
+0YUg0L/QvtC30LjRgtC40LLQvdCw0Y8gCiAgICAgICAgICAgINC80L7RgtC40LLQsNGG0LjRjyDQ
+vdC1INC80L7RgtC40LLQuNGA0YPQtdGCLiDQmtCw0Log0LjRgdC/0L7Qu9GM0LfQvtCy0LDRgtGM
+INC40L3RgdGC0YDRg9C80LXQvdGC0Ysg0L3QtdCz0LDRgtC40LLQvdC+0LkgCiAgICAgICAgICAg
+INC4INC/0L7Qt9C40YLQuNCy0L3QvtC5INC80L7RgtC40LLQsNGG0LjQuC4g0KHQvtCy0LXRgtGL
+INGD0L/RgNCw0LLQu9C10L3RhtCwINGBIDkt0LvQtdGC0L3QuNC8INGB0YLQsNC20LXQvC4gCiAg
+ICAgICAgICAgIC0g0K3RhNGE0LXQutGC0LjQstC90YvQuSDQutC+0L3RgtGA0L7Qu9GMINC/0L7Q
+tNGH0LjQvdC10L3QvdGL0YUuIAogICAgICAgICAgICAtINCd0LDQudC8INC4INCw0LTQsNC/0YLQ
+sNGG0LjRjyDRgdC+0YLRgNGD0LTQvdC40LrQvtCyLiDQmtCw0LogItGB0L7QutGA0LDRidCw0YLR
+jCIg0LjRgdC/0YvRgtCw0YLQtdC70YzQvdGL0LkgCiAgICAgICAgICAgINGB0YDQvtC6LiDQmtCw
+0Log0LzQvtC20L3QviDRg9Cy0LjQtNC10YLRjCDRgNC10LDQu9GM0L3Rg9GOINGA0LDQsdC+0YLQ
+vtGB0L/QvtGB0L7QsdC90L7RgdGC0Ywg0Lgg0LrQstCw0LvQuNGE0LjQutCw0YbQuNGOIAogICAg
+ICAgICAgICDRgdC+0YLRgNGD0LTQvdC40LrQsCDQt9CwIDIwINC80LjQvdGD0YIuIAoKICAgICAg
+0KHRgtC+0LjQvNC+0YHRgtGMINGD0YfQsNGB0YLQuNGPOiAxNyA1MDAg0YDRg9Cx0LvQtdC5Lgog
+ICAgICDQkiDRgdGC0L7QuNC80L7RgdGC0Ywg0LLRhdC+0LTQuNGCINC80LXRgtC+0LTQuNGH0LXR
+gdC60LjQuSDQvNCw0YLQtdGA0LjQsNC7LCDQvtCx0LXQtNGLLCDQutC+0YTQtS3Qv9Cw0YPQt9GL
+LCDRgdC10YDRgtC40YTQuNC60LDRgi4gCgogICAgICDQnNC10YHRgtC+INC/0YDQvtCy0LXQtNC1
+0L3QuNGPOiDQvC4g0JHQsNGD0LzQsNC90YHQutCw0Y8sINGD0LsuINCR0LDRg9C80LDQvdGB0LrQ
+sNGPLCDQtC42LCDQsdC40LfQvdC10YEg0YbQtdC90YLRgCAi0JLQuNC60YLQvtGA0LjRjyDQn9C7
+0LDQt9CwIi4KICAgICAg0JjQvdC+0LPQvtGA0L7QtNC90LjQvCDRg9GH0LDRgdGC0L3QuNC60LDQ
+vCDQv9C+0LzQvtCz0LDQtdC8INCyINCx0YDQvtC90LjRgNC+0LLQsNC90LjQuCDQs9C+0YHRgtC4
+0L3QuNGG0YsuCgogICAgICDQndCw0Ygg0LrQvtC90YLQsNC60YLQvdGL0Lkg0YLQtdC70LXRhNC+
+0L06IDggKDQ5NSkgOTIxIDMwIDE3CiAgICAgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlua0dl
+ZWsgYW5kIFdJUkVEJ3MgR2Vla0RhZCB0ZWFtIHVwIGZvciB0aGUgVWx0aW1hdGUgCkdlZWtEYWQg
+RmF0aGVyJ3MgRGF5IEdpdmVhd2F5LiBPTkUgTUFTU0lWRSBQUklaRSB0byB0aGUgCmx1Y2t5IHBh
+cmVudGFsIHVuaXQuICBTZWUgdGhlIHByaXplIGxpc3QgYW5kIGVudGVyIHRvIHdpbjogCmh0dHA6
+Ly9wLnNmLm5ldC9zZnUvdGhpbmtnZWVrLXByb21vCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,7 +1,9 @@
-From: "=?ISO-8859-1?Q?Tranquillit=E9=20Sant=E9?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] La complementaire santé au plus près de vos besoins
-Date: Sun, 20 Jun 2010 07:31:10 +0000 (UTC)
-Message-ID: <l4ay7x.b42j19@front07.g7r9.com>
+From: "Simyo par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Tarif unique de 0,
+	19 euro par Minute vers tous les operateurs 24h sur 24h ET sans
+	engagement!
+Date: Mon, 21 Jun 2010 01:19:23 +0000 (UTC)
+Message-ID: <l4cbqp.tbqqag@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

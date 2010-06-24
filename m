@@ -1,50 +1,134 @@
-From: bchdey-ebzXiOLvwOHQT0dZR+AlfA@public.gmane.org
-Subject: =?gb2312?b?uanTpsnMxrfWyrncv9i8vMr10bXBtw==?=
-Date: Thu, 24 Jun 2010 16:49:08 +0800
-Message-ID: <E1ORi7k-0000Xa-TM@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: [PATCH] spi/omap2_mcspi: disable and enable chan between each SPI
+	transfer
+Date: Thu, 24 Jun 2010 20:12:45 +0800
+Message-ID: <1277381565-6305-1-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: grant.likely@secretlab.ca, roman.tereshonkov@nokia.com, david-b@pacbell.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+In current design, the SPI channel is always enable during the period
+of handling a SPI message, it is risky when more than one SPI transfer
+are included in a message. Current working route like that:
+[
+  SPI channel enable
+  configure channel
+  handle transfer #1
+  configure channel
+  handle transfer #2
+  ...
+  SPI channel disable
+]
+If we can disable channel before configure it and reenable
+channel after it is configured, it will be more safe.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+The commit a330ce2 "omap2_mcspi: Flush posted writes" make this risk
+to a real problem for ads7846 driver on omap3530evm. The
+ads7846 driver will send a SPI messge which includes,
+[
+  TX_ONLY transfer (1 byte)
+  RX_ONLY transfer (2 bytes)
+  TX_ONLY transfer (1 byte)
+  RX_ONLY transfer (2 bytes)
+]
+If we don't add disable/reenable channel between TX and RX transfers,
+the RX transfer will get wrong datas sent from slave.
 
+Signed-off-by: Jason Wang <jason77.wang@gmail.com>
+---
+ drivers/spi/omap2_mcspi.c |   16 ++++++----------
+ 1 files changed, 6 insertions(+), 10 deletions(-)
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-ThinkGeek and WIRED's GeekDad team up for the Ultimate 
-GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
-lucky parental unit.  See the prize list and enter to win: 
-http://p.sf.net/sfu/thinkgeek-promo
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index b3a94ca..1e3cb7b 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -408,7 +408,6 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 				count -= (word_len <= 8)  ? 2 :
+ 					(word_len <= 16) ? 4 :
+ 					/* word_len <= 32 */ 8;
+-				omap2_mcspi_set_enable(spi, 1);
+ 				return count;
+ 			}
+ 		}
+@@ -430,8 +429,10 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 				 (word_len <= 16) ? 2 :
+ 			       /* word_len <= 32 */ 4;
+ 		}
+-		omap2_mcspi_set_enable(spi, 1);
+ 	}
++
++	omap2_mcspi_set_enable(spi, 0);
++
+ 	return count;
+ }
+ 
+@@ -517,8 +518,6 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 						goto out;
+ 					}
+ 					c = 0;
+-				} else if (c == 0 && tx == NULL) {
+-					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+ 				*rx++ = __raw_readl(rx_reg);
+@@ -570,8 +569,6 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 						goto out;
+ 					}
+ 					c = 0;
+-				} else if (c == 0 && tx == NULL) {
+-					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+ 				*rx++ = __raw_readl(rx_reg);
+@@ -623,8 +620,6 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 						goto out;
+ 					}
+ 					c = 0;
+-				} else if (c == 0 && tx == NULL) {
+-					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+ 				*rx++ = __raw_readl(rx_reg);
+@@ -646,7 +641,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 			dev_err(&spi->dev, "EOT timed out\n");
+ 	}
+ out:
+-	omap2_mcspi_set_enable(spi, 1);
++	omap2_mcspi_set_enable(spi, 0);
+ 	return count - c;
+ }
+ 
+@@ -894,7 +889,6 @@ static void omap2_mcspi_work(struct work_struct *work)
+ 		cs = spi->controller_state;
+ 		cd = spi->controller_data;
+ 
+-		omap2_mcspi_set_enable(spi, 1);
+ 		list_for_each_entry(t, &m->transfers, transfer_list) {
+ 			if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
+ 				status = -EINVAL;
+@@ -931,6 +925,8 @@ static void omap2_mcspi_work(struct work_struct *work)
+ 
+ 			mcspi_write_chconf0(spi, chconf);
+ 
++			omap2_mcspi_set_enable(spi, 1);
++
+ 			if (t->len) {
+ 				unsigned	count;
+ 
+-- 
+1.5.6.5

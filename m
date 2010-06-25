@@ -1,17 +1,18 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: I have a question about SPI gpio bit-bang
-	driver
-Date: Fri, 25 Jun 2010 02:46:30 -0700 (PDT)
-Message-ID: <572197.56047.qm@web180308.mail.gq1.yahoo.com>
-References: <0L4K007HPBVCV1@ms8.samsung.com>
+From: jason <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/omap2_mcspi: disable and enable
+ chan between each SPI transfer
+Date: Fri, 25 Jun 2010 20:05:53 +0800
+Message-ID: <4C249BA1.8010808@gmail.com>
+References: <1277381565-6305-1-git-send-email-jason77.wang@gmail.com>
+	<E1C7579D1379824DAE67858071C810382DD83846FB@NOK-EUMSG-02.mgdnok.nokia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: =?utf-8?B?64yA7J246riw?= <inki.dae-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	=?utf-8?B?67CV6rK966+8?= <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, riverful.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <0L4K007HPBVCV1-MiUXHoAvhViUEJcrhfAQsw@public.gmane.org>
+In-Reply-To: <E1C7579D1379824DAE67858071C810382DD83846FB-xJW1crHCIS+8kqYwC468Frtp2NbXvJi8gfoxzgwHRXE@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,42 +23,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgotLS0gT24gRnJpLCA2LzI1LzEwLCA8cml2ZXJmdWwua2ltQHNhbXN1bmcuY29tPiB3cm90ZToK
-ClN1YmplY3Q6IEkgaGF2ZSBhIHF1ZXN0aW9uIGFib3V0IFNQSSBncGlvIGJpdC1iYW5nIGRyaXZl
-cgoKClNhbXN1bmcgRW50ZXJwcmlzZSBQb3J0YWwgbXlTaW5nbGUKIAojeWl2NTc4MjYwMjg2IFAg
-ewpNQVJHSU4tVE9QOjVweDtGT05ULVNJWkU6OXB0O01BUkdJTi1CT1RUT006NXB4O0ZPTlQtRkFN
-SUxZOuq1tOumvOyytCwgYXJpYWw7fQojeWl2NTc4MjYwMjg2IFREIHsKTUFSR0lOLVRPUDo1cHg7
-Rk9OVC1TSVpFOjlwdDtNQVJHSU4tQk9UVE9NOjVweDtGT05ULUZBTUlMWTrqtbTrprzssrQsIGFy
-aWFsO30KI3lpdjU3ODI2MDI4NiBMSSB7Ck1BUkdJTi1UT1A6NXB4O0ZPTlQtU0laRTo5cHQ7TUFS
-R0lOLUJPVFRPTTo1cHg7Rk9OVC1GQU1JTFk66rW066a87LK0LCBhcmlhbDt9CiN5aXY1NzgyNjAy
-ODYgIHsKRk9OVC1TSVpFOjlwdDtGT05ULUZBTUlMWTrqtbTrprzssrQsIGFyaWFsO30KCgpJIHdh
-bm5hIGFkZCB0aGUgc3BpIGRldmljZSB1c2luZyBTUEkgYml0YmFuZyBkcml2ZXIgaW4gdGhlIGRy
-aXZlcnMvc3BpL3NwaV9ncGlvLmMuCmJ1dCwgdGhlIGN1cnJlbnQgU1BJIGJpdC1iYW5nIGRyaXZl
-ciBtYXkgc3VwcG9ydCBvbmx5IG9uZSBidXMoaWYsIGJ1cyBtZWFucyBwaHlzaWNhbGx5wqBvbmUg
-TU9TSSwgTUlTTyBwaW4tcGFpciksIGFuZCBtYW55IGNoYW5uZWzCoChpZiBjaGFubmVsIG1lYW5z
-IHBoeXNpY2FsbHkgb25lIENTIG9yIEVOIHBpbiBpbiB0aGUgc2FtZSBNT1NJLCBNSVNPIHBpbi1w
-YWlyKS4KZXhhY3RseSwgd2hlbiB0aGUgYm9hcmQgbmVlZCBtb3JlIFNQSSBidXMgZm9yIGJpdC1i
-YW5naW5nLCB0aGUgY3VycmVudCBkb3Nlbid0IHN1cHBvcnQgdGhpcy4KaXMgaXQgcmlnaHQ/PwpO
-T1QgUklHSFQuwqAgRG9lc24ndCBhIGNvbW1lbnQgdXAgdG9wIHNheSBob3cgdG9zdXBwb3J0IG11
-bHRpcGxlIGJ1c3NlcyAoTU9TSS9NSVNPL1NDSyBhbmRidXMgbnVtYmVyKSBieSBpbmNsdWRpbmcg
-dGhhdCBDIHNvdXJjZSBmaWxlIHdpdGhtaW5vciBjb25maWd1cmF0aW9uICNkZWZpbmVzPwoKVGhl
-IGlzc3VlIGlzIHRoYXQgZWFjaCBidXMgbmVlZHMgaXRzIG93biB1bmlxdWV0aWdodCBiaXRiYW5n
-aW5nIFRYUlggbG9vcCAuLi4gY29uZmlndXJlIHRob3NlLCBhbmRtb3N0IG9mIHRoZSByZXN0IGlz
-IGdlbmVyaWMvc2hhcmFibGUuCgpJJ3ZlIGNlcnRhaW5seSBidWlsdCBzeXN0ZW1zIHdpdGggbXVs
-dGlwbGUgYml0YmFuZ2VkU1BJLWdwaW8gZHJpdmVycyAuLi4gd2hlcmUgZWFjaCBUWFJYIGxvb3Ag
-d2Fzb25seSBhIGZldyBpbnN0cnVjdGlvbnMsIHdyaXRpbmcgcmlnaHQgdG8gdGhlIGhhcmR3YXJl
-R1BJTyByZWdpc3RlcnMgYXMgZmFzdCBhcyB0aGUgU29DIGNvdWxkIGdvLgoKCgrCoApJIHRoaW5r
-IHRoZSBkcml2ZXIgbmVlZCB0byBjaGFuZ2UgdGhlIGJ1cyBudW1iZXIgd2hlbiByZWdpc3Rlcmlu
-ZyB0aGUgc3BpIGJvYXJkIGluZm8sIGxpa2UgdGhpcywKwqAKc3BpX3JlZ2lzdGVyX2JvYXJkX2lu
-Zm8oeHh4X2JvYXJkX2luZm8sIEFSUkFZX1NJWkUoeHh4X2JvYXJkX2luZm8pKTsKLT4gc3BpX3Jl
-Z2lzdGVyX2JvYXJkX2luZm8oQlVTTlVNLCB4eHhfYm9hcmRfaW5mbywgQVJSQVlfU0laRSh4eHhf
-Ym9hcmRfaW5mbykpOwoKCk9mIGNvdXJzZSwganVzdCBsaWtlIHRoZSBHUElPIG51bWJlcnMgaXQg
-c2hvdWxkIHVzZS4KCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaW5rR2VlayBhbmQgV0lSRUQn
-cyBHZWVrRGFkIHRlYW0gdXAgZm9yIHRoZSBVbHRpbWF0ZSAKR2Vla0RhZCBGYXRoZXIncyBEYXkg
-R2l2ZWF3YXkuIE9ORSBNQVNTSVZFIFBSSVpFIHRvIHRoZSAKbHVja3kgcGFyZW50YWwgdW5pdC4g
-IFNlZSB0aGUgcHJpemUgbGlzdCBhbmQgZW50ZXIgdG8gd2luOiAKaHR0cDovL3Auc2YubmV0L3Nm
-dS90aGlua2dlZWstcHJvbW8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org wrote:
+>  
+>
+>   
+[snip]
+>> -----Original Message-----
+>>
+>> 					}
+>> 					c = 0;
+>> -				} else if (c == 0 && tx == NULL) {
+>> -					omap2_mcspi_set_enable(spi, 0);
+>> 				}
+>>
+>> 				*rx++ = __raw_readl(rx_reg);
+>>     
+>
+> Why do you do this?
+> Reading the last word from the shift register buffer leads to 
+> the receiving new data to the buffer.
+> The channel needs to be disabled before the last word reading.
+>
+>
+>   
+Yes, you are right. If this patch can be accepted, i will remove those 
+changes in the V2 patch.
+Please see my email replying grant likely's questions.
+
+Thanks,
+Jason.
+>   
+>> @@ -646,7 +641,7 @@ omap2_mcspi_txrx_pio(struct spi_device 
+>> *spi, struct spi_transfer *xfer)
+>> 			dev_err(&spi->dev, "EOT timed out\n");
+>> 	}
+>> out:
+>> -	omap2_mcspi_set_enable(spi, 1);
+>> +	omap2_mcspi_set_enable(spi, 0);
+>> 	return count - c;
+>> }
+>>
+>> @@ -894,7 +889,6 @@ static void omap2_mcspi_work(struct 
+>> work_struct *work)
+>> 		cs = spi->controller_state;
+>> 		cd = spi->controller_data;
+>>
+>> -		omap2_mcspi_set_enable(spi, 1);
+>> 		list_for_each_entry(t, &m->transfers, transfer_list) {
+>> 			if (t->tx_buf == NULL && t->rx_buf == 
+>> NULL && t->len) {
+>> 				status = -EINVAL;
+>> @@ -931,6 +925,8 @@ static void omap2_mcspi_work(struct 
+>> work_struct *work)
+>>
+>> 			mcspi_write_chconf0(spi, chconf);
+>>
+>> +			omap2_mcspi_set_enable(spi, 1);
+>> +
+>> 			if (t->len) {
+>> 				unsigned	count;
+>>
+>> -- 
+>> 1.5.6.5
+>>
+>>
+>>     
+
+
+------------------------------------------------------------------------------
+ThinkGeek and WIRED's GeekDad team up for the Ultimate 
+GeekDad Father's Day Giveaway. ONE MASSIVE PRIZE to the 
+lucky parental unit.  See the prize list and enter to win: 
+http://p.sf.net/sfu/thinkgeek-promo

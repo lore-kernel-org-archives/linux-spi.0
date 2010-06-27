@@ -1,17 +1,20 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] spi: reinitialize transfer
-	parameters for every message
-Date: Sun, 27 Jun 2010 00:06:17 -0700 (PDT)
-Message-ID: <560247.36823.qm@web180310.mail.gq1.yahoo.com>
-References: <AANLkTil9nKF_tDNVl8cGliBbP-w0iQsLNxuKK6maYiuC@mail.gmail.com>
+From: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/3] davinci: spi: replace existing
+ SPI driver
+Date: Sun, 27 Jun 2010 10:25:44 +0200
+Message-ID: <4C270B08.2000104@kernel.org>
+References: <1276530901-4413-1-git-send-email-bniebuhr@efjohnson.com>
+	<AANLkTilTTgTchq_w0CktXokOxGX32lmRyPqrTyFI9LCF@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Vitaly Wool <vwool-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	Thomas Koeller <thomas.koeller-x9WYMywdo8BF6kxbq+BtvQ@public.gmane.org>,
+	Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Sandeep Paulraj <s-paulraj-l0cyMroinI0@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTil9nKF_tDNVl8cGliBbP-w0iQsLNxuKK6maYiuC-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTilTTgTchq_w0CktXokOxGX32lmRyPqrTyFI9LCF-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,24 +25,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello,
 
+On 06/27/2010 08:03 AM, Grant Likely wrote:
+> Any users of the current davinci_spi driver care to comment on this
+> series?  I'm hesitant to apply a complete replacement to a driver that
+> was only added in December without having a lot more information.
+> 
+> Tejun or Sandeep, any comments?
 
---- On Sat, 6/26/10, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+Eh, I don't really have any idea about the code.  My only commit there
+is slab.h inclusion cleanup which doesn't require any specific
+knowledge of the code, so... no useful comment from me.
 
-> Vitaly and David, can you please take
-> a look at this.=A0 You both know
-> this code better than I, and I'd like as second opinion.
-> (see my
-> comments below)
+Thanks.
 
-First fix $SUBJECT:  it's not a generic SPI
-issue, it's just for one driver!
-> =
+-- 
+tejun
 
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?
 Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

@@ -1,123 +1,49 @@
-From: Raffaele Recalcati <lamiaposta71@gmail.com>
-Subject: [PATCH] spi: davinci: Added support for chip select using gpio
-Date: Mon, 28 Jun 2010 08:47:35 +0200
-Message-ID: <1277707655-3468-1-git-send-email-lamiaposta71@gmail.com>
+From: ihgdU-yEtKEjRothbdG/upSq5wSw@public.gmane.org
+Subject: [SPAM] 不懂财务,就做不好总经理、老板....
+Date: Mon, 28 Jun 2010 16:52:15 +0800
+Message-ID: <E1OTA5N-00038c-7J@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Russell King <linux@arm.linux.org.uk>,
-	Thomas Koeller <thomas.koeller@baslerweb.com>,
-	Sudhakar Rajashekhara <sudhakar.raj@ti.com>,
-	linux-kernel@vger.kernel.org, Sandeep Paulraj <s-paulraj@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Davide Bonfanti <davide.bonfanti@bticino.it>,
-	Raffaele Recalcati <raffaele.recalcati@bticino.it>,
-	linux-arm-kernel@lists.infradead.org, Cyril Chemparathy <cyril@ti.com>,
-	Philby John <pjohn@in.mvista.com>,
-	Miguel Aguilar <miguel.aguilar@ridgerun.com>
-To: davinci-linux-open-source@linux.davincidsp.com
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Raffaele Recalcati <raffaele.recalcati@bticino.it>
+This is a multi-part message in MIME format
 
-    It is not everytime possible, due to hardware constraints,
-    to use the hw chip select available on spi port.
-    So I add this possibility using a gpio as chip select.
-    If controller_data variable is not null it is
-    the gpio to be used as chip select.
-    The default case is compatible with evmdm365.
-    This patch has been developed against the
-    http://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-davinci.git
-    git tree and has been tested on bmx board (similar to dm365 evm but with
-    gpio as spi chip select).
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Raffaele Recalcati <raffaele.recalcati@bticino.it>
-Signed-off-by: Davide Bonfanti <davide.bonfanti@bticino.it>
----
- arch/arm/mach-davinci/dm365.c |   10 ++++++----
- drivers/spi/davinci_spi.c     |   27 ++++++++++++++++++---------
- 2 files changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
-index a146849..42fd4a4 100644
---- a/arch/arm/mach-davinci/dm365.c
-+++ b/arch/arm/mach-davinci/dm365.c
-@@ -677,10 +677,12 @@ void __init dm365_init_spi0(unsigned chipselect_mask,
- 	davinci_cfg_reg(DM365_SPI0_SDO);
- 
- 	/* not all slaves will be wired up */
--	if (chipselect_mask & BIT(0))
--		davinci_cfg_reg(DM365_SPI0_SDENA0);
--	if (chipselect_mask & BIT(1))
--		davinci_cfg_reg(DM365_SPI0_SDENA1);
-+	if  (!((unsigned long) info->controller_data)) {
-+		if (chipselect_mask & BIT(0))
-+			davinci_cfg_reg(DM365_SPI0_SDENA0);
-+		if (chipselect_mask & BIT(1))
-+			davinci_cfg_reg(DM365_SPI0_SDENA1);
-+	}
- 
- 	spi_register_board_info(info, len);
- 
-diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 95afb6b..621ae46 100644
---- a/drivers/spi/davinci_spi.c
-+++ b/drivers/spi/davinci_spi.c
-@@ -29,6 +29,7 @@
- #include <linux/spi/spi_bitbang.h>
- #include <linux/slab.h>
- 
-+#include <mach/gpio.h>
- #include <mach/spi.h>
- #include <mach/edma.h>
- 
-@@ -270,18 +271,26 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 	pdata = davinci_spi->pdata;
- 
- 	/*
--	 * Board specific chip select logic decides the polarity and cs
--	 * line for the controller
--	 */
-+	* Board specific chip select logic decides the polarity and cs
-+	* line for the controller
-+	*/
- 	if (value == BITBANG_CS_INACTIVE) {
--		set_io_bits(davinci_spi->base + SPIDEF, CS_DEFAULT);
--
--		data1_reg_val |= CS_DEFAULT << SPIDAT1_CSNR_SHIFT;
--		iowrite32(data1_reg_val, davinci_spi->base + SPIDAT1);
--
-+		if  ((unsigned long) spi->controller_data) {
-+			gpio_set_value(spi->controller_data, \
-+				!(spi->mode & SPI_CS_HIGH));
-+		} else {
-+			set_io_bits(davinci_spi->base + SPIDEF, CS_DEFAULT);
-+
-+			data1_reg_val |= CS_DEFAULT << SPIDAT1_CSNR_SHIFT;
-+			iowrite32(data1_reg_val, davinci_spi->base + SPIDAT1);
-+		}
- 		while ((ioread32(davinci_spi->base + SPIBUF)
--					& SPIBUF_RXEMPTY_MASK) == 0)
-+				& SPIBUF_RXEMPTY_MASK) == 0)
- 			cpu_relax();
-+	} else {
-+		if  ((unsigned long) spi->controller_data)
-+			gpio_set_value(spi->controller_data, \
-+				(spi->mode & SPI_CS_HIGH));
- 	}
- }
- 
--- 
-1.7.0.4
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

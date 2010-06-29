@@ -1,8 +1,7 @@
-From: <oxiqauq2881-Fdo0d6c0ZGo@public.gmane.org>
-Subject: [SPAM] Wholesale on sex pills on-line
-Date: Mon, 28 Jun 2010 15:29:17 -0400
-Message-ID: <E1OTK1A-00022L-Az@sfs-ml-2.v29.ch3.sourceforge.com>
-Reply-To: oxiqauq2881-Fdo0d6c0ZGo@public.gmane.org
+From: "Panorama Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Des tarifs discounts pour des couvertures santé de qualité!
+Date: Tue, 29 Jun 2010 03:19:52 +0000 (UTC)
+Message-ID: <l4ranx.vrgy0j@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://483.tableupold89y.ru/?on=1475E76B51E191&usr=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

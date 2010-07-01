@@ -1,256 +1,352 @@
-From: raffaele.recalcati@bticino.it
-Subject: Rif: Re: [PATCH] spi: davinci: Added support for chip select using
-	gpio
-Date: Thu, 1 Jul 2010 07:59:51 +0200
-Message-ID: <OF309AC560.325C057E-ONC1257753.0020F1E5-C1257753.0020F21E@grpleg.it>
-References: <1277707655-3468-1-git-send-email-lamiaposta71@gmail.com>,
-	<AANLkTilnVxNfsfJ4nCWITM_DhOb6BDGZQC8cMiM0RkiF@mail.gmail.com>
+From: jason <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/omap2_mcspi: disable and enable
+ chan between each SPI transfer
+Date: Thu, 01 Jul 2010 19:58:33 +0800
+Message-ID: <4C2C82E9.2010103@gmail.com>
+References: <1277381565-6305-1-git-send-email-jason77.wang@gmail.com>
+	<AANLkTin7mqe_zJIbyDcRPpCLaxPhl_dZQrSGua2z1nYW@mail.gmail.com>
+	<4C24A182.4060009@gmail.com>
+	<E1C7579D1379824DAE67858071C810382DD8495B26@NOK-EUMSG-02.mgdnok.nokia.com>
+	<4C289CCB.7010409@gmail.com>
+	<E1C7579D1379824DAE67858071C810382DD84963BC@NOK-EUMSG-02.mgdnok.nokia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-arm-kernel@lists.infradead.org,
-	davinci-linux-open-source@linux.davincidsp.com,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Russell King <linux@arm.linux.org.uk>,
-	Thomas Koeller <thomas.koeller@baslerweb.com>,
-	Sudhakar Rajashekhara <sudhakar.raj@ti.com>,
-	linux-kernel@vger.kernel.org, Sandeep Paulraj <s-paulraj@ti.com>,
-	Davide Bonfanti <davide.bonfanti@bticino.it>,
-	Philby John <pjohn@in.mvista.com>,
-	Miguel Aguilar <miguel.aguilar@ridgerun.com>,
-	Cyril Chemparathy <cyril@ti.com>, spi-devel-general@lists.sourceforge.net,
-	Raffaele Recalcati <lamiaposta71@gmail.com>
-To: Grant Likely <grant.likely@secretlab.ca>,
-	Brian Niebuhr <bniebuhr3@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <AANLkTilnVxNfsfJ4nCWITM_DhOb6BDGZQC8cMiM0RkiF@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <E1C7579D1379824DAE67858071C810382DD84963BC-xJW1crHCIS+8kqYwC468Frtp2NbXvJi8gfoxzgwHRXE@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
------glikely@secretlab.ca ha scritto: -----
-
->Per:=A0Raffaele=A0Recalcati=A0<lamiaposta71@gmail.com>,=A0Brian=A0Niebuhr
-><bniebuhr3@gmail.com>
->Da:=A0Grant=A0Likely=A0<grant.likely@secretlab.ca>
->Inviato=A0da:=A0glikely@secretlab.ca
->Data:=A001/07/2010=A001.03
->Cc:=A0davinci-linux-open-source@linux.davincidsp.com,=A0Raffaele
->Recalcati=A0<raffaele.recalcati@bticino.it>,=A0Davide=A0Bonfanti
-><davide.bonfanti@bticino.it>,=A0Russell=A0King=A0<linux@arm.linux.org.uk>,
->Sandeep=A0Paulraj=A0<s-paulraj@ti.com>,=A0Cyril=A0Chemparathy=A0<cyril@ti.=
-com>,
->Miguel=A0Aguilar=A0<miguel.aguilar@ridgerun.com>,=A0Thomas=A0Koeller
-><thomas.koeller@baslerweb.com>,=A0David=A0Brownell
-><dbrownell@users.sourceforge.net>,=A0Philby=A0John=A0<pjohn@in.mvista.com>,
->Sudhakar=A0Rajashekhara=A0<sudhakar.raj@ti.com>,
->linux-arm-kernel@lists.infradead.org,=A0linux-kernel@vger.kernel.org,
->spi-devel-general@lists.sourceforge.net
->Oggetto:=A0Re:=A0[PATCH]=A0spi:=A0davinci:=A0Added=A0support=A0for=A0chip=
-=A0select
->using=A0gpio
+roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org wrote:
+> Hi Jason,
 >
->On=A0Mon,=A0Jun=A028,=A02010=A0at=A012:47=A0AM,=A0Raffaele=A0Recalcati
-><lamiaposta71@gmail.com>=A0wrote:
->>=A0From:=A0Raffaele=A0Recalcati=A0<raffaele.recalcati@bticino.it>
->>
->>=A0=A0=A0=A0It=A0is=A0not=A0everytime=A0possible,=A0due=A0to=A0hardware=
-=A0constraints,
->>=A0=A0=A0=A0to=A0use=A0the=A0hw=A0chip=A0select=A0available=A0on=A0spi=A0=
-port.
->>=A0=A0=A0=A0So=A0I=A0add=A0this=A0possibility=A0using=A0a=A0gpio=A0as=A0c=
-hip=A0select.
->>=A0=A0=A0=A0If=A0controller_data=A0variable=A0is=A0not=A0null=A0it=A0is
->>=A0=A0=A0=A0the=A0gpio=A0to=A0be=A0used=A0as=A0chip=A0select.
->>=A0=A0=A0=A0The=A0default=A0case=A0is=A0compatible=A0with=A0evmdm365.
->>=A0=A0=A0=A0This=A0patch=A0has=A0been=A0developed=A0against=A0the
->>
->http://git.kernel.org/pub/scm/linux/kernel/git/khilman/linux-davinci.
->git
->>=A0=A0=A0=A0git=A0tree=A0and=A0has=A0been=A0tested=A0on=A0bmx=A0board=A0(=
-similar=A0to=A0dm365=A0evm
->but=A0with
->>=A0=A0=A0=A0gpio=A0as=A0spi=A0chip=A0select).
->>
->>=A0Signed-off-by:=A0Raffaele=A0Recalcati=A0<raffaele.recalcati@bticino.it>
->>=A0Signed-off-by:=A0Davide=A0Bonfanti=A0<davide.bonfanti@bticino.it>
+> It is a little bit hard to analyze your logs.
+> 1. You showed the bytes read in your own way but there is the data reading in omap2_mcspi_txrx_pio function also.
+> 2. For your third test case. You try to read data after TX_ONLY, before triggering RX_ONLY, and get the right word.
+> Looks like there is something wrong.
 >
->The=A0davinci=A0SPI=A0driver=A0is=A0getting=A0completely=A0replaced=A0(as=
-=A0soon=A0as=A0I
->receive=A0the=A0respun=A0patches),=A0and=A0I=A0assume=A0this=A0patch=A0wil=
-l=A0no=A0longer
->apply=A0after=A0the=A0fact,=A0so=A0I'm=A0not=A0going=A0to=A0pick=A0this=A0=
-patch=A0up.=A0=A0You
->should=A0coordinate=A0with=A0Brian=A0Niebuhr=A0to=A0get=A0this=A0feature=
-=A0into=A0his=A0new
->driver.
-
-I'm not very lucky with davinci-linux-open-source patching.
-Thank you for the information.
-The patch is really simple and so it will be not a real problem to up port
-it.
-
-I'd like anyway a timing roadmap, because,
-if now the best kernel choose for dm365 is surely
-http://arago-project.org/git/projects/linux-davinci.git
-because of dvsdk (video codec) compatibility,
-it is possible that next year 2.6.36 will be stable and compatible to dvsdk
-(video codec).
-The kernel of dm365 (that is a video processor) has to be compatible to its
-video codec.
-How to manage the transition?
-
-
->Cheers,
->g.
->
->>=A0---
->>=A0=A0arch/arm/mach-davinci/dm365.c=A0|=A0=A0=A010=A0++++++----
->>=A0=A0drivers/spi/davinci_spi.c=A0=A0=A0=A0=A0|=A0=A0=A027=A0++++++++++++=
-++++++---------
->>=A0=A02=A0files=A0changed,=A024=A0insertions(+),=A013=A0deletions(-)
->>
->>=A0diff=A0--git=A0a/arch/arm/mach-davinci/dm365.c
->b/arch/arm/mach-davinci/dm365.c
->>=A0index=A0a146849..42fd4a4=A0100644
->>=A0---=A0a/arch/arm/mach-davinci/dm365.c
->>=A0+++=A0b/arch/arm/mach-davinci/dm365.c
->>=A0@@=A0-677,10=A0+677,12=A0@@=A0void=A0__init=A0dm365_init_spi0(unsigned
->chipselect_mask,
->>=A0=A0=A0=A0=A0=A0=A0=A0davinci_cfg_reg(DM365_SPI0_SDO);
->>
->>=A0=A0=A0=A0=A0=A0=A0=A0/*=A0not=A0all=A0slaves=A0will=A0be=A0wired=A0up=
-=A0*/
->>=A0-=A0=A0=A0=A0=A0=A0=A0if=A0(chipselect_mask=A0&=A0BIT(0))
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0davinci_cfg_reg(DM365_SP=
-I0_SDENA0);
->>=A0-=A0=A0=A0=A0=A0=A0=A0if=A0(chipselect_mask=A0&=A0BIT(1))
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0davinci_cfg_reg(DM365_SP=
-I0_SDENA1);
->>=A0+=A0=A0=A0=A0=A0=A0=A0if=A0=A0(!((unsigned=A0long)=A0info->controller_=
-data))=A0{
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if=A0(chipselect_mask=A0=
-&=A0BIT(0))
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-davinci_cfg_reg(DM365_SPI0_SDENA0);
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if=A0(chipselect_mask=A0=
-&=A0BIT(1))
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-davinci_cfg_reg(DM365_SPI0_SDENA1);
->>=A0+=A0=A0=A0=A0=A0=A0=A0}
->>
->>=A0=A0=A0=A0=A0=A0=A0=A0spi_register_board_info(info,=A0len);
->>
->>=A0diff=A0--git=A0a/drivers/spi/davinci_spi.c=A0b/drivers/spi/davinci_spi=
-.c
->>=A0index=A095afb6b..621ae46=A0100644
->>=A0---=A0a/drivers/spi/davinci_spi.c
->>=A0+++=A0b/drivers/spi/davinci_spi.c
->>=A0@@=A0-29,6=A0+29,7=A0@@
->>=A0=A0#include=A0<linux/spi/spi_bitbang.h>
->>=A0=A0#include=A0<linux/slab.h>
->>
->>=A0+#include=A0<mach/gpio.h>
->>=A0=A0#include=A0<mach/spi.h>
->>=A0=A0#include=A0<mach/edma.h>
->>
->>=A0@@=A0-270,18=A0+271,26=A0@@=A0static=A0void=A0davinci_spi_chipselect(s=
-truct
->spi_device=A0*spi,=A0int=A0value)
->>=A0=A0=A0=A0=A0=A0=A0=A0pdata=A0=3D=A0davinci_spi->pdata;
->>
->>=A0=A0=A0=A0=A0=A0=A0=A0/*
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0*=A0Board=A0specific=A0chip=A0select=A0logic=
-=A0decides=A0the=A0polarity
->and=A0cs
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0*=A0line=A0for=A0the=A0controller
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0*/
->>=A0+=A0=A0=A0=A0=A0=A0=A0*=A0Board=A0specific=A0chip=A0select=A0logic=A0d=
-ecides=A0the=A0polarity=A0and
->cs
->>=A0+=A0=A0=A0=A0=A0=A0=A0*=A0line=A0for=A0the=A0controller
->>=A0+=A0=A0=A0=A0=A0=A0=A0*/
->>=A0=A0=A0=A0=A0=A0=A0=A0if=A0(value=A0=3D=3D=A0BITBANG_CS_INACTIVE)=A0{
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0set_io_bits(davinci_spi-=
->base=A0+=A0SPIDEF,
->CS_DEFAULT);
->>=A0-
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0data1_reg_val=A0|=3D=A0C=
-S_DEFAULT=A0<<=A0SPIDAT1_CSNR_SHIFT;
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0iowrite32(data1_reg_val,=
-=A0davinci_spi->base=A0+
->SPIDAT1);
->>=A0-
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if=A0=A0((unsigned=A0lon=
-g)=A0spi->controller_data)=A0{
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-gpio_set_value(spi->controller_data,=A0\
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0!(spi->mode=A0&=A0SPI_CS_HIGH));
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}=A0else=A0{
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-set_io_bits(davinci_spi->base=A0+=A0SPIDEF,
->CS_DEFAULT);
->>=A0+
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-data1_reg_val=A0|=3D=A0CS_DEFAULT=A0<<
->SPIDAT1_CSNR_SHIFT;
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-iowrite32(data1_reg_val,=A0davinci_spi->base
->+=A0SPIDAT1);
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0}
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0while=A0((ioread32(davinc=
-i_spi->base=A0+=A0SPIBUF)
->>=A0-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0&=A0SPIBUF_RXEMPTY_MASK)=A0=
-=3D=3D
->0)
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0&=A0SPIBUF_RXEMPTY_MASK)=A0=3D=3D=A00)
->>=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0c=
-pu_relax();
->>=A0+=A0=A0=A0=A0=A0=A0=A0}=A0else=A0{
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if=A0=A0((unsigned=A0lon=
-g)=A0spi->controller_data)
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-gpio_set_value(spi->controller_data,=A0\
->>=A0+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0(spi->mode=A0&=A0SPI_CS_HIGH));
->>=A0=A0=A0=A0=A0=A0=A0=A0}
->>=A0=A0}
->>
->>=A0--
->>=A01.7.0.4
->>
->>
+> Try to log MCSPI_CHxSTAT register to follow when RXS bit (register RX is full) is set.
+> And do not use the RX register reading in you own way. If you need RX logging do it from omap2_mcspi_txrx_pio function.
 >
 >
+> Regards
+> Roman Tereshonkov
 >
->--
->Grant=A0Likely,=A0B.Sc.,=A0P.Eng.
->Secret=A0Lab=A0Technologies=A0Ltd.
+>
+>   
+Hi roman,
 
-Ce message, ainsi que tous les fichiers joints =E0 ce message,
-peuvent contenir des informations sensibles et/ ou confidentielles
-ne devant pas =EAtre divulgu=E9es. Si vous n'=EAtes pas le destinataire
-de ce message (ou que vous recevez ce message par erreur), nous
-vous remercions de le notifier imm=E9diatement =E0 son exp=E9diteur, et
-de d=E9truire ce message. Toute copie, divulgation, modification,
-utilisation ou diffusion, non autoris=E9e, directe ou indirecte, de
-tout ou partie de ce message, est strictement interdite.
+This time i enable SPI_DEBUG first then design 3 test cases to
+investigate spi issue.
+test 1: print tx data, status reg(when RXS bit set) and rx data in 
+txrx_pio func.
+test 2: revert the commit a330ce2 "omap2_mcspi: Flush posted writes",
+other is same as test 1.
+test 3: disable and enable channel between each SPI transfer, other is
+same as test 1.
 
-This e-mail, and any document attached hereby, may contain
-confidential and/or privileged information. If you are not the
-intended recipient (or have received this e-mail in error) please
-notify the sender immediately and destroy this e-mail. Any
-unauthorized, direct or indirect, copying, disclosure, distribution
-or other use of the material or parts thereof is strictly
-forbidden.
+The output of test2 and test3 is same and is right, while test1's output is
+wrong.
+
+The ads7846 driver works like that, when i touch the top-left corner of the
+touchscreen, it will send a READ-Y command first(8 bit word 0x93,
+TX_ONLY transfer), then it will receive y coordinate(two 8 bit words, MSB
+12bits are meaningful, correct data should be around 0x77nn, RX_ONLY 
+transfer).
+
+the output of test1 is:
+<4>======SPI MESSAGE BEGIN======
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000005
+<7>ads7846 spi1.0: read-8 f0
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000005
+<7>ads7846 spi1.0: read-8 f0
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<4>.....SPI MESSAGE END.....
+
+the output of test2 is:
+<4>======SPI MESSAGE BEGIN======
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 b0
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 88
+<4>.....SPI MESSAGE END.....
+
+the output of test3 is:
+<4>======SPI MESSAGE BEGIN======
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 68
+<7>ads7846 spi1.0: write-8 93
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 77
+<7>ads7846 spi1.0: status reg: 00000007
+<7>ads7846 spi1.0: read-8 98
+<4>.....SPI MESSAGE END.....
+
+
+test1 patch:
+Subject: [PATCH] SPI/test1: print tx data & rx data when ads7846 works
+
+when we touch the top-left corner of the touchscreen, the ads7846
+driver will send a read-y command(one 8-bit word, 0x93) and receive
+y coordinate(two 8-bit words, MSB 12bits are meaningful). now print
+all tx word, staus reg and rx word when RXS bit is set. Test1 only
+add debug output and have no other modification.
+
+Signed-off-by: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+drivers/spi/omap2_mcspi.c | 11 +++++++++--
+1 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index b3a94ca..893a124 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -40,6 +40,8 @@
+#include <plat/clock.h>
+#include <plat/mcspi.h>
+
++#define VERBOSE
++
+#define OMAP2_MCSPI_MAX_FREQ 48000000
+
+/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
+@@ -502,6 +504,11 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
+spi_transfer *xfer)
+goto out;
+}
+
++#ifdef VERBOSE
++ dev_dbg(&spi->dev, "status reg: %08x\n",
++ __raw_readl(chstat_reg));
++#endif
++
+if (c == 1 && tx == NULL &&
+(l & OMAP2_MCSPI_CHCONF_TURBO)) {
+omap2_mcspi_set_enable(spi, 0);
+@@ -893,7 +900,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+spi = m->spi;
+cs = spi->controller_state;
+cd = spi->controller_data;
+-
++ printk("======SPI MESSAGE BEGIN======\n");
+omap2_mcspi_set_enable(spi, 1);
+list_for_each_entry(t, &m->transfers, transfer_list) {
+if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
+@@ -971,7 +978,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+omap2_mcspi_force_cs(spi, 0);
+
+omap2_mcspi_set_enable(spi, 0);
+-
++ printk(".....SPI MESSAGE END.....\n");
+m->status = status;
+m->complete(m->context);
+
+-- 
+1.5.6.5
+
+
+test2 patch:
+Subject: [PATCH] SPI/test2: print tx data & rx data when ads7846 works
+
+when we touch the top-left corner of the touchscreen, the ads7846
+driver will send a read-y command(one 8-bit word, 0x93) and receive
+y coordinate(two 8-bit words, MSB 12bits are meaningful). now print
+all tx word and rx word. In test2, i revert the commit a330ce2
+"omap2_mcspi: Flush posted writes".
+
+Signed-off-by: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+drivers/spi/omap2_mcspi.c | 13 ++++++++++---
+1 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index b3a94ca..cf8066e 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -40,6 +40,8 @@
+#include <plat/clock.h>
+#include <plat/mcspi.h>
+
++#define VERBOSE
++
+#define OMAP2_MCSPI_MAX_FREQ 48000000
+
+/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
+@@ -204,7 +206,7 @@ static inline void mcspi_write_chconf0(const struct 
+spi_device *spi, u32 val)
+
+cs->chconf0 = val;
+mcspi_write_cs_reg(spi, OMAP2_MCSPI_CHCONF0, val);
+- mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHCONF0);
++ /* mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHCONF0); */
+}
+
+static void omap2_mcspi_set_dma_req(const struct spi_device *spi,
+@@ -502,6 +504,11 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
+spi_transfer *xfer)
+goto out;
+}
+
++#ifdef VERBOSE
++ dev_dbg(&spi->dev, "status reg: %08x\n",
++ __raw_readl(chstat_reg));
++#endif
++
+if (c == 1 && tx == NULL &&
+(l & OMAP2_MCSPI_CHCONF_TURBO)) {
+omap2_mcspi_set_enable(spi, 0);
+@@ -893,7 +900,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+spi = m->spi;
+cs = spi->controller_state;
+cd = spi->controller_data;
+-
++ printk("======SPI MESSAGE BEGIN======\n");
+omap2_mcspi_set_enable(spi, 1);
+list_for_each_entry(t, &m->transfers, transfer_list) {
+if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
+@@ -971,7 +978,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+omap2_mcspi_force_cs(spi, 0);
+
+omap2_mcspi_set_enable(spi, 0);
+-
++ printk(".....SPI MESSAGE END.....\n");
+m->status = status;
+m->complete(m->context);
+
+-- 
+1.5.6.5
+
+
+test3 patch:
+Subject: [PATCH] SPI/test3: print tx data & rx data when ads7846 works
+
+when we touch the top-left corner of the touchscreen, the ads7846
+driver will send a read-y command(one 8-bit word, 0x93) and receive
+y coordinate(two 8-bit words, MSB 12bits are meaningful). now print
+all tx word and rx word. In test3, i add disable channel and reenable
+channel between each SPI transfer.
+
+Signed-off-by: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+drivers/spi/omap2_mcspi.c | 21 +++++++++++++++------
+1 files changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index b3a94ca..7449365 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -40,6 +40,8 @@
+#include <plat/clock.h>
+#include <plat/mcspi.h>
+
++#define VERBOSE
++
+#define OMAP2_MCSPI_MAX_FREQ 48000000
+
+/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
+@@ -408,7 +410,6 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct 
+spi_transfer *xfer)
+count -= (word_len <= 8) ? 2 :
+(word_len <= 16) ? 4 :
+/* word_len <= 32 */ 8;
+- omap2_mcspi_set_enable(spi, 1);
+return count;
+}
+}
+@@ -430,8 +431,10 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct 
+spi_transfer *xfer)
+(word_len <= 16) ? 2 :
+/* word_len <= 32 */ 4;
+}
+- omap2_mcspi_set_enable(spi, 1);
+}
++
++ omap2_mcspi_set_enable(spi, 0);
++
+return count;
+}
+
+@@ -502,6 +505,11 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
+spi_transfer *xfer)
+goto out;
+}
+
++#ifdef VERBOSE
++ dev_dbg(&spi->dev, "status reg: %08x\n",
++ __raw_readl(chstat_reg));
++#endif
++
+if (c == 1 && tx == NULL &&
+(l & OMAP2_MCSPI_CHCONF_TURBO)) {
+omap2_mcspi_set_enable(spi, 0);
+@@ -646,7 +654,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
+spi_transfer *xfer)
+dev_err(&spi->dev, "EOT timed out\n");
+}
+out:
+- omap2_mcspi_set_enable(spi, 1);
++ omap2_mcspi_set_enable(spi, 0);
+return count - c;
+}
+
+@@ -893,8 +901,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+spi = m->spi;
+cs = spi->controller_state;
+cd = spi->controller_data;
+-
+- omap2_mcspi_set_enable(spi, 1);
++ printk("======SPI MESSAGE BEGIN======\n");
+list_for_each_entry(t, &m->transfers, transfer_list) {
+if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
+status = -EINVAL;
+@@ -931,6 +938,8 @@ static void omap2_mcspi_work(struct work_struct *work)
+
+mcspi_write_chconf0(spi, chconf);
+
++ omap2_mcspi_set_enable(spi, 1);
++
+if (t->len) {
+unsigned count;
+
+@@ -971,7 +980,7 @@ static void omap2_mcspi_work(struct work_struct *work)
+omap2_mcspi_force_cs(spi, 0);
+
+omap2_mcspi_set_enable(spi, 0);
+-
++ printk(".....SPI MESSAGE END.....\n");
+m->status = status;
+m->complete(m->context);
+
+-- 
+1.5.6.5
+
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

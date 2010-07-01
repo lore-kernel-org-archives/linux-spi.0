@@ -1,12 +1,11 @@
-From: <eymosogesu1348-j+lFL+71PhXR7s880joybQ@public.gmane.org>
-Subject: Licensed male pills
-Date: Thu, 1 Jul 2010 16:13:51 +0200
-Message-ID: <E1OUKWX-0005T4-Ob@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: eymosogesu1348-j+lFL+71PhXR7s880joybQ@public.gmane.org
+From: ananth <ananth86coolguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: SPI Framework in Linux
+Date: Thu, 1 Jul 2010 20:40:13 +0530
+Message-ID: <AANLkTimMpQXQyj4bmsIDxu-OtK15532g5ArjGIfQSMwy@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, glikely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,8 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://e7.aromarather.ru/?spi-devel-general=EEB623794647B55
+Hi
 
+  I am learning the SPI framework in linux. I read the spi-summary and
+documentation. I couldn't get a clear picture of what's happening. Is there
+any other document or article which gives a overview of the SPI framework in
+linux?Also could you give me any driver which uses SPI for communicating
+with devices like touchscreen or other SPI compatible sensors?
+
+Thanks
+Ananth
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?

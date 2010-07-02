@@ -1,12 +1,12 @@
-From: "Objectif Mutuelle" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Enfin des prix revolutionnaires! A vous
-	de comparer...
-Date: Fri,  2 Jul 2010 05:33:20 +0000 (UTC)
-Message-ID: <l4x0rk.76dvp7@front07.g7r9.com>
+From: iyisf6-/ZQPPMMDtWQxrlqPcB8adw@public.gmane.org
+Subject: [SPAM] 你看后有什么问题请与我联系！
+Date: Fri, 2 Jul 2010 15:17:27 +0800
+Message-ID: <E1OUaVk-0005a9-Vr@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,8 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?
 Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

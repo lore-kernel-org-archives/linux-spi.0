@@ -1,103 +1,48 @@
-From: Antonio Ospite <ospite@studenti.unina.it>
-Subject: Re: Request for SPI testing
-Date: Sat, 3 Jul 2010 19:05:04 +0200
-Message-ID: <20100703190504.693fe8fa.ospite@studenti.unina.it>
-References: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
+From: "Eiiphs" <palafoxtjyj-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: =?gb2312?b?u6e/2g==?=
+Date: Sun, 4 Jul 2010 02:56:25 +0800
+Message-ID: <630355.7294.qm@smtp122.plus.mail.sp1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	linux-mmc@vger.kernel.org, Ernst Schwab <eschwab@online.de>,
-	Ned Forrester <nforrester@whoi.edu>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Anton Vorontsov <cbouatmailru@gmail.com>,
-	openezx-devel@lists.openezx.org
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="----=svgws455_5645_227849826.586983"
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN
-Content-Type: text/plain; charset=US-ASCII
+This is a multi-part message in MIME format.
+
+------=svgws455_5645_227849826.586983
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+
+
+------=svgws455_5645_227849826.586983
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 29 Jun 2010 21:30:34 -0600
-Grant Likely <grant.likely@secretlab.ca> wrote:
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+------=svgws455_5645_227849826.586983
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> I've pushed out Ernst's spi bus locking API patches to the following
-> branch.  Before I push them into linux-next, I'd like to get some
-> testing.  Can I have some volunteers please to pull this branch and
-> give it a spin?  Bonus points for people who have mmc cards
-> multiplexed with other devices on their SPI bus.
->
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-=46rom a quick test it works for me too, I have both the MMC and the PMIC
-(battery, regulators) attached to spi, this is Motorola A910 phone
-(pxa27x). Just FYI I applied the patches to 2.6.34 and tested with this
-kernel, without the patches I cannot make mmc_spi work reliably (lots
-of I/O errors, due to conflict with the PMIC) with these patches I can
-finally use the MMC card.
-
-Thanks a lot,
-   Antonio
-
-> Cheers,
-> g.
->=20
-> The following changes since commit 5904b3b81d25166e5e39b9727645bb47937618=
-e3:
->   Linus Torvalds (1):
->         Merge branch 'perf-fixes-for-linus' of
-> git://git.kernel.org/.../tip/linux-2.6-tip
->=20
-> are available in the git repository at:
->=20
->   git://git.secretlab.ca/git/linux-2.6 spi/test
->=20
-> Cory Maccarrone (1):
->       SPI100k: Fix 8-bit and RX-only transfers
->=20
-> Ernst Schwab (2):
->       spi/mmc_spi: SPI bus locking API, using mutex
->       spi/mmc_spi: mmc_spi adaptations for SPI bus locking API
->=20
->  drivers/mmc/host/mmc_spi.c  |   59 ++---------
->  drivers/spi/omap_spi_100k.c |   23 +++--
->  drivers/spi/spi.c           |  225 ++++++++++++++++++++++++++++++++++++-=
-------
->  include/linux/spi/spi.h     |   12 +++
->  4 files changed, 227 insertions(+), 92 deletions(-)
->=20
-> --=20
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
->=20
-
-
---=20
-Antonio Ospite
-http://ao2.it
-
-PGP public key ID: 0x4553B001
-
-A: Because it messes up the order in which people normally read text.
-   See http://en.wikipedia.org/wiki/Posting_style
-Q: Why is top-posting such a bad thing?
-A: Top-posting.
-Q: What is the most annoying thing in e-mail?
-
---Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAkwvbcAACgkQ5xr2akVTsAFWYwCgnz6hkyBo0Dx1UKkJVyV1ysg2
-5nsAmwU2SAivs1FQl5ZbxB9ORR3LH3y9
-=vdWX
------END PGP SIGNATURE-----
-
---Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN--
+------=svgws455_5645_227849826.586983--

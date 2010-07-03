@@ -1,220 +1,103 @@
-From: jason <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/omap2_mcspi: disable and enable
- chan between each SPI transfer
-Date: Sat, 03 Jul 2010 19:21:45 +0800
-Message-ID: <4C2F1D49.3090802@gmail.com>
-References: <1277381565-6305-1-git-send-email-jason77.wang@gmail.com>
-	<AANLkTin7mqe_zJIbyDcRPpCLaxPhl_dZQrSGua2z1nYW@mail.gmail.com>
-	<4C24A182.4060009@gmail.com>
-	<E1C7579D1379824DAE67858071C810382DD8495B26@NOK-EUMSG-02.mgdnok.nokia.com>
-	<4C289CCB.7010409@gmail.com>
-	<E1C7579D1379824DAE67858071C810382DD84963BC@NOK-EUMSG-02.mgdnok.nokia.com>
-	<4C2C82E9.2010103@gmail.com>
-	<E1C7579D1379824DAE67858071C810382DD859571A@NOK-EUMSG-02.mgdnok.nokia.com>
+From: Antonio Ospite <ospite@studenti.unina.it>
+Subject: Re: Request for SPI testing
+Date: Sat, 3 Jul 2010 19:05:04 +0200
+Message-ID: <20100703190504.693fe8fa.ospite@studenti.unina.it>
+References: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <E1C7579D1379824DAE67858071C810382DD859571A-xJW1crHCIS+8kqYwC468Frtp2NbXvJi8gfoxzgwHRXE@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	linux-mmc@vger.kernel.org, Ernst Schwab <eschwab@online.de>,
+	Ned Forrester <nforrester@whoi.edu>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Anton Vorontsov <cbouatmailru@gmail.com>,
+	openezx-devel@lists.openezx.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-roman.tereshonkov-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org wrote:
-> Hi Jason,
+--Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 29 Jun 2010 21:30:34 -0600
+Grant Likely <grant.likely@secretlab.ca> wrote:
+
+> I've pushed out Ernst's spi bus locking API patches to the following
+> branch.  Before I push them into linux-next, I'd like to get some
+> testing.  Can I have some volunteers please to pull this branch and
+> give it a spin?  Bonus points for people who have mmc cards
+> multiplexed with other devices on their SPI bus.
 >
-> Your logs do not show what I wanted to see.
-> But what I can see now at least is the case when TX is full and RX is full at the same time.
->
-> 1.  Put 
-> 	dev_dbg(&spi->dev, "status reg: %08x\n", __raw_readl(chstat_reg));
-> 	after "do" and before "while (c)" in omap2_mcspi_txrx_pio function.
-> 	I want to see how status is changed before and after TX or RX transaction.
-> 2. Also try to make fake reading 
-> 	__raw_readl(tx_reg)
-> 	 after TX write in omap2_mcspi_txrx_pio.
-> 	and 
-> 	__raw_readl(cs->base + OMAP2_MCSPI_TX0);
-> 	in mcspi_work function.
-> 	This should exclude the posted write effect if such present.
->
-> If you put more logging info from other spi registers it might be also usefull in problem analyzing.
-> And it is better to concentrate on your test case 1. 
-> So as it is the test which gives the bug with unknown yet nature.
->
->
->
-> Regards
-> Roman Tereshonkov
->
->   
-Hi roman,
-The test is designed just as your suggestion.
 
-We get status reg=0x5(RX Full & TX FULL at the same time) in the first 
-round in RX_ONLY
-transfer. It seems that the RX_ONLY triggering write is not finished yet 
-but we have received something.
-I guess the last received data in TX_ONLY transfer affect the FXS bit in 
-the first round of RX_ONLY transfer.
+=46rom a quick test it works for me too, I have both the MMC and the PMIC
+(battery, regulators) attached to spi, this is Motorola A910 phone
+(pxa27x). Just FYI I applied the patches to 2.6.34 and tested with this
+kernel, without the patches I cannot make mmc_spi work reliably (lots
+of I/O errors, due to conflict with the PMIC) with these patches I can
+finally use the MMC card.
 
+Thanks a lot,
+   Antonio
 
-<4>======SPI MESSAGE BEGIN======
-<7>ads7846 spi1.0: work tx reg(1): 00000000
-<7>ads7846 spi1.0: after do stat reg: 00000006
-<7>ads7846 spi1.0: write-8 93
-<7>ads7846 spi1.0: after write tx reg: 00000093
-<7>ads7846 spi1.0: before while(c) stat reg: 00000006
-<7>ads7846 spi1.0: work tx reg(1): 00000093
-<7>ads7846 spi1.0: after do stat reg: 00000000
-<7>ads7846 spi1.0: status reg: 00000005
-<7>ads7846 spi1.0: read-8 f0
-<7>ads7846 spi1.0: before while(c) stat reg: 00000007
-<7>ads7846 spi1.0: after do stat reg: 00000007
-<7>ads7846 spi1.0: status reg: 00000007
-<7>ads7846 spi1.0: read-8 77
-<7>ads7846 spi1.0: before while(c) stat reg: 00000006
-<7>ads7846 spi1.0: work tx reg(1): 00000000
-<7>ads7846 spi1.0: after do stat reg: 00000006
-<7>ads7846 spi1.0: write-8 93
-<7>ads7846 spi1.0: after write tx reg: 00000093
-<7>ads7846 spi1.0: before while(c) stat reg: 00000006
-<7>ads7846 spi1.0: work tx reg(1): 00000093
-<7>ads7846 spi1.0: after do stat reg: 00000000
-<7>ads7846 spi1.0: status reg: 00000005
-<7>ads7846 spi1.0: read-8 f8
-<7>ads7846 spi1.0: before while(c) stat reg: 00000007
-<7>ads7846 spi1.0: after do stat reg: 00000007
-<7>ads7846 spi1.0: status reg: 00000007
-<7>ads7846 spi1.0: read-8 75
-<7>ads7846 spi1.0: before while(c) stat reg: 00000006
-<4>.....SPI MESSAGE END.....
+> Cheers,
+> g.
+>=20
+> The following changes since commit 5904b3b81d25166e5e39b9727645bb47937618=
+e3:
+>   Linus Torvalds (1):
+>         Merge branch 'perf-fixes-for-linus' of
+> git://git.kernel.org/.../tip/linux-2.6-tip
+>=20
+> are available in the git repository at:
+>=20
+>   git://git.secretlab.ca/git/linux-2.6 spi/test
+>=20
+> Cory Maccarrone (1):
+>       SPI100k: Fix 8-bit and RX-only transfers
+>=20
+> Ernst Schwab (2):
+>       spi/mmc_spi: SPI bus locking API, using mutex
+>       spi/mmc_spi: mmc_spi adaptations for SPI bus locking API
+>=20
+>  drivers/mmc/host/mmc_spi.c  |   59 ++---------
+>  drivers/spi/omap_spi_100k.c |   23 +++--
+>  drivers/spi/spi.c           |  225 ++++++++++++++++++++++++++++++++++++-=
+------
+>  include/linux/spi/spi.h     |   12 +++
+>  4 files changed, 227 insertions(+), 92 deletions(-)
+>=20
+> --=20
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+>=20
 
 
-Subject: [PATCH] SPI/test1: print tx data & rx data when ads7846 works
+--=20
+Antonio Ospite
+http://ao2.it
 
-when we touch the top-left corner of the touchscreen, the ads7846
-driver will send a read-y command(one 8-bit word, 0x93) and receive
-y coordinate(two 8-bit words, MSB 12bits are meaningful). now print
-all tx word, staus reg and rx word when RXS bit is set. Test1 only
-add debug output and have no other modification.
+PGP public key ID: 0x4553B001
 
-Signed-off-by: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-drivers/spi/omap2_mcspi.c | 32 ++++++++++++++++++++++++++++++--
-1 files changed, 30 insertions(+), 2 deletions(-)
+A: Because it messes up the order in which people normally read text.
+   See http://en.wikipedia.org/wiki/Posting_style
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index b3a94ca..76bbdeb 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -40,6 +40,8 @@
-#include <plat/clock.h>
-#include <plat/mcspi.h>
+--Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN
+Content-Type: application/pgp-signature
 
-+#define VERBOSE
-+
-#define OMAP2_MCSPI_MAX_FREQ 48000000
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
-@@ -482,6 +484,10 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
-spi_transfer *xfer)
-tx = xfer->tx_buf;
+iEYEARECAAYFAkwvbcAACgkQ5xr2akVTsAFWYwCgnz6hkyBo0Dx1UKkJVyV1ysg2
+5nsAmwU2SAivs1FQl5ZbxB9ORR3LH3y9
+=vdWX
+-----END PGP SIGNATURE-----
 
-do {
-+#ifdef VERBOSE
-+ dev_dbg(&spi->dev, "after do stat reg: %08x\n",
-+ __raw_readl(chstat_reg));
-+#endif
-c -= 1;
-if (tx != NULL) {
-if (mcspi_wait_for_reg_bit(chstat_reg,
-@@ -494,6 +500,12 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
-spi_transfer *xfer)
-word_len, *tx);
-#endif
-__raw_writel(*tx++, tx_reg);
-+
-+#ifdef VERBOSE
-+ dev_dbg(&spi->dev, "after write tx reg: %08x\n",
-+ __raw_readl(tx_reg));
-+#endif
-+
-}
-if (rx != NULL) {
-if (mcspi_wait_for_reg_bit(chstat_reg,
-@@ -502,6 +514,11 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
-spi_transfer *xfer)
-goto out;
-}
-
-+#ifdef VERBOSE
-+ dev_dbg(&spi->dev, "status reg: %08x\n",
-+ __raw_readl(chstat_reg));
-+#endif
-+
-if (c == 1 && tx == NULL &&
-(l & OMAP2_MCSPI_CHCONF_TURBO)) {
-omap2_mcspi_set_enable(spi, 0);
-@@ -527,6 +544,11 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct 
-spi_transfer *xfer)
-word_len, *(rx - 1));
-#endif
-}
-+
-+#ifdef VERBOSE
-+ dev_dbg(&spi->dev, "before while(c) stat reg: %08x\n",
-+ __raw_readl(chstat_reg));
-+#endif
-} while (c);
-} else if (word_len <= 16) {
-u16 *rx;
-@@ -893,9 +915,15 @@ static void omap2_mcspi_work(struct work_struct *work)
-spi = m->spi;
-cs = spi->controller_state;
-cd = spi->controller_data;
--
-+ printk("======SPI MESSAGE BEGIN======\n");
-omap2_mcspi_set_enable(spi, 1);
-list_for_each_entry(t, &m->transfers, transfer_list) {
-+
-+#ifdef VERBOSE
-+ dev_dbg(&spi->dev, "work tx reg(1): %08x\n",
-+ __raw_readl(cs->base + OMAP2_MCSPI_TX0));
-+#endif
-+
-if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
-status = -EINVAL;
-break;
-@@ -971,7 +999,7 @@ static void omap2_mcspi_work(struct work_struct *work)
-omap2_mcspi_force_cs(spi, 0);
-
-omap2_mcspi_set_enable(spi, 0);
--
-+ printk(".....SPI MESSAGE END.....\n");
-m->status = status;
-m->complete(m->context);
-
--- 
-1.5.6.5
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+--Signature=_Sat__3_Jul_2010_19_05_04_+0200_MjlMGvnVjM_UH3MN--

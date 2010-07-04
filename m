@@ -1,52 +1,42 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: Request for SPI testing
-Date: Sat, 3 Jul 2010 22:51:25 -0600
-Message-ID: <AANLkTingjwUlUlrho3xHS7AkuaZC3tK-lIizvFd_8_QS@mail.gmail.com>
-References: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
-	<20100703190504.693fe8fa.ospite@studenti.unina.it>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: reinitialize transfer
+	parameters for every message
+Date: Sat, 3 Jul 2010 23:01:11 -0600
+Message-ID: <AANLkTilkMBJ_o6Bh4Wikkppx_VgQsKxORc-E_pmNP5id@mail.gmail.com>
+References: <1278084617-23027-1-git-send-email-bniebuhr@efjohnson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net, linux-mmc@vger.kernel.org,
-	Ernst Schwab <eschwab@online.de>,
-	Ned Forrester <nforrester@whoi.edu>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Anton Vorontsov <cbouatmailru@gmail.com>,
-	openezx-devel@lists.openezx.org,
-	Matt Fleming <matt@console-pimps.org>
-To: Antonio Ospite <ospite@studenti.unina.it>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <20100703190504.693fe8fa.ospite@studenti.unina.it>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1278084617-23027-1-git-send-email-bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Jul 3, 2010 at 11:05 AM, Antonio Ospite
-<ospite@studenti.unina.it> wrote:
-> On Tue, 29 Jun 2010 21:30:34 -0600
-> Grant Likely <grant.likely@secretlab.ca> wrote:
+On Fri, Jul 2, 2010 at 9:30 AM, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> This patch fixes the setup_transfer logic to account for the case where
+> multiple messages to different SPI devices are in the queue simultaneously.
+> With the current logic, the second message in the queue will end up
+> using the transfer parameters for the previous message in the queue.
 >
->> I've pushed out Ernst's spi bus locking API patches to the following
->> branch. =A0Before I push them into linux-next, I'd like to get some
->> testing. =A0Can I have some volunteers please to pull this branch an=
-d
->> give it a spin? =A0Bonus points for people who have mmc cards
->> multiplexed with other devices on their SPI bus.
->>
+> The fix is to reinitialize the transfer parameters for each message
+> rather than only once on the first message.
 >
-> From a quick test it works for me too, I have both the MMC and the PM=
-IC
-> (battery, regulators) attached to spi, this is Motorola A910 phone
-> (pxa27x). Just FYI I applied the patches to 2.6.34 and tested with th=
-is
-> kernel, without the patches I cannot make mmc_spi work reliably (lots
-> of I/O errors, due to conflict with the PMIC) with these patches I ca=
-n
-> finally use the MMC card.
->
-> Thanks a lot,
-> =A0 Antonio
+> Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-Thanks everyone who tested.  I've pushed this out for linux-next
-inclusion (next-spi branch)
+Picked up, thanks.
 
 g.
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

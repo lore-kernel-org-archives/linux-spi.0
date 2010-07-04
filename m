@@ -1,48 +1,52 @@
-From: "Eiiphs" <palafoxtjyj-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
-Subject: =?gb2312?b?u6e/2g==?=
-Date: Sun, 4 Jul 2010 02:56:25 +0800
-Message-ID: <630355.7294.qm@smtp122.plus.mail.sp1.yahoo.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: Request for SPI testing
+Date: Sat, 3 Jul 2010 22:51:25 -0600
+Message-ID: <AANLkTingjwUlUlrho3xHS7AkuaZC3tK-lIizvFd_8_QS@mail.gmail.com>
+References: <AANLkTimVajsJq9lRSLbv8_lzu7g_CL5ptmV5OLG6dBds@mail.gmail.com>
+	<20100703190504.693fe8fa.ospite@studenti.unina.it>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=svgws455_5645_227849826.586983"
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net, linux-mmc@vger.kernel.org,
+	Ernst Schwab <eschwab@online.de>,
+	Ned Forrester <nforrester@whoi.edu>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Anton Vorontsov <cbouatmailru@gmail.com>,
+	openezx-devel@lists.openezx.org,
+	Matt Fleming <matt@console-pimps.org>
+To: Antonio Ospite <ospite@studenti.unina.it>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20100703190504.693fe8fa.ospite@studenti.unina.it>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Sat, Jul 3, 2010 at 11:05 AM, Antonio Ospite
+<ospite@studenti.unina.it> wrote:
+> On Tue, 29 Jun 2010 21:30:34 -0600
+> Grant Likely <grant.likely@secretlab.ca> wrote:
+>
+>> I've pushed out Ernst's spi bus locking API patches to the following
+>> branch. =A0Before I push them into linux-next, I'd like to get some
+>> testing. =A0Can I have some volunteers please to pull this branch an=
+d
+>> give it a spin? =A0Bonus points for people who have mmc cards
+>> multiplexed with other devices on their SPI bus.
+>>
+>
+> From a quick test it works for me too, I have both the MMC and the PM=
+IC
+> (battery, regulators) attached to spi, this is Motorola A910 phone
+> (pxa27x). Just FYI I applied the patches to 2.6.34 and tested with th=
+is
+> kernel, without the patches I cannot make mmc_spi work reliably (lots
+> of I/O errors, due to conflict with the PMIC) with these patches I ca=
+n
+> finally use the MMC card.
+>
+> Thanks a lot,
+> =A0 Antonio
 
-------=svgws455_5645_227849826.586983
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
+Thanks everyone who tested.  I've pushed this out for linux-next
+inclusion (next-spi branch)
 
-
-------=svgws455_5645_227849826.586983
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
-------=svgws455_5645_227849826.586983
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=svgws455_5645_227849826.586983--
+g.

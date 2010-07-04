@@ -1,7 +1,8 @@
-From: "CityDeal" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Un bon plan tous les jours près de chez vous
-Date: Sun,  4 Jul 2010 13:18:56 +0000 (UTC)
-Message-ID: <l51bqo.p7gmq4@front02.r7g.com>
+From: <tybin6482-JnXT/5gsr3g@public.gmane.org>
+Subject: [SPAM] Your shop of sex pills
+Date: Sun, 4 Jul 2010 08:36:08 -0700
+Message-ID: <E1OVREq-0002J8-IB@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: tybin6482-JnXT/5gsr3g@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://19.pillgino88f.ru/?spi-devel-general=5568452C52507
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

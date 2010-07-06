@@ -1,20 +1,15 @@
-From: Brian Niebuhr <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-Subject: Re: [PATCH v2 0/1] davinci: spi:
-	replaceexisting driver
-Date: Tue, 6 Jul 2010 09:15:56 -0500
-Message-ID: <BA34378D1528D04CB3C865B8BAB2472B035F78@transmx01.transcrypt.local>
-References: <1278110334-13943-1-git-send-email-bniebuhr@efjohnson.com>
-	<002301cb1ce6$64fba3e0$2ef2eba0$@raj@ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: SPI Framework in Linux
+Date: Tue, 6 Jul 2010 17:22:46 -0600
+Message-ID: <AANLkTimFzHdY6luh2UQOLoTlI8kjdwIeiazT6YSdWdMU@mail.gmail.com>
+References: <AANLkTimMpQXQyj4bmsIDxu-OtK15532g5ArjGIfQSMwy@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: "Sudhakar Rajashekhara" <sudhakar.raj-l0cyMroinI0@public.gmane.org>,
-	"Brian Niebuhr" <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: ananth <ananth86coolguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Class: urn:content-classes:message
-In-Reply-To: <002301cb1ce6$64fba3e0$2ef2eba0$@raj-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <AANLkTimMpQXQyj4bmsIDxu-OtK15532g5ArjGIfQSMwy-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,82 +20,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> On Sat, Jul 03, 2010 at 04:08:53, Brian Niebuhr wrote:
-> > I have included all of the recommended changes in this 
-> version of the patch.
-> > I also combined the patches into one patch to avoid 
-> bisecting issues.  This
-> > makes the diff on davinci_spi.c very large.
-> > 
-> > If people who are using this driver could test this version 
-> of the driver
-> > and Ack it, I would appreciate it.
-> > 
-> > ** NOTE **
-> > 
-> > This patch requires the EDMA patch at:
-> > 
-> > 
-> http://linux.davincidsp.com/pipermail/davinci-linux-open-sourc
-> e/2010-March/018022.html
-> > 
-> > which is queued waiting on another driver fix, for DMA mode 
-> to work correctly.
-> > 
-> > 
-> > Brian Niebuhr (1):
-> >   davinci: spi: replace existing driver
-> > 
-> >  arch/arm/mach-davinci/board-dm355-evm.c     |   10 +
-> >  arch/arm/mach-davinci/board-dm355-leopard.c |   10 +
-> >  arch/arm/mach-davinci/board-dm365-evm.c     |   10 +
-> >  arch/arm/mach-davinci/dm355.c               |   12 +-
-> >  arch/arm/mach-davinci/dm365.c               |   12 +-
-> >  arch/arm/mach-davinci/include/mach/spi.h    |   37 +-
-> >  drivers/spi/davinci_spi.c                   | 1328 
-> ++++++++++++---------------
-> >  7 files changed, 648 insertions(+), 771 deletions(-)
-> > 
-> 
-> Quick update.
-> 
-> I tested this patch on DM355 and DM365 EVMs. On DM355 all the 
-> 3 modes (DMA,
-> Polled and Interrupt) worked fine. But in interrupt mode, on 
-> DM355, if I set
-> "intr_level = 1", then kernel hangs during booting after printing
-> "spi spi0.0: DaVinci SPI driver in Interrupt mode" on the console.
+On Thu, Jul 1, 2010 at 9:10 AM, ananth <ananth86coolguy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi
+>
+> =A0 I am learning the SPI framework in linux. I read the spi-summary and
+> documentation. I couldn't get a clear picture of what's happening. Is the=
+re
+> any other document or article which gives a overview of the SPI framework=
+ in
+> linux?Also could you give me any driver which uses SPI for communicating
+> with devices like touchscreen or other SPI compatible sensors?
 
-Sudhakar - 
+The SPI subsystem uses the Linux device model much the same way as
+other bus types in the Linux kernel.  SPI master controller drivers
+create instances of spi busses.  one or more spi_devices is registered
+on the spi_bus_type as children of the spi_master bus.  spi_drivers
+also get registered onto the spi_bus_type.  Whenever the spi subsystem
+code finds an spi_device and an spi_driver that match (a driver that
+is able to driver the device) it calls the probe() routine on the
+spi_driver with a pointer to the spi_device structure.
 
-When you changed the interrupt level, did you also change the
-IORESOURCE_IRQ entry for SPI0?  Maybe we could set the interrupt level
-automatically based on the IORESOURCE_IRQ provided?  The problem is, I
-don't see any way of doing that without a bunch of machine-specific
-ifdefs in the driver.
- 
-> On DM365 only DMA and Polled mode worked fine. In interrupt 
-> mode, whether I
-> set intr_level to ZERO or ONE, kernel booting hangs, similar to DM355.
+So, for your spi bus controller, you need to have an spi master driver.
+For each spi device, you need to have a matching spi_driver loaded
+into the kernel.
 
-Does the interrupt mode of the existing driver work on DM365?  
+Take a look at the book Linux Device Drivers 3rd edition for
+information on the device model.  Read the source code for detailed
+information about the spi bus type.
 
-I don't have one of these boards, so I can't debug the issue.  If you
-have any ideas where the problem might be I'd appreciate the help in
-getting this resolved.  If the change I mentioned above fixes the issue
-on DM355, then I've got to imagine that it's just a configuration issue
-of some sort on DM365.
+Cheers,
+g.
 
-> I'll update the status of testing on OMAP-L1x EVMs later.
-> 
-> I am using the Linux kernel from [1] for testing.
-> 
-> [1] 
-> http://git.kernel.org/?p=linux/kernel/git/khilman/linux-davinc
-> i.git;a=summary
+>
+> Thanks
+> Ananth
+>
 
 
-------------------------------------------------------------------------------
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?
 Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

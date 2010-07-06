@@ -1,21 +1,20 @@
-From: "Hemanth V" <hemanthv-l0cyMroinI0@public.gmane.org>
-Subject: Re: PATCH[V2 1/3]: Update Platform files for SPI
-Date: Tue, 6 Jul 2010 14:47:25 +0530 (IST)
-Message-ID: <26287.10.24.255.17.1278407845.squirrel@dbdmail.itg.ti.com>
-References: <9629.10.24.255.17.1265192505.squirrel@dbdmail.itg.ti.com>
-	<20100209222513.GJ21755@atomide.com>
-	<fa686aa41002180828l378a9550u125752e1e972a345@mail.gmail.com>
-	<20100218170946.GO21755@atomide.com>
-	<fa686aa41002180929u555e2af0s9f0646fccb744955@mail.gmail.com>
-	<AANLkTinEfJqvRZKqMaXY3_EE4WJT3W3_j0Kwg89pt_SU@mail.gmail.com>
+From: Brian Niebuhr <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
+Subject: Re: [PATCH v2 0/1] davinci: spi:
+	replaceexisting driver
+Date: Tue, 6 Jul 2010 09:15:56 -0500
+Message-ID: <BA34378D1528D04CB3C865B8BAB2472B035F78@transmx01.transcrypt.local>
+References: <1278110334-13943-1-git-send-email-bniebuhr@efjohnson.com>
+	<002301cb1ce6$64fba3e0$2ef2eba0$@raj@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, govindraj.raja-l0cyMroinI0@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+To: "Sudhakar Rajashekhara" <sudhakar.raj-l0cyMroinI0@public.gmane.org>,
+	"Brian Niebuhr" <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTinEfJqvRZKqMaXY3_EE4WJT3W3_j0Kwg89pt_SU-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Class: urn:content-classes:message
+In-Reply-To: <002301cb1ce6$64fba3e0$2ef2eba0$@raj-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,75 +25,82 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> On Thu, Feb 18, 2010 at 11:29 AM, Grant Likely
-> <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->> On Thu, Feb 18, 2010 at 10:09 AM, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org> wrote:
->>> * Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> [100218 08:26]:
->>>> On Tue, Feb 9, 2010 at 3:25 PM, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org> wrote:
->>>> > * Hemanth V <hemanthv-l0cyMroinI0@public.gmane.org> [100203 02:19]:
->>>> >> From ee48142ddc43129a21676dbb56a83e3e7d8063de Mon Sep 17 00:00:00 2=
-001
->>>> >> From: Hemanth V <hemanthv-l0cyMroinI0@public.gmane.org>
->>>> >> Date: Fri, 27 Nov 2009 14:22:30 +0530
->>>> >> Subject: [PATCH] Update platform files
->>>> >>
->>>> >> This patch updates platform files for
->>>> >> fifo, slave support
->>>> >>
->>>> >> Signed-off-by: Hemanth V <hemanthv-l0cyMroinI0@public.gmane.org>
->>>> >
->>>> > This should get merged via the spi-devel list with the other patches.
->>>> >
->>>> > Acked-by: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
->>>>
->>>> Tony, do you want me to add your acked-by to patches 2 & 3?
->>>
->>> No thanks, I've only looked at them briefly.
->>
->> Okay, thanks.
->>
->> Hemanth, I'm going to drop this series for the moment. =A0I'd like to
->> see some feedback/acks from current users and maintainers of the
->> omap2_mcspi driver before I merge support, especially now when the
->> merge window is about to open and it hasn't gotten any linux-next
->> exposure.
->>
->>>> Also, what is your feeling about patch 3/3, spi slave support. =A0spi
->>>> slave usage model is still a matter under debate, but that patch
->>>> doesn't touch core spi code, so I'm okay to merge it as a
->>>> driver-specific feature. =A0However, I'm not convinced that it is
->>>> actually a useful patch to merge yet, so I'll defer to you on this
->>>> one. =A0Thoughts?
->>>
->>> Up to you to decide. But here's my experience so far..
->>>
->>> Based on my experience if temporary hacks are merged, then nobody
->>> bothers to clean them up properly afterwards and the clean-up task
->>> unfairly falls on the maintainer.
->>>
->>> So IMHO, hacks like that are better floating on the mailing list
->>> until they're properly done. It's best to concentrate on getting
->>> the core things done right to make long term support easier.
->>
->> Right, I agree. =A0I'll ignore patch 3 entirely until I at least see a
->> patch for an in-tree user.
->
-> Hi Hemanth.  Could you please respin patches 1 and 2 against
-> 2.6.35-rc3?  The current patches do not apply anymore.
->
+> On Sat, Jul 03, 2010 at 04:08:53, Brian Niebuhr wrote:
+> > I have included all of the recommended changes in this 
+> version of the patch.
+> > I also combined the patches into one patch to avoid 
+> bisecting issues.  This
+> > makes the diff on davinci_spi.c very large.
+> > 
+> > If people who are using this driver could test this version 
+> of the driver
+> > and Ack it, I would appreciate it.
+> > 
+> > ** NOTE **
+> > 
+> > This patch requires the EDMA patch at:
+> > 
+> > 
+> http://linux.davincidsp.com/pipermail/davinci-linux-open-sourc
+> e/2010-March/018022.html
+> > 
+> > which is queued waiting on another driver fix, for DMA mode 
+> to work correctly.
+> > 
+> > 
+> > Brian Niebuhr (1):
+> >   davinci: spi: replace existing driver
+> > 
+> >  arch/arm/mach-davinci/board-dm355-evm.c     |   10 +
+> >  arch/arm/mach-davinci/board-dm355-leopard.c |   10 +
+> >  arch/arm/mach-davinci/board-dm365-evm.c     |   10 +
+> >  arch/arm/mach-davinci/dm355.c               |   12 +-
+> >  arch/arm/mach-davinci/dm365.c               |   12 +-
+> >  arch/arm/mach-davinci/include/mach/spi.h    |   37 +-
+> >  drivers/spi/davinci_spi.c                   | 1328 
+> ++++++++++++---------------
+> >  7 files changed, 648 insertions(+), 771 deletions(-)
+> > 
+> 
+> Quick update.
+> 
+> I tested this patch on DM355 and DM365 EVMs. On DM355 all the 
+> 3 modes (DMA,
+> Polled and Interrupt) worked fine. But in interrupt mode, on 
+> DM355, if I set
+> "intr_level = 1", then kernel hangs during booting after printing
+> "spi spi0.0: DaVinci SPI driver in Interrupt mode" on the console.
 
-Grant,
+Sudhakar - 
 
-Govindraj marked in this mail would rebase the patches and post the
-same.
+When you changed the interrupt level, did you also change the
+IORESOURCE_IRQ entry for SPI0?  Maybe we could set the interrupt level
+automatically based on the IORESOURCE_IRQ provided?  The problem is, I
+don't see any way of doing that without a bunch of machine-specific
+ifdefs in the driver.
+ 
+> On DM365 only DMA and Polled mode worked fine. In interrupt 
+> mode, whether I
+> set intr_level to ZERO or ONE, kernel booting hangs, similar to DM355.
 
-Thanks
-Hemanth
+Does the interrupt mode of the existing driver work on DM365?  
+
+I don't have one of these boards, so I can't debug the issue.  If you
+have any ideas where the problem might be I'd appreciate the help in
+getting this resolved.  If the change I mentioned above fixes the issue
+on DM355, then I've got to imagine that it's just a configuration issue
+of some sort on DM365.
+
+> I'll update the status of testing on OMAP-L1x EVMs later.
+> 
+> I am using the Linux kernel from [1] for testing.
+> 
+> [1] 
+> http://git.kernel.org/?p=linux/kernel/git/khilman/linux-davinc
+> i.git;a=summary
 
 
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?
 Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

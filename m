@@ -1,17 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/mpc5121: change annotations for
-	probe and remove functions
-Date: Mon, 5 Jul 2010 11:35:56 -0600
-Message-ID: <AANLkTinE0ZWo6X7WPWpYlMP-rZ1pEabfKSnk5ufprNK7@mail.gmail.com>
-References: <1278325071-28809-1-git-send-email-agust@denx.de>
+From: "Jenn Kennedy (VP, San Diego)" <jennkennedy-YKN35+g/NR460jQDQQQ/sqmn/OTskMXa@public.gmane.org>
+Subject: Tap into this massive buyers list!
+Date: Mon, 05 Jul 2010 17:17:48 -0700
+Message-ID: <E1OVwcS-0006LV-8s@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1278325071-28809-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,100 +17,96 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 5, 2010 at 4:17 AM, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
-> Change annotations from __init/__exit to __devinit/__devexit
-> to get rid of section mismatch warning.
->
-> Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-
-Applied, thank you.
-
-> ---
-> =A0drivers/spi/mpc512x_psc_spi.c | =A0 16 ++++++++--------
-> =A01 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/spi/mpc512x_psc_spi.c b/drivers/spi/mpc512x_psc_spi.c
-> index 2534b1e..c8d69fc 100644
-> --- a/drivers/spi/mpc512x_psc_spi.c
-> +++ b/drivers/spi/mpc512x_psc_spi.c
-> @@ -405,9 +405,9 @@ static irqreturn_t mpc512x_psc_spi_isr(int irq, void =
-*dev_id)
-> =A0}
->
-> =A0/* bus_num is used only for the case dev->platform_data =3D=3D NULL */
-> -static int __init mpc512x_psc_spi_do_probe(struct device *dev, u32 regad=
-dr,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0u32 size, unsigned int irq,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0s16 bus_num)
-> +static int __devinit mpc512x_psc_spi_do_probe(struct device *dev, u32 re=
-gaddr,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 u32 size, unsigned int irq,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 s16 bus_num)
-> =A0{
-> =A0 =A0 =A0 =A0struct fsl_spi_platform_data *pdata =3D dev->platform_data;
-> =A0 =A0 =A0 =A0struct mpc512x_psc_spi *mps;
-> @@ -490,7 +490,7 @@ free_master:
-> =A0 =A0 =A0 =A0return ret;
-> =A0}
->
-> -static int __exit mpc512x_psc_spi_do_remove(struct device *dev)
-> +static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
-> =A0{
-> =A0 =A0 =A0 =A0struct spi_master *master =3D dev_get_drvdata(dev);
-> =A0 =A0 =A0 =A0struct mpc512x_psc_spi *mps =3D spi_master_get_devdata(mas=
-ter);
-> @@ -505,8 +505,8 @@ static int __exit mpc512x_psc_spi_do_remove(struct de=
-vice *dev)
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> -static int __init mpc512x_psc_spi_of_probe(struct of_device *op,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0const struct of_device_id *match)
-> +static int __devinit mpc512x_psc_spi_of_probe(struct of_device *op,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 const struct of_device_id *match)
-> =A0{
-> =A0 =A0 =A0 =A0const u32 *regaddr_p;
-> =A0 =A0 =A0 =A0u64 regaddr64, size64;
-> @@ -537,7 +537,7 @@ static int __init mpc512x_psc_spi_of_probe(struct of_=
-device *op,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0irq_of_par=
-se_and_map(op->dev.of_node, 0), id);
-> =A0}
->
-> -static int __exit mpc512x_psc_spi_of_remove(struct of_device *op)
-> +static int __devexit mpc512x_psc_spi_of_remove(struct of_device *op)
-> =A0{
-> =A0 =A0 =A0 =A0return mpc512x_psc_spi_do_remove(&op->dev);
-> =A0}
-> @@ -551,7 +551,7 @@ MODULE_DEVICE_TABLE(of, mpc512x_psc_spi_of_match);
->
-> =A0static struct of_platform_driver mpc512x_psc_spi_of_driver =3D {
-> =A0 =A0 =A0 =A0.probe =3D mpc512x_psc_spi_of_probe,
-> - =A0 =A0 =A0 .remove =3D __exit_p(mpc512x_psc_spi_of_remove),
-> + =A0 =A0 =A0 .remove =3D __devexit_p(mpc512x_psc_spi_of_remove),
-> =A0 =A0 =A0 =A0.driver =3D {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.name =3D "mpc512x-psc-spi",
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.owner =3D THIS_MODULE,
-> --
-> 1.7.0.4
->
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+SGV5IQoKSeKAmXZlIGJlZW4gc2F5aW5nIGl0IGZvciB5ZWFyc+KApiDigJxIZSBvciBzaGUgd2hv
+IGhhcyB0aGUgbGFyZ2VzdApidXllcnMgbGlzdCB3aWxsIG1ha2UgdGhlIG1vc3QgbW9uZXkgYXMg
+YSByZWFsIGVzdGF0ZSBpbnZlc3Rvci7igJ0KCkFzIHlvdSBrbm93LCBkZWFscyBhcmUgZXZlcnl3
+aGVyZSByaWdodCBub3cuICBUaGV5IGFyZSB2ZXJ5IGVhc3kgCnRvIGZpbmQuCgpUaGUga2V5IGlz
+IGJlaW5nIGFibGUgdG8gc2VsbCB0aGVt4oCmIGFuZCB0byBzZWxsIHRoZW0gcXVpY2tseSBhbmQK
+ZWFzaWx5ISAKClRoaXMgVGh1cnNkYXksIEkgd2lsbCBpbnRyb2R1Y2UgeW91IHRvIGEgZnJpZW5k
+IG9mIG1pbmUgd2hvIGhhcwpzcGVudCB0aGUgbGFzdCB0d28geWVhcnMgY29tcGlsaW5nIGEgbmF0
+aW9ud2lkZSBsaXN0IG9mCmludmVzdG9yLWJ1eWVycyB3aG8gYnV5IGhvdXNlcyB3aXRoIGNhc2gu
+CgpUaGVyZSBhcmUgb3ZlciA5NTAsMDAwIGludmVzdG9yLWJ1eWVycyBvbiB0aGlzIGxpc3TigKYg
+YW5kIHRoZXkgYXJlCmJ1eWluZyBkZWFscyBpbiBhbG1vc3QgZXZlcnkgY291bnR5IG9mIHRoZSBV
+bml0ZWQgU3RhdGVzIQoKRXZlcnkgaW52ZXN0b3ItYnV5ZXIgb24gdGhpcyBsaXN0IGhhcyBib3Vn
+aHQgYXQgbGVhc3QgT05FIGRlYWwgZnJvbQphbm90aGVyIGludmVzdG9yIHdpdGhpbiB0aGUgbGFz
+dCB0d28geWVhcnMhICBBbmQgdGhleSBhcmUgbG9va2luZwpmb3IgbW9yZSBkZWFsc+KApiBZT1VS
+IGRlYWxzIQoKU3RhcnRpbmcgdGhpcyBGcmlkYXksIHlvdSB3aWxsIGJlIGFibGUgdG8gZW1haWwg
+YW55IGRlYWwgeW91IGZpbmQKdG8gdGhpcyBsaXN0IG9mIG92ZXIgOTUwLDAwMCBidXllcnMhCgpU
+aGUgbmFtZSBvZiB0aGUgZ3V5IHdobyBjb21waWxlZCB0aGlzIGxpc3QgaXMsIEpvc2guICAKCkpv
+c2ggc3BlY2lhbGl6ZXMgaW4gZmxpcHBpbmcgc2hvcnQgc2FsZSBhbmQgd2hvbGVzYWxlIGRlYWxz
+LiAgCkhl4oCZcyBkb25lIG92ZXIgNDUwIG9mIHRoZXNlIGRlYWxzIGp1c3QgaW4gdGhlIGxhc3Qg
+ZmV3IHllYXJz4oCmIAplYXJuaW5nIGhpbSBtaWxsaW9ucyBvZiBkb2xsYXJzISAgKEhlIGN1cnJl
+bnRseSBlYXJucyBvdmVyIG9uZSAKbWlsbGlvbiBkb2xsYXJzIHBlciB5ZWFyLikKCkluIGZhY3Qs
+IG9uIGF2ZXJhZ2UsIEpvc2ggaXMgZ2V0dGluZyBwYWlkIG9uIGEgZGVhbCBldmVyeSA0IGRheXPi
+gKYKYW5kIHRoaXMgaXMgYmVjYXVzZSBoZSBoYXMgYSBtYXNzaXZlIGxpc3QhICAoVGhhdCBoZSB3
+aWxsIGFsbG93IAp5b3UgZW1haWwgeW91ciBkZWFscyB0b+KApiB3aXRob3V0IHNwbGl0dGluZyB0
+aGUgcHJvZml0cyB3aXRoIGhpbSEpCgpKb3NoIHRlbGxzIG1lIHRoYXQgb25jZSBoZSBzZW5kcyBh
+IGRlYWwgb3V0IHRvIHRoaXMgaHVnZSBsaXN0LCBpdAp1c3VhbGx5IG9ubHkgdGFrZXMgaGltIGEg
+ZmV3IGhvdXJzIHRvIHNlbGwgaXQuLi5JbWFnaW5lIHNlbmRpbmcgCm9uZSBlbWFpbCB0byB0aGlz
+IGxpc3QsYW5kIDMgaG91cnMgbGF0ZXIgeW91ciBkZWFsIGlzIHNvbGTigKYgYW5kIAp5b3UgaGF2
+ZSBiYWNrLXVwIGJ1eWVycyB0b28hCihUaGF04oCZcyBob3cgaXQgd29ya3MgZm9yIEpvc2jigKYg
+YW5kIG5vdyBpdCBjYW4gd29yayB0aGlzIHdheSAKZm9yIHlvdSwgdG9vISkKCkpvc2ggaXMgYSBw
+cmV0dHkgcXVpZXQgZ3V54oCmIGJ1dCBJJ3ZlIGNvbnZpbmNlZCBKb3NoIHRvIGdldCBvbiBhCndl
+YmluYXIgd2l0aCBtZSB0aGlzIFRodXJzZGF5IHdoZXJlIGhlIHdpbGwgdGVsbCB5b3UgYWxsIGFi
+b3V0IApoaXMgYnV5ZXJzIGxpc3QgYW5kIGhvdyB5b3UgY2FuIGVtYWlsIHlvdXIgZGVhbHMgdG8g
+aXQuIAoKSGUgd2lsbCBhbHNvIHRlYWNoIHlvdSBhYm91dCBoaXMgMzMgZGlzdGluY3QgbWV0aG9k
+cyB0byBmaW5kIApkZWFscy5Nb3N0IGFyZSBubyBtb25leSBkb3duIHRlY2huaXF1ZXMuICAKCkFm
+dGVyIFRodXJzZGF54oCZcyBjYWxsLCB5b3UgY2FuIHN0YXJ0IG91dCBieSB1c2luZyBqdXN0IG9u
+ZSBvciB0d28Kb2YgaGlzIDMzIG1ldGhvZHMgdG8gZmluZCBkZWFsc+KApiBhbmQgZWFjaCB0aW1l
+IHlvdSBmaW5kIG9uZeKApmVtYWlsCnRoYXQgZGVhbCB0byBoaXMgYmVoZW1vdGgsIHJlc3BvbnNp
+dmUgbGlzdOKApiBhbmQgeW91IGNhbiBnZXQgeW91cgpkZWFsIHNvbGQgaW4gYSBtYXR0ZXIgb2Yg
+aG91cnMhCgpIZXJl4oCZcyB3aGF0IGVsc2UgSm9zaCB3aWxsIHNoYXJlIG9uIHRoZSBjYWxs4oCm
+Cgo+ICBFdmVyeSBvbmNlIGluIGEgd2hpbGUsIHlvdSBtYXkgY29tZSBhY3Jvc3MgYSBkZWFsIHRo
+YXQgZG9lcwpyZXF1aXJlIHNvbWUgbW9uZXkgZG93bi4gIFdoZW4geW91IGNvbWUgYWNyb3NzIG9u
+ZSBvZiB0aG9zZSAKZGVhbHPigKZKb3NoIGhhcyBhbm90aGVyIGxpc3QgdGhhdCBoZSBjYWxscyBo
+aXMg4oCcbW9uZXkgcGFydG5lcnPigJ0gCndobyB3aWxsIGxldCB5b3UgdXNlIHRoZWlyIG1vbmV5
+IHRvIGdldCB0aGUgZGVhbCBkb25lLiAgCk9yIHlvdSBjYW4gcGFydG5lciB3aXRoIEpvc2ggb24g
+dGhlc2UgZGVhbHMsIGFuZCBoZeKAmWxsIGZ1bmQgdGhlbQpmb3IgeW91LCBhbmQgc3BsaXQgdGhl
+IHByb2ZpdHMgd2l0aCB5b3UgNTAtNTAuKQoKPiAgSm9zaCB3aWxsIHRlYWNoIHlvdSB3aGF0IGhl
+IGNhbGxzIOKAnDYgc3RlcHMgdG8gJDZLIGluIDE2IGRheXMu4oCdIApUaGlzIGlzIGhvdyBoZSB3
+aG9sZXNhbGVzIGhvdXNlcy4gIEl04oCZcyBzaW1wbGUuSXTigJlzIHN0ZXAtYnktc3RlcC4KQW55
+b25lIGNhbiBkbyB0aGlzIGZyb20gYW55d2hlcmUuICBZb3UgY2FuIGV2ZW4gZG8gdGhpcyBpbiB5
+b3VyCnNwYXJlIHRpbWUsIGlmIHlvdSBoYXZlIGEgZnVsbC10aW1lIGpvYi4gIEFuZCwgb2YgY291
+cnNlLCB0aGUKOTUwLDAwMCBpbnZlc3Rvci1idXllcnMgbGlzdCBMT1ZFIHdob2xlc2FsZSBkZWFs
+cyBhbmQgYnV5IHRoZXNlCmRlYWxzIGZhc3QhICBUaGlzIGlzIHF1aWNrIGFuZCBlYXN5IG1vbmV5
+IGZvciB5b3UuCgo+ICBKb3NoIGhhcyBhbHNvIGRpc2NvdmVyZWQgYSB3YXkgdG8gc2VsbCB5b3Vy
+IGRlYWxzIHRvIOKAnEZIQQpidXllcnPigJ0gd2l0aG91dCBhbnkgc2Vhc29uaW5nIGlzc3Vlcy4g
+SGXigJlsbCB0ZWFjaCB5b3UgYWJvdXQgdGhpcwpvbiB0aGUgd2ViaW5hci4KCj4gIEpvc2ggaXMg
+bm93IGludGVyZXN0ZWQgaW4gZG9pbmcgZGVhbHMgd2l0aCBvdGhlcgppbnZlc3Rvci1wYXJ0bmVy
+cyBhcm91bmQgdGhlIGNvdW50cnkuICBIZeKAmXMgZ290IGEgdmVyeSBjb21wZXRlbnQKc3RhZmYg
+YW5kIHZlcnkgZWZmaWNpZW50IHN5c3RlbXMgaW4gcGxhY2UsdGhhdCBoZSB3aWxsIGFsc28gdGVh
+Y2gKeW91IGFib3V0KeKApiBhbmQgaGUgY2FuIGVhc2lseSBoYW5kbGUgYWRkaXRpb25hbCBkZWFs
+cy4gSm9zaCBjYWxscwp0aGlzIGhpcyDigJxBcHByZW50aWNlIFBhcnRuZXJpbmcgUHJvZ3JhbeKA
+nSBhbmQgaWYgdGhlIHR3byBvZiB5b3UKcGFydG5lciBvbiBhIGRlYWzigKYgeW914oCZbGwgc3Bs
+aXQgaXQgNTAtNTAsIGJ1dCBKb3NoIGFuZCBoaXMgdGVhbSAKZG8gbW9zdCBvZiB0aGUgd29yay4K
+ClNpZ24tdXAgZm9yIG15IHdlYmluYXIgcmlnaHQgbm93IHNvIHlvdSBjYW4gc3RhcnQgZG9pbmcg
+ZGVhbHMgCmxpa2UgSm9zaCAob3Igd2l0aCBoaW0p4oCmIGFuZCBnZXQgYWNjZXNzIHRvIGhpcyBo
+dWdlLCByZXNwb25zaXZlIApsaXN0IG9mIG92ZXIgOTUwLDAwMCBpbnZlc3Rvci1idXllcnMgd2hv
+IGFyZSBidXlpbmcgZGVhbHMgdG9kYXkuICAKTWFueSB0aW1lcyB3aXRoaW4gaG91cnMgYWZ0ZXIg
+dGhlIGRlYWwgaXMgc3VibWl0dGVkIHRvIHRoZSBsaXN0LgoKVGhlIHdlYmluYXIgaXMgdGhpcyBU
+aHVyc2RheS4KCkNsaWNrIGhlcmUgdG8gUmVnaXN0ZXI6IApodHRwczovL3d3dzIuZ290b21lZXRp
+bmcuY29tL3JlZ2lzdGVyLzk1NDE2NDU3MQoKVGhpcyBXZWJpbmFyIHN0YXJ0cyBhdOKApgoKOTow
+MCBwbSBFQVNURVJOIFNUQU5EQVJEIFRJTUUKODowMCBwbSBDRU5UUkFMCjc6MDAgcG0gTU9VTlRB
+SU4KNjowMCBwbSBQQUNJRklDCgoKClRoZSBiZXN0IGFsd2F5cywKCkplbm4gS2VubmVkeQpXZWFs
+dGggU3RyYXRlZ3kgSW5zdGl0dXRlCjUyNjAgQ2hhcG1hbiBTdHJlZXQKU2FuIERpZWdvLCBDQSA5
+MjExMC01Njk0CgoKUC5TLiAgSWYgeW91IGhhdmUgQU5ZIGRlYWxzIHJpZ2h0IG5vdyB0aGF0IHlv
+dSBuZWVkIHRvIHNlbGwsIHRoZW4KZ2V0IG9uIHRoZSB3ZWJpbmFyIHRoaXMgVGh1cnNkYXkuICBC
+ZWNhdXNlIG9uIEZyaWRheSwgeW91IGNhbiAKZW1haWwgeW91ciBkZWFsIChvciBkZWFscykgdG8g
+Sm9zaOKAmXMgbGlzdCBvZiA5NTAsMDAwIGludmVzdG9yIApidXllcnPigKYgYW5kIGhhdmUgdGhl
+bSBzb2xkIGluIGEgbWF0dGVyIG9mIGhvdXJzLiAgCgpQLlAuUy4gIElmIHlvdSBkbyBOT1QgY3Vy
+cmVudGx5IGhhdmUgYW55IGRlYWxzLCB0aGVuIHlvdSBzaG91bGQKYWxzbyBnZXQgb24gdGhlIHdl
+YmluYXIgYmVjYXVzZSBKb3NoIHdpbGwgdGVhY2ggeW91IDMzIHdheXMgdG8gCmZpbmQgZGVhbHMg
+RkFTVC4gIFRoZW4gZWFjaCB0aW1lIHlvdSBmaW5kIGEgZGVhbCwgZW1haWwgaXQgdG8gdGhlCmxp
+c3Qgb2YgOTUwLDAwMOKApiBhbmQgZ2V0IHBhaWQgRkFTVCEgIChPciwgc2ltcGx5IHBhcnRuZXIg
+d2l0aCAKSm9zaCBpZiB5b3Ugd2FudCB0by4pCgpBZ2FpbiwgVGh1cnNkYXnigJlzIHdlYmluYXIg
+c3RhcnRzIGF0IDk6MDAgcG0gRWFzdGVybgpUaW1lLiAgUmVnaXN0ZXIgaGVyZeKApgoKaHR0cHM6
+Ly93d3cyLmdvdG9tZWV0aW5nLmNvbS9yZWdpc3Rlci85NTQxNjQ1NzEKCgpodHRwOi8vYXBwLnN0
+cmVhbXNlbmQuY29tL3ByaXZhdGUvdzREMC9OZVgvYnNJZFc2QS91bnN1YnNjcmliZS8xMjAyNTkx
+MQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5
+IFNwcmludApXaGF0IHdpbGwgeW91IGRvIGZpcnN0IHdpdGggRVZPLCB0aGUgZmlyc3QgNEcgcGhv
+bmU/ClZpc2l0IHNwcmludC5jb20vZmlyc3QgLS0gaHR0cDovL3Auc2YubmV0L3NmdS9zcHJpbnQt
+Y29tLWZpcnN0Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

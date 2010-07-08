@@ -1,122 +1,56 @@
-From: "Sudhakar Rajashekhara" <sudhakar.raj-l0cyMroinI0@public.gmane.org>
-Subject: RE: [spi-devel-general] [PATCH v2 0/1] davinci: spi:replaceexisting
+From: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 0/1] davinci: spi: replace existing
 	driver
-Date: Thu, 8 Jul 2010 09:19:02 +0530
-Message-ID: <46206.9503417753$1278561342@news.gmane.org>
-References: <1278110334-13943-1-git-send-email-bniebuhr@efjohnson.com><002301cb1ce6$64fba3e0$2ef2eba0$@raj@ti.com><BA34378D1528D04CB3C865B8BAB2472B035F78@transmx01.transcrypt.local>
-	<013901cb1dc6$747ab500$5d701f00$@raj@ti.com>
-	<BA34378D1528D04CB3C865B8BAB2472B035FCD@transmx01.transcrypt.local>
+Date: Thu,  8 Jul 2010 14:23:22 -0500
+Message-ID: <1278617003-10295-1-git-send-email-bniebuhr@efjohnson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: "'Brian Niebuhr'" <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>,
-        "'Brian Niebuhr'" <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <BA34378D1528D04CB3C865B8BAB2472B035FCD-mqUZVEcnZosHtCCSzi1I5PfQPhDVBs+grNQQ6b5fDX0@public.gmane.org>
-Content-Language: en-us
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Fixed in this version:
 
-On Wed, Jul 07, 2010 at 22:32:58, Brian Niebuhr wrote:
-> > -----Original Message-----
-> > From: Sudhakar Rajashekhara [mailto:sudhakar.raj-l0cyMroinI0@public.gmane.org] 
-> > Sent: Wednesday, July 07, 2010 6:21 AM
-> > To: Brian Niebuhr; 'Brian Niebuhr'; 
-> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> > Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-> > Subject: Re: [spi-devel-general] [PATCH v2 0/1] davinci: 
-> > spi:replaceexisting driver
-> > 
-> > Hi Brian,
-> > 
-> > On Tue, Jul 06, 2010 at 19:45:56, Brian Niebuhr wrote:
-> > > > On Sat, Jul 03, 2010 at 04:08:53, Brian Niebuhr wrote:
-> > > > > I have included all of the recommended changes in this 
-> > 
-> > [...]
-> > 
-> > > > 
-> > > > Quick update.
-> > > > 
-> > > > I tested this patch on DM355 and DM365 EVMs. On DM355 all the 
-> > > > 3 modes (DMA,
-> > > > Polled and Interrupt) worked fine. But in interrupt mode, on 
-> > > > DM355, if I set
-> > > > "intr_level = 1", then kernel hangs during booting after printing
-> > > > "spi spi0.0: DaVinci SPI driver in Interrupt mode" on the console.
-> > > 
-> > > Sudhakar - 
-> > > 
-> > > When you changed the interrupt level, did you also change the
-> > > IORESOURCE_IRQ entry for SPI0?  Maybe we could set the 
-> > interrupt level
-> > > automatically based on the IORESOURCE_IRQ provided?
-> > 
-> > IORESOURCE_IRQ entry for dm365 were already present in dm365.c.
-> 
-> 
-> I should have been more clear: The intr_level setting chooses which IRQ
-> is used to signal events.  If you change intr_level to 1 then you also
-> need to change the IRQ that is provided as a resource to the driver to
-> match.  On DM355 intr_level=0 corresponds to SPINT0_0 (42) and
-> intr_level=1 corresponds to SPINT0_1 (43).
-> 
-> 
-> > >  
-> > > > On DM365 only DMA and Polled mode worked fine. In interrupt 
-> > > > mode, whether I
-> > > > set intr_level to ZERO or ONE, kernel booting hangs, 
-> > similar to DM355.
-> > > 
-> > > Does the interrupt mode of the existing driver work on DM365?  
-> > > 
-> > 
-> > AFAIK, support for interrupt mode was not present in the 
-> > earlier driver
-> > by Sandeep Paulraj.
-> > 
-> > > I don't have one of these boards, so I can't debug the 
-> > issue.  If you
-> > > have any ideas where the problem might be I'd appreciate the help in
-> > > getting this resolved.
-> > 
-> > As I mentioned in my earlier e-mail, on DM365 kernel booting 
-> > hangs after
-> > Printing "spi spi0.0: DaVinci SPI driver in Interrupt mode" 
-> > on the console.
-> > Control is in spi_sync() function waiting for completion.
-> 
-> 
-> I've got an idea what the problem is:  When I was writing the driver I
-> was looking at the DM355 for as an example of the "version 1" SPI
-> controller.  The DM355 doesn't have a TX interrupt, so I thought that
-> was a feature of the "version 1" controller.  However, DM365 does have a
-> TX interrupt, even though it has a "version 1" controller.  The
-> interrupt handler in the driver changes its processing based on whether
-> it is a "version 1" or "version 2" device, but obviously that's not
-> quite correct.
-> 
-> Could you try one experiment for me on the DM365 board?  Could you
-> change SPIINT_MASKINT to 0x0000015Fu and retest on the DM365 only?  This
-> should make it behave like the DM355.  If that fixes the problem, then
-> at least I know where the problem is.  I don't have a good idea how to
-> solve it yet, though. 
-> 
+- Got rid of the incorrect IORESOURCE flags.  DMA resources are now
+  selected by index.
 
-Bingo. With the modification you suggested above, interrupt mode worked fine
-on DM365.
+- Added a third SPI controller version to differentiate the version on
+  DM355 with no Tx interrupt and the version on DM365 and DM6467 with a
+  Tx interrupt.  This should fix the interrupt-mode issues on DM365.
 
-Thanks,
-Sudhakar
+** NOTE **
+
+This patch requires the EDMA patch at:
+
+http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2010-March/018022.html
+
+which is queued waiting on another driver fix, for DMA mode to work correctly.
+
+
+Brian Niebuhr (1):
+  davinci: spi: replace existing driver
+
+ arch/arm/mach-davinci/board-dm355-evm.c     |   10 +
+ arch/arm/mach-davinci/board-dm355-leopard.c |   10 +
+ arch/arm/mach-davinci/board-dm365-evm.c     |   10 +
+ arch/arm/mach-davinci/dm355.c               |    8 +-
+ arch/arm/mach-davinci/dm365.c               |    6 -
+ arch/arm/mach-davinci/include/mach/spi.h    |   35 +-
+ drivers/spi/davinci_spi.c                   | 1329 ++++++++++++---------------
+ 7 files changed, 640 insertions(+), 768 deletions(-)
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

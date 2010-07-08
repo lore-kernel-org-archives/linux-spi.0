@@ -1,18 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v3 1/1] davinci: spi: replace
-	existing driver
-Date: Thu, 8 Jul 2010 13:34:02 -0600
-Message-ID: <AANLkTil95LqvKmYP50i8XPQM20HcedZOtWAtPWUIeJ8N@mail.gmail.com>
-References: <1278617003-10295-1-git-send-email-bniebuhr@efjohnson.com>
-	<1278617003-10295-2-git-send-email-bniebuhr@efjohnson.com>
+From: "Jenn Kennedy (VP, San Diego)" <jennkennedy-YKN35+g/NR460jQDQQQ/sqmn/OTskMXa@public.gmane.org>
+Subject: Tonight's the night!!
+Date: Thu, 08 Jul 2010 13:10:00 -0700
+Message-ID: <E1OWyTc-0005w2-7W@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1278617003-10295-2-git-send-email-bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,25 +17,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 8, 2010 at 1:23 PM, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> INTRODUCTION
->
-> I have been working on a custom OMAP-L138 board that has multiple spi
-> devices (seven) on one controller. =A0These devices have a wide range of
-> transfer parameters (speed, phase, polarity, internal and gpio chip
-> selects). =A0During my testing I found multiple errors in the davinci spi
-> driver as a result of this complex setup. =A0The primary issues were:
-
-Nack.  Sorry for being abrupt, but the patch still is full of
-unrelated whitespace changes (tabs converted to spaces) which makes
-the patch very difficult to review.  This needs to be fixed.
-
-Let me know if you need help with how to do this.
-
-g.
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+SGV5LCAKCkl0IGhhcHBlbnMgdG9uaWdodCBhdCA5OjAwIFBNIEVhc3Rlcm4uIEkgd2lsbCBiZSBl
+eHBvc2luZwpob3cgeW91IGNhbiB1c2UgSm9zaCdzIE1BU1NJVkUgbGlzdCBvZiBvdmVyIDk1MCww
+MDAgSW52ZXN0b3JzIAphbmQgQnV5ZXJzIHdobyBhcmUgYnV5aW5nIGRlYWxzIHRvZGF5LiBBcyBl
+YXJseSBhcyB0b21vcnJvdywgCnlvdSBjYW4gc3RhcnQgb3V0IGJ5IHVzaW5nIGp1c3Qgb25lIG9y
+IHR3byBvZiBKb3NoJ3MgMzMgbWV0aG9kcyAKdG8gZmluZCBkZWFsc+KApiBhbmQgZWFjaCB0aW1l
+IHlvdSBmaW5kIG9uZSwgZW1haWwgdGhhdCBkZWFsIHRvIGhpcyAKQmVoZW1vdGgsIFJlc3BvbnNp
+dmUgTGlzdOKApiBhbmQgeW91IGNhbiBnZXQgeW91cgpkZWFsIHNvbGQgaW4gYSBtYXR0ZXIgb2Yg
+aG91cnMhIAoKR290IERlYWxzPyBTZWxsIHRoZW0uLi4gdG9tb3Jyb3chIFlvdSBORUVEIHRvIGJl
+IG9uIHRoaXMgY2FsbC4gIAoKPj5DTElDSyBIRVJFIFRPIFJFR0lTVEVSIEZPUiBUSEUgTElWRSBU
+UkFJTklORyBUT05JR0hUPDwKaHR0cHM6Ly93d3cyLmdvdG9tZWV0aW5nLmNvbS9yZWdpc3Rlci85
+NTQxNjQ1NzEKCgoKSm9zaCB3aWxsIGFsc28gc2hhcmUgd2l0aCB5b3UgaG93IGhlIGNhbiBob2xk
+IHlvdXIgaGFuZCBhbmQgClBhcnRuZXIgV0lUSCB5b3UsIGRvIG1vc3Qgb2YgdGhlIHdvcmsgYW5k
+IGF0IHRoZSBlbmQgb2YgdGhlIGRheQpoZSdsbCBwYXkgeW91IDUwJSBvZiB0aGUgcHJvZml0cyBv
+biBlYWNoIGFuZCBldmVyeSBkZWFsIHlvdSBkbyAKdG9nZXRoZXIuIE5vdCBhIHNtYWxsIHBlcmNl
+bnRhZ2UsIG1pbnVzIGZlZXMuIEhlIG1lYW5zIDUwLzUwLCAKcmlnaHQgZG93biB0aGUgbWlkZGxl
+ISBKb3NoIGFuZCBoaXMgdGVhbSBjbG9zZSBvdmVyIDc2JSBvZiB0aGVpciAKZGVhbHMgdXNpbmcg
+dGhlaXIgQXBwcmVudGljZSBQYXJ0bmVyc2hpcC4gTm8gam9rZS4KCklmIHlvdSB3YW50IHRvIGlu
+dmVzdCBpbiByZWFsIGVzdGF0ZSwgYnV0IGZlZWwgeW91IGRvbid0IGhhdmUgdGhlCmNhcGl0YWws
+IHRpbWUgb3IgZXhwZXJpZW5jZSwgeW91IG5lZWQgdG8gYmUgaGVyZToKCj4+Q0xJQ0sgSEVSRSBU
+TyBSRUdJU1RFUiBGT1IgVEhFIExJVkUgVFJBSU5JTkcgVE9OSUdIVDw8Cmh0dHBzOi8vd3d3Mi5n
+b3RvbWVldGluZy5jb20vcmVnaXN0ZXIvOTU0MTY0NTcxCgoKCllvdSBkb27igJl0IGhhdmUgdG8g
+cXVpdCB5b3VyIGpvYiB0byBkbyB0aGlzLiBFdmVuIGlmIHlvdSBvbmx5IApoYXZlIDEtMiBob3Vy
+cyBwZXIgd2VlaywgeW91IGNhbiBzdGlsbCBkbyB0aGlzIHN1Y2Nlc3NmdWxseS4gCgpPbiBhIHBl
+cnNvbmFsIG5vdGUsIEpvc2ggaXMgb25lIG9mIHRoZSBtb3N0IHN1Y2Nlc3NmdWwgaW52ZXN0b3Jz
+IApJJ3ZlIGV2ZXIgbWV0LiBBbmQgSSd2ZSBtZXQgcXVpdGUgYSBmZXcuLi4gaW4gdGhlIGxhc3Qg
+NiB5ZWFycyAKYWxvbmUsIGhlIGhhcyBkb25lIG92ZXIgNTAwIGRlYWxzLiBGaXZlIEh1bmRyZWQg
+RGVhbHMuIAoKV2hlbiBJIGNhbGN1bGF0ZWQgdGhlIG51bWJlciBvZiBkZWFscyBoZSBoYXMgY2xv
+c2VkLCBpdCBjb21lcyAKZG93biB0byBoaW0gc2VsbGluZyBhbmQgY2xvc2luZyBldmVyeSA0LjIg
+ZGF5cyBmb3IgdGhlIHBhc3QgCnNpeCB5ZWFycy4gVGhhdCBhbG9uZSBpcyBpbmNyZWRpYmx5IGlt
+cHJlc3NpdmUhIEkgZG9uJ3Qga25vdyAKYW55b25lIGVsc2Ugd2hvIGNhbiBtYWtlIHRoYXQgY2xh
+aW0hCgo+PkNMSUNLIEhFUkUgVE8gUkVHSVNURVIgRk9SIFRIRSBMSVZFIFRSQUlOSU5HIFRPTklH
+SFQ8PApodHRwczovL3d3dzIuZ290b21lZXRpbmcuY29tL3JlZ2lzdGVyLzk1NDE2NDU3MQoKU2Vl
+IHlvdSB0b25pZ2h0LCAKCkplbm4gS2VubmVkeQpXZWFsdGggU3RyYXRlZ3kgSW5zdGl0dXRlCjUy
+NjAgQ2hhcG1hbiBTdHJlZXQKU2FuIERpZWdvLCBDQSA5MjExMC01Njk0CgoKUC5TLiAKVGhpcyBX
+ZWJpbmFyIHN0YXJ0cyBhdOKApgoKOTowMCBwbSBFQVNURVJOIFNUQU5EQVJEIFRJTUUKODowMCBw
+bSBDRU5UUkFMCjc6MDAgcG0gTU9VTlRBSU4KNjowMCBwbSBQQUNJRklDCgoKPj5DTElDSyBIRVJF
+IFRPIFJFR0lTVEVSIEZPUiBUSEUgTElWRSBUUkFJTklORyBUT05JR0hUPDwKaHR0cHM6Ly93d3cy
+LmdvdG9tZWV0aW5nLmNvbS9yZWdpc3Rlci85NTQxNjQ1NzEKCgpodHRwOi8vYXBwLnN0cmVhbXNl
+bmQuY29tL3ByaXZhdGUvdzREMC9OZVgvYnNJZFc2QS91bnN1YnNjcmliZS8xMjEwMDk2MQotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFNwcmlu
+dApXaGF0IHdpbGwgeW91IGRvIGZpcnN0IHdpdGggRVZPLCB0aGUgZmlyc3QgNEcgcGhvbmU/ClZp
+c2l0IHNwcmludC5jb20vZmlyc3QgLS0gaHR0cDovL3Auc2YubmV0L3NmdS9zcHJpbnQtY29tLWZp
+cnN0Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

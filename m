@@ -1,13 +1,21 @@
-From: "Jenn Kennedy (VP, San Diego)" <jennkennedy-YKN35+g/NR460jQDQQQ/sqmn/OTskMXa@public.gmane.org>
-Subject: This REI 'robot' works FOR you and sells your
-	deals
-Date: Wed, 07 Jul 2010 15:18:48 -0700
-Message-ID: <E1OWdzs-0006KB-FO@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Sudhakar Rajashekhara" <sudhakar.raj-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v2 0/1] davinci: spi:replaceexisting
+	driver
+Date: Thu, 8 Jul 2010 09:19:02 +0530
+Message-ID: <38166.174470871$1278561297@news.gmane.org>
+References: <1278110334-13943-1-git-send-email-bniebuhr@efjohnson.com><002301cb1ce6$64fba3e0$2ef2eba0$@raj@ti.com><BA34378D1528D04CB3C865B8BAB2472B035F78@transmx01.transcrypt.local>
+	<013901cb1dc6$747ab500$5d701f00$@raj@ti.com>
+	<BA34378D1528D04CB3C865B8BAB2472B035FCD@transmx01.transcrypt.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+To: "'Brian Niebuhr'" <BNiebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>,
+	"'Brian Niebuhr'" <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <BA34378D1528D04CB3C865B8BAB2472B035FCD-mqUZVEcnZosHtCCSzi1I5PfQPhDVBs+grNQQ6b5fDX0@public.gmane.org>
+Content-Language: en-us
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,86 +26,104 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGV5IHRoZXJlISAKCgoKVGhlcmXigJlzIGEgbmV3IFJFSSDigJxyb2JvdOKAnSBzeXN0ZW0gb3V0
-4oCmIGFuZCB1c2luZyBpdCBpcyBqdXN0IGxpa2UKCmhhdmluZyBhIHBlcnNvbmFsIGVtcGxveWVl
-IHRoYXQgZG9lcyBhbGwgeW91ciByZWFsIGVzdGF0ZSDigJxidXN5Cgp3b3Jr4oCdIGZvciB5b3Uh
-CgogCgpFeGNlcHQgdGhpcyDigJxlbXBsb3llZeKAnSBuZXZlciBjb21wbGFpbnPigKYgbmV2ZXIg
-bWFrZXMgbWlzdGFrZXPigKYgCm5ldmVyIGFza3MgZm9yIGEgcmFpc2XigKYgYW5kIG5ldmVyIHRh
-a2VzIHRpbWUgb2ZmIQoKIAoKSXQgZXZlbiBzZWxscyB5b3VyIGRlYWxzIGZvciB5b3UhICAoU2Vl
-IGJ1bGxldCAjOSBiZWxvdy4gIERvbuKAmXQKCm1pc3MgdGhlIFAuUy4gZWl0aGVyISkKCiAKCkFu
-ZCBiZXN0IG9mIGFsbCwgdGhpcyBlbXBsb3llZSB3b3JrcyBjaGVhcOKApiBESVJUIENIRUFQIQoK
-IAoKSGVyZSBhcmUganVzdCBzb21lIG9mIHRoZSB0aW1lLSBhbmQgbW9uZXktc2F2aW5nIHRhc2tz
-IHRoaXMKCuKAnGVtcGxveWVlIHJvYm904oCdIGRvZXMgZm9yIHlvdeKApgoKIAoKMS4gQXV0b21h
-dGljYWxseSBjcmVhdGVzIHRoZSBmb3JtcyB5b3UgbmVlZCwgZmlsbHMgdGhlbSBvdXQgZm9yCgp5
-b3UsIGFuZCBzdWJtaXRzIHRoZW0gZm9yIHlvdSBlbGVjdHJvbmljYWxseSAoZ2l2aW5nIHlvdSBh
-IHRydWUKCuKAnHBhcGVybGVzc+KAnSBvZmZpY2UpLgoKIAoKMi4gU2VuZHMgYW5kIHJlY2VpdmVz
-IGRvY3VtZW50cyBmcm9tIGZheCBudW1iZXJzIGZvciB5b3Ugc28gCnlvdeKAmWxsIG5ldmVyIG5l
-ZWQgYSBmYXggbWFjaGluZSBhZ2Fpbi4KCiAKCjMuIFVwZGF0ZXMgdGhlIFJlYWx0b3IsIG1vcnRn
-YWdlIGJyb2tlciwgYW5kIGhvbWVvd25lciB3aXRoIHRoZQoKc3RhdHVzIG9mIHRoZSBkZWFsIGZv
-ciB5b3UuICBMZXNzIHRpbWUgb24gdGhlIHBob25lIG1lYW5zIG1vcmUgCnRpbWUgdG8gZG8gZGVh
-bHMgKGFuZCBtYWtlIG1vcmUgbW9uZXkpLgoKIAoKNC4gUHVsbHMgZGF0YSBvbiBjb21wYXJhYmxl
-IHByb3BlcnRpZXMgbmV4dCB0byB5b3VycyBhbmQKCmF1dG9tYXRpY2FsbHkgZ2VuZXJhdGVzIHRo
-ZSBjb21wIHJlcG9ydCBmb3IgeW91LgoKIAoKNS4gRmlsdGVycyBkZWFscyBmb3IgeW91IGJ5IHRl
-bGxpbmcgeW91IHdoaWNoIGRlYWxzIHRvIGRvIGFuZCAKd2hpY2ggdG8gZHVtcOKApiBhbmQganVz
-dCBob3cgbXVjaCBwcm9maXQgeW91IGNhbiBleHBlY3QgdG8gbWFrZSEKCiAKCjYuIENyZWF0ZXMg
-YSA5MCUgYWNjdXJhdGUgcHJvZmVzc2lvbmFsIHJlcGFpciBlc3RpbWF0ZSBmb3IgeW91ICYKCmtl
-ZXBzIHRyYWNrIG9mIHRoZSBwcm9qZWN0IHN0YXR1cyAodGhpcyBpcyBhbiBhYnNvbHV0ZSBtdXN0
-LWhhdmUgCmlmIHlvdSBhcmUgcmVoYWJiaW5nIHByb3BlcnRpZXMpLgoKIAoKNy4gVHJhY2tzIGV4
-cGVuc2VzIGZvciB5b3UgYW5kIGF1dG9tYXRpY2FsbHkg4oCcc3luY3PigJ0gd2l0aCB5b3VyCgpm
-YXZvcml0ZSBhY2NvdW50aW5nIHNvZnR3YXJlKHRoaXMgaXMgYSBodWdlIHRpbWUtc2F2ZXIgaWYg
-eW91IGFyZQoKZG9pbmcgbW9yZSB0aGFuIG9uZSBkZWFsIHBlciBtb250aCkuCgogCgo4LiBMZWFk
-cyB5b3UsIHN0ZXAtYnktc3RlcCwgdGhyb3VnaCB0aGUgc2VsbGluZyBwcm9jZXNzIHNvIHlvdSAK
-bmV2ZXIgbWFrZSBhIG1pcy1zdGVwIG9yIGdldCBzdHVjayBvbiB3aGF0IHRvIGRvIG5leHQhCgog
-Cgo5LiBBbmQgbGFzdCwgYnV0IG5vdCBsZWFzdOKApiBTdWJtaXRzIHlvdXIgcHJvcGVydGllcyAo
-d2l0aCBqdXN0IAp0aGUgcHVzaCBvZiBhIGJ1dHRvbikgdG8gYSBjYXNoIGJ1eWVyIG5ldHdvcmsg
-b2Ygb3ZlciA5NTAsMDAwIApxdWFsaWZpZWQgaW52ZXN0b3ItYnV5ZXJzIHdobyBhcmUgSFVOR1JZ
-IGFuZCByZWFkeSB0byBidXkgeW91ciAKZGVhbHMgTk9XIChzZWxsaW5nIGEgaG91c2UgaW4gMiB0
-byAzIGhvdXJzIHRoaXMgd2F5IGlzIG5vdCAKdW5jb21tb24pIQoKIAoKQnV0IHRoZSBiZXN0IHBh
-cnQgaXMsIGFsbCB5b3UgaGF2ZSB0byBkbyBpcyBnZXQgb24gbXkgd2ViaW5hciAKd2l0aCBzdXBl
-cnN0YXIgcmVhbCBlc3RhdGUgaW52ZXN0b3IgSm9zaOKApiBhbmQgaGUgd2lsbCB0ZWxsIHlvdSAK
-aG93IHlvdSBleGFjdGx5IGhvdyB5b3UgY2FuIGdldCB0aGlzIOKAnGVtcGxveWVlIHJvYm904oCd
-IHRvIHdvcmsgCmZvciB5b3XigKYgZm9yIEZSRUUhCgogCgpKb2luIG1lLCB0aGlzIFRIVVJTREFZ
-LCBKdWx5IDgsIDIwMTAgYnkgY2xpY2tpbmcgaGVyZTogCgpodHRwczovL3d3dzIuZ290b21lZXRp
-bmcuY29tL3JlZ2lzdGVyLzk1NDE2NDU3MQoKOTowMCBwbSBFYXN0ZXJuIFRpbWUgICAKCjg6MDAg
-cG0gQ2VudHJhbCAgIAoKNzowMCBwbSBNb3VudGFpbiAgIAoKNjowMCBwbSBQYWNpZmljCgoKCkpv
-c2ggd2lsbCBzaG93IHlvdSBob3cgdG8gbWFrZSB5b3VyIGludmVzdGluZyBjYXJlZXIgCgooYW5k
-IHlvdXIgbGlmZSkgU08gbXVjaCBlYXNpZXIuCgogCgpKZW5uIEtlbm5lZHkKCldlYWx0aCBTdHJh
-dGVneSBJbnN0aXR1dGUKCjUyNjAgQ2hhcG1hbiBTdHJlZXQKClNhbiBEaWVnbywgQ0EgOTIxMTAt
-NTY5NAoKIAoKUFMgLUhlcmXigJlzIHdoYXQgZWxzZSBKb3NoIHdpbGwgdGFsayBhYm91dCBkdXJp
-bmcgdGhlIHdlYmluYXIKCnRoaXMgVGh1cnNkYXnigKYgCgogCgo+ICBFdmVyeSBvbmNlIGluIGEg
-d2hpbGUsIHlvdSBtYXkgY29tZSBhY3Jvc3MgYSBkZWFsIHRoYXQgZG9lcwoKcmVxdWlyZSBzb21l
-IG1vbmV5IGRvd24gKG1vc3Qgd2lsbCBub3QgaWYgeW91IGZvbGxvdyBKb3No4oCZcwoKc3lzdGVt
-KS4gV2hlbiB5b3UgY29tZSBhY3Jvc3Mgb25lIG9mIHRob3NlIGRlYWxz4oCmIEpvc2ggaGFzIGEg
-bGlzdAoKdGhhdCBoZSBjYWxscyBoaXMg4oCcbW9uZXkgcGFydG5lcnMgbGlzdOKAnSB3aG8gd2ls
-bCBsZXQgeW91IHVzZSAKCnRoZWlyIG1vbmV5IHRvIGdldCB0aGUgZGVhbCBkb25lLiAgKE9yIHlv
-dSBjYW4gcGFydG5lciB3aXRoIEpvc2ggCgpvbiB0aGVzZSBkZWFscywgYW5kIGhl4oCZbGwgZG8g
-dGhlIGxvc3MgbWl0aWdhdGlvbiBmb3IgeW91LCBmdW5kIAoKdGhlIGRlYWwgZm9yIHlvdSwgYW5k
-IHNwbGl0IHRoZSBwcm9maXRzIHdpdGggeW91IDUwLTUwLikKCiAKCj4gIEpvc2ggaGFzIGFsc28g
-cGVyZmVjdGVkIGEgbWV0aG9kIHRoYXQgYWxsb3dzIHlvdSB0byBzZWxsIHlvdXIKCnNob3J0IHNh
-bGUgZGVhbHMgdG8g4oCcRkhBIGJ1eWVyc+KAnSB3aXRob3V0IGFueSBzZWFzb25pbmcgaXNzdWVz
-LiAKCkhl4oCZbGwgdGVhY2ggeW91IGFib3V0IHRoaXMgb24gdGhlIHdlYmluYXIuCgogCgo+ICBK
-b3NoIGlzIG5vdyBpbnRlcmVzdGVkIGluIGRvaW5nIHdob2xlc2FsZSBkZWFscyBhbmQgc2hvcnQg
-c2FsZQoKZGVhbHMgd2l0aCBvdGhlciBpbnZlc3Rvci1wYXJ0bmVycyBhcm91bmQgdGhlIGNvdW50
-cnkuIEhl4oCZcyBnb3QgYQoKdmVyeSBjb21wZXRlbnQgc3RhZmYgYW5kIHZlcnkgZWZmaWNpZW50
-IHN5c3RlbXMgaW4gcGxhY2UgKHRoYXQgaGUKCndpbGwgYWxzbyB0ZWFjaCB5b3UgYWJvdXQp4oCm
-IGFuZCBoZSBjYW4gZWFzaWx5IGhhbmRsZSBhZGRpdGlvbmFsCgpkZWFscy4gSm9zaCBjYWxscyB0
-aGlzIGhpcyDigJxBcHByZW50aWNlIFBhcnRuZXJpbmcgUHJvZ3JhbeKAnSBhbmQgaWYKCnRoZSB0
-d28gb2YgeW91IHBhcnRuZXIgb24gYSBkZWFs4oCmIHlvdeKAmWxsIHNwbGl0IGl0IDUwLTUwLCBi
-dXQgSm9zaAoKYW5kIGhpcyB0ZWFtIHdpbGwgZG8gbW9zdCBvZiB0aGUgd29yay4KCiAKClNpZ24t
-dXAgZm9yIG15IHdlYmluYXIgcmlnaHQgbm93IHNvIHlvdSBjYW4gc3RhcnQgZG9pbmcgZGVhbHMg
-YXMKCnF1aWNrbHkgYW5kIGVhc2lseSBhcyBKb3No4oCmYW5kIGdldCBhY2Nlc3MgdG8gaGlzIGh1
-Z2UsIHJlc3BvbnNpdmUKCmxpc3Qgb2Ygb3ZlciA5NTAsMDAwIGludmVzdG9yLWJ1eWVycyB3aG8g
-YXJlIGJ1eWluZyBkZWFscyB0b2RheS4gCgpNYW55IHRpbWVzIHdpdGhpbiBob3VycyBhZnRlciB0
-aGUgZGVhbCBpcyBzdWJtaXR0ZWQgdG8gdGhlIGxpc3QuCgogCgpBZ2FpbiwgdGhlIHdlYmluYXIg
-aXMgb27igKYgVGh1cnNkYXksIEp1bHkgOHRoIGF04oCmCgo5OjAwIHBtIEVhc3Rlcm4gVGltZSAg
-IAoKODowMCBwbSBDZW50cmFsICAgCgo3OjAwIHBtIE1vdW50YWluICAgCgo2OjAwIHBtIFBhY2lm
-aWMKCiAKClJlZ2lzdGVyIGhlcmXigKYuCgpodHRwczovL3d3dzIuZ290b21lZXRpbmcuY29tL3Jl
-Z2lzdGVyLzk1NDE2NDU3MQoKCmh0dHA6Ly9hcHAuc3RyZWFtc2VuZC5jb20vcHJpdmF0ZS93NEQw
-L05lWC9ic0lkVzZBL3Vuc3Vic2NyaWJlLzEyMDc4NjUxCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpU
-aGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgU3ByaW50CldoYXQgd2lsbCB5b3UgZG8g
-Zmlyc3Qgd2l0aCBFVk8sIHRoZSBmaXJzdCA0RyBwaG9uZT8KVmlzaXQgc3ByaW50LmNvbS9maXJz
-dCAtLSBodHRwOi8vcC5zZi5uZXQvc2Z1L3NwcmludC1jb20tZmlyc3QKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi,
+
+On Wed, Jul 07, 2010 at 22:32:58, Brian Niebuhr wrote:
+> > -----Original Message-----
+> > From: Sudhakar Rajashekhara [mailto:sudhakar.raj-l0cyMroinI0@public.gmane.org] 
+> > Sent: Wednesday, July 07, 2010 6:21 AM
+> > To: Brian Niebuhr; 'Brian Niebuhr'; 
+> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+> > Subject: Re: [spi-devel-general] [PATCH v2 0/1] davinci: 
+> > spi:replaceexisting driver
+> > 
+> > Hi Brian,
+> > 
+> > On Tue, Jul 06, 2010 at 19:45:56, Brian Niebuhr wrote:
+> > > > On Sat, Jul 03, 2010 at 04:08:53, Brian Niebuhr wrote:
+> > > > > I have included all of the recommended changes in this 
+> > 
+> > [...]
+> > 
+> > > > 
+> > > > Quick update.
+> > > > 
+> > > > I tested this patch on DM355 and DM365 EVMs. On DM355 all the 
+> > > > 3 modes (DMA,
+> > > > Polled and Interrupt) worked fine. But in interrupt mode, on 
+> > > > DM355, if I set
+> > > > "intr_level = 1", then kernel hangs during booting after printing
+> > > > "spi spi0.0: DaVinci SPI driver in Interrupt mode" on the console.
+> > > 
+> > > Sudhakar - 
+> > > 
+> > > When you changed the interrupt level, did you also change the
+> > > IORESOURCE_IRQ entry for SPI0?  Maybe we could set the 
+> > interrupt level
+> > > automatically based on the IORESOURCE_IRQ provided?
+> > 
+> > IORESOURCE_IRQ entry for dm365 were already present in dm365.c.
+> 
+> 
+> I should have been more clear: The intr_level setting chooses which IRQ
+> is used to signal events.  If you change intr_level to 1 then you also
+> need to change the IRQ that is provided as a resource to the driver to
+> match.  On DM355 intr_level=0 corresponds to SPINT0_0 (42) and
+> intr_level=1 corresponds to SPINT0_1 (43).
+> 
+> 
+> > >  
+> > > > On DM365 only DMA and Polled mode worked fine. In interrupt 
+> > > > mode, whether I
+> > > > set intr_level to ZERO or ONE, kernel booting hangs, 
+> > similar to DM355.
+> > > 
+> > > Does the interrupt mode of the existing driver work on DM365?  
+> > > 
+> > 
+> > AFAIK, support for interrupt mode was not present in the 
+> > earlier driver
+> > by Sandeep Paulraj.
+> > 
+> > > I don't have one of these boards, so I can't debug the 
+> > issue.  If you
+> > > have any ideas where the problem might be I'd appreciate the help in
+> > > getting this resolved.
+> > 
+> > As I mentioned in my earlier e-mail, on DM365 kernel booting 
+> > hangs after
+> > Printing "spi spi0.0: DaVinci SPI driver in Interrupt mode" 
+> > on the console.
+> > Control is in spi_sync() function waiting for completion.
+> 
+> 
+> I've got an idea what the problem is:  When I was writing the driver I
+> was looking at the DM355 for as an example of the "version 1" SPI
+> controller.  The DM355 doesn't have a TX interrupt, so I thought that
+> was a feature of the "version 1" controller.  However, DM365 does have a
+> TX interrupt, even though it has a "version 1" controller.  The
+> interrupt handler in the driver changes its processing based on whether
+> it is a "version 1" or "version 2" device, but obviously that's not
+> quite correct.
+> 
+> Could you try one experiment for me on the DM365 board?  Could you
+> change SPIINT_MASKINT to 0x0000015Fu and retest on the DM365 only?  This
+> should make it behave like the DM355.  If that fixes the problem, then
+> at least I know where the problem is.  I don't have a good idea how to
+> solve it yet, though. 
+> 
+
+Bingo. With the modification you suggested above, interrupt mode worked fine
+on DM365.
+
+Thanks,
+Sudhakar
+
+
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

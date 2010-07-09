@@ -1,11 +1,10 @@
-From: "Baumer, Vanessa" <vanessa-3F4H3t6TLQZiCbKXbTv9yWb8qiTeHX/p@public.gmane.org>
-Subject: =?utf-8?q?Don=E2=80=99t_Miss_the_Saturday_Cal?=
- =?utf-8?q?l_about_Business_Credit?=
-Date: Fri, 09 Jul 2010 07:16:59 -0700
-Message-ID: <E1OXEhO-0003yg-Rj@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Kim, Heung Jun" <riverful-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: what repo can I base patch works?
+Date: Sat, 10 Jul 2010 00:15:54 +0900
+Message-ID: <AANLkTineorwtg3hSlb8-9-LlQpdMXLujNt0JhxG_p-N5@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,54 +17,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGV5LAoKSSBISUdITFkgcmVjb21tZW5kIHlvdSBhdHRlbmQgYSBSQVJFIFNhdHVyZGF5IHRyYWlu
-aW5nIHdlYmluYXIgdG8gCmxlYXJuIGhvdyB5b3UgY2FuIHF1aWNrbHkgZ2V0ICQzMDAsMDAwIGlu
-IG5ldyBidXNpbmVzcyBjcmVkaXQgCnRoYXQgY2FuIGJlIHVzZWQgZm9yIEFOWSBwdXJwb3NlLgoK
-VGhpcyBpcyBSRUFMIE1PTkVZIGluIHRoZSBmb3JtIG9mOgoK74OeCUZpeGVkIHJhdGUsIGZpeGVk
-IHRlcm0gbG9hbnMgdG8geW91ciBidXNpbmVzcwoK74OeCSoqQnVzaW5lc3MgTGluZXMgb2YgQ3Jl
-ZGl0IHdpdGggY2hlY2sgd3JpdGluZyBwcml2aWxlZ2VzIQoK74OeCVNtYWxsIGJ1c2luZXNzIGNy
-ZWRpdCBjYXJkcyB0aGF0IGRvbuKAmXQgcmVwb3J0IGFueSBiYWxhbmNlIApvbiB5b3VyIHBlcnNv
-bmFsIGNyZWRpdCB3aGVuIHlvdSB1c2UgdGhlbQoKVGhpcyDigJxuby1icmFpbmVy4oCdIHdlYmlu
-YXIgaXMgaG9zdGVkIGJ5IG5hdGlvbmFsIGJ1c2luZXNzIGNyZWRpdCAKZXhwZXJ0IChmcm9tIENC
-UyBSYWRpbykgVGhvbWFzIEtpc2guCgpSZWdpc3RlciBub3cgYmVmb3JlIHRoZSBsaW5lcyBnZXQg
-ZmlsbGVkIHVwIGF0OiAKCgpodHRwOi8vd3d3Lmtpc2hidXNpbmVzc2NyZWRpdC5jb20vCgoKVGhl
-IHRyYWluaW5nIHdlYmluYXIgd2lsbCBiZSBoZWxkIG9uOgoKVGhpcyBTYXR1cmRheSBKdWx5IDEw
-dGgKCjlhbSBQYWNpZmljIC8gMTFhbSBjZW50cmFsIC8gTm9vbiBlYXN0ZXJuCgpJbiB0aGlzIHVw
-Y29taW5nIGNsYXNzLCB5b3UnbGwgbGVhcm4gaG93IHRvOgoKMS4JUmVnaXN0ZXIgYSBidXNpbmVz
-cyBuYW1lIGluIGFueSBzdGF0ZS4KCjIuCVNlcGFyYXRlIHlvdXIgcGVyc29uYWwgY3JlZGl0IGZy
-b20geW91ciBidXNpbmVzcy4KCjMuCVJlbW92ZSBkZWJ0IHRoYXQgaXMgeW91ciBwZXJzb25hbCBu
-YW1lLgoKNC4JU2F2ZSBiaWcgb24geW91ciB0YXhlcy4KCjUuCUdldCBIVUdFIGNhc2ggbGluZXMg
-b2YgYnVzaW5lc3MgY3JlZGl0LgoKNi4JUGx1cyBtb3JlIQoKKk9uZSBvZiB0aGUgY29vbGVzdCB3
-YXlzIHRvIHN0YXJ0IGludmVzdGluZyBvciB0byBleHBhbmQgb3Igc3RhcnQgCmEgYnVzaW5lc3Mg
-aXMgd2l0aCBhIGZvcm0gb2YgbW9uZXkgdGhhdCBtb3N0IHBlb3BsZSAKRE9O4oCZVCBLTk9XIEFC
-T1VUIC0gQnVzaW5lc3MgTGluZXMgb2YgQ3JlZGl0LgoKSWYgeW91IGtub3cgYWJvdXQgdGhlbSwg
-eW91IGNhbiBxdWlja2x5IGdldCAkMzAwLDAwMCBpbiB1bnNlY3VyZWQgCmJ1c2luZXNzIGNyZWRp
-dCBmb3IgYW55IHB1cnBvc2UuIAoKQW5kIHRoaXMgaXMgbW9uZXkgdGhhdCBuZXZlciByZXBvcnRz
-IG9uIHlvdXIgcGVyc29uYWwgY3JlZGl0LgoKVG9tIGlzIHRoZSBjcmVhdG9yIG9mIGEgdHJhZGVt
-YXJrZWQgNCBzdGVwIHJlY2lwZSB0byBnZXR0aW5nIG5ldyAKdW5zZWN1cmVkIGJ1c2luZXNzIGxp
-bmVzIG9mIGNyZWRpdCBmb3IgYW55IHB1cnBvc2UuCgpUaGUgc3lzdGVtIGFib3V0IHRvIGJlIHJl
-dmVhbGVkIG9uIHRoaXMgdHJhaW5pbmcgY2FsbCBpcyBhbiAKYW1hemluZ2x5IHNpbXBsZSB3YXkg
-dG8gZ2V0ICQyMDAsMDAwIHRvICQzMDAsMDAwIGluIGNhc2ggYW5kIApidXNpbmVzcyBsaW5lcyBv
-ZiBjcmVkaXQgbm8gbWF0dGVyIHdoYXQga2luZCBvZiBpbmNvbWUsIGFzc2V0cyBvciAKc2NvcmUg
-eW91IGN1cnJlbnRseSBoYXZlLiAKCnJlZ2lzdGVyIG5vdyBhdDogCgpodHRwOi8vd3d3Lmtpc2hi
-dXNpbmVzc2NyZWRpdC5jb20vCgoKQW5kIHlvdSB3aWxsIGFsc28gbGVhcm4gaG93IHRvIGRvdWJs
-ZSBvciB0cmlwbGUgdGhlIGxpbmVzIG9mIApjcmVkaXQgYW5kIGJ1aWxkIHRvIGEgbWlsbGlvbiBk
-b2xsYXJzIQoKU28sIGdldCBzb21lIGNvZmZlZSBhbmQgYSBjb21mb3J0YWJsZSBjaGFpciBhbmQg
-am9pbiBUb20gb24gdGhpcyAKc3BlY2lhbCBMSVZFIGNhbGwgdG8gbGVhcm4gYWxsIGFib3V0IGhp
-cyBwcm92ZW4gc2hvcnRjdXQgdG8gCmdldHRpbmcgYnVzaW5lc3MgbGluZXMgb2YgY3JlZGl0IGlu
-IHRvZGF54oCZcyBlY29ub215LgoKV2l0aCB0aGlzIGluZm8sIHlvdSBjYW4gZ2V0IHlvdXIgaGFu
-ZHMgb24gJDMwMCwwMDAgcmlnaHQgbm93LCAKZXZlbiBpbiB0b2RheeKAmXMgdG91Z2ggZWNvbm9t
-eS4gIEkga25vdyB0aGlzIGJlY2F1c2UgcGVvcGxlIGp1c3QgCmdvdCBhcHByb3ZlZCBmb3IgdGhp
-cyBtb25leSBsYXN0IHdlZWsuCgpUbyBZb3VyIFN1Y2Nlc3MKClZhbmVzc2EgQmF1bWVyCktpc2gg
-QnVzaW5lc3MgQ3JlZGl0IExMQwozNzUzIEhvd2FyZCBIdWdoZXMgUGFya3dheSwgU3VpdGUgMjAw
-CkxhcyBWZWdhcywgTlYgODkxNjkKClAuUy4gIFRoaXMgY2FsbCBpcyB0b28gaW1wb3J0YW50IHRv
-IG1pc3PigKYgCgpodHRwOi8vd3d3Lmtpc2hidXNpbmVzc2NyZWRpdC5jb20vCgpodHRwOi8vYXBw
-LnN0cmVhbXNlbmQuY29tL3ByaXZhdGUvdzREMC9OZVgvYnNJZFc2QS91bnN1YnNjcmliZS8xMjEx
-NDkxMQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVk
-IGJ5IFNwcmludApXaGF0IHdpbGwgeW91IGRvIGZpcnN0IHdpdGggRVZPLCB0aGUgZmlyc3QgNEcg
-cGhvbmU/ClZpc2l0IHNwcmludC5jb20vZmlyc3QgLS0gaHR0cDovL3Auc2YubmV0L3NmdS9zcHJp
-bnQtY29tLWZpcnN0Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi everyone,
+
+I have a question.
+
+I found a spi_gpio framework issue need to be changed, so I  to make
+the patch based git://git.secretlab.ca/linux-2.6 next-spi.
+Is it right?? what repo can I base patch works?
+
+Thanks,
+HeungJun, Kim
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

@@ -1,14 +1,13 @@
 From: Linus Walleij <linus.walleij@stericsson.com>
-Subject: [PATCH 1/2] SPI: moved the PL022 test chip out to the SPI subsystem
-Date: Sun, 11 Jul 2010 02:43:09 +0200
-Message-ID: <1278808989-29677-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH] ARM: add SSP platform data for the RealView PB1176
+Date: Sun, 11 Jul 2010 02:44:11 +0200
+Message-ID: <1278809051-30211-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij@stericsson.com>,
-	linux-arm-kernel@lists.infradead.org
-To: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>
+Cc: spi-devel-general@lists.sourceforge.net,
+	Linus Walleij <linus.walleij@stericsson.com>
+To: linux-arm-kernel@lists.infradead.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -21,614 +20,94 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This moves the SPI test chip from the U300 architecture to the
-SPI subsystem. This is where the code belongs: we want the
-loopback test chip to be available to all users of PL022.
-
-This just moves the file, the following patch makes it work
-in the new location.
+This adds the required platform data to get the SSP PL022 driver
+working on the RealView PB1176.
 
 Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
 ---
- arch/arm/mach-u300/dummyspichip.c |  291 -------------------------------------
- drivers/spi/amba-pl022-looptest.c |  291 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 291 insertions(+), 291 deletions(-)
- delete mode 100644 arch/arm/mach-u300/dummyspichip.c
- create mode 100644 drivers/spi/amba-pl022-looptest.c
+ arch/arm/mach-realview/core.c                     |    3 +++
+ arch/arm/mach-realview/include/mach/irqs-pb1176.h |    2 +-
+ arch/arm/mach-realview/realview_pb1176.c          |   13 +++++++++++--
+ 3 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-u300/dummyspichip.c b/arch/arm/mach-u300/dummyspichip.c
-deleted file mode 100644
-index 5f55012..0000000
---- a/arch/arm/mach-u300/dummyspichip.c
-+++ /dev/null
-@@ -1,291 +0,0 @@
--/*
-- * arch/arm/mach-u300/dummyspichip.c
-- *
-- * Copyright (C) 2007-2009 ST-Ericsson AB
-- * License terms: GNU General Public License (GPL) version 2
-- * This is a dummy loopback SPI "chip" used for testing SPI.
-- * Author: Linus Walleij <linus.walleij@stericsson.com>
-- */
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/device.h>
--#include <linux/err.h>
--#include <linux/sysfs.h>
--#include <linux/mutex.h>
--#include <linux/spi/spi.h>
--#include <linux/dma-mapping.h>
--#include <linux/slab.h>
--/*
-- * WARNING! Do not include this pl022-specific controller header
-- * for any generic driver. It is only done in this dummy chip
-- * because we alter the chip configuration in order to test some
-- * different settings on the loopback device. Normal chip configs
-- * shall be STATIC and not altered by the driver!
-- */
--#include <linux/amba/pl022.h>
--
--struct dummy {
--	struct device *dev;
--	struct mutex lock;
--};
--
--#define DMA_TEST_SIZE 2048
--
--/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
--static ssize_t dummy_looptest(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct spi_device *spi = to_spi_device(dev);
--	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
--
--	/*
--	 * WARNING! Do not dereference the chip-specific data in any normal
--	 * driver for a chip. It is usually STATIC and shall not be read
--	 * or written to. Your chip driver should NOT depend on fields in this
--	 * struct, this is just used here to alter the behaviour of the chip
--	 * in order to perform tests.
--	 */
--	struct pl022_config_chip *chip_info = spi->controller_data;
--	int status;
--	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
--			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
--			0xF0, 0x0D};
--	u8 rxbuf[14];
--	u8 *bigtxbuf_virtual;
--	u8 *bigrxbuf_virtual;
--
--	if (mutex_lock_interruptible(&p_dummy->lock))
--		return -ERESTARTSYS;
--
--	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
--	if (bigtxbuf_virtual == NULL) {
--		status = -ENOMEM;
--		goto out;
--	}
--	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
--
--	/* Fill TXBUF with some happy pattern */
--	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
--
--	/*
--	 * Force chip to 8 bit mode
--	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
--	 */
--	chip_info->data_size = SSP_DATA_BITS_8;
--	/* You should NOT DO THIS EITHER */
--	spi->master->setup(spi);
--
--	/* Now run the tests for 8bit mode */
--	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
--		"in 8bit mode\n");
--	status = spi_w8r8(spi, 0xAA);
--	if (status < 0)
--		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 1: SUCCESS!\n");
--
--	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
--		"in 8bit mode (full FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 2: SUCCESS!\n");
--
--	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
--		"in 8bit mode (see if we overflow FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 3: FAILURE: failed with status %d "
--			   "(probably FIFO overrun)\n", status);
--	else
--		pr_info("Simple test 3: SUCCESS!\n");
--
--	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
--		"bytes garbage with spi_read() in 8bit mode\n");
--	status = spi_write(spi, &txbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 4 step 1: SUCCESS!\n");
--	status = spi_read(spi, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 4 step 2: SUCCESS!\n");
--
--	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
--		"14 bytes garbage with spi_read() in 8bit mode\n");
--	status = spi_write(spi, &txbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 5 step 1: SUCCESS!\n");
--	status = spi_read(spi, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 5: SUCCESS!\n");
--
--	pr_info("Simple test 6: write %d bytes with spi_write(), "
--		"read %d bytes garbage with spi_read() in 8bit mode\n",
--		DMA_TEST_SIZE, DMA_TEST_SIZE);
--	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 6 step 1: SUCCESS!\n");
--	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 6: SUCCESS!\n");
--
--
--	/*
--	 * Force chip to 16 bit mode
--	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
--	 */
--	chip_info->data_size = SSP_DATA_BITS_16;
--	/* You should NOT DO THIS EITHER */
--	spi->master->setup(spi);
--
--	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
--		"in 16bit bus mode\n");
--	status = spi_w8r8(spi, 0xAA);
--	if (status == -EIO)
--		pr_info("Simple test 7: SUCCESS! (expected failure with "
--			"status EIO)\n");
--	else if (status < 0)
--		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
--			   "failed with status %d\n", status);
--	else
--		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
--			   "succeeded but it was expected to fail!\n");
--
--	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
--		"in 16bit mode (full FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 8: SUCCESS!\n");
--
--	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
--		"in 16bit mode (see if we overflow FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 9: FAILURE: failed with status %d "
--			   "(probably FIFO overrun)\n", status);
--	else
--		pr_info("Simple test 9: SUCCESS!\n");
--
--	pr_info("Simple test 10: write %d bytes with spi_write(), "
--	       "read %d bytes garbage with spi_read() in 16bit mode\n",
--	       DMA_TEST_SIZE, DMA_TEST_SIZE);
--	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 10 step 1: SUCCESS!\n");
--
--	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 10: SUCCESS!\n");
--
--	status = sprintf(buf, "loop test complete\n");
--	kfree(bigrxbuf_virtual);
--	kfree(bigtxbuf_virtual);
-- out:
--	mutex_unlock(&p_dummy->lock);
--	return status;
--}
--
--static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
--
--static int __devinit pl022_dummy_probe(struct spi_device *spi)
--{
--	struct dummy *p_dummy;
--	int status;
--
--	dev_info(&spi->dev, "probing dummy SPI device\n");
--
--	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
--	if (!p_dummy)
--		return -ENOMEM;
--
--	dev_set_drvdata(&spi->dev, p_dummy);
--	mutex_init(&p_dummy->lock);
--
--	/* sysfs hook */
--	status = device_create_file(&spi->dev, &dev_attr_looptest);
--	if (status) {
--		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
--		goto out_dev_create_looptest_failed;
--	}
--
--	return 0;
--
--out_dev_create_looptest_failed:
--	dev_set_drvdata(&spi->dev, NULL);
--	kfree(p_dummy);
--	return status;
--}
--
--static int __devexit pl022_dummy_remove(struct spi_device *spi)
--{
--	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
--
--	dev_info(&spi->dev, "removing dummy SPI device\n");
--	device_remove_file(&spi->dev, &dev_attr_looptest);
--	dev_set_drvdata(&spi->dev, NULL);
--	kfree(p_dummy);
--
--	return 0;
--}
--
--static struct spi_driver pl022_dummy_driver = {
--	.driver = {
--		.name	= "spi-dummy",
--		.owner	= THIS_MODULE,
--	},
--	.probe	= pl022_dummy_probe,
--	.remove	= __devexit_p(pl022_dummy_remove),
--};
--
--static int __init pl022_init_dummy(void)
--{
--	return spi_register_driver(&pl022_dummy_driver);
--}
--
--static void __exit pl022_exit_dummy(void)
--{
--	spi_unregister_driver(&pl022_dummy_driver);
--}
--
--module_init(pl022_init_dummy);
--module_exit(pl022_exit_dummy);
--
--MODULE_AUTHOR("Linus Walleij <linus.walleij@stericsson.com>");
--MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
--MODULE_LICENSE("GPL");
-diff --git a/drivers/spi/amba-pl022-looptest.c b/drivers/spi/amba-pl022-looptest.c
-new file mode 100644
-index 0000000..5f55012
---- /dev/null
-+++ b/drivers/spi/amba-pl022-looptest.c
-@@ -0,0 +1,291 @@
-+/*
-+ * arch/arm/mach-u300/dummyspichip.c
-+ *
-+ * Copyright (C) 2007-2009 ST-Ericsson AB
-+ * License terms: GNU General Public License (GPL) version 2
-+ * This is a dummy loopback SPI "chip" used for testing SPI.
-+ * Author: Linus Walleij <linus.walleij@stericsson.com>
-+ */
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/sysfs.h>
-+#include <linux/mutex.h>
-+#include <linux/spi/spi.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/slab.h>
-+/*
-+ * WARNING! Do not include this pl022-specific controller header
-+ * for any generic driver. It is only done in this dummy chip
-+ * because we alter the chip configuration in order to test some
-+ * different settings on the loopback device. Normal chip configs
-+ * shall be STATIC and not altered by the driver!
-+ */
+diff --git a/arch/arm/mach-realview/core.c b/arch/arm/mach-realview/core.c
+index 4b3d2fd..e8aaeef 100644
+--- a/arch/arm/mach-realview/core.c
++++ b/arch/arm/mach-realview/core.c
+@@ -348,6 +348,9 @@ static struct clk_lookup lookups[] = {
+ 	}, {	/* PB:CLCD */
+ 		.dev_id		= "issp:clcd",
+ 		.clk		= &oscvco_clk,
++	}, {	/* SSP */
++		.dev_id		= "dev:ssp0",
++		.clk		= &ref24_clk,
+ 	}
+ };
+ 
+diff --git a/arch/arm/mach-realview/include/mach/irqs-pb1176.h b/arch/arm/mach-realview/include/mach/irqs-pb1176.h
+index 830055b..5c3c625 100644
+--- a/arch/arm/mach-realview/include/mach/irqs-pb1176.h
++++ b/arch/arm/mach-realview/include/mach/irqs-pb1176.h
+@@ -40,6 +40,7 @@
+ #define IRQ_DC1176_L2CC		(IRQ_DC1176_GIC_START + 13)
+ #define IRQ_DC1176_RTC		(IRQ_DC1176_GIC_START + 14)
+ #define IRQ_DC1176_CLCD		(IRQ_DC1176_GIC_START + 15)	/* CLCD controller */
++#define IRQ_DC1176_SSP		(IRQ_DC1176_GIC_START + 17)	/* SSP port */
+ #define IRQ_DC1176_UART0	(IRQ_DC1176_GIC_START + 18)	/* UART 0 on development chip */
+ #define IRQ_DC1176_UART1	(IRQ_DC1176_GIC_START + 19)	/* UART 1 on development chip */
+ #define IRQ_DC1176_UART2	(IRQ_DC1176_GIC_START + 20)	/* UART 2 on development chip */
+@@ -73,7 +74,6 @@
+ #define IRQ_PB1176_RTC		(IRQ_PB1176_GIC_START + 25)	/* Real Time Clock */
+ 
+ #define IRQ_PB1176_GPIO0	-1
+-#define IRQ_PB1176_SSP		-1
+ #define IRQ_PB1176_SCTL		-1
+ 
+ #define NR_GIC_PB1176		2
+diff --git a/arch/arm/mach-realview/realview_pb1176.c b/arch/arm/mach-realview/realview_pb1176.c
+index 9f02350..3ed57ca 100644
+--- a/arch/arm/mach-realview/realview_pb1176.c
++++ b/arch/arm/mach-realview/realview_pb1176.c
+@@ -25,6 +25,7 @@
+ #include <linux/amba/bus.h>
+ #include <linux/amba/pl061.h>
+ #include <linux/amba/mmci.h>
 +#include <linux/amba/pl022.h>
-+
-+struct dummy {
-+	struct device *dev;
-+	struct mutex lock;
+ #include <linux/io.h>
+ 
+ #include <mach/hardware.h>
+@@ -123,6 +124,14 @@ static struct pl061_platform_data gpio2_plat_data = {
+ 	.irq_base	= -1,
+ };
+ 
++static struct pl022_ssp_controller ssp0_plat_data = {
++	/* If you have several SPI buses this varies, we have only bus 0 */
++	.bus_id = 0,
++	/* Set this to 1 when we think we got DMA working */
++	.enable_dma = 0,
++	.num_chipselect = 1,
 +};
 +
-+#define DMA_TEST_SIZE 2048
-+
-+/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
-+static ssize_t dummy_looptest(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
-+
-+	/*
-+	 * WARNING! Do not dereference the chip-specific data in any normal
-+	 * driver for a chip. It is usually STATIC and shall not be read
-+	 * or written to. Your chip driver should NOT depend on fields in this
-+	 * struct, this is just used here to alter the behaviour of the chip
-+	 * in order to perform tests.
-+	 */
-+	struct pl022_config_chip *chip_info = spi->controller_data;
-+	int status;
-+	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
-+			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
-+			0xF0, 0x0D};
-+	u8 rxbuf[14];
-+	u8 *bigtxbuf_virtual;
-+	u8 *bigrxbuf_virtual;
-+
-+	if (mutex_lock_interruptible(&p_dummy->lock))
-+		return -ERESTARTSYS;
-+
-+	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
-+	if (bigtxbuf_virtual == NULL) {
-+		status = -ENOMEM;
-+		goto out;
-+	}
-+	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
-+
-+	/* Fill TXBUF with some happy pattern */
-+	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
-+
-+	/*
-+	 * Force chip to 8 bit mode
-+	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
-+	 */
-+	chip_info->data_size = SSP_DATA_BITS_8;
-+	/* You should NOT DO THIS EITHER */
-+	spi->master->setup(spi);
-+
-+	/* Now run the tests for 8bit mode */
-+	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
-+		"in 8bit mode\n");
-+	status = spi_w8r8(spi, 0xAA);
-+	if (status < 0)
-+		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 1: SUCCESS!\n");
-+
-+	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
-+		"in 8bit mode (full FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 2: SUCCESS!\n");
-+
-+	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
-+		"in 8bit mode (see if we overflow FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 3: FAILURE: failed with status %d "
-+			   "(probably FIFO overrun)\n", status);
-+	else
-+		pr_info("Simple test 3: SUCCESS!\n");
-+
-+	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
-+		"bytes garbage with spi_read() in 8bit mode\n");
-+	status = spi_write(spi, &txbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 4 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 4 step 2: SUCCESS!\n");
-+
-+	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
-+		"14 bytes garbage with spi_read() in 8bit mode\n");
-+	status = spi_write(spi, &txbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 5 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 5: SUCCESS!\n");
-+
-+	pr_info("Simple test 6: write %d bytes with spi_write(), "
-+		"read %d bytes garbage with spi_read() in 8bit mode\n",
-+		DMA_TEST_SIZE, DMA_TEST_SIZE);
-+	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 6 step 1: SUCCESS!\n");
-+	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 6: SUCCESS!\n");
-+
-+
-+	/*
-+	 * Force chip to 16 bit mode
-+	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
-+	 */
-+	chip_info->data_size = SSP_DATA_BITS_16;
-+	/* You should NOT DO THIS EITHER */
-+	spi->master->setup(spi);
-+
-+	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
-+		"in 16bit bus mode\n");
-+	status = spi_w8r8(spi, 0xAA);
-+	if (status == -EIO)
-+		pr_info("Simple test 7: SUCCESS! (expected failure with "
-+			"status EIO)\n");
-+	else if (status < 0)
-+		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
-+			   "succeeded but it was expected to fail!\n");
-+
-+	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
-+		"in 16bit mode (full FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
-+	if (status < 0)
-+		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
-+			   "failed with status %d\n", status);
-+	else
-+		pr_info("Simple test 8: SUCCESS!\n");
-+
-+	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
-+		"in 16bit mode (see if we overflow FIFO)\n");
-+	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
-+	if (status < 0)
-+		pr_warning("Simple test 9: FAILURE: failed with status %d "
-+			   "(probably FIFO overrun)\n", status);
-+	else
-+		pr_info("Simple test 9: SUCCESS!\n");
-+
-+	pr_info("Simple test 10: write %d bytes with spi_write(), "
-+	       "read %d bytes garbage with spi_read() in 16bit mode\n",
-+	       DMA_TEST_SIZE, DMA_TEST_SIZE);
-+	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 10 step 1: SUCCESS!\n");
-+
-+	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
-+	if (status < 0)
-+		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
-+			   "failed with status %d (probably FIFO overrun)\n",
-+			   status);
-+	else
-+		pr_info("Simple test 10: SUCCESS!\n");
-+
-+	status = sprintf(buf, "loop test complete\n");
-+	kfree(bigrxbuf_virtual);
-+	kfree(bigtxbuf_virtual);
-+ out:
-+	mutex_unlock(&p_dummy->lock);
-+	return status;
-+}
-+
-+static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
-+
-+static int __devinit pl022_dummy_probe(struct spi_device *spi)
-+{
-+	struct dummy *p_dummy;
-+	int status;
-+
-+	dev_info(&spi->dev, "probing dummy SPI device\n");
-+
-+	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
-+	if (!p_dummy)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&spi->dev, p_dummy);
-+	mutex_init(&p_dummy->lock);
-+
-+	/* sysfs hook */
-+	status = device_create_file(&spi->dev, &dev_attr_looptest);
-+	if (status) {
-+		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
-+		goto out_dev_create_looptest_failed;
-+	}
-+
-+	return 0;
-+
-+out_dev_create_looptest_failed:
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(p_dummy);
-+	return status;
-+}
-+
-+static int __devexit pl022_dummy_remove(struct spi_device *spi)
-+{
-+	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
-+
-+	dev_info(&spi->dev, "removing dummy SPI device\n");
-+	device_remove_file(&spi->dev, &dev_attr_looptest);
-+	dev_set_drvdata(&spi->dev, NULL);
-+	kfree(p_dummy);
-+
-+	return 0;
-+}
-+
-+static struct spi_driver pl022_dummy_driver = {
-+	.driver = {
-+		.name	= "spi-dummy",
-+		.owner	= THIS_MODULE,
-+	},
-+	.probe	= pl022_dummy_probe,
-+	.remove	= __devexit_p(pl022_dummy_remove),
-+};
-+
-+static int __init pl022_init_dummy(void)
-+{
-+	return spi_register_driver(&pl022_dummy_driver);
-+}
-+
-+static void __exit pl022_exit_dummy(void)
-+{
-+	spi_unregister_driver(&pl022_dummy_driver);
-+}
-+
-+module_init(pl022_init_dummy);
-+module_exit(pl022_exit_dummy);
-+
-+MODULE_AUTHOR("Linus Walleij <linus.walleij@stericsson.com>");
-+MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
-+MODULE_LICENSE("GPL");
+ /*
+  * RealView PB1176 AMBA devices
+  */
+@@ -166,7 +175,7 @@ static struct pl061_platform_data gpio2_plat_data = {
+ #define PB1176_UART3_DMA	{ 0x86, 0x87 }
+ #define PB1176_UART4_IRQ	{ IRQ_PB1176_UART4, NO_IRQ }
+ #define PB1176_UART4_DMA	{ 0, 0 }
+-#define PB1176_SSP_IRQ		{ IRQ_PB1176_SSP, NO_IRQ }
++#define PB1176_SSP_IRQ		{ IRQ_DC1176_SSP, NO_IRQ }
+ #define PB1176_SSP_DMA		{ 9, 8 }
+ 
+ /* FPGA Primecells */
+@@ -189,7 +198,7 @@ AMBA_DEVICE(uart0,	"dev:uart0",	PB1176_UART0,	NULL);
+ AMBA_DEVICE(uart1,	"dev:uart1",	PB1176_UART1,	NULL);
+ AMBA_DEVICE(uart2,	"dev:uart2",	PB1176_UART2,	NULL);
+ AMBA_DEVICE(uart3,	"dev:uart3",	PB1176_UART3,	NULL);
+-AMBA_DEVICE(ssp0,	"dev:ssp0",	PB1176_SSP,	NULL);
++AMBA_DEVICE(ssp0,	"dev:ssp0",	PB1176_SSP,	&ssp0_plat_data);
+ AMBA_DEVICE(clcd,	"dev:clcd",	PB1176_CLCD,	&clcd_plat_data);
+ 
+ static struct amba_device *amba_devs[] __initdata = {
 -- 
 1.7.1

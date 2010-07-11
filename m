@@ -1,25 +1,634 @@
-From: "Voyage =?ISO-8859-1?Q?priv=E9?= par Plein Temps"
-	<privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Des destinations de reves à prix discount, c'est maintenant!
-Date: Fri,  9 Jul 2010 16:40:07 +0000 (UTC)
-Message-ID: <l5aueb.251sqf@front02.r7g.com>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH 1/2] SPI: moved the PL022 test chip out to the SPI subsystem
+Date: Sun, 11 Jul 2010 02:43:09 +0200
+Message-ID: <1278808989-29677-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Linus Walleij <linus.walleij@stericsson.com>,
+	linux-arm-kernel@lists.infradead.org
+To: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+This moves the SPI test chip from the U300 architecture to the
+SPI subsystem. This is where the code belongs: we want the
+loopback test chip to be available to all users of PL022.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+This just moves the file, the following patch makes it work
+in the new location.
+
+Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
+---
+ arch/arm/mach-u300/dummyspichip.c |  291 -------------------------------------
+ drivers/spi/amba-pl022-looptest.c |  291 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 291 insertions(+), 291 deletions(-)
+ delete mode 100644 arch/arm/mach-u300/dummyspichip.c
+ create mode 100644 drivers/spi/amba-pl022-looptest.c
+
+diff --git a/arch/arm/mach-u300/dummyspichip.c b/arch/arm/mach-u300/dummyspichip.c
+deleted file mode 100644
+index 5f55012..0000000
+--- a/arch/arm/mach-u300/dummyspichip.c
++++ /dev/null
+@@ -1,291 +0,0 @@
+-/*
+- * arch/arm/mach-u300/dummyspichip.c
+- *
+- * Copyright (C) 2007-2009 ST-Ericsson AB
+- * License terms: GNU General Public License (GPL) version 2
+- * This is a dummy loopback SPI "chip" used for testing SPI.
+- * Author: Linus Walleij <linus.walleij@stericsson.com>
+- */
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/device.h>
+-#include <linux/err.h>
+-#include <linux/sysfs.h>
+-#include <linux/mutex.h>
+-#include <linux/spi/spi.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/slab.h>
+-/*
+- * WARNING! Do not include this pl022-specific controller header
+- * for any generic driver. It is only done in this dummy chip
+- * because we alter the chip configuration in order to test some
+- * different settings on the loopback device. Normal chip configs
+- * shall be STATIC and not altered by the driver!
+- */
+-#include <linux/amba/pl022.h>
+-
+-struct dummy {
+-	struct device *dev;
+-	struct mutex lock;
+-};
+-
+-#define DMA_TEST_SIZE 2048
+-
+-/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
+-static ssize_t dummy_looptest(struct device *dev,
+-		struct device_attribute *attr, char *buf)
+-{
+-	struct spi_device *spi = to_spi_device(dev);
+-	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
+-
+-	/*
+-	 * WARNING! Do not dereference the chip-specific data in any normal
+-	 * driver for a chip. It is usually STATIC and shall not be read
+-	 * or written to. Your chip driver should NOT depend on fields in this
+-	 * struct, this is just used here to alter the behaviour of the chip
+-	 * in order to perform tests.
+-	 */
+-	struct pl022_config_chip *chip_info = spi->controller_data;
+-	int status;
+-	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
+-			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
+-			0xF0, 0x0D};
+-	u8 rxbuf[14];
+-	u8 *bigtxbuf_virtual;
+-	u8 *bigrxbuf_virtual;
+-
+-	if (mutex_lock_interruptible(&p_dummy->lock))
+-		return -ERESTARTSYS;
+-
+-	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
+-	if (bigtxbuf_virtual == NULL) {
+-		status = -ENOMEM;
+-		goto out;
+-	}
+-	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
+-
+-	/* Fill TXBUF with some happy pattern */
+-	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
+-
+-	/*
+-	 * Force chip to 8 bit mode
+-	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
+-	 */
+-	chip_info->data_size = SSP_DATA_BITS_8;
+-	/* You should NOT DO THIS EITHER */
+-	spi->master->setup(spi);
+-
+-	/* Now run the tests for 8bit mode */
+-	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
+-		"in 8bit mode\n");
+-	status = spi_w8r8(spi, 0xAA);
+-	if (status < 0)
+-		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_info("Simple test 1: SUCCESS!\n");
+-
+-	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
+-		"in 8bit mode (full FIFO)\n");
+-	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
+-	if (status < 0)
+-		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_info("Simple test 2: SUCCESS!\n");
+-
+-	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
+-		"in 8bit mode (see if we overflow FIFO)\n");
+-	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
+-	if (status < 0)
+-		pr_warning("Simple test 3: FAILURE: failed with status %d "
+-			   "(probably FIFO overrun)\n", status);
+-	else
+-		pr_info("Simple test 3: SUCCESS!\n");
+-
+-	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
+-		"bytes garbage with spi_read() in 8bit mode\n");
+-	status = spi_write(spi, &txbuf[0], 8);
+-	if (status < 0)
+-		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_info("Simple test 4 step 1: SUCCESS!\n");
+-	status = spi_read(spi, &rxbuf[0], 8);
+-	if (status < 0)
+-		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_info("Simple test 4 step 2: SUCCESS!\n");
+-
+-	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
+-		"14 bytes garbage with spi_read() in 8bit mode\n");
+-	status = spi_write(spi, &txbuf[0], 14);
+-	if (status < 0)
+-		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 5 step 1: SUCCESS!\n");
+-	status = spi_read(spi, &rxbuf[0], 14);
+-	if (status < 0)
+-		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 5: SUCCESS!\n");
+-
+-	pr_info("Simple test 6: write %d bytes with spi_write(), "
+-		"read %d bytes garbage with spi_read() in 8bit mode\n",
+-		DMA_TEST_SIZE, DMA_TEST_SIZE);
+-	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
+-	if (status < 0)
+-		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 6 step 1: SUCCESS!\n");
+-	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
+-	if (status < 0)
+-		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 6: SUCCESS!\n");
+-
+-
+-	/*
+-	 * Force chip to 16 bit mode
+-	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
+-	 */
+-	chip_info->data_size = SSP_DATA_BITS_16;
+-	/* You should NOT DO THIS EITHER */
+-	spi->master->setup(spi);
+-
+-	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
+-		"in 16bit bus mode\n");
+-	status = spi_w8r8(spi, 0xAA);
+-	if (status == -EIO)
+-		pr_info("Simple test 7: SUCCESS! (expected failure with "
+-			"status EIO)\n");
+-	else if (status < 0)
+-		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
+-			   "succeeded but it was expected to fail!\n");
+-
+-	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
+-		"in 16bit mode (full FIFO)\n");
+-	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
+-	if (status < 0)
+-		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
+-			   "failed with status %d\n", status);
+-	else
+-		pr_info("Simple test 8: SUCCESS!\n");
+-
+-	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
+-		"in 16bit mode (see if we overflow FIFO)\n");
+-	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
+-	if (status < 0)
+-		pr_warning("Simple test 9: FAILURE: failed with status %d "
+-			   "(probably FIFO overrun)\n", status);
+-	else
+-		pr_info("Simple test 9: SUCCESS!\n");
+-
+-	pr_info("Simple test 10: write %d bytes with spi_write(), "
+-	       "read %d bytes garbage with spi_read() in 16bit mode\n",
+-	       DMA_TEST_SIZE, DMA_TEST_SIZE);
+-	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
+-	if (status < 0)
+-		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 10 step 1: SUCCESS!\n");
+-
+-	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
+-	if (status < 0)
+-		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
+-			   "failed with status %d (probably FIFO overrun)\n",
+-			   status);
+-	else
+-		pr_info("Simple test 10: SUCCESS!\n");
+-
+-	status = sprintf(buf, "loop test complete\n");
+-	kfree(bigrxbuf_virtual);
+-	kfree(bigtxbuf_virtual);
+- out:
+-	mutex_unlock(&p_dummy->lock);
+-	return status;
+-}
+-
+-static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
+-
+-static int __devinit pl022_dummy_probe(struct spi_device *spi)
+-{
+-	struct dummy *p_dummy;
+-	int status;
+-
+-	dev_info(&spi->dev, "probing dummy SPI device\n");
+-
+-	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
+-	if (!p_dummy)
+-		return -ENOMEM;
+-
+-	dev_set_drvdata(&spi->dev, p_dummy);
+-	mutex_init(&p_dummy->lock);
+-
+-	/* sysfs hook */
+-	status = device_create_file(&spi->dev, &dev_attr_looptest);
+-	if (status) {
+-		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
+-		goto out_dev_create_looptest_failed;
+-	}
+-
+-	return 0;
+-
+-out_dev_create_looptest_failed:
+-	dev_set_drvdata(&spi->dev, NULL);
+-	kfree(p_dummy);
+-	return status;
+-}
+-
+-static int __devexit pl022_dummy_remove(struct spi_device *spi)
+-{
+-	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
+-
+-	dev_info(&spi->dev, "removing dummy SPI device\n");
+-	device_remove_file(&spi->dev, &dev_attr_looptest);
+-	dev_set_drvdata(&spi->dev, NULL);
+-	kfree(p_dummy);
+-
+-	return 0;
+-}
+-
+-static struct spi_driver pl022_dummy_driver = {
+-	.driver = {
+-		.name	= "spi-dummy",
+-		.owner	= THIS_MODULE,
+-	},
+-	.probe	= pl022_dummy_probe,
+-	.remove	= __devexit_p(pl022_dummy_remove),
+-};
+-
+-static int __init pl022_init_dummy(void)
+-{
+-	return spi_register_driver(&pl022_dummy_driver);
+-}
+-
+-static void __exit pl022_exit_dummy(void)
+-{
+-	spi_unregister_driver(&pl022_dummy_driver);
+-}
+-
+-module_init(pl022_init_dummy);
+-module_exit(pl022_exit_dummy);
+-
+-MODULE_AUTHOR("Linus Walleij <linus.walleij@stericsson.com>");
+-MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
+-MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/amba-pl022-looptest.c b/drivers/spi/amba-pl022-looptest.c
+new file mode 100644
+index 0000000..5f55012
+--- /dev/null
++++ b/drivers/spi/amba-pl022-looptest.c
+@@ -0,0 +1,291 @@
++/*
++ * arch/arm/mach-u300/dummyspichip.c
++ *
++ * Copyright (C) 2007-2009 ST-Ericsson AB
++ * License terms: GNU General Public License (GPL) version 2
++ * This is a dummy loopback SPI "chip" used for testing SPI.
++ * Author: Linus Walleij <linus.walleij@stericsson.com>
++ */
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/sysfs.h>
++#include <linux/mutex.h>
++#include <linux/spi/spi.h>
++#include <linux/dma-mapping.h>
++#include <linux/slab.h>
++/*
++ * WARNING! Do not include this pl022-specific controller header
++ * for any generic driver. It is only done in this dummy chip
++ * because we alter the chip configuration in order to test some
++ * different settings on the loopback device. Normal chip configs
++ * shall be STATIC and not altered by the driver!
++ */
++#include <linux/amba/pl022.h>
++
++struct dummy {
++	struct device *dev;
++	struct mutex lock;
++};
++
++#define DMA_TEST_SIZE 2048
++
++/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
++static ssize_t dummy_looptest(struct device *dev,
++		struct device_attribute *attr, char *buf)
++{
++	struct spi_device *spi = to_spi_device(dev);
++	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
++
++	/*
++	 * WARNING! Do not dereference the chip-specific data in any normal
++	 * driver for a chip. It is usually STATIC and shall not be read
++	 * or written to. Your chip driver should NOT depend on fields in this
++	 * struct, this is just used here to alter the behaviour of the chip
++	 * in order to perform tests.
++	 */
++	struct pl022_config_chip *chip_info = spi->controller_data;
++	int status;
++	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
++			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
++			0xF0, 0x0D};
++	u8 rxbuf[14];
++	u8 *bigtxbuf_virtual;
++	u8 *bigrxbuf_virtual;
++
++	if (mutex_lock_interruptible(&p_dummy->lock))
++		return -ERESTARTSYS;
++
++	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
++	if (bigtxbuf_virtual == NULL) {
++		status = -ENOMEM;
++		goto out;
++	}
++	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
++
++	/* Fill TXBUF with some happy pattern */
++	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
++
++	/*
++	 * Force chip to 8 bit mode
++	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
++	 */
++	chip_info->data_size = SSP_DATA_BITS_8;
++	/* You should NOT DO THIS EITHER */
++	spi->master->setup(spi);
++
++	/* Now run the tests for 8bit mode */
++	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
++		"in 8bit mode\n");
++	status = spi_w8r8(spi, 0xAA);
++	if (status < 0)
++		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
++			   "failed with status %d\n", status);
++	else
++		pr_info("Simple test 1: SUCCESS!\n");
++
++	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
++		"in 8bit mode (full FIFO)\n");
++	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
++	if (status < 0)
++		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
++			   "failed with status %d\n", status);
++	else
++		pr_info("Simple test 2: SUCCESS!\n");
++
++	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
++		"in 8bit mode (see if we overflow FIFO)\n");
++	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
++	if (status < 0)
++		pr_warning("Simple test 3: FAILURE: failed with status %d "
++			   "(probably FIFO overrun)\n", status);
++	else
++		pr_info("Simple test 3: SUCCESS!\n");
++
++	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
++		"bytes garbage with spi_read() in 8bit mode\n");
++	status = spi_write(spi, &txbuf[0], 8);
++	if (status < 0)
++		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
++			   "failed with status %d\n", status);
++	else
++		pr_info("Simple test 4 step 1: SUCCESS!\n");
++	status = spi_read(spi, &rxbuf[0], 8);
++	if (status < 0)
++		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
++			   "failed with status %d\n", status);
++	else
++		pr_info("Simple test 4 step 2: SUCCESS!\n");
++
++	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
++		"14 bytes garbage with spi_read() in 8bit mode\n");
++	status = spi_write(spi, &txbuf[0], 14);
++	if (status < 0)
++		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 5 step 1: SUCCESS!\n");
++	status = spi_read(spi, &rxbuf[0], 14);
++	if (status < 0)
++		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 5: SUCCESS!\n");
++
++	pr_info("Simple test 6: write %d bytes with spi_write(), "
++		"read %d bytes garbage with spi_read() in 8bit mode\n",
++		DMA_TEST_SIZE, DMA_TEST_SIZE);
++	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
++	if (status < 0)
++		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 6 step 1: SUCCESS!\n");
++	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
++	if (status < 0)
++		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 6: SUCCESS!\n");
++
++
++	/*
++	 * Force chip to 16 bit mode
++	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
++	 */
++	chip_info->data_size = SSP_DATA_BITS_16;
++	/* You should NOT DO THIS EITHER */
++	spi->master->setup(spi);
++
++	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
++		"in 16bit bus mode\n");
++	status = spi_w8r8(spi, 0xAA);
++	if (status == -EIO)
++		pr_info("Simple test 7: SUCCESS! (expected failure with "
++			"status EIO)\n");
++	else if (status < 0)
++		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
++			   "failed with status %d\n", status);
++	else
++		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
++			   "succeeded but it was expected to fail!\n");
++
++	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
++		"in 16bit mode (full FIFO)\n");
++	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
++	if (status < 0)
++		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
++			   "failed with status %d\n", status);
++	else
++		pr_info("Simple test 8: SUCCESS!\n");
++
++	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
++		"in 16bit mode (see if we overflow FIFO)\n");
++	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
++	if (status < 0)
++		pr_warning("Simple test 9: FAILURE: failed with status %d "
++			   "(probably FIFO overrun)\n", status);
++	else
++		pr_info("Simple test 9: SUCCESS!\n");
++
++	pr_info("Simple test 10: write %d bytes with spi_write(), "
++	       "read %d bytes garbage with spi_read() in 16bit mode\n",
++	       DMA_TEST_SIZE, DMA_TEST_SIZE);
++	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
++	if (status < 0)
++		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 10 step 1: SUCCESS!\n");
++
++	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
++	if (status < 0)
++		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
++			   "failed with status %d (probably FIFO overrun)\n",
++			   status);
++	else
++		pr_info("Simple test 10: SUCCESS!\n");
++
++	status = sprintf(buf, "loop test complete\n");
++	kfree(bigrxbuf_virtual);
++	kfree(bigtxbuf_virtual);
++ out:
++	mutex_unlock(&p_dummy->lock);
++	return status;
++}
++
++static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
++
++static int __devinit pl022_dummy_probe(struct spi_device *spi)
++{
++	struct dummy *p_dummy;
++	int status;
++
++	dev_info(&spi->dev, "probing dummy SPI device\n");
++
++	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
++	if (!p_dummy)
++		return -ENOMEM;
++
++	dev_set_drvdata(&spi->dev, p_dummy);
++	mutex_init(&p_dummy->lock);
++
++	/* sysfs hook */
++	status = device_create_file(&spi->dev, &dev_attr_looptest);
++	if (status) {
++		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
++		goto out_dev_create_looptest_failed;
++	}
++
++	return 0;
++
++out_dev_create_looptest_failed:
++	dev_set_drvdata(&spi->dev, NULL);
++	kfree(p_dummy);
++	return status;
++}
++
++static int __devexit pl022_dummy_remove(struct spi_device *spi)
++{
++	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
++
++	dev_info(&spi->dev, "removing dummy SPI device\n");
++	device_remove_file(&spi->dev, &dev_attr_looptest);
++	dev_set_drvdata(&spi->dev, NULL);
++	kfree(p_dummy);
++
++	return 0;
++}
++
++static struct spi_driver pl022_dummy_driver = {
++	.driver = {
++		.name	= "spi-dummy",
++		.owner	= THIS_MODULE,
++	},
++	.probe	= pl022_dummy_probe,
++	.remove	= __devexit_p(pl022_dummy_remove),
++};
++
++static int __init pl022_init_dummy(void)
++{
++	return spi_register_driver(&pl022_dummy_driver);
++}
++
++static void __exit pl022_exit_dummy(void)
++{
++	spi_unregister_driver(&pl022_dummy_driver);
++}
++
++module_init(pl022_init_dummy);
++module_exit(pl022_exit_dummy);
++
++MODULE_AUTHOR("Linus Walleij <linus.walleij@stericsson.com>");
++MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
++MODULE_LICENSE("GPL");
+-- 
+1.7.1

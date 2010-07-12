@@ -1,7 +1,8 @@
-From: "BetClic par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Pariez sur la finale Espagne - Pays-Bas
-Date: Sun, 11 Jul 2010 18:05:56 +0000 (UTC)
-Message-ID: <l5enpg.7035q8@front02.r7g.com>
+From: <uzieug9592-goC3yJgJGU3Nvy9tFN6x7g@public.gmane.org>
+Subject: [SPAM] Best pills for erection
+Date: Mon, 12 Jul 2010 09:42:29 +0700
+Message-ID: <E1OY8wF-0003qD-PG@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: uzieug9592-goC3yJgJGU3Nvy9tFN6x7g@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://hatheard.ru/?spi-devel-general=D43F7533943D363
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

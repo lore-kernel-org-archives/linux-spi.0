@@ -1,13 +1,15 @@
-From: <uzieug9592-goC3yJgJGU3Nvy9tFN6x7g@public.gmane.org>
-Subject: [SPAM] Best pills for erection
-Date: Mon, 12 Jul 2010 09:42:29 +0700
-Message-ID: <E1OY8wF-0003qD-PG@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: uzieug9592-goC3yJgJGU3Nvy9tFN6x7g@public.gmane.org
+From: "shangwangbanz" <zmtpc168-k+cT0dCbe1g@public.gmane.org>
+Subject: [SPAM] 2010-7-12 16:40:22…œÕ¯÷§2010-7-12 16:40:22
+Date: Mon, 12 Jul 2010 08:08:01 +0800
+Message-ID: <{DED870BC-4847-41CA-A4F9-711576FBE35B}@yahoo.cn>
+References: <{DED870BC-4847-41CA-A4F9-711576FBE35B}@yahoo.cn>
+Reply-To: zmtpc168-k+cT0dCbe1g@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <{DED870BC-4847-41CA-A4F9-711576FBE35B}@yahoo.cn>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,7 +20,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://hatheard.ru/?spi-devel-general=D43F7533943D363
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

@@ -1,7 +1,8 @@
-From: "Protection Maison" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Des specialistes vous guident dans votre choix à prix inedits!
-Date: Wed, 14 Jul 2010 17:39:00 +0000 (UTC)
-Message-ID: <l5k6cz.nz3niq@front07.g7r9.com>
+From: <wybaxob9045-KsbvOupFIvcxFYw1CcD5bw@public.gmane.org>
+Subject: [SPAM] Sex pills Sale
+Date: Thu, 15 Jul 2010 08:11:35 -0700
+Message-ID: <E1OZQ6G-0005Lc-8v@sfs-ml-3.v29.ch3.sourceforge.com>
+Reply-To: wybaxob9045-KsbvOupFIvcxFYw1CcD5bw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://erectderry96v.ru/?spi-devel-general=16B9CDF60EB
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

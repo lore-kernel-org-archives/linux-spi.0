@@ -1,8 +1,8 @@
-From: "Mon Album Photo" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Creez et recevez gratuitement le livre photo de
-	votre choix
-Date: Sat, 17 Jul 2010 12:45:34 +0200 (CEST)
-Message-ID: <l5p77y.ynerdr@front.ta271.com>
+From: "Binck Bank" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] La bourse facile avec 0 Euro de frais de
+	transactions...
+Date: Sat, 17 Jul 2010 13:23:27 +0000 (UTC)
+Message-ID: <l5pemx.s4yk83@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

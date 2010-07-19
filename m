@@ -1,7 +1,7 @@
 From: "discounter" <maillist-v5uRveHXTjdWk0Htik3J/w@public.gmane.org>
 Subject: [SPAM] best prices
-Date: Mon, 19 Jul 2010 07:03:37 -0400
-Message-ID: <C2D5C369A1934342B82E7ADA26DA3030@Win2003-DC>
+Date: Mon, 19 Jul 2010 09:55:37 -0400
+Message-ID: <35553D25A93049CC9A16EE1F4384BB45@Win2003-DC>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

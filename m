@@ -1,41 +1,43 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [spi-devel-general] [PATCH 2/2] SPI: make the moved loopback test
-	work
-Date: Mon, 19 Jul 2010 18:32:30 -0700 (PDT)
-Message-ID: <812288.2599.qm@web180314.mail.gq1.yahoo.com>
-References: <AANLkTinm_bvpcQogsTgVy5ZX1MFajVvDxBtVJ056sTyq@mail.gmail.com>
+From: Cory Maccarrone <darkstar6262@gmail.com>
+Subject: Re: [PATCH] [SPI] SPI100k: Fix 8-bit and RX-only transfers
+Date: Mon, 19 Jul 2010 21:22:28 -0600
+Message-ID: <AANLkTilXQm2z22eXcEHRZDcT1sHDuyxA5ANlPzhKHY1u@mail.gmail.com>
+References: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Anton Vorontsov <avorontsov@mvista.com>,
-	Linus Walleij <linus.ml.walleij@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <AANLkTinm_bvpcQogsTgVy5ZX1MFajVvDxBtVJ056sTyq@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-omap@vger.kernel.org,
+	Cory Maccarrone <darkstar6262@gmail.com>
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> No matter how much I look at it, it seems like
-> all use of this require you to first register
-> *some* device, 
+On Sat, May 29, 2010 at 6:12 PM, Cory Maccarrone <darkstar6262@gmail.co=
+m> wrote:
+> This change fixes 8-bit transfers and RX-only transfers. =C2=A0The
+> SPI100k framework requires minimum 16-bit words to be written, so 8-b=
+it
+> transfers must be shited by 8 bits and sent out as a 16-bit word.
+>
+> Additionally, receive-only transfers were failing due to the
+> perceived need to fill the TX buffer with something. =C2=A0This is in
+> fact not needed.
+>
+> Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
+> ---
+> =C2=A0drivers/spi/omap_spi_100k.c | =C2=A0 23 ++++++++++++-----------
+> =C2=A01 files changed, 12 insertions(+), 11 deletions(-)
+>
 
-OBVIOUSLY.  You can't use SPI without a device;
-it's like any other driver framework in Linux.
-What else should you expect???
+Any feedback on this?  I submitted it almost two months ago and
+nothing seems to have happened with it.  Can this be included in the
+next RC?
 
-Look at the sample code though, ISTR you'll see
-that when the SPI master works correctly, putting
-it into loopback mode just means that the writes
-and reads (should) get the same data -- full duplex.
-No matter what the device is (given SPI_LOOP).
-
-- Dave
+- Cory
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

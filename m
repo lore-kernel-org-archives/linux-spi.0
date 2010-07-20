@@ -1,43 +1,25 @@
-From: Cory Maccarrone <darkstar6262@gmail.com>
-Subject: Re: [PATCH] [SPI] SPI100k: Fix 8-bit and RX-only transfers
-Date: Mon, 19 Jul 2010 21:22:28 -0600
-Message-ID: <AANLkTilXQm2z22eXcEHRZDcT1sHDuyxA5ANlPzhKHY1u@mail.gmail.com>
-References: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
+From: "votre Coin Mutuelle" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Baisse_des_prix_et_hausse_des_?=
+	=?iso-8859-1?q?soins=2C_=E0_decouvrir_maintenant?=
+Date: Tue, 20 Jul 2010 19:16:40 +0200 (CEST)
+Message-ID: <l5v9bp.ng14q8@front.ta271.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-omap@vger.kernel.org,
-	Cory Maccarrone <darkstar6262@gmail.com>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 29, 2010 at 6:12 PM, Cory Maccarrone <darkstar6262@gmail.co=
-m> wrote:
-> This change fixes 8-bit transfers and RX-only transfers. =C2=A0The
-> SPI100k framework requires minimum 16-bit words to be written, so 8-b=
-it
-> transfers must be shited by 8 bits and sent out as a 16-bit word.
->
-> Additionally, receive-only transfers were failing due to the
-> perceived need to fill the TX buffer with something. =C2=A0This is in
-> fact not needed.
->
-> Signed-off-by: Cory Maccarrone <darkstar6262@gmail.com>
-> ---
-> =C2=A0drivers/spi/omap_spi_100k.c | =C2=A0 23 ++++++++++++-----------
-> =C2=A01 files changed, 12 insertions(+), 11 deletions(-)
->
 
-Any feedback on this?  I submitted it almost two months ago and
-nothing seems to have happened with it.  Can this be included in the
-next RC?
-
-- Cory
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Sprint
+What will you do first with EVO, the first 4G phone?
+Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first

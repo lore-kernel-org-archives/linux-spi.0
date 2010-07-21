@@ -1,7 +1,7 @@
-From: "Sofinco par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Taux avantageux sur votre pret en ligne
-Date: Wed, 21 Jul 2010 18:53:09 +0000 (UTC)
-Message-ID: <l5x8ko.9gi2bo@front02.r7g.com>
+From: "Vigilance Securitas Direct par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Votre telesurveillance offerte pour cet été!
+Date: Wed, 21 Jul 2010 20:54:38 +0000 (UTC)
+Message-ID: <l5xe30.2ajq5x@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

@@ -1,8 +1,8 @@
-From: "Horizons Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: =?iso-8859-1?q?Les_bons_soins_aux_bons_prix?=
-	=?iso-8859-1?q?=2C_=E0_voir_sans_attendre!?=
-Date: Thu, 22 Jul 2010 05:13:42 +0200 (CEST)
-Message-ID: <l5xvmp.luo323@front.ta271.com>
+From: <ypipupawe7111-ZSe03BcF65HELLbFHfFBGw@public.gmane.org>
+Subject: [SPAM] Wholesale drugs for sex
+Date: Thu, 22 Jul 2010 08:14:02 -0300
+Message-ID: <E1ObtjI-0004tB-Bu@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: ypipupawe7111-ZSe03BcF65HELLbFHfFBGw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://www.pharmudale45s.ru/
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Sprint

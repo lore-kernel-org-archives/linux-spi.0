@@ -1,7 +1,7 @@
-From: vryujs-fUD0vIDNJdJv1O+Z8WTAqQ@public.gmane.org
-Subject: =?gb2312?b?yfqy+rzGu67T687vwc+/2NbGwfezzA==?=
-Date: Fri, 23 Jul 2010 04:15:41 +0800
-Message-ID: <E1Oc2Bk-0000xs-8A@sfs-ml-4.v29.ch3.sourceforge.com>
+From: JYUer9-M+3VZDXcpjGsTnJN9+BGXg@public.gmane.org
+Subject: [SPAM] 研发的人力资源管理
+Date: Fri, 23 Jul 2010 08:06:03 +0800
+Message-ID: <E1Oc5nC-0003de-Dj@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
 	charset="gb2312"

@@ -1,9 +1,11 @@
-From: "Lmqvz" <hlos-OiEs/phobzlWk0Htik3J/w@public.gmane.org>
-Subject: Mjo
-Date: Sat, 24 Jul 2010 17:21:44 +0800
-Message-ID: <201007241721442500235@ybfimqvz.com>
+From: JUTwdU-jcZlAr5GHw7dG/upSq5wSw@public.gmane.org
+Subject: [SPAM] 全.面.跟>单管.理技.能提.升
+Date: Sat, 24 Jul 2010 18:16:52 +0800
+Message-ID: <E1OcboB-0007uv-Ml@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2532468243579364641=="
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,18 +18,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2532468243579364641==
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
+This is a multi-part message in MIME format
 
-W9fJLdGvXSBbyczGty3P+srbXSBbt/4tzvFdIFu5pLPMLbC017BdtcghDQoNCiAgICAgIKmvsGyp
-ryhwaWFvKdPFu92/yb+qoaMgDQogICAgDQogICAgICAxMzUgMjI3MiA2OTk1wfW+rcDto6ENCg0K
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KRWZqbnN3YSBZdnljZ2twIFVlIExs
-cHQgUWNna290eGJnIE5l
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
---===============2532468243579364641==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -37,7 +35,7 @@ Content-Disposition: inline
 This SF.net email is sponsored by Sprint
 What will you do first with EVO, the first 4G phone?
 Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
---===============2532468243579364641==
+--=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -48,4 +46,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============2532468243579364641==--
+--=_NextPart_2rfkindysadvnqw3nerasdf--

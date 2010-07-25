@@ -1,49 +1,49 @@
-From: JUTwdU-jcZlAr5GHw7dG/upSq5wSw@public.gmane.org
-Subject: [SPAM] 全.面.跟>单管.理技.能提.升
-Date: Sat, 24 Jul 2010 18:16:52 +0800
-Message-ID: <E1OcboB-0007uv-Ml@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [spi-devel-general] [PATCH 2/2] SPI: make the moved loopback test
+	work
+Date: Sun, 25 Jul 2010 01:48:37 -0600
+Message-ID: <AANLkTinFqwexhf5g3JMeN2eedRHbo8eTgaD-eqfWkU=B@mail.gmail.com>
+References: <AANLkTinm_bvpcQogsTgVy5ZX1MFajVvDxBtVJ056sTyq@mail.gmail.com>
+	<812288.2599.qm@web180314.mail.gq1.yahoo.com>
+	<AANLkTilqKs4WcSXxrZPUuaTudLD-P8ZeA6ShGyLmAIhi@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: David Brownell <david-b@pacbell.net>,
+	spi-devel-general@lists.sourceforge.net,
+	Anton Vorontsov <avorontsov@mvista.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Linus Walleij <linus.ml.walleij@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <AANLkTilqKs4WcSXxrZPUuaTudLD-P8ZeA6ShGyLmAIhi@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+On Tue, Jul 20, 2010 at 3:10 PM, Linus Walleij
+<linus.ml.walleij@gmail.com> wrote:
+> 2010/7/20 David Brownell <david-b@pacbell.net>:
+>
+>>> No matter how much I look at it, it seems like
+>>> all use of this require you to first register
+>>> *some* device,
+>>
+>> OBVIOUSLY. =A0You can't use SPI without a device;
+>> it's like any other driver framework in Linux.
+>> What else should you expect???
+>
+> I didn't expect anything else, it just makes it clear that
+> the part of my patch registering a dummy device is
+> not what is being disagreed upon, so this should be OK.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+What's disagreed with is the dummy device knowing the intimate working
+details of the SPI bus driver.
 
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+g.

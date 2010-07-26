@@ -1,14 +1,14 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] SPI: remove the unused dummychip
-Date: Sun, 25 Jul 2010 10:29:49 +0200
-Message-ID: <1280046589-10880-1-git-send-email-linus.walleij@stericsson.com>
+From: =?utf-8?B?0J/RgNCw0LrRgtC40LrRg9C8INC/0L4g0L7RhNGE0YjQvtGA0LDQvA==?=
+	<fe-Srsal3c/G4PigjrGnzQ9xQ@public.gmane.org>
+Subject: =?utf-8?b?0J7QpNCk0KjQntCg0Ks6INCe0JHQl9Ce?=
+	=?utf-8?b?0KAg0JLQntCX0JzQntCW0J3QntCh0KLQldCZINCYINCg0JjQodCa0J4=?=
+	=?utf-8?b?0JI=?=
+Date: Mon, 26 Jul 2010 04:57:48 +0400
+Message-ID: <006A01CB2C5D$905A78A0$8D3FA8C0@181.66.166.190.F.STA.CODETEL.NET.DO>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,321 +20,104 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The unused dummychip i the U300 architecture can be removed since
-the loopback test is moved into the PL022 driver.
-
-Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
----
-This requires the previous patch moving the loopback test.
-I meant to make it one big patch but failed. This should work just
-as good and is still bisectable.
----
- arch/arm/mach-u300/dummyspichip.c |  291 -------------------------------------
- 1 files changed, 0 insertions(+), 291 deletions(-)
- delete mode 100644 arch/arm/mach-u300/dummyspichip.c
-
-diff --git a/arch/arm/mach-u300/dummyspichip.c b/arch/arm/mach-u300/dummyspichip.c
-deleted file mode 100644
-index 5f55012..0000000
---- a/arch/arm/mach-u300/dummyspichip.c
-+++ /dev/null
-@@ -1,291 +0,0 @@
--/*
-- * arch/arm/mach-u300/dummyspichip.c
-- *
-- * Copyright (C) 2007-2009 ST-Ericsson AB
-- * License terms: GNU General Public License (GPL) version 2
-- * This is a dummy loopback SPI "chip" used for testing SPI.
-- * Author: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-- */
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/device.h>
--#include <linux/err.h>
--#include <linux/sysfs.h>
--#include <linux/mutex.h>
--#include <linux/spi/spi.h>
--#include <linux/dma-mapping.h>
--#include <linux/slab.h>
--/*
-- * WARNING! Do not include this pl022-specific controller header
-- * for any generic driver. It is only done in this dummy chip
-- * because we alter the chip configuration in order to test some
-- * different settings on the loopback device. Normal chip configs
-- * shall be STATIC and not altered by the driver!
-- */
--#include <linux/amba/pl022.h>
--
--struct dummy {
--	struct device *dev;
--	struct mutex lock;
--};
--
--#define DMA_TEST_SIZE 2048
--
--/* When we cat /sys/bus/spi/devices/spi0.0/looptest this will be triggered */
--static ssize_t dummy_looptest(struct device *dev,
--		struct device_attribute *attr, char *buf)
--{
--	struct spi_device *spi = to_spi_device(dev);
--	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
--
--	/*
--	 * WARNING! Do not dereference the chip-specific data in any normal
--	 * driver for a chip. It is usually STATIC and shall not be read
--	 * or written to. Your chip driver should NOT depend on fields in this
--	 * struct, this is just used here to alter the behaviour of the chip
--	 * in order to perform tests.
--	 */
--	struct pl022_config_chip *chip_info = spi->controller_data;
--	int status;
--	u8 txbuf[14] = {0xDE, 0xAD, 0xBE, 0xEF, 0x2B, 0xAD,
--			0xCA, 0xFE, 0xBA, 0xBE, 0xB1, 0x05,
--			0xF0, 0x0D};
--	u8 rxbuf[14];
--	u8 *bigtxbuf_virtual;
--	u8 *bigrxbuf_virtual;
--
--	if (mutex_lock_interruptible(&p_dummy->lock))
--		return -ERESTARTSYS;
--
--	bigtxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
--	if (bigtxbuf_virtual == NULL) {
--		status = -ENOMEM;
--		goto out;
--	}
--	bigrxbuf_virtual = kmalloc(DMA_TEST_SIZE, GFP_KERNEL);
--
--	/* Fill TXBUF with some happy pattern */
--	memset(bigtxbuf_virtual, 0xAA, DMA_TEST_SIZE);
--
--	/*
--	 * Force chip to 8 bit mode
--	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
--	 */
--	chip_info->data_size = SSP_DATA_BITS_8;
--	/* You should NOT DO THIS EITHER */
--	spi->master->setup(spi);
--
--	/* Now run the tests for 8bit mode */
--	pr_info("Simple test 1: write 0xAA byte, read back garbage byte "
--		"in 8bit mode\n");
--	status = spi_w8r8(spi, 0xAA);
--	if (status < 0)
--		pr_warning("Siple test 1: FAILURE: spi_write_then_read "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 1: SUCCESS!\n");
--
--	pr_info("Simple test 2: write 8 bytes, read back 8 bytes garbage "
--		"in 8bit mode (full FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 2: FAILURE: spi_write_then_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 2: SUCCESS!\n");
--
--	pr_info("Simple test 3: write 14 bytes, read back 14 bytes garbage "
--		"in 8bit mode (see if we overflow FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 3: FAILURE: failed with status %d "
--			   "(probably FIFO overrun)\n", status);
--	else
--		pr_info("Simple test 3: SUCCESS!\n");
--
--	pr_info("Simple test 4: write 8 bytes with spi_write(), read 8 "
--		"bytes garbage with spi_read() in 8bit mode\n");
--	status = spi_write(spi, &txbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 4 step 1: FAILURE: spi_write() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 4 step 1: SUCCESS!\n");
--	status = spi_read(spi, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 4 step 2: FAILURE: spi_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 4 step 2: SUCCESS!\n");
--
--	pr_info("Simple test 5: write 14 bytes with spi_write(), read "
--		"14 bytes garbage with spi_read() in 8bit mode\n");
--	status = spi_write(spi, &txbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 5 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 5 step 1: SUCCESS!\n");
--	status = spi_read(spi, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 5 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 5: SUCCESS!\n");
--
--	pr_info("Simple test 6: write %d bytes with spi_write(), "
--		"read %d bytes garbage with spi_read() in 8bit mode\n",
--		DMA_TEST_SIZE, DMA_TEST_SIZE);
--	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 6 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 6 step 1: SUCCESS!\n");
--	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 6 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 6: SUCCESS!\n");
--
--
--	/*
--	 * Force chip to 16 bit mode
--	 * WARNING: NEVER DO THIS IN REAL DRIVER CODE, THIS SHOULD BE STATIC!
--	 */
--	chip_info->data_size = SSP_DATA_BITS_16;
--	/* You should NOT DO THIS EITHER */
--	spi->master->setup(spi);
--
--	pr_info("Simple test 7: write 0xAA byte, read back garbage byte "
--		"in 16bit bus mode\n");
--	status = spi_w8r8(spi, 0xAA);
--	if (status == -EIO)
--		pr_info("Simple test 7: SUCCESS! (expected failure with "
--			"status EIO)\n");
--	else if (status < 0)
--		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
--			   "failed with status %d\n", status);
--	else
--		pr_warning("Siple test 7: FAILURE: spi_write_then_read "
--			   "succeeded but it was expected to fail!\n");
--
--	pr_info("Simple test 8: write 8 bytes, read back 8 bytes garbage "
--		"in 16bit mode (full FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 8, &rxbuf[0], 8);
--	if (status < 0)
--		pr_warning("Simple test 8: FAILURE: spi_write_then_read() "
--			   "failed with status %d\n", status);
--	else
--		pr_info("Simple test 8: SUCCESS!\n");
--
--	pr_info("Simple test 9: write 14 bytes, read back 14 bytes garbage "
--		"in 16bit mode (see if we overflow FIFO)\n");
--	status = spi_write_then_read(spi, &txbuf[0], 14, &rxbuf[0], 14);
--	if (status < 0)
--		pr_warning("Simple test 9: FAILURE: failed with status %d "
--			   "(probably FIFO overrun)\n", status);
--	else
--		pr_info("Simple test 9: SUCCESS!\n");
--
--	pr_info("Simple test 10: write %d bytes with spi_write(), "
--	       "read %d bytes garbage with spi_read() in 16bit mode\n",
--	       DMA_TEST_SIZE, DMA_TEST_SIZE);
--	status = spi_write(spi, &bigtxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 10 step 1: FAILURE: spi_write() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 10 step 1: SUCCESS!\n");
--
--	status = spi_read(spi, &bigrxbuf_virtual[0], DMA_TEST_SIZE);
--	if (status < 0)
--		pr_warning("Simple test 10 step 2: FAILURE: spi_read() "
--			   "failed with status %d (probably FIFO overrun)\n",
--			   status);
--	else
--		pr_info("Simple test 10: SUCCESS!\n");
--
--	status = sprintf(buf, "loop test complete\n");
--	kfree(bigrxbuf_virtual);
--	kfree(bigtxbuf_virtual);
-- out:
--	mutex_unlock(&p_dummy->lock);
--	return status;
--}
--
--static DEVICE_ATTR(looptest, S_IRUGO, dummy_looptest, NULL);
--
--static int __devinit pl022_dummy_probe(struct spi_device *spi)
--{
--	struct dummy *p_dummy;
--	int status;
--
--	dev_info(&spi->dev, "probing dummy SPI device\n");
--
--	p_dummy = kzalloc(sizeof *p_dummy, GFP_KERNEL);
--	if (!p_dummy)
--		return -ENOMEM;
--
--	dev_set_drvdata(&spi->dev, p_dummy);
--	mutex_init(&p_dummy->lock);
--
--	/* sysfs hook */
--	status = device_create_file(&spi->dev, &dev_attr_looptest);
--	if (status) {
--		dev_dbg(&spi->dev, "device_create_file looptest failure.\n");
--		goto out_dev_create_looptest_failed;
--	}
--
--	return 0;
--
--out_dev_create_looptest_failed:
--	dev_set_drvdata(&spi->dev, NULL);
--	kfree(p_dummy);
--	return status;
--}
--
--static int __devexit pl022_dummy_remove(struct spi_device *spi)
--{
--	struct dummy *p_dummy = dev_get_drvdata(&spi->dev);
--
--	dev_info(&spi->dev, "removing dummy SPI device\n");
--	device_remove_file(&spi->dev, &dev_attr_looptest);
--	dev_set_drvdata(&spi->dev, NULL);
--	kfree(p_dummy);
--
--	return 0;
--}
--
--static struct spi_driver pl022_dummy_driver = {
--	.driver = {
--		.name	= "spi-dummy",
--		.owner	= THIS_MODULE,
--	},
--	.probe	= pl022_dummy_probe,
--	.remove	= __devexit_p(pl022_dummy_remove),
--};
--
--static int __init pl022_init_dummy(void)
--{
--	return spi_register_driver(&pl022_dummy_driver);
--}
--
--static void __exit pl022_exit_dummy(void)
--{
--	spi_unregister_driver(&pl022_dummy_driver);
--}
--
--module_init(pl022_init_dummy);
--module_exit(pl022_exit_dummy);
--
--MODULE_AUTHOR("Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>");
--MODULE_DESCRIPTION("PL022 SSP/SPI DUMMY Linux driver");
--MODULE_LICENSE("GPL");
--- 
-1.7.1.1
-
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Sprint
-What will you do first with EVO, the first 4G phone?
-Visit sprint.com/first -- http://p.sf.net/sfu/sprint-com-first
+0J7QpNCk0KjQntCg0KsgLSDQrdCk0KTQldCa0KLQmNCS0J3Qq9CVINCh0J/QntCh0J7QkdCrINCY
+0KHQn9Ce0JvQrNCX0J7QktCQ0J3QmNCvOgrQstGL0LHQvtGAINC+0L/RgtC40LzQsNC70YzQvdC+
+0Lkg0Y7RgNC40YHQtNC40LrRhtC40LgsINGB0YXQtdC80Ysg0L3QsNC70L7Qs9C+0LLQvtC5INC+
+0L/RgtC40LzQuNC30LDRhtC40LgsINCy0L7Qv9GA0L7RgdGLIArQutC+0L3RhNC40LTQtdC90YbQ
+uNCw0LvRjNC90L7RgdGC0LguCgowOSDQsNCy0LPRg9GB0YLQsCB+INCc0L7RgdC60LLQsAoK0JjQ
+vdGE0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjyDQv9C+INGC0LXQu9C1
+0YTQvtC90YM6IDhfNDk1XzkyMV8zMF8xNwoK0JIg0L/RgNC+0LPRgNCw0LzQvNC1OgoxLiDQntGE
+0YTRiNC+0YDQvdGL0LUsINC90LjQt9C60L7QvdCw0LvQvtCz0L7QstGL0LUg0Lgg0L/RgNC10YHR
+gtC40LbQvdGL0LUg0LXQstGA0L7Qv9C10LnRgdC60LjQtSDRjtGA0LjRgdC00LjQutGG0LjQuDog
+0LrRgNC40YLQtdGA0LjQuCAKICDQstGL0LHQvtGA0LAuCi0g0KHRgNCw0LLQvdC40YLQtdC70YzQ
+vdCw0Y8g0YXQsNGA0LDQutGC0LXRgNC40YHRgtC40LrQsCDQvdCw0LjQsdC+0LvQtdC1INC/0L7Q
+v9GD0LvRj9GA0L3Ri9GFINC+0YTRhNGI0L7RgNC90YvRhSDRjtGA0LjRgdC00LjQutGG0LjQuSAo
+0JHRgNC40YLQsNC90YHQutC40LUgCiAg0JLQuNGA0LPQuNC90YHQutC40LUg0L7RgdGC0YDQvtCy
+0LAsINCR0LXQu9C40LcsINCh0LXQudGI0LXQu9GLLCDQn9Cw0L3QsNC80LAg0Lgg0YIu0LQuKS4g
+Ci0g0J7RhNGE0YjQvtGA0YssINCT0L7QvdC60L7QvdCzINC4INCa0LjQv9GAINCyINGB0L7QstGA
+0LXQvNC10L3QvdC+0Lwg0LHQuNC30L3QtdGB0LUuCi0g0J3QuNC30LrQvtC90LDQu9C+0LPQvtCy
+0YvQtSDRjtGA0LjRgdC00LjQutGG0LjQuDog0L/RgNC10LjQvNGD0YnQtdGB0YLQstCwINC/0L4g
+0YHRgNCw0LLQvdC10L3QuNGOINGBICLQutC70LDRgdGB0LjRh9C10YHQutC40LzQuCIg0L7RhNGE
+0YjQvtGA0LDQvNC4IAogINC4INCT0L7QvdC60L7QvdCz0L7QvC4KLSDQoNC40YHQutC4LCDQstC+
+0LfQvdC40LrQsNGO0YnQuNC1INC/0YDQuCDQuNGB0L/QvtC70YzQt9C+0LLQsNC90LjQuCDQvtGE
+0YTRiNC+0YDQvdGL0YUg0LrQvtC80L/QsNC90LjQuS4KLSDQodGC0YDRg9C60YLRg9GA0LAg0YPQ
+v9GA0LDQstC70LXQvdC40Y8g0LjQvdC+0YHRgtGA0LDQvdC90YvQvNC4INC60L7QvNC/0LDQvdC4
+0Y/QvNC4INC4INC00L7RgdGC0YPQv9CwINC6INCx0LDQvdC60L7QstGB0LrQvtC80YMg0YHRh9C1
+0YLRgy4KLSDQodC70YPRh9Cw0LgsINCyINC60L7RgtC+0YDRi9GFINGG0LXQu9C10YHQvtC+0LHR
+gNCw0LfQvdC+INC40YHQv9C+0LvRjNC30L7QstCw0YLRjCDQv9GA0LXRgdGC0LjQttC90YvQtSDR
+jtGA0LjRgdC00LjQutGG0LjQuDog0KjQstC10LnRhtCw0YDQuNGPLCAKICDQkNCy0YHRgtGA0LjR
+jywg0JvRjtC60YHQtdC80LHRg9GA0LMsINCd0LjQtNC10YDQu9Cw0L3QtNGLINC4INGCLtC0LgoK
+Mi4g0JrQuNC/0YAg0LrQsNC6INGB0LHQsNC70LDQvdGB0LjRgNC+0LLQsNC90L3Ri9C5INC40L3R
+gdGC0YDRg9C80LXQvdGCINC90LDQu9C+0LPQvtCy0L7Qs9C+INC/0LvQsNC90LjRgNC+0LLQsNC9
+0LjRjy4g0J/RgNCw0LrRgtC40LrQsCAKICAg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40Y8g0LrQ
+uNC/0YDRgdC60LjRhSDQutC+0LzQv9Cw0L3QuNC5LgotINCe0YHQvdC+0LLQvdGL0LUg0L3QsNC7
+0L7Qs9C4INC90LAg0JrQuNC/0YDQtTog0YHRgtCw0LLQutC4LCDQv9C+0YDRj9C00L7QuiDRg9C/
+0LvQsNGC0YssINC+0YHQstC+0LHQvtC20LTQtdC90LjRjzoKICDQvdCw0LvQvtCzINC90LAg0L/R
+gNC40LHRi9C70YwgKENvcnBvcmF0ZSBJbmNvbWUgVGF4KTsKICDQv9GA0LXQtNCy0LDRgNC40YLQ
+tdC70YzQvdGL0Lkg0L3QsNC70L7QsyDQvdCwINC/0YDQuNCx0YvQu9GMIChQcmVsaW1pbmFyeSBU
+YXgpINC4INCw0LLQsNC90YHQvtCy0YvQtSDQv9C70LDRgtC10LbQuCAoSW5zdGFsbG1lbnRzKTsK
+ICDQvdCw0LvQvtCzINC90LAg0L7QsdC+0YDQvtC90YMgKERlZmVuY2UgQ29udHJpYnV0aW9uIFRh
+eCk7CiAg0J3QlNChLgotINCf0YDQvtCy0LXQtNC10L3QuNC1INCw0YPQtNC40YLQsCDQuCDRgdC0
+0LDRh9CwINC+0YLRh9C10YLQvdC+0YHRgtC4LgoKMy4g0KHRhdC10LzRiywg0L/RgNC40LzQtdC9
+0Y/QtdC80YvQtSDQsiDQvNC10LbQtNGD0L3QsNGA0L7QtNC90L7QvCDQvdCw0LvQvtCz0L7QstC+
+0Lwg0L/Qu9Cw0L3QuNGA0L7QstCw0L3QuNC4LgotINCS0L3QtdGI0L3QtdGC0L7RgNCz0L7QstGL
+0LUg0L7Qv9C10YDQsNGG0LjQuCAo0Y3QutGB0L/QvtGA0YIv0LjQvNC/0L7RgNGCKToKICDRgdGF
+0LXQvNGLINGBINC40YHQv9C+0LvRjNC30L7QstCw0L3QuNC10Lwg0L7RhNGE0YjQvtGA0L7QsiDQ
+uCDQk9C+0L3QutC+0L3Qs9CwOwogINGB0YXQtdC80LAg0YEg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQ
+vdC40LUg0LDQvdCz0LvQuNC50YHQutC40YUg0L/QsNGA0YLQvdC10YDRgdGC0LIgTExQOwogINGB
+0YXQtdC80Ysg0YEg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40LXQvCDQmtC40L/RgNCwINC4INCw
+0L3Qs9C70LjQudGB0LrQvtC5INC60L7QvNC/0LDQvdC40Lgg0YHQviDRgdGC0LDRgtGD0YHQvtC8
+INGA0LXQt9C40LTQtdC90YLRgdGC0LLQsCDQvdCwINCa0LjQv9GA0LUuCiAg0LDQs9C10L3RgtGB
+0LrQuNC1INGB0YXQtdC80YsgKNC90LAg0L/RgNC40LzQtdGA0LUg0LDQvdCz0LvQuNC50YHQutC+
+0LkgTFREKSDQuCDQstC+0LfQvNC+0LbQvdC+0YHRgtGMINC40YHQv9C+0LvRjNC30L7QstCw0L3Q
+uNGPINC/0YDQvtGH0LjRhQogINGO0YDQuNGB0LTQuNC60YbQuNC5LgotINCS0YvQv9C70LDRgtGL
+INC00LjQstC40LTQtdC90LTQvtCyINC4INC/0L7RgdGC0YDQvtC10L3QuNC1INGF0L7Qu9C00LjQ
+vdCz0L7QstGL0YUg0YHRgtGA0YPQutGC0YPRgDoKLSDQpNC40L3QsNC90YHQuNGA0L7QstCw0L3Q
+uNC1ICjQvdCwINC/0YDQuNC80LXRgNC1INC30LDQudC80L7QsiDQuCDQv9GA0L7RhtC10L3RgtC9
+0YvRhSDQstGL0L/Qu9Cw0YIpLgotICjQodGD0LEp0LvQuNGG0LXQvdC30LjQvtC90L3Ri9C1INC0
+0L7Qs9C+0LLQvtGA0Ysg0Lgg0LLRi9C/0LvQsNGC0Ysg0YDQvtGP0LvRgtC4INC30LAg0LjRgdC/
+0L7Qu9GM0LfQvtCy0LDQvdC40LUg0L/RgNCw0LIg0LjQvdGC0LXQu9C70LXQutGC0YPQsNC70YzQ
+vdC+0LkgCiAg0YHQvtCx0YHRgtCy0LXQvdC90L7RgdGC0LguCi0g0KHRhdC10LzRiywg0LjRgdC/
+0L7Qu9GM0LfQvtCy0LDQvdC40LUg0LrQvtGC0L7RgNGL0YUg0YHQu9C10LTRg9C10YIg0LjQt9Cx
+0LXQs9Cw0YLRjC4KCjQuINCa0L7QvdGE0LjQtNC10L3RhtC40LDQu9GM0L3QvtGB0YLRjCDQsdC4
+0LfQvdC10YHQsDog0L3QvtC80LjQvdCw0LvRjNC90YvQtSDQtNC40YDQtdC60YLQvtGA0LAg0Lgg
+0LDQutGG0LjQvtC90LXRgNGLLCDQsNC60YbQuNC4INC90LAgCiAg0L/RgNC10LTRitGP0LLQuNGC
+0LXQu9GPLCDRgtGA0LDRgdGC0Ysg0Lgg0YTQvtC90LTRiy4KLSDQndC+0LzQuNC90LDQu9GM0L3R
+i9C5INGB0LXRgNCy0LjRgToKICDQuNC90YHRgtGA0YPQvNC10L3RgtGLINC60L7QvdGC0YDQvtC7
+0Y8g0L3QvtC80LjQvdCw0LvRjNC90YvRhSDQtNC40YDQtdC60YLQvtGA0L7QsiDQuCDQvdC+0LzQ
+uNC90LDQu9GM0L3Ri9GFINCw0LrRhtC40L7QvdC10YDQvtCyOwogINC70LjRhtCwLCDQutC+0YLQ
+vtGA0YvQvCDQsdGD0LTRg9GCINC40LfQstC10YHRgtC90Ysg0LjQvNC10L3QsCDQsdC10L3QtdGE
+0LjRhtC40LDRgNC+0LIuCi0g0JrQuNC/0YA6INC80L7Qs9GD0YIg0LvQuCDQvdCw0LvQvtCz0L7Q
+stGL0LUg0L7RgNCz0LDQvdGLINCg0KQg0L/QvtC70YPRh9C40YLRjCDQuNC90YTQvtGA0LzQsNGG
+0LjRjiDQviDQutC+0LzQv9Cw0L3QuNC4INC/0YPRgtC10Lwg0LfQsNC/0YDQvtGB0LAg0LIgCiAg
+0YDQtdCz0LjRgdGC0YDQuNGA0YPRjtGJ0LjQtSDQvtGA0LPQsNC90Ysg0LjQvdC+0YHRgtGA0LDQ
+vdC90L7Qs9C+INCz0L7RgdGD0LTQsNGA0YHRgtCy0LA/Ci0g0JDQutGG0LjQuCDQvdCwINC/0YDQ
+tdC00YrRj9Cy0LjRgtC10LvRjzog0YbQtdC70LXRgdC+0L7QsdGA0LDQt9C90L7RgdGC0Ywg0L/R
+gNC40LzQtdC90LXQvdC40Y8uCi0g0KLRgNCw0YHRgtGLL9GE0L7QvdC00Ysg0LrQsNC6INC40L3R
+gdGC0YDRg9C80LXQvdGCINC30LDRidC40YLRiyDQsNC60YLQuNCy0L7QsiDQuCDQutC+0L3RhNC4
+0LTQtdC90YbQuNCw0LvRjNC90L7RgdGC0LguCi0gItCf0L7QtNCy0L7QtNC90YvQtSDQutCw0LzQ
+vdC4IiDQv9GA0Lgg0LjRgdC/0L7Qu9GM0LfQvtCy0LDQvdC40Lgg0L3QvtC80LjQvdCw0LvRjNC9
+0L7Qs9C+INGB0LXRgNCy0LjRgdCwINC4INGC0YDQsNGB0YLQvtCyL9GE0L7QvdC00L7Qsi4KCjUu
+INCe0YLQutGA0YvRgtC40LUg0YHRh9C10YLQvtCyINC90LAg0LjQvdC+0YHRgtGA0LDQvdC90YvQ
+tSDQutC+0LzQv9Cw0L3QuNC4LgotINCa0LDQutC+0Lkg0LjQvdC+0YHRgtGA0LDQvdC90YvQuSDQ
+sdCw0L3QuiDQstGL0LHRgNCw0YLRjD8KLSDQn9GA0L7RhtC10LTRg9GA0LAg0L7RgtC60YDRi9GC
+0LjRjyDRgdGH0LXRgtCwLgotINCi0YDQtdCx0L7QstCw0L3QuNC1INCx0LDQvdC60L7QsiDQuiDQ
+tNC10YDQttCw0YLQtdC70Y/QvCDRgdGH0LXRgtC+0LIuCi0g0KDRg9Cx0LvQtdCy0YvQuSDRgdGH
+0LXRgiDQsiDQuNC90L7RgdGC0YDQsNC90L3QvtC8INCx0LDQvdC60LUuCgrQodGC0L7QuNC80L7R
+gdGC0Ywg0YPRh9Cw0YHRgtC40Y86IDgwMDAg0YDRg9Cx0LvQtdC5LgoK0JzQtdGB0YLQviDQv9GA
+0L7QstC10LTQtdC90LjRjzog0LwuINCR0LDRg9C80LDQvdGB0LrQsNGPLCDQsdC40LfQvdC10YEg
+0YbQtdC90YLRgCAi0JLQuNC60YLQvtGA0LjRjyDQn9C70LDQt9CwIi4K0JIg0YHRgtC+0LjQvNC+
+0YHRgtGMINCy0YXQvtC00LjRgiDQvNC10YLQvtC00LjRh9C10YHQutC40Lkg0LzQsNGC0LXRgNC4
+0LDQuywg0L7QsdC10LTRiywg0LrQvtGE0LUt0L/QsNGD0LfRiywg0YHQtdGA0YLQuNGE0LjQutCw
+0YIuIArQmNC90L7Qs9C+0YDQvtC00L3QuNC8INGD0YfQsNGB0YLQvdC40LrQsNC8INC/0L7QvNC+
+0LPQsNC10Lwg0LIg0LHRgNC+0L3QuNGA0L7QstCw0L3QuNC4INCz0L7RgdGC0LjQvdC40YbRiy4K
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSBQYWxtIFBESyBIb3QgQXBwcyBQcm9ncmFtIG9mZmVy
+cyBkZXZlbG9wZXJzIHdobyB1c2UgdGhlClBsdWctSW4gRGV2ZWxvcG1lbnQgS2l0IHRvIGJyaW5n
+IHRoZWlyIEMvQysrIGFwcHMgdG8gUGFsbSBmb3IgYSBzaGFyZSAKb2YgJDEgTWlsbGlvbiBpbiBj
+YXNoIG9yIEhQIFByb2R1Y3RzLiBWaXNpdCB1cyBoZXJlIGZvciBtb3JlIGRldGFpbHM6Cmh0dHA6
+Ly9hZC5kb3VibGVjbGljay5uZXQvY2xrOzIyNjg3OTMzOTsxMzUwMzAzODtsPwpodHRwOi8vY2xr
+LmF0ZG10LmNvbS9DUlMvZ28vMjQ3NzY1NTMyL2RpcmVjdC8wMS8KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

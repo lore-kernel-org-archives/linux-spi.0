@@ -1,15 +1,18 @@
-From: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Subject: Re: Linux as a SPI slave device - anything new?
-Date: Mon, 26 Jul 2010 23:00:37 -0400
-Message-ID: <4C4E4BD5.2090804@whoi.edu>
-References: <AANLkTimbDo0U7fB60xZ31UfqnAYnEm+HskLfXGyRKamz@mail.gmail.com>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH] spi/mpc5121: register spi child
+ devices of spi node
+Date: Tue, 27 Jul 2010 09:17:44 +0300
+Message-ID: <20100727061744.GB22765@jasper.tkos.co.il>
+References: <1280185178-5002-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dpervushin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: John Williams <john.williams-g5w7nrANp4BDPfheJLI6IQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTimbDo0U7fB60xZ31UfqnAYnEm+HskLfXGyRKamz-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1280185178-5002-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,41 +23,74 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/26/2010 09:54 PM, John Williams wrote:
-> Hi,
-> 
-> I was wondering if anything has changed in the Linux SPI stack to
-> allow the creation of SPI slave devices - that is have an Embedded
-> Linux system look like a SPI slave to a master elsewhere in the
-> system?
-> 
-> I asked about this a few years ago and there was no general solution -
-> it's a hard problem because the slave must respond very quickly to a
-> master request, and userspace latencies in there may make it
-> impossible.
-> 
-> Just wondering if that is still the case.
+Hi Anatolij,
 
-As far as I know, nothing has changed, nor is it ever likely to do so,
-because of the problem you summarized above.  Restricted slave operation
-is still possible, where the next request by the external master can be
-predicted, where the master inserts the required delay before clocking a
-response, or where the clock is very slow.  But general slave operation
-can never be achieved (IMHO); even an interrupt driven kernel
-implementation is not generally fast enough on any existing processor
-(100s of usec on most processors that would be considered for embedded
-use).  If, in the future, processing becomes orders of magnitude faster,
-while SPI devices remain slow, then perhaps it will be possible.
+On Tue, Jul 27, 2010 at 12:59:38AM +0200, Anatolij Gustschin wrote:
+> Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+> ---
+>  drivers/spi/mpc512x_psc_spi.c |   10 +++++++++-
+>  1 files changed, 9 insertions(+), 1 deletions(-)
+
+You should CC Grant Likely on this. He is now the de-facto maintainer of the 
+SPI subsystem.
+
+baruch
+
+> diff --git a/drivers/spi/mpc512x_psc_spi.c b/drivers/spi/mpc512x_psc_spi.c
+> index c8d69fc..39e5faf 100644
+> --- a/drivers/spi/mpc512x_psc_spi.c
+> +++ b/drivers/spi/mpc512x_psc_spi.c
+> @@ -27,6 +27,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/spi/spi.h>
+>  #include <linux/fsl_devices.h>
+> +#include <linux/of_spi.h>
+>  #include <asm/mpc52xx_psc.h>
+>  
+>  struct mpc512x_psc_spi {
+> @@ -511,6 +512,7 @@ static int __devinit mpc512x_psc_spi_of_probe(struct of_device *op,
+>  	const u32 *regaddr_p;
+>  	u64 regaddr64, size64;
+>  	s16 id = -1;
+> +	int ret;
+>  
+>  	regaddr_p = of_get_address(op->dev.of_node, 0, &size64, NULL);
+>  	if (!regaddr_p) {
+> @@ -533,8 +535,14 @@ static int __devinit mpc512x_psc_spi_of_probe(struct of_device *op,
+>  		id = *psc_nump;
+>  	}
+>  
+> -	return mpc512x_psc_spi_do_probe(&op->dev, (u32) regaddr64, (u32) size64,
+> +	ret = mpc512x_psc_spi_do_probe(&op->dev, (u32) regaddr64, (u32) size64,
+>  				irq_of_parse_and_map(op->dev.of_node, 0), id);
+> +
+> +	if (!ret)
+> +		of_register_spi_devices(dev_get_drvdata(&op->dev),
+> +					op->dev.of_node);
+> +
+> +	return ret;
+>  }
+>  
+>  static int __devexit mpc512x_psc_spi_of_remove(struct of_device *op)
+> -- 
+> 1.7.0.4
+> 
+> 
+> ------------------------------------------------------------------------------
+> The Palm PDK Hot Apps Program offers developers who use the
+> Plug-In Development Kit to bring their C/C++ apps to Palm for a share 
+> of $1 Million in cash or HP Products. Visit us here for more details:
+> http://ad.doubleclick.net/clk;226879339;13503038;l?
+> http://clk.atdmt.com/CRS/go/247765532/direct/01/
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
 -- 
-Ned Forrester                                       nforrester-/d+BM93fTQY@public.gmane.org
-Oceanographic Systems Lab                                  508-289-2226
-Applied Ocean Physics and Engineering Dept.
-Woods Hole Oceanographic Institution          Woods Hole, MA 02543, USA
-http://www.whoi.edu/
-http://www.whoi.edu/sbl/liteSite.do?litesiteid=7212
-http://www.whoi.edu/hpb/Site.do?id=1532
-
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

@@ -1,245 +1,290 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/6] of/spi: add support to parse
-	the SPI flash's partitions
-Date: Tue, 27 Jul 2010 13:24:19 -0600
-Message-ID: <AANLkTikt+j0_jL7Winqzyb-OhWXSgw-G7F0ix3NVNXB7@mail.gmail.com>
-References: <1279591705-7574-1-git-send-email-Mingkai.hu@freescale.com>
-	<1279591705-7574-2-git-send-email-Mingkai.hu@freescale.com>
-	<1279591705-7574-3-git-send-email-Mingkai.hu@freescale.com>
-	<1279591705-7574-4-git-send-email-Mingkai.hu@freescale.com>
-	<20100726002813.GB25419@angua.secretlab.ca>
-	<73839B4A0818E747864426270AC332C305400637@zmy16exm20.fsl.freescale.net>
-	<AANLkTimQNWOvk_Tn3yedA-TSEc3x=+QR=rynvB8PKpTp@mail.gmail.com>
-	<73839B4A0818E747864426270AC332C305400687@zmy16exm20.fsl.freescale.net>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH v2] of/spi: call of_register_spi_devices() from spi core code
+Date: Tue, 27 Jul 2010 22:35:58 +0200
+Message-ID: <1280262958-21914-1-git-send-email-agust@denx.de>
+References: <AANLkTimG+QLksWVbQ63F=Bc1h-9946J1RO0qSavBAegO@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Zang Roy-R61911 <R61911-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Hu Mingkai-B21284 <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <73839B4A0818E747864426270AC332C305400687-6lxYB4K41cljSzXYXaT4fVjVikpgYyvb5NbjCUgZEJk@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <AANLkTimG+QLksWVbQ63F=Bc1h-9946J1RO0qSavBAegO-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-[cc'ing spi-devel-general]
+Move of_register_spi_devices() call from drivers to
+spi_register_master(). Also change the function to use
+the struct device_node pointer from master spi device
+instead of passing it as function argument.
 
-On Mon, Jul 26, 2010 at 2:20 AM, Hu Mingkai-B21284 <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org> w=
-rote:
->
->
->> -----Original Message-----
->> From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On
->> Behalf Of Grant Likely
->> Sent: Monday, July 26, 2010 3:53 PM
->> To: Hu Mingkai-B21284
->> Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org; Zang
->> Roy-R61911
->> Subject: Re: [PATCH 3/6] of/spi: add support to parse the SPI
->> flash's partitions
->>
->> On Mon, Jul 26, 2010 at 1:25 AM, Hu Mingkai-B21284
->> <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wrote:
->> >
->> >
->> >> -----Original Message-----
->> >> From: Grant Likely [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On Behalf
->> Of Grant
->> >> Likely
->> >> Sent: Monday, July 26, 2010 8:28 AM
->> >> To: Hu Mingkai-B21284
->> >> Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org; Zang
->> >> Roy-R61911
->> >> Subject: Re: [PATCH 3/6] of/spi: add support to parse the
->> SPI flash's
->> >> partitions
->> >>
->> >> On Tue, Jul 20, 2010 at 10:08:22AM +0800, Mingkai Hu wrote:
->> >> > Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->> >> > ---
->> >> > =A0drivers/of/of_spi.c =A0 =A0 =A0 | =A0 11 +++++++++++
->> >> > =A0drivers/spi/spi_mpc8xxx.c | =A0 =A01 +
->> >> > =A02 files changed, 12 insertions(+), 0 deletions(-)
->> >> >
->> >> > diff --git a/drivers/of/of_spi.c b/drivers/of/of_spi.c index
->> >> > 5fed7e3..284ca0e 100644
->> >> > --- a/drivers/of/of_spi.c
->> >> > +++ b/drivers/of/of_spi.c
->> >> > @@ -10,6 +10,8 @@
->> >> > =A0#include <linux/device.h>
->> >> > =A0#include <linux/spi/spi.h>
->> >> > =A0#include <linux/of_spi.h>
->> >> > +#include <linux/spi/flash.h>
->> >> > +#include <linux/mtd/partitions.h>
->> >> >
->> >> > =A0/**
->> >> > =A0 * of_register_spi_devices - Register child devices onto
->> >> the SPI bus
->> >> > @@ -26,6 +28,7 @@ void of_register_spi_devices(struct
->> >> spi_master *master, struct device_node *np)
->> >> > =A0 =A0 const __be32 *prop;
->> >> > =A0 =A0 int rc;
->> >> > =A0 =A0 int len;
->> >> > + =A0 struct flash_platform_data *pdata;
->> >> >
->> >> > =A0 =A0 for_each_child_of_node(np, nc) {
->> >> > =A0 =A0 =A0 =A0 =A0 =A0 /* Alloc an spi_device */ @@ -81,6 +84,14 @=
-@ void
->> >> > of_register_spi_devices(struct
->> >> spi_master *master, struct device_node *np)
->> >> > =A0 =A0 =A0 =A0 =A0 =A0 of_node_get(nc);
->> >> > =A0 =A0 =A0 =A0 =A0 =A0 spi->dev.of_node =3D nc;
->> >> >
->> >> > + =A0 =A0 =A0 =A0 =A0 /* Parse the mtd partitions */
->> >> > + =A0 =A0 =A0 =A0 =A0 pdata =3D kzalloc(sizeof(*pdata), GFP_KERNEL);
->> >> > + =A0 =A0 =A0 =A0 =A0 if (!pdata)
->> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
->> >> > + =A0 =A0 =A0 =A0 =A0 pdata->nr_parts =3D
->> of_mtd_parse_partitions(&master->dev,
->> >> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nc, &pdata->p=
-arts);
->> >> > + =A0 =A0 =A0 =A0 =A0 spi->dev.platform_data =3D pdata;
->> >> > +
->> >>
->> >> Nack. =A0Not all spi devices are mtd devices. =A0In fact, most are no=
-t.
->> >>
->> >> The spi driver itself should call the
->> of_mtd_parse_partitions code to
->> >> get the partition map. =A0Do not use pdata in this case.
->> >>
->> >
->> > Yes, we can call of_mtd_parse_partitions to get the
->> partiton map, but
->> > how can we pass this map to spi device to register to MTD layer?
->> >
->> > The spi device is created and registered when call
->> > of_register_spi_device in the spi controller probe
->> function, then the
->> > spi device will traverse the spi device driver list to find
->> the proper
->> > driver, if matched, then call the spi device driver probe
->> code where
->> > the mtd partition info is registered to the mtd layer.
->> >
->> > so where is the proper place to put the
->> of_mtd_parse_partitions code?
->>
->> In the device driver probe code.
->>
->
-> This is the way that I did at first, thus we need to add the same code
-> in all the spi flash driver to get partition map info.
->
-> or we add the get partition map code to of_spi.c?
-
-No, it really does not belong in of_spi.c because the spi code has no
-knowledge about MTD devices.
-
-I only see two valid options, to either:
-a) add it to each MTD driver, or
-b) add a hook to the core MTD code so that if an of_node pointer is
-provided, and no partition data is provided, then it will parse the
-partitions when the MTD device is registered.  You'd also need to code
-it in a way that becomes a no-op when CONFIG_OF is not set.
-
->
-> +/*
-> + * of_parse_flash_partition - Parse the flash partition on the SPI bus
-> + * @spi: =A0 =A0 =A0 Pointer to spi_device device
-> + */
-> +void of_parse_flash_partition(struct spi_device *spi)
-> +{
-> + =A0 =A0 =A0 struct mtd_partition *parts;
-> + =A0 =A0 =A0 struct flash_platform_data *spi_pdata;
-> + =A0 =A0 =A0 int nr_parts =3D 0;
-> + =A0 =A0 =A0 static int num_flash;
-> + =A0 =A0 =A0 struct device_node *np =3D spi->dev.archdata.of_node;
-> +
-> + =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi->dev, np, &parts);
-> + =A0 =A0 =A0 if (!nr_parts)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto end;
-> +
-> + =A0 =A0 =A0 spi_pdata =3D kzalloc(sizeof(*spi_pdata), GFP_KERNEL);
-> + =A0 =A0 =A0 if (!spi_pdata)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto end;
-> + =A0 =A0 =A0 spi_pdata->name =3D kzalloc(10, GFP_KERNEL);
-> + =A0 =A0 =A0 if (!spi_pdata->name)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_flash;
-> + =A0 =A0 =A0 snprintf(spi_pdata->name, 10, "SPIFLASH%d", num_flash++);
-> +
-> + =A0 =A0 =A0 spi_pdata->parts =3D parts;
-> + =A0 =A0 =A0 spi_pdata->nr_parts =3D nr_parts;
-> +
-> + =A0 =A0 =A0 spi->dev.platform_data =3D spi_pdata;
-> +
-> + =A0 =A0 =A0 return;
-> +
-> +free_flash:
-> + =A0 =A0 =A0 kfree(spi_pdata);
-> +end:
-> + =A0 =A0 =A0 return;
-> +}
->
->
->> >> > diff --git a/drivers/spi/spi_mpc8xxx.c
->> b/drivers/spi/spi_mpc8xxx.c
->> >> > index efed70e..0fadaeb 100644
->> >> > --- a/drivers/spi/spi_mpc8xxx.c
->> >> > +++ b/drivers/spi/spi_mpc8xxx.c
->> >> > @@ -137,6 +137,7 @@ int mpc8xxx_spi_transfer(struct spi_device
->> >> > *spi,
->> >> >
->> >> > =A0void mpc8xxx_spi_cleanup(struct spi_device *spi) =A0{
->> >> > + =A0 kfree(spi->dev.platform_data);
->> >>
->> >> Irrelevant given the above comment, but how does this even work?
->> >> What if a driver was detached and reattached to an
->> spi_device? =A0The
->> >> platform_data would be freed. =A0Not to mention that the
->> pointer isn't
->> >> cleared, so the driver would have no idea that it has a freed
->> >> pointer.
->> >>
->> >
->> > It works. If the driver detached, the spi device
->> platform_data will be
->> > released, when reattached, the of_register_spi_devices will
->> be called
->> > again, the platform_data will be allocated.
->>
->> Ah right, I wasn't looking in the right place. =A0On that note
->> however, the cleanup of spi_device allocated by the OF code
->> should also have a reciprocal helper that frees them too. =A0It
->> shouldn't be done in the individual drivers.
->>
->
-> We can define a helper to free the platform_data, but where it should be =
-called?
-> Maybe spidev_release is a better place to call, after all the platfrom_da=
-ta is allocated
-> when the spi device is created, so it should be freed when released.
-
-It would be called from the spi core code.  However, with two options
-I gave above, platform_data shouldn't be needed at all.
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
+Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 ---
-The Palm PDK Hot Apps Program offers developers who use the
-Plug-In Development Kit to bring their C/C++ apps to Palm for a share =
+Changes in v2 as requested by Grant:
 
-of $1 Million in cash or HP Products. Visit us here for more details:
-http://ad.doubleclick.net/clk;226879339;13503038;l?
-http://clk.atdmt.com/CRS/go/247765532/direct/01/
+ - check master->dev.of_node to prevent potential null
+   pointer dereference
+ - set master->dev.of_node in OF-aware SPI bus drivers
+ - also drop of_register_spi_devices() in xilinx_spi_of.c
+   and spi_ppc4xx.c drivers
+
+ drivers/of/of_spi.c           |   10 ++++++----
+ drivers/spi/mpc512x_psc_spi.c |    1 +
+ drivers/spi/mpc52xx_psc_spi.c |   10 ++--------
+ drivers/spi/mpc52xx_spi.c     |    3 +--
+ drivers/spi/spi.c             |    4 ++++
+ drivers/spi/spi_mpc8xxx.c     |    4 +---
+ drivers/spi/spi_ppc4xx.c      |    2 +-
+ drivers/spi/xilinx_spi.c      |    1 +
+ drivers/spi/xilinx_spi_of.c   |    3 ---
+ include/linux/of_spi.h        |   11 ++++++++---
+ 10 files changed, 25 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/of/of_spi.c b/drivers/of/of_spi.c
+index d504f1d..1dbce58 100644
+--- a/drivers/of/of_spi.c
++++ b/drivers/of/of_spi.c
+@@ -15,12 +15,11 @@
+ /**
+  * of_register_spi_devices - Register child devices onto the SPI bus
+  * @master:	Pointer to spi_master device
+- * @np:		parent node of SPI device nodes
+  *
+- * Registers an spi_device for each child node of 'np' which has a 'reg'
++ * Registers an spi_device for each child node of master node which has a 'reg'
+  * property.
+  */
+-void of_register_spi_devices(struct spi_master *master, struct device_node *np)
++void of_register_spi_devices(struct spi_master *master)
+ {
+ 	struct spi_device *spi;
+ 	struct device_node *nc;
+@@ -28,7 +27,10 @@ void of_register_spi_devices(struct spi_master *master, struct device_node *np)
+ 	int rc;
+ 	int len;
+ 
+-	for_each_child_of_node(np, nc) {
++	if (!master->dev.of_node)
++		return;
++
++	for_each_child_of_node(master->dev.of_node, nc) {
+ 		/* Alloc an spi_device */
+ 		spi = spi_alloc_device(master);
+ 		if (!spi) {
+diff --git a/drivers/spi/mpc512x_psc_spi.c b/drivers/spi/mpc512x_psc_spi.c
+index c8d69fc..b5539d3 100644
+--- a/drivers/spi/mpc512x_psc_spi.c
++++ b/drivers/spi/mpc512x_psc_spi.c
+@@ -440,6 +440,7 @@ static int __devinit mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	master->setup = mpc512x_psc_spi_setup;
+ 	master->transfer = mpc512x_psc_spi_transfer;
+ 	master->cleanup = mpc512x_psc_spi_cleanup;
++	master->dev.of_node = dev->of_node;
+ 
+ 	tempp = ioremap(regaddr, size);
+ 	if (!tempp) {
+diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+index 7104cb7..bd81ff9 100644
+--- a/drivers/spi/mpc52xx_psc_spi.c
++++ b/drivers/spi/mpc52xx_psc_spi.c
+@@ -17,7 +17,6 @@
+ #include <linux/errno.h>
+ #include <linux/interrupt.h>
+ #include <linux/of_platform.h>
+-#include <linux/of_spi.h>
+ #include <linux/workqueue.h>
+ #include <linux/completion.h>
+ #include <linux/io.h>
+@@ -398,6 +397,7 @@ static int __init mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	master->setup = mpc52xx_psc_spi_setup;
+ 	master->transfer = mpc52xx_psc_spi_transfer;
+ 	master->cleanup = mpc52xx_psc_spi_cleanup;
++	master->dev.of_node = dev->of_node;
+ 
+ 	mps->psc = ioremap(regaddr, size);
+ 	if (!mps->psc) {
+@@ -470,7 +470,6 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+ 	const u32 *regaddr_p;
+ 	u64 regaddr64, size64;
+ 	s16 id = -1;
+-	int rc;
+ 
+ 	regaddr_p = of_get_address(op->dev.of_node, 0, &size64, NULL);
+ 	if (!regaddr_p) {
+@@ -491,13 +490,8 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_device *op,
+ 		id = *psc_nump + 1;
+ 	}
+ 
+-	rc = mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
++	return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (u32)size64,
+ 				irq_of_parse_and_map(op->dev.of_node, 0), id);
+-	if (rc == 0)
+-		of_register_spi_devices(dev_get_drvdata(&op->dev),
+-					op->dev.of_node);
+-
+-	return rc;
+ }
+ 
+ static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
+diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
+index b1a76bf..56136ff 100644
+--- a/drivers/spi/mpc52xx_spi.c
++++ b/drivers/spi/mpc52xx_spi.c
+@@ -18,7 +18,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
+ #include <linux/spi/spi.h>
+-#include <linux/of_spi.h>
+ #include <linux/io.h>
+ #include <linux/of_gpio.h>
+ #include <linux/slab.h>
+@@ -439,6 +438,7 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
+ 	master->setup = mpc52xx_spi_setup;
+ 	master->transfer = mpc52xx_spi_transfer;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
++	master->dev.of_node = op->dev.of_node;
+ 
+ 	dev_set_drvdata(&op->dev, master);
+ 
+@@ -512,7 +512,6 @@ static int __devinit mpc52xx_spi_probe(struct of_device *op,
+ 	if (rc)
+ 		goto err_register;
+ 
+-	of_register_spi_devices(master, op->dev.of_node);
+ 	dev_info(&ms->master->dev, "registered MPC5200 SPI bus\n");
+ 
+ 	return rc;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index fdde706..a9e5c79 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -26,6 +26,7 @@
+ #include <linux/slab.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/spi/spi.h>
++#include <linux/of_spi.h>
+ 
+ 
+ /* SPI bustype and spi_master class are registered after board init code
+@@ -544,6 +545,9 @@ int spi_register_master(struct spi_master *master)
+ 	/* populate children from any spi device tables */
+ 	scan_boardinfo(master);
+ 	status = 0;
++
++	/* Register devices from the device tree */
++	of_register_spi_devices(master);
+ done:
+ 	return status;
+ }
+diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+index 97ab0a8..aad9ae1 100644
+--- a/drivers/spi/spi_mpc8xxx.c
++++ b/drivers/spi/spi_mpc8xxx.c
+@@ -38,7 +38,6 @@
+ #include <linux/of_platform.h>
+ #include <linux/gpio.h>
+ #include <linux/of_gpio.h>
+-#include <linux/of_spi.h>
+ #include <linux/slab.h>
+ 
+ #include <sysdev/fsl_soc.h>
+@@ -1009,6 +1008,7 @@ mpc8xxx_spi_probe(struct device *dev, struct resource *mem, unsigned int irq)
+ 	master->setup = mpc8xxx_spi_setup;
+ 	master->transfer = mpc8xxx_spi_transfer;
+ 	master->cleanup = mpc8xxx_spi_cleanup;
++	master->dev.of_node = dev->of_node;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	mpc8xxx_spi->dev = dev;
+@@ -1299,8 +1299,6 @@ static int __devinit of_mpc8xxx_spi_probe(struct of_device *ofdev,
+ 		goto err;
+ 	}
+ 
+-	of_register_spi_devices(master, np);
+-
+ 	return 0;
+ 
+ err:
+diff --git a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
+index d53466a..0f5fa7e 100644
+--- a/drivers/spi/spi_ppc4xx.c
++++ b/drivers/spi/spi_ppc4xx.c
+@@ -407,6 +407,7 @@ static int __init spi_ppc4xx_of_probe(struct of_device *op,
+ 	master = spi_alloc_master(dev, sizeof *hw);
+ 	if (master == NULL)
+ 		return -ENOMEM;
++	master->dev.of_node = np;
+ 	dev_set_drvdata(dev, master);
+ 	hw = spi_master_get_devdata(master);
+ 	hw->master = spi_master_get(master);
+@@ -545,7 +546,6 @@ static int __init spi_ppc4xx_of_probe(struct of_device *op,
+ 	}
+ 
+ 	dev_info(dev, "driver initialized\n");
+-	of_register_spi_devices(master, np);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+index 1b47363..d101a84 100644
+--- a/drivers/spi/xilinx_spi.c
++++ b/drivers/spi/xilinx_spi.c
+@@ -390,6 +390,7 @@ struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
+ 
+ 	master->bus_num = bus_num;
+ 	master->num_chipselect = pdata->num_chipselect;
++	master->dev.of_node = dev->of_node;
+ 
+ 	xspi->mem = *mem;
+ 	xspi->irq = irq;
+diff --git a/drivers/spi/xilinx_spi_of.c b/drivers/spi/xilinx_spi_of.c
+index 4654805..87cda09 100644
+--- a/drivers/spi/xilinx_spi_of.c
++++ b/drivers/spi/xilinx_spi_of.c
+@@ -80,9 +80,6 @@ static int __devinit xilinx_spi_of_probe(struct of_device *ofdev,
+ 
+ 	dev_set_drvdata(&ofdev->dev, master);
+ 
+-	/* Add any subnodes on the SPI bus */
+-	of_register_spi_devices(master, ofdev->dev.of_node);
+-
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/of_spi.h b/include/linux/of_spi.h
+index 5f71ee8..9e3e70f 100644
+--- a/include/linux/of_spi.h
++++ b/include/linux/of_spi.h
+@@ -9,10 +9,15 @@
+ #ifndef __LINUX_OF_SPI_H
+ #define __LINUX_OF_SPI_H
+ 
+-#include <linux/of.h>
+ #include <linux/spi/spi.h>
+ 
+-extern void of_register_spi_devices(struct spi_master *master,
+-				    struct device_node *np);
++#if defined(CONFIG_OF_SPI) || defined(CONFIG_OF_SPI_MODULE)
++extern void of_register_spi_devices(struct spi_master *master);
++#else
++static inline void of_register_spi_devices(struct spi_master *master)
++{
++	return;
++}
++#endif /* CONFIG_OF_SPI */
+ 
+ #endif /* __LINUX_OF_SPI */
+-- 
+1.7.0.4

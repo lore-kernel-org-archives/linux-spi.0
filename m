@@ -1,252 +1,285 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: enable spi_board_info to be
-	registered after spi_master
-Date: Tue, 27 Jul 2010 11:27:16 -0600
-Message-ID: <AANLkTi=C48+mnNjrxha8WqagCybF45f7aTn6nxt2qRuU@mail.gmail.com>
-References: <1280223769-19919-1-git-send-email-feng.tang@intel.com>
+Subject: Re: [PATCH] of/spi: call of_register_spi_devices() from spi core code
+Date: Tue, 27 Jul 2010 11:40:34 -0600
+Message-ID: <AANLkTimG+QLksWVbQ63F=Bc1h-9946J1RO0qSavBAegO@mail.gmail.com>
+References: <AANLkTik9GYDGi3jnMdPdyOa6sFv4bo_+4b-RWMq7nW6x@mail.gmail.com>
+	<1280237967-2460-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1280223769-19919-1-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1280237967-2460-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 27, 2010 at 3:42 AM, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> Currently spi_register_board_info() has to be called before its related
-> spi_master be registered, otherwise these board info will be just ignored.
+On Tue, Jul 27, 2010 at 7:39 AM, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
+> Move of_register_spi_devices() call from some drivers to
+> spi_register_master(). Also change the function to use
+> the struct device_node pointer from master spi device
+> instead of passing it as function argument.
 >
-> This patch will remove this order limit, it adds a global spi master list
-> like the existing global board info listr. Whenever a board info is
-> registered, the spi master list will be scanned, and a new spi device will
-> be created if they match.
+> Since xilinx_spi_of.c and spi_ppc4xx.c drivers do not use
+> spi_register_master(), they still call of_register_spi_devices()
+> directly. Maybe these drivers should be reworked later.
 >
-> Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+> Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 > ---
-> =A0drivers/spi/spi.c =A0 =A0 =A0 | =A0 66 +++++++++++++++++++++++++++++++=
-++-------------
-> =A0include/linux/spi/spi.h | =A0 =A03 ++
-> =A02 files changed, 50 insertions(+), 19 deletions(-)
+> =A0drivers/of/of_spi.c =A0 =A0 =A0 =A0 =A0 | =A0 =A07 +++----
+> =A0drivers/spi/mpc52xx_psc_spi.c | =A0 =A09 +--------
+> =A0drivers/spi/mpc52xx_spi.c =A0 =A0 | =A0 =A02 --
+> =A0drivers/spi/spi.c =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A05 +++++
+> =A0drivers/spi/spi_mpc8xxx.c =A0 =A0 | =A0 =A03 ---
+> =A0drivers/spi/spi_ppc4xx.c =A0 =A0 =A0| =A0 =A03 ++-
+> =A0drivers/spi/xilinx_spi.c =A0 =A0 =A0| =A0 =A01 +
+> =A0drivers/spi/xilinx_spi_of.c =A0 | =A0 =A02 +-
+> =A0include/linux/of_spi.h =A0 =A0 =A0 =A0| =A0 11 ++++++++---
+> =A09 files changed, 21 insertions(+), 22 deletions(-)
 >
+> diff --git a/drivers/of/of_spi.c b/drivers/of/of_spi.c
+> index d504f1d..76a0529 100644
+> --- a/drivers/of/of_spi.c
+> +++ b/drivers/of/of_spi.c
+> @@ -15,12 +15,11 @@
+> =A0/**
+> =A0* of_register_spi_devices - Register child devices onto the SPI bus
+> =A0* @master: =A0 =A0Pointer to spi_master device
+> - * @np: =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0parent node of SPI device nodes
+> =A0*
+> - * Registers an spi_device for each child node of 'np' which has a 'reg'
+> + * Registers an spi_device for each child node of master node which has =
+a 'reg'
+> =A0* property.
+> =A0*/
+> -void of_register_spi_devices(struct spi_master *master, struct device_no=
+de *np)
+> +void of_register_spi_devices(struct spi_master *master)
+> =A0{
+> =A0 =A0 =A0 =A0struct spi_device *spi;
+> =A0 =A0 =A0 =A0struct device_node *nc;
+> @@ -28,7 +27,7 @@ void of_register_spi_devices(struct spi_master *master,=
+ struct device_node *np)
+> =A0 =A0 =A0 =A0int rc;
+> =A0 =A0 =A0 =A0int len;
+
+if (!master->dev.of_node)
+	return;
+>
+> - =A0 =A0 =A0 for_each_child_of_node(np, nc) {
+> + =A0 =A0 =A0 for_each_child_of_node(master->dev.of_node, nc) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Alloc an spi_device */
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi =3D spi_alloc_device(master);
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (!spi) {
+> diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
+> index 7104cb7..a6eb5d4 100644
+> --- a/drivers/spi/mpc52xx_psc_spi.c
+> +++ b/drivers/spi/mpc52xx_psc_spi.c
+> @@ -17,7 +17,6 @@
+> =A0#include <linux/errno.h>
+> =A0#include <linux/interrupt.h>
+> =A0#include <linux/of_platform.h>
+> -#include <linux/of_spi.h>
+> =A0#include <linux/workqueue.h>
+> =A0#include <linux/completion.h>
+> =A0#include <linux/io.h>
+> @@ -470,7 +469,6 @@ static int __init mpc52xx_psc_spi_of_probe(struct of_=
+device *op,
+> =A0 =A0 =A0 =A0const u32 *regaddr_p;
+> =A0 =A0 =A0 =A0u64 regaddr64, size64;
+> =A0 =A0 =A0 =A0s16 id =3D -1;
+> - =A0 =A0 =A0 int rc;
+>
+> =A0 =A0 =A0 =A0regaddr_p =3D of_get_address(op->dev.of_node, 0, &size64, =
+NULL);
+> =A0 =A0 =A0 =A0if (!regaddr_p) {
+> @@ -491,13 +489,8 @@ static int __init mpc52xx_psc_spi_of_probe(struct of=
+_device *op,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0id =3D *psc_nump + 1;
+> =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 rc =3D mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (=
+u32)size64,
+> + =A0 =A0 =A0 return mpc52xx_psc_spi_do_probe(&op->dev, (u32)regaddr64, (=
+u32)size64,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0irq_of_par=
+se_and_map(op->dev.of_node, 0), id);
+> - =A0 =A0 =A0 if (rc =3D=3D 0)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 of_register_spi_devices(dev_get_drvdata(&op=
+->dev),
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 op->dev.of_node);
+> -
+> - =A0 =A0 =A0 return rc;
+> =A0}
+>
+> =A0static int __exit mpc52xx_psc_spi_of_remove(struct of_device *op)
+> diff --git a/drivers/spi/mpc52xx_spi.c b/drivers/spi/mpc52xx_spi.c
+> index b1a76bf..18e1c86 100644
+> --- a/drivers/spi/mpc52xx_spi.c
+> +++ b/drivers/spi/mpc52xx_spi.c
+> @@ -18,7 +18,6 @@
+> =A0#include <linux/interrupt.h>
+> =A0#include <linux/delay.h>
+> =A0#include <linux/spi/spi.h>
+> -#include <linux/of_spi.h>
+> =A0#include <linux/io.h>
+> =A0#include <linux/of_gpio.h>
+> =A0#include <linux/slab.h>
+> @@ -512,7 +511,6 @@ static int __devinit mpc52xx_spi_probe(struct of_devi=
+ce *op,
+> =A0 =A0 =A0 =A0if (rc)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_register;
+>
+> - =A0 =A0 =A0 of_register_spi_devices(master, op->dev.of_node);
+> =A0 =A0 =A0 =A0dev_info(&ms->master->dev, "registered MPC5200 SPI bus\n");
+>
+> =A0 =A0 =A0 =A0return rc;
 > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index b3a1f92..f4a5221 100644
+> index fdde706..626fa48 100644
 > --- a/drivers/spi/spi.c
 > +++ b/drivers/spi/spi.c
-> @@ -196,13 +196,16 @@ EXPORT_SYMBOL_GPL(spi_register_driver);
+> @@ -26,6 +26,7 @@
+> =A0#include <linux/slab.h>
+> =A0#include <linux/mod_devicetable.h>
+> =A0#include <linux/spi/spi.h>
+> +#include <linux/of_spi.h>
 >
-> =A0struct boardinfo {
-> =A0 =A0 =A0 =A0struct list_head =A0 =A0 =A0 =A0list;
-> - =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0n_board_info;
-> - =A0 =A0 =A0 struct spi_board_info =A0 board_info[0];
-> + =A0 =A0 =A0 struct spi_board_info =A0 board_info;
-> =A0};
 >
-> =A0static LIST_HEAD(board_list);
-> =A0static DEFINE_MUTEX(board_lock);
->
-> +
-> +static LIST_HEAD(master_list);
-> +static DEFINE_MUTEX(master_lock);
-> +
-
-Protect against global namespace collisions.  spi_master_list and
-spi_master_list_lock.
-
-You can probably use one mutex for both the board and master lists.
-
-> =A0/**
-> =A0* spi_alloc_device - Allocate a new SPI device
-> =A0* @master: Controller to which device is connected
-> @@ -365,6 +368,19 @@ struct spi_device *spi_new_device(struct spi_master =
-*master,
-> =A0}
-> =A0EXPORT_SYMBOL_GPL(spi_new_device);
->
-> +static void scan_masterlist(struct spi_board_info *bi)
-
-spi_scan_master_list
-
-> +{
-> + =A0 =A0 =A0 struct spi_master *master;
-> +
-> + =A0 =A0 =A0 mutex_lock(&master_lock);
-> + =A0 =A0 =A0 list_for_each_entry(master, &master_list, list) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (master->bus_num !=3D bi->bus_num)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 continue;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 (void) spi_new_device(master, bi);
-
-Always check the return value.  At the very least print out an error
-message.  I know you're copying the scan_boardinfo() lead, but that is
-a bad example.  There are error paths in spi_new_device() that will
-not print any output.
-
-> + =A0 =A0 =A0 }
-> + =A0 =A0 =A0 mutex_unlock(&master_lock);
-> +}
-> +
-> =A0/**
-> =A0* spi_register_board_info - register SPI devices for a given board
-> =A0* @info: array of chip descriptors
-> @@ -387,41 +403,45 @@ EXPORT_SYMBOL_GPL(spi_new_device);
-> =A0int __init
-> =A0spi_register_board_info(struct spi_board_info const *info, unsigned n)
-> =A0{
-> - =A0 =A0 =A0 struct boardinfo =A0 =A0 =A0 =A0*bi;
-> + =A0 =A0 =A0 struct boardinfo =A0 =A0 =A0 =A0*bi, *tmp_bi;
-> + =A0 =A0 =A0 int i;
->
-> - =A0 =A0 =A0 bi =3D kmalloc(sizeof(*bi) + n * sizeof *info, GFP_KERNEL);
-> + =A0 =A0 =A0 bi =3D kzalloc(n * sizeof *bi, GFP_KERNEL);
-
-sizeof(*bi)
-
-> =A0 =A0 =A0 =A0if (!bi)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -ENOMEM;
-> - =A0 =A0 =A0 bi->n_board_info =3D n;
-> - =A0 =A0 =A0 memcpy(bi->board_info, info, n * sizeof *info);
->
-> + =A0 =A0 =A0 tmp_bi =3D bi;
-> =A0 =A0 =A0 =A0mutex_lock(&board_lock);
-> - =A0 =A0 =A0 list_add_tail(&bi->list, &board_list);
-> + =A0 =A0 =A0 for (i =3D 0; i < n; i++, bi++, info++) {
-
-I'd do this the other way around (bi vs. tmp_bi).  I think this is
-somewhat clearer:
-
-for (i =3D 0, tmp_bi =3D bi; i < n; i++, tmp_bi++, info++)
-
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 memcpy(&bi->board_info, info, sizeof *info);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 list_add_tail(&bi->list, &board_list);
-> + =A0 =A0 =A0 }
-> =A0 =A0 =A0 =A0mutex_unlock(&board_lock);
-> +
-> + =A0 =A0 =A0 bi =3D tmp_bi;
-> + =A0 =A0 =A0 for (i =3D 0; i < n; i++)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 scan_masterlist(&bi->board_info);
-
-How does this work?  The same board_info struct is passed to
-scan_masterlist() multiple times.
-
-> +
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> =A0/* FIXME someone should add support for a __setup("spi", ...) that
-> =A0* creates board info from kernel command lines
-> =A0*/
-> -
-> =A0static void scan_boardinfo(struct spi_master *master)
-> =A0{
-> =A0 =A0 =A0 =A0struct boardinfo =A0 =A0 =A0 =A0*bi;
->
-> =A0 =A0 =A0 =A0mutex_lock(&board_lock);
-> =A0 =A0 =A0 =A0list_for_each_entry(bi, &board_list, list) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct spi_board_info =A0 *chip =3D bi->boa=
-rd_info;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0n;
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (n =3D bi->n_board_info; n > 0; n--, ch=
-ip++) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (chip->bus_num !=3D mast=
-er->bus_num)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 continue;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* NOTE: this relies on spi=
-_new_device to
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* issue diagnostics when=
- given bogus inputs
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (void) spi_new_device(maste=
-r, chip);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct spi_board_info =A0 *chip =3D &bi->bo=
-ard_info;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (chip->bus_num !=3D master->bus_num)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 continue;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* NOTE: this relies on spi_new_device to
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0* issue diagnostics when given bogus inp=
-uts
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*/
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 (void) spi_new_device(master, chip);
-> =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0mutex_unlock(&board_lock);
-> =A0}
-> @@ -537,6 +557,10 @@ int spi_register_master(struct spi_master *master)
-> =A0 =A0 =A0 =A0dev_dbg(dev, "registered master %s%s\n", dev_name(&master-=
->dev),
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dynamic ? " (dynamic)" : "=
-");
->
-> + =A0 =A0 =A0 mutex_lock(&master_lock);
-> + =A0 =A0 =A0 list_add_tail(&master->list, &master_list);
-> + =A0 =A0 =A0 mutex_unlock(&master_lock);
-> +
-
-There seems to be a race condition here.  If a boardinfo is registered
-after this list add, but before scan_boardinfo(master), then a
-boardinfo can get parsed twice for a single master.  I think the
-proper thing to do is to hold the mutex over the whole operation; from
-registering the list or master, until after the scan is complete.
-
-
-Otherwise, in general I like the patch.  spin it again to address the
-comments, and I think I can get it into linux-next for 2.6.36.
-
-Thanks!
-g.
-
+> =A0/* SPI bustype and spi_master class are registered after board init co=
+de
+> @@ -544,6 +545,10 @@ int spi_register_master(struct spi_master *master)
 > =A0 =A0 =A0 =A0/* populate children from any spi device tables */
 > =A0 =A0 =A0 =A0scan_boardinfo(master);
 > =A0 =A0 =A0 =A0status =3D 0;
-> @@ -568,6 +592,10 @@ void spi_unregister_master(struct spi_master *master)
-> =A0{
-> =A0 =A0 =A0 =A0int dummy;
->
-> + =A0 =A0 =A0 mutex_lock(&master_lock);
-> + =A0 =A0 =A0 list_del(&master->list);
-> + =A0 =A0 =A0 mutex_unlock(&master_lock);
 > +
-> =A0 =A0 =A0 =A0dummy =3D device_for_each_child(master->dev.parent, &maste=
-r->dev,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0__unregister);
-> =A0 =A0 =A0 =A0device_unregister(&master->dev);
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index af56071..f4a29b6 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -204,6 +204,7 @@ static inline void spi_unregister_driver(struct spi_d=
-river *sdrv)
-> =A0/**
-> =A0* struct spi_master - interface to SPI master controller
-> =A0* @dev: device interface to this driver
-> + * @list: link with the global spi_master list
-> =A0* @bus_num: board-specific (and often SOC-specific) identifier for a
-> =A0* =A0 =A0 given SPI controller.
-> =A0* @num_chipselect: chipselects are used to distinguish individual
-> @@ -235,6 +236,8 @@ static inline void spi_unregister_driver(struct spi_d=
-river *sdrv)
-> =A0struct spi_master {
-> =A0 =A0 =A0 =A0struct device =A0 dev;
+> + =A0 =A0 =A0 /* Register devices from the device tree */
+> + =A0 =A0 =A0 master->dev.of_node =3D dev->of_node;
+
+Drop this line.  There must be a way for drivers to override the
+behaviour.  On i2c I solved this by still requiring the driver to copy
+the of_node pointer into the master's dev structure.  That gives
+drivers the option to use another node for the list of spi child
+devices or to skip broken spi busses.
+
+So this line should still appear in each of the OF-aware SPI bus drivers.
+
+> + =A0 =A0 =A0 of_register_spi_devices(master);
+> =A0done:
+> =A0 =A0 =A0 =A0return status;
+> =A0}
+> diff --git a/drivers/spi/spi_mpc8xxx.c b/drivers/spi/spi_mpc8xxx.c
+> index 97ab0a8..89fea11 100644
+> --- a/drivers/spi/spi_mpc8xxx.c
+> +++ b/drivers/spi/spi_mpc8xxx.c
+> @@ -38,7 +38,6 @@
+> =A0#include <linux/of_platform.h>
+> =A0#include <linux/gpio.h>
+> =A0#include <linux/of_gpio.h>
+> -#include <linux/of_spi.h>
+> =A0#include <linux/slab.h>
 >
-> + =A0 =A0 =A0 struct list_head list;
-> +
-> =A0 =A0 =A0 =A0/* other than negative (=3D=3D assign one dynamically), bu=
-s_num is fully
-> =A0 =A0 =A0 =A0 * board-specific. =A0usually that simplifies to being SOC=
--specific.
-> =A0 =A0 =A0 =A0 * example: =A0one SOC has three SPI controllers, numbered=
- 0..2,
+> =A0#include <sysdev/fsl_soc.h>
+> @@ -1299,8 +1298,6 @@ static int __devinit of_mpc8xxx_spi_probe(struct of=
+_device *ofdev,
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err;
+> =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 of_register_spi_devices(master, np);
+> -
+> =A0 =A0 =A0 =A0return 0;
+>
+> =A0err:
+> diff --git a/drivers/spi/spi_ppc4xx.c b/drivers/spi/spi_ppc4xx.c
+> index d53466a..0bcea55 100644
+> --- a/drivers/spi/spi_ppc4xx.c
+> +++ b/drivers/spi/spi_ppc4xx.c
+> @@ -545,7 +545,8 @@ static int __init spi_ppc4xx_of_probe(struct of_devic=
+e *op,
+> =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0dev_info(dev, "driver initialized\n");
+> - =A0 =A0 =A0 of_register_spi_devices(master, np);
+> + =A0 =A0 =A0 master->dev.of_node =3D np;
+> + =A0 =A0 =A0 of_register_spi_devices(master);
+
+You can drop these lines.  This drivers calls spi_bitbang_start, which
+in turn calls spi_register_master().
+
+>
+> =A0 =A0 =A0 =A0return 0;
+>
+> diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+> index 1b47363..d101a84 100644
+> --- a/drivers/spi/xilinx_spi.c
+> +++ b/drivers/spi/xilinx_spi.c
+> @@ -390,6 +390,7 @@ struct spi_master *xilinx_spi_init(struct device *dev=
+, struct resource *mem,
+>
+> =A0 =A0 =A0 =A0master->bus_num =3D bus_num;
+> =A0 =A0 =A0 =A0master->num_chipselect =3D pdata->num_chipselect;
+> + =A0 =A0 =A0 master->dev.of_node =3D dev->of_node;
+>
+> =A0 =A0 =A0 =A0xspi->mem =3D *mem;
+> =A0 =A0 =A0 =A0xspi->irq =3D irq;
+> diff --git a/drivers/spi/xilinx_spi_of.c b/drivers/spi/xilinx_spi_of.c
+> index 4654805..0295bbf 100644
+> --- a/drivers/spi/xilinx_spi_of.c
+> +++ b/drivers/spi/xilinx_spi_of.c
+> @@ -81,7 +81,7 @@ static int __devinit xilinx_spi_of_probe(struct of_devi=
+ce *ofdev,
+> =A0 =A0 =A0 =A0dev_set_drvdata(&ofdev->dev, master);
+>
+> =A0 =A0 =A0 =A0/* Add any subnodes on the SPI bus */
+> - =A0 =A0 =A0 of_register_spi_devices(master, ofdev->dev.of_node);
+> + =A0 =A0 =A0 of_register_spi_devices(master);
+
+Ditto here, spi_bitbang_start() is used by this driver.
+
+Overall though, this is the right direction.  Thanks!
+
+g.
+
+>
+> =A0 =A0 =A0 =A0return 0;
+> =A0}
+> diff --git a/include/linux/of_spi.h b/include/linux/of_spi.h
+> index 5f71ee8..9e3e70f 100644
+> --- a/include/linux/of_spi.h
+> +++ b/include/linux/of_spi.h
+> @@ -9,10 +9,15 @@
+> =A0#ifndef __LINUX_OF_SPI_H
+> =A0#define __LINUX_OF_SPI_H
+>
+> -#include <linux/of.h>
+> =A0#include <linux/spi/spi.h>
+>
+> -extern void of_register_spi_devices(struct spi_master *master,
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 str=
+uct device_node *np);
+> +#if defined(CONFIG_OF_SPI) || defined(CONFIG_OF_SPI_MODULE)
+> +extern void of_register_spi_devices(struct spi_master *master);
+> +#else
+> +static inline void of_register_spi_devices(struct spi_master *master)
+> +{
+> + =A0 =A0 =A0 return;
+> +}
+> +#endif /* CONFIG_OF_SPI */
+>
+> =A0#endif /* __LINUX_OF_SPI */
 > --
 > 1.7.0.4
 >
@@ -258,12 +291,3 @@ s_num is fully
 
 Grant Likely, B.Sc., P.Eng.
 Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-The Palm PDK Hot Apps Program offers developers who use the
-Plug-In Development Kit to bring their C/C++ apps to Palm for a share =
-
-of $1 Million in cash or HP Products. Visit us here for more details:
-http://ad.doubleclick.net/clk;226879339;13503038;l?
-http://clk.atdmt.com/CRS/go/247765532/direct/01/

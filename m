@@ -1,11 +1,11 @@
-From: <ylajig8712-TN2JkKCKT04@public.gmane.org>
-Subject: [SPAM] Best drugs for sex
-Date: Mon, 26 Jul 2010 22:03:25 -0300
-Message-ID: <E1OdYZr-0004Kd-Og@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: ylajig8712-TN2JkKCKT04@public.gmane.org
+From: John Williams <john.williams-g5w7nrANp4BDPfheJLI6IQ@public.gmane.org>
+Subject: Linux as a SPI slave device - anything new?
+Date: Tue, 27 Jul 2010 11:54:28 +1000
+Message-ID: <AANLkTimbDo0U7fB60xZ31UfqnAYnEm+HskLfXGyRKamz@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: dpervushin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,7 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://www.drugsromain53i.ru/
+Hi,
+
+I was wondering if anything has changed in the Linux SPI stack to
+allow the creation of SPI slave devices - that is have an Embedded
+Linux system look like a SPI slave to a master elsewhere in the
+system?
+
+I asked about this a few years ago and there was no general solution -
+it's a hard problem because the slave must respond very quickly to a
+master request, and userspace latencies in there may make it
+impossible.
+
+Just wondering if that is still the case.
+
+Thanks,
+
+John
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

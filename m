@@ -1,16 +1,20 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: Re: amba_pl022: Fix section mismatch warnings
-Date: Wed, 28 Jul 2010 00:32:49 +0200
-Message-ID: <AANLkTi=EEy5kToWXaNh1LZo7Dnzio+F1eeHgdaP4T_B3@mail.gmail.com>
-References: <083DF309106F364B939360100EC290F80AC392A206@eu1rdcrdc1wx030.exi.nxp.com>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: enable spi_board_info to be
+ registered after spi_master
+Date: Wed, 28 Jul 2010 09:23:06 +0800
+Message-ID: <20100728092306.1168ab7c@feng-i7>
+References: <1280223769-19919-1-git-send-email-feng.tang@intel.com>
+	<AANLkTi=C48+mnNjrxha8WqagCybF45f7aTn6nxt2qRuU@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Kevin Wells <kevin.wells-3arQi8VN3Tc@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org" <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <083DF309106F364B939360100EC290F80AC392A206-SIPbe8o7cfX8DdpCu65jn8FrZmdRls4ZQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <AANLkTi=C48+mnNjrxha8WqagCybF45f7aTn6nxt2qRuU-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,21 +25,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/7/27 Kevin Wells <kevin.wells-3arQi8VN3Tc@public.gmane.org>:
+Hi Grant,
 
-> Changed __init to __devinit and __exit_p to __devexit_p per other
-> AMBA drivers. Fixes section mismatch warning.
->
-> Signed-off-by: Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Thanks for your thorough reviews!
 
-Acked-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Will address most of the comments.
 
-Yours,
-Linus Walleij
 
-------------------------------------------------------------------------------
+
+On Wed, 28 Jul 2010 01:27:16 +0800
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+
+> =
+
+> for (i =3D 0, tmp_bi =3D bi; i < n; i++, tmp_bi++, info++)
+> =
+
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 memcpy(&bi->board_info, info, sizeof *inf=
+o);
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 list_add_tail(&bi->list, &board_list);
+> > + =A0 =A0 =A0 }
+> > =A0 =A0 =A0 =A0mutex_unlock(&board_lock);
+> > +
+> > + =A0 =A0 =A0 bi =3D tmp_bi;
+> > + =A0 =A0 =A0 for (i =3D 0; i < n; i++)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 scan_masterlist(&bi->board_info);
+> =
+
+> How does this work?  The same board_info struct is passed to
+> scan_masterlist() multiple times.
+
+My bad, I tested 2 cases by calling register_board_info before and
+after spi_register_master(), but only with one spi device. Will fix it
+
+
+> > @@ -537,6 +557,10 @@ int spi_register_master(struct spi_master
+> > *master) dev_dbg(dev, "registered master %s%s\n",
+> > dev_name(&master->dev), dynamic ? " (dynamic)" : "");
+> >
+> > + =A0 =A0 =A0 mutex_lock(&master_lock);
+> > + =A0 =A0 =A0 list_add_tail(&master->list, &master_list);
+> > + =A0 =A0 =A0 mutex_unlock(&master_lock);
+> > +
+> =
+
+> There seems to be a race condition here.  If a boardinfo is registered
+> after this list add, but before scan_boardinfo(master), then a
+> boardinfo can get parsed twice for a single master.  I think the
+> proper thing to do is to hold the mutex over the whole operation; from
+> registering the list or master, until after the scan is complete.
+> =
+
+
+Good point. Maybe moving the list_add(master) after scan_boardinfo() =
+
+can fix this race condition.
+
+Thanks,
+Feng
+
+---------------------------------------------------------------------------=
+---
 The Palm PDK Hot Apps Program offers developers who use the
-Plug-In Development Kit to bring their C/C++ apps to Palm for a share 
+Plug-In Development Kit to bring their C/C++ apps to Palm for a share =
+
 of $1 Million in cash or HP Products. Visit us here for more details:
 http://ad.doubleclick.net/clk;226879339;13503038;l?
 http://clk.atdmt.com/CRS/go/247765532/direct/01/

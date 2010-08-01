@@ -1,2183 +1,889 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
-Date: Sat, 31 Jul 2010 23:12:22 -0600
-Message-ID: <AANLkTimu+G-5wTrdQ6YiWi60i+5uN9sydfsZKMKQX7_f@mail.gmail.com>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
-	<1280355490-11878-2-git-send-email-bniebuhr@efjohnson.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: add spi_tegra driver
+Date: Sun, 1 Aug 2010 00:21:04 -0600
+Message-ID: <AANLkTimUm_wj+gyxTa=X+845kLj1sZ9GF+jsmsBwxnLN@mail.gmail.com>
+References: <1280450224-25118-1-git-send-email-ccross@google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1280355490-11878-2-git-send-email-bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: linux-tegra@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org, Erik Gilling <konkers@android.com>
+To: Colin Cross <ccross@google.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1280450224-25118-1-git-send-email-ccross@google.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 28, 2010 at 4:18 PM, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> INTRODUCTION
->
-> I have been working on a custom OMAP-L138 board that has multiple spi
-> devices (seven) on one controller. =A0These devices have a wide range of
-> transfer parameters (speed, phase, polarity, internal and gpio chip
-> selects). =A0During my testing I found multiple errors in the davinci spi
-> driver as a result of this complex setup. =A0The primary issues were:
->
-> 1. There is a race condition due to the SPIBUF read busy-waits for slow
-> =A0 =A0 =A0 =A0devices
-> 2. I found some DMA transfer length errors under some conditions
-> 3. The chip select code caused extra byte transfers (with no chip
-> =A0 =A0 =A0 =A0select active) due to writes to SPIDAT1
-> 4. Several issues prevented using multiple SPI devices, especially
-> =A0 =A0 =A0 =A0the DMA code, as disucussed previously on the davinci list.
->
-> The fixes to these problems were not simple. =A0I ended up making fairly
-> large changes to the driver, and those changes are contained in these
-> patches. =A0The full list of changes follows.
->
-> CHANGE LIST
->
-> 1. davinci_spi_chipelect() now performs both activation and deactivation
-> =A0 =A0 =A0 =A0of chip selects. =A0This lets spi_bitbang fully control ch=
-ip
-> =A0 =A0 =A0 =A0select activation, as intended by the SPI API.
-> 2. Chip select activation does not cause extra writes to the SPI bus
-> 3. Chip select activation does not use SPIDEF for control. =A0This change
-> =A0 =A0 =A0 =A0will also allow for implementation of inverted (active hig=
-h)
-> =A0 =A0 =A0 =A0chip selects in the future.
-> 4. Added back gpio chip select capability from the old driver
-> 5. Fixed prescale calculation for non-integer fractions of spi clock
-> 6. Allow specification of SPI transfer parameters on a per-device
-> =A0 =A0 =A0 =A0(instead of per-controller) basis
-> 7. Allow specification of polled, interrupt-based, or DMA operation on
-> =A0 =A0 =A0 =A0a per-device basis
-> 8. Allow DMA with when more than one device is connected
-> 9. Combined pio and dma txrx_bufs functions into one since they share
-> =A0 =A0 =A0 =A0large parts of their functionality, and to simplify item (=
-8).
-> 10. Use only SPIFMT0 to allow more than 4 devices
->
-> TESTING
->
-> I have tested the driver using a custom SPI stress test on my
-> OMAP-L138-based board with three devices connected. =A0I have tested
-> configurations with all three devices polled, all three interrupt-based,
-> all three DMA, and a mixture.
->
-> I have compiled with the davinci_all_defconfig, but I don't have EVMs
-> for the other davinci platforms to test with.
->
-> Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
+Hi Colin,
 
-Hi Brian,
+Looks like a pretty nice driver.  Some comments/questions below.
 
-I'm getting a little frustrated, and I wouldn't be surprised if you're
-getting a little frustrated too, but I cannot merge this as is.  It is
-just too big to be able to review sanely, when I know there are
-bite-size chunks that can be factored out into separate patches and
-can be merged independently.
+Cheers,
+g.
 
-At a *bare minimum* I would need acks from several davinci users that
-it is tested and working before I'd merge something like this, but
-even then I'm not sure I would.  It certainly will not make me happy.
-It also means that when someone does have problems with the new driver
-over the old that they won't have a hope of bisecting it to figure out
-which change broken their system.  There will be less pain all around
-if you split it up instead.
+On Thu, Jul 29, 2010 at 6:37 PM, Colin Cross <ccross@google.com> wrote:
+> From: Erik Gilling <konkers@android.com>
+>
+> CC: spi-devel-general@lists.sourceforge.net
+> Signed-off-by: Erik Gilling <konkers@android.com>
 
-...
-
-In fact, after taking another look at it, I insist.  I can tell that
-while major changes have been made, it is *still* the same driver with
-changes that can be logically identified.  Split it up.
-
-I'm more than happy to help you with the tools and techniques for
-splitting a single monolithic patch into logical changes if you've not
-done that before.  Send me a private email if you prefer.
-
-Comments below:
+You should also add your s-o-b line when passing on patches.
 
 > ---
-> =A0arch/arm/mach-davinci/board-dm355-evm.c =A0 =A0 | =A0 10 +
-> =A0arch/arm/mach-davinci/board-dm355-leopard.c | =A0 10 +
-> =A0arch/arm/mach-davinci/board-dm365-evm.c =A0 =A0 | =A0 10 +
-> =A0arch/arm/mach-davinci/dm355.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A08 +-
-> =A0arch/arm/mach-davinci/dm365.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A06 -
-> =A0arch/arm/mach-davinci/include/mach/spi.h =A0 =A0| =A0 35 +-
-> =A0drivers/spi/davinci_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | 1098 +=
-+++++++++++---------------
-> =A07 files changed, 521 insertions(+), 656 deletions(-)
->
-> diff --git a/arch/arm/mach-davinci/board-dm355-evm.c b/arch/arm/mach-davi=
-nci/board-dm355-evm.c
-> index a319101..ad8779b 100644
-> --- a/arch/arm/mach-davinci/board-dm355-evm.c
-> +++ b/arch/arm/mach-davinci/board-dm355-evm.c
-> @@ -32,6 +32,7 @@
-> =A0#include <mach/nand.h>
-> =A0#include <mach/mmc.h>
-> =A0#include <mach/usb.h>
-> +#include <mach/spi.h>
->
-> =A0/* NOTE: =A0this is geared for the standard config, with a socketed
-> =A0* 2 GByte Micron NAND (MT29F16G08FAA) using 128KB sectors. =A0If you
-> @@ -300,10 +301,19 @@ static struct spi_eeprom at25640a =3D {
-> =A0 =A0 =A0 =A0.flags =A0 =A0 =A0 =A0 =A0=3D EE_ADDR2,
-> =A0};
->
-> +static struct davinci_spi_config at25640a_spi_cfg =3D {
-> + =A0 =A0 =A0 .parity_enable =A0=3D false,
-> + =A0 =A0 =A0 .intr_level =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .io_type =A0 =A0 =A0 =A0=3D SPI_IO_TYPE_DMA,
-> + =A0 =A0 =A0 .wdelay =A0 =A0 =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .timer_disable =A0=3D true,
-> +};
-> +
-> =A0static struct spi_board_info dm355_evm_spi_info[] __initconst =3D {
-> =A0 =A0 =A0 =A0{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.modalias =A0 =A0 =A0 =3D "at25",
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.platform_data =A0=3D &at25640a,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .controller_data =3D &at25640a_spi_cfg,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.max_speed_hz =A0 =3D 10 * 1000 * 1000, =
-=A0 =A0 /* at 3v3 */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.bus_num =A0 =A0 =A0 =A0=3D 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.chip_select =A0 =A0=3D 0,
-> diff --git a/arch/arm/mach-davinci/board-dm355-leopard.c b/arch/arm/mach-=
-davinci/board-dm355-leopard.c
-> index f1d8132..b2d8d48 100644
-> --- a/arch/arm/mach-davinci/board-dm355-leopard.c
-> +++ b/arch/arm/mach-davinci/board-dm355-leopard.c
-> @@ -29,6 +29,7 @@
-> =A0#include <mach/nand.h>
-> =A0#include <mach/mmc.h>
-> =A0#include <mach/usb.h>
-> +#include <mach/spi.h>
->
-> =A0/* NOTE: =A0this is geared for the standard config, with a socketed
-> =A0* 2 GByte Micron NAND (MT29F16G08FAA) using 128KB sectors. =A0If you
-> @@ -222,10 +223,19 @@ static struct spi_eeprom at25640a =3D {
-> =A0 =A0 =A0 =A0.flags =A0 =A0 =A0 =A0 =A0=3D EE_ADDR2,
-> =A0};
->
-> +static struct davinci_spi_config at25640a_spi_cfg =3D {
-> + =A0 =A0 =A0 .parity_enable =A0=3D false,
-> + =A0 =A0 =A0 .intr_level =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .io_type =A0 =A0 =A0 =A0=3D SPI_IO_TYPE_DMA,
-> + =A0 =A0 =A0 .wdelay =A0 =A0 =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .timer_disable =A0=3D true,
-> +};
-> +
-> =A0static struct spi_board_info dm355_leopard_spi_info[] __initconst =3D {
-> =A0 =A0 =A0 =A0{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.modalias =A0 =A0 =A0 =3D "at25",
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.platform_data =A0=3D &at25640a,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .controller_data =3D &at25640a_spi_cfg,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.max_speed_hz =A0 =3D 10 * 1000 * 1000, =
-=A0 =A0 /* at 3v3 */
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.bus_num =A0 =A0 =A0 =A0=3D 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.chip_select =A0 =A0=3D 0,
-> diff --git a/arch/arm/mach-davinci/board-dm365-evm.c b/arch/arm/mach-davi=
-nci/board-dm365-evm.c
-> index 5bb86b2..db85372 100644
-> --- a/arch/arm/mach-davinci/board-dm365-evm.c
-> +++ b/arch/arm/mach-davinci/board-dm365-evm.c
-> @@ -39,6 +39,7 @@
-> =A0#include <mach/mmc.h>
-> =A0#include <mach/nand.h>
-> =A0#include <mach/keyscan.h>
-> +#include <mach/spi.h>
->
-> =A0#include <media/tvp514x.h>
->
-> @@ -579,10 +580,19 @@ static struct spi_eeprom at25640 =3D {
-> =A0 =A0 =A0 =A0.flags =A0 =A0 =A0 =A0 =A0=3D EE_ADDR2,
-> =A0};
->
-> +static struct davinci_spi_config at25640_spi_cfg =3D {
-> + =A0 =A0 =A0 .parity_enable =A0=3D false,
-> + =A0 =A0 =A0 .intr_level =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .io_type =A0 =A0 =A0 =A0=3D SPI_IO_TYPE_DMA,
-> + =A0 =A0 =A0 .wdelay =A0 =A0 =A0 =A0 =3D 0,
-> + =A0 =A0 =A0 .timer_disable =A0=3D true,
-> +};
-> +
-> =A0static struct spi_board_info dm365_evm_spi_info[] __initconst =3D {
-> =A0 =A0 =A0 =A0{
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.modalias =A0 =A0 =A0 =3D "at25",
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.platform_data =A0=3D &at25640,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .controller_data =3D &at25640_spi_cfg,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.max_speed_hz =A0 =3D 10 * 1000 * 1000,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.bus_num =A0 =A0 =A0 =A0=3D 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.chip_select =A0 =A0=3D 0,
-> diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
-> index 3834781..b79b798 100644
-> --- a/arch/arm/mach-davinci/dm355.c
-> +++ b/arch/arm/mach-davinci/dm355.c
-> @@ -410,14 +410,8 @@ static struct resource dm355_spi0_resources[] =3D {
-> =A0};
->
-> =A0static struct davinci_spi_platform_data dm355_spi0_pdata =3D {
-> - =A0 =A0 =A0 .version =A0 =A0 =A0 =A0=3D SPI_VERSION_1,
-> + =A0 =A0 =A0 .version =A0 =A0 =A0 =A0=3D SPI_VERSION_0,
-> =A0 =A0 =A0 =A0.num_chipselect =3D 2,
-> - =A0 =A0 =A0 .clk_internal =A0 =3D 1,
-> - =A0 =A0 =A0 .cs_hold =A0 =A0 =A0 =A0=3D 1,
-> - =A0 =A0 =A0 .intr_level =A0 =A0 =3D 0,
-> - =A0 =A0 =A0 .poll_mode =A0 =A0 =A0=3D 1, =A0 =A0/* 0 -> interrupt mode =
-1-> polling mode */
-> - =A0 =A0 =A0 .c2tdelay =A0 =A0 =A0 =3D 0,
-> - =A0 =A0 =A0 .t2cdelay =A0 =A0 =A0 =3D 0,
-> =A0};
-> =A0static struct platform_device dm355_spi0_device =3D {
-> =A0 =A0 =A0 =A0.name =3D "spi_davinci",
-> diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
-> index 652f4b6..4aea346 100644
-> --- a/arch/arm/mach-davinci/dm365.c
-> +++ b/arch/arm/mach-davinci/dm365.c
-> @@ -625,12 +625,6 @@ static u64 dm365_spi0_dma_mask =3D DMA_BIT_MASK(32);
-> =A0static struct davinci_spi_platform_data dm365_spi0_pdata =3D {
-> =A0 =A0 =A0 =A0.version =A0 =A0 =A0 =A0=3D SPI_VERSION_1,
-> =A0 =A0 =A0 =A0.num_chipselect =3D 2,
-> - =A0 =A0 =A0 .clk_internal =A0 =3D 1,
-> - =A0 =A0 =A0 .cs_hold =A0 =A0 =A0 =A0=3D 1,
-> - =A0 =A0 =A0 .intr_level =A0 =A0 =3D 0,
-> - =A0 =A0 =A0 .poll_mode =A0 =A0 =A0=3D 1, =A0 =A0/* 0 -> interrupt mode =
-1-> polling mode */
-> - =A0 =A0 =A0 .c2tdelay =A0 =A0 =A0 =3D 0,
-> - =A0 =A0 =A0 .t2cdelay =A0 =A0 =A0 =3D 0,
-> =A0};
->
-> =A0static struct resource dm365_spi0_resources[] =3D {
-> diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-dav=
-inci/include/mach/spi.h
-> index 910efbf..3f77dab 100644
-> --- a/arch/arm/mach-davinci/include/mach/spi.h
-> +++ b/arch/arm/mach-davinci/include/mach/spi.h
-> @@ -19,26 +19,35 @@
-> =A0#ifndef __ARCH_ARM_DAVINCI_SPI_H
-> =A0#define __ARCH_ARM_DAVINCI_SPI_H
->
-> +#define SPI_INTERN_CS =A00xFF
-> +
-> =A0enum {
-> - =A0 =A0 =A0 SPI_VERSION_1, /* For DM355/DM365/DM6467 */
-> + =A0 =A0 =A0 SPI_VERSION_0, /* For DM355 (reduced features, no Tx interr=
-upt) */
-> + =A0 =A0 =A0 SPI_VERSION_1, /* For DM365/DM6467 (reduced features) */
-> =A0 =A0 =A0 =A0SPI_VERSION_2, /* For DA8xx */
-> =A0};
->
-> =A0struct davinci_spi_platform_data {
-> =A0 =A0 =A0 =A0u8 =A0 =A0 =A0version;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0num_chipselect;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0wdelay;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0odd_parity;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0parity_enable;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0wait_enable;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0timer_disable;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0clk_internal;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0cs_hold;
-> + =A0 =A0 =A0 u16 =A0 =A0 num_chipselect;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0*chip_sel;
-> +};
-> +
-> +struct davinci_spi_config {
-> + =A0 =A0 =A0 bool =A0 =A0odd_parity;
-> + =A0 =A0 =A0 bool =A0 =A0parity_enable;
-> =A0 =A0 =A0 =A0u8 =A0 =A0 =A0intr_level;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0poll_mode;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0use_dma;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0c2tdelay;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0t2cdelay;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0io_type;
-> +#define SPI_IO_TYPE_INTR =A0 =A00
-> +#define SPI_IO_TYPE_POLL =A0 =A01
-> +#define SPI_IO_TYPE_DMA =A0 =A0 2
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0bytes_per_word;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0wdelay;
-> + =A0 =A0 =A0 bool =A0 =A0timer_disable;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0c2t_delay;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0t2c_delay;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0t2e_delay;
-> + =A0 =A0 =A0 u8 =A0 =A0 =A0c2e_delay;
-> =A0};
->
-> =A0#endif /* __ARCH_ARM_DAVINCI_SPI_H */
-> diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-> index b85090c..5c9e9ce 100644
-> --- a/drivers/spi/davinci_spi.c
-> +++ b/drivers/spi/davinci_spi.c
-> @@ -1,5 +1,6 @@
-> =A0/*
-> =A0* Copyright (C) 2009 Texas Instruments.
-> + * Copyright (C) 2010 EF Johnson Technologies
-> =A0*
-> =A0* This program is free software; you can redistribute it and/or modify
-> =A0* it under the terms of the GNU General Public License as published by
-> @@ -27,21 +28,19 @@
-> =A0#include <linux/dma-mapping.h>
-> =A0#include <linux/spi/spi.h>
-> =A0#include <linux/spi/spi_bitbang.h>
-> -#include <linux/slab.h>
->
-> =A0#include <mach/spi.h>
-> =A0#include <mach/edma.h>
->
-> =A0#define SPI_NO_RESOURCE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0((resource_size=
-_t)-1)
->
-> -#define SPI_MAX_CHIPSELECT =A0 =A0 2
-> -
-> =A0#define CS_DEFAULT =A0 =A0 0xFF
->
-> =A0#define SPI_BUFSIZ =A0 =A0 (SMP_CACHE_BYTES + 1)
-> -#define DAVINCI_DMA_DATA_TYPE_S8 =A0 =A0 =A0 0x01
-> -#define DAVINCI_DMA_DATA_TYPE_S16 =A0 =A0 =A00x02
-> -#define DAVINCI_DMA_DATA_TYPE_S32 =A0 =A0 =A00x04
-> +
-> +#define RX_DMA_INDEX =A0 =A0 =A0 =A0 =A0 0
-> +#define TX_DMA_INDEX =A0 =A0 =A0 =A0 =A0 1
-> +#define EVENTQ_DMA_INDEX =A0 =A0 =A0 2
->
-> =A0#define SPIFMT_PHASE_MASK =A0 =A0 =A0BIT(16)
-> =A0#define SPIFMT_POLARITY_MASK =A0 BIT(17)
-> @@ -53,9 +52,11 @@
-> =A0#define SPIFMT_WDELAY_MASK =A0 =A0 0x3f000000u
-> =A0#define SPIFMT_WDELAY_SHIFT =A0 =A024
-> =A0#define SPIFMT_CHARLEN_MASK =A0 =A00x0000001Fu
-> +#define SPIFMT_PRESCALE_SHIFT =A08
->
-> =A0/* SPIGCR1 */
-> -#define SPIGCR1_SPIENA_MASK =A0 =A00x01000000u
-> +#define SPIGCR1_SPIENA_MASK =A0 =A0BIT(24)
-> +#define SPIGCR1_POWERDOWN_MASK BIT(8)
->
-> =A0/* SPIPC0 */
-> =A0#define SPIPC0_DIFUN_MASK =A0 =A0 =A0BIT(11) =A0 =A0 =A0 =A0 /* MISO */
-> @@ -66,20 +67,38 @@
-> =A0#define SPIPC0_EN0FUN_MASK =A0 =A0 BIT(0)
->
-> =A0#define SPIINT_MASKALL =A0 =A0 =A0 =A0 0x0101035F
-> +#define SPIINT_MASKINT =A0 =A0 =A0 =A0 0x0000035F
-> =A0#define SPI_INTLVL_1 =A0 =A0 =A0 =A0 =A0 0x000001FFu
-> =A0#define SPI_INTLVL_0 =A0 =A0 =A0 =A0 =A0 0x00000000u
->
-> =A0/* SPIDAT1 */
-> +#define SPIDAT1_CSHOLD_MASK =A0 =A0BIT(28)
-> =A0#define SPIDAT1_CSHOLD_SHIFT =A0 28
-> +#define SPIDAT1_WDEL_MASK =A0 =A0 =A0BIT(26)
-> +#define SPIDAT1_CSNR_MASK =A0 =A0 =A00x00FF0000u
-> =A0#define SPIDAT1_CSNR_SHIFT =A0 =A0 16
-> +#define SPIDAT1_DFSEL_MASK =A0 =A0 (BIT(24 | BIT(25))
-> =A0#define SPIGCR1_CLKMOD_MASK =A0 =A0BIT(1)
-> -#define SPIGCR1_MASTER_MASK =A0 =A0 BIT(0)
-> +#define SPIGCR1_MASTER_MASK =A0 =A0BIT(0)
-> =A0#define SPIGCR1_LOOPBACK_MASK =A0BIT(16)
->
-> =A0/* SPIBUF */
-> =A0#define SPIBUF_TXFULL_MASK =A0 =A0 BIT(29)
-> =A0#define SPIBUF_RXEMPTY_MASK =A0 =A0BIT(31)
->
-> +/* SPIDELAY */
-> +#define SPIDELAY_C2TDELAY_MASK =A00xFF000000u
-> +#define SPIDELAY_C2TDELAY_SHIFT 24
-> +#define SPIDELAY_T2CDELAY_MASK =A00x00FF0000u
-> +#define SPIDELAY_T2CDELAY_SHIFT 16
-> +#define SPIDELAY_T2EDELAY_MASK =A00x0000FF00u
-> +#define SPIDELAY_T2EDELAY_SHIFT 8
-> +#define SPIDELAY_C2EDELAY_MASK =A00x000000FFu
-> +#define SPIDELAY_C2EDELAY_SHIFT 0
-> +
-> +/* SPIDEF */
-> +#define SPIDEF_CSDEF_MASK =A0 =A0 =A0 0x000000FFu
-> +
-> =A0/* Error Masks */
-> =A0#define SPIFLG_DLEN_ERR_MASK =A0 =A0 =A0 =A0 =A0 BIT(0)
-> =A0#define SPIFLG_TIMEOUT_MASK =A0 =A0 =A0 =A0 =A0 =A0BIT(1)
-> @@ -90,11 +109,12 @@
-> =A0#define SPIFLG_RX_INTR_MASK =A0 =A0 =A0 =A0 =A0 =A0BIT(8)
-> =A0#define SPIFLG_TX_INTR_MASK =A0 =A0 =A0 =A0 =A0 =A0BIT(9)
-> =A0#define SPIFLG_BUF_INIT_ACTIVE_MASK =A0 =A0BIT(24)
-> -#define SPIFLG_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(SPIFLG_DLEN_=
-ERR_MASK \
-> +#define SPIFLG_ERROR_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0(SPIFLG_DLEN_ERR_MA=
-SK \
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| SPIFLG_T=
-IMEOUT_MASK | SPIFLG_PARERR_MASK \
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| SPIFLG_D=
-ESYNC_MASK | SPIFLG_BITERR_MASK \
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIFLG_OV=
-RRUN_MASK | SPIFLG_RX_INTR_MASK \
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIFLG_TX=
-_INTR_MASK \
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIFLG_OV=
-RRUN_MASK)
-> +#define SPIFLG_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(SPIFLG_ERROR=
-_MASK \
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIFLG_RX=
-_INTR_MASK | SPIFLG_TX_INTR_MASK \
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| SPIFLG_B=
-UF_INIT_ACTIVE_MASK)
->
-> =A0#define SPIINT_DLEN_ERR_INTR =A0 BIT(0)
-> @@ -139,11 +159,10 @@
-> =A0#define TGINTVEC0 =A0 =A0 =A00x60
-> =A0#define TGINTVEC1 =A0 =A0 =A00x64
->
-> -struct davinci_spi_slave {
-> - =A0 =A0 =A0 u32 =A0 =A0 cmd_to_write;
-> - =A0 =A0 =A0 u32 =A0 =A0 clk_ctrl_to_write;
-> - =A0 =A0 =A0 u32 =A0 =A0 bytes_per_word;
-> - =A0 =A0 =A0 u8 =A0 =A0 =A0active_cs;
-> +const char * const io_type_names[] =3D {
-> + =A0 =A0 =A0 [SPI_IO_TYPE_INTR] =3D "Interrupt",
-> + =A0 =A0 =A0 [SPI_IO_TYPE_POLL] =3D "Polled",
-> + =A0 =A0 =A0 [SPI_IO_TYPE_DMA] =3D "DMA",
-> =A0};
->
-> =A0/* We have 2 DMA channels per CS, one for RX and one for TX */
-> @@ -152,10 +171,8 @@ struct davinci_spi_dma {
-> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_rx_channel;
-> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_tx_sync_de=
-v;
-> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_rx_sync_de=
-v;
-> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dummy_param_slo=
-t;
-> =A0 =A0 =A0 =A0enum dma_event_q =A0 =A0 =A0 =A0eventq;
-> -
-> - =A0 =A0 =A0 struct completion =A0 =A0 =A0 dma_tx_completion;
-> - =A0 =A0 =A0 struct completion =A0 =A0 =A0 dma_rx_completion;
-> =A0};
->
-> =A0/* SPI Controller driver's private data. */
-> @@ -173,51 +190,53 @@ struct davinci_spi {
-> =A0 =A0 =A0 =A0const void =A0 =A0 =A0 =A0 =A0 =A0 =A0*tx;
-> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*rx;
-> =A0 =A0 =A0 =A0u8 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0*tmp_buf;
-> - =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 count;
-> - =A0 =A0 =A0 struct davinci_spi_dma =A0*dma_channels;
-> - =A0 =A0 =A0 struct =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi_platf=
-orm_data *pdata;
-> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rcount;
-> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 wcount;
-> + =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 errors;
-> + =A0 =A0 =A0 struct davinci_spi_dma =A0dma_channels;
-> + =A0 =A0 =A0 struct davinci_spi_platform_data *pdata;
->
-> =A0 =A0 =A0 =A0void =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(*get_rx)(u32 =
-rx_data, struct davinci_spi *);
-> =A0 =A0 =A0 =A0u32 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (*get_tx)(stru=
-ct davinci_spi *);
-> -
-> - =A0 =A0 =A0 struct davinci_spi_slave slave[SPI_MAX_CHIPSELECT];
-> =A0};
->
-> -static unsigned use_dma;
-> -
-> =A0static void davinci_spi_rx_buf_u8(u32 data, struct davinci_spi *davinc=
-i_spi)
-> =A0{
-> - =A0 =A0 =A0 u8 *rx =3D davinci_spi->rx;
-> -
-> - =A0 =A0 =A0 *rx++ =3D (u8)data;
-> - =A0 =A0 =A0 davinci_spi->rx =3D rx;
-> + =A0 =A0 =A0 if (davinci_spi->rx) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u8 *rx =3D davinci_spi->rx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 *rx++ =3D (u8)data;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->rx =3D rx;
-> + =A0 =A0 =A0 }
-> =A0}
->
-> =A0static void davinci_spi_rx_buf_u16(u32 data, struct davinci_spi *davin=
-ci_spi)
-> =A0{
-> - =A0 =A0 =A0 u16 *rx =3D davinci_spi->rx;
-> -
-> - =A0 =A0 =A0 *rx++ =3D (u16)data;
-> - =A0 =A0 =A0 davinci_spi->rx =3D rx;
-> + =A0 =A0 =A0 if (davinci_spi->rx) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u16 *rx =3D davinci_spi->rx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 *rx++ =3D (u16)data;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->rx =3D rx;
-> + =A0 =A0 =A0 }
-> =A0}
->
-> =A0static u32 davinci_spi_tx_buf_u8(struct davinci_spi *davinci_spi)
-> =A0{
-> - =A0 =A0 =A0 u32 data;
-> - =A0 =A0 =A0 const u8 *tx =3D davinci_spi->tx;
-> -
-> - =A0 =A0 =A0 data =3D *tx++;
-> - =A0 =A0 =A0 davinci_spi->tx =3D tx;
-> + =A0 =A0 =A0 u32 data =3D 0;
-> + =A0 =A0 =A0 if (davinci_spi->tx) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 const u8 *tx =3D davinci_spi->tx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 data =3D *tx++;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->tx =3D tx;
-> + =A0 =A0 =A0 }
-> =A0 =A0 =A0 =A0return data;
-> =A0}
+> This patch depends on the Tegra APB DMA driver:
+> [PATCH] [ARM] tegra: Add APB DMA support
 
-Here's an excellent candidate for a separate patch.  Validation of the
-rx/tx buffer before transfering data to/from it.
 
+What is the status of the APB DMA driver?  Is it going to be merged in 2.6.=
+36?
+
+> ---
+> =A0drivers/spi/Kconfig =A0 =A0 | =A0 =A06 +
+> =A0drivers/spi/Makefile =A0 =A0| =A0 =A01 +
+> =A0drivers/spi/spi_tegra.c | =A0651 +++++++++++++++++++++++++++++++++++++=
+++++++++++
+> =A03 files changed, 658 insertions(+), 0 deletions(-)
+> =A0create mode 100644 drivers/spi/spi_tegra.c
 >
-> =A0static u32 davinci_spi_tx_buf_u16(struct davinci_spi *davinci_spi)
-> =A0{
-> - =A0 =A0 =A0 u32 data;
-> - =A0 =A0 =A0 const u16 *tx =3D davinci_spi->tx;
-> -
-> - =A0 =A0 =A0 data =3D *tx++;
-> - =A0 =A0 =A0 davinci_spi->tx =3D tx;
-> + =A0 =A0 =A0 u32 data =3D 0;
-> + =A0 =A0 =A0 if (davinci_spi->tx) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 const u16 *tx =3D davinci_spi->tx;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 data =3D *tx++;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->tx =3D tx;
-> + =A0 =A0 =A0 }
-> =A0 =A0 =A0 =A0return data;
-> =A0}
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 91c2f4f..c07e0de 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -298,6 +298,12 @@ config SPI_STMP3XXX
+> =A0 =A0 =A0 =A0help
+> =A0 =A0 =A0 =A0 =A0SPI driver for Freescale STMP37xx/378x SoC SSP interfa=
+ce
 >
-> @@ -237,26 +256,6 @@ static inline void clear_io_bits(void __iomem *addr,=
- u32 bits)
-> =A0 =A0 =A0 =A0iowrite32(v, addr);
-> =A0}
->
-> -static inline void set_fmt_bits(void __iomem *addr, u32 bits, int cs_num)
-> -{
-> - =A0 =A0 =A0 set_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
-> -}
-> -
-> -static inline void clear_fmt_bits(void __iomem *addr, u32 bits, int cs_n=
-um)
-> -{
-> - =A0 =A0 =A0 clear_io_bits(addr + SPIFMT0 + (0x4 * cs_num), bits);
-> -}
-> -
-> -static void davinci_spi_set_dma_req(const struct spi_device *spi, int en=
-able)
-> -{
-> - =A0 =A0 =A0 struct davinci_spi *davinci_spi =3D spi_master_get_devdata(=
-spi->master);
-> -
-> - =A0 =A0 =A0 if (enable)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIINT, SPI=
-INT_DMA_REQ_EN);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIINT, S=
-PIINT_DMA_REQ_EN);
-> -}
-> -
-> =A0/*
-> =A0* Interface to control the chip select signal
-> =A0*/
-> @@ -264,25 +263,54 @@ static void davinci_spi_chipselect(struct spi_devic=
-e *spi, int value)
-> =A0{
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
-> - =A0 =A0 =A0 u32 data1_reg_val =3D 0;
-> + =A0 =A0 =A0 u8 i, chip_sel =3D spi->chip_select;
-> + =A0 =A0 =A0 u32 spidat1;
-> + =A0 =A0 =A0 u16 spidat1_cfg;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
->
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* Board specific chip select logic decides the polarity =
-and cs
-> - =A0 =A0 =A0 =A0* line for the controller
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 if (value =3D=3D BITBANG_CS_INACTIVE) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIDEF, CS_=
-DEFAULT);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 data1_reg_val |=3D CS_DEFAULT << SPIDAT1_CS=
-NR_SHIFT;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(data1_reg_val, davinci_spi->base =
-+ SPIDAT1);
-> + =A0 =A0 =A0 spidat1 =3D SPIDAT1_CSNR_MASK;
-> + =A0 =A0 =A0 if (value =3D=3D BITBANG_CS_ACTIVE)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 |=3D SPIDAT1_CSHOLD_MASK;
+> +config SPI_TEGRA
+> + =A0 =A0 =A0 tristate "Nvidia Tegra SPI controller"
+> + =A0 =A0 =A0 depends on ARCH_TEGRA
+> + =A0 =A0 =A0 help
+> + =A0 =A0 =A0 =A0 SPI driver for NVidia Tegra SoCs
+> +
+> =A0config SPI_TXX9
+> =A0 =A0 =A0 =A0tristate "Toshiba TXx9 SPI controller"
+> =A0 =A0 =A0 =A0depends on GENERIC_GPIO && CPU_TX49XX
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index e9cbd18..b6573d8 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -39,6 +39,7 @@ obj-$(CONFIG_SPI_PPC4xx) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=
+=3D spi_ppc4xx.o
+> =A0obj-$(CONFIG_SPI_S3C24XX_GPIO) =A0 =A0 =A0 =A0 +=3D spi_s3c24xx_gpio.o
+> =A0obj-$(CONFIG_SPI_S3C24XX) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_s3c24xx_=
+hw.o
+> =A0obj-$(CONFIG_SPI_S3C64XX) =A0 =A0 =A0 =A0 =A0 =A0 =A0+=3D spi_s3c64xx.o
+> +obj-$(CONFIG_SPI_TEGRA) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0+=
+=3D spi_tegra.o
+> =A0obj-$(CONFIG_SPI_TXX9) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D spi_txx9.o
+> =A0obj-$(CONFIG_SPI_XILINX) =A0 =A0 =A0 =A0 =A0 =A0 =A0 +=3D xilinx_spi.o
+> =A0obj-$(CONFIG_SPI_XILINX_OF) =A0 =A0 =A0 =A0 =A0 =A0+=3D xilinx_spi_of.o
+> diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+> new file mode 100644
+> index 0000000..72fc4d4
+> --- /dev/null
+> +++ b/drivers/spi/spi_tegra.c
+> @@ -0,0 +1,651 @@
+> +/*
+> + * drivers/spi/spi_tegra.c
+
+I find it is more useful, and it is my preference, to have a one-line
+description of what the file actually is here.  Showing the filename
+is just redundant and doesn't tell a reader anything new.
+
+> + *
+> + * Copyright (C) 2010 Google, Inc.
+> + *
+> + * Author:
+> + * =A0 =A0 Erik Gilling <konkers@android.com>
+> + *
+> + * This software is licensed under the terms of the GNU General Public
+> + * License version 2, as published by the Free Software Foundation, and
+> + * may be copied, distributed, and modified under those terms.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. =A0See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +
+> +#undef DEBUG
+
+trim
+
+> +#include <linux/kernel.h>
+> +#include <linux/init.h>
+> +#include <linux/err.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/io.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/dmapool.h>
+> +#include <linux/clk.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/delay.h>
+> +
+> +#include <linux/spi/spi.h>
+> +
+> +#include <mach/dma.h>
+> +
+> +#define DRIVER_NAME =A0 =A0 =A0 =A0 =A0 =A0"spi_tegra"
+
+Used only twice in 2 side-by-side locations.  I'd trim, or at least
+move to where it is actually used.
+
+> +
+> +#define BUSY_TIMEOUT =A0 =A0 =A0 =A0 =A0 1000
+
+Used exactly once.  May be better defined and documented at the usage site
+
+> +
+> +#define SLINK_COMMAND =A0 =A0 =A0 =A0 =A00x000
+> +#define =A0 BIT_LENGTH(x) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0(((x) & 0x1f) << 0)
+> +#define =A0 WORD_SIZE(x) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (((x) & 0x1f) <=
+< 5)
+> +#define =A0 BOTH_EN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 10)
+> +#define =A0 CS_SW =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0(1 << 11)
+> +#define =A0 CS_VALUE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 12)
+> +#define =A0 CS_POLARITY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 13)
+> +#define =A0 IDLE_SDA_DRIVE_LOW =A0 =A0 =A0 =A0 =A0 (0 << 16)
+> +#define =A0 IDLE_SDA_DRIVE_HIGH =A0 =A0 =A0 =A0 =A0(1 << 16)
+> +#define =A0 IDLE_SDA_PULL_LOW =A0 =A0 =A0 =A0 =A0 =A0(2 << 16)
+> +#define =A0 IDLE_SDA_PULL_HIGH =A0 =A0 =A0 =A0 =A0 (3 << 16)
+> +#define =A0 IDLE_SDA_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0(3 << 16)
+> +#define =A0 CS_POLARITY1 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 20)
+> +#define =A0 CK_SDA =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 21)
+> +#define =A0 CS_POLARITY2 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 22)
+> +#define =A0 CS_POLARITY3 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 23)
+> +#define =A0 IDLE_SCLK_DRIVE_LOW =A0 =A0 =A0 =A0 =A0(0 << 24)
+> +#define =A0 IDLE_SCLK_DRIVE_HIGH =A0 =A0 =A0 =A0 (1 << 24)
+> +#define =A0 IDLE_SCLK_PULL_LOW =A0 =A0 =A0 =A0 =A0 (2 << 24)
+> +#define =A0 IDLE_SCLK_PULL_HIGH =A0 =A0 =A0 =A0 =A0(3 << 24)
+> +#define =A0 IDLE_SCLK_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 24)
+> +#define =A0 M_S =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 <<=
+ 28)
+> +#define =A0 WAIT =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 2=
+9)
+> +#define =A0 GO =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 <<=
+ 30)
+> +#define =A0 ENB =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 <<=
+ 31)
+> +
+> +#define SLINK_COMMAND2 =A0 =A0 =A0 =A0 0x004
+> +#define =A0 LSBFE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0(1 << 0)
+> +#define =A0 SSOE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 1)
+> +#define =A0 SPIE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 4)
+> +#define =A0 BIDIROE =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 6)
+> +#define =A0 MODFEN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 7)
+> +#define =A0 INT_SIZE(x) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(((x) & 0x1f)=
+ << 8)
+> +#define =A0 CS_ACTIVE_BETWEEN =A0 =A0 =A0 =A0 =A0 =A0(1 << 17)
+> +#define =A0 SS_EN_CS(x) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(((x) & 0x3) =
+<< 18)
+> +#define =A0 SS_SETUP(x) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(((x) & 0x3) =
+<< 20)
+> +#define =A0 FIFO_REFILLS_0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (0 << 22)
+> +#define =A0 FIFO_REFILLS_1 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 22)
+> +#define =A0 FIFO_REFILLS_2 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (2 << 22)
+> +#define =A0 FIFO_REFILLS_3 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 22)
+> +#define =A0 FIFO_REFILLS_MASK =A0 =A0 =A0 =A0 =A0 =A0(3 << 22)
+> +#define =A0 WAIT_PACK_INT(x) =A0 =A0 =A0 =A0 =A0 =A0 (((x) & 0x7) << 26)
+> +#define =A0 SPC0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 2=
+9)
+> +#define =A0 TXEN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 3=
+0)
+> +#define =A0 RXEN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 3=
+1)
+> +
+> +#define SLINK_STATUS =A0 =A0 =A0 =A0 =A0 0x008
+> +#define =A0 COUNT(val) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (((val) >> 0)=
+ & 0x1f)
+> +#define =A0 WORD(val) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(((val) >> =
+5) & 0x1f)
+> +#define =A0 BLK_CNT(val) =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (((val) >> 0) &=
+ 0xffff)
+> +#define =A0 MODF =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 1=
+6)
+> +#define =A0 RX_UNF =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 18)
+> +#define =A0 TX_OVF =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 19)
+> +#define =A0 TX_FULL =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 20)
+> +#define =A0 TX_EMPTY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 21)
+> +#define =A0 RX_FULL =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 22)
+> +#define =A0 RX_EMPTY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 23)
+> +#define =A0 TX_UNF =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 24)
+> +#define =A0 RX_OVF =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 25)
+> +#define =A0 TX_FLUSH =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 26)
+> +#define =A0 RX_FLUSH =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 27)
+> +#define =A0 SCLK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 2=
+8)
+> +#define =A0 ERR =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 <<=
+ 29)
+> +#define =A0 RDY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 <<=
+ 30)
+> +#define =A0 BSY =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 <<=
+ 31)
+> +
+> +#define SLINK_MAS_DATA =A0 =A0 =A0 =A0 0x010
+> +#define SLINK_SLAVE_DATA =A0 =A0 =A0 0x014
+> +
+> +#define SLINK_DMA_CTL =A0 =A0 =A0 =A0 =A00x018
+> +#define =A0 DMA_BLOCK_SIZE(x) =A0 =A0 =A0 =A0 =A0 =A0(((x) & 0xffff) << =
+0)
+> +#define =A0 TX_TRIG_1 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(0 << 16)
+> +#define =A0 TX_TRIG_4 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 16)
+> +#define =A0 TX_TRIG_8 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(2 << 16)
+> +#define =A0 TX_TRIG_16 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 16)
+> +#define =A0 TX_TRIG_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 16)
+> +#define =A0 RX_TRIG_1 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(0 << 18)
+> +#define =A0 RX_TRIG_4 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 18)
+> +#define =A0 RX_TRIG_8 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(2 << 18)
+> +#define =A0 RX_TRIG_16 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 18)
+> +#define =A0 RX_TRIG_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 18)
+> +#define =A0 PACKED =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 20)
+> +#define =A0 PACK_SIZE_4 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(0 << 21)
+> +#define =A0 PACK_SIZE_8 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(1 << 21)
+> +#define =A0 PACK_SIZE_16 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (2 << 21)
+> +#define =A0 PACK_SIZE_32 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 21)
+> +#define =A0 PACK_SIZE_MASK =A0 =A0 =A0 =A0 =A0 =A0 =A0 (3 << 21)
+> +#define =A0 IE_TXC =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 26)
+> +#define =A0 IE_RXC =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 27)
+> +#define =A0 DMA_EN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << 31)
+> +
+> +#define SLINK_STATUS2 =A0 =A0 =A0 =A0 =A00x01c
+> +#define =A0 TX_FIFO_EMPTY_COUNT(val) =A0 =A0 (((val) & 0x3f) >> 0)
+> +#define =A0 RX_FIFO_FULL_COUNT(val) =A0 =A0 =A0(((val) & 0x3f) >> 16)
+> +
+> +#define SLINK_TX_FIFO =A0 =A0 =A0 =A0 =A00x100
+> +#define SLINK_RX_FIFO =A0 =A0 =A0 =A0 =A00x180
+> +
+> +static const unsigned long spi_tegra_req_sels[] =3D {
+> + =A0 =A0 =A0 TEGRA_DMA_REQ_SEL_SL2B1,
+> + =A0 =A0 =A0 TEGRA_DMA_REQ_SEL_SL2B2,
+> + =A0 =A0 =A0 TEGRA_DMA_REQ_SEL_SL2B3,
+> + =A0 =A0 =A0 TEGRA_DMA_REQ_SEL_SL2B4,
+> +};
+> +
+> +static inline unsigned bytes_per_word(u8 bits)
+> +{
+> + =A0 =A0 =A0 WARN_ON((bits < 1) || bits > 32);
+
+This condition has already been tested for in spi_tegra_start_transfer()
+
+> + =A0 =A0 =A0 if (bits <=3D 8)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 1;
+> + =A0 =A0 =A0 else if (bits <=3D 16)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 2;
+> + =A0 =A0 =A0 else if (bits <=3D 24)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 3;
 > + =A0 =A0 =A0 else
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 |=3D SPIDAT1_WDEL_MASK;
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 while ((ioread32(davinci_spi->base + SPIBUF)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 & SPIBUF_RXEMPTY_MASK) =3D=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> + =A0 =A0 =A0 if (pdata->chip_sel =3D=3D NULL) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (value =3D=3D BITBANG_CS_ACTIVE)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 &=3D ~((0x1 << chip=
-_sel) << SPIDAT1_CSNR_SHIFT);
-> + =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (i =3D 0; i < pdata->num_chipselect; i+=
-+) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (pdata->chip_sel[i] =3D=
-=3D SPI_INTERN_CS) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((i =3D=
-=3D chip_sel) &&
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (va=
-lue =3D=3D BITBANG_CS_ACTIVE)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spidat1 &=3D ~((0x1 << chip_sel)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 << SPIDAT1_CSNR_SHIFT);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (value =
-=3D=3D BITBANG_CS_INACTIVE)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 gpio_set_value(pdata->chip_sel[i], 1);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 else if (i =
-=3D=3D chip_sel)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 gpio_set_value(pdata->chip_sel[i], 0);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> =A0 =A0 =A0 =A0}
-> +
-> + =A0 =A0 =A0 spidat1_cfg =3D spidat1 >> SPIDAT1_CSNR_SHIFT;
-> + =A0 =A0 =A0 iowrite16(spidat1_cfg, davinci_spi->base + SPIDAT1 + 2);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 4;
+
+return ((bits - 1) / 8) + 1
+
+Also, this function is used in exactly 1 place.  Consider moving it
+down to nearer where it is called, or open coding it instead.
+
 > +}
 > +
-> +/**
-> + * davinci_spi_get_prescale - Calculates the correct prescale value
-> + * @max_speed_hz: the maximum rate the SPI clock can run at
-> + *
-> + * This function calculates the prescale value that generates a clock ra=
-te
-> + * less than or equal to the specified maximum
-> + */
-> +static inline u32 davinci_spi_get_prescale(struct davinci_spi *davinci_s=
-pi,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 u32 max_speed_hz)
+> +#define BB_LEN =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 32
+> +
+> +struct spi_tegra_data {
+> + =A0 =A0 =A0 struct spi_master =A0 =A0 =A0 *master;
+> + =A0 =A0 =A0 struct platform_device =A0*pdev;
+> + =A0 =A0 =A0 spinlock_t =A0 =A0 =A0 =A0 =A0 =A0 =A0lock;
+> +
+> + =A0 =A0 =A0 struct clk =A0 =A0 =A0 =A0 =A0 =A0 =A0*clk;
+> + =A0 =A0 =A0 void __iomem =A0 =A0 =A0 =A0 =A0 =A0*base;
+> + =A0 =A0 =A0 unsigned long =A0 =A0 =A0 =A0 =A0 phys;
+> +
+> + =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cur_speed;
+> +
+> + =A0 =A0 =A0 struct list_head =A0 =A0 =A0 =A0queue;
+> + =A0 =A0 =A0 struct spi_transfer =A0 =A0 *cur;
+> + =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cur_pos;
+> + =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cur_len;
+> + =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0cur_bytes_per_word;
+> +
+> + =A0 =A0 =A0 /* The tegra spi controller has a bug which causes the firs=
+t word
+> + =A0 =A0 =A0 =A0* in PIO transactions to be garbage. =A0Since packed DMA=
+ transactions
+> + =A0 =A0 =A0 =A0* require transfers to be 4 byte aligned we need a bounc=
+e buffer
+> + =A0 =A0 =A0 =A0* for the generic case.
+> + =A0 =A0 =A0 =A0*/
+> + =A0 =A0 =A0 struct tegra_dma_req =A0 =A0rx_dma_req;
+> + =A0 =A0 =A0 struct tegra_dma_channel *rx_dma;
+> + =A0 =A0 =A0 u32 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 *rx_bb;
+> + =A0 =A0 =A0 dma_addr_t =A0 =A0 =A0 =A0 =A0 =A0 =A0rx_bb_phys;
+> +};
+> +
+> +
+> +static unsigned long spi_readl(struct spi_tegra_data *tspi, unsigned lon=
+g reg)
+
+To avoid global namespace collisions, please prefix all static symbols
+with something like tegra_spi_.
+
 > +{
-> + =A0 =A0 =A0 return ((clk_get_rate(davinci_spi->clk) - 1) / max_speed_hz=
-) & 0xff;
-> =A0}
->
-> =A0/**
-> @@ -297,14 +325,15 @@ static void davinci_spi_chipselect(struct spi_devic=
-e *spi, int value)
-> =A0static int davinci_spi_setup_transfer(struct spi_device *spi,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct spi_transfer *t)
-> =A0{
-> -
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
-> + =A0 =A0 =A0 struct davinci_spi_config *spi_cfg;
-> =A0 =A0 =A0 =A0u8 bits_per_word =3D 0;
-> - =A0 =A0 =A0 u32 hz =3D 0, prescale =3D 0, clkspeed;
-> + =A0 =A0 =A0 u32 hz =3D 0, spifmt =3D 0, prescale, delay =3D 0;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
-> + =A0 =A0 =A0 spi_cfg =3D spi->controller_data;
->
-> =A0 =A0 =A0 =A0if (t) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bits_per_word =3D t->bits_per_word;
-> @@ -322,76 +351,112 @@ static int davinci_spi_setup_transfer(struct spi_d=
-evice *spi,
-> =A0 =A0 =A0 =A0if (bits_per_word <=3D 8 && bits_per_word >=3D 2) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi->get_rx =3D davinci_spi_rx_buf=
-_u8;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi->get_tx =3D davinci_spi_tx_buf=
-_u8;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->slave[spi->chip_select].bytes_=
-per_word =3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_cfg->bytes_per_word =3D 1;
-> =A0 =A0 =A0 =A0} else if (bits_per_word <=3D 16 && bits_per_word >=3D 2) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi->get_rx =3D davinci_spi_rx_buf=
-_u16;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi->get_tx =3D davinci_spi_tx_buf=
-_u16;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->slave[spi->chip_select].bytes_=
-per_word =3D 2;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_cfg->bytes_per_word =3D 2;
-> =A0 =A0 =A0 =A0} else
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -EINVAL;
->
-> =A0 =A0 =A0 =A0if (!hz)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0hz =3D spi->max_speed_hz;
->
-> - =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, SPIFMT_CHARLEN_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_select);
-> - =A0 =A0 =A0 set_fmt_bits(davinci_spi->base, bits_per_word & 0x1f,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_select);
-> + =A0 =A0 =A0 prescale =3D davinci_spi_get_prescale(davinci_spi, hz);
-> + =A0 =A0 =A0 spifmt |=3D (prescale << SPIFMT_PRESCALE_SHIFT);
+> + =A0 =A0 =A0 return readl(tspi->base + reg);
+> +}
 > +
-> + =A0 =A0 =A0 spifmt |=3D (bits_per_word & 0x1f);
+> +static void spi_writel(struct spi_tegra_data *tspi, unsigned long val,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned long reg)
+> +{
+> + =A0 =A0 =A0 writel(val, tspi->base + reg);
+> +}
+
+Are the accessor redirects really necessary?  Is there any likelyhood
+that anything other than readl/writel will ever be used to access the
+device regs?
+
 > +
-> + =A0 =A0 =A0 if (spi->mode & SPI_LSB_FIRST)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_SHIFTDIR_MASK;
+> +static void spi_tegra_go(struct spi_tegra_data *tspi)
+> +{
+> + =A0 =A0 =A0 unsigned long val;
+> +
+> + =A0 =A0 =A0 wmb();
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_DMA_CTL);
+> + =A0 =A0 =A0 val &=3D ~DMA_BLOCK_SIZE(~0) & ~DMA_EN;
+> + =A0 =A0 =A0 val |=3D DMA_BLOCK_SIZE(tspi->rx_dma_req.size / 4 - 1);
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_DMA_CTL);
+> +
+> + =A0 =A0 =A0 tegra_dma_enqueue_req(tspi->rx_dma, &tspi->rx_dma_req);
+> +
+> + =A0 =A0 =A0 val |=3D DMA_EN;
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_DMA_CTL);
+> +}
+> +
+> +static unsigned spi_tegra_fill_tx_fifo(struct spi_tegra_data *tspi,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct =
+spi_transfer *t)
+> +{
+> + =A0 =A0 =A0 unsigned len =3D min(t->len - tspi->cur_pos, BB_LEN *
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0tspi->cur_bytes_per_=
+word);
+> + =A0 =A0 =A0 u8 *tx_buf =3D (u8 *)t->tx_buf + tspi->cur_pos;
+> + =A0 =A0 =A0 int i, j;
+> + =A0 =A0 =A0 unsigned long val;
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_COMMAND);
+> + =A0 =A0 =A0 val &=3D ~WORD_SIZE(~0);
+> + =A0 =A0 =A0 val |=3D WORD_SIZE(len / tspi->cur_bytes_per_word - 1);
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_COMMAND);
+> +
+> + =A0 =A0 =A0 for (i =3D 0; i < len; i +=3D tspi->cur_bytes_per_word) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val =3D 0;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (j =3D 0; j < tspi->cur_bytes_per_word;=
+ j++)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D tx_buf[i + j] << j=
+ * 8;
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_writel(tspi, val, SLINK_TX_FIFO);
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 tspi->rx_dma_req.size =3D len / tspi->cur_bytes_per_word * =
+4;
+> +
+> + =A0 =A0 =A0 return len;
+> +}
+> +
+> +static unsigned spi_tegra_drain_rx_fifo(struct spi_tegra_data *tspi,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct =
+spi_transfer *t)
+> +{
+> + =A0 =A0 =A0 unsigned len =3D tspi->cur_len;
+> + =A0 =A0 =A0 u8 *rx_buf =3D (u8 *)t->rx_buf + tspi->cur_pos;
+> + =A0 =A0 =A0 int i, j;
+> + =A0 =A0 =A0 unsigned long val;
+> +
+> + =A0 =A0 =A0 for (i =3D 0; i < len; i +=3D tspi->cur_bytes_per_word) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val =3D tspi->rx_bb[i / tspi->cur_bytes_per=
+_word];
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (j =3D 0; j < tspi->cur_bytes_per_word;=
+ j++)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_buf[i + j] =3D (val >> (=
+j * 8)) & 0xff;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 return len;
+> +}
+> +
+> +static int spi_tegra_start_transfer(struct spi_device *spi,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 str=
+uct spi_transfer *t)
+> +{
+> + =A0 =A0 =A0 struct spi_tegra_data *tspi =3D spi_master_get_devdata(spi-=
+>master);
+> + =A0 =A0 =A0 u32 speed;
+> + =A0 =A0 =A0 u8 bits_per_word;
+> + =A0 =A0 =A0 unsigned long val;
+> +
+> + =A0 =A0 =A0 speed =3D t->speed_hz ? t->speed_hz : spi->max_speed_hz;
+> + =A0 =A0 =A0 bits_per_word =3D t->bits_per_word ? t->bits_per_word =A0:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->bits_per_word;
+> +
+> + =A0 =A0 =A0 if (bits_per_word < 1 || bits_per_word > 32)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> +
+> + =A0 =A0 =A0 if (t->len =3D=3D 0)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> +
+> + =A0 =A0 =A0 if (!t->rx_buf && !t->tx_buf)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+
+Looks to me like this validation should be performed before accepting
+the transfer (see comments below)
+
+> +
+> + =A0 =A0 =A0 tspi->cur_bytes_per_word =3D bytes_per_word(bits_per_word);
+> +
+> + =A0 =A0 =A0 if (speed !=3D tspi->cur_speed)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_set_rate(tspi->clk, speed);
+> +
+> + =A0 =A0 =A0 if (tspi->cur_speed =3D=3D 0)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_enable(tspi->clk);
+> +
+> + =A0 =A0 =A0 tspi->cur_speed =3D speed;
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_COMMAND2);
+> + =A0 =A0 =A0 if (t->rx_buf)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D RXEN;
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val &=3D ~RXEN;
+> +
+> + =A0 =A0 =A0 if (t->tx_buf)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D TXEN;
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val &=3D ~TXEN;
+> +
+> + =A0 =A0 =A0 val &=3D ~SS_EN_CS(~0);
+> + =A0 =A0 =A0 val |=3D SS_EN_CS(spi->chip_select);
+> + =A0 =A0 =A0 val |=3D SPIE;
+> +
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_COMMAND2);
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_COMMAND);
+> + =A0 =A0 =A0 val &=3D ~BIT_LENGTH(~0);
+> + =A0 =A0 =A0 val |=3D BIT_LENGTH(bits_per_word - 1);
+> +
+> + =A0 =A0 =A0 /* FIXME: should probably control CS manually so that we ca=
+n be sure
+> + =A0 =A0 =A0 =A0* it does not go low between transfer and to support del=
+ay_usecs
+> + =A0 =A0 =A0 =A0* correctly.
+> + =A0 =A0 =A0 =A0*/
+> + =A0 =A0 =A0 val &=3D ~IDLE_SCLK_MASK & ~CK_SDA & ~CS_SW;
+> +
+> + =A0 =A0 =A0 if (spi->mode & SPI_CPHA)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D CK_SDA;
 > +
 > + =A0 =A0 =A0 if (spi->mode & SPI_CPOL)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_POLARITY_MASK;
-> +
-> + =A0 =A0 =A0 if (!(spi->mode & SPI_CPHA))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_PHASE_MASK;
-> +
-> + =A0 =A0 =A0 if (davinci_spi->version =3D=3D SPI_VERSION_2) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D ((spi_cfg->wdelay << SPIFMT_WDE=
-LAY_SHIFT)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 & SPIFMT_WD=
-ELAY_MASK);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (spi_cfg->odd_parity)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_ODD_PARI=
-TY_MASK;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (spi_cfg->parity_enable)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_PARITYEN=
-A_MASK;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (spi->mode & SPI_READY) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_WAITENA_=
-MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 delay |=3D (spi_cfg->t2e_de=
-lay
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 << SPIDELAY_T2EDELAY_SHIFT)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 & SPIDELAY_T2EDELAY_MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 delay |=3D (spi_cfg->c2e_de=
-lay
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 << SPIDELAY_C2EDELAY_SHIFT)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 & SPIDELAY_C2EDELAY_MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (spi_cfg->timer_disable) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spifmt |=3D SPIFMT_DISTIMER=
-_MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 delay |=3D (spi_cfg->c2t_de=
-lay
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 << SPIDELAY_C2TDELAY_SHIFT)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 & SPIDELAY_C2TDELAY_MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 delay |=3D (spi_cfg->t2c_de=
-lay
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 << SPIDELAY_T2CDELAY_SHIFT)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 & SPIDELAY_T2CDELAY_MASK;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->
-> - =A0 =A0 =A0 clkspeed =3D clk_get_rate(davinci_spi->clk);
-> - =A0 =A0 =A0 if (hz > clkspeed / 2)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 1 << 8;
-> - =A0 =A0 =A0 if (hz < clkspeed / 256)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D 255 << 8;
-> - =A0 =A0 =A0 if (!prescale)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 prescale =3D ((clkspeed / hz - 1) << 8) & 0=
-x0000ff00;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(delay, davinci_spi->base + SPIDEL=
-AY);
-> + =A0 =A0 =A0 }
-> +
-> + =A0 =A0 =A0 iowrite32(spifmt, davinci_spi->base + SPIFMT0);
->
-> - =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, 0x0000ff00, spi->chip_sel=
-ect);
-> - =A0 =A0 =A0 set_fmt_bits(davinci_spi->base, prescale, spi->chip_select);
-> + =A0 =A0 =A0 if (spi_cfg->intr_level)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(SPI_INTLVL_1, davinci_spi->base +=
- SPILVL);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D IDLE_SCLK_DRIVE_HIGH;
 > + =A0 =A0 =A0 else
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(SPI_INTLVL_0, davinci_spi->base +=
- SPILVL);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D IDLE_SCLK_DRIVE_LOW;
 > +
-> + =A0 =A0 =A0 if (spi->mode & SPI_LOOP)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_LOO=
-PBACK_MASK);
-> + =A0 =A0 =A0 else
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_LOO=
-PBACK_MASK);
->
-> =A0 =A0 =A0 =A0return 0;
-> =A0}
->
-> =A0static void davinci_spi_dma_rx_callback(unsigned lch, u16 ch_status, v=
-oid *data)
-> =A0{
-> - =A0 =A0 =A0 struct spi_device *spi =3D (struct spi_device *)data;
-> - =A0 =A0 =A0 struct davinci_spi *davinci_spi;
-> + =A0 =A0 =A0 struct davinci_spi *davinci_spi =3D data;
-> =A0 =A0 =A0 =A0struct davinci_spi_dma *davinci_spi_dma;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
->
-> - =A0 =A0 =A0 davinci_spi =3D spi_master_get_devdata(spi->master);
-> - =A0 =A0 =A0 davinci_spi_dma =3D &(davinci_spi->dma_channels[spi->chip_s=
-elect]);
-> + =A0 =A0 =A0 davinci_spi_dma =3D &(davinci_spi->dma_channels);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
->
-> + =A0 =A0 =A0 edma_stop(davinci_spi_dma->dma_rx_channel);
+> + =A0 =A0 =A0 val |=3D M_S;
 > +
-> =A0 =A0 =A0 =A0if (ch_status =3D=3D DMA_COMPLETE)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_stop(davinci_spi_dma->dma_rx_channel);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_clean_channel(davinci_spi_dma->dma_rx_=
-channel);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->rcount =3D 0;
->
-> - =A0 =A0 =A0 complete(&davinci_spi_dma->dma_rx_completion);
-> - =A0 =A0 =A0 /* We must disable the DMA RX request */
-> - =A0 =A0 =A0 davinci_spi_set_dma_req(spi, 0);
-> + =A0 =A0 =A0 complete(&davinci_spi->done);
-> =A0}
->
-> =A0static void davinci_spi_dma_tx_callback(unsigned lch, u16 ch_status, v=
-oid *data)
-> =A0{
-> - =A0 =A0 =A0 struct spi_device *spi =3D (struct spi_device *)data;
-> - =A0 =A0 =A0 struct davinci_spi *davinci_spi;
-> + =A0 =A0 =A0 struct davinci_spi *davinci_spi =3D data;
-> =A0 =A0 =A0 =A0struct davinci_spi_dma *davinci_spi_dma;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
->
-> - =A0 =A0 =A0 davinci_spi =3D spi_master_get_devdata(spi->master);
-> - =A0 =A0 =A0 davinci_spi_dma =3D &(davinci_spi->dma_channels[spi->chip_s=
-elect]);
-> + =A0 =A0 =A0 davinci_spi_dma =3D &(davinci_spi->dma_channels);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
->
-> - =A0 =A0 =A0 if (ch_status =3D=3D DMA_COMPLETE)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_stop(davinci_spi_dma->dma_tx_channel);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_clean_channel(davinci_spi_dma->dma_tx_=
-channel);
-> + =A0 =A0 =A0 edma_stop(davinci_spi_dma->dma_tx_channel);
->
-> - =A0 =A0 =A0 complete(&davinci_spi_dma->dma_tx_completion);
-> - =A0 =A0 =A0 /* We must disable the DMA TX request */
-> - =A0 =A0 =A0 davinci_spi_set_dma_req(spi, 0);
-> + =A0 =A0 =A0 if (ch_status =3D=3D DMA_COMPLETE)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->wcount =3D 0;
-> =A0}
->
-> =A0static int davinci_spi_request_dma(struct spi_device *spi)
-> @@ -403,30 +468,51 @@ static int davinci_spi_request_dma(struct spi_devic=
-e *spi)
-> =A0 =A0 =A0 =A0int r;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> - =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_channels[spi->chip_se=
-lect];
-> + =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_channels;
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
-> =A0 =A0 =A0 =A0sdev =3D davinci_spi->bitbang.master->dev.parent;
->
-> =A0 =A0 =A0 =A0r =3D edma_alloc_channel(davinci_spi_dma->dma_rx_sync_dev,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-_dma_rx_callback, spi,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-_dma_rx_callback, davinci_spi,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_sp=
-i_dma->eventq);
-> =A0 =A0 =A0 =A0if (r < 0) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to request DMA channe=
-l for SPI RX\n");
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EAGAIN;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to request DMA channe=
-l for MibSPI RX\n");
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D =A0-EAGAIN;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto rx_dma_failed;
-> =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0davinci_spi_dma->dma_rx_channel =3D r;
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_COMMAND);
 > +
-> =A0 =A0 =A0 =A0r =3D edma_alloc_channel(davinci_spi_dma->dma_tx_sync_dev,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-_dma_tx_callback, spi,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-_dma_tx_callback, davinci_spi,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_sp=
-i_dma->eventq);
-> =A0 =A0 =A0 =A0if (r < 0) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_channel(davinci_spi_dma->dma_rx_c=
-hannel);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi_dma->dma_rx_channel =3D -1;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to request DMA channe=
-l for SPI TX\n");
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EAGAIN;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to request DMA channe=
-l for MibSPI TX\n");
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D -EAGAIN;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto tx_dma_failed;
-> =A0 =A0 =A0 =A0}
-> =A0 =A0 =A0 =A0davinci_spi_dma->dma_tx_channel =3D r;
->
-> + =A0 =A0 =A0 r =3D edma_alloc_slot(EDMA_CTLR(davinci_spi_dma->dma_tx_syn=
-c_dev),
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 EDMA_SLOT_A=
-NY);
-> + =A0 =A0 =A0 if (r < 0) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to request SPI DMA pa=
-ram slot\n");
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D -EAGAIN;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto param_failed;
-> + =A0 =A0 =A0 }
-> + =A0 =A0 =A0 davinci_spi_dma->dummy_param_slot =3D r;
-> + =A0 =A0 =A0 edma_link(davinci_spi_dma->dummy_param_slot,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi_dma->dummy_param_slot);
+> + =A0 =A0 =A0 spi_writel(tspi, RX_FLUSH | TX_FLUSH, SLINK_STATUS);
 > +
-> =A0 =A0 =A0 =A0return 0;
+> + =A0 =A0 =A0 tspi->cur =3D t;
+> + =A0 =A0 =A0 tspi->cur_pos =3D 0;
+> + =A0 =A0 =A0 tspi->cur_len =3D spi_tegra_fill_tx_fifo(tspi, t);
 > +
-> +param_failed:
-> + =A0 =A0 =A0 edma_free_channel(davinci_spi_dma->dma_tx_channel);
-> + =A0 =A0 =A0 davinci_spi_dma->dma_tx_channel =3D -1;
-> +tx_dma_failed:
-> + =A0 =A0 =A0 edma_free_channel(davinci_spi_dma->dma_rx_channel);
-> + =A0 =A0 =A0 davinci_spi_dma->dma_rx_channel =3D -1;
-> +rx_dma_failed:
-> + =A0 =A0 =A0 return r;
-> =A0}
->
-> =A0/**
-> @@ -438,129 +524,54 @@ static int davinci_spi_request_dma(struct spi_devi=
-ce *spi)
->
-> =A0static int davinci_spi_setup(struct spi_device *spi)
-> =A0{
-> - =A0 =A0 =A0 int retval;
-> + =A0 =A0 =A0 int retval =3D 0;
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> - =A0 =A0 =A0 struct davinci_spi_dma *davinci_spi_dma;
-> - =A0 =A0 =A0 struct device *sdev;
-> + =A0 =A0 =A0 struct davinci_spi_dma *davinci_dma;
-> + =A0 =A0 =A0 struct davinci_spi_platform_data *pdata;
-> + =A0 =A0 =A0 struct davinci_spi_config *spi_cfg;
-> + =A0 =A0 =A0 u32 prescale;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> - =A0 =A0 =A0 sdev =3D davinci_spi->bitbang.master->dev.parent;
-> + =A0 =A0 =A0 pdata =3D davinci_spi->pdata;
-> + =A0 =A0 =A0 spi_cfg =3D (struct davinci_spi_config *)spi->controller_da=
-ta;
-> + =A0 =A0 =A0 davinci_dma =3D &(davinci_spi->dma_channels);
->
-> =A0 =A0 =A0 =A0/* if bits per word length is zero then set it default 8 */
-> =A0 =A0 =A0 =A0if (!spi->bits_per_word)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi->bits_per_word =3D 8;
->
-> - =A0 =A0 =A0 davinci_spi->slave[spi->chip_select].cmd_to_write =3D 0;
-> + =A0 =A0 =A0 if (!(spi->mode & SPI_NO_CS)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((pdata->chip_sel =3D=3D NULL) ||
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (pdata->chip_sel[spi->chip_select] =
-=3D=3D SPI_INTERN_CS))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->ba=
-se + SPIPC0,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 1 << spi->chip_select);
->
-> - =A0 =A0 =A0 if (use_dma && davinci_spi->dma_channels) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_chann=
-els[spi->chip_select];
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((davinci_spi_dma->dma_rx_channel =3D=3D=
- -1)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 || (davinci=
-_spi_dma->dma_tx_channel =3D=3D -1)) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 retval =3D davinci_spi_requ=
-est_dma(spi);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (retval < 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return retv=
-al;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 }
-> -
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* SPI in DaVinci and DA8xx operate between
-> - =A0 =A0 =A0 =A0* 600 KHz and 50 MHz
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 if (spi->max_speed_hz < 600000 || spi->max_speed_hz > 50000=
-000) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Operating frequency is not i=
-n acceptable "
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "range\n");
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* Set up SPIFMTn register, unique to this chipselect.
-> - =A0 =A0 =A0 =A0*
-> - =A0 =A0 =A0 =A0* NOTE: we could do all of these with one write. =A0Also=
-, some
-> - =A0 =A0 =A0 =A0* of the "version 2" features are found in chips that do=
-n't
-> - =A0 =A0 =A0 =A0* support all of them...
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 if (spi->mode & SPI_LSB_FIRST)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->base, SPIFMT_SHIF=
-TDIR_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, SPIFMT_SH=
-IFTDIR_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> + =A0 =A0 =A0 if (spi->mode & SPI_READY)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIPC0, SPI=
-PC0_SPIENA_MASK);
->
-> - =A0 =A0 =A0 if (spi->mode & SPI_CPOL)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->base, SPIFMT_POLA=
-RITY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, SPIFMT_PO=
-LARITY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> + =A0 =A0 =A0 if (spi_cfg->io_type =3D=3D SPI_IO_TYPE_DMA) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_dma =3D &(davinci_spi->dma_channels=
-);
->
-> - =A0 =A0 =A0 if (!(spi->mode & SPI_CPHA))
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->base, SPIFMT_PHAS=
-E_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, SPIFMT_PH=
-ASE_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((davinci_dma->dma_tx_sync_dev =3D=3D SP=
-I_NO_RESOURCE) ||
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (davinci_dma->dma_rx_sync_dev =3D=
-=3D SPI_NO_RESOURCE) ||
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (davinci_dma->eventq =3D=3D SPI_NO_=
-RESOURCE))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_cfg->io_type =3D SPI_IO=
-_TYPE_INTR;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 else if ((davinci_dma->dma_rx_channel =3D=
-=3D -1) ||
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0(davinci_dma->dma_tx_cha=
-nnel =3D=3D -1))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 retval =3D davinci_spi_requ=
-est_dma(spi);
-> + =A0 =A0 =A0 }
->
-> =A0 =A0 =A0 =A0/*
-> - =A0 =A0 =A0 =A0* Version 1 hardware supports two basic SPI modes:
-> - =A0 =A0 =A0 =A0* =A0- Standard SPI mode uses 4 pins, with chipselect
-> - =A0 =A0 =A0 =A0* =A0- 3 pin SPI is a 4 pin variant without CS (SPI_NO_C=
-S)
-> - =A0 =A0 =A0 =A0* =A0 =A0 =A0(distinct from SPI_3WIRE, with just one dat=
-a wire;
-> - =A0 =A0 =A0 =A0* =A0 =A0 =A0or similar variants without MOSI or without=
- MISO)
-> - =A0 =A0 =A0 =A0*
-> - =A0 =A0 =A0 =A0* Version 2 hardware supports an optional handshaking si=
-gnal,
-> - =A0 =A0 =A0 =A0* so it can support two more modes:
-> - =A0 =A0 =A0 =A0* =A0- 5 pin SPI variant is standard SPI plus SPI_READY
-> - =A0 =A0 =A0 =A0* =A0- 4 pin with enable is (SPI_READY | SPI_NO_CS)
-> + =A0 =A0 =A0 =A0* Validate desired clock rate
-> =A0 =A0 =A0 =A0 */
-> + =A0 =A0 =A0 prescale =3D davinci_spi_get_prescale(davinci_spi, spi->max=
-_speed_hz);
-> + =A0 =A0 =A0 if ((prescale < 2) || (prescale > 255))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
->
-> - =A0 =A0 =A0 if (davinci_spi->version =3D=3D SPI_VERSION_2) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi->base, SPIFMT_WD=
-ELAY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->base,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (davinci_sp=
-i->pdata->wdelay
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 << SPIFMT_WDELAY_SHIFT)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 & SPIFMT_WDELAY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->chip_s=
-elect);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (davinci_spi->pdata->odd_parity)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->b=
-ase,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_ODD_PARITY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi-=
->base,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_ODD_PARITY_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (davinci_spi->pdata->parity_enable)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->b=
-ase,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_PARITYENA_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi-=
->base,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_PARITYENA_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (davinci_spi->pdata->wait_enable)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->b=
-ase,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_WAITENA_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi-=
->base,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_WAITENA_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (davinci_spi->pdata->timer_disable)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_fmt_bits(davinci_spi->b=
-ase,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_DISTIMER_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_fmt_bits(davinci_spi-=
->base,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 SPIFMT_DISTIMER_MASK,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spi->chip_select);
-> - =A0 =A0 =A0 }
-> -
-> - =A0 =A0 =A0 retval =3D davinci_spi_setup_transfer(spi, NULL);
-> + =A0 =A0 =A0 dev_info(&spi->dev, "DaVinci SPI driver in %s mode\n",
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 io_type_names[spi_cfg->io_t=
-ype]);
->
-> =A0 =A0 =A0 =A0return retval;
-> =A0}
-> @@ -569,50 +580,19 @@ static void davinci_spi_cleanup(struct spi_device *=
-spi)
-> =A0{
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi =3D spi_master_get_devdata=
-(spi->master);
-> =A0 =A0 =A0 =A0struct davinci_spi_dma *davinci_spi_dma;
-> + =A0 =A0 =A0 struct davinci_spi_platform_data *pdata;
->
-> - =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_channels[spi->chip_se=
-lect];
-> -
-> - =A0 =A0 =A0 if (use_dma && davinci_spi->dma_channels) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_chann=
-els[spi->chip_select];
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((davinci_spi_dma->dma_rx_channel !=3D -=
-1)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 && (davinci=
-_spi_dma->dma_tx_channel !=3D -1)) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_channel(davinci_s=
-pi_dma->dma_tx_channel);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_channel(davinci_s=
-pi_dma->dma_rx_channel);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 }
-> -}
-> -
-> -static int davinci_spi_bufs_prep(struct spi_device *spi,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct d=
-avinci_spi *davinci_spi)
-> -{
-> - =A0 =A0 =A0 int op_mode =3D 0;
-> -
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* REVISIT =A0unless devices disagree about SPI_LOOP or
-> - =A0 =A0 =A0 =A0* SPI_READY (SPI_NO_CS only allows one device!), this
-> - =A0 =A0 =A0 =A0* should not need to be done before each message...
-> - =A0 =A0 =A0 =A0* optimize for both flags staying cleared.
-> - =A0 =A0 =A0 =A0*/
-> -
-> - =A0 =A0 =A0 op_mode =3D SPIPC0_DIFUN_MASK
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIPC0_DOFUN_MASK
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 | SPIPC0_CLKFUN_MASK;
-> - =A0 =A0 =A0 if (!(spi->mode & SPI_NO_CS))
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 op_mode |=3D 1 << spi->chip_select;
-> - =A0 =A0 =A0 if (spi->mode & SPI_READY)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 op_mode |=3D SPIPC0_SPIENA_MASK;
-> + =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_channels;
-> + =A0 =A0 =A0 pdata =3D davinci_spi->pdata;
->
-> - =A0 =A0 =A0 iowrite32(op_mode, davinci_spi->base + SPIPC0);
-> + =A0 =A0 =A0 if (davinci_spi_dma->dma_rx_channel !=3D -1)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_channel(davinci_spi_dma->dma_rx_c=
-hannel);
->
-> - =A0 =A0 =A0 if (spi->mode & SPI_LOOP)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_LOO=
-PBACK_MASK);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_LOO=
-PBACK_MASK);
-> + =A0 =A0 =A0 if (davinci_spi_dma->dma_tx_channel !=3D -1)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_channel(davinci_spi_dma->dma_tx_c=
-hannel);
->
-> - =A0 =A0 =A0 return 0;
-> + =A0 =A0 =A0 if (davinci_spi_dma->dummy_param_slot !=3D -1)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_free_slot(davinci_spi_dma->dummy_param=
-_slot);
-> =A0}
->
-> =A0static int davinci_spi_check_error(struct davinci_spi *davinci_spi,
-> @@ -660,355 +640,242 @@ static int davinci_spi_check_error(struct davinci=
-_spi *davinci_spi,
-> =A0}
->
-> =A0/**
-> - * davinci_spi_bufs - functions which will handle transfer data
-> - * @spi: spi device on which data transfer to be done
-> - * @t: spi transfer in which transfer info is filled
-> + * davinci_spi_process_events - check for and handle any SPI controller =
-events
-> + * @davinci_spi: the controller data
-> =A0*
-> - * This function will put data to be transferred into data register
-> - * of SPI controller and then wait until the completion will be marked
-> - * by the IRQ Handler.
-> + * This function will check the SPIFLG register and handle any events th=
-at are
-> + * detected there
-> =A0*/
-> -static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_trans=
-fer *t)
-> +static int davinci_spi_process_events(struct davinci_spi *davinci_spi)
-> =A0{
-> - =A0 =A0 =A0 struct davinci_spi *davinci_spi;
-> - =A0 =A0 =A0 int int_status, count, ret;
-> - =A0 =A0 =A0 u8 conv, tmp;
-> - =A0 =A0 =A0 u32 tx_data, data1_reg_val;
-> - =A0 =A0 =A0 u32 buf_val, flg_val;
-> - =A0 =A0 =A0 struct davinci_spi_platform_data *pdata;
-> -
-> - =A0 =A0 =A0 davinci_spi =3D spi_master_get_devdata(spi->master);
-> - =A0 =A0 =A0 pdata =3D davinci_spi->pdata;
-> -
-> - =A0 =A0 =A0 davinci_spi->tx =3D t->tx_buf;
-> - =A0 =A0 =A0 davinci_spi->rx =3D t->rx_buf;
-> -
-> - =A0 =A0 =A0 /* convert len to words based on bits_per_word */
-> - =A0 =A0 =A0 conv =3D davinci_spi->slave[spi->chip_select].bytes_per_wor=
-d;
-> - =A0 =A0 =A0 davinci_spi->count =3D t->len / conv;
-> -
-> - =A0 =A0 =A0 INIT_COMPLETION(davinci_spi->done);
-> -
-> - =A0 =A0 =A0 ret =3D davinci_spi_bufs_prep(spi, davinci_spi);
-> - =A0 =A0 =A0 if (ret)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
-> -
-> - =A0 =A0 =A0 /* Enable SPI */
-> - =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MAS=
-K);
-> -
-> - =A0 =A0 =A0 iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (pdata->t2cdelay << SPI_T2C=
-DELAY_SHIFT),
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->base + SPIDELA=
-Y);
-> -
-> - =A0 =A0 =A0 count =3D davinci_spi->count;
-> - =A0 =A0 =A0 data1_reg_val =3D pdata->cs_hold << SPIDAT1_CSHOLD_SHIFT;
-> - =A0 =A0 =A0 tmp =3D ~(0x1 << spi->chip_select);
-> -
-> - =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIDEF, ~tmp);
-> -
-> - =A0 =A0 =A0 data1_reg_val |=3D tmp << SPIDAT1_CSNR_SHIFT;
-> -
-> - =A0 =A0 =A0 while ((ioread32(davinci_spi->base + SPIBUF)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 & SPIBUF_RX=
-EMPTY_MASK) =3D=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> -
-> - =A0 =A0 =A0 /* Determine the command to execute READ or WRITE */
-> - =A0 =A0 =A0 if (t->tx_buf) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIINT, S=
-PIINT_MASKALL);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 while (1) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_data =3D davinci_spi->ge=
-t_tx(davinci_spi);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 data1_reg_val &=3D ~(0xFFFF=
-);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 data1_reg_val |=3D (0xFFFF =
-& tx_data);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 buf_val =3D ioread32(davinc=
-i_spi->base + SPIBUF);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((buf_val & SPIBUF_TXFUL=
-L_MASK) =3D=3D 0) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(d=
-ata1_reg_val,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 davinci_spi->base + SPIDAT1);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 count--;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 while (ioread32(davinci_spi=
-->base + SPIBUF)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 & SPIBUF_RXEMPTY_MASK)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* getting the returned byt=
-e */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->rx_buf) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 buf_val =3D=
- ioread32(davinci_spi->base + SPIBUF);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-->get_rx(buf_val, davinci_spi);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (count <=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 } else {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (pdata->poll_mode) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 while (1) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* keeps th=
-e serial clock going */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((ioread=
-32(davinci_spi->base + SPIBUF)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 & SPIBUF_TXFULL_MASK) =3D=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 iowrite32(data1_reg_val,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 davinci_spi->base + SPIDAT1);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 while (iore=
-ad32(davinci_spi->base + SPIBUF) &
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 SPIBUF_RXEMPTY_MASK)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 cpu_relax();
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 flg_val =3D=
- ioread32(davinci_spi->base + SPIFLG);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 buf_val =3D=
- ioread32(davinci_spi->base + SPIBUF);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-->get_rx(buf_val, davinci_spi);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 count--;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (count <=
-=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 break;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else { =A0 =A0 =A0 =A0/* Receive in Inter=
-rupt mode */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 int i;
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (i =3D 0; i < davinci_s=
-pi->count; i++) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits=
-(davinci_spi->base + SPIINT,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 SPIINT_BITERR_INTR
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 | SPIINT_OVRRUN_INTR
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 | SPIINT_RX_INTR);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(d=
-ata1_reg_val,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 davinci_spi->base + SPIDAT1);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 while (iore=
-ad32(davinci_spi->base + SPIINT) &
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 SPIINT_RX_INTR)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 cpu_relax();
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32((data1_reg_val & =
-0x0ffcffff),
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 davinci_spi->base + SPIDAT1);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> + =A0 =A0 =A0 u32 status, tx_data, rx_data, spidat1;
-> + =A0 =A0 =A0 u8 tx_word =3D 0;
+> + =A0 =A0 =A0 spi_tegra_go(tspi);
 > +
-> + =A0 =A0 =A0 status =3D ioread32(davinci_spi->base + SPIFLG);
-> +
-> + =A0 =A0 =A0 if ((davinci_spi->version !=3D SPI_VERSION_0) &&
-> + =A0 =A0 =A0 =A0 =A0 (likely(status & SPIFLG_TX_INTR_MASK)) &&
-> + =A0 =A0 =A0 =A0 =A0 (likely(davinci_spi->wcount > 0)))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_word =3D 1;
-> +
-> + =A0 =A0 =A0 if (likely(status & SPIFLG_RX_INTR_MASK)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_data =3D ioread32(davinci_spi->base + SP=
-IBUF) & 0xFFFF;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->get_rx(rx_data, davinci_spi);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->rcount--;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((davinci_spi->version =3D=3D SPI_VERSIO=
-N_0) &&
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (likely(davinci_spi->wcount > 0)))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_word =3D 1;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* Check for bit error, desync error,parity error,timeout=
- error and
-> - =A0 =A0 =A0 =A0* receive overflow errors
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 int_status =3D ioread32(davinci_spi->base + SPIFLG);
-> -
-> - =A0 =A0 =A0 ret =3D davinci_spi_check_error(davinci_spi, int_status);
-> - =A0 =A0 =A0 if (ret !=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
-> + =A0 =A0 =A0 if (unlikely(status & SPIFLG_ERROR_MASK)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->errors =3D (status & SPIFLG_ER=
-ROR_MASK);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -1;
-> + =A0 =A0 =A0 }
->
-> - =A0 =A0 =A0 /* SPI Framework maintains the count only in bytes so conve=
-rt back */
-> - =A0 =A0 =A0 davinci_spi->count *=3D conv;
-> + =A0 =A0 =A0 if (likely(tx_word)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 =3D ioread32(davinci_spi->base + SP=
-IDAT1);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->wcount--;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_data =3D davinci_spi->get_tx(davinci_spi=
-);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 &=3D 0xFFFF0000;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 |=3D (tx_data & 0xFFFF);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(spidat1, davinci_spi->base + SPID=
-AT1);
-> + =A0 =A0 =A0 }
->
-> - =A0 =A0 =A0 return t->len;
 > + =A0 =A0 =A0 return 0;
-> =A0}
->
-> -#define DAVINCI_DMA_DATA_TYPE_S8 =A0 =A0 =A0 0x01
-> -#define DAVINCI_DMA_DATA_TYPE_S16 =A0 =A0 =A00x02
-> -#define DAVINCI_DMA_DATA_TYPE_S32 =A0 =A0 =A00x04
-> -
-> -static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_trans=
-fer *t)
-> +/**
-> + * davinci_spi_txrx_bufs - function which will handle transfer data
-> + * @spi: spi device on which data transfer to be done
-> + * @t: spi transfer in which transfer info is filled
-> + *
-> + * This function will put data to be transferred into data register
-> + * of SPI controller and then wait until the completion will be marked
-> + * by the IRQ Handler.
-> + */
-> +static int davinci_spi_txrx_bufs(struct spi_device *spi, struct spi_tran=
-sfer *t)
-> =A0{
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> - =A0 =A0 =A0 int int_status =3D 0;
-> - =A0 =A0 =A0 int count, temp_count;
-> - =A0 =A0 =A0 u8 conv =3D 1;
-> - =A0 =A0 =A0 u8 tmp;
-> - =A0 =A0 =A0 u32 data1_reg_val;
-> - =A0 =A0 =A0 struct davinci_spi_dma *davinci_spi_dma;
-> - =A0 =A0 =A0 int word_len, data_type, ret;
-> - =A0 =A0 =A0 unsigned long tx_reg, rx_reg;
-> + =A0 =A0 =A0 int data_type, ret =3D 0;
-> + =A0 =A0 =A0 u32 tx_data, spidat1;
-> + =A0 =A0 =A0 u16 tx_buf_count =3D 0, rx_buf_count =3D 0;
-> + =A0 =A0 =A0 struct davinci_spi_config *spi_cfg;
-> =A0 =A0 =A0 =A0struct davinci_spi_platform_data *pdata;
-> + =A0 =A0 =A0 struct davinci_spi_dma *davinci_dma;
-> =A0 =A0 =A0 =A0struct device *sdev;
-> + =A0 =A0 =A0 dma_addr_t tx_reg, rx_reg;
-> + =A0 =A0 =A0 void *tx_buf, *rx_buf;
-> + =A0 =A0 =A0 struct edmacc_param rx_param, tx_param;
->
-> =A0 =A0 =A0 =A0davinci_spi =3D spi_master_get_devdata(spi->master);
-> =A0 =A0 =A0 =A0pdata =3D davinci_spi->pdata;
-> - =A0 =A0 =A0 sdev =3D davinci_spi->bitbang.master->dev.parent;
-> -
-> - =A0 =A0 =A0 davinci_spi_dma =3D &davinci_spi->dma_channels[spi->chip_se=
-lect];
-> -
-> - =A0 =A0 =A0 tx_reg =3D (unsigned long)davinci_spi->pbase + SPIDAT1;
-> - =A0 =A0 =A0 rx_reg =3D (unsigned long)davinci_spi->pbase + SPIBUF;
-> + =A0 =A0 =A0 spi_cfg =3D (struct davinci_spi_config *)spi->controller_da=
-ta;
-> + =A0 =A0 =A0 davinci_dma =3D &(davinci_spi->dma_channels);
->
-> =A0 =A0 =A0 =A0davinci_spi->tx =3D t->tx_buf;
-> =A0 =A0 =A0 =A0davinci_spi->rx =3D t->rx_buf;
-> + =A0 =A0 =A0 davinci_spi->wcount =3D t->len / spi_cfg->bytes_per_word;
-> + =A0 =A0 =A0 davinci_spi->rcount =3D davinci_spi->wcount;
-> + =A0 =A0 =A0 davinci_spi->errors =3D 0;
->
-> - =A0 =A0 =A0 /* convert len to words based on bits_per_word */
-> - =A0 =A0 =A0 conv =3D davinci_spi->slave[spi->chip_select].bytes_per_wor=
-d;
-> - =A0 =A0 =A0 davinci_spi->count =3D t->len / conv;
-> + =A0 =A0 =A0 spidat1 =3D ioread32(davinci_spi->base + SPIDAT1);
->
-> - =A0 =A0 =A0 INIT_COMPLETION(davinci_spi->done);
-> -
-> - =A0 =A0 =A0 init_completion(&davinci_spi_dma->dma_rx_completion);
-> - =A0 =A0 =A0 init_completion(&davinci_spi_dma->dma_tx_completion);
-> -
-> - =A0 =A0 =A0 word_len =3D conv * 8;
-> -
-> - =A0 =A0 =A0 if (word_len <=3D 8)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type =3D DAVINCI_DMA_DATA_TYPE_S8;
-> - =A0 =A0 =A0 else if (word_len <=3D 16)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type =3D DAVINCI_DMA_DATA_TYPE_S16;
-> - =A0 =A0 =A0 else if (word_len <=3D 32)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type =3D DAVINCI_DMA_DATA_TYPE_S32;
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
-> -
-> - =A0 =A0 =A0 ret =3D davinci_spi_bufs_prep(spi, davinci_spi);
-> - =A0 =A0 =A0 if (ret)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
-> -
-> - =A0 =A0 =A0 /* Put delay val if required */
-> - =A0 =A0 =A0 iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (pdata->t2cdelay << SPI_T2C=
-DELAY_SHIFT),
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->base + SPIDELA=
-Y);
-> -
-> - =A0 =A0 =A0 count =3D davinci_spi->count; =A0 =A0 /* the number of elem=
-ents */
-> - =A0 =A0 =A0 data1_reg_val =3D pdata->cs_hold << SPIDAT1_CSHOLD_SHIFT;
-> -
-> - =A0 =A0 =A0 /* CS default =3D 0xFF */
-> - =A0 =A0 =A0 tmp =3D ~(0x1 << spi->chip_select);
-> -
-> - =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIDEF, ~tmp);
-> -
-> - =A0 =A0 =A0 data1_reg_val |=3D tmp << SPIDAT1_CSNR_SHIFT;
-> -
-> - =A0 =A0 =A0 /* disable all interrupts for dma transfers */
-> - =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIINT, SPIINT_MASKALL);
-> - =A0 =A0 =A0 /* Disable SPI to write configuration bits in SPIDAT */
-> - =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_M=
-ASK);
-> - =A0 =A0 =A0 iowrite32(data1_reg_val, davinci_spi->base + SPIDAT1);
-> - =A0 =A0 =A0 /* Enable SPI */
-> + =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_POWERDOW=
-N_MASK);
-> =A0 =A0 =A0 =A0set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MA=
-SK);
->
-> - =A0 =A0 =A0 while ((ioread32(davinci_spi->base + SPIBUF)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 & SPIBUF_RX=
-EMPTY_MASK) =3D=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> -
-> + =A0 =A0 =A0 INIT_COMPLETION(davinci_spi->done);
->
-> - =A0 =A0 =A0 if (t->tx_buf) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->tx_dma =3D dma_map_single(&spi->dev, (vo=
-id *)t->tx_buf, count,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DMA_TO_DEVI=
-CE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (dma_mapping_error(&spi->dev, t->tx_dma)=
-) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to DM=
-A map a %d bytes"
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 " TX buffer=
-\n", count);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ENOMEM;
-> + =A0 =A0 =A0 if ((spi_cfg->io_type =3D=3D SPI_IO_TYPE_INTR) ||
-> + =A0 =A0 =A0 =A0 =A0 (spi_cfg->io_type =3D=3D SPI_IO_TYPE_POLL)) {
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (spi_cfg->io_type =3D=3D SPI_IO_TYPE_INT=
-R)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->ba=
-se + SPIINT, SPIINT_MASKINT);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* start the transfer */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->wcount--;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_data =3D davinci_spi->get_tx(davinci_spi=
-);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 &=3D 0xFFFF0000;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spidat1 |=3D (tx_data & 0xFFFF);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(spidat1, davinci_spi->base + SPID=
-AT1);
-> +
-> + =A0 =A0 =A0 } else if (spi_cfg->io_type =3D=3D SPI_IO_TYPE_DMA) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type =3D spi_cfg->bytes_per_word;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_reg =3D (dma_addr_t)davinci_spi->pbase +=
- SPIDAT1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_reg =3D (dma_addr_t)davinci_spi->pbase +=
- SPIBUF;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->tx_buf) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_buf =3D ((void *)t->tx_b=
-uf);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_buf_count =3D davinci_sp=
-i->wcount;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_buf =3D (void *)davinci_=
-spi->tmp_buf;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_buf_count =3D SPI_BUFSIZ;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 temp_count =3D count;
-> - =A0 =A0 =A0 } else {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* We need TX clocking for RX transaction */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->tx_dma =3D dma_map_single(&spi->dev,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (void *)dav=
-inci_spi->tmp_buf, count + 1,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DMA_TO_DEVI=
-CE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (dma_mapping_error(&spi->dev, t->tx_dma)=
-) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Unable to DM=
-A map a %d bytes"
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 " TX tmp bu=
-ffer\n", count);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ENOMEM;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->rx_buf) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_buf =3D (void *)t->rx_bu=
-f;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_buf_count =3D davinci_sp=
-i->rcount;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_buf =3D (void *)davinci_=
-spi->tmp_buf;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_buf_count =3D SPI_BUFSIZ;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 temp_count =3D count + 1;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->tx_dma =3D dma_map_single(&spi->dev, tx_=
-buf,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 tx_buf_count, DMA_TO_DEVICE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->rx_dma =3D dma_map_single(&spi->dev, rx_=
-buf,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 rx_buf_count, DMA_FROM_DEVICE);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.opt =3D TCINTEN | EDMA_TCC(davinci=
-_dma->dma_tx_channel);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.src =3D t->tx_buf ? t->tx_dma : tx=
-_reg;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.a_b_cnt =3D davinci_spi->wcount <<=
- 16 | data_type;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.dst =3D tx_reg;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.src_dst_bidx =3D t->tx_buf ? data_=
-type : 0;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.link_bcntrld =3D 0xffff;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.src_dst_cidx =3D 0;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tx_param.ccnt =3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_write_slot(davinci_dma->dma_tx_channel=
-, &tx_param);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_link(davinci_dma->dma_tx_channel,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_dma->dummy_para=
-m_slot);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.opt =3D TCINTEN | EDMA_TCC(davinci=
-_dma->dma_rx_channel);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.src =3D rx_reg;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.a_b_cnt =3D davinci_spi->rcount <<=
- 16 | data_type;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.dst =3D t->rx_dma;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.src_dst_bidx =3D (t->rx_buf ? data=
-_type : 0) << 16;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.link_bcntrld =3D 0xffff;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.src_dst_cidx =3D 0;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_param.ccnt =3D 1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_write_slot(davinci_dma->dma_rx_channel=
-, &rx_param);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite16(spidat1 >> SPIDAT1_CSNR_SHIFT,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi=
-->base + SPIDAT1 + 2);
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_start(davinci_dma->dma_rx_channel);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_start(davinci_dma->dma_tx_channel);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIINT, SPI=
-INT_DMA_REQ_EN);
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 edma_set_transfer_params(davinci_spi_dma->dma_tx_channel,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 data_type, temp_count, 1, 0, ASYNC);
-> - =A0 =A0 =A0 edma_set_dest(davinci_spi_dma->dma_tx_channel, tx_reg, INCR=
-, W8BIT);
-> - =A0 =A0 =A0 edma_set_src(davinci_spi_dma->dma_tx_channel, t->tx_dma, IN=
-CR, W8BIT);
-> - =A0 =A0 =A0 edma_set_src_index(davinci_spi_dma->dma_tx_channel, data_ty=
-pe, 0);
-> - =A0 =A0 =A0 edma_set_dest_index(davinci_spi_dma->dma_tx_channel, 0, 0);
-> -
-> - =A0 =A0 =A0 if (t->rx_buf) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* initiate transaction */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(data1_reg_val, davinci_spi->base =
-+ SPIDAT1);
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->rx_dma =3D dma_map_single(&spi->dev, (vo=
-id *)t->rx_buf, count,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DMA_FROM_DE=
-VICE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (dma_mapping_error(&spi->dev, t->rx_dma)=
-) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(sdev, "Couldn't DMA=
- map a %d bytes RX buffer\n",
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 count);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (t->tx_buf !=3D NULL)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_unmap_s=
-ingle(NULL, t->tx_dma,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0count, DMA_TO_DEVICE);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ENOMEM;
-> + =A0 =A0 =A0 /* Wait for the transfer to complete */
-> + =A0 =A0 =A0 if (spi_cfg->io_type !=3D SPI_IO_TYPE_POLL) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 wait_for_completion_interruptible(&(davinci=
-_spi->done));
-> + =A0 =A0 =A0 } else {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 while ((davinci_spi->rcount > 0) && (ret =
-=3D=3D 0)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D davinci_spi_process=
-_events(davinci_spi);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cpu_relax();
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_set_transfer_params(davinci_spi_dma->d=
-ma_rx_channel,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type, =
-count, 1, 0, ASYNC);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_set_src(davinci_spi_dma->dma_rx_channe=
-l,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_reg, INC=
-R, W8BIT);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_set_dest(davinci_spi_dma->dma_rx_chann=
-el,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 t->rx_dma, =
-INCR, W8BIT);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_set_src_index(davinci_spi_dma->dma_rx_=
-channel, 0, 0);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_set_dest_index(davinci_spi_dma->dma_rx=
-_channel,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 data_type, =
-0);
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 if ((t->tx_buf) || (t->rx_buf))
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_start(davinci_spi_dma->dma_tx_channel);
-> -
-> - =A0 =A0 =A0 if (t->rx_buf)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 edma_start(davinci_spi_dma->dma_rx_channel);
-> -
-> - =A0 =A0 =A0 if ((t->rx_buf) || (t->tx_buf))
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi_set_dma_req(spi, 1);
-> -
-> - =A0 =A0 =A0 if (t->tx_buf)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 wait_for_completion_interruptible(
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 &davinci_sp=
-i_dma->dma_tx_completion);
-> -
-> - =A0 =A0 =A0 if (t->rx_buf)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 wait_for_completion_interruptible(
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 &davinci_sp=
-i_dma->dma_rx_completion);
-> -
-> - =A0 =A0 =A0 dma_unmap_single(NULL, t->tx_dma, temp_count, DMA_TO_DEVICE=
-);
-> -
-> - =A0 =A0 =A0 if (t->rx_buf)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_unmap_single(NULL, t->rx_dma, count, DM=
-A_FROM_DEVICE);
-> -
-> - =A0 =A0 =A0 /*
-> - =A0 =A0 =A0 =A0* Check for bit error, desync error,parity error,timeout=
- error and
-> - =A0 =A0 =A0 =A0* receive overflow errors
-> - =A0 =A0 =A0 =A0*/
-> - =A0 =A0 =A0 int_status =3D ioread32(davinci_spi->base + SPIFLG);
-> + =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIINT, SPIINT_MASKALL);
-> + =A0 =A0 =A0 if (spi_cfg->io_type =3D=3D SPI_IO_TYPE_DMA) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_unmap_single(NULL, t->tx_dma, tx_buf_co=
-unt,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 DMA_TO_DEVICE);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_unmap_single(NULL, t->rx_dma, rx_buf_co=
-unt,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 DMA_FROM_DEVICE);
-> + =A0 =A0 =A0 }
->
-> - =A0 =A0 =A0 ret =3D davinci_spi_check_error(davinci_spi, int_status);
-> - =A0 =A0 =A0 if (ret !=3D 0)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
-> + =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_M=
-ASK);
-> + =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_POWERDOWN_=
-MASK);
->
-> - =A0 =A0 =A0 /* SPI Framework maintains the count only in bytes so conve=
-rt back */
-> - =A0 =A0 =A0 davinci_spi->count *=3D conv;
-> + =A0 =A0 =A0 if (davinci_spi->errors) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D davinci_spi_check_error(davinci_spi=
-, davinci_spi->errors);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (ret !=3D 0)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
-> + =A0 =A0 =A0 }
-> + =A0 =A0 =A0 if ((davinci_spi->rcount !=3D 0) || (davinci_spi->wcount !=
-=3D 0)) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 sdev =3D davinci_spi->bitbang.master->dev.p=
-arent;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_info(sdev, "SPI data transfer error\n");
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EIO;
-> + =A0 =A0 =A0 }
->
-> =A0 =A0 =A0 =A0return t->len;
-> =A0}
->
-> =A0/**
-> - * davinci_spi_irq - IRQ handler for DaVinci SPI
-> + * davinci_spi_irq - probe function for SPI Master Controller
-
-This doesn't look right.
-
-> =A0* @irq: IRQ number for this SPI Master
-> =A0* @context_data: structure for SPI Master controller davinci_spi
-> + *
-> + * ISR will determine that interrupt arrives either for READ or WRITE co=
-mmand.
-> + * According to command it will do the appropriate action. It will check
-> + * transfer length and if it is not zero then dispatch transfer command =
-again.
-> + * If transfer length is zero then it will indicate the COMPLETION so th=
-at
-> + * davinci_spi_bufs function can go ahead.
-> =A0*/
-> =A0static irqreturn_t davinci_spi_irq(s32 irq, void *context_data)
-> =A0{
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi =3D context_data;
-> - =A0 =A0 =A0 u32 int_status, rx_data =3D 0;
-> - =A0 =A0 =A0 irqreturn_t ret =3D IRQ_NONE;
-> + =A0 =A0 =A0 int status;
->
-> - =A0 =A0 =A0 int_status =3D ioread32(davinci_spi->base + SPIFLG);
-> + =A0 =A0 =A0 status =3D davinci_spi_process_events(davinci_spi);
-> + =A0 =A0 =A0 if (unlikely(status !=3D 0))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIINT, S=
-PIINT_MASKINT);
->
-> - =A0 =A0 =A0 while ((int_status & SPIFLG_RX_INTR_MASK)) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (likely(int_status & SPIFLG_RX_INTR_MASK=
-)) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D IRQ_HANDLED;
-> + =A0 =A0 =A0 if ((davinci_spi->rcount =3D=3D 0) || (status !=3D 0))
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 complete(&(davinci_spi->done));
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 rx_data =3D ioread32(davinc=
-i_spi->base + SPIBUF);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->get_rx(rx_data=
-, davinci_spi);
-> + =A0 =A0 =A0 return IRQ_HANDLED;
 > +}
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* Disable Receive Interrup=
-t */
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(~(SPIINT_RX_INTR =
-| SPIINT_TX_INTR),
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 davinci_spi->base + SPIINT);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (void)davinci_spi_check_err=
-or(davinci_spi, int_status);
-> +resource_size_t davinci_spi_get_dma_by_index(struct platform_device *dev,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned long index)
+> +
+> +static void spi_tegra_start_message(struct spi_device *spi,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 str=
+uct spi_message *m)
 > +{
-> + =A0 =A0 =A0 struct resource *r;
->
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 int_status =3D ioread32(davinci_spi->base +=
- SPIFLG);
-> - =A0 =A0 =A0 }
-> + =A0 =A0 =A0 r =3D platform_get_resource(dev, IORESOURCE_DMA, index);
-> + =A0 =A0 =A0 if (r !=3D NULL)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return r->start;
->
-> - =A0 =A0 =A0 return ret;
-> + =A0 =A0 =A0 return SPI_NO_RESOURCE;
-> =A0}
->
-> =A0/**
-> =A0* davinci_spi_probe - probe function for SPI Master Controller
-> =A0* @pdev: platform_device structure which contains plateform specific d=
-ata
-> + *
-> + * According to Linux Device Model this function will be invoked by Linux
-> + * with platform_device struct which contains the device specific info.
-> + * This function will map the SPI controller's memory, register IRQ,
-> + * Reset SPI controller and setting its registers to default value.
-> + * It will invoke spi_bitbang_start to create work queue so that client =
-driver
-> + * can register transfer method to work queue.
-
-Another candidate; improve documentation
-
-> =A0*/
-> =A0static int davinci_spi_probe(struct platform_device *pdev)
-> =A0{
-> @@ -1020,6 +887,7 @@ static int davinci_spi_probe(struct platform_device =
-*pdev)
-> =A0 =A0 =A0 =A0resource_size_t dma_tx_chan =3D SPI_NO_RESOURCE;
-> =A0 =A0 =A0 =A0resource_size_t dma_eventq =3D SPI_NO_RESOURCE;
-> =A0 =A0 =A0 =A0int i =3D 0, ret =3D 0;
-> + =A0 =A0 =A0 u32 spipc0;
->
-> =A0 =A0 =A0 =A0pdata =3D pdev->dev.platform_data;
-> =A0 =A0 =A0 =A0if (pdata =3D=3D NULL) {
-> @@ -1071,10 +939,12 @@ static int davinci_spi_probe(struct platform_devic=
-e *pdev)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto unmap_io;
-> =A0 =A0 =A0 =A0}
->
-> - =A0 =A0 =A0 ret =3D request_irq(davinci_spi->irq, davinci_spi_irq, IRQF=
-_DISABLED,
-> + =A0 =A0 =A0 ret =3D request_irq(davinci_spi->irq, davinci_spi_irq, 0,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_name(&pdev->dev), =
-davinci_spi);
-> - =A0 =A0 =A0 if (ret)
-> + =A0 =A0 =A0 if (ret !=3D 0) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -EAGAIN;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto unmap_io;
+> + =A0 =A0 =A0 struct spi_transfer *t;
+> +
+> + =A0 =A0 =A0 m->actual_length =3D 0;
+> +
+> + =A0 =A0 =A0 t =3D list_first_entry(&m->transfers, struct spi_transfer, =
+transfer_list);
+> + =A0 =A0 =A0 spi_tegra_start_transfer(spi, t);
+> +}
+> +
+> +static void tegra_spi_rx_dma_complete(struct tegra_dma_req *req)
+> +{
+> + =A0 =A0 =A0 struct spi_tegra_data *tspi =3D req->dev;
+> + =A0 =A0 =A0 unsigned long flags;
+> + =A0 =A0 =A0 struct spi_message *m;
+> + =A0 =A0 =A0 struct spi_device *spi;
+> + =A0 =A0 =A0 int complete =3D 0;
+> + =A0 =A0 =A0 int timeout =3D 0;
+> + =A0 =A0 =A0 unsigned long val;
+> +
+> + =A0 =A0 =A0 /* the SPI controller may come back with both the BSY and R=
+DY bits
+> + =A0 =A0 =A0 =A0* set. =A0In this case we need to wait for the BSY bit t=
+o clear so
+> + =A0 =A0 =A0 =A0* that we are sure the DMA is finished.
+> + =A0 =A0 =A0 =A0*/
+> + =A0 =A0 =A0 while (timeout++ < BUSY_TIMEOUT) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!(spi_readl(tspi, SLINK_STATUS) & BSY))
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
 > + =A0 =A0 =A0 }
->
-> =A0 =A0 =A0 =A0/* Allocate tmp_buf for tx_buf */
-> =A0 =A0 =A0 =A0davinci_spi->tmp_buf =3D kzalloc(SPI_BUFSIZ, GFP_KERNEL);
-> @@ -1104,55 +974,23 @@ static int davinci_spi_probe(struct platform_devic=
-e *pdev)
->
-> =A0 =A0 =A0 =A0davinci_spi->bitbang.chipselect =3D davinci_spi_chipselect;
-> =A0 =A0 =A0 =A0davinci_spi->bitbang.setup_transfer =3D davinci_spi_setup_=
-transfer;
-> + =A0 =A0 =A0 davinci_spi->bitbang.txrx_bufs =3D davinci_spi_txrx_bufs;
->
-> =A0 =A0 =A0 =A0davinci_spi->version =3D pdata->version;
-> - =A0 =A0 =A0 use_dma =3D pdata->use_dma;
->
-> =A0 =A0 =A0 =A0davinci_spi->bitbang.flags =3D SPI_NO_CS | SPI_LSB_FIRST |=
- SPI_LOOP;
-> =A0 =A0 =A0 =A0if (davinci_spi->version =3D=3D SPI_VERSION_2)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0davinci_spi->bitbang.flags |=3D SPI_READY;
->
-> - =A0 =A0 =A0 if (use_dma) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D platform_get_resource=
-(pdev, IORESOURCE_DMA, 0);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (r)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_rx_chan=
- =3D r->start;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D platform_get_resource=
-(pdev, IORESOURCE_DMA, 1);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (r)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_tx_chan=
- =3D r->start;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 r =3D platform_get_resource=
-(pdev, IORESOURCE_DMA, 2);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (r)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_eventq =
-=3D r->start;
-> - =A0 =A0 =A0 }
-> -
-> - =A0 =A0 =A0 if (!use_dma ||
-> - =A0 =A0 =A0 =A0 =A0 dma_rx_chan =3D=3D SPI_NO_RESOURCE ||
-> - =A0 =A0 =A0 =A0 =A0 dma_tx_chan =3D=3D SPI_NO_RESOURCE ||
-> - =A0 =A0 =A0 =A0 =A0 dma_eventq =A0=3D=3D SPI_NO_RESOURCE) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->bitbang.txrx_bufs =3D davinci_=
-spi_bufs_pio;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 use_dma =3D 0;
-> - =A0 =A0 =A0 } else {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->bitbang.txrx_bufs =3D davinci_=
-spi_bufs_dma;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels =3D kzalloc(maste=
-r->num_chipselect
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 * sizeof(st=
-ruct davinci_spi_dma), GFP_KERNEL);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (davinci_spi->dma_channels =3D=3D NULL) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto free_clk;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> -
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (i =3D 0; i < master->num_chipselect; i=
-++) {
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels[i=
-].dma_rx_channel =3D -1;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels[i=
-].dma_rx_sync_dev =3D
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_rx_chan;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels[i=
-].dma_tx_channel =3D -1;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels[i=
-].dma_tx_sync_dev =3D
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_tx_chan;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 davinci_spi->dma_channels[i=
-].eventq =3D dma_eventq;
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_info(&pdev->dev, "DaVinci SPI driver in=
- EDMA mode\n"
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "Using RX c=
-hannel =3D %d , TX channel =3D %d and "
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "event queu=
-e =3D %d", dma_rx_chan, dma_tx_chan,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_eventq);
-> - =A0 =A0 =A0 }
-> + =A0 =A0 =A0 dma_rx_chan =3D davinci_spi_get_dma_by_index(pdev, RX_DMA_I=
-NDEX);
-> + =A0 =A0 =A0 dma_tx_chan =3D davinci_spi_get_dma_by_index(pdev, TX_DMA_I=
-NDEX);
-> + =A0 =A0 =A0 dma_eventq =A0=3D davinci_spi_get_dma_by_index(pdev, EVENTQ=
-_DMA_INDEX);
-> + =A0 =A0 =A0 davinci_spi->dma_channels.dma_rx_channel =3D -1;
-> + =A0 =A0 =A0 davinci_spi->dma_channels.dma_rx_sync_dev =3D dma_rx_chan;
-> + =A0 =A0 =A0 davinci_spi->dma_channels.dma_tx_channel =3D -1;
-> + =A0 =A0 =A0 davinci_spi->dma_channels.dma_tx_sync_dev =3D dma_tx_chan;
-> + =A0 =A0 =A0 davinci_spi->dma_channels.dummy_param_slot =3D -1;
-> + =A0 =A0 =A0 davinci_spi->dma_channels.eventq =3D dma_eventq;
->
-> =A0 =A0 =A0 =A0davinci_spi->get_rx =3D davinci_spi_rx_buf_u8;
-> =A0 =A0 =A0 =A0davinci_spi->get_tx =3D davinci_spi_tx_buf_u8;
-> @@ -1164,31 +1002,28 @@ static int davinci_spi_probe(struct platform_devi=
-ce *pdev)
-> =A0 =A0 =A0 =A0udelay(100);
-> =A0 =A0 =A0 =A0iowrite32(1, davinci_spi->base + SPIGCR0);
->
-> - =A0 =A0 =A0 /* Clock internal */
-> - =A0 =A0 =A0 if (davinci_spi->pdata->clk_internal)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_CLK=
-MOD_MASK);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 clear_io_bits(davinci_spi->base + SPIGCR1,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPIGCR1_CLK=
-MOD_MASK);
-> + =A0 =A0 =A0 /* Set up SPIPC0. =A0CS and ENA init is done in davinci_spi=
-_setup */
-> + =A0 =A0 =A0 spipc0 =3D SPIPC0_DIFUN_MASK | SPIPC0_DOFUN_MASK | SPIPC0_C=
-LKFUN_MASK;
-> + =A0 =A0 =A0 iowrite32(spipc0, davinci_spi->base + SPIPC0);
->
-> - =A0 =A0 =A0 /* master mode default */
-> - =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_MASTER_MAS=
-K);
-> + =A0 =A0 =A0 /* initialize chip selects */
-> + =A0 =A0 =A0 if (pdata->chip_sel !=3D NULL) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 for (i =3D 0; i < pdata->num_chipselect; i+=
-+) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (pdata->chip_sel[i] !=3D=
- SPI_INTERN_CS)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 gpio_direct=
-ion_output(pdata->chip_sel[i], 1);
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_STATUS);
+> + =A0 =A0 =A0 val |=3D RDY;
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_STATUS);
+> +
+> + =A0 =A0 =A0 spin_lock_irqsave(&tspi->lock, flags);
+> +
+> + =A0 =A0 =A0 m =3D list_first_entry(&tspi->queue, struct spi_message, qu=
+eue);
+> + =A0 =A0 =A0 spi =3D m->state;
+> +
+> + =A0 =A0 =A0 tspi->cur_pos +=3D spi_tegra_drain_rx_fifo(tspi, tspi->cur);
+> + =A0 =A0 =A0 m->actual_length +=3D tspi->cur_pos;
+> +
+> + =A0 =A0 =A0 if (tspi->cur_pos < tspi->cur->len) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tspi->cur_len =3D spi_tegra_fill_tx_fifo(ts=
+pi, tspi->cur);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_tegra_go(tspi);
+> + =A0 =A0 =A0 } else if (!list_is_last(&tspi->cur->transfer_list,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0&m->tran=
+sfers)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 tspi->cur =3D =A0list_first_entry(&tspi->cu=
+r->transfer_list,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 struct spi_transfer,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 transfer_list);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_tegra_start_transfer(spi, tspi->cur);
+
+Not checking the returned error code.  If an error occurs, then the
+callback needs to be called to notify that the message did not
+complete.  However, this comment may be moot if the validation is
+moved out of spi_tegra_start_transfer().
+
+> + =A0 =A0 =A0 } else {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 complete =3D 1;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 if (complete) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 list_del(&m->queue);
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 m->status =3D 0;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 m->complete(m->context);
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (!list_empty(&tspi->queue)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 m =3D list_first_entry(&tsp=
+i->queue, struct spi_message,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0queue);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi =3D m->state;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_tegra_start_message(spi=
+, m);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 clk_disable(tspi->clk);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tspi->cur_speed =3D 0;
 > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
 > + =A0 =A0 =A0 }
-> + =A0 =A0 =A0 iowrite32(SPIDEF_CSDEF_MASK, davinci_spi->base + SPIDEF);
->
-> - =A0 =A0 =A0 if (davinci_spi->pdata->intr_level)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(SPI_INTLVL_1, davinci_spi->base +=
- SPILVL);
-> - =A0 =A0 =A0 else
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(SPI_INTLVL_0, davinci_spi->base +=
- SPILVL);
-> + =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_CLKMOD_MAS=
-K);
-> + =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_MASTER_MAS=
-K);
-> + =A0 =A0 =A0 set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_POWERDOWN_=
-MASK);
->
-> =A0 =A0 =A0 =A0ret =3D spi_bitbang_start(&davinci_spi->bitbang);
-> - =A0 =A0 =A0 if (ret)
-> + =A0 =A0 =A0 if (ret !=3D 0)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto free_clk;
->
-> - =A0 =A0 =A0 dev_info(&pdev->dev, "Controller at 0x%p \n", davinci_spi->=
-base);
-> -
-> - =A0 =A0 =A0 if (!pdata->poll_mode)
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_info(&pdev->dev, "Operating in interrup=
-t mode"
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 " using IRQ %d\n", davinci_=
-spi->irq);
-> + =A0 =A0 =A0 dev_info(&pdev->dev, "Controller at 0x%p\n", davinci_spi->b=
-ase);
->
-> =A0 =A0 =A0 =A0return ret;
->
-> @@ -1220,7 +1055,7 @@ err:
-> =A0* It will also call spi_bitbang_stop to destroy the work queue which w=
-as
-> =A0* created by spi_bitbang_start.
-> =A0*/
-> -static int __exit davinci_spi_remove(struct platform_device *pdev)
-> +static int __devexit davinci_spi_remove(struct platform_device *pdev)
-> =A0{
-> =A0 =A0 =A0 =A0struct davinci_spi *davinci_spi;
-> =A0 =A0 =A0 =A0struct spi_master *master;
-> @@ -1242,8 +1077,11 @@ static int __exit davinci_spi_remove(struct platfo=
-rm_device *pdev)
-> =A0}
->
-> =A0static struct platform_driver davinci_spi_driver =3D {
-> - =A0 =A0 =A0 .driver.name =3D "spi_davinci",
-> - =A0 =A0 =A0 .remove =3D __exit_p(davinci_spi_remove),
+> +
+> + =A0 =A0 =A0 spin_unlock_irqrestore(&tspi->lock, flags);
+> +}
+> +
+> +static int spi_tegra_setup(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 struct spi_tegra_data *tspi =3D spi_master_get_devdata(spi-=
+>master);
+> + =A0 =A0 =A0 unsigned long cs_bit;
+> + =A0 =A0 =A0 unsigned long val;
+> + =A0 =A0 =A0 unsigned long flags;
+> +
+> + =A0 =A0 =A0 dev_dbg(&spi->dev, "setup %d bpw, %scpol, %scpha, %dHz\n",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->bits_per_word,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->mode & SPI_CPOL ? "" : "~",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->mode & SPI_CPHA ? "" : "~",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi->max_speed_hz);
+> +
+> +
+> + =A0 =A0 =A0 switch (spi->chip_select) {
+> + =A0 =A0 =A0 case 0:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs_bit =3D CS_POLARITY;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> +
+> + =A0 =A0 =A0 case 1:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs_bit =3D CS_POLARITY1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> +
+> + =A0 =A0 =A0 case 2:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs_bit =3D CS_POLARITY2;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> +
+> + =A0 =A0 =A0 case 4:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 cs_bit =3D CS_POLARITY3;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> +
+> + =A0 =A0 =A0 default:
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 spin_lock_irqsave(&tspi->lock, flags);
+> +
+> + =A0 =A0 =A0 val =3D spi_readl(tspi, SLINK_COMMAND);
+> + =A0 =A0 =A0 if (spi->mode & SPI_CS_HIGH)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val |=3D cs_bit;
+> + =A0 =A0 =A0 else
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 val &=3D ~cs_bit;
+> + =A0 =A0 =A0 spi_writel(tspi, val, SLINK_COMMAND);
+> +
+> + =A0 =A0 =A0 spin_unlock_irqrestore(&tspi->lock, flags);
+> +
+> + =A0 =A0 =A0 return 0;
+> +}
+> +
+> +static int spi_tegra_transfer(struct spi_device *spi, struct spi_message=
+ *m)
+> +{
+> + =A0 =A0 =A0 struct spi_tegra_data *tspi =3D spi_master_get_devdata(spi-=
+>master);
+> + =A0 =A0 =A0 unsigned long flags;
+> + =A0 =A0 =A0 int was_empty;
+> +
+> + =A0 =A0 =A0 if (list_empty(&m->transfers) || !m->complete)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+
+It's a good idea to move most of the validation of the message from
+spi_tegra_start_message() and spi_tegra_start_transfer() to here so
+that the validation occurs outside of the spinlock.  It also means the
+driver doesn't discover badly formed messages part way through the
+transfer.
+
+> +
+> + =A0 =A0 =A0 m->state =3D spi;
+> +
+> + =A0 =A0 =A0 spin_lock_irqsave(&tspi->lock, flags);
+> + =A0 =A0 =A0 was_empty =3D list_empty(&tspi->queue);
+> + =A0 =A0 =A0 list_add_tail(&m->queue, &tspi->queue);
+> +
+> + =A0 =A0 =A0 if (was_empty)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_tegra_start_message(spi, m);
+> +
+> + =A0 =A0 =A0 spin_unlock_irqrestore(&tspi->lock, flags);
+> +
+> + =A0 =A0 =A0 return 0;
+> +}
+> +
+> +static void spi_tegra_cleanup(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 dev_dbg(&spi->dev, "cleanup\n");
+> +}
+> +
+> +static int __init spi_tegra_probe(struct platform_device *pdev)
+> +{
+> + =A0 =A0 =A0 struct spi_master =A0 =A0 =A0 *master;
+> + =A0 =A0 =A0 struct spi_tegra_data =A0 *tspi;
+> + =A0 =A0 =A0 struct resource =A0 =A0 =A0 =A0 *r;
+> + =A0 =A0 =A0 int ret;
+> +
+> + =A0 =A0 =A0 master =3D spi_alloc_master(&pdev->dev, sizeof *tspi);
+> + =A0 =A0 =A0 if (master =3D=3D NULL) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "master allocation fail=
+ed\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ENOMEM;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 /* the spi->mode bits understood by this driver: */
+> + =A0 =A0 =A0 master->mode_bits =3D SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> +
+> + =A0 =A0 =A0 if (pdev->id !=3D -1)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 master->bus_num =3D pdev->id;
+> +
+> + =A0 =A0 =A0 master->setup =3D spi_tegra_setup;
+> + =A0 =A0 =A0 master->transfer =3D spi_tegra_transfer;
+> + =A0 =A0 =A0 master->cleanup =3D spi_tegra_cleanup;
+> + =A0 =A0 =A0 master->num_chipselect =3D 4;
+> +
+> + =A0 =A0 =A0 dev_set_drvdata(&pdev->dev, master);
+> + =A0 =A0 =A0 tspi =3D spi_master_get_devdata(master);
+> + =A0 =A0 =A0 tspi->master =3D master;
+> + =A0 =A0 =A0 tspi->pdev =3D pdev;
+> + =A0 =A0 =A0 spin_lock_init(&tspi->lock);
+> +
+> + =A0 =A0 =A0 r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> + =A0 =A0 =A0 if (r =3D=3D NULL) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENODEV;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err0;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 if (!request_mem_region(r->start, (r->end - r->start) + 1,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_name(&pdev->dev))) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -EBUSY;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err0;
+> + =A0 =A0 =A0 }
+
+I believe the platform bus does this for you already by calling
+insert_resource() on all the platform bus ranges.  See if /proc/iomem
+is any different with or without this call to verify.
+
+> +
+> + =A0 =A0 =A0 tspi->phys =3D r->start;
+> + =A0 =A0 =A0 tspi->base =3D ioremap(r->start, r->end - r->start + 1);
+> + =A0 =A0 =A0 if (!tspi->base) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "can't ioremap iomem\n"=
+);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err1;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 tspi->clk =3D clk_get(&pdev->dev, NULL);
+> + =A0 =A0 =A0 if (IS_ERR_OR_NULL(tspi->clk)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "can not get clock\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D PTR_ERR(tspi->clk);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err2;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 INIT_LIST_HEAD(&tspi->queue);
+> +
+> + =A0 =A0 =A0 tspi->rx_dma =3D tegra_dma_allocate_channel(TEGRA_DMA_MODE_=
+ONESHOT);
+> + =A0 =A0 =A0 if (IS_ERR(tspi->rx_dma)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "can not allocate rx dm=
+a channel\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D PTR_ERR(tspi->rx_dma);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err3;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 tspi->rx_bb =3D dma_alloc_coherent(&pdev->dev, sizeof(u32) =
+* BB_LEN,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0&tspi->rx_bb_phys, GFP_KERNEL);
+> + =A0 =A0 =A0 if (!tspi->rx_bb) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev, "can not allocate rx bo=
+unce buffer\n");
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err4;
+> + =A0 =A0 =A0 }
+> +
+> + =A0 =A0 =A0 tspi->rx_dma_req.complete =3D tegra_spi_rx_dma_complete;
+> + =A0 =A0 =A0 tspi->rx_dma_req.to_memory =3D 1;
+> + =A0 =A0 =A0 tspi->rx_dma_req.dest_addr =3D tspi->rx_bb_phys;
+> + =A0 =A0 =A0 tspi->rx_dma_req.dest_bus_width =3D 32;
+> + =A0 =A0 =A0 tspi->rx_dma_req.source_addr =3D tspi->phys + SLINK_RX_FIFO;
+> + =A0 =A0 =A0 tspi->rx_dma_req.source_bus_width =3D 32;
+> + =A0 =A0 =A0 tspi->rx_dma_req.source_wrap =3D 4;
+> + =A0 =A0 =A0 tspi->rx_dma_req.req_sel =3D spi_tegra_req_sels[pdev->id];
+> + =A0 =A0 =A0 tspi->rx_dma_req.dev =3D tspi;
+> +
+> + =A0 =A0 =A0 ret =3D spi_register_master(master);
+> +
+> + =A0 =A0 =A0 if (ret < 0)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err5;
+> +
+> + =A0 =A0 =A0 return ret;
+> +
+> +err5:
+> + =A0 =A0 =A0 dma_free_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tspi->rx_bb, tspi->rx_b=
+b_phys);
+> +err4:
+> + =A0 =A0 =A0 tegra_dma_free_channel(tspi->rx_dma);
+> +err3:
+> + =A0 =A0 =A0 clk_put(tspi->clk);
+> +err2:
+> + =A0 =A0 =A0 iounmap(tspi->base);
+> +err1:
+> + =A0 =A0 =A0 release_mem_region(r->start, (r->end - r->start) + 1);
+> +err0:
+> + =A0 =A0 =A0 spi_master_put(master);
+> + =A0 =A0 =A0 return ret;
+> +}
+> +
+> +static int __exit spi_tegra_remove(struct platform_device *pdev)
+
+__devexit
+
+> +{
+> + =A0 =A0 =A0 struct spi_master =A0 =A0 =A0 *master;
+> + =A0 =A0 =A0 struct spi_tegra_data =A0 *tspi;
+> + =A0 =A0 =A0 struct resource =A0 =A0 =A0 =A0 *r;
+> +
+> + =A0 =A0 =A0 master =3D dev_get_drvdata(&pdev->dev);
+> + =A0 =A0 =A0 tspi =3D spi_master_get_devdata(master);
+> +
+> + =A0 =A0 =A0 tegra_dma_free_channel(tspi->rx_dma);
+> +
+> + =A0 =A0 =A0 dma_free_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 tspi->rx_bb, tspi->rx_b=
+b_phys);
+> +
+> + =A0 =A0 =A0 clk_put(tspi->clk);
+> + =A0 =A0 =A0 iounmap(tspi->base);
+> +
+> + =A0 =A0 =A0 spi_master_put(master);
+> +
+> + =A0 =A0 =A0 r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> + =A0 =A0 =A0 release_mem_region(r->start, (r->end - r->start) + 1);
+
+Ditto to comment earlier.
+
+> +
+> + =A0 =A0 =A0 return 0;
+> +}
+> +
+> +
+> +MODULE_ALIAS("platform:" DRIVER_NAME);
+> +
+> +static struct platform_driver spi_tegra_driver =3D {
 > + =A0 =A0 =A0 .driver =3D {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D "spi_davinci",
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =3D THIS_MODULE,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D =A0 =A0 =A0 =A0 DRIVER_NAME,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =3D =A0 =A0 =A0 =A0THIS_MODULE,
 > + =A0 =A0 =A0 },
-> + =A0 =A0 =A0 .remove =3D __devexit_p(davinci_spi_remove),
-> =A0};
+> + =A0 =A0 =A0 .remove =3D =A0 =A0 =A0 __exit_p(spi_tegra_remove),
 
-Another candidate.  Corrections to platform_driver structure and
-__devexit annotations.
+__devexit_p
 
->
-> =A0static int __init davinci_spi_init(void)
+> +};
+> +
+> +
+> +static int __init spi_tegra_init(void)
+> +{
+> + =A0 =A0 =A0 return platform_driver_probe(&spi_tegra_driver, spi_tegra_p=
+robe);
+> +}
+> +subsys_initcall(spi_tegra_init);
+
+Is module_init() not sufficient?
+
+> +
+> +static void __exit spi_tegra_exit(void)
+> +{
+> + =A0 =A0 =A0 platform_driver_unregister(&spi_tegra_driver);
+> +}
+> +module_exit(spi_tegra_exit);
+> +
+> +MODULE_LICENSE("GPL");
 > --
-> 1.6.3.3
+> 1.7.1
 >
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 >
 
 

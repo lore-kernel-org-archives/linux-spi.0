@@ -1,12 +1,9 @@
 From: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v2 4/6] mtd: m25p80: add a read function
-	to read page by page
-Date: Mon, 2 Aug 2010 15:52:02 +0800
-Message-ID: <1280735524-17547-5-git-send-email-Mingkai.hu@freescale.com>
+Subject: [PATCH v2 2/6] eSPI: add eSPI controller support
+Date: Mon, 2 Aug 2010 15:52:00 +0800
+Message-ID: <1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
 References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
-	<1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
-	<1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,7 +11,7 @@ Cc: kumar.gala-KZfg59tc24xl57MIdRCFDg@public.gmane.org, tie-fei.zang-KZfg59tc24x
 	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1280735524-17547-4-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1280735524-17547-2-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,148 +22,742 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-For Freescale's eSPI controller, the max transaction length one time
-is limitted by the SPCOM[TRANSLEN] field which is 0xFFFF. When used
-mkfs.ext2 command to create ext2 filesystem on the flash, the read
-length will exceed the max value of the SPCOM[TRANSLEN] field, so
-change the read function to read page by page.
+Add eSPI controller support based on the library code spi_fsl_lib.c.
 
-For other SPI flash driver, also needed to supply the read function
-if used the eSPI controller.
+The eSPI controller is newer controller 85xx/Pxxx devices supported.
+There're some differences comparing to the SPI controller:
+
+1. Has different register map and different bit definition
+   So leave the code operated the register to the driver code, not
+   the common code.
+
+2. Support 4 dedicated chip selects
+   The software can't controll the chip selects directly, The SPCOM[CS]
+   field is used to select which chip selects is used, and the
+   SPCOM[TRANLEN] field is set to tell the controller how long the CS
+   signal need to be asserted. So the driver doesn't need the chipselect
+   related function when transfering data, just set corresponding register
+   fields to controll the chipseclect.
+
+3. Different Transmit/Receive FIFO access register behavior
+   For SPI controller, the Tx/Rx FIFO access register can hold only
+   one character regardless of the character length, but for eSPI
+   controller, the register can hold 4 or 2 characters according to
+   the character lengths. Access the Tx/Rx FIFO access register of the
+   eSPI controller will shift out/in 4/2 characters one time. For SPI
+   subsystem, the command and data are put into different transfers, so
+   we need to combine all the transfers to one transfer in order to pass
+   the transfer to eSPI controller.
 
 Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
 
 v2:
- - Add SPI_MASTER_TRANS_LIMIT flag to indicate the master's trans length
-   limitation, so the MTD driver can select the correct transfer behaviour
-   at driver probe time
+ - Rename fsl_espi.c to spi_fsl_espi.c, also the config name
+ - Move register map definiton from spi_fsl_lib.c to spi_fsl_espi.c
+ - Break some funcions line in the arguments instead of the declaration
+ - Inconsistent whitespacing in the macro definition
+ - Init bits_per_word to 0 to eliminate the else clause
+ - Add brace for the else clause to match if clause
+ - Add chip name mpc8536 to the compatible value
+ - Drop the last entry's comma in the match table
+ - move module_init() immediately after the init fsl_espi_init() function
 
- drivers/mtd/devices/m25p80.c |   78 ++++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi_fsl_espi.c   |    1 +
- include/linux/spi/spi.h      |    1 +
- 3 files changed, 80 insertions(+), 0 deletions(-)
+ drivers/spi/Kconfig        |    9 +
+ drivers/spi/Makefile       |    1 +
+ drivers/spi/spi_fsl_espi.c |  633 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi_fsl_lib.h  |    2 +
+ 4 files changed, 645 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi_fsl_espi.c
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 5f00075..30e4568 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -376,6 +376,81 @@ static int m25p80_read(struct mtd_info *mtd, loff_t from, size_t len,
- }
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index cd7f13b..a379363 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -140,6 +140,15 @@ config SPI_FSL_SPI
+ 	  MPC83xx platform uses the controller in cpu mode or CPM/QE mode.
+ 	  MPC8569 uses the controller in QE mode, MPC8610 in cpu mode.
  
- /*
-+ * Read an address range from the flash chip page by page.
-+ * Some controller has transaction length limitation such as the
-+ * Freescale's eSPI controller can only trasmit 0xFFFF bytes one
-+ * time, so we have to read page by page if the len is more than
-+ * the limitation.
++config SPI_FSL_ESPI
++	tristate "Freescale eSPI controller"
++	depends on FSL_SOC
++	select SPI_FSL_LIB
++	help
++	  This enables using the Freescale eSPI controllers in master mode.
++	  From MPC8536, 85xx platform uses the controller, and all P10xx,
++	  P20xx, P40xx uses this controller.
++
+ config SPI_GPIO
+ 	tristate "GPIO-based bitbanging SPI Master"
+ 	depends on GENERIC_GPIO
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index cf8d9be..dd86ba7 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_SPI_DW_MMIO)		+= dw_spi_mmio.o
+ obj-$(CONFIG_SPI_EP93XX)		+= ep93xx_spi.o
+ obj-$(CONFIG_SPI_FSL_LIB)		+= spi_fsl_lib.o
+ obj-$(CONFIG_SPI_FSL_SPI)		+= spi_fsl_spi.o
++obj-$(CONFIG_SPI_FSL_ESPI)		+= spi_fsl_espi.o
+ obj-$(CONFIG_SPI_GPIO)			+= spi_gpio.o
+ obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
+ obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
+diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
+new file mode 100644
+index 0000000..61987cf
+--- /dev/null
++++ b/drivers/spi/spi_fsl_espi.c
+@@ -0,0 +1,633 @@
++/*
++ * Freescale eSPI controller driver.
++ *
++ * Copyright 2010 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
 + */
-+static int m25p80_page_read(struct mtd_info *mtd, loff_t from, size_t len,
-+	size_t *retlen, u_char *buf)
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/irq.h>
++#include <linux/spi/spi.h>
++#include <linux/platform_device.h>
++#include <linux/fsl_devices.h>
++#include <linux/mm.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/of_spi.h>
++#include <sysdev/fsl_soc.h>
++#include <linux/interrupt.h>
++
++#include "spi_fsl_lib.h"
++
++/* eSPI Controller registers */
++struct fsl_espi_reg {
++	__be32 mode;		/* 0x000 - eSPI mode register */
++	__be32 event;		/* 0x004 - eSPI event register */
++	__be32 mask;		/* 0x008 - eSPI mask register */
++	__be32 command;		/* 0x00c - eSPI command register */
++	__be32 transmit;	/* 0x010 - eSPI transmit FIFO access register*/
++	__be32 receive;		/* 0x014 - eSPI receive FIFO access register*/
++	u8 res[8];		/* 0x018 - 0x01c reserved */
++	__be32 csmode[4];	/* 0x020 - 0x02c eSPI cs mode register */
++};
++
++/* eSPI Controller mode register definitions */
++#define SPMODE_ENABLE		(1 << 31)
++#define SPMODE_LOOP		(1 << 30)
++#define SPMODE_TXTHR(x)		((x) << 8)
++#define SPMODE_RXTHR(x)		((x) << 0)
++
++/* eSPI Controller CS mode register definitions */
++#define CSMODE_CI_INACTIVEHIGH	(1 << 31)
++#define CSMODE_CP_BEGIN_EDGECLK	(1 << 30)
++#define CSMODE_REV		(1 << 29)
++#define CSMODE_DIV16		(1 << 28)
++#define CSMODE_PM(x)		((x) << 24)
++#define CSMODE_POL_1		(1 << 20)
++#define CSMODE_LEN(x)		((x) << 16)
++#define CSMODE_BEF(x)		((x) << 12)
++#define CSMODE_AFT(x)		((x) << 8)
++#define CSMODE_CG(x)		((x) << 3)
++
++/* Default mode/csmode for eSPI controller */
++#define SPMODE_INIT_VAL (SPMODE_TXTHR(4) | SPMODE_RXTHR(3))
++#define CSMODE_INIT_VAL (CSMODE_POL_1 | CSMODE_BEF(0) \
++		| CSMODE_AFT(0) | CSMODE_CG(1))
++
++/* SPIE register values */
++#define	SPIE_NE		0x00000200	/* Not empty */
++#define	SPIE_NF		0x00000100	/* Not full */
++
++/* SPIM register values */
++#define	SPIM_NE		0x00000200	/* Not empty */
++#define	SPIM_NF		0x00000100	/* Not full */
++#define SPIE_RXCNT(reg)     ((reg >> 24) & 0x3F)
++#define SPIE_TXCNT(reg)     ((reg >> 16) & 0x3F)
++
++/* SPCOM register values */
++#define SPCOM_CS(x)		((x) << 30)
++#define SPCOM_TRANLEN(x)	((x) << 0)
++#define	SPCOM_TRANLEN_MAX	0xFFFF	/* Max transaction length */
++
++static void fsl_espi_change_mode(struct spi_device *spi)
 +{
-+	struct m25p *flash = mtd_to_m25p(mtd);
-+	struct spi_transfer t[2];
-+	struct spi_message m;
-+	u32 i, page_size = 0;
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
++	struct spi_mpc8xxx_cs *cs = spi->controller_state;
++	__be32 __iomem *mode;
++	__be32 __iomem *espi_mode = NULL;
++	u32 tmp;
++	unsigned long flags;
 +
-+	DEBUG(MTD_DEBUG_LEVEL2, "%s: %s %s 0x%08x, len %zd\n",
-+			dev_name(&flash->spi->dev), __func__, "from",
-+			(u32)from, len);
++	espi_mode = &mspi->espi_base->mode;
++	mode = &mspi->espi_base->csmode[spi->chip_select];
 +
-+	/* sanity checks */
-+	if (!len)
++	/* Turn off IRQs locally to minimize time that SPI is disabled. */
++	local_irq_save(flags);
++
++	/* Turn off SPI unit prior changing mode */
++	tmp = mpc8xxx_spi_read_reg(espi_mode);
++	mpc8xxx_spi_write_reg(espi_mode, tmp & ~SPMODE_ENABLE);
++	mpc8xxx_spi_write_reg(mode, cs->hw_mode);
++	mpc8xxx_spi_write_reg(espi_mode, tmp);
++
++	local_irq_restore(flags);
++}
++
++static u32 fsl_espi_tx_buf_lsb(struct mpc8xxx_spi *mpc8xxx_spi)
++{
++	u32 data;
++	u16 data_h, data_l;
++
++	const u32 *tx = mpc8xxx_spi->tx;
++	if (!tx)
 +		return 0;
 +
-+	if (from + len > flash->mtd.size)
++	data = *tx++ << mpc8xxx_spi->tx_shift;
++	data_l = data & 0xffff;
++	data_h = (data >> 16) & 0xffff;
++	swab16s(&data_l);
++	swab16s(&data_h);
++	data = data_h | data_l;
++
++	mpc8xxx_spi->tx = tx;
++	return data;
++}
++
++static int fsl_espi_setup_transfer(struct spi_device *spi,
++					struct spi_transfer *t)
++{
++	struct mpc8xxx_spi *mpc8xxx_spi;
++	int bits_per_word = 0;
++	u8 pm;
++	u32 hz = 0;
++	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
++
++	mpc8xxx_spi = spi_master_get_devdata(spi->master);
++
++	if (t) {
++		bits_per_word = t->bits_per_word;
++		hz = t->speed_hz;
++	}
++
++	/* spi_transfer level calls that work per-word */
++	if (!bits_per_word)
++		bits_per_word = spi->bits_per_word;
++
++	/* Make sure its a bit width we support [4..16] */
++	if ((bits_per_word < 4) || (bits_per_word > 16))
 +		return -EINVAL;
 +
-+	spi_message_init(&m);
-+	memset(t, 0, (sizeof t));
++	if (!hz)
++		hz = spi->max_speed_hz;
 +
-+	/* NOTE:
-+	 * OPCODE_FAST_READ (if available) is faster.
-+	 * Should add 1 byte DUMMY_BYTE.
-+	 */
-+	t[0].tx_buf = flash->command;
-+	t[0].len = m25p_cmdsz(flash) + FAST_READ_DUMMY_BYTE;
-+	spi_message_add_tail(&t[0], &m);
++	cs->rx_shift = 0;
++	cs->tx_shift = 0;
++	cs->get_rx = mpc8xxx_spi_rx_buf_u32;
++	cs->get_tx = mpc8xxx_spi_tx_buf_u32;
++	if (bits_per_word <= 8) {
++		cs->rx_shift = 8 - bits_per_word;
++	} else if (bits_per_word <= 16) {
++		cs->rx_shift = 16 - bits_per_word;
++		if (spi->mode & SPI_LSB_FIRST)
++			cs->get_tx = fsl_espi_tx_buf_lsb;
++	} else
++		return -EINVAL;
 +
-+	t[1].rx_buf = buf;
-+	spi_message_add_tail(&t[1], &m);
++	mpc8xxx_spi->rx_shift = cs->rx_shift;
++	mpc8xxx_spi->tx_shift = cs->tx_shift;
++	mpc8xxx_spi->get_rx = cs->get_rx;
++	mpc8xxx_spi->get_tx = cs->get_tx;
 +
-+	/* Byte count starts at zero. */
-+	if (retlen)
-+		*retlen = 0;
++	bits_per_word = bits_per_word - 1;
 +
-+	mutex_lock(&flash->lock);
++	/* mask out bits we are going to set */
++	cs->hw_mode &= ~(CSMODE_LEN(0xF) | CSMODE_DIV16
++				  | CSMODE_PM(0xF));
 +
-+	/* Wait till previous write/erase is done. */
-+	if (wait_till_ready(flash)) {
-+		/* REVISIT status return?? */
-+		mutex_unlock(&flash->lock);
-+		return 1;
++	cs->hw_mode |= CSMODE_LEN(bits_per_word);
++
++	if ((mpc8xxx_spi->spibrg / hz) > 64) {
++		cs->hw_mode |= CSMODE_DIV16;
++		pm = (mpc8xxx_spi->spibrg - 1) / (hz * 64) + 1;
++
++		WARN_ONCE(pm > 16, "%s: Requested speed is too low: %d Hz. "
++			  "Will use %d Hz instead.\n", dev_name(&spi->dev),
++			  hz, mpc8xxx_spi->spibrg / 1024);
++		if (pm > 16)
++			pm = 16;
++	} else {
++		pm = (mpc8xxx_spi->spibrg - 1) / (hz * 4) + 1;
 +	}
++	if (pm)
++		pm--;
 +
-+	/* Set up the write data buffer. */
-+	flash->command[0] = OPCODE_READ;
++	cs->hw_mode |= CSMODE_PM(pm);
 +
-+	for (i = page_size; i < len; i += page_size) {
-+		page_size = len - i;
-+		if (page_size > flash->page_size)
-+			page_size = flash->page_size;
-+		m25p_addr2cmd(flash, from + i, flash->command);
-+		t[1].len = page_size;
-+		t[1].rx_buf = buf + i;
++	fsl_espi_change_mode(spi);
++	return 0;
++}
 +
-+		spi_sync(flash->spi, &m);
++int fsl_espi_cpu_bufs(struct mpc8xxx_spi *mspi, struct spi_transfer *t,
++		unsigned int len)
++{
++	u32 word;
 +
-+		*retlen += m.actual_length - m25p_cmdsz(flash)
-+			- FAST_READ_DUMMY_BYTE;
-+	}
++	mspi->count = len;
 +
-+	mutex_unlock(&flash->lock);
++	/* enable rx ints */
++	mpc8xxx_spi_write_reg(&mspi->espi_base->mask, SPIM_NE);
++
++	/* transmit word */
++	word = mspi->get_tx(mspi);
++	mpc8xxx_spi_write_reg(&mspi->espi_base->transmit, word);
 +
 +	return 0;
 +}
 +
-+/*
-  * Write an address range to the flash chip.  Data must be written in
-  * FLASH_PAGESIZE chunks.  The address range may be any size provided
-  * it is within the physical boundaries.
-@@ -877,6 +952,9 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 	flash->mtd.erase = m25p80_erase;
- 	flash->mtd.read = m25p80_read;
- 
-+	if (spi->master->flags & SPI_MASTER_TRANS_LIMIT)
-+		flash->mtd.read = m25p80_page_read;
++static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t,
++			    bool is_dma_mapped)
++{
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	unsigned int len = t->len;
++	u8 bits_per_word;
++	int ret;
 +
- 	/* sst flash chips use AAI word program */
- 	if (info->jedec_id >> 16 == 0xbf)
- 		flash->mtd.write = sst_write;
-diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
-index 61987cf..e15b7dc 100644
---- a/drivers/spi/spi_fsl_espi.c
-+++ b/drivers/spi/spi_fsl_espi.c
-@@ -470,6 +470,7 @@ static struct spi_master * __devinit fsl_espi_probe(struct device *dev,
- 		goto err_probe;
++	bits_per_word = spi->bits_per_word;
++	if (t->bits_per_word)
++		bits_per_word = t->bits_per_word;
++
++	mpc8xxx_spi->len = t->len;
++	len = roundup(len, 4) / 4;
++
++	mpc8xxx_spi->tx = t->tx_buf;
++	mpc8xxx_spi->rx = t->rx_buf;
++
++	INIT_COMPLETION(mpc8xxx_spi->done);
++
++	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
++	if ((t->len - 1) > SPCOM_TRANLEN_MAX) {
++		dev_err(mpc8xxx_spi->dev, "Transaction length (%d)"
++				" beyond the SPCOM[TRANLEN] field\n", t->len);
++		return -EINVAL;
++	}
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->command,
++		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
++
++	ret = fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
++	if (ret)
++		return ret;
++
++	wait_for_completion(&mpc8xxx_spi->done);
++
++	/* disable rx ints */
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->mask, 0);
++
++	return mpc8xxx_spi->count;
++}
++
++static void fsl_espi_do_one_msg(struct spi_message *m)
++{
++	struct spi_device *spi = m->spi;
++	struct mpc8xxx_spi *mspi = spi_master_get_devdata(spi->master);
++	struct spi_message message;
++	struct spi_transfer *t, *first, trans;
++	u8 *local_buf, *rx_buf = NULL;
++	unsigned int n_tx = 0;
++	unsigned int n_rx = 0;
++	int status = 0;
++	int i = 0;
++
++	spi_message_init(&message);
++	memset(&trans, 0, sizeof(trans));
++
++	first = list_first_entry(&m->transfers, struct spi_transfer,
++			transfer_list);
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if ((first->bits_per_word != t->bits_per_word) ||
++			(first->speed_hz != t->speed_hz)) {
++			status = -EINVAL;
++			dev_err(mspi->dev, "bits_per_word/speed_hz should be"
++					" same for the same SPI transfer\n");
++			return;
++		}
++
++		trans.speed_hz = t->speed_hz;
++		trans.bits_per_word = t->bits_per_word;
++		trans.delay_usecs = max(first->delay_usecs, t->delay_usecs);
++
++		if (t->tx_buf)
++			n_tx += t->len;
++
++		if (t->rx_buf) {
++			n_rx += t->len;
++			rx_buf = t->rx_buf;
++		}
++	}
++
++	local_buf = kzalloc(n_tx * 2 + roundup(n_rx + n_tx, 4), GFP_KERNEL);
++	if (!local_buf) {
++		status = -ENOMEM;
++		return;
++	}
++
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (t->tx_buf) {
++			memcpy(local_buf + i, t->tx_buf, t->len);
++			i += t->len;
++		}
++	}
++
++	trans.len = n_tx + n_rx;
++	trans.tx_buf = local_buf;
++	trans.rx_buf = local_buf + n_tx;
++	spi_message_add_tail(&trans, &message);
++
++	list_for_each_entry(t, &message.transfers, transfer_list) {
++		if (t->bits_per_word || t->speed_hz) {
++			status = -EINVAL;
++
++			status = fsl_espi_setup_transfer(spi, t);
++			if (status < 0)
++				break;
++		}
++
++		if (t->len)
++			status = fsl_espi_bufs(spi, t, 0);
++		if (status) {
++			status = -EMSGSIZE;
++			break;
++		}
++		m->actual_length += t->len;
++
++		if (rx_buf)
++			memcpy(rx_buf, t->rx_buf + n_tx, n_rx);
++
++		if (t->delay_usecs)
++			udelay(t->delay_usecs);
++	}
++
++	m->status = status;
++	m->complete(m->context);
++
++	fsl_espi_setup_transfer(spi, NULL);
++	kfree(local_buf);
++}
++
++static int fsl_espi_setup(struct spi_device *spi)
++{
++	struct mpc8xxx_spi *mpc8xxx_spi;
++	int retval;
++	u32 hw_mode;
++	u32 loop_mode;
++	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
++
++	if (!spi->max_speed_hz)
++		return -EINVAL;
++
++	if (!cs) {
++		cs = kzalloc(sizeof *cs, GFP_KERNEL);
++		if (!cs)
++			return -ENOMEM;
++		spi->controller_state = cs;
++	}
++
++	mpc8xxx_spi = spi_master_get_devdata(spi->master);
++
++	hw_mode = cs->hw_mode; /* Save orginal settings */
++	cs->hw_mode = mpc8xxx_spi_read_reg(
++			&mpc8xxx_spi->espi_base->csmode[spi->chip_select]);
++	/* mask out bits we are going to set */
++	cs->hw_mode &= ~(CSMODE_CP_BEGIN_EDGECLK | CSMODE_CI_INACTIVEHIGH
++			 | CSMODE_REV);
++
++	if (spi->mode & SPI_CPHA)
++		cs->hw_mode |= CSMODE_CP_BEGIN_EDGECLK;
++	if (spi->mode & SPI_CPOL)
++		cs->hw_mode |= CSMODE_CI_INACTIVEHIGH;
++	if (!(spi->mode & SPI_LSB_FIRST))
++		cs->hw_mode |= CSMODE_REV;
++
++	/* Handle the loop mode */
++	loop_mode = mpc8xxx_spi_read_reg(&mpc8xxx_spi->espi_base->mode);
++	loop_mode &= ~SPMODE_LOOP;
++	if (spi->mode & SPI_LOOP)
++		loop_mode |= SPMODE_LOOP;
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->mode, loop_mode);
++
++	retval = fsl_espi_setup_transfer(spi, NULL);
++	if (retval < 0) {
++		cs->hw_mode = hw_mode; /* Restore settings */
++		return retval;
++	}
++	return 0;
++}
++
++static void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
++{
++	/* We need handle RX first */
++	if (events & SPIE_NE) {
++		u32 rx_data;
++
++		/* Spin until RX is done */
++		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
++			cpu_relax();
++			events = mpc8xxx_spi_read_reg(&mspi->espi_base->event);
++		}
++		mspi->len -= 4;
++
++		rx_data = mpc8xxx_spi_read_reg(&mspi->espi_base->receive);
++
++		if (mspi->rx)
++			mspi->get_rx(rx_data, mspi);
++	}
++
++	if ((events & SPIE_NF) == 0)
++		/* spin until TX is done */
++		while (((events =
++			mpc8xxx_spi_read_reg(&mspi->espi_base->event)) &
++						SPIE_NF) == 0)
++			cpu_relax();
++
++	/* Clear the events */
++	mpc8xxx_spi_write_reg(&mspi->espi_base->event, events);
++
++	mspi->count -= 1;
++	if (mspi->count) {
++		u32 word = mspi->get_tx(mspi);
++
++		mpc8xxx_spi_write_reg(&mspi->espi_base->transmit, word);
++	} else {
++		complete(&mspi->done);
++	}
++}
++
++irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
++{
++	struct mpc8xxx_spi *mspi = context_data;
++	irqreturn_t ret = IRQ_NONE;
++	u32 events;
++
++	/* Get interrupt events(tx/rx) */
++	events = mpc8xxx_spi_read_reg(&mspi->espi_base->event);
++	if (events)
++		ret = IRQ_HANDLED;
++
++	dev_dbg(mspi->dev, "%s: events %x\n", __func__, events);
++
++	fsl_espi_cpu_irq(mspi, events);
++
++	return ret;
++}
++
++static void fsl_espi_remove(struct mpc8xxx_spi *mspi)
++{
++	iounmap(mspi->espi_base);
++}
++
++static struct spi_master * __devinit fsl_espi_probe(struct device *dev,
++		struct resource *mem, unsigned int irq)
++{
++	struct fsl_spi_platform_data *pdata = dev->platform_data;
++	struct spi_master *master;
++	struct mpc8xxx_spi *mpc8xxx_spi;
++	u32 regval;
++	int i, ret = 0;
++
++	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
++	if (master == NULL) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	dev_set_drvdata(dev, master);
++
++	ret = mpc8xxx_spi_probe(dev, mem, irq);
++	if (ret)
++		goto err_probe;
++
++	master->setup = fsl_espi_setup;
++
++	mpc8xxx_spi = spi_master_get_devdata(master);
++	mpc8xxx_spi->spi_do_one_msg = fsl_espi_do_one_msg;
++	mpc8xxx_spi->spi_remove = fsl_espi_remove;
++
++	mpc8xxx_spi->espi_base = ioremap(mem->start, resource_size(mem));
++	if (mpc8xxx_spi->espi_base == NULL) {
++		ret = -ENOMEM;
++		goto err_probe;
++	}
++
++	/* Register for SPI Interrupt */
++	ret = request_irq(mpc8xxx_spi->irq, fsl_espi_irq,
++			  0, "fsl_espi", mpc8xxx_spi);
++
++	if (ret != 0)
++		goto err_free_irq;
++
++	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
++		mpc8xxx_spi->rx_shift = 16;
++		mpc8xxx_spi->tx_shift = 24;
++	}
++
++	/* SPI controller initializations */
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->mode, 0);
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->mask, 0);
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->command, 0);
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->event, 0xffffffff);
++
++	/* Init eSPI CS mode register */
++	for (i = 0; i < pdata->max_chipselect; i++)
++		mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->csmode[i],
++				CSMODE_INIT_VAL);
++
++	/* Enable SPI interface */
++	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
++
++	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->mode, regval);
++
++	ret = spi_register_master(master);
++	if (ret < 0)
++		goto unreg_master;
++
++	dev_info(dev, "at 0x%p (irq = %d)\n", mpc8xxx_spi->espi_base,
++			mpc8xxx_spi->irq);
++
++	return master;
++
++unreg_master:
++	free_irq(mpc8xxx_spi->irq, mpc8xxx_spi);
++err_free_irq:
++	iounmap(mpc8xxx_spi->espi_base);
++err_probe:
++	spi_master_put(master);
++err:
++	return ERR_PTR(ret);
++}
++
++static int of_fsl_espi_get_chipselects(struct device *dev)
++{
++	struct device_node *np = dev->of_node;
++	struct fsl_spi_platform_data *pdata = dev->platform_data;
++	const u32 *prop;
++	int len;
++
++	prop = of_get_property(np, "fsl,espi-num-chipselects", &len);
++	if (!prop || len < sizeof(*prop)) {
++		dev_err(dev, "No 'fsl,espi-num-chipselects' property\n");
++		return -EINVAL;
++	}
++
++	pdata->max_chipselect = *prop;
++	pdata->cs_control = NULL;
++
++	return 0;
++}
++
++static int __devinit of_fsl_espi_probe(struct of_device *ofdev,
++					  const struct of_device_id *ofid)
++{
++	struct device *dev = &ofdev->dev;
++	struct device_node *np = ofdev->dev.of_node;
++	struct spi_master *master;
++	struct resource mem;
++	struct resource irq;
++	int ret = -ENOMEM;
++
++	ret = of_mpc8xxx_spi_probe(ofdev, ofid);
++	if (ret)
++		return ret;
++
++	ret = of_fsl_espi_get_chipselects(dev);
++	if (ret)
++		goto err;
++
++	ret = of_address_to_resource(np, 0, &mem);
++	if (ret)
++		goto err;
++
++	ret = of_irq_to_resource(np, 0, &irq);
++	if (!ret) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	master = fsl_espi_probe(dev, &mem, irq.start);
++	if (IS_ERR(master)) {
++		ret = PTR_ERR(master);
++		goto err;
++	}
++
++	of_register_spi_devices(master, np);
++
++	return 0;
++
++err:
++	return ret;
++}
++
++static int __devexit of_fsl_espi_remove(struct of_device *ofdev)
++{
++	int ret;
++
++	ret = mpc8xxx_spi_remove(&ofdev->dev);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static const struct of_device_id of_fsl_espi_match[] = {
++	{ .compatible = "fsl,mpc8536-espi" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, of_fsl_espi_match);
++
++static struct of_platform_driver of_fsl_espi_driver = {
++	.driver = {
++		.name = "fsl_espi",
++		.owner = THIS_MODULE,
++		.of_match_table = of_fsl_espi_match,
++	},
++	.probe		= of_fsl_espi_probe,
++	.remove		= __devexit_p(of_fsl_espi_remove),
++};
++
++static int __init fsl_espi_init(void)
++{
++	return of_register_platform_driver(&of_fsl_espi_driver);
++}
++module_init(fsl_espi_init);
++
++static void __exit fsl_espi_exit(void)
++{
++	of_unregister_platform_driver(&of_fsl_espi_driver);
++}
++module_exit(fsl_espi_exit);
++
++MODULE_AUTHOR("Mingkai Hu");
++MODULE_DESCRIPTION("Enhanced Freescale SPI Driver");
++MODULE_LICENSE("GPL");
+diff --git a/drivers/spi/spi_fsl_lib.h b/drivers/spi/spi_fsl_lib.h
+index 774e1c8..0772c98 100644
+--- a/drivers/spi/spi_fsl_lib.h
++++ b/drivers/spi/spi_fsl_lib.h
+@@ -22,10 +22,12 @@
+ struct mpc8xxx_spi {
+ 	struct device *dev;
+ 	struct fsl_spi_reg __iomem *base;
++	struct fsl_espi_reg __iomem *espi_base;
  
- 	master->setup = fsl_espi_setup;
-+	master->flags = SPI_MASTER_TRANS_LIMIT;
+ 	/* rx & tx bufs from the spi_transfer */
+ 	const void *tx;
+ 	void *rx;
++	int len;
  
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 	mpc8xxx_spi->spi_do_one_msg = fsl_espi_do_one_msg;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index af56071..0729cbd 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -261,6 +261,7 @@ struct spi_master {
- #define SPI_MASTER_HALF_DUPLEX	BIT(0)		/* can't do full duplex */
- #define SPI_MASTER_NO_RX	BIT(1)		/* can't do buffer read */
- #define SPI_MASTER_NO_TX	BIT(2)		/* can't do buffer write */
-+#define SPI_MASTER_TRANS_LIMIT	BIT(3)		/* have trans length limit */
- 
- 	/* Setup mode and clock, etc (spi driver may call many times).
- 	 *
+ 	int subblock;
+ 	struct spi_pram __iomem *pram;
 -- 
 1.6.4
 

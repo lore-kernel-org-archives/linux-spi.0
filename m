@@ -1,83 +1,57 @@
-From: Cory Maccarrone <darkstar6262@gmail.com>
-Subject: Re: [PATCH] [SPI] SPI100k: Fix 8-bit and RX-only transfers
-Date: Mon, 2 Aug 2010 08:34:11 -0700
-Message-ID: <AANLkTimJfM2BLTS2Uf9kMV4pT2nqSXZtur9cb0Qi7g7u@mail.gmail.com>
-References: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v5 1/1] davinci: spi: replace
+	existing driver
+Date: Mon, 2 Aug 2010 21:23:16 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59301E7ED0A13@dbde02.ent.ti.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
+	<1280355490-11878-2-git-send-email-bniebuhr@efjohnson.com>
+	<AANLkTimu+G-5wTrdQ6YiWi60i+5uN9sydfsZKMKQX7_f@mail.gmail.com>
+	<AANLkTim-FB6YrGSTmDQhmnS+Qw-dGm7D-pH7iCzy0-Td@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-Cc: linux-omap@vger.kernel.org,
-	Cory Maccarrone <darkstar6262@gmail.com>
-To: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1275178343-28193-1-git-send-email-darkstar6262@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <AANLkTim-FB6YrGSTmDQhmnS+Qw-dGm7D-pH7iCzy0-Td-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCBNYXkgMjksIDIwMTAgYXQgNToxMiBQTSwgQ29yeSBNYWNjYXJyb25lIDxkYXJrc3Rh
-cjYyNjJAZ21haWwuY29tPiB3cm90ZToKPiBUaGlzIGNoYW5nZSBmaXhlcyA4LWJpdCB0cmFuc2Zl
-cnMgYW5kIFJYLW9ubHkgdHJhbnNmZXJzLiDCoFRoZQo+IFNQSTEwMGsgZnJhbWV3b3JrIHJlcXVp
-cmVzIG1pbmltdW0gMTYtYml0IHdvcmRzIHRvIGJlIHdyaXR0ZW4sIHNvIDgtYml0Cj4gdHJhbnNm
-ZXJzIG11c3QgYmUgc2hpdGVkIGJ5IDggYml0cyBhbmQgc2VudCBvdXQgYXMgYSAxNi1iaXQgd29y
-ZC4KPgo+IEFkZGl0aW9uYWxseSwgcmVjZWl2ZS1vbmx5IHRyYW5zZmVycyB3ZXJlIGZhaWxpbmcg
-ZHVlIHRvIHRoZQo+IHBlcmNlaXZlZCBuZWVkIHRvIGZpbGwgdGhlIFRYIGJ1ZmZlciB3aXRoIHNv
-bWV0aGluZy4gwqBUaGlzIGlzIGluCj4gZmFjdCBub3QgbmVlZGVkLgo+Cj4gU2lnbmVkLW9mZi1i
-eTogQ29yeSBNYWNjYXJyb25lIDxkYXJrc3RhcjYyNjJAZ21haWwuY29tPgo+IC0tLQo+IMKgZHJp
-dmVycy9zcGkvb21hcF9zcGlfMTAway5jIHwgwqAgMjMgKysrKysrKysrKysrLS0tLS0tLS0tLS0K
-PiDCoDEgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0pCj4K
-PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvb21hcF9zcGlfMTAway5jIGIvZHJpdmVycy9zcGkv
-b21hcF9zcGlfMTAway5jCj4gaW5kZXggMjQ2NjhiMy4uOWJkMWM5MiAxMDA2NDQKPiAtLS0gYS9k
-cml2ZXJzL3NwaS9vbWFwX3NwaV8xMDBrLmMKPiArKysgYi9kcml2ZXJzL3NwaS9vbWFwX3NwaV8x
-MDBrLmMKPiBAQCAtMTQxLDcgKzE0MSwxMiBAQCBzdGF0aWMgdm9pZCBzcGkxMDBrX3dyaXRlX2Rh
-dGEoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwgaW50IGxlbiwgaW50IGRhdGEpCj4gwqB7Cj4g
-wqAgwqAgwqAgwqBzdHJ1Y3Qgb21hcDFfc3BpMTAwayAqc3BpMTAwayA9IHNwaV9tYXN0ZXJfZ2V0
-X2RldmRhdGEobWFzdGVyKTsKPgo+IC0gwqAgwqAgwqAgLyogd3JpdGUgMTYtYml0IHdvcmQgKi8K
-PiArIMKgIMKgIMKgIC8qIHdyaXRlIDE2LWJpdCB3b3JkLCBzaGlmdGluZyA4LWJpdCBkYXRhIGlm
-IG5lY2Vzc2FyeSAqLwo+ICsgwqAgwqAgwqAgaWYgKGxlbiA8PSA4KSB7Cj4gKyDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCBkYXRhIDw8PSA4Owo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgbGVuID0gMTY7
-Cj4gKyDCoCDCoCDCoCB9Cj4gKwo+IMKgIMKgIMKgIMKgc3BpMTAwa19lbmFibGVfY2xvY2sobWFz
-dGVyKTsKPiDCoCDCoCDCoCDCoHdyaXRldyggZGF0YSAsIHNwaTEwMGstPmJhc2UgKyBTUElfVFhf
-TVNCKTsKPgo+IEBAIC0xNjIsNiArMTY3LDEwIEBAIHN0YXRpYyBpbnQgc3BpMTAwa19yZWFkX2Rh
-dGEoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciwgaW50IGxlbikKPiDCoCDCoCDCoCDCoGludCBk
-YXRhSCxkYXRhTDsKPiDCoCDCoCDCoCDCoHN0cnVjdCBvbWFwMV9zcGkxMDBrICpzcGkxMDBrID0g
-c3BpX21hc3Rlcl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwo+Cj4gKyDCoCDCoCDCoCAvKiBBbHdheXMg
-ZG8gYXQgbGVhc3QgMTYgYml0cyAqLwo+ICsgwqAgwqAgwqAgaWYgKGxlbiA8PSA4KQo+ICsgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgbGVuID0gMTY7Cj4gKwo+IMKgIMKgIMKgIMKgc3BpMTAwa19lbmFi
-bGVfY2xvY2sobWFzdGVyKTsKPiDCoCDCoCDCoCDCoHdyaXRldyhTUElfQ1RSTF9TRU4oMCkgfAo+
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIFNQSV9DVFJMX1dPUkRfU0laRShsZW4pIHwKPiBAQCAtMjE0
-LDEwICsyMjMsNiBAQCBvbWFwMV9zcGkxMDBrX3R4cnhfcGlvKHN0cnVjdCBzcGlfZGV2aWNlICpz
-cGksIHN0cnVjdCBzcGlfdHJhbnNmZXIgKnhmZXIpCj4gwqAgwqAgwqAgwqBjID0gY291bnQ7Cj4g
-wqAgwqAgwqAgwqB3b3JkX2xlbiA9IGNzLT53b3JkX2xlbjsKPgo+IC0gwqAgwqAgwqAgLyogUlhf
-T05MWSBtb2RlIG5lZWRzIGR1bW15IGRhdGEgaW4gVFggcmVnICovCj4gLSDCoCDCoCDCoCBpZiAo
-eGZlci0+dHhfYnVmID09IE5VTEwpCj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzcGkxMDBrX3dy
-aXRlX2RhdGEoc3BpLT5tYXN0ZXIsd29yZF9sZW4sIDApOwo+IC0KPiDCoCDCoCDCoCDCoGlmICh3
-b3JkX2xlbiA8PSA4KSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB1OCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCpyeDsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNvbnN0IHU4IMKgIMKgIMKgIMKg
-KnR4Owo+IEBAIC0yMjcsOSArMjMyLDkgQEAgb21hcDFfc3BpMTAwa190eHJ4X3BpbyhzdHJ1Y3Qg
-c3BpX2RldmljZSAqc3BpLCBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVyKQo+IMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgZG8gewo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYy09
-MTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlmICh4ZmVyLT50eF9idWYg
-IT0gTlVMTCkKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IHNwaTEwMGtfd3JpdGVfZGF0YShzcGktPm1hc3Rlcix3b3JkX2xlbiwgKnR4KTsKPiArIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNwaTEwMGtfd3JpdGVfZGF0
-YShzcGktPm1hc3Rlciwgd29yZF9sZW4sICp0eCsrKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoGlmICh4ZmVyLT5yeF9idWYgIT0gTlVMTCkKPiAtIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICpyeCA9IHNwaTEwMGtfcmVhZF9kYXRhKHNw
-aS0+bWFzdGVyLHdvcmRfbGVuKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgICpyeCsrID0gc3BpMTAwa19yZWFkX2RhdGEoc3BpLT5tYXN0ZXIsIHdvcmRf
-bGVuKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoH0gd2hpbGUoYyk7Cj4gwqAgwqAgwqAgwqB9
-IGVsc2UgaWYgKHdvcmRfbGVuIDw9IDE2KSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB1MTYg
-wqAgwqAgwqAgwqAgwqAgwqAgKnJ4Owo+IEBAIC0zODAsMTAgKzM4NSw2IEBAIHN0YXRpYyB2b2lk
-IG9tYXAxX3NwaTEwMGtfd29yayhzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmspCj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpZiAodC0+bGVuKSB7Cj4gwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB1bnNpZ25lZCBjb3VudDsKPgo+IC0gwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgLyogUlhfT05MWSBtb2Rl
-IG5lZWRzIGR1bW15IGRhdGEgaW4gVFggcmVnICovCj4gLSDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBpZiAodC0+dHhfYnVmID09IE5VTEwpCj4gLSDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBzcGkxMDBr
-X3dyaXRlX2RhdGEoc3BpLT5tYXN0ZXIsIDgsIDApOwo+IC0KPiDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNvdW50ID0gb21hcDFfc3BpMTAwa190eHJ4X3Bp
-byhzcGksIHQpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgbS0+YWN0dWFsX2xlbmd0aCArPSBjb3VudDsKPgo+IC0tCj4gMS43LjAuNAo+Cj4KCkFkZGlu
-ZyBhbm90aGVyIG5hbWUgdG8gdGhlIGxpc3QuCgotIENvcnkK
+
+Hi Brian,
+
+On Mon, Aug 02, 2010 at 19:40:29, Brian Niebuhr wrote:
+> Grant -
+>
+
+>  For my part, I've already sunk way more time into this than I ever
+> intended, and I really have no clue how to break this patch down into
+> smaller patches.  I don't really care much if the patch gets accepted
+> or not - I am just trying to help out all of the other users that are
+> stuck with a broken driver like I was.  Maybe if TI wants to give
+> their customers a driver that actually works they'll pick it up and do
+> the rest of the work that's necessary to get it accepted.
+
+Thanks for all the work on this so far. We will work on breaking
+this patch up and getting the fixes accepted upstream.
+
+Regards,
+Sekhar
+
+------------------------------------------------------------------------------
+The Palm PDK Hot Apps Program offers developers who use the
+Plug-In Development Kit to bring their C/C++ apps to Palm for a share
+of $1 Million in cash or HP Products. Visit us here for more details:
+http://p.sf.net/sfu/dev2dev-palm

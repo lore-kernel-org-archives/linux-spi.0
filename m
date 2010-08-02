@@ -1,13 +1,11 @@
 From: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v2 5/6] powerpc/of: add eSPI controller
-	dts bindings
-Date: Mon, 2 Aug 2010 15:52:03 +0800
-Message-ID: <1280735524-17547-6-git-send-email-Mingkai.hu@freescale.com>
+Subject: [PATCH v2 3/6] mtd: m25p80: add support to
+	parse the SPI flash's partitions
+Date: Mon, 2 Aug 2010 15:52:01 +0800
+Message-ID: <1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
 References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
-	<1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
-	<1280735524-17547-5-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +13,7 @@ Cc: kumar.gala-KZfg59tc24xl57MIdRCFDg@public.gmane.org, tie-fei.zang-KZfg59tc24x
 	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1280735524-17547-5-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1280735524-17547-3-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,57 +24,62 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Also modifiy the document of cell-index in SPI controller.
-
 Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
 
 v2:
- - Add cell-index clarification
- - Add mpc8536 chip name to the compatible value
+ - Move the flash partition function from of_spi.c to MTD driver
 
- Documentation/powerpc/dts-bindings/fsl/spi.txt |   24 +++++++++++++++++++++++-
- 1 files changed, 23 insertions(+), 1 deletions(-)
+ drivers/mtd/devices/m25p80.c |   29 +++++++++++++++++++++++++++++
+ 1 files changed, 29 insertions(+), 0 deletions(-)
 
-diff --git a/Documentation/powerpc/dts-bindings/fsl/spi.txt b/Documentation/powerpc/dts-bindings/fsl/spi.txt
-index 80510c0..01543ca 100644
---- a/Documentation/powerpc/dts-bindings/fsl/spi.txt
-+++ b/Documentation/powerpc/dts-bindings/fsl/spi.txt
-@@ -1,7 +1,9 @@
- * SPI (Serial Peripheral Interface)
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 81e49a9..5f00075 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -752,6 +752,31 @@ static const struct spi_device_id *__devinit jedec_probe(struct spi_device *spi)
+ 	return NULL;
+ }
  
- Required properties:
--- cell-index : SPI controller index.
-+- cell-index : QE SPI subblock index.
-+ 	       0: QE subblock SPI1
-+ 	       1: QE subblock SPI2
- - compatible : should be "fsl,spi".
- - mode : the SPI operation mode, it can be "cpu" or "cpu-qe".
- - reg : Offset and length of the register set for the device
-@@ -29,3 +31,23 @@ Example:
- 		gpios = <&gpio 18 1	// device reg=<0>
- 			 &gpio 19 1>;	// device reg=<1>
- 	};
++/*
++ * parse_flash_partition - Parse the flash partition on the SPI bus
++ * @spi: Pointer to spi_device device
++ */
++void parse_flash_partition(struct spi_device *spi)
++{
++	struct mtd_partition *parts;
++	struct flash_platform_data *pdata;
++	int nr_parts = 0;
++	struct device_node *np = spi->dev.of_node;
 +
++	nr_parts = of_mtd_parse_partitions(&spi->dev, np, &parts);
++	if (!nr_parts)
++		return;
 +
-+* eSPI (Enhanced Serial Peripheral Interface)
++	pdata = kzalloc(sizeof(*pdata), GFP_KERNEL);
++	if (!pdata)
++		return;
 +
-+Required properties:
-+- compatible : should be "fsl,mpc8536-espi".
-+- reg : Offset and length of the register set for the device.
-+- interrupts : should contain eSPI interrupt, the device has one interrupt.
-+- fsl,espi-num-chipselects : the number of the chipselect signals.
++	pdata->parts = parts;
++	pdata->nr_parts = nr_parts;
++	spi->dev.platform_data = pdata;
 +
-+Example:
-+	spi@110000 {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		compatible = "fsl,espi";
-+		reg = <0x110000 0x1000>;
-+		interrupts = <53 0x2>;
-+		interrupt-parent = <&mpic>;
-+		fsl,espi-num-chipselects = <4>;
-+	};
++	return;
++}
+ 
+ /*
+  * board specific setup should have ensured the SPI clock used here
+@@ -771,6 +796,10 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 	 * a chip ID, try the JEDEC id commands; they'll work for most
+ 	 * newer chips, even if we don't recognize the particular chip.
+ 	 */
++
++	/* Parse the flash partition */
++	parse_flash_partition(spi);
++
+ 	data = spi->dev.platform_data;
+ 	if (data && data->type) {
+ 		const struct spi_device_id *plat_id;
 -- 
 1.6.4
 

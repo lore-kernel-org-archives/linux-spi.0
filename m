@@ -1,14 +1,13 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v5] spi: enable spi_board_info to be
- registered after spi_master
-Date: Mon, 2 Aug 2010 15:52:15 +0800
-Message-ID: <20100802155215.193482f0@feng-i7>
+From: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH v2 0/6] refactor spi_mpc8xxx.c and add
+	eSPI controller support
+Date: Mon, 2 Aug 2010 15:51:58 +0800
+Message-ID: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, David Brownell
-	<david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, spi-devel-list
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: kumar.gala-KZfg59tc24xl57MIdRCFDg@public.gmane.org, tie-fei.zang-KZfg59tc24xl57MIdRCFDg@public.gmane.org
+To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,224 +19,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi All,
+In-Reply-To: 
 
-Pls review this patch. thanks,
+This patchset refactor the file spi_mpc8xxx.c to abstract some common
+code as a lib used by the SPI/eSPI controller driver, move the SPI 
+controller driver code to spi_fsl_spi.c, and add the eSPI controller
+support with spi_fsl_espi.c.
 
--Feng
+Tested on P4080DS and MPC8536DS board based on latest Linux tree.
 
-Changelog:
-	v4/5:
-	   * Abstract a spi_match_master_to_boardinfo() which will
-	     be called in scanning master/boardinfo list, suggested
-	     by Grant also.
-	v3:
-	   * As suggested by Grant, use one lock to protect the match
-	     between spi_master and spi board info
-	v2:
-	   * fix a typo in looping scan_masterlist()
-	   * fix one race condition found by Grant
+[PATCH v2 1/6] spi/mpc8xxx: refactor the common code for SPI/eSPI controller
+[PATCH v2 2/6] eSPI: add eSPI controller support
+[PATCH v2 3/6] mtd: m25p80: add support to parse the SPI flash's partitions
+[PATCH v2 4/6] mtd: m25p80: add a read function to read page by page
+[PATCH v2 5/6] powerpc/of: add eSPI controller dts bindings
+[PATCH v2 6/6] DTS: add SPI flash(s25fl128p01) support on p4080ds and mpc8536ds board
 
+Thanks,
+Mingkai
 
->From b42755bb2e4e2162951bf6544e9fce82452eab5e Mon Sep 17 00:00:00 2001
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Date: Tue, 27 Jul 2010 17:15:05 +0800
-Subject: [PATCH] spi: enable spi_board_info to be registered after spi_master
-
-Currently spi_register_board_info() has to be called before its related
-spi_master be registered, otherwise these board info will be just ignored.
-
-This patch will remove this order limit, it adds a global spi master list
-like the existing global board info listr. Whenever a board info or a
-spi_master is registered, the spi master list or board info list
-will be scanned, and a new spi device will be created if there is a
-master-board info match.
-
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi.c       |   86 ++++++++++++++++++++++++----------------------
- include/linux/spi/spi.h |    3 ++
- 2 files changed, 48 insertions(+), 41 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b3a1f92..a868cc0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -27,11 +27,6 @@
- #include <linux/mod_devicetable.h>
- #include <linux/spi/spi.h>
- 
--
--/* SPI bustype and spi_master class are registered after board init code
-- * provides the SPI device tables, ensuring that both are present by the
-- * time controller driver registration causes spi_devices to "enumerate".
-- */
- static void spidev_release(struct device *dev)
- {
- 	struct spi_device	*spi = to_spi_device(dev);
-@@ -196,11 +191,16 @@ EXPORT_SYMBOL_GPL(spi_register_driver);
- 
- struct boardinfo {
- 	struct list_head	list;
--	unsigned		n_board_info;
--	struct spi_board_info	board_info[0];
-+	struct spi_board_info	board_info;
- };
- 
- static LIST_HEAD(board_list);
-+static LIST_HEAD(spi_master_list);
-+
-+/*
-+ * Used to protect add/del opertion for board_info list and
-+ * spi_master list, and their matching process
-+ */
- static DEFINE_MUTEX(board_lock);
- 
- /**
-@@ -365,6 +365,20 @@ struct spi_device *spi_new_device(struct spi_master *master,
- }
- EXPORT_SYMBOL_GPL(spi_new_device);
- 
-+static void spi_match_master_to_boardinfo(struct spi_master *master,
-+				struct spi_board_info *bi)
-+{
-+	struct spi_device *dev;
-+
-+	if (master->bus_num != bi->bus_num)
-+		return;
-+
-+	dev = spi_new_device(master, bi);
-+	if (!dev)
-+		dev_err(master->dev.parent, "can't create new device for %s\n",
-+			bi->modalias);
-+}
-+
- /**
-  * spi_register_board_info - register SPI devices for a given board
-  * @info: array of chip descriptors
-@@ -387,43 +401,25 @@ EXPORT_SYMBOL_GPL(spi_new_device);
- int __init
- spi_register_board_info(struct spi_board_info const *info, unsigned n)
- {
--	struct boardinfo	*bi;
-+	struct boardinfo *bi;
-+	int i;
- 
--	bi = kmalloc(sizeof(*bi) + n * sizeof *info, GFP_KERNEL);
-+	bi = kzalloc(n * sizeof(*bi), GFP_KERNEL);
- 	if (!bi)
- 		return -ENOMEM;
--	bi->n_board_info = n;
--	memcpy(bi->board_info, info, n * sizeof *info);
--
--	mutex_lock(&board_lock);
--	list_add_tail(&bi->list, &board_list);
--	mutex_unlock(&board_lock);
--	return 0;
--}
- 
--/* FIXME someone should add support for a __setup("spi", ...) that
-- * creates board info from kernel command lines
-- */
-+	for (i = 0; i < n; i++, bi++, info++) {
-+		struct spi_master *master;
- 
--static void scan_boardinfo(struct spi_master *master)
--{
--	struct boardinfo	*bi;
--
--	mutex_lock(&board_lock);
--	list_for_each_entry(bi, &board_list, list) {
--		struct spi_board_info	*chip = bi->board_info;
--		unsigned		n;
--
--		for (n = bi->n_board_info; n > 0; n--, chip++) {
--			if (chip->bus_num != master->bus_num)
--				continue;
--			/* NOTE: this relies on spi_new_device to
--			 * issue diagnostics when given bogus inputs
--			 */
--			(void) spi_new_device(master, chip);
--		}
-+		memcpy(&bi->board_info, info, sizeof(*info));
-+		mutex_lock(&board_lock);
-+		list_add_tail(&bi->list, &board_list);
-+		list_for_each_entry(master, &spi_master_list, list)
-+			spi_match_master_to_boardinfo(master, &bi->board_info);
-+		mutex_unlock(&board_lock);
- 	}
--	mutex_unlock(&board_lock);
-+
-+	return 0;
- }
- 
- /*-------------------------------------------------------------------------*/
-@@ -506,6 +502,7 @@ int spi_register_master(struct spi_master *master)
- {
- 	static atomic_t		dyn_bus_id = ATOMIC_INIT((1<<15) - 1);
- 	struct device		*dev = master->dev.parent;
-+	struct boardinfo	*bi;
- 	int			status = -ENODEV;
- 	int			dynamic = 0;
- 
-@@ -537,15 +534,18 @@ int spi_register_master(struct spi_master *master)
- 	dev_dbg(dev, "registered master %s%s\n", dev_name(&master->dev),
- 			dynamic ? " (dynamic)" : "");
- 
--	/* populate children from any spi device tables */
--	scan_boardinfo(master);
-+	mutex_lock(&board_lock);
-+	list_add_tail(&master->list, &spi_master_list);
-+	list_for_each_entry(bi, &board_list, list)
-+		spi_match_master_to_boardinfo(master, &bi->board_info);
-+	mutex_unlock(&board_lock);
-+
- 	status = 0;
- done:
- 	return status;
- }
- EXPORT_SYMBOL_GPL(spi_register_master);
- 
--
- static int __unregister(struct device *dev, void *master_dev)
- {
- 	/* note: before about 2.6.14-rc1 this would corrupt memory: */
-@@ -568,6 +568,10 @@ void spi_unregister_master(struct spi_master *master)
- {
- 	int dummy;
- 
-+	mutex_lock(&board_lock);
-+	list_del(&master->list);
-+	mutex_unlock(&board_lock);
-+
- 	dummy = device_for_each_child(master->dev.parent, &master->dev,
- 					__unregister);
- 	device_unregister(&master->dev);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index af56071..f4a29b6 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -204,6 +204,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
- /**
-  * struct spi_master - interface to SPI master controller
-  * @dev: device interface to this driver
-+ * @list: link with the global spi_master list
-  * @bus_num: board-specific (and often SOC-specific) identifier for a
-  *	given SPI controller.
-  * @num_chipselect: chipselects are used to distinguish individual
-@@ -235,6 +236,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
- struct spi_master {
- 	struct device	dev;
- 
-+	struct list_head list;
-+
- 	/* other than negative (== assign one dynamically), bus_num is fully
- 	 * board-specific.  usually that simplifies to being SOC-specific.
- 	 * example:  one SOC has three SPI controllers, numbered 0..2,
--- 
-1.7.0.4
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

@@ -1,66 +1,62 @@
-From: Christophe Aeschlimann <c.aeschlimann-5/WUhD8XThOVQ4qyx6sgCw@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
-Date: Tue, 03 Aug 2010 09:55:58 +0200
-Message-ID: <4C57CB8E.6050207@acn-group.ch>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>	<1280355490-11878-2-git-send-email-bniebuhr@efjohnson.com>	<AANLkTimu+G-5wTrdQ6YiWi60i+5uN9sydfsZKMKQX7_f@mail.gmail.com>
-	<AANLkTim-FB6YrGSTmDQhmnS+Qw-dGm7D-pH7iCzy0-Td@mail.gmail.com>
+From: Julia Lawall <julia@diku.dk>
+Subject: [PATCH 5/9] drivers/spi: Drop unnecessary null test
+Date: Tue, 3 Aug 2010 23:34:00 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.1008032333440.20393@ask.diku.dk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <AANLkTim-FB6YrGSTmDQhmnS+Qw-dGm7D-pH7iCzy0-Td-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+From: Julia Lawall <julia@diku.dk>
 
-On 02.08.2010 16:10, Brian Niebuhr wrote:
-> Grant -
+list_for_each_entry binds its first argument to a non-null value, and thus
+any null test on the value of that argument is superfluous.
 
-[...]
+The semantic patch that makes this change is as follows:
+(http://coccinelle.lip6.fr/)
 
-> I am just trying to help out all of the other users that are
-> stuck with a broken driver like I was.  =
+// <smpl>
+@@
+iterator I;
+expression x,E;
+@@
 
+I(x,...) { <...
+- (x != NULL) &&
+  E
+  ...> }
+// </smpl>
 
-Thank you Brian. The work you've done there is very much appreciated.
+Signed-off-by: Julia Lawall <julia@diku.dk>
 
-> Maybe if TI wants to give their customers a driver that actually =
+---
+ drivers/spi/orion_spi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> works they'll pick it up and do the rest of the work that's necessary =
-
-> to get it accepted.  =
-
-
-It seems they got the message ! :)
-
-> Brian
-
-Regards,
-
--- =
-
-Christophe Aeschlimann
-
-Embedded Software Engineer
-
-Advanced Communications Networks S.A.
-
-Rue du Puits-Godet 8a
-2000 Neuch=E2tel, Switzerland
-
-T=E9l. +41 32 724 74 31
-
-c.aeschlimann-5/WUhD8XThOVQ4qyx6sgCw@public.gmane.org
+diff --git a/drivers/spi/orion_spi.c b/drivers/spi/orion_spi.c
+index 3aea50d..0b677dc 100644
+--- a/drivers/spi/orion_spi.c
++++ b/drivers/spi/orion_spi.c
+@@ -404,7 +404,7 @@ static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ 			goto msg_rejected;
+ 		}
+ 
+-		if ((t != NULL) && t->bits_per_word)
++		if (t->bits_per_word)
+ 			bits_per_word = t->bits_per_word;
+ 
+ 		if ((bits_per_word != 8) && (bits_per_word != 16)) {
+@@ -415,7 +415,7 @@ static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ 			goto msg_rejected;
+ 		}
+ 		/*make sure buffer length is even when working in 16 bit mode*/
+-		if ((t != NULL) && (t->bits_per_word == 16) && (t->len & 1)) {
++		if ((t->bits_per_word == 16) && (t->len & 1)) {
+ 			dev_err(&spi->dev,
+ 				"message rejected : "
+ 				"odd data length (%d) while in 16 bit mode\n",

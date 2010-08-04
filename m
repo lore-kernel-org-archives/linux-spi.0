@@ -1,8 +1,8 @@
-From: <ierytaty3113-yR6380LUlaXR7s880joybQ@public.gmane.org>
-Subject: [SPAM] Watch her ride to ecstacy
-Date: Wed, 4 Aug 2010 12:52:11 +0100
-Message-ID: <E1OgcW4-00037G-SH@sfs-ml-4.v29.ch3.sourceforge.com>
-Reply-To: ierytaty3113-yR6380LUlaXR7s880joybQ@public.gmane.org
+From: <yiajufevia5985-wrLXukplB0aizZfi7tHa4KWDoRwv6POX@public.gmane.org>
+Subject: [SPAM] hot pics from yesterday's party
+Date: Wed, 4 Aug 2010 09:03:29 -0700
+Message-ID: <E1OggRL-0001S3-7K@sfs-ml-3.v29.ch3.sourceforge.com>
+Reply-To: yiajufevia5985-wrLXukplB0aizZfi7tHa4KWDoRwv6POX@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Girth and Length will be yours forever
-http://www.windowlabs.ru/
+Deeper penetration is now possible.
+http://www.foxice.ru/
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

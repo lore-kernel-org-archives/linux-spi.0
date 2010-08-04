@@ -1,8 +1,8 @@
-From: <ukioe4165-XPjz3JdeyD4@public.gmane.org>
-Subject: [SPAM] Because size matters
-Date: Wed, 4 Aug 2010 13:10:55 +0200
-Message-ID: <E1OgbsE-0008UU-HA@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: ukioe4165-XPjz3JdeyD4@public.gmane.org
+From: <ierytaty3113-yR6380LUlaXR7s880joybQ@public.gmane.org>
+Subject: [SPAM] Watch her ride to ecstacy
+Date: Wed, 4 Aug 2010 12:52:11 +0100
+Message-ID: <E1OgcW4-00037G-SH@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: ierytaty3113-yR6380LUlaXR7s880joybQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Amazing length and girth await you when you click here
-http://www.anglestate.ru/
+Girth and Length will be yours forever
+http://www.windowlabs.ru/
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

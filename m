@@ -1,8 +1,8 @@
-From: <yiajufevia5985-wrLXukplB0aizZfi7tHa4KWDoRwv6POX@public.gmane.org>
-Subject: [SPAM] hot pics from yesterday's party
-Date: Wed, 4 Aug 2010 09:03:29 -0700
-Message-ID: <E1OggRL-0001S3-7K@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: yiajufevia5985-wrLXukplB0aizZfi7tHa4KWDoRwv6POX@public.gmane.org
+From: "EPS-TELESURVEILLANCE par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Service_tout_compris_contre_le?=
+	=?iso-8859-1?q?_vol_par_le_Numero_1_Fran=E7ais?=
+Date: Thu,  5 Aug 2010 04:23:45 +0200 (CEST)
+Message-ID: <l6nqsi.lmyvu4@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Deeper penetration is now possible.
-http://www.foxice.ru/
 
 ------------------------------------------------------------------------------
 The Palm PDK Hot Apps Program offers developers who use the

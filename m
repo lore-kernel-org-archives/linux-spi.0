@@ -1,8 +1,8 @@
-From: "EPS-TELESURVEILLANCE par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: =?iso-8859-1?q?Service_tout_compris_contre_le?=
-	=?iso-8859-1?q?_vol_par_le_Numero_1_Fran=E7ais?=
-Date: Thu,  5 Aug 2010 04:23:45 +0200 (CEST)
-Message-ID: <l6nqsi.lmyvu4@front02.r7g.com>
+From: "Protection =?ISO-8859-1?Q?Sant=E9?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Nouvelles_garanties_pour_Tous_?=
+	=?iso-8859-1?q?=E0_petits_prix!?=
+Date: Thu,  5 Aug 2010 08:56:02 +0200 (CEST)
+Message-ID: <l6o39e.c4fcev@front.ta271.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

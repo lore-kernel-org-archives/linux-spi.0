@@ -1,7 +1,8 @@
-From: "Cetelem par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Preparez vos projets avec Cetelem
-Date: Sun,  8 Aug 2010 10:22:32 +0200 (CEST)
-Message-ID: <l6tren.r51py2@front02.r7g.com>
+From: <wysyatye4080-9Ji7d9QUNogb1SvskN2V4Q@public.gmane.org>
+Subject: [SPAM] Get dressed for Wall Street here
+Date: Sun, 8 Aug 2010 15:23:07 +0200
+Message-ID: <E1Oi5qI-0008ML-WA@sfs-ml-3.v29.ch3.sourceforge.com>
+Reply-To: wysyatye4080-9Ji7d9QUNogb1SvskN2V4Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,6 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Be what every woman wants you to be.
+http://www.babyfall.ru/
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by 

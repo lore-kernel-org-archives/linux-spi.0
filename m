@@ -1,11 +1,13 @@
-From: 13560740732-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Tue, 10 Aug 2010 07:18:01 +0800
-Message-ID: <E1OibbE-0000YO-L7@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "Votre Budget Mutuelle" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?Les_prix_et_garanties_s=27amel?=
+	=?iso-8859-1?q?iorent_pour_cette_rentr=E9e_=2C_comparez_maintenant?=
+	=?iso-8859-1?q?=2E=2E=2E?=
+Date: Tue, 10 Aug 2010 01:35:54 +0200 (CEST)
+Message-ID: <l6wsd1.tv4fwy@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,14 +19,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2
-MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25z
-b3JlZCBieSAKCk1ha2UgYW4gYXBwIHRoZXkgY2FuJ3QgbGl2ZSB3aXRob3V0CkVudGVyIHRoZSBC
-bGFja0JlcnJ5IERldmVsb3BlciBDaGFsbGVuZ2UKaHR0cDovL3Auc2YubmV0L3NmdS9SSU0tZGV2
-MmRldiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by 
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev 

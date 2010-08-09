@@ -1,11 +1,11 @@
-From: Orjan Friberg <of-Gxjboj7dVqxWk0Htik3J/w@public.gmane.org>
-Subject: Bitbanged SPI over GPIO probe fail
-Date: Mon, 9 Aug 2010 17:35:55 +0200
-Message-ID: <4C60205B.9090202@flatfrog.com>
+From: 13560740732-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 你好：税/票――代/开
+Date: Tue, 10 Aug 2010 07:18:01 +0800
+Message-ID: <E1OibbE-0000YO-L7@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,31 +17,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi list,
-
-I'm trying to use the bitbanged spi_gpio.c driver on a Beagleboard, 
-using the inlined approach (defining gpio pin numbers and cs).
-
-When modprobing the driver platform_driver_probe returns -ENODEV but 
-spi_gpio_probe is not being called, which seems odd to me.  Any suggestions?
-
-This is on a 2.6.32 TI PSP kernel.
-
-There is in fact no device attached on the pins, but as the driver's 
-probe function isn't called I don't think it should matter.  Also, I 
-have checked that I can manually control the pins through /sys/class/gpio.
-
-Thanks,
-Orjan
-
-
--- 
-Orjan Friberg
-FlatFrog Laboratories AB
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by 
-
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev 
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2
+MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25z
+b3JlZCBieSAKCk1ha2UgYW4gYXBwIHRoZXkgY2FuJ3QgbGl2ZSB3aXRob3V0CkVudGVyIHRoZSBC
+bGFja0JlcnJ5IERldmVsb3BlciBDaGFsbGVuZ2UKaHR0cDovL3Auc2YubmV0L3NmdS9SSU0tZGV2
+MmRldiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
+LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
+cGktZGV2ZWwtZ2VuZXJhbAo=

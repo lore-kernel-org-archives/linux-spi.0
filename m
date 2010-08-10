@@ -1,11 +1,12 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2 2/6] eSPI: add eSPI controller
-	support
-Date: Tue, 10 Aug 2010 00:44:48 -0600
-Message-ID: <AANLkTin3W4++cAFcksVBX3QxeV8QF3d5T2tGy_KbEkRs@mail.gmail.com>
+Subject: Re: [PATCH v2 3/6] mtd: m25p80: add support to
+	parse the SPI flash's partitions
+Date: Tue, 10 Aug 2010 00:56:10 -0600
+Message-ID: <AANLkTik9cy+at2n28U+Mut4RD6_cJ9uRZzjf+H86d-rp@mail.gmail.com>
 References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -13,7 +14,7 @@ Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, kumar.gala-KZfg59tc24x
 	tie-fei.zang-KZfg59tc24xl57MIdRCFDg@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1280735524-17547-3-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1280735524-17547-4-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,56 +26,85 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On Mon, Aug 2, 2010 at 1:52 AM, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wrote:
-> Add eSPI controller support based on the library code spi_fsl_lib.c.
->
-> The eSPI controller is newer controller 85xx/Pxxx devices supported.
-> There're some differences comparing to the SPI controller:
->
-> 1. Has different register map and different bit definition
-> =A0 So leave the code operated the register to the driver code, not
-> =A0 the common code.
->
-> 2. Support 4 dedicated chip selects
-> =A0 The software can't controll the chip selects directly, The SPCOM[CS]
-> =A0 field is used to select which chip selects is used, and the
-> =A0 SPCOM[TRANLEN] field is set to tell the controller how long the CS
-> =A0 signal need to be asserted. So the driver doesn't need the chipselect
-> =A0 related function when transfering data, just set corresponding regist=
-er
-> =A0 fields to controll the chipseclect.
->
-> 3. Different Transmit/Receive FIFO access register behavior
-> =A0 For SPI controller, the Tx/Rx FIFO access register can hold only
-> =A0 one character regardless of the character length, but for eSPI
-> =A0 controller, the register can hold 4 or 2 characters according to
-> =A0 the character lengths. Access the Tx/Rx FIFO access register of the
-> =A0 eSPI controller will shift out/in 4/2 characters one time. For SPI
-> =A0 subsystem, the command and data are put into different transfers, so
-> =A0 we need to combine all the transfers to one transfer in order to pass
-> =A0 the transfer to eSPI controller.
->
 > Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+>
+> v2:
+> =A0- Move the flash partition function from of_spi.c to MTD driver
+>
+> =A0drivers/mtd/devices/m25p80.c | =A0 29 +++++++++++++++++++++++++++++
+> =A01 files changed, 29 insertions(+), 0 deletions(-)
+>
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 81e49a9..5f00075 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -752,6 +752,31 @@ static const struct spi_device_id *__devinit jedec_p=
+robe(struct spi_device *spi)
+> =A0 =A0 =A0 =A0return NULL;
+> =A0}
+>
+> +/*
+> + * parse_flash_partition - Parse the flash partition on the SPI bus
+> + * @spi: Pointer to spi_device device
+> + */
+> +void parse_flash_partition(struct spi_device *spi)
+> +{
+> + =A0 =A0 =A0 struct mtd_partition *parts;
+> + =A0 =A0 =A0 struct flash_platform_data *pdata;
+> + =A0 =A0 =A0 int nr_parts =3D 0;
+> + =A0 =A0 =A0 struct device_node *np =3D spi->dev.of_node;
+> +
+> + =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi->dev, np, &parts);
+> + =A0 =A0 =A0 if (!nr_parts)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
+> +
+> + =A0 =A0 =A0 pdata =3D kzalloc(sizeof(*pdata), GFP_KERNEL);
+> + =A0 =A0 =A0 if (!pdata)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return;
+> +
+> + =A0 =A0 =A0 pdata->parts =3D parts;
+> + =A0 =A0 =A0 pdata->nr_parts =3D nr_parts;
+> + =A0 =A0 =A0 spi->dev.platform_data =3D pdata;
 
-I've not dug deep into this patch, but it seems pretty good.  I did
-notice one thing below...
-[...]
+The driver is not allowed to write to the platform_data pointer in the
+device structure because it leaves an absolute mess in trying to
+figure out who owns the pdata pointer.  Should it be freed when the
+driver is unbound?  Is it statically allocated? etc.  There is a safer
+way to get the data (see below).
 
-> diff --git a/drivers/spi/spi_fsl_lib.h b/drivers/spi/spi_fsl_lib.h
-> index 774e1c8..0772c98 100644
-> --- a/drivers/spi/spi_fsl_lib.h
-> +++ b/drivers/spi/spi_fsl_lib.h
-> @@ -22,10 +22,12 @@
-> =A0struct mpc8xxx_spi {
-> =A0 =A0 =A0 =A0struct device *dev;
-> =A0 =A0 =A0 =A0struct fsl_spi_reg __iomem *base;
-> + =A0 =A0 =A0 struct fsl_espi_reg __iomem *espi_base;
+> +
+> + =A0 =A0 =A0 return;
+> +}
+>
+> =A0/*
+> =A0* board specific setup should have ensured the SPI clock used here
+> @@ -771,6 +796,10 @@ static int __devinit m25p_probe(struct spi_device *s=
+pi)
+> =A0 =A0 =A0 =A0 * a chip ID, try the JEDEC id commands; they'll work for =
+most
+> =A0 =A0 =A0 =A0 * newer chips, even if we don't recognize the particular =
+chip.
+> =A0 =A0 =A0 =A0 */
+> +
+> + =A0 =A0 =A0 /* Parse the flash partition */
+> + =A0 =A0 =A0 parse_flash_partition(spi);
+> +
 
-There's got to be a cleaner way to do this.  Rather than putting both
-pointers into mpc8xxx_spi, I suggest each driver use its own
-fsl_spi_priv and fsl_espi_priv wrapper structures that contain the
-controller specific properties.
+Doing this unconditionally is dangerous, and if a platform_data
+structure is provided, then it must alwasy take precedence over the
+device tree data (because the platform code has gone to extra lengths
+to add a pdata structure; that must mean it is important!)  :-)
 
-cheers,
+Instead what can be done is to call of_mtd_parse_partitions() directly
+from the probe routine after checking to see if the pdata structure
+exists and has partition information.  If it doesn't, then call
+of_mtd_parse_partitions() to get values for parts and nr_parts.  Doing
+it that way completely eliminates the uncertainty over pdata pointer
+ownership, and eliminates having an anonymous pointer buried in the
+driver.
+
+Cheers,
 g.
 
 ---------------------------------------------------------------------------=

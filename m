@@ -1,163 +1,72 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: omap2_mcspi: make use of dev_vdbg()
-Date: Tue, 10 Aug 2010 00:33:41 -0600
-Message-ID: <20100810063341.GA28597@angua.secretlab.ca>
-References: <1275563341-31078-1-git-send-email-felipe.balbi@nokia.com>
- <20100809103618.GE11340@nokia.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2 1/6] spi/mpc8xxx: refactor the
+	common code for SPI/eSPI controller
+Date: Tue, 10 Aug 2010 00:40:21 -0600
+Message-ID: <AANLkTim=Qc-zA=9E0SfOB+8V48Y957MXkefD324xoq0w@mail.gmail.com>
+References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	"Tereshonkov Roman (Nokia-D/Helsinki)" <roman.tereshonkov@nokia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Brownell <david-b@pacbell.net>,
-	spi-devel-general@lists.sourceforge.net
-To: Felipe Balbi <felipe.balbi@nokia.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20100809103618.GE11340@nokia.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, kumar.gala-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	tie-fei.zang-KZfg59tc24xl57MIdRCFDg@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1280735524-17547-2-git-send-email-Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 09, 2010 at 01:36:18PM +0300, Felipe Balbi wrote:
-> On Thu, Jun 03, 2010 at 01:09:01PM +0200, Balbi Felipe (Nokia-D/Helsinki) wrote:
-> >From: Felipe Balbi <felipe.balbi@nokia.com>
-> >
-> >dev_vdbg() is only compiled when VERBOSE is defined, so
-> >there's no need to wrap dev_dbg() on #ifdef VERBOSE .. #endif
-> >as we can use dev_vdbg() directly.
-> >
-> >Signed-off-by: Felipe Balbi <felipe.balbi@nokia.com>
-> >---
-> 
-> ping, any comments to this one ? It's been pending for quite a long
-> time.
+On Mon, Aug 2, 2010 at 1:51 AM, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wrote:
+> Refactor the common code in file spi_mpc8xxx.c to spi_fsl_lib.c
+> used by SPI/eSPI controller driver as a library, move the SPI
+> controller driver to a new file spi_fsl_spi.c, and leave the
+> QE/CPM SPI controller code in this file.
+>
+> Because the register map of the SPI controller and eSPI controller
+> is so different, also leave the code operated the register to the
+> driver code, not the common code.
+>
+> Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+> v2:
+> =A0- Rename spi_mpc8xxx.c to spi_fsl_lib.c, also the config name
+> =A0- Rename fsl_spi.c to spi_fsl_spi.c, also the config name
+> =A0- Move register map definiton from spi_fsl_lib.c to spi_fsl_spi.c
+> =A0- Break some funcions line in the arguments instead of the declaration
+> =A0- Init bits_per_word to 0 to eliminate the else clause
+> =A0- Add brace for the else clause to match if clause
+> =A0- Drop the last entry's comma in the match table
+> =A0- move module_init() immediately after the init fsl_spi_init() function
+>
+> =A0drivers/spi/Kconfig =A0 =A0 =A0 | =A0 20 +-
+> =A0drivers/spi/Makefile =A0 =A0 =A0| =A0 =A03 +-
+> =A0drivers/spi/spi_fsl_lib.c | =A0237 ++++++++
+> =A0drivers/spi/spi_fsl_lib.h | =A0119 ++++
+> =A0drivers/spi/spi_fsl_spi.c | 1173 +++++++++++++++++++++++++++++++++++++
+> =A0drivers/spi/spi_mpc8xxx.c | 1421 -------------------------------------=
+--------
 
-Now picked up into my test-spi branch.  I'll add it to linux-next after the merge window closes.
+This patch seems pretty good now.  However, the rename from
+spi_mpc8xxx.c to spi_fsl_lib.c should be done in a separate patch.  It
+is too difficult to track what has changed, when the file gets moved
+at the same time.  Move the file in one patch verbatim (with the
+required Makefile change), and then move out the fsl_spi specific bits
+in a second patch.
 
 g.
 
-> 
-> >drivers/spi/omap2_mcspi.c |   36 +++++++++---------------------------
-> >1 files changed, 9 insertions(+), 27 deletions(-)
-> >
-> >diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-> >index b3a94ca..d703927 100644
-> >--- a/drivers/spi/omap2_mcspi.c
-> >+++ b/drivers/spi/omap2_mcspi.c
-> >@@ -489,10 +489,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >					dev_err(&spi->dev, "TXS timed out\n");
-> >					goto out;
-> >				}
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "write-%d %02x\n",
-> >+				dev_vdbg(&spi->dev, "write-%d %02x\n",
-> >						word_len, *tx);
-> >-#endif
-> >				__raw_writel(*tx++, tx_reg);
-> >			}
-> >			if (rx != NULL) {
-> >@@ -506,10 +504,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
-> >					omap2_mcspi_set_enable(spi, 0);
-> >					*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-					dev_dbg(&spi->dev, "read-%d %02x\n",
-> >+					dev_vdbg(&spi->dev, "read-%d %02x\n",
-> >						    word_len, *(rx - 1));
-> >-#endif
-> >					if (mcspi_wait_for_reg_bit(chstat_reg,
-> >						OMAP2_MCSPI_CHSTAT_RXS) < 0) {
-> >						dev_err(&spi->dev,
-> >@@ -522,10 +518,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				}
-> >
-> >				*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "read-%d %02x\n",
-> >+				dev_vdbg(&spi->dev, "read-%d %02x\n",
-> >						word_len, *(rx - 1));
-> >-#endif
-> >			}
-> >		} while (c);
-> >	} else if (word_len <= 16) {
-> >@@ -542,10 +536,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >					dev_err(&spi->dev, "TXS timed out\n");
-> >					goto out;
-> >				}
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "write-%d %04x\n",
-> >+				dev_vdbg(&spi->dev, "write-%d %04x\n",
-> >						word_len, *tx);
-> >-#endif
-> >				__raw_writel(*tx++, tx_reg);
-> >			}
-> >			if (rx != NULL) {
-> >@@ -559,10 +551,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
-> >					omap2_mcspi_set_enable(spi, 0);
-> >					*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-					dev_dbg(&spi->dev, "read-%d %04x\n",
-> >+					dev_vdbg(&spi->dev, "read-%d %04x\n",
-> >						    word_len, *(rx - 1));
-> >-#endif
-> >					if (mcspi_wait_for_reg_bit(chstat_reg,
-> >						OMAP2_MCSPI_CHSTAT_RXS) < 0) {
-> >						dev_err(&spi->dev,
-> >@@ -575,10 +565,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				}
-> >
-> >				*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "read-%d %04x\n",
-> >+				dev_vdbg(&spi->dev, "read-%d %04x\n",
-> >						word_len, *(rx - 1));
-> >-#endif
-> >			}
-> >		} while (c);
-> >	} else if (word_len <= 32) {
-> >@@ -595,10 +583,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >					dev_err(&spi->dev, "TXS timed out\n");
-> >					goto out;
-> >				}
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "write-%d %08x\n",
-> >+				dev_vdbg(&spi->dev, "write-%d %08x\n",
-> >						word_len, *tx);
-> >-#endif
-> >				__raw_writel(*tx++, tx_reg);
-> >			}
-> >			if (rx != NULL) {
-> >@@ -612,10 +598,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
-> >					omap2_mcspi_set_enable(spi, 0);
-> >					*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-					dev_dbg(&spi->dev, "read-%d %08x\n",
-> >+					dev_vdbg(&spi->dev, "read-%d %08x\n",
-> >						    word_len, *(rx - 1));
-> >-#endif
-> >					if (mcspi_wait_for_reg_bit(chstat_reg,
-> >						OMAP2_MCSPI_CHSTAT_RXS) < 0) {
-> >						dev_err(&spi->dev,
-> >@@ -628,10 +612,8 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
-> >				}
-> >
-> >				*rx++ = __raw_readl(rx_reg);
-> >-#ifdef VERBOSE
-> >-				dev_dbg(&spi->dev, "read-%d %08x\n",
-> >+				dev_vdbg(&spi->dev, "read-%d %08x\n",
-> >						word_len, *(rx - 1));
-> >-#endif
-> >			}
-> >		} while (c);
-> >	}
-> >-- 
-> >1.7.1
-> 
-> -- 
-> balbi
-> 
-> DefectiveByDesign.org
+---------------------------------------------------------------------------=
+---
+This SF.net email is sponsored by =
+
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev =

@@ -1,42 +1,49 @@
-From: Orjan Friberg <of-Gxjboj7dVqxWk0Htik3J/w@public.gmane.org>
-Subject: Re: Bitbanged SPI over GPIO probe fail
-Date: Wed, 11 Aug 2010 18:44:45 +0200
-Message-ID: <4C62D37D.8020303@flatfrog.com>
-References: <4C60205B.9090202@flatfrog.com>
+From: Kevin Hilman <khilman@deeprootsystems.com>
+Subject: Re: [PATCH 0/2] Put OMAP2 SPI CS in unactive state when return from  suspend
+Date: Wed, 11 Aug 2010 11:21:58 -0700
+Message-ID: <871va52ent.fsf@deeprootsystems.com>
+References: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4C60205B.9090202-Gxjboj7dVqxWk0Htik3J/w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-omap <linux-omap@vger.kernel.org>
+To: Gregory CLEMENT <gclement00@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
+	(Gregory CLEMENT's message of "Wed, 11 Aug 2010 16:42:52 +0200")
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2010-08-09 17:35, Orjan Friberg wrote:
-> When modprobing the driver platform_driver_probe returns -ENODEV but
-> spi_gpio_probe is not being called, which seems odd to me.  Any suggestions?
+Gregory CLEMENT <gclement00@gmail.com> writes:
 
-This part I still don't understand, but I can at least insmod the driver 
-by changing platform_driver_probe to platform_driver_register; it shows 
-up in /sys/bus/platform/drivers now too.
+> We notice that when system wake up from OFF mode, then CS is in
+> unactive state until the first SPI transfert.
+> For our design it lead to some conflict on this I/O.
+> Unactive state for CS when there is no transfert shoudl be the correct
+> behaviour: this is the purpose of these patches.
 
-(I get that I need to call platform_driver_register and create a sysfs 
-entry etc before I have a device to play with.)
+This approach handles an off-mode transition during suspend, but if
+off-mode is enabled, you can also have an off-mode transition during
+idle.
 
--- 
-Orjan Friberg
-FlatFrog Laboratories AB
+Since you didn't describe what the conflicts you're seeing are, I would
+assume that you'll have the same problems in idle as in suspend, and
+this series doesn't address the idle case.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by 
+Kevin
 
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev 
+
+
+> Gregory CLEMENT (2):
+>   spi: Add hook on suspend/resume for spi master
+>   spi/omap2_mcspi: When SPI wake up from OFF mode, CS is in wrong
+>     state: force it to unactive state
+>
+>  drivers/spi/omap2_mcspi.c |   11 ++++++++++-
+>  drivers/spi/spi.c         |   15 ++++++++++++++-
+>  include/linux/spi/spi.h   |    4 +++-
+>  3 files changed, 27 insertions(+), 3 deletions(-)
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

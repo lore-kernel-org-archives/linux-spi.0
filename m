@@ -1,49 +1,40 @@
-From: Kevin Hilman <khilman@deeprootsystems.com>
-Subject: Re: [PATCH 0/2] Put OMAP2 SPI CS in unactive state when return from  suspend
-Date: Wed, 11 Aug 2010 11:21:58 -0700
-Message-ID: <871va52ent.fsf@deeprootsystems.com>
-References: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
+From: <rikuli3882-tOlfNDg14hhsBfux4nEjSAC/G2K4zDHf@public.gmane.org>
+Subject: [SPAM] Choose your individualized plan from our
+	list
+Date: Wed, 11 Aug 2010 22:26:32 +0100
+Message-ID: <E1OjIov-0006O1-9Y@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: rikuli3882-tOlfNDg14hhsBfux4nEjSAC/G2K4zDHf@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-omap <linux-omap@vger.kernel.org>
-To: Gregory CLEMENT <gclement00@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
-	(Gregory CLEMENT's message of "Wed, 11 Aug 2010 16:42:52 +0200")
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Gregory CLEMENT <gclement00@gmail.com> writes:
-
-> We notice that when system wake up from OFF mode, then CS is in
-> unactive state until the first SPI transfert.
-> For our design it lead to some conflict on this I/O.
-> Unactive state for CS when there is no transfert shoudl be the correct
-> behaviour: this is the purpose of these patches.
-
-This approach handles an off-mode transition during suspend, but if
-off-mode is enabled, you can also have an off-mode transition during
-idle.
-
-Since you didn't describe what the conflicts you're seeing are, I would
-assume that you'll have the same problems in idle as in suspend, and
-this series doesn't address the idle case.
-
-Kevin
+Start your journey to the center of the uterus
+http://www.labswhiskey.ru/
 
 
+We have already seen identity shift from matter to body to mind, each of which involved a decentering or dis-identifying with the lesser dimension...
+In 2008 migration continued to grow by a pace of 2.
+The official language of Romania is Romanian, an Eastern Romance language related to Italian, French, Spanish, Portuguese and Catalan.
+Centers for Disease Control (CDC) (August 1987).
+An electric current produces a magnetic field.
+The core player of this " Golden Generation " [212] and perhaps the best known Romanian player internationally is Gheorghe Hagi (nicknamed the Maradona of the Carpathians).
+The physical properties of the Earth, as well as its geological history and orbit, have allowed life to persist during this period.
+It can remain inactive in these cells for long periods, though.
 
-> Gregory CLEMENT (2):
->   spi: Add hook on suspend/resume for spi master
->   spi/omap2_mcspi: When SPI wake up from OFF mode, CS is in wrong
->     state: force it to unactive state
->
->  drivers/spi/omap2_mcspi.c |   11 ++++++++++-
->  drivers/spi/spi.c         |   15 ++++++++++++++-
->  include/linux/spi/spi.h   |    4 +++-
->  3 files changed, 27 insertions(+), 3 deletions(-)
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+------------------------------------------------------------------------------
+This SF.net email is sponsored by 
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev 

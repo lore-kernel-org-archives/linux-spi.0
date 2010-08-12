@@ -1,72 +1,58 @@
-From: Kevin Hilman <khilman@deeprootsystems.com>
-Subject: Re: [PATCH 0/2] Put OMAP2 SPI CS in unactive state when return from  suspend
-Date: Thu, 12 Aug 2010 07:28:29 -0700
-Message-ID: <87tymzucqa.fsf@deeprootsystems.com>
-References: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
-	<871va52ent.fsf@deeprootsystems.com>
-	<AANLkTik7O1s-UAt0abyJoakSSjHGJD6CSktOD+O=BGou@mail.gmail.com>
-	<AANLkTinPbOR2OUyfiCLkkbV6gCjxib+-mmMKNf9mzeDC@mail.gmail.com>
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH] spi: add spi_tegra driver
+Date: Thu, 12 Aug 2010 16:24:24 +0100
+Message-ID: <20100812152424.GB31982@n2100.arm.linux.org.uk>
+References: <1280450224-25118-1-git-send-email-ccross@google.com>
+	<AANLkTimUm_wj+gyxTa=X+845kLj1sZ9GF+jsmsBwxnLN@mail.gmail.com>
+	<AANLkTinKNfPtaYYyUMmdTRewSKiRnTEfaf+pKkx_7jME@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-omap <linux-omap@vger.kernel.org>
-To: Gregory CLEMENT <gclement00@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <AANLkTinPbOR2OUyfiCLkkbV6gCjxib+-mmMKNf9mzeDC@mail.gmail.com>
-	(Gregory CLEMENT's message of "Thu, 12 Aug 2010 10:54:00 +0200")
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Grant Likely <grant.likely@secretlab.ca>, linux-tegra@vger.kernel.org,
+	Colin Cross <ccross@google.com>, linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net
+To: Erik Gilling <konkers@android.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTinKNfPtaYYyUMmdTRewSKiRnTEfaf+pKkx_7jME@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Gregory CLEMENT <gclement00@gmail.com> writes:
+On Wed, Aug 11, 2010 at 05:31:00PM -0700, Erik Gilling wrote:
+> >> + =A0 =A0 =A0 if (!request_mem_region(r->start, (r->end - r->start) + =
+1,
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_name(&pdev->dev))) {
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D -EBUSY;
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err0;
+> >> + =A0 =A0 =A0 }
+> >
+> > I believe the platform bus does this for you already by calling
+> > insert_resource() on all the platform bus ranges. =A0See if /proc/iomem
+> > is any different with or without this call to verify.
+> =
 
-> 2010/8/11 Kevin Hilman <khilman@deeprootsystems.com>
->>
->> Gregory CLEMENT <gclement00@gmail.com> writes:
->>
->> > We notice that when system wake up from OFF mode, then CS is in
->> > unactive state until the first SPI transfert.
->> > For our design it lead to some conflict on this I/O.
->> > Unactive state for CS when there is no transfert shoudl be the correct
->> > behaviour: this is the purpose of these patches.
->>
->> This approach handles an off-mode transition during suspend, but if
->> off-mode is enabled, you can also have an off-mode transition during
->> idle.
->>
->
-> Well maybe I didn't use the correct words.
-> During the system life, I monitored the CS behaviour using a oscilloscope.
-> I also activate debug in omap2_mcspi, so I see when driver disable the
-> clocks and restore context when device is not used.
-> Each time the CS is in the correct state. It is only when there is a
-> suspend with the following configuration that on resume the CS is in
-> wrong state( ie activated)
+> You're right.  Didn't realize this
 
-OK, that should be more clear in the changelog.  The way I understood
-your description, the problem was related to an off-mode transition.
+There is a big difference between what the platform bus does and what
+drivers do.
 
->
-> echo 1 > /mnt/pm_debug/enable_off_mode
-> echo 0 > /mnt/pm_debug/core_pwrdm/suspend
+The platform bus adds the resources to the resource tree as they stand
+without marking them _busy_.  This means that they can be sub-divided
+and other resources registered within their range.
 
-fyi... this part isn't needed.  You're telling the OMAP PM core that
-you want the CORE powerdomain to go into off-mode, but you've you've
-already done that by the 'enable_off_mode' flag, which enables *all*
-powerdomains to hit off mode.
+request_mem_region() adds resources to the resource tree marking them
+busy, detecting overlapping resources and indicating whether two
+drivers are trying to claim the same resource region.  In other words,
+it's a preventative measure against two device drivers accessing the
+same region.
 
-> echo 1 > /mnt/pm_debug/voltage_off_while_idle
->
->
->>
->> Since you didn't describe what the conflicts you're seeing are, I would
->> assume that you'll have the same problems in idle as in suspend, and
->> this series doesn't address the idle case.
->
-> I didn't see any problem in idle case, just when system resume from a
-> suspend to ram (echo mem > /sys/power/state)
-
-OK, I'd recommend you update the changelog to make that more clear.
-
-Then, I'll leave it to the SPI folks to review your patch.
-
-Kevin
+You're absolutely right to do what you're doing above, please continue
+to do so.

@@ -1,50 +1,72 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: Using spidev driver for spi over
-	gpio-device?
-Date: Thu, 12 Aug 2010 02:40:06 -0700 (PDT)
-Message-ID: <556655.15797.qm@web180306.mail.gq1.yahoo.com>
-References: <4C63B034.1000007@flatfrog.com>
+From: Kevin Hilman <khilman@deeprootsystems.com>
+Subject: Re: [PATCH 0/2] Put OMAP2 SPI CS in unactive state when return from  suspend
+Date: Thu, 12 Aug 2010 07:28:29 -0700
+Message-ID: <87tymzucqa.fsf@deeprootsystems.com>
+References: <AANLkTin7-ZqFRH4GXT4aUfQ4sE=8Jc=3i0j8rTH7EyBm@mail.gmail.com>
+	<871va52ent.fsf@deeprootsystems.com>
+	<AANLkTik7O1s-UAt0abyJoakSSjHGJD6CSktOD+O=BGou@mail.gmail.com>
+	<AANLkTinPbOR2OUyfiCLkkbV6gCjxib+-mmMKNf9mzeDC@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Orjan Friberg <of-Gxjboj7dVqxWk0Htik3J/w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4C63B034.1000007-Gxjboj7dVqxWk0Htik3J/w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-omap <linux-omap@vger.kernel.org>
+To: Gregory CLEMENT <gclement00@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <AANLkTinPbOR2OUyfiCLkkbV6gCjxib+-mmMKNf9mzeDC@mail.gmail.com>
+	(Gregory CLEMENT's message of "Thu, 12 Aug 2010 10:54:00 +0200")
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> Is a SPI device as bitbanged over GPIO enough of
-> a "real" SPI device =
+Gregory CLEMENT <gclement00@gmail.com> writes:
 
-> that the spidev can be used for it?
+> 2010/8/11 Kevin Hilman <khilman@deeprootsystems.com>
+>>
+>> Gregory CLEMENT <gclement00@gmail.com> writes:
+>>
+>> > We notice that when system wake up from OFF mode, then CS is in
+>> > unactive state until the first SPI transfert.
+>> > For our design it lead to some conflict on this I/O.
+>> > Unactive state for CS when there is no transfert shoudl be the correct
+>> > behaviour: this is the purpose of these patches.
+>>
+>> This approach handles an off-mode transition during suspend, but if
+>> off-mode is enabled, you can also have an off-mode transition during
+>> idle.
+>>
+>
+> Well maybe I didn't use the correct words.
+> During the system life, I monitored the CS behaviour using a oscilloscope.
+> I also activate debug in omap2_mcspi, so I see when driver disable the
+> clocks and restore context when device is not used.
+> Each time the CS is in the correct state. It is only when there is a
+> suspend with the following configuration that on resume the CS is in
+> wrong state( ie activated)
 
-Yes -- modulo bugs.  The bitbanging would be via
-the SPI master controller, and that's written to
-be fairly close to a reference implementation.
+OK, that should be more clear in the changelog.  The way I understood
+your description, the problem was related to an off-mode transition.
 
-and spidev is just one possible client.
+>
+> echo 1 > /mnt/pm_debug/enable_off_mode
+> echo 0 > /mnt/pm_debug/core_pwrdm/suspend
 
-=A0 I'm having
-> trouble getting the =
+fyi... this part isn't needed.  You're telling the OMAP PM core that
+you want the CORE powerdomain to go into off-mode, but you've you've
+already done that by the 'enable_off_mode' flag, which enables *all*
+powerdomains to hit off mode.
 
-> interfaces to line up.
-> =
+> echo 1 > /mnt/pm_debug/voltage_off_while_idle
+>
+>
+>>
+>> Since you didn't describe what the conflicts you're seeing are, I would
+>> assume that you'll have the same problems in idle as in suspend, and
+>> this series doesn't address the idle case.
+>
+> I didn't see any problem in idle case, just when system resume from a
+> suspend to ram (echo mem > /sys/power/state)
 
+OK, I'd recommend you update the changelog to make that more clear.
 
+Then, I'll leave it to the SPI folks to review your patch.
 
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by =
-
-
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev =
+Kevin

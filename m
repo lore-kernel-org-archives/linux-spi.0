@@ -1,7 +1,8 @@
-From: "Cetelem par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Preparez vos projets avec Cetelem
-Date: Fri, 13 Aug 2010 09:52:12 +0200 (CEST)
-Message-ID: <l72zcc.fkhs3r@front02.r7g.com>
+From: <qaozuwyry3741-BwUmv6MbR8umLYEK066ZfDiP9/pWjw0T@public.gmane.org>
+Subject: [SPAM] Get top notch sexual performance
+Date: Fri, 13 Aug 2010 09:41:21 -0300
+Message-ID: <E1OjtZc-0000wf-5G@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: qaozuwyry3741-BwUmv6MbR8umLYEK066ZfDiP9/pWjw0T@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,6 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Researchers have found that these pills do increase pen1le size in 90% of test subjects
+http://www.societybit.ru/
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by 

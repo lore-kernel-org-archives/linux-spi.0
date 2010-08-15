@@ -1,12 +1,13 @@
-From: "»Æ½õ»Ô" <qwqd7788-WVlzvzqoTvw@public.gmane.org>
-Subject: [SPAM] Ë«Ó®`´úÀí
-Date: Mon, 16 Aug 2010 03:32:55 +0800
-Message-ID: <E1OkixR-0003co-4i@sfs-ml-1.v29.ch3.sourceforge.com>
+From: <ijizok5343-9FxMChWcbVLLrKE18MjzDg@public.gmane.org>
+Subject: [SPAM] Ashton Kutcher got his performance
+	enhanced
+Date: Sun, 15 Aug 2010 15:17:06 -0500
+Message-ID: <E1Okjdq-0005Bj-9b@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: ijizok5343-9FxMChWcbVLLrKE18MjzDg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,11 +19,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CrG+08q8/s6qSFRNTLjxyr3E2sjdo6zE+rXE08q8/rf+zvHG97K71qez1qOhCi0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgCgpNYWtlIGFuIGFw
-cCB0aGV5IGNhbid0IGxpdmUgd2l0aG91dApFbnRlciB0aGUgQmxhY2tCZXJyeSBEZXZlbG9wZXIg
-Q2hhbGxlbmdlCmh0dHA6Ly9wLnNmLm5ldC9zZnUvUklNLWRldjJkZXYgCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
-bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Give them more to talk about with this package
+
+http://www.shoppencil.ru/
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by 
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev 

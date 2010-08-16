@@ -1,31 +1,28 @@
-From: Randy Dunlap <rdunlap@xenotime.net>
+From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: spi.h: missing kernel-doc notation, please fix
-Date: Mon, 16 Aug 2010 08:36:37 -0700
-Message-ID: <20100816083637.ca01e53e.rdunlap@xenotime.net>
+Date: Mon, 16 Aug 2010 15:09:12 -0600
+Message-ID: <20100816210912.GB17571@angua.secretlab.ca>
 References: <20100815103156.37ae14cd.rdunlap@xenotime.net>
-	<20100816151011.68e6c722.eschwab@online.de>
+ <20100816151011.68e6c722.eschwab@online.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
+Content-Type: text/plain; charset=us-ascii
+Cc: Randy Dunlap <rdunlap@xenotime.net>,
+	spi-devel-general@lists.sourceforge.net,
 	lkml <linux-kernel@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>
+	David Brownell <dbrownell@users.sourceforge.net>
 To: Ernst Schwab <eschwab@online.de>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <20100816151011.68e6c722.eschwab@online.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 16 Aug 2010 15:10:11 +0200 Ernst Schwab wrote:
-
+On Mon, Aug 16, 2010 at 03:10:11PM +0200, Ernst Schwab wrote:
 > Added comments in kernel-doc notation for previously added struct fields.
 > 
 > Signed-off-by: Ernst Schwab <eschwab@online.de>
 
-Thanks.
-
-Acked-by: Randy Dunlap <rdunlap@xenotime.net>
+Applied, thanks.
 
 > ---
 > On Sun, 15 Aug 2010 10:31:56 -0700
@@ -55,8 +52,3 @@ Acked-by: Randy Dunlap <rdunlap@xenotime.net>
 >   * @setup: updates the device mode and clocking records used by a
 >   *	device's SPI controller; protocol code may call this.  This
 >   *	must fail if an unrecognized or unsupported mode is requested.
-
-
----
-~Randy
-*** Remember to use Documentation/SubmitChecklist when testing your code ***

@@ -1,19 +1,14 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] SPI: remove superfluous DMA buffer
-	syncs on PL022
-Date: Tue, 17 Aug 2010 22:15:29 -0600
-Message-ID: <AANLkTi=T89ZZo0m2hYaW9dJ7MKd9GLEDVZpcqZ-3RcNq@mail.gmail.com>
-References: <1282082924-25809-1-git-send-email-linus.walleij@stericsson.com>
+From: =?UTF-8?B?TXBzIFJ1c3lhICYgVMO8cmtpIEN1bWh1cml5ZXRsZXIgSMSxemzEsSBQYWtldCBUYcWfxLFtYQ==?=
+	=?UTF-8?B?Y8SxbMSxxJ/EsSBBLsWe?= <e-bulten-iqtj7ZsP5ulpBfM9I0jaj1aTQe2KTcn/@public.gmane.org>
+Subject: [SPAM] =?UTF-8?B?RMO8bnlhbsSxbiBIZXJ5ZXJpbmUgSMSxemzEsSB2ZSBFa29ub21payBIYXZhIEthcmdvICYg?=
+ Kurye Taşımacılığı
+Date: Tue, 17 Aug 2010 22:53:55 +0300
+Message-ID: <E1Old8o-0006p3-6j@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, yuanyabin1978-k+cT0dCbe1g@public.gmane.org
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1282082924-25809-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,95 +19,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 17, 2010 at 4:08 PM, Linus Walleij
-<linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
-> This removes the superfluous DMA buffer syncs identified by Russell
-> in the DMA support for PL022.
->
-> Cc: yuanyabin1978-k+cT0dCbe1g@public.gmane.org
-> Cc: Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-
-I haven't actually pushed out the spi-test branch yet.  Shall I squash
-this patch into the previous one?
-
-g.
-
-> ---
-> =A0drivers/spi/amba-pl022.c | =A0 16 +++++-----------
-> =A01 files changed, 5 insertions(+), 11 deletions(-)
->
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index 59b3948..521d3d9 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -794,12 +794,7 @@ static void dma_callback(void *data)
-> =A0 =A0 =A0 =A0struct pl022 *pl022 =3D data;
-> =A0 =A0 =A0 =A0struct spi_message *msg =3D pl022->cur_msg;
->
-> - =A0 =A0 =A0 /* Sync in RX buffer to CPU */
-> =A0 =A0 =A0 =A0BUG_ON(!pl022->sgt_rx.sgl);
-> - =A0 =A0 =A0 dma_sync_sg_for_cpu(&pl022->adev->dev,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pl022->sgt_rx.sgl,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pl022->sgt_rx.nents,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DMA_FROM_DEVICE);
->
-> =A0#ifdef VERBOSE_DEBUG
-> =A0 =A0 =A0 =A0/*
-> @@ -812,6 +807,11 @@ static void dma_callback(void *data)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0struct scatterlist *sg;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0unsigned int i;
->
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dma_sync_sg_for_cpu(&pl022->adev->dev,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pl0=
-22->sgt_rx.sgl,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pl0=
-22->sgt_rx.nents,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 DMA=
-_FROM_DEVICE);
-> +
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0for_each_sg(pl022->sgt_rx.sgl, sg, pl022->=
-sgt_rx.nents, i) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&pl022->adev->dev,=
- "SPI RX SG ENTRY: %d", i);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0print_hex_dump(KERN_ERR, "=
-SPI RX: ",
-> @@ -1001,12 +1001,6 @@ static int configure_dma(struct pl022 *pl022)
-> =A0 =A0 =A0 =A0if (sglen !=3D pages)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_tx_sgmap;
->
-> - =A0 =A0 =A0 /* Synchronize the TX scatterlist, invalidate buffers, cach=
-es etc */
-> - =A0 =A0 =A0 dma_sync_sg_for_device(&pl022->adev->dev,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pl022->sgt_t=
-x.sgl,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0pl022->sgt_t=
-x.nents,
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0DMA_TO_DEVIC=
-E);
-> -
-> =A0 =A0 =A0 =A0/* Send both scatterlists */
-> =A0 =A0 =A0 =A0rxdesc =3D rxchan->device->device_prep_slave_sg(rxchan,
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0pl022->sgt_rx.sgl,
-> --
-> 1.6.3.3
->
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by =
-
-
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev =
+TVBTIEV4cHJlc3MgRGV2IEthbXBhbnlhLi4uLgpNUFMgR2lmdCBIZWRpeWUgS2FtcGFueWFzxLFu
+ZGFuIFNpemRlIFlhcmFybGFuxLFuLi4uIApEw7xueWFuxLFuIDIyMCDDnGxrZXNpbmRlIEZhbGl5
+ZXQgZ8O2c3RlcmVuIE1QUyBFeHByZXNzIFTDvHJraXllZGVuIETDvG55YW7EsW4gSGVyeWVyaW5l
+IETDtmvDvG1hbiBQYWtldCBLb2xpIHZlIMSwaHJhY2F0IEthcmdvbGFyxLFuxLF6xLEgZW4gaMSx
+emzEsSBlbiBla29ub21payB2ZSBlbiBnw7x2ZW5saSDFn2VraWxkZSB0YcWfxLFtYSBoaXptZXRp
+bmkgYmlyIHllbmlzaW5pIGRhaGEgZWtsZWRpLlTDvHJraXllZGVuIFJ1c3lhIHZlIFVrcmF5bmEg
+w5xsa2VsZXJpbmUgZ8O2bmRlcmVjZcSfaW5peiBoZXIgdMO8cmzDvCBrYXJnb2xhcsSxbsSxesSx
+IGtnIGfDtnpldG1la3NpemluIEtBUElEQU4gLSBLQVBJWUEgxLBtemEga2FyxZ/EsWzEscSfxLEg
+dGVzbGltIGVkZXJlayByYWtpcHNpeiBiaXIgaGl6bWV0IGJhxZ9sYXRtxLHFn3TEsXIuClJ1c3lh
+ICYgVWtyYXluYSBQYWtldCBUYcWfxLFtYWPEsWzEscSfxLEgClZhcsSxxZ8gw7xsa2VzaW5kZSBn
+w7xtcsO8xJ9lIHRhYmkgb2xzdW4gb2xtYXPEsW4gbnVtdW5lbGVyaW5pemkgUnVzeWEgdmUgVWty
+YXluYSDDnGxrZWxlcmluZGUgUmFraXBsZXJpIEfDvG1yw7zEn2UgYsSxcmFrxLFya2VuLE1QUyBF
+eHByZXNzICBNw7zFn3RlcmluaXppbiBrYXDEsXPEsW5hIHRlc2xpbSBldG1leWkgdGFhaMO8dCBl
+ZGl5b3IuClJ1c3lhIHZlIFVrcmF5bmEgRnVhciBUYcWfxLFtYSBIaXptZXRpIApNUFMgRXhwcmVz
+cyBGdWFyIFRhxZ/EsW1hIGhpem1ldGkgaWxlIGthdMSxbGFjYcSfxLFuxLF6IGZ1YXJsYXJkYSBv
+cmdhbml6YXN5b25sYXLEsW7EsXrEsW4gYmHFn2FyxLEgaWxlIHNvbnXDp2xhbmTEsXJtYW7EsXph
+IHlhcmTEsW1jxLEgb2xtYWsgacOnaW4gc2l6aSBzYWRlY2Ugc2F0xLHFnyBvZGFrbMSxIGvEsWxh
+YmlsbWVrIHZlIGthdMSxbGFjYcSfxLFuxLF6IGV0a2lubGlrIG5lcmVkZSBvbHVyc2Egb2xzdW4g
+TVBTIEV4cHJlc3MgS0FMxLBURSBWRSBERU5FWcSwTcSwIFZFIEhJWkxJLiBTaXpsZXJlIHRhbSB6
+YW1hbmzEsSBvcmdhbml6YXN5b25sYXLEsW7EsXrEsW4gaGVyIGHFn2FtYXPEsW5kYSDDvHN0bGVu
+ZXJlayBtw7zFn3RlcmlsZXJpbml6IGlsZSAxMC55xLFsxLFuZGEgYnVsdcWfdHVybWEgZGV2YW0g
+ZWRpeW9yLi4uCkTDvG55YW7EsW4gSGVyeWVyaW5lIEjEsXpsxLEgdmUgRWtvbm9taWsgSGF2YSBL
+YXJnbyAmIEt1cnllIFRhxZ/EsW1hY8SxbMSxxJ/EsSAKTVBTIEV4cHJlc3MgIFl1cnRkxLHFn8Sx
+bmEgZ8O2bmRlcmVjZcSfaW5peiBUw7xtIEthcmdvbGFyxLFuxLF6ZGEgRMO8bnlhbsSxbiAyMjAg
+w5xsa2VzaW5lIEjEsXpsxLEgJiBFa29ub21payBnw7x2ZW5pbGlyIGJpciDFn2VraWxkZSB0YcWf
+xLFtYSBoaXptZXRpIHNhxJ9sYW1ha3RhZMSxci5Ew7xueWEgw4dhcMSxbmRhIGJpciDDp29rIGfD
+vMOnbMO8IGt1cnVsdcWfIGlsZSBpxZ9iaXJsacSfaSB5YXBhbiBNUFMgRXhwcmVzcyAgVMO8cmtp
+eWUgZ2VuZWxpbmRlIE3DvMWfdGVyaWxlcmluZSBzdW5kdcSfdSBrYWxpdGVsaSBoaXptZXQgc2F5
+ZXNpbmRlIDIyMCDDvGxrZSB2ZSDDtnplcmsgYsO2bGdlZGUga29udW11bnUgc8O8cmTDvHJtZWt0
+ZWRpci5NUFMgRXhwcmVzcyDDp2XFn2l0bGkgw7xsa2VsZXIgZGUgZW4geWF5Z8SxbiBrdXJ1bHXF
+n2xhciBpxZ9iaXJsacSfaSB5YXBtYXnEsSB0ZXJjaWggZWRlcmVrIG3DvMWfdGVyaWxlcmluZSBs
+b2thbCBkYcSfxLF0xLFtZGEgZW4gZGHEn8SxdMSxbSBmaXJtYWxhcsSxIGlsZSDDp2FsxLHFn21h
+IGF2YW50YWpsYXLEsSBzYcSfbGFtYWt0YWTEsXIuCkhhdmEgS2FyZ28gClTDvHJraXllZGVuIETD
+vG55YW7EsW4gaGVyIHllcmluZSAsRMO8bnlhbsSxbiBoZXIgeWVyaW5kZW4gSGF2YWxpbWFuxLEg
+eWFkYSBrYXDEsWRhbiBrYXDEsXlhIGhhdmF5b2x1IHRhxZ/EsW1hY8SxbMSxxJ/EsSBoaXptZXRs
+ZXJpIHZlcmVuIE1QUyBFeHByZXNzICBTZcOna2luIGhhdmF5b2x1IMWfaXJrZXRsZXJpIGlsZSBZ
+YXDEsWxhbiBhbmxhxZ9tYWxhciBzYXllc2luZGUgdGHFn8SxbWFsYXJkYSB5ZXIgdmUgZml5YXQg
+YXZhbnRhamxhcsSxIHNhxJ9sYW1ha3RhZMSxci5NUFMgRXhwcmVzcyAgU2VrdMO2csO8bmRlIGRl
+bmV5aW1pIHZlIMOnYWzEscWfbWEgYW5sYXnEscWfxLEgaWxlIGhhdmF5b2x1IHRhxZ/EsW1hY8Sx
+bMSxxJ/EsW5kYSBUw7xya2l5ZWRlIMO2bmPDvCBiaXIgbWFya2EgaGFsaW5lIGdlbG1pxZ90aXIu
+xLBocmFjYXR0YSBhcnRhbiBkxLHFnyByZWthYmV0aW4gdmUgdWx1c2xhcmFyYXPEsSBhcmVuYWRh
+a2kgYWzEsWPEsWxhcsSxbiBkYWhhIGjEsXpsxLEgdGVybWluIGlzdGVrbGVyaW5pbiBzb251Y3Ug
+b2xhcmFrIG9sdcWfYW4ga2FsaXRlIGhpem1ldCB2ZSBla29ub21payDDp8O2esO8bWxlciBpbGUg
+dGFsZWJpbmkga2FyxZ/EsWxheWFyYWsgeWF0xLFyxLFtbGFyxLFuxLEgdGFtYW1sYW3EscWfdMSx
+ci4KRMO8bnlhbsSxbiBIZXJ5ZXJpbmUgSGF2YSBLYXJnbyDDnHLDvG4gdmUgSGl6bWV0bGVyaW1p
+eiAgICAgICAgTcO8xZ90ZXJpIEhpem1ldGxlcmkgICAgICAgLjorIDkwIDIxMiA0NDQgMCAxMDgg
+CkhhdmFsaW1hbsSxbmRhbiBIYXZhbGltYW7EsSBUYcWfxLFtYSDDh8O2esO8bWxlcmkgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzYWxlc0BtcHNnbG9i
+YWxleHByZXNzLmNvbSAgd3d3Lm1wc2dsb2JhbGV4cHJlc3MuY29tICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCkhhdmFsaW1hbsSxbmRhbiBLYXDEsXlhIFRhxZ/EsW1hIMOHw7Z6w7xtbGVy
+aSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGluZm9AbXBzZ2xvYmFsZXhwcmVzcy5jb20KVGVobGlrZWxpIE1hZGRlIFRhxZ/EsW1hIMOHw7Z6
+w7xtbGVyaSAKS2FwxLFkYW4gSGF2YWxpbWFuxLFuYSBUYcWfxLFtYSDDh8O2esO8bWxlcmkgCkth
+cMSxZGFuIEthcMSxeWEgVGHFn8SxbWEgw4fDtnrDvG1sZXJpIApHw7xtcsO8a2zDvCAmIEfDvG1y
+w7xrc8O8eiBLYXDEsSBUZXNsaW1pIApZb2xjdSBiZXJhYmVyaW5kZSBLYXJnbyBUZXNsaW0gw4fD
+tnrDvG1sZXJpIApSdXN5YSB2ZSBVa3JheW5hIEFjaWwgS2FyZ28gw4fDtnrDvG1sZXJpIAoKCiAK
+IAoKLQogCiAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9u
+c29yZWQgYnkgCgpNYWtlIGFuIGFwcCB0aGV5IGNhbid0IGxpdmUgd2l0aG91dApFbnRlciB0aGUg
+QmxhY2tCZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlCmh0dHA6Ly9wLnNmLm5ldC9zZnUvUklNLWRl
+djJkZXYgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
+aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
+c3BpLWRldmVsLWdlbmVyYWwK

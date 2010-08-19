@@ -1,158 +1,249 @@
-From: =?utf-8?B?0JLQvtC30LLRgNCw0YIg0LTQvtC70LPQvtCy?= <toju-lUKxBRrCLW1AWsC3H4fXnw@public.gmane.org>
-Subject: =?utf-8?b?0JzQtdGC0L7QtNGLICLQsdC+0YDRjNCx?=
-	=?utf-8?b?0YsiINGBINC00LXQsdC40YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C2?=
-	=?utf-8?b?0LXQvdC90L7RgdGC0YzRjg==?=
-Date: Thu, 19 Aug 2010 15:05:13 +0400
-Message-ID: <1613951518.20100819150513@listseminarov.ru>
+From: "Kalliguddi, Hema" <hemahk@ti.com>
+Subject: RE: [PATCH 1/5] OMAP2420: McSPI: Add mcspi hwmod
+Date: Thu, 19 Aug 2010 17:14:58 +0530
+Message-ID: <E0D41E29EB0DAC4E9F3FF173962E9E940270CAEEB4@dbde02.ent.ti.com>
+References: <1281708323-18989-1-git-send-email-charu@ti.com>
+ <1281708323-18989-2-git-send-email-charu@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "khilman@deeprootsystems.com" <khilman@deeprootsystems.com>,
+	"paul@pwsan.com" <paul@pwsan.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	"tony@atomide.com" <tony@atomide.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"dbrownell@users.sourceforge.net" <dbrownell@users.sourceforge.net>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"Nayak, Rajendra"
+	<IMCEAEX-_O=TI_OU=EXCHANGE+20ADMINISTRATIVE+20GROUP+20+28FYDIBOHF23SPDLT+29_CN=RECIPIENTS_CN=X0016154@dlee86.itg.ti.com>,
+	"Basak, Partha" <p-basak2@ti.com>,
+	"Raja, Govindraj" <govindraj.raja@ti.com>
+To: "Varadarajan, Charulatha" <charu@ti.com>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1281708323-18989-2-git-send-email-charu@ti.com>
+Content-Language: en-US
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-0K3QpNCk0JXQmtCi0JjQktCd0JDQryDQoNCQ0JHQntCi0JAg0KEg0JTQldCR0JjQotCe0KDQodCa
-0J7QmSDQl9CQ0JTQntCb0JbQldCd0J3QntCh0KLQrNCuIArQmCDQktCX0KvQodCa0JDQndCY0JUg
-0JTQntCb0JPQntCSCgoyNS0yNiDQsNCy0LPRg9GB0YLQsCB8INCc0L7RgdC60LLQsAoK0JjQvdGE
-0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjzogOCAoNDk1KSA5MjEtMzAt
-MTcKCtCS0JDQltCd0J4hINCX0LDQvdGP0YLQuNGPINC/0YDQvtGF0L7QtNGP0YIg0LIg0YPRh9C1
-0LHQvdC+0Lkg0LDRg9C00LjRgtC+0YDQuNC4INGBINC60L7QvdC00LjRhtC40L7QvdC40YDQvtCy
-0LDQvdC90YvQvCAK0L/RgNC+0YXQu9Cw0LTQvdGL0Lwg0LLQvtC30LTRg9GF0L7QvCEKCtCSINC/
-0YDQvtCz0YDQsNC80LzQtToKCtCt0JrQntCd0J7QnNCY0KfQldCh0JrQmNCVINCYINCe0KDQk9CQ
-0J3QmNCX0JDQptCY0J7QndCd0KvQlSDQkNCh0J/QldCa0KLQqyDQo9Cf0KDQkNCS0JvQldCd0JjQ
-ryDQlNCV0JHQmNCi0J7QoNCh0JrQntCZIArQl9CQ0JTQntCb0JbQldCd0J3QntCh0KLQrNCuCjEu
-INCh0LjRgdGC0LXQvNCwINGD0L/RgNCw0LLQu9C10L3QuNGPINC00LXQsdC40YLQvtGA0YHQutC+
-0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjiDQsiDQutC+0LzQv9Cw0L3QuNC4LiDQktC4
-0LTRiyDQtNC10LHQuNGC0L7RgNGB0LrQvtC5CtC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4OiDR
-gtC10LrRg9GJ0LDRjywg0L/RgNC+0YHRgNC+0YfQtdC90L3QsNGPLCDQsdC10LfQvdCw0LTQtdC2
-0L3QsNGPICjQvNC+0YDQsNGC0L7RgNC90LDRjykuINCe0YHQvtCx0LXQvdC90L7RgdGC0Ywg0YDQ
-sNCx0L7RgtGLINGBIArRgNCw0LfQvdGL0LzQuCDQstC40LTQsNC80Lgg0LfQsNC00L7Qu9C20LXQ
-vdC90L7RgdGC0LguINCa0LDQuiDRgdGE0L7RgNC80LjRgNC+0LLQsNGC0Ywg0LrRgNC10LTQuNGC
-0L3Rg9GOINC/0L7Qu9C40YLQuNC60YMg0L7RgNCz0LDQvdC40LfQsNGG0LjQuCDQuCDRgdC40YHR
-gtC10LzRgyAK0YPQv9GA0LDQstC70LXQvdC40Y8g0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw
-0LTQvtC70LbQtdC90L3QvtGB0YLQuD8g0JrQsNC60LjQtSDRgdC70YPQttCx0Ysg0LTQvtC70LbQ
-vdGLINGD0YfQsNGB0YLQstC+0LLQsNGC0Ywg0LIg0L/RgNC+0YbQtdGB0YHQtSAK0YPQv9GA0LDQ
-stC70LXQvdC40Y8g0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjj8g0JrQsNC6INGB0YLQuNC8
-0YPQu9C40YDQvtCy0LDRgtGMINC80LXQvdC10LTQttC10YDQvtCyINC/0L4g0L/RgNC+0LTQsNC2
-0LDQvCDQuiDQv9GA0L7RhNC40LvQsNC60YLQuNC60LUg0LggCtCy0L7Qt9Cy0YDQsNGC0YMg0LTQ
-vtC70LPQvtCyPyAKMi4g0JDQvdCw0LvQuNC3INC4INGD0YfQtdGCINC00LXQsdC40YLQvtGA0YHQ
-utC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0LguINCf0L7QutCw0LfQsNGC0LXQu9C4LCDQ
-uNGB0L/QvtC70YzQt9GD0LXQvNGL0LUg0LTQu9GPINC+0YbQtdC90LrQuCAK0LTQtdCx0LjRgtC+
-0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuCDQv9GA0LXQtNC/0YDQuNGP0YLQ
-uNGPLiDQnNC10YLQvtC00Ysg0LDQvdCw0LvQuNC30LAg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQ
-t9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuC4g0KjQsNCz0LgsIArQv9GA0LXQtNC/0YDQuNC90LjQ
-vNCw0LXQvNGL0LUg0L/QviDRgNC10LfRg9C70YzRgtCw0YLQsNC8INCw0L3QsNC70LjQt9CwINC3
-0LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmtCw0Log0LrQvtC90YLRgNC+0LvQuNGA0L7QstCw
-0YLRjCDRg9GA0L7QstC10L3RjCAK0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQ
-tdC90L3QvtGB0YLQuD8g0JrQsNC60LjQtSDRhNC+0YDQvNGLINC+0YLRh9C10YLQvdC+0YHRgtC4
-INC40YHQv9C+0LvRjNC30L7QstCw0YLRjCDQvdCwINC/0YDQtdC00L/RgNC40Y/RgtC40Lgg0LTQ
-u9GPINGC0L7Qs9C+LCAK0YfRgtC+0LHRiyDQvtC/0LXRgNCw0YLQuNCy0L3QviDQv9GA0LXQtNC/
-0YDQuNC90LjQvNCw0YLRjCDQvdC10L7QsdGF0L7QtNC40LzRi9C1INGI0LDQs9C4INC/0L4g0LLQ
-t9GL0YHQutCw0L3QuNGOINC00L7Qu9Cz0L7Qsj8gCjMuINCe0YbQtdC90LrQsCDQv9C70LDRgtC1
-0LbQtdGB0L/QvtGB0L7QsdC90L7RgdGC0LguINCa0LDQuiDQstGL0LTQtdC70LjRgtGMINCyINC6
-0LvQuNC10L3RgtGB0LrQvtC5INCx0LDQt9C1ICLQs9GA0YPQv9C/0YMg0YDQuNGB0LrQsCI/INCa
-0LDQuiDQstGL0Y/QstC70Y/RgtGMIArQvdCw0LvQuNGH0LjQtSDRhNC40L3QsNC90YHQvtCy0YvR
-hSDQv9GA0L7QsdC70LXQvCDRgyDQutC70LjQtdC90YLQsCDQvdCwINGA0LDQvdC90LXQvCDRjdGC
-0LDQv9C1INC40YUg0LLQvtC30L3QuNC60L3QvtCy0LXQvdC40Y8/ICLQpNCw0LrRgtC+0YDRiyDR
-gNC40YHQutCwIiAK0L3QtdC+0L/Qu9Cw0YLRiyDQuCDQutCw0Log0LjRhSDQvtGG0LXQvdC40YLR
-jC4g0JrQsNC60LjQtSDQuNGB0YLQvtGH0L3QuNC60Lgg0LjQvdGE0L7RgNC80LDRhtC40Lgg0LjR
-gdC/0L7Qu9GM0LfQvtCy0LDRgtGMINC00LvRjyDQvtGG0LXQvdC60LggCtC/0LvQsNGC0LXQttC1
-0YHQv9C+0YHQvtCx0L3QvtGB0YLQuCDQutC70LjQtdC90YLQsD8g0KLQtdGF0L3QvtC70L7Qs9C4
-0Lgg0L/QvtC40YHQutCwINC40L3RhNC+0YDQvNCw0YbQuNC4INCyINGB0LXRgtC4INCY0L3RgtC1
-0YDQvdC10YI6INGH0YLQviDQtNC+0LvQttC10L0g0LfQvdCw0YLRjCAK0YHQv9C10YbQuNCw0LvQ
-uNGB0YIg0L/QviDQstC30YvRgdC60LDQvdC40Y4/IAo0LiDQn9C70LDQvdC40YDQvtCy0LDQvdC4
-0LUg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuCDQuCDQ
-utGA0LXQtNC40YLQvdGL0YUg0LvQuNC80LjRgtC+0LIuINCa0LDQuiDQv9C70LDQvdC40YDQvtCy
-0LDRgtGMINC+0LHRitC10LwgCtC00LXQsdC40YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C20LXQ
-vdC90L7RgdGC0Lgg0LIgItC+0LHQvtGA0L7RgtC60LUiINC4INC40LfQsdC10LPQsNGC0Ywg0LrQ
-sNGB0YHQvtCy0YvRhSDRgNCw0LfRgNGL0LLQvtCyLiDQmtCw0Log0YDQsNGB0YHRh9C40YLQsNGC
-0YwgCiLRgdGC0L7QuNC80L7RgdGC0YwiINC60YDQtdC00LjRgtC+0LLQsNC90LjRjyDQutC70LjQ
-tdC90YLQvtCyPyDQpNC+0YDQvNC40YDQvtCy0LDQvdC40LUg0LrRgNC10LTQuNGC0L3Ri9GFINGA
-0LXQudGC0LjQvdCz0L7QsiDQutC70LjQtdC90YLQvtCyIArQmtCw0Log0YDQsNGB0YHRh9C40YLQ
-sNGC0Ywg0LrRgNC10LTQuNGC0L3Ri9C5INC70LjQvNC40YIg0LjRgdGF0L7QtNGPINC40Lcg0L7Q
-sdGK0LXQvNC+0LIg0L7RgtCz0YDRg9C30L7Quiwg0L/QvtGC0LXQvdGG0LjQsNC70LAsINCy0YvQ
-s9C+0LTQvdC+0YHRgtC4INC4IArQvdCw0LTQtdC20L3QvtGB0YLQuCDQutC70LjQtdC90YLQsD8g
-CjUuINCY0L3RgdGC0YDRg9C80LXQvdGC0Ysg0LrRgNC10LTQuNGC0L3QvtC5INC/0L7Qu9C40YLQ
-uNC60LguINCh0L/QvtGB0L7QsdGLINC+0LHQtdGB0L/QtdGH0LXQvdC40Y86INC30LDQu9C+0LMs
-INC/0L7RgNGD0YfQuNGC0LXQu9GM0YHRgtCy0L4sINCx0LDQvdC60L7QstGB0LrQsNGPIArQs9Cw
-0YDQsNC90YLQuNGPLiDQntGB0L7QsdC10L3QvdC+0YHRgtC4INC40YUg0LjRgdC/0L7Qu9GM0LfQ
-vtCy0LDQvdC40Y8uINCY0YHQv9C+0LvRjNC30L7QstCw0L3QuNC1INGE0LDQutGC0L7RgNC40L3Q
-s9CwINC00LvRjyDRg9C80LXQvdGM0YjQtdC90LjRjyDRgdGA0L7QutC+0LIgCtC+0LHQvtGA0LDR
-h9C40LLQsNC10LzQvtGB0YLQuCDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC1
-0L3QvdC+0YHRgtC4LiDQktC30LDQuNC80L7Qt9Cw0YfQtdGCLCDQutCw0Log0LDQu9GM0YLQtdGA
-0L3QsNGC0LjQstC90YvQuSDRgdC/0L7RgdC+0LEgCtC/0L7Qs9Cw0YjQtdC90LjRjyDQv9GA0L7R
-gdGA0L7Rh9C10L3QvdC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0LguIAoK0J/QoNCe0KTQ
-mNCb0JDQmtCi0JjQmtCQINCYINCS0JXQlNCV0J3QmNCVINCf0JXQoNCV0JPQntCS0J7QoNCe0JIg
-0J4g0JLQntCX0JLQoNCQ0KLQlSDQlNCe0JvQk9Ce0JIKNi4g0J/RgNC+0YTQuNC70LDQutGC0LjQ
-utCwINCy0L7Qt9C90LjQutC90L7QstC10L3QuNGPINC/0YDQvtGB0YDQvtGH0LXQvdC90L7QuSDQ
-tNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmtCw0Log
-0LLQvtC50YLQuCDQsiAK0YfQuNGB0LvQviDQv9GA0LjQvtGA0LjRgtC10YLQvdGL0YUg0L/QvtGB
-0YLQsNCy0YnQuNC60L7Qsiwg0LrQvtGC0L7RgNGL0Lwg0LLRgdC10LPQtNCwINCy0L7QstGA0LXQ
-vNGPINC+0YLQtNCw0Y7RgiDQtNC10L3RjNCz0Lg/INCS0LfQsNC40LzQvtC00LXQudGB0YLQstC4
-0LUg0YEgCiLQs9GA0YPQv9C/0L7QuSDRgNC40YHQutCwIiAtINC/0L7RgtC10L3RhtC40LDQu9GM
-0L3Ri9C80Lgg0L3QtdC/0LvQsNGC0LXQu9GM0YnQuNC60LDQvNC4LiDQp9GC0L4g0LTQtdC70LDR
-gtGMINC30LAg0L3QtdC00LXQu9GOINC00L4g0L/Qu9Cw0YLQtdC20LA/IAo3LiDQn9C10YDQtdCz
-0L7QstC+0YDRiyDQv9C+INCy0L7Qt9Cy0YDQsNGC0YMg0LTQvtC70LPQvtCyLiDQntGCINC+0YDQ
-uNC10L3RgtCw0YbQuNC4INC90LAg0LrQu9C40LXQvdGC0LAg0Log0L7RgNC40LXQvdGC0LDRhtC4
-0Lgg0L3QsCDQstC+0LfQstGA0LDRgiDQtNC10L3QtdCzOiAK0YPQttC10YHRgtC+0YfQtdC90LjQ
-tSDQv9C10YDQtdCz0L7QstC+0YDQvtCyINGBINC60LDQttC00YvQvCDRjdGC0LDQv9C+0Lwg0L/R
-gNC+0YHRgNC+0YfQutC4INC00L7Qu9Cz0LAuINCa0LDQuiDRjdGE0YTQtdC60YLQuNCy0L3QviDQ
-stC10YHRgtC4INC/0LXRgNC10LPQvtCy0L7RgNGLINC/0L4gCtCy0L7Qt9Cy0YDQsNGC0YMg0L/R
-gNC+0YHRgNC+0YfQtdC90L3Ri9GFINC00L7Qu9Cz0L7Qsiwg0L3QtSAi0L/QtdGA0LXQtNCw0LLQ
-u9C40LLQsNGPIiDQutC70LjQtdC90YLQvtCyLiAKOC4g0J/Qu9Cw0YLQtdC2INC90LUg0L/QvtGB
-0YLRg9C/0LjQuy4g0KEg0LrQtdC8INC60L7QvdGC0LDQutGC0LjRgNC+0LLQsNGC0Ywg0L/QviDQ
-v9C+0LLQvtC00YMg0L7Qv9C70LDRgtGLLiDQntGB0L7QsdC10L3QvdC+0YHRgtC4INC90LDQv9C+
-0LzQuNC90LDQvdC40Y8g0L4gCtC/0YDQvtGB0YDQvtGH0LrQtSDQv9C70LDRgtC10LbQsC4g0JrQ
-sNC6INC/0L7Qu9GD0YfQuNGC0Ywg0YMg0LrQu9C40LXQvdGC0LAg0L7QsdGP0LfQsNGC0LXQu9GM
-0YHRgtCy0L4g0L4g0YHRgNC+0LrQsNGFINC/0L7Qs9Cw0YjQtdC90LjRjyDQtNC+0LvQs9CwLiAK
-OS4g0JTQu9C40YLQtdC70YzQvdCw0Y8g0LfQsNC00LXRgNC20LrQsCDQvtC/0LvQsNGC0YsuINCa
-0LDQuiDRgdC+0LfQtNCw0YLRjCDQtNC40YHQutC+0LzRhNC+0YDRgiDQtNC70Y8g0LTQvtC70LbQ
-vdC40LrQsC4g0KHRhtC10L3QsNGA0LjQuCDQv9C10YDQtdCz0L7QstC+0YDQvtCyIArQviDQstC+
-0LfQstGA0LDRgtC1INC00L7Qu9Cz0LAg0Lgg0L3QsNC40LHQvtC70LXQtSDRjdGE0YTQtdC60YLQ
-uNCy0L3Ri9C1INGA0LXRiNC10L3QuNGPLiDQn9GA0L7Rj9GB0L3QtdC90LjQtSDQvtCx0YrQtdC6
-0YLQuNCy0L3QvtC5INC/0YDQuNGH0LjQvdGLINC4INGB0LrRgNGL0YLRi9GFIArQvNC+0YLQuNCy
-0L7QsiDQvdC10L/Qu9Cw0YLQtdC20LAuINCa0LDQuiDRgNCw0LHQvtGC0LDRgtGMINGBINGC0LjQ
-v9C40YfQvdGL0LzQuCDQvtGC0LPQvtCy0L7RgNC60LDQvNC4INC4INGD0LvQvtCy0LrQsNC80Lgg
-0LTQvtC70LbQvdC40LrQsD8g0JrQsNC6INCy0LXRgNC90YPRgtGMIArQtNC10L3RjNCz0Lgg0Lgg
-0L3QtSAi0L/QtdGA0LXQtNCw0LLQuNGC0YwiINC60LvQuNC10L3RgtCwLiAKMTAuINCi0LjQv9GL
-INC90LXQv9C70LDRgtC10LvRjNGJ0LjQutC+0LIuINCh0YLRgNCw0YLQtdCz0LjQuCDRgNCw0LHQ
-vtGC0Ysg0YEg0YDQsNC30L3Ri9C80Lgg0YLQuNC/0LDQvNC4INC00L7Qu9C20L3QuNC60L7Qsi4g
-0J/RgNC40LXQvNC70LXQvNGL0LUg0LggCtC90LXQv9GA0LjQtdC80LvQtdC80YvQtSDQvNC10YLQ
-vtC00Ysg0YDQsNCx0L7RgtGLLiAKMTEuINCe0YLQutCw0Lcg0LrQu9C40LXQvdGC0LAg0L/Qu9Cw
-0YLQuNGC0YwuINCj0LvRjNGC0LjQvNCw0YLQuNCy0L3QvtC1INGC0YDQtdCx0L7QstCw0L3QuNC1
-INC6INC00L7Qu9C20L3QuNC60YMuIAoxMi4g0JzQtdGC0L7QtNGLINCy0LfRi9GB0LrQsNC90LjR
-jyDQsdC10LfQvdCw0LTQtdC20L3Ri9GFINC00L7Qu9Cz0L7Qsi4g0J/QvtC00YXQvtC00Ysg0Log
-0LLQt9GL0YHQutCw0L3QuNGOINCx0LXQt9C90LDQtNC10LbQvdGL0YUg0LTQvtC70LPQvtCyOiAK
-0L/QtdGA0LXQs9C+0LLQvtGA0L3Ri9C5LCDRgdGD0LTQtdCx0L3Ri9C5LCDQsNC00LzQuNC90LjR
-gdGC0YDQsNGC0LjQstC90L4t0LrQvtGA0YDRg9C/0YbQuNC+0L3QvdGL0LkuINCa0LDQuiDQstGL
-0YHRgtGA0L7QuNGC0Ywg0LLQt9GL0YHQutCw0L3QuNC1IArQsdC10LfQvdCw0LTQtdC20L3QvtCz
-0L4g0LTQvtC70LPQsCDRgSDQv9C+0LzQvtGJ0YzRjiBQUi3RgdC+0L/RgNC+0LLQvtC20LTQtdC9
-0LjRjyDQstC30YvRgdC60LDQvdC40Y8/INCh0L7RgdGC0LDQstC70LXQvdC40LUg0Lgg0YDQtdCw
-0LvQuNC30LDRhtC40Y8gCtC/0YDQvtCz0YDQsNC80LzRiyDQstC+0LfQstGA0LDRgtCwINC30LDQ
-tNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmNGB0L/QvtC70YzQt9C+0LLQsNC90LjQtSDRg9Cz0YDQ
-vtC3INC4INGA0LDQt9C70LjRh9C90YvRhSDRgdGF0LXQvCDQv9C+0LPQsNGI0LXQvdC40Y8gCtC3
-0LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiAKCtCh0YLQvtC40LzQvtGB0YLRjCDRg9GH0LDRgdGC
-0LjRjzogMTc1MDAg0YDRg9Cx0LvQtdC5LgoK0JzQtdGB0YLQviDQv9GA0L7QstC10LTQtdC90LjR
-jzog0LwuINCR0LDRg9C80LDQvdGB0LrQsNGPLCDRg9C7LiDQkdCw0YPQvNCw0L3RgdC60LDRjywg
-0LQuNiwg0LHQuNC30L3QtdGBINGG0LXQvdGC0YAgItCS0LjQutGC0L7RgNC40Y8g0J/Qu9Cw0LfQ
-sCIuCtCSINGB0YLQvtC40LzQvtGB0YLRjCDQstGF0L7QtNC40YIg0LzQtdGC0L7QtNC40YfQtdGB
-0LrQuNC5INC80LDRgtC10YDQuNCw0LssINC+0LHQtdC00YssINC60L7RhNC1LdC/0LDRg9C30Yss
-INGB0LXRgNGC0LjRhNC40LrQsNGCLiAK0JjQvdC+0LPQvtGA0L7QtNC90LjQvCDRg9GH0LDRgdGC
-0L3QuNC60LDQvCDQv9C+0LzQvtCz0LDQtdC8INCyINCx0YDQvtC90LjRgNC+0LLQsNC90LjQuCDQ
-s9C+0YHRgtC40L3QuNGG0YsuCgrQmNC90YTQvtGA0LzQsNGG0LjRjyDQuCDRgNC10LPQuNGB0YLR
-gNCw0YbQuNGPOiA4ICg0OTUpIDkyMS0zMC0xNwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBT
-Ri5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IAoKTWFrZSBhbiBhcHAgdGhleSBjYW4ndCBsaXZl
-IHdpdGhvdXQKRW50ZXIgdGhlIEJsYWNrQmVycnkgRGV2ZWxvcGVyIENoYWxsZW5nZQpodHRwOi8v
-cC5zZi5uZXQvc2Z1L1JJTS1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hi,
+ 
+
+>-----Original Message-----
+>From: linux-omap-owner@vger.kernel.org 
+>[mailto:linux-omap-owner@vger.kernel.org] On Behalf Of 
+>Varadarajan, Charulatha
+>Sent: Friday, August 13, 2010 7:35 PM
+>To: linux-omap@vger.kernel.org
+>Cc: khilman@deeprootsystems.com; paul@pwsan.com; Cousson, 
+>Benoit; tony@atomide.com; grant.likely@secretlab.ca; 
+>dbrownell@users.sourceforge.net; 
+>spi-devel-general@lists.sourceforge.net; Nayak, Rajendra; 
+>Basak, Partha; Varadarajan, Charulatha; Raja, Govindraj
+>Subject: [PATCH 1/5] OMAP2420: McSPI: Add mcspi hwmod
+>
+>This patch updates the omap2420 hwmod data with the
+>McSPI info.
+>
+>Signed-off-by: Charulatha V <charu@ti.com>
+>Signed-off-by: Partha Basak <p-basak2@ti.com>
+>Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
+>---
+> arch/arm/mach-omap2/omap_hwmod_2420_data.c |  138 
+>++++++++++++++++++++++++++++
+> 1 files changed, 138 insertions(+), 0 deletions(-)
+>
+>diff --git a/arch/arm/mach-omap2/omap_hwmod_2420_data.c 
+>b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
+>index 3cc768e..7d1a0ff 100644
+>--- a/arch/arm/mach-omap2/omap_hwmod_2420_data.c
+>+++ b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
+>@@ -15,6 +15,7 @@
+> #include <mach/irqs.h>
+> #include <plat/cpu.h>
+> #include <plat/dma.h>
+>+#include <plat/mcspi.h>
+> 
+> #include "omap_hwmod_common_data.h"
+> 
+>@@ -33,6 +34,8 @@ static struct omap_hwmod omap2420_mpu_hwmod;
+> static struct omap_hwmod omap2420_iva_hwmod;
+> static struct omap_hwmod omap2420_l3_main_hwmod;
+> static struct omap_hwmod omap2420_l4_core_hwmod;
+>+static struct omap_hwmod omap2420_mcspi1_hwmod;
+>+static struct omap_hwmod omap2420_mcspi2_hwmod;
+> 
+> /* L3 -> L4_CORE interface */
+> static struct omap_hwmod_ocp_if omap2420_l3_main__l4_core = {
+>@@ -72,6 +75,42 @@ static struct omap_hwmod omap2420_l3_main_hwmod = {
+> 
+> static struct omap_hwmod omap2420_l4_wkup_hwmod;
+> 
+>+/* L4 CORE -> MCSPI1 interface */
+>+static struct omap_hwmod_addr_space omap2420_mcspi1_addr_space[] = {
+>+	{
+>+		.pa_start	= 0x48098000,
+>+		.pa_end		= 0x480980ff,
+>+		.flags		= ADDR_TYPE_RT,
+>+	},
+>+};
+
+Align all of them to one tab..
+
+>+
+>+static struct omap_hwmod_ocp_if omap2420_l4_core__mcspi1 = {
+>+	.master		= &omap2420_l4_core_hwmod,
+>+	.slave		= &omap2420_mcspi1_hwmod,
+>+	.clk		= "mcspi1_ick",
+>+	.addr		= omap2420_mcspi1_addr_space,
+>+	.addr_cnt	= ARRAY_SIZE(omap2420_mcspi1_addr_space),
+>+	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+>+};
+>+
+>+/* L4 CORE -> MCSPI2 interface */
+>+static struct omap_hwmod_addr_space omap2420_mcspi2_addr_space[] = {
+>+	{
+>+		.pa_start	= 0x4809a000,
+>+		.pa_end		= 0x4809a0ff,
+>+		.flags		= ADDR_TYPE_RT,
+>+	},
+>+};
+>+
+
+Ditto align to one tab
+
+>+static struct omap_hwmod_ocp_if omap2420_l4_core__mcspi2 = {
+>+	.master		= &omap2420_l4_core_hwmod,
+>+	.slave		= &omap2420_mcspi2_hwmod,
+>+	.clk		= "mcspi2_ick",
+>+	.addr		= omap2420_mcspi2_addr_space,
+>+	.addr_cnt	= ARRAY_SIZE(omap2420_mcspi2_addr_space),
+>+	.user		= OCP_USER_MPU | OCP_USER_SDMA,
+>+};
+>+
+> /* L4_CORE -> L4_WKUP interface */
+> static struct omap_hwmod_ocp_if omap2420_l4_core__l4_wkup = {
+> 	.master	= &omap2420_l4_core_hwmod,
+>@@ -165,12 +204,111 @@ static struct omap_hwmod omap2420_iva_hwmod = {
+> 	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP2420)
+> };
+> 
+>+/* SPI common */
+>+static struct omap_hwmod_class_sysconfig omap2420_mcspi_sysc = {
+>+	.rev_offs	= 0x0000,
+>+	.sysc_offs	= 0x0010,
+>+	.syss_offs	= 0x0014,
+>+	.sysc_flags	= (SYSC_HAS_CLOCKACTIVITY | SYSC_HAS_SIDLEMODE |
+>+				SYSC_HAS_ENAWAKEUP | 
+>SYSC_HAS_SOFTRESET |
+>+				SYSC_HAS_AUTOIDLE),
+>+	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+>+	.sysc_fields    = &omap_hwmod_sysc_type1,
+>+};
+>+
+>+static struct omap_hwmod_class omap2420_mcspi_class = {
+>+	.name = "mcspi",
+>+	.sysc = &omap2420_mcspi_sysc,
+>+};
+>+
+>+/* SPI1 */
+>+static struct omap_hwmod_irq_info omap2420_mcspi1_mpu_irqs[] = {
+>+	{ .irq = INT_24XX_SPI1_IRQ }, /* 65 */
+>+};
+>+
+>+static struct omap_hwmod_dma_info omap2420_mcspi1_sdma_reqs[] = {
+>+	{ .name = "rx0", .dma_req = OMAP24XX_DMA_SPI1_RX0 }, /* 35 */
+>+	{ .name = "rx1", .dma_req = OMAP24XX_DMA_SPI1_RX1 }, /* 37 */
+>+	{ .name = "rx2", .dma_req = OMAP24XX_DMA_SPI1_RX2 }, /* 39 */
+>+	{ .name = "rx3", .dma_req = OMAP24XX_DMA_SPI1_RX3 }, /* 41 */
+>+	{ .name = "tx0", .dma_req = OMAP24XX_DMA_SPI1_TX0 }, /* 34 */
+>+	{ .name = "tx1", .dma_req = OMAP24XX_DMA_SPI1_TX1 }, /* 36 */
+>+	{ .name = "tx2", .dma_req = OMAP24XX_DMA_SPI1_TX2 }, /* 38 */
+>+	{ .name = "tx3", .dma_req = OMAP24XX_DMA_SPI1_TX3 }, /* 40 */
+>+};
+>+
+>+static struct omap_hwmod_ocp_if *omap2420_mcspi1_slaves[] = {
+>+	&omap2420_l4_core__mcspi1,
+>+};
+>+
+>+static struct omap_hwmod omap2420_mcspi1_hwmod = {
+>+	.name		= "mcspi1_hwmod",
+>+	.mpu_irqs	= omap2420_mcspi1_mpu_irqs,
+>+	.mpu_irqs_cnt	= ARRAY_SIZE(omap2420_mcspi1_mpu_irqs),
+>+	.sdma_reqs	= omap2420_mcspi1_sdma_reqs,
+>+	.sdma_reqs_cnt	= ARRAY_SIZE(omap2420_mcspi1_sdma_reqs),
+>+	.main_clk	= "mcspi1_fck",
+>+	.prcm		= {
+>+		.omap2 = {
+>+			.module_offs = CORE_MOD,
+>+			.prcm_reg_id = 1,
+>+			.module_bit = OMAP24XX_EN_MCSPI1_SHIFT,
+>+			.idlest_reg_id = 1,
+>+			.idlest_idle_bit = OMAP24XX_EN_MCSPI1_SHIFT,
+>+		},
+>+	},
+>+	.slaves		= omap2420_mcspi1_slaves,
+>+	.slaves_cnt	= ARRAY_SIZE(omap2420_mcspi1_slaves),
+>+	.class		= &omap2420_mcspi_class,
+>+	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP2420),
+>+};
+>+
+>+/* SPI2 */
+>+static struct omap_hwmod_irq_info omap2420_mcspi2_mpu_irqs[] = {
+>+	{ .irq = INT_24XX_SPI2_IRQ }, /* 66 */
+>+};
+>+
+>+static struct omap_hwmod_dma_info omap2420_mcspi2_sdma_reqs[] = {
+>+	{ .name = "rx0", .dma_req = OMAP24XX_DMA_SPI2_RX0 }, /* 43 */
+>+	{ .name = "rx1", .dma_req = OMAP24XX_DMA_SPI2_RX1 }, /* 45 */
+>+	{ .name = "tx0", .dma_req = OMAP24XX_DMA_SPI2_TX0 }, /* 42 */
+>+	{ .name = "tx1", .dma_req = OMAP24XX_DMA_SPI2_TX1 }, /* 44 */
+>+};
+>+
+>+static struct omap_hwmod_ocp_if *omap2420_mcspi2_slaves[] = {
+>+	&omap2420_l4_core__mcspi2,
+>+};
+>+
+>+static struct omap_hwmod omap2420_mcspi2_hwmod = {
+>+	.name		= "mcspi2_hwmod",
+>+	.mpu_irqs	= omap2420_mcspi2_mpu_irqs,
+>+	.mpu_irqs_cnt	= ARRAY_SIZE(omap2420_mcspi2_mpu_irqs),
+>+	.sdma_reqs	= omap2420_mcspi2_sdma_reqs,
+>+	.sdma_reqs_cnt	= ARRAY_SIZE(omap2420_mcspi2_sdma_reqs),
+>+	.main_clk	= "mcspi2_fck",
+>+	.prcm		= {
+>+		.omap2 = {
+>+			.module_offs = CORE_MOD,
+>+			.prcm_reg_id = 1,
+>+			.module_bit = OMAP24XX_EN_MCSPI2_SHIFT,
+>+			.idlest_reg_id = 1,
+>+			.idlest_idle_bit = OMAP24XX_EN_MCSPI2_SHIFT,
+>+		},
+>+	},
+>+	.slaves		= omap2420_mcspi2_slaves,
+>+	.slaves_cnt	= ARRAY_SIZE(omap2420_mcspi2_slaves),
+>+	.class		= &omap2420_mcspi_class,
+>+	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP2420),
+>+};
+>+
+> static __initdata struct omap_hwmod *omap2420_hwmods[] = {
+> 	&omap2420_l3_main_hwmod,
+> 	&omap2420_l4_core_hwmod,
+> 	&omap2420_l4_wkup_hwmod,
+> 	&omap2420_mpu_hwmod,
+> 	&omap2420_iva_hwmod,
+>+	&omap2420_mcspi1_hwmod,
+>+	&omap2420_mcspi2_hwmod,
+> 	NULL,
+> };
+> 
+>-- 
+>1.6.3.3
+>
+>--
+>To unsubscribe from this list: send the line "unsubscribe 
+>linux-omap" in
+>the body of a message to majordomo@vger.kernel.org
+>More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>

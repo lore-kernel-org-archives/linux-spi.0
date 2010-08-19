@@ -1,130 +1,349 @@
-From: "Varadarajan, Charulatha" <charu@ti.com>
-Subject: RE: [PATCH 1/5] OMAP2420: McSPI: Add mcspi hwmod
-Date: Thu, 19 Aug 2010 19:03:43 +0530
-Message-ID: <EAF47CD23C76F840A9E7FCE10091EFAB02C6722CF9@dbde02.ent.ti.com>
-References: <1281708323-18989-1-git-send-email-charu@ti.com>
- <1281708323-18989-2-git-send-email-charu@ti.com>
- <E0D41E29EB0DAC4E9F3FF173962E9E940270CAEEB4@dbde02.ent.ti.com>
+From: Unknown <unknown@unknown.invalid>
+Subject: [SPAM] Заключение и реализация внешнеторговой сделки
+Date: Thu, 19 Aug 2010 18:21:32 +0400
+Message-ID: <1564353349.20100819182132@listseminarov.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "khilman@deeprootsystems.com" <khilman@deeprootsystems.com>,
-	"paul@pwsan.com" <paul@pwsan.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	"tony@atomide.com" <tony@atomide.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"dbrownell@users.sourceforge.net" <dbrownell@users.sourceforge.net>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"Nayak, Rajendra"
-	<IMCEAEX-_O=TI_OU=EXCHANGE+20ADMINISTRATIVE+20GROUP+20+28FYDIBOHF23SPDLT+29_CN=RECIPIENTS_CN=X0016154@dlee86.itg.ti.com>,
-	"Basak, Partha" <p-basak2@ti.com>,
-	"Raja, Govindraj" <govindraj.raja@ti.com>
-To: "Kalliguddi, Hema" <hemahk@ti.com>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <E0D41E29EB0DAC4E9F3FF173962E9E940270CAEEB4@dbde02.ent.ti.com>
-Content-Language: en-US
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============9102430273486952887=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?utf-8?Q?=D0=9E=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5_=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=8B=D1=85_=D0=B3=D1=80=D1=83=D0=B7=D0=
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hema,
+This is a multi-part message in MIME format.
 
-> 
-> 
-> >-----Original Message-----
-> >From: linux-omap-owner@vger.kernel.org
-> >[mailto:linux-omap-owner@vger.kernel.org] On Behalf Of
-> >Varadarajan, Charulatha
-> >Sent: Friday, August 13, 2010 7:35 PM
-> >To: linux-omap@vger.kernel.org
-> >Cc: khilman@deeprootsystems.com; paul@pwsan.com; Cousson,
-> >Benoit; tony@atomide.com; grant.likely@secretlab.ca;
-> >dbrownell@users.sourceforge.net;
-> >spi-devel-general@lists.sourceforge.net; Nayak, Rajendra;
-> >Basak, Partha; Varadarajan, Charulatha; Raja, Govindraj
-> >Subject: [PATCH 1/5] OMAP2420: McSPI: Add mcspi hwmod
-> >
-> >This patch updates the omap2420 hwmod data with the
-> >McSPI info.
-> >
-> >Signed-off-by: Charulatha V <charu@ti.com>
-> >Signed-off-by: Partha Basak <p-basak2@ti.com>
-> >Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
-> >---
-> > arch/arm/mach-omap2/omap_hwmod_2420_data.c |  138
-> >++++++++++++++++++++++++++++
-> > 1 files changed, 138 insertions(+), 0 deletions(-)
-> >
-> >diff --git a/arch/arm/mach-omap2/omap_hwmod_2420_data.c
-> >b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
-> >index 3cc768e..7d1a0ff 100644
-> >--- a/arch/arm/mach-omap2/omap_hwmod_2420_data.c
-> >+++ b/arch/arm/mach-omap2/omap_hwmod_2420_data.c
-> >@@ -15,6 +15,7 @@
-> > #include <mach/irqs.h>
-> > #include <plat/cpu.h>
-> > #include <plat/dma.h>
-> >+#include <plat/mcspi.h>
-> >
-> > #include "omap_hwmod_common_data.h"
-> >
-> >@@ -33,6 +34,8 @@ static struct omap_hwmod omap2420_mpu_hwmod;
-> > static struct omap_hwmod omap2420_iva_hwmod;
-> > static struct omap_hwmod omap2420_l3_main_hwmod;
-> > static struct omap_hwmod omap2420_l4_core_hwmod;
-> >+static struct omap_hwmod omap2420_mcspi1_hwmod;
-> >+static struct omap_hwmod omap2420_mcspi2_hwmod;
-> >
-> > /* L3 -> L4_CORE interface */
-> > static struct omap_hwmod_ocp_if omap2420_l3_main__l4_core = {
-> >@@ -72,6 +75,42 @@ static struct omap_hwmod omap2420_l3_main_hwmod = {
-> >
-> > static struct omap_hwmod omap2420_l4_wkup_hwmod;
-> >
-> >+/* L4 CORE -> MCSPI1 interface */
-> >+static struct omap_hwmod_addr_space omap2420_mcspi1_addr_space[] = {
-> >+	{
-> >+		.pa_start	= 0x48098000,
-> >+		.pa_end		= 0x480980ff,
-> >+		.flags		= ADDR_TYPE_RT,
-> >+	},
-> >+};
-> 
-> Align all of them to one tab..
+--===============9102430273486952887==
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-If you apply the patch, you would see them aligned to one tab.
- 
-> 
-> >+
-> >+static struct omap_hwmod_ocp_if omap2420_l4_core__mcspi1 = {
-> >+	.master		= &omap2420_l4_core_hwmod,
-> >+	.slave		= &omap2420_mcspi1_hwmod,
-> >+	.clk		= "mcspi1_ick",
-> >+	.addr		= omap2420_mcspi1_addr_space,
-> >+	.addr_cnt	= ARRAY_SIZE(omap2420_mcspi1_addr_space),
-> >+	.user		= OCP_USER_MPU | OCP_USER_SDMA,
-> >+};
-> >+
-> >+/* L4 CORE -> MCSPI2 interface */
-> >+static struct omap_hwmod_addr_space omap2420_mcspi2_addr_space[] = {
-> >+	{
-> >+		.pa_start	= 0x4809a000,
-> >+		.pa_end		= 0x4809a0ff,
-> >+		.flags		= ADDR_TYPE_RT,
-> >+	},
-> >+};
-> >+
-> 
-> Ditto align to one tab
+=D0=92=D0=9D=D0=95=D0=A8=D0=9D=D0=95=D0=A2=D0=9E=D0=A0=D0=93=D0=9E=D0=92=D0=
+=90=D0=AF =D0=A1=D0=94=D0=95=D0=9B=D0=9A=D0=90 =D0=B8 =D0=B5=D0=B5 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B5=20
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 2010.
 
-Ditto :)
+23 =D0=B0=D0=B2=D0=B3=D1=83=D1=81=D1=82=D0=B0 | =
+=D0=9C=D0=BE=D1=81=D0=BA=D0=B2=D0=B0
 
-> 
-> >+static struct omap_hwmod_ocp_if omap2420_l4_core__mcspi2 = {
-> >+	.master		= &omap2420_l4_core_hwmod,
-.
-.
-[snip]
-.
-.
+=D0=98=D0=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8F =D0=B8 =
+=D1=80=D0=B5=D0=B3=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=86=D0=B8=D1=8F: 8  =
+(495)  921 - 30 - 17
+
+=D0=92=D0=90=D0=96=D0=9D=D0=9E! =
+=D0=97=D0=B0=D0=BD=D1=8F=D1=82=D0=B8=D1=8F =
+=D0=BF=D1=80=D0=BE=D1=85=D0=BE=D0=B4=D1=8F=D1=82 =D0=B2 =
+=D1=83=D1=87=D0=B5=D0=B1=D0=BD=D0=BE=D0=B9 =
+=D0=B0=D1=83=D0=B4=D0=B8=D1=82=D0=BE=D1=80=D0=B8=D0=B8 =D1=81 =
+=D0=BA=D0=BE=D0=BD=D0=B4=D0=B8=D1=86=D0=B8=D0=BE=D0=BD=D0=B8=D1=80=D0=BE=D0=
+=B2=D0=B0=D0=BD=D0=BD=D1=8B=D0=BC=20
+=D0=BF=D1=80=D0=BE=D1=85=D0=BB=D0=B0=D0=B4=D0=BD=D1=8B=D0=BC =
+=D0=B2=D0=BE=D0=B7=D0=B4=D1=83=D1=85=D0=BE=D0=BC!
+
+=D0=92 =D0=BF=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D0=B5:
+
+1. =D0=9E=D1=80=D0=B3=D0=B0=D0=BD=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=B8 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D0=
+=BE=D0=B9 =D1=81=D0=B4=D0=B5=D0=BB=D0=BA=D0=B8 =D0=BD=D0=B0 =
+=D0=BC=D0=B5=D0=B6=D0=B4=D1=83=D0=BD=D0=B0=D1=80=D0=BE=D0=B4=D0=BD=D1=8B=D1=
+=85 =D1=80=D1=8B=D0=BD=D0=BA=D0=B0=D1=85.=20
+=D0=A0=D0=B0=D0=B7=D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=BA=D0=B0 =
+=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=B5=D0=B3=D0=B8=D0=B8 =
+=D0=BA=D0=BE=D0=BC=D0=BF=D0=B0=D0=BD=D0=B8=D0=B8 =D0=B2 =
+=D0=BE=D0=B1=D0=BB=D0=B0=D1=81=D1=82=D0=B8 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=8D=D0=BA=D0=BE=D0=BD=D0=BE=D0=BC=D0=
+=B8=D1=87=D0=B5=D1=81=D0=BA=D0=BE=D0=B9 =
+=D0=B4=D0=B5=D1=8F=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+(=D0=92=D0=AD=D0=94).=20
+=D0=9E=D1=86=D0=B5=D0=BD=D0=BA=D0=B0 =D0=B4=D0=BE=D0=BB=D0=B8 =D0=B8 =
+=D0=BC=D0=B5=D1=81=D1=82=D0=B0 =
+=D0=BA=D0=BE=D0=BC=D0=BF=D0=B0=D0=BD=D0=B8=D0=B8 =D0=B2 =
+=D0=BA=D0=BE=D0=BD=D0=BA=D1=80=D0=B5=D1=82=D0=BD=D0=BE=D0=BC =
+=D1=81=D0=B5=D0=B3=D0=BC=D0=B5=D0=BD=D1=82=D0=B5 =
+=D1=80=D1=8B=D0=BD=D0=BA=D0=B0.=20
+=D0=98=D1=81=D1=82=D0=BE=D1=87=D0=BD=D0=B8=D0=BA=D0=B8 =
+=D0=B8=D0=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D0=B8 =
+=D0=B4=D0=BB=D1=8F =D0=B0=D0=BD=D0=B0=D0=BB=D0=B8=D0=B7=D0=B0 =
+=D1=80=D1=8B=D0=BD=D0=BA=D0=B0 =D0=B8 =
+=D0=BA=D0=BE=D0=BD=D0=BA=D1=83=D1=80=D0=B5=D0=BD=D1=82=D0=BE=D0=B2.=20
+=D0=9C=D0=B5=D1=81=D1=82=D0=BE =D0=B8 =D1=80=D0=BE=D0=BB=D1=8C =
+=D1=81=D0=BB=D1=83=D0=B6=D0=B1=D1=8B =D0=92=D0=AD=D0=94 =D0=B2 =
+=D0=BE=D1=80=D0=B3=D0=B0=D0=BD=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=BE=D0=BD=D0=
+=BD=D0=BE=D0=B9 =D1=81=D1=82=D1=80=D1=83=D0=BA=D1=82=D1=83=D1=80=D0=B5 =
+=D0=BA=D0=BE=D0=BC=D0=BF=D0=B0=D0=BD=D0=B8=D0=B8.=20
+=D0=97=D0=B0=D0=B4=D0=B0=D1=87=D0=B8, =
+=D1=84=D1=83=D0=BD=D0=BA=D1=86=D0=B8=D0=B8, =
+=D0=B4=D0=BE=D0=BB=D0=B6=D0=BD=D0=BE=D1=81=D1=82=D0=BD=D1=8B=D0=B5 =
+=D0=BE=D0=B1=D1=8F=D0=B7=D0=B0=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D1=81=D0=BE=D1=82=D1=80=D1=83=D0=B4=D0=BD=D0=B8=D0=BA=D0=BE=D0=B2 =
+=D1=81=D0=BB=D1=83=D0=B6=D0=B1=D1=8B =D0=92=D0=AD=D0=94.
+=D0=98=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=
+=B5 =
+=D0=B8=D0=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D0=BE=D0=BD=D0=BD=D1=
+=8B=D1=85 =D1=82=D0=B5=D1=85=D0=BD=D0=BE=D0=BB=D0=BE=D0=B3=D0=B8=D0=B9 =
+=D0=B2=D0=BE =D0=92=D0=AD=D0=94.=20
+=D0=9A=D0=BB=D0=B0=D1=81=D1=81=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=86=D0=B8=D1=
+=8F =D0=B8=D0=BD=D0=BE=D1=81=D1=82=D1=80=D0=B0=D0=BD=D0=BD=D1=8B=D1=85 =
+=D0=BA=D0=BE=D0=BC=D0=BF=D0=B0=D0=BD=D0=B8=D0=B9.=20
+=D0=9E=D1=81=D0=BE=D0=B1=D0=B5=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D0=B2=D1=8B=D0=B1=D0=BE=D1=80=D0=B0 =D0=B8 =
+=D0=BF=D0=BE=D1=81=D1=82=D1=80=D0=BE=D0=B5=D0=BD=D0=B8=D1=8F =
+=D0=B2=D0=B7=D0=B0=D0=B8=D0=BC=D0=BE=D0=BE=D1=82=D0=BD=D0=BE=D1=88=D0=B5=D0=
+=BD=D0=B8=D0=B9 =D1=81 =
+=D1=80=D0=B0=D0=B7=D0=BB=D0=B8=D1=87=D0=BD=D1=8B=D0=BC=D0=B8 =
+=D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D1=8F=D0=BC=D0=B8 =
+=D0=B8=D0=BD=D0=BE=D1=81=D1=82=D1=80=D0=B0=D0=BD=D0=BD=D1=8B=D1=85=20
+=D0=BF=D0=B0=D1=80=D1=82=D0=BD=D1=91=D1=80=D0=BE=D0=B2.
+=D0=A0=D0=B8=D1=81=D0=BA=D0=B8 =D0=B2=D0=BE =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=8D=D0=BA=D0=BE=D0=BD=D0=BE=D0=BC=D0=
+=B8=D1=87=D0=B5=D1=81=D0=BA=D0=BE=D0=B9 =
+=D0=B4=D0=B5=D1=8F=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8,=
+ =D0=B8=D1=85 =
+=D0=BA=D0=BB=D0=B0=D1=81=D1=81=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=86=D0=B8=D1=
+=8F =D0=B8 =D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D1=8B =
+=D0=BC=D0=B8=D0=BD=D0=B8=D0=BC=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=B8.=20
+
+2. =D0=9E=D1=81=D0=BE=D0=B1=D0=B5=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D1=80=D0=B5=D0=B0=D0=BB=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=B8 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D0=
+=BE=D0=B9 =D1=81=D0=B4=D0=B5=D0=BB=D0=BA=D0=B8.=20
+=D0=92=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=8D=D0=BA=D0=BE=D0=BD=D0=BE=D0=BC=D0=
+=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B0=D1=8F =
+=D1=81=D0=B4=D0=B5=D0=BB=D0=BA=D0=B0 - =D1=8D=D1=82=D0=B0=D0=BF=D1=8B =
+=D0=B8 =D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D1=8B =D0=B5=D1=91 =
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F.=20
+=D0=A1=D1=82=D1=80=D1=83=D0=BA=D1=82=D1=83=D1=80=D0=B0 =D0=B8 =
+=D1=81=D0=BE=D0=B4=D0=B5=D1=80=D0=B6=D0=B0=D0=BD=D0=B8=D0=B5 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D0=
+=BE=D0=B3=D0=BE =D0=BA=D0=BE=D0=BD=D1=82=D1=80=D0=B0=D0=BA=D1=82=D0=B0 =
+=D0=BA=D1=83=D0=BF=D0=BB=D0=B8-=D0=BF=D1=80=D0=BE=D0=B4=D0=B0=D0=B6=D0=B8=
+=20
+=D0=9E=D0=BF=D0=BB=D0=B0=D1=82=D0=B0 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D1=81=D0=B4=D0=B5=D0=BB=D0=BE=D0=BA.=20
+=D0=A1=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=B0 =
+=D0=B2=D0=B0=D0=BB=D1=8E=D1=82=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D1=
+=8F =D0=B8 =D0=B2=D0=B0=D0=BB=D1=8E=D1=82=D0=BD=D0=BE=D0=B3=D0=BE =
+=D0=BA=D0=BE=D0=BD=D1=82=D1=80=D0=BE=D0=BB=D1=8F =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D0=BE=D0=BF=D0=B5=D1=80=D0=B0=D1=86=D0=B8=D0=B9.=20
+=D0=9D=D0=B0=D0=BB=D0=BE=D0=B3=D0=BE=D0=BE=D0=B1=D0=BB=D0=BE=D0=B6=D0=B5=D0=
+=BD=D0=B8=D0=B5 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D0=BE=D0=BF=D0=B5=D1=80=D0=B0=D1=86=D0=B8=D0=B9.=20
+=D0=9F=D1=80=D0=BE=D0=B1=D0=BB=D0=B5=D0=BC=D1=8B =
+=D0=B2=D0=BE=D0=B7=D0=BC=D0=B5=D1=89=D0=B5=D0=BD=D0=B8=D1=8F =
+=D0=9D=D0=94=D0=A1.=20
+=D0=9E=D1=81=D0=BE=D0=B1=D0=B5=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D0=BF=D0=BE=D0=B4=D0=B3=D0=BE=D1=82=D0=BE=D0=B2=D0=BA=D0=B8 =
+=D0=BE=D1=81=D0=BD=D0=BE=D0=B2=D0=BD=D1=8B=D1=85 =
+=D0=B4=D0=BE=D0=BA=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D0=BE=D0=B2 =
+=D0=B4=D0=BB=D1=8F =
+=D1=80=D0=B5=D0=B0=D0=BB=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=B8 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D0=
+=BE=D0=B9 =D1=81=D0=B4=D0=B5=D0=BB=D0=BA=D0=B8 =D0=B8=20
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =
+=D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=BE=D0=B2: =
+=D0=B8=D0=BD=D0=B2=D0=BE=D0=B9=D1=81=D1=8B; =
+=D1=81=D0=BF=D0=B5=D1=86=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=86=D0=B8=D0=B8;=
+ =D1=83=D0=BF=D0=B0=D0=BA=D0=BE=D0=B2=D0=BE=D1=87=D0=BD=D1=8B=D0=B5 =
+=D0=BB=D0=B8=D1=81=D1=82=D1=8B; =
+=D0=BC=D0=B5=D0=B6=D0=B4=D1=83=D0=BD=D0=B0=D1=80=D0=BE=D0=B4=D0=BD=D1=8B=D0=
+=B5=20
+=D1=82=D1=80=D0=B0=D0=BD=D1=81=D0=BF=D0=BE=D1=80=D1=82=D0=BD=D1=8B=D0=B5 =
+=D0=B4=D0=BE=D0=BA=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D1=8B; =
+=D1=81=D0=B5=D1=80=D1=82=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=82=D1=8B; =
+=D1=81=D0=B0=D0=BD=D0=B8=D1=82=D0=B0=D1=80=D0=BD=D0=BE-=D1=8D=D0=BF=D0=B8=
+=D0=B4=D0=B5=D0=BC=D0=B8=D0=BE=D0=BB=D0=BE=D0=B3=D0=B8=D1=87=D0=B5=D1=81=D0=
+=BA=D0=B8=D0=B5 =
+=D0=B7=D0=B0=D0=BA=D0=BB=D1=8E=D1=87=D0=B5=D0=BD=D0=B8=D1=8F; =
+=D0=BF=D1=80=D0=B0=D0=B9=D1=81-=D0=BB=D0=B8=D1=81=D1=82=D1=8B;
+=D1=8D=D0=BA=D1=81=D0=BF=D0=BE=D1=80=D1=82=D0=BD=D1=8B=D0=B5 =
+=D0=B4=D0=B5=D0=BA=D0=BB=D0=B0=D1=80=D0=B0=D1=86=D0=B8=D0=B8.
+
+3. =D0=9E=D1=81=D0=BE=D0=B1=D0=B5=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D0=B3=D1=80=D1=83=D0=B7=D0=BE=D0=B2 =D0=B2 =
+=D1=83=D1=81=D0=BB=D0=BE=D0=B2=D0=B8=D1=8F=D1=85=20
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=81=D0=BE=D1=8E=D0=B7=D0=B0.
+=D0=A2=D0=BE=D0=B2=D0=B0=D1=80=D0=BD=D0=B0=D1=8F =
+=D0=9D=D0=BE=D0=BC=D0=B5=D0=BD=D0=BA=D0=BB=D0=B0=D1=82=D1=83=D1=80=D0=B0 =
+=D0=92=D0=AD=D0=94 =
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D0=A1=D0=BE=D1=8E=D0=B7=D0=B0, =
+=D0=B2=D1=81=D1=82=D1=83=D0=BF=D0=B8=D0=B2=D1=88=D0=B0=D1=8F =D0=B2 =
+=D1=81=D0=B8=D0=BB=D1=83 =D1=81 01 =D1=8F=D0=BD=D0=B2=D0=B0=D1=80=D1=8F =
+2010 =D0=B3=D0=BE=D0=B4=D0=B0, =D0=B5=D0=B5=20
+=D0=BE=D1=81=D0=BD=D0=BE=D0=B2=D0=BD=D1=8B=D0=B5 =
+=D0=BE=D1=82=D0=BB=D0=B8=D1=87=D0=B8=D1=8F =D0=BE=D1=82 =D0=A2=D0=9D =
+=D0=92=D0=AD=D0=94 =D0=A0=D0=A4. =
+=D0=9E=D1=81=D0=BE=D0=B1=D0=B5=D0=BD=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE-=D1=82=D0=B0=D1=80=
+=D0=B8=D1=84=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D1=
+=8F =D0=BD=D0=B0=20
+=D1=82=D0=B5=D1=80=D1=80=D0=B8=D1=82=D0=BE=D1=80=D0=B8=D0=B8 =
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=81=D0=BE=D1=8E=D0=B7=D0=B0 =D1=81 01 =
+=D1=8F=D0=BD=D0=B2=D0=B0=D1=80=D1=8F 2010 =D0=B3=D0=BE=D0=B4=D0=B0.
+=D0=95=D0=B4=D0=B8=D0=BD=D0=BE=D0=B5 =
+=D0=BD=D0=B5=D1=82=D0=B0=D1=80=D0=B8=D1=84=D0=BD=D0=BE=D0=B5 =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=
+=B5 =D0=BD=D0=B0 =
+=D1=82=D0=B5=D1=80=D1=80=D0=B8=D1=82=D0=BE=D1=80=D0=B8=D0=B8 =
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=81=D0=BE=D1=8E=D0=B7=D0=B0 =D1=81 01 =
+=D1=8F=D0=BD=D0=B2=D0=B0=D1=80=D1=8F 2010 =D0=B3=D0=BE=D0=B4=D0=B0.
+=D0=A2=D0=B5=D1=85=D0=BD=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=BE=D0=B5 =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=
+=B5, =
+=D1=81=D0=B5=D1=80=D1=82=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=86=D0=B8=D1=8F,=
+ =D0=BF=D1=80=D0=B8=D0=BC=D0=B5=D0=BD=D0=B5=D0=BD=D0=B8=D0=B5 =
+=D1=81=D0=B0=D0=BD=D0=B8=D1=82=D0=B0=D1=80=D0=BD=D1=8B=D1=85, =
+=D0=B2=D0=B5=D1=82=D0=B5=D1=80=D0=B8=D0=BD=D0=B0=D1=80=D0=BD=D1=8B=D1=85 =
+=D0=B8=20
+=D1=84=D0=B8=D1=82=D0=BE=D1=81=D0=B0=D0=BD=D0=B8=D1=82=D0=B0=D1=80=D0=BD=D1=
+=8B=D1=85 =D0=BC=D0=B5=D1=80 =D0=BD=D0=B0 =
+=D1=82=D0=B5=D1=80=D1=80=D0=B8=D1=82=D0=BE=D1=80=D0=B8=D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=81=D0=BE=D1=8E=D0=B7=D0=B0 =D1=81 01 =
+=D1=8F=D0=BD=D0=B2=D0=B0=D1=80=D1=8F 2010 =D0=B3=D0=BE=D0=B4=D0=B0.
+
+4. =
+=D0=9D=D0=BE=D1=80=D0=BC=D0=B0=D1=82=D0=B8=D0=B2=D0=BD=D0=BE-=D0=BF=D1=80=
+=D0=B0=D0=B2=D0=BE=D0=B2=D0=B0=D1=8F =D0=B1=D0=B0=D0=B7=D0=B0 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D1=
+=8F =D0=92=D0=AD=D0=94. =D0=A2=D0=B0=D1=80=D0=B8=D1=84=D0=BD=D1=8B=D0=B5 =
+=D0=B8 =D0=BD=D0=B5=D1=82=D0=B0=D1=80=D0=B8=D1=84=D0=BD=D1=8B=D0=B5=20
+=D0=BC=D0=B5=D1=82=D0=BE=D0=B4=D1=8B =
+=D1=80=D0=B5=D0=B3=D1=83=D0=BB=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D1=
+=8F =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D1=81=D0=B4=D0=B5=D0=BB=D0=BE=D0=BA.=20
+=D0=9A=D0=BB=D0=B0=D1=81=D1=81=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=86=D0=B8=D1=
+=8F =D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=BE=D0=B2 =D0=B8 =
+=D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=BD=D0=B0=D1=8F =
+=D0=BD=D0=BE=D0=BC=D0=B5=D0=BD=D0=BA=D0=BB=D0=B0=D1=82=D1=83=D1=80=D0=B0 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=8D=D0=BA=D0=BE=D0=BD=D0=BE=D0=BC=D0=
+=B8=D1=87=D0=B5=D1=81=D0=BA=D0=BE=D0=B9 =
+=D0=B4=D0=B5=D1=8F=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8.=
+ =D0=A2=D0=BE=D0=B2=D0=B0=D1=80=D1=8B=20
+"=D0=B3=D1=80=D1=83=D0=BF=D0=BF=D1=8B =D1=80=D0=B8=D1=81=D0=BA=D0=B0" =
+=D0=B8 "=D0=B3=D1=80=D1=83=D0=BF=D0=BF=D1=8B =
+=D0=BF=D1=80=D0=B8=D0=BA=D1=80=D1=8B=D1=82=D0=B8=D1=8F".=20
+=D0=A1=D1=82=D1=80=D0=B0=D0=BD=D0=B0 =
+=D0=BF=D1=80=D0=BE=D0=B8=D1=81=D1=85=D0=BE=D0=B6=D0=B4=D0=B5=D0=BD=D0=B8=D1=
+=8F =D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=B0 =D0=B8 =
+=D1=81=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=B0 =
+=D0=BF=D1=80=D0=B5=D1=84=D0=B5=D1=80=D0=B5=D0=BD=D1=86=D0=B8=D0=B9 =
+=D0=A0=D0=A4. =D0=9A=D0=B0=D0=BA =
+=D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C =
+=D1=80=D0=B5=D0=B6=D0=B8=D0=BC=20
+=D0=BF=D1=80=D0=B5=D1=84=D0=B5=D1=80=D0=B5=D0=BD=D1=86=D0=B8=D0=B9 =
+=D0=B2 =D1=86=D0=B5=D0=BB=D1=8F=D1=85 =
+=D1=8D=D0=BA=D0=BE=D0=BD=D0=BE=D0=BC=D0=B8=D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D1=8B=D1=85 =
+=D0=BF=D0=BB=D0=B0=D1=82=D0=B5=D0=B6=D0=B5=D0=B9.=20
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=B0=D1=8F =
+=D1=81=D1=82=D0=BE=D0=B8=D0=BC=D0=BE=D1=81=D1=82=D1=8C =
+=D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=BE=D0=B2. =D0=9A=D0=B0=D0=BA =
+=D0=BF=D1=80=D0=B0=D0=B2=D0=B8=D0=BB=D1=8C=D0=BD=D0=BE =
+=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D0=B8=D1=82=D1=8C, =
+=D0=BF=D0=BE=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B8=D1=82=D1=8C =
+=D0=B8 =D0=BE=D1=82=D1=81=D1=82=D0=BE=D1=8F=D1=82=D1=8C =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D1=83=D1=8E=20
+=D1=81=D1=82=D0=BE=D0=B8=D0=BC=D0=BE=D1=81=D1=82=D1=8C. =
+=D0=9F=D0=BE=D1=80=D1=8F=D0=B4=D0=BE=D0=BA =
+=D1=80=D0=B0=D1=81=D1=87=D0=B5=D1=82=D0=B0 =D0=B8 =
+=D1=81=D1=80=D0=BE=D0=BA=D0=B8 =D1=83=D0=BF=D0=BB=D0=B0=D1=82=D1=8B =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D1=8B=D1=85 =
+=D0=BF=D0=BB=D0=B0=D1=82=D0=B5=D0=B6=D0=B5=D0=B9.=20
+=D0=94=D0=B5=D0=BA=D0=BB=D0=B0=D1=80=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=
+=B8=D0=B5 =D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B5 =
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D0=B3=D1=80=D1=83=D0=B7=D0=BE=D0=B2. =
+"=D0=A1=D0=B5=D1=80=D1=8B=D0=B5" =D1=81=D1=85=D0=B5=D0=BC=D1=8B =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE=20
+=D0=BE=D1=84=D0=BE=D1=80=D0=BC=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F. =
+=D0=9F=D1=80=D0=B5=D0=B4=D0=BF=D1=80=D0=B8=D0=BD=D0=B8=D0=BC=D0=B0=D1=82=D0=
+=B5=D0=BB=D1=8C=D1=81=D0=BA=D0=B8=D0=B5 =D0=B8 =
+=D1=82=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D1=8B=D0=B5 =
+=D1=80=D0=B8=D1=81=D0=BA=D0=B8 =D0=B8 =
+=D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D1=8B =D0=B8=D1=85 =
+=D0=BC=D0=B8=D0=BD=D0=B8=D0=BC=D0=B8=D0=B7=D0=B0=D1=86=D0=B8=D0=B8.=20
+=D0=A2=D0=B0=D0=BC=D0=BE=D0=B6=D0=B5=D0=BD=D0=BD=D1=8B=D0=B9 =
+=D0=BA=D0=BE=D0=BD=D1=82=D1=80=D0=BE=D0=BB=D1=8C =
+=D0=B2=D0=BD=D0=B5=D1=88=D0=BD=D0=B5=D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D1=
+=8B=D1=85 =D0=BE=D0=BF=D0=B5=D1=80=D0=B0=D1=86=D0=B8=D0=B9 =D0=B8 =
+=D0=BE=D0=BF=D1=82=D0=BE=D0=B2=D0=BE-=D1=80=D0=BE=D0=B7=D0=BD=D0=B8=D1=87=
+=D0=BD=D0=BE=D0=B9 =D1=82=D0=BE=D1=80=D0=B3=D0=BE=D0=B2=D0=BB=D0=B8 =
+=D0=B8=D0=BC=D0=BF=D0=BE=D1=80=D1=82=D0=BD=D1=8B=D0=BC=D0=B8
+=D1=82=D0=BE=D0=B2=D0=B0=D1=80=D0=B0=D0=BC=D0=B8.=20
+
+=D0=A1=D1=82=D0=BE=D0=B8=D0=BC=D0=BE=D1=81=D1=82=D1=8C =
+=D1=83=D1=87=D0=B0=D1=81=D1=82=D0=B8=D1=8F: 8000 =
+=D1=80=D1=83=D0=B1=D0=BB=D0=B5=D0=B9.
+
+=D0=9C=D0=B5=D1=81=D1=82=D0=BE =
+=D0=BF=D1=80=D0=BE=D0=B2=D0=B5=D0=B4=D0=B5=D0=BD=D0=B8=D1=8F: =D0=BC. =
+=D0=91=D0=B0=D1=83=D0=BC=D0=B0=D0=BD=D1=81=D0=BA=D0=B0=D1=8F, ==D1=83=D0=BB. =
+=D0=91=D0=B0=D1=83=D0=BC=D0=B0=D0=BD=D1=81=D0=BA=D0=B0=D1=8F, =D0=B4.6, =
+=D0=B1=D0=B8=D0=B7=D0=BD=D0=B5=D1=81 =D1=86=D0=B5=D0=BD=D1=82=D1=80 =
+"=D0=92=D0=B8=D0=BA=D1=82=D0=BE=D1=80=D0=B8=D1=8F =
+=D0=9F=D0=BB=D0=B0=D0=B7=D0=B0".
+=D0=92 =D1=81=D1=82=D0=BE=D0=B8=D0=BC=D0=BE=D1=81=D1=82=D1=8C =
+=D0=B2=D1=85=D0=BE=D0=B4=D0=B8=D1=82 =
+=D0=BC=D0=B5=D1=82=D0=BE=D0=B4=D0=B8=D1=87=D0=B5=D1=81=D0=BA=D0=B8=D0=B9 =
+=D0=BC=D0=B0=D1=82=D0=B5=D1=80=D0=B8=D0=B0=D0=BB, =
+=D0=BE=D0=B1=D0=B5=D0=B4=D1=8B, =
+=D0=BA=D0=BE=D1=84=D0=B5-=D0=BF=D0=B0=D1=83=D0=B7=D1=8B, =
+=D1=81=D0=B5=D1=80=D1=82=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=82.=20
+=D0=98=D0=BD=D0=BE=D0=B3=D0=BE=D1=80=D0=BE=D0=B4=D0=BD=D0=B8=D0=BC =
+=D1=83=D1=87=D0=B0=D1=81=D1=82=D0=BD=D0=B8=D0=BA=D0=B0=D0=BC =
+=D0=BF=D0=BE=D0=BC=D0=BE=D0=B3=D0=B0=D0=B5=D0=BC =D0=B2 =
+=D0=B1=D1=80=D0=BE=D0=BD=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B8 =
+=D0=B3=D0=BE=D1=81=D1=82=D0=B8=D0=BD=D0=B8=D1=86=D1=8B.
+
+=D0=98=D0=BD=D1=84=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8F =D0=B8 =
+=D1=80=D0=B5=D0=B3=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=86=D0=B8=D1=8F: 8  =
+(495)  921 - 30 - 17
+
+
+--===============9102430273486952887==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by 
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev 
+--===============9102430273486952887==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============9102430273486952887==--

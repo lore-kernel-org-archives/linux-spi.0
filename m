@@ -1,30 +1,112 @@
-From: 13642347266-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Thu, 19 Aug 2010 00:04:47 +0800
-Message-ID: <E1Oll8e-0003KX-GQ@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Varadarajan, Charulatha" <charu@ti.com>
+Subject: RE: [PATCH 0/5] OMAP: McSPI: Implement McSPI in HWMOD way
+Date: Thu, 19 Aug 2010 12:39:27 +0530
+Message-ID: <EAF47CD23C76F840A9E7FCE10091EFAB02C6722A10@dbde02.ent.ti.com>
+References: <1281708323-18989-1-git-send-email-charu@ti.com>
+ <AANLkTikS0tX3GA+1LXnqbZYuuWteOTq7dH13i-icKYD2@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	"khilman@deeprootsystems.com" <khilman@deeprootsystems.com>,
+	"paul@pwsan.com" <paul@pwsan.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	"tony@atomide.com" <tony@atomide.com>,
+	"dbrownell@users.sourceforge.net" <dbrownell@users.sourceforge.net>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"Nayak, Rajendra"
+	<IMCEAEX-_O=TI_OU=EXCHANGE+20ADMINISTRATIVE+20GROUP+20+28FYDIBOHF23SPDLT+29_CN=RECIPIENTS_CN=X0016154@dlee86.itg.ti.com>,
+	"Basak, Partha" <p-basak2@ti.com>,
+	"Raja, Govindraj" <govindraj.raja@ti.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <AANLkTikS0tX3GA+1LXnqbZYuuWteOTq7dH13i-icKYD2@mail.gmail.com>
+Content-Language: en-US
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
-w7eioaqhqsaxtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK27eioarGsaO7CiAgICgyKbnjuObStaGi
-uPfA4Lf+zvHStbeioaqhqsaxtci1yKGjCiAKyOfT0NDo0qqjrLu2063E+tPrztLBqs+1o7ogIAq4
-utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBT
-Ri5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IAoKTWFrZSBhbiBhcHAgdGhleSBjYW4ndCBsaXZl
-IHdpdGhvdXQKRW50ZXIgdGhlIEJsYWNrQmVycnkgRGV2ZWxvcGVyIENoYWxsZW5nZQpodHRwOi8v
-cC5zZi5uZXQvc2Z1L1JJTS1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+
+> -----Original Message-----
+> From: glikely@secretlab.ca [mailto:glikely@secretlab.ca] On Behalf Of
+> Grant Likely
+> Sent: Saturday, August 14, 2010 4:15 AM
+> To: Varadarajan, Charulatha
+> Cc: linux-omap@vger.kernel.org; khilman@deeprootsystems.com;
+> paul@pwsan.com; Cousson, Benoit; tony@atomide.com;
+> dbrownell@users.sourceforge.net; spi-devel-general@lists.sourceforge.=
+net;
+> Nayak, Rajendra; Basak, Partha; Raja, Govindraj
+> Subject: Re: [PATCH 0/5] OMAP: McSPI: Implement McSPI in HWMOD way
+>=20
+> On Fri, Aug 13, 2010 at 8:05 AM, Charulatha V <charu@ti.com> wrote:
+> > This patch series implements McSPI Module in HWMOD FW way
+> > and use the runtime PM layer.
+>=20
+> Hi Charulatha,
+>=20
+> I'll go through and review the patches, but I'm unfamiliar with HWMOD=
+=2E
+>  Is there a description of HWMOD that you can point me at?
+
+The following link could be of some help:
+http://omappedia.org/wiki/HWMOD#Steps_involved_in_HWMOD
+
+>=20
+> Thanks,
+> g.
+>=20
+> >
+> > This patch series is created on "origin/pm-wip/hwmods-omap4" with
+> > McSPI slave mode patches (url given below) on top of it.
+> > https://patchwork.kernel.org/patch/79677/
+> > Updated McSPI slave mode patches will be posted shortly by Govindra=
+j.
+> > McSPI slave mode patches were already discussed on open source mail=
+ing
+> > list and they are almost towards the end of final rebased version.
+> > Hence hwmod patches are created on top of McSPI slave mode patch
+> > series to avoid major rework later on.
+> >
+> > Benoit Cousson (1):
+> > =A0OMAP4 HWMOD: Add mcspi hwmods.
+> >
+> > Charulatha V (3):
+> > =A0OMAP2420: McSPI: Add mcspi hwmod
+> > =A0OMAP2430 : McSPI: Add mcspi hwmod data
+> > =A0OMAP3 HWMOD: Add mcspi hwmods.
+> >
+> > Govindraj.R (1):
+> > =A0OMAP McSPI: Adapt McSPI driver to use omap hwmod
+> >
+> > =A0arch/arm/mach-omap2/clock3xxx_data.c =A0 =A0 =A0 | =A0 =A04 +
+> > =A0arch/arm/mach-omap2/devices.c =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A023=
+3 +++++++++------------
+> ---
+> > =A0arch/arm/mach-omap2/omap_hwmod_2420_data.c | =A0138 ++++++++++++=
+++
+> > =A0arch/arm/mach-omap2/omap_hwmod_2430_data.c | =A0196 ++++++++++++=
+++++++++
+> > =A0arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | =A0252
+> +++++++++++++++++++++++++
+> > =A0arch/arm/mach-omap2/omap_hwmod_44xx_data.c | =A0244
+> +++++++++++++++++++++++++
+> > =A0arch/arm/plat-omap/include/plat/mcspi.h =A0 =A0| =A0 27 +++
+> > =A0drivers/spi/omap2_mcspi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+273 +++++++++------------
+> -------
+> > =A08 files changed, 1034 insertions(+), 333 deletions(-)
+> >
+> >
+>=20
+>=20
+>=20
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

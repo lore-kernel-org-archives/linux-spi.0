@@ -1,597 +1,158 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH] Topcliff: Update PCH_SPI driver to 2.6.35
-Date: Thu, 19 Aug 2010 09:31:58 +0200
-Message-ID: <AANLkTinue_L8-E8Jqz=dZ4jRcE-4=in-Wb7YS=iL0_KM@mail.gmail.com>
-References: <4C61EBAC.4000009@dsn.okisemi.com>
-	<AANLkTikyz_RVcCeKzf9m10xXDyKZm3+Yy7y+axZN+MMx@mail.gmail.com>
+From: =?utf-8?B?0JLQvtC30LLRgNCw0YIg0LTQvtC70LPQvtCy?= <toju-lUKxBRrCLW1AWsC3H4fXnw@public.gmane.org>
+Subject: =?utf-8?b?0JzQtdGC0L7QtNGLICLQsdC+0YDRjNCx?=
+	=?utf-8?b?0YsiINGBINC00LXQsdC40YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C2?=
+	=?utf-8?b?0LXQvdC90L7RgdGC0YzRjg==?=
+Date: Thu, 19 Aug 2010 15:05:13 +0400
+Message-ID: <1613951518.20100819150513@listseminarov.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: meego-dev@meego.com, LKML <linux-kernel@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net, qi.wang@intel.com,
-	yong.y.wang@intel.com, andrew.chih.howe.khor@intel.com,
-	arjan@linux.intel.com, gregkh@suse.de,
-	Grant Likely <grant.likely@secretlab.ca>
-To: Masayuki Ohtak <masa-korg@dsn.okisemi.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AANLkTikyz_RVcCeKzf9m10xXDyKZm3+Yy7y+axZN+MMx@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Masayuki,
-
-Can't find the orginal patch on LKML or SPI-dev so guess it's on meego-=
-dev.
-I have to quote Grants comments to comment...
-
-2010/8/14 Grant Likely <grant.likely@secretlab.ca>:
-> 2010/8/10 Masayuki Ohtak <masa-korg@dsn.okisemi.com>:
->>(...)
->> +struct pch_spi_data {
->> + =A0 =A0 void __iomem *io_remap_addr;
->> + =A0 =A0 struct spi_master *p_master;
-
-p_* is for "pointer" is it not? Hungarian notation is not liked in the
-kernel, see Documentation/CodingStyle.
-
->> + =A0 =A0 struct work_struct work;
->> + =A0 =A0 struct workqueue_struct *p_wk_q;
-
-Dito.
-
->> + =A0 =A0 wait_queue_head_t wait;
->> + =A0 =A0 u8 b_transfer_complete;
->> + =A0 =A0 u8 bcurrent_msg_processing;
->> + =A0 =A0 spinlock_t lock;
->> + =A0 =A0 struct list_head queue;
->> + =A0 =A0 u8 status;
->> + =A0 =A0 u32 bpw_len;
->> + =A0 =A0 s8 b_transfer_active;
-
-This is hungarian notation again, signifying that this s8 (signed!)
-should actually be a bool.
-
-Change to bool and drop the b_ prefix.
-
->> + =A0 =A0 u32 tx_index;
->> + =A0 =A0 u32 rx_index;
->> + =A0 =A0 u16 *pkt_tx_buff;
->> + =A0 =A0 u16 *pkt_rx_buff;
->> + =A0 =A0 u8 n_curnt_chip;
->> + =A0 =A0 struct spi_device *p_current_chip;
->> + =A0 =A0 struct spi_message *p_current_msg;
->> + =A0 =A0 struct spi_transfer *p_cur_trans;
->> + =A0 =A0 struct pch_spi_board_data *p_board_dat;
-
-The hungarian p_* prefix issue again.
-
->> +};
->> +
->> +/**
->> + * struct pch_spi_board_data - Holds the SPI device specific detail=
-s
->> + * @pdev: =A0 =A0 =A0 =A0 =A0 =A0Pointer to the PCI device
->> + * @irq_reg_sts: =A0 =A0 Status of IRQ registration
->> + * @pci_req_sts: =A0 =A0 Status of pci_request_regions
->> + * @suspend_sts: =A0 =A0 Status of suspend
->> + * @p_data: =A0 =A0 =A0 =A0 =A0Pointer to SPI channel data structur=
-e
->> + */
->> +struct pch_spi_board_data {
->> + =A0 =A0 struct pci_dev *pdev;
-
-Hungarian p*?
-
->> + =A0 =A0 u8 irq_reg_sts;
->> + =A0 =A0 u8 pci_req_sts;
->> + =A0 =A0 u8 suspend_sts;
->> + =A0 =A0 struct pch_spi_data *p_data[PCH_MAX_DEV];
-
-Hungarian p_*?
-
->> (...)
->> +/**
->> + * pch_spi_handler() - Interrupt handler
->> + * @irq: =A0 =A0 The interrupt number.
->> + * @dev_id: =A0Pointer to struct pch_spi_board_data.
->> + */
->> +static irqreturn_t pch_spi_handler(int irq, void *dev_id)
->> +{
->> + =A0 =A0 /*channel & read/write indices */
->> + =A0 =A0 int dev, read_cnt;
->> +
->> + =A0 =A0 /*SPSR content */
->> + =A0 =A0 u32 reg_spsr_val, reg_spcr_val;
->> +
->> + =A0 =A0 /*book keeping variables */
->> + =A0 =A0 u32 n_read, tx_index, rx_index, bpw_len;
->> +
->> + =A0 =A0 /*to hold channel data */
->> + =A0 =A0 struct pch_spi_data *p_data;
-
-Hungarian p_*
-
->> +
->> + =A0 =A0 /*buffer to store rx/tx data */
->> + =A0 =A0 u16 *pkt_rx_buffer, *pkt_tx_buff;
->> +
->> + =A0 =A0 /*register addresses */
->> + =A0 =A0 void __iomem *spsr;
->> + =A0 =A0 void __iomem *spdrr;
->> + =A0 =A0 void __iomem *spdwr;
->> +
->> + =A0 =A0 /*remapped pci base address */
->> + =A0 =A0 void __iomem *io_remap_addr;
->> +
->> + =A0 =A0 irqreturn_t tRetVal =3D IRQ_NONE;
-
-Horrible hungarian construct with t* prefix for "type",
-And CamlCase. What's wrong with plain "ret"?
-
-> nit: use lowercase for variable names.
->
->> +
->> + =A0 =A0 struct pch_spi_board_data *p_board_dat =3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 (struct pch_spi_board_data *)dev_id;
->> +
->> + =A0 =A0 if (p_board_dat->suspend_sts =3D=3D true) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&p_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s return=
-ing due to suspend\n", __func__);
->> + =A0 =A0 } else {
->> + =A0 =A0 =A0 =A0 =A0 =A0 for (dev =3D 0; dev < PCH_MAX_DEV; dev++) =
-{
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 p_data =3D p_board_dat->p_=
-data[dev];
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 io_remap_addr =3D p_data->=
-io_remap_addr;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spsr =3D io_remap_addr + P=
-CH_SPSR;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg_spsr_val =3D ioread32(=
-spsr);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*Check if the interrupt i=
-s for SPI device */
->> +
-
-=46rom this point...
-
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (reg_spsr_val & (SPSR_F=
-I_BIT | SPSR_RFI_BIT)) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&p=
-_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "SPSR =
-in %s=3D%x\n", __func__, reg_spsr_val);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*clear in=
-terrupt */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32(=
-reg_spsr_val, spsr);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (p_data=
-->b_transfer_active =3D=3D true) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 rx_index =3D p_data->rx_index;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 tx_index =3D p_data->tx_index;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 bpw_len =3D p_data->bpw_len;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 pkt_rx_buffer =3D p_data->pkt_rx_buff;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 pkt_tx_buff =3D p_data->pkt_tx_buff;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spdrr =3D io_remap_addr + PCH_SPDRR;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 spdwr =3D io_remap_addr + PCH_SPDWR;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 n_read =3D PCH_READABLE(reg_spsr_val);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 for (read_cnt =3D 0; (read_cnt < n_read);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0read_cnt++) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 /*read data */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 pkt_rx_buffer[rx_index++] =3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ioread32(spdrr);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 /*write data */
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 if (tx_index < bpw_len) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 iowrite32
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (pkt_tx_buff
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0[tx_index++],
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spdwr);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 }
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 }
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /*disable RFI if not needed */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 if ((bpw_len - rx_index) <=3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 PCH_MAX_FIFO_DEPTH) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 dev_dbg(&p_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "%s disabling RFI as data "
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "remaining=3D%d\n", __func__,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 (bpw_len - rx_index));
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 reg_spcr_val =3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 ioread32(io_remap_addr +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 PCH_SPCR);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 /*disable RFI */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 PCH_CLR_BITMSK(reg_spcr_val,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPCR_RFIE_BIT);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 /*reset rx threshold */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 reg_spcr_val &=3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0MASK_RFIC_SPCR_BITS;
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 reg_spcr_val |=3D
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (PCH_RX_THOLD_MAX <<
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPCR_RFIC_FIELD);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 iowrite32(PCH_CLR_BITMSK
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (reg_spcr_val,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 SPCR_RFIE_BIT),
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (io_remap_addr +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 PCH_SPCR));
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 }
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /*update counts */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 p_data->tx_index =3D tx_index;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 p_data->rx_index =3D rx_index;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 dev_dbg(&p_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 "%s rx_index=3D%d tx_index=3D%d "
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 "nWritable=3D%d n_read=3D%d\n",
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 __func__, rx_index, tx_index,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 (16 -
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 (PCH_WRITABLE(reg_spsr_val))),
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 n_read);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /*if trans=
-fer complete interrupt */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (reg_sp=
-sr_val & SPSR_FI_BIT) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 dev_dbg(&p_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s FI bit in SPSR"
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 " set\n", __func__);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /*disable FI & RFI interrupts */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 pch_spi_disable_interrupts(p_data->
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 p_master, PCH_FI | PCH_RFI);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /*transfer is completed;inform
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0pch_spi_process_messages */
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 if (pch_spi_gcbptr !=3D NULL) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 dev_dbg(&p_board_dat->pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "%s invoking callback\n",
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 (*pch_spi_gcbptr) (p_data);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 }
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->> +
-
-To this point you are implementing an arrow antipattern.
-=46or an in-depth explanation see:
-http://c2.com/cgi/wiki?ArrowAntiPattern
-
-if (noerror)
-        ... much code ...
-else
-        errorpath
-
-All these should be converted to the form:
-
-if (error)
-        errorpath
-        return errorcode / goto cleanup
-
-=2E.. rest of the code ...
-
-This removes one indent and make the code much easier to
-read.
-
-This in combination with the fact that you're obviously running
-checkpatch on top and forcing it down to 80 chars/line gives this
-weird looking code.
-
->> +static int pch_spi_probe(struct pci_dev *pdev, const struct pci_dev=
-ice_id
->> *id)
->> +{
->> +
->> + =A0 =A0 struct spi_master *p_master[PCH_MAX_DEV];
-
-Hungarian p_* and even in hungarian it is also wrong because
-this is an array of pointers not a plain pointer.
-
->> +
->> + =A0 =A0 struct pch_spi_board_data *p_board_dat;
-
-Hungarian p_*
-
->> (...)
->> +static int pch_spi_resume(struct pci_dev *pdev)
->> +{
->> + =A0 =A0 int i;
->> + =A0 =A0 s32 retval;
-
-s32?? What's wrong with an int?
-
->> +
->> + =A0 =A0 struct pch_spi_board_data *p_board_dat =3D pci_get_drvdata=
-(pdev);
->> + =A0 =A0 dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
-
-Here begins another deep nested arrow antipattern...
-
->> + =A0 =A0 if (p_board_dat =3D=3D NULL) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s pci_get_drvdata return=
-ed NULL\n", __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 retval =3D -EFAULT;
-
-return -EFAULT and de-indent, etc. You know the drill.
-
->> + =A0 =A0 } else {
->> + =A0 =A0 =A0 =A0 =A0 =A0 retval =3D 0;
->> + =A0 =A0 =A0 =A0 =A0 =A0 /* move device to DO power state */
->> + =A0 =A0 =A0 =A0 =A0 =A0 pci_set_power_state(pdev, PCI_D0);
->> + =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s pci_set_power_state invoked su=
-ccessfully\n", __func__);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 /* restore state */
->> + =A0 =A0 =A0 =A0 =A0 =A0 pci_restore_state(pdev);
->> + =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s pci_restore_state invoked succ=
-essfully\n", __func__);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 retval =3D pci_enable_device(pdev);
->> + =A0 =A0 =A0 =A0 =A0 =A0 if (retval < 0) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s pci_en=
-able_device failed\n", __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 } else {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 "%s pci_enable_device returned=3D%d\n",
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 __func__, retval);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* disable PM notification=
-s */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pci_enable_wake(pdev, PCI_=
-D3hot, 0);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0"%s pci_enable_wake inv=
-oked successfully\n", __func__);
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* register IRQ handler */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if ((p_board_dat->irq_reg_=
-sts) !=3D true) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* registe=
-r IRQ */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 retval =3D=
- request_irq(p_board_dat->pdev->irq,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0pch_spi_handler, IRQF_SHARED,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0DRIVER_NAME,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0p_board_dat);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (retval=
- < 0) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 dev_err(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0"%s request_irq failed\n", __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 } else {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 dev_dbg(&pdev->dev, "%s request_irq"
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0" returned=3D%d\n", __func__, retval);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 p_board_dat->irq_reg_sts =3D true;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /* reset PCH SPI h/w */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 for (i =3D 0; i < PCH_MAX_DEV; i++) {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 pch_spi_reset(p_board_dat->
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 p_data[i]->
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 p_master);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "pdev->dev, %s pch_spi_reset "
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "invoked successfully\n",
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 pch_spi_set_master_mode
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 (p_board_dat->p_data[i]->
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0p_master);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev,
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "%s pch_spi_set_master_mode "
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 "invoked successfully\n",
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0 =A0 =A0 __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 }
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 /* set suspend status to false */
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 p_board_dat->suspend_sts =3D false;
->> +
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 dev_dbg(&pdev->dev, "%s set p_board_dat"
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0"->bSuspending =3D false\n", __func__);
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
->> + =A0 =A0 =A0 =A0 =A0 =A0 }
->> + =A0 =A0 }
-
-All the way to here.
-
->> (...)
->> --- /dev/null
->> +++ b/drivers/spi/pch_spi_platform_devices.c
->> @@ -0,0 +1,56 @@
->> +/*
->> + * Copyright (C) 2010 OKI SEMICONDUCTOR Co., LTD.
->> + *
->> + * This program is free software; you can redistribute it and/or mo=
-dify
->> + * it under the terms of the GNU General Public License as publishe=
-d by
->> + * the Free Software Foundation; version 2 of the License.
->> + *
->> + * This program is distributed in the hope that it will be useful,
->> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
->> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. =A0See the
->> + * GNU General Public License for more details.
->> + *
->> + * You should have received a copy of the GNU General Public Licens=
-e
->> + * along with this program; if not, write to the Free Software
->> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA =A00211=
-1-1307,
->> USA.
->> + */
->> +
->> +#include <linux/module.h>
->> +#include <linux/spi/spidev.h>
->> +#include <linux/device.h>
->> +#include <linux/spi/spi.h>
->> +
->> +static struct spi_board_info pch_spi_slaves[] =3D {
->> + =A0 =A0 {
->> + =A0 =A0 =A0.modalias =3D "spidev",
->> + =A0 =A0 =A0.max_speed_hz =3D 1000000,
->> + =A0 =A0 =A0.bus_num =3D 0,
->> + =A0 =A0 =A0.chip_select =3D 0,
->> + =A0 =A0 =A0.platform_data =3D NULL,
->> + =A0 =A0 =A0.mode =3D SPI_MODE_0,
->> + =A0 =A0 =A0},
->> +#if (CONFIG_PCH_SPI_PLATFORM_DEVICE_COUNT - 1)
-
-What does this #if() actually do?
-
-Since the range in Kconfig is set to 1..2 I *think* this can be
-rewritten
-
-#if (CONFIG_PCH_SPI_PLATFORM_DEVICE_COUNT =3D=3D 2)
-
-Which makes a lot more sense.
-
->> + =A0 =A0 {
->> + =A0 =A0 =A0.modalias =3D "spidev",
->> + =A0 =A0 =A0.max_speed_hz =3D 1000000,
->> + =A0 =A0 =A0.bus_num =3D 1,
->> + =A0 =A0 =A0.chip_select =3D 1,
->> + =A0 =A0 =A0.platform_data =3D NULL,
->> + =A0 =A0 =A0.mode =3D SPI_MODE_0,
->> + =A0 =A0 =A0},
->> +#endif
->> +};
->> +
->> +static __init int Load(void)
-
-Rename from "Load" to pch_init or *_init whatever like everyone
-else.
-
->> +{
->> + =A0 =A0 int iRetVal =3D -1;
-
-Hungarian notation.
-
->> +
->> + =A0 =A0 if (!spi_register_board_info
->> + =A0 =A0 =A0 =A0 (pch_spi_slaves, ARRAY_SIZE(pch_spi_slaves)))
->> + =A0 =A0 =A0 =A0 =A0 =A0 iRetVal =3D 0;
->> +
->> + =A0 =A0 return iRetVal;
->> +}
->> +
->> +module_init(Load);
-
-Yours,
-Linus Walleij
+0K3QpNCk0JXQmtCi0JjQktCd0JDQryDQoNCQ0JHQntCi0JAg0KEg0JTQldCR0JjQotCe0KDQodCa
+0J7QmSDQl9CQ0JTQntCb0JbQldCd0J3QntCh0KLQrNCuIArQmCDQktCX0KvQodCa0JDQndCY0JUg
+0JTQntCb0JPQntCSCgoyNS0yNiDQsNCy0LPRg9GB0YLQsCB8INCc0L7RgdC60LLQsAoK0JjQvdGE
+0L7RgNC80LDRhtC40Y8g0Lgg0YDQtdCz0LjRgdGC0YDQsNGG0LjRjzogOCAoNDk1KSA5MjEtMzAt
+MTcKCtCS0JDQltCd0J4hINCX0LDQvdGP0YLQuNGPINC/0YDQvtGF0L7QtNGP0YIg0LIg0YPRh9C1
+0LHQvdC+0Lkg0LDRg9C00LjRgtC+0YDQuNC4INGBINC60L7QvdC00LjRhtC40L7QvdC40YDQvtCy
+0LDQvdC90YvQvCAK0L/RgNC+0YXQu9Cw0LTQvdGL0Lwg0LLQvtC30LTRg9GF0L7QvCEKCtCSINC/
+0YDQvtCz0YDQsNC80LzQtToKCtCt0JrQntCd0J7QnNCY0KfQldCh0JrQmNCVINCYINCe0KDQk9CQ
+0J3QmNCX0JDQptCY0J7QndCd0KvQlSDQkNCh0J/QldCa0KLQqyDQo9Cf0KDQkNCS0JvQldCd0JjQ
+ryDQlNCV0JHQmNCi0J7QoNCh0JrQntCZIArQl9CQ0JTQntCb0JbQldCd0J3QntCh0KLQrNCuCjEu
+INCh0LjRgdGC0LXQvNCwINGD0L/RgNCw0LLQu9C10L3QuNGPINC00LXQsdC40YLQvtGA0YHQutC+
+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjiDQsiDQutC+0LzQv9Cw0L3QuNC4LiDQktC4
+0LTRiyDQtNC10LHQuNGC0L7RgNGB0LrQvtC5CtC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4OiDR
+gtC10LrRg9GJ0LDRjywg0L/RgNC+0YHRgNC+0YfQtdC90L3QsNGPLCDQsdC10LfQvdCw0LTQtdC2
+0L3QsNGPICjQvNC+0YDQsNGC0L7RgNC90LDRjykuINCe0YHQvtCx0LXQvdC90L7RgdGC0Ywg0YDQ
+sNCx0L7RgtGLINGBIArRgNCw0LfQvdGL0LzQuCDQstC40LTQsNC80Lgg0LfQsNC00L7Qu9C20LXQ
+vdC90L7RgdGC0LguINCa0LDQuiDRgdGE0L7RgNC80LjRgNC+0LLQsNGC0Ywg0LrRgNC10LTQuNGC
+0L3Rg9GOINC/0L7Qu9C40YLQuNC60YMg0L7RgNCz0LDQvdC40LfQsNGG0LjQuCDQuCDRgdC40YHR
+gtC10LzRgyAK0YPQv9GA0LDQstC70LXQvdC40Y8g0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw
+0LTQvtC70LbQtdC90L3QvtGB0YLQuD8g0JrQsNC60LjQtSDRgdC70YPQttCx0Ysg0LTQvtC70LbQ
+vdGLINGD0YfQsNGB0YLQstC+0LLQsNGC0Ywg0LIg0L/RgNC+0YbQtdGB0YHQtSAK0YPQv9GA0LDQ
+stC70LXQvdC40Y8g0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0YzRjj8g0JrQsNC6INGB0YLQuNC8
+0YPQu9C40YDQvtCy0LDRgtGMINC80LXQvdC10LTQttC10YDQvtCyINC/0L4g0L/RgNC+0LTQsNC2
+0LDQvCDQuiDQv9GA0L7RhNC40LvQsNC60YLQuNC60LUg0LggCtCy0L7Qt9Cy0YDQsNGC0YMg0LTQ
+vtC70LPQvtCyPyAKMi4g0JDQvdCw0LvQuNC3INC4INGD0YfQtdGCINC00LXQsdC40YLQvtGA0YHQ
+utC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0LguINCf0L7QutCw0LfQsNGC0LXQu9C4LCDQ
+uNGB0L/QvtC70YzQt9GD0LXQvNGL0LUg0LTQu9GPINC+0YbQtdC90LrQuCAK0LTQtdCx0LjRgtC+
+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuCDQv9GA0LXQtNC/0YDQuNGP0YLQ
+uNGPLiDQnNC10YLQvtC00Ysg0LDQvdCw0LvQuNC30LAg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQ
+t9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuC4g0KjQsNCz0LgsIArQv9GA0LXQtNC/0YDQuNC90LjQ
+vNCw0LXQvNGL0LUg0L/QviDRgNC10LfRg9C70YzRgtCw0YLQsNC8INCw0L3QsNC70LjQt9CwINC3
+0LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmtCw0Log0LrQvtC90YLRgNC+0LvQuNGA0L7QstCw
+0YLRjCDRg9GA0L7QstC10L3RjCAK0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQ
+tdC90L3QvtGB0YLQuD8g0JrQsNC60LjQtSDRhNC+0YDQvNGLINC+0YLRh9C10YLQvdC+0YHRgtC4
+INC40YHQv9C+0LvRjNC30L7QstCw0YLRjCDQvdCwINC/0YDQtdC00L/RgNC40Y/RgtC40Lgg0LTQ
+u9GPINGC0L7Qs9C+LCAK0YfRgtC+0LHRiyDQvtC/0LXRgNCw0YLQuNCy0L3QviDQv9GA0LXQtNC/
+0YDQuNC90LjQvNCw0YLRjCDQvdC10L7QsdGF0L7QtNC40LzRi9C1INGI0LDQs9C4INC/0L4g0LLQ
+t9GL0YHQutCw0L3QuNGOINC00L7Qu9Cz0L7Qsj8gCjMuINCe0YbQtdC90LrQsCDQv9C70LDRgtC1
+0LbQtdGB0L/QvtGB0L7QsdC90L7RgdGC0LguINCa0LDQuiDQstGL0LTQtdC70LjRgtGMINCyINC6
+0LvQuNC10L3RgtGB0LrQvtC5INCx0LDQt9C1ICLQs9GA0YPQv9C/0YMg0YDQuNGB0LrQsCI/INCa
+0LDQuiDQstGL0Y/QstC70Y/RgtGMIArQvdCw0LvQuNGH0LjQtSDRhNC40L3QsNC90YHQvtCy0YvR
+hSDQv9GA0L7QsdC70LXQvCDRgyDQutC70LjQtdC90YLQsCDQvdCwINGA0LDQvdC90LXQvCDRjdGC
+0LDQv9C1INC40YUg0LLQvtC30L3QuNC60L3QvtCy0LXQvdC40Y8/ICLQpNCw0LrRgtC+0YDRiyDR
+gNC40YHQutCwIiAK0L3QtdC+0L/Qu9Cw0YLRiyDQuCDQutCw0Log0LjRhSDQvtGG0LXQvdC40YLR
+jC4g0JrQsNC60LjQtSDQuNGB0YLQvtGH0L3QuNC60Lgg0LjQvdGE0L7RgNC80LDRhtC40Lgg0LjR
+gdC/0L7Qu9GM0LfQvtCy0LDRgtGMINC00LvRjyDQvtGG0LXQvdC60LggCtC/0LvQsNGC0LXQttC1
+0YHQv9C+0YHQvtCx0L3QvtGB0YLQuCDQutC70LjQtdC90YLQsD8g0KLQtdGF0L3QvtC70L7Qs9C4
+0Lgg0L/QvtC40YHQutCwINC40L3RhNC+0YDQvNCw0YbQuNC4INCyINGB0LXRgtC4INCY0L3RgtC1
+0YDQvdC10YI6INGH0YLQviDQtNC+0LvQttC10L0g0LfQvdCw0YLRjCAK0YHQv9C10YbQuNCw0LvQ
+uNGB0YIg0L/QviDQstC30YvRgdC60LDQvdC40Y4/IAo0LiDQn9C70LDQvdC40YDQvtCy0LDQvdC4
+0LUg0LTQtdCx0LjRgtC+0YDRgdC60L7QuSDQt9Cw0LTQvtC70LbQtdC90L3QvtGB0YLQuCDQuCDQ
+utGA0LXQtNC40YLQvdGL0YUg0LvQuNC80LjRgtC+0LIuINCa0LDQuiDQv9C70LDQvdC40YDQvtCy
+0LDRgtGMINC+0LHRitC10LwgCtC00LXQsdC40YLQvtGA0YHQutC+0Lkg0LfQsNC00L7Qu9C20LXQ
+vdC90L7RgdGC0Lgg0LIgItC+0LHQvtGA0L7RgtC60LUiINC4INC40LfQsdC10LPQsNGC0Ywg0LrQ
+sNGB0YHQvtCy0YvRhSDRgNCw0LfRgNGL0LLQvtCyLiDQmtCw0Log0YDQsNGB0YHRh9C40YLQsNGC
+0YwgCiLRgdGC0L7QuNC80L7RgdGC0YwiINC60YDQtdC00LjRgtC+0LLQsNC90LjRjyDQutC70LjQ
+tdC90YLQvtCyPyDQpNC+0YDQvNC40YDQvtCy0LDQvdC40LUg0LrRgNC10LTQuNGC0L3Ri9GFINGA
+0LXQudGC0LjQvdCz0L7QsiDQutC70LjQtdC90YLQvtCyIArQmtCw0Log0YDQsNGB0YHRh9C40YLQ
+sNGC0Ywg0LrRgNC10LTQuNGC0L3Ri9C5INC70LjQvNC40YIg0LjRgdGF0L7QtNGPINC40Lcg0L7Q
+sdGK0LXQvNC+0LIg0L7RgtCz0YDRg9C30L7Quiwg0L/QvtGC0LXQvdGG0LjQsNC70LAsINCy0YvQ
+s9C+0LTQvdC+0YHRgtC4INC4IArQvdCw0LTQtdC20L3QvtGB0YLQuCDQutC70LjQtdC90YLQsD8g
+CjUuINCY0L3RgdGC0YDRg9C80LXQvdGC0Ysg0LrRgNC10LTQuNGC0L3QvtC5INC/0L7Qu9C40YLQ
+uNC60LguINCh0L/QvtGB0L7QsdGLINC+0LHQtdGB0L/QtdGH0LXQvdC40Y86INC30LDQu9C+0LMs
+INC/0L7RgNGD0YfQuNGC0LXQu9GM0YHRgtCy0L4sINCx0LDQvdC60L7QstGB0LrQsNGPIArQs9Cw
+0YDQsNC90YLQuNGPLiDQntGB0L7QsdC10L3QvdC+0YHRgtC4INC40YUg0LjRgdC/0L7Qu9GM0LfQ
+vtCy0LDQvdC40Y8uINCY0YHQv9C+0LvRjNC30L7QstCw0L3QuNC1INGE0LDQutGC0L7RgNC40L3Q
+s9CwINC00LvRjyDRg9C80LXQvdGM0YjQtdC90LjRjyDRgdGA0L7QutC+0LIgCtC+0LHQvtGA0LDR
+h9C40LLQsNC10LzQvtGB0YLQuCDQtNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC1
+0L3QvdC+0YHRgtC4LiDQktC30LDQuNC80L7Qt9Cw0YfQtdGCLCDQutCw0Log0LDQu9GM0YLQtdGA
+0L3QsNGC0LjQstC90YvQuSDRgdC/0L7RgdC+0LEgCtC/0L7Qs9Cw0YjQtdC90LjRjyDQv9GA0L7R
+gdGA0L7Rh9C10L3QvdC+0Lkg0LfQsNC00L7Qu9C20LXQvdC90L7RgdGC0LguIAoK0J/QoNCe0KTQ
+mNCb0JDQmtCi0JjQmtCQINCYINCS0JXQlNCV0J3QmNCVINCf0JXQoNCV0JPQntCS0J7QoNCe0JIg
+0J4g0JLQntCX0JLQoNCQ0KLQlSDQlNCe0JvQk9Ce0JIKNi4g0J/RgNC+0YTQuNC70LDQutGC0LjQ
+utCwINCy0L7Qt9C90LjQutC90L7QstC10L3QuNGPINC/0YDQvtGB0YDQvtGH0LXQvdC90L7QuSDQ
+tNC10LHQuNGC0L7RgNGB0LrQvtC5INC30LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmtCw0Log
+0LLQvtC50YLQuCDQsiAK0YfQuNGB0LvQviDQv9GA0LjQvtGA0LjRgtC10YLQvdGL0YUg0L/QvtGB
+0YLQsNCy0YnQuNC60L7Qsiwg0LrQvtGC0L7RgNGL0Lwg0LLRgdC10LPQtNCwINCy0L7QstGA0LXQ
+vNGPINC+0YLQtNCw0Y7RgiDQtNC10L3RjNCz0Lg/INCS0LfQsNC40LzQvtC00LXQudGB0YLQstC4
+0LUg0YEgCiLQs9GA0YPQv9C/0L7QuSDRgNC40YHQutCwIiAtINC/0L7RgtC10L3RhtC40LDQu9GM
+0L3Ri9C80Lgg0L3QtdC/0LvQsNGC0LXQu9GM0YnQuNC60LDQvNC4LiDQp9GC0L4g0LTQtdC70LDR
+gtGMINC30LAg0L3QtdC00LXQu9GOINC00L4g0L/Qu9Cw0YLQtdC20LA/IAo3LiDQn9C10YDQtdCz
+0L7QstC+0YDRiyDQv9C+INCy0L7Qt9Cy0YDQsNGC0YMg0LTQvtC70LPQvtCyLiDQntGCINC+0YDQ
+uNC10L3RgtCw0YbQuNC4INC90LAg0LrQu9C40LXQvdGC0LAg0Log0L7RgNC40LXQvdGC0LDRhtC4
+0Lgg0L3QsCDQstC+0LfQstGA0LDRgiDQtNC10L3QtdCzOiAK0YPQttC10YHRgtC+0YfQtdC90LjQ
+tSDQv9C10YDQtdCz0L7QstC+0YDQvtCyINGBINC60LDQttC00YvQvCDRjdGC0LDQv9C+0Lwg0L/R
+gNC+0YHRgNC+0YfQutC4INC00L7Qu9Cz0LAuINCa0LDQuiDRjdGE0YTQtdC60YLQuNCy0L3QviDQ
+stC10YHRgtC4INC/0LXRgNC10LPQvtCy0L7RgNGLINC/0L4gCtCy0L7Qt9Cy0YDQsNGC0YMg0L/R
+gNC+0YHRgNC+0YfQtdC90L3Ri9GFINC00L7Qu9Cz0L7Qsiwg0L3QtSAi0L/QtdGA0LXQtNCw0LLQ
+u9C40LLQsNGPIiDQutC70LjQtdC90YLQvtCyLiAKOC4g0J/Qu9Cw0YLQtdC2INC90LUg0L/QvtGB
+0YLRg9C/0LjQuy4g0KEg0LrQtdC8INC60L7QvdGC0LDQutGC0LjRgNC+0LLQsNGC0Ywg0L/QviDQ
+v9C+0LLQvtC00YMg0L7Qv9C70LDRgtGLLiDQntGB0L7QsdC10L3QvdC+0YHRgtC4INC90LDQv9C+
+0LzQuNC90LDQvdC40Y8g0L4gCtC/0YDQvtGB0YDQvtGH0LrQtSDQv9C70LDRgtC10LbQsC4g0JrQ
+sNC6INC/0L7Qu9GD0YfQuNGC0Ywg0YMg0LrQu9C40LXQvdGC0LAg0L7QsdGP0LfQsNGC0LXQu9GM
+0YHRgtCy0L4g0L4g0YHRgNC+0LrQsNGFINC/0L7Qs9Cw0YjQtdC90LjRjyDQtNC+0LvQs9CwLiAK
+OS4g0JTQu9C40YLQtdC70YzQvdCw0Y8g0LfQsNC00LXRgNC20LrQsCDQvtC/0LvQsNGC0YsuINCa
+0LDQuiDRgdC+0LfQtNCw0YLRjCDQtNC40YHQutC+0LzRhNC+0YDRgiDQtNC70Y8g0LTQvtC70LbQ
+vdC40LrQsC4g0KHRhtC10L3QsNGA0LjQuCDQv9C10YDQtdCz0L7QstC+0YDQvtCyIArQviDQstC+
+0LfQstGA0LDRgtC1INC00L7Qu9Cz0LAg0Lgg0L3QsNC40LHQvtC70LXQtSDRjdGE0YTQtdC60YLQ
+uNCy0L3Ri9C1INGA0LXRiNC10L3QuNGPLiDQn9GA0L7Rj9GB0L3QtdC90LjQtSDQvtCx0YrQtdC6
+0YLQuNCy0L3QvtC5INC/0YDQuNGH0LjQvdGLINC4INGB0LrRgNGL0YLRi9GFIArQvNC+0YLQuNCy
+0L7QsiDQvdC10L/Qu9Cw0YLQtdC20LAuINCa0LDQuiDRgNCw0LHQvtGC0LDRgtGMINGBINGC0LjQ
+v9C40YfQvdGL0LzQuCDQvtGC0LPQvtCy0L7RgNC60LDQvNC4INC4INGD0LvQvtCy0LrQsNC80Lgg
+0LTQvtC70LbQvdC40LrQsD8g0JrQsNC6INCy0LXRgNC90YPRgtGMIArQtNC10L3RjNCz0Lgg0Lgg
+0L3QtSAi0L/QtdGA0LXQtNCw0LLQuNGC0YwiINC60LvQuNC10L3RgtCwLiAKMTAuINCi0LjQv9GL
+INC90LXQv9C70LDRgtC10LvRjNGJ0LjQutC+0LIuINCh0YLRgNCw0YLQtdCz0LjQuCDRgNCw0LHQ
+vtGC0Ysg0YEg0YDQsNC30L3Ri9C80Lgg0YLQuNC/0LDQvNC4INC00L7Qu9C20L3QuNC60L7Qsi4g
+0J/RgNC40LXQvNC70LXQvNGL0LUg0LggCtC90LXQv9GA0LjQtdC80LvQtdC80YvQtSDQvNC10YLQ
+vtC00Ysg0YDQsNCx0L7RgtGLLiAKMTEuINCe0YLQutCw0Lcg0LrQu9C40LXQvdGC0LAg0L/Qu9Cw
+0YLQuNGC0YwuINCj0LvRjNGC0LjQvNCw0YLQuNCy0L3QvtC1INGC0YDQtdCx0L7QstCw0L3QuNC1
+INC6INC00L7Qu9C20L3QuNC60YMuIAoxMi4g0JzQtdGC0L7QtNGLINCy0LfRi9GB0LrQsNC90LjR
+jyDQsdC10LfQvdCw0LTQtdC20L3Ri9GFINC00L7Qu9Cz0L7Qsi4g0J/QvtC00YXQvtC00Ysg0Log
+0LLQt9GL0YHQutCw0L3QuNGOINCx0LXQt9C90LDQtNC10LbQvdGL0YUg0LTQvtC70LPQvtCyOiAK
+0L/QtdGA0LXQs9C+0LLQvtGA0L3Ri9C5LCDRgdGD0LTQtdCx0L3Ri9C5LCDQsNC00LzQuNC90LjR
+gdGC0YDQsNGC0LjQstC90L4t0LrQvtGA0YDRg9C/0YbQuNC+0L3QvdGL0LkuINCa0LDQuiDQstGL
+0YHRgtGA0L7QuNGC0Ywg0LLQt9GL0YHQutCw0L3QuNC1IArQsdC10LfQvdCw0LTQtdC20L3QvtCz
+0L4g0LTQvtC70LPQsCDRgSDQv9C+0LzQvtGJ0YzRjiBQUi3RgdC+0L/RgNC+0LLQvtC20LTQtdC9
+0LjRjyDQstC30YvRgdC60LDQvdC40Y8/INCh0L7RgdGC0LDQstC70LXQvdC40LUg0Lgg0YDQtdCw
+0LvQuNC30LDRhtC40Y8gCtC/0YDQvtCz0YDQsNC80LzRiyDQstC+0LfQstGA0LDRgtCwINC30LDQ
+tNC+0LvQttC10L3QvdC+0YHRgtC4LiDQmNGB0L/QvtC70YzQt9C+0LLQsNC90LjQtSDRg9Cz0YDQ
+vtC3INC4INGA0LDQt9C70LjRh9C90YvRhSDRgdGF0LXQvCDQv9C+0LPQsNGI0LXQvdC40Y8gCtC3
+0LDQtNC+0LvQttC10L3QvdC+0YHRgtC4LiAKCtCh0YLQvtC40LzQvtGB0YLRjCDRg9GH0LDRgdGC
+0LjRjzogMTc1MDAg0YDRg9Cx0LvQtdC5LgoK0JzQtdGB0YLQviDQv9GA0L7QstC10LTQtdC90LjR
+jzog0LwuINCR0LDRg9C80LDQvdGB0LrQsNGPLCDRg9C7LiDQkdCw0YPQvNCw0L3RgdC60LDRjywg
+0LQuNiwg0LHQuNC30L3QtdGBINGG0LXQvdGC0YAgItCS0LjQutGC0L7RgNC40Y8g0J/Qu9Cw0LfQ
+sCIuCtCSINGB0YLQvtC40LzQvtGB0YLRjCDQstGF0L7QtNC40YIg0LzQtdGC0L7QtNC40YfQtdGB
+0LrQuNC5INC80LDRgtC10YDQuNCw0LssINC+0LHQtdC00YssINC60L7RhNC1LdC/0LDRg9C30Yss
+INGB0LXRgNGC0LjRhNC40LrQsNGCLiAK0JjQvdC+0LPQvtGA0L7QtNC90LjQvCDRg9GH0LDRgdGC
+0L3QuNC60LDQvCDQv9C+0LzQvtCz0LDQtdC8INCyINCx0YDQvtC90LjRgNC+0LLQsNC90LjQuCDQ
+s9C+0YHRgtC40L3QuNGG0YsuCgrQmNC90YTQvtGA0LzQsNGG0LjRjyDQuCDRgNC10LPQuNGB0YLR
+gNCw0YbQuNGPOiA4ICg0OTUpIDkyMS0zMC0xNwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBT
+Ri5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IAoKTWFrZSBhbiBhcHAgdGhleSBjYW4ndCBsaXZl
+IHdpdGhvdXQKRW50ZXIgdGhlIEJsYWNrQmVycnkgRGV2ZWxvcGVyIENoYWxsZW5nZQpodHRwOi8v
+cC5zZi5uZXQvc2Z1L1JJTS1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

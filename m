@@ -1,22 +1,17 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace
-	existing driver
-Date: Fri, 20 Aug 2010 11:19:12 -0600
-Message-ID: <AANLkTi=YuaPSeQrKbzvMgdux-u5H_puA-p-iqCYjbwPp@mail.gmail.com>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
-	<AANLkTim-FB6YrGSTmDQhmnS+Qw-dGm7D-pH7iCzy0-Td@mail.gmail.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301E7ED0A13@dbde02.ent.ti.com>
-	<201008201406.33473.caglarakyuz@gmail.com>
+From: Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Suggested Patch for 'amba-pl022.c' to solve
+ the problem of running 'spidev_test' on Phytec LPC3250 board.
+Date: Fri, 20 Aug 2010 11:16:54 -0700
+Message-ID: <AANLkTimsoUUJihk8j48KkJ1YPdAttLHPuJ19i0W0BkpD@mail.gmail.com>
+References: <AANLkTinQFQMXXBh7bq5ce_iwOzGvYCZxud6QWb-S71yQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, "Nori,
-	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Caglar Akyuz <caglarakyuz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Quentin YANG <quentinyang05-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201008201406.33473.caglarakyuz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <AANLkTinQFQMXXBh7bq5ce_iwOzGvYCZxud6QWb-S71yQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,46 +22,93 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 20, 2010 at 5:06 AM, Caglar Akyuz <caglarakyuz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On Monday 02 August 2010 06:53:16 pm Nori, Sekhar wrote:
->> Hi Brian,
->>
->> On Mon, Aug 02, 2010 at 19:40:29, Brian Niebuhr wrote:
->> > Grant -
->> >
->> >
->> > =A0For my part, I've already sunk way more time into this than I ever
->> > intended, and I really have no clue how to break this patch down into
->> > smaller patches. =A0I don't really care much if the patch gets accepted
->> > or not - I am just trying to help out all of the other users that are
->> > stuck with a broken driver like I was. =A0Maybe if TI wants to give
->> > their customers a driver that actually works they'll pick it up and do
->> > the rest of the work that's necessary to get it accepted.
->>
->> Thanks for all the work on this so far. We will work on breaking
->> this patch up and getting the fixes accepted upstream.
->>
+> pl022_probe(struct amba_device *adev, struct amba_id *id)
+> {
+> =A0 =A0 =A0 ...................................
 >
-> Is there any improvement on this or anybody is actively working on submit=
-ting
-> patches?
+> =A0 =A0/* Allocate master with space for data */
+> =A0 =A0master =3D spi_alloc_master(dev, sizeof(struct pl022));
+> =A0 =A0if (master =3D=3D NULL) {
+> =A0 =A0 =A0 =A0dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
+> =A0 =A0 =A0 =A0status =3D -ENOMEM;
+> =A0 =A0 =A0 =A0goto err_no_master;
 >
-> I'm going to try this driver on DaVinci DM6446 and OMAP L-138 with differ=
-ent
-> peripherals. If nobody is expected to submit something soon, then I can w=
-ork
-> on preparing incremental patches while working with the driver. I can sta=
-rt
-> sending patches next week or so.
+> =A0 =A0}
 >
-> Best Regards,
-> Caglar
+> =A0 =A0 =A0 =A0/* Quentin Added 2010-AUG-19 */
+> =A0 =A0 =A0 =A0master->mode_bits=3DMODEBITS;
+> =A0 =A0.........................
+>
+> }
+>
+> Now I can successfully set 'SPI mode' to mode 3.
+>
 
-Thanks Caglar for picking up this work.  I look forward to seeing the
-patches.  Let me know if you need any help with getting them in shape
-for merging.
+It looks like some additional setup is needed in pl022_setup() to setup the=
+se
+modes in hardware. Setting the mode_bits mask alone only tricks the
+application into thinking SPI mode 3 has been set, but nothing will change
+in hardware on the next setup if the passed mode isn't handled there too.
 
-g.
+Some of the transfer setup config - data width, clock rate, SPI mode,
+etc - are actually setup on a per transfer basis and may vary based on how
+spidev (and in this case the spidev_test app) configures it. For these spec=
+ific
+setup items, we probably shouldn't use the static chip_info version of the
+transfer config - maybe we can use the config passed in 'struct spi_transfe=
+r'
+instead.
+
+This would also reduce the size of the struct pl022_config_chip controller
+data structure since some of those fields would now be handled in the
+spi_transfer structure.
+
+I guess this change is bigger than anticipated :(
+
+> [root@GsnCommsModule debug]# ./spidev_test -OH
+> spi mode: 3
+> bits per word: 8
+> max speed: 500000 Hz (500 KHz)
+> 00 00 00 00 00 00
+> 00 00 00 00 00 00
+> 00 00 00 00 00 00
+> 00 00 00 00 00 00
+> 00 00 00 00 00 00
+> 00 00 00 00 00 00
+> 00 00
+>
+>
+> Hope this patch can be added to amba-pl022.c in the next Linux kernel
+> release.
+>
+>
+> Regards,
+>
+> *Quentin YANG***
+>
+> *Firmware Engineer***
+>
+> *Tel: +61-2-88787724***
+>
+> *CHK GridSense Pty Ltd*
+>
+> Unit 3, 20-36 Nancarrow Ave
+>
+> Meadowbank, NSW, 2114, Australia
+>
+> Web Site: =A0http://www.gridsense.com
+> -------------------------------------------------------------------------=
+-----
+> This SF.net email is sponsored by
+>
+> Make an app they can't live without
+> Enter the BlackBerry Developer Challenge
+> http://p.sf.net/sfu/RIM-dev2dev
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
 
 ---------------------------------------------------------------------------=
 ---

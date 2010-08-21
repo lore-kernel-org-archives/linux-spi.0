@@ -1,43 +1,64 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [spi-devel-general] [PATCH 1/2] spi/spi_s3c64xx: Make probe more
- robust against missing board config
-Date: Sat, 21 Aug 2010 10:45:56 +0900
-Message-ID: <AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi/spi_s3c64xx: Staticise
+ non-exported functions
+Date: Sat, 21 Aug 2010 10:52:44 +0900
+Message-ID: <AANLkTiknsnER2Z-4_h8OC=VAqbjEfF0H0-y8etzW3i0q@mail.gmail.com>
 References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+	<1282321028-32196-2-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1282321028-32196-2-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Aug 21, 2010 at 1:17 AM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> The S3C64xx SPI driver requires the machine to call s3c64xx_spi_set_info()
-> to select a few options, including the clock to use for the SPI controller.
-> If this is not done then a NULL will be passed as the clock name for
-> clk_get(), causing an obscure crash. Guard against this and other missing
-> configuration by validating that the clock name has been filled in in
-> the platform data that ets passed in.
-
-     The movement of sci assignment and check doesn't make any
-difference because
-      we already check for presence of platform_data and DMA-Tx,Rx and
-IO base is
-      set irrespective of calling s3c64xx_spi_set_info()
-
-    Also, I think !sci->num_cs might be an even better check because
-the samsung clock
-   api might be changed (IIRC Ben was already working it out) to make
-it redundant
-   to pass clock name strings to clk_get. If that is the case, we might end up
-   adding another foolproof check like !sci->num_cs
-
-    what do you guys think?
-
-regards
+T24gU2F0LCBBdWcgMjEsIDIwMTAgYXQgMToxNyBBTSwgTWFyayBCcm93bgo8YnJvb25pZUBvcGVu
+c291cmNlLndvbGZzb25taWNyby5jb20+IHdyb3RlOgo+IFNpZ25lZC1vZmYtYnk6IE1hcmsgQnJv
+d24gPGJyb29uaWVAb3BlbnNvdXJjZS53b2xmc29ubWljcm8uY29tPgo+IC0tLQo+IMKgZHJpdmVy
+cy9zcGkvc3BpX3MzYzY0eHguYyB8IMKgIMKgOCArKysrLS0tLQo+IMKgMSBmaWxlcyBjaGFuZ2Vk
+LCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvc3BpX3MzYzY0eHguYyBiL2RyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMKPiBpbmRleCBh
+MGI2M2I3Li43ZTYyN2Y3IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMK
+PiArKysgYi9kcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5jCj4gQEAgLTQ0Nyw4ICs0NDcsOCBAQCBz
+dGF0aWMgdm9pZCBzM2M2NHh4X3NwaV9jb25maWcoc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9k
+YXRhICpzZGQpCj4gwqAgwqAgwqAgwqB3cml0ZWwodmFsLCByZWdzICsgUzNDNjRYWF9TUElfQ0xL
+X0NGRyk7Cj4gwqB9Cj4KPiAtdm9pZCBzM2M2NHh4X3NwaV9kbWFfcnhjYihzdHJ1Y3QgczNjMjQx
+MF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lkLAo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNpemUsIGVudW0gczNjMjQxMF9kbWFfYnVmZnJl
+c3VsdCByZXMpCj4gK3N0YXRpYyB2b2lkIHMzYzY0eHhfc3BpX2RtYV9yeGNiKHN0cnVjdCBzM2My
+NDEwX2RtYV9jaGFuICpjaGFuLCB2b2lkICpidWZfaWQsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGludCBzaXplLCBlbnVtIHMzYzI0MTBfZG1hX2J1
+ZmZyZXN1bHQgcmVzKQo+IMKgewo+IMKgIMKgIMKgIMKgc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZl
+cl9kYXRhICpzZGQgPSBidWZfaWQ7Cj4gwqAgwqAgwqAgwqB1bnNpZ25lZCBsb25nIGZsYWdzOwo+
+IEBAIC00NjcsOCArNDY3LDggQEAgdm9pZCBzM2M2NHh4X3NwaV9kbWFfcnhjYihzdHJ1Y3QgczNj
+MjQxMF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lkLAo+IMKgIMKgIMKgIMKgc3Bpbl91bmxv
+Y2tfaXJxcmVzdG9yZSgmc2RkLT5sb2NrLCBmbGFncyk7Cj4gwqB9Cj4KPiAtdm9pZCBzM2M2NHh4
+X3NwaV9kbWFfdHhjYihzdHJ1Y3QgczNjMjQxMF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lk
+LAo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNp
+emUsIGVudW0gczNjMjQxMF9kbWFfYnVmZnJlc3VsdCByZXMpCj4gK3N0YXRpYyB2b2lkIHMzYzY0
+eHhfc3BpX2RtYV90eGNiKHN0cnVjdCBzM2MyNDEwX2RtYV9jaGFuICpjaGFuLCB2b2lkICpidWZf
+aWQsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlu
+dCBzaXplLCBlbnVtIHMzYzI0MTBfZG1hX2J1ZmZyZXN1bHQgcmVzKQo+IMKgewo+IMKgIMKgIMKg
+IMKgc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQgPSBidWZfaWQ7Cj4gwqAgwqAg
+wqAgwqB1bnNpZ25lZCBsb25nIGZsYWdzOwoKT2gsIHllcy4gV2hhdCB3YXMgSSB0aGlua2luZyA/
+IQoKQWNrZWQtYnk6IEphc3NpIEJyYXIgPGphc3Npc2luZ2hicmFyQGdtYWlsLmNvbT4KCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgCgpNYWtl
+IGFuIGFwcCB0aGV5IGNhbid0IGxpdmUgd2l0aG91dApFbnRlciB0aGUgQmxhY2tCZXJyeSBEZXZl
+bG9wZXIgQ2hhbGxlbmdlCmh0dHA6Ly9wLnNmLm5ldC9zZnUvUklNLWRldjJkZXYgCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

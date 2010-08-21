@@ -1,18 +1,13 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: moved the PL022 test chip out
- to the SPI subsystem v2
-Date: Sat, 21 Aug 2010 09:36:21 +0200
-Message-ID: <AANLkTimF5TtEh117Hjc2c16T-wg2oqig8B1Zvr4bVzYP@mail.gmail.com>
-References: <1280045963-10564-1-git-send-email-linus.walleij@stericsson.com>
-	<AANLkTimD=MTn-=EB1Kt87tz9bSVUq+mbZwoOxDbG5sbr@mail.gmail.com>
+From: =?utf-8?B?0JTQvtGH0LXRgNC90LjQtSDQvtCx0YnQtdGB0YLQstCwLCDRhdC+0LvQtNC40L3Qs9C4?=
+	<kot-lUKxBRrCLW1AWsC3H4fXnw@public.gmane.org>
+Subject: [SPAM] Холдинги: управление, защита от претензий
+Date: Sat, 21 Aug 2010 12:47:37 +0400
+Message-ID: <1705124242.20100821124737@listseminarov.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTimD=MTn-=EB1Kt87tz9bSVUq+mbZwoOxDbG5sbr-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,75 +18,127 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/8/1 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
-> On Sun, Jul 25, 2010 at 2:19 AM, Linus Walleij
-> <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
->> This moves the SPI test chip from the U300 architecture to the
->> SPI subsystem. This is where the code belongs: we want the
->> loopback test chip to be available to all users of PL022.
->>
->> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
->
-> Better, but not quite right yet in my opinion. =A0With the code now
-> embedded into the driver (which I agree with), there is no need to
-> create a dummy spi_device any more. =A0What is this code intended to
-> test? =A0The hardware, or the spi subsystem. =A0If it is to test the
-> hardware (which I suspect), then just driver the hardware directly
-> (using the driver's own access functions of course). =A0You don't need
-> to register a dummy spi_device for that because it is all driver
-> internal.
-
-Sorry for a late answer.
-
-I've been trying to address these goals,
-but since the pl022 message queueing, interrupt handling and
-most everything is based on using struct spi_message and since
-all message transfer helpers (such as spi_write_then_read()) take
-an struct spi_device * as argument, and at some point using the
-internal functions from the outside with struct spi_message involves
-setting the .spi field of the message to something, so obviously that
-would fall back to the old solution.
-
-This makes it necessary to refactor the entire driver and queueing
-mechanism to take some wrapper message derived from the
-spi_message that can work on loops without ever using
-struct spi_message by having some .is_loop bool or so.
-
-That's a little much overhead for just adding some hardware tests
-and breaks the design pattern from the rest of the SPI drivers...
-
-Isn't it easier to just say that any tests *must* be done from
-userspace, leading to the logical conclusion:
-
-> If it goal is to exercise the spi subsystem, then do it from userspace
-> with the loopback flag set, and add loopback flag support to the
-> driver.  You don't need to test all the modes of the hardware in this
-> situation.
-
-No problem with that. But as clarified in the earlier discussion
-with Ben, this is not possible if there are no devices attached to
-the bus. This is often the case when you want to exercise some
-bare hardware where there is no actual SPI device attached to
-the bus. And since the idea was to use the loopback (i.e. not
-communicating with any actual device) this leads to the addition
-of a dummychip for loopback tests anyway.
-
-I'll assume this latter approach is what is really desired and cook
-up a patch for that (just a Kconfig for adding the dummychip, no
-debugfs intrinsic tests) for the moment.
-
-The patch as it stands (and works today on the U300
-dummychip) is just the latter solution with an in-kernel
-exerciser.
-
-Yours,
-Linus Walleij
-
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by =
-
-
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev =
+0KXQntCb0JTQmNCd0JPQmDog0L/QvtGB0YLRgNC+0LXQvdC40LUsINGD0L/RgNCw0LLQu9C10L3Q
+uNC1LCDQt9Cw0YnQuNGC0LAg0L7RgiDQv9GA0LXRgtC10L3Qt9C40LkuCgoyNyDQsNCy0LPRg9GB
+0YLQsCB8INCc0L7RgdC60LLQsCB8INCY0L3RhNC+0YDQvNCw0YbQuNGPINC4INGA0LXQs9C40YHR
+gtGA0LDRhtC40Y86ICs3ICg0OTUpIDkyMSAqIDMwICogMTcKCtCSINC/0YDQvtCz0YDQsNC80LzQ
+tToKCjEuINCS0LjQtNGLINC+0LHRitC10LTQuNC90LXQvdC40LkuINCk0LjQvdCw0L3RgdC+0LLQ
+vi3Qv9GA0L7QvNGL0YjQu9C10L3QvdCw0Y8g0LPRgNGD0L/Qv9CwLiDQpdC+0LvQtNC40L3Qsy4g
+0J/RgNC+0YHRgtC+0LUg0YLQvtCy0LDRgNC40YnQtdGB0YLQstC+LiAK0J/QvtC90Y/RgtC40LUg
+0Lgg0YHRgtGA0YPQutGC0YPRgNCwINC+0LHRitC10LTQuNC90LXQvdC40LkuINCf0YDQtdC40LzR
+g9GJ0LXRgdGC0LLQsCDQuCDQvdC10LTQvtGB0YLQsNGC0LrQuC4g0J3QsNC70L7Qs9C+0LLRi9C1
+INC+0YHQvtCx0LXQvdC90L7RgdGC0LguCgoyLiDQodC/0L7RgdC+0LHRiyDQvtCx0YrQtdC00LjQ
+vdC10L3QuNC5LiDQlNC+0LPQvtCy0L7RgNC90YvQtSDRgdC/0L7RgdC+0LHRiyDQvtCx0YrQtdC0
+0LjQvdC10L3QuNC5LCDRg9GH0LDRgdGC0LjQtSDQsiDQutCw0L/QuNGC0LDQu9C1LCAK0L7RgtC9
+0L7RiNC10L3QuNC1INC00L7Rh9C10YDQvdC+0YHRgtC4INC4INGCLtC/LiDQktC30LDQuNC80L3Q
+sNGPINC+0YLQstC10YLRgdGC0LLQtdC90L3QvtGB0YLRjCDQv9C+INCz0YDQsNC20LTQsNC90YHQ
+utC+LdC/0YDQsNCy0L7QstGL0LwgCtC+0LHRj9C30LDRgtC10LvRjNGB0YLQstCw0LwuCgozLiDQ
+ntGA0LPQsNC90LjQt9Cw0YbQuNC+0L3QvdGL0LUg0YHRgtGA0YPQutGC0YPRgNGLINGF0L7Qu9C0
+0LjQvdCz0L7Qsi4g0J7Qv9C40YHQsNC90LjQtSDQstC+0LfQvNC+0LbQvdGL0YUg0YHRgtGA0YPQ
+utGC0YPRgCDRhdC+0LvQtNC40L3Qs9C+0LI6IArQu9C40L3QtdC50L3Ri9C5LCDQutGA0YPQs9C+
+0LLQvtC5LCDQuNC80YPRidC10YHRgtCy0LXQvdC90YvQuSwg0LTQvtCz0L7QstC+0YDQvdGL0Lks
+INC/0YDQvtC10LrRgtC90YvQuSwg0LjQvdCy0LXRgdGC0LjRhtC40L7QvdC90YvQuSwg0LzQvdC+
+0LPQvtC+0YLRgNCw0YHQu9C10LLQvtC5LCAK0YLQtdGA0YDQuNGC0L7RgNC40LDQu9GM0L3Ri9C5
+INGF0L7Qu9C00LjQvdCzLiDQktC10YDRgtC40LrQsNC70YzQvdC+INC4INCz0L7RgNC40LfQvtC9
+0YLQsNC70YzQvdC+INC+0YDQuNC10L3RgtC40YDQvtCy0LDQvdC90YvQtSDRhdC+0LvQtNC40L3Q
+s9C4LiAK0JTQuNCy0LXRgNGB0LjRhNC40YbQuNGA0L7QstCw0L3QvdGL0LUg0YXQvtC70LTQuNC9
+0LPQuCDQuCDRgi7Qvy4g0JTQvtGH0LXRgNC90LjQtSDQvtCx0YnQtdGB0YLQstCwOiDRgdC/0L7R
+gdC+0LHRiyDRg9C/0YDQsNCy0LvQtdC90LjRjywg0Y3QutC+0L3QvtC80LjRh9C10YHQutC40LUg
+CtC+0YLQvdC+0YjQtdC90LjRjy4g0J/RgNCw0LLQvtCy0L7QtSDRgNC10LPRg9C70LjRgNC+0LLQ
+sNC90LjQtSDRjdC60L7QvdC+0LzQuNGH0LXRgdC60LjRhSDQvtGC0L3QvtGI0LXQvdC40Lkg0L7R
+gdC90L7QstC90L7Qs9C+INC4INC00L7Rh9C10YDQvdC10LPQviDQvtCx0YnQtdGB0YLQsi4gCtCU
+0L7Qs9C+0LLQvtGALiDQntGB0L3QvtCy0L3Ri9C1INC/0YDQsNCy0L7QvNC+0YfQuNGPINGB0YPQ
+sdGK0LXQutGC0L7QsiDQtNC+0LPQvtCy0L7RgNC90YvRhSDQvtGC0L3QvtGI0LXQvdC40LkuCgo0
+LiDQo9C/0YDQsNCy0LvQtdC90LjRjyDRhdC+0LvQtNC40L3Qs9C+0LwuINCS0LXRgNGC0LjQutCw
+0LvRjNC90L7QtSDQuCDQs9C+0YDQuNC30L7QvdGC0LDQu9GM0L3QvtC1INGD0L/RgNCw0LLQu9C1
+0L3QuNC1INGF0L7Qu9C00LjQvdCz0L7QvC4g0KPQv9GA0LDQstC70Y/RjtGJ0LDRjyAK0LrQvtC8
+0L/QsNC90LjRjy4g0J/RgNC+0LHQu9C10LzQsCDRgdC+0LLQvNC10YnQtdC90LjRjyDQv9C+0LvQ
+vdC+0LzQvtGH0LjQuSDQtNC40YDQtdC60YLQvtGA0LAg0YPQv9GA0LDQstC70Y/RjtGJ0LXQuSDQ
+utC+0LzQv9Cw0L3QuNC4INC4INC/0YDQtdC00YHQtdC00LDRgtC10LvRjyAK0YHQvtCy0LXRgtCw
+INC00LjRgNC10LrRgtC+0YDQvtCyINGD0L/RgNCw0LLQu9GP0LXQvNC+0LPQviDQu9C40YbQsC4g
+0J/QvtC70L3QvtC80L7Rh9C40Y8g0L3QtdC30LDQstC40YHQuNC80L7QuSDRg9C/0YDQsNCy0LvR
+j9GO0YnQtdC5INC60L7QvNC/0LDQvdC40Lgg0LggCtC+0YHQvdC+0LLQvdC+0LPQviDQvtCx0YnQ
+tdGB0YLQstCwLiDQo9C/0YDQsNCy0LvQtdC90LjQtSDQtNC+0YfQtdGA0L3QuNC8INC+0LHRidC1
+0YHRgtCy0L7QvCDQv9C+0YHRgNC10LTRgdGC0LLQvtC8INC/0LXRgNC10LTQsNGH0Lgg0L/QvtC7
+0L3QvtC80L7Rh9C40LkgCtC+0YHQvdC+0LLQvdC+0LzRgyDQvtCx0YnQtdGB0YLQstGDLiDQodGA
+0LDRidC10L3QuNC1INCw0L/Qv9Cw0YDQsNGC0L7QsiDRg9C/0YDQsNCy0LvQtdC90LjRjyDQtNC+
+0YfQtdGA0L3QtdCz0L4g0L7QsdGJ0LXRgdGC0LLQsCDQuCDQvtGB0L3QvtCy0L3QvtCz0L4gCtC+
+0LHRidC10YHRgtCy0LAuINCh0LXQv9Cw0YDQsNGG0LjRjyDQv9C+0LvQvdC+0LzQvtGH0LjQuSDQ
+vNC10LbQtNGDINGB0YLRgNGD0LrRgtGD0YDQsNC80Lgg0YPQv9GA0LDQstC70Y/RjtGJ0LjRhS/R
+g9C/0YDQsNCy0LvRj9C10LzRi9GFINC60L7QvNC/0LDQvdC40LkuIArQntGA0LPQsNC90LjQt9Cw
+0YbQuNGPINC/0LXRgNC10LTQsNGH0Lgg0YPQv9GA0LDQstC70LXQvdGH0LXRgdC60L7QuSDQuNC9
+0YTQvtGA0LzQsNGG0LjQuCDQsiDRhdC+0LvQtNC40L3Qs9C1LiDQodC/0L7RgdC+0LHRiyDRg9C/
+0YDQsNCy0LvQtdC90LjRjyDRhdC+0LvQtNC40L3Qs9C+0LwgCtC90LAg0L7Qv9C10YDQsNGC0LjQ
+stC90L7QvCDRg9GA0L7QstC90LUuINCe0LHQtdGB0L/QtdGH0LXQvdC40LUg0LrQvtC90YLRgNC+
+0LvRjyDQstC90YPRgtGA0Lgg0LTQvtGH0LXRgNC90LjRhSDQvtCx0YnQtdGB0YLQsi4KCjUuINCU
+0L7Qs9C+0LLQvtGA0L3QsNGPINC80L7QtNC10LvRjCDRg9C/0YDQsNCy0LvQtdC90LjRjyDQsiDR
+hdC+0LvQtNC40L3Qs9C1LCDRhtC10L3RgtGA0LDQu9C40LfQsNGG0LjRjy4g0JTQvtCz0L7QstC+
+0YDRiyDQviDQv9GA0LXQtNC+0YHRgtCw0LLQu9C10L3QuNC4IArRg9C/0YDQsNCy0LvQtdC90YfQ
+tdGB0LrQuNGFINGD0YHQu9GD0LMsINC/0YDQtdC00L7RgdGC0LDQstC70LXQvdC40Lgg0L/QtdGA
+0YHQvtC90LDQu9CwINC4INC00YDRg9Cz0LjQtSDRgNCw0LfQvdC+0LLQuNC00L3QvtGB0YLQuCDQ
+sNGD0YLRgdC+0YDRgdC40L3Qs9CwLiDQndCw0LvQvtCz0L7QstGL0LUgCtC/0YDQvtCx0LvQtdC8
+0Ysg0LLQt9Cw0LjQvNC+0LTQtdC50YHRgtCy0LjRjyDQutC+0LzQv9Cw0L3QuNC5LCDQv9C10YDQ
+tdC60LLQsNC70LjRhNC40LrQsNGG0LjRjyDRgdC00LXQu9C+0LouINCh0L/QvtGB0L7QsdGLINGB
+0L3QuNC20LXQvdC40Y8g0YDQuNGB0LrQvtCyLiAK0J7RhNC+0YDQvNC70LXQvdC40LUg0L7RgtC9
+0L7RiNC10L3QuNC5LiDQodC+0LfQtNCw0L3QuNC1INC10LTQuNC90L7Qs9C+INC/0YDQsNCy0L7Q
+stC+0LPQviDQv9GA0L7RgdGC0YDQsNC90YHRgtCy0LAuINCa0L7QvdGG0LXQv9GG0LjRjyDQstC9
+0YPRgtGA0LXQvdC90LjRhSAK0LTQvtC60YPQvNC10L3RgtC+0LIg0YXQvtC70LTQuNC90LPQvtCy
+0L7QuSDQutC+0LzQv9Cw0L3QuNC4INCe0YHQvdC+0LLQvdGL0LUg0LLQvdGD0YLRgNC10L3QvdC4
+0LUg0LTQvtC60YPQvNC10L3RgtGLLiDQo9C/0YDQsNCy0LvQtdC90LjQtSDQv9C10YDRgdC+0L3Q
+sNC70L7QvCAK0YXQvtC70LTQuNC90LPQsC4KCjYuINCf0L7RgdGC0YDQvtC10L3QuNC1INGF0L7Q
+u9C00LjQvdCz0L7QsiDRgSDQvdC10YDQtdC30LjQtNC10L3RgtCw0LzQuC4g0JDQvdCw0LvQuNC3
+INC/0L7RgdGC0YDQvtC10L3QuNC1INGF0L7Qu9C00LjQvdCz0L7QstGL0YUg0YHRgtGA0YPQutGC
+0YPRgCDRgSAK0L3QtdGA0LXQt9C40LTQtdC90YLQsNC80Lgg0L3QsCDQv9GA0LjQvNC10YDQtSDQ
+mtC40L/RgNCwLgoKNy4g0J/RgNCw0LLQvtCy0YvQtSDQsNGB0L/QtdC60YLRiyDQtNC10Y/RgtC1
+0LvRjNC90L7RgdGC0Lgg0YXQvtC70LTQuNC90LPQvtCyLiDQn9GA0LDQstCwINC4INC+0LHRj9C3
+0LDQvdC90L7RgdGC0Lgg0LTQvtGH0LXRgNC90LXQs9C+INC+0LHRidC10YHRgtCy0LAg0LggCtC+
+0YHQvdC+0LLQvdC+0LPQviDQvtCx0YnQtdGB0YLQstCwLCDRg9C/0YDQsNCy0LvRj9GO0YnQtdC5
+INC60L7QvNC/0LDQvdC40LguINCg0LDRgdC/0YDQtdC00LXQu9C10L3QuNC1INGE0YPQvdC60YbQ
+uNC5INC4INC/0L7Qu9C90L7QvNC+0YfQuNC5LCAK0YDQsNGB0L/RgNC10LTQtdC70LXQvdC40LUg
+0LDQutGC0LjQstC+0LIg0LIg0YXQvtC70LTQuNC90LPQtS4g0JrRgNGD0L/QvdGL0LUg0YHQtNC1
+0LvQutC4LCDRgdC00LXQu9C60Lgg0YEg0LfQsNC40L3RgtC10YDQtdGB0L7QstCw0L3QvdC+0YHR
+gtGM0Y4uINCe0YHQvdC+0LLQsNC90LjRjyAK0L7RgdC/0LDRgNC40LLQsNC90LjRjyDQuCDQt9Cw
+0YnQuNGC0YsuINCh0L/QvtGB0L7QsdGLINC30LDQutC70Y7Rh9C10L3QuNGPINGB0LTQtdC70L7Q
+uiDQvNC40L3QuNC80LjQt9C40YDRg9GO0YnQuNC1INCy0L7Qt9C80L7QttC90YvQtSDQv9GA0LXR
+gtC10L3Qt9C40LguCgo4LiDQoNC10LPRg9C70LjRgNC+0LLQsNC90LjQtSDRhdC+0LvQtNC40L3Q
+s9C+0LIg0LDQvdGC0LjQvNC+0L3QvtC/0L7Qu9GM0L3Ri9C8INC30LDQutC+0L3QvtC00LDRgtC1
+0LvRjNGB0YLQstC+0LwuICLQkNGE0YTQuNC70LjRgNC+0LLQsNC90L3Ri9C1IArQu9C40YbQsCIs
+ICLRhdC+0LvQtNC40L3QsyIg0Lgg0YIu0L8uINCe0YHQvdC+0LLQsNC90LjRjyDQutC+0L3RgtGA
+0L7Qu9GPLiDQn9C+0YHQu9C10LTRgdGC0LLQuNGPINC90LDRgNGD0YjQtdC90LjQuSDRgtGA0LXQ
+sdC+0LLQsNC90LjQuSAK0LDQvdGC0LjQvNC+0L3QvtC/0L7Qu9GM0L3QvtCz0L4g0LfQsNC60L7Q
+vdC+0LTQsNGC0LXQu9GM0YHRgtCy0LAuCgo5LiDQpNC40L3QsNC90YHQuNGA0L7QstCw0L3QuNC1
+INC4INC/0LXRgNC10LTQsNGH0LAg0LjQvNGD0YnQtdGB0YLQstCwLiDQktC+0LfQvNC+0LbQvdC+
+0YHRgtC4INCx0LXQt9Cy0L7Qt9C80LXQt9C00L3QvtC5INC/0LXRgNC10LTQsNGH0Lgg0LjQvNGD
+0YnQtdGB0YLQstCwINC4IArQtNC10L3QtdC20L3Ri9GFINGB0YDQtdC00YHRgtCyLiDQodGD0YLR
+jCDQvdCw0LvQvtCz0L7QstGL0YUg0L/RgNC10YLQtdC90LfQuNC5LCDQvdCw0LvQvtCz0L7QvtCx
+0LvQvtC20LXQvdC40LUg0YHQtNC10LvQvtC6LiDQn9GA0L7QsdC70LXQvNGLIArQutCy0LDQu9C4
+0YTQuNC60LDRhtC40Lgg0YHQtNC10LvQvtC6LiDQodC/0L7RgdC+0LHRiyDQv9C10YDQtdC00LDR
+h9C4INCw0LrRgtC40LLQvtCyLiDQodC/0L7RgdC+0LHRiyDRhNC40L3QsNC90YHQuNGA0L7QstCw
+0L3QuNGPLCDQt9Cw0LzQtdC90LAg0LfQsNC50LzQvtCyIArQuNC90YvQvNC4INGB0LTQtdC70LrQ
+sNC80LguCgoxMC4g0J3QsNC70L7Qs9C+0LLRi9C5INCw0YHQv9C10LrRgi4g0KDQsNGB0YHQvNC+
+0YLRgNC10L3QuNC1INCz0YDRg9C/0L/RiyDQutC+0LzQv9Cw0L3QuNC5INC60LDQuiDQstC30LDQ
+uNC80L7Qt9Cw0LLQuNGB0LjQvNGL0YUg0LvQuNGGLiAK0J/QtdGA0LXQutCy0LDQu9C40YTQuNC6
+0LDRhtC40Y8g0YHQtNC10LvQvtC6LiDQn9GA0LjQvNC10L3QtdC90LjQtSDQutGA0LjRgtC10YDQ
+uNC10LIg0L3QtdC00L7QsdGA0L7RgdC+0LLQtdGB0YLQvdC+0YHRgtC4INC6INCz0YDRg9C/0L/Q
+tSDQu9C40YYuIArQntGB0L3QvtCy0L3Ri9C1INC00LXQu9C+0LLRi9C1INGG0LXQu9C4LCDQvtCx
+0YrRj9GB0L3Rj9GO0YnQuNC1INC+0LHRitC10LTQuNC90LXQvdC40LUuINCf0YDQuNCy0LvQtdGH
+0LXQvdC40LUg0YPRh9Cw0YHRgtC90LjQutC+0LIg0YXQvtC70LTQuNC90LPQsCDQuiAK0LjRgdC/
+0L7Qu9C90LXQvdC40Y4g0L3QsNC70L7Qs9C+0LLRi9GFINC+0LHRj9C30LDQvdC90L7RgdGC0LXQ
+uSDQtNGA0YPQsyDQt9CwINC00YDRg9Cz0LAuINCQ0L3QsNC70LjQtyDQvNCw0YLQtdGA0LjQsNC7
+0L7QsiDRgdGD0LTQtdCx0L3QvtC5INC/0YDQsNC60YLQuNC60LguIAoK0KHRgtC+0LjQvNC+0YHR
+gtGMINGD0YfQsNGB0YLQuNGPOiA4MDAwINGA0YPQsdC70LXQuS4KCtCc0LXRgdGC0L4g0L/RgNC+
+0LLQtdC00LXQvdC40Y86INC8LiDQkdCw0YPQvNCw0L3RgdC60LDRjywg0YPQuy4g0JHQsNGD0LzQ
+sNC90YHQutCw0Y8sINC0LjYsINCx0LjQt9C90LXRgSDRhtC10L3RgtGAICLQktC40LrRgtC+0YDQ
+uNGPINCf0LvQsNC30LAiLgrQkiDRgdGC0L7QuNC80L7RgdGC0Ywg0LLRhdC+0LTQuNGCINC80LXR
+gtC+0LTQuNGH0LXRgdC60LjQuSDQvNCw0YLQtdGA0LjQsNC7LCDQvtCx0LXQtNGLLCDQutC+0YTQ
+tS3Qv9Cw0YPQt9GLLCDRgdC10YDRgtC40YTQuNC60LDRgi4gCgrQktCQ0JbQndCeISDQl9Cw0L3R
+j9GC0LjRjyDQv9GA0L7RhdC+0LTRj9GCINCyINGD0YfQtdCx0L3QvtC5INCw0YPQtNC40YLQvtGA
+0LjQuCDRgSDQutC+0L3QtNC40YbQuNC+0L3QuNGA0L7QstCw0L3QvdGL0LwgCtC/0YDQvtGF0LvQ
+sNC00L3Ri9C8INCy0L7Qt9C00YPRhdC+0LwhCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNG
+Lm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgCgpNYWtlIGFuIGFwcCB0aGV5IGNhbid0IGxpdmUg
+d2l0aG91dApFbnRlciB0aGUgQmxhY2tCZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvUklNLWRldjJkZXYgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

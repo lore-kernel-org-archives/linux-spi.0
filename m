@@ -1,29 +1,43 @@
-From: <wobigux4824-iKbljaP1DMZwFqzsTH5u/w@public.gmane.org>
-Subject: [SPAM] What a gorgeous babe
-Date: Fri, 20 Aug 2010 18:50:45 -0300
-Message-ID: <E1OmZUK-0006pw-VA@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: wobigux4824-iKbljaP1DMZwFqzsTH5u/w@public.gmane.org
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Subject: Re: [spi-devel-general] [PATCH 1/2] spi/spi_s3c64xx: Make probe more
+ robust against missing board config
+Date: Sat, 21 Aug 2010 10:45:56 +0900
+Message-ID: <AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com>
+References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Check out the one thing that men and women love.
-http://www.salesbundle.ru/
+On Sat, Aug 21, 2010 at 1:17 AM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> The S3C64xx SPI driver requires the machine to call s3c64xx_spi_set_info()
+> to select a few options, including the clock to use for the SPI controller.
+> If this is not done then a NULL will be passed as the clock name for
+> clk_get(), causing an obscure crash. Guard against this and other missing
+> configuration by validating that the clock name has been filled in in
+> the platform data that ets passed in.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by 
+     The movement of sci assignment and check doesn't make any
+difference because
+      we already check for presence of platform_data and DMA-Tx,Rx and
+IO base is
+      set irrespective of calling s3c64xx_spi_set_info()
 
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev 
+    Also, I think !sci->num_cs might be an even better check because
+the samsung clock
+   api might be changed (IIRC Ben was already working it out) to make
+it redundant
+   to pass clock name strings to clk_get. If that is the case, we might end up
+   adding another foolproof check like !sci->num_cs
+
+    what do you guys think?
+
+regards

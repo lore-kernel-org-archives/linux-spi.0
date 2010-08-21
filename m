@@ -1,89 +1,92 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi/spi_s3c64xx: Make probe
- more robust against missing board config
-Date: Sat, 21 Aug 2010 22:58:36 +0900
-Message-ID: <AANLkTikbGR4wWUEHjR74UFu8P-w9us3ZpKgmG+yDukfC@mail.gmail.com>
-References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com>
-	<20100821100855.GA5545@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [spi-devel-general] [PATCH 1/2] spi/spi_s3c64xx: Make probe
+	more robust against missing board config
+Date: Sat, 21 Aug 2010 20:30:15 +0100
+Message-ID: <20100821193015.GA16455@opensource.wolfsonmicro.com>
+References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com> <AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com> <20100821100855.GA5545@opensource.wolfsonmicro.com> <AANLkTikbGR4wWUEHjR74UFu8P-w9us3ZpKgmG+yDukfC@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100821100855.GA5545-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTikbGR4wWUEHjR74UFu8P-w9us3ZpKgmG+yDukfC@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCBBdWcgMjEsIDIwMTAgYXQgNzowOCBQTSwgTWFyayBCcm93bgo8YnJvb25pZUBvcGVu
-c291cmNlLndvbGZzb25taWNyby5jb20+IHdyb3RlOgo+IE9uIFNhdCwgQXVnIDIxLCAyMDEwIGF0
-IDEwOjQ1OjU2QU0gKzA5MDAsIEphc3NpIEJyYXIgd3JvdGU6Cj4+IE9uIFNhdCwgQXVnIDIxLCAy
-MDEwIGF0IDE6MTcgQU0sIE1hcmsgQnJvd24KPj4gPGJyb29uaWVAb3BlbnNvdXJjZS53b2xmc29u
-bWljcm8uY29tPiB3cm90ZToKPj4gPiBUaGUgUzNDNjR4eCBTUEkgZHJpdmVyIHJlcXVpcmVzIHRo
-ZSBtYWNoaW5lIHRvIGNhbGwgczNjNjR4eF9zcGlfc2V0X2luZm8oKQo+PiA+IHRvIHNlbGVjdCBh
-IGZldyBvcHRpb25zLCBpbmNsdWRpbmcgdGhlIGNsb2NrIHRvIHVzZSBmb3IgdGhlIFNQSSBjb250
-cm9sbGVyLgo+PiA+IElmIHRoaXMgaXMgbm90IGRvbmUgdGhlbiBhIE5VTEwgd2lsbCBiZSBwYXNz
-ZWQgYXMgdGhlIGNsb2NrIG5hbWUgZm9yCj4+ID4gY2xrX2dldCgpLCBjYXVzaW5nIGFuIG9ic2N1
-cmUgY3Jhc2guIEd1YXJkIGFnYWluc3QgdGhpcyBhbmQgb3RoZXIgbWlzc2luZwo+PiA+IGNvbmZp
-Z3VyYXRpb24gYnkgdmFsaWRhdGluZyB0aGF0IHRoZSBjbG9jayBuYW1lIGhhcyBiZWVuIGZpbGxl
-ZCBpbiBpbgo+PiA+IHRoZSBwbGF0Zm9ybSBkYXRhIHRoYXQgZXRzIHBhc3NlZCBpbi4KPgo+PiDC
-oCDCoCDCoFRoZSBtb3ZlbWVudCBvZiBzY2kgYXNzaWdubWVudCBhbmQgY2hlY2sgZG9lc24ndCBt
-YWtlIGFueQo+PiBkaWZmZXJlbmNlIGJlY2F1c2UKPj4gwqAgwqAgwqAgd2UgYWxyZWFkeSBjaGVj
-ayBmb3IgcHJlc2VuY2Ugb2YgcGxhdGZvcm1fZGF0YSBhbmQgRE1BLVR4LFJ4IGFuZAo+PiBJTyBi
-YXNlIGlzCj4+IMKgIMKgIMKgIHNldCBpcnJlc3BlY3RpdmUgb2YgY2FsbGluZyBzM2M2NHh4X3Nw
-aV9zZXRfaW5mbygpCj4KPiBXaGlsZSBpdCBkb2VzIGNoZWNrIGZvciB0aG9zZSB0aGluZ3MgZm9y
-IGF0IGxlYXN0IHRoZSA2NDEwIHRoZXkncmUgYWxsCj4gdW5jb25kaXRpb25hbGx5IHNldCB1cCBi
-eSBkZXYtc3BpLmMgc28gdGhlIHRlc3RzIGFsbCBwYXNzIGFuZCB3ZSBtYWtlIGl0Cj4gZG93biBp
-bnRvIHRvIHRoZSBjbGtfZ2V0KCkgd2hpY2ggdGhlbiBmYWxscyBvdmVyIGhvcnJpYmx5LgpUaG9z
-ZSBwYXJhbWV0ZXJzIGFyZSBTb0Mgc3BlY2lmaWMgYW5kIGhlbmNlIHdpbGwgYmUgYWx3YXlzIGF2
-YWlsYWJsZSB0bwpwbGF0Zm9ybSBkZXZpY2VzLgpDbG9jayBzZWxlY3Rpb24gYW5kIG51bV9jcyhu
-dW1iZXIgb2Ygc2xhdmVzIGF0dGFjaGVkIHRvIHRoZSBTUEkgYnVzKSBhcmUKbWFjaGluZSBzcGVj
-aWZpYyBhbmQgaGVuY2UgcmVzcG9uc2liaWxpdHkgb2YgdGhlIG1hY2hpbmUgZGV2ZWxvcGVyIHRv
-CnNldCBhcHByb3ByaWF0ZWx5IHZpYSBzM2M2NHh4X3NwaV9zZXRfaW5mbygpCgoKPj4gwqAgwqAg
-QWxzbywgSSB0aGluayAhc2NpLT5udW1fY3MgbWlnaHQgYmUgYW4gZXZlbiBiZXR0ZXIgY2hlY2sg
-YmVjYXVzZQo+PiB0aGUgc2Ftc3VuZyBjbG9jawo+PiDCoCDCoGFwaSBtaWdodCBiZSBjaGFuZ2Vk
-IChJSVJDIEJlbiB3YXMgYWxyZWFkeSB3b3JraW5nIGl0IG91dCkgdG8gbWFrZQo+PiBpdCByZWR1
-bmRhbnQKPj4gwqAgwqB0byBwYXNzIGNsb2NrIG5hbWUgc3RyaW5ncyB0byBjbGtfZ2V0LiBJZiB0
-aGF0IGlzIHRoZSBjYXNlLCB3ZSBtaWdodCBlbmQgdXAKPj4gwqAgwqBhZGRpbmcgYW5vdGhlciBm
-b29scHJvb2YgY2hlY2sgbGlrZSAhc2NpLT5udW1fY3MKPgo+IFRoZSBwcm9ibGVtIHdpdGggbnVt
-X2NzIGlzIHRoYXQgaXQgZ2V0cyBpbnRlcnByZXRlZCBieSBhIGN1c3RvbSBmdW5jdGlvbgo+IHBy
-b3ZpZGVkIGJ5IHRoZSBib2FyZCBkcml2ZXIgc28gd2UgcmVhbGx5IGNhbid0IHNheSBhbnl0aGlu
-ZyBhYm91dCB3aGF0Cj4gaXQgZG9lcy4KbnVtX2NzIGlzIHBhc3NlZCBvbiBhcyBzdWNoIHRvIHRo
-ZSBTUEkgY29yZSB0byBtYXN0ZXItPm51bV9jaGlwc2VsZWN0CndoaWNoIGlzIHN0cmljdGx5IGNo
-ZWNrZWQgZm9yIGJlZm9yZSBhIG1hc3RlciBpcyBjcmVhdGVkLgoKPiDCoElmIHRoZSBjbG9jayBB
-UEkgZ2V0cyBlbmhhbmNlZCB0aGVuIHdlIGNhbiBhbHdheXMgY29wZSB3aXRoCj4gdGhpbmdzIHRo
-ZW4sIGJ1dCBnaXZlbiB0aGUgcGFjZSBvZiBkZXZlbG9wbWVudCB0aGVyZSBJJ2QgZXhwZWN0IHRo
-YXQKPiB3ZSdkIG5lZWQgdG8gY29udGludWUgY2hlY2tpbmcgZm9yIGEgd2hpbGUuCnllcywgc28g
-ZG8gaSB0aGluay4KCj4gVEJIIEknbSBhIGJpdCBzdXJwcmlzZWQgdGhhdCB0aGUgZHJpdmVyIGhh
-cyB0byBkbyBjdXN0b20gc3R1ZmYgdG8KPiBzdXBwb3J0IGdwaW9saWIgY2hpcCBzZWxlY3RzIC0g
-bXkgZmlyc3QgdGhvdWdodCB3aGVuIEkgc2F3IHRoYXQgc3R1ZmYKPiB3YXMgdGhhdCBpdCBzZWVt
-ZWQgbGlrZSBzb21ldGhpbmcgdGhhdCBsb3RzIG9mIFNQSSBjb250cm9sbGVycyB3b3VsZCBiZQo+
-IGFibGUgdG8gc2hhcmUgYnV0IEkgZGlkbid0IGxvb2sgYXQgdGhlIG92ZXJhbGwgU1BJIGNvZGUg
-Zm9yIGxvbmcgZW5vdWdoCj4gdG8gZmlndXJlIG91dCB3aGF0IHdhcyBnb2luZyBvbiB0aGVyZS4K
-d2UgaGF2ZSBjb21tb24gc3BpIGJpdGJhbmdpbmcgZHJpdmVyIHRoYXQgdGFrZXMgb25seSBmb3Vy
-IGdwaW8gcGlucwphbmQgd29yayBsaWtlIGEgY2hhcm0uCkluIG9yZGVyIHRvIGVuYWJsZSB1c2Vy
-cyB1c2UgbXVsdGlwbGUgQ1MgcGVyIG1hc3RlciwgaW4gc3BpX3MzYzY0eHguYwp0aGUgc2luZ2xl
-IENTIGZlYXR1cmUgcHJvdmlkZWQgYnkgdGhlIGNvbnRyb2xsZXIgaXMgZGVsaWJlcmF0ZWx5IGxl
-ZnQgdW51c2VkCmFuZCB0aGUgZHJpdmVyIGFjY2VwdHMgYSBncGlvIHBlciBzbGF2ZSBhbmQgbWFu
-dWFsbHkgY29udHJvbHMgaXQuIFRob3VnaAp0aGUgY2FsbGJhY2tzIGFuZCBhcmd1bWVudHMgYXJl
-IGRlc2lnbmVkIHNvIHRoYXQgYSBzaW1wbGUgZ3BpbyBudW1iZXIKYW5kIGdwaW9fc2V0IGNhbiBi
-ZSBhc3NpZ25lZCBieSB0aGUgbWFjaGluZSBjb2RlLgoKQW55d2F5cywgSSB0aGluayB3ZSBjYW4g
-a2VlcCB0aGUgcGF0Y2ggYXMgaXQgaXMsIGlmIGl0J3MgYWxyZWFkeQphcHBsaWVkIGluIEdyYW50
-J3MKdHJlZS4KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9u
-c29yZWQgYnkgCgpNYWtlIGFuIGFwcCB0aGV5IGNhbid0IGxpdmUgd2l0aG91dApFbnRlciB0aGUg
-QmxhY2tCZXJyeSBEZXZlbG9wZXIgQ2hhbGxlbmdlCmh0dHA6Ly9wLnNmLm5ldC9zZnUvUklNLWRl
-djJkZXYgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
-aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
-c3BpLWRldmVsLWdlbmVyYWwK
+On Sat, Aug 21, 2010 at 10:58:36PM +0900, Jassi Brar wrote:
+> On Sat, Aug 21, 2010 at 7:08 PM, Mark Brown
+> > On Sat, Aug 21, 2010 at 10:45:56AM +0900, Jassi Brar wrote:
+
+> >> =A0 =A0 =A0The movement of sci assignment and check doesn't make a=
+ny
+> >> difference because
+> >> =A0 =A0 =A0 we already check for presence of platform_data and DMA=
+-Tx,Rx and
+> >> IO base is
+> >> =A0 =A0 =A0 set irrespective of calling s3c64xx_spi_set_info()
+
+> > While it does check for those things for at least the 6410 they're =
+all
+> > unconditionally set up by dev-spi.c so the tests all pass and we ma=
+ke it
+> > down into to the clk_get() which then falls over horribly.
+
+> Those parameters are SoC specific and hence will be always available =
+to
+> platform devices.
+> Clock selection and num_cs(number of slaves attached to the SPI bus) =
+are
+> machine specific and hence responsibility of the machine developer to
+> set appropriately via s3c64xx_spi_set_info()
+
+Sure, the split does make sense - it's just that this means that we nee=
+d
+to do something to make sure that s3c64xx_spi_set_info() got called.
+
+> > The problem with num_cs is that it gets interpreted by a custom fun=
+ction
+> > provided by the board driver so we really can't say anything about =
+what
+> > it does.
+
+> num_cs is passed on as such to the SPI core to master->num_chipselect
+> which is strictly checked for before a master is created.
+
+Ah, too many variables with similar functions.
+
+> > support gpiolib chip selects - my first thought when I saw that stu=
+ff
+> > was that it seemed like something that lots of SPI controllers woul=
+d be
+> > able to share but I didn't look at the overall SPI code for long en=
+ough
+> > to figure out what was going on there.
+
+> we have common spi bitbanging driver that takes only four gpio pins
+> and work like a charm.
+
+Though it does burn CPU rather a lot which makes them unsuitable for
+some applications where SPI is used for bulk data transfers or CPU is
+otherwise tight.  In general if you've got an actual SPI controller it'=
+s
+much nicer to use it.
+
+> In order to enable users use multiple CS per master, in spi_s3c64xx.c
+> the single CS feature provided by the controller is deliberately left=
+ unused
+> and the driver accepts a gpio per slave and manually controls it. Tho=
+ugh
+> the callbacks and arguments are designed so that a simple gpio number
+> and gpio_set can be assigned by the machine code.
+
+It did occur to me that a nice way of dealing with this would be to hav=
+e
+the driver default to using the built in chip select (even if driven as
+a GPIO for the sake of code simplicity) but leave the current method
+there as an override.  That way if people are using the IP block in the
+"natural" manner they'd have less to set up.

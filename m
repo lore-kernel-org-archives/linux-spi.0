@@ -1,111 +1,57 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] SPI: fix APB pclk power regression on
-	U300
-Date: Sat, 21 Aug 2010 11:07:36 +0200
-Message-ID: <1282381656-8644-1-git-send-email-linus.walleij@stericsson.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [spi-devel-general] [PATCH 1/2] spi/spi_s3c64xx: Make probe
+	more robust against missing board config
+Date: Sat, 21 Aug 2010 11:08:56 +0100
+Message-ID: <20100821100855.GA5545@opensource.wolfsonmicro.com>
+References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com> <AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTimggbZqgv=eKe+wx8YvUX5vOppDfmwpLwTgxJFM@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-With the introduction of an AMBA PrimeCell per-cell block clock,
-the pclk was left on after probe() unless explicitly disabled.
-This clock is wired to the same clock on PL022 causing it to stay
-always on since.
+On Sat, Aug 21, 2010 at 10:45:56AM +0900, Jassi Brar wrote:
+> On Sat, Aug 21, 2010 at 1:17 AM, Mark Brown
+> <broonie@opensource.wolfsonmicro.com> wrote:
+> > The S3C64xx SPI driver requires the machine to call s3c64xx_spi_set_info()
+> > to select a few options, including the clock to use for the SPI controller.
+> > If this is not done then a NULL will be passed as the clock name for
+> > clk_get(), causing an obscure crash. Guard against this and other missing
+> > configuration by validating that the clock name has been filled in in
+> > the platform data that ets passed in.
 
-Fix this up properly by clocking the pclk whenever we want to
-write into any PL022 registers and clocking the external clock
-whenever we want to transmit messages on the bus.
+>      The movement of sci assignment and check doesn't make any
+> difference because
+>       we already check for presence of platform_data and DMA-Tx,Rx and
+> IO base is
+>       set irrespective of calling s3c64xx_spi_set_info()
 
-Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
----
-Tested on U300 and U8500, even though the pclk stuff came in from
-the ARM tree it is probably better to carry this through Grants
-tree so as not to disturb other patches going in for PL022.
----
- drivers/spi/amba-pl022.c |   14 ++++++++------
- 1 files changed, 8 insertions(+), 6 deletions(-)
+While it does check for those things for at least the 6410 they're all
+unconditionally set up by dev-spi.c so the tests all pass and we make it
+down into to the clk_get() which then falls over horribly.
 
-diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 5b3f575..59f8cfb 100644
---- a/drivers/spi/amba-pl022.c
-+++ b/drivers/spi/amba-pl022.c
-@@ -503,8 +503,9 @@ static void giveback(struct pl022 *pl022)
- 	msg->state = NULL;
- 	if (msg->complete)
- 		msg->complete(msg->context);
--	/* This message is completed, so let's turn off the clock! */
-+	/* This message is completed, so let's turn off the clocks! */
- 	clk_disable(pl022->clk);
-+	amba_pclk_disable(pl022->adev);
- }
- 
- /**
-@@ -1139,9 +1140,10 @@ static void pump_messages(struct work_struct *work)
- 	/* Setup the SPI using the per chip configuration */
- 	pl022->cur_chip = spi_get_ctldata(pl022->cur_msg->spi);
- 	/*
--	 * We enable the clock here, then the clock will be disabled when
-+	 * We enable the clocks here, then the clocks will be disabled when
- 	 * giveback() is called in each method (poll/interrupt/DMA)
- 	 */
-+	amba_pclk_enable(pl022->adev);
- 	clk_enable(pl022->clk);
- 	restore_state(pl022);
- 	flush(pl022);
-@@ -1787,11 +1789,9 @@ pl022_probe(struct amba_device *adev, struct amba_id *id)
- 	}
- 
- 	/* Disable SSP */
--	clk_enable(pl022->clk);
- 	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
- 	       SSP_CR1(pl022->virtbase));
- 	load_ssp_default_config(pl022);
--	clk_disable(pl022->clk);
- 
- 	status = request_irq(adev->irq[0], pl022_interrupt_handler, 0, "pl022",
- 			     pl022);
-@@ -1819,6 +1819,8 @@ pl022_probe(struct amba_device *adev, struct amba_id *id)
- 		goto err_spi_register;
- 	}
- 	dev_dbg(dev, "probe succeded\n");
-+	/* Disable the silicon block pclk and clock it when needed */
-+	amba_pclk_disable(adev);
- 	return 0;
- 
-  err_spi_register:
-@@ -1880,9 +1882,9 @@ static int pl022_suspend(struct amba_device *adev, pm_message_t state)
- 		return status;
- 	}
- 
--	clk_enable(pl022->clk);
-+	amba_pclk_enable(adev);
- 	load_ssp_default_config(pl022);
--	clk_disable(pl022->clk);
-+	amba_pclk_disable(adev);
- 	dev_dbg(&adev->dev, "suspended\n");
- 	return 0;
- }
--- 
-1.6.3.3
+>     Also, I think !sci->num_cs might be an even better check because
+> the samsung clock
+>    api might be changed (IIRC Ben was already working it out) to make
+> it redundant
+>    to pass clock name strings to clk_get. If that is the case, we might end up
+>    adding another foolproof check like !sci->num_cs
 
+The problem with num_cs is that it gets interpreted by a custom function
+provided by the board driver so we really can't say anything about what
+it does.  If the clock API gets enhanced then we can always cope with
+things then, but given the pace of development there I'd expect that
+we'd need to continue checking for a while.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by 
-
-Make an app they can't live without
-Enter the BlackBerry Developer Challenge
-http://p.sf.net/sfu/RIM-dev2dev 
+TBH I'm a bit surprised that the driver has to do custom stuff to
+support gpiolib chip selects - my first thought when I saw that stuff
+was that it seemed like something that lots of SPI controllers would be
+able to share but I didn't look at the overall SPI code for long enough
+to figure out what was going on there.

@@ -1,19 +1,18 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/spi_s3c64xx: Staticise
- non-exported functions
-Date: Sat, 21 Aug 2010 10:52:44 +0900
-Message-ID: <AANLkTiknsnER2Z-4_h8OC=VAqbjEfF0H0-y8etzW3i0q@mail.gmail.com>
-References: <1282321028-32196-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<1282321028-32196-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] SPI: moved the PL022 test chip out
+ to the SPI subsystem v2
+Date: Sat, 21 Aug 2010 09:36:21 +0200
+Message-ID: <AANLkTimF5TtEh117Hjc2c16T-wg2oqig8B1Zvr4bVzYP@mail.gmail.com>
+References: <1280045963-10564-1-git-send-email-linus.walleij@stericsson.com>
+	<AANLkTimD=MTn-=EB1Kt87tz9bSVUq+mbZwoOxDbG5sbr@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1282321028-32196-2-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <AANLkTimD=MTn-=EB1Kt87tz9bSVUq+mbZwoOxDbG5sbr-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,41 +23,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCBBdWcgMjEsIDIwMTAgYXQgMToxNyBBTSwgTWFyayBCcm93bgo8YnJvb25pZUBvcGVu
-c291cmNlLndvbGZzb25taWNyby5jb20+IHdyb3RlOgo+IFNpZ25lZC1vZmYtYnk6IE1hcmsgQnJv
-d24gPGJyb29uaWVAb3BlbnNvdXJjZS53b2xmc29ubWljcm8uY29tPgo+IC0tLQo+IMKgZHJpdmVy
-cy9zcGkvc3BpX3MzYzY0eHguYyB8IMKgIMKgOCArKysrLS0tLQo+IMKgMSBmaWxlcyBjaGFuZ2Vk
-LCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9zcGkvc3BpX3MzYzY0eHguYyBiL2RyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMKPiBpbmRleCBh
-MGI2M2I3Li43ZTYyN2Y3IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaV9zM2M2NHh4LmMK
-PiArKysgYi9kcml2ZXJzL3NwaS9zcGlfczNjNjR4eC5jCj4gQEAgLTQ0Nyw4ICs0NDcsOCBAQCBz
-dGF0aWMgdm9pZCBzM2M2NHh4X3NwaV9jb25maWcoc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9k
-YXRhICpzZGQpCj4gwqAgwqAgwqAgwqB3cml0ZWwodmFsLCByZWdzICsgUzNDNjRYWF9TUElfQ0xL
-X0NGRyk7Cj4gwqB9Cj4KPiAtdm9pZCBzM2M2NHh4X3NwaV9kbWFfcnhjYihzdHJ1Y3QgczNjMjQx
-MF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lkLAo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNpemUsIGVudW0gczNjMjQxMF9kbWFfYnVmZnJl
-c3VsdCByZXMpCj4gK3N0YXRpYyB2b2lkIHMzYzY0eHhfc3BpX2RtYV9yeGNiKHN0cnVjdCBzM2My
-NDEwX2RtYV9jaGFuICpjaGFuLCB2b2lkICpidWZfaWQsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGludCBzaXplLCBlbnVtIHMzYzI0MTBfZG1hX2J1
-ZmZyZXN1bHQgcmVzKQo+IMKgewo+IMKgIMKgIMKgIMKgc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZl
-cl9kYXRhICpzZGQgPSBidWZfaWQ7Cj4gwqAgwqAgwqAgwqB1bnNpZ25lZCBsb25nIGZsYWdzOwo+
-IEBAIC00NjcsOCArNDY3LDggQEAgdm9pZCBzM2M2NHh4X3NwaV9kbWFfcnhjYihzdHJ1Y3QgczNj
-MjQxMF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lkLAo+IMKgIMKgIMKgIMKgc3Bpbl91bmxv
-Y2tfaXJxcmVzdG9yZSgmc2RkLT5sb2NrLCBmbGFncyk7Cj4gwqB9Cj4KPiAtdm9pZCBzM2M2NHh4
-X3NwaV9kbWFfdHhjYihzdHJ1Y3QgczNjMjQxMF9kbWFfY2hhbiAqY2hhbiwgdm9pZCAqYnVmX2lk
-LAo+IC0gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaW50IHNp
-emUsIGVudW0gczNjMjQxMF9kbWFfYnVmZnJlc3VsdCByZXMpCj4gK3N0YXRpYyB2b2lkIHMzYzY0
-eHhfc3BpX2RtYV90eGNiKHN0cnVjdCBzM2MyNDEwX2RtYV9jaGFuICpjaGFuLCB2b2lkICpidWZf
-aWQsCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGlu
-dCBzaXplLCBlbnVtIHMzYzI0MTBfZG1hX2J1ZmZyZXN1bHQgcmVzKQo+IMKgewo+IMKgIMKgIMKg
-IMKgc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQgPSBidWZfaWQ7Cj4gwqAgwqAg
-wqAgwqB1bnNpZ25lZCBsb25nIGZsYWdzOwoKT2gsIHllcy4gV2hhdCB3YXMgSSB0aGlua2luZyA/
-IQoKQWNrZWQtYnk6IEphc3NpIEJyYXIgPGphc3Npc2luZ2hicmFyQGdtYWlsLmNvbT4KCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgCgpNYWtl
-IGFuIGFwcCB0aGV5IGNhbid0IGxpdmUgd2l0aG91dApFbnRlciB0aGUgQmxhY2tCZXJyeSBEZXZl
-bG9wZXIgQ2hhbGxlbmdlCmh0dHA6Ly9wLnNmLm5ldC9zZnUvUklNLWRldjJkZXYgCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+2010/8/1 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
+> On Sun, Jul 25, 2010 at 2:19 AM, Linus Walleij
+> <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
+>> This moves the SPI test chip from the U300 architecture to the
+>> SPI subsystem. This is where the code belongs: we want the
+>> loopback test chip to be available to all users of PL022.
+>>
+>> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+>
+> Better, but not quite right yet in my opinion. =A0With the code now
+> embedded into the driver (which I agree with), there is no need to
+> create a dummy spi_device any more. =A0What is this code intended to
+> test? =A0The hardware, or the spi subsystem. =A0If it is to test the
+> hardware (which I suspect), then just driver the hardware directly
+> (using the driver's own access functions of course). =A0You don't need
+> to register a dummy spi_device for that because it is all driver
+> internal.
+
+Sorry for a late answer.
+
+I've been trying to address these goals,
+but since the pl022 message queueing, interrupt handling and
+most everything is based on using struct spi_message and since
+all message transfer helpers (such as spi_write_then_read()) take
+an struct spi_device * as argument, and at some point using the
+internal functions from the outside with struct spi_message involves
+setting the .spi field of the message to something, so obviously that
+would fall back to the old solution.
+
+This makes it necessary to refactor the entire driver and queueing
+mechanism to take some wrapper message derived from the
+spi_message that can work on loops without ever using
+struct spi_message by having some .is_loop bool or so.
+
+That's a little much overhead for just adding some hardware tests
+and breaks the design pattern from the rest of the SPI drivers...
+
+Isn't it easier to just say that any tests *must* be done from
+userspace, leading to the logical conclusion:
+
+> If it goal is to exercise the spi subsystem, then do it from userspace
+> with the loopback flag set, and add loopback flag support to the
+> driver.  You don't need to test all the modes of the hardware in this
+> situation.
+
+No problem with that. But as clarified in the earlier discussion
+with Ben, this is not possible if there are no devices attached to
+the bus. This is often the case when you want to exercise some
+bare hardware where there is no actual SPI device attached to
+the bus. And since the idea was to use the loopback (i.e. not
+communicating with any actual device) this leads to the addition
+of a dummychip for loopback tests anyway.
+
+I'll assume this latter approach is what is really desired and cook
+up a patch for that (just a Kconfig for adding the dummychip, no
+debugfs intrinsic tests) for the moment.
+
+The patch as it stands (and works today on the U300
+dummychip) is just the latter solution with an in-kernel
+exerciser.
+
+Yours,
+Linus Walleij
+
+---------------------------------------------------------------------------=
+---
+This SF.net email is sponsored by =
+
+
+Make an app they can't live without
+Enter the BlackBerry Developer Challenge
+http://p.sf.net/sfu/RIM-dev2dev =

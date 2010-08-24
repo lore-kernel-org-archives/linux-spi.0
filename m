@@ -1,18 +1,14 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/spi_s3c64xx: Warn if PIO
- transfers time out
-Date: Tue, 24 Aug 2010 09:06:40 +0900
-Message-ID: <AANLkTim6+6-L8ALM0YO01D44PmZgsbcMrrwRxrPJMkpT@mail.gmail.com>
-References: <1282581656-26137-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: ntr_fty5-YdDcl2MLUoOsTnJN9+BGXg@public.gmane.org
+Subject: =?gb2312?b?0dC3osH3s8zTxbuv0+vR0Leiz+7Ev7nc?=
+	=?gb2312?b?wO0=?=
+Date: Wed, 25 Aug 2010 04:06:24 +0800
+Message-ID: <E1OnznR-0002og-Tj@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1282581656-26137-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,43 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBBdWcgMjQsIDIwMTAgYXQgMTo0MCBBTSwgTWFyayBCcm93bgo8YnJvb25pZUBvcGVu
-c291cmNlLndvbGZzb25taWNyby5jb20+IHdyb3RlOgo+IFdoZW4gdXNpbmcgUElPIHdlIGhhdmUg
-YSB0aW1lb3V0IGZvciB0aGUgVFggYW5kIFJYIEZJRk9zIHRvIGVuc3VyZSB0aGF0Cj4gdGhlIGRh
-dGEgYWN0dWFsbHkgZ2V0cyB0cmFuc2ZlcnJlZC4gV2FybiBpZiB3ZSBoaXQgdGhhdCB0aW1lb3V0
-IC0gaXQKPiBzaG91bGQgbmV2ZXIgaGFwcGVuLCBidXQgdGhpcyBtYWtlcyBzdXJlIHdlJ2xsIGZp
-bmQgb3V0IGlmIGl0IGRvZXMuCj4KPiBTaWduZWQtb2ZmLWJ5OiBNYXJrIEJyb3duIDxicm9vbmll
-QG9wZW5zb3VyY2Uud29sZnNvbm1pY3JvLmNvbT4KPiAtLS0KPiDCoGRyaXZlcnMvc3BpL3NwaV9z
-M2M2NHh4LmMgfCDCoCDCoDYgKysrKysrCj4gwqAxIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9u
-cygrKSwgMCBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfczNj
-NjR4eC5jIGIvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+IGluZGV4IDdlNjI3ZjcuLmY3MmUx
-YzAgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+ICsrKyBiL2RyaXZl
-cnMvc3BpL3NwaV9zM2M2NHh4LmMKPiBAQCAtMjAwLDYgKzIwMCw5IEBAIHN0YXRpYyB2b2lkIGZs
-dXNoX2ZpZm8oc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQpCj4gwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqB2YWwgPSByZWFkbChyZWdzICsgUzNDNjRYWF9TUElfU1RBVFVTKTsKPiDC
-oCDCoCDCoCDCoH0gd2hpbGUgKFRYX0ZJRk9fTFZMKHZhbCwgc2NpKSAmJiBsb29wcy0tKTsKPgo+
-ICsgwqAgwqAgwqAgaWYgKGxvb3BzID09IDApCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZf
-d2Fybigmc2RkLT5wZGV2LT5kZXYsICJUaW1lZCBvdXQgZmx1c2hpbmcgVFggRklGT1xuIik7Cj4g
-Kwo+IMKgIMKgIMKgIMKgLyogRmx1c2ggUnhGSUZPKi8KPiDCoCDCoCDCoCDCoGxvb3BzID0gbXNl
-Y3NfdG9fbG9vcHMoMSk7Cj4gwqAgwqAgwqAgwqBkbyB7Cj4gQEAgLTIxMCw2ICsyMTMsOSBAQCBz
-dGF0aWMgdm9pZCBmbHVzaF9maWZvKHN0cnVjdCBzM2M2NHh4X3NwaV9kcml2ZXJfZGF0YSAqc2Rk
-KQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYnJlYWs7Cj4gwqAgwqAgwqAg
-wqB9IHdoaWxlIChsb29wcy0tKTsKPgo+ICsgwqAgwqAgwqAgaWYgKGxvb3BzID09IDApCj4gKyDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZfd2Fybigmc2RkLT5wZGV2LT5kZXYsICJUaW1lZCBvdXQg
-Zmx1c2hpbmcgUlggRklGT1xuIik7Cj4gKwo+IMKgIMKgIMKgIMKgdmFsID0gcmVhZGwocmVncyAr
-IFMzQzY0WFhfU1BJX0NIX0NGRyk7Cj4gwqAgwqAgwqAgwqB2YWwgJj0gflMzQzY0WFhfU1BJX0NI
-X1NXX1JTVDsKPiDCoCDCoCDCoCDCoHdyaXRlbCh2YWwsIHJlZ3MgKyBTM0M2NFhYX1NQSV9DSF9D
-RkcpOwoKT2ssIHRob3VnaCBJJ2xsIGJlIHZlcnkgc3VycHJpc2VkIHRvIHNlZSB0aGUgRklGTyBm
-bHVzaCBmYWlsaW5nLiBXZQphcmUgbm90IHdhaXRpbmcKZm9yIGRhdGEgdG8gYmUgdHJhbnNmZXJy
-ZWQsIGJ1dCBmb3IgU1cgUmVzZXQgdG8gbWFrZSBpdHMgZWZmZWN0LgoKQWNrZWQtYnk6IEphc3Np
-IEJyYXIgPGphc3NpLmJyYXJAc2Ftc3VuZy5jb20+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2Vs
-bCBhcHBzIHRvIG1pbGxpb25zIHRocm91Z2ggdGhlIEludGVsKFIpIEF0b20oVG0pIERldmVsb3Bl
-ciBQcm9ncmFtCkJlIHBhcnQgb2YgdGhpcyBpbm5vdmF0aXZlIGNvbW11bml0eSBhbmQgcmVhY2gg
-bWlsbGlvbnMgb2YgbmV0Ym9vayB1c2VycyAKd29ybGR3aWRlLiBUYWtlIGFkdmFudGFnZSBvZiBz
-cGVjaWFsIG9wcG9ydHVuaXRpZXMgdG8gaW5jcmVhc2UgcmV2ZW51ZSBhbmQgCnNwZWVkIHRpbWUt
-dG8tbWFya2V0LiBKb2luIG5vdywgYW5kIGp1bXBzdGFydCB5b3VyIGZ1dHVyZS4KaHR0cDovL3Au
-c2YubmV0L3NmdS9pbnRlbC1hdG9tLWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Sell apps to millions through the Intel(R) Atom(Tm) Developer Program
+Be part of this innovative community and reach millions of netbook users 
+worldwide. Take advantage of special opportunities to increase revenue and 
+speed time-to-market. Join now, and jumpstart your future.
+http://p.sf.net/sfu/intel-atom-d2d
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

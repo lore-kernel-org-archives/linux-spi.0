@@ -1,17 +1,18 @@
-From: Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: fix APB pclk power regression
-	on U300
-Date: Mon, 23 Aug 2010 10:30:17 -0700
-Message-ID: <AANLkTik+-YwxU7__QnSC8BhEO0-iqAA+u11BBt-2qo9Q@mail.gmail.com>
-References: <1282381656-8644-1-git-send-email-linus.walleij@stericsson.com>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/spi_s3c64xx: Warn if PIO
+ transfers time out
+Date: Tue, 24 Aug 2010 09:06:40 +0900
+Message-ID: <AANLkTim6+6-L8ALM0YO01D44PmZgsbcMrrwRxrPJMkpT@mail.gmail.com>
+References: <1282581656-26137-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1282381656-8644-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <1282581656-26137-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,33 +23,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> With the introduction of an AMBA PrimeCell per-cell block clock,
-> the pclk was left on after probe() unless explicitly disabled.
-> This clock is wired to the same clock on PL022 causing it to stay
-> always on since.
->
-> Fix this up properly by clocking the pclk whenever we want to
-> write into any PL022 registers and clocking the external clock
-> whenever we want to transmit messages on the bus.
->
-> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> ---
-> Tested on U300 and U8500, even though the pclk stuff came in from
-> the ARM tree it is probably better to carry this through Grants
-> tree so as not to disturb other patches going in for PL022.
-> ---
-> =A0drivers/spi/amba-pl022.c | =A0 14 ++++++++------
-> =A01 files changed, 8 insertions(+), 6 deletions(-)
->
-
-Tested-by : Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
----------------------------------------------------------------------------=
----
-Sell apps to millions through the Intel(R) Atom(Tm) Developer Program
-Be part of this innovative community and reach millions of netbook users =
-
-worldwide. Take advantage of special opportunities to increase revenue and =
-
-speed time-to-market. Join now, and jumpstart your future.
-http://p.sf.net/sfu/intel-atom-d2d
+T24gVHVlLCBBdWcgMjQsIDIwMTAgYXQgMTo0MCBBTSwgTWFyayBCcm93bgo8YnJvb25pZUBvcGVu
+c291cmNlLndvbGZzb25taWNyby5jb20+IHdyb3RlOgo+IFdoZW4gdXNpbmcgUElPIHdlIGhhdmUg
+YSB0aW1lb3V0IGZvciB0aGUgVFggYW5kIFJYIEZJRk9zIHRvIGVuc3VyZSB0aGF0Cj4gdGhlIGRh
+dGEgYWN0dWFsbHkgZ2V0cyB0cmFuc2ZlcnJlZC4gV2FybiBpZiB3ZSBoaXQgdGhhdCB0aW1lb3V0
+IC0gaXQKPiBzaG91bGQgbmV2ZXIgaGFwcGVuLCBidXQgdGhpcyBtYWtlcyBzdXJlIHdlJ2xsIGZp
+bmQgb3V0IGlmIGl0IGRvZXMuCj4KPiBTaWduZWQtb2ZmLWJ5OiBNYXJrIEJyb3duIDxicm9vbmll
+QG9wZW5zb3VyY2Uud29sZnNvbm1pY3JvLmNvbT4KPiAtLS0KPiDCoGRyaXZlcnMvc3BpL3NwaV9z
+M2M2NHh4LmMgfCDCoCDCoDYgKysrKysrCj4gwqAxIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9u
+cygrKSwgMCBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGlfczNj
+NjR4eC5jIGIvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+IGluZGV4IDdlNjI3ZjcuLmY3MmUx
+YzAgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpX3MzYzY0eHguYwo+ICsrKyBiL2RyaXZl
+cnMvc3BpL3NwaV9zM2M2NHh4LmMKPiBAQCAtMjAwLDYgKzIwMCw5IEBAIHN0YXRpYyB2b2lkIGZs
+dXNoX2ZpZm8oc3RydWN0IHMzYzY0eHhfc3BpX2RyaXZlcl9kYXRhICpzZGQpCj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqB2YWwgPSByZWFkbChyZWdzICsgUzNDNjRYWF9TUElfU1RBVFVTKTsKPiDC
+oCDCoCDCoCDCoH0gd2hpbGUgKFRYX0ZJRk9fTFZMKHZhbCwgc2NpKSAmJiBsb29wcy0tKTsKPgo+
+ICsgwqAgwqAgwqAgaWYgKGxvb3BzID09IDApCj4gKyDCoCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZf
+d2Fybigmc2RkLT5wZGV2LT5kZXYsICJUaW1lZCBvdXQgZmx1c2hpbmcgVFggRklGT1xuIik7Cj4g
+Kwo+IMKgIMKgIMKgIMKgLyogRmx1c2ggUnhGSUZPKi8KPiDCoCDCoCDCoCDCoGxvb3BzID0gbXNl
+Y3NfdG9fbG9vcHMoMSk7Cj4gwqAgwqAgwqAgwqBkbyB7Cj4gQEAgLTIxMCw2ICsyMTMsOSBAQCBz
+dGF0aWMgdm9pZCBmbHVzaF9maWZvKHN0cnVjdCBzM2M2NHh4X3NwaV9kcml2ZXJfZGF0YSAqc2Rk
+KQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYnJlYWs7Cj4gwqAgwqAgwqAg
+wqB9IHdoaWxlIChsb29wcy0tKTsKPgo+ICsgwqAgwqAgwqAgaWYgKGxvb3BzID09IDApCj4gKyDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCBkZXZfd2Fybigmc2RkLT5wZGV2LT5kZXYsICJUaW1lZCBvdXQg
+Zmx1c2hpbmcgUlggRklGT1xuIik7Cj4gKwo+IMKgIMKgIMKgIMKgdmFsID0gcmVhZGwocmVncyAr
+IFMzQzY0WFhfU1BJX0NIX0NGRyk7Cj4gwqAgwqAgwqAgwqB2YWwgJj0gflMzQzY0WFhfU1BJX0NI
+X1NXX1JTVDsKPiDCoCDCoCDCoCDCoHdyaXRlbCh2YWwsIHJlZ3MgKyBTM0M2NFhYX1NQSV9DSF9D
+RkcpOwoKT2ssIHRob3VnaCBJJ2xsIGJlIHZlcnkgc3VycHJpc2VkIHRvIHNlZSB0aGUgRklGTyBm
+bHVzaCBmYWlsaW5nLiBXZQphcmUgbm90IHdhaXRpbmcKZm9yIGRhdGEgdG8gYmUgdHJhbnNmZXJy
+ZWQsIGJ1dCBmb3IgU1cgUmVzZXQgdG8gbWFrZSBpdHMgZWZmZWN0LgoKQWNrZWQtYnk6IEphc3Np
+IEJyYXIgPGphc3NpLmJyYXJAc2Ftc3VuZy5jb20+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2Vs
+bCBhcHBzIHRvIG1pbGxpb25zIHRocm91Z2ggdGhlIEludGVsKFIpIEF0b20oVG0pIERldmVsb3Bl
+ciBQcm9ncmFtCkJlIHBhcnQgb2YgdGhpcyBpbm5vdmF0aXZlIGNvbW11bml0eSBhbmQgcmVhY2gg
+bWlsbGlvbnMgb2YgbmV0Ym9vayB1c2VycyAKd29ybGR3aWRlLiBUYWtlIGFkdmFudGFnZSBvZiBz
+cGVjaWFsIG9wcG9ydHVuaXRpZXMgdG8gaW5jcmVhc2UgcmV2ZW51ZSBhbmQgCnNwZWVkIHRpbWUt
+dG8tbWFya2V0LiBKb2luIG5vdywgYW5kIGp1bXBzdGFydCB5b3VyIGZ1dHVyZS4KaHR0cDovL3Au
+c2YubmV0L3NmdS9pbnRlbC1hdG9tLWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

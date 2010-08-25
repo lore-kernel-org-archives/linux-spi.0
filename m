@@ -1,10 +1,12 @@
-From: 13410458452-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Wed, 25 Aug 2010 11:23:27 +0800
-Message-ID: <E1Oo6ZN-0003vG-Db@sfs-ml-1.v29.ch3.sourceforge.com>
+From: zxdqea-kYQZF8aCxQuxMpQ903CuyA@public.gmane.org
+Subject: =?gb2312?b?zqrG89K1vajBos3qycahor/G0ae1xMH3?=
+	=?gb2312?b?s8y53MDt0+vJ6LzGt72wuA==?=
+Date: Wed, 25 Aug 2010 12:55:53 +0800
+Message-ID: <E1Oo83J-0007KD-T9@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,19 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
-qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
-1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
-CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlbGwgYXBwcyB0byBtaWxsaW9ucyB0aHJvdWdoIHRoZSBJ
-bnRlbChSKSBBdG9tKFRtKSBEZXZlbG9wZXIgUHJvZ3JhbQpCZSBwYXJ0IG9mIHRoaXMgaW5ub3Zh
-dGl2ZSBjb21tdW5pdHkgYW5kIHJlYWNoIG1pbGxpb25zIG9mIG5ldGJvb2sgdXNlcnMgCndvcmxk
-d2lkZS4gVGFrZSBhZHZhbnRhZ2Ugb2Ygc3BlY2lhbCBvcHBvcnR1bml0aWVzIHRvIGluY3JlYXNl
-IHJldmVudWUgYW5kIApzcGVlZCB0aW1lLXRvLW1hcmtldC4gSm9pbiBub3csIGFuZCBqdW1wc3Rh
-cnQgeW91ciBmdXR1cmUuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtYXRvbS1kMmQKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Sell apps to millions through the Intel(R) Atom(Tm) Developer Program
+Be part of this innovative community and reach millions of netbook users 
+worldwide. Take advantage of special opportunities to increase revenue and 
+speed time-to-market. Join now, and jumpstart your future.
+http://p.sf.net/sfu/intel-atom-d2d
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

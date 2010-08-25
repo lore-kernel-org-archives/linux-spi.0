@@ -1,8 +1,8 @@
-From: <yvykizajad9514-yR6380LUlaXR7s880joybQ@public.gmane.org>
-Subject: [SPAM] Hey hottie, wanna talk
-Date: Wed, 25 Aug 2010 08:48:03 +0100
-Message-ID: <E1OoAig-0008BW-2e@sfs-ml-4.v29.ch3.sourceforge.com>
-Reply-To: yvykizajad9514-yR6380LUlaXR7s880joybQ@public.gmane.org
+From: <ybimyfylu1297-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Organ enlargement for all who need them
+Date: Thu, 26 Aug 2010 00:16:23 +0300
+Message-ID: <E1OoNKi-0008IL-9G@sfs-ml-2.v29.ch3.sourceforge.com>
+Reply-To: ybimyfylu1297-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Be inimitable and perfect in bed without hassle, find out how here
-http://www.insectshelf.ru/
+Long men get all the chicks
+http://www.meetingyear.ru/
 
 ------------------------------------------------------------------------------
 Sell apps to millions through the Intel(R) Atom(Tm) Developer Program

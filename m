@@ -1,11 +1,12 @@
-From: 15989349144-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 税/票――代/开
-Date: Mon, 28 Jun 2010 14:25:49 +0800
-Message-ID: <E1OoVzk-0002PT-Gt@sfs-ml-2.v29.ch3.sourceforge.com>
+From: <yawen9284-71ubn78lNmomlAP/+Wk3EA@public.gmane.org>
+Subject: [SPAM] See men fight over women
+Date: Thu, 26 Aug 2010 13:32:20 +0100
+Message-ID: <E1Oobd1-0003vu-Mi@sfs-ml-2.v29.ch3.sourceforge.com>
+Reply-To: yawen9284-71ubn78lNmomlAP/+Wk3EA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +18,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQoaLJz7qjytC1yLXYo6nT
-0MG8usO1xMbz0rXQzs/zoaPP1rG+uavLvtPQ0ruyv7fW16jTw8uwoaqhqsaxtPq/qqO7CsjnOigx
-Kbqjudi79c7vvfi/2r3Jv+7K6aO7CiAgICgyKcbVzajJzMa3z/rK27eioarGsaO7CiAgICgzKbnj
-uObStaGiuPfA4Lf+zvHStbeioaqhqsaxtci1yKGjCrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0
-tefT687SwarPtaO6ICAKICAKICAgILi61PDIy6O61cXPyMn6KDApMTU5ODkzNDkxNDQKCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpTZWxsIGFwcHMgdG8gbWlsbGlvbnMgdGhyb3VnaCB0aGUgSW50ZWwo
-UikgQXRvbShUbSkgRGV2ZWxvcGVyIFByb2dyYW0KQmUgcGFydCBvZiB0aGlzIGlubm92YXRpdmUg
-Y29tbXVuaXR5IGFuZCByZWFjaCBtaWxsaW9ucyBvZiBuZXRib29rIHVzZXJzIAp3b3JsZHdpZGUu
-IFRha2UgYWR2YW50YWdlIG9mIHNwZWNpYWwgb3Bwb3J0dW5pdGllcyB0byBpbmNyZWFzZSByZXZl
-bnVlIGFuZCAKc3BlZWQgdGltZS10by1tYXJrZXQuIEpvaW4gbm93LCBhbmQganVtcHN0YXJ0IHlv
-dXIgZnV0dXJlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVsLWF0b20tZDJkCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Do not blame us for mistakes by your company
+http://www.rubbishguitar.ru/
+
+------------------------------------------------------------------------------
+Sell apps to millions through the Intel(R) Atom(Tm) Developer Program
+Be part of this innovative community and reach millions of netbook users 
+worldwide. Take advantage of special opportunities to increase revenue and 
+speed time-to-market. Join now, and jumpstart your future.
+http://p.sf.net/sfu/intel-atom-d2d

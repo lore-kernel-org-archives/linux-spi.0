@@ -1,8 +1,8 @@
-From: <asuguhet6810-iKbljaP1DMZwFqzsTH5u/w@public.gmane.org>
-Subject: [SPAM] College girls getting naughty with you
-Date: Fri, 27 Aug 2010 00:47:17 -0300
-Message-ID: <E1Oopsx-0002DF-27@sfs-ml-4.v29.ch3.sourceforge.com>
-Reply-To: asuguhet6810-iKbljaP1DMZwFqzsTH5u/w@public.gmane.org
+From: "Sofinco par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: =?iso-8859-1?q?C=27est_la_rentr=E9e_=2C_profi?=
+	=?iso-8859-1?q?tez_de_nos_offres?=
+Date: Fri, 27 Aug 2010 05:58:01 +0200 (CEST)
+Message-ID: <l7sluk.9vfl34@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Results are shown in all of our customers for organ enlargement
-http://www.oceanspinster.ru/
 
 ------------------------------------------------------------------------------
 Sell apps to millions through the Intel(R) Atom(Tm) Developer Program

@@ -1,19 +1,18 @@
 From: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
 Subject: Re: [PATCH] spi: free children in spi_unregister_master, not siblings
-Date: Mon, 30 Aug 2010 23:39:49 +0200
-Message-ID: <20100830213949.GB2413339@jupiter.n2.diac24.net>
+Date: Mon, 30 Aug 2010 23:54:17 +0200
+Message-ID: <20100830215417.GC2413339@jupiter.n2.diac24.net>
 References: <20100830095837.GA2404529@jupiter.n2.diac24.net>
+	<20100830213949.GB2413339@jupiter.n2.diac24.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, Tony Jones <tonyj-l3A5Bk7waGM@public.gmane.org>,
-	David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
+	Tony Jones <tonyj-l3A5Bk7waGM@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20100830095837.GA2404529-sd4rSCkhOesKVZNVnti56SRbHCANfdcW@public.gmane.org>
+In-Reply-To: <20100830213949.GB2413339-sd4rSCkhOesKVZNVnti56SRbHCANfdcW@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -38,38 +37,52 @@ Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 ---
 
-Hi Grant,
+Great, I'm sending around a wrong version which doesn't even
+compile...
 
-please see attached patch :)
+> +	dummy = device_for_each_child(master->dev, NULL, _unregister);
+needs to be
+> +	dummy = device_for_each_child(&master->dev, NULL, __unregister);
+really.
 
-(reply from David Brownell went off-list because I accidentally Cc'ed an
-old e-mail address of him. moving this to on-list thread.)
 
--David L.
+Sorry,
+-David
 
-On Mon, Aug 30, 2010 at 11:58:37AM +0200, David Lamparter wrote:
-> "siblings" were usb endpoint devices in my case, causing a very nice
-> *boom* when the usb code tried to unregister them after they were gone
-> already because of spi_unregister_master. went looking for a bug in my
-> code for 20 hours...
+On Mon, Aug 30, 2010 at 11:39:49PM +0200, David Lamparter wrote:
+> Hi Grant,
 > 
-> patch is against 2.6.35.4 but there shouldn't be much change in this
-> file.
+> please see attached patch :)
 > 
-On Mon, Aug 30, 2010 at 10:08:12AM -0700, David Brownell wrote:
-> Bug since 2007?  OUch!
+> (reply from David Brownell went off-list because I accidentally Cc'ed an
+> old e-mail address of him. moving this to on-list thread.)
 > 
+> -David L.
 > 
-> At a real quick review, it looked right; but
-> I couldn't test.
-> 
-> Please send this patch also to Grant Likely.
+> On Mon, Aug 30, 2010 at 11:58:37AM +0200, David Lamparter wrote:
+> > "siblings" were usb endpoint devices in my case, causing a very nice
+> > *boom* when the usb code tried to unregister them after they were gone
+> > already because of spi_unregister_master. went looking for a bug in my
+> > code for 20 hours...
+> > 
+> > patch is against 2.6.35.4 but there shouldn't be much change in this
+> > file.
+> > 
+> On Mon, Aug 30, 2010 at 10:08:12AM -0700, David Brownell wrote:
+> > Bug since 2007?  OUch!
+> > 
+> > 
+> > At a real quick review, it looked right; but
+> > I couldn't test.
+> > 
+> > Please send this patch also to Grant Likely.
+
 
  drivers/spi/spi.c |    9 +++------
  1 files changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b3a1f92..144393c 100644
+index b3a1f92..1a61fa8 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
 @@ -546,11 +546,9 @@ done:
@@ -92,7 +105,7 @@ index b3a1f92..144393c 100644
  
 -	dummy = device_for_each_child(master->dev.parent, &master->dev,
 -					__unregister);
-+	dummy = device_for_each_child(master->dev, NULL, _unregister);
++	dummy = device_for_each_child(&master->dev, NULL, __unregister);
  	device_unregister(&master->dev);
  }
  EXPORT_SYMBOL_GPL(spi_unregister_master);

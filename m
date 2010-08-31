@@ -1,86 +1,38 @@
-From: Quentin YANG <quentinyang05-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Low SPI data throughput on Phytec 3250 board? (amba-pl022.c
-	deployed on Phytec 3250 board.)
-Date: Tue, 31 Aug 2010 14:04:16 +1000
-Message-ID: <AANLkTik5jgOvNW6iSeOp+1+aWbbo_0akXmnhriLqqeWS@mail.gmail.com>
-References: <AANLkTi=z6x38+qhgc6cuGEY3jgiUwReMURP6sFhP3Cfe@mail.gmail.com>
+From: Yong Wang <yong.y.wang@linux.intel.com>
+Subject: [PATCH] spi/dw_spi: Enable Intel Moorestown SPI controller 1
+Date: Tue, 31 Aug 2010 14:14:16 +0800
+Message-ID: <20100831061416.GA5904@ywang-moblin2.bj.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTi=z6x38+qhgc6cuGEY3jgiUwReMURP6sFhP3Cfe-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Feng Tang <feng.tang@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhpcyBwb3N0IGlzIGNsb3NlZC4KUHJvYmxlbSBpcyByZXNvbHZlZCBieSB0dXJuaW5nIG9mZiBT
-UEkgRGVidWcgbWVzc2FnZS4KCkluIDIuNi4zNCBLZXJuZWwgY29uZmlnOiAoWDpcbHBjMzI1MFxs
-dGliLXFzXHJwbVxCVUlMRFxsaW51eC0yLjYuMzRcLmNvbmZpZykKCkNoYW5nZSBmcm9tCkNPTkZJ
-R19TUElfREVCVUc9eQp0bzoKIyBDT05GSUdfU1BJX0RFQlVHIGlzIG5vdCBzZXQKCkFmdGVyIHRo
-aXMsIGluICNkbWVzZywgd2Ugd29uJ3Qgc2VlIHRob3NlIHNwaSBkZWJ1Z2dpbmcgbWVzc2FnZToK
-Ci4uLi4uLi4uLi4uLi4uLi4uLgpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBj
-M2UwZTAwNiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwMTYsIHR4ZW5kOiAwMDAwMDBkYwpz
-c3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTAxYSwgcnhlbmQ6IGMzZTBl
-MGRjLCB0eDoKMDAwMDAwMmEsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJl
-YWR3cml0ZXIsIHJ4OiBjM2UwZTAyZSwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwM2UsIHR4
-ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA0
-MiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwNTIsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGww
-MjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA1NiwgcnhlbmQ6IGMzZTBlMGRjLCB0
-eDoKMDAwMDAwNjYsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0
-ZXIsIHJ4OiBjM2UwZTA2YSwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwN2EsIHR4ZW5kOiAw
-MDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA3ZSwgcnhl
-bmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwOGUsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2
-OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA5MiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAw
-MDAwYTIsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4
-OiBjM2UwZTBhNiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwYjYsIHR4ZW5kOiAwMDAwMDBk
-Ywpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTBiYSwgcnhlbmQ6IGMz
-ZTBlMGRjLCB0eDoKMDAwMDAwY2EsIHR4ZW5kOiAwMDAwMDBkYwouLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLgoKSG93ZXZlciwgd2UgY2FuIGdldCBmdWxsICdzcGkgZGF0YSB0aHJvdWdocHV0Jy4K
-CgpSZWdhcmRzLApRdWVudGluCgoKCk9uIE1vbiwgQXVnIDMwLCAyMDEwIGF0IDExOjUwIEFNLCBR
-dWVudGluIFlBTkcgPHF1ZW50aW55YW5nMDVAZ21haWwuY29tPiB3cm90ZToKPiBIaSwKPgo+IEkg
-YW0gdXNpbmcgdHJhbnNmZXIoKcKgIGZ1bmN0aW9uIGluIHNwaWRldl90ZXN0LmMgdG8gdmVyaWZ5
-IHRoZSBkYXRhCj4gdGhyb3VnaHB1dCBvbiBwaHl0ZWMgTFBDMzI1MCBib2FyZC4KPiAyS0J5dGVz
-IFNQSSBtZXNzYWdlIGlzIHNlbnQgb3V0IHRvIFNQSSBTbGF2ZSBkZXZpY2UuCj4KPiBUaGVyZSBp
-cyBhIGJpZyBkZWxheSAoODB1cyBvciBzbykgYWZ0ZXIgZXZlcnkgMTEgd29yZHMgdHJhbnNtaXNz
-aW9uICgKPiAyMCB1cyBvciBzbywgd2hpY2ggaXMgcmVhc29uYWJsZSBhdCA4TUh6IFNQSSBDbG9j
-aykuCj4gPT09PSBJIGFtIHdvbmRlcmluZyB3aGVyZSBpcyB0aGlzIHNpZ25pZmljYW50IGRlbGF5
-IGNvbWluZyBmcm9tPz8/IMKgPT09PT09Cj4gSXQgbGFyZ2VseSByZWR1Y2VkIHRoZSBTUEkgZGF0
-YSB0aHJvdWdwdXQuCj4gSXQgZG9lcyBub3QgbG9vayBsaWtlICdMaW51eCBLZXJuZWwgQ29udGV4
-dCBzd2l0Y2gnLgo+Cj4gU2VlIGF0dGFjaGVkIFRpbWluZyBJbmZvIG9uIFNjb3BlLiDCoChUaW1p
-bmdPblNjb3BlLnR4dCkKPgo+Cj4gU1BJIGJvYXJkIHNldHRpbmcgaXMgYXMgZm9sbG93cyAoOE1I
-WiBzcGkgY2xvY2ssIDE2Yml0IGRhdGEgc2l6ZSwKPiBpbnRlcnJ1cHQgdHJhbnNmZXIpCj4KPiBz
-dGF0aWMgc3RydWN0IHBsMDIyX2NvbmZpZ19jaGlwIHNwaTFfY2hpcF9pbmZvID0gewo+IMKgwqDC
-oCAubGJtwqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBMT09QQkFDS19ESVNBQkxFRCwKPiDCoMKgwqAg
-LmNvbV9tb2RlwqDCoMKgIMKgwqDCoCA9IElOVEVSUlVQVF9UUkFOU0ZFUiwKPiDCoMKgwqAgLmlm
-YWNlwqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBTU1BfSU5URVJGQUNFX01PVE9ST0xBX1NQSSwKPiDC
-oMKgwqAgLmhpZXJhcmNoecKgwqDCoCDCoMKgwqAgPSBTU1BfTUFTVEVSLAo+IMKgwqDCoCAuc2xh
-dmVfdHhfZGlzYWJsZcKgwqDCoCA9IDAsCj4gwqDCoMKgIC5lbmRpYW5fdHjCoMKgwqAgwqDCoMKg
-ID0gU1NQX1RYX0xTQiwKPiDCoMKgwqAgLmVuZGlhbl9yeMKgwqDCoCDCoMKgwqAgPSBTU1BfUlhf
-TFNCLAo+IMKgwqDCoCAuZGF0YV9zaXplwqDCoMKgIMKgwqDCoCA9IFNTUF9EQVRBX0JJVFNfMTYs
-wqDCoMKgwqDCoCAvL1NTUF9EQVRBX0JJVFNfOCwKPiDCoMKgwqAgLnJ4X2xldl90cmlnwqDCoMKg
-IMKgwqDCoCA9IFNTUF9SWF80X09SX01PUkVfRUxFTSwKPiDCoMKgwqAgLnR4X2xldl90cmlnwqDC
-oMKgIMKgwqDCoCA9IFNTUF9UWF80X09SX01PUkVfRU1QVFlfTE9DLAo+IMKgwqDCoCAuY2xrX3Bo
-YXNlwqDCoMKgIMKgwqDCoCA9IFNTUF9DTEtfRklSU1RfRURHRSzCoMKgIC8vU1NQX0NMS19TRUNP
-TkRfRURHRSwKPiDCoMKgwqAgLmNsa19wb2zCoMKgwqAgwqDCoMKgID0gU1NQX0NMS19QT0xfSURM
-RV9MT1csCj4gwqDCoMKgIC5jdHJsX2xlbsKgwqDCoCDCoMKgwqAgPSBTU1BfQklUU184LAo+IMKg
-wqDCoCAud2FpdF9zdGF0ZcKgwqDCoCDCoMKgwqAgPSBTU1BfTVdJUkVfV0FJVF9aRVJPLAo+IMKg
-wqDCoCAuZHVwbGV4wqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBTU1BfTUlDUk9XSVJFX0NIQU5ORUxf
-RlVMTF9EVVBMRVgsCj4gwqDCoMKgIC5jc19jb250cm9swqDCoMKgIMKgwqDCoCA9IHBoeTMyNTBf
-c3BpMV9jc19zZXQsCj4gfTsKPgo+Cj4gS2VybmVsICgyLjYuMzQpIGlzIHVzaW5nIGRlZmF1bHQg
-MTAwbXMgY29udGV4dCBzd2l0Y2guICcgQ09ORklHX0haPTEwMC4gJwo+Cj4gQW55IGhlbHAgaXMg
-YXBwcmVjaWF0ZWQuCj4KPgo+IFJlZ2FyZHMsCj4gUXVlbnRpbgo+CgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KVGhpcyBTRi5uZXQgRGV2MkRldiBlbWFpbCBpcyBzcG9uc29yZWQgYnk6CgpTaG93IG9m
-ZiB5b3VyIHBhcmFsbGVsIHByb2dyYW1taW5nIHNraWxscy4KRW50ZXIgdGhlIEludGVsKFIpIFRo
-cmVhZGluZyBDaGFsbGVuZ2UgMjAxMC4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC10aHJlYWQt
-c2ZkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+Enable Intel Moorestown SPI controller 1
+
+Signed-off-by: Yong Wang <yong.y.wang@intel.com>
+---
+ drivers/spi/dw_spi_pci.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/dw_spi_pci.c b/drivers/spi/dw_spi_pci.c
+index 1f52755..eec9d0b 100644
+--- a/drivers/spi/dw_spi_pci.c
++++ b/drivers/spi/dw_spi_pci.c
+@@ -142,6 +142,8 @@ static int spi_resume(struct pci_dev *pdev)
+ static const struct pci_device_id pci_ids[] __devinitdata = {
+ 	/* Intel Moorestown platform SPI controller 0 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0800) },
++	/* Intel Moorestown platform SPI controller 1 */
++	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0801) },
+ 	{},
+ };
+ 
+-- 
+1.5.5.1

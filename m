@@ -1,18 +1,15 @@
-From: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-Subject: Re: [PATCH] spi: free children in spi_unregister_master, not siblings
-Date: Mon, 30 Aug 2010 23:54:17 +0200
-Message-ID: <20100830215417.GC2413339@jupiter.n2.diac24.net>
-References: <20100830095837.GA2404529@jupiter.n2.diac24.net>
-	<20100830213949.GB2413339@jupiter.n2.diac24.net>
+From: Quentin YANG <quentinyang05-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Low SPI data throughput on Phytec 3250 board? (amba-pl022.c
+	deployed on Phytec 3250 board.)
+Date: Tue, 31 Aug 2010 14:04:16 +1000
+Message-ID: <AANLkTik5jgOvNW6iSeOp+1+aWbbo_0akXmnhriLqqeWS@mail.gmail.com>
+References: <AANLkTi=z6x38+qhgc6cuGEY3jgiUwReMURP6sFhP3Cfe@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
-	Tony Jones <tonyj-l3A5Bk7waGM@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20100830213949.GB2413339-sd4rSCkhOesKVZNVnti56SRbHCANfdcW@public.gmane.org>
+In-Reply-To: <AANLkTi=z6x38+qhgc6cuGEY3jgiUwReMURP6sFhP3Cfe-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,99 +20,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-introduced by 49dce689ad4ef0fd1f970ef762168e4bd46f69a3 and bad-fixed by
-350d0076c5763ca2b88ca05e3889bfa7c1905f21, spi_unregister_master would
-previously device_unregister all of the spi master's siblings (instead
-of its children). hilarity ensues.
-
-fix it to unregister children.
-
-Signed-off-by: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-Cc: Tony Jones <tonyj-l3A5Bk7waGM@public.gmane.org>
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
----
-
-Great, I'm sending around a wrong version which doesn't even
-compile...
-
-> +	dummy = device_for_each_child(master->dev, NULL, _unregister);
-needs to be
-> +	dummy = device_for_each_child(&master->dev, NULL, __unregister);
-really.
-
-
-Sorry,
--David
-
-On Mon, Aug 30, 2010 at 11:39:49PM +0200, David Lamparter wrote:
-> Hi Grant,
-> 
-> please see attached patch :)
-> 
-> (reply from David Brownell went off-list because I accidentally Cc'ed an
-> old e-mail address of him. moving this to on-list thread.)
-> 
-> -David L.
-> 
-> On Mon, Aug 30, 2010 at 11:58:37AM +0200, David Lamparter wrote:
-> > "siblings" were usb endpoint devices in my case, causing a very nice
-> > *boom* when the usb code tried to unregister them after they were gone
-> > already because of spi_unregister_master. went looking for a bug in my
-> > code for 20 hours...
-> > 
-> > patch is against 2.6.35.4 but there shouldn't be much change in this
-> > file.
-> > 
-> On Mon, Aug 30, 2010 at 10:08:12AM -0700, David Brownell wrote:
-> > Bug since 2007?  OUch!
-> > 
-> > 
-> > At a real quick review, it looked right; but
-> > I couldn't test.
-> > 
-> > Please send this patch also to Grant Likely.
-
-
- drivers/spi/spi.c |    9 +++------
- 1 files changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b3a1f92..1a61fa8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -546,11 +546,9 @@ done:
- EXPORT_SYMBOL_GPL(spi_register_master);
- 
- 
--static int __unregister(struct device *dev, void *master_dev)
-+static int __unregister(struct device *dev, void *null)
- {
--	/* note: before about 2.6.14-rc1 this would corrupt memory: */
--	if (dev != master_dev)
--		spi_unregister_device(to_spi_device(dev));
-+	spi_unregister_device(to_spi_device(dev));
- 	return 0;
- }
- 
-@@ -568,8 +566,7 @@ void spi_unregister_master(struct spi_master *master)
- {
- 	int dummy;
- 
--	dummy = device_for_each_child(master->dev.parent, &master->dev,
--					__unregister);
-+	dummy = device_for_each_child(&master->dev, NULL, __unregister);
- 	device_unregister(&master->dev);
- }
- EXPORT_SYMBOL_GPL(spi_unregister_master);
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
-This SF.net Dev2Dev email is sponsored by:
-
-Show off your parallel programming skills.
-Enter the Intel(R) Threading Challenge 2010.
-http://p.sf.net/sfu/intel-thread-sfd
+VGhpcyBwb3N0IGlzIGNsb3NlZC4KUHJvYmxlbSBpcyByZXNvbHZlZCBieSB0dXJuaW5nIG9mZiBT
+UEkgRGVidWcgbWVzc2FnZS4KCkluIDIuNi4zNCBLZXJuZWwgY29uZmlnOiAoWDpcbHBjMzI1MFxs
+dGliLXFzXHJwbVxCVUlMRFxsaW51eC0yLjYuMzRcLmNvbmZpZykKCkNoYW5nZSBmcm9tCkNPTkZJ
+R19TUElfREVCVUc9eQp0bzoKIyBDT05GSUdfU1BJX0RFQlVHIGlzIG5vdCBzZXQKCkFmdGVyIHRo
+aXMsIGluICNkbWVzZywgd2Ugd29uJ3Qgc2VlIHRob3NlIHNwaSBkZWJ1Z2dpbmcgbWVzc2FnZToK
+Ci4uLi4uLi4uLi4uLi4uLi4uLgpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBj
+M2UwZTAwNiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwMTYsIHR4ZW5kOiAwMDAwMDBkYwpz
+c3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTAxYSwgcnhlbmQ6IGMzZTBl
+MGRjLCB0eDoKMDAwMDAwMmEsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJl
+YWR3cml0ZXIsIHJ4OiBjM2UwZTAyZSwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwM2UsIHR4
+ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA0
+MiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwNTIsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGww
+MjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA1NiwgcnhlbmQ6IGMzZTBlMGRjLCB0
+eDoKMDAwMDAwNjYsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0
+ZXIsIHJ4OiBjM2UwZTA2YSwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwN2EsIHR4ZW5kOiAw
+MDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA3ZSwgcnhl
+bmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwOGUsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2
+OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTA5MiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAw
+MDAwYTIsIHR4ZW5kOiAwMDAwMDBkYwpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4
+OiBjM2UwZTBhNiwgcnhlbmQ6IGMzZTBlMGRjLCB0eDoKMDAwMDAwYjYsIHR4ZW5kOiAwMDAwMDBk
+Ywpzc3AtcGwwMjIgZGV2OnNzcDE6IHJlYWR3cml0ZXIsIHJ4OiBjM2UwZTBiYSwgcnhlbmQ6IGMz
+ZTBlMGRjLCB0eDoKMDAwMDAwY2EsIHR4ZW5kOiAwMDAwMDBkYwouLi4uLi4uLi4uLi4uLi4uLi4u
+Li4uLi4uLgoKSG93ZXZlciwgd2UgY2FuIGdldCBmdWxsICdzcGkgZGF0YSB0aHJvdWdocHV0Jy4K
+CgpSZWdhcmRzLApRdWVudGluCgoKCk9uIE1vbiwgQXVnIDMwLCAyMDEwIGF0IDExOjUwIEFNLCBR
+dWVudGluIFlBTkcgPHF1ZW50aW55YW5nMDVAZ21haWwuY29tPiB3cm90ZToKPiBIaSwKPgo+IEkg
+YW0gdXNpbmcgdHJhbnNmZXIoKcKgIGZ1bmN0aW9uIGluIHNwaWRldl90ZXN0LmMgdG8gdmVyaWZ5
+IHRoZSBkYXRhCj4gdGhyb3VnaHB1dCBvbiBwaHl0ZWMgTFBDMzI1MCBib2FyZC4KPiAyS0J5dGVz
+IFNQSSBtZXNzYWdlIGlzIHNlbnQgb3V0IHRvIFNQSSBTbGF2ZSBkZXZpY2UuCj4KPiBUaGVyZSBp
+cyBhIGJpZyBkZWxheSAoODB1cyBvciBzbykgYWZ0ZXIgZXZlcnkgMTEgd29yZHMgdHJhbnNtaXNz
+aW9uICgKPiAyMCB1cyBvciBzbywgd2hpY2ggaXMgcmVhc29uYWJsZSBhdCA4TUh6IFNQSSBDbG9j
+aykuCj4gPT09PSBJIGFtIHdvbmRlcmluZyB3aGVyZSBpcyB0aGlzIHNpZ25pZmljYW50IGRlbGF5
+IGNvbWluZyBmcm9tPz8/IMKgPT09PT09Cj4gSXQgbGFyZ2VseSByZWR1Y2VkIHRoZSBTUEkgZGF0
+YSB0aHJvdWdwdXQuCj4gSXQgZG9lcyBub3QgbG9vayBsaWtlICdMaW51eCBLZXJuZWwgQ29udGV4
+dCBzd2l0Y2gnLgo+Cj4gU2VlIGF0dGFjaGVkIFRpbWluZyBJbmZvIG9uIFNjb3BlLiDCoChUaW1p
+bmdPblNjb3BlLnR4dCkKPgo+Cj4gU1BJIGJvYXJkIHNldHRpbmcgaXMgYXMgZm9sbG93cyAoOE1I
+WiBzcGkgY2xvY2ssIDE2Yml0IGRhdGEgc2l6ZSwKPiBpbnRlcnJ1cHQgdHJhbnNmZXIpCj4KPiBz
+dGF0aWMgc3RydWN0IHBsMDIyX2NvbmZpZ19jaGlwIHNwaTFfY2hpcF9pbmZvID0gewo+IMKgwqDC
+oCAubGJtwqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBMT09QQkFDS19ESVNBQkxFRCwKPiDCoMKgwqAg
+LmNvbV9tb2RlwqDCoMKgIMKgwqDCoCA9IElOVEVSUlVQVF9UUkFOU0ZFUiwKPiDCoMKgwqAgLmlm
+YWNlwqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBTU1BfSU5URVJGQUNFX01PVE9ST0xBX1NQSSwKPiDC
+oMKgwqAgLmhpZXJhcmNoecKgwqDCoCDCoMKgwqAgPSBTU1BfTUFTVEVSLAo+IMKgwqDCoCAuc2xh
+dmVfdHhfZGlzYWJsZcKgwqDCoCA9IDAsCj4gwqDCoMKgIC5lbmRpYW5fdHjCoMKgwqAgwqDCoMKg
+ID0gU1NQX1RYX0xTQiwKPiDCoMKgwqAgLmVuZGlhbl9yeMKgwqDCoCDCoMKgwqAgPSBTU1BfUlhf
+TFNCLAo+IMKgwqDCoCAuZGF0YV9zaXplwqDCoMKgIMKgwqDCoCA9IFNTUF9EQVRBX0JJVFNfMTYs
+wqDCoMKgwqDCoCAvL1NTUF9EQVRBX0JJVFNfOCwKPiDCoMKgwqAgLnJ4X2xldl90cmlnwqDCoMKg
+IMKgwqDCoCA9IFNTUF9SWF80X09SX01PUkVfRUxFTSwKPiDCoMKgwqAgLnR4X2xldl90cmlnwqDC
+oMKgIMKgwqDCoCA9IFNTUF9UWF80X09SX01PUkVfRU1QVFlfTE9DLAo+IMKgwqDCoCAuY2xrX3Bo
+YXNlwqDCoMKgIMKgwqDCoCA9IFNTUF9DTEtfRklSU1RfRURHRSzCoMKgIC8vU1NQX0NMS19TRUNP
+TkRfRURHRSwKPiDCoMKgwqAgLmNsa19wb2zCoMKgwqAgwqDCoMKgID0gU1NQX0NMS19QT0xfSURM
+RV9MT1csCj4gwqDCoMKgIC5jdHJsX2xlbsKgwqDCoCDCoMKgwqAgPSBTU1BfQklUU184LAo+IMKg
+wqDCoCAud2FpdF9zdGF0ZcKgwqDCoCDCoMKgwqAgPSBTU1BfTVdJUkVfV0FJVF9aRVJPLAo+IMKg
+wqDCoCAuZHVwbGV4wqDCoMKgIMKgwqDCoCDCoMKgwqAgPSBTU1BfTUlDUk9XSVJFX0NIQU5ORUxf
+RlVMTF9EVVBMRVgsCj4gwqDCoMKgIC5jc19jb250cm9swqDCoMKgIMKgwqDCoCA9IHBoeTMyNTBf
+c3BpMV9jc19zZXQsCj4gfTsKPgo+Cj4gS2VybmVsICgyLjYuMzQpIGlzIHVzaW5nIGRlZmF1bHQg
+MTAwbXMgY29udGV4dCBzd2l0Y2guICcgQ09ORklHX0haPTEwMC4gJwo+Cj4gQW55IGhlbHAgaXMg
+YXBwcmVjaWF0ZWQuCj4KPgo+IFJlZ2FyZHMsCj4gUXVlbnRpbgo+CgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KVGhpcyBTRi5uZXQgRGV2MkRldiBlbWFpbCBpcyBzcG9uc29yZWQgYnk6CgpTaG93IG9m
+ZiB5b3VyIHBhcmFsbGVsIHByb2dyYW1taW5nIHNraWxscy4KRW50ZXIgdGhlIEludGVsKFIpIFRo
+cmVhZGluZyBDaGFsbGVuZ2UgMjAxMC4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC10aHJlYWQt
+c2ZkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

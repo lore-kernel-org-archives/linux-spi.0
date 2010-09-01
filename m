@@ -1,22 +1,18 @@
-From: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-Subject: Re: [PATCH] spi: free children in spi_unregister_master, not siblings
-Date: Wed, 1 Sep 2010 17:52:55 +0200
-Message-ID: <20100901155255.GB2483082@jupiter.n2.diac24.net>
-References: <20100830095837.GA2404529@jupiter.n2.diac24.net>
-	<20100830213949.GB2413339@jupiter.n2.diac24.net>
-	<20100830215417.GC2413339@jupiter.n2.diac24.net>
-	<20100901152412.GC13421@angua.secretlab.ca>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Suggested Patch for 'amba-pl022.c' to solve
+	the problem of running 'spidev_test' on Phytec LPC3250 board.
+Date: Wed, 1 Sep 2010 17:57:45 +0200
+Message-ID: <AANLkTi=8uvtwd9+HEc9EpW-Y9CVx+NN-Zg-omO4nUN13@mail.gmail.com>
+References: <AANLkTinQFQMXXBh7bq5ce_iwOzGvYCZxud6QWb-S71yQ@mail.gmail.com>
+	<AANLkTimsoUUJihk8j48KkJ1YPdAttLHPuJ19i0W0BkpD@mail.gmail.com>
+	<AANLkTi=e53=8VNHv=5gSfujYN0XU0NYJTu3=Aq2FS5VZ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, Tony Jones <tonyj-l3A5Bk7waGM@public.gmane.org>,
-	David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20100901152412.GC13421-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+In-Reply-To: <AANLkTi=e53=8VNHv=5gSfujYN0XU0NYJTu3=Aq2FS5VZ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,34 +23,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 01, 2010 at 09:24:12AM -0600, Grant Likely wrote:
-> On Mon, Aug 30, 2010 at 11:54:17PM +0200, David Lamparter wrote:
-> > introduced by 49dce689ad4ef0fd1f970ef762168e4bd46f69a3 and bad-fixed by
-> > 350d0076c5763ca2b88ca05e3889bfa7c1905f21, spi_unregister_master would
-> > previously device_unregister all of the spi master's siblings (instead
-> > of its children). hilarity ensues.
-> 
-> Obviously correct.  Applied, and I'll push it out after some testing.
+2010/9/1 Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
 
-Thanks!
+> I use this driver quite a bit here - Is it ok if try to get the setup based on
+> spi->mode instead of the controller_data info?
 
-> BTW, you should be friendly to reviewers when quoting sha1 commit
-> ids.  You should also quote the patch title so that readers don't
-> need to context-switch to git or the web to figure out what the
-> patches actually are.  This is how I fixed it up in the commit:
-> 
->   introduced by 49dce689 ("spi doesn't need class_device") and bad-fixed
->   by 350d0076 ("spi: fix double-free on spi_unregister_master"),
->   spi_unregister_master would previously device_unregister all of the spi
->   master's siblings (instead of its children). hilarity ensues.
+I think that the stuff that comes from the modebits should take
+precedence, and also I believe the relevant platform data should
+be removed.
 
-Ah. I oriented on 350d0076's commit message ("spi: fix double-free on
-spi_unregister_master") which did strike me as weird, but I didn't
-think. Will remember to do better in the future.
+I cannot fully undertand what this means and I never used SPI
+from userspace, can't you just provide a patch I can look on,
+that is easiest I think. I will test it on my hardware and see what
+happens.
 
-
--David
-
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:

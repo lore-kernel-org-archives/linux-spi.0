@@ -1,16 +1,15 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH] spi: add a bits_per_word to struct spi_board_info
-Date: Wed, 1 Sep 2010 22:23:33 -0700 (PDT)
-Message-ID: <930634.1250.qm@web180310.mail.gq1.yahoo.com>
-References: <20100902100128.5d5b7d87@feng-i7>
+From: emerick_mgn-k+cT0dCbe1g@public.gmane.org
+Subject: =?GBK?B?0MTH6dPkv+zKx8rX0qq1xMjOzvGjrCAg?=
+Date: Thu, 02 Sep 2010 13:37:34 +0800
+Message-ID: <20100902053735.09AE850894@mail2-200.sinamail.sina.com.cn>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="=-sinamail_mix_da354c7f0e281b4890d3e077b250a1e0"
+To: spiderlq-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spiderman-mATVpqgjuBk@public.gmane.org, spiderman-hKq+l52x7qAAvxtiuMwx3w@public.gmane.org,
+	spiderman_hj-k+cT0dCbe1g@public.gmane.org, spiderman_iverson-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org,
+	spiderman2007-Xb2Y1Dfb9CI@public.gmane.org,
+	spidermanbag-9Onoh4P/yGk@public.gmane.org, spidermoon-Xb2Y1Dfb9CI@public.gmane.org,
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100902100128.5d5b7d87@feng-i7>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,42 +20,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+--=-sinamail_mix_da354c7f0e281b4890d3e077b250a1e0
+Content-Type: text/plain;
+	charset=GBK
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
 
---- On Wed, 9/1/10, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-
-> > 
-> > What's the case where platform code could
-> > know "better" than the driver?
-> 
-> Grant also asked me the same question.
 
 
-I saw him ask a different question (which
-I quoted) ...
-
-
- Yes, driver itself
-> know the bits_per_word info best in most case, but there
-> is
-> some device (Option GTM501L spi modem) which supports
-> multiple
-> bits_per_mode option, and here platform code
-is the good place to set it.
-
-
-Not unless it knows which mode the driver uses...
-a kind of layering violation.
-
-> 
-> So if we can set it before
-> registering board info, then the second spi_setup can be
-> removed for many drivers.
-
-that doesn't seem to me like it'd be a startup
-cost that's easily observed; hard for me to
-worry about it, but I can see what you mean.
-
+--=-sinamail_mix_da354c7f0e281b4890d3e077b250a1e0
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:
@@ -64,3 +41,15 @@ This SF.net Dev2Dev email is sponsored by:
 Show off your parallel programming skills.
 Enter the Intel(R) Threading Challenge 2010.
 http://p.sf.net/sfu/intel-thread-sfd
+--=-sinamail_mix_da354c7f0e281b4890d3e077b250a1e0
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=-sinamail_mix_da354c7f0e281b4890d3e077b250a1e0--

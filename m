@@ -1,11 +1,16 @@
 From: Hu Mingkai-B21284 <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: RE: [PATCH v2 2/6] eSPI: add eSPI controller support
-Date: Thu, 2 Sep 2010 16:28:27 +0800
-Message-ID: <73839B4A0818E747864426270AC332C30561B6D0@zmy16exm20.fsl.freescale.net>
+Subject: RE: [PATCH v2 6/6] DTS: add SPI flash(s25fl128p01) support on p4080ds
+	and mpc8536ds board
+Date: Thu, 2 Sep 2010 16:30:18 +0800
+Message-ID: <73839B4A0818E747864426270AC332C30561B6D1@zmy16exm20.fsl.freescale.net>
 References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
 	<1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
-	<AANLkTin3W4++cAFcksVBX3QxeV8QF3d5T2tGy_KbEkRs@mail.gmail.com>
+	<1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-5-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-6-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-7-git-send-email-Mingkai.hu@freescale.com>
+	<AANLkTinzea7-k3Wd6EsAy+ipThHMhkpMF3pCP7g_6O6J@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -15,7 +20,7 @@ Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org, Gala Kumar-B11780 <B11
 To: "Grant Likely" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Class: urn:content-classes:message
-In-Reply-To: <AANLkTin3W4++cAFcksVBX3QxeV8QF3d5T2tGy_KbEkRs-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTinzea7-k3Wd6EsAy+ipThHMhkpMF3pCP7g_6O6J-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -32,74 +37,169 @@ List-Id: linux-spi.vger.kernel.org
 > From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On Behalf Of Gra=
 nt
 > Likely
-> Sent: Tuesday, August 10, 2010 2:45 PM
+> Sent: Tuesday, August 10, 2010 3:11 PM
 > To: Hu Mingkai-B21284
 > Cc: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Gala
 > Kumar-B11780; Zang Roy-R61911
-> Subject: Re: [PATCH v2 2/6] eSPI: add eSPI controller support
+> Subject: Re: [PATCH v2 6/6] DTS: add SPI flash(s25fl128p01) support on p4=
+080ds
+> and mpc8536ds board
+> =
+
+> Hi Mingkai,
+> =
+
+> one comment below.  Otherwise this patch looks good, and so does patch 5.
+> =
+
+> g.
 > =
 
 > On Mon, Aug 2, 2010 at 1:52 AM, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wro=
 te:
-> > Add eSPI controller support based on the library code spi_fsl_lib.c.
-> >
-> > The eSPI controller is newer controller 85xx/Pxxx devices supported.
-> > There're some differences comparing to the SPI controller:
-> >
-> > 1. Has different register map and different bit definition
-> > =A0 So leave the code operated the register to the driver code, not
-> > =A0 the common code.
-> >
-> > 2. Support 4 dedicated chip selects
-> > =A0 The software can't controll the chip selects directly, The SPCOM[CS]
-> > =A0 field is used to select which chip selects is used, and the
-> > =A0 SPCOM[TRANLEN] field is set to tell the controller how long the CS
-> > =A0 signal need to be asserted. So the driver doesn't need the
-> > chipselect
-> > =A0 related function when transfering data, just set corresponding
-> > register
-> > =A0 fields to controll the chipseclect.
-> >
-> > 3. Different Transmit/Receive FIFO access register behavior
-> > =A0 For SPI controller, the Tx/Rx FIFO access register can hold only
-> > =A0 one character regardless of the character length, but for eSPI
-> > =A0 controller, the register can hold 4 or 2 characters according to
-> > =A0 the character lengths. Access the Tx/Rx FIFO access register of the
-> > =A0 eSPI controller will shift out/in 4/2 characters one time. For SPI
-> > =A0 subsystem, the command and data are put into different transfers, so
-> > =A0 we need to combine all the transfers to one transfer in order to
-> > pass
-> > =A0 the transfer to eSPI controller.
-> >
 > > Signed-off-by: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > ---
+> >
+> > v2:
+> > =A0- Remove the whitespace inconsitencies
+> >
+> > =A0arch/powerpc/boot/dts/mpc8536ds.dts | =A0 52
+> > +++++++++++++++++++++++++++++++++++
+> > =A0arch/powerpc/boot/dts/p4080ds.dts =A0 | =A0 11 +++-----
+> > =A02 files changed, 56 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/arch/powerpc/boot/dts/mpc8536ds.dts
+> > b/arch/powerpc/boot/dts/mpc8536ds.dts
+> > index 815cebb..a75c10e 100644
+> > --- a/arch/powerpc/boot/dts/mpc8536ds.dts
+> > +++ b/arch/powerpc/boot/dts/mpc8536ds.dts
+> > @@ -108,6 +108,58 @@
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0};
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0};
+> >
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi@7000 {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 #address-cells =3D <1>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 #size-cells =3D <0>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatible =3D "fsl,mpc85=
+36-espi";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg =3D <0x7000 0x1000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 interrupts =3D <59 0x2>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 interrupt-parent =3D <&mp=
+ic>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 fsl,espi-num-chipselects =
+=3D <4>;
+> > +
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash@0 {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 #address-=
+cells =3D <1>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 #size-cel=
+ls =3D <1>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatibl=
+e =3D "spansion,s25sl12801";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg =3D <=
+0>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi-max-f=
+requency =3D <40000000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 partition=
+@u-boot {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 label =3D "u-boot";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 reg =3D <0x00000000 0x00100000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 read-only;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 partition=
+@kernel {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 label =3D "kernel";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 reg =3D <0x00100000 0x00500000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 read-only;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 partition=
+@dtb {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 label =3D "dtb";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 reg =3D <0x00600000 0x00100000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 read-only;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 partition=
+@fs {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 label =3D "file system";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 reg =3D <0x00700000 0x00900000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash@1 {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatibl=
+e =3D "spansion,s25sl12801";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg =3D <=
+1>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi-max-f=
+requency =3D <40000000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash@2 {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatibl=
+e =3D "spansion,s25sl12801";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg =3D <=
+2>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi-max-f=
+requency =3D <40000000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash@3 {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatibl=
+e =3D "spansion,s25sl12801";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 reg =3D <=
+3>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi-max-f=
+requency =3D <40000000>;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 };
+> > +
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dma@21300 {
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0#address-cells =3D <1>;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0#size-cells =3D <1>; dif=
+f --git
+> > a/arch/powerpc/boot/dts/p4080ds.dts
+> > b/arch/powerpc/boot/dts/p4080ds.dts
+> > index 6b29eab..48437ad 100644
+> > --- a/arch/powerpc/boot/dts/p4080ds.dts
+> > +++ b/arch/powerpc/boot/dts/p4080ds.dts
+> > @@ -236,22 +236,19 @@
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0};
+> >
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0spi@110000 {
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 cell-index =3D <0>;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0#address-cells =3D <1>;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0#size-cells =3D <0>;
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatible =3D "fsl,espi";
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 compatible =3D "fsl,mpc85=
+36-espi";
 > =
 
-> I've not dug deep into this patch, but it seems pretty good.  I did notic=
-e one
-> thing below...
-> [...]
+> Should be more specific here by specifying the exact device; plus a list =
+of what
+> it is compatible with.  For example:
 > =
 
-> > diff --git a/drivers/spi/spi_fsl_lib.h b/drivers/spi/spi_fsl_lib.h
-> > index 774e1c8..0772c98 100644
-> > --- a/drivers/spi/spi_fsl_lib.h
-> > +++ b/drivers/spi/spi_fsl_lib.h
-> > @@ -22,10 +22,12 @@
-> > =A0struct mpc8xxx_spi {
-> > =A0 =A0 =A0 =A0struct device *dev;
-> > =A0 =A0 =A0 =A0struct fsl_spi_reg __iomem *base;
-> > + =A0 =A0 =A0 struct fsl_espi_reg __iomem *espi_base;
+> compatible =3D "fsl,p4080-espi", "fsl,mpc5836-espi";
 > =
 
-> There's got to be a cleaner way to do this.  Rather than putting both poi=
-nters
-> into mpc8xxx_spi, I suggest each driver use its own fsl_spi_priv and
-> fsl_espi_priv wrapper structures that contain the controller specific pro=
-perties.
+> the reason for this is that the driver for the existing part is still abl=
+e to
+> bind against the node, but if it ever needs it, then information about the
+> specific device is available which can be used to (for example) figure ou=
+t when
+> to enable silicon bug workarounds.
 > =
 
 
-Make sense, I'll change it.
+Make sense, I'll add it.
 
 Thanks,
 Mingkai

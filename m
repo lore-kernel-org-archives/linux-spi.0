@@ -1,76 +1,253 @@
 From: Hu Mingkai-B21284 <B21284@freescale.com>
-Subject: RE: [spi-devel-general] [PATCH v2 3/6] mtd: m25p80: add support to
-	parse the SPI flash's partitions
-Date: Thu, 2 Sep 2010 16:57:30 +0800
-Message-ID: <73839B4A0818E747864426270AC332C30561B6E8@zmy16exm20.fsl.freescale.net>
-References: <AANLkTik9cy+at2n28U+Mut4RD6_cJ9uRZzjf+H86d-rp@mail.gmail.com>
-	<796604.30863.qm@web180307.mail.gq1.yahoo.com>
-	<AANLkTi=FGf9gbWDkO4qs01Z+qkip+Zm11=Jc4wHu3G8b@mail.gmail.com>
-	<OF0D24DC16.E1FE65D2-ONC125777B.002E544A-C125777B.002EA7C2@transmode.se>
-	<AANLkTinYYTj+dR6ckPoShHKZTUmENEA1O-DYP9mjnWrs@mail.gmail.com>
-	<20100810160157.GA24553@oksana.dev.rtsoft.ru>
+Subject: RE: [PATCH v2 4/6] mtd: m25p80: add a read function to read page by
+	page
+Date: Thu, 2 Sep 2010 17:04:07 +0800
+Message-ID: <73839B4A0818E747864426270AC332C30561B6F3@zmy16exm20.fsl.freescale.net>
+References: <1280735524-17547-1-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-2-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-3-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-4-git-send-email-Mingkai.hu@freescale.com>
+	<1280735524-17547-5-git-send-email-Mingkai.hu@freescale.com>
+	<AANLkTikM5je7Ckt=7bP6fj7OKCaroSn_AqgcS4T+Bv5d@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <joakim.tjernlund@transmode.se>,
-	David Brownell <david-b@pacbell.net>, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	Gala Kumar-B11780 <B11780@freescale.com>,
-	David Woodhouse <dwmw2@infradead.org>
-To: "Anton Vorontsov" <cbouatmailru@gmail.com>,
-	"Grant Likely" <grant.likely@secretlab.ca>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linuxppc-dev@ozlabs.org, Gala Kumar-B11780 <B11780@freescale.com>,
+	linux-mtd@lists.infradead.org, Zang Roy-R61911 <R61911@freescale.com>,
+	spi-devel-general@lists.sourceforge.net
+To: "Grant Likely" <grant.likely@secretlab.ca>,
+	"David Woodhouse" <dwmw2@infradead.org>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
 Content-Class: urn:content-classes:message
-In-Reply-To: <20100810160157.GA24553@oksana.dev.rtsoft.ru>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: linux-mtd-bounces@lists.infradead.org
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+In-Reply-To: <AANLkTikM5je7Ckt=7bP6fj7OKCaroSn_AqgcS4T+Bv5d@mail.gmail.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
+[adding mtd list]
 
+Hi guys,
 
-> -----Original Message-----
-> From: Anton Vorontsov [mailto:cbouatmailru@gmail.com]
-> Sent: Wednesday, August 11, 2010 12:02 AM
-> To: Grant Likely
-> Cc: Joakim Tjernlund; Gala Kumar-B11780; David Brownell; linux-
-> mtd@lists.infradead.org; spi-devel-general@lists.sourceforge.net; Hu Mingkai-
-> B21284; David Woodhouse
-> Subject: Re: [spi-devel-general] [PATCH v2 3/6] mtd: m25p80: add support to
-> parse the SPI flash's partitions
-> 
-> On Tue, Aug 10, 2010 at 08:56:42AM -0600, Grant Likely wrote:
-> [...]
-> > The suggestion has been raised to use something like bus notifiers to
-> > get a hook onto the device registration before the driver is probed so
-> > that the platform_data can be translated in an separate chuck of code,
-> > but down that path lies insanity.  There are all kinds of ordering
-> > issues (like making sure the translation code is called before the
-> > driver probe code), and it is a lot of complexity for what is really a
-> > simple thing.
-> 
-> There's another option: platform data handlers (they could be chained, in case
-> if we want to use several methods of obtaining platform data, i.e. "try raw data,
-> then ACPI, then OF").
-> 
-> See include/linux/spi/mmc_spi.h (mmc_spi_get_pdata) and
-> drivers/mmc/host/of_mmc_spi.c.
-> 
-> I think we might implement some library to make these handlers more generic, but
-> even the simple implementation as in mmc_spi case proves that it is possible to
-> separate OF/ACPI/DMI/whatever handling from the generic code.
-> 
-
-It's also a good suggestion, I'll try it.
+Could you please take a look at this patch and give some suggestion?
 
 Thanks,
 Mingkai
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+> -----Original Message-----
+> From: glikely@secretlab.ca [mailto:glikely@secretlab.ca] On Behalf Of Gra=
+nt
+> Likely
+> Sent: Tuesday, August 10, 2010 3:00 PM
+> To: Hu Mingkai-B21284; David Woodhouse
+> Cc: linuxppc-dev@ozlabs.org; spi-devel-general@lists.sourceforge.net; Gala
+> Kumar-B11780; Zang Roy-R61911
+> Subject: Re: [PATCH v2 4/6] mtd: m25p80: add a read function to read page=
+ by
+> page
+> =
+
+> [adding David Woodhouse]
+> =
+
+> (Btw, you should cc: David Woodhouse and the mtd list on the MTD patches).
+> =
+
+> On Mon, Aug 2, 2010 at 1:52 AM, Mingkai Hu <Mingkai.hu@freescale.com> wro=
+te:
+> > For Freescale's eSPI controller, the max transaction length one time
+> > is limitted by the SPCOM[TRANSLEN] field which is 0xFFFF. When used
+> > mkfs.ext2 command to create ext2 filesystem on the flash, the read
+> > length will exceed the max value of the SPCOM[TRANSLEN] field, so
+> > change the read function to read page by page.
+> >
+> > For other SPI flash driver, also needed to supply the read function if
+> > used the eSPI controller.
+> >
+> > Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+> =
+
+> This one bothers me, but I can't put my finger on it.  The flag feels lik=
+e a
+> controller specific hack.  David, can you take a look at this patch?
+> =
+
+> g.
+> =
+
+> > ---
+> >
+> > v2:
+> > =A0- Add SPI_MASTER_TRANS_LIMIT flag to indicate the master's trans
+> > length
+> > =A0 limitation, so the MTD driver can select the correct transfer
+> > behaviour
+> > =A0 at driver probe time
+> >
+> > =A0drivers/mtd/devices/m25p80.c | =A0 78
+> > ++++++++++++++++++++++++++++++++++++++++++
+> > =A0drivers/spi/spi_fsl_espi.c =A0 | =A0 =A01 +
+> > =A0include/linux/spi/spi.h =A0 =A0 =A0| =A0 =A01 +
+> > =A03 files changed, 80 insertions(+), 0 deletions(-)
+> >
+> > diff --git a/drivers/mtd/devices/m25p80.c
+> > b/drivers/mtd/devices/m25p80.c index 5f00075..30e4568 100644
+> > --- a/drivers/mtd/devices/m25p80.c
+> > +++ b/drivers/mtd/devices/m25p80.c
+> > @@ -376,6 +376,81 @@ static int m25p80_read(struct mtd_info *mtd,
+> > loff_t from, size_t len,
+> > =A0}
+> >
+> > =A0/*
+> > + * Read an address range from the flash chip page by page.
+> > + * Some controller has transaction length limitation such as the
+> > + * Freescale's eSPI controller can only trasmit 0xFFFF bytes one
+> > + * time, so we have to read page by page if the len is more than
+> > + * the limitation.
+> > + */
+> > +static int m25p80_page_read(struct mtd_info *mtd, loff_t from, size_t
+> > +len,
+> > + =A0 =A0 =A0 size_t *retlen, u_char *buf)
+> > +{
+> > + =A0 =A0 =A0 struct m25p *flash =3D mtd_to_m25p(mtd);
+> > + =A0 =A0 =A0 struct spi_transfer t[2];
+> > + =A0 =A0 =A0 struct spi_message m;
+> > + =A0 =A0 =A0 u32 i, page_size =3D 0;
+> > +
+> > + =A0 =A0 =A0 DEBUG(MTD_DEBUG_LEVEL2, "%s: %s %s 0x%08x, len %zd\n",
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_name(&flash->spi->dev=
+), __func__, "from",
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 (u32)from, len);
+> > +
+> > + =A0 =A0 =A0 /* sanity checks */
+> > + =A0 =A0 =A0 if (!len)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 0;
+> > +
+> > + =A0 =A0 =A0 if (from + len > flash->mtd.size)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -EINVAL;
+> > +
+> > + =A0 =A0 =A0 spi_message_init(&m);
+> > + =A0 =A0 =A0 memset(t, 0, (sizeof t));
+> > +
+> > + =A0 =A0 =A0 /* NOTE:
+> > + =A0 =A0 =A0 =A0* OPCODE_FAST_READ (if available) is faster.
+> > + =A0 =A0 =A0 =A0* Should add 1 byte DUMMY_BYTE.
+> > + =A0 =A0 =A0 =A0*/
+> > + =A0 =A0 =A0 t[0].tx_buf =3D flash->command;
+> > + =A0 =A0 =A0 t[0].len =3D m25p_cmdsz(flash) + FAST_READ_DUMMY_BYTE;
+> > + =A0 =A0 =A0 spi_message_add_tail(&t[0], &m);
+> > +
+> > + =A0 =A0 =A0 t[1].rx_buf =3D buf;
+> > + =A0 =A0 =A0 spi_message_add_tail(&t[1], &m);
+> > +
+> > + =A0 =A0 =A0 /* Byte count starts at zero. */
+> > + =A0 =A0 =A0 if (retlen)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 *retlen =3D 0;
+> > +
+> > + =A0 =A0 =A0 mutex_lock(&flash->lock);
+> > +
+> > + =A0 =A0 =A0 /* Wait till previous write/erase is done. */
+> > + =A0 =A0 =A0 if (wait_till_ready(flash)) {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* REVISIT status return?? */
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 mutex_unlock(&flash->lock);
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return 1;
+> > + =A0 =A0 =A0 }
+> > +
+> > + =A0 =A0 =A0 /* Set up the write data buffer. */
+> > + =A0 =A0 =A0 flash->command[0] =3D OPCODE_READ;
+> > +
+> > + =A0 =A0 =A0 for (i =3D page_size; i < len; i +=3D page_size) {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 page_size =3D len - i;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (page_size > flash->page_size)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 page_size =3D flash->page=
+_size;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 m25p_addr2cmd(flash, from + i, flash->com=
+mand);
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 t[1].len =3D page_size;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 t[1].rx_buf =3D buf + i;
+> > +
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_sync(flash->spi, &m);
+> > +
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 *retlen +=3D m.actual_length - m25p_cmdsz=
+(flash)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 - FAST_READ_DUMMY_BYTE;
+> > + =A0 =A0 =A0 }
+> > +
+> > + =A0 =A0 =A0 mutex_unlock(&flash->lock);
+> > +
+> > + =A0 =A0 =A0 return 0;
+> > +}
+> > +
+> > +/*
+> > =A0* Write an address range to the flash chip. =A0Data must be written =
+in
+> > =A0* FLASH_PAGESIZE chunks. =A0The address range may be any size provid=
+ed
+> > =A0* it is within the physical boundaries.
+> > @@ -877,6 +952,9 @@ static int __devinit m25p_probe(struct spi_device
+> > *spi)
+> > =A0 =A0 =A0 =A0flash->mtd.erase =3D m25p80_erase;
+> > =A0 =A0 =A0 =A0flash->mtd.read =3D m25p80_read;
+> >
+> > + =A0 =A0 =A0 if (spi->master->flags & SPI_MASTER_TRANS_LIMIT)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash->mtd.read =3D m25p80_page_read;
+> > +
+> > =A0 =A0 =A0 =A0/* sst flash chips use AAI word program */
+> > =A0 =A0 =A0 =A0if (info->jedec_id >> 16 =3D=3D 0xbf)
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0flash->mtd.write =3D sst_write; diff --g=
+it
+> > a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c index
+> > 61987cf..e15b7dc 100644
+> > --- a/drivers/spi/spi_fsl_espi.c
+> > +++ b/drivers/spi/spi_fsl_espi.c
+> > @@ -470,6 +470,7 @@ static struct spi_master * __devinit
+> > fsl_espi_probe(struct device *dev,
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err_probe;
+> >
+> > =A0 =A0 =A0 =A0master->setup =3D fsl_espi_setup;
+> > + =A0 =A0 =A0 master->flags =3D SPI_MASTER_TRANS_LIMIT;
+> >
+> > =A0 =A0 =A0 =A0mpc8xxx_spi =3D spi_master_get_devdata(master);
+> > =A0 =A0 =A0 =A0mpc8xxx_spi->spi_do_one_msg =3D fsl_espi_do_one_msg; dif=
+f --git
+> > a/include/linux/spi/spi.h b/include/linux/spi/spi.h index
+> > af56071..0729cbd 100644
+> > --- a/include/linux/spi/spi.h
+> > +++ b/include/linux/spi/spi.h
+> > @@ -261,6 +261,7 @@ struct spi_master {
+> > =A0#define SPI_MASTER_HALF_DUPLEX BIT(0) =A0 =A0 =A0 =A0 =A0/* can't do=
+ full
+> > duplex */
+> > =A0#define SPI_MASTER_NO_RX =A0 =A0 =A0 BIT(1) =A0 =A0 =A0 =A0 =A0/* ca=
+n't do buffer
+> > read */
+> > =A0#define SPI_MASTER_NO_TX =A0 =A0 =A0 BIT(2) =A0 =A0 =A0 =A0 =A0/* ca=
+n't do buffer
+> > write */
+> > +#define SPI_MASTER_TRANS_LIMIT BIT(3) =A0 =A0 =A0 =A0 =A0/* have trans=
+ length
+> > +limit */
+> >
+> > =A0 =A0 =A0 =A0/* Setup mode and clock, etc (spi driver may call many t=
+imes).
+> > =A0 =A0 =A0 =A0 *
+> > --
+> > 1.6.4
+> >
+> >
+> >
+> =
+
+> =
+
+> =
+
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.

@@ -1,9 +1,7 @@
 From: Jason Wang <jason77.wang@gmail.com>
-Subject: [PATCH 2/6] i.MX5/clock: add eCSPI and CSPI clock definitions
-Date: Thu,  2 Sep 2010 15:52:00 +0800
-Message-ID: <1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
-References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
+Subject: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx driver
+Date: Thu,  2 Sep 2010 15:51:58 +0800
+Message-ID: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +10,6 @@ Cc: spi-devel-general@lists.sourceforge.net,
 To: s.hauer@pengutronix.de, u.kleine-koenig@pengutronix.de,
 	amit.kucheria@canonical.com, grant.likely@secretlab.ca
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,131 +21,54 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-i.MX51 has two eCSPI and one CSPI controllers, now add clock
-definitions and registrations for these controllers.
+Some explanations:
 
-Signed-off-by: Jason Wang <jason77.wang@gmail.com>
----
- arch/arm/mach-mx5/clock-mx51.c |   79 ++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 79 insertions(+), 0 deletions(-)
+This patchset is to add SPI support in the existing spi_imx driver for
+i.MX51 and add SPI relating stuffs for mx51_3ds board level.
 
-diff --git a/arch/arm/mach-mx5/clock-mx51.c b/arch/arm/mach-mx5/clock-mx51.c
-index 6af69de..217c3f3 100644
---- a/arch/arm/mach-mx5/clock-mx51.c
-+++ b/arch/arm/mach-mx5/clock-mx51.c
-@@ -38,6 +38,7 @@ static struct clk periph_apm_clk;
- static struct clk ahb_clk;
- static struct clk ipg_clk;
- static struct clk usboh3_clk;
-+static struct clk spba_clk;
- 
- #define MAX_DPLL_WAIT_TRIES	1000 /* 1000 * udelay(1) = 1ms */
- 
-@@ -52,6 +53,18 @@ static int _clk_ccgr_enable(struct clk *clk)
- 	return 0;
- }
- 
-+static int _clk_ccgr_enable_inrun(struct clk *clk)
-+{
-+	u32 reg;
-+
-+	reg = __raw_readl(clk->enable_reg);
-+	reg &= ~(MXC_CCM_CCGRx_CG_MASK << clk->enable_shift);
-+	reg |= MXC_CCM_CCGRx_MOD_IDLE << clk->enable_shift;
-+	__raw_writel(reg, clk->enable_reg);
-+
-+	return 0;
-+}
-+
- static void _clk_ccgr_disable(struct clk *clk)
- {
- 	u32 reg;
-@@ -762,6 +775,61 @@ static struct clk kpp_clk = {
- 	.id = 0,
- };
- 
-+/* eCSPI */
-+static unsigned long _clk_ecspi_getrate(struct clk *clk)
-+{
-+	u32 reg, prediv, podf;
-+	unsigned long ret;
-+
-+	reg = __raw_readl(MXC_CCM_CSCDR2);
-+	prediv = ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PRED_MASK) >>
-+		  MXC_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET) + 1;
-+	if (prediv == 1)
-+		BUG();
-+	podf = ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PODF_MASK) >>
-+		MXC_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET) + 1;
-+
-+	ret = clk_get_rate(clk->parent) / (prediv * podf);
-+	return ret;
-+}
-+
-+static int _clk_ecspi_set_parent(struct clk *clk, struct clk *parent)
-+{
-+	u32 reg, mux;
-+
-+	mux = _get_mux(parent, &pll1_sw_clk, &pll2_sw_clk, &pll3_sw_clk,
-+		       &lp_apm_clk);
-+	reg = __raw_readl(MXC_CCM_CSCMR1) & ~MXC_CCM_CSCMR1_CSPI_CLK_SEL_MASK;
-+	reg |= mux << MXC_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET;
-+	__raw_writel(reg, MXC_CCM_CSCMR1);
-+
-+	return 0;
-+}
-+
-+static struct clk ecspi_main_clk = {
-+	.parent = &pll3_sw_clk,
-+	.get_rate = _clk_ecspi_getrate,
-+	.set_parent = _clk_ecspi_set_parent,
-+};
-+
-+static struct clk ecspi1_ipg_clk = {
-+	.parent = &ipg_clk,
-+	.secondary = &spba_clk,
-+	.enable_reg = MXC_CCM_CCGR4,
-+	.enable_shift = MXC_CCM_CCGRx_CG9_OFFSET,
-+	.enable = _clk_ccgr_enable_inrun,
-+	.disable = _clk_ccgr_disable,
-+};
-+
-+static struct clk ecspi2_ipg_clk = {
-+	.parent = &ipg_clk,
-+	.secondary = &aips_tz2_clk,
-+	.enable_reg = MXC_CCM_CCGR4,
-+	.enable_shift = MXC_CCM_CCGRx_CG11_OFFSET,
-+	.enable = _clk_ccgr_enable_inrun,
-+	.disable = _clk_ccgr_disable,
-+};
-+
- #define DEFINE_CLOCK(name, i, er, es, gr, sr, p, s)	\
- 	static struct clk name = {			\
- 		.id		= i,			\
-@@ -814,6 +882,14 @@ DEFINE_CLOCK(hsi2c_clk, 0, MXC_CCM_CCGR1, MXC_CCM_CCGRx_CG11_OFFSET,
- DEFINE_CLOCK(fec_clk, 0, MXC_CCM_CCGR2, MXC_CCM_CCGRx_CG12_OFFSET,
- 	NULL,  NULL, &ipg_clk, NULL);
- 
-+/* eCSPI & CSPI */
-+DEFINE_CLOCK(cspi1_clk, 0, MXC_CCM_CCGR4, MXC_CCM_CCGRx_CG10_OFFSET,
-+	NULL, NULL, &ecspi_main_clk, &ecspi1_ipg_clk);
-+DEFINE_CLOCK(cspi2_clk, 1, MXC_CCM_CCGR4, MXC_CCM_CCGRx_CG12_OFFSET,
-+	NULL, NULL, &ecspi_main_clk, &ecspi2_ipg_clk);
-+DEFINE_CLOCK(cspi3_clk, 2, MXC_CCM_CCGR4, MXC_CCM_CCGRx_CG13_OFFSET,
-+	NULL, NULL, &ipg_clk, NULL);
-+
- #define _REGISTER_CLOCK(d, n, c) \
-        { \
- 		.dev_id = d, \
-@@ -837,6 +913,9 @@ static struct clk_lookup lookups[] = {
- 	_REGISTER_CLOCK("fsl-usb2-udc", "usb", usboh3_clk)
- 	_REGISTER_CLOCK("fsl-usb2-udc", "usb_ahb", ahb_clk)
- 	_REGISTER_CLOCK("imx-keypad.0", NULL, kpp_clk)
-+	_REGISTER_CLOCK("spi_imx.0", NULL, cspi1_clk)
-+	_REGISTER_CLOCK("spi_imx.1", NULL, cspi2_clk)
-+	_REGISTER_CLOCK("spi_imx.2", NULL, cspi3_clk)
- };
- 
- static void clk_tree_init(void)
--- 
-1.5.6.5
+i.MX51 has two eCSPI controllers and one CSPI controller, CSPI
+controller is 100% compatible with the one of i.MX35, so we don't need
+to add new functions for this CSPI, only bind it with i.MX35 together,
+while eCSPI isn't compatible with existing controllers of i.MX
+platforms, so i add new functions for these two eCSPIs in the existing
+spi_imx driver.
+
+If these patches pass review, the first patch 0001-xxx.patch should be
+merged by Grant.likely; other patches(0002-0006) are based off
+imx-for-2.6.37 and should be handled by Sascha.
+
+On mx51_3ds board, there is a SPI NOR flash connected through eCSPI2,
+i have validated this patchset using this SPI NOR flash, see results:
+(bootlogs)
+<snip>
+m25p80 spi1.1: found sst25vf016b, expected m25p80
+m25p80 spi1.1: sst25vf016b (2048 Kbytes)
+spi_imx spi_imx.1: probed
+<snip>
+(target tty console)
+# cat /proc/mtd
+dev:    size   erasesize  name
+mtd0: 00200000 00001000 "spi1.1"
+# mtd_debug read /dev/mtd0 0 0x100 /a.txt
+Copied 256 bytes from address 0x00000000 in flash to /a.txt
+# hexdump a.txt 
+0000000 0000 eb00 0b53 eb00 002c e28f 0c00 e890
+0000010 a000 e08a b000 e08b 7001 e24a 000b e15a
+0000020 0000 1a00 0b4b eb00 000f e8ba e018 e24f
+0000030 0001 e313 f003 1047 ff13 e12f 3720 0000
+0000040 3730 0000 3000 e3b0 4000 e3b0 5000 e3b0
+0000050 6000 e3b0 2010 e252 0078 28a1 fffc 8aff
+0000060 2e82 e1b0 0030 28a1 3000 4581 ff1e e12f
+0000070 e004 e52d 7000 e10f 700f e3c7 6001 e287
+0000080 f006 e12f 0001 e040 d000 e1a0 6002 e287
+0000090 f006 e12f 0001 e040 d000 e1a0 6006 e287
+00000a0 f006 e12f 0001 e040 d000 e1a0 6007 e287
+00000b0 f006 e12f 0001 e040 d000 e1a0 600b e287
+00000c0 f006 e12f 0001 e040 d000 e1a0 600f e287
+00000d0 f006 e12f 0001 e040 d000 e1a0 6003 e287
+00000e0 60c0 e3c6 f006 e12f f004 e49d f003 e320
+00000f0 ff1e e12f 4001 e92d 0f11 ee11 0001 e380
+
+
+Thanks,
+Jason.

@@ -1,18 +1,19 @@
 From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: add a bits_per_word to struct spi_board_info
-Date: Thu, 2 Sep 2010 10:01:28 +0800
-Message-ID: <20100902100128.5d5b7d87@feng-i7>
-References: <20100901151010.GB13421@angua.secretlab.ca>
-	<220308.75070.qm@web180310.mail.gq1.yahoo.com>
+Subject: Re: [PATCH] spi/dw_spi: clean the cs_control code
+Date: Thu, 2 Sep 2010 10:10:29 +0800
+Message-ID: <20100902101029.2f17c8a5@feng-i7>
+References: <1283319359-16297-1-git-send-email-feng.tang@intel.com>
+	<20100901150757.GA13421@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <220308.75070.qm-4JhmkcZgSkk/JfqJOfUXs/u2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <20100901150757.GA13421-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,52 +24,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 1 Sep 2010 23:46:18 +0800
-David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
+On Wed, 1 Sep 2010 23:07:57 +0800
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
 
-> Re $SUBJECT ... consider it a quirk of how
-> SPI devices get setup that this field isn't
-> one of the ones the platform code can set up.
-> =
+> Hi Feng,
+> 
+> On Wed, Sep 01, 2010 at 01:35:59PM +0800, Feng Tang wrote:
+> > commit 052dc7c45 introduced cs_control code,
+> 
+> Be friendly to mere-mortals.  You should quote the patch title
+> "spi/dw_spi: conditional transfer mode changes" in addition to the
+> sha1 id.
 
-> I've thought about fixing this before,
-> and decided against it:
-> =
+Got it, thanks, will add it in V2
 
-> =
+> > @@ -544,13 +540,13 @@ static void pump_transfers(unsigned long data)
+> >  	 */
+> >  	if (dws->cs_control) {
+> >  		if (dws->rx && dws->tx)
+> > -			chip->tmode = 0x00;
+> > +			chip->tmode = SPI_TMOD_TR;
+> >  		else if (dws->rx)
+> > -			chip->tmode = 0x02;
+> > +			chip->tmode = SPI_TMOD_RO;
+> >  		else
+> > -			chip->tmode = 0x01;
+> > +			chip->tmode = SPI_TMOD_TO;
+> >  
+> > -		cr0 &= ~(0x3 << SPI_MODE_OFFSET);
+> > +		cr0 &= ~SPI_TMOD_MASK;
+> >  		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
+> 
+> Changing these values isn't mentioned in the patch description.  I
+> assume this is not the bug fix because the #defines are the same
+> values.
 
-> > What is the use case that you would want to do
->  > this. Knowing what the bits_per_word should
-> > be is the responsibility of the spi device
-> > driver.=A0 What is the > use-case where the
-> > driver wouldn't know what bits_per_word
-> > should be?
-> =
+OK, it's a little confusing, there are 2 OFFSET here:
+	SPI_MODE_OFFSET (for spi mode 0/1/2 etc setting)
+	SPI_TMOD_OFFSET (for tx only/rx only/duplex)
 
-> What's the case where platform code could
-> know "better" than the driver?
-
-Grant also asked me the same question. Yes, driver itself
-know the bits_per_word info best in most case, but there is
-some device (Option GTM501L spi modem) which supports multiple
-bits_per_mode option, and here platform code is the good place
-to set it.
-
-One of my intension of this patch is to save some extra spi_setup.
-For many spi protocol drivers in kernel, spi_setup() will be
-called twice for them, first time is inside spi_new_device(it calls
-spi_add_device), the second time will be inside driver's probe
-func, after setting bits_per_word info. So if we can set it before
-registering board info, then the second spi_setup can be removed for
-many drivers.
+So simple fix should be
+-		cr0 &= ~(0x3 << SPI_MODE_OFFSET); 
++		cr0 &= ~(0x3 << SPI_TMOD_OFFSET);
+while my new introduced SPI_TMOD_MASK make things complex :)
 
 Thanks,
 Feng
 
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:
 
 Show off your parallel programming skills.

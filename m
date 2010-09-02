@@ -1,23 +1,20 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 5/6] mx51_3ds: add eCSPI2 support on the imx51_3ds board
-Date: Thu, 2 Sep 2010 17:05:16 +0200
-Message-ID: <20100902150516.GO14214@pengutronix.de>
+From: =?iso-8859-15?Q?Lothar_Wa=DFmann?= <LW@KARO-electronics.de>
+Subject: Re: [PATCH 1/6] spi-imx: add CSPI and eCSPI support for i.MX51 MCU
+Date: Thu, 2 Sep 2010 17:11:56 +0200
+Message-ID: <19583.48828.125104.712979@ipc1.ka-ro>
 References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-4-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-5-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
+	<20100902145357.GL14214@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	s.hauer@pengutronix.de, amit.kucheria@canonical.com,
+Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
+	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
+	spi-devel-general@lists.sourceforge.net,
 	linux-arm-kernel@lists.infradead.org
-To: Jason Wang <jason77.wang@gmail.com>
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
+In-Reply-To: <20100902145357.GL14214@pengutronix.de>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -29,92 +26,40 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jason,
+Hi,
 
-On Thu, Sep 02, 2010 at 03:52:03PM +0800, Jason Wang wrote:
-> Add platform data for eCSPI2 and register it through spi_imx dynamical
-> register interface.
+> > -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
+> > +	/* i.MX51 has two eCSPI and one CSPI controllers, eCSPI controllers a=
+re
+> > +	 * not compatible with existing SPI controllers on other i.MX platfor=
+ms,
+> > +	 * while CSPI controller is 100% compatible with the one on the i.MX3=
+5.
+> > +	 * We set the platform device id to 2 for this CSPI at i.MX51 board i=
+nit
+> > +	 * level to distinguish it from two eCSPI controllers.
+> > +	 */
+> This comment is missing in Sascha's driver.  I like it.
+> BTW, I'd like to make use of platform ids in this driver.  This would
+> make this ugly "on imx51 id2 is a cspi" distinction unnecessary.
 > =
 
-> Signed-off-by: Jason Wang <jason77.wang@gmail.com>
-> ---
->  arch/arm/mach-mx5/board-mx51_3ds.c |   20 ++++++++++++++++++++
->  1 files changed, 20 insertions(+), 0 deletions(-)
-> =
-
-> diff --git a/arch/arm/mach-mx5/board-mx51_3ds.c b/arch/arm/mach-mx5/board=
--mx51_3ds.c
-> index f95c2fd..0cf4e14 100644
-> --- a/arch/arm/mach-mx5/board-mx51_3ds.c
-> +++ b/arch/arm/mach-mx5/board-mx51_3ds.c
-> @@ -24,9 +24,11 @@
->  #include <mach/imx-uart.h>
->  #include <mach/3ds_debugboard.h>
->  =
-
-> +#include "devices-imx51.h"
->  #include "devices.h"
->  =
-
->  #define EXPIO_PARENT_INT	(MXC_INTERNAL_IRQS + GPIO_PORTA + 6)
-> +#define MX51_3DS_ECSPI2_CS	(GPIO_PORTC + 28)
->  =
-
->  static struct pad_desc mx51_3ds_pads[] =3D {
->  	/* UART1 */
-> @@ -61,6 +63,12 @@ static struct pad_desc mx51_3ds_pads[] =3D {
->  	MX51_PAD_KEY_COL3__KEY_COL3,
->  	MX51_PAD_KEY_COL4__KEY_COL4,
->  	MX51_PAD_KEY_COL5__KEY_COL5,
-> +
-> +	/* eCSPI2 */
-> +	MX51_PAD_NANDF_RB2__ECSPI2_SCLK,
-> +	MX51_PAD_NANDF_RB3__ECSPI2_MISO,
-> +	MX51_PAD_NANDF_D15__ECSPI2_MOSI,
-> +	MX51_PAD_NANDF_D12__GPIO_3_28,
->  };
->  =
-
->  /* Serial ports */
-> @@ -127,6 +135,16 @@ static inline void mxc_init_keypad(void)
->  }
->  #endif
->  =
-
-> +static int mx51_3ds_spi2_cs[] =3D {
-> +	MXC_SPI_CS(0),
-> +	MX51_3DS_ECSPI2_CS,
-> +};
-> +
-> +static struct spi_imx_master mx51_3ds_spi2_pdata =3D {
-> +	.chipselect	=3D mx51_3ds_spi2_cs,
-> +	.num_chipselect	=3D ARRAY_SIZE(mx51_3ds_spi2_cs),
-> +};
-maybe better call it mx51_3ds_ecspi2_pdata?  This should be const
-__initconst.
-
->  /*
->   * Board specific initialization.
->   */
-> @@ -136,6 +154,8 @@ static void __init mxc_board_init(void)
->  					ARRAY_SIZE(mx51_3ds_pads));
->  	mxc_init_imx_uart();
->  =
-
-> +	imx51_add_spi_imx1(&mx51_3ds_spi2_pdata);
-> +
->  	if (mxc_expio_init(MX51_CS5_BASE_ADDR, EXPIO_PARENT_INT))
->  		printk(KERN_WARNING "Init of the debugboard failed, all "
->  				    "devices on the board are unusable.\n");
-> -- =
-
-> 1.5.6.5
-> =
-
-> =
+> > +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+> > +	    (cpu_is_mx51() && (pdev->id =3D=3D 2))) {
+I'd prefer a flag in the platform_data that tells the driver to act as
+an eCSPI driver. This way the information about eCSPI or not would be
+where it belongs (in the arch specific code).
 
 
+Lothar Wa=DFmann
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+___________________________________________________________
+
+Ka-Ro electronics GmbH | Pascalstra=DFe 22 | D - 52076 Aachen
+Phone: +49 2408 1402-0 | Fax: +49 2408 1402-10
+Gesch=E4ftsf=FChrer: Matthias Kaussen
+Handelsregistereintrag: Amtsgericht Aachen, HRB 4996
+
+www.karo-electronics.de | info@karo-electronics.de
+___________________________________________________________

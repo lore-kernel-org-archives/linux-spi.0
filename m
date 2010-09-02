@@ -1,13 +1,11 @@
 From: Jason Wang <jason77.wang@gmail.com>
-Subject: [PATCH 6/6] mx51_3ds: add SPI NOR flash in the board init stage
-Date: Thu,  2 Sep 2010 15:52:04 +0800
-Message-ID: <1283413924-14210-7-git-send-email-jason77.wang@gmail.com>
+Subject: [PATCH 3/6] mx5: add support to dynamically register spi_imx devices
+	(imx51 3ds)
+Date: Thu,  2 Sep 2010 15:52:01 +0800
+Message-ID: <1283413924-14210-4-git-send-email-jason77.wang@gmail.com>
 References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-4-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-5-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -16,7 +14,7 @@ Cc: spi-devel-general@lists.sourceforge.net,
 To: s.hauer@pengutronix.de, u.kleine-koenig@pengutronix.de,
 	amit.kucheria@canonical.com, grant.likely@secretlab.ca
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
+In-Reply-To: <1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -28,51 +26,50 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-A 2M bytes SPI NOR flash(sst25vf016b) is soldered on the mx51_3ds
-board, Now add registration for it in the board init stage.
-
 Signed-off-by: Jason Wang <jason77.wang@gmail.com>
 ---
- arch/arm/mach-mx5/board-mx51_3ds.c |   13 +++++++++++++
- 1 files changed, 13 insertions(+), 0 deletions(-)
+ arch/arm/mach-mx5/Kconfig         |    1 +
+ arch/arm/mach-mx5/devices-imx51.h |   20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-mx5/devices-imx51.h
 
-diff --git a/arch/arm/mach-mx5/board-mx51_3ds.c b/arch/arm/mach-mx5/board-mx51_3ds.c
-index 0cf4e14..8f1631d 100644
---- a/arch/arm/mach-mx5/board-mx51_3ds.c
-+++ b/arch/arm/mach-mx5/board-mx51_3ds.c
-@@ -13,6 +13,7 @@
- #include <linux/irq.h>
- #include <linux/platform_device.h>
- #include <linux/input/matrix_keypad.h>
-+#include <linux/spi/spi.h>
- 
- #include <asm/mach-types.h>
- #include <asm/mach/arch.h>
-@@ -145,6 +146,16 @@ static struct spi_imx_master mx51_3ds_spi2_pdata = {
- 	.num_chipselect	= ARRAY_SIZE(mx51_3ds_spi2_cs),
- };
- 
-+static struct spi_board_info mx51_3ds_spi_nor_device[] = {
-+	{
-+	 .modalias = "m25p80",
-+	 .max_speed_hz = 25000000,	/* max spi clock (SCK) speed in HZ */
-+	 .bus_num = 1,
-+	 .chip_select = 1,
-+	 .mode = SPI_MODE_0,
-+	 .platform_data = NULL,},
-+};
+diff --git a/arch/arm/mach-mx5/Kconfig b/arch/arm/mach-mx5/Kconfig
+index 0848db5..898fb47 100644
+--- a/arch/arm/mach-mx5/Kconfig
++++ b/arch/arm/mach-mx5/Kconfig
+@@ -18,6 +18,7 @@ config MACH_MX51_BABBAGE
+ config MACH_MX51_3DS
+ 	bool "Support MX51PDK (3DS)"
+ 	select MXC_DEBUG_BOARD
++	select IMX_HAVE_PLATFORM_SPI_IMX
+ 	help
+ 	  Include support for MX51PDK (3DS) platform. This includes specific
+ 	  configurations for the board and its peripherals.
+diff --git a/arch/arm/mach-mx5/devices-imx51.h b/arch/arm/mach-mx5/devices-imx51.h
+new file mode 100644
+index 0000000..d04c7eb
+--- /dev/null
++++ b/arch/arm/mach-mx5/devices-imx51.h
+@@ -0,0 +1,20 @@
++/*
++ * Copyright (C) 2010 Jason Wang <jason77.wang@gmail.com>
++ *
++ * based on mach-mx3/devices-imx35.h which is
++ * Copyright (C) 2010 Pengutronix
++ * Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License version 2 as published by the
++ * Free Software Foundation.
++ */
++#include <mach/mx51.h>
++#include <mach/devices-common.h>
 +
- /*
-  * Board specific initialization.
-  */
-@@ -155,6 +166,8 @@ static void __init mxc_board_init(void)
- 	mxc_init_imx_uart();
- 
- 	imx51_add_spi_imx1(&mx51_3ds_spi2_pdata);
-+	spi_register_board_info(mx51_3ds_spi_nor_device,
-+				ARRAY_SIZE(mx51_3ds_spi_nor_device));
- 
- 	if (mxc_expio_init(MX51_CS5_BASE_ADDR, EXPIO_PARENT_INT))
- 		printk(KERN_WARNING "Init of the debugboard failed, all "
++#define imx51_add_spi_imx0(pdata)	\
++	imx_add_spi_imx(0, MX51_CSPI1_BASE_ADDR, SZ_4K, MX51_MXC_INT_CSPI1, pdata)
++#define imx51_add_spi_imx1(pdata)	\
++	imx_add_spi_imx(1, MX51_CSPI2_BASE_ADDR, SZ_4K, MX51_MXC_INT_CSPI2, pdata)
++#define imx51_add_spi_imx2(pdata)	\
++	imx_add_spi_imx(1, MX51_CSPI3_BASE_ADDR, SZ_4K, MX51_MXC_INT_CSPI, pdata)
 -- 
 1.5.6.5

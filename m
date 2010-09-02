@@ -1,16 +1,19 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 3/6] ARM: imx: change the way spi-imx devices are registered
-Date: Thu,  2 Sep 2010 16:42:00 +0200
-Message-ID: <1283438523-19697-3-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <20100902143908.GK14214@pengutronix.de>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 1/6] spi-imx: add CSPI and eCSPI support for i.MX51 MCU
+Date: Thu, 2 Sep 2010 16:53:57 +0200
+Message-ID: <20100902145357.GL14214@pengutronix.de>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Jason Wang <jason77.wang@gmail.com>, linux-arm-kernel@lists.infradead.org,
-	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
-	spi-devel-general@lists.sourceforge.net
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	s.hauer@pengutronix.de, amit.kucheria@canonical.com,
+	linux-arm-kernel@lists.infradead.org
+To: Jason Wang <jason77.wang@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100902143908.GK14214@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -22,174 +25,229 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-U2ltaWxhciB0byB0aGUgY2hhbmdlIGRvbmUgZWFybGllciBmb3IgaW14LXVhcnQgZGV2aWNlcyBn
-cm91cCBzb2Mgc3BlY2lmaWMKZGF0YSBpbiBhIGdsb2JhbCBzdHJ1Y3QgaW5zdGVhZCBvZiByZXBl
-YXRpbmcgaXQgZm9yIGVhY2ggY2FsbCB0bwppbXhYWF9hZGRfc3BpX2lteFguCgpBY2tlZC1ieTog
-V29sZnJhbSBTYW5nIDx3LnNhbmdAcGVuZ3V0cm9uaXguZGU+ClNpZ25lZC1vZmYtYnk6IFV3ZSBL
-bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9h
-cm0vbWFjaC1pbXgvZGV2aWNlcy1pbXgyMS5oICAgICAgICAgICAgICAgfCAgICA5ICsrLQogYXJj
-aC9hcm0vbWFjaC1pbXgvZGV2aWNlcy1pbXgyNy5oICAgICAgICAgICAgICAgfCAgIDEyICsrLS0K
-IGFyY2gvYXJtL21hY2gtbXgyNS9kZXZpY2VzLWlteDI1LmggICAgICAgICAgICAgIHwgICAxMiAr
-Ky0tCiBhcmNoL2FybS9tYWNoLW14My9kZXZpY2VzLWlteDMxLmggICAgICAgICAgICAgICB8ICAg
-MTIgKystLQogYXJjaC9hcm0vbWFjaC1teDMvZGV2aWNlcy1pbXgzNS5oICAgICAgICAgICAgICAg
-fCAgICA5ICsrLQogYXJjaC9hcm0vcGxhdC1teGMvZGV2aWNlcy9wbGF0Zm9ybS1zcGlfaW14LmMg
-ICAgfCAgIDc2ICsrKysrKysrKysrKysrKysrKysrLS0tCiBhcmNoL2FybS9wbGF0LW14Yy9pbmNs
-dWRlL21hY2gvZGV2aWNlcy1jb21tb24uaCB8ICAgMTAgKysrLQogNyBmaWxlcyBjaGFuZ2VkLCAx
-MDMgaW5zZXJ0aW9ucygrKSwgMzcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-bWFjaC1pbXgvZGV2aWNlcy1pbXgyMS5oIGIvYXJjaC9hcm0vbWFjaC1pbXgvZGV2aWNlcy1pbXgy
-MS5oCmluZGV4IDQyNzg4ZTkuLjVjZDk5MWEgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtaW14
-L2RldmljZXMtaW14MjEuaAorKysgYi9hcmNoL2FybS9tYWNoLWlteC9kZXZpY2VzLWlteDIxLmgK
-QEAgLTI0LDcgKzI0LDggQEAKICNkZWZpbmUgaW14MjFfYWRkX214Y19uYW5kKHBkYXRhKQlcCiAJ
-aW14X2FkZF9teGNfbmFuZF92MShNWDIxX05GQ19CQVNFX0FERFIsIE1YMjFfSU5UX05BTkRGQywg
-cGRhdGEpCiAKLSNkZWZpbmUgaW14MjFfYWRkX3NwaV9pbXgwKHBkYXRhKQlcCi0JaW14X2FkZF9z
-cGlfaW14KDAsIE1YMjFfQ1NQSTFfQkFTRV9BRERSLCBTWl80SywgTVgyMV9JTlRfQ1NQSTEsIHBk
-YXRhKQotI2RlZmluZSBpbXgyMV9hZGRfc3BpX2lteDEocGRhdGEpCVwKLQlpbXhfYWRkX3NwaV9p
-bXgoMSwgTVgyMV9DU1BJMl9CQVNFX0FERFIsIFNaXzRLLCBNWDIxX0lOVF9DU1BJMiwgcGRhdGEp
-CitleHRlcm4gY29uc3Qgc3RydWN0IGlteF9zcGlfaW14X2RhdGEgaW14MjFfc3BpX2lteF9kYXRh
-W10gX19pbml0Y29uc3Q7CisjZGVmaW5lIGlteDIxX2FkZF9zcGlfaW14KGlkLCBwZGF0YSkJXAor
-CWlteF9hZGRfc3BpX2lteCgmaW14MjFfc3BpX2lteF9kYXRhW2lkXSwgcGRhdGEpCisjZGVmaW5l
-IGlteDIxX2FkZF9zcGlfaW14MChwZGF0YSkJaW14MjFfYWRkX3NwaV9pbXgoMCwgcGRhdGEpCisj
-ZGVmaW5lIGlteDIxX2FkZF9zcGlfaW14MShwZGF0YSkJaW14MjFfYWRkX3NwaV9pbXgoMSwgcGRh
-dGEpCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWlteC9kZXZpY2VzLWlteDI3LmggYi9hcmNo
-L2FybS9tYWNoLWlteC9kZXZpY2VzLWlteDI3LmgKaW5kZXggNjVlN2JiNy4uZWQzN2FmZCAxMDA2
-NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1pbXgvZGV2aWNlcy1pbXgyNy5oCisrKyBiL2FyY2gvYXJt
-L21hY2gtaW14L2RldmljZXMtaW14MjcuaApAQCAtMzAsOSArMzAsOSBAQAogI2RlZmluZSBpbXgy
-N19hZGRfbXhjX25hbmQocGRhdGEpCVwKIAlpbXhfYWRkX214Y19uYW5kX3YxKE1YMjdfTkZDX0JB
-U0VfQUREUiwgTVgyN19JTlRfTkFOREZDLCBwZGF0YSkKIAotI2RlZmluZSBpbXgyN19hZGRfc3Bp
-X2lteDAocGRhdGEpCVwKLQlpbXhfYWRkX3NwaV9pbXgoMCwgTVgyN19DU1BJMV9CQVNFX0FERFIs
-IFNaXzRLLCBNWDI3X0lOVF9DU1BJMSwgcGRhdGEpCi0jZGVmaW5lIGlteDI3X2FkZF9zcGlfaW14
-MShwZGF0YSkJXAotCWlteF9hZGRfc3BpX2lteCgxLCBNWDI3X0NTUEkyX0JBU0VfQUREUiwgU1pf
-NEssIE1YMjdfSU5UX0NTUEkyLCBwZGF0YSkKLSNkZWZpbmUgaW14MjdfYWRkX3NwaV9pbXgyKHBk
-YXRhKQlcCi0JaW14X2FkZF9zcGlfaW14KDIsIE1YMjdfQ1NQSTNfQkFTRV9BRERSLCBTWl80Sywg
-TVgyN19JTlRfQ1NQSTMsIHBkYXRhKQorZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9k
-YXRhIGlteDI3X3NwaV9pbXhfZGF0YVtdIF9faW5pdGNvbnN0OworI2RlZmluZSBpbXgyN19hZGRf
-c3BpX2lteChpZCwgcGRhdGEpCVwKKwlpbXhfYWRkX3NwaV9pbXgoJmlteDI3X3NwaV9pbXhfZGF0
-YVtpZF0sIHBkYXRhKQorI2RlZmluZSBpbXgyN19hZGRfc3BpX2lteDAocGRhdGEpCWlteDI3X2Fk
-ZF9zcGlfaW14KDAsIHBkYXRhKQorI2RlZmluZSBpbXgyN19hZGRfc3BpX2lteDEocGRhdGEpCWlt
-eDI3X2FkZF9zcGlfaW14KDEsIHBkYXRhKQorI2RlZmluZSBpbXgyN19hZGRfc3BpX2lteDIocGRh
-dGEpCWlteDI3X2FkZF9zcGlfaW14KDIsIHBkYXRhKQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFj
-aC1teDI1L2RldmljZXMtaW14MjUuaCBiL2FyY2gvYXJtL21hY2gtbXgyNS9kZXZpY2VzLWlteDI1
-LmgKaW5kZXggZDg2YTdjMy4uMzRhNzA2MSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1teDI1
-L2RldmljZXMtaW14MjUuaAorKysgYi9hcmNoL2FybS9tYWNoLW14MjUvZGV2aWNlcy1pbXgyNS5o
-CkBAIC0zNSw5ICszNSw5IEBACiAjZGVmaW5lIGlteDI1X2FkZF9teGNfbmFuZChwZGF0YSkJXAog
-CWlteF9hZGRfbXhjX25hbmRfdjIxKE1YMjVfTkZDX0JBU0VfQUREUiwgTVgyNV9JTlRfTkFOREZD
-LCBwZGF0YSkKIAotI2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteDAocGRhdGEpCVwKLQlpbXhfYWRk
-X3NwaV9pbXgoMCwgTVgyNV9DU1BJMV9CQVNFX0FERFIsIFNaXzE2SywgTVgyNV9JTlRfQ1NQSTEs
-IHBkYXRhKQotI2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteDEocGRhdGEpCVwKLQlpbXhfYWRkX3Nw
-aV9pbXgoMSwgTVgyNV9DU1BJMl9CQVNFX0FERFIsIFNaXzE2SywgTVgyNV9JTlRfQ1NQSTIsIHBk
-YXRhKQotI2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteDIocGRhdGEpCVwKLQlpbXhfYWRkX3NwaV9p
-bXgoMiwgTVgyNV9DU1BJM19CQVNFX0FERFIsIFNaXzE2SywgTVgyNV9JTlRfQ1NQSTMsIHBkYXRh
-KQorZXh0ZXJuIGNvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhIGlteDI1X3NwaV9pbXhfZGF0
-YVtdIF9faW5pdGNvbnN0OworI2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteChpZCwgcGRhdGEpCVwK
-KwlpbXhfYWRkX3NwaV9pbXgoJmlteDI1X3NwaV9pbXhfZGF0YVtpZF0sIHBkYXRhKQorI2RlZmlu
-ZSBpbXgyNV9hZGRfc3BpX2lteDAocGRhdGEpCWlteDI1X2FkZF9zcGlfaW14KDAsIHBkYXRhKQor
-I2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteDEocGRhdGEpCWlteDI1X2FkZF9zcGlfaW14KDEsIHBk
-YXRhKQorI2RlZmluZSBpbXgyNV9hZGRfc3BpX2lteDIocGRhdGEpCWlteDI1X2FkZF9zcGlfaW14
-KDIsIHBkYXRhKQpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1teDMvZGV2aWNlcy1pbXgzMS5o
-IGIvYXJjaC9hcm0vbWFjaC1teDMvZGV2aWNlcy1pbXgzMS5oCmluZGV4IDNiMWE0NGEuLjlmZTAw
-YjIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtbXgzL2RldmljZXMtaW14MzEuaAorKysgYi9h
-cmNoL2FybS9tYWNoLW14My9kZXZpY2VzLWlteDMxLmgKQEAgLTMwLDkgKzMwLDkgQEAKICNkZWZp
-bmUgaW14MzFfYWRkX214Y19uYW5kKHBkYXRhKQlcCiAJaW14X2FkZF9teGNfbmFuZF92MShNWDMx
-X05GQ19CQVNFX0FERFIsIE1YMzFfSU5UX05BTkRGQywgcGRhdGEpCiAKLSNkZWZpbmUgaW14MzFf
-YWRkX3NwaV9pbXgwKHBkYXRhKQlcCi0JaW14X2FkZF9zcGlfaW14KDAsIE1YMzFfQ1NQSTFfQkFT
-RV9BRERSLCBTWl80SywgTVgzMV9JTlRfQ1NQSTEsIHBkYXRhKQotI2RlZmluZSBpbXgzMV9hZGRf
-c3BpX2lteDEocGRhdGEpCVwKLQlpbXhfYWRkX3NwaV9pbXgoMSwgTVgzMV9DU1BJMl9CQVNFX0FE
-RFIsIFNaXzRLLCBNWDMxX0lOVF9DU1BJMiwgcGRhdGEpCi0jZGVmaW5lIGlteDMxX2FkZF9zcGlf
-aW14MihwZGF0YSkJXAotCWlteF9hZGRfc3BpX2lteCgyLCBNWDMxX0NTUEkzX0JBU0VfQUREUiwg
-U1pfNEssIE1YMzFfSU5UX0NTUEkzLCBwZGF0YSkKK2V4dGVybiBjb25zdCBzdHJ1Y3QgaW14X3Nw
-aV9pbXhfZGF0YSBpbXgzMV9zcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdDsKKyNkZWZpbmUgaW14
-MzFfYWRkX3NwaV9pbXgoaWQsIHBkYXRhKQlcCisJaW14X2FkZF9zcGlfaW14KCZpbXgzMV9zcGlf
-aW14X2RhdGFbaWRdLCBwZGF0YSkKKyNkZWZpbmUgaW14MzFfYWRkX3NwaV9pbXgwKHBkYXRhKQlp
-bXgzMV9hZGRfc3BpX2lteCgwLCBwZGF0YSkKKyNkZWZpbmUgaW14MzFfYWRkX3NwaV9pbXgxKHBk
-YXRhKQlpbXgzMV9hZGRfc3BpX2lteCgxLCBwZGF0YSkKKyNkZWZpbmUgaW14MzFfYWRkX3NwaV9p
-bXgyKHBkYXRhKQlpbXgzMV9hZGRfc3BpX2lteCgyLCBwZGF0YSkKZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL21hY2gtbXgzL2RldmljZXMtaW14MzUuaCBiL2FyY2gvYXJtL21hY2gtbXgzL2RldmljZXMt
-aW14MzUuaAppbmRleCBmNmE0MzFhLi45OTcyZmZjIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNo
-LW14My9kZXZpY2VzLWlteDM1LmgKKysrIGIvYXJjaC9hcm0vbWFjaC1teDMvZGV2aWNlcy1pbXgz
-NS5oCkBAIC0zMSw3ICszMSw4IEBACiAjZGVmaW5lIGlteDM1X2FkZF9teGNfbmFuZChwZGF0YSkJ
-XAogCWlteF9hZGRfbXhjX25hbmRfdjIxKE1YMzVfTkZDX0JBU0VfQUREUiwgTVgzNV9JTlRfTkFO
-REZDLCBwZGF0YSkKIAotI2RlZmluZSBpbXgzNV9hZGRfc3BpX2lteDAocGRhdGEpCVwKLQlpbXhf
-YWRkX3NwaV9pbXgoMCwgTVgzNV9DU1BJMV9CQVNFX0FERFIsIFNaXzRLLCBNWDM1X0lOVF9DU1BJ
-MSwgcGRhdGEpCi0jZGVmaW5lIGlteDM1X2FkZF9zcGlfaW14MShwZGF0YSkJXAotCWlteF9hZGRf
-c3BpX2lteCgxLCBNWDM1X0NTUEkyX0JBU0VfQUREUiwgU1pfNEssIE1YMzVfSU5UX0NTUEkyLCBw
-ZGF0YSkKK2V4dGVybiBjb25zdCBzdHJ1Y3QgaW14X3NwaV9pbXhfZGF0YSBpbXgzNV9zcGlfaW14
-X2RhdGFbXSBfX2luaXRjb25zdDsKKyNkZWZpbmUgaW14MzVfYWRkX3NwaV9pbXgoaWQsIHBkYXRh
-KQlcCisJaW14X2FkZF9zcGlfaW14KCZpbXgzNV9zcGlfaW14X2RhdGFbaWRdLCBwZGF0YSkKKyNk
-ZWZpbmUgaW14MzVfYWRkX3NwaV9pbXgwKHBkYXRhKQlpbXgzNV9hZGRfc3BpX2lteCgwLCBwZGF0
-YSkKKyNkZWZpbmUgaW14MzVfYWRkX3NwaV9pbXgxKHBkYXRhKQlpbXgzNV9hZGRfc3BpX2lteCgx
-LCBwZGF0YSkKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL3BsYXQtbXhjL2RldmljZXMvcGxhdGZvcm0t
-c3BpX2lteC5jIGIvYXJjaC9hcm0vcGxhdC1teGMvZGV2aWNlcy9wbGF0Zm9ybS1zcGlfaW14LmMK
-aW5kZXggMjgzMWE2ZC4uN2I3YjAwNSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vcGxhdC1teGMvZGV2
-aWNlcy9wbGF0Zm9ybS1zcGlfaW14LmMKKysrIGIvYXJjaC9hcm0vcGxhdC1teGMvZGV2aWNlcy9w
-bGF0Zm9ybS1zcGlfaW14LmMKQEAgLTYsMjUgKzYsODMgQEAKICAqIHRoZSB0ZXJtcyBvZiB0aGUg
-R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzIHB1Ymxpc2hlZCBieSB0aGUK
-ICAqIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KICAqLwotI2luY2x1ZGUgPGFzbS9zaXplcy5o
-PgorI2luY2x1ZGUgPG1hY2gvaGFyZHdhcmUuaD4KICNpbmNsdWRlIDxtYWNoL2RldmljZXMtY29t
-bW9uLmg+CiAKLXN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKl9faW5pdCBpbXhfYWRkX3NwaV9pbXgo
-aW50IGlkLAotCQlyZXNvdXJjZV9zaXplX3QgaW9iYXNlLCByZXNvdXJjZV9zaXplX3QgaW9zaXpl
-LCBpbnQgaXJxLAorI2RlZmluZSBpbXhfc3BpX2lteF9kYXRhX2VudHJ5X3NpbmdsZShzb2MsIHR5
-cGUsIF9uYW1lLCBfaWQsIF9od2lkLCBfc2l6ZSkgXAorCXsJCQkJCQkJCVwKKwkJLmlkID0gX2lk
-LAkJCQkJCVwKKwkJLmlvYmFzZSA9IHNvYyAjIyBfICMjIHR5cGUgIyMgX2h3aWQgIyMgX0JBU0Vf
-QUREUiwJXAorCQkuaW9zaXplID0gX3NpemUsCQkJCQlcCisJCS5pcnEgPSBzb2MgIyMgX0lOVF8g
-IyMgdHlwZSAjIyBfaHdpZCwJCQlcCisJfQorCisjZGVmaW5lIGlteF9zcGlfaW14X2RhdGFfZW50
-cnkoc29jLCB0eXBlLCBuYW1lLCBfaWQsIF9od2lkLCBfc2l6ZSkJXAorCVtfaWRdID0gaW14X3Nw
-aV9pbXhfZGF0YV9lbnRyeV9zaW5nbGUoc29jLCB0eXBlLCBfbmFtZSwgX2lkLCBfaHdpZCwgX3Np
-emUpCisKKyNpZmRlZiBDT05GSUdfU09DX0lNWDIxCitjb25zdCBzdHJ1Y3QgaW14X3NwaV9pbXhf
-ZGF0YSBpbXgyMV9zcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdCA9IHsKKyNkZWZpbmUgaW14MjFf
-c3BpX2lteF9kYXRhX2VudHJ5KF9pZCwgX2h3aWQpICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IFwKKwlpbXhfc3BpX2lteF9kYXRhX2VudHJ5KE1YMjEsIENTUEksICJpbXgyMS1jc3BpIiwgX2lk
-LCBfaHdpZCwgU1pfNEspCisJaW14MjFfc3BpX2lteF9kYXRhX2VudHJ5KDAsIDEpLAorCWlteDIx
-X3NwaV9pbXhfZGF0YV9lbnRyeSgxLCAyKSwKKyNlbmRpZgorCisjaWZkZWYgQ09ORklHX0FSQ0hf
-TVgyNQorY29uc3Qgc3RydWN0IGlteF9zcGlfaW14X2RhdGEgaW14MjVfc3BpX2lteF9kYXRhW10g
-X19pbml0Y29uc3QgPSB7CisjZGVmaW5lIGlteDI1X3NwaV9pbXhfZGF0YV9lbnRyeShfaWQsIF9o
-d2lkKQkJCQlcCisJaW14X3NwaV9pbXhfZGF0YV9lbnRyeShNWDI1LCBDU1BJLCAiaW14MjUtY3Nw
-aSIsIF9pZCwgX2h3aWQsIFNaXzE2SykKKwlpbXgyNV9zcGlfaW14X2RhdGFfZW50cnkoMCwgMSks
-CisJaW14MjVfc3BpX2lteF9kYXRhX2VudHJ5KDEsIDIpLAorCWlteDI1X3NwaV9pbXhfZGF0YV9l
-bnRyeSgyLCAzKSwKK307CisjZW5kaWYgLyogaWZkZWYgQ09ORklHX0FSQ0hfTVgyNSAqLworCisj
-aWZkZWYgQ09ORklHX1NPQ19JTVgyNworY29uc3Qgc3RydWN0IGlteF9zcGlfaW14X2RhdGEgaW14
-Mjdfc3BpX2lteF9kYXRhW10gX19pbml0Y29uc3QgPSB7CisjZGVmaW5lIGlteDI3X3NwaV9pbXhf
-ZGF0YV9lbnRyeShfaWQsIF9od2lkKQkJCQlcCisJaW14X3NwaV9pbXhfZGF0YV9lbnRyeShNWDI3
-LCBDU1BJLCAiaW14MjctY3NwaSIsIF9pZCwgX2h3aWQsIFNaXzRLKQorCWlteDI3X3NwaV9pbXhf
-ZGF0YV9lbnRyeSgwLCAxKSwKKwlpbXgyN19zcGlfaW14X2RhdGFfZW50cnkoMSwgMiksCisJaW14
-Mjdfc3BpX2lteF9kYXRhX2VudHJ5KDIsIDMpLAorfTsKKyNlbmRpZiAvKiBpZmRlZiBDT05GSUdf
-U09DX0lNWDI3ICovCisKKyNpZmRlZiBDT05GSUdfQVJDSF9NWDMxCitjb25zdCBzdHJ1Y3QgaW14
-X3NwaV9pbXhfZGF0YSBpbXgzMV9zcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdCA9IHsKKyNkZWZp
-bmUgaW14MzFfc3BpX2lteF9kYXRhX2VudHJ5KF9pZCwgX2h3aWQpCQkJCVwKKwlpbXhfc3BpX2lt
-eF9kYXRhX2VudHJ5KE1YMzEsIENTUEksICJpbXgzMS1jc3BpIiwgX2lkLCBfaHdpZCwgU1pfNEsp
-CisJaW14MzFfc3BpX2lteF9kYXRhX2VudHJ5KDAsIDEpLAorCWlteDMxX3NwaV9pbXhfZGF0YV9l
-bnRyeSgxLCAyKSwKKwlpbXgzMV9zcGlfaW14X2RhdGFfZW50cnkoMiwgMyksCit9OworI2VuZGlm
-IC8qIGlmZGVmIENPTkZJR19BUkNIX01YMzEgKi8KKworI2lmZGVmIENPTkZJR19BUkNIX01YMzUK
-K2NvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhIGlteDM1X3NwaV9pbXhfZGF0YVtdIF9faW5p
-dGNvbnN0ID0geworI2RlZmluZSBpbXgzNV9zcGlfaW14X2RhdGFfZW50cnkoX2lkLCBfaHdpZCkg
-ICAgICAgICAgICAgICAgICAgICAgICAgICBcCisJaW14X3NwaV9pbXhfZGF0YV9lbnRyeShNWDM1
-LCBDU1BJLCAiaW14MzUtY3NwaSIsIF9pZCwgX2h3aWQsIFNaXzRLKQorCWlteDM1X3NwaV9pbXhf
-ZGF0YV9lbnRyeSgwLCAxKSwKKwlpbXgzNV9zcGlfaW14X2RhdGFfZW50cnkoMSwgMiksCit9Owor
-I2VuZGlmIC8qIGlmZGVmIENPTkZJR19BUkNIX01YMzUgKi8KKworc3RydWN0IHBsYXRmb3JtX2Rl
-dmljZSAqX19pbml0IGlteF9hZGRfc3BpX2lteCgKKwkJY29uc3Qgc3RydWN0IGlteF9zcGlfaW14
-X2RhdGEgKmRhdGEsCiAJCWNvbnN0IHN0cnVjdCBzcGlfaW14X21hc3RlciAqcGRhdGEpCiB7CiAJ
-c3RydWN0IHJlc291cmNlIHJlc1tdID0gewogCQl7Ci0JCQkuc3RhcnQgPSBpb2Jhc2UsCi0JCQku
-ZW5kID0gaW9iYXNlICsgaW9zaXplIC0gMSwKKwkJCS5zdGFydCA9IGRhdGEtPmlvYmFzZSwKKwkJ
-CS5lbmQgPSBkYXRhLT5pb2Jhc2UgKyBkYXRhLT5pb3NpemUgLSAxLAogCQkJLmZsYWdzID0gSU9S
-RVNPVVJDRV9NRU0sCiAJCX0sIHsKLQkJCS5zdGFydCA9IGlycSwKLQkJCS5lbmQgPSBpcnEsCisJ
-CQkuc3RhcnQgPSBkYXRhLT5pcnEsCisJCQkuZW5kID0gZGF0YS0+aXJxLAogCQkJLmZsYWdzID0g
-SU9SRVNPVVJDRV9JUlEsCiAJCX0sCiAJfTsKIAotCXJldHVybiBpbXhfYWRkX3BsYXRmb3JtX2Rl
-dmljZSgic3BpX2lteCIsIGlkLCByZXMsIEFSUkFZX1NJWkUocmVzKSwKLQkJCXBkYXRhLCBzaXpl
-b2YoKnBkYXRhKSk7CisJcmV0dXJuIGlteF9hZGRfcGxhdGZvcm1fZGV2aWNlKCJzcGlfaW14Iiwg
-ZGF0YS0+aWQsCisJCQlyZXMsIEFSUkFZX1NJWkUocmVzKSwgcGRhdGEsIHNpemVvZigqcGRhdGEp
-KTsKIH0KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL3BsYXQtbXhjL2luY2x1ZGUvbWFjaC9kZXZpY2Vz
-LWNvbW1vbi5oIGIvYXJjaC9hcm0vcGxhdC1teGMvaW5jbHVkZS9tYWNoL2RldmljZXMtY29tbW9u
-LmgKaW5kZXggYzVmNjhjNS4uYWJlMTJjMiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vcGxhdC1teGMv
-aW5jbHVkZS9tYWNoL2RldmljZXMtY29tbW9uLmgKKysrIGIvYXJjaC9hcm0vcGxhdC1teGMvaW5j
-bHVkZS9tYWNoL2RldmljZXMtY29tbW9uLmgKQEAgLTU1LDYgKzU1LDEyIEBAIHN0cnVjdCBwbGF0
-Zm9ybV9kZXZpY2UgKl9faW5pdCBpbXhfYWRkX214Y19uYW5kX3YyMShyZXNvdXJjZV9zaXplX3Qg
-aW9iYXNlLAogCQlpbnQgaXJxLCBjb25zdCBzdHJ1Y3QgbXhjX25hbmRfcGxhdGZvcm1fZGF0YSAq
-cGRhdGEpOwogCiAjaW5jbHVkZSA8bWFjaC9zcGkuaD4KLXN0cnVjdCBwbGF0Zm9ybV9kZXZpY2Ug
-Kl9faW5pdCBpbXhfYWRkX3NwaV9pbXgoaW50IGlkLAotCQlyZXNvdXJjZV9zaXplX3QgaW9iYXNl
-LCByZXNvdXJjZV9zaXplX3QgaW9zaXplLCBpbnQgaXJxLAorc3RydWN0IGlteF9zcGlfaW14X2Rh
-dGEgeworCWludCBpZDsKKwlyZXNvdXJjZV9zaXplX3QgaW9iYXNlOworCXJlc291cmNlX3NpemVf
-dCBpb3NpemU7CisJaW50IGlycTsKK307CitzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpfX2luaXQg
-aW14X2FkZF9zcGlfaW14KAorCQljb25zdCBzdHJ1Y3QgaW14X3NwaV9pbXhfZGF0YSAqZGF0YSwK
-IAkJY29uc3Qgc3RydWN0IHNwaV9pbXhfbWFzdGVyICpwZGF0YSk7Ci0tIAoxLjcuMQoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJu
-ZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
-Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+Hello Jason,
+
+On Thu, Sep 02, 2010 at 03:51:59PM +0800, Jason Wang wrote:
+> There are 3 SPI controllers on i.MX51, one is called CSPI and is
+> 100% compatible with the one on i.MX35, the other two are called
+> eCSPI and are not compatible with existing controllers on other
+> i.MX platforms, here we add support of these three controllers in
+> the imx spi driver.
+> =
+
+> Signed-off-by: Jason Wang <jason77.wang@gmail.com>
+> ---
+>  drivers/spi/spi_imx.c |  135 +++++++++++++++++++++++++++++++++++++++++++=
+++++--
+>  1 files changed, 131 insertions(+), 4 deletions(-)
+> =
+
+> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+> index 7972e90..8d9c9da 100644
+> --- a/drivers/spi/spi_imx.c
+> +++ b/drivers/spi/spi_imx.c
+> @@ -155,6 +155,120 @@ static unsigned int spi_imx_clkdiv_2(unsigned int f=
+in,
+>  	return 7;
+>  }
+>  =
+
+> +/* MX51 eCSPI post divider */
+> +static unsigned int spi_imx_clkdiv_3(unsigned int fin,
+> +		unsigned int fspi)
+> +{
+> +	int i, div =3D 1;
+> +
+> +	for (i =3D 0; i < 15; i++) {
+> +		if (fspi * div >=3D fin)
+> +			return i;
+> +		div <<=3D 1;
+> +	}
+> +
+> +	return 15;
+> +}
+This is different in Sascha's patch.  Didn't try yet to understand the
+difference.
+
+> +
+> +#define MX51_INTREG_TEEN		(1 << 0)
+> +#define MX51_INTREG_RREN		(1 << 3)
+> +
+> +#define MX51_CSPICTRL_ENABLE		(1 << 0)
+> +#define MX51_CSPICTRL_XCH		(1 << 2)
+> +
+> +#define MX51_CSPICTRL_BL_SHIFT		20
+> +#define MX51_CSPICTRL_CS_SHIFT		18
+> +#define MX51_CSPICTRL_DR_SHIFT		8
+> +#define MX51_CSPICTRL_MODE_SHIFT	4
+> +#define MX51_CSPICONF_PHA_SHIFT		0
+> +#define MX51_CSPICONF_POL_SHIFT		4
+> +#define MX51_CSPICONF_SSPOL_SHIFT	12
+> +#define MX51_CSPICONF_SSCTL_SHIFT	8
+> +
+> +#define MX51_CSPICTRL_CSMASK		0x3
+> +#define MX51_CSPIINT			0x10
+> +#define MX51_CSPICONF			0xC
+> +#define MX51_CSPISTATUS			0x18
+> +#define MX51_STATUS_RR			(1 << 3)
+> +
+> +#define MAX_CHIPSELECT_NUM 4
+> +
+> +static int get_chipselect(struct spi_imx_data *spi_imx,
+> +			  struct spi_imx_config *config)
+> +{
+> +	int i;
+> +
+> +	for (i =3D 0; i < MAX_CHIPSELECT_NUM; i++) {
+> +		if (config->cs =3D=3D spi_imx->chipselect[i])
+> +			return i;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +static void mx51_intctrl(struct spi_imx_data *spi_imx, int enable)
+> +{
+> +	unsigned int val =3D 0;
+> +
+> +	if (enable & MXC_INT_TE)
+> +		val |=3D MX51_INTREG_TEEN;
+> +	if (enable & MXC_INT_RR)
+> +		val |=3D MX51_INTREG_RREN;
+> +
+> +	writel(val, spi_imx->base + MX51_CSPIINT);
+> +}
+> +
+> +static void mx51_trigger(struct spi_imx_data *spi_imx)
+> +{
+> +	unsigned int reg;
+> +
+> +	reg =3D readl(spi_imx->base + MXC_CSPICTRL);
+> +	reg |=3D MX51_CSPICTRL_XCH;
+> +	writel(reg, spi_imx->base + MXC_CSPICTRL);
+> +}
+> +
+> +static int mx51_config(struct spi_imx_data *spi_imx,
+> +		struct spi_imx_config *config)
+> +{
+> +	unsigned int config_reg =3D 0;
+> +	unsigned int ctrl_reg =3D MX51_CSPICTRL_ENABLE;
+> +	int chan;
+> +
+> +	chan =3D get_chipselect(spi_imx, config);
+> +	if (chan < 0)
+> +		return chan;
+can this happen?  Does that have to do with using a GPIO for CS?
+
+> +	ctrl_reg |=3D (chan & MX51_CSPICTRL_CSMASK) << MX51_CSPICTRL_CS_SHIFT;
+> +	ctrl_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+> +		MX51_CSPICTRL_MODE_SHIFT;
+> +	ctrl_reg |=3D spi_imx_clkdiv_3(spi_imx->spi_clk, config->speed_hz) <<
+> +		MX51_CSPICTRL_DR_SHIFT;
+> +
+> +	ctrl_reg |=3D (config->bpw - 1) << MX51_CSPICTRL_BL_SHIFT;
+> +
+> +
+duplicated empty line
+
+> +	if (config->mode & SPI_CPHA)
+> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+> +			MX51_CSPICONF_PHA_SHIFT;
+> +	if (config->mode & SPI_CPOL)
+> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+> +			MX51_CSPICONF_POL_SHIFT;
+> +	if (config->mode & SPI_CS_HIGH)
+> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+> +			MX51_CSPICONF_SSPOL_SHIFT;
+> +
+> +	config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+> +		MX51_CSPICONF_SSCTL_SHIFT;
+> +
+> +	writel(ctrl_reg, spi_imx->base + MXC_CSPICTRL);
+> +	writel(config_reg, spi_imx->base + MX51_CSPICONF);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mx51_rx_available(struct spi_imx_data *spi_imx)
+> +{
+> +	return readl(spi_imx->base + MX51_CSPISTATUS) & MX51_STATUS_RR;
+> +}
+> +
+>  #define MX31_INTREG_TEEN	(1 << 0)
+>  #define MX31_INTREG_RREN	(1 << 3)
+>  =
+
+> @@ -209,7 +323,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
+>  =
+
+>  	if (cpu_is_mx31())
+>  		reg |=3D (config->bpw - 1) << MX31_CSPICTRL_BC_SHIFT;
+> -	else if (cpu_is_mx25() || cpu_is_mx35()) {
+> +	else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51()) {
+>  		reg |=3D (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
+>  		reg |=3D MX31_CSPICTRL_SSCTL;
+>  	}
+> @@ -223,7 +337,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
+>  	if (config->cs < 0) {
+>  		if (cpu_is_mx31())
+>  			reg |=3D (config->cs + 32) << MX31_CSPICTRL_CS_SHIFT;
+> -		else if (cpu_is_mx25() || cpu_is_mx35())
+> +		else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51())
+>  			reg |=3D (config->cs + 32) << MX35_CSPICTRL_CS_SHIFT;
+>  	}
+>  =
+
+> @@ -567,7 +681,14 @@ static int __devinit spi_imx_probe(struct platform_d=
+evice *pdev)
+>  		goto out_iounmap;
+>  	}
+>  =
+
+> -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
+> +	/* i.MX51 has two eCSPI and one CSPI controllers, eCSPI controllers are
+> +	 * not compatible with existing SPI controllers on other i.MX platforms,
+> +	 * while CSPI controller is 100% compatible with the one on the i.MX35.
+> +	 * We set the platform device id to 2 for this CSPI at i.MX51 board init
+> +	 * level to distinguish it from two eCSPI controllers.
+> +	 */
+This comment is missing in Sascha's driver.  I like it.
+BTW, I'd like to make use of platform ids in this driver.  This would
+make this ugly "on imx51 id2 is a cspi" distinction unnecessary.
+
+> +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+> +	    (cpu_is_mx51() && (pdev->id =3D=3D 2))) {
+>  		spi_imx->intctrl =3D mx31_intctrl;
+>  		spi_imx->config =3D mx31_config;
+>  		spi_imx->trigger =3D mx31_trigger;
+> @@ -582,6 +703,11 @@ static int __devinit spi_imx_probe(struct platform_d=
+evice *pdev)
+>  		spi_imx->config =3D mx1_config;
+>  		spi_imx->trigger =3D mx1_trigger;
+>  		spi_imx->rx_available =3D mx1_rx_available;
+> +	} else if (cpu_is_mx51()) {
+> +		spi_imx->intctrl =3D mx51_intctrl;
+> +		spi_imx->config =3D mx51_config;
+> +		spi_imx->trigger =3D mx51_trigger;
+> +		spi_imx->rx_available =3D mx51_rx_available;
+>  	} else
+>  		BUG();
+>  =
+
+> @@ -599,7 +725,8 @@ static int __devinit spi_imx_probe(struct platform_de=
+vice *pdev)
+>  		writel(1, spi_imx->base + MXC_RESET);
+>  =
+
+>  	/* drain receive buffer */
+> -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35())
+> +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+> +	    (cpu_is_mx51() && (pdev->id =3D=3D 2)))
+>  		while (readl(spi_imx->base + MX3_CSPISTAT) & MX3_CSPISTAT_RR)
+>  			readl(spi_imx->base + MXC_CSPIRXDATA);
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

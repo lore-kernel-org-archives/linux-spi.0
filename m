@@ -1,11 +1,11 @@
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 5/6] spi-imx: Add i.MX51 support
-Date: Thu,  2 Sep 2010 16:42:02 +0200
-Message-ID: <1283438523-19697-5-git-send-email-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 4/6] ARM: mx51: Add spi clock and spi_imx device registration
+Date: Thu,  2 Sep 2010 16:42:01 +0200
+Message-ID: <1283438523-19697-4-git-send-email-u.kleine-koenig@pengutronix.de>
 References: <20100902143908.GK14214@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 To: Jason Wang <jason77.wang@gmail.com>, linux-arm-kernel@lists.infradead.org,
 	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
@@ -23,174 +23,91 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/spi/spi_imx.c |  123 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 files changed, 120 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
-index 7972e90..5ee2699 100644
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -155,6 +155,117 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
- 	return 7;
- }
- 
-+/* MX51 */
-+static unsigned int spi_imx_clkdiv_3(unsigned int fin,
-+		unsigned int fspi)
-+{
-+	unsigned int div = 4, post = 0, pre = 0, res;
-+
-+	div = fin / fspi;
-+
-+	res = fin;
-+	while (res > (fspi * 16)) {
-+		post++;
-+		res = fin / (1 << post);
-+	}
-+
-+	pre = fin / (1 << post) / fspi;
-+
-+	return (post & 0xf) | ((pre & 0xf) << 4);
-+}
-+
-+#define MX51_CSPIRXDATA		0x00
-+#define MX51_CSPITXDATA		0x04
-+#define MX51_CSPICTRL		0x08
-+#define MX51_CSPICONFIG		0x0c
-+#define MX51_CSPIINT		0x10
-+#define MX51_CSPIDMA		0x14
-+#define MX51_CSPISTATUS		0x18
-+#define MX51_CSPIPERIOD		0x1c
-+#define MX51_CSPITEST		0x20
-+
-+#define MX51_INTREG_TEEN	(1 << 0)
-+#define MX51_INTREG_RREN	(1 << 3)
-+
-+#define MX51_CSPICTRL_ENABLE	(1 << 0)
-+#define MX51_CSPICTRL_XCH	(1 << 2)
-+#define MX51_CSPICTRL_DIV_SHIFT	8
-+#define MX51_CSPICTRL_MASTER(cs)	((1 << (cs)) << 4)
-+#define MX51_CSPICTRL_BL_SHIFT	20
-+#define MX51_CSPICTRL_CS(cs)	((cs) << 18)
-+
-+#define MX51_CSPICONFIG_PHA(cs)		((1 << (cs)) << 0)
-+#define MX51_CSPICONFIG_POL(cs)		((1 << (cs)) << 4)
-+#define MX51_CSPICONFIG_SSBCTRL(cs)	((1 << (cs)) << 8)
-+#define MX51_CSPICONFIG_SSBPOL(cs)	((1 << (cs)) << 12)
-+#define MX51_CSPICONFIG_DATACTRL(cs)	((1 << (cs)) << 16)
-+#define MX51_CSPICONFIG_SCLKCTRL(cs)	((1 << (cs)) << 20)
-+
-+#define MX51_STATUS_RR		(1 << 3)
-+
-+#define MX51_CSPITEST_LBC	(1 << 31)
-+
-+static void mx51_intctrl(struct spi_imx_data *spi_imx, int enable)
-+{
-+	unsigned int val = 0;
-+
-+	if (enable & MXC_INT_TE)
-+		val |= MX51_INTREG_TEEN;
-+	if (enable & MXC_INT_RR)
-+		val |= MX51_INTREG_RREN;
-+
-+	writel(val, spi_imx->base + MX51_CSPIINT);
-+}
-+
-+static void mx51_trigger(struct spi_imx_data *spi_imx)
-+{
-+	unsigned int reg;
-+
-+	reg = readl(spi_imx->base + MXC_CSPICTRL);
-+	reg |= MX51_CSPICTRL_XCH;
-+	writel(reg, spi_imx->base + MXC_CSPICTRL);
-+}
-+
-+static int mx51_config(struct spi_imx_data *spi_imx,
-+		struct spi_imx_config *config)
-+{
-+	int cs;
-+	u32 ctrl;
-+	u32 cfg = 0;
-+
-+#ifdef INTERNAL_LOOPBACK
-+	writel(MX51_CSPITEST_LBC, spi_imx->base + MX51_CSPITEST);
-+#endif
-+	if (config->cs < 0)
-+		cs = config->cs + 32;
-+	else
-+		cs = 0;
-+
-+	ctrl = MX51_CSPICTRL_MASTER(cs) | MX51_CSPICTRL_ENABLE;
-+	ctrl |= spi_imx_clkdiv_3(spi_imx->spi_clk, config->speed_hz) <<
-+		MX51_CSPICTRL_DIV_SHIFT;
-+
-+	ctrl |= (config->bpw - 1) << MX51_CSPICTRL_BL_SHIFT;
-+	cfg |= MX51_CSPICONFIG_SSBCTRL(cs);
-+	if (config->mode & SPI_CPHA)
-+		cfg |= MX51_CSPICONFIG_PHA(cs);
-+	if (config->mode & SPI_CPOL)
-+		cfg |= MX51_CSPICONFIG_POL(cs) | MX51_CSPICONFIG_SCLKCTRL(cs);
-+	if (config->mode & SPI_CS_HIGH)
-+		cfg |= MX51_CSPICONFIG_SSBPOL(cs);
-+	ctrl |= MX51_CSPICTRL_CS(cs);
-+
-+	writel(ctrl, spi_imx->base + MX51_CSPICTRL);
-+	writel(cfg, spi_imx->base + MX51_CSPICONFIG);
-+
-+	return 0;
-+}
-+
-+static int mx51_rx_available(struct spi_imx_data *spi_imx)
-+{
-+	return readl(spi_imx->base + MX51_CSPISTATUS) & MX51_STATUS_RR;
-+}
-+
- #define MX31_INTREG_TEEN	(1 << 0)
- #define MX31_INTREG_RREN	(1 << 3)
- 
-@@ -209,7 +320,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
- 
- 	if (cpu_is_mx31())
- 		reg |= (config->bpw - 1) << MX31_CSPICTRL_BC_SHIFT;
--	else if (cpu_is_mx25() || cpu_is_mx35()) {
-+	else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51()) {
- 		reg |= (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
- 		reg |= MX31_CSPICTRL_SSCTL;
- 	}
-@@ -223,7 +334,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
- 	if (config->cs < 0) {
- 		if (cpu_is_mx31())
- 			reg |= (config->cs + 32) << MX31_CSPICTRL_CS_SHIFT;
--		else if (cpu_is_mx25() || cpu_is_mx35())
-+		else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51())
- 			reg |= (config->cs + 32) << MX35_CSPICTRL_CS_SHIFT;
- 	}
- 
-@@ -567,7 +678,8 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 		goto out_iounmap;
- 	}
- 
--	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
-+	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
-+			(cpu_is_mx51() && pdev->id == 2)) {
- 		spi_imx->intctrl = mx31_intctrl;
- 		spi_imx->config = mx31_config;
- 		spi_imx->trigger = mx31_trigger;
-@@ -582,6 +694,11 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 		spi_imx->config = mx1_config;
- 		spi_imx->trigger = mx1_trigger;
- 		spi_imx->rx_available = mx1_rx_available;
-+	} else if (cpu_is_mx51()) {
-+		spi_imx->intctrl = mx51_intctrl;
-+		spi_imx->config = mx51_config;
-+		spi_imx->trigger = mx51_trigger;
-+		spi_imx->rx_available = mx51_rx_available;
- 	} else
- 		BUG();
- 
--- 
-1.7.1
+RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1i
+eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBV
+d2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGFy
+Y2gvYXJtL21hY2gtbXg1L2Nsb2NrLW14NTEuYyAgICAgICAgICAgICAgIHwgICA0MiArKysrKysr
+KysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1teDUvZGV2aWNlcy1pbXg1MS5oICAg
+ICAgICAgICAgfCAgIDE4ICsrKysrKysrKysrCiBhcmNoL2FybS9wbGF0LW14Yy9kZXZpY2VzL3Bs
+YXRmb3JtLXNwaV9pbXguYyB8ICAgMTcgKysrKysrKysrKwogMyBmaWxlcyBjaGFuZ2VkLCA3NyBp
+bnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJt
+L21hY2gtbXg1L2RldmljZXMtaW14NTEuaAoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtbXg1
+L2Nsb2NrLW14NTEuYyBiL2FyY2gvYXJtL21hY2gtbXg1L2Nsb2NrLW14NTEuYwppbmRleCA2YWY2
+OWRlLi45YWI0ZDE3IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW14NS9jbG9jay1teDUxLmMK
+KysrIGIvYXJjaC9hcm0vbWFjaC1teDUvY2xvY2stbXg1MS5jCkBAIC03NjIsNiArNzYyLDI5IEBA
+IHN0YXRpYyBzdHJ1Y3QgY2xrIGtwcF9jbGsgPSB7CiAJLmlkID0gMCwKIH07CiAKK3N0YXRpYyB1
+bnNpZ25lZCBsb25nIGNsa19jc3BpX2dldF9yYXRlKHN0cnVjdCBjbGsgKmNsaykKK3sKKwl1MzIg
+cmVnLCBwcmVkaXYsIHBvZGY7CisJdW5zaWduZWQgbG9uZyByYXRlOworCisJcmVnID0gX19yYXdf
+cmVhZGwoTVhDX0NDTV9DU0NEUjIpOworCXByZWRpdiA9ICgocmVnICYgTVhDX0NDTV9DU0NEUjJf
+Q1NQSV9DTEtfUFJFRF9NQVNLKSA+PgorCQkgIE1YQ19DQ01fQ1NDRFIyX0NTUElfQ0xLX1BSRURf
+T0ZGU0VUKSArIDE7CisJaWYgKHByZWRpdiA9PSAxKQorCQlCVUcoKTsKKwlwb2RmID0gKChyZWcg
+JiBNWENfQ0NNX0NTQ0RSMl9DU1BJX0NMS19QT0RGX01BU0spID4+CisJCU1YQ19DQ01fQ1NDRFIy
+X0NTUElfQ0xLX1BPREZfT0ZGU0VUKSArIDE7CisKKwlyYXRlID0gY2xrX2dldF9yYXRlKGNsay0+
+cGFyZW50KSAvIChwcmVkaXYgKiBwb2RmKTsKKworCXJldHVybiByYXRlOworfQorCitzdGF0aWMg
+c3RydWN0IGNsayBjc3BpX21haW5fY2xrID0geworCS5wYXJlbnQgPSAmcGxsM19zd19jbGssCisJ
+LmdldF9yYXRlID0gY2xrX2NzcGlfZ2V0X3JhdGUsCit9OworCiAjZGVmaW5lIERFRklORV9DTE9D
+SyhuYW1lLCBpLCBlciwgZXMsIGdyLCBzciwgcCwgcykJXAogCXN0YXRpYyBzdHJ1Y3QgY2xrIG5h
+bWUgPSB7CQkJXAogCQkuaWQJCT0gaSwJCQlcCkBAIC04MTAsNiArODMzLDIyIEBAIERFRklORV9D
+TE9DSyhpMmMyX2NsaywgMSwgTVhDX0NDTV9DQ0dSMSwgTVhDX0NDTV9DQ0dSeF9DRzEwX09GRlNF
+VCwKIERFRklORV9DTE9DSyhoc2kyY19jbGssIDAsIE1YQ19DQ01fQ0NHUjEsIE1YQ19DQ01fQ0NH
+UnhfQ0cxMV9PRkZTRVQsCiAJTlVMTCwgTlVMTCwgJmlwZ19jbGssIE5VTEwpOwogCisvKiBTUEkg
+Ki8KK0RFRklORV9DTE9DSyhjc3BpMV9pcGdfY2xrLCAwLCBNWENfQ0NNX0NDR1I0LCBNWENfQ0NN
+X0NDR1J4X0NHOV9PRkZTRVQsCisJTlVMTCwgTlVMTCwgJmlwZ19jbGssICZzcGJhX2Nsayk7CitE
+RUZJTkVfQ0xPQ0soY3NwaTFfY2xrLCAwLCBNWENfQ0NNX0NDR1I0LCBNWENfQ0NNX0NDR1J4X0NH
+MTBfT0ZGU0VULAorCU5VTEwsIE5VTEwsICZjc3BpX21haW5fY2xrLCAmY3NwaTFfaXBnX2Nsayk7
+CisKK0RFRklORV9DTE9DSyhjc3BpMl9pcGdfY2xrLCAwLCBNWENfQ0NNX0NDR1I0LCBNWENfQ0NN
+X0NDR1J4X0NHMTFfT0ZGU0VULAorCU5VTEwsIE5VTEwsICZpcGdfY2xrLCAmc3BiYV9jbGspOwor
+REVGSU5FX0NMT0NLKGNzcGkyX2NsaywgMCwgTVhDX0NDTV9DQ0dSNCwgTVhDX0NDTV9DQ0dSeF9D
+RzEyX09GRlNFVCwKKwlOVUxMLCBOVUxMLCAmY3NwaV9tYWluX2NsaywgJmNzcGkyX2lwZ19jbGsp
+OworCitERUZJTkVfQ0xPQ0soY3NwaTNfaXBnX2NsaywgMCwgTVhDX0NDTV9DQ0dSNCwgTVhDX0ND
+TV9DQ0dSeF9DRzlfT0ZGU0VULAorCU5VTEwsIE5VTEwsICZpcGdfY2xrLCAmYWlwc190ejJfY2xr
+KTsKK0RFRklORV9DTE9DSyhjc3BpM19jbGssIDAsIE1YQ19DQ01fQ0NHUjQsIE1YQ19DQ01fQ0NH
+UnhfQ0cxM19PRkZTRVQsCisJTlVMTCwgTlVMTCwgJmNzcGlfbWFpbl9jbGssICZjc3BpM19pcGdf
+Y2xrKTsKKwogLyogRkVDICovCiBERUZJTkVfQ0xPQ0soZmVjX2NsaywgMCwgTVhDX0NDTV9DQ0dS
+MiwgTVhDX0NDTV9DQ0dSeF9DRzEyX09GRlNFVCwKIAlOVUxMLCAgTlVMTCwgJmlwZ19jbGssIE5V
+TEwpOwpAQCAtODM3LDYgKzg3Niw5IEBAIHN0YXRpYyBzdHJ1Y3QgY2xrX2xvb2t1cCBsb29rdXBz
+W10gPSB7CiAJX1JFR0lTVEVSX0NMT0NLKCJmc2wtdXNiMi11ZGMiLCAidXNiIiwgdXNib2gzX2Ns
+aykKIAlfUkVHSVNURVJfQ0xPQ0soImZzbC11c2IyLXVkYyIsICJ1c2JfYWhiIiwgYWhiX2NsaykK
+IAlfUkVHSVNURVJfQ0xPQ0soImlteC1rZXlwYWQuMCIsIE5VTEwsIGtwcF9jbGspCisJX1JFR0lT
+VEVSX0NMT0NLKCJzcGlfaW14LjAiLCBOVUxMLCBjc3BpMV9jbGspCisJX1JFR0lTVEVSX0NMT0NL
+KCJzcGlfaW14LjEiLCBOVUxMLCBjc3BpMl9jbGspCisJX1JFR0lTVEVSX0NMT0NLKCJzcGlfaW14
+LjIiLCBOVUxMLCBjc3BpM19jbGspCiB9OwogCiBzdGF0aWMgdm9pZCBjbGtfdHJlZV9pbml0KHZv
+aWQpCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14NS9kZXZpY2VzLWlteDUxLmggYi9hcmNo
+L2FybS9tYWNoLW14NS9kZXZpY2VzLWlteDUxLmgKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXgg
+MDAwMDAwMC4uMzkwMWY1OQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL21hY2gtbXg1L2Rl
+dmljZXMtaW14NTEuaApAQCAtMCwwICsxLDE4IEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDEw
+IFBlbmd1dHJvbml4CisgKiBVd2UgS2xlaW5lLUtvZW5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2Fu
+IHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5IGl0IHVuZGVyCisgKiB0aGUgdGVybXMgb2Yg
+dGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZlcnNpb24gMiBhcyBwdWJsaXNoZWQgYnkg
+dGhlCisgKiBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uCisgKi8KKyNpbmNsdWRlIDxtYWNoL214
+NTEuaD4KKyNpbmNsdWRlIDxtYWNoL2RldmljZXMtY29tbW9uLmg+CisKK2V4dGVybiBjb25zdCBz
+dHJ1Y3QgaW14X3NwaV9pbXhfZGF0YSBpbXg1MV9jc3BpX2lteF9kYXRhIF9faW5pdGNvbnN0Owor
+I2RlZmluZSBpbXg1MV9hZGRfY3NwaV9pbXgocGRhdGEpCVwKKwlpbXhfYWRkX3NwaV9pbXgoJmlt
+eDUxX2NzcGlfaW14X2RhdGEsIHBkYXRhKQorCitleHRlcm4gc3RydWN0IGlteF9zcGlfaW14X2Rh
+dGEgaW14NTFfZWNzcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdDsKKyNkZWZpbmUgaW14NTFfYWRk
+X2Vjc3BpX2lteChpZCwgcGRhdGEpCVwKKwlpbXhfYWRkX3NwaV9pbXgoJmlteDUxX2Vjc3BpX2lt
+eF9kYXRhW2lkXSwgcGRhdGEpCmRpZmYgLS1naXQgYS9hcmNoL2FybS9wbGF0LW14Yy9kZXZpY2Vz
+L3BsYXRmb3JtLXNwaV9pbXguYyBiL2FyY2gvYXJtL3BsYXQtbXhjL2RldmljZXMvcGxhdGZvcm0t
+c3BpX2lteC5jCmluZGV4IDdiN2IwMDUuLjA3N2Y5MzYgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL3Bs
+YXQtbXhjL2RldmljZXMvcGxhdGZvcm0tc3BpX2lteC5jCisrKyBiL2FyY2gvYXJtL3BsYXQtbXhj
+L2RldmljZXMvcGxhdGZvcm0tc3BpX2lteC5jCkBAIC02Nyw2ICs2NywyMyBAQCBjb25zdCBzdHJ1
+Y3QgaW14X3NwaV9pbXhfZGF0YSBpbXgzNV9zcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdCA9IHsK
+IH07CiAjZW5kaWYgLyogaWZkZWYgQ09ORklHX0FSQ0hfTVgzNSAqLwogCisjaWZkZWYgQ09ORklH
+X0FSQ0hfTVg1MQorLyoKKyAqIHVudGlsIHRoZSBpbXgtc3BpIHN1cHBvcnRzIHBsYXRmb3JtLWlk
+cywgdGhlIGNzcGkgZGV2aWNlIGhhcyB0byB1c2UgYQorICogZGlmZmVyZW50IGlkIHRoYW4gdGhl
+IGVjc3BpIGRldmljZXMgYWJvdmUuICBUaGUgZHJpdmVyIGN1cnJlbnRseSBoYXJkY29kZXMgMgor
+ICogZm9yIHRoZSBjc3BpIGRldmljZS4KKyAqLworY29uc3Qgc3RydWN0IGlteF9zcGlfaW14X2Rh
+dGEgaW14NTFfY3NwaV9pbXhfZGF0YSBfX2luaXRjb25zdCA9CisJaW14X3NwaV9pbXhfZGF0YV9l
+bnRyeV9zaW5nbGUoTVg1MSwgQ1NQSSwgImlteDUxLWNzcGkiLCAyLCAsIFNaXzRLKTsKKworY29u
+c3Qgc3RydWN0IGlteF9zcGlfaW14X2RhdGEgaW14NTFfZWNzcGlfaW14X2RhdGFbXSBfX2luaXRj
+b25zdCA9IHsKKyNkZWZpbmUgaW14NTFfZWNzcGlfaW14X2RhdGFfZW50cnkoX2lkLCBfaHdpZCkJ
+CQkJXAorCWlteF9zcGlfaW14X2RhdGFfZW50cnkoTVg1MSwgRUNTUEksICJpbXg1MS1lY3NwaSIs
+IF9pZCwgX2h3aWQsIFNaXzRLKQorCWlteDUxX2Vjc3BpX2lteF9kYXRhX2VudHJ5KDAsIDEpLAor
+CWlteDUxX2Vjc3BpX2lteF9kYXRhX2VudHJ5KDEsIDIpLAorfTsKKyNlbmRpZiAvKiBpZmRlZiBD
+T05GSUdfQVJDSF9NWDUxICovCisKIHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKl9faW5pdCBpbXhf
+YWRkX3NwaV9pbXgoCiAJCWNvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhICpkYXRhLAogCQlj
+b25zdCBzdHJ1Y3Qgc3BpX2lteF9tYXN0ZXIgKnBkYXRhKQotLSAKMS43LjEKCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1h
+aWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

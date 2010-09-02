@@ -1,79 +1,94 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: add a bits_per_word to struct spi_board_info
-Date: Thu, 2 Sep 2010 14:13:48 +0800
-Message-ID: <20100902141348.669aa817@feng-i7>
-References: <20100902100128.5d5b7d87@feng-i7>
-	<930634.1250.qm@web180310.mail.gq1.yahoo.com>
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: [PATCH 5/6] mx51_3ds: add eCSPI2 support on the imx51_3ds board
+Date: Thu,  2 Sep 2010 15:52:03 +0800
+Message-ID: <1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-4-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-5-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <930634.1250.qm-4JhmkcZgSkk/JfqJOfUXs/u2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: s.hauer@pengutronix.de, u.kleine-koenig@pengutronix.de,
+	amit.kucheria@canonical.com, grant.likely@secretlab.ca
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1283413924-14210-5-git-send-email-jason77.wang@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi David,
+Add platform data for eCSPI2 and register it through spi_imx dynamical
+register interface.
 
+Signed-off-by: Jason Wang <jason77.wang@gmail.com>
+---
+ arch/arm/mach-mx5/board-mx51_3ds.c |   20 ++++++++++++++++++++
+ 1 files changed, 20 insertions(+), 0 deletions(-)
 
-> > Grant also asked me the same question.
-> 
-> 
-> I saw him ask a different question (which
-> I quoted) ...
-
-My mistake, I tried to answer Grant's and your questions in one email to
-keep the discussion in one thread.
-
-> 
-> 
->  Yes, driver itself
-> > know the bits_per_word info best in most case, but there
-> > is
-> > some device (Option GTM501L spi modem) which supports
-> > multiple
-> > bits_per_mode option, and here platform code
-> is the good place to set it.
-> 
-> 
-> Not unless it knows which mode the driver uses...
-> a kind of layering violation.
-
-spi_board_info has a member of "mode", so for my platform, I prefer to
-set all these infos in platform code, while protocol driver can
-check if the preset infos like speed_hz/mode/bits_per_word are supported.
-
-I thought platform code have to know the detail of the spi device
-when setting spi_board_info for it.
-
-Also the following code quoted from spi_setup() indicates it supports
-setting mode for spi_board_info
-------------------------------------------------------------------------
-	bad_bits = spi->mode & ~spi->master->mode_bits;
-	if (bad_bits) {
-		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
-			bad_bits);
-		return -EINVAL;
-	}
-
-Thanks,
-Feng
-
-
-
-
-------------------------------------------------------------------------------
-This SF.net Dev2Dev email is sponsored by:
-
-Show off your parallel programming skills.
-Enter the Intel(R) Threading Challenge 2010.
-http://p.sf.net/sfu/intel-thread-sfd
+diff --git a/arch/arm/mach-mx5/board-mx51_3ds.c b/arch/arm/mach-mx5/board-mx51_3ds.c
+index f95c2fd..0cf4e14 100644
+--- a/arch/arm/mach-mx5/board-mx51_3ds.c
++++ b/arch/arm/mach-mx5/board-mx51_3ds.c
+@@ -24,9 +24,11 @@
+ #include <mach/imx-uart.h>
+ #include <mach/3ds_debugboard.h>
+ 
++#include "devices-imx51.h"
+ #include "devices.h"
+ 
+ #define EXPIO_PARENT_INT	(MXC_INTERNAL_IRQS + GPIO_PORTA + 6)
++#define MX51_3DS_ECSPI2_CS	(GPIO_PORTC + 28)
+ 
+ static struct pad_desc mx51_3ds_pads[] = {
+ 	/* UART1 */
+@@ -61,6 +63,12 @@ static struct pad_desc mx51_3ds_pads[] = {
+ 	MX51_PAD_KEY_COL3__KEY_COL3,
+ 	MX51_PAD_KEY_COL4__KEY_COL4,
+ 	MX51_PAD_KEY_COL5__KEY_COL5,
++
++	/* eCSPI2 */
++	MX51_PAD_NANDF_RB2__ECSPI2_SCLK,
++	MX51_PAD_NANDF_RB3__ECSPI2_MISO,
++	MX51_PAD_NANDF_D15__ECSPI2_MOSI,
++	MX51_PAD_NANDF_D12__GPIO_3_28,
+ };
+ 
+ /* Serial ports */
+@@ -127,6 +135,16 @@ static inline void mxc_init_keypad(void)
+ }
+ #endif
+ 
++static int mx51_3ds_spi2_cs[] = {
++	MXC_SPI_CS(0),
++	MX51_3DS_ECSPI2_CS,
++};
++
++static struct spi_imx_master mx51_3ds_spi2_pdata = {
++	.chipselect	= mx51_3ds_spi2_cs,
++	.num_chipselect	= ARRAY_SIZE(mx51_3ds_spi2_cs),
++};
++
+ /*
+  * Board specific initialization.
+  */
+@@ -136,6 +154,8 @@ static void __init mxc_board_init(void)
+ 					ARRAY_SIZE(mx51_3ds_pads));
+ 	mxc_init_imx_uart();
+ 
++	imx51_add_spi_imx1(&mx51_3ds_spi2_pdata);
++
+ 	if (mxc_expio_init(MX51_CS5_BASE_ADDR, EXPIO_PARENT_INT))
+ 		printk(KERN_WARNING "Init of the debugboard failed, all "
+ 				    "devices on the board are unusable.\n");
+-- 
+1.5.6.5

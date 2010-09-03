@@ -1,7 +1,7 @@
 From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 6/6] SPI: S3C64XX: Consider the clk_from_cmu flag
-Date: Fri,  3 Sep 2010 10:37:10 +0900
-Message-ID: <1283477830-31555-1-git-send-email-jassi.brar@samsung.com>
+Subject: [PATCH 5/6] SPI: S3C64XX: Define new clk src indicator
+Date: Fri,  3 Sep 2010 10:37:02 +0900
+Message-ID: <1283477822-31260-1-git-send-email-jassi.brar@samsung.com>
 References: <1OrKX4-0007cO-1K>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,156 +20,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Newer SoCs have the SPI clock scaling control in platform's
-clock management unit. Inorder for such SoCs to work, we need
-to check the flag clk_from_cmu before making any clock changes.
+Since the driver is meant to manage SPI of newer SoCs as well, we
+need to define a new structure member for latest SoC that has the
+SPI clock control/scaling block moved from the controller to the
+platform's clock management unit.
+The flag should be set to 'true' by any SoC that has SPI controller
+clock managed by CMU.
 
 Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi_s3c64xx.c |   94 +++++++++++++++++++++++++++------------------
- 1 files changed, 56 insertions(+), 38 deletions(-)
+ arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-index 8aa9f85..46f42b8 100644
---- a/drivers/spi/spi_s3c64xx.c
-+++ b/drivers/spi/spi_s3c64xx.c
-@@ -432,13 +432,18 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
+diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+index e5aba8f..b226f74 100644
+--- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
++++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+@@ -32,6 +32,8 @@ struct s3c64xx_spi_csinfo {
+  * struct s3c64xx_spi_info - SPI Controller defining structure
+  * @src_clk_nr: Clock source index for the CLK_CFG[SPI_CLKSEL] field.
+  * @src_clk_name: Platform name of the corresponding clock.
++ * @clk_from_cmu: If the SPI clock/prescalar control block is present
++ *     by the platform's clock-management-unit and not in SPI controller.
+  * @num_cs: Number of CS this controller emulates.
+  * @cfg_gpio: Configure pins for this SPI controller.
+  * @fifo_lvl_mask: All tx fifo_lvl fields start at offset-6
+@@ -41,6 +43,7 @@ struct s3c64xx_spi_csinfo {
+ struct s3c64xx_spi_info {
+ 	int src_clk_nr;
+ 	char *src_clk_name;
++	bool clk_from_cmu;
  
- static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- {
-+	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
- 	void __iomem *regs = sdd->regs;
- 	u32 val;
+ 	int num_cs;
  
- 	/* Disable Clock */
--	val = readl(regs + S3C64XX_SPI_CLK_CFG);
--	val &= ~S3C64XX_SPI_ENCLK_ENABLE;
--	writel(val, regs + S3C64XX_SPI_CLK_CFG);
-+	if (sci->clk_from_cmu) {
-+		clk_disable(sdd->src_clk);
-+	} else {
-+		val = readl(regs + S3C64XX_SPI_CLK_CFG);
-+		val &= ~S3C64XX_SPI_ENCLK_ENABLE;
-+		writel(val, regs + S3C64XX_SPI_CLK_CFG);
-+	}
- 
- 	/* Set Polarity and Phase */
- 	val = readl(regs + S3C64XX_SPI_CH_CFG);
-@@ -479,17 +484,25 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- 
- 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
- 
--	/* Configure Clock */
--	val = readl(regs + S3C64XX_SPI_CLK_CFG);
--	val &= ~S3C64XX_SPI_PSR_MASK;
--	val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / 2 - 1)
--			& S3C64XX_SPI_PSR_MASK);
--	writel(val, regs + S3C64XX_SPI_CLK_CFG);
--
--	/* Enable Clock */
--	val = readl(regs + S3C64XX_SPI_CLK_CFG);
--	val |= S3C64XX_SPI_ENCLK_ENABLE;
--	writel(val, regs + S3C64XX_SPI_CLK_CFG);
-+	if (sci->clk_from_cmu) {
-+		/* Configure Clock */
-+		/* There is half-multiplier before the SPI */
-+		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
-+		/* Enable Clock */
-+		clk_enable(sdd->src_clk);
-+	} else {
-+		/* Configure Clock */
-+		val = readl(regs + S3C64XX_SPI_CLK_CFG);
-+		val &= ~S3C64XX_SPI_PSR_MASK;
-+		val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / 2 - 1)
-+				& S3C64XX_SPI_PSR_MASK);
-+		writel(val, regs + S3C64XX_SPI_CLK_CFG);
-+
-+		/* Enable Clock */
-+		val = readl(regs + S3C64XX_SPI_CLK_CFG);
-+		val |= S3C64XX_SPI_ENCLK_ENABLE;
-+		writel(val, regs + S3C64XX_SPI_CLK_CFG);
-+	}
- }
- 
- void s3c64xx_spi_dma_rxcb(struct s3c2410_dma_chan *chan, void *buf_id,
-@@ -852,7 +865,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct s3c64xx_spi_info *sci;
- 	struct spi_message *msg;
--	u32 psr, speed;
- 	unsigned long flags;
- 	int err = 0;
- 
-@@ -895,32 +907,37 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	}
- 
- 	/* Check if we can provide the requested rate */
--	speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1); /* Max possible */
--
--	if (spi->max_speed_hz > speed)
--		spi->max_speed_hz = speed;
--
--	psr = clk_get_rate(sdd->src_clk) / 2 / spi->max_speed_hz - 1;
--	psr &= S3C64XX_SPI_PSR_MASK;
--	if (psr == S3C64XX_SPI_PSR_MASK)
--		psr--;
-+	if (!sci->clk_from_cmu) {
-+		u32 psr, speed;
-+
-+		/* Max possible */
-+		speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1);
-+
-+		if (spi->max_speed_hz > speed)
-+			spi->max_speed_hz = speed;
-+
-+		psr = clk_get_rate(sdd->src_clk) / 2 / spi->max_speed_hz - 1;
-+		psr &= S3C64XX_SPI_PSR_MASK;
-+		if (psr == S3C64XX_SPI_PSR_MASK)
-+			psr--;
-+
-+		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
-+		if (spi->max_speed_hz < speed) {
-+			if (psr+1 < S3C64XX_SPI_PSR_MASK) {
-+				psr++;
-+			} else {
-+				err = -EINVAL;
-+				goto setup_exit;
-+			}
-+		}
- 
--	speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
--	if (spi->max_speed_hz < speed) {
--		if (psr+1 < S3C64XX_SPI_PSR_MASK) {
--			psr++;
--		} else {
-+		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
-+		if (spi->max_speed_hz >= speed)
-+			spi->max_speed_hz = speed;
-+		else
- 			err = -EINVAL;
--			goto setup_exit;
--		}
- 	}
- 
--	speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
--	if (spi->max_speed_hz >= speed)
--		spi->max_speed_hz = speed;
--	else
--		err = -EINVAL;
--
- setup_exit:
- 
- 	/* setup() returns with device de-selected */
-@@ -942,7 +959,8 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- 	/* Disable Interrupts - we use Polling if not DMA mode */
- 	writel(0, regs + S3C64XX_SPI_INT_EN);
- 
--	writel(sci->src_clk_nr << S3C64XX_SPI_CLKSEL_SRCSHFT,
-+	if (!sci->clk_from_cmu)
-+		writel(sci->src_clk_nr << S3C64XX_SPI_CLKSEL_SRCSHFT,
- 				regs + S3C64XX_SPI_CLK_CFG);
- 	writel(0, regs + S3C64XX_SPI_MODE_CFG);
- 	writel(0, regs + S3C64XX_SPI_PACKET_CNT);
 -- 
 1.6.2.5
 

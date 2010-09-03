@@ -1,21 +1,23 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+From: =?iso-8859-15?Q?Lothar_Wa=DFmann?= <LW@KARO-electronics.de>
 Subject: Re: [PATCH 1/6] spi-imx: add CSPI and eCSPI support for i.MX51 MCU
-Date: Fri, 3 Sep 2010 09:54:16 +0200
-Message-ID: <20100903075416.GY14214@pengutronix.de>
+Date: Fri, 3 Sep 2010 10:49:09 +0200
+Message-ID: <19584.46725.955202.942529@ipc1.ka-ro>
 References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 	<20100902145357.GL14214@pengutronix.de>
-	<4C8092AB.1050405@gmail.com>
+	<19583.48828.125104.712979@ipc1.ka-ro>
+	<20100902172908.GD2464@tarshish>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	s.hauer@pengutronix.de, amit.kucheria@canonical.com,
+Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
+	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
+	Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	spi-devel-general@lists.sourceforge.net,
 	linux-arm-kernel@lists.infradead.org
-To: Jason Wang <jason77.wang@gmail.com>
+To: Baruch Siach <baruch@tkos.co.il>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <4C8092AB.1050405@gmail.com>
+In-Reply-To: <20100902172908.GD2464@tarshish>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,41 +29,53 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Hi,
 
-On Fri, Sep 03, 2010 at 02:16:11PM +0800, Jason Wang wrote:
->>>  -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
->>> +	/* i.MX51 has two eCSPI and one CSPI controllers, eCSPI controllers a=
-re
->>> +	 * not compatible with existing SPI controllers on other i.MX platfor=
-ms,
->>> +	 * while CSPI controller is 100% compatible with the one on the i.MX3=
-5.
->>> +	 * We set the platform device id to 2 for this CSPI at i.MX51 board i=
-nit
->>> +	 * level to distinguish it from two eCSPI controllers.
->>> +	 */
->>>     =
+> On Thu, Sep 02, 2010 at 05:11:56PM +0200, Lothar Wa=DFmann wrote:
+> > > > -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
+> > > > +	/* i.MX51 has two eCSPI and one CSPI controllers, eCSPI controlle=
+rs are
+> > > > +	 * not compatible with existing SPI controllers on other i.MX pla=
+tforms,
+> > > > +	 * while CSPI controller is 100% compatible with the one on the i=
+.MX35.
+> > > > +	 * We set the platform device id to 2 for this CSPI at i.MX51 boa=
+rd init
+> > > > +	 * level to distinguish it from two eCSPI controllers.
+> > > > +	 */
+> > > This comment is missing in Sascha's driver.  I like it.
+> > > BTW, I'd like to make use of platform ids in this driver.  This would
+> > > make this ugly "on imx51 id2 is a cspi" distinction unnecessary.
+> > > =
 
->> This comment is missing in Sascha's driver.  I like it.
->> BTW, I'd like to make use of platform ids in this driver.  This would
->> make this ugly "on imx51 id2 is a cspi" distinction unnecessary.
->>
->>   =
+> > > > +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+> > > > +	    (cpu_is_mx51() && (pdev->id =3D=3D 2))) {
+> > I'd prefer a flag in the platform_data that tells the driver to act as
+> > an eCSPI driver. This way the information about eCSPI or not would be
+> > where it belongs (in the arch specific code).
+> =
 
-> agree, i like both your and lothar's solution.
-> Either platform ids or flags in platform_data.
-I suggest to do the cleanup later.  Doing it before adding mx51 support
-would make only more work for little benefit.  And then the cleanup
-bases on a working version.  I'm willing to implement the platform id
-thingy and evaluate it.  But currently I have no time for that.  So I
-suggest we choose a mix between your and Sascha's patch for now and I
-will check where the cleanup fits in my planning.
+> But this also increases the size of driver code, since the compiler can =
 
-Best regards
-Uwe
+> resolve cpu_is_* at compile time, and drop the dead code. Maybe an is_ecs=
+pi =
 
+> macro will make the above code clearer.
+> =
+
+I did not mean to remove the cpu_is_* macros, but use the explicit
+ecspi flag instead of the comparison with pdev->id.
+
+
+Lothar Wa=DFmann
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+___________________________________________________________
+
+Ka-Ro electronics GmbH | Pascalstra=DFe 22 | D - 52076 Aachen
+Phone: +49 2408 1402-0 | Fax: +49 2408 1402-10
+Gesch=E4ftsf=FChrer: Matthias Kaussen
+Handelsregistereintrag: Amtsgericht Aachen, HRB 4996
+
+www.karo-electronics.de | info@karo-electronics.de
+___________________________________________________________

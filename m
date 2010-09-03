@@ -1,12 +1,22 @@
-From: 13560740732-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/理――发/票
-Date: Wed, 7 Jul 2010 03:22:01 +0800
-Message-ID: <E1Orbvj-00061h-7n@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Kevin Wells <kevin.wells-3arQi8VN3Tc@public.gmane.org>
+Subject: RE: Suggested Patch for 'amba-pl022.c' to solve
+	the problem of running 'spidev_test' on Phytec LPC3250 board.
+Date: Fri, 3 Sep 2010 21:23:35 +0200
+Message-ID: <083DF309106F364B939360100EC290F80AD470AD4B@eu1rdcrdc1wx030.exi.nxp.com>
+References: <AANLkTinQFQMXXBh7bq5ce_iwOzGvYCZxud6QWb-S71yQ@mail.gmail.com>
+	<AANLkTimsoUUJihk8j48KkJ1YPdAttLHPuJ19i0W0BkpD@mail.gmail.com>
+	<AANLkTi=e53=8VNHv=5gSfujYN0XU0NYJTu3=Aq2FS5VZ@mail.gmail.com>
+	<AANLkTi=8uvtwd9+HEc9EpW-Y9CVx+NN-Zg-omO4nUN13@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Kevin Wells
+	<wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <AANLkTi=8uvtwd9+HEc9EpW-Y9CVx+NN-Zg-omO4nUN13-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,14 +27,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOigxKcbVzajJ
-zMa3z/rK28uwoaqhqsaxo7sKICAgKDIpueO45tK1oaK498Dgt/7O8dK1y7ChqqGqxrEvtci1yKGj
-CrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAq4utTwyMujutXFz8jJ+igw
-KTEzNTYwNzQwNzMyCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgRGV2MkRldiBl
-bWFpbCBpcyBzcG9uc29yZWQgYnk6CgpTaG93IG9mZiB5b3VyIHBhcmFsbGVsIHByb2dyYW1taW5n
-IHNraWxscy4KRW50ZXIgdGhlIEludGVsKFIpIFRocmVhZGluZyBDaGFsbGVuZ2UgMjAxMC4KaHR0
-cDovL3Auc2YubmV0L3NmdS9pbnRlbC10aHJlYWQtc2ZkCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+> 2010/9/1 Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> 
+> > I use this driver quite a bit here - Is it ok if try to get the setup
+> based on
+> > spi->mode instead of the controller_data info?
+> 
+> I think that the stuff that comes from the modebits should take
+> precedence, and also I believe the relevant platform data should
+> be removed.
+> 
+> I cannot fully undertand what this means and I never used SPI
+> from userspace, can't you just provide a patch I can look on,
+> that is easiest I think. I will test it on my hardware and see what
+> happens.
+> 
+
+Hi Linus,
+
+I put up a patch for this late yesterday.
+It won't break any existing platform code, although some of the fields
+in the SPI board info structure are no longer used. I'll remove those
+fields in a follow-up series.
+
+The only real change in this patch is that the SPI setup now comes
+from the individual drivers that use SPI instead of the board info.
+
+thanks,
+Kevin
+
+> Yours,
+> Linus Walleij
+> 
+> -----------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+This SF.net Dev2Dev email is sponsored by:
+
+Show off your parallel programming skills.
+Enter the Intel(R) Threading Challenge 2010.
+http://p.sf.net/sfu/intel-thread-sfd

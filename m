@@ -1,24 +1,23 @@
-From: Jason Wang <jason77.wang@gmail.com>
-Subject: Re: [PATCH 5/6] mx51_3ds: add eCSPI2 support on the imx51_3ds board
-Date: Fri, 03 Sep 2010 14:24:01 +0800
-Message-ID: <4C809481.9090200@gmail.com>
+From: Amit Kucheria <amit.kucheria@linaro.org>
+Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
+	driver
+Date: Fri, 3 Sep 2010 09:41:04 +0300
+Message-ID: <20100903064104.GA2965@matterhorn.lan>
 References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-4-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-5-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-6-git-send-email-jason77.wang@gmail.com>
-	<20100902150516.GO14214@pengutronix.de>
+	<20100902082759.GE14214@pengutronix.de>
+	<4C7F777E.1090104@gmail.com>
+	<20100902143908.GK14214@pengutronix.de>
+	<4C8068FD.1090705@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
-Content-Transfer-Encoding: quoted-printable
-Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
-	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	s.hauer@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Jason Wang <jason77.wang@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100902150516.GO14214@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <4C8068FD.1090705@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -30,95 +29,30 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Uwe Kleine-K=F6nig wrote:
-> Hi Jason,
->
-> On Thu, Sep 02, 2010 at 03:52:03PM +0800, Jason Wang wrote:
->   =
-
->> Add platform data for eCSPI2 and register it through spi_imx dynamical
->> register interface.
->>
->> Signed-off-by: Jason Wang <jason77.wang@gmail.com>
->> ---
->>  arch/arm/mach-mx5/board-mx51_3ds.c |   20 ++++++++++++++++++++
->>  1 files changed, 20 insertions(+), 0 deletions(-)
->>
->> diff --git a/arch/arm/mach-mx5/board-mx51_3ds.c b/arch/arm/mach-mx5/boar=
-d-mx51_3ds.c
->> index f95c2fd..0cf4e14 100644
->> --- a/arch/arm/mach-mx5/board-mx51_3ds.c
->> +++ b/arch/arm/mach-mx5/board-mx51_3ds.c
->> @@ -24,9 +24,11 @@
->>  #include <mach/imx-uart.h>
->>  #include <mach/3ds_debugboard.h>
->>  =
-
->> +#include "devices-imx51.h"
->>  #include "devices.h"
->>  =
-
->>  #define EXPIO_PARENT_INT	(MXC_INTERNAL_IRQS + GPIO_PORTA + 6)
->> +#define MX51_3DS_ECSPI2_CS	(GPIO_PORTC + 28)
->>  =
-
->>  static struct pad_desc mx51_3ds_pads[] =3D {
->>  	/* UART1 */
->> @@ -61,6 +63,12 @@ static struct pad_desc mx51_3ds_pads[] =3D {
->>  	MX51_PAD_KEY_COL3__KEY_COL3,
->>  	MX51_PAD_KEY_COL4__KEY_COL4,
->>  	MX51_PAD_KEY_COL5__KEY_COL5,
->> +
->> +	/* eCSPI2 */
->> +	MX51_PAD_NANDF_RB2__ECSPI2_SCLK,
->> +	MX51_PAD_NANDF_RB3__ECSPI2_MISO,
->> +	MX51_PAD_NANDF_D15__ECSPI2_MOSI,
->> +	MX51_PAD_NANDF_D12__GPIO_3_28,
->>  };
->>  =
-
->>  /* Serial ports */
->> @@ -127,6 +135,16 @@ static inline void mxc_init_keypad(void)
->>  }
->>  #endif
->>  =
-
->> +static int mx51_3ds_spi2_cs[] =3D {
->> +	MXC_SPI_CS(0),
->> +	MX51_3DS_ECSPI2_CS,
->> +};
->> +
->> +static struct spi_imx_master mx51_3ds_spi2_pdata =3D {
->> +	.chipselect	=3D mx51_3ds_spi2_cs,
->> +	.num_chipselect	=3D ARRAY_SIZE(mx51_3ds_spi2_cs),
->> +};
->>     =
-
-> maybe better call it mx51_3ds_ecspi2_pdata?  This should be const
-> __initconst.
->
->   =
-
-OK, i will modify it.
->>  /*
->>   * Board specific initialization.
->>   */
->> @@ -136,6 +154,8 @@ static void __init mxc_board_init(void)
->>  					ARRAY_SIZE(mx51_3ds_pads));
->>  	mxc_init_imx_uart();
->>  =
-
->> +	imx51_add_spi_imx1(&mx51_3ds_spi2_pdata);
->> +
->>  	if (mxc_expio_init(MX51_CS5_BASE_ADDR, EXPIO_PARENT_INT))
->>  		printk(KERN_WARNING "Init of the debugboard failed, all "
->>  				    "devices on the board are unusable.\n");
->> -- =
-
->> 1.5.6.5
->>
->>
->>     =
-
->
->   =
+T24gMTAgU2VwIDAzLCBKYXNvbiBXYW5nIHdyb3RlOgo+IFV3ZSBLbGVpbmUtS8O2bmlnIHdyb3Rl
+Ogo+ID5IZWxsbyBKYXNvbiwKPiA+Cj4gPj4+QWN0dWFsbHkgSSB3b3VsZCBwcmVmZXIgb3VyIHBh
+dGNoZXMsIGJ1dCBvZiBjb3Vyc2UgSSdtIGJpYXNlZCA6LSkKPiA+Pj4KPiA+Pj5JIGRvbid0IGtu
+b3cgaG93IHdlIHNob3VsZCBoYW5kbGUgdGhpcy4gIEFuZCBTYXNjaGEgaXMgb24gdmFjYXRpb24g
+dGhpcwo+ID4+PmFuZCBuZXh0IHdlZWsuICBJIHdpbGwgaW52ZXN0aWdhdGUgaWYgb3VyIHBhdGNo
+ZXMgYXJlIGFscmVhZHkgZnJlZSB0byBiZQo+ID4+PnBvc3RlZC4KPiA+T0ssIEkgY2FuIHBvc3Qg
+b3VyIHBhdGNoZXMuICBJIHRoaW5rIHRoZSBkcml2ZXIgcGFydCBpcyBxdWl0ZSBzaW1pbGFyLAo+
+ID50aGUgcGxhdGZvcm0gcGFydCBpcyBub3QuICBCdXQgbG9vayBmb3IgeW91cnNlbGYsIEknbGwg
+cG9zdCB0aGVtIGluIHJlcGx5IHRvCj4gPnRoaXMgbWFpbC4gIEhvcGVmdWxseSB3ZSBjYW4gam9p
+biBmb3JjZXMgdG8gZ2V0IHRoZSBiZXN0IG91dCBvZiB0aGUgdHdvCj4gPmFwcHJvYWNoZXMuCj4g
+T0ssIGdsYWQgdG8gc2VlIHRoZSByZWZpbmUgb2YgcGxhdGZvcm0gaGVhZGVyIGZpbGVzLgo+ID5C
+VFcsIHdlJ3JlIHdvcmtpbmcgb24gbmFuZCAoRGF2aWQgbWVyZ2VkIGFuIGVhcmx5IHBhdGNoIHNl
+cmllcyBieQo+ID5TYXNjaGEsIHdlIGhhdmUgc29tZSBmaXhlcyBwZW5kaW5nKSwgbWMxOTg5MiBh
+bmQgaXB1djMsIHRvby4gIEp1c3QgdG8KPiA+bm90aWNlIHRoZSBwb3NzaWJpbGl0eSBmb3IgbW9y
+ZSBjb29wZXJhdGlvbiBlYXJseS4gOi0pCj4gPgo+IEdvb2QgbmV3cywgYWZ0ZXIgYWRkIHNkbWEs
+IG1jMTM4OTIgYW5kIGlwdXYzLCB0aGUgaS5NWDUxIHdpbGwKPiBiZSBsaWtlIGEgcmVhbCB1c2Vm
+dWwgcGxhdGZvcm0uIDotKQoKSmFzb24sIFV3ZSwKCkNhbiB3ZSBwdXQgdXAgYSB3aWtpIHBhZ2Ug
+b2Ygd2hhdCBkcml2ZXJzIGFyZSBiZWluZyB3b3JrZWQgb24gYnkgd2hvIHNvIHdlCmRvbid0IHdv
+cmsgb24gdGhlIHNhbWUgZHJpdmVycz8KCldlIGFyZSBwbGFubmluZyB0byBsb29rIGF0IHRoZSBw
+b3dlciBtYW5hZ2VtZW50IGFzcGVjdHMgb2YgdGhlIGkuTVg1MSBhdCBMaW5hcm8uCgovQW1pdAoK
+LS0gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KQW1pdCBLdWNoZXJpYSwgS2VybmVsIEVuZ2luZWVyIHx8IGFtaXQu
+a3VjaGVyaWFAY2Fub25pY2FsLmNvbQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlz
+dApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

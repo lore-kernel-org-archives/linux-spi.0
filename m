@@ -1,12 +1,12 @@
-From: aotexbs-q0rgvdHUV7g@public.gmane.org
-Subject: [SPAM] ã¹ç ”å‘å›¢é˜Ÿå»ºè®¾ä¸ç»©æ•ˆç®¡ç†ã¹
-Date: Fri, 3 Sep 2010 08:27:43 +0800
-Message-ID: <E1OrK9m-0001Hg-DL@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 0/6] SPI: S3C64XX: bug fix and enhancements
+Date: Fri,  3 Sep 2010 10:36:04 +0900
+Message-ID: <1283477764-31099-1-git-send-email-jassi.brar@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,21 +18,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+Hi,
+  Here come six bug fixes and enhancements to the S3C64XX
+spi controller driver.
+ The first 4 are bug/warning fixes, the last two are to
+enable the spi_s3c64xx.c to manage SPI controllers of newer
+Samsung SoCs with essentially the same IP but scalar logic
+moved into core clock management unit.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Thanks,
+Jassi
 
-
-
-    ±¾¿Î³Ì¡¶ÑĞ·¢ÍÅ¶Ó½¨ÉèÓë¹ÜÀíôßÑĞ·¢ÈËÔ±µÄ¿¼ºËÓë¼¤Àø¡·ÊÇÊÊºÏ×Ü¾­Àí¡¢ÈËÁ¦×ÊÔ´²¿¾­Àí/¼¨Ğ§¿¼ºË×¨Ô±¡¢ÑĞ·¢×Ü¼à¡¢ÑĞ·¢¾­Àí¡¢ÑĞ·¢ÏîÄ¿¾­Àí¡¢¼¼Êõ¹ÜÀí²¿/ÑĞ·¢¹ÜÀí²¿/ÏîÄ¿¹ÜÀí²¿µÈÑĞ·¢¹Ç¸ÉÖµµÃÀ´ÁË½âµÄÒ»ÃÅ¿Î³Ì¡£
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:
@@ -40,15 +36,3 @@ This SF.net Dev2Dev email is sponsored by:
 Show off your parallel programming skills.
 Enter the Intel(R) Threading Challenge 2010.
 http://p.sf.net/sfu/intel-thread-sfd
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--

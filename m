@@ -1,7 +1,7 @@
 From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/6] SPI: S3C64XX: Prevent unnecessary map-unmap
-Date: Fri,  3 Sep 2010 10:36:37 +0900
-Message-ID: <1283477797-31163-1-git-send-email-jassi.brar@samsung.com>
+Subject: [PATCH 6/6] SPI: S3C64XX: Consider the clk_from_cmu flag
+Date: Fri,  3 Sep 2010 10:37:10 +0900
+Message-ID: <1283477830-31555-1-git-send-email-jassi.brar@samsung.com>
 References: <1OrKX4-0007cO-1K>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,54 +20,156 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Since we use DMA mode only for xfers bigger than FIFO size,
-do not map/unmap buffers for polling mode transfers.
+Newer SoCs have the SPI clock scaling control in platform's
+clock management unit. Inorder for such SoCs to work, we need
+to check the flag clk_from_cmu before making any clock changes.
 
 Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi_s3c64xx.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+ drivers/spi/spi_s3c64xx.c |   94 +++++++++++++++++++++++++++------------------
+ 1 files changed, 56 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-index 774e861..12e7915 100644
+index 8aa9f85..46f42b8 100644
 --- a/drivers/spi/spi_s3c64xx.c
 +++ b/drivers/spi/spi_s3c64xx.c
-@@ -492,6 +492,7 @@ void s3c64xx_spi_dma_txcb(struct s3c2410_dma_chan *chan, void *buf_id,
- static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
- 						struct spi_message *msg)
+@@ -432,13 +432,18 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
+ 
+ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
  {
 +	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
- 	struct device *dev = &sdd->pdev->dev;
- 	struct spi_transfer *xfer;
+ 	void __iomem *regs = sdd->regs;
+ 	u32 val;
  
-@@ -507,6 +508,9 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
- 	/* Map until end or first fail */
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 	/* Disable Clock */
+-	val = readl(regs + S3C64XX_SPI_CLK_CFG);
+-	val &= ~S3C64XX_SPI_ENCLK_ENABLE;
+-	writel(val, regs + S3C64XX_SPI_CLK_CFG);
++	if (sci->clk_from_cmu) {
++		clk_disable(sdd->src_clk);
++	} else {
++		val = readl(regs + S3C64XX_SPI_CLK_CFG);
++		val &= ~S3C64XX_SPI_ENCLK_ENABLE;
++		writel(val, regs + S3C64XX_SPI_CLK_CFG);
++	}
  
-+		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
-+			continue;
+ 	/* Set Polarity and Phase */
+ 	val = readl(regs + S3C64XX_SPI_CH_CFG);
+@@ -479,17 +484,25 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ 
+ 	writel(val, regs + S3C64XX_SPI_MODE_CFG);
+ 
+-	/* Configure Clock */
+-	val = readl(regs + S3C64XX_SPI_CLK_CFG);
+-	val &= ~S3C64XX_SPI_PSR_MASK;
+-	val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / 2 - 1)
+-			& S3C64XX_SPI_PSR_MASK);
+-	writel(val, regs + S3C64XX_SPI_CLK_CFG);
+-
+-	/* Enable Clock */
+-	val = readl(regs + S3C64XX_SPI_CLK_CFG);
+-	val |= S3C64XX_SPI_ENCLK_ENABLE;
+-	writel(val, regs + S3C64XX_SPI_CLK_CFG);
++	if (sci->clk_from_cmu) {
++		/* Configure Clock */
++		/* There is half-multiplier before the SPI */
++		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
++		/* Enable Clock */
++		clk_enable(sdd->src_clk);
++	} else {
++		/* Configure Clock */
++		val = readl(regs + S3C64XX_SPI_CLK_CFG);
++		val &= ~S3C64XX_SPI_PSR_MASK;
++		val |= ((clk_get_rate(sdd->src_clk) / sdd->cur_speed / 2 - 1)
++				& S3C64XX_SPI_PSR_MASK);
++		writel(val, regs + S3C64XX_SPI_CLK_CFG);
 +
- 		if (xfer->tx_buf != NULL) {
- 			xfer->tx_dma = dma_map_single(dev,
- 					(void *)xfer->tx_buf, xfer->len,
-@@ -538,6 +542,7 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
- static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
- 						struct spi_message *msg)
- {
-+	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
- 	struct device *dev = &sdd->pdev->dev;
- 	struct spi_transfer *xfer;
++		/* Enable Clock */
++		val = readl(regs + S3C64XX_SPI_CLK_CFG);
++		val |= S3C64XX_SPI_ENCLK_ENABLE;
++		writel(val, regs + S3C64XX_SPI_CLK_CFG);
++	}
+ }
  
-@@ -546,6 +551,9 @@ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ void s3c64xx_spi_dma_rxcb(struct s3c2410_dma_chan *chan, void *buf_id,
+@@ -852,7 +865,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 	struct s3c64xx_spi_driver_data *sdd;
+ 	struct s3c64xx_spi_info *sci;
+ 	struct spi_message *msg;
+-	u32 psr, speed;
+ 	unsigned long flags;
+ 	int err = 0;
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+@@ -895,32 +907,37 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 	}
  
-+		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
-+			continue;
+ 	/* Check if we can provide the requested rate */
+-	speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1); /* Max possible */
+-
+-	if (spi->max_speed_hz > speed)
+-		spi->max_speed_hz = speed;
+-
+-	psr = clk_get_rate(sdd->src_clk) / 2 / spi->max_speed_hz - 1;
+-	psr &= S3C64XX_SPI_PSR_MASK;
+-	if (psr == S3C64XX_SPI_PSR_MASK)
+-		psr--;
++	if (!sci->clk_from_cmu) {
++		u32 psr, speed;
 +
- 		if (xfer->rx_buf != NULL
- 				&& xfer->rx_dma != XFER_DMAADDR_INVALID)
- 			dma_unmap_single(dev, xfer->rx_dma,
++		/* Max possible */
++		speed = clk_get_rate(sdd->src_clk) / 2 / (0 + 1);
++
++		if (spi->max_speed_hz > speed)
++			spi->max_speed_hz = speed;
++
++		psr = clk_get_rate(sdd->src_clk) / 2 / spi->max_speed_hz - 1;
++		psr &= S3C64XX_SPI_PSR_MASK;
++		if (psr == S3C64XX_SPI_PSR_MASK)
++			psr--;
++
++		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
++		if (spi->max_speed_hz < speed) {
++			if (psr+1 < S3C64XX_SPI_PSR_MASK) {
++				psr++;
++			} else {
++				err = -EINVAL;
++				goto setup_exit;
++			}
++		}
+ 
+-	speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
+-	if (spi->max_speed_hz < speed) {
+-		if (psr+1 < S3C64XX_SPI_PSR_MASK) {
+-			psr++;
+-		} else {
++		speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
++		if (spi->max_speed_hz >= speed)
++			spi->max_speed_hz = speed;
++		else
+ 			err = -EINVAL;
+-			goto setup_exit;
+-		}
+ 	}
+ 
+-	speed = clk_get_rate(sdd->src_clk) / 2 / (psr + 1);
+-	if (spi->max_speed_hz >= speed)
+-		spi->max_speed_hz = speed;
+-	else
+-		err = -EINVAL;
+-
+ setup_exit:
+ 
+ 	/* setup() returns with device de-selected */
+@@ -942,7 +959,8 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+ 	/* Disable Interrupts - we use Polling if not DMA mode */
+ 	writel(0, regs + S3C64XX_SPI_INT_EN);
+ 
+-	writel(sci->src_clk_nr << S3C64XX_SPI_CLKSEL_SRCSHFT,
++	if (!sci->clk_from_cmu)
++		writel(sci->src_clk_nr << S3C64XX_SPI_CLKSEL_SRCSHFT,
+ 				regs + S3C64XX_SPI_CLK_CFG);
+ 	writel(0, regs + S3C64XX_SPI_MODE_CFG);
+ 	writel(0, regs + S3C64XX_SPI_PACKET_CNT);
 -- 
 1.6.2.5
 

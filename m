@@ -1,7 +1,7 @@
 From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 1/6] SPI: S3C64XX: Fix compilation warning
-Date: Fri,  3 Sep 2010 10:36:26 +0900
-Message-ID: <1283477786-31131-1-git-send-email-jassi.brar@samsung.com>
+Subject: [PATCH 2/6] SPI: S3C64XX: Prevent unnecessary map-unmap
+Date: Fri,  3 Sep 2010 10:36:37 +0900
+Message-ID: <1283477797-31163-1-git-send-email-jassi.brar@samsung.com>
 References: <1OrKX4-0007cO-1K>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,29 +20,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix compilation warning by typecasting the tx_buf pointer.
+Since we use DMA mode only for xfers bigger than FIFO size,
+do not map/unmap buffers for polling mode transfers.
 
 Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi_s3c64xx.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi_s3c64xx.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-index 9736581..774e861 100644
+index 774e861..12e7915 100644
 --- a/drivers/spi/spi_s3c64xx.c
 +++ b/drivers/spi/spi_s3c64xx.c
-@@ -508,8 +508,9 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+@@ -492,6 +492,7 @@ void s3c64xx_spi_dma_txcb(struct s3c2410_dma_chan *chan, void *buf_id,
+ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 						struct spi_message *msg)
+ {
++	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+ 	struct device *dev = &sdd->pdev->dev;
+ 	struct spi_transfer *xfer;
+ 
+@@ -507,6 +508,9 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 	/* Map until end or first fail */
  	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
  
++		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
++			continue;
++
  		if (xfer->tx_buf != NULL) {
--			xfer->tx_dma = dma_map_single(dev, xfer->tx_buf,
--						xfer->len, DMA_TO_DEVICE);
-+			xfer->tx_dma = dma_map_single(dev,
-+					(void *)xfer->tx_buf, xfer->len,
-+					DMA_TO_DEVICE);
- 			if (dma_mapping_error(dev, xfer->tx_dma)) {
- 				dev_err(dev, "dma_map_single Tx failed\n");
- 				xfer->tx_dma = XFER_DMAADDR_INVALID;
+ 			xfer->tx_dma = dma_map_single(dev,
+ 					(void *)xfer->tx_buf, xfer->len,
+@@ -538,6 +542,7 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 						struct spi_message *msg)
+ {
++	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+ 	struct device *dev = &sdd->pdev->dev;
+ 	struct spi_transfer *xfer;
+ 
+@@ -546,6 +551,9 @@ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 
++		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
++			continue;
++
+ 		if (xfer->rx_buf != NULL
+ 				&& xfer->rx_dma != XFER_DMAADDR_INVALID)
+ 			dma_unmap_single(dev, xfer->rx_dma,
 -- 
 1.6.2.5
 

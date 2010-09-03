@@ -1,48 +1,160 @@
-From: Robert Schwebel <r.schwebel@pengutronix.de>
-Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
-	driver
-Date: Fri, 3 Sep 2010 11:34:34 +0200
-Message-ID: <20100903093434.GT10841@pengutronix.de>
-References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
-	<20100902082759.GE14214@pengutronix.de>
-	<4C7F777E.1090104@gmail.com>
-	<20100902143908.GK14214@pengutronix.de>
-	<4C8068FD.1090705@gmail.com> <20100903064104.GA2965@matterhorn.lan>
+From: Govindraj <govindraj.ti@gmail.com>
+Subject: Re: [PATCH 5/5] OMAP McSPI: Adapt McSPI driver to use omap hwmod
+Date: Fri, 3 Sep 2010 18:23:02 +0530
+Message-ID: <AANLkTikEE=Bx2jJ2efNZg=gptBECqW6xMnvx_-mJBAdY@mail.gmail.com>
+References: <1281708323-18989-1-git-send-email-charu@ti.com>
+	<1281708323-18989-2-git-send-email-charu@ti.com>
+	<1281708323-18989-3-git-send-email-charu@ti.com>
+	<1281708323-18989-4-git-send-email-charu@ti.com>
+	<1281708323-18989-5-git-send-email-charu@ti.com>
+	<1281708323-18989-6-git-send-email-charu@ti.com>
+	<AANLkTi=qN2nOJ4nRmS=C0kBa7y3=13iQ-ZEHHw5FeGne@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
-	grant.likely@secretlab.ca,
-	Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Amit Kucheria <amit.kucheria@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20100903064104.GA2965@matterhorn.lan>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Charulatha V <charu@ti.com>, linux-omap@vger.kernel.org,
+	khilman@deeprootsystems.com, paul@pwsan.com, b-cousson@ti.com,
+	tony@atomide.com, dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net, rnayak@ti.com,
+	p-basak2@ti.com, govindraj.raja@ti.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <AANLkTi=qN2nOJ4nRmS=C0kBa7y3=13iQ-ZEHHw5FeGne@mail.gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 03, 2010 at 09:41:04AM +0300, Amit Kucheria wrote:
-> Can we put up a wiki page of what drivers are being worked on by who so we
-> don't work on the same drivers?
-> 
-> We are planning to look at the power management aspects of the i.MX51 at Linaro.
+Grant,
 
-Something like this: http://www.elinux.org/I.MX
-Feel free to optimize the format, it's just a first raw cut.
+Thanks for the review. Comments inlined.
 
-rsc
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+On Sat, Aug 14, 2010 at 4:39 AM, Grant Likely <grant.likely@secretlab.c=
+a> wrote:
+> On Fri, Aug 13, 2010 at 8:05 AM, Charulatha V <charu@ti.com> wrote:
+>> From: Govindraj.R <govindraj.raja@ti.com>
+>>
+>> This patch converts the McSPI driver to use pm_runtime apis while
+>> implementing it in HWMOD FW way.
+>
+> Hi Govindraj,
+>
+> Some comments below. =A0Short version is that this patch seems to lum=
+p a
+> number of (mostly) unrelated changes (the register map, HWMOD stuff,
+> and runtime pm) that makes it hard to review and understand. =A0I cou=
+ld
+> use some help understanding what the intent of the patch is, and it
+> would also help to split it up.
+>
+> Cheers,
+> g.
+
+Sure, I will split this patch as below.
+
+1.) reg map update
+2.) hwmod update(like removing dma macros etc.) + runtime (if split,
+git bisect can break)
+     (Since clock handling will be done with hwmod)
+
+<snip>
+
+>> + =A0 =A0 =A0 [OMAP2_MCSPI_RX0] =A0 =A0 =A0 =A0 =A0 =A0 =A0 =3D 0x13=
+c,
+>> + =A0 =A0 =A0 [OMAP2_MCSPI_HL_REV] =A0 =A0 =A0 =A0 =A0 =A0=3D 0x000,
+>> + =A0 =A0 =A0 [OMAP2_MCSPI_HL_HWINFO] =A0 =A0 =A0 =A0 =3D 0x004,
+>> + =A0 =A0 =A0 [OMAP2_MCSPI_HL_SYSCONFIG] =A0 =A0 =A0=3D 0x010,
+>> +};
+>
+> Other than an 0x100 offset for omap4 and the addition of revision
+> registers, these two register maps are identical. =A0Is it really wor=
+th
+> having a complete register map table for two things that aren't reall=
+y
+> different? =A0It looks overengineered.
+>
+> Personally I'd handle this by having two base address pointers; the
+> regs pointer and the info/revision pointer. =A0omap4 would have the
+> revision base set, and omap2 would not.
+>
+
+Yes will have a single table for register offset, pass a
+0x100(probably named as offset deviation)
+value from platform data to be added while read/write to registers for
+omap4 and others can have 0
+
+<snip>
+
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->num_cs =3D 2;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->mode =3D OMAP2_MCSPI_MASTER;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->dma_mode =3D 1;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->force_cs_mode =3D 0;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->fifo_depth =3D 0;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+>> + =A0 =A0 =A0 case 2:
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->num_cs =3D 2;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+>> + =A0 =A0 =A0 case 3:
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->num_cs =3D 1;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+>> + =A0 =A0 =A0 }
+>
+> HWMOD appears to have the purpose of making device instantiation data
+> driven. =A0If so, shouldn't these parameters also be extracted from t=
+he
+> HWMOD data?
+
+Yes these params can be passed from hwmod data
+This has to part of dev attribute data that can be passed from hwmod da=
+ta.
+
+
+<snip>
+
+>> - =A0 =A0 =A0 mcspi->ick =3D clk_get(&pdev->dev, "ick");
+>> - =A0 =A0 =A0 if (IS_ERR(mcspi->ick)) {
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev, "can't get mcspi_i=
+ck\n");
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D PTR_ERR(mcspi->ick);
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err1a;
+>> - =A0 =A0 =A0 }
+>> - =A0 =A0 =A0 mcspi->fck =3D clk_get(&pdev->dev, "fck");
+>> - =A0 =A0 =A0 if (IS_ERR(mcspi->fck)) {
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_dbg(&pdev->dev, "can't get mcspi_f=
+ck\n");
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D PTR_ERR(mcspi->fck);
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err2;
+>> - =A0 =A0 =A0 }
+>> -
+>
+> I'm obviously missing some context here. =A0The driver doesn't seem t=
+o
+> manage the clocks anymore. =A0What code does now?
+
+hwmod layer is handling all clocks now.
+
+<snip>
+
+>> +
+>> =A0static struct platform_driver omap2_mcspi_driver =3D {
+>> =A0 =A0 =A0 =A0.driver =3D {
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =3D =A0 =A0 =A0 =A0 "omap2_mcspi=
+",
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =3D =A0 =A0 =A0 =A0THIS_MODULE,
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =3D "omap2_mcspi",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =A0=3D THIS_MODULE,
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .pm =A0 =A0 =3D &omap_mcspi_dev_pm_ops=
+,
+>
+> nit: Unrelated whitespace changes.
+>
+
+Will correct this in next version.
+
+---
+Regards,
+Govindraj.R
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

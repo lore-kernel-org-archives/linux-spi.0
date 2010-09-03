@@ -1,127 +1,284 @@
-From: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 4/6] ARM: mx51: Add spi clock and spi_imx device
-	registration
-Date: Fri, 03 Sep 2010 13:46:45 +0800
-Message-ID: <4C808BC5.2020002@gmail.com>
-References: <20100902143908.GK14214@pengutronix.de>
-	<1283438523-19697-4-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: Re: [PATCH 1/6] spi-imx: add CSPI and eCSPI support for i.MX51 MCU
+Date: Fri, 03 Sep 2010 14:16:11 +0800
+Message-ID: <4C8092AB.1050405@gmail.com>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
+	<20100902145357.GL14214@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: amit.kucheria-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1283438523-19697-4-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
+	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20100902145357.GL14214@pengutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-VXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gRnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPgo+Cj4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPgo+IFNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWlu
-ZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Cj4gLS0tCj4gIGFyY2gvYXJtL21hY2gtbXg1L2Nsb2Nr
-LW14NTEuYyAgICAgICAgICAgICAgIHwgICA0MiArKysrKysrKysrKysrKysrKysrKysrKysrKwo+
-ICBhcmNoL2FybS9tYWNoLW14NS9kZXZpY2VzLWlteDUxLmggICAgICAgICAgICB8ICAgMTggKysr
-KysrKysrKysKPiAgYXJjaC9hcm0vcGxhdC1teGMvZGV2aWNlcy9wbGF0Zm9ybS1zcGlfaW14LmMg
-fCAgIDE3ICsrKysrKysrKysKPiAgMyBmaWxlcyBjaGFuZ2VkLCA3NyBpbnNlcnRpb25zKCspLCAw
-IGRlbGV0aW9ucygtKQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1teDUvZGV2
-aWNlcy1pbXg1MS5oCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1teDUvY2xvY2stbXg1
-MS5jIGIvYXJjaC9hcm0vbWFjaC1teDUvY2xvY2stbXg1MS5jCj4gaW5kZXggNmFmNjlkZS4uOWFi
-NGQxNyAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9tYWNoLW14NS9jbG9jay1teDUxLmMKPiArKysg
-Yi9hcmNoL2FybS9tYWNoLW14NS9jbG9jay1teDUxLmMKPiBAQCAtNzYyLDYgKzc2MiwyOSBAQCBz
-dGF0aWMgc3RydWN0IGNsayBrcHBfY2xrID0gewo+ICAJLmlkID0gMCwKPiAgfTsKPiAgCj4gK3N0
-YXRpYyB1bnNpZ25lZCBsb25nIGNsa19jc3BpX2dldF9yYXRlKHN0cnVjdCBjbGsgKmNsaykKPiAr
-ewo+ICsJdTMyIHJlZywgcHJlZGl2LCBwb2RmOwo+ICsJdW5zaWduZWQgbG9uZyByYXRlOwo+ICsK
-PiArCXJlZyA9IF9fcmF3X3JlYWRsKE1YQ19DQ01fQ1NDRFIyKTsKPiArCXByZWRpdiA9ICgocmVn
-ICYgTVhDX0NDTV9DU0NEUjJfQ1NQSV9DTEtfUFJFRF9NQVNLKSA+Pgo+ICsJCSAgTVhDX0NDTV9D
-U0NEUjJfQ1NQSV9DTEtfUFJFRF9PRkZTRVQpICsgMTsKPiArCWlmIChwcmVkaXYgPT0gMSkKPiAr
-CQlCVUcoKTsKPiArCXBvZGYgPSAoKHJlZyAmIE1YQ19DQ01fQ1NDRFIyX0NTUElfQ0xLX1BPREZf
-TUFTSykgPj4KPiArCQlNWENfQ0NNX0NTQ0RSMl9DU1BJX0NMS19QT0RGX09GRlNFVCkgKyAxOwo+
-ICsKPiArCXJhdGUgPSBjbGtfZ2V0X3JhdGUoY2xrLT5wYXJlbnQpIC8gKHByZWRpdiAqIHBvZGYp
-Owo+ICsKPiArCXJldHVybiByYXRlOwo+ICt9Cj4gKwo+ICtzdGF0aWMgc3RydWN0IGNsayBjc3Bp
-X21haW5fY2xrID0gewo+ICsJLnBhcmVudCA9ICZwbGwzX3N3X2NsaywKPiArCS5nZXRfcmF0ZSA9
-IGNsa19jc3BpX2dldF9yYXRlLAo+ICt9Owo+ICsKPiAgI2RlZmluZSBERUZJTkVfQ0xPQ0sobmFt
-ZSwgaSwgZXIsIGVzLCBnciwgc3IsIHAsIHMpCVwKPiAgCXN0YXRpYyBzdHJ1Y3QgY2xrIG5hbWUg
-PSB7CQkJXAo+ICAJCS5pZAkJPSBpLAkJCVwKPiBAQCAtODEwLDYgKzgzMywyMiBAQCBERUZJTkVf
-Q0xPQ0soaTJjMl9jbGssIDEsIE1YQ19DQ01fQ0NHUjEsIE1YQ19DQ01fQ0NHUnhfQ0cxMF9PRkZT
-RVQsCj4gIERFRklORV9DTE9DSyhoc2kyY19jbGssIDAsIE1YQ19DQ01fQ0NHUjEsIE1YQ19DQ01f
-Q0NHUnhfQ0cxMV9PRkZTRVQsCj4gIAlOVUxMLCBOVUxMLCAmaXBnX2NsaywgTlVMTCk7Cj4gIAo+
-ICsvKiBTUEkgKi8KPiArREVGSU5FX0NMT0NLKGNzcGkxX2lwZ19jbGssIDAsIE1YQ19DQ01fQ0NH
-UjQsIE1YQ19DQ01fQ0NHUnhfQ0c5X09GRlNFVCwKPiArCU5VTEwsIE5VTEwsICZpcGdfY2xrLCAm
-c3BiYV9jbGspOwo+ICtERUZJTkVfQ0xPQ0soY3NwaTFfY2xrLCAwLCBNWENfQ0NNX0NDR1I0LCBN
-WENfQ0NNX0NDR1J4X0NHMTBfT0ZGU0VULAo+ICsJTlVMTCwgTlVMTCwgJmNzcGlfbWFpbl9jbGss
-ICZjc3BpMV9pcGdfY2xrKTsKPiArCj4gK0RFRklORV9DTE9DSyhjc3BpMl9pcGdfY2xrLCAwLCBN
-WENfQ0NNX0NDR1I0LCBNWENfQ0NNX0NDR1J4X0NHMTFfT0ZGU0VULAo+ICsJTlVMTCwgTlVMTCwg
-JmlwZ19jbGssICZzcGJhX2Nsayk7Cj4gK0RFRklORV9DTE9DSyhjc3BpMl9jbGssIDAsIE1YQ19D
-Q01fQ0NHUjQsIE1YQ19DQ01fQ0NHUnhfQ0cxMl9PRkZTRVQsCj4gKwlOVUxMLCBOVUxMLCAmY3Nw
-aV9tYWluX2NsaywgJmNzcGkyX2lwZ19jbGspOwo+ICsKPiArREVGSU5FX0NMT0NLKGNzcGkzX2lw
-Z19jbGssIDAsIE1YQ19DQ01fQ0NHUjQsIE1YQ19DQ01fQ0NHUnhfQ0c5X09GRlNFVCwKPiArCU5V
-TEwsIE5VTEwsICZpcGdfY2xrLCAmYWlwc190ejJfY2xrKTsKPiArREVGSU5FX0NMT0NLKGNzcGkz
-X2NsaywgMCwgTVhDX0NDTV9DQ0dSNCwgTVhDX0NDTV9DQ0dSeF9DRzEzX09GRlNFVCwKPiArCU5V
-TEwsIE5VTEwsICZjc3BpX21haW5fY2xrLCAmY3NwaTNfaXBnX2Nsayk7Cj4gKwo+ICAgCkhlcmUs
-IGZyb20gIk1DSU1YNTFSTSBSZXYuIDAgMTEvMjAwOSwgY2hhcHRlciA3IiwgdGhlIENTUEkncyBk
-aXJlY3QgCnBhcmVudCBjbG9jayBzZWVtcyB0byBiZQppcGdfY2xrIGluc3RlYWQgb2YgY3NwaV9t
-YWluX2Nsay4KCj4gIC8qIEZFQyAqLwo+ICBERUZJTkVfQ0xPQ0soZmVjX2NsaywgMCwgTVhDX0ND
-TV9DQ0dSMiwgTVhDX0NDTV9DQ0dSeF9DRzEyX09GRlNFVCwKPiAgCU5VTEwsICBOVUxMLCAmaXBn
-X2NsaywgTlVMTCk7Cj4gQEAgLTgzNyw2ICs4NzYsOSBAQCBzdGF0aWMgc3RydWN0IGNsa19sb29r
-dXAgbG9va3Vwc1tdID0gewo+ICAJX1JFR0lTVEVSX0NMT0NLKCJmc2wtdXNiMi11ZGMiLCAidXNi
-IiwgdXNib2gzX2NsaykKPiAgCV9SRUdJU1RFUl9DTE9DSygiZnNsLXVzYjItdWRjIiwgInVzYl9h
-aGIiLCBhaGJfY2xrKQo+ICAJX1JFR0lTVEVSX0NMT0NLKCJpbXgta2V5cGFkLjAiLCBOVUxMLCBr
-cHBfY2xrKQo+ICsJX1JFR0lTVEVSX0NMT0NLKCJzcGlfaW14LjAiLCBOVUxMLCBjc3BpMV9jbGsp
-Cj4gKwlfUkVHSVNURVJfQ0xPQ0soInNwaV9pbXguMSIsIE5VTEwsIGNzcGkyX2NsaykKPiArCV9S
-RUdJU1RFUl9DTE9DSygic3BpX2lteC4yIiwgTlVMTCwgY3NwaTNfY2xrKQo+ICB9Owo+ICAKPiAg
-c3RhdGljIHZvaWQgY2xrX3RyZWVfaW5pdCh2b2lkKQo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9t
-YWNoLW14NS9kZXZpY2VzLWlteDUxLmggYi9hcmNoL2FybS9tYWNoLW14NS9kZXZpY2VzLWlteDUx
-LmgKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjM5MDFmNTkKPiAtLS0g
-L2Rldi9udWxsCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1teDUvZGV2aWNlcy1pbXg1MS5oCj4gQEAg
-LTAsMCArMSwxOCBAQAo+ICsvKgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMTAgUGVuZ3V0cm9uaXgK
-PiArICogVXdlIEtsZWluZS1Lb2VuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
-PiArICoKPiArICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0
-cmlidXRlIGl0IGFuZC9vciBtb2RpZnkgaXQgdW5kZXIKPiArICogdGhlIHRlcm1zIG9mIHRoZSBH
-TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSB2ZXJzaW9uIDIgYXMgcHVibGlzaGVkIGJ5IHRoZQo+
-ICsgKiBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uCj4gKyAqLwo+ICsjaW5jbHVkZSA8bWFjaC9t
-eDUxLmg+Cj4gKyNpbmNsdWRlIDxtYWNoL2RldmljZXMtY29tbW9uLmg+Cj4gKwo+ICtleHRlcm4g
-Y29uc3Qgc3RydWN0IGlteF9zcGlfaW14X2RhdGEgaW14NTFfY3NwaV9pbXhfZGF0YSBfX2luaXRj
-b25zdDsKPiArI2RlZmluZSBpbXg1MV9hZGRfY3NwaV9pbXgocGRhdGEpCVwKPiArCWlteF9hZGRf
-c3BpX2lteCgmaW14NTFfY3NwaV9pbXhfZGF0YSwgcGRhdGEpCj4gKwo+ICtleHRlcm4gc3RydWN0
-IGlteF9zcGlfaW14X2RhdGEgaW14NTFfZWNzcGlfaW14X2RhdGFbXSBfX2luaXRjb25zdDsKPiAr
-I2RlZmluZSBpbXg1MV9hZGRfZWNzcGlfaW14KGlkLCBwZGF0YSkJXAo+ICsJaW14X2FkZF9zcGlf
-aW14KCZpbXg1MV9lY3NwaV9pbXhfZGF0YVtpZF0sIHBkYXRhKQo+IGRpZmYgLS1naXQgYS9hcmNo
-L2FybS9wbGF0LW14Yy9kZXZpY2VzL3BsYXRmb3JtLXNwaV9pbXguYyBiL2FyY2gvYXJtL3BsYXQt
-bXhjL2RldmljZXMvcGxhdGZvcm0tc3BpX2lteC5jCj4gaW5kZXggN2I3YjAwNS4uMDc3ZjkzNiAx
-MDA2NDQKPiAtLS0gYS9hcmNoL2FybS9wbGF0LW14Yy9kZXZpY2VzL3BsYXRmb3JtLXNwaV9pbXgu
-Ywo+ICsrKyBiL2FyY2gvYXJtL3BsYXQtbXhjL2RldmljZXMvcGxhdGZvcm0tc3BpX2lteC5jCj4g
-QEAgLTY3LDYgKzY3LDIzIEBAIGNvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhIGlteDM1X3Nw
-aV9pbXhfZGF0YVtdIF9faW5pdGNvbnN0ID0gewo+ICB9Owo+ICAjZW5kaWYgLyogaWZkZWYgQ09O
-RklHX0FSQ0hfTVgzNSAqLwo+ICAKPiArI2lmZGVmIENPTkZJR19BUkNIX01YNTEKPiArLyoKPiAr
-ICogdW50aWwgdGhlIGlteC1zcGkgc3VwcG9ydHMgcGxhdGZvcm0taWRzLCB0aGUgY3NwaSBkZXZp
-Y2UgaGFzIHRvIHVzZSBhCj4gKyAqIGRpZmZlcmVudCBpZCB0aGFuIHRoZSBlY3NwaSBkZXZpY2Vz
-IGFib3ZlLiAgVGhlIGRyaXZlciBjdXJyZW50bHkgaGFyZGNvZGVzIDIKPiArICogZm9yIHRoZSBj
-c3BpIGRldmljZS4KPiArICovCj4gK2NvbnN0IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhIGlteDUx
-X2NzcGlfaW14X2RhdGEgX19pbml0Y29uc3QgPQo+ICsJaW14X3NwaV9pbXhfZGF0YV9lbnRyeV9z
-aW5nbGUoTVg1MSwgQ1NQSSwgImlteDUxLWNzcGkiLCAyLCAsIFNaXzRLKTsKPiArCj4gK2NvbnN0
-IHN0cnVjdCBpbXhfc3BpX2lteF9kYXRhIGlteDUxX2Vjc3BpX2lteF9kYXRhW10gX19pbml0Y29u
-c3QgPSB7Cj4gKyNkZWZpbmUgaW14NTFfZWNzcGlfaW14X2RhdGFfZW50cnkoX2lkLCBfaHdpZCkJ
-CQkJXAo+ICsJaW14X3NwaV9pbXhfZGF0YV9lbnRyeShNWDUxLCBFQ1NQSSwgImlteDUxLWVjc3Bp
-IiwgX2lkLCBfaHdpZCwgU1pfNEspCj4gKwlpbXg1MV9lY3NwaV9pbXhfZGF0YV9lbnRyeSgwLCAx
-KSwKPiArCWlteDUxX2Vjc3BpX2lteF9kYXRhX2VudHJ5KDEsIDIpLAo+ICt9Owo+ICsjZW5kaWYg
-LyogaWZkZWYgQ09ORklHX0FSQ0hfTVg1MSAqLwo+ICsKPiAgc3RydWN0IHBsYXRmb3JtX2Rldmlj
-ZSAqX19pbml0IGlteF9hZGRfc3BpX2lteCgKPiAgCQljb25zdCBzdHJ1Y3QgaW14X3NwaV9pbXhf
-ZGF0YSAqZGF0YSwKPiAgCQljb25zdCBzdHJ1Y3Qgc3BpX2lteF9tYXN0ZXIgKnBkYXRhKQo+ICAg
-CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IERldjJEZXYgZW1haWwgaXMgc3Bv
-bnNvcmVkIGJ5OgoKU2hvdyBvZmYgeW91ciBwYXJhbGxlbCBwcm9ncmFtbWluZyBza2lsbHMuCkVu
-dGVyIHRoZSBJbnRlbChSKSBUaHJlYWRpbmcgQ2hhbGxlbmdlIDIwMTAuCmh0dHA6Ly9wLnNmLm5l
-dC9zZnUvaW50ZWwtdGhyZWFkLXNmZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Uwe Kleine-K=F6nig wrote:
+> Hello Jason,
+>
+> On Thu, Sep 02, 2010 at 03:51:59PM +0800, Jason Wang wrote:
+>   =
+
+>> There are 3 SPI controllers on i.MX51, one is called CSPI and is
+>> 100% compatible with the one on i.MX35, the other two are called
+>> eCSPI and are not compatible with existing controllers on other
+>> i.MX platforms, here we add support of these three controllers in
+>> the imx spi driver.
+>>
+>> Signed-off-by: Jason Wang <jason77.wang@gmail.com>
+>> ---
+>>  drivers/spi/spi_imx.c |  135 ++++++++++++++++++++++++++++++++++++++++++=
++++++--
+>>  1 files changed, 131 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+>> index 7972e90..8d9c9da 100644
+>> --- a/drivers/spi/spi_imx.c
+>> +++ b/drivers/spi/spi_imx.c
+>> @@ -155,6 +155,120 @@ static unsigned int spi_imx_clkdiv_2(unsigned int =
+fin,
+>>  	return 7;
+>>  }
+>>  =
+
+>> +/* MX51 eCSPI post divider */
+>> +static unsigned int spi_imx_clkdiv_3(unsigned int fin,
+>> +		unsigned int fspi)
+>> +{
+>> +	int i, div =3D 1;
+>> +
+>> +	for (i =3D 0; i < 15; i++) {
+>> +		if (fspi * div >=3D fin)
+>> +			return i;
+>> +		div <<=3D 1;
+>> +	}
+>> +
+>> +	return 15;
+>> +}
+>>     =
+
+> This is different in Sascha's patch.  Didn't try yet to understand the
+> difference.
+>
+>   =
+
+To change the spi clock frequency, we can set pre-divider and post-divider,
+here, to be simple, i only change post-divider(set pre-divider to 1), while
+sascha handle both pre-divider and post-divider.
+>> +
+>> +#define MX51_INTREG_TEEN		(1 << 0)
+>> +#define MX51_INTREG_RREN		(1 << 3)
+>> +
+>> +#define MX51_CSPICTRL_ENABLE		(1 << 0)
+>> +#define MX51_CSPICTRL_XCH		(1 << 2)
+>> +
+>> +#define MX51_CSPICTRL_BL_SHIFT		20
+>> +#define MX51_CSPICTRL_CS_SHIFT		18
+>> +#define MX51_CSPICTRL_DR_SHIFT		8
+>> +#define MX51_CSPICTRL_MODE_SHIFT	4
+>> +#define MX51_CSPICONF_PHA_SHIFT		0
+>> +#define MX51_CSPICONF_POL_SHIFT		4
+>> +#define MX51_CSPICONF_SSPOL_SHIFT	12
+>> +#define MX51_CSPICONF_SSCTL_SHIFT	8
+>> +
+>> +#define MX51_CSPICTRL_CSMASK		0x3
+>> +#define MX51_CSPIINT			0x10
+>> +#define MX51_CSPICONF			0xC
+>> +#define MX51_CSPISTATUS			0x18
+>> +#define MX51_STATUS_RR			(1 << 3)
+>> +
+>> +#define MAX_CHIPSELECT_NUM 4
+>> +
+>> +static int get_chipselect(struct spi_imx_data *spi_imx,
+>> +			  struct spi_imx_config *config)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i =3D 0; i < MAX_CHIPSELECT_NUM; i++) {
+>> +		if (config->cs =3D=3D spi_imx->chipselect[i])
+>> +			return i;
+>> +	}
+>> +
+>> +	return -EINVAL;
+>> +}
+>> +static void mx51_intctrl(struct spi_imx_data *spi_imx, int enable)
+>> +{
+>> +	unsigned int val =3D 0;
+>> +
+>> +	if (enable & MXC_INT_TE)
+>> +		val |=3D MX51_INTREG_TEEN;
+>> +	if (enable & MXC_INT_RR)
+>> +		val |=3D MX51_INTREG_RREN;
+>> +
+>> +	writel(val, spi_imx->base + MX51_CSPIINT);
+>> +}
+>> +
+>> +static void mx51_trigger(struct spi_imx_data *spi_imx)
+>> +{
+>> +	unsigned int reg;
+>> +
+>> +	reg =3D readl(spi_imx->base + MXC_CSPICTRL);
+>> +	reg |=3D MX51_CSPICTRL_XCH;
+>> +	writel(reg, spi_imx->base + MXC_CSPICTRL);
+>> +}
+>> +
+>> +static int mx51_config(struct spi_imx_data *spi_imx,
+>> +		struct spi_imx_config *config)
+>> +{
+>> +	unsigned int config_reg =3D 0;
+>> +	unsigned int ctrl_reg =3D MX51_CSPICTRL_ENABLE;
+>> +	int chan;
+>> +
+>> +	chan =3D get_chipselect(spi_imx, config);
+>> +	if (chan < 0)
+>> +		return chan;
+>>     =
+
+> can this happen?  Does that have to do with using a GPIO for CS?
+>   =
+
+If we use 4 GPIOs for 4 SPI client devices, we can assign each to a =
+
+separate channel.
+each channel has its own transfer mode(like clk edge...).
+>   =
+
+>> +	ctrl_reg |=3D (chan & MX51_CSPICTRL_CSMASK) << MX51_CSPICTRL_CS_SHIFT;
+>> +	ctrl_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+>> +		MX51_CSPICTRL_MODE_SHIFT;
+>> +	ctrl_reg |=3D spi_imx_clkdiv_3(spi_imx->spi_clk, config->speed_hz) <<
+>> +		MX51_CSPICTRL_DR_SHIFT;
+>> +
+>> +	ctrl_reg |=3D (config->bpw - 1) << MX51_CSPICTRL_BL_SHIFT;
+>> +
+>> +
+>>     =
+
+> duplicated empty line
+>
+>   =
+
+OK.
+>> +	if (config->mode & SPI_CPHA)
+>> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+>> +			MX51_CSPICONF_PHA_SHIFT;
+>> +	if (config->mode & SPI_CPOL)
+>> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+>> +			MX51_CSPICONF_POL_SHIFT;
+>> +	if (config->mode & SPI_CS_HIGH)
+>> +		config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+>> +			MX51_CSPICONF_SSPOL_SHIFT;
+>> +
+>> +	config_reg |=3D (1 << (chan & MX51_CSPICTRL_CSMASK)) <<
+>> +		MX51_CSPICONF_SSCTL_SHIFT;
+>> +
+>> +	writel(ctrl_reg, spi_imx->base + MXC_CSPICTRL);
+>> +	writel(config_reg, spi_imx->base + MX51_CSPICONF);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int mx51_rx_available(struct spi_imx_data *spi_imx)
+>> +{
+>> +	return readl(spi_imx->base + MX51_CSPISTATUS) & MX51_STATUS_RR;
+>> +}
+>> +
+>>  #define MX31_INTREG_TEEN	(1 << 0)
+>>  #define MX31_INTREG_RREN	(1 << 3)
+>>  =
+
+>> @@ -209,7 +323,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
+>>  =
+
+>>  	if (cpu_is_mx31())
+>>  		reg |=3D (config->bpw - 1) << MX31_CSPICTRL_BC_SHIFT;
+>> -	else if (cpu_is_mx25() || cpu_is_mx35()) {
+>> +	else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51()) {
+>>  		reg |=3D (config->bpw - 1) << MX35_CSPICTRL_BL_SHIFT;
+>>  		reg |=3D MX31_CSPICTRL_SSCTL;
+>>  	}
+>> @@ -223,7 +337,7 @@ static int mx31_config(struct spi_imx_data *spi_imx,
+>>  	if (config->cs < 0) {
+>>  		if (cpu_is_mx31())
+>>  			reg |=3D (config->cs + 32) << MX31_CSPICTRL_CS_SHIFT;
+>> -		else if (cpu_is_mx25() || cpu_is_mx35())
+>> +		else if (cpu_is_mx25() || cpu_is_mx35() || cpu_is_mx51())
+>>  			reg |=3D (config->cs + 32) << MX35_CSPICTRL_CS_SHIFT;
+>>  	}
+>>  =
+
+>> @@ -567,7 +681,14 @@ static int __devinit spi_imx_probe(struct platform_=
+device *pdev)
+>>  		goto out_iounmap;
+>>  	}
+>>  =
+
+>> -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35()) {
+>> +	/* i.MX51 has two eCSPI and one CSPI controllers, eCSPI controllers are
+>> +	 * not compatible with existing SPI controllers on other i.MX platform=
+s,
+>> +	 * while CSPI controller is 100% compatible with the one on the i.MX35.
+>> +	 * We set the platform device id to 2 for this CSPI at i.MX51 board in=
+it
+>> +	 * level to distinguish it from two eCSPI controllers.
+>> +	 */
+>>     =
+
+> This comment is missing in Sascha's driver.  I like it.
+> BTW, I'd like to make use of platform ids in this driver.  This would
+> make this ugly "on imx51 id2 is a cspi" distinction unnecessary.
+>
+>   =
+
+agree, i like both your and lothar's solution.
+Either platform ids or flags in platform_data.
+
+>> +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+>> +	    (cpu_is_mx51() && (pdev->id =3D=3D 2))) {
+>>  		spi_imx->intctrl =3D mx31_intctrl;
+>>  		spi_imx->config =3D mx31_config;
+>>  		spi_imx->trigger =3D mx31_trigger;
+>> @@ -582,6 +703,11 @@ static int __devinit spi_imx_probe(struct platform_=
+device *pdev)
+>>  		spi_imx->config =3D mx1_config;
+>>  		spi_imx->trigger =3D mx1_trigger;
+>>  		spi_imx->rx_available =3D mx1_rx_available;
+>> +	} else if (cpu_is_mx51()) {
+>> +		spi_imx->intctrl =3D mx51_intctrl;
+>> +		spi_imx->config =3D mx51_config;
+>> +		spi_imx->trigger =3D mx51_trigger;
+>> +		spi_imx->rx_available =3D mx51_rx_available;
+>>  	} else
+>>  		BUG();
+>>  =
+
+>> @@ -599,7 +725,8 @@ static int __devinit spi_imx_probe(struct platform_d=
+evice *pdev)
+>>  		writel(1, spi_imx->base + MXC_RESET);
+>>  =
+
+>>  	/* drain receive buffer */
+>> -	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35())
+>> +	if (cpu_is_mx25() || cpu_is_mx31() || cpu_is_mx35() ||
+>> +	    (cpu_is_mx51() && (pdev->id =3D=3D 2)))
+>>  		while (readl(spi_imx->base + MX3_CSPISTAT) & MX3_CSPISTAT_RR)
+>>  			readl(spi_imx->base + MXC_CSPIRXDATA);
+>>     =
+
+> Best regards
+> Uwe
+>
+>   =

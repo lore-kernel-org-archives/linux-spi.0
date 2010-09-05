@@ -1,8 +1,7 @@
-From: <etauyhoga5841-BwUmv6MbR8umLYEK066ZfDiP9/pWjw0T@public.gmane.org>
-Subject: [SPAM] Increase the size of your manhood
-Date: Sat, 4 Sep 2010 17:47:17 -0300
-Message-ID: <E1Orze0-00075A-QS@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: etauyhoga5841-BwUmv6MbR8umLYEK066ZfDiP9/pWjw0T@public.gmane.org
+From: "Reflexe Sante" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Promotion de rentree : 5 mois offerts, profitez-en
+Date: Sun,  5 Sep 2010 11:17:38 +0200 (CEST)
+Message-ID: <l89ohf.vmx8l7@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Let her experience 9 inches http://www.jumpbrush.ru/
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:

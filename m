@@ -1,11 +1,12 @@
-From: "Reflexe Sante" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Promotion de rentree : 5 mois offerts, profitez-en
-Date: Sun,  5 Sep 2010 11:17:38 +0200 (CEST)
-Message-ID: <l89ohf.vmx8l7@front07.g7r9.com>
+From: GHJ0D4-N9jO1Cs7mq5eoWH0uzbU5w@public.gmane.org
+Subject: [SPAM] 每个企业都需要
+Date: Mon, 6 Sep 2010 06:19:38 +0800
+Message-ID: <E1OsNZa-0001vQ-Hb@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,6 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:
@@ -24,3 +37,15 @@ This SF.net Dev2Dev email is sponsored by:
 Show off your parallel programming skills.
 Enter the Intel(R) Threading Challenge 2010.
 http://p.sf.net/sfu/intel-thread-sfd
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

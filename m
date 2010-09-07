@@ -1,42 +1,42 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH] spi/spi_s3c64xx: Move to subsys_initcall()
-Date: Tue,  7 Sep 2010 11:29:17 +0100
-Message-ID: <1283855357-15179-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: patches@opensource.wolfsonmicro.com,
-	spi-devel-general@lists.sourceforge.net,
+Subject: [PATCH 2/2] spi/spi_s3c64xx: Increase dead reckoning time in wait_for_xfer()
+Date: Tue,  7 Sep 2010 16:37:52 +0100
+Message-ID: <1283873872-8633-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+References: <1283873872-8633-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
 	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Jassi Brar <jassi.brar@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Jassi Brar <jassi.brar@samsung.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1283873872-8633-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Allow the use of the S3C64xx SPI controller with things like PMICs by
-moving the init up to subsys_initcall().
+For small transfers at high speeds the expected transfer time can easily
+be well under 1ms, causing the delay in wait_for_xfer() to be only the
+dead reckoning fudge factor of 5ms currently included. Experiments on
+some of my systems shows that this is marginal for some transfers so
+double it to 10ms.
 
 Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 ---
-
-Incidentally I don't seem to see anything in the current SPI tree for
--next - should the tree being used be updated or something?
-
  drivers/spi/spi_s3c64xx.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-index f72e1c0..6e48ea9 100644
+index 03b28e4..4abb441 100644
 --- a/drivers/spi/spi_s3c64xx.c
 +++ b/drivers/spi/spi_s3c64xx.c
-@@ -1181,7 +1181,7 @@ static int __init s3c64xx_spi_init(void)
- {
- 	return platform_driver_probe(&s3c64xx_spi_driver, s3c64xx_spi_probe);
- }
--module_init(s3c64xx_spi_init);
-+subsys_initcall(s3c64xx_spi_init);
+@@ -326,7 +326,7 @@ static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
  
- static void __exit s3c64xx_spi_exit(void)
- {
+ 	/* millisecs to xfer 'len' bytes @ 'cur_speed' */
+ 	ms = xfer->len * 8 * 1000 / sdd->cur_speed;
+-	ms += 5; /* some tolerance */
++	ms += 10; /* some tolerance */
+ 
+ 	if (dma_mode) {
+ 		val = msecs_to_jiffies(ms) + 10;
 -- 
 1.7.1

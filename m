@@ -1,53 +1,42 @@
-From: Yong Wang <yong.y.wang@linux.intel.com>
-Subject: [PATCH] dw_spi: Allow interrupt sharing
-Date: Tue, 7 Sep 2010 15:27:27 +0800
-Message-ID: <20100907072727.GA2152@ywang-moblin2.bj.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: David Brownell <dbrownell@users.sourceforge.net>,
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH] spi/spi_s3c64xx: Move to subsys_initcall()
+Date: Tue,  7 Sep 2010 11:29:17 +0100
+Message-ID: <1283855357-15179-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: patches@opensource.wolfsonmicro.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Jassi Brar <jassi.brar@samsung.com>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	Feng Tang <feng.tang@intel.com>,
-	George Shore <george@georgeshore.com>,
-	Andrew Morton <akp
+	David Brownell <dbrownell@users.sourceforge.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Allow interrupt sharing since exclusive interrupt line for
-DW SPI controller is not provided on every platform.
+Allow the use of the S3C64xx SPI controller with things like PMICs by
+moving the init up to subsys_initcall().
 
-Signed-off-by: Yong Wang <yong.y.wang@intel.com>
+Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 ---
- drivers/spi/dw_spi.c |    7 ++++++-
- 1 files changed, 6 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index d256cb0..11fbbf6 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -396,6 +396,11 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
- static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+Incidentally I don't seem to see anything in the current SPI tree for
+-next - should the tree being used be updated or something?
+
+ drivers/spi/spi_s3c64xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
+index f72e1c0..6e48ea9 100644
+--- a/drivers/spi/spi_s3c64xx.c
++++ b/drivers/spi/spi_s3c64xx.c
+@@ -1181,7 +1181,7 @@ static int __init s3c64xx_spi_init(void)
  {
- 	struct dw_spi *dws = dev_id;
-+	u16 irq_status, irq_mask = 0x3f;
-+
-+	irq_status = dw_readw(dws, isr) & irq_mask;
-+	if (!irq_status)
-+		return IRQ_NONE;
+ 	return platform_driver_probe(&s3c64xx_spi_driver, s3c64xx_spi_probe);
+ }
+-module_init(s3c64xx_spi_init);
++subsys_initcall(s3c64xx_spi_init);
  
- 	if (!dws->cur_msg) {
- 		spi_mask_intr(dws, SPI_INT_TXEI);
-@@ -883,7 +888,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
- 
--	ret = request_irq(dws->irq, dw_spi_irq, 0,
-+	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
- 			"dw_spi", dws);
- 	if (ret < 0) {
- 		dev_err(&master->dev, "can not get IRQ\n");
+ static void __exit s3c64xx_spi_exit(void)
+ {
 -- 
-1.5.5.1
+1.7.1

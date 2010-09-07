@@ -1,112 +1,53 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi/dw_spi: clean the cs_control code
-Date: Tue,  7 Sep 2010 15:52:06 +0800
-Message-ID: <1283845926-12547-1-git-send-email-feng.tang@intel.com>
+From: Yong Wang <yong.y.wang@linux.intel.com>
+Subject: [PATCH] dw_spi: Allow interrupt sharing
+Date: Tue, 7 Sep 2010 15:27:27 +0800
+Message-ID: <20100907072727.GA2152@ywang-moblin2.bj.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Feng Tang <feng.tang@intel.com>,
+	George Shore <george@georgeshore.com>,
+	Andrew Morton <akp
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-commit 052dc7c45i "spi/dw_spi: conditional transfer mode change"
-introduced cs_control code, which has a bug by using bit offset
-for spi mode to set transfer mode in control register. Also it
-forces devices who don't need cs_control to re-configure the
-control registers for each spi transfer. This patch will fix them
+Allow interrupt sharing since exclusive interrupt line for
+DW SPI controller is not provided on every platform.
 
-Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Cc: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
+Signed-off-by: Yong Wang <yong.y.wang@intel.com>
 ---
- drivers/spi/dw_spi.c       |   17 +++++------------
- include/linux/spi/dw_spi.h |    2 ++
- 2 files changed, 7 insertions(+), 12 deletions(-)
+ drivers/spi/dw_spi.c |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index d256cb0..4b75a81 100644
+index d256cb0..11fbbf6 100644
 --- a/drivers/spi/dw_spi.c
 +++ b/drivers/spi/dw_spi.c
-@@ -181,10 +181,6 @@ static void flush(struct dw_spi *dws)
- 	wait_till_not_busy(dws);
- }
- 
--static void null_cs_control(u32 command)
--{
--}
--
- static int null_writer(struct dw_spi *dws)
+@@ -396,6 +396,11 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
  {
- 	u8 n_bytes = dws->n_bytes;
-@@ -322,7 +318,7 @@ static void giveback(struct dw_spi *dws)
- 					struct spi_transfer,
- 					transfer_list);
- 
--	if (!last_transfer->cs_change)
-+	if (!last_transfer->cs_change && dws->cs_control)
- 		dws->cs_control(MRST_SPI_DEASSERT);
- 
- 	msg->state = NULL;
-@@ -544,13 +540,13 @@ static void pump_transfers(unsigned long data)
- 	 */
- 	if (dws->cs_control) {
- 		if (dws->rx && dws->tx)
--			chip->tmode = 0x00;
-+			chip->tmode = SPI_TMOD_TR;
- 		else if (dws->rx)
--			chip->tmode = 0x02;
-+			chip->tmode = SPI_TMOD_RO;
- 		else
--			chip->tmode = 0x01;
-+			chip->tmode = SPI_TMOD_TO;
- 
--		cr0 &= ~(0x3 << SPI_MODE_OFFSET);
-+		cr0 &= ~SPI_TMOD_MASK;
- 		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
- 	}
- 
-@@ -699,9 +695,6 @@ static int dw_spi_setup(struct spi_device *spi)
- 		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
- 		if (!chip)
- 			return -ENOMEM;
--
--		chip->cs_control = null_cs_control;
--		chip->enable_dma = 0;
- 	}
- 
- 	/*
-diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
-index cc813f9..c91302f 100644
---- a/include/linux/spi/dw_spi.h
-+++ b/include/linux/spi/dw_spi.h
-@@ -14,7 +14,9 @@
- #define SPI_MODE_OFFSET			6
- #define SPI_SCPH_OFFSET			6
- #define SPI_SCOL_OFFSET			7
+ 	struct dw_spi *dws = dev_id;
++	u16 irq_status, irq_mask = 0x3f;
 +
- #define SPI_TMOD_OFFSET			8
-+#define SPI_TMOD_MASK			(0x3 << SPI_TMOD_OFFSET)
- #define	SPI_TMOD_TR			0x0		/* xmit & recv */
- #define SPI_TMOD_TO			0x1		/* xmit only */
- #define SPI_TMOD_RO			0x2		/* recv only */
++	irq_status = dw_readw(dws, isr) & irq_mask;
++	if (!irq_status)
++		return IRQ_NONE;
+ 
+ 	if (!dws->cur_msg) {
+ 		spi_mask_intr(dws, SPI_INT_TXEI);
+@@ -883,7 +888,7 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
+ 	dws->dma_inited = 0;
+ 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
+ 
+-	ret = request_irq(dws->irq, dw_spi_irq, 0,
++	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
+ 			"dw_spi", dws);
+ 	if (ret < 0) {
+ 		dev_err(&master->dev, "can not get IRQ\n");
 -- 
-1.7.0.4
-
-
-------------------------------------------------------------------------------
-This SF.net Dev2Dev email is sponsored by:
-
-Show off your parallel programming skills.
-Enter the Intel(R) Threading Challenge 2010.
-http://p.sf.net/sfu/intel-thread-sfd
+1.5.5.1

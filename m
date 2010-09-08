@@ -1,70 +1,122 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi/spi_s3c64xx: Move to subsys_initcall()
-Date: Wed, 8 Sep 2010 10:44:32 -0600
-Message-ID: <20100908164432.GG3686@angua.secretlab.ca>
-References: <1283855357-15179-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <AANLkTim=ArPyqC7K-aaer97deGeR6yU-FS1Hpm3D_1ER@mail.gmail.com>
- <20100908091242.GB31253@rakim.wolfsonmicro.main>
- <AANLkTimvc52yXuMFN2=qLKX1MSyTum1GHnLdDW8dMR=2@mail.gmail.com>
- <20100908161245.GC3686@angua.secretlab.ca>
- <20100908162251.GA15562@rakim.wolfsonmicro.main>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2] spi/dw_spi: clean the cs_control code
+Date: Wed, 8 Sep 2010 10:51:06 -0600
+Message-ID: <20100908165106.GI3686@angua.secretlab.ca>
+References: <1283845926-12547-1-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jassi Brar <jassisinghbrar@gmail.com>,
-	Jassi Brar <jassi.brar@samsung.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net,
-	patches@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20100908162251.GA15562@rakim.wolfsonmicro.main>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1283845926-12547-1-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 08, 2010 at 05:22:51PM +0100, Mark Brown wrote:
-> On Wed, Sep 08, 2010 at 10:12:45AM -0600, Grant Likely wrote:
+On Tue, Sep 07, 2010 at 03:52:06PM +0800, Feng Tang wrote:
+> commit 052dc7c45i "spi/dw_spi: conditional transfer mode change"
+> introduced cs_control code, which has a bug by using bit offset
+> for spi mode to set transfer mode in control register. Also it
+> forces devices who don't need cs_control to re-configure the
+> control registers for each spi transfer. This patch will fix them
 > 
-> [reflowed into 80 columns]
+> Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Cc: George Shore <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>
+> ---
 
-Sorry about that.  I'm in the process of switching to mutt+vim for my
-mailer.  gmail is just not efficient enough when managing patches.
-
-> > ... but it seems to me that there is a systemic problem in the way the
-> > driver model is being used if SPI (and I2C) bus drivers need to be
-> > 'special' in this regard.  What are the ordering requirements on things
-> > like PMICs?  (My uneducated assumption is that other devices depend on
-> > them being enabled before being probed.)  Would it be better to have a
-> 
-> Pretty much this, yes - if you might want to turn on your supplies
-> when you're probed it's rather helpful if the subsystem needed to
-> control the regulators is available when you probe.
-> 
-> > mechanism to defer probing on certain devices until other devices are
-> > probed?  Then the relationships could be made explicit instead of the
-> > rather coarse-grained (and potentially fragile) approach of changing the
-> > init order.
-> 
-> That would be much nicer (and this is far from the only case where we
-> need to deal with it) but it's a substantial change to core kernel
-> infrastructure so it's being worked around like this.  Given how all the
-> discussions about sorting and dependencies for suspend and resume went
-> it might be an uphill struggle to do much more, especially while we are
-> able to continue to deal with things fairly easily using the current
-> infrastructure.
-> 
-> Doing dependencies could get pretty complicated, especially once you
-> handle optional dependencies ("is this missing because it didn't probe
-> yet or because it's just not there?") so it's not entirely clear to me
-> that it's worth the hassle.
-
-I think it might be doable.  I had a similar problem with Ethernet
-MACs and PHYs where the PHY was on a completely separate bus from the
-MAC with zero guarantees on probe order.  I had some code that made it
-simple to use a bus notifier to defer MAC initialization until the
-required phy turned up and was probed.  I eventually abandoned it
-because accessing the PHY could be deferred until .ndo_open() time.
-However, it would be easy to resurrect, and might be a reasonable
-solution.  At the very least it is worth an investigation.
+Applied, thanks.
 
 g.
+
+>  drivers/spi/dw_spi.c       |   17 +++++------------
+>  include/linux/spi/dw_spi.h |    2 ++
+>  2 files changed, 7 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+> index d256cb0..4b75a81 100644
+> --- a/drivers/spi/dw_spi.c
+> +++ b/drivers/spi/dw_spi.c
+> @@ -181,10 +181,6 @@ static void flush(struct dw_spi *dws)
+>  	wait_till_not_busy(dws);
+>  }
+>  
+> -static void null_cs_control(u32 command)
+> -{
+> -}
+> -
+>  static int null_writer(struct dw_spi *dws)
+>  {
+>  	u8 n_bytes = dws->n_bytes;
+> @@ -322,7 +318,7 @@ static void giveback(struct dw_spi *dws)
+>  					struct spi_transfer,
+>  					transfer_list);
+>  
+> -	if (!last_transfer->cs_change)
+> +	if (!last_transfer->cs_change && dws->cs_control)
+>  		dws->cs_control(MRST_SPI_DEASSERT);
+>  
+>  	msg->state = NULL;
+> @@ -544,13 +540,13 @@ static void pump_transfers(unsigned long data)
+>  	 */
+>  	if (dws->cs_control) {
+>  		if (dws->rx && dws->tx)
+> -			chip->tmode = 0x00;
+> +			chip->tmode = SPI_TMOD_TR;
+>  		else if (dws->rx)
+> -			chip->tmode = 0x02;
+> +			chip->tmode = SPI_TMOD_RO;
+>  		else
+> -			chip->tmode = 0x01;
+> +			chip->tmode = SPI_TMOD_TO;
+>  
+> -		cr0 &= ~(0x3 << SPI_MODE_OFFSET);
+> +		cr0 &= ~SPI_TMOD_MASK;
+>  		cr0 |= (chip->tmode << SPI_TMOD_OFFSET);
+>  	}
+>  
+> @@ -699,9 +695,6 @@ static int dw_spi_setup(struct spi_device *spi)
+>  		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
+>  		if (!chip)
+>  			return -ENOMEM;
+> -
+> -		chip->cs_control = null_cs_control;
+> -		chip->enable_dma = 0;
+>  	}
+>  
+>  	/*
+> diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
+> index cc813f9..c91302f 100644
+> --- a/include/linux/spi/dw_spi.h
+> +++ b/include/linux/spi/dw_spi.h
+> @@ -14,7 +14,9 @@
+>  #define SPI_MODE_OFFSET			6
+>  #define SPI_SCPH_OFFSET			6
+>  #define SPI_SCOL_OFFSET			7
+> +
+>  #define SPI_TMOD_OFFSET			8
+> +#define SPI_TMOD_MASK			(0x3 << SPI_TMOD_OFFSET)
+>  #define	SPI_TMOD_TR			0x0		/* xmit & recv */
+>  #define SPI_TMOD_TO			0x1		/* xmit only */
+>  #define SPI_TMOD_RO			0x2		/* recv only */
+> -- 
+> 1.7.0.4
+> 
+
+------------------------------------------------------------------------------
+This SF.net Dev2Dev email is sponsored by:
+
+Show off your parallel programming skills.
+Enter the Intel(R) Threading Challenge 2010.
+http://p.sf.net/sfu/intel-thread-sfd

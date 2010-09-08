@@ -1,49 +1,47 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] amba_pl022: Setup SPI configuration based on spi->mode
-Date: Wed, 8 Sep 2010 18:04:57 +0200
-Message-ID: <AANLkTi=2XQ==iCYtAQ_74wPZ6JRB3x9SjS=sjVoC5YiM@mail.gmail.com>
-References: <1283446992-23764-1-git-send-email-wellsk40@gmail.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi/spi_s3c64xx: Move to subsys_initcall()
+Date: Wed, 8 Sep 2010 10:12:45 -0600
+Message-ID: <20100908161245.GC3686@angua.secretlab.ca>
+References: <1283855357-15179-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <AANLkTim=ArPyqC7K-aaer97deGeR6yU-FS1Hpm3D_1ER@mail.gmail.com>
+ <20100908091242.GB31253@rakim.wolfsonmicro.main>
+ <AANLkTimvc52yXuMFN2=qLKX1MSyTum1GHnLdDW8dMR=2@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lukasz.Baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org
-To: wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1283446992-23764-1-git-send-email-wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Jassi Brar <jassi.brar@samsung.com>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	patches@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTimvc52yXuMFN2=qLKX1MSyTum1GHnLdDW8dMR=2@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/9/2  <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+On Wed, Sep 08, 2010 at 06:37:59PM +0900, Jassi Brar wrote:
+> On Wed, Sep 8, 2010 at 6:12 PM, Mark Brown
+> <broonie@opensource.wolfsonmicro.com> wrote:
+> > On Wed, Sep 08, 2010 at 01:55:39PM +0900, Jassi Brar wrote:
+> >> On Tue, Sep 7, 2010 at 7:29 PM, Mark Brown
+> >> <broonie@opensource.wolfsonmicro.com> wrote:
+> >> > Allow the use of the S3C64xx SPI controller with things like PMICs by
+> >> > moving the init up to subsys_initcall().
+> >
+> >> Couldn't any user ever need to load it as a module?
+> >> If no, we might as well drop the s3c64xx_spi_exit and s3c64xx_spi_remove
+> >
+> > This doesn't prevent building as a module - when built as a module
+> > subsys_initcall() is identical to module_init(), the change will only
+> > affect the order in which things are done when the code is built into
+> > the kernel otherwise it's a noop.
+> I didn't know that, thanks for the info.
+> 
+> Acked-by: Jassi Brar <jassi.brar@samsung.com>
 
-> This patch changes the way SPI transfers are setup. The previous
-> method uses the pl022_config_chip data for configuration of
-> loopback mode, edge count, clock polarity, number of data bits,
-> and bit transfer order. This change configures these parameters
-> based on spi->mode passed via master->setup and will allow the
-> drivers use SPI to configure the interface.
+Applied, thanks.
 
-I get regressions on my in-kernel drivers of the SPI when I apply
-this patch.
+... but it seems to me that there is a systemic problem in the way the driver model is being used if SPI (and I2C) bus drivers need to be 'special' in this regard.  What are the ordering requirements on things like PMICs?  (My uneducated assumption is that other devices depend on them being enabled before being probed.)  Would it be better to have a mechanism to defer probing on certain devices until other devices are probed?  Then the relationships could be made explicit instead of the rather coarse-grained (and potentially fragile) approach of changing the init order.
 
-I guess I also have to update all in-kernel clients to supply the
-correct bits?
-
-Can you help me out on what needs to be done... the major
-in-kernel user is drivers/mfd/ab8500-spi.c so far.
-
-Yours,
-Linus Walleij
-
-------------------------------------------------------------------------------
-This SF.net Dev2Dev email is sponsored by:
-
-Show off your parallel programming skills.
-Enter the Intel(R) Threading Challenge 2010.
-http://p.sf.net/sfu/intel-thread-sfd
+g.

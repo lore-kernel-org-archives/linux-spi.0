@@ -1,54 +1,51 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH 2/2] spi/spi_s3c64xx: Increase dead reckoning time in wait_for_xfer()
-Date: Wed, 8 Sep 2010 10:44:26 +0900
-Message-ID: <AANLkTimxXWjiX64wJcNui2mLrvVg9RUtN9fFVnLhZsBY@mail.gmail.com>
-References: <1283873872-8633-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<1283873872-8633-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: "Dddkgntz" <alewine_fqp-/E1597aS9LRJ2CDvoIMA+Q@public.gmane.org>
+Subject: Mcqve Fogb
+Date: Wed, 8 Sep 2010 10:30:43 +0800
+Message-ID: <705839.69188.qm@smtp135.mail.mud.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Jassi Brar <jassi.brar@samsung.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1283873872-8633-2-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed;
+	boundary="----=mtes743_2817_113889726.854249"
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 8, 2010 at 12:37 AM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> For small transfers at high speeds the expected transfer time can eas=
-ily
-> be well under 1ms, causing the delay in wait_for_xfer() to be only th=
-e
-> dead reckoning fudge factor of 5ms currently included. Experiments on
-> some of my systems shows that this is marginal for some transfers so
-> double it to 10ms.
->
-> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> ---
-> =C2=A0drivers/spi/spi_s3c64xx.c | =C2=A0 =C2=A02 +-
-> =C2=A01 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-> index 03b28e4..4abb441 100644
-> --- a/drivers/spi/spi_s3c64xx.c
-> +++ b/drivers/spi/spi_s3c64xx.c
-> @@ -326,7 +326,7 @@ static int wait_for_xfer(struct s3c64xx_spi_drive=
-r_data *sdd,
->
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0/* millisecs to xfer 'len' bytes @ 'cur_sp=
-eed' */
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0ms =3D xfer->len * 8 * 1000 / sdd->cur_spe=
-ed;
-> - =C2=A0 =C2=A0 =C2=A0 ms +=3D 5; /* some tolerance */
-> + =C2=A0 =C2=A0 =C2=A0 ms +=3D 10; /* some tolerance */
->
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0if (dma_mode) {
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0val =3D msecs_=
-to_jiffies(ms) + 10;
+This is a multi-part message in MIME format.
 
-Acked-by: Jassi Brar <jassi.brar@samsung.com>
+------=mtes743_2817_113889726.854249
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+
+
+------=mtes743_2817_113889726.854249
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF.net Dev2Dev email is sponsored by:
+
+Show off your parallel programming skills.
+Enter the Intel(R) Threading Challenge 2010.
+http://p.sf.net/sfu/intel-thread-sfd
+------=mtes743_2817_113889726.854249
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=mtes743_2817_113889726.854249--

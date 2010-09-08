@@ -1,54 +1,26 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [spi-devel-general] [PATCH] SPI: fix APB pclk power regression
-	on U300
-Date: Wed, 8 Sep 2010 12:24:54 -0600
-Message-ID: <20100908182454.GS3686@angua.secretlab.ca>
-References: <1282381656-8644-1-git-send-email-linus.walleij@stericsson.com>
-	<AANLkTik+-YwxU7__QnSC8BhEO0-iqAA+u11BBt-2qo9Q@mail.gmail.com>
+From: "Mon plan alimentaire par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Laissez vous guider, mincissez avec un coaching personnalisé
+Date: Wed,  8 Sep 2010 21:33:26 +0200 (CEST)
+Message-ID: <l8g0zm.5cak0k@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	Linus Walleij <linus.walleij@stericsson.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Kevin Wells <wellsk40@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTik+-YwxU7__QnSC8BhEO0-iqAA+u11BBt-2qo9Q@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Aug 23, 2010 at 10:30:17AM -0700, Kevin Wells wrote:
-> > With the introduction of an AMBA PrimeCell per-cell block clock,
-> > the pclk was left on after probe() unless explicitly disabled.
-> > This clock is wired to the same clock on PL022 causing it to stay
-> > always on since.
-> >
-> > Fix this up properly by clocking the pclk whenever we want to
-> > write into any PL022 registers and clocking the external clock
-> > whenever we want to transmit messages on the bus.
-> >
-> > Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
-> > ---
-> > Tested on U300 and U8500, even though the pclk stuff came in from
-> > the ARM tree it is probably better to carry this through Grants
-> > tree so as not to disturb other patches going in for PL022.
-> > ---
-> > =A0drivers/spi/amba-pl022.c | =A0 14 ++++++++------
-> > =A01 files changed, 8 insertions(+), 6 deletions(-)
-> >
-> =
 
-> Tested-by : Kevin Wells <wellsk40@gmail.com>
+------------------------------------------------------------------------------
+This SF.net Dev2Dev email is sponsored by:
 
-Applied, thanks.
-
-g.
+Show off your parallel programming skills.
+Enter the Intel(R) Threading Challenge 2010.
+http://p.sf.net/sfu/intel-thread-sfd

@@ -1,61 +1,49 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/2] spi/spi_s3c64xx: Increase dead reckoning time in
- wait_for_xfer()
-Date: Wed, 8 Sep 2010 10:00:34 -0600
-Message-ID: <20100908160034.GB3686@angua.secretlab.ca>
-References: <1283873872-8633-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <1283873872-8633-2-git-send-email-broonie@opensource.wolfsonmicro.com>
- <AANLkTimxXWjiX64wJcNui2mLrvVg9RUtN9fFVnLhZsBY@mail.gmail.com>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] amba_pl022: Setup SPI configuration based on spi->mode
+Date: Wed, 8 Sep 2010 18:04:57 +0200
+Message-ID: <AANLkTi=2XQ==iCYtAQ_74wPZ6JRB3x9SjS=sjVoC5YiM@mail.gmail.com>
+References: <1283446992-23764-1-git-send-email-wellsk40@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Jassi Brar <jassi.brar@samsung.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Jassi Brar <jassisinghbrar@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTimxXWjiX64wJcNui2mLrvVg9RUtN9fFVnLhZsBY@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lukasz.Baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org
+To: wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1283446992-23764-1-git-send-email-wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 08, 2010 at 10:44:26AM +0900, Jassi Brar wrote:
-> On Wed, Sep 8, 2010 at 12:37 AM, Mark Brown
-> <broonie@opensource.wolfsonmicro.com> wrote:
-> > For small transfers at high speeds the expected transfer time can e=
-asily
-> > be well under 1ms, causing the delay in wait_for_xfer() to be only =
-the
-> > dead reckoning fudge factor of 5ms currently included. Experiments =
-on
-> > some of my systems shows that this is marginal for some transfers s=
-o
-> > double it to 10ms.
-> >
-> > Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> > ---
-> > =A0drivers/spi/spi_s3c64xx.c | =A0 =A02 +-
-> > =A01 files changed, 1 insertions(+), 1 deletions(-)
-> >
-> > diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-> > index 03b28e4..4abb441 100644
-> > --- a/drivers/spi/spi_s3c64xx.c
-> > +++ b/drivers/spi/spi_s3c64xx.c
-> > @@ -326,7 +326,7 @@ static int wait_for_xfer(struct s3c64xx_spi_dri=
-ver_data *sdd,
-> >
-> > =A0 =A0 =A0 =A0/* millisecs to xfer 'len' bytes @ 'cur_speed' */
-> > =A0 =A0 =A0 =A0ms =3D xfer->len * 8 * 1000 / sdd->cur_speed;
-> > - =A0 =A0 =A0 ms +=3D 5; /* some tolerance */
-> > + =A0 =A0 =A0 ms +=3D 10; /* some tolerance */
-> >
-> > =A0 =A0 =A0 =A0if (dma_mode) {
-> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0val =3D msecs_to_jiffies(ms) + 10;
->=20
-> Acked-by: Jassi Brar <jassi.brar@samsung.com>
+2010/9/2  <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
 
-Applied, thanks.
+> This patch changes the way SPI transfers are setup. The previous
+> method uses the pl022_config_chip data for configuration of
+> loopback mode, edge count, clock polarity, number of data bits,
+> and bit transfer order. This change configures these parameters
+> based on spi->mode passed via master->setup and will allow the
+> drivers use SPI to configure the interface.
 
-g.
+I get regressions on my in-kernel drivers of the SPI when I apply
+this patch.
+
+I guess I also have to update all in-kernel clients to supply the
+correct bits?
+
+Can you help me out on what needs to be done... the major
+in-kernel user is drivers/mfd/ab8500-spi.c so far.
+
+Yours,
+Linus Walleij
+
+------------------------------------------------------------------------------
+This SF.net Dev2Dev email is sponsored by:
+
+Show off your parallel programming skills.
+Enter the Intel(R) Threading Challenge 2010.
+http://p.sf.net/sfu/intel-thread-sfd

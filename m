@@ -1,60 +1,49 @@
-From: Yong Wang <yong.y.wang@linux.intel.com>
-Subject: Re: [PATCH] dw_spi: Allow interrupt sharing
-Date: Thu, 9 Sep 2010 13:08:58 +0800
-Message-ID: <20100909050858.GA8003@ywang-moblin2.bj.intel.com>
-References: <20100907072727.GA2152@ywang-moblin2.bj.intel.com> <20100908165341.GJ3686@angua.secretlab.ca>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 6/6] SPI: S3C64XX: Consider the clk_from_cmu flag
+Date: Thu, 9 Sep 2010 14:29:22 +0900
+Message-ID: <AANLkTim=_OxGmrvh_eutsc6ugtCBBM_4+yo8X8960Rc0@mail.gmail.com>
+References: <1283477830-31555-1-git-send-email-jassi.brar@samsung.com>
+	<20100909051136.GH11833@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Feng Tang <feng.tang@intel.com>,
-	George Shore <george@georgeshore.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jean-Hugues Deschenes <jean-hugues.deschenes@octasic.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20100908165341.GJ3686@angua.secretlab.ca>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100909051136.GH11833-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 08, 2010 at 10:53:41AM -0600, Grant Likely wrote:
-> On Tue, Sep 07, 2010 at 03:27:27PM +0800, Yong Wang wrote:
-> > Allow interrupt sharing since exclusive interrupt line for
-> > DW SPI controller is not provided on every platform.
-> > 
-> > Signed-off-by: Yong Wang <yong.y.wang@intel.com>
-> > ---
-> >  drivers/spi/dw_spi.c |    7 ++++++-
-> >  1 files changed, 6 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-> > index d256cb0..11fbbf6 100644
-> > --- a/drivers/spi/dw_spi.c
-> > +++ b/drivers/spi/dw_spi.c
-> > @@ -396,6 +396,11 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
-> >  static irqreturn_t dw_spi_irq(int irq, void *dev_id)
-> >  {
-> >  	struct dw_spi *dws = dev_id;
-> > +	u16 irq_status, irq_mask = 0x3f;
-> > +
-> > +	irq_status = dw_readw(dws, isr) & irq_mask;
-> > +	if (!irq_status)
-> > +		return IRQ_NONE;
-> 
-> To be more concise, this could have simply been:
-> 
-> if (!dw_readw(dws, isr) & 0x3f)
-> 	return IRQ_NONE;
-> 
-> ... but I'm nitpicking here.  If I don't get an updated version of
-> this patch from you in the next few days then I'll apply this one.
-> 
-
-Thanks for your comments, Grant. Could you please apply the patch as is?
-I think it is more readable. In addition, it is consistent with other
-parts of the driver in terms of how isr register is manipulated.
-
-Thanks
--Yong
+T24gVGh1LCBTZXAgOSwgMjAxMCBhdCAyOjExIFBNLCBHcmFudCBMaWtlbHkgPGdyYW50Lmxpa2Vs
+eUBzZWNyZXRsYWIuY2E+IHdyb3RlOgo+IE9uIEZyaSwgU2VwIDAzLCAyMDEwIGF0IDEwOjM3OjEw
+QU0gKzA5MDAsIEphc3NpIEJyYXIgd3JvdGU6Cj4+IE5ld2VyIFNvQ3MgaGF2ZSB0aGUgU1BJIGNs
+b2NrIHNjYWxpbmcgY29udHJvbCBpbiBwbGF0Zm9ybSdzCj4+IGNsb2NrIG1hbmFnZW1lbnQgdW5p
+dC4gSW5vcmRlciBmb3Igc3VjaCBTb0NzIHRvIHdvcmssIHdlIG5lZWQKPj4gdG8gY2hlY2sgdGhl
+IGZsYWcgY2xrX2Zyb21fY211IGJlZm9yZSBtYWtpbmcgYW55IGNsb2NrIGNoYW5nZXMuCj4+Cj4+
+IFNpZ25lZC1vZmYtYnk6IEphc3NpIEJyYXIgPGphc3NpLmJyYXJAc2Ftc3VuZy5jb20+Cj4KPiBX
+b3VsZCBpdCBub3QgbWFrZSBzZW5zZSAob3IgYmUgcG9zc2libGUpIHRvIHJvbGwgdGhlIGN1cnJl
+bnQgY2xvY2sgYmVoYXZpb3VyIGludG8gdGhlIGN1cnJlbnQgY2xvY2sgc3RydWN0IHNvIHRoYXQg
+dGhpcyBkcml2ZXIgY2FuIGFsd2F5cyB1c2UgdGhlIHNhbWUgQVBJIGZvciBkZWFsaW5nIHdpdGgg
+aXRzIGNsb2NraW5nPyDCoE9yIGFtIEkgbWlzc2luZyBzb21ldGhpbmc/Cj4KClRoZSBwcm9ibGVt
+IGlzLCBlYXJsaWVyIFNQSSBoYWQgY2xvY2sgY29udHJvbC9zY2FsaW5nIGluIGl0J3Mgb3duIElQ
+LAp3aGVyZWFzIGxhdGVzdChhbmQgaW4gZnV0dXJlKQpTUElzIGhhdmUgdGhlbSBtb3ZlZCBvdXQg
+aW50byB0aGUgQ2xvY2stTWFuYWdlbWVudC1Vbml0IG9mIHRoZSBTb0MgLQpqdXN0IGhvdyBpdCBz
+aG91bGQgYmUuCkluIG9yZGVyIHRvIGhhdmUgY29tbW9uIEFQSSwgd2UgbmVlZCB0byBoYWNrIGNs
+b2NrLWFwaSB0byBtYW5pcHVsYXRlClNQSSBjb250cm9sbGVyCnJlZ2lzdGVycyBvdXRzaWRlIG9m
+IHRoZSBTUEkgZHJpdmVyIGZvciBvbGRlciBTUElzLi4uLiB3aGljaCB3b3VsZG4ndApiZSB2ZXJ5
+IG5pY2UgdG8gc2VlLgphbnkgc3VnZ2VzdGlvbiBpcyB3ZWxjb21lLCB0aG91Z2guCgp0aGFua3Mu
+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgRGV2MkRldiBlbWFpbCBpcyBzcG9u
+c29yZWQgYnk6CgpTaG93IG9mZiB5b3VyIHBhcmFsbGVsIHByb2dyYW1taW5nIHNraWxscy4KRW50
+ZXIgdGhlIEludGVsKFIpIFRocmVhZGluZyBDaGFsbGVuZ2UgMjAxMC4KaHR0cDovL3Auc2YubmV0
+L3NmdS9pbnRlbC10aHJlYWQtc2ZkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
+bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

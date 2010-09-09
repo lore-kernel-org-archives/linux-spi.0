@@ -1,17 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: add a bits_per_word to struct spi_board_info
-Date: Wed, 8 Sep 2010 22:36:29 -0600
-Message-ID: <AANLkTi=QgsQE_t0YT_-Me_nmB1Rdykx1UwM8E+zRt6kr@mail.gmail.com>
-References: <20100909031827.GA10389@angua.secretlab.ca>
-	<570796.22556.qm@web180308.mail.gq1.yahoo.com>
+Subject: Re: [PATCH] SPI: move PL022 probe call to subsys_initcall()
+Date: Wed, 8 Sep 2010 22:53:44 -0600
+Message-ID: <20100909045344.GC11833@angua.secretlab.ca>
+References: <1283763732-19419-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Lukasz Baj <lukasz.baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org>
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <570796.22556.qm-g47maUHHHF8P4eY3Ra60wvu2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1283763732-19419-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,38 +22,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 8, 2010 at 9:48 PM, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org> wrote:
-> You know, in retrospect, I shouldn't have put
-> most of those SPI device setup params into the
-> board setup data.
+On Mon, Sep 06, 2010 at 11:02:12AM +0200, Linus Walleij wrote:
+> The PL022 SPI bus is sometimes used for early stuff like
+> regulators that need to be present at module_init() time, so
+> we move this to a subsys_initcall().
+> 
+> Cc: Lukasz Baj <lukasz.baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-Out of curiosity, what was the reasoning behind registering the spi
-board info separately instead of passing it explicitly via the spi bus
-driver's platform_data?  (I ask only because I'm unfamiliar with the
-history).
+Applied, thanks.
 
-> There's one which MUST be there: =A0polarity of
-> the chip select line. =A0The rest seem like they
-> could (and arguably should) all be handled by
-> driver-specific params. =A0(Possible exception:
-> clock rate, which sometimes matters even when
-> chips are not selected).
+Note on the subject line:  The preferred form for spi patches is:
 
-Of course, CS polarity and clock rate are more representative of the
-interconnection than of the device.  Regardless though, it should be
-done in such a way that a properly behaved spi_driver cannot change
-the initial .probe() conditions.
+    spi[/chip]: <description>
 
-> At any rate, adding MORE driver-specific params
-> (like bits-per-word) to board setup data seems
-> like the wrong direction to go...
-
-indeed!
+'spi' in the header and the optional driver name are both lowercase.
+I fix patches up to match this form, but it is less work for me when I
+don't have to.
 
 g.
 
----------------------------------------------------------------------------=
----
+> ---
+>  drivers/spi/amba-pl022.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+> index 3db5402..f958072 100644
+> --- a/drivers/spi/amba-pl022.c
+> +++ b/drivers/spi/amba-pl022.c
+> @@ -2324,7 +2324,7 @@ static int __init pl022_init(void)
+>  	return amba_driver_register(&pl022_driver);
+>  }
+>  
+> -module_init(pl022_init);
+> +subsys_initcall(pl022_init);
+>  
+>  static void __exit pl022_exit(void)
+>  {
+> -- 
+> 1.6.3.3
+> 
+
+------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:
 
 Show off your parallel programming skills.

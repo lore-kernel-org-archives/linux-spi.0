@@ -1,46 +1,57 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 5/6] spi-imx: Add i.MX51 support
-Date: Thu, 9 Sep 2010 09:27:33 +0200
-Message-ID: <20100909072733.GB1828@pengutronix.de>
-References: <20100902143908.GK14214@pengutronix.de>
-	<1283438523-19697-5-git-send-email-u.kleine-koenig@pengutronix.de>
-	<20100909053316.GK11833@angua.secretlab.ca>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 6/6] SPI: S3C64XX: Consider the clk_from_cmu flag
+Date: Thu, 9 Sep 2010 16:27:38 +0900
+Message-ID: <AANLkTimZ1gcGirypHzwQZA_reWEyRiHbVRX5_QCwvk92@mail.gmail.com>
+References: <1283477830-31555-1-git-send-email-jassi.brar@samsung.com>
+	<20100909051136.GH11833@angua.secretlab.ca>
+	<AANLkTim=_OxGmrvh_eutsc6ugtCBBM_4+yo8X8960Rc0@mail.gmail.com>
+	<20100909055519.GL11833@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	Sascha Hauer <s.hauer@pengutronix.de>, amit.kucheria@canonical.com,
-	linux-arm-kernel@lists.infradead.org, Jason Wang <jason77.wang@gmail.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20100909053316.GK11833@angua.secretlab.ca>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100909055519.GL11833-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-On Wed, Sep 08, 2010 at 11:33:16PM -0600, Grant Likely wrote:
-> A description of what is required to add imx51 support would be
-> appreciated by us poor patch reviewers.
-Currently there are two different patches for adding imx51 support, one
-by Sascha (sent by me) and one by Jason Wang.
-
-I'll try to pick the best our of both and come back to you, of course
-with a nice commit log :-)
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+T24gVGh1LCBTZXAgOSwgMjAxMCBhdCAyOjU1IFBNLCBHcmFudCBMaWtlbHkgPGdyYW50Lmxpa2Vs
+eUBzZWNyZXRsYWIuY2E+IHdyb3RlOgo+IE9uIFRodSwgU2VwIDA5LCAyMDEwIGF0IDAyOjI5OjIy
+UE0gKzA5MDAsIEphc3NpIEJyYXIgd3JvdGU6Cj4+IE9uIFRodSwgU2VwIDksIDIwMTAgYXQgMjox
+MSBQTSwgR3JhbnQgTGlrZWx5IDxncmFudC5saWtlbHlAc2VjcmV0bGFiLmNhPiB3cm90ZToKPj4g
+PiBPbiBGcmksIFNlcCAwMywgMjAxMCBhdCAxMDozNzoxMEFNICswOTAwLCBKYXNzaSBCcmFyIHdy
+b3RlOgo+PiA+PiBOZXdlciBTb0NzIGhhdmUgdGhlIFNQSSBjbG9jayBzY2FsaW5nIGNvbnRyb2wg
+aW4gcGxhdGZvcm0ncwo+PiA+PiBjbG9jayBtYW5hZ2VtZW50IHVuaXQuIElub3JkZXIgZm9yIHN1
+Y2ggU29DcyB0byB3b3JrLCB3ZSBuZWVkCj4+ID4+IHRvIGNoZWNrIHRoZSBmbGFnIGNsa19mcm9t
+X2NtdSBiZWZvcmUgbWFraW5nIGFueSBjbG9jayBjaGFuZ2VzLgo+PiA+Pgo+PiA+PiBTaWduZWQt
+b2ZmLWJ5OiBKYXNzaSBCcmFyIDxqYXNzaS5icmFyQHNhbXN1bmcuY29tPgo+PiA+Cj4+ID4gV291
+bGQgaXQgbm90IG1ha2Ugc2Vuc2UgKG9yIGJlIHBvc3NpYmxlKSB0byByb2xsIHRoZSBjdXJyZW50
+IGNsb2NrIGJlaGF2aW91ciBpbnRvIHRoZSBjdXJyZW50IGNsb2NrIHN0cnVjdCBzbyB0aGF0IHRo
+aXMgZHJpdmVyIGNhbiBhbHdheXMgdXNlIHRoZSBzYW1lIEFQSSBmb3IgZGVhbGluZyB3aXRoIGl0
+cyBjbG9ja2luZz8gwqBPciBhbSBJIG1pc3Npbmcgc29tZXRoaW5nPwo+PiA+Cj4+Cj4+IFRoZSBw
+cm9ibGVtIGlzLCBlYXJsaWVyIFNQSSBoYWQgY2xvY2sgY29udHJvbC9zY2FsaW5nIGluIGl0J3Mg
+b3duIElQLAo+PiB3aGVyZWFzIGxhdGVzdChhbmQgaW4gZnV0dXJlKQo+PiBTUElzIGhhdmUgdGhl
+bSBtb3ZlZCBvdXQgaW50byB0aGUgQ2xvY2stTWFuYWdlbWVudC1Vbml0IG9mIHRoZSBTb0MgLQo+
+PiBqdXN0IGhvdyBpdCBzaG91bGQgYmUuCj4+IEluIG9yZGVyIHRvIGhhdmUgY29tbW9uIEFQSSwg
+d2UgbmVlZCB0byBoYWNrIGNsb2NrLWFwaSB0byBtYW5pcHVsYXRlCj4+IFNQSSBjb250cm9sbGVy
+Cj4+IHJlZ2lzdGVycyBvdXRzaWRlIG9mIHRoZSBTUEkgZHJpdmVyIGZvciBvbGRlciBTUElzLi4u
+LiB3aGljaCB3b3VsZG4ndAo+PiBiZSB2ZXJ5IG5pY2UgdG8gc2VlLgo+PiBhbnkgc3VnZ2VzdGlv
+biBpcyB3ZWxjb21lLCB0aG91Z2guCj4KPiBGYWlyIGVub3VnaCwgbm90IGFuIGlkZWFsIHNpdHVh
+dGlvbiByZWdhcmRsZXNzIG9mIHRoZSBhcHByb2FjaC4gwqBZb3VyIGFwcHJvYWNoIGlzIHByb2Jh
+Ymx5IGJldHRlciB0aGVuLgoKT2ssIEkgYW0gcmVzZW5kaW5nIGFmdGVyIHNxdWFzaGluZyBpdCB3
+aXRoIDUvNgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IERldjJEZXYgZW1haWwg
+aXMgc3BvbnNvcmVkIGJ5OgoKU2hvdyBvZmYgeW91ciBwYXJhbGxlbCBwcm9ncmFtbWluZyBza2ls
+bHMuCkVudGVyIHRoZSBJbnRlbChSKSBUaHJlYWRpbmcgQ2hhbGxlbmdlIDIwMTAuCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvaW50ZWwtdGhyZWFkLXNmZApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
+Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

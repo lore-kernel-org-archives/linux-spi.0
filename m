@@ -1,13 +1,17 @@
-From: "Raquel" <uygitag7578-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org>
-Subject: [SPAM] Top Goods for ED Treatment
-Date: Wed, 8 Sep 2010 21:04:30 -0300
-Message-ID: <r7364j1ak5503@localhost.localdomain>
-Reply-To: uygitag7578-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org
+From: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCHv2 2/6] SPI: S3C64XX: Prevent unnecessary map-unmap
+Date: Thu,  9 Sep 2010 10:15:53 +0900
+Message-ID: <1283994953-24025-1-git-send-email-jassi.brar@samsung.com>
+References: <1OtV3x-0001Yl-Ss>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1OtV3x-0001Yl-Ss>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,7 +22,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://web122833.rex14.flatbooster.com/bended52.html
+Since we use DMA mode only for xfers bigger than FIFO size,
+do not map/unmap buffers for polling mode transfers.
+
+Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi_s3c64xx.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
+index 774e861..12e7915 100644
+--- a/drivers/spi/spi_s3c64xx.c
++++ b/drivers/spi/spi_s3c64xx.c
+@@ -492,6 +492,7 @@ void s3c64xx_spi_dma_txcb(struct s3c2410_dma_chan *chan, void *buf_id,
+ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 						struct spi_message *msg)
+ {
++	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+ 	struct device *dev = &sdd->pdev->dev;
+ 	struct spi_transfer *xfer;
+ 
+@@ -507,6 +508,9 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 	/* Map until end or first fail */
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 
++		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
++			continue;
++
+ 		if (xfer->tx_buf != NULL) {
+ 			xfer->tx_dma = dma_map_single(dev,
+ 					(void *)xfer->tx_buf, xfer->len,
+@@ -538,6 +542,7 @@ static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
+ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 						struct spi_message *msg)
+ {
++	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+ 	struct device *dev = &sdd->pdev->dev;
+ 	struct spi_transfer *xfer;
+ 
+@@ -546,6 +551,9 @@ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 
++		if (xfer->len <= ((sci->fifo_lvl_mask >> 1) + 1))
++			continue;
++
+ 		if (xfer->rx_buf != NULL
+ 				&& xfer->rx_dma != XFER_DMAADDR_INVALID)
+ 			dma_unmap_single(dev, xfer->rx_dma,
+-- 
+1.6.2.5
+
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:

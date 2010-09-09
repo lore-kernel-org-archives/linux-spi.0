@@ -1,8 +1,8 @@
-From: "Chloe" <daxuai8500-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Erection Remedies on-line
-Date: Thu, 9 Sep 2010 12:01:36 +0300
-Message-ID: <46f530428101i@localhost.localdomain>
-Reply-To: daxuai8500-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org
+From: "Whitney" <dykad4739-tpTpht9bPjVmR6Xm/wNWPw@public.gmane.org>
+Subject: [SPAM] Viagra's trusted Source online
+Date: Thu, 9 Sep 2010 11:32:43 +0200
+Message-ID: <u386h376x9bmy@localhost.localdomain>
+Reply-To: dykad4739-tpTpht9bPjVmR6Xm/wNWPw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://www4.ocn.ne.jp/~bmsfit/jesuit29.html
+http://cafes.s17.xrea.com/blase86.html
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:

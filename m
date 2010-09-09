@@ -1,22 +1,16 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [PATCH] spi: add a bits_per_word to struct spi_board_info
-Date: Wed, 8 Sep 2010 21:18:27 -0600
-Message-ID: <20100909031827.GA10389@angua.secretlab.ca>
-References: <20100902100128.5d5b7d87@feng-i7>
-	<930634.1250.qm@web180310.mail.gq1.yahoo.com>
-	<20100902141348.669aa817@feng-i7>
-	<20100908202159.GG7065@angua.secretlab.ca>
-	<20100909111445.47145de9@feng-i7>
+Date: Wed, 8 Sep 2010 20:48:22 -0700 (PDT)
+Message-ID: <570796.22556.qm@web180308.mail.gq1.yahoo.com>
+References: <20100909031827.GA10389@angua.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20100909111445.47145de9@feng-i7>
+In-Reply-To: <20100909031827.GA10389-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,62 +21,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 09, 2010 at 11:14:45AM +0800, Feng Tang wrote:
-> Hi Grant,
-> 
-> On Thu, 9 Sep 2010 04:21:59 +0800
-> Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> 
-> > > > 
-> > > >  Yes, driver itself
-> > > > > know the bits_per_word info best in most case, but there
-> > > > > is
-> > > > > some device (Option GTM501L spi modem) which supports
-> > > > > multiple
-> > > > > bits_per_mode option, and here platform code
-> > > > is the good place to set it.
-> > > > 
-> > > > 
-> > > > Not unless it knows which mode the driver uses...
-> > > > a kind of layering violation.
-> > > 
-> > > spi_board_info has a member of "mode", so for my platform, I prefer
-> > > to set all these infos in platform code, while protocol driver can
-> > > check if the preset infos like speed_hz/mode/bits_per_word are
-> > > supported.
-> > 
-> > The real problem is that spi_drivers are normally allowed to change
-> > bits_per_word as needed. 
-> 
-> For drivers who don't accept bits_per_word comes from platform code, it
-> could just ignores it and set the value it wants.
-> 
-> > If the spi_driver gets unbound and
-> > rebound, then the original platform-set value for bits_per_word is
-> > lost and the behaviour changes.  
-> 
-> Um, if you are talking about driver load/unload, then the bits_per_word
-> info won't get lost as it is set to spi_device from spi_board_info when
-> spi_new_device get called.
+You know, in retrospect, I shouldn't have put
+most of those SPI device setup params into the
+board setup data.
 
-No, I'm talking about a specific device's spi_driver being unloaded
-and reloaded.  spi_new_device would only be called if the spi bus
-driver was reloaded, triggering a call to spi_register_master().
+There's one which MUST be there:  polarity of
+the chip select line.  The rest seem like they
+could (and arguably should) all be handled by
+driver-specific params.  (Possible exception:
+clock rate, which sometimes matters even when
+chips are not selected).
 
-> > If you really want to give the driver
-> > hints about the best setting for bits_per_word or similar, then you
-> > should probably use a driver-specific pdata structure.
-> 
-> Good point, really a solution to the GTM501L modem driver. But still,
-> adding the bits_per_word to spi_board_info will be more generic when
-> more devices which support multiple bits models show up.
+At any rate, adding MORE driver-specific params
+(like bits-per-word) to board setup data seems
+like the wrong direction to go...
 
-As described above, anything that a driver can legally modify cannot
-be "preset" by the platform code because the initial preset values
-will get lost.  A different mechanism must be used so that initial
-conditions remain unchanged between successive binding of a driver.
 
-g.
 
 ------------------------------------------------------------------------------
 This SF.net Dev2Dev email is sponsored by:

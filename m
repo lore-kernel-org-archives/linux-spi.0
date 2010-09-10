@@ -1,11 +1,11 @@
-From: 13642347266-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Fri, 10 Sep 2010 19:55:24 +0800
-Message-ID: <E1Ou2Be-0004QX-Dm@sfs-ml-4.v29.ch3.sourceforge.com>
+From: =?ISO-8859-1?Q?Fl=E1vio_Alberto_Lopes_Soares?= <flavioalsoares-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Analog Digital Converter - ADS1256 extreme newbie questions
+Date: Fri, 10 Sep 2010 10:11:35 -0300
+Message-ID: <AANLkTi=iQVwpd-PymaWSKapfntmf4aRrt51Jutsz=D_g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,15 +17,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
-w7eioaqhqsaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6ICAKICAg
-ICAgICC4utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-QXV0b21hdGUgU3RvcmFnZSBUaWVyaW5nIFNpbXBseQpPcHRpbWl6ZSBJVCBwZXJmb3JtYW5jZSBh
-bmQgZWZmaWNpZW5jeSB0aHJvdWdoIGZsZXhpYmxlLCBwb3dlcmZ1bCwgCmF1dG9tYXRlZCBzdG9y
-YWdlIHRpZXJpbmcgY2FwYWJpbGl0aWVzLiBWaWV3IHRoaXMgYnJpZWYgdG8gbGVhcm4gaG93Cnlv
-dSBjYW4gcmVkdWNlIGNvc3RzIGFuZCBpbXByb3ZlIHBlcmZvcm1hbmNlLiAKaHR0cDovL3Auc2Yu
-bmV0L3NmdS9kZWxsLXNmZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hello all,
+I'm working 9 years as a Linux C/C++ programmer but I spent 99,9% of this
+time working in user space programming, now I need to write a driver to use
+the ADS1256 Analog-Digital converter (
+http://focus.ti.com/docs/prod/folders/print/ads1256.html ) in an ARM board
+using S3C2440 processor, my lecture start point
+was Documentation/spi/spi-sumary from 2.6.32.2 kernel tree version and
+drivers/misc/eeprom/at25.c code (this is an eeprom driver but I want look
+the SPI general view), reading the text and the code I found some conceptual
+doubts, my initial idea was create a character device driver and attach the
+device read operation with a ADS1256 start lecture and pass the ADC channel
+data to this device, this concept is correct ? There's some standard
+interface to do this if my idea is wrong ?
+
+Looking in at25.c in at25_probe(struct spi_device *spi) function this
+"struct spi_device *spi" parameter represents the S3C2440 SPI controller and
+came from SPI core subsystem ? If yes how the SPI controller knows that this
+is an eeprom device in the snippet bellow ?
+...
+const struct spi_eeprom *chip;
+...
+/* Chip description */
+chip =3D spi->dev.platform_data;
+
+who provides this platform_data structure and who knows it must be a struct
+spi_eeprom object ?
+
+Thanks for all help
+
+Fl=E1vio Alberto Lopes Soares
+---------------------------------------------------------------------------=
+---
+Automate Storage Tiering Simply
+Optimize IT performance and efficiency through flexible, powerful, =
+
+automated storage tiering capabilities. View this brief to learn how
+you can reduce costs and improve performance. =
+
+http://p.sf.net/sfu/dell-sfdev2dev

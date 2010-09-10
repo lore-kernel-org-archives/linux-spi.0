@@ -1,162 +1,79 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/6] SPI: S3C64XX: Correction for 16,32 bits bus width
-Date: Fri, 10 Sep 2010 12:00:16 -0600
-Message-ID: <20100910180016.GF11284@angua.secretlab.ca>
-References: <20100909160051.GA6273@angua.secretlab.ca>
-	<1284076549-17715-1-git-send-email-jassi.brar@samsung.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 0/5] OMAP: McSPI: Implement McSPI in HWMOD way
+Date: Fri, 10 Sep 2010 13:24:33 -0600
+Message-ID: <20100910192433.GJ11284@angua.secretlab.ca>
+References: <1281708323-18989-1-git-send-email-charu@ti.com>
+ <AANLkTikS0tX3GA+1LXnqbZYuuWteOTq7dH13i-icKYD2@mail.gmail.com>
+ <87fwyacd9w.fsf@deeprootsystems.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
-To: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Charulatha V <charu@ti.com>, linux-omap@vger.kernel.org,
+	paul@pwsan.com, b-cousson@ti.com, tony@atomide.com,
+	dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net, rnayak@ti.com,
+	p-basak2@ti.com, govindraj.raja@ti.com,
+	David Woodhouse <dwmw2@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jeremy Kerr <jeremy.kerr@canonical.com>
+To: Kevin Hilman <khilman@deeprootsystems.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1284076549-17715-1-git-send-email-jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <87fwyacd9w.fsf@deeprootsystems.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 10, 2010 at 08:55:49AM +0900, Jassi Brar wrote:
-> We can't do without setting channel and bus width to
-> same size. Inorder to do that, use loop read/writes in
-> polling mode and appropriate burst size in DMA mode.
+On Thu, Aug 19, 2010 at 05:56:43PM -0700, Kevin Hilman wrote:
+> Grant Likely <grant.likely@secretlab.ca> writes:
 > 
-> Signed-off-by: Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> > On Fri, Aug 13, 2010 at 8:05 AM, Charulatha V <charu@ti.com> wrote:
+> >> This patch series implements McSPI Module in HWMOD FW way
+> >> and use the runtime PM layer.
+> >
+> > Hi Charulatha,
+> >
+> > I'll go through and review the patches, but I'm unfamiliar with HWMOD.
+> > Is there a description of HWMOD that you can point me at?
+> 
+> Hi Grant,
+> 
+> If you want to skip my rambling, the source for omap_hwmod is in mainline:
+> 
+>    arch/arm/mach-omap2/omap_hwmod.c
+>    arch/arm/plat-omap/include/plat/omap_hwmod.h
+> 
+> omap_hwmod is short for OMAP hardware module.  It is essentially a
+> central way of describing each IP block in an OMAP SoC, and the way they
+> are connected together to make an SoC.  An omap_hwmod for a given IP
+> block contains base address, IRQs, DMA channels etc. (as would a device
+> tree node) but also includes information on any master/slave interfaces
+> to model how IP blocks are connected on the SoC and many other details.
 
-applied to -next branch.  Thanks.
+Hi Kevin,
+
+This seems to be a common issue for more than just OMAP SoCs, and I've
+seen a number of approaches to solving it; both internal to the kernel
+(AMBA bus, HWMOD, ad-hoc pdata, etc) and via external data (FDT, SFI).
+It doesn't seem like there is a lot of cross-pollination going on
+either.
+
+I'm thinking about scheduling a discussion in the embedded
+microconference at Plumbers to talk about the encoding and handling of
+SoC and machine interconnection data.  There should be enough examples
+now that we can agree on some common infrastructure for handling these
+kinds of things without inventing new infrastructure from scratch for
+each SoC family.  What do you think?
+
+[...]
+> You see all these changes happening in a single patch because the are
+> quite dependent on one another.  This driver seems to have needed pretty
+> significant cleanup as well, so I agree that this last patch should be
+> broken up into parts.  
+> 
+> I think it could be broken up into at least two parts:
+> cleanup/restructure work to handle more data coming via platform_data,
+> followed by the conversion to runtime PM.
+
+Yes, I like to see refactoring work separated from functional changes
+as much as possible.
 
 g.
-
-> ---
->  drivers/spi/spi_s3c64xx.c |   56 +++++++++++++++++++++++++++++++++------------
->  1 files changed, 41 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx.c
-> index 39816bb..cf45e01 100644
-> --- a/drivers/spi/spi_s3c64xx.c
-> +++ b/drivers/spi/spi_s3c64xx.c
-> @@ -255,15 +255,25 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
->  		chcfg |= S3C64XX_SPI_CH_TXCH_ON;
->  		if (dma_mode) {
->  			modecfg |= S3C64XX_SPI_MODE_TXDMA_ON;
-> -			s3c2410_dma_config(sdd->tx_dmach, 1);
-> +			s3c2410_dma_config(sdd->tx_dmach, sdd->cur_bpw / 8);
->  			s3c2410_dma_enqueue(sdd->tx_dmach, (void *)sdd,
->  						xfer->tx_dma, xfer->len);
->  			s3c2410_dma_ctrl(sdd->tx_dmach, S3C2410_DMAOP_START);
->  		} else {
-> -			unsigned char *buf = (unsigned char *) xfer->tx_buf;
-> -			int i = 0;
-> -			while (i < xfer->len)
-> -				writeb(buf[i++], regs + S3C64XX_SPI_TX_DATA);
-> +			switch (sdd->cur_bpw) {
-> +			case 32:
-> +				iowrite32_rep(regs + S3C64XX_SPI_TX_DATA,
-> +					xfer->tx_buf, xfer->len / 4);
-> +				break;
-> +			case 16:
-> +				iowrite16_rep(regs + S3C64XX_SPI_TX_DATA,
-> +					xfer->tx_buf, xfer->len / 2);
-> +				break;
-> +			default:
-> +				iowrite8_rep(regs + S3C64XX_SPI_TX_DATA,
-> +					xfer->tx_buf, xfer->len);
-> +				break;
-> +			}
->  		}
->  	}
->  
-> @@ -280,7 +290,7 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
->  			writel(((xfer->len * 8 / sdd->cur_bpw) & 0xffff)
->  					| S3C64XX_SPI_PACKET_CNT_EN,
->  					regs + S3C64XX_SPI_PACKET_CNT);
-> -			s3c2410_dma_config(sdd->rx_dmach, 1);
-> +			s3c2410_dma_config(sdd->rx_dmach, sdd->cur_bpw / 8);
->  			s3c2410_dma_enqueue(sdd->rx_dmach, (void *)sdd,
->  						xfer->rx_dma, xfer->len);
->  			s3c2410_dma_ctrl(sdd->rx_dmach, S3C2410_DMAOP_START);
-> @@ -360,20 +370,26 @@ static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
->  				return -EIO;
->  		}
->  	} else {
-> -		unsigned char *buf;
-> -		int i;
-> -
->  		/* If it was only Tx */
->  		if (xfer->rx_buf == NULL) {
->  			sdd->state &= ~TXBUSY;
->  			return 0;
->  		}
->  
-> -		i = 0;
-> -		buf = xfer->rx_buf;
-> -		while (i < xfer->len)
-> -			buf[i++] = readb(regs + S3C64XX_SPI_RX_DATA);
-> -
-> +		switch (sdd->cur_bpw) {
-> +		case 32:
-> +			ioread32_rep(regs + S3C64XX_SPI_RX_DATA,
-> +				xfer->rx_buf, xfer->len / 4);
-> +			break;
-> +		case 16:
-> +			ioread16_rep(regs + S3C64XX_SPI_RX_DATA,
-> +				xfer->rx_buf, xfer->len / 2);
-> +			break;
-> +		default:
-> +			ioread8_rep(regs + S3C64XX_SPI_RX_DATA,
-> +				xfer->rx_buf, xfer->len);
-> +			break;
-> +		}
->  		sdd->state &= ~RXBUSY;
->  	}
->  
-> @@ -423,15 +439,17 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
->  	switch (sdd->cur_bpw) {
->  	case 32:
->  		val |= S3C64XX_SPI_MODE_BUS_TSZ_WORD;
-> +		val |= S3C64XX_SPI_MODE_CH_TSZ_WORD;
->  		break;
->  	case 16:
->  		val |= S3C64XX_SPI_MODE_BUS_TSZ_HALFWORD;
-> +		val |= S3C64XX_SPI_MODE_CH_TSZ_HALFWORD;
->  		break;
->  	default:
->  		val |= S3C64XX_SPI_MODE_BUS_TSZ_BYTE;
-> +		val |= S3C64XX_SPI_MODE_CH_TSZ_BYTE;
->  		break;
->  	}
-> -	val |= S3C64XX_SPI_MODE_CH_TSZ_BYTE; /* Always 8bits wide */
->  
->  	writel(val, regs + S3C64XX_SPI_MODE_CFG);
->  
-> @@ -610,6 +628,14 @@ static void handle_msg(struct s3c64xx_spi_driver_data *sdd,
->  		bpw = xfer->bits_per_word ? : spi->bits_per_word;
->  		speed = xfer->speed_hz ? : spi->max_speed_hz;
->  
-> +		if (xfer->len % (bpw / 8)) {
-> +			dev_err(&spi->dev,
-> +				"Xfer length(%u) not a multiple of word size(%u)\n",
-> +				xfer->len, bpw / 8);
-> +			status = -EIO;
-> +			goto out;
-> +		}
-> +
->  		if (bpw != sdd->cur_bpw || speed != sdd->cur_speed) {
->  			sdd->cur_bpw = bpw;
->  			sdd->cur_speed = speed;
-> -- 
-> 1.6.2.5
-> 
-
-------------------------------------------------------------------------------
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing
-http://p.sf.net/sfu/novell-sfdev2dev

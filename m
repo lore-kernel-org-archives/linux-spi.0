@@ -1,79 +1,27 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/5] OMAP: McSPI: Implement McSPI in HWMOD way
-Date: Fri, 10 Sep 2010 13:24:33 -0600
-Message-ID: <20100910192433.GJ11284@angua.secretlab.ca>
-References: <1281708323-18989-1-git-send-email-charu@ti.com>
- <AANLkTikS0tX3GA+1LXnqbZYuuWteOTq7dH13i-icKYD2@mail.gmail.com>
- <87fwyacd9w.fsf@deeprootsystems.com>
+From: "Reid" <iheiba6692-N76eRJAzP2EMeUYST6yb8A@public.gmane.org>
+Subject: Top Erection Meds online
+Date: Fri, 10 Sep 2010 22:04:15 +0200
+Message-ID: <68f38mt7bv87b@localhost.localdomain>
+Reply-To: iheiba6692-N76eRJAzP2EMeUYST6yb8A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Charulatha V <charu@ti.com>, linux-omap@vger.kernel.org,
-	paul@pwsan.com, b-cousson@ti.com, tony@atomide.com,
-	dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net, rnayak@ti.com,
-	p-basak2@ti.com, govindraj.raja@ti.com,
-	David Woodhouse <dwmw2@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jeremy Kerr <jeremy.kerr@canonical.com>
-To: Kevin Hilman <khilman@deeprootsystems.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <87fwyacd9w.fsf@deeprootsystems.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 19, 2010 at 05:56:43PM -0700, Kevin Hilman wrote:
-> Grant Likely <grant.likely@secretlab.ca> writes:
-> 
-> > On Fri, Aug 13, 2010 at 8:05 AM, Charulatha V <charu@ti.com> wrote:
-> >> This patch series implements McSPI Module in HWMOD FW way
-> >> and use the runtime PM layer.
-> >
-> > Hi Charulatha,
-> >
-> > I'll go through and review the patches, but I'm unfamiliar with HWMOD.
-> > Is there a description of HWMOD that you can point me at?
-> 
-> Hi Grant,
-> 
-> If you want to skip my rambling, the source for omap_hwmod is in mainline:
-> 
->    arch/arm/mach-omap2/omap_hwmod.c
->    arch/arm/plat-omap/include/plat/omap_hwmod.h
-> 
-> omap_hwmod is short for OMAP hardware module.  It is essentially a
-> central way of describing each IP block in an OMAP SoC, and the way they
-> are connected together to make an SoC.  An omap_hwmod for a given IP
-> block contains base address, IRQs, DMA channels etc. (as would a device
-> tree node) but also includes information on any master/slave interfaces
-> to model how IP blocks are connected on the SoC and many other details.
+http://www.firstchoiceohio.com/impure16.html
 
-Hi Kevin,
-
-This seems to be a common issue for more than just OMAP SoCs, and I've
-seen a number of approaches to solving it; both internal to the kernel
-(AMBA bus, HWMOD, ad-hoc pdata, etc) and via external data (FDT, SFI).
-It doesn't seem like there is a lot of cross-pollination going on
-either.
-
-I'm thinking about scheduling a discussion in the embedded
-microconference at Plumbers to talk about the encoding and handling of
-SoC and machine interconnection data.  There should be enough examples
-now that we can agree on some common infrastructure for handling these
-kinds of things without inventing new infrastructure from scratch for
-each SoC family.  What do you think?
-
-[...]
-> You see all these changes happening in a single patch because the are
-> quite dependent on one another.  This driver seems to have needed pretty
-> significant cleanup as well, so I agree that this last patch should be
-> broken up into parts.  
-> 
-> I think it could be broken up into at least two parts:
-> cleanup/restructure work to handle more data coming via platform_data,
-> followed by the conversion to runtime PM.
-
-Yes, I like to see refactoring work separated from functional changes
-as much as possible.
-
-g.
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing
+http://p.sf.net/sfu/novell-sfdev2dev

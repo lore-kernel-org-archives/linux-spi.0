@@ -1,154 +1,70 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+From: =?iso-8859-15?Q?Lothar_Wa=DFmann?= <LW-bxm8fMRDkQLDiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
 Subject: Re: [PATCH 2/6] i.MX5/clock: add eCSPI and CSPI clock definitions
-Date: Fri, 10 Sep 2010 11:47:14 +0200
-Message-ID: <20100910094714.GF30558@pengutronix.de>
+Date: Fri, 10 Sep 2010 12:04:33 +0200
+Message-ID: <19594.689.326396.859751@ipc1.ka-ro>
 References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
 	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
 	<20100902150112.GM14214@pengutronix.de>
 	<4C809410.9090602@gmail.com>
+	<20100910094714.GF30558@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	s.hauer@pengutronix.de, amit.kucheria@canonical.com,
-	linux-arm-kernel@lists.infradead.org
-To: Jason Wang <jason77.wang@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <4C809410.9090602@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	amit.kucheria-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100910094714.GF30558-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Jason,
+Hi,
 
-I currently merge your and our patch set.  Will follow up with the
-result hopefully later today.
+Uwe Kleine-K=F6nig writes:
+> >>> +static struct clk ecspi2_ipg_clk =3D {
+> >>> +	.parent =3D &ipg_clk,
+> >>> +	.secondary =3D &aips_tz2_clk,
+> >>> +	.enable_reg =3D MXC_CCM_CCGR4,
+> >>> +	.enable_shift =3D MXC_CCM_CCGRx_CG11_OFFSET,
+> >>> +	.enable =3D _clk_ccgr_enable_inrun,
+> >>> +	.disable =3D _clk_ccgr_disable,
+> >>> +};
+> aips_tz2_clk is wrong here, no?  Sascha used spba_clk here, too.  I
+> didn't found out yet how to read that out of the reference manual.
+> =
 
-On Fri, Sep 03, 2010 at 02:22:08PM +0800, Jason Wang wrote:
->>>  @@ -52,6 +53,18 @@ static int _clk_ccgr_enable(struct clk *clk)
->>>  	return 0;
->>>  }
->>>  +static int _clk_ccgr_enable_inrun(struct clk *clk)
->>> +{
->>> +	u32 reg;
->>> +
->>> +	reg =3D __raw_readl(clk->enable_reg);
->>> +	reg &=3D ~(MXC_CCM_CCGRx_CG_MASK << clk->enable_shift);
->>> +	reg |=3D MXC_CCM_CCGRx_MOD_IDLE << clk->enable_shift;
->>> +	__raw_writel(reg, clk->enable_reg);
->>> +
->>> +	return 0;
->>> +}
->>> +
->>>     =
+The Freescale BSP used aips_tz2_clk (and spba for cspi1). They should
+know what's right. Maybe a copy/paste error from Sascha?
 
->> imho this should be consolidated in something like:
->>
->> static int _clk_ccgr_setclk(struct clk *clk, unsigned mode)
->> {
->> 	...
->> }
->>
->> #define _clk_ccgr_enable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_ON)
->> #define _clk_ccgr_disable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_O=
-FF)
->> #define _clk_ccgr_enable_inrun(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_=
-MOD_IDLE)
->>
->>   =
 
-> It makes  code more concise. On the other hand, too many macros will
-> add troubles when we use kgdb to perform sourcecode-level debug.
-Using macros doesn't work here, as they are used as callbacks.  Still
-made it with functions.  Then (apart from the return value)
-_clk_ccgr_enable_inrun and _clk_ccgr_disable_inwait are identically.
-I wonder if this is intended?
-
-> Anyway, i agree your suggestion.
->>>  static void _clk_ccgr_disable(struct clk *clk)
->>>  {
->>>  	u32 reg;
->>> @@ -762,6 +775,61 @@ static struct clk kpp_clk =3D {
->>>  	.id =3D 0,
->>>  };
->>>  +/* eCSPI */
->>> +static unsigned long _clk_ecspi_getrate(struct clk *clk)
->>> +{
->>> +	u32 reg, prediv, podf;
->>> +	unsigned long ret;
->>> +
->>> +	reg =3D __raw_readl(MXC_CCM_CSCDR2);
->>> +	prediv =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PRED_MASK) >>
->>> +		  MXC_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET) + 1;
->>> +	if (prediv =3D=3D 1)
->>> +		BUG();
->>> +	podf =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PODF_MASK) >>
->>> +		MXC_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET) + 1;
->>> +
->>> +	ret =3D clk_get_rate(clk->parent) / (prediv * podf);
->>> +	return ret;
->>> +}
->>> +
->>> +static int _clk_ecspi_set_parent(struct clk *clk, struct clk *parent)
->>> +{
->>> +	u32 reg, mux;
->>> +
->>> +	mux =3D _get_mux(parent, &pll1_sw_clk, &pll2_sw_clk, &pll3_sw_clk,
->>> +		       &lp_apm_clk);
->>> +	reg =3D __raw_readl(MXC_CCM_CSCMR1) & ~MXC_CCM_CSCMR1_CSPI_CLK_SEL_MA=
-SK;
->>> +	reg |=3D mux << MXC_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET;
->>> +	__raw_writel(reg, MXC_CCM_CSCMR1);
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static struct clk ecspi_main_clk =3D {
->>> +	.parent =3D &pll3_sw_clk,
->>> +	.get_rate =3D _clk_ecspi_getrate,
->>> +	.set_parent =3D _clk_ecspi_set_parent,
->>>     =
-
->> Sascha didn't implement set_parent
->>
->>   =
-
-> ecspi really can change parent root clock.
->>> +};
->>> +
->>> +static struct clk ecspi1_ipg_clk =3D {
->>> +	.parent =3D &ipg_clk,
->>> +	.secondary =3D &spba_clk,
->>> +	.enable_reg =3D MXC_CCM_CCGR4,
->>> +	.enable_shift =3D MXC_CCM_CCGRx_CG9_OFFSET,
->>> +	.enable =3D _clk_ccgr_enable_inrun,
->>> +	.disable =3D _clk_ccgr_disable,
->>> +};
->>> +
->>> +static struct clk ecspi2_ipg_clk =3D {
->>> +	.parent =3D &ipg_clk,
->>> +	.secondary =3D &aips_tz2_clk,
->>> +	.enable_reg =3D MXC_CCM_CCGR4,
->>> +	.enable_shift =3D MXC_CCM_CCGRx_CG11_OFFSET,
->>> +	.enable =3D _clk_ccgr_enable_inrun,
->>> +	.disable =3D _clk_ccgr_disable,
->>> +};
-aips_tz2_clk is wrong here, no?  Sascha used spba_clk here, too.  I
-didn't found out yet how to read that out of the reference manual.
-
-Best regards
-Uwe
-
+Lothar Wa=DFmann
 -- =
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+___________________________________________________________
+
+Ka-Ro electronics GmbH | Pascalstra=DFe 22 | D - 52076 Aachen
+Phone: +49 2408 1402-0 | Fax: +49 2408 1402-10
+Gesch=E4ftsf=FChrer: Matthias Kaussen
+Handelsregistereintrag: Amtsgericht Aachen, HRB 4996
+
+www.karo-electronics.de | info-AvR2QvxeiV7DiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org
+___________________________________________________________
+
+---------------------------------------------------------------------------=
+---
+Automate Storage Tiering Simply
+Optimize IT performance and efficiency through flexible, powerful, =
+
+automated storage tiering capabilities. View this brief to learn how
+you can reduce costs and improve performance. =
+
+http://p.sf.net/sfu/dell-sfdev2dev

@@ -1,8 +1,8 @@
-From: "Antonia" <diabyx2425-yR6380LUlaXR7s880joybQ@public.gmane.org>
-Subject: [SPAM] Viagra resellers' community
-Date: Sat, 11 Sep 2010 13:10:52 +0100
-Message-ID: <y65a4l84wsw67@localhost.localdomain>
-Reply-To: diabyx2425-yR6380LUlaXR7s880joybQ@public.gmane.org
+From: "Jami" <ucure6336-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org>
+Subject: [SPAM] SexMeds pharmaceutical store
+Date: Sat, 11 Sep 2010 09:47:35 -0300
+Message-ID: <445s83q29621k@localhost.localdomain>
+Reply-To: ucure6336-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://www.pharmacyti.info/
+http://www.frpharmacy.info/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

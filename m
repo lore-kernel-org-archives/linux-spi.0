@@ -1,12 +1,11 @@
-From: "Jami" <ucure6336-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org>
-Subject: [SPAM] SexMeds pharmaceutical store
-Date: Sat, 11 Sep 2010 09:47:35 -0300
-Message-ID: <445s83q29621k@localhost.localdomain>
-Reply-To: ucure6336-Cnz8r0zykOy7IZFHOwGKKw@public.gmane.org
+From: "Securitas Direct par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Profitez de la rentree en toute securite
+Date: Sat, 11 Sep 2010 17:25:42 +0200 (CEST)
+Message-ID: <l8l9iq.6j5jmn@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,7 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://www.frpharmacy.info/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

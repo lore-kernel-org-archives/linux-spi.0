@@ -1,12 +1,12 @@
-From: <otalej5270-Z2KA3vgWHWqsTnJN9+BGXg@public.gmane.org>
-Subject: [SPAM] A 9 inch monster is foreplay enough
-Date: Sun, 12 Sep 2010 14:39:26 +0300
-Message-ID: <E1OukuC-0001YF-F4@sfs-ml-4.v29.ch3.sourceforge.com>
-Reply-To: otalej5270-Z2KA3vgWHWqsTnJN9+BGXg@public.gmane.org
+From: "Tyree" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Web-Portal with Viagra
+Date: Sun, 12 Sep 2010 12:57:18 +0100
+Message-ID: <x36cz72cshzd8@localhost.localdomain>
+Reply-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,8 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-A 9 inch monster is foreplay enough
-http://www.bowjudge.ru/
+http://www.doctorem.info/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

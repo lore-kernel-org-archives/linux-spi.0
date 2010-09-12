@@ -1,12 +1,12 @@
-From: "Voyage =?ISO-8859-1?Q?priv=E9?= par Plein Temps"
-	<privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Reservez vos plus beaux voyages à tarif reduit!
-Date: Sun, 12 Sep 2010 17:27:50 +0200 (CEST)
-Message-ID: <l8n4h9.yolr4t@front02.r7g.com>
+From: "Marguerita" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] Web-ordering of anti-ed
+Date: Sun, 12 Sep 2010 23:42:31 +0530
+Message-ID: <8465uc50z57om@localhost.localdomain>
+Reply-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://www.doctorbh.info/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

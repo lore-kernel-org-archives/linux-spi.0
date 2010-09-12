@@ -1,11 +1,12 @@
-From: "Securitas Direct par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Profitez de la rentree en toute securite
-Date: Sat, 11 Sep 2010 17:25:42 +0200 (CEST)
-Message-ID: <l8l9iq.6j5jmn@front07.g7r9.com>
+From: "Ervin" <uyolij9701-DiTQsDXNiww@public.gmane.org>
+Subject: [SPAM] Affordable prices on Viagra
+Date: Sun, 12 Sep 2010 10:33:26 +0900
+Message-ID: <6462u993v99d2@localhost.localdomain>
+Reply-To: uyolij9701-DiTQsDXNiww@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,6 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+http://www.doctorwa.info/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

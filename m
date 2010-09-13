@@ -1,191 +1,92 @@
-From: Jason Wang <jason77.wang@gmail.com>
-Subject: Re: [PATCH 2/6] i.MX5/clock: add eCSPI and CSPI clock definitions
-Date: Mon, 13 Sep 2010 11:31:12 +0800
-Message-ID: <4C8D9B00.8080004@gmail.com>
-References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
-	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
-	<20100902150112.GM14214@pengutronix.de>
-	<4C809410.9090602@gmail.com>
-	<20100910094714.GF30558@pengutronix.de>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: [git pull] spi and OF fixes
+Date: Sun, 12 Sep 2010 23:28:33 -0600
+Message-ID: <AANLkTik6ntBGd=qVEkN=asARVJs41ww8pR5Wr6Z1n1Lc@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
-Content-Transfer-Encoding: quoted-printable
-Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
-	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100910094714.GF30558@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Jassi Brar <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	devicetree-discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, "Wang,
+	Yong Y" <yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Julia Lawall <julia-dAYI7NvHqcQ@public.gmane.org>,
+	Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Uwe Kleine-K=F6nig wrote:
-> Hello Jason,
->
-> I currently merge your and our patch set.  Will follow up with the
-> result hopefully later today.
->
-> On Fri, Sep 03, 2010 at 02:22:08PM +0800, Jason Wang wrote:
->   =
+Hi Linus,
 
->>>>  @@ -52,6 +53,18 @@ static int _clk_ccgr_enable(struct clk *clk)
->>>>  	return 0;
->>>>  }
->>>>  +static int _clk_ccgr_enable_inrun(struct clk *clk)
->>>> +{
->>>> +	u32 reg;
->>>> +
->>>> +	reg =3D __raw_readl(clk->enable_reg);
->>>> +	reg &=3D ~(MXC_CCM_CCGRx_CG_MASK << clk->enable_shift);
->>>> +	reg |=3D MXC_CCM_CCGRx_MOD_IDLE << clk->enable_shift;
->>>> +	__raw_writel(reg, clk->enable_reg);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>>     =
+Here's a double handfull of SPI and OF (ll_temac, gpiolib, 52xx_uart).
+ Should be nothing eyebrow raising here.
 
->>>>         =
+g.
 
->>> imho this should be consolidated in something like:
->>>
->>> static int _clk_ccgr_setclk(struct clk *clk, unsigned mode)
->>> {
->>> 	...
->>> }
->>>
->>> #define _clk_ccgr_enable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_O=
-N)
->>> #define _clk_ccgr_disable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_=
-OFF)
->>> #define _clk_ccgr_enable_inrun(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx=
-_MOD_IDLE)
->>>
->>>   =
+The following changes since commit be6200aac985e0a3db56ec636763a32f3e32e7f1:
+  Linus Torvalds (1):
+        Merge branch 'kvm-updates/2.6.36' of
+git://git.kernel.org/pub/scm/virt/kvm/kvm
 
->>>       =
+are available in the git repository at:
 
->> It makes  code more concise. On the other hand, too many macros will
->> add troubles when we use kgdb to perform sourcecode-level debug.
->>     =
+  git://git.secretlab.ca/git/linux-2.6 next-spi
 
-> Using macros doesn't work here, as they are used as callbacks.  Still
-> made it with functions.  Then (apart from the return value)
-> _clk_ccgr_enable_inrun and _clk_ccgr_disable_inwait are identically.
-> I wonder if this is intended?
->
->   =
+Anton Vorontsov (1):
+      gpiolib: Add 'struct gpio_chip' forward declaration for !GPIOLIB case
 
-This is from Freescale's original design.
+David Lamparter (1):
+      spi: free children in spi_unregister_master, not siblings
 
-enalble_inrun =3D disable_inwait  =3D paritial enable =3D partial disable.
-(clock is enable in free run mode, while is disable in wait/stop mode.)
+Feng Tang (1):
+      spi/dw_spi: clean the cs_control code
 
-This function can be both an enable callback and a disable callback.
-I guess that assign this function two names just for logic clear.
->> Anyway, i agree your suggestion.
->>     =
+Jassi Brar (2):
+      spi/s3c64xx: Fix compilation warning
+      spi/s3c64xx: Fix incorrect reuse of 'val' local variable.
 
->>>>  static void _clk_ccgr_disable(struct clk *clk)
->>>>  {
->>>>  	u32 reg;
->>>> @@ -762,6 +775,61 @@ static struct clk kpp_clk =3D {
->>>>  	.id =3D 0,
->>>>  };
->>>>  +/* eCSPI */
->>>> +static unsigned long _clk_ecspi_getrate(struct clk *clk)
->>>> +{
->>>> +	u32 reg, prediv, podf;
->>>> +	unsigned long ret;
->>>> +
->>>> +	reg =3D __raw_readl(MXC_CCM_CSCDR2);
->>>> +	prediv =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PRED_MASK) >>
->>>> +		  MXC_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET) + 1;
->>>> +	if (prediv =3D=3D 1)
->>>> +		BUG();
->>>> +	podf =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PODF_MASK) >>
->>>> +		MXC_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET) + 1;
->>>> +
->>>> +	ret =3D clk_get_rate(clk->parent) / (prediv * podf);
->>>> +	return ret;
->>>> +}
->>>> +
->>>> +static int _clk_ecspi_set_parent(struct clk *clk, struct clk *parent)
->>>> +{
->>>> +	u32 reg, mux;
->>>> +
->>>> +	mux =3D _get_mux(parent, &pll1_sw_clk, &pll2_sw_clk, &pll3_sw_clk,
->>>> +		       &lp_apm_clk);
->>>> +	reg =3D __raw_readl(MXC_CCM_CSCMR1) & ~MXC_CCM_CSCMR1_CSPI_CLK_SEL_M=
-ASK;
->>>> +	reg |=3D mux << MXC_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET;
->>>> +	__raw_writel(reg, MXC_CCM_CSCMR1);
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
->>>> +static struct clk ecspi_main_clk =3D {
->>>> +	.parent =3D &pll3_sw_clk,
->>>> +	.get_rate =3D _clk_ecspi_getrate,
->>>> +	.set_parent =3D _clk_ecspi_set_parent,
->>>>     =
+Julia Lawall (1):
+      powerpc/5200: mpc52xx_uart.c: Add of_node_put to avoid memory leak
 
->>>>         =
+Linus Walleij (2):
+      spi/pl022: fix APB pclk power regression on U300
+      spi/pl022: move probe call to subsys_initcall()
 
->>> Sascha didn't implement set_parent
->>>
->>>   =
+Mark Brown (5):
+      spi/spi_s3c64xx: Make probe more robust against missing board config
+      spi/spi_s3c64xx: Staticise non-exported functions
+      spi/spi_s3c64xx: Move to subsys_initcall()
+      spi/spi_s3c64xx: Increase dead reckoning time in wait_for_xfer()
+      spi/spi_s3c64xx: Warn if PIO transfers time out
 
->>>       =
+Michal Simek (1):
+      of: Fix missing includes - ll_temac
 
->> ecspi really can change parent root clock.
->>     =
+Yong Wang (1):
+      spi/dw_spi: Allow interrupt sharing
 
->>>> +};
->>>> +
->>>> +static struct clk ecspi1_ipg_clk =3D {
->>>> +	.parent =3D &ipg_clk,
->>>> +	.secondary =3D &spba_clk,
->>>> +	.enable_reg =3D MXC_CCM_CCGR4,
->>>> +	.enable_shift =3D MXC_CCM_CCGRx_CG9_OFFSET,
->>>> +	.enable =3D _clk_ccgr_enable_inrun,
->>>> +	.disable =3D _clk_ccgr_disable,
->>>> +};
->>>> +
->>>> +static struct clk ecspi2_ipg_clk =3D {
->>>> +	.parent =3D &ipg_clk,
->>>> +	.secondary =3D &aips_tz2_clk,
->>>> +	.enable_reg =3D MXC_CCM_CCGR4,
->>>> +	.enable_shift =3D MXC_CCM_CCGRx_CG11_OFFSET,
->>>> +	.enable =3D _clk_ccgr_enable_inrun,
->>>> +	.disable =3D _clk_ccgr_disable,
->>>> +};
->>>>         =
+ drivers/net/ll_temac_main.c   |    1 +
+ drivers/net/ll_temac_mdio.c   |    1 +
+ drivers/serial/mpc52xx_uart.c |    1 +
+ drivers/spi/amba-pl022.c      |   16 +++++++++-------
+ drivers/spi/dw_spi.c          |   24 +++++++++++-------------
+ drivers/spi/spi.c             |    9 +++------
+ drivers/spi/spi_s3c64xx.c     |   37 +++++++++++++++++++++++++------------
+ include/linux/gpio.h          |    1 +
+ include/linux/spi/dw_spi.h    |    2 ++
+ 9 files changed, 54 insertions(+), 38 deletions(-)
 
-> aips_tz2_clk is wrong here, no?  Sascha used spba_clk here, too.  I
-> didn't found out yet how to read that out of the reference manual.
->
->   =
-
-Just guess from Freescale original design and "charpter 2 Memory Map" of
-MCIMX51RM.pdf.
-
-eCSPI1 is in the AIPS_TZ1(spba) ip module, while eCSPI2 is in the AIPS_TZ2
-ip module, so they have different "secondary ipg parent clock".
-
-Thanks,
-Jason.
-> Best regards
-> Uwe
->
->   =
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

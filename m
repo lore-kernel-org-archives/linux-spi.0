@@ -1,59 +1,62 @@
-From: Kevin Wells <kevin.wells@nxp.com>
-Subject: RE: amba_pl022 spi->mode fix/cleanup patches
-Date: Mon, 13 Sep 2010 18:52:51 +0200
-Message-ID: <083DF309106F364B939360100EC290F80AD49D5232@eu1rdcrdc1wx030.exi.nxp.com>
-References: <1284135579-13578-1-git-send-email-wellsk40@gmail.com>
- <AANLkTimtR6+TFX8w1_6MEEqbvk5-StkUTn5kKd4q3DeZ@mail.gmail.com>
+From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
+Date: Mon, 13 Sep 2010 19:45:25 -0400
+Message-ID: <4C8EB795.1080607@criticallink.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>	<201008201406.33473.caglarakyuz@gmail.com>	<B85A65D85D7EB246BE421B3FB0FBB59301E8350B45@dbde02.ent.ti.com>	<201008231154.10411.caglarakyuz@gmail.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301E8350E47@dbde02.ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "rabin.vincent@stericsson.com" <rabin.vincent@stericsson.com>,
-	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-	"sameo@linux.intel.com" <sameo@linux.intel.com>,
-	"Lukasz.Baj@tieto.com" <Lukasz.Baj@tieto.com>,
-	"srinidhi.kasagar@stericsson.com" <srinidhi.kasagar@stericsson.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-	"tj@kernel.org" <tj@kernel.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Linus Walleij <linus.ml.walleij@gmail.com>,
-	"wellsk40@gmail.com" <wellsk40@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AANLkTimtR6+TFX8w1_6MEEqbvk5-StkUTn5kKd4q3DeZ@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59301E8350E47-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> 
-> 2010/9/10  <wellsk40@gmail.com>:
-> 
-> > This patch series updates drivers and platforms that depend on the
-> > amba_pl022 driver and use the pl022_config_chip structure for
-> > setting up the SPI mode and data transfer width.
-> 
-> I get regressions from the ab8500-spi.c driver from this patch:
-> 
-> > ssp-pl022 ssp0: ARM PL022 driver, device ID: 0x01080022
-> > pl022: mapped registers from 0x80002000 to d0834000
-> > ab8500-spi spi0.0: unknown chip, revision: 0x80
-> > ab8500-spi: probe of spi0.0 failed with error -22
-> 
-> The 0x80 above used to be 0x00 before these patches.
-> So all of a sudden bit 7 gets set...
-> 
-> I don't know why this happens, probably some flag that used to
-> be set had not been properly propagated in the first patch to alter
-> the AB8500 device registration?
-> 
+Hi Sekhar,
 
-I found a bug in the SPI driver for the SPHA field. This would effect
-SPI mode 1/3 users. Can you please try it once more with the fix?
-(see fix in patch email)
-I was hoping these changes would be very minor, but I have limited
-hardware to do SPI testing without resorting to loopback mode.
+On 08/23/2010 05:30 AM, Nori, Sekhar wrote:
+> On Mon, Aug 23, 2010 at 14:24:10, Caglar Akyuz wrote:
+>> On Monday 23 August 2010 07:28:48 am Nori, Sekhar wrote:
+>>> Hi Caglar,
+>>>
+>>
+>> Hi,
+>>
+>> [...]
+>>
+>>> I have been spending time on this (admittedly on and off) since I wrote
+>>>  that email and have broken down the work into ~20 patches so far. Starting
+>>>  to scratch the DMA related changes right now. So, I guess I am somewhere
+>>>  midway.
+>>>
+>>> I pushed a branch containing the work so far here:
+>>>
+>>> http://arago-project.org/git/projects/?p=linux-davinci.git;a=shortlog;h=ref
+>>> s/heads/davinci-spi-rewrite
+>>>
+>>
 
-Thanks!
-Kevin
+I've been trying to take a peek, but the arago site seems to be flakey lately,
+giving a lot of messages like the one below.  Not sure if you are aware of this.
+
+Looking forward to seeing this...  Thanks!
+
+-Mike
+
+(Arago Error Message).
+XML Parsing Error: undefined entity
+Location: http://arago-project.org/git/projects/?p=linux-davinci.git;a=summary
+Line Number 41, Column 20:<div class="title">&nbsp;</div>
+-------------------^

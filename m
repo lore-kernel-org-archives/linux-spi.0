@@ -1,71 +1,191 @@
-From: Zhjf6-f3E74UdbJl1VXl6HArRg7A@public.gmane.org
-Subject: =?GB2312?B?1Yiy6b+04eGB7euK?=
-Date: Mon, 13 Sep 2010 05:11:36 +0800
-Message-ID: <E1Outpt-00012o-OK@sfs-ml-3.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============6998297313581900253=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: Re: [PATCH 2/6] i.MX5/clock: add eCSPI and CSPI clock definitions
+Date: Mon, 13 Sep 2010 11:31:12 +0800
+Message-ID: <4C8D9B00.8080004@gmail.com>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-2-git-send-email-jason77.wang@gmail.com>
+	<1283413924-14210-3-git-send-email-jason77.wang@gmail.com>
+	<20100902150112.GM14214@pengutronix.de>
+	<4C809410.9090602@gmail.com>
+	<20100910094714.GF30558@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
+	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20100910094714.GF30558@pengutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6998297313581900253==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+Uwe Kleine-K=F6nig wrote:
+> Hello Jason,
+>
+> I currently merge your and our patch set.  Will follow up with the
+> result hopefully later today.
+>
+> On Fri, Sep 03, 2010 at 02:22:08PM +0800, Jason Wang wrote:
+>   =
 
+>>>>  @@ -52,6 +53,18 @@ static int _clk_ccgr_enable(struct clk *clk)
+>>>>  	return 0;
+>>>>  }
+>>>>  +static int _clk_ccgr_enable_inrun(struct clk *clk)
+>>>> +{
+>>>> +	u32 reg;
+>>>> +
+>>>> +	reg =3D __raw_readl(clk->enable_reg);
+>>>> +	reg &=3D ~(MXC_CCM_CCGRx_CG_MASK << clk->enable_shift);
+>>>> +	reg |=3D MXC_CCM_CCGRx_MOD_IDLE << clk->enable_shift;
+>>>> +	__raw_writel(reg, clk->enable_reg);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>>     =
 
+>>>>         =
 
-“五步連貫”股權激勵法--留駐核心人才
+>>> imho this should be consolidated in something like:
+>>>
+>>> static int _clk_ccgr_setclk(struct clk *clk, unsigned mode)
+>>> {
+>>> 	...
+>>> }
+>>>
+>>> #define _clk_ccgr_enable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_O=
+N)
+>>> #define _clk_ccgr_disable(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx_MOD_=
+OFF)
+>>> #define _clk_ccgr_enable_inrun(clk) _clk_ccgr_setclk(clk, MXC_CCM_CCGRx=
+_MOD_IDLE)
+>>>
+>>>   =
 
-2010年10月29--30日 上 海
-2010年11月29--30日 上 海
-2010年12月21--22日 深 圳
- 
-——中國股權激勵第一人薛中行博士主講——爲企業建立最完善的股權激勵方案；
+>>>       =
 
-參加學員均可免費獲贈價值上萬的 《股權激勵方案設計模板》一套（包括股權制
+>> It makes  code more concise. On the other hand, too many macros will
+>> add troubles when we use kgdb to perform sourcecode-level debug.
+>>     =
 
-度管理辦法、股權協議書、股權證書以及其他相關法律文件）。
+> Using macros doesn't work here, as they are used as callbacks.  Still
+> made it with functions.  Then (apart from the return value)
+> _clk_ccgr_enable_inrun and _clk_ccgr_disable_inwait are identically.
+> I wonder if this is intended?
+>
+>   =
 
-◆主 辦 單 位：中華創世紀企業培訓網  www.51pxcn.com
+This is from Freescale's original design.
 
-◆參 課 對 象：企業總裁、董事長、總經理、決策者、人力資源總監、財務總監
+enalble_inrun =3D disable_inwait  =3D paritial enable =3D partial disable.
+(clock is enable in free run mode, while is disable in wait/stop mode.)
 
-及薪資福利經理、中高層管理人員、HR管理從業人員等。
+This function can be both an enable callback and a disable callback.
+I guess that assign this function two names just for logic clear.
+>> Anyway, i agree your suggestion.
+>>     =
 
-◆標 准 費 用：7800元/2天/人（含培訓、指定培訓教材、午餐、茶點費等）
+>>>>  static void _clk_ccgr_disable(struct clk *clk)
+>>>>  {
+>>>>  	u32 reg;
+>>>> @@ -762,6 +775,61 @@ static struct clk kpp_clk =3D {
+>>>>  	.id =3D 0,
+>>>>  };
+>>>>  +/* eCSPI */
+>>>> +static unsigned long _clk_ecspi_getrate(struct clk *clk)
+>>>> +{
+>>>> +	u32 reg, prediv, podf;
+>>>> +	unsigned long ret;
+>>>> +
+>>>> +	reg =3D __raw_readl(MXC_CCM_CSCDR2);
+>>>> +	prediv =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PRED_MASK) >>
+>>>> +		  MXC_CCM_CSCDR2_CSPI_CLK_PRED_OFFSET) + 1;
+>>>> +	if (prediv =3D=3D 1)
+>>>> +		BUG();
+>>>> +	podf =3D ((reg & MXC_CCM_CSCDR2_CSPI_CLK_PODF_MASK) >>
+>>>> +		MXC_CCM_CSCDR2_CSPI_CLK_PODF_OFFSET) + 1;
+>>>> +
+>>>> +	ret =3D clk_get_rate(clk->parent) / (prediv * podf);
+>>>> +	return ret;
+>>>> +}
+>>>> +
+>>>> +static int _clk_ecspi_set_parent(struct clk *clk, struct clk *parent)
+>>>> +{
+>>>> +	u32 reg, mux;
+>>>> +
+>>>> +	mux =3D _get_mux(parent, &pll1_sw_clk, &pll2_sw_clk, &pll3_sw_clk,
+>>>> +		       &lp_apm_clk);
+>>>> +	reg =3D __raw_readl(MXC_CCM_CSCMR1) & ~MXC_CCM_CSCMR1_CSPI_CLK_SEL_M=
+ASK;
+>>>> +	reg |=3D mux << MXC_CCM_CSCMR1_CSPI_CLK_SEL_OFFSET;
+>>>> +	__raw_writel(reg, MXC_CCM_CSCMR1);
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +static struct clk ecspi_main_clk =3D {
+>>>> +	.parent =3D &pll3_sw_clk,
+>>>> +	.get_rate =3D _clk_ecspi_getrate,
+>>>> +	.set_parent =3D _clk_ecspi_set_parent,
+>>>>     =
 
->>>>>>>來電諮詢享受更多優惠 
+>>>>         =
 
+>>> Sascha didn't implement set_parent
+>>>
+>>>   =
 
---===============6998297313581900253==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>>>       =
 
-------------------------------------------------------------------------------
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing
-http://p.sf.net/sfu/novell-sfdev2dev
+>> ecspi really can change parent root clock.
+>>     =
 
---===============6998297313581900253==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>>>> +};
+>>>> +
+>>>> +static struct clk ecspi1_ipg_clk =3D {
+>>>> +	.parent =3D &ipg_clk,
+>>>> +	.secondary =3D &spba_clk,
+>>>> +	.enable_reg =3D MXC_CCM_CCGR4,
+>>>> +	.enable_shift =3D MXC_CCM_CCGRx_CG9_OFFSET,
+>>>> +	.enable =3D _clk_ccgr_enable_inrun,
+>>>> +	.disable =3D _clk_ccgr_disable,
+>>>> +};
+>>>> +
+>>>> +static struct clk ecspi2_ipg_clk =3D {
+>>>> +	.parent =3D &ipg_clk,
+>>>> +	.secondary =3D &aips_tz2_clk,
+>>>> +	.enable_reg =3D MXC_CCM_CCGR4,
+>>>> +	.enable_shift =3D MXC_CCM_CCGRx_CG11_OFFSET,
+>>>> +	.enable =3D _clk_ccgr_enable_inrun,
+>>>> +	.disable =3D _clk_ccgr_disable,
+>>>> +};
+>>>>         =
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> aips_tz2_clk is wrong here, no?  Sascha used spba_clk here, too.  I
+> didn't found out yet how to read that out of the reference manual.
+>
+>   =
 
---===============6998297313581900253==--
+Just guess from Freescale original design and "charpter 2 Memory Map" of
+MCIMX51RM.pdf.
+
+eCSPI1 is in the AIPS_TZ1(spba) ip module, while eCSPI2 is in the AIPS_TZ2
+ip module, so they have different "secondary ipg parent clock".
+
+Thanks,
+Jason.
+> Best regards
+> Uwe
+>
+>   =

@@ -1,54 +1,25 @@
-From: Linus Walleij <linus.walleij@stericsson.com>
-Subject: Re: resend: [PATCH] amba_pl022: Setup SPI configuration based on spi->mode
-Date: Tue, 14 Sep 2010 16:45:57 +0200
-Message-ID: <AANLkTim4a7eha6Z3pjrZ0kg9VNRcuH52Qs2h4XydsXi4@mail.gmail.com>
-References: <AANLkTikbKwo9=xLWo1qEcc2E5aa2iN2F_KCokJPpnWOk@mail.gmail.com>
-	<083DF309106F364B939360100EC290F80AD49D5230@eu1rdcrdc1wx030.exi.nxp.com>
+From: "Gan =?ISO-8859-1?Q?Sant=E9?= par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Une couverture sante au meilleur prix, quel que soit votre age
+Date: Tue, 14 Sep 2010 17:23:45 +0200 (CEST)
+Message-ID: <l8qtmj.uwlv1i@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Kevin Wells <wellsk40@gmail.com>,
-	"sameo@linux.intel.com" <sameo@linux.intel.com>,
-	"rabin.vincent@stericsson.com" <rabin.vincent@stericsson.com>,
-	"srinidhi.kasagar@stericsson.com" <srinidhi.kasagar@stericsson.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-	"u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"tj@kernel.org" <tj@kernel.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"Lukasz.Baj@tieto.com" <Lukasz.Baj@tieto.com>
-To: Kevin Wells <kevin.wells@nxp.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <083DF309106F364B939360100EC290F80AD49D5230@eu1rdcrdc1wx030.exi.nxp.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/9/13 Kevin Wells <kevin.wells@nxp.com>:
 
-> SSP_CR0_MASK_SPH (SPHA) should use bit 7, not bit 6.
-> Should be:
-> =A0 =A0 =A0 SSP_WRITE_BITS(chip->cr0, tmp, SSP_CR0_MASK_SPH, 7);
->
->> +
->> =A0 =A0 =A0 =A0SSP_WRITE_BITS(chip->cr0, chip_info->clk_freq.scr, SS=
-P_CR0_MASK_SCR,
->> 8);
->> =A0 =A0 =A0 =A0/* Loopback is available on all versions except PL023=
- */
-
-That's it!
-
-With this correction it starts working, so
-Acked-by/Tested-by/Reviewed-by: Linus Walleij <linus.walleij@stericsson=
-=2Ecom>
-
-Please submit the whole patch series with corrections and my tag
-so Grant can pick it up, and thanks for doing this because I think
-it is a great improvement to the driver!
-
-Yours,
-Linus Walleij
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev

@@ -1,46 +1,29 @@
-From: Kevin Hilman <khilman@deeprootsystems.com>
-Subject: Re: [PATCH 0/5] OMAP: McSPI: Implement McSPI in HWMOD way
-Date: Wed, 15 Sep 2010 15:13:18 -0700
-Message-ID: <874odqd5a9.fsf@deeprootsystems.com>
-References: <1281708323-18989-1-git-send-email-charu@ti.com>
-	<AANLkTikS0tX3GA+1LXnqbZYuuWteOTq7dH13i-icKYD2@mail.gmail.com>
-	<87fwyacd9w.fsf@deeprootsystems.com>
-	<20100910192433.GJ11284@angua.secretlab.ca>
-	<878w392qk8.fsf@deeprootsystems.com>
-	<20100915201825.GF4446@angua.secretlab.ca>
+From: "Jeffie Raimundo" <JeffieRaimundo2841-1qjEjX/Lvz1Mo1R+fwTmgw@public.gmane.org>
+Subject: [SPAM] Why fork out for the new apple iphone 4g when you can get it
+	for free?
+Date: Thu, 16 Sep 2010 02:41:14 +0300
+Message-ID: <3491540010.342615564954901@user-b2641>
+Reply-To: Jeffie Raimundo <JeffieRaimundo2841-1qjEjX/Lvz1Mo1R+fwTmgw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Charulatha V <charu@ti.com>, linux-omap@vger.kernel.org,
-	paul@pwsan.com, b-cousson@ti.com, tony@atomide.com,
-	dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net, rnayak@ti.com,
-	p-basak2@ti.com, govindraj.raja@ti.com,
-	David Woodhouse <dwmw2@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jeremy Kerr <jeremy.kerr@canonical.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20100915201825.GF4446@angua.secretlab.ca> (Grant Likely's
-	message of "Wed, 15 Sep 2010 14:18:25 -0600")
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely <grant.likely@secretlab.ca> writes:
+I can't believe all I had to do was click the link and then I got lucky and gained an Iphone 4 from apple!!
+http://www.nellissa.com/
 
-[...]
-
-> What I'm thinking about doing at the embedded microconf is asking a
-> few people (you included) to speak briefly about what they are doing
-> to describe their platforms, and see if any common functionality
-> bubbles to the top.  
-
-Sounds great.
-
-> I think it is to easy to get focused on our own problem domain and
-> miss that others are working on very similar problems in isolation.
-
-Completely agree.
-
-Looking forward to LPC.
-
-Kevin
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev

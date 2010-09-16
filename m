@@ -1,67 +1,43 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] amba_pl022: Setup SPI configuration based on spi->mode
-Date: Thu, 16 Sep 2010 13:53:02 -0600
-Message-ID: <20100916195302.GB11001@angua.secretlab.ca>
-References: <1283446992-23764-1-git-send-email-wellsk40@gmail.com>
-	<AANLkTi=2XQ==iCYtAQ_74wPZ6JRB3x9SjS=sjVoC5YiM@mail.gmail.com>
-	<AANLkTik4Jm6u+jowgG7Py3u8N=B48opWYAikGztpXhs_@mail.gmail.com>
-	<AANLkTimm1VujXp6dsQLqJt_GRmE3xOS5Z-i7wvJLj5Nc@mail.gmail.com>
-	<AANLkTimySFr+QuKTPuR3xiC3Uq-xZ-E_5Bdjs_DOMbmJ@mail.gmail.com>
-	<083DF309106F364B939360100EC290F80AF398DEF1@eu1rdcrdc1wx030.exi.nxp.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi_mpc8xxx: fix writing to adress 0
+Date: Thu, 16 Sep 2010 14:11:14 -0600
+Message-ID: <20100916201114.GA11972@angua.secretlab.ca>
+References: <20100916070420.95083C7391@messagerie.si.c-s.fr>
+ <OFE491C952.64B1BE24-ONC12577A0.0029DACE-C12577A0.002A0993@transmode.se>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Lukasz.Baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org" <Lukasz.Baj-++hxYGjEMp0AvxtiuMwx3w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Kevin Wells <kevin.wells-3arQi8VN3Tc@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: christophe leroy <christophe.leroy@c-s.fr>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net
+To: Joakim Tjernlund <joakim.tjernlund@transmode.se>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <083DF309106F364B939360100EC290F80AF398DEF1-SIPbe8o7cfX8DdpCu65jn8FrZmdRls4ZQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <OFE491C952.64B1BE24-ONC12577A0.0029DACE-C12577A0.002A0993@transmode.se>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 16, 2010 at 09:49:34PM +0200, Kevin Wells wrote:
-> > >> Yes - the clients and the client setup info need some changes.
-> > >> I'm currently testing these patches and will post them soon.
-> > >
-> > > OK great, can you make this a patch series?
-> > >
-> > > Like
-> > > 1/2 - changes to amba-pl022.c
-> > > 2/2 - changes to clients
-> > >
-> > > or so?
-> > 
-> > Nah.  As mentioned on other thread.  Just squash it all into one
-> > patch.  Otherwise hoops need to be jumped through to preserve
-> > bisectability.
-> > 
+On Thu, Sep 16, 2010 at 09:39:09AM +0200, Joakim Tjernlund wrote:
+> > From: christophe leroy <christophe.leroy@c-s.fr>
+> > To: David Brownell <dbrownell@users.sourceforge.net>, Grant Likely
+> > <grant.likely@secretlab.ca>, spi-devel-general@lists.sourceforge.net, linux-
+> > kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+> > Date: 2010/09/16 09:06
+> > Subject: [PATCH] spi_mpc8xxx: fix writing to adress 0
+> > Sent by: linuxppc-dev-bounces+joakim.tjernlund=transmode.se@lists.ozlabs.org
+> >
+> > This patch applies to 2.6.34.7 (already included in 2.6.35.4)
+> > It fixes an issue when sending only or receiving only (mspi->tx-dma was reset
+> > as when no tx_buf is defined, tx_dma is 0)
+> >
+> > Signed-off-by: christophe leroy <christophe.leroy@c-s.fr>
 > 
-> I think I missed the other thread. But simple is good and it's
-> bundled as a single patch. This has Linus W's ACK.
+> Acked-by: Joakim Tjernlund <Joakim.Tjernlund@transmode.se>
 > 
-> Can you please pull it from:
-> 	git://git.lpclinux.com/linux-2.6-lpc amba_pl022_spimode
-> 
-> The only change from the original posted series is the bit 6/7
-> SPHA mode fix. The git comment has also been slightly reduced.
-> If needed, I can also send out the single patch to the ml.
 
-Please send the patch to the list.
+You need to send this to the linux-stable list and include the sha1
+commit id that fixes it in mainline.
+
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
 g.
-
-
-------------------------------------------------------------------------------
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing.
-http://p.sf.net/sfu/novell-sfdev2dev

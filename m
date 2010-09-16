@@ -1,33 +1,65 @@
-From: 13430544812-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Thu, 16 Sep 2010 11:03:11 +0800
-Message-ID: <E1Ow4l6-0001j9-Nh@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: amba_pl022 spi->mode fix/cleanup patches
+Date: Wed, 15 Sep 2010 21:14:36 -0600
+Message-ID: <20100916031436.GA7542@angua.secretlab.ca>
+References: <1284135579-13578-1-git-send-email-wellsk40@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linus.walleij@stericsson.com,
+	spi-devel-general@lists.sourceforge.net, sameo@linux.intel.com,
+	rabin.vincent@stericsson.com, srinidhi.kasagar@stericsson.com,
+	linux-kernel@vger.kernel.org, linux@arm.linux.org.uk,
+	u.kleine-koenig@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, tj@kernel.org,
+	Lukasz.Baj@tieto.com, quentinyang05@gmail.com
+To: wellsk40@gmail.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1284135579-13578-1-git-send-email-wellsk40@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
-qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
-1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
-CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClN0YXJ0IHVuY292ZXJpbmcgdGhlIG1hbnkgYWR2YW50YWdl
-cyBvZiB2aXJ0dWFsIGFwcGxpYW5jZXMKYW5kIHN0YXJ0IHVzaW5nIHRoZW0gdG8gc2ltcGxpZnkg
-YXBwbGljYXRpb24gZGVwbG95bWVudCBhbmQKYWNjZWxlcmF0ZSB5b3VyIHNoaWZ0IHRvIGNsb3Vk
-IGNvbXB1dGluZy4KaHR0cDovL3Auc2YubmV0L3NmdS9ub3ZlbGwtc2ZkZXYyZGV2Cl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+On Fri, Sep 10, 2010 at 09:19:34AM -0700, wellsk40@gmail.com wrote:
+> This patch series updates drivers and platforms that depend on the
+> amba_pl022 driver and use the pl022_config_chip structure for
+> setting up the SPI mode and data transfer width.
+> 
+> The SPI configuration (CPOL/CPHA mode, bit send order, data bits per
+> word, and loopback mode) were previously setup as part of board
+> specific data in the pl022_config_chip structure. This has been
+> changed to now use the .mode field in spi_board_info structure (or
+> drivers that setup the mode). The SPI transfer's data width is now
+> configured from spi->bits_per_word.
+> 
+> The SPI driver changes have been previously submitted to the SPI ML.
+> This patch series need to be layered on that patch series.
+> 
+> These changes add or fix the .mode field in the plats/boards that use the
+> driver (u300, ux500, lpc32xx). The patches also move the data width
+> from the board specific area to the driver for mfd/ab8500. As the
+> fields in the pl022_config_chip structure are no longer needed, they
+> are removed in the last patch.
+> 
+> These changes have been tested on the phy3250 platform (lpc32xx). I
+> was able to test the ab8500 driver to some degree, but I only have a
+> standard pl022. I am unable to test u300 and ux500 changes, but the
+> u300 changes compiled fine.
+> 
+> [PATCH 1/5] mfd/ab8500: Setup SPI transfer for 24 bits
+> [PATCH 2/5] ARM: LPC32XX: Add missing SPI mode and remove unused fields
+> [PATCH 3/5] ARM: U300: spi->mode and spi_bits_per_words updates
+> [PATCH 4/5] ARM: Ux500: Change SPI mode and remove unused fields
+> [PATCH 5/5] spi: amba_pl022: Remove unused fields from pl022_config_chip
+
+There are ordering issues with these patches and the patch they depend
+on.  Basically, as-is it is not bisectable.  The above platforms stop
+working after the SPI driver changes are applied, but before these
+patches are.  You'll need to update the mode field for all the users
+in or before the SPI driver changes patch to preserve bisectability.
+Then you can have subsequent cleanup patches....
+
+Or just squash all the patches into the SPI driver patch.  I'd be
+okay with that in this case because the board changes are well
+contained and easy to understand.
+
+g.

@@ -1,25 +1,46 @@
-From: "la Protection Habitat par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Une securité a prix juste pour une rentrée solide
-Date: Thu, 16 Sep 2010 19:21:05 +0200 (CEST)
-Message-ID: <l8uo72.wugvq7@front07.g7r9.com>
+From: Kevin Wells <kevin.wells@nxp.com>
+Subject: RE: resend: [PATCH] amba_pl022: Setup SPI configuration based on
+ spi->mode
+Date: Thu, 16 Sep 2010 21:16:08 +0200
+Message-ID: <083DF309106F364B939360100EC290F80AF398DEE4@eu1rdcrdc1wx030.exi.nxp.com>
+References: <AANLkTikbKwo9=xLWo1qEcc2E5aa2iN2F_KCokJPpnWOk@mail.gmail.com>
+	<083DF309106F364B939360100EC290F80AD49D5230@eu1rdcrdc1wx030.exi.nxp.com>
+ <AANLkTim4a7eha6Z3pjrZ0kg9VNRcuH52Qs2h4XydsXi4@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Transfer-Encoding: 8BIT
+Cc: Kevin Wells <wellsk40@gmail.com>,
+	"sameo@linux.intel.com" <sameo@linux.intel.com>,
+	"rabin.vincent@stericsson.com" <rabin.vincent@stericsson.com>,
+	"srinidhi.kasagar@stericsson.com" <srinidhi.kasagar@stericsson.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+	"u.kleine-koenig@pengutronix.de" <u.kleine-koenig@pengutronix.de>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"tj@kernel.org" <tj@kernel.org>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"Lukasz.Baj@tieto.com" <Lukasz.Baj@tieto.com>
+To: Linus Walleij <linus.walleij@stericsson.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AANLkTim4a7eha6Z3pjrZ0kg9VNRcuH52Qs2h4XydsXi4@mail.gmail.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+> 
+> With this correction it starts working, so
+> Acked-by/Tested-by/Reviewed-by: Linus Walleij
+> <linus.walleij@stericsson.com>
+> 
+> Please submit the whole patch series with corrections and my tag
+> so Grant can pick it up, and thanks for doing this because I think
+> it is a great improvement to the driver!
+> 
 
-------------------------------------------------------------------------------
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing.
-http://p.sf.net/sfu/novell-sfdev2dev
+Thanks! I'll put them up today.
+
+> Yours,
+> Linus Walleij

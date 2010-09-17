@@ -1,18 +1,12 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 11/16] ARM: mx5/clock-mx51: refactor ccgr callbacks to use
-	common code
-Date: Fri, 17 Sep 2010 11:54:29 +0200
-Message-ID: <1284717274-12850-11-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <20100917095247.GB30441@pengutronix.de>
+From: "Gan =?ISO-8859-1?Q?Sant=E9?= par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Votre complementaire sante a partir de 0,65 euro par jour
+Date: Fri, 17 Sep 2010 12:18:39 +0200 (CEST)
+Message-ID: <l8vzi9.82k1vd@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, amit.kucheria-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100917095247.GB30441-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,41 +17,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW14NS9jbG9jay1teDUxLmMgfCAgIDMwICsrKysr
-KysrKysrKysrKystLS0tLS0tLS0tLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNlcnRpb25z
-KCspLCAxNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14NS9jbG9j
-ay1teDUxLmMgYi9hcmNoL2FybS9tYWNoLW14NS9jbG9jay1teDUxLmMKaW5kZXggNTdjMTBhOS4u
-ZmU2NThiZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1teDUvY2xvY2stbXg1MS5jCisrKyBi
-L2FyY2gvYXJtL21hY2gtbXg1L2Nsb2NrLW14NTEuYwpAQCAtNDEsMzQgKzQxLDM2IEBAIHN0YXRp
-YyBzdHJ1Y3QgY2xrIHVzYm9oM19jbGs7CiAKICNkZWZpbmUgTUFYX0RQTExfV0FJVF9UUklFUwkx
-MDAwIC8qIDEwMDAgKiB1ZGVsYXkoMSkgPSAxbXMgKi8KIAotc3RhdGljIGludCBfY2xrX2NjZ3Jf
-ZW5hYmxlKHN0cnVjdCBjbGsgKmNsaykKK3N0YXRpYyB2b2lkIF9jbGtfY2Nncl9zZXRjbGsoc3Ry
-dWN0IGNsayAqY2xrLCB1bnNpZ25lZCBtb2RlKQogewotCXUzMiByZWc7CisJdTMyIHJlZyA9IF9f
-cmF3X3JlYWRsKGNsay0+ZW5hYmxlX3JlZyk7CisKKwlyZWcgJj0gfihNWENfQ0NNX0NDR1J4X0NH
-X01BU0sgPDwgY2xrLT5lbmFibGVfc2hpZnQpOworCXJlZyB8PSBtb2RlIDw8IGNsay0+ZW5hYmxl
-X3NoaWZ0OwogCi0JcmVnID0gX19yYXdfcmVhZGwoY2xrLT5lbmFibGVfcmVnKTsKLQlyZWcgfD0g
-TVhDX0NDTV9DQ0dSeF9NT0RfT04gPDwgY2xrLT5lbmFibGVfc2hpZnQ7CiAJX19yYXdfd3JpdGVs
-KHJlZywgY2xrLT5lbmFibGVfcmVnKTsKK30KIAorc3RhdGljIGludCBfY2xrX2NjZ3JfZW5hYmxl
-KHN0cnVjdCBjbGsgKmNsaykKK3sKKwlfY2xrX2NjZ3Jfc2V0Y2xrKGNsaywgTVhDX0NDTV9DQ0dS
-eF9NT0RfT04pOwogCXJldHVybiAwOwogfQogCiBzdGF0aWMgdm9pZCBfY2xrX2NjZ3JfZGlzYWJs
-ZShzdHJ1Y3QgY2xrICpjbGspCiB7Ci0JdTMyIHJlZzsKLQlyZWcgPSBfX3Jhd19yZWFkbChjbGst
-PmVuYWJsZV9yZWcpOwotCXJlZyAmPSB+KE1YQ19DQ01fQ0NHUnhfQ0dfTUFTSyA8PCBjbGstPmVu
-YWJsZV9zaGlmdCk7Ci0JX19yYXdfd3JpdGVsKHJlZywgY2xrLT5lbmFibGVfcmVnKTsKKwlfY2xr
-X2NjZ3Jfc2V0Y2xrKGNsaywgTVhDX0NDTV9DQ0dSeF9NT0RfT0ZGKTsKK30KIAorc3RhdGljIGlu
-dCBfY2xrX2NjZ3JfZW5hYmxlX2lucnVuKHN0cnVjdCBjbGsgKmNsaykKK3sKKwlfY2xrX2NjZ3Jf
-c2V0Y2xrKGNsaywgTVhDX0NDTV9DQ0dSeF9NT0RfSURMRSk7CisJcmV0dXJuIDA7CiB9CiAKIHN0
-YXRpYyB2b2lkIF9jbGtfY2Nncl9kaXNhYmxlX2lud2FpdChzdHJ1Y3QgY2xrICpjbGspCiB7Ci0J
-dTMyIHJlZzsKLQotCXJlZyA9IF9fcmF3X3JlYWRsKGNsay0+ZW5hYmxlX3JlZyk7Ci0JcmVnICY9
-IH4oTVhDX0NDTV9DQ0dSeF9DR19NQVNLIDw8IGNsay0+ZW5hYmxlX3NoaWZ0KTsKLQlyZWcgfD0g
-TVhDX0NDTV9DQ0dSeF9NT0RfSURMRSA8PCBjbGstPmVuYWJsZV9zaGlmdDsKLQlfX3Jhd193cml0
-ZWwocmVnLCBjbGstPmVuYWJsZV9yZWcpOworCV9jbGtfY2Nncl9zZXRjbGsoY2xrLCBNWENfQ0NN
-X0NDR1J4X01PRF9JRExFKTsKIH0KIAogLyoKLS0gCjEuNy4yLjMKCgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KU3RhcnQgdW5jb3ZlcmluZyB0aGUgbWFueSBhZHZhbnRhZ2VzIG9mIHZpcnR1YWwgYXBw
-bGlhbmNlcwphbmQgc3RhcnQgdXNpbmcgdGhlbSB0byBzaW1wbGlmeSBhcHBsaWNhdGlvbiBkZXBs
-b3ltZW50IGFuZAphY2NlbGVyYXRlIHlvdXIgc2hpZnQgdG8gY2xvdWQgY29tcHV0aW5nLgpodHRw
-Oi8vcC5zZi5uZXQvc2Z1L25vdmVsbC1zZmRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev

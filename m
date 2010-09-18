@@ -1,7 +1,7 @@
-From: soureyb-fLTh8kjlI5SjKv3TNrM5DQ@public.gmane.org
-Subject: =?GB2312?B?ucnIqLykwPi3vbC4?=
-Date: Sat, 18 Sep 2010 13:25:39 +0800
-Message-ID: <E1Owpwz-0003Fd-3b@sfs-ml-2.v29.ch3.sourceforge.com>
+From: ytreyd_hr5-2IkLjROiQD3aNoJssSIAhw@public.gmane.org
+Subject: =?GB2312?B?ofO5ybaryOe6zs780v2hosH016GhorykwPjWsNK1vq3A7aO/?=
+Date: Sat, 18 Sep 2010 14:07:26 +0800
+Message-ID: <E1Owqbo-0005Ju-Df@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
 	charset="gb2312"
@@ -24,8 +24,6 @@ This is a multi-part message in MIME format
 Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-
-      FW：附件里的《中国式股权激励法--留驻核心人才》内容是适合：企业总裁、董事长、总经理、决策者、人力资源总监、财务总监及薪资福利经理、投资经理、中高层管理人员、HR管理从业人员等值得来了解的一堂课程。有需要的话请直接点开。谢谢！
 
 --=_NextPart_2rfkindysadvnqw3nerasdf
 Content-Type: text/plain; charset="us-ascii"

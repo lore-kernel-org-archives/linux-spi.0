@@ -1,10 +1,11 @@
-From: 13430544812-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] ‰ª£/ÂºÄ‚Äï‚ÄïÂèë/Á•®
-Date: Fri, 17 Sep 2010 22:24:14 +0800
-Message-ID: <E1Owbrl-00014k-7F@sfs-ml-2.v29.ch3.sourceforge.com>
+From: soureyb-fLTh8kjlI5SjKv3TNrM5DQ@public.gmane.org
+Subject: =?GB2312?B?ucnIqLykwPi3vbC4?=
+Date: Sat, 18 Sep 2010 13:25:39 +0800
+Message-ID: <E1Owpwz-0003Fd-3b@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,17 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
-qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
-1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
-CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClN0YXJ0IHVuY292ZXJpbmcgdGhlIG1hbnkgYWR2YW50YWdl
-cyBvZiB2aXJ0dWFsIGFwcGxpYW5jZXMKYW5kIHN0YXJ0IHVzaW5nIHRoZW0gdG8gc2ltcGxpZnkg
-YXBwbGljYXRpb24gZGVwbG95bWVudCBhbmQKYWNjZWxlcmF0ZSB5b3VyIHNoaWZ0IHRvIGNsb3Vk
-IGNvbXB1dGluZy4KaHR0cDovL3Auc2YubmV0L3NmdS9ub3ZlbGwtc2ZkZXYyZGV2Cl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+      FW£∫∏Ωº˛¿Ôµƒ°∂÷–π˙ Ωπ…»®º§¿¯∑®--¡Ù◊§∫À–ƒ»À≤≈°∑ƒ⁄»› «  ∫œ£∫∆Û“µ◊‹≤√°¢∂≠ ¬≥§°¢◊‹æ≠¿Ì°¢æˆ≤ﬂ’ﬂ°¢»À¡¶◊ ‘¥◊‹º‡°¢≤∆ŒÒ◊‹º‡º∞–Ω◊ ∏£¿˚æ≠¿Ì°¢Õ∂◊ æ≠¿Ì°¢÷–∏ﬂ≤„π‹¿Ì»À‘±°¢HRπ‹¿Ì¥”“µ»À‘±µ»÷µµ√¿¥¡ÀΩ‚µƒ“ªÃ√øŒ≥Ã°£”––Ë“™µƒª∞«Î÷±Ω”µ„ø™°£–ª–ª£°
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

@@ -1,25 +1,109 @@
-From: "Mutuelle MCD" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Profitez des tarifs avantageux de la rentree
-Date: Sat, 18 Sep 2010 15:42:20 +0200 (CEST)
-Message-ID: <l8y3ls.wci8m1@front02.r7g.com>
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: Re: [PATCH 04/16] spi/imx: save the spi chip select in config	struct,
+	not the gpio to use
+Date: Sun, 19 Sep 2010 16:47:49 +0800
+Message-ID: <4C95CE35.7030303@gmail.com>
+References: <20100917095247.GB30441@pengutronix.de>
+	<1284717274-12850-4-git-send-email-u.kleine-koenig@pengutronix.de>
+	<19603.19666.323684.891456@ipc1.ka-ro>
+	<20100917112026.GE27467@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Cc: Jason Wang <jason77.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
+	=?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	=?ISO-8859-1?Q?Lothar_Wa=DFmann?= <LW@karo-electronics.de>
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20100917112026.GE27467@n2100.arm.linux.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Russell King - ARM Linux wrote:
+> On Fri, Sep 17, 2010 at 01:11:14PM +0200, Lothar Wa=DFmann wrote:
+>   =
 
-------------------------------------------------------------------------------
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing.
-http://p.sf.net/sfu/novell-sfdev2dev
+>> Hi,
+>>
+>>     =
+
+>>> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+>>> index 60a52d1..23db984 100644
+>>> --- a/drivers/spi/spi_imx.c
+>>> +++ b/drivers/spi/spi_imx.c
+>>> @@ -56,7 +56,7 @@ struct spi_imx_config {
+>>>  	unsigned int speed_hz;
+>>>  	unsigned int bpw;
+>>>  	unsigned int mode;
+>>> -	int cs;
+>>> +	u8 cs;
+>>>       =
+
+>>         ^^^^^^
+>>     =
+
+>
+> u8 cs in spi_imx_config.
+>
+>   =
+
+>>>  };
+>>>  =
+
+>>>  enum spi_imx_devtype {
+>>> @@ -218,6 +218,7 @@ static int __maybe_unused spi_imx0_4_config(struct =
+spi_imx_data *spi_imx,
+>>>  		struct spi_imx_config *config)
+>>>  {
+>>>  	unsigned int reg =3D MX31_CSPICTRL_ENABLE | MX31_CSPICTRL_MASTER;
+>>> +	int cs =3D spi_imx->chipselect[config->cs];
+>>>       =
+
+>
+> which is used as an index to this array (which presumably is an array of
+> ints.)  Let's hope that it is 256 entries long (maybe it should be
+> checked before use?)
+>
+>   =
+
+>>>  =
+
+>>>  	reg |=3D spi_imx_clkdiv_2(spi_imx->spi_clk, config->speed_hz) <<
+>>>  		MX31_CSPICTRL_DR_SHIFT;
+>>> @@ -230,9 +231,8 @@ static int __maybe_unused spi_imx0_4_config(struct =
+spi_imx_data *spi_imx,
+>>>  		reg |=3D MX31_CSPICTRL_POL;
+>>>  	if (config->mode & SPI_CS_HIGH)
+>>>  		reg |=3D MX31_CSPICTRL_SSPOL;
+>>> -	if (config->cs < 0) {
+>>> -		reg |=3D (config->cs + 32) << MX31_CSPICTRL_CS_SHIFT;
+>>> -	}
+>>> +	if (cs < 0)
+>>>
+>>>       =
+
+>> This can never be true, since an 'int' promoted from 'u8' will always
+>> be positive!
+>>     =
+
+>
+> This is the value of chipselect[config->cs] not of the u8 config->cs.
+>
+>   =
+
+Yes, here (cs < 0) means a SPI dedicate internal CS pin, while (cs >=3D 0)
+means a GPIO act as a SPI CS pin.
+
+Thanks,
+Jason.

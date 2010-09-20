@@ -1,134 +1,107 @@
-From: Jason Wang <jason77.wang@gmail.com>
-Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
-	driver
-Date: Sun, 19 Sep 2010 16:53:26 +0800
-Message-ID: <4C95CF86.30306@gmail.com>
-References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
-	<20100902082759.GE14214@pengutronix.de>
-	<4C7F777E.1090104@gmail.com>
-	<20100902143908.GK14214@pengutronix.de>
-	<20100917095247.GB30441@pengutronix.de>
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v5 1/1] davinci: spi: replace existing driver
+Date: Mon, 20 Sep 2010 20:38:00 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
+	<4C8EB795.1080607@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
+	<201009140904.59555.caglarakyuz@gmail.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
+	<4C8F7460.6050006@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
+	<4C94B9BD.4010606@criticallink.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
-Content-Transfer-Encoding: quoted-printable
-Cc: Jason Wang <jason77.wang@gmail.com>, s.hauer@pengutronix.de,
-	grant.likely@secretlab.ca, amit.kucheria@canonical.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100917095247.GB30441@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	Caglar Akyuz <caglarakyuz-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4C94B9BD.4010606-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Uwe,
+Hi Michael,
 
-Uwe Kleine-K=F6nig wrote:
-> Hello,
+On Sat, Sep 18, 2010 at 18:38:13, Michael Williamson wrote:
+> On 09/14/2010 09:26 AM, Nori, Sekhar wrote:
+> > Hi Mike,
+> >
+> > On Tue, Sep 14, 2010 at 18:40:56, Michael Williamson wrote:
+> >> On 9/14/2010 3:14 AM, Nori, Sekhar wrote:
+> >>
+> >>> On Tue, Sep 14, 2010 at 11:34:59, Caglar Akyuz wrote:
+> >>>
+> >>>> Yes, your patches seems ok and mostly complete. I'm waiting for hardware to
+> >>>> test those, will let you know when I do some testing.
+> >>>
+> >>> Thanks! To save time, I haven't tested these patches myself. I have only made
+> >>> sure individual patches don't break the build. Was planning to test after
+> >>> the complete series is ready.
+> >>>
+> >>
+> >>
+> >> If it would help, If there are portions of the patch set that can be tested
+> >> with DMA disabled or something, I'd be willing to kick the tires.  I have
+> >> da850 hardware available.
+> >
+> > Thanks for being brave and offering to help! Yes, interrupt and polled mode
+> > can be tried. Since a lot of testing has already happened on the original patch,
+> > I was planning to test the series only after it is complete. Any issues found can
+> > be narrowed down to the differences (which I hope will be justifiable).
+> >
+> > Thanks,
+> > Sekhar
 >
-> On Thu, Sep 02, 2010 at 04:39:08PM +0200, Uwe Kleine-K=F6nig wrote:
->   =
+> So I am testing with a configuration which is pretty much the same as the da850 EVM;
+> a SPI-NOR flash on the first chip select of SPI1.  Both poll and interrupt modes
+> work.  So far so good, and Brian's work really sorted out a bunch of questions
+> I had looking at the original spi code.  Nice work, Nori, for break the patch
+> into logical blocks.  I do have a couple of comments:
 
->> Hello Jason,
->>
->>     =
+Really?? Just worked? Wooohooo...
 
->>>> Actually I would prefer our patches, but of course I'm biased :-)
->>>>
->>>> I don't know how we should handle this.  And Sascha is on vacation this
->>>> and next week.  I will investigate if our patches are already free to =
-be
->>>> posted.
->>>>         =
-
->> OK, I can post our patches.  I think the driver part is quite similar,
->> the platform part is not.  But look for yourself, I'll post them in repl=
-y to
->> this mail.  Hopefully we can join forces to get the best out of the two
->> approaches.
->>     =
-
-> I now made the effort to try doing this.  I hope this is OK though it
-> feels strage that no commit is attributed to Sascha.
 >
-> The following changes since commit 5b1caa2452a2cf09417ab657ae3a2275ebd781=
-03:
->
->   ARM: mx5/mx51_babbage: Add FEC support (2010-09-13 11:31:22 +0200)
->
-> are available in the git repository at:
->   git://git.pengutronix.de/git/ukl/linux-2.6.git spi-imx51
->
-> (5b1caa2452a2cf09417ab657ae3a2275ebd78103 is the result of rebasing
-> Sascha's for-2.6.37 branch on top of 2.6.36-rc4---done mainly to contain
-> the for-2.6.36 branch)
->
->   =
+> * I'm not sure I understand why there is a "intr_line" field in the platform
+> data and then a possibility to configure an "io_type" as interrupt or polled at
+> the chip select level.  I got burned by setting the "io_type" to SPI_IO_TYPE_INTR
+> and not setting "intr_line" to non-zero.  The probe just hung because it was
+> trying to use interrupts but never setting SPILVL register.  These fields aren't
+> mutually exclusive.  Is the intent to support a configuration with one chip select
+> running in polled mode and another in interrupt mode?  If so, then it seems the SPILVL
+> register logic needs some attention during each transfer.
 
-I have performed a git pull for your repository based off 2.6.36-rc4, and
-built and validated these patches  on imx51_3ds board, they worked fine.
-The spi flash can be read without any problems.
+The intr_line to be set is constant for the SoC. So, irrespective of what the
+individual devices on a given board choose to operate (interrupted, polled or DMA)
+the SoC code (da850.c) should setup the intr_line according to how the SPI interrupt
+is wired within the SoC. Can you clarify what you mean by "needs some attention during
+each transfer"?
 
-And your patches looks pretty good to me. :-).
+>
+> * As a (novice) user, I'd really like to see some comments / hints added to the
+> ../mach-davinci/include/mach/spi.h file to describe how all of the platform fields
+> should be set.  Some of the fields aren't very obvious as to how to initialize
+> them without having a data sheet on one screen and plowing through the
+> driver on another.  This might have cleaned up my confusion on the first item.
+
+Good point. Will ensure this.
 
 Thanks,
-Jason.
-> Jason Wang (4):
->       ARM: mx5/clock-mx51: add spi clocks
->       ARM: mx5/iomux-mx51: add iomux definitions for eCSPI2 on the imx51_=
-3ds board
->       ARM: mx5/mx51_3ds: add eCSPI2 support on the imx51_3ds board
->       ARM: mx5/mx51_3ds: add SPI NOR flash in the board init stage
->
-> Uwe Kleine-K=F6nig (12):
->       spi/imx: default to m on platforms that have such devices
->       spi/imx: convert driver to use platform ids
->       spi/imx: get rid of more ifs depending on the used cpu
->       spi/imx: save the spi chip select in config struct, not the gpio to=
- use
->       spi/imx: add support for imx51's eCSPI and CSPI
->       ARM: imx: change the way spi-imx devices are registered
->       ARM: imx: use platform ids for spi_imx devices
->       ARM: mx51: clean up mx51 header
->       ARM: mx51: fix naming of spi related defines
->       ARM: mx5: add spi_imx device registration
->       ARM: mx5/clock-mx51: refactor ccgr callbacks to use common code
->       ARM: mx5/clock-mx51: new macro that defines a clk with all members
->
->  arch/arm/mach-imx/clock-imx1.c                  |    2 +-
->  arch/arm/mach-imx/clock-imx21.c                 |    6 +-
->  arch/arm/mach-imx/clock-imx27.c                 |    6 +-
->  arch/arm/mach-imx/devices-imx21.h               |    9 +-
->  arch/arm/mach-imx/devices-imx27.h               |   12 +-
->  arch/arm/mach-mx25/clock.c                      |    6 +-
->  arch/arm/mach-mx25/devices-imx25.h              |   12 +-
->  arch/arm/mach-mx3/clock-imx31.c                 |    6 +-
->  arch/arm/mach-mx3/clock-imx35.c                 |    4 +-
->  arch/arm/mach-mx3/devices-imx31.h               |   12 +-
->  arch/arm/mach-mx3/devices-imx35.h               |    9 +-
->  arch/arm/mach-mx5/Kconfig                       |    1 +
->  arch/arm/mach-mx5/board-mx51_3ds.c              |   33 ++
->  arch/arm/mach-mx5/clock-mx51.c                  |  113 ++++-
->  arch/arm/mach-mx5/devices-imx51.h               |   18 +
->  arch/arm/plat-mxc/devices/platform-spi_imx.c    |   89 +++-
->  arch/arm/plat-mxc/include/mach/devices-common.h |   11 +-
->  arch/arm/plat-mxc/include/mach/iomux-mx51.h     |    5 +
->  arch/arm/plat-mxc/include/mach/mx51.h           |  608 +++++++++++------=
-------
->  drivers/spi/Kconfig                             |   16 +
->  drivers/spi/spi_imx.c                           |  394 ++++++++++++---
->  21 files changed, 919 insertions(+), 453 deletions(-)
->  create mode 100644 arch/arm/mach-mx5/devices-imx51.h
->
-> Thanks
-> Uwe
->
->   =
+Sekhar
+
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev

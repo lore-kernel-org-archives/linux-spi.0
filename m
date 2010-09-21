@@ -1,66 +1,51 @@
-From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
-Date: Mon, 20 Sep 2010 13:42:53 -0400
-Message-ID: <4C979D1D.1070707@criticallink.com>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
-	<4C8EB795.1080607@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
-	<201009140904.59555.caglarakyuz@gmail.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
-	<4C8F7460.6050006@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
-	<4C94B9BD.4010606@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
+From: Jason Wang <jason77.wang@gmail.com>
+Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
+	driver
+Date: Tue, 21 Sep 2010 09:39:35 +0800
+Message-ID: <4C980CD7.1040005@gmail.com>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>	<20100902082759.GE14214@pengutronix.de>	<4C7F777E.1090104@gmail.com>	<20100902143908.GK14214@pengutronix.de>	<20100917095247.GB30441@pengutronix.de>
+	<4C95CF86.30306@gmail.com> <20100920153358.GF32291@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general@lists.sourceforge.net, s.hauer@pengutronix.de,
+	Jason Wang <jason77.wang@gmail.com>, linux-arm-kernel@lists.infradead.org,
+	amit.kucheria@canonical.com
+To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20100920153358.GF32291@pengutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9/20/2010 11:08 AM, Nori, Sekhar wrote:
+Uwe Kleine-K=F6nig wrote:
+> Hi Jason,
+>
+>   =
 
-> Hi Michael,
-> 
-> On Sat, Sep 18, 2010 at 18:38:13, Michael Williamson wrote:
+>> I have performed a git pull for your repository based off 2.6.36-rc4, and
+>> built and validated these patches  on imx51_3ds board, they worked fine.
+>> The spi flash can be read without any problems.
 >>
->> * I'm not sure I understand why there is a "intr_line" field in the platform
->> data and then a possibility to configure an "io_type" as interrupt or polled at
->> the chip select level.  I got burned by setting the "io_type" to SPI_IO_TYPE_INTR
->> and not setting "intr_line" to non-zero.  The probe just hung because it was
->> trying to use interrupts but never setting SPILVL register.  These fields aren't
->> mutually exclusive.  Is the intent to support a configuration with one chip select
->> running in polled mode and another in interrupt mode?  If so, then it seems the SPILVL
->> register logic needs some attention during each transfer.
-> 
-> The intr_line to be set is constant for the SoC. So, irrespective of what the
-> individual devices on a given board choose to operate (interrupted, polled or DMA)
-> the SoC code (da850.c) should setup the intr_line according to how the SPI interrupt
-> is wired within the SoC. Can you clarify what you mean by "needs some attention during
-> each transfer"?
-> 
+>> And your patches looks pretty good to me. :-).
+>>     =
 
+> This is an ack for all patches in my series?
+>
+>   =
 
-Ah... OK.  Thank you.  I now see that the SPILVL can be INT0 or INT1 for other davinci
-SoCs like the DM644x.  For the da850 (OMAP-L138), SPILVL is valid only for INT1.  So 
-pretty much, if your using a da850 (at least), intr_line has to be 1.  On other platforms,
-it carries a lot more meaning...
+Yes, all patches look fine to me.
 
-Please ignore my ignorance...
-
-Let me know if you want testing on the DMA portion of the patch (when your ready, of course).  
-
--Mike
+Thanks,
+Jason.
+> Best regards
+> Uwe
+>
+>   =

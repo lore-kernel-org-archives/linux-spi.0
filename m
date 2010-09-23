@@ -1,51 +1,56 @@
-From: Jason Wang <jason77.wang@gmail.com>
-Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
-	driver
-Date: Tue, 21 Sep 2010 09:39:35 +0800
-Message-ID: <4C980CD7.1040005@gmail.com>
-References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>	<20100902082759.GE14214@pengutronix.de>	<4C7F777E.1090104@gmail.com>	<20100902143908.GK14214@pengutronix.de>	<20100917095247.GB30441@pengutronix.de>
-	<4C95CF86.30306@gmail.com> <20100920153358.GF32291@pengutronix.de>
+From: "qr" <vesfmqxx199874-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org>
+Subject: =?gb2312?B?zfW+rcDt?=
+Date: Thu, 23 Sep 2010 03:44:34 +0000 (UTC)
+Message-ID: <EF48B54A341FE88739958C9F64976FC9@ihf>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net, s.hauer@pengutronix.de,
-	Jason Wang <jason77.wang@gmail.com>, linux-arm-kernel@lists.infradead.org,
-	amit.kucheria@canonical.com
-To: =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20100920153358.GF32291@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_079E_018055E3.12960920"
+To: <public_bar-k+cT0dCbe1g@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<18rui-9Onoh4P/yGk@public.gmane.org>, <hclmy1982-9Onoh4P/yGk@public.gmane.org>, <hyz_81-9Onoh4P/yGk@public.gmane.org>,
+	<jwjsfefcjw-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <long-jun-fei-9Onoh4P/yGk@public.gmane.org>, <qiuwenbo_1014
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Wed, 12 Sep 2012 01:20:10 +0800
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Uwe Kleine-K=F6nig wrote:
-> Hi Jason,
->
->   =
+------=_NextPart_000_079E_018055E3.12960920
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
 
->> I have performed a git pull for your repository based off 2.6.36-rc4, and
->> built and validated these patches  on imx51_3ds board, they worked fine.
->> The spi flash can be read without any problems.
->>
->> And your patches looks pretty good to me. :-).
->>     =
 
-> This is an ack for all patches in my series?
->
->   =
+------=_NextPart_000_079E_018055E3.12960920
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Yes, all patches look fine to me.
+------------------------------------------------------------------------------
+Start uncovering the many advantages of virtual appliances
+and start using them to simplify application deployment and
+accelerate your shift to cloud computing.
+http://p.sf.net/sfu/novell-sfdev2dev
+------=_NextPart_000_079E_018055E3.12960920
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Thanks,
-Jason.
-> Best regards
-> Uwe
->
->   =
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_079E_018055E3.12960920--
+
+_______________________________________
+ YM - 離線訊息
+ 就算你沒有上網，你的朋友仍可以留下訊息給你，當你上網時就能立即看到，任何說話都冇走失。
+ http://messenger.yahoo.com.hk

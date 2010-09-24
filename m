@@ -1,62 +1,121 @@
-From: Anton Vorontsov <cbouatmailru@gmail.com>
-Subject: Re: [PATCH] spi_mpc8xxx: issue with using definition of pram in
- Device Tree
-Date: Fri, 24 Sep 2010 11:57:40 +0400
-Message-ID: <20100924075740.GA20599@oksana.dev.rtsoft.ru>
-References: <20100916070503.10046C7391@messagerie.si.c-s.fr>
- <20100924071006.GA21318@angua.secretlab.ca>
- <4C9C513B.40501@c-s.fr>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 0/6] add spi support for i.MX51 in the existing spi_imx
+	driver
+Date: Fri, 24 Sep 2010 11:11:20 +0200
+Message-ID: <20100924091120.GA25312@pengutronix.de>
+References: <1283413924-14210-1-git-send-email-jason77.wang@gmail.com>
+	<20100902082759.GE14214@pengutronix.de>
+	<4C7F777E.1090104@gmail.com>
+	<20100902143908.GK14214@pengutronix.de>
+	<20100917095247.GB30441@pengutronix.de>
+	<AANLkTi=mMGe10rDhA6g0OZYXhSW3=M07PKr6yN8VwnnJ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Kumar Gala <galak@kernel.crashing.org>
-To: LEROY Christophe <christophe.leroy@c-s.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general@lists.sourceforge.net, s.hauer@pengutronix.de,
+	Jason Wang <jason77.wang@gmail.com>, linux-arm-kernel@lists.infradead.org,
+	amit.kucheria@canonical.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <4C9C513B.40501@c-s.fr>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <AANLkTi=mMGe10rDhA6g0OZYXhSW3=M07PKr6yN8VwnnJ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+Hello Grant,
 
-On Fri, Sep 24, 2010 at 09:20:27AM +0200, LEROY Christophe wrote:
-> The issue is that cpm_muram_alloc_fixed() allocates memory from the
-> general purpose muram area (from 0x0 to 0x1bff).
-> Here we need to return a pointer to the parameter RAM, which is
-> located somewhere starting at 0x1c00. It is not a dynamic allocation
-> that is required here but only to point on the correct location in
-> the parameter RAM.
-> 
-> For the CPM2, I don't know. I'm working with a MPC866.
-> 
-> Attached is a previous discussion on the subject where I explain a
-> bit more in details the issue.
+On Fri, Sep 24, 2010 at 01:00:14AM -0600, Grant Likely wrote:
+> > Jason Wang (4):
+> > =A0 =A0 =A0ARM: mx5/clock-mx51: add spi clocks
+> > =A0 =A0 =A0ARM: mx5/iomux-mx51: add iomux definitions for eCSPI2 on the=
+ imx51_3ds board
+> > =A0 =A0 =A0ARM: mx5/mx51_3ds: add eCSPI2 support on the imx51_3ds board
+> > =A0 =A0 =A0ARM: mx5/mx51_3ds: add SPI NOR flash in the board init stage
+> >
+> > Uwe Kleine-K=F6nig (12):
+> > =A0 =A0 =A0spi/imx: default to m on platforms that have such devices
+> > =A0 =A0 =A0spi/imx: convert driver to use platform ids
+> > =A0 =A0 =A0spi/imx: get rid of more ifs depending on the used cpu
+> > =A0 =A0 =A0spi/imx: save the spi chip select in config struct, not the =
+gpio to use
+> > =A0 =A0 =A0spi/imx: add support for imx51's eCSPI and CSPI
+> > =A0 =A0 =A0ARM: imx: change the way spi-imx devices are registered
+> > =A0 =A0 =A0ARM: imx: use platform ids for spi_imx devices
+> > =A0 =A0 =A0ARM: mx51: clean up mx51 header
+> > =A0 =A0 =A0ARM: mx51: fix naming of spi related defines
+> > =A0 =A0 =A0ARM: mx5: add spi_imx device registration
+> > =A0 =A0 =A0ARM: mx5/clock-mx51: refactor ccgr callbacks to use common c=
+ode
+> > =A0 =A0 =A0ARM: mx5/clock-mx51: new macro that defines a clk with all m=
+embers
+> >
+> > =A0arch/arm/mach-imx/clock-imx1.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =
+=A0 =A02 +-
+> > =A0arch/arm/mach-imx/clock-imx21.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A06 +-
+> > =A0arch/arm/mach-imx/clock-imx27.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A06 +-
+> > =A0arch/arm/mach-imx/devices-imx21.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A09 +-
+> > =A0arch/arm/mach-imx/devices-imx27.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+12 +-
+> > =A0arch/arm/mach-mx25/clock.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| =A0 =A06 +-
+> > =A0arch/arm/mach-mx25/devices-imx25.h =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =
+12 +-
+> > =A0arch/arm/mach-mx3/clock-imx31.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A06 +-
+> > =A0arch/arm/mach-mx3/clock-imx35.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =
+=A0 =A04 +-
+> > =A0arch/arm/mach-mx3/devices-imx31.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+12 +-
+> > =A0arch/arm/mach-mx3/devices-imx35.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A09 +-
+> > =A0arch/arm/mach-mx5/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 | =A0 =A01 +
+> > =A0arch/arm/mach-mx5/board-mx51_3ds.c =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0 =
+33 ++
+> > =A0arch/arm/mach-mx5/clock-mx51.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =
+=A0113 ++++-
+> > =A0arch/arm/mach-mx5/devices-imx51.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =
+18 +
+> > =A0arch/arm/plat-mxc/devices/platform-spi_imx.c =A0 =A0| =A0 89 +++-
+> > =A0arch/arm/plat-mxc/include/mach/devices-common.h | =A0 11 +-
+> > =A0arch/arm/plat-mxc/include/mach/iomux-mx51.h =A0 =A0 | =A0 =A05 +
+> > =A0arch/arm/plat-mxc/include/mach/mx51.h =A0 =A0 =A0 =A0 =A0 | =A0608 +=
+++++++++++------------
+> > =A0drivers/spi/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 | =A0 16 +
+> > =A0drivers/spi/spi_imx.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 | =A0394 ++++++++++++---
+> > =A021 files changed, 919 insertions(+), 453 deletions(-)
+> > =A0create mode 100644 arch/arm/mach-mx5/devices-imx51.h
+> =
 
-The patch looks OK, I think.
+> I'm fine with this series.
+> =
 
-Doesn't explain why that worked on MPC8272 (CPM2) and MPC8560
-(also CPM2) machines though. But here's my guess (I no longer
-have these boards to test it):
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> =
 
-On 8272 I used this node:
+> What tree do you want to merge them through?
+I thought that the five patches touching drivers/spi should go via your
+tree, the others via Sascha's.  Assuming this is OK for you, too, do you
+prefer to pick the patches out here or should I prepare a branch with
+these patches for you to pull?
 
-+                       spi@4c0 {
-+                               #address-cells = <1>;
-+                               #size-cells = <0>;
-+                               compatible = "fsl,cpm2-spi", "fsl,spi";
-+                               reg = <0x11a80 0x40 0x89fc 0x2>;
+Best regards
+Uwe
 
-On that SOC there are two muram data regions 0x0..0x2000 and
-0x9000..0x9100. Note that we actually don't want "data" regions,
-and the only reason why that worked is that sysdev/cpm_common.c
-maps muram(0)..muram(max).
+-- =
 
-Thanks,
-
--- 
-Anton Vorontsov
-email: cbouatmailru@gmail.com
-irc://irc.freenode.net/bd2
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

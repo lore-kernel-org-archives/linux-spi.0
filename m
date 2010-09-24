@@ -1,7 +1,8 @@
-From: "Educatel par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Votre profil nous interesse pour une formation qualifiante
-Date: Thu, 23 Sep 2010 19:38:24 +0200 (CEST)
-Message-ID: <l97nnx.orfgif@front07.g7r9.com>
+From: "Binck Bank" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Service de Reglement =?ISO-8859-1?Q?Diff=E9r?==?ISO-8859-1?Q?=E9?= ET
+	d'autres privileges sur vos transactions
+Date: Fri, 24 Sep 2010 02:01:40 +0200 (CEST)
+Message-ID: <l985m8.ni17o7@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

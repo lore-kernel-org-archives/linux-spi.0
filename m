@@ -1,11 +1,11 @@
-From: "Angel Philp" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] You are now blacklisted
-Date: Sat, 25 Sep 2010 09:55:22 +0530
-Message-ID: <897E3D95C20A.C33C458E80@[123.252.230.93]>
+From: "Club assureur =?ISO-8859-1?Q?Sant=E9?=" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Plus de 180 contrats comparés gratuitement
+Date: Sat, 25 Sep 2010 08:01:39 +0200 (CEST)
+Message-ID: <l9agqk.3u0bi4@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,8 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Alicia was shocked at my gains
-http://aa.exit-cheaplink.ru/
 
 ------------------------------------------------------------------------------
 Start uncovering the many advantages of virtual appliances

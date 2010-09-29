@@ -1,7 +1,7 @@
-From: "Votre Espace Mutuelles" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Les prix et garanties s'ameliorent, comparez maintenant
-Date: Tue, 28 Sep 2010 04:36:59 +0200 (CEST)
-Message-ID: <l9frh9.m6wy43@front02.r7g.com>
+From: "Panneau solaire" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Zoom sur les nouvelles dispositions et le choix du prestataire
+Date: Wed, 29 Sep 2010 02:10:47 +0200 (CEST)
+Message-ID: <l9hf5n.sofmcq@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

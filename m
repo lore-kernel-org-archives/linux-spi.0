@@ -1,7 +1,7 @@
-From: "Panneau solaire" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Zoom sur les nouvelles dispositions et le choix du prestataire
-Date: Wed, 29 Sep 2010 02:10:47 +0200 (CEST)
-Message-ID: <l9hf5n.sofmcq@front07.g7r9.com>
+From: "Le Coach DUKAN" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Gardez la ligne en toute saison, analyse Offerte!
+Date: Wed, 29 Sep 2010 08:46:47 +0200 (CEST)
+Message-ID: <l9hxpt.ju7cb7@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

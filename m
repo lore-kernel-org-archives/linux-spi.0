@@ -1,50 +1,104 @@
-From: Anton Vorontsov <cbouatmailru@gmail.com>
-Subject: Re: [PATCH v3 6/7] mtd: m25p80: add a read function to read page
-	by page
-Date: Thu, 30 Sep 2010 19:06:33 +0400
-Message-ID: <20100930150633.GA13741@oksana.dev.rtsoft.ru>
-References: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
-	<AANLkTinBDdEyMDt3KoauNdmTCz1ZAJ5mZ23iMWiwsUm4@mail.gmail.com>
-	<AANLkTi=GydTyhf3TOzCZOtrme1Jh0UmNDHqTVP59q=LH@mail.gmail.com>
+From: Kevin Wells <kevin.wells@nxp.com>
+Subject: RE: [PATCH] spi/pl022: compare bitwidth to enums
+Date: Thu, 30 Sep 2010 18:21:27 +0200
+Message-ID: <083DF309106F364B939360100EC290F80B06721D75@eu1rdcrdc1wx030.exi.nxp.com>
+References: <1285840671-9567-1-git-send-email-linus.walleij@stericsson.com>
+	<AANLkTin6fPnDdSqQiWKH8kTnREV2g8p94HzQQcjcpKLs@mail.gmail.com>
+	<AANLkTimGpfazBPYp3cc4pSFUJ_Q7GaPVxRtB2=YSM5YE@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: kumar.gala@freescale.com, David Brownell <david-b@pacbell.net>,
-	linuxppc-dev@ozlabs.org, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mingkai Hu <Mingkai.hu@freescale.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=GydTyhf3TOzCZOtrme1Jh0UmNDHqTVP59q=LH@mail.gmail.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Linus Walleij <linus.walleij@stericsson.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Grant Likely <grant.likely@secretlab.ca>, Linus Walleij
+	<linus.ml.walleij@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <AANLkTimGpfazBPYp3cc4pSFUJ_Q7GaPVxRtB2=YSM5YE@mail.gmail.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBTZXAgMzAsIDIwMTAgYXQgMTE6NDE6NDBQTSArMDkwMCwgR3JhbnQgTGlrZWx5IHdy
-b3RlOgo+IE9uIFRodSwgU2VwIDMwLCAyMDEwIGF0IDExOjE2IFBNLCBHcmFudCBMaWtlbHkKPiA8
-Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4gd3JvdGU6Cj4gPiBPbiBUaHUsIFNlcCAzMCwgMjAx
-MCBhdCA3OjQ2IFBNLCBEYXZpZCBCcm93bmVsbCA8ZGF2aWQtYkBwYWNiZWxsLm5ldD4gd3JvdGU6
-Cj4gPj4KPiA+PiAtLS0gT24gVGh1LCA5LzMwLzEwLCBNaW5na2FpIEh1IDxNaW5na2FpLmh1QGZy
-ZWVzY2FsZS5jb20+IHdyb3RlOgo+ID4+Cj4gPj4+IEZyb206IE1pbmdrYWkgSHUgPE1pbmdrYWku
-aHVAZnJlZXNjYWxlLmNvbT4KPiA+Pj4gU3ViamVjdDogW1BBVENIIHYzIDYvN10gbXRkOiBtMjVw
-ODA6IGFkZCBhIHJlYWQgZnVuY3Rpb24gdG8gcmVhZCBwYWdlIGJ5IHBhZ2UKPiA+Pgo+ID4+IE5B
-Sy4KPiA+Pgo+ID4+IFdlIHdlbnQgb3ZlciB0aGlzIGJlZm9yZS4KPiA+Cj4gPiBZZXMsIEkgYWdy
-ZWUgd2l0aCBEYXZpZCBvbiB0aGlzLiDCoElmIGxhcmdlIHRyYW5zZmVycyBkb24ndCB3b3JrLCB0
-aGVuCj4gPiBpdCBpcyB0aGUgU1BJIG1hc3RlciBkcml2ZXIgdGhhdCBpcyBidWdneS4KPiAKPiBC
-eSB0aGUgd2F5LCBkb2VzIHRoaXMgZml4IHlvdXIgcHJvYmxlbT8KPiAKPiBodHRwczovL3BhdGNo
-d29yay5rZXJuZWwub3JnL3BhdGNoLzE4NDc1Mi8KCkl0IHNob3VsZG4ndC4gQUZBSUssIGVTUEkg
-aXMgUElPLW9ubHkgY29udHJvbGxlciwgYW5kIHRoZSBvdmVycnVuCmZpeCBpcyBmb3IgdGhlIERN
-QSBtb2RlLgoKVGhhbmtzLAoKcC5zLiBCdHcsIGluIHBhdGNoIDMvNywgaXNfZG1hX21hcHBlZCBh
-cmd1bWVudCBvZiBmc2xfZXNwaV9idWZzKCkKaXMgdW5uZWVkZWQuCgotLSAKQW50b24gVm9yb250
-c292CmVtYWlsOiBjYm91YXRtYWlscnVAZ21haWwuY29tCmlyYzovL2lyYy5mcmVlbm9kZS5uZXQv
-YmQyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4
-cHBjLWRldiBtYWlsaW5nIGxpc3QKTGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcKaHR0cHM6
-Ly9saXN0cy5vemxhYnMub3JnL2xpc3RpbmZvL2xpbnV4cHBjLWRldg==
+
+> >> The enums from <linux/amba/pl022.h> are actually off-by-one
+> >> since bitwidth 4 is defined as 0x03, causing weirdness when
+> >> we were trying out some 9-bit peripheral. Fix this by
+> >> comparing to the enum values rather than hardcoded values
+> >> and also fixing the enum to something reasonable.
+> >>
+> >> Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
+> >> (...)
+> >> - =A0 =A0 =A0 if (chip_info->data_size <=3D 8) {
+> >> + =A0 =A0 =A0 if (chip_info->data_size <=3D SSP_DATA_BITS_8) {
+> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&spi->dev, "1 <=3D n <=3D8 bits=
+ per word\n");
+> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->n_bytes =3D 1;
+> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->read =3D READING_U8;
+> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->write =3D WRITING_U8;
+> >> - =A0 =A0 =A0 } else if (chip_info->data_size <=3D 16) {
+> >> + =A0 =A0 =A0 } else if (chip_info->data_size <=3D SSP_DATA_BITS_16) {
+> >
+> > I just realized that Kevin Wells patch actually patch away this problem
+> > so merge his patch and disregard this for the optimal solution.
+> >
+> >> =A0enum ssp_data_size {
+> >> - =A0 =A0 =A0 SSP_DATA_BITS_4 =3D 0x03, SSP_DATA_BITS_5, SSP_DATA_BITS=
+_6,
+> >> + =A0 =A0 =A0 SSP_DATA_BITS_4 =3D 0x04, SSP_DATA_BITS_5, SSP_DATA_BITS=
+_6,
+> >
+> > This is not good because this is used for default register
+> > settings too (I didn't notice, typical).
+> =
+
+> And it creates a 1:1 mapping of name to the same number.  Insane!
+> Just use the integer number directly.  :-)
+
+The spi->mode patch I submitted a few weeks ago actually removed the
+data_size field from chip_info and uses spi->data_bus_bits instead.
+The values passed into the dss field for the control0 register
+subtracts 1 from the spi->data_bus_bits to get the correct value now.
+
+Reference: 09/16/2010
+[PATCH] spi: amba_pl022: Add spi->mode support to AMBA SPI driver
+
+> =
+
+> >
+> > If anyone still wants a patch for older kernels I can provide a
+> > patch against 2.6.36-rc6 with just the first two hunks.
+> >
+> > Yours,
+> > Linus Walleij
+> >
+> =
+
+> =
+
+> =
+
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+> =
+
+> --------------------------------------------------------------------------
+> ----
+> Start uncovering the many advantages of virtual appliances
+> and start using them to simplify application deployment and
+> accelerate your shift to cloud computing.
+> http://p.sf.net/sfu/novell-sfdev2dev
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

@@ -1,69 +1,55 @@
-From: Linus Walleij <linus.walleij@stericsson.com>
-Subject: [PATCH] spi/pl022: compare bitwidth to enums
-Date: Thu, 30 Sep 2010 11:57:51 +0200
-Message-ID: <1285840671-9567-1-git-send-email-linus.walleij@stericsson.com>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by
+	page
+Date: Thu, 30 Sep 2010 03:46:25 -0700 (PDT)
+Message-ID: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij@stericsson.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Grant Likely <grant.likely@secretlab.ca>,
-	<spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: kumar.gala@freescale.com, Mingkai Hu <Mingkai.hu@freescale.com>
+To: linuxppc-dev@ozlabs.org, spi-devel-general@lists.sourceforge.net,
+	linux-mtd@lists.infradead.org, Mingkai Hu <Mingkai.hu@freescale.com>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-The enums from <linux/amba/pl022.h> are actually off-by-one
-since bitwidth 4 is defined as 0x03, causing weirdness when
-we were trying out some 9-bit peripheral. Fix this by
-comparing to the enum values rather than hardcoded values
-and also fixing the enum to something reasonable.
 
-Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
----
- drivers/spi/amba-pl022.c   |    4 ++--
- include/linux/amba/pl022.h |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+--- On Thu, 9/30/10, Mingkai Hu <Mingkai.hu@freescale.com> wrote:
 
-diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 90a7e5d..981f78d 100644
---- a/drivers/spi/amba-pl022.c
-+++ b/drivers/spi/amba-pl022.c
-@@ -1605,12 +1605,12 @@ static int pl022_setup(struct spi_device *spi)
- 	chip->xfer_type = chip_info->com_mode;
- 	chip->cs_control = chip_info->cs_control;
- 
--	if (chip_info->data_size <= 8) {
-+	if (chip_info->data_size <= SSP_DATA_BITS_8) {
- 		dev_dbg(&spi->dev, "1 <= n <=8 bits per word\n");
- 		chip->n_bytes = 1;
- 		chip->read = READING_U8;
- 		chip->write = WRITING_U8;
--	} else if (chip_info->data_size <= 16) {
-+	} else if (chip_info->data_size <= SSP_DATA_BITS_16) {
- 		dev_dbg(&spi->dev, "9 <= n <= 16 bits per word\n");
- 		chip->n_bytes = 2;
- 		chip->read = READING_U16;
-diff --git a/include/linux/amba/pl022.h b/include/linux/amba/pl022.h
-index abf26cc..3c83c62 100644
---- a/include/linux/amba/pl022.h
-+++ b/include/linux/amba/pl022.h
-@@ -90,7 +90,7 @@ enum ssp_tx_endian {
-  * enum ssp_data_size - number of bits in one data element
-  */
- enum ssp_data_size {
--	SSP_DATA_BITS_4 = 0x03, SSP_DATA_BITS_5, SSP_DATA_BITS_6,
-+	SSP_DATA_BITS_4 = 0x04, SSP_DATA_BITS_5, SSP_DATA_BITS_6,
- 	SSP_DATA_BITS_7, SSP_DATA_BITS_8, SSP_DATA_BITS_9,
- 	SSP_DATA_BITS_10, SSP_DATA_BITS_11, SSP_DATA_BITS_12,
- 	SSP_DATA_BITS_13, SSP_DATA_BITS_14, SSP_DATA_BITS_15,
--- 
-1.6.3.3
+> From: Mingkai Hu <Mingkai.hu@freescale.com>
+> Subject: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by =
+page
+
+NAK.
+
+We went over this before.
+
+=A0 The bug is in your SPI master controller driver,
+and the fix there involves mapping large reads
+ into multiple smaller reads.=A0 (Example, 128K
+read as two 64K reads instead of one of 128K.
+
+It's *NEVER* appropriate to commit to patching all
+upper level drivers in order to work around bugs
+in lower level ones.=A0 The set of such upper level
+drivers that may need bugfixing is quite large,
+most will never be used with your buggy controller
+driver, and all such patches will need testing (but
+the test resources are probably not available).
+
+Whatever SPI controller driver you're working with
+is clearly buggy ... but not unfixably so.
+
+DO NOT head down the path of requiring every SPI
+device driver to include workarounds for this odd
+little SPI master driver bug.
+
+- Dave

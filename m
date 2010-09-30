@@ -1,14 +1,13 @@
 From: Mingkai Hu <Mingkai.hu@freescale.com>
-Subject: [PATCH v3 7/7] DTS: add fsl,spi-quirk-trans-len-limit property
-Date: Thu, 30 Sep 2010 16:00:46 +0800
-Message-ID: <1285833646-12006-8-git-send-email-Mingkai.hu@freescale.com>
+Subject: [PATCH v3 5/7] mtd: m25p80: add support to parse the SPI flash's
+	partitions
+Date: Thu, 30 Sep 2010 16:00:44 +0800
+Message-ID: <1285833646-12006-6-git-send-email-Mingkai.hu@freescale.com>
 References: <1285833646-12006-1-git-send-email-Mingkai.hu@freescale.com>
 	<1285833646-12006-2-git-send-email-Mingkai.hu@freescale.com>
 	<1285833646-12006-3-git-send-email-Mingkai.hu@freescale.com>
 	<1285833646-12006-4-git-send-email-Mingkai.hu@freescale.com>
 	<1285833646-12006-5-git-send-email-Mingkai.hu@freescale.com>
-	<1285833646-12006-6-git-send-email-Mingkai.hu@freescale.com>
-	<1285833646-12006-7-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,7 +16,7 @@ Cc: grant.likely@secretlab.ca, kumar.gala@freescale.com,
 To: <linuxppc-dev@ozlabs.org>, <spi-devel-general@lists.sourceforge.net>,
 	<linux-mtd@lists.infradead.org>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1285833646-12006-7-git-send-email-Mingkai.hu@freescale.com>
+In-Reply-To: <1285833646-12006-5-git-send-email-Mingkai.hu@freescale.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
 	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -32,51 +31,101 @@ List-Id: linux-spi.vger.kernel.org
 Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
 ---
 v3:
- - Add "spi-quirk-trans-len-limit" property to the board's dts.
+ - Move the SPI flash partition code to the probe function.
 
- Documentation/powerpc/dts-bindings/fsl/spi.txt |    3 +++
- arch/powerpc/boot/dts/mpc8536ds.dts            |    1 +
- arch/powerpc/boot/dts/p4080ds.dts              |    1 +
- 3 files changed, 5 insertions(+), 0 deletions(-)
+ drivers/mtd/devices/m25p80.c |   39 +++++++++++++++++++++++++++------------
+ 1 files changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/powerpc/dts-bindings/fsl/spi.txt b/Documentation/powerpc/dts-bindings/fsl/spi.txt
-index 777abd7..e1cb84e 100644
---- a/Documentation/powerpc/dts-bindings/fsl/spi.txt
-+++ b/Documentation/powerpc/dts-bindings/fsl/spi.txt
-@@ -41,6 +41,9 @@ Required properties:
- - interrupts : should contain eSPI interrupt, the device has one interrupt.
- - fsl,espi-num-chipselects : the number of the chipselect signals.
- 
-+Optional properties:
-+- fsl,spi-quirk-trans-len-limit : the max trans length is limited to 0xFFFF.
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 6f512b5..47d53c7 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -772,7 +772,7 @@ static const struct spi_device_id *__devinit jedec_probe(struct spi_device *spi)
+ static int __devinit m25p_probe(struct spi_device *spi)
+ {
+ 	const struct spi_device_id	*id = spi_get_device_id(spi);
+-	struct flash_platform_data	*data;
++	struct flash_platform_data	data, *pdata;
+ 	struct m25p			*flash;
+ 	struct flash_info		*info;
+ 	unsigned			i;
+@@ -782,13 +782,27 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 	 * a chip ID, try the JEDEC id commands; they'll work for most
+ 	 * newer chips, even if we don't recognize the particular chip.
+ 	 */
+-	data = spi->dev.platform_data;
+-	if (data && data->type) {
++	pdata = spi->dev.platform_data;
++	if (!pdata && spi->dev.of_node) {
++		int nr_parts;
++		struct mtd_partition *parts;
++		struct device_node *np = spi->dev.of_node;
 +
- Example:
- 	spi@110000 {
- 		#address-cells = <1>;
-diff --git a/arch/powerpc/boot/dts/mpc8536ds.dts b/arch/powerpc/boot/dts/mpc8536ds.dts
-index a75c10e..6911c76 100644
---- a/arch/powerpc/boot/dts/mpc8536ds.dts
-+++ b/arch/powerpc/boot/dts/mpc8536ds.dts
-@@ -116,6 +116,7 @@
- 			interrupts = <59 0x2>;
- 			interrupt-parent = <&mpic>;
- 			fsl,espi-num-chipselects = <4>;
-+			fsl,spi-quirk-trans-len-limit;
++		nr_parts = of_mtd_parse_partitions(&spi->dev, np, &parts);
++		if (nr_parts) {
++			pdata = &data;
++			memset(pdata, 0, sizeof(*pdata));
++			pdata->parts = parts;
++			pdata->nr_parts = nr_parts;
++		}
++	}
++
++	if (pdata && pdata->type) {
+ 		const struct spi_device_id *plat_id;
  
- 			flash@0 {
- 				#address-cells = <1>;
-diff --git a/arch/powerpc/boot/dts/p4080ds.dts b/arch/powerpc/boot/dts/p4080ds.dts
-index 5b7fc29..060fc45 100644
---- a/arch/powerpc/boot/dts/p4080ds.dts
-+++ b/arch/powerpc/boot/dts/p4080ds.dts
-@@ -243,6 +243,7 @@
- 			interrupts = <53 0x2>;
- 			interrupt-parent = <&mpic>;
- 			fsl,espi-num-chipselects = <4>;
-+			fsl,spi-quirk-trans-len-limit;
+ 		for (i = 0; i < ARRAY_SIZE(m25p_ids) - 1; i++) {
+ 			plat_id = &m25p_ids[i];
+-			if (strcmp(data->type, plat_id->name))
++			if (strcmp(pdata->type, plat_id->name))
+ 				continue;
+ 			break;
+ 		}
+@@ -796,7 +810,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 		if (i < ARRAY_SIZE(m25p_ids) - 1)
+ 			id = plat_id;
+ 		else
+-			dev_warn(&spi->dev, "unrecognized id %s\n", data->type);
++			dev_warn(&spi->dev, "unrecognized id %s\n",
++					pdata->type);
+ 	}
  
- 			flash@0 {
- 				#address-cells = <1>;
+ 	info = (void *)id->driver_data;
+@@ -847,8 +862,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 		write_sr(flash, 0);
+ 	}
+ 
+-	if (data && data->name)
+-		flash->mtd.name = data->name;
++	if (pdata && pdata->name)
++		flash->mtd.name = pdata->name;
+ 	else
+ 		flash->mtd.name = dev_name(&spi->dev);
+ 
+@@ -919,9 +934,9 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 					part_probes, &parts, 0);
+ 		}
+ 
+-		if (nr_parts <= 0 && data && data->parts) {
+-			parts = data->parts;
+-			nr_parts = data->nr_parts;
++		if (nr_parts <= 0 && pdata && pdata->parts) {
++			parts = pdata->parts;
++			nr_parts = pdata->nr_parts;
+ 		}
+ 
+ 		if (nr_parts > 0) {
+@@ -937,9 +952,9 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 			flash->partitioned = 1;
+ 			return add_mtd_partitions(&flash->mtd, parts, nr_parts);
+ 		}
+-	} else if (data && data->nr_parts)
++	} else if (pdata && pdata->nr_parts)
+ 		dev_warn(&spi->dev, "ignoring %d default partitions on %s\n",
+-				data->nr_parts, data->name);
++				pdata->nr_parts, pdata->name);
+ 
+ 	return add_mtd_device(&flash->mtd) == 1 ? -ENODEV : 0;
+ }
 -- 
 1.6.4
 

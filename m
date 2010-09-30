@@ -1,60 +1,41 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH] spi/pl022: compare bitwidth to enums
-Date: Thu, 30 Sep 2010 13:34:17 +0200
-Message-ID: <AANLkTin6fPnDdSqQiWKH8kTnREV2g8p94HzQQcjcpKLs@mail.gmail.com>
-References: <1285840671-9567-1-git-send-email-linus.walleij@stericsson.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by
+	page
+Date: Thu, 30 Sep 2010 23:16:09 +0900
+Message-ID: <AANLkTinBDdEyMDt3KoauNdmTCz1ZAJ5mZ23iMWiwsUm4@mail.gmail.com>
+References: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Linus Walleij <linus.walleij@stericsson.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Grant Likely <grant.likely@secretlab.ca>,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev@ozlabs.org, Mingkai Hu <Mingkai.hu@freescale.com>,
+	linux-mtd@lists.infradead.org, kumar.gala@freescale.com,
 	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1285840671-9567-1-git-send-email-linus.walleij@stericsson.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: David Brownell <david-b@pacbell.net>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/9/30 Linus Walleij <linus.walleij@stericsson.com>:
-
-> The enums from <linux/amba/pl022.h> are actually off-by-one
-> since bitwidth 4 is defined as 0x03, causing weirdness when
-> we were trying out some 9-bit peripheral. Fix this by
-> comparing to the enum values rather than hardcoded values
-> and also fixing the enum to something reasonable.
+On Thu, Sep 30, 2010 at 7:46 PM, David Brownell <david-b@pacbell.net> wrote:
 >
-> Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
-> (...)
-> - =A0 =A0 =A0 if (chip_info->data_size <=3D 8) {
-> + =A0 =A0 =A0 if (chip_info->data_size <=3D SSP_DATA_BITS_8) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&spi->dev, "1 <=3D n <=3D8 bits pe=
-r word\n");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->n_bytes =3D 1;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->read =3D READING_U8;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0chip->write =3D WRITING_U8;
-> - =A0 =A0 =A0 } else if (chip_info->data_size <=3D 16) {
-> + =A0 =A0 =A0 } else if (chip_info->data_size <=3D SSP_DATA_BITS_16) {
+> --- On Thu, 9/30/10, Mingkai Hu <Mingkai.hu@freescale.com> wrote:
+>
+>> From: Mingkai Hu <Mingkai.hu@freescale.com>
+>> Subject: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by page
+>
+> NAK.
+>
+> We went over this before.
 
-I just realized that Kevin Wells patch actually patch away this problem
-so merge his patch and disregard this for the optimal solution.
+Yes, I agree with David on this.  If large transfers don't work, then
+it is the SPI master driver that is buggy.
 
-> =A0enum ssp_data_size {
-> - =A0 =A0 =A0 SSP_DATA_BITS_4 =3D 0x03, SSP_DATA_BITS_5, SSP_DATA_BITS_6,
-> + =A0 =A0 =A0 SSP_DATA_BITS_4 =3D 0x04, SSP_DATA_BITS_5, SSP_DATA_BITS_6,
-
-This is not good because this is used for default register
-settings too (I didn't notice, typical).
-
-If anyone still wants a patch for older kernels I can provide a
-patch against 2.6.36-rc6 with just the first two hunks.
-
-Yours,
-Linus Walleij
+g.

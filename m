@@ -1,22 +1,22 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by
-	page
-Date: Fri, 1 Oct 2010 05:57:21 +0900
-Message-ID: <AANLkTim2osW_BoOOUZ4EXx7P=qK3-23Co+Mdj7kLRyt4@mail.gmail.com>
-References: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
-	<AANLkTinBDdEyMDt3KoauNdmTCz1ZAJ5mZ23iMWiwsUm4@mail.gmail.com>
-	<AANLkTi=GydTyhf3TOzCZOtrme1Jh0UmNDHqTVP59q=LH@mail.gmail.com>
-	<20100930150633.GA13741@oksana.dev.rtsoft.ru>
+Subject: Re: [PATCH v3 5/7] mtd: m25p80: add support to parse the SPI flash's
+	partitions
+Date: Fri, 1 Oct 2010 06:34:51 +0900
+Message-ID: <AANLkTi=eBA+i7kCOrEPao1AXofKUjBQokWLXFpgx3WND@mail.gmail.com>
+References: <1285833646-12006-1-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-2-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-3-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-4-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-5-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-6-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: kumar.gala@freescale.com, David Brownell <david-b@pacbell.net>,
-	linuxppc-dev@ozlabs.org, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mingkai Hu <Mingkai.hu@freescale.com>
-To: Anton Vorontsov <cbouatmailru@gmail.com>
+Cc: linuxppc-dev@ozlabs.org, kumar.gala@freescale.com,
+	linux-mtd@lists.infradead.org, spi-devel-general@lists.sourceforge.net
+To: Mingkai Hu <Mingkai.hu@freescale.com>
 Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <20100930150633.GA13741@oksana.dev.rtsoft.ru>
+In-Reply-To: <1285833646-12006-6-git-send-email-Mingkai.hu@freescale.com>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
@@ -28,55 +28,137 @@ Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.
 Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 1, 2010 at 12:06 AM, Anton Vorontsov <cbouatmailru@gmail.com> w=
-rote:
-> On Thu, Sep 30, 2010 at 11:41:40PM +0900, Grant Likely wrote:
->> On Thu, Sep 30, 2010 at 11:16 PM, Grant Likely
->> <grant.likely@secretlab.ca> wrote:
->> > On Thu, Sep 30, 2010 at 7:46 PM, David Brownell <david-b@pacbell.net> =
-wrote:
->> >>
->> >> --- On Thu, 9/30/10, Mingkai Hu <Mingkai.hu@freescale.com> wrote:
->> >>
->> >>> From: Mingkai Hu <Mingkai.hu@freescale.com>
->> >>> Subject: [PATCH v3 6/7] mtd: m25p80: add a read function to read pag=
-e by page
->> >>
->> >> NAK.
->> >>
->> >> We went over this before.
->> >
->> > Yes, I agree with David on this. =A0If large transfers don't work, then
->> > it is the SPI master driver that is buggy.
->>
->> By the way, does this fix your problem?
->>
->> https://patchwork.kernel.org/patch/184752/
+On Thu, Sep 30, 2010 at 5:00 PM, Mingkai Hu <Mingkai.hu@freescale.com> wrot=
+e:
+> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+> ---
+> v3:
+> =A0- Move the SPI flash partition code to the probe function.
 >
-> It shouldn't. AFAIK, eSPI is PIO-only controller, and the overrun
-> fix is for the DMA mode.
+> =A0drivers/mtd/devices/m25p80.c | =A0 39 +++++++++++++++++++++++++++-----=
+-------
+> =A01 files changed, 27 insertions(+), 12 deletions(-)
 >
-> Thanks,
->
-> p.s. Btw, in patch 3/7, is_dma_mapped argument of fsl_espi_bufs()
-> is unneeded.
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 6f512b5..47d53c7 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -772,7 +772,7 @@ static const struct spi_device_id *__devinit jedec_pr=
+obe(struct spi_device *spi)
+> =A0static int __devinit m25p_probe(struct spi_device *spi)
+> =A0{
+> =A0 =A0 =A0 =A0const struct spi_device_id =A0 =A0 =A0*id =3D spi_get_devi=
+ce_id(spi);
+> - =A0 =A0 =A0 struct flash_platform_data =A0 =A0 =A0*data;
+> + =A0 =A0 =A0 struct flash_platform_data =A0 =A0 =A0data, *pdata;
+> =A0 =A0 =A0 =A0struct m25p =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 *flash;
+> =A0 =A0 =A0 =A0struct flash_info =A0 =A0 =A0 =A0 =A0 =A0 =A0 *info;
+> =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0i;
+> @@ -782,13 +782,27 @@ static int __devinit m25p_probe(struct spi_device *=
+spi)
+> =A0 =A0 =A0 =A0 * a chip ID, try the JEDEC id commands; they'll work for =
+most
+> =A0 =A0 =A0 =A0 * newer chips, even if we don't recognize the particular =
+chip.
+> =A0 =A0 =A0 =A0 */
+> - =A0 =A0 =A0 data =3D spi->dev.platform_data;
+> - =A0 =A0 =A0 if (data && data->type) {
+> + =A0 =A0 =A0 pdata =3D spi->dev.platform_data;
+> + =A0 =A0 =A0 if (!pdata && spi->dev.of_node) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int nr_parts;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct mtd_partition *parts;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct device_node *np =3D spi->dev.of_node;
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi->=
+dev, np, &parts);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata =3D &data;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 memset(pdata, 0, sizeof(*pd=
+ata));
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->parts =3D parts;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->nr_parts =3D nr_part=
+s;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> + =A0 =A0 =A0 }
 
-Thanks Anton.  Please reply to that patch with this comment so that
-patchwork records it and I don't forget about it.
+Yes, this is the correct way to go about adding the partitions.
+However, this patch can be made simpler by not renaming 'data' to
+'pdata' and by moving the above code down to just before the partition
+information is actually used.  in the OF case, only the parts and the
+nr_parts values written into data, and those values aren't used until
+the last part of the probe function.
 
-Thanks,
+Regardless, in principle this patch is correct:
+
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+
+> +
+> + =A0 =A0 =A0 if (pdata && pdata->type) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0const struct spi_device_id *plat_id;
+>
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0for (i =3D 0; i < ARRAY_SIZE(m25p_ids) - 1=
+; i++) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0plat_id =3D &m25p_ids[i];
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (strcmp(data->type, plat=
+_id->name))
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (strcmp(pdata->type, pla=
+t_id->name))
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0continue;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0break;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+> @@ -796,7 +810,8 @@ static int __devinit m25p_probe(struct spi_device *sp=
+i)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (i < ARRAY_SIZE(m25p_ids) - 1)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0id =3D plat_id;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0else
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&spi->dev, "unreco=
+gnized id %s\n", data->type);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&spi->dev, "unreco=
+gnized id %s\n",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 pdata->type);
+> =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0info =3D (void *)id->driver_data;
+> @@ -847,8 +862,8 @@ static int __devinit m25p_probe(struct spi_device *sp=
+i)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0write_sr(flash, 0);
+> =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 if (data && data->name)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash->mtd.name =3D data->name;
+> + =A0 =A0 =A0 if (pdata && pdata->name)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash->mtd.name =3D pdata->name;
+> =A0 =A0 =A0 =A0else
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0flash->mtd.name =3D dev_name(&spi->dev);
+>
+> @@ -919,9 +934,9 @@ static int __devinit m25p_probe(struct spi_device *sp=
+i)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0part_probes, &parts, 0);
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+>
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts <=3D 0 && data && data->parts)=
+ {
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 parts =3D data->parts;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D data->nr_parts;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts <=3D 0 && pdata && pdata->part=
+s) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 parts =3D pdata->parts;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D pdata->nr_part=
+s;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+
+As per my comment earlier; since parts and nr_parts isn't needed
+before this point, this block could simply be:
+
+if (nr_parts <=3D 0 && data && data->parts) {
+        parts =3D data->parts;
+        nr_parts =3D data->nr_parts;
+}
+if (nr_parts <=3D 0 && spi->dev.of_node)
+  =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi->dev, np, &parts);
+
+And most of the other changes to this file goes away.  Simpler, yes?
+
 g.
-
->
-> --
-> Anton Vorontsov
-> email: cbouatmailru@gmail.com
-> irc://irc.freenode.net/bd2
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.

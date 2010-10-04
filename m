@@ -1,18 +1,14 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [git pull] SPI bug fixes for 2.6.36
-Date: Sat, 2 Oct 2010 21:43:50 -0600
-Message-ID: <AANLkTi=GjpvhexkGdwJmigX0yOE6at-vdEq+OR_HG9kG@mail.gmail.com>
-References: <AANLkTimgKWoFt8Kd3DCG20Mpkib54ePPiiGbabVvrYuU@mail.gmail.com>
+From: ioyoioY-Bwk+phw43s6ijSvrBCdNNQ@public.gmane.org
+Subject: =?GB2312?B?xvPStbXEuPoxtaWhotK1Mc7xoaKyyTG5uqGiyfoxudzIy7XI16jWsMjL1LE=?=
+Date: Mon, 4 Oct 2010 16:56:43 +0000 (UTC)
+Message-ID: <E1P2oKw-0000T3-9U@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>, Sinan Akman <sinan-w0xpxkV3uqlBDgjK7y7TUQ@public.gmane.org>,
-	Roel Kluin <roel.kluin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTimgKWoFt8Kd3DCG20Mpkib54ePPiiGbabVvrYuU-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Date: Wed, 13 Oct 2010 00:54:48 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,75 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Oops, missed one.  Here is an updated pull req:
+This is a multi-part message in MIME format
 
-The following changes since commit c6ea21e35bf3691cad59647c771e6606067f627d:
-  Linus Torvalds (1):
-        Merge git://git.kernel.org/.../sfrench/cifs-2.6
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 merge-spi
-
-Roel Kluin (1):
-      spi: spi-gpio.c tests SPI_MASTER_NO_RX bit twice, but not SPI_MASTER_=
-NO_TX
-
-Sinan Akman (1):
-      of/spi: Fix OF-style driver binding of spi devices
-
-christophe leroy (1):
-      spi/mpc8xxx: fix buffer overrun on large transfers
-
- drivers/spi/spi.c         |    5 +++++
- drivers/spi/spi_gpio.c    |    2 +-
- drivers/spi/spi_mpc8xxx.c |   10 ++++++++--
- 3 files changed, 14 insertions(+), 3 deletions(-)
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Sat, Oct 2, 2010 at 9:26 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wr=
-ote:
-> Hi Linus,
->
-> Some spi bug fixes for 2.6.36
->
-> The following changes since commit 899611ee7d373e5eeda08e9a8632684e1ebbbf=
-00:
-> =A0Linus Torvalds (1):
-> =A0 =A0 =A0 =A0Linux 2.6.36-rc6
->
-> are available in the git repository at:
->
-> =A0git://git.secretlab.ca/git/linux-2.6 merge-spi
->
-> Roel Kluin (1):
-> =A0 =A0 =A0spi: spi-gpio.c tests SPI_MASTER_NO_RX bit twice, but not SPI_=
-MASTER_NO_TX
->
-> christophe leroy (1):
-> =A0 =A0 =A0spi/mpc8xxx: fix buffer overrun on large transfers
->
-> =A0drivers/spi/spi_gpio.c =A0 =A0| =A0 =A02 +-
-> =A0drivers/spi/spi_mpc8xxx.c | =A0 10 ++++++++--
-> =A02 files changed, 9 insertions(+), 3 deletions(-)
->
->
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
->
+------------------------------------------------------------------------------
+Virtualization is moving to the mainstream and overtaking non-virtualized
+environment for deploying applications. Does it make network security 
+easier or more difficult to achieve? Read this whitepaper to separate the 
+two and get a better understanding.
+http://p.sf.net/sfu/hp-phase2-d2d
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-Start uncovering the many advantages of virtual appliances
-and start using them to simplify application deployment and
-accelerate your shift to cloud computing.
-http://p.sf.net/sfu/novell-sfdev2dev
+--=_NextPart_2rfkindysadvnqw3nerasdf--

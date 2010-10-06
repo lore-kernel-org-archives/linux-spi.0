@@ -1,17 +1,12 @@
-From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: get rid of chipinfo dev pointer
-Date: Wed, 6 Oct 2010 11:16:31 +0200
-Message-ID: <AANLkTikJXpYXAxYD0VEc4GszT-QOxvVhES1+QerzAi9T@mail.gmail.com>
-References: <1285926452-8636-1-git-send-email-linus.walleij@stericsson.com>
+From: Sergii Kovalchuk <sentinelofsetch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Assert CS, wait for IRQ, write data sequence
+Date: Wed, 6 Oct 2010 16:49:45 +0300
+Message-ID: <201010061649.45237.sentinelofsetch@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1285926452-8636-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,23 +17,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/10/1 Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>:
+Hi,
 
-> What is the dev pointer doing inside the platform data anyway.
-> We have another pointer to the actual device at hand, use that.
->
-> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> ---
-> Note: this is based off Kevin Wells patch for using the proper
-> modebits since I expect that to go in first. If you want this to
-> go before that patch, tell me and we both have to rebase.
+I'm implementing an SPI protocol driver for TI WL12xx combo chip. According to 
+the spec, for write transaction I should complete the following sequence:
 
-Obviously it needs the ACKed DMA support patch as well.
-Tell me if you want the patch stack spun around either direction,
-things are stacking up a bit...
+1. Assert CS
+2. Wait until chip will trigger IRQ
+3. Write data
 
-Yours,
-Linus Walleij
+Looking at spi_transfer structure I wondering, how I can implement such logic 
+- there is no explicit ways to implement "wait for an event" within single 
+spi_message processing.
+ 
+As current workarround I use a simple delay in 5 us, but for sleep states it 
+might be not sufficient, since wake-up time are ususally greater.
+
+
+It would be appropriate to assert CS manually, wait for IRQ and then start the 
+data transfer, but may be there is some more essential way to accomplish this?
+
+--
+Best regards,
+Sergii Kovalchuk
 
 ------------------------------------------------------------------------------
 Beautiful is writing same markup. Internet Explorer 9 supports

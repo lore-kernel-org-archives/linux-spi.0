@@ -1,15 +1,17 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Change MODE, CS, BUS, and SPEED using SPI-DEV driver?
-Date: Tue, 5 Oct 2010 09:54:56 +0900
-Message-ID: <AANLkTi=uszrgBRbh1a4WEYMZ5b9E9Sr8vXTkvf5UD1sz@mail.gmail.com>
-References: <20101004210503.147160@gmx.com>
+From: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: get rid of chipinfo dev pointer
+Date: Wed, 6 Oct 2010 11:16:31 +0200
+Message-ID: <AANLkTikJXpYXAxYD0VEc4GszT-QOxvVhES1+QerzAi9T@mail.gmail.com>
+References: <1285926452-8636-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101004210503.147160-KK0ffGbhmjU@public.gmane.org>
+In-Reply-To: <1285926452-8636-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,27 +22,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 5, 2010 at 6:02 AM, Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org> wrote:
+2010/10/1 Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>:
 
+> What is the dev pointer doing inside the platform data anyway.
+> We have another pointer to the actual device at hand, use that.
+>
+> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> ---
+> Note: this is based off Kevin Wells patch for using the proper
+> modebits since I expect that to go in first. If you want this to
+> go before that patch, tell me and we both have to rebase.
 
-> I had built a kernel for the s3c6410 using linux-2.6.24.
-Could you plz upgrade to latest kernel ?
-2.6.24 was released before I was born, so can't say much about it.
+Obviously it needs the ACKed DMA support patch as well.
+Tell me if you want the patch stack spun around either direction,
+things are stacking up a bit...
 
-> I noticed that there are drivers for the s3c24xx but only the
-> "S3C6410 High Speed SPI Driver" is specific to the s3c6410.
-> I do not believe that the the s3c24xx series drivers are
-> compatible with the s3c6410. Am I wrong?
-No.
-
-> The problem I am having would go away if I could use the
-> s3c24xx drivers since they result in the spidev.c file being
-> built.
-SPIDEV is a test protocol driver. You should be able to select that
-while config
-
-Summary:- Upgrade to latest possible kernel or backport S3C64xx driver
-from the latest kernel.
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 Beautiful is writing same markup. Internet Explorer 9 supports

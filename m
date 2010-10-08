@@ -1,19 +1,23 @@
 From: Hu Mingkai-B21284 <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Subject: RE: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by
 	page
-Date: Fri, 8 Oct 2010 10:13:08 +0800
-Message-ID: <73839B4A0818E747864426270AC332C3057F6134@zmy16exm20.fsl.freescale.net>
+Date: Fri, 8 Oct 2010 10:15:26 +0800
+Message-ID: <73839B4A0818E747864426270AC332C3057F6138@zmy16exm20.fsl.freescale.net>
 References: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
+	<AANLkTinBDdEyMDt3KoauNdmTCz1ZAJ5mZ23iMWiwsUm4@mail.gmail.com>
+	<AANLkTi=GydTyhf3TOzCZOtrme1Jh0UmNDHqTVP59q=LH@mail.gmail.com>
+	<20100930150633.GA13741@oksana.dev.rtsoft.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Gala Kumar-B11780 <B11780-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Zang Roy-R61911 <R61911-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, <linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	Gala Kumar-B11780 <B11780-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Class: urn:content-classes:message
-In-Reply-To: <841976.76219.qm-g47maUHHHF8HBU+L9ui1Svu2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <20100930150633.GA13741-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,77 +28,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: David Brownell [mailto:david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org]
-> Sent: Thursday, September 30, 2010 6:46 PM
-> To: linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; lin=
-ux-
-> mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org; Hu Mingkai-B21284
-> Cc: Gala Kumar-B11780; Zang Roy-R61911; Hu Mingkai-B21284
-> Subject: Re: [PATCH v3 6/7] mtd: m25p80: add a read function to read page=
- by
-> page
-> =
-
-> =
-
-> --- On Thu, 9/30/10, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wrote:
-> =
-
-> > From: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > Subject: [PATCH v3 6/7] mtd: m25p80: add a read function to read page
-> > by page
-> =
-
-> NAK.
-> =
-
-> We went over this before.
-> =
-
-> =A0 The bug is in your SPI master controller driver, and the fix there in=
-volves
-> mapping large reads  into multiple smaller reads.=A0 (Example, 128K read =
-as two
-> 64K reads instead of one of 128K.
-> =
-
-> It's *NEVER* appropriate to commit to patching all upper level drivers in=
- order
-> to work around bugs in lower level ones.=A0 The set of such upper level d=
-rivers
-> that may need bugfixing is quite large, most will never be used with your=
- buggy
-> controller driver, and all such patches will need testing (but the test
-> resources are probably not available).
-> =
-
-> Whatever SPI controller driver you're working with is clearly buggy ... b=
-ut not
-> unfixably so.
-> =
-
-> DO NOT head down the path of requiring every SPI device driver to include
-> workarounds for this odd little SPI master driver bug.
-> =
-
-> - Dave
-> =
-
-
-Thanks for your comments, the controller driver is the proper place to hand=
-le this, I'll fix it.
-
-Thanks,
-Mingkai
-
-
----------------------------------------------------------------------------=
----
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW50b24gVm9yb250c292
+IFttYWlsdG86Y2JvdWF0bWFpbHJ1QGdtYWlsLmNvbV0NCj4gU2VudDogVGh1cnNkYXksIFNlcHRl
+bWJlciAzMCwgMjAxMCAxMTowNyBQTQ0KPiBUbzogR3JhbnQgTGlrZWx5DQo+IENjOiBEYXZpZCBC
+cm93bmVsbDsgbGludXhwcGMtZGV2QG96bGFicy5vcmc7IEh1IE1pbmdrYWktQjIxMjg0OyBsaW51
+eC0NCj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IEdhbGEgS3VtYXItQjExNzgwOyBzcGktZGV2
+ZWwtDQo+IGdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0DQo+IFN1YmplY3Q6IFJlOiBbUEFU
+Q0ggdjMgNi83XSBtdGQ6IG0yNXA4MDogYWRkIGEgcmVhZCBmdW5jdGlvbiB0byByZWFkIHBhZ2Ug
+YnkNCj4gcGFnZQ0KPiANCj4gT24gVGh1LCBTZXAgMzAsIDIwMTAgYXQgMTE6NDE6NDBQTSArMDkw
+MCwgR3JhbnQgTGlrZWx5IHdyb3RlOg0KPiA+IE9uIFRodSwgU2VwIDMwLCAyMDEwIGF0IDExOjE2
+IFBNLCBHcmFudCBMaWtlbHkNCj4gPiA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4gd3JvdGU6
+DQo+ID4gPiBPbiBUaHUsIFNlcCAzMCwgMjAxMCBhdCA3OjQ2IFBNLCBEYXZpZCBCcm93bmVsbCA8
+ZGF2aWQtYkBwYWNiZWxsLm5ldD4gd3JvdGU6DQo+ID4gPj4NCj4gPiA+PiAtLS0gT24gVGh1LCA5
+LzMwLzEwLCBNaW5na2FpIEh1IDxNaW5na2FpLmh1QGZyZWVzY2FsZS5jb20+IHdyb3RlOg0KPiA+
+ID4+DQo+ID4gPj4+IEZyb206IE1pbmdrYWkgSHUgPE1pbmdrYWkuaHVAZnJlZXNjYWxlLmNvbT4N
+Cj4gPiA+Pj4gU3ViamVjdDogW1BBVENIIHYzIDYvN10gbXRkOiBtMjVwODA6IGFkZCBhIHJlYWQg
+ZnVuY3Rpb24gdG8gcmVhZA0KPiA+ID4+PiBwYWdlIGJ5IHBhZ2UNCj4gPiA+Pg0KPiA+ID4+IE5B
+Sy4NCj4gPiA+Pg0KPiA+ID4+IFdlIHdlbnQgb3ZlciB0aGlzIGJlZm9yZS4NCj4gPiA+DQo+ID4g
+PiBZZXMsIEkgYWdyZWUgd2l0aCBEYXZpZCBvbiB0aGlzLiDCoElmIGxhcmdlIHRyYW5zZmVycyBk
+b24ndCB3b3JrLA0KPiA+ID4gdGhlbiBpdCBpcyB0aGUgU1BJIG1hc3RlciBkcml2ZXIgdGhhdCBp
+cyBidWdneS4NCj4gPg0KPiA+IEJ5IHRoZSB3YXksIGRvZXMgdGhpcyBmaXggeW91ciBwcm9ibGVt
+Pw0KPiA+DQo+ID4gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xODQ3NTIvDQo+
+IA0KPiBJdCBzaG91bGRuJ3QuIEFGQUlLLCBlU1BJIGlzIFBJTy1vbmx5IGNvbnRyb2xsZXIsIGFu
+ZCB0aGUgb3ZlcnJ1biBmaXggaXMgZm9yIHRoZQ0KPiBETUEgbW9kZS4NCj4gDQo+IFRoYW5rcywN
+Cj4gDQo+IHAucy4gQnR3LCBpbiBwYXRjaCAzLzcsIGlzX2RtYV9tYXBwZWQgYXJndW1lbnQgb2Yg
+ZnNsX2VzcGlfYnVmcygpIGlzIHVubmVlZGVkLg0KPiANCg0KWWVzLCB0aGUgaXNfZG1hX21hcHBl
+ZCBpc24ndCBuZWVkZWQsIEknbGwgcmVtb3ZlIGl0Lg0KDQpUaGFua3MsDQpNaW5na2FpDQotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KQmVhdXRpZnVsIGlzIHdyaXRpbmcgc2FtZSBtYXJrdXAuIEludGVy
+bmV0IEV4cGxvcmVyIDkgc3VwcG9ydHMKc3RhbmRhcmRzIGZvciBIVE1MNSwgQ1NTMywgU1ZHIDEu
+MSwgIEVDTUFTY3JpcHQ1LCBhbmQgRE9NIEwyICYgTDMuClNwZW5kIGxlc3MgdGltZSB3cml0aW5n
+IGFuZCAgcmV3cml0aW5nIGNvZGUgYW5kIG1vcmUgdGltZSBjcmVhdGluZyBncmVhdApleHBlcmll
+bmNlcyBvbiB0aGUgd2ViLiBCZSBhIHBhcnQgb2YgdGhlIGJldGEgdG9kYXkuCmh0dHA6Ly9wLnNm
+Lm5ldC9zZnUvYmVhdXR5b2Z0aGV3ZWIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

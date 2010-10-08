@@ -1,70 +1,56 @@
-From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
-Date: Fri, 08 Oct 2010 15:22:46 -0400
-Message-ID: <4CAF6F86.40201@criticallink.com>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
-	<4C8EB795.1080607@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
-	<201009140904.59555.caglarakyuz@gmail.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
-	<4C8F7460.6050006@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
-	<4C94B9BD.4010606@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
-	<4C979D1D.1070707@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302342050C7@dbde02.ent.ti.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH 0/2 V2] Adding support for adis16250/5 to adis16260 driver.
+Date: Fri, 08 Oct 2010 13:12:00 -0700
+Message-ID: <1286568720.1723.4.camel@helium>
+References: <1283786178-6466-1-git-send-email-jic23@cam.ac.uk>
+	<4C94B4A6.2060001@cam.ac.uk>
+	<AANLkTinQ04UmbBvakGQBeSap0PCh3VrWmhhobLh0u9Qj@mail.gmail.com>
+	<4CA0C7AB.8060905@cam.ac.uk>
+	<AANLkTikXMycs_eaRGA4Va=uaBo_qyx3S3m0Y43Gt+qAz@mail.gmail.com>
+	<4CA344A5.80205@cam.ac.uk> <4CAEFEF4.4040506@cam.ac.uk>
+	<20101008182943.GJ3863@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59302342050C7-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, matthias <mensch0815-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20101008182943.GJ3863-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgU2VraGFyLAoKT24gMTAvNi8yMDEwIDExOjM3IEFNLCBOb3JpLCBTZWtoYXIgd3JvdGU6Cgo+
-IEhpIE1pa2UsCj4gCj4gT24gTW9uLCBTZXAgMjAsIDIwMTAgYXQgMjM6MTI6NTMsIE1pY2hhZWwg
-V2lsbGlhbXNvbiB3cm90ZToKPj4KPj4gTGV0IG1lIGtub3cgaWYgeW91IHdhbnQgdGVzdGluZyBv
-biB0aGUgRE1BIHBvcnRpb24gb2YgdGhlIHBhdGNoICh3aGVuIHlvdXIgcmVhZHksIG9mIGNvdXJz
-ZSkuCj4gCj4gSSBqdXN0IGZpbmlzaGVkIHB1c2hpbmcgdGhlIERNQSByZWxhdGVkIHBhdGNoZXMg
-dG8gdGhlIGdpdCBicmFuY2hbMV0uCj4gSSBoYXZlIG5vdCB0ZXN0ZWQgeWV0LCBidXQgZmVlbCBm
-cmVlIHRvIGdpdmUgaXQgYSBnbyAobWF5YmUgSSB3aWxsIGdldAo+IGx1Y2t5IGFnYWluISkuCj4K
-CgpJIGdhdmUgaXQgYSBnbyBmb3Igb3VyIHBsYXRmb3JtLiAgVGhlIGdvb2QgbmV3cyBpcywgcG9s
-bGVkIGFuZCBpbnRlcnJ1cHQgZHJpdmVuIG1vZGUgc3RpbGwgd29yayEgIApUaGUgYmFkIG5ld3Mg
-aXMgdGhhdCBETUEgbW9kZSBoYW5ncyB1cCB0aGUga2VybmVsIG9uIHRoZSBmaXJzdCByZWFkIGF0
-dGVtcHQsIHN0YWxsZWQgd2FpdGluZyAKZm9yIHRoZSB0cmFuc2ZlciBjb21wbGV0aW9uIG5vdGlm
-aWNhdGlvbiAoaG1tbS4uLi4gSSB0aGluayB0aGlzIHdhcyBhIHNwb3Qgd2hlcmUgdGhpbmdzIHdl
-cmUgCnR3ZWFrZWQgYSBiaXQ/IDopICkKCkknbGwgc2VlIGlmIEkgY2FuIG5hcnJvdyBpdCBkb3du
-IHNvbWUgbW9yZSBpZiB5b3UgZG9uJ3QgZ2V0IHRvIGl0IGZpcnN0LgogCgo+IEFsc28sIGRvIHlv
-dSBoYXZlIHBhdGNoZXMgYWRkaW5nIFNQSSBzdXBwb3J0IGZvciBEQTg1MCBwbGF0Zm9ybT8KPiBJ
-IGNhbiBpbmNsdWRlIHRoZXNlIHBhdGNoZXMgb24gdGhpcyBicmFuY2ggc28gb3RoZXJzIHdobyB3
-aWxsIGJlCj4gdGVzdGluZyBkb27igJl0IGhhdmUgdG8gcmVwZWF0IHRoZSB3b3JrLgo+IAoKCkkg
-Y2xvbmVkIHlvdXIgcmVwb3NpdG9yeSBhdCBbMV0gYW5kIHB1Ymxpc2hlZCB0aGUgYWRkaXRpb25z
-IG5lZWRlZCB0byBtYWRlIHRvIHRlc3QgaXQgb24gdGhlCm1pdHlkc3AtbDEzOCBwbGF0Zm9ybSAo
-ZGE4NTAgYmFzZWQpIGF0IFsyXSAobmV2ZXIgbWluZCB0aGUgVUFSVCBvbmUgYXQgdGhlIGVuZCku
-ICBJIGhhZCB0byBhZGQgCmNsb2NrIHN1cHBvcnQgZm9yIHRoZSBzcGkgZGV2aWNlcyBhbmQgZGVm
-aW5lIHRoZSBwbGF0Zm9ybSBTUEkgcmVzb3VyY2VzL3JlZ2lzdHJhdGlvbiByb3V0aW5lcy4gIApJ
-J2QgYXBwcmVjaWF0ZSBhIHF1aWNrIHBlZWsgYXQgdGhvc2UgdG8gbWFrZSBzdXJlIHRoYXQgSSBk
-aWRuJ3QgbWFrZSBhbnkgZXJyb3JzLiAgVGhlIHNwaSAKcmVnaXN0cmF0aW9uIG1heSBiZSByZWZh
-Y3RvcmFibGUgKHNwPykgdG8gc3VwcG9ydCBkYTgzMCwgSSBkaWRuJ3QgbG9vayB0byBjbG9zZWx5
-IGF0IHRoYXQuCgpJZiBhbnkgb2YgaXQgaXMgdXNhYmxlLCBncmVhdC4KCj4gVGhhbmtzLAo+IFNl
-a2hhcgo+IAo+IFsxXSBodHRwOi8vYXJhZ28tcHJvamVjdC5vcmcvZ2l0L3Byb2plY3RzLz9wPWxp
-bnV4LWRhdmluY2kuZ2l0O2E9c2hvcnRsb2c7aD1yZWZzL2hlYWRzL2RhdmluY2ktc3BpLXJld3Jp
-dGUKPiAKCgpbMl0gaHR0cDovL3N1cHBvcnQuY3JpdGljYWxsaW5rLmNvbS9naXR3ZWIvP3A9bGlu
-dXgtZGF2aW5jaS5naXQ7YT1zaG9ydGxvZztoPXJlZnMvaGVhZHMvc3BpLXRlc3RpbmcKCi1NaWtl
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkRhdmluY2kt
-bGludXgtb3Blbi1zb3VyY2UgbWFpbGluZyBsaXN0CkRhdmluY2ktbGludXgtb3Blbi1zb3VyY2VA
-bGludXguZGF2aW5jaWRzcC5jb20KaHR0cDovL2xpbnV4LmRhdmluY2lkc3AuY29tL21haWxtYW4v
-bGlzdGluZm8vZGF2aW5jaS1saW51eC1vcGVuLXNvdXJjZQo=
+On Fri, 2010-10-08 at 12:29 -0600, Grant Likely wrote:
+> On Fri, Oct 08, 2010 at 12:22:28PM +0100, Jonathan Cameron wrote:
+
+> > Is it ever wrong to over specify elements of a transfer?
+
+I wouldn't say that's even possible.
+
+> > We have a driver that (for historical reasons) specifies
+> > that a particular transfer is 8 bit.
+> > 	.bits_per_word = 8,
+> > 
+> > This causes issues with the atmel spi driver which sees that
+> > the value is specified and hence fails the transfer.
+
+
+Specifying 8 there means the same as specifying zero.
+
+
+
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today.
+http://p.sf.net/sfu/beautyoftheweb

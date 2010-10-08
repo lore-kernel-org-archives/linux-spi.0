@@ -1,17 +1,20 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 7/6] spi/imx: Support different fifo sizes
-Date: Fri,  8 Oct 2010 11:24:01 +0200
-Message-ID: <1286529841-20800-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <20100902143908.GK14214@pengutronix.de>
+From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Subject: Re: [PATCH 0/2 V2] Adding support for adis16250/5 to adis16260 driver.
+Date: Fri, 08 Oct 2010 12:22:28 +0100
+Message-ID: <4CAEFEF4.4040506@cam.ac.uk>
+References: <1283786178-6466-1-git-send-email-jic23@cam.ac.uk>	<4C94B4A6.2060001@cam.ac.uk>	<AANLkTinQ04UmbBvakGQBeSap0PCh3VrWmhhobLh0u9Qj@mail.gmail.com>	<4CA0C7AB.8060905@cam.ac.uk>
+	<AANLkTikXMycs_eaRGA4Va=uaBo_qyx3S3m0Y43Gt+qAz@mail.gmail.com>
+	<4CA344A5.80205@cam.ac.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	amit.kucheria-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org, David Jander <david-/Q/L1SwJa3aEVqv0pETR8A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	matthias <mensch0815-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20100902143908.GK14214-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <4CA344A5.80205-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,58 +25,197 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogRGF2aWQgSmFuZGVyIDxkYXZpZEBwcm90b25pYy5ubD4KClRoZSBpLk1YNTEgRUNTUEkg
-aGFzIGEgZmlmbyBzaXplIG9mIDY0IGVudHJpZXMgaW5zdGVhZCBvZiA4IGVudHJpZXMgYXMKZm91
-bmQgb24gdGhlIG90aGVyIGNzcGkgYnVzIGRldmljZXMuCgpDYzogSmFzb24gV2FuZyA8amFzb243
-Ny53YW5nQGdtYWlsLmNvbT4KU2lnbmVkLW9mZi1ieTogRGF2aWQgSmFuZGVyIDxkYXZpZEBwcm90
-b25pYy5ubD4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4
-LmRlPgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
-bmd1dHJvbml4LmRlPgotLS0KSGVsbG8sCgp0aGlzIHBhdGNoIGRlcGVuZHMgb24gcGF0Y2hlcyBh
-bHJlYWR5IGFja2VkIGJ5IEdyYW50IExpa2VseSBhbmQgc2l0dGluZwppbiBTYXNjaGEgSGF1ZXIn
-cyBpbXgtZm9yLTIuNi4zNyBicmFuY2guCgpCZXN0IHJlZ2FyZHMKVXdlCgogZHJpdmVycy9zcGkv
-c3BpX2lteC5jIHwgICAgOCArKysrKysrLQogMSBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMo
-KyksIDEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpX2lteC5jIGIv
-ZHJpdmVycy9zcGkvc3BpX2lteC5jCmluZGV4IDZiYWIyY2YuLjU1YTM4ZTIgMTAwNjQ0Ci0tLSBh
-L2RyaXZlcnMvc3BpL3NwaV9pbXguYworKysgYi9kcml2ZXJzL3NwaS9zcGlfaW14LmMKQEAgLTc3
-LDYgKzc3LDcgQEAgc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhIHsKIAl2b2lkICgqdHJpZ2dl
-cikoc3RydWN0IHNwaV9pbXhfZGF0YSAqKTsKIAlpbnQgKCpyeF9hdmFpbGFibGUpKHN0cnVjdCBz
-cGlfaW14X2RhdGEgKik7CiAJdm9pZCAoKnJlc2V0KShzdHJ1Y3Qgc3BpX2lteF9kYXRhICopOwor
-CXVuc2lnbmVkIGludCBmaWZvc2l6ZTsKIH07CiAKIHN0cnVjdCBzcGlfaW14X2RhdGEgewpAQCAt
-NTQxLDYgKzU0Miw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBlX2RhdGEgc3BpX2lt
-eF9kZXZ0eXBlX2RhdGFbXSBfX2RldmluaXRkYXRhID0gewogCQkudHJpZ2dlciA9IG14MV90cmln
-Z2VyLAogCQkucnhfYXZhaWxhYmxlID0gbXgxX3J4X2F2YWlsYWJsZSwKIAkJLnJlc2V0ID0gbXgx
-X3Jlc2V0LAorCQkuZmlmb3NpemUgPSA4LAogCX0sCiAjZW5kaWYKICNpZmRlZiBDT05GSUdfU1BJ
-X0lNWF9WRVJfMF8wCkBAIC01NTAsNiArNTUyLDcgQEAgc3RhdGljIHN0cnVjdCBzcGlfaW14X2Rl
-dnR5cGVfZGF0YSBzcGlfaW14X2RldnR5cGVfZGF0YVtdIF9fZGV2aW5pdGRhdGEgPSB7CiAJCS50
-cmlnZ2VyID0gbXgyN190cmlnZ2VyLAogCQkucnhfYXZhaWxhYmxlID0gbXgyN19yeF9hdmFpbGFi
-bGUsCiAJCS5yZXNldCA9IHNwaV9pbXgwXzBfcmVzZXQsCisJCS5maWZvc2l6ZSA9IDgsCiAJfSwK
-ICNlbmRpZgogI2lmZGVmIENPTkZJR19TUElfSU1YX1ZFUl8wXzQKQEAgLTU1OSw2ICs1NjIsNyBA
-QCBzdGF0aWMgc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhIHNwaV9pbXhfZGV2dHlwZV9kYXRh
-W10gX19kZXZpbml0ZGF0YSA9IHsKIAkJLnRyaWdnZXIgPSBteDMxX3RyaWdnZXIsCiAJCS5yeF9h
-dmFpbGFibGUgPSBteDMxX3J4X2F2YWlsYWJsZSwKIAkJLnJlc2V0ID0gc3BpX2lteDBfNF9yZXNl
-dCwKKwkJLmZpZm9zaXplID0gOCwKIAl9LAogI2VuZGlmCiAjaWZkZWYgQ09ORklHX1NQSV9JTVhf
-VkVSXzBfNwpAQCAtNTY4LDYgKzU3Miw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBl
-X2RhdGEgc3BpX2lteF9kZXZ0eXBlX2RhdGFbXSBfX2RldmluaXRkYXRhID0gewogCQkudHJpZ2dl
-ciA9IG14MzFfdHJpZ2dlciwKIAkJLnJ4X2F2YWlsYWJsZSA9IG14MzFfcnhfYXZhaWxhYmxlLAog
-CQkucmVzZXQgPSBzcGlfaW14MF80X3Jlc2V0LAorCQkuZmlmb3NpemUgPSA4LAogCX0sCiAjZW5k
-aWYKICNpZmRlZiBDT05GSUdfU1BJX0lNWF9WRVJfMl8zCkBAIC01NzcsNiArNTgyLDcgQEAgc3Rh
-dGljIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSBzcGlfaW14X2RldnR5cGVfZGF0YVtdIF9f
-ZGV2aW5pdGRhdGEgPSB7CiAJCS50cmlnZ2VyID0gc3BpX2lteDJfM190cmlnZ2VyLAogCQkucnhf
-YXZhaWxhYmxlID0gc3BpX2lteDJfM19yeF9hdmFpbGFibGUsCiAJCS5yZXNldCA9IHNwaV9pbXgy
-XzNfcmVzZXQsCisJCS5maWZvc2l6ZSA9IDY0LAogCX0sCiAjZW5kaWYKIH07CkBAIC01OTYsNyAr
-NjAyLDcgQEAgc3RhdGljIHZvaWQgc3BpX2lteF9jaGlwc2VsZWN0KHN0cnVjdCBzcGlfZGV2aWNl
-ICpzcGksIGludCBpc19hY3RpdmUpCiAKIHN0YXRpYyB2b2lkIHNwaV9pbXhfcHVzaChzdHJ1Y3Qg
-c3BpX2lteF9kYXRhICpzcGlfaW14KQogewotCXdoaWxlIChzcGlfaW14LT50eGZpZm8gPCA4KSB7
-CisJd2hpbGUgKHNwaV9pbXgtPnR4ZmlmbyA8IHNwaV9pbXgtPmRldnR5cGVfZGF0YS5maWZvc2l6
-ZSkgewogCQlpZiAoIXNwaV9pbXgtPmNvdW50KQogCQkJYnJlYWs7CiAJCXNwaV9pbXgtPnR4KHNw
-aV9pbXgpOwotLSAKMS43LjIuMwoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpCZWF1dGlmdWwgaXMg
-d3JpdGluZyBzYW1lIG1hcmt1cC4gSW50ZXJuZXQgRXhwbG9yZXIgOSBzdXBwb3J0cwpzdGFuZGFy
-ZHMgZm9yIEhUTUw1LCBDU1MzLCBTVkcgMS4xLCAgRUNNQVNjcmlwdDUsIGFuZCBET00gTDIgJiBM
-My4KU3BlbmQgbGVzcyB0aW1lIHdyaXRpbmcgYW5kICByZXdyaXRpbmcgY29kZSBhbmQgbW9yZSB0
-aW1lIGNyZWF0aW5nIGdyZWF0CmV4cGVyaWVuY2VzIG9uIHRoZSB3ZWIuIEJlIGEgcGFydCBvZiB0
-aGUgYmV0YSB0b2RheS4KaHR0cDovL3Auc2YubmV0L3NmdS9iZWF1dHlvZnRoZXdlYgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+*bump* For anyone from spi side of things.
+
+Quick summary of question (hence top post :)
+Is it ever wrong to over specify elements of a transfer?
+We have a driver that (for historical reasons) specifies
+that a particular transfer is 8 bit.
+	.bits_per_word = 8,
+
+This causes issues with the atmel spi driver which sees that
+the value is specified and hence fails the transfer.
+
+Who needs to fix?
+
+Obviously we can work around by dropping the specification that it
+is 8 bits per word.
+
+Thanks,
+
+Jonathan
+
+On 09/29/10 14:52, Jonathan Cameron wrote:
+> Hi Matthias
+> 
+> Lots of additional cc's as I think I know what the problem is and I
+> think it's an spi issue rather than an IIO one.
+> 
+>>
+>> after a long stuggle, I got a working kernel version for my board
+>> running as I need it.
+>> I tried both the staging/adis16255 and the staging/iio/gyro driver.
+>>
+>> The latter doesn't work.
+>> "adis16260 spi1.1: problem when reading 16 bit register 0x34
+>> iio device0: disable irq failed"
+> That is the first actual comms with the chip, so it is likely to be a
+> general issue rather than due to that particular call.
+>>
+>> A quick look in the code of staging/adis16255 and the data sheet tells
+>> me, that you have to read from the higher register address but we read
+>> from the lower one.
+>> So I changed the value to 0x35, but it doesn't work either.
+> Quoting from the data sheet (it is present on the sheets for both chips).
+> 
+> "Each register has two addresses (upper, lower), but either one can be used
+> to access its entire 16 bits of data."
+> 
+> It could be there is something special about that register I'm not seeing
+> though...
+>>
+>> Well in the end I copied "my" read version from staging/adis16255 and
+>> put a read call in the probe function (because it is the easiest way
+>> to get spi_device structure).
+>> Then it seems to work, with higher and lower byte.
+> Ok, that gives us something to work against which is very helpful!
+>> So my conclusion is, that something went wrong when you casacade and
+>> discascade (sorry for the poor english), from spi_device through
+>> adis16260_state to device.
+>> Sounds stange to me, as it works with the adis16260 chip, right?
+> As far as I know. It's possible something strange happened in a merge
+> at some point though.
+>> So maybe it's because I use avr32 architecture?
+> 
+> Having done a bit of digging and made sure that (up to the fact I don't
+> have the part) everything runs normally on my board, I'm beginning to
+> suspect you are correct. There are some subtle differences in the setup
+> between your code and Barry's.
+> 
+> Looking about, the avr32's seem to use the atmel_spi driver?
+> 
+> Ah got it (I think)...
+> 
+> In drivers/spi/atmel_spi.c atmel_spi_transfer we have:
+> 
+> 		/* FIXME implement these protocol options!! */
+> 		if (xfer->bits_per_word || xfer->speed_hz) {
+> 			dev_dbg(&spi->dev, "no protocol options yet\n");
+> 			return -ENOPROTOOPT;
+> 		}
+> 
+> Personally I'd have at least sanity checked if the parameters were trying
+> to change anything before dumping out.  Also, surely that's a case for
+> something screaming a little louder given it is an out and out device
+> killing problem? I think the default is 8 bit?  I think the reason it
+> is in Barry's driver is a legacy issue to do with the fact that these
+> are actually 16bit transfers pretending to be 8 bits ones...  Actually
+> now I look at it, I'm not sure why he didn't use 16 bit ones in that
+> function in the first place!
+> 
+> Not sure we need it in our drivers, but I'm guessing there may be some
+> spi master driver out there somewhere that defaults to something other than
+> 8 bit? (have vague recollection of seeing an email about this... perhaps
+> someone who plays more with spi bus drivers?)
+> 
+>>
+>> So I don't know if we should dig deeper. The problem is, that I don't
+>> have too much time to do it...
+> Sorry it is proving such a pain for you to test!
+>> What do you think?
+> I have cc'd spi people and the atmel_spi maintainer to see what we think
+> is the correct fix for this. For the purposes of this discussion
+> (though it's isn't quite what Matthias is working with) the driver in
+> question is drivers/staging/iio/gyro/adis16260_core.c
+> 
+> 
+> Thanks again for testing.
+> 
+> Jonathan
+> 
+>> Regards,
+>> Matthias
+>>
+>> 2010/9/27 Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>:
+>>> On 09/18/10 16:48, matthias wrote:
+>>>> Hi Jonathan,
+>>>>
+>>>> sorry for not answering yet. I was on vacation and next week I won't
+>>>> be able to test the driver. Will try to do it asap....
+>>>>
+>>>> Matthias
+>>>
+>>> Hi Matthias,
+>>>
+>>> I'm afraid quite a bit has changed over the last few weeks. Feel free to test
+>>> this patch set.  The changes since then are merely renames of a couple of
+>>> attributes and a lot of stuff for event handling that doesn't effect this
+>>> driver.
+>>>
+>>> If not, I'm hosting a *temporary* git tree with all my various queued up changes
+>>> at:
+>>>
+>>> http://git.kernel.org/?p=linux/kernel/git/jic23/iio_temp.git
+>>>
+>>> Seems excessive to post this set again until I hear back from you!
+>>>
+>>> Thanks,
+>>>
+>>> Jonathan
+>>>
+>>> p.s. Switched to drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org address as that now seems to work.
+>>>
+>>>>
+>>>> 2010/9/18 Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>:
+>>>>> On 09/06/10 16:16, Jonathan Cameron wrote:
+>>>>>> Mainly a rebase, but a couple of attribute naming fixes as well.
+>>>>>>
+>>>>>> Note I don't have one of these so if anyone could test that would
+>>>>>> be great!
+>>>>>>
+>>>>>> Signed-off-by: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+>>>>>>
+>>>>>> Jonathan Cameron (2):
+>>>>>>   staging:iio:adis16260 add id table support
+>>>>>>   staging:iio:adis16260 add suppport for adis16255 and adis16250.
+>>>>>>
+>>>>>>  drivers/staging/iio/gyro/Kconfig                   |    8 +-
+>>>>>>  drivers/staging/iio/gyro/adis16260.h               |    3 +
+>>>>>>  drivers/staging/iio/gyro/adis16260_core.c          |  139 ++++++++++++++------
+>>>>>>  drivers/staging/iio/gyro/adis16260_platform_data.h |   19 +++
+>>>>>>  drivers/staging/iio/gyro/gyro.h                    |    9 ++
+>>>>>>  5 files changed, 136 insertions(+), 42 deletions(-)
+>>>>>>  create mode 100644 drivers/staging/iio/gyro/adis16260_platform_data.h
+>>>>>>
+>>>>>>
+>>>>> Whilst I haven't tested these (don't have the hardware) I don't think there
+>>>>> is anything controversial, so my intent is to push these to Greg before the
+>>>>> next merge window.  This is primarily to remove the duplication we currently
+>>>>> have with two drivers that effectively cover the same parts.
+>>>>>
+>>>>> Thanks,
+>>>>>
+>>>>> Jonathan
+>>>>>
+>>>>
+>>>>
+>>>>
+>>>
+>>>
+>>
+>>
+>>
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 
+
+
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today.
+http://p.sf.net/sfu/beautyoftheweb

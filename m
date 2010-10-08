@@ -1,66 +1,200 @@
-From: Hu Mingkai-B21284 <B21284-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: RE: [PATCH v3 6/7] mtd: m25p80: add a read function to read page by
-	page
-Date: Fri, 8 Oct 2010 10:15:26 +0800
-Message-ID: <73839B4A0818E747864426270AC332C3057F6138@zmy16exm20.fsl.freescale.net>
-References: <841976.76219.qm@web180306.mail.gq1.yahoo.com>
-	<AANLkTinBDdEyMDt3KoauNdmTCz1ZAJ5mZ23iMWiwsUm4@mail.gmail.com>
-	<AANLkTi=GydTyhf3TOzCZOtrme1Jh0UmNDHqTVP59q=LH@mail.gmail.com>
-	<20100930150633.GA13741@oksana.dev.rtsoft.ru>
+From: Hu Mingkai-B21284 <B21284@freescale.com>
+Subject: RE: [PATCH v3 5/7] mtd: m25p80: add support to parse the SPI flash's
+	partitions
+Date: Fri, 8 Oct 2010 10:42:10 +0800
+Message-ID: <73839B4A0818E747864426270AC332C3057F616A@zmy16exm20.fsl.freescale.net>
+References: <1285833646-12006-1-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-2-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-3-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-4-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-5-git-send-email-Mingkai.hu@freescale.com>
+	<1285833646-12006-6-git-send-email-Mingkai.hu@freescale.com>
+	<AANLkTi=eBA+i7kCOrEPao1AXofKUjBQokWLXFpgx3WND@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	Gala Kumar-B11780 <B11780-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Anton Vorontsov <cbouatmailru-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Grant Likely
-	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linuxppc-dev@ozlabs.org, Gala Kumar-B11780 <B11780@freescale.com>,
+	linux-mtd@lists.infradead.org, Zang Roy-R61911 <R61911@freescale.com>,
+	spi-devel-general@lists.sourceforge.net
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
 Content-Class: urn:content-classes:message
-In-Reply-To: <20100930150633.GA13741-wnGakbxT3iijyJ0x5qLZdcN33GVbZNy3@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <AANLkTi=eBA+i7kCOrEPao1AXofKUjBQokWLXFpgx3WND@mail.gmail.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQW50b24gVm9yb250c292
-IFttYWlsdG86Y2JvdWF0bWFpbHJ1QGdtYWlsLmNvbV0NCj4gU2VudDogVGh1cnNkYXksIFNlcHRl
-bWJlciAzMCwgMjAxMCAxMTowNyBQTQ0KPiBUbzogR3JhbnQgTGlrZWx5DQo+IENjOiBEYXZpZCBC
-cm93bmVsbDsgbGludXhwcGMtZGV2QG96bGFicy5vcmc7IEh1IE1pbmdrYWktQjIxMjg0OyBsaW51
-eC0NCj4gbXRkQGxpc3RzLmluZnJhZGVhZC5vcmc7IEdhbGEgS3VtYXItQjExNzgwOyBzcGktZGV2
-ZWwtDQo+IGdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0DQo+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0ggdjMgNi83XSBtdGQ6IG0yNXA4MDogYWRkIGEgcmVhZCBmdW5jdGlvbiB0byByZWFkIHBhZ2Ug
-YnkNCj4gcGFnZQ0KPiANCj4gT24gVGh1LCBTZXAgMzAsIDIwMTAgYXQgMTE6NDE6NDBQTSArMDkw
-MCwgR3JhbnQgTGlrZWx5IHdyb3RlOg0KPiA+IE9uIFRodSwgU2VwIDMwLCAyMDEwIGF0IDExOjE2
-IFBNLCBHcmFudCBMaWtlbHkNCj4gPiA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4gd3JvdGU6
-DQo+ID4gPiBPbiBUaHUsIFNlcCAzMCwgMjAxMCBhdCA3OjQ2IFBNLCBEYXZpZCBCcm93bmVsbCA8
-ZGF2aWQtYkBwYWNiZWxsLm5ldD4gd3JvdGU6DQo+ID4gPj4NCj4gPiA+PiAtLS0gT24gVGh1LCA5
-LzMwLzEwLCBNaW5na2FpIEh1IDxNaW5na2FpLmh1QGZyZWVzY2FsZS5jb20+IHdyb3RlOg0KPiA+
-ID4+DQo+ID4gPj4+IEZyb206IE1pbmdrYWkgSHUgPE1pbmdrYWkuaHVAZnJlZXNjYWxlLmNvbT4N
-Cj4gPiA+Pj4gU3ViamVjdDogW1BBVENIIHYzIDYvN10gbXRkOiBtMjVwODA6IGFkZCBhIHJlYWQg
-ZnVuY3Rpb24gdG8gcmVhZA0KPiA+ID4+PiBwYWdlIGJ5IHBhZ2UNCj4gPiA+Pg0KPiA+ID4+IE5B
-Sy4NCj4gPiA+Pg0KPiA+ID4+IFdlIHdlbnQgb3ZlciB0aGlzIGJlZm9yZS4NCj4gPiA+DQo+ID4g
-PiBZZXMsIEkgYWdyZWUgd2l0aCBEYXZpZCBvbiB0aGlzLiDCoElmIGxhcmdlIHRyYW5zZmVycyBk
-b24ndCB3b3JrLA0KPiA+ID4gdGhlbiBpdCBpcyB0aGUgU1BJIG1hc3RlciBkcml2ZXIgdGhhdCBp
-cyBidWdneS4NCj4gPg0KPiA+IEJ5IHRoZSB3YXksIGRvZXMgdGhpcyBmaXggeW91ciBwcm9ibGVt
-Pw0KPiA+DQo+ID4gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xODQ3NTIvDQo+
-IA0KPiBJdCBzaG91bGRuJ3QuIEFGQUlLLCBlU1BJIGlzIFBJTy1vbmx5IGNvbnRyb2xsZXIsIGFu
-ZCB0aGUgb3ZlcnJ1biBmaXggaXMgZm9yIHRoZQ0KPiBETUEgbW9kZS4NCj4gDQo+IFRoYW5rcywN
-Cj4gDQo+IHAucy4gQnR3LCBpbiBwYXRjaCAzLzcsIGlzX2RtYV9tYXBwZWQgYXJndW1lbnQgb2Yg
-ZnNsX2VzcGlfYnVmcygpIGlzIHVubmVlZGVkLg0KPiANCg0KWWVzLCB0aGUgaXNfZG1hX21hcHBl
-ZCBpc24ndCBuZWVkZWQsIEknbGwgcmVtb3ZlIGl0Lg0KDQpUaGFua3MsDQpNaW5na2FpDQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KQmVhdXRpZnVsIGlzIHdyaXRpbmcgc2FtZSBtYXJrdXAuIEludGVy
-bmV0IEV4cGxvcmVyIDkgc3VwcG9ydHMKc3RhbmRhcmRzIGZvciBIVE1MNSwgQ1NTMywgU1ZHIDEu
-MSwgIEVDTUFTY3JpcHQ1LCBhbmQgRE9NIEwyICYgTDMuClNwZW5kIGxlc3MgdGltZSB3cml0aW5n
-IGFuZCAgcmV3cml0aW5nIGNvZGUgYW5kIG1vcmUgdGltZSBjcmVhdGluZyBncmVhdApleHBlcmll
-bmNlcyBvbiB0aGUgd2ViLiBCZSBhIHBhcnQgb2YgdGhlIGJldGEgdG9kYXkuCmh0dHA6Ly9wLnNm
-Lm5ldC9zZnUvYmVhdXR5b2Z0aGV3ZWIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+
+> -----Original Message-----
+> From: glikely@secretlab.ca [mailto:glikely@secretlab.ca] On Behalf Of Gra=
+nt
+> Likely
+> Sent: Friday, October 01, 2010 5:35 AM
+> To: Hu Mingkai-B21284
+> Cc: linuxppc-dev@ozlabs.org; spi-devel-general@lists.sourceforge.net; lin=
+ux-
+> mtd@lists.infradead.org; Gala Kumar-B11780; Zang Roy-R61911
+> Subject: Re: [PATCH v3 5/7] mtd: m25p80: add support to parse the SPI fla=
+sh's
+> partitions
+> =
+
+> On Thu, Sep 30, 2010 at 5:00 PM, Mingkai Hu <Mingkai.hu@freescale.com> wr=
+ote:
+> > Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+> > ---
+> > v3:
+> > =A0- Move the SPI flash partition code to the probe function.
+> >
+> > =A0drivers/mtd/devices/m25p80.c | =A0 39 +++++++++++++++++++++++++++---=
+---------
+> > =A01 files changed, 27 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> > index 6f512b5..47d53c7 100644
+> > --- a/drivers/mtd/devices/m25p80.c
+> > +++ b/drivers/mtd/devices/m25p80.c
+> > @@ -772,7 +772,7 @@ static const struct spi_device_id *__devinit
+> jedec_probe(struct spi_device *spi)
+> > =A0static int __devinit m25p_probe(struct spi_device *spi)
+> > =A0{
+> > =A0 =A0 =A0 =A0const struct spi_device_id =A0 =A0 =A0*id =3D spi_get_de=
+vice_id(spi);
+> > - =A0 =A0 =A0 struct flash_platform_data =A0 =A0 =A0*data;
+> > + =A0 =A0 =A0 struct flash_platform_data =A0 =A0 =A0data, *pdata;
+> > =A0 =A0 =A0 =A0struct m25p =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 *fla=
+sh;
+> > =A0 =A0 =A0 =A0struct flash_info =A0 =A0 =A0 =A0 =A0 =A0 =A0 *info;
+> > =A0 =A0 =A0 =A0unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+i;
+> > @@ -782,13 +782,27 @@ static int __devinit m25p_probe(struct spi_device=
+ *spi)
+> > =A0 =A0 =A0 =A0 * a chip ID, try the JEDEC id commands; they'll work fo=
+r most
+> > =A0 =A0 =A0 =A0 * newer chips, even if we don't recognize the particula=
+r chip.
+> > =A0 =A0 =A0 =A0 */
+> > - =A0 =A0 =A0 data =3D spi->dev.platform_data;
+> > - =A0 =A0 =A0 if (data && data->type) {
+> > + =A0 =A0 =A0 pdata =3D spi->dev.platform_data;
+> > + =A0 =A0 =A0 if (!pdata && spi->dev.of_node) {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int nr_parts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct mtd_partition *parts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct device_node *np =3D spi->dev.of_no=
+de;
+> > +
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi=
+->dev, np, &parts);
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts) {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata =3D &data;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 memset(pdata, 0, sizeof(*=
+pdata));
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->parts =3D parts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdata->nr_parts =3D nr_pa=
+rts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+> > + =A0 =A0 =A0 }
+> =
+
+> Yes, this is the correct way to go about adding the partitions.
+> However, this patch can be made simpler by not renaming 'data' to
+> 'pdata' and by moving the above code down to just before the partition
+> information is actually used.  in the OF case, only the parts and the
+> nr_parts values written into data, and those values aren't used until
+> the last part of the probe function.
+> =
+
+> Regardless, in principle this patch is correct:
+> =
+
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> =
+
+> > +
+> > + =A0 =A0 =A0 if (pdata && pdata->type) {
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0const struct spi_device_id *plat_id;
+> >
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0for (i =3D 0; i < ARRAY_SIZE(m25p_ids) -=
+ 1; i++) {
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0plat_id =3D &m25p_ids[i];
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (strcmp(data->type, pl=
+at_id->name))
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (strcmp(pdata->type, p=
+lat_id->name))
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0continue;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0break;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+> > @@ -796,7 +810,8 @@ static int __devinit m25p_probe(struct spi_device *=
+spi)
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (i < ARRAY_SIZE(m25p_ids) - 1)
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0id =3D plat_id;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0else
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&spi->dev, "unre=
+cognized id %s\n", data-
+> >type);
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&spi->dev, "unre=
+cognized id %s\n",
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 pdata->type);
+> > =A0 =A0 =A0 =A0}
+> >
+> > =A0 =A0 =A0 =A0info =3D (void *)id->driver_data;
+> > @@ -847,8 +862,8 @@ static int __devinit m25p_probe(struct spi_device *=
+spi)
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0write_sr(flash, 0);
+> > =A0 =A0 =A0 =A0}
+> >
+> > - =A0 =A0 =A0 if (data && data->name)
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash->mtd.name =3D data->name;
+> > + =A0 =A0 =A0 if (pdata && pdata->name)
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 flash->mtd.name =3D pdata->name;
+> > =A0 =A0 =A0 =A0else
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0flash->mtd.name =3D dev_name(&spi->dev);
+> >
+> > @@ -919,9 +934,9 @@ static int __devinit m25p_probe(struct spi_device *=
+spi)
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0part_probes, &parts, 0);
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+> >
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts <=3D 0 && data && data->part=
+s) {
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 parts =3D data->parts;
+> > - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D data->nr_par=
+ts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (nr_parts <=3D 0 && pdata && pdata->pa=
+rts) {
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 parts =3D pdata->parts;
+> > + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 nr_parts =3D pdata->nr_pa=
+rts;
+> > =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+> =
+
+> As per my comment earlier; since parts and nr_parts isn't needed
+> before this point, this block could simply be:
+> =
+
+> if (nr_parts <=3D 0 && data && data->parts) {
+>         parts =3D data->parts;
+>         nr_parts =3D data->nr_parts;
+> }
+> if (nr_parts <=3D 0 && spi->dev.of_node)
+>   =A0 =A0 =A0 nr_parts =3D of_mtd_parse_partitions(&spi->dev, np, &parts);
+> =
+
+> And most of the other changes to this file goes away.  Simpler, yes?
+> =
+
+
+Yes, you're right, I'll fix it. Also thanks for your suggestion and ACK.
+
+Thanks,
+Mingkai

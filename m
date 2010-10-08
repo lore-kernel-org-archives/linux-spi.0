@@ -1,13 +1,17 @@
-From: "SD Telesurveillance par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Pour votre =?ISO-8859-1?Q?securit=E9?= faites confiance au numero 1
-	Europeen
-Date: Fri,  8 Oct 2010 09:01:12 +0200 (CEST)
-Message-ID: <l9ym61.gx014e@front07.g7r9.com>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 7/6] spi/imx: Support different fifo sizes
+Date: Fri,  8 Oct 2010 11:24:01 +0200
+Message-ID: <1286529841-20800-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <20100902143908.GK14214@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	amit.kucheria-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org, David Jander <david-/Q/L1SwJa3aEVqv0pETR8A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20100902143908.GK14214-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,10 +22,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
+RnJvbTogRGF2aWQgSmFuZGVyIDxkYXZpZEBwcm90b25pYy5ubD4KClRoZSBpLk1YNTEgRUNTUEkg
+aGFzIGEgZmlmbyBzaXplIG9mIDY0IGVudHJpZXMgaW5zdGVhZCBvZiA4IGVudHJpZXMgYXMKZm91
+bmQgb24gdGhlIG90aGVyIGNzcGkgYnVzIGRldmljZXMuCgpDYzogSmFzb24gV2FuZyA8amFzb243
+Ny53YW5nQGdtYWlsLmNvbT4KU2lnbmVkLW9mZi1ieTogRGF2aWQgSmFuZGVyIDxkYXZpZEBwcm90
+b25pYy5ubD4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4
+LmRlPgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
+bmd1dHJvbml4LmRlPgotLS0KSGVsbG8sCgp0aGlzIHBhdGNoIGRlcGVuZHMgb24gcGF0Y2hlcyBh
+bHJlYWR5IGFja2VkIGJ5IEdyYW50IExpa2VseSBhbmQgc2l0dGluZwppbiBTYXNjaGEgSGF1ZXIn
+cyBpbXgtZm9yLTIuNi4zNyBicmFuY2guCgpCZXN0IHJlZ2FyZHMKVXdlCgogZHJpdmVycy9zcGkv
+c3BpX2lteC5jIHwgICAgOCArKysrKysrLQogMSBmaWxlcyBjaGFuZ2VkLCA3IGluc2VydGlvbnMo
+KyksIDEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpX2lteC5jIGIv
+ZHJpdmVycy9zcGkvc3BpX2lteC5jCmluZGV4IDZiYWIyY2YuLjU1YTM4ZTIgMTAwNjQ0Ci0tLSBh
+L2RyaXZlcnMvc3BpL3NwaV9pbXguYworKysgYi9kcml2ZXJzL3NwaS9zcGlfaW14LmMKQEAgLTc3
+LDYgKzc3LDcgQEAgc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhIHsKIAl2b2lkICgqdHJpZ2dl
+cikoc3RydWN0IHNwaV9pbXhfZGF0YSAqKTsKIAlpbnQgKCpyeF9hdmFpbGFibGUpKHN0cnVjdCBz
+cGlfaW14X2RhdGEgKik7CiAJdm9pZCAoKnJlc2V0KShzdHJ1Y3Qgc3BpX2lteF9kYXRhICopOwor
+CXVuc2lnbmVkIGludCBmaWZvc2l6ZTsKIH07CiAKIHN0cnVjdCBzcGlfaW14X2RhdGEgewpAQCAt
+NTQxLDYgKzU0Miw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBlX2RhdGEgc3BpX2lt
+eF9kZXZ0eXBlX2RhdGFbXSBfX2RldmluaXRkYXRhID0gewogCQkudHJpZ2dlciA9IG14MV90cmln
+Z2VyLAogCQkucnhfYXZhaWxhYmxlID0gbXgxX3J4X2F2YWlsYWJsZSwKIAkJLnJlc2V0ID0gbXgx
+X3Jlc2V0LAorCQkuZmlmb3NpemUgPSA4LAogCX0sCiAjZW5kaWYKICNpZmRlZiBDT05GSUdfU1BJ
+X0lNWF9WRVJfMF8wCkBAIC01NTAsNiArNTUyLDcgQEAgc3RhdGljIHN0cnVjdCBzcGlfaW14X2Rl
+dnR5cGVfZGF0YSBzcGlfaW14X2RldnR5cGVfZGF0YVtdIF9fZGV2aW5pdGRhdGEgPSB7CiAJCS50
+cmlnZ2VyID0gbXgyN190cmlnZ2VyLAogCQkucnhfYXZhaWxhYmxlID0gbXgyN19yeF9hdmFpbGFi
+bGUsCiAJCS5yZXNldCA9IHNwaV9pbXgwXzBfcmVzZXQsCisJCS5maWZvc2l6ZSA9IDgsCiAJfSwK
+ICNlbmRpZgogI2lmZGVmIENPTkZJR19TUElfSU1YX1ZFUl8wXzQKQEAgLTU1OSw2ICs1NjIsNyBA
+QCBzdGF0aWMgc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhIHNwaV9pbXhfZGV2dHlwZV9kYXRh
+W10gX19kZXZpbml0ZGF0YSA9IHsKIAkJLnRyaWdnZXIgPSBteDMxX3RyaWdnZXIsCiAJCS5yeF9h
+dmFpbGFibGUgPSBteDMxX3J4X2F2YWlsYWJsZSwKIAkJLnJlc2V0ID0gc3BpX2lteDBfNF9yZXNl
+dCwKKwkJLmZpZm9zaXplID0gOCwKIAl9LAogI2VuZGlmCiAjaWZkZWYgQ09ORklHX1NQSV9JTVhf
+VkVSXzBfNwpAQCAtNTY4LDYgKzU3Miw3IEBAIHN0YXRpYyBzdHJ1Y3Qgc3BpX2lteF9kZXZ0eXBl
+X2RhdGEgc3BpX2lteF9kZXZ0eXBlX2RhdGFbXSBfX2RldmluaXRkYXRhID0gewogCQkudHJpZ2dl
+ciA9IG14MzFfdHJpZ2dlciwKIAkJLnJ4X2F2YWlsYWJsZSA9IG14MzFfcnhfYXZhaWxhYmxlLAog
+CQkucmVzZXQgPSBzcGlfaW14MF80X3Jlc2V0LAorCQkuZmlmb3NpemUgPSA4LAogCX0sCiAjZW5k
+aWYKICNpZmRlZiBDT05GSUdfU1BJX0lNWF9WRVJfMl8zCkBAIC01NzcsNiArNTgyLDcgQEAgc3Rh
+dGljIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSBzcGlfaW14X2RldnR5cGVfZGF0YVtdIF9f
+ZGV2aW5pdGRhdGEgPSB7CiAJCS50cmlnZ2VyID0gc3BpX2lteDJfM190cmlnZ2VyLAogCQkucnhf
+YXZhaWxhYmxlID0gc3BpX2lteDJfM19yeF9hdmFpbGFibGUsCiAJCS5yZXNldCA9IHNwaV9pbXgy
+XzNfcmVzZXQsCisJCS5maWZvc2l6ZSA9IDY0LAogCX0sCiAjZW5kaWYKIH07CkBAIC01OTYsNyAr
+NjAyLDcgQEAgc3RhdGljIHZvaWQgc3BpX2lteF9jaGlwc2VsZWN0KHN0cnVjdCBzcGlfZGV2aWNl
+ICpzcGksIGludCBpc19hY3RpdmUpCiAKIHN0YXRpYyB2b2lkIHNwaV9pbXhfcHVzaChzdHJ1Y3Qg
+c3BpX2lteF9kYXRhICpzcGlfaW14KQogewotCXdoaWxlIChzcGlfaW14LT50eGZpZm8gPCA4KSB7
+CisJd2hpbGUgKHNwaV9pbXgtPnR4ZmlmbyA8IHNwaV9pbXgtPmRldnR5cGVfZGF0YS5maWZvc2l6
+ZSkgewogCQlpZiAoIXNwaV9pbXgtPmNvdW50KQogCQkJYnJlYWs7CiAJCXNwaV9pbXgtPnR4KHNw
+aV9pbXgpOwotLSAKMS43LjIuMwoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpCZWF1dGlmdWwgaXMg
+d3JpdGluZyBzYW1lIG1hcmt1cC4gSW50ZXJuZXQgRXhwbG9yZXIgOSBzdXBwb3J0cwpzdGFuZGFy
+ZHMgZm9yIEhUTUw1LCBDU1MzLCBTVkcgMS4xLCAgRUNNQVNjcmlwdDUsIGFuZCBET00gTDIgJiBM
+My4KU3BlbmQgbGVzcyB0aW1lIHdyaXRpbmcgYW5kICByZXdyaXRpbmcgY29kZSBhbmQgbW9yZSB0
+aW1lIGNyZWF0aW5nIGdyZWF0CmV4cGVyaWVuY2VzIG9uIHRoZSB3ZWIuIEJlIGEgcGFydCBvZiB0
+aGUgYmV0YSB0b2RheS4KaHR0cDovL3Auc2YubmV0L3NmdS9iZWF1dHlvZnRoZXdlYgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

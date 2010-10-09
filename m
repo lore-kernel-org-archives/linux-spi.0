@@ -1,73 +1,117 @@
-From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Subject: Re: [PATCH 0/2 V2] Adding support for adis16250/5 to adis16260 driver.
-Date: Sat, 09 Oct 2010 11:24:27 +0100
-Message-ID: <4CB042DB.6020500@cam.ac.uk>
-References: <1283786178-6466-1-git-send-email-jic23@cam.ac.uk>	
-	<4C94B4A6.2060001@cam.ac.uk>	
-	<AANLkTinQ04UmbBvakGQBeSap0PCh3VrWmhhobLh0u9Qj@mail.gmail.com>	
-	<4CA0C7AB.8060905@cam.ac.uk>	
-	<AANLkTikXMycs_eaRGA4Va=uaBo_qyx3S3m0Y43Gt+qAz@mail.gmail.com>	
-	<4CA344A5.80205@cam.ac.uk> <4CAEFEF4.4040506@cam.ac.uk>	
-	<20101008182943.GJ3863@angua.secretlab.ca>
-	<1286568720.1723.4.camel@helium>
+From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
+Date: Sat, 09 Oct 2010 08:55:54 -0400
+Message-ID: <4CB0665A.3000309@criticallink.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
+	<4C8EB795.1080607@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
+	<201009140904.59555.caglarakyuz@gmail.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
+	<4C8F7460.6050006@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
+	<4C94B9BD.4010606@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
+	<4C979D1D.1070707@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59302342050C7@dbde02.ent.ti.com>
+	<4CAF6F86.40201@criticallink.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	matthias <mensch0815-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1286568720.1723.4.camel@helium>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <4CAF6F86.40201-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/08/10 21:12, David Brownell wrote:
-> On Fri, 2010-10-08 at 12:29 -0600, Grant Likely wrote:
->> On Fri, Oct 08, 2010 at 12:22:28PM +0100, Jonathan Cameron wrote:
+On 10/08/2010 03:22 PM, Michael Williamson wrote:
+> Hi Sekhar,
 > 
->>> Is it ever wrong to over specify elements of a transfer?
+> On 10/6/2010 11:37 AM, Nori, Sekhar wrote:
 > 
-> I wouldn't say that's even possible.
-> 
->>> We have a driver that (for historical reasons) specifies
->>> that a particular transfer is 8 bit.
->>> 	.bits_per_word = 8,
+>> Hi Mike,
+>>
+>> On Mon, Sep 20, 2010 at 23:12:53, Michael Williamson wrote:
 >>>
->>> This causes issues with the atmel spi driver which sees that
->>> the value is specified and hence fails the transfer.
+>>> Let me know if you want testing on the DMA portion of the patch (when your ready, of course).
+>>
+>> I just finished pushing the DMA related patches to the git branch[1].
+>> I have not tested yet, but feel free to give it a go (maybe I will get
+>> lucky again!).
+>>
 > 
 > 
-> Specifying 8 there means the same as specifying zero.
-Cool,
+> I gave it a go for our platform.  The good news is, polled and interrupt driven mode still work!  
+> The bad news is that DMA mode hangs up the kernel on the first read attempt, stalled waiting 
+> for the transfer completion notification (hmmm.... I think this was a spot where things were 
+> tweaked a bit? :) )
+> 
+> I'll see if I can narrow it down some more if you don't get to it first.
+>  
 
-I'll post a patch (probably Monday now) to at least ensure the
-atmel driver lets transfers through if we aren't trying to change
-bits_per_word.
+I think I found it.  This patch (below, and on [2]) got it working for me. The Rx DMA
+size on transfer requests with no receive buffer provided needs to match the requested
+size (and the transmit size), not the size of the temporary buffer.  All good as the
+DMA address increment is 0 in this case.
 
-Thanks for getting back to us.
+I'll try to do some more testing next week, but so far so good.
 
-Jonathan
+---
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+index 662ebbe..8206df1 100755
+--- a/drivers/spi/davinci_spi.c
++++ b/drivers/spi/davinci_spi.c
+@@ -632,13 +632,11 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		 * source address never increments.
+ 		 */
+ 
+-		if (t->rx_buf) {
++		rx_buf_count = davinci_spi->rcount;
++		if (t->rx_buf)
+ 			rx_buf = t->rx_buf;
+-			rx_buf_count = davinci_spi->rcount;
+-		} else {
++		else
+ 			rx_buf = davinci_spi->rx_tmp_buf;
+-			rx_buf_count = sizeof(davinci_spi->rx_tmp_buf);
+-		}
+ 
+ 		t->rx_dma = dma_map_single(&spi->dev, rx_buf, rx_buf_count,
+ 							DMA_FROM_DEVICE);
+
+> 
+>> Also, do you have patches adding SPI support for DA850 platform?
+>> I can include these patches on this branch so others who will be
+>> testing dont have to repeat the work.
+>>
 > 
 > 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> I cloned your repository at [1] and published the additions needed to made to test it on the
+> mitydsp-l138 platform (da850 based) at [2] (never mind the UART one at the end).  I had to add 
+> clock support for the spi devices and define the platform SPI resources/registration routines.  
+> I'd appreciate a quick peek at those to make sure that I didn't make any errors.  The spi 
+> registration may be refactorable (sp?) to support da830, I didn't look to closely at that.
 > 
-
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
+> If any of it is usable, great.
+> 
+>> Thanks,
+>> Sekhar
+>>
+>> [1] http://arago-project.org/git/projects/?p=linux-davinci.git;a=shortlog;h=refs/heads/davinci-spi-rewrite
+>>
+> 
+> 
+> [2] http://support.criticallink.com/gitweb/?p=linux-davinci.git;a=shortlog;h=refs/heads/spi-testing
+> 
+> -Mike

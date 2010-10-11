@@ -1,75 +1,109 @@
-From: Sergii Kovalchuk <sentinelofsetch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Assert CS, wait for IRQ, write data sequence
-Date: Mon, 11 Oct 2010 19:22:23 +0300
-Message-ID: <201010111922.23952.sentinelofsetch@gmail.com>
-References: <201010061649.45237.sentinelofsetch@gmail.com>
-	<AANLkTi=-v_fEX+TkBw8HA_KM2CPQUqbOzRy8vb3k6EAc@mail.gmail.com>
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v5 1/1] davinci: spi: replace existing driver
+Date: Mon, 11 Oct 2010 22:27:25 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59302343630D8@dbde02.ent.ti.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
+	<4C8EB795.1080607@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
+	<201009140904.59555.caglarakyuz@gmail.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
+	<4C8F7460.6050006@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
+	<4C94B9BD.4010606@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
+	<4C979D1D.1070707@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59302342050C7@dbde02.ent.ti.com>
+	<4CAF6F86.40201@criticallink.com> <4CB0665A.3000309@criticallink.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTi=-v_fEX+TkBw8HA_KM2CPQUqbOzRy8vb3k6EAc-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <4CB0665A.3000309-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 07 October 2010 19:36:18 Grant Likely wrote:
-> On Wed, Oct 6, 2010 at 7:49 AM, Sergii Kovalchuk
-> 
-> <sentinelofsetch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > Hi,
-> > 
-> > I'm implementing an SPI protocol driver for TI WL12xx combo chip.
-> > According to the spec, for write transaction I should complete the
-> > following sequence:
-> > 
-> > 1. Assert CS
-> > 2. Wait until chip will trigger IRQ
-> > 3. Write data
-> > 
-> > Looking at spi_transfer structure I wondering, how I can implement such
-> > logic - there is no explicit ways to implement "wait for an event"
-> > within single spi_message processing.
-> > 
-> > As current workarround I use a simple delay in 5 us, but for sleep states
-> > it might be not sufficient, since wake-up time are ususally greater.
-> 
-> Wow.  That's nasty.  The SPI layer really doesn't have a mechanism for
-> handling that.  What you *could* do is lock the spi bus; assert CS
-> manually; wait for the irq, and then issue the transfer.  Not exactly
-> pretty, but it would work within the existing infrastructure.
-> 
-> g.
-
-Yes, seems to be nasty. This is what I'm doing now - locking the bus and 
-waiting for IRQ, but this is really ugly. Just wondered, if there is some 
-hidden way.
-
-Not sure, if it more or less common situation. If so, may be it will be worth 
-to extend spi_tranfer to handle "timed wait for IRQ/event" in some kind of 
-busy loop or completion - depending of context?
-
-Of course, any modifications to generic SPI subsystem are hard to push, but 
-this is simple extending and will not break existing functionality. Controller 
-drivers may or may not support this initially.
-
-If it will be useful for others and worth implementing.
-
---
-Best regards,
-Sergii
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
+SGkgTWlrZSwNCg0KT24gU2F0LCBPY3QgMDksIDIwMTAgYXQgMTg6MjU6NTQsIE1pY2hhZWwgV2ls
+bGlhbXNvbiB3cm90ZToNCj4gT24gMTAvMDgvMjAxMCAwMzoyMiBQTSwgTWljaGFlbCBXaWxsaWFt
+c29uIHdyb3RlOg0KDQo+ID4gT24gMTAvNi8yMDEwIDExOjM3IEFNLCBOb3JpLCBTZWtoYXIgd3Jv
+dGU6DQoNCj4gPj4gT24gTW9uLCBTZXAgMjAsIDIwMTAgYXQgMjM6MTI6NTMsIE1pY2hhZWwgV2ls
+bGlhbXNvbiB3cm90ZToNCg0KPiA+Pg0KPiA+PiBJIGp1c3QgZmluaXNoZWQgcHVzaGluZyB0aGUg
+RE1BIHJlbGF0ZWQgcGF0Y2hlcyB0byB0aGUgZ2l0IGJyYW5jaFsxXS4NCj4gPj4gSSBoYXZlIG5v
+dCB0ZXN0ZWQgeWV0LCBidXQgZmVlbCBmcmVlIHRvIGdpdmUgaXQgYSBnbyAobWF5YmUgSSB3aWxs
+IGdldA0KPiA+PiBsdWNreSBhZ2FpbiEpLg0KPiA+Pg0KPiA+DQo+ID4NCj4gPiBJIGdhdmUgaXQg
+YSBnbyBmb3Igb3VyIHBsYXRmb3JtLiAgVGhlIGdvb2QgbmV3cyBpcywgcG9sbGVkIGFuZCBpbnRl
+cnJ1cHQgZHJpdmVuIG1vZGUgc3RpbGwgd29yayENCj4gPiBUaGUgYmFkIG5ld3MgaXMgdGhhdCBE
+TUEgbW9kZSBoYW5ncyB1cCB0aGUga2VybmVsIG9uIHRoZSBmaXJzdCByZWFkIGF0dGVtcHQsIHN0
+YWxsZWQgd2FpdGluZw0KPiA+IGZvciB0aGUgdHJhbnNmZXIgY29tcGxldGlvbiBub3RpZmljYXRp
+b24gKGhtbW0uLi4uIEkgdGhpbmsgdGhpcyB3YXMgYSBzcG90IHdoZXJlIHRoaW5ncyB3ZXJlDQo+
+ID4gdHdlYWtlZCBhIGJpdD8gOikgKQ0KPiA+DQo+ID4gSSdsbCBzZWUgaWYgSSBjYW4gbmFycm93
+IGl0IGRvd24gc29tZSBtb3JlIGlmIHlvdSBkb24ndCBnZXQgdG8gaXQgZmlyc3QuDQo+ID4NCj4N
+Cj4gSSB0aGluayBJIGZvdW5kIGl0LiAgVGhpcyBwYXRjaCAoYmVsb3csIGFuZCBvbiBbMl0pIGdv
+dCBpdCB3b3JraW5nIGZvciBtZS4gVGhlIFJ4IERNQQ0KPiBzaXplIG9uIHRyYW5zZmVyIHJlcXVl
+c3RzIHdpdGggbm8gcmVjZWl2ZSBidWZmZXIgcHJvdmlkZWQgbmVlZHMgdG8gbWF0Y2ggdGhlIHJl
+cXVlc3RlZA0KPiBzaXplIChhbmQgdGhlIHRyYW5zbWl0IHNpemUpLCBub3QgdGhlIHNpemUgb2Yg
+dGhlIHRlbXBvcmFyeSBidWZmZXIuICBBbGwgZ29vZCBhcyB0aGUNCj4gRE1BIGFkZHJlc3MgaW5j
+cmVtZW50IGlzIDAgaW4gdGhpcyBjYXNlLg0KPg0KPiBJJ2xsIHRyeSB0byBkbyBzb21lIG1vcmUg
+dGVzdGluZyBuZXh0IHdlZWssIGJ1dCBzbyBmYXIgc28gZ29vZC4NCg0KU29ycnksIEkgY291bGRu
+4oCZdCBnZXQgdG8gdGVzdGluZyBldmVuIHRvZGF5LiBTaG91bGQgYmUgb24gaXQNCnRvbW9ycm93
+Lg0KDQo+DQo+IC0tLQ0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvZGF2aW5jaV9zcGkuYyBi
+L2RyaXZlcnMvc3BpL2RhdmluY2lfc3BpLmMNCj4gaW5kZXggNjYyZWJiZS4uODIwNmRmMSAxMDA3
+NTUNCj4gLS0tIGEvZHJpdmVycy9zcGkvZGF2aW5jaV9zcGkuYw0KPiArKysgYi9kcml2ZXJzL3Nw
+aS9kYXZpbmNpX3NwaS5jDQo+IEBAIC02MzIsMTMgKzYzMiwxMSBAQCBzdGF0aWMgaW50IGRhdmlu
+Y2lfc3BpX2J1ZnMoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IHNwaV90cmFuc2ZlciAq
+dCkNCj4gICAgICAgICAgICAgICAgKiBzb3VyY2UgYWRkcmVzcyBuZXZlciBpbmNyZW1lbnRzLg0K
+PiAgICAgICAgICAgICAgICAqLw0KPg0KPiAtICAgICAgICAgICAgIGlmICh0LT5yeF9idWYpIHsN
+Cj4gKyAgICAgICAgICAgICByeF9idWZfY291bnQgPSBkYXZpbmNpX3NwaS0+cmNvdW50Ow0KPiAr
+ICAgICAgICAgICAgIGlmICh0LT5yeF9idWYpDQo+ICAgICAgICAgICAgICAgICAgICAgICByeF9i
+dWYgPSB0LT5yeF9idWY7DQo+IC0gICAgICAgICAgICAgICAgICAgICByeF9idWZfY291bnQgPSBk
+YXZpbmNpX3NwaS0+cmNvdW50Ow0KPiAtICAgICAgICAgICAgIH0gZWxzZSB7DQo+ICsgICAgICAg
+ICAgICAgZWxzZQ0KPiAgICAgICAgICAgICAgICAgICAgICAgcnhfYnVmID0gZGF2aW5jaV9zcGkt
+PnJ4X3RtcF9idWY7DQo+IC0gICAgICAgICAgICAgICAgICAgICByeF9idWZfY291bnQgPSBzaXpl
+b2YoZGF2aW5jaV9zcGktPnJ4X3RtcF9idWYpOw0KPiAtICAgICAgICAgICAgIH0NCj4NCj4gICAg
+ICAgICAgICAgICB0LT5yeF9kbWEgPSBkbWFfbWFwX3NpbmdsZSgmc3BpLT5kZXYsIHJ4X2J1Ziwg
+cnhfYnVmX2NvdW50LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBETUFfRlJPTV9ERVZJQ0UpOw0KDQpIbW0sIGxvb2tzIGxpa2UgdGhlIFR4
+IGFuZCBSeCBETUEgbXVzdCBhbHdheXMgcnVuIGZvciB0aGUgc2FtZSBkdXJhdGlvbi4gSSB3YXMN
+CnVuZGVyIHRoZSBpbXByZXNzaW9uIFR4IGlzIHJlcXVpcmVkIHRvIGtlZXAgdGhlIGNsb2NrIHJ1
+bm5pbmcsIGFuZCBzbyBtdXN0IGFsd2F5cw0KcnVuIGZvciB0aGUgbGVuZ3RoIG9mIHRyYW5zZmVy
+IHJlcXVlc3RlZCwgYnV0IFJ4IERNQSBjYW4gZmluaXNoIGVhcmxpZXIuDQoNCkkgZ3Vlc3MgcmVw
+bGFjaW5nIHRoZSBsaW5lOg0KDQogICAgICAgICAgICAgICAgcGFyYW0uYV9iX2NudCA9IHJ4X2J1
+Zl9jb3VudCA8PCAxNiB8IGRhdGFfdHlwZTsNCg0Kd2l0aA0KDQogICAgICAgICAgICAgICAgcGFy
+YW0uYV9iX2NudCA9IGRhdmluY2lfc3BpLT5yY291bnQgPDwgMTYgfCBkYXRhX3R5cGU7DQoNCndp
+bGwgYWxzbyBmaXggdGhlIGlzc3VlPw0KDQo+DQo+ID4NCj4gPj4gQWxzbywgZG8geW91IGhhdmUg
+cGF0Y2hlcyBhZGRpbmcgU1BJIHN1cHBvcnQgZm9yIERBODUwIHBsYXRmb3JtPw0KPiA+PiBJIGNh
+biBpbmNsdWRlIHRoZXNlIHBhdGNoZXMgb24gdGhpcyBicmFuY2ggc28gb3RoZXJzIHdobyB3aWxs
+IGJlDQo+ID4+IHRlc3RpbmcgZG9uGXQgaGF2ZSB0byByZXBlYXQgdGhlIHdvcmsuDQo+ID4+DQo+
+ID4NCj4gPg0KPiA+IEkgY2xvbmVkIHlvdXIgcmVwb3NpdG9yeSBhdCBbMV0gYW5kIHB1Ymxpc2hl
+ZCB0aGUgYWRkaXRpb25zIG5lZWRlZCB0byBtYWRlIHRvIHRlc3QgaXQgb24gdGhlDQo+ID4gbWl0
+eWRzcC1sMTM4IHBsYXRmb3JtIChkYTg1MCBiYXNlZCkgYXQgWzJdIChuZXZlciBtaW5kIHRoZSBV
+QVJUIG9uZSBhdCB0aGUgZW5kKS4gIEkgaGFkIHRvIGFkZA0KPiA+IGNsb2NrIHN1cHBvcnQgZm9y
+IHRoZSBzcGkgZGV2aWNlcyBhbmQgZGVmaW5lIHRoZSBwbGF0Zm9ybSBTUEkgcmVzb3VyY2VzL3Jl
+Z2lzdHJhdGlvbiByb3V0aW5lcy4NCj4gPiBJJ2QgYXBwcmVjaWF0ZSBhIHF1aWNrIHBlZWsgYXQg
+dGhvc2UgdG8gbWFrZSBzdXJlIHRoYXQgSSBkaWRuJ3QgbWFrZSBhbnkgZXJyb3JzLiAgVGhlIHNw
+aQ0KPiA+IHJlZ2lzdHJhdGlvbiBtYXkgYmUgcmVmYWN0b3JhYmxlIChzcD8pIHRvIHN1cHBvcnQg
+ZGE4MzAsIEkgZGlkbid0IGxvb2sgdG8gY2xvc2VseSBhdCB0aGF0Lg0KPiA+DQo+ID4gSWYgYW55
+IG9mIGl0IGlzIHVzYWJsZSwgZ3JlYXQuDQoNClN1cmUgaXQgaXMhIEkgY2hlY2tlZC1pbiB5b3Vy
+IHBhdGNoZXMgd2l0aCBzb21lIG1vZGlmaWNhdGlvbnMgdG8gbXkNCmJyYW5jaC4gVGhlIG1vc3Qg
+bm90YWJsZSBjaGFuZ2UgYmVpbmcgdXNhZ2Ugb2YgZGE4eHggaW5zdGVhZCBvZiBkYTg1MCBzaW5j
+ZQ0KdGhlIHNhbWUgY29kZSBzaG91bGQgd29yayBvbiBkYTgzMCBhcyB3ZWxsLiBBcGFydCBmcm9t
+IHRoaXMgdGhlcmUgYXJlDQpzb21lIGNvc21ldGljIGNoYW5nZXMgKHBhdGNoZXMgc3F1YXNoZWQs
+IHNvbWUgbm9uLXJlbGV2YW50IGh1bmtzIGRyb3BwZWQNCmV0YykuIERvIHVwZGF0ZSB0aGUgcGF0
+Y2hlcyBpbiB5b3VyIHRyZWUgaWYgeW91IGFyZSBPSyB3aXRoIHRoZSBjaGFuZ2VzLg0KDQpUaGFu
+a3MsDQpTZWtoYXINCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KRGF2aW5jaS1saW51eC1vcGVuLXNvdXJjZSBtYWlsaW5nIGxpc3QKRGF2aW5jaS1saW51
+eC1vcGVuLXNvdXJjZUBsaW51eC5kYXZpbmNpZHNwLmNvbQpodHRwOi8vbGludXguZGF2aW5jaWRz
+cC5jb20vbWFpbG1hbi9saXN0aW5mby9kYXZpbmNpLWxpbnV4LW9wZW4tc291cmNlCg==

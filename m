@@ -1,117 +1,92 @@
-From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
-Date: Mon, 11 Oct 2010 14:09:35 -0400
-Message-ID: <4CB352DF.70104@criticallink.com>
-References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
-	<4C8EB795.1080607@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
-	<201009140904.59555.caglarakyuz@gmail.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
-	<4C8F7460.6050006@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
-	<4C94B9BD.4010606@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
-	<4C979D1D.1070707@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302342050C7@dbde02.ent.ti.com>
-	<4CAF6F86.40201@criticallink.com>
-	<4CB0665A.3000309@criticallink.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302343630D8@dbde02.ent.ti.com>
+From: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH v4] spi: add spi_tegra driver
+Date: Mon, 11 Oct 2010 14:01:33 -0700
+Message-ID: <AANLkTi=m-Omf4BApb=edTveOBbc6q5uYQdHMB1T=qmY6@mail.gmail.com>
+References: <1282771395-21684-1-git-send-email-konkers@android.com>
+	<1283379393-14831-1-git-send-email-konkers@android.com>
+	<AANLkTimonLa1mUVSHR=QnR48HPtAZ5BW3BsVsg7MWALy@mail.gmail.com>
+	<AANLkTini_PA3J+R4gEP4DzFpcAxHhdmDbcXxOtj2h81O@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59302343630D8-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <AANLkTini_PA3J+R4gEP4DzFpcAxHhdmDbcXxOtj2h81O-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMTAvMTEvMjAxMCAxMjo1NyBQTSwgTm9yaSwgU2VraGFyIHdyb3RlOgo+IEhpIE1pa2UsCj4g
-Cj4gT24gU2F0LCBPY3QgMDksIDIwMTAgYXQgMTg6MjU6NTQsIE1pY2hhZWwgV2lsbGlhbXNvbiB3
-cm90ZToKPj4gT24gMTAvMDgvMjAxMCAwMzoyMiBQTSwgTWljaGFlbCBXaWxsaWFtc29uIHdyb3Rl
-Ogo+IAo+Pj4gT24gMTAvNi8yMDEwIDExOjM3IEFNLCBOb3JpLCBTZWtoYXIgd3JvdGU6Cj4gCj4+
-Pj4gT24gTW9uLCBTZXAgMjAsIDIwMTAgYXQgMjM6MTI6NTMsIE1pY2hhZWwgV2lsbGlhbXNvbiB3
-cm90ZToKPiAKPj4+Pgo+Pj4+IEkganVzdCBmaW5pc2hlZCBwdXNoaW5nIHRoZSBETUEgcmVsYXRl
-ZCBwYXRjaGVzIHRvIHRoZSBnaXQgYnJhbmNoWzFdLgo+Pj4+IEkgaGF2ZSBub3QgdGVzdGVkIHll
-dCwgYnV0IGZlZWwgZnJlZSB0byBnaXZlIGl0IGEgZ28gKG1heWJlIEkgd2lsbCBnZXQKPj4+PiBs
-dWNreSBhZ2FpbiEpLgo+Pj4+Cj4+Pgo+Pj4KPj4+IEkgZ2F2ZSBpdCBhIGdvIGZvciBvdXIgcGxh
-dGZvcm0uICBUaGUgZ29vZCBuZXdzIGlzLCBwb2xsZWQgYW5kIGludGVycnVwdCBkcml2ZW4gbW9k
-ZSBzdGlsbCB3b3JrIQo+Pj4gVGhlIGJhZCBuZXdzIGlzIHRoYXQgRE1BIG1vZGUgaGFuZ3MgdXAg
-dGhlIGtlcm5lbCBvbiB0aGUgZmlyc3QgcmVhZCBhdHRlbXB0LCBzdGFsbGVkIHdhaXRpbmcKPj4+
-IGZvciB0aGUgdHJhbnNmZXIgY29tcGxldGlvbiBub3RpZmljYXRpb24gKGhtbW0uLi4uIEkgdGhp
-bmsgdGhpcyB3YXMgYSBzcG90IHdoZXJlIHRoaW5ncyB3ZXJlCj4+PiB0d2Vha2VkIGEgYml0PyA6
-KSApCj4+Pgo+Pj4gSSdsbCBzZWUgaWYgSSBjYW4gbmFycm93IGl0IGRvd24gc29tZSBtb3JlIGlm
-IHlvdSBkb24ndCBnZXQgdG8gaXQgZmlyc3QuCj4+Pgo+Pgo+PiBJIHRoaW5rIEkgZm91bmQgaXQu
-ICBUaGlzIHBhdGNoIChiZWxvdywgYW5kIG9uIFsyXSkgZ290IGl0IHdvcmtpbmcgZm9yIG1lLiBU
-aGUgUnggRE1BCj4+IHNpemUgb24gdHJhbnNmZXIgcmVxdWVzdHMgd2l0aCBubyByZWNlaXZlIGJ1
-ZmZlciBwcm92aWRlZCBuZWVkcyB0byBtYXRjaCB0aGUgcmVxdWVzdGVkCj4+IHNpemUgKGFuZCB0
-aGUgdHJhbnNtaXQgc2l6ZSksIG5vdCB0aGUgc2l6ZSBvZiB0aGUgdGVtcG9yYXJ5IGJ1ZmZlci4g
-IEFsbCBnb29kIGFzIHRoZQo+PiBETUEgYWRkcmVzcyBpbmNyZW1lbnQgaXMgMCBpbiB0aGlzIGNh
-c2UuCj4+Cj4+IEknbGwgdHJ5IHRvIGRvIHNvbWUgbW9yZSB0ZXN0aW5nIG5leHQgd2VlaywgYnV0
-IHNvIGZhciBzbyBnb29kLgo+IAo+IFNvcnJ5LCBJIGNvdWxkbuKAmXQgZ2V0IHRvIHRlc3Rpbmcg
-ZXZlbiB0b2RheS4gU2hvdWxkIGJlIG9uIGl0Cj4gdG9tb3Jyb3cuCj4gCj4+Cj4+IC0tLQo+PiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvZGF2aW5jaV9zcGkuYyBiL2RyaXZlcnMvc3BpL2Rhdmlu
-Y2lfc3BpLmMKPj4gaW5kZXggNjYyZWJiZS4uODIwNmRmMSAxMDA3NTUKPj4gLS0tIGEvZHJpdmVy
-cy9zcGkvZGF2aW5jaV9zcGkuYwo+PiArKysgYi9kcml2ZXJzL3NwaS9kYXZpbmNpX3NwaS5jCj4+
-IEBAIC02MzIsMTMgKzYzMiwxMSBAQCBzdGF0aWMgaW50IGRhdmluY2lfc3BpX2J1ZnMoc3RydWN0
-IHNwaV9kZXZpY2UgKnNwaSwgc3RydWN0IHNwaV90cmFuc2ZlciAqdCkKPj4gICAgICAgICAgICAg
-ICAgKiBzb3VyY2UgYWRkcmVzcyBuZXZlciBpbmNyZW1lbnRzLgo+PiAgICAgICAgICAgICAgICAq
-Lwo+Pgo+PiAtICAgICAgICAgICAgIGlmICh0LT5yeF9idWYpIHsKPj4gKyAgICAgICAgICAgICBy
-eF9idWZfY291bnQgPSBkYXZpbmNpX3NwaS0+cmNvdW50Owo+PiArICAgICAgICAgICAgIGlmICh0
-LT5yeF9idWYpCj4+ICAgICAgICAgICAgICAgICAgICAgICByeF9idWYgPSB0LT5yeF9idWY7Cj4+
-IC0gICAgICAgICAgICAgICAgICAgICByeF9idWZfY291bnQgPSBkYXZpbmNpX3NwaS0+cmNvdW50
-Owo+PiAtICAgICAgICAgICAgIH0gZWxzZSB7Cj4+ICsgICAgICAgICAgICAgZWxzZQo+PiAgICAg
-ICAgICAgICAgICAgICAgICAgcnhfYnVmID0gZGF2aW5jaV9zcGktPnJ4X3RtcF9idWY7Cj4+IC0g
-ICAgICAgICAgICAgICAgICAgICByeF9idWZfY291bnQgPSBzaXplb2YoZGF2aW5jaV9zcGktPnJ4
-X3RtcF9idWYpOwo+PiAtICAgICAgICAgICAgIH0KPj4KPj4gICAgICAgICAgICAgICB0LT5yeF9k
-bWEgPSBkbWFfbWFwX3NpbmdsZSgmc3BpLT5kZXYsIHJ4X2J1ZiwgcnhfYnVmX2NvdW50LAo+PiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBETUFf
-RlJPTV9ERVZJQ0UpOwo+IAo+IEhtbSwgbG9va3MgbGlrZSB0aGUgVHggYW5kIFJ4IERNQSBtdXN0
-IGFsd2F5cyBydW4gZm9yIHRoZSBzYW1lIGR1cmF0aW9uLiBJIHdhcwo+IHVuZGVyIHRoZSBpbXBy
-ZXNzaW9uIFR4IGlzIHJlcXVpcmVkIHRvIGtlZXAgdGhlIGNsb2NrIHJ1bm5pbmcsIGFuZCBzbyBt
-dXN0IGFsd2F5cwo+IHJ1biBmb3IgdGhlIGxlbmd0aCBvZiB0cmFuc2ZlciByZXF1ZXN0ZWQsIGJ1
-dCBSeCBETUEgY2FuIGZpbmlzaCBlYXJsaWVyLgo+IAoKVGhhdCBtYXkgYmUgdHJ1ZS4gIFRoZSBz
-Y2VuYXJpbyBJIHdhcyBzZWVpbmcgd2FzIGEgcmVxdWVzdGVkIFR4IGxlbmd0aCBvZiAxIHdpdGgg
-bm8KUnggYnVmZmVyIHN1cHBsaWVkLiAgVGhlIGxlbmd0aCBvZiB0aGUgaW50ZXJuYWwgYnVmZmVy
-IHdhcyBiaWdnZXIgdGhhbiAxLCBzbyB0aGUgcmVzdWx0aW5nClJ4IERNQSBzaXplIGluIHRoZSBh
-X2JfY250IHdhcyBncmVhdGVyIHRoYW4gdGhlIFR4IHNpemUsIGFuZCBpdCBzdGFsbGVkLgoKPiBJ
-IGd1ZXNzIHJlcGxhY2luZyB0aGUgbGluZToKPiAKPiAgICAgICAgICAgICAgICAgcGFyYW0uYV9i
-X2NudCA9IHJ4X2J1Zl9jb3VudCA8PCAxNiB8IGRhdGFfdHlwZTsKPiAKPiB3aXRoCj4gCj4gICAg
-ICAgICAgICAgICAgIHBhcmFtLmFfYl9jbnQgPSBkYXZpbmNpX3NwaS0+cmNvdW50IDw8IDE2IHwg
-ZGF0YV90eXBlOwo+IAo+IHdpbGwgYWxzbyBmaXggdGhlIGlzc3VlPwo+IAoKQSBiZXR0ZXIgZml4
-LiAgc2hvdWxkIGJlIGZpbmUuCgo+Pgo+Pj4KPj4+PiBBbHNvLCBkbyB5b3UgaGF2ZSBwYXRjaGVz
-IGFkZGluZyBTUEkgc3VwcG9ydCBmb3IgREE4NTAgcGxhdGZvcm0/Cj4+Pj4gSSBjYW4gaW5jbHVk
-ZSB0aGVzZSBwYXRjaGVzIG9uIHRoaXMgYnJhbmNoIHNvIG90aGVycyB3aG8gd2lsbCBiZQo+Pj4+
-IHRlc3RpbmcgZG9uGXQgaGF2ZSB0byByZXBlYXQgdGhlIHdvcmsuCj4+Pj4KPj4+Cj4+Pgo+Pj4g
-SSBjbG9uZWQgeW91ciByZXBvc2l0b3J5IGF0IFsxXSBhbmQgcHVibGlzaGVkIHRoZSBhZGRpdGlv
-bnMgbmVlZGVkIHRvIG1hZGUgdG8gdGVzdCBpdCBvbiB0aGUKPj4+IG1pdHlkc3AtbDEzOCBwbGF0
-Zm9ybSAoZGE4NTAgYmFzZWQpIGF0IFsyXSAobmV2ZXIgbWluZCB0aGUgVUFSVCBvbmUgYXQgdGhl
-IGVuZCkuICBJIGhhZCB0byBhZGQKPj4+IGNsb2NrIHN1cHBvcnQgZm9yIHRoZSBzcGkgZGV2aWNl
-cyBhbmQgZGVmaW5lIHRoZSBwbGF0Zm9ybSBTUEkgcmVzb3VyY2VzL3JlZ2lzdHJhdGlvbiByb3V0
-aW5lcy4KPj4+IEknZCBhcHByZWNpYXRlIGEgcXVpY2sgcGVlayBhdCB0aG9zZSB0byBtYWtlIHN1
-cmUgdGhhdCBJIGRpZG4ndCBtYWtlIGFueSBlcnJvcnMuICBUaGUgc3BpCj4+PiByZWdpc3RyYXRp
-b24gbWF5IGJlIHJlZmFjdG9yYWJsZSAoc3A/KSB0byBzdXBwb3J0IGRhODMwLCBJIGRpZG4ndCBs
-b29rIHRvIGNsb3NlbHkgYXQgdGhhdC4KPj4+Cj4+PiBJZiBhbnkgb2YgaXQgaXMgdXNhYmxlLCBn
-cmVhdC4KPiAKPiBTdXJlIGl0IGlzISBJIGNoZWNrZWQtaW4geW91ciBwYXRjaGVzIHdpdGggc29t
-ZSBtb2RpZmljYXRpb25zIHRvIG15Cj4gYnJhbmNoLiBUaGUgbW9zdCBub3RhYmxlIGNoYW5nZSBi
-ZWluZyB1c2FnZSBvZiBkYTh4eCBpbnN0ZWFkIG9mIGRhODUwIHNpbmNlCj4gdGhlIHNhbWUgY29k
-ZSBzaG91bGQgd29yayBvbiBkYTgzMCBhcyB3ZWxsLiBBcGFydCBmcm9tIHRoaXMgdGhlcmUgYXJl
-Cj4gc29tZSBjb3NtZXRpYyBjaGFuZ2VzIChwYXRjaGVzIHNxdWFzaGVkLCBzb21lIG5vbi1yZWxl
-dmFudCBodW5rcyBkcm9wcGVkCj4gZXRjKS4gRG8gdXBkYXRlIHRoZSBwYXRjaGVzIGluIHlvdXIg
-dHJlZSBpZiB5b3UgYXJlIE9LIHdpdGggdGhlIGNoYW5nZXMuCj4gCgpPSy4gIEknbGwgdHJ5IHRv
-IHJlYmFzZSBvZmYgeW91ciB0cmVlIGFuZCByZXRlc3QuICAKCi1NaWtlCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkRhdmluY2ktbGludXgtb3Blbi1zb3Vy
-Y2UgbWFpbGluZyBsaXN0CkRhdmluY2ktbGludXgtb3Blbi1zb3VyY2VAbGludXguZGF2aW5jaWRz
-cC5jb20KaHR0cDovL2xpbnV4LmRhdmluY2lkc3AuY29tL21haWxtYW4vbGlzdGluZm8vZGF2aW5j
-aS1saW51eC1vcGVuLXNvdXJjZQo=
+Grant,
+    Sorry.  Fell off my radar.   I'll push it this week.
+
+Cheers,
+    Erik
+
+On Sat, Oct 9, 2010 at 11:31 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> w=
+rote:
+> On Thu, Sep 2, 2010 at 8:22 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> =
+wrote:
+>> On Wed, Sep 1, 2010 at 4:16 PM, Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org> wrote:
+>>> v2 changes:
+>>> =A0from Thierry Reding:
+>>> =A0 =A0* add "select TEGRA_SYSTEM_DMA" to Kconfig
+>>> =A0from Grant Likely:
+>>> =A0 =A0* add oneline description to header
+>>> =A0 =A0* inline references to DRIVER_NAME
+>>> =A0 =A0* inline references to BUSY_TIMEOUT
+>>> =A0 =A0* open coded bytes_per_word()
+>>> =A0 =A0* spi_readl/writel -> spi_tegra_readl/writel
+>>> =A0 =A0* move transfer validation to spi_tegra_transfer
+>>> =A0 =A0* don't request_mem_region iomem as platform bus does that for us
+>>> =A0 =A0* __exit -> __devexit
+>>>
+>>> v3 changes:
+>>> =A0from Russell King:
+>>> =A0 =A0* put request_mem_region back int
+>>> =A0from Grant Likely:
+>>> =A0 =A0* remove #undef DEBUG
+>>> =A0 =A0* add SLINK_ to register bit defines
+>>> =A0 =A0* remove unused bytes_per_word
+>>> =A0 =A0* make spi_tegra_readl/writel static linine
+>>> =A0 =A0* various refactoring for clarity
+>>> =A0 =A0* mark err if BSY bit is not cleared after 1000 retries
+>>> =A0 =A0* move spinlock to protect setting of RDY bit
+>>> =A0 =A0* subsys_initcall -> module_init
+>>>
+>>> v3 changes:
+>>> =A0from Grant Likely:
+>>> =A0 =A0* update spi_tegra to use PTR_ERRless dma API
+>>>
+>>> Signed-off-by: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+>>> Cc: Thierry Reding <thierry.reding-RM9K5IK7kjKj5M59NBduVrNAH6kLmebB@public.gmane.org>
+>>> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+>>> Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+>>
+>> Hi Erik,
+>>
+>> Go ahead and add my Acked-by line and merge this via the tegra tree to
+>> avoid ordering issues. =A0I also have a few more minor comments below.
+>
+> Hi Erik,
+>
+> What's the status on this one? =A0I've not seen it show up in the
+> for-next branch of the android tegra tree.
+>
+> g.
+>
+
+---------------------------------------------------------------------------=
+---
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today.
+http://p.sf.net/sfu/beautyoftheweb

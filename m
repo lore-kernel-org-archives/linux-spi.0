@@ -1,92 +1,81 @@
-From: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v4] spi: add spi_tegra driver
-Date: Mon, 11 Oct 2010 14:01:33 -0700
-Message-ID: <AANLkTi=m-Omf4BApb=edTveOBbc6q5uYQdHMB1T=qmY6@mail.gmail.com>
-References: <1282771395-21684-1-git-send-email-konkers@android.com>
-	<1283379393-14831-1-git-send-email-konkers@android.com>
-	<AANLkTimonLa1mUVSHR=QnR48HPtAZ5BW3BsVsg7MWALy@mail.gmail.com>
-	<AANLkTini_PA3J+R4gEP4DzFpcAxHhdmDbcXxOtj2h81O@mail.gmail.com>
+From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Subject: Re: [PATCH v5 1/1] davinci: spi: replace existing driver
+Date: Mon, 11 Oct 2010 20:31:15 -0400
+Message-ID: <4CB3AC53.2050701@criticallink.com>
+References: <1280355490-11878-1-git-send-email-bniebuhr@efjohnson.com>
+	<4C8EB795.1080607@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4C95@dbde02.ent.ti.com>
+	<201009140904.59555.caglarakyuz@gmail.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF4D9B@dbde02.ent.ti.com>
+	<4C8F7460.6050006@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6DF50C1@dbde02.ent.ti.com>
+	<4C94B9BD.4010606@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59301F6F5385B@dbde02.ent.ti.com>
+	<4C979D1D.1070707@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59302342050C7@dbde02.ent.ti.com>
+	<4CAF6F86.40201@criticallink.com>
+	<4CB0665A.3000309@criticallink.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59302343630D8@dbde02.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTini_PA3J+R4gEP4DzFpcAxHhdmDbcXxOtj2h81O-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Brian Niebuhr <bniebuhr3-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59302343630D8-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant,
-    Sorry.  Fell off my radar.   I'll push it this week.
+On 10/11/2010 12:57 PM, Nori, Sekhar wrote:
+> Hi Mike,
+> 
+> On Sat, Oct 09, 2010 at 18:25:54, Michael Williamson wrote:
+>> On 10/08/2010 03:22 PM, Michael Williamson wrote:
+> 
+>>> On 10/6/2010 11:37 AM, Nori, Sekhar wrote:
+> 
+>>>> On Mon, Sep 20, 2010 at 23:12:53, Michael Williamson wrote:
+> 
+>>>>
+>>>> I just finished pushing the DMA related patches to the git branch[1].
 
-Cheers,
-    Erik
+[ stuff deleted ]
 
-On Sat, Oct 9, 2010 at 11:31 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> w=
-rote:
-> On Thu, Sep 2, 2010 at 8:22 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> =
-wrote:
->> On Wed, Sep 1, 2010 at 4:16 PM, Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org> wrote:
->>> v2 changes:
->>> =A0from Thierry Reding:
->>> =A0 =A0* add "select TEGRA_SYSTEM_DMA" to Kconfig
->>> =A0from Grant Likely:
->>> =A0 =A0* add oneline description to header
->>> =A0 =A0* inline references to DRIVER_NAME
->>> =A0 =A0* inline references to BUSY_TIMEOUT
->>> =A0 =A0* open coded bytes_per_word()
->>> =A0 =A0* spi_readl/writel -> spi_tegra_readl/writel
->>> =A0 =A0* move transfer validation to spi_tegra_transfer
->>> =A0 =A0* don't request_mem_region iomem as platform bus does that for us
->>> =A0 =A0* __exit -> __devexit
->>>
->>> v3 changes:
->>> =A0from Russell King:
->>> =A0 =A0* put request_mem_region back int
->>> =A0from Grant Likely:
->>> =A0 =A0* remove #undef DEBUG
->>> =A0 =A0* add SLINK_ to register bit defines
->>> =A0 =A0* remove unused bytes_per_word
->>> =A0 =A0* make spi_tegra_readl/writel static linine
->>> =A0 =A0* various refactoring for clarity
->>> =A0 =A0* mark err if BSY bit is not cleared after 1000 retries
->>> =A0 =A0* move spinlock to protect setting of RDY bit
->>> =A0 =A0* subsys_initcall -> module_init
->>>
->>> v3 changes:
->>> =A0from Grant Likely:
->>> =A0 =A0* update spi_tegra to use PTR_ERRless dma API
->>>
->>> Signed-off-by: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
->>> Cc: Thierry Reding <thierry.reding-RM9K5IK7kjKj5M59NBduVrNAH6kLmebB@public.gmane.org>
->>> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
->>> Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 >>
->> Hi Erik,
->>
->> Go ahead and add my Acked-by line and merge this via the tegra tree to
->> avoid ordering issues. =A0I also have a few more minor comments below.
->
-> Hi Erik,
->
-> What's the status on this one? =A0I've not seen it show up in the
-> for-next branch of the android tegra tree.
->
-> g.
->
+>>>
+>>>> Also, do you have patches adding SPI support for DA850 platform?
+>>>> I can include these patches on this branch so others who will be
+>>>> testing dont have to repeat the work.
+>>>>
+>>>
+>>>
+>>> I cloned your repository at [1] and published the additions needed to made to test it on the
+>>> mitydsp-l138 platform (da850 based) at [2] (never mind the UART one at the end).  I had to add
+>>> clock support for the spi devices and define the platform SPI resources/registration routines.
+>>> I'd appreciate a quick peek at those to make sure that I didn't make any errors.  The spi
+>>> registration may be refactorable (sp?) to support da830, I didn't look to closely at that.
+>>>
+>>> If any of it is usable, great.
+> 
+> Sure it is! I checked-in your patches with some modifications to my
+> branch. The most notable change being usage of da8xx instead of da850 since
+> the same code should work on da830 as well. Apart from this there are
+> some cosmetic changes (patches squashed, some non-relevant hunks dropped
+> etc). Do update the patches in your tree if you are OK with the changes.
+> 
 
----------------------------------------------------------------------------=
----
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
+I think that the spi device names in the clk_lookup table in da830.c may need to be updated.  Right now
+they are shown as "dm_spi.0".  Should they be "spi_davinci.o" and "spi_davinci.1"?
+
+-Mike

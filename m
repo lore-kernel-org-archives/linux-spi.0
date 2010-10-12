@@ -1,65 +1,177 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Assert CS, wait for IRQ, write data sequence
-Date: Tue, 12 Oct 2010 09:51:10 +0900
-Message-ID: <AANLkTi=sognho1_nuZw2xJmOTXQ4MMudVwktX6CniM+w@mail.gmail.com>
-References: <201010061649.45237.sentinelofsetch@gmail.com>
-	<AANLkTi=-v_fEX+TkBw8HA_KM2CPQUqbOzRy8vb3k6EAc@mail.gmail.com>
-	<201010111922.23952.sentinelofsetch@gmail.com>
+From: Mingkai Hu <Mingkai.hu@freescale.com>
+Subject: [PATCH v4 4/5] powerpc/of: add eSPI controller dts bindings and DTS
+	modification
+Date: Tue, 12 Oct 2010 18:18:33 +0800
+Message-ID: <1286878714-13090-5-git-send-email-Mingkai.hu@freescale.com>
+References: <1286878714-13090-1-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-2-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-3-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-4-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Sergii Kovalchuk <sentinelofsetch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201010111922.23952.sentinelofsetch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: david-b@pacbell.net, kumar.gala@freescale.com,
+	Mingkai Hu <Mingkai.hu@freescale.com>
+To: <linuxppc-dev@ozlabs.org>, <spi-devel-general@lists.sourceforge.net>,
+	<linux-mtd@lists.infradead.org>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <1286878714-13090-4-git-send-email-Mingkai.hu@freescale.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBPY3QgMTIsIDIwMTAgYXQgMToyMiBBTSwgU2VyZ2lpIEtvdmFsY2h1awo8c2VudGlu
-ZWxvZnNldGNoQGdtYWlsLmNvbT4gd3JvdGU6Cj4gT24gVGh1cnNkYXkgMDcgT2N0b2JlciAyMDEw
-IDE5OjM2OjE4IEdyYW50IExpa2VseSB3cm90ZToKPj4gT24gV2VkLCBPY3QgNiwgMjAxMCBhdCA3
-OjQ5IEFNLCBTZXJnaWkgS292YWxjaHVrCj4+ID4KPj4gPiBJJ20gaW1wbGVtZW50aW5nIGFuIFNQ
-SSBwcm90b2NvbCBkcml2ZXIgZm9yIFRJIFdMMTJ4eCBjb21ibyBjaGlwLgo+PiA+IEFjY29yZGlu
-ZyB0byB0aGUgc3BlYywgZm9yIHdyaXRlIHRyYW5zYWN0aW9uIEkgc2hvdWxkIGNvbXBsZXRlIHRo
-ZQo+PiA+IGZvbGxvd2luZyBzZXF1ZW5jZToKPj4gPgo+PiA+IDEuIEFzc2VydCBDUwo+PiA+IDIu
-IFdhaXQgdW50aWwgY2hpcCB3aWxsIHRyaWdnZXIgSVJRCj4+ID4gMy4gV3JpdGUgZGF0YQo+PiA+
-Cj4+ID4gTG9va2luZyBhdCBzcGlfdHJhbnNmZXIgc3RydWN0dXJlIEkgd29uZGVyaW5nLCBob3cg
-SSBjYW4gaW1wbGVtZW50IHN1Y2gKPj4gPiBsb2dpYyAtIHRoZXJlIGlzIG5vIGV4cGxpY2l0IHdh
-eXMgdG8gaW1wbGVtZW50ICJ3YWl0IGZvciBhbiBldmVudCIKPj4gPiB3aXRoaW4gc2luZ2xlIHNw
-aV9tZXNzYWdlIHByb2Nlc3NpbmcuCj4+ID4KPj4gPiBBcyBjdXJyZW50IHdvcmthcnJvdW5kIEkg
-dXNlIGEgc2ltcGxlIGRlbGF5IGluIDUgdXMsIGJ1dCBmb3Igc2xlZXAgc3RhdGVzCj4+ID4gaXQg
-bWlnaHQgYmUgbm90IHN1ZmZpY2llbnQsIHNpbmNlIHdha2UtdXAgdGltZSBhcmUgdXN1c2FsbHkg
-Z3JlYXRlci4KPj4KPj4gV293LiDCoFRoYXQncyBuYXN0eS4gwqBUaGUgU1BJIGxheWVyIHJlYWxs
-eSBkb2Vzbid0IGhhdmUgYSBtZWNoYW5pc20gZm9yCj4+IGhhbmRsaW5nIHRoYXQuIMKgV2hhdCB5
-b3UgKmNvdWxkKiBkbyBpcyBsb2NrIHRoZSBzcGkgYnVzOyBhc3NlcnQgQ1MKPj4gbWFudWFsbHk7
-IHdhaXQgZm9yIHRoZSBpcnEsIGFuZCB0aGVuIGlzc3VlIHRoZSB0cmFuc2Zlci4gwqBOb3QgZXhh
-Y3RseQo+PiBwcmV0dHksIGJ1dCBpdCB3b3VsZCB3b3JrIHdpdGhpbiB0aGUgZXhpc3RpbmcgaW5m
-cmFzdHJ1Y3R1cmUuCj4+Cj4+IGcuCj4KPiBZZXMsIHNlZW1zIHRvIGJlIG5hc3R5LiBUaGlzIGlz
-IHdoYXQgSSdtIGRvaW5nIG5vdyAtIGxvY2tpbmcgdGhlIGJ1cyBhbmQKPiB3YWl0aW5nIGZvciBJ
-UlEsIGJ1dCB0aGlzIGlzIHJlYWxseSB1Z2x5LiBKdXN0IHdvbmRlcmVkLCBpZiB0aGVyZSBpcyBz
-b21lCj4gaGlkZGVuIHdheS4KPgo+IE5vdCBzdXJlLCBpZiBpdCBtb3JlIG9yIGxlc3MgY29tbW9u
-IHNpdHVhdGlvbi4gSWYgc28sIG1heSBiZSBpdCB3aWxsIGJlIHdvcnRoCj4gdG8gZXh0ZW5kIHNw
-aV90cmFuZmVyIHRvIGhhbmRsZSAidGltZWQgd2FpdCBmb3IgSVJRL2V2ZW50IiBpbiBzb21lIGtp
-bmQgb2YKPiBidXN5IGxvb3Agb3IgY29tcGxldGlvbiAtIGRlcGVuZGluZyBvZiBjb250ZXh0PwpC
-eSBjb25zdHJhaW50cyBvZiB5b3VyIGJ1cyBjb250cm9sbGVyLCB5b3UgY2FuJ3QgcG9zc2libHkg
-ZG8gYW55dGhpbmcKbW9yZSB1c2VmdWwgdGhhbgp3YWl0aW5nICdkZWNlbnRseScuIEFmdGVyIGFs
-bCwgb25seSBvbmUgQ1MgY2FuIGJlIGFjdGl2ZSBhdCBhbnkgdGltZQpvbiB0aGUgYnVzIGFuZAp5
-b3VyIGgvdyBleHBlY3RzIHRoYXQgd2hpbGUgaXQgcHJlcGFyZXMgdG8gc2VuZC9yZWN2IGRhdGEu
-Ck9yIGFtIEkgYmVpbmcgbmFpdmU/CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQmVhdXRpZnVsIGlz
-IHdyaXRpbmcgc2FtZSBtYXJrdXAuIEludGVybmV0IEV4cGxvcmVyIDkgc3VwcG9ydHMKc3RhbmRh
-cmRzIGZvciBIVE1MNSwgQ1NTMywgU1ZHIDEuMSwgIEVDTUFTY3JpcHQ1LCBhbmQgRE9NIEwyICYg
-TDMuClNwZW5kIGxlc3MgdGltZSB3cml0aW5nIGFuZCAgcmV3cml0aW5nIGNvZGUgYW5kIG1vcmUg
-dGltZSBjcmVhdGluZyBncmVhdApleHBlcmllbmNlcyBvbiB0aGUgd2ViLiBCZSBhIHBhcnQgb2Yg
-dGhlIGJldGEgdG9kYXkuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYmVhdXR5b2Z0aGV3ZWIKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+Also modifiy the document of cell-index in SPI controller. Add the
+SPI flash(s25fl128p01) support on p4080ds and mpc8536ds board.
+
+Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+---
+v4:
+ - Updated to latest kernel base(Linux 2.6.36-rc7).
+
+ Documentation/powerpc/dts-bindings/fsl/spi.txt |   24 ++++++++++-
+ arch/powerpc/boot/dts/mpc8536ds.dts            |   52 ++++++++++++++++++++++++
+ arch/powerpc/boot/dts/p4080ds.dts              |   11 ++---
+ 3 files changed, 79 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/powerpc/dts-bindings/fsl/spi.txt b/Documentation/powerpc/dts-bindings/fsl/spi.txt
+index 80510c0..777abd7 100644
+--- a/Documentation/powerpc/dts-bindings/fsl/spi.txt
++++ b/Documentation/powerpc/dts-bindings/fsl/spi.txt
+@@ -1,7 +1,9 @@
+ * SPI (Serial Peripheral Interface)
+ 
+ Required properties:
+-- cell-index : SPI controller index.
++- cell-index : QE SPI subblock index.
++		0: QE subblock SPI1
++		1: QE subblock SPI2
+ - compatible : should be "fsl,spi".
+ - mode : the SPI operation mode, it can be "cpu" or "cpu-qe".
+ - reg : Offset and length of the register set for the device
+@@ -29,3 +31,23 @@ Example:
+ 		gpios = <&gpio 18 1	// device reg=<0>
+ 			 &gpio 19 1>;	// device reg=<1>
+ 	};
++
++
++* eSPI (Enhanced Serial Peripheral Interface)
++
++Required properties:
++- compatible : should be "fsl,mpc8536-espi".
++- reg : Offset and length of the register set for the device.
++- interrupts : should contain eSPI interrupt, the device has one interrupt.
++- fsl,espi-num-chipselects : the number of the chipselect signals.
++
++Example:
++	spi@110000 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "fsl,mpc8536-espi";
++		reg = <0x110000 0x1000>;
++		interrupts = <53 0x2>;
++		interrupt-parent = <&mpic>;
++		fsl,espi-num-chipselects = <4>;
++	};
+diff --git a/arch/powerpc/boot/dts/mpc8536ds.dts b/arch/powerpc/boot/dts/mpc8536ds.dts
+index 815cebb..a75c10e 100644
+--- a/arch/powerpc/boot/dts/mpc8536ds.dts
++++ b/arch/powerpc/boot/dts/mpc8536ds.dts
+@@ -108,6 +108,58 @@
+ 			};
+ 		};
+ 
++		spi@7000 {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			compatible = "fsl,mpc8536-espi";
++			reg = <0x7000 0x1000>;
++			interrupts = <59 0x2>;
++			interrupt-parent = <&mpic>;
++			fsl,espi-num-chipselects = <4>;
++
++			flash@0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "spansion,s25sl12801";
++				reg = <0>;
++				spi-max-frequency = <40000000>;
++				partition@u-boot {
++					label = "u-boot";
++					reg = <0x00000000 0x00100000>;
++					read-only;
++				};
++				partition@kernel {
++					label = "kernel";
++					reg = <0x00100000 0x00500000>;
++					read-only;
++				};
++				partition@dtb {
++					label = "dtb";
++					reg = <0x00600000 0x00100000>;
++					read-only;
++				};
++				partition@fs {
++					label = "file system";
++					reg = <0x00700000 0x00900000>;
++				};
++			};
++			flash@1 {
++				compatible = "spansion,s25sl12801";
++				reg = <1>;
++				spi-max-frequency = <40000000>;
++			};
++			flash@2 {
++				compatible = "spansion,s25sl12801";
++				reg = <2>;
++				spi-max-frequency = <40000000>;
++			};
++			flash@3 {
++				compatible = "spansion,s25sl12801";
++				reg = <3>;
++				spi-max-frequency = <40000000>;
++			};
++		};
++
+ 		dma@21300 {
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+diff --git a/arch/powerpc/boot/dts/p4080ds.dts b/arch/powerpc/boot/dts/p4080ds.dts
+index 2f0de24..5b7fc29 100644
+--- a/arch/powerpc/boot/dts/p4080ds.dts
++++ b/arch/powerpc/boot/dts/p4080ds.dts
+@@ -236,22 +236,19 @@
+ 		};
+ 
+ 		spi@110000 {
+-			cell-index = <0>;
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			compatible = "fsl,espi";
++			compatible = "fsl,p4080-espi", "fsl,mpc8536-espi";
+ 			reg = <0x110000 0x1000>;
+ 			interrupts = <53 0x2>;
+ 			interrupt-parent = <&mpic>;
+-			espi,num-ss-bits = <4>;
+-			mode = "cpu";
++			fsl,espi-num-chipselects = <4>;
+ 
+-			fsl_m25p80@0 {
++			flash@0 {
+ 				#address-cells = <1>;
+ 				#size-cells = <1>;
+-				compatible = "fsl,espi-flash";
++				compatible = "spansion,s25sl12801";
+ 				reg = <0>;
+-				linux,modalias = "fsl_m25p80";
+ 				spi-max-frequency = <40000000>; /* input clock */
+ 				partition@u-boot {
+ 					label = "u-boot";
+-- 
+1.6.4

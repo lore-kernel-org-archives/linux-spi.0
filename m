@@ -1,12 +1,11 @@
-From: dgeyk-rLdhVdUJ2qM@public.gmane.org
-Subject: [SPAM] 鑲℃潈婵�鍔辨柟妗堣璁℃妧宸
-Date: Wed, 13 Oct 2010 14:26:53 +0800
-Message-ID: <E1P5unf-00020H-8b@sfs-ml-1.v29.ch3.sourceforge.com>
+From: =?koi8-r?B?5MHXycQg?= <hvudop-p32f3XyCuykqcZcGjlUOXw@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8k=?=
+Date: Wed, 13 Oct 2010 14:21:03 +0400
+Message-ID: <7AE2BA2AA0204CB18A90D22440012DEA@fmlvci>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: valeev-SYPjacQAEmk@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, serials2008-O5WfVfzUwx8@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-o
-
-中国股权激励第一人薛中行博士手把手教您设计适合自身企业的股权激励方案。
-
-14:26:52
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+5S3N3MrMIPLB09PZzMvJIAogCu3P08vXwSDA0i7MycPBIC0gMi42MjY0ODIgwcTSIC0gMzk5NiDS
+1cIKIArtz9PL18EgxsnaLszJw8EgLSA5LjcxNzk3MyDBxNIgLSA2OTkzINLVwgogCvTFzDogKDQ5
+OSk1MDItICAgICAg7cHL08nNIAo0NDQ3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpCZWF1dGlmdWwg
+aXMgd3JpdGluZyBzYW1lIG1hcmt1cC4gSW50ZXJuZXQgRXhwbG9yZXIgOSBzdXBwb3J0cwpzdGFu
+ZGFyZHMgZm9yIEhUTUw1LCBDU1MzLCBTVkcgMS4xLCAgRUNNQVNjcmlwdDUsIGFuZCBET00gTDIg
+JiBMMy4KU3BlbmQgbGVzcyB0aW1lIHdyaXRpbmcgYW5kICByZXdyaXRpbmcgY29kZSBhbmQgbW9y
+ZSB0aW1lIGNyZWF0aW5nIGdyZWF0CmV4cGVyaWVuY2VzIG9uIHRoZSB3ZWIuIEJlIGEgcGFydCBv
+ZiB0aGUgYmV0YSB0b2RheS4KaHR0cDovL3Auc2YubmV0L3NmdS9iZWF1dHlvZnRoZXdlYgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

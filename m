@@ -1,11 +1,17 @@
-From: =?koi8-r?B?5MHXycQg?= <hvudop-p32f3XyCuykqcZcGjlUOXw@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8k=?=
-Date: Wed, 13 Oct 2010 14:21:03 +0400
-Message-ID: <7AE2BA2AA0204CB18A90D22440012DEA@fmlvci>
+From: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [Patch] atmel_spi.c - let transfers through if not changing
+	bits_per_word
+Date: Wed, 13 Oct 2010 17:51:02 +0200
+Message-ID: <4CB5D566.2040301@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: valeev-SYPjacQAEmk@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, serials2008-O5WfVfzUwx8@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	kernel-o2ulR9ObcgE/ohRxsw7f2g@public.gmane.org, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	matthias <mensch0815-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +23,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCu3P08vXwSDA0i7MycPBIC0gMi42MjY0ODIgwcTSIC0gMzk5NiDS
-1cIKIArtz9PL18EgxsnaLszJw8EgLSA5LjcxNzk3MyDBxNIgLSA2OTkzINLVwgogCvTFzDogKDQ5
-OSk1MDItICAgICAg7cHL08nNIAo0NDQ3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpCZWF1dGlmdWwg
-aXMgd3JpdGluZyBzYW1lIG1hcmt1cC4gSW50ZXJuZXQgRXhwbG9yZXIgOSBzdXBwb3J0cwpzdGFu
-ZGFyZHMgZm9yIEhUTUw1LCBDU1MzLCBTVkcgMS4xLCAgRUNNQVNjcmlwdDUsIGFuZCBET00gTDIg
-JiBMMy4KU3BlbmQgbGVzcyB0aW1lIHdyaXRpbmcgYW5kICByZXdyaXRpbmcgY29kZSBhbmQgbW9y
-ZSB0aW1lIGNyZWF0aW5nIGdyZWF0CmV4cGVyaWVuY2VzIG9uIHRoZSB3ZWIuIEJlIGEgcGFydCBv
-ZiB0aGUgYmV0YSB0b2RheS4KaHR0cDovL3Auc2YubmV0L3NmdS9iZWF1dHlvZnRoZXdlYgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+- bits_per_word option in spi_transfer are allowed if it does not change
+the csr register.
+
+This is necessary for the driver in
+drivers/staging/iio/adis16260_core.c, as it uses this option.
+
+Signed-off-by: Matthias Brugger <mensch0815-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/atmel_spi.c |   14 +++++++++++++-
+ 1 files changed, 13 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+index c4e0442..5c03a5b 100644
+--- a/drivers/spi/atmel_spi.c
++++ b/drivers/spi/atmel_spi.c
+@@ -654,6 +654,8 @@ static int atmel_spi_transfer(struct spi_device
+*spi, struct spi_message *msg)
+ 	struct spi_transfer	*xfer;
+ 	unsigned long		flags;
+ 	struct device		*controller = spi->master->dev.parent;
++	u8			bits;
++	struct atmel_spi_device	*asd;
+
+ 	as = spi_master_get_devdata(spi->master);
+
+@@ -672,8 +674,18 @@ static int atmel_spi_transfer(struct spi_device
+*spi, struct spi_message *msg)
+ 			return -EINVAL;
+ 		}
+
++		if (xfer->bits_per_word) {
++			asd = spi->controller_state;
++			bits = (asd->csr >> 4) & 0xf;
++			if (bits != xfer->bits_per_word - 8) {
++				dev_dbg(&spi->dev, "you can't yet change "
++					 "bit_per_word in transfers\n");
++				return -ENOPROTOOPT;
++			}
++		}
++
+ 		/* FIXME implement these protocol options!! */
+-		if (xfer->bits_per_word || xfer->speed_hz) {
++		if (xfer->speed_hz) {
+ 			dev_dbg(&spi->dev, "no protocol options yet\n");
+ 			return -ENOPROTOOPT;
+ 		}
+-- 
+1.5.6.5
+
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today.
+http://p.sf.net/sfu/beautyoftheweb

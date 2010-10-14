@@ -1,17 +1,12 @@
-From: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [Patch] atmel_spi.c - let transfers through if not changing
-	bits_per_word
-Date: Wed, 13 Oct 2010 17:51:02 +0200
-Message-ID: <4CB5D566.2040301@gmail.com>
+From: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi: tegra: fix error setting on timeout
+Date: Wed, 13 Oct 2010 18:16:38 -0700
+Message-ID: <1287018998-14931-1-git-send-email-konkers@android.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: drivers-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	kernel-o2ulR9ObcgE/ohRxsw7f2g@public.gmane.org, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	matthias <mensch0815-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+To: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,54 +18,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-- bits_per_word option in spi_transfer are allowed if it does not change
-the csr register.
+avoids derefencing an uninitialized pointer
 
-This is necessary for the driver in
-drivers/staging/iio/adis16260_core.c, as it uses this option.
-
-Signed-off-by: Matthias Brugger <mensch0815-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Change-Id: Icf528441ae481e9f6f5ddc0be32c7c217fa49701
+Signed-off-by: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/atmel_spi.c |   14 +++++++++++++-
- 1 files changed, 13 insertions(+), 1 deletions(-)
+ drivers/spi/spi_tegra.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index c4e0442..5c03a5b 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -654,6 +654,8 @@ static int atmel_spi_transfer(struct spi_device
-*spi, struct spi_message *msg)
- 	struct spi_transfer	*xfer;
- 	unsigned long		flags;
- 	struct device		*controller = spi->master->dev.parent;
-+	u8			bits;
-+	struct atmel_spi_device	*asd;
-
- 	as = spi_master_get_devdata(spi->master);
-
-@@ -672,8 +674,18 @@ static int atmel_spi_transfer(struct spi_device
-*spi, struct spi_message *msg)
- 			return -EINVAL;
- 		}
-
-+		if (xfer->bits_per_word) {
-+			asd = spi->controller_state;
-+			bits = (asd->csr >> 4) & 0xf;
-+			if (bits != xfer->bits_per_word - 8) {
-+				dev_dbg(&spi->dev, "you can't yet change "
-+					 "bit_per_word in transfers\n");
-+				return -ENOPROTOOPT;
-+			}
-+		}
+diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+index 0385fde..bb7df02 100644
+--- a/drivers/spi/spi_tegra.c
++++ b/drivers/spi/spi_tegra.c
+@@ -338,15 +338,15 @@ static void tegra_spi_rx_dma_complete(struct tegra_dma_req *req)
+ 
+ 	spin_lock_irqsave(&tspi->lock, flags);
+ 
+-	if (timeout >= 1000)
+-		m->status = -EIO;
+-
+ 	val = spi_tegra_readl(tspi, SLINK_STATUS);
+ 	val |= SLINK_RDY;
+ 	spi_tegra_writel(tspi, val, SLINK_STATUS);
+ 
+-
+ 	m = list_first_entry(&tspi->queue, struct spi_message, queue);
 +
- 		/* FIXME implement these protocol options!! */
--		if (xfer->bits_per_word || xfer->speed_hz) {
-+		if (xfer->speed_hz) {
- 			dev_dbg(&spi->dev, "no protocol options yet\n");
- 			return -ENOPROTOOPT;
- 		}
++	if (timeout >= 1000)
++		m->status = -EIO;
++
+ 	spi = m->state;
+ 
+ 	tspi->cur_pos += spi_tegra_drain_rx_fifo(tspi, tspi->cur);
 -- 
-1.5.6.5
+1.7.3.1.1.g1cf9a4
+
 
 ------------------------------------------------------------------------------
 Beautiful is writing same markup. Internet Explorer 9 supports

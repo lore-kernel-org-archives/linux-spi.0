@@ -1,357 +1,117 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [RFC PATCH 3/3] spi/xilinx: merge OF support code into main driver
-Date: Thu, 14 Oct 2010 10:20:10 -0600
-Message-ID: <20101014162009.18966.42392.stgit@localhost6.localdomain6>
-References: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 02/12] davinci: add tnetv107x ssp platform device
+Date: Thu, 14 Oct 2010 14:38:45 -0400
+Message-ID: <1287081535-2864-3-git-send-email-cyril@ti.com>
+References: <1287081535-2864-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, richard.rojfors-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org,
-	john.linn-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org, monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101014161724.18966.42340.stgit-bi+AKbBUZKagILUCTcTcHdKyNwTtLsGr@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org,
+        dbrownell@users
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1287081535-2864-1-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Now that the of_platform_bus_type has been merged with the platform
-bus type, a single platform driver can handle both OF and non-OF use
-cases.  This patch merges the OF support into the platform driver.
+This patch adds an SSP platform device definition for the tnetv107x soc family.
+The clock lookup entry has also been updated to match.
 
-Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/Kconfig         |    7 --
- drivers/spi/Makefile        |    1 
- drivers/spi/xilinx_spi.c    |   56 ++++++++++++++++---
- drivers/spi/xilinx_spi.h    |   32 -----------
- drivers/spi/xilinx_spi_of.c |  124 -------------------------------------------
- 5 files changed, 45 insertions(+), 175 deletions(-)
- delete mode 100644 drivers/spi/xilinx_spi.h
- delete mode 100644 drivers/spi/xilinx_spi_of.c
+ arch/arm/mach-davinci/devices-tnetv107x.c      |   25 ++++++++++++++++++++++++
+ arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+ arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+ 3 files changed, 28 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index cebe425..6660deb 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -330,7 +330,6 @@ config SPI_XILINX
- 	tristate "Xilinx SPI controller common module"
- 	depends on HAS_IOMEM && EXPERIMENTAL
- 	select SPI_BITBANG
--	select SPI_XILINX_OF if (XILINX_VIRTEX || MICROBLAZE)
- 	help
- 	  This exposes the SPI controller IP from the Xilinx EDK.
- 
-@@ -339,12 +338,6 @@ config SPI_XILINX
- 
- 	  Or for the DS570, see "XPS Serial Peripheral Interface (SPI) (v2.00b)"
- 
--config SPI_XILINX_OF
--	tristate "Xilinx SPI controller OF device"
--	depends on SPI_XILINX && (XILINX_VIRTEX || MICROBLAZE)
--	help
--	  This is the OF driver for the SPI controller IP from the Xilinx EDK.
--
- config SPI_NUC900
- 	tristate "Nuvoton NUC900 series SPI"
- 	depends on ARCH_W90X900 && EXPERIMENTAL
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 90e0e6a..dadb6b5 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -42,7 +42,6 @@ obj-$(CONFIG_SPI_S3C64XX)		+= spi_s3c64xx.o
- obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi_topcliff_pch.o
- obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
- obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
--obj-$(CONFIG_SPI_XILINX_OF)		+= xilinx_spi_of.o
- obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
- obj-$(CONFIG_SPI_SH_MSIOF)		+= spi_sh_msiof.o
- obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index bb3b520..7adaef6 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -16,13 +16,12 @@
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
--#include <linux/io.h>
--
--#include "xilinx_spi.h"
- #include <linux/spi/xilinx_spi.h>
-+#include <linux/io.h>
- 
- #define XILINX_SPI_NAME "xilinx_spi"
- 
-@@ -352,6 +351,15 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
-+#ifdef CONFIG_OF
-+static const struct of_device_id xilinx_spi_of_match[] = {
-+	{ .compatible = "xlnx,xps-spi-2.00.a", },
-+	{ .compatible = "xlnx,xps-spi-2.00.b", },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, xilinx_spi_of_match);
-+#endif
-+
- struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
- 	u32 irq, s16 bus_num, int num_cs, int little_endian, int bits_per_word)
- {
-@@ -462,13 +470,35 @@ static int __devinit xilinx_spi_probe(struct platform_device *dev)
- {
- 	struct xspi_platform_data *pdata;
- 	struct resource *r;
--	int irq;
-+	int irq, num_cs = 0, little_endian = 0, bits_per_word = 8;
- 	struct spi_master *master;
- 	u8 i;
- 
- 	pdata = dev->dev.platform_data;
--	if (!pdata)
--		return -ENODEV;
-+	if (pdata) {
-+		num_cs = pdata->num_chipselect;
-+		little_endian = pdata->little_endian;
-+		bits_per_word = pdata->bits_per_word;
-+	}
-+
-+#ifdef CONFIG_OF
-+	if (dev->dev.of_node) {
-+		const __be32 *prop;
-+		int len;
-+
-+		/* number of slave select bits is required */
-+		prop = of_get_property(dev->dev.of_node, "xlnx,num-ss-bits",
-+				       &len);
-+		if (prop && len >= sizeof(*prop))
-+			num_cs = __be32_to_cpup(prop);
-+	}
-+#endif
-+
-+	if (!num_cs) {
-+		dev_err(&dev->dev, "Missing slave select configuration data\n");
-+		return -EINVAL;
-+	}
-+
- 
- 	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (!r)
-@@ -478,14 +508,15 @@ static int __devinit xilinx_spi_probe(struct platform_device *dev)
- 	if (irq < 0)
- 		return -ENXIO;
- 
--	master = xilinx_spi_init(&dev->dev, r, irq, dev->id,
--				 pdata->num_chipselect, pdata->little_endian,
--				 pdata->bits_per_word);
-+	master = xilinx_spi_init(&dev->dev, r, irq, dev->id, num_cs,
-+				 little_endian, bits_per_word);
- 	if (!master)
- 		return -ENODEV;
- 
--	for (i = 0; i < pdata->num_devices; i++)
--		spi_new_device(master, pdata->devices + i);
-+	if (pdata) {
-+		for (i = 0; i < pdata->num_devices; i++)
-+			spi_new_device(master, pdata->devices + i);
-+	}
- 
- 	platform_set_drvdata(dev, master);
- 	return 0;
-@@ -508,6 +539,9 @@ static struct platform_driver xilinx_spi_driver = {
- 	.driver = {
- 		.name = XILINX_SPI_NAME,
- 		.owner = THIS_MODULE,
-+#ifdef CONFIG_OF
-+		.of_match_table = xilinx_spi_of_match,
-+#endif
- 	},
+diff --git a/arch/arm/mach-davinci/devices-tnetv107x.c b/arch/arm/mach-davinci/devices-tnetv107x.c
+index c9a86d8..0d0522b 100644
+--- a/arch/arm/mach-davinci/devices-tnetv107x.c
++++ b/arch/arm/mach-davinci/devices-tnetv107x.c
+@@ -35,6 +35,7 @@
+ #define TNETV107X_SDIO0_BASE			0x08088700
+ #define TNETV107X_SDIO1_BASE			0x08088800
+ #define TNETV107X_KEYPAD_BASE			0x08088a00
++#define TNETV107X_SSP_BASE			0x08088c00
+ #define TNETV107X_ASYNC_EMIF_CNTRL_BASE		0x08200000
+ #define TNETV107X_ASYNC_EMIF_DATA_CE0_BASE	0x30000000
+ #define TNETV107X_ASYNC_EMIF_DATA_CE1_BASE	0x40000000
+@@ -342,6 +343,25 @@ static struct platform_device tsc_device = {
+ 	.resource	= tsc_resources,
  };
  
-diff --git a/drivers/spi/xilinx_spi.h b/drivers/spi/xilinx_spi.h
-deleted file mode 100644
-index d710a33..0000000
---- a/drivers/spi/xilinx_spi.h
-+++ /dev/null
-@@ -1,32 +0,0 @@
--/*
-- * Xilinx SPI device driver API and platform data header file
-- *
-- * Copyright (c) 2009 Intel Corporation
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#ifndef _XILINX_SPI_H_
--#define _XILINX_SPI_H_
--
--#include <linux/spi/spi.h>
--#include <linux/spi/spi_bitbang.h>
--
--#define XILINX_SPI_NAME "xilinx_spi"
--
--struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
--	u32 irq, s16 bus_num, int num_cs, int little_endian, int bits_per_word);
--
--void xilinx_spi_deinit(struct spi_master *master);
--#endif
-diff --git a/drivers/spi/xilinx_spi_of.c b/drivers/spi/xilinx_spi_of.c
-deleted file mode 100644
-index c2d8ade..0000000
---- a/drivers/spi/xilinx_spi_of.c
-+++ /dev/null
-@@ -1,124 +0,0 @@
--/*
-- * Xilinx SPI OF device driver
-- *
-- * Copyright (c) 2009 Intel Corporation
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program; if not, write to the Free Software
-- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--/* Supports:
-- * Xilinx SPI devices as OF devices
-- *
-- * Inspired by xilinx_spi.c, 2002-2007 (c) MontaVista Software, Inc.
-- */
--
--#include <linux/module.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/io.h>
--#include <linux/slab.h>
--
--#include <linux/of_address.h>
--#include <linux/of_platform.h>
--#include <linux/of_device.h>
--#include <linux/of_spi.h>
--
--#include <linux/spi/xilinx_spi.h>
--#include "xilinx_spi.h"
--
--
--static int __devinit xilinx_spi_of_probe(struct platform_device *ofdev,
--	const struct of_device_id *match)
--{
--	struct spi_master *master;
--	struct resource r_mem;
--	struct resource r_irq;
--	int rc = 0;
--	const u32 *prop;
--	int len, num_cs;
--
--	rc = of_address_to_resource(ofdev->dev.of_node, 0, &r_mem);
--	if (rc) {
--		dev_warn(&ofdev->dev, "invalid address\n");
--		return rc;
--	}
--
--	rc = of_irq_to_resource(ofdev->dev.of_node, 0, &r_irq);
--	if (rc == NO_IRQ) {
--		dev_warn(&ofdev->dev, "no IRQ found\n");
--		return -ENODEV;
--	}
--
--	/* number of slave select bits is required */
--	prop = of_get_property(ofdev->dev.of_node, "xlnx,num-ss-bits", &len);
--	if (!prop || len < sizeof(*prop)) {
--		dev_warn(&ofdev->dev, "no 'xlnx,num-ss-bits' property\n");
--		return -EINVAL;
--	}
--	num_cs = __be32_to_cpup(prop);
--	master = xilinx_spi_init(&ofdev->dev, &r_mem, r_irq.start, -1,
--				 num_cs, 0, 8);
--	if (!master)
--		return -ENODEV;
--
--	dev_set_drvdata(&ofdev->dev, master);
--
--	return 0;
--}
--
--static int __devexit xilinx_spi_remove(struct platform_device *ofdev)
--{
--	xilinx_spi_deinit(dev_get_drvdata(&ofdev->dev));
--	dev_set_drvdata(&ofdev->dev, 0);
--	return 0;
--}
--
--static int __exit xilinx_spi_of_remove(struct platform_device *op)
--{
--	return xilinx_spi_remove(op);
--}
--
--static const struct of_device_id xilinx_spi_of_match[] = {
--	{ .compatible = "xlnx,xps-spi-2.00.a", },
--	{ .compatible = "xlnx,xps-spi-2.00.b", },
--	{}
--};
--
--MODULE_DEVICE_TABLE(of, xilinx_spi_of_match);
--
--static struct of_platform_driver xilinx_spi_of_driver = {
--	.probe = xilinx_spi_of_probe,
--	.remove = __exit_p(xilinx_spi_of_remove),
--	.driver = {
--		.name = "xilinx-xps-spi",
--		.owner = THIS_MODULE,
--		.of_match_table = xilinx_spi_of_match,
--	},
--};
--
--static int __init xilinx_spi_of_init(void)
--{
--	return of_register_platform_driver(&xilinx_spi_of_driver);
--}
--module_init(xilinx_spi_of_init);
--
--static void __exit xilinx_spi_of_exit(void)
--{
--	of_unregister_platform_driver(&xilinx_spi_of_driver);
--}
--module_exit(xilinx_spi_of_exit);
--
--MODULE_AUTHOR("Mocean Laboratories <info-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>");
--MODULE_DESCRIPTION("Xilinx SPI platform driver");
--MODULE_LICENSE("GPL v2");
-
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today.
-http://p.sf.net/sfu/beautyoftheweb
++static struct resource ssp_resources [] = {
++	{
++		.start	= TNETV107X_SSP_BASE,
++		.end	= TNETV107X_SSP_BASE + 0x1ff,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= IRQ_TNETV107X_SSP,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static struct platform_device ssp_device = {
++	.name		= "ti-ssp",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(ssp_resources),
++	.resource	= ssp_resources,
++};
++
+ void __init tnetv107x_devices_init(struct tnetv107x_device_info *info)
+ {
+ 	int i;
+@@ -367,4 +387,9 @@ void __init tnetv107x_devices_init(struct tnetv107x_device_info *info)
+ 		keypad_device.dev.platform_data = info->keypad_config;
+ 		platform_device_register(&keypad_device);
+ 	}
++
++	if (info->ssp_config) {
++		ssp_device.dev.platform_data = info->ssp_config;
++		platform_device_register(&ssp_device);
++	}
+ }
+diff --git a/arch/arm/mach-davinci/include/mach/tnetv107x.h b/arch/arm/mach-davinci/include/mach/tnetv107x.h
+index 5a681d8..c1df563 100644
+--- a/arch/arm/mach-davinci/include/mach/tnetv107x.h
++++ b/arch/arm/mach-davinci/include/mach/tnetv107x.h
+@@ -38,12 +38,14 @@
+ #include <mach/mmc.h>
+ #include <mach/nand.h>
+ #include <mach/serial.h>
++#include <mach/ti_ssp.h>
+ 
+ struct tnetv107x_device_info {
+ 	struct davinci_uart_config	*serial_config;
+ 	struct davinci_mmc_config	*mmc_config[2];  /* 2 controllers */
+ 	struct davinci_nand_pdata	*nand_config[4]; /* 4 chipsels */
+ 	struct matrix_keypad_platform_data *keypad_config;
++	struct ti_ssp_data		*ssp_config;
+ };
+ 
+ extern struct platform_device tnetv107x_wdt_device;
+diff --git a/arch/arm/mach-davinci/tnetv107x.c b/arch/arm/mach-davinci/tnetv107x.c
+index daeae06..fcf30e7 100644
+--- a/arch/arm/mach-davinci/tnetv107x.c
++++ b/arch/arm/mach-davinci/tnetv107x.c
+@@ -277,7 +277,7 @@ static struct clk_lookup clks[] = {
+ 	CLK(NULL,		"timer1",		&clk_timer1),
+ 	CLK("tnetv107x_wdt.0",	NULL,			&clk_wdt_arm),
+ 	CLK(NULL,		"clk_wdt_dsp",		&clk_wdt_dsp),
+-	CLK("ti-ssp.0",		NULL,			&clk_ssp),
++	CLK("ti-ssp",		NULL,			&clk_ssp),
+ 	CLK(NULL,		"clk_tdm0",		&clk_tdm0),
+ 	CLK(NULL,		"clk_vlynq",		&clk_vlynq),
+ 	CLK(NULL,		"clk_mcdma",		&clk_mcdma),
+-- 
+1.7.0.4

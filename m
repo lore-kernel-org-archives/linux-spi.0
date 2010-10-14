@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 12/12] davinci: add tnetv107x evm i2c eeprom device
-Date: Thu, 14 Oct 2010 14:38:55 -0400
-Message-ID: <1287081535-2864-13-git-send-email-cyril@ti.com>
+Subject: [PATCH 09/12] davinci: add tnetv107x evm ti-ssp gpio device
+Date: Thu, 14 Oct 2010 14:38:52 -0400
+Message-ID: <1287081535-2864-10-git-send-email-cyril@ti.com>
 References: <1287081535-2864-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,91 +23,62 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The tnetv107x evm board has an I2C device connected on one of the SSP ports.
-This patch adds board definitions for a GPIO based I2C master, as well as
-definitions for the eeprom device on these boards.
+This patch adds definitions to hook up one of the ti-ssp ports to the SSP GPIO
+driver.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   35 +++++++++++++++++++++++----
- 1 files changed, 30 insertions(+), 5 deletions(-)
+ arch/arm/mach-davinci/board-tnetv107x-evm.c |   23 +++++++++++++++++++++++
+ 1 files changed, 23 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index 0a1e9c8..2e3d842 100644
+index 2f13544..7b4f86e 100644
 --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -29,6 +29,9 @@
- #include <linux/regulator/machine.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regulator/driver.h>
-+#include <linux/i2c.h>
-+#include <linux/i2c/at24.h>
-+#include <linux/i2c-gpio.h>
+@@ -40,6 +40,8 @@
+ #include <mach/ti_ssp.h>
+ #include <mach/tnetv107x.h>
  
- #include <asm/mach/arch.h>
- #include <asm/mach-types.h>
-@@ -45,6 +48,8 @@
++#define SSP_GPIO_START		128
++
  #define EVM_MMC_WP_GPIO		21
  #define EVM_MMC_CD_GPIO		24
  #define EVM_SPI_CS_GPIO		54
-+#define EVM_I2C_SDA_GPIO	(SSP_GPIO_START + 0)
-+#define EVM_I2C_SCL_GPIO	(SSP_GPIO_START + 1)
- #define EVM_BACKLIGHT_GPIO	(SSP_GPIO_START + 2)
- 
- static int initialize_gpio(int gpio, char *desc)
-@@ -270,11 +275,6 @@ static struct ti_ssp_gpio_data ssp_gpio_data = {
- 	.port_data = {
- 		.ssp_dev_name = "ti-ssp",
- 		.port = 0,
--		.iosel = SSP_PIN_SEL(0, SSP_OUT)	|
--			 SSP_PIN_SEL(1, SSP_OUT)	|
--			 SSP_PIN_SEL(2, SSP_OUT)	|
--			 SSP_PIN_SEL(3, SSP_OUT)	|
--			 SSP_INPUT_SEL(3),
- 	},
- 	.start		= SSP_GPIO_START,
- };
-@@ -382,6 +382,29 @@ static struct platform_device backlight_device = {
- 	.dev.platform_data = (void *)EVM_BACKLIGHT_GPIO,
+@@ -263,6 +265,25 @@ static struct platform_device spi_master_device = {
+ 	.dev.platform_data = &spi_master_data,
  };
  
-+struct i2c_gpio_platform_data i2c_data = {
-+	.sda_pin	= EVM_I2C_SDA_GPIO,
-+	.scl_pin	= EVM_I2C_SCL_GPIO,
-+};
-+
-+static struct platform_device i2c_device = {
-+	.name		= "i2c-gpio",
-+	.id		= 0,
-+	.dev.platform_data = &i2c_data,
-+};
-+
-+static struct at24_platform_data at24_config = {
-+	.byte_len	= SZ_16K / 8,
-+	.page_size	= 16,
-+};
-+
-+static struct i2c_board_info i2c_info[] __initconst =  {
-+	{
-+		I2C_BOARD_INFO("24c16", 0x50),
-+		.platform_data	= &at24_config,
++static struct ti_ssp_gpio_data ssp_gpio_data = {
++	.port_data = {
++		.ssp_dev_name = "ti-ssp",
++		.port = 0,
++		.iosel = SSP_PIN_SEL(0, SSP_OUT)	|
++			 SSP_PIN_SEL(1, SSP_OUT)	|
++			 SSP_PIN_SEL(2, SSP_OUT)	|
++			 SSP_PIN_SEL(3, SSP_OUT)	|
++			 SSP_INPUT_SEL(3),
 +	},
++	.start		= SSP_GPIO_START,
 +};
 +
- static __init void tnetv107x_evm_board_init(void)
- {
- 	davinci_cfg_reg_list(sdio1_pins);
-@@ -393,8 +416,10 @@ static __init void tnetv107x_evm_board_init(void)
- 	platform_device_register(&spi_master_device);
- 	platform_device_register(&ssp_gpio_device);
- 	platform_device_register(&backlight_device);
-+	platform_device_register(&i2c_device);
++static struct platform_device ssp_gpio_device = {
++	.name		= "ti-ssp-gpio",
++	.id		= 0,
++	.dev.platform_data = &ssp_gpio_data,
++};
++
+ static struct regulator_consumer_supply usb_consumers[] = {
+ 	REGULATOR_SUPPLY("vbus", "musb_hdrc.1"),
+ };
+@@ -363,6 +384,8 @@ static __init void tnetv107x_evm_board_init(void)
+ 	tnetv107x_devices_init(&evm_device_info);
  
+ 	platform_device_register(&spi_master_device);
++	platform_device_register(&ssp_gpio_device);
++
  	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
-+	i2c_register_board_info(0, i2c_info, ARRAY_SIZE(i2c_info));
  }
  
- #ifdef CONFIG_SERIAL_8250_CONSOLE
 -- 
 1.7.0.4
 

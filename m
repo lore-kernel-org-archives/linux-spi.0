@@ -1,12 +1,15 @@
-From: =?gb2312?B?uqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?gb2312?B?xbfW3rv5sb642w==?= $1500/2900/2950
-	=?gb2312?B?MTDUwrK/t9a427/awdnKsbGovNs=?=
-Date: Fri, 15 Oct 2010 09:09:44 +0800
-Message-ID: <20101015090944382426@WWW-BDD9080FC2C.net>
+From: "lianm" <rcqrykvdrcli372929-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org>
+Subject: [SPAM] ËÅå‰∏ö
+Date: Fri, 15 Oct 2010 15:03:14 +0800
+Message-ID: <C18DFE135C6C44103FD925ACB271CB31@fxawxiv>
+Reply-To: a1122abcde-KN7UnAbNpbg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_071D_012CA140.1EE2DB40"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<spidi-sXJsrNKGaAyJEg79ku39Ckn1X6ankA70@public.gmane.org>, <spidr110-9Onoh4P/yGk@public.gmane.org>,
+	<spike.li-7F53jg4R4eYnDS1+zs4M5A@public.gmane.org>,
+	<spike_vrm-O5WfVfzUwx8@public.gmane.org>, <spikebed-9Onoh4P/yGk@public.gmane.org>, <spike-c-Xb2Y1Dfb9CI@public.gmane.org>,
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,25 +21,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-yc+6o7jbs/a/2g0KMjAxMC0xMC0xMQ0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
-J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
-IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
-V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
-xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ3MjUvMTIwMC8xMjAwDQogICC/qMCtxuYgJDcyNS8x
-MjAwLzEyMDANCiAgICCworDNy7kgJDcyNS8xMjAwLzEyMDANCg0K0tTJz7qj1Mu30b75zqq6o7Wl
-QUxMSU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEt
-NjA5NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEz
-OTE3OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo
-0qq/yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+
-1tDH69eiw/e587mry77D+7PGoaMNCg0Kt8fW3s/f0MLNxrP2tc282867tKyjrMW31t7P37zbuPHO
-rLPWsrux5A0KyOeyu9Do0qq0y9PKvP6jrL/J0tS72Li0ztKjrM7SvavU2s/CtM61xLeiy83W0Mih
-z/sKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkRvd25sb2FkIG5ldyBBZG9iZShSKSBGbGFzaChSKSBC
-dWlsZGVyKFRNKSA0ClRoZSBuZXcgQWRvYmUoUikgRmxleChSKSA0IGFuZCBGbGFzaChSKSBCdWls
-ZGVyKFRNKSA0IChmb3JtZXJseSAKRmxleChSKSBCdWlsZGVyKFRNKSkgZW5hYmxlIHRoZSBkZXZl
-bG9wbWVudCBvZiByaWNoIGFwcGxpY2F0aW9ucyB0aGF0IHJ1bgphY3Jvc3MgbXVsdGlwbGUgYnJv
-d3NlcnMgYW5kIHBsYXRmb3Jtcy4gRG93bmxvYWQgeW91ciBmcmVlIHRyaWFscyB0b2RheSEKaHR0
-cDovL3Auc2YubmV0L3NmdS9hZG9iZS1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+------=_NextPart_000_071D_012CA140.1EE2DB40
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+
+------=_NextPart_000_071D_012CA140.1EE2DB40
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Download new Adobe(R) Flash(R) Builder(TM) 4
+The new Adobe(R) Flex(R) 4 and Flash(R) Builder(TM) 4 (formerly 
+Flex(R) Builder(TM)) enable the development of rich applications that run
+across multiple browsers and platforms. Download your free trials today!
+http://p.sf.net/sfu/adobe-dev2dev
+------=_NextPart_000_071D_012CA140.1EE2DB40
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_071D_012CA140.1EE2DB40--
+
+_______________________________________
+ YM - ¬˜Ωu∞TÆß
+ ¥N∫‚ßA®S¶≥§W∫Ù°AßA™∫™B§Õ§¥•i•HØd§U∞TÆßµπßA°A∑ÌßA§W∫ÙÆ…¥NØ‡•ﬂßY¨›®Ï°A•Ù¶Ûª°∏‹≥£…N®´•¢°C
+ http://messenger.yahoo.com.hk

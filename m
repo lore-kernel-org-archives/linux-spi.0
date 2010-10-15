@@ -1,43 +1,42 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 07/12] davinci: add tnetv107x evm regulators
-Date: Thu, 14 Oct 2010 22:05:16 +0100
-Message-ID: <20101014210516.GC14479@opensource.wolfsonmicro.com>
-References: <1287081535-2864-1-git-send-email-cyril@ti.com>
-	<1287081535-2864-8-git-send-email-cyril@ti.com>
+From: =?gb2312?B?uqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?gb2312?B?xbfW3rv5sb642w==?= $1500/2900/2950
+	=?gb2312?B?MTDUwrK/t9a427/awdnKsbGovNs=?=
+Date: Fri, 15 Oct 2010 09:09:44 +0800
+Message-ID: <20101015090944382426@WWW-BDD9080FC2C.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-        dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
-To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1287081535-2864-8-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 14, 2010 at 02:38:50PM -0400, Cyril Chemparathy wrote:
-
-> +	{
-> +		.num_consumer_supplies	= ARRAY_SIZE(usb_consumers),
-> +		.consumer_supplies	= usb_consumers,
-> +		.constraints		= {
-> +			.name		= "USB",
-> +			.min_uV		= 5000000,
-> +			.max_uV		= 5000000,
-> +			.min_uA		= 200000,
-> +			.max_uA		= 1000000,
-
-Are you *sure* about the min_uA here - what would be the goal of
-enforcing a minimum current draw?  For a voltage regulator current limit
-usually only an upper limit would be specified.  The same applies to
-several other machine drivers in the series.
+yc+6o7jbs/a/2g0KMjAxMC0xMC0xMQ0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
+J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
+IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
+V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
+xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ3MjUvMTIwMC8xMjAwDQogICC/qMCtxuYgJDcyNS8x
+MjAwLzEyMDANCiAgICCworDNy7kgJDcyNS8xMjAwLzEyMDANCg0K0tTJz7qj1Mu30b75zqq6o7Wl
+QUxMSU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEt
+NjA5NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEz
+OTE3OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo
+0qq/yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+
+1tDH69eiw/e587mry77D+7PGoaMNCg0Kt8fW3s/f0MLNxrP2tc282867tKyjrMW31t7P37zbuPHO
+rLPWsrux5A0KyOeyu9Do0qq0y9PKvP6jrL/J0tS72Li0ztKjrM7SvavU2s/CtM61xLeiy83W0Mih
+z/sKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkRvd25sb2FkIG5ldyBBZG9iZShSKSBGbGFzaChSKSBC
+dWlsZGVyKFRNKSA0ClRoZSBuZXcgQWRvYmUoUikgRmxleChSKSA0IGFuZCBGbGFzaChSKSBCdWls
+ZGVyKFRNKSA0IChmb3JtZXJseSAKRmxleChSKSBCdWlsZGVyKFRNKSkgZW5hYmxlIHRoZSBkZXZl
+bG9wbWVudCBvZiByaWNoIGFwcGxpY2F0aW9ucyB0aGF0IHJ1bgphY3Jvc3MgbXVsdGlwbGUgYnJv
+d3NlcnMgYW5kIHBsYXRmb3Jtcy4gRG93bmxvYWQgeW91ciBmcmVlIHRyaWFscyB0b2RheSEKaHR0
+cDovL3Auc2YubmV0L3NmdS9hZG9iZS1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

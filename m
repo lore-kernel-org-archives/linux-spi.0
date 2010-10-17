@@ -1,12 +1,13 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 23/28] Blackfin SPI: reject unsupported SPI modes
-Date: Sun, 17 Oct 2010 18:59:36 -0400
-Message-ID: <1287356381-31495-24-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 28/28] Blackfin SPI: init early
+Date: Sun, 17 Oct 2010 18:59:41 -0400
+Message-ID: <1287356381-31495-29-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
@@ -22,28 +23,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Who knows what people will try!
+From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
+Some systems using this bus sometimes have very basic devices on them
+such as regulators.  So we need to be loaded even earlier in case the
+devices are used before userspace is loaded.  Therefore register in
+subsys_initcall().
+
+Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 18b313a..a91e556 100644
+index bd18214..d17ab37 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -1022,6 +1022,10 @@ static int bfin_spi_setup(struct spi_device *spi)
- 	}
+@@ -1466,7 +1466,7 @@ static int __init bfin_spi_init(void)
+ {
+ 	return platform_driver_probe(&bfin_spi_driver, bfin_spi_probe);
+ }
+-module_init(bfin_spi_init);
++subsys_initcall(bfin_spi_init);
  
- 	/* translate common spi framework into our register */
-+	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
-+		dev_err(&spi->dev, "unsupported spi modes detected\n");
-+		goto error;
-+	}
- 	if (spi->mode & SPI_CPOL)
- 		chip->ctl_reg |= BIT_CTL_CPOL;
- 	if (spi->mode & SPI_CPHA)
+ static void __exit bfin_spi_exit(void)
+ {
 -- 
 1.7.3.1
 

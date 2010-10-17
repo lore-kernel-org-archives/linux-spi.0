@@ -1,8 +1,8 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v4 5/5] mtd: m25p80: add support to parse the partitions
-	by OF node
-Date: Sat, 16 Oct 2010 19:05:33 -0600
-Message-ID: <AANLkTimr03KAKnz5sfwm19=KzB-ik95WM_qQO0YP9qVs@mail.gmail.com>
+From: Artem Bityutskiy <dedekind1@gmail.com>
+Subject: Re: [PATCH v4 5/5] mtd: m25p80: add support to parse the
+	partitions by OF node
+Date: Sun, 17 Oct 2010 10:44:50 +0300
+Message-ID: <1287301490.1951.0.camel@localhost>
 References: <1286878714-13090-1-git-send-email-Mingkai.hu@freescale.com>
 	<1286878714-13090-2-git-send-email-Mingkai.hu@freescale.com>
 	<1286878714-13090-3-git-send-email-Mingkai.hu@freescale.com>
@@ -10,15 +10,17 @@ References: <1286878714-13090-1-git-send-email-Mingkai.hu@freescale.com>
 	<1286878714-13090-5-git-send-email-Mingkai.hu@freescale.com>
 	<1286878714-13090-6-git-send-email-Mingkai.hu@freescale.com>
 	<1287256647.1781.34.camel@brekeke>
+	<AANLkTimr03KAKnz5sfwm19=KzB-ik95WM_qQO0YP9qVs@mail.gmail.com>
+Reply-To: dedekind1@gmail.com
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: kumar.gala@freescale.com, david-b@pacbell.net, linuxppc-dev@ozlabs.org,
 	linux-mtd@lists.infradead.org, spi-devel-general@lists.sourceforge.net,
 	Mingkai Hu <Mingkai.hu@freescale.com>
-To: dedekind1@gmail.com
+To: Grant Likely <grant.likely@secretlab.ca>
 Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1287256647.1781.34.camel@brekeke>
+In-Reply-To: <AANLkTimr03KAKnz5sfwm19=KzB-ik95WM_qQO0YP9qVs@mail.gmail.com>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
@@ -30,20 +32,20 @@ Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.
 Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Oct 16, 2010 at 1:17 PM, Artem Bityutskiy <dedekind1@gmail.com> wro=
-te:
-> On Tue, 2010-10-12 at 18:18 +0800, Mingkai Hu wrote:
->> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
->> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->> ---
->> v4:
->> =A0- Updated to latest kernel base(Linux 2.6.36-rc7).
->> =A0- Made changes according to Grant's comments.
->
-> Looks good to me, pushed to l2-mtd-2.6.git, thanks.
-
-Wait!  It will break whenever CONFIG_OF is not set.  I broke
-linux-next with this patch.  It can be solved by wrapping the block
-with #ifdef CONFIG_OF, but I'd like to find a better solution.
-
-g.
+T24gU2F0LCAyMDEwLTEwLTE2IGF0IDE5OjA1IC0wNjAwLCBHcmFudCBMaWtlbHkgd3JvdGU6Cj4g
+T24gU2F0LCBPY3QgMTYsIDIwMTAgYXQgMToxNyBQTSwgQXJ0ZW0gQml0eXV0c2tpeSA8ZGVkZWtp
+bmQxQGdtYWlsLmNvbT4gd3JvdGU6Cj4gPiBPbiBUdWUsIDIwMTAtMTAtMTIgYXQgMTg6MTggKzA4
+MDAsIE1pbmdrYWkgSHUgd3JvdGU6Cj4gPj4gU2lnbmVkLW9mZi1ieTogTWluZ2thaSBIdSA8TWlu
+Z2thaS5odUBmcmVlc2NhbGUuY29tPgo+ID4+IEFja2VkLWJ5OiBHcmFudCBMaWtlbHkgPGdyYW50
+Lmxpa2VseUBzZWNyZXRsYWIuY2E+Cj4gPj4gLS0tCj4gPj4gdjQ6Cj4gPj4gIC0gVXBkYXRlZCB0
+byBsYXRlc3Qga2VybmVsIGJhc2UoTGludXggMi42LjM2LXJjNykuCj4gPj4gIC0gTWFkZSBjaGFu
+Z2VzIGFjY29yZGluZyB0byBHcmFudCdzIGNvbW1lbnRzLgo+ID4KPiA+IExvb2tzIGdvb2QgdG8g
+bWUsIHB1c2hlZCB0byBsMi1tdGQtMi42LmdpdCwgdGhhbmtzLgo+IAo+IFdhaXQhICBJdCB3aWxs
+IGJyZWFrIHdoZW5ldmVyIENPTkZJR19PRiBpcyBub3Qgc2V0LiAgSSBicm9rZQo+IGxpbnV4LW5l
+eHQgd2l0aCB0aGlzIHBhdGNoLiAgSXQgY2FuIGJlIHNvbHZlZCBieSB3cmFwcGluZyB0aGUgYmxv
+Y2sKPiB3aXRoICNpZmRlZiBDT05GSUdfT0YsIGJ1dCBJJ2QgbGlrZSB0byBmaW5kIGEgYmV0dGVy
+IHNvbHV0aW9uLgoKT0ssIHJlbW92ZWQuCgotLSAKQmVzdCBSZWdhcmRzLApBcnRlbSBCaXR5dXRz
+a2l5ICjQkNGA0YLRkdC8INCR0LjRgtGO0YbQutC40LkpCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eHBwYy1kZXYgbWFpbGluZyBsaXN0CkxpbnV4
+cHBjLWRldkBsaXN0cy5vemxhYnMub3JnCmh0dHBzOi8vbGlzdHMub3psYWJzLm9yZy9saXN0aW5m
+by9saW51eHBwYy1kZXY=

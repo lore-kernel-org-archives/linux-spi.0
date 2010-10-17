@@ -1,13 +1,13 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 11/28] Blackfin SPI: convert struct
-	names to something more logical
-Date: Sun, 17 Oct 2010 18:59:24 -0400
-Message-ID: <1287356381-31495-12-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 04/28] Blackfin SPI: utilize the SPI
+	interrupt in PIO mode
+Date: Sun, 17 Oct 2010 18:59:17 -0400
+Message-ID: <1287356381-31495-5-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
@@ -24,385 +24,344 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The current structure names are a bit confusing as to what they represent,
-so use better names.
+From: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Reported-by: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+The current behavior in PIO mode is to poll the SPI status registers which
+can obviously lead to higher latencies when doing a lot of SPI traffic.
+There is a SPI interrupt which can be used instead to signal individual
+completion of transactions.
+
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |  100 ++++++++++++++++++++++----------------------
- 1 files changed, 50 insertions(+), 50 deletions(-)
+ drivers/spi/spi_bfin5xx.c |  235 +++++++++++++++++++++++++++++++++++----------
+ 1 files changed, 185 insertions(+), 50 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index b0de61a..9a1801b 100644
+index b835254..3736c35 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -42,15 +42,15 @@ MODULE_LICENSE("GPL");
- #define DONE_STATE	((void *)2)
- #define ERROR_STATE	((void *)-1)
+@@ -92,6 +92,9 @@ struct driver_data {
+ 	dma_addr_t rx_dma;
+ 	dma_addr_t tx_dma;
  
--struct driver_data;
-+struct master_data;
- 
- struct transfer_ops {
--	void (*write) (struct driver_data *);
--	void (*read) (struct driver_data *);
--	void (*duplex) (struct driver_data *);
-+	void (*write) (struct master_data *);
-+	void (*read) (struct master_data *);
-+	void (*duplex) (struct master_data *);
- };
- 
--struct driver_data {
-+struct master_data {
- 	/* Driver model hookup */
- 	struct platform_device *pdev;
- 
-@@ -80,7 +80,7 @@ struct driver_data {
- 	/* Current message transfer state info */
- 	struct spi_message *cur_msg;
- 	struct spi_transfer *cur_transfer;
--	struct chip_data *cur_chip;
-+	struct slave_data *cur_chip;
- 	size_t len_in_bytes;
- 	size_t len;
- 	void *tx;
-@@ -105,7 +105,7 @@ struct driver_data {
- 	const struct transfer_ops *ops;
- };
- 
--struct chip_data {
-+struct slave_data {
- 	u16 ctl_reg;
- 	u16 baud;
- 	u16 flag;
-@@ -123,9 +123,9 @@ struct chip_data {
- };
- 
- #define DEFINE_SPI_REG(reg, off) \
--static inline u16 read_##reg(struct driver_data *drv_data) \
-+static inline u16 read_##reg(struct master_data *drv_data) \
- 	{ return bfin_read16(drv_data->regs_base + off); } \
--static inline void write_##reg(struct driver_data *drv_data, u16 v) \
-+static inline void write_##reg(struct master_data *drv_data, u16 v) \
- 	{ bfin_write16(drv_data->regs_base + off, v); }
- 
- DEFINE_SPI_REG(CTRL, 0x00)
-@@ -136,7 +136,7 @@ DEFINE_SPI_REG(RDBR, 0x10)
- DEFINE_SPI_REG(BAUD, 0x14)
- DEFINE_SPI_REG(SHAW, 0x18)
- 
--static void bfin_spi_enable(struct driver_data *drv_data)
-+static void bfin_spi_enable(struct master_data *drv_data)
- {
- 	u16 cr;
- 
-@@ -144,7 +144,7 @@ static void bfin_spi_enable(struct driver_data *drv_data)
- 	write_CTRL(drv_data, (cr | BIT_CTL_ENABLE));
++	int irq_requested;
++	int spi_irq;
++
+ 	size_t rx_map_len;
+ 	size_t tx_map_len;
+ 	u8 n_bytes;
+@@ -115,6 +118,7 @@ struct chip_data {
+ 	u16 cs_chg_udelay;	/* Some devices require > 255usec delay */
+ 	u32 cs_gpio;
+ 	u16 idle_tx_val;
++	u8 pio_interrupt;	/* use spi data irq */
+ 	void (*write) (struct driver_data *);
+ 	void (*read) (struct driver_data *);
+ 	void (*duplex) (struct driver_data *);
+@@ -525,6 +529,79 @@ static void bfin_spi_giveback(struct driver_data *drv_data)
+ 		msg->complete(msg->context);
  }
  
--static void bfin_spi_disable(struct driver_data *drv_data)
-+static void bfin_spi_disable(struct master_data *drv_data)
- {
- 	u16 cr;
- 
-@@ -167,7 +167,7 @@ static u16 hz_to_spi_baud(u32 speed_hz)
- 	return spi_baud;
- }
- 
--static int bfin_spi_flush(struct driver_data *drv_data)
-+static int bfin_spi_flush(struct master_data *drv_data)
- {
- 	unsigned long limit = loops_per_jiffy << 1;
- 
-@@ -181,7 +181,7 @@ static int bfin_spi_flush(struct driver_data *drv_data)
- }
- 
- /* Chip select operation functions for cs_change flag */
--static void bfin_spi_cs_active(struct driver_data *drv_data, struct chip_data *chip)
-+static void bfin_spi_cs_active(struct master_data *drv_data, struct slave_data *chip)
- {
- 	if (likely(chip->chip_select_num)) {
- 		u16 flag = read_FLAG(drv_data);
-@@ -194,7 +194,7 @@ static void bfin_spi_cs_active(struct driver_data *drv_data, struct chip_data *c
- 	}
- }
- 
--static void bfin_spi_cs_deactive(struct driver_data *drv_data, struct chip_data *chip)
-+static void bfin_spi_cs_deactive(struct master_data *drv_data, struct slave_data *chip)
- {
- 	if (likely(chip->chip_select_num)) {
- 		u16 flag = read_FLAG(drv_data);
-@@ -212,7 +212,7 @@ static void bfin_spi_cs_deactive(struct driver_data *drv_data, struct chip_data
- }
- 
- /* enable or disable the pin muxed by GPIO and SPI CS to work as SPI CS */
--static inline void bfin_spi_cs_enable(struct driver_data *drv_data, struct chip_data *chip)
-+static inline void bfin_spi_cs_enable(struct master_data *drv_data, struct slave_data *chip)
- {
- 	u16 flag = read_FLAG(drv_data);
- 
-@@ -221,7 +221,7 @@ static inline void bfin_spi_cs_enable(struct driver_data *drv_data, struct chip_
- 	write_FLAG(drv_data, flag);
- }
- 
--static inline void bfin_spi_cs_disable(struct driver_data *drv_data, struct chip_data *chip)
-+static inline void bfin_spi_cs_disable(struct master_data *drv_data, struct slave_data *chip)
- {
- 	u16 flag = read_FLAG(drv_data);
- 
-@@ -231,9 +231,9 @@ static inline void bfin_spi_cs_disable(struct driver_data *drv_data, struct chip
- }
- 
- /* stop controller and re-config current chip*/
--static void bfin_spi_restore_state(struct driver_data *drv_data)
-+static void bfin_spi_restore_state(struct master_data *drv_data)
- {
--	struct chip_data *chip = drv_data->cur_chip;
-+	struct slave_data *chip = drv_data->cur_chip;
- 
- 	/* Clear status and disable clock */
- 	write_STAT(drv_data, BIT_STAT_CLR);
-@@ -249,12 +249,12 @@ static void bfin_spi_restore_state(struct driver_data *drv_data)
- }
- 
- /* used to kick off transfer in rx mode and read unwanted RX data */
--static inline void bfin_spi_dummy_read(struct driver_data *drv_data)
-+static inline void bfin_spi_dummy_read(struct master_data *drv_data)
- {
- 	(void) read_RDBR(drv_data);
- }
- 
--static void bfin_spi_u8_writer(struct driver_data *drv_data)
-+static void bfin_spi_u8_writer(struct master_data *drv_data)
- {
- 	/* clear RXS (we check for RXS inside the loop) */
- 	bfin_spi_dummy_read(drv_data);
-@@ -270,7 +270,7 @@ static void bfin_spi_u8_writer(struct driver_data *drv_data)
- 	}
- }
- 
--static void bfin_spi_u8_reader(struct driver_data *drv_data)
-+static void bfin_spi_u8_reader(struct master_data *drv_data)
- {
- 	u16 tx_val = drv_data->cur_chip->idle_tx_val;
- 
-@@ -285,7 +285,7 @@ static void bfin_spi_u8_reader(struct driver_data *drv_data)
- 	}
- }
- 
--static void bfin_spi_u8_duplex(struct driver_data *drv_data)
-+static void bfin_spi_u8_duplex(struct master_data *drv_data)
- {
- 	/* discard old RX data and clear RXS */
- 	bfin_spi_dummy_read(drv_data);
-@@ -304,7 +304,7 @@ static const struct transfer_ops bfin_transfer_ops_u8 = {
- 	.duplex = bfin_spi_u8_duplex,
- };
- 
--static void bfin_spi_u16_writer(struct driver_data *drv_data)
-+static void bfin_spi_u16_writer(struct master_data *drv_data)
- {
- 	/* clear RXS (we check for RXS inside the loop) */
- 	bfin_spi_dummy_read(drv_data);
-@@ -321,7 +321,7 @@ static void bfin_spi_u16_writer(struct driver_data *drv_data)
- 	}
- }
- 
--static void bfin_spi_u16_reader(struct driver_data *drv_data)
-+static void bfin_spi_u16_reader(struct master_data *drv_data)
- {
- 	u16 tx_val = drv_data->cur_chip->idle_tx_val;
- 
-@@ -337,7 +337,7 @@ static void bfin_spi_u16_reader(struct driver_data *drv_data)
- 	}
- }
- 
--static void bfin_spi_u16_duplex(struct driver_data *drv_data)
-+static void bfin_spi_u16_duplex(struct master_data *drv_data)
- {
- 	/* discard old RX data and clear RXS */
- 	bfin_spi_dummy_read(drv_data);
-@@ -359,7 +359,7 @@ static const struct transfer_ops bfin_transfer_ops_u16 = {
- };
- 
- /* test if ther is more transfer to be done */
--static void *bfin_spi_next_transfer(struct driver_data *drv_data)
-+static void *bfin_spi_next_transfer(struct master_data *drv_data)
- {
- 	struct spi_message *msg = drv_data->cur_msg;
- 	struct spi_transfer *trans = drv_data->cur_transfer;
-@@ -378,9 +378,9 @@ static void *bfin_spi_next_transfer(struct driver_data *drv_data)
-  * caller already set message->status;
-  * dma and pio irqs are blocked give finished message back
-  */
--static void bfin_spi_giveback(struct driver_data *drv_data)
-+static void bfin_spi_giveback(struct master_data *drv_data)
- {
--	struct chip_data *chip = drv_data->cur_chip;
-+	struct slave_data *chip = drv_data->cur_chip;
- 	struct spi_transfer *last_transfer;
- 	unsigned long flags;
- 	struct spi_message *msg;
-@@ -412,8 +412,8 @@ static void bfin_spi_giveback(struct driver_data *drv_data)
- /* spi data irq handler */
- static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
- {
--	struct driver_data *drv_data = dev_id;
--	struct chip_data *chip = drv_data->cur_chip;
-+	struct master_data *drv_data = dev_id;
-+	struct slave_data *chip = drv_data->cur_chip;
- 	struct spi_message *msg = drv_data->cur_msg;
- 	int n_bytes = drv_data->n_bytes;
- 
-@@ -484,8 +484,8 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
- 
++/* spi data irq handler */
++static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
++{
++	struct driver_data *drv_data = dev_id;
++	struct chip_data *chip = drv_data->cur_chip;
++	struct spi_message *msg = drv_data->cur_msg;
++	int n_bytes = drv_data->n_bytes;
++
++	/* wait until transfer finished. */
++	while (!(read_STAT(drv_data) & BIT_STAT_RXS))
++		cpu_relax();
++
++	if ((drv_data->tx && drv_data->tx >= drv_data->tx_end) ||
++		(drv_data->rx && drv_data->rx >= (drv_data->rx_end - n_bytes))) {
++		/* last read */
++		if (drv_data->rx) {
++			dev_dbg(&drv_data->pdev->dev, "last read\n");
++			if (n_bytes == 2)
++				*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
++			else if (n_bytes == 1)
++				*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
++			drv_data->rx += n_bytes;
++		}
++
++		msg->actual_length += drv_data->len_in_bytes;
++		if (drv_data->cs_change)
++			bfin_spi_cs_deactive(drv_data, chip);
++		/* Move to next transfer */
++		msg->state = bfin_spi_next_transfer(drv_data);
++
++		disable_irq(drv_data->spi_irq);
++
++		/* Schedule transfer tasklet */
++		tasklet_schedule(&drv_data->pump_transfers);
++		return IRQ_HANDLED;
++	}
++
++	if (drv_data->rx && drv_data->tx) {
++		/* duplex */
++		dev_dbg(&drv_data->pdev->dev, "duplex: write_TDBR\n");
++		if (drv_data->n_bytes == 2) {
++			*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
++			write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
++		} else if (drv_data->n_bytes == 1) {
++			*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
++			write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
++		}
++	} else if (drv_data->rx) {
++		/* read */
++		dev_dbg(&drv_data->pdev->dev, "read: write_TDBR\n");
++		if (drv_data->n_bytes == 2)
++			*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
++		else if (drv_data->n_bytes == 1)
++			*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
++		write_TDBR(drv_data, chip->idle_tx_val);
++	} else if (drv_data->tx) {
++		/* write */
++		dev_dbg(&drv_data->pdev->dev, "write: write_TDBR\n");
++		bfin_spi_dummy_read(drv_data);
++		if (drv_data->n_bytes == 2)
++			write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
++		else if (drv_data->n_bytes == 1)
++			write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
++	}
++
++	if (drv_data->tx)
++		drv_data->tx += n_bytes;
++	if (drv_data->rx)
++		drv_data->rx += n_bytes;
++
++	return IRQ_HANDLED;
++}
++
  static irqreturn_t bfin_spi_dma_irq_handler(int irq, void *dev_id)
  {
--	struct driver_data *drv_data = dev_id;
--	struct chip_data *chip = drv_data->cur_chip;
-+	struct master_data *drv_data = dev_id;
-+	struct slave_data *chip = drv_data->cur_chip;
- 	struct spi_message *msg = drv_data->cur_msg;
- 	unsigned long timeout;
- 	unsigned short dmastat = get_dma_curr_irqstat(drv_data->dma_channel);
-@@ -548,11 +548,11 @@ static irqreturn_t bfin_spi_dma_irq_handler(int irq, void *dev_id)
+ 	struct driver_data *drv_data = dev_id;
+@@ -700,6 +777,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
  
- static void bfin_spi_pump_transfers(unsigned long data)
- {
--	struct driver_data *drv_data = (struct driver_data *)data;
-+	struct master_data *drv_data = (struct master_data *)data;
- 	struct spi_message *message = NULL;
- 	struct spi_transfer *transfer = NULL;
- 	struct spi_transfer *previous = NULL;
--	struct chip_data *chip = NULL;
-+	struct slave_data *chip = NULL;
- 	u8 width;
- 	u16 cr, dma_width, dma_config;
- 	u32 tranf_success = 1;
-@@ -872,10 +872,10 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	default:
+ 		/* No change, the same as default setting */
++		transfer->bits_per_word = chip->bits_per_word;
+ 		drv_data->n_bytes = chip->n_bytes;
+ 		width = chip->width;
+ 		drv_data->write = drv_data->tx ? chip->write : bfin_spi_null_writer;
+@@ -842,60 +920,86 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 		dma_enable_irq(drv_data->dma_channel);
+ 		local_irq_restore(flags);
+ 
+-	} else {
+-		/* IO mode write then read */
+-		dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
++		return;
++	}
+ 
+-		/* we always use SPI_WRITE mode. SPI_READ mode
+-		   seems to have problems with setting up the
+-		   output value in TDBR prior to the transfer. */
++	if (chip->pio_interrupt) {
++		/* use write mode. spi irq should have been disabled */
++		cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
+ 		write_CTRL(drv_data, (cr | CFG_SPI_WRITE));
+ 
+-		if (full_duplex) {
+-			/* full duplex mode */
+-			BUG_ON((drv_data->tx_end - drv_data->tx) !=
+-			       (drv_data->rx_end - drv_data->rx));
+-			dev_dbg(&drv_data->pdev->dev,
+-				"IO duplex: cr is 0x%x\n", cr);
+-
+-			drv_data->duplex(drv_data);
+-
+-			if (drv_data->tx != drv_data->tx_end)
+-				tranf_success = 0;
+-		} else if (drv_data->tx != NULL) {
+-			/* write only half duplex */
+-			dev_dbg(&drv_data->pdev->dev,
+-				"IO write: cr is 0x%x\n", cr);
++		/* discard old RX data and clear RXS */
++		bfin_spi_dummy_read(drv_data);
+ 
+-			drv_data->write(drv_data);
++		/* start transfer */
++		if (drv_data->tx == NULL)
++			write_TDBR(drv_data, chip->idle_tx_val);
++		else {
++			if (transfer->bits_per_word == 8)
++				write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
++			else if (transfer->bits_per_word == 16)
++				write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
++			drv_data->tx += drv_data->n_bytes;
++		}
+ 
+-			if (drv_data->tx != drv_data->tx_end)
+-				tranf_success = 0;
+-		} else if (drv_data->rx != NULL) {
+-			/* read only half duplex */
+-			dev_dbg(&drv_data->pdev->dev,
+-				"IO read: cr is 0x%x\n", cr);
++		/* once TDBR is empty, interrupt is triggered */
++		enable_irq(drv_data->spi_irq);
++		return;
++	}
+ 
+-			drv_data->read(drv_data);
+-			if (drv_data->rx != drv_data->rx_end)
+-				tranf_success = 0;
+-		}
++	/* IO mode */
++	dev_dbg(&drv_data->pdev->dev, "doing IO transfer\n");
++
++	/* we always use SPI_WRITE mode. SPI_READ mode
++	   seems to have problems with setting up the
++	   output value in TDBR prior to the transfer. */
++	write_CTRL(drv_data, (cr | CFG_SPI_WRITE));
++
++	if (full_duplex) {
++		/* full duplex mode */
++		BUG_ON((drv_data->tx_end - drv_data->tx) !=
++		       (drv_data->rx_end - drv_data->rx));
++		dev_dbg(&drv_data->pdev->dev,
++			"IO duplex: cr is 0x%x\n", cr);
++
++		drv_data->duplex(drv_data);
++
++		if (drv_data->tx != drv_data->tx_end)
++			tranf_success = 0;
++	} else if (drv_data->tx != NULL) {
++		/* write only half duplex */
++		dev_dbg(&drv_data->pdev->dev,
++			"IO write: cr is 0x%x\n", cr);
++
++		drv_data->write(drv_data);
++
++		if (drv_data->tx != drv_data->tx_end)
++			tranf_success = 0;
++	} else if (drv_data->rx != NULL) {
++		/* read only half duplex */
++		dev_dbg(&drv_data->pdev->dev,
++			"IO read: cr is 0x%x\n", cr);
++
++		drv_data->read(drv_data);
++		if (drv_data->rx != drv_data->rx_end)
++			tranf_success = 0;
++	}
+ 
+-		if (!tranf_success) {
+-			dev_dbg(&drv_data->pdev->dev,
+-				"IO write error!\n");
+-			message->state = ERROR_STATE;
+-		} else {
+-			/* Update total byte transfered */
+-			message->actual_length += drv_data->len_in_bytes;
+-			/* Move to next transfer of this msg */
+-			message->state = bfin_spi_next_transfer(drv_data);
+-			if (drv_data->cs_change)
+-				bfin_spi_cs_deactive(drv_data, chip);
+-		}
+-		/* Schedule next transfer tasklet */
+-		tasklet_schedule(&drv_data->pump_transfers);
++	if (!tranf_success) {
++		dev_dbg(&drv_data->pdev->dev,
++			"IO write error!\n");
++		message->state = ERROR_STATE;
++	} else {
++		/* Update total byte transfered */
++		message->actual_length += drv_data->len_in_bytes;
++		/* Move to next transfer of this msg */
++		message->state = bfin_spi_next_transfer(drv_data);
++		if (drv_data->cs_change)
++			bfin_spi_cs_deactive(drv_data, chip);
+ 	}
++
++	/* Schedule next transfer tasklet */
++	tasklet_schedule(&drv_data->pump_transfers);
+ }
+ 
  /* pop a msg from queue and kick off real transfer */
- static void bfin_spi_pump_messages(struct work_struct *work)
- {
--	struct driver_data *drv_data;
-+	struct master_data *drv_data;
- 	unsigned long flags;
+@@ -1047,6 +1151,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		chip->cs_chg_udelay = chip_info->cs_chg_udelay;
+ 		chip->cs_gpio = chip_info->cs_gpio;
+ 		chip->idle_tx_val = chip_info->idle_tx_val;
++		chip->pio_interrupt = chip_info->pio_interrupt;
+ 	}
  
--	drv_data = container_of(work, struct driver_data, pump_messages);
-+	drv_data = container_of(work, struct master_data, pump_messages);
+ 	/* translate common spi framework into our register */
+@@ -1096,6 +1201,11 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		goto error;
+ 	}
  
- 	/* Lock queue and check for queue work */
- 	spin_lock_irqsave(&drv_data->lock, flags);
-@@ -929,7 +929,7 @@ static void bfin_spi_pump_messages(struct work_struct *work)
-  */
- static int bfin_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- {
--	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-+	struct master_data *drv_data = spi_master_get_devdata(spi->master);
- 	unsigned long flags;
++	if (chip->enable_dma && chip->pio_interrupt) {
++		dev_err(&spi->dev, "enable_dma is set, "
++				"do not set pio_interrupt\n");
++		goto error;
++	}
+ 	/*
+ 	 * if any one SPI chip is registered and wants DMA, request the
+ 	 * DMA channel for it
+@@ -1119,6 +1229,18 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		dma_disable_irq(drv_data->dma_channel);
+ 	}
  
- 	spin_lock_irqsave(&drv_data->lock, flags);
-@@ -974,8 +974,8 @@ static u16 ssel[][MAX_SPI_SSEL] = {
- static int bfin_spi_setup(struct spi_device *spi)
- {
- 	struct bfin5xx_spi_chip *chip_info;
--	struct chip_data *chip = NULL;
--	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-+	struct slave_data *chip = NULL;
-+	struct master_data *drv_data = spi_master_get_devdata(spi->master);
- 	int ret = -EINVAL;
++	if (chip->pio_interrupt && !drv_data->irq_requested) {
++		ret = request_irq(drv_data->spi_irq, bfin_spi_pio_irq_handler,
++			IRQF_DISABLED, "BFIN_SPI", drv_data);
++		if (ret) {
++			dev_err(&spi->dev, "Unable to register spi IRQ\n");
++			goto error;
++		}
++		drv_data->irq_requested = 1;
++		/* we use write mode, spi irq has to be disabled here */
++		disable_irq(drv_data->spi_irq);
++	}
++
+ 	if (chip->chip_select_num == 0) {
+ 		ret = gpio_request(chip->cs_gpio, spi->modalias);
+ 		if (ret) {
+@@ -1328,11 +1450,19 @@ static int __init bfin_spi_probe(struct platform_device *pdev)
+ 		goto out_error_ioremap;
+ 	}
  
- 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
-@@ -1155,8 +1155,8 @@ static int bfin_spi_setup(struct spi_device *spi)
-  */
- static void bfin_spi_cleanup(struct spi_device *spi)
- {
--	struct chip_data *chip = spi_get_ctldata(spi);
--	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
-+	struct slave_data *chip = spi_get_ctldata(spi);
-+	struct master_data *drv_data = spi_master_get_devdata(spi->master);
+-	drv_data->dma_channel = platform_get_irq(pdev, 0);
+-	if (drv_data->dma_channel < 0) {
++	res = platform_get_resource(pdev, IORESOURCE_DMA, 0);
++	if (res == NULL) {
+ 		dev_err(dev, "No DMA channel specified\n");
+ 		status = -ENOENT;
+-		goto out_error_no_dma_ch;
++		goto out_error_free_io;
++	}
++	drv_data->dma_channel = res->start;
++
++	drv_data->spi_irq = platform_get_irq(pdev, 0);
++	if (drv_data->spi_irq < 0) {
++		dev_err(dev, "No spi pio irq specified\n");
++		status = -ENOENT;
++		goto out_error_free_io;
+ 	}
  
- 	if (!chip)
- 		return;
-@@ -1176,7 +1176,7 @@ static void bfin_spi_cleanup(struct spi_device *spi)
- 	spi_set_ctldata(spi, NULL);
- }
+ 	/* Initial and start queue */
+@@ -1375,7 +1505,7 @@ static int __init bfin_spi_probe(struct platform_device *pdev)
  
--static inline int bfin_spi_init_queue(struct driver_data *drv_data)
-+static inline int bfin_spi_init_queue(struct master_data *drv_data)
- {
- 	INIT_LIST_HEAD(&drv_data->queue);
- 	spin_lock_init(&drv_data->lock);
-@@ -1198,7 +1198,7 @@ static inline int bfin_spi_init_queue(struct driver_data *drv_data)
- 	return 0;
- }
+ out_error_queue_alloc:
+ 	bfin_spi_destroy_queue(drv_data);
+-out_error_no_dma_ch:
++out_error_free_io:
+ 	iounmap((void *) drv_data->regs_base);
+ out_error_ioremap:
+ out_error_get_res:
+@@ -1407,6 +1537,11 @@ static int __devexit bfin_spi_remove(struct platform_device *pdev)
+ 			free_dma(drv_data->dma_channel);
+ 	}
  
--static inline int bfin_spi_start_queue(struct driver_data *drv_data)
-+static inline int bfin_spi_start_queue(struct master_data *drv_data)
- {
- 	unsigned long flags;
++	if (drv_data->irq_requested) {
++		free_irq(drv_data->spi_irq, drv_data);
++		drv_data->irq_requested = 0;
++	}
++
+ 	/* Disconnect from the SPI framework */
+ 	spi_unregister_master(drv_data->master);
  
-@@ -1220,7 +1220,7 @@ static inline int bfin_spi_start_queue(struct driver_data *drv_data)
- 	return 0;
- }
- 
--static inline int bfin_spi_stop_queue(struct driver_data *drv_data)
-+static inline int bfin_spi_stop_queue(struct master_data *drv_data)
- {
- 	unsigned long flags;
- 	unsigned limit = 500;
-@@ -1249,7 +1249,7 @@ static inline int bfin_spi_stop_queue(struct driver_data *drv_data)
- 	return status;
- }
- 
--static inline int bfin_spi_destroy_queue(struct driver_data *drv_data)
-+static inline int bfin_spi_destroy_queue(struct master_data *drv_data)
- {
- 	int status;
- 
-@@ -1267,14 +1267,14 @@ static int __init bfin_spi_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct bfin5xx_spi_master *platform_info;
- 	struct spi_master *master;
--	struct driver_data *drv_data = 0;
-+	struct master_data *drv_data = 0;
- 	struct resource *res;
- 	int status = 0;
- 
- 	platform_info = dev->platform_data;
- 
- 	/* Allocate master with space for drv_data */
--	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
-+	master = spi_alloc_master(dev, sizeof(struct master_data) + 16);
- 	if (!master) {
- 		dev_err(&pdev->dev, "can not alloc spi_master\n");
- 		return -ENOMEM;
-@@ -1377,7 +1377,7 @@ out_error_get_res:
- /* stop hardware and remove the driver */
- static int __devexit bfin_spi_remove(struct platform_device *pdev)
- {
--	struct driver_data *drv_data = platform_get_drvdata(pdev);
-+	struct master_data *drv_data = platform_get_drvdata(pdev);
- 	int status = 0;
- 
- 	if (!drv_data)
-@@ -1416,7 +1416,7 @@ static int __devexit bfin_spi_remove(struct platform_device *pdev)
- #ifdef CONFIG_PM
- static int bfin_spi_suspend(struct platform_device *pdev, pm_message_t state)
- {
--	struct driver_data *drv_data = platform_get_drvdata(pdev);
-+	struct master_data *drv_data = platform_get_drvdata(pdev);
- 	int status = 0;
- 
- 	status = bfin_spi_stop_queue(drv_data);
-@@ -1431,7 +1431,7 @@ static int bfin_spi_suspend(struct platform_device *pdev, pm_message_t state)
- 
- static int bfin_spi_resume(struct platform_device *pdev)
- {
--	struct driver_data *drv_data = platform_get_drvdata(pdev);
-+	struct master_data *drv_data = platform_get_drvdata(pdev);
- 	int status = 0;
- 
- 	/* Enable the SPI interface */
 -- 
 1.7.3.1

@@ -1,8 +1,8 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 20/28] Blackfin SPI: reset ctl_reg bits when setup is run
-	again on a device
-Date: Sun, 17 Oct 2010 18:59:33 -0400
-Message-ID: <1287356381-31495-21-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 19/28] Blackfin SPI: push all size checks into the transfer
+	function
+Date: Sun, 17 Oct 2010 18:59:32 -0400
+Message-ID: <1287356381-31495-20-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,65 +23,143 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-During runtime, the spi setup function may be called multiple times on the
-same device in order to reconfigure some settings on the fly.  When this
-happens, we need to reset the ctl_reg bits so that changing the mode works
-as expected.
+This reduces duplication between the setup/transfer functions and keeps
+values cached during setup from overriding values changed on a transfer
+basis (like bits_per_word).
 
-Reported-by: Andy Getzendanner <james.getzendanner-9geRo0GdX4k6efY3Smnssodd74u8MsAO@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   12 +++++++++---
- 1 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/spi/spi_bfin5xx.c |   57 +++++++++++----------------------------------
+ 1 files changed, 14 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 830c705..376f2f0 100644
+index d446524..830c705 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -972,6 +972,7 @@ static int bfin_spi_setup(struct spi_device *spi)
- 	struct bfin5xx_spi_chip *chip_info;
+@@ -114,10 +114,7 @@ struct slave_data {
+ 	u16 flag;
+ 
+ 	u8 chip_select_num;
+-	u8 n_bytes;
+-	u8 width;		/* 0 or 1 */
+ 	u8 enable_dma;
+-	u8 bits_per_word;	/* 8 or 16 */
+ 	u16 cs_chg_udelay;	/* Some devices require > 255usec delay */
+ 	u32 cs_gpio;
+ 	u16 idle_tx_val;
+@@ -562,6 +559,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	struct spi_transfer *transfer = NULL;
+ 	struct spi_transfer *previous = NULL;
  	struct slave_data *chip = NULL;
++	unsigned int bits_per_word;
+ 	u8 width;
+ 	u16 cr, dma_width, dma_config;
+ 	u32 tranf_success = 1;
+@@ -641,26 +639,15 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	drv_data->cs_change = transfer->cs_change;
+ 
+ 	/* Bits per word setup */
+-	switch (transfer->bits_per_word) {
+-	case 8:
++	bits_per_word = transfer->bits_per_word ? : message->spi->bits_per_word;
++	if (bits_per_word == 8) {
+ 		drv_data->n_bytes = 1;
+ 		width = CFG_SPI_WORDSIZE8;
+ 		drv_data->ops = &bfin_transfer_ops_u8;
+-		break;
+-
+-	case 16:
++	} else {
+ 		drv_data->n_bytes = 2;
+ 		width = CFG_SPI_WORDSIZE16;
+ 		drv_data->ops = &bfin_transfer_ops_u16;
+-		break;
+-
+-	default:
+-		/* No change, the same as default setting */
+-		transfer->bits_per_word = chip->bits_per_word;
+-		drv_data->n_bytes = chip->n_bytes;
+-		width = chip->width;
+-		drv_data->ops = chip->ops;
+-		break;
+ 	}
+ 	cr = (read_CTRL(drv_data) & (~BIT_CTL_TIMOD));
+ 	cr |= (width << 8);
+@@ -811,9 +798,9 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 		if (drv_data->tx == NULL)
+ 			write_TDBR(drv_data, chip->idle_tx_val);
+ 		else {
+-			if (transfer->bits_per_word == 8)
++			if (bits_per_word == 8)
+ 				write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+-			else if (transfer->bits_per_word == 16)
++			else
+ 				write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+ 			drv_data->tx += drv_data->n_bytes;
+ 		}
+@@ -987,9 +974,6 @@ static int bfin_spi_setup(struct spi_device *spi)
  	struct master_data *drv_data = spi_master_get_devdata(spi->master);
-+	u16 bfin_ctl_reg;
  	int ret = -EINVAL;
  
- 	/* Only alloc (or use chip_info) on first setup */
-@@ -989,6 +990,10 @@ static int bfin_spi_setup(struct spi_device *spi)
- 		chip_info = spi->controller_data;
- 	}
- 
-+	/* Let people set non-standard bits directly */
-+	bfin_ctl_reg = BIT_CTL_OPENDRAIN | BIT_CTL_EMISO |
-+		BIT_CTL_PSSE | BIT_CTL_GM | BIT_CTL_SZ;
-+
- 	/* chip_info isn't always needed */
- 	if (chip_info) {
- 		/* Make sure people stop trying to set fields via ctl_reg
-@@ -997,13 +1002,11 @@ static int bfin_spi_setup(struct spi_device *spi)
- 		 * Not sure if a user actually needs/uses any of these,
- 		 * but let's assume (for now) they do.
- 		 */
--		if (chip_info->ctl_reg & ~(BIT_CTL_OPENDRAIN | BIT_CTL_EMISO | \
--		                           BIT_CTL_PSSE | BIT_CTL_GM | BIT_CTL_SZ)) {
-+		if (chip_info->ctl_reg & ~bfin_ctl_reg) {
- 			dev_err(&spi->dev, "do not set bits in ctl_reg "
- 				"that the SPI framework manages\n");
- 			goto error;
- 		}
+-	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
+-		goto error;
 -
+ 	/* Only alloc (or use chip_info) on first setup */
+ 	chip_info = NULL;
+ 	chip = spi_get_ctldata(spi);
+@@ -1023,10 +1007,16 @@ static int bfin_spi_setup(struct spi_device *spi)
  		chip->enable_dma = chip_info->enable_dma != 0
  		    && drv_data->master_info->enable_dma;
  		chip->ctl_reg = chip_info->ctl_reg;
-@@ -1011,6 +1014,9 @@ static int bfin_spi_setup(struct spi_device *spi)
+-		chip->bits_per_word = chip_info->bits_per_word;
+ 		chip->cs_chg_udelay = chip_info->cs_chg_udelay;
  		chip->idle_tx_val = chip_info->idle_tx_val;
  		chip->pio_interrupt = chip_info->pio_interrupt;
- 		spi->bits_per_word = chip_info->bits_per_word;
-+	} else {
-+		/* force a default base state */
-+		chip->ctl_reg &= bfin_ctl_reg;
++		spi->bits_per_word = chip_info->bits_per_word;
++	}
++
++	if (spi->bits_per_word != 8 && spi->bits_per_word != 16) {
++		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
++				spi->bits_per_word);
++		goto error;
  	}
  
- 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16) {
+ 	/* translate common spi framework into our register */
+@@ -1050,25 +1040,6 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	else
+ 		chip->cs_gpio = chip->chip_select_num - MAX_CTRL_CS;
+ 
+-	switch (chip->bits_per_word) {
+-	case 8:
+-		chip->n_bytes = 1;
+-		chip->width = CFG_SPI_WORDSIZE8;
+-		chip->ops = &bfin_transfer_ops_u8;
+-		break;
+-
+-	case 16:
+-		chip->n_bytes = 2;
+-		chip->width = CFG_SPI_WORDSIZE16;
+-		chip->ops = &bfin_transfer_ops_u16;
+-		break;
+-
+-	default:
+-		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
+-				chip->bits_per_word);
+-		goto error;
+-	}
+-
+ 	if (chip->enable_dma && chip->pio_interrupt) {
+ 		dev_err(&spi->dev, "enable_dma is set, "
+ 				"do not set pio_interrupt\n");
+@@ -1119,7 +1090,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	}
+ 
+ 	dev_dbg(&spi->dev, "setup spi chip %s, width is %d, dma is %d\n",
+-			spi->modalias, chip->width, chip->enable_dma);
++			spi->modalias, spi->bits_per_word, chip->enable_dma);
+ 	dev_dbg(&spi->dev, "ctl_reg is 0x%x, flag_reg is 0x%x\n",
+ 			chip->ctl_reg, chip->flag);
+ 
 -- 
 1.7.3.1
 

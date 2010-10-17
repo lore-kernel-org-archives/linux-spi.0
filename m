@@ -1,8 +1,8 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 17/28] Blackfin SPI: sync hardware state before reprogramming
-	everything
-Date: Sun, 17 Oct 2010 18:59:30 -0400
-Message-ID: <1287356381-31495-18-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 22/28] Blackfin SPI: use dma_disable_irq_nosync() in irq
+	handler
+Date: Sun, 17 Oct 2010 18:59:35 -0400
+Message-ID: <1287356381-31495-23-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,30 +25,28 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Sometimes under load, the Blackfin core is able to send SPI register
-updates out before the controller is actually disabled.  So when we
-go to reprogram the entire state (to switch to a different slave),
-make sure we sync after disabling the controller.
+Using disable_irq() on the IRQ whose handler we are currently executing in
+can easily lead to a hang.  So use the nosync variant here.
 
 Signed-off-by: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index c23ac3b..54f9dbb 100644
+index b3450b7..18b313a 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -247,6 +247,8 @@ static void bfin_spi_restore_state(struct master_data *drv_data)
- 	bfin_spi_disable(drv_data);
- 	dev_dbg(&drv_data->pdev->dev, "restoring spi ctl state\n");
+@@ -547,7 +547,7 @@ static irqreturn_t bfin_spi_dma_irq_handler(int irq, void *dev_id)
+ 	dev_dbg(&drv_data->pdev->dev,
+ 		"disable dma channel irq%d\n",
+ 		drv_data->dma_channel);
+-	dma_disable_irq(drv_data->dma_channel);
++	dma_disable_irq_nosync(drv_data->dma_channel);
  
-+	SSYNC();
-+
- 	/* Load the registers */
- 	write_CTRL(drv_data, chip->ctl_reg);
- 	write_BAUD(drv_data, chip->baud);
+ 	return IRQ_HANDLED;
+ }
 -- 
 1.7.3.1
 

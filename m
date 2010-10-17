@@ -1,13 +1,14 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 05/28] Blackfin SPI: fix CS handling
-Date: Sun, 17 Oct 2010 18:59:18 -0400
-Message-ID: <1287356381-31495-6-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 01/28] Blackfin SPI: fix resources
+	leakage
+Date: Sun, 17 Oct 2010 18:59:14 -0400
+Message-ID: <1287356381-31495-2-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
-        Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+        Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
@@ -24,108 +25,202 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+From: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
 
-The CS helper functions were toggling both the Flag Enable and the Flag
-Value bits, but the Flag Value bit is ignored if the corresponding Flag
-Enable bit is cleared.  So under high speed transactions, the CS sometimes
-would not toggle properly.
+Re-order setup() a bit so we don't leak memory/dma/gpio resources upon
+errors.  Also make sure we don't call kfree() twice on the same object.
 
-Since it makes no sense to toggle the Flag Enable bit dynamically when we
-actually want to control the Flag Value, do this when setting up the device
-and then only handle toggling of the CS value during runtime.
-
-Signed-off-by: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Daniel Mack <daniel-rDUAYElUppE@public.gmane.org>
+Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Yi Li <yi.li-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |   33 +++++++++++++++++++++++++++------
- 1 files changed, 27 insertions(+), 6 deletions(-)
+ drivers/spi/spi_bfin5xx.c |  120 ++++++++++++++++++++++++++++-----------------
+ 1 files changed, 75 insertions(+), 45 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 3736c35..6150a8c 100644
+index 10a6dc3..4f20b92 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -188,8 +188,7 @@ static void bfin_spi_cs_active(struct driver_data *drv_data, struct chip_data *c
- 	if (likely(chip->chip_select_num)) {
- 		u16 flag = read_FLAG(drv_data);
- 
--		flag |= chip->flag;
--		flag &= ~(chip->flag << 8);
-+		flag &= ~chip->flag;
- 
- 		write_FLAG(drv_data, flag);
- 	} else {
-@@ -202,8 +201,7 @@ static void bfin_spi_cs_deactive(struct driver_data *drv_data, struct chip_data
- 	if (likely(chip->chip_select_num)) {
- 		u16 flag = read_FLAG(drv_data);
- 
--		flag &= ~chip->flag;
--		flag |= (chip->flag << 8);
-+		flag |= chip->flag;
- 
- 		write_FLAG(drv_data, flag);
- 	} else {
-@@ -215,6 +213,25 @@ static void bfin_spi_cs_deactive(struct driver_data *drv_data, struct chip_data
- 		udelay(chip->cs_chg_udelay);
- }
- 
-+/* enable or disable the pin muxed by GPIO and SPI CS to work as SPI CS */
-+static inline void bfin_spi_cs_enable(struct driver_data *drv_data, struct chip_data *chip)
-+{
-+	u16 flag = read_FLAG(drv_data);
-+
-+	flag |= (chip->flag >> 8);
-+
-+	write_FLAG(drv_data, flag);
-+}
-+
-+static inline void bfin_spi_cs_disable(struct driver_data *drv_data, struct chip_data *chip)
-+{
-+	u16 flag = read_FLAG(drv_data);
-+
-+	flag &= ~(chip->flag >> 8);
-+
-+	write_FLAG(drv_data, flag);
-+}
-+
- /* stop controller and re-config current chip*/
- static void bfin_spi_restore_state(struct driver_data *drv_data)
+@@ -1006,20 +1006,24 @@ static u16 ssel[][MAX_SPI_SSEL] = {
+ /* first setup for new devices */
+ static int bfin_spi_setup(struct spi_device *spi)
  {
-@@ -1169,7 +1186,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+-	struct bfin5xx_spi_chip *chip_info = NULL;
+-	struct chip_data *chip;
++	struct bfin5xx_spi_chip *chip_info;
++	struct chip_data *chip = NULL;
+ 	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
+-	int ret;
++	int ret = -EINVAL;
+ 
+ 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
+-		return -EINVAL;
++		goto error;
+ 
+ 	/* Only alloc (or use chip_info) on first setup */
++	chip_info = NULL;
+ 	chip = spi_get_ctldata(spi);
+ 	if (chip == NULL) {
+-		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
+-		if (!chip)
+-			return -ENOMEM;
++		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
++		if (!chip) {
++			dev_err(&spi->dev, "cannot allocate chip data\n");
++			ret = -ENOMEM;
++			goto error;
++		}
+ 
+ 		chip->enable_dma = 0;
+ 		chip_info = spi->controller_data;
+@@ -1036,7 +1040,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 		if (chip_info->ctl_reg & (SPE|MSTR|CPOL|CPHA|LSBF|SIZE)) {
+ 			dev_err(&spi->dev, "do not set bits in ctl_reg "
+ 				"that the SPI framework manages\n");
+-			return -EINVAL;
++			goto error;
+ 		}
+ 
+ 		chip->enable_dma = chip_info->enable_dma != 0
+@@ -1060,26 +1064,6 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip->ctl_reg |= MSTR;
+ 
+ 	/*
+-	 * if any one SPI chip is registered and wants DMA, request the
+-	 * DMA channel for it
+-	 */
+-	if (chip->enable_dma && !drv_data->dma_requested) {
+-		/* register dma irq handler */
+-		if (request_dma(drv_data->dma_channel, "BFIN_SPI_DMA") < 0) {
+-			dev_dbg(&spi->dev,
+-				"Unable to request BlackFin SPI DMA channel\n");
+-			return -ENODEV;
+-		}
+-		if (set_dma_callback(drv_data->dma_channel,
+-		    bfin_spi_dma_irq_handler, drv_data) < 0) {
+-			dev_dbg(&spi->dev, "Unable to set dma callback\n");
+-			return -EPERM;
+-		}
+-		dma_disable_irq(drv_data->dma_channel);
+-		drv_data->dma_requested = 1;
+-	}
+-
+-	/*
+ 	 * Notice: for blackfin, the speed_hz is the value of register
  	 * SPI_BAUD, not the real baudrate
  	 */
- 	chip->baud = hz_to_spi_baud(spi->max_speed_hz);
--	chip->flag = 1 << (spi->chip_select);
-+	chip->flag = (1 << (spi->chip_select)) << 8;
+@@ -1087,16 +1071,6 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	chip->flag = 1 << (spi->chip_select);
  	chip->chip_select_num = spi->chip_select;
  
+-	if (chip->chip_select_num == 0) {
+-		ret = gpio_request(chip->cs_gpio, spi->modalias);
+-		if (ret) {
+-			if (drv_data->dma_requested)
+-				free_dma(drv_data->dma_channel);
+-			return ret;
+-		}
+-		gpio_direction_output(chip->cs_gpio, 1);
+-	}
+-
  	switch (chip->bits_per_word) {
-@@ -1268,6 +1285,7 @@ static int bfin_spi_setup(struct spi_device *spi)
- 		}
+ 	case 8:
+ 		chip->n_bytes = 1;
+@@ -1123,9 +1097,39 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	default:
+ 		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
+ 				chip->bits_per_word);
+-		if (chip_info)
+-			kfree(chip);
+-		return -ENODEV;
++		goto error;
++	}
++
++	/*
++	 * if any one SPI chip is registered and wants DMA, request the
++	 * DMA channel for it
++	 */
++	if (chip->enable_dma && !drv_data->dma_requested) {
++		/* register dma irq handler */
++		ret = request_dma(drv_data->dma_channel, "BFIN_SPI_DMA");
++		if (ret) {
++			dev_err(&spi->dev,
++				"Unable to request BlackFin SPI DMA channel\n");
++			goto error;
++		}
++		drv_data->dma_requested = 1;
++
++		ret = set_dma_callback(drv_data->dma_channel,
++			bfin_spi_dma_irq_handler, drv_data);
++		if (ret) {
++			dev_err(&spi->dev, "Unable to set dma callback\n");
++			goto error;
++		}
++		dma_disable_irq(drv_data->dma_channel);
++	}
++
++	if (chip->chip_select_num == 0) {
++		ret = gpio_request(chip->cs_gpio, spi->modalias);
++		if (ret) {
++			dev_err(&spi->dev, "gpio_request() error\n");
++			goto pin_error;
++		}
++		gpio_direction_output(chip->cs_gpio, 1);
  	}
  
-+	bfin_spi_cs_enable(drv_data, chip);
+ 	dev_dbg(&spi->dev, "setup spi chip %s, width is %d, dma is %d\n",
+@@ -1136,14 +1140,38 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	spi_set_ctldata(spi, chip);
+ 
+ 	dev_dbg(&spi->dev, "chip select number is %d\n", chip->chip_select_num);
+-	if ((chip->chip_select_num > 0)
+-		&& (chip->chip_select_num <= spi->master->num_chipselect))
+-		peripheral_request(ssel[spi->master->bus_num]
+-			[chip->chip_select_num-1], spi->modalias);
++	if (chip->chip_select_num > 0 &&
++	    chip->chip_select_num <= spi->master->num_chipselect) {
++		ret = peripheral_request(ssel[spi->master->bus_num]
++		                         [chip->chip_select_num-1], spi->modalias);
++		if (ret) {
++			dev_err(&spi->dev, "peripheral_request() error\n");
++			goto pin_error;
++		}
++	}
+ 
  	bfin_spi_cs_deactive(drv_data, chip);
  
  	return 0;
-@@ -1299,14 +1317,17 @@ static int bfin_spi_setup(struct spi_device *spi)
- static void bfin_spi_cleanup(struct spi_device *spi)
- {
- 	struct chip_data *chip = spi_get_ctldata(spi);
-+	struct driver_data *drv_data = spi_master_get_devdata(spi->master);
- 
- 	if (!chip)
- 		return;
- 
- 	if ((chip->chip_select_num > 0)
--		&& (chip->chip_select_num <= spi->master->num_chipselect))
-+		&& (chip->chip_select_num <= spi->master->num_chipselect)) {
- 		peripheral_free(ssel[spi->master->bus_num]
- 					[chip->chip_select_num-1]);
-+		bfin_spi_cs_disable(drv_data, chip);
++
++ pin_error:
++	if (chip->chip_select_num == 0)
++		gpio_free(chip->cs_gpio);
++	else
++		peripheral_free(ssel[spi->master->bus_num]
++			[chip->chip_select_num - 1]);
++ error:
++	if (chip) {
++		if (drv_data->dma_requested)
++			free_dma(drv_data->dma_channel);
++		drv_data->dma_requested = 0;
++
++		kfree(chip);
++		/* prevent free 'chip' twice */
++		spi_set_ctldata(spi, NULL);
 +	}
++
++	return ret;
+ }
  
- 	if (chip->chip_select_num == 0)
+ /*
+@@ -1166,6 +1194,8 @@ static void bfin_spi_cleanup(struct spi_device *spi)
  		gpio_free(chip->cs_gpio);
+ 
+ 	kfree(chip);
++	/* prevent free 'chip' twice */
++	spi_set_ctldata(spi, NULL);
+ }
+ 
+ static inline int bfin_spi_init_queue(struct driver_data *drv_data)
 -- 
 1.7.3.1

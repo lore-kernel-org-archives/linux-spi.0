@@ -1,13 +1,12 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 24/28] Blackfin SPI: fix typo in comment
-Date: Sun, 17 Oct 2010 18:59:37 -0400
-Message-ID: <1287356381-31495-25-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 23/28] Blackfin SPI: reject unsupported SPI modes
+Date: Sun, 17 Oct 2010 18:59:36 -0400
+Message-ID: <1287356381-31495-24-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Rob Maris <maris.rob-rHNaxI9ti4Y@public.gmane.org>,
-	Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
@@ -23,28 +22,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Rob Maris <maris.rob-rHNaxI9ti4Y@public.gmane.org>
+Who knows what people will try!
 
-Signed-off-by: Rob Maris <maris.rob-rHNaxI9ti4Y@public.gmane.org>
-Signed-off-by: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index a91e556..550aaf7 100644
+index 18b313a..a91e556 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -364,7 +364,7 @@ static const struct transfer_ops bfin_transfer_ops_u16 = {
- 	.duplex = bfin_spi_u16_duplex,
- };
+@@ -1022,6 +1022,10 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	}
  
--/* test if ther is more transfer to be done */
-+/* test if there is more transfer to be done */
- static void *bfin_spi_next_transfer(struct master_data *drv_data)
- {
- 	struct spi_message *msg = drv_data->cur_msg;
+ 	/* translate common spi framework into our register */
++	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
++		dev_err(&spi->dev, "unsupported spi modes detected\n");
++		goto error;
++	}
+ 	if (spi->mode & SPI_CPOL)
+ 		chip->ctl_reg |= BIT_CTL_CPOL;
+ 	if (spi->mode & SPI_CPHA)
 -- 
 1.7.3.1
 

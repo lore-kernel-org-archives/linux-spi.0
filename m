@@ -1,12 +1,13 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 27/28] Blackfin SPI: check per-transfer bits_per_word
-Date: Sun, 17 Oct 2010 18:59:40 -0400
-Message-ID: <1287356381-31495-28-git-send-email-vapier@gentoo.org>
+Subject: [PATCH 26/28] Blackfin SPI: warn when CS is driven by hardware
+	(CPHA=0)
+Date: Sun, 17 Oct 2010 18:59:39 -0400
+Message-ID: <1287356381-31495-27-git-send-email-vapier@gentoo.org>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
@@ -22,39 +23,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-Currently, if the bits_per_word when doing a transfer is not 8bits, we
-always treat it as 16bits when we should actually be returning an error.
+When the hardware is controlling the CS, there are some SPI options
+we are unable to support.  So issue a warning in the hopes that the
+user will change to a SPI mode where we can support things sanely.
 
-Signed-off-by: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Barry Song <barry.song-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    7 ++++++-
- 1 files changed, 6 insertions(+), 1 deletions(-)
+ drivers/spi/spi_bfin5xx.c |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 21de860..bd18214 100644
+index 7882afc..21de860 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -644,11 +644,16 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 		drv_data->len = transfer->len;
- 		cr_width = 0;
- 		drv_data->ops = &bfin_transfer_ops_u8;
--	} else {
-+	} else if (bits_per_word == 16) {
- 		drv_data->n_bytes = 2;
- 		drv_data->len = (transfer->len) >> 1;
- 		cr_width = BIT_CTL_WORDSIZE;
- 		drv_data->ops = &bfin_transfer_ops_u16;
-+	} else {
-+		dev_err(&drv_data->pdev->dev, "transfer: unsupported bits_per_word\n");
-+		message->status = -EINVAL;
-+		bfin_spi_giveback(drv_data);
-+		return;
- 	}
- 	cr = read_CTRL(drv_data) & ~(BIT_CTL_TIMOD | BIT_CTL_WORDSIZE);
- 	cr |= cr_width;
+@@ -1040,9 +1040,14 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	 */
+ 	chip->baud = hz_to_spi_baud(spi->max_speed_hz);
+ 	chip->chip_select_num = spi->chip_select;
+-	if (chip->chip_select_num < MAX_CTRL_CS)
++	if (chip->chip_select_num < MAX_CTRL_CS) {
++		if (!(spi->mode & SPI_CPHA))
++			dev_warn(&spi->dev, "Warning: SPI CPHA not set:"
++				" Slave Select not under software control!\n"
++				" See Documentation/blackfin/bfin-spi-notes.txt");
++
+ 		chip->flag = (1 << spi->chip_select) << 8;
+-	else
++	} else
+ 		chip->cs_gpio = chip->chip_select_num - MAX_CTRL_CS;
+ 
+ 	if (chip->enable_dma && chip->pio_interrupt) {
 -- 
 1.7.3.1
 

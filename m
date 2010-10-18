@@ -1,20 +1,20 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 14/28] Blackfin: SPI: expand SPI
-	bitmasks
-Date: Mon, 18 Oct 2010 02:11:12 -0400
-Message-ID: <AANLkTimCDT8Fy4w_Ac3Wf7AD1ts405SaZOqhNdW=9BZY@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 28/28] Blackfin SPI: init early
+Date: Mon, 18 Oct 2010 00:12:11 -0600
+Message-ID: <20101018061211.GC19399@angua.secretlab.ca>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
-	<1287356381-31495-15-git-send-email-vapier@gentoo.org>
-	<20101018060416.GB19399@angua.secretlab.ca>
+	<1287356381-31495-29-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <20101018060416.GB19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1287356381-31495-29-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,34 +26,47 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MDQsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBT
-dW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OToyN1BNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
-ZToKPj4gRXhwYW5kIHRoZSBCSVRfQ1RMIGRlZmluZXMgdG8gdXNlIHRoZSBuYW1pbmcgY29udmVu
-dGlvbiBvZiB0aGUgaGFyZHdhcmUsCj4+IGFuZCBleHBhbmQgdGhlIG1hc2tzIHRvIGNvdmVyIGFs
-bCBkb2N1bWVudGVkIGJpdHMuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IE1pa2UgRnJ5c2luZ2VyIDx2
-YXBpZXJAZ2VudG9vLm9yZz4KPj4gLS0tCj4+IMKgYXJjaC9ibGFja2Zpbi9pbmNsdWRlL2FzbS9i
-ZmluNXh4X3NwaS5oIHwgwqAgMTEgKysrKysrKy0tLS0KPj4gwqAxIGZpbGVzIGNoYW5nZWQsIDcg
-aW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYmxh
-Y2tmaW4vaW5jbHVkZS9hc20vYmZpbjV4eF9zcGkuaCBiL2FyY2gvYmxhY2tmaW4vaW5jbHVkZS9h
-c20vYmZpbjV4eF9zcGkuaAo+PiBpbmRleCBlZTNlY2I5Li4xMjZkMjVlIDEwMDY0NAo+PiAtLS0g
-YS9hcmNoL2JsYWNrZmluL2luY2x1ZGUvYXNtL2JmaW41eHhfc3BpLmgKPj4gKysrIGIvYXJjaC9i
-bGFja2Zpbi9pbmNsdWRlL2FzbS9iZmluNXh4X3NwaS5oCj4+IEBAIC0yNiwxMSArMjYsMTQgQEAK
-Pj4gwqAjZGVmaW5lIEJJVF9DVExfRU5BQkxFIMKgIMKgIMKgMHg0MDAwCj4+IMKgI2RlZmluZSBC
-SVRfQ1RMX09QRU5EUkFJTiDCoCAweDIwMDAKPj4gwqAjZGVmaW5lIEJJVF9DVExfTUFTVEVSIMKg
-IMKgIMKgMHgxMDAwCj4+IC0jZGVmaW5lIEJJVF9DVExfUE9MQVIgwqAgwqAgwqAgMHgwODAwCj4+
-IC0jZGVmaW5lIEJJVF9DVExfUEhBU0UgwqAgwqAgwqAgMHgwNDAwCj4+IC0jZGVmaW5lIEJJVF9D
-VExfQklUT1JERVIgwqAgwqAweDAyMDAKPj4gKyNkZWZpbmUgQklUX0NUTF9DUE9MIMKgIMKgIMKg
-IMKgMHgwODAwCj4+ICsjZGVmaW5lIEJJVF9DVExfQ1BIQSDCoCDCoCDCoCDCoDB4MDQwMAo+PiAr
-I2RlZmluZSBCSVRfQ1RMX0xTQkYgwqAgwqAgwqAgwqAweDAyMDAKPj4gwqAjZGVmaW5lIEJJVF9D
-VExfV09SRFNJWkUgwqAgwqAweDAxMDAKPj4gLSNkZWZpbmUgQklUX0NUTF9NSVNPRU5BQkxFIMKg
-MHgwMDIwCj4+ICsjZGVmaW5lIEJJVF9DVExfRU1JU08gwqAgwqAgwqAgMHgwMDIwCj4+ICsjZGVm
-aW5lIEJJVF9DVExfUFNTRSDCoCDCoCDCoCDCoDB4MDAxMAo+PiArI2RlZmluZSBCSVRfQ1RMX0dN
-IMKgIMKgIMKgIMKgIMKgMHgwMDA4Cj4+ICsjZGVmaW5lIEJJVF9DVExfU1ogwqAgwqAgwqAgwqAg
-wqAweDAwMDQKPj4gwqAjZGVmaW5lIEJJVF9DVExfUlhNT0QgwqAgwqAgwqAgMHgwMDAwCj4+IMKg
-I2RlZmluZSBCSVRfQ1RMX1RYTU9EIMKgIMKgIMKgIDB4MDAwMQo+PiDCoCNkZWZpbmUgQklUX0NU
-TF9USU1PRF9ETUFfVFggMHgwMDAzCj4KPiBDYW4gSSBhc3N1bWUgdGhhdCB0aGVzZSBjaGFuZ2Vk
-IHZhbHVlcyBhcmUgYXMtb2YtdGhpcy1wb2ludCB1bnVzZWQ/CgppZiB5b3UgbWVhbiB0aGUgb25l
-cyBpJ20gZGVsZXRpbmcgLT4geWVzCi1taWtlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fClVjbGludXgtZGlzdC1kZXZlbCBtYWlsaW5nIGxpc3QKVWNsaW51
-eC1kaXN0LWRldmVsQGJsYWNrZmluLnVjbGludXgub3JnCmh0dHBzOi8vYmxhY2tmaW4udWNsaW51
-eC5vcmcvbWFpbG1hbi9saXN0aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWw=
+On Sun, Oct 17, 2010 at 06:59:41PM -0400, Mike Frysinger wrote:
+> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> 
+> Some systems using this bus sometimes have very basic devices on them
+> such as regulators.  So we need to be loaded even earlier in case the
+> devices are used before userspace is loaded.  Therefore register in
+> subsys_initcall().
+
+This shouldn't have anything to do with userspace since regardless of
+the initcall, all of this setup should be complete before userspace
+starts.  Rather I expect it has to do with an earlier initcall wanting
+to have the spi bus up earlier than module_initcall.  The description
+of this patch seems wrong.
+
+On that note, this is something that needs to be revisited.  Needing
+to play these kind of games highlights a failure of the device model,
+or the way that it is being used.  (The patch is okay; but it does
+highlight some ugliness in the current kernel)
+
+g.
+
+> 
+> Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi_bfin5xx.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+> index bd18214..d17ab37 100644
+> --- a/drivers/spi/spi_bfin5xx.c
+> +++ b/drivers/spi/spi_bfin5xx.c
+> @@ -1466,7 +1466,7 @@ static int __init bfin_spi_init(void)
+>  {
+>  	return platform_driver_probe(&bfin_spi_driver, bfin_spi_probe);
+>  }
+> -module_init(bfin_spi_init);
+> +subsys_initcall(bfin_spi_init);
+>  
+>  static void __exit bfin_spi_exit(void)
+>  {
+> -- 
+> 1.7.3.1
+> 

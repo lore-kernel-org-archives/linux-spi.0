@@ -1,20 +1,21 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 00/28] Blackfin SPI updates for
 	2.6.36
-Date: Mon, 18 Oct 2010 02:49:23 -0400
-Message-ID: <AANLkTimmVQ0EtkACtXqxO0vkXfN9FoyF9c6OLo3JNPUC@mail.gmail.com>
+Date: Mon, 18 Oct 2010 00:49:57 -0600
+Message-ID: <AANLkTinB21p9rByqy3UCbUhE+FdjyDxB_SeOKdEUw=nf@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 	<20101018062834.GG19399@angua.secretlab.ca>
 	<AANLkTims9Z+XGXMdcAH53OBO=S9aYiszxHczmsTn06Gd@mail.gmail.com>
+	<AANLkTim1p0Ukufh1dWGSk8L2yA4xwQzsWmr8EK_AbfLP@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <AANLkTims9Z+XGXMdcAH53OBO=S9aYiszxHczmsTn06Gd-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTim1p0Ukufh1dWGSk8L2yA4xwQzsWmr8EK_AbfLP-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,33 +27,28 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MzQsIE1pa2UgRnJ5c2luZ2VyIHdyb3RlOgo+IE9u
-IE1vbiwgT2N0IDE4LCAyMDEwIGF0IDAyOjI4LCBHcmFudCBMaWtlbHkgd3JvdGU6Cj4+IE9uIFN1
-biwgT2N0IDE3LCAyMDEwIGF0IDA2OjU5OjEzUE0gLTA0MDAsIE1pa2UgRnJ5c2luZ2VyIHdyb3Rl
-Ogo+Pj4gUXVpdGUgYSBiaXQgaGVyZSwgYnV0IHRoZXNlIHBhdGNoZXMgaGF2ZSBiZWVuIGFyb3Vu
-ZCBmb3IgYSB3aGlsZS4gwqBUaGUKPj4+IHJlYXNvbiB0aGV5IGhhdmVuJ3QgYmVlbiBwdXNoZWQg
-dXAgYmVmb3JlIHdhcyB0aGF0IHNvbWUgb2YgdGhlIGZpcnN0Cj4+PiBjaGFuZ2VzIGludHJvZHVj
-ZWQga25vd24gYnVncyB0aGVtc2VsdmVzIGFuZCBuZWVkZWQgc29tZSBtYW51YWwgZml4aW5nLgo+
-Pj4KPj4+IEFsc28sIHdoaWxlIHNvbWUgZmlsZXMgdG91Y2ggQmxhY2tmaW4gaGVhZGVycyBpbiBh
-cmNoL2JsYWNrZmluLywgSSdkCj4+PiBsaWtlIHRvIGtlZXAgdGhlbSBpbiB0aGlzIHNlcmllcyBh
-bmQgbWVyZ2UgdGhyb3VnaCB0aGUgU1BJIHRyZWUgdG8ga2VlcAo+Pj4gY29uZmxpY3QgaXNzdWVz
-IGRvd24sIGFzIHdlbGwgYXMgcG9zc2libGUgYnJlYWthZ2UgZHVlIHRvIGRlc3luYy4KPj4+Cj4+
-PiBUaGVzZSBhcmUgYWxzbyBhdmFpbGFibGUgaW4gbXkgJ2Zvci1zcGknIGJyYW5jaCBvZiBteSBn
-aXQgdHJlZToKPj4+IMKgIMKgIMKgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgv
-a2VybmVsL2dpdC92YXBpZXIvYmxhY2tmaW4uZ2l0Cj4+Cj4+IE9uIGJyaWVmIHJldmlldywgdGhl
-IHNlcmllcyBsb29rcyBnb29kIHdpdGggYSBjb3VwbGUgb2YgbWlub3IgY29tbWVudHMKPj4gKGFs
-cmVhZHkgc2VudCkuCj4+Cj4+IEZvciB0aGUgc3BpIGJyYW5jaCB0aGF0IEkgcHVzaCB0byBMaW51
-cywgSSBhbHdheXMgdXNlIHRoZSBwcmVmaXgKPj4gc3BpLzxkcml2ZXItbmFtZT4uIMKgSWYgdGhl
-IHBhdGNoZXMgaW4geW91ciBicmFuY2ggYWxzbyB1c2UgdGhhdAo+PiBwcmVmaXgsIHRoZW4gSSdk
-IGJlIGhhcHB5IHRvIHB1bGwgeW91ciB0cmVlIGRpcmVjdGx5IGluc3RlYWQgb2YKPj4gY29tbWl0
-dGluZyB0aGUgcGF0Y2hlcyBteXNlbGYuIMKgT3RoZXJ3aXNlLCBJIG5lZWQgdG8gY29tbWl0IHRo
-ZW0KPj4gbWFudWFsbHkuCj4KPiBtZXJnZWQgcGF0Y2hlcyB0aHVzIGZhciBoYXZlIHVzZWQgdGhl
-IGNvbnZlbnRpb24gaSBwaWNrZWQgaGVyZSwgYnV0IGkKPiBkb250IGhhdmUgYSBwcm9ibGVtIHdp
-dGggY2hhbmdpbmcgdGhlbS4KCml2ZSByZXdyaWl0dGVuIHRoZSBsb2dzLCBhZGRyZXNzZWQgeW91
-ciBmZWVkYmFjayBvbiBhbGwgdGhlIG90aGVyCnBhdGNoZXMsIGFuZCBwdXNoZWQgdXAgdGhlIG5l
-dyBmb3Itc3BpIGJyYW5jaCBpZiB5b3Ugd2FudCB0byBkb3VibGUKY2hlY2sgJiBwdWxsLiAgaSBk
-b250IHdhbnQgdG8gc3BhbSBwZW9wbGUgd2l0aCAzMCBwYXRjaGVzIHdoZXJlIG9ubHkKdGhlIHN1
-bW1hcnkgY2hhbmdlZCAuLi4KLW1pa2UKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xpbnV4LWRp
-c3QtZGV2ZWxAYmxhY2tmaW4udWNsaW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xpbnV4Lm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL3VjbGludXgtZGlzdC1kZXZlbA==
+On Mon, Oct 18, 2010 at 12:37 AM, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, Oct 18, 2010 at 02:34, Mike Frysinger wrote:
+>> On Mon, Oct 18, 2010 at 02:28, Grant Likely wrote:
+>>> I *might* pick these up for .36, but it is very late for picking up
+>>> stuff that hasn't had any linux-next exposure yet.
+>>
+>> these issues have been around for so long that missing another 2.6.x
+>> is fine. =A0as long as they're in 2.6.37 ;).
+>
+> sorry, i noticed my cover letter summary. =A0i meant for it to say "2.6.3=
+7".
+
+Ugh.  yes, but *I* said .36 when I meant .37.  Gah.
+
+g,
+
+> -mike
+>
+
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2 07/12] davinci: add tnetv107x evm regulators
-Date: Mon, 18 Oct 2010 15:25:17 -0400
-Message-ID: <1287429922-18870-8-git-send-email-cyril@ti.com>
+Subject: [PATCH v2 11/12] davinci: add tnetv107x evm backlight device
+Date: Mon, 18 Oct 2010 15:25:21 -0400
+Message-ID: <1287429922-18870-12-git-send-email-cyril@ti.com>
 References: <1287429922-18870-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,118 +23,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds regulator and spi board info definitions for the tps6524x
-power management IC found on tnetv107x evm boards.
+The tnetv107x evm board has a backlight device that is connected on one of the
+SSP ports.  This patch adds the board definitions necessary to plug the
+backlight driver to the GPIO corresponding to this SSP pin.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   85 +++++++++++++++++++++++++++
- 1 files changed, 85 insertions(+), 0 deletions(-)
+ arch/arm/mach-davinci/board-tnetv107x-evm.c |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index c37c5c6..d4c3d18 100644
+index 270ba26..ca61f8a 100644
 --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -26,6 +26,9 @@
- #include <linux/input.h>
- #include <linux/input/matrix_keypad.h>
- #include <linux/spi/spi.h>
-+#include <linux/regulator/machine.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/regulator/driver.h>
+@@ -45,6 +45,7 @@
+ #define EVM_MMC_WP_GPIO		21
+ #define EVM_MMC_CD_GPIO		24
+ #define EVM_SPI_CS_GPIO		54
++#define EVM_BACKLIGHT_GPIO	(SSP_GPIO_START + 2)
  
- #include <asm/mach/arch.h>
- #include <asm/mach-types.h>
-@@ -257,7 +260,89 @@ static struct tnetv107x_device_info evm_device_info __initconst = {
- 	.ssp_config		= &ssp_config,
+ static int initialize_gpio(int gpio, char *desc)
+ {
+@@ -360,6 +361,12 @@ static struct spi_board_info spi_info[] __initconst = {
+ 	},
  };
  
-+static struct regulator_consumer_supply usb_consumers[] = {
-+	REGULATOR_SUPPLY("vbus", "musb_hdrc.1"),
++static struct platform_device backlight_device = {
++	.name		= "tps6116x",
++	.id		= -1,
++	.dev.platform_data = (void *)EVM_BACKLIGHT_GPIO,
 +};
 +
-+static struct regulator_consumer_supply lcd_consumers[] = {
-+	REGULATOR_SUPPLY("vlcd", "tps6116x"),
-+};
-+
-+static struct regulator_init_data regulators[] = {
-+	{
-+		.constraints		= {
-+			.name		= "DCDC1",
-+			.min_uV		= 1000000,
-+			.max_uV		= 1000000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC2",
-+			.min_uV		= 1800000,
-+			.max_uV		= 1800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC3",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 4800000,
-+			.max_uV		= 4800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(usb_consumers),
-+		.consumer_supplies	= usb_consumers,
-+		.constraints		= {
-+			.name		= "USB",
-+			.min_uA		= 200000,
-+			.max_uA		= 1000000,
-+			.valid_ops_mask	= REGULATOR_CHANGE_CURRENT |
-+					  REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(lcd_consumers),
-+		.consumer_supplies	= lcd_consumers,
-+		.constraints		= {
-+			.name		= "LCD",
-+			.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+};
-+
- static struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias	= "tps6524x",
-+		.bus_num	= 1,
-+		.chip_select	= 0,
-+		.mode		= SPI_MODE_0,
-+		.platform_data	= regulators,
-+	},
- };
- 
  static __init void tnetv107x_evm_board_init(void)
+ {
+ 	davinci_cfg_reg_list(sdio1_pins);
+@@ -368,6 +375,8 @@ static __init void tnetv107x_evm_board_init(void)
+ 
+ 	tnetv107x_devices_init(&evm_device_info);
+ 
++	platform_device_register(&backlight_device);
++
+ 	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
+ }
+ 
 -- 
 1.7.0.4
 

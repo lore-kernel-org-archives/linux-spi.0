@@ -1,19 +1,22 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 00/28] Blackfin SPI updates for
-	2.6.36
-Date: Mon, 18 Oct 2010 00:28:34 -0600
-Message-ID: <20101018062834.GG19399@angua.secretlab.ca>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 11/28] Blackfin SPI: convert struct
+ names to something more logical
+Date: Mon, 18 Oct 2010 02:28:23 -0400
+Message-ID: <AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
+	<1287356381-31495-12-git-send-email-vapier@gentoo.org>
+	<20101018060253.GA19399@angua.secretlab.ca>
+	<AANLkTimJtoRWL0auw1xHthXbkBc6L2b1ph18WZA+_PdY@mail.gmail.com>
+	<20101018062025.GD19399@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1287356381-31495-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20101018062025.GD19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -25,85 +28,30 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Oct 17, 2010 at 06:59:13PM -0400, Mike Frysinger wrote:
-> Quite a bit here, but these patches have been around for a while.  The
-> reason they haven't been pushed up before was that some of the first
-> changes introduced known bugs themselves and needed some manual fixing.
-> 
-> Also, while some files touch Blackfin headers in arch/blackfin/, I'd
-> like to keep them in this series and merge through the SPI tree to keep
-> conflict issues down, as well as possible breakage due to desync.
-> 
-> These are also available in my 'for-spi' branch of my git tree:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/vapier/blackfin.git
-
-On brief review, the series looks good with a couple of minor comments
-(already sent).
-
-For the spi branch that I push to Linus, I always use the prefix
-spi/<driver-name>.  If the patches in your branch also use that
-prefix, then I'd be happy to pull your tree directly instead of
-committing the patches myself.  Otherwise, I need to commit them
-manually.
-
-I *might* pick these up for .36, but it is very late for picking up
-stuff that hasn't had any linux-next exposure yet.
-
-Thanks,
-g.
-
-> 
-> Barry Song (6):
->   Blackfin SPI: fix CS handling
->   Blackfin SPI: redo GPIO CS handling
->   Blackfin SPI: save/restore state when suspending/resuming
->   Blackfin SPI: sync hardware state before reprogramming everything
->   Blackfin SPI: use dma_disable_irq_nosync() in irq handler
->   Blackfin SPI: warn when CS is driven by hardware (CPHA=0)
-> 
-> Bob Liu (1):
->   Blackfin SPI: check per-transfer bits_per_word
-> 
-> Daniel Mack (1):
->   Blackfin SPI: fix resources leakage
-> 
-> Michael Hennerich (1):
->   Blackfin SPI: init early
-> 
-> Mike Frysinger (13):
->   Blackfin SPI: drop custom cs_change_per_word support
->   Blackfin SPI: punt useless null read/write funcs
->   Blackfin SPI: fix up some unused/misleading comments
->   Blackfin SPI: convert queue run state to true/false
->   Blackfin SPI: convert read/write/duplex funcs to a dedicated ops
->     structure
->   Blackfin SPI: convert struct names to something more logical
->   Blackfin SPI: drop extra memory we don't need
->   Blackfin SPI: use the SPI namespaced bit names
->   Blackfin: SPI: expand SPI bitmasks
->   Blackfin SPI: push all size checks into the transfer function
->   Blackfin SPI: reset ctl_reg bits when setup is run again on a device
->   Blackfin SPI: combine duplicate SPI_CTL read/write logic
->   Blackfin SPI: reject unsupported SPI modes
-> 
-> Rob Maris (2):
->   Blackfin SPI: fix typo in comment
->   Blackfin SPI: cs should be always low when a new transfer begins
-> 
-> Sonic Zhang (1):
->   Blackfin SPI: work around anomaly 05000119
-> 
-> Wolfgang Muees (1):
->   Blackfin SPI: force sane master-mode state at boot
-> 
-> Yi Li (2):
->   Blackfin SPI: utilize the SPI interrupt in PIO mode
->   Blackfin SPI: use nosync when disabling the IRQ from the IRQ handler
-> 
->  arch/blackfin/include/asm/bfin5xx_spi.h |   81 +---
->  drivers/spi/spi_bfin5xx.c               |  839 ++++++++++++++++---------------
->  2 files changed, 441 insertions(+), 479 deletions(-)
-> 
-> -- 
-> 1.7.3.1
-> 
+T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MjAsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBN
+b24sIE9jdCAxOCwgMjAxMCBhdCAwMjoxMDoxN0FNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gT24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MDIsIEdyYW50IExpa2VseSB3cm90ZToK
+Pj4gPiBPbiBTdW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OToyNFBNIC0wNDAwLCBNaWtlIEZyeXNp
+bmdlciB3cm90ZToKPj4gPj4gLXN0cnVjdCBkcml2ZXJfZGF0YSB7Cj4+ID4+ICtzdHJ1Y3QgbWFz
+dGVyX2RhdGEgewo+PiA+Cj4+ID4gT3IgYmV0dGVyIHlldCwgdG8gcHJvdGVjdCBhZ2FpbnN0IGds
+b2JhbCBjb2xsaXNpb25zLCBiZmluNXh4X21hc3RlciBwZXJoYXBzPwo+Pgo+PiBpJ2QgcmF0aGVy
+IG5vdC4gwqB0aGVyZSBpcyB0b28gbXVjaCAiYmZpbjV4eCIgc3R1ZmYgYWxyZWFkeSB3aGljaAo+
+PiBzaG91bGRudCBleGlzdC4gwqB3aGF0IGNvbGxpc2lvbiBjb3VsZCB0aGVyZSBwb3NzaWJseSBi
+ZSA/Cj4KPiBGb3IgZHJpdmVyIGNvZGUsIGFueXRoaW5nIGF0IHRoZSBmaWxlIHNjb3BlIGhhcyBh
+IHBvdGVudGlhbCBjb25mbGljdAo+IHdpdGggdGhlIGdsb2JhbCBzY29wZS4gwqBJZiBhbnkgaGVh
+ZGVyIGluIGluY2x1ZGUvbGludXggd2VyZSB0byBkZWZpbmUKPiBhICJtYXN0ZXJfZGF0YSIgb3Ig
+YSAic2xhdmVfZGF0YSIgc3RydWN0dXJlLCAodGhvc2UgYXJlIHByZXR0eSBnZW5lcmljCj4gbmFt
+ZXMsIGl0IGlzIHdlbGwgd2l0aGluIHRoZSByZWFsbSBvZiBwb3NzaWJpbGl0aWVzKSB0aGVuIGl0
+IHdvdWxkCj4gY29uZmxpY3QuCgppIGRvbnQgdGhpbmsgZ2VuZXJpYyBuYW1lcyBsaWtlIHRoYXQg
+d291bGQgYmUgYWxsb3dlZCBpbiBnbG9iYWwgc3BhY2UKZm9yIHRoaXMgZXhhY3QgcmVhc29uLiAg
+aXZlIGFscmVhZHkgbWFkZSBzdXJlIGFsbCB0aGUgZGF0YS9mdW5jdGlvbgpzeW1ib2xzIHRoYXQg
+YXJlIHZpc2libGUgZnJvbSBhIGxpbmthZ2Ugc3RhbmQgcG9pbnQgYXJlIHByb3Blcmx5Cm5hbWVz
+cGFjZWQgYmVjYXVzZSB1bmxpa2Ugc3RydWN0dXJlcywgdGhvc2UgYXJlIGV4dGVybmFsbHkgdmlz
+aWJsZSBieQp0b29scyBzdWNoIGFzIGthbGxzeW1zLgoKaSdkIHJlYWxseSBwcmVmZXIgdG8gbm90
+IGhhdmUgdG8gcmVkbyBhbGwgdGhlc2UgcGF0Y2hlcyBjb25zaWRlcmluZwp0aGlzIG9uZSBjaGFu
+Z2Ugd2lsbCBjYXNjYWRlIGludG8gbGlrZSAyMCBvdGhlcnMuICBpJ2QgYmUgYSBsb3QgbW9yZQph
+bWVuZGFibGUgdG8gYSBwYXRjaCBvbiB0b3Agb2YgYWxsIG9mIHRoZXNlIHRoYXQgbmFtZXNwYWNl
+cyB0aGUKc3RydWN0cy4KLW1pa2UKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xpbnV4LWRpc3Qt
+ZGV2ZWxAYmxhY2tmaW4udWNsaW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xpbnV4Lm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL3VjbGludXgtZGlzdC1kZXZlbA==

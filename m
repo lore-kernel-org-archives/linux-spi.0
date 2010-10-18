@@ -1,66 +1,68 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 06/12] regulator: add driver for tps6524x regulator
-Date: Mon, 18 Oct 2010 08:50:55 -0400
-Message-ID: <4CBC42AF.5000803@ti.com>
+Subject: Re: [PATCH 01/12] misc: add driver for sequencer serial port
+Date: Mon, 18 Oct 2010 09:56:27 -0400
+Message-ID: <4CBC520B.9070502@ti.com>
 References: <1287081535-2864-1-git-send-email-cyril@ti.com>
-	<1287081535-2864-7-git-send-email-cyril@ti.com>
-	<20101014210323.GB14479@opensource.wolfsonmicro.com>
+	<1287081535-2864-2-git-send-email-cyril@ti.com>
+	<20101016050055.GH21170@angua.secretlab.ca>
 Reply-To: cyril-l0cyMroinI0@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	"dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101014210323.GB14479-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20101016050055.GH21170-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Grant,
 
-Thanks for the feedback.  I agree with your comments, and I will make
-the necessary changes before posting a v2.
-
-The one exception being...
+Thanks for the feedback, I will send out an updated v2 with the proposed
+changes.
 
 [...]
->> +static const int dcdc1_voltages[] = {
->> +	 800000,  825000,  850000,  875000,
->> +	 900000,  925000,  950000,  975000,
->> +	1000000, 1025000, 1050000, 1075000,
->> +	1100000, 1125000, 1150000, 1175000,
->> +	1200000, 1225000, 1250000, 1275000,
->> +	1300000, 1325000, 1350000, 1375000,
->> +	1400000, 1425000, 1450000, 1475000,
->> +	1500000, 1525000, 1550000, 1575000,
+>> +EXPORT_SYMBOL(ti_ssp_open);
 > 
-> Looks like you could just do the maths for most of these tables, might
-> be a bit clearer/simpler?  Not a major issue either way, though.
+> I'm not thrilled with the ti_ssp_open()/ti_ssp_close() usage model.
+> It appears that the usage model is the board code registers an pile
+> of platform_devices, one for the ssp, and one for each of the
+> behaviours on top of it.  Then the various driver instances have to
+> figure out how to find each other and whether or not they are related.
+> Am I correct?
+> 
+> Rather than doing an end-run around the Linux driver model, I strongly
+> recommend using the model to solve your problem.  Register only the
+> ssp platform_device in the board support code and pass it data about
+> the intended behaviour (via platform data).  When it gets probed, it
+> can then register additional platform devices which will get probed by
+> the requested driver.  That way the specific ssp device instance data
+> can be passed reliably to the spi/i2c/whatever driver without any
+> ambiguity, without any uncertainty about whether a port is 'busy', and
+> without the need of these open/close routines.
+> 
+> (Hint: The trick is to set the platform_device's pdev->dev.parent
+> pointer to make use of the Linux device model's hierarchy).
 
-... not all of the supplies are linear (e.g. ldo2).  Rather than have to
-deal with both cases (linear and non-linear), enumerating the list of
-voltages appeared to be simpler.
+I am not very thrilled with this approach either :-)  I had looked at a
+few other instances where something similar was being done (spi, i2c,
+mdio, etc.), but felt that defining a new bus type would be an overkill
+for this.
 
-[...]
+For reference, could you please point me to some other place where
+something similar is being done?
 
 Regards
 Cyril.
-
-------------------------------------------------------------------------------
-Download new Adobe(R) Flash(R) Builder(TM) 4
-The new Adobe(R) Flex(R) 4 and Flash(R) Builder(TM) 4 (formerly 
-Flex(R) Builder(TM)) enable the development of rich applications that run
-across multiple browsers and platforms. Download your free trials today!
-http://p.sf.net/sfu/adobe-dev2dev

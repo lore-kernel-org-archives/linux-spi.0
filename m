@@ -1,20 +1,20 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 11/28] Blackfin SPI: convert struct
- names to something more logical
-Date: Mon, 18 Oct 2010 02:10:17 -0400
-Message-ID: <AANLkTimJtoRWL0auw1xHthXbkBc6L2b1ph18WZA+_PdY@mail.gmail.com>
+Subject: Re: [PATCH 14/28] Blackfin: SPI: expand SPI
+	bitmasks
+Date: Mon, 18 Oct 2010 02:11:12 -0400
+Message-ID: <AANLkTimCDT8Fy4w_Ac3Wf7AD1ts405SaZOqhNdW=9BZY@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
-	<1287356381-31495-12-git-send-email-vapier@gentoo.org>
-	<20101018060253.GA19399@angua.secretlab.ca>
+	<1287356381-31495-15-git-send-email-vapier@gentoo.org>
+	<20101018060416.GB19399@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <20101018060253.GA19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+In-Reply-To: <20101018060416.GB19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,13 +26,34 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 18, 2010 at 02:02, Grant Likely wrote:
-> On Sun, Oct 17, 2010 at 06:59:24PM -0400, Mike Frysinger wrote:
->> -struct driver_data {
->> +struct master_data {
->
-> Or better yet, to protect against global collisions, bfin5xx_master perhaps?
-
-i'd rather not.  there is too much "bfin5xx" stuff already which
-shouldnt exist.  what collision could there possibly be ?
--mike
+T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MDQsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBT
+dW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OToyN1BNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gRXhwYW5kIHRoZSBCSVRfQ1RMIGRlZmluZXMgdG8gdXNlIHRoZSBuYW1pbmcgY29udmVu
+dGlvbiBvZiB0aGUgaGFyZHdhcmUsCj4+IGFuZCBleHBhbmQgdGhlIG1hc2tzIHRvIGNvdmVyIGFs
+bCBkb2N1bWVudGVkIGJpdHMuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IE1pa2UgRnJ5c2luZ2VyIDx2
+YXBpZXJAZ2VudG9vLm9yZz4KPj4gLS0tCj4+IMKgYXJjaC9ibGFja2Zpbi9pbmNsdWRlL2FzbS9i
+ZmluNXh4X3NwaS5oIHwgwqAgMTEgKysrKysrKy0tLS0KPj4gwqAxIGZpbGVzIGNoYW5nZWQsIDcg
+aW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYmxh
+Y2tmaW4vaW5jbHVkZS9hc20vYmZpbjV4eF9zcGkuaCBiL2FyY2gvYmxhY2tmaW4vaW5jbHVkZS9h
+c20vYmZpbjV4eF9zcGkuaAo+PiBpbmRleCBlZTNlY2I5Li4xMjZkMjVlIDEwMDY0NAo+PiAtLS0g
+YS9hcmNoL2JsYWNrZmluL2luY2x1ZGUvYXNtL2JmaW41eHhfc3BpLmgKPj4gKysrIGIvYXJjaC9i
+bGFja2Zpbi9pbmNsdWRlL2FzbS9iZmluNXh4X3NwaS5oCj4+IEBAIC0yNiwxMSArMjYsMTQgQEAK
+Pj4gwqAjZGVmaW5lIEJJVF9DVExfRU5BQkxFIMKgIMKgIMKgMHg0MDAwCj4+IMKgI2RlZmluZSBC
+SVRfQ1RMX09QRU5EUkFJTiDCoCAweDIwMDAKPj4gwqAjZGVmaW5lIEJJVF9DVExfTUFTVEVSIMKg
+IMKgIMKgMHgxMDAwCj4+IC0jZGVmaW5lIEJJVF9DVExfUE9MQVIgwqAgwqAgwqAgMHgwODAwCj4+
+IC0jZGVmaW5lIEJJVF9DVExfUEhBU0UgwqAgwqAgwqAgMHgwNDAwCj4+IC0jZGVmaW5lIEJJVF9D
+VExfQklUT1JERVIgwqAgwqAweDAyMDAKPj4gKyNkZWZpbmUgQklUX0NUTF9DUE9MIMKgIMKgIMKg
+IMKgMHgwODAwCj4+ICsjZGVmaW5lIEJJVF9DVExfQ1BIQSDCoCDCoCDCoCDCoDB4MDQwMAo+PiAr
+I2RlZmluZSBCSVRfQ1RMX0xTQkYgwqAgwqAgwqAgwqAweDAyMDAKPj4gwqAjZGVmaW5lIEJJVF9D
+VExfV09SRFNJWkUgwqAgwqAweDAxMDAKPj4gLSNkZWZpbmUgQklUX0NUTF9NSVNPRU5BQkxFIMKg
+MHgwMDIwCj4+ICsjZGVmaW5lIEJJVF9DVExfRU1JU08gwqAgwqAgwqAgMHgwMDIwCj4+ICsjZGVm
+aW5lIEJJVF9DVExfUFNTRSDCoCDCoCDCoCDCoDB4MDAxMAo+PiArI2RlZmluZSBCSVRfQ1RMX0dN
+IMKgIMKgIMKgIMKgIMKgMHgwMDA4Cj4+ICsjZGVmaW5lIEJJVF9DVExfU1ogwqAgwqAgwqAgwqAg
+wqAweDAwMDQKPj4gwqAjZGVmaW5lIEJJVF9DVExfUlhNT0QgwqAgwqAgwqAgMHgwMDAwCj4+IMKg
+I2RlZmluZSBCSVRfQ1RMX1RYTU9EIMKgIMKgIMKgIDB4MDAwMQo+PiDCoCNkZWZpbmUgQklUX0NU
+TF9USU1PRF9ETUFfVFggMHgwMDAzCj4KPiBDYW4gSSBhc3N1bWUgdGhhdCB0aGVzZSBjaGFuZ2Vk
+IHZhbHVlcyBhcmUgYXMtb2YtdGhpcy1wb2ludCB1bnVzZWQ/CgppZiB5b3UgbWVhbiB0aGUgb25l
+cyBpJ20gZGVsZXRpbmcgLT4geWVzCi1taWtlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fClVjbGludXgtZGlzdC1kZXZlbCBtYWlsaW5nIGxpc3QKVWNsaW51
+eC1kaXN0LWRldmVsQGJsYWNrZmluLnVjbGludXgub3JnCmh0dHBzOi8vYmxhY2tmaW4udWNsaW51
+eC5vcmcvbWFpbG1hbi9saXN0aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWw=

@@ -1,20 +1,20 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 14/28] Blackfin: SPI: expand SPI
-	bitmasks
-Date: Mon, 18 Oct 2010 00:04:16 -0600
-Message-ID: <20101018060416.GB19399@angua.secretlab.ca>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 11/28] Blackfin SPI: convert struct
+ names to something more logical
+Date: Mon, 18 Oct 2010 02:10:17 -0400
+Message-ID: <AANLkTimJtoRWL0auw1xHthXbkBc6L2b1ph18WZA+_PdY@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
-	<1287356381-31495-15-git-send-email-vapier@gentoo.org>
+	<1287356381-31495-12-git-send-email-vapier@gentoo.org>
+	<20101018060253.GA19399@angua.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1287356381-31495-15-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20101018060253.GA19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,44 +26,13 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Oct 17, 2010 at 06:59:27PM -0400, Mike Frysinger wrote:
-> Expand the BIT_CTL defines to use the naming convention of the hardware,
-> and expand the masks to cover all documented bits.
-> 
-> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-> ---
->  arch/blackfin/include/asm/bfin5xx_spi.h |   11 +++++++----
->  1 files changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/blackfin/include/asm/bfin5xx_spi.h b/arch/blackfin/include/asm/bfin5xx_spi.h
-> index ee3ecb9..126d25e 100644
-> --- a/arch/blackfin/include/asm/bfin5xx_spi.h
-> +++ b/arch/blackfin/include/asm/bfin5xx_spi.h
-> @@ -26,11 +26,14 @@
->  #define BIT_CTL_ENABLE      0x4000
->  #define BIT_CTL_OPENDRAIN   0x2000
->  #define BIT_CTL_MASTER      0x1000
-> -#define BIT_CTL_POLAR       0x0800
-> -#define BIT_CTL_PHASE       0x0400
-> -#define BIT_CTL_BITORDER    0x0200
-> +#define BIT_CTL_CPOL        0x0800
-> +#define BIT_CTL_CPHA        0x0400
-> +#define BIT_CTL_LSBF        0x0200
->  #define BIT_CTL_WORDSIZE    0x0100
-> -#define BIT_CTL_MISOENABLE  0x0020
-> +#define BIT_CTL_EMISO       0x0020
-> +#define BIT_CTL_PSSE        0x0010
-> +#define BIT_CTL_GM          0x0008
-> +#define BIT_CTL_SZ          0x0004
->  #define BIT_CTL_RXMOD       0x0000
->  #define BIT_CTL_TXMOD       0x0001
->  #define BIT_CTL_TIMOD_DMA_TX 0x0003
+On Mon, Oct 18, 2010 at 02:02, Grant Likely wrote:
+> On Sun, Oct 17, 2010 at 06:59:24PM -0400, Mike Frysinger wrote:
+>> -struct driver_data {
+>> +struct master_data {
+>
+> Or better yet, to protect against global collisions, bfin5xx_master perhaps?
 
-Can I assume that these changed values are as-of-this-point unused?
-Otherwise this patch has bisect issues.
-
-g.
-
-> -- 
-> 1.7.3.1
-> 
+i'd rather not.  there is too much "bfin5xx" stuff already which
+shouldnt exist.  what collision could there possibly be ?
+-mike

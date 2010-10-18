@@ -1,22 +1,19 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 28/28] Blackfin SPI: init early
-Date: Mon, 18 Oct 2010 00:21:24 -0600
-Message-ID: <20101018062124.GE19399@angua.secretlab.ca>
+Subject: Re: [PATCH 00/28] Blackfin SPI updates for
+	2.6.36
+Date: Mon, 18 Oct 2010 00:28:34 -0600
+Message-ID: <20101018062834.GG19399@angua.secretlab.ca>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
-	<1287356381-31495-29-git-send-email-vapier@gentoo.org>
-	<20101018061211.GC19399@angua.secretlab.ca>
-	<AANLkTi=AwuK8-U8+Ezm1JVrvD1Taqwq53EzahA5Ag4Uf@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <AANLkTi=AwuK8-U8+Ezm1JVrvD1Taqwq53EzahA5Ag4Uf-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1287356381-31495-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -28,38 +25,85 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 18, 2010 at 02:14:28AM -0400, Mike Frysinger wrote:
-> On Mon, Oct 18, 2010 at 02:12, Grant Likely wrote:
-> > On Sun, Oct 17, 2010 at 06:59:41PM -0400, Mike Frysinger wrote:
-> >> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> >>
-> >> Some systems using this bus sometimes have very basic devices on them
-> >> such as regulators. =A0So we need to be loaded even earlier in case the
-> >> devices are used before userspace is loaded. =A0Therefore register in
-> >> subsys_initcall().
-> >
-> > This shouldn't have anything to do with userspace since regardless of
-> > the initcall, all of this setup should be complete before userspace
-> > starts. =A0Rather I expect it has to do with an earlier initcall wanting
-> > to have the spi bus up earlier than module_initcall. =A0The description
-> > of this patch seems wrong.
-> =
+On Sun, Oct 17, 2010 at 06:59:13PM -0400, Mike Frysinger wrote:
+> Quite a bit here, but these patches have been around for a while.  The
+> reason they haven't been pushed up before was that some of the first
+> changes introduced known bugs themselves and needed some manual fixing.
+> 
+> Also, while some files touch Blackfin headers in arch/blackfin/, I'd
+> like to keep them in this series and merge through the SPI tree to keep
+> conflict issues down, as well as possible breakage due to desync.
+> 
+> These are also available in my 'for-spi' branch of my git tree:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/vapier/blackfin.git
 
-> probably.  it doesnt make the change wrong though.  many spi/i2c
-> busses do the same thing.
+On brief review, the series looks good with a couple of minor comments
+(already sent).
 
-Not saying it does.  Just asking for the commit log to be changed.
+For the spi branch that I push to Linus, I always use the prefix
+spi/<driver-name>.  If the patches in your branch also use that
+prefix, then I'd be happy to pull your tree directly instead of
+committing the patches myself.  Otherwise, I need to commit them
+manually.
 
-> =
+I *might* pick these up for .36, but it is very late for picking up
+stuff that hasn't had any linux-next exposure yet.
 
-> > On that note, this is something that needs to be revisited. =A0Needing
-> > to play these kind of games highlights a failure of the device model,
-> > or the way that it is being used. =A0(The patch is okay; but it does
-> > highlight some ugliness in the current kernel)
-> =
-
-> i agree, but i'm not about to embark on fixing these fundamental issues.
-
-Indeed.  I'm certainly not asking you to.  Just thinking out loud.  :-)
-
+Thanks,
 g.
+
+> 
+> Barry Song (6):
+>   Blackfin SPI: fix CS handling
+>   Blackfin SPI: redo GPIO CS handling
+>   Blackfin SPI: save/restore state when suspending/resuming
+>   Blackfin SPI: sync hardware state before reprogramming everything
+>   Blackfin SPI: use dma_disable_irq_nosync() in irq handler
+>   Blackfin SPI: warn when CS is driven by hardware (CPHA=0)
+> 
+> Bob Liu (1):
+>   Blackfin SPI: check per-transfer bits_per_word
+> 
+> Daniel Mack (1):
+>   Blackfin SPI: fix resources leakage
+> 
+> Michael Hennerich (1):
+>   Blackfin SPI: init early
+> 
+> Mike Frysinger (13):
+>   Blackfin SPI: drop custom cs_change_per_word support
+>   Blackfin SPI: punt useless null read/write funcs
+>   Blackfin SPI: fix up some unused/misleading comments
+>   Blackfin SPI: convert queue run state to true/false
+>   Blackfin SPI: convert read/write/duplex funcs to a dedicated ops
+>     structure
+>   Blackfin SPI: convert struct names to something more logical
+>   Blackfin SPI: drop extra memory we don't need
+>   Blackfin SPI: use the SPI namespaced bit names
+>   Blackfin: SPI: expand SPI bitmasks
+>   Blackfin SPI: push all size checks into the transfer function
+>   Blackfin SPI: reset ctl_reg bits when setup is run again on a device
+>   Blackfin SPI: combine duplicate SPI_CTL read/write logic
+>   Blackfin SPI: reject unsupported SPI modes
+> 
+> Rob Maris (2):
+>   Blackfin SPI: fix typo in comment
+>   Blackfin SPI: cs should be always low when a new transfer begins
+> 
+> Sonic Zhang (1):
+>   Blackfin SPI: work around anomaly 05000119
+> 
+> Wolfgang Muees (1):
+>   Blackfin SPI: force sane master-mode state at boot
+> 
+> Yi Li (2):
+>   Blackfin SPI: utilize the SPI interrupt in PIO mode
+>   Blackfin SPI: use nosync when disabling the IRQ from the IRQ handler
+> 
+>  arch/blackfin/include/asm/bfin5xx_spi.h |   81 +---
+>  drivers/spi/spi_bfin5xx.c               |  839 ++++++++++++++++---------------
+>  2 files changed, 441 insertions(+), 479 deletions(-)
+> 
+> -- 
+> 1.7.3.1
+> 

@@ -1,20 +1,20 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 28/28] Blackfin SPI: init early
-Date: Mon, 18 Oct 2010 00:12:11 -0600
-Message-ID: <20101018061211.GC19399@angua.secretlab.ca>
+Date: Mon, 18 Oct 2010 02:14:28 -0400
+Message-ID: <AANLkTi=AwuK8-U8+Ezm1JVrvD1Taqwq53EzahA5Ag4Uf@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 	<1287356381-31495-29-git-send-email-vapier@gentoo.org>
+	<20101018061211.GC19399@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1287356381-31495-29-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20101018061211.GC19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,47 +26,27 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Oct 17, 2010 at 06:59:41PM -0400, Mike Frysinger wrote:
-> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> 
-> Some systems using this bus sometimes have very basic devices on them
-> such as regulators.  So we need to be loaded even earlier in case the
-> devices are used before userspace is loaded.  Therefore register in
-> subsys_initcall().
-
-This shouldn't have anything to do with userspace since regardless of
-the initcall, all of this setup should be complete before userspace
-starts.  Rather I expect it has to do with an earlier initcall wanting
-to have the spi bus up earlier than module_initcall.  The description
-of this patch seems wrong.
-
-On that note, this is something that needs to be revisited.  Needing
-to play these kind of games highlights a failure of the device model,
-or the way that it is being used.  (The patch is okay; but it does
-highlight some ugliness in the current kernel)
-
-g.
-
-> 
-> Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi_bfin5xx.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-> index bd18214..d17ab37 100644
-> --- a/drivers/spi/spi_bfin5xx.c
-> +++ b/drivers/spi/spi_bfin5xx.c
-> @@ -1466,7 +1466,7 @@ static int __init bfin_spi_init(void)
->  {
->  	return platform_driver_probe(&bfin_spi_driver, bfin_spi_probe);
->  }
-> -module_init(bfin_spi_init);
-> +subsys_initcall(bfin_spi_init);
->  
->  static void __exit bfin_spi_exit(void)
->  {
-> -- 
-> 1.7.3.1
-> 
+T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MTIsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBT
+dW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OTo0MVBNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gRnJvbTogTWljaGFlbCBIZW5uZXJpY2ggPG1pY2hhZWwuaGVubmVyaWNoQGFuYWxvZy5j
+b20+Cj4+Cj4+IFNvbWUgc3lzdGVtcyB1c2luZyB0aGlzIGJ1cyBzb21ldGltZXMgaGF2ZSB2ZXJ5
+IGJhc2ljIGRldmljZXMgb24gdGhlbQo+PiBzdWNoIGFzIHJlZ3VsYXRvcnMuIMKgU28gd2UgbmVl
+ZCB0byBiZSBsb2FkZWQgZXZlbiBlYXJsaWVyIGluIGNhc2UgdGhlCj4+IGRldmljZXMgYXJlIHVz
+ZWQgYmVmb3JlIHVzZXJzcGFjZSBpcyBsb2FkZWQuIMKgVGhlcmVmb3JlIHJlZ2lzdGVyIGluCj4+
+IHN1YnN5c19pbml0Y2FsbCgpLgo+Cj4gVGhpcyBzaG91bGRuJ3QgaGF2ZSBhbnl0aGluZyB0byBk
+byB3aXRoIHVzZXJzcGFjZSBzaW5jZSByZWdhcmRsZXNzIG9mCj4gdGhlIGluaXRjYWxsLCBhbGwg
+b2YgdGhpcyBzZXR1cCBzaG91bGQgYmUgY29tcGxldGUgYmVmb3JlIHVzZXJzcGFjZQo+IHN0YXJ0
+cy4gwqBSYXRoZXIgSSBleHBlY3QgaXQgaGFzIHRvIGRvIHdpdGggYW4gZWFybGllciBpbml0Y2Fs
+bCB3YW50aW5nCj4gdG8gaGF2ZSB0aGUgc3BpIGJ1cyB1cCBlYXJsaWVyIHRoYW4gbW9kdWxlX2lu
+aXRjYWxsLiDCoFRoZSBkZXNjcmlwdGlvbgo+IG9mIHRoaXMgcGF0Y2ggc2VlbXMgd3JvbmcuCgpw
+cm9iYWJseS4gIGl0IGRvZXNudCBtYWtlIHRoZSBjaGFuZ2Ugd3JvbmcgdGhvdWdoLiAgbWFueSBz
+cGkvaTJjCmJ1c3NlcyBkbyB0aGUgc2FtZSB0aGluZy4KCj4gT24gdGhhdCBub3RlLCB0aGlzIGlz
+IHNvbWV0aGluZyB0aGF0IG5lZWRzIHRvIGJlIHJldmlzaXRlZC4gwqBOZWVkaW5nCj4gdG8gcGxh
+eSB0aGVzZSBraW5kIG9mIGdhbWVzIGhpZ2hsaWdodHMgYSBmYWlsdXJlIG9mIHRoZSBkZXZpY2Ug
+bW9kZWwsCj4gb3IgdGhlIHdheSB0aGF0IGl0IGlzIGJlaW5nIHVzZWQuIMKgKFRoZSBwYXRjaCBp
+cyBva2F5OyBidXQgaXQgZG9lcwo+IGhpZ2hsaWdodCBzb21lIHVnbGluZXNzIGluIHRoZSBjdXJy
+ZW50IGtlcm5lbCkKCmkgYWdyZWUsIGJ1dCBpJ20gbm90IGFib3V0IHRvIGVtYmFyayBvbiBmaXhp
+bmcgdGhlc2UgZnVuZGFtZW50YWwgaXNzdWVzLgotbWlrZQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpVY2xpbnV4LWRpc3QtZGV2ZWwgbWFpbGluZyBsaXN0
+ClVjbGludXgtZGlzdC1kZXZlbEBibGFja2Zpbi51Y2xpbnV4Lm9yZwpodHRwczovL2JsYWNrZmlu
+LnVjbGludXgub3JnL21haWxtYW4vbGlzdGluZm8vdWNsaW51eC1kaXN0LWRldmVs

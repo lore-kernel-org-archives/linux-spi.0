@@ -1,24 +1,19 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 11/28] Blackfin SPI: convert struct
- names to something more logical
-Date: Mon, 18 Oct 2010 00:31:44 -0600
-Message-ID: <20101018063144.GI19399@angua.secretlab.ca>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 00/28] Blackfin SPI updates for
+	2.6.36
+Date: Mon, 18 Oct 2010 02:34:43 -0400
+Message-ID: <AANLkTims9Z+XGXMdcAH53OBO=S9aYiszxHczmsTn06Gd@mail.gmail.com>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
-	<1287356381-31495-12-git-send-email-vapier@gentoo.org>
-	<20101018060253.GA19399@angua.secretlab.ca>
-	<AANLkTimJtoRWL0auw1xHthXbkBc6L2b1ph18WZA+_PdY@mail.gmail.com>
-	<20101018062025.GD19399@angua.secretlab.ca>
-	<AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9@mail.gmail.com>
+	<20101018062834.GG19399@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20101018062834.GG19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -30,40 +25,32 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 18, 2010 at 02:28:23AM -0400, Mike Frysinger wrote:
-> On Mon, Oct 18, 2010 at 02:20, Grant Likely wrote:
-> > On Mon, Oct 18, 2010 at 02:10:17AM -0400, Mike Frysinger wrote:
-> >> On Mon, Oct 18, 2010 at 02:02, Grant Likely wrote:
-> >> > On Sun, Oct 17, 2010 at 06:59:24PM -0400, Mike Frysinger wrote:
-> >> >> -struct driver_data {
-> >> >> +struct master_data {
-> >> >
-> >> > Or better yet, to protect against global collisions, bfin5xx_master =
-perhaps?
-> >>
-> >> i'd rather not. =A0there is too much "bfin5xx" stuff already which
-> >> shouldnt exist. =A0what collision could there possibly be ?
-> >
-> > For driver code, anything at the file scope has a potential conflict
-> > with the global scope. =A0If any header in include/linux were to define
-> > a "master_data" or a "slave_data" structure, (those are pretty generic
-> > names, it is well within the realm of possibilities) then it would
-> > conflict.
-> =
-
-> i dont think generic names like that would be allowed in global space
-> for this exact reason.  ive already made sure all the data/function
-> symbols that are visible from a linkage stand point are properly
-> namespaced because unlike structures, those are externally visible by
-> tools such as kallsyms.
-> =
-
-> i'd really prefer to not have to redo all these patches considering
-> this one change will cascade into like 20 others.  i'd be a lot more
-> amendable to a patch on top of all of these that namespaces the
-> structs.
-> -mike
-
-I'm okay with a patch on top.
-
-g.
+T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MjgsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBT
+dW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OToxM1BNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gUXVpdGUgYSBiaXQgaGVyZSwgYnV0IHRoZXNlIHBhdGNoZXMgaGF2ZSBiZWVuIGFyb3Vu
+ZCBmb3IgYSB3aGlsZS4gwqBUaGUKPj4gcmVhc29uIHRoZXkgaGF2ZW4ndCBiZWVuIHB1c2hlZCB1
+cCBiZWZvcmUgd2FzIHRoYXQgc29tZSBvZiB0aGUgZmlyc3QKPj4gY2hhbmdlcyBpbnRyb2R1Y2Vk
+IGtub3duIGJ1Z3MgdGhlbXNlbHZlcyBhbmQgbmVlZGVkIHNvbWUgbWFudWFsIGZpeGluZy4KPj4K
+Pj4gQWxzbywgd2hpbGUgc29tZSBmaWxlcyB0b3VjaCBCbGFja2ZpbiBoZWFkZXJzIGluIGFyY2gv
+YmxhY2tmaW4vLCBJJ2QKPj4gbGlrZSB0byBrZWVwIHRoZW0gaW4gdGhpcyBzZXJpZXMgYW5kIG1l
+cmdlIHRocm91Z2ggdGhlIFNQSSB0cmVlIHRvIGtlZXAKPj4gY29uZmxpY3QgaXNzdWVzIGRvd24s
+IGFzIHdlbGwgYXMgcG9zc2libGUgYnJlYWthZ2UgZHVlIHRvIGRlc3luYy4KPj4KPj4gVGhlc2Ug
+YXJlIGFsc28gYXZhaWxhYmxlIGluIG15ICdmb3Itc3BpJyBicmFuY2ggb2YgbXkgZ2l0IHRyZWU6
+Cj4+IMKgIMKgIMKgIGdpdDovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dp
+dC92YXBpZXIvYmxhY2tmaW4uZ2l0Cj4KPiBPbiBicmllZiByZXZpZXcsIHRoZSBzZXJpZXMgbG9v
+a3MgZ29vZCB3aXRoIGEgY291cGxlIG9mIG1pbm9yIGNvbW1lbnRzCj4gKGFscmVhZHkgc2VudCku
+Cj4KPiBGb3IgdGhlIHNwaSBicmFuY2ggdGhhdCBJIHB1c2ggdG8gTGludXMsIEkgYWx3YXlzIHVz
+ZSB0aGUgcHJlZml4Cj4gc3BpLzxkcml2ZXItbmFtZT4uIMKgSWYgdGhlIHBhdGNoZXMgaW4geW91
+ciBicmFuY2ggYWxzbyB1c2UgdGhhdAo+IHByZWZpeCwgdGhlbiBJJ2QgYmUgaGFwcHkgdG8gcHVs
+bCB5b3VyIHRyZWUgZGlyZWN0bHkgaW5zdGVhZCBvZgo+IGNvbW1pdHRpbmcgdGhlIHBhdGNoZXMg
+bXlzZWxmLiDCoE90aGVyd2lzZSwgSSBuZWVkIHRvIGNvbW1pdCB0aGVtCj4gbWFudWFsbHkuCgpt
+ZXJnZWQgcGF0Y2hlcyB0aHVzIGZhciBoYXZlIHVzZWQgdGhlIGNvbnZlbnRpb24gaSBwaWNrZWQg
+aGVyZSwgYnV0IGkKZG9udCBoYXZlIGEgcHJvYmxlbSB3aXRoIGNoYW5naW5nIHRoZW0uCgo+IEkg
+Km1pZ2h0KiBwaWNrIHRoZXNlIHVwIGZvciAuMzYsIGJ1dCBpdCBpcyB2ZXJ5IGxhdGUgZm9yIHBp
+Y2tpbmcgdXAKPiBzdHVmZiB0aGF0IGhhc24ndCBoYWQgYW55IGxpbnV4LW5leHQgZXhwb3N1cmUg
+eWV0LgoKdGhlc2UgaXNzdWVzIGhhdmUgYmVlbiBhcm91bmQgZm9yIHNvIGxvbmcgdGhhdCBtaXNz
+aW5nIGFub3RoZXIgMi42LngKaXMgZmluZS4gIGFzIGxvbmcgYXMgdGhleSdyZSBpbiAyLjYuMzcg
+OykuCi1taWtlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+ClVjbGludXgtZGlzdC1kZXZlbCBtYWlsaW5nIGxpc3QKVWNsaW51eC1kaXN0LWRldmVsQGJsYWNr
+ZmluLnVjbGludXgub3JnCmh0dHBzOi8vYmxhY2tmaW4udWNsaW51eC5vcmcvbWFpbG1hbi9saXN0
+aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWw=

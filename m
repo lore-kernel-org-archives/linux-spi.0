@@ -1,22 +1,24 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 11/28] Blackfin SPI: convert struct
  names to something more logical
-Date: Mon, 18 Oct 2010 02:28:23 -0400
-Message-ID: <AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9@mail.gmail.com>
+Date: Mon, 18 Oct 2010 00:31:44 -0600
+Message-ID: <20101018063144.GI19399@angua.secretlab.ca>
 References: <1287356381-31495-1-git-send-email-vapier@gentoo.org>
 	<1287356381-31495-12-git-send-email-vapier@gentoo.org>
 	<20101018060253.GA19399@angua.secretlab.ca>
 	<AANLkTimJtoRWL0auw1xHthXbkBc6L2b1ph18WZA+_PdY@mail.gmail.com>
 	<20101018062025.GD19399@angua.secretlab.ca>
+	<AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <20101018062025.GD19399-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTi=pBYVLCYVtwd3L=O31O4FxOPwQLJQK5WUkdRS9-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -28,30 +30,40 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MjAsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBN
-b24sIE9jdCAxOCwgMjAxMCBhdCAwMjoxMDoxN0FNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
-ZToKPj4gT24gTW9uLCBPY3QgMTgsIDIwMTAgYXQgMDI6MDIsIEdyYW50IExpa2VseSB3cm90ZToK
-Pj4gPiBPbiBTdW4sIE9jdCAxNywgMjAxMCBhdCAwNjo1OToyNFBNIC0wNDAwLCBNaWtlIEZyeXNp
-bmdlciB3cm90ZToKPj4gPj4gLXN0cnVjdCBkcml2ZXJfZGF0YSB7Cj4+ID4+ICtzdHJ1Y3QgbWFz
-dGVyX2RhdGEgewo+PiA+Cj4+ID4gT3IgYmV0dGVyIHlldCwgdG8gcHJvdGVjdCBhZ2FpbnN0IGds
-b2JhbCBjb2xsaXNpb25zLCBiZmluNXh4X21hc3RlciBwZXJoYXBzPwo+Pgo+PiBpJ2QgcmF0aGVy
-IG5vdC4gwqB0aGVyZSBpcyB0b28gbXVjaCAiYmZpbjV4eCIgc3R1ZmYgYWxyZWFkeSB3aGljaAo+
-PiBzaG91bGRudCBleGlzdC4gwqB3aGF0IGNvbGxpc2lvbiBjb3VsZCB0aGVyZSBwb3NzaWJseSBi
-ZSA/Cj4KPiBGb3IgZHJpdmVyIGNvZGUsIGFueXRoaW5nIGF0IHRoZSBmaWxlIHNjb3BlIGhhcyBh
-IHBvdGVudGlhbCBjb25mbGljdAo+IHdpdGggdGhlIGdsb2JhbCBzY29wZS4gwqBJZiBhbnkgaGVh
-ZGVyIGluIGluY2x1ZGUvbGludXggd2VyZSB0byBkZWZpbmUKPiBhICJtYXN0ZXJfZGF0YSIgb3Ig
-YSAic2xhdmVfZGF0YSIgc3RydWN0dXJlLCAodGhvc2UgYXJlIHByZXR0eSBnZW5lcmljCj4gbmFt
-ZXMsIGl0IGlzIHdlbGwgd2l0aGluIHRoZSByZWFsbSBvZiBwb3NzaWJpbGl0aWVzKSB0aGVuIGl0
-IHdvdWxkCj4gY29uZmxpY3QuCgppIGRvbnQgdGhpbmsgZ2VuZXJpYyBuYW1lcyBsaWtlIHRoYXQg
-d291bGQgYmUgYWxsb3dlZCBpbiBnbG9iYWwgc3BhY2UKZm9yIHRoaXMgZXhhY3QgcmVhc29uLiAg
-aXZlIGFscmVhZHkgbWFkZSBzdXJlIGFsbCB0aGUgZGF0YS9mdW5jdGlvbgpzeW1ib2xzIHRoYXQg
-YXJlIHZpc2libGUgZnJvbSBhIGxpbmthZ2Ugc3RhbmQgcG9pbnQgYXJlIHByb3Blcmx5Cm5hbWVz
-cGFjZWQgYmVjYXVzZSB1bmxpa2Ugc3RydWN0dXJlcywgdGhvc2UgYXJlIGV4dGVybmFsbHkgdmlz
-aWJsZSBieQp0b29scyBzdWNoIGFzIGthbGxzeW1zLgoKaSdkIHJlYWxseSBwcmVmZXIgdG8gbm90
-IGhhdmUgdG8gcmVkbyBhbGwgdGhlc2UgcGF0Y2hlcyBjb25zaWRlcmluZwp0aGlzIG9uZSBjaGFu
-Z2Ugd2lsbCBjYXNjYWRlIGludG8gbGlrZSAyMCBvdGhlcnMuICBpJ2QgYmUgYSBsb3QgbW9yZQph
-bWVuZGFibGUgdG8gYSBwYXRjaCBvbiB0b3Agb2YgYWxsIG9mIHRoZXNlIHRoYXQgbmFtZXNwYWNl
-cyB0aGUKc3RydWN0cy4KLW1pa2UKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xpbnV4LWRpc3Qt
-ZGV2ZWxAYmxhY2tmaW4udWNsaW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xpbnV4Lm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL3VjbGludXgtZGlzdC1kZXZlbA==
+On Mon, Oct 18, 2010 at 02:28:23AM -0400, Mike Frysinger wrote:
+> On Mon, Oct 18, 2010 at 02:20, Grant Likely wrote:
+> > On Mon, Oct 18, 2010 at 02:10:17AM -0400, Mike Frysinger wrote:
+> >> On Mon, Oct 18, 2010 at 02:02, Grant Likely wrote:
+> >> > On Sun, Oct 17, 2010 at 06:59:24PM -0400, Mike Frysinger wrote:
+> >> >> -struct driver_data {
+> >> >> +struct master_data {
+> >> >
+> >> > Or better yet, to protect against global collisions, bfin5xx_master =
+perhaps?
+> >>
+> >> i'd rather not. =A0there is too much "bfin5xx" stuff already which
+> >> shouldnt exist. =A0what collision could there possibly be ?
+> >
+> > For driver code, anything at the file scope has a potential conflict
+> > with the global scope. =A0If any header in include/linux were to define
+> > a "master_data" or a "slave_data" structure, (those are pretty generic
+> > names, it is well within the realm of possibilities) then it would
+> > conflict.
+> =
+
+> i dont think generic names like that would be allowed in global space
+> for this exact reason.  ive already made sure all the data/function
+> symbols that are visible from a linkage stand point are properly
+> namespaced because unlike structures, those are externally visible by
+> tools such as kallsyms.
+> =
+
+> i'd really prefer to not have to redo all these patches considering
+> this one change will cascade into like 20 others.  i'd be a lot more
+> amendable to a patch on top of all of these that namespaces the
+> structs.
+> -mike
+
+I'm okay with a patch on top.
+
+g.

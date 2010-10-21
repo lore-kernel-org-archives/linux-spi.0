@@ -1,12 +1,11 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi/pl022: fix erroneous platform data in U300
-Date: Thu, 21 Oct 2010 21:05:25 +0200
-Message-ID: <1287687925-27189-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH] spi: fixed some core weirdness
+Date: Thu, 21 Oct 2010 21:06:44 +0200
+Message-ID: <1287688004-27410-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -20,29 +19,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This fixes an erroneous use of LSB first in the U300 machine, the
-PL022 used in U300 is a standard ARM core that doesn't support this
-bit so it should never have been set.
+Those things in the SPI core just strike me as particularly odd:
+dev_dbg() used in an obvious error branch, and then two hardcoded
+strings passed in as parameters.
 
-Cc: Kevin Wells <wellsk40-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>OA
 Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 ---
- arch/arm/mach-u300/spi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-u300/spi.c b/arch/arm/mach-u300/spi.c
-index 779abf7..5767208 100644
---- a/arch/arm/mach-u300/spi.c
-+++ b/arch/arm/mach-u300/spi.c
-@@ -67,7 +67,7 @@ static struct spi_board_info u300_spi_devices[] = {
- 		.bus_num        = 0, /* Only one bus on this chip */
- 		.chip_select    = 0,
- 		/* Means SPI_CS_HIGH, change if e.g low CS */
--		.mode           = SPI_MODE_1 | SPI_LSB_FIRST | SPI_LOOP,
-+		.mode           = SPI_MODE_1 | SPI_LOOP,
- 	},
- #endif
- };
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b5a78a1..fcaa200 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -300,16 +300,16 @@ int spi_add_device(struct spi_device *spi)
+ 	 */
+ 	status = spi_setup(spi);
+ 	if (status < 0) {
+-		dev_err(dev, "can't %s %s, status %d\n",
+-				"setup", dev_name(&spi->dev), status);
++		dev_err(dev, "can't setup %s, status %d\n",
++				dev_name(&spi->dev), status);
+ 		goto done;
+ 	}
+ 
+ 	/* Device may be bound to an active driver when this returns */
+ 	status = device_add(&spi->dev);
+ 	if (status < 0)
+-		dev_err(dev, "can't %s %s, status %d\n",
+-				"add", dev_name(&spi->dev), status);
++		dev_err(dev, "can't add %s, status %d\n",
++				dev_name(&spi->dev), status);
+ 	else
+ 		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
+ 
+@@ -652,7 +652,7 @@ int spi_setup(struct spi_device *spi)
+ 	 */
+ 	bad_bits = spi->mode & ~spi->master->mode_bits;
+ 	if (bad_bits) {
+-		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
++		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+ 			bad_bits);
+ 		return -EINVAL;
+ 	}
 -- 
 1.6.3.3
 

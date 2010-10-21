@@ -1,74 +1,126 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi: fixed some core weirdness
-Date: Thu, 21 Oct 2010 21:06:44 +0200
-Message-ID: <1287688004-27410-1-git-send-email-linus.walleij@stericsson.com>
+From: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH v2 00/12] tnetv107x ssp driver stack
+Date: Thu, 21 Oct 2010 12:09:43 -0700
+Message-ID: <87fwvzuzuw.fsf@deeprootsystems.com>
+References: <1287429922-18870-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+        grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
+To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1287429922-18870-1-git-send-email-cyril-l0cyMroinI0@public.gmane.org> (Cyril
+	Chemparathy's message of "Mon, 18 Oct 2010 15:25:10 -0400")
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Those things in the SPI core just strike me as particularly odd:
-dev_dbg() used in an obvious error branch, and then two hardcoded
-strings passed in as parameters.
+Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> writes:
 
-Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
----
- drivers/spi/spi.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+> TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+> device.  It has a built-in programmable execution engine that can be programmed
+> to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b5a78a1..fcaa200 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -300,16 +300,16 @@ int spi_add_device(struct spi_device *spi)
- 	 */
- 	status = spi_setup(spi);
- 	if (status < 0) {
--		dev_err(dev, "can't %s %s, status %d\n",
--				"setup", dev_name(&spi->dev), status);
-+		dev_err(dev, "can't setup %s, status %d\n",
-+				dev_name(&spi->dev), status);
- 		goto done;
- 	}
- 
- 	/* Device may be bound to an active driver when this returns */
- 	status = device_add(&spi->dev);
- 	if (status < 0)
--		dev_err(dev, "can't %s %s, status %d\n",
--				"add", dev_name(&spi->dev), status);
-+		dev_err(dev, "can't add %s, status %d\n",
-+				dev_name(&spi->dev), status);
- 	else
- 		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
- 
-@@ -652,7 +652,7 @@ int spi_setup(struct spi_device *spi)
- 	 */
- 	bad_bits = spi->mode & ~spi->master->mode_bits;
- 	if (bad_bits) {
--		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
-+		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
- 			bad_bits);
- 		return -EINVAL;
- 	}
--- 
-1.6.3.3
+Hi Cyril,
+
+Can you do one more posting, including the acks from the subsystem
+maintainers so far, and posting also to LKML and
+linux-arm-kernel-IAPFreCvJWM7uuMidbF8XZu6nac5fYnt@public.gmane.org
+
+Also the backlight driver needs a review/ack from Richard Purdie (search
+for drivers/video/backlight in MAINTAINERS).
+
+With acks from all the subsystem maintainers, I think it makes sense to
+merge all of these together via the davinci tree.   At the moment, I'm
+not sure who the final authority on the drivers/misc stuff is, but I
+will ask in response to your updated posting.
+
+Thanks,
+
+Kevin
 
 
-------------------------------------------------------------------------------
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
-http://p.sf.net/sfu/nokia-dev2dev
+> This patch series implements a driver stack that looks like the following:
+>
+>                              +--------+
+>                              | eeprom | . . .
+>                              +--------+
+>    +-----------+             +--------------+ +---------+
+>    | regulator | . . .       |   i2c-gpio   | | 1-wire  | . . .
+>    +-----------+             +--------------+ +---------+
+>    +----------------------+  +--------------------------------+
+>    |       ssp-spi        |  |           ssp-gpio             |
+>    +----------------------+  +--------------------------------+
+>    +----------------------------------------------------------+
+>    |                            ssp                           |
+>    +----------------------------------------------------------+
+>
+>
+> Changes between v1 and v2 of this series:
+>
+>   - Replaced open()/close() semantics with dynamic platform_device
+>     registration on SSP probe.
+>
+>   - Removed user-land interface to regulator registers
+>
+>   - More sensible regulator constraints
+>
+>   - Other minor cleanups
+>
+>
+> Cyril Chemparathy (12):
+>   misc: add driver for sequencer serial port
+>   davinci: add tnetv107x ssp platform device
+>   davinci: add ssp config for tnetv107x evm board
+>   spi: add ti-ssp spi master driver
+>   davinci: add spi devices on tnetv107x evm
+>   regulator: add driver for tps6524x regulator
+>   davinci: add tnetv107x evm regulators
+>   gpio: add ti-ssp virtual gpio driver
+>   davinci: add tnetv107x evm ti-ssp gpio device
+>   backlight: add support for tps6116x controller
+>   davinci: add tnetv107x evm backlight device
+>   davinci: add tnetv107x evm i2c eeprom device
+>
+>  arch/arm/mach-davinci/board-tnetv107x-evm.c    |  199 +++++++
+>  arch/arm/mach-davinci/devices-tnetv107x.c      |   25 +
+>  arch/arm/mach-davinci/include/mach/ti_ssp.h    |   99 ++++
+>  arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+>  arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+>  drivers/gpio/Kconfig                           |   10 +
+>  drivers/gpio/Makefile                          |    1 +
+>  drivers/gpio/ti-ssp-gpio.c                     |  200 +++++++
+>  drivers/misc/Kconfig                           |   11 +
+>  drivers/misc/Makefile                          |    1 +
+>  drivers/misc/ti_ssp.c                          |  436 +++++++++++++++
+>  drivers/regulator/Kconfig                      |   10 +
+>  drivers/regulator/Makefile                     |    1 +
+>  drivers/regulator/tps6524x-regulator.c         |  692 ++++++++++++++++++++++++
+>  drivers/spi/Kconfig                            |    6 +
+>  drivers/spi/Makefile                           |    1 +
+>  drivers/spi/spi_ti_ssp.c                       |  397 ++++++++++++++
+>  drivers/video/backlight/Kconfig                |    7 +
+>  drivers/video/backlight/Makefile               |    2 +-
+>  drivers/video/backlight/tps6116x.c             |  340 ++++++++++++
+>  20 files changed, 2440 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm/mach-davinci/include/mach/ti_ssp.h
+>  create mode 100644 drivers/gpio/ti-ssp-gpio.c
+>  create mode 100644 drivers/misc/ti_ssp.c
+>  create mode 100644 drivers/regulator/tps6524x-regulator.c
+>  create mode 100644 drivers/spi/spi_ti_ssp.c
+>  create mode 100644 drivers/video/backlight/tps6116x.c
+>
+> _______________________________________________
+> Davinci-linux-open-source mailing list
+> Davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source

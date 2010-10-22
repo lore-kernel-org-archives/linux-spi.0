@@ -1,20 +1,20 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 1/2] spi/bfin_spi: only request
-	GPIO on first load
-Date: Fri, 22 Oct 2010 00:30:04 -0600
-Message-ID: <20101022063004.GA3311@angua.secretlab.ca>
+ GPIO on first load
+Date: Fri, 22 Oct 2010 02:41:12 -0400
+Message-ID: <AANLkTi=-yDBTJPhSgP7XjaKpqp7T+=inf5F1DCMZT4CZ@mail.gmail.com>
 References: <1287727308-26653-1-git-send-email-vapier@gentoo.org>
+	<20101022063004.GA3311@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
         uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1287727308-26653-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20101022063004.GA3311-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -26,52 +26,22 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 22, 2010 at 02:01:47AM -0400, Mike Frysinger wrote:
-> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> 
-> The gpiolib code does not allow people to do gpio_request() on a GPIO
-> once it has already been requested.  So make sure we only request the
-> pin on the first setup of a SPI device.  Otherwise, if you attempts to
-> reconfigure a SPI device on the fly (like change bit sizes), the setup
-> function incorrectly fails.
-> 
-> Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-
-Doesn't that mean that the gpio pin be requested at device probe time
-instead of in a function that can be repeatedly called?
-
-g.
-
-> ---
->  drivers/spi/spi_bfin5xx.c |   13 ++++++++-----
->  1 files changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-> index ab483a0..a8f276d 100644
-> --- a/drivers/spi/spi_bfin5xx.c
-> +++ b/drivers/spi/spi_bfin5xx.c
-> @@ -1099,12 +1099,15 @@ static int bfin_spi_setup(struct spi_device *spi)
->  	}
->  
->  	if (chip->chip_select_num >= MAX_CTRL_CS) {
-> -		ret = gpio_request(chip->cs_gpio, spi->modalias);
-> -		if (ret) {
-> -			dev_err(&spi->dev, "gpio_request() error\n");
-> -			goto pin_error;
-> +		/* Only request on first setup */
-> +		if (spi_get_ctldata(spi) == NULL) {
-> +			ret = gpio_request(chip->cs_gpio, spi->modalias);
-> +			if (ret) {
-> +				dev_err(&spi->dev, "gpio_request() error\n");
-> +				goto pin_error;
-> +			}
-> +			gpio_direction_output(chip->cs_gpio, 1);
->  		}
-> -		gpio_direction_output(chip->cs_gpio, 1);
->  	}
->  
->  	dev_dbg(&spi->dev, "setup spi chip %s, width is %d, dma is %d\n",
-> -- 
-> 1.7.3.1
-> 
+T24gRnJpLCBPY3QgMjIsIDIwMTAgYXQgMDI6MzAsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBG
+cmksIE9jdCAyMiwgMjAxMCBhdCAwMjowMTo0N0FNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gRnJvbTogTWljaGFlbCBIZW5uZXJpY2ggPG1pY2hhZWwuaGVubmVyaWNoQGFuYWxvZy5j
+b20+Cj4+Cj4+IFRoZSBncGlvbGliIGNvZGUgZG9lcyBub3QgYWxsb3cgcGVvcGxlIHRvIGRvIGdw
+aW9fcmVxdWVzdCgpIG9uIGEgR1BJTwo+PiBvbmNlIGl0IGhhcyBhbHJlYWR5IGJlZW4gcmVxdWVz
+dGVkLiDCoFNvIG1ha2Ugc3VyZSB3ZSBvbmx5IHJlcXVlc3QgdGhlCj4+IHBpbiBvbiB0aGUgZmly
+c3Qgc2V0dXAgb2YgYSBTUEkgZGV2aWNlLiDCoE90aGVyd2lzZSwgaWYgeW91IGF0dGVtcHRzIHRv
+Cj4+IHJlY29uZmlndXJlIGEgU1BJIGRldmljZSBvbiB0aGUgZmx5IChsaWtlIGNoYW5nZSBiaXQg
+c2l6ZXMpLCB0aGUgc2V0dXAKPj4gZnVuY3Rpb24gaW5jb3JyZWN0bHkgZmFpbHMuCj4KPiBEb2Vz
+bid0IHRoYXQgbWVhbiB0aGF0IHRoZSBncGlvIHBpbiBiZSByZXF1ZXN0ZWQgYXQgZGV2aWNlIHBy
+b2JlIHRpbWUKPiBpbnN0ZWFkIG9mIGluIGEgZnVuY3Rpb24gdGhhdCBjYW4gYmUgcmVwZWF0ZWRs
+eSBjYWxsZWQ/Cgpub3Qgc3VyZSB3aGF0IHlvdSBtZWFuLiAgdGhpcyBpcyBhIHBpbiBzcGVjaWZp
+YyB0byBhIHNwaSBzbGF2ZSBkZXZpY2UuCiB0aGVyZSBpcyBubyAic3BpIHByb2JlIiBmdW5jdGlv
+biBmb3Igc3BpIHNsYXZlIGRldmljZXMsIG9ubHkgdGhlICJzcGkKc2V0dXAiIGZ1bmN0aW9uLgoK
+aWYgdGhlcmUncyBzb21ldGhpbmcgc3BlY2lmaWMgeW91J3JlIHJlZmVycmluZyB0bywgeW91J2xs
+IGhhdmUgdG8gZWxhYm9yYXRlIC4uLgotbWlrZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpVY2xpbnV4LWRpc3QtZGV2ZWwgbWFpbGluZyBsaXN0ClVjbGlu
+dXgtZGlzdC1kZXZlbEBibGFja2Zpbi51Y2xpbnV4Lm9yZwpodHRwczovL2JsYWNrZmluLnVjbGlu
+dXgub3JnL21haWxtYW4vbGlzdGluZm8vdWNsaW51eC1kaXN0LWRldmVs

@@ -1,20 +1,16 @@
-From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [PATCH v3 01/12] misc: add driver for sequencer serial port
-Date: Fri, 22 Oct 2010 15:20:24 +0100
-Message-ID: <20101022152024.65e8f181@lxorguk.ukuu.org.uk>
-References: <1287694873-12904-1-git-send-email-cyril@ti.com>
-	<1287694873-12904-2-git-send-email-cyril@ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: fixed some core weirdness
+Date: Fri, 22 Oct 2010 10:43:43 -0600
+Message-ID: <20101022164343.GA20713@angua.secretlab.ca>
+References: <1287688004-27410-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
-To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1287694873-12904-2-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1287688004-27410-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,20 +21,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 21 Oct 2010 17:01:02 -0400
-Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> wrote:
-
-> TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
-> device.  It has a built-in programmable execution engine that can be programmed
-> to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
+On Thu, Oct 21, 2010 at 09:06:44PM +0200, Linus Walleij wrote:
+> Those things in the SPI core just strike me as particularly odd:
+> dev_dbg() used in an obvious error branch, and then two hardcoded
+> strings passed in as parameters.
 > 
-> This patch adds a driver for this controller device.  The driver does not
-> expose a user-land interface.  Protocol drivers built on top of this layer are
-> expected to remain in-kernel.
+> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-I suspect the driver belongs with the mfd drivers not with drivers/misc ?
+Merged, thanks.
 
-otherwise it looks very nice.
+I ready David's nack, but We're quibbling over *bytes* in the single
+digits in a multi-megabyte kernel.  The total size of printk messages
+is indeed a problem, but it isn't going to be solved by the kind of
+micro-optimizations employed here.
+
+I have dropped the dev_dbg->dev_err hunk though.
+
+g.
+
+
+> ---
+>  drivers/spi/spi.c |   10 +++++-----
+>  1 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index b5a78a1..fcaa200 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -300,16 +300,16 @@ int spi_add_device(struct spi_device *spi)
+>  	 */
+>  	status = spi_setup(spi);
+>  	if (status < 0) {
+> -		dev_err(dev, "can't %s %s, status %d\n",
+> -				"setup", dev_name(&spi->dev), status);
+> +		dev_err(dev, "can't setup %s, status %d\n",
+> +				dev_name(&spi->dev), status);
+>  		goto done;
+>  	}
+>  
+>  	/* Device may be bound to an active driver when this returns */
+>  	status = device_add(&spi->dev);
+>  	if (status < 0)
+> -		dev_err(dev, "can't %s %s, status %d\n",
+> -				"add", dev_name(&spi->dev), status);
+> +		dev_err(dev, "can't add %s, status %d\n",
+> +				dev_name(&spi->dev), status);
+>  	else
+>  		dev_dbg(dev, "registered child %s\n", dev_name(&spi->dev));
+>  
+> @@ -652,7 +652,7 @@ int spi_setup(struct spi_device *spi)
+>  	 */
+>  	bad_bits = spi->mode & ~spi->master->mode_bits;
+>  	if (bad_bits) {
+> -		dev_dbg(&spi->dev, "setup: unsupported mode bits %x\n",
+> +		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+>  			bad_bits);
+>  		return -EINVAL;
+>  	}
+> -- 
+> 1.6.3.3
+> 
 
 ------------------------------------------------------------------------------
 Nokia and AT&T present the 2010 Calling All Innovators-North America contest

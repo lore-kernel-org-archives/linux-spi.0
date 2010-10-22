@@ -1,76 +1,75 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [Uclinux-dist-devel] [PATCH] spi/bfin_sport_spi: new driver to
-	emulate a SPI bus using Blackfin SPORT peripheral
-Date: Fri, 22 Oct 2010 01:29:16 -0600
-Message-ID: <20101022072916.GD8205@angua.secretlab.ca>
-References: <1287730415-6246-1-git-send-email-vapier@gentoo.org>
-	<20101022071630.GA15440@angua.secretlab.ca>
-	<AANLkTi=_u_0FksCzJix1Dw9Ui-Xf5C9J46CUvppSqUCJ@mail.gmail.com>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/bfin_spi: only request
+ GPIO on first load
+Date: Fri, 22 Oct 2010 03:33:02 -0400
+Message-ID: <AANLkTinFwZrtzPARy65oTnFgn2gxpniPXvONfWzjzF8z@mail.gmail.com>
+References: <1287727308-26653-1-git-send-email-vapier@gentoo.org>
+	<20101022063004.GA3311@angua.secretlab.ca>
+	<AANLkTi=-yDBTJPhSgP7XjaKpqp7T+=inf5F1DCMZT4CZ@mail.gmail.com>
+	<20101022072545.GA8205@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=_u_0FksCzJix1Dw9Ui-Xf5C9J46CUvppSqUCJ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <20101022072545.GA8205-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 22, 2010 at 03:24:11AM -0400, Mike Frysinger wrote:
-> On Fri, Oct 22, 2010 at 03:16, Grant Likely wrote:
-> > On Fri, Oct 22, 2010 at 02:53:35AM -0400, Mike Frysinger wrote:
-> >> From: Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> >>
-> >> The Blackfin SPORT peripheral is a pretty flexible device. =A0With eno=
-ugh
-> >> coaching, we can make it generate SPI compatible waveforms. =A0This is
-> >> desirable as the SPORT can run at much higher clock frequencies than t=
-he
-> >> dedicated on-chip SPI peripheral, and it can do full duplex DMA. =A0It=
- also
-> >> opens up the possibility of multiple SPI buses in case someone wants to
-> >> dedicate a whole bus to a specific part that does not play well with
-> >> others.
-> >>
-> >> Signed-off-by: Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> >> Signed-off-by: Bryan Wu <cooloney-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> >> Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> >> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-> >> ---
-> >> =A0drivers/spi/Kconfig =A0 =A0 =A0 =A0 =A0| =A0 10 +
-> >> =A0drivers/spi/Makefile =A0 =A0 =A0 =A0 | =A0 =A01 +
-> >> =A0drivers/spi/bfin_sport_spi.c | =A0925 +++++++++++++++++++++++++++++=
-+++++++++++++
-> >
-> > Remind me about this one after 2.6.37-rc1 is released. =A0It is too late
-> > for the current merge window.
-> =
-
-> isnt this why git supports multiple branches so easily ?  i dont
-> expect you to take it for this merge window, but it seems silly for
-> subsys maintainers to all have their own "merge" window.
-
-'cause I don't have time to review it right now, and I might forget
-about it later.
-
-g.
-
----------------------------------------------------------------------------=
----
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store =
-
-http://p.sf.net/sfu/nokia-dev2dev
+T24gRnJpLCBPY3QgMjIsIDIwMTAgYXQgMDM6MjUsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBG
+cmksIE9jdCAyMiwgMjAxMCBhdCAwMjo0MToxMkFNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gT24gRnJpLCBPY3QgMjIsIDIwMTAgYXQgMDI6MzAsIEdyYW50IExpa2VseSB3cm90ZToK
+Pj4gPiBPbiBGcmksIE9jdCAyMiwgMjAxMCBhdCAwMjowMTo0N0FNIC0wNDAwLCBNaWtlIEZyeXNp
+bmdlciB3cm90ZToKPj4gPj4gRnJvbTogTWljaGFlbCBIZW5uZXJpY2ggPG1pY2hhZWwuaGVubmVy
+aWNoQGFuYWxvZy5jb20+Cj4+ID4+Cj4+ID4+IFRoZSBncGlvbGliIGNvZGUgZG9lcyBub3QgYWxs
+b3cgcGVvcGxlIHRvIGRvIGdwaW9fcmVxdWVzdCgpIG9uIGEgR1BJTwo+PiA+PiBvbmNlIGl0IGhh
+cyBhbHJlYWR5IGJlZW4gcmVxdWVzdGVkLiDCoFNvIG1ha2Ugc3VyZSB3ZSBvbmx5IHJlcXVlc3Qg
+dGhlCj4+ID4+IHBpbiBvbiB0aGUgZmlyc3Qgc2V0dXAgb2YgYSBTUEkgZGV2aWNlLiDCoE90aGVy
+d2lzZSwgaWYgeW91IGF0dGVtcHRzIHRvCj4+ID4+IHJlY29uZmlndXJlIGEgU1BJIGRldmljZSBv
+biB0aGUgZmx5IChsaWtlIGNoYW5nZSBiaXQgc2l6ZXMpLCB0aGUgc2V0dXAKPj4gPj4gZnVuY3Rp
+b24gaW5jb3JyZWN0bHkgZmFpbHMuCj4+ID4KPj4gPiBEb2Vzbid0IHRoYXQgbWVhbiB0aGF0IHRo
+ZSBncGlvIHBpbiBiZSByZXF1ZXN0ZWQgYXQgZGV2aWNlIHByb2JlIHRpbWUKPj4gPiBpbnN0ZWFk
+IG9mIGluIGEgZnVuY3Rpb24gdGhhdCBjYW4gYmUgcmVwZWF0ZWRseSBjYWxsZWQ/Cj4+Cj4+IG5v
+dCBzdXJlIHdoYXQgeW91IG1lYW4uIMKgdGhpcyBpcyBhIHBpbiBzcGVjaWZpYyB0byBhIHNwaSBz
+bGF2ZSBkZXZpY2UuCj4+IMKgdGhlcmUgaXMgbm8gInNwaSBwcm9iZSIgZnVuY3Rpb24gZm9yIHNw
+aSBzbGF2ZSBkZXZpY2VzLCBvbmx5IHRoZSAic3BpCj4+IHNldHVwIiBmdW5jdGlvbi4KPgo+IFRo
+ZSBzcGkgbWFzdGVyIGRldmljZSBpcyByZXNwb25zaWJsZSBmb3IgbWFuYWdpbmcgaXRzIG93biBj
+cyBsaW5lcywKPiBhbmQgaXQgc2hvdWxkIGtub3cgd2hhdCB0aGV5IGFyZSBhdCBiZmluX3NwaV9w
+cm9iZSB0aW1lLiDCoExvb2tpbmcgYXQKPiBjb21taXQgZDNjYzcxZjcgd2hpY2ggcmV3b3JrZWQg
+dGhlIGNzX2dwaW8gYml0cywgSSBzZWUgdGhhdCB0aGUKPiBibGFja2ZpbiBkcml2ZXIgcGxhY2Vz
+IHRoZSBncGlvIGluZm9ybWF0aW9uIHdpdGggdGhlIHNsYXZlIGluc3RhbmNlLgo+Cj4gT25lIGNv
+dWxkIGJlIGFyZ3VlIHRoYXQgdGhlIHNwaV9zbGF2ZSBjYW4gYmUgY29uc2lkZXJlZCB0aGUgb3du
+ZXIgb2YKPiBzcGkgc3MgbGluZXMsIGJ1dCB0aGF0IHJ1bnMgY291bnRlciB0byBjdXJyZW50IGNv
+bnZlbnRpb25zLCBhbmQKPiBjb3VudGVyIHRvIGhvdyBJIHdhbnQgdG8gaW1wbGVtZW50IGNvbW1v
+biBpbmZyYXN0cnVjdHVyZSBmb3IgaGFuZGxpbmcKPiBncGlvIHNsYXZlIHNlbGVjdCBsaW5lcy4K
+Pgo+IEkgc2VlIHRoYXQgdGhpcyBwYXRjaCBpcyBhIGJ1ZyBmaXgsIGFuZCB0aGUgZHJpdmVyIGFs
+cmVhZHkgaW1wbGVtZW50cwo+IGJhZCBiZWhhdmlvdXIsIHNvIEkgaGF2ZSBsaXR0bGUgY2hvaWNl
+IGJ1dCB0byBwaWNrIGl0IHVwLiDCoEhvd2V2ZXIsIGl0Cj4gaXMgb25seSBhIGJhbmQtYWlkIHNv
+bHV0aW9uIGFuZCBpbiB0aGUgbG9uZyB0ZXJtIGl0IHNob3VsZCBiZQo+IHJlZmFjdG9yZWQgdG8g
+c3RvcmUgdGhlIGdwaW8gc2xhdmUtc2VsZWN0IGxpbmVzIHdpdGggdGhlIHNwaV9tYXN0ZXIKPiBk
+ZXZpY2UgKHByb2JhYmx5IGFmdGVyIHNvbWUgY29tbW9uIGdwaW8tc2xhdmUtc2VsZWN0IGluZnJh
+c3RydWN0dXJlIGlzCj4gcHV0IGluIHBsYWNlKS4KCmkgZGlzYWdyZWUuICBpZiBhbnkgR1BJTyBh
+dCBhbGwgbWF5IGJlIHVzZWQgYXMgYSBDUywgaG93IGNvdWxkIHRoZSBTUEkKbWFzdGVyIGRyaXZl
+ciBoYXZlIGFueSBpZGVhIGF0IGFsbCB3aGF0IEdQSU8gYSBzbGF2ZSBtaWdodCBjaG9vc2UgdG8K
+dXNlID8gIG9yIHdobyBpcyB0byBzYXkgdGhhdCB0aGUgR1BJTyBpbiBxdWVzdGlvbiBpcyBhdmFp
+bGFibGUgd2hlbgp0aGUgU1BJIGJ1cyBtYXN0ZXIgcmVnaXN0ZXJzIGl0c2VsZiBpZiB0aGUgR1BJ
+TyBzaXRzIG9uIGEgR1BJTwpleHBhbmRlciBib2FyZCAoZS5nLiBpMmMpIGFuZCBub3QgdGhlIFNP
+QyA/Cgp0aGlzIGlzIGluZm9ybWF0aW9uIHRoYXQgb25seSB0aGUgU1BJIGNsaWVudCBrbm93cyBh
+Ym91dCBhbmQgdGhhdCB0aGUKc2xhdmUgZGV2aWNlIGlzIGJpbmRpbmcgdG8uICBwdXR0aW5nIHNs
+YXZlIGluZm9ybWF0aW9uIGludG8gdGhlIG1hc3RlcgpyZXNvdXJjZXMgbWFrZXMgbm8gc2Vuc2Ug
+dG8gbWUuCi1taWtlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fClVjbGludXgtZGlzdC1kZXZlbCBtYWlsaW5nIGxpc3QKVWNsaW51eC1kaXN0LWRldmVsQGJs
+YWNrZmluLnVjbGludXgub3JnCmh0dHBzOi8vYmxhY2tmaW4udWNsaW51eC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWw=

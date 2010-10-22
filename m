@@ -1,55 +1,76 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/bfin_sport_spi: new driver to
- emulate a SPI bus using Blackfin SPORT peripheral
-Date: Fri, 22 Oct 2010 03:24:11 -0400
-Message-ID: <AANLkTi=_u_0FksCzJix1Dw9Ui-Xf5C9J46CUvppSqUCJ@mail.gmail.com>
-References: <1287730415-6246-1-git-send-email-vapier@gentoo.org>
-	<20101022071630.GA15440@angua.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [Uclinux-dist-devel] [PATCH 1/2] spi/bfin_spi: only request
+	GPIO on first load
+Date: Fri, 22 Oct 2010 01:25:45 -0600
+Message-ID: <20101022072545.GA8205@angua.secretlab.ca>
+References: <1287727308-26653-1-git-send-email-vapier@gentoo.org>
+	<20101022063004.GA3311@angua.secretlab.ca>
+	<AANLkTi=-yDBTJPhSgP7XjaKpqp7T+=inf5F1DCMZT4CZ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <20101022071630.GA15440-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <AANLkTi=-yDBTJPhSgP7XjaKpqp7T+=inf5F1DCMZT4CZ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCBPY3QgMjIsIDIwMTAgYXQgMDM6MTYsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBG
-cmksIE9jdCAyMiwgMjAxMCBhdCAwMjo1MzozNUFNIC0wNDAwLCBNaWtlIEZyeXNpbmdlciB3cm90
-ZToKPj4gRnJvbTogQ2xpZmYgQ2FpIDxjbGlmZi5jYWlAYW5hbG9nLmNvbT4KPj4KPj4gVGhlIEJs
-YWNrZmluIFNQT1JUIHBlcmlwaGVyYWwgaXMgYSBwcmV0dHkgZmxleGlibGUgZGV2aWNlLiDCoFdp
-dGggZW5vdWdoCj4+IGNvYWNoaW5nLCB3ZSBjYW4gbWFrZSBpdCBnZW5lcmF0ZSBTUEkgY29tcGF0
-aWJsZSB3YXZlZm9ybXMuIMKgVGhpcyBpcwo+PiBkZXNpcmFibGUgYXMgdGhlIFNQT1JUIGNhbiBy
-dW4gYXQgbXVjaCBoaWdoZXIgY2xvY2sgZnJlcXVlbmNpZXMgdGhhbiB0aGUKPj4gZGVkaWNhdGVk
-IG9uLWNoaXAgU1BJIHBlcmlwaGVyYWwsIGFuZCBpdCBjYW4gZG8gZnVsbCBkdXBsZXggRE1BLiDC
-oEl0IGFsc28KPj4gb3BlbnMgdXAgdGhlIHBvc3NpYmlsaXR5IG9mIG11bHRpcGxlIFNQSSBidXNl
-cyBpbiBjYXNlIHNvbWVvbmUgd2FudHMgdG8KPj4gZGVkaWNhdGUgYSB3aG9sZSBidXMgdG8gYSBz
-cGVjaWZpYyBwYXJ0IHRoYXQgZG9lcyBub3QgcGxheSB3ZWxsIHdpdGgKPj4gb3RoZXJzLgo+Pgo+
-PiBTaWduZWQtb2ZmLWJ5OiBDbGlmZiBDYWkgPGNsaWZmLmNhaUBhbmFsb2cuY29tPgo+PiBTaWdu
-ZWQtb2ZmLWJ5OiBCcnlhbiBXdSA8Y29vbG9uZXlAa2VybmVsLm9yZz4KPj4gU2lnbmVkLW9mZi1i
-eTogTWljaGFlbCBIZW5uZXJpY2ggPG1pY2hhZWwuaGVubmVyaWNoQGFuYWxvZy5jb20+Cj4+IFNp
-Z25lZC1vZmYtYnk6IE1pa2UgRnJ5c2luZ2VyIDx2YXBpZXJAZ2VudG9vLm9yZz4KPj4gLS0tCj4+
-IMKgZHJpdmVycy9zcGkvS2NvbmZpZyDCoCDCoCDCoCDCoCDCoHwgwqAgMTAgKwo+PiDCoGRyaXZl
-cnMvc3BpL01ha2VmaWxlIMKgIMKgIMKgIMKgIHwgwqAgwqAxICsKPj4gwqBkcml2ZXJzL3NwaS9i
-ZmluX3Nwb3J0X3NwaS5jIHwgwqA5MjUgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrCj4KPiBSZW1pbmQgbWUgYWJvdXQgdGhpcyBvbmUgYWZ0ZXIgMi42LjM3LXJjMSBp
-cyByZWxlYXNlZC4gwqBJdCBpcyB0b28gbGF0ZQo+IGZvciB0aGUgY3VycmVudCBtZXJnZSB3aW5k
-b3cuCgppc250IHRoaXMgd2h5IGdpdCBzdXBwb3J0cyBtdWx0aXBsZSBicmFuY2hlcyBzbyBlYXNp
-bHkgPyAgaSBkb250CmV4cGVjdCB5b3UgdG8gdGFrZSBpdCBmb3IgdGhpcyBtZXJnZSB3aW5kb3cs
-IGJ1dCBpdCBzZWVtcyBzaWxseSBmb3IKc3Vic3lzIG1haW50YWluZXJzIHRvIGFsbCBoYXZlIHRo
-ZWlyIG93biAibWVyZ2UiIHdpbmRvdy4KLW1pa2UKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xp
-bnV4LWRpc3QtZGV2ZWxAYmxhY2tmaW4udWNsaW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xp
-bnV4Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL3VjbGludXgtZGlzdC1kZXZlbA==
+On Fri, Oct 22, 2010 at 02:41:12AM -0400, Mike Frysinger wrote:
+> On Fri, Oct 22, 2010 at 02:30, Grant Likely wrote:
+> > On Fri, Oct 22, 2010 at 02:01:47AM -0400, Mike Frysinger wrote:
+> >> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> >>
+> >> The gpiolib code does not allow people to do gpio_request() on a GPIO
+> >> once it has already been requested. =A0So make sure we only request the
+> >> pin on the first setup of a SPI device. =A0Otherwise, if you attempts =
+to
+> >> reconfigure a SPI device on the fly (like change bit sizes), the setup
+> >> function incorrectly fails.
+> >
+> > Doesn't that mean that the gpio pin be requested at device probe time
+> > instead of in a function that can be repeatedly called?
+> =
+
+> not sure what you mean.  this is a pin specific to a spi slave device.
+>  there is no "spi probe" function for spi slave devices, only the "spi
+> setup" function.
+
+The spi master device is responsible for managing its own cs lines,
+and it should know what they are at bfin_spi_probe time.  Looking at
+commit d3cc71f7 which reworked the cs_gpio bits, I see that the
+blackfin driver places the gpio information with the slave instance.
+
+One could be argue that the spi_slave can be considered the owner of
+spi ss lines, but that runs counter to current conventions, and
+counter to how I want to implement common infrastructure for handling
+gpio slave select lines.
+
+I see that this patch is a bug fix, and the driver already implements
+bad behaviour, so I have little choice but to pick it up.  However, it
+is only a band-aid solution and in the long term it should be
+refactored to store the gpio slave-select lines with the spi_master
+device (probably after some common gpio-slave-select infrastructure is
+put in place).
+
+g.
+
+---------------------------------------------------------------------------=
+---
+Nokia and AT&T present the 2010 Calling All Innovators-North America contest
+Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
+$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
+Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store =
+
+http://p.sf.net/sfu/nokia-dev2dev

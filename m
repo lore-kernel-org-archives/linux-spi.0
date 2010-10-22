@@ -1,12 +1,12 @@
-From: "La mutuelle =?ISO-8859-1?Q?g=E9n?==?ISO-8859-1?Q?=E9rale?= par Plein
-	Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Une bonne mutuelle, ce n'est pas forcément cher
-Date: Fri, 22 Oct 2010 04:46:53 +0200 (CEST)
-Message-ID: <lao7z4.k3626p@front02.r7g.com>
+From: =?gb2312?B?uqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1200/40HQ
+	=?gb2312?B?MTDUwrK/t9a427/awdnKsbGovNs=?=
+Date: Fri, 22 Oct 2010 10:05:48 +0800
+Message-ID: <20101022100548531782@WWW-BDD9080FC2C.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,10 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
-http://p.sf.net/sfu/nokia-dev2dev
+yc+6o7jbs/a/2g0KMjAxMC0xMC0yMA0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
+J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
+IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
+V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
+xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ3MjUvMTIwMC8xMjAwDQogICC/qMCtxuYgJDcyNS8x
+MjAwLzEyMDANCiAgICCworDNy7kgJDcyNS8xMjAwLzEyMDANCg0K0tTJz7qj1Mu30b75zqq6o7Wl
+QUxMSU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEt
+NjA5NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEz
+OTE3OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo
+0qq/yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+
+1tDH69eiw/e587mry77D+7PGoaMNCsjnsrvQ6NKqtMvTyrz+o6y/ydLUu9i4tM7So6zO0r2r1NrP
+wrTOtcS3osvN1tDIoc/7Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpOb2tpYSBhbmQgQVQmVCBwcmVz
+ZW50IHRoZSAyMDEwIENhbGxpbmcgQWxsIElubm92YXRvcnMtTm9ydGggQW1lcmljYSBjb250ZXN0
+CkNyZWF0ZSBuZXcgYXBwcyAmIGdhbWVzIGZvciB0aGUgTm9raWEgTjggZm9yIGNvbnN1bWVycyBp
+biAgVS5TLiBhbmQgQ2FuYWRhCiQxMCBtaWxsaW9uIHRvdGFsIGluIHByaXplcyAtICQ0TSBjYXNo
+LCA1MDAgZGV2aWNlcywgbmVhcmx5ICQ2TSBpbiBtYXJrZXRpbmcKRGV2ZWxvcCB3aXRoIE5va2lh
+IFF0IFNESywgV2ViIFJ1bnRpbWUsIG9yIEphdmEgYW5kIFB1Ymxpc2ggdG8gT3ZpIFN0b3JlIApo
+dHRwOi8vcC5zZi5uZXQvc2Z1L25va2lhLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

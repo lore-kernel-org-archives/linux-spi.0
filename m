@@ -1,42 +1,59 @@
-From: =?gb2312?B?uqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1200/40HQ
-	=?gb2312?B?MTDUwrK/t9a427/awdnKsbGovNs=?=
-Date: Fri, 22 Oct 2010 10:05:48 +0800
-Message-ID: <20101022100548531782@WWW-BDD9080FC2C.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Kumar Gala <kumar.gala@freescale.com>
+Subject: Re: [PATCH v4 5/5] mtd: m25p80: add support to parse the partitions
+	by OF node
+Date: Fri, 22 Oct 2010 01:01:12 -0500
+Message-ID: <3AE1F37D-F328-40EF-8B35-F94CC074D384@freescale.com>
+References: <1286878714-13090-1-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-2-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-3-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-4-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-5-git-send-email-Mingkai.hu@freescale.com>
+	<1286878714-13090-6-git-send-email-Mingkai.hu@freescale.com>
+	<1287256647.1781.34.camel@brekeke>
+	<AANLkTimr03KAKnz5sfwm19=KzB-ik95WM_qQO0YP9qVs@mail.gmail.com>
+	<1287301490.1951.0.camel@localhost>
+Mime-Version: 1.0 (Apple Message framework v1081)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dedekind1@gmail.com, David Brownell <david-b@pacbell.net>,
+	Linuxppc-dev list <linuxppc-dev@ozlabs.org>, linux-mtd@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	Mingkai Hu <Mingkai.hu@freescale.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <1287301490.1951.0.camel@localhost>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-yc+6o7jbs/a/2g0KMjAxMC0xMC0yMA0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
-J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
-IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
-V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
-xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ3MjUvMTIwMC8xMjAwDQogICC/qMCtxuYgJDcyNS8x
-MjAwLzEyMDANCiAgICCworDNy7kgJDcyNS8xMjAwLzEyMDANCg0K0tTJz7qj1Mu30b75zqq6o7Wl
-QUxMSU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEt
-NjA5NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEz
-OTE3OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo
-0qq/yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+
-1tDH69eiw/e587mry77D+7PGoaMNCsjnsrvQ6NKqtMvTyrz+o6y/ydLUu9i4tM7So6zO0r2r1NrP
-wrTOtcS3osvN1tDIoc/7Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpOb2tpYSBhbmQgQVQmVCBwcmVz
-ZW50IHRoZSAyMDEwIENhbGxpbmcgQWxsIElubm92YXRvcnMtTm9ydGggQW1lcmljYSBjb250ZXN0
-CkNyZWF0ZSBuZXcgYXBwcyAmIGdhbWVzIGZvciB0aGUgTm9raWEgTjggZm9yIGNvbnN1bWVycyBp
-biAgVS5TLiBhbmQgQ2FuYWRhCiQxMCBtaWxsaW9uIHRvdGFsIGluIHByaXplcyAtICQ0TSBjYXNo
-LCA1MDAgZGV2aWNlcywgbmVhcmx5ICQ2TSBpbiBtYXJrZXRpbmcKRGV2ZWxvcCB3aXRoIE5va2lh
-IFF0IFNESywgV2ViIFJ1bnRpbWUsIG9yIEphdmEgYW5kIFB1Ymxpc2ggdG8gT3ZpIFN0b3JlIApo
-dHRwOi8vcC5zZi5uZXQvc2Z1L25va2lhLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+On Oct 17, 2010, at 2:44 AM, Artem Bityutskiy wrote:
+
+> On Sat, 2010-10-16 at 19:05 -0600, Grant Likely wrote:
+>> On Sat, Oct 16, 2010 at 1:17 PM, Artem Bityutskiy <dedekind1@gmail.com> wrote:
+>>> On Tue, 2010-10-12 at 18:18 +0800, Mingkai Hu wrote:
+>>>> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+>>>> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+>>>> ---
+>>>> v4:
+>>>> - Updated to latest kernel base(Linux 2.6.36-rc7).
+>>>> - Made changes according to Grant's comments.
+>>> 
+>>> Looks good to me, pushed to l2-mtd-2.6.git, thanks.
+>> 
+>> Wait!  It will break whenever CONFIG_OF is not set.  I broke
+>> linux-next with this patch.  It can be solved by wrapping the block
+>> with #ifdef CONFIG_OF, but I'd like to find a better solution.
+> 
+> OK, removed.
+
+Grant, poke.  Would like to see this either resolved or have this patch go in for .37 w/CONFIG_OF and fix properly for .38.
+
+- k

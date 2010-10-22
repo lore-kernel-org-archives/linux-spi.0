@@ -1,59 +1,66 @@
-From: Kumar Gala <kumar.gala@freescale.com>
-Subject: Re: [PATCH v4 5/5] mtd: m25p80: add support to parse the partitions
-	by OF node
-Date: Fri, 22 Oct 2010 01:01:12 -0500
-Message-ID: <3AE1F37D-F328-40EF-8B35-F94CC074D384@freescale.com>
-References: <1286878714-13090-1-git-send-email-Mingkai.hu@freescale.com>
-	<1286878714-13090-2-git-send-email-Mingkai.hu@freescale.com>
-	<1286878714-13090-3-git-send-email-Mingkai.hu@freescale.com>
-	<1286878714-13090-4-git-send-email-Mingkai.hu@freescale.com>
-	<1286878714-13090-5-git-send-email-Mingkai.hu@freescale.com>
-	<1286878714-13090-6-git-send-email-Mingkai.hu@freescale.com>
-	<1287256647.1781.34.camel@brekeke>
-	<AANLkTimr03KAKnz5sfwm19=KzB-ik95WM_qQO0YP9qVs@mail.gmail.com>
-	<1287301490.1951.0.camel@localhost>
-Mime-Version: 1.0 (Apple Message framework v1081)
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/2] spi/bfin_spi: only request GPIO on
+	first load
+Date: Fri, 22 Oct 2010 02:01:47 -0400
+Message-ID: <1287727308-26653-1-git-send-email-vapier@gentoo.org>
+Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dedekind1@gmail.com, David Brownell <david-b@pacbell.net>,
-	Linuxppc-dev list <linuxppc-dev@ozlabs.org>, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mingkai Hu <Mingkai.hu@freescale.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1287301490.1951.0.camel@localhost>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
+        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
 
-On Oct 17, 2010, at 2:44 AM, Artem Bityutskiy wrote:
+The gpiolib code does not allow people to do gpio_request() on a GPIO
+once it has already been requested.  So make sure we only request the
+pin on the first setup of a SPI device.  Otherwise, if you attempts to
+reconfigure a SPI device on the fly (like change bit sizes), the setup
+function incorrectly fails.
 
-> On Sat, 2010-10-16 at 19:05 -0600, Grant Likely wrote:
->> On Sat, Oct 16, 2010 at 1:17 PM, Artem Bityutskiy <dedekind1@gmail.com> wrote:
->>> On Tue, 2010-10-12 at 18:18 +0800, Mingkai Hu wrote:
->>>> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
->>>> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->>>> ---
->>>> v4:
->>>> - Updated to latest kernel base(Linux 2.6.36-rc7).
->>>> - Made changes according to Grant's comments.
->>> 
->>> Looks good to me, pushed to l2-mtd-2.6.git, thanks.
->> 
->> Wait!  It will break whenever CONFIG_OF is not set.  I broke
->> linux-next with this patch.  It can be solved by wrapping the block
->> with #ifdef CONFIG_OF, but I'd like to find a better solution.
-> 
-> OK, removed.
+Signed-off-by: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi_bfin5xx.c |   13 ++++++++-----
+ 1 files changed, 8 insertions(+), 5 deletions(-)
 
-Grant, poke.  Would like to see this either resolved or have this patch go in for .37 w/CONFIG_OF and fix properly for .38.
-
-- k
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index ab483a0..a8f276d 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -1099,12 +1099,15 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 	}
+ 
+ 	if (chip->chip_select_num >= MAX_CTRL_CS) {
+-		ret = gpio_request(chip->cs_gpio, spi->modalias);
+-		if (ret) {
+-			dev_err(&spi->dev, "gpio_request() error\n");
+-			goto pin_error;
++		/* Only request on first setup */
++		if (spi_get_ctldata(spi) == NULL) {
++			ret = gpio_request(chip->cs_gpio, spi->modalias);
++			if (ret) {
++				dev_err(&spi->dev, "gpio_request() error\n");
++				goto pin_error;
++			}
++			gpio_direction_output(chip->cs_gpio, 1);
+ 		}
+-		gpio_direction_output(chip->cs_gpio, 1);
+ 	}
+ 
+ 	dev_dbg(&spi->dev, "setup spi chip %s, width is %d, dma is %d\n",
+-- 
+1.7.3.1

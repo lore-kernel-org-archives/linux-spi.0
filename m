@@ -1,15 +1,13 @@
-From: "Girish S G" <girishsg-l0cyMroinI0@public.gmane.org>
-Subject: RE: Gumstix Overo omap2_mcspi and spidev driver issues
-Date: Mon, 25 Oct 2010 15:19:50 -0500
-Message-ID: <5FEC51001016456892EA763C216F2FB6@am.dhcp.ti.com>
-References: <20101025172508.72910@gmx.net>
+From: =?gb2312?B?vK/XsM/kuqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1200/40HQ
+	=?gb2312?B?yc+6o7jbMTDUwg==?=
+Date: Tue, 26 Oct 2010 05:49:20 +0800
+Message-ID: <20101026054920013221@PC2010102311PUL.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "'Norman Wildmann'" <nenntmichdochwieihrwollt-Mmb7MZpHnFY@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101025172508.72910-hi6Y0CQ0nG0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,24 +18,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Norman Wildmann [mailto:nenntmichdochwieihrwollt-Mmb7MZpHnFY@public.gmane.org]
-> 
-> 
-> It seems to have worked alright, I can see /dev/spidev1.0 and running
-> the spidev_test program it does not complain. Nevertheless, i dont get
-> any signal on the pins.
-
-You might need to check pin mux first?
-
--Girish
-
-
-------------------------------------------------------------------------------
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
-http://p.sf.net/sfu/nokia-dev2dev
+yc+6o7jbs/a/2g0KMjAxMC0xMC0yNQ0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
+J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
+IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
+V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
+xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ3MjUvMTIwMC8xMjAwDQogICC/qMCtxuYgJDcyNS8x
+MjAwLzEyMDANCiAgICCworDNy7kgJDcyNS8xMjAwLzEyMDANCg0K0tTJz7qj1Mu30b75zqq6o7Wl
+QUxMSU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEt
+NjA5NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEz
+OTE3OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo
+0qq/yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+
+1tDH69eiw/e587mry77D+7PGoaMNCg0Kt8fW3s/f0MLNxrP2tc282867tKyjrMW31t7P37zbuPHO
+rLPWsrux5A0KyOeyu9Do0qq0y9PKvP6jrL/J0tS72Li0ztKjrM7SvavU2s/CtM61xLeiy83W0Mih
+z/sKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk5va2lhIGFuZCBBVCZUIHByZXNlbnQgdGhlIDIwMTAg
+Q2FsbGluZyBBbGwgSW5ub3ZhdG9ycy1Ob3J0aCBBbWVyaWNhIGNvbnRlc3QKQ3JlYXRlIG5ldyBh
+cHBzICYgZ2FtZXMgZm9yIHRoZSBOb2tpYSBOOCBmb3IgY29uc3VtZXJzIGluICBVLlMuIGFuZCBD
+YW5hZGEKJDEwIG1pbGxpb24gdG90YWwgaW4gcHJpemVzIC0gJDRNIGNhc2gsIDUwMCBkZXZpY2Vz
+LCBuZWFybHkgJDZNIGluIG1hcmtldGluZwpEZXZlbG9wIHdpdGggTm9raWEgUXQgU0RLLCBXZWIg
+UnVudGltZSwgb3IgSmF2YSBhbmQgUHVibGlzaCB0byBPdmkgU3RvcmUgCmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvbm9raWEtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,12 +1,15 @@
-From: "Norman Wildmann" <nenntmichdochwieihrwollt-Mmb7MZpHnFY@public.gmane.org>
-Subject: Gumstix Overo omap2_mcspi and spidev driver issues
-Date: Mon, 25 Oct 2010 19:25:08 +0200
-Message-ID: <20101025172508.72910@gmx.net>
+From: "Girish S G" <girishsg-l0cyMroinI0@public.gmane.org>
+Subject: RE: Gumstix Overo omap2_mcspi and spidev driver issues
+Date: Mon, 25 Oct 2010 15:19:50 -0500
+Message-ID: <5FEC51001016456892EA763C216F2FB6@am.dhcp.ti.com>
+References: <20101025172508.72910@gmx.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "'Norman Wildmann'" <nenntmichdochwieihrwollt-Mmb7MZpHnFY@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20101025172508.72910-hi6Y0CQ0nG0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,48 +20,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgYWxsLCAKCmkgYW0gaGF2aW5nIGJpZyB0cm91YmxlIHRvIGdldCB0aGUgc3BpZGV2LWRyaXZl
-ciBydW5uaW5nIG9uIG15IGd1bXN0aXggb3Zlcm8uIEkgcGF0Y2hlZCBrZXJuZWwgbGludXgtb21h
-cC0yLjYuMzQtcjkwIHRvIG5vdCB1c2UgYSB0b3VjaHNjcmVlbiB0aGF0IHdhcyBjb25maWd1cmVk
-IGZvciB0aGUga2VybmVsLCBidXQgc3BpZGV2IGlzOgoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21h
-Y2gtb21hcDIvYm9hcmQtb3Zlcm8uYyBiL2FyY2gvYXJtL21hY2gtb21hcDIvYm9hcmQtb3Zlcm8u
-YwppbmRleCBmMzU3ZGU5Li4zYTljNTE5IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAy
-L2JvYXJkLW92ZXJvLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwMi9ib2FyZC1vdmVyby5jCkBA
-IC03MCw4ICs3MCw5IEBACiAjZGVmaW5lIE9WRVJPX1NNU0M5MTFYMl9DUyAgICAgNAogI2RlZmlu
-ZSBPVkVST19TTVNDOTExWDJfR1BJTyAgIDY1CiAKLSNpZiBkZWZpbmVkKENPTkZJR19UT1VDSFND
-UkVFTl9BRFM3ODQ2KSB8fCBcCi0JZGVmaW5lZChDT05GSUdfVE9VQ0hTQ1JFRU5fQURTNzg0Nl9N
-T0RVTEUpCisvLyNpZiBkZWZpbmVkKENPTkZJR19UT1VDSFNDUkVFTl9BRFM3ODQ2KSB8fCBcCisv
-LwlkZWZpbmVkKENPTkZJR19UT1VDSFNDUkVFTl9BRFM3ODQ2X01PRFVMRSkKKyNpZiAwCiAKICNp
-bmNsdWRlIDxsaW51eC9zcGkvYWRzNzg0Ni5oPgogCkBAIC02MTYsNyArNjE3LDggQEAKIAlyZXR1
-cm4gMDsKIH0KIAotc3RhdGljIHN0cnVjdCBzcGlfYm9hcmRfaW5mbyBvdmVyb19zcGlfYm9hcmRf
-aW5mb1tdIF9faW5pdGRhdGEgPSB7CitzdGF0aWMgc3RydWN0IHNwaV9ib2FyZF9pbmZvIG92ZXJv
-X3NwaV9ib2FyZF9pbmZvW10gPSB7CisvKgogI2lmIGRlZmluZWQoQ09ORklHX1RPVUNIU0NSRUVO
-X0FEUzc4NDYpIHx8IFwKIAlkZWZpbmVkKENPTkZJR19UT1VDSFNDUkVFTl9BRFM3ODQ2X01PRFVM
-RSkKIAl7CkBAIC02MzksMTEgKzY0MSwxOSBAQAogCQkubW9kZQkJCT0gU1BJX01PREVfMywKIAl9
-LAogI2VuZGlmCisqLworCXsKKwkJLm1vZGFsaWFzID0gInNwaWRldiIsCisJCS5idXNfbnVtID0g
-MSwKKwkJLmNoaXBfc2VsZWN0ID0gMCwKKwkJLm1heF9zcGVlZF9oeiA9IDEwMDAwMDAsCisJCS5t
-b2RlID0gU1BJX01PREVfMCwKKwl9LAogfTsKIAogc3RhdGljIGludCBfX2luaXQgb3Zlcm9fc3Bp
-X2luaXQodm9pZCkKIHsKLQlvdmVyb19hZHM3ODQ2X2luaXQoKTsKKwkvL292ZXJvX2Fkczc4NDZf
-aW5pdCgpOwogCXNwaV9yZWdpc3Rlcl9ib2FyZF9pbmZvKG92ZXJvX3NwaV9ib2FyZF9pbmZvLAog
-CQkJQVJSQVlfU0laRShvdmVyb19zcGlfYm9hcmRfaW5mbykpOwogCXJldHVybiAwOwoKCgpJdCBz
-ZWVtcyB0byBoYXZlIHdvcmtlZCBhbHJpZ2h0LCBJIGNhbiBzZWUgL2Rldi9zcGlkZXYxLjAgYW5k
-IHJ1bm5pbmcgdGhlIHNwaWRldl90ZXN0IHByb2dyYW0gaXQgZG9lcyBub3QgY29tcGxhaW4uIE5l
-dmVydGhlbGVzcywgaSBkb250IGdldCBhbnkgc2lnbmFsIG9uIHRoZSBwaW5zLgoKQW0gSSBtaXNz
-aW5nIHNvbWV0aGluZyBlc3NlbnRpYWw/IElzIHRoZXJlIGEgZ29vZCB3YXkgdG8gZGVidWcgdGhl
-IHByb2JsZW0/IEkgcnVubmluZyBvdXQgb2YgaWRlYXMuIEkgcmVhZCBhIGxvdCBvZiBvdGhlciBw
-ZW9wbGUgaGF2aW5nIHNpbWlsYXIgcHJvYmxlbXMsIHdoaWNoIGNvdWxkIGJlIGZpeGVkIGJ5IG5v
-dCB1c2luZyB0aGUgbWF4X3NwZWVkX2h6IGFuZCBiaXRzX3Blcl93b3JkLCBidXQgYWxsIHRoYXQg
-ZGlkIG5vdCBoZWxwIGZvciBtZS4KCkkgd291bGQgYXBwcmVjaWF0ZSBzb21lIGhlbHAsIG9yIGhp
-bnRzIGF0IGxlYXN0LgoKUmVnYXJkcywgCk5vcm1hbgotLSAKR1JBVElTISBNb3ZpZS1GTEFUIG1p
-dCDDvGJlciAzMDAgVmlkZW9zLiAKSmV0enQgZnJlaXNjaGFsdGVuIHVudGVyIGh0dHA6Ly9wb3J0
-YWwuZ214Lm5ldC9kZS9nby9tYXhkb21lCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTm9raWEgYW5k
-IEFUJlQgcHJlc2VudCB0aGUgMjAxMCBDYWxsaW5nIEFsbCBJbm5vdmF0b3JzLU5vcnRoIEFtZXJp
-Y2EgY29udGVzdApDcmVhdGUgbmV3IGFwcHMgJiBnYW1lcyBmb3IgdGhlIE5va2lhIE44IGZvciBj
-b25zdW1lcnMgaW4gIFUuUy4gYW5kIENhbmFkYQokMTAgbWlsbGlvbiB0b3RhbCBpbiBwcml6ZXMg
-LSAkNE0gY2FzaCwgNTAwIGRldmljZXMsIG5lYXJseSAkNk0gaW4gbWFya2V0aW5nCkRldmVsb3Ag
-d2l0aCBOb2tpYSBRdCBTREssIFdlYiBSdW50aW1lLCBvciBKYXZhIGFuZCBQdWJsaXNoIHRvIE92
-aSBTdG9yZSAKaHR0cDovL3Auc2YubmV0L3NmdS9ub2tpYS1kZXYyZGV2Cl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
-bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+
+> -----Original Message-----
+> From: Norman Wildmann [mailto:nenntmichdochwieihrwollt-Mmb7MZpHnFY@public.gmane.org]
+> 
+> 
+> It seems to have worked alright, I can see /dev/spidev1.0 and running
+> the spidev_test program it does not complain. Nevertheless, i dont get
+> any signal on the pins.
+
+You might need to check pin mux first?
+
+-Girish
+
+
+------------------------------------------------------------------------------
+Nokia and AT&T present the 2010 Calling All Innovators-North America contest
+Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
+$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
+Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
+http://p.sf.net/sfu/nokia-dev2dev

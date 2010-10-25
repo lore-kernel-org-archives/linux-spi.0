@@ -1,11 +1,10 @@
-From: zpyuimxk-NHQqqRY0ujZeoWH0uzbU5w@public.gmane.org
-Subject: [SPAM] TOÔºö‰∫∫ÂäõËµÑÊ∫êÈÉ®Êî∂
-Date: Mon, 25 Oct 2010 05:15:36 +0800
-Message-ID: <E1PA7vY-0006Ib-NE@sfs-ml-4.v29.ch3.sourceforge.com>
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] Âèë/Á•®‚Äï‚Äï‰ª£/ÂºÄ
+Date: Mon, 25 Oct 2010 11:45:16 +0800
+Message-ID: <E1PAE0K-00019N-UM@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,37 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-
-
-     FW£∫Œ™∆Û“µΩ®¡¢ÕÍ…∆°¢ø∆—ßµƒ¡˜≥Ãπ‹¿Ì”Î…Ëº∆∑Ω∞∏°≠°≠
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
-http://p.sf.net/sfu/nokia-dev2dev
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
+w7eioaqhqsaxtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK27eioarGsaO7CiAgICgyKbnjuObStaGi
+uPfA4Lf+zvHStbeioaqhqsaxtci1yKGjCiAKyOfT0NDo0qqjrLu2063E+tPrztLBqs+1o7ogIAq4
+utTwyMujutXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTm9raWEg
+YW5kIEFUJlQgcHJlc2VudCB0aGUgMjAxMCBDYWxsaW5nIEFsbCBJbm5vdmF0b3JzLU5vcnRoIEFt
+ZXJpY2EgY29udGVzdApDcmVhdGUgbmV3IGFwcHMgJiBnYW1lcyBmb3IgdGhlIE5va2lhIE44IGZv
+ciBjb25zdW1lcnMgaW4gIFUuUy4gYW5kIENhbmFkYQokMTAgbWlsbGlvbiB0b3RhbCBpbiBwcml6
+ZXMgLSAkNE0gY2FzaCwgNTAwIGRldmljZXMsIG5lYXJseSAkNk0gaW4gbWFya2V0aW5nCkRldmVs
+b3Agd2l0aCBOb2tpYSBRdCBTREssIFdlYiBSdW50aW1lLCBvciBKYXZhIGFuZCBQdWJsaXNoIHRv
+IE92aSBTdG9yZSAKaHR0cDovL3Auc2YubmV0L3NmdS9ub2tpYS1kZXYyZGV2Cl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
+aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
+Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,52 +1,27 @@
-From: <ilkka.koskinen@nokia.com>
-Subject: RE: [PATCH] input: spi: Driver for SPI data stream driven vibrator
-Date: Tue, 26 Oct 2010 18:52:07 +0200
-Message-ID: <F80267346F10C541946CBE8909F1C39E35932598BD@NOK-EUMSG-02.mgdnok.nokia.com>
-References: <1288013463-21722-1-git-send-email-ilkka.koskinen@nokia.com>
-	<20101026111344.GB24714@angua.secretlab.ca>
- <20101026121749.298dc60a@lxorguk.ukuu.org.uk>
+From: "HERMAN" <tqytq-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] mieten mobiles
+Date: Tue, 26 Oct 2010 22:04:39 +0200
+Message-ID: <23DFA75BBFEA4C1B95935B3C22C5F11A@dskreutzfeldt01>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: <linux-input@vger.kernel.org>, <dmitry.torokhov@gmail.com>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>, <ilkka.koskinen@nokia.com>
-To: <alan@lxorguk.ukuu.org.uk>, <grant.likely@secretlab.ca>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <20101026121749.298dc60a@lxorguk.ukuu.org.uk>
-Content-Language: en-US
-Sender: linux-input-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
 
->From: ext Alan Cox [mailto:alan@lxorguk.ukuu.org.uk]
->Sent: 26 October, 2010 14:18
->To: Grant Likely
->Cc: Koskinen Ilkka (Nokia-MS/Tampere); linux-input@vger.kernel.org;
->dmitry.torokhov@gmail.com; spi-devel-general@lists.sourceforge.net;
->linux-kernel@vger.kernel.org
->Subject: Re: [PATCH] input: spi: Driver for SPI data stream driven
->vibrator
->
->> > +	if (!einfo->buf) {
->> > +		einfo->buf = kzalloc(datalen, GFP_KERNEL | GFP_DMA);
->> > +		if (!einfo->buf) {
->> > +			ret = -ENOMEM;
->> > +			goto exit;
->> > +		}
->> > +	}
->> > +
->> > +	memcpy(einfo->buf, p->custom_data, datalen);
->>
->> It looks like raw data from userspace is being passed on to the
->> device.  Is this sane?  Is there already a data format used by other
->> vibration/feedback devices that should be used here instead and
->> translated into the form expected by the hardware?
->
->It also seems to be using GFP_DMA not dma_alloc functions which looks a
->bit odd and certainly isn't portable.
-
-Right, I'll change it to the appropriate ones.
-
-Cheers, Ilkka
+ What Happens in Vegas, Happens Here: http://eurex.x10.bz/casino.html
+------------------------------------------------------------------------------
+Nokia and AT&T present the 2010 Calling All Innovators-North America contest
+Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
+$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
+Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
+http://p.sf.net/sfu/nokia-dev2dev

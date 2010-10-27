@@ -1,26 +1,69 @@
-From: "Gan =?ISO-8859-1?Q?Sant=E9?= par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Votre complementaire sante a partir de 0,65 euro par jour
-Date: Wed, 27 Oct 2010 09:16:38 +0200 (CEST)
-Message-ID: <laxtt3.21sb9m@front02.r7g.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] input: spi: Driver for SPI data stream driven vibrator
+Date: Wed, 27 Oct 2010 09:47:30 +0100
+Message-ID: <20101027084730.GC6797@angua.secretlab.ca>
+References: <1288013463-21722-1-git-send-email-ilkka.koskinen@nokia.com>
+ <20101026111344.GB24714@angua.secretlab.ca>
+ <F80267346F10C541946CBE8909F1C39E35932598BB@NOK-EUMSG-02.mgdnok.nokia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-input@vger.kernel.org, dmitry.torokhov@gmail.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: ilkka.koskinen@nokia.com
+Return-path: <linux-input-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <F80267346F10C541946CBE8909F1C39E35932598BB@NOK-EUMSG-02.mgdnok.nokia.com>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Oct 26, 2010 at 06:50:33PM +0200, ilkka.koskinen@nokia.com wrote:
+> Hi Grant and thanks for comments,
+[...]
+> >> +static int vibra_spi_playback(struct input_dev *input, int effect_id,
+> >int value)
+> >> +{
+> >> +    struct vibra_data *vibra = input_get_drvdata(input);
+> >> +    struct effect_info *einfo = &vibra->effects[effect_id];
+> >> +    struct ff_effect *ff_effect = &input->ff->effects[effect_id];
+> >> +
+> >> +    if (!vibra->workqueue)
+> >> +            return -ENODEV;
+> >> +
+> >> +    if (test_bit(FF_EFFECT_UPLOADING, &einfo->flags))
+> >> +            return -EBUSY;
+> >> +
+> >> +    if (value == 0) {
+> >> +            /* Abort the given effect */
+> >> +            if (test_bit(FF_EFFECT_PLAYING, &einfo->flags))
+> >> +                    __set_bit(FF_EFFECT_ABORTING, &einfo->flags);
+> >> +
+> >> +            __clear_bit(FF_EFFECT_QUEUED, &einfo->flags);
+> >> +    } else {
+> >> +            /* Move the given effect as the next one */
+> >> +            __clear_bit(FF_EFFECT_QUEUED,
+> >> +                    &vibra->effects[vibra->next_effect].flags);
+> >> +
+> >> +            vibra->next_effect = effect_id;
+> >> +            __set_bit(FF_EFFECT_QUEUED, &einfo->flags);
+> >> +            __clear_bit(FF_EFFECT_ABORTING, &einfo->flags);
+> >> +            einfo->stop_at = jiffies +
+> >> +                    msecs_to_jiffies(ff_effect->replay.length);
+> >> +
+> >> +            if (vibra->status == IDLE) {
+> >> +                    vibra->status = STARTED;
+> >> +                    queue_work(vibra->workqueue, &vibra->play_work);
+> >> +            }
+> >> +    }
+> >
+> >I can't speak anything about the input event handling because I'm not
+> >very familiar with it.  However, it looks like the shared effect data
+> >(vibra->effects) is getting modified outside of a critical region.  Is
+> >this safe?
 
-------------------------------------------------------------------------------
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store 
-http://p.sf.net/sfu/nokia-dev2dev
+Hmmm, I don't know why the force feedback layer is using a spin lock,
+but it looks like overkill.  Since you're already deferring work, I
+would look at queueing the request and pushing down the spin lock
+exposure as much as possible, but I'm really not the expert on the
+input layer.
+

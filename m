@@ -1,156 +1,100 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH] ifx6x60: SPI protocol driver for Infineon 6x60 modem
-Date: Thu, 28 Oct 2010 14:35:02 -0400
-Message-ID: <AANLkTi=rPb9z5h3Zaq0vNJdqcGPjrsWpkCNbZRqsjvjP@mail.gmail.com>
-References: <20101026131325.4506.1135.stgit@localhost.localdomain>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/bfin_spi: only request
+ GPIO on first load
+Date: Sun, 31 Oct 2010 00:07:23 -0400
+Message-ID: <AANLkTikXyGQ9nQOtNT-ztveKNG71EdKox1tNeFix_=K0@mail.gmail.com>
+References: <1287727308-26653-1-git-send-email-vapier@gentoo.org>
+	<20101022063004.GA3311@angua.secretlab.ca>
+	<AANLkTi=-yDBTJPhSgP7XjaKpqp7T+=inf5F1DCMZT4CZ@mail.gmail.com>
+	<20101022072545.GA8205@angua.secretlab.ca>
+	<AANLkTinFwZrtzPARy65oTnFgn2gxpniPXvONfWzjzF8z@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: greg@kroah.com, linux-serial@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <20101026131325.4506.1135.stgit@localhost.localdomain>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <AANLkTinFwZrtzPARy65oTnFgn2gxpniPXvONfWzjzF8z-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/10/26 Alan Cox <alan@lxorguk.ukuu.org.uk>:
+On Fri, Oct 22, 2010 at 3:33 AM, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Oct 22, 2010 at 03:25, Grant Likely wrote:
+>> On Fri, Oct 22, 2010 at 02:41:12AM -0400, Mike Frysinger wrote:
+>>> On Fri, Oct 22, 2010 at 02:30, Grant Likely wrote:
+>>> > On Fri, Oct 22, 2010 at 02:01:47AM -0400, Mike Frysinger wrote:
+>>> >> From: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+>>> >>
+>>> >> The gpiolib code does not allow people to do gpio_request() on a GPIO
+>>> >> once it has already been requested. =A0So make sure we only request =
+the
+>>> >> pin on the first setup of a SPI device. =A0Otherwise, if you attempt=
+s to
+>>> >> reconfigure a SPI device on the fly (like change bit sizes), the set=
+up
+>>> >> function incorrectly fails.
+>>> >
+>>> > Doesn't that mean that the gpio pin be requested at device probe time
+>>> > instead of in a function that can be repeatedly called?
+>>>
+>>> not sure what you mean. =A0this is a pin specific to a spi slave device.
+>>> =A0there is no "spi probe" function for spi slave devices, only the "spi
+>>> setup" function.
+>>
+>> The spi master device is responsible for managing its own cs lines,
+>> and it should know what they are at bfin_spi_probe time. =A0Looking at
+>> commit d3cc71f7 which reworked the cs_gpio bits, I see that the
+>> blackfin driver places the gpio information with the slave instance.
+>>
+>> One could be argue that the spi_slave can be considered the owner of
+>> spi ss lines, but that runs counter to current conventions, and
+>> counter to how I want to implement common infrastructure for handling
+>> gpio slave select lines.
+>>
+>> I see that this patch is a bug fix, and the driver already implements
+>> bad behaviour, so I have little choice but to pick it up. =A0However, it
+>> is only a band-aid solution and in the long term it should be
+>> refactored to store the gpio slave-select lines with the spi_master
+>> device (probably after some common gpio-slave-select infrastructure is
+>> put in place).
+>
+> i disagree. =A0if any GPIO at all may be used as a CS, how could the SPI
+> master driver have any idea at all what GPIO a slave might choose to
+> use ? =A0or who is to say that the GPIO in question is available when
+> the SPI bus master registers itself if the GPIO sits on a GPIO
+> expander board (e.g. i2c) and not the SOC ?
+>
+> this is information that only the SPI client knows about and that the
+> slave device is binding to. =A0putting slave information into the master
+> resources makes no sense to me.
 
-Sorry for just reviewing the structs at this point but I hope it
-helps out...
+The arguement can be made in either direction.  From one perspective,
+the GPIO is a property of the SPI controller because that is what is
+responsible for fiddling with the bit (evidenced by the fact that the
+GPIO number is being stored in controller data).  From another
+perspective it could be seen as a property of the spi_device.
+However, at some point a convention needs to be chosen, and the SPI
+layer has tended towards SS lines being a property of the SPI
+controller; regardless of whether or not it happens to be a GPIO line.
 
-> diff --git a/drivers/serial/ifx6x60.h b/drivers/serial/ifx6x60.h
-> new file mode 100644
-> index 0000000..deb7b8d
-> --- /dev/null
-> +++ b/drivers/serial/ifx6x60.h
-> (...)
-> +struct ifx_spi_device {
-> + =A0 =A0 =A0 /* Our SPI device */
-> + =A0 =A0 =A0 struct spi_device *spi_dev;
-> +
-> + =A0 =A0 =A0 /* Port specific data */
-> + =A0 =A0 =A0 struct kfifo tx_fifo;
-> + =A0 =A0 =A0 spinlock_t fifo_lock;
-> + =A0 =A0 =A0 unsigned long signal_state;
-> +
-> + =A0 =A0 =A0 /* TTY Layer logic */
-> + =A0 =A0 =A0 struct tty_port tty_port;
-> + =A0 =A0 =A0 struct device *tty_dev;
-> + =A0 =A0 =A0 int minor;
-> +
-> + =A0 =A0 =A0 /* Low level I/O work */
-> + =A0 =A0 =A0 struct tasklet_struct io_work_tasklet;
-> + =A0 =A0 =A0 unsigned long flags;
-> + =A0 =A0 =A0 dma_addr_t rx_dma;
-> + =A0 =A0 =A0 dma_addr_t tx_dma;
-> +
-> + =A0 =A0 =A0 int is_6160; =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0/* Modem type */
+It isn't a critical issue now, but it will become more important when
+the GPIO SS line handling is generalized so that the individual
+drivers can be simplified.
 
-Should this be a bool? It is suspiciously named much
-like something boolean.
+g.
 
-> +
-> + =A0 =A0 =A0 spinlock_t write_lock;
-> + =A0 =A0 =A0 int write_pending;
+-- =
 
-This should be a bool.
-
-> + =A0 =A0 =A0 spinlock_t power_lock;
-> + =A0 =A0 =A0 unsigned char power_status;
-
-This piece of comments from the ifx_spi_power_state_clear
-kerneldoc:
-"+ *     ifx_spi_power_state_clear       -       clear power bit"
-Actually indicates that this is also a bool, albeit using some
-opaque "val" to set/clear it. The code handling this flag really
-needs an overhaul or I'm not reading it right.
-
-> + =A0 =A0 =A0 unsigned char *rx_buffer;
-> + =A0 =A0 =A0 unsigned char *tx_buffer;
-> + =A0 =A0 =A0 dma_addr_t rx_bus;
-> + =A0 =A0 =A0 dma_addr_t tx_bus;
-> + =A0 =A0 =A0 unsigned char spi_more;
-> + =A0 =A0 =A0 unsigned char spi_slave_cts;
-> +
-> + =A0 =A0 =A0 struct timer_list spi_timer;
-> +
-> + =A0 =A0 =A0 struct spi_message spi_msg;
-> + =A0 =A0 =A0 struct spi_transfer spi_xfer;
-> +
-> + =A0 =A0 =A0 struct {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* gpio lines */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned short srdy; =A0 =A0 =A0 =A0 =A0=
- =A0/* slave-ready gpio */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned short mrdy; =A0 =A0 =A0 =A0 =A0=
- =A0/* master-ready gpio */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned short reset; =A0 =A0 =A0 =A0 =A0=
- /* modem-reset gpio */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned short po; =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0/* modem-on gpio */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 unsigned short reset_out; =A0 =A0 =A0 /=
-* modem-in-reset gpio */
-
-Is there something wrong about using u16 for these?
-If it's to fit the gpio function it ought to be unsigned int
-I believe.
-
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 /* state/stats */
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 int unack_srdy_int_nb;
-
-I don't get that comment above. This seems to be some
-interrupt counter, this whole struct may need some kerneldoc.
-
-> + =A0 =A0 =A0 } gpio;
-> +
-> + =A0 =A0 =A0 /* modem reset */
-> + =A0 =A0 =A0 unsigned long mdm_reset_state;
-> +#define MR_START =A0 =A0 =A0 0
-> +#define MR_INPROGRESS =A01
-> +#define MR_COMPLETE =A0 =A02
-> + =A0 =A0 =A0 wait_queue_head_t mdm_reset_wait;
-> +};
-> +
-> +#endif /* _IFX6X60_H */
-> diff --git a/include/linux/spi/ifx_modem.h b/include/linux/spi/ifx_mo=
-dem.h
-> new file mode 100644
-> index 0000000..a68f3b1
-> --- /dev/null
-> +++ b/include/linux/spi/ifx_modem.h
-> @@ -0,0 +1,14 @@
-> +#ifndef LINUX_IFX_MODEM_H
-> +#define LINUX_IFX_MODEM_H
-> +
-
-/**
- * Insert some kerneldoc of struct fields here, I think
- * it'd be nice.
- */
-
-> +struct ifx_modem_platform_data {
-> + =A0 =A0 =A0 unsigned short rst_out; /* modem reset out */
-> + =A0 =A0 =A0 unsigned short pwr_on; =A0/* power on */
-> + =A0 =A0 =A0 unsigned short rst_pmu; /* reset modem */
-> + =A0 =A0 =A0 unsigned short tx_pwr; =A0/* modem power threshold */
-> + =A0 =A0 =A0 unsigned short srdy; =A0 =A0/* SRDY */
-> + =A0 =A0 =A0 unsigned short mrdy; =A0 =A0/* MRDY */
-
-If these are GPIO pins they should be unsigned int I believe.
-
-> + =A0 =A0 =A0 unsigned short is_6160; /* Modem type */
-
-=2E. is this bool?
-
-> +};
-> +
-> +#endif
-
-Yours,
-Linus Walleij
---
-To unsubscribe from this list: send the line "unsubscribe linux-serial"=
- in
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

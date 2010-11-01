@@ -1,12 +1,15 @@
-From: "Charles Martel" <SingerIsland-KK0ffGbhmjU@public.gmane.org>
-Subject: Access the linux_2.6.36 SPI Drivers from Userspace?
-Date: Mon, 01 Nov 2010 09:38:14 -0400
-Message-ID: <20101101133814.141660@gmx.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: Access the linux_2.6.36 SPI Drivers from Userspace?
+Date: Mon, 1 Nov 2010 10:26:58 -0400
+Message-ID: <AANLkTimhBrDjQeT6=PnKg_q0d-WSO_UX3dhxe4Fkbr46@mail.gmail.com>
+References: <20101101133814.141660@gmx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20101101133814.141660-KK0ffGbhmjU@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,19 +20,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-77u/RG9lcyBhbnlvbmUga25vdyBob3cgdG8gYWNjZXNzIHRoZSBsaW51eF8yLjYuMzYgU1BJIERy
-aXZlcnMgZnJvbSBVc2Vyc3BhY2U/IElmIHNvLCBjb3VsZCB5b3UgZXhwbGFpbj8KIApBbHNvLCBp
-dCBhcHBlYXJzIHRoYXQgU1BJLURFViAobm90IFNQSURFVikgaGFzIGJlZW4gcmVtb3ZlZC4gwqBJ
-cyB0aGVyZSBhIHJlcGxhY2VtZW50IGluIHRoZSB3b3Jrcz8KSSBjb3VsZCBzdXJlIHVzZSBvbmUg
-dGhhdCBsZXRzIG1lIGNoYW5nZSB0aGUgU1BJIFNwZWVkIGFmdGVyIEkgYnJpbmcgdXAgdGhlIFNQ
-SSBEZXZpY2UuCiAKVGhhbmtzCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTm9raWEgYW5kIEFUJlQg
-cHJlc2VudCB0aGUgMjAxMCBDYWxsaW5nIEFsbCBJbm5vdmF0b3JzLU5vcnRoIEFtZXJpY2EgY29u
-dGVzdApDcmVhdGUgbmV3IGFwcHMgJiBnYW1lcyBmb3IgdGhlIE5va2lhIE44IGZvciBjb25zdW1l
-cnMgaW4gIFUuUy4gYW5kIENhbmFkYQokMTAgbWlsbGlvbiB0b3RhbCBpbiBwcml6ZXMgLSAkNE0g
-Y2FzaCwgNTAwIGRldmljZXMsIG5lYXJseSAkNk0gaW4gbWFya2V0aW5nCkRldmVsb3Agd2l0aCBO
-b2tpYSBRdCBTREssIFdlYiBSdW50aW1lLCBvciBKYXZhIGFuZCBQdWJsaXNoIHRvIE92aSBTdG9y
-ZSAKaHR0cDovL3Auc2YubmV0L3NmdS9ub2tpYS1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Mon, Nov 1, 2010 at 9:38 AM, Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org> wrote:
+> Does anyone know how to access the linux_2.6.36 SPI Drivers from Userspac=
+e? If so, could you explain?
+>
+> Also, it appears that SPI-DEV (not SPIDEV) has been removed. =A0Is there =
+a replacement in the works?
+> I could sure use one that lets me change the SPI Speed after I bring up t=
+he SPI Device.
+
+I'm don't know what the difference is between spi-dev and spidev, but
+spidev allows the spi speed to be changed with an ioctl.
+Documentation/spi/ contains information about how to use it from
+userspace, and you can also look at drivers/spi/spidev.c
+
+g.
+
+---------------------------------------------------------------------------=
+---
+Nokia and AT&T present the 2010 Calling All Innovators-North America contest
+Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
+$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
+Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store =
+
+http://p.sf.net/sfu/nokia-dev2dev

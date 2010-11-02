@@ -1,15 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: Access the linux_2.6.36 SPI Drivers from Userspace?
-Date: Mon, 1 Nov 2010 10:26:58 -0400
-Message-ID: <AANLkTimhBrDjQeT6=PnKg_q0d-WSO_UX3dhxe4Fkbr46@mail.gmail.com>
-References: <20101101133814.141660@gmx.com>
+From: =?gb2312?B?vK/XsM/kuqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1350/40HQ
+	=?gb2312?B?yc+6o7jbMTHUwg==?=
+Date: Tue, 2 Nov 2010 15:58:26 +0800
+Message-ID: <20101102155826185324@PC2010102311PUL.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101101133814.141660-KK0ffGbhmjU@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,27 +18,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 1, 2010 at 9:38 AM, Charles Martel <SingerIsland-KK0ffGbhmjU@public.gmane.org> wrote:
-> Does anyone know how to access the linux_2.6.36 SPI Drivers from Userspac=
-e? If so, could you explain?
->
-> Also, it appears that SPI-DEV (not SPIDEV) has been removed. =A0Is there =
-a replacement in the works?
-> I could sure use one that lets me change the SPI Speed after I bring up t=
-he SPI Device.
-
-I'm don't know what the difference is between spi-dev and spidev, but
-spidev allows the spi speed to be changed with an ioctl.
-Documentation/spi/ contains information about how to use it from
-userspace, and you can also look at drivers/spi/spidev.c
-
-g.
-
----------------------------------------------------------------------------=
----
-Nokia and AT&T present the 2010 Calling All Innovators-North America contest
-Create new apps & games for the Nokia N8 for consumers in  U.S. and Canada
-$10 million total in prizes - $4M cash, 500 devices, nearly $6M in marketing
-Develop with Nokia Qt SDK, Web Runtime, or Java and Publish to Ovi Store =
-
-http://p.sf.net/sfu/nokia-dev2dev
+yc+6o7jbs/a/2g0KMjAxMC0xMC0yNQ0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
+J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
+IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
+V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
+xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ4MDAvMTM1MC8xMzUwDQogICC/qMCtxuYgJDgwMC8x
+MzUwLzEzNTANCiAgICCworDNy7kgJDgwMC8xMzUwLzEzNTANCtLUyc+6o9TLt9G++c6quqO1pUFM
+TElOvNu48SANCg0KVE1DTCBDb250YWluZXIgTGluZQ0KVDowMjEtNjA5NTU1NDENCkY6MDIxLTYw
+OTU1NjIyDQrTyrz+vLBtc246ICBzaHRtY2xAaG90bWFpbC5jb20gICAgICANCsrWu/qjuiAxMzkx
+Nzk4NjUyMiANCs31z8jJ+iANCg0KsbHFt7n6vNK497jbv9rP1tLUv6rKvLPQvdOjrMjn09DQ6NKq
+v8llbWFpbNfJ0a+how0K0OjSqrqj1Mu827jxse21xKOsv8nS1Lei08q8/rj4ztKjrNTa08q8/tbQ
+x+vXosP3ufO5q8u+w/uzxqGjDQoNCrfH1t7P39DCzcaz9rXNvNvOu7Sso6zFt9bez9+827jxzqyz
+1rK7seQNCsjnsrvQ6NKqtMvTyrz+o6y/ydLUu9i4tM7So6zO0r2r1NrPwrTOtcS3osvN1tDIoc/7
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpOb2tpYSBhbmQgQVQmVCBwcmVzZW50IHRoZSAyMDEwIENh
+bGxpbmcgQWxsIElubm92YXRvcnMtTm9ydGggQW1lcmljYSBjb250ZXN0CkNyZWF0ZSBuZXcgYXBw
+cyAmIGdhbWVzIGZvciB0aGUgTm9raWEgTjggZm9yIGNvbnN1bWVycyBpbiAgVS5TLiBhbmQgQ2Fu
+YWRhCiQxMCBtaWxsaW9uIHRvdGFsIGluIHByaXplcyAtICQ0TSBjYXNoLCA1MDAgZGV2aWNlcywg
+bmVhcmx5ICQ2TSBpbiBtYXJrZXRpbmcKRGV2ZWxvcCB3aXRoIE5va2lhIFF0IFNESywgV2ViIFJ1
+bnRpbWUsIG9yIEphdmEgYW5kIFB1Ymxpc2ggdG8gT3ZpIFN0b3JlIApodHRwOi8vcC5zZi5uZXQv
+c2Z1L25va2lhLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

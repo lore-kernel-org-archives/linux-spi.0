@@ -1,31 +1,53 @@
-From: 15989582864-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Wed, 3 Nov 2010 20:25:38 +0800
-Message-ID: <E1PDcNv-00034g-5U@sfs-ml-1.v29.ch3.sourceforge.com>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
+Date: Wed, 3 Nov 2010 05:35:54 -0700 (PDT)
+Message-ID: <129498.93810.qm@web180302.mail.gq1.yahoo.com>
+References: <AANLkTin=3K0H+YdNM2Nhz63c3+Upp+rwApo-Ww4p5qH6@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
+To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <AANLkTin=3K0H+YdNM2Nhz63c3+Upp+rwApo-Ww4p5qH6-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
-w7eioaqhqsaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6ICAKICAg
-ICAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5NTgyODY0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-QWNoaWV2ZSBJbXByb3ZlZCBOZXR3b3JrIFNlY3VyaXR5IHdpdGggSVAgYW5kIEROUyBSZXB1dGF0
-aW9uLgpEZWZlbmQgYWdhaW5zdCBiYWQgbmV0d29yayB0cmFmZmljLCBpbmNsdWRpbmcgYm90bmV0
-cywgbWFsd2FyZSwgCnBoaXNoaW5nIHNpdGVzLCBhbmQgY29tcHJvbWlzZWQgaG9zdHMgLSBzYXZp
-bmcgeW91ciBjb21wYW55IHRpbWUsIAptb25leSwgYW5kIGVtYmFycmFzc21lbnQuICAgTGVhcm4g
-TW9yZSEgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaHBkZXYyZGV2LW5vdgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
-IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
-dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+
+--- On Wed, 11/3/10, Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+\
+> Date: Wednesday, November 3, 2010, 3:18 AM
+> 2010/11/3 David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>:
+> 
+> > That seems like
+> > a better structure for various vendors' "SSP"
+> > hardware (multifunction serial interface logic)
+> 
+> Incidentally the ARM PrimeCell PL022 is called SSP,
+> "Synchronous Serial Port" and is not multifunction at all.
+
+ISTR coming across that IP module; are you sure
+that it only supports a single serial protocol,
+instead of just a "small" variety" (multi)?
+Unless the hardware only supports one protocol,
+my point holds.
+
+I wasn't implying that modules named SSP have
+more in common than tending to support
+more than a single serial protocol.  If they
+only support one, they get names like"USART"
+or sometimes CODEC.
+
+- Dave

@@ -1,43 +1,53 @@
-From: =?gb2312?B?vK/XsM/kuqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1350/40HQ
-	=?gb2312?B?yc+6o7jbMTHUwg==?=
-Date: Tue, 2 Nov 2010 15:58:26 +0800
-Message-ID: <20101102155826185324@PC2010102311PUL.net>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
+Date: Tue, 2 Nov 2010 19:15:16 -0700 (PDT)
+Message-ID: <956998.65651.qm@web180302.mail.gq1.yahoo.com>
+References: <1288124308-14999-9-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org,
+        grant.likely@se
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1288124308-14999-9-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-yc+6o7jbs/a/2g0KMjAxMC0xMC0yNQ0KMS7Ft9beu/mxvrjbICQxNTAwLzIwJ0dQICQyOTAwLzQw
-J0dQICQyOTUwLzQwJ0hRICANCtaxtO+/7LSsICC1vUxFIEhBVlJFIEFOVFdFUlAgUk9UVEVSREFN
-IEhBTUJVUke427/aIA0Ktb1MRSBIQVZSRSBST1RURVJEQU0gMjjM7CBIQU1CVVJHIDI5zOwgQU5U
-V0VSUCAzMMzsICAgICAgICANCiAgICAgICAgDQoyLrDNyfogJDMwMC82MDAvNjAwDQogICDQwrzT
-xsIgJDE1MC8zMDAvMzAwDQogICC1z7DdICQ4MDAvMTM1MC8xMzUwDQogICC/qMCtxuYgJDgwMC8x
-MzUwLzEzNTANCiAgICCworDNy7kgJDgwMC8xMzUwLzEzNTANCtLUyc+6o9TLt9G++c6quqO1pUFM
-TElOvNu48SANCg0KVE1DTCBDb250YWluZXIgTGluZQ0KVDowMjEtNjA5NTU1NDENCkY6MDIxLTYw
-OTU1NjIyDQrTyrz+vLBtc246ICBzaHRtY2xAaG90bWFpbC5jb20gICAgICANCsrWu/qjuiAxMzkx
-Nzk4NjUyMiANCs31z8jJ+iANCg0KsbHFt7n6vNK497jbv9rP1tLUv6rKvLPQvdOjrMjn09DQ6NKq
-v8llbWFpbNfJ0a+how0K0OjSqrqj1Mu827jxse21xKOsv8nS1Lei08q8/rj4ztKjrNTa08q8/tbQ
-x+vXosP3ufO5q8u+w/uzxqGjDQoNCrfH1t7P39DCzcaz9rXNvNvOu7Sso6zFt9bez9+827jxzqyz
-1rK7seQNCsjnsrvQ6NKqtMvTyrz+o6y/ydLUu9i4tM7So6zO0r2r1NrPwrTOtcS3osvN1tDIoc/7
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpOb2tpYSBhbmQgQVQmVCBwcmVzZW50IHRoZSAyMDEwIENh
-bGxpbmcgQWxsIElubm92YXRvcnMtTm9ydGggQW1lcmljYSBjb250ZXN0CkNyZWF0ZSBuZXcgYXBw
-cyAmIGdhbWVzIGZvciB0aGUgTm9raWEgTjggZm9yIGNvbnN1bWVycyBpbiAgVS5TLiBhbmQgQ2Fu
-YWRhCiQxMCBtaWxsaW9uIHRvdGFsIGluIHByaXplcyAtICQ0TSBjYXNoLCA1MDAgZGV2aWNlcywg
-bmVhcmx5ICQ2TSBpbiBtYXJrZXRpbmcKRGV2ZWxvcCB3aXRoIE5va2lhIFF0IFNESywgV2ViIFJ1
-bnRpbWUsIG9yIEphdmEgYW5kIFB1Ymxpc2ggdG8gT3ZpIFN0b3JlIApodHRwOi8vcC5zZi5uZXQv
-c2Z1L25va2lhLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+
+--- On Tue, 10/26/10, Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> wrote:
+
+> From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+> Subject: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
+
+On the assumptions you've tested this *AND* will
+resubmit with the previously-requested change of
+removing all references to non-existent
+"virtual"ness in the driver ... I'll likely
+add my ack to that resubmitted version
+
+Also, chip2gpio seems an excessively generic name;
+maybe chip2_ti_ssp_gpio or somesuch?
+
+I'd still be happier seeing this "stack" packaged
+as a hardware library called by various drivers
+(like GPIO, SPI, etc) rather than a core driver
+that's called by other drivers.  That seems like
+a better structure for various vendors' "SSP"
+hardware (multifunction serial interface logic)
+since most function drivers just need to poke
+the registers a bit differently, and don't have
+much to share with a "core driver" beyond a few
+setup routines (if that).
+
+- Dave

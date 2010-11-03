@@ -1,55 +1,51 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
-Date: Wed, 3 Nov 2010 17:24:09 +0100
-Message-ID: <AANLkTikZNMRLiWnDuY9oahwoJ+Zxsrvz=JO0C10CbZvx@mail.gmail.com>
-References: <AANLkTin=3K0H+YdNM2Nhz63c3+Upp+rwApo-Ww4p5qH6@mail.gmail.com>
-	<129498.93810.qm@web180302.mail.gq1.yahoo.com>
+From: yruytrtG-p8rLRjgcmZCjKv3TNrM5DQ@public.gmane.org
+Subject: =?GB2312?B?ZmFmd8bz0rXB97PMzOXPtb2oyejT68q1yqnKtdW9dGZnZmp3?=
+Date: Thu, 4 Nov 2010 06:55:11 +0800
+Message-ID: <E1PDmH6-0002gc-9L@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	broonie@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org,
-	rpurdie@rpsys.net, Cyril Chemparathy <cyril@ti.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org, lrg@slimlogic.co.uk
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <129498.93810.qm@web180302.mail.gq1.yahoo.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/11/3 David Brownell <david-b@pacbell.net>:
-> --- On Wed, 11/3/10, Linus Walleij <linus.ml.walleij@gmail.com> wrote:
->>
->> Incidentally the ARM PrimeCell PL022 is called SSP,
->> "Synchronous Serial Port" and is not multifunction at all.
->
-> ISTR coming across that IP module; are you sure
-> that it only supports a single serial protocol,
-> instead of just a "small" variety" (multi)?
-> Unless the hardware only supports one protocol,
-> my point holds.
+This is a multi-part message in MIME format
 
-Yeah well:
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-/**
- * enum ssp_interface - interfaces allowed for this SSP Controller
- * @SSP_INTERFACE_MOTOROLA_SPI: Motorola Interface
- * @SSP_INTERFACE_TI_SYNC_SERIAL: Texas Instrument Synchronous Serial
- * interface
- * @SSP_INTERFACE_NATIONAL_MICROWIRE: National Semiconductor Microwire
- * interface
- * @SSP_INTERFACE_UNIDIRECTIONAL: Unidirectional interface (STn8810
- * &STn8815 only)
- */
-enum ssp_interface {
-        SSP_INTERFACE_MOTOROLA_SPI,
-        SSP_INTERFACE_TI_SYNC_SERIAL,
-        SSP_INTERFACE_NATIONAL_MICROWIRE,
-        SSP_INTERFACE_UNIDIRECTIONAL
-};
 
-If that is what you mean then yes. All of the protols are
-"SPI type" though.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Yours,
-Linus Walleij
+------------------------------------------------------------------------------
+The Next 800 Companies to Lead America's Growth: New Video Whitepaper
+David G. Thomson, author of the best-selling book "Blueprint to a 
+Billion" shares his insights and actions to help propel your 
+business during the next growth cycle. Listen Now!
+http://p.sf.net/sfu/SAP-dev2dev
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

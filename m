@@ -1,32 +1,31 @@
-From: Linus Walleij <linus.ml.walleij@gmail.com>
-Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
-Date: Wed, 3 Nov 2010 11:18:37 +0100
-Message-ID: <AANLkTin=3K0H+YdNM2Nhz63c3+Upp+rwApo-Ww4p5qH6@mail.gmail.com>
-References: <1288124308-14999-9-git-send-email-cyril@ti.com>
-	<956998.65651.qm@web180302.mail.gq1.yahoo.com>
+From: 15989582864-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Wed, 3 Nov 2010 20:25:38 +0800
+Message-ID: <E1PDcNv-00034g-5U@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	spi-devel-general@lists.sourceforge.net,
-	broonie@opensource.wolfsonmicro.com, lrg@slimlogic.co.uk,
-	grant.likely@secretlab.ca, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, rpurdie@rpsys.net,
-	Cyril Chemparathy <cyril@ti.com>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <956998.65651.qm@web180302.mail.gq1.yahoo.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2010/11/3 David Brownell <david-b@pacbell.net>:
-
-> That seems like
-> a better structure for various vendors' "SSP"
-> hardware (multifunction serial interface logic)
-
-Incidentally the ARM PrimeCell PL022 is called SSP,
-"Synchronous Serial Port" and is not multifunction at all.
-Just to add to the confusion...
-
-Yours,
-Linus Walleij
+xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
+w7eioaqhqsaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6ICAKICAg
+ICAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5NTgyODY0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+QWNoaWV2ZSBJbXByb3ZlZCBOZXR3b3JrIFNlY3VyaXR5IHdpdGggSVAgYW5kIEROUyBSZXB1dGF0
+aW9uLgpEZWZlbmQgYWdhaW5zdCBiYWQgbmV0d29yayB0cmFmZmljLCBpbmNsdWRpbmcgYm90bmV0
+cywgbWFsd2FyZSwgCnBoaXNoaW5nIHNpdGVzLCBhbmQgY29tcHJvbWlzZWQgaG9zdHMgLSBzYXZp
+bmcgeW91ciBjb21wYW55IHRpbWUsIAptb25leSwgYW5kIGVtYmFycmFzc21lbnQuICAgTGVhcm4g
+TW9yZSEgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaHBkZXYyZGV2LW5vdgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

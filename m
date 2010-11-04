@@ -1,11 +1,11 @@
-From: evafi <evafi-eLctNYwMjXYDZ1qJvdNYyg@public.gmane.org>
-Subject: [SPAM] etude financiere
-Date: Thu, 4 Nov 2010 13:00:44 +0100
-Message-ID: <403e552e30bd6896165c2a5041dea717@localhost.localdomain>
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票――代/开
+Date: Fri, 5 Nov 2010 00:21:48 +0800
+Message-ID: <E1PE2ZT-0002Qk-JJ@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,28 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Madame, monsieur,
-
-Des maintenant, r=E9alisez l'=E9tude de votre situation personnelle =
-
-
-
-
-
-Cli>quez ici http://nouveautes.reducimpots.net/index.php?ID=3D29195&M=3Dinf=
-o77
-
-
-
-
-
-
----------------------------------------------------------------------------=
----
-The Next 800 Companies to Lead America's Growth: New Video Whitepaper
-David G. Thomson, author of the best-selling book "Blueprint to a =
-
-Billion" shares his insights and actions to help propel your =
-
-business during the next growth cycle. Listen Now!
-http://p.sf.net/sfu/SAP-dev2dev
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTU4MTczMDI3
+NjAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgTmV4dCA4MDAgQ29tcGFuaWVzIHRvIExlYWQg
+QW1lcmljYSdzIEdyb3d0aDogTmV3IFZpZGVvIFdoaXRlcGFwZXIKRGF2aWQgRy4gVGhvbXNvbiwg
+YXV0aG9yIG9mIHRoZSBiZXN0LXNlbGxpbmcgYm9vayAiQmx1ZXByaW50IHRvIGEgCkJpbGxpb24i
+IHNoYXJlcyBoaXMgaW5zaWdodHMgYW5kIGFjdGlvbnMgdG8gaGVscCBwcm9wZWwgeW91ciAKYnVz
+aW5lc3MgZHVyaW5nIHRoZSBuZXh0IGdyb3d0aCBjeWNsZS4gTGlzdGVuIE5vdyEKaHR0cDovL3Au
+c2YubmV0L3NmdS9TQVAtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

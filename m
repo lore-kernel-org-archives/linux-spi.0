@@ -1,12 +1,11 @@
-From: =?gb2312?B?vK/XsM/kuqPUyw==?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
-Subject: =?gb2312?B?sKKwzcu5ILXPsN0gv6jArcbm?= $1350/40HQ
-	=?gb2312?B?yc+6o7jbMTHUwg==?=
-Date: Thu, 4 Nov 2010 12:08:20 +0800
-Message-ID: <20101104120820672228@PC2010102311PUL.net>
+From: evafi <evafi-eLctNYwMjXYDZ1qJvdNYyg@public.gmane.org>
+Subject: [SPAM] etude financiere
+Date: Thu, 4 Nov 2010 13:00:44 +0100
+Message-ID: <403e552e30bd6896165c2a5041dea717@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,25 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-yc+6o7jbs/a/2g0KMjAxMC0xMS0yDQoxLsW31t67+bG+uNsgJDE0NTAvMjAnR1AgJDI3MDAvNDAn
-R1AgJDI4MDAvNDAnSFEgIA0K1rG077/stKwgILW9TEUgSEFWUkUgQU5UV0VSUCBST1RURVJEQU0g
-SEFNQlVSR7jbv9ogDQq1vUxFIEhBVlJFIFJPVFRFUkRBTSAyOMzsIEhBTUJVUkcgMjnM7CBBTlRX
-RVJQIDMwzOwgICAgICAgIA0KICAgICAgICANCjIusM3J+iAkMzAwLzYwMC82MDANCiAgINDCvNPG
-wiAkMTAwLzIwMC8yMDANCiAgILXPsN0gJDgwMC8xMzUwLzEzNTANCiAgIL+owK3G5iAkODAwLzEz
-NTAvMTM1MA0KICAgILCisM3LuSAkODAwLzEzNTAvMTM1MA0K0tTJz7qj1Mu30b75zqq6o7WlQUxM
-SU6827jxIA0KDQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAyMS02MDk1NTU0MQ0KRjowMjEtNjA5
-NTU2MjINCtPKvP68sG1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAgIA0Kyta7+qO6IDEzOTE3
-OTg2NTIyIA0KzfXPyMn6IA0KDQqxscW3ufq80rj3uNu/2s/W0tS/qsq8s9C906OsyOfT0NDo0qq/
-yWVtYWls18nRr6GjDQrQ6NKquqPUy7zbuPGx7bXEo6y/ydLUt6LTyrz+uPjO0qOs1NrTyrz+1tDH
-69eiw/e587mry77D+7PGoaMNCg0Kt8fW3s/f0MLNxrP2tc282867tKyjrMW31t7P37zbuPHOrLPW
-srux5A0KyOeyu9Do0qq0y9PKvP6jrL/J0tS72Li0ztKjrM7SvavU2s/CtM61xLeiy83W0Mihz/sK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSBOZXh0IDgwMCBDb21wYW5pZXMgdG8gTGVhZCBBbWVy
-aWNhJ3MgR3Jvd3RoOiBOZXcgVmlkZW8gV2hpdGVwYXBlcgpEYXZpZCBHLiBUaG9tc29uLCBhdXRo
-b3Igb2YgdGhlIGJlc3Qtc2VsbGluZyBib29rICJCbHVlcHJpbnQgdG8gYSAKQmlsbGlvbiIgc2hh
-cmVzIGhpcyBpbnNpZ2h0cyBhbmQgYWN0aW9ucyB0byBoZWxwIHByb3BlbCB5b3VyIApidXNpbmVz
-cyBkdXJpbmcgdGhlIG5leHQgZ3Jvd3RoIGN5Y2xlLiBMaXN0ZW4gTm93IQpodHRwOi8vcC5zZi5u
-ZXQvc2Z1L1NBUC1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Madame, monsieur,
+
+Des maintenant, r=E9alisez l'=E9tude de votre situation personnelle =
+
+
+
+
+
+Cli>quez ici http://nouveautes.reducimpots.net/index.php?ID=3D29195&M=3Dinf=
+o77
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+The Next 800 Companies to Lead America's Growth: New Video Whitepaper
+David G. Thomson, author of the best-selling book "Blueprint to a =
+
+Billion" shares his insights and actions to help propel your =
+
+business during the next growth cycle. Listen Now!
+http://p.sf.net/sfu/SAP-dev2dev

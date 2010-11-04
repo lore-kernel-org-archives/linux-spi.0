@@ -1,32 +1,26 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: spi_butterfly null ptr dereference on unload module
-Date: Thu, 4 Nov 2010 13:19:58 -0700 (PDT)
-Message-ID: <596240.50099.qm@web180307.mail.gq1.yahoo.com>
+From: "Votre Mutuelle" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Les prix s'adaptent à vos besoins et votre budget, comparez!
+Date: Thu,  4 Nov 2010 22:48:49 +0100 (CET)
+Message-ID: <lbdr9c.kynck9@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net
-To: lkml <linux-kernel@vger.kernel.org>,
-	Randy Dunlap <randy.dunlap@oracle.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---- On Thu, 11/4/10, Randy Dunlap <randy.dunlap@oracle.com> wrote:
-
-> Date: Thursday, November 4, 2010, 12:46 PM
-> Just load and unload the module.
-
-For the record ... at first impression this
-feels like a regression in another part of
-the kernel than the driver you indicate.
-I used to do that load/unload semi-regularly,
-with no errors appearing.
-
-However, I can't do any real testing on this,
-now, since I no longer have parport-capable
-hardware to which I can hook up one of these adapters ... and thus collect more info about
-where the bit-rot has rooted.
-
-- Dave
+------------------------------------------------------------------------------
+The Next 800 Companies to Lead America's Growth: New Video Whitepaper
+David G. Thomson, author of the best-selling book "Blueprint to a 
+Billion" shares his insights and actions to help propel your 
+business during the next growth cycle. Listen Now!
+http://p.sf.net/sfu/SAP-dev2dev

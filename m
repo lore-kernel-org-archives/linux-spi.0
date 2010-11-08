@@ -1,75 +1,67 @@
-From: Michal Simek <monstr@monstr.eu>
-Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
-Date: Mon, 08 Nov 2010 14:29:11 +0100
-Message-ID: <4CD7FB27.9030804@monstr.eu>
-References: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
-Reply-To: monstr@monstr.eu
+From: John Linn <John.Linn@xilinx.com>
+Subject: RE: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+Date: Mon, 8 Nov 2010 07:34:05 -0700
+Message-ID: <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
+References: <20101014161724.18966.42340.stgit@localhost6.localdomain6> <4CD7FB27.9030804@monstr.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	richard.rojfors@mocean-labs.com, john.linn@xilinx.com,
-	linux-kernel@vger.kernel.org
-To: Grant Likely <grant.likely@secretlab.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Cc: <spi-devel-general@lists.sourceforge.net>,
+	<richard.rojfors@mocean-labs.com>, <linux-kernel@vger.kernel.org>
+To: <monstr@monstr.eu>, <grant.likely@secretlab.ca>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
+Content-Class: urn:content-classes:message
+In-Reply-To: <4CD7FB27.9030804@monstr.eu>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-Grant Likely wrote:
-> Since of_platform_bus_type has been merged with the platform_bus_type,
-> a single platform driver can now support both use cases.  This patch
-> series merges the two halves of the xilinx_spi device driver.
-> 
-> Compile tested only.  I haven't booted this yet.
-
-I have tested it on sp605 and works well. Have you added that patches
-to your repository? Or are they somewhere else? Who is responsible for?
-
-I would like to also discuss one change which is related mmc_spi kernel driver.
-Let me describe the problem. Microblaze can use dma in all addresses
-that's why dma_mask is setup to 0xffffffff in of_platform_device_create.
-Xilinx spi driver doesn't support dma but mmc_spi driver is checking dma_mask in parent device
-which is xilinx spi driver.
-
-Here is the corresponding the part of code (Expect dma_mask=zero for no dma operations).
-mmc_spi.c:~1395
-	if (spi->master->dev.parent->dma_mask) {
-		struct device	*dev = spi->master->dev.parent;
-
-		host->dma_dev = dev;
-
-
-Based on this one our customer came with the following solution to setup
-dma_mask in xilinx_spi to zero and then mmc_spi doesn't setup dma operation.
-
-I think that this is nice solution but I would like to be sure that I didn't miss anything.
-After that i will create proper patch with description.
-
-
-diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
-index 7adaef6..3612e1b 100644
---- a/drivers/spi/xilinx_spi.c
-+++ b/drivers/spi/xilinx_spi.c
-@@ -519,6 +519,9 @@ static int __devinit xilinx_spi_probe(struct platform_device *dev)
-        }
-
-        platform_set_drvdata(dev, master);
-+       /* clear the dma_mask, to try to disable use of dma */
-+       dev->dev.dma_mask = 0;
-+
-        return 0;
- }
-
-
-Thanks,
-Michal
-
-
--- 
-Michal Simek, Ing. (M.Eng)
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel 2.6 Microblaze Linux - http://www.monstr.eu/fdt/
-Microblaze U-BOOT custodian
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNaWNoYWwgU2ltZWsgW21haWx0
+bzptb25zdHJAbW9uc3RyLmV1XQ0KPiBTZW50OiBNb25kYXksIE5vdmVtYmVyIDA4LCAyMDEwIDY6
+MjkgQU0NCj4gVG86IGdyYW50Lmxpa2VseUBzZWNyZXRsYWIuY2ENCj4gQ2M6IHNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgcmljaGFyZC5yb2pmb3JzQG1vY2Vhbi1sYWJz
+LmNvbTsgSm9obiBMaW5uOyBsaW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
+ZWN0OiBSZTogW1JGQyBQQVRDSCAwLzNdIHNwaS94aWxpbng6IE1lcmdlIE9GIGFuZCBub24tT0Yg
+ZHJpdmVycw0KPiANCj4gSGkgR3JhbnQsDQo+IA0KPiBHcmFudCBMaWtlbHkgd3JvdGU6DQo+ID4g
+U2luY2Ugb2ZfcGxhdGZvcm1fYnVzX3R5cGUgaGFzIGJlZW4gbWVyZ2VkIHdpdGggdGhlIHBsYXRm
+b3JtX2J1c190eXBlLA0KPiA+IGEgc2luZ2xlIHBsYXRmb3JtIGRyaXZlciBjYW4gbm93IHN1cHBv
+cnQgYm90aCB1c2UgY2FzZXMuICBUaGlzIHBhdGNoDQo+ID4gc2VyaWVzIG1lcmdlcyB0aGUgdHdv
+IGhhbHZlcyBvZiB0aGUgeGlsaW54X3NwaSBkZXZpY2UgZHJpdmVyLg0KPiA+DQo+ID4gQ29tcGls
+ZSB0ZXN0ZWQgb25seS4gIEkgaGF2ZW4ndCBib290ZWQgdGhpcyB5ZXQuDQo+IA0KPiBJIGhhdmUg
+dGVzdGVkIGl0IG9uIHNwNjA1IGFuZCB3b3JrcyB3ZWxsLiBIYXZlIHlvdSBhZGRlZCB0aGF0IHBh
+dGNoZXMNCj4gdG8geW91ciByZXBvc2l0b3J5PyBPciBhcmUgdGhleSBzb21ld2hlcmUgZWxzZT8g
+V2hvIGlzIHJlc3BvbnNpYmxlIGZvcj8NCj4gDQo+IEkgd291bGQgbGlrZSB0byBhbHNvIGRpc2N1
+c3Mgb25lIGNoYW5nZSB3aGljaCBpcyByZWxhdGVkIG1tY19zcGkga2VybmVsIGRyaXZlci4NCj4g
+TGV0IG1lIGRlc2NyaWJlIHRoZSBwcm9ibGVtLiBNaWNyb2JsYXplIGNhbiB1c2UgZG1hIGluIGFs
+bCBhZGRyZXNzZXMNCj4gdGhhdCdzIHdoeSBkbWFfbWFzayBpcyBzZXR1cCB0byAweGZmZmZmZmZm
+IGluIG9mX3BsYXRmb3JtX2RldmljZV9jcmVhdGUuDQo+IFhpbGlueCBzcGkgZHJpdmVyIGRvZXNu
+J3Qgc3VwcG9ydCBkbWEgYnV0IG1tY19zcGkgZHJpdmVyIGlzIGNoZWNraW5nIGRtYV9tYXNrIGlu
+IHBhcmVudCBkZXZpY2UNCj4gd2hpY2ggaXMgeGlsaW54IHNwaSBkcml2ZXIuDQo+IA0KPiBIZXJl
+IGlzIHRoZSBjb3JyZXNwb25kaW5nIHRoZSBwYXJ0IG9mIGNvZGUgKEV4cGVjdCBkbWFfbWFzaz16
+ZXJvIGZvciBubyBkbWEgb3BlcmF0aW9ucykuDQo+IG1tY19zcGkuYzp+MTM5NQ0KPiAJaWYgKHNw
+aS0+bWFzdGVyLT5kZXYucGFyZW50LT5kbWFfbWFzaykgew0KPiAJCXN0cnVjdCBkZXZpY2UJKmRl
+diA9IHNwaS0+bWFzdGVyLT5kZXYucGFyZW50Ow0KPiANCj4gCQlob3N0LT5kbWFfZGV2ID0gZGV2
+Ow0KPiANCj4gDQo+IEJhc2VkIG9uIHRoaXMgb25lIG91ciBjdXN0b21lciBjYW1lIHdpdGggdGhl
+IGZvbGxvd2luZyBzb2x1dGlvbiB0byBzZXR1cA0KPiBkbWFfbWFzayBpbiB4aWxpbnhfc3BpIHRv
+IHplcm8gYW5kIHRoZW4gbW1jX3NwaSBkb2Vzbid0IHNldHVwIGRtYSBvcGVyYXRpb24uDQo+IA0K
+PiBJIHRoaW5rIHRoYXQgdGhpcyBpcyBuaWNlIHNvbHV0aW9uIGJ1dCBJIHdvdWxkIGxpa2UgdG8g
+YmUgc3VyZSB0aGF0IEkgZGlkbid0IG1pc3MgYW55dGhpbmcuDQo+IEFmdGVyIHRoYXQgaSB3aWxs
+IGNyZWF0ZSBwcm9wZXIgcGF0Y2ggd2l0aCBkZXNjcmlwdGlvbi4NCg0KU2VlbXMgcmVhc29uYWJs
+ZSB0byBtZS4NCg0KVGhhbmtzLA0KSm9obg0KDQo+IA0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvc3BpL3hpbGlueF9zcGkuYyBiL2RyaXZlcnMvc3BpL3hpbGlueF9zcGkuYw0KPiBpbmRleCA3
+YWRhZWY2Li4zNjEyZTFiIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS94aWxpbnhfc3BpLmMN
+Cj4gKysrIGIvZHJpdmVycy9zcGkveGlsaW54X3NwaS5jDQo+IEBAIC01MTksNiArNTE5LDkgQEAg
+c3RhdGljIGludCBfX2RldmluaXQgeGlsaW54X3NwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
+aWNlICpkZXYpDQo+ICAgICAgICAgfQ0KPiANCj4gICAgICAgICBwbGF0Zm9ybV9zZXRfZHJ2ZGF0
+YShkZXYsIG1hc3Rlcik7DQo+ICsgICAgICAgLyogY2xlYXIgdGhlIGRtYV9tYXNrLCB0byB0cnkg
+dG8gZGlzYWJsZSB1c2Ugb2YgZG1hICovDQo+ICsgICAgICAgZGV2LT5kZXYuZG1hX21hc2sgPSAw
+Ow0KPiArDQo+ICAgICAgICAgcmV0dXJuIDA7DQo+ICB9DQo+IA0KPiANCj4gVGhhbmtzLA0KPiBN
+aWNoYWwNCj4gDQo+IA0KPiAtLQ0KPiBNaWNoYWwgU2ltZWssIEluZy4gKE0uRW5nKQ0KPiB3OiB3
+d3cubW9uc3RyLmV1IHA6ICs0Mi0wLTcyMTg0Mjg1NA0KPiBNYWludGFpbmVyIG9mIExpbnV4IGtl
+cm5lbCAyLjYgTWljcm9ibGF6ZSBMaW51eCAtIGh0dHA6Ly93d3cubW9uc3RyLmV1L2ZkdC8NCj4g
+TWljcm9ibGF6ZSBVLUJPT1QgY3VzdG9kaWFuDQoNCgpUaGlzIGVtYWlsIGFuZCBhbnkgYXR0YWNo
+bWVudHMgYXJlIGludGVuZGVkIGZvciB0aGUgc29sZSB1c2Ugb2YgdGhlIG5hbWVkIHJlY2lwaWVu
+dChzKSBhbmQgY29udGFpbihzKSBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gdGhhdCBtYXkgYmUg
+cHJvcHJpZXRhcnksIHByaXZpbGVnZWQgb3IgY29weXJpZ2h0ZWQgdW5kZXIgYXBwbGljYWJsZSBs
+YXcuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIGRvIG5vdCByZWFkLCBj
+b3B5LCBvciBmb3J3YXJkIHRoaXMgZW1haWwgbWVzc2FnZSBvciBhbnkgYXR0YWNobWVudHMuIERl
+bGV0ZSB0aGlzIGVtYWlsIG1lc3NhZ2UgYW5kIGFueSBhdHRhY2htZW50cyBpbW1lZGlhdGVseS4K

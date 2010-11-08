@@ -1,67 +1,134 @@
-From: John Linn <John.Linn@xilinx.com>
-Subject: RE: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
-Date: Mon, 8 Nov 2010 07:34:05 -0700
-Message-ID: <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
-References: <20101014161724.18966.42340.stgit@localhost6.localdomain6> <4CD7FB27.9030804@monstr.eu>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+Date: Mon, 8 Nov 2010 13:01:18 -0500
+Message-ID: <AANLkTinMoqqMKeEFiD=xHwa5DS+5qY6xN2r236SZQEba@mail.gmail.com>
+References: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
+ <4CD7FB27.9030804@monstr.eu> <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	<richard.rojfors@mocean-labs.com>, <linux-kernel@vger.kernel.org>
-To: <monstr@monstr.eu>, <grant.likely@secretlab.ca>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: monstr@monstr.eu, spi-devel-general@lists.sourceforge.net,
+	richard.rojfors@mocean-labs.com, linux-kernel@vger.kernel.org
+To: John Linn <John.Linn@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Class: urn:content-classes:message
-In-Reply-To: <4CD7FB27.9030804@monstr.eu>
+In-Reply-To: <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNaWNoYWwgU2ltZWsgW21haWx0
-bzptb25zdHJAbW9uc3RyLmV1XQ0KPiBTZW50OiBNb25kYXksIE5vdmVtYmVyIDA4LCAyMDEwIDY6
-MjkgQU0NCj4gVG86IGdyYW50Lmxpa2VseUBzZWNyZXRsYWIuY2ENCj4gQ2M6IHNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgcmljaGFyZC5yb2pmb3JzQG1vY2Vhbi1sYWJz
-LmNvbTsgSm9obiBMaW5uOyBsaW51eC0NCj4ga2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
-ZWN0OiBSZTogW1JGQyBQQVRDSCAwLzNdIHNwaS94aWxpbng6IE1lcmdlIE9GIGFuZCBub24tT0Yg
-ZHJpdmVycw0KPiANCj4gSGkgR3JhbnQsDQo+IA0KPiBHcmFudCBMaWtlbHkgd3JvdGU6DQo+ID4g
-U2luY2Ugb2ZfcGxhdGZvcm1fYnVzX3R5cGUgaGFzIGJlZW4gbWVyZ2VkIHdpdGggdGhlIHBsYXRm
-b3JtX2J1c190eXBlLA0KPiA+IGEgc2luZ2xlIHBsYXRmb3JtIGRyaXZlciBjYW4gbm93IHN1cHBv
-cnQgYm90aCB1c2UgY2FzZXMuICBUaGlzIHBhdGNoDQo+ID4gc2VyaWVzIG1lcmdlcyB0aGUgdHdv
-IGhhbHZlcyBvZiB0aGUgeGlsaW54X3NwaSBkZXZpY2UgZHJpdmVyLg0KPiA+DQo+ID4gQ29tcGls
-ZSB0ZXN0ZWQgb25seS4gIEkgaGF2ZW4ndCBib290ZWQgdGhpcyB5ZXQuDQo+IA0KPiBJIGhhdmUg
-dGVzdGVkIGl0IG9uIHNwNjA1IGFuZCB3b3JrcyB3ZWxsLiBIYXZlIHlvdSBhZGRlZCB0aGF0IHBh
-dGNoZXMNCj4gdG8geW91ciByZXBvc2l0b3J5PyBPciBhcmUgdGhleSBzb21ld2hlcmUgZWxzZT8g
-V2hvIGlzIHJlc3BvbnNpYmxlIGZvcj8NCj4gDQo+IEkgd291bGQgbGlrZSB0byBhbHNvIGRpc2N1
-c3Mgb25lIGNoYW5nZSB3aGljaCBpcyByZWxhdGVkIG1tY19zcGkga2VybmVsIGRyaXZlci4NCj4g
-TGV0IG1lIGRlc2NyaWJlIHRoZSBwcm9ibGVtLiBNaWNyb2JsYXplIGNhbiB1c2UgZG1hIGluIGFs
-bCBhZGRyZXNzZXMNCj4gdGhhdCdzIHdoeSBkbWFfbWFzayBpcyBzZXR1cCB0byAweGZmZmZmZmZm
-IGluIG9mX3BsYXRmb3JtX2RldmljZV9jcmVhdGUuDQo+IFhpbGlueCBzcGkgZHJpdmVyIGRvZXNu
-J3Qgc3VwcG9ydCBkbWEgYnV0IG1tY19zcGkgZHJpdmVyIGlzIGNoZWNraW5nIGRtYV9tYXNrIGlu
-IHBhcmVudCBkZXZpY2UNCj4gd2hpY2ggaXMgeGlsaW54IHNwaSBkcml2ZXIuDQo+IA0KPiBIZXJl
-IGlzIHRoZSBjb3JyZXNwb25kaW5nIHRoZSBwYXJ0IG9mIGNvZGUgKEV4cGVjdCBkbWFfbWFzaz16
-ZXJvIGZvciBubyBkbWEgb3BlcmF0aW9ucykuDQo+IG1tY19zcGkuYzp+MTM5NQ0KPiAJaWYgKHNw
-aS0+bWFzdGVyLT5kZXYucGFyZW50LT5kbWFfbWFzaykgew0KPiAJCXN0cnVjdCBkZXZpY2UJKmRl
-diA9IHNwaS0+bWFzdGVyLT5kZXYucGFyZW50Ow0KPiANCj4gCQlob3N0LT5kbWFfZGV2ID0gZGV2
-Ow0KPiANCj4gDQo+IEJhc2VkIG9uIHRoaXMgb25lIG91ciBjdXN0b21lciBjYW1lIHdpdGggdGhl
-IGZvbGxvd2luZyBzb2x1dGlvbiB0byBzZXR1cA0KPiBkbWFfbWFzayBpbiB4aWxpbnhfc3BpIHRv
-IHplcm8gYW5kIHRoZW4gbW1jX3NwaSBkb2Vzbid0IHNldHVwIGRtYSBvcGVyYXRpb24uDQo+IA0K
-PiBJIHRoaW5rIHRoYXQgdGhpcyBpcyBuaWNlIHNvbHV0aW9uIGJ1dCBJIHdvdWxkIGxpa2UgdG8g
-YmUgc3VyZSB0aGF0IEkgZGlkbid0IG1pc3MgYW55dGhpbmcuDQo+IEFmdGVyIHRoYXQgaSB3aWxs
-IGNyZWF0ZSBwcm9wZXIgcGF0Y2ggd2l0aCBkZXNjcmlwdGlvbi4NCg0KU2VlbXMgcmVhc29uYWJs
-ZSB0byBtZS4NCg0KVGhhbmtzLA0KSm9obg0KDQo+IA0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvc3BpL3hpbGlueF9zcGkuYyBiL2RyaXZlcnMvc3BpL3hpbGlueF9zcGkuYw0KPiBpbmRleCA3
-YWRhZWY2Li4zNjEyZTFiIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL3NwaS94aWxpbnhfc3BpLmMN
-Cj4gKysrIGIvZHJpdmVycy9zcGkveGlsaW54X3NwaS5jDQo+IEBAIC01MTksNiArNTE5LDkgQEAg
-c3RhdGljIGludCBfX2RldmluaXQgeGlsaW54X3NwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2
-aWNlICpkZXYpDQo+ICAgICAgICAgfQ0KPiANCj4gICAgICAgICBwbGF0Zm9ybV9zZXRfZHJ2ZGF0
-YShkZXYsIG1hc3Rlcik7DQo+ICsgICAgICAgLyogY2xlYXIgdGhlIGRtYV9tYXNrLCB0byB0cnkg
-dG8gZGlzYWJsZSB1c2Ugb2YgZG1hICovDQo+ICsgICAgICAgZGV2LT5kZXYuZG1hX21hc2sgPSAw
-Ow0KPiArDQo+ICAgICAgICAgcmV0dXJuIDA7DQo+ICB9DQo+IA0KPiANCj4gVGhhbmtzLA0KPiBN
-aWNoYWwNCj4gDQo+IA0KPiAtLQ0KPiBNaWNoYWwgU2ltZWssIEluZy4gKE0uRW5nKQ0KPiB3OiB3
-d3cubW9uc3RyLmV1IHA6ICs0Mi0wLTcyMTg0Mjg1NA0KPiBNYWludGFpbmVyIG9mIExpbnV4IGtl
-cm5lbCAyLjYgTWljcm9ibGF6ZSBMaW51eCAtIGh0dHA6Ly93d3cubW9uc3RyLmV1L2ZkdC8NCj4g
-TWljcm9ibGF6ZSBVLUJPT1QgY3VzdG9kaWFuDQoNCgpUaGlzIGVtYWlsIGFuZCBhbnkgYXR0YWNo
-bWVudHMgYXJlIGludGVuZGVkIGZvciB0aGUgc29sZSB1c2Ugb2YgdGhlIG5hbWVkIHJlY2lwaWVu
-dChzKSBhbmQgY29udGFpbihzKSBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gdGhhdCBtYXkgYmUg
-cHJvcHJpZXRhcnksIHByaXZpbGVnZWQgb3IgY29weXJpZ2h0ZWQgdW5kZXIgYXBwbGljYWJsZSBs
-YXcuIElmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIGRvIG5vdCByZWFkLCBj
-b3B5LCBvciBmb3J3YXJkIHRoaXMgZW1haWwgbWVzc2FnZSBvciBhbnkgYXR0YWNobWVudHMuIERl
-bGV0ZSB0aGlzIGVtYWlsIG1lc3NhZ2UgYW5kIGFueSBhdHRhY2htZW50cyBpbW1lZGlhdGVseS4K
+On Mon, Nov 8, 2010 at 9:34 AM, John Linn <John.Linn@xilinx.com> wrote:
+>> -----Original Message-----
+>> From: Michal Simek [mailto:monstr@monstr.eu]
+>> Sent: Monday, November 08, 2010 6:29 AM
+>> To: grant.likely@secretlab.ca
+>> Cc: spi-devel-general@lists.sourceforge.net; richard.rojfors@mocean-=
+labs.com; John Linn; linux-
+>> kernel@vger.kernel.org
+>> Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+>>
+>> Hi Grant,
+>>
+>> Grant Likely wrote:
+>> > Since of_platform_bus_type has been merged with the platform_bus_t=
+ype,
+>> > a single platform driver can now support both use cases. =A0This p=
+atch
+>> > series merges the two halves of the xilinx_spi device driver.
+>> >
+>> > Compile tested only. =A0I haven't booted this yet.
+>>
+>> I have tested it on sp605 and works well. Have you added that patche=
+s
+>> to your repository? Or are they somewhere else? Who is responsible f=
+or?
+>>
+>> I would like to also discuss one change which is related mmc_spi ker=
+nel driver.
+>> Let me describe the problem. Microblaze can use dma in all addresses
+>> that's why dma_mask is setup to 0xffffffff in of_platform_device_cre=
+ate.
+>> Xilinx spi driver doesn't support dma but mmc_spi driver is checking=
+ dma_mask in parent device
+>> which is xilinx spi driver.
+>>
+>> Here is the corresponding the part of code (Expect dma_mask=3Dzero f=
+or no dma operations).
+>> mmc_spi.c:~1395
+>> =A0 =A0 =A0 if (spi->master->dev.parent->dma_mask) {
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct device =A0 *dev =3D spi->master->=
+dev.parent;
+>>
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 host->dma_dev =3D dev;
+>>
+>>
+>> Based on this one our customer came with the following solution to s=
+etup
+>> dma_mask in xilinx_spi to zero and then mmc_spi doesn't setup dma op=
+eration.
+>>
+>> I think that this is nice solution but I would like to be sure that =
+I didn't miss anything.
+>> After that i will create proper patch with description.
+>
+> Seems reasonable to me.
+
+Hmmm, that actually is not sane.  Ideally, drivers should never be
+mucking with the dma mask.  It is supposed to only be set by the code
+actually registering the device.  The mmc code should not be looking
+at the parent's dma mask to determine if DMA is available; the spi bus
+drivers should be explicitly stating whether or not it supports DMA.
+The mmc_spi code is doing the wrong thing here.
+
+That being said, until the mmc_spi code is fixed (and all the users
+are fixed up so DMA still works) then this patch is probably the best
+solution.  However, please note that dev->dma_mask is a pointer, so
+you should actually be setting it to NULL.
+
+g.
+
+>
+> Thanks,
+> John
+>
+>>
+>>
+>> diff --git a/drivers/spi/xilinx_spi.c b/drivers/spi/xilinx_spi.c
+>> index 7adaef6..3612e1b 100644
+>> --- a/drivers/spi/xilinx_spi.c
+>> +++ b/drivers/spi/xilinx_spi.c
+>> @@ -519,6 +519,9 @@ static int __devinit xilinx_spi_probe(struct pla=
+tform_device *dev)
+>> =A0 =A0 =A0 =A0 }
+>>
+>> =A0 =A0 =A0 =A0 platform_set_drvdata(dev, master);
+>> + =A0 =A0 =A0 /* clear the dma_mask, to try to disable use of dma */
+>> + =A0 =A0 =A0 dev->dev.dma_mask =3D 0;
+>> +
+>> =A0 =A0 =A0 =A0 return 0;
+>> =A0}
+>>
+>>
+>> Thanks,
+>> Michal
+>>
+>>
+>> --
+>> Michal Simek, Ing. (M.Eng)
+>> w: www.monstr.eu p: +42-0-721842854
+>> Maintainer of Linux kernel 2.6 Microblaze Linux - http://www.monstr.=
+eu/fdt/
+>> Microblaze U-BOOT custodian
+>
+>
+> This email and any attachments are intended for the sole use of the n=
+amed recipient(s) and contain(s) confidential information that may be p=
+roprietary, privileged or copyrighted under applicable law. If you are =
+not the intended recipient, do not read, copy, or forward this email me=
+ssage or any attachments. Delete this email message and any attachments=
+ immediately.
+>
+
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

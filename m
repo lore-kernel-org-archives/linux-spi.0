@@ -1,54 +1,54 @@
-From: Grant Likely <grant.likely@secretlab.ca>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
-Date: Tue, 9 Nov 2010 21:45:30 -0700
-Message-ID: <20101110044530.GB4110@angua.secretlab.ca>
-References: <1288124308-14999-9-git-send-email-cyril@ti.com>
- <956998.65651.qm@web180302.mail.gq1.yahoo.com>
+Date: Tue, 9 Nov 2010 22:16:22 -0800 (PST)
+Message-ID: <79124.87409.qm@web180307.mail.gq1.yahoo.com>
+References: <20101110044530.GB4110@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	spi-devel-general@lists.sourceforge.net,
-	broonie@opensource.wolfsonmicro.com, lrg@slimlogic.co.uk,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	rpurdie@rpsys.net, Cyril Chemparathy <cyril@ti.com>
-To: David Brownell <david-b@pacbell.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <956998.65651.qm@web180302.mail.gq1.yahoo.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+        rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20101110044530.GB4110-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Nov 02, 2010 at 07:15:16PM -0700, David Brownell wrote:
-> 
-> 
-> --- On Tue, 10/26/10, Cyril Chemparathy <cyril@ti.com> wrote:
-> 
-> > From: Cyril Chemparathy <cyril@ti.com>
-> > Subject: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
-> 
-> On the assumptions you've tested this *AND* will
-> resubmit with the previously-requested change of
-> removing all references to non-existent
-> "virtual"ness in the driver ... I'll likely
-> add my ack to that resubmitted version
-> 
-> Also, chip2gpio seems an excessively generic name;
-> maybe chip2_ti_ssp_gpio or somesuch?
-> 
-> I'd still be happier seeing this "stack" packaged
-> as a hardware library called by various drivers
-> (like GPIO, SPI, etc) rather than a core driver
-> that's called by other drivers.  That seems like
-> a better structure for various vendors' "SSP"
-> hardware (multifunction serial interface logic)
-> since most function drivers just need to poke
-> the registers a bit differently, and don't have
-> much to share with a "core driver" beyond a few
-> setup routines (if that).
 
-I thought the point of this device was that a single device hosted a
-pair of multi-function serial interfaces, with each implementing a
-separate function.  If so, then it makes sense for the base driver to
-register child devices of the appropriate kinds.
+> I thought the point of this device was that a single [SSP] device
+> hosted a
+> pair of multi-function serial interfaces, with each
+> implementing a
+> separate function.
 
-g.
+function chosen based on what the board needs.
+Codec interface, SPI, GPIO, etc.
+
+=A0 If so, then it makes sense for the
+> base driver to
+> register child devices of the appropriate kinds.
+
+I'd normally say board setup registers them; a
+"core"driver can't know what children would be needed.
+
+But the point I was making was about code factoring
+not driver setup.  When  the functions don't have
+much commonality, they might as well just write to
+the relevant registers instead of expecting to have
+a non-register programming interface (of dubious
+generality of a "core" driver, but much complexity).
+
+Easier just to have children use registers directly,
+in several similar cases.  Less overhead, too.
+
+- Dave

@@ -1,101 +1,52 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v2 1/2] spi: Add hook on suspend/resume for spi master
-Date: Wed, 10 Nov 2010 08:58:25 -0700
-Message-ID: <20101110155825.GB2266@angua.secretlab.ca>
-References: <4CDA74D6.1040107@free-electrons.com>
+Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+Date: Wed, 10 Nov 2010 08:59:10 -0700
+Message-ID: <20101110155910.GC2266@angua.secretlab.ca>
+References: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
+ <4CD7FB27.9030804@monstr.eu>
+ <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
+ <AANLkTinMoqqMKeEFiD=xHwa5DS+5qY6xN2r236SZQEba@mail.gmail.com>
+ <4CDA9BAE.6020709@monstr.eu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Cc: John Linn <John.Linn@xilinx.com>,
+	spi-devel-general@lists.sourceforge.net,
+	richard.rojfors@mocean-labs.com, linux-kernel@vger.kernel.org
+To: Michal Simek <monstr@monstr.eu>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <4CDA74D6.1040107@free-electrons.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <4CDA9BAE.6020709@monstr.eu>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 10, 2010 at 11:32:54AM +0100, Gregory CLEMENT wrote:
-> Some spi masters need to do some actions when system is going to suspend
-> or when it will be resumed.
-> Spi driver offer possibility to handle suspend and resume only for device.
-> Spi master will do its suspend actions after the devices and will do
-> its resume action before the devices.
+On Wed, Nov 10, 2010 at 02:18:38PM +0100, Michal Simek wrote:
+> Grant Likely wrote:
+> >On Mon, Nov 8, 2010 at 9:34 AM, John Linn <John.Linn@xilinx.com> wrote:
+> >>>-----Original Message-----
+> >>>From: Michal Simek [mailto:monstr@monstr.eu]
+> >>>Sent: Monday, November 08, 2010 6:29 AM
+> >>>To: grant.likely@secretlab.ca
+> >>>Cc: spi-devel-general@lists.sourceforge.net; richard.rojfors@mocean-labs.com; John Linn; linux-
+> >>>kernel@vger.kernel.org
+> >>>Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+> >>>
+> >>>Hi Grant,
+> >>>
+> >>>Grant Likely wrote:
+> >>>>Since of_platform_bus_type has been merged with the platform_bus_type,
+> >>>>a single platform driver can now support both use cases.  This patch
+> >>>>series merges the two halves of the xilinx_spi device driver.
+> >>>>
+> >>>>Compile tested only.  I haven't booted this yet.
+> >>>I have tested it on sp605 and works well. Have you added that patches
+> >>>to your repository? Or are they somewhere else? Who is responsible for?
 > 
-> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> Grant: Can you answer my questions?
+> 
+> That our patch about DMA should follow your three patches.
 
-As stated in my reply to patch 2, this looks to be working around a
-bug in the omap spi_master driver.  It does not make sense to hook
-into the spi_device suspend/resume path to fix it.
+It is in my spi/next branch which I haven't pushed out to my public
+tree yet.  Sometime today I will after I've given it one more run
+through.
 
 g.
-
-> ---
->  drivers/spi/spi.c       |   14 ++++++++++++++
->  include/linux/spi/spi.h |    5 +++++
->  2 files changed, 19 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 709c836..1094aef 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -106,6 +106,11 @@ static int spi_suspend(struct device *dev,
-> pm_message_t message)
->  {
->  	int			value = 0;
->  	struct spi_driver	*drv = to_spi_driver(dev->driver);
-> +	struct spi_device 	*spi_dev = to_spi_device(dev);
-> +	struct spi_master 	*master = NULL;
-> +
-> +	if (spi_dev)
-> +		master = spi_dev->master;
->   	/* suspend will stop irqs and dma; no more i/o */
->  	if (drv) {
-> @@ -114,6 +119,9 @@ static int spi_suspend(struct device *dev,
-> pm_message_t message)
->  		else
->  			dev_dbg(dev, "... can't suspend\n");
->  	}
-> +	if (master && master->suspend )
-> +		master->suspend(spi_dev);
-> +
->  	return value;
->  }
->  @@ -121,7 +129,11 @@ static int spi_resume(struct device *dev)
->  {
->  	int			value = 0;
->  	struct spi_driver	*drv = to_spi_driver(dev->driver);
-> +	struct spi_device 	*spi_dev = to_spi_device(dev);
-> +	struct spi_master 	*master = NULL;
->  +	if (spi_dev)
-> +		master = spi_dev->master;
->  	/* resume may restart the i/o queue */
->  	if (drv) {
->  		if (drv->resume)
-> @@ -129,6 +141,8 @@ static int spi_resume(struct device *dev)
->  		else
->  			dev_dbg(dev, "... can't resume\n");
->  	}
-> +	if (master && master->resume )
-> +		master->resume(spi_dev);
->  	return value;
->  }
->  diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index b4d7710..e98c630 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -307,6 +307,11 @@ struct spi_master {
->   	/* called on release() to free memory provided by spi_master */
->  	void			(*cleanup)(struct spi_device *spi);
-> +
-> +	/* called on suspend() and resume() if spi_master has to do
-> +	 * some actions */
-> +	void (*suspend)(struct spi_device *spi);
-> +	void (*resume)(struct spi_device *spi);
->  };
->   static inline void *spi_master_get_devdata(struct spi_master *master)
-> -- 
-> 1.7.0.4
-> 
-> 

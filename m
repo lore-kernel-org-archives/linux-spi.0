@@ -1,37 +1,52 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: [PATCH v2 0/2] Put the OMAP2 SPI CS in inactive state when returning
- from suspend
-Date: Wed, 10 Nov 2010 11:32:27 +0100
-Message-ID: <4CDA74BB.4030304@free-electrons.com>
+From: Michal Simek <monstr@monstr.eu>
+Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+Date: Wed, 10 Nov 2010 14:18:38 +0100
+Message-ID: <4CDA9BAE.6020709@monstr.eu>
+References: <20101014161724.18966.42340.stgit@localhost6.localdomain6> <4CD7FB27.9030804@monstr.eu> <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local> <AANLkTinMoqqMKeEFiD=xHwa5DS+5qY6xN2r236SZQEba@mail.gmail.com>
+Reply-To: monstr@monstr.eu
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-omap <linux-omap@vger.kernel.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Cc: John Linn <John.Linn@xilinx.com>,
+	spi-devel-general@lists.sourceforge.net,
+	richard.rojfors@mocean-labs.com, linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AANLkTinMoqqMKeEFiD=xHwa5DS+5qY6xN2r236SZQEba@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We notice that when system wake up from OFF mode, then CS is in inactive 
-state until the first SPI transfer.
-For our design it lead to some conflict on this I/O.
-Inactive state for CS when there is no transfer should be the correct 
-behavior: this is the purpose of these patches.
+Grant Likely wrote:
+> On Mon, Nov 8, 2010 at 9:34 AM, John Linn <John.Linn@xilinx.com> wrote:
+>>> -----Original Message-----
+>>> From: Michal Simek [mailto:monstr@monstr.eu]
+>>> Sent: Monday, November 08, 2010 6:29 AM
+>>> To: grant.likely@secretlab.ca
+>>> Cc: spi-devel-general@lists.sourceforge.net; richard.rojfors@mocean-labs.com; John Linn; linux-
+>>> kernel@vger.kernel.org
+>>> Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
+>>>
+>>> Hi Grant,
+>>>
+>>> Grant Likely wrote:
+>>>> Since of_platform_bus_type has been merged with the platform_bus_type,
+>>>> a single platform driver can now support both use cases.  This patch
+>>>> series merges the two halves of the xilinx_spi device driver.
+>>>>
+>>>> Compile tested only.  I haven't booted this yet.
+>>> I have tested it on sp605 and works well. Have you added that patches
+>>> to your repository? Or are they somewhere else? Who is responsible for?
 
-* Change from v1:
-Rebase on linus/master (after 2.6.37-rc1)
-Do some clean-up and fix indentation on both patches
-Add more explanations for patch 2
+Grant: Can you answer my questions?
 
-Gregory CLEMENT (2):
-   spi: Add hook on suspend/resume for spi master
-   spi: Force CS to be in inactive state after off-mode transition
+That our patch about DMA should follow your three patches.
 
-  drivers/spi/omap2_mcspi.c |   10 ++++++++++
-  drivers/spi/spi.c         |   14 ++++++++++++++
-  include/linux/spi/spi.h   |    5 +++++
-  3 files changed, 29 insertions(+), 0 deletions(-)
+Thanks,
+Michal
 
+
+-- 
+Michal Simek, Ing. (M.Eng)
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel 2.6 Microblaze Linux - http://www.monstr.eu/fdt/
+Microblaze U-BOOT custodian

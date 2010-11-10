@@ -1,288 +1,86 @@
-From: poiK-76G-ox5oLzKYGauPIuoq4WtwnQC/G2K4zDHf@public.gmane.org
-Subject: [SPAM] 爲您的企業打造“金手銬”
-Date: Wed, 10 Nov 2010 23:57:16 +0800
-Message-ID: <E1PGD34-0007yS-Pt@sfs-ml-2.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============3116976573799080547=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: Re: [PATCH v2 2/2] spi: Force CS to be in inactive state after off-mode
+ transition
+Date: Wed, 10 Nov 2010 17:41:40 +0100
+Message-ID: <4CDACB44.4060803@free-electrons.com>
+References: <4CDA74DB.1060102@free-electrons.com> <20101110155718.GA2266@angua.secretlab.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-omap <linux-omap@vger.kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20101110155718.GA2266@angua.secretlab.ca>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3116976573799080547==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+On 11/10/2010 04:57 PM, Grant Likely wrote:
+> On Wed, Nov 10, 2010 at 11:32:59AM +0100, Gregory CLEMENT wrote:
+>> When SPI wake up from OFF mode, CS is in the wrong state: force it
+>> to the inactive state.
+>>
+>> During the system life, I monitored the CS behavior using a
+>> oscilloscope. I also activated debug in omap2_mcspi, so I saw when
+>> driver disable the clocks and restore context when device is not
+>> used.
+>> Each time the CS was in the correct state.
+>> It was only when system was put suspend to ram with off-mode
+>> activated that on resume the CS was in wrong state( ie activated).
+>
+> Sounds like a bug in the suspend/resume path of the spi_master, not
+> the spi_device.  Trying to work around it via the spi_device resume
+> path is the wrong approach.
+>
+
+OK it was not clear to me that spi_resume() and spi_suspend() were 
+specifics to devices as these functions belong to a bus structure.
+
+So you suggest to use the suspend/resume functions of the 
+platform_driver structure of omap2_mcspi_driver, right?
+
+> g.
+>
+>>
+>> Signed-off-by: Gregory CLEMENT<gregory.clement@free-electrons.com>
+>> ---
+>>   drivers/spi/omap2_mcspi.c |   10 ++++++++++
+>>   1 files changed, 10 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+>> index 2a651e6..938f14c 100644
+>> --- a/drivers/spi/omap2_mcspi.c
+>> +++ b/drivers/spi/omap2_mcspi.c
+>> @@ -1139,6 +1139,15 @@ static u8 __initdata spi4_txdma_id[] = {
+>>   };
+>>   #endif
+>>   +/* When SPI wake up, CS is in wrong state: force it to unactive state*/
+>> +static void omap2_mcspi_resume(struct spi_device *spi)
+>> +{
+>> +	omap2_mcspi_enable_clocks( spi_master_get_devdata(spi->master));
+>> +	/* We need to togle CS state for OMAP take this chang in account*/
+>> +	omap2_mcspi_force_cs(spi, 1);
+>> +	omap2_mcspi_force_cs(spi, 0);
+>> +	omap2_mcspi_disable_clocks( spi_master_get_devdata(spi->master));
+>> +}
+>>   static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>   {
+>>   	struct spi_master	*master;
+>> @@ -1194,6 +1203,7 @@ static int __init omap2_mcspi_probe(struct
+>> platform_device *pdev)
+>>   	master->transfer = omap2_mcspi_transfer;
+>>   	master->cleanup = omap2_mcspi_cleanup;
+>>   	master->num_chipselect = num_chipselect;
+>> +	master->resume = omap2_mcspi_resume;
+>>    	dev_set_drvdata(&pdev->dev, master);
+>>   -- 1.7.0.4
+>>
 
 
-%%%%%%%%%%%%%%%%%   中國式股權激勵法--留駐核心人才   %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-                    2010年11月20--21日 上 海
-                    2010年12月4--5日   深 圳
-                    2010年12月11--12日 北 京
-                    2010年12月18--19日 上 海
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-——本次高級培訓由榮正投資頂級股權激勵顧問專家團顧亮、何志聰、鄭培敏（每期確定其中任
-意兩位擔綱主講---“團隊的力量勝於個人力量”）——爲企業建立最完善、最科學的股權激勵方
-案；參加學員均可免費獲贈價值上萬的 《股權激勵方案設計模板》一套（包括股權制度管理辦法
-、股權協議書、股權證書以及其他相關法律文件）。
-上海榮正投資諮詢有限公司是國內公認的股權激勵諮詢第一品牌機構，具有中國證監會授予證券
-諮詢從業資格，是中國該細分諮詢領域歷史最久、操作案例最多、參與國家級政策（包括但不限
-於國資委、證監會）最多從而最權威、最專業的正規機構。國內從事該領域諮詢的個人或內外資
-諮詢機構業務骨幹大多也由榮正培養。
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-【培訓对象】企業總裁、董事長、總經理、決策者、人力資源總監、財務總監及薪資福利經理、
-投資經理、中高層管理人員、HR管理從業人員。
-【收費標準】原價：8900元，現價：4900元/2天/人（含培訓、指定培訓教材、午餐、茶點費等）
-注：課程質量與效果保證您收穫價值均在十倍以上，本次課程是真正的物超所值。
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●培-訓-報-名-中-心:
-深 圳 報 名 電 話：０７５５--８１２６２９７８   ８１２６７２７８
-上 海 報 名 電 話：０２１--２５９７６８３１
-聯 系 人：萬先生　陳先生　王小姐  
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●課程背景與收益：
-●以下是現代企業總裁、董事長等高層領導最爲頭疼的問題之一，您是否經常遇到以下困惑：
-◇股東如何吸引、留住、激勵職業經理？職業經理如何獲得人力資本超額彙回報？企業如何才能
-打造穩固的“企業與員工的利益共同體”，實現利益共用，風險同擔？◇企業如何才能激勵並釋
-放人力資本潛能，將人力資本的價值發揮到極致？◇如何讓新員工入職後就有歸屬感？◇如何讓
-老員工永具激情和創造力？◇如何讓核心員工與企業同心同德？◇如何讓公司高管與你不離不去
-？◇如何合理設計股權激勵方案？◇如何能讓激勵達到長期有效？◇如何優化企業股權？◇出讓
-多少股份？◇如何分配股權？◇虛實如何選擇？◇什麽價格出讓？◇要公開報表嗎？◇會影響投
-資嗎？◇如何在股權被稀釋的同時保持控制權和經營權的統一？◇如何既保持企業股權激勵的功
-能發揮，又能將其操作與法律風險控制到一個防火牆內？……
-此次兩天課程上將一一爲您揭曉答案，手把手教您設計適合自身企業的股權激勵方案。
-爲您的企業打造“金手銬”，有效留住核心人才，增強企業凝聚力；
-爲您的企業打造“金鑰匙”，徹底激發員工潛能，加速企業實現目標、發展壯大；
-爲您的企業打造“金色降落傘”，圓滿解決元老退出各大難題；……
-目前,員工持股、年底分紅等“股權激勵”問題是衆多企業最爲關注的核心問題，“手把手”教您
-運用股權期權這一獨特的“創富機器”,爲您的企業量身打造一幅誘人的“金手銬”，開啓人才價
-值的“金鑰匙”。
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●本次課程與股權激勵專家特色與優勢：
-——俗話說：“三人之行，必有我師”，此次課程至少有兩位股權激勵智囊專家授課，各自把他
-們最擅長的多年實操經驗一一分享給大家，從而使您更加系統全面瞭解股權激勵理論、法規、財
-稅、實際操作模式等各方面內容，並從股權激勵方案設計到實施都進行了系統而全面的闡述。本
-課程是多位實戰型頂級股權激勵專家老師經過10多年研究與實踐並結合企業成功經驗合作研發的
-結晶，讓參會企業受益非淺! 
-——權威：唯一同時、全程（1999 ～ 2010）參與各部委（包括但不限制于國資委、證監會等）
-高管薪酬與長期激勵相關重大法規制定的專業機構，透徹的政策理解和前瞻性的形勢判斷。
-——交叉：複合知識體系（橫跨人力資源與投資銀行兩大領域與交叉學科）的顧問團隊。
-——實戰：12年超過百餘家上市公司及大中型企業的服務經驗。
-——資料：強大及獨特的知識庫、案例庫、資料庫支援：連續十一年（2000～2010）獨家、持續
-、權威發佈《中國上市公司高管薪酬與持股綜合研究報告》（又名：《中國企業家價值報告》）。
-——本土：作爲本土知名顧問機構與專家團，熟悉中國獨特的國有資産監管體系，熟悉中國特色
-的資本市場與上市公司特徵，熟悉中國企業的治理結構與文化。
----真實性與實用性：課程中所講的股權設計模式都是顧亮、何志聰、鄭培敏幾位專家在近十年來
-他們親自參與的各大中型企業的實際顧問案例中總結提煉出來的，完全都能轉化運用在參會企業
-中。並且分享股權激勵方面的衆多經典真實案例，具有極高的學習和借鑒、參考價值，從而爲企
-業得到物超所值的實際效果。 
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●【授課專家導師——中國行業領先最權威、最專業的榮正投資(中國證監會授予證券從業資格證
-)頂級股權激勵專家顧問團顧亮、何志聰、鄭培敏（每期確定其中任意兩位擔綱主講）--“團隊的
-力量勝於個人力量”】  
-◆本次課程專家顧問智囊團導師之一：
-顧亮先生：企業“股權激勵”領域的實戰權威專家
-◇擅長講授人力資源與資本運作各模組的課程，尤其是股權激勵課程，平均培訓滿意度高達97%，
-榮正諮詢合夥人、常務副總經理，上海交通大學經濟學學士，多年來致力於股權激勵、並購重組
-、投融資、金融創新等方面的研究，擁有豐富的專案諮詢和運作經驗。特別是在“股權激勵”業
-務方面尤爲突出，多次參與證監會和國資委有關兼併收購、資産重組、股權激勵、國資管理、企
-業改制、股份轉讓等政策的草擬和修訂工作。主持過光明乳業、友誼集團、上實集團、川化集團
-、大亞集團、華源藥業、東方明珠、大商集團、招商銀行、瀘州老窖、徐工集團、新世界、陸家
-嘴、萬業企業、四川發展等五十余家知名企業的股權激勵諮詢專案。並曾主持《公司治理結構及
-相關測評體系的研究》、《公司內控制度建設理論與實踐研究》、《四川省國有控股上市公司市
-值管理專案研究》、《國企中央化研究》等過個研究課題。
-◆本次課程專家顧問智囊團導師之二：
-何志聰先生：企業“股權激勵”領域的實戰權威專家
-◇擅長講授人力資源與資本運作各模組的課程，尤其是股權激勵課程，平均培訓滿意度高達96%，
-榮正諮詢合夥人、副總經理，人力資本事業部總監，管理學碩士。曾主持東風汽車、徐工機械、
-江西銅業、中投證券、勝利油田、安泰科技、中創信測、探路者等多個薪酬管理與股權激勵專案
-；曾主持國務院國資委分配局、中國證監會上市部、江西省國資委、湖北省武漢市東湖經濟開發
-區等多個中長期激勵課題研究，實實在在解決了上百家企業股權激勵難題。特別是剛剛創立的中
-國創業板市場上，第一個創業板上市公司的股權激勵方案——“探路者”，就是何志聰先生主持
-設計的。
-◆本次課程專家顧問智囊團導師之三：
-鄭培敏先生：
-1989~1994，就讀於清華大學經濟管理學院，獲工學學士學位；
-1994~1997，保送直讀清華大學經濟管理學院，獲工商管理碩士（MBA）學位；
-1997~1998年任職于中國人保信託投資公司，先後在總部投資研究中心和上海投資銀行部從事證
-券研究和IPO、M&A等工作；
-1998年7月創辦上海榮正投資諮詢有限公司，任董事長至今。
-社會職務及榮譽： 
-上海青年企業家協會會員，曾于2001、2002兩次入選上海青年經濟風雲人物十大候選人（共青團
-上海市委及上海青年企業家協會聯合評選）。
-獨立董事任職經歷：
-曾任“東方電氣”（600875，央企，2009年6月離任）、“黑牡丹”（600510，江蘇常州國企，
-2009年4月離任）、“遼寧時代”（600241，遼寧省國企，，2008年6月離任）獨立董事。
-現任“彩虹股份”（600707，央企）、“博瑞傳播”（600880，四川成都國企）、“中國海誠”
-（002126，央企）、創元科技（000551，江蘇蘇州國企）獨立董事。
-分別具有中國證監會（2001）和深交所（2008）兩份獨立董事任職培訓資格證書。
-特長等情況：
-鄭培敏先生有十餘年證券金融行業相關工作經驗，熟悉資本市場，擅長公司治理、股權激勵及上
-市公司購並等工作，熟悉相關法規、操作及政府關係，自1999年以來，先後全程參與國務院發展
-研究中心、證監會、國資委等有關國企和上市公司激勵機制的調研、法規起草等工作，與國資委
-、證監會等相關部門保持密切聯繫與合作。
-鄭培敏先生創辦的“榮正諮詢”經過十一年的發展，服務超過100家上市公司，已經成爲國內著
-名的“投資銀行精品店”機構，並獲中國證監會授予的證券諮詢從業資格，是中國證券業協會正
-式會員單位，專業從事各類非公募承銷性質的創新型投資銀行業務，包括但不限於公司治理、私
-募融資、並購重組等，特別是在“高管薪酬與股權激勵”業務方面，是業內公認的第一品牌。鄭
-培敏先生也于2007年當選中國證券業協會分析師專業委員會委員。
-
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●課程模組---內容說明
-導言：中國式股權（長期）激勵探索
-	   ——從ESOP到MBO
-90年代初首先從深圳開始探索，系萌芽階段，代表性個案有：華爲、金地
-90年代中期以上海的期股制爲代表，更系統，並對90年代末各地方的試點政策有很大影響，代表
-性個案有：儀電模式
-90年代末至今，大型知名企業紛紛試水，政策趨向日益明朗，代表性成功案例有：聯想、TCL、東
-方通信、美的、中石化、中石油、聯通、中移動、中銀國際、中遠發展
-其他企業也正在積極探索，如長虹、海信等
-第一部分：宏觀理論篇：公司治理與人力資本
-–經過百年的工業資本原始積累使得貨幣財富（包括實體經濟和虛擬經濟）不再稀缺
-–市場經濟微觀主體——企業的運行越來越依賴複雜的技術（如IT）和複雜的管理（如MBA教育的
-盛行）
-第二部分：實務概念篇：股權激勵概論
-（一）經濟人的基本假設
-（二）現代企業薪酬激勵體系的模型
-榮正模型（Realize Model）
-短期激勵：月度
-中期激勵：年度
-長期激勵：三～五年以上
-越是高層或越是核心技術人員，除了其薪酬的絕對值高外，其薪酬結構中的長期激勵比例也較大
-誤區
-重激勵的絕對數量比較
-忽視激勵的結構安排
-榮正規律
-越是高層或越是核心技術人員，除了其薪酬的絕對值高外，其薪酬結構中的長期激勵比例也較大
-原因之一：反證法，如果這樣的核心人員離開公司，公司的損失較大，所以應盡可能留住這樣的
-人才；
-原因之二：不同層次人才勞動力市場的供求關係不一樣
-薪酬管理基本原則
-內部公平性
-外部競爭性
-結構完整性
-考核科學性
-延伸話題：考核與激勵
-（三）股權激勵（中長期激勵）定義
-（四）“股權”之“權”內涵
-基本權益：
-佔有權
-收益權
-衍生權益：
-管理權
-處置權
-（五）所謂“股權”的具體形式
-實股
-幹股（虛擬股）
-期權（認股權）
-期股
-……
-（六）股權激勵的主要形式
-ESOP(Emploee Stock Ownership Plan) 員工持股計劃
-ESO(Executive Stock Ownership) 管理層持股
-SO(Stock Option)股票認股權
-MBO(Management Buyout)管理層收購
-演變軌迹
-福利性——>激勵性——>控制權轉移
-（七）股權激勵的作用
-基本作用：
-改善公司治理，長期激勵機制，減少代理成本，調節收入分配……
-衍生作用
-提高外部投資者信心
-促進新老交替
-保護企業家
-
-第三部分：股權激勵操作方法篇
-（一）實施股權激勵計劃的四個要素
-持股人範圍（定人）----“重在人力資本投資”
-持股量（定量）---- “過猶不及、與時俱進”
-持股價格（定價）---- “人力資本可計量”
-持股期限（定時）----“嵌套與迴圈”
-（二）實施股權激勵計劃的兩個來源
-股份來源問題
-資金來源問題
-（三）實施股權激勵計劃的調整因素
-所有制因素
-産業因素
-規模因素
-地域因素
-（四）實施股權激勵計劃的四個關係
-外部市場與內部組織的關係
-股東與經營者的關係
-高級管理人員與基層員工的關係
-新老員工的關係
-（五）股權激勵的雙重特徵
-人力資源的激勵與約束——企業內部管理機制創新
-産權多元化和建立有效均衡的公司治理結構——企業外部産權創新
-（六）實施股權激勵的原則
-度身定制
-多層次
-公正、中立
-戰略性與全面性
-企業戰略角度 
-人力資源角度 
-資産財務角度 
-法律政策角度
-（七）幾點認識
-第二次股份制改造，對第一次（物質）股份制改造的深化和昇華
-以“人”爲本
-並非一股就靈
-多米諾骨牌效應
-先發制勝
-（八）股權激勵的利益特徵
-本質上是原始出資者（物質資本的投入方、也即所有者）與經營者（人力資本的投入方）之
-間的一種利益協調、平衡和力量較量及雙方談判的關係，因此，由任何一方來提交方案均有
-可能引起另一方的戒備和懷疑從而沒有信任基礎，因此，對獨立第三方的需求就是必然的。
-（九）股權激勵的複雜性
-一個完善和有效的股權激勵方案涉及到企業戰略、人力資源、資産財務及法律政策等四大方
-面的問題，絕大多數企業內沒有如此完整的專業人才體系，或者在單個方面也沒有就股權激
-勵很專業和深刻的認識，更沒有融會四個方面的整體意識，所以，需要具備上述四個方面專
-業知識、且專注於此方面的諮詢機構的服務。
-（十）仲介機構（獨立財務顧問）的作用
-公正、中立、科學、高效
-
-第四部分：股權激勵實踐及案例篇
-（一）非上市公司股權激勵
-（二）擬上市公司股權激勵
-（三）A股上市公司股權激勵
-≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡≡
-●培-訓-報-名-中-心:
-
-深 圳 報 名 電 話：０７５５--８１２６２９７８   ８１２６７２７８
-
-上 海 報 名 電 話：０２１--２５９７６８３１
-
-聯 系 人：萬先生　陳先生　王小姐 
-
-
---===============3116976573799080547==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-The Next 800 Companies to Lead America's Growth: New Video Whitepaper
-David G. Thomson, author of the best-selling book "Blueprint to a 
-Billion" shares his insights and actions to help propel your 
-business during the next growth cycle. Listen Now!
-http://p.sf.net/sfu/SAP-dev2dev
---===============3116976573799080547==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3116976573799080547==--
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com

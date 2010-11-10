@@ -1,109 +1,54 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drivers
-Date: Tue, 9 Nov 2010 14:16:30 -0700
-Message-ID: <AANLkTimGwW-v1VQyOM3fmE-6wNf7g64W1YNALh2kd=54@mail.gmail.com>
-References: <20101014161724.18966.42340.stgit@localhost6.localdomain6>
- <4CD7FB27.9030804@monstr.eu> <ec622bb7-57d1-4aa2-80f1-65fa4b3fa7eb@VA3EHSMHS033.ehs.local>
- <AANLkTinMoqqMKeEFiD=xHwa5DS+5qY6xN2r236SZQEba@mail.gmail.com> <4CD8F884.30409@monstr.eu>
+Subject: Re: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
+Date: Tue, 9 Nov 2010 21:45:30 -0700
+Message-ID: <20101110044530.GB4110@angua.secretlab.ca>
+References: <1288124308-14999-9-git-send-email-cyril@ti.com>
+ <956998.65651.qm@web180302.mail.gq1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: John Linn <John.Linn@xilinx.com>,
+Content-Type: text/plain; charset=us-ascii
+Cc: davinci-linux-open-source@linux.davincidsp.com,
 	spi-devel-general@lists.sourceforge.net,
-	richard.rojfors@mocean-labs.com, linux-kernel@vger.kernel.org,
-	dbrownell@users.sourceforge.net
-To: monstr@monstr.eu
+	broonie@opensource.wolfsonmicro.com, lrg@slimlogic.co.uk,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	rpurdie@rpsys.net, Cyril Chemparathy <cyril@ti.com>
+To: David Brownell <david-b@pacbell.net>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4CD8F884.30409@monstr.eu>
+Content-Disposition: inline
+In-Reply-To: <956998.65651.qm@web180302.mail.gq1.yahoo.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Nov 9, 2010 at 12:30 AM, Michal Simek <monstr@monstr.eu> wrote:
-> Hi, [cc: David Brownell]
->
-> Grant Likely wrote:
->> On Mon, Nov 8, 2010 at 9:34 AM, John Linn <John.Linn@xilinx.com> wro=
-te:
->>>> -----Original Message-----
->>>> From: Michal Simek [mailto:monstr@monstr.eu]
->>>> Sent: Monday, November 08, 2010 6:29 AM
->>>> To: grant.likely@secretlab.ca
->>>> Cc: spi-devel-general@lists.sourceforge.net; richard.rojfors@mocea=
-n-labs.com; John Linn; linux-
->>>> kernel@vger.kernel.org
->>>> Subject: Re: [RFC PATCH 0/3] spi/xilinx: Merge OF and non-OF drive=
-rs
->>>>
->>>> Hi Grant,
->>>>
->>>> Grant Likely wrote:
->>>>> Since of_platform_bus_type has been merged with the platform_bus_=
-type,
->>>>> a single platform driver can now support both use cases. =A0This =
-patch
->>>>> series merges the two halves of the xilinx_spi device driver.
->>>>>
->>>>> Compile tested only. =A0I haven't booted this yet.
->>>> I have tested it on sp605 and works well. Have you added that patc=
-hes
->>>> to your repository? Or are they somewhere else? Who is responsible=
- for?
->>>>
->>>> I would like to also discuss one change which is related mmc_spi k=
-ernel driver.
->>>> Let me describe the problem. Microblaze can use dma in all address=
-es
->>>> that's why dma_mask is setup to 0xffffffff in of_platform_device_c=
-reate.
->>>> Xilinx spi driver doesn't support dma but mmc_spi driver is checki=
-ng dma_mask in parent device
->>>> which is xilinx spi driver.
->>>>
->>>> Here is the corresponding the part of code (Expect dma_mask=3Dzero=
- for no dma operations).
->>>> mmc_spi.c:~1395
->>>> =A0 =A0 =A0 if (spi->master->dev.parent->dma_mask) {
->>>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 struct device =A0 *dev =3D spi->master=
-->dev.parent;
->>>>
->>>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 host->dma_dev =3D dev;
->>>>
->>>>
->>>> Based on this one our customer came with the following solution to=
- setup
->>>> dma_mask in xilinx_spi to zero and then mmc_spi doesn't setup dma =
-operation.
->>>>
->>>> I think that this is nice solution but I would like to be sure tha=
-t I didn't miss anything.
->>>> After that i will create proper patch with description.
->>> Seems reasonable to me.
->>
->> Hmmm, that actually is not sane. =A0Ideally, drivers should never be
->> mucking with the dma mask. =A0It is supposed to only be set by the c=
-ode
->> actually registering the device. =A0The mmc code should not be looki=
-ng
->> at the parent's dma mask to determine if DMA is available; the spi b=
-us
->> drivers should be explicitly stating whether or not it supports DMA.
->> The mmc_spi code is doing the wrong thing here.
->
-> I have no problem to fix mmc_spi driver but what is the standard way =
-how to detect
-> DMA capability for this case? This part of code is in mmc_spi from th=
-e beginning that's why I am
-> wondering that none complain about.
->
-> David?
->
-> Sorry I don't have HW where I can test it. :-(
+On Tue, Nov 02, 2010 at 07:15:16PM -0700, David Brownell wrote:
+> 
+> 
+> --- On Tue, 10/26/10, Cyril Chemparathy <cyril@ti.com> wrote:
+> 
+> > From: Cyril Chemparathy <cyril@ti.com>
+> > Subject: [PATCH v4 08/12] gpio: add ti-ssp gpio driver
+> 
+> On the assumptions you've tested this *AND* will
+> resubmit with the previously-requested change of
+> removing all references to non-existent
+> "virtual"ness in the driver ... I'll likely
+> add my ack to that resubmitted version
+> 
+> Also, chip2gpio seems an excessively generic name;
+> maybe chip2_ti_ssp_gpio or somesuch?
+> 
+> I'd still be happier seeing this "stack" packaged
+> as a hardware library called by various drivers
+> (like GPIO, SPI, etc) rather than a core driver
+> that's called by other drivers.  That seems like
+> a better structure for various vendors' "SSP"
+> hardware (multifunction serial interface logic)
+> since most function drivers just need to poke
+> the registers a bit differently, and don't have
+> much to share with a "core driver" beyond a few
+> setup routines (if that).
 
-Nobody will have *all* the hardware required to test it.  The solution
-is actually really hard because it requires auditing all of the spi
-bus drivers, figuring out which ones of them support dma, and then
-publishing that information in a way readable by the spi_device
-drivers.  For the time being, you're solution is probably the most
-reasonable.
+I thought the point of this device was that a single device hosted a
+pair of multi-function serial interfaces, with each implementing a
+separate function.  If so, then it makes sense for the base driver to
+register child devices of the appropriate kinds.
 
 g.

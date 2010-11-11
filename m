@@ -1,7 +1,8 @@
-From: "France Loisirs Finance par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Besoin d'argent, decouvrez nos offres de financement...
-Date: Wed, 10 Nov 2010 22:12:33 +0100 (CET)
-Message-ID: <lbotv0.zaohch@front02.r7g.com>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: nitin vishnoi invites you to join Ecademy
+Date: Thu, 11 Nov 2010 05:06:25 +0000 (GMT)
+Message-ID: <20101111050625.4D19CD9813E@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,10 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
+
+Join me on Ecademy, a community that enables people to learn, network and develop their business for the digital age >
+
+ Share Knowledge with Social Media
+ Build Contacts with Social Networking
+ Grow Transactions with Social Commerce
+
+The site also guides you on how to get a return on investment from social media and online networking for your business.
+
+id">It's working for me, I look forward to connecting with you.
+
+thanks,
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+
+
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future send an email from that address to
+invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+or go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+Email:support-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org The Ecademy Limited. Registered in England and Wales.
+Company Registration: 3651083 VAT: 718 0377 36
+
 
 ------------------------------------------------------------------------------
-The Next 800 Companies to Lead America's Growth: New Video Whitepaper
-David G. Thomson, author of the best-selling book "Blueprint to a 
-Billion" shares his insights and actions to help propel your 
-business during the next growth cycle. Listen Now!
-http://p.sf.net/sfu/SAP-dev2dev
+Centralized Desktop Delivery: Dell and VMware Reference Architecture
+Simplifying enterprise desktop deployment and management using
+Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
+client virtualization framework. Read more!
+http://p.sf.net/sfu/dell-eql-dev2dev

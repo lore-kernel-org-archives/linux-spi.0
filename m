@@ -1,10 +1,11 @@
-From: "SmokeLogix par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Recevez votre essai pour arreter de fumer
-Date: Thu, 11 Nov 2010 18:26:59 +0100 (CET)
-Message-ID: <lbqe1t.2bqno0@front02.r7g.com>
+From: "Giuliano" <boletim-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org>
+Subject: Grandes Marcas e Grandes Ofertas
+Date: Thu, 11 Nov 2010 11:29:16 -0600
+Message-ID: <b62196a10bf5f183d079463f79dac96d@www.tombrazil.com.br>
+Reply-To: falecom-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,10 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Centralized Desktop Delivery: Dell and VMware Reference Architecture
-Simplifying enterprise desktop deployment and management using
-Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
-client virtualization framework. Read more!
-http://p.sf.net/sfu/dell-eql-dev2dev
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnRv
+bWJyYXppbC5jb20uYnIvaWVtL2Rpc3BsYXkucGhwP009NzQ5NDUmQz0wN2U5ZmQ4YWJiNDJkYWJi
+MzgwZWJhMThmY2U0YzYxYSZTPTEyJkw9NSZOPTIKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
+c29zCkVtYWlsczpodHRwOi8vd3d3LnRvbWJyYXppbC5jb20uYnIvaWVtL3Vuc3Vic2NyaWJlLnBo
+cD9NPTc0OTQ1JkM9MDdlOWZkOGFiYjQyZGFiYjM4MGViYTE4ZmNlNGM2MWEmTD01Jk49MTIKCkVt
+YWlsIE1hcmtldGluZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQ2VudHJhbGl6ZWQgRGVza3RvcCBE
+ZWxpdmVyeTogRGVsbCBhbmQgVk13YXJlIFJlZmVyZW5jZSBBcmNoaXRlY3R1cmUKU2ltcGxpZnlp
+bmcgZW50ZXJwcmlzZSBkZXNrdG9wIGRlcGxveW1lbnQgYW5kIG1hbmFnZW1lbnQgdXNpbmcKRGVs
+bCBFcXVhbExvZ2ljIHN0b3JhZ2UgYW5kIFZNd2FyZSBWaWV3OiBBIGhpZ2hseSBzY2FsYWJsZSwg
+ZW5kLXRvLWVuZApjbGllbnQgdmlydHVhbGl6YXRpb24gZnJhbWV3b3JrLiBSZWFkIG1vcmUhCmh0
+dHA6Ly9wLnNmLm5ldC9zZnUvZGVsbC1lcWwtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

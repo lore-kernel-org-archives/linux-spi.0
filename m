@@ -1,36 +1,60 @@
-From: "Giuliano" <boletim-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org>
-Subject: Grandes Marcas e Grandes Ofertas
-Date: Thu, 11 Nov 2010 11:29:16 -0600
-Message-ID: <b62196a10bf5f183d079463f79dac96d@www.tombrazil.com.br>
-Reply-To: falecom-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org
+From: Greg KH <greg@kroah.com>
+Subject: Re: [PATCH] ifx6x60: SPI protocol driver for Infineon 6x60 modem
+Date: Thu, 11 Nov 2010 11:56:34 -0800
+Message-ID: <20101111195634.GA27040@kroah.com>
+References: <20101026131325.4506.1135.stgit@localhost.localdomain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-serial@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Return-path: <linux-serial-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20101026131325.4506.1135.stgit@localhost.localdomain>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnRv
-bWJyYXppbC5jb20uYnIvaWVtL2Rpc3BsYXkucGhwP009NzQ5NDUmQz0wN2U5ZmQ4YWJiNDJkYWJi
-MzgwZWJhMThmY2U0YzYxYSZTPTEyJkw9NSZOPTIKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
-c29zCkVtYWlsczpodHRwOi8vd3d3LnRvbWJyYXppbC5jb20uYnIvaWVtL3Vuc3Vic2NyaWJlLnBo
-cD9NPTc0OTQ1JkM9MDdlOWZkOGFiYjQyZGFiYjM4MGViYTE4ZmNlNGM2MWEmTD01Jk49MTIKCkVt
-YWlsIE1hcmtldGluZwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQ2VudHJhbGl6ZWQgRGVza3RvcCBE
-ZWxpdmVyeTogRGVsbCBhbmQgVk13YXJlIFJlZmVyZW5jZSBBcmNoaXRlY3R1cmUKU2ltcGxpZnlp
-bmcgZW50ZXJwcmlzZSBkZXNrdG9wIGRlcGxveW1lbnQgYW5kIG1hbmFnZW1lbnQgdXNpbmcKRGVs
-bCBFcXVhbExvZ2ljIHN0b3JhZ2UgYW5kIFZNd2FyZSBWaWV3OiBBIGhpZ2hseSBzY2FsYWJsZSwg
-ZW5kLXRvLWVuZApjbGllbnQgdmlydHVhbGl6YXRpb24gZnJhbWV3b3JrLiBSZWFkIG1vcmUhCmh0
-dHA6Ly9wLnNmLm5ldC9zZnUvZGVsbC1lcWwtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
-cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Tue, Oct 26, 2010 at 02:13:52PM +0100, Alan Cox wrote:
+> From: Russ Gorby <richardx.r.gorby@intel.com>
+> 
+> Prototype driver for the IFX6x60 series of SPI attached modems by Jim
+> Stanley and Russ Gorby
+> 
+> Signed-off-by: Russ Gorby <richardx.r.gorby@intel.com>
+> 
+> [Some reworking and a major cleanup]
+> 
+> Signed-off-by: Alan Cox <alan@linux.intel.com>
+> ---
+> 
+>  drivers/serial/Kconfig        |    6 
+>  drivers/serial/Makefile       |    1 
+>  drivers/serial/ifx6x60.c      | 1402 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/serial/ifx6x60.h      |  129 ++++
+>  include/linux/spi/ifx_modem.h |   14 
+>  5 files changed, 1552 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/serial/ifx6x60.c
+>  create mode 100644 drivers/serial/ifx6x60.h
+>  create mode 100644 include/linux/spi/ifx_modem.h
+> 
+> 
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index aff9dcd..0b9cc17 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -1632,4 +1632,10 @@ config SERIAL_ALTERA_UART_CONSOLE
+>  	help
+>  	  Enable a Altera UART port to be the system console.
+>  
+> +config SERIAL_IFX6X60
+> +        tristate "SPI protocol driver for Infineon 6x60 modem (EXPERIMENTAL)"
+> +	depends on GPIOLIB && EXPERIMENTAL
+
+You also need to depend on SPI here as well, otherwise the build will
+break.
+
+Care to send a follow-up patch that does this?
+
+thanks,
+
+greg k-h

@@ -1,85 +1,59 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: [PATCH v4 1/1] OMAP2: Spi: Force CS to be in inactive state after
- off-mode transition
-Date: Sat, 13 Nov 2010 00:44:42 +0100
-Message-ID: <4CDDD16A.5070200@free-electrons.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v4 0/1] Put the OMAP2 SPI CS in inactive state when
+ returning from suspend
+Date: Fri, 12 Nov 2010 18:07:43 -0700
+Message-ID: <AANLkTimH7_WYHpQAGuyM7j3kisU1N2Q1Vtcr-Si-Ktf0@mail.gmail.com>
+References: <4CDDD14B.1010706@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	Kevin Hilman <khilman@deeprootsystems.com>
-To: linux-omap <linux-omap@vger.kernel.org>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <4CDDD14B.1010706@free-electrons.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When SPI wake up from OFF mode, CS is in the wrong state: force it to 
-the inactive state.
+On Fri, Nov 12, 2010 at 4:44 PM, Gregory CLEMENT
+<gregory.clement@free-electrons.com> wrote:
+> We notice that when system wake up from OFF mode, then CS is in inact=
+ive
+> state until the first SPI transfer.
+> For our design it lead to some conflict on this I/O.
+> Inactive state for CS when there is no transfer should be the correct
+> behavior: this is the purpose of these patches.
+>
+> * Change from v3:
+> Patch clean-up according to Kevin Hilman and checkpatch.
+> Now force CS to be in inactive state only if it was inactive when it =
+was
+> suspended.
+>
+> Gregory CLEMENT (1):
+> =A0OMAP2: Spi: Force CS to be in inactive state after off-mode
+> =A0 =A0transition
+>
+> =A0drivers/spi/omap2_mcspi.c | =A0 35 +++++++++++++++++++++++++++++++=
+++++
+> =A01 files changed, 35 insertions(+), 0 deletions(-)
 
-During the system life, I monitored the CS behavior using a oscilloscope.
-I also activated debug in omap2_mcspi, so I saw when driver disable the 
-clocks and restore context when device is not used.
-Each time the CS was in the correct state.
-It was only when system was put suspend to ram with off-mode activated 
-that on resume the CS was in wrong state( ie activated).
+Hi Gregory,
 
-Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
----
-  drivers/spi/omap2_mcspi.c |   35 +++++++++++++++++++++++++++++++++++
-  1 files changed, 35 insertions(+), 0 deletions(-)
+If you've only got one patch then please put all the explanation text
+into the patch description.  Using a cover letter like this is only
+useful when describing the context for a series (more than 1) of
+patches.  Also, revision history should always be in patch
+description, regardless of whether or not there is a cover letter (at
+least for the subsystems that I maintain.  Otherwise, it is too easy
+for vital information to get separated from the patch.
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index 2a651e6..43d92fc 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -1305,11 +1305,46 @@ static int __exit omap2_mcspi_remove(struct 
-platform_device *pdev)
-  /* work with hotplug and coldplug */
-  MODULE_ALIAS("platform:omap2_mcspi");
-  +#ifdef	CONFIG_PM
-+/* When SPI wake up from off-mode, CS is in activate state. If it was in
-+ * unactive state when driver was suspend, then force it to unactive 
-state at
-+ * wake up.
-+ */
-+static int omap2_mcspi_resume(struct platform_device *pdev)
-+{
-+	struct spi_master	*master;
-+	struct omap2_mcspi_cs *cs;
-+	struct omap2_mcspi	*mcspi;
-+
-+	master = dev_get_drvdata(&pdev->dev);
-+	mcspi = spi_master_get_devdata(master);
-+	omap2_mcspi_enable_clocks(mcspi);
-+	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
-+			    node) {
-+		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
-+
-+			/* We need to togle CS state for OMAP take this
-+			 * change in account.
-+			 */
-+			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
-+			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
-+			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
-+			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
-+		}
-+	}
-+	omap2_mcspi_disable_clocks(mcspi);
-+	return 0;
-+}
-+#else
-+#define	omap2_mcspi_resume	NULL
-+#endif
-+
-  static struct platform_driver omap2_mcspi_driver = {
-  	.driver = {
-  		.name =		"omap2_mcspi",
-  		.owner =	THIS_MODULE,
-  	},
-+	.resume =	omap2_mcspi_resume,
-  	.remove =	__exit_p(omap2_mcspi_remove),
-  };
-  -- 1.7.0.4
-
+Thanks,
+g.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

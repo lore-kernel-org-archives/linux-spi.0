@@ -1,59 +1,26 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v4 0/1] Put the OMAP2 SPI CS in inactive state when
- returning from suspend
-Date: Fri, 12 Nov 2010 18:07:43 -0700
-Message-ID: <AANLkTimH7_WYHpQAGuyM7j3kisU1N2Q1Vtcr-Si-Ktf0@mail.gmail.com>
-References: <4CDDD14B.1010706@free-electrons.com>
+From: "SwissLife par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Evitez les depenses inutiles avec nos formules sur mesure
+Date: Sat, 13 Nov 2010 05:15:03 +0100 (CET)
+Message-ID: <lbt2gy.50lqdr@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-omap <linux-omap@vger.kernel.org>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <4CDDD14B.1010706@free-electrons.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 12, 2010 at 4:44 PM, Gregory CLEMENT
-<gregory.clement@free-electrons.com> wrote:
-> We notice that when system wake up from OFF mode, then CS is in inact=
-ive
-> state until the first SPI transfer.
-> For our design it lead to some conflict on this I/O.
-> Inactive state for CS when there is no transfer should be the correct
-> behavior: this is the purpose of these patches.
->
-> * Change from v3:
-> Patch clean-up according to Kevin Hilman and checkpatch.
-> Now force CS to be in inactive state only if it was inactive when it =
-was
-> suspended.
->
-> Gregory CLEMENT (1):
-> =A0OMAP2: Spi: Force CS to be in inactive state after off-mode
-> =A0 =A0transition
->
-> =A0drivers/spi/omap2_mcspi.c | =A0 35 +++++++++++++++++++++++++++++++=
-++++
-> =A01 files changed, 35 insertions(+), 0 deletions(-)
 
-Hi Gregory,
-
-If you've only got one patch then please put all the explanation text
-into the patch description.  Using a cover letter like this is only
-useful when describing the context for a series (more than 1) of
-patches.  Also, revision history should always be in patch
-description, regardless of whether or not there is a cover letter (at
-least for the subsystems that I maintain.  Otherwise, it is too easy
-for vital information to get separated from the patch.
-
-Thanks,
-g.
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+------------------------------------------------------------------------------
+Centralized Desktop Delivery: Dell and VMware Reference Architecture
+Simplifying enterprise desktop deployment and management using
+Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
+client virtualization framework. Read more!
+http://p.sf.net/sfu/dell-eql-dev2dev

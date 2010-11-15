@@ -1,53 +1,145 @@
-From: Ryan Mallon <ryan@bluewatersys.com>
-Subject: Re: [PATCH v5 04/12] spi: add ti-ssp spi master driver
-Date: Tue, 16 Nov 2010 10:59:59 +1300
-Message-ID: <4CE1AD5F.4020401@bluewatersys.com>
+From: Ryan Mallon <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
+Subject: Re: [PATCH v5 08/12] gpio: add ti-ssp gpio driver
+Date: Tue, 16 Nov 2010 11:38:09 +1300
+Message-ID: <4CE1B651.1060006@bluewatersys.com>
 References: <1289848334-8695-1-git-send-email-cyril@ti.com>
-	<1289848334-8695-5-git-send-email-cyril@ti.com>
+	<1289848334-8695-9-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	dbrownell@users.sourceforge.net, sameo@linux.intel.com,
-	khilman@deeprootsystems.com, linus.ml.walleij@gmail.com,
-	broonie@opensource.wolfsonmicro.com, grant.likely@secretlab.ca,
-	rpurdie@rpsys.net, alan@lxorguk.ukuu.org.uk,
-	spi-devel-general@lists.sourceforge.net,
-	akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	lrg@slimlogic.co.uk
-To: Cyril Chemparathy <cyril@ti.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1289848334-8695-5-git-send-email-cyril@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
+To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1289848334-8695-9-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 On 11/16/2010 08:12 AM, Cyril Chemparathy wrote:
-> This patch adds an SPI master implementation that operates on top of an
-> underlying TI-SSP port.
+> TI's SSP controller pins can be directly read and written to behave like a
+> GPIO.  This patch adds a GPIO driver that exposes such functionality.
 > 
-> Signed-off-by: Cyril Chemparathy <cyril@ti.com>
+> Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 > ---
->  drivers/mfd/Kconfig        |   10 +
+>  drivers/mfd/Kconfig        |   10 ++
 >  drivers/mfd/Makefile       |    1 +
->  drivers/mfd/ti-ssp-spi.c   |  402 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/ti_ssp.h |    6 +
->  4 files changed, 419 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/mfd/ti-ssp-spi.c
+>  drivers/mfd/ti-ssp-gpio.c  |  205 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/ti_ssp.h |    4 +
+>  4 files changed, 220 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/mfd/ti-ssp-gpio.c
 
-This should live in drivers/spi rather than drivers/mfd. Each of the
-drivers which use the TI-SSP core are single function drivers and having
-them in the appropriate directory makes them easier to find.
+Should go under drivers/gpio. This is not a multifunction driver.
 
-The SSP core driver could either live in drivers/mfd or drivers/misc
-atmel-ssc.c is in drivers/misc for example.
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/io.h>
+> +#include <linux/err.h>
+> +#include <linux/slab.h>
+> +#include <linux/gpio.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/mfd/ti_ssp.h>
+> +
+> +struct ti_ssp_gpio {
+
+This is a confusing name because it sounds like this struct maps to a
+single gpio rather than bank. Perhaps a better name is ti_ssp_gpio_chip?
+
+> +	struct gpio_chip		chip;
+> +#define chip2gpio(chip)	container_of(chip, struct ti_ssp_gpio, chip)
+
+Please don't put #define's in the middle of a struct. Move it either
+before or after the structure definition. It is also confusingly named,
+something like to_ti_ssp_gpio_chip might be better.
+
+> +static int value_get(struct gpio_chip *chip, unsigned gpio_num)
+> +{
+> +	struct ti_ssp_gpio *gpio = chip2gpio(chip);
+> +	int ret;
+> +
+> +	spin_lock(&gpio->lock);
+> +
+> +	ret = ti_ssp_raw_read(gpio->dev);
+> +	if (ret >= 0)
+> +		ret = (ret & BIT(gpio_num)) ? 1 : 0;
+
+		ret = !!(ret & BIT(gpio_num));
+
+> +
+> +	spin_unlock(&gpio->lock);
+> +	return ret;
+> +}
+
+> +static int __devinit ti_ssp_gpio_probe(struct platform_device *pdev)
+> +{
+> +	const struct ti_ssp_gpio_data *pdata = pdev->dev.platform_data;
+> +	struct device *dev = &pdev->dev;
+> +	struct ti_ssp_gpio *gpio;
+> +	int error;
+> +
+> +	if (!pdata) {
+> +		dev_err(dev, "platform data not found\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	gpio = kzalloc(sizeof(*gpio), GFP_KERNEL);
+> +	if (!gpio) {
+> +		dev_err(dev, "cannot allocate driver data\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	gpio->dev = dev;
+> +	gpio->iosel = SSP_PIN_SEL(0, SSP_IN) | SSP_PIN_SEL(1, SSP_IN) |
+> +		      SSP_PIN_SEL(2, SSP_IN) | SSP_PIN_SEL(3, SSP_IN);
+> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
+> +	if (error < 0) {
+> +		dev_err(dev, "gpio io setup failed (%d)\n", error);
+> +		goto error;
+> +	}
+> +
+> +	spin_lock_init(&gpio->lock);
+> +	platform_set_drvdata(pdev, gpio);
+> +
+> +	gpio->chip.base  = pdata->start;
+> +	gpio->chip.ngpio = 4;
+
+Is this always four or can the SSP peripheral be configured to have
+varying numbers of gpios. Maybe the number of gpios should be passed via
+platform data?
+
+> +	gpio->chip.dev   = &pdev->dev;
+> +	gpio->chip.label = "ti_ssp_gpio";
+> +	gpio->chip.owner = THIS_MODULE;
+> +	gpio->chip.get   = value_get;
+> +	gpio->chip.set   = value_set;
+> +	gpio->chip.direction_input  = direction_in;
+> +	gpio->chip.direction_output = direction_out;
+> +
+> +	error = gpiochip_add(&gpio->chip);
+> +	if (error < 0) {
+> +		dev_err(dev, "gpio chip registration failed (%d)\n", error);
+> +		goto error;
+> +	}
+> +
+> +	dev_info(dev, "ssp gpio interface registered\n");
+> +	return 0;
+> +
+> +error:
+> +	kfree(gpio);
+> +	return error;
+> +}
 
 ~Ryan
 
@@ -55,7 +147,14 @@ atmel-ssc.c is in drivers/misc for example.
 Bluewater Systems Ltd - ARM Technology Solution Centre
 
 Ryan Mallon         		5 Amuri Park, 404 Barbadoes St
-ryan@bluewatersys.com         	PO Box 13 889, Christchurch 8013
+ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org         	PO Box 13 889, Christchurch 8013
 http://www.bluewatersys.com	New Zealand
 Phone: +64 3 3779127		Freecall: Australia 1800 148 751
 Fax:   +64 3 3779135			  USA 1800 261 2934
+
+------------------------------------------------------------------------------
+Centralized Desktop Delivery: Dell and VMware Reference Architecture
+Simplifying enterprise desktop deployment and management using
+Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
+client virtualization framework. Read more!
+http://p.sf.net/sfu/dell-eql-dev2dev

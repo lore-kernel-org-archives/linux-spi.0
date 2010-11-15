@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v5 09/12] davinci: add tnetv107x evm ti-ssp gpio device
-Date: Mon, 15 Nov 2010 14:12:11 -0500
-Message-ID: <1289848334-8695-10-git-send-email-cyril@ti.com>
+Subject: [PATCH v5 05/12] davinci: add spi devices on tnetv107x evm
+Date: Mon, 15 Nov 2010 14:12:07 -0500
+Message-ID: <1289848334-8695-6-git-send-email-cyril@ti.com>
 References: <1289848334-8695-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,46 +25,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds definitions to hook up one of the ti-ssp ports to the SSP GPIO
-driver.
+This patch adds definitions for spi devices on the tnetv107x evm platform.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   11 +++++++++++
- 1 files changed, 11 insertions(+), 0 deletions(-)
+ arch/arm/mach-davinci/board-tnetv107x-evm.c |   43 +++++++++++++++++++++++++++
+ 1 files changed, 43 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index ca23516..e3863dd 100644
+index ef526b1..1a656e8 100644
 --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -39,6 +39,8 @@
- #include <mach/cp_intc.h>
- #include <mach/tnetv107x.h>
+@@ -25,6 +25,7 @@
+ #include <linux/mtd/partitions.h>
+ #include <linux/input.h>
+ #include <linux/input/matrix_keypad.h>
++#include <linux/spi/spi.h>
  
-+#define SSP_GPIO_START		128
-+
+ #include <asm/mach/arch.h>
+ #include <asm/mach-types.h>
+@@ -37,6 +38,7 @@
+ 
  #define EVM_MMC_WP_GPIO		21
  #define EVM_MMC_CD_GPIO		24
- #define EVM_SPI_CS_GPIO		54
-@@ -238,9 +240,18 @@ static struct ti_ssp_spi_data spi_master_data = {
- 		  SSP_INPUT_SEL(3),
++#define EVM_SPI_CS_GPIO		54
+ 
+ static int initialize_gpio(int gpio, char *desc)
+ {
+@@ -202,9 +204,45 @@ static struct matrix_keypad_platform_data keypad_config = {
+ 	.no_autorepeat	= 0,
  };
  
-+static struct ti_ssp_gpio_data ssp_gpio_data = {
-+	.start		= SSP_GPIO_START,
++static void spi_select_device(int cs)
++{
++	static int gpio;
++
++	if (!gpio) {
++		int ret;
++		ret = gpio_request(EVM_SPI_CS_GPIO, "spi chipsel");
++		if (ret < 0) {
++			pr_err("cannot open spi chipsel gpio\n");
++			gpio = -ENOSYS;
++			return;
++		} else {
++			gpio = EVM_SPI_CS_GPIO;
++			gpio_direction_output(gpio, 0);
++		}
++	}
++
++	if (gpio < 0)
++		return;
++
++	return gpio_set_value(gpio, cs ? 1 : 0);
++}
++
++static struct ti_ssp_spi_data spi_master_data = {
++	.num_cs	= 2,
++	.select	= spi_select_device,
++	.iosel	= SSP_PIN_SEL(0, SSP_CLOCK)	| SSP_PIN_SEL(1, SSP_DATA) |
++		  SSP_PIN_SEL(2, SSP_CHIPSEL)	| SSP_PIN_SEL(3, SSP_IN)   |
++		  SSP_INPUT_SEL(3),
 +};
 +
  static struct ti_ssp_data ssp_config = {
  	.out_clock	= 250 * 1000,
  	.dev_data	= {
-+		[0] = {
-+			.dev_name = "ti-ssp-gpio",
-+			.pdata = &ssp_gpio_data,
-+			.pdata_size = sizeof(ssp_gpio_data),
++		[1] = {
++			.dev_name = "ti-ssp-spi",
++			.pdata = &spi_master_data,
++			.pdata_size = sizeof(spi_master_data),
 +		},
- 		[1] = {
- 			.dev_name = "ti-ssp-spi",
- 			.pdata = &spi_master_data,
+ 	},
+ };
+ 
+@@ -216,6 +254,9 @@ static struct tnetv107x_device_info evm_device_info __initconst = {
+ 	.ssp_config		= &ssp_config,
+ };
+ 
++static struct spi_board_info spi_info[] __initconst = {
++};
++
+ static __init void tnetv107x_evm_board_init(void)
+ {
+ 	davinci_cfg_reg_list(sdio1_pins);
+@@ -223,6 +264,8 @@ static __init void tnetv107x_evm_board_init(void)
+ 	davinci_cfg_reg_list(ssp_pins);
+ 
+ 	tnetv107x_devices_init(&evm_device_info);
++
++	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
+ }
+ 
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
 -- 
 1.7.1
 

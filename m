@@ -1,93 +1,109 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [RFC 11/18] spi: add SPI controller driver for the Atheros
- AR71XX/AR724X/AR913X SoCs
-Date: Mon, 15 Nov 2010 09:28:05 -0700
-Message-ID: <AANLkTiknq2Rdzp-xb-xTm5c_1QwBsq_vsS1N3iAL_Xn7@mail.gmail.com>
-References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
- <1289598684-30624-12-git-send-email-juhosg@openwrt.org> <20101114082242.GA3137@angua.secretlab.ca>
- <4CE04EBC.4080701@openwrt.org> <20101115040456.GB19965@angua.secretlab.ca> <4CE0F8D1.8000704@openwrt.org>
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v5 00/12] tnetv107x ssp drivers
+Date: Mon, 15 Nov 2010 14:12:02 -0500
+Message-ID: <1289848334-8695-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-mips@linux-mips.org, "Luis R. Rodriguez" <mcgrof@gmail.com>,
-        Cliff Holden <Cliff.Holden@atheros.com>,
-        David Brownell <dbrownell@users.sourceforge.net>,
-        spi-devel-general@lists.sourceforge.net,
-        Imre Kaloz <kaloz@openwrt.org>
-To: Gabor Juhos <juhosg@openwrt.org>,
-        Ralf Baechle <ralf@linux-mips.org>
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <4CE0F8D1.8000704@openwrt.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org,
+	Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
+	alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	rpurdie@rpsys
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 15, 2010 at 2:09 AM, Gabor Juhos <juhosg@openwrt.org> wrote=
-:
-> 2010.11.15. 5:04 keltez=E9ssel, Grant Likely =EDrta:
->> On Sun, Nov 14, 2010 at 10:03:56PM +0100, Gabor Juhos wrote:
->>>>> +static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned re=
-g)
->>>>> +{
->>>>> + =A0return __raw_readl(sp->base + reg);
->>>>> +}
->>>>> +
->>>>> +static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned r=
-eg, u32 val)
->>>>> +{
->>>>> + =A0__raw_writel(val, sp->base + reg);
->>>>> +}
->>>>
->>>> This is suspect. =A0Why is __raw_{readl,writel} being used instead=
- of
->>>> ioread32/iowrite32? =A0The __raw versions don't provide any kind o=
-f
->>>> ordering barriers.
->>>
->>> Mainly because the resulting code is smaller, and the performance i=
-s a bit
->>> better with the use of the __raw versions. The controller is embedd=
-ed into the
->>> SoC and the registers are memory mapped, so i think it is safe to a=
-ccess them
->>> with __raw_{readl,writel}. However I can change it if that is the p=
-referred method.
->>>
->>
->> Smaller, yes, because it doesn't have any io barriers; but is it saf=
-e?
->> Do you know whether or not the CPU will reorder the instructions on
->> you? =A0Being embedded into the SoC doesn't really mean anything in =
-this
->> regard. =A0Unless you really understand all the behaviour of the CPU=
- and
->> bus, then the safe versions must be used.
->>
->> If you *do* really understand all the behaviour and decide it is saf=
-e
->> to use the __raw versions, then the driver needs to be well document=
-ed
->> as to the reasons why the __raw versions are safe to use.
->
-> These SoCs are using the MIPS 24K core. This core is based on an in-o=
-rder
-> architecture, so it is safe to use the __raw versions from the CPU's =
-side.
->
-> To be honest, I have no informations about that the completion of the=
- request is
-> always in order that the request are received on the AHB bus between =
-the CPU and
-> the SPI controller. However the Atheros' reference code uses the __ra=
-w versions
-> everywhere to access the registers of the built-in devices, so I assu=
-me that no
-> out-of-order completion is allowed on that bus.
+TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+device.  It has a built-in programmable execution engine that can be programmed
+to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
 
-Ralf, what say you?  I personally don't like this, and it makes for a
-bad example of driver code, but I'll accept it if you say that it is
-the right thing to do for MIPS device drivers.  (Although I retain my
-requirement that the use of __raw accessors needs to be well
-documented).
+This patch series implements a driver stack that looks like the following:
 
-g.
+                             +--------+
+                             | eeprom | . . .
+                             +--------+
+   +-----------+             +--------------+ +---------+
+   | regulator | . . .       |   i2c-gpio   | | 1-wire  | . . .
+   +-----------+             +--------------+ +---------+
+   +----------------------+  +--------------------------------+
+   |       ssp-spi        |  |           ssp-gpio             |
+   +----------------------+  +--------------------------------+
+   +----------------------------------------------------------+
+   |                            ssp                           |
+   +----------------------------------------------------------+
+
+Changes between v5 and v4 of this series:
+  - Moved drivers from misc/gpio/spi to mfd
+  - Removed implicit init-time iosel setup
+  - Minor cleanups in backlight driver
+
+Changes between v3 and v4 of this series:
+  - Replaced polled wait for sequence termination with interrupt
+  - Improved locking within SSP driver
+  - Other minor cleanups
+
+Changes between v2 and v3 of this series:
+  - Minor cleanups in Kconfig and Makefile ordering
+
+Changes between v1 and v2 of this series:
+  - Replaced open()/close() semantics with dynamic platform_device
+    registration on SSP probe.
+  - Removed user-land interface to regulator registers
+  - More sensible regulator constraints
+  - Other minor cleanups
+
+Cyril Chemparathy (12):
+  misc: add driver for sequencer serial port
+  davinci: add tnetv107x ssp platform device
+  davinci: add ssp config for tnetv107x evm board
+  spi: add ti-ssp spi master driver
+  davinci: add spi devices on tnetv107x evm
+  regulator: add driver for tps6524x regulator
+  davinci: add tnetv107x evm regulators
+  gpio: add ti-ssp gpio driver
+  davinci: add tnetv107x evm ti-ssp gpio device
+  backlight: add support for tps6116x controller
+  davinci: add tnetv107x evm backlight device
+  davinci: add tnetv107x evm i2c eeprom device
+
+ arch/arm/mach-davinci/board-tnetv107x-evm.c    |  192 +++++++
+ arch/arm/mach-davinci/devices-tnetv107x.c      |   25 +
+ arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+ arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+ drivers/mfd/Kconfig                            |   31 +
+ drivers/mfd/Makefile                           |    3 +
+ drivers/mfd/ti-ssp-gpio.c                      |  205 +++++++
+ drivers/mfd/ti-ssp-spi.c                       |  402 ++++++++++++++
+ drivers/mfd/ti-ssp.c                           |  475 ++++++++++++++++
+ drivers/regulator/Kconfig                      |   10 +
+ drivers/regulator/Makefile                     |    1 +
+ drivers/regulator/tps6524x-regulator.c         |  692 ++++++++++++++++++++++++
+ drivers/video/backlight/Kconfig                |    7 +
+ drivers/video/backlight/Makefile               |    2 +-
+ drivers/video/backlight/tps6116x.c             |  339 ++++++++++++
+ include/linux/mfd/ti_ssp.h                     |   97 ++++
+ 16 files changed, 2483 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/mfd/ti-ssp-gpio.c
+ create mode 100644 drivers/mfd/ti-ssp-spi.c
+ create mode 100644 drivers/mfd/ti-ssp.c
+ create mode 100644 drivers/regulator/tps6524x-regulator.c
+ create mode 100644 drivers/video/backlight/tps6116x.c
+ create mode 100644 include/linux/mfd/ti_ssp.h
+
+
+------------------------------------------------------------------------------
+Centralized Desktop Delivery: Dell and VMware Reference Architecture
+Simplifying enterprise desktop deployment and management using
+Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
+client virtualization framework. Read more!
+http://p.sf.net/sfu/dell-eql-dev2dev

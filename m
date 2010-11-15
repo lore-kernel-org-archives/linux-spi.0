@@ -1,61 +1,71 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 28/44] drivers/spi: Remove unnecessary semicolons
-Date: Sun, 14 Nov 2010 20:57:42 -0700
-Message-ID: <20101115035742.GA19965@angua.secretlab.ca>
-References: <cover.1289789604.git.joe@perches.com>
- <fe5e5e0efbd97eaa32530eef5ed47efdc3252dad.1289789605.git.joe@perches.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [RFC 11/18] spi: add SPI controller driver for the Atheros
+	AR71XX/AR724X/AR913X SoCs
+Date: Sun, 14 Nov 2010 21:04:56 -0700
+Message-ID: <20101115040456.GB19965@angua.secretlab.ca>
+References: <1289598684-30624-1-git-send-email-juhosg@openwrt.org>
+	<1289598684-30624-12-git-send-email-juhosg@openwrt.org>
+	<20101114082242.GA3137@angua.secretlab.ca>
+	<4CE04EBC.4080701@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Jiri Kosina <trivial@kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Wan ZongShun <mcuos.com@gmail.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Joe Perches <joe@perches.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, "Luis R. Rodriguez" <mcgrof-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Cliff Holden <Cliff.Holden-R2DSYHpuZhhBDgjK7y7TUQ@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Imre Kaloz <kaloz-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <fe5e5e0efbd97eaa32530eef5ed47efdc3252dad.1289789605.git.joe@perches.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <4CE04EBC.4080701-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Nov 14, 2010 at 07:04:47PM -0800, Joe Perches wrote:
-> Signed-off-by: Joe Perches <joe@perches.com>
+On Sun, Nov 14, 2010 at 10:03:56PM +0100, Gabor Juhos wrote:
+> >> +static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
+> >> +{
+> >> +	return __raw_readl(sp->base + reg);
+> >> +}
+> >> +
+> >> +static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
+> >> +{
+> >> +	__raw_writel(val, sp->base + reg);
+> >> +}
+> > 
+> > This is suspect.  Why is __raw_{readl,writel} being used instead of
+> > ioread32/iowrite32?  The __raw versions don't provide any kind of
+> > ordering barriers.
+> 
+> Mainly because the resulting code is smaller, and the performance is a bit
+> better with the use of the __raw versions. The controller is embedded into the
+> SoC and the registers are memory mapped, so i think it is safe to access them
+> with __raw_{readl,writel}. However I can change it if that is the preferred method.
+> 
 
-applied, thanks.
+Smaller, yes, because it doesn't have any io barriers; but is it safe?
+Do you know whether or not the CPU will reorder the instructions on
+you?  Being embedded into the SoC doesn't really mean anything in this
+regard.  Unless you really understand all the behaviour of the CPU and
+bus, then the safe versions must be used.
+
+If you *do* really understand all the behaviour and decide it is safe
+to use the __raw versions, then the driver needs to be well documented
+as to the reasons why the __raw versions are safe to use.
 
 g.
 
-> ---
->  drivers/spi/amba-pl022.c |    2 +-
->  drivers/spi/spi_nuc900.c |    2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index fb3d1b3..2e50631 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -956,7 +956,7 @@ static int configure_dma(struct pl022 *pl022)
->  		tx_conf.dst_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
->  		break;
->  	case WRITING_U32:
-> -		tx_conf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;;
-> +		tx_conf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
->  		break;
->  	}
->  
-> diff --git a/drivers/spi/spi_nuc900.c b/drivers/spi/spi_nuc900.c
-> index dff63be..d5be18b 100644
-> --- a/drivers/spi/spi_nuc900.c
-> +++ b/drivers/spi/spi_nuc900.c
-> @@ -449,7 +449,7 @@ err_iomap:
->  	release_mem_region(hw->res->start, resource_size(hw->res));
->  	kfree(hw->ioarea);
->  err_pdata:
-> -	spi_master_put(hw->master);;
-> +	spi_master_put(hw->master);
->  
->  err_nomem:
->  	return err;
-> -- 
-> 1.7.3.1.g432b3.dirty
-> 
+
+------------------------------------------------------------------------------
+Centralized Desktop Delivery: Dell and VMware Reference Architecture
+Simplifying enterprise desktop deployment and management using
+Dell EqualLogic storage and VMware View: A highly scalable, end-to-end
+client virtualization framework. Read more!
+http://p.sf.net/sfu/dell-eql-dev2dev

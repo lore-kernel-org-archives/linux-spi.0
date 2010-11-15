@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v5 07/12] davinci: add tnetv107x evm regulators
-Date: Mon, 15 Nov 2010 14:12:09 -0500
-Message-ID: <1289848334-8695-8-git-send-email-cyril@ti.com>
+Subject: [PATCH v5 02/12] davinci: add tnetv107x ssp platform device
+Date: Mon, 15 Nov 2010 14:12:04 -0500
+Message-ID: <1289848334-8695-3-git-send-email-cyril@ti.com>
 References: <1289848334-8695-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,118 +25,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds regulator and spi board info definitions for the tps6524x
-power management IC found on tnetv107x evm boards.
+This patch adds an SSP platform device definition for the tnetv107x soc family.
+The clock lookup entry has also been updated to match.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   85 +++++++++++++++++++++++++++
- 1 files changed, 85 insertions(+), 0 deletions(-)
+ arch/arm/mach-davinci/devices-tnetv107x.c      |   25 ++++++++++++++++++++++++
+ arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+ arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+ 3 files changed, 28 insertions(+), 1 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index 1a656e8..ca23516 100644
---- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
-+++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -26,6 +26,9 @@
- #include <linux/input.h>
+diff --git a/arch/arm/mach-davinci/devices-tnetv107x.c b/arch/arm/mach-davinci/devices-tnetv107x.c
+index 85503de..6162cae 100644
+--- a/arch/arm/mach-davinci/devices-tnetv107x.c
++++ b/arch/arm/mach-davinci/devices-tnetv107x.c
+@@ -35,6 +35,7 @@
+ #define TNETV107X_SDIO0_BASE			0x08088700
+ #define TNETV107X_SDIO1_BASE			0x08088800
+ #define TNETV107X_KEYPAD_BASE			0x08088a00
++#define TNETV107X_SSP_BASE			0x08088c00
+ #define TNETV107X_ASYNC_EMIF_CNTRL_BASE		0x08200000
+ #define TNETV107X_ASYNC_EMIF_DATA_CE0_BASE	0x30000000
+ #define TNETV107X_ASYNC_EMIF_DATA_CE1_BASE	0x40000000
+@@ -342,6 +343,25 @@ static struct platform_device tsc_device = {
+ 	.resource	= tsc_resources,
+ };
+ 
++static struct resource ssp_resources[] = {
++	{
++		.start	= TNETV107X_SSP_BASE,
++		.end	= TNETV107X_SSP_BASE + 0x1ff,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= IRQ_TNETV107X_SSP,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static struct platform_device ssp_device = {
++	.name		= "ti-ssp",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(ssp_resources),
++	.resource	= ssp_resources,
++};
++
+ void __init tnetv107x_devices_init(struct tnetv107x_device_info *info)
+ {
+ 	int i, error;
+@@ -380,4 +400,9 @@ void __init tnetv107x_devices_init(struct tnetv107x_device_info *info)
+ 		keypad_device.dev.platform_data = info->keypad_config;
+ 		platform_device_register(&keypad_device);
+ 	}
++
++	if (info->ssp_config) {
++		ssp_device.dev.platform_data = info->ssp_config;
++		platform_device_register(&ssp_device);
++	}
+ }
+diff --git a/arch/arm/mach-davinci/include/mach/tnetv107x.h b/arch/arm/mach-davinci/include/mach/tnetv107x.h
+index 5a681d8..89c1fdc 100644
+--- a/arch/arm/mach-davinci/include/mach/tnetv107x.h
++++ b/arch/arm/mach-davinci/include/mach/tnetv107x.h
+@@ -34,6 +34,7 @@
+ 
+ #include <linux/serial_8250.h>
  #include <linux/input/matrix_keypad.h>
- #include <linux/spi/spi.h>
-+#include <linux/regulator/machine.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/regulator/driver.h>
++#include <linux/mfd/ti_ssp.h>
  
- #include <asm/mach/arch.h>
- #include <asm/mach-types.h>
-@@ -254,7 +257,89 @@ static struct tnetv107x_device_info evm_device_info __initconst = {
- 	.ssp_config		= &ssp_config,
+ #include <mach/mmc.h>
+ #include <mach/nand.h>
+@@ -44,6 +45,7 @@ struct tnetv107x_device_info {
+ 	struct davinci_mmc_config	*mmc_config[2];  /* 2 controllers */
+ 	struct davinci_nand_pdata	*nand_config[4]; /* 4 chipsels */
+ 	struct matrix_keypad_platform_data *keypad_config;
++	struct ti_ssp_data		*ssp_config;
  };
  
-+static struct regulator_consumer_supply usb_consumers[] = {
-+	REGULATOR_SUPPLY("vbus", "musb_hdrc.1"),
-+};
-+
-+static struct regulator_consumer_supply lcd_consumers[] = {
-+	REGULATOR_SUPPLY("vlcd", "tps6116x"),
-+};
-+
-+static struct regulator_init_data regulators[] = {
-+	{
-+		.constraints		= {
-+			.name		= "DCDC1",
-+			.min_uV		= 1000000,
-+			.max_uV		= 1000000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC2",
-+			.min_uV		= 1800000,
-+			.max_uV		= 1800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC3",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 4800000,
-+			.max_uV		= 4800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(usb_consumers),
-+		.consumer_supplies	= usb_consumers,
-+		.constraints		= {
-+			.name		= "USB",
-+			.min_uA		= 200000,
-+			.max_uA		= 1000000,
-+			.valid_ops_mask	= REGULATOR_CHANGE_CURRENT |
-+					  REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(lcd_consumers),
-+		.consumer_supplies	= lcd_consumers,
-+		.constraints		= {
-+			.name		= "LCD",
-+			.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+};
-+
- static struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias	= "tps6524x",
-+		.bus_num	= 1,
-+		.chip_select	= 0,
-+		.mode		= SPI_MODE_0,
-+		.platform_data	= regulators,
-+	},
- };
- 
- static __init void tnetv107x_evm_board_init(void)
+ extern struct platform_device tnetv107x_wdt_device;
+diff --git a/arch/arm/mach-davinci/tnetv107x.c b/arch/arm/mach-davinci/tnetv107x.c
+index 6fcdece..1b28fdd 100644
+--- a/arch/arm/mach-davinci/tnetv107x.c
++++ b/arch/arm/mach-davinci/tnetv107x.c
+@@ -278,7 +278,7 @@ static struct clk_lookup clks[] = {
+ 	CLK(NULL,		"timer1",		&clk_timer1),
+ 	CLK("tnetv107x_wdt.0",	NULL,			&clk_wdt_arm),
+ 	CLK(NULL,		"clk_wdt_dsp",		&clk_wdt_dsp),
+-	CLK("ti-ssp.0",		NULL,			&clk_ssp),
++	CLK("ti-ssp",		NULL,			&clk_ssp),
+ 	CLK(NULL,		"clk_tdm0",		&clk_tdm0),
+ 	CLK(NULL,		"clk_vlynq",		&clk_vlynq),
+ 	CLK(NULL,		"clk_mcdma",		&clk_mcdma),
 -- 
 1.7.1
 

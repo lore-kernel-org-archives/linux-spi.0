@@ -1,103 +1,104 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v5 04/12] spi: add ti-ssp spi master driver
-Date: Tue, 16 Nov 2010 00:47:04 -0700
-Message-ID: <AANLkTi=utWumLKo9QVWXpkC8WxpgaNJJs+dj=pa2eq-q@mail.gmail.com>
-References: <1289848334-8695-1-git-send-email-cyril@ti.com>
-	<1289848334-8695-5-git-send-email-cyril@ti.com>
-	<20101116072225.GF4074@angua.secretlab.ca>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v4 1/1] OMAP2: Spi: Force CS to be in inactive state
+ after off-mode transition
+Date: Tue, 16 Nov 2010 00:54:34 -0700
+Message-ID: <20101116075434.GG4074@angua.secretlab.ca>
+References: <4CDDD16A.5070200@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
-To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101116072225.GF4074-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4CDDD16A.5070200@free-electrons.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Nov 16, 2010 at 12:22 AM, Grant Likely
-<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> On Mon, Nov 15, 2010 at 02:12:06PM -0500, Cyril Chemparathy wrote:
->> This patch adds an SPI master implementation that operates on top of an
->> underlying TI-SSP port.
->>
->> Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-> [...]
->> +static int __init ti_ssp_spi_init(void)
->> +{
->> + =A0 =A0 return platform_driver_register(&ti_ssp_spi_driver);
->> +}
->> +subsys_initcall(ti_ssp_spi_init);
->
-> After discussions about device init dependencies at plumbers, and
-> since this is the first SPI device driver I've reviewed since that
-> dicussion, this driver gets to be the first to implement the proposed
-> policy. =A0:-)
->
-> Change this to module_initcall(). =A0Many spi and i2c drivers use
-> module or subsys_initcall to try and influence driver probe order so
-> that certain regulator chips get registered before the devices that
-> try to use them. =A0This approach is insane.
->
-> Instead, it is now incumbent on the board support code to ensure that
-> any device that depends on another device (including i2c or spi
-> regulators) will defer registration until the prerequisite devices are
-> bound to drivers.
->
-> I don't *think* this change will affect anything in this particular
-> patch series, but if it does then let me know and I'll help you work out
-> how to fix it using a bus notifier.
+On Sat, Nov 13, 2010 at 12:44:42AM +0100, Gregory CLEMENT wrote:
+> When SPI wake up from OFF mode, CS is in the wrong state: force it
+> to the inactive state.
+> 
+> During the system life, I monitored the CS behavior using a oscilloscope.
+> I also activated debug in omap2_mcspi, so I saw when driver disable
+> the clocks and restore context when device is not used.
+> Each time the CS was in the correct state.
+> It was only when system was put suspend to ram with off-mode
+> activated that on resume the CS was in wrong state( ie activated).
+> 
+> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
 
-Oh, wait, spoke too soon.  You do add a regulator in this series, so
-this change will require a fixup.  The solution is to register an
-bus_notifier to the spi bus type before you start registering devices.
-It also requires deferring the musb_hdrc.1 and tps6116x registrations
-until the bus_notifier callback gets called with an indication that
-the regulator is bound.  It will look something like this:
+Looks okay to me, but I'd like to get an ack from other users before I
+merge it.  Also some minor comments below.
 
-static int tnetv107x_spi_notifier_call(struct notifier_block *nb,
-				unsigned long event, void *__dev)
-{
-	struct device *dev =3D __dev;
+> ---
+>  drivers/spi/omap2_mcspi.c |   35 +++++++++++++++++++++++++++++++++++
+>  1 files changed, 35 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index 2a651e6..43d92fc 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -1305,11 +1305,46 @@ static int __exit omap2_mcspi_remove(struct
+> platform_device *pdev)
+>  /* work with hotplug and coldplug */
+>  MODULE_ALIAS("platform:omap2_mcspi");
+>  +#ifdef	CONFIG_PM
+> +/* When SPI wake up from off-mode, CS is in activate state. If it was in
+> + * unactive state when driver was suspend, then force it to
+> unactive state at
 
-	if ((event =3D=3D BUS_NOTIFY_BOUND_DRIVER) && (dev =3D=3D (the-regulator))=
-) {
-		register-the-remaining-devices();
-		return NOTIFY_STOP;
-	};
-	return NOTIFY_DONE;
-}
+Patch is line-wrap damaged.  Check your mailer configuration.
 
-static struct notifier_block tnetv107x_spi_nb =3D {
-	.notifier_call =3D tnetv107x_spi_notifier_call,
-};
+> + * wake up.
+> + */
+> +static int omap2_mcspi_resume(struct platform_device *pdev)
+> +{
+> +	struct spi_master	*master;
+> +	struct omap2_mcspi_cs *cs;
+> +	struct omap2_mcspi	*mcspi;
+> +
+> +	master = dev_get_drvdata(&pdev->dev);
+> +	mcspi = spi_master_get_devdata(master);
 
-and then in the device registration code, before registering the
-regulator:
+These 5 lines can be collapsed a bit:
+	struct spi_master *master = dev_get_drvdata(&pdev->dev);
+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
+	struct omap2_mcspi_cs *cs;
 
-	bus_register_notifier(&spi_bus_type, &tnetv107x_spi_nb);
+> +	omap2_mcspi_enable_clocks(mcspi);
+> +	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
+> +			    node) {
+> +		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
+> +
+> +			/* We need to togle CS state for OMAP take this
 
-Let me know if you have any trouble.
+spelling.  s/togle/toggle
 
-g.
-
----------------------------------------------------------------------------=
----
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today
-http://p.sf.net/sfu/msIE9-sfdev2dev
+> +			 * change in account.
+> +			 */
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +		}
+> +	}
+> +	omap2_mcspi_disable_clocks(mcspi);
+> +	return 0;
+> +}
+> +#else
+> +#define	omap2_mcspi_resume	NULL
+> +#endif
+> +
+>  static struct platform_driver omap2_mcspi_driver = {
+>  	.driver = {
+>  		.name =		"omap2_mcspi",
+>  		.owner =	THIS_MODULE,
+>  	},
+> +	.resume =	omap2_mcspi_resume,
+>  	.remove =	__exit_p(omap2_mcspi_remove),
+>  };
+>  -- 1.7.0.4
+> 

@@ -1,59 +1,79 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v5 04/12] spi: add ti-ssp spi master driver
-Date: Tue, 16 Nov 2010 11:34:09 +0000
-Message-ID: <20101116113409.GH3338@sirena.org.uk>
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v5 01/12] misc: add driver for sequencer serial port
+Date: Tue, 16 Nov 2010 11:15:56 -0500
+Message-ID: <4CE2AE3C.4040805@ti.com>
 References: <1289848334-8695-1-git-send-email-cyril@ti.com>
-	<1289848334-8695-5-git-send-email-cyril@ti.com>
-	<20101116072225.GF4074@angua.secretlab.ca>
-	<AANLkTi=utWumLKo9QVWXpkC8WxpgaNJJs+dj=pa2eq-q@mail.gmail.com>
+	<1289848334-8695-2-git-send-email-cyril@ti.com>
+	<20101116071047.GE4074@angua.secretlab.ca>
+Reply-To: cyril-l0cyMroinI0@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	dbrownell@users.sourceforge.net, sameo@linux.intel.com,
-	khilman@deeprootsystems.com, linus.ml.walleij@gmail.com,
-	rpurdie@rpsys.net, linux-arm-kernel@lists.infradead.org,
-	Cyril Chemparathy <cyril@ti.com>, spi-devel-general@lists.sourceforge.net,
-	akpm@linux-foundation.org, alan@lxorguk.ukuu.org.uk, lrg@slimlogic.co.uk
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTi=utWumLKo9QVWXpkC8WxpgaNJJs+dj=pa2eq-q@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	"dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	"khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org" <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>,
+	"broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	"rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
+	"alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20101116071047.GE4074-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Nov 16, 2010 at 12:47:04AM -0700, Grant Likely wrote:
-> On Tue, Nov 16, 2010 at 12:22 AM, Grant Likely
+On 11/16/2010 02:10 AM, Grant Likely wrote:
+> On Mon, Nov 15, 2010 at 02:12:03PM -0500, Cyril Chemparathy wrote:
+>> TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+>> device.  It has a built-in programmable execution engine that can be programmed
+>> to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
+>>
+>> This patch adds a driver for this controller device.  The driver does not
+>> expose a user-land interface.  Protocol drivers built on top of this layer are
+>> expected to remain in-kernel.
+>>
+[...]
+>> +static inline void ssp_write(struct ti_ssp *ssp, int reg, u32 val)
+>> +{
+>> +     __raw_writel(val, ssp->regs + reg);
+>> +}
+> 
+> I'm pretty sure it was resolved that __raw_ versions should not be
+> used here.
 
-> > Instead, it is now incumbent on the board support code to ensure that
-> > any device that depends on another device (including i2c or spi
-> > regulators) will defer registration until the prerequisite devices are
-> > bound to drivers.
+The endian-swap done by writel/readl are incorrect since these devices
+are meant to be accessed native-endian at all times.
 
-You did also say you were going to write helpers to make this easier - I
-do fear that we're going to end up with far too much boiler plate code
-in machine drivers if we have to open code this.  I guess device tree is
-going to need the helpers anyway :)
+See [1] below for Russell King's earlier response on this.  In this
+case, I don't think memory-device ordering matters, and therefore the
+__raw_ variants should be ok.  Should I just insert barriers into the
+read/write wrappers here?
 
-> > I don't *think* this change will affect anything in this particular
-> > patch series, but if it does then let me know and I'll help you work out
-> > how to fix it using a bus notifier.
+[...]
 
-> Oh, wait, spoke too soon.  You do add a regulator in this series, so
-> this change will require a fixup.  The solution is to register an
-> bus_notifier to the spi bus type before you start registering devices.
+Regards
+Cyril.
 
-> It also requires deferring the musb_hdrc.1 and tps6116x registrations
-> until the bus_notifier callback gets called with an indication that
-> the regulator is bound.  It will look something like this:
+[1] http://kerneltrap.org/mailarchive/linux-kernel/2010/10/22/4636289
 
-Did you come up with a way of handling situations like cpufreq where we
-have no device to wait for?
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today
+http://p.sf.net/sfu/msIE9-sfdev2dev

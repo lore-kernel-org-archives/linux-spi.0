@@ -1,8 +1,7 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 14/49] spi: davinci: setup chip-select timers values only if
-	timer enabled
-Date: Wed, 17 Nov 2010 16:13:46 +0530
-Message-ID: <1289990661-30126-15-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 15/49] spi: davinci: add support for wait enable timeouts
+Date: Wed, 17 Nov 2010 16:13:47 +0530
+Message-ID: <1289990661-30126-16-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -17,6 +16,7 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-12-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-13-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-14-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-15-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -24,8 +24,8 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-14-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1289990661-30126-15-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -33,91 +33,114 @@ List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@pu
 List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
 List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-Setup chip-select timers values only if timer is enabled
-(timer_disbled in spi configuration is false).
+Just enabling WAITENA in SPIFMTn register waits for the
+enable signal from the slave indefinitely. Allow support
+for finite waiting by adding support for c2e delay
+(maximum time for addressed slave to respond) and t2e
+delay (maximum time for slave to respond after transmit
+data finished).
 
-As a nice side effect, this patch removes code duplicated in
-davinci_spi_bufs_pio() and davinci_spi_bufs_dma().
+While at it, modify the T2C and C2T defines by prepending
+the register name as is the convention followed for other
+register field elsewhere in the driver.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/davinci_spi.c |   21 ++++-----------------
- 1 files changed, 4 insertions(+), 17 deletions(-)
+ arch/arm/mach-davinci/include/mach/spi.h |    2 +
+ drivers/spi/davinci_spi.c                |   36 ++++++++++++++++++++++-------
+ 2 files changed, 29 insertions(+), 9 deletions(-)
 
+diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
+index 29c19c4..483b055 100644
+--- a/arch/arm/mach-davinci/include/mach/spi.h
++++ b/arch/arm/mach-davinci/include/mach/spi.h
+@@ -43,6 +43,8 @@ struct davinci_spi_config {
+ 	u8	timer_disable;
+ 	u8	c2tdelay;
+ 	u8	t2cdelay;
++	u8	t2edelay;
++	u8	c2edelay;
+ };
+ 
+ #endif	/* __ARCH_ARM_DAVINCI_SPI_H */
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 34b28fe..d09b63c 100644
+index d09b63c..e94c638 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -374,6 +374,10 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+@@ -78,6 +78,16 @@
+ #define SPIBUF_TXFULL_MASK	BIT(29)
+ #define SPIBUF_RXEMPTY_MASK	BIT(31)
  
- 		if (spicfg->timer_disable)
++/* SPIDELAY */
++#define SPIDELAY_C2TDELAY_SHIFT 24
++#define SPIDELAY_C2TDELAY_MASK  (0xFF << SPIDELAY_C2TDELAY_SHIFT)
++#define SPIDELAY_T2CDELAY_SHIFT 16
++#define SPIDELAY_T2CDELAY_MASK  (0xFF << SPIDELAY_T2CDELAY_SHIFT)
++#define SPIDELAY_T2EDELAY_SHIFT 8
++#define SPIDELAY_T2EDELAY_MASK  (0xFF << SPIDELAY_T2EDELAY_SHIFT)
++#define SPIDELAY_C2EDELAY_SHIFT 0
++#define SPIDELAY_C2EDELAY_MASK  0xFF
++
+ /* Error Masks */
+ #define SPIFLG_DLEN_ERR_MASK		BIT(0)
+ #define SPIFLG_TIMEOUT_MASK		BIT(1)
+@@ -95,9 +105,6 @@
+ #define SPIINT_TX_INTR		BIT(9)
+ #define SPIINT_DMA_REQ_EN	BIT(16)
+ 
+-#define SPI_T2CDELAY_SHIFT	16
+-#define SPI_C2TDELAY_SHIFT	24
+-
+ /* SPI Controller registers */
+ #define SPIGCR0		0x00
+ #define SPIGCR1		0x04
+@@ -363,6 +370,8 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 
+ 	if (davinci_spi->version == SPI_VERSION_2) {
+ 
++		u32 delay = 0;
++
+ 		spifmt |= ((spicfg->wdelay << SPIFMT_WDELAY_SHIFT)
+ 							& SPIFMT_WDELAY_MASK);
+ 
+@@ -372,15 +381,24 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 		if (spicfg->parity_enable)
+ 			spifmt |= SPIFMT_PARITYENA_MASK;
+ 
+-		if (spicfg->timer_disable)
++		if (spicfg->timer_disable) {
  			spifmt |= SPIFMT_DISTIMER_MASK;
-+		else
-+			iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
-+				  (spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
-+				  davinci_spi->base + SPIDELAY);
+-		else
+-			iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
+-				  (spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
+-				  davinci_spi->base + SPIDELAY);
++		} else {
++			delay |= (spicfg->c2tdelay << SPIDELAY_C2TDELAY_SHIFT)
++						& SPIDELAY_C2TDELAY_MASK;
++			delay |= (spicfg->t2cdelay << SPIDELAY_T2CDELAY_SHIFT)
++						& SPIDELAY_T2CDELAY_MASK;
++		}
  
- 		if (spi->mode & SPI_READY)
+-		if (spi->mode & SPI_READY)
++		if (spi->mode & SPI_READY) {
  			spifmt |= SPIFMT_WAITENA_MASK;
-@@ -607,13 +611,9 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 	u32 tx_data, data1_reg_val;
- 	u32 buf_val, flg_val;
- 	struct davinci_spi_platform_data *pdata;
--	struct davinci_spi_config *spicfg;
++			delay |= (spicfg->t2edelay << SPIDELAY_T2EDELAY_SHIFT)
++						& SPIDELAY_T2EDELAY_MASK;
++			delay |= (spicfg->c2edelay << SPIDELAY_C2EDELAY_SHIFT)
++						& SPIDELAY_C2EDELAY_MASK;
++		}
++
++		iowrite32(delay, davinci_spi->base + SPIDELAY);
+ 	}
  
- 	davinci_spi = spi_master_get_devdata(spi->master);
- 	pdata = davinci_spi->pdata;
--	spicfg = (struct davinci_spi_config *)spi->controller_data;
--	if (!spicfg)
--		spicfg = &davinci_spi_default_cfg;
- 
- 	davinci_spi->tx = t->tx_buf;
- 	davinci_spi->rx = t->rx_buf;
-@@ -633,10 +633,6 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 	/* Enable SPI */
- 	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
- 
--	iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
--			(spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
--			davinci_spi->base + SPIDELAY);
--
- 	count = davinci_spi->count;
- 
- 	/* Determine the command to execute READ or WRITE */
-@@ -741,14 +737,10 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 	struct davinci_spi_dma *davinci_spi_dma;
- 	int word_len, data_type, ret;
- 	unsigned long tx_reg, rx_reg;
--	struct davinci_spi_config *spicfg;
- 	struct device *sdev;
- 
- 	davinci_spi = spi_master_get_devdata(spi->master);
- 	sdev = davinci_spi->bitbang.master->dev.parent;
--	spicfg = (struct davinci_spi_config *)spi->controller_data;
--	if (!spicfg)
--		spicfg = &davinci_spi_default_cfg;
- 
- 	davinci_spi_dma = &davinci_spi->dma_channels[spi->chip_select];
- 
-@@ -784,11 +776,6 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 	if (ret)
- 		return ret;
- 
--	/* Put delay val if required */
--	iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
--			(spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
--			davinci_spi->base + SPIDELAY);
--
- 	count = davinci_spi->count;	/* the number of elements */
- 
- 	/* disable all interrupts for dma transfers */
+ 	iowrite32(spifmt, davinci_spi->base + SPIFMT0);
 -- 
 1.7.3.2

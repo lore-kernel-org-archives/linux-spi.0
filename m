@@ -1,8 +1,7 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 30/49] spi: davinci: remove unnecessary call to
-	davinci_spi_setup_transfer()
-Date: Wed, 17 Nov 2010 16:14:02 +0530
-Message-ID: <1289990661-30126-31-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 46/49] spi: davinci: add EF Johnson Technologies copyright
+Date: Wed, 17 Nov 2010 16:14:18 +0530
+Message-ID: <1289990661-30126-47-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -33,6 +32,22 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-28-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-29-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-30-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-31-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-32-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-33-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-34-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-35-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-36-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-37-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-38-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-39-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-40-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-41-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-42-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-43-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-44-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-45-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-46-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -41,7 +56,7 @@ Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
 	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1289990661-30126-30-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1289990661-30126-46-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -54,52 +69,26 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-Remove unnecessary call to davinci_spi_setup_transfer() at the end
-of davinci_spi_setup().
-
-davinci_spi_setup_transfer() is registered as the setup_transfer
-callback for the bitbang layer and is called independently by
-the bitbang layer to setup the transfer before it begins.
+Add copyright for EF Johnson Technologies since the driver
+has been majorly overhauled by Brian.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
-Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/davinci_spi.c |   11 +++--------
- 1 files changed, 3 insertions(+), 8 deletions(-)
+ drivers/spi/davinci_spi.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 05b6145..77109dc 100644
+index f40f1be..42314a32 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -479,7 +479,7 @@ static int davinci_spi_request_dma(struct spi_device *spi)
-  */
- static int davinci_spi_setup(struct spi_device *spi)
- {
--	int retval;
-+	int retval = 0;
- 	struct davinci_spi *davinci_spi;
- 	struct davinci_spi_dma *davinci_spi_dma;
- 	struct davinci_spi_platform_data *pdata;
-@@ -512,16 +512,11 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	if (use_dma && davinci_spi->dma_channels) {
- 		davinci_spi_dma = &davinci_spi->dma_channels[spi->chip_select];
- 
--		if ((davinci_spi_dma->dma_rx_channel == -1)
--				|| (davinci_spi_dma->dma_tx_channel == -1)) {
-+		if ((davinci_spi_dma->dma_rx_channel == -1) ||
-+		    (davinci_spi_dma->dma_tx_channel == -1))
- 			retval = davinci_spi_request_dma(spi);
--			if (retval < 0)
--				return retval;
--		}
- 	}
- 
--	retval = davinci_spi_setup_transfer(spi, NULL);
--
- 	return retval;
- }
- 
+@@ -1,5 +1,6 @@
+ /*
+  * Copyright (C) 2009 Texas Instruments.
++ * Copyright (C) 2010 EF Johnson Technologies
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
 -- 
 1.7.3.2
 

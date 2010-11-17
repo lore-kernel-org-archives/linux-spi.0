@@ -1,8 +1,7 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 12/49] spi: davinci: make chip-slect specific parameters
-	really chip-select specific
-Date: Wed, 17 Nov 2010 16:13:44 +0530
-Message-ID: <1289990661-30126-13-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 19/49] spi: davinci: simplify calculation of edma acount value
+Date: Wed, 17 Nov 2010 16:13:51 +0530
+Message-ID: <1289990661-30126-20-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -15,6 +14,13 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-10-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-11-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-12-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-13-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-14-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-15-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-16-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-17-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-18-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-19-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,7 +29,7 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-12-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1289990661-30126-19-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -37,228 +43,81 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-Some chip-select specific paramterers like wdelay, parity, usage of
-chip-select timers (and the actual timer values) are included in
-platform data forcing the same behaviour across all chip-selects.
-
-Create a new davinci_spi_config data structure which can be passed
-along using controller_data member of spi_device data structure
-on a per-device basis.
+The EDMA acount (called data_type in davinci_spi_bufs_dma())
+is simply the bytes_per_word obtained in the transfer setup
+function. The current code calculates the acount value from
+bytes_per_word in a convoluted manner. Simplify the code.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/dm355.c            |    3 -
- arch/arm/mach-davinci/dm365.c            |    3 -
- arch/arm/mach-davinci/include/mach/spi.h |   13 ++++--
- drivers/spi/davinci_spi.c                |   67 ++++++++++++++++-------------
- 4 files changed, 45 insertions(+), 41 deletions(-)
+ drivers/spi/davinci_spi.c |   25 +++----------------------
+ 1 files changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
-index 6a76dfa..a6d9b72 100644
---- a/arch/arm/mach-davinci/dm355.c
-+++ b/arch/arm/mach-davinci/dm355.c
-@@ -413,10 +413,7 @@ static struct davinci_spi_platform_data dm355_spi0_pdata = {
- 	.version 	= SPI_VERSION_1,
- 	.num_chipselect = 2,
- 	.clk_internal	= 1,
--	.intr_level	= 0,
- 	.poll_mode	= 1,	/* 0 -> interrupt mode 1-> polling mode */
--	.c2tdelay	= 0,
--	.t2cdelay	= 0,
- };
- static struct platform_device dm355_spi0_device = {
- 	.name = "spi_davinci",
-diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
-index cd623db..80dd159 100644
---- a/arch/arm/mach-davinci/dm365.c
-+++ b/arch/arm/mach-davinci/dm365.c
-@@ -626,10 +626,7 @@ static struct davinci_spi_platform_data dm365_spi0_pdata = {
- 	.version 	= SPI_VERSION_1,
- 	.num_chipselect = 2,
- 	.clk_internal	= 1,
--	.intr_level	= 0,
- 	.poll_mode	= 1,	/* 0 -> interrupt mode 1-> polling mode */
--	.c2tdelay	= 0,
--	.t2cdelay	= 0,
- };
- 
- static struct resource dm365_spi0_resources[] = {
-diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
-index fe699140..29c19c4 100644
---- a/arch/arm/mach-davinci/include/mach/spi.h
-+++ b/arch/arm/mach-davinci/include/mach/spi.h
-@@ -29,17 +29,20 @@ enum {
- struct davinci_spi_platform_data {
- 	u8	version;
- 	u8	num_chipselect;
--	u8	wdelay;
--	u8	odd_parity;
--	u8	parity_enable;
--	u8	timer_disable;
- 	u8	clk_internal;
- 	u8	intr_level;
- 	u8	poll_mode;
- 	u8	use_dma;
-+	u8	*chip_sel;
-+};
-+
-+struct davinci_spi_config {
-+	u8	wdelay;
-+	u8	odd_parity;
-+	u8	parity_enable;
-+	u8	timer_disable;
- 	u8	c2tdelay;
- 	u8	t2cdelay;
--	u8	*chip_sel;
- };
- 
- #endif	/* __ARCH_ARM_DAVINCI_SPI_H */
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 5480857..d4320f7 100644
+index f1c3502..b0b338f 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -156,6 +156,8 @@ struct davinci_spi {
- 	struct davinci_spi_slave slave[SPI_MAX_CHIPSELECT];
- };
+@@ -39,9 +39,6 @@
+ #define CS_DEFAULT	0xFF
  
-+static struct davinci_spi_config davinci_spi_default_cfg;
-+
- static unsigned use_dma;
+ #define SPI_BUFSIZ	(SMP_CACHE_BYTES + 1)
+-#define DAVINCI_DMA_DATA_TYPE_S8	0x01
+-#define DAVINCI_DMA_DATA_TYPE_S16	0x02
+-#define DAVINCI_DMA_DATA_TYPE_S32	0x04
  
- static void davinci_spi_rx_buf_u8(u32 data, struct davinci_spi *davinci_spi)
-@@ -434,8 +436,12 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	int retval;
+ #define SPIFMT_PHASE_MASK	BIT(16)
+ #define SPIFMT_POLARITY_MASK	BIT(17)
+@@ -729,19 +726,14 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
+ 	return t->len;
+ }
+ 
+-#define DAVINCI_DMA_DATA_TYPE_S8	0x01
+-#define DAVINCI_DMA_DATA_TYPE_S16	0x02
+-#define DAVINCI_DMA_DATA_TYPE_S32	0x04
+-
+ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ {
  	struct davinci_spi *davinci_spi;
+ 	int int_status = 0;
+ 	int count, temp_count;
+-	u8 conv = 1;
+ 	u32 data1_reg_val;
  	struct davinci_spi_dma *davinci_spi_dma;
-+	struct davinci_spi_config *spicfg;
- 
- 	davinci_spi = spi_master_get_devdata(spi->master);
-+	spicfg = (struct davinci_spi_config *)spi->controller_data;
-+	if (!spicfg)
-+		spicfg = &davinci_spi_default_cfg;
- 
- 	/* if bits per word length is zero then set it default 8 */
- 	if (!spi->bits_per_word)
-@@ -496,31 +502,34 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	 */
- 
- 	if (davinci_spi->version == SPI_VERSION_2) {
-+
- 		clear_fmt_bits(davinci_spi->base, SPIFMT_WDELAY_MASK,
--				spi->chip_select);
-+							spi->chip_select);
- 		set_fmt_bits(davinci_spi->base,
--				(davinci_spi->pdata->wdelay
--						<< SPIFMT_WDELAY_SHIFT)
--					& SPIFMT_WDELAY_MASK,
--				spi->chip_select);
-+				(spicfg->wdelay << SPIFMT_WDELAY_SHIFT) &
-+				SPIFMT_WDELAY_MASK, spi->chip_select);
- 
--		if (davinci_spi->pdata->odd_parity)
--			set_fmt_bits(davinci_spi->base,
--					SPIFMT_ODD_PARITY_MASK,
--					spi->chip_select);
-+		if (spicfg->odd_parity)
-+			set_fmt_bits(davinci_spi->base, SPIFMT_ODD_PARITY_MASK,
-+							spi->chip_select);
- 		else
- 			clear_fmt_bits(davinci_spi->base,
- 					SPIFMT_ODD_PARITY_MASK,
- 					spi->chip_select);
- 
--		if (davinci_spi->pdata->parity_enable)
--			set_fmt_bits(davinci_spi->base,
--					SPIFMT_PARITYENA_MASK,
--					spi->chip_select);
-+		if (spicfg->parity_enable)
-+			set_fmt_bits(davinci_spi->base, SPIFMT_PARITYENA_MASK,
-+							spi->chip_select);
- 		else
--			clear_fmt_bits(davinci_spi->base,
--					SPIFMT_PARITYENA_MASK,
--					spi->chip_select);
-+			clear_fmt_bits(davinci_spi->base, SPIFMT_PARITYENA_MASK,
-+							spi->chip_select);
-+
-+		if (spicfg->timer_disable)
-+			set_fmt_bits(davinci_spi->base, SPIFMT_DISTIMER_MASK,
-+							spi->chip_select);
-+		else
-+			clear_fmt_bits(davinci_spi->base, SPIFMT_DISTIMER_MASK,
-+							spi->chip_select);
- 
- 		if (spi->mode & SPI_READY)
- 			set_fmt_bits(davinci_spi->base,
-@@ -531,14 +540,6 @@ static int davinci_spi_setup(struct spi_device *spi)
- 					SPIFMT_WAITENA_MASK,
- 					spi->chip_select);
- 
--		if (davinci_spi->pdata->timer_disable)
--			set_fmt_bits(davinci_spi->base,
--					SPIFMT_DISTIMER_MASK,
--					spi->chip_select);
--		else
--			clear_fmt_bits(davinci_spi->base,
--					SPIFMT_DISTIMER_MASK,
--					spi->chip_select);
- 	}
- 
- 	retval = davinci_spi_setup_transfer(spi, NULL);
-@@ -662,9 +663,13 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 	u32 tx_data, data1_reg_val;
- 	u32 buf_val, flg_val;
- 	struct davinci_spi_platform_data *pdata;
-+	struct davinci_spi_config *spicfg;
- 
- 	davinci_spi = spi_master_get_devdata(spi->master);
- 	pdata = davinci_spi->pdata;
-+	spicfg = (struct davinci_spi_config *)spi->controller_data;
-+	if (!spicfg)
-+		spicfg = &davinci_spi_default_cfg;
- 
- 	davinci_spi->tx = t->tx_buf;
- 	davinci_spi->rx = t->rx_buf;
-@@ -684,8 +689,8 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 	/* Enable SPI */
- 	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_SPIENA_MASK);
- 
--	iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
--			(pdata->t2cdelay << SPI_T2CDELAY_SHIFT),
-+	iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
-+			(spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
- 			davinci_spi->base + SPIDELAY);
- 
- 	count = davinci_spi->count;
-@@ -792,12 +797,14 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 	struct davinci_spi_dma *davinci_spi_dma;
- 	int word_len, data_type, ret;
+-	int word_len, data_type, ret;
++	int data_type, ret;
  	unsigned long tx_reg, rx_reg;
--	struct davinci_spi_platform_data *pdata;
-+	struct davinci_spi_config *spicfg;
  	struct device *sdev;
  
- 	davinci_spi = spi_master_get_devdata(spi->master);
--	pdata = davinci_spi->pdata;
- 	sdev = davinci_spi->bitbang.master->dev.parent;
-+	spicfg = (struct davinci_spi_config *)spi->controller_data;
-+	if (!spicfg)
-+		spicfg = &davinci_spi_default_cfg;
+@@ -757,8 +749,8 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	davinci_spi->rx = t->rx_buf;
  
- 	davinci_spi_dma = &davinci_spi->dma_channels[spi->chip_select];
+ 	/* convert len to words based on bits_per_word */
+-	conv = davinci_spi->bytes_per_word[spi->chip_select];
+-	davinci_spi->count = t->len / conv;
++	data_type = davinci_spi->bytes_per_word[spi->chip_select];
++	davinci_spi->count = t->len / data_type;
  
-@@ -834,8 +841,8 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	data1_reg_val = ioread32(davinci_spi->base + SPIDAT1);
+ 
+@@ -767,17 +759,6 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	init_completion(&davinci_spi_dma->dma_rx_completion);
+ 	init_completion(&davinci_spi_dma->dma_tx_completion);
+ 
+-	word_len = conv * 8;
+-
+-	if (word_len <= 8)
+-		data_type = DAVINCI_DMA_DATA_TYPE_S8;
+-	else if (word_len <= 16)
+-		data_type = DAVINCI_DMA_DATA_TYPE_S16;
+-	else if (word_len <= 32)
+-		data_type = DAVINCI_DMA_DATA_TYPE_S32;
+-	else
+-		return -EINVAL;
+-
+ 	ret = davinci_spi_bufs_prep(spi, davinci_spi);
+ 	if (ret)
  		return ret;
- 
- 	/* Put delay val if required */
--	iowrite32(0 | (pdata->c2tdelay << SPI_C2TDELAY_SHIFT) |
--			(pdata->t2cdelay << SPI_T2CDELAY_SHIFT),
-+	iowrite32((spicfg->c2tdelay << SPI_C2TDELAY_SHIFT) |
-+			(spicfg->t2cdelay << SPI_T2CDELAY_SHIFT),
- 			davinci_spi->base + SPIDELAY);
- 
- 	count = davinci_spi->count;	/* the number of elements */
 -- 
 1.7.3.2

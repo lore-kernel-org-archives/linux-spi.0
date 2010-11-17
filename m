@@ -1,8 +1,8 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 29/49] spi: davinci: remove unnecessary function
-	davinci_spi_bufs_prep()
-Date: Wed, 17 Nov 2010 16:14:01 +0530
-Message-ID: <1289990661-30126-30-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 30/49] spi: davinci: remove unnecessary call to
+	davinci_spi_setup_transfer()
+Date: Wed, 17 Nov 2010 16:14:02 +0530
+Message-ID: <1289990661-30126-31-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -32,148 +32,81 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-27-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-28-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-29-git-send-email-nsekhar@ti.com>
+	<1289990661-30126-30-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-29-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1289990661-30126-30-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-The function davinci_spi_bufs_prep() is doing stuff that
-davinci_spi_setup() is doing. Eliminate it and move the work
-to davinci_spi_setup()
+Remove unnecessary call to davinci_spi_setup_transfer() at the end
+of davinci_spi_setup().
+
+davinci_spi_setup_transfer() is registered as the setup_transfer
+callback for the bitbang layer and is called independently by
+the bitbang layer to setup the transfer before it begins.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/davinci_spi.c |   64 ++++++++++++++------------------------------
- 1 files changed, 21 insertions(+), 43 deletions(-)
+ drivers/spi/davinci_spi.c |   11 +++--------
+ 1 files changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 6f279c5..05b6145 100644
+index 05b6145..77109dc 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -482,13 +482,33 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	int retval;
+@@ -479,7 +479,7 @@ static int davinci_spi_request_dma(struct spi_device *spi)
+  */
+ static int davinci_spi_setup(struct spi_device *spi)
+ {
+-	int retval;
++	int retval = 0;
  	struct davinci_spi *davinci_spi;
  	struct davinci_spi_dma *davinci_spi_dma;
-+	struct davinci_spi_platform_data *pdata;
- 
- 	davinci_spi = spi_master_get_devdata(spi->master);
-+	pdata = davinci_spi->pdata;
- 
- 	/* if bits per word length is zero then set it default 8 */
- 	if (!spi->bits_per_word)
- 		spi->bits_per_word = 8;
- 
-+	if (!(spi->mode & SPI_NO_CS)) {
-+		if ((pdata->chip_sel == NULL) ||
-+		    (pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS))
-+			set_io_bits(davinci_spi->base + SPIPC0,
-+					1 << spi->chip_select);
-+
-+	}
-+
-+	if (spi->mode & SPI_READY)
-+		set_io_bits(davinci_spi->base + SPIPC0, SPIPC0_SPIENA_MASK);
-+
-+	if (spi->mode & SPI_LOOP)
-+		set_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_LOOPBACK_MASK);
-+	else
-+		clear_io_bits(davinci_spi->base + SPIGCR1,
-+				SPIGCR1_LOOPBACK_MASK);
-+
+ 	struct davinci_spi_platform_data *pdata;
+@@ -512,16 +512,11 @@ static int davinci_spi_setup(struct spi_device *spi)
  	if (use_dma && davinci_spi->dma_channels) {
  		davinci_spi_dma = &davinci_spi->dma_channels[spi->chip_select];
  
-@@ -523,40 +543,6 @@ static void davinci_spi_cleanup(struct spi_device *spi)
+-		if ((davinci_spi_dma->dma_rx_channel == -1)
+-				|| (davinci_spi_dma->dma_tx_channel == -1)) {
++		if ((davinci_spi_dma->dma_rx_channel == -1) ||
++		    (davinci_spi_dma->dma_tx_channel == -1))
+ 			retval = davinci_spi_request_dma(spi);
+-			if (retval < 0)
+-				return retval;
+-		}
  	}
+ 
+-	retval = davinci_spi_setup_transfer(spi, NULL);
+-
+ 	return retval;
  }
- 
--static int davinci_spi_bufs_prep(struct spi_device *spi,
--				 struct davinci_spi *davinci_spi)
--{
--	struct davinci_spi_platform_data *pdata;
--	int op_mode = 0;
--
--	/*
--	 * REVISIT  unless devices disagree about SPI_LOOP or
--	 * SPI_READY (SPI_NO_CS only allows one device!), this
--	 * should not need to be done before each message...
--	 * optimize for both flags staying cleared.
--	 */
--
--	if (!(spi->mode & SPI_NO_CS)) {
--		pdata = davinci_spi->pdata;
--		if (!pdata->chip_sel ||
--		     pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS)
--			op_mode |= 1 << spi->chip_select;
--	}
--	if (spi->mode & SPI_READY)
--		op_mode |= SPIPC0_SPIENA_MASK;
--
--	iowrite32(op_mode, davinci_spi->base + SPIPC0);
--
--	if (spi->mode & SPI_LOOP)
--		set_io_bits(davinci_spi->base + SPIGCR1,
--				SPIGCR1_LOOPBACK_MASK);
--	else
--		clear_io_bits(davinci_spi->base + SPIGCR1,
--				SPIGCR1_LOOPBACK_MASK);
--
--	return 0;
--}
--
- static int davinci_spi_check_error(struct davinci_spi *davinci_spi,
- 				   int int_status)
- {
-@@ -664,10 +650,6 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 				davinci_spi->bytes_per_word[spi->chip_select];
- 	davinci_spi->rcount = davinci_spi->wcount;
- 
--	ret = davinci_spi_bufs_prep(spi, davinci_spi);
--	if (ret)
--		return ret;
--
- 	data1_reg_val = ioread32(davinci_spi->base + SPIDAT1);
- 
- 	/* Enable SPI */
-@@ -769,10 +751,6 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 	init_completion(&davinci_spi_dma->dma_rx_completion);
- 	init_completion(&davinci_spi_dma->dma_tx_completion);
- 
--	ret = davinci_spi_bufs_prep(spi, davinci_spi);
--	if (ret)
--		return ret;
--
- 	count = t->len / data_type;	/* the number of elements */
- 
- 	/* disable all interrupts for dma transfers */
-@@ -1026,7 +1004,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	udelay(100);
- 	iowrite32(1, davinci_spi->base + SPIGCR0);
- 
--	/* Set up SPIPC0.  CS and ENA init is done in davinci_spi_bufs_prep */
-+	/* Set up SPIPC0.  CS and ENA init is done in davinci_spi_setup */
- 	spipc0 = SPIPC0_DIFUN_MASK | SPIPC0_DOFUN_MASK | SPIPC0_CLKFUN_MASK;
- 	iowrite32(spipc0, davinci_spi->base + SPIPC0);
  
 -- 
 1.7.3.2
+
+
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today
+http://p.sf.net/sfu/msIE9-sfdev2dev

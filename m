@@ -1,7 +1,8 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 36/49] spi: davinci: fix DMA event generation stoppage
-Date: Wed, 17 Nov 2010 16:14:08 +0530
-Message-ID: <1289990661-30126-37-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 29/49] spi: davinci: remove unnecessary function
+	davinci_spi_bufs_prep()
+Date: Wed, 17 Nov 2010 16:14:01 +0530
+Message-ID: <1289990661-30126-30-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -31,13 +32,6 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-27-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-28-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-29-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-30-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-31-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-32-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-33-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-34-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-35-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-36-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -45,8 +39,8 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-36-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1289990661-30126-29-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -54,88 +48,132 @@ List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@pu
 List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
 List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-Do not stop SPI DMA event generation in either transmit or
-receive DMA event call back because the single setting affects
-both transmit and receive event generation.
-
-Depending on the order in which the callbacks happen, transmit
-or receive events can get unintentionally stalled.
-
-Instead, disable event generation once after both the transmit
-and receive DMA completes.
-
-While at it, remove the largely under-used function to set or
-clear DMA event generation.
+The function davinci_spi_bufs_prep() is doing stuff that
+davinci_spi_setup() is doing. Eliminate it and move the work
+to davinci_spi_setup()
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/davinci_spi.c |   18 +++---------------
- 1 files changed, 3 insertions(+), 15 deletions(-)
+ drivers/spi/davinci_spi.c |   64 ++++++++++++++------------------------------
+ 1 files changed, 21 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 67f1e46..9695f98 100644
+index 6f279c5..05b6145 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -211,16 +211,6 @@ static inline void clear_io_bits(void __iomem *addr, u32 bits)
- 	iowrite32(v, addr);
+@@ -482,13 +482,33 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 	int retval;
+ 	struct davinci_spi *davinci_spi;
+ 	struct davinci_spi_dma *davinci_spi_dma;
++	struct davinci_spi_platform_data *pdata;
+ 
+ 	davinci_spi = spi_master_get_devdata(spi->master);
++	pdata = davinci_spi->pdata;
+ 
+ 	/* if bits per word length is zero then set it default 8 */
+ 	if (!spi->bits_per_word)
+ 		spi->bits_per_word = 8;
+ 
++	if (!(spi->mode & SPI_NO_CS)) {
++		if ((pdata->chip_sel == NULL) ||
++		    (pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS))
++			set_io_bits(davinci_spi->base + SPIPC0,
++					1 << spi->chip_select);
++
++	}
++
++	if (spi->mode & SPI_READY)
++		set_io_bits(davinci_spi->base + SPIPC0, SPIPC0_SPIENA_MASK);
++
++	if (spi->mode & SPI_LOOP)
++		set_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_LOOPBACK_MASK);
++	else
++		clear_io_bits(davinci_spi->base + SPIGCR1,
++				SPIGCR1_LOOPBACK_MASK);
++
+ 	if (use_dma && davinci_spi->dma_channels) {
+ 		davinci_spi_dma = &davinci_spi->dma_channels[spi->chip_select];
+ 
+@@ -523,40 +543,6 @@ static void davinci_spi_cleanup(struct spi_device *spi)
+ 	}
  }
  
--static void davinci_spi_set_dma_req(const struct spi_device *spi, int enable)
+-static int davinci_spi_bufs_prep(struct spi_device *spi,
+-				 struct davinci_spi *davinci_spi)
 -{
--	struct davinci_spi *davinci_spi = spi_master_get_devdata(spi->master);
+-	struct davinci_spi_platform_data *pdata;
+-	int op_mode = 0;
 -
--	if (enable)
--		set_io_bits(davinci_spi->base + SPIINT, SPIINT_DMA_REQ_EN);
+-	/*
+-	 * REVISIT  unless devices disagree about SPI_LOOP or
+-	 * SPI_READY (SPI_NO_CS only allows one device!), this
+-	 * should not need to be done before each message...
+-	 * optimize for both flags staying cleared.
+-	 */
+-
+-	if (!(spi->mode & SPI_NO_CS)) {
+-		pdata = davinci_spi->pdata;
+-		if (!pdata->chip_sel ||
+-		     pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS)
+-			op_mode |= 1 << spi->chip_select;
+-	}
+-	if (spi->mode & SPI_READY)
+-		op_mode |= SPIPC0_SPIENA_MASK;
+-
+-	iowrite32(op_mode, davinci_spi->base + SPIPC0);
+-
+-	if (spi->mode & SPI_LOOP)
+-		set_io_bits(davinci_spi->base + SPIGCR1,
+-				SPIGCR1_LOOPBACK_MASK);
 -	else
--		clear_io_bits(davinci_spi->base + SPIINT, SPIINT_DMA_REQ_EN);
+-		clear_io_bits(davinci_spi->base + SPIGCR1,
+-				SPIGCR1_LOOPBACK_MASK);
+-
+-	return 0;
 -}
 -
- /*
-  * Interface to control the chip select signal
-  */
-@@ -414,8 +404,6 @@ static void davinci_spi_dma_rx_callback(unsigned lch, u16 ch_status, void *data)
- 		edma_clean_channel(davinci_spi_dma->dma_rx_channel);
+ static int davinci_spi_check_error(struct davinci_spi *davinci_spi,
+ 				   int int_status)
+ {
+@@ -664,10 +650,6 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
+ 				davinci_spi->bytes_per_word[spi->chip_select];
+ 	davinci_spi->rcount = davinci_spi->wcount;
  
- 	complete(&davinci_spi_dma->dma_rx_completion);
--	/* We must disable the DMA RX request */
--	davinci_spi_set_dma_req(spi, 0);
- }
+-	ret = davinci_spi_bufs_prep(spi, davinci_spi);
+-	if (ret)
+-		return ret;
+-
+ 	data1_reg_val = ioread32(davinci_spi->base + SPIDAT1);
  
- static void davinci_spi_dma_tx_callback(unsigned lch, u16 ch_status, void *data)
-@@ -433,8 +421,6 @@ static void davinci_spi_dma_tx_callback(unsigned lch, u16 ch_status, void *data)
- 		edma_clean_channel(davinci_spi_dma->dma_tx_channel);
+ 	/* Enable SPI */
+@@ -769,10 +751,6 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	init_completion(&davinci_spi_dma->dma_rx_completion);
+ 	init_completion(&davinci_spi_dma->dma_tx_completion);
  
- 	complete(&davinci_spi_dma->dma_tx_completion);
--	/* We must disable the DMA TX request */
--	davinci_spi_set_dma_req(spi, 0);
- }
+-	ret = davinci_spi_bufs_prep(spi, davinci_spi);
+-	if (ret)
+-		return ret;
+-
+ 	count = t->len / data_type;	/* the number of elements */
  
- static int davinci_spi_request_dma(struct spi_device *spi)
-@@ -831,7 +817,7 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	/* disable all interrupts for dma transfers */
+@@ -1026,7 +1004,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	udelay(100);
+ 	iowrite32(1, davinci_spi->base + SPIGCR0);
  
- 	edma_start(davinci_spi_dma->dma_rx_channel);
- 	edma_start(davinci_spi_dma->dma_tx_channel);
--	davinci_spi_set_dma_req(spi, 1);
-+	set_io_bits(davinci_spi->base + SPIINT, SPIINT_DMA_REQ_EN);
+-	/* Set up SPIPC0.  CS and ENA init is done in davinci_spi_bufs_prep */
++	/* Set up SPIPC0.  CS and ENA init is done in davinci_spi_setup */
+ 	spipc0 = SPIPC0_DIFUN_MASK | SPIPC0_DOFUN_MASK | SPIPC0_CLKFUN_MASK;
+ 	iowrite32(spipc0, davinci_spi->base + SPIPC0);
  
- 	wait_for_completion_interruptible(&davinci_spi_dma->dma_tx_completion);
- 	wait_for_completion_interruptible(&davinci_spi_dma->dma_rx_completion);
-@@ -841,6 +827,8 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 
- 	dma_unmap_single(NULL, t->rx_dma, rx_buf_count, DMA_FROM_DEVICE);
- 
-+	clear_io_bits(davinci_spi->base + SPIINT, SPIINT_DMA_REQ_EN);
-+
- 	/*
- 	 * Check for bit error, desync error,parity error,timeout error and
- 	 * receive overflow errors
 -- 
 1.7.3.2

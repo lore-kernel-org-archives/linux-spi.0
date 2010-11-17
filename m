@@ -1,7 +1,8 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 19/49] spi: davinci: simplify calculation of edma acount value
-Date: Wed, 17 Nov 2010 16:13:51 +0530
-Message-ID: <1289990661-30126-20-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 17/49] spi: davinci: eliminate the single member structure
+	davinci_spi_slave
+Date: Wed, 17 Nov 2010 16:13:49 +0530
+Message-ID: <1289990661-30126-18-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -19,8 +20,6 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-15-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-16-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-17-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-18-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-19-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -29,7 +28,7 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-19-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1289990661-30126-17-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -43,81 +42,71 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-The EDMA acount (called data_type in davinci_spi_bufs_dma())
-is simply the bytes_per_word obtained in the transfer setup
-function. The current code calculates the acount value from
-bytes_per_word in a convoluted manner. Simplify the code.
+The struct davinci_spi_slave has a single member. Eliminate it
+and store the per-chipselect data in struct davinci_spi directly.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/davinci_spi.c |   25 +++----------------------
- 1 files changed, 3 insertions(+), 22 deletions(-)
+ drivers/spi/davinci_spi.c |   14 +++++---------
+ 1 files changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index f1c3502..b0b338f 100644
+index 31b9c22..3dac2038 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -39,9 +39,6 @@
- #define CS_DEFAULT	0xFF
+@@ -118,10 +118,6 @@
+ #define SPIDEF		0x4c
+ #define SPIFMT0		0x50
  
- #define SPI_BUFSIZ	(SMP_CACHE_BYTES + 1)
--#define DAVINCI_DMA_DATA_TYPE_S8	0x01
--#define DAVINCI_DMA_DATA_TYPE_S16	0x02
--#define DAVINCI_DMA_DATA_TYPE_S32	0x04
- 
- #define SPIFMT_PHASE_MASK	BIT(16)
- #define SPIFMT_POLARITY_MASK	BIT(17)
-@@ -729,19 +726,14 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
- 	return t->len;
- }
- 
--#define DAVINCI_DMA_DATA_TYPE_S8	0x01
--#define DAVINCI_DMA_DATA_TYPE_S16	0x02
--#define DAVINCI_DMA_DATA_TYPE_S32	0x04
+-struct davinci_spi_slave {
+-	u32	bytes_per_word;
+-};
 -
- static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct davinci_spi *davinci_spi;
- 	int int_status = 0;
- 	int count, temp_count;
--	u8 conv = 1;
- 	u32 data1_reg_val;
- 	struct davinci_spi_dma *davinci_spi_dma;
--	int word_len, data_type, ret;
-+	int data_type, ret;
- 	unsigned long tx_reg, rx_reg;
- 	struct device *sdev;
+ /* We have 2 DMA channels per CS, one for RX and one for TX */
+ struct davinci_spi_dma {
+ 	int			dma_tx_channel;
+@@ -156,7 +152,7 @@ struct davinci_spi {
+ 	void			(*get_rx)(u32 rx_data, struct davinci_spi *);
+ 	u32			(*get_tx)(struct davinci_spi *);
  
-@@ -757,8 +749,8 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+-	struct davinci_spi_slave slave[SPI_MAX_CHIPSELECT];
++	u8			bytes_per_word[SPI_MAX_CHIPSELECT];
+ };
+ 
+ static struct davinci_spi_config davinci_spi_default_cfg;
+@@ -324,11 +320,11 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 	if (bits_per_word <= 8 && bits_per_word >= 2) {
+ 		davinci_spi->get_rx = davinci_spi_rx_buf_u8;
+ 		davinci_spi->get_tx = davinci_spi_tx_buf_u8;
+-		davinci_spi->slave[spi->chip_select].bytes_per_word = 1;
++		davinci_spi->bytes_per_word[spi->chip_select] = 1;
+ 	} else if (bits_per_word <= 16 && bits_per_word >= 2) {
+ 		davinci_spi->get_rx = davinci_spi_rx_buf_u16;
+ 		davinci_spi->get_tx = davinci_spi_tx_buf_u16;
+-		davinci_spi->slave[spi->chip_select].bytes_per_word = 2;
++		davinci_spi->bytes_per_word[spi->chip_select] = 2;
+ 	} else
+ 		return -EINVAL;
+ 
+@@ -632,7 +628,7 @@ static int davinci_spi_bufs_pio(struct spi_device *spi, struct spi_transfer *t)
  	davinci_spi->rx = t->rx_buf;
  
  	/* convert len to words based on bits_per_word */
--	conv = davinci_spi->bytes_per_word[spi->chip_select];
--	davinci_spi->count = t->len / conv;
-+	data_type = davinci_spi->bytes_per_word[spi->chip_select];
-+	davinci_spi->count = t->len / data_type;
+-	conv = davinci_spi->slave[spi->chip_select].bytes_per_word;
++	conv = davinci_spi->bytes_per_word[spi->chip_select];
+ 	davinci_spi->count = t->len / conv;
  
  	data1_reg_val = ioread32(davinci_spi->base + SPIDAT1);
+@@ -764,7 +760,7 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	davinci_spi->rx = t->rx_buf;
  
-@@ -767,17 +759,6 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
- 	init_completion(&davinci_spi_dma->dma_rx_completion);
- 	init_completion(&davinci_spi_dma->dma_tx_completion);
+ 	/* convert len to words based on bits_per_word */
+-	conv = davinci_spi->slave[spi->chip_select].bytes_per_word;
++	conv = davinci_spi->bytes_per_word[spi->chip_select];
+ 	davinci_spi->count = t->len / conv;
  
--	word_len = conv * 8;
--
--	if (word_len <= 8)
--		data_type = DAVINCI_DMA_DATA_TYPE_S8;
--	else if (word_len <= 16)
--		data_type = DAVINCI_DMA_DATA_TYPE_S16;
--	else if (word_len <= 32)
--		data_type = DAVINCI_DMA_DATA_TYPE_S32;
--	else
--		return -EINVAL;
--
- 	ret = davinci_spi_bufs_prep(spi, davinci_spi);
- 	if (ret)
- 		return ret;
+ 	data1_reg_val = ioread32(davinci_spi->base + SPIDAT1);
 -- 
 1.7.3.2

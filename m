@@ -1,58 +1,61 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH v5 04/12] spi: add ti-ssp spi master driver
-Date: Tue, 16 Nov 2010 06:19:00 -0800
-Message-ID: <1289917140.1752.7.camel@helium>
-References: <1289848334-8695-1-git-send-email-cyril@ti.com>
-	<1289848334-8695-5-git-send-email-cyril@ti.com>
-	<20101116072225.GF4074@angua.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 00/49] spi: davinci: re-write existing driver
+Date: Wed, 17 Nov 2010 08:24:26 -0700
+Message-ID: <20101117152426.GA5757@angua.secretlab.ca>
+References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-        dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-        linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-        rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
-        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20101116072225.GF4074-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1289990661-30126-1-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2010-11-16 at 00:22 -0700, Grant Likely wrote:
-
+On Wed, Nov 17, 2010 at 04:13:32PM +0530, Sekhar Nori wrote:
+> This patch series represents a break-up into reviewable portions
+> of the work originally done by Brian and posted here:
 > 
-> After discussions about device init dependencies at plumbers, and
-> since this is the first SPI device driver I've reviewed since that
-> dicussion, this driver gets to be the first to implement the proposed
-> policy.  :-)
+> https://patchwork.kernel.org/patch/114924/
 > 
-> Change this to module_initcall().  Many spi and i2c drivers use
-> module or subsys_initcall to try and influence driver probe order so
-> that certain regulator chips get registered before the devices that
-> try to use them.  This approach is insane.
+> While this series does not exactly add up to what Brian's patch
+> is, it is pretty close functionally.
+> 
+> This series was tested by me on OMAP-L138, OMAP-L137, DM365 and DM355
+> EVMs and on their OMAP-L138 boards (not EVMs) by Brian and Michael.
+> 
+> The patch series applies to latest of Linus's tree in hope that
+> it will be considered for merge in 2.6.37 since the series is
+> about bug fixes and clean-up.
+> 
+> This series along with some patches to add SPI platform support
+> to OMAP-L1x EVMs and Mity-DSP board is also available here:
+> 
+> http://arago-project.org/git/projects/?p=linux-davinci.git;a=shortlog;h=refs/heads/davinci-spi-rewrite
 
-Last I observed the issue ... the situation was that various core
-drivers were required to be able to say that a key subsystem was
-functional ... with said subsystem required to boot properly.
+I went through all the patches, and it looks good to me.  Is there a
+public git:// url I can use to pull this series?
 
-The dependency being, that is, driver on subsystem (but that subsystem
-needed a core/bus driver running before it could work.
+>  5 files changed, 587 insertions(+), 799 deletions(-)
 
-What's insane is that Linux *STILL* has no clean way to express that
-type of system dependency ... where driver dependencies are pure side
-effects.  (Albeit ones that never change on many platforms, but where
-board-specific differences are routine, and have the same kind of
-indirect dependencies.
+Nice diffstat.  :-)
 
+g.
 
-- Dave
+------------------------------------------------------------------------------
+Beautiful is writing same markup. Internet Explorer 9 supports
+standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
+Spend less time writing and  rewriting code and more time creating great
+experiences on the web. Be a part of the beta today
+http://p.sf.net/sfu/msIE9-sfdev2dev

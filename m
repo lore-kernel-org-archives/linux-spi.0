@@ -1,8 +1,8 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 49/49] spi: davinci: kconfig: add manufacturer name to prompt
-	string
-Date: Wed, 17 Nov 2010 16:14:21 +0530
-Message-ID: <1289990661-30126-50-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 47/49] spi: davinci: remove unnecessary private data member
+	'region_size'
+Date: Wed, 17 Nov 2010 16:14:19 +0530
+Message-ID: <1289990661-30126-48-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -50,8 +50,6 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-45-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-46-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-47-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-48-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-49-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -60,7 +58,7 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-49-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1289990661-30126-47-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -72,41 +70,76 @@ Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@publi
 Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add manufacturer name to the Kconfig prompt string and move
-the controller name to the begining of the prompt.
+Remove unnecesary private data member 'region_size'
+being used to store the size of SPI memory region.
 
-This helps locate the driver easily among the list of existing
-drivers.
-
-While at it, also add information about being able to build
-the driver as module.
+Instead, get the memory resource size directly from
+the platform data.
 
 Tested-By: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/Kconfig |    7 +++++--
- 1 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/davinci_spi.c |   13 ++++++-------
+ 1 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 78f9fd0..a32796e 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -111,11 +111,14 @@ config SPI_COLDFIRE_QSPI
- 	  will be called coldfire_qspi.
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+index 42314a32..f6f63d0 100644
+--- a/drivers/spi/davinci_spi.c
++++ b/drivers/spi/davinci_spi.c
+@@ -129,7 +129,6 @@ struct davinci_spi {
+ 	u8			version;
+ 	resource_size_t		pbase;
+ 	void __iomem		*base;
+-	size_t			region_size;
+ 	u32			irq;
+ 	struct completion	done;
  
- config SPI_DAVINCI
--	tristate "SPI controller driver for DaVinci/DA8xx SoC's"
-+	tristate "Texas Instruments DaVinci/DA8x/OMAP-L/AM1x SoC SPI controller"
- 	depends on SPI_MASTER && ARCH_DAVINCI
- 	select SPI_BITBANG
- 	help
--	  SPI master controller for DaVinci and DA8xx SPI modules.
-+	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
-+
-+	  This driver can also be built as a module. The module will be called
-+	  davinci_spi.
+@@ -835,17 +834,15 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	}
  
- config SPI_EP93XX
- 	tristate "Cirrus Logic EP93xx SPI controller"
+ 	davinci_spi->pbase = r->start;
+-	davinci_spi->region_size = resource_size(r);
+ 	davinci_spi->pdata = pdata;
+ 
+-	mem = request_mem_region(r->start, davinci_spi->region_size,
+-					pdev->name);
++	mem = request_mem_region(r->start, resource_size(r), pdev->name);
+ 	if (mem == NULL) {
+ 		ret = -EBUSY;
+ 		goto free_master;
+ 	}
+ 
+-	davinci_spi->base = ioremap(r->start, davinci_spi->region_size);
++	davinci_spi->base = ioremap(r->start, resource_size(r));
+ 	if (davinci_spi->base == NULL) {
+ 		ret = -ENOMEM;
+ 		goto release_region;
+@@ -972,7 +969,7 @@ irq_free:
+ unmap_io:
+ 	iounmap(davinci_spi->base);
+ release_region:
+-	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
++	release_mem_region(davinci_spi->pbase, resource_size(r));
+ free_master:
+ 	kfree(master);
+ err:
+@@ -992,6 +989,7 @@ static int __exit davinci_spi_remove(struct platform_device *pdev)
+ {
+ 	struct davinci_spi *davinci_spi;
+ 	struct spi_master *master;
++	struct resource *r;
+ 
+ 	master = dev_get_drvdata(&pdev->dev);
+ 	davinci_spi = spi_master_get_devdata(master);
+@@ -1003,7 +1001,8 @@ static int __exit davinci_spi_remove(struct platform_device *pdev)
+ 	spi_master_put(master);
+ 	free_irq(davinci_spi->irq, davinci_spi);
+ 	iounmap(davinci_spi->base);
+-	release_mem_region(davinci_spi->pbase, davinci_spi->region_size);
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	release_mem_region(davinci_spi->pbase, resource_size(r));
+ 
+ 	return 0;
+ }
 -- 
 1.7.3.2

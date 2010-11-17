@@ -1,8 +1,7 @@
 From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 42/49] spi: davinci: remove non-useful "clk_internal" platform
-	data
-Date: Wed, 17 Nov 2010 16:14:14 +0530
-Message-ID: <1289990661-30126-43-git-send-email-nsekhar@ti.com>
+Subject: [PATCH 38/49] spi: davinci: fix EDMA CC errors at end of transfers
+Date: Wed, 17 Nov 2010 16:14:10 +0530
+Message-ID: <1289990661-30126-39-git-send-email-nsekhar@ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-2-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-3-git-send-email-nsekhar@ti.com>
@@ -41,10 +40,6 @@ References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-36-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-37-git-send-email-nsekhar@ti.com>
 	<1289990661-30126-38-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-39-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-40-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-41-git-send-email-nsekhar@ti.com>
-	<1289990661-30126-42-git-send-email-nsekhar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -52,8 +47,8 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1289990661-30126-42-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1289990661-30126-38-git-send-email-nsekhar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -61,91 +56,101 @@ List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@pu
 List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
 List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 
-The "clk_internal" platform data member which contols the
-CLKMOD bit in Global Control Register 1 is not useful
-since CLKMOD needs be set to 1 *always* to ensure master
-mode operation.
+Use a dummy param slot linked to itself to take care of the
+extra "sync event" that gets sent to EDMA controller after
+the last byte has been transferred.
 
-Remove this platform data.
+The dummy PaRAM slot that is linked to the actual DMA PaRAM
+slot "absorbs" this event and prevents a EDMA CC error to
+be asserted.
+
+Without this provision, the EDMA CC error would be asserted
+because the channel PaRAM would be empty after the transfer
+and EDMA would not know what to make out of the extra sync
+event.
 
 Signed-off-by: Brian Niebuhr <bniebuhr-JaPwekKOx1yaMJb+Lgu22Q@public.gmane.org>
 Tested-By: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
 Signed-off-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/dm355.c            |    1 -
- arch/arm/mach-davinci/dm365.c            |    1 -
- arch/arm/mach-davinci/include/mach/spi.h |    1 -
- drivers/spi/davinci_spi.c                |    9 +--------
- 4 files changed, 1 insertions(+), 11 deletions(-)
+ drivers/spi/davinci_spi.c |   28 +++++++++++++++++++++++++---
+ 1 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
-index 27ee870..c0c501a 100644
---- a/arch/arm/mach-davinci/dm355.c
-+++ b/arch/arm/mach-davinci/dm355.c
-@@ -412,7 +412,6 @@ static struct resource dm355_spi0_resources[] = {
- static struct davinci_spi_platform_data dm355_spi0_pdata = {
- 	.version 	= SPI_VERSION_1,
- 	.num_chipselect = 2,
--	.clk_internal	= 1,
- 	.cshold_bug	= true,
- };
- static struct platform_device dm355_spi0_device = {
-diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
-index 1e5012e..8b8204f 100644
---- a/arch/arm/mach-davinci/dm365.c
-+++ b/arch/arm/mach-davinci/dm365.c
-@@ -625,7 +625,6 @@ static u64 dm365_spi0_dma_mask = DMA_BIT_MASK(32);
- static struct davinci_spi_platform_data dm365_spi0_pdata = {
- 	.version 	= SPI_VERSION_1,
- 	.num_chipselect = 2,
--	.clk_internal	= 1,
- };
- 
- static struct resource dm365_spi0_resources[] = {
-diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
-index b3ab7d0..1f8b786 100644
---- a/arch/arm/mach-davinci/include/mach/spi.h
-+++ b/arch/arm/mach-davinci/include/mach/spi.h
-@@ -29,7 +29,6 @@ enum {
- struct davinci_spi_platform_data {
- 	u8	version;
- 	u8	num_chipselect;
--	u8	clk_internal;
- 	u8	intr_line;
- 	u8	*chip_sel;
- 	bool	cshold_bug;
 diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
-index 5fe2980..2e74fcd 100644
+index 6db4786..975c2a2 100644
 --- a/drivers/spi/davinci_spi.c
 +++ b/drivers/spi/davinci_spi.c
-@@ -927,14 +927,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 		}
+@@ -116,6 +116,7 @@
+ struct davinci_spi_dma {
+ 	int			dma_tx_channel;
+ 	int			dma_rx_channel;
++	int			dummy_param_slot;
+ 	enum dma_event_q	eventq;
+ 
+ 	struct completion	dma_tx_completion;
+@@ -697,6 +698,8 @@ static int davinci_spi_bufs_dma(struct spi_device *spi, struct spi_transfer *t)
+ 	param.src_dst_cidx = 0;
+ 	param.ccnt = 1;
+ 	edma_write_slot(davinci_spi_dma->dma_tx_channel, &param);
++	edma_link(davinci_spi_dma->dma_tx_channel,
++			davinci_spi_dma->dummy_param_slot);
+ 
+ 	/*
+ 	 * Receive DMA setup
+@@ -779,19 +782,37 @@ static int davinci_spi_request_dma(struct davinci_spi_dma *davinci_spi_dma)
+ 				davinci_spi_dma->eventq);
+ 	if (r < 0) {
+ 		pr_err("Unable to request DMA channel for SPI RX\n");
+-		return -EAGAIN;
++		r = -EAGAIN;
++		goto rx_dma_failed;
  	}
  
--	/* Clock internal */
--	if (davinci_spi->pdata->clk_internal)
--		set_io_bits(davinci_spi->base + SPIGCR1,
--				SPIGCR1_CLKMOD_MASK);
--	else
--		clear_io_bits(davinci_spi->base + SPIGCR1,
--				SPIGCR1_CLKMOD_MASK);
--
- 	if (pdata->intr_line)
- 		iowrite32(SPI_INTLVL_1, davinci_spi->base + SPILVL);
- 	else
-@@ -943,6 +935,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	iowrite32(CS_DEFAULT, davinci_spi->base + SPIDEF);
+ 	r = edma_alloc_channel(davinci_spi_dma->dma_tx_channel,
+ 				davinci_spi_dma_tx_callback, davinci_spi_dma,
+ 				davinci_spi_dma->eventq);
+ 	if (r < 0) {
+-		edma_free_channel(davinci_spi_dma->dma_rx_channel);
+ 		pr_err("Unable to request DMA channel for SPI TX\n");
+-		return -EAGAIN;
++		r = -EAGAIN;
++		goto tx_dma_failed;
+ 	}
  
- 	/* master mode default */
-+	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_CLKMOD_MASK);
- 	set_io_bits(davinci_spi->base + SPIGCR1, SPIGCR1_MASTER_MASK);
++	r = edma_alloc_slot(EDMA_CTLR(davinci_spi_dma->dma_tx_channel),
++		EDMA_SLOT_ANY);
++	if (r < 0) {
++		pr_err("Unable to request SPI TX DMA param slot\n");
++		r = -EAGAIN;
++		goto param_failed;
++	}
++	davinci_spi_dma->dummy_param_slot = r;
++	edma_link(davinci_spi_dma->dummy_param_slot,
++		davinci_spi_dma->dummy_param_slot);
++
+ 	return 0;
++param_failed:
++	edma_free_channel(davinci_spi_dma->dma_tx_channel);
++tx_dma_failed:
++	edma_free_channel(davinci_spi_dma->dma_rx_channel);
++rx_dma_failed:
++	return r;
+ }
  
- 	ret = spi_bitbang_start(&davinci_spi->bitbang);
+ /**
+@@ -970,6 +991,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ free_dma:
+ 	edma_free_channel(davinci_spi->dma_channels.dma_tx_channel);
+ 	edma_free_channel(davinci_spi->dma_channels.dma_rx_channel);
++	edma_free_slot(davinci_spi->dma_channels.dummy_param_slot);
+ free_clk:
+ 	clk_disable(davinci_spi->clk);
+ 	clk_put(davinci_spi->clk);
 -- 
 1.7.3.2

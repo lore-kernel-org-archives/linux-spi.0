@@ -1,23 +1,13 @@
-From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH 00/49] spi: davinci: re-write existing driver
-Date: Thu, 18 Nov 2010 18:44:18 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59302473885A3@dbde02.ent.ti.com>
-References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
-	<20101117152426.GA5757@angua.secretlab.ca>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247388244@dbde02.ent.ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302473884F7@dbde02.ent.ti.com>
+From: Ma Voiture Par Internet par Team Leaders <alex.champy-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Reservez vite votre essai !
+Date: Thu, 18 Nov 2010 15:24:58 +0200
+Message-ID: <0a918217456ca1d8943ce7e19d044b2c@pro2.back-monitor.com>
+Reply-To: Ma Voiture Par Internet par Team Leaders <alex.champy-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59302473884F7-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,37 +18,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-On Thu, Nov 18, 2010 at 17:01:24, Nori, Sekhar wrote:
-> On Thu, Nov 18, 2010 at 12:23:24, Nori, Sekhar wrote:
-> >
-> > Here is the pull request:
-> >
-> > The following changes since commit 0a5b871ea4c6bfb2723ac2ffc7ef5c32452abb89:
-> >   Linus Torvalds (1):
-> >         hardirq.h: remove now-empty #ifdef/#endif pair
-> >
-> > are available in the git repository at:
-> >
-> >   git://arago-project.org/git/projects/linux-davinci.git for-grant
-> >
-> > <short log and diffstat deleted>
->
-> Oops, I just realized that because my sign-off is added when
-> git-format-patch -s is run, the patches in the pull request
-> do not have my sign-off. I will recreate the branch with my
-> sign-off added to these patches.
-
-I fixed this now. You can go ahead and do the pull.
-
-Thanks,
-Sekhar
-
-
-------------------------------------------------------------------------------
-Beautiful is writing same markup. Internet Explorer 9 supports
-standards for HTML5, CSS3, SVG 1.1,  ECMAScript5, and DOM L2 & L3.
-Spend less time writing and  rewriting code and more time creating great
-experiences on the web. Be a part of the beta today
-http://p.sf.net/sfu/msIE9-sfdev2dev
+RXNzYXlleiBncmF0dWl0ZW1lbnQgbGVzIHZvaXR1cmVzIG5ldXZlcyBkZSB2b3RyZSBjaG9peCEK
+UHLDqHMgZGUgY2hleiB2b3VzIGV0IHNhbnMgZW5nYWdlbWVudCEK4oCiCUNob2lzaXNzZXogdm9z
+IHZvaXR1cmVzIHByw6lmw6lyw6llcwrigKIJSW5zY3JpdmV6LXZvdXMgZ3JhdHVpdGVtZW50CuKA
+oglFc3NheWVzIGxlcyBwcsOocyBkZSBjaGV6IHZvdXMhClBsdXMgZCdpbmZvcm1hdGlvbnM6IApo
+dHRwOi8vd3d3LndlZWRvaXQuZnIvdHJhY2tpbmcvdHJhY2tpbmdfYWZmLnBocD9pZD1ZMkZ0Y0dG
+bmJtVTlWR1ZoYlNCTVpXRmtaWEp6WDAxaExWWnZhWFIxY21VdFVHRnlMVWx1ZEdWeWJtVjBYMVpw
+YzNWbGJBPT0KKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioKQ29uZm9ybcOpbWVudCDDoCBsYSBsb2kgaW5mb3JtYXRpcXVl
+ICYgbGliZXJ0w6lzIGR1IDYgamFudmllciAxOTc4LCBqZQpkaXNwb3NlIGQndW4gZHJvaXQgZCdh
+Y2PDqHMsIGRlIHJlY3RpZmljYXRpb24gZXQgZCdvcHBvc2l0aW9uIGF1eApkb25uw6llcyBwZXJz
+b25uZWxsZXMgbWUgY29uY2VybmFudC4gCkNlIG1lc3NhZ2UgY29tbWVyY2lhbCB2b3VzIGVzdCBl
+bnZvecOpIHBhciDigJxUZWFtIExlYWRlcnPigJ0uLiBWb3VzCnJlY2V2ZXogY2UgbWVzc2FnZSBw
+YXJjZSBxdWUgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQgc3VyIGwndW4gZGVzCnNpdGVzIHBhcnRl
+bmFpcmVzIGRlIOKAnFRlYW0gTGVhZGVyc+KAnS4gVm9zIGRvbm7DqWVzIG5vbWluYXRpdmVzCm4n
+b250IHBhcyDDqXTDqSB0cmFuc21pc2VzIMOgIGwnYW5ub25jZXVyLiBTaSB2b3VzIG5lIHNvdWhh
+aXRleiBwbHVzCnJlY2V2b2lyIG5vdHJlIGxldHRyZSBkJ2luZm9ybWF0aW9uIFJlbXBsaXNzZXog
+Y2UgZm9ybXVsYWlyZTogCmh0dHA6Ly83Ny44OS4yNDcuMTMwL3Vuc3Vic2NyaWJlL2luZGV4LnBo
+cD9xPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KQmVhdXRpZnVsIGlzIHdyaXRpbmcgc2FtZSBtYXJrdXAuIEludGVybmV0IEV4
+cGxvcmVyIDkgc3VwcG9ydHMKc3RhbmRhcmRzIGZvciBIVE1MNSwgQ1NTMywgU1ZHIDEuMSwgIEVD
+TUFTY3JpcHQ1LCBhbmQgRE9NIEwyICYgTDMuClNwZW5kIGxlc3MgdGltZSB3cml0aW5nIGFuZCAg
+cmV3cml0aW5nIGNvZGUgYW5kIG1vcmUgdGltZSBjcmVhdGluZyBncmVhdApleHBlcmllbmNlcyBv
+biB0aGUgd2ViLiBCZSBhIHBhcnQgb2YgdGhlIGJldGEgdG9kYXkKaHR0cDovL3Auc2YubmV0L3Nm
+dS9tc0lFOS1zZmRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

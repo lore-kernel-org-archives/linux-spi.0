@@ -1,10 +1,11 @@
 From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
 Subject: RE: [PATCH 00/49] spi: davinci: re-write existing driver
-Date: Thu, 18 Nov 2010 17:01:24 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59302473884F7@dbde02.ent.ti.com>
+Date: Thu, 18 Nov 2010 18:44:18 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB59302473885A3@dbde02.ent.ti.com>
 References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
 	<20101117152426.GA5757@angua.secretlab.ca>
 	<B85A65D85D7EB246BE421B3FB0FBB5930247388244@dbde02.ent.ti.com>
+	<B85A65D85D7EB246BE421B3FB0FBB59302473884F7@dbde02.ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +16,7 @@ Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB5930247388244-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB59302473884F7-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
 Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -27,24 +28,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 18, 2010 at 12:23:24, Nori, Sekhar wrote:
->
-> Here is the pull request:
->
-> The following changes since commit 0a5b871ea4c6bfb2723ac2ffc7ef5c32452abb89:
->   Linus Torvalds (1):
->         hardirq.h: remove now-empty #ifdef/#endif pair
->
-> are available in the git repository at:
->
->   git://arago-project.org/git/projects/linux-davinci.git for-grant
->
-> <short log and diffstat deleted>
+Hi Grant,
 
-Oops, I just realized that because my sign-off is added when
-git-format-patch -s is run, the patches in the pull request
-do not have my sign-off. I will recreate the branch with my
-sign-off added to these patches.
+On Thu, Nov 18, 2010 at 17:01:24, Nori, Sekhar wrote:
+> On Thu, Nov 18, 2010 at 12:23:24, Nori, Sekhar wrote:
+> >
+> > Here is the pull request:
+> >
+> > The following changes since commit 0a5b871ea4c6bfb2723ac2ffc7ef5c32452abb89:
+> >   Linus Torvalds (1):
+> >         hardirq.h: remove now-empty #ifdef/#endif pair
+> >
+> > are available in the git repository at:
+> >
+> >   git://arago-project.org/git/projects/linux-davinci.git for-grant
+> >
+> > <short log and diffstat deleted>
+>
+> Oops, I just realized that because my sign-off is added when
+> git-format-patch -s is run, the patches in the pull request
+> do not have my sign-off. I will recreate the branch with my
+> sign-off added to these patches.
+
+I fixed this now. You can go ahead and do the pull.
 
 Thanks,
 Sekhar

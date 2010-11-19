@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v6 08/12] gpio: add ti-ssp gpio driver
-Date: Fri, 19 Nov 2010 10:55:52 -0500
-Message-ID: <1290182156-20104-9-git-send-email-cyril@ti.com>
+Subject: [PATCH v6 10/12] backlight: add support for tps6116x controller
+Date: Fri, 19 Nov 2010 10:55:54 -0500
+Message-ID: <1290182156-20104-11-git-send-email-cyril@ti.com>
 References: <1290182156-20104-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,278 +25,349 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-TI's SSP controller pins can be directly read and written to behave like a
-GPIO.  This patch adds a GPIO driver that exposes such functionality.
+TPS6116x is an EasyScale backlight controller device.  This driver supports
+TPS6116x devices connected on a single GPIO.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- drivers/gpio/Kconfig       |   10 ++
- drivers/gpio/Makefile      |    1 +
- drivers/gpio/ti-ssp-gpio.c |  206 ++++++++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/ti_ssp.h |    4 +
- 4 files changed, 221 insertions(+), 0 deletions(-)
- create mode 100644 drivers/gpio/ti-ssp-gpio.c
+ drivers/video/backlight/Kconfig    |    7 +
+ drivers/video/backlight/Makefile   |    2 +-
+ drivers/video/backlight/tps6116x.c |  298 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 306 insertions(+), 1 deletions(-)
+ create mode 100644 drivers/video/backlight/tps6116x.c
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 3143ac7..05bbe4c 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -128,6 +128,16 @@ config GPIO_VX855
- 	  additional drivers must be enabled in order to use the
- 	  functionality of the device.
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index e54a337..06e868e 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -307,6 +307,13 @@ config BACKLIGHT_PCF50633
+ 	  If you have a backlight driven by a NXP PCF50633 MFD, say Y here to
+ 	  enable its driver.
  
-+config GPIO_TI_SSP
-+	tristate "TI Sequencer Serial Port - GPIO Support"
-+	depends on MFD_TI_SSP
++config BACKLIGHT_TPS6116X
++	tristate "TPS6116X LCD Backlight"
++	depends on GENERIC_GPIO
 +	help
-+	  Say yes here to support a GPIO interface on TI SSP port pins.
-+	  Each SSP port translates into 4 GPIOs.
++	  This driver controls the LCD backlight level for EasyScale capable
++	  SSP connected backlight controllers.
 +
-+	  This driver can also be built as a module. If so, the module
-+	  will be called ti-ssp-gpio.
-+
- comment "I2C GPIO expanders:"
+ endif # BACKLIGHT_CLASS_DEVICE
  
- config GPIO_MAX7300
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index bdf3dde..0e2a844 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_GPIO_PL061)	+= pl061.o
- obj-$(CONFIG_GPIO_STMPE)	+= stmpe-gpio.o
- obj-$(CONFIG_GPIO_TC35892)	+= tc35892-gpio.o
- obj-$(CONFIG_GPIO_TIMBERDALE)	+= timbgpio.o
-+obj-$(CONFIG_GPIO_TI_SSP)	+= ti-ssp-gpio.o
- obj-$(CONFIG_GPIO_TWL4030)	+= twl4030-gpio.o
- obj-$(CONFIG_GPIO_UCB1400)	+= ucb1400_gpio.o
- obj-$(CONFIG_GPIO_XILINX)	+= xilinx_gpio.o
-diff --git a/drivers/gpio/ti-ssp-gpio.c b/drivers/gpio/ti-ssp-gpio.c
+ endif # BACKLIGHT_LCD_SUPPORT
+diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+index 44c0f81..5d407c8 100644
+--- a/drivers/video/backlight/Makefile
++++ b/drivers/video/backlight/Makefile
+@@ -35,4 +35,4 @@ obj-$(CONFIG_BACKLIGHT_ADP5520)	+= adp5520_bl.o
+ obj-$(CONFIG_BACKLIGHT_ADP8860)	+= adp8860_bl.o
+ obj-$(CONFIG_BACKLIGHT_88PM860X) += 88pm860x_bl.o
+ obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
+-
++obj-$(CONFIG_BACKLIGHT_TPS6116X)+= tps6116x.o
+diff --git a/drivers/video/backlight/tps6116x.c b/drivers/video/backlight/tps6116x.c
 new file mode 100644
-index 0000000..387970e
+index 0000000..d7d8cca
 --- /dev/null
-+++ b/drivers/gpio/ti-ssp-gpio.c
-@@ -0,0 +1,206 @@
++++ b/drivers/video/backlight/tps6116x.c
+@@ -0,0 +1,298 @@
 +/*
-+ * Sequencer Serial Port (SSP) based virtual GPIO driver
++ * TPS6116X LCD Backlight Controller Driver
 + *
-+ * Copyright (C) 2010 Texas Instruments Inc
++ * Copyright (C) 2010 Texas Instruments
 + *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation version 2.
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ * This program is distributed "as is" WITHOUT ANY WARRANTY of any kind,
++ * whether express or implied; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ * General Public License for more details.
 + */
 +
-+#include <linux/init.h>
 +#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/io.h>
++#include <linux/fb.h>
 +#include <linux/err.h>
-+#include <linux/slab.h>
++#include <linux/delay.h>
 +#include <linux/gpio.h>
++#include <linux/backlight.h>
 +#include <linux/platform_device.h>
-+#include <linux/mfd/ti_ssp.h>
++#include <linux/regulator/consumer.h>
 +
-+struct ti_ssp_gpio_chip {
-+	struct gpio_chip		chip;
++#define TPS6116X_MAX_INTENSITY		31
++#define TPS6116X_DEFAULT_INTENSITY	10
++
++/* Easyscale timing w/ margin (usecs) */
++#define T_POWER_SETTLE			2000
++#define T_ES_DELAY			120
++#define T_ES_DETECT			280
++#define T_ES_WINDOW			(1000 - T_ES_DELAY - T_ES_DETECT)
++#define T_START				3
++#define T_EOS				3
++#define T_INACTIVE			3
++#define T_ACTIVE			(3 * T_INACTIVE)
++
++#define CMD_SET				0x72
++
++struct tps6116x {
++	struct ti_ssp_device		*handle;
 +	struct device			*dev;
-+	spinlock_t			lock;
-+	u8				out;
-+	u32				iosel;
++	int				gpio;
++	struct mutex			lock;
++	int				intensity;
++	struct backlight_properties	props;
++	struct backlight_device		*bl;
++	struct regulator		*regulator;
++	bool				power;
++	bool				suspended;
 +};
 +
-+#define to_ssp_gpio_chip(c) container_of(c, struct ti_ssp_gpio_chip, chip)
-+
-+static int direction_in(struct gpio_chip *chip, unsigned gpio_num)
++static int __set_power(struct tps6116x *hw, bool power)
 +{
-+	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-+	int error = 0;
++	unsigned long flags;
++	int error;
 +
-+	spin_lock(&gpio->lock);
++	if (power == hw->power)
++		return 0; /* nothing to do */
 +
-+	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
-+	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_IN);
++	/* disabling is simple... choke power */
++	if (!power) {
++		error = regulator_disable(hw->regulator);
++		goto done;
++	}
 +
-+	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
++	/* set ctrl pin init state for easyscale detection */
++	gpio_set_value(hw->gpio, 0);
 +
-+	spin_unlock(&gpio->lock);
++	error = regulator_enable(hw->regulator);
++	if (error < 0)
++		goto done;
++
++	udelay(T_POWER_SETTLE);
++
++	/*
++	 * Now that the controller is powered up, we need to put it into 1-wire
++	 * mode.  This is a timing sensitive operation, hence the irq disable.
++	 * Ideally, this should happen rarely, and mostly at init, so disabling
++	 * interrupts for the duration should not be a problem.
++	 */
++	local_irq_save(flags);
++
++	gpio_set_value(hw->gpio, 1);
++	udelay(T_ES_DELAY);
++	gpio_set_value(hw->gpio, 0);
++	udelay(T_ES_DETECT);
++	gpio_set_value(hw->gpio, 1);
++
++	local_irq_restore(flags);
++
++done:
++	if (error >= 0)
++		hw->power = power;
 +
 +	return error;
 +}
 +
-+static int direction_out(struct gpio_chip *chip, unsigned gpio_num, int val)
++static void __write_byte(struct tps6116x *hw, u8 data)
 +{
-+	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-+	int error;
++	int bit;
 +
-+	spin_lock(&gpio->lock);
++	gpio_set_value(hw->gpio, 1);
++	udelay(T_START);
 +
-+	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
-+	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_OUT);
++	for (bit = 0; bit < 8; bit++, data <<= 1) {
++		int val = data & 0x80;
++		int t_lo = val ? T_INACTIVE : T_ACTIVE;
++		int t_hi = val ? T_ACTIVE : T_INACTIVE;
 +
-+	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
++		gpio_set_value(hw->gpio, 0);
++		udelay(t_lo);
++		gpio_set_value(hw->gpio, 1);
++		udelay(t_hi);
++	}
 +
++	gpio_set_value(hw->gpio, 0);
++	udelay(T_EOS);
++	gpio_set_value(hw->gpio, 1);
++}
++
++static void __set_intensity(struct tps6116x *hw, int intensity)
++{
++	unsigned long flags;
++
++	intensity = clamp(intensity, 0, TPS6116X_MAX_INTENSITY);
++
++	local_irq_save(flags);
++	__write_byte(hw, CMD_SET);
++	__write_byte(hw, intensity);
++	local_irq_restore(flags);
++}
++
++static int set_intensity(struct tps6116x *hw, int intensity)
++{
++	int error = 0;
++
++	if (intensity == hw->intensity)
++		return 0;
++
++	mutex_lock(&hw->lock);
++
++	error = __set_power(hw, intensity ? true : false);
 +	if (error < 0)
 +		goto error;
 +
-+	if (val)
-+		gpio->out |= BIT(gpio_num);
-+	else
-+		gpio->out &= ~BIT(gpio_num);
++	if (intensity > 0)
++		__set_intensity(hw, intensity);
 +
-+	error = ti_ssp_raw_write(gpio->dev, gpio->out);
-+
++	hw->intensity = intensity;
 +error:
-+	spin_unlock(&gpio->lock);
++	mutex_unlock(&hw->lock);
++
 +	return error;
 +}
 +
-+static int value_get(struct gpio_chip *chip, unsigned gpio_num)
++static int get_brightness(struct backlight_device *bl)
 +{
-+	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-+	int ret;
++	struct tps6116x *hw = bl_get_data(bl);
 +
-+	spin_lock(&gpio->lock);
-+
-+	ret = ti_ssp_raw_read(gpio->dev);
-+	if (ret >= 0)
-+		ret = !!(ret & BIT(gpio_num));
-+
-+	spin_unlock(&gpio->lock);
-+	return ret;
++	return hw->intensity;
 +}
 +
-+static void value_set(struct gpio_chip *chip, unsigned gpio_num, int val)
++static int update_status(struct backlight_device *bl)
 +{
-+	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
++	struct tps6116x *hw = bl_get_data(bl);
++	int intensity = bl->props.brightness;
 +
-+	spin_lock(&gpio->lock);
++	if (hw->suspended || hw->props.state & BL_CORE_SUSPENDED)
++		intensity = 0;
++	if (bl->props.power != FB_BLANK_UNBLANK)
++		intensity = 0;
++	if (bl->props.fb_blank != FB_BLANK_UNBLANK)
++		intensity = 0;
 +
-+	if (val)
-+		gpio->out |= BIT(gpio_num);
-+	else
-+		gpio->out &= ~BIT(gpio_num);
-+
-+	ti_ssp_raw_write(gpio->dev, gpio->out);
-+
-+	spin_unlock(&gpio->lock);
++	return set_intensity(hw, intensity);
 +}
 +
-+static int __devinit ti_ssp_gpio_probe(struct platform_device *pdev)
++static const struct backlight_ops tps6116x_backlight_ops = {
++	.options	= BL_CORE_SUSPENDRESUME,
++	.get_brightness	= get_brightness,
++	.update_status	= update_status,
++};
++
++static int __devinit tps6116x_probe(struct platform_device *pdev)
 +{
-+	const struct ti_ssp_gpio_data *pdata = pdev->dev.platform_data;
++	struct tps6116x *hw;
 +	struct device *dev = &pdev->dev;
-+	struct ti_ssp_gpio_chip *gpio;
++	struct backlight_properties props;
 +	int error;
 +
-+	if (!pdata) {
-+		dev_err(dev, "platform data not found\n");
-+		return -EINVAL;
-+	}
-+
-+	gpio = kzalloc(sizeof(*gpio), GFP_KERNEL);
-+	if (!gpio) {
++	hw = kzalloc(sizeof(struct tps6116x), GFP_KERNEL);
++	if (!hw) {
 +		dev_err(dev, "cannot allocate driver data\n");
 +		return -ENOMEM;
 +	}
++	platform_set_drvdata(pdev, hw);
 +
-+	gpio->dev = dev;
-+	gpio->iosel = SSP_PIN_SEL(0, SSP_IN) | SSP_PIN_SEL(1, SSP_IN) |
-+		      SSP_PIN_SEL(2, SSP_IN) | SSP_PIN_SEL(3, SSP_IN);
-+	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
-+	if (error < 0) {
-+		dev_err(dev, "gpio io setup failed (%d)\n", error);
-+		goto error;
++	hw->gpio = (int)dev->platform_data;
++	hw->dev = dev;
++
++	mutex_init(&hw->lock);
++
++	hw->regulator = regulator_get(dev, "vlcd");
++	if (IS_ERR(hw->regulator)) {
++		error = PTR_ERR(hw->regulator);
++		dev_err(dev, "cannot claim regulator\n");
++		goto error_regulator;
 +	}
 +
-+	spin_lock_init(&gpio->lock);
-+	platform_set_drvdata(pdev, gpio);
-+
-+	gpio->chip.base  = pdata->start;
-+	gpio->chip.ngpio = 4;
-+	gpio->chip.dev   = &pdev->dev;
-+	gpio->chip.label = "ti_ssp_gpio";
-+	gpio->chip.owner = THIS_MODULE;
-+	gpio->chip.get   = value_get;
-+	gpio->chip.set   = value_set;
-+	gpio->chip.direction_input  = direction_in;
-+	gpio->chip.direction_output = direction_out;
-+
-+	error = gpiochip_add(&gpio->chip);
++	error = gpio_request_one(hw->gpio, GPIOF_DIR_OUT, dev_name(dev));
 +	if (error < 0) {
-+		dev_err(dev, "gpio chip registration failed (%d)\n", error);
-+		goto error;
++		dev_err(dev, "cannot claim gpio\n");
++		goto error_gpio;
 +	}
 +
-+	dev_info(dev, "ssp gpio interface registered\n");
++	memset(&props, 0, sizeof(props));
++	props.max_brightness = TPS6116X_MAX_INTENSITY;
++	props.brightness     = TPS6116X_DEFAULT_INTENSITY;
++	props.power          = FB_BLANK_UNBLANK;
++
++	hw->bl = backlight_device_register("tps6116x", hw->dev, hw,
++					   &tps6116x_backlight_ops, &props);
++	if (IS_ERR(hw->bl)) {
++		error = PTR_ERR(hw->bl);
++		dev_err(dev, "backlight registration failed\n");
++		goto error_register;
++	}
++
++	dev_info(dev, "registered backlight controller\n");
 +	return 0;
 +
-+error:
-+	kfree(gpio);
++error_register:
++	gpio_free(hw->gpio);
++error_gpio:
++	regulator_put(hw->regulator);
++error_regulator:
++	kfree(hw);
++	platform_set_drvdata(pdev, NULL);
 +	return error;
 +}
 +
-+static int __devexit ti_ssp_gpio_remove(struct platform_device *pdev)
++static int __devexit tps6116x_remove(struct platform_device *pdev)
 +{
-+	struct ti_ssp_gpio_chip *gpio = platform_get_drvdata(pdev);
-+	int error;
++	struct tps6116x *hw = platform_get_drvdata(pdev);
 +
-+	error = gpiochip_remove(&gpio->chip);
-+	if (error < 0)
-+		return error;
-+	kfree(gpio);
++	backlight_device_unregister(hw->bl);
++	regulator_disable(hw->regulator);
++	regulator_put(hw->regulator);
++	gpio_free(hw->gpio);
++	kfree(hw);
++	platform_set_drvdata(pdev, NULL);
 +	return 0;
 +}
 +
-+static struct platform_driver ti_ssp_gpio_driver = {
-+	.probe		= ti_ssp_gpio_probe,
-+	.remove		= __devexit_p(ti_ssp_gpio_remove),
++static int tps6116x_suspend(struct platform_device *pdev, pm_message_t state)
++{
++	struct tps6116x *hw = platform_get_drvdata(pdev);
++	hw->suspended = true;
++	update_status(hw->bl);
++	return 0;
++}
++
++static int tps6116x_resume(struct platform_device *pdev)
++{
++	struct tps6116x *hw = platform_get_drvdata(pdev);
++	hw->suspended = false;
++	update_status(hw->bl);
++	return 0;
++}
++
++static struct platform_driver tps6116x_driver = {
++	.probe		= tps6116x_probe,
++	.remove		= __devexit_p(tps6116x_remove),
++	.suspend	= tps6116x_suspend,
++	.resume		= tps6116x_resume,
 +	.driver		= {
-+		.name	= "ti-ssp-gpio",
++		.name	= "tps6116x",
 +		.owner	= THIS_MODULE,
 +	},
 +};
 +
-+static int __init ti_ssp_gpio_init(void)
++static int __init tps6116x_init(void)
 +{
-+	return platform_driver_register(&ti_ssp_gpio_driver);
++	return platform_driver_register(&tps6116x_driver);
 +}
-+module_init(ti_ssp_gpio_init);
++module_init(tps6116x_init);
 +
-+static void __exit ti_ssp_gpio_exit(void)
++static void __exit tps6116x_exit(void)
 +{
-+	platform_driver_unregister(&ti_ssp_gpio_driver);
++	platform_driver_unregister(&tps6116x_driver);
 +}
-+module_exit(ti_ssp_gpio_exit);
++module_exit(tps6116x_exit);
 +
-+MODULE_DESCRIPTION("GPIO interface for TI-SSP");
-+MODULE_AUTHOR("Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>");
++MODULE_DESCRIPTION("SSP TPS6116X Driver");
++MODULE_AUTHOR("Cyril Chemparathy");
 +MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:ti-ssp-gpio");
-diff --git a/include/linux/mfd/ti_ssp.h b/include/linux/mfd/ti_ssp.h
-index dbb4b43..10c65bb 100644
---- a/include/linux/mfd/ti_ssp.h
-+++ b/include/linux/mfd/ti_ssp.h
-@@ -38,6 +38,10 @@ struct ti_ssp_spi_data {
- 	void		(*select)(int cs);
- };
- 
-+struct ti_ssp_gpio_data {
-+	int		start;
-+};
-+
- /*
-  * Sequencer port IO pin configuration bits.  These do not correlate 1-1 with
-  * the hardware.  The iosel field in the port data combines iosel1 and iosel2,
++MODULE_ALIAS("platform:tps6116x");
 -- 
 1.7.1
 

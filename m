@@ -1,9 +1,9 @@
 From: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH v6 05/12] davinci: add spi devices on tnetv107x evm
-Date: Fri, 19 Nov 2010 19:25:58 +0300
-Message-ID: <4CE6A516.402@mvista.com>
+Subject: Re: [PATCH v6 11/12] davinci: add tnetv107x evm backlight device
+Date: Fri, 19 Nov 2010 19:44:00 +0300
+Message-ID: <4CE6A950.8040704@mvista.com>
 References: <1290182156-20104-1-git-send-email-cyril@ti.com>
-	<1290182156-20104-6-git-send-email-cyril@ti.com>
+	<1290182156-20104-12-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
 	lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
 To: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1290182156-20104-6-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1290182156-20104-12-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,52 +30,26 @@ Hello.
 
 Cyril Chemparathy wrote:
 
-> This patch adds definitions for spi devices on the tnetv107x evm platform.
+> The tnetv107x evm board has a backlight device that is connected on one of the
+> SSP ports.  This patch adds the board definitions necessary to plug the
+> backlight driver to the GPIO corresponding to this SSP pin.
 
 > Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 > ---
->  arch/arm/mach-davinci/board-tnetv107x-evm.c |   43 +++++++++++++++++++++++++++
->  1 files changed, 43 insertions(+), 0 deletions(-)
+>  arch/arm/mach-davinci/board-tnetv107x-evm.c |   14 ++++++++++++++
+>  1 files changed, 14 insertions(+), 0 deletions(-)
 
 > diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-> index ef526b1..1a656e8 100644
+> index e3863dd..ac62de2 100644
 > --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 > +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-[...]
-> @@ -202,9 +204,45 @@ static struct matrix_keypad_platform_data keypad_config = {
->  	.no_autorepeat	= 0,
->  };
->  
-> +static void spi_select_device(int cs)
-> +{
-> +	static int gpio;
-> +
-> +	if (!gpio) {
-> +		int ret;
-> +		ret = gpio_request(EVM_SPI_CS_GPIO, "spi chipsel");
+> @@ -44,6 +44,7 @@
+>  #define EVM_MMC_WP_GPIO		21
+>  #define EVM_MMC_CD_GPIO		24
+>  #define EVM_SPI_CS_GPIO		54
+> +#define EVM_BACKLIGHT_GPIO	(SSP_GPIO_START + 2)
 
-    Why not just:
-
-		int ret = gpio_request(EVM_SPI_CS_GPIO, "spi chipsel");
-
-    Also, and empty line after declaration wouldn't hurt.
-
-> +		if (ret < 0) {
-> +			pr_err("cannot open spi chipsel gpio\n");
-> +			gpio = -ENOSYS;
-> +			return;
-> +		} else {
-> +			gpio = EVM_SPI_CS_GPIO;
-> +			gpio_direction_output(gpio, 0);
-> +		}
-> +	}
-> +
-> +	if (gpio < 0)
-> +		return;
-> +
-> +	return gpio_set_value(gpio, cs ? 1 : 0);
-
-    Why not do it right with gpio_direction_output() call?
+    Why it's not aligned with others?
 
 WBR, Sergei
 

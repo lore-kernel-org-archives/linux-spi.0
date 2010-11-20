@@ -1,135 +1,69 @@
-From: Ben Gardiner <bengardiner@nanometrics.ca>
-Subject: [PATCH][RFC] spi-gpio: implement spidelay() for platforms that configure SLOWER_SPI_GPIO
-Date: Fri, 19 Nov 2010 17:19:45 -0500
-Message-ID: <1290205185-11956-1-git-send-email-bengardiner@nanometrics.ca>
-Cc: linux-kernel@vger.kernel.org, Michael Buesch <mb@bu3sch.de>
-To: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 6/6] atmel_spi: fix warning In function
+	'atmel_spi_dma_map_xfer'
+Date: Sat, 20 Nov 2010 22:48:20 +0100
+Message-ID: <20101120214820.GG8942@pengutronix.de>
+References: <20101120095906.GD4216@game.jcrosoft.org> <1290247733-17834-6-git-send-email-plagnioj@jcrosoft.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-arm-kernel@lists.infradead.org,
+	Patrice Vilchez <patrice.vilchez@atmel.com>,
+	Nicolas Ferre <nicolas.ferre@atmel.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1290247733-17834-6-git-send-email-plagnioj@jcrosoft.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Introduce a Kconfig option, SLOWER_SPI_GPIO, that enables a spidelay
-implementation of ndelay when defined.
+Hello,
 
-This is based off of the patch proposed by Michael Buesch [1]. Whereas that
-patch required slave's set their spi_device.max_speed_hz and
-spi_transfer.speed_hz to 0 to obtain 'as fast as we can transfers' this patch
-keeps the default of 'as fast as we can' for any GPIO SPI master unless the
-proposed Kconfig option is enabled.
+[adding spi-devel-general and lkml to Cc:]
 
-Signed-off-by: Ben Gardiner <bengardiner@nanometrics.ca>
-Reviewed-by: Dan Sharon <dansharon@nanometrics.ca>
-Reviewed-by: Chris Cordahi <chriscordahi@nanometrics.ca>
-CC: Michael Buesch <mb@bu3sch.de>
+On Sat, Nov 20, 2010 at 11:08:53AM +0100, Jean-Christophe PLAGNIOL-VILL=
+ARD wrote:
+> passing argument 2 of 'dma_map_single' discards qualifiers from point=
+er target type
+>=20
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.co=
+m>
+> ---
+>  drivers/spi/atmel_spi.c |    4 +++-
+>  1 files changed, 3 insertions(+), 1 deletions(-)
+>=20
+> diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
+> index 154529a..2cf6abd 100644
+> --- a/drivers/spi/atmel_spi.c
+> +++ b/drivers/spi/atmel_spi.c
+> @@ -352,8 +352,10 @@ atmel_spi_dma_map_xfer(struct atmel_spi *as, str=
+uct spi_transfer *xfer)
+> =20
+>  	xfer->tx_dma =3D xfer->rx_dma =3D INVALID_DMA_ADDRESS;
+>  	if (xfer->tx_buf) {
+> +		void *nonconst_tx =3D (void *)xfer->tx_buf; /* shut up gcc */
+> +
+>  		xfer->tx_dma =3D dma_map_single(dev,
+> -				(void *) xfer->tx_buf, xfer->len,
+> +				nonconst_tx, xfer->len,
+>  				DMA_TO_DEVICE);
+Hmm, I wonder if this is the right approach to do this.  I'd prefer to
+have something like:
 
-[1] http://article.gmane.org/gmane.comp.embedded.openwrt.devel/2854
+	dma_map_single_to_device(struct device *, const void *, ...)
 
----
+don't know if that's sensible though.
 
-This patch was rebased to 6656b3fc8aba2eb7ca00c06c7fe4917938b0b652 of
-git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git
+And I wonder about gcc that your patch makes a difference.
 
-Testing was performed using the GPIOs of a da850evm. I registered an spi-gpio
-instance and a slave device with a transfer speed of 500Hz (the slowest
-possible speed on ARM since the udelay max is 2ms):
+Best regards
+Uwe
 
-...
-static struct spi_gpio_platform_data bb_spi_gpio_pdata = {
-       .sck            = SPIG_CLK,
-       .mosi           = SPIG_SIMO,
-       .miso           = SPIG_SOMI,
-       .num_chipselect = 1,
-};
-
-static struct platform_device bb_spi_gpio = {
-       .name           = "spi_gpio",
-       .id             = 0,
-       .dev            = {
-               .platform_data  = &bb_spi_gpio_pdata,
-       },
-};
-
-static struct spi_board_info bb_spi_devices[] = {
-       {
-               .modalias       = "spidev",
-               .max_speed_hz   = 500,
-               .bus_num        = 0,
-               .chip_select    = 0,
-               .mode           = SPI_MODE_0,
-       },
-};
-...
-
-Without SLOWER_SPI_GPIO=y a spi transfer using 'echo a > /dev/spidev0.0'
-resulted in a ~700kHz SCLK signal. 
-With SLOWER_SPI_GPIO=y a spi transfer using 'echo a > /dev/spidev0.0'
-resulted in a ~500Hz SCLK signal.
-
----
-
- drivers/spi/Kconfig    |   17 +++++++++++++++++
- drivers/spi/spi_gpio.c |    5 +++++
- 2 files changed, 22 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 78f9fd0..0570dcd 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -143,6 +143,23 @@ config SPI_GPIO
- 	  GPIO operations, you should be able to leverage that for better
- 	  speed with a custom version of this driver; see the source code.
- 
-+config SLOWER_SPI_GPIO
-+	bool "Enable delays in the GPIO-based bitbanging SPI Master"
-+	default n
-+	depends on SPI_GPIO
-+	help
-+	  The GPIO bitbanging SPI master driver will run without any delays if this
-+	  option is not set. This option will enable the use of delays in the
-+	  operation of the GPIO bitbanging SPI master implementation to honour the
-+	  maximum speed of very slow devices.
-+
-+	  To configure slow speed devices your board-specific setup logic must also
-+	  provide platform data assigning the speed for a device on a given chip
-+	  select of the GPIO bitbanging SPI master.
-+
-+	  If your platform requires SPI buses driven at slow speeds select yes. If
-+	  in doubt, select no.
-+
- config SPI_IMX_VER_IMX1
- 	def_bool y if SOC_IMX1
- 
-diff --git a/drivers/spi/spi_gpio.c b/drivers/spi/spi_gpio.c
-index 63e51b0..b31fddd 100644
---- a/drivers/spi/spi_gpio.c
-+++ b/drivers/spi/spi_gpio.c
-@@ -19,6 +19,7 @@
-  */
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- 
-@@ -119,6 +120,9 @@ static inline int getmiso(const struct spi_device *spi)
- 
- #undef pdata
- 
-+#if defined(CONFIG_SLOWER_SPI_GPIO)
-+#define spidelay(nsecs) ndelay(nsecs)
-+#else
- /*
-  * NOTE:  this clocks "as fast as we can".  It "should" be a function of the
-  * requested device clock.  Software overhead means we usually have trouble
-@@ -126,6 +130,7 @@ static inline int getmiso(const struct spi_device *spi)
-  * we'll just assume we never need additional per-bit slowdowns.
-  */
- #define spidelay(nsecs)	do {} while (0)
-+#endif
- 
- #include "spi_bitbang_txrx.h"
- 
--- 
-1.7.0.4
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
+    |
+Industrial Linux Solutions                 | http://www.pengutronix.de/=
+  |

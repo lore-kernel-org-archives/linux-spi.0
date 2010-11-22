@@ -1,65 +1,52 @@
-From: Ryan Mallon <ryan@bluewatersys.com>
-Subject: Re: [PATCH v6 08/12] gpio: add ti-ssp gpio driver
-Date: Tue, 23 Nov 2010 08:35:58 +1300
-Message-ID: <4CEAC61E.40504@bluewatersys.com>
-References: <1290182156-20104-1-git-send-email-cyril@ti.com>
-	<1290182156-20104-9-git-send-email-cyril@ti.com>
-	<4CE97AE5.3040801@bluewatersys.com>
-	<AANLkTikYu4H8aWOvK+q6g4YgUZxD_80UKBdr=eB__frF@mail.gmail.com>
-	<20101122112038.GD16504@rakim.wolfsonmicro.main>
+From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
+Subject: Re: [PATCH] Renaming 'struct flash_platform_data' into 'struct
+	spi_flash_platform_data' in include/linux/spi/flash.h
+Date: Mon, 22 Nov 2010 13:52:17 -0800 (PST)
+Message-ID: <327178.68946.qm@web180303.mail.gq1.yahoo.com>
+References: <4CEA7AF0.6000804@bvs-tech.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	dbrownell@users.sourceforge.net, sameo@linux.intel.com,
-	khilman@deeprootsystems.com, linus.ml.walleij@gmail.com,
-	Grant Likely <grant.likely@secretlab.ca>, rpurdie@rpsys.net,
-	alan@lxorguk.ukuu.org.uk, Cyril Chemparathy <cyril@ti.com>,
-	spi-devel-general@lists.sourceforge.net,
-	akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	lrg@slimlogic.co.uk
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20101122112038.GD16504@rakim.wolfsonmicro.main>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+To: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4CEA7AF0.6000804-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/23/2010 12:20 AM, Mark Brown wrote:
-> On Sun, Nov 21, 2010 at 02:31:38PM -0700, Grant Likely wrote:
->> On Sun, Nov 21, 2010 at 1:02 PM, Ryan Mallon <ryan@bluewatersys.com> wrote:
-> 
->>> Currently the code will allow you to install
->>> several peripherals at once, which will lead to odd behaviour at
->>> runtime. Maybe a better approach would be to have something like this in
->>> drivers/mfd/ti-ssp.c:
-> 
->> Only the ssp core itself is allowed to register the peripheral
->> devices, and so using the parent pointer is perfectly valid.  I think
->> Cyril's approach is fine.
-> 
-> This is very much a standard idiom for MFD children in Linux - if the
-> children are entirely reliant on working through a parent-specific API
-> anyway there's no issue with making the parent device be part of that
-> API.
 
-Yeah, I misunderstood how the registration worked. It is fine as is,
-ignore my comments :-).
 
-~Ryan
+--- On Mon, 11/22/10, Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org> wrote:
 
--- 
-Bluewater Systems Ltd - ARM Technology Solution Centre
+> > And this patch doesn't touch machine or driver code,
+> so it's incomplete.
+> Look at the patch in previous mail attachment and you'll
+> see it does.
 
-Ryan Mallon         		5 Amuri Park, 404 Barbadoes St
-ryan@bluewatersys.com         	PO Box 13 889, Christchurch 8013
-http://www.bluewatersys.com	New Zealand
-Phone: +64 3 3779127		Freecall: Australia 1800 148 751
-Fax:   +64 3 3779135			  USA 1800 261 2934
+
+Couldn't do that.  Submit another patch, or
+combine it with this one.  Either way,  once it
+merges, "git bisect" needs to work"...
+
+
+> > How about a patch that does the full rename??
+> What do you mean ?
+
+Apply the patch and everthing builds and works;
+and if it's a series, "git bisect" also works".
+
+
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev

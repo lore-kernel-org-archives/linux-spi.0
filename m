@@ -1,12 +1,17 @@
-From: 13410458452-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Tue, 23 Nov 2010 07:55:23 +0800
-Message-ID: <E1PKgDb-0005WX-8C@sfs-ml-3.v29.ch3.sourceforge.com>
+From: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
+Subject: Re: spi/spi: don't release the spi device twice
+Date: Tue, 23 Nov 2010 01:43:01 +0100
+Message-ID: <20101123004301.GA1034746@jupiter.n2.diac24.net>
+References: <20101122133503.GA25553@www.tglx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20101122133503.GA25553-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,19 +22,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
-qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
-1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
-CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkluY3JlYXNlIFZpc2liaWxpdHkgb2YgWW91ciAzRCBHYW1l
-IEFwcCAmIEVhcm4gYSBDaGFuY2UgVG8gV2luICQ1MDAhClRhcCBpbnRvIHRoZSBsYXJnZXN0IGlu
-c3RhbGxlZCBQQyBiYXNlICYgZ2V0IG1vcmUgZXllcyBvbiB5b3VyIGdhbWUgYnkKb3B0aW1pemlu
-ZyBmb3IgSW50ZWwoUikgR3JhcGhpY3MgVGVjaG5vbG9neS4gR2V0IHN0YXJ0ZWQgdG9kYXkgd2l0
-aCB0aGUKSW50ZWwoUikgU29mdHdhcmUgUGFydG5lciBQcm9ncmFtLiBGaXZlICQ1MDAgY2FzaCBw
-cml6ZXMgYXJlIHVwIGZvciBncmFicy4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbGlzcC1kZXYy
-ZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+On Mon, Nov 22, 2010 at 01:35:03PM -0000, Sebastian Andrzej Siewior wrote:
+> According to my debug printks, the loop
+> 
+> | dummy = device_for_each_child(master->dev.parent, &master->dev,
+> | 		__unregister);
+> 
+> calls __unregister for all childs of spi devicee (spidev in my case) and
+> the spi device itself. So calling device_unregister() for the device
+> itself leads to trouble.
+> This seems to be comming from  3486008 aka ("spi: free children in
+> spi_unregister_master, not siblings") so therefore I cc stable for v36.
+
+This code is the old code, before patch 3486008 which you're citing.
+3486008 does:
+
+-       dummy = device_for_each_child(master->dev.parent, &master->dev,
+-                                       __unregister);
++       dummy = device_for_each_child(&master->dev, NULL, __unregister);
+
+Considering that this patch is in 2.6.36 (and 36.1), you seem to have
+mixed up your sources. Please make sure your checkout is current and
+unbroken...
+
+> This is on v2.6.37-rc1. Unless this got fixed somewhere else in the
+> meantime it is still there.
+
+"Mu."
+
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -586,7 +586,6 @@ void spi_unregister_master(struct spi_master *master)
+>  
+>  	dummy = device_for_each_child(master->dev.parent, &master->dev,
+>  					__unregister);
+> -	device_unregister(&master->dev);
+>  }
+
+This patch does, consequently, not apply on 2.6.37-rc, since the code
+doesn't look like that anymore after 3486008...
+
+
+-David
+
+
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev

@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: [PATCH 2/9] spi/pxa2xx: add support for shared IRQ handler
-Date: Wed, 24 Nov 2010 12:13:20 +0100
-Message-ID: <1290597207-29838-3-git-send-email-bigeasy@linutronix.de>
+Subject: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
+Date: Wed, 24 Nov 2010 12:13:19 +0100
+Message-ID: <1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
 References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,48 +24,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is required in case the interrupt line is shared with other
-devices.
+It is a simple driver and there is no need to call its init function
+at the level of a subsystem.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/pxa2xx_spi.c |   15 ++++++++++++++-
- 1 files changed, 14 insertions(+), 1 deletions(-)
+ drivers/spi/pxa2xx_spi.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index 6f2f061..6d40995 100644
+index e76b1af..6f2f061 100644
 --- a/drivers/spi/pxa2xx_spi.c
 +++ b/drivers/spi/pxa2xx_spi.c
-@@ -742,6 +742,18 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+@@ -1731,7 +1731,7 @@ static int __init pxa2xx_spi_init(void)
  {
- 	struct driver_data *drv_data = dev_id;
- 	void __iomem *reg = drv_data->ioaddr;
-+	u32 sccr1_reg = read_SSCR1(reg);
-+	u32 mask = drv_data->mask_sr;
-+	u32 status;
-+
-+	status = read_SSSR(reg);
-+
-+	/* Ignore possible writes if we don't need to write */
-+	if (!(sccr1_reg & SSCR1_TIE))
-+		mask &= ~SSSR_TFS;
-+
-+	if (!(status & mask))
-+		return IRQ_NONE;
+ 	return platform_driver_probe(&driver, pxa2xx_spi_probe);
+ }
+-subsys_initcall(pxa2xx_spi_init);
++module_init(pxa2xx_spi_init);
  
- 	if (!drv_data->cur_msg) {
- 
-@@ -1512,7 +1524,8 @@ static int __init pxa2xx_spi_probe(struct platform_device *pdev)
- 		drv_data->mask_sr = SSSR_TINT | SSSR_RFS | SSSR_TFS | SSSR_ROR;
- 	}
- 
--	status = request_irq(ssp->irq, ssp_int, 0, dev_name(dev), drv_data);
-+	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
-+			drv_data);
- 	if (status < 0) {
- 		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
- 		goto out_error_master_alloc;
+ static void __exit pxa2xx_spi_exit(void)
+ {
 -- 
 1.7.3.2
 

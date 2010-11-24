@@ -1,142 +1,115 @@
-From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: [PATCH 8/9] spi/pxa2xx: Modify RX-Tresh instead of busy-loop for the
-	remaining RX bytes.
-Date: Wed, 24 Nov 2010 12:13:26 +0100
-Message-ID: <1290597207-29838-9-git-send-email-bigeasy@linutronix.de>
+From: Antonio Ospite <ospite@studenti.unina.it>
+Subject: Re: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
+Date: Wed, 24 Nov 2010 14:18:57 +0100
+Message-ID: <20101124141857.694e52ef.ospite@studenti.unina.it>
 References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
+	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1290597207-29838-1-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1228182812=="
+Cc: David Brownell <dbrownell@users.sourceforge.net>, eric.y.miao@gmail.com,
+	linux@arm.linux.org.uk, sodaville@linutronix.de,
+	Daniel Ribeiro <drwyrm@gmail.com>,
+	Dirk Brandewie <dirk.brandewie@gmail.com>,
+	spi-devel-general@lists.sourceforge.net, tglx@linutronix.de,
+	linux-arm-kernel@lists.infradead.org
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-After all TX bytes are sent, the driver spins while the SPI core is busy
-and then it spins for a "short" period of time until RX bytes are
-available.
-On Sodavile the busy flag disappears pretty quick and after that it
-takes approx ~130ms (sometimes less but not much) until there are bytes
-available in the RX FIFO.
-This patch removes the busy loop and modifies the RX threshould so we
-get woken up once the remainings bytes arrived.
+--===============1228182812==
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Wed__24_Nov_2010_14_18_57_+0100_7+RuibhNIAU=w0U2"
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/pxa2xx_spi.c |   56 ++++++++++++++++++++++++++++++++--------------
- 1 files changed, 39 insertions(+), 17 deletions(-)
+--Signature=_Wed__24_Nov_2010_14_18_57_+0100_7+RuibhNIAU=w0U2
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index d77e47f..5c8c6e3 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -660,13 +660,25 @@ static irqreturn_t dma_transfer(struct driver_data *drv_data)
- 	return IRQ_NONE;
- }
- 
-+static void reset_sccr1(struct driver_data *drv_data)
-+{
-+	void __iomem *reg = drv_data->ioaddr;
-+	struct chip_data *chip = drv_data->cur_chip;
-+	u32 sccr1_reg;
-+
-+	sccr1_reg = read_SSCR1(reg) & ~drv_data->int_cr1;
-+	sccr1_reg &= ~SSCR1_RFT;
-+	sccr1_reg |= chip->threshold;
-+	write_SSCR1(sccr1_reg, reg);
-+}
-+
- static void int_error_stop(struct driver_data *drv_data, const char* msg)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
- 	/* Stop and reset SSP */
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
--	write_SSCR1(read_SSCR1(reg) & ~drv_data->int_cr1, reg);
-+	reset_sccr1(drv_data);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		write_SSTO(0, reg);
- 	flush(drv_data);
-@@ -684,7 +696,7 @@ static void int_transfer_complete(struct driver_data *drv_data)
- 
- 	/* Stop SSP */
- 	write_SSSR_CS(drv_data, drv_data->clear_sr);
--	write_SSCR1(read_SSCR1(reg) & ~drv_data->int_cr1, reg);
-+	reset_sccr1(drv_data);
- 	if (!pxa25x_ssp_comp(drv_data))
- 		write_SSTO(0, reg);
- 
-@@ -739,24 +751,34 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 	}
- 
- 	if (drv_data->tx == drv_data->tx_end) {
--		write_SSCR1(read_SSCR1(reg) & ~SSCR1_TIE, reg);
--		/* PXA25x_SSP has no timeout, read trailing bytes */
-+		u32 bytes_left;
-+		u32 sccr1_reg;
-+
-+		sccr1_reg = read_SSCR1(reg);
-+		sccr1_reg &= ~SSCR1_TIE;
-+
-+		/*
-+		 * PXA25x_SSP has no timeout, set up rx threshould for the
-+		 * remaing RX bytes.
-+		 */
- 		if (pxa25x_ssp_comp(drv_data)) {
--			if (!wait_ssp_rx_stall(reg))
--			{
--				int_error_stop(drv_data, "interrupt_transfer: "
--						"rx stall failed");
--				return IRQ_HANDLED;
--			}
--			if (!drv_data->read(drv_data))
--			{
--				int_error_stop(drv_data,
--						"interrupt_transfer: "
--						"trailing byte read failed");
--				return IRQ_HANDLED;
-+
-+			sccr1_reg &= ~SSCR1_RFT;
-+
-+			bytes_left = drv_data->rx_end - drv_data->rx;
-+			switch (drv_data->n_bytes) {
-+			case 4:
-+				bytes_left >>= 1;
-+			case 2:
-+				bytes_left >>= 1;
- 			}
--			int_transfer_complete(drv_data);
-+
-+			if (bytes_left > RX_THRESH_DFLT)
-+				bytes_left = RX_THRESH_DFLT;
-+
-+			sccr1_reg |= SSCR1_RxTresh(bytes_left);
- 		}
-+		write_SSCR1(sccr1_reg, reg);
- 	}
- 
- 	/* We did something */
--- 
-1.7.3.2
+On Wed, 24 Nov 2010 12:13:19 +0100
+Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
+
+> It is a simple driver and there is no need to call its init function
+> at the level of a subsystem.
+>=20
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Signed-off-by: Dirk Brandewie <dirk.brandewie@gmail.com>
+> ---
+
+Please take a look at commit 5b61a749e8fd0a45a5e37c267d20a43ef0590d68
+there are some situations where the spi driver needs to be loaded before
+the others, IIRC the change in the commit above was needed for the EZX
+phones, where the PMIC is on the spi bus and cpufreq operates on some
+regulator controlled by the PMIC; added Daniel Ribeiro on CC who maybe
+can give more details.
+
+Regards,
+   Antonio
+
+>  drivers/spi/pxa2xx_spi.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+>=20
+> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+> index e76b1af..6f2f061 100644
+> --- a/drivers/spi/pxa2xx_spi.c
+> +++ b/drivers/spi/pxa2xx_spi.c
+> @@ -1731,7 +1731,7 @@ static int __init pxa2xx_spi_init(void)
+>  {
+>  	return platform_driver_probe(&driver, pxa2xx_spi_probe);
+>  }
+> -subsys_initcall(pxa2xx_spi_init);
+> +module_init(pxa2xx_spi_init);
+> =20
+>  static void __exit pxa2xx_spi_exit(void)
+>  {
+> --=20
+> 1.7.3.2
+>=20
+>=20
+
+--=20
+Antonio Ospite
+http://ao2.it
+
+PGP public key ID: 0x4553B001
+
+A: Because it messes up the order in which people normally read text.
+   See http://en.wikipedia.org/wiki/Posting_style
+Q: Why is top-posting such a bad thing?
+
+--Signature=_Wed__24_Nov_2010_14_18_57_+0100_7+RuibhNIAU=w0U2
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAkztEMEACgkQ5xr2akVTsAHXaACdG68JZ2nJYHGHvnTSH+C/NtIJ
+I+cAnAsyLx30LB7BJup2G04rme/loDzl
+=SsuL
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__24_Nov_2010_14_18_57_+0100_7+RuibhNIAU=w0U2--
 
 
-------------------------------------------------------------------------------
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
+--===============1228182812==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============1228182812==--

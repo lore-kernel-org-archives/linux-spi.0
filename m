@@ -1,56 +1,109 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
-Date: Wed, 24 Nov 2010 15:43:46 +0000
-Message-ID: <20101124154346.GJ24970@rakim.wolfsonmicro.main>
-References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
-	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
-	<AANLkTin4vh85XRkEd7YocCmKngViR_qZDe7z1b4JXyd-@mail.gmail.com>
-	<4CED1C95.8070300@linutronix.de>
-	<20101124141623.GH24970@rakim.wolfsonmicro.main>
-	<AANLkTikC+XW7JtJO77vQL99=d9FKpO2tLtkCuxE57j7o@mail.gmail.com>
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after
+ off-mode transition
+Date: Wed, 24 Nov 2010 23:19:26 +0100
+Message-ID: <4CED8F6E.3000808@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTikC+XW7JtJO77vQL99=d9FKpO2tLtkCuxE57j7o-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+To: linux-omap <linux-omap@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 24, 2010 at 08:30:37AM -0700, Grant Likely wrote:
+As request by Grant Likely, there is no more cover letter. Full changelog is following.
+I am still reluctant to add this changelog in the patch description, as it adds no value to
+the patch itself: when it was needed I try to updat comments or patch description.
+I understand that Grant Likely would need an ack from other user as this patch fix a corner case.
+Kevin Hilman made a few comments on this patch so he could add his "Ack by" or at least his "Review by".
 
-> It would be easy enough to defer cpufreq initialization based on some
-> platform defined criteria.  It's just an initcall.  However, I don't
 
-Though it'd be much better to fix the thing where cpufreq doesn't have a
-device anyway.
+Changelog:
+* Change from v1 to v2:
+Rebase on linus/master (after 2.6.37-rc1)
+Do some clean-up and fix indentation on both patches
+Add more explanations for patch 2
 
-> know what the impact area is for subsystems that depend on cpufreq.
-> Are there drivers that depend on cpufreq before initialized?
+* Change from v2 to v3:
+Use directly resume function of spi_master instead of using function
+from spi_device as Grant Likely pointed it out.
+Force this transition explicitly for each CS used by a device.
 
-OMAP?  It'd be fairly surprising if something were to have a strict
-dependency, though - more likely to be notifiers I'd expect.  Usually
-cpufreq comes up fairly late.
+* Change from v3 to v4:
+Patch clean-up according to Kevin Hilman and checkpatch.
+Now force CS to be in inactive state only if it was inactive when it was
+suspended.
 
-------------------------------------------------------------------------------
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
+* Change from v4 to v5:
+Rebase on linus/master (after 2.6.37-rc3)
+Collapse some lines as pointed by Grant Likely
+Fix a spelling
+
+
+== CUT HERE ==
+When SPI wake up from OFF mode, CS is in the wrong state: force it to the inactive state.
+
+During the system life, I monitored the CS behavior using a oscilloscope.
+I also activated debug in omap2_mcspi, so I saw when driver disable the clocks and restore context when device is not used.
+Each time the CS was in the correct state.
+It was only when system was put suspend to ram with off-mode activated that on resume the CS was in wrong state( ie activated).
+
+Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+---
+ drivers/spi/omap2_mcspi.c |   33 +++++++++++++++++++++++++++++++++
+ 1 files changed, 33 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 2a651e6..dcc024a 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -1305,11 +1305,44 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+ /* work with hotplug and coldplug */
+ MODULE_ALIAS("platform:omap2_mcspi");
+
++#ifdef	CONFIG_PM
++/* When SPI wake up from off-mode, CS is in activate state. If it was in
++ * unactive state when driver was suspend, then force it to unactive state at
++ * wake up.
++ */
++static int omap2_mcspi_resume(struct platform_device *pdev)
++{
++	struct spi_master	*master = dev_get_drvdata(&pdev->dev);
++	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
++	struct omap2_mcspi_cs *cs;
++
++	omap2_mcspi_enable_clocks(mcspi);
++	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
++			    node) {
++		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
++
++			/* We need to toggle CS state for OMAP take this
++			 * change in account.
++			 */
++			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
++			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
++			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++		}
++	}
++	omap2_mcspi_disable_clocks(mcspi);
++	return 0;
++}
++#else
++#define	omap2_mcspi_resume	NULL
++#endif
++
+ static struct platform_driver omap2_mcspi_driver = {
+ 	.driver = {
+ 		.name =		"omap2_mcspi",
+ 		.owner =	THIS_MODULE,
+ 	},
++	.resume =	omap2_mcspi_resume,
+ 	.remove =	__exit_p(omap2_mcspi_remove),
+ };
+ -- 1.7.0.4
+

@@ -1,13 +1,19 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] spi/imx: remove autodetection
-Date: Wed, 24 Nov 2010 10:05:46 +0100
-Message-ID: <1290589546-21662-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Subject: [PATCH 2/9] spi/pxa2xx: add support for shared IRQ handler
+Date: Wed, 24 Nov 2010 12:13:20 +0100
+Message-ID: <1290597207-29838-3-git-send-email-bigeasy@linutronix.de>
+References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
+	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1290597207-29838-1-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,48 +24,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-dGhlcmUgYXJlIG5vIG1hY2hpbmVzIGluLXRyZWUgdGhhdCBzdGlsbCB1c2UgdGhlIGRyaXZlcgpu
-YW1lIGFzIGRldmljZSBuYW1lLiAgU28gc2F2ZSBhIGZldyBieXRlcyBhbmQgcmVtb3ZlIGl0LgoK
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBkcml2ZXJzL3NwaS9zcGlfaW14LmMgfCAgIDMwICsrLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDI4IGRl
-bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaV9pbXguYyBiL2RyaXZlcnMv
-c3BpL3NwaV9pbXguYwppbmRleCA1NWEzOGUyLi45MDEwZWYwIDEwMDY0NAotLS0gYS9kcml2ZXJz
-L3NwaS9zcGlfaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCkBAIC02Niw3ICs2Niw2
-IEBAIGVudW0gc3BpX2lteF9kZXZ0eXBlIHsKIAlTUElfSU1YX1ZFUl8wXzUsCiAJU1BJX0lNWF9W
-RVJfMF83LAogCVNQSV9JTVhfVkVSXzJfMywKLQlTUElfSU1YX1ZFUl9BVVRPREVURUNULAogfTsK
-IAogc3RydWN0IHNwaV9pbXhfZGF0YTsKQEAgLTcyMCw5ICs3MTksNiBAQCBzdGF0aWMgdm9pZCBz
-cGlfaW14X2NsZWFudXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKIAogc3RhdGljIHN0cnVjdCBw
-bGF0Zm9ybV9kZXZpY2VfaWQgc3BpX2lteF9kZXZ0eXBlW10gPSB7CiAJewotCQkubmFtZSA9IERS
-SVZFUl9OQU1FLAotCQkuZHJpdmVyX2RhdGEgPSBTUElfSU1YX1ZFUl9BVVRPREVURUNULAotCX0s
-IHsKIAkJLm5hbWUgPSAiaW14MS1jc3BpIiwKIAkJLmRyaXZlcl9kYXRhID0gU1BJX0lNWF9WRVJf
-SU1YMSwKIAl9LCB7CkBAIC04MDIsMzAgKzc5OCw4IEBAIHN0YXRpYyBpbnQgX19kZXZpbml0IHNw
-aV9pbXhfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKIAogCWluaXRfY29tcGxl
-dGlvbigmc3BpX2lteC0+eGZlcl9kb25lKTsKIAotCWlmIChwZGV2LT5pZF9lbnRyeS0+ZHJpdmVy
-X2RhdGEgPT0gU1BJX0lNWF9WRVJfQVVUT0RFVEVDVCkgewotCQlpZiAoY3B1X2lzX214MjUoKSB8
-fCBjcHVfaXNfbXgzNSgpKQotCQkJc3BpX2lteC0+ZGV2dHlwZV9kYXRhID0KLQkJCQlzcGlfaW14
-X2RldnR5cGVfZGF0YVtTUElfSU1YX1ZFUl8wXzddOwotCQllbHNlIGlmIChjcHVfaXNfbXgyNSgp
-IHx8IGNwdV9pc19teDMxKCkgfHwgY3B1X2lzX214MzUoKSkKLQkJCXNwaV9pbXgtPmRldnR5cGVf
-ZGF0YSA9Ci0JCQkJc3BpX2lteF9kZXZ0eXBlX2RhdGFbU1BJX0lNWF9WRVJfMF80XTsKLQkJZWxz
-ZSBpZiAoY3B1X2lzX214MjcoKSB8fCBjcHVfaXNfbXgyMSgpKQotCQkJc3BpX2lteC0+ZGV2dHlw
-ZV9kYXRhID0KLQkJCQlzcGlfaW14X2RldnR5cGVfZGF0YVtTUElfSU1YX1ZFUl8wXzBdOwotCQll
-bHNlIGlmIChjcHVfaXNfbXgxKCkpCi0JCQlzcGlfaW14LT5kZXZ0eXBlX2RhdGEgPQotCQkJCXNw
-aV9pbXhfZGV2dHlwZV9kYXRhW1NQSV9JTVhfVkVSX0lNWDFdOwotCQllbHNlCi0JCQlCVUcoKTsK
-LQl9IGVsc2UKLQkJc3BpX2lteC0+ZGV2dHlwZV9kYXRhID0KLQkJCXNwaV9pbXhfZGV2dHlwZV9k
-YXRhW3BkZXYtPmlkX2VudHJ5LT5kcml2ZXJfZGF0YV07Ci0KLQlpZiAoIXNwaV9pbXgtPmRldnR5
-cGVfZGF0YS5pbnRjdHJsKSB7Ci0JCWRldl9lcnIoJnBkZXYtPmRldiwgIm5vIHN1cHBvcnQgZm9y
-IHRoaXMgZGV2aWNlIGNvbXBpbGVkIGluXG4iKTsKLQkJcmV0ID0gLUVOT0RFVjsKLQkJZ290byBv
-dXRfZ3Bpb19mcmVlOwotCX0KKwlzcGlfaW14LT5kZXZ0eXBlX2RhdGEgPQorCQlzcGlfaW14X2Rl
-dnR5cGVfZGF0YVtwZGV2LT5pZF9lbnRyeS0+ZHJpdmVyX2RhdGFdOwogCiAJcmVzID0gcGxhdGZv
-cm1fZ2V0X3Jlc291cmNlKHBkZXYsIElPUkVTT1VSQ0VfTUVNLCAwKTsKIAlpZiAoIXJlcykgewot
-LSAKMS43LjIuMwoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbmNyZWFzZSBWaXNpYmlsaXR5IG9m
-IFlvdXIgM0QgR2FtZSBBcHAgJiBFYXJuIGEgQ2hhbmNlIFRvIFdpbiAkNTAwIQpUYXAgaW50byB0
-aGUgbGFyZ2VzdCBpbnN0YWxsZWQgUEMgYmFzZSAmIGdldCBtb3JlIGV5ZXMgb24geW91ciBnYW1l
-IGJ5Cm9wdGltaXppbmcgZm9yIEludGVsKFIpIEdyYXBoaWNzIFRlY2hub2xvZ3kuIEdldCBzdGFy
-dGVkIHRvZGF5IHdpdGggdGhlCkludGVsKFIpIFNvZnR3YXJlIFBhcnRuZXIgUHJvZ3JhbS4gRml2
-ZSAkNTAwIGNhc2ggcHJpemVzIGFyZSB1cCBmb3IgZ3JhYnMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUv
-aW50ZWxpc3AtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This is required in case the interrupt line is shared with other
+devices.
+
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/pxa2xx_spi.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+index 6f2f061..6d40995 100644
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -742,6 +742,18 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+ {
+ 	struct driver_data *drv_data = dev_id;
+ 	void __iomem *reg = drv_data->ioaddr;
++	u32 sccr1_reg = read_SSCR1(reg);
++	u32 mask = drv_data->mask_sr;
++	u32 status;
++
++	status = read_SSSR(reg);
++
++	/* Ignore possible writes if we don't need to write */
++	if (!(sccr1_reg & SSCR1_TIE))
++		mask &= ~SSSR_TFS;
++
++	if (!(status & mask))
++		return IRQ_NONE;
+ 
+ 	if (!drv_data->cur_msg) {
+ 
+@@ -1512,7 +1524,8 @@ static int __init pxa2xx_spi_probe(struct platform_device *pdev)
+ 		drv_data->mask_sr = SSSR_TINT | SSSR_RFS | SSSR_TFS | SSSR_ROR;
+ 	}
+ 
+-	status = request_irq(ssp->irq, ssp_int, 0, dev_name(dev), drv_data);
++	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
++			drv_data);
+ 	if (status < 0) {
+ 		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
+ 		goto out_error_master_alloc;
+-- 
+1.7.3.2
+
+
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev

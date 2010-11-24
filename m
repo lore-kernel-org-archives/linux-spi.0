@@ -1,16 +1,16 @@
-From: Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Subject: Re: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
-Date: Wed, 24 Nov 2010 22:14:31 +0800
-Message-ID: <AANLkTimxjiYkbaHUzq_V-s9WWytgbpNSo8xe8V_Lm6uF@mail.gmail.com>
+Date: Wed, 24 Nov 2010 14:16:23 +0000
+Message-ID: <20101124141623.GH24970@rakim.wolfsonmicro.main>
 References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
 	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
 	<AANLkTin4vh85XRkEd7YocCmKngViR_qZDe7z1b4JXyd-@mail.gmail.com>
 	<4CED1C95.8070300@linutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -18,6 +18,7 @@ Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 	drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <4CED1C95.8070300-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -29,37 +30,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 24, 2010 at 10:09 PM, Sebastian Andrzej Siewior
-<bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org> wrote:
-> Haojian Zhuang wrote:
->>
->> Hi Sebastian,
->
-> Hi Hoajian,
->
->> Actually it's added for cpufreq usage. We can check the commit in below.
->>
->> =A0 =A0pxa2xx_spi: register earlier
->>
->> =A0 =A0Register pxa2xx_spi earlier so it can be used with cpufreq
->>
->> So I think that this modifcation may cause others brokne.
->
+On Wed, Nov 24, 2010 at 03:09:25PM +0100, Sebastian Andrzej Siewior wrote:
+
 > I've been pointed out to this commit but I don't understand _why_.
 > The part I don't get is "so it can be used with cpufreq". Is it
 > refered to a driver or the subsystem as it?
->
 
-As we know, cpufreq is used to adjust frequency and voltage of CPU. We
-need some interface to access PMIC hardware, such as I2C, SPI, .... So
-I think that they need SPI to initialize first. Otherwise, they may
-meet failure on accessing PMIC hardware.
+We need the regulators for the CPU rails to start before the cpufreq
+driver starts so cpufreq can talk to them, and since the regulators may
+be SPI attached this means we also need the SPI controller to start
+before cpufreq.  cpufreq starts at vanilla init time.
 
-Thanks
-Haojian
+There's an approach being looked at for handling this for devices but
+for deviceless stuff like cpufreq we've nothing.
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
 Tap into the largest installed PC base & get more eyes on your game by
 optimizing for Intel(R) Graphics Technology. Get started today with the

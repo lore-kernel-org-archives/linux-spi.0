@@ -1,68 +1,54 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Subject: Re: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
-Date: Wed, 24 Nov 2010 08:30:37 -0700
-Message-ID: <AANLkTikC+XW7JtJO77vQL99=d9FKpO2tLtkCuxE57j7o@mail.gmail.com>
+Date: Wed, 24 Nov 2010 16:39:05 +0100
+Message-ID: <4CED3199.2040700@linutronix.de>
 References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
 	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
 	<AANLkTin4vh85XRkEd7YocCmKngViR_qZDe7z1b4JXyd-@mail.gmail.com>
 	<4CED1C95.8070300@linutronix.de>
 	<20101124141623.GH24970@rakim.wolfsonmicro.main>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101124141623.GH24970-HF5t3jzXg/6ND3a5+9QAFujbO/Zr0HzV@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>, eric.y.miao@gmail.com,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	linux@arm.linux.org.uk, Grant Likely <grant.likely@secretlab.ca>,
+	sodaville@linutronix.de, linux-arm-kernel@lists.infradead.org,
+	Dirk Brandewie <dirk.brandewie@gmail.com>,
+	spi-devel-general@lists.sourceforge.net, tglx@linutronix.de,
+	drwyrm@gmail.com
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20101124141623.GH24970@rakim.wolfsonmicro.main>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 24, 2010 at 7:16 AM, Mark Brown
-<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+Mark Brown wrote:
 > On Wed, Nov 24, 2010 at 03:09:25PM +0100, Sebastian Andrzej Siewior wrote:
->
+> 
 >> I've been pointed out to this commit but I don't understand _why_.
 >> The part I don't get is "so it can be used with cpufreq". Is it
 >> refered to a driver or the subsystem as it?
->
+> 
 > We need the regulators for the CPU rails to start before the cpufreq
 > driver starts so cpufreq can talk to them, and since the regulators may
 > be SPI attached this means we also need the SPI controller to start
-> before cpufreq. =A0cpufreq starts at vanilla init time.
->
-> There's an approach being looked at for handling this for devices but
-> for deviceless stuff like cpufreq we've nothing.
+> before cpufreq.  cpufreq starts at vanilla init time.
 
-It would be easy enough to defer cpufreq initialization based on some
-platform defined criteria.  It's just an initcall.  However, I don't
-know what the impact area is for subsystems that depend on cpufreq.
-Are there drivers that depend on cpufreq before initialized?
+After digging through the code I think I've found it. pxa_cpu_init()
+registers a cpufreq client. cpufreq calls init and pxa then
+regulator_get() to get the regulator and I guess this is the problem.
+So I would suggest to defer pxa_cpu_init() via late_initcall().
 
-g.
+The other way around will force you to hack the init code for various
+drivers to make it work.
 
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
+Sebastian

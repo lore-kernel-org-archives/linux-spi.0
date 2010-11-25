@@ -1,139 +1,64 @@
-From: "Rafael J. Wysocki" <rjw@sisk.pl>
-Subject: Re: [PATCH v5 04/12] spi: add ti-ssp spi master driver
-Date: Fri, 26 Nov 2010 00:32:37 +0100
-Message-ID: <201011260032.38154.rjw@sisk.pl>
-References: <1289848334-8695-1-git-send-email-cyril@ti.com>
-	<20101117161130.GC5757@angua.secretlab.ca>
-	<20101118054611.GB13567@suse.de>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [PATCH 1/9] spi/pxa2xx: don't use subys initcall for driver init
+Date: Thu, 25 Nov 2010 23:54:15 +0000
+Message-ID: <20101125235415.GA9310@n2100.arm.linux.org.uk>
+References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
+	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
+	<AANLkTin4vh85XRkEd7YocCmKngViR_qZDe7z1b4JXyd-@mail.gmail.com>
+	<4CED1C95.8070300@linutronix.de>
+	<20101124141623.GH24970@rakim.wolfsonmicro.main>
+	<4CED3199.2040700@linutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source@linux.davincidsp.com"
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	"dbrownell@users.sourceforge.net" <dbrownell@users.sourceforge.net>,
-	"sameo@linux.intel.com" <sameo@linux.intel.com>,
-	"khilman@deeprootsystems.com" <khilman@deeprootsystems.com>,
-	"linus.ml.walleij@gmail.com" <linus.ml.walleij@gmail.com>,
-	"broonie@opensource.wolfsonmicro.com"
-	<broonie@opensource.wolfsonmicro.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	"rpurdie@rpsys.net" <rpurdie@rpsys.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Cyril Chemparathy <cyril@ti.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"alan@lxorguk.ukuu.org.uk" <alan@lxorguk.ukuu.org.uk>,
-	"lrg@slimlogic.co.uk" <lrg@slimlogic.co.uk>
-To: Greg KH <gregkh@suse.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20101118054611.GB13567@suse.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, tglx-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
+	drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4CED3199.2040700-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday, November 18, 2010, Greg KH wrote:
-> On Wed, Nov 17, 2010 at 09:11:30AM -0700, Grant Likely wrote:
-> > Also, any dependency tracking must work across bus_types.  It is not
-> > sufficient to only handle the platform_devices use-case.  All bus
-> > types have this need.
-> 
-> Agreed.
-> 
-> > I see a few potential approaches.
-> > 
-> > Option 1: Add a list of prerequisite devices to struct device and
-> > modify driver core so that it defers binding to a driver until all the
-> > prerequisites are already bound.  This can probably be implemented
-> > in a way that works for all bus types transparently.  Before binding
-> > a driver, the driver core would increase the ref count on each of the
-> > prereq devices, and decrease it again when the driver is removed.
-> 
-> I see loops happening easily that prevent any device from being bound.
-> That could get tricky to debug :(
-> 
-> > Option 2: On a per-bus_type basis have a separate registration and the
-> > bus type code would hold the device unregistered in a pending list.
-> > This option would also add a prerequisites list to struct device.
-> 
-> When would we process the "pending list"?
-> 
-> I can see something like this working, up to a point.  Once device (or
-> driver) registration is complete, we would walk the lists of busses and
-> see if anything new wants to be bound again, now that something new has
-> shown up, instead of just walking the single bus.
-> 
-> But then we have the issue of devices that never are bound to anything,
-> it could get a little "noisy" with them never binding, but we can't rely
-> on the fact that not all devices are not bound to know when to stop
-> trying.
-> 
-> This might be the simplest to try out as we do almost all of this today
-> in the driver core (walk the list and try to bind all unbound devices to
-> a new driver.)  Just extend that walking to walk all other busses as
-> well.  But this would require that the drivers know when they can't bind
-> to a device due to something not being set up properly, which I don't
-> know if is always true.
-> 
-> > Option 3: Don't try to handle it in the bus_type or driver core code
-> > at all, but rather provide board support code with helpers to make
-> > waiting for other devices easy.  Even in this case I think it is
-> > probably still a good idea for the dependant devices to increment
-> > the refcount of the prereq devices.
+On Wed, Nov 24, 2010 at 04:39:05PM +0100, Sebastian Andrzej Siewior wrote:
+> Mark Brown wrote:
+>> On Wed, Nov 24, 2010 at 03:09:25PM +0100, Sebastian Andrzej Siewior wrote:
+>>
+>>> I've been pointed out to this commit but I don't understand _why_.
+>>> The part I don't get is "so it can be used with cpufreq". Is it
+>>> refered to a driver or the subsystem as it?
+>>
+>> We need the regulators for the CPU rails to start before the cpufreq
+>> driver starts so cpufreq can talk to them, and since the regulators may
+>> be SPI attached this means we also need the SPI controller to start
+>> before cpufreq.  cpufreq starts at vanilla init time.
+>
+> After digging through the code I think I've found it. pxa_cpu_init()
+> registers a cpufreq client. cpufreq calls init and pxa then
+> regulator_get() to get the regulator and I guess this is the problem.
+> So I would suggest to defer pxa_cpu_init() via late_initcall().
+>
+> The other way around will force you to hack the init code for various
+> drivers to make it work.
 
-That's necessary IMO.
+Why should the PXA code change when you haven't explained _why_ you want
+to change the SPI driver to conform to your idea?
 
-> > Perhaps something that is used like:
-> > 
-> > void do_second_registration(void)
-> > {
-> > 	/* register list of dependant devices */
-> > }
-> > 
-> > and then in the primary registration function:
-> > 	...
-> > 	device_notify_when_bound(&prereq_pdev->dev,
-> > 				 do_second_registration);
-> > 	platform_device_add(prereq_pdev);
-> > 	...
-> > 
-> > which would reduce the boilerplate, but remain flexible.  However,
-> > while flexable, option 3 doesn't solve the dependency tracking
-> > problem, and it still requires some gymnastics to handle multiple
-> > dependencies.
-> > 
-> > On a related issue, it may also be desirable for each device to
-> > maintain a list of devices that have claimed dependency on it for the
-> > purpose of debugability.
-> 
-> That might be the simplest as each "board type" knows which devices it
-> wants to register and in what order, right?
-
-Ironically enough, we also have this problem in ACPI where there are power
-resources that "regular" devices may depend on in pretty much the same way
-as discussed here.  Those power resources are represented as devices, so the
-problem is really analogous.
-
-In ACPI, though, basically all devices are registered by the same routine that
-walks the namespace (which is a tree-like structure) and registers all devices
-it finds there.  Before registering a device it examines its properties and,
-among other things, it finds what power resources the device depends on.  Then,
-it may invoke itself in a recursive way to register those power resources before
-registering the device (the recurrence is one-level only, because power
-resources cannot depend on anything else).  Since the driver for power
-resources has been already registered at that point, we know it will bind to
-the power resource device objects as soon as they are registered.  This is done
-in a patch series I posted yesterday, actaully.
-
-I'm not sure if this approach can be generalized somehow, but in the ACPI
-case it works just fine.
-
-Thanks,
-Rafael
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev

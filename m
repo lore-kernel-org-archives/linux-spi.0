@@ -1,13 +1,14 @@
-From: CF53-VJ1uWbvd+u8/G/WUTvq9LQ@public.gmane.org
-Subject: [SPAM] 如何认定严重失职
-Date: Thu, 25 Nov 2010 23:45:30 +0800
-Message-ID: <E1PLe2T-0005Qa-MU@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "IT-MAN" <it.man007-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] 特怏上門電腦即時維修/保養/顧問/資料回復
+Date: Fri, 26 Nov 2010 03:28:30 +0800
+Message-ID: <20101126032600.SM01488@DATA>
+Reply-To: IT-MAN <it.man007-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Message-ID: <20101126.EDWDWWJSMEQMGPSJ-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,34 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+r1On1qRXqvm5cbijpM6k5bv2uvut1yxJVMVVsN2nVadBq9il36X4t36k/bDqL6tPs29FLU1haWyl
+sq1ursmkQKl3wLCo7KdBLA0KuNSxoaVprVC5cTY1OTgyODAxqc5FLW1haWym3G1mLm1hbmZvcnRA
+eWFob28uY29tLmhruNSxoaVprN2lSKRVs+axaToNCmh0dHA6Ly9pbWFnZTgyLndlYnNob3RzLmNv
+bS8xODIvMS82My82OS8yODE1MTYzNjkwMTA2Nzc0MzkzSVRzQWRLX3BoLmpwZw0KDQqmcLvVpFWk
+o7dRpkGmrKjsp9qtzKVIpFWqukUtbWFpbCy90LX5qfq71aRVqrpFLW1haWymYad9wuCxSKbcQ2Fu
+Y2VsbWFpbDFAeW1haWwuY29tCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbmNyZWFzZSBWaXNpYmls
+aXR5IG9mIFlvdXIgM0QgR2FtZSBBcHAgJiBFYXJuIGEgQ2hhbmNlIFRvIFdpbiAkNTAwIQpUYXAg
+aW50byB0aGUgbGFyZ2VzdCBpbnN0YWxsZWQgUEMgYmFzZSAmIGdldCBtb3JlIGV5ZXMgb24geW91
+ciBnYW1lIGJ5Cm9wdGltaXppbmcgZm9yIEludGVsKFIpIEdyYXBoaWNzIFRlY2hub2xvZ3kuIEdl
+dCBzdGFydGVkIHRvZGF5IHdpdGggdGhlCkludGVsKFIpIFNvZnR3YXJlIFBhcnRuZXIgUHJvZ3Jh
+bS4gRml2ZSAkNTAwIGNhc2ggcHJpemVzIGFyZSB1cCBmb3IgZ3JhYnMuCmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvaW50ZWxpc3AtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

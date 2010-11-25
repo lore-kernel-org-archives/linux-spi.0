@@ -1,57 +1,71 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after off-mode transition
-Date: Wed, 24 Nov 2010 19:55:25 -0800 (PST)
-Message-ID: <249691.92718.qm@web180302.mail.gq1.yahoo.com>
-References: <87y68i447o.fsf@deeprootsystems.com>
+From: Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: remove autodetection
+Date: Thu, 25 Nov 2010 12:03:43 +0800
+Message-ID: <4CEDE01F.5050109@gmail.com>
+References: <1290589546-21662-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap <linux-omap@vger.kernel.org>
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <87y68i447o.fsf@deeprootsystems.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1290589546-21662-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
---- On Wed, 11/24/10, Kevin Hilman <khilman@deeprootsystems.com> wrote:
-
->  I'm not SPI-aware enough to ack
-> this patch or
-> test it thoroughly.
-
-Heh, my excuse is usually "not enough time"
-or sometimes "no test setup" ... ;)
-
-In this case I can at least ack the fix in
-principle.  CS active means an active trransfer,
-which must not happen during OFF  or other
-suspend states.
-
-
-Acked-by: David Brownell <dbrownell@users.sourceforge.net>
-
-
-
-> Also, in the last patch I suggested you do more of a
-> save/restore of
-> this value instead of a restore to a hard-coded
-> value.=A0 IOW, save the
-> value in the suspend method, restore it in resume.
-
-
-More correct to restart
-message queue processing
-after resume, if it's non-empty, and to have
-cleanly stopped it (between messages) before
-entering suspend states like OFF.
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+SXQgaXMgcmVhc29uYWJsZSwgbG9va3MgZmluZSB0byBtZS4gOi0pCgpKYXNvbi4KClV3ZSBLbGVp
+bmUtS8O2bmlnIHdyb3RlOgo+IHRoZXJlIGFyZSBubyBtYWNoaW5lcyBpbi10cmVlIHRoYXQgc3Rp
+bGwgdXNlIHRoZSBkcml2ZXIKPiBuYW1lIGFzIGRldmljZSBuYW1lLiAgU28gc2F2ZSBhIGZldyBi
+eXRlcyBhbmQgcmVtb3ZlIGl0Lgo+Cj4gU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcg
+PHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KPiAtLS0KPiAgZHJpdmVycy9zcGkvc3Bp
+X2lteC5jIHwgICAzMCArKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlcyBj
+aGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQo+Cj4gZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvc3BpL3NwaV9pbXguYyBiL2RyaXZlcnMvc3BpL3NwaV9pbXguYwo+IGluZGV4IDU1
+YTM4ZTIuLjkwMTBlZjAgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpX2lteC5jCj4gKysr
+IGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCj4gQEAgLTY2LDcgKzY2LDYgQEAgZW51bSBzcGlfaW14
+X2RldnR5cGUgewo+ICAJU1BJX0lNWF9WRVJfMF81LAo+ICAJU1BJX0lNWF9WRVJfMF83LAo+ICAJ
+U1BJX0lNWF9WRVJfMl8zLAo+IC0JU1BJX0lNWF9WRVJfQVVUT0RFVEVDVCwKPiAgfTsKPiAgCj4g
+IHN0cnVjdCBzcGlfaW14X2RhdGE7Cj4gQEAgLTcyMCw5ICs3MTksNiBAQCBzdGF0aWMgdm9pZCBz
+cGlfaW14X2NsZWFudXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKPiAgCj4gIHN0YXRpYyBzdHJ1
+Y3QgcGxhdGZvcm1fZGV2aWNlX2lkIHNwaV9pbXhfZGV2dHlwZVtdID0gewo+ICAJewo+IC0JCS5u
+YW1lID0gRFJJVkVSX05BTUUsCj4gLQkJLmRyaXZlcl9kYXRhID0gU1BJX0lNWF9WRVJfQVVUT0RF
+VEVDVCwKPiAtCX0sIHsKPiAgCQkubmFtZSA9ICJpbXgxLWNzcGkiLAo+ICAJCS5kcml2ZXJfZGF0
+YSA9IFNQSV9JTVhfVkVSX0lNWDEsCj4gIAl9LCB7Cj4gQEAgLTgwMiwzMCArNzk4LDggQEAgc3Rh
+dGljIGludCBfX2RldmluaXQgc3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpw
+ZGV2KQo+ICAKPiAgCWluaXRfY29tcGxldGlvbigmc3BpX2lteC0+eGZlcl9kb25lKTsKPiAgCj4g
+LQlpZiAocGRldi0+aWRfZW50cnktPmRyaXZlcl9kYXRhID09IFNQSV9JTVhfVkVSX0FVVE9ERVRF
+Q1QpIHsKPiAtCQlpZiAoY3B1X2lzX214MjUoKSB8fCBjcHVfaXNfbXgzNSgpKQo+IC0JCQlzcGlf
+aW14LT5kZXZ0eXBlX2RhdGEgPQo+IC0JCQkJc3BpX2lteF9kZXZ0eXBlX2RhdGFbU1BJX0lNWF9W
+RVJfMF83XTsKPiAtCQllbHNlIGlmIChjcHVfaXNfbXgyNSgpIHx8IGNwdV9pc19teDMxKCkgfHwg
+Y3B1X2lzX214MzUoKSkKPiAtCQkJc3BpX2lteC0+ZGV2dHlwZV9kYXRhID0KPiAtCQkJCXNwaV9p
+bXhfZGV2dHlwZV9kYXRhW1NQSV9JTVhfVkVSXzBfNF07Cj4gLQkJZWxzZSBpZiAoY3B1X2lzX214
+MjcoKSB8fCBjcHVfaXNfbXgyMSgpKQo+IC0JCQlzcGlfaW14LT5kZXZ0eXBlX2RhdGEgPQo+IC0J
+CQkJc3BpX2lteF9kZXZ0eXBlX2RhdGFbU1BJX0lNWF9WRVJfMF8wXTsKPiAtCQllbHNlIGlmIChj
+cHVfaXNfbXgxKCkpCj4gLQkJCXNwaV9pbXgtPmRldnR5cGVfZGF0YSA9Cj4gLQkJCQlzcGlfaW14
+X2RldnR5cGVfZGF0YVtTUElfSU1YX1ZFUl9JTVgxXTsKPiAtCQllbHNlCj4gLQkJCUJVRygpOwo+
+IC0JfSBlbHNlCj4gLQkJc3BpX2lteC0+ZGV2dHlwZV9kYXRhID0KPiAtCQkJc3BpX2lteF9kZXZ0
+eXBlX2RhdGFbcGRldi0+aWRfZW50cnktPmRyaXZlcl9kYXRhXTsKPiAtCj4gLQlpZiAoIXNwaV9p
+bXgtPmRldnR5cGVfZGF0YS5pbnRjdHJsKSB7Cj4gLQkJZGV2X2VycigmcGRldi0+ZGV2LCAibm8g
+c3VwcG9ydCBmb3IgdGhpcyBkZXZpY2UgY29tcGlsZWQgaW5cbiIpOwo+IC0JCXJldCA9IC1FTk9E
+RVY7Cj4gLQkJZ290byBvdXRfZ3Bpb19mcmVlOwo+IC0JfQo+ICsJc3BpX2lteC0+ZGV2dHlwZV9k
+YXRhID0KPiArCQlzcGlfaW14X2RldnR5cGVfZGF0YVtwZGV2LT5pZF9lbnRyeS0+ZHJpdmVyX2Rh
+dGFdOwo+ICAKPiAgCXJlcyA9IHBsYXRmb3JtX2dldF9yZXNvdXJjZShwZGV2LCBJT1JFU09VUkNF
+X01FTSwgMCk7Cj4gIAlpZiAoIXJlcykgewo+ICAgCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCklu
+Y3JlYXNlIFZpc2liaWxpdHkgb2YgWW91ciAzRCBHYW1lIEFwcCAmIEVhcm4gYSBDaGFuY2UgVG8g
+V2luICQ1MDAhClRhcCBpbnRvIHRoZSBsYXJnZXN0IGluc3RhbGxlZCBQQyBiYXNlICYgZ2V0IG1v
+cmUgZXllcyBvbiB5b3VyIGdhbWUgYnkKb3B0aW1pemluZyBmb3IgSW50ZWwoUikgR3JhcGhpY3Mg
+VGVjaG5vbG9neS4gR2V0IHN0YXJ0ZWQgdG9kYXkgd2l0aCB0aGUKSW50ZWwoUikgU29mdHdhcmUg
+UGFydG5lciBQcm9ncmFtLiBGaXZlICQ1MDAgY2FzaCBwcml6ZXMgYXJlIHVwIGZvciBncmFicy4K
+aHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbGlzcC1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

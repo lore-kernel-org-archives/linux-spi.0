@@ -1,26 +1,57 @@
-From: "la Grande Pomme" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Fais tes valises, New York t'attend
-Date: Thu, 25 Nov 2010 02:03:09 +0100 (CET)
-Message-ID: <lcf1l7.ashcaz@front07.g7r9.com>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after off-mode transition
+Date: Wed, 24 Nov 2010 19:55:25 -0800 (PST)
+Message-ID: <249691.92718.qm@web180302.mail.gq1.yahoo.com>
+References: <87y68i447o.fsf@deeprootsystems.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap <linux-omap@vger.kernel.org>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <87y68i447o.fsf@deeprootsystems.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-------------------------------------------------------------------------------
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
+
+--- On Wed, 11/24/10, Kevin Hilman <khilman@deeprootsystems.com> wrote:
+
+>  I'm not SPI-aware enough to ack
+> this patch or
+> test it thoroughly.
+
+Heh, my excuse is usually "not enough time"
+or sometimes "no test setup" ... ;)
+
+In this case I can at least ack the fix in
+principle.  CS active means an active trransfer,
+which must not happen during OFF  or other
+suspend states.
+
+
+Acked-by: David Brownell <dbrownell@users.sourceforge.net>
+
+
+
+> Also, in the last patch I suggested you do more of a
+> save/restore of
+> this value instead of a restore to a hard-coded
+> value.=A0 IOW, save the
+> value in the suspend method, restore it in resume.
+
+
+More correct to restart
+message queue processing
+after resume, if it's non-empty, and to have
+cleanly stopped it (between messages) before
+entering suspend states like OFF.
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

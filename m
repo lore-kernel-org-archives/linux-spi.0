@@ -1,54 +1,51 @@
-From: "Hemanth V" <hemanthv@ti.com>
-Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after off-mode transition
-Date: Thu, 25 Nov 2010 14:28:43 +0530
-Message-ID: <2699B5D6798D4057B2679F7C8A16C537@wipblrx0099946>
-References: <4CED8F6E.3000808@free-electrons.com>
+From: CF53-VJ1uWbvd+u8/G/WUTvq9LQ@public.gmane.org
+Subject: [SPAM] 如何认定严重失职
+Date: Thu, 25 Nov 2010 23:45:30 +0800
+Message-ID: <E1PLe2T-0005Qa-MU@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-Cc: "David Brownell" <dbrownell@users.sourceforge.net>,
-	"Grant Likely" <grant.likely@secretlab.ca>,
-	"Kevin Hilman" <khilman@deeprootsystems.com>
-To: "Gregory CLEMENT" <gregory.clement@free-electrons.com>,
-	"linux-omap" <linux-omap@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
------ Original Message ----- 
-From: "Gregory CLEMENT" <gregory.clement@free-electrons.com>
-To: "linux-omap" <linux-omap@vger.kernel.org>; 
-<spi-devel-general@lists.sourceforge.net>
-Cc: "David Brownell" <dbrownell@users.sourceforge.net>; "Grant Likely" 
-<grant.likely@secretlab.ca>; "Kevin Hilman" <khilman@deeprootsystems.com>
-Sent: Thursday, November 25, 2010 3:49 AM
-Subject: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after 
-off-mode transition
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
 
-> As request by Grant Likely, there is no more cover letter. Full changelog 
-> is following.
-> I am still reluctant to add this changelog in the patch description, as it 
-> adds no value to
-> the patch itself: when it was needed I try to updat comments or patch 
-> description.
-> I understand that Grant Likely would need an ack from other user as this 
-> patch fix a corner case.
-> Kevin Hilman made a few comments on this patch so he could add his "Ack 
-> by" or at least his "Review by".
->
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I was trying to run some tests with this patch. I find that the resume 
-function registered by this patch doesnot seem to
-get called during system wide suspend/resume, since spi_resume only calls 
-the resume routine registered by spi client driver.
-Is there something I am missing.
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Thanks
-Hemanth
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-
+--=_NextPart_2rfkindysadvnqw3nerasdf--

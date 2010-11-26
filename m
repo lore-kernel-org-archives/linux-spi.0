@@ -1,29 +1,18 @@
-From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: Re: [sodaville] [PATCH 1/9] spi/pxa2xx: don't use subys initcall
-	for driver init
-Date: Fri, 26 Nov 2010 14:29:16 +0100
-Message-ID: <4CEFB62C.6020508@linutronix.de>
-References: <1290597207-29838-1-git-send-email-bigeasy@linutronix.de>
-	<1290597207-29838-2-git-send-email-bigeasy@linutronix.de>
-	<AANLkTin4vh85XRkEd7YocCmKngViR_qZDe7z1b4JXyd-@mail.gmail.com>
-	<4CED1C95.8070300@linutronix.de>
-	<20101124141623.GH24970@rakim.wolfsonmicro.main>
-	<4CED3199.2040700@linutronix.de>
-	<20101125235415.GA9310@n2100.arm.linux.org.uk>
-	<20101126105028.GA24010@www.tglx.de>
-	<20101126110605.GI9310@n2100.arm.linux.org.uk>
+From: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Subject: Re: Spi slave devices with two chip selects, how best to handle?
+Date: Fri, 26 Nov 2010 14:39:02 +0000
+Message-ID: <4CEFC686.30603@cam.ac.uk>
+References: <301691.11173.qm@web180316.mail.gq1.yahoo.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, drwyrm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, "Hennerich,
+	Michael" <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	"device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101126110605.GI9310-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+In-Reply-To: <301691.11173.qm-4JhmkcZgSkkHBU+L9ui1Svu2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,39 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Russell King - ARM Linux wrote:
-> On Fri, Nov 26, 2010 at 11:50:28AM +0100, Sebastian Andrzej Siewior wrote:
->> * Russell King - ARM Linux | 2010-11-25 23:54:15 [+0000]:
+On 11/26/10 04:19, David Brownell wrote:
+> 
+> 
+> --- On Thu, 11/25/10, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> 
+>>> as to be able to pair them up. Anyone have a better
+>> idea or an example of
+>>> what someone else has done in similar circumstances?
 >>
->>> Why should the PXA code change when you haven't explained _why_ you want
->>> to change the SPI driver to conform to your idea?
->> The problem was, that the platform driver never got probed after I
->> registered the PCI driver. For that reason I made the patch attached. It
->> got lost while moving the tree forward and I did not notice it earlier.
->> While at it, I changed the subsys_init to module_init because it looked
->> wrong. At this time I was also thinking about using one module for the
->> platform and PCI code but never got to it.
+>> Have a single driver private data structure that contains
+>> and
+>> registers 2 spi_device instances.  Have both
+>> spi_device instances
+>> point back at the same driver private data structure.
 > 
-> This is one of the problems of the foo_driver_probe() idea - if the
-> device is not present at the time the driver is registered, then the
-> driver loses out completely.
-> 
-> This would seem to be exagerated as you're creating this platform device
-> from a PCI device - who's to say that someone won't unbind the PCI device
-> and re-bind it later, causing the platform device to be deleted and
-> re-created?
+> And consider having a chardev or blockdev to
+> access (indirectly) both the read and write
+> sides of the chip. using that driver-private
+> structure.  ((and, tricky, making the linkage
+> between the three devices visible through the
+> driver model, if you can).
+Thanks all.  This is looking complex enough that I'll probably
+want to actually have the part or leave it to someone who does...
 
-Unbinding a PCI device should call ->remove of the pci driver and this in
-turn will remove the platform device which calls ->remove of the driver.
+One for your list Michael (I can put suitable element in your
+tracker if that is helpful?)
 
-> As such, I think the patch you've shown in this email is more appropriate
-> (getting rid of the platform_driver_probe()) than trying to sort out
-> init-level dependencies.  Really, the init-level dependencies in this case
-> are not the problem - the use of platform_driver_probe() is.
-
-Okay. So I leave as it.
-
-Sebastian
+Jonathan
 
 ------------------------------------------------------------------------------
 Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!

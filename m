@@ -1,7 +1,7 @@
-From: "CONSOMAIL" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Repondez au questionnaire pour obtenir 1500 euros!
-Date: Sun, 28 Nov 2010 01:00:47 +0100 (CET)
-Message-ID: <lckj0a.2ivknj@front02.r7g.com>
+From: "Pedigree.fr" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] 1 an de nourriture à gagner pour votre chien!
+Date: Sun, 28 Nov 2010 04:13:11 +0100 (CET)
+Message-ID: <lckrlw.d744ut@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

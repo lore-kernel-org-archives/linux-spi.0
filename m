@@ -1,75 +1,122 @@
-From: "Hennerich, Michael" <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Subject: RE: Spi slave devices with two chip selects, how best to handle?
-Date: Mon, 29 Nov 2010 12:16:09 +0000
-Message-ID: <544AC56F16B56944AEC3BD4E3D591771312EFFDE3D@LIMKCMBX1.ad.analog.com>
-References: <301691.11173.qm@web180316.mail.gq1.yahoo.com>
-	<4CEFC686.30603@cam.ac.uk>
+From: Kevin Hilman <khilman@deeprootsystems.com>
+Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after off-mode transition
+Date: Mon, 29 Nov 2010 15:22:53 +0100
+Message-ID: <877hfw1a6a.fsf@deeprootsystems.com>
+References: <4CED8F6E.3000808@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-To: Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4CEFC686.30603-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <4CED8F6E.3000808@free-electrons.com> (Gregory CLEMENT's message
+	of "Wed, 24 Nov 2010 23:19:26 +0100")
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Jonathan Cameron wrote on 2010-11-26:
-> On 11/26/10 04:19, David Brownell wrote:
->>
->>
->> --- On Thu, 11/25/10, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->>
->>>> as to be able to pair them up. Anyone have a better idea or an
->>>> example of what someone else has done in similar circumstances?
->>>
->>> Have a single driver private data structure that contains and
->>> registers 2 spi_device instances.  Have both spi_device instances
->>> point back at the same driver private data structure.
+Gregory CLEMENT <gregory.clement@free-electrons.com> writes:
 
-Sorry - I'm not quite sure how this should work, without using a global.
-Having a single private data structure is obvious, however spi drivers are
-registered and not spi devices. container_of() is not going to help here either.
+> As request by Grant Likely, there is no more cover letter. Full changelog is following.
+> I am still reluctant to add this changelog in the patch description, as it adds no value to
+> the patch itself: when it was needed I try to updat comments or patch description.
+> I understand that Grant Likely would need an ack from other user as this patch fix a corner case.
+> Kevin Hilman made a few comments on this patch so he could add his "Ack by" or at least his "Review by".
 
-Can you explain how you would pass the pointer?
+A couple more comments...
 
->> And consider having a chardev or blockdev to access (indirectly)
->> both the read and write sides of the chip. using that driver-private
->> structure.  ((and, tricky, making the linkage between the three
->> devices visible through the driver model, if you can).
-> Thanks all.  This is looking complex enough that I'll probably want to
-> actually have the part or leave it to someone who does...
 >
-> One for your list Michael (I can put suitable element in your tracker
-> if that is helpful?)
+> Changelog:
+> * Change from v1 to v2:
+> Rebase on linus/master (after 2.6.37-rc1)
+> Do some clean-up and fix indentation on both patches
+> Add more explanations for patch 2
 >
-> Jonathan
+> * Change from v2 to v3:
+> Use directly resume function of spi_master instead of using function
+> from spi_device as Grant Likely pointed it out.
+> Force this transition explicitly for each CS used by a device.
+>
+> * Change from v3 to v4:
+> Patch clean-up according to Kevin Hilman and checkpatch.
+> Now force CS to be in inactive state only if it was inactive when it was
+> suspended.
+>
+> * Change from v4 to v5:
+> Rebase on linus/master (after 2.6.37-rc3)
+> Collapse some lines as pointed by Grant Likely
+> Fix a spelling
+>
+>
+> == CUT HERE ==
+> When SPI wake up from OFF mode, CS is in the wrong state: force it to the inactive state.
+>
+> During the system life, I monitored the CS behavior using a oscilloscope.
+> I also activated debug in omap2_mcspi, so I saw when driver disable the clocks and restore context when device is not used.
+> Each time the CS was in the correct state.
+> It was only when system was put suspend to ram with off-mode activated that on resume the CS was in wrong state( ie activated).
+>
+> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> ---
+>  drivers/spi/omap2_mcspi.c |   33 +++++++++++++++++++++++++++++++++
+>  1 files changed, 33 insertions(+), 0 deletions(-)
+>
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index 2a651e6..dcc024a 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -1305,11 +1305,44 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>  /* work with hotplug and coldplug */
+>  MODULE_ALIAS("platform:omap2_mcspi");
+>
+> +#ifdef	CONFIG_PM
 
-I'll add a tracker item.
-Thanks.
+You should use CONFIG_SUSPEND here
 
-Greetings,
-Michael
+> +/* When SPI wake up from off-mode, CS is in activate state. If it was in
+> + * unactive state when driver was suspend, then force it to unactive state at
+> + * wake up.
+> + */
+> +static int omap2_mcspi_resume(struct platform_device *pdev)
+> +{
+> +	struct spi_master	*master = dev_get_drvdata(&pdev->dev);
+> +	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
+> +	struct omap2_mcspi_cs *cs;
+> +
+> +	omap2_mcspi_enable_clocks(mcspi);
+> +	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
+> +			    node) {
+> +		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
+> +
+> +			/* We need to toggle CS state for OMAP take this
+> +			 * change in account.
+> +			 */
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +		}
+> +	}
+> +	omap2_mcspi_disable_clocks(mcspi);
+> +	return 0;
+> +}
+> +#else
+> +#define	omap2_mcspi_resume	NULL
+> +#endif
+> +
+>  static struct platform_driver omap2_mcspi_driver = {
+>  	.driver = {
+>  		.name =		"omap2_mcspi",
+>  		.owner =	THIS_MODULE,
+>  	},
+> +	.resume =	omap2_mcspi_resume,
 
---
-Analog Devices GmbH      Wilhelm-Wagenfeld-Str. 6      80807 Muenchen
-Sitz der Gesellschaft Muenchen, Registergericht Muenchen HRB 4036 Geschaeftsfuehrer Thomas Wessel, William A. Martin, Margaret Seif
+This is adding legacy PM methods.  Instead, you should add a struct
+dev_pm_ops and add the resume method there.
 
+Kevin
 
-------------------------------------------------------------------------------
-Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
-Tap into the largest installed PC base & get more eyes on your game by
-optimizing for Intel(R) Graphics Technology. Get started today with the
-Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
-http://p.sf.net/sfu/intelisp-dev2dev
+>  	.remove =	__exit_p(omap2_mcspi_remove),
+>  };
+>  -- 1.7.0.4

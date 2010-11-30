@@ -1,42 +1,71 @@
-From: David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after off-mode transition
-Date: Mon, 29 Nov 2010 19:08:47 -0800 (PST)
-Message-ID: <509131.41359.qm@web180304.mail.gq1.yahoo.com>
-References: <877hfw1a6a.fsf@deeprootsystems.com>
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: Re: [PATCH v5 1/1] OMAP2: Spi: Force CS to be in inactive state after
+ off-mode transition
+Date: Tue, 30 Nov 2010 09:26:04 +0100
+Message-ID: <4CF4B51C.7030902@free-electrons.com>
+References: <509131.41359.qm@web180304.mail.gq1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap <linux-omap@vger.kernel.org>,
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Kevin Hilman <khilman@deeprootsystems.com>,
+	linux-omap <linux-omap@vger.kernel.org>,
 	spi-devel-general@lists.sourceforge.net,
 	Grant Likely <grant.likely@secretlab.ca>
-To: Gregory CLEMENT <gregory.clement@free-electrons.com>,
-	Kevin Hilman <khilman@deeprootsystems.com>
+To: David Brownell <david-b@pacbell.net>
 Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <877hfw1a6a.fsf@deeprootsystems.com>
+In-Reply-To: <509131.41359.qm@web180304.mail.gq1.yahoo.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> > Now force CS to be in inactive state only if it was
-> inactive when it was suspended.
+On 11/30/2010 04:08 AM, David Brownell wrote:
+>>> Now force CS to be in inactive state only if it was
+>> inactive when it was suspended.
+> 
+> Note that it's a bug if CS is active in
+> any suspend state (including OFF).  That
+> strongly suggests $SUBJECT is an incomplete
+> workaround for that other bug...
+> 
 
-Note that it's a bug if CS is active in
-any suspend state (including OFF).  That
-strongly suggests $SUBJECT is an incomplete
-workaround for that other bug...
+It is not the case, at least it is not what we
+observed. In suspend state, CS is inactive.
 
-> >
-> > When SPI wake up from OFF mode, CS is in the wrong
-> state: force it to the inactive state.
+>>>
+>>> When SPI wake up from OFF mode, CS is in the wrong
+>> state: force it to the inactive state.
+> 
+> Best report the bug that the suspend/OFF state
+> was mis-handled...  That is, it didn't
+> correctly ENTER that OFF mode...
+> 
+> In fact ... I'd like to see that fixed more
+> than the $SUBJECT issue, so the root cause
+> gets resolved...
 
-Best report the bug that the suspend/OFF state
-was mis-handled...  That is, it didn't
-correctly ENTER that OFF mode...
+As far as I know, it enter correctly that OFF mode.
+It is only at wake up, that CS become active while
+there is no SPI message being processed. It is the
+point of my patch.
 
-In fact ... I'd like to see that fixed more
-than the $SUBJECT issue, so the root cause
-gets resolved...
+My first patch version forced unconditionally CS to
+inactive state at wake up. It was correct from the
+point of view of the SPI but not for suspend/resume.
+Resume should only restore the state of the driver
+just before suspend. If resume force the inactive
+state it could mask a bug in the suspend path.
+But as I wrote before, as far as I know there is no
+bug when driver enter suspend mode, at this moment
+CS is inactive.
 
-CS should only be active while a SPI message
-is being processed, and such processing must
-have completed before suspend/OFF/... starts
+> 
+> CS should only be active while a SPI message
+> is being processed, and such processing must
+> have completed before suspend/OFF/... starts
+> 
+I agree and this driver seems to respect this point.
 
-
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com

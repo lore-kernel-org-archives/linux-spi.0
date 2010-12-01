@@ -1,73 +1,38 @@
-From: Mingkai Hu <Mingkai.hu@freescale.com>
-Subject: [PATCH] eSPI: change the read behavior of the SPIRF
-Date: Wed, 1 Dec 2010 17:29:18 +0800
-Message-ID: <1291195758-12322-1-git-send-email-Mingkai.hu@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: kumar.gala@freescale.com, Mingkai Hu <Mingkai.hu@freescale.com>
-To: <linuxppc-dev@ozlabs.org>, <spi-devel-general@lists.sourceforge.net>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+From: Bernhard Walle <walle@corscience.de>
+Subject: [PATCH] spi: spidev: Add 32 bit compat ioctl()
+Date: Wed,  1 Dec 2010 11:51:14 +0100
+Message-ID: <1291200674-25630-1-git-send-email-walle@corscience.de>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: dbrownell@users.sourceforge.net, grant.likely@secretlab.ca
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The user must read N bytes of SPIRF (1 <= N <= 4) that do not exceed the
-amount of data in the receive FIFO, so read the SPIRF byte by byte when
-the data in receive FIFO is less than 4 bytes.
+Add the compat_ioctl for operations on /dev/spi* so that 32 bit
+userspace applications can access SPI. As far as I can see all data
+structure are already prepared for that, so no additional conversion has
+to be done.
 
-On Simics, when read N bytes that exceed the amout of data in receive
-FIFO, we can't read the data out, that is we can't clear the rx FIFO,
-then the CPU will loop on the espi rx interrupt.
+My use case is MIPS with N32 userspace ABI and toolchain, and that was
+also the platform where I tested it successfully (Cavium Octeon).
 
-Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+Signed-off-by: Bernhard Walle <walle@corscience.de>
 ---
- drivers/spi/spi_fsl_espi.c |   19 ++++++++++++++++---
- 1 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/spi/spidev.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
-index e3b4f64..ae78926 100644
---- a/drivers/spi/spi_fsl_espi.c
-+++ b/drivers/spi/spi_fsl_espi.c
-@@ -507,16 +507,29 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
- 
- 	/* We need handle RX first */
- 	if (events & SPIE_NE) {
--		u32 rx_data;
-+		u32 rx_data, tmp;
-+		u8 rx_data_8;
- 
- 		/* Spin until RX is done */
- 		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
- 			cpu_relax();
- 			events = mpc8xxx_spi_read_reg(&reg_base->event);
- 		}
--		mspi->len -= 4;
- 
--		rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
-+		if (mspi->len >= 4) {
-+			rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
-+		} else {
-+			tmp = mspi->len;
-+			rx_data = 0;
-+			while (tmp--) {
-+				rx_data_8 = in_8((u8 *)&reg_base->receive);
-+				rx_data |= (rx_data_8 << (tmp * 8));
-+			}
-+
-+			rx_data <<= (4 - mspi->len) * 8;
-+		}
-+
-+		mspi->len -= 4;
- 
- 		if (mspi->rx)
- 			mspi->get_rx(rx_data, mspi);
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index ea1bec3..d3d1155 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -543,6 +543,7 @@ static const struct file_operations spidev_fops = {
+ 	.write =	spidev_write,
+ 	.read =		spidev_read,
+ 	.unlocked_ioctl = spidev_ioctl,
++	.compat_ioctl = spidev_ioctl,
+ 	.open =		spidev_open,
+ 	.release =	spidev_release,
+ };
 -- 
-1.7.0.4
+1.7.1

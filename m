@@ -1,67 +1,52 @@
-From: Govindraj <govindraj.ti@gmail.com>
-Subject: Re: [PATCH 5/7 v2] OMAP3: clocks: Update clock domain name for mcspi fck
-Date: Thu, 2 Dec 2010 12:01:34 +0530
-Message-ID: <AANLkTiky2Xb_iZpKzfOmEmiF9hSCqOrw6Wm-EQWMxe08@mail.gmail.com>
-References: <33288.10.24.255.18.1291212111.squirrel@dbdmail.itg.ti.com> <alpine.DEB.2.00.1012011759490.2515@utopia.booyaka.com>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] dw_spi: add DMA support
+Date: Thu, 2 Dec 2010 15:36:14 +0800
+Message-ID: <20101202153614.6de11547@feng-i7>
+References: <20101118200935.26334.53708.stgit@localhost.localdomain>
+	<AANLkTik8v=H=exeOO93Q_oOxVU=snck_SGWDXuy+-db7@mail.gmail.com>
+	<20101123175331.3d7ed427@feng-i7>
+	<AANLkTim_XfK2nL4pmw=Xrak+=+cpSg9hv89qnio9YR8k@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "Govindraj.R" <govindraj.raja@ti.com>, linux-omap@vger.kernel.org,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-arm-kernel@lists.infradead.org, Charulatha V <charu@ti.com>
-To: Paul Walmsley <paul@pwsan.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <alpine.DEB.2.00.1012011759490.2515@utopia.booyaka.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Williams,
+	Dan J" <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <AANLkTim_XfK2nL4pmw=Xrak+=+cpSg9hv89qnio9YR8k-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 2, 2010 at 6:31 AM, Paul Walmsley <paul@pwsan.com> wrote:
-> Hello Govindraj
->
-> On Wed, 1 Dec 2010, Govindraj.R wrote:
->
->> From: Charulatha V <charu@ti.com>
->>
->> Update clock3xxx_data for mcspi1-4 with appropriate clock domain nam=
-e.
->>
->> Signed-off-by: Charulatha V <charu@ti.com>
->
-> Looks like this is missing your Signed-off-by:.
+On Tue, 30 Nov 2010 23:13:22 +0800
+Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
 
-Yes, I will add it
+> 2010/11/23 Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>:
+> 
+> > Thanks for the reviews, I made some dma change as you suggested, pls
+> > help to review.
+> 
+> This is looking much better. I guess there is a corresponding patch to
+> drivers/dma/* to provide the proper interfaces for this to work?
+> Anyway, Acked-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
->
-> Also, please submit this patch separately and I will take it as part =
-of
-> the clock patches for 2.6.38.
->
+Yes, there will be some changed to the corresponding dma driver. Thanks
+again for the review
 
-Yes sure. Will send out as a separate patch
+- Feng
+> 
+> Yours,
+> Linus Walleij
 
---
-Thanks,
-Govindraj.R
-
-
-> regards
->
-> - Paul
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap"=
- in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
->
-
-
-
---=20
----
-Regards,
-Govindraj.R
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+------------------------------------------------------------------------------
+Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+Tap into the largest installed PC base & get more eyes on your game by
+optimizing for Intel(R) Graphics Technology. Get started today with the
+Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+http://p.sf.net/sfu/intelisp-dev2dev

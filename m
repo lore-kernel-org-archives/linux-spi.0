@@ -1,7 +1,7 @@
 From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: [PATCH 1/9] spi/pxa2xx: register driver properly
-Date: Thu,  2 Dec 2010 18:47:29 +0100
-Message-ID: <1291312057-7933-2-git-send-email-bigeasy@linutronix.de>
+Subject: [PATCH 2/9] spi/pxa2xx: add support for shared IRQ handler
+Date: Thu,  2 Dec 2010 18:47:30 +0100
+Message-ID: <1291312057-7933-3-git-send-email-bigeasy@linutronix.de>
 References: <1291312057-7933-1-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,55 +23,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-use platform_driver_register instead of platform_driver_probe. The
-latter only checks available devices at the time of calling. So if a
-device gets inserter at a later point in time then the driver will never
-play with it.
+This is required in case the interrupt line is shared with other
+devices.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/pxa2xx_spi.c |    7 ++++---
- 1 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/pxa2xx_spi.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index e76b1af..4e169b5 100644
+index 4e169b5..1865c23 100644
 --- a/drivers/spi/pxa2xx_spi.c
 +++ b/drivers/spi/pxa2xx_spi.c
-@@ -1366,7 +1366,7 @@ static void cleanup(struct spi_device *spi)
- 	kfree(chip);
- }
- 
--static int __init init_queue(struct driver_data *drv_data)
-+static int __devinit init_queue(struct driver_data *drv_data)
+@@ -742,6 +742,18 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
  {
- 	INIT_LIST_HEAD(&drv_data->queue);
- 	spin_lock_init(&drv_data->lock);
-@@ -1454,7 +1454,7 @@ static int destroy_queue(struct driver_data *drv_data)
- 	return 0;
- }
+ 	struct driver_data *drv_data = dev_id;
+ 	void __iomem *reg = drv_data->ioaddr;
++	u32 sccr1_reg = read_SSCR1(reg);
++	u32 mask = drv_data->mask_sr;
++	u32 status;
++
++	status = read_SSSR(reg);
++
++	/* Ignore possible writes if we don't need to write */
++	if (!(sccr1_reg & SSCR1_TIE))
++		mask &= ~SSSR_TFS;
++
++	if (!(status & mask))
++		return IRQ_NONE;
  
--static int __init pxa2xx_spi_probe(struct platform_device *pdev)
-+static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct pxa2xx_spi_master *platform_info;
-@@ -1723,13 +1723,14 @@ static struct platform_driver driver = {
- 		.pm	= &pxa2xx_spi_pm_ops,
- #endif
- 	},
-+	.probe = pxa2xx_spi_probe,
- 	.remove = pxa2xx_spi_remove,
- 	.shutdown = pxa2xx_spi_shutdown,
- };
+ 	if (!drv_data->cur_msg) {
  
- static int __init pxa2xx_spi_init(void)
- {
--	return platform_driver_probe(&driver, pxa2xx_spi_probe);
-+	return platform_driver_register(&driver);
- }
- subsys_initcall(pxa2xx_spi_init);
+@@ -1512,7 +1524,8 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
+ 		drv_data->mask_sr = SSSR_TINT | SSSR_RFS | SSSR_TFS | SSSR_ROR;
+ 	}
  
+-	status = request_irq(ssp->irq, ssp_int, 0, dev_name(dev), drv_data);
++	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
++			drv_data);
+ 	if (status < 0) {
+ 		dev_err(&pdev->dev, "cannot get IRQ %d\n", ssp->irq);
+ 		goto out_error_master_alloc;
 -- 
 1.7.3.2
 

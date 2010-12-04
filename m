@@ -1,59 +1,26 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH] SPI: S5P64X0: Enable SPI driver for S5P6440 and S5P6450
-Date: Fri, 3 Dec 2010 19:12:21 +0900
-Message-ID: <AANLkTin1UkkQOhtScPqsPGMPJYPQuVhj9ddXZhbYddkj@mail.gmail.com>
-References: <1291338253-16461-1-git-send-email-sbkim73@samsung.com>
-	<015201cb92d0$d03777a0$70a666e0$%kim@samsung.com>
+From: "GAN Patrimoine par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Realisez gratuitement votre bilan patrimonial
+Date: Sat,  4 Dec 2010 09:55:54 +0100 (CET)
+Message-ID: <lcwbv9.qgww7e@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Sangbeom Kim <sbkim73@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Abhilash Kesavan <a.kesavan@samsung.com>,
-	dbrownell@users.sourceforge.net, ben-linux@fluff.org
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <015201cb92d0$d03777a0$70a666e0$%kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 3, 2010 at 6:59 PM, Kukjin Kim <kgene.kim@samsung.com> wrot=
-e:
-> Sangbeom Kim wrote:
->>
->> From: Abhilash Kesavan <a.kesavan@samsung.com>
->>
->> This patch enable the existing S3C64XX series SPI driver for S5P64X0
->>
->> Signed-off-by: Abhilash Kesavan <a.kesavan@samsung.com>
->> Signed-off-by: Sangbeom Kim <sbkim73@samsung.com>
->> ---
->> =C2=A0drivers/spi/Kconfig | =C2=A0 =C2=A04 ++--
->
-> Added following mailing list and maintainers.
-> spi-devel-general@lists.sourceforge.net
-> David Brownell and Grant Likely (SPI Subsystem's maintainer)
 
-I would have appreciated being CC'ed.
-
->> =C2=A0config SPI_S3C64XX
->> =C2=A0 =C2=A0 =C2=A0 tristate "Samsung S3C64XX series type SPI"
->> - =C2=A0 =C2=A0 depends on ARCH_S3C64XX && EXPERIMENTAL
->> - =C2=A0 =C2=A0 select S3C64XX_DMA
->> + =C2=A0 =C2=A0 depends on (ARCH_S3C64XX || ARCH_S5P64X0) && EXPERIM=
-ENTAL
->
-> Do we really still need CONFIG_EXPERIMENTAL here?
-
-I think we can drop it.
-
-
->> + =C2=A0 =C2=A0 select S3C64XX_DMA if !ARCH_S5P64X0
->> =C2=A0 =C2=A0 =C2=A0 help
->> =C2=A0 =C2=A0 =C2=A0 =C2=A0 SPI driver for Samsung S3C64XX and newer=
- SoCs.
->
-> SPI driver for Samsung S3C64XX, S5P64X0 and newer Socs.
-
-S5P64X0 is already a part of  'newer Socs'
+------------------------------------------------------------------------------
+What happens now with your Lotus Notes apps - do you make another costly 
+upgrade, or settle for being marooned without product support? Time to move
+off Lotus Notes and onto the cloud with Force.com, apps are easier to build,
+use, and manage than apps on traditional platforms. Sign up for the Lotus 
+Notes Migration Kit to learn more. http://p.sf.net/sfu/salesforce-d2d

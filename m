@@ -1,10 +1,11 @@
-From: "GAN Patrimoine par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Realisez gratuitement votre bilan patrimonial
-Date: Sat,  4 Dec 2010 09:55:54 +0100 (CET)
-Message-ID: <lcwbv9.qgww7e@front02.r7g.com>
+From: "tombrazil" <boletim-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org>
+Subject: GRANDES MARCAS & GRANDES OFERTAS
+Date: Sun, 05 Dec 2010 19:36:03 -0600
+Message-ID: <70b0344506629655ca9305b7ad3421c0@www.tombrazil.com.br>
+Reply-To: falecom-NNqgJEM/K0MJBBnbVQ8SfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,10 +18,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-What happens now with your Lotus Notes apps - do you make another costly 
-upgrade, or settle for being marooned without product support? Time to move
-off Lotus Notes and onto the cloud with Force.com, apps are easier to build,
-use, and manage than apps on traditional platforms. Sign up for the Lotus 
-Notes Migration Kit to learn more. http://p.sf.net/sfu/salesforce-d2d
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnRv
+bWJyYXppbC5jb20uYnIvaWVtL2Rpc3BsYXkucGhwP009NzQ5NDUmQz0wN2U5ZmQ4YWJiNDJkYWJi
+MzgwZWJhMThmY2U0YzYxYSZTPTI0Jkw9NSZOPTYKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
+c29zCkVtYWlsczpodHRwOi8vd3d3LnRvbWJyYXppbC5jb20uYnIvaWVtL3Vuc3Vic2NyaWJlLnBo
+cD9NPTc0OTQ1JkM9MDdlOWZkOGFiYjQyZGFiYjM4MGViYTE4ZmNlNGM2MWEmTD01Jk49MjQKRW1h
+aWwgTWFya2V0aW5nCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpXaGF0IGhhcHBlbnMgbm93IHdpdGgg
+eW91ciBMb3R1cyBOb3RlcyBhcHBzIC0gZG8geW91IG1ha2UgYW5vdGhlciBjb3N0bHkgCnVwZ3Jh
+ZGUsIG9yIHNldHRsZSBmb3IgYmVpbmcgbWFyb29uZWQgd2l0aG91dCBwcm9kdWN0IHN1cHBvcnQ/
+IFRpbWUgdG8gbW92ZQpvZmYgTG90dXMgTm90ZXMgYW5kIG9udG8gdGhlIGNsb3VkIHdpdGggRm9y
+Y2UuY29tLCBhcHBzIGFyZSBlYXNpZXIgdG8gYnVpbGQsCnVzZSwgYW5kIG1hbmFnZSB0aGFuIGFw
+cHMgb24gdHJhZGl0aW9uYWwgcGxhdGZvcm1zLiBTaWduIHVwIGZvciB0aGUgTG90dXMgCk5vdGVz
+IE1pZ3JhdGlvbiBLaXQgdG8gbGVhcm4gbW9yZS4gaHR0cDovL3Auc2YubmV0L3NmdS9zYWxlc2Zv
+cmNlLWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

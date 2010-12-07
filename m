@@ -1,12 +1,20 @@
-From: 13410458452-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Tue, 7 Dec 2010 16:50:10 +0800
-Message-ID: <E1PPtFg-0003xs-Py@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v7 03/12] davinci: add ssp config for tnetv107x evm board
+Date: Tue,  7 Dec 2010 09:51:53 -0500
+Message-ID: <1291733522-3626-4-git-send-email-cyril@ti.com>
+References: <1291733522-3626-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org,
+	Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>, akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org,
+	alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	rpurdie@rpsys
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1291733522-3626-1-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,20 +25,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
-qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
-1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
-CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCldoYXQgaGFwcGVucyBub3cgd2l0aCB5b3VyIExvdHVzIE5v
-dGVzIGFwcHMgLSBkbyB5b3UgbWFrZSBhbm90aGVyIGNvc3RseSAKdXBncmFkZSwgb3Igc2V0dGxl
-IGZvciBiZWluZyBtYXJvb25lZCB3aXRob3V0IHByb2R1Y3Qgc3VwcG9ydD8gVGltZSB0byBtb3Zl
-Cm9mZiBMb3R1cyBOb3RlcyBhbmQgb250byB0aGUgY2xvdWQgd2l0aCBGb3JjZS5jb20sIGFwcHMg
-YXJlIGVhc2llciB0byBidWlsZCwKdXNlLCBhbmQgbWFuYWdlIHRoYW4gYXBwcyBvbiB0cmFkaXRp
-b25hbCBwbGF0Zm9ybXMuIFNpZ24gdXAgZm9yIHRoZSBMb3R1cyAKTm90ZXMgTWlncmF0aW9uIEtp
-dCB0byBsZWFybiBtb3JlLiBodHRwOi8vcC5zZi5uZXQvc2Z1L3NhbGVzZm9yY2UtZDJkCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
-cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
-aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
-bmVyYWwK
+This patch adds SSP configuration and pin muxing info for tnetv107x
+evm boards.
+
+Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+---
+ arch/arm/mach-davinci/board-tnetv107x-evm.c |   14 ++++++++++++++
+ 1 files changed, 14 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
+index a6db854..ef526b1 100644
+--- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
++++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
+@@ -99,6 +99,12 @@ static const short uart1_pins[] __initdata = {
+ 	-1
+ };
+ 
++static const short ssp_pins[] __initdata = {
++	TNETV107X_SSP0_0, TNETV107X_SSP0_1, TNETV107X_SSP0_2,
++	TNETV107X_SSP1_0, TNETV107X_SSP1_1, TNETV107X_SSP1_2,
++	TNETV107X_SSP1_3, -1
++};
++
+ static struct mtd_partition nand_partitions[] = {
+ 	/* bootloader (U-Boot, etc) in first 12 sectors */
+ 	{
+@@ -196,17 +202,25 @@ static struct matrix_keypad_platform_data keypad_config = {
+ 	.no_autorepeat	= 0,
+ };
+ 
++static struct ti_ssp_data ssp_config = {
++	.out_clock	= 250 * 1000,
++	.dev_data	= {
++	},
++};
++
+ static struct tnetv107x_device_info evm_device_info __initconst = {
+ 	.serial_config		= &serial_config,
+ 	.mmc_config[1]		= &mmc_config,	/* controller 1 */
+ 	.nand_config[0]		= &nand_config,	/* chip select 0 */
+ 	.keypad_config		= &keypad_config,
++	.ssp_config		= &ssp_config,
+ };
+ 
+ static __init void tnetv107x_evm_board_init(void)
+ {
+ 	davinci_cfg_reg_list(sdio1_pins);
+ 	davinci_cfg_reg_list(uart1_pins);
++	davinci_cfg_reg_list(ssp_pins);
+ 
+ 	tnetv107x_devices_init(&evm_device_info);
+ }
+-- 
+1.7.1
+
+
+------------------------------------------------------------------------------
+What happens now with your Lotus Notes apps - do you make another costly 
+upgrade, or settle for being marooned without product support? Time to move
+off Lotus Notes and onto the cloud with Force.com, apps are easier to build,
+use, and manage than apps on traditional platforms. Sign up for the Lotus 
+Notes Migration Kit to learn more. http://p.sf.net/sfu/salesforce-d2d

@@ -1,12 +1,14 @@
-From: "Vpaej" <deccd-VJ3iFojvAMpBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Jexgqm Kohu
-Date: Wed, 8 Dec 2010 05:24:34 +0800
-Message-ID: <EPSILONLlcEPt0nlNFf00006e88@epsilon>
+From: "Celia" <celia-VgKT0Tum5cmyg/coymR8RNBPR1lH4CV8@public.gmane.org>
+Subject: 25 eur et 300% pour la bienvenue
+Date: Tue, 7 Dec 2010 23:13:04 +0100
+Message-ID: <20101207231304.44D786AE3B36@node6.grp1.afflink.org>
+Reply-To: celia-VgKT0Tum5cmyg/coymR8RNBPR1lH4CV8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; charset="GB2312";
-	boundary="NVqSP6PoBxpwYYAKMpYOEnF9YGv=_drNsM"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Language: fr
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,35 +19,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---NVqSP6PoBxpwYYAKMpYOEnF9YGv=_drNsM
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-
-您好！中\华\苏\烟\黄\鹤\楼等！完全分辨出不来（请看附件）   2dI61y9KIf77wBDNoq06ln5mG9tE8R019tVXP45908oqj419s49rlf6kd5hA1208X97WH6lW208XI
-
---NVqSP6PoBxpwYYAKMpYOEnF9YGv=_drNsM
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-What happens now with your Lotus Notes apps - do you make another costly 
-upgrade, or settle for being marooned without product support? Time to move
-off Lotus Notes and onto the cloud with Force.com, apps are easier to build,
-use, and manage than apps on traditional platforms. Sign up for the Lotus 
-Notes Migration Kit to learn more. http://p.sf.net/sfu/salesforce-d2d
---NVqSP6PoBxpwYYAKMpYOEnF9YGv=_drNsM
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---NVqSP6PoBxpwYYAKMpYOEnF9YGv=_drNsM--
+U2kgbGUgbWVzc2FnZSBjaS1kZXNzb3VzIG5lIHMnYWZmaWNoZSBwYXMgY29ycmVjdGVtZW50LCBh
+Y2PDqWRleiDDoCBsYSB2ZXJzaW9uIGVuIGxpZ25lIDoKCmh0dHA6Ly93d3cubW9ubmFpZS1yYXBp
+ZGUuY29tL2luZm8vMTAxMTI0MDFzNTVtMTNkMjItMy0xNjhkMTcucGhwCgpWb3VzIGF2ZXogbGEg
+cG9zc2liaWxpdMOpIGRlIHJlY2V2b2lyIDI1IGV1ciBzYW5zIGRlcG90IChDb2RlIHNlY3JldCA9
+IDI1Ym9udXMpICsgMzAwMCBldXIgb2ZmZXJ0cyBwb3VyIGRlY3JvY2hlciBsYSBjYWdub3R0ZSEg
+UmVjZXZleiBlbiBwbHVzIGRlcyBvZmZyZXMgdG90YWxlbWVudCBpbmNyb3lhYmxlcyBwb3VyIGF1
+Z21lbnRlciB2b3RyZSBwcm9iYWJpbGl0w6kgZGUgZ2FpbiBzdXIgdm9zIGRlcG90cyBzdWl2YW50
+cyEgQ2V0dGUgcHJvcG9zaXRpb24gbmUgZHVyZSBxdWUgcXVlbHF1ZXMgam91cnMsIG91dnJleiB1
+biBjb21wdGUgam91ZXVyIHNhbnMgcGVyZHJlIGRlIHRlbXBzIHBvdXIgw6p0cmUgc8O7ciBkJ2Vu
+IHByb2ZpdGVyIQoKCmh0dHA6Ly93d3cubW9ubmFpZS1yYXBpZGUuY29tL2FydGljbGUvMTAxMTI0
+MDEtMy0xNjhkMTcucGhwCgpJbnNjcml2ZXotdm91cyBwb3VyIGpvdWVyIGTDqHMgYXVqb3VyZCdo
+dWkhIE5vdXMgc29tbWVzIGwndW4gZGVzIGRlcm5pZXJzIHByZXN0aWdpZXV4IHNpdGVzIGVuIGxp
+Z25lIHZlbmFudCBzJ2Fqb3V0ZXIgYXUgZ3JvdXBlLCBkb250IGxhIHLDqXB1dGF0aW9uIG4nZXN0
+IHBsdXMgw6AgZmFpcmUuIE5vdHJlIG9iamVjdGlmIGVzdCBkZSBmb3VybmlyIGF1eCBqb3VldXJz
+IGwnZXhww6lyaWVuY2UgZGUgamV1IGxhIHBsdXMgZGl2ZXJ0aXNzYW50ZSBldCBzw6ljdXJpc8Op
+ZSBxdWkgc29pdCBzdXIgSW50ZXJuZXQuIAoKVmlzZXogbGEgY2Fnbm90dGUgZ2xvYmFsZSBhIGRl
+Y3JvY2hlciBkYW5zIHRvdXQgbGUgY29uZm9ydCBkZSB2b3RyZSBzYWxvbiBzdXIgbCd1biBkZXMg
+bWVpbGxldXJzIGxvZ2ljaWVscyBkZSBqZXUgdG90YWxlbWVudCBzw6ljdXJpc8OpLiBOb3RyZSBz
+aXRlIHZvdXMgcHJvcG9zZSBwbHVzIGRlIDQwOSBqZXV4IGRlcm5pZXIgY3JpLCBkaWduZXMgZGUg
+Y29uZmlhbmNlLiAKClTDqWzDqWNoYXJnZXogbm90cmUgbG9naWNpZWwgZMOocyBtYWludGVuYW50
+IGFmaW4gZGUgam91ZXIgaW1tZWRpYXRlbWVudC4gVm91cyB5IHRyb3V2ZXJleiBkZXMgamV1eCB0
+ZWxzIHF1ZSBsYSByb3VsZXR0ZSwgbGVzIG1hY2hpbmVzIGV0IGxlcyB0YWJsZXMuIFZvdXMgcG91
+cnJleiB5IGpvdWVyIGV0IGFwcHJlY2llciBjZSBncmFuZCBtb21lbnQhIAoKUG91ciBjb21tZW5j
+ZXIsIG5vdXMgdm91cyBvZmZyb25zIHVuZSBwcm9tb3Rpb24gaW50ZXJlc3NhbnRlLCBldCBsZSBt
+ZWlsbGV1ciBkYW5zIHRvdXQgw6dhIGMnZXN0IHF1ZSB2b3VzIGF1cmV6IGxhIHBvc3NpYmlsaXTD
+qSBkZSBnYXJkZXIgdG91cyB2b3MgZ2FpbnMhIAoKTm91cyBwcmVub25zIHNvaW4gZGUgbm9zIGpv
+dWV1cnMsIGMnZXN0IHBvdXJxdW9pIG5vdXMgYXR0YWNob25zIHVuZSBncmFuZGUgaW1wb3J0YW5j
+ZSDDoCBub3RyZSBzZXJ2aWNlIGNsaWVudC4gTm90cmUgw6lxdWlwZSBtdWx0aWxpbmd1ZSBlc3Qg
+w6Agdm90cmUgZGlzcG9zaXRpb24gMjQgaGV1cmVzIHN1ciAyNCBldCA3IGpvdXJzIHN1ciA3LiBO
+J2jDqXNpdGV6IHBhcyDDoCBub3VzIGFwcGVsZXIsIG5vdHJlIG51bcOpcm8gbmUgY291dGUgcmll
+bi4gVm91cyBwb3V2ZXogYXVzc2kgbm91cyBjb250YWN0ZXIgcGFyIGVtYWlsIG91IHN1ciBub3Ry
+ZSB0Y2hhdCBlbiBkaXJlY3QuIENlY2kgYXNzdXJlcmEgcXVlIHZvdHJlIGV4cMOpcmllbmNlIHNv
+aXQgbGEgcGx1cyBwbGFpc2FudGUgcG9zc2libGUuIAoKU2kgdm91cyBjaGVyY2hleiB1biBzaXRl
+IG/DuSB2b3VzIG4nYXZleiBwYXMgYmVzb2luIGRlIGTDqXBvc2VyIGRlcyBzb21tZXMgZm9sbGVz
+IHBvdXIgcG91dm9pciBjb21tZW5jZXIgw6Agam91ZXIsIG5vdHJlIHNpdGUgZXN0IGZhaXQgcG91
+ciB2b3VzIQoKVm91cyByZWNldmV6IGNldCBlbWFpbCBjYXIgdm91cyDDqnRlcyBtZW1icmUgZCd1
+biBkZSBub3Mgc2l0ZXMgcGFydGVuYWlyZXMgcHJpdmlsw6lnacOpcy4gTsOpYW5tb2lucywgdm91
+cyBwb3V2ZXogdm91cyDigJxkw6lzaW5zY3JpcmXigJ0gZGUgY2V0dGUgbGV0dHJlIGQnaW5mb3Jt
+YXRpb24gw6AgdG91dCBtb21lbnQgOiBodHRwOi8vd3d3Lm1vbm5haWUtcmFwaWRlLmNvbS91bnN1
+YnNjcmliZS8/cmVtb3ZlPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZh
+bXA7ZG89MTY4ZDE3JmFtcDtjYW1wPTEwMTEyNDAxCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KV2hh
+dCBoYXBwZW5zIG5vdyB3aXRoIHlvdXIgTG90dXMgTm90ZXMgYXBwcyAtIGRvIHlvdSBtYWtlIGFu
+b3RoZXIgY29zdGx5IAp1cGdyYWRlLCBvciBzZXR0bGUgZm9yIGJlaW5nIG1hcm9vbmVkIHdpdGhv
+dXQgcHJvZHVjdCBzdXBwb3J0PyBUaW1lIHRvIG1vdmUKb2ZmIExvdHVzIE5vdGVzIGFuZCBvbnRv
+IHRoZSBjbG91ZCB3aXRoIEZvcmNlLmNvbSwgYXBwcyBhcmUgZWFzaWVyIHRvIGJ1aWxkLAp1c2Us
+IGFuZCBtYW5hZ2UgdGhhbiBhcHBzIG9uIHRyYWRpdGlvbmFsIHBsYXRmb3Jtcy4gU2lnbiB1cCBm
+b3IgdGhlIExvdHVzIApOb3RlcyBNaWdyYXRpb24gS2l0IHRvIGxlYXJuIG1vcmUuIGh0dHA6Ly9w
+LnNmLm5ldC9zZnUvc2FsZXNmb3JjZS1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

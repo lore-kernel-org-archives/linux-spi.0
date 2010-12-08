@@ -1,73 +1,110 @@
-From: "Celia" <celia-VgKT0Tum5cmyg/coymR8RNBPR1lH4CV8@public.gmane.org>
-Subject: 25 eur et 300% pour la bienvenue
-Date: Tue, 7 Dec 2010 23:13:04 +0100
-Message-ID: <20101207231304.44D786AE3B36@node6.grp1.afflink.org>
-Reply-To: celia-VgKT0Tum5cmyg/coymR8RNBPR1lH4CV8@public.gmane.org
+From: Govindraj <govindraj.ti@gmail.com>
+Subject: Re: [PATCH 0/7 v2] OMAP: McSPI: Hwmod adaptation + runtime conversion
+Date: Wed, 8 Dec 2010 14:49:26 +0530
+Message-ID: <AANLkTimPAogh+foA3V+LShmw858UAcU7rN_2SryrabEj@mail.gmail.com>
+References: <33183.10.24.255.18.1291212072.squirrel@dbdmail.itg.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Language: fr
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-omap@vger.kernel.org,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-arm-kernel@lists.infradead.org, Charulatha V <charu@ti.com>,
+	Cousson@dbdmail.itg.ti.com, "Govindraj.R" <govindraj.raja@ti.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	Tony Lindgren <tony@atomide.com>,
+	Benoit Cousson <b-cousson@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <33183.10.24.255.18.1291212072.squirrel@dbdmail.itg.ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgbGUgbWVzc2FnZSBjaS1kZXNzb3VzIG5lIHMnYWZmaWNoZSBwYXMgY29ycmVjdGVtZW50LCBh
-Y2PDqWRleiDDoCBsYSB2ZXJzaW9uIGVuIGxpZ25lIDoKCmh0dHA6Ly93d3cubW9ubmFpZS1yYXBp
-ZGUuY29tL2luZm8vMTAxMTI0MDFzNTVtMTNkMjItMy0xNjhkMTcucGhwCgpWb3VzIGF2ZXogbGEg
-cG9zc2liaWxpdMOpIGRlIHJlY2V2b2lyIDI1IGV1ciBzYW5zIGRlcG90IChDb2RlIHNlY3JldCA9
-IDI1Ym9udXMpICsgMzAwMCBldXIgb2ZmZXJ0cyBwb3VyIGRlY3JvY2hlciBsYSBjYWdub3R0ZSEg
-UmVjZXZleiBlbiBwbHVzIGRlcyBvZmZyZXMgdG90YWxlbWVudCBpbmNyb3lhYmxlcyBwb3VyIGF1
-Z21lbnRlciB2b3RyZSBwcm9iYWJpbGl0w6kgZGUgZ2FpbiBzdXIgdm9zIGRlcG90cyBzdWl2YW50
-cyEgQ2V0dGUgcHJvcG9zaXRpb24gbmUgZHVyZSBxdWUgcXVlbHF1ZXMgam91cnMsIG91dnJleiB1
-biBjb21wdGUgam91ZXVyIHNhbnMgcGVyZHJlIGRlIHRlbXBzIHBvdXIgw6p0cmUgc8O7ciBkJ2Vu
-IHByb2ZpdGVyIQoKCmh0dHA6Ly93d3cubW9ubmFpZS1yYXBpZGUuY29tL2FydGljbGUvMTAxMTI0
-MDEtMy0xNjhkMTcucGhwCgpJbnNjcml2ZXotdm91cyBwb3VyIGpvdWVyIGTDqHMgYXVqb3VyZCdo
-dWkhIE5vdXMgc29tbWVzIGwndW4gZGVzIGRlcm5pZXJzIHByZXN0aWdpZXV4IHNpdGVzIGVuIGxp
-Z25lIHZlbmFudCBzJ2Fqb3V0ZXIgYXUgZ3JvdXBlLCBkb250IGxhIHLDqXB1dGF0aW9uIG4nZXN0
-IHBsdXMgw6AgZmFpcmUuIE5vdHJlIG9iamVjdGlmIGVzdCBkZSBmb3VybmlyIGF1eCBqb3VldXJz
-IGwnZXhww6lyaWVuY2UgZGUgamV1IGxhIHBsdXMgZGl2ZXJ0aXNzYW50ZSBldCBzw6ljdXJpc8Op
-ZSBxdWkgc29pdCBzdXIgSW50ZXJuZXQuIAoKVmlzZXogbGEgY2Fnbm90dGUgZ2xvYmFsZSBhIGRl
-Y3JvY2hlciBkYW5zIHRvdXQgbGUgY29uZm9ydCBkZSB2b3RyZSBzYWxvbiBzdXIgbCd1biBkZXMg
-bWVpbGxldXJzIGxvZ2ljaWVscyBkZSBqZXUgdG90YWxlbWVudCBzw6ljdXJpc8OpLiBOb3RyZSBz
-aXRlIHZvdXMgcHJvcG9zZSBwbHVzIGRlIDQwOSBqZXV4IGRlcm5pZXIgY3JpLCBkaWduZXMgZGUg
-Y29uZmlhbmNlLiAKClTDqWzDqWNoYXJnZXogbm90cmUgbG9naWNpZWwgZMOocyBtYWludGVuYW50
-IGFmaW4gZGUgam91ZXIgaW1tZWRpYXRlbWVudC4gVm91cyB5IHRyb3V2ZXJleiBkZXMgamV1eCB0
-ZWxzIHF1ZSBsYSByb3VsZXR0ZSwgbGVzIG1hY2hpbmVzIGV0IGxlcyB0YWJsZXMuIFZvdXMgcG91
-cnJleiB5IGpvdWVyIGV0IGFwcHJlY2llciBjZSBncmFuZCBtb21lbnQhIAoKUG91ciBjb21tZW5j
-ZXIsIG5vdXMgdm91cyBvZmZyb25zIHVuZSBwcm9tb3Rpb24gaW50ZXJlc3NhbnRlLCBldCBsZSBt
-ZWlsbGV1ciBkYW5zIHRvdXQgw6dhIGMnZXN0IHF1ZSB2b3VzIGF1cmV6IGxhIHBvc3NpYmlsaXTD
-qSBkZSBnYXJkZXIgdG91cyB2b3MgZ2FpbnMhIAoKTm91cyBwcmVub25zIHNvaW4gZGUgbm9zIGpv
-dWV1cnMsIGMnZXN0IHBvdXJxdW9pIG5vdXMgYXR0YWNob25zIHVuZSBncmFuZGUgaW1wb3J0YW5j
-ZSDDoCBub3RyZSBzZXJ2aWNlIGNsaWVudC4gTm90cmUgw6lxdWlwZSBtdWx0aWxpbmd1ZSBlc3Qg
-w6Agdm90cmUgZGlzcG9zaXRpb24gMjQgaGV1cmVzIHN1ciAyNCBldCA3IGpvdXJzIHN1ciA3LiBO
-J2jDqXNpdGV6IHBhcyDDoCBub3VzIGFwcGVsZXIsIG5vdHJlIG51bcOpcm8gbmUgY291dGUgcmll
-bi4gVm91cyBwb3V2ZXogYXVzc2kgbm91cyBjb250YWN0ZXIgcGFyIGVtYWlsIG91IHN1ciBub3Ry
-ZSB0Y2hhdCBlbiBkaXJlY3QuIENlY2kgYXNzdXJlcmEgcXVlIHZvdHJlIGV4cMOpcmllbmNlIHNv
-aXQgbGEgcGx1cyBwbGFpc2FudGUgcG9zc2libGUuIAoKU2kgdm91cyBjaGVyY2hleiB1biBzaXRl
-IG/DuSB2b3VzIG4nYXZleiBwYXMgYmVzb2luIGRlIGTDqXBvc2VyIGRlcyBzb21tZXMgZm9sbGVz
-IHBvdXIgcG91dm9pciBjb21tZW5jZXIgw6Agam91ZXIsIG5vdHJlIHNpdGUgZXN0IGZhaXQgcG91
-ciB2b3VzIQoKVm91cyByZWNldmV6IGNldCBlbWFpbCBjYXIgdm91cyDDqnRlcyBtZW1icmUgZCd1
-biBkZSBub3Mgc2l0ZXMgcGFydGVuYWlyZXMgcHJpdmlsw6lnacOpcy4gTsOpYW5tb2lucywgdm91
-cyBwb3V2ZXogdm91cyDigJxkw6lzaW5zY3JpcmXigJ0gZGUgY2V0dGUgbGV0dHJlIGQnaW5mb3Jt
-YXRpb24gw6AgdG91dCBtb21lbnQgOiBodHRwOi8vd3d3Lm1vbm5haWUtcmFwaWRlLmNvbS91bnN1
-YnNjcmliZS8/cmVtb3ZlPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZh
-bXA7ZG89MTY4ZDE3JmFtcDtjYW1wPTEwMTEyNDAxCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KV2hh
-dCBoYXBwZW5zIG5vdyB3aXRoIHlvdXIgTG90dXMgTm90ZXMgYXBwcyAtIGRvIHlvdSBtYWtlIGFu
-b3RoZXIgY29zdGx5IAp1cGdyYWRlLCBvciBzZXR0bGUgZm9yIGJlaW5nIG1hcm9vbmVkIHdpdGhv
-dXQgcHJvZHVjdCBzdXBwb3J0PyBUaW1lIHRvIG1vdmUKb2ZmIExvdHVzIE5vdGVzIGFuZCBvbnRv
-IHRoZSBjbG91ZCB3aXRoIEZvcmNlLmNvbSwgYXBwcyBhcmUgZWFzaWVyIHRvIGJ1aWxkLAp1c2Us
-IGFuZCBtYW5hZ2UgdGhhbiBhcHBzIG9uIHRyYWRpdGlvbmFsIHBsYXRmb3Jtcy4gU2lnbiB1cCBm
-b3IgdGhlIExvdHVzIApOb3RlcyBNaWdyYXRpb24gS2l0IHRvIGxlYXJuIG1vcmUuIGh0dHA6Ly9w
-LnNmLm5ldC9zZnUvc2FsZXNmb3JjZS1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Wed, Dec 1, 2010 at 7:31 PM, Govindraj.R <govindraj.raja@ti.com> wro=
+te:
+> Changes invloves:
+> ----------------
+> 1) Addition of hwmod data for omap2/3/4.
+> 1) McSPI driver hwmod adaptation with cleanup of base address
+> =A0 macros and using omap-device API's.
+> 2) Runtime Conversion of McSPI driver
+
+
+Any comments or feedback on this patch series?
+
+If no comments I hope patch series can be merged
+through LO tree with a ack from Grant on
+patch 6/6 and patch 7/7.
+
+Benoit,
+I may need you comments or ack on patch 1/[1-4]
+
+Patch 1/5 will be posted out separately as per Paul's
+comments:
+http://ns3.spinics.net/lists/linux-omap/msg41219.html
+
+--
+Thanks,
+Govindraj.R
+
+>
+> Changes from v1:
+> ---------------
+> 1) Fixing patch 5/5 comments for hwmod+runtime
+> =A0 Split the patch 5/5 to hwmod adaptation
+> =A0 and then runtime conversion
+> =A0 http://www.mail-archive.com/linux-omap@vger.kernel.org/msg33387.h=
+tml
+>
+> Testing Updates:
+> ----------------
+> Was tested using data transfer test module available at:
+> http://dev.omapzoom.org/?p=3Dricho/device_driver_test.git;a=3Dblob;f=3D=
+mcspi/test_code/
+> utils/mcspi_modules/omap_mcspi_datatest.c;
+> h=3De42ec10c5c844abdde6a7175a268b379fbbdb655;
+> hb=3D5d9a755d50e58de861c5e8991f2f607bc49b5dc3
+>
+> System wide suspend and ret/off counts observation,
+> ensured that no behavioral difference with and without
+> this patch series.
+>
+> Benoit Cousson (1):
+> =A0OMAP4: hwmod data: Add McSPI
+>
+> Charulatha V (5):
+> =A0OMAP2420: hwmod data: Add McSPI
+> =A0OMAP2430: hwmod data: Add McSPI
+> =A0OMAP3: hwmod data: Add McSPI
+> =A0OMAP3: clocks: Update clock domain name for mcspi fck
+> =A0OMAP: devices: Modify McSPI device to adapt to hwmod framework
+>
+> Govindraj.R (1):
+> =A0OMAP: runtime: McSPI driver runtime conversion
+>
+> =A0arch/arm/mach-omap2/clock3xxx_data.c =A0 =A0 =A0 | =A0 =A04 +
+> =A0arch/arm/mach-omap2/devices.c =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0189 =
+++++---------------
+> =A0arch/arm/mach-omap2/omap_hwmod_2420_data.c | =A0156 ++++++++++++++=
+++
+> =A0arch/arm/mach-omap2/omap_hwmod_2430_data.c | =A0219 ++++++++++++++=
+++++++++
+> =A0arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | =A0280 ++++++++++++++=
+++++++++++++++
+> =A0arch/arm/mach-omap2/omap_hwmod_44xx_data.c | =A0267 ++++++++++++++=
+++++++++++++
+> =A0arch/arm/plat-omap/include/plat/mcspi.h =A0 =A0| =A0 11 +
+> =A0drivers/spi/omap2_mcspi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+225 +++++++---------------
+> =A08 files changed, 1051 insertions(+), 300 deletions(-)
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap"=
+ in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
+>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

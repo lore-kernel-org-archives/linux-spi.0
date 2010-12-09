@@ -1,51 +1,62 @@
-From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: Re: [sodaville] SPI support for CE4100, v2
-Date: Thu, 09 Dec 2010 17:43:54 +0100
-Message-ID: <4D01074A.2020106@linutronix.de>
-References: <1291312057-7933-1-git-send-email-bigeasy@linutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1291312057-7933-1-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Ben Gardiner <bengardiner@nanometrics.ca>
+Subject: [RFC][PATCH v2 2/3] spi_bitbang : get nsecs delay from cs during transfer
+Date: Thu,  9 Dec 2010 15:34:55 -0500
+Message-ID: <67270e44ec792d1a684d6052f7aebbc8c538a6c1.1291925752.git.bengardiner@nanometrics.ca>
+References: <1290205185-11956-1-git-send-email-bengardiner@nanometrics.ca> <cover.1291925752.git.bengardiner@nanometrics.ca>
+Cc: linux-kernel@vger.kernel.org, Michael Buesch <mb@bu3sch.de>
+To: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	David Brownell <dbrownell@users.sourceforge.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <cover.1291925752.git.bengardiner@nanometrics.ca>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Sebastian Andrzej Siewior wrote:
-> The SPI core inside CE4100 is very much the same as in PXA25x.
-> I Cc the ARM folks because patch 4 reorganizes some files so that they
-> can be access from x86. Yes, CE4100 is a x86 SoC :)
-> The SPI device is behind a PCI bus. The PCI probe code simply creates a
-> platform device so we don't have much changes to the platform driver.
-> There is no clock framework on x86 and the peripherals don't support
-> changing their clocks or to enable/disable them. So I provided dummy
-> function which keep the driver happy.
-> 
-> History:
-> v1: initial post
-> v2: - the patch touching subys_inticall() got removed.
->     - platform_driver_probe() is replaced with platform_driver_register()
->     - there are no files created in include/asm.
-> 
-> The patch series has been created with the -M option so file moves can
-> be easily noticed. The whole series is also available at
->   git://git.linutronix.de/users/bigeasy/soda.git spi
+When users have elected to enable delays in the spi-gpio driver, use the
+cs speed to govern the time between CS assertion and beginning of data
+transfer on the bus
 
-It's been week since I posted this and nobody commented on it. Is this
-patchset missing something or is it good to go?
+Signed-off-by: Ben Gardiner <bengardiner@nanometrics.ca>
+---
+changes since v1:
+ * none; new in v2
 
-Sebastian
+ drivers/spi/spi_bitbang.c |   15 +++++++++------
+ 1 files changed, 9 insertions(+), 6 deletions(-)
 
-
-------------------------------------------------------------------------------
+diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+index 8b55724..8707133 100644
+--- a/drivers/spi/spi_bitbang.c
++++ b/drivers/spi/spi_bitbang.c
+@@ -269,6 +269,7 @@ static void bitbang_work(struct work_struct *work)
+ 	while (!list_empty(&bitbang->queue)) {
+ 		struct spi_message	*m;
+ 		struct spi_device	*spi;
++		struct spi_bitbang_cs	*cs;
+ 		unsigned		nsecs;
+ 		struct spi_transfer	*t = NULL;
+ 		unsigned		tmp;
+@@ -281,13 +282,15 @@ static void bitbang_work(struct work_struct *work)
+ 		list_del_init(&m->queue);
+ 		spin_unlock_irqrestore(&bitbang->lock, flags);
+ 
+-		/* FIXME this is made-up ... the correct value is known to
+-		 * word-at-a-time bitbang code, and presumably chipselect()
+-		 * should enforce these requirements too?
+-		 */
+-		nsecs = 100;
+-
+ 		spi = m->spi;
++		cs = spi->controller_state;
++		nsecs =
++#if defined(CONFIG_SLOWER_SPI_GPIO)
++				!cs->nsecs ? cs->nsecs : 100;
++#else
++		100;
++#endif
++
+ 		tmp = 0;
+ 		cs_change = 1;
+ 		status = 0;
+-- 
+1.7.0.4

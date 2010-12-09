@@ -1,98 +1,68 @@
-From: Ben Gardiner <bengardiner@nanometrics.ca>
-Subject: [RFC][PATCH v2 1/3] spi-gpio: implement spidelay() for platforms that configure SLOWER_SPI_GPIO
-Date: Thu,  9 Dec 2010 15:34:54 -0500
-Message-ID: <0e2c28d0e0d60b9655e7d80e79cc811206b725b9.1291925752.git.bengardiner@nanometrics.ca>
-References: <1290205185-11956-1-git-send-email-bengardiner@nanometrics.ca> <cover.1291925752.git.bengardiner@nanometrics.ca>
-Cc: linux-kernel@vger.kernel.org, Michael Buesch <mb@bu3sch.de>
-To: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <cover.1291925752.git.bengardiner@nanometrics.ca>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "Beam Clip Supply" <theclawbeamNoReply-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Wrap Columns and Beams - Save Time and Money
+Date: Thu, 9 Dec 2010 13:45:21 -0700
+Message-ID: <e97c5673923430c0530a54a70013ccde@g2gm.com>
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_1515381625D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Introduce a Kconfig option, SLOWER_SPI_GPIO, that enables a spidelay
-implementation of ndelay when defined.
+This is a multi-part message in MIME format.
 
-This is based off of the patch proposed by Michael Buesch [1]. Whereas that
-patch required slave's set their spi_device.max_speed_hz and
-spi_transfer.speed_hz to 0 to obtain 'as fast as we can transfers' this patch
-keeps the default of 'as fast as we can' for any GPIO SPI master unless the
-proposed Kconfig option is enabled.
+------=SPLITOR00A_001_1515381625D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Ben Gardiner <bengardiner@nanometrics.ca>
-Reviewed-by: Dan Sharon <dansharon@nanometrics.ca>
-Reviewed-by: Chris Cordahi <chriscordahi@nanometrics.ca>
-CC: Michael Buesch <mb@bu3sch.de>
+Wrap Columns and Beams by Using THE CLAW!
 
-[1] http://article.gmane.org/gmane.comp.embedded.openwrt.devel/2854
+Simply snap THE CLAW single step beam & column clips on by hand=2E
+No Tools required. An eight-foot column can be framed ready for wallboard =
+within 2 Minutes!
 
----
-changes since v1:
- * rebased to v2.6.37-rc5
+Don't pay to spray eight areas of steal--- Use THE CLAW and coded board to =
+fireproof beams and columns=2E
 
- drivers/spi/Kconfig    |   17 +++++++++++++++++
- drivers/spi/spi_gpio.c |    5 +++++
- 2 files changed, 22 insertions(+), 0 deletions(-)
+------>VIEW THE ATTACHED FORM TO GET A SAMPLE or TO ORDER THE CLAW<------
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 78f9fd0..0570dcd 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -143,6 +143,23 @@ config SPI_GPIO
- 	  GPIO operations, you should be able to leverage that for better
- 	  speed with a custom version of this driver; see the source code.
- 
-+config SLOWER_SPI_GPIO
-+	bool "Enable delays in the GPIO-based bitbanging SPI Master"
-+	default n
-+	depends on SPI_GPIO
-+	help
-+	  The GPIO bitbanging SPI master driver will run without any delays if this
-+	  option is not set. This option will enable the use of delays in the
-+	  operation of the GPIO bitbanging SPI master implementation to honour the
-+	  maximum speed of very slow devices.
-+
-+	  To configure slow speed devices your board-specific setup logic must also
-+	  provide platform data assigning the speed for a device on a given chip
-+	  select of the GPIO bitbanging SPI master.
-+
-+	  If your platform requires SPI buses driven at slow speeds select yes. If
-+	  in doubt, select no.
-+
- config SPI_IMX_VER_IMX1
- 	def_bool y if SOC_IMX1
- 
-diff --git a/drivers/spi/spi_gpio.c b/drivers/spi/spi_gpio.c
-index 63e51b0..b31fddd 100644
---- a/drivers/spi/spi_gpio.c
-+++ b/drivers/spi/spi_gpio.c
-@@ -19,6 +19,7 @@
-  */
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- 
-@@ -119,6 +120,9 @@ static inline int getmiso(const struct spi_device *spi)
- 
- #undef pdata
- 
-+#if defined(CONFIG_SLOWER_SPI_GPIO)
-+#define spidelay(nsecs) ndelay(nsecs)
-+#else
- /*
-  * NOTE:  this clocks "as fast as we can".  It "should" be a function of the
-  * requested device clock.  Software overhead means we usually have trouble
-@@ -126,6 +130,7 @@ static inline int getmiso(const struct spi_device *spi)
-  * we'll just assume we never need additional per-bit slowdowns.
-  */
- #define spidelay(nsecs)	do {} while (0)
-+#endif
- 
- #include "spi_bitbang_txrx.h"
- 
--- 
-1.7.0.4
+WHY USE THE CLAW?
+--Save Time
+--Prevents Slippage During Installation
+--No Inspection
+--No Damage Repairs
+--No Slop to Clean Up
+--50% Less Material
+
+For Questions or to get a sample of THE CLAW call 712-266-3707
+
+
+------=SPLITOR00A_001_1515381625D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+
+------=SPLITOR00A_001_1515381625D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_1515381625D--

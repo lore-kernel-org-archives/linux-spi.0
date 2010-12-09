@@ -1,19 +1,17 @@
 From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Subject: Re: [v2] spi/spi: don't release the spi device twice
-Date: Thu, 9 Dec 2010 17:06:22 +0100
-Message-ID: <20101209160622.GA22000@www.tglx.de>
-References: <20101123145910.GA23880@www.tglx.de>
+Subject: Re: [sodaville] SPI support for CE4100, v2
+Date: Thu, 09 Dec 2010 17:43:54 +0100
+Message-ID: <4D01074A.2020106@linutronix.de>
+References: <1291312057-7933-1-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20101123145910.GA23880-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
+In-Reply-To: <1291312057-7933-1-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,35 +22,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Sebastian Andrzej Siewior | 2010-11-23 14:59:10 [-0000]:
-
->This was fixed by David Lamparter in v2.6.36-rc5 3486008
->("spi: free children in spi_unregister_master, not siblings") and broken
->again in v2.6.37-rc1~2^2~4 during the merge of 2b9603a0 ("spi: enable
->spi_board_info to be registered after spi_master").
->
->Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
->---
-
-ping
-
->
-> drivers/spi/spi.c |    3 +--
-> 1 files changed, 1 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->index 709c836..b02d0cb 100644
->--- a/drivers/spi/spi.c
->+++ b/drivers/spi/spi.c
->@@ -584,8 +584,7 @@ void spi_unregister_master(struct spi_master *master)
-> 	list_del(&master->list);
-> 	mutex_unlock(&board_lock);
+Sebastian Andrzej Siewior wrote:
+> The SPI core inside CE4100 is very much the same as in PXA25x.
+> I Cc the ARM folks because patch 4 reorganizes some files so that they
+> can be access from x86. Yes, CE4100 is a x86 SoC :)
+> The SPI device is behind a PCI bus. The PCI probe code simply creates a
+> platform device so we don't have much changes to the platform driver.
+> There is no clock framework on x86 and the peripherals don't support
+> changing their clocks or to enable/disable them. So I provided dummy
+> function which keep the driver happy.
 > 
->-	dummy = device_for_each_child(master->dev.parent, &master->dev,
->-					__unregister);
->+	dummy = device_for_each_child(&master->dev, NULL, __unregister);
-> 	device_unregister(&master->dev);
-> }
-> EXPORT_SYMBOL_GPL(spi_unregister_master);
+> History:
+> v1: initial post
+> v2: - the patch touching subys_inticall() got removed.
+>     - platform_driver_probe() is replaced with platform_driver_register()
+>     - there are no files created in include/asm.
+> 
+> The patch series has been created with the -M option so file moves can
+> be easily noticed. The whole series is also available at
+>   git://git.linutronix.de/users/bigeasy/soda.git spi
+
+It's been week since I posted this and nobody commented on it. Is this
+patchset missing something or is it good to go?
+
+Sebastian
+
 
 ------------------------------------------------------------------------------

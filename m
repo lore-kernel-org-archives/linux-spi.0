@@ -1,60 +1,58 @@
-From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v7 11/12] davinci: add tnetv107x evm backlight device
-Date: Thu, 09 Dec 2010 09:58:41 -0500
-Message-ID: <4D00EEA1.8070201@ti.com>
-References: <1291733522-3626-1-git-send-email-cyril@ti.com>	<1291733522-3626-12-git-send-email-cyril@ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247CD83E1@dbde02.ent.ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247CD84F4@dbde02.ent.ti.com>
-Reply-To: cyril-l0cyMroinI0@public.gmane.org
+From: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Subject: Re: [v2] spi/spi: don't release the spi device twice
+Date: Thu, 9 Dec 2010 17:06:22 +0100
+Message-ID: <20101209160622.GA22000@www.tglx.de>
+References: <20101123145910.GA23880@www.tglx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-        "alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB5930247CD84F4-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: "dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20101123145910.GA23880-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/09/2010 06:00 AM, Nori, Sekhar wrote:
-> On Thu, Dec 09, 2010 at 14:25:49, Nori, Sekhar wrote:
+* Sebastian Andrzej Siewior | 2010-11-23 14:59:10 [-0000]:
+
+>This was fixed by David Lamparter in v2.6.36-rc5 3486008
+>("spi: free children in spi_unregister_master, not siblings") and broken
+>again in v2.6.37-rc1~2^2~4 during the merge of 2b9603a0 ("spi: enable
+>spi_board_info to be registered after spi_master").
+>
+>Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+>---
+
+ping
+
+>
+> drivers/spi/spi.c |    3 +--
+> 1 files changed, 1 insertions(+), 2 deletions(-)
+>
+>diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>index 709c836..b02d0cb 100644
+>--- a/drivers/spi/spi.c
+>+++ b/drivers/spi/spi.c
+>@@ -584,8 +584,7 @@ void spi_unregister_master(struct spi_master *master)
+> 	list_del(&master->list);
+> 	mutex_unlock(&board_lock);
 > 
->> This call should simply return if machine is not tnetv107x EVM.
->>
->> I didn't follow the entire series but wondering why
->> platform device registration should be a late init call.
->> Typically the driver probe can be made a late init call
->> in case of init sequence dependencies.
-> 
-> I meant driver init, not probe.
+>-	dummy = device_for_each_child(master->dev.parent, &master->dev,
+>-					__unregister);
+>+	dummy = device_for_each_child(&master->dev, NULL, __unregister);
+> 	device_unregister(&master->dev);
+> }
+> EXPORT_SYMBOL_GPL(spi_unregister_master);
 
-This was done to handle driver dependencies, and is meant to be
-temporary (until a real driver dependency framework comes in).
-
-Please see [1] for a bit more of background on changing drivers to use
-module_init().
-
-Regards
-- Cyril.
-
-[1]
-http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2010-November/020987.html
+------------------------------------------------------------------------------

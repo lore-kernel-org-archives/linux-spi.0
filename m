@@ -1,12 +1,13 @@
-From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v7 11/12] davinci: add tnetv107x evm backlight device
-Date: Fri, 10 Dec 2010 21:31:59 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8@dbde02.ent.ti.com>
+From: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+Subject: Re: [PATCH v7 11/12] davinci: add tnetv107x evm backlight device
+Date: Fri, 10 Dec 2010 08:56:28 -0800
+Message-ID: <87aakdd0sj.fsf@deeprootsystems.com>
 References: <1291733522-3626-1-git-send-email-cyril@ti.com>
 	<1291733522-3626-12-git-send-email-cyril@ti.com>
 	<B85A65D85D7EB246BE421B3FB0FBB5930247CD83E1@dbde02.ent.ti.com>
 	<B85A65D85D7EB246BE421B3FB0FBB5930247CD84F4@dbde02.ent.ti.com>
 	<4D00EEA1.8070201@ti.com>
+	<B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8@dbde02.ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,15 +18,15 @@ Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
         "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
         "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
         "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-        "alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
         "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
         "akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
         "lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
-To: "Chemparathy, Cyril" <cyril-l0cyMroinI0@public.gmane.org>
+To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
 Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <4D00EEA1.8070201-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+	(Sekhar Nori's message of "Fri, 10 Dec 2010 21:31:59 +0530")
 List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
 	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
@@ -37,34 +38,36 @@ Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@publi
 Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 09, 2010 at 20:28:41, Chemparathy, Cyril wrote:
-> On 12/09/2010 06:00 AM, Nori, Sekhar wrote:
-> > On Thu, Dec 09, 2010 at 14:25:49, Nori, Sekhar wrote:
-> >
-> >> This call should simply return if machine is not tnetv107x EVM.
-> >>
-> >> I didn't follow the entire series but wondering why
-> >> platform device registration should be a late init call.
-> >> Typically the driver probe can be made a late init call
-> >> in case of init sequence dependencies.
-> >
-> > I meant driver init, not probe.
->
-> This was done to handle driver dependencies, and is meant to be
-> temporary (until a real driver dependency framework comes in).
->
-> Please see [1] for a bit more of background on changing drivers to use
-> module_init().
+"Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org> writes:
 
-Hmm, okay. Please include a check for machine in that case.
+> On Thu, Dec 09, 2010 at 20:28:41, Chemparathy, Cyril wrote:
+>> On 12/09/2010 06:00 AM, Nori, Sekhar wrote:
+>> > On Thu, Dec 09, 2010 at 14:25:49, Nori, Sekhar wrote:
+>> >
+>> >> This call should simply return if machine is not tnetv107x EVM.
+>> >>
+>> >> I didn't follow the entire series but wondering why
+>> >> platform device registration should be a late init call.
+>> >> Typically the driver probe can be made a late init call
+>> >> in case of init sequence dependencies.
+>> >
+>> > I meant driver init, not probe.
+>>
+>> This was done to handle driver dependencies, and is meant to be
+>> temporary (until a real driver dependency framework comes in).
+>>
+>> Please see [1] for a bit more of background on changing drivers to use
+>> module_init().
+>
+> Hmm, okay. Please include a check for machine in that case.
+>
+
+Sekhar is right.  
+
+Today, we don't (can't) build this machine with others for a couple
+reasons, but we're moving towards removing those restrictions, so when
+this machine is included in a binary with others, it needs to check.
 
 Thanks,
-Sekhar
 
->
-> Regards
-> - Cyril.
->
-> [1]
-> http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2010-November/020987.html
->
+Kevin

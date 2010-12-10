@@ -1,73 +1,61 @@
-From: Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
-Subject: Re: [PATCH v7 11/12] davinci: add tnetv107x evm backlight device
-Date: Fri, 10 Dec 2010 08:56:28 -0800
-Message-ID: <87aakdd0sj.fsf@deeprootsystems.com>
-References: <1291733522-3626-1-git-send-email-cyril@ti.com>
-	<1291733522-3626-12-git-send-email-cyril@ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247CD83E1@dbde02.ent.ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247CD84F4@dbde02.ent.ti.com>
-	<4D00EEA1.8070201@ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8@dbde02.ent.ti.com>
+From: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [uClinux-dev] [PATCH] m68knommu: Coldfire QSPI platform support
+Date: Fri, 10 Dec 2010 08:46:35 -0800
+Message-ID: <201012100846.36080.sfking@fdwdc.com>
+References: <201001221243.04045.sfking@fdwdc.com>
+	<4CA17F2D.7000407@snapgear.com>
+	<6C2434209962DC46B88345CA85C334A2A434E65AF7@Courier.syntech.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        "alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
-        "lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8-/tLxBxkBPtCIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-	(Sekhar Nori's message of "Fri, 10 Dec 2010 21:31:59 +0530")
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: "'spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org'"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	'Greg Ungerer' <gerg-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org>
+To: Jate Sujjavanich <jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <6C2434209962DC46B88345CA85C334A2A434E65AF7-sZuHJe4yGqVM6S7uvVHM8UB+6BGkLq7r@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-"Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org> writes:
-
-> On Thu, Dec 09, 2010 at 20:28:41, Chemparathy, Cyril wrote:
->> On 12/09/2010 06:00 AM, Nori, Sekhar wrote:
->> > On Thu, Dec 09, 2010 at 14:25:49, Nori, Sekhar wrote:
->> >
->> >> This call should simply return if machine is not tnetv107x EVM.
->> >>
->> >> I didn't follow the entire series but wondering why
->> >> platform device registration should be a late init call.
->> >> Typically the driver probe can be made a late init call
->> >> in case of init sequence dependencies.
->> >
->> > I meant driver init, not probe.
->>
->> This was done to handle driver dependencies, and is meant to be
->> temporary (until a real driver dependency framework comes in).
->>
->> Please see [1] for a bit more of background on changing drivers to use
->> module_init().
+On Wednesday 29 September 2010 06:44:32 Jate Sujjavanich wrote:
+> Here's a patch for your review.
 >
-> Hmm, okay. Please include a check for machine in that case.
+>
+> After grabbing a msg from the msgq, the mcfqspi_work function calls
+> list_del_init on the mcfqspi->msgq which unintentionally deletes the rest
+> of the list before it can be processed. If qspi call was made using
+> spi_sync, this can result in a process hang.
+>
+> Signed-off by Jate Sujjavanich<jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>
+> -----------
+> diff --git a/drivers/spi/coldfire_qspi.c b/drivers/spi/coldfire_qspi.c
+> index 59be3ef..0aa00af 100644
+> --- a/drivers/spi/coldfire_qspi.c
+> +++ b/drivers/spi/coldfire_qspi.c
+> @@ -316,7 +316,7 @@ static void mcfqspi_work(struct work_struct *work)
+>                  msg = container_of(mcfqspi->msgq.next, struct spi_message,
+>                                     queue);
+> -               list_del_init(&mcfqspi->msgq);
+> +               list_del_init(&msg->queue);
+>                  spin_unlock_irqrestore(&mcfqspi->lock, flags);
+>                  spi = msg->spi;
 >
 
-Sekhar is right.  
 
-Today, we don't (can't) build this machine with others for a couple
-reasons, but we're moving towards removing those restrictions, so when
-this machine is included in a binary with others, it needs to check.
+A belated ack.
 
-Thanks,
+Grant, can we still get this into .37?
 
-Kevin
+------------------------------------------------------------------------------
+Oracle to DB2 Conversion Guide: Learn learn about native support for PL/SQL,
+new data types, scalar functions, improved concurrency, built-in packages, 
+OCI, SQL*Plus, data movement tools, best practices and more.
+http://p.sf.net/sfu/oracle-sfdev2dev 

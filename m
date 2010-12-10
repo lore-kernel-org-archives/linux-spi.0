@@ -1,66 +1,70 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [RFC][PATCH v2 2/3] spi_bitbang : get nsecs delay from cs
- during transfer
-Date: Fri, 10 Dec 2010 12:46:04 +0100
-Message-ID: <20101210114604.GB4228@pengutronix.de>
-References: <1290205185-11956-1-git-send-email-bengardiner@nanometrics.ca>
- <cover.1291925752.git.bengardiner@nanometrics.ca>
- <67270e44ec792d1a684d6052f7aebbc8c538a6c1.1291925752.git.bengardiner@nanometrics.ca>
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v7 11/12] davinci: add tnetv107x evm backlight device
+Date: Fri, 10 Dec 2010 21:31:59 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB5930247CD8CE8@dbde02.ent.ti.com>
+References: <1291733522-3626-1-git-send-email-cyril@ti.com>
+	<1291733522-3626-12-git-send-email-cyril@ti.com>
+	<B85A65D85D7EB246BE421B3FB0FBB5930247CD83E1@dbde02.ent.ti.com>
+	<B85A65D85D7EB246BE421B3FB0FBB5930247CD84F4@dbde02.ent.ti.com>
+	<4D00EEA1.8070201@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2JFBq9zoW8cOFH7v"
-Cc: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, Michael Buesch <mb@bu3sch.de>
-To: Ben Gardiner <bengardiner@nanometrics.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <67270e44ec792d1a684d6052f7aebbc8c538a6c1.1291925752.git.bengardiner@nanometrics.ca>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        "linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+        "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
+        "alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org" <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org" <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        "lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org" <lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org>
+To: "Chemparathy, Cyril" <cyril-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <4D00EEA1.8070201-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, Dec 09, 2010 at 20:28:41, Chemparathy, Cyril wrote:
+> On 12/09/2010 06:00 AM, Nori, Sekhar wrote:
+> > On Thu, Dec 09, 2010 at 14:25:49, Nori, Sekhar wrote:
+> >
+> >> This call should simply return if machine is not tnetv107x EVM.
+> >>
+> >> I didn't follow the entire series but wondering why
+> >> platform device registration should be a late init call.
+> >> Typically the driver probe can be made a late init call
+> >> in case of init sequence dependencies.
+> >
+> > I meant driver init, not probe.
+>
+> This was done to handle driver dependencies, and is meant to be
+> temporary (until a real driver dependency framework comes in).
+>
+> Please see [1] for a bit more of background on changing drivers to use
+> module_init().
 
---2JFBq9zoW8cOFH7v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmm, okay. Please include a check for machine in that case.
 
-Hi,
+Thanks,
+Sekhar
 
-thanks for the submission. It has some issues, though:
-
-On Thu, Dec 09, 2010 at 03:34:55PM -0500, Ben Gardiner wrote:
-
-> +		nsecs =3D
-> +#if defined(CONFIG_SLOWER_SPI_GPIO)
-> +				!cs->nsecs ? cs->nsecs : 100;
-> +#else
-> +		100;
-> +#endif
-
-This coding style is very hard to read and gains nothing for it. Also,
-slower_spi should rather be a per-device than a config option.
-
-Kind regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---2JFBq9zoW8cOFH7v
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk0CEvwACgkQD27XaX1/VRsviACgmUcwWV5cqVcKo9X2eeFm1kQ7
-NscAoIhABVZW4Pni+8eRsYl9s6fOHnvk
-=aO5M
------END PGP SIGNATURE-----
-
---2JFBq9zoW8cOFH7v--
+>
+> Regards
+> - Cyril.
+>
+> [1]
+> http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2010-November/020987.html
+>

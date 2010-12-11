@@ -1,57 +1,40 @@
-From: Kevin Hilman <khilman@deeprootsystems.com>
-Subject: Re: [PATCH v7 00/12] tnetv107x ssp drivers
-Date: Fri, 10 Dec 2010 16:19:48 -0800
-Message-ID: <87r5dp6tzv.fsf@deeprootsystems.com>
-References: <1291733522-3626-1-git-send-email-cyril@ti.com>
+From: "steffenhagenvkg-/E1597aS9LSez0ei9/+7zw@public.gmane.org" <steffenhagenvkg-/E1597aS9LSez0ei9/+7zw@public.gmane.org>
+Subject: =?GB2312?B?x+uy6crV0ru34tPKvP4hc3RlZmZlbmhhZ2VudmtnQHlhaG9vLmNvLmlkV3s1?=
+	=?GB2312?B?LTIwfW17NS0yMH0=?=
+Date: Sat, 11 Dec 2010 09:07:50 +0800
+Message-ID: <201012110907506875814@yahoo.co.id>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source@linux.davincidsp.com,
-	dbrownell@users.sourceforge.net, sameo@linux.intel.com,
-	linus.ml.walleij@gmail.com, broonie@opensource.wolfsonmicro.com,
-	grant.likely@secretlab.ca, rpurdie@rpsys.net, alan@lxorguk.ukuu.org.uk,
-	spi-devel-general@lists.sourceforge.net,
-	akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	lrg@slimlogic.co.uk
-To: Cyril Chemparathy <cyril@ti.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1291733522-3626-1-git-send-email-cyril@ti.com> (Cyril
-	Chemparathy's message of "Tue, 7 Dec 2010 09:51:50 -0500")
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Cyril Chemparathy <cyril@ti.com> writes:
-
-> TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
-> device.  It has a built-in programmable execution engine that can be programmed
-> to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
-
-OK, this series seems to be stabilizing.  The question now is how to
-merge it.
-
-I'm happy to merge it as a single series via the davinci tree as long as
-I get some acks on the drivers.  For me to merge this, I'm missing some
-acks for the following:
-
-[PATCH v7 04/12] spi: add ti-ssp spi master driver
-Grant Likely, although I thought he gave an ack earlier)
-
-[PATCH v7 10/12] backlight: add support for tps6116x controller
-Richard Purdie
-
-[PATCH v7 08/12] gpio: add ti-ssp gpio driver
-David Brownell?  (MAINTAINERS isn't clear here)
-
-If I get acks soon, we can get this in for 2.6.38. 
-
-Thanks,
-
-Kevin
+xPq6w6Oh16jStbmp06bUrbOn0czLv8Xk1sa498Dgw+LLsM/j0cwuDQoNCiDW0LuqoaLcvcjYu8ah
+osvV0cyhorTz0KHQ3MOooaK7xrrXwqWhotK7vsXSu8H5oaK2rLPmz8Sy3bXIo6ENCg0KIMGqz7VR
+UaO6NjQyNzE0MzYyICAgus7J+jEzNjkyMjI3NzYyIA0KDQogsb7JzNDQz+PRzLa8yse+q7fCz7XB
+0C6w/Newus3V5sa3sfDO3sG90fmjqNPQt8DOscLro6kgv9q40LS/1f0uOTUltrzKx9Xm0czLvy4N
+Cg0KINX9ueazp7zSvNO5pNbG1/cuob6+q7fCob8gs6e1xNKqx/O63NHPuPEu0czStsirsr/M2Mri
+vNO5pNPr1sbX99Xm1f2077W9wcu437Hq17y1xNKqx/Mho6jF+sG/vNu48cHt0umjqb270tfB47Wj
+t+fP1aOhDQoNCiDKx9fUs+ks1dC0/SzLzcDxLMX6t6IswePK2yy5q8u+LL7GteosINPpwNazocv5
+tcjK19GhLCANCg0KILzbuPG4/LrPwO0sv9rOtrj8tL/V/SEgvPu79bi2v+4sx+u3xdDEubrC8iEg
+s7m118jDxPrO3rrzucvWrtPHIQ0KDQog0tShsLPP0MUuzvHKtS6439CnLrmy066hsc6q19rWvNPr
+xPqzpMbaus/X9ywgtPLIxcfrxOPBwr3iDQoNCiAgICAgICAgeWFob28uY28uaWQoMy05KXlhaG9v
+LmNvLmlkKDMtOSkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9yYWNsZSB0byBEQjIgQ29udmVyc2lv
+biBHdWlkZTogTGVhcm4gbGVhcm4gYWJvdXQgbmF0aXZlIHN1cHBvcnQgZm9yIFBML1NRTCwKbmV3
+IGRhdGEgdHlwZXMsIHNjYWxhciBmdW5jdGlvbnMsIGltcHJvdmVkIGNvbmN1cnJlbmN5LCBidWls
+dC1pbiBwYWNrYWdlcywgCk9DSSwgU1FMKlBsdXMsIGRhdGEgbW92ZW1lbnQgdG9vbHMsIGJlc3Qg
+cHJhY3RpY2VzIGFuZCBtb3JlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L29yYWNsZS1zZmRldjJkZXYg
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
+bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
+dmVsLWdlbmVyYWwK

@@ -1,82 +1,41 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 00/49] spi: davinci: re-write existing driver
-Date: Sat, 11 Dec 2010 13:54:45 -0700
-Message-ID: <AANLkTi=y+5YXRwz2gDNfs9HAkRKro_Aw6eyUwTjcDt9M@mail.gmail.com>
-References: <1289990661-30126-1-git-send-email-nsekhar@ti.com>
-	<20101117152426.GA5757@angua.secretlab.ca>
-	<B85A65D85D7EB246BE421B3FB0FBB5930247388244@dbde02.ent.ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302473884F7@dbde02.ent.ti.com>
-	<B85A65D85D7EB246BE421B3FB0FBB59302473885A3@dbde02.ent.ti.com>
-	<4D0399EB.6070204@criticallink.com>
+From: "C. Toure" <charlestoure80-8Ag6cWZj/Ek@public.gmane.org>
+Subject: [SPAM] Hello
+Date: Mon, 13 Dec 2010 11:31:46 +0000
+Message-ID: <00ebfb32$40525$12724803936921@poste5>
+Reply-To: "C. Toure" <prince.ch94-EMRzualFZlQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <4D0399EB.6070204-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Dec 11, 2010 at 8:34 AM, Michael Williamson
-<michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org> wrote:
-> On 11/18/2010 08:14 AM, Nori, Sekhar wrote:
->> Hi Grant,
->>
->> On Thu, Nov 18, 2010 at 17:01:24, Nori, Sekhar wrote:
->>> On Thu, Nov 18, 2010 at 12:23:24, Nori, Sekhar wrote:
->>>>
->>>> Here is the pull request:
->>>>
->>>> The following changes since commit 0a5b871ea4c6bfb2723ac2ffc7ef5c32452=
-abb89:
->>>> =A0 Linus Torvalds (1):
->>>> =A0 =A0 =A0 =A0 hardirq.h: remove now-empty #ifdef/#endif pair
->>>>
->>>> are available in the git repository at:
->>>>
->>>> =A0 git://arago-project.org/git/projects/linux-davinci.git for-grant
->>>>
->>>> <short log and diffstat deleted>
->>>
->>> Oops, I just realized that because my sign-off is added when
->>> git-format-patch -s is run, the patches in the pull request
->>> do not have my sign-off. I will recreate the branch with my
->>> sign-off added to these patches.
->>
->> I fixed this now. You can go ahead and do the pull.
->>
->> Thanks,
->> Sekhar
->>
->
-> I was wondering is this has been / will be queued or if there were issues=
- holding
-> it off? =A0If it has, what version?
->
-> I have some patches that are dependent on this series that I have some ti=
-me coming
-> up to work on submission. =A0Apologies for the nag, Grant, if it's in pro=
-cess.
+Hello
 
-Yes, stuff is in progress.  I hit a personal scalability issue which
-has delayed getting a lot of my maintainership backlog sorted out.
-Mostly due to the fact that it takes a lot of work to test my tree
-before pushing it out.  I'm in the process of bringing up autotest so
-that I have to manually test every platform before pushing my tree
-into linux-next.
+Please permit me to express certain personal issues I do not know if I might receive helps from you of course my subject might appear so sudden but please consider this as a wish and accept my mail with a deep sense of humility
 
-Patches should be sorted out next week since I've dedicated the week
-to doing maintainership tasks.
+I lost my father about some months ago; I and my sister are Alone right now. My father was a formal district leader to our entire community more than twenty-five years before our births I was the Eldest son and our mother has a divorce with my father she did never knew of my father's fortunes and so many other aspects though we lost my Mom on the 1st July 2010
 
-g.
+Unfortunately, my father willed some amounts of money to us which was with a certain bank within our capital district These amounts was annually paid into my fathers account from various communities and company cooperation among which where Shell Petroleum Development Company, Chevron, and Mobil.
+
+Most of the saving which my father willed to me was from annual revenues for compensation of youth and community development under my father leadership I 'd like to transfer to your country with your cooperate assistance of course this was my actual issue of reaching with a mail.
+
+The real plight where that there has always been many problems within family members because of indirect rights to some certain matters much like my father's mills, lands, old industrial, Estates, and 16 private housing and other structures. I may urgently need your assistance as I wanted immediate transfer's to your country cooperatively with your helps. I inherited Good sun of money which is $4.000.000 as said herein and I believed it might be Great times that has indeed drew us together Please do accord mutual esteem to the email, I may need your Reply quickly. 
+
+
+Sincerely Charles
+
+
+------------------------------------------------------------------------------
+Oracle to DB2 Conversion Guide: Learn learn about native support for PL/SQL,
+new data types, scalar functions, improved concurrency, built-in packages, 
+OCI, SQL*Plus, data movement tools, best practices and more.
+http://p.sf.net/sfu/oracle-sfdev2dev 

@@ -1,46 +1,82 @@
-From: Ben Gardiner <bengardiner@nanometrics.ca>
-Subject: Re: [RFC][PATCH v2 2/3] spi_bitbang : get nsecs delay from cs during transfer
-Date: Tue, 14 Dec 2010 13:17:22 -0500
-Message-ID: <AANLkTi=Fi+TaV=FJfz07kGBLnKMDoh5ph2vnLA9xLNVK@mail.gmail.com>
-References: <1290205185-11956-1-git-send-email-bengardiner@nanometrics.ca>
-	<cover.1291925752.git.bengardiner@nanometrics.ca>
-	<67270e44ec792d1a684d6052f7aebbc8c538a6c1.1291925752.git.bengardiner@nanometrics.ca>
-	<20101210114604.GB4228@pengutronix.de>
-	<AANLkTimdw5crEJTdnObURp_kxqjwFas2RuDMewd=CqEG@mail.gmail.com>
-	<20101214180840.GB4584@pengutronix.de>
+From: Kevin Hilman <khilman@deeprootsystems.com>
+Subject: Re: [PATCH 0/7 v2] OMAP: McSPI: Hwmod adaptation + runtime conversion
+Date: Wed, 15 Dec 2010 08:12:06 -0800
+Message-ID: <87d3p3kobt.fsf@deeprootsystems.com>
+References: <33183.10.24.255.18.1291212072.squirrel@dbdmail.itg.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, Michael Buesch <mb@bu3sch.de>
-To: Wolfram Sang <w.sang@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20101214180840.GB4584@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org,
+	"spi-devel-general" <spi-devel-general@lists.sourceforge.net>,
+	linux-arm-kernel@lists.infradead.org,
+	"Charulatha V" <charu@ti.com>, "Benoit Cousson" <b-cousson@ti.com>
+To: "Govindraj.R" <govindraj.raja@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <33183.10.24.255.18.1291212072.squirrel@dbdmail.itg.ti.com>
+	(Govindraj R.'s message of "Wed, 1 Dec 2010 19:31:12 +0530 (IST)")
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 14, 2010 at 1:08 PM, Wolfram Sang <w.sang@pengutronix.de> wrote:
-> Hi Ben,
+"Govindraj.R" <govindraj.raja@ti.com> writes:
+
+> Changes invloves:
+> ----------------
+> 1) Addition of hwmod data for omap2/3/4.
+> 1) McSPI driver hwmod adaptation with cleanup of base address
+>    macros and using omap-device API's.
+> 2) Runtime Conversion of McSPI driver
 >
->> I think it is starting to sink-in that a 'slower' spi gpio _driver_ is
->> needed. I can think of a couple different ways to make the CS-to-data
->> delay assigned to 'nsecs' a per-device feature:
->> 1) a flag or 2) a function pointer in struct spi_bitbang. Were you
->> thinking of something else entirely?
+> Changes from v1:
+> ---------------
+> 1) Fixing patch 5/5 comments for hwmod+runtime
+>    Split the patch 5/5 to hwmod adaptation
+>    and then runtime conversion
+>    http://www.mail-archive.com/linux-omap@vger.kernel.org/msg33387.html
 >
-> Nope, just saw (very high-level) that it should be per-device as it
-> might be feasible to have a fast and a slow bus at the same time. My
-> advice would be to start coding your favourite solution and check if it
-> feels right :)
+> Testing Updates:
+> ----------------
+> Was tested using data transfer test module available at:
+> http://dev.omapzoom.org/?p=richo/device_driver_test.git;a=blob;f=mcspi/test_code/
+> utils/mcspi_modules/omap_mcspi_datatest.c;
+> h=e42ec10c5c844abdde6a7175a268b379fbbdb655;
+> hb=5d9a755d50e58de861c5e8991f2f607bc49b5dc3
 
-:) Sounds like good advice.
+Can you summarize what this test does?  
 
-Thanks again, Wolfram.
+On what platforms was this tested?  
 
-Best Regards,
-Ben Gardiner
+How was it tested for OMAP1 and OMAP2?
 
----
-Nanometrics Inc.
-http://www.nanometrics.ca
+Kevin
+
+> System wide suspend and ret/off counts observation,
+> ensured that no behavioral difference with and without
+> this patch series.
+>
+> Benoit Cousson (1):
+>   OMAP4: hwmod data: Add McSPI
+>
+> Charulatha V (5):
+>   OMAP2420: hwmod data: Add McSPI
+>   OMAP2430: hwmod data: Add McSPI
+>   OMAP3: hwmod data: Add McSPI
+>   OMAP3: clocks: Update clock domain name for mcspi fck
+>   OMAP: devices: Modify McSPI device to adapt to hwmod framework
+>
+> Govindraj.R (1):
+>   OMAP: runtime: McSPI driver runtime conversion
+>
+>  arch/arm/mach-omap2/clock3xxx_data.c       |    4 +
+>  arch/arm/mach-omap2/devices.c              |  189 ++++---------------
+>  arch/arm/mach-omap2/omap_hwmod_2420_data.c |  156 ++++++++++++++++
+>  arch/arm/mach-omap2/omap_hwmod_2430_data.c |  219 ++++++++++++++++++++++
+>  arch/arm/mach-omap2/omap_hwmod_3xxx_data.c |  280 ++++++++++++++++++++++++++++
+>  arch/arm/mach-omap2/omap_hwmod_44xx_data.c |  267 ++++++++++++++++++++++++++
+>  arch/arm/plat-omap/include/plat/mcspi.h    |   11 +
+>  drivers/spi/omap2_mcspi.c                  |  225 +++++++---------------
+>  8 files changed, 1051 insertions(+), 300 deletions(-)
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

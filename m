@@ -1,106 +1,101 @@
-From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH] spi: mpc52xx-psc-spi: move probe/remove to proper sections
-Date: Fri, 17 Dec 2010 15:44:00 +0100
-Message-ID: <1292597040-28223-1-git-send-email-w.sang@pengutronix.de>
+From: Johannes Reif <reif@corscience.de>
+Subject: sc16is7x2 driver bug (fix)
+Date: Fri, 17 Dec 2010 16:22:18 +0100
+Message-ID: <4D0B802A.1090002@corscience.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general@lists.sourceforge.net,
+	linux-serial@vger.kernel.org, manuel.stahl@iis.fraunhofer.de
+Return-path: <linux-serial-owner@vger.kernel.org>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Probe/remove should be in __devinit/__devexit. Found by a section-mismatch
-warning. Also, copy do_remove() over to remove().
+Hi,
 
-Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/mpc52xx_psc_spi.c |   35 +++++++++++++++--------------------
- 1 files changed, 15 insertions(+), 20 deletions(-)
+I'm using the sc16is7x2 driver (SPI<-> 2x UART) written by Manuel Stahl.
+While operating one UART channel everything seems fine. But if I use 
+both channels the driver runs into an "unresponsive state" after some time.
+In this state I figured out that the /IRQ pin of the chip stays low 
+(active) although the IIR of both channels indicates that there is no 
+interrupt pending.
 
-diff --git a/drivers/spi/mpc52xx_psc_spi.c b/drivers/spi/mpc52xx_psc_spi.c
-index 983fbbf..8a904c1 100644
---- a/drivers/spi/mpc52xx_psc_spi.c
-+++ b/drivers/spi/mpc52xx_psc_spi.c
-@@ -363,7 +363,7 @@ static irqreturn_t mpc52xx_psc_spi_isr(int irq, void *dev_id)
- }
- 
- /* bus_num is used only for the case dev->platform_data == NULL */
--static int __init mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
-+static int __devinit mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 				u32 size, unsigned int irq, s16 bus_num)
- {
- 	struct fsl_spi_platform_data *pdata = dev->platform_data;
-@@ -450,22 +450,7 @@ free_master:
- 	return ret;
- }
- 
--static int __exit mpc52xx_psc_spi_do_remove(struct device *dev)
--{
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
--
--	flush_workqueue(mps->workqueue);
--	destroy_workqueue(mps->workqueue);
--	spi_unregister_master(master);
--	free_irq(mps->irq, mps);
--	if (mps->psc)
--		iounmap(mps->psc);
--
--	return 0;
--}
--
--static int __init mpc52xx_psc_spi_of_probe(struct platform_device *op,
-+static int __devinit mpc52xx_psc_spi_of_probe(struct platform_device *op,
- 	const struct of_device_id *match)
- {
- 	const u32 *regaddr_p;
-@@ -495,9 +480,19 @@ static int __init mpc52xx_psc_spi_of_probe(struct platform_device *op,
- 				irq_of_parse_and_map(op->dev.of_node, 0), id);
- }
- 
--static int __exit mpc52xx_psc_spi_of_remove(struct platform_device *op)
-+static int __devexit mpc52xx_psc_spi_of_remove(struct platform_device *op)
- {
--	return mpc52xx_psc_spi_do_remove(&op->dev);
-+	struct spi_master *master = dev_get_drvdata(&op->dev);
-+	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
-+
-+	flush_workqueue(mps->workqueue);
-+	destroy_workqueue(mps->workqueue);
-+	spi_unregister_master(master);
-+	free_irq(mps->irq, mps);
-+	if (mps->psc)
-+		iounmap(mps->psc);
-+
-+	return 0;
- }
- 
- static const struct of_device_id mpc52xx_psc_spi_of_match[] = {
-@@ -510,7 +505,7 @@ MODULE_DEVICE_TABLE(of, mpc52xx_psc_spi_of_match);
- 
- static struct of_platform_driver mpc52xx_psc_spi_of_driver = {
- 	.probe = mpc52xx_psc_spi_of_probe,
--	.remove = __exit_p(mpc52xx_psc_spi_of_remove),
-+	.remove = __devexit_p(mpc52xx_psc_spi_of_remove),
- 	.driver = {
- 		.name = "mpc52xx-psc-spi",
- 		.owner = THIS_MODULE,
--- 
-1.7.2.3
+Can someone reproduce this bug?
+
+I want to make clear that there are 2 interrupt handler which share one 
+IRQ. So i.e. let's say the following happens:
+
+- RX-timeout interrupt on channel 2
+- IRQ Pin high -> low (active)
+- kernel gets notice of IRQ and starts thread(s)
+- work thread ch. 1 starting
+- work thread ch. 2 starting
+- work thread ch. 1 reads IIR over SPI and figures out that ch. 1 has no 
+interrupt
+- work thread ch. 2 reads IIR over SPI, sees that ch
+- work thread ch. 1 finished (returns IRQ_HANDLED)
+- work thread ch. 2 reads out RX data --> IIR gets cleared (also IRQ pin 
+goes high)
+(what happens when ch. 1 gets data now and generates an IRQ before 
+worker of ch. 2 has finished)
+- work thread ch. 2. finished /returns IRQ_HANDLED)
+
+Is it possible that last IRQ_HANDLED makes the Kernel wait for /IRQ pin 
+going high and low again, because the Kernel thinks that the first 
+IRQ_HANDLED managed the IRQ and the second one that of ch. 1 which didn't?
+
+For those who don't have the driver right now here's the work routine.
+
+static irqreturn_t sc16is7x2_work(int irq, void *data)
+{
+     struct sc16is7x2_channel *chan = data;
+     struct sc16is7x2_chip *ts = chan->chip;
+     struct spi_message *m = &(chan->fifo_message);
+     unsigned ch = (chan == ts->channel) ? 0 : 1;
+     bool rx, tx;
+
+     dev_dbg(&ts->spi->dev, "%s (%i)\n", __func__, ch);
+
+     sc16is7x2_read_status(ts, ch);
+
+     while ((chan->iir & UART_IIR_NO_INT) == 0x00
+&& !ts->force_end_work) {
+         sc16is7x2_handle_modem(ts, ch);
+
+         spi_message_init(m);
+         rx = sc16is7x2_msg_add_fifo_rx(ts, ch);
+         tx = sc16is7x2_msg_add_fifo_tx(ts, ch);
+
+         if (rx || tx)
+             spi_sync(ts->spi, m);
+
+         if (rx)
+             sc16is7x2_handle_fifo_rx(chan);
+         if (tx)
+             sc16is7x2_handle_fifo_tx(chan);
+
+         sc16is7x2_read_status(ts, ch);
+     }
+     dev_dbg(&ts->spi->dev, "%s finished (iir = 0x%02x)\n",
+             __func__, chan->iir);
+
+     return IRQ_HANDLED;
+}
 
 
-------------------------------------------------------------------------------
-Lotusphere 2011
-Register now for Lotusphere 2011 and learn how
-to connect the dots, take your collaborative environment
-to the next level, and enter the era of Social Business.
-http://p.sf.net/sfu/lotusphere-d2d
+The following patch is a workaround for that bug which does also check 
+the gpio pin of the IRQ line.
+
+--- a/drivers/serial/sc16is7x2.c
++++ b/drivers/serial/sc16is7x2.c
+@@ -1042,7 +1042,7 @@ static irqreturn_t sc16is7x2_work(int irq, void *data)
+
+         sc16is7x2_read_status(ts, ch);
+
+-       while ((chan->iir & UART_IIR_NO_INT) == 0x00
++       while (((chan->iir & UART_IIR_NO_INT) == 0x00 || 
+gpio_get_value(irq_to_gpio(ts->spi->irq)) == 0)
+&& !ts->force_end_work) {
+                 sc16is7x2_handle_modem(ts, ch);
+
+Johannes Reif

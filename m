@@ -1,124 +1,191 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCHv3 4/4] mc13xxx: Add i2c and spi drivers to Kconfig and
-	Makefile
-Date: Mon, 20 Dec 2010 09:38:39 +0100
-Message-ID: <20101220083839.GQ1940@pengutronix.de>
-References: <1292817055-17715-1-git-send-email-marc@cpdesign.com.au> <1292817055-17715-5-git-send-email-marc@cpdesign.com.au>
+From: Manuel Stahl <manuel.stahl@iis.fraunhofer.de>
+Subject: Re: Fw: about sc16is7x2 drivier
+Date: Mon, 20 Dec 2010 10:09:32 +0100
+Message-ID: <4D0F1D4C.4010600@iis.fraunhofer.de>
+References: <4D0F1B6A.0A69AA.31769@m50-133.163.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1292817055-17715-5-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/mixed;
+ boundary="------------060601030509030805050100"
+Cc: "hunterzhu@baite-group.com" <hunterzhu@baite-group.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-serial@vger.kernel.org
+To: changgx <changgx@163.com>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <4D0F1B6A.0A69AA.31769@m50-133.163.com>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 20, 2010 at 02:50:55PM +1100, Marc Reilly wrote:
-> Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-> ---
->  drivers/mfd/Kconfig  |   22 ++++++++++++++--------
->  drivers/mfd/Makefile |    2 ++
->  2 files changed, 16 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 3a1493b..6980cf2 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -424,20 +424,26 @@ config MFD_PCF50633
->  	  facilities, and registers devices for the various functions
->  	  so that function-specific drivers can bind to them.
-> =20
-> -config MFD_MC13783
-> -	tristate
-> -
-this needs at least a note in the commit log.  And $(git grep
-MFD_MC13783 drivers) shows that you don't want to remove that yet.
+This is a multi-part message in MIME format.
+--------------060601030509030805050100
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: 8bit
 
->  config MFD_MC13XXX
-> -	tristate "Support Freescale MC13783 and MC13892"
-> -	depends on SPI_MASTER
-> +	tristate "Support Freescale MC13XXX"
-Hmm, I'd prefer to have the supported numbers.  Consider FSL releasing
-an MC13991.  Then it's unclear if MFD_MC13XXX supports it.
+Hello Kathy Chang,
 
-> +	depends on SPI_MASTER || I2C
->  	select MFD_CORE
-> -	select MFD_MC13783
->  	help
->  	  Support for the Freescale (Atlas) PMIC and audio CODECs
->  	  MC13783 and MC13892.
-> -	  This driver provides common support for accessing  the device,
-> +	  This driver provides common support for accessing the device,
->  	  additional drivers must be enabled in order to use the
-> -	  functionality of the device.
-> +	  functionality of these devices.
-> +
-> +config MFD_MC13XXX_SPI
-> +	tristate "Support for MC13XXX via SPI"
-> +	depends on SPI_MASTER
-> +	select MFD_MC13XXX
-> +
-> +config MFD_MC13XXX_I2C
-> +	tristate "Support for MC13XXX via I2C"
-and only mc13892 can do i2c, so writing MC13XXX doesn't make sense here=
-=2E
+thank you for your effort. Can you provide a patch for the sc16is7x2.c file?
 
-> +	depends on I2C
-> +	select MFD_MC13XXX
-Hmm, that means that MFD_MC13XXX alone doesn't do anything useful,
-right?  IMHO either do:
+Regards,
+Manuel Stahl
 
-	config MFD_MC13XXX_SPI
-		tristate
+On 20.12.2010 10:01, changgx wrote:
+> hello,Manuel Stahl:
+> 
+> Sc16is7x2 driver has been successfully debugged.
+> 
+> In sc16is7x2.c，the control to the var .cs_change does not match with at91sam9260 driver.
+> 
+> 1、
+> In function sc16is7x2_startup(),the spi chip select maintains low level after the setence cmds = sc16is7x2_alloc_spi_cmds(8).
+> It caused a error about next SPI operation.
+> 
+> Improved method is to use 8 sc16is7x2_write_async() function to set sc16is7x2 reg.
+> 
+> 2、
+> 
+> In sc16is7x2_msg_add_fifo_tx() function， you need to take anti-cs_change variables.
+> 
+> 
+> good luck!!!
+> 
+> 
+> ======= 2010-12-14 11:52:00 您在来信中写道：=======
+> 
+>> Hello again,
+>>
+>> The commands in sc16is7x2_spi_async are sent async (as the name says),
+>> so the first time you execute sc16is7x2_read(ts->spi, UART_IER,ch) the
+>> async part was not yet completed, the second time it was completed and
+>> has set UART_IER to 0.
+>>
+>> Regards,
+>> Manuel
+>>
+>> On 13.12.2010 06:43, changgx wrote:
+>>>      hello，manuel.stahl：
+>>>
+>>>      excuse me!!
+>>>
+>>>      I found the sc16is7x2.c driver provided by you on the internet the
+>>>      other day. And I explante it to my board.
+>>>
+>>>      My develop environment is about ：CPU for AT91SAM9260 and kennel for
+>>>      linux-2.6.27.
+>>>
+>>>      But I found some questions in debugging.
+>>>
+>>>      In the function of sc16is7x2_startup( ), i add the sentence to read
+>>>      register value after sc16is7x2_spi_async(ts->spi, cmds, 8) sentence
+>>>      and i find that the return value is always 0xff.
+>>>
+>>>      for example:
+>>>
+>>>      int uier1,uier2;
+>>>
+>>>      uier1 = sc16is7x2_read(ts->spi, UART_IER,ch);
+>>>      SC16_PRINTK("+++++++++++++++++++++>  s ：d UART_IER = x
+>>>      \n",__func__,__LINE__,uier1);
+>>>      uier2 = sc16is7x2_read(ts->spi, UART_IER,ch);
+>>>      SC16_PRINTK("+++++++++++++++++++++>  s ：d UART_IER = x
+>>>      \n",__func__,__LINE__,uier2);
+>>>
+>>>      the print result:
+>>>
+>>>      +++++++++++++++++++++>  sc16is7x2_startup : 512 UART_IER = ff
+>>>      +++++++++++++++++++++>  sc16is7x2_startup : 515 UART_IER = 0
+>>>
+>>>      The results is that the first time is 0xff, the secend is 0.
+>>>
+>>>      And it is same to read other register.
+>>>
+>>>      please give me some advice for this question.
+>>>
+>>>      ps: thank you very much for your open souce and look forward to your
+>>>      email.
+>>>
+>>>      thanks！
+>>>
+>>>      kathy chang
+>>>
+>>>      2010-12-13
+>>>
+>>>      ------------------------------------------------
+>>>
+>>>      Email：changgx@163.com<mailto:changgx@163.com>
+>>>
+>>>      ------------------------------------------------
+>>>
+>>>
+>>>
+>>> = = = = = = = = = = = = = = = = = = = =
+>>> 　　　　　　　　致
+>>> 礼！
+>>> changgx
+>>> changgx@163.com<mailto:changgx@163.com>
+>>> 2010-12-13
+>>> 　　　　　　　　　　　　　　
+>>
+>>
+>> -- 
+>> Manuel Stahl
+>> Fraunhofer-Institut IIS
+>> Leistungsoptimierte Systeme
+>>
+>> Nordostpark 93
+>> D90411 Nürnberg
+>> Telefon  +49 (0)911/58061-6419
+>> Fax      +49 (0)911/58061-6398
+>> E-Mail   manuel.stahl@iis.fraunhofer.de
+>>
+>> http://www.iis.fraunhofer.de
+>> http://www.smart-power.fraunhofer.de
+>>
+>>
+>>
+>> __________ Information from ESET Smart Security, version of virus signature database 5563 (20101026) __________
+>>
+>> The message was checked by ESET Smart Security.
+>>
+>> http://www.eset.com
+> 
+> = = = = = = = = = = = = = = = = = = = =
+> 			
+> 
+> 　　　　　　　　致
+> 礼！
+> 
+> 				
+> 　　　　　　　　changgx
+> 　　　　　　　　changgx@163.com
+> 　　　　　　　　　　2010-12-20
+> 
+> 
+> 
+> 
 
-	config MFD_MC13XXX_I2C
-		tristate
 
-	config MFD_MC13XXX
-		tristate "..."
-		select MFD_MC13XXX_SPI if SPI_MASTER
-		select MFD_MC13XXX_I2C if I2C
-		...
+-- 
+Manuel Stahl
+Fraunhofer-Institut IIS
+Leistungsoptimierte Systeme
 
-or
+Nordostpark 93
+D90411 Nürnberg
+Telefon  +49 (0)911/58061-6419
+Fax      +49 (0)911/58061-6398
+E-Mail   manuel.stahl@iis.fraunhofer.de
 
-	config MFD_MC13XXX
-		tristate
-		...
+http://www.iis.fraunhofer.de
+http://www.smart-power.fraunhofer.de
 
-	config MFD_MC13XXX_SPI
-		tristate "..."
-		select MFD_MC13XXX
-		...
-	config MFD_MC13XXX_I2C
-		tristate "..."
-		select MFD_MC13XXX
-		...
+--------------060601030509030805050100
+Content-Type: text/x-vcard; charset=utf-8;
+ name="manuel_stahl.vcf"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="manuel_stahl.vcf"
 
->  config PCF50633_ADC
->  	tristate "Support for NXP PCF50633 ADC"
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index f54b365..b7d774f 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -42,6 +42,8 @@ obj-$(CONFIG_TWL4030_CODEC)	+=3D twl4030-codec.o
->  obj-$(CONFIG_TWL6030_PWM)	+=3D twl6030-pwm.o
-> =20
->  obj-$(CONFIG_MFD_MC13XXX)	+=3D mc13xxx-core.o
-> +obj-$(CONFIG_MFD_MC13XXX_SPI)	+=3D mc13xxx-spi.o
-> +obj-$(CONFIG_MFD_MC13XXX_I2C)	+=3D mc13xxx-i2c.o
-> =20
->  obj-$(CONFIG_MFD_CORE)		+=3D mfd-core.o
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
-    |
-Industrial Linux Solutions                 | http://www.pengutronix.de/=
-  |
+YmVnaW46dmNhcmQNCmZuOk1hbnVlbCBTdGFobA0KbjpTdGFobDtNYW51ZWwNCmVtYWlsO2lu
+dGVybmV0Om1hbnVlbC5zdGFobEBpaXMuZnJhdW5ob2Zlci5kZQ0KdGVsO3dvcms6KzQ5IDkx
+MSA1ODA2MS02NDE5DQp4LW1vemlsbGEtaHRtbDpGQUxTRQ0KdmVyc2lvbjoyLjENCmVuZDp2
+Y2FyZA0KDQo=
+--------------060601030509030805050100--

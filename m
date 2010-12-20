@@ -1,7 +1,7 @@
 From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: [PATCHv3 3/4] mc13xxx: Add i2c driver
-Date: Mon, 20 Dec 2010 14:50:54 +1100
-Message-ID: <1292817055-17715-4-git-send-email-marc@cpdesign.com.au>
+Subject: [PATCHv3 2/4] mc13xxx: Add spi driver
+Date: Mon, 20 Dec 2010 14:50:53 +1100
+Message-ID: <1292817055-17715-3-git-send-email-marc@cpdesign.com.au>
 References: <1292817055-17715-1-git-send-email-marc@cpdesign.com.au>
 Cc: w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
@@ -12,24 +12,27 @@ In-Reply-To: <1292817055-17715-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@publ
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Adds i2c specific code for mc13xxx.
+Adds spi specific code for mc13xxx.
+Most code extracted from the previous mc13xxx-core.c
 
 Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 ---
- drivers/mfd/mc13xxx-i2c.c |  115 +++++++++++++++++++++++++++++++++++++++++++++
- 1 files changed, 115 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mfd/mc13xxx-i2c.c
+ drivers/mfd/mc13xxx-spi.c |  168 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 168 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mfd/mc13xxx-spi.c
 
-diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
+diff --git a/drivers/mfd/mc13xxx-spi.c b/drivers/mfd/mc13xxx-spi.c
 new file mode 100644
-index 0000000..f7ceed8
+index 0000000..de832ea
 --- /dev/null
-+++ b/drivers/mfd/mc13xxx-i2c.c
-@@ -0,0 +1,115 @@
++++ b/drivers/mfd/mc13xxx-spi.c
+@@ -0,0 +1,168 @@
 +/*
-+ * Copyright 2009-2010 Creative Product Design
-+ * Marc Reilly marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
++ * Copyright 2009-2010 Pengutronix
++ * Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 + *
++ * loosely based on an earlier driver that has
++ * Copyright 2009 Pengutronix, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 + *
 + * This program is free software; you can redistribute it and/or modify it under
 + * the terms of the GNU General Public License version 2 as published by the
@@ -39,107 +42,158 @@ index 0000000..f7ceed8
 +#include <linux/module.h>
 +#include <linux/platform_device.h>
 +#include <linux/mutex.h>
++#include <linux/interrupt.h>
++#include <linux/spi/spi.h>
 +#include <linux/mfd/core.h>
 +#include <linux/mfd/mc13xxx.h>
-+#include <linux/i2c.h>
 +
-+static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, unsigned int offset,
-+		u32 *val)
++#define MC13XXX_REGOFFSET_SHIFT 25
++static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx,
++				unsigned int offset, u32 *val)
 +{
++	struct spi_transfer t;
++	struct spi_message m;
 +	int ret;
-+	unsigned char buf[3] = {0, 0, 0};
 +
-+	ret = i2c_smbus_read_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
-+	*val = buf[0] << 16 | buf[1] << 8 | buf[2];
++	*val = offset << MC13XXX_REGOFFSET_SHIFT;
 +
-+	return ret == 3 ? 0 : ret;
++	memset(&t, 0, sizeof(t));
++
++	t.tx_buf = val;
++	t.rx_buf = val;
++	t.len = sizeof(u32);
++
++	spi_message_init(&m);
++	spi_message_add_tail(&t, &m);
++
++	ret = spi_sync(mc13xxx->spidev, &m);
++
++	/* error in message.status implies error return from spi_sync */
++	BUG_ON(!ret && m.status);
++
++	if (ret)
++		return ret;
++
++	*val &= 0xffffff;
++
++	return 0;
 +}
 +
-+static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
++static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
 +		u32 val)
 +{
++	u32 buf;
++	struct spi_transfer t;
++	struct spi_message m;
 +	int ret;
-+	unsigned char buf[3];
 +
-+	buf[0] = (val >> 16) & 0xff;
-+	buf[1] = (val >> 8) & 0xff;
-+	buf[2] = val & 0xff;
++	buf = 1 << 31 | offset << MC13XXX_REGOFFSET_SHIFT | val;
 +
-+	ret = i2c_smbus_write_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
++	memset(&t, 0, sizeof(t));
 +
-+	return ret;
++	t.tx_buf = &buf;
++	t.rx_buf = &buf;
++	t.len = sizeof(u32);
++
++	spi_message_init(&m);
++	spi_message_add_tail(&t, &m);
++
++	ret = spi_sync(mc13xxx->spidev, &m);
++
++	BUG_ON(!ret && m.status);
++
++	if (ret)
++		return ret;
++
++	return 0;
 +}
 +
-+static int mc13xxx_i2c_probe(struct i2c_client *client,
-+			     const struct i2c_device_id *id)
++static int mc13xxx_spi_probe(struct spi_device *spi)
 +{
 +	struct mc13xxx *mc13xxx;
-+	struct mc13xxx_platform_data *pdata = dev_get_platdata(&client->dev);
++	struct mc13xxx_platform_data *pdata = dev_get_platdata(&spi->dev);
 +	int ret;
 +
 +	mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
 +	if (!mc13xxx)
 +		return -ENOMEM;
 +
-+	dev_set_drvdata(&client->dev, mc13xxx);
-+	mc13xxx->dev = &client->dev;
-+	mc13xxx->i2cclient = client;
-+	mc13xxx->read_dev = mc13xxx_i2c_reg_read;
-+	mc13xxx->write_dev = mc13xxx_i2c_reg_write;
++	dev_set_drvdata(&spi->dev, mc13xxx);
++	spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
++	spi->bits_per_word = 32;
++	spi_setup(spi);
 +
-+	ret = mc13xxx_common_init(mc13xxx, pdata, client->irq);
++	mc13xxx->dev = &spi->dev;
++	mc13xxx->spidev = spi;
++	mc13xxx->read_dev = mc13xxx_spi_reg_read;
++	mc13xxx->write_dev = mc13xxx_spi_reg_write;
 +
-+	if (ret == 0 && (id->driver_data != mc13xxx->ictype))
-+		dev_warn(mc13xxx->dev,
++	ret = mc13xxx_common_init(mc13xxx, pdata, spi->irq);
++
++	if (ret) {
++		dev_set_drvdata(&spi->dev, NULL);
++	} else {
++		const struct spi_device_id *devid =
++			spi_get_device_id(mc13xxx->spidev);
++		if (!devid || devid->driver_data != mc13xxx->ictype)
++			dev_warn(mc13xxx->dev,
 +				"device id doesn't match auto detection!\n");
++	}
 +
 +	return ret;
 +}
 +
-+static int __devexit mc13xxx_i2c_remove(struct i2c_client *client)
++
++static int __devexit mc13xxx_spi_remove(struct spi_device *spi)
 +{
-+	struct mc13xxx *mc13xxx = dev_get_drvdata(&client->dev);
++	struct mc13xxx *mc13xxx = dev_get_drvdata(&spi->dev);
 +
-+	free_irq(client->irq, mc13xxx);
++	free_irq(spi->irq, mc13xxx);
 +
-+	mfd_remove_devices(&client->dev);
++	mfd_remove_devices(&spi->dev);
 +
 +	kfree(mc13xxx);
 +
 +	return 0;
 +}
 +
-+static const struct i2c_device_id mc13xxx_i2c_idtable[] = {
-+	{ "mc13892", MC13XXX_ID_MC13892},
-+	{ }
++static const struct spi_device_id mc13xxx_device_id[] = {
++	{
++		.name = "mc13783",
++		.driver_data = MC13XXX_ID_MC13783,
++	}, {
++		.name = "mc13892",
++		.driver_data = MC13XXX_ID_MC13892,
++	}, {
++		/* sentinel */
++	}
 +};
 +
-+static struct i2c_driver mc13xxx_i2c_driver = {
++static struct spi_driver mc13xxx_driver = {
++	.id_table = mc13xxx_device_id,
 +	.driver = {
++		.name = "mc13xxx",
++		.bus = &spi_bus_type,
 +		.owner = THIS_MODULE,
-+		.name = "mc13xxx-i2c"
 +	},
-+	.id_table = mc13xxx_i2c_idtable,
-+	.probe = mc13xxx_i2c_probe,
-+	.remove = __devexit_p(mc13xxx_i2c_remove),
++	.probe = mc13xxx_spi_probe,
++	.remove = __devexit_p(mc13xxx_spi_remove),
 +};
 +
-+static int __init mc13xxx_i2c_init(void)
++static int __init mc13xxx_spi_init(void)
 +{
-+	return i2c_add_driver(&mc13xxx_i2c_driver);
++	return spi_register_driver(&mc13xxx_driver);
 +}
-+subsys_initcall(mc13xxx_i2c_init);
++subsys_initcall(mc13xxx_spi_init);
 +
-+static void __exit mc13xxx_i2c_exit(void)
++static void __exit mc13xxx_spi_exit(void)
 +{
-+	i2c_del_driver(&mc13xxx_i2c_driver);
++	spi_unregister_driver(&mc13xxx_driver);
 +}
-+module_exit(mc13xxx_i2c_exit);
++module_exit(mc13xxx_spi_exit);
 +
-+MODULE_DESCRIPTION("i2c driver for Freescale MC13XXX PMIC");
-+MODULE_AUTHOR("Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org");
++MODULE_DESCRIPTION("spi driver for Freescale MC13XXX PMIC");
++MODULE_AUTHOR("Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>");
 +MODULE_LICENSE("GPL v2");
 -- 
 1.7.1

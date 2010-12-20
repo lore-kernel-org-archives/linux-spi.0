@@ -1,16 +1,145 @@
 From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: mc13xxx core support for i2c
-Date: Mon, 20 Dec 2010 14:50:51 +1100
-Message-ID: <1292817055-17715-1-git-send-email-marc@cpdesign.com.au>
+Subject: [PATCHv3 3/4] mc13xxx: Add i2c driver
+Date: Mon, 20 Dec 2010 14:50:54 +1100
+Message-ID: <1292817055-17715-4-git-send-email-marc@cpdesign.com.au>
+References: <1292817055-17715-1-git-send-email-marc@cpdesign.com.au>
 Cc: w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1292817055-17715-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-These patches add i2c support for the mc13xxx-core driver. This v3 improves the v2
-(http://lists.arm.linux.org.uk/lurker/message/20101215.214755.b6bae366.en.html) by splitting
-the driver up into core, spi and i2c files so that it can support one subsystem in the absence
-of the other.
+Adds i2c specific code for mc13xxx.
+
+Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+---
+ drivers/mfd/mc13xxx-i2c.c |  115 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 115 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mfd/mc13xxx-i2c.c
+
+diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
+new file mode 100644
+index 0000000..f7ceed8
+--- /dev/null
++++ b/drivers/mfd/mc13xxx-i2c.c
+@@ -0,0 +1,115 @@
++/*
++ * Copyright 2009-2010 Creative Product Design
++ * Marc Reilly marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
++ *
++ *
++ * This program is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License version 2 as published by the
++ * Free Software Foundation.
++ */
++#include <linux/slab.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/mutex.h>
++#include <linux/mfd/core.h>
++#include <linux/mfd/mc13xxx.h>
++#include <linux/i2c.h>
++
++static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, unsigned int offset,
++		u32 *val)
++{
++	int ret;
++	unsigned char buf[3] = {0, 0, 0};
++
++	ret = i2c_smbus_read_i2c_block_data(mc13xxx->i2cclient,
++			offset, 3, buf);
++	*val = buf[0] << 16 | buf[1] << 8 | buf[2];
++
++	return ret == 3 ? 0 : ret;
++}
++
++static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
++		u32 val)
++{
++	int ret;
++	unsigned char buf[3];
++
++	buf[0] = (val >> 16) & 0xff;
++	buf[1] = (val >> 8) & 0xff;
++	buf[2] = val & 0xff;
++
++	ret = i2c_smbus_write_i2c_block_data(mc13xxx->i2cclient,
++			offset, 3, buf);
++
++	return ret;
++}
++
++static int mc13xxx_i2c_probe(struct i2c_client *client,
++			     const struct i2c_device_id *id)
++{
++	struct mc13xxx *mc13xxx;
++	struct mc13xxx_platform_data *pdata = dev_get_platdata(&client->dev);
++	int ret;
++
++	mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
++	if (!mc13xxx)
++		return -ENOMEM;
++
++	dev_set_drvdata(&client->dev, mc13xxx);
++	mc13xxx->dev = &client->dev;
++	mc13xxx->i2cclient = client;
++	mc13xxx->read_dev = mc13xxx_i2c_reg_read;
++	mc13xxx->write_dev = mc13xxx_i2c_reg_write;
++
++	ret = mc13xxx_common_init(mc13xxx, pdata, client->irq);
++
++	if (ret == 0 && (id->driver_data != mc13xxx->ictype))
++		dev_warn(mc13xxx->dev,
++				"device id doesn't match auto detection!\n");
++
++	return ret;
++}
++
++static int __devexit mc13xxx_i2c_remove(struct i2c_client *client)
++{
++	struct mc13xxx *mc13xxx = dev_get_drvdata(&client->dev);
++
++	free_irq(client->irq, mc13xxx);
++
++	mfd_remove_devices(&client->dev);
++
++	kfree(mc13xxx);
++
++	return 0;
++}
++
++static const struct i2c_device_id mc13xxx_i2c_idtable[] = {
++	{ "mc13892", MC13XXX_ID_MC13892},
++	{ }
++};
++
++static struct i2c_driver mc13xxx_i2c_driver = {
++	.driver = {
++		.owner = THIS_MODULE,
++		.name = "mc13xxx-i2c"
++	},
++	.id_table = mc13xxx_i2c_idtable,
++	.probe = mc13xxx_i2c_probe,
++	.remove = __devexit_p(mc13xxx_i2c_remove),
++};
++
++static int __init mc13xxx_i2c_init(void)
++{
++	return i2c_add_driver(&mc13xxx_i2c_driver);
++}
++subsys_initcall(mc13xxx_i2c_init);
++
++static void __exit mc13xxx_i2c_exit(void)
++{
++	i2c_del_driver(&mc13xxx_i2c_driver);
++}
++module_exit(mc13xxx_i2c_exit);
++
++MODULE_DESCRIPTION("i2c driver for Freescale MC13XXX PMIC");
++MODULE_AUTHOR("Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org");
++MODULE_LICENSE("GPL v2");
+-- 
+1.7.1

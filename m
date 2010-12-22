@@ -1,7 +1,7 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 1/4] spi/pl022: map the buffers on the DMA engine
-Date: Wed, 22 Dec 2010 23:13:07 +0100
-Message-ID: <1293055987-12656-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 4/4] spi/pl022: convert running variable
+Date: Wed, 22 Dec 2010 23:13:59 +0100
+Message-ID: <1293056039-13465-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,61 +19,109 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The struct device for the DMA engine is the apropriate one to use
-when mapping/unmapping buffers. This is because the memory which
-is addressable by DMA is determined by the DMA engine rather than
-the device.
+This variable is a bool but defined an int and defined completely
+backwards. This makes the code more readable.
 
-Reported-by: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 ---
- drivers/spi/amba-pl022.c |   12 ++++++------
- 1 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/amba-pl022.c |   24 ++++++++++--------------
+ 1 files changed, 10 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index fb3d1b3..9a14c45 100644
+index 91ba23a..546e714 100644
 --- a/drivers/spi/amba-pl022.c
 +++ b/drivers/spi/amba-pl022.c
-@@ -782,9 +782,9 @@ static void *next_transfer(struct pl022 *pl022)
- static void unmap_free_dma_scatter(struct pl022 *pl022)
- {
- 	/* Unmap and free the SG tables */
--	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
-+	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
- 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
--	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
-+	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
- 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
- 	sg_free_table(&pl022->sgt_rx);
- 	sg_free_table(&pl022->sgt_tx);
-@@ -991,12 +991,12 @@ static int configure_dma(struct pl022 *pl022)
- 			  pl022->cur_transfer->len, &pl022->sgt_tx);
+@@ -253,11 +253,6 @@
+ #define STATE_ERROR			((void *) -1)
  
- 	/* Map DMA buffers */
--	sglen = dma_map_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
-+	sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
- 			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
- 	if (!sglen)
- 		goto err_rx_sgmap;
+ /*
+- * Queue State
+- */
+-#define QUEUE_RUNNING			(0)
+-#define QUEUE_STOPPED			(1)
+-/*
+  * SSP State - Whether Enabled or Disabled
+  */
+ #define SSP_DISABLED			(0)
+@@ -344,7 +339,7 @@ struct vendor_data {
+  * @lock: spinlock to syncronise access to driver data
+  * @workqueue: a workqueue on which any spi_message request is queued
+  * @busy: workqueue is busy
+- * @run: workqueue is running
++ * @running: workqueue is running
+  * @pump_transfers: Tasklet used in Interrupt Transfer mode
+  * @cur_msg: Pointer to current spi_message being processed
+  * @cur_transfer: Pointer to current spi_transfer
+@@ -370,7 +365,7 @@ struct pl022 {
+ 	spinlock_t			queue_lock;
+ 	struct list_head		queue;
+ 	bool				busy;
+-	int				run;
++	bool				running;
+ 	/* Message transfer pump */
+ 	struct tasklet_struct		pump_transfers;
+ 	struct spi_message		*cur_msg;
+@@ -1460,7 +1455,7 @@ static void pump_messages(struct work_struct *work)
  
--	sglen = dma_map_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
-+	sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
- 			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
- 	if (!sglen)
- 		goto err_tx_sgmap;
-@@ -1040,10 +1040,10 @@ err_txdesc:
- 	txchan->device->device_control(txchan, DMA_TERMINATE_ALL, 0);
- err_rxdesc:
- 	rxchan->device->device_control(rxchan, DMA_TERMINATE_ALL, 0);
--	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
-+	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
- 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
- err_tx_sgmap:
--	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
-+	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
- 		     pl022->sgt_tx.nents, DMA_FROM_DEVICE);
- err_rx_sgmap:
- 	sg_free_table(&pl022->sgt_tx);
+ 	/* Lock queue and check for queue work */
+ 	spin_lock_irqsave(&pl022->queue_lock, flags);
+-	if (list_empty(&pl022->queue) || pl022->run == QUEUE_STOPPED) {
++	if (list_empty(&pl022->queue) || !pl022->running) {
+ 		pl022->busy = false;
+ 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
+ 		return;
+@@ -1507,7 +1502,7 @@ static int __init init_queue(struct pl022 *pl022)
+ 	INIT_LIST_HEAD(&pl022->queue);
+ 	spin_lock_init(&pl022->queue_lock);
+ 
+-	pl022->run = QUEUE_STOPPED;
++	pl022->running = false;
+ 	pl022->busy = false;
+ 
+ 	tasklet_init(&pl022->pump_transfers,
+@@ -1529,12 +1524,12 @@ static int start_queue(struct pl022 *pl022)
+ 
+ 	spin_lock_irqsave(&pl022->queue_lock, flags);
+ 
+-	if (pl022->run == QUEUE_RUNNING || pl022->busy) {
++	if (pl022->running || pl022->busy) {
+ 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
+ 		return -EBUSY;
+ 	}
+ 
+-	pl022->run = QUEUE_RUNNING;
++	pl022->running = true;
+ 	pl022->cur_msg = NULL;
+ 	pl022->cur_transfer = NULL;
+ 	pl022->cur_chip = NULL;
+@@ -1566,7 +1561,8 @@ static int stop_queue(struct pl022 *pl022)
+ 
+ 	if (!list_empty(&pl022->queue) || pl022->busy)
+ 		status = -EBUSY;
+-	else pl022->run = QUEUE_STOPPED;
++	else
++		pl022->running = false;
+ 
+ 	spin_unlock_irqrestore(&pl022->queue_lock, flags);
+ 
+@@ -1684,7 +1680,7 @@ static int pl022_transfer(struct spi_device *spi, struct spi_message *msg)
+ 
+ 	spin_lock_irqsave(&pl022->queue_lock, flags);
+ 
+-	if (pl022->run == QUEUE_STOPPED) {
++	if (!pl022->running) {
+ 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
+ 		return -ESHUTDOWN;
+ 	}
+@@ -1693,7 +1689,7 @@ static int pl022_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	msg->state = STATE_START;
+ 
+ 	list_add_tail(&msg->queue, &pl022->queue);
+-	if (pl022->run == QUEUE_RUNNING && !pl022->busy)
++	if (pl022->running && !pl022->busy)
+ 		queue_work(pl022->workqueue, &pl022->pump_messages);
+ 
+ 	spin_unlock_irqrestore(&pl022->queue_lock, flags);
 -- 
 1.7.3.3
 

@@ -1,49 +1,108 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/2] spi_imx.c: TRIVIAL mx25 & mx35 SPI_VER is 0.7
-Date: Thu, 23 Dec 2010 12:03:15 -0700
-Message-ID: <20101223190315.GD20384@angua.secretlab.ca>
-References: <1293102730-32528-1-git-send-email-richard.genoud@gmail.com>
- <1293102730-32528-2-git-send-email-richard.genoud@gmail.com>
- <20101223142934.GU14221@pengutronix.de>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH] mcspi: Add support for GPIO chip select lines
+Date: Thu, 23 Dec 2010 11:59:17 -0800
+Message-ID: <20101223195917.GO7771@atomide.com>
+References: <1b68c6791001272033q60dd31dbif4de285cd9bac83d@mail.gmail.com>
+ <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Richard Genoud <richard.genoud@gmail.com>,
-	spi-devel-general@lists.sourceforge.net,
+Content-Type: text/plain; charset=us-ascii
+Cc: beagleboard <beagleboard@googlegroups.com>,
+	linux-omap <linux-omap@vger.kernel.org>,
 	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	Eric Miao <eric.miao@marvell.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>
+To: Ben Gamari <bgamari.foss@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20101223142934.GU14221@pengutronix.de>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 23, 2010 at 03:29:34PM +0100, Uwe Kleine-K=F6nig wrote:
-> On Thu, Dec 23, 2010 at 12:12:10PM +0100, Richard Genoud wrote:
-> > The check on cpu_is_mx25 and cpu_is_mx35 was made twice.
-> > This is obviously wrong.
-> obviously wrong but no wrong behaviour.  Your patch only makes the co=
-de
-> consistent, but IMHO it doesn't qualify as a bugfix.
->=20
-> > Anyway, this patch won't change the previous behaviour which is
-> > SPI_IMX_VER_0_7 for mx25 and mx35.
-> This conflicts with
-> http://mid.gmane.org/1290589546-21662-1-git-send-email-u.kleine-koeni=
-g@pengutronix.de
->=20
-> which I prefer.  The platform IDs have it correct (i.e.
->=20
-> 	imx25-cspi -> 0.7
-> 	imx31-cspi -> 0.4
-> 	imx35-cspi -> 0.7
->=20
-> )
+* Ben Gamari <bgamari.foss@gmail.com> [101221 09:56]:
+> This mechanism is in large part stolen from the s3c64xx-spi module. To
+> use this functionality, one simply must define a set_level function to
+> set the CS state and a omap2_mcspi_csinfo struct for each chip select in
+> the board file.
+> 
+> Each spi_board_info.controller_data should then be set
+> to point to the appropriate csinfo struct. This will cause the driver to
+> call the csinfo->set_level function instead of toggling the McSPI chip
+> select lines.
+> 
+> Signed-off-by: Ben Gamari <bgamari.foss@gmail.com>
 
-Oops, missed you're reply.  Okay, I've dropped Richard's patch and will=
- look at yours.
+This one should go via the SPI list:
 
+Acked-by: Tony Lindgren <tony@atomide.com>
 
-g.
+> ---
+>  arch/arm/plat-omap/include/plat/mcspi.h |   14 ++++++++++++++
+>  drivers/spi/omap2_mcspi.c               |   14 +++++++++-----
+>  2 files changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/plat-omap/include/plat/mcspi.h b/arch/arm/plat-omap/include/plat/mcspi.h
+> index 1254e49..ab84b8d 100644
+> --- a/arch/arm/plat-omap/include/plat/mcspi.h
+> +++ b/arch/arm/plat-omap/include/plat/mcspi.h
+> @@ -1,6 +1,20 @@
+>  #ifndef _OMAP2_MCSPI_H
+>  #define _OMAP2_MCSPI_H
+>  
+> +/**
+> + * struct omap2_mcspi_csinfo - Chip Select description
+> + * @line: Custom 'identity' of the CS line
+> + * @set_level: Function to set the state of a given CS line
+> + *
+> + * This is to allow use of GPIO lines as CS lines. Allocate and initialize one
+> + * in the machine init code and make spi_board_info.controller_data point to
+> + * it.
+> + */
+> +struct omap2_mcspi_csinfo {
+> +        unsigned line;
+> +        void (*set_level)(unsigned line_id, int lvl);
+> +};
+> +
+>  struct omap2_mcspi_platform_config {
+>  	unsigned short	num_cs;
+>  };
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index 2a651e6..92ccbd6 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -35,6 +35,7 @@
+>  #include <linux/slab.h>
+>  
+>  #include <linux/spi/spi.h>
+> +#include <linux/gpio.h>
+>  
+>  #include <plat/dma.h>
+>  #include <plat/clock.h>
+> @@ -235,11 +236,14 @@ static void omap2_mcspi_set_enable(const struct spi_device *spi, int enable)
+>  
+>  static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
+>  {
+> -	u32 l;
+> -
+> -	l = mcspi_cached_chconf0(spi);
+> -	MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
+> -	mcspi_write_chconf0(spi, l);
+> +	if (spi->controller_data) {
+> +		struct omap2_mcspi_csinfo *csinfo = spi->controller_data;
+> +		(*csinfo->set_level)(csinfo->line, cs_active);
+> +	} else {
+> +		u32 l = mcspi_cached_chconf0(spi);
+> +		MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
+> +		mcspi_write_chconf0(spi, l);
+> +	}
+>  }
+>  
+>  static void omap2_mcspi_set_master_mode(struct spi_master *master)
+> -- 
+> 1.7.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

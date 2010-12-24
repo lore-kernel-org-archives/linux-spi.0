@@ -1,60 +1,66 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] mcspi: Add support for GPIO chip select lines
-Date: Thu, 23 Dec 2010 20:28:19 -0700
-Message-ID: <20101224032819.GC2491@angua.secretlab.ca>
-References: <1b68c6791001272033q60dd31dbif4de285cd9bac83d@mail.gmail.com>
- <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com>
- <AANLkTi=L+ZfwVy+O=oAXx8EHGisCdW1Pg4U+dQa4ZzEN@mail.gmail.com>
- <871v58xf0k.fsf@gmail.com>
- <AANLkTi=d_xkhksY=qzUOmjYYs8OkX13+8_4byZtnX9i5@mail.gmail.com>
- <87y67fx5vb.fsf@gmail.com>
+Subject: Re: [PATCH] spi_topcliff_pch: Fix data transfer issue
+Date: Thu, 23 Dec 2010 20:31:10 -0700
+Message-ID: <20101224033110.GD2491@angua.secretlab.ca>
+References: <1293158450-3168-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: beagleboard <beagleboard@googlegroups.com>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	Eric Miao <eric.miao@canonical.com>
-To: Ben Gamari <bgamari.foss@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <87y67fx5vb.fsf@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <1293158450-3168-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 23, 2010 at 09:27:20PM -0500, Ben Gamari wrote:
-> On Thu, 23 Dec 2010 17:37:12 -0700, Grant Likely <grant.likely@secretlab.ca> wrote:
-> > On Thu, Dec 23, 2010 at 4:09 PM, Ben Gamari <bgamari.foss@gmail.com> wrote:
-> > > The reason I left this up to the board is it's easy to foresee cases
-> > > where you want a non-trivial mapping between logical CS numbers and CS
-> > > pin states. In my case, I using a 2-to-4 multiplexer as the source of
-> > > chip select.
-> > 
-> > Hi Ben,
-> > 
-> > I understand and appreciate the motivation.  However in practice, the
-> > gpio api is sufficient for pretty much any use case, even when the
-> > backing gpio controller driver ends up driving some oddball device
-> > with different constraints.  The big downside to using a callback is
-> > that it forces all users to do the extra work of implementing the
-> > callback.  With the gpio api, only the oddball cases have to do extra
-> > code (to adapt the custom device to the gpio api).
+On Fri, Dec 24, 2010 at 11:40:50AM +0900, Tomoya MORINAGA wrote:
+> It seems spi_topcliff_pch of linux-2.6.37-rc6 degraded by previous patch.
+> In fact, data transfer fails on evaluation board testing.
+> I found like the following register miss-setting line.
+> Using this patch, I have confirmed data transfer can work well.
 > 
-> I understand your concerns, but I'm not sure how to satisfy them without
-> crippling the design's ability to accomodate my use-case. I can't pass a
-> GPIO line per spi_board_info since in my case of a multiplexed CS
-> configuration a single pin's state does not uniquely determine the
-> desired CS. The only other option I can think of is that we somehow
-> provide a list of GPIOs for each bus and map the CS numbers to
-> permutations of GPIO states. Unfortunately, I don't know of any suitable
-> structure to put this GPIO list in. Perhaps I'm missing something obvious?
+> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 
-Close, but not quite.  Assign one gpio number to each cs state, and
-write a gpio controller driver that maps the linux-gpio number to the
-physical gpio state permutation.  The mapping from gpio# to ss# is
-1:1, but the driver behind the gpio# can do whatever you need it to
-do.
+Looks okay to me, but I'm not an expert on the device.  I've picked
+this patch up into my next-spi branch, but I can drop it if anyone has
+concerns.
 
 g.
 
+> ---
+>  drivers/spi/spi_topcliff_pch.c |    8 ++++----
+>  1 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+> index 58e187f..56b7588 100644
+> --- a/drivers/spi/spi_topcliff_pch.c
+> +++ b/drivers/spi/spi_topcliff_pch.c
+> @@ -267,7 +267,7 @@ static void pch_spi_handler_sub(struct pch_spi_data *data, u32 reg_spsr_val,
+>  	if (reg_spsr_val & SPSR_FI_BIT) {
+>  		/* disable FI & RFI interrupts */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR, 0,
+> -				   SPCR_FIE_BIT | SPCR_TFIE_BIT);
+> +				   SPCR_FIE_BIT | SPCR_RFIE_BIT);
+>  
+>  		/* transfer is completed;inform pch_spi_process_messages */
+>  		data->transfer_complete = true;
+> @@ -679,11 +679,11 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
+>  	if ((data->bpw_len) > PCH_MAX_FIFO_DEPTH) {
+>  		/* set receive threhold to PCH_RX_THOLD */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> -				   PCH_RX_THOLD << SPCR_TFIC_FIELD,
+> -				   ~MASK_TFIC_SPCR_BITS);
+> +				   PCH_RX_THOLD << SPCR_RFIC_FIELD,
+> +				   ~MASK_RFIC_SPCR_BITS);
+>  		/* enable FI and RFI interrupts */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> -				   SPCR_RFIE_BIT | SPCR_TFIE_BIT, 0);
+> +				   SPCR_RFIE_BIT | SPCR_FIE_BIT, 0);
+>  	} else {
+>  		/* set receive threhold to maximum */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> -- 
+> 1.6.0.6
+> 

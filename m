@@ -1,19 +1,19 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [Patch v2 1/3] spi/dw_spi: Fix too short timeout in spi
-	polling loop
-Date: Fri, 24 Dec 2010 01:10:47 -0700
-Message-ID: <20101224081047.GA5544@angua.secretlab.ca>
+Subject: Re: [Patch v2 2/3] spi/dw_spi: change to EXPORT_SYMBOL_GPL for
+	exported APIs
+Date: Fri, 24 Dec 2010 01:11:04 -0700
+Message-ID: <20101224081104.GB5544@angua.secretlab.ca>
 References: <1293170351-7426-1-git-send-email-feng.tang@intel.com>
+	<1293170351-7426-2-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Arjan van de Ven <arjan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1293170351-7426-1-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1293170351-7426-2-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,57 +24,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 24, 2010 at 01:59:09PM +0800, Feng Tang wrote:
-> The SPI polling loop timeout only works with HZ=100 as the loop was
-> actually too short.
-> 
-> Also add appropriate cpu_relax() in the busy wait loops...
-> 
+On Fri, Dec 24, 2010 at 01:59:10PM +0800, Feng Tang wrote:
 > Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> Signed-off-by: Arjan van de Ven <arjan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-
-Where is your s-o-b line?  :-)
+> Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
 Applied for -next, thanks.
 
 g.
 
 > ---
->  drivers/spi/dw_spi.c |    9 ++++++---
->  1 files changed, 6 insertions(+), 3 deletions(-)
+>  drivers/spi/dw_spi.c |    8 ++++----
+>  1 files changed, 4 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-> index 0838c79..25238a8 100644
+> index 25238a8..b50bf5b 100644
 > --- a/drivers/spi/dw_spi.c
 > +++ b/drivers/spi/dw_spi.c
-> @@ -164,20 +164,23 @@ static inline void mrst_spi_debugfs_remove(struct dw_spi *dws)
->  
->  static void wait_till_not_busy(struct dw_spi *dws)
->  {
-> -	unsigned long end = jiffies + 1 + usecs_to_jiffies(1000);
-> +	unsigned long end = jiffies + 1 + usecs_to_jiffies(5000);
->  
->  	while (time_before(jiffies, end)) {
->  		if (!(dw_readw(dws, sr) & SR_BUSY))
->  			return;
-> +		cpu_relax();
->  	}
->  	dev_err(&dws->master->dev,
-> -		"DW SPI: Status keeps busy for 1000us after a read/write!\n");
-> +		"DW SPI: Status keeps busy for 5000us after a read/write!\n");
+> @@ -941,7 +941,7 @@ err_free_master:
+>  exit:
+>  	return ret;
 >  }
+> -EXPORT_SYMBOL(dw_spi_add_host);
+> +EXPORT_SYMBOL_GPL(dw_spi_add_host);
 >  
->  static void flush(struct dw_spi *dws)
+>  void __devexit dw_spi_remove_host(struct dw_spi *dws)
 >  {
-> -	while (dw_readw(dws, sr) & SR_RF_NOT_EMPT)
-> +	while (dw_readw(dws, sr) & SR_RF_NOT_EMPT) {
->  		dw_readw(dws, dr);
-> +		cpu_relax();
-> +	}
->  
->  	wait_till_not_busy(dws);
+> @@ -965,7 +965,7 @@ void __devexit dw_spi_remove_host(struct dw_spi *dws)
+>  	/* Disconnect from the SPI framework */
+>  	spi_unregister_master(dws->master);
 >  }
+> -EXPORT_SYMBOL(dw_spi_remove_host);
+> +EXPORT_SYMBOL_GPL(dw_spi_remove_host);
+>  
+>  int dw_spi_suspend_host(struct dw_spi *dws)
+>  {
+> @@ -978,7 +978,7 @@ int dw_spi_suspend_host(struct dw_spi *dws)
+>  	spi_set_clk(dws, 0);
+>  	return ret;
+>  }
+> -EXPORT_SYMBOL(dw_spi_suspend_host);
+> +EXPORT_SYMBOL_GPL(dw_spi_suspend_host);
+>  
+>  int dw_spi_resume_host(struct dw_spi *dws)
+>  {
+> @@ -990,7 +990,7 @@ int dw_spi_resume_host(struct dw_spi *dws)
+>  		dev_err(&dws->master->dev, "fail to start queue (%d)\n", ret);
+>  	return ret;
+>  }
+> -EXPORT_SYMBOL(dw_spi_resume_host);
+> +EXPORT_SYMBOL_GPL(dw_spi_resume_host);
+>  
+>  MODULE_AUTHOR("Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>");
+>  MODULE_DESCRIPTION("Driver for DesignWare SPI controller core");
 > -- 
 > 1.7.0.4
 > 

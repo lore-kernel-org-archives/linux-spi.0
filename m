@@ -1,8 +1,10 @@
 From: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 Subject: [PATCH] spi_topcliff_pch: Fix data transfer issue
-Date: Fri, 24 Dec 2010 11:40:50 +0900
-Message-ID: <1293158450-3168-1-git-send-email-tomoya-linux@dsn.okisemi.com>
-Cc: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Date: Fri, 24 Dec 2010 11:45:47 +0900
+Message-ID: <1293158747-3270-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Cc: qi.wang@intel.com, yong.y.wang@intel.com, joel.clark@intel.com,
+	kok.howg.ewe@intel.com,
+	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 To: David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
 	spi-devel-general@lists.sourceforge.net,
@@ -10,6 +12,8 @@ To: David Brownell <dbrownell@users.sourceforge.net>,
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+Sorry, I forget to add "--CCs"
 
 It seems spi_topcliff_pch of linux-2.6.37-rc6 degraded by previous patch.
 In fact, data transfer fails on evaluation board testing.

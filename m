@@ -1,48 +1,87 @@
-From: Ben Gamari <bgamari.foss@gmail.com>
-Subject: Re: [PATCH] mcspi: Add support for GPIO chip select lines
-Date: Fri, 24 Dec 2010 01:05:56 -0500
-Message-ID: <878vzfr9h7.fsf@gmail.com>
-References: <1b68c6791001272033q60dd31dbif4de285cd9bac83d@mail.gmail.com> <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com> <AANLkTi=L+ZfwVy+O=oAXx8EHGisCdW1Pg4U+dQa4ZzEN@mail.gmail.com> <871v58xf0k.fsf@gmail.com> <AANLkTi=d_xkhksY=qzUOmjYYs8OkX13+8_4byZtnX9i5@mail.gmail.com> <87y67fx5vb.fsf@gmail.com> <20101224032819.GC2491@angua.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [Patch v2 1/3] spi/dw_spi: Fix too short timeout in spi
+	polling loop
+Date: Fri, 24 Dec 2010 01:10:47 -0700
+Message-ID: <20101224081047.GA5544@angua.secretlab.ca>
+References: <1293170351-7426-1-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: beagleboard <beagleboard@googlegroups.com>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	Eric Miao <eric.miao@canonical.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20101224032819.GC2491@angua.secretlab.ca>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Arjan van de Ven <arjan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1293170351-7426-1-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 23 Dec 2010 20:28:19 -0700, Grant Likely <grant.likely@secretlab.ca> wrote:
-> On Thu, Dec 23, 2010 at 09:27:20PM -0500, Ben Gamari wrote:
-> > I understand your concerns, but I'm not sure how to satisfy them without
-> > crippling the design's ability to accomodate my use-case. I can't pass a
-> > GPIO line per spi_board_info since in my case of a multiplexed CS
-> > configuration a single pin's state does not uniquely determine the
-> > desired CS. The only other option I can think of is that we somehow
-> > provide a list of GPIOs for each bus and map the CS numbers to
-> > permutations of GPIO states. Unfortunately, I don't know of any suitable
-> > structure to put this GPIO list in. Perhaps I'm missing something obvious?
+On Fri, Dec 24, 2010 at 01:59:09PM +0800, Feng Tang wrote:
+> The SPI polling loop timeout only works with HZ=100 as the loop was
+> actually too short.
 > 
-> Close, but not quite.  Assign one gpio number to each cs state, and
-> write a gpio controller driver that maps the linux-gpio number to the
-> physical gpio state permutation.  The mapping from gpio# to ss# is
-> 1:1, but the driver behind the gpio# can do whatever you need it to
-> do.
+> Also add appropriate cpu_relax() in the busy wait loops...
 > 
-I see. I'm still not convinced that this is the route to take,
-however. It seems like this virtual gpio interface is not only pretty
-clunky (simple board file glue turns into an entire gpio chip driver),
-it seems like this is a very inaccurate and not very useful way to
-expose a multiplexed CS configuration; e.g. what is this chip driver to
-do if the user tries to set two CS pins at once? Is there precedent for
-using the GPIO subsystem in this way?
+> Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Signed-off-by: Arjan van de Ven <arjan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-Cheers,
+Where is your s-o-b line?  :-)
 
-- Ben
+Applied for -next, thanks.
 
+g.
+
+> ---
+>  drivers/spi/dw_spi.c |    9 ++++++---
+>  1 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+> index 0838c79..25238a8 100644
+> --- a/drivers/spi/dw_spi.c
+> +++ b/drivers/spi/dw_spi.c
+> @@ -164,20 +164,23 @@ static inline void mrst_spi_debugfs_remove(struct dw_spi *dws)
+>  
+>  static void wait_till_not_busy(struct dw_spi *dws)
+>  {
+> -	unsigned long end = jiffies + 1 + usecs_to_jiffies(1000);
+> +	unsigned long end = jiffies + 1 + usecs_to_jiffies(5000);
+>  
+>  	while (time_before(jiffies, end)) {
+>  		if (!(dw_readw(dws, sr) & SR_BUSY))
+>  			return;
+> +		cpu_relax();
+>  	}
+>  	dev_err(&dws->master->dev,
+> -		"DW SPI: Status keeps busy for 1000us after a read/write!\n");
+> +		"DW SPI: Status keeps busy for 5000us after a read/write!\n");
+>  }
+>  
+>  static void flush(struct dw_spi *dws)
+>  {
+> -	while (dw_readw(dws, sr) & SR_RF_NOT_EMPT)
+> +	while (dw_readw(dws, sr) & SR_RF_NOT_EMPT) {
+>  		dw_readw(dws, dr);
+> +		cpu_relax();
+> +	}
+>  
+>  	wait_till_not_busy(dws);
+>  }
+> -- 
+> 1.7.0.4
+> 
+
+------------------------------------------------------------------------------
+Learn how Oracle Real Application Clusters (RAC) One Node allows customers
+to consolidate database storage, standardize their database environment, and, 
+should the need arise, upgrade to a full multi-node Oracle RAC database 
+without downtime or disruption
+http://p.sf.net/sfu/oracle-sfdevnl

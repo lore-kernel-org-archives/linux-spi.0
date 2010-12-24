@@ -1,18 +1,16 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH REPOST v2] spi/spi: don't release the spi device twice
-Date: Thu, 23 Dec 2010 20:39:11 -0700
-Message-ID: <AANLkTikxQJffL8=_Dqij-405TF92CZqqOfoo5yoxLcdN@mail.gmail.com>
-References: <20101220171330.GA15344@www.tglx.de>
+Subject: Re: [PATCH 1/4] spi/pl022: map the buffers on the DMA engine
+Date: Thu, 23 Dec 2010 21:07:13 -0700
+Message-ID: <20101224040713.GG2491@angua.secretlab.ca>
+References: <1293055987-12656-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101220171330.GA15344-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1293055987-12656-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,35 +21,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 20, 2010 at 10:13 AM, Sebastian Andrzej Siewior
-<bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org> wrote:
-> This was fixed by David Lamparter in v2.6.36-rc5 3486008
-> ("spi: free children in spi_unregister_master, not siblings") and broken
-> again in v2.6.37-rc1~2^2~4 during the merge of 2b9603a0 ("spi: enable
-> spi_board_info to be registered after spi_master").
->
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-> Signed-off-by: David Lamparter <equinox-cEeocvCgqOOsTnJN9+BGXg@public.gmane.org>
-> ---
->
-> Andrew, I resent this to you because it fixes a regression which was
-> introduced in the merge window for v2.6.37.
-> I posted this patch at 2010-11-23 14:59:10 and sent a ping 2010-12-09
-> 16:06:22 and got no response so far from the maintainer. The patch is at
-> https://patchwork.kernel.org/patch/349721/
+On Wed, Dec 22, 2010 at 11:13:07PM +0100, Linus Walleij wrote:
+> The struct device for the DMA engine is the apropriate one to use
+> when mapping/unmapping buffers. This is because the memory which
+> is addressable by DMA is determined by the DMA engine rather than
+> the device.
+> 
+> Reported-by: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+> Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-Sebastian, sorry I've been completely AWOL for the last month and a
-half (or more).  I got completely overwhelmed this fall and it took
-until just now to get myself dug out again.  I'm not doing any travel
-for the next 4 months, and I've *finally* got an autotest instance set
-up so I can properly pick up and test patches quickly, so things
-should be better in the new year.
-
-Andrew, Thanks for picking this one up and sending it on.  I've
-rearranged the way I work on my end, so this situation shouldn't
-happen again.
+merged for -next, thanks.
 
 g.
+
+> ---
+>  drivers/spi/amba-pl022.c |   12 ++++++------
+>  1 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+> index fb3d1b3..9a14c45 100644
+> --- a/drivers/spi/amba-pl022.c
+> +++ b/drivers/spi/amba-pl022.c
+> @@ -782,9 +782,9 @@ static void *next_transfer(struct pl022 *pl022)
+>  static void unmap_free_dma_scatter(struct pl022 *pl022)
+>  {
+>  	/* Unmap and free the SG tables */
+> -	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
+> +	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
+>  		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+> -	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
+> +	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
+>  		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+>  	sg_free_table(&pl022->sgt_rx);
+>  	sg_free_table(&pl022->sgt_tx);
+> @@ -991,12 +991,12 @@ static int configure_dma(struct pl022 *pl022)
+>  			  pl022->cur_transfer->len, &pl022->sgt_tx);
+>  
+>  	/* Map DMA buffers */
+> -	sglen = dma_map_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
+> +	sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+>  			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+>  	if (!sglen)
+>  		goto err_rx_sgmap;
+>  
+> -	sglen = dma_map_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
+> +	sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+>  			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
+>  	if (!sglen)
+>  		goto err_tx_sgmap;
+> @@ -1040,10 +1040,10 @@ err_txdesc:
+>  	txchan->device->device_control(txchan, DMA_TERMINATE_ALL, 0);
+>  err_rxdesc:
+>  	rxchan->device->device_control(rxchan, DMA_TERMINATE_ALL, 0);
+> -	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_tx.sgl,
+> +	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+>  		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+>  err_tx_sgmap:
+> -	dma_unmap_sg(&pl022->adev->dev, pl022->sgt_rx.sgl,
+> +	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+>  		     pl022->sgt_tx.nents, DMA_FROM_DEVICE);
+>  err_rx_sgmap:
+>  	sg_free_table(&pl022->sgt_tx);
+> -- 
+> 1.7.3.3
+> 
 
 ------------------------------------------------------------------------------
 Learn how Oracle Real Application Clusters (RAC) One Node allows customers

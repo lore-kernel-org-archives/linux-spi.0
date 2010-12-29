@@ -1,72 +1,64 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCHv3 1/4] mc13xxx-core: Consolidate common code to prepare
- for separate i2c and spi
-Date: Wed, 29 Dec 2010 00:40:33 -0700
-Message-ID: <20101229074033.GJ8172@angua.secretlab.ca>
-References: <1292817055-17715-1-git-send-email-marc@cpdesign.com.au>
- <1292817055-17715-2-git-send-email-marc@cpdesign.com.au>
- <20101220083120.GP1940@pengutronix.de>
+Subject: Re: [sodaville] SPI support for CE4100, v2
+Date: Wed, 29 Dec 2010 01:10:51 -0700
+Message-ID: <20101229081051.GL8172@angua.secretlab.ca>
+References: <1291312057-7933-1-git-send-email-bigeasy@linutronix.de>
+	<4D01074A.2020106@linutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20101220083120.GP1940-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <4D01074A.2020106-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Marc and Uwe,
+On Thu, Dec 09, 2010 at 05:43:54PM +0100, Sebastian Andrzej Siewior wrote:
+> Sebastian Andrzej Siewior wrote:
+> >The SPI core inside CE4100 is very much the same as in PXA25x.
+> >I Cc the ARM folks because patch 4 reorganizes some files so that they
+> >can be access from x86. Yes, CE4100 is a x86 SoC :)
+> >The SPI device is behind a PCI bus. The PCI probe code simply creates a
+> >platform device so we don't have much changes to the platform driver.
+> >There is no clock framework on x86 and the peripherals don't support
+> >changing their clocks or to enable/disable them. So I provided dummy
+> >function which keep the driver happy.
+> >
+> >History:
+> >v1: initial post
+> >v2: - the patch touching subys_inticall() got removed.
+> >    - platform_driver_probe() is replaced with platform_driver_register()
+> >    - there are no files created in include/asm.
+> >
+> >The patch series has been created with the -M option so file moves can
+> >be easily noticed. The whole series is also available at
+> >  git://git.linutronix.de/users/bigeasy/soda.git spi
+> 
+> It's been week since I posted this and nobody commented on it. Is this
+> patchset missing something or is it good to go?
 
-On Mon, Dec 20, 2010 at 09:31:20AM +0100, Uwe Kleine-K=F6nig wrote:
-> On Mon, Dec 20, 2010 at 02:50:52PM +1100, Marc Reilly wrote:
-> > This patch moves common mc13xxx definitions to the header file in
-> > preparation for separate i2c and spi driver modules.
-> > spi specific functions are also removed.
-> >=20
-> > Changes to the mc13xxx struct are:
-> > removing the redundant irq member,
-> > adding driver read/write function ptrs,
-> > adding ictype
-> This list isn't complete, but see below.
->=20
-> I don't like that after this patch the driver isn't functional, becau=
-se
-> you removed the spi functionality which breaks bisection.
+I've just picked it up into my test branch, and I'll push it out to
+git.secretlab.ca in the morning if everything checks out with the
+sanity build.
 
-Ugh, yes.  Breaking bisection is absolutely a no-no.  I'll wait for
-the next version of this series before I do a full review.
-
->=20
-> > Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-> > ---
-> >  drivers/mfd/mc13xxx-core.c  |  207 +++++++------------------------=
------------
-> >  include/linux/mfd/mc13xxx.h |   77 +++++++++++-----
-> >  2 files changed, 87 insertions(+), 197 deletions(-)
-> >=20
-> > diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.=
-c
-> > index a2ac2ed..3367a40 100644
-> > --- a/drivers/mfd/mc13xxx-core.c
-> > +++ b/drivers/mfd/mc13xxx-core.c
-> > @@ -9,24 +9,14 @@
-> >   * the terms of the GNU General Public License version 2 as publis=
-hed by the
-> >   * Free Software Foundation.
-> >   */
-> > -
-> (hmm.  I think there is no style guide for that, but I know people wh=
-o
-> think that this nl should be there.  So IMHO don't touch this.)
-
-A better comment is: don't make unrelated, non-functional whitespace
-changes in patches for something else.  They add noise that make it
-harder to review.
-
-Cheers,
 g.
+
+
+------------------------------------------------------------------------------
+Learn how Oracle Real Application Clusters (RAC) One Node allows customers
+to consolidate database storage, standardize their database environment, and, 
+should the need arise, upgrade to a full multi-node Oracle RAC database 
+without downtime or disruption
+http://p.sf.net/sfu/oracle-sfdevnl

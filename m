@@ -1,150 +1,135 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 8/9] spi/pxa2xx: Modify RX-Tresh instead of busy-loop
-	for the remaining RX bytes.
-Date: Wed, 29 Dec 2010 01:12:01 -0700
-Message-ID: <20101229081201.GU8172@angua.secretlab.ca>
-References: <1291312057-7933-1-git-send-email-bigeasy@linutronix.de>
-	<1291312057-7933-9-git-send-email-bigeasy@linutronix.de>
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Subject: Re: [PATCH v6 1/1] OMAP2: Spi: Force CS to be in inactive state after
+ off-mode transition
+Date: Wed, 29 Dec 2010 10:01:11 +0100
+Message-ID: <4D1AF8D7.6060904@free-electrons.com>
+References: <4D149045.8080801@free-electrons.com> <20101229072800.GF8172@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org,
-	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1291312057-7933-9-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: linux-omap <linux-omap@vger.kernel.org>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	Kevin Hilman <khilman@deeprootsystems.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20101229072800.GF8172@angua.secretlab.ca>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 02, 2010 at 06:47:36PM +0100, Sebastian Andrzej Siewior wrote:
-> After all TX bytes are sent, the driver spins while the SPI core is busy
-> and then it spins for a "short" period of time until RX bytes are
-> available.
-> On Sodavile the busy flag disappears pretty quick and after that it
-> takes approx ~130ms (sometimes less but not much) until there are bytes
-> available in the RX FIFO.
-> This patch removes the busy loop and modifies the RX threshould so we
-> get woken up once the remainings bytes arrived.
+> Hi Gregory,
 > 
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
-> Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Hi Grant,
 
-picked up for -next via merge
-
-g.
-
-> ---
->  drivers/spi/pxa2xx_spi.c |   56 ++++++++++++++++++++++++++++++++--------------
->  1 files changed, 39 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> index a54685b..9ca6454 100644
-> --- a/drivers/spi/pxa2xx_spi.c
-> +++ b/drivers/spi/pxa2xx_spi.c
-> @@ -660,13 +660,25 @@ static irqreturn_t dma_transfer(struct driver_data *drv_data)
->  	return IRQ_NONE;
->  }
->  
-> +static void reset_sccr1(struct driver_data *drv_data)
-> +{
-> +	void __iomem *reg = drv_data->ioaddr;
-> +	struct chip_data *chip = drv_data->cur_chip;
-> +	u32 sccr1_reg;
-> +
-> +	sccr1_reg = read_SSCR1(reg) & ~drv_data->int_cr1;
-> +	sccr1_reg &= ~SSCR1_RFT;
-> +	sccr1_reg |= chip->threshold;
-> +	write_SSCR1(sccr1_reg, reg);
-> +}
-> +
->  static void int_error_stop(struct driver_data *drv_data, const char* msg)
->  {
->  	void __iomem *reg = drv_data->ioaddr;
->  
->  	/* Stop and reset SSP */
->  	write_SSSR_CS(drv_data, drv_data->clear_sr);
-> -	write_SSCR1(read_SSCR1(reg) & ~drv_data->int_cr1, reg);
-> +	reset_sccr1(drv_data);
->  	if (!pxa25x_ssp_comp(drv_data))
->  		write_SSTO(0, reg);
->  	flush(drv_data);
-> @@ -684,7 +696,7 @@ static void int_transfer_complete(struct driver_data *drv_data)
->  
->  	/* Stop SSP */
->  	write_SSSR_CS(drv_data, drv_data->clear_sr);
-> -	write_SSCR1(read_SSCR1(reg) & ~drv_data->int_cr1, reg);
-> +	reset_sccr1(drv_data);
->  	if (!pxa25x_ssp_comp(drv_data))
->  		write_SSTO(0, reg);
->  
-> @@ -739,24 +751,34 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
->  	}
->  
->  	if (drv_data->tx == drv_data->tx_end) {
-> -		write_SSCR1(read_SSCR1(reg) & ~SSCR1_TIE, reg);
-> -		/* PXA25x_SSP has no timeout, read trailing bytes */
-> +		u32 bytes_left;
-> +		u32 sccr1_reg;
-> +
-> +		sccr1_reg = read_SSCR1(reg);
-> +		sccr1_reg &= ~SSCR1_TIE;
-> +
-> +		/*
-> +		 * PXA25x_SSP has no timeout, set up rx threshould for the
-> +		 * remaing RX bytes.
-> +		 */
->  		if (pxa25x_ssp_comp(drv_data)) {
-> -			if (!wait_ssp_rx_stall(reg))
-> -			{
-> -				int_error_stop(drv_data, "interrupt_transfer: "
-> -						"rx stall failed");
-> -				return IRQ_HANDLED;
-> -			}
-> -			if (!drv_data->read(drv_data))
-> -			{
-> -				int_error_stop(drv_data,
-> -						"interrupt_transfer: "
-> -						"trailing byte read failed");
-> -				return IRQ_HANDLED;
-> +
-> +			sccr1_reg &= ~SSCR1_RFT;
-> +
-> +			bytes_left = drv_data->rx_end - drv_data->rx;
-> +			switch (drv_data->n_bytes) {
-> +			case 4:
-> +				bytes_left >>= 1;
-> +			case 2:
-> +				bytes_left >>= 1;
->  			}
-> -			int_transfer_complete(drv_data);
-> +
-> +			if (bytes_left > RX_THRESH_DFLT)
-> +				bytes_left = RX_THRESH_DFLT;
-> +
-> +			sccr1_reg |= SSCR1_RxTresh(bytes_left);
->  		}
-> +		write_SSCR1(sccr1_reg, reg);
->  	}
->  
->  	/* We did something */
-> -- 
-> 1.7.3.2
+> Patch does not apply, but I cannot immediately isolate the damage.
+> Please see if you can figure out the issue on your end.  Is it your
+> mailer?  I could fudge it, but in the long run it is better if this
+> issue can get sorted out now.
 > 
 
-------------------------------------------------------------------------------
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, and, 
-should the need arise, upgrade to a full multi-node Oracle RAC database 
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
+I found the problem: see below in the patch itself.
+
+> Also, a few other minor nitpicks (I won't reject a patch over these,
+> but it helps to have them right):
+> 
+> Please prefix spi patch names with "spi[/driver]:".  It is the format
+> for all spi patches I take through my tree, and if it already follows
+> that convention, then I don't need to edit it manually.
+> 
+> Second, please keep the line length in the patch description short; in
+> general I find that a textwidth limit of 70 characters is about right
+> for the purpose of reading/replying in email.  A lot of maintainers
+> use text email clients like mutt in 80 column terminal windows.
+> Keeping a reasonable right hand margin in the text body is simply
+> friendly.
+> 
+> Finally, in changelogs it is easier to read if there is some kind of
+> itemization ticks.  For example:
+> 
+> * Change from v5 to v6:
+>   - Rebase on linus/master (after 2.6.37-rc7)
+>   - Use CONFIG_SUSPEND instead of CONFIG_PM
+>   - Didn't use legacy PM methods anymore. Instead, add a struct
+>     dev_pm_ops and add the resume method there.
+>   - Fix multi-line comment style
+>  
+
+I will fix these (patch prefix, wrapping and itemization ticks) and send the patch again today.
+
+> g.
+> 
+>> ---
+>>  drivers/spi/omap2_mcspi.c |   40 ++++++++++++++++++++++++++++++++++++++++
+>>  1 files changed, 40 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+>> index 2a651e6..a17ea97 100644
+>> --- a/drivers/spi/omap2_mcspi.c
+>> +++ b/drivers/spi/omap2_mcspi.c
+>> @@ -1305,10 +1305,50 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>>  /* work with hotplug and coldplug */
+>>  MODULE_ALIAS("platform:omap2_mcspi");
+>>  +#ifdef	CONFIG_SUSPEND
+   ^
+   |
+Problem was here, I deleted a carrier in error :(
+
+>> +/*
+>> + * When SPI wake up from off-mode, CS is in activate state. If it was in
+>> + * unactive state when driver was suspend, then force it to unactive state at
+>> + * wake up.
+>> + */
+>> +static int omap2_mcspi_resume(struct device *dev)
+>> +{
+>> +	struct spi_master	*master = dev_get_drvdata(dev);
+>> +	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
+>> +	struct omap2_mcspi_cs *cs;
+>> +
+>> +	omap2_mcspi_enable_clocks(mcspi);
+>> +	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
+>> +			    node) {
+>> +		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
+>> +
+>> +			/*
+>> +			 * We need to toggle CS state for OMAP take this
+>> +			 * change in account.
+>> +			 */
+>> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
+>> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+>> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
+>> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+>> +		}
+>> +	}
+>> +	omap2_mcspi_disable_clocks(mcspi);
+>> +	return 0;
+>> +}
+>> +#else
+>> +#define	omap2_mcspi_resume	NULL
+>> +#endif
+>> +
+>> +static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+>> +	.resume = omap2_mcspi_resume,
+>> +};
+>> +
+>>  static struct platform_driver omap2_mcspi_driver = {
+>>  	.driver = {
+>>  		.name =		"omap2_mcspi",
+>>  		.owner =	THIS_MODULE,
+>> +		.pm =		&omap2_mcspi_pm_ops
+>> +
+> 
+> Drop the extra line.
+> 
+>>  	},
+>>  	.remove =	__exit_p(omap2_mcspi_remove),
+>>  };
+>> -- 
+>> 1.7.0.4
+>>
+
+
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com

@@ -1,420 +1,536 @@
-From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH v3 09/16] spi: add SPI controller driver for the Atheros
-	AR71XX/AR724X/AR913X SoCs
-Date: Tue, 28 Dec 2010 19:20:30 +0100
-Message-ID: <1293560437-7967-10-git-send-email-juhosg@openwrt.org>
-References: <1293560437-7967-1-git-send-email-juhosg@openwrt.org>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+Date: Tue, 28 Dec 2010 23:49:37 -0700
+Message-ID: <20101229064937.GC8172@angua.secretlab.ca>
+References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"Luis R. Rodriguez" <lrodriguez-DlyHzToyqoxBDgjK7y7TUQ@public.gmane.org>,
-	Cliff Holden <Cliff.Holden-R2DSYHpuZhhBDgjK7y7TUQ@public.gmane.org>, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kathy Giori <Kathy.Giori-R2DSYHpuZhhBDgjK7y7TUQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Imre Kaloz <kaloz-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1293560437-7967-1-git-send-email-juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, qi.wang@intel.com,
+	yong.y.wang@intel.com, joel.clark@intel.com, kok.howg.ewe@intel.com
+To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The Atheros AR71XX/AR724X/AR913X SoCs have a built-in SPI controller. This
-patch implements a driver for that.
+On Mon, Dec 27, 2010 at 08:23:45PM +0900, Tomoya MORINAGA wrote:
+> Support ML7213 device of OKI SEMICONDUCTOR.
+> ML7213 is companion chip of Intel Atom E6xx series for IVI(In-Vehicle Infotainment).
+> ML7213 is completely compatible for Intel EG20T PCH.
+> 
+> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+> ---
+>  drivers/spi/spi_topcliff_pch.c |  293 +++++++++++++++++++++++-----------------
 
-Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
----
+Hi Tomoya,
 
-Changes since RFC:
-    - remove DRV_DESC definition and use its previous value directly in the
-      MODULE_DESCRIPTION() macro,
-    - use io{read,write}32 accesors instead of __raw_{read,write}l,
-    - use __dev{init,exit,exit_p} annotations where in the appropriate places,
-    - initialize 'master->bus_num' field to -1 if no platform data specified,
-      so that a bus number can be dynamically assigned,
-    - rename ath79_spi_drv to ath79_spi_driver to avoid section mismatch 
-      warnings
+As previously discussed on this list, I would like to see support for
+multiple bus instances implemented differently.  Rather than storing
+the spi_master instances in an array in the pci device private data,
+the pci device should register a separate platform_device for each spi
+bus instance, and each of those bus instances should get bound to a
+topcliff_spi_bus driver which doesn't need to have any special
+knowledge about how many spi_master instances actually exist.
 
-Changes since v1:
-    - rebased against 2.6.37-rc7
+Basically, the way it is implemented in this patch isn't taking
+advantage of the infrastructure and instance management provided by
+the driver model.
 
-Changes since v2: ---
+g.
 
- .../include/asm/mach-ath79/ath79_spi_platform.h    |   19 ++
- drivers/spi/Kconfig                                |    8 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/ath79_spi.c                            |  290 ++++++++++++++++++++
- 4 files changed, 318 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
- create mode 100644 drivers/spi/ath79_spi.c
-
-diff --git a/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h b/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
-new file mode 100644
-index 0000000..aa71216
---- /dev/null
-+++ b/arch/mips/include/asm/mach-ath79/ath79_spi_platform.h
-@@ -0,0 +1,19 @@
-+/*
-+ *  Platform data definition for Atheros AR71XX/AR724X/AR913X SPI controller
-+ *
-+ *  Copyright (C) 2008-2010 Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify it
-+ *  under the terms of the GNU General Public License version 2 as published
-+ *  by the Free Software Foundation.
-+ */
-+
-+#ifndef _ATH79_SPI_PLATFORM_H
-+#define _ATH79_SPI_PLATFORM_H
-+
-+struct ath79_spi_platform_data {
-+	unsigned	bus_num;
-+	unsigned	num_chipselect;
-+};
-+
-+#endif /* _ATH79_SPI_PLATFORM_H */
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 78f9fd0..f2093e1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -53,6 +53,14 @@ if SPI_MASTER
- 
- comment "SPI Master Controller Drivers"
- 
-+config SPI_ATH79
-+	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
-+	depends on ATH79 && GENERIC_GPIO
-+	select SPI_BITBANG
-+	help
-+	  This enables support for the SPI controller present on the
-+	  Atheros AR71XX/AR724X/AR913X SoCs.
-+
- config SPI_ATMEL
- 	tristate "Atmel SPI Controller"
- 	depends on (ARCH_AT91 || AVR32)
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 8bc1a5a..875bc3d 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_SPI_MASTER)		+= spi.o
- 
- # SPI master controller drivers (bus)
- obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
-+obj-$(CONFIG_SPI_ATH79)			+= ath79_spi.o
- obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
- obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
- obj-$(CONFIG_SPI_AU1550)		+= au1550_spi.o
-diff --git a/drivers/spi/ath79_spi.c b/drivers/spi/ath79_spi.c
-new file mode 100644
-index 0000000..96f169a
---- /dev/null
-+++ b/drivers/spi/ath79_spi.c
-@@ -0,0 +1,290 @@
-+/*
-+ * SPI controller driver for the Atheros AR71XX/AR724X/AR913X SoCs
-+ *
-+ * Copyright (C) 2009-2010 Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ *
-+ * This driver has been based on the spi-gpio.c:
-+ *	Copyright (C) 2006,2008 David Brownell
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ *
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+#include <linux/platform_device.h>
-+#include <linux/io.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
-+#include <linux/bitops.h>
-+#include <linux/gpio.h>
-+
-+#include <asm/mach-ath79/ar71xx_regs.h>
-+#include <asm/mach-ath79/ath79_spi_platform.h>
-+
-+#define DRV_NAME	"ath79-spi"
-+
-+struct ath79_spi {
-+	struct	spi_bitbang	bitbang;
-+	u32			ioc_base;
-+	u32			reg_ctrl;
-+
-+	void __iomem		*base;
-+
-+	struct platform_device	*pdev;
-+};
-+
-+static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
-+{
-+	return ioread32(sp->base + reg);
-+}
-+
-+static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg, u32 val)
-+{
-+	iowrite32(val, sp->base + reg);
-+}
-+
-+static inline struct ath79_spi *spidev_to_sp(struct spi_device *spi)
-+{
-+	return spi_master_get_devdata(spi->master);
-+}
-+
-+static void ath79_spi_chipselect(struct spi_device *spi, int is_active)
-+{
-+	struct ath79_spi *sp = spidev_to_sp(spi);
-+	int cs_high = (spi->mode & SPI_CS_HIGH) ? is_active : !is_active;
-+
-+	if (is_active) {
-+		/* set initial clock polarity */
-+		if (spi->mode & SPI_CPOL)
-+			sp->ioc_base |= AR71XX_SPI_IOC_CLK;
-+		else
-+			sp->ioc_base &= ~AR71XX_SPI_IOC_CLK;
-+
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
-+	}
-+
-+	if (spi->chip_select) {
-+		unsigned long gpio = (unsigned long) spi->controller_data;
-+
-+		/* SPI is normally active-low */
-+		gpio_set_value(gpio, cs_high);
-+	} else {
-+		if (cs_high)
-+			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+		else
-+			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
-+	}
-+
-+}
-+
-+static int ath79_spi_setup_cs(struct spi_device *spi)
-+{
-+	struct ath79_spi *sp = spidev_to_sp(spi);
-+
-+	/* enable GPIO mode */
-+	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
-+
-+	/* save CTRL register */
-+	sp->reg_ctrl = ath79_spi_rr(sp, AR71XX_SPI_REG_CTRL);
-+	sp->ioc_base = ath79_spi_rr(sp, AR71XX_SPI_REG_IOC);
-+
-+	/* TODO: setup speed? */
-+	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
-+
-+	if (spi->chip_select) {
-+		unsigned long gpio = (unsigned long) spi->controller_data;
-+		int status = 0;
-+
-+		status = gpio_request(gpio, dev_name(&spi->dev));
-+		if (status)
-+			return status;
-+
-+		status = gpio_direction_output(gpio, spi->mode & SPI_CS_HIGH);
-+		if (status) {
-+			gpio_free(gpio);
-+			return status;
-+		}
-+	} else {
-+		if (spi->mode & SPI_CS_HIGH)
-+			sp->ioc_base |= AR71XX_SPI_IOC_CS0;
-+		else
-+			sp->ioc_base &= ~AR71XX_SPI_IOC_CS0;
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
-+	}
-+
-+	return 0;
-+}
-+
-+static void ath79_spi_cleanup_cs(struct spi_device *spi)
-+{
-+	struct ath79_spi *sp = spidev_to_sp(spi);
-+
-+	if (spi->chip_select) {
-+		unsigned long gpio = (unsigned long) spi->controller_data;
-+		gpio_free(gpio);
-+	}
-+
-+	/* restore CTRL register */
-+	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, sp->reg_ctrl);
-+	/* disable GPIO mode */
-+	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, 0);
-+}
-+
-+static int ath79_spi_setup(struct spi_device *spi)
-+{
-+	int status = 0;
-+
-+	if (spi->bits_per_word > 32)
-+		return -EINVAL;
-+
-+	if (!spi->controller_state) {
-+		status = ath79_spi_setup_cs(spi);
-+		if (status)
-+			return status;
-+	}
-+
-+	status = spi_bitbang_setup(spi);
-+	if (status && !spi->controller_state)
-+		ath79_spi_cleanup_cs(spi);
-+
-+	return status;
-+}
-+
-+static void ath79_spi_cleanup(struct spi_device *spi)
-+{
-+	ath79_spi_cleanup_cs(spi);
-+	spi_bitbang_cleanup(spi);
-+}
-+
-+static u32 ath79_spi_txrx_mode0(struct spi_device *spi, unsigned nsecs,
-+			       u32 word, u8 bits)
-+{
-+	struct ath79_spi *sp = spidev_to_sp(spi);
-+	u32 ioc = sp->ioc_base;
-+
-+	/* clock starts at inactive polarity */
-+	for (word <<= (32 - bits); likely(bits); bits--) {
-+		u32 out;
-+
-+		if (word & (1 << 31))
-+			out = ioc | AR71XX_SPI_IOC_DO;
-+		else
-+			out = ioc & ~AR71XX_SPI_IOC_DO;
-+
-+		/* setup MSB (to slave) on trailing edge */
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, out);
-+		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, out | AR71XX_SPI_IOC_CLK);
-+
-+		word <<= 1;
-+	}
-+
-+	return ath79_spi_rr(sp, AR71XX_SPI_REG_RDS);
-+}
-+
-+static __devinit int ath79_spi_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct ath79_spi *sp;
-+	struct ath79_spi_platform_data *pdata;
-+	struct resource	*r;
-+	int ret;
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*sp));
-+	if (master == NULL) {
-+		dev_err(&pdev->dev, "failed to allocate spi master\n");
-+		return -ENOMEM;
-+	}
-+
-+	sp = spi_master_get_devdata(master);
-+	platform_set_drvdata(pdev, sp);
-+
-+	pdata = pdev->dev.platform_data;
-+
-+	master->setup = ath79_spi_setup;
-+	master->cleanup = ath79_spi_cleanup;
-+	if (pdata) {
-+		master->bus_num = pdata->bus_num;
-+		master->num_chipselect = pdata->num_chipselect;
-+	} else {
-+		master->bus_num = -1;
-+		master->num_chipselect = 1;
-+	}
-+
-+	sp->bitbang.master = spi_master_get(master);
-+	sp->bitbang.chipselect = ath79_spi_chipselect;
-+	sp->bitbang.txrx_word[SPI_MODE_0] = ath79_spi_txrx_mode0;
-+	sp->bitbang.setup_transfer = spi_bitbang_setup_transfer;
-+	sp->bitbang.flags = SPI_CS_HIGH;
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (r == NULL) {
-+		ret = -ENOENT;
-+		goto err_put_master;
-+	}
-+
-+	sp->base = ioremap(r->start, r->end - r->start + 1);
-+	if (!sp->base) {
-+		ret = -ENXIO;
-+		goto err_put_master;
-+	}
-+
-+	ret = spi_bitbang_start(&sp->bitbang);
-+	if (ret)
-+		goto err_unmap;
-+
-+	return 0;
-+
-+err_unmap:
-+	iounmap(sp->base);
-+err_put_master:
-+	platform_set_drvdata(pdev, NULL);
-+	spi_master_put(sp->bitbang.master);
-+
-+	return ret;
-+}
-+
-+static __devexit int ath79_spi_remove(struct platform_device *pdev)
-+{
-+	struct ath79_spi *sp = platform_get_drvdata(pdev);
-+
-+	spi_bitbang_stop(&sp->bitbang);
-+	iounmap(sp->base);
-+	platform_set_drvdata(pdev, NULL);
-+	spi_master_put(sp->bitbang.master);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver ath79_spi_driver = {
-+	.probe		= ath79_spi_probe,
-+	.remove		= __devexit_p(ath79_spi_remove),
-+	.driver		= {
-+		.name	= DRV_NAME,
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+static __init int ath79_spi_init(void)
-+{
-+	return platform_driver_register(&ath79_spi_driver);
-+}
-+module_init(ath79_spi_init);
-+
-+static __exit void ath79_spi_exit(void)
-+{
-+	platform_driver_unregister(&ath79_spi_driver);
-+}
-+module_exit(ath79_spi_exit);
-+
-+MODULE_DESCRIPTION("SPI controller driver for Atheros AR71XX/AR724X/AR91X");
-+MODULE_AUTHOR("Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>");
-+MODULE_LICENSE("GPL v2");
-+MODULE_ALIAS("platform:" DRV_NAME);
--- 
-1.7.2.1
-
-
-------------------------------------------------------------------------------
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, and, 
-should the need arise, upgrade to a full multi-node Oracle RAC database 
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
+>  1 files changed, 172 insertions(+), 121 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+> index 58e187f..18e077b 100644
+> --- a/drivers/spi/spi_topcliff_pch.c
+> +++ b/drivers/spi/spi_topcliff_pch.c
+> @@ -35,6 +35,7 @@
+>  #define PCH_SPDRR		0x10	/* SPI read data register */
+>  #define PCH_SSNXCR		0x18	/* SSN Expand Control Register */
+>  #define PCH_SRST		0x1C	/* SPI reset register */
+> +#define PCH_SPI_ADDRESS_SIZE	0x20
+>  
+>  #define PCH_SPSR_TFD		0x000007C0
+>  #define PCH_SPSR_RFD		0x0000F800
+> @@ -88,6 +89,16 @@
+>  #define PCH_CLOCK_HZ		50000000
+>  #define PCH_MAX_SPBR		1023
+>  
+> +/* Definition for ML7213 by OKI SEMICONDUCTOR */
+> +#define PCI_VENDOR_ID_ROHM		0x10DB
+> +#define PCI_DEVICE_ID_ML7213_SPI	0x802c
+> +
+> +/*
+> +Set the number of SPI instance max
+> +Intel EG20T PCH :		1ch
+> +OKI SEMICONDUCTOR ML7213 IOH :	2ch
+> +*/
+> +#define PCH_SPI_MAX_DEV			2
+>  
+>  /**
+>   * struct pch_spi_data - Holds the SPI channel specific details
+> @@ -153,18 +164,21 @@ struct pch_spi_data {
+>   * @pci_req_sts:	Status of pci_request_regions
+>   * @suspend_sts:	Status of suspend
+>   * @data:		Pointer to SPI channel data structure
+> + * @num:		The number of SPI device instance
+>   */
+>  struct pch_spi_board_data {
+>  	struct pci_dev *pdev;
+>  	u8 irq_reg_sts;
+>  	u8 pci_req_sts;
+>  	u8 suspend_sts;
+> -	struct pch_spi_data *data;
+> +	struct pch_spi_data *data[PCH_SPI_MAX_DEV];
+> +	int num;
+>  };
+>  
+>  static struct pci_device_id pch_spi_pcidev_id[] = {
+> -	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_GE_SPI)},
+> -	{0,}
+> +	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
+> +	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
+> +	{ }
+>  };
+>  
+>  /**
+> @@ -267,7 +281,7 @@ static void pch_spi_handler_sub(struct pch_spi_data *data, u32 reg_spsr_val,
+>  	if (reg_spsr_val & SPSR_FI_BIT) {
+>  		/* disable FI & RFI interrupts */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR, 0,
+> -				   SPCR_FIE_BIT | SPCR_TFIE_BIT);
+> +				   SPCR_FIE_BIT | SPCR_RFIE_BIT);
+>  
+>  		/* transfer is completed;inform pch_spi_process_messages */
+>  		data->transfer_complete = true;
+> @@ -288,6 +302,7 @@ static irqreturn_t pch_spi_handler(int irq, void *dev_id)
+>  	void __iomem *io_remap_addr;
+>  	irqreturn_t ret = IRQ_NONE;
+>  	struct pch_spi_board_data *board_dat = dev_id;
+> +	int i;
+>  
+>  	if (board_dat->suspend_sts) {
+>  		dev_dbg(&board_dat->pdev->dev,
+> @@ -295,21 +310,22 @@ static irqreturn_t pch_spi_handler(int irq, void *dev_id)
+>  		return IRQ_NONE;
+>  	}
+>  
+> -	data = board_dat->data;
+> -	io_remap_addr = data->io_remap_addr;
+> -	spsr = io_remap_addr + PCH_SPSR;
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		data = board_dat->data[i];
+> +		io_remap_addr = data->io_remap_addr;
+> +		spsr = io_remap_addr + PCH_SPSR;
+>  
+> -	reg_spsr_val = ioread32(spsr);
+> +		reg_spsr_val = ioread32(spsr);
+>  
+> -	/* Check if the interrupt is for SPI device */
+> -	if (reg_spsr_val & (SPSR_FI_BIT | SPSR_RFI_BIT)) {
+> -		pch_spi_handler_sub(data, reg_spsr_val, io_remap_addr);
+> -		ret = IRQ_HANDLED;
+> -	}
+> -
+> -	dev_dbg(&board_dat->pdev->dev, "%s EXIT return value=%d\n",
+> -		__func__, ret);
+> +		/* Check if the interrupt is for SPI device */
+> +		if (reg_spsr_val & (SPSR_FI_BIT | SPSR_RFI_BIT)) {
+> +			pch_spi_handler_sub(data, reg_spsr_val, io_remap_addr);
+> +			ret = IRQ_HANDLED;
+> +		}
+>  
+> +		dev_dbg(&board_dat->pdev->dev, "%s EXIT return value=%d\n",
+> +			__func__, ret);
+> +	}
+>  	return ret;
+>  }
+>  
+> @@ -679,11 +695,11 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
+>  	if ((data->bpw_len) > PCH_MAX_FIFO_DEPTH) {
+>  		/* set receive threhold to PCH_RX_THOLD */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> -				   PCH_RX_THOLD << SPCR_TFIC_FIELD,
+> -				   ~MASK_TFIC_SPCR_BITS);
+> +				   PCH_RX_THOLD << SPCR_RFIC_FIELD,
+> +				   ~MASK_RFIC_SPCR_BITS);
+>  		/* enable FI and RFI interrupts */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> -				   SPCR_RFIE_BIT | SPCR_TFIE_BIT, 0);
+> +				   SPCR_RFIE_BIT | SPCR_FIE_BIT, 0);
+>  	} else {
+>  		/* set receive threhold to maximum */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+> @@ -870,37 +886,46 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+>  
+>  static void pch_spi_free_resources(struct pch_spi_board_data *board_dat)
+>  {
+> +	int i;
+> +
+>  	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+>  
+>  	/* free workqueue */
+> -	if (board_dat->data->wk != NULL) {
+> -		destroy_workqueue(board_dat->data->wk);
+> -		board_dat->data->wk = NULL;
+> -		dev_dbg(&board_dat->pdev->dev,
+> -			"%s destroy_workqueue invoked successfully\n",
+> -			__func__);
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		if (board_dat->data[i]->wk != NULL) {
+> +			destroy_workqueue(board_dat->data[i]->wk);
+> +			board_dat->data[i]->wk = NULL;
+> +			dev_dbg(&board_dat->pdev->dev,
+> +				"%s destroy_workqueue invoked successfully\n",
+> +				__func__);
+> +		}
+>  	}
+>  
+>  	/* disable interrupts & free IRQ */
+>  	if (board_dat->irq_reg_sts) {
+> -		/* disable interrupts */
+> -		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR, 0,
+> -				   PCH_ALL);
+> +		for (i = 0; i < board_dat->num; i++) {
+> +			/* disable interrupts */
+> +			pch_spi_setclr_reg(board_dat->data[i]->master, PCH_SPCR, 0,
+> +					   PCH_ALL);
+>  
+> -		/* free IRQ */
+> -		free_irq(board_dat->pdev->irq, board_dat);
+> +			if (i == (board_dat->num - 1)) {
+> +				/* free IRQ */
+> +				free_irq(board_dat->pdev->irq, board_dat);
+>  
+> -		dev_dbg(&board_dat->pdev->dev,
+> -			"%s free_irq invoked successfully\n", __func__);
+> +				dev_dbg(&board_dat->pdev->dev,
+> +					"%s free_irq invoked successfully\n", __func__);
+>  
+> -		board_dat->irq_reg_sts = false;
+> +				board_dat->irq_reg_sts = false;
+> +			}
+> +		}
+>  	}
+>  
+>  	/* unmap PCI base address */
+> -	if (board_dat->data->io_remap_addr != 0) {
+> -		pci_iounmap(board_dat->pdev, board_dat->data->io_remap_addr);
+> +	if (board_dat->data[0]->io_remap_addr != 0) {
+> +		pci_iounmap(board_dat->pdev, board_dat->data[0]->io_remap_addr);
+>  
+> -		board_dat->data->io_remap_addr = 0;
+> +		for (i = 0; i < board_dat->num; i++)
+> +			board_dat->data[i]->io_remap_addr = 0;
+>  
+>  		dev_dbg(&board_dat->pdev->dev,
+>  			"%s pci_iounmap invoked successfully\n", __func__);
+> @@ -920,19 +945,23 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat)
+>  {
+>  	void __iomem *io_remap_addr;
+>  	int retval;
+> +	int i;
+> +
+>  	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
+>  
+> -	/* create workqueue */
+> -	board_dat->data->wk = create_singlethread_workqueue(KBUILD_MODNAME);
+> -	if (!board_dat->data->wk) {
+> -		dev_err(&board_dat->pdev->dev,
+> -			"%s create_singlet hread_workqueue failed\n", __func__);
+> -		retval = -EBUSY;
+> -		goto err_return;
+> -	}
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		/* create workqueue */
+> +		board_dat->data[i]->wk = create_singlethread_workqueue(KBUILD_MODNAME);
+> +		if (!board_dat->data[i]->wk) {
+> +			dev_err(&board_dat->pdev->dev,
+> +				"%s create_singlet hread_workqueue failed\n", __func__);
+> +			retval = -EBUSY;
+> +			goto err_return;
+> +		}
+>  
+> -	dev_dbg(&board_dat->pdev->dev,
+> -		"%s create_singlethread_workqueue success\n", __func__);
+> +		dev_dbg(&board_dat->pdev->dev,
+> +			"%s create_singlethread_workqueue success\n", __func__);
+> +	}
+>  
+>  	retval = pci_request_regions(board_dat->pdev, KBUILD_MODNAME);
+>  	if (retval != 0) {
+> @@ -951,13 +980,15 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat)
+>  		goto err_return;
+>  	}
+>  
+> -	/* calculate base address for all channels */
+> -	board_dat->data->io_remap_addr = io_remap_addr;
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		/* calculate base address for all channels */
+> +		board_dat->data[i]->io_remap_addr = io_remap_addr + (PCH_SPI_ADDRESS_SIZE * i);
+>  
+> -	/* reset PCH SPI h/w */
+> -	pch_spi_reset(board_dat->data->master);
+> -	dev_dbg(&board_dat->pdev->dev,
+> -		"%s pch_spi_reset invoked successfully\n", __func__);
+> +		/* reset PCH SPI h/w */
+> +		pch_spi_reset(board_dat->data[i]->master);
+> +		dev_dbg(&board_dat->pdev->dev,
+> +			"%s pch_spi_reset invoked successfully\n", __func__);
+> +	}
+>  
+>  	/* register IRQ */
+>  	retval = request_irq(board_dat->pdev->irq, pch_spi_handler,
+> @@ -989,10 +1020,11 @@ err_return:
+>  static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  {
+>  
+> -	struct spi_master *master;
+> +	struct spi_master *master[PCH_SPI_MAX_DEV];
+>  
+>  	struct pch_spi_board_data *board_dat;
+>  	int retval;
+> +	int i, j;
+>  
+>  	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
+>  
+> @@ -1021,37 +1053,40 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  		__func__, retval);
+>  
+>  	board_dat->pdev = pdev;
+> +	board_dat->num = id->driver_data;
+> +
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		/* alllocate memory for SPI master */
+> +		master[i] = spi_alloc_master(&pdev->dev, sizeof(struct pch_spi_data));
+> +		if (master[i] == NULL) {
+> +			retval = -ENOMEM;
+> +			dev_err(&pdev->dev, "%s Fail.\n", __func__);
+> +			goto err_spi_alloc_master;
+> +		}
+>  
+> -	/* alllocate memory for SPI master */
+> -	master = spi_alloc_master(&pdev->dev, sizeof(struct pch_spi_data));
+> -	if (master == NULL) {
+> -		retval = -ENOMEM;
+> -		dev_err(&pdev->dev, "%s Fail.\n", __func__);
+> -		goto err_spi_alloc_master;
+> -	}
+> -
+> -	dev_dbg(&pdev->dev,
+> -		"%s spi_alloc_master returned non NULL\n", __func__);
+> +		dev_dbg(&pdev->dev,
+> +			"%s spi_alloc_master returned non NULL\n", __func__);
+>  
+> -	/* initialize members of SPI master */
+> -	master->bus_num = -1;
+> -	master->num_chipselect = PCH_MAX_CS;
+> -	master->setup = pch_spi_setup;
+> -	master->transfer = pch_spi_transfer;
+> -	dev_dbg(&pdev->dev,
+> -		"%s transfer member of SPI master initialized\n", __func__);
+> +		/* initialize members of SPI master */
+> +		master[i]->bus_num = -1;
+> +		master[i]->num_chipselect = PCH_MAX_CS;
+> +		master[i]->setup = pch_spi_setup;
+> +		master[i]->transfer = pch_spi_transfer;
+> +		dev_dbg(&pdev->dev,
+> +			"%s transfer member of SPI master initialized\n", __func__);
+>  
+> -	board_dat->data = spi_master_get_devdata(master);
+> +		board_dat->data[i] = spi_master_get_devdata(master[i]);
+>  
+> -	board_dat->data->master = master;
+> -	board_dat->data->n_curnt_chip = 255;
+> -	board_dat->data->board_dat = board_dat;
+> -	board_dat->data->status = STATUS_RUNNING;
+> +		board_dat->data[i]->master = master[i];
+> +		board_dat->data[i]->n_curnt_chip = 255;
+> +		board_dat->data[i]->board_dat = board_dat;
+> +		board_dat->data[i]->status = STATUS_RUNNING;
+>  
+> -	INIT_LIST_HEAD(&board_dat->data->queue);
+> -	spin_lock_init(&board_dat->data->lock);
+> -	INIT_WORK(&board_dat->data->work, pch_spi_process_messages);
+> -	init_waitqueue_head(&board_dat->data->wait);
+> +		INIT_LIST_HEAD(&board_dat->data[i]->queue);
+> +		spin_lock_init(&board_dat->data[i]->lock);
+> +		INIT_WORK(&board_dat->data[i]->work, pch_spi_process_messages);
+> +		init_waitqueue_head(&board_dat->data[i]->wait);
+> +	}
+>  
+>  	/* allocate resources for PCH SPI */
+>  	retval = pch_spi_get_resources(board_dat);
+> @@ -1068,29 +1103,32 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  	dev_dbg(&pdev->dev, "%s invoked pci_set_drvdata\n", __func__);
+>  
+>  	/* set master mode */
+> -	pch_spi_set_master_mode(master);
+> -	dev_dbg(&pdev->dev,
+> -		"%s invoked pch_spi_set_master_mode\n", __func__);
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		pch_spi_set_master_mode(master[i]);
+> +		dev_dbg(&pdev->dev,
+> +			"%s invoked pch_spi_set_master_mode\n", __func__);
+> +
+> +		/* Register the controller with the SPI core. */
+> +		retval = spi_register_master(master[i]);
+> +		if (retval != 0) {
+> +			dev_err(&pdev->dev,
+> +				"%s spi_register_master FAILED\n", __func__);
+> +			goto err_spi_reg_master;
+> +		}
+>  
+> -	/* Register the controller with the SPI core. */
+> -	retval = spi_register_master(master);
+> -	if (retval != 0) {
+> -		dev_err(&pdev->dev,
+> -			"%s spi_register_master FAILED\n", __func__);
+> -		goto err_spi_reg_master;
+> +		dev_dbg(&pdev->dev, "%s spi_register_master returned=%d\n",
+> +			__func__, retval);
+>  	}
+>  
+> -	dev_dbg(&pdev->dev, "%s spi_register_master returned=%d\n",
+> -		__func__, retval);
+> -
+> -
+>  	return 0;
+>  
+>  err_spi_reg_master:
+> -	spi_unregister_master(master);
+> +	for (j = 0; j < i; j++)
+> +		spi_unregister_master(master[j]);
+>  err_spi_get_resources:
+>  err_spi_alloc_master:
+> -	spi_master_put(master);
+> +	for (j = 0; j < i; j++)
+> +		spi_master_put(master[j]);
+>  	pci_disable_device(pdev);
+>  err_pci_en_device:
+>  	kfree(board_dat);
+> @@ -1102,6 +1140,7 @@ static void pch_spi_remove(struct pci_dev *pdev)
+>  {
+>  	struct pch_spi_board_data *board_dat = pci_get_drvdata(pdev);
+>  	int count;
+> +	int i;
+>  
+>  	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
+>  
+> @@ -1113,22 +1152,26 @@ static void pch_spi_remove(struct pci_dev *pdev)
+>  
+>  	/* check for any pending messages; no action is taken if the queue
+>  	 * is still full; but at least we tried.  Unload anyway */
+> -	count = 500;
+> -	spin_lock(&board_dat->data->lock);
+> -	board_dat->data->status = STATUS_EXITING;
+> -	while ((list_empty(&board_dat->data->queue) == 0) && --count) {
+> -		dev_dbg(&board_dat->pdev->dev, "%s :queue not empty\n",
+> -			__func__);
+> -		spin_unlock(&board_dat->data->lock);
+> -		msleep(PCH_SLEEP_TIME);
+> -		spin_lock(&board_dat->data->lock);
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		count = 500;
+> +		spin_lock(&board_dat->data[i]->lock);
+> +		board_dat->data[i]->status = STATUS_EXITING;
+> +		while ((list_empty(&board_dat->data[i]->queue) == 0) && --count) {
+> +			dev_dbg(&board_dat->pdev->dev, "%s :queue not empty\n",
+> +				__func__);
+> +			spin_unlock(&board_dat->data[i]->lock);
+> +			msleep(PCH_SLEEP_TIME);
+> +			spin_lock(&board_dat->data[i]->lock);
+> +		}
+> +		spin_unlock(&board_dat->data[i]->lock);
+>  	}
+> -	spin_unlock(&board_dat->data->lock);
+>  
+>  	/* Free resources allocated for PCH SPI */
+>  	pch_spi_free_resources(board_dat);
+>  
+> -	spi_unregister_master(board_dat->data->master);
+> +	/* Unregister SPI master */
+> +	for (i = 0; i < board_dat->num; i++)
+> +		spi_unregister_master(board_dat->data[i]->master);
+>  
+>  	/* free memory for private data */
+>  	kfree(board_dat);
+> @@ -1146,6 +1189,7 @@ static int pch_spi_suspend(struct pci_dev *pdev, pm_message_t state)
+>  {
+>  	u8 count;
+>  	int retval;
+> +	int i;
+>  
+>  	struct pch_spi_board_data *board_dat = pci_get_drvdata(pdev);
+>  
+> @@ -1162,25 +1206,29 @@ static int pch_spi_suspend(struct pci_dev *pdev, pm_message_t state)
+>  
+>  	/* check if the current message is processed:
+>  	   Only after thats done the transfer will be suspended */
+> -	count = 255;
+> -	while ((--count) > 0) {
+> -		if (!(board_dat->data->bcurrent_msg_processing)) {
+> -			dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_"
+> -				"msg_processing = false\n", __func__);
+> -			break;
+> -		} else {
+> -			dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_msg_"
+> -				"processing = true\n", __func__);
+> +	for (i = 0; i < board_dat->num; i++) {
+> +		count = 255;
+> +		while ((--count) > 0) {
+> +			if (!(board_dat->data[i]->bcurrent_msg_processing)) {
+> +				dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_"
+> +					"msg_processing = false\n", __func__);
+> +				break;
+> +			} else {
+> +				dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_msg_"
+> +					"processing = true\n", __func__);
+> +			}
+> +			msleep(PCH_SLEEP_TIME);
+>  		}
+> -		msleep(PCH_SLEEP_TIME);
+>  	}
+>  
+>  	/* Free IRQ */
+>  	if (board_dat->irq_reg_sts) {
+> -		/* disable all interrupts */
+> -		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR, 0,
+> -				   PCH_ALL);
+> -		pch_spi_reset(board_dat->data->master);
+> +		/* disable all interrupts */	
+> +		for (i = 0; i < board_dat->num; i++) {
+> +			pch_spi_setclr_reg(board_dat->data[i]->master, PCH_SPCR, 0,
+> +					   PCH_ALL);
+> +			pch_spi_reset(board_dat->data[i]->master);
+> +		}
+>  
+>  		free_irq(board_dat->pdev->irq, board_dat);
+>  
+> @@ -1221,6 +1269,7 @@ static int pch_spi_suspend(struct pci_dev *pdev, pm_message_t state)
+>  static int pch_spi_resume(struct pci_dev *pdev)
+>  {
+>  	int retval;
+> +	int i;
+>  
+>  	struct pch_spi_board_data *board = pci_get_drvdata(pdev);
+>  	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
+> @@ -1259,8 +1308,10 @@ static int pch_spi_resume(struct pci_dev *pdev)
+>  			board->irq_reg_sts = true;
+>  
+>  			/* reset PCH SPI h/w */
+> -			pch_spi_reset(board->data->master);
+> -			pch_spi_set_master_mode(board->data->master);
+> +			for (i = 0; i < board->num; i++) {
+> +				pch_spi_reset(board->data[i]->master);
+> +				pch_spi_set_master_mode(board->data[i]->master);
+> +			}
+>  
+>  			/* set suspend status to false */
+>  			board->suspend_sts = false;
+> -- 
+> 1.6.0.6
+> 

@@ -1,51 +1,131 @@
-From: oiuydgi-jC2mT8CDquuuvtTkCOosKA@public.gmane.org
-Subject: [SPAM] 是"没有人"还是"没有合适的人"
-Date: Thu, 30 Dec 2010 06:02:05 +0800
-Message-ID: <E1PY46Y-00037K-FT@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v7 1/1] spi/omap2_mcspi.c: Force CS to be in inactive
+ state after off-mode transition
+Date: Wed, 29 Dec 2010 15:16:36 -0700
+Message-ID: <20101229221636.GA15648@angua.secretlab.ca>
+References: <4D1B1305.4090709@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-omap <linux-omap@vger.kernel.org>,
+	Kevin Hilman <khilman@deeprootsystems.com>,
+	David Brownell <dbrownell@users.sourceforge.net>
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4D1B1305.4090709@free-electrons.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+On Wed, Dec 29, 2010 at 11:52:53AM +0100, Gregory CLEMENT wrote:
+> When SPI wake up from OFF mode, CS is in the wrong state: force it to the
+> inactive state.
+> 
+> During the system life, I monitored the CS behavior using a oscilloscope.
+> I also activated debug in omap2_mcspi, so I saw when driver disable the clocks
+> and restore context when device is not used.Each time the CS was in the correct
+> state.  It was only when system was put suspend to ram with off-mode activated
+> that on resume the CS was in wrong state( ie activated).
+> 
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+merged, thanks.
 
+g.
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, and, 
-should the need arise, upgrade to a full multi-node Oracle RAC database 
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+> Changelog:
+> * Change from v1 to v2:
+>   - Rebase on linus/master (after 2.6.37-rc1)
+>   - Do some clean-up and fix indentation on both patches
+>   - Add more explanations for patch 2
+> 
+> * Change from v2 to v3:
+>   - Use directly resume function of spi_master instead of using function
+>   - from spi_device as Grant Likely pointed it out.
+>   - Force this transition explicitly for each CS used by a device.
+> 
+> * Change from v3 to v4:
+>   - Patch clean-up according to Kevin Hilman and checkpatch.
+>   - Now force CS to be in inactive state only if it was inactive when it was
+>     suspended.
+> 
+> * Change from v4 to v5:
+>   - Rebase on linus/master (after 2.6.37-rc3)
+>   - Collapse some lines as pointed by Grant Likely
+>   - Fix a spelling
+> 
+> * Change from v5 to v6:
+>   - Rebase on linus/master (after 2.6.37-rc7)
+>   - Use CONFIG_SUSPEND instead of CONFIG_PM
+>   - Didn't use legacy PM methods anymore. Instead, add a struct dev_pm_ops and
+>     add the resume method there.
+>   - Fix multi-line comment style
+> 
+> * Change from v6 to v7:
+>   - Rebase on linus/master (after 2.6.37-rc8)
+>   - Drop an extra line
+> 
+> Signed-off-by: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> Acked-by: David Brownell <dbrownell@users.sourceforge.net>
+> Reviewed-by: Kevin Hilman <khilman@deeprootsystems.com>
+> 
+> ---
+>  drivers/spi/omap2_mcspi.c |   39 +++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 39 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index 2a651e6..951a160 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -1305,10 +1305,49 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>  /* work with hotplug and coldplug */
+>  MODULE_ALIAS("platform:omap2_mcspi");
+> 
+> +#ifdef	CONFIG_SUSPEND
+> +/*
+> + * When SPI wake up from off-mode, CS is in activate state. If it was in
+> + * unactive state when driver was suspend, then force it to unactive state at
+> + * wake up.
+> + */
+> +static int omap2_mcspi_resume(struct device *dev)
+> +{
+> +	struct spi_master	*master = dev_get_drvdata(dev);
+> +	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
+> +	struct omap2_mcspi_cs *cs;
+> +
+> +	omap2_mcspi_enable_clocks(mcspi);
+> +	list_for_each_entry(cs, &omap2_mcspi_ctx[master->bus_num - 1].cs,
+> +			    node) {
+> +		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
+> +
+> +			/*
+> +			 * We need to toggle CS state for OMAP take this
+> +			 * change in account.
+> +			 */
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
+> +			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+> +		}
+> +	}
+> +	omap2_mcspi_disable_clocks(mcspi);
+> +	return 0;
+> +}
+> +#else
+> +#define	omap2_mcspi_resume	NULL
+> +#endif
+> +
+> +static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+> +	.resume = omap2_mcspi_resume,
+> +};
+> +
+>  static struct platform_driver omap2_mcspi_driver = {
+>  	.driver = {
+>  		.name =		"omap2_mcspi",
+>  		.owner =	THIS_MODULE,
+> +		.pm =		&omap2_mcspi_pm_ops
+>  	},
+>  	.remove =	__exit_p(omap2_mcspi_remove),
+>  };
+> -- 
+> 1.7.0.4
+> 

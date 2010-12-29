@@ -1,22 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/9] spi/pxa2xx: register driver properly
-Date: Wed, 29 Dec 2010 14:40:55 -0700
-Message-ID: <20101229214054.GB15198@angua.secretlab.ca>
-References: <20101229081120.GN8172@angua.secretlab.ca>
-	<349566.41372.qm@web180301.mail.gq1.yahoo.com>
-	<20101229212635.GA31347@www.tglx.de>
+From: oiuydgi-jC2mT8CDquuuvtTkCOosKA@public.gmane.org
+Subject: [SPAM] 是"没有人"还是"没有合适的人"
+Date: Thu, 30 Dec 2010 06:02:05 +0800
+Message-ID: <E1PY46Y-00037K-FT@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
-	eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20101229212635.GA31347-Hfxr4Dq0UpYb1SvskN2V4Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,29 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 29, 2010 at 10:26:35PM +0100, Sebastian Andrzej Siewior wrote:
-> * David Brownell | 2010-12-29 09:00:36 [-0800]:
-> 
-> >I detect an effort to change the classic model for board initialization in Linux:  first set up
-> >and register all system/platform devices on each
-> >board then do the same for their drivers.  ("hardware first" ... "software second".
-> 
-> What are you suggesting? platform_driver_probe() does not work with
-> hotpluged devices.
+This is a multi-part message in MIME format
 
-That assumption only holds for certain devices on certain boards.
-platform_device_probe() is a machine specific optimization that I will
-not hesitate to remove if it breaks the driver on other machines.
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-> I don't see a reason why it should be available to drivers. It is
-> unlikely that platform devices are hotlpluged but not impossible.
 
-More and more likely all the time though.  Many drivers use the model
-of registering child platform_devices (for instance, multi function
-devices).
-
-g.
-
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Learn how Oracle Real Application Clusters (RAC) One Node allows customers
@@ -57,3 +37,15 @@ to consolidate database storage, standardize their database environment, and,
 should the need arise, upgrade to a full multi-node Oracle RAC database 
 without downtime or disruption
 http://p.sf.net/sfu/oracle-sfdevnl
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

@@ -1,125 +1,91 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/7 v2] OMAP: McSPI: Hwmod adaptation + runtime
- conversion
-Date: Wed, 29 Dec 2010 00:32:05 -0700
-Message-ID: <20101229073205.GG8172@angua.secretlab.ca>
-References: <33183.10.24.255.18.1291212072.squirrel@dbdmail.itg.ti.com>
- <AANLkTikbEUjjdy-9J_WxnhjODv5aJx0K-Z0iwbOPsYj-@mail.gmail.com>
+Subject: Re: [PATCH] spi: Fix rmmod module issue
+Date: Wed, 29 Dec 2010 00:33:30 -0700
+Message-ID: <20101229073330.GH8172@angua.secretlab.ca>
+References: <1293022667-2904-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Tony Lindgren <tony@atomide.com>, linux-omap@vger.kernel.org,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-arm-kernel@lists.infradead.org, Charulatha V <charu@ti.com>,
-	Cousson@dbdmail.itg.ti.com, Benoit <b-cousson@ti.com>,
-	"Govindraj.R" <govindraj.raja@ti.com>
-To: Govindraj <govindraj.ti@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <AANLkTikbEUjjdy-9J_WxnhjODv5aJx0K-Z0iwbOPsYj-@mail.gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <1293022667-2904-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 29, 2010 at 12:57:35PM +0530, Govindraj wrote:
-> Hi Grant,
->=20
->=20
-> On Wed, Dec 1, 2010 at 7:31 PM, Govindraj.R <govindraj.raja@ti.com> w=
-rote:
-> > Changes invloves:
-> > ----------------
-> > 1) Addition of hwmod data for omap2/3/4.
-> > 1) McSPI driver hwmod adaptation with cleanup of base address
-> > =A0 macros and using omap-device API's.
-> > 2) Runtime Conversion of McSPI driver
->=20
->=20
-> Any comments on this patch series?
-> I need your review comments or ack on
-> patch 6/6 and patch 7/7.
->=20
-> I hope this patch series can be merged with LO
-> tree with your ack.
+On Wed, Dec 22, 2010 at 09:57:47PM +0900, Tomoya MORINAGA wrote:
+> It seems when spi_unregister_master is called,
+> device_unregister is called 2 times.
 
-I the process of going through my backlog at the moment.  I should be
-able to get to it tomorrow.
+This should be fixed in mainline now.  Can you please retest?
 
+Thanks,
 g.
 
->=20
-> --
-> Thanks
-> Govindraj.R
->=20
->=20
-> >
-> > Changes from v1:
-> > ---------------
-> > 1) Fixing patch 5/5 comments for hwmod+runtime
-> > =A0 Split the patch 5/5 to hwmod adaptation
-> > =A0 and then runtime conversion
-> > =A0 http://www.mail-archive.com/linux-omap@vger.kernel.org/msg33387=
-=2Ehtml
-> >
-> > Testing Updates:
-> > ----------------
-> > Was tested using data transfer test module available at:
-> > http://dev.omapzoom.org/?p=3Dricho/device_driver_test.git;a=3Dblob;=
-f=3Dmcspi/test_code/
-> > utils/mcspi_modules/omap_mcspi_datatest.c;
-> > h=3De42ec10c5c844abdde6a7175a268b379fbbdb655;
-> > hb=3D5d9a755d50e58de861c5e8991f2f607bc49b5dc3
-> >
-> > System wide suspend and ret/off counts observation,
-> > ensured that no behavioral difference with and without
-> > this patch series.
-> >
-> > Benoit Cousson (1):
-> > =A0OMAP4: hwmod data: Add McSPI
-> >
-> > Charulatha V (5):
-> > =A0OMAP2420: hwmod data: Add McSPI
-> > =A0OMAP2430: hwmod data: Add McSPI
-> > =A0OMAP3: hwmod data: Add McSPI
-> > =A0OMAP3: clocks: Update clock domain name for mcspi fck
-> > =A0OMAP: devices: Modify McSPI device to adapt to hwmod framework
-> >
-> > Govindraj.R (1):
-> > =A0OMAP: runtime: McSPI driver runtime conversion
-> >
-> > =A0arch/arm/mach-omap2/clock3xxx_data.c =A0 =A0 =A0 | =A0 =A04 +
-> > =A0arch/arm/mach-omap2/devices.c =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A018=
-9 ++++---------------
-> > =A0arch/arm/mach-omap2/omap_hwmod_2420_data.c | =A0156 ++++++++++++=
-++++
-> > =A0arch/arm/mach-omap2/omap_hwmod_2430_data.c | =A0219 ++++++++++++=
-++++++++++
-> > =A0arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | =A0280 ++++++++++++=
-++++++++++++++++
-> > =A0arch/arm/mach-omap2/omap_hwmod_44xx_data.c | =A0267 ++++++++++++=
-++++++++++++++
-> > =A0arch/arm/plat-omap/include/plat/mcspi.h =A0 =A0| =A0 11 +
-> > =A0drivers/spi/omap2_mcspi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
-225 +++++++---------------
-> > =A08 files changed, 1051 insertions(+), 300 deletions(-)
-> >
-> >
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe linux-oma=
-p" in
-> > the body of a message to majordomo@vger.kernel.org
-> > More majordomo info at =A0http://vger.kernel.org/majordomo-info.htm=
-l
-> >
->=20
->=20
->=20
-> --=20
+> 
+> Fix the following issue when removes SPI module.
+> [ 1355.220625] BUG: unable to handle kernel NULL pointer dereference at 0000001c
+> [ 1355.220642] IP: [<c10fc551>] sysfs_find_dirent+0xa/0x3a
+> [ 1355.220662] *pde = 00000000
+> [ 1355.220671] Oops: 0000 [#1] SMP
+> [ 1355.220679] last sysfs file: /sys/power/state
+> [ 1355.220688] Modules linked in: spi_topcliff_pch(-) spidev
+> [ 1355.220700]
+> [ 1355.220710] Pid: 3838, comm: rmmod Not tainted 2.6.37-rc6+ #7 To be filled by O.E.M./To be filled by O.E.M.
+> [ 1355.220721] EIP: 0060:[<c10fc551>] EFLAGS: 00010286 CPU: 1
+> [ 1355.220730] EIP is at sysfs_find_dirent+0xa/0x3a
+> [ 1355.220739] EAX: 00000000 EBX: c14a2d38 ECX: c14a2d38 EDX: 00000000
+> [ 1355.220748] ESI: 00000000 EDI: c14a2d38 EBP: f6605e60 ESP: f6605e54
+> [ 1355.220757]  DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068
+> [ 1355.220767] Process rmmod (pid: 3838, ti=f6604000 task=f1281d40 task.ti=f6604000)
+> [ 1355.220774] Stack:
+> [ 1355.220779]  c14a2d38 00000000 00000000 f6605e74 c10fc5a2 f124ae00 f124ae08 c1643080
+> [ 1355.220801]  f6605e88 c10fdfd4 f124ae00 00000001 f124a200 f6605e90 c1211184 f6605ea4
+> [ 1355.220822]  c120c9d4 f124ae00 00000001 000001f4 f6605eb0 c120cafe f124ae00 f6605ebc
+> [ 1355.220844] Call Trace:
+> [ 1355.220856]  [<c10fc5a2>] ? sysfs_get_dirent+0x21/0x39
+> [ 1355.220868]  [<c10fdfd4>] ? sysfs_remove_group+0x1a/0x85
+> [ 1355.220881]  [<c1211184>] ? dpm_sysfs_remove+0x10/0x12
+> [ 1355.220894]  [<c120c9d4>] ? device_del+0x31/0x150
+> [ 1355.220906]  [<c120cafe>] ? device_unregister+0xb/0x15
+> [ 1355.220917]  [<c1244428>] ? spi_unregister_master+0x54/0x57
+> [ 1355.220932]  [<f80c95e7>] ? pch_spi_remove+0x89/0xb6 [spi_topcliff_pch]
+> [ 1355.220946]  [<c11a0286>] ? pci_device_remove+0x19/0x39
+> [ 1355.220959]  [<c120e6d9>] ? __device_release_driver+0x58/0x8e
+> [ 1355.220971]  [<c120e76c>] ? driver_detach+0x5d/0x7b
+> [ 1355.220983]  [<c120dc81>] ? bus_remove_driver+0x6c/0x92
+> [ 1355.220995]  [<c120eb84>] ? driver_unregister+0x4d/0x54
+> [ 1355.221007]  [<c11a0454>] ? pci_unregister_driver+0x2d/0x6a
+> [ 1355.221019]  [<f80ca095>] ? pch_spi_exit+0xd/0x1b [spi_topcliff_pch]
+> [ 1355.221020]  [<c105ab7b>] ? sys_delete_module+0x180/0x1d8
+> [ 1355.221020]  [<c10a7900>] ? __vma_link_file+0x3d/0x61
+> [ 1355.221020]  [<c10bfbea>] ? path_put+0xe/0x23
+> [ 1355.221020]  [<c100290c>] ? sysenter_do_call+0x12/0x22
+> [ 1355.221020] Code: 89 c3 74 18 8b 00 85 c0 75 0f ba b7 00 00 00 b8 c3 5a 58 c1 e8 10 4b f3 ff f0 ff 03 89 d8 5b 5d c3 55 89 e5 57 89 cf 56 89 d6 53 <8b> 58 1c eb 20 85 f6 74 0b 8
+> b 43 14 85 c0 74 04 39 f0 75 0e 8b
+> [ 1355.221020] EIP: [<c10fc551>] sysfs_find_dirent+0xa/0x3a SS:ESP 0068:f6605e54
+> [ 1355.221020] CR2: 000000000000001c
+> [ 1355.221237] ---[ end trace ac3358f2d325b0b5 ]---
+> 
+> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 > ---
-> Regards,
-> Govindraj.R
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>  drivers/spi/spi.c |    1 -
+>  1 files changed, 0 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 709c836..3c8ff6f 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -586,7 +586,6 @@ void spi_unregister_master(struct spi_master *master)
+>  
+>  	dummy = device_for_each_child(master->dev.parent, &master->dev,
+>  					__unregister);
+> -	device_unregister(&master->dev);
+>  }
+>  EXPORT_SYMBOL_GPL(spi_unregister_master);
+>  
+> -- 
+> 1.6.0.6
+> 

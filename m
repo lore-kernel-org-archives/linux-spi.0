@@ -1,44 +1,57 @@
-From: Gregory CLEMENT <gregory.clement@free-electrons.com>
-Subject: Re: [PATCH v6 1/1] OMAP2: Spi: Force CS to be in inactive state after
- off-mode transition
-Date: Wed, 29 Dec 2010 12:07:08 +0100
-Message-ID: <4D1B165C.3020008@free-electrons.com>
-References: <4D149045.8080801@free-electrons.com> <20101229072800.GF8172@angua.secretlab.ca> <4D1AF8D7.6060904@free-electrons.com>
+From: David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 1/9] spi/pxa2xx: register driver properly
+Date: Wed, 29 Dec 2010 09:00:36 -0800 (PST)
+Message-ID: <349566.41372.qm@web180301.mail.gq1.yahoo.com>
+References: <20101229081120.GN8172@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-omap <linux-omap@vger.kernel.org>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Kevin Hilman <khilman@deeprootsystems.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <4D1AF8D7.6060904@free-electrons.com>
-Sender: linux-omap-owner@vger.kernel.org
+Cc: dbrownell@users.sourceforge.net, linux@arm.linux.org.uk,
+	eric.y.miao@gmail.com, sodaville@linutronix.de,
+	Dirk Brandewie <dirk.brandewie@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20101229081120.GN8172@angua.secretlab.ca>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/29/2010 10:01 AM, Gregory CLEMENT wrote:
->> Hi Gregory,
->>
-> Hi Grant,
-> 
->> Patch does not apply, but I cannot immediately isolate the damage.
->> Please see if you can figure out the issue on your end.  Is it your
->> mailer?  I could fudge it, but in the long run it is better if this
->> issue can get sorted out now.
->>
-> 
-> I found the problem: see below in the patch itself.
-> 
-Indeed it was may mailer which had broken the patch. I use
-git-format-patch and git imap send to create the mail. But when I
-open it from the draft folder to add the email address, it decides
-by itself to remove an end of line!
-It is not the first time that I have some problems with Thunderbird.
-I consider changing my mailer to a more "hacker friendly" one.
 
--- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+
+> Date: Wednesday, December 29, 2010, 12:11 AM
+> On Thu, Dec 02, 2010 at 06:47:29PM
+> +0100, Sebastian Andrzej Siewior wrote:
+> > use platform_driver_register instead of
+> platform_driver_probe. The
+> > latter only checks available devices at the time of
+> calling. So if a
+> > device gets inserter at a later point in time then the
+> driver will never
+> > play with it.
+
+
+I detect an effort to change the classic model for board initialization in Linux:  first set up
+and register all system/platform devices on each
+board then do the same for their drivers.  ("hardware first" ... "software second".
+
+(Without such a change, there's no need for
+ patches like this (of which I've recently
+seen a few).
+
+I've not seen discussion about the desirability
+of such a change.
+
+- Dave
+
+
+Has this change

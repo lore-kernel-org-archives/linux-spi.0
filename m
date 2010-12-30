@@ -1,74 +1,33 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 01/15]arch:m68k:ifpsp060:src:fpsp.S Typo change diable to disable.
-Date: Fri, 31 Dec 2010 11:33:49 +0100
-Message-ID: <AANLkTins7rj1o4rEcEFmVSA2=1yXZSfLdO000gqQP7cg@mail.gmail.com>
-References: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
+From: =?gb2312?B?yc+6o7qj1Ms=?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?gb2312?B?yc+6o7W9tc+w3SCworDNy7kgv6jArcbmMdTCsai82w==?=
+Date: Thu, 30 Dec 2010 16:28:47 +0800
+Message-ID: <1C0F11072D0795D1C627AB7022179D18@zzx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: trivial@kernel.org, linux-m68k@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
-To: "Justin P. Mattock" <justinmattock@gmail.com>
-Return-path: <linux-scsi-owner@vger.kernel.org>
-In-Reply-To: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
-Sender: linux-scsi-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 31, 2010 at 00:07, Justin P. Mattock
-<justinmattock@gmail.com> wrote:
-> The below patch fixes a typo "diable" to "disable". Please let me kno=
-w if this
-> is correct or not.
->
-> Signed-off-by: Justin P. Mattock <justinmattock@gmail.com>
-
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-> ---
-> =C2=A0arch/m68k/ifpsp060/src/fpsp.S | =C2=A0 =C2=A02 +-
-> =C2=A01 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/m68k/ifpsp060/src/fpsp.S b/arch/m68k/ifpsp060/src/f=
-psp.S
-> index 73613b5..26e85e2 100644
-> --- a/arch/m68k/ifpsp060/src/fpsp.S
-> +++ b/arch/m68k/ifpsp060/src/fpsp.S
-> @@ -3881,7 +3881,7 @@ _fpsp_fline:
-> =C2=A0# FP Unimplemented Instruction stack frame and jump to that ent=
-ry
-> =C2=A0# point.
-> =C2=A0#
-> -# but, if the FPU is disabled, then we need to jump to the FPU diabl=
-ed
-> +# but, if the FPU is disabled, then we need to jump to the FPU disab=
-led
-> =C2=A0# entry point.
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0movc =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0%pcr,%d0
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0btst =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0&0x1,%d0
-
-Gr{oetje,eeting}s,
-
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
-m68k.org
-
-In personal conversations with technical people, I call myself a hacker=
-=2E But
-when I'm talking to journalists I just say "programmer" or something li=
-ke that.
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0=C2=A0 -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-scsi" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+yc+6o7W9tc+w3SCworDNy7kgv6jArcbmICANCiQ3NTAvMjBHUCAkMTIyNS80MEdQICQxMjI1LzQw
+SFENCjIwMTAtMTItMjgNClRNQ0wgQ29udGFpbmVyIExpbmUNClQ6MDIxLTYwOTU1NTQxDQpGOjAy
+MS02MDk1NTYyMg0KbXNuOiAgc2h0bWNsQGhvdG1haWwuY29tICAgICAgDQrK1rv6OiAxMzkxNzk4
+NjUyMiANCsjnsrvQ6NKqtM7Tyrz+o6zH67vYuLS45taqo6zO0r2r1NrPwrTOt6LLzdbQyKHP+6Gj
+DQoNCiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxlYXJuIGhvdyBPcmFjbGUgUmVhbCBBcHBsaWNh
+dGlvbiBDbHVzdGVycyAoUkFDKSBPbmUgTm9kZSBhbGxvd3MgY3VzdG9tZXJzCnRvIGNvbnNvbGlk
+YXRlIGRhdGFiYXNlIHN0b3JhZ2UsIHN0YW5kYXJkaXplIHRoZWlyIGRhdGFiYXNlIGVudmlyb25t
+ZW50LCBhbmQsIApzaG91bGQgdGhlIG5lZWQgYXJpc2UsIHVwZ3JhZGUgdG8gYSBmdWxsIG11bHRp
+LW5vZGUgT3JhY2xlIFJBQyBkYXRhYmFzZSAKd2l0aG91dCBkb3dudGltZSBvciBkaXNydXB0aW9u
+Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvb3JhY2xlLXNmZGV2bmwKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
+CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
+dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

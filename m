@@ -1,124 +1,85 @@
-From: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>
-Subject: Re: [PATCH 1/9] spi/pxa2xx: register driver properly
-Date: Wed, 29 Dec 2010 17:55:30 -0800 (PST)
-Message-ID: <27128.99950.qm@web180304.mail.gq1.yahoo.com>
-References: <20101229214054.GB15198@angua.secretlab.ca>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] eSPI: change the read behavior of the SPIRF
+Date: Wed, 29 Dec 2010 23:04:58 -0700
+Message-ID: <20101230060458.GG27954@angua.secretlab.ca>
+References: <1291195758-12322-1-git-send-email-Mingkai.hu@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
-	sodaville-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20101229214054.GB15198-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev@ozlabs.org, kumar.gala@freescale.com,
+	spi-devel-general@lists.sourceforge.net
+To: Mingkai Hu <Mingkai.hu@freescale.com>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+Content-Disposition: inline
+In-Reply-To: <1291195758-12322-1-git-send-email-Mingkai.hu@freescale.com>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Dec 01, 2010 at 05:29:18PM +0800, Mingkai Hu wrote:
+> The user must read N bytes of SPIRF (1 <= N <= 4) that do not exceed the
+> amount of data in the receive FIFO, so read the SPIRF byte by byte when
+> the data in receive FIFO is less than 4 bytes.
+> 
+> On Simics, when read N bytes that exceed the amout of data in receive
+> FIFO, we can't read the data out, that is we can't clear the rx FIFO,
+> then the CPU will loop on the espi rx interrupt.
+> 
+> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
 
+Applied for -next, thanks.
 
---- On Wed, 12/29/10, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+g.
 
-> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> Subject: Re: [PATCH 1/9] spi/pxa2xx: register
-
-> > >I detect an effort to change the classic model for
-> board initialization in Linux:=A0 first set up
-> > >and register all system/platform devices on each board then do the sam=
-e for their drivers.=A0
-> ("hardware first" ... "software second".
-> > =
-
-> > What are you suggesting? =
-
-
-Just what I said above.   The classic model
-sets up all of a board's platform devices and
-then their drivers get initialized ... simple
-interdependency management; sometimes fancier
-models are needed, but Linux does poorly with
-those common/fancier requirements, so far
-except via techniques some folk retch at.
-
-platform_driver_probe() does
-> not work with
-> > hotpluged devices.
-
-And was documented that way.  So if anyone
-writes code expecting hotplug support, that
-person has created a bug.  Their fault.
-> =
-
-> That assumption only holds for certain
- devices on certain boards.
-
-It's still classic;  it works very well for
-fixed-function SoC boards, no hotpluggable
-Platform devices. ... most of the
-time they're SoC-integrated, fixed in a
-chip.  Sometimes they're just hard-wired
-onto a board, (vs hard-wired into a chip).
-Such boards are extremely common.
-
-Regardless, if a driver is going to be
-hotpluggable, it must be written with
-that in mind ... avoiding certain calls, and
-addressing various dynamic reconfig issues.
-
-> platform_device_probe() is a machine specific optimization
-
-It's not machine-specific at all, but it may not
-be used for those rare platform devices which
-are found in hotpluggable configurations.
-
-Even if you want modprobe/rmmod support from
-some driver ... that's not a machine issue;
-it's a development/support issue. Drivers can
-work just fine without being hotpluggable.
-
-
-
-> =
-
-> More and more likely all the time though.=A0 Many
-> drivers use the model
-> of registering child platform_devices (for instance, multi
-> function
-> devices).
-
-That's *Orthogonal* to hotpluggability..
-
-Something you may be trying to avoid mentioning:
-That call can also be a useful way to get driver
-initialization sequencing sane, in the ongoing
-absence of robust ways for Linux to handle the
-interdependencies of drivers and devices.  I'm
-told some folk will be working on that someday;
-but that day isn't here yet.
-
-- Dave
-
-
-> =
-
-
-
----------------------------------------------------------------------------=
----
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, an=
-d, =
-
-should the need arise, upgrade to a full multi-node Oracle RAC database =
-
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
+> ---
+>  drivers/spi/spi_fsl_espi.c |   19 ++++++++++++++++---
+>  1 files changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
+> index e3b4f64..ae78926 100644
+> --- a/drivers/spi/spi_fsl_espi.c
+> +++ b/drivers/spi/spi_fsl_espi.c
+> @@ -507,16 +507,29 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+>  
+>  	/* We need handle RX first */
+>  	if (events & SPIE_NE) {
+> -		u32 rx_data;
+> +		u32 rx_data, tmp;
+> +		u8 rx_data_8;
+>  
+>  		/* Spin until RX is done */
+>  		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
+>  			cpu_relax();
+>  			events = mpc8xxx_spi_read_reg(&reg_base->event);
+>  		}
+> -		mspi->len -= 4;
+>  
+> -		rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
+> +		if (mspi->len >= 4) {
+> +			rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
+> +		} else {
+> +			tmp = mspi->len;
+> +			rx_data = 0;
+> +			while (tmp--) {
+> +				rx_data_8 = in_8((u8 *)&reg_base->receive);
+> +				rx_data |= (rx_data_8 << (tmp * 8));
+> +			}
+> +
+> +			rx_data <<= (4 - mspi->len) * 8;
+> +		}
+> +
+> +		mspi->len -= 4;
+>  
+>  		if (mspi->rx)
+>  			mspi->get_rx(rx_data, mspi);
+> -- 
+> 1.7.0.4
+> 
+> 

@@ -1,72 +1,35 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [git pull] one more spi bugfix for 2.6.37
-Date: Thu, 30 Dec 2010 00:59:11 -0700
-Message-ID: <AANLkTi=PrTZ7faC6VQmqVjKo0FP9h1SqPFW7tWcsm2V8@mail.gmail.com>
-References: <AANLkTimc2U==zvuRU67Bohsb5uCNjD8fX-6s7EefY6EQ@mail.gmail.com>
+From: =?utf-8?B?5LiK5rW35rW36L+Q?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?B?5LiK5rW35Yiw5r6z5rSy5riv5Y+jMeaciOaKpeS7tw==?=
+Date: Thu, 30 Dec 2010 16:33:27 +0800
+Message-ID: <9467F19904063980AD05888085E19259@ma>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Gregory CLEMENT <gregory.clement@free-electrons.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <AANLkTimc2U==zvuRU67Bohsb5uCNjD8fX-6s7EefY6EQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Oops, missed one.  Here's an updated pull req.
-
-The following changes since commit 387c31c7e5c9805b0aef8833d1731a5fe7bd=
-ea14:
-
-  Linux 2.6.37-rc8 (2010-12-28 17:05:48 -0800)
-
-are available in the git repository at:
-  git://git.secretlab.ca/git/linux-2.6 merge-spi
-
-Gregory CLEMENT (1):
-      spi/omap2_mcspi.c: Force CS to be in inactive state after
-off-mode transition
-
-Jate Sujjavanich (1):
-      spi/m68knommu: Coldfire QSPI platform support
-
- drivers/spi/coldfire_qspi.c |    2 +-
- drivers/spi/omap2_mcspi.c   |   39 +++++++++++++++++++++++++++++++++++=
-++++
- 2 files changed, 40 insertions(+), 1 deletions(-)
-
-
-On Wed, Dec 29, 2010 at 6:45 PM, Grant Likely <grant.likely@secretlab.c=
-a> wrote:
-> Hi Linus,
->
-> Here is one more spi bug fix for .37
->
-> The following changes since commit 387c31c7e5c9805b0aef8833d1731a5fe7=
-bdea14:
->
-> =A0Linux 2.6.37-rc8 (2010-12-28 17:05:48 -0800)
->
-> are available in the git repository at:
-> =A0git://git.secretlab.ca/git/linux-2.6 merge-spi
->
-> Gregory CLEMENT (1):
-> =A0 =A0 =A0spi/omap2_mcspi.c: Force CS to be in inactive state after
-> off-mode transition
->
-> =A0drivers/spi/omap2_mcspi.c | =A0 39 +++++++++++++++++++++++++++++++=
-++++++++
-> =A01 files changed, 39 insertions(+), 0 deletions(-)
->
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
->
-
-
-
---=20
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+5LiK5rW35Yiw5r6z5rSy5riv5Y+j5oql5Lu3DQokNzUwLzIwR1AgJDE1MDAvNDBHUCAkMTUwMC80
+MEhRDQpTWURORVkgIE1FTEJPVVJORSAgQlJJU0JBTkUNCuavj+WRqOS6jCDlm5sgIOaWsOWKoOWd
+oeS4rei9rCAg5Ye65rW35Y2VDQoyMDEwLTEyLTI2DQpUTUNMIENvbnRhaW5lciBMaW5lDQpUOjAy
+MS02MDk1NTU0MQ0KRjowMjEtNjA5NTU2MjINCm1zbjogIHNodG1jbEBob3RtYWlsLmNvbSAgICAg
+IA0K5omL5py6OiAxMzkxNzk4NjUyMiANCuWmguS4jemcgOimgeasoemCruS7tu+8jOivt+WbnuWk
+jeWRiuefpe+8jOaIkeWwhuWcqOS4i+asoeWPkemAgeS4reWPlua2iOOAggotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KTGVhcm4gaG93IE9yYWNsZSBSZWFsIEFwcGxpY2F0aW9uIENsdXN0ZXJzIChSQUMp
+IE9uZSBOb2RlIGFsbG93cyBjdXN0b21lcnMKdG8gY29uc29saWRhdGUgZGF0YWJhc2Ugc3RvcmFn
+ZSwgc3RhbmRhcmRpemUgdGhlaXIgZGF0YWJhc2UgZW52aXJvbm1lbnQsIGFuZCwgCnNob3VsZCB0
+aGUgbmVlZCBhcmlzZSwgdXBncmFkZSB0byBhIGZ1bGwgbXVsdGktbm9kZSBPcmFjbGUgUkFDIGRh
+dGFiYXNlIAp3aXRob3V0IGRvd250aW1lIG9yIGRpc3J1cHRpb24KaHR0cDovL3Auc2YubmV0L3Nm
+dS9vcmFjbGUtc2ZkZXZubApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

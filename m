@@ -1,49 +1,41 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v7 00/12] tnetv107x ssp drivers
-Date: Thu, 30 Dec 2010 14:05:58 -0700
-Message-ID: <20101230210558.GA3220@angua.secretlab.ca>
-References: <1291733522-3626-1-git-send-email-cyril@ti.com>
-	<87r5dp6tzv.fsf@deeprootsystems.com>
-	<20101211124242.GE9380@opensource.wolfsonmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-        dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-        linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org,
-        alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-        lrg-kDsPt+C1G03kYMGBc/C6ZA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20101211124242.GE9380-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+From: "Justin P. Mattock" <justinmattock@gmail.com>
+Subject: [PATCH 01/15]arch:m68k:ifpsp060:src:fpsp.S Typo change diable to disable.
+Date: Thu, 30 Dec 2010 15:07:50 -0800
+Message-ID: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, ivtv-devel@ivtvdriver.org,
+	linux-media@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	devel@driverdev.osuosl.org, linux-usb@vger.kernel.org,
+	"Justin P. Mattock" <justinmattock@gmail.com>
+To: trivial@kernel.org
+Return-path: <netdev-owner@vger.kernel.org>
+Sender: netdev-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Dec 11, 2010 at 12:42:42PM +0000, Mark Brown wrote:
-> On Fri, Dec 10, 2010 at 04:19:48PM -0800, Kevin Hilman wrote:
-> 
-> > [PATCH v7 08/12] gpio: add ti-ssp gpio driver
-> > David Brownell?  (MAINTAINERS isn't clear here)
-> 
-> It's mostly abandoned at the minute.  Andrew Morton has been taking
-> patches.  Grant Likely said he might take it over so sending stuff his
-> way might prod him into action.
+The below patch fixes a typo "diable" to "disable". Please let me know if this 
+is correct or not.
 
-I probably will pick up GPIO, but not just yet.  I've got to get my dt
-and spi house in order first (making good progress here.  I've got an
-autotest instance set up so that I can apply and test patches on many
-architectures quickly and easily).  Once I've taken care of the backlog
-I'll make a decision on whether or not I can pick up gpio too.
-Probably sometime mid-January.
+Signed-off-by: Justin P. Mattock <justinmattock@gmail.com>
 
-g.
+---
+ arch/m68k/ifpsp060/src/fpsp.S |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/m68k/ifpsp060/src/fpsp.S b/arch/m68k/ifpsp060/src/fpsp.S
+index 73613b5..26e85e2 100644
+--- a/arch/m68k/ifpsp060/src/fpsp.S
++++ b/arch/m68k/ifpsp060/src/fpsp.S
+@@ -3881,7 +3881,7 @@ _fpsp_fline:
+ # FP Unimplemented Instruction stack frame and jump to that entry
+ # point.
+ #
+-# but, if the FPU is disabled, then we need to jump to the FPU diabled
++# but, if the FPU is disabled, then we need to jump to the FPU disabled
+ # entry point.
+ 	movc		%pcr,%d0
+ 	btst		&0x1,%d0
+-- 
+1.6.5.2.180.gc5b3e
+

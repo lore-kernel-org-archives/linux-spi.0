@@ -1,85 +1,70 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] eSPI: change the read behavior of the SPIRF
-Date: Wed, 29 Dec 2010 23:04:58 -0700
-Message-ID: <20101230060458.GG27954@angua.secretlab.ca>
-References: <1291195758-12322-1-git-send-email-Mingkai.hu@freescale.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [uClinux-dev] [PATCH] m68knommu: Coldfire QSPI platform support
+Date: Wed, 29 Dec 2010 23:20:01 -0700
+Message-ID: <20101230062001.GA843@angua.secretlab.ca>
+References: <201001221243.04045.sfking@fdwdc.com>
+	<4CA17F2D.7000407@snapgear.com>
+	<6C2434209962DC46B88345CA85C334A2A434E65AF7@Courier.syntech.org>
+	<201012100846.36080.sfking@fdwdc.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev@ozlabs.org, kumar.gala@freescale.com,
-	spi-devel-general@lists.sourceforge.net
-To: Mingkai Hu <Mingkai.hu@freescale.com>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+Cc: Jate Sujjavanich <jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>,
+	'Greg Ungerer' <gerg-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org>,
+	"'spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org'"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1291195758-12322-1-git-send-email-Mingkai.hu@freescale.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+In-Reply-To: <201012100846.36080.sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 01, 2010 at 05:29:18PM +0800, Mingkai Hu wrote:
-> The user must read N bytes of SPIRF (1 <= N <= 4) that do not exceed the
-> amount of data in the receive FIFO, so read the SPIRF byte by byte when
-> the data in receive FIFO is less than 4 bytes.
+On Fri, Dec 10, 2010 at 08:46:35AM -0800, Steven King wrote:
+> On Wednesday 29 September 2010 06:44:32 Jate Sujjavanich wrote:
+> > Here's a patch for your review.
+> >
+> >
+> > After grabbing a msg from the msgq, the mcfqspi_work function calls
+> > list_del_init on the mcfqspi->msgq which unintentionally deletes the rest
+> > of the list before it can be processed. If qspi call was made using
+> > spi_sync, this can result in a process hang.
+> >
+> > Signed-off by Jate Sujjavanich<jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>
+> > -----------
+> > diff --git a/drivers/spi/coldfire_qspi.c b/drivers/spi/coldfire_qspi.c
+> > index 59be3ef..0aa00af 100644
+> > --- a/drivers/spi/coldfire_qspi.c
+> > +++ b/drivers/spi/coldfire_qspi.c
+> > @@ -316,7 +316,7 @@ static void mcfqspi_work(struct work_struct *work)
+> >                  msg = container_of(mcfqspi->msgq.next, struct spi_message,
+> >                                     queue);
+> > -               list_del_init(&mcfqspi->msgq);
+> > +               list_del_init(&msg->queue);
+> >                  spin_unlock_irqrestore(&mcfqspi->lock, flags);
+> >                  spi = msg->spi;
+> >
 > 
-> On Simics, when read N bytes that exceed the amout of data in receive
-> FIFO, we can't read the data out, that is we can't clear the rx FIFO,
-> then the CPU will loop on the espi rx interrupt.
 > 
-> Signed-off-by: Mingkai Hu <Mingkai.hu@freescale.com>
+> A belated ack.
+> 
+> Grant, can we still get this into .37?
 
-Applied for -next, thanks.
+Applied manually (patch was mailer-damaged).  I'll see if Linux will still pick it up for .37.
 
+thanks.
 g.
 
-> ---
->  drivers/spi/spi_fsl_espi.c |   19 ++++++++++++++++---
->  1 files changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
-> index e3b4f64..ae78926 100644
-> --- a/drivers/spi/spi_fsl_espi.c
-> +++ b/drivers/spi/spi_fsl_espi.c
-> @@ -507,16 +507,29 @@ void fsl_espi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
->  
->  	/* We need handle RX first */
->  	if (events & SPIE_NE) {
-> -		u32 rx_data;
-> +		u32 rx_data, tmp;
-> +		u8 rx_data_8;
->  
->  		/* Spin until RX is done */
->  		while (SPIE_RXCNT(events) < min(4, mspi->len)) {
->  			cpu_relax();
->  			events = mpc8xxx_spi_read_reg(&reg_base->event);
->  		}
-> -		mspi->len -= 4;
->  
-> -		rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
-> +		if (mspi->len >= 4) {
-> +			rx_data = mpc8xxx_spi_read_reg(&reg_base->receive);
-> +		} else {
-> +			tmp = mspi->len;
-> +			rx_data = 0;
-> +			while (tmp--) {
-> +				rx_data_8 = in_8((u8 *)&reg_base->receive);
-> +				rx_data |= (rx_data_8 << (tmp * 8));
-> +			}
-> +
-> +			rx_data <<= (4 - mspi->len) * 8;
-> +		}
-> +
-> +		mspi->len -= 4;
->  
->  		if (mspi->rx)
->  			mspi->get_rx(rx_data, mspi);
-> -- 
-> 1.7.0.4
-> 
-> 
+------------------------------------------------------------------------------
+Learn how Oracle Real Application Clusters (RAC) One Node allows customers
+to consolidate database storage, standardize their database environment, and, 
+should the need arise, upgrade to a full multi-node Oracle RAC database 
+without downtime or disruption
+http://p.sf.net/sfu/oracle-sfdevnl

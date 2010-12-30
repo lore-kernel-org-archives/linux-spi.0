@@ -1,23 +1,12 @@
-From: "Justin P. Mattock" <justinmattock-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 03/15]drivers:staging:rtl8187se:r8180_hw.h Typo change
-	diable to disable.
-Date: Sat, 01 Jan 2011 06:53:34 -0800
-Message-ID: <4D1F3FEE.7__437.859717249189$1293893681$gmane$org@gmail.com>
-References: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
-	<1293750484-1161-2-git-send-email-justinmattock@gmail.com>
-	<1293750484-1161-3-git-send-email-justinmattock@gmail.com>
-	<alpine.LNX.2.00.1012311722580.24460@nippy.intranet>
-	<4D1EDB22.2020308@gmail.com> <20110101090931.GH1886@bicker>
+From: =?utf-8?B?5LiK5rW35rW36L+Q?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?B?5LiK5rW35Yiw5qyn5rSyMeaciOaKpeS7tw==?=
+Date: Thu, 30 Dec 2010 16:22:56 +0800
+Message-ID: <46B4CF3BBFAD982F7BF6DC12B0156B69@ytws>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: Dan Carpenter <error27-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Finn Thain <fthain-PnMVE5gNl/W9dxLkCovUHLpzq4S04n8Q@public.gmane.org>,
-	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-scsi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	lin
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20110101090931.GH1886@bicker>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,41 +17,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/01/2011 01:09 AM, Dan Carpenter wrote:
-> On Fri, Dec 31, 2010 at 11:43:30PM -0800, Justin P. Mattock wrote:
->> On 12/31/2010 10:48 PM, Finn Thain wrote:
->>>> -/*  BIT[8-9] is for SW Antenna Diversity. Only the value EEPROM_SW_AD_ENABLE means enable, other values are diable.					*/
->>>> +/*  BIT[8-9] is for SW Antenna Diversity. Only the value EEPROM_SW_AD_ENABLE means enable, other values are disabled.					*/
->>>
->>> I think, "other values disable" was what you meant?
->>>
->>> Finn
->>>
->>>>   #define EEPROM_SW_AD_MASK			0x0300
->>>>   #define EEPROM_SW_AD_ENABLE			0x0100
->>>>
->>>>
->>>
->>
->> no! I changed it to disabled to make it proper..
->
-> Finn is obviously right, but maybe a compromise would be:
->
-> Only the value EEPROM_SW_AD_ENABLE means "enable", other values mean
-> "disable".
->
-> regards,
-> dan carpenter
->
-
-ahh.. I see what you your saying now.. alright let me send this out that 
-way..
-
-Justin P. Mattock
-
-------------------------------------------------------------------------------
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, and, 
-should the need arise, upgrade to a full multi-node Oracle RAC database 
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
+5LiK5rW35Yiw5qyn5rSy5Z+65pys5rivDQokMTMwMC8yMEdQICQyNTUwLzQwR1AgJDI2MDAvNDBI
+UQ0KDQrmr4/lkajlm5sg5LqUICDnm7Tovr7oiLkgIOWHuua1t+WNlQ0KMjAxMC0xMi0yOA0KVE1D
+TCBDb250YWluZXIgTGluZQ0KVDowMjEtNjA5NTU1NDENCkY6MDIxLTYwOTU1NjIyDQptc246ICBz
+aHRtY2xAaG90bWFpbC5jb20gICAgICANCuaJi+acujogMTM5MTc5ODY1MjIgDQrlpoLkuI3pnIDo
+poHmrKHpgq7ku7bvvIzor7flm57lpI3lkYrnn6XvvIzmiJHlsIblnKjkuIvmrKHlj5HpgIHkuK3l
+j5bmtojjgIIKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxlYXJuIGhvdyBPcmFjbGUgUmVhbCBBcHBs
+aWNhdGlvbiBDbHVzdGVycyAoUkFDKSBPbmUgTm9kZSBhbGxvd3MgY3VzdG9tZXJzCnRvIGNvbnNv
+bGlkYXRlIGRhdGFiYXNlIHN0b3JhZ2UsIHN0YW5kYXJkaXplIHRoZWlyIGRhdGFiYXNlIGVudmly
+b25tZW50LCBhbmQsIApzaG91bGQgdGhlIG5lZWQgYXJpc2UsIHVwZ3JhZGUgdG8gYSBmdWxsIG11
+bHRpLW5vZGUgT3JhY2xlIFJBQyBkYXRhYmFzZSAKd2l0aG91dCBkb3dudGltZSBvciBkaXNydXB0
+aW9uCmh0dHA6Ly9wLnNmLm5ldC9zZnUvb3JhY2xlLXNmZGV2bmwKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

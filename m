@@ -1,70 +1,72 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [uClinux-dev] [PATCH] m68knommu: Coldfire QSPI platform support
-Date: Wed, 29 Dec 2010 23:20:01 -0700
-Message-ID: <20101230062001.GA843@angua.secretlab.ca>
-References: <201001221243.04045.sfking@fdwdc.com>
-	<4CA17F2D.7000407@snapgear.com>
-	<6C2434209962DC46B88345CA85C334A2A434E65AF7@Courier.syntech.org>
-	<201012100846.36080.sfking@fdwdc.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [git pull] one more spi bugfix for 2.6.37
+Date: Thu, 30 Dec 2010 00:59:11 -0700
+Message-ID: <AANLkTi=PrTZ7faC6VQmqVjKo0FP9h1SqPFW7tWcsm2V8@mail.gmail.com>
+References: <AANLkTimc2U==zvuRU67Bohsb5uCNjD8fX-6s7EefY6EQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Jate Sujjavanich <jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>,
-	'Greg Ungerer' <gerg-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org>,
-	"'spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org'"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201012100846.36080.sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Gregory CLEMENT <gregory.clement@free-electrons.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AANLkTimc2U==zvuRU67Bohsb5uCNjD8fX-6s7EefY6EQ@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 10, 2010 at 08:46:35AM -0800, Steven King wrote:
-> On Wednesday 29 September 2010 06:44:32 Jate Sujjavanich wrote:
-> > Here's a patch for your review.
-> >
-> >
-> > After grabbing a msg from the msgq, the mcfqspi_work function calls
-> > list_del_init on the mcfqspi->msgq which unintentionally deletes the rest
-> > of the list before it can be processed. If qspi call was made using
-> > spi_sync, this can result in a process hang.
-> >
-> > Signed-off by Jate Sujjavanich<jsujjavanich-oI4RZb1+6EReLsYL91UIxL5dPsmED6B0@public.gmane.org>
-> > -----------
-> > diff --git a/drivers/spi/coldfire_qspi.c b/drivers/spi/coldfire_qspi.c
-> > index 59be3ef..0aa00af 100644
-> > --- a/drivers/spi/coldfire_qspi.c
-> > +++ b/drivers/spi/coldfire_qspi.c
-> > @@ -316,7 +316,7 @@ static void mcfqspi_work(struct work_struct *work)
-> >                  msg = container_of(mcfqspi->msgq.next, struct spi_message,
-> >                                     queue);
-> > -               list_del_init(&mcfqspi->msgq);
-> > +               list_del_init(&msg->queue);
-> >                  spin_unlock_irqrestore(&mcfqspi->lock, flags);
-> >                  spi = msg->spi;
-> >
-> 
-> 
-> A belated ack.
-> 
-> Grant, can we still get this into .37?
+Oops, missed one.  Here's an updated pull req.
 
-Applied manually (patch was mailer-damaged).  I'll see if Linux will still pick it up for .37.
+The following changes since commit 387c31c7e5c9805b0aef8833d1731a5fe7bd=
+ea14:
 
-thanks.
-g.
+  Linux 2.6.37-rc8 (2010-12-28 17:05:48 -0800)
 
-------------------------------------------------------------------------------
-Learn how Oracle Real Application Clusters (RAC) One Node allows customers
-to consolidate database storage, standardize their database environment, and, 
-should the need arise, upgrade to a full multi-node Oracle RAC database 
-without downtime or disruption
-http://p.sf.net/sfu/oracle-sfdevnl
+are available in the git repository at:
+  git://git.secretlab.ca/git/linux-2.6 merge-spi
+
+Gregory CLEMENT (1):
+      spi/omap2_mcspi.c: Force CS to be in inactive state after
+off-mode transition
+
+Jate Sujjavanich (1):
+      spi/m68knommu: Coldfire QSPI platform support
+
+ drivers/spi/coldfire_qspi.c |    2 +-
+ drivers/spi/omap2_mcspi.c   |   39 +++++++++++++++++++++++++++++++++++=
+++++
+ 2 files changed, 40 insertions(+), 1 deletions(-)
+
+
+On Wed, Dec 29, 2010 at 6:45 PM, Grant Likely <grant.likely@secretlab.c=
+a> wrote:
+> Hi Linus,
+>
+> Here is one more spi bug fix for .37
+>
+> The following changes since commit 387c31c7e5c9805b0aef8833d1731a5fe7=
+bdea14:
+>
+> =A0Linux 2.6.37-rc8 (2010-12-28 17:05:48 -0800)
+>
+> are available in the git repository at:
+> =A0git://git.secretlab.ca/git/linux-2.6 merge-spi
+>
+> Gregory CLEMENT (1):
+> =A0 =A0 =A0spi/omap2_mcspi.c: Force CS to be in inactive state after
+> off-mode transition
+>
+> =A0drivers/spi/omap2_mcspi.c | =A0 39 +++++++++++++++++++++++++++++++=
+++++++++
+> =A01 files changed, 39 insertions(+), 0 deletions(-)
+>
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
+>
+
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

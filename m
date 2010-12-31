@@ -1,14 +1,22 @@
 From: "Justin P. Mattock" <justinmattock-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/spi_topcliff_pch.c Typo change threhold to threshold
-Date: Fri, 31 Dec 2010 09:50:31 -0800
-Message-ID: <1293817831-8263-1-git-send-email-justinmattock@gmail.com>
+Subject: Re: [PATCH 02/15]drivers:spi:dw_spi.c Typo change diable to disable.
+Date: Fri, 31 Dec 2010 09:59:19 -0800
+Message-ID: <4D1E19F7.6000608@gmail.com>
+References: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
+	<1293750484-1161-2-git-send-email-justinmattock@gmail.com>
+	<20101231064515.GC3733@angua.secretlab.ca>
+	<4D1D7DAE.7060504@gmail.com> <20101231091136.GC1886@bicker>
+	<4D1DE616.7010105@gmail.com> <20101231174100.GF1886@bicker>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Justin P. Mattock" <justinmattock-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: Dan Carpenter <error27-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org,
+	linux-scsi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	li
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20101231174100.GF1886@bicker>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,40 +27,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The below patch changes a typo from "threhold" to "threshold".
-Let me know if I missed anything.
+On 12/31/2010 09:41 AM, Dan Carpenter wrote:
+> On Fri, Dec 31, 2010 at 06:17:58AM -0800, Justin P. Mattock wrote:
+>>> Wrong:  [PATCH 02/15]drivers:spi:dw_spi.c Typo change diable to disable.
+>>>
+>>> Right:  [PATCH 02/15] spi/dw_spi: Typo change diable to disable
+>>>
+>>> regards,
+>>> dan carpenter
+>>>
+>>
+>> alright.. so having the backlash is alright for the subject
+>
+> Well really my point is not so much about backslashes vs colons, it's
+> about getting the *one* correct prefix.  This stuff is probably
+> scriptable most of the time, but you may still be required to think a
+> little on the corner cases.
+>
+> Here is a script to get you started.
+>
+> git log --format="%s" drivers/spi/dw_spi.c | \
+> 	head -n 20 |                         \
+> 	perl -ne 's/(.*):.*/$1/; print' |    \
+> 	sort | uniq -c | sort -rn |          \
+> 	perl -ne 's/^\W+\d+ //; print' |     \
+> 	head -n 1
+>
+> regards,
+> dan carpenter
+>
 
-Signed-off-by: Justin P. Mattock <justinmattock-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+thats a nice little script there(just ran it) any way you want to add 
+this into to getmaintainers.pl or something? (this way people get the 
+maintainers address plus a subject line in the mix)
 
----
- drivers/spi/spi_topcliff_pch.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
-index 58e187f..be451e3 100644
---- a/drivers/spi/spi_topcliff_pch.c
-+++ b/drivers/spi/spi_topcliff_pch.c
-@@ -677,7 +677,7 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
- {
- 	/* enable interrupts */
- 	if ((data->bpw_len) > PCH_MAX_FIFO_DEPTH) {
--		/* set receive threhold to PCH_RX_THOLD */
-+		/* set receive threshold to PCH_RX_THOLD */
- 		pch_spi_setclr_reg(data->master, PCH_SPCR,
- 				   PCH_RX_THOLD << SPCR_TFIC_FIELD,
- 				   ~MASK_TFIC_SPCR_BITS);
-@@ -685,7 +685,7 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
- 		pch_spi_setclr_reg(data->master, PCH_SPCR,
- 				   SPCR_RFIE_BIT | SPCR_TFIE_BIT, 0);
- 	} else {
--		/* set receive threhold to maximum */
-+		/* set receive threshold to maximum */
- 		pch_spi_setclr_reg(data->master, PCH_SPCR,
- 				   PCH_RX_THOLD_MAX << SPCR_TFIC_FIELD,
- 				   ~MASK_TFIC_SPCR_BITS);
--- 
-1.6.5.2.180.gc5b3e
-
+Justin P. Mattock
 
 ------------------------------------------------------------------------------
 Learn how Oracle Real Application Clusters (RAC) One Node allows customers

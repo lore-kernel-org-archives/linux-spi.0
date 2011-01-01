@@ -1,65 +1,57 @@
-From: "Justin P. Mattock" <justinmattock@gmail.com>
-Subject: Re: [PATCH 11/15]drivers:media:video:cx18:cx23418.h Typo change diable
- to disable.
-Date: Fri, 31 Dec 2010 14:33:31 -0800
-Message-ID: <4D1E5A3B.4000104@gmail.com>
-References: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-2-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-3-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-4-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-5-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-6-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-7-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-8-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-9-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-10-git-send-email-justinmattock@gmail.com>	 <1293750484-1161-11-git-send-email-justinmattock@gmail.com> <1293830120.2410.11.camel@localhost>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi/spi_topcliff_pch.c Typo change threhold to
+ threshold
+Date: Fri, 31 Dec 2010 17:49:44 -0700
+Message-ID: <20110101004944.GC19643@angua.secretlab.ca>
+References: <1293817831-8263-1-git-send-email-justinmattock@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: trivial@kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
-To: Andy Walls <awalls@md.metrocast.net>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <1293830120.2410.11.camel@localhost>
-Sender: netdev-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: trivial@kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: "Justin P. Mattock" <justinmattock@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1293817831-8263-1-git-send-email-justinmattock@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/31/2010 01:15 PM, Andy Walls wrote:
-> On Thu, 2010-12-30 at 15:08 -0800, Justin P. Mattock wrote:
->> The below patch fixes a typo "diable" to "disable". Please let me know if this
->> is correct or not.
->       ^^^^^^^^^^^^^^
->
-> What, else could it be?  The "diablo" chroma spatial filter type? ;)
->
-> Looks fine.
->
-> Acked-by: Andy Walls<awalls@md.metrocast.net>
+On Fri, Dec 31, 2010 at 09:50:31AM -0800, Justin P. Mattock wrote:
+> The below patch changes a typo from "threhold" to "threshold".
+> Let me know if I missed anything.
+> 
+> Signed-off-by: Justin P. Mattock <justinmattock@gmail.com>
 
-depends on what the search engine gives you.. diablo did show up
-but figured better throw that in to be safe since some definitions 
-appear to be incorect but are in fact correct..
+Applied, thanks.
 
->
->>
->> Signed-off-by: Justin P. Mattock<justinmattock@gmail.com>
->>
->> ---
->>   drivers/media/video/cx18/cx23418.h |    2 +-
->>   1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/drivers/media/video/cx18/cx23418.h b/drivers/media/video/cx18/cx23418.h
->> index 2c00980..7e40035 100644
->> --- a/drivers/media/video/cx18/cx23418.h
->> +++ b/drivers/media/video/cx18/cx23418.h
->> @@ -177,7 +177,7 @@
->>      IN[0] - Task handle.
->>      IN[1] - luma type: 0 = disable, 1 = 1D horizontal only, 2 = 1D vertical only,
->>   		      3 = 2D H/V separable, 4 = 2D symmetric non-separable
->> -   IN[2] - chroma type: 0 - diable, 1 = 1D horizontal
->> +   IN[2] - chroma type: 0 - disable, 1 = 1D horizontal
->>      ReturnCode - One of the ERR_CAPTURE_... */
->>   #define CX18_CPU_SET_SPATIAL_FILTER_TYPE     	(CPU_CMD_MASK_CAPTURE | 0x000C)
->>
->
->
->
+g.
 
-cheers,
-
-Justin P. Mattock
+> 
+> ---
+>  drivers/spi/spi_topcliff_pch.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+> index 58e187f..be451e3 100644
+> --- a/drivers/spi/spi_topcliff_pch.c
+> +++ b/drivers/spi/spi_topcliff_pch.c
+> @@ -677,7 +677,7 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
+>  {
+>  	/* enable interrupts */
+>  	if ((data->bpw_len) > PCH_MAX_FIFO_DEPTH) {
+> -		/* set receive threhold to PCH_RX_THOLD */
+> +		/* set receive threshold to PCH_RX_THOLD */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+>  				   PCH_RX_THOLD << SPCR_TFIC_FIELD,
+>  				   ~MASK_TFIC_SPCR_BITS);
+> @@ -685,7 +685,7 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+>  				   SPCR_RFIE_BIT | SPCR_TFIE_BIT, 0);
+>  	} else {
+> -		/* set receive threhold to maximum */
+> +		/* set receive threshold to maximum */
+>  		pch_spi_setclr_reg(data->master, PCH_SPCR,
+>  				   PCH_RX_THOLD_MAX << SPCR_TFIC_FIELD,
+>  				   ~MASK_TFIC_SPCR_BITS);
+> -- 
+> 1.6.5.2.180.gc5b3e
+> 

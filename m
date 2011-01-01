@@ -1,68 +1,43 @@
-From: "Justin P. Mattock" <justinmattock@gmail.com>
-Subject: Re: [PATCH 03/15]drivers:staging:rtl8187se:r8180_hw.h Typo change
-	diable to disable.
-Date: Fri, 31 Dec 2010 23:43:30 -0800
-Message-ID: <4D1EDB22.2020308@gmail.com>
-References: <1293750484-1161-1-git-send-email-justinmattock@gmail.com>
-	<1293750484-1161-2-git-send-email-justinmattock@gmail.com>
-	<1293750484-1161-3-git-send-email-justinmattock@gmail.com>
-	<alpine.LNX.2.00.1012311722580.24460@nippy.intranet>
+From: XCGDR-mCm4OD2olavdG/upSq5wSw@public.gmane.org
+Subject: [SPAM] 关于瑞典移民
+Date: Sat, 1 Jan 2011 16:06:27 +0800
+Message-ID: <E1PYwTi-0007hj-Pa@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: devel@driverdev.osuosl.org, trivial@kernel.org, linux-scsi@vger.kernel.org,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	ivtv-devel@ivtvdriver.org, linux-m68k@lists.linux-m68k.org,
-	spi-devel-general@lists.sourceforge.net, linux-media@vger.kernel.org
-To: Finn Thain <fthain@telegraphics.com.au>
-Return-path: <devel-bounces@linuxdriverproject.org>
-In-Reply-To: <alpine.LNX.2.00.1012311722580.24460@nippy.intranet>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
-	<mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel>
-List-Post: <mailto:devel@linuxdriverproject.org>
-List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
-	<mailto:devel-request@linuxdriverproject.org?subject=subscribe>
-Sender: devel-bounces@linuxdriverproject.org
-Errors-To: devel-bounces@linuxdriverproject.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/31/2010 10:48 PM, Finn Thain wrote:
->
-> On Thu, 30 Dec 2010, Justin P. Mattock wrote:
->
->> The below patch fixes a typo "diable" to "disable". Please let me know if this
->> is correct or not.
->>
->> Signed-off-by: Justin P. Mattock<justinmattock@gmail.com>
->>
->> ---
->>   drivers/staging/rtl8187se/r8180_hw.h |    2 +-
->>   1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/drivers/staging/rtl8187se/r8180_hw.h b/drivers/staging/rtl8187se/r8180_hw.h
->> index 3fca144..2911d40 100644
->> --- a/drivers/staging/rtl8187se/r8180_hw.h
->> +++ b/drivers/staging/rtl8187se/r8180_hw.h
->> @@ -554,7 +554,7 @@
->>   /* by amy for power save		*/
->>   /* by amy for antenna			*/
->>   #define EEPROM_SW_REVD_OFFSET 0x3f
->> -/*  BIT[8-9] is for SW Antenna Diversity. Only the value EEPROM_SW_AD_ENABLE means enable, other values are diable.					*/
->> +/*  BIT[8-9] is for SW Antenna Diversity. Only the value EEPROM_SW_AD_ENABLE means enable, other values are disabled.					*/
->
-> I think, "other values disable" was what you meant?
->
-> Finn
->
->>   #define EEPROM_SW_AD_MASK			0x0300
->>   #define EEPROM_SW_AD_ENABLE			0x0100
->>
->>
->
-
-no! I changed it to disabled to make it proper..
-
-Justin P. Mattock
+CgoKudjT2sjwteTSxsPxCgrSxsPxyPC15LXE08XKxqO6Cgq/7KGqoaqhqrTTyerH67W9zPnHqdak
+zaizozO49tTCo7u92rzZyNXLs9HTo6zX7sL9NLj21MKhozTE6ry0v8nEw8LMv6ihoyAKCrHj0suh
+qqGq19y7qLfRscjL+dPQ1vfB99LGw/G5+rzSsePSy8bwwuvSu7Dr0tTJz6Oszt7Q6LXW0brXyr3w
+oaMgCgq3vbHjoaqhqsO70afA+rrN0+/R1MTcwaa1xNKqx/OjrLK70OjSqrz7x6nWpLnZo6yyu9Do
+yM66ztfKsvrWpMP3oaMgCgq437ijwPuhqsjwteTKx9PF09q0q82ztcTSxsPxufq80rXEyMvOxLn6
+vNKjrMTDtb3HqdakuvOjrL7Nv8nS1M/tyty6zcjwteS5q8Px0rvR+bXEuKPA+7T90/ajrAogICAg
+ICAgIMPit9HSvcHGo6zD4rfRvczT/aOotNPT17b51LC1vbTz0aejqaOsuN+27tH4wM+98KO7OMvq
+0tTPwrXEuqLX09PQuN+07zIwzfLS1MnPtcS4uMS4CiAgICAgICAgvfLM+brNuKPA+6OsuqLX07TT
+s/bJ+rW9MTbL6sO/1MLT0DEwNTC1xL3yzPmjrDE2fjE409C27s3ivfLM+aGjKM/qvPvI8LXkuKPA
++8rWsuEpCgrX1NPJoaqhqsO709DSxsPxvOCjrNfU08mz9sjry/nT0DI1uPbJ6rj5ufq80qGjIAoK
+CsirufrNs9K718nRr8jIz9+jqMPis6TNvrfRo6mjujQwMCA4ODggMDMxMQoKyta7+qO6MTM1IDEw
+NjYgODU4NQpRICBRo7oxMTQyODU2NDgwoaI4NjExMzYzNTKhojk4NTUwOTY0MKGiNzI4OTE5NDIy
+Ck0gU06jumxvdWtpeUBob3RtYWlsLmNvbaGiaXN3ZWRlbkAxNjMuY29toaJsb3Zlc3dlZGVuQDE2
+My5jb22homdvc3dlZGVuQDE2My5jb20KbWFpbKO6bGlmZXN3ZWRlbkAxNjMuY29tCgotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KTGVhcm4gaG93IE9yYWNsZSBSZWFsIEFwcGxpY2F0aW9uIENsdXN0ZXJz
+IChSQUMpIE9uZSBOb2RlIGFsbG93cyBjdXN0b21lcnMKdG8gY29uc29saWRhdGUgZGF0YWJhc2Ug
+c3RvcmFnZSwgc3RhbmRhcmRpemUgdGhlaXIgZGF0YWJhc2UgZW52aXJvbm1lbnQsIGFuZCwgCnNo
+b3VsZCB0aGUgbmVlZCBhcmlzZSwgdXBncmFkZSB0byBhIGZ1bGwgbXVsdGktbm9kZSBPcmFjbGUg
+UkFDIGRhdGFiYXNlIAp3aXRob3V0IGRvd250aW1lIG9yIGRpc3J1cHRpb24KaHR0cDovL3Auc2Yu
+bmV0L3NmdS9vcmFjbGUtc2ZkZXZubApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

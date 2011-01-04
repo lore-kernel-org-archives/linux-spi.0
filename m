@@ -1,190 +1,144 @@
-From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: [PATCH v4 4/4] mc13xxx-core: Add i2c driver
-Date: Tue,  4 Jan 2011 16:34:59 +1100
-Message-ID: <1294119299-18352-5-git-send-email-marc@cpdesign.com.au>
-References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au>
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1294119299-18352-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Gabor Juhos <juhosg@openwrt.org>
+Subject: Re: [PATCH v4 09/16] spi: add SPI controller driver for the Atheros
+ AR71XX/AR724X/AR913X SoCs
+Date: Tue, 04 Jan 2011 13:56:39 +0100
+Message-ID: <4D231907.8070302@openwrt.org>
+References: <1293994589-6794-1-git-send-email-juhosg@openwrt.org> <1293994589-6794-10-git-send-email-juhosg@openwrt.org> <20110103170211.GA2522@angua.secretlab.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        "Luis R. Rodriguez" <lrodriguez@atheros.com>,
+        Cliff Holden <Cliff.Holden@Atheros.com>,
+        Kathy Giori <Kathy.Giori@Atheros.com>,
+        spi-devel-general@lists.sourceforge.net,
+        Imre Kaloz <kaloz@openwrt.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-mips-bounce@linux-mips.org>
+In-Reply-To: <20110103170211.GA2522@angua.secretlab.ca>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
----
- drivers/mfd/Kconfig         |    5 ++
- drivers/mfd/Makefile        |    1 +
- drivers/mfd/mc13xxx-i2c.c   |  115 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/mc13xxx.h |    5 ++-
- 4 files changed, 125 insertions(+), 1 deletions(-)
- create mode 100644 drivers/mfd/mc13xxx-i2c.c
+2011.01.03. 18:02 keltez=E9ssel, Grant Likely =EDrta:
+> On Sun, Jan 02, 2011 at 07:56:22PM +0100, Gabor Juhos wrote:
+>> The Atheros AR71XX/AR724X/AR913X SoCs have a built-in SPI controller=
+=2E This
+>> patch implements a driver for that.
+>>
+>=20
+> Mostly looks okay to me.  A few comments below.  Do you want this one
+> merged via my spi tree, or does it depend on other patches in this
+> series?  I'm also okay with it going in with the rest of this series.
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 9ce1d42..fbbbdaa 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -455,6 +455,11 @@ config MFD_MC13XXX_SPI
- 	select MFD_MC13XXX
- 	depends on SPI_MASTER && (MFD_MC13783 || MFD_MC13892)
- 
-+config MFD_MC13XXX_I2C
-+	tristate "Support Freescale MC13892 via I2C interface"
-+	select MFD_MC13XXX
-+	depends on I2C && MFD_MC13892
-+
- config PCF50633_ADC
- 	tristate "Support for NXP PCF50633 ADC"
- 	depends on MFD_PCF50633
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 492e881..b7d774f 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -43,6 +43,7 @@ obj-$(CONFIG_TWL6030_PWM)	+= twl6030-pwm.o
- 
- obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx-core.o
- obj-$(CONFIG_MFD_MC13XXX_SPI)	+= mc13xxx-spi.o
-+obj-$(CONFIG_MFD_MC13XXX_I2C)	+= mc13xxx-i2c.o
- 
- obj-$(CONFIG_MFD_CORE)		+= mfd-core.o
- 
-diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
-new file mode 100644
-index 0000000..b3f2f2b
---- /dev/null
-+++ b/drivers/mfd/mc13xxx-i2c.c
-@@ -0,0 +1,115 @@
-+/*
-+ * Copyright 2009-2010 Creative Product Design
-+ * Marc Reilly marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
-+ *
-+ * This program is free software; you can redistribute it and/or modify it under
-+ * the terms of the GNU General Public License version 2 as published by the
-+ * Free Software Foundation.
-+ */
-+
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/mfd/core.h>
-+#include <linux/mfd/mc13xxx.h>
-+#include <linux/i2c.h>
-+
-+static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, unsigned int offset,
-+		u32 *val)
-+{
-+	int ret;
-+	unsigned char buf[3] = {0, 0, 0};
-+
-+	ret = i2c_smbus_read_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
-+	*val = buf[0] << 16 | buf[1] << 8 | buf[2];
-+
-+	return ret == 3 ? 0 : ret;
-+}
-+
-+static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
-+		u32 val)
-+{
-+	int ret;
-+	unsigned char buf[3];
-+
-+	buf[0] = (val >> 16) & 0xff;
-+	buf[1] = (val >> 8) & 0xff;
-+	buf[2] = val & 0xff;
-+
-+	ret = i2c_smbus_write_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
-+
-+	return ret;
-+}
-+
-+static int mc13xxx_i2c_probe(struct i2c_client *client,
-+		const struct i2c_device_id *id)
-+{
-+	struct mc13xxx *mc13xxx;
-+	struct mc13xxx_platform_data *pdata = dev_get_platdata(&client->dev);
-+	int ret;
-+
-+	mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
-+	if (!mc13xxx)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&client->dev, mc13xxx);
-+	mc13xxx->dev = &client->dev;
-+	mc13xxx->i2cclient = client;
-+	mc13xxx->read_dev = mc13xxx_i2c_reg_read;
-+	mc13xxx->write_dev = mc13xxx_i2c_reg_write;
-+
-+	ret = mc13xxx_common_init(mc13xxx, pdata, client->irq);
-+
-+	if (ret == 0 && (id->driver_data != mc13xxx->ictype))
-+		dev_warn(mc13xxx->dev,
-+				"device id doesn't match auto detection!\n");
-+
-+	return ret;
-+}
-+
-+static int __devexit mc13xxx_i2c_remove(struct i2c_client *client)
-+{
-+	struct mc13xxx *mc13xxx = dev_get_drvdata(&client->dev);
-+
-+	free_irq(client->irq, mc13xxx);
-+
-+	mfd_remove_devices(&client->dev);
-+
-+	kfree(mc13xxx);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id mc13xxx_i2c_idtable[] = {
-+	{"mc13892", MC13XXX_ID_MC13892},
-+	{ }
-+};
-+
-+static struct i2c_driver mc13xxx_i2c_driver = {
-+	.driver = {
-+		.owner = THIS_MODULE,
-+		.name = "mc13xxx-i2c"
-+	},
-+	.id_table = mc13xxx_i2c_idtable,
-+	.probe = mc13xxx_i2c_probe,
-+	.remove = __devexit_p(mc13xxx_i2c_remove),
-+};
-+
-+static int __init mc13xxx_i2c_init(void)
-+{
-+	return i2c_add_driver(&mc13xxx_i2c_driver);
-+}
-+subsys_initcall(mc13xxx_i2c_init);
-+
-+static void __exit mc13xxx_i2c_exit(void)
-+{
-+	i2c_del_driver(&mc13xxx_i2c_driver);
-+}
-+module_exit(mc13xxx_i2c_exit);
-+
-+MODULE_DESCRIPTION("i2c driver for Freescale MC13XXX PMIC");
-+MODULE_AUTHOR("Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.h
-index ab7deb3..c5ab08b 100644
---- a/include/linux/mfd/mc13xxx.h
-+++ b/include/linux/mfd/mc13xxx.h
-@@ -73,7 +73,10 @@ enum mc13xxx_id {
- };
- 
- struct mc13xxx {
--	struct spi_device *spidev;
-+	union {
-+		struct spi_device *spidev;
-+		struct i2c_client *i2cclient;
-+	};
- 
- 	struct device *dev;
- 	enum mc13xxx_id ictype;
--- 
-1.7.1
+The driver won't be usable without the preceding patches in the series.
+Additionally, further patches depends on this one so it should go via t=
+he MIPS tree.
+
+> After addressing comments, feel free to add:
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+
+Thank you!
+
+>> <...>
+>> +struct ath79_spi {
+>> +	struct	spi_bitbang	bitbang;
+>> +	u32			ioc_base;
+>> +	u32			reg_ctrl;
+>> +
+>> +	void __iomem		*base;
+>> +
+>> +	struct platform_device	*pdev;
+>=20
+> This field doesn't seem to actually be used anywhere.
+
+True, i will remove that.
+
+>=20
+>> +};
+>> +
+>> +static inline u32 ath79_spi_rr(struct ath79_spi *sp, unsigned reg)
+>> +{
+>> +	return ioread32(sp->base + reg);
+>> +}
+>> +
+>> +static inline void ath79_spi_wr(struct ath79_spi *sp, unsigned reg,=
+ u32 val)
+>> +{
+>> +	iowrite32(val, sp->base + reg);
+>> +}
+>> +
+>> +static inline struct ath79_spi *spidev_to_sp(struct spi_device *spi=
+)
+>=20
+> should be ath79_spidev_to_sp()
+
+Ok.
+
+>=20
+>> +{
+>> +	return spi_master_get_devdata(spi->master);
+>> +}
+>> +
+>> +static void ath79_spi_chipselect(struct spi_device *spi, int is_act=
+ive)
+>> +{
+>> +	struct ath79_spi *sp =3D spidev_to_sp(spi);
+>> +	int cs_high =3D (spi->mode & SPI_CS_HIGH) ? is_active : !is_active=
+;
+>> +
+>> +	if (is_active) {
+>> +		/* set initial clock polarity */
+>> +		if (spi->mode & SPI_CPOL)
+>> +			sp->ioc_base |=3D AR71XX_SPI_IOC_CLK;
+>> +		else
+>> +			sp->ioc_base &=3D ~AR71XX_SPI_IOC_CLK;
+>> +
+>> +		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
+>> +	}
+>> +
+>> +	if (spi->chip_select) {
+>> +		unsigned long gpio =3D (unsigned long) spi->controller_data;
+>> +
+>> +		/* SPI is normally active-low */
+>> +		gpio_set_value(gpio, cs_high);
+>> +	} else {
+>> +		if (cs_high)
+>> +			sp->ioc_base |=3D AR71XX_SPI_IOC_CS0;
+>> +		else
+>> +			sp->ioc_base &=3D ~AR71XX_SPI_IOC_CS0;
+>> +
+>> +		ath79_spi_wr(sp, AR71XX_SPI_REG_IOC, sp->ioc_base);
+>> +	}
+>> +
+>> +}
+>> +
+>> +static int ath79_spi_setup_cs(struct spi_device *spi)
+>> +{
+>> +	struct ath79_spi *sp =3D spidev_to_sp(spi);
+>> +
+>> +	/* enable GPIO mode */
+>> +	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
+>> +
+>> +	/* save CTRL register */
+>> +	sp->reg_ctrl =3D ath79_spi_rr(sp, AR71XX_SPI_REG_CTRL);
+>> +	sp->ioc_base =3D ath79_spi_rr(sp, AR71XX_SPI_REG_IOC);
+>> +
+>> +	/* TODO: setup speed? */
+>> +	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
+>> +
+>> +	if (spi->chip_select) {
+>> +		unsigned long gpio =3D (unsigned long) spi->controller_data;
+>=20
+> Casting here is bad practice. =20
+
+It seems that the spi-gpio driver was a bad example. :)
+
+> It would be better to have an explicit ath97_spi_controller_data stru=
+cture.
+
+I will add the explicit structure. Expect an updated version soon.
+
+Thanks,
+Gabor

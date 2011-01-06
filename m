@@ -1,59 +1,73 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
-Date: Wed, 5 Jan 2011 09:38:35 -0700
-Message-ID: <20110105163835.GD17272@angua.secretlab.ca>
-References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com>
- <20101229064937.GC8172@angua.secretlab.ca>
- <280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com>
+From: Richard Genoud <richard.genoud@gmail.com>
+Subject: Re: [PATCH 1/2] spi_imx.c: CSPI3 irq is 0 on imx25
+Date: Thu, 6 Jan 2011 12:26:17 +0100
+Message-ID: <AANLkTimpTUz_Fizef09urPBR8vP80KU-5yApjzGWFwc0@mail.gmail.com>
+References: <1293102730-32528-1-git-send-email-richard.genoud@gmail.com> <20101223185921.GB20384@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, qi.wang@intel.com,
-	yong.y.wang@intel.com, joel.clark@intel.com,
-	kok.howg.ewe@intel.com,
-	Toshiharu Okada <toshiharu-linux@dsn.okisemi.com>
-To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com>
+In-Reply-To: <20101223185921.GB20384@angua.secretlab.ca>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 05, 2011 at 11:34:20AM +0900, Tomoya MORINAGA wrote:
-> Hi Grant,
-> 
-> On Wednesday, December 29, 2010 3:49 PM, Grant Likely wrote:
-> >As previously discussed on this list, I would like to see support for
-> >multiple bus instances implemented differently.  Rather than storing
-> >the spi_master instances in an array in the pci device private data,
-> >the pci device should register a separate platform_device for each spi
-> >bus instance, and each of those bus instances should get bound to a
-> >topcliff_spi_bus driver which doesn't need to have any special
-> >knowledge about how many spi_master instances actually exist.
-> >
-> >Basically, the way it is implemented in this patch isn't taking
-> >advantage of the infrastructure and instance management provided by
-> >the driver model.
-> 
-> I see.
-> I will modify like your suggestion.
-> Could you show the reference SPI driver using multi-instance ?
+2010/12/23 Grant Likely <grant.likely@secretlab.ca>:
+> On Thu, Dec 23, 2010 at 12:12:09PM +0100, Richard Genoud wrote:
+>> On imx25 soc, MX25_INT_CSPI3 is 0
+>> (cf arch/arm/plat-mxc/include/mach/mx25.h).
+>> So, the test (spi_imx->irq <=3D 0) returned an error
+>> for this platform.
+>> This patch corrects this behaviour.
+>>
+>> Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
+>> ---
+>> =C2=A0drivers/spi/spi_imx.c | =C2=A0 =C2=A02 +-
+>> =C2=A01 files changed, 1 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+>> index 55a38e2..793ae99 100644
+>> --- a/drivers/spi/spi_imx.c
+>> +++ b/drivers/spi/spi_imx.c
+>> @@ -847,7 +847,7 @@ static int __devinit spi_imx_probe(struct platfo=
+rm_device *pdev)
+>> =C2=A0 =C2=A0 =C2=A0 }
+>>
+>> =C2=A0 =C2=A0 =C2=A0 spi_imx->irq =3D platform_get_irq(pdev, 0);
+>> - =C2=A0 =C2=A0 if (spi_imx->irq <=3D 0) {
+>> + =C2=A0 =C2=A0 if (spi_imx->irq < 0) {
+>
+> I *really* don't want to apply this. =C2=A0The kernel is slowly movin=
+g
+> toward NO_IRQ =3D=3D 0 for all architectures. =C2=A0This patch is a s=
+tep in the
+> wrong direction because it will break with ARM starts using 0 for
+> NO_IRQ.
+>
+> I would accept a change to spi_imx->irq =3D=3D NO_IRQ however.
+>
+> g.
+>
 
-In an multi-instance scenario, the spi driver is just a plain-jane
-platform_driver.  There isn't anything special about it.  Instead, the
-pci_driver becomes responsible to register one or more platform
-devices for the child busses.  Much like one of the multifunction
-devices in drivers/mfd.
+Actually, the description of the patch is wrong, but not the patch itse=
+lf.
+The test "if (spi_imx->irq <=3D 0)" is not testing the IRQ value, but
+the return value of platform_get_irq().
+And platform_get_irq() can return an error (-ENXIO) or the IRQ value it=
+ found.
+So, as we are testing if platform_get_irq() failed or not, the test
+should be "if (spi_imx->irq < 0)"
 
-As far as examples go, drivers/mfd/timberdale.c seems reasonable, if a
-bit larger than what you need.
+If you agree with that, I will resend the patch with a good description=
+=2E
 
-g.
+richard.
 
-> 
-> Thanks,
-> ---
-> Tomoya MORINAGA
-> OKI SEMICONDUCTOR CO., LTD.
-> 
+
+--=20
+for me, ck means con kolivas and not calvin klein... does it mean I'm a=
+ geek ?

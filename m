@@ -1,91 +1,45 @@
-From: "Taro Celta on line" <tarocelta-/1Rj0zDCqbBfyO9Q7EP/yw@public.gmane.org>
-Subject: [SPAM] =?iso-8859-1?B?VGFybyBDZWx0YSBvbiBsaW5lIC0gU2FpYmEgbyBxdWUgMjAxMSBsaGUgcmVzZXJ2YSE=?=
-  Promoção Janeiro de 2011
-Date: Fri, 7 Jan 2011 13:57:46 -0200
-Message-ID: <E1PbEhM-0003Qr-SZ@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Richard Genoud <richard.genoud@gmail.com>
+Subject: Re: [PATCH] spi_imx.c: correct the test on platform_get_irq() return value
+Date: Fri, 7 Jan 2011 17:41:53 +0100
+Message-ID: <AANLkTi=SCQYOTSQGpRnje-+=h5AZTtuaEOT6LO4VQA8T@mail.gmail.com>
+References: <AANLkTimpTUz_Fizef09urPBR8vP80KU-5yApjzGWFwc0@mail.gmail.com>
+ <1294410361-9092-1-git-send-email-richard.genoud@gmail.com> <AANLkTin0eXCpLD1B0+zABqYcWxzG8+kM1cpRyD+Af_2n@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?=
+	<u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <AANLkTin0eXCpLD1B0+zABqYcWxzG8+kM1cpRyD+Af_2n@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-O que 2011 lhe reserva? =
+2011/1/7 Grant Likely <grant.likely@secretlab.ca>:
+> On Fri, Jan 7, 2011 at 7:26 AM, Richard Genoud <richard.genoud@gmail.=
+com> wrote:
+>> The test "if (spi_imx->irq <=3D 0)" is not testing the IRQ value, bu=
+t the return value of platform_get_irq().
+>> As platform_get_irq() can return an error (-ENXIO) or the IRQ value =
+it found, the test should be "if (spi_imx->irq < 0)"
+>>
+>> Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
+>
+> For the majority of architectures in Linux, 0 is not a valid IRQ for
+> devices. =C2=A0Unless there is an actual imx platform that currently
+> assigns linux irq 0 to the spi controller then I'd rather not apply
+> this change.
+actually, there is the imx25 platform:
+in arch/arm/plat-mxc/include/mach/mx25.h
+line 61 :
+#define MX25_INT_CSPI3          0
+this is the interrupt assigned for CSPI3.
 
-Fa=E7a esta consulta baseada na Roda Astrol=F3gica e saiba de todos os pote=
-nciais de seu ano de 2011!! e mais tiragem do plano mental de seu amor!
-Mais informa=E7=F5es:
-http://lefayetarocelta.blogspot.com/2010/12/como-sera-seu-ano-de-2011.html
-Ciclos de Anos Pessoais =
+I doubled check with the imx25 release manual chapter 3.1 (page 51):
+http://cache.freescale.com/files/dsp/doc/ref_manual/IMX25RM.pdf
+And I made some spi test on the imx25 3stack PDK, the CSPI3 is working
+with irq 0.
 
-Numerologia - Ciclo de ano pessoal =
-
-
-
-
-
-O ciclo de ano pessoal =E9 um pequeno ciclo de 9 anos em nossas vidas e cad=
-a ano desse ciclo tem uma vibra=E7=E3o espec=EDfica. O n=FAmero do ano pess=
-oal =E9 uma forte indica=E7=E3o das tend=EAncias e circunst=E2ncias que exp=
-erimentamos durante o ano. Logo abaixo voc=EA tem a explica=E7=E3o do c=E1l=
-culo simplificado do ano pessoal. Para saber em que Ano Pessoal estamos den=
-tro desse Ciclo de 9 anos, =E9 s=F3 somar: =
-
-
-
-DIA DO NASCIMENTO + M=CAS DO NASCIMENTO + O ANO DO =DALTIMO ANIVERS=C1RIO. =
-
-
-
-Exemplo: Data de Nascimento: 14/04/1969 (Dia) 14 + (M=EAs) 04 + (ano do =FA=
-ltimo anivers=E1rio) 2007 Somando todos esses n=FAmeros temos: 14 + 04 + 20=
-07 =3D 27 Sempre somamos os n=FAmeros at=E9 chegarmos a um =FAnico d=EDgito=
-: 27 =3D 2 + 7 =3D 9 ANO PESSOAL =3D 9 Logo abaixo, tem a explica=E7=E3o re=
-sumida de como caminha essa vibra=E7=E3o energ=E9tica em nossas vidas, dura=
-nte esses 9 anos. O Ano Pessoal inicia-se no dia do nosso anivers=E1rio!! =
-
-
-
-Ciclo de Ano Pessoal =
-
-1 - Plantar =
-
-2 - Regar =
-
-3 - Colher
-4 - Estruturar
-5 - Mudar
-6 - Fam=EDlia =
-
-7 - Avalia=E7=E3o Espiritual
-8 - Karma, Retorno, Financeiro =
-
-9 - Fechar p/ balan=E7o
-
-Leia mais e calcule seu Ano Pessoal
-http://lefayetarocelta.blogspot.com/2011/01/ciclos-de-anos-pessoais.html
-
-Taro Celta on line
-Jaguari=FAna - SP
-Brazil =
-
-
----------------------------------------------------------------------------=
----
-Gaining the trust of online customers is vital for the success of any compa=
-ny
-that requires sensitive data to be transmitted over the Web.   Learn how to =
-
-best implement a security strategy that keeps consumers' information secure =
-
-and instills the confidence they need to proceed with transactions.
-http://p.sf.net/sfu/oracle-sfdevnl =
+richard.

@@ -1,50 +1,222 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi_imx.c: correct the test on platform_get_irq()
- return value
-Date: Fri, 7 Jan 2011 09:58:15 -0700
-Message-ID: <20110107165815.GA25446@angua.secretlab.ca>
-References: <AANLkTimpTUz_Fizef09urPBR8vP80KU-5yApjzGWFwc0@mail.gmail.com>
- <1294410361-9092-1-git-send-email-richard.genoud@gmail.com>
+Subject: [git pull] spi changes for 2.6.38
+Date: Fri, 7 Jan 2011 10:09:04 -0700
+Message-ID: <AANLkTimAr3E0R0iENVYmajoXBaz7gFFgLgFdThOJTtwx@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org
-To: Richard Genoud <richard.genoud@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Brian Niebuhr <BNiebuhr@efjohnson.com>,
+	Feng Tang <feng.tang@intel.com>, Joe Perches <joe@perches.com>,
+	Linus Walleij <linus.ml.walleij@gmail.com>,
+	Mingkai Hu <Mingkai.hu@freescale.com>,
+	Richard Genoud <richard.genoud@gmail.com>,
+	Sekhar Nori <nsekhar@ti.com>,
+	Tomoya MORINAGA <morinaga526@dsn.okisemi.com>,
+	=?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?=
+	<u.kleine-koenig@pengutronix.de>,
+	Wolfram Sang <w.sang@pengutronix.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1294410361-9092-1-git-send-email-richard.genoud@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 07, 2011 at 03:26:01PM +0100, Richard Genoud wrote:
-> The test "if (spi_imx->irq <= 0)" is not testing the IRQ value, but the return value of platform_get_irq().
-> As platform_get_irq() can return an error (-ENXIO) or the IRQ value it found, the test should be "if (spi_imx->irq < 0)"
-> 
-> Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
+Hi Linus,
 
-Alright.  Applied.
+Here are the spi subsystem changes to be merged for 2.6.38
 
+Thanks,
 g.
 
-> ---
->  drivers/spi/spi_imx.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
-> index 55a38e2..793ae99 100644
-> --- a/drivers/spi/spi_imx.c
-> +++ b/drivers/spi/spi_imx.c
-> @@ -847,7 +847,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
->  	}
->  
->  	spi_imx->irq = platform_get_irq(pdev, 0);
-> -	if (spi_imx->irq <= 0) {
-> +	if (spi_imx->irq < 0) {
->  		ret = -EINVAL;
->  		goto out_iounmap;
->  	}
-> -- 
-> 1.7.1
-> 
+The following changes since commit 3c0cb7c31c206aaedb967e44b98442bbeb17=
+a6c4:
+
+  Merge branch 'devel' of master.kernel.org:/home/rmk/linux-2.6-arm
+(2011-01-06 16:50:35 -0800)
+
+are available in the git repository at:
+
+  git://git.secretlab.ca/git/linux-2.6 next-spi
+
+Brian Niebuhr (42):
+      spi: davinci: fix checkpatch errors
+      spi: davinci: whitespace cleanup
+      spi: davinci: remove unused variable 'pdata'
+      spi: davinci: set chip-select mode in SPIDEF only once
+      spi: davinci: enable both activation and deactivation of chip-sel=
+ects
+      spi: davinci: remove unnecessary data transmit on CS disable
+      spi: davinci: enable GPIO lines to be used as chip selects
+      spi: davinci: simplify prescalar calculation
+      spi: davinci: remove 'wait_enable' platform data member
+      spi: davinci: make chip-slect specific parameters really
+chip-select specific
+      spi: davinci: consolidate setup of SPIFMTn in one function
+      spi: davinci: setup chip-select timers values only if timer enabl=
+ed
+      spi: davinci: add support for wait enable timeouts
+      spi: davinci: remove unused members of davinci_spi_slave
+      spi: davinci: eliminate the single member structure davinci_spi_s=
+lave
+      spi: davinci: eliminate unnecessary update of davinci_spi->count
+      spi: davinci: simplify calculation of edma acount value
+      spi: davinci: check for NULL buffer pointer before using it
+      spi: davinci: remove unnecessary disable of SPI
+      spi: davinci: remove unnecessary 'count' variable in driver priva=
+te data
+      spi: davinci: remove unnecessary completion variable initializati=
+on
+      spi: davinci: remove non-useful interrupt mode support
+      spi: davinci: simplify poll mode transfers
+      spi: davinci: add support for interrupt mode
+      spi: davinci: configure the invariable bits in spipc0 only once
+      spi: davinci: remove unnecessary function davinci_spi_bufs_prep()
+      spi: davinci: remove unnecessary call to davinci_spi_setup_transf=
+er()
+      spi: davinci: do not store DMA channel information per chip selec=
+t
+      spi: davinci: always start transmit DMA
+      spi: davinci: do not use temporary buffer if no transmit data pro=
+vided
+      spi: davinci: always start receive DMA
+      spi: davinci: use edma_write_slot() to setup EDMA PaRAM slot
+      spi: davinci: fix DMA event generation stoppage
+      spi: davinci: fix EDMA CC errors at end of transfers
+      spi: davinci: handle DMA completion errors correctly
+      spi: davinci: remove usage of additional completion variables for=
+ DMA
+      spi: davinci: let DMA operation be specified on per-device basis
+      spi: davinci: remove non-useful "clk_internal" platform data
+      spi: davinci: enable and power-up SPI only when required
+      spi: davinci: setup the driver owner
+      spi: davinci: add additional comments
+      spi: davinci: add EF Johnson Technologies copyright
+
+=46eng Tang (3):
+      spi/dw_spi: Fix too short timeout in spi polling loop
+      spi/dw_spi: change to EXPORT_SYMBOL_GPL for exported APIs
+      spi/dw_spi: add DMA support
+
+Grant Likely (6):
+      spi/xilinx: Eliminate pdata references from common code.
+      spi/xilinx: fold platform_driver support into main body
+      spi/xilinx: merge OF support code into main driver
+      Merge commit 'v2.6.37-rc7' into spi/next
+      Merge branch 'for-grant' of
+git://arago-project.org/git/projects/linux-davinci into spi/next
+      Merge branch 'spi' of git://git.linutronix.de/users/bigeasy/soda
+into spi/next
+
+Joe Perches (1):
+      drivers/spi: Remove unnecessary semicolons
+
+Justin P. Mattock (2):
+      spi/dw_spi Typo change diable to disable.
+      spi/topcliff: Typo fix threhold to threshold
+
+Linus Walleij (4):
+      spi/pl022: map the buffers on the DMA engine
+      spi/pl022: pass the returned sglen to the DMA engine
+      spi/pl022: convert busy flag to a bool
+      spi/pl022: convert running variable
+
+Mingkai Hu (1):
+      spi/fsl_espi: change the read behaviour of the SPIRF
+
+Richard Genoud (1):
+      spi/imx: correct the test on platform_get_irq() return value
+
+Sebastian Andrzej Siewior (9):
+      spi/pxa2xx: register driver properly
+      spi/pxa2xx: add support for shared IRQ handler
+      spi/pxa2xx: Use define for SSSR_TFL_MASK instead of plain numbers
+      arm/pxa2xx: reorgazine SSP and SPI header files
+      spi/pxa2xx: Add CE4100 support
+      spi/pxa2xx: Consider CE4100's FIFO depth
+      spi/pxa2xx: Add chipselect support for Sodaville
+      spi/pxa2xx: Modify RX-Tresh instead of busy-loop for the
+remaining RX bytes.
+      spi/pxa2xx: pass of_node to spi device and set a parent device
+
+Sekhar Nori (7):
+      spi: davinci: removed unused #defines
+      spi: davinci: remove unnecessary typecast
+      spi: davinci: do not treat Tx interrupt being set as error
+      spi: davinci: do not allocate DMA channels during SPI device setu=
+p
+      spi: davinci: remove unnecessary private data member 'region_size=
+'
+      spi: davinci: shorten variable names
+      spi: davinci: kconfig: add manufacturer name to prompt string
+
+Tomoya MORINAGA (1):
+      spi/topcliff_pch: Fix data transfer issue
+
+Uwe Kleine-K=F6nig (1):
+      spi/imx: remove autodetection
+
+Wolfram Sang (1):
+      spi/mpc52xx-psc-spi: move probe/remove to proper sections
+
+ Documentation/spi/pxa2xx                           |    4 +-
+ arch/arm/mach-davinci/dm355.c                      |    7 +-
+ arch/arm/mach-davinci/dm365.c                      |    6 -
+ arch/arm/mach-davinci/include/mach/spi.h           |   52 +-
+ arch/arm/mach-pxa/cm-x255.c                        |    2 +-
+ arch/arm/mach-pxa/cm-x270.c                        |    2 +-
+ arch/arm/mach-pxa/corgi.c                          |    2 +-
+ arch/arm/mach-pxa/devices.c                        |    2 +-
+ arch/arm/mach-pxa/em-x270.c                        |    2 +-
+ arch/arm/mach-pxa/hx4700.c                         |    2 +-
+ arch/arm/mach-pxa/icontrol.c                       |    2 +-
+ arch/arm/mach-pxa/include/mach/pxa2xx_spi.h        |   47 -
+ arch/arm/mach-pxa/littleton.c                      |    2 +-
+ arch/arm/mach-pxa/lubbock.c                        |    2 +-
+ arch/arm/mach-pxa/pcm027.c                         |    2 +-
+ arch/arm/mach-pxa/poodle.c                         |    2 +-
+ arch/arm/mach-pxa/spitz.c                          |    3 +-
+ arch/arm/mach-pxa/stargate2.c                      |    2 +-
+ arch/arm/mach-pxa/tosa.c                           |    2 +-
+ arch/arm/mach-pxa/trizeps4.c                       |    1 -
+ arch/arm/mach-pxa/z2.c                             |    2 +-
+ arch/arm/mach-pxa/zeus.c                           |    2 +-
+ arch/arm/plat-pxa/ssp.c                            |    2 +-
+ drivers/spi/Kconfig                                |   38 +-
+ drivers/spi/Makefile                               |    6 +-
+ drivers/spi/amba-pl022.c                           |   56 +-
+ drivers/spi/davinci_spi.c                          | 1314 ++++++++----=
+--------
+ drivers/spi/dw_spi.c                               |   52 +-
+ drivers/spi/dw_spi_mid.c                           |  223 ++++
+ drivers/spi/dw_spi_pci.c                           |   20 +-
+ drivers/spi/mpc52xx_psc_spi.c                      |   35 +-
+ drivers/spi/pxa2xx_spi.c                           |  190 ++-
+ drivers/spi/pxa2xx_spi_pci.c                       |  201 +++
+ drivers/spi/spi_fsl_espi.c                         |   19 +-
+ drivers/spi/spi_imx.c                              |   32 +-
+ drivers/spi/spi_nuc900.c                           |    2 +-
+ drivers/spi/spi_topcliff_pch.c                     |   12 +-
+ drivers/spi/xilinx_spi.c                           |  133 ++-
+ drivers/spi/xilinx_spi.h                           |   32 -
+ drivers/spi/xilinx_spi_of.c                        |  133 --
+ drivers/spi/xilinx_spi_pltfm.c                     |  102 --
+ .../plat/ssp.h =3D> include/linux/pxa2xx_ssp.h       |   39 +-
+ include/linux/spi/dw_spi.h                         |   24 +-
+ include/linux/spi/pxa2xx_spi.h                     |  152 +++
+ sound/soc/pxa/pxa-ssp.c                            |    2 +-
+ 45 files changed, 1609 insertions(+), 1360 deletions(-)
+ delete mode 100644 arch/arm/mach-pxa/include/mach/pxa2xx_spi.h
+ create mode 100644 drivers/spi/dw_spi_mid.c
+ create mode 100644 drivers/spi/pxa2xx_spi_pci.c
+ delete mode 100644 drivers/spi/xilinx_spi.h
+ delete mode 100644 drivers/spi/xilinx_spi_of.c
+ delete mode 100644 drivers/spi/xilinx_spi_pltfm.c
+ rename arch/arm/plat-pxa/include/plat/ssp.h =3D> include/linux/pxa2xx_=
+ssp.h (90%)
+ create mode 100644 include/linux/spi/pxa2xx_spi.h
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

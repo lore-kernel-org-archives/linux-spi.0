@@ -1,73 +1,92 @@
-From: "HIPNOSIS CHILE" <hipnosischile-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Diplomado de Hipnosis Enero 2011.
-Date: Thu, 6 Jan 2011 21:54:00 -0300
-Message-ID: <1235851007-220111570540631@usuario-1109edb>
-Reply-To: HIPNOSIS CHILE <cursosdehipnosis-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Tomoya MORINAGA" <morinaga526@dsn.okisemi.com>
+Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+Date: Fri, 7 Jan 2011 15:40:35 +0900
+Message-ID: <46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com>
+References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com> <20101229064937.GC8172@angua.secretlab.ca> <280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com> <20110105163835.GD17272@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "'David Brownell'" <dbrownell@users.sourceforge.net>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>, <qi.wang@intel.com>,
+	<yong.y.wang@intel.com>, <joel.clark@intel.com>,
+	<kok.howg.ewe@intel.com>,
+	"'Toshiharu Okada'" <toshiharu-linux@dsn.okisemi.com>
+To: "'Grant Likely'" <grant.likely@secretlab.ca>,
+	"'Tomoya MORINAGA'" <tomoya-linux@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20110105163835.GD17272@angua.secretlab.ca>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Grant,
 
+On Thursday, January 06, 2011 1:39 AM, Grant Likely wrote:
+> As far as examples go, drivers/mfd/timberdale.c seems 
+> reasonable, if a bit larger than what you need.
 
+Thank you for your suggestion.
+However, though seeing this driver, I didn't understand your intention.
+It seems platform_device/platform_driver are not used in this.
+Which part of this driver do you want to show me as reference ?
 
- =
+Thanks,
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD.
 
-
-INSCRIPCIONES
-			=
-
-http://www.hipnosischile.cl/inscripciones.htm    =
-
-
-Telefonos: 2781078 - 4458986 Celular: (Movistar) 96756898 -  89916414 - (En=
-tel) 96756898
-
- =
-
-			=
-
-			Dr. Barros Borgono 384 - Providencia 			(Metro Manuel Montt - Salida Sur)
-			=
-
- =
-
-			 			=
-
-			Siguiendo 			las disposiciones legales actuales, los siguientes son los =
-datos de 			quienes realizan el presente env=EDo publicitario:
-			=
-
-			 			 			=
-
-			=
-
-			Hipnosis Chile
-			=
-
-			 			E-mail: info-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org - www.hipnosischile.cl
-			=
-
-			 			Remoci=F3n: remover-EllHPs1tUSK9nnua7EJmZQ@public.gmane.org
- =
-
----------------------------------------------------------------------------=
----
-Gaining the trust of online customers is vital for the success of any compa=
-ny
-that requires sensitive data to be transmitted over the Web.   Learn how to =
-
-best implement a security strategy that keeps consumers' information secure =
-
-and instills the confidence they need to proceed with transactions.
-http://p.sf.net/sfu/oracle-sfdevnl =
+> -----Original Message-----
+> From: Grant Likely [mailto:glikely@secretlab.ca] On Behalf Of 
+> Grant Likely
+> Sent: Thursday, January 06, 2011 1:39 AM
+> To: Tomoya MORINAGA
+> Cc: David Brownell; spi-devel-general@lists.sourceforge.net; 
+> linux-kernel@vger.kernel.org; qi.wang@intel.com; 
+> yong.y.wang@intel.com; joel.clark@intel.com; 
+> kok.howg.ewe@intel.com; Toshiharu Okada
+> Subject: Re: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+> 
+> On Wed, Jan 05, 2011 at 11:34:20AM +0900, Tomoya MORINAGA wrote:
+> > Hi Grant,
+> > 
+> > On Wednesday, December 29, 2010 3:49 PM, Grant Likely wrote:
+> > >As previously discussed on this list, I would like to see 
+> support for 
+> > >multiple bus instances implemented differently.  Rather 
+> than storing 
+> > >the spi_master instances in an array in the pci device 
+> private data, 
+> > >the pci device should register a separate platform_device for each 
+> > >spi bus instance, and each of those bus instances should 
+> get bound to 
+> > >a topcliff_spi_bus driver which doesn't need to have any special 
+> > >knowledge about how many spi_master instances actually exist.
+> > >
+> > >Basically, the way it is implemented in this patch isn't taking 
+> > >advantage of the infrastructure and instance management 
+> provided by 
+> > >the driver model.
+> > 
+> > I see.
+> > I will modify like your suggestion.
+> > Could you show the reference SPI driver using multi-instance ?
+> 
+> In an multi-instance scenario, the spi driver is just a 
+> plain-jane platform_driver.  There isn't anything special 
+> about it.  Instead, the pci_driver becomes responsible to 
+> register one or more platform devices for the child busses.  
+> Much like one of the multifunction devices in drivers/mfd.
+> 
+> As far as examples go, drivers/mfd/timberdale.c seems 
+> reasonable, if a bit larger than what you need.
+> 
+> g.
+> 
+> > 
+> > Thanks,
+> > ---
+> > Tomoya MORINAGA
+> > OKI SEMICONDUCTOR CO., LTD.
+> > 
+> 

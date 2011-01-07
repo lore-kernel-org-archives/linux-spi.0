@@ -1,478 +1,353 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: [git pull] (updated) spi changes for 2.6.38
-Date: Fri, 7 Jan 2011 13:49:50 -0700
-Message-ID: <AANLkTi=JRPpgyYnv1+mnY_VBYM=z74dpzngOPOLTEOAz@mail.gmail.com>
+From: Kevin Hilman <khilman@ti.com>
+Subject: Re: [PATCH 7/7 v2] OMAP: runtime: McSPI driver runtime conversion
+Date: Fri, 07 Jan 2011 14:49:13 -0800
+Message-ID: <877hegl47q.fsf@ti.com>
+References: <33542.10.24.255.18.1291212131.squirrel@dbdmail.itg.ti.com>
+	<20101230192957.GD2713@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	linux-arm-kernel@lists.infradead.org, Charulatha V <charu@ti.com>,
+	tony@atomide.com, p-basak2@ti.com
+To: "Govindraj.R" <govindraj.raja@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20101230192957.GD2713@angua.secretlab.ca> (Grant Likely's
+	message of "Thu, 30 Dec 2010 12:29:57 -0700")
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus,
+Grant Likely <grant.likely@secretlab.ca> writes:
 
-Added one more patch from Russell to get omap DMA working.
-
-Thanks,
-g.
-
-
-The following changes since commit 01539ba2a706ab7d35fc0667dff919ade7f8=
-7d63:
-
-  Merge branch 'omap-for-linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/tmlind/linux-omap-2.6
-(2011-01-06 19:13:58 -0800)
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 next-spi
-
-Brian Niebuhr (42):
-      spi: davinci: fix checkpatch errors
-      spi: davinci: whitespace cleanup
-      spi: davinci: remove unused variable 'pdata'
-      spi: davinci: set chip-select mode in SPIDEF only once
-      spi: davinci: enable both activation and deactivation of chip-sel=
-ects
-      spi: davinci: remove unnecessary data transmit on CS disable
-      spi: davinci: enable GPIO lines to be used as chip selects
-      spi: davinci: simplify prescalar calculation
-      spi: davinci: remove 'wait_enable' platform data member
-      spi: davinci: make chip-slect specific parameters really
-chip-select specific
-      spi: davinci: consolidate setup of SPIFMTn in one function
-      spi: davinci: setup chip-select timers values only if timer enabl=
-ed
-      spi: davinci: add support for wait enable timeouts
-      spi: davinci: remove unused members of davinci_spi_slave
-      spi: davinci: eliminate the single member structure davinci_spi_s=
-lave
-      spi: davinci: eliminate unnecessary update of davinci_spi->count
-      spi: davinci: simplify calculation of edma acount value
-      spi: davinci: check for NULL buffer pointer before using it
-      spi: davinci: remove unnecessary disable of SPI
-      spi: davinci: remove unnecessary 'count' variable in driver priva=
-te data
-      spi: davinci: remove unnecessary completion variable initializati=
-on
-      spi: davinci: remove non-useful interrupt mode support
-      spi: davinci: simplify poll mode transfers
-      spi: davinci: add support for interrupt mode
-      spi: davinci: configure the invariable bits in spipc0 only once
-      spi: davinci: remove unnecessary function davinci_spi_bufs_prep()
-      spi: davinci: remove unnecessary call to davinci_spi_setup_transf=
-er()
-      spi: davinci: do not store DMA channel information per chip selec=
-t
-      spi: davinci: always start transmit DMA
-      spi: davinci: do not use temporary buffer if no transmit data pro=
-vided
-      spi: davinci: always start receive DMA
-      spi: davinci: use edma_write_slot() to setup EDMA PaRAM slot
-      spi: davinci: fix DMA event generation stoppage
-      spi: davinci: fix EDMA CC errors at end of transfers
-      spi: davinci: handle DMA completion errors correctly
-      spi: davinci: remove usage of additional completion variables for=
- DMA
-      spi: davinci: let DMA operation be specified on per-device basis
-      spi: davinci: remove non-useful "clk_internal" platform data
-      spi: davinci: enable and power-up SPI only when required
-      spi: davinci: setup the driver owner
-      spi: davinci: add additional comments
-      spi: davinci: add EF Johnson Technologies copyright
-
-=46eng Tang (3):
-      spi/dw_spi: Fix too short timeout in spi polling loop
-      spi/dw_spi: change to EXPORT_SYMBOL_GPL for exported APIs
-      spi/dw_spi: add DMA support
-
-Grant Likely (6):
-      spi/xilinx: Eliminate pdata references from common code.
-      spi/xilinx: fold platform_driver support into main body
-      spi/xilinx: merge OF support code into main driver
-      Merge commit 'v2.6.37-rc7' into spi/next
-      Merge branch 'for-grant' of
-git://arago-project.org/git/projects/linux-davinci into spi/next
-      Merge branch 'spi' of git://git.linutronix.de/users/bigeasy/soda
-into spi/next
-
-Joe Perches (1):
-      drivers/spi: Remove unnecessary semicolons
-
-Justin P. Mattock (2):
-      spi/dw_spi Typo change diable to disable.
-      spi/topcliff: Typo fix threhold to threshold
-
-Linus Walleij (4):
-      spi/pl022: map the buffers on the DMA engine
-      spi/pl022: pass the returned sglen to the DMA engine
-      spi/pl022: convert busy flag to a bool
-      spi/pl022: convert running variable
-
-Mingkai Hu (1):
-      spi/fsl_espi: change the read behaviour of the SPIRF
-
-Richard Genoud (1):
-      spi/imx: correct the test on platform_get_irq() return value
-
-Russell King - ARM Linux (1):
-      spi/omap: Fix DMA API usage in OMAP MCSPI driver
-
-Sebastian Andrzej Siewior (9):
-      spi/pxa2xx: register driver properly
-      spi/pxa2xx: add support for shared IRQ handler
-      spi/pxa2xx: Use define for SSSR_TFL_MASK instead of plain numbers
-      arm/pxa2xx: reorgazine SSP and SPI header files
-      spi/pxa2xx: Add CE4100 support
-      spi/pxa2xx: Consider CE4100's FIFO depth
-      spi/pxa2xx: Add chipselect support for Sodaville
-      spi/pxa2xx: Modify RX-Tresh instead of busy-loop for the
-remaining RX bytes.
-      spi/pxa2xx: pass of_node to spi device and set a parent device
-
-Sekhar Nori (7):
-      spi: davinci: removed unused #defines
-      spi: davinci: remove unnecessary typecast
-      spi: davinci: do not treat Tx interrupt being set as error
-      spi: davinci: do not allocate DMA channels during SPI device setu=
-p
-      spi: davinci: remove unnecessary private data member 'region_size=
-'
-      spi: davinci: shorten variable names
-      spi: davinci: kconfig: add manufacturer name to prompt string
-
-Tomoya MORINAGA (1):
-      spi/topcliff_pch: Fix data transfer issue
-
-Uwe Kleine-K=F6nig (1):
-      spi/imx: remove autodetection
-
-Wolfram Sang (1):
-      spi/mpc52xx-psc-spi: move probe/remove to proper sections
-
- Documentation/spi/pxa2xx                           |    4 +-
- arch/arm/mach-davinci/dm355.c                      |    7 +-
- arch/arm/mach-davinci/dm365.c                      |    6 -
- arch/arm/mach-davinci/include/mach/spi.h           |   52 +-
- arch/arm/mach-pxa/cm-x255.c                        |    2 +-
- arch/arm/mach-pxa/cm-x270.c                        |    2 +-
- arch/arm/mach-pxa/corgi.c                          |    2 +-
- arch/arm/mach-pxa/devices.c                        |    2 +-
- arch/arm/mach-pxa/em-x270.c                        |    2 +-
- arch/arm/mach-pxa/hx4700.c                         |    2 +-
- arch/arm/mach-pxa/icontrol.c                       |    2 +-
- arch/arm/mach-pxa/include/mach/pxa2xx_spi.h        |   47 -
- arch/arm/mach-pxa/littleton.c                      |    2 +-
- arch/arm/mach-pxa/lubbock.c                        |    2 +-
- arch/arm/mach-pxa/pcm027.c                         |    2 +-
- arch/arm/mach-pxa/poodle.c                         |    2 +-
- arch/arm/mach-pxa/spitz.c                          |    3 +-
- arch/arm/mach-pxa/stargate2.c                      |    2 +-
- arch/arm/mach-pxa/tosa.c                           |    2 +-
- arch/arm/mach-pxa/trizeps4.c                       |    1 -
- arch/arm/mach-pxa/z2.c                             |    2 +-
- arch/arm/mach-pxa/zeus.c                           |    2 +-
- arch/arm/plat-pxa/ssp.c                            |    2 +-
- drivers/spi/Kconfig                                |   38 +-
- drivers/spi/Makefile                               |    6 +-
- drivers/spi/amba-pl022.c                           |   56 +-
- drivers/spi/davinci_spi.c                          | 1314 ++++++++----=
---------
- drivers/spi/dw_spi.c                               |   52 +-
- drivers/spi/dw_spi_mid.c                           |  223 ++++
- drivers/spi/dw_spi_pci.c                           |   20 +-
- drivers/spi/mpc52xx_psc_spi.c                      |   35 +-
- drivers/spi/omap2_mcspi.c                          |   11 +-
- drivers/spi/pxa2xx_spi.c                           |  190 ++-
- drivers/spi/pxa2xx_spi_pci.c                       |  201 +++
- drivers/spi/spi_fsl_espi.c                         |   19 +-
- drivers/spi/spi_imx.c                              |   32 +-
- drivers/spi/spi_nuc900.c                           |    2 +-
- drivers/spi/spi_topcliff_pch.c                     |   12 +-
- drivers/spi/xilinx_spi.c                           |  133 ++-
- drivers/spi/xilinx_spi.h                           |   32 -
- drivers/spi/xilinx_spi_of.c                        |  133 --
- drivers/spi/xilinx_spi_pltfm.c                     |  102 --
- .../plat/ssp.h =3D> include/linux/pxa2xx_ssp.h       |   39 +-
- include/linux/spi/dw_spi.h                         |   24 +-
- include/linux/spi/pxa2xx_spi.h                     |  152 +++
- sound/soc/pxa/pxa-ssp.c                            |    2 +-
- 46 files changed, 1612 insertions(+), 1368 deletions(-)
- delete mode 100644 arch/arm/mach-pxa/include/mach/pxa2xx_spi.h
- create mode 100644 drivers/spi/dw_spi_mid.c
- create mode 100644 drivers/spi/pxa2xx_spi_pci.c
- delete mode 100644 drivers/spi/xilinx_spi.h
- delete mode 100644 drivers/spi/xilinx_spi_of.c
- delete mode 100644 drivers/spi/xilinx_spi_pltfm.c
- rename arch/arm/plat-pxa/include/plat/ssp.h =3D> include/linux/pxa2xx_=
-ssp.h (90%)
- create mode 100644 include/linux/spi/pxa2xx_spi.h
-
-
-2011/1/7 Grant Likely <grant.likely@secretlab.ca>:
-> Hi Linus,
+> On Wed, Dec 01, 2010 at 07:32:11PM +0530, Govindraj.R wrote:
+>> McSPI runtime conversion.
+>> Changes involves:
+>> 1) remove clock framework apis to use runtime framework apis.
+>> 2) context restore from runtime resume which is a callback for get_sync.
+>> 3) Remove SYSCONFIG(sysc) register handling
+>>         (a) Remove context save and restore of sysc reg and remove soft reset
+>>             done from sysc reg as this will be done with hwmod framework.
+>>         (b) Also cleanup sysc reg bit macros.
+>> 4) Rename the omap2_mcspi_reset function to omap2_mcspi_master_setup
+>>    function as with hwmod changes soft reset will be done in
+>>    hwmod framework itself and use the return value from clock
+>>    enable function to return for failure scenarios.
+>> 
+>> Signed-off-by: Charulatha V <charu@ti.com>
+>> Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
+>> Reviewed-by: Partha Basak <p-basak2@ti.com>
 >
-> Here are the spi subsystem changes to be merged for 2.6.38
+> One comment below, but otherwise looks good to me.  Since the majority
+> of the changes are in arch/arm, feel free to add my Acked-by for the
+> whole series and merge via the omap tree.  
+
+Thanks, we'll merge this through the OMAP tree.
+
+> None of my comments are showstoppers, so I'm even fine with merging
+> them as-is as long as followup patches are posted to address the
+> comments.
+
+Govindraj, since we've missed 2.6.38 for this series, I'd like to see the last few
+minor issues cleaned up before merge, especially the various casting and
+CodingStyle issues that Grant found.
+
+Kevin
+
+> In particular, I'd really like to see the data duplication issue from
+> the first 4 patches addressed.
 >
-> Thanks,
-> g.
->
-> The following changes since commit 3c0cb7c31c206aaedb967e44b98442bbeb=
-17a6c4:
->
-> =A0Merge branch 'devel' of master.kernel.org:/home/rmk/linux-2.6-arm
-> (2011-01-06 16:50:35 -0800)
->
-> are available in the git repository at:
->
-> =A0git://git.secretlab.ca/git/linux-2.6 next-spi
->
-> Brian Niebuhr (42):
-> =A0 =A0 =A0spi: davinci: fix checkpatch errors
-> =A0 =A0 =A0spi: davinci: whitespace cleanup
-> =A0 =A0 =A0spi: davinci: remove unused variable 'pdata'
-> =A0 =A0 =A0spi: davinci: set chip-select mode in SPIDEF only once
-> =A0 =A0 =A0spi: davinci: enable both activation and deactivation of c=
-hip-selects
-> =A0 =A0 =A0spi: davinci: remove unnecessary data transmit on CS disab=
-le
-> =A0 =A0 =A0spi: davinci: enable GPIO lines to be used as chip selects
-> =A0 =A0 =A0spi: davinci: simplify prescalar calculation
-> =A0 =A0 =A0spi: davinci: remove 'wait_enable' platform data member
-> =A0 =A0 =A0spi: davinci: make chip-slect specific parameters really
-> chip-select specific
-> =A0 =A0 =A0spi: davinci: consolidate setup of SPIFMTn in one function
-> =A0 =A0 =A0spi: davinci: setup chip-select timers values only if time=
-r enabled
-> =A0 =A0 =A0spi: davinci: add support for wait enable timeouts
-> =A0 =A0 =A0spi: davinci: remove unused members of davinci_spi_slave
-> =A0 =A0 =A0spi: davinci: eliminate the single member structure davinc=
-i_spi_slave
-> =A0 =A0 =A0spi: davinci: eliminate unnecessary update of davinci_spi-=
->count
-> =A0 =A0 =A0spi: davinci: simplify calculation of edma acount value
-> =A0 =A0 =A0spi: davinci: check for NULL buffer pointer before using i=
-t
-> =A0 =A0 =A0spi: davinci: remove unnecessary disable of SPI
-> =A0 =A0 =A0spi: davinci: remove unnecessary 'count' variable in drive=
-r private data
-> =A0 =A0 =A0spi: davinci: remove unnecessary completion variable initi=
-alization
-> =A0 =A0 =A0spi: davinci: remove non-useful interrupt mode support
-> =A0 =A0 =A0spi: davinci: simplify poll mode transfers
-> =A0 =A0 =A0spi: davinci: add support for interrupt mode
-> =A0 =A0 =A0spi: davinci: configure the invariable bits in spipc0 only=
- once
-> =A0 =A0 =A0spi: davinci: remove unnecessary function davinci_spi_bufs=
-_prep()
-> =A0 =A0 =A0spi: davinci: remove unnecessary call to davinci_spi_setup=
-_transfer()
-> =A0 =A0 =A0spi: davinci: do not store DMA channel information per chi=
-p select
-> =A0 =A0 =A0spi: davinci: always start transmit DMA
-> =A0 =A0 =A0spi: davinci: do not use temporary buffer if no transmit d=
-ata provided
-> =A0 =A0 =A0spi: davinci: always start receive DMA
-> =A0 =A0 =A0spi: davinci: use edma_write_slot() to setup EDMA PaRAM sl=
-ot
-> =A0 =A0 =A0spi: davinci: fix DMA event generation stoppage
-> =A0 =A0 =A0spi: davinci: fix EDMA CC errors at end of transfers
-> =A0 =A0 =A0spi: davinci: handle DMA completion errors correctly
-> =A0 =A0 =A0spi: davinci: remove usage of additional completion variab=
-les for DMA
-> =A0 =A0 =A0spi: davinci: let DMA operation be specified on per-device=
- basis
-> =A0 =A0 =A0spi: davinci: remove non-useful "clk_internal" platform da=
-ta
-> =A0 =A0 =A0spi: davinci: enable and power-up SPI only when required
-> =A0 =A0 =A0spi: davinci: setup the driver owner
-> =A0 =A0 =A0spi: davinci: add additional comments
-> =A0 =A0 =A0spi: davinci: add EF Johnson Technologies copyright
->
-> Feng Tang (3):
-> =A0 =A0 =A0spi/dw_spi: Fix too short timeout in spi polling loop
-> =A0 =A0 =A0spi/dw_spi: change to EXPORT_SYMBOL_GPL for exported APIs
-> =A0 =A0 =A0spi/dw_spi: add DMA support
->
-> Grant Likely (6):
-> =A0 =A0 =A0spi/xilinx: Eliminate pdata references from common code.
-> =A0 =A0 =A0spi/xilinx: fold platform_driver support into main body
-> =A0 =A0 =A0spi/xilinx: merge OF support code into main driver
-> =A0 =A0 =A0Merge commit 'v2.6.37-rc7' into spi/next
-> =A0 =A0 =A0Merge branch 'for-grant' of
-> git://arago-project.org/git/projects/linux-davinci into spi/next
-> =A0 =A0 =A0Merge branch 'spi' of git://git.linutronix.de/users/bigeas=
-y/soda
-> into spi/next
->
-> Joe Perches (1):
-> =A0 =A0 =A0drivers/spi: Remove unnecessary semicolons
->
-> Justin P. Mattock (2):
-> =A0 =A0 =A0spi/dw_spi Typo change diable to disable.
-> =A0 =A0 =A0spi/topcliff: Typo fix threhold to threshold
->
-> Linus Walleij (4):
-> =A0 =A0 =A0spi/pl022: map the buffers on the DMA engine
-> =A0 =A0 =A0spi/pl022: pass the returned sglen to the DMA engine
-> =A0 =A0 =A0spi/pl022: convert busy flag to a bool
-> =A0 =A0 =A0spi/pl022: convert running variable
->
-> Mingkai Hu (1):
-> =A0 =A0 =A0spi/fsl_espi: change the read behaviour of the SPIRF
->
-> Richard Genoud (1):
-> =A0 =A0 =A0spi/imx: correct the test on platform_get_irq() return val=
-ue
->
-> Sebastian Andrzej Siewior (9):
-> =A0 =A0 =A0spi/pxa2xx: register driver properly
-> =A0 =A0 =A0spi/pxa2xx: add support for shared IRQ handler
-> =A0 =A0 =A0spi/pxa2xx: Use define for SSSR_TFL_MASK instead of plain =
-numbers
-> =A0 =A0 =A0arm/pxa2xx: reorgazine SSP and SPI header files
-> =A0 =A0 =A0spi/pxa2xx: Add CE4100 support
-> =A0 =A0 =A0spi/pxa2xx: Consider CE4100's FIFO depth
-> =A0 =A0 =A0spi/pxa2xx: Add chipselect support for Sodaville
-> =A0 =A0 =A0spi/pxa2xx: Modify RX-Tresh instead of busy-loop for the
-> remaining RX bytes.
-> =A0 =A0 =A0spi/pxa2xx: pass of_node to spi device and set a parent de=
-vice
->
-> Sekhar Nori (7):
-> =A0 =A0 =A0spi: davinci: removed unused #defines
-> =A0 =A0 =A0spi: davinci: remove unnecessary typecast
-> =A0 =A0 =A0spi: davinci: do not treat Tx interrupt being set as error
-> =A0 =A0 =A0spi: davinci: do not allocate DMA channels during SPI devi=
-ce setup
-> =A0 =A0 =A0spi: davinci: remove unnecessary private data member 'regi=
-on_size'
-> =A0 =A0 =A0spi: davinci: shorten variable names
-> =A0 =A0 =A0spi: davinci: kconfig: add manufacturer name to prompt str=
-ing
->
-> Tomoya MORINAGA (1):
-> =A0 =A0 =A0spi/topcliff_pch: Fix data transfer issue
->
-> Uwe Kleine-K=F6nig (1):
-> =A0 =A0 =A0spi/imx: remove autodetection
->
-> Wolfram Sang (1):
-> =A0 =A0 =A0spi/mpc52xx-psc-spi: move probe/remove to proper sections
->
-> =A0Documentation/spi/pxa2xx =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A04 +-
-> =A0arch/arm/mach-davinci/dm355.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0| =A0 =A07 +-
-> =A0arch/arm/mach-davinci/dm365.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0| =A0 =A06 -
-> =A0arch/arm/mach-davinci/include/mach/spi.h =A0 =A0 =A0 =A0 =A0 | =A0=
- 52 +-
-> =A0arch/arm/mach-pxa/cm-x255.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/cm-x270.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/corgi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/devices.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/em-x270.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/hx4700.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/icontrol.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/include/mach/pxa2xx_spi.h =A0 =A0 =A0 =A0| =A0 4=
-7 -
-> =A0arch/arm/mach-pxa/littleton.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/lubbock.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/pcm027.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/poodle.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/spitz.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0| =A0 =A03 +-
-> =A0arch/arm/mach-pxa/stargate2.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0| =A0 =A02 +-
-> =A0arch/arm/mach-pxa/tosa.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/trizeps4.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0 =A01 -
-> =A0arch/arm/mach-pxa/z2.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/mach-pxa/zeus.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0arch/arm/plat-pxa/ssp.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0| =A0 =A02 +-
-> =A0drivers/spi/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 =A0| =A0 38 +-
-> =A0drivers/spi/Makefile =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 | =A0 =A06 +-
-> =A0drivers/spi/amba-pl022.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 56 +-
-> =A0drivers/spi/davinci_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0| 1314 ++++++++------------
-> =A0drivers/spi/dw_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0 | =A0 52 +-
-> =A0drivers/spi/dw_spi_mid.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0223 ++++
-> =A0drivers/spi/dw_spi_pci.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 20 +-
-> =A0drivers/spi/mpc52xx_psc_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0| =A0 35 +-
-> =A0drivers/spi/pxa2xx_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0190 ++-
-> =A0drivers/spi/pxa2xx_spi_pci.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0201 +++
-> =A0drivers/spi/spi_fsl_espi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 19 +-
-> =A0drivers/spi/spi_imx.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0| =A0 32 +-
-> =A0drivers/spi/spi_nuc900.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 =A02 +-
-> =A0drivers/spi/spi_topcliff_pch.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0 12 +-
-> =A0drivers/spi/xilinx_spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0133 ++-
-> =A0drivers/spi/xilinx_spi.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 32 -
-> =A0drivers/spi/xilinx_spi_of.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0| =A0133 --
-> =A0drivers/spi/xilinx_spi_pltfm.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0102 --
-> =A0.../plat/ssp.h =3D> include/linux/pxa2xx_ssp.h =A0 =A0 =A0 | =A0 3=
-9 +-
-> =A0include/linux/spi/dw_spi.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 | =A0 24 +-
-> =A0include/linux/spi/pxa2xx_spi.h =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 | =A0152 +++
-> =A0sound/soc/pxa/pxa-ssp.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0 =A0 =A0| =A0 =A02 +-
-> =A045 files changed, 1609 insertions(+), 1360 deletions(-)
-> =A0delete mode 100644 arch/arm/mach-pxa/include/mach/pxa2xx_spi.h
-> =A0create mode 100644 drivers/spi/dw_spi_mid.c
-> =A0create mode 100644 drivers/spi/pxa2xx_spi_pci.c
-> =A0delete mode 100644 drivers/spi/xilinx_spi.h
-> =A0delete mode 100644 drivers/spi/xilinx_spi_of.c
-> =A0delete mode 100644 drivers/spi/xilinx_spi_pltfm.c
-> =A0rename arch/arm/plat-pxa/include/plat/ssp.h =3D> include/linux/pxa=
-2xx_ssp.h (90%)
-> =A0create mode 100644 include/linux/spi/pxa2xx_spi.h
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
 >
 >
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
+>> ---
+>>  drivers/spi/omap2_mcspi.c |  120 +++++++++++++++++---------------------------
+>>  1 files changed, 46 insertions(+), 74 deletions(-)
+>> 
+>> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+>> index ad3811e..a1b157f 100644
+>> --- a/drivers/spi/omap2_mcspi.c
+>> +++ b/drivers/spi/omap2_mcspi.c
+>> @@ -33,6 +33,7 @@
+>>  #include <linux/clk.h>
+>>  #include <linux/io.h>
+>>  #include <linux/slab.h>
+>> +#include <linux/pm_runtime.h>
+>> 
+>>  #include <linux/spi/spi.h>
+>> 
+>> @@ -46,7 +47,6 @@
+>>  #define OMAP2_MCSPI_MAX_CTRL 		4
+>> 
+>>  #define OMAP2_MCSPI_REVISION		0x00
+>> -#define OMAP2_MCSPI_SYSCONFIG		0x10
+>>  #define OMAP2_MCSPI_SYSSTATUS		0x14
+>>  #define OMAP2_MCSPI_IRQSTATUS		0x18
+>>  #define OMAP2_MCSPI_IRQENABLE		0x1c
+>> @@ -63,13 +63,6 @@
+>> 
+>>  /* per-register bitmasks: */
+>> 
+>> -#define OMAP2_MCSPI_SYSCONFIG_SMARTIDLE	BIT(4)
+>> -#define OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP	BIT(2)
+>> -#define OMAP2_MCSPI_SYSCONFIG_AUTOIDLE	BIT(0)
+>> -#define OMAP2_MCSPI_SYSCONFIG_SOFTRESET	BIT(1)
+>> -
+>> -#define OMAP2_MCSPI_SYSSTATUS_RESETDONE	BIT(0)
+>> -
+>>  #define OMAP2_MCSPI_MODULCTRL_SINGLE	BIT(0)
+>>  #define OMAP2_MCSPI_MODULCTRL_MS	BIT(2)
+>>  #define OMAP2_MCSPI_MODULCTRL_STEST	BIT(3)
+>> @@ -122,13 +115,12 @@ struct omap2_mcspi {
+>>  	spinlock_t		lock;
+>>  	struct list_head	msg_queue;
+>>  	struct spi_master	*master;
+>> -	struct clk		*ick;
+>> -	struct clk		*fck;
+>>  	/* Virtual base address of the controller */
+>>  	void __iomem		*base;
+>>  	unsigned long		phys;
+>>  	/* SPI1 has 4 channels, while SPI2 has 2 */
+>>  	struct omap2_mcspi_dma	*dma_channels;
+>> +	struct  device          *dev;
 >
-
-
-
---=20
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+> Inconsistent indentation with the rest of the structure (tabs vs. spaces).
+>
+>>  };
+>> 
+>>  struct omap2_mcspi_cs {
+>> @@ -144,7 +136,6 @@ struct omap2_mcspi_cs {
+>>   * corresponding registers are modified.
+>>   */
+>>  struct omap2_mcspi_regs {
+>> -	u32 sysconfig;
+>>  	u32 modulctrl;
+>>  	u32 wakeupenable;
+>>  	struct list_head cs;
+>> @@ -268,9 +259,6 @@ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
+>>  	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
+>>  			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
+>> 
+>> -	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_SYSCONFIG,
+>> -			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].sysconfig);
+>> -
+>>  	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
+>>  			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
+>> 
+>> @@ -280,20 +268,12 @@ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
+>>  }
+>>  static void omap2_mcspi_disable_clocks(struct omap2_mcspi *mcspi)
+>>  {
+>> -	clk_disable(mcspi->ick);
+>> -	clk_disable(mcspi->fck);
+>> +	pm_runtime_put_sync(mcspi->dev);
+>>  }
+>> 
+>>  static int omap2_mcspi_enable_clocks(struct omap2_mcspi *mcspi)
+>>  {
+>> -	if (clk_enable(mcspi->ick))
+>> -		return -ENODEV;
+>> -	if (clk_enable(mcspi->fck))
+>> -		return -ENODEV;
+>> -
+>> -	omap2_mcspi_restore_ctx(mcspi);
+>> -
+>> -	return 0;
+>> +	return pm_runtime_get_sync(mcspi->dev);
+>>  }
+>> 
+>>  static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
+>> @@ -819,8 +799,9 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+>>  			return ret;
+>>  	}
+>> 
+>> -	if (omap2_mcspi_enable_clocks(mcspi))
+>> -		return -ENODEV;
+>> +	ret = omap2_mcspi_enable_clocks(mcspi);
+>> +	if (ret < 0)
+>> +		return ret;
+>> 
+>>  	ret = omap2_mcspi_setup_transfer(spi, NULL);
+>>  	omap2_mcspi_disable_clocks(mcspi);
+>> @@ -863,10 +844,11 @@ static void omap2_mcspi_work(struct work_struct *work)
+>>  	struct omap2_mcspi	*mcspi;
+>> 
+>>  	mcspi = container_of(work, struct omap2_mcspi, work);
+>> -	spin_lock_irq(&mcspi->lock);
+>> 
+>> -	if (omap2_mcspi_enable_clocks(mcspi))
+>> -		goto out;
+>> +	if (omap2_mcspi_enable_clocks(mcspi) < 0)
+>> +		return;
+>> +
+>> +	spin_lock_irq(&mcspi->lock);
+>> 
+>>  	/* We only enable one channel at a time -- the one whose message is
+>>  	 * at the head of the queue -- although this controller would gladly
+>> @@ -979,10 +961,9 @@ static void omap2_mcspi_work(struct work_struct *work)
+>>  		spin_lock_irq(&mcspi->lock);
+>>  	}
+>> 
+>> -	omap2_mcspi_disable_clocks(mcspi);
+>> -
+>> -out:
+>>  	spin_unlock_irq(&mcspi->lock);
+>> +
+>> +	omap2_mcspi_disable_clocks(mcspi);
+>>  }
+>> 
+>>  static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
+>> @@ -1063,25 +1044,15 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message
+>> *m)
+>>  	return 0;
+>>  }
+>> 
+>> -static int __init omap2_mcspi_reset(struct omap2_mcspi *mcspi)
+>> +static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+>>  {
+>>  	struct spi_master	*master = mcspi->master;
+>>  	u32			tmp;
+>> +	int ret = 0;
+>> 
+>> -	if (omap2_mcspi_enable_clocks(mcspi))
+>> -		return -1;
+>> -
+>> -	mcspi_write_reg(master, OMAP2_MCSPI_SYSCONFIG,
+>> -			OMAP2_MCSPI_SYSCONFIG_SOFTRESET);
+>> -	do {
+>> -		tmp = mcspi_read_reg(master, OMAP2_MCSPI_SYSSTATUS);
+>> -	} while (!(tmp & OMAP2_MCSPI_SYSSTATUS_RESETDONE));
+>> -
+>> -	tmp = OMAP2_MCSPI_SYSCONFIG_AUTOIDLE |
+>> -		OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP |
+>> -		OMAP2_MCSPI_SYSCONFIG_SMARTIDLE;
+>> -	mcspi_write_reg(master, OMAP2_MCSPI_SYSCONFIG, tmp);
+>> -	omap2_mcspi_ctx[master->bus_num - 1].sysconfig = tmp;
+>> +	ret = omap2_mcspi_enable_clocks(mcspi);
+>> +	if (ret < 0)
+>> +		return ret;
+>> 
+>>  	tmp = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
+>>  	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE, tmp);
+>> @@ -1092,6 +1063,18 @@ static int __init omap2_mcspi_reset(struct omap2_mcspi *mcspi)
+>>  	return 0;
+>>  }
+>> 
+>> +static int omap_mcspi_runtime_resume(struct device *dev)
+>> +{
+>> +	struct omap2_mcspi	*mcspi;
+>> +	struct spi_master	*master;
+>> +
+>> +	master = dev_get_drvdata(dev);
+>> +	mcspi = spi_master_get_devdata(master);
+>> +	omap2_mcspi_restore_ctx(mcspi);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> 
+>>  static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>  {
+>> @@ -1142,34 +1125,22 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>  	if (!mcspi->base) {
+>>  		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+>>  		status = -ENOMEM;
+>> -		goto err1aa;
+>> +		goto err2;
+>>  	}
+>> 
+>> +	mcspi->dev = &pdev->dev;
+>>  	INIT_WORK(&mcspi->work, omap2_mcspi_work);
+>> 
+>>  	spin_lock_init(&mcspi->lock);
+>>  	INIT_LIST_HEAD(&mcspi->msg_queue);
+>>  	INIT_LIST_HEAD(&omap2_mcspi_ctx[master->bus_num - 1].cs);
+>> 
+>> -	mcspi->ick = clk_get(&pdev->dev, "ick");
+>> -	if (IS_ERR(mcspi->ick)) {
+>> -		dev_dbg(&pdev->dev, "can't get mcspi_ick\n");
+>> -		status = PTR_ERR(mcspi->ick);
+>> -		goto err1a;
+>> -	}
+>> -	mcspi->fck = clk_get(&pdev->dev, "fck");
+>> -	if (IS_ERR(mcspi->fck)) {
+>> -		dev_dbg(&pdev->dev, "can't get mcspi_fck\n");
+>> -		status = PTR_ERR(mcspi->fck);
+>> -		goto err2;
+>> -	}
+>> -
+>>  	mcspi->dma_channels = kcalloc(master->num_chipselect,
+>>  			sizeof(struct omap2_mcspi_dma),
+>>  			GFP_KERNEL);
+>> 
+>>  	if (mcspi->dma_channels == NULL)
+>> -		goto err3;
+>> +		goto err2;
+>> 
+>>  	for (i = 0; i < master->num_chipselect; i++) {
+>>  		char dma_ch_name[14];
+>> @@ -1199,8 +1170,10 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>  		mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
+>>  	}
+>> 
+>> -	if (omap2_mcspi_reset(mcspi) < 0)
+>> -		goto err4;
+>> +	pm_runtime_enable(&pdev->dev);
+>> +
+>> +	if (status || omap2_mcspi_master_setup(mcspi) < 0)
+>> +		goto err3;
+>> 
+>>  	status = spi_register_master(master);
+>>  	if (status < 0)
+>> @@ -1209,17 +1182,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>  	return status;
+>> 
+>>  err4:
+>> -	kfree(mcspi->dma_channels);
+>> +	spi_master_put(master);
+>>  err3:
+>> -	clk_put(mcspi->fck);
+>> +	kfree(mcspi->dma_channels);
+>>  err2:
+>> -	clk_put(mcspi->ick);
+>> -err1a:
+>> -	iounmap(mcspi->base);
+>> -err1aa:
+>>  	release_mem_region(r->start, (r->end - r->start) + 1);
+>> +	iounmap(mcspi->base);
+>>  err1:
+>> -	spi_master_put(master);
+>>  	return status;
+>>  }
+>> 
+>> @@ -1235,9 +1204,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>>  	mcspi = spi_master_get_devdata(master);
+>>  	dma_channels = mcspi->dma_channels;
+>> 
+>> -	clk_put(mcspi->fck);
+>> -	clk_put(mcspi->ick);
+>> -
+>> +	omap2_mcspi_disable_clocks(mcspi);
+>>  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>  	release_mem_region(r->start, (r->end - r->start) + 1);
+>> 
+>> @@ -1252,10 +1219,15 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>>  /* work with hotplug and coldplug */
+>>  MODULE_ALIAS("platform:omap2_mcspi");
+>> 
+>> +static const struct dev_pm_ops omap_mcspi_dev_pm_ops = {
+>> +	.runtime_resume	= omap_mcspi_runtime_resume,
+>> +};
+>> +
+>>  static struct platform_driver omap2_mcspi_driver = {
+>>  	.driver = {
+>>  		.name =		"omap2_mcspi",
+>>  		.owner =	THIS_MODULE,
+>> +		.pm = &omap_mcspi_dev_pm_ops,
+>>  	},
+>>  	.remove =	__exit_p(omap2_mcspi_remove),
+>>  };
+>> -- 
+>> 1.7.1
+>> 
+>> 

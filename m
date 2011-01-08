@@ -1,353 +1,47 @@
-From: Kevin Hilman <khilman@ti.com>
-Subject: Re: [PATCH 7/7 v2] OMAP: runtime: McSPI driver runtime conversion
-Date: Fri, 07 Jan 2011 14:49:13 -0800
-Message-ID: <877hegl47q.fsf@ti.com>
-References: <33542.10.24.255.18.1291212131.squirrel@dbdmail.itg.ti.com>
-	<20101230192957.GD2713@angua.secretlab.ca>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: How to mesure current SPI transfer speed
+Date: Sat, 8 Jan 2011 11:16:12 +0900
+Message-ID: <AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE@mail.gmail.com>
+References: <1294426319.3892.11.camel@andromeda>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap@vger.kernel.org,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-arm-kernel@lists.infradead.org, Charulatha V <charu@ti.com>,
-	tony@atomide.com, p-basak2@ti.com
-To: "Govindraj.R" <govindraj.raja@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20101230192957.GD2713@angua.secretlab.ca> (Grant Likely's
-	message of "Thu, 30 Dec 2010 12:29:57 -0700")
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	gumstix-users-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: =?UTF-8?Q?Kevyn=2DAlexandre_Par=C3=A9?= <kapare-7qmld2CjetYf4mhTGKTGE9BPR1lH4CV8@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1294426319.3892.11.camel@andromeda>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely <grant.likely@secretlab.ca> writes:
-
-> On Wed, Dec 01, 2010 at 07:32:11PM +0530, Govindraj.R wrote:
->> McSPI runtime conversion.
->> Changes involves:
->> 1) remove clock framework apis to use runtime framework apis.
->> 2) context restore from runtime resume which is a callback for get_sync.
->> 3) Remove SYSCONFIG(sysc) register handling
->>         (a) Remove context save and restore of sysc reg and remove soft reset
->>             done from sysc reg as this will be done with hwmod framework.
->>         (b) Also cleanup sysc reg bit macros.
->> 4) Rename the omap2_mcspi_reset function to omap2_mcspi_master_setup
->>    function as with hwmod changes soft reset will be done in
->>    hwmod framework itself and use the return value from clock
->>    enable function to return for failure scenarios.
->> 
->> Signed-off-by: Charulatha V <charu@ti.com>
->> Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
->> Reviewed-by: Partha Basak <p-basak2@ti.com>
->
-> One comment below, but otherwise looks good to me.  Since the majority
-> of the changes are in arch/arm, feel free to add my Acked-by for the
-> whole series and merge via the omap tree.  
-
-Thanks, we'll merge this through the OMAP tree.
-
-> None of my comments are showstoppers, so I'm even fine with merging
-> them as-is as long as followup patches are posted to address the
-> comments.
-
-Govindraj, since we've missed 2.6.38 for this series, I'd like to see the last few
-minor issues cleaned up before merge, especially the various casting and
-CodingStyle issues that Grant found.
-
-Kevin
-
-> In particular, I'd really like to see the data duplication issue from
-> the first 4 patches addressed.
->
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->
->
->> ---
->>  drivers/spi/omap2_mcspi.c |  120 +++++++++++++++++---------------------------
->>  1 files changed, 46 insertions(+), 74 deletions(-)
->> 
->> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
->> index ad3811e..a1b157f 100644
->> --- a/drivers/spi/omap2_mcspi.c
->> +++ b/drivers/spi/omap2_mcspi.c
->> @@ -33,6 +33,7 @@
->>  #include <linux/clk.h>
->>  #include <linux/io.h>
->>  #include <linux/slab.h>
->> +#include <linux/pm_runtime.h>
->> 
->>  #include <linux/spi/spi.h>
->> 
->> @@ -46,7 +47,6 @@
->>  #define OMAP2_MCSPI_MAX_CTRL 		4
->> 
->>  #define OMAP2_MCSPI_REVISION		0x00
->> -#define OMAP2_MCSPI_SYSCONFIG		0x10
->>  #define OMAP2_MCSPI_SYSSTATUS		0x14
->>  #define OMAP2_MCSPI_IRQSTATUS		0x18
->>  #define OMAP2_MCSPI_IRQENABLE		0x1c
->> @@ -63,13 +63,6 @@
->> 
->>  /* per-register bitmasks: */
->> 
->> -#define OMAP2_MCSPI_SYSCONFIG_SMARTIDLE	BIT(4)
->> -#define OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP	BIT(2)
->> -#define OMAP2_MCSPI_SYSCONFIG_AUTOIDLE	BIT(0)
->> -#define OMAP2_MCSPI_SYSCONFIG_SOFTRESET	BIT(1)
->> -
->> -#define OMAP2_MCSPI_SYSSTATUS_RESETDONE	BIT(0)
->> -
->>  #define OMAP2_MCSPI_MODULCTRL_SINGLE	BIT(0)
->>  #define OMAP2_MCSPI_MODULCTRL_MS	BIT(2)
->>  #define OMAP2_MCSPI_MODULCTRL_STEST	BIT(3)
->> @@ -122,13 +115,12 @@ struct omap2_mcspi {
->>  	spinlock_t		lock;
->>  	struct list_head	msg_queue;
->>  	struct spi_master	*master;
->> -	struct clk		*ick;
->> -	struct clk		*fck;
->>  	/* Virtual base address of the controller */
->>  	void __iomem		*base;
->>  	unsigned long		phys;
->>  	/* SPI1 has 4 channels, while SPI2 has 2 */
->>  	struct omap2_mcspi_dma	*dma_channels;
->> +	struct  device          *dev;
->
-> Inconsistent indentation with the rest of the structure (tabs vs. spaces).
->
->>  };
->> 
->>  struct omap2_mcspi_cs {
->> @@ -144,7 +136,6 @@ struct omap2_mcspi_cs {
->>   * corresponding registers are modified.
->>   */
->>  struct omap2_mcspi_regs {
->> -	u32 sysconfig;
->>  	u32 modulctrl;
->>  	u32 wakeupenable;
->>  	struct list_head cs;
->> @@ -268,9 +259,6 @@ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
->>  	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
->>  			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
->> 
->> -	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_SYSCONFIG,
->> -			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].sysconfig);
->> -
->>  	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
->>  			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
->> 
->> @@ -280,20 +268,12 @@ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
->>  }
->>  static void omap2_mcspi_disable_clocks(struct omap2_mcspi *mcspi)
->>  {
->> -	clk_disable(mcspi->ick);
->> -	clk_disable(mcspi->fck);
->> +	pm_runtime_put_sync(mcspi->dev);
->>  }
->> 
->>  static int omap2_mcspi_enable_clocks(struct omap2_mcspi *mcspi)
->>  {
->> -	if (clk_enable(mcspi->ick))
->> -		return -ENODEV;
->> -	if (clk_enable(mcspi->fck))
->> -		return -ENODEV;
->> -
->> -	omap2_mcspi_restore_ctx(mcspi);
->> -
->> -	return 0;
->> +	return pm_runtime_get_sync(mcspi->dev);
->>  }
->> 
->>  static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
->> @@ -819,8 +799,9 @@ static int omap2_mcspi_setup(struct spi_device *spi)
->>  			return ret;
->>  	}
->> 
->> -	if (omap2_mcspi_enable_clocks(mcspi))
->> -		return -ENODEV;
->> +	ret = omap2_mcspi_enable_clocks(mcspi);
->> +	if (ret < 0)
->> +		return ret;
->> 
->>  	ret = omap2_mcspi_setup_transfer(spi, NULL);
->>  	omap2_mcspi_disable_clocks(mcspi);
->> @@ -863,10 +844,11 @@ static void omap2_mcspi_work(struct work_struct *work)
->>  	struct omap2_mcspi	*mcspi;
->> 
->>  	mcspi = container_of(work, struct omap2_mcspi, work);
->> -	spin_lock_irq(&mcspi->lock);
->> 
->> -	if (omap2_mcspi_enable_clocks(mcspi))
->> -		goto out;
->> +	if (omap2_mcspi_enable_clocks(mcspi) < 0)
->> +		return;
->> +
->> +	spin_lock_irq(&mcspi->lock);
->> 
->>  	/* We only enable one channel at a time -- the one whose message is
->>  	 * at the head of the queue -- although this controller would gladly
->> @@ -979,10 +961,9 @@ static void omap2_mcspi_work(struct work_struct *work)
->>  		spin_lock_irq(&mcspi->lock);
->>  	}
->> 
->> -	omap2_mcspi_disable_clocks(mcspi);
->> -
->> -out:
->>  	spin_unlock_irq(&mcspi->lock);
->> +
->> +	omap2_mcspi_disable_clocks(mcspi);
->>  }
->> 
->>  static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
->> @@ -1063,25 +1044,15 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message
->> *m)
->>  	return 0;
->>  }
->> 
->> -static int __init omap2_mcspi_reset(struct omap2_mcspi *mcspi)
->> +static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
->>  {
->>  	struct spi_master	*master = mcspi->master;
->>  	u32			tmp;
->> +	int ret = 0;
->> 
->> -	if (omap2_mcspi_enable_clocks(mcspi))
->> -		return -1;
->> -
->> -	mcspi_write_reg(master, OMAP2_MCSPI_SYSCONFIG,
->> -			OMAP2_MCSPI_SYSCONFIG_SOFTRESET);
->> -	do {
->> -		tmp = mcspi_read_reg(master, OMAP2_MCSPI_SYSSTATUS);
->> -	} while (!(tmp & OMAP2_MCSPI_SYSSTATUS_RESETDONE));
->> -
->> -	tmp = OMAP2_MCSPI_SYSCONFIG_AUTOIDLE |
->> -		OMAP2_MCSPI_SYSCONFIG_ENAWAKEUP |
->> -		OMAP2_MCSPI_SYSCONFIG_SMARTIDLE;
->> -	mcspi_write_reg(master, OMAP2_MCSPI_SYSCONFIG, tmp);
->> -	omap2_mcspi_ctx[master->bus_num - 1].sysconfig = tmp;
->> +	ret = omap2_mcspi_enable_clocks(mcspi);
->> +	if (ret < 0)
->> +		return ret;
->> 
->>  	tmp = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
->>  	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE, tmp);
->> @@ -1092,6 +1063,18 @@ static int __init omap2_mcspi_reset(struct omap2_mcspi *mcspi)
->>  	return 0;
->>  }
->> 
->> +static int omap_mcspi_runtime_resume(struct device *dev)
->> +{
->> +	struct omap2_mcspi	*mcspi;
->> +	struct spi_master	*master;
->> +
->> +	master = dev_get_drvdata(dev);
->> +	mcspi = spi_master_get_devdata(master);
->> +	omap2_mcspi_restore_ctx(mcspi);
->> +
->> +	return 0;
->> +}
->> +
->> 
->>  static int __init omap2_mcspi_probe(struct platform_device *pdev)
->>  {
->> @@ -1142,34 +1125,22 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->>  	if (!mcspi->base) {
->>  		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
->>  		status = -ENOMEM;
->> -		goto err1aa;
->> +		goto err2;
->>  	}
->> 
->> +	mcspi->dev = &pdev->dev;
->>  	INIT_WORK(&mcspi->work, omap2_mcspi_work);
->> 
->>  	spin_lock_init(&mcspi->lock);
->>  	INIT_LIST_HEAD(&mcspi->msg_queue);
->>  	INIT_LIST_HEAD(&omap2_mcspi_ctx[master->bus_num - 1].cs);
->> 
->> -	mcspi->ick = clk_get(&pdev->dev, "ick");
->> -	if (IS_ERR(mcspi->ick)) {
->> -		dev_dbg(&pdev->dev, "can't get mcspi_ick\n");
->> -		status = PTR_ERR(mcspi->ick);
->> -		goto err1a;
->> -	}
->> -	mcspi->fck = clk_get(&pdev->dev, "fck");
->> -	if (IS_ERR(mcspi->fck)) {
->> -		dev_dbg(&pdev->dev, "can't get mcspi_fck\n");
->> -		status = PTR_ERR(mcspi->fck);
->> -		goto err2;
->> -	}
->> -
->>  	mcspi->dma_channels = kcalloc(master->num_chipselect,
->>  			sizeof(struct omap2_mcspi_dma),
->>  			GFP_KERNEL);
->> 
->>  	if (mcspi->dma_channels == NULL)
->> -		goto err3;
->> +		goto err2;
->> 
->>  	for (i = 0; i < master->num_chipselect; i++) {
->>  		char dma_ch_name[14];
->> @@ -1199,8 +1170,10 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->>  		mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
->>  	}
->> 
->> -	if (omap2_mcspi_reset(mcspi) < 0)
->> -		goto err4;
->> +	pm_runtime_enable(&pdev->dev);
->> +
->> +	if (status || omap2_mcspi_master_setup(mcspi) < 0)
->> +		goto err3;
->> 
->>  	status = spi_register_master(master);
->>  	if (status < 0)
->> @@ -1209,17 +1182,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->>  	return status;
->> 
->>  err4:
->> -	kfree(mcspi->dma_channels);
->> +	spi_master_put(master);
->>  err3:
->> -	clk_put(mcspi->fck);
->> +	kfree(mcspi->dma_channels);
->>  err2:
->> -	clk_put(mcspi->ick);
->> -err1a:
->> -	iounmap(mcspi->base);
->> -err1aa:
->>  	release_mem_region(r->start, (r->end - r->start) + 1);
->> +	iounmap(mcspi->base);
->>  err1:
->> -	spi_master_put(master);
->>  	return status;
->>  }
->> 
->> @@ -1235,9 +1204,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->>  	mcspi = spi_master_get_devdata(master);
->>  	dma_channels = mcspi->dma_channels;
->> 
->> -	clk_put(mcspi->fck);
->> -	clk_put(mcspi->ick);
->> -
->> +	omap2_mcspi_disable_clocks(mcspi);
->>  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>  	release_mem_region(r->start, (r->end - r->start) + 1);
->> 
->> @@ -1252,10 +1219,15 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->>  /* work with hotplug and coldplug */
->>  MODULE_ALIAS("platform:omap2_mcspi");
->> 
->> +static const struct dev_pm_ops omap_mcspi_dev_pm_ops = {
->> +	.runtime_resume	= omap_mcspi_runtime_resume,
->> +};
->> +
->>  static struct platform_driver omap2_mcspi_driver = {
->>  	.driver = {
->>  		.name =		"omap2_mcspi",
->>  		.owner =	THIS_MODULE,
->> +		.pm = &omap_mcspi_dev_pm_ops,
->>  	},
->>  	.remove =	__exit_p(omap2_mcspi_remove),
->>  };
->> -- 
->> 1.7.1
->> 
->> 
+T24gU2F0LCBKYW4gOCwgMjAxMSBhdCAzOjUxIEFNLCBLZXZ5bi1BbGV4YW5kcmUgUGFyw6kKPGth
+cGFyZUByb2d1ZS1yZXNlYXJjaC5jb20+IHdyb3RlOgo+IEhpLAo+Cj4gV2hhdCdzIHRoZSBiZXN0
+IHdheSB0byBjYWxjdWxhdGUgdGhlIGN1cnJlbnQgU1BJIHRyYW5zZmVyIHNwZWVkPwo+Cj4gUmln
+aHQgbm93IEkgdXNlIHNvbWV0aGluZyBsaWtlIHRoYXQgYW5kIHRyYW5zZmVyIG9uZSBzcGlfbWVz
+c2FnZSB3aXRoIDEKPiBzcGlfdHJhbnNmZXIgb2YgMTAwMDAwIGJ5dGVzIGFuZCBJIGRvIHRoZSBt
+YXRoLi4uIEkga25vdyB0aGF0IHRoaXMgaXMKPiBub3QgYWNjdXJhdGUgYW5kIHdhcyB3b25kZXJp
+bmcgaWYgYW55b25lIGhhdmUgYSBiZXR0ZXIgd2F5Pwo+Cj4KPiBzdHJ1Y3QgdGltZXZhbCB0dl9i
+ZWZvcmU7Cj4gc3RydWN0IHRpbWV2YWwgdHZfYWZ0ZXI7Cj4KPiBkb19nZXR0aW1lb2ZkYXkoJnR2
+X2JlZm9yZSk7Cj4gwqAgwqBzdGF0dXMgPSBzcGlfc3luYyhzcGlrZV9kZXYuc3BpX2RldmljZSwg
+JnNwaWtlX2N0bC5tc2cpOwo+IGRvX2dldHRpbWVvZmRheSgmdHZfYWZ0ZXIpOwo+IMKgIMKgbG9u
+ZyBlbGFwc2VkVGltZSA9ICh0dl9hZnRlci50dl91c2VjIC0gdHZfYmVmb3JlLnR2X3VzZWMpOwoK
+VHJhbnNmZXIgc3BlZWQgaXMgdGlnaHRseSBsaW5rZWQgdG8gTU9TSS9NSVNPIGJpdCByYXRlcy4K
+QnV0IHRoZSBvdmVyYWxsIHRocm91Z2hwdXQgd291bGQgZGVwZW5kIG9uIHRoZSBwcm90b2NvbCB0
+aGF0CnlvdSBydW4gb3ZlciBTUEkuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KR2FpbmluZyB0aGUg
+dHJ1c3Qgb2Ygb25saW5lIGN1c3RvbWVycyBpcyB2aXRhbCBmb3IgdGhlIHN1Y2Nlc3Mgb2YgYW55
+IGNvbXBhbnkKdGhhdCByZXF1aXJlcyBzZW5zaXRpdmUgZGF0YSB0byBiZSB0cmFuc21pdHRlZCBv
+dmVyIHRoZSBXZWIuICAgTGVhcm4gaG93IHRvIApiZXN0IGltcGxlbWVudCBhIHNlY3VyaXR5IHN0
+cmF0ZWd5IHRoYXQga2VlcHMgY29uc3VtZXJzJyBpbmZvcm1hdGlvbiBzZWN1cmUgCmFuZCBpbnN0
+aWxscyB0aGUgY29uZmlkZW5jZSB0aGV5IG5lZWQgdG8gcHJvY2VlZCB3aXRoIHRyYW5zYWN0aW9u
+cy4KaHR0cDovL3Auc2YubmV0L3NmdS9vcmFjbGUtc2ZkZXZubCAKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

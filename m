@@ -1,82 +1,57 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [Uclinux-dist-devel] [PATCH]
- spi/bfin_sport_spi: new driver to emulate a SPI bus using Blackfin SPORT
- peripheral
-Date: Mon, 10 Jan 2011 08:22:01 -0700
-Message-ID: <20110110152201.GA392@angua.secretlab.ca>
-References: <1287730415-6246-1-git-send-email-vapier@gentoo.org>
-	<20101101055600.GC17587@angua.secretlab.ca>
-	<AANLkTikpQHNRinCXOPFKfCqwCaNGa2VavFHG9juDw9cK@mail.gmail.com>
+From: Kevyn-Alexandre =?ISO-8859-1?Q?Par=E9?= <kapare-7qmld2CjetYf4mhTGKTGE9BPR1lH4CV8@public.gmane.org>
+Subject: Re: How to mesure current SPI transfer speed
+Date: Mon, 10 Jan 2011 20:25:00 +0000
+Message-ID: <1294691100.5312.16.camel@andromeda>
+References: <1294426319.3892.11.camel@andromeda>
+	<AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTikpQHNRinCXOPFKfCqwCaNGa2VavFHG9juDw9cK-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	gumstix-users-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 10, 2011 at 09:39:40AM -0500, Mike Frysinger wrote:
-> On Mon, Nov 1, 2010 at 01:56, Grant Likely wrote:
-> > On Fri, Oct 22, 2010 at 02:53:35AM -0400, Mike Frysinger wrote:
-> >> + =A0 =A0 /* SPI framework hookup */
-> >> + =A0 =A0 struct spi_master *master;
-> >> +
-> >> + =A0 =A0 /* Regs base of SPI controller */
-> >> + =A0 =A0 volatile struct sport_register __iomem *regs;
-> >
-> > Drop the volatile. =A0Registers must never be dereferenced directly
-> > anyway.
-> >
-> >> +static void bfin_sport_spi_enable(struct master_data *drv_data)
-> >> +{
-> >> + =A0 =A0 drv_data->regs->tcr1 |=3D TSPEN;
-> >> + =A0 =A0 drv_data->regs->rcr1 |=3D TSPEN;
-> >
-> > Illegal direct dereference; use ioread/iowrite instead. =A0Ditto through
-> > rest of file.
-> =
-
-> that's not correct.  ioread/iowrite are fine if the devices were
-> generically mapped through say the asynchronous memory bus, but these
-> registers arent.  they're mapped directly into the Blackfin hardware
-> system bus and have different semantics than the async memory bus.
-
-It is not okay to use direct register dereference in Linux for well
-documented reasons (see volatile-considered-harmful.txt).  In
-particular, accessors prevent either the compiler or the CPU from
-reordering or optimizing out accesses to registers in a predictable
-way.  volatile is strongly discouraged.  I may have the specific
-accessor routine name wrong for the blackfin use case, but direct
-dereference is definitely not okay.
-
-> =
-
-> >> + =A0 =A0 SSYNC();
-> >
-> > The SSYNC shouldn't be necessary with the correct accessors.
-> =
-
-> independently incorrect from the ioread/iowrite comment.  there's no
-> way any register accessors function would ever impose a SSYNC on the
-> Blackfin architecture.  this causes a *system* wide sync of *all*
-> registers and as such, is used only when necessary.  if we did as you
-> proposed and added them to every single read/write, it would kill
-> performance.
-
-Fair enough.
-
-g.
+CgpPbiBTYXQsIDIwMTEtMDEtMDggYXQgMTE6MTYgKzA5MDAsIEphc3NpIEJyYXIgd3JvdGU6Cj4g
+T24gU2F0LCBKYW4gOCwgMjAxMSBhdCAzOjUxIEFNLCBLZXZ5bi1BbGV4YW5kcmUgUGFyw6kKPiA8
+a2FwYXJlQHJvZ3VlLXJlc2VhcmNoLmNvbT4gd3JvdGU6Cj4gPiBIaSwKPiA+Cj4gPiBXaGF0J3Mg
+dGhlIGJlc3Qgd2F5IHRvIGNhbGN1bGF0ZSB0aGUgY3VycmVudCBTUEkgdHJhbnNmZXIgc3BlZWQ/
+Cj4gPgo+ID4gUmlnaHQgbm93IEkgdXNlIHNvbWV0aGluZyBsaWtlIHRoYXQgYW5kIHRyYW5zZmVy
+IG9uZSBzcGlfbWVzc2FnZSB3aXRoIDEKPiA+IHNwaV90cmFuc2ZlciBvZiAxMDAwMDAgYnl0ZXMg
+YW5kIEkgZG8gdGhlIG1hdGguLi4gSSBrbm93IHRoYXQgdGhpcyBpcwo+ID4gbm90IGFjY3VyYXRl
+IGFuZCB3YXMgd29uZGVyaW5nIGlmIGFueW9uZSBoYXZlIGEgYmV0dGVyIHdheT8KPiA+Cj4gPgo+
+ID4gc3RydWN0IHRpbWV2YWwgdHZfYmVmb3JlOwo+ID4gc3RydWN0IHRpbWV2YWwgdHZfYWZ0ZXI7
+Cj4gPgo+ID4gZG9fZ2V0dGltZW9mZGF5KCZ0dl9iZWZvcmUpOwo+ID4gICAgc3RhdHVzID0gc3Bp
+X3N5bmMoc3Bpa2VfZGV2LnNwaV9kZXZpY2UsICZzcGlrZV9jdGwubXNnKTsKPiA+IGRvX2dldHRp
+bWVvZmRheSgmdHZfYWZ0ZXIpOwo+ID4gICAgbG9uZyBlbGFwc2VkVGltZSA9ICh0dl9hZnRlci50
+dl91c2VjIC0gdHZfYmVmb3JlLnR2X3VzZWMpOwo+IAo+IFRyYW5zZmVyIHNwZWVkIGlzIHRpZ2h0
+bHkgbGlua2VkIHRvIE1PU0kvTUlTTyBiaXQgcmF0ZXMuCj4gQnV0IHRoZSBvdmVyYWxsIHRocm91
+Z2hwdXQgd291bGQgZGVwZW5kIG9uIHRoZSBwcm90b2NvbCB0aGF0Cj4geW91IHJ1biBvdmVyIFNQ
+SS4KCkVmZmVjdGl2ZWx5LCBidXQgaG93IHRvIG1vbml0b3IgdGhhdCBJIHJlc3BlY3QsIGZvciBl
+eGFtcGxlLCBhCnJlcXVpcmVtZW50IG9mIDVNYnBzIHdpdGggYSBjaGlwLi4uIEknbSBhbHJlYWR5
+IHNlbmRpbmcgZGF0YSBhdAoKI2RlZmluZSBTUElfQlVTX1NQRUVEIDUwMDAwMDAKc3BpX2Rldmlj
+ZS0+bWF4X3NwZWVkX2h6ID0gU1BJX0JVU19TUEVFRDsKClNvIGRvZXMgdGhpcyBzZXR0aW5ncyBl
+bnN1cmUgaXQgdG8gYWx3YXlzIGJlIGF0IDVNaHo/CgpJIHdpbGwgdHJ5IHRvIHRlc3QgaXQgYnkg
+c2V0dGluZ3MgaXQgdG8gaGlnaGVyIHNwZWVkIHRvIHNlZSB3aGF0IGhhcHBlbgpleDogNDgwMDAw
+MDAgKDQ4TWh6KQoKUmVnYXJkcywKCi0tCktldnluLUFsZXhhbmRyZSBQYXJlCgoKCgoKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCkdhaW5pbmcgdGhlIHRydXN0IG9mIG9ubGluZSBjdXN0b21lcnMgaXMg
+dml0YWwgZm9yIHRoZSBzdWNjZXNzIG9mIGFueSBjb21wYW55CnRoYXQgcmVxdWlyZXMgc2Vuc2l0
+aXZlIGRhdGEgdG8gYmUgdHJhbnNtaXR0ZWQgb3ZlciB0aGUgV2ViLiAgIExlYXJuIGhvdyB0byAK
+YmVzdCBpbXBsZW1lbnQgYSBzZWN1cml0eSBzdHJhdGVneSB0aGF0IGtlZXBzIGNvbnN1bWVycycg
+aW5mb3JtYXRpb24gc2VjdXJlIAphbmQgaW5zdGlsbHMgdGhlIGNvbmZpZGVuY2UgdGhleSBuZWVk
+IHRvIHByb2NlZWQgd2l0aCB0cmFuc2FjdGlvbnMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvb3JhY2xl
+LXNmZGV2bmwgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

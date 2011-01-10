@@ -1,17 +1,16 @@
-From: Kevyn-Alexandre =?ISO-8859-1?Q?Par=E9?= <kapare-7qmld2CjetYf4mhTGKTGE9BPR1lH4CV8@public.gmane.org>
-Subject: Re: How to mesure current SPI transfer speed
-Date: Mon, 10 Jan 2011 20:25:00 +0000
-Message-ID: <1294691100.5312.16.camel@andromeda>
-References: <1294426319.3892.11.camel@andromeda>
-	<AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: tegra: don't treat NULL clk as an error
+Date: Mon, 10 Jan 2011 13:58:12 -0700
+Message-ID: <AANLkTikd7AZv+-aVf4=jwF+xjvq+1k_kAwLPz-+yP6=Q@mail.gmail.com>
+References: <1294657506-27510-1-git-send-email-jamie@jamieiles.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	gumstix-users-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1294657506-27510-1-git-send-email-jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,36 +21,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgpPbiBTYXQsIDIwMTEtMDEtMDggYXQgMTE6MTYgKzA5MDAsIEphc3NpIEJyYXIgd3JvdGU6Cj4g
-T24gU2F0LCBKYW4gOCwgMjAxMSBhdCAzOjUxIEFNLCBLZXZ5bi1BbGV4YW5kcmUgUGFyw6kKPiA8
-a2FwYXJlQHJvZ3VlLXJlc2VhcmNoLmNvbT4gd3JvdGU6Cj4gPiBIaSwKPiA+Cj4gPiBXaGF0J3Mg
-dGhlIGJlc3Qgd2F5IHRvIGNhbGN1bGF0ZSB0aGUgY3VycmVudCBTUEkgdHJhbnNmZXIgc3BlZWQ/
-Cj4gPgo+ID4gUmlnaHQgbm93IEkgdXNlIHNvbWV0aGluZyBsaWtlIHRoYXQgYW5kIHRyYW5zZmVy
-IG9uZSBzcGlfbWVzc2FnZSB3aXRoIDEKPiA+IHNwaV90cmFuc2ZlciBvZiAxMDAwMDAgYnl0ZXMg
-YW5kIEkgZG8gdGhlIG1hdGguLi4gSSBrbm93IHRoYXQgdGhpcyBpcwo+ID4gbm90IGFjY3VyYXRl
-IGFuZCB3YXMgd29uZGVyaW5nIGlmIGFueW9uZSBoYXZlIGEgYmV0dGVyIHdheT8KPiA+Cj4gPgo+
-ID4gc3RydWN0IHRpbWV2YWwgdHZfYmVmb3JlOwo+ID4gc3RydWN0IHRpbWV2YWwgdHZfYWZ0ZXI7
-Cj4gPgo+ID4gZG9fZ2V0dGltZW9mZGF5KCZ0dl9iZWZvcmUpOwo+ID4gICAgc3RhdHVzID0gc3Bp
-X3N5bmMoc3Bpa2VfZGV2LnNwaV9kZXZpY2UsICZzcGlrZV9jdGwubXNnKTsKPiA+IGRvX2dldHRp
-bWVvZmRheSgmdHZfYWZ0ZXIpOwo+ID4gICAgbG9uZyBlbGFwc2VkVGltZSA9ICh0dl9hZnRlci50
-dl91c2VjIC0gdHZfYmVmb3JlLnR2X3VzZWMpOwo+IAo+IFRyYW5zZmVyIHNwZWVkIGlzIHRpZ2h0
-bHkgbGlua2VkIHRvIE1PU0kvTUlTTyBiaXQgcmF0ZXMuCj4gQnV0IHRoZSBvdmVyYWxsIHRocm91
-Z2hwdXQgd291bGQgZGVwZW5kIG9uIHRoZSBwcm90b2NvbCB0aGF0Cj4geW91IHJ1biBvdmVyIFNQ
-SS4KCkVmZmVjdGl2ZWx5LCBidXQgaG93IHRvIG1vbml0b3IgdGhhdCBJIHJlc3BlY3QsIGZvciBl
-eGFtcGxlLCBhCnJlcXVpcmVtZW50IG9mIDVNYnBzIHdpdGggYSBjaGlwLi4uIEknbSBhbHJlYWR5
-IHNlbmRpbmcgZGF0YSBhdAoKI2RlZmluZSBTUElfQlVTX1NQRUVEIDUwMDAwMDAKc3BpX2Rldmlj
-ZS0+bWF4X3NwZWVkX2h6ID0gU1BJX0JVU19TUEVFRDsKClNvIGRvZXMgdGhpcyBzZXR0aW5ncyBl
-bnN1cmUgaXQgdG8gYWx3YXlzIGJlIGF0IDVNaHo/CgpJIHdpbGwgdHJ5IHRvIHRlc3QgaXQgYnkg
-c2V0dGluZ3MgaXQgdG8gaGlnaGVyIHNwZWVkIHRvIHNlZSB3aGF0IGhhcHBlbgpleDogNDgwMDAw
-MDAgKDQ4TWh6KQoKUmVnYXJkcywKCi0tCktldnluLUFsZXhhbmRyZSBQYXJlCgoKCgoKLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCkdhaW5pbmcgdGhlIHRydXN0IG9mIG9ubGluZSBjdXN0b21lcnMgaXMg
-dml0YWwgZm9yIHRoZSBzdWNjZXNzIG9mIGFueSBjb21wYW55CnRoYXQgcmVxdWlyZXMgc2Vuc2l0
-aXZlIGRhdGEgdG8gYmUgdHJhbnNtaXR0ZWQgb3ZlciB0aGUgV2ViLiAgIExlYXJuIGhvdyB0byAK
-YmVzdCBpbXBsZW1lbnQgYSBzZWN1cml0eSBzdHJhdGVneSB0aGF0IGtlZXBzIGNvbnN1bWVycycg
-aW5mb3JtYXRpb24gc2VjdXJlIAphbmQgaW5zdGlsbHMgdGhlIGNvbmZpZGVuY2UgdGhleSBuZWVk
-IHRvIHByb2NlZWQgd2l0aCB0cmFuc2FjdGlvbnMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvb3JhY2xl
-LXNmZGV2bmwgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Mon, Jan 10, 2011 at 4:05 AM, Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org> wrote:
+> Some platforms have been known to return NULL from clk_get() if they
+> support only a single struct clk. =A0Whilst tegra doesn't do this, make
+> the drivers consistent with others.
+>
+> Cc: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>
+
+Hi James,
+
+If NULL does get returned, say due to a future change to the clock
+code, then this change causes the driver to oops.  I'm not going to
+apply this patch.
+
+g.
+
+> ---
+>
+> =A0drivers/spi/spi_tegra.c | =A0 =A02 +-
+> =A01 files changed, 1 insertions(+), 1 deletions(-)
+>
+> diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+> index bb7df02..891e590 100644
+> --- a/drivers/spi/spi_tegra.c
+> +++ b/drivers/spi/spi_tegra.c
+> @@ -513,7 +513,7 @@ static int __init spi_tegra_probe(struct platform_dev=
+ice *pdev)
+> =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0tspi->clk =3D clk_get(&pdev->dev, NULL);
+> - =A0 =A0 =A0 if (IS_ERR_OR_NULL(tspi->clk)) {
+> + =A0 =A0 =A0 if (IS_ERR(tspi->clk)) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_err(&pdev->dev, "can not get clock\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0ret =3D PTR_ERR(tspi->clk);
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0goto err2;
+> --
+> 1.7.3.4
+>
+>
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+>
+
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
+Gaining the trust of online customers is vital for the success of any compa=
+ny
+that requires sensitive data to be transmitted over the Web.   Learn how to =
+
+best implement a security strategy that keeps consumers' information secure =
+
+and instills the confidence they need to proceed with transactions.
+http://p.sf.net/sfu/oracle-sfdevnl =

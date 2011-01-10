@@ -1,47 +1,48 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: How to mesure current SPI transfer speed
-Date: Sat, 8 Jan 2011 11:16:12 +0900
-Message-ID: <AANLkTimexzqAafU7dWj8QY1Oaac5wUoEj=pp6gqkcuqE@mail.gmail.com>
-References: <1294426319.3892.11.camel@andromeda>
+From: Jamie Iles <jamie@jamieiles.com>
+Subject: [PATCH] spi: tegra: don't treat NULL clk as an error
+Date: Mon, 10 Jan 2011 11:05:06 +0000
+Message-ID: <1294657506-27510-1-git-send-email-jamie@jamieiles.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	gumstix-users-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: =?UTF-8?Q?Kevyn=2DAlexandre_Par=C3=A9?= <kapare-7qmld2CjetYf4mhTGKTGE9BPR1lH4CV8@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1294426319.3892.11.camel@andromeda>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Jamie Iles <jamie@jamieiles.com>, Erik Gilling <konkers@android.com>
+To: spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gU2F0LCBKYW4gOCwgMjAxMSBhdCAzOjUxIEFNLCBLZXZ5bi1BbGV4YW5kcmUgUGFyw6kKPGth
-cGFyZUByb2d1ZS1yZXNlYXJjaC5jb20+IHdyb3RlOgo+IEhpLAo+Cj4gV2hhdCdzIHRoZSBiZXN0
-IHdheSB0byBjYWxjdWxhdGUgdGhlIGN1cnJlbnQgU1BJIHRyYW5zZmVyIHNwZWVkPwo+Cj4gUmln
-aHQgbm93IEkgdXNlIHNvbWV0aGluZyBsaWtlIHRoYXQgYW5kIHRyYW5zZmVyIG9uZSBzcGlfbWVz
-c2FnZSB3aXRoIDEKPiBzcGlfdHJhbnNmZXIgb2YgMTAwMDAwIGJ5dGVzIGFuZCBJIGRvIHRoZSBt
-YXRoLi4uIEkga25vdyB0aGF0IHRoaXMgaXMKPiBub3QgYWNjdXJhdGUgYW5kIHdhcyB3b25kZXJp
-bmcgaWYgYW55b25lIGhhdmUgYSBiZXR0ZXIgd2F5Pwo+Cj4KPiBzdHJ1Y3QgdGltZXZhbCB0dl9i
-ZWZvcmU7Cj4gc3RydWN0IHRpbWV2YWwgdHZfYWZ0ZXI7Cj4KPiBkb19nZXR0aW1lb2ZkYXkoJnR2
-X2JlZm9yZSk7Cj4gwqAgwqBzdGF0dXMgPSBzcGlfc3luYyhzcGlrZV9kZXYuc3BpX2RldmljZSwg
-JnNwaWtlX2N0bC5tc2cpOwo+IGRvX2dldHRpbWVvZmRheSgmdHZfYWZ0ZXIpOwo+IMKgIMKgbG9u
-ZyBlbGFwc2VkVGltZSA9ICh0dl9hZnRlci50dl91c2VjIC0gdHZfYmVmb3JlLnR2X3VzZWMpOwoK
-VHJhbnNmZXIgc3BlZWQgaXMgdGlnaHRseSBsaW5rZWQgdG8gTU9TSS9NSVNPIGJpdCByYXRlcy4K
-QnV0IHRoZSBvdmVyYWxsIHRocm91Z2hwdXQgd291bGQgZGVwZW5kIG9uIHRoZSBwcm90b2NvbCB0
-aGF0CnlvdSBydW4gb3ZlciBTUEkuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KR2FpbmluZyB0aGUg
-dHJ1c3Qgb2Ygb25saW5lIGN1c3RvbWVycyBpcyB2aXRhbCBmb3IgdGhlIHN1Y2Nlc3Mgb2YgYW55
-IGNvbXBhbnkKdGhhdCByZXF1aXJlcyBzZW5zaXRpdmUgZGF0YSB0byBiZSB0cmFuc21pdHRlZCBv
-dmVyIHRoZSBXZWIuICAgTGVhcm4gaG93IHRvIApiZXN0IGltcGxlbWVudCBhIHNlY3VyaXR5IHN0
-cmF0ZWd5IHRoYXQga2VlcHMgY29uc3VtZXJzJyBpbmZvcm1hdGlvbiBzZWN1cmUgCmFuZCBpbnN0
-aWxscyB0aGUgY29uZmlkZW5jZSB0aGV5IG5lZWQgdG8gcHJvY2VlZCB3aXRoIHRyYW5zYWN0aW9u
-cy4KaHR0cDovL3Auc2YubmV0L3NmdS9vcmFjbGUtc2ZkZXZubCAKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
-aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
-LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Some platforms have been known to return NULL from clk_get() if they
+support only a single struct clk.  Whilst tegra doesn't do this, make
+the drivers consistent with others.
+
+Cc: Erik Gilling <konkers@android.com>
+Signed-off-by: Jamie Iles <jamie@jamieiles.com>
+---
+
+ drivers/spi/spi_tegra.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+index bb7df02..891e590 100644
+--- a/drivers/spi/spi_tegra.c
++++ b/drivers/spi/spi_tegra.c
+@@ -513,7 +513,7 @@ static int __init spi_tegra_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	tspi->clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR_OR_NULL(tspi->clk)) {
++	if (IS_ERR(tspi->clk)) {
+ 		dev_err(&pdev->dev, "can not get clock\n");
+ 		ret = PTR_ERR(tspi->clk);
+ 		goto err2;
+-- 
+1.7.3.4

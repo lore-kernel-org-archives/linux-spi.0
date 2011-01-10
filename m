@@ -1,55 +1,63 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [PATCH] spi: tegra: don't treat NULL clk as an error
-Date: Mon, 10 Jan 2011 22:25:24 +0000
-Message-ID: <20110110222524.GE12552@n2100.arm.linux.org.uk>
-References: <1294657506-27510-1-git-send-email-jamie@jamieiles.com>
-	<AANLkTikd7AZv+-aVf4=jwF+xjvq+1k_kAwLPz-+yP6=Q@mail.gmail.com>
-	<20110110221802.GD12552@n2100.arm.linux.org.uk>
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: RE: [PATCH] mtd: sst25l: fix reads with broken spi-masters
+Date: Mon, 10 Jan 2011 16:36:50 -0600
+Message-ID: <0D753D10438DA54287A00B027084269764CDF41635__5958.4035109312$1294700709$gmane$org@AUSP01VMBX24.collaborationhost.net>
+References: <0D753D10438DA54287A00B027084269764CDF4146A@AUSP01VMBX24.collaborationhost.net>
+	<909411.87280.qm@web180312.mail.gq1.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Jamie Iles <jamie@jamieiles.com>, Erik Gilling <konkers@android.com>,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20110110221802.GD12552@n2100.arm.linux.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "Artem.Bityutskiy-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org" <Artem.Bityutskiy-xNZwKgViW5gAvxtiuMwx3w@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+To: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, "spi-devel-general
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <909411.87280.qm-4JhmkcZgSkmZZBmlwP4mLPu2YVrzzGjVVpNB7YpNyf8@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 10, 2011 at 10:18:02PM +0000, Russell King - ARM Linux wrote:
-> On Mon, Jan 10, 2011 at 01:58:12PM -0700, Grant Likely wrote:
-> > On Mon, Jan 10, 2011 at 4:05 AM, Jamie Iles <jamie@jamieiles.com> wrote:
-> > > Some platforms have been known to return NULL from clk_get() if they
-> > > support only a single struct clk. =A0Whilst tegra doesn't do this, ma=
-ke
-> > > the drivers consistent with others.
-> > >
-> > > Cc: Erik Gilling <konkers@android.com>
-> > > Signed-off-by: Jamie Iles <jamie@jamieiles.com>
-> > =
+On Monday, January 10, 2011 3:20 PM, David Brownell wrote:
+> --- On Mon, 1/10/11, H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org> wrote:
+> NAK.  I'm surprised you even thought to submit
+> such a clearly-wrong patch.
+>
+> The bug is in the SPI master driver, and thus
+> so should the fix be.  Or make your system use
+> the GPIO based SPI master driver.
 
-> > Hi James,
-> > =
+Sorry.
 
-> > If NULL does get returned, say due to a future change to the clock
-> > code, then this change causes the driver to oops.  I'm not going to
-> > apply this patch.
-> =
+The bug _is_ in the spi peripheral on the ep93xx.
 
-> Please apply it - the clock API just defines struct clk as a cookie
-> where errors are IS_ERR/PTR_ERR.  Other values must be considered by
-> drivers as perfectly valid, including NULL.
+Unfortunately, hardware does exist that uses the SFRMOUT signal as part of
+the chip select to access the device.  The only way to get this signal to
+do anything is by using the spi peripheral.  The SFRMOUT signal cannot be
+accessed using GPIO so the GPIO based SPI master driver is not an option.
 
-Also note that drivers have no business ever dereferencing struct clks.
-So if they oops, that's their own fault for dereferencing something
-that they shouldn't.
+If the SFRMOUT signal is _not_ used in the chip select logic then everything
+works fine.
+
+But... If it's a NAK.. It's a NAK...  I'll try to figure out a way to handle
+this in the SPI master driver.
+
+Regards,
+Hartley
+
+
+
+
+------------------------------------------------------------------------------
+Gaining the trust of online customers is vital for the success of any company
+that requires sensitive data to be transmitted over the Web.   Learn how to 
+best implement a security strategy that keeps consumers' information secure 
+and instills the confidence they need to proceed with transactions.
+http://p.sf.net/sfu/oracle-sfdevnl 

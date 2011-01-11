@@ -1,53 +1,48 @@
-From: EdenFlirt par Team Leaders <zece.jan2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Alexandra a flashé sur toi!
-Date: Tue, 11 Jan 2011 14:17:20 +0200
-Message-ID: <670f850b35f4e1d42783e7a204bef1fa@localhost.localdomain>
-Reply-To: EdenFlirt par Team Leaders <zece.jan2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Jamie Iles <jamie@jamieiles.com>
+Subject: [PATCH 15/16] spi: dw_spi: don't treat NULL clk as an error
+Date: Tue, 11 Jan 2011 12:43:52 +0000
+Message-ID: <1294749833-32019-16-git-send-email-jamie@jamieiles.com>
+References: <1294749833-32019-1-git-send-email-jamie@jamieiles.com>
+Cc: Jamie Iles <jamie@jamieiles.com>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1294749833-32019-1-git-send-email-jamie@jamieiles.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Q291Y291LCAKCkPigJllc3QgQWxleGFuZHJhICwgY2EgeSBlc3QgamUgc3VpcyBwbHVzIGVuIGNv
-dXBsZSBkZXB1aXMgdW5lIHNlbWFpbmUKZXQgcmVzdGVyIHNldWxlIGMnZXN0IHZyYWltZW50IHBh
-cyBtb24gdHJ1Yy4gCkrigJlhaSBjcsOpw6kgbW9uIHByb2ZpbCBzdXIgZWRlbmZsaXJ0LmZyIGF2
-ZWMgcGxlaW4gZGUgcGhvdG9zLCBqZQpwZW5zZSBxdWUgYydlc3QgbGEgbWVpbGxldXJlIGZhw6dv
-biBwb3VyIG1vaSBkZSByZW5jb250cmVyIGRlCm5vdXZlbGxlcyBwZXJzb25uZXMgZXQgZGUgcmVz
-dGVyIGVuIGNvbnRhY3QgYXZlYyBtZXMgYW1pcwpjw6lsaWJhdGFpcmVzLiBSZWpvaW5zLW1vaSBl
-dCBkaXMgbW9pIGNlIHF1ZSB0dSBwZW5zZXMgZGVzIHBob3RvcyEgCgpHcm9zIEJpc291cy0gQWxl
-eGFuZHJhIAoKUGx1cyBkJ2luZm9ybWF0aW9uczogCmh0dHA6Ly9tYXJrZXQxLnRoZS1hZHVsdC1j
-b21wYW55LmNvbS9mcGFnZS9kaWFsLWNvcXVpbi9kNjU2MTM0LXdlZWRvaXQvdGVhbWxlYWRlci84
-LzEwODYvMTAwMDEwL2VkZW5mbGlydC0yMS5odG1sP2IxJmIyJmIzJmI0JmI1JmZpbGxlPTE0CgoK
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKgpDb25mb3Jtw6ltZW50IMOgIGxhIGxvaSBpbmZvcm1hdGlxdWUgJiBsaWJlcnTD
-qXMgZHUgNiBqYW52aWVyIDE5NzgsIGplCmRpc3Bvc2UgZCd1biBkcm9pdCBkJ2FjY8OocywgZGUg
-cmVjdGlmaWNhdGlvbiBldCBkJ29wcG9zaXRpb24gYXV4CmRvbm7DqWVzIHBlcnNvbm5lbGxlcyBt
-ZSBjb25jZXJuYW50LiAKQ2UgbWVzc2FnZSBjb21tZXJjaWFsIHZvdXMgZXN0IGVudm95w6kgcGFy
-IOKAnFRlYW0gTGVhZGVyc+KAnS4uIFZvdXMKcmVjZXZleiBjZSBtZXNzYWdlIHBhcmNlIHF1ZSB2
-b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdCBzdXIgbCd1biBkZXMKc2l0ZXMgcGFydGVuYWlyZXMgZGUg
-4oCcVGVhbSBMZWFkZXJz4oCdLiBWb3MgZG9ubsOpZXMgbm9taW5hdGl2ZXMKbidvbnQgcGFzIMOp
-dMOpIHRyYW5zbWlzZXMgw6AgbCdhbm5vbmNldXIuIFNpIHZvdXMgbmUgc291aGFpdGV6IHBsdXMK
-cmVjZXZvaXIgbm90cmUgbGV0dHJlIGQnaW5mb3JtYXRpb24gUmVtcGxpc3NleiBjZSBmb3JtdWxh
-aXJlOiAKaHR0cDovLzc3Ljg5LjI0Ny4xMzUvdW5zdWJzY3JpYmUvaW5kZXgucGhwP3E9c3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQpHYWluaW5nIHRoZSB0cnVzdCBvZiBvbmxpbmUgY3VzdG9tZXJzIGlzIHZpdGFsIGZvciB0aGUg
-c3VjY2VzcyBvZiBhbnkgY29tcGFueQp0aGF0IHJlcXVpcmVzIHNlbnNpdGl2ZSBkYXRhIHRvIGJl
-IHRyYW5zbWl0dGVkIG92ZXIgdGhlIFdlYi4gICBMZWFybiBob3cgdG8gCmJlc3QgaW1wbGVtZW50
-IGEgc2VjdXJpdHkgc3RyYXRlZ3kgdGhhdCBrZWVwcyBjb25zdW1lcnMnIGluZm9ybWF0aW9uIHNl
-Y3VyZSAKYW5kIGluc3RpbGxzIHRoZSBjb25maWRlbmNlIHRoZXkgbmVlZCB0byBwcm9jZWVkIHdp
-dGggdHJhbnNhY3Rpb25zLgpodHRwOi8vcC5zZi5uZXQvc2Z1L29yYWNsZS1zZmRldm5sIApfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+clk_get() returns a struct clk cookie to the driver and some platforms
+may return NULL if they only support a single clock.  clk_get() has only
+failed if it returns a ERR_PTR() encoded pointer.
+
+Cc: spi-devel-general@lists.sourceforge.net
+Signed-off-by: Jamie Iles <jamie@jamieiles.com>
+---
+ drivers/spi/dw_spi_mmio.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/dw_spi_mmio.c b/drivers/spi/dw_spi_mmio.c
+index db35bd9..2fa012c 100644
+--- a/drivers/spi/dw_spi_mmio.c
++++ b/drivers/spi/dw_spi_mmio.c
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <linux/clk.h>
++#include <linux/err.h>
+ #include <linux/interrupt.h>
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+@@ -68,8 +69,8 @@ static int __devinit dw_spi_mmio_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	dwsmmio->clk = clk_get(&pdev->dev, NULL);
+-	if (!dwsmmio->clk) {
+-		ret = -ENODEV;
++	if (IS_ERR(dwsmmio->clk)) {
++		ret = PTR_ERR(dwsmmio->clk);
+ 		goto err_irq;
+ 	}
+ 	clk_enable(dwsmmio->clk);
+-- 
+1.7.3.4

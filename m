@@ -1,16 +1,21 @@
-From: <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] ARM i.MX SPI driver changes for i.MX53 support
-Date: Tue, 11 Jan 2011 17:21:53 +0800
-Message-ID: <1294737713-24015-2-git-send-email-yong.shen@freescale.com>
-References: <1294737713-24015-1-git-send-email-yong.shen@freescale.com>
+From: "Tomoya MORINAGA" <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
+Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+Date: Tue, 11 Jan 2011 18:38:35 +0900
+Message-ID: <84FF3503839A46E0B9919DF000DDE5C5@hacdom.okisemi.com>
+References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com><20101229064937.GC8172@angua.secretlab.ca><280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com><20110105163835.GD17272@angua.secretlab.ca><46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com>
+	<topcliff-split@mdm.bga.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Yong Shen <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <yong.shen-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: 'David Brownell' <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "'Wang,
+	Qi'" <qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	Toshiharu Okada <toshiharu-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>,
+	kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	'linux-kernel-u79uwXL29TaiAVqoAR/hOA49XUYAGyU/@public.gmane.org@intel.com', joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: "'Milton Miller'" <miltonm-ogEGBHC/i9Y@public.gmane.org>,
+	"'Grant Likely'" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1294737713-24015-1-git-send-email-yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <topcliff-split-kM9DGJe42AJBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,55 +26,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Yong Shen <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Hi Grant,
 
-1. Change the Kconfig to include i.MX53
-2. add devtype entry for i.MX53
+On Friday, January 07, 2011 6:22 PM, Milton Miller wrote:
+> follow mfd_add_devices into drivers/mfd/mfd-core.c
+I have also seen mfd-core.c.
+However, I couldn't clear my question.
 
-Signed-off-by: Yong Shen <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/Kconfig   |    4 ++--
- drivers/spi/spi_imx.c |    6 ++++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+Q1. It seems platform_device is not used in your example. Does need "platform_device" ?
+Q2. How detect pch_spi channel dynamically ?
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 78f9fd0..04965e2 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -153,10 +153,10 @@ config SPI_IMX_VER_0_4
- 	def_bool y if ARCH_MX31
- 
- config SPI_IMX_VER_0_7
--	def_bool y if ARCH_MX25 || ARCH_MX35 || ARCH_MX51
-+	def_bool y if ARCH_MX25 || ARCH_MX35 || ARCH_MX51 || ARCH_MX53
- 
- config SPI_IMX_VER_2_3
--	def_bool y if ARCH_MX51
-+	def_bool y if ARCH_MX51 || ARCH_MX53
- 
- config SPI_IMX
- 	tristate "Freescale i.MX SPI controllers"
-diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
-index 55a38e2..9b8a733 100644
---- a/drivers/spi/spi_imx.c
-+++ b/drivers/spi/spi_imx.c
-@@ -747,6 +747,12 @@ static struct platform_device_id spi_imx_devtype[] = {
- 		.name = "imx51-ecspi",
- 		.driver_data = SPI_IMX_VER_2_3,
- 	}, {
-+		.name = "imx53-cspi",
-+		.driver_data = SPI_IMX_VER_0_7,
-+	}, {
-+		.name = "imx53-ecspi",
-+		.driver_data = SPI_IMX_VER_2_3,
-+	}, {
- 		/* sentinel */
- 	}
- };
--- 
-1.7.1
+I want to catch your saying correctly.
+Could you give me more information ?
 
+Thanks,
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD.
 
 
 ------------------------------------------------------------------------------

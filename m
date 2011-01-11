@@ -1,18 +1,23 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/2] spi/bfin_spi: return immediately
-	after skipping to next transfer
-Date: Tue, 11 Jan 2011 11:19:08 -0500
-Message-ID: <1294762748-25122-2-git-send-email-vapier@gentoo.org>
-References: <1294762748-25122-1-git-send-email-vapier@gentoo.org>
+Subject: Re: [Uclinux-dist-devel] [PATCH]
+ spi/bfin_sport_spi: new driver to emulate a SPI bus using Blackfin SPORT
+ peripheral
+Date: Tue, 11 Jan 2011 11:22:37 -0500
+Message-ID: <AANLkTi=G30HUUTrN1DQoMtaJ1E-LY8wURS+ph7bBW7Sp@mail.gmail.com>
+References: <1287730415-6246-1-git-send-email-vapier@gentoo.org>
+	<20101101055600.GC17587@angua.secretlab.ca>
+	<AANLkTikpQHNRinCXOPFKfCqwCaNGa2VavFHG9juDw9cK@mail.gmail.com>
+	<20110110152201.GA392@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
         David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <1294762748-25122-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20110110152201.GA392-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
 	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
@@ -24,29 +29,40 @@ Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane
 Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-
-If there is an error with setting up a transfer, we need to return
-immediately rather than trying to continue to process things.  We
-already set up the error states for the caller at this point.
-
-Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi_bfin5xx.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index e8d68b7..a284624 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -653,6 +653,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 		message->state = bfin_spi_next_transfer(drv_data);
- 		/* Schedule next transfer tasklet */
- 		tasklet_schedule(&drv_data->pump_transfers);
-+		return;
- 	}
- 
- 	if (transfer->tx_buf != NULL) {
--- 
-1.7.4.rc1
+T24gTW9uLCBKYW4gMTAsIDIwMTEgYXQgMTA6MjIsIEdyYW50IExpa2VseSB3cm90ZToKPiBPbiBN
+b24sIEphbiAxMCwgMjAxMSBhdCAwOTozOTo0MEFNIC0wNTAwLCBNaWtlIEZyeXNpbmdlciB3cm90
+ZToKPj4gT24gTW9uLCBOb3YgMSwgMjAxMCBhdCAwMTo1NiwgR3JhbnQgTGlrZWx5IHdyb3RlOgo+
+PiA+IE9uIEZyaSwgT2N0IDIyLCAyMDEwIGF0IDAyOjUzOjM1QU0gLTA0MDAsIE1pa2UgRnJ5c2lu
+Z2VyIHdyb3RlOgo+PiA+PiArIMKgIMKgIC8qIFNQSSBmcmFtZXdvcmsgaG9va3VwICovCj4+ID4+
+ICsgwqAgwqAgc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlcjsKPj4gPj4gKwo+PiA+PiArIMKgIMKg
+IC8qIFJlZ3MgYmFzZSBvZiBTUEkgY29udHJvbGxlciAqLwo+PiA+PiArIMKgIMKgIHZvbGF0aWxl
+IHN0cnVjdCBzcG9ydF9yZWdpc3RlciBfX2lvbWVtICpyZWdzOwo+PiA+Cj4+ID4gRHJvcCB0aGUg
+dm9sYXRpbGUuIMKgUmVnaXN0ZXJzIG11c3QgbmV2ZXIgYmUgZGVyZWZlcmVuY2VkIGRpcmVjdGx5
+Cj4+ID4gYW55d2F5Lgo+PiA+Cj4+ID4+ICtzdGF0aWMgdm9pZCBiZmluX3Nwb3J0X3NwaV9lbmFi
+bGUoc3RydWN0IG1hc3Rlcl9kYXRhICpkcnZfZGF0YSkKPj4gPj4gK3sKPj4gPj4gKyDCoCDCoCBk
+cnZfZGF0YS0+cmVncy0+dGNyMSB8PSBUU1BFTjsKPj4gPj4gKyDCoCDCoCBkcnZfZGF0YS0+cmVn
+cy0+cmNyMSB8PSBUU1BFTjsKPj4gPgo+PiA+IElsbGVnYWwgZGlyZWN0IGRlcmVmZXJlbmNlOyB1
+c2UgaW9yZWFkL2lvd3JpdGUgaW5zdGVhZC4gwqBEaXR0byB0aHJvdWdoCj4+ID4gcmVzdCBvZiBm
+aWxlLgo+Pgo+PiB0aGF0J3Mgbm90IGNvcnJlY3QuIMKgaW9yZWFkL2lvd3JpdGUgYXJlIGZpbmUg
+aWYgdGhlIGRldmljZXMgd2VyZQo+PiBnZW5lcmljYWxseSBtYXBwZWQgdGhyb3VnaCBzYXkgdGhl
+IGFzeW5jaHJvbm91cyBtZW1vcnkgYnVzLCBidXQgdGhlc2UKPj4gcmVnaXN0ZXJzIGFyZW50LiDC
+oHRoZXkncmUgbWFwcGVkIGRpcmVjdGx5IGludG8gdGhlIEJsYWNrZmluIGhhcmR3YXJlCj4+IHN5
+c3RlbSBidXMgYW5kIGhhdmUgZGlmZmVyZW50IHNlbWFudGljcyB0aGFuIHRoZSBhc3luYyBtZW1v
+cnkgYnVzLgo+Cj4gSXQgaXMgbm90IG9rYXkgdG8gdXNlIGRpcmVjdCByZWdpc3RlciBkZXJlZmVy
+ZW5jZSBpbiBMaW51eCBmb3Igd2VsbAo+IGRvY3VtZW50ZWQgcmVhc29ucyAoc2VlIHZvbGF0aWxl
+LWNvbnNpZGVyZWQtaGFybWZ1bC50eHQpLgoKYW5kIHRoYXQgZG9jdW1lbnQgYnkgJiBsYXJnZSB0
+YWxrcyBhYm91dCBob3cgcGVvcGxlIGFidXNlIGl0IGZvcgpub3JtYWwgc3RvcmFnZSBpbiBwbGFj
+ZSBvZiBwcm9wZXIgYmFycmllcnMgd2hpY2ggaGFzIG5vIGJlYXJpbmcgaGVyZQoKPiBwYXJ0aWN1
+bGFyLCBhY2Nlc3NvcnMgcHJldmVudCBlaXRoZXIgdGhlIGNvbXBpbGVyIG9yIHRoZSBDUFUgZnJv
+bQo+IHJlb3JkZXJpbmcgb3Igb3B0aW1pemluZyBvdXQgYWNjZXNzZXMgdG8gcmVnaXN0ZXJzIGlu
+IGEgcHJlZGljdGFibGUKPiB3YXkuIMKgdm9sYXRpbGUgaXMgc3Ryb25nbHkgZGlzY291cmFnZWQu
+IMKgSSBtYXkgaGF2ZSB0aGUgc3BlY2lmaWMKPiBhY2Nlc3NvciByb3V0aW5lIG5hbWUgd3Jvbmcg
+Zm9yIHRoZSBibGFja2ZpbiB1c2UgY2FzZSwgYnV0IGRpcmVjdAo+IGRlcmVmZXJlbmNlIGlzIGRl
+ZmluaXRlbHkgbm90IG9rYXkuCgp0aGUgdm9sYXRpbGUgbWFya2luZ3Mgb24gdGhlIHJlZ2lzdGVy
+cyBwcmV2ZW50cyB0aGUgc2FtZSB0aGluZyBmb3IgdGhlCnNhbWUgcmVhc29uLiAgdGhpcyB1c2Fn
+ZSBtaWdodCBiZSBkaXNjb3VyYWdlZCwgYnV0IGl0IGlzIGNlcnRhaW5seSBub3QKImlsbGVnYWwi
+IG9yICJ3cm9uZyIuICBpdCdzIHNpbXBseSAibm90IHRoZSBwcmVmZXJyZWQgbWV0aG9kIi4KLW1p
+a2UKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KVWNsaW51
+eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xpbnV4LWRpc3QtZGV2ZWxAYmxhY2tmaW4udWNs
+aW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xpbnV4Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL3Vj
+bGludXgtZGlzdC1kZXZlbA==

@@ -1,43 +1,53 @@
-From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
-Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
-Date: Tue, 11 Jan 2011 18:42:11 +0900
-Message-ID: <CA1F4AF27C0D466BA059E4B050FF3360@hacdom.okisemi.com>
-References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com><20101229064937.GC8172@angua.secretlab.ca><280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com><20110105163835.GD17272@angua.secretlab.ca><46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com> <topcliff-split@mdm.bga.com>
+From: EdenFlirt par Team Leaders <zece.jan2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Alexandra a flashé sur toi!
+Date: Tue, 11 Jan 2011 14:17:20 +0200
+Message-ID: <670f850b35f4e1d42783e7a204bef1fa@localhost.localdomain>
+Reply-To: EdenFlirt par Team Leaders <zece.jan2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "'David Brownell'" <dbrownell@users.sourceforge.net>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>, <yong.y.wang@intel.com>,
-	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
-	"Toshiharu Okada" <toshiharu-linux@dsn.okisemi.com>,
-	"'Wang, Qi'" <qi.wang@intel.com>
-To: "'Milton Miller'" <miltonm@bga.com>,
-	"'Grant Likely'" <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: 
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Resend
-(Previous destination address is broken partly.)
-
-Hi Grant,
-
-On Friday, January 07, 2011 6:22 PM, Milton Miller wrote:
-> follow mfd_add_devices into drivers/mfd/mfd-core.c
-I have also seen mfd-core.c.
-However, I couldn't clear my question.
-
-Q1. It seems platform_device is not used in your example. 
-	Does need "platform_device" ?
-Q2. How detect pch_spi channel dynamically ?
-
-I want to catch your saying correctly.
-Could you give me more information ?
-
-Thanks,
------------------------------------------
-Tomoya MORINAGA
-OKI SEMICONDUCTOR CO., LTD.
+Q291Y291LCAKCkPigJllc3QgQWxleGFuZHJhICwgY2EgeSBlc3QgamUgc3VpcyBwbHVzIGVuIGNv
+dXBsZSBkZXB1aXMgdW5lIHNlbWFpbmUKZXQgcmVzdGVyIHNldWxlIGMnZXN0IHZyYWltZW50IHBh
+cyBtb24gdHJ1Yy4gCkrigJlhaSBjcsOpw6kgbW9uIHByb2ZpbCBzdXIgZWRlbmZsaXJ0LmZyIGF2
+ZWMgcGxlaW4gZGUgcGhvdG9zLCBqZQpwZW5zZSBxdWUgYydlc3QgbGEgbWVpbGxldXJlIGZhw6dv
+biBwb3VyIG1vaSBkZSByZW5jb250cmVyIGRlCm5vdXZlbGxlcyBwZXJzb25uZXMgZXQgZGUgcmVz
+dGVyIGVuIGNvbnRhY3QgYXZlYyBtZXMgYW1pcwpjw6lsaWJhdGFpcmVzLiBSZWpvaW5zLW1vaSBl
+dCBkaXMgbW9pIGNlIHF1ZSB0dSBwZW5zZXMgZGVzIHBob3RvcyEgCgpHcm9zIEJpc291cy0gQWxl
+eGFuZHJhIAoKUGx1cyBkJ2luZm9ybWF0aW9uczogCmh0dHA6Ly9tYXJrZXQxLnRoZS1hZHVsdC1j
+b21wYW55LmNvbS9mcGFnZS9kaWFsLWNvcXVpbi9kNjU2MTM0LXdlZWRvaXQvdGVhbWxlYWRlci84
+LzEwODYvMTAwMDEwL2VkZW5mbGlydC0yMS5odG1sP2IxJmIyJmIzJmI0JmI1JmZpbGxlPTE0CgoK
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKgpDb25mb3Jtw6ltZW50IMOgIGxhIGxvaSBpbmZvcm1hdGlxdWUgJiBsaWJlcnTD
+qXMgZHUgNiBqYW52aWVyIDE5NzgsIGplCmRpc3Bvc2UgZCd1biBkcm9pdCBkJ2FjY8OocywgZGUg
+cmVjdGlmaWNhdGlvbiBldCBkJ29wcG9zaXRpb24gYXV4CmRvbm7DqWVzIHBlcnNvbm5lbGxlcyBt
+ZSBjb25jZXJuYW50LiAKQ2UgbWVzc2FnZSBjb21tZXJjaWFsIHZvdXMgZXN0IGVudm95w6kgcGFy
+IOKAnFRlYW0gTGVhZGVyc+KAnS4uIFZvdXMKcmVjZXZleiBjZSBtZXNzYWdlIHBhcmNlIHF1ZSB2
+b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdCBzdXIgbCd1biBkZXMKc2l0ZXMgcGFydGVuYWlyZXMgZGUg
+4oCcVGVhbSBMZWFkZXJz4oCdLiBWb3MgZG9ubsOpZXMgbm9taW5hdGl2ZXMKbidvbnQgcGFzIMOp
+dMOpIHRyYW5zbWlzZXMgw6AgbCdhbm5vbmNldXIuIFNpIHZvdXMgbmUgc291aGFpdGV6IHBsdXMK
+cmVjZXZvaXIgbm90cmUgbGV0dHJlIGQnaW5mb3JtYXRpb24gUmVtcGxpc3NleiBjZSBmb3JtdWxh
+aXJlOiAKaHR0cDovLzc3Ljg5LjI0Ny4xMzUvdW5zdWJzY3JpYmUvaW5kZXgucGhwP3E9c3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQpHYWluaW5nIHRoZSB0cnVzdCBvZiBvbmxpbmUgY3VzdG9tZXJzIGlzIHZpdGFsIGZvciB0aGUg
+c3VjY2VzcyBvZiBhbnkgY29tcGFueQp0aGF0IHJlcXVpcmVzIHNlbnNpdGl2ZSBkYXRhIHRvIGJl
+IHRyYW5zbWl0dGVkIG92ZXIgdGhlIFdlYi4gICBMZWFybiBob3cgdG8gCmJlc3QgaW1wbGVtZW50
+IGEgc2VjdXJpdHkgc3RyYXRlZ3kgdGhhdCBrZWVwcyBjb25zdW1lcnMnIGluZm9ybWF0aW9uIHNl
+Y3VyZSAKYW5kIGluc3RpbGxzIHRoZSBjb25maWRlbmNlIHRoZXkgbmVlZCB0byBwcm9jZWVkIHdp
+dGggdHJhbnNhY3Rpb25zLgpodHRwOi8vcC5zZi5uZXQvc2Z1L29yYWNsZS1zZmRldm5sIApfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

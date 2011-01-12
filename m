@@ -1,76 +1,49 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH V3] spi: Enable SPI driver for S5P6440 and S5P6450
-Date: Wed, 12 Jan 2011 15:29:41 +0900
-Message-ID: <AANLkTikGDN+S7MPMi9V4AQ4v94nc=B-Cgm-7Up69EK8V@mail.gmail.com>
-References: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
+From: "=?windows-1252?Q?1_(800)_518-0350?=" <pacifica-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Urgent Notification
+Date: Wed, 12 Jan 2011 06:33:43 -0700
+Message-ID: <89e42fb4dfac08b375f0e859001a5e30@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Sangbeom Kim <sbkim73@samsung.com>,
-	dbrownell@users.courceforge.net, ben-linux@fluff.org,
-	Abhilash Kesavan <a.kesavan@samsung.com>
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 12, 2011 at 3:00 PM, Kukjin Kim <kgene.kim@samsung.com> wro=
-te:
-> From: Abhilash Kesavan <a.kesavan@samsung.com>
->
-> This patch enables the existing S3C64XX series SPI driver for S5P64X0
-> and removed dependency on EXPERIMENTAL because we don't need it now.
->
-> Signed-off-by: Abhilash Kesavan <a.kesavan@samsung.com>
-> Signed-off-by: Sangbeom Kim <sbkim73@samsung.com>
-> Cc: Jassi Brar <jassi.brar@samsung.com>
-> Signed-off-by: Kukjin Kim <kgene.kim@samsung.com>
-> ---
-> Changes since v2:
-> - Changed dependency of S3C64XX_DMA
->
-> Changes since v1:
-> - Removed dependency on EXPERIMENTAL
->
-> (Following is same with previous patch v2)
->
-> Hi David and Grant,
->
-> I missed that send to you when I have got this via Linux Samsung SoC =
-mailing list.
-> Hmm...I know, it's 38 merge winodw...so I'm not sure can be handled n=
-ow.
->
-> Anyway if any problems, please let me know.
->
-> Thanks and Happy New year :)
->
-> Best regards,
-> Kgene.
->
-> =C2=A0drivers/spi/Kconfig | =C2=A0 =C2=A04 ++--
-> =C2=A01 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 1906840..37aec5e 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -310,8 +310,8 @@ config SPI_S3C24XX_GPIO
->
-> =C2=A0config SPI_S3C64XX
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0tristate "Samsung S3C64XX series type SPI"
-> - =C2=A0 =C2=A0 =C2=A0 depends on ARCH_S3C64XX && EXPERIMENTAL
-> - =C2=A0 =C2=A0 =C2=A0 select S3C64XX_DMA
-> + =C2=A0 =C2=A0 =C2=A0 depends on (ARCH_S3C64XX || ARCH_S5P64X0)
-> + =C2=A0 =C2=A0 =C2=A0 select S3C64XX_DMA if ARCH_S3C64XX
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0help
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0SPI driver for Samsung S3C64XX and =
-newer SoCs.
->
-> --
-> 1.6.2.5
+-----------------------------------------
+FREE INK & TONER PROMOTION
+-----------------------------------------
 
-Acked-by: Jassi Brar <jassi.brar@samsung.com>
+Buy 1 Get 1 Free on all Ink Products
+
+We carry all fax, ink-jets, laser jets
+and copier toners and drums.
+
+Save 80% on all products.
+
+Hurry offer ends soon!
+
+** Call Today! 1 (800) 518-0350 **
+
+> Buy 3 Get 3 FREE
+> Buy 2 Get 2 FREE
+> Buy 1 - 50% Off
+> FREE Same Day Shipping
+
+** Call 1 (800) 518-0350 Now  !**
+
+
+
+------------------------------------------------------------------------------
+Protect Your Site and Customers from Malware Attacks
+Learn about various malware tactics and how to avoid them. Understand 
+malware threats, the impact they can have on your business, and how you 
+can protect your company and customers by using code signing.
+http://p.sf.net/sfu/oracle-sfdevnl

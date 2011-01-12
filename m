@@ -1,11 +1,11 @@
-From: "=?windows-1252?Q?1_(800)_518-0350?=" <pacifica-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Urgent Notification
-Date: Wed, 12 Jan 2011 06:33:43 -0700
-Message-ID: <89e42fb4dfac08b375f0e859001a5e30@g2gm.com>
+From: Nicholas Kinar <n.kinar-/KKvz3x1pcI@public.gmane.org>
+Subject: Embedded system control loops and reading from daisy-chained ADCs
+Date: Wed, 12 Jan 2011 10:45:18 -0600
+Message-ID: <4D2DDA9E.4090504@usask.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,28 +17,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
------------------------------------------
-FREE INK & TONER PROMOTION
------------------------------------------
+Hello,
 
-Buy 1 Get 1 Free on all Ink Products
+I am in the process of designing an embedded system that needs to read 
+values over SPI from 5 daisy-chained ADCs.  The ADCs are the AD7685 from 
+Analog Devices 
+(http://www.analog.com/en/analog-to-digital-converters/ad-converters/ad7685/products/product.html).  
+These are 16-bit ADC slave devices that are read over a SPI bus.  I 
+would like to read these devices at a rate of 1 kHz.  I am using the ARM 
+AT91SAM9RL processor.  This processor will run the Linux kernel.
 
-We carry all fax, ink-jets, laser jets
-and copier toners and drums.
+To read values from these ADCs, the processor must first toggle a port 
+pin (CNV) to initiate a conversion.  The processor needs to toggle the 
+port pin at a rate of 1 kHz, perhaps using a high-resolution timer.  
+After every conversion, the processor needs to lower a chip select pin 
+and read data consisting of a (16 bit)(5) =  80-bit word.  The chip 
+select pin then goes high.  I assume that the daisy-chained ADCs would 
+appear to the kernel driver as a single SPI slave with MISO, MOSI, and 
+\CS pins.  The only difference is the CNV pin that is needed to initiate 
+a conversion.
 
-Save 80% on all products.
+After every conversion, the kernel driver needs to make a comparison (is 
+the value from each ADC above or below a certain value).  The kernel 
+driver needs to then select an SPI slave DAC (AD5621) or I2C slave DAC 
+(AD5622) and update the voltage output of the DAC.
 
-Hurry offer ends soon!
+I need to read data from the ADC slaves at a rate of 1 kHz.  What is the 
+best way to do this without introducing too much jitter, and is it 
+possible to do this all with one kernel driver?
 
-** Call Today! 1 (800) 518-0350 **
-
-> Buy 3 Get 3 FREE
-> Buy 2 Get 2 FREE
-> Buy 1 - 50% Off
-> FREE Same Day Shipping
-
-** Call 1 (800) 518-0350 Now  !**
-
+Nicholas
 
 
 ------------------------------------------------------------------------------

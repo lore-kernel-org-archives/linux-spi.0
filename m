@@ -1,12 +1,15 @@
-From: =?GB2312?B?16rQ6MfzyMvUsQ==?= <gyo-+KviC7WOxWY@public.gmane.org>
-Subject: [SPAM] spi-devel-general全能班组长
-Date: Thu, 13 Jan 2011 21:36:51 +0800
-Message-ID: <E1PdNMJ-0003KU-UN@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Nicholas Kinar <n.kinar-/KKvz3x1pcI@public.gmane.org>
+Subject: Re: Embedded system control loops and reading from daisy-chained ADCs
+Date: Thu, 13 Jan 2011 10:00:26 -0600
+Message-ID: <4D2F219A.1090601@usask.ca>
+References: <4D2DDA9E.4090504@usask.ca> <4D2E646E.40505@whoi.edu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-reply-to: <4D2E646E.40505-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,126 +20,74 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-c3BpLWRldmVsLWdlbmVyYWzKtdW90M3Iq8TcsODX6bOkCiAgICAgICAgICAKyrG85LXYteOjujIw
-MTHE6jHUwjE1LTE2yNUgIMnPuqMKytzW2rbUz/Ojusbz0rW497Dg1+mzpKGi0rvP39b3udyhosn6
-svrW97ncoaLJ+rL6vq3A7QrK2r/O0M7KvaO6vbLKpr2yytqhorC4wP231s72oaLA7cTu17K796Gi
-0NC2r7HttaUKxOq119PFu92826O6MTEwMNSqo6yyu9TZtPLV2yAgICCjqLqsxeDRtaGi1ri2qMXg
-0bW9zLLEoaIyzOzO57LNoaKy6LXjt9G1yKOpCgrXydGvtee7sKO6MDIwLTgwNTYwNjM4o7swMjAt
-ODU5MTc5NDUgINC70KG946OosrvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sFjaGluYW1tYzIwMTBA
-MTI2LmNvbc3L0MWjqQqxvr/Os8zM4bmpxNrRtaOsu7bTrcC0tefXydGvCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLaGiCr/Os8yx
-s76wo7rX986qxvPStdfuu/my47XEudzA7dSxLLDg1+mzpMrHxvPStbLGuLu0tNTstcTWsb3Tzca2
-r9XfoaOw4Nfps6S1xLmk1/e2r8GmLLbU09rG8wrStbXEsru2z8/yx7C3otW5xvDXxb7Z1+PH4dbY
-tcTX99PDLrDg1+mzpMrH1LG5pLXE1rG908HstbzV3yzKx8bz0rXJz7Lj0+vUsbmkubXNqLXEx8XB
-uqGjIAqw4Nfps6S5pNf3xNzBprXEuN+1zSy5pNf3t723qLXEv8bRp9Prt/EsuaTX97y8x8m1xMrK
-tbHT67fxLNPrz9azobXE1f2zo9TL1/fPos+iz+C52KGjCiAgICC1sbK/t9Y4MLrz0ru0+tDC0M3U
-sbmk07/I68bz0rWw4Nfpo6w4MMTqtPrQwtDN1LG5pNLU19TO0s6q1tDQxKGis+fJ0NfU08nQwsu8
-zqy6zQrQwrnbxO6ju9PWvt/T0L/Jy9zQ1Me/oaLRp8+wxNzBpse/oaLX1NDFus20tNDC1eLQqczY
-1sqjrLDg1+mzpMPHyOe6ztOmttQ4MLrz1LG5pNX91NoKzPTVvbSrzbO53MDtxKPKvbXEz9bKtaO/
-sb6/zrPMvau4+NPoyKuyv73ivva3vbC4oaMKCr/OILPMIMzYIMmro7oKICAgIL2yyqbPtcquvLjE
-6tTa1vjD+8jV18rG89K1tNO7+bLj1ve53NK71rHD/sXAufa08rW91sbU7M+1zbO437Ljo6y21Lv5
-suOw4Nfps6TIy9SxCrXEudzA7dPQ18W8q8bkt+G4u7XEvq3R6aOsvbLKptTatuDE6sq1vPnW0Mzh
-wbez9rDg1+mzpNTayNWzo7ncwO28sNaw0rXNqLXAt73D5r6ts6O74QrT9rW9tcTKrr7FuPbOyszi
-o6yxvr/Os8y1xNbQ0MTW99a80rLKx86nyMa0y8quvsW49s7KzOLSu9K71bm/qqO6CiAgMDEuICDU
-9dH5yrXP1rTT1LG5pLW9sOCzpLXEv+fUvT8gIAowMi6w4Nfps6S1xNXmyrXJ7bfdKM7SysfB7LW8
-wvApPyAgIAowMy7G89K1sODX6bOk09DExLy41tayu7PG1rCx7c/WPyAKMDQusOAo1+kps6S1xMvE
-tPO539DUsqGjuyAgCjA1LrDgKNfpKbOky8S087nf0NSyobXExvDS8qO7CjA2LrDgKNfpKbOky8S0
-87nf0NSyobXEtKa3vaO7CjA3LrDg1+mzpLXEuaTX99bY0MTMvczWo7sKMDguxvPStbW9tdfQ6NKq
-yrLDtNH5tcSw4Nfps6QKMDkuuaTHsLvh0unKp7DctcTI/dbWxKPKvdPrs8m5prXEsMu087y8x8mj
-uwoxMC4gsOCzpNT10fm/tLT9yf3WsLrNzay8trXEvrrV+TsgCjExLiCw4LOkus3UsbmkzLjF0LXE
-zuW089KqteOjuwoxMi4g1LG5pM6qyrLDtLvht7i07aO7CjEzLiDUsbmkzqrKssO0u+HA67+qo7sK
-MTQuINSxuaTOqsqyw7Syu7rNxOO90738o7sKMTUuINT10fm53MDtusPE47XE1LG5pKO7CjE2LiDU
-9dH5yMPUsbmk1tKzz6O7IAoxNy4gyOe6zr3M0/3UsbmkuMSx5LbUtP3OyszitcTMrLbIo7sKMTgu
-INCnwsrT68Tcwaa1xMf4sfC8sLzGy+OjuwoxOS4gyeixuNfbus/E3MGmtcTA7b3ivLDUy8vjo7sK
-0afPsMS/tcSjugrKucbz0rW1xLDgKNfpKbjJsr/J7sjrx7Oz9rXYsNHO1bHY0qq1xLncwO2zo8q2
-o7sKyrnRp9Sx17zIt8nuv8y12LDRztU4MLrzsODX6dSxuaS1xMzYtePT69auz+C21NOmtcS53MDt
-t723qKO7Cr30w9y12L3hus/P1rOhuaTX97XEyrW8ysq5y/vDx9Ta0afPsNbQ1cbO1bj8tuC1xLmk
-1/e8vMfJo7sKzazKscrK08PT2rK7zazOxLuvsuO0ziyyu82suaTX99fKwPossrvNrLL6xrfQ0NK1
-tcSw4CjX6Sm4ybK/0afPsNPrss6/vKGjIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCr/O
-ILPMIMzhILjZCrXa0ru9sqO6sODX6bncwO2zo8q2CszWwtujus/I09C53MDtwO3C27u5ysfPyNPQ
-udzA7cq1vPkKudzA7bXEyP3W1sjPyrYKuf2zzNPryta2zgq8vMr10+vS1cr1CtDQzqrT673owaYK
-zNbC26O6udzA7bW9tdfKx7K7ysfSu9bWv8bRpwq53MDttcTBvbTzzNi14wrOyszizNbC26O6wey1
-vNXftcS53MDtusvQxM3GwO0KvNLNpdf30rWjurncwO3I/bTzudi8/LTKtcTI/b3HudjPtQogICAg
-ICAgICAg0afX9rncwO21vbXX0OjSqs/I0afKssO0PwoKtdq2/r2yoaLIq8Tc0M2w4Nfps6S1xL3H
-yavIz8q2CsHstby1xLao0uXT687ltPPX99PDCrDg1+mzpMrHsrvKx9Xm1f21xMHstbyjvwrKtdW9
-0bXBt9PrzsrM4szWwtsKsOCzpM6qyrLDtNfcysfDprb4wtKjvwqw4LOk09DExMvE1tayu7PG1rCx
-7c/Wo78K1PXR+bLFxNy3orvTs/aw4LOktcTE3MGmus3TxcrGo78KxvPStbW9tdfQ6NKqyrLDtNH5
-tcSw4Nfps6Sjvwqw4Nfps6S53MDtuaS+39Om08MKuaTHsLvh0um1xLDLtPPSqrXjCgq12sj9vbKj
-us+1zbPIz8q2z9azoaGiyM/Kttaw1PCjqMLUo6kKz9azobncwO21xLao0uUouePS5dPrz8HS5SkK
-z9azobncwO21xMH5tPPP7sS/0+vI/bTzusvQxArP1rOhudzA7bXEzuW087bUz/MKz9azobncwO25
-pNf3tcTI/bTzu/nKrwrP1rOhudzA7bXEyP2087DcscoKz9azobncwO3Lrsa9tcTI/bj2suO0zgrL
-vL+8Orj3sr/DxbXEuaTX99bY0MTKx8qyw7QgCgq12svEvbKjutbKwb+53MDtzqO7+tSkt8DT67/Y
-1sYKudvE7qO6xrfWysrH0uLKtr72tqizybDcCs7KzOKjutT10fmyxcTcx7+7r9SxuaS1xMa31srS
-4sq2CiAgICAgIMjnus6007j8uN+y47TOwO294sa31sqhsMj9srvV/rLfobEKICAgICAgyOe6zrTT
-uPy/7bXEsuPD5sDtveKhsMa31srKx9bG1Oyz9sC0tcShsQogICAgICDOqsqyw7TLtca31sq6zcix
-z93Kx83qyKuyu82stcTBvbvYysIK0aHU8aO6z8jSqs+1zbPT673M0/27ucrHz8jSqre9t6jT67mk
-vt8KvvbQxKO6sdjQ68rHobDB46GxsrvBvM7Eu68KCrXazuW9sqO6vqvS5tbG1Oy53MDttcS52Lz8
-1rix6rzGy+MKu/mxvrncwO3WuLHqCsn6svq92sXECsn6svrGv76xCsn6svrL2cLKCrHq17y5pMqx
-Cr6r0ubUy8vj1rix6grJ+rL60KfCygrJ+rL6xNzBpgrJ+rL6xNzBprTvs8nCygrJ+rL6vMa7rta0
-0NDCygrJ+rL6z9/Gvbri0KfCygrJ+rL6z9/Gvbriy/DKp8LKCgq12sH5vbKjutSxuaS53MDtxqot
-Lcjnus7Ktc/W09DQp7XE1LG5pL3M0/0K1LG5pM6qyrLDtLvht7i07T8gCtSxuaTOqsqyw7S74cH3
-yqc/CtT10fmyxcTcudzA7brDxOO1xNSxuaQ/CsjL0NS7r7ncwO3I/S/O5cDtwtvU2rmk1/fKtbz5
-1tC1xNOm08M7CrDgs6Szo9PDtcShsLDLtPPWq8zl0+/R1KGxCrDgs6Szo9PDtcShsMqutPO/2s23
-0+/R1KGxCtfw1tjUsbmkyMu48bXEobDKrrTz0qq146GxCsPmttTUsbmk0qrQsrXEobDO5bTzttSy
-36GxCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0Ks8LWvruqwM/KpqO6CqOtuaTJzLncwO3L
-tsq/CqOtufrE2tbG1Oy53MDt16i80iAKo61NTUPWxtTsudzA7dbQ0MS437y2ucvOygogICDU+NTa
-yKvH8tfutPO1xM/fyKbWxtTsyczKpMPAtO8oU1VNSURBKaGiyNWxvr+ozvfFt7Xn19MoQ0FTSU8p
-yM7WsLTvMTPE6qOswPrIzgrJ+rL61ve53KGixrfWytb3udyjrMn6svq+rcDtoaLWxtTs19y+rcDt
-tciju9T4yqa009ChtKjSu9Kyo6jI1bG+xNzCytCtu+G53MDt1tDQxArXqLzSo6wgyNWxvldGJklF
-0dC+v7Xa0rvIy6OsyNWxvtbG1OzStdHQvr+1xLn6saa8tsjLzu+jqdeow8XR0M+wserXvLmkyrHT
-67av1/fR0Aq+v9T4z8i687bgtM6xu8XJzfnI1bG+us3QwrzTxsK9+NDevLDF4NG1o6i34czvSklU
-yfqy+re9yr2jrLbUTlBT09DPtc2zvLDJ7sjr0dC+vwq6zcq1vPmjqaOss8LAz8qm08jG5MnDs6TP
-1rOh0rvM5buvudzA7Si8xruuLLPJsb4sxMnG2izWysG/LLy8yvWjrMjL1LEpoaPW972yv86zzArT
-0Dqhtsn6svrP1rOhzqO7+tSkt8DT67/Y1sa8vMr1obehoqG2yOe6zrm5vaix6te8u6+1xMDNtq+2
-qLbuudzA7c+1zbOht6G2tuC8vMTcCtSxuaTF4NH4zOXPtaG3oaKhtrbgxfrJ2cG/yfqy+re9yr3K
-tc7xobehoqG2zqLA+8qxtPq1xL6rz7i7r8/Ws6G53MDtobehoqG2yKvE3NDNCrO1vOTW98jOyrXV
-vby8xNzRtcG3obe1yKOs1vfSqrP2sObO76G2t7TKodbQufrKvbmks6e53MDtobehoqG2zPTVvTgw
-uvO53MDtobe1yKGjIAogICAgs8LAz8qm1PjOqsGqz+uhosvJz8K/1bX3oaK48cGmtefG96GizajT
-w7XnxvihorCsxKzJ+qGiu6rOqry8yvWhorfJwPvG0dK9wcbPtQrNs6Giu/TE4c6ktvuhokFCQqGi
-v8LE4b+ow8DE3LTvoaKwwsHWsM3LuaGiuLvKvy3KqcDWoaLT0bTvueK156Gitqu3vc2o0MWhotSj
-1KrWxgrU7LyvzcWhosDuvfW8x6GiwvzQ48DXttihor/GwNW94L7foaKyvbK9uN+hos73sLLR7smt
-oaLRx8LXufq8yryvzcWhotK7xvu34czvoaK2qwq358b7s7WhorijzO/G+7O1oaK9rcHlxvuztaGi
-0dO35s6wysDNqKGix9jJvbrLteehorS0zqyhotHFwu25/qGivfW6/sLWzKWhornjtqvS5wq076Gi
-1fLMqc3mvt+1yL38x6e80r/Nu6fM4bmpuf3F4NG1u/LXydGvt/7O8aOs1sG98dPQvfzN8tLUyc/I
-y7TOvdPK3Mbk16jStb/Os8zRtQrBt6GjCiAgICAgyq68uMTq1qrD+8jVsb7G89K1tcTWxtTsudzA
-7cq11b2+rdHpLL6rsdm1xLC4wP29sr3ivLDJ7r/MtcS527XjsvvKzaOsyMOzwsDPCsqmvbLMw8nP
-087I0NPQyOeho9LyxuTK2r/OxNrI3bXEyrXTw9DUuN+jrLG70afUscPH0/7Oqsv5vPu5/bXE1+7K
-tdTaoaLX7sfQus/KtbzKCrXExeDRtcqmo6EKwLTX1NGn1LG1xMbAvNujqL3a0aGjqaO6CqH0ILPC
-wM/KprXEse2078ezz9TS17auo6zS8srHtNO7+bLjs8mzpKOsy/m+2cD919PHobWxus/KyqOsyrXT
-w9DUx7+ho7/Os8y63Aq6w7XYtNPIy9DUoaK40Mfptci3vcPmsvvK9sjnus7X9rrD0ru49rncwO3V
-36OszazKsbu506a4w7TTvLzK9bLjw+bR0L6/1/a6w7ncwO25pNf3oaMKLS3Jz7qjzajTw7XnxvjT
-0M/euavLvi/VxdK7Cgqh9CDU2tGnz7C5/bPM1tC40LSl1+7J7rXEysfL+dPQtcTJ+rL6udzA7c7K
-zOKjrLPCwM/Kpra8xNy4+NPoz+rPuL3itPDT69a4tbyjoQotLcGqz+u159fTL9Ck0cfB1goKofQg
-s8LAz8qmtcS5pNf3vq3R6bfHs6O34bi7o6y/zrPMxNrI3crHttTO0sPHxr3Ksbmk1/e3x7OjusO1
-xLvj19yhowotLb/CxOG/qMPAxNy077ni0afT0M/euavLvi/N9ca8Cgqh9CDS8s6q0+vEv8ewuaTX
-98/gudijrMfSxNrI3b3pydy9sr3iutzKtdPDo6zAz8qmutzH5bP+uaSzp8n6svq3vcPmtcTXtL/2
-us3KtbzKo6zT0Aq34bi7tcS53MDtvq3R6aGjCi0tu6rOqry8yvUvxcvP/r78Cgqh9CCzwsDPyqa1
-xMXg0bXKx8Hpu+6hosH3s6mhosn6tq+hor/swNa1xNGnz7ChowotLdbQtO+1582oucm33dPQz965
-q8u+L7bFu9sKCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CqG2yrXVvdDNyKvE3LDg1+mz
-pKG3sajD+7vY1rSx7aOox+u0q9XmMDIwLTYyMzUxMTU2o6kKCrLOILvhILWlIM67IMP7ILPGo7pf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCgqy
-ziC80yC12CC146O6v9rJ7tvaICAgv9rJz7qjCgrBqs+1yMujul9fX19fX19fX19fX19ftee7sDpf
-X19fX19fX19fX19fX19ftKvV5jpfX19fX19fX19fX19fX19fCgrTyrz+o7pfX19fX19fX19fX19f
-XyCyziC74SDIyyDK/TpfX19fX19fX1/IyyC30SDTwyCjpKO6X19fX19fX19f1KogCgqyziC74SDI
-y6O6X19fX19fX19fX1/L+SDIziDWsCDO8aO6X19fX19fX19fX19f0sYgtq8gtecgu7Cjul9fX19f
-X19fX19fX18gCgqyziC74SDIy6O6X19fX19fX19fX1/L+SDIziDWsCDO8aO6X19fX19fX19fX19f
-0sYgtq8gtecgu7Cjul9fX19fX19fX19fX18gCgqyziC74SDIy6O6X19fX19fX19fX1/L+SDIziDW
-sCDO8aO6X19fX19fX19fX19f0sYgtq8gtecgu7Cjul9fX19fX19fX19fX18gCgqyziC74SDIy6O6
-X19fX19fX19fX1/L+SDIziDWsCDO8aO6X19fX19fX19fX19f0sYgtq8gtecgu7Cjul9fX19fX19f
-X19fX18gCgq4tr/ut73KvaOox+vRodTxtPKhsKHMobGjqaO6IKH1MaGiz9a98CCh9TKhoteq1cog
-ofUzoaK157vjIAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KsbjXojrH68T6sNGxqMP7u9jW
-tLvYtKvO0su+o6zOqsi3saPE+rGow/vO3s7zLMfrxPrU2bTOtee7sKOoMDIwLTgwNTYwNjM4o6nI
-t8jPIQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClByb3RlY3QgWW91ciBTaXRlIGFuZCBDdXN0b21l
-cnMgZnJvbSBNYWx3YXJlIEF0dGFja3MKTGVhcm4gYWJvdXQgdmFyaW91cyBtYWx3YXJlIHRhY3Rp
-Y3MgYW5kIGhvdyB0byBhdm9pZCB0aGVtLiBVbmRlcnN0YW5kIAptYWx3YXJlIHRocmVhdHMsIHRo
-ZSBpbXBhY3QgdGhleSBjYW4gaGF2ZSBvbiB5b3VyIGJ1c2luZXNzLCBhbmQgaG93IHlvdSAKY2Fu
-IHByb3RlY3QgeW91ciBjb21wYW55IGFuZCBjdXN0b21lcnMgYnkgdXNpbmcgY29kZSBzaWduaW5n
-LgpodHRwOi8vcC5zZi5uZXQvc2Z1L29yYWNsZS1zZmRldm5sCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 12/01/2011 8:33 PM, Ned Forrester wrote:
+> I would be doubtful of guaranteeing 1ms response time, more from the
+> standpoint of interrupt and process latency, than from the speed and
+> timing of the SPI.  I have an application running on a 400MHz PXA255
+> that streams much more data than you have, but the key is streaming:
+> many ADCs are sending continuous data that are received by hardware
+> chained DMA buffers.  You have to interact with every sample to do the
+> comparison.  I'm not familiar with the processor you are using; perhaps
+> it is faster.
+Ned, thank you very much for your response; this is greatly 
+appreciated.  Now suppose that the entire control loop is to be 
+implemented inside of the kernel driver.  Might this help to reduce 
+latency?  If I am not mistaken, the AT91SAM9RL processor can be clocked 
+at a speed of no more than ~200 MHz, so I think that it is not as quick 
+as the one that you are using.  Would writing an SPI kernel driver help 
+to reduce latency rather than doing this all in userspace?  If I have 
+the trigger pin of the daisy-chained ADCs tied to one of the ARM 
+processor's pulse width modulator (PWM) pins, might I be able to trigger 
+a series of samples with PWM, and then read the data over SPI?  I think 
+that a timer would be required, but how would I set up an interrupt to 
+read from SPI once the conversion has been triggered?  I would also have 
+to wait a predetermined time after triggering the conversion to be able 
+to read data from the ADCs.
+
+Can an SPI kernel driver read a (16-bit)(5) = 80-bit data stream without 
+having the chip select pin go high after 16 or more bits are 
+transferred?  I understand that the AT91SAM9RL has DMA as well, so would 
+it be possible to read the 80-bit data stream over SPI and then stuff 
+the data in memory?  Is there any example code available for this DMA 
+application?
+
+Now suppose that I choose to not interact with each sample, and the data 
+is simply streamed into memory using DMA.  Does this make my application 
+easier?  The next thing that I am concerned about is being able to 
+toggle the port pin at a rate of 1 kHz to trigger each sample.  What if 
+I am to reduce the sampling rate to 500 Hz or 100 Hz?
+
+> One thing that might (or might not) help is to check the scheduler
+> resolution on your machine.  For the PXA255 the kernel defaults to 10ms
+> (CONFIG_HZ=100).  It may help to set that to 1000 (though it can be hard
+> to track down what file really sets that for the kernel, I found it in
+> arch/arm/Kconfig by searching for "HZ").  This may only help if there is
+> a user-space portion of your code.
+Could high resolution timers in kernel code help to reduce the latency?
+
+> If you can't get it to work in software, it is likely possible to add a
+> CPLD to do the job of collecting the data, making the comparison and
+> loading the DAC.  Xilinx has the Coolrunner series that draws very
+> little (CMOS) power at low clock rates; unfortunately, they don't seem
+> to have chips with lots of gates and few pins.  Atmel has a similar low
+> power series that is available with plenty of cells in smaller packages.
+>   I'm assuming that you still have control over the hardware that might
+> be added between the CPU and the ADCs/DAC.
+>
+
+Thank you very much for these suggestions!  At this time I am engaged in 
+the process of designing and laying out the circuit boards for this 
+system.  The CPU is on one PCB, but the ADCs (and other supporting 
+analog circuitry) is on another PCB.  Both PCBs are linked together by 
+an FPC/FFC jumper cable.  There are SPI, I2C, and serial (RX/TX) buses 
+shared across this cable.
+
+Nicholas
+
+
+------------------------------------------------------------------------------
+Protect Your Site and Customers from Malware Attacks
+Learn about various malware tactics and how to avoid them. Understand 
+malware threats, the impact they can have on your business, and how you 
+can protect your company and customers by using code signing.
+http://p.sf.net/sfu/oracle-sfdevnl

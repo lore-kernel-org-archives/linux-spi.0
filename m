@@ -1,77 +1,42 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH V3] spi: Enable SPI driver for S5P6440 and S5P6450
-Date: Fri, 14 Jan 2011 01:02:49 -0700
-Message-ID: <20110114080249.GB21832@angua.secretlab.ca>
-References: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
+From: =?ISO-8859-1?Q?Fl=E1vio_Alberto_Lopes_Soares?= <flavioalsoares-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: ADS1256 - too fast for Linux ?
+Date: Fri, 14 Jan 2011 10:02:45 -0200
+Message-ID: <AANLkTikhEd1AER28AoV3DVqZENzXyX3RRpv7CP2sOvdE@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, ben-linux@fluff.org,
-	dbrownell@users.courceforge.net,
-	Abhilash Kesavan <a.kesavan@samsung.com>,
-	Sangbeom Kim <sbkim73@samsung.com>,
-	Jassi Brar <jassi.brar@samsung.com>
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 12, 2011 at 03:00:23PM +0900, Kukjin Kim wrote:
-> From: Abhilash Kesavan <a.kesavan@samsung.com>
-> 
-> This patch enables the existing S3C64XX series SPI driver for S5P64X0
-> and removed dependency on EXPERIMENTAL because we don't need it now.
-> 
-> Signed-off-by: Abhilash Kesavan <a.kesavan@samsung.com>
-> Signed-off-by: Sangbeom Kim <sbkim73@samsung.com>
-> Cc: Jassi Brar <jassi.brar@samsung.com>
-> Signed-off-by: Kukjin Kim <kgene.kim@samsung.com>
+Hello all,
+I need to communicate with a Texas Instruments ADS1256 SPI 24 bits ADC (
+http://focus.ti.com/docs/prod/folders/print/ads1256.html) from a 2.6.32
+kernel Linux running on a ARM Samsung S3C2440 microcontroller using spidev
+module, to do this I need to pass a command on MOSI channel and after read
+the result on MISO, but I can't read the correct data from this ADC, the
+data is always corrupted, I believe (but I can't prove this) this occurs
+because the very short time between the command and response, according with
+the component datasheet this time is 50x the clock period, for my circuit
+this is approximately 8us and I believe that there's no time to Linux get
+the interrupt from SPI process this and read the SPI data, my suspicion can
+be correct ? The DMA cannot solve this problem and if true how to know if it
+is activated ? Only Real Time Linux can solve this ?
 
-Merged, thanks.
+Thanks for all help
 
-g.
-
-> ---
-> Changes since v2:
-> - Changed dependency of S3C64XX_DMA
-> 
-> Changes since v1:
-> - Removed dependency on EXPERIMENTAL
-> 
-> (Following is same with previous patch v2)
-> 
-> Hi David and Grant,
-> 
-> I missed that send to you when I have got this via Linux Samsung SoC mailing list.
-> Hmm...I know, it's 38 merge winodw...so I'm not sure can be handled now.
-> 
-> Anyway if any problems, please let me know.
-> 
-> Thanks and Happy New year :)
-> 
-> Best regards,
-> Kgene.
-> 
->  drivers/spi/Kconfig |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 1906840..37aec5e 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -310,8 +310,8 @@ config SPI_S3C24XX_GPIO
->  
->  config SPI_S3C64XX
->  	tristate "Samsung S3C64XX series type SPI"
-> -	depends on ARCH_S3C64XX && EXPERIMENTAL
-> -	select S3C64XX_DMA
-> +	depends on (ARCH_S3C64XX || ARCH_S5P64X0)
-> +	select S3C64XX_DMA if ARCH_S3C64XX
->  	help
->  	  SPI driver for Samsung S3C64XX and newer SoCs.
->  
-> -- 
-> 1.6.2.5
-> 
+Flavio Alberto Lopes Soares
+------------------------------------------------------------------------------
+Protect Your Site and Customers from Malware Attacks
+Learn about various malware tactics and how to avoid them. Understand 
+malware threats, the impact they can have on your business, and how you 
+can protect your company and customers by using code signing.
+http://p.sf.net/sfu/oracle-sfdevnl

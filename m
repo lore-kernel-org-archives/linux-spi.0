@@ -1,73 +1,77 @@
-From: Nicholas Kinar <n.kinar-/KKvz3x1pcI@public.gmane.org>
-Subject: Re: Embedded system control loops and reading from daisy-chained ADCs
-Date: Thu, 13 Jan 2011 23:01:41 -0600
-Message-ID: <4D2FD8B5.5090701@usask.ca>
-References: <4D2DDA9E.4090504@usask.ca> <4D2E646E.40505@whoi.edu>
-	<4D2F219A.1090601@usask.ca> <4D2FD480.4020001@whoi.edu>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH V3] spi: Enable SPI driver for S5P6440 and S5P6450
+Date: Fri, 14 Jan 2011 01:02:49 -0700
+Message-ID: <20110114080249.GB21832@angua.secretlab.ca>
+References: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <4D2FD480.4020001-/d+BM93fTQY@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net, ben-linux@fluff.org,
+	dbrownell@users.courceforge.net,
+	Abhilash Kesavan <a.kesavan@samsung.com>,
+	Sangbeom Kim <sbkim73@samsung.com>,
+	Jassi Brar <jassi.brar@samsung.com>
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1294812023-32697-1-git-send-email-kgene.kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jan 12, 2011 at 03:00:23PM +0900, Kukjin Kim wrote:
+> From: Abhilash Kesavan <a.kesavan@samsung.com>
+> 
+> This patch enables the existing S3C64XX series SPI driver for S5P64X0
+> and removed dependency on EXPERIMENTAL because we don't need it now.
+> 
+> Signed-off-by: Abhilash Kesavan <a.kesavan@samsung.com>
+> Signed-off-by: Sangbeom Kim <sbkim73@samsung.com>
+> Cc: Jassi Brar <jassi.brar@samsung.com>
+> Signed-off-by: Kukjin Kim <kgene.kim@samsung.com>
 
-> That would help, but I measured interrupt latencies of 100-600usec
-> (200us typical) on the PXA255, with occasional longer delays.  That
-> was with the network driver busy also.
-Thanks for confirming this, Ned.
+Merged, thanks.
 
->> If I have
->> the trigger pin of the daisy-chained ADCs tied to one of the ARM
->> processor's pulse width modulator (PWM) pins, might I be able to trigger
->> a series of samples with PWM, and then read the data over SPI?  I think
->> that a timer would be required, but how would I set up an interrupt to
->> read from SPI once the conversion has been triggered?  I would also have
->> to wait a predetermined time after triggering the conversion to be able
->> to read data from the ADCs.
-> If the timer controls the period and pulse width of the trigger, you
-> program the trailing edge for the correct acquisition delay, and use
-> the trailing edge to generate the interrupt for the driver.
-> Alternatively, you could interrupt on the leading edge and then loop
-> until the trailing edge (reading a GPIO pin); that would help overlap
-> some of the interrupt latency.  This latter idea is only acceptable if
-> the acquisition time is short, or if the processor is not busy and
-> thus you don't mind generating increased latency for other interrupts
-> (normally not a good idea).
-Okay, I think that I understand.
+g.
 
-> It's been a while since I worked on my driver.  I recall that its
-> maximum word size was 32-bits.  I don't recall if there is anything in
-> the SPI core that limits that, or if it is simply a driver limit.  If
-> the latter, you can write a driver to do anything you want.
-I'm not familiar with the SPI core either, and I would also wonder if 
-the word size is limited for the ARM architecture.
-
->
-> It sounds like you have a lot of options. Good luck.
->
-
-Yes - I am designing, building and testing an embedded system for my own 
-research.  Once again, thank you for your help!
-
-Nicholas
-
-
-
-
-------------------------------------------------------------------------------
-Protect Your Site and Customers from Malware Attacks
-Learn about various malware tactics and how to avoid them. Understand 
-malware threats, the impact they can have on your business, and how you 
-can protect your company and customers by using code signing.
-http://p.sf.net/sfu/oracle-sfdevnl
+> ---
+> Changes since v2:
+> - Changed dependency of S3C64XX_DMA
+> 
+> Changes since v1:
+> - Removed dependency on EXPERIMENTAL
+> 
+> (Following is same with previous patch v2)
+> 
+> Hi David and Grant,
+> 
+> I missed that send to you when I have got this via Linux Samsung SoC mailing list.
+> Hmm...I know, it's 38 merge winodw...so I'm not sure can be handled now.
+> 
+> Anyway if any problems, please let me know.
+> 
+> Thanks and Happy New year :)
+> 
+> Best regards,
+> Kgene.
+> 
+>  drivers/spi/Kconfig |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 1906840..37aec5e 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -310,8 +310,8 @@ config SPI_S3C24XX_GPIO
+>  
+>  config SPI_S3C64XX
+>  	tristate "Samsung S3C64XX series type SPI"
+> -	depends on ARCH_S3C64XX && EXPERIMENTAL
+> -	select S3C64XX_DMA
+> +	depends on (ARCH_S3C64XX || ARCH_S5P64X0)
+> +	select S3C64XX_DMA if ARCH_S3C64XX
+>  	help
+>  	  SPI driver for Samsung S3C64XX and newer SoCs.
+>  
+> -- 
+> 1.6.2.5
+> 

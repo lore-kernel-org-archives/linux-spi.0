@@ -1,42 +1,47 @@
-From: =?ISO-8859-1?Q?Fl=E1vio_Alberto_Lopes_Soares?= <flavioalsoares-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: ADS1256 - too fast for Linux ?
-Date: Fri, 14 Jan 2011 10:02:45 -0200
-Message-ID: <AANLkTikhEd1AER28AoV3DVqZENzXyX3RRpv7CP2sOvdE@mail.gmail.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] mtd: sst25l: fix reads with broken spi-masters
+Date: Fri, 14 Jan 2011 15:24:01 -0700
+Message-ID: <20110114222401.GA10504@angua.secretlab.ca>
+References: <0D753D10438DA54287A00B027084269764CDF4146A@AUSP01VMBX24.collaborationhost.net>
+ <909411.87280.qm@web180312.mail.gq1.yahoo.com>
+ <0D753D10438DA54287A00B027084269764CDF41635@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <david-b@pacbell.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"Artem.Bityutskiy@nokia.com" <Artem.Bityutskiy@nokia.com>
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <0D753D10438DA54287A00B027084269764CDF41635@AUSP01VMBX24.collaborationhost.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello all,
-I need to communicate with a Texas Instruments ADS1256 SPI 24 bits ADC (
-http://focus.ti.com/docs/prod/folders/print/ads1256.html) from a 2.6.32
-kernel Linux running on a ARM Samsung S3C2440 microcontroller using spidev
-module, to do this I need to pass a command on MOSI channel and after read
-the result on MISO, but I can't read the correct data from this ADC, the
-data is always corrupted, I believe (but I can't prove this) this occurs
-because the very short time between the command and response, according with
-the component datasheet this time is 50x the clock period, for my circuit
-this is approximately 8us and I believe that there's no time to Linux get
-the interrupt from SPI process this and read the SPI data, my suspicion can
-be correct ? The DMA cannot solve this problem and if true how to know if it
-is activated ? Only Real Time Linux can solve this ?
+On Mon, Jan 10, 2011 at 04:36:50PM -0600, H Hartley Sweeten wrote:
+> On Monday, January 10, 2011 3:20 PM, David Brownell wrote:
+> > --- On Mon, 1/10/11, H Hartley Sweeten <hartleys@visionengravers.com> wrote:
+> > NAK.  I'm surprised you even thought to submit
+> > such a clearly-wrong patch.
+> >
+> > The bug is in the SPI master driver, and thus
+> > so should the fix be.  Or make your system use
+> > the GPIO based SPI master driver.
+> 
+> Sorry.
+> 
+> The bug _is_ in the spi peripheral on the ep93xx.
+> 
+> Unfortunately, hardware does exist that uses the SFRMOUT signal as part of
+> the chip select to access the device.  The only way to get this signal to
+> do anything is by using the spi peripheral.  The SFRMOUT signal cannot be
+> accessed using GPIO so the GPIO based SPI master driver is not an option.
 
-Thanks for all help
+No, David is correct.  The fault is in the master driver.  It is perfectly valid (and common) for spi peripherals to required the SS line to remain asserted over the entire transfer.  Unfortunately, it is also as common for spi master devices to not support this mode in hardware.
 
-Flavio Alberto Lopes Soares
-------------------------------------------------------------------------------
-Protect Your Site and Customers from Malware Attacks
-Learn about various malware tactics and how to avoid them. Understand 
-malware threats, the impact they can have on your business, and how you 
-can protect your company and customers by using code signing.
-http://p.sf.net/sfu/oracle-sfdevnl
+However, the fault is with the spi master hardware, and therefore it is the responsibility of the master driver to handle the buffering and magic required so that the transfer proceeds correctly.
+
+g.

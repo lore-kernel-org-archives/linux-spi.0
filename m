@@ -1,55 +1,54 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] SPI: spi_sh_msiof: fix a wrong free_irq() parameter
-Date: Mon, 17 Jan 2011 10:26:33 -0700
-Message-ID: <20110117172633.GA29462@angua.secretlab.ca>
-References: <Pine.LNX.4.64.1101171700370.16051@axis700.grange>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: [git pull] and spi bugfix and a devicetree patch.
+Date: Mon, 17 Jan 2011 11:50:36 -0700
+Message-ID: <AANLkTikCJy4QWGxyRwv53JGMKf12Zqh_8pZOy82eAWWc@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.1101171700370.16051@axis700.grange>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss <devicetree-dis
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 17, 2011 at 05:01:07PM +0100, Guennadi Liakhovetski wrote:
-> Without this fix reloading of the driver is impossible.
-> 
-> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Hi Linus,
 
-Applied, thanks.
+To more minor changes.  This should be it from me for the merge window.
 
 g.
 
-> ---
->  drivers/spi/spi_sh_msiof.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
-> index d93b667..56f60c8 100644
-> --- a/drivers/spi/spi_sh_msiof.c
-> +++ b/drivers/spi/spi_sh_msiof.c
-> @@ -635,7 +635,7 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
->  	ret = spi_bitbang_stop(&p->bitbang);
->  	if (!ret) {
->  		pm_runtime_disable(&pdev->dev);
-> -		free_irq(platform_get_irq(pdev, 0), sh_msiof_spi_irq);
-> +		free_irq(platform_get_irq(pdev, 0), p);
->  		iounmap(p->mapbase);
->  		clk_put(p->clk);
->  		spi_master_put(p->bitbang.master);
-> -- 
-> 1.7.2.3
-> 
-> 
-> ------------------------------------------------------------------------------
-> Protect Your Site and Customers from Malware Attacks
-> Learn about various malware tactics and how to avoid them. Understand 
-> malware threats, the impact they can have on your business, and how you 
-> can protect your company and customers by using code signing.
-> http://p.sf.net/sfu/oracle-sfdevnl
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+The following changes since commit e78bf5e6cbe837daa6ab628a5f679548742994d3:
+
+  drivers/nfc/pn544.c: fix min_t warnings (2011-01-16 17:28:21 -0800)
+
+are available in the git repository at:
+  git://git.secretlab.ca/git/linux-2.6 next-devicetree
+
+Grant Likely (1):
+      dt/flattree: Return virtual address from early_init_dt_alloc_memory_arch()
+
+Guennadi Liakhovetski (1):
+      spi/spi_sh_msiof: fix a wrong free_irq() parameter
+
+ arch/microblaze/kernel/prom.c |    4 ++--
+ arch/mips/kernel/prom.c       |    6 ++----
+ arch/powerpc/kernel/prom.c    |    4 ++--
+ drivers/of/fdt.c              |    8 +-------
+ drivers/spi/spi_sh_msiof.c    |    2 +-
+ include/linux/of_fdt.h        |    2 +-
+ 6 files changed, 9 insertions(+), 17 deletions(-)
+
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

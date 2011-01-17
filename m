@@ -1,106 +1,67 @@
-From: "Cousson, Benoit" <b-cousson@ti.com>
-Subject: Re: [PATCH v3 0/6] OMAP: McSPI: Hwmod adaptation + runtime conversion
-Date: Mon, 17 Jan 2011 17:00:11 +0100
-Message-ID: <4D34678B.702@ti.com>
-References: <32036.10.24.255.18.1295274181.squirrel@dbdmail.itg.ti.com> <AANLkTinOg3aPQrX+rp=UOf4UcMw2CVA=6COgfGpRkVm0@mail.gmail.com>
+From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Subject: [PATCH] SPI: Fix unregistering of the SPI master and SPI devices
+Date: Mon, 17 Jan 2011 17:00:34 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.1101171659550.16051@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "Raja, Govindraj" <govindraj.raja@ti.com>,
-	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"Varadarajan, Charulatha" <charu@ti.com>,
-	Paul Walmsley <paul@pwsan.com>,
-	"Hilman, Kevin" <khilman@ti.com>, Tony Lindgren <tony@atomide.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <AANLkTinOg3aPQrX+rp=UOf4UcMw2CVA=6COgfGpRkVm0@mail.gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+The actual SPI master device instance and SPI devices on the bus are all
+children of the same parent, typically, the SPI host platform device. Not
+taking this into consideration leads to SPI devices never being unregistered.
 
-On 1/17/2011 4:47 PM, Grant Likely wrote:
-> On Mon, Jan 17, 2011 at 7:23 AM, Govindraj.R<govindraj.raja@ti.com>  wrote:
->> Changes invloves:
->> ----------------
->> 1) Addition of hwmod data for omap2/3/4.
->> 2) McSPI driver hwmod adaptation with cleanup of base address
->>    macros and using omap-device API's.
->> 3) Runtime Conversion of McSPI driver.
->>
->> Changes from v2:
->> ---------------
->> 1) Fixing minor comments and adding ack from Grant Likely.
->>         https://patchwork.kernel.org/patch/371321/
->>         https://patchwork.kernel.org/patch/371331/
->
-> Hi Govindraj,
->
-> My comment still stands that it looks like a lot of duplicate data is
-> being generated, which makes this patch set larger than it appears to
-> need to be, but those files aren't in a directory that I maintain so
-> it's not my call.  :-)
+Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+---
+ drivers/spi/spi.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
 
-As Paul said in a previous email, we are well aware of that issue. This 
-is something I will work on for the future OMAP4 variants.
-Since these files are manually done on OMAP2 & 3 and generated for 
-OMAP4, it will require some time and a bunch of scripts to manage easily 
-the delta between OMAP2, 3 and 4.
-It should be much more straightforward for OMAP4 and beyond.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 34bb17f..0fa6c6c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -636,9 +636,13 @@ done:
+ EXPORT_SYMBOL_GPL(spi_register_master);
+ 
+ 
+-static int __unregister(struct device *dev, void *null)
++static int __unregister(struct device *dev, void *data)
+ {
+-	spi_unregister_device(to_spi_device(dev));
++	struct spi_master *master = data;
++
++	if (&master->dev != dev)
++		spi_unregister_device(to_spi_device(dev));
++
+ 	return 0;
+ }
+ 
+@@ -660,7 +664,7 @@ void spi_unregister_master(struct spi_master *master)
+ 	list_del(&master->list);
+ 	mutex_unlock(&board_lock);
+ 
+-	dummy = device_for_each_child(&master->dev, NULL, __unregister);
++	dummy = device_for_each_child(master->dev.parent, master, __unregister);
+ 	device_unregister(&master->dev);
+ }
+ EXPORT_SYMBOL_GPL(spi_unregister_master);
+-- 
+1.7.2.3
 
-Regards,
-Benoit
 
->
-> Tony, I'm okay with your merging this series through your tree.
->
-> g.
->
->>
->> Changes from v1:
->> ---------------
->> 1) Fixing patch 5/5 comments for hwmod+runtime
->>   Split the patch 5/5 to hwmod adaptation
->>   and then runtime conversion
->>   http://www.mail-archive.com/linux-omap@vger.kernel.org/msg33387.html
->>
->> Testing Updates:
->> ----------------
->> Was tested using data transfer test module available at:
->> http://dev.omapzoom.org/?p=richo/device_driver_test.git;a=blob;f=mcspi/test_code/
->> utils/mcspi_modules/omap_mcspi_datatest.c;
->> h=e42ec10c5c844abdde6a7175a268b379fbbdb655;
->> hb=5d9a755d50e58de861c5e8991f2f607bc49b5dc3
->> This test basically involves MISO<-->  MOSI lines looped and data transfer test
->> done using the above test module.
->> System wide suspend and ret/off counts observation, ensured that no behavioral
->> difference with and without this patch series.
->>
->> Charulatha V (1):
->>   OMAP: devices: Modify McSPI device to adapt to hwmod framework
->>
->> Govindraj.R (5):
->>   OMAP2420: hwmod data: Add McSPI
->>   OMAP2430: hwmod data: Add McSPI
->>   OMAP3: hwmod data: Add McSPI
->>   OMAP4: hwmod data: Add McSPI
->>   OMAP: runtime: McSPI driver runtime conversion
->>
->>   arch/arm/mach-omap2/devices.c              |  187 ++++---------------
->>   arch/arm/mach-omap2/omap_hwmod_2420_data.c |  156 ++++++++++++++++
->>   arch/arm/mach-omap2/omap_hwmod_2430_data.c |  219 ++++++++++++++++++++++
->>   arch/arm/mach-omap2/omap_hwmod_3xxx_data.c |  280 ++++++++++++++++++++++++++++
->>   arch/arm/mach-omap2/omap_hwmod_44xx_data.c |  266 ++++++++++++++++++++++++++
->>   arch/arm/plat-omap/include/plat/mcspi.h    |   11 +
->>   drivers/spi/omap2_mcspi.c                  |  224 +++++++---------------
->>   7 files changed, 1043 insertions(+), 300 deletions(-)
->>
->>
->>
->
->
->
-
+------------------------------------------------------------------------------
+Protect Your Site and Customers from Malware Attacks
+Learn about various malware tactics and how to avoid them. Understand 
+malware threats, the impact they can have on your business, and how you 
+can protect your company and customers by using code signing.
+http://p.sf.net/sfu/oracle-sfdevnl

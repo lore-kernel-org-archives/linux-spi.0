@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v8 06/11] davinci: add ssp config for tnetv107x evm board
-Date: Mon, 17 Jan 2011 14:15:20 -0500
-Message-ID: <1295291725-32509-7-git-send-email-cyril@ti.com>
+Subject: [PATCH v8 09/11] davinci: add tnetv107x evm ti-ssp gpio device
+Date: Mon, 17 Jan 2011 14:15:23 -0500
+Message-ID: <1295291725-32509-10-git-send-email-cyril@ti.com>
 References: <1295291725-32509-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,57 +22,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds SSP configuration and pin muxing info for tnetv107x
-evm boards.
+This patch adds definitions to hook up one of the ti-ssp ports to the SSP GPIO
+driver.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   14 ++++++++++++++
- 1 files changed, 14 insertions(+), 0 deletions(-)
+ arch/arm/mach-davinci/board-tnetv107x-evm.c |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index a6db854..ef526b1 100644
+index ca23516..e3863dd 100644
 --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -99,6 +99,12 @@ static const short uart1_pins[] __initdata = {
- 	-1
+@@ -39,6 +39,8 @@
+ #include <mach/cp_intc.h>
+ #include <mach/tnetv107x.h>
+ 
++#define SSP_GPIO_START		128
++
+ #define EVM_MMC_WP_GPIO		21
+ #define EVM_MMC_CD_GPIO		24
+ #define EVM_SPI_CS_GPIO		54
+@@ -238,9 +240,18 @@ static struct ti_ssp_spi_data spi_master_data = {
+ 		  SSP_INPUT_SEL(3),
  };
  
-+static const short ssp_pins[] __initdata = {
-+	TNETV107X_SSP0_0, TNETV107X_SSP0_1, TNETV107X_SSP0_2,
-+	TNETV107X_SSP1_0, TNETV107X_SSP1_1, TNETV107X_SSP1_2,
-+	TNETV107X_SSP1_3, -1
++static struct ti_ssp_gpio_data ssp_gpio_data = {
++	.start		= SSP_GPIO_START,
 +};
 +
- static struct mtd_partition nand_partitions[] = {
- 	/* bootloader (U-Boot, etc) in first 12 sectors */
- 	{
-@@ -196,17 +202,25 @@ static struct matrix_keypad_platform_data keypad_config = {
- 	.no_autorepeat	= 0,
- };
- 
-+static struct ti_ssp_data ssp_config = {
-+	.out_clock	= 250 * 1000,
-+	.dev_data	= {
-+	},
-+};
-+
- static struct tnetv107x_device_info evm_device_info __initconst = {
- 	.serial_config		= &serial_config,
- 	.mmc_config[1]		= &mmc_config,	/* controller 1 */
- 	.nand_config[0]		= &nand_config,	/* chip select 0 */
- 	.keypad_config		= &keypad_config,
-+	.ssp_config		= &ssp_config,
- };
- 
- static __init void tnetv107x_evm_board_init(void)
- {
- 	davinci_cfg_reg_list(sdio1_pins);
- 	davinci_cfg_reg_list(uart1_pins);
-+	davinci_cfg_reg_list(ssp_pins);
- 
- 	tnetv107x_devices_init(&evm_device_info);
- }
+ static struct ti_ssp_data ssp_config = {
+ 	.out_clock	= 250 * 1000,
+ 	.dev_data	= {
++		[0] = {
++			.dev_name = "ti-ssp-gpio",
++			.pdata = &ssp_gpio_data,
++			.pdata_size = sizeof(ssp_gpio_data),
++		},
+ 		[1] = {
+ 			.dev_name = "ti-ssp-spi",
+ 			.pdata = &spi_master_data,
 -- 
 1.7.1
 

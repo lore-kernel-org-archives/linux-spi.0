@@ -1,54 +1,112 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [git pull] and spi bugfix and a devicetree patch.
-Date: Mon, 17 Jan 2011 11:50:36 -0700
-Message-ID: <AANLkTikCJy4QWGxyRwv53JGMKf12Zqh_8pZOy82eAWWc@mail.gmail.com>
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v8 00/11]  tnetv107x ssp drivers
+Date: Mon, 17 Jan 2011 14:15:14 -0500
+Message-ID: <1295291725-32509-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss <devicetree-dis
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+        rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus,
+TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+device.  It has a built-in programmable execution engine that can be programmed
+to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
 
-To more minor changes.  This should be it from me for the merge window.
+This patch series implements a driver stack that looks like the following:
 
-g.
+                             +--------+
+                             | eeprom | . . .
+                             +--------+
+   +-----------+             +--------------+ +---------+
+   | regulator | . . .       |   i2c-gpio   | | 1-wire  | . . .
+   +-----------+             +--------------+ +---------+
+   +----------------------+  +--------------------------------+
+   |       ssp-spi        |  |           ssp-gpio             |
+   +----------------------+  +--------------------------------+
+   +----------------------------------------------------------+
+   |                            ssp                           |
+   +----------------------------------------------------------+
 
-The following changes since commit e78bf5e6cbe837daa6ab628a5f679548742994d3:
+Changes between v8 and v7 of this series:
+  - Reorder commits, removed regulator driver patch (already upstreamed)
+  - Renamed static function definitions to keep namespace clean (mfd, gpio)
+  - Removed instance pdata in mfd driver
 
-  drivers/nfc/pn544.c: fix min_t warnings (2011-01-16 17:28:21 -0800)
+Changes between v7 and v6 of this series:
+  - Workaround for iosel2 register not reading back set bits.
+  - Update backlight status once probe succeeds.
 
-are available in the git repository at:
-  git://git.secretlab.ca/git/linux-2.6 next-devicetree
+Changes between v6 and v5 of this series:
+  - Changed initcalls to module_init() across all drivers.  This series now
+    uses a late_initcall() in the board to delay initialization of gpio and
+    regulator dependent devices.
 
-Grant Likely (1):
-      dt/flattree: Return virtual address from early_init_dt_alloc_memory_arch()
+Changes between v5 and v4 of this series:
+  - Moved drivers from misc/gpio/spi to mfd
+  - Removed implicit init-time iosel setup
+  - Minor cleanups in backlight driver
 
-Guennadi Liakhovetski (1):
-      spi/spi_sh_msiof: fix a wrong free_irq() parameter
+Changes between v3 and v4 of this series:
+  - Replaced polled wait for sequence termination with interrupt
+  - Improved locking within SSP driver
+  - Other minor cleanups
 
- arch/microblaze/kernel/prom.c |    4 ++--
- arch/mips/kernel/prom.c       |    6 ++----
- arch/powerpc/kernel/prom.c    |    4 ++--
- drivers/of/fdt.c              |    8 +-------
- drivers/spi/spi_sh_msiof.c    |    2 +-
- include/linux/of_fdt.h        |    2 +-
- 6 files changed, 9 insertions(+), 17 deletions(-)
+Changes between v2 and v3 of this series:
+  - Minor cleanups in Kconfig and Makefile ordering
+
+Changes between v1 and v2 of this series:
+  - Replaced open()/close() semantics with dynamic platform_device
+    registration on SSP probe.
+  - Removed user-land interface to regulator registers
+  - More sensible regulator constraints
+  - Other minor cleanups
 
 
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Cyril Chemparathy (11):
+  mfd: add driver for sequencer serial port
+  spi: add ti-ssp spi master driver
+  gpio: add ti-ssp gpio driver
+  backlight: add support for tps6116x controller
+  davinci: add tnetv107x ssp platform device
+  davinci: add ssp config for tnetv107x evm board
+  davinci: add spi devices on tnetv107x evm
+  davinci: add tnetv107x evm regulators
+  davinci: add tnetv107x evm ti-ssp gpio device
+  davinci: add tnetv107x evm backlight device
+  davinci: add tnetv107x evm i2c eeprom device
+
+ arch/arm/mach-davinci/board-tnetv107x-evm.c    |  197 ++++++++++
+ arch/arm/mach-davinci/devices-tnetv107x.c      |   25 ++
+ arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+ arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+ drivers/gpio/Kconfig                           |   10 +
+ drivers/gpio/Makefile                          |    1 +
+ drivers/gpio/ti-ssp-gpio.c                     |  207 ++++++++++
+ drivers/mfd/Kconfig                            |   11 +
+ drivers/mfd/Makefile                           |    1 +
+ drivers/mfd/ti-ssp.c                           |  476 ++++++++++++++++++++++++
+ drivers/spi/Kconfig                            |   10 +
+ drivers/spi/Makefile                           |    1 +
+ drivers/spi/ti-ssp-spi.c                       |  402 ++++++++++++++++++++
+ drivers/video/backlight/Kconfig                |    7 +
+ drivers/video/backlight/Makefile               |    2 +-
+ drivers/video/backlight/tps6116x.c             |  299 +++++++++++++++
+ include/linux/mfd/ti_ssp.h                     |   97 +++++
+ 17 files changed, 1748 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/gpio/ti-ssp-gpio.c
+ create mode 100644 drivers/mfd/ti-ssp.c
+ create mode 100644 drivers/spi/ti-ssp-spi.c
+ create mode 100644 drivers/video/backlight/tps6116x.c
+ create mode 100644 include/linux/mfd/ti_ssp.h

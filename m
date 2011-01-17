@@ -1,8 +1,8 @@
 From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-Subject: [PATCH v3] spi: New driver for Altera SPI
-Date: Mon, 17 Jan 2011 15:04:29 +0800
-Message-ID: <1295247869-4968-1-git-send-email-thomas@wytron.com.tw>
-References: <AANLkTi=D4Rcxbei2oo+EHc6X1O-2Oo+VWHAasK_JLj5W@mail.gmail.com>
+Subject: [PATCH v4] spi: New driver for Altera SPI
+Date: Mon, 17 Jan 2011 15:13:56 +0800
+Message-ID: <1295248436-5049-1-git-send-email-thomas@wytron.com.tw>
+References: <AANLkTimCvYai7mvrrHP9=EXB4L+yw3W2ad-7DU_iEzLy@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org, Mike Frysinger 
 To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <AANLkTi=D4Rcxbei2oo+EHc6X1O-2Oo+VWHAasK_JLj5W-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTimCvYai7mvrrHP9=EXB4L+yw3W2ad-7DU_iEzLy-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
 	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
@@ -32,11 +32,12 @@ Signed-off-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
 v2 add devicetree support
 v3 remove platform header, as Grant suggested.
    no irq resource means polling.
+v4 minor cleanup, as Grant suggested.
 
  drivers/spi/Kconfig      |    6 +
  drivers/spi/Makefile     |    1 +
- drivers/spi/spi_altera.c |  391 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 398 insertions(+), 0 deletions(-)
+ drivers/spi/spi_altera.c |  389 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 396 insertions(+), 0 deletions(-)
  create mode 100644 drivers/spi/spi_altera.c
 
 diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
@@ -70,10 +71,10 @@ index 3a42463..c2675a4 100644
  obj-$(CONFIG_SPI_BITBANG)		+= spi_bitbang.o
 diff --git a/drivers/spi/spi_altera.c b/drivers/spi/spi_altera.c
 new file mode 100644
-index 0000000..f90ef0f
+index 0000000..e4cbd5f
 --- /dev/null
 +++ b/drivers/spi/spi_altera.c
-@@ -0,0 +1,391 @@
+@@ -0,0 +1,389 @@
 +/*
 + * Altera SPI driver
 + *
@@ -140,17 +141,16 @@ index 0000000..f90ef0f
 +	/* data buffers */
 +	const unsigned char *tx;
 +	unsigned char *rx;
-+
 +};
 +
-+static inline struct altera_spi *to_hw(struct spi_device *sdev)
++static inline struct altera_spi *altera_spi_to_hw(struct spi_device *sdev)
 +{
 +	return spi_master_get_devdata(sdev->master);
 +}
 +
 +static void altera_spi_chipsel(struct spi_device *spi, int value)
 +{
-+	struct altera_spi *hw = to_hw(spi);
++	struct altera_spi *hw = altera_spi_to_hw(spi);
 +
 +	if (spi->mode & SPI_CS_HIGH) {
 +		switch (value) {
@@ -211,7 +211,7 @@ index 0000000..f90ef0f
 +
 +static int altera_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
 +{
-+	struct altera_spi *hw = to_hw(spi);
++	struct altera_spi *hw = altera_spi_to_hw(spi);
 +
 +	hw->tx = t->tx_buf;
 +	hw->rx = t->rx_buf;
@@ -401,7 +401,7 @@ index 0000000..f90ef0f
 +	if (hw->irq >= 0)
 +		free_irq(hw->irq, hw);
 +err_no_irq:
-+	iounmap((void *)hw->base);
++	iounmap(hw->base);
 +err_no_iomap:
 +err_no_iores:
 +	spi_master_put(master);;
@@ -419,7 +419,7 @@ index 0000000..f90ef0f
 +
 +	if (hw->irq >= 0)
 +		free_irq(hw->irq, hw);
-+	iounmap((void *)hw->base);
++	iounmap(hw->base);
 +
 +	platform_set_drvdata(dev, NULL);
 +	spi_master_put(master);
@@ -452,13 +452,12 @@ index 0000000..f90ef0f
 +{
 +	return platform_driver_probe(&altera_spidrv, altera_spi_probe);
 +}
++module_init(altera_spi_init);
 +
 +static void __exit altera_spi_exit(void)
 +{
 +	platform_driver_unregister(&altera_spidrv);
 +}
-+
-+module_init(altera_spi_init);
 +module_exit(altera_spi_exit);
 +
 +MODULE_DESCRIPTION("Altera SPI driver");

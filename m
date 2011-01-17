@@ -1,328 +1,111 @@
-From: Kevin Hilman <khilman@ti.com>
-Subject: Re: [PATCH v3 4/6] OMAP4: hwmod data: Add McSPI
-Date: Mon, 17 Jan 2011 08:29:31 -0800
-Message-ID: <87wrm35w9g.fsf@ti.com>
-References: <32203.10.24.255.18.1295274218.squirrel@dbdmail.itg.ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] SPI: Fix unregistering of the SPI master and SPI devices
+Date: Mon, 17 Jan 2011 10:12:34 -0700
+Message-ID: <AANLkTinufhbNoAkozt2-xf7Nnd4GAs77mYy9X2NxO8uV@mail.gmail.com>
+References: <Pine.LNX.4.64.1101171659550.16051@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap@vger.kernel.org,
-	"spi-devel-general" <spi-devel-general@lists.sourceforge.net>,
-	linux-arm-kernel@lists.infradead.org,
-	"Grant Likely" <grant.likely@secretlab.ca>,
-	"Charulatha V" <charu@ti.com>, "Benoit Cousson" <b-cousson@ti.com>,
-	"Paul Walmsley" <paul@pwsan.com>,
-	"Tony Lindgren" <tony@atomide.com>
-To: "Govindraj.R" <govindraj.raja@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <32203.10.24.255.18.1295274218.squirrel@dbdmail.itg.ti.com>
-	(Govindraj R.'s message of "Mon, 17 Jan 2011 19:53:38 +0530 (IST)")
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.1101171659550.16051-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-"Govindraj.R" <govindraj.raja@ti.com> writes:
+On Mon, Jan 17, 2011 at 9:00 AM, Guennadi Liakhovetski
+<g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> The actual SPI master device instance and SPI devices on the bus are all
+> children of the same parent, typically, the SPI host platform device. Not
+> taking this into consideration leads to SPI devices never being unregiste=
+red.
 
-> Update omap4 hwmod file with McSPI info.
+Conceptually, the fact that spi puts the master and the slaves at the
+same level doesn't make very much sense to me.  I've been toying with
+the idea of changing it so that the slaves become children of the
+master.  It is conceivable that a single device would contain two or
+more spi master instances, so it would be wise to separate the slave
+instances from each other.
+
+David, what's the reasoning for making slaves and the master peers?
+
+g.
+
 >
-> Signed-off-by: Benoit Cousson <b-cousson@ti.com>
-> Signed-off-by: Charulatha V <charu@ti.com>
-> Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
-
-Shouldn't Benoit be the author of this patch?
-
-Kevin
-
+> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 > ---
->  arch/arm/mach-omap2/omap_hwmod_44xx_data.c |  266 ++++++++++++++++++++++++++++
->  1 files changed, 266 insertions(+), 0 deletions(-)
+> =A0drivers/spi/spi.c | =A0 10 +++++++---
+> =A01 files changed, 7 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-> index c2806bd..d4cd695 100644
-> --- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-> +++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
-> @@ -24,6 +24,7 @@
->  #include <plat/cpu.h>
->  #include <plat/gpio.h>
->  #include <plat/dma.h>
-> +#include <plat/mcspi.h>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 34bb17f..0fa6c6c 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -636,9 +636,13 @@ done:
+> =A0EXPORT_SYMBOL_GPL(spi_register_master);
 >
->  #include "omap_hwmod_common_data.h"
 >
-> @@ -2001,6 +2002,265 @@ static struct omap_hwmod omap44xx_wd_timer3_hwmod = {
->  	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
->  };
+> -static int __unregister(struct device *dev, void *null)
+> +static int __unregister(struct device *dev, void *data)
+> =A0{
+> - =A0 =A0 =A0 spi_unregister_device(to_spi_device(dev));
+> + =A0 =A0 =A0 struct spi_master *master =3D data;
+> +
+> + =A0 =A0 =A0 if (&master->dev !=3D dev)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 spi_unregister_device(to_spi_device(dev));
+> +
+> =A0 =A0 =A0 =A0return 0;
+> =A0}
 >
-> +/*
-> + * 'mcspi' class
-> + * multichannel serial port interface (mcspi) / master/slave synchronous serial
-> + * bus
-> + */
-> +
-> +static struct omap_hwmod_class_sysconfig omap44xx_mcspi_sysc = {
-> +	.rev_offs	= 0x0000,
-> +	.sysc_offs	= 0x0010,
-> +	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_EMUFREE |
-> +			   SYSC_HAS_SOFTRESET | SYSC_HAS_RESET_STATUS),
-> +	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
-> +	.sysc_fields	= &omap_hwmod_sysc_type2,
-> +};
-> +
-> +static struct omap_hwmod_class omap44xx_mcspi_hwmod_class = {
-> +	.name = "mcspi",
-> +	.sysc = &omap44xx_mcspi_sysc,
-> +	.rev = OMAP4_MCSPI_REV,
-> +};
-> +
-> +/* mcspi1 */
-> +static struct omap_hwmod omap44xx_mcspi1_hwmod;
-> +static struct omap_hwmod_irq_info omap44xx_mcspi1_irqs[] = {
-> +	{ .irq = 65 + OMAP44XX_IRQ_GIC_START },
-> +};
-> +
-> +static struct omap_hwmod_dma_info omap44xx_mcspi1_sdma_reqs[] = {
-> +	{ .name = "tx0", .dma_req = 34 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx0", .dma_req = 35 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "tx1", .dma_req = 36 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx1", .dma_req = 37 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "tx2", .dma_req = 38 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx2", .dma_req = 39 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "tx3", .dma_req = 40 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx3", .dma_req = 41 + OMAP44XX_DMA_REQ_START },
-> +};
-> +
-> +static struct omap_hwmod_addr_space omap44xx_mcspi1_addrs[] = {
-> +	{
-> +		.pa_start	= 0x48098000,
-> +		.pa_end		= 0x480981ff,
-> +		.flags		= ADDR_TYPE_RT
-> +	},
-> +};
-> +
-> +/* l4_per -> mcspi1 */
-> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi1 = {
-> +	.master		= &omap44xx_l4_per_hwmod,
-> +	.slave		= &omap44xx_mcspi1_hwmod,
-> +	.clk		= "l4_div_ck",
-> +	.addr		= omap44xx_mcspi1_addrs,
-> +	.addr_cnt	= ARRAY_SIZE(omap44xx_mcspi1_addrs),
-> +	.user		= OCP_USER_MPU | OCP_USER_SDMA,
-> +};
-> +
-> +/* mcspi1 slave ports */
-> +static struct omap_hwmod_ocp_if *omap44xx_mcspi1_slaves[] = {
-> +	&omap44xx_l4_per__mcspi1,
-> +};
-> +
-> +static struct omap2_mcspi_dev_attr omap_mcspi1_dev_attr = {
-> +	.num_chipselect = 4,
-> +};
-> +
-> +static struct omap_hwmod omap44xx_mcspi1_hwmod = {
-> +	.name		= "mcspi1",
-> +	.class		= &omap44xx_mcspi_hwmod_class,
-> +	.mpu_irqs	= omap44xx_mcspi1_irqs,
-> +	.mpu_irqs_cnt	= ARRAY_SIZE(omap44xx_mcspi1_irqs),
-> +	.sdma_reqs	= omap44xx_mcspi1_sdma_reqs,
-> +	.sdma_reqs_cnt	= ARRAY_SIZE(omap44xx_mcspi1_sdma_reqs),
-> +	.main_clk	= "mcspi1_fck",
-> +	.prcm = {
-> +		.omap4 = {
-> +			.clkctrl_reg = OMAP4430_CM_L4PER_MCSPI1_CLKCTRL,
-> +		},
-> +	},
-> +	.slaves		= omap44xx_mcspi1_slaves,
-> +	.slaves_cnt	= ARRAY_SIZE(omap44xx_mcspi1_slaves),
-> +	.dev_attr       = &omap_mcspi1_dev_attr,
-> +	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
-> +};
-> +
-> +/* mcspi2 */
-> +static struct omap_hwmod omap44xx_mcspi2_hwmod;
-> +static struct omap_hwmod_irq_info omap44xx_mcspi2_irqs[] = {
-> +	{ .irq = 66 + OMAP44XX_IRQ_GIC_START },
-> +};
-> +
-> +static struct omap_hwmod_dma_info omap44xx_mcspi2_sdma_reqs[] = {
-> +	{ .name = "tx0", .dma_req = 42 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx0", .dma_req = 43 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "tx1", .dma_req = 44 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx1", .dma_req = 45 + OMAP44XX_DMA_REQ_START },
-> +};
-> +
-> +static struct omap_hwmod_addr_space omap44xx_mcspi2_addrs[] = {
-> +	{
-> +		.pa_start	= 0x4809a000,
-> +		.pa_end		= 0x4809a1ff,
-> +		.flags		= ADDR_TYPE_RT
-> +	},
-> +};
-> +
-> +/* l4_per -> mcspi2 */
-> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi2 = {
-> +	.master		= &omap44xx_l4_per_hwmod,
-> +	.slave		= &omap44xx_mcspi2_hwmod,
-> +	.clk		= "l4_div_ck",
-> +	.addr		= omap44xx_mcspi2_addrs,
-> +	.addr_cnt	= ARRAY_SIZE(omap44xx_mcspi2_addrs),
-> +	.user		= OCP_USER_MPU | OCP_USER_SDMA,
-> +};
-> +
-> +/* mcspi2 slave ports */
-> +static struct omap_hwmod_ocp_if *omap44xx_mcspi2_slaves[] = {
-> +	&omap44xx_l4_per__mcspi2,
-> +};
-> +
-> +static struct omap2_mcspi_dev_attr omap_mcspi2_dev_attr = {
-> +	.num_chipselect = 2,
-> +};
-> +
-> +static struct omap_hwmod omap44xx_mcspi2_hwmod = {
-> +	.name		= "mcspi2",
-> +	.class		= &omap44xx_mcspi_hwmod_class,
-> +	.mpu_irqs	= omap44xx_mcspi2_irqs,
-> +	.mpu_irqs_cnt	= ARRAY_SIZE(omap44xx_mcspi2_irqs),
-> +	.sdma_reqs	= omap44xx_mcspi2_sdma_reqs,
-> +	.sdma_reqs_cnt	= ARRAY_SIZE(omap44xx_mcspi2_sdma_reqs),
-> +	.main_clk	= "mcspi2_fck",
-> +	.prcm = {
-> +		.omap4 = {
-> +			.clkctrl_reg = OMAP4430_CM_L4PER_MCSPI2_CLKCTRL,
-> +		},
-> +	},
-> +	.slaves		= omap44xx_mcspi2_slaves,
-> +	.slaves_cnt	= ARRAY_SIZE(omap44xx_mcspi2_slaves),
-> +	.dev_attr       = &omap_mcspi2_dev_attr,
-> +	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
-> +};
-> +
-> +/* mcspi3 */
-> +static struct omap_hwmod omap44xx_mcspi3_hwmod;
-> +static struct omap_hwmod_irq_info omap44xx_mcspi3_irqs[] = {
-> +	{ .irq = 91 + OMAP44XX_IRQ_GIC_START },
-> +};
-> +
-> +static struct omap_hwmod_dma_info omap44xx_mcspi3_sdma_reqs[] = {
-> +	{ .name = "tx0", .dma_req = 14 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx0", .dma_req = 15 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "tx1", .dma_req = 22 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx1", .dma_req = 23 + OMAP44XX_DMA_REQ_START },
-> +};
-> +
-> +static struct omap_hwmod_addr_space omap44xx_mcspi3_addrs[] = {
-> +	{
-> +		.pa_start	= 0x480b8000,
-> +		.pa_end		= 0x480b81ff,
-> +		.flags		= ADDR_TYPE_RT
-> +	},
-> +};
-> +
-> +/* l4_per -> mcspi3 */
-> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi3 = {
-> +	.master		= &omap44xx_l4_per_hwmod,
-> +	.slave		= &omap44xx_mcspi3_hwmod,
-> +	.clk		= "l4_div_ck",
-> +	.addr		= omap44xx_mcspi3_addrs,
-> +	.addr_cnt	= ARRAY_SIZE(omap44xx_mcspi3_addrs),
-> +	.user		= OCP_USER_MPU | OCP_USER_SDMA,
-> +};
-> +
-> +/* mcspi3 slave ports */
-> +static struct omap_hwmod_ocp_if *omap44xx_mcspi3_slaves[] = {
-> +	&omap44xx_l4_per__mcspi3,
-> +};
-> +
-> +static struct omap2_mcspi_dev_attr omap_mcspi3_dev_attr = {
-> +	.num_chipselect = 2,
-> +};
-> +
-> +static struct omap_hwmod omap44xx_mcspi3_hwmod = {
-> +	.name		= "mcspi3",
-> +	.class		= &omap44xx_mcspi_hwmod_class,
-> +	.mpu_irqs	= omap44xx_mcspi3_irqs,
-> +	.mpu_irqs_cnt	= ARRAY_SIZE(omap44xx_mcspi3_irqs),
-> +	.sdma_reqs	= omap44xx_mcspi3_sdma_reqs,
-> +	.sdma_reqs_cnt	= ARRAY_SIZE(omap44xx_mcspi3_sdma_reqs),
-> +	.main_clk	= "mcspi3_fck",
-> +	.prcm = {
-> +		.omap4 = {
-> +			.clkctrl_reg = OMAP4430_CM_L4PER_MCSPI3_CLKCTRL,
-> +		},
-> +	},
-> +	.slaves		= omap44xx_mcspi3_slaves,
-> +	.slaves_cnt	= ARRAY_SIZE(omap44xx_mcspi3_slaves),
-> +	.dev_attr       = &omap_mcspi3_dev_attr,
-> +	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
-> +};
-> +
-> +/* mcspi4 */
-> +static struct omap_hwmod omap44xx_mcspi4_hwmod;
-> +static struct omap_hwmod_irq_info omap44xx_mcspi4_irqs[] = {
-> +	{ .irq = 48 + OMAP44XX_IRQ_GIC_START },
-> +};
-> +
-> +static struct omap_hwmod_dma_info omap44xx_mcspi4_sdma_reqs[] = {
-> +	{ .name = "tx0", .dma_req = 69 + OMAP44XX_DMA_REQ_START },
-> +	{ .name = "rx0", .dma_req = 70 + OMAP44XX_DMA_REQ_START },
-> +};
-> +
-> +static struct omap_hwmod_addr_space omap44xx_mcspi4_addrs[] = {
-> +	{
-> +		.pa_start	= 0x480ba000,
-> +		.pa_end		= 0x480ba1ff,
-> +		.flags		= ADDR_TYPE_RT
-> +	},
-> +};
-> +
-> +/* l4_per -> mcspi4 */
-> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi4 = {
-> +	.master		= &omap44xx_l4_per_hwmod,
-> +	.slave		= &omap44xx_mcspi4_hwmod,
-> +	.clk		= "l4_div_ck",
-> +	.addr		= omap44xx_mcspi4_addrs,
-> +	.addr_cnt	= ARRAY_SIZE(omap44xx_mcspi4_addrs),
-> +	.user		= OCP_USER_MPU | OCP_USER_SDMA,
-> +};
-> +
-> +/* mcspi4 slave ports */
-> +static struct omap_hwmod_ocp_if *omap44xx_mcspi4_slaves[] = {
-> +	&omap44xx_l4_per__mcspi4,
-> +};
-> +
-> +static struct omap2_mcspi_dev_attr omap_mcspi4_dev_attr = {
-> +	.num_chipselect = 1,
-> +};
-> +
-> +static struct omap_hwmod omap44xx_mcspi4_hwmod = {
-> +	.name		= "mcspi4",
-> +	.class		= &omap44xx_mcspi_hwmod_class,
-> +	.mpu_irqs	= omap44xx_mcspi4_irqs,
-> +	.mpu_irqs_cnt	= ARRAY_SIZE(omap44xx_mcspi4_irqs),
-> +	.sdma_reqs	= omap44xx_mcspi4_sdma_reqs,
-> +	.sdma_reqs_cnt	= ARRAY_SIZE(omap44xx_mcspi4_sdma_reqs),
-> +	.main_clk	= "mcspi4_fck",
-> +	.prcm = {
-> +		.omap4 = {
-> +			.clkctrl_reg = OMAP4430_CM_L4PER_MCSPI4_CLKCTRL,
-> +		},
-> +	},
-> +	.slaves		= omap44xx_mcspi4_slaves,
-> +	.slaves_cnt	= ARRAY_SIZE(omap44xx_mcspi4_slaves),
-> +	.dev_attr       = &omap_mcspi4_dev_attr,
-> +	.omap_chip	= OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
-> +};
-> +
->  static __initdata struct omap_hwmod *omap44xx_hwmods[] = {
+> @@ -660,7 +664,7 @@ void spi_unregister_master(struct spi_master *master)
+> =A0 =A0 =A0 =A0list_del(&master->list);
+> =A0 =A0 =A0 =A0mutex_unlock(&board_lock);
 >
->  	/* dmm class */
-> @@ -2068,6 +2328,12 @@ static __initdata struct omap_hwmod *omap44xx_hwmods[] = {
->  	&omap44xx_wd_timer2_hwmod,
->  	&omap44xx_wd_timer3_hwmod,
+> - =A0 =A0 =A0 dummy =3D device_for_each_child(&master->dev, NULL, __unreg=
+ister);
+> + =A0 =A0 =A0 dummy =3D device_for_each_child(master->dev.parent, master,=
+ __unregister);
+> =A0 =A0 =A0 =A0device_unregister(&master->dev);
+> =A0}
+> =A0EXPORT_SYMBOL_GPL(spi_unregister_master);
+> --
+> 1.7.2.3
 >
-> +	/* mcspi class */
-> +	&omap44xx_mcspi1_hwmod,
-> +	&omap44xx_mcspi2_hwmod,
-> +	&omap44xx_mcspi3_hwmod,
-> +	&omap44xx_mcspi4_hwmod,
-> +
->  	NULL,
->  };
+>
+> -------------------------------------------------------------------------=
+-----
+> Protect Your Site and Customers from Malware Attacks
+> Learn about various malware tactics and how to avoid them. Understand
+> malware threats, the impact they can have on your business, and how you
+> can protect your company and customers by using code signing.
+> http://p.sf.net/sfu/oracle-sfdevnl
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
+
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
+Protect Your Site and Customers from Malware Attacks
+Learn about various malware tactics and how to avoid them. Understand =
+
+malware threats, the impact they can have on your business, and how you =
+
+can protect your company and customers by using code signing.
+http://p.sf.net/sfu/oracle-sfdevnl

@@ -1,399 +1,214 @@
-From: Govindraj <govindraj.ti@gmail.com>
-Subject: Re: [PATCH v3 4/6] OMAP4: hwmod data: Add McSPI
-Date: Tue, 18 Jan 2011 12:00:04 +0530
-Message-ID: <AANLkTikjDBHXKgqJwDrrZCY6j6x7adWBvjb-KXzdWbzt@mail.gmail.com>
-References: <32203.10.24.255.18.1295274218.squirrel@dbdmail.itg.ti.com> <87wrm35w9g.fsf@ti.com>
+From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
+Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+Date: Tue, 18 Jan 2011 21:36:48 +0900
+Message-ID: <EEE6F4C641AC4593B5CDF5139FCAD0F6@hacdom.okisemi.com>
+References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com><20101229064937.GC8172@angua.secretlab.ca><280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com><20110105163835.GD17272@angua.secretlab.ca><46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com> <topcliff-split@mdm.bga.com>  <CA1F4AF27C0D466BA059E4B050FF3360@hacdom.okisemi.com> <A780EBC01B4946F895EA47BE425B56F8@hacdom.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: "Govindraj.R" <govindraj.raja@ti.com>, linux-omap@vger.kernel.org,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	linux-arm-kernel@lists.infradead.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Charulatha V <charu@ti.com>, Benoit Cousson <b-cousson@ti.com>,
-	Paul Walmsley <paul@pwsan.com>,
-	Tony Lindgren <tony@atomide.com>
-To: Kevin Hilman <khilman@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <87wrm35w9g.fsf@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: "'David Brownell'" <dbrownell@users.sourceforge.net>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>, <yong.y.wang@intel.com>,
+	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
+	"'Toshiharu Okada'" <toshiharu-linux@dsn.okisemi.com>,
+	"'Wang, Qi'" <qi.wang@intel.com>
+To: "'Milton Miller'" <miltonm@bga.com>,
+	"'Grant Likely'" <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <A780EBC01B4946F895EA47BE425B56F8@hacdom.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 17, 2011 at 9:59 PM, Kevin Hilman <khilman@ti.com> wrote:
-> "Govindraj.R" <govindraj.raja@ti.com> writes:
->
->> Update omap4 hwmod file with McSPI info.
->>
->> Signed-off-by: Benoit Cousson <b-cousson@ti.com>
->> Signed-off-by: Charulatha V <charu@ti.com>
->> Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
->> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->
-> Shouldn't Benoit be the author of this patch?
+Hi Grant,
 
-Sorry my mistake, will give a quick respin and post out a new version
-today.
+Need your help!
+Could you give us your answer ?
 
---
 Thanks,
-Govindraj.R
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD.
 
->
-> Kevin
->
->> ---
->> =A0arch/arm/mach-omap2/omap_hwmod_44xx_data.c | =A0266 +++++++++++++=
-+++++++++++++++
->> =A01 files changed, 266 insertions(+), 0 deletions(-)
->>
->> diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/m=
-ach-omap2/omap_hwmod_44xx_data.c
->> index c2806bd..d4cd695 100644
->> --- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
->> +++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
->> @@ -24,6 +24,7 @@
->> =A0#include <plat/cpu.h>
->> =A0#include <plat/gpio.h>
->> =A0#include <plat/dma.h>
->> +#include <plat/mcspi.h>
->>
->> =A0#include "omap_hwmod_common_data.h"
->>
->> @@ -2001,6 +2002,265 @@ static struct omap_hwmod omap44xx_wd_timer3_=
-hwmod =3D {
->> =A0 =A0 =A0 .omap_chip =A0 =A0 =A0=3D OMAP_CHIP_INIT(CHIP_IS_OMAP443=
-0),
->> =A0};
->>
->> +/*
->> + * 'mcspi' class
->> + * multichannel serial port interface (mcspi) / master/slave synchr=
-onous serial
->> + * bus
->> + */
->> +
->> +static struct omap_hwmod_class_sysconfig omap44xx_mcspi_sysc =3D {
->> + =A0 =A0 .rev_offs =A0 =A0 =A0 =3D 0x0000,
->> + =A0 =A0 .sysc_offs =A0 =A0 =A0=3D 0x0010,
->> + =A0 =A0 .sysc_flags =A0 =A0 =3D (SYSC_HAS_SIDLEMODE | SYSC_HAS_EMU=
-=46REE |
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0SYSC_HAS_SOFTRESET =
-| SYSC_HAS_RESET_STATUS),
->> + =A0 =A0 .idlemodes =A0 =A0 =A0=3D (SIDLE_FORCE | SIDLE_NO | SIDLE_=
-SMART),
->> + =A0 =A0 .sysc_fields =A0 =A0=3D &omap_hwmod_sysc_type2,
->> +};
->> +
->> +static struct omap_hwmod_class omap44xx_mcspi_hwmod_class =3D {
->> + =A0 =A0 .name =3D "mcspi",
->> + =A0 =A0 .sysc =3D &omap44xx_mcspi_sysc,
->> + =A0 =A0 .rev =3D OMAP4_MCSPI_REV,
->> +};
->> +
->> +/* mcspi1 */
->> +static struct omap_hwmod omap44xx_mcspi1_hwmod;
->> +static struct omap_hwmod_irq_info omap44xx_mcspi1_irqs[] =3D {
->> + =A0 =A0 { .irq =3D 65 + OMAP44XX_IRQ_GIC_START },
->> +};
->> +
->> +static struct omap_hwmod_dma_info omap44xx_mcspi1_sdma_reqs[] =3D {
->> + =A0 =A0 { .name =3D "tx0", .dma_req =3D 34 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx0", .dma_req =3D 35 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "tx1", .dma_req =3D 36 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx1", .dma_req =3D 37 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "tx2", .dma_req =3D 38 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx2", .dma_req =3D 39 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "tx3", .dma_req =3D 40 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx3", .dma_req =3D 41 + OMAP44XX_DMA_REQ_STAR=
-T },
->> +};
->> +
->> +static struct omap_hwmod_addr_space omap44xx_mcspi1_addrs[] =3D {
->> + =A0 =A0 {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_start =A0 =A0 =A0 =3D 0x48098000,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_end =A0 =A0 =A0 =A0 =3D 0x480981ff,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .flags =A0 =A0 =A0 =A0 =A0=3D ADDR_TYPE_RT
->> + =A0 =A0 },
->> +};
->> +
->> +/* l4_per -> mcspi1 */
->> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi1 =3D {
->> + =A0 =A0 .master =A0 =A0 =A0 =A0 =3D &omap44xx_l4_per_hwmod,
->> + =A0 =A0 .slave =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi1_hwmod,
->> + =A0 =A0 .clk =A0 =A0 =A0 =A0 =A0 =A0=3D "l4_div_ck",
->> + =A0 =A0 .addr =A0 =A0 =A0 =A0 =A0 =3D omap44xx_mcspi1_addrs,
->> + =A0 =A0 .addr_cnt =A0 =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi1_addrs=
-),
->> + =A0 =A0 .user =A0 =A0 =A0 =A0 =A0 =3D OCP_USER_MPU | OCP_USER_SDMA=
-,
->> +};
->> +
->> +/* mcspi1 slave ports */
->> +static struct omap_hwmod_ocp_if *omap44xx_mcspi1_slaves[] =3D {
->> + =A0 =A0 &omap44xx_l4_per__mcspi1,
->> +};
->> +
->> +static struct omap2_mcspi_dev_attr omap_mcspi1_dev_attr =3D {
->> + =A0 =A0 .num_chipselect =3D 4,
->> +};
->> +
->> +static struct omap_hwmod omap44xx_mcspi1_hwmod =3D {
->> + =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mcspi1",
->> + =A0 =A0 .class =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi_hwmod_class,
->> + =A0 =A0 .mpu_irqs =A0 =A0 =A0 =3D omap44xx_mcspi1_irqs,
->> + =A0 =A0 .mpu_irqs_cnt =A0 =3D ARRAY_SIZE(omap44xx_mcspi1_irqs),
->> + =A0 =A0 .sdma_reqs =A0 =A0 =A0=3D omap44xx_mcspi1_sdma_reqs,
->> + =A0 =A0 .sdma_reqs_cnt =A0=3D ARRAY_SIZE(omap44xx_mcspi1_sdma_reqs=
-),
->> + =A0 =A0 .main_clk =A0 =A0 =A0 =3D "mcspi1_fck",
->> + =A0 =A0 .prcm =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .omap4 =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .clkctrl_reg =3D OMAP4430_=
-CM_L4PER_MCSPI1_CLKCTRL,
->> + =A0 =A0 =A0 =A0 =A0 =A0 },
->> + =A0 =A0 },
->> + =A0 =A0 .slaves =A0 =A0 =A0 =A0 =3D omap44xx_mcspi1_slaves,
->> + =A0 =A0 .slaves_cnt =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi1_slaves)=
-,
->> + =A0 =A0 .dev_attr =A0 =A0 =A0 =3D &omap_mcspi1_dev_attr,
->> + =A0 =A0 .omap_chip =A0 =A0 =A0=3D OMAP_CHIP_INIT(CHIP_IS_OMAP4430)=
-,
->> +};
->> +
->> +/* mcspi2 */
->> +static struct omap_hwmod omap44xx_mcspi2_hwmod;
->> +static struct omap_hwmod_irq_info omap44xx_mcspi2_irqs[] =3D {
->> + =A0 =A0 { .irq =3D 66 + OMAP44XX_IRQ_GIC_START },
->> +};
->> +
->> +static struct omap_hwmod_dma_info omap44xx_mcspi2_sdma_reqs[] =3D {
->> + =A0 =A0 { .name =3D "tx0", .dma_req =3D 42 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx0", .dma_req =3D 43 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "tx1", .dma_req =3D 44 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx1", .dma_req =3D 45 + OMAP44XX_DMA_REQ_STAR=
-T },
->> +};
->> +
->> +static struct omap_hwmod_addr_space omap44xx_mcspi2_addrs[] =3D {
->> + =A0 =A0 {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_start =A0 =A0 =A0 =3D 0x4809a000,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_end =A0 =A0 =A0 =A0 =3D 0x4809a1ff,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .flags =A0 =A0 =A0 =A0 =A0=3D ADDR_TYPE_RT
->> + =A0 =A0 },
->> +};
->> +
->> +/* l4_per -> mcspi2 */
->> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi2 =3D {
->> + =A0 =A0 .master =A0 =A0 =A0 =A0 =3D &omap44xx_l4_per_hwmod,
->> + =A0 =A0 .slave =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi2_hwmod,
->> + =A0 =A0 .clk =A0 =A0 =A0 =A0 =A0 =A0=3D "l4_div_ck",
->> + =A0 =A0 .addr =A0 =A0 =A0 =A0 =A0 =3D omap44xx_mcspi2_addrs,
->> + =A0 =A0 .addr_cnt =A0 =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi2_addrs=
-),
->> + =A0 =A0 .user =A0 =A0 =A0 =A0 =A0 =3D OCP_USER_MPU | OCP_USER_SDMA=
-,
->> +};
->> +
->> +/* mcspi2 slave ports */
->> +static struct omap_hwmod_ocp_if *omap44xx_mcspi2_slaves[] =3D {
->> + =A0 =A0 &omap44xx_l4_per__mcspi2,
->> +};
->> +
->> +static struct omap2_mcspi_dev_attr omap_mcspi2_dev_attr =3D {
->> + =A0 =A0 .num_chipselect =3D 2,
->> +};
->> +
->> +static struct omap_hwmod omap44xx_mcspi2_hwmod =3D {
->> + =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mcspi2",
->> + =A0 =A0 .class =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi_hwmod_class,
->> + =A0 =A0 .mpu_irqs =A0 =A0 =A0 =3D omap44xx_mcspi2_irqs,
->> + =A0 =A0 .mpu_irqs_cnt =A0 =3D ARRAY_SIZE(omap44xx_mcspi2_irqs),
->> + =A0 =A0 .sdma_reqs =A0 =A0 =A0=3D omap44xx_mcspi2_sdma_reqs,
->> + =A0 =A0 .sdma_reqs_cnt =A0=3D ARRAY_SIZE(omap44xx_mcspi2_sdma_reqs=
-),
->> + =A0 =A0 .main_clk =A0 =A0 =A0 =3D "mcspi2_fck",
->> + =A0 =A0 .prcm =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .omap4 =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .clkctrl_reg =3D OMAP4430_=
-CM_L4PER_MCSPI2_CLKCTRL,
->> + =A0 =A0 =A0 =A0 =A0 =A0 },
->> + =A0 =A0 },
->> + =A0 =A0 .slaves =A0 =A0 =A0 =A0 =3D omap44xx_mcspi2_slaves,
->> + =A0 =A0 .slaves_cnt =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi2_slaves)=
-,
->> + =A0 =A0 .dev_attr =A0 =A0 =A0 =3D &omap_mcspi2_dev_attr,
->> + =A0 =A0 .omap_chip =A0 =A0 =A0=3D OMAP_CHIP_INIT(CHIP_IS_OMAP4430)=
-,
->> +};
->> +
->> +/* mcspi3 */
->> +static struct omap_hwmod omap44xx_mcspi3_hwmod;
->> +static struct omap_hwmod_irq_info omap44xx_mcspi3_irqs[] =3D {
->> + =A0 =A0 { .irq =3D 91 + OMAP44XX_IRQ_GIC_START },
->> +};
->> +
->> +static struct omap_hwmod_dma_info omap44xx_mcspi3_sdma_reqs[] =3D {
->> + =A0 =A0 { .name =3D "tx0", .dma_req =3D 14 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx0", .dma_req =3D 15 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "tx1", .dma_req =3D 22 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx1", .dma_req =3D 23 + OMAP44XX_DMA_REQ_STAR=
-T },
->> +};
->> +
->> +static struct omap_hwmod_addr_space omap44xx_mcspi3_addrs[] =3D {
->> + =A0 =A0 {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_start =A0 =A0 =A0 =3D 0x480b8000,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_end =A0 =A0 =A0 =A0 =3D 0x480b81ff,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .flags =A0 =A0 =A0 =A0 =A0=3D ADDR_TYPE_RT
->> + =A0 =A0 },
->> +};
->> +
->> +/* l4_per -> mcspi3 */
->> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi3 =3D {
->> + =A0 =A0 .master =A0 =A0 =A0 =A0 =3D &omap44xx_l4_per_hwmod,
->> + =A0 =A0 .slave =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi3_hwmod,
->> + =A0 =A0 .clk =A0 =A0 =A0 =A0 =A0 =A0=3D "l4_div_ck",
->> + =A0 =A0 .addr =A0 =A0 =A0 =A0 =A0 =3D omap44xx_mcspi3_addrs,
->> + =A0 =A0 .addr_cnt =A0 =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi3_addrs=
-),
->> + =A0 =A0 .user =A0 =A0 =A0 =A0 =A0 =3D OCP_USER_MPU | OCP_USER_SDMA=
-,
->> +};
->> +
->> +/* mcspi3 slave ports */
->> +static struct omap_hwmod_ocp_if *omap44xx_mcspi3_slaves[] =3D {
->> + =A0 =A0 &omap44xx_l4_per__mcspi3,
->> +};
->> +
->> +static struct omap2_mcspi_dev_attr omap_mcspi3_dev_attr =3D {
->> + =A0 =A0 .num_chipselect =3D 2,
->> +};
->> +
->> +static struct omap_hwmod omap44xx_mcspi3_hwmod =3D {
->> + =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mcspi3",
->> + =A0 =A0 .class =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi_hwmod_class,
->> + =A0 =A0 .mpu_irqs =A0 =A0 =A0 =3D omap44xx_mcspi3_irqs,
->> + =A0 =A0 .mpu_irqs_cnt =A0 =3D ARRAY_SIZE(omap44xx_mcspi3_irqs),
->> + =A0 =A0 .sdma_reqs =A0 =A0 =A0=3D omap44xx_mcspi3_sdma_reqs,
->> + =A0 =A0 .sdma_reqs_cnt =A0=3D ARRAY_SIZE(omap44xx_mcspi3_sdma_reqs=
-),
->> + =A0 =A0 .main_clk =A0 =A0 =A0 =3D "mcspi3_fck",
->> + =A0 =A0 .prcm =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .omap4 =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .clkctrl_reg =3D OMAP4430_=
-CM_L4PER_MCSPI3_CLKCTRL,
->> + =A0 =A0 =A0 =A0 =A0 =A0 },
->> + =A0 =A0 },
->> + =A0 =A0 .slaves =A0 =A0 =A0 =A0 =3D omap44xx_mcspi3_slaves,
->> + =A0 =A0 .slaves_cnt =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi3_slaves)=
-,
->> + =A0 =A0 .dev_attr =A0 =A0 =A0 =3D &omap_mcspi3_dev_attr,
->> + =A0 =A0 .omap_chip =A0 =A0 =A0=3D OMAP_CHIP_INIT(CHIP_IS_OMAP4430)=
-,
->> +};
->> +
->> +/* mcspi4 */
->> +static struct omap_hwmod omap44xx_mcspi4_hwmod;
->> +static struct omap_hwmod_irq_info omap44xx_mcspi4_irqs[] =3D {
->> + =A0 =A0 { .irq =3D 48 + OMAP44XX_IRQ_GIC_START },
->> +};
->> +
->> +static struct omap_hwmod_dma_info omap44xx_mcspi4_sdma_reqs[] =3D {
->> + =A0 =A0 { .name =3D "tx0", .dma_req =3D 69 + OMAP44XX_DMA_REQ_STAR=
-T },
->> + =A0 =A0 { .name =3D "rx0", .dma_req =3D 70 + OMAP44XX_DMA_REQ_STAR=
-T },
->> +};
->> +
->> +static struct omap_hwmod_addr_space omap44xx_mcspi4_addrs[] =3D {
->> + =A0 =A0 {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_start =A0 =A0 =A0 =3D 0x480ba000,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .pa_end =A0 =A0 =A0 =A0 =3D 0x480ba1ff,
->> + =A0 =A0 =A0 =A0 =A0 =A0 .flags =A0 =A0 =A0 =A0 =A0=3D ADDR_TYPE_RT
->> + =A0 =A0 },
->> +};
->> +
->> +/* l4_per -> mcspi4 */
->> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi4 =3D {
->> + =A0 =A0 .master =A0 =A0 =A0 =A0 =3D &omap44xx_l4_per_hwmod,
->> + =A0 =A0 .slave =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi4_hwmod,
->> + =A0 =A0 .clk =A0 =A0 =A0 =A0 =A0 =A0=3D "l4_div_ck",
->> + =A0 =A0 .addr =A0 =A0 =A0 =A0 =A0 =3D omap44xx_mcspi4_addrs,
->> + =A0 =A0 .addr_cnt =A0 =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi4_addrs=
-),
->> + =A0 =A0 .user =A0 =A0 =A0 =A0 =A0 =3D OCP_USER_MPU | OCP_USER_SDMA=
-,
->> +};
->> +
->> +/* mcspi4 slave ports */
->> +static struct omap_hwmod_ocp_if *omap44xx_mcspi4_slaves[] =3D {
->> + =A0 =A0 &omap44xx_l4_per__mcspi4,
->> +};
->> +
->> +static struct omap2_mcspi_dev_attr omap_mcspi4_dev_attr =3D {
->> + =A0 =A0 .num_chipselect =3D 1,
->> +};
->> +
->> +static struct omap_hwmod omap44xx_mcspi4_hwmod =3D {
->> + =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "mcspi4",
->> + =A0 =A0 .class =A0 =A0 =A0 =A0 =A0=3D &omap44xx_mcspi_hwmod_class,
->> + =A0 =A0 .mpu_irqs =A0 =A0 =A0 =3D omap44xx_mcspi4_irqs,
->> + =A0 =A0 .mpu_irqs_cnt =A0 =3D ARRAY_SIZE(omap44xx_mcspi4_irqs),
->> + =A0 =A0 .sdma_reqs =A0 =A0 =A0=3D omap44xx_mcspi4_sdma_reqs,
->> + =A0 =A0 .sdma_reqs_cnt =A0=3D ARRAY_SIZE(omap44xx_mcspi4_sdma_reqs=
-),
->> + =A0 =A0 .main_clk =A0 =A0 =A0 =3D "mcspi4_fck",
->> + =A0 =A0 .prcm =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 .omap4 =3D {
->> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 .clkctrl_reg =3D OMAP4430_=
-CM_L4PER_MCSPI4_CLKCTRL,
->> + =A0 =A0 =A0 =A0 =A0 =A0 },
->> + =A0 =A0 },
->> + =A0 =A0 .slaves =A0 =A0 =A0 =A0 =3D omap44xx_mcspi4_slaves,
->> + =A0 =A0 .slaves_cnt =A0 =A0 =3D ARRAY_SIZE(omap44xx_mcspi4_slaves)=
-,
->> + =A0 =A0 .dev_attr =A0 =A0 =A0 =3D &omap_mcspi4_dev_attr,
->> + =A0 =A0 .omap_chip =A0 =A0 =A0=3D OMAP_CHIP_INIT(CHIP_IS_OMAP4430)=
-,
->> +};
->> +
->> =A0static __initdata struct omap_hwmod *omap44xx_hwmods[] =3D {
->>
->> =A0 =A0 =A0 /* dmm class */
->> @@ -2068,6 +2328,12 @@ static __initdata struct omap_hwmod *omap44xx=
-_hwmods[] =3D {
->> =A0 =A0 =A0 &omap44xx_wd_timer2_hwmod,
->> =A0 =A0 =A0 &omap44xx_wd_timer3_hwmod,
->>
->> + =A0 =A0 /* mcspi class */
->> + =A0 =A0 &omap44xx_mcspi1_hwmod,
->> + =A0 =A0 &omap44xx_mcspi2_hwmod,
->> + =A0 =A0 &omap44xx_mcspi3_hwmod,
->> + =A0 =A0 &omap44xx_mcspi4_hwmod,
->> +
->> =A0 =A0 =A0 NULL,
->> =A0};
+
+> -----Original Message-----
+> From: linux-kernel-owner@vger.kernel.org 
+> [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of 
+> Tomoya MORINAGA
+> Sent: Wednesday, January 12, 2011 2:27 PM
+> To: 'Milton Miller'; 'Grant Likely'
+> Cc: 'David Brownell'; 
+> spi-devel-general@lists.sourceforge.net; 
+> linux-kernel@vger.kernel.org; yong.y.wang@intel.com; 
+> joel.clark@intel.com; kok.howg.ewe@intel.com; 'Toshiharu 
+> Okada'; 'Wang, Qi'
+> Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
+> 
+> On Tuesday, January 11, 2011 6:42 PM, Tomoya MORINAGA wrote:
+> > However, I couldn't clear my question.
+> 
+> I show the current our coding image.
+> Is the following agreeable with your saying ?
+> 
+> struct spi_platform_data {
+> 	u16 num_chipselect;
+> 	bool little_endian;
+> 	u8 bits_per_word;
+> 	struct spi_board_info *devices;
+> 	u8 num_devices;
+> };
+> 
+> static struct resource pch_spi_resources[] = {
+> 	{
+> 		.start 	= 0,
+> 		.end	= 0,
+> 		.flags	= IORESOURCE_MEM,
+> 	},
+> 	{
+> 		.start	= 0,
+> 		.end	= 0,
+> 		.flags	= IORESOURCE_IRQ,
+> 	},
+> };
+> 
+> static struct spi_platform_data pch_spi_platform_data = {
+> 	.num_chipselect = 2,
+> 	.little_endian = true,
+> };
+> 
+> static struct pch_spi_cell pch_spi_cfg0 = {
+> 	.name = "pch_spi",
+> 	.num_resources = ARRAY_SIZE(pch_spi_resources),
+> 	.resources = pch_spi_resources,
+> 	.platform_data = &pch_spi_platform_data,
+> 	.data_size = sizeof(pch_spi_platform_data), };
+> 
+> static int pch_spi_get_resources(struct pch_spi_board_data 
+> *board_dat, int num) {
+> 	int retval;
+> 	int i;
+> 
+> 	/* create workqueue */
+> 	board_dat->data[num]->wk = 
+> create_singlethread_workqueue(KBUILD_MODNAME);
+> 
+> 	pci_request_regions(board_dat->pdev, KBUILD_MODNAME); }
+> 
+> static int pch_spi_add_device(struct device *parent, int id,
+> 			  struct pch_spi_cell *cell,
+> 			  struct resource *mem_base, int irq_base,
+> 			      struct pch_spi_board_data *board_dat) {
+> 
+> 	platform_device_alloc(cell->name, id + cell->id);
+> 
+> 	res = kzalloc(sizeof(*res) * cell->num_resources, GFP_KERNEL);
+> 	if (!res)
+> 		goto fail_device;
+> 
+> 	platform_set_drvdata(pdev, cell->driver_data);
+> 
+> 	if (cell->data_size) {
+> 		platform_device_add_data(pdev,
+> 					cell->platform_data, 
+> cell->data_size);
+> 	}
+> 
+> 	for (i = 0; i < cell->num_resources; i++) {
+> 		if ((cell->resources[i].flags & IORESOURCE_MEM) 
+> && mem_base) {
+> 			res[i].parent = 
+> 			res[i].start = 
+> 			res[i].end = 
+> 		} else if (cell->resources[i].flags & IORESOURCE_IRQ) {
+> 			res[i].start = 
+> 			res[i].end   = 
+> 		} else {
+> 
+> 
+> 	}
+> 
+> 	ret = platform_device_add_resources(pdev, res, 
+> cell->num_resources);
+> 	if (ret)
+> 		goto fail_res;
+> 
+> 	ret = platform_device_add(pdev);
+> 	if (ret)
+> 		goto fail_res;
+> 
+> 	kfree(res);
+> 
+> 	spi_alloc_master( );
+> 
+> 	board_dat->data[num] = spi_master_get_devdata( );
+> 
+> 	pch_spi_get_resources( );
+> 
+> 	/* set master mode */
+> 	pch_spi_set_master_mode( );
+> 
+> 	/* Register the controller with the SPI core. */
+> 	spi_register_master( );
+> 
+> 	return 0;
+> }
+> 
+> int pch_spi_add_devices(struct device *parent,
+> 		    struct pch_spi_cell *cells, int n_devs,
+> 		    struct resource *mem_base,
+> 		    struct pch_spi_board_data *board_dat) {
+> 	pci_iomap()
+> 
+> 	for (i < n_devs)
+> 		pch_spi_add_device()
+> 
+> }
+> 
+> static int pch_spi_probe(struct pci_dev *pdev, const struct 
+> pci_device_id *id) {
+> 	board_dat = kzalloc(sizeof(struct pch_spi_board_data), 
+> GFP_KERNEL);
+> 	pci_enable_device()
+> 	request_irq()
+> 	pch_spi_add_devices(&pdev->dev, 
+> 			&pch_spi_cfg0,
+> 			2,
+> 			&pdev->resource[0], board_dat);
+> 
+> }
+> 
+> static irqreturn_t pch_spi_handler(int irq, void *dev_id) {
+> 
+> 	for (i = 0; i < board_dat->num; i++) {
+> 		data = board_dat->data[i];
+> 		io_remap_addr = data->io_remap_addr;
+> 		spsr = io_remap_addr + PCH_SPSR;
+> 
+> 		reg_spsr_val = ioread32(spsr);
+> 
+> 		/* Check if the interrupt is for SPI device */
+> 		if (reg_spsr_val & (SPSR_FI_BIT | SPSR_RFI_BIT)) {
+> 			pch_spi_handler_sub(data, reg_spsr_val, 
+> io_remap_addr);
+> 			ret = IRQ_HANDLED;
+> 		}
+> 
+> 		dev_dbg(&board_dat->pdev->dev, "%s EXIT return 
+> value=%d\n",
+> 			__func__, ret);
+> 	}
+> 	return ret;
+> }
+> 
+> Thanks,
+> -----------------------------------------
+> Tomoya MORINAGA
+> OKI SEMICONDUCTOR CO., LTD.
+> 
 > --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap"=
- in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
->
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> To unsubscribe from this list: send the line "unsubscribe 
+> linux-kernel" in the body of a message to 
+> majordomo@vger.kernel.org More majordomo info at  
+> http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+> 

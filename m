@@ -1,109 +1,113 @@
-From: Cyril Chemparathy <cyril@ti.com>
-Subject: [PATCH v8 07/11] davinci: add spi devices on tnetv107x evm
-Date: Tue, 18 Jan 2011 14:21:41 -0500
-Message-ID: <1295378505-15221-8-git-send-email-cyril@ti.com>
-References: <1295378505-15221-1-git-send-email-cyril@ti.com>
-Cc: c-park@ti.com, linux-arm-kernel@lists.arm.linux.org.uk,
-	linux-kernel@vger.kernel.org, Cyril Chemparathy <cyril@ti.com>
-To: davinci-linux-open-source@linux.davincidsp.com,
-	spi-devel-general@lists.sourceforge.net, sameo@linux.intel.com,
-	rpurdie@rpsys.net, dbrownell@users.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1295378505-15221-1-git-send-email-cyril@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v8 00/11]  tnetv107x ssp drivers
+Date: Tue, 18 Jan 2011 14:21:34 -0500
+Message-ID: <1295378505-15221-1-git-send-email-cyril@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+        rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds definitions for spi devices on the tnetv107x evm platform.
+TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+device.  It has a built-in programmable execution engine that can be programmed
+to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
 
-Signed-off-by: Cyril Chemparathy <cyril@ti.com>
----
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   43 +++++++++++++++++++++++++++
- 1 files changed, 43 insertions(+), 0 deletions(-)
+This patch series implements a driver stack that looks like the following:
 
-diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index ef526b1..1a656e8 100644
---- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
-+++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -25,6 +25,7 @@
- #include <linux/mtd/partitions.h>
- #include <linux/input.h>
- #include <linux/input/matrix_keypad.h>
-+#include <linux/spi/spi.h>
- 
- #include <asm/mach/arch.h>
- #include <asm/mach-types.h>
-@@ -37,6 +38,7 @@
- 
- #define EVM_MMC_WP_GPIO		21
- #define EVM_MMC_CD_GPIO		24
-+#define EVM_SPI_CS_GPIO		54
- 
- static int initialize_gpio(int gpio, char *desc)
- {
-@@ -202,9 +204,45 @@ static struct matrix_keypad_platform_data keypad_config = {
- 	.no_autorepeat	= 0,
- };
- 
-+static void spi_select_device(int cs)
-+{
-+	static int gpio;
-+
-+	if (!gpio) {
-+		int ret;
-+		ret = gpio_request(EVM_SPI_CS_GPIO, "spi chipsel");
-+		if (ret < 0) {
-+			pr_err("cannot open spi chipsel gpio\n");
-+			gpio = -ENOSYS;
-+			return;
-+		} else {
-+			gpio = EVM_SPI_CS_GPIO;
-+			gpio_direction_output(gpio, 0);
-+		}
-+	}
-+
-+	if (gpio < 0)
-+		return;
-+
-+	return gpio_set_value(gpio, cs ? 1 : 0);
-+}
-+
-+static struct ti_ssp_spi_data spi_master_data = {
-+	.num_cs	= 2,
-+	.select	= spi_select_device,
-+	.iosel	= SSP_PIN_SEL(0, SSP_CLOCK)	| SSP_PIN_SEL(1, SSP_DATA) |
-+		  SSP_PIN_SEL(2, SSP_CHIPSEL)	| SSP_PIN_SEL(3, SSP_IN)   |
-+		  SSP_INPUT_SEL(3),
-+};
-+
- static struct ti_ssp_data ssp_config = {
- 	.out_clock	= 250 * 1000,
- 	.dev_data	= {
-+		[1] = {
-+			.dev_name = "ti-ssp-spi",
-+			.pdata = &spi_master_data,
-+			.pdata_size = sizeof(spi_master_data),
-+		},
- 	},
- };
- 
-@@ -216,6 +254,9 @@ static struct tnetv107x_device_info evm_device_info __initconst = {
- 	.ssp_config		= &ssp_config,
- };
- 
-+static struct spi_board_info spi_info[] __initconst = {
-+};
-+
- static __init void tnetv107x_evm_board_init(void)
- {
- 	davinci_cfg_reg_list(sdio1_pins);
-@@ -223,6 +264,8 @@ static __init void tnetv107x_evm_board_init(void)
- 	davinci_cfg_reg_list(ssp_pins);
- 
- 	tnetv107x_devices_init(&evm_device_info);
-+
-+	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
- }
- 
- #ifdef CONFIG_SERIAL_8250_CONSOLE
--- 
-1.7.1
+                             +--------+
+                             | eeprom | . . .
+                             +--------+
+   +-----------+             +--------------+ +---------+
+   | regulator | . . .       |   i2c-gpio   | | 1-wire  | . . .
+   +-----------+             +--------------+ +---------+
+   +----------------------+  +--------------------------------+
+   |       ssp-spi        |  |           ssp-gpio             |
+   +----------------------+  +--------------------------------+
+   +----------------------------------------------------------+
+   |                            ssp                           |
+   +----------------------------------------------------------+
+
+Changes between v8 and v7 of this series:
+  - Reorder commits, removed regulator driver patch (already upstreamed)
+  - Renamed static function definitions to keep namespace clean (mfd, gpio)
+  - Removed instance pdata in mfd driver
+
+Changes between v7 and v6 of this series:
+  - Workaround for iosel2 register not reading back set bits.
+  - Update backlight status once probe succeeds.
+
+Changes between v6 and v5 of this series:
+  - Changed initcalls to module_init() across all drivers.  This series now
+    uses a late_initcall() in the board to delay initialization of gpio and
+    regulator dependent devices.
+
+Changes between v5 and v4 of this series:
+  - Moved drivers from misc/gpio/spi to mfd
+  - Removed implicit init-time iosel setup
+  - Minor cleanups in backlight driver
+
+Changes between v3 and v4 of this series:
+  - Replaced polled wait for sequence termination with interrupt
+  - Improved locking within SSP driver
+  - Other minor cleanups
+
+Changes between v2 and v3 of this series:
+  - Minor cleanups in Kconfig and Makefile ordering
+
+Changes between v1 and v2 of this series:
+  - Replaced open()/close() semantics with dynamic platform_device
+    registration on SSP probe.
+  - Removed user-land interface to regulator registers
+  - More sensible regulator constraints
+  - Other minor cleanups
+
+
+Cyril Chemparathy (11):
+  mfd: add driver for sequencer serial port
+  spi: add ti-ssp spi master driver
+  gpio: add ti-ssp gpio driver
+  backlight: add support for tps6116x controller
+  davinci: add tnetv107x ssp platform device
+  davinci: add ssp config for tnetv107x evm board
+  davinci: add spi devices on tnetv107x evm
+  davinci: add tnetv107x evm regulators
+  davinci: add tnetv107x evm ti-ssp gpio device
+  davinci: add tnetv107x evm backlight device
+  davinci: add tnetv107x evm i2c eeprom device
+
+ arch/arm/mach-davinci/board-tnetv107x-evm.c    |  197 ++++++++++
+ arch/arm/mach-davinci/devices-tnetv107x.c      |   25 ++
+ arch/arm/mach-davinci/include/mach/tnetv107x.h |    2 +
+ arch/arm/mach-davinci/tnetv107x.c              |    2 +-
+ drivers/gpio/Kconfig                           |   10 +
+ drivers/gpio/Makefile                          |    1 +
+ drivers/gpio/ti-ssp-gpio.c                     |  207 ++++++++++
+ drivers/mfd/Kconfig                            |   11 +
+ drivers/mfd/Makefile                           |    1 +
+ drivers/mfd/ti-ssp.c                           |  476 ++++++++++++++++++++++++
+ drivers/spi/Kconfig                            |   10 +
+ drivers/spi/Makefile                           |    1 +
+ drivers/spi/ti-ssp-spi.c                       |  402 ++++++++++++++++++++
+ drivers/video/backlight/Kconfig                |    7 +
+ drivers/video/backlight/Makefile               |    2 +-
+ drivers/video/backlight/tps6116x.c             |  299 +++++++++++++++
+ include/linux/mfd/ti_ssp.h                     |   97 +++++
+ 17 files changed, 1748 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/gpio/ti-ssp-gpio.c
+ create mode 100644 drivers/mfd/ti-ssp.c
+ create mode 100644 drivers/spi/ti-ssp-spi.c
+ create mode 100644 drivers/video/backlight/tps6116x.c
+ create mode 100644 include/linux/mfd/ti_ssp.h

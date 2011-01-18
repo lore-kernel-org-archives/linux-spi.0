@@ -1,147 +1,366 @@
-From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v8 08/11] davinci: add tnetv107x evm regulators
-Date: Tue, 18 Jan 2011 14:21:42 -0500
-Message-ID: <1295378505-15221-9-git-send-email-cyril@ti.com>
-References: <1295378505-15221-1-git-send-email-cyril@ti.com>
+From: "Cousson, Benoit" <b-cousson@ti.com>
+Subject: Re: [PATCH v3 4/6] OMAP4: hwmod data: Add McSPI
+Date: Wed, 19 Jan 2011 00:09:36 +0100
+Message-ID: <4D361DB0.3030205@ti.com>
+References: <32203.10.24.255.18.1295274218.squirrel@dbdmail.itg.ti.com> <87wrm35w9g.fsf@ti.com> <AANLkTikjDBHXKgqJwDrrZCY6j6x7adWBvjb-KXzdWbzt@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: c-park-l0cyMroinI0@public.gmane.org, Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>,
-	linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1295378505-15221-1-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "Hilman, Kevin" <khilman@ti.com>,
+	"Raja, Govindraj" <govindraj.raja@ti.com>,
+	"linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
+	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	"Varadarajan, Charulatha" <charu@ti.com>,
+	Paul Walmsley <paul@pwsan.com>,
+	Tony Lindgren <tony@atomide.com>
+To: Govindraj <govindraj.ti@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <AANLkTikjDBHXKgqJwDrrZCY6j6x7adWBvjb-KXzdWbzt@mail.gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds regulator and spi board info definitions for the tps6524x
-power management IC found on tnetv107x evm boards.
+Hi Govindraj,
 
-Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
----
- arch/arm/mach-davinci/board-tnetv107x-evm.c |   85 +++++++++++++++++++++++++++
- 1 files changed, 85 insertions(+), 0 deletions(-)
+On 1/18/2011 7:30 AM, Govindraj wrote:
+> On Mon, Jan 17, 2011 at 9:59 PM, Kevin Hilman<khilman@ti.com>  wrote:
+>> "Govindraj.R"<govindraj.raja@ti.com>  writes:
+>>
+>>> Update omap4 hwmod file with McSPI info.
+>>>
+>>> Signed-off-by: Benoit Cousson<b-cousson@ti.com>
+>>> Signed-off-by: Charulatha V<charu@ti.com>
+>>> Signed-off-by: Govindraj.R<govindraj.raja@ti.com>
+>>> Acked-by: Grant Likely<grant.likely@secretlab.ca>
+>>
+>> Shouldn't Benoit be the author of this patch?
+>
+> Sorry my mistake, will give a quick respin and post out a new version
+> today.
 
-diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index 1a656e8..ca23516 100644
---- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
-+++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -26,6 +26,9 @@
- #include <linux/input.h>
- #include <linux/input/matrix_keypad.h>
- #include <linux/spi/spi.h>
-+#include <linux/regulator/machine.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/regulator/driver.h>
- 
- #include <asm/mach/arch.h>
- #include <asm/mach-types.h>
-@@ -254,7 +257,89 @@ static struct tnetv107x_device_info evm_device_info __initconst = {
- 	.ssp_config		= &ssp_config,
- };
- 
-+static struct regulator_consumer_supply usb_consumers[] = {
-+	REGULATOR_SUPPLY("vbus", "musb_hdrc.1"),
-+};
-+
-+static struct regulator_consumer_supply lcd_consumers[] = {
-+	REGULATOR_SUPPLY("vlcd", "tps6116x"),
-+};
-+
-+static struct regulator_init_data regulators[] = {
-+	{
-+		.constraints		= {
-+			.name		= "DCDC1",
-+			.min_uV		= 1000000,
-+			.max_uV		= 1000000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC2",
-+			.min_uV		= 1800000,
-+			.max_uV		= 1800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "DCDC3",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 4800000,
-+			.max_uV		= 4800000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.constraints		= {
-+			.name		= "LDO1",
-+			.min_uV		= 3300000,
-+			.max_uV		= 3300000,
-+			.always_on	= 1,
-+			.boot_on	= 1,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(usb_consumers),
-+		.consumer_supplies	= usb_consumers,
-+		.constraints		= {
-+			.name		= "USB",
-+			.min_uA		= 200000,
-+			.max_uA		= 1000000,
-+			.valid_ops_mask	= REGULATOR_CHANGE_CURRENT |
-+					  REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+	{
-+		.num_consumer_supplies	= ARRAY_SIZE(lcd_consumers),
-+		.consumer_supplies	= lcd_consumers,
-+		.constraints		= {
-+			.name		= "LCD",
-+			.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
-+		},
-+	},
-+};
-+
- static struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias	= "tps6524x",
-+		.bus_num	= 1,
-+		.chip_select	= 0,
-+		.mode		= SPI_MODE_0,
-+		.platform_data	= regulators,
-+	},
- };
- 
- static __init void tnetv107x_evm_board_init(void)
--- 
-1.7.1
+Since you will respin, could you please fix the position of the data in 
+order to stick to the original one? Same thing for the list at the end.
+
+One flag introduced in 2.6.38 is missing, and the flags are now sorted. 
+See comments below.
+
+If you need to check what should be the final result after the merge of 
+every hwmods series, you can check here:
+git://gitorious.org/omap-pm/linux.git pm-wip/hwmods-omap4-full
+
+>
+> --
+> Thanks,
+> Govindraj.R
+>
+>>
+>> Kevin
+>>
+>>> ---
+>>>   arch/arm/mach-omap2/omap_hwmod_44xx_data.c |  266 ++++++++++++++++++++++++++++
+>>>   1 files changed, 266 insertions(+), 0 deletions(-)
+>>>
+>>> diff --git a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+>>> index c2806bd..d4cd695 100644
+>>> --- a/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+>>> +++ b/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+>>> @@ -24,6 +24,7 @@
+>>>   #include<plat/cpu.h>
+>>>   #include<plat/gpio.h>
+>>>   #include<plat/dma.h>
+>>> +#include<plat/mcspi.h>
+>>>
+>>>   #include "omap_hwmod_common_data.h"
+>>>
+>>> @@ -2001,6 +2002,265 @@ static struct omap_hwmod omap44xx_wd_timer3_hwmod = {
+>>>        .omap_chip      = OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
+>>>   };
+>>>
+>>> +/*
+>>> + * 'mcspi' class
+>>> + * multichannel serial port interface (mcspi) / master/slave synchronous serial
+>>> + * bus
+>>> + */
+>>> +
+>>> +static struct omap_hwmod_class_sysconfig omap44xx_mcspi_sysc = {
+>>> +     .rev_offs       = 0x0000,
+>>> +     .sysc_offs      = 0x0010,
+>>> +     .sysc_flags     = (SYSC_HAS_SIDLEMODE | SYSC_HAS_EMUFREE |
+>>> +                        SYSC_HAS_SOFTRESET | SYSC_HAS_RESET_STATUS),
+
+The order is slightly different due to a sort that was not done before.
+
+	  .sysc_flags = (SYSC_HAS_EMUFREE | SYSC_HAS_RESET_STATUS |
+			 SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET),
+
+	>>> +     .idlemodes      = (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
+
+SIDLE_SMART_WKUP is missing
 
 
-------------------------------------------------------------------------------
-Protect Your Site and Customers from Malware Attacks
-Learn about various malware tactics and how to avoid them. Understand 
-malware threats, the impact they can have on your business, and how you 
-can protect your company and customers by using code signing.
-http://p.sf.net/sfu/oracle-sfdevnl
+>>> +     .sysc_fields    =&omap_hwmod_sysc_type2,
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_class omap44xx_mcspi_hwmod_class = {
+>>> +     .name = "mcspi",
+>>> +     .sysc =&omap44xx_mcspi_sysc,
+>>> +     .rev = OMAP4_MCSPI_REV,
+>>> +};
+>>> +
+>>> +/* mcspi1 */
+>>> +static struct omap_hwmod omap44xx_mcspi1_hwmod;
+>>> +static struct omap_hwmod_irq_info omap44xx_mcspi1_irqs[] = {
+>>> +     { .irq = 65 + OMAP44XX_IRQ_GIC_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_dma_info omap44xx_mcspi1_sdma_reqs[] = {
+>>> +     { .name = "tx0", .dma_req = 34 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx0", .dma_req = 35 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "tx1", .dma_req = 36 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx1", .dma_req = 37 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "tx2", .dma_req = 38 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx2", .dma_req = 39 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "tx3", .dma_req = 40 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx3", .dma_req = 41 + OMAP44XX_DMA_REQ_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_addr_space omap44xx_mcspi1_addrs[] = {
+>>> +     {
+>>> +             .pa_start       = 0x48098000,
+>>> +             .pa_end         = 0x480981ff,
+>>> +             .flags          = ADDR_TYPE_RT
+>>> +     },
+>>> +};
+>>> +
+>>> +/* l4_per ->  mcspi1 */
+>>> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi1 = {
+>>> +     .master         =&omap44xx_l4_per_hwmod,
+>>> +     .slave          =&omap44xx_mcspi1_hwmod,
+>>> +     .clk            = "l4_div_ck",
+>>> +     .addr           = omap44xx_mcspi1_addrs,
+>>> +     .addr_cnt       = ARRAY_SIZE(omap44xx_mcspi1_addrs),
+>>> +     .user           = OCP_USER_MPU | OCP_USER_SDMA,
+>>> +};
+>>> +
+>>> +/* mcspi1 slave ports */
+>>> +static struct omap_hwmod_ocp_if *omap44xx_mcspi1_slaves[] = {
+>>> +&omap44xx_l4_per__mcspi1,
+>>> +};
+>>> +
+>>> +static struct omap2_mcspi_dev_attr omap_mcspi1_dev_attr = {
+>>> +     .num_chipselect = 4,
+>>> +};
+>>> +
+>>> +static struct omap_hwmod omap44xx_mcspi1_hwmod = {
+>>> +     .name           = "mcspi1",
+>>> +     .class          =&omap44xx_mcspi_hwmod_class,
+>>> +     .mpu_irqs       = omap44xx_mcspi1_irqs,
+>>> +     .mpu_irqs_cnt   = ARRAY_SIZE(omap44xx_mcspi1_irqs),
+>>> +     .sdma_reqs      = omap44xx_mcspi1_sdma_reqs,
+>>> +     .sdma_reqs_cnt  = ARRAY_SIZE(omap44xx_mcspi1_sdma_reqs),
+>>> +     .main_clk       = "mcspi1_fck",
+>>> +     .prcm = {
+>>> +             .omap4 = {
+>>> +                     .clkctrl_reg = OMAP4430_CM_L4PER_MCSPI1_CLKCTRL,
+>>> +             },
+>>> +     },
+>>> +     .slaves         = omap44xx_mcspi1_slaves,
+>>> +     .slaves_cnt     = ARRAY_SIZE(omap44xx_mcspi1_slaves),
+>>> +     .dev_attr       =&omap_mcspi1_dev_attr,
+>>> +     .omap_chip      = OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
+>>> +};
+>>> +
+>>> +/* mcspi2 */
+>>> +static struct omap_hwmod omap44xx_mcspi2_hwmod;
+>>> +static struct omap_hwmod_irq_info omap44xx_mcspi2_irqs[] = {
+>>> +     { .irq = 66 + OMAP44XX_IRQ_GIC_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_dma_info omap44xx_mcspi2_sdma_reqs[] = {
+>>> +     { .name = "tx0", .dma_req = 42 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx0", .dma_req = 43 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "tx1", .dma_req = 44 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx1", .dma_req = 45 + OMAP44XX_DMA_REQ_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_addr_space omap44xx_mcspi2_addrs[] = {
+>>> +     {
+>>> +             .pa_start       = 0x4809a000,
+>>> +             .pa_end         = 0x4809a1ff,
+>>> +             .flags          = ADDR_TYPE_RT
+>>> +     },
+>>> +};
+>>> +
+>>> +/* l4_per ->  mcspi2 */
+>>> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi2 = {
+>>> +     .master         =&omap44xx_l4_per_hwmod,
+>>> +     .slave          =&omap44xx_mcspi2_hwmod,
+>>> +     .clk            = "l4_div_ck",
+>>> +     .addr           = omap44xx_mcspi2_addrs,
+>>> +     .addr_cnt       = ARRAY_SIZE(omap44xx_mcspi2_addrs),
+>>> +     .user           = OCP_USER_MPU | OCP_USER_SDMA,
+>>> +};
+>>> +
+>>> +/* mcspi2 slave ports */
+>>> +static struct omap_hwmod_ocp_if *omap44xx_mcspi2_slaves[] = {
+>>> +&omap44xx_l4_per__mcspi2,
+>>> +};
+>>> +
+>>> +static struct omap2_mcspi_dev_attr omap_mcspi2_dev_attr = {
+>>> +     .num_chipselect = 2,
+>>> +};
+>>> +
+>>> +static struct omap_hwmod omap44xx_mcspi2_hwmod = {
+>>> +     .name           = "mcspi2",
+>>> +     .class          =&omap44xx_mcspi_hwmod_class,
+>>> +     .mpu_irqs       = omap44xx_mcspi2_irqs,
+>>> +     .mpu_irqs_cnt   = ARRAY_SIZE(omap44xx_mcspi2_irqs),
+>>> +     .sdma_reqs      = omap44xx_mcspi2_sdma_reqs,
+>>> +     .sdma_reqs_cnt  = ARRAY_SIZE(omap44xx_mcspi2_sdma_reqs),
+>>> +     .main_clk       = "mcspi2_fck",
+>>> +     .prcm = {
+>>> +             .omap4 = {
+>>> +                     .clkctrl_reg = OMAP4430_CM_L4PER_MCSPI2_CLKCTRL,
+>>> +             },
+>>> +     },
+>>> +     .slaves         = omap44xx_mcspi2_slaves,
+>>> +     .slaves_cnt     = ARRAY_SIZE(omap44xx_mcspi2_slaves),
+>>> +     .dev_attr       =&omap_mcspi2_dev_attr,
+>>> +     .omap_chip      = OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
+>>> +};
+>>> +
+>>> +/* mcspi3 */
+>>> +static struct omap_hwmod omap44xx_mcspi3_hwmod;
+>>> +static struct omap_hwmod_irq_info omap44xx_mcspi3_irqs[] = {
+>>> +     { .irq = 91 + OMAP44XX_IRQ_GIC_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_dma_info omap44xx_mcspi3_sdma_reqs[] = {
+>>> +     { .name = "tx0", .dma_req = 14 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx0", .dma_req = 15 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "tx1", .dma_req = 22 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx1", .dma_req = 23 + OMAP44XX_DMA_REQ_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_addr_space omap44xx_mcspi3_addrs[] = {
+>>> +     {
+>>> +             .pa_start       = 0x480b8000,
+>>> +             .pa_end         = 0x480b81ff,
+>>> +             .flags          = ADDR_TYPE_RT
+>>> +     },
+>>> +};
+>>> +
+>>> +/* l4_per ->  mcspi3 */
+>>> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi3 = {
+>>> +     .master         =&omap44xx_l4_per_hwmod,
+>>> +     .slave          =&omap44xx_mcspi3_hwmod,
+>>> +     .clk            = "l4_div_ck",
+>>> +     .addr           = omap44xx_mcspi3_addrs,
+>>> +     .addr_cnt       = ARRAY_SIZE(omap44xx_mcspi3_addrs),
+>>> +     .user           = OCP_USER_MPU | OCP_USER_SDMA,
+>>> +};
+>>> +
+>>> +/* mcspi3 slave ports */
+>>> +static struct omap_hwmod_ocp_if *omap44xx_mcspi3_slaves[] = {
+>>> +&omap44xx_l4_per__mcspi3,
+>>> +};
+>>> +
+>>> +static struct omap2_mcspi_dev_attr omap_mcspi3_dev_attr = {
+>>> +     .num_chipselect = 2,
+>>> +};
+>>> +
+>>> +static struct omap_hwmod omap44xx_mcspi3_hwmod = {
+>>> +     .name           = "mcspi3",
+>>> +     .class          =&omap44xx_mcspi_hwmod_class,
+>>> +     .mpu_irqs       = omap44xx_mcspi3_irqs,
+>>> +     .mpu_irqs_cnt   = ARRAY_SIZE(omap44xx_mcspi3_irqs),
+>>> +     .sdma_reqs      = omap44xx_mcspi3_sdma_reqs,
+>>> +     .sdma_reqs_cnt  = ARRAY_SIZE(omap44xx_mcspi3_sdma_reqs),
+>>> +     .main_clk       = "mcspi3_fck",
+>>> +     .prcm = {
+>>> +             .omap4 = {
+>>> +                     .clkctrl_reg = OMAP4430_CM_L4PER_MCSPI3_CLKCTRL,
+>>> +             },
+>>> +     },
+>>> +     .slaves         = omap44xx_mcspi3_slaves,
+>>> +     .slaves_cnt     = ARRAY_SIZE(omap44xx_mcspi3_slaves),
+>>> +     .dev_attr       =&omap_mcspi3_dev_attr,
+>>> +     .omap_chip      = OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
+>>> +};
+>>> +
+>>> +/* mcspi4 */
+>>> +static struct omap_hwmod omap44xx_mcspi4_hwmod;
+>>> +static struct omap_hwmod_irq_info omap44xx_mcspi4_irqs[] = {
+>>> +     { .irq = 48 + OMAP44XX_IRQ_GIC_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_dma_info omap44xx_mcspi4_sdma_reqs[] = {
+>>> +     { .name = "tx0", .dma_req = 69 + OMAP44XX_DMA_REQ_START },
+>>> +     { .name = "rx0", .dma_req = 70 + OMAP44XX_DMA_REQ_START },
+>>> +};
+>>> +
+>>> +static struct omap_hwmod_addr_space omap44xx_mcspi4_addrs[] = {
+>>> +     {
+>>> +             .pa_start       = 0x480ba000,
+>>> +             .pa_end         = 0x480ba1ff,
+>>> +             .flags          = ADDR_TYPE_RT
+>>> +     },
+>>> +};
+>>> +
+>>> +/* l4_per ->  mcspi4 */
+>>> +static struct omap_hwmod_ocp_if omap44xx_l4_per__mcspi4 = {
+>>> +     .master         =&omap44xx_l4_per_hwmod,
+>>> +     .slave          =&omap44xx_mcspi4_hwmod,
+>>> +     .clk            = "l4_div_ck",
+>>> +     .addr           = omap44xx_mcspi4_addrs,
+>>> +     .addr_cnt       = ARRAY_SIZE(omap44xx_mcspi4_addrs),
+>>> +     .user           = OCP_USER_MPU | OCP_USER_SDMA,
+>>> +};
+>>> +
+>>> +/* mcspi4 slave ports */
+>>> +static struct omap_hwmod_ocp_if *omap44xx_mcspi4_slaves[] = {
+>>> +&omap44xx_l4_per__mcspi4,
+>>> +};
+>>> +
+>>> +static struct omap2_mcspi_dev_attr omap_mcspi4_dev_attr = {
+>>> +     .num_chipselect = 1,
+>>> +};
+>>> +
+>>> +static struct omap_hwmod omap44xx_mcspi4_hwmod = {
+>>> +     .name           = "mcspi4",
+>>> +     .class          =&omap44xx_mcspi_hwmod_class,
+>>> +     .mpu_irqs       = omap44xx_mcspi4_irqs,
+>>> +     .mpu_irqs_cnt   = ARRAY_SIZE(omap44xx_mcspi4_irqs),
+>>> +     .sdma_reqs      = omap44xx_mcspi4_sdma_reqs,
+>>> +     .sdma_reqs_cnt  = ARRAY_SIZE(omap44xx_mcspi4_sdma_reqs),
+>>> +     .main_clk       = "mcspi4_fck",
+>>> +     .prcm = {
+>>> +             .omap4 = {
+>>> +                     .clkctrl_reg = OMAP4430_CM_L4PER_MCSPI4_CLKCTRL,
+>>> +             },
+>>> +     },
+>>> +     .slaves         = omap44xx_mcspi4_slaves,
+>>> +     .slaves_cnt     = ARRAY_SIZE(omap44xx_mcspi4_slaves),
+>>> +     .dev_attr       =&omap_mcspi4_dev_attr,
+>>> +     .omap_chip      = OMAP_CHIP_INIT(CHIP_IS_OMAP4430),
+>>> +};
+>>> +
+>>>   static __initdata struct omap_hwmod *omap44xx_hwmods[] = {
+>>>
+>>>        /* dmm class */
+>>> @@ -2068,6 +2328,12 @@ static __initdata struct omap_hwmod *omap44xx_hwmods[] = {
+>>>        &omap44xx_wd_timer2_hwmod,
+>>>        &omap44xx_wd_timer3_hwmod,
+>>>
+>>> +     /* mcspi class */
+>>> +&omap44xx_mcspi1_hwmod,
+>>> +&omap44xx_mcspi2_hwmod,
+>>> +&omap44xx_mcspi3_hwmod,
+>>> +&omap44xx_mcspi4_hwmod,
+
+mcspi should not be after wd_timer.
+
+Regards,
+Benoit

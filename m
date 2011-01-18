@@ -1,7 +1,7 @@
 From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v8 10/11] davinci: add tnetv107x evm backlight device
-Date: Tue, 18 Jan 2011 14:21:44 -0500
-Message-ID: <1295378505-15221-11-git-send-email-cyril@ti.com>
+Subject: [PATCH v8 06/11] davinci: add ssp config for tnetv107x evm board
+Date: Tue, 18 Jan 2011 14:21:40 -0500
+Message-ID: <1295378505-15221-7-git-send-email-cyril@ti.com>
 References: <1295378505-15221-1-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,9 +23,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The tnetv107x evm board has a backlight device that is connected on one of the
-SSP ports.  This patch adds the board definitions necessary to plug the
-backlight driver to the GPIO corresponding to this SSP pin.
+This patch adds SSP configuration and pin muxing info for tnetv107x
+evm boards.
 
 Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
 ---
@@ -33,44 +32,48 @@ Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
  1 files changed, 14 insertions(+), 0 deletions(-)
 
 diff --git a/arch/arm/mach-davinci/board-tnetv107x-evm.c b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-index e3863dd..ac62de2 100644
+index a6db854..ef526b1 100644
 --- a/arch/arm/mach-davinci/board-tnetv107x-evm.c
 +++ b/arch/arm/mach-davinci/board-tnetv107x-evm.c
-@@ -44,6 +44,7 @@
- #define EVM_MMC_WP_GPIO		21
- #define EVM_MMC_CD_GPIO		24
- #define EVM_SPI_CS_GPIO		54
-+#define EVM_BACKLIGHT_GPIO	(SSP_GPIO_START + 2)
- 
- static int initialize_gpio(int gpio, char *desc)
- {
-@@ -353,6 +354,12 @@ static struct spi_board_info spi_info[] __initconst = {
- 	},
+@@ -99,6 +99,12 @@ static const short uart1_pins[] __initdata = {
+ 	-1
  };
  
-+static struct platform_device backlight_device = {
-+	.name		= "tps6116x",
-+	.id		= -1,
-+	.dev.platform_data = (void *)EVM_BACKLIGHT_GPIO,
++static const short ssp_pins[] __initdata = {
++	TNETV107X_SSP0_0, TNETV107X_SSP0_1, TNETV107X_SSP0_2,
++	TNETV107X_SSP1_0, TNETV107X_SSP1_1, TNETV107X_SSP1_2,
++	TNETV107X_SSP1_3, -1
 +};
 +
+ static struct mtd_partition nand_partitions[] = {
+ 	/* bootloader (U-Boot, etc) in first 12 sectors */
+ 	{
+@@ -196,17 +202,25 @@ static struct matrix_keypad_platform_data keypad_config = {
+ 	.no_autorepeat	= 0,
+ };
+ 
++static struct ti_ssp_data ssp_config = {
++	.out_clock	= 250 * 1000,
++	.dev_data	= {
++	},
++};
++
+ static struct tnetv107x_device_info evm_device_info __initconst = {
+ 	.serial_config		= &serial_config,
+ 	.mmc_config[1]		= &mmc_config,	/* controller 1 */
+ 	.nand_config[0]		= &nand_config,	/* chip select 0 */
+ 	.keypad_config		= &keypad_config,
++	.ssp_config		= &ssp_config,
+ };
+ 
  static __init void tnetv107x_evm_board_init(void)
  {
  	davinci_cfg_reg_list(sdio1_pins);
-@@ -364,6 +371,13 @@ static __init void tnetv107x_evm_board_init(void)
- 	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
- }
+ 	davinci_cfg_reg_list(uart1_pins);
++	davinci_cfg_reg_list(ssp_pins);
  
-+static int __init tnetv107x_evm_late_init(void)
-+{
-+	platform_device_register(&backlight_device);
-+	return 0;
-+}
-+late_initcall(tnetv107x_evm_late_init);
-+
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- static int __init tnetv107x_evm_console_init(void)
- {
+ 	tnetv107x_devices_init(&evm_device_info);
+ }
 -- 
 1.7.1
 

@@ -1,229 +1,378 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
-Date: Tue, 18 Jan 2011 23:25:58 -0700
-Message-ID: <20110119062558.GD2545@angua.secretlab.ca>
-References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com>
- <20101229064937.GC8172@angua.secretlab.ca>
- <280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com>
- <20110105163835.GD17272@angua.secretlab.ca>
- <46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com>
- <topcliff-split@mdm.bga.com>
- <CA1F4AF27C0D466BA059E4B050FF3360@hacdom.okisemi.com>
- <A780EBC01B4946F895EA47BE425B56F8@hacdom.okisemi.com>
- <EEE6F4C641AC4593B5CDF5139FCAD0F6@hacdom.okisemi.com>
+From: Kevin Hilman <khilman@ti.com>
+Subject: Re: [PATCH v8 04/11] backlight: add support for tps6116x controller
+Date: Wed, 19 Jan 2011 09:42:41 -0800
+Message-ID: <871v48vlgu.fsf@ti.com>
+References: <1295378505-15221-1-git-send-email-cyril@ti.com>
+	<1295378505-15221-5-git-send-email-cyril@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: 'Milton Miller' <miltonm@bga.com>,
-	'David Brownell' <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, yong.y.wang@intel.com,
-	joel.clark@intel.com, kok.howg.ewe@intel.com,
-	'Toshiharu Okada' <toshiharu-linux@dsn.okisemi.com>,
-	"'Wang, Qi'" <qi.wang@intel.com>
-To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Cc: davinci-linux-open-source@linux.davincidsp.com,
+	spi-devel-general@lists.sourceforge.net, sameo@linux.intel.com,
+	dbrownell@users.sourceforge.net,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	linux-kernel@vger.kernel.org, Cyril Chemparathy <cyril@ti.com>
+To: rpurdie@rpsys.net, Andrew Morton <akpm@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <EEE6F4C641AC4593B5CDF5139FCAD0F6@hacdom.okisemi.com>
+In-Reply-To: <1295378505-15221-5-git-send-email-cyril@ti.com> (Cyril
+	Chemparathy's message of "Tue, 18 Jan 2011 14:21:38 -0500")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 18, 2011 at 09:36:48PM +0900, Tomoya MORINAGA wrote:
-> Hi Grant,
-> 
-> Need your help!
-> Could you give us your answer ?
+Richard,
 
-Hi Tomoya, I've not forgotten about you, just a little swamped with
-other stuff.  I'll try to get you a proper reply tomorrow.
+Cyril Chemparathy <cyril@ti.com> writes:
 
-g.
+> TPS6116x is an EasyScale backlight controller device.  This driver supports
+> TPS6116x devices connected on a single GPIO.
+>
+> Signed-off-by: Cyril Chemparathy <cyril@ti.com>
 
-> 
-> Thanks,
-> -----------------------------------------
-> Tomoya MORINAGA
-> OKI SEMICONDUCTOR CO., LTD.
-> 
-> 
-> > -----Original Message-----
-> > From: linux-kernel-owner@vger.kernel.org 
-> > [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of 
-> > Tomoya MORINAGA
-> > Sent: Wednesday, January 12, 2011 2:27 PM
-> > To: 'Milton Miller'; 'Grant Likely'
-> > Cc: 'David Brownell'; 
-> > spi-devel-general@lists.sourceforge.net; 
-> > linux-kernel@vger.kernel.org; yong.y.wang@intel.com; 
-> > joel.clark@intel.com; kok.howg.ewe@intel.com; 'Toshiharu 
-> > Okada'; 'Wang, Qi'
-> > Subject: RE: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
-> > 
-> > On Tuesday, January 11, 2011 6:42 PM, Tomoya MORINAGA wrote:
-> > > However, I couldn't clear my question.
-> > 
-> > I show the current our coding image.
-> > Is the following agreeable with your saying ?
-> > 
-> > struct spi_platform_data {
-> > 	u16 num_chipselect;
-> > 	bool little_endian;
-> > 	u8 bits_per_word;
-> > 	struct spi_board_info *devices;
-> > 	u8 num_devices;
-> > };
-> > 
-> > static struct resource pch_spi_resources[] = {
-> > 	{
-> > 		.start 	= 0,
-> > 		.end	= 0,
-> > 		.flags	= IORESOURCE_MEM,
-> > 	},
-> > 	{
-> > 		.start	= 0,
-> > 		.end	= 0,
-> > 		.flags	= IORESOURCE_IRQ,
-> > 	},
-> > };
-> > 
-> > static struct spi_platform_data pch_spi_platform_data = {
-> > 	.num_chipselect = 2,
-> > 	.little_endian = true,
-> > };
-> > 
-> > static struct pch_spi_cell pch_spi_cfg0 = {
-> > 	.name = "pch_spi",
-> > 	.num_resources = ARRAY_SIZE(pch_spi_resources),
-> > 	.resources = pch_spi_resources,
-> > 	.platform_data = &pch_spi_platform_data,
-> > 	.data_size = sizeof(pch_spi_platform_data), };
-> > 
-> > static int pch_spi_get_resources(struct pch_spi_board_data 
-> > *board_dat, int num) {
-> > 	int retval;
-> > 	int i;
-> > 
-> > 	/* create workqueue */
-> > 	board_dat->data[num]->wk = 
-> > create_singlethread_workqueue(KBUILD_MODNAME);
-> > 
-> > 	pci_request_regions(board_dat->pdev, KBUILD_MODNAME); }
-> > 
-> > static int pch_spi_add_device(struct device *parent, int id,
-> > 			  struct pch_spi_cell *cell,
-> > 			  struct resource *mem_base, int irq_base,
-> > 			      struct pch_spi_board_data *board_dat) {
-> > 
-> > 	platform_device_alloc(cell->name, id + cell->id);
-> > 
-> > 	res = kzalloc(sizeof(*res) * cell->num_resources, GFP_KERNEL);
-> > 	if (!res)
-> > 		goto fail_device;
-> > 
-> > 	platform_set_drvdata(pdev, cell->driver_data);
-> > 
-> > 	if (cell->data_size) {
-> > 		platform_device_add_data(pdev,
-> > 					cell->platform_data, 
-> > cell->data_size);
-> > 	}
-> > 
-> > 	for (i = 0; i < cell->num_resources; i++) {
-> > 		if ((cell->resources[i].flags & IORESOURCE_MEM) 
-> > && mem_base) {
-> > 			res[i].parent = 
-> > 			res[i].start = 
-> > 			res[i].end = 
-> > 		} else if (cell->resources[i].flags & IORESOURCE_IRQ) {
-> > 			res[i].start = 
-> > 			res[i].end   = 
-> > 		} else {
-> > 
-> > 
-> > 	}
-> > 
-> > 	ret = platform_device_add_resources(pdev, res, 
-> > cell->num_resources);
-> > 	if (ret)
-> > 		goto fail_res;
-> > 
-> > 	ret = platform_device_add(pdev);
-> > 	if (ret)
-> > 		goto fail_res;
-> > 
-> > 	kfree(res);
-> > 
-> > 	spi_alloc_master( );
-> > 
-> > 	board_dat->data[num] = spi_master_get_devdata( );
-> > 
-> > 	pch_spi_get_resources( );
-> > 
-> > 	/* set master mode */
-> > 	pch_spi_set_master_mode( );
-> > 
-> > 	/* Register the controller with the SPI core. */
-> > 	spi_register_master( );
-> > 
-> > 	return 0;
-> > }
-> > 
-> > int pch_spi_add_devices(struct device *parent,
-> > 		    struct pch_spi_cell *cells, int n_devs,
-> > 		    struct resource *mem_base,
-> > 		    struct pch_spi_board_data *board_dat) {
-> > 	pci_iomap()
-> > 
-> > 	for (i < n_devs)
-> > 		pch_spi_add_device()
-> > 
-> > }
-> > 
-> > static int pch_spi_probe(struct pci_dev *pdev, const struct 
-> > pci_device_id *id) {
-> > 	board_dat = kzalloc(sizeof(struct pch_spi_board_data), 
-> > GFP_KERNEL);
-> > 	pci_enable_device()
-> > 	request_irq()
-> > 	pch_spi_add_devices(&pdev->dev, 
-> > 			&pch_spi_cfg0,
-> > 			2,
-> > 			&pdev->resource[0], board_dat);
-> > 
-> > }
-> > 
-> > static irqreturn_t pch_spi_handler(int irq, void *dev_id) {
-> > 
-> > 	for (i = 0; i < board_dat->num; i++) {
-> > 		data = board_dat->data[i];
-> > 		io_remap_addr = data->io_remap_addr;
-> > 		spsr = io_remap_addr + PCH_SPSR;
-> > 
-> > 		reg_spsr_val = ioread32(spsr);
-> > 
-> > 		/* Check if the interrupt is for SPI device */
-> > 		if (reg_spsr_val & (SPSR_FI_BIT | SPSR_RFI_BIT)) {
-> > 			pch_spi_handler_sub(data, reg_spsr_val, 
-> > io_remap_addr);
-> > 			ret = IRQ_HANDLED;
-> > 		}
-> > 
-> > 		dev_dbg(&board_dat->pdev->dev, "%s EXIT return 
-> > value=%d\n",
-> > 			__func__, ret);
-> > 	}
-> > 	return ret;
-> > }
-> > 
-> > Thanks,
-> > -----------------------------------------
-> > Tomoya MORINAGA
-> > OKI SEMICONDUCTOR CO., LTD.
-> > 
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe 
-> > linux-kernel" in the body of a message to 
-> > majordomo@vger.kernel.org More majordomo info at  
-> > http://vger.kernel.org/majordomo-info.html
-> > Please read the FAQ at  http://www.tux.org/lkml/
-> > 
-> 
+Any comments on this driver?
+
+With your Ack, I'll be happy to merge it via the davinci tree with the
+rest of the series.
+
+Thanks,
+
+Kevin
+
+> ---
+>  drivers/video/backlight/Kconfig    |    7 +
+>  drivers/video/backlight/Makefile   |    2 +-
+>  drivers/video/backlight/tps6116x.c |  299 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 307 insertions(+), 1 deletions(-)
+>  create mode 100644 drivers/video/backlight/tps6116x.c
+>
+> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+> index e54a337..06e868e 100644
+> --- a/drivers/video/backlight/Kconfig
+> +++ b/drivers/video/backlight/Kconfig
+> @@ -307,6 +307,13 @@ config BACKLIGHT_PCF50633
+>  	  If you have a backlight driven by a NXP PCF50633 MFD, say Y here to
+>  	  enable its driver.
+>  
+> +config BACKLIGHT_TPS6116X
+> +	tristate "TPS6116X LCD Backlight"
+> +	depends on GENERIC_GPIO
+> +	help
+> +	  This driver controls the LCD backlight level for EasyScale capable
+> +	  SSP connected backlight controllers.
+> +
+>  endif # BACKLIGHT_CLASS_DEVICE
+>  
+>  endif # BACKLIGHT_LCD_SUPPORT
+> diff --git a/drivers/video/backlight/Makefile b/drivers/video/backlight/Makefile
+> index 44c0f81..5d407c8 100644
+> --- a/drivers/video/backlight/Makefile
+> +++ b/drivers/video/backlight/Makefile
+> @@ -35,4 +35,4 @@ obj-$(CONFIG_BACKLIGHT_ADP5520)	+= adp5520_bl.o
+>  obj-$(CONFIG_BACKLIGHT_ADP8860)	+= adp8860_bl.o
+>  obj-$(CONFIG_BACKLIGHT_88PM860X) += 88pm860x_bl.o
+>  obj-$(CONFIG_BACKLIGHT_PCF50633)	+= pcf50633-backlight.o
+> -
+> +obj-$(CONFIG_BACKLIGHT_TPS6116X)+= tps6116x.o
+> diff --git a/drivers/video/backlight/tps6116x.c b/drivers/video/backlight/tps6116x.c
+> new file mode 100644
+> index 0000000..7f846ab
+> --- /dev/null
+> +++ b/drivers/video/backlight/tps6116x.c
+> @@ -0,0 +1,299 @@
+> +/*
+> + * TPS6116X LCD Backlight Controller Driver
+> + *
+> + * Copyright (C) 2010 Texas Instruments
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation version 2.
+> + *
+> + * This program is distributed "as is" WITHOUT ANY WARRANTY of any kind,
+> + * whether express or implied; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+> + * General Public License for more details.
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/fb.h>
+> +#include <linux/err.h>
+> +#include <linux/delay.h>
+> +#include <linux/gpio.h>
+> +#include <linux/backlight.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regulator/consumer.h>
+> +
+> +#define TPS6116X_MAX_INTENSITY		31
+> +#define TPS6116X_DEFAULT_INTENSITY	10
+> +
+> +/* Easyscale timing w/ margin (usecs) */
+> +#define T_POWER_SETTLE			2000
+> +#define T_ES_DELAY			120
+> +#define T_ES_DETECT			280
+> +#define T_ES_WINDOW			(1000 - T_ES_DELAY - T_ES_DETECT)
+> +#define T_START				3
+> +#define T_EOS				3
+> +#define T_INACTIVE			3
+> +#define T_ACTIVE			(3 * T_INACTIVE)
+> +
+> +#define CMD_SET				0x72
+> +
+> +struct tps6116x {
+> +	struct ti_ssp_device		*handle;
+> +	struct device			*dev;
+> +	int				gpio;
+> +	struct mutex			lock;
+> +	int				intensity;
+> +	struct backlight_properties	props;
+> +	struct backlight_device		*bl;
+> +	struct regulator		*regulator;
+> +	bool				power;
+> +	bool				suspended;
+> +};
+> +
+> +static int __set_power(struct tps6116x *hw, bool power)
+> +{
+> +	unsigned long flags;
+> +	int error;
+> +
+> +	if (power == hw->power)
+> +		return 0; /* nothing to do */
+> +
+> +	/* disabling is simple... choke power */
+> +	if (!power) {
+> +		error = regulator_disable(hw->regulator);
+> +		goto done;
+> +	}
+> +
+> +	/* set ctrl pin init state for easyscale detection */
+> +	gpio_set_value(hw->gpio, 0);
+> +
+> +	error = regulator_enable(hw->regulator);
+> +	if (error < 0)
+> +		goto done;
+> +
+> +	udelay(T_POWER_SETTLE);
+> +
+> +	/*
+> +	 * Now that the controller is powered up, we need to put it into 1-wire
+> +	 * mode.  This is a timing sensitive operation, hence the irq disable.
+> +	 * Ideally, this should happen rarely, and mostly at init, so disabling
+> +	 * interrupts for the duration should not be a problem.
+> +	 */
+> +	local_irq_save(flags);
+> +
+> +	gpio_set_value(hw->gpio, 1);
+> +	udelay(T_ES_DELAY);
+> +	gpio_set_value(hw->gpio, 0);
+> +	udelay(T_ES_DETECT);
+> +	gpio_set_value(hw->gpio, 1);
+> +
+> +	local_irq_restore(flags);
+> +
+> +done:
+> +	if (error >= 0)
+> +		hw->power = power;
+> +
+> +	return error;
+> +}
+> +
+> +static void __write_byte(struct tps6116x *hw, u8 data)
+> +{
+> +	int bit;
+> +
+> +	gpio_set_value(hw->gpio, 1);
+> +	udelay(T_START);
+> +
+> +	for (bit = 0; bit < 8; bit++, data <<= 1) {
+> +		int val = data & 0x80;
+> +		int t_lo = val ? T_INACTIVE : T_ACTIVE;
+> +		int t_hi = val ? T_ACTIVE : T_INACTIVE;
+> +
+> +		gpio_set_value(hw->gpio, 0);
+> +		udelay(t_lo);
+> +		gpio_set_value(hw->gpio, 1);
+> +		udelay(t_hi);
+> +	}
+> +
+> +	gpio_set_value(hw->gpio, 0);
+> +	udelay(T_EOS);
+> +	gpio_set_value(hw->gpio, 1);
+> +}
+> +
+> +static void __set_intensity(struct tps6116x *hw, int intensity)
+> +{
+> +	unsigned long flags;
+> +
+> +	intensity = clamp(intensity, 0, TPS6116X_MAX_INTENSITY);
+> +
+> +	local_irq_save(flags);
+> +	__write_byte(hw, CMD_SET);
+> +	__write_byte(hw, intensity);
+> +	local_irq_restore(flags);
+> +}
+> +
+> +static int set_intensity(struct tps6116x *hw, int intensity)
+> +{
+> +	int error = 0;
+> +
+> +	if (intensity == hw->intensity)
+> +		return 0;
+> +
+> +	mutex_lock(&hw->lock);
+> +
+> +	error = __set_power(hw, intensity ? true : false);
+> +	if (error < 0)
+> +		goto error;
+> +
+> +	if (intensity > 0)
+> +		__set_intensity(hw, intensity);
+> +
+> +	hw->intensity = intensity;
+> +error:
+> +	mutex_unlock(&hw->lock);
+> +
+> +	return error;
+> +}
+> +
+> +static int get_brightness(struct backlight_device *bl)
+> +{
+> +	struct tps6116x *hw = bl_get_data(bl);
+> +
+> +	return hw->intensity;
+> +}
+> +
+> +static int update_status(struct backlight_device *bl)
+> +{
+> +	struct tps6116x *hw = bl_get_data(bl);
+> +	int intensity = bl->props.brightness;
+> +
+> +	if (hw->suspended || hw->props.state & BL_CORE_SUSPENDED)
+> +		intensity = 0;
+> +	if (bl->props.power != FB_BLANK_UNBLANK)
+> +		intensity = 0;
+> +	if (bl->props.fb_blank != FB_BLANK_UNBLANK)
+> +		intensity = 0;
+> +
+> +	return set_intensity(hw, intensity);
+> +}
+> +
+> +static const struct backlight_ops tps6116x_backlight_ops = {
+> +	.options	= BL_CORE_SUSPENDRESUME,
+> +	.get_brightness	= get_brightness,
+> +	.update_status	= update_status,
+> +};
+> +
+> +static int __devinit tps6116x_probe(struct platform_device *pdev)
+> +{
+> +	struct tps6116x *hw;
+> +	struct device *dev = &pdev->dev;
+> +	struct backlight_properties props;
+> +	int error;
+> +
+> +	hw = kzalloc(sizeof(struct tps6116x), GFP_KERNEL);
+> +	if (!hw) {
+> +		dev_err(dev, "cannot allocate driver data\n");
+> +		return -ENOMEM;
+> +	}
+> +	platform_set_drvdata(pdev, hw);
+> +
+> +	hw->gpio = (int)dev->platform_data;
+> +	hw->dev = dev;
+> +
+> +	mutex_init(&hw->lock);
+> +
+> +	hw->regulator = regulator_get(dev, "vlcd");
+> +	if (IS_ERR(hw->regulator)) {
+> +		error = PTR_ERR(hw->regulator);
+> +		dev_err(dev, "cannot claim regulator\n");
+> +		goto error_regulator;
+> +	}
+> +
+> +	error = gpio_request_one(hw->gpio, GPIOF_DIR_OUT, dev_name(dev));
+> +	if (error < 0) {
+> +		dev_err(dev, "cannot claim gpio\n");
+> +		goto error_gpio;
+> +	}
+> +
+> +	memset(&props, 0, sizeof(props));
+> +	props.max_brightness = TPS6116X_MAX_INTENSITY;
+> +	props.brightness     = TPS6116X_DEFAULT_INTENSITY;
+> +	props.power          = FB_BLANK_UNBLANK;
+> +
+> +	hw->bl = backlight_device_register("tps6116x", hw->dev, hw,
+> +					   &tps6116x_backlight_ops, &props);
+> +	if (IS_ERR(hw->bl)) {
+> +		error = PTR_ERR(hw->bl);
+> +		dev_err(dev, "backlight registration failed\n");
+> +		goto error_register;
+> +	}
+> +
+> +	update_status(hw->bl);
+> +	dev_info(dev, "registered backlight controller\n");
+> +	return 0;
+> +
+> +error_register:
+> +	gpio_free(hw->gpio);
+> +error_gpio:
+> +	regulator_put(hw->regulator);
+> +error_regulator:
+> +	kfree(hw);
+> +	platform_set_drvdata(pdev, NULL);
+> +	return error;
+> +}
+> +
+> +static int __devexit tps6116x_remove(struct platform_device *pdev)
+> +{
+> +	struct tps6116x *hw = platform_get_drvdata(pdev);
+> +
+> +	backlight_device_unregister(hw->bl);
+> +	regulator_disable(hw->regulator);
+> +	regulator_put(hw->regulator);
+> +	gpio_free(hw->gpio);
+> +	kfree(hw);
+> +	platform_set_drvdata(pdev, NULL);
+> +	return 0;
+> +}
+> +
+> +static int tps6116x_suspend(struct platform_device *pdev, pm_message_t state)
+> +{
+> +	struct tps6116x *hw = platform_get_drvdata(pdev);
+> +	hw->suspended = true;
+> +	update_status(hw->bl);
+> +	return 0;
+> +}
+> +
+> +static int tps6116x_resume(struct platform_device *pdev)
+> +{
+> +	struct tps6116x *hw = platform_get_drvdata(pdev);
+> +	hw->suspended = false;
+> +	update_status(hw->bl);
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver tps6116x_driver = {
+> +	.probe		= tps6116x_probe,
+> +	.remove		= __devexit_p(tps6116x_remove),
+> +	.suspend	= tps6116x_suspend,
+> +	.resume		= tps6116x_resume,
+> +	.driver		= {
+> +		.name	= "tps6116x",
+> +		.owner	= THIS_MODULE,
+> +	},
+> +};
+> +
+> +static int __init tps6116x_init(void)
+> +{
+> +	return platform_driver_register(&tps6116x_driver);
+> +}
+> +module_init(tps6116x_init);
+> +
+> +static void __exit tps6116x_exit(void)
+> +{
+> +	platform_driver_unregister(&tps6116x_driver);
+> +}
+> +module_exit(tps6116x_exit);
+> +
+> +MODULE_DESCRIPTION("SSP TPS6116X Driver");
+> +MODULE_AUTHOR("Cyril Chemparathy");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:tps6116x");

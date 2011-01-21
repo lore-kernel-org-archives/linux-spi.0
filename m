@@ -1,364 +1,655 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] SPI: spi_sh_msiof: cosmetic clean-up
-Date: Fri, 21 Jan 2011 12:12:12 -0700
-Message-ID: <20110121191212.GE7477@angua.secretlab.ca>
-References: <Pine.LNX.4.64.1101211654280.18867@axis700.grange>
- <20110121170247.GB7477@angua.secretlab.ca>
- <Pine.LNX.4.64.1101211806360.18867@axis700.grange>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] Renaming 'struct flash_platform_data' into 'struct
+	spi_flash_platform_data' in include/linux/spi/flash.h
+Date: Fri, 21 Jan 2011 12:28:19 -0700
+Message-ID: <20110121192819.GA32112@angua.secretlab.ca>
+References: <327178.68946.qm@web180303.mail.gq1.yahoo.com>
+	<4CEB89C6.3080603@bvs-tech.com>
+	<20101123093643.GC6156@jasper.tkos.co.il>
+	<4CEB8C39.1060801@bvs-tech.com>
+	<20101123094414.GD6156@jasper.tkos.co.il>
+	<4CEB8F7C.6070102@bvs-tech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+To: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.1101211806360.18867@axis700.grange>
-Sender: linux-sh-owner@vger.kernel.org
+In-Reply-To: <4CEB8F7C.6070102-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 21, 2011 at 06:10:50PM +0100, Guennadi Liakhovetski wrote:
-> On Fri, 21 Jan 2011, Grant Likely wrote:
+On Tue, Nov 23, 2010 at 10:55:08AM +0100, Alexis RODET wrote:
+> Hi baruch,
 > 
-> > On Fri, Jan 21, 2011 at 04:56:37PM +0100, Guennadi Liakhovetski wrote:
-> > > 1. sort headers alphabetically
-> > > 2. use fixed-size types u8, u16, u32 for register values and transferred data
-> > > 3. simplify some arithmetic operations
-> > > 4. remove leading spaces in front of labels
-> > 
-> > There's actually good reason to leave these labels alone.  Labels in
-> > column zero confuse diff and it gives the wrong function name.  For
-> > example:
-> > 
-> > diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
-> > index 658bd05..840164b 100644
-> > --- a/drivers/spi/spi_sh_msiof.c
-> > +++ b/drivers/spi/spi_sh_msiof.c
-> > @@ -682,7 +682,7 @@ err2:
-> >         clk_put(p->clk);
-> >  err1:
-> >         spi_master_put(master);
-> > -err0:
-> > + err0:
-> >         return ret;
-> >  }
-> > 
-> > See how the function name in the @@ line is 'err2' instead of
-> > sh_msiof_spi_probe() in this example?  Indenting the labels by one
-> > space is an easy fix and is intentional.
-> > 
-> > I've picked up the patch, but I've dropped the last two hunks.
-> 
-> Strange, my "git diff" doesn't get confused - as in the patch, that 
-> I've sent to you... Time to update your git?;) So, personally, I wouldn't 
-> hold _that_ for a reason. Well, CodingStyle doesn't directly say anything 
-> about those labels, but an example in it puts one at offset 0... Anyway, 
-> that's not critical, of course.
+> I hope this time every thing is OK.
 
-Of course it didn't.  The diff hunk started before a label.  My
-machine does the same with your patch, here:
+Hi Alexis,
 
-diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
-index 56f60c8..a81a836 100644
---- a/drivers/spi/spi_sh_msiof.c
-+++ b/drivers/spi/spi_sh_msiof.c
-@@ -617,13 +617,13 @@ static int sh_msiof_spi_probe(struct platform_device *pdev
-                return 0;
- 
-        pm_runtime_disable(&pdev->dev);
-- err3:
-+err3:
-        iounmap(p->mapbase);
-- err2:
-+err2:
-        clk_put(p->clk);
-- err1:
-+err1:
-        spi_master_put(master);
-- err0:
-+err0:
-        return ret;
- }
+Patch doesn't apply.  Looks like it's whitespace damaged (tabs
+converted to spaces).  Did you try to cut & paste it?  git send-email
+is a more reliable way to post patches.
 
-However, try it with only changing the last label so that diff hunk
-begins later.  Actually, what you need to try is apply your original
-patch so that all the labels are in column zero, and then indent only
-the last label so it looks like the example I sent you.  I'll bet you
-a beer that it gets confused.  :-)
+Also, for a change as far-reaching as this you should do it in two
+stages; rename the structure, but leave a #define to the old name so
+that conflicts aren't generated in linux-next.  Then remove the
+#define after the change makes it into Linus' tree.
+
+> Here is the command line used for doing this:
+> find . \( -name .git -prune -false -o -path ./include/linux/spi/flash.h -o \( -name \*.c -execdir grep -q '#include <linux/spi/flash.h>' \{\} \; \) \) -execdir sed -i -e 's/struct flash_platform_data/struct spi_flash_platform_data/' \{\} \+ -execdir git add \{\} \+ -print
+
+This looks to me like it will miss any files that include
+linux/spi/flash.h indirectly (ie, if they include a header that
+includes linux/spi/flash.h).  A simple 'git grep flash_platform_data'
+could very well be sufficient for finding the call sites.
+
+That being said, is it really worth making this change?  What is your
+motivation?  There isn't actually anything spi-specific in the
+flash_platform_data structure.
 
 g.
 
-> 
-> Thanks
-> Guennadi
-> 
-> > 
-> > g.
-> > 
-> > 
-> > > 
-> > > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-> > > ---
-> > >  drivers/spi/spi_sh_msiof.c |   78 ++++++++++++++++++++++----------------------
-> > >  1 files changed, 39 insertions(+), 39 deletions(-)
-> > > 
-> > > diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
-> > > index 56f60c8..07b4ead 100644
-> > > --- a/drivers/spi/spi_sh_msiof.c
-> > > +++ b/drivers/spi/spi_sh_msiof.c
-> > > @@ -9,22 +9,22 @@
-> > >   *
-> > >   */
-> > >  
-> > > -#include <linux/kernel.h>
-> > > -#include <linux/init.h>
-> > > +#include <linux/bitmap.h>
-> > > +#include <linux/clk.h>
-> > > +#include <linux/completion.h>
-> > >  #include <linux/delay.h>
-> > > +#include <linux/err.h>
-> > > +#include <linux/gpio.h>
-> > > +#include <linux/init.h>
-> > >  #include <linux/interrupt.h>
-> > > +#include <linux/io.h>
-> > > +#include <linux/kernel.h>
-> > >  #include <linux/platform_device.h>
-> > > -#include <linux/completion.h>
-> > >  #include <linux/pm_runtime.h>
-> > > -#include <linux/gpio.h>
-> > > -#include <linux/bitmap.h>
-> > > -#include <linux/clk.h>
-> > > -#include <linux/io.h>
-> > > -#include <linux/err.h>
-> > >  
-> > > +#include <linux/spi/sh_msiof.h>
-> > >  #include <linux/spi/spi.h>
-> > >  #include <linux/spi/spi_bitbang.h>
-> > > -#include <linux/spi/sh_msiof.h>
-> > >  
-> > >  #include <asm/unaligned.h>
-> > >  
-> > > @@ -67,7 +67,7 @@ struct sh_msiof_spi_priv {
-> > >  #define STR_TEOF  (1 << 23)
-> > >  #define STR_REOF  (1 << 7)
-> > >  
-> > > -static unsigned long sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
-> > > +static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
-> > >  {
-> > >  	switch (reg_offs) {
-> > >  	case TSCR:
-> > > @@ -79,7 +79,7 @@ static unsigned long sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
-> > >  }
-> > >  
-> > >  static void sh_msiof_write(struct sh_msiof_spi_priv *p, int reg_offs,
-> > > -			   unsigned long value)
-> > > +			   u32 value)
-> > >  {
-> > >  	switch (reg_offs) {
-> > >  	case TSCR:
-> > > @@ -93,10 +93,10 @@ static void sh_msiof_write(struct sh_msiof_spi_priv *p, int reg_offs,
-> > >  }
-> > >  
-> > >  static int sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
-> > > -				    unsigned long clr, unsigned long set)
-> > > +				    u32 clr, u32 set)
-> > >  {
-> > > -	unsigned long mask = clr | set;
-> > > -	unsigned long data;
-> > > +	u32 mask = clr | set;
-> > > +	u32 data;
-> > >  	int k;
-> > >  
-> > >  	data = sh_msiof_read(p, CTR);
-> > > @@ -166,10 +166,10 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
-> > >  }
-> > >  
-> > >  static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
-> > > -				      int cpol, int cpha,
-> > > -				      int tx_hi_z, int lsb_first)
-> > > +				      u32 cpol, u32 cpha,
-> > > +				      u32 tx_hi_z, u32 lsb_first)
-> > >  {
-> > > -	unsigned long tmp;
-> > > +	u32 tmp;
-> > >  	int edge;
-> > >  
-> > >  	/*
-> > > @@ -187,7 +187,7 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
-> > >  	tmp |= cpol << 30; /* TSCKIZ */
-> > >  	tmp |= cpol << 28; /* RSCKIZ */
-> > >  
-> > > -	edge = cpol ? cpha : !cpha;
-> > > +	edge = cpol ^ !cpha;
-> > >  
-> > >  	tmp |= edge << 27; /* TEDG */
-> > >  	tmp |= edge << 26; /* REDG */
-> > > @@ -197,11 +197,9 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
-> > >  
-> > >  static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
-> > >  				       const void *tx_buf, void *rx_buf,
-> > > -				       int bits, int words)
-> > > +				       u32 bits, u32 words)
-> > >  {
-> > > -	unsigned long dr2;
-> > > -
-> > > -	dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
-> > > +	u32 dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
-> > >  
-> > >  	if (tx_buf)
-> > >  		sh_msiof_write(p, TMDR2, dr2);
-> > > @@ -222,7 +220,7 @@ static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
-> > >  static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
-> > >  				      const void *tx_buf, int words, int fs)
-> > >  {
-> > > -	const unsigned char *buf_8 = tx_buf;
-> > > +	const u8 *buf_8 = tx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -232,7 +230,7 @@ static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
-> > >  				       const void *tx_buf, int words, int fs)
-> > >  {
-> > > -	const unsigned short *buf_16 = tx_buf;
-> > > +	const u16 *buf_16 = tx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -242,7 +240,7 @@ static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
-> > >  					const void *tx_buf, int words, int fs)
-> > >  {
-> > > -	const unsigned short *buf_16 = tx_buf;
-> > > +	const u16 *buf_16 = tx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -252,7 +250,7 @@ static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
-> > >  				       const void *tx_buf, int words, int fs)
-> > >  {
-> > > -	const unsigned int *buf_32 = tx_buf;
-> > > +	const u32 *buf_32 = tx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -262,7 +260,7 @@ static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
-> > >  					const void *tx_buf, int words, int fs)
-> > >  {
-> > > -	const unsigned int *buf_32 = tx_buf;
-> > > +	const u32 *buf_32 = tx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -272,7 +270,7 @@ static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
-> > >  				     void *rx_buf, int words, int fs)
-> > >  {
-> > > -	unsigned char *buf_8 = rx_buf;
-> > > +	u8 *buf_8 = rx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -282,7 +280,7 @@ static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
-> > >  				      void *rx_buf, int words, int fs)
-> > >  {
-> > > -	unsigned short *buf_16 = rx_buf;
-> > > +	u16 *buf_16 = rx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -292,7 +290,7 @@ static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
-> > >  				       void *rx_buf, int words, int fs)
-> > >  {
-> > > -	unsigned short *buf_16 = rx_buf;
-> > > +	u16 *buf_16 = rx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -302,7 +300,7 @@ static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
-> > >  				      void *rx_buf, int words, int fs)
-> > >  {
-> > > -	unsigned int *buf_32 = rx_buf;
-> > > +	u32 *buf_32 = rx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -312,7 +310,7 @@ static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
-> > >  static void sh_msiof_spi_read_fifo_32u(struct sh_msiof_spi_priv *p,
-> > >  				       void *rx_buf, int words, int fs)
-> > >  {
-> > > -	unsigned int *buf_32 = rx_buf;
-> > > +	u32 *buf_32 = rx_buf;
-> > >  	int k;
-> > >  
-> > >  	for (k = 0; k < words; k++)
-> > > @@ -324,7 +322,8 @@ static int sh_msiof_spi_bits(struct spi_device *spi, struct spi_transfer *t)
-> > >  	int bits;
-> > >  
-> > >  	bits = t ? t->bits_per_word : 0;
-> > > -	bits = bits ? bits : spi->bits_per_word;
-> > > +	if (!bits)
-> > > +		bits = spi->bits_per_word;
-> > >  	return bits;
-> > >  }
-> > >  
-> > > @@ -334,7 +333,8 @@ static unsigned long sh_msiof_spi_hz(struct spi_device *spi,
-> > >  	unsigned long hz;
-> > >  
-> > >  	hz = t ? t->speed_hz : 0;
-> > > -	hz = hz ? hz : spi->max_speed_hz;
-> > > +	if (!hz)
-> > > +		hz = spi->max_speed_hz;
-> > >  	return hz;
-> > >  }
-> > >  
-> > > @@ -453,7 +453,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
-> > >  
-> > >  	return words;
-> > >  
-> > > - err:
-> > > +err:
-> > >  	sh_msiof_write(p, IER, 0);
-> > >  	return ret;
-> > >  }
-> > > @@ -617,13 +617,13 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
-> > >  		return 0;
-> > >  
-> > >  	pm_runtime_disable(&pdev->dev);
-> > > - err3:
-> > > +err3:
-> > >  	iounmap(p->mapbase);
-> > > - err2:
-> > > +err2:
-> > >  	clk_put(p->clk);
-> > > - err1:
-> > > +err1:
-> > >  	spi_master_put(master);
-> > > - err0:
-> > > +err0:
-> > >  	return ret;
-> > >  }
-> > >  
-> > > -- 
-> > > 1.7.2.3
-> > > 
-> > > 
-> > > ------------------------------------------------------------------------------
-> > > Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
-> > > Finally, a world-class log management solution at an even better price-free!
-> > > Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
-> > > February 28th, so secure your free ArcSight Logger TODAY! 
-> > > http://p.sf.net/sfu/arcsight-sfd2d
-> > > _______________________________________________
-> > > spi-devel-general mailing list
-> > > spi-devel-general@lists.sourceforge.net
-> > > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-> > 
+
+> I didn't test all compilation as I don't have blackfin compiler installed and I'm quite lasy and also busy.
+> I compiled for my x86 with allyesconfig and for Freescale mx27 with allyesconfig minus a number of buggy drivers.
 > 
 > ---
-> Guennadi Liakhovetski, Ph.D.
-> Freelance Open-Source Software Developer
-> http://www.open-technology.de/
+>  arch/arm/mach-at91/board-cam60.c               |    2 +-
+>  arch/arm/mach-at91/board-ecbat91.c             |    2 +-
+>  arch/arm/mach-dove/dove-db-setup.c             |    2 +-
+>  arch/arm/mach-kirkwood/lacie_v2-common.c       |    2 +-
+>  arch/arm/mach-kirkwood/mv88f6281gtw_ge-setup.c |    2 +-
+>  arch/arm/mach-kirkwood/rd88f6192-nas-setup.c   |    2 +-
+>  arch/arm/mach-kirkwood/t5325-setup.c           |    2 +-
+>  arch/arm/mach-kirkwood/tsx1x-common.c          |    2 +-
+>  arch/arm/mach-orion5x/rd88f6183ap-ge-setup.c   |    2 +-
+>  arch/arm/mach-w90x900/dev.c                    |    2 +-
+>  arch/blackfin/mach-bf518/boards/ezbrd.c        |    2 +-
+>  arch/blackfin/mach-bf518/boards/tcm-bf518.c    |    2 +-
+>  arch/blackfin/mach-bf527/boards/ad7160eval.c   |    2 +-
+>  arch/blackfin/mach-bf527/boards/cm_bf527.c     |    2 +-
+>  arch/blackfin/mach-bf527/boards/ezbrd.c        |    2 +-
+>  arch/blackfin/mach-bf527/boards/ezkit.c        |    2 +-
+>  arch/blackfin/mach-bf527/boards/tll6527m.c     |    2 +-
+>  arch/blackfin/mach-bf533/boards/H8606.c        |    2 +-
+>  arch/blackfin/mach-bf533/boards/blackstamp.c   |    2 +-
+>  arch/blackfin/mach-bf533/boards/cm_bf533.c     |    2 +-
+>  arch/blackfin/mach-bf533/boards/ezkit.c        |    2 +-
+>  arch/blackfin/mach-bf533/boards/stamp.c        |    2 +-
+>  arch/blackfin/mach-bf537/boards/cm_bf537e.c    |    2 +-
+>  arch/blackfin/mach-bf537/boards/cm_bf537u.c    |    2 +-
+>  arch/blackfin/mach-bf537/boards/minotaur.c     |    2 +-
+>  arch/blackfin/mach-bf537/boards/pnav10.c       |    2 +-
+>  arch/blackfin/mach-bf537/boards/stamp.c        |    4 ++--
+>  arch/blackfin/mach-bf537/boards/tcm_bf537.c    |    2 +-
+>  arch/blackfin/mach-bf538/boards/ezkit.c        |    2 +-
+>  arch/blackfin/mach-bf548/boards/cm_bf548.c     |    2 +-
+>  arch/blackfin/mach-bf548/boards/ezkit.c        |    2 +-
+>  arch/blackfin/mach-bf561/boards/acvilon.c      |    2 +-
+>  arch/blackfin/mach-bf561/boards/cm_bf561.c     |    2 +-
+>  arch/mips/alchemy/devboards/db1200/platform.c  |    2 +-
+>  drivers/mtd/devices/m25p80.c                   |    2 +-
+>  drivers/mtd/devices/mtd_dataflash.c            |    2 +-
+>  drivers/mtd/devices/sst25l.c                   |    2 +-
+>  drivers/spi/spi_butterfly.c                    |    2 +-
+>  include/linux/spi/flash.h                      |    4 ++--
+>  39 files changed, 41 insertions(+), 41 deletions(-)
+> 
+> diff --git a/arch/arm/mach-at91/board-cam60.c b/arch/arm/mach-at91/board-cam60.c
+> index b54e3e6..50780b2 100644
+> --- a/arch/arm/mach-at91/board-cam60.c
+> +++ b/arch/arm/mach-at91/board-cam60.c
+> @@ -98,7 +98,7 @@ static struct mtd_partition cam60_spi_partitions[] = {
+>      },
+>  };
+>  
+> -static struct flash_platform_data cam60_spi_flash_platform_data = {
+> +static struct spi_flash_platform_data cam60_spi_flash_platform_data = {
+>      .name        = "spi_flash",
+>      .parts        = cam60_spi_partitions,
+>      .nr_parts    = ARRAY_SIZE(cam60_spi_partitions)
+> diff --git a/arch/arm/mach-at91/board-ecbat91.c b/arch/arm/mach-at91/board-ecbat91.c
+> index 7b58c94..8598237 100644
+> --- a/arch/arm/mach-at91/board-ecbat91.c
+> +++ b/arch/arm/mach-at91/board-ecbat91.c
+> @@ -110,7 +110,7 @@ static struct mtd_partition __initdata my_flash0_partitions[] =
+>      }
+>  };
+>  
+> -static struct flash_platform_data __initdata my_flash0_platform = {
+> +static struct spi_flash_platform_data __initdata my_flash0_platform = {
+>      .name        = "Removable flash card",
+>      .parts        = my_flash0_partitions,
+>      .nr_parts    = ARRAY_SIZE(my_flash0_partitions)
+> diff --git a/arch/arm/mach-dove/dove-db-setup.c b/arch/arm/mach-dove/dove-db-setup.c
+> index 95925aa..90f8f95 100644
+> --- a/arch/arm/mach-dove/dove-db-setup.c
+> +++ b/arch/arm/mach-dove/dove-db-setup.c
+> @@ -40,7 +40,7 @@ static struct mv_sata_platform_data dove_db_sata_data = {
+>   * SPI Devices:
+>   *     SPI0: 4M Flash ST-M25P32-VMF6P
+>   ****************************************************************************/
+> -static const struct flash_platform_data dove_db_spi_flash_data = {
+> +static const struct spi_flash_platform_data dove_db_spi_flash_data = {
+>      .type        = "m25p64",
+>  };
+>  
+> diff --git a/arch/arm/mach-kirkwood/lacie_v2-common.c b/arch/arm/mach-kirkwood/lacie_v2-common.c
+> index 285edab..b60003f 100644
+> --- a/arch/arm/mach-kirkwood/lacie_v2-common.c
+> +++ b/arch/arm/mach-kirkwood/lacie_v2-common.c
+> @@ -33,7 +33,7 @@ static struct mtd_partition lacie_v2_flash_parts[] = {
+>      },
+>  };
+>  
+> -static const struct flash_platform_data lacie_v2_flash = {
+> +static const struct spi_flash_platform_data lacie_v2_flash = {
+>      .type        = "mx25l4005a",
+>      .name        = "spi_flash",
+>      .parts        = lacie_v2_flash_parts,
+> diff --git a/arch/arm/mach-kirkwood/mv88f6281gtw_ge-setup.c b/arch/arm/mach-kirkwood/mv88f6281gtw_ge-setup.c
+> index 1e5266f..16356c8 100644
+> --- a/arch/arm/mach-kirkwood/mv88f6281gtw_ge-setup.c
+> +++ b/arch/arm/mach-kirkwood/mv88f6281gtw_ge-setup.c
+> @@ -52,7 +52,7 @@ static struct dsa_platform_data mv88f6281gtw_ge_switch_plat_data = {
+>      .chip        = &mv88f6281gtw_ge_switch_chip_data,
+>  };
+>  
+> -static const struct flash_platform_data mv88f6281gtw_ge_spi_slave_data = {
+> +static const struct spi_flash_platform_data mv88f6281gtw_ge_spi_slave_data = {
+>      .type        = "mx25l12805d",
+>  };
+>  
+> diff --git a/arch/arm/mach-kirkwood/rd88f6192-nas-setup.c b/arch/arm/mach-kirkwood/rd88f6192-nas-setup.c
+> index 0049614..d3b706f 100644
+> --- a/arch/arm/mach-kirkwood/rd88f6192-nas-setup.c
+> +++ b/arch/arm/mach-kirkwood/rd88f6192-nas-setup.c
+> @@ -32,7 +32,7 @@ static struct mv_sata_platform_data rd88f6192_sata_data = {
+>      .n_ports    = 2,
+>  };
+>  
+> -static const struct flash_platform_data rd88F6192_spi_slave_data = {
+> +static const struct spi_flash_platform_data rd88F6192_spi_slave_data = {
+>      .type        = "m25p128",
+>  };
+>  
+> diff --git a/arch/arm/mach-kirkwood/t5325-setup.c b/arch/arm/mach-kirkwood/t5325-setup.c
+> index ce50e61..d086983 100644
+> --- a/arch/arm/mach-kirkwood/t5325-setup.c
+> +++ b/arch/arm/mach-kirkwood/t5325-setup.c
+> @@ -59,7 +59,7 @@ struct mtd_partition hp_t5325_partitions[] = {
+>      },
+>  };
+>  
+> -const struct flash_platform_data hp_t5325_flash = {
+> +const struct spi_flash_platform_data hp_t5325_flash = {
+>      .type        = "mx25l8005",
+>      .name        = "spi_flash",
+>      .parts        = hp_t5325_partitions,
+> diff --git a/arch/arm/mach-kirkwood/tsx1x-common.c b/arch/arm/mach-kirkwood/tsx1x-common.c
+> index f781164..14c7825 100644
+> --- a/arch/arm/mach-kirkwood/tsx1x-common.c
+> +++ b/arch/arm/mach-kirkwood/tsx1x-common.c
+> @@ -59,7 +59,7 @@ struct mtd_partition qnap_tsx1x_partitions[] = {
+>      },
+>  };
+>  
+> -const struct flash_platform_data qnap_tsx1x_flash = {
+> +const struct spi_flash_platform_data qnap_tsx1x_flash = {
+>      .type        = "m25p128",
+>      .name        = "spi_flash",
+>      .parts        = qnap_tsx1x_partitions,
+> diff --git a/arch/arm/mach-orion5x/rd88f6183ap-ge-setup.c b/arch/arm/mach-orion5x/rd88f6183ap-ge-setup.c
+> index 02ff45f..b18bb24 100644
+> --- a/arch/arm/mach-orion5x/rd88f6183ap-ge-setup.c
+> +++ b/arch/arm/mach-orion5x/rd88f6183ap-ge-setup.c
+> @@ -65,7 +65,7 @@ static struct mtd_partition rd88f6183ap_ge_partitions[] = {
+>      },
+>  };
+>  
+> -static struct flash_platform_data rd88f6183ap_ge_spi_slave_data = {
+> +static struct spi_flash_platform_data rd88f6183ap_ge_spi_slave_data = {
+>      .type        = "m25p64",
+>      .nr_parts    = ARRAY_SIZE(rd88f6183ap_ge_partitions),
+>      .parts        = rd88f6183ap_ge_partitions,
+> diff --git a/arch/arm/mach-w90x900/dev.c b/arch/arm/mach-w90x900/dev.c
+> index 7a1fa6a..12d7f7c 100644
+> --- a/arch/arm/mach-w90x900/dev.c
+> +++ b/arch/arm/mach-w90x900/dev.c
+> @@ -246,7 +246,7 @@ static struct mtd_partition nuc900_spi_flash_partitions[] = {
+>      },
+>  };
+>  
+> -static struct flash_platform_data nuc900_spi_flash_data = {
+> +static struct spi_flash_platform_data nuc900_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts =  nuc900_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(nuc900_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf518/boards/ezbrd.c b/arch/blackfin/mach-bf518/boards/ezbrd.c
+> index b894c8a..ded02c1 100644
+> --- a/arch/blackfin/mach-bf518/boards/ezbrd.c
+> +++ b/arch/blackfin/mach-bf518/boards/ezbrd.c
+> @@ -178,7 +178,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf518/boards/tcm-bf518.c b/arch/blackfin/mach-bf518/boards/tcm-bf518.c
+> index e6ce1d7..66817b0 100644
+> --- a/arch/blackfin/mach-bf518/boards/tcm-bf518.c
+> +++ b/arch/blackfin/mach-bf518/boards/tcm-bf518.c
+> @@ -128,7 +128,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf527/boards/ad7160eval.c b/arch/blackfin/mach-bf527/boards/ad7160eval.c
+> index fc767ac..c43724b 100644
+> --- a/arch/blackfin/mach-bf527/boards/ad7160eval.c
+> +++ b/arch/blackfin/mach-bf527/boards/ad7160eval.c
+> @@ -254,7 +254,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf527/boards/cm_bf527.c b/arch/blackfin/mach-bf527/boards/cm_bf527.c
+> index 2c31af7..3d5a3dc 100644
+> --- a/arch/blackfin/mach-bf527/boards/cm_bf527.c
+> +++ b/arch/blackfin/mach-bf527/boards/cm_bf527.c
+> @@ -341,7 +341,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf527/boards/ezbrd.c b/arch/blackfin/mach-bf527/boards/ezbrd.c
+> index 9a736a8..6670939 100644
+> --- a/arch/blackfin/mach-bf527/boards/ezbrd.c
+> +++ b/arch/blackfin/mach-bf527/boards/ezbrd.c
+> @@ -240,7 +240,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf527/boards/ezkit.c b/arch/blackfin/mach-bf527/boards/ezkit.c
+> index 9222bc0..78a07e7 100644
+> --- a/arch/blackfin/mach-bf527/boards/ezkit.c
+> +++ b/arch/blackfin/mach-bf527/boards/ezkit.c
+> @@ -434,7 +434,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf527/boards/tll6527m.c b/arch/blackfin/mach-bf527/boards/tll6527m.c
+> index 9ec5757..147374b 100644
+> --- a/arch/blackfin/mach-bf527/boards/tll6527m.c
+> +++ b/arch/blackfin/mach-bf527/boards/tll6527m.c
+> @@ -304,7 +304,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf533/boards/H8606.c b/arch/blackfin/mach-bf533/boards/H8606.c
+> index 2ce7b16..60ff37f 100644
+> --- a/arch/blackfin/mach-bf533/boards/H8606.c
+> +++ b/arch/blackfin/mach-bf533/boards/H8606.c
+> @@ -149,7 +149,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf533/boards/blackstamp.c b/arch/blackfin/mach-bf533/boards/blackstamp.c
+> index 20c1022..cbdcca1 100644
+> --- a/arch/blackfin/mach-bf533/boards/blackstamp.c
+> +++ b/arch/blackfin/mach-bf533/boards/blackstamp.c
+> @@ -93,7 +93,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf533/boards/cm_bf533.c b/arch/blackfin/mach-bf533/boards/cm_bf533.c
+> index adbe62a..6448686 100644
+> --- a/arch/blackfin/mach-bf533/boards/cm_bf533.c
+> +++ b/arch/blackfin/mach-bf533/boards/cm_bf533.c
+> @@ -49,7 +49,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf533/boards/ezkit.c b/arch/blackfin/mach-bf533/boards/ezkit.c
+> index a1cb8e7..4e1ee73 100644
+> --- a/arch/blackfin/mach-bf533/boards/ezkit.c
+> +++ b/arch/blackfin/mach-bf533/boards/ezkit.c
+> @@ -200,7 +200,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf533/boards/stamp.c b/arch/blackfin/mach-bf533/boards/stamp.c
+> index b3b1cde..8554b38 100644
+> --- a/arch/blackfin/mach-bf533/boards/stamp.c
+> +++ b/arch/blackfin/mach-bf533/boards/stamp.c
+> @@ -163,7 +163,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/cm_bf537e.c b/arch/blackfin/mach-bf537/boards/cm_bf537e.c
+> index 836698c..c1bb193 100644
+> --- a/arch/blackfin/mach-bf537/boards/cm_bf537e.c
+> +++ b/arch/blackfin/mach-bf537/boards/cm_bf537e.c
+> @@ -51,7 +51,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/cm_bf537u.c b/arch/blackfin/mach-bf537/boards/cm_bf537u.c
+> index 2a85670..da1886e 100644
+> --- a/arch/blackfin/mach-bf537/boards/cm_bf537u.c
+> +++ b/arch/blackfin/mach-bf537/boards/cm_bf537u.c
+> @@ -52,7 +52,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/minotaur.c b/arch/blackfin/mach-bf537/boards/minotaur.c
+> index 4980051..c360f10 100644
+> --- a/arch/blackfin/mach-bf537/boards/minotaur.c
+> +++ b/arch/blackfin/mach-bf537/boards/minotaur.c
+> @@ -149,7 +149,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/pnav10.c b/arch/blackfin/mach-bf537/boards/pnav10.c
+> index b958078..aab7edd 100644
+> --- a/arch/blackfin/mach-bf537/boards/pnav10.c
+> +++ b/arch/blackfin/mach-bf537/boards/pnav10.c
+> @@ -174,7 +174,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/stamp.c b/arch/blackfin/mach-bf537/boards/stamp.c
+> index 3aa344c..633cbf0 100644
+> --- a/arch/blackfin/mach-bf537/boards/stamp.c
+> +++ b/arch/blackfin/mach-bf537/boards/stamp.c
+> @@ -526,7 +526,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> @@ -1003,7 +1003,7 @@ static struct mtd_partition bfin_spi_dataflash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_dataflash_data = {
+> +static struct spi_flash_platform_data bfin_spi_dataflash_data = {
+>      .name = "SPI Dataflash",
+>      .parts = bfin_spi_dataflash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_dataflash_partitions),
+> diff --git a/arch/blackfin/mach-bf537/boards/tcm_bf537.c b/arch/blackfin/mach-bf537/boards/tcm_bf537.c
+> index 31498ad..557747f 100644
+> --- a/arch/blackfin/mach-bf537/boards/tcm_bf537.c
+> +++ b/arch/blackfin/mach-bf537/boards/tcm_bf537.c
+> @@ -52,7 +52,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf538/boards/ezkit.c b/arch/blackfin/mach-bf538/boards/ezkit.c
+> index c6fb0a5..de9ab68 100644
+> --- a/arch/blackfin/mach-bf538/boards/ezkit.c
+> +++ b/arch/blackfin/mach-bf538/boards/ezkit.c
+> @@ -493,7 +493,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf548/boards/cm_bf548.c b/arch/blackfin/mach-bf548/boards/cm_bf548.c
+> index f0c0eef..7effe25 100644
+> --- a/arch/blackfin/mach-bf548/boards/cm_bf548.c
+> +++ b/arch/blackfin/mach-bf548/boards/cm_bf548.c
+> @@ -849,7 +849,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf548/boards/ezkit.c b/arch/blackfin/mach-bf548/boards/ezkit.c
+> index 216e269..1ab35e3 100644
+> --- a/arch/blackfin/mach-bf548/boards/ezkit.c
+> +++ b/arch/blackfin/mach-bf548/boards/ezkit.c
+> @@ -957,7 +957,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/blackfin/mach-bf561/boards/acvilon.c b/arch/blackfin/mach-bf561/boards/acvilon.c
+> index 0b1c20f..7f69032 100644
+> --- a/arch/blackfin/mach-bf561/boards/acvilon.c
+> +++ b/arch/blackfin/mach-bf561/boards/acvilon.c
+> @@ -359,7 +359,7 @@ static struct mtd_partition bfin_spi_dataflash_partitions[] = {
+>       }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_dataflash_data = {
+> +static struct spi_flash_platform_data bfin_spi_dataflash_data = {
+>      .name = "SPI Dataflash",
+>      .parts = bfin_spi_dataflash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_dataflash_partitions),
+> diff --git a/arch/blackfin/mach-bf561/boards/cm_bf561.c b/arch/blackfin/mach-bf561/boards/cm_bf561.c
+> index 087b6b0..80073ac 100644
+> --- a/arch/blackfin/mach-bf561/boards/cm_bf561.c
+> +++ b/arch/blackfin/mach-bf561/boards/cm_bf561.c
+> @@ -50,7 +50,7 @@ static struct mtd_partition bfin_spi_flash_partitions[] = {
+>      }
+>  };
+>  
+> -static struct flash_platform_data bfin_spi_flash_data = {
+> +static struct spi_flash_platform_data bfin_spi_flash_data = {
+>      .name = "m25p80",
+>      .parts = bfin_spi_flash_partitions,
+>      .nr_parts = ARRAY_SIZE(bfin_spi_flash_partitions),
+> diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
+> index fbb5593..ea9bf90 100644
+> --- a/arch/mips/alchemy/devboards/db1200/platform.c
+> +++ b/arch/mips/alchemy/devboards/db1200/platform.c
+> @@ -50,7 +50,7 @@ static struct mtd_partition db1200_spiflash_parts[] = {
+>      },
+>  };
+>  
+> -static struct flash_platform_data db1200_spiflash_data = {
+> +static struct spi_flash_platform_data db1200_spiflash_data = {
+>      .name        = "s25fl001",
+>      .parts        = db1200_spiflash_parts,
+>      .nr_parts    = ARRAY_SIZE(db1200_spiflash_parts),
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index bf5a002..4244468 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -776,7 +776,7 @@ static const struct spi_device_id *__devinit jedec_probe(struct spi_device *spi)
+>  static int __devinit m25p_probe(struct spi_device *spi)
+>  {
+>      const struct spi_device_id    *id = spi_get_device_id(spi);
+> -    struct flash_platform_data    *data;
+> +    struct spi_flash_platform_data    *data;
+>      struct m25p            *flash;
+>      struct flash_info        *info;
+>      unsigned            i;
+> diff --git a/drivers/mtd/devices/mtd_dataflash.c b/drivers/mtd/devices/mtd_dataflash.c
+> index c5015cc..9cb2727 100644
+> --- a/drivers/mtd/devices/mtd_dataflash.c
+> +++ b/drivers/mtd/devices/mtd_dataflash.c
+> @@ -634,7 +634,7 @@ add_dataflash_otp(struct spi_device *spi, char *name,
+>  {
+>      struct dataflash        *priv;
+>      struct mtd_info            *device;
+> -    struct flash_platform_data    *pdata = spi->dev.platform_data;
+> +    struct spi_flash_platform_data    *pdata = spi->dev.platform_data;
+>      char                *otp_tag = "";
+>      int                err = 0;
+>  
+> diff --git a/drivers/mtd/devices/sst25l.c b/drivers/mtd/devices/sst25l.c
+> index 684247a..989758d 100644
+> --- a/drivers/mtd/devices/sst25l.c
+> +++ b/drivers/mtd/devices/sst25l.c
+> @@ -379,7 +379,7 @@ static int __init sst25l_probe(struct spi_device *spi)
+>  {
+>      struct flash_info *flash_info;
+>      struct sst25l_flash *flash;
+> -    struct flash_platform_data *data;
+> +    struct spi_flash_platform_data *data;
+>      int ret, i;
+>  
+>      flash_info = sst25l_match_device(spi);
+> diff --git a/drivers/spi/spi_butterfly.c b/drivers/spi/spi_butterfly.c
+> index 0d4ceba..a9ac6b2 100644
+> --- a/drivers/spi/spi_butterfly.c
+> +++ b/drivers/spi/spi_butterfly.c
+> @@ -183,7 +183,7 @@ static struct mtd_partition partitions[] = { {
+>      .size        = MTDPART_SIZ_FULL,
+>  } };
+>  
+> -static struct flash_platform_data flash = {
+> +static struct spi_flash_platform_data flash = {
+>      .name        = "butterflash",
+>      .parts        = partitions,
+>      .nr_parts    = ARRAY_SIZE(partitions),
+> diff --git a/include/linux/spi/flash.h b/include/linux/spi/flash.h
+> index 3f22932..946145e 100644
+> --- a/include/linux/spi/flash.h
+> +++ b/include/linux/spi/flash.h
+> @@ -4,7 +4,7 @@
+>  struct mtd_partition;
+>  
+>  /**
+> - * struct flash_platform_data: board-specific flash data
+> + * struct spi_flash_platform_data: board-specific flash data
+>   * @name: optional flash device name (eg, as used with mtdparts=)
+>   * @parts: optional array of mtd_partitions for static partitioning
+>   * @nr_parts: number of mtd_partitions for static partitoning
+> @@ -18,7 +18,7 @@ struct mtd_partition;
+>   * Note that for DataFlash, sizes for pages, blocks, and sectors are
+>   * rarely powers of two; and partitions should be sector-aligned.
+>   */
+> -struct flash_platform_data {
+> +struct spi_flash_platform_data {
+>      char        *name;
+>      struct mtd_partition *parts;
+>      unsigned int    nr_parts;
+> -- 
+> 1.7.1
+> 
+
+> ------------------------------------------------------------------------------
+> Increase Visibility of Your 3D Game App & Earn a Chance To Win $500!
+> Tap into the largest installed PC base & get more eyes on your game by
+> optimizing for Intel(R) Graphics Technology. Get started today with the
+> Intel(R) Software Partner Program. Five $500 cash prizes are up for grabs.
+> http://p.sf.net/sfu/intelisp-dev2dev
+
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+
+------------------------------------------------------------------------------
+Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
+Finally, a world-class log management solution at an even better price-free!
+Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
+February 28th, so secure your free ArcSight Logger TODAY! 
+http://p.sf.net/sfu/arcsight-sfd2d

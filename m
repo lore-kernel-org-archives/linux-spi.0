@@ -1,128 +1,364 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi_topcliff_pch: support new device ML7213
-Date: Fri, 21 Jan 2011 11:48:52 -0700
-Message-ID: <20110121184852.GA18603@angua.secretlab.ca>
-References: <1293449027-3219-1-git-send-email-tomoya-linux@dsn.okisemi.com>
-	<20101229064937.GC8172@angua.secretlab.ca>
-	<280596192AA74D208C2C5F6389DBE8C1@hacdom.okisemi.com>
-	<20110105163835.GD17272@angua.secretlab.ca>
-	<46862922F48B45F781832619CF3F4B79@hacdom.okisemi.com>
-	<topcliff-split@mdm.bga.com>
-	<84FF3503839A46E0B9919DF000DDE5C5@hacdom.okisemi.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 1/3] SPI: spi_sh_msiof: cosmetic clean-up
+Date: Fri, 21 Jan 2011 12:12:12 -0700
+Message-ID: <20110121191212.GE7477@angua.secretlab.ca>
+References: <Pine.LNX.4.64.1101211654280.18867@axis700.grange>
+ <20110121170247.GB7477@angua.secretlab.ca>
+ <Pine.LNX.4.64.1101211806360.18867@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: 'David Brownell' <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "'Wang,
-	Qi'" <qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"'linux-kernel-u79uwXL29TaiAVqoAR/hOA49XUYAGyU/@public.gmane.org@intel.com'"@angua.secretlab.ca,
-	yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, 'Milton Miller' <miltonm-ogEGBHC/i9Y@public.gmane.org>,
-	Toshiharu Okada <toshiharu-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>,
-	kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org
+To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <84FF3503839A46E0B9919DF000DDE5C5-c0cKtqp5df7I9507bXv2FdBPR1lH4CV8@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <Pine.LNX.4.64.1101211806360.18867@axis700.grange>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 11, 2011 at 06:38:35PM +0900, Tomoya MORINAGA wrote:
-> Hi Grant,
+On Fri, Jan 21, 2011 at 06:10:50PM +0100, Guennadi Liakhovetski wrote:
+> On Fri, 21 Jan 2011, Grant Likely wrote:
 > 
-> On Friday, January 07, 2011 6:22 PM, Milton Miller wrote:
-> > follow mfd_add_devices into drivers/mfd/mfd-core.c
-> I have also seen mfd-core.c.
-> However, I couldn't clear my question.
+> > On Fri, Jan 21, 2011 at 04:56:37PM +0100, Guennadi Liakhovetski wrote:
+> > > 1. sort headers alphabetically
+> > > 2. use fixed-size types u8, u16, u32 for register values and transferred data
+> > > 3. simplify some arithmetic operations
+> > > 4. remove leading spaces in front of labels
+> > 
+> > There's actually good reason to leave these labels alone.  Labels in
+> > column zero confuse diff and it gives the wrong function name.  For
+> > example:
+> > 
+> > diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
+> > index 658bd05..840164b 100644
+> > --- a/drivers/spi/spi_sh_msiof.c
+> > +++ b/drivers/spi/spi_sh_msiof.c
+> > @@ -682,7 +682,7 @@ err2:
+> >         clk_put(p->clk);
+> >  err1:
+> >         spi_master_put(master);
+> > -err0:
+> > + err0:
+> >         return ret;
+> >  }
+> > 
+> > See how the function name in the @@ line is 'err2' instead of
+> > sh_msiof_spi_probe() in this example?  Indenting the labels by one
+> > space is an easy fix and is intentional.
+> > 
+> > I've picked up the patch, but I've dropped the last two hunks.
 > 
-> Q1. It seems platform_device is not used in your example. Does need "platform_device" ?
-> Q2. How detect pch_spi channel dynamically ?
-> 
-> I want to catch your saying correctly.
-> Could you give me more information ?
+> Strange, my "git diff" doesn't get confused - as in the patch, that 
+> I've sent to you... Time to update your git?;) So, personally, I wouldn't 
+> hold _that_ for a reason. Well, CodingStyle doesn't directly say anything 
+> about those labels, but an example in it puts one at offset 0... Anyway, 
+> that's not critical, of course.
 
-Let me try a different explanation.  The pch_spi driver implements a
-pci_driver, and currently that pci_driver implements a single
-spi_master child device as a child of the pci_bus.  The structure in
-/sys/devices is probably something like this:
+Of course it didn't.  The diff hunk started before a label.  My
+machine does the same with your patch, here:
 
-/sys/devices/.../0000:00:1a.0 (pci_dev bound to driver 'pch_spi_pcidev')
-  |
-  +--spi0.0  (spi_device 0 on spi_master 0)
-  |
-  \--spi0.1  (spi_device 1 on spi_master 0)
+diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
+index 56f60c8..a81a836 100644
+--- a/drivers/spi/spi_sh_msiof.c
++++ b/drivers/spi/spi_sh_msiof.c
+@@ -617,13 +617,13 @@ static int sh_msiof_spi_probe(struct platform_device *pdev
+                return 0;
+ 
+        pm_runtime_disable(&pdev->dev);
+- err3:
++err3:
+        iounmap(p->mapbase);
+- err2:
++err2:
+        clk_put(p->clk);
+- err1:
++err1:
+        spi_master_put(master);
+- err0:
++err0:
+        return ret;
+ }
 
-You want to modify the driver so that it can have more than one
-spi_master attached to the device.  Your patch attempts to do so by
-maintaining an array of spi_master devices that are children of the
-pci_dev, so that the structure looks like this:
-
-
-/sys/devices/.../0000:00:1a.0 (pci_dev bound to driver 'pch_spi_pcidev')
-  |
-  +--spi0.0  (spi_device 0 on spi_master 0)
-  |
-  +--spi0.1  (spi_device 1 on spi_master 0)
-  |
-  \--spi1.0  (spi_device 0 on spi_master 1)
-
-Am I correct so far?
-
-What I'm suggesting is that the code used to implement this structure
-adds unnecessary complexity to the driver since each of the spi_master
-instances are essentially completely independent, yet the driver has
-to do extra work to know about the multiple instances.
-
-Instead what you can do is to treat each spi bus as a child
-platform_device of the pci_dev, and move the guts of the current
-pch_spi_pcidev driver into a new platform_driver.  Then, instead of
-driving the spi_master directly, the pch_spi_pcidev registers one or
-more child platform_devices, one for each spi bus, so that the device
-model looks something like this:
-
-/sys/devices/.../0000:00:1a.0 (pci_dev bound to driver 'pch_spi_pcidev')
-  |
-  +--pch_spi.0
-  |   |
-  |   +--spi0.0  (spi_device 0 on spi_master 0)
-  |   |
-  |   \--spi0.1  (spi_device 1 on spi_master 0)
-  |
-  \--pch_spi.1
-      |
-      \--spi1.0  (spi_device 0 on spi_master 1)
-
-where pch_spi.0 and pch_spi.1 are platform devices.  The
-pch_spi_pcidev driver would allocated and register one or more
-pch_spi.* platform_device children, each of which gets bound to a
-pch_spi_platform_driver independently.  Doing it this way lets the
-Linux driver model manage multiple instances instead of implementing
-it by hand in your driver.
-
-Make sense?
-
-To do this, you need to move most of the driver code into a
-platform_driver, and then modify your pci_driver so that it only
-allocates and registers one or more platform_devices that will bind to
-the driver.  It means you now have *two* driver structures.  One for
-the pci_dev, and one for the platform_device children, and the pci_dev
-acts as a container for the platform_devices.
-
-The files in drivers/misc are an example of drivers that work in this
-way.
+However, try it with only changing the last label so that diff hunk
+begins later.  Actually, what you need to try is apply your original
+patch so that all the labels are in column zero, and then indent only
+the last label so it looks like the example I sent you.  I'll bet you
+a beer that it gets confused.  :-)
 
 g.
 
-
-------------------------------------------------------------------------------
-Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
-Finally, a world-class log management solution at an even better price-free!
-Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
-February 28th, so secure your free ArcSight Logger TODAY! 
-http://p.sf.net/sfu/arcsight-sfd2d
+> 
+> Thanks
+> Guennadi
+> 
+> > 
+> > g.
+> > 
+> > 
+> > > 
+> > > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+> > > ---
+> > >  drivers/spi/spi_sh_msiof.c |   78 ++++++++++++++++++++++----------------------
+> > >  1 files changed, 39 insertions(+), 39 deletions(-)
+> > > 
+> > > diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
+> > > index 56f60c8..07b4ead 100644
+> > > --- a/drivers/spi/spi_sh_msiof.c
+> > > +++ b/drivers/spi/spi_sh_msiof.c
+> > > @@ -9,22 +9,22 @@
+> > >   *
+> > >   */
+> > >  
+> > > -#include <linux/kernel.h>
+> > > -#include <linux/init.h>
+> > > +#include <linux/bitmap.h>
+> > > +#include <linux/clk.h>
+> > > +#include <linux/completion.h>
+> > >  #include <linux/delay.h>
+> > > +#include <linux/err.h>
+> > > +#include <linux/gpio.h>
+> > > +#include <linux/init.h>
+> > >  #include <linux/interrupt.h>
+> > > +#include <linux/io.h>
+> > > +#include <linux/kernel.h>
+> > >  #include <linux/platform_device.h>
+> > > -#include <linux/completion.h>
+> > >  #include <linux/pm_runtime.h>
+> > > -#include <linux/gpio.h>
+> > > -#include <linux/bitmap.h>
+> > > -#include <linux/clk.h>
+> > > -#include <linux/io.h>
+> > > -#include <linux/err.h>
+> > >  
+> > > +#include <linux/spi/sh_msiof.h>
+> > >  #include <linux/spi/spi.h>
+> > >  #include <linux/spi/spi_bitbang.h>
+> > > -#include <linux/spi/sh_msiof.h>
+> > >  
+> > >  #include <asm/unaligned.h>
+> > >  
+> > > @@ -67,7 +67,7 @@ struct sh_msiof_spi_priv {
+> > >  #define STR_TEOF  (1 << 23)
+> > >  #define STR_REOF  (1 << 7)
+> > >  
+> > > -static unsigned long sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+> > > +static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+> > >  {
+> > >  	switch (reg_offs) {
+> > >  	case TSCR:
+> > > @@ -79,7 +79,7 @@ static unsigned long sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+> > >  }
+> > >  
+> > >  static void sh_msiof_write(struct sh_msiof_spi_priv *p, int reg_offs,
+> > > -			   unsigned long value)
+> > > +			   u32 value)
+> > >  {
+> > >  	switch (reg_offs) {
+> > >  	case TSCR:
+> > > @@ -93,10 +93,10 @@ static void sh_msiof_write(struct sh_msiof_spi_priv *p, int reg_offs,
+> > >  }
+> > >  
+> > >  static int sh_msiof_modify_ctr_wait(struct sh_msiof_spi_priv *p,
+> > > -				    unsigned long clr, unsigned long set)
+> > > +				    u32 clr, u32 set)
+> > >  {
+> > > -	unsigned long mask = clr | set;
+> > > -	unsigned long data;
+> > > +	u32 mask = clr | set;
+> > > +	u32 data;
+> > >  	int k;
+> > >  
+> > >  	data = sh_msiof_read(p, CTR);
+> > > @@ -166,10 +166,10 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+> > >  }
+> > >  
+> > >  static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+> > > -				      int cpol, int cpha,
+> > > -				      int tx_hi_z, int lsb_first)
+> > > +				      u32 cpol, u32 cpha,
+> > > +				      u32 tx_hi_z, u32 lsb_first)
+> > >  {
+> > > -	unsigned long tmp;
+> > > +	u32 tmp;
+> > >  	int edge;
+> > >  
+> > >  	/*
+> > > @@ -187,7 +187,7 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+> > >  	tmp |= cpol << 30; /* TSCKIZ */
+> > >  	tmp |= cpol << 28; /* RSCKIZ */
+> > >  
+> > > -	edge = cpol ? cpha : !cpha;
+> > > +	edge = cpol ^ !cpha;
+> > >  
+> > >  	tmp |= edge << 27; /* TEDG */
+> > >  	tmp |= edge << 26; /* REDG */
+> > > @@ -197,11 +197,9 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+> > >  
+> > >  static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
+> > >  				       const void *tx_buf, void *rx_buf,
+> > > -				       int bits, int words)
+> > > +				       u32 bits, u32 words)
+> > >  {
+> > > -	unsigned long dr2;
+> > > -
+> > > -	dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
+> > > +	u32 dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
+> > >  
+> > >  	if (tx_buf)
+> > >  		sh_msiof_write(p, TMDR2, dr2);
+> > > @@ -222,7 +220,7 @@ static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
+> > >  static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
+> > >  				      const void *tx_buf, int words, int fs)
+> > >  {
+> > > -	const unsigned char *buf_8 = tx_buf;
+> > > +	const u8 *buf_8 = tx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -232,7 +230,7 @@ static void sh_msiof_spi_write_fifo_8(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
+> > >  				       const void *tx_buf, int words, int fs)
+> > >  {
+> > > -	const unsigned short *buf_16 = tx_buf;
+> > > +	const u16 *buf_16 = tx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -242,7 +240,7 @@ static void sh_msiof_spi_write_fifo_16(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
+> > >  					const void *tx_buf, int words, int fs)
+> > >  {
+> > > -	const unsigned short *buf_16 = tx_buf;
+> > > +	const u16 *buf_16 = tx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -252,7 +250,7 @@ static void sh_msiof_spi_write_fifo_16u(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
+> > >  				       const void *tx_buf, int words, int fs)
+> > >  {
+> > > -	const unsigned int *buf_32 = tx_buf;
+> > > +	const u32 *buf_32 = tx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -262,7 +260,7 @@ static void sh_msiof_spi_write_fifo_32(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
+> > >  					const void *tx_buf, int words, int fs)
+> > >  {
+> > > -	const unsigned int *buf_32 = tx_buf;
+> > > +	const u32 *buf_32 = tx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -272,7 +270,7 @@ static void sh_msiof_spi_write_fifo_32u(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
+> > >  				     void *rx_buf, int words, int fs)
+> > >  {
+> > > -	unsigned char *buf_8 = rx_buf;
+> > > +	u8 *buf_8 = rx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -282,7 +280,7 @@ static void sh_msiof_spi_read_fifo_8(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
+> > >  				      void *rx_buf, int words, int fs)
+> > >  {
+> > > -	unsigned short *buf_16 = rx_buf;
+> > > +	u16 *buf_16 = rx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -292,7 +290,7 @@ static void sh_msiof_spi_read_fifo_16(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
+> > >  				       void *rx_buf, int words, int fs)
+> > >  {
+> > > -	unsigned short *buf_16 = rx_buf;
+> > > +	u16 *buf_16 = rx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -302,7 +300,7 @@ static void sh_msiof_spi_read_fifo_16u(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
+> > >  				      void *rx_buf, int words, int fs)
+> > >  {
+> > > -	unsigned int *buf_32 = rx_buf;
+> > > +	u32 *buf_32 = rx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -312,7 +310,7 @@ static void sh_msiof_spi_read_fifo_32(struct sh_msiof_spi_priv *p,
+> > >  static void sh_msiof_spi_read_fifo_32u(struct sh_msiof_spi_priv *p,
+> > >  				       void *rx_buf, int words, int fs)
+> > >  {
+> > > -	unsigned int *buf_32 = rx_buf;
+> > > +	u32 *buf_32 = rx_buf;
+> > >  	int k;
+> > >  
+> > >  	for (k = 0; k < words; k++)
+> > > @@ -324,7 +322,8 @@ static int sh_msiof_spi_bits(struct spi_device *spi, struct spi_transfer *t)
+> > >  	int bits;
+> > >  
+> > >  	bits = t ? t->bits_per_word : 0;
+> > > -	bits = bits ? bits : spi->bits_per_word;
+> > > +	if (!bits)
+> > > +		bits = spi->bits_per_word;
+> > >  	return bits;
+> > >  }
+> > >  
+> > > @@ -334,7 +333,8 @@ static unsigned long sh_msiof_spi_hz(struct spi_device *spi,
+> > >  	unsigned long hz;
+> > >  
+> > >  	hz = t ? t->speed_hz : 0;
+> > > -	hz = hz ? hz : spi->max_speed_hz;
+> > > +	if (!hz)
+> > > +		hz = spi->max_speed_hz;
+> > >  	return hz;
+> > >  }
+> > >  
+> > > @@ -453,7 +453,7 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+> > >  
+> > >  	return words;
+> > >  
+> > > - err:
+> > > +err:
+> > >  	sh_msiof_write(p, IER, 0);
+> > >  	return ret;
+> > >  }
+> > > @@ -617,13 +617,13 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+> > >  		return 0;
+> > >  
+> > >  	pm_runtime_disable(&pdev->dev);
+> > > - err3:
+> > > +err3:
+> > >  	iounmap(p->mapbase);
+> > > - err2:
+> > > +err2:
+> > >  	clk_put(p->clk);
+> > > - err1:
+> > > +err1:
+> > >  	spi_master_put(master);
+> > > - err0:
+> > > +err0:
+> > >  	return ret;
+> > >  }
+> > >  
+> > > -- 
+> > > 1.7.2.3
+> > > 
+> > > 
+> > > ------------------------------------------------------------------------------
+> > > Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
+> > > Finally, a world-class log management solution at an even better price-free!
+> > > Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
+> > > February 28th, so secure your free ArcSight Logger TODAY! 
+> > > http://p.sf.net/sfu/arcsight-sfd2d
+> > > _______________________________________________
+> > > spi-devel-general mailing list
+> > > spi-devel-general@lists.sourceforge.net
+> > > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> > 
+> 
+> ---
+> Guennadi Liakhovetski, Ph.D.
+> Freelance Open-Source Software Developer
+> http://www.open-technology.de/

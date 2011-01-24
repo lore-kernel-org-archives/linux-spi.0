@@ -1,29 +1,28 @@
-From: Alexis RODET <alexis.rodet@bvs-tech.com>
+From: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
 Subject: [PATCH 1/1] Renaming 'struct flash_platform_data' into 'struct
 	spi_flash_platform_data' in include/linux/spi/flash.h
 Date: Mon, 24 Jan 2011 16:16:47 +0100
-Message-ID: <1295882207-17963-1-git-send-email-alexis.rodet@bvs-tech.com>
+Message-ID: <1295882207-17963-1-git-send-email-alexis.rodet__4442.02440926364$1295883530$gmane$org@bvs-tech.com>
 References: <4D3D6472.8030505@bvs-tech.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Baruch Siach <baruch@tkos.co.il>, Alexis RODET <alexis.rodet@bvs-tech.com>,
-	David Brownell <david-b@pacbell.net>, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	David Woodhouse <dwmw2@infradead.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+Cc: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>,
+	David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 To: 
-In-Reply-To: <4D3D6472.8030505@bvs-tech.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: linux-mtd-bounces@lists.infradead.org
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+In-Reply-To: <4D3D6472.8030505-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 Here is the command line used for doing this:
@@ -31,7 +30,7 @@ find . \( -name .git -prune -false -o -path ./include/linux/spi/flash.h -o \( -n
 I didn't test all compilation as I don't have blackfin compiler installed and I'm quite lasy and also busy.
 I compiled for my x86 with allyesconfig and for Freescale mx27 with allyesconfig minus a number of buggy drivers.
 
-Signed-off-by: Alexis RODET <alexis.rodet@bvs-tech.com>
+Signed-off-by: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
 ---
  arch/arm/mach-at91/board-cam60.c               |    2 +-
  arch/arm/mach-at91/board-ecbat91.c             |    2 +-
@@ -645,6 +644,9 @@ index 3f22932..946145e 100644
 1.7.1
 
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+------------------------------------------------------------------------------
+Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
+Finally, a world-class log management solution at an even better price-free!
+Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
+February 28th, so secure your free ArcSight Logger TODAY! 
+http://p.sf.net/sfu/arcsight-sfd2d

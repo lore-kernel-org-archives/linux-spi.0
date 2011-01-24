@@ -1,57 +1,79 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2] spi: add OpenCores tiny SPI driver
-Date: Mon, 24 Jan 2011 08:50:02 -0700
-Message-ID: <20110124155002.GA16370@angua.secretlab.ca>
-References: <1294800109-31603-1-git-send-email-thomas@wytron.com.tw>
-	<1295249542-26743-1-git-send-email-thomas@wytron.com.tw>
-	<20110120165430.GA24445@angua.secretlab.ca>
-	<4D38AAEB.7020308@wytron.com.tw>
-	<1295612849.23825.26.camel@needafix>
-	<4D3CD38D.4080808@wytron.com.tw>
-	<1295866794.23825.100.camel@needafix>
-	<4D3D91D1.8000701@wytron.com.tw>
+From: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 0/1] Renaming 'struct flash_platform_data' into 'struct
+	spi_flash_platform_data' in include/linux/spi/flash.h
+Date: Mon, 24 Jan 2011 16:49:58 +0100
+Message-ID: <4D3D9FA6.3050900@bvs-tech.com>
+References: <327178.68946.qm@web180303.mail.gq1.yahoo.com>
+	<4CEB89C6.3080603@bvs-tech.com>
+	<20101123093643.GC6156@jasper.tkos.co.il>
+	<4CEB8C39.1060801@bvs-tech.com>
+	<20101123094414.GD6156@jasper.tkos.co.il>
+	<4CEB8F7C.6070102@bvs-tech.com>
+	<20110121192819.GA32112@angua.secretlab.ca>
+	<4D3D6472.8030505@bvs-tech.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <4D3D91D1.8000701-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: multipart/mixed; boundary="------------020402060703010602040504"
+Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4D3D6472.8030505-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 24, 2011 at 10:50:57PM +0800, Thomas Chou wrote:
-> Hi Jonas,
-> 
-> On 01/24/2011 06:59 PM, Jonas Bonn wrote:
-> >We've discussed this a bit internally now and decided that the best way
-> >to version OpenCores cores is to use the SVN commit ID of the rtl/
-> >directory in the project's repository.  So, for your tiny-spi project,
-> >the last SVN commit to update the rtl/ directory was commit number 2;
-> >hence, I'd recommend you use the following device tree identifier:
-> >
-> >opencores,tiny-spi-rtlsvn2
-> >
-> >That's:  opencores,<project>-rtl<VCS><commit ID>
-> >
-> >As projects are currently in SVN, VCS=svn.
-> >
-> >Linux drivers for other OpenCores cores will be updated accordingly.
-> 
-> I will follow your suggestion exactly. Thank you very much.
+This is a multi-part message in MIME format.
+--------------020402060703010602040504
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Make sure you also document the binding in Documentation/powerpc/dts-bindings
+Hi again,
 
-g.
+In facts I don't know which git URL to clone for getting linux-next as patch base, can you tell me ?
+I'm working on last stable release from git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-2.6-stable.git.
+
+I wonder also what to do if people keep committing new files with old structure name:
+What should I put to make the define generate a "deprecated" warning ?
+
+BR,
+Alexis
+
+On 24/01/2011 12:37, Alexis RODET wrote :
+>> Also, for a change as far-reaching as this you should do it in two
+>> stages; rename the structure, but leave a #define to the old name so
+>> that conflicts aren't generated in linux-next.  Then remove the
+>> #define after the change makes it into Linus' tree.
+> And I keep changing all source code that use this structure, don't I ?
+
+
+--------------020402060703010602040504
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
+Finally, a world-class log management solution at an even better price-free!
+Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
+February 28th, so secure your free ArcSight Logger TODAY! 
+http://p.sf.net/sfu/arcsight-sfd2d
+--------------020402060703010602040504
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--------------020402060703010602040504--

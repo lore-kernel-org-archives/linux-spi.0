@@ -1,8 +1,7 @@
 From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Subject: [PATCH/RFC 2/2] sh: use DMA with MSIOF SPI on the sh7724 ecovec
- board
-Date: Mon, 24 Jan 2011 11:24:40 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.1101241123340.12760@axis700.grange>
+Subject: [PATCH/RFC 1/2] SPI: spi_sh_msiof: implement DMA support
+Date: Mon, 24 Jan 2011 11:24:36 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.1101241122320.12760@axis700.grange>
 References: <Pine.LNX.4.64.1101241110400.12760@axis700.grange>
 Mime-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
@@ -13,100 +12,546 @@ In-Reply-To: <Pine.LNX.4.64.1101241110400.12760@axis700.grange>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On ecovec MSIOF0 is connected to an SD/MMC slot, this patch adds DMA
-support on it.
+Use the sh_dma dmaengine driver to support DMA on MSIOF.
 
 not-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 ---
 
-FYI only
+As explained in patch 0/2, this is not for mainline
 
- arch/sh/boards/mach-ecovec24/setup.c   |   11 ++++++++++-
- arch/sh/include/cpu-sh4/cpu/sh7724.h   |    4 ++++
- arch/sh/kernel/cpu/sh4a/setup-sh7724.c |   20 ++++++++++++++++++++
- 3 files changed, 34 insertions(+), 1 deletions(-)
+ drivers/spi/spi_sh_msiof.c   |  381 +++++++++++++++++++++++++++++++++++++++---
+ include/linux/spi/sh_msiof.h |    8 +
+ 2 files changed, 363 insertions(+), 26 deletions(-)
 
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 701667a..aa620fd 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -580,8 +580,14 @@ static struct spi_board_info spi_bus[] = {
- };
+diff --git a/drivers/spi/spi_sh_msiof.c b/drivers/spi/spi_sh_msiof.c
+index 6d30829..3cb0eb4 100644
+--- a/drivers/spi/spi_sh_msiof.c
++++ b/drivers/spi/spi_sh_msiof.c
+@@ -13,6 +13,7 @@
+ #include <linux/clk.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
++#include <linux/dmaengine.h>
+ #include <linux/err.h>
+ #include <linux/gpio.h>
+ #include <linux/init.h>
+@@ -21,6 +22,7 @@
+ #include <linux/kernel.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
++#include <linux/sh_dma.h>
  
- /* MSIOF0 */
-+struct sh_msiof_spi_dma msiof0_dma = {
-+	.chan_priv_tx = {.slave_id = SHDMA_SLAVE_MSIOF0_TX},
-+	.chan_priv_rx = {.slave_id = SHDMA_SLAVE_MSIOF0_RX},
+ #include <linux/spi/sh_msiof.h>
+ #include <linux/spi/spi.h>
+@@ -28,6 +30,12 @@
+ 
+ #include <asm/unaligned.h>
+ 
++struct sh_msiof_dma {
++	struct dma_chan	*chan;
++	struct sg_table	sg;
++	struct dma_async_tx_descriptor *desc;
 +};
 +
- static struct sh_msiof_spi_info msiof0_data = {
- 	.num_chipselect = 1,
-+	.dma = &msiof0_dma,
+ struct sh_msiof_spi_priv {
+ 	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
+ 	void __iomem *mapbase;
+@@ -38,6 +46,10 @@ struct sh_msiof_spi_priv {
+ 	unsigned long flags;
+ 	int tx_fifo_size;
+ 	int rx_fifo_size;
++	struct sh_msiof_dma dma_tx;
++	struct sh_msiof_dma dma_rx;
++	struct completion dma_done;
++	struct page *dummypage;
  };
  
- static struct resource msiof0_resources[] = {
-@@ -597,11 +603,14 @@ static struct resource msiof0_resources[] = {
- 	},
- };
+ #define TMDR1	0x00
+@@ -64,8 +76,12 @@ struct sh_msiof_spi_priv {
+ #define CTR_TXE   (1 << 9)
+ #define CTR_RXE   (1 << 8)
  
-+u64 msiof0_dmamask = (1ULL << 32) - 1;
+-#define STR_TEOF  (1 << 23)
+-#define STR_REOF  (1 << 7)
++#define IER_TDMA  (1 << 31)
++#define IER_TDREQ (1 << 28)
++#define IER_TEOF  (1 << 23)
++#define IER_RDMA  (1 << 15)
++#define IER_RDREQ (1 << 12)
++#define IER_REOF  (1 << 7)
+ 
+ static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
+ {
+@@ -208,8 +224,6 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
+ 
+ 	if (rx_buf)
+ 		sh_msiof_write(p, RMDR2, dr2);
+-
+-	sh_msiof_write(p, IER, STR_TEOF | STR_REOF);
+ }
+ 
+ static void sh_msiof_reset_str(struct sh_msiof_spi_priv *p)
+@@ -401,9 +415,9 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ 
+ 	/* chip select is active low unless SPI_CS_HIGH is set */
+ 	if (spi->mode & SPI_CS_HIGH)
+-		value = (is_on == BITBANG_CS_ACTIVE) ? 1 : 0;
++		value = is_on == BITBANG_CS_ACTIVE;
+ 	else
+-		value = (is_on == BITBANG_CS_ACTIVE) ? 0 : 1;
++		value = is_on != BITBANG_CS_ACTIVE;
+ 
+ 	if (is_on == BITBANG_CS_ACTIVE) {
+ 		if (!test_and_set_bit(0, &p->flags)) {
+@@ -429,6 +443,36 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ 	}
+ }
+ 
++static int sh_msiof_spi_start(struct sh_msiof_spi_priv *p, void *rx_buf)
++{
++	/* setup clock and rx/tx signals */
++	int ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
++	if (rx_buf && !ret)
++		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_RXE);
++	if (!ret)
++		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TXE);
 +
- static struct platform_device msiof0_device = {
- 	.name		= "spi_sh_msiof",
- 	.id		= 0, /* MSIOF0 */
- 	.dev = {
--		.platform_data = &msiof0_data,
-+		.platform_data	= &msiof0_data,
-+		.dma_mask	= &msiof0_dmamask,
- 	},
- 	.num_resources	= ARRAY_SIZE(msiof0_resources),
- 	.resource	= msiof0_resources,
-diff --git a/arch/sh/include/cpu-sh4/cpu/sh7724.h b/arch/sh/include/cpu-sh4/cpu/sh7724.h
-index 7eb4359..774297f 100644
---- a/arch/sh/include/cpu-sh4/cpu/sh7724.h
-+++ b/arch/sh/include/cpu-sh4/cpu/sh7724.h
-@@ -301,6 +301,10 @@ enum {
- 	SHDMA_SLAVE_SDHI0_RX,
- 	SHDMA_SLAVE_SDHI1_TX,
- 	SHDMA_SLAVE_SDHI1_RX,
-+	SHDMA_SLAVE_MSIOF0_TX,
-+	SHDMA_SLAVE_MSIOF0_RX,
-+	SHDMA_SLAVE_MSIOF1_TX,
-+	SHDMA_SLAVE_MSIOF1_RX,
++	/* start by setting frame bit */
++	if (!ret)
++		ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TFSE);
++
++	return ret;
++}
++
++static int sh_msiof_spi_stop(struct sh_msiof_spi_priv *p, void *rx_buf)
++{
++	/* shut down frame, tx/tx and clock signals */
++	int ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
++	if (!ret)
++		ret = sh_msiof_modify_ctr_wait(p, CTR_TXE, 0);
++	if (rx_buf && !ret)
++		ret = sh_msiof_modify_ctr_wait(p, CTR_RXE, 0);
++	if (!ret)
++		ret = sh_msiof_modify_ctr_wait(p, CTR_TSCKE, 0);
++
++	return ret;
++}
++
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+ 						  const void *, int, int),
+@@ -456,16 +500,11 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	if (tx_buf)
+ 		tx_fifo(p, tx_buf, words, fifo_shift);
+ 
+-	/* setup clock and rx/tx signals */
+-	ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
+-	if (rx_buf)
+-		ret = ret ? ret : sh_msiof_modify_ctr_wait(p, 0, CTR_RXE);
+-	ret = ret ? ret : sh_msiof_modify_ctr_wait(p, 0, CTR_TXE);
+-
+-	/* start by setting frame bit */
+ 	INIT_COMPLETION(p->done);
+-	ret = ret ? ret : sh_msiof_modify_ctr_wait(p, 0, CTR_TFSE);
+-	if (ret) {
++	sh_msiof_write(p, IER, IER_TEOF | IER_REOF);
++
++	ret = sh_msiof_spi_start(p, rx_buf);
++	if (ret < 0) {
+ 		dev_err(&p->pdev->dev, "failed to start hardware\n");
+ 		goto err;
+ 	}
+@@ -480,13 +519,8 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	/* clear status bits */
+ 	sh_msiof_reset_str(p);
+ 
+-	/* shut down frame, tx/tx and clock signals */
+-	ret = sh_msiof_modify_ctr_wait(p, CTR_TFSE, 0);
+-	ret = ret ? ret : sh_msiof_modify_ctr_wait(p, CTR_TXE, 0);
+-	if (rx_buf)
+-		ret = ret ? ret : sh_msiof_modify_ctr_wait(p, CTR_RXE, 0);
+-	ret = ret ? ret : sh_msiof_modify_ctr_wait(p, CTR_TSCKE, 0);
+-	if (ret) {
++	ret = sh_msiof_spi_stop(p, rx_buf);
++	if (ret < 0) {
+ 		dev_err(&p->pdev->dev, "failed to shut down hardware\n");
+ 		goto err;
+ 	}
+@@ -498,6 +532,220 @@ err:
+ 	return ret;
+ }
+ 
++static void sh_msiof_setup_sg(struct sh_msiof_spi_priv *p,
++			      const void *buffer,
++			      unsigned int length,
++			      struct sg_table *sgtab)
++{
++	struct scatterlist *sg;
++	int bytesleft = length;
++	const void *bufp = buffer;
++	int mapbytes;
++	int i;
++
++	if (buffer) {
++		for_each_sg(sgtab->sgl, sg, sgtab->nents, i) {
++			/*
++			 * If there are fewer bytes left than what fits
++			 * in the current page (plus page alignment offset)
++			 * we just feed in this, else we stuff in as much
++			 * as we can.
++			 */
++			if (bytesleft < (PAGE_SIZE - offset_in_page(bufp)))
++				mapbytes = bytesleft;
++			else
++				mapbytes = PAGE_SIZE - offset_in_page(bufp);
++			sg_set_page(sg, virt_to_page(bufp),
++				    mapbytes, offset_in_page(bufp));
++			bytesleft -= mapbytes;
++			bufp += mapbytes;
++		}
++	} else {
++		/* Map the dummy buffer on every page */
++		for_each_sg(sgtab->sgl, sg, sgtab->nents, i) {
++			if (bytesleft < PAGE_SIZE)
++				mapbytes = bytesleft;
++			else
++				mapbytes = PAGE_SIZE;
++			sg_set_page(sg, p->dummypage, mapbytes, 0);
++			bytesleft -= mapbytes;
++		}
++	}
++	BUG_ON(bytesleft);
++}
++
++static int sh_msiof_spi_setup_xfer_dma(struct sh_msiof_spi_priv *p, struct sh_msiof_dma *dma,
++				       const void *buffer, size_t len, enum dma_data_direction dir)
++{
++	int ret, sglen;
++	unsigned int pages;
++	unsigned long flags = DMA_CTRL_ACK;
++
++	/* Create sglists for the transfers */
++	pages = (PAGE_ALIGN(len) >> PAGE_SHIFT);
++
++	ret = sg_alloc_table(&dma->sg, pages, GFP_KERNEL);
++	if (ret < 0)
++		return ret;
++
++	sh_msiof_setup_sg(p, buffer, len, &dma->sg);
++
++	/* Map DMA buffers */
++	sglen = dma_map_sg(&p->pdev->dev, dma->sg.sgl,
++			   dma->sg.orig_nents, dir);
++	if (sglen < 0) {
++		ret = sglen;
++		goto emapsg;
++	} else if (!sglen) {
++		ret = -EINVAL;
++		goto emapsg;
++	}
++
++	if (dir == DMA_FROM_DEVICE)
++		flags |= DMA_PREP_INTERRUPT;
++
++	dma->desc = dma->chan->device->device_prep_slave_sg(dma->chan,
++					dma->sg.sgl, sglen, dir, flags);
++	if (!dma->desc) {
++		ret = -ENOMEM;
++		goto edmaprep;
++	}
++
++	dma->sg.nents = sglen;
++
++	return 0;
++
++edmaprep:
++	dma_unmap_sg(&p->pdev->dev, dma->sg.sgl, sglen, dir);
++emapsg:
++	sg_free_table(&dma->sg);
++
++	return ret;
++}
++
++static void sh_msiof_spi_free_xfer_dma(struct sh_msiof_spi_priv *p, struct sh_msiof_dma *dma,
++				       enum dma_data_direction dir)
++{
++	dma_unmap_sg(&p->pdev->dev, dma->sg.sgl, dma->sg.nents, dir);
++	sg_free_table(&dma->sg);
++}
++
++static void sh_msiof_spi_dma_callback(void *arg)
++{
++	struct sh_msiof_spi_priv *p = arg;
++
++	dma_sync_sg_for_device(&p->pdev->dev, p->dma_rx.sg.sgl,
++			       p->dma_rx.sg.nents, DMA_FROM_DEVICE);
++
++	sh_msiof_spi_free_xfer_dma(p, &p->dma_rx, DMA_FROM_DEVICE);
++	sh_msiof_spi_free_xfer_dma(p, &p->dma_tx, DMA_TO_DEVICE);
++
++	complete(&p->dma_done);
++}
++
++static int sh_msiof_spi_txrx_dma_single(struct sh_msiof_spi_priv *p, int bits,
++					const void *tx_buf, const void *rx_buf, size_t len)
++{
++	int ret, cookie, words;
++
++	if (bits <= 8)
++		words = len;
++	else if (bits <= 16)
++		words = len >> 1;
++	else
++		words = len >> 2;
++
++	ret = sh_msiof_spi_setup_xfer_dma(p, &p->dma_tx, tx_buf, len, DMA_TO_DEVICE);
++	if (ret < 0)
++		return ret;
++
++	dma_sync_sg_for_device(&p->pdev->dev, p->dma_tx.sg.sgl,
++			       p->dma_tx.sg.nents, DMA_TO_DEVICE);
++
++	ret = sh_msiof_spi_setup_xfer_dma(p, &p->dma_rx, rx_buf, len, DMA_FROM_DEVICE);
++	if (ret < 0)
++		goto esdmarx;
++
++	/* Put the callback on the RX transfer only, that should finish last */
++	p->dma_rx.desc->callback = sh_msiof_spi_dma_callback;
++	p->dma_rx.desc->callback_param = p;
++
++	/* Submit and fire RX and TX with TX last so we're ready to read! */
++	cookie = p->dma_rx.desc->tx_submit(p->dma_rx.desc);
++	if (dma_submit_error(cookie)) {
++		ret = cookie;
++		goto esubmitrx;
++	}
++	p->dma_rx.chan->device->device_issue_pending(p->dma_rx.chan);
++
++	/* setup msiof transfer mode registers */
++	sh_msiof_spi_set_mode_regs(p, tx_buf, p->dummypage, bits, words);
++
++	cookie = p->dma_tx.desc->tx_submit(p->dma_tx.desc);
++	if (dma_submit_error(cookie)) {
++		ret = cookie;
++		goto esubmittx;
++	}
++	p->dma_tx.chan->device->device_issue_pending(p->dma_tx.chan);
++
++	INIT_COMPLETION(p->dma_done);
++	sh_msiof_write(p, IER, IER_RDREQ | IER_TDREQ | IER_RDMA | IER_TDMA);
++
++	/* As long as there's something to send, we'll also be receiving. */
++	ret = sh_msiof_spi_start(p, p->dummypage);
++	if (ret < 0) {
++		dev_err(&p->pdev->dev, "failed to start hardware: %d\n", ret);
++		goto espistart;
++	}
++
++	wait_for_completion(&p->dma_done);
++
++	/* clear status bits */
++	sh_msiof_reset_str(p);
++
++	ret = sh_msiof_spi_stop(p, p->dummypage);
++	if (ret < 0) {
++		dev_err(&p->pdev->dev, "failed to stop hardware: %d\n", ret);
++		goto espistop;
++	}
++
++	return len;
++
++espistop:
++espistart:
++	dmaengine_device_control(p->dma_tx.chan, DMA_TERMINATE_ALL, 0);
++esubmittx:
++	dmaengine_device_control(p->dma_rx.chan, DMA_TERMINATE_ALL, 0);
++esubmitrx:
++	sh_msiof_spi_free_xfer_dma(p, &p->dma_rx, DMA_FROM_DEVICE);
++esdmarx:
++	sh_msiof_spi_free_xfer_dma(p, &p->dma_tx, DMA_TO_DEVICE);
++
++	return ret;
++}
++
++static int sh_msiof_spi_txrx_dma(struct sh_msiof_spi_priv *p, struct spi_transfer *t, int bits)
++{
++	int i, ret = 0;
++	size_t left = t->len;
++	off_t offs = 0;
++
++	/* Up to 256 words per group, we only use a single group */
++	for (i = 0; i < (t->len + 255) / 256; i++) {
++		const void *rx_buf = t->rx_buf ? t->rx_buf + offs : NULL;
++		const void *tx_buf = t->tx_buf ? t->tx_buf + offs : NULL;
++
++		ret = sh_msiof_spi_txrx_dma_single(p, bits, tx_buf, rx_buf,
++						   min_t(size_t, left, 256));
++		if (ret < 0)
++			return ret;
++		left -= ret;
++		offs += ret;
++	}
++
++	return ret <= 0 ? ret : t->len;
++}
++
+ static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
+@@ -512,6 +760,19 @@ static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 	bits = sh_msiof_spi_bits(spi, t);
+ 
++	/* setup clocks (clock already enabled in chipselect()) */
++	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk),
++				  sh_msiof_spi_hz(spi, t));
++
++	if (p->dma_rx.chan && p->dma_tx.chan && t->len > 15 &&
++	    !(t->len & 3) && !((int)t->rx_buf & 3) && !((int)t->tx_buf & 3)) {
++		int ret = sh_msiof_spi_txrx_dma(p, t, bits);
++		if (ret < 0)
++			dev_warn(&spi->dev, "fall back to PIO: %d\n", ret);
++		else
++			return ret;
++	}
++
+ 	if (bits <= 8 && t->len > 15 && !(t->len & 3)) {
+ 		bits = 32;
+ 		swab = true;
+@@ -559,10 +820,6 @@ static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 			rx_fifo = sh_msiof_spi_read_fifo_32;
+ 	}
+ 
+-	/* setup clocks (clock already enabled in chipselect()) */
+-	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk),
+-				  sh_msiof_spi_hz(spi, t));
+-
+ 	/* transfer in fifo sized chunks */
+ 	words = t->len / bytes_per_word;
+ 	bytes_done = 0;
+@@ -591,6 +848,74 @@ static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
+ 	return 0;
+ }
+ 
++static bool sh_msiof_filter(struct dma_chan *chan, void *arg)
++{
++	dev_dbg(chan->device->dev, "%s: slave data %p\n", __func__, arg);
++	chan->private = arg;
++	return true;
++}
++
++static void sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
++{
++	dma_cap_mask_t mask;
++	struct sh_msiof_spi_dma *dma = p->info->dma;
++
++	/* We can only either use DMA for both Tx and Rx or not use it at all */
++	if (!dma)
++		return;
++
++	p->dummypage = alloc_page(GFP_KERNEL);
++	if (!p->dummypage)
++		return;
++
++	dma_cap_zero(mask);
++	dma_cap_set(DMA_SLAVE, mask);
++
++	p->dma_tx.chan = dma_request_channel(mask, sh_msiof_filter,
++					    &dma->chan_priv_tx);
++	dev_dbg(&p->pdev->dev, "%s: TX: got channel %p\n", __func__,
++		p->dma_tx.chan);
++
++	if (!p->dma_tx.chan)
++		goto echantx;
++
++	p->dma_rx.chan = dma_request_channel(mask, sh_msiof_filter,
++					    &dma->chan_priv_rx);
++	dev_dbg(&p->pdev->dev, "%s: RX: got channel %p\n", __func__,
++		p->dma_rx.chan);
++
++	if (!p->dma_rx.chan)
++		goto echanrx;
++
++	init_completion(&p->dma_done);
++
++	return;
++
++echanrx:
++	dma_release_channel(p->dma_tx.chan);
++	p->dma_tx.chan = NULL;
++echantx:
++	__free_pages(p->dummypage, 0);
++}
++
++static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
++{
++	/* Descriptors are freed automatically */
++	if (p->dma_tx.chan) {
++		struct dma_chan *chan = p->dma_tx.chan;
++		p->dma_tx.chan = NULL;
++		dma_release_channel(chan);
++	}
++	if (p->dma_rx.chan) {
++		struct dma_chan *chan = p->dma_rx.chan;
++		p->dma_rx.chan = NULL;
++		dma_release_channel(chan);
++	}
++
++	if (p->dummypage)
++		__free_pages(p->dummypage, 0);
++}
++
+ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource	*r;
+@@ -645,6 +970,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	p->pdev = pdev;
+ 	pm_runtime_enable(&pdev->dev);
+ 
++	sh_msiof_request_dma(p);
++
+ 	/* The standard version of MSIOF use 64 word FIFOs */
+ 	p->tx_fifo_size = 64;
+ 	p->rx_fifo_size = 64;
+@@ -677,6 +1004,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	if (ret == 0)
+ 		return 0;
+ 
++	sh_msiof_release_dma(p);
+ 	pm_runtime_disable(&pdev->dev);
+ err3:
+ 	iounmap(p->mapbase);
+@@ -695,6 +1023,7 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
+ 
+ 	ret = spi_bitbang_stop(&p->bitbang);
+ 	if (!ret) {
++		sh_msiof_release_dma(p);
+ 		pm_runtime_disable(&pdev->dev);
+ 		free_irq(platform_get_irq(pdev, 0), p);
+ 		iounmap(p->mapbase);
+diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
+index 2e8db3d..c9e7abc 100644
+--- a/include/linux/spi/sh_msiof.h
++++ b/include/linux/spi/sh_msiof.h
+@@ -1,10 +1,18 @@
+ #ifndef __SPI_SH_MSIOF_H__
+ #define __SPI_SH_MSIOF_H__
+ 
++#include <linux/sh_dma.h>
++
++struct sh_msiof_spi_dma {
++	struct sh_dmae_slave chan_priv_tx;
++	struct sh_dmae_slave chan_priv_rx;
++};
++
+ struct sh_msiof_spi_info {
+ 	int tx_fifo_override;
+ 	int rx_fifo_override;
+ 	u16 num_chipselect;
++	struct sh_msiof_spi_dma *dma;
  };
  
- extern struct clk sh7724_fsimcka_clk;
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-index 0333fe9..f04fbb1 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-@@ -112,6 +112,26 @@ static const struct sh_dmae_slave_config sh7724_dmae_slaves[] = {
- 		.addr		= 0x04cf0030,
- 		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_16BIT),
- 		.mid_rid	= 0xca,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF0_TX,
-+		.addr		= 0xa4c40050,
-+		.chcr		= DM_FIX | SM_INC | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x51,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF0_RX,
-+		.addr		= 0xa4c40060,
-+		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x52,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF1_TX,
-+		.addr		= 0xa4c50050,
-+		.chcr		= DM_FIX | SM_INC | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x55,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF1_RX,
-+		.addr		= 0xa4c50060,
-+		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x56,
- 	},
- };
- 
+ #endif /* __SPI_SH_MSIOF_H__ */
 -- 
 1.7.2.3
 

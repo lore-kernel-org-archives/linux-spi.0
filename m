@@ -1,77 +1,145 @@
-From: Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 0/1] Renaming 'struct flash_platform_data' into 'struct
-	spi_flash_platform_data' in include/linux/spi/flash.h
-Date: Tue, 25 Jan 2011 10:40:49 +0100
-Message-ID: <4D3E9AA1.4020308@bvs-tech.com>
-References: <327178.68946.qm@web180303.mail.gq1.yahoo.com>
-	<4CEB89C6.3080603@bvs-tech.com>
-	<20101123093643.GC6156@jasper.tkos.co.il>
-	<4CEB8C39.1060801@bvs-tech.com>
-	<20101123094414.GD6156@jasper.tkos.co.il>
-	<4CEB8F7C.6070102@bvs-tech.com>
-	<20110121192819.GA32112@angua.secretlab.ca>
-	<4D3D6472.8030505@bvs-tech.com> <4D3D9FA6.3050900@bvs-tech.com>
-	<AANLkTikDHbKt5q+o2LK89hHZ3EUeeYzmQVJj8jXgQ+pB@mail.gmail.com>
+From: Govindraj <govindraj.ti@gmail.com>
+Subject: Re: [PATCH v5 0/6] OMAP: McSPI: Hwmod adaptation + runtime conversion
+Date: Tue, 25 Jan 2011 15:34:33 +0530
+Message-ID: <AANLkTimdBJe64bYyBZnuOPhshyik4Z90zpsSSXJPosPs@mail.gmail.com>
+References: <1295614547-1920-1-git-send-email-govindraj.raja@ti.com> <87lj2a5462.fsf@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------050000090903090609070807"
-Cc: David Brownell <david-b-yBeKhBN/0LDR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTikDHbKt5q+o2LK89hHZ3EUeeYzmQVJj8jXgQ+pB-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "Govindraj.R" <govindraj.raja@ti.com>, linux-omap@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	Tony Lindgren <tony@atomide.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Paul Walmsley <paul@pwsan.com>, Charulatha V <charu@ti.com>
+To: Kevin Hilman <khilman@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <87lj2a5462.fsf@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------050000090903090609070807
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+On Tue, Jan 25, 2011 at 3:56 AM, Kevin Hilman <khilman@ti.com> wrote:
+> Hi Govindraj,
+>
+> "Govindraj.R" <govindraj.raja@ti.com> writes:
+>
+>> Changes invloves:
+>> ----------------
+>> 1) Addition of hwmod data for omap2/3/4.
+>> 2) McSPI driver hwmod adaptation with cleanup of base address
+>> =A0 =A0macros and using omap-device API's.
+>> 3) Runtime Conversion of McSPI driver.
+>
+> I accidentally replied to the v4 series about the refresh, but this o=
+ne
+> still needs ar refresh.
+>
+> Specifically, this change from Gregory Clement touches some of the sa=
+me
+> code as your patch:
+>
+> commit 42ce7fd6319bed8ecb26d656c476365da46b29e9
+> Author: Gregory CLEMENT <gregory.clement@free-electrons.com>
+> Date: =A0 Wed Dec 29 11:52:53 2010 +0100
+>
+> =A0 =A0spi/omap2_mcspi.c: Force CS to be in inactive state after off-=
+mode transition
+>
 
-Hello,
+Yes correct.
 
-Le 24/01/2011 18:52, Grant Likely a écrit :
-> On Mon, Jan 24, 2011 at 8:49 AM, Alexis RODET <alexis.rodet-zROAmvwsW6hWk0Htik3J/w@public.gmane.org> wrote:
->> Hi again,
+Will rebase and repost in couple of days.
+
+--
+Thanks
+Govindraj.R
+
+
+>
+> Kevin
+>
 >>
->> In facts I don't know which git URL to clone for getting linux-next as patch base, can you tell me ?
->> I'm working on last stable release from git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-2.6-stable.git.
-> git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+>> Changes from v4:
+>> ---------------
+>> 1) 4430 hwmod file alignment based on Benoit's comments.
+>> =A0 =A0http://www.spinics.net/lists/arm-kernel/msg111215.html
+>> =A0 =A04430 Hwmod file now aligned based on:
+>> =A0 =A0http://gitorious.org/omap-pm/linux/blobs/pm-wip/
+>> =A0 =A0hwmods-omap4-full/arch/arm/mach-omap2/omap_hwmod_44xx_data.c
+>>
+>> Changes from v3:
+>> ---------------
+>> 1) Updated proper Author for all patches which was missed
+>> =A0 =A0in v2.
+>> 2) Modified 4430 hwmod data file so that mcspi data gets
+>> =A0 =A0updated in proper alphabetical order.
+>> 3) Update omap2/3 hwmod dat files with SYSS_HAS_RESET_STATUS
+>> =A0 =A0flag.
+>>
+>> Changes from v2:
+>> ---------------
+>> 1) Fixing minor comments and adding ack from Grant Likely.
+>> =A0 =A0 =A0 https://patchwork.kernel.org/patch/371321/
+>> =A0 =A0 =A0 https://patchwork.kernel.org/patch/371331/
+>>
+>> Changes from v1:
+>> ---------------
+>> 1) Fixing patch 5/5 comments for hwmod+runtime
+>> =A0 Split the patch 5/5 to hwmod adaptation
+>> =A0 and then runtime conversion
+>> =A0 http://www.mail-archive.com/linux-omap@vger.kernel.org/msg33387.=
+html
+>>
+>> Testing Updates:
+>> ----------------
+>> Was tested using data transfer test module available at:
+>> http://dev.omapzoom.org/?p=3Dricho/device_driver_test.git;a=3Dblob;f=
+=3Dmcspi/test_code/
+>> utils/mcspi_modules/omap_mcspi_datatest.c;
+>> h=3De42ec10c5c844abdde6a7175a268b379fbbdb655;
+>> hb=3D5d9a755d50e58de861c5e8991f2f607bc49b5dc3
+>> This test basically involves MISO <--> MOSI lines looped and data tr=
+ansfer test
+>> done using the above test module.
+>> System wide suspend and ret/off counts observation, ensured that no =
+behavioral
+>> difference with and without this patch series.
+>>
+>> Benoit Cousson (1):
+>> =A0 OMAP4: hwmod data: Add McSPI
+>>
+>> Charulatha V (4):
+>> =A0 OMAP2420: hwmod data: Add McSPI
+>> =A0 OMAP2430: hwmod data: Add McSPI
+>> =A0 OMAP3: hwmod data: Add McSPI
+>> =A0 OMAP: devices: Modify McSPI device to adapt to hwmod framework
+>>
+>> Govindraj.R (1):
+>> =A0 OMAP: runtime: McSPI driver runtime conversion
+>>
+>> =A0arch/arm/mach-omap2/devices.c =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0187=
+ ++++---------------
+>> =A0arch/arm/mach-omap2/omap_hwmod_2420_data.c | =A0156 +++++++++++++=
++++
+>> =A0arch/arm/mach-omap2/omap_hwmod_2430_data.c | =A0219 +++++++++++++=
++++++++++
+>> =A0arch/arm/mach-omap2/omap_hwmod_3xxx_data.c | =A0280 +++++++++++++=
++++++++++++++++
+>> =A0arch/arm/mach-omap2/omap_hwmod_44xx_data.c | =A0267 +++++++++++++=
++++++++++++++
+>> =A0arch/arm/plat-omap/include/plat/mcspi.h =A0 =A0| =A0 11 +
+>> =A0drivers/spi/omap2_mcspi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+224 +++++++---------------
+>> =A07 files changed, 1044 insertions(+), 300 deletions(-)
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap"=
+ in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
 >
-> Be warned, it is rebased every night.
->
-It seems to have been frozen for 4 days and to have become late behind git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git
-
-Alexis
-
---------------050000090903090609070807
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
-Finally, a world-class log management solution at an even better price-free!
-Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
-February 28th, so secure your free ArcSight Logger TODAY! 
-http://p.sf.net/sfu/arcsight-sfd2d
---------------050000090903090609070807
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---------------050000090903090609070807--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

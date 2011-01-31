@@ -1,80 +1,53 @@
-From: "mark Kumar" <markkumar001-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>
-Subject: [SPAM] ATTENTION:,(FMF)
-Date: 28 Jan 2011 21:01:05 -0000
-Message-ID: <20110128210105.56133.qmail@f4mail-235-237.rediffmail.com>
+From: Samuel Ortiz <sameo@linux.intel.com>
+Subject: Re: [PATCH v8 01/11] mfd: add driver for sequencer serial port
+Date: Mon, 31 Jan 2011 01:40:02 +0100
+Message-ID: <20110131004001.GF2565@sortiz-mobl>
+References: <1295378505-15221-1-git-send-email-cyril@ti.com>
+ <1295378505-15221-2-git-send-email-cyril@ti.com>
+ <87tyh4u6uo.fsf@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	davinci-linux-open-source@linux.davincidsp.com,
+	spi-devel-general@lists.sourceforge.net, rpurdie@rpsys.net,
+	dbrownell@users.sourceforge.net,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	linux-kernel@vger.kernel.org, Cyril Chemparathy <cyril@ti.com>
+To: Kevin Hilman <khilman@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <87tyh4u6uo.fsf@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Kevin,
+
+On Wed, Jan 19, 2011 at 09:43:43AM -0800, Kevin Hilman wrote:
+> Samuel,
+> 
+> Cyril Chemparathy <cyril@ti.com> writes:
+> 
+> > TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+> > device.  It has a built-in programmable execution engine that can be programmed
+> > to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
+> >
+> > This patch adds a driver for this controller device.  The driver does not
+> > expose a user-land interface.  Protocol drivers built on top of this layer are
+> > expected to remain in-kernel.
+> >
+> > Signed-off-by: Cyril Chemparathy <cyril@ti.com>
+> 
+> Any comments on this driver?
+The driver looks fine.
 
 
-ATTENTION:
+> With your ack, I'll be happy to merge this via the davinci tree with the
+> rest of the series.
+Please go ahead and add my Acked-by: Samuel Ortiz <sameo@linux.intel.com>
 
+Cheers,
+Samuel.
 
-
-THIS MASSAGE IS FROM MINISTRY OF FINANCE OFFICE IN LONDON AND WE ARE HERE TO NOTIFY YOU THAT YOUR FUND HAVE BEEN SECURED TO THE FEDERAL
-
-MINISTRY OF FINANCE OFFICE OF ATM PAYMENT DEPARTMENT IN ACCRA GHANA DUE TO THE NEW GOVERNMENT AND FMF IN ACCRA GHANA WILL PAY YOU VIA ATM MASTER CARD DIRECT, THEY HAVE REGISTERED ALL THE FUNDS THAT SUPOSE TO BE PAID THROUGH ATM MASTER CARD, THE ATM CARD PAYMENT OFFICE HAS ARRANGED YOUR SUM OF $4.2M UNITED STATE DOLLARS THROUGH SWIFT CARD PAYMENT,I KNOW THAT IT WILL BE UNBELIEVABLE BUT IS VERY EXTREMELY GOOD AND SURPRISING.
-
-
-
-SO YOUR ARE THERE TO FORWARD YOUR INFORMATION WHERE YOU WOULD RECEIVE YOUR ATM MASTER CARD FROM THE FEDERAL MINISTRY OF FINANCE OF ATM PAYMENT DEPARTMENT IN ACCRA GHANA AND FOR YOUR INFORMATION YOU HAVE TO BE CAREFUL FOR THE IMPOSTORS EMAILS FLYING FROM EVERYWHERE BY SEND MONEY TO UNKNOWING PERSON, THIS INFORMATION IS FROM HEAD OFFICE HERE IN UNITED KINGDOM TO FEDERAL MINISTRY OF FINANCE OFFICE IN ACCRA GHANA.
-
-
-
-NOW RECONFIRM YOUR INFORMATION TO THE FMF OF ATM PAYMENT DEPARTMENT OFFICE IN ACCRA GHANA TO ENABLE THEM SEND YOUR ATM MASTER CARD IMMEDIATELY.THIS IS WHAT YOU ARE REQUIRE TO FORWARD TO THE FEDERAL MINISTRY OF FINANCE OF ATM PAYMENT OFFICER IN ACCRA GHANA:
-
-
-
-1 YOUR FULL NAME/
-
-2 YOUR MAILING ADDRESS/
-
-3 YOUR 24HOURS CONTACT TELEPHONE NUMBER/
-
-4 YOUR OFFICE TELEPHONE NUMBER/
-
-5 YOUR LOCATION/COUNTRY/
-
-
-
-HOWEVER, YOU ARE TO CONTACT THE FMF OFFICE IN ACCRA GHANA BELOW THE
-
-INFORMATION.
-
-
-
-CONTACT DIRECTOR:DR.OKE ORIMILLI
-
-DIRECTOR,FEDERAL MINISTRY OF FINANCE ATM PAYMENT DEPARTMENT OFFICER
-
-EMAIL: federalministryatm-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
-
-CONTACT TEL: +
-
-THIS ATM CARD PAYMENT HAS BEEN ACTIVATED AND IT HAS BEEN MANDATED TO ISSUE OUT YOUR PAYMENT AND YOU HAVE TO STOP ANY FURTHER COMMUNICATION WITH ANY OTHER PERSON, NOTE: THAT BECAUSE OF IMPOSTORS.
-
-
-
-YOURS FAITHFULLY
-
-MR.ROBERT WILLIAMS
-
-MINISTRY OF FINANCE OFFICE IN LONDON. 
-------------------------------------------------------------------------------
-Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
-Finally, a world-class log management solution at an even better price-free!
-Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
-February 28th, so secure your free ArcSight Logger TODAY! 
-http://p.sf.net/sfu/arcsight-sfd2d
+-- 
+Intel Open Source Technology Centre
+http://oss.intel.com/

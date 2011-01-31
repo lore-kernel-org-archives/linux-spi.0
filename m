@@ -1,183 +1,68 @@
-From: Alexis RODET <alexis.rodet@bvs-tech.com>
-Subject: [PATCH 1/1] merging arch/arm/include/asm/mach/flash.h and
-	include/linux/spi/flash.h into single header file
-	include/linux/mtd/flash.h
-Date: Mon, 31 Jan 2011 12:29:11 +0100
-Message-ID: <1296473351-22771-1-git-send-email-alexis.rodet__31172.9662390009$1296473654$gmane$org@bvs-tech.com>
-References: <4D3E9683.5090906@bvs-tech.com>
+From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [uclinux-dist-devel] [PATCH] spi:add support for slave function
+	in current spi framework
+Date: Mon, 31 Jan 2011 11:31:48 -0500
+Message-ID: <AANLkTim2FHTp8M+u=cw0QaMiEPgUPwz_3QrbTFR3dBhh@mail.gmail.com>
+References: <1296463611-18764-1-git-send-email-Aaron.Wu06@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Baruch Siach <baruch@tkos.co.il>, Alexis RODET <alexis.rodet@bvs-tech.com>,
-	David Brownell <david-b@pacbell.net>, linux-mtd@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	David Woodhouse <dwmw2@infradead.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-To: 
-In-Reply-To: <4D3E9683.5090906@bvs-tech.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: linux-mtd-bounces@lists.infradead.org
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: "Aaron.Wu" <Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1296463611-18764-1-git-send-email-Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Signed-off-by: Alexis RODET <alexis.rodet@bvs-tech.com>
----
- arch/arm/include/asm/mach/flash.h |   35 +------------------------
- include/linux/mtd/flash.h         |   51 +++++++++++++++++++++++++++++++++++++
- include/linux/spi/flash.h         |   27 +-------------------
- 3 files changed, 53 insertions(+), 60 deletions(-)
-
-diff --git a/arch/arm/include/asm/mach/flash.h b/arch/arm/include/asm/mach/flash.h
-index 4ca69fe..28bd58b 100644
---- a/arch/arm/include/asm/mach/flash.h
-+++ b/arch/arm/include/asm/mach/flash.h
-@@ -1,39 +1,6 @@
--/*
-- *  arch/arm/include/asm/mach/flash.h
-- *
-- *  Copyright (C) 2003 Russell King, All Rights Reserved.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- */
- #ifndef ASMARM_MACH_FLASH_H
- #define ASMARM_MACH_FLASH_H
- 
--struct mtd_partition;
--struct mtd_info;
--
--/*
-- * map_name:	the map probe function name
-- * name:	flash device name (eg, as used with mtdparts=)
-- * width:	width of mapped device
-- * init:	method called at driver/device initialisation
-- * exit:	method called at driver/device removal
-- * set_vpp:	method called to enable or disable VPP
-- * mmcontrol:	method called to enable or disable Sync. Burst Read in OneNAND
-- * parts:	optional array of mtd_partitions for static partitioning
-- * nr_parts:	number of mtd_partitions for static partitoning
-- */
--struct flash_platform_data {
--	const char	*map_name;
--	const char	*name;
--	unsigned int	width;
--	int		(*init)(void);
--	void		(*exit)(void);
--	void		(*set_vpp)(int on);
--	void		(*mmcontrol)(struct mtd_info *mtd, int sync_read);
--	struct mtd_partition *parts;
--	unsigned int	nr_parts;
--};
-+#include <linux/mtd/flash.h>
- 
- #endif
-diff --git a/include/linux/mtd/flash.h b/include/linux/mtd/flash.h
-new file mode 100644
-index 0000000..5379eee
---- /dev/null
-+++ b/include/linux/mtd/flash.h
-@@ -0,0 +1,51 @@
-+/*
-+ *  include/linux/mtd/flash.h
-+ *  merged from arch/arm/include/asm/mach/flash.h and include/linux/spi/flash.h
-+ *
-+ *  Copyright (C) 2003 Russell King, All Rights Reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+#ifndef LINUX_MTD_FLASH_H
-+#define LINUX_MTD_FLASH_H
-+
-+struct mtd_partition;
-+struct mtd_info;
-+
-+/**
-+ * struct flash_platform_data: board-specific flash data
-+ * @map_name:	the map probe function name
-+ * @name:	optional flash device name (eg, as used with mtdparts=)
-+ * @width:	width of mapped device
-+ * @init:	method called at driver/device initialisation
-+ * @exit:	method called at driver/device removal
-+ * @set_vpp:	method called to enable or disable VPP
-+ * @mmcontrol:	method called to enable or disable Sync. Burst Read in OneNAND
-+ * @parts:	optional array of mtd_partitions for static partitioning
-+ * @nr_parts:	number of mtd_partitions for static partitoning
-+ * @type:	optional flash device type (e.g. m25p80 vs m25p64), for use
-+ *	with chips that can't be queried for JEDEC or other IDs
-+ *
-+ * Board init code (in arch/.../mach-xxx/board-yyy.c files) can
-+ * provide information about SPI flash parts (such as DataFlash) to
-+ * help set up the device and its appropriate default partitioning.
-+ *
-+ * Note that for DataFlash, sizes for pages, blocks, and sectors are
-+ * rarely powers of two; and partitions should be sector-aligned.
-+ */
-+struct flash_platform_data {
-+	const char	*map_name;
-+	const char	*name;
-+	unsigned int	width;
-+	int		(*init)(void);
-+	void		(*exit)(void);
-+	void		(*set_vpp)(int on);
-+	void		(*mmcontrol)(struct mtd_info *mtd, int sync_read);
-+	struct mtd_partition *parts;
-+	unsigned int	nr_parts;
-+	const char	*type;
-+};
-+
-+#endif
-diff --git a/include/linux/spi/flash.h b/include/linux/spi/flash.h
-index 3f22932..c7ed65e 100644
---- a/include/linux/spi/flash.h
-+++ b/include/linux/spi/flash.h
-@@ -1,31 +1,6 @@
- #ifndef LINUX_SPI_FLASH_H
- #define LINUX_SPI_FLASH_H
- 
--struct mtd_partition;
--
--/**
-- * struct flash_platform_data: board-specific flash data
-- * @name: optional flash device name (eg, as used with mtdparts=)
-- * @parts: optional array of mtd_partitions for static partitioning
-- * @nr_parts: number of mtd_partitions for static partitoning
-- * @type: optional flash device type (e.g. m25p80 vs m25p64), for use
-- *	with chips that can't be queried for JEDEC or other IDs
-- *
-- * Board init code (in arch/.../mach-xxx/board-yyy.c files) can
-- * provide information about SPI flash parts (such as DataFlash) to
-- * help set up the device and its appropriate default partitioning.
-- *
-- * Note that for DataFlash, sizes for pages, blocks, and sectors are
-- * rarely powers of two; and partitions should be sector-aligned.
-- */
--struct flash_platform_data {
--	char		*name;
--	struct mtd_partition *parts;
--	unsigned int	nr_parts;
--
--	char		*type;
--
--	/* we'll likely add more ... use JEDEC IDs, etc */
--};
-+#include <linux/mtd/flash.h>
- 
- #endif
--- 
-1.7.1
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+T24gTW9uLCBKYW4gMzEsIDIwMTEgYXQgMDM6NDYsIEFhcm9uLld1IHdyb3RlOgo+IC0tLSBhL2lu
+Y2x1ZGUvbGludXgvc3BpL3NwaS5oCj4gKysrIGIvaW5jbHVkZS9saW51eC9zcGkvc3BpLmgKPiBA
+QCAtMjQwLDkgKzI0Niw5IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBzcGlfdW5yZWdpc3Rlcl9kcml2
+ZXIoc3RydWN0IHNwaV9kcml2ZXIgKnNkcnYpCj4gwqAqLwo+IMKgc3RydWN0IHNwaV9tYXN0ZXIg
+ewo+IMKgIMKgIMKgIMKgc3RydWN0IGRldmljZSDCoCBkZXY7Cj4gLQo+IMKgIMKgIMKgIMKgc3Ry
+dWN0IGxpc3RfaGVhZCBsaXN0Owo+Cj4gKwo+IMKgIMKgIMKgIMKgLyogb3RoZXIgdGhhbiBuZWdh
+dGl2ZSAoPT0gYXNzaWduIG9uZSBkeW5hbWljYWxseSksIGJ1c19udW0gaXMgZnVsbHkKPiDCoCDC
+oCDCoCDCoCAqIGJvYXJkLXNwZWNpZmljLiDCoHVzdWFsbHkgdGhhdCBzaW1wbGlmaWVzIHRvIGJl
+aW5nIFNPQy1zcGVjaWZpYy4KPiDCoCDCoCDCoCDCoCAqIGV4YW1wbGU6IMKgb25lIFNPQyBoYXMg
+dGhyZWUgU1BJIGNvbnRyb2xsZXJzLCBudW1iZXJlZCAwLi4yLAoKcGxlYXNlIGF2b2lkIHVzZWxl
+c3Mgd2hpdGVzcGFjZSBjaGFuZ2VzCgo+IEBAIC0zMDksNiArMzE1LDUwIEBAIHN0cnVjdCBzcGlf
+bWFzdGVyIHsKPgo+IMKgIMKgIMKgIMKgLyogY2FsbGVkIG9uIHJlbGVhc2UoKSB0byBmcmVlIG1l
+bW9yeSBwcm92aWRlZCBieSBzcGlfbWFzdGVyICovCj4gwqAgwqAgwqAgwqB2b2lkIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgKCpjbGVhbnVwKShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsK
+PiArCj4gKyDCoCDCoCDCoCBpbnQgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKCpsb2Nr
+X2J1cykoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSk7Cj4gKyDCoCDCoCDCoCBpbnQgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgKCp1bmxvY2tfYnVzKShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
+KTsKPiArfTsKPiBAQCAtNTU3LDggKzYzNSw2IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBzcGlfbWVz
+c2FnZV9mcmVlKHN0cnVjdCBzcGlfbWVzc2FnZSAqbSkKPgo+IMKgZXh0ZXJuIGludCBzcGlfc2V0
+dXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSk7Cj4gwqBleHRlcm4gaW50IHNwaV9hc3luYyhzdHJ1
+Y3Qgc3BpX2RldmljZSAqc3BpLCBzdHJ1Y3Qgc3BpX21lc3NhZ2UgKm1lc3NhZ2UpOwo+IC1leHRl
+cm4gaW50IHNwaV9hc3luY19sb2NrZWQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwKPiAtIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0cnVjdCBzcGlfbWVzc2FnZSAqbWVz
+c2FnZSk7Cj4KPiDCoC8qLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKi8KPgo+IEBAIC01NjgsOSArNjQ0LDgg
+QEAgZXh0ZXJuIGludCBzcGlfYXN5bmNfbG9ja2VkKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCj4g
+wqAqLwo+Cj4gwqBleHRlcm4gaW50IHNwaV9zeW5jKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHN0
+cnVjdCBzcGlfbWVzc2FnZSAqbWVzc2FnZSk7Cj4gLWV4dGVybiBpbnQgc3BpX3N5bmNfbG9ja2Vk
+KHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHN0cnVjdCBzcGlfbWVzc2FnZSAqbWVzc2FnZSk7Cj4g
+LWV4dGVybiBpbnQgc3BpX2J1c19sb2NrKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpOwo+IC1l
+eHRlcm4gaW50IHNwaV9idXNfdW5sb2NrKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpOwo+ICtl
+eHRlcm4gaW50IHNwaV9sb2NrX2J1cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsKPiArZXh0ZXJu
+IGludCBzcGlfdW5sb2NrX2J1cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsKCndoeSBhcmUgeW91
+IGNoYW5naW5nIHRoZSBidXMgbG9jay91bmxvY2sgYXBpID8KLW1pa2UKCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpTcGVjaWFsIE9mZmVyLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVF
+IChhICQ0OSBVU0QgdmFsdWUpIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50
+IHNvbHV0aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIHByaWNlLWZyZWUhCkRvd25sb2FkIHVzaW5nIHBy
+b21vIGNvZGUgRnJlZV9Mb2dnZXJfNF9EZXYyRGV2LiBPZmZlciBleHBpcmVzIApGZWJydWFyeSAy
+OHRoLCBzbyBzZWN1cmUgeW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEgCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvYXJjc2lnaHQtc2ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

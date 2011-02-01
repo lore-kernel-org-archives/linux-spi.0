@@ -1,68 +1,38 @@
-From: Mike Frysinger <vapier.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [uclinux-dist-devel] [PATCH] spi:add support for slave function
-	in current spi framework
-Date: Mon, 31 Jan 2011 11:31:48 -0500
-Message-ID: <AANLkTim2FHTp8M+u=cw0QaMiEPgUPwz_3QrbTFR3dBhh@mail.gmail.com>
-References: <1296463611-18764-1-git-send-email-Aaron.Wu06@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: "Aaron.Wu" <Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1296463611-18764-1-git-send-email-Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Bernhard Walle <walle@corscience.de>
+Subject: [PATCH] spi: spidev: Add 32 bit compat ioctl()
+Date: Tue,  1 Feb 2011 10:02:46 +0100
+Message-ID: <1296550966-4015-1-git-send-email-walle@corscience.de>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+To: dbrownell@users.sourceforge.net, grant.likely@secretlab.ca
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBKYW4gMzEsIDIwMTEgYXQgMDM6NDYsIEFhcm9uLld1IHdyb3RlOgo+IC0tLSBhL2lu
-Y2x1ZGUvbGludXgvc3BpL3NwaS5oCj4gKysrIGIvaW5jbHVkZS9saW51eC9zcGkvc3BpLmgKPiBA
-QCAtMjQwLDkgKzI0Niw5IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBzcGlfdW5yZWdpc3Rlcl9kcml2
-ZXIoc3RydWN0IHNwaV9kcml2ZXIgKnNkcnYpCj4gwqAqLwo+IMKgc3RydWN0IHNwaV9tYXN0ZXIg
-ewo+IMKgIMKgIMKgIMKgc3RydWN0IGRldmljZSDCoCBkZXY7Cj4gLQo+IMKgIMKgIMKgIMKgc3Ry
-dWN0IGxpc3RfaGVhZCBsaXN0Owo+Cj4gKwo+IMKgIMKgIMKgIMKgLyogb3RoZXIgdGhhbiBuZWdh
-dGl2ZSAoPT0gYXNzaWduIG9uZSBkeW5hbWljYWxseSksIGJ1c19udW0gaXMgZnVsbHkKPiDCoCDC
-oCDCoCDCoCAqIGJvYXJkLXNwZWNpZmljLiDCoHVzdWFsbHkgdGhhdCBzaW1wbGlmaWVzIHRvIGJl
-aW5nIFNPQy1zcGVjaWZpYy4KPiDCoCDCoCDCoCDCoCAqIGV4YW1wbGU6IMKgb25lIFNPQyBoYXMg
-dGhyZWUgU1BJIGNvbnRyb2xsZXJzLCBudW1iZXJlZCAwLi4yLAoKcGxlYXNlIGF2b2lkIHVzZWxl
-c3Mgd2hpdGVzcGFjZSBjaGFuZ2VzCgo+IEBAIC0zMDksNiArMzE1LDUwIEBAIHN0cnVjdCBzcGlf
-bWFzdGVyIHsKPgo+IMKgIMKgIMKgIMKgLyogY2FsbGVkIG9uIHJlbGVhc2UoKSB0byBmcmVlIG1l
-bW9yeSBwcm92aWRlZCBieSBzcGlfbWFzdGVyICovCj4gwqAgwqAgwqAgwqB2b2lkIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgKCpjbGVhbnVwKShzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsK
-PiArCj4gKyDCoCDCoCDCoCBpbnQgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKCpsb2Nr
-X2J1cykoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSk7Cj4gKyDCoCDCoCDCoCBpbnQgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgKCp1bmxvY2tfYnVzKShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
-KTsKPiArfTsKPiBAQCAtNTU3LDggKzYzNSw2IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBzcGlfbWVz
-c2FnZV9mcmVlKHN0cnVjdCBzcGlfbWVzc2FnZSAqbSkKPgo+IMKgZXh0ZXJuIGludCBzcGlfc2V0
-dXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSk7Cj4gwqBleHRlcm4gaW50IHNwaV9hc3luYyhzdHJ1
-Y3Qgc3BpX2RldmljZSAqc3BpLCBzdHJ1Y3Qgc3BpX21lc3NhZ2UgKm1lc3NhZ2UpOwo+IC1leHRl
-cm4gaW50IHNwaV9hc3luY19sb2NrZWQoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwKPiAtIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHN0cnVjdCBzcGlfbWVzc2FnZSAqbWVz
-c2FnZSk7Cj4KPiDCoC8qLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKi8KPgo+IEBAIC01NjgsOSArNjQ0LDgg
-QEAgZXh0ZXJuIGludCBzcGlfYXN5bmNfbG9ja2VkKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCj4g
-wqAqLwo+Cj4gwqBleHRlcm4gaW50IHNwaV9zeW5jKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHN0
-cnVjdCBzcGlfbWVzc2FnZSAqbWVzc2FnZSk7Cj4gLWV4dGVybiBpbnQgc3BpX3N5bmNfbG9ja2Vk
-KHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHN0cnVjdCBzcGlfbWVzc2FnZSAqbWVzc2FnZSk7Cj4g
-LWV4dGVybiBpbnQgc3BpX2J1c19sb2NrKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpOwo+IC1l
-eHRlcm4gaW50IHNwaV9idXNfdW5sb2NrKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpOwo+ICtl
-eHRlcm4gaW50IHNwaV9sb2NrX2J1cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsKPiArZXh0ZXJu
-IGludCBzcGlfdW5sb2NrX2J1cyhzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKTsKCndoeSBhcmUgeW91
-IGNoYW5naW5nIHRoZSBidXMgbG9jay91bmxvY2sgYXBpID8KLW1pa2UKCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQpTcGVjaWFsIE9mZmVyLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVF
-IChhICQ0OSBVU0QgdmFsdWUpIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50
-IHNvbHV0aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIHByaWNlLWZyZWUhCkRvd25sb2FkIHVzaW5nIHBy
-b21vIGNvZGUgRnJlZV9Mb2dnZXJfNF9EZXYyRGV2LiBPZmZlciBleHBpcmVzIApGZWJydWFyeSAy
-OHRoLCBzbyBzZWN1cmUgeW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEgCmh0dHA6Ly9w
-LnNmLm5ldC9zZnUvYXJjc2lnaHQtc2ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Add the compat_ioctl for operations on /dev/spi* so that 32 bit
+userspace applications can access SPI. As far as I can see all data
+structure are already prepared for that, so no additional conversion has
+to be done.
+
+My use case is MIPS with N32 userspace ABI and toolchain, and that was
+also the platform where I tested it successfully (Cavium Octeon).
+
+Signed-off-by: Bernhard Walle <walle@corscience.de>
+---
+ drivers/spi/spidev.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 4e6245e..bb24ad8 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -543,6 +543,7 @@ static const struct file_operations spidev_fops = {
+ 	.write =	spidev_write,
+ 	.read =		spidev_read,
+ 	.unlocked_ioctl = spidev_ioctl,
++	.compat_ioctl = spidev_ioctl,
+ 	.open =		spidev_open,
+ 	.release =	spidev_release,
+ 	.llseek =	no_llseek,
+-- 
+1.7.1

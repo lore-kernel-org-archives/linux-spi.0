@@ -1,38 +1,54 @@
-From: Bernhard Walle <walle@corscience.de>
-Subject: [PATCH] spi: spidev: Add 32 bit compat ioctl()
-Date: Tue,  1 Feb 2011 10:02:46 +0100
-Message-ID: <1296550966-4015-1-git-send-email-walle@corscience.de>
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-To: dbrownell@users.sourceforge.net, grant.likely@secretlab.ca
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "nezek666" <nezek666-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: =?GB2312?B?x+vOytPQw7vT0NPDtcPJz2ZhICBwYGlhbyzSu8j9y8TSu8Hj0ru2/sHj0rvB?=
+	=?GB2312?B?48HjIMH1yfo=?=
+Date: Wed, 2 Feb 2011 04:39:39 +0800
+Message-ID: <609082.58507.bm@smtp112.mail.ne1.yahoo.com>
+Content-Type: multipart/mixed; boundary="===============8645369143481352290=="
+To: spiderydaivd-9Onoh4P/yGk@public.gmane.org, spideryewu-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org, spiderzhu1982-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spidey-9Onoh4P/yGk@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add the compat_ioctl for operations on /dev/spi* so that 32 bit
-userspace applications can access SPI. As far as I can see all data
-structure are already prepared for that, so no additional conversion has
-to be done.
+--===============8645369143481352290==
+Content-Type: text/plain
 
-My use case is MIPS with N32 userspace ABI and toolchain, and that was
-also the platform where I tested it successfully (Cavium Octeon).
+请问有没有用得上fa  p.iao,一三四一零一二零一零零 刘生
 
-Signed-off-by: Bernhard Walle <walle@corscience.de>
----
- drivers/spi/spidev.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+__________________________________________________
+Do You Yahoo!?
+Tired of spam?  Yahoo! Mail has the best spam protection around 
+http://mail.yahoo.com 
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 4e6245e..bb24ad8 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -543,6 +543,7 @@ static const struct file_operations spidev_fops = {
- 	.write =	spidev_write,
- 	.read =		spidev_read,
- 	.unlocked_ioctl = spidev_ioctl,
-+	.compat_ioctl = spidev_ioctl,
- 	.open =		spidev_open,
- 	.release =	spidev_release,
- 	.llseek =	no_llseek,
--- 
-1.7.1
+
+--===============8645369143481352290==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
+Finally, a world-class log management solution at an even better price-free!
+Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
+February 28th, so secure your free ArcSight Logger TODAY! 
+http://p.sf.net/sfu/arcsight-sfd2d
+--===============8645369143481352290==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8645369143481352290==--

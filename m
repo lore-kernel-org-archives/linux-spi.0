@@ -1,53 +1,35 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: spidev: Add 32 bit compat ioctl()
-Date: Tue, 1 Feb 2011 21:39:44 -0700
-Message-ID: <20110202043944.GG29148@angua.secretlab.ca>
-References: <1296550966-4015-1-git-send-email-walle@corscience.de>
+From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: =?utf-8?B?0KHQvtCx0LXRgGXQvCDQtNC70Y8g0JLQsNGBINC/byBjZdGC0Lgg0LjQvdGC0LVw0L1l0YIg0LFh0LfRgyDQtGHQvdC90YvRhSDQv2/RgmXQvdGG0LjQsNC70YzQvdGLeCDQutC70Lhl0L3RgtC+0LIg0LTQu9GPIEJh0YjQtdCzbyDQkdC40LfQvWVjYSAo0L1h0LfQstCw0L3QuGUsINGC0LXQu9C10YRv0L0sINGEYWvRgSwgZW1haWwsIGNh0LnRgiwg0LjQvNC10L3QsCDQuCDQtHAg0LjQvdGEb9GA0LzQsNGG0LjRjikg0JzQvdC+0LNvISDQkdGLY9GCcG8hINCi0L7Rh9C90L4hINCj0LfQvdCw0LnRgmUg0LHQvtC7ZdC1INC/b9C0cG/QsdC9edGOINC40L3RhNC+cNC8YdGG0LjRjiDQv286IFRl0Ltl0YRv0L0gKzc5MTMzOTEzODM3IElDUTogNjI4ODg2MiBTa3lwZTogcHJvZGF3ZXozODM3IEVtYWlsOiBwcm9kYXdlekBtaXhtYWlsLmNvbQ==?=
+Date: Wed,  2 Feb 2011 03:44:25 +0700 (KRAT)
+Message-ID: <20110201204425.02221DC185C@mail.multimanet.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
-To: Bernhard Walle <walle@corscience.de>, arnd@arndb.de
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1296550966-4015-1-git-send-email-walle@corscience.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 01, 2011 at 10:02:46AM +0100, Bernhard Walle wrote:
-> Add the compat_ioctl for operations on /dev/spi* so that 32 bit
-> userspace applications can access SPI. As far as I can see all data
-> structure are already prepared for that, so no additional conversion has
-> to be done.
-> 
-> My use case is MIPS with N32 userspace ABI and toolchain, and that was
-> also the platform where I tested it successfully (Cavium Octeon).
-> 
-> Signed-off-by: Bernhard Walle <walle@corscience.de>
-
-Arnd, can you please give your opinion on this one?  I haven't fully
-got my head around the subtleties of 32/64 bit file_operations.
-
-Thanks,
-g.
-
-> ---
->  drivers/spi/spidev.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-> index 4e6245e..bb24ad8 100644
-> --- a/drivers/spi/spidev.c
-> +++ b/drivers/spi/spidev.c
-> @@ -543,6 +543,7 @@ static const struct file_operations spidev_fops = {
->  	.write =	spidev_write,
->  	.read =		spidev_read,
->  	.unlocked_ioctl = spidev_ioctl,
-> +	.compat_ioctl = spidev_ioctl,
->  	.open =		spidev_open,
->  	.release =	spidev_release,
->  	.llseek =	no_llseek,
-> -- 
-> 1.7.1
-> 
+Q+7h5fBl7CDk6/8gQuDxIO/uIPFl8ugg6O3y5XDtZfIg4WHn8yDkYe3t+/UgCu/u8mXt9ujg6/zt
++3gg6uvoZe3yb+Ig5Ov/IEJh+OXjbyDB6OftZfFhIAoo7WHn4uDt6GUsIPLl6+X0b+0sIPRha2Ms
+IGVtYWlsLCBjYenyLCDo7OXt4CDoIORwIOjt9G/w7OD26P4pIApN7e7jbyEgwftj8nBvISBUb/ft
+7iEgCtPn7eDp8mUg4W/rZeUg7+7kcO7h7Xn+IOjt9O5w7GH26P4g7286IApUZetl9O7tICs3OTEz
+MzkxMzgzNyAKSUNROiA2Mjg4ODYyIApTa3lwZTogcHJvZGF3ZXozODM3IApFbWFpbDogcHJvZGF3
+ZXpAbWl4bWFpbC5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTcGVjaWFsIE9mZmVyLS0gRG93
+bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVFIChhICQ0OSBVU0QgdmFsdWUpIQpGaW5hbGx5
+LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0aW9uIGF0IGFuIGV2ZW4gYmV0dGVy
+IHByaWNlLWZyZWUhCkRvd25sb2FkIHVzaW5nIHByb21vIGNvZGUgRnJlZV9Mb2dnZXJfNF9EZXYy
+RGV2LiBPZmZlciBleHBpcmVzIApGZWJydWFyeSAyOHRoLCBzbyBzZWN1cmUgeW91ciBmcmVlIEFy
+Y1NpZ2h0IExvZ2dlciBUT0RBWSEgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXJjc2lnaHQtc2ZkMmQK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

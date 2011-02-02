@@ -1,47 +1,74 @@
-From: Assuragency par Team Leaders <good.news2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Trop de credits ?
-Date: Wed, 2 Feb 2011 15:54:21 +0200
-Message-ID: <1156dd3906d866ce69d10b4292d4f444@n2.be-moon.com>
-Reply-To: Assuragency par Team Leaders <good.news2011-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: spidev: Add 32 bit compat ioctl()
+Date: Wed, 2 Feb 2011 07:12:15 -0700
+Message-ID: <AANLkTimRsEB5DBX0NH80f_aoqWn8-5KzXnf-p8_fHnsx@mail.gmail.com>
+References: <1296550966-4015-1-git-send-email-walle@corscience.de>
+ <20110202043944.GG29148@angua.secretlab.ca> <201102021037.14364.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Bernhard Walle <walle@corscience.de>,
+	dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <201102021037.14364.arnd@arndb.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm91cyBhdmV6IHRyb3AgZGUgY3JlZGl0cz8KUmVncm91cGV6IHRvdXMgdm9zIGNyZWRpdHMgZW4g
-MSBzZXVsCuKCrCBldCByw6lkdWlzZXogdm9zIG1lbnN1YWxpdMOpcyEKUmV0cm91dmV6IGR1IHBv
-dXZvaXIgZOKAmWFjaGF0IHJhcGlkZW1lbnQhCgpQbHVzIGQnaW5mb3JtYXRpb25zOgpodHRwOi8v
-d3d3LndlZWRvaXQuZnIvdHJhY2tpbmcvdHJhY2tpbmdfYWZmLnBocD9pZD1ZMkZ0Y0dGbmJtVTlW
-R1ZoYlNCTVpXRmtaWEp6WDFKaFkyaGhkQzFrWlMxRGNtVmthWFJ6WDFacGMzVmxiQT09CgoKKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKgpDb25mb3Jtw6ltZW50IMOgIGxhIGxvaSBpbmZvcm1hdGlxdWUgJiBsaWJlcnTDqXMg
-ZHUgNiBqYW52aWVyIDE5NzgsIGplCmRpc3Bvc2UgZCd1biBkcm9pdCBkJ2FjY8OocywgZGUgcmVj
-dGlmaWNhdGlvbiBldCBkJ29wcG9zaXRpb24gYXV4CmRvbm7DqWVzIHBlcnNvbm5lbGxlcyBtZSBj
-b25jZXJuYW50LiAKQ2UgbWVzc2FnZSBjb21tZXJjaWFsIHZvdXMgZXN0IGVudm95w6kgcGFyIOKA
-nFRlYW0gTGVhZGVyc+KAnS4uIFZvdXMKcmVjZXZleiBjZSBtZXNzYWdlIHBhcmNlIHF1ZSB2b3Vz
-IHZvdXMgw6p0ZXMgaW5zY3JpdCBzdXIgbCd1biBkZXMKc2l0ZXMgcGFydGVuYWlyZXMgZGUg4oCc
-VGVhbSBMZWFkZXJz4oCdLiBWb3MgZG9ubsOpZXMgbm9taW5hdGl2ZXMKbidvbnQgcGFzIMOpdMOp
-IHRyYW5zbWlzZXMgw6AgbCdhbm5vbmNldXIuIFNpIHZvdXMgbmUgc291aGFpdGV6IHBsdXMKcmVj
-ZXZvaXIgbm90cmUgbGV0dHJlIGQnaW5mb3JtYXRpb24gUmVtcGxpc3NleiBjZSBmb3JtdWxhaXJl
-OiAKaHR0cDovLzc3Ljg5LjI0Ny4xMzUvdW5zdWJzY3JpYmUvaW5kZXgucGhwP3E9c3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpT
-cGVjaWFsIE9mZmVyLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVFIChhICQ0OSBV
-U0QgdmFsdWUpIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0aW9u
-IGF0IGFuIGV2ZW4gYmV0dGVyIHByaWNlLWZyZWUhCkRvd25sb2FkIHVzaW5nIHByb21vIGNvZGUg
-RnJlZV9Mb2dnZXJfNF9EZXYyRGV2LiBPZmZlciBleHBpcmVzIApGZWJydWFyeSAyOHRoLCBzbyBz
-ZWN1cmUgeW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEgCmh0dHA6Ly9wLnNmLm5ldC9z
-ZnUvYXJjc2lnaHQtc2ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Wed, Feb 2, 2011 at 2:37 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Wednesday 02 February 2011, Grant Likely wrote:
+>> On Tue, Feb 01, 2011 at 10:02:46AM +0100, Bernhard Walle wrote:
+>> > Add the compat_ioctl for operations on /dev/spi* so that 32 bit
+>> > userspace applications can access SPI. As far as I can see all dat=
+a
+>> > structure are already prepared for that, so no additional conversi=
+on has
+>> > to be done.
+>> >
+>> > My use case is MIPS with N32 userspace ABI and toolchain, and that=
+ was
+>> > also the platform where I tested it successfully (Cavium Octeon).
+>> >
+>> > Signed-off-by: Bernhard Walle <walle@corscience.de>
+>>
+>> Arnd, can you please give your opinion on this one? =A0I haven't ful=
+ly
+>> got my head around the subtleties of 32/64 bit file_operations.
+>
+> The patch is correct on everything except s390, which does not have S=
+PI.
+> The only thing that is missing for s390 is a pointer conversion of th=
+e ioctl
+> argument, like:
+>
+> static long
+> compat_spidev_ioctl(struct file *filp, unsigned int cmd, unsigned lon=
+g arg)
+> {
+> =A0 =A0 =A0 =A0return spidev_ioctl(filp, cmd, (unsigned long)compat_p=
+tr(arg));
+> }
+>
+> Some years ago, I proposed adding a common
+>
+> #ifdef CONFIG_COMPAT
+> long generic_compat_ioctl(struct file *filp, unsigned int cmd, unsign=
+ed long arg)
+> {
+> =A0 =A0 =A0 =A0if (!file->unlocked_ioctl)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -ENOTTY;
+> =A0 =A0 =A0 =A0return filp->f_ops->unlocked_ioctl(filp, cmd, (unsigne=
+d long)compat_ptr(arg));
+> }
+> #else
+> #define generic_compat_ioctl NULL
+> #endif
+>
+> for this purpose, but it never made it in. Maybe I should try again.
+
+I'd like to see that go in too.  If you can implement it for the
+2.6.39, then I'd like to see this patch rebased on top of it.
+
+g.

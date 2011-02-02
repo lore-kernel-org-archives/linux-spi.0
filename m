@@ -1,7 +1,7 @@
 From: Bernhard Walle <walle@corscience.de>
 Subject: [PATCH] spi: spidev: Add 32 bit compat ioctl()
-Date: Wed,  2 Feb 2011 12:30:40 +0100
-Message-ID: <1296646240-31778-1-git-send-email-walle@corscience.de>
+Date: Wed,  2 Feb 2011 12:31:36 +0100
+Message-ID: <1296646296-31843-1-git-send-email-walle@corscience.de>
 Cc: spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
 	arnd@arndb.de
@@ -20,14 +20,22 @@ also the platform where I tested it successfully (Cavium Octeon).
 
 Signed-off-by: Bernhard Walle <walle@corscience.de>
 ---
- drivers/spi/spidev.c |   11 +++++++++++
- 1 files changed, 11 insertions(+), 0 deletions(-)
+ drivers/spi/spidev.c |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 4e6245e..95c3f10 100644
+index 4e6245e..f80503b 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -471,6 +471,14 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+@@ -30,6 +30,7 @@
+ #include <linux/errno.h>
+ #include <linux/mutex.h>
+ #include <linux/slab.h>
++#include <linux/compat.h>
+ 
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spidev.h>
+@@ -471,6 +472,14 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
  	return retval;
  }
  
@@ -42,7 +50,7 @@ index 4e6245e..95c3f10 100644
  static int spidev_open(struct inode *inode, struct file *filp)
  {
  	struct spidev_data	*spidev;
-@@ -543,6 +551,9 @@ static const struct file_operations spidev_fops = {
+@@ -543,6 +552,9 @@ static const struct file_operations spidev_fops = {
  	.write =	spidev_write,
  	.read =		spidev_read,
  	.unlocked_ioctl = spidev_ioctl,

@@ -1,247 +1,53 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi:add support for slave function
- in current spi framework
-Date: Tue, 1 Feb 2011 21:05:22 -0700
-Message-ID: <20110202040522.GD29148@angua.secretlab.ca>
-References: <1296463611-18764-1-git-send-email-Aaron.Wu06@gmail.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: spidev: Add 32 bit compat ioctl()
+Date: Tue, 1 Feb 2011 21:39:44 -0700
+Message-ID: <20110202043944.GG29148@angua.secretlab.ca>
+References: <1296550966-4015-1-git-send-email-walle@corscience.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: "Aaron.Wu" <Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+To: Bernhard Walle <walle@corscience.de>, arnd@arndb.de
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1296463611-18764-1-git-send-email-Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+In-Reply-To: <1296550966-4015-1-git-send-email-walle@corscience.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 31, 2011 at 04:46:51PM +0800, Aaron.Wu wrote:
-> This is for the current git trunk and it's basically from  the patch once post by Ken Mills.  It's a draft version showing how we plan to implement the spi slave funtion by introducing some changes on the current spi framework, if this style of implementation is going to be accepted then we will go on to do more work on it.
+On Tue, Feb 01, 2011 at 10:02:46AM +0100, Bernhard Walle wrote:
+> Add the compat_ioctl for operations on /dev/spi* so that 32 bit
+> userspace applications can access SPI. As far as I can see all data
+> structure are already prepared for that, so no additional conversion has
+> to be done.
 > 
-> Signed-off-by: Aaron.Wu <Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi.c       |  401 ++++++++++++++++++++++++++++++++++++++++-------
->  include/linux/spi/spi.h |   97 ++++++++++--
->  2 files changed, 432 insertions(+), 66 deletions(-)
-
-Hi Aaron,
-
-I made a few comments about the patch itself, but there is something
-more fundamental that needs to be addressed first, so I'll move it to
-the top...
-
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index a3059c2..8663947 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -24,15 +24,18 @@
->  #include <linux/slab.h>
->  
->  /*
-> - * INTERFACES between SPI master-side drivers and SPI infrastructure.
-> - * (There's no SPI slave support for Linux yet...)
-> - */
-> + * INTERFACES between SPI Master/Slave side drivers and
-> + * SPI infrastructure.
-> + * SPI Slave Support added : It uses few new APIs and
-> + * a new spi_slave struct
-> +*/
->  extern struct bus_type spi_bus_type;
->  
->  /**
->   * struct spi_device - Master side proxy for an SPI slave device
->   * @dev: Driver model representation of the device.
-> - * @master: SPI controller used with the device.
-> + * @master: SPI Master controller used with the device.
-> + * @slave: SPI Slave Controller used with the device
-
-Absolutely not.  Handling SPI slave mode is fundamentally different
-from spi master mode.  In master mode, Linux is scheduling
-transactions and gets the final say about who talks when.  It is able
-to completely prepare the transactions ahead of time and knows exactly
-how long each one is going to be and what it will contain in the
-outgoing direction.
-
-However, spi slave mode must sit on the bus and wait for some external
-entity to initiate a transfer.  Worse than that, it possibly needs to
-read the first part of the input data, act on it, and change the
-outgoing bits depending on the input /within the same transfer/.
-Conceptually it is entirely different from SPI master mode.  I will
-not accept a solution that co-opts the master-mode infrastructure for
-implementing a slave mode.  Heck, the spi_message/spi_transfer
-structures don't even make sense for slave mode since you don't know
-how long the transfer is going to be or how it will be broken up into
-buffers.
-
-If you want to implement slave mode, then it is a separate sub system.
-You are welcome to use some of the master mode structures and routines
-provided that it does not create additional complexity to the
-master-mode code paths.  You're also welcome to create a slave
-subdirectory under the drivers/spi directory.  I'm not opposed to
-implementing spi-slave support, but it needs to be a subsystem that
-reflects the conceptual model of slave mode, and doesn't try to
-shoehorn into master mode.
-
-When you do write the spi_slave subsystem, also make sure that you
-write a good dollop of documentation to help me get my brain around
-the mental modal that you're proposing for slave support.  Doing so
-will make review and understanding easy.
-
-Some general patch etiquette comments below...
-
+> My use case is MIPS with N32 userspace ABI and toolchain, and that was
+> also the platform where I tested it successfully (Cavium Octeon).
 > 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index b02d0cb..b2757d4 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -29,19 +29,39 @@
->  #include <linux/spi/spi.h>
->  #include <linux/of_spi.h>
->  
-> +
-> +/* SPI bustype, spi_master and spi_slave class are registered after board
-> + * init code provides the SPI device tables, ensuring that both are present
-> + * by the time controller driver registration causes spi_devices
-> + * to "enumerate".
-> + */
-> +
-> +/* SPI Slave Support is added for new spi slave devices: It uses common APIs,
-> + * apart from few new APIs and a spi_slave structure.
-> + */
-> +
->  static void spidev_release(struct device *dev)
->  {
->  	struct spi_device	*spi = to_spi_device(dev);
->  
-> -	/* spi masters may cleanup for released devices */
-> -	if (spi->master->cleanup)
-> -		spi->master->cleanup(spi);
-> +	if (spi->master) {
-> +		/* spi masters may cleanup for released devices */
-> +		if (spi->master->cleanup)
-> +			spi->master->cleanup(spi);
-> +
-> +		spi_master_put(spi->master);
-> +	} else {
-> +		/* spi slave controller */
-> +		if (spi->slave->cleanup)
-> +			spi->slave->cleanup(spi);
-> +
-> +		spi_slave_put(spi->slave);
-> +	}
->  
-> -	spi_master_put(spi->master);
->  	kfree(spi);
->  }
->  
-> -static ssize_t
-> +	static ssize_t
+> Signed-off-by: Bernhard Walle <walle@corscience.de>
 
-Unrelated whitespace change.  Be careful about stuff like this.  It
-says to me you don't know the full impact of what your patch is
-changing.  Always eyeball the diff output before posting a patch.
+Arnd, can you please give your opinion on this one?  I haven't fully
+got my head around the subtleties of 32/64 bit file_operations.
 
->  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
->  {
->  	const struct spi_device	*spi = to_spi_device(dev);
-> @@ -59,7 +79,7 @@ static struct device_attribute spi_dev_attrs[] = {
->   */
->  
->  static const struct spi_device_id *spi_match_id(const struct spi_device_id *id,
-> -						const struct spi_device *sdev)
-> +		const struct spi_device *sdev)
-
-Ditto
-
->  {
->  	while (id->name[0]) {
->  		if (!strcmp(sdev->modalias, id->name))
-> @@ -194,7 +214,6 @@ EXPORT_SYMBOL_GPL(spi_register_driver);
->   * Device registration normally goes into like arch/.../mach.../board-YYY.c
->   * with other readonly (flashable) information about mainboard devices.
->   */
-> -
-
-Ditto
-
->  struct boardinfo {
->  	struct list_head	list;
->  	struct spi_board_info	board_info;
-> @@ -202,6 +221,7 @@ struct boardinfo {
->  
->  static LIST_HEAD(board_list);
->  static LIST_HEAD(spi_master_list);
-> +static LIST_HEAD(spi_slave_list);
->  
->  /*
->   * Used to protect add/del opertion for board_info list and
-> @@ -228,28 +248,70 @@ static DEFINE_MUTEX(board_lock);
->   */
->  struct spi_device *spi_alloc_device(struct spi_master *master)
->  {
-> -	struct spi_device	*spi;
-> +	struct spi_device	*spi_m_dev;
-
-This is a local variable, and it doesn't measurable change
-the understanding of the routine.  By renaming it it causes a large
-amount of churn that is completely unrelated to the task at hand,
-makes the patch hard to review, and doesn't provide any real benefit.
-
->  	struct device		*dev = master->dev.parent;
->  
->  	if (!spi_master_get(master))
->  		return NULL;
->  
-> -	spi = kzalloc(sizeof *spi, GFP_KERNEL);
-> -	if (!spi) {
-> +	spi_m_dev = kzalloc(sizeof *spi_m_dev, GFP_KERNEL);
-> +	if (!spi_m_dev) {
->  		dev_err(dev, "cannot alloc spi_device\n");
->  		spi_master_put(master);
->  		return NULL;
->  	}
->  
-> -	spi->master = master;
-> -	spi->dev.parent = dev;
-> -	spi->dev.bus = &spi_bus_type;
-> -	spi->dev.release = spidev_release;
-> -	device_initialize(&spi->dev);
-> -	return spi;
-> +	spi_m_dev->master = master;
-> +	spi_m_dev->slave = NULL;
-> +	spi_m_dev->dev.parent = dev;
-> +	spi_m_dev->dev.bus = &spi_bus_type;
-> +	spi_m_dev->dev.release = spidev_release;
-> +	device_initialize(&spi_m_dev->dev);
-> +	return spi_m_dev;
->  }
->  EXPORT_SYMBOL_GPL(spi_alloc_device);
->  
-> @@ -70,6 +73,7 @@ extern struct bus_type spi_bus_type;
->  struct spi_device {
->  	struct device		dev;
->  	struct spi_master	*master;
-> +	struct spi_slave        *slave;
->  	u32			max_speed_hz;
->  	u8			chip_select;
->  	u8			mode;
-> @@ -206,8 +210,8 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
->  /**
->   * struct spi_master - interface to SPI master controller
->   * @dev: device interface to this driver
-> - * @list: link with the global spi_master list
->   * @bus_num: board-specific (and often SOC-specific) identifier for a
-> + * @list: link with the global spi_master list
-
-Another unrelated change hunk.  Be careful about these.
-
+Thanks,
 g.
+
+> ---
+>  drivers/spi/spidev.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+> index 4e6245e..bb24ad8 100644
+> --- a/drivers/spi/spidev.c
+> +++ b/drivers/spi/spidev.c
+> @@ -543,6 +543,7 @@ static const struct file_operations spidev_fops = {
+>  	.write =	spidev_write,
+>  	.read =		spidev_read,
+>  	.unlocked_ioctl = spidev_ioctl,
+> +	.compat_ioctl = spidev_ioctl,
+>  	.open =		spidev_open,
+>  	.release =	spidev_release,
+>  	.llseek =	no_llseek,
+> -- 
+> 1.7.1
+> 

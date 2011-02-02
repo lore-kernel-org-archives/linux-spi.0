@@ -1,110 +1,60 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: Regd: SPI Slave Select
-Date: Wed, 2 Feb 2011 09:56:08 +0200
-Message-ID: <20110202075608.GB20884@jasper.tkos.co.il>
-References: <AANLkTimpC8Atvves=r+CLQYZKByLpyo8bm+xfnKvXAas@mail.gmail.com>
-	<20110128082443.GA6927@tarshish>
-	<AANLkTinkWD4CMEjLCCKzECaC4i5JQJeBPwPjGOrr9f5B@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi: spidev: Add 32 bit compat ioctl()
+Date: Wed, 2 Feb 2011 10:37:14 +0100
+Message-ID: <201102021037.14364.arnd@arndb.de>
+References: <1296550966-4015-1-git-send-email-walle@corscience.de> <20110202043944.GG29148@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <AANLkTinkWD4CMEjLCCKzECaC4i5JQJeBPwPjGOrr9f5B-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Bernhard Walle <walle@corscience.de>,
+	dbrownell@users.sourceforge.net,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20110202043944.GG29148@angua.secretlab.ca>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Tom,
-
-On Fri, Jan 28, 2011 at 02:42:42PM +0530, Tom wrote:
-> Thanks a lot for the quick reply.
-> But,my concern/doubt is over the sync of SS (GPIO toggling) and data
-> transmitted or read by SPI master.
+On Wednesday 02 February 2011, Grant Likely wrote:
+> On Tue, Feb 01, 2011 at 10:02:46AM +0100, Bernhard Walle wrote:
+> > Add the compat_ioctl for operations on /dev/spi* so that 32 bit
+> > userspace applications can access SPI. As far as I can see all data
+> > structure are already prepared for that, so no additional conversion has
+> > to be done.
+> > 
+> > My use case is MIPS with N32 userspace ABI and toolchain, and that was
+> > also the platform where I tested it successfully (Cavium Octeon).
+> > 
+> > Signed-off-by: Bernhard Walle <walle@corscience.de>
 > 
-> There is(are actually) another SPI protocol driver in existence, and what if
-> its write/read operation happens over the bus, when my driver has issued a
-> write/read.
+> Arnd, can you please give your opinion on this one?  I haven't fully
+> got my head around the subtleties of 32/64 bit file_operations.
 
-By "another SPI protocol driver" you mean another master or another slave?
+The patch is correct on everything except s390, which does not have SPI.
+The only thing that is missing for s390 is a pointer conversion of the ioctl
+argument, like:
 
-In the former case, you need to do the coordination yourself. The SPI 
-subsystem assumes that different master drivers control different clock/data 
-lines.
+static long     
+compat_spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	return spidev_ioctl(filp, cmd, (unsigned long)compat_ptr(arg));
+}
 
-If the latter is the case, that the SPI subsystem does the serialization of 
-SPI transfers for you, assuming the your SPI slave behave correctly (that is, 
-it doesn't toggle the MISO line when its SS signal is not asserted).
+Some years ago, I proposed adding a common
 
-> How do i avert this or does the spi framework (or linux driver model) assure
-> of its avoidance?
+#ifdef CONFIG_COMPAT
+long generic_compat_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	if (!file->unlocked_ioctl)
+		return -ENOTTY;
+	return filp->f_ops->unlocked_ioctl(filp, cmd, (unsigned long)compat_ptr(arg));
+}
+#else
+#define generic_compat_ioctl NULL
+#endif
 
-See above.
+for this purpose, but it never made it in. Maybe I should try again.
 
-> I noticed spi_bus_lock, spi_async_lock.. etc are available only in 2.6.37
-> and not in the code i am using (2.6.35)
-
-This is only needed for SPI slaves that behave strangely (MMC controllers in 
-particular).
-
-baruch
-
-> On Fri, Jan 28, 2011 at 1:54 PM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
-> 
-> > Hi Tom,
-> >
-> > On Fri, Jan 28, 2011 at 01:28:54PM +0530, Tom wrote:
-> > > I have a SPI slave device which expects the slave select line to be
-> > active
-> > > (low) during the entire message (e.g: say for a two byte transfer, the SS
-> > > should be low for until both the bytes have been written, and should not
-> > go
-> > > inactive in-between bytes being transfered).
-> > > But, I notice, this is not the case. The SS goes inactive in between
-> > bytes
-> > > transfer.
-> > >
-> > > Does the spi framework provide any support to avoid SS being deactivated
-> > > between byte transfer ?
-> >
-> > This is a (mis)feature of the DesignWare SPI master hardware, when SCPOL =
-> > 1.
-> > See figure 16 (page 63) in the DesigWare DW_apb_ssi Databook. The only
-> > solution is to use an external GPIO to control the SS signal.
-> >
-> > Another misfeature of this SPI master hardware is that it deactivates the
-> > SS
-> > signal automatically when the FIFO empties. This may or may not affect you,
-> > it
-> > depends on your application. Anyway, the solution here is again to use an
-> > external GPIO for SS.
-> >
-> > baruch
-> >
-> > > I have multiple slave devices on the same bus, so I can't keep the slave
-> > > always selected.
-> > >
-> > > My master driver is dw_spi.c and linunx kernel version is 2.6.35.
-> > >
-> > > Regards,
-> > > Tom
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-------------------------------------------------------------------------------
-Special Offer-- Download ArcSight Logger for FREE (a $49 USD value)!
-Finally, a world-class log management solution at an even better price-free!
-Download using promo code Free_Logger_4_Dev2Dev. Offer expires 
-February 28th, so secure your free ArcSight Logger TODAY! 
-http://p.sf.net/sfu/arcsight-sfd2d
+	Arnd

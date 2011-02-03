@@ -1,34 +1,142 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/1] spi: intel_mid_ssp_spi: new SPI driver for intel
-	Medfield platform
-Date: Thu, 3 Feb 2011 15:06:24 +0000
-Message-ID: <20110203150624.GA23123@sirena.org.uk>
-References: <1296680512-2758-2-git-send-email-russ.gorby@intel.com> <20110202224054.7916e7af@lxorguk.ukuu.org.uk> <20110203132800.GA17825@sirena.org.uk> <20110203150432.40cd74c4@lxorguk.ukuu.org.uk>
+From: Dirk Brandewie <dirk.brandewie@gmail.com>
+Subject: Re: [PATCH v4] spi: add OpenCores tiny SPI driver
+Date: Thu, 03 Feb 2011 07:20:32 -0800
+Message-ID: <4D4AC7C0.4050608@gmail.com>
+References: <1295925450-28550-1-git-send-email-thomas@wytron.com.tw> <1296729466-2936-1-git-send-email-thomas@wytron.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Russ Gorby <russ.gorby@intel.com>,
-	David Brownell <dbrownell@users.sourceforge.net>,
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	"open list:SPI SUBSYSTEM" <spi-devel-general@lists.sourceforge.net>,
-	open list <linux-kernel@vger.kernel.org>
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
+	nios2-dev@sopc.et.ntust.edu.tw,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Thomas Chou <thomas@wytron.com.tw>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20110203150432.40cd74c4@lxorguk.ukuu.org.uk>
+In-Reply-To: <1296729466-2936-1-git-send-email-thomas@wytron.com.tw>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 03, 2011 at 03:04:32PM +0000, Alan Cox wrote:
-> Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+On 02/03/2011 02:37 AM, Thomas Chou wrote:
+> This patch adds support of OpenCores tiny SPI driver.
+>
+> http://opencores.org/project,tiny_spi
+>
 
-> > I've got the same question here as I had with Russ' patch: it looks like
-> > there's some overlap with the SSP ports used for audio (it's just a
-> > generic programmable serial port so even if it's not normally used for
-> > audio that's a possiblity), how is that handled?
+> +static int tiny_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
+> +	const u8 *txp = t->tx_buf;
+> +	u8 *rxp = t->rx_buf;
+> +	unsigned int i;
+> +
+> +	if (hw->irq>= 0) {
+> +		/* use intrrupt driven data transfer */
+> +		hw->len = t->len;
+> +		hw->txp = t->tx_buf;
+> +		hw->rxp = t->rx_buf;
+> +		hw->txc = 0;
+> +		hw->rxc = 0;
+> +
+> +		/* send the first byte */
+> +		if (t->len>  1) {
+> +			writeb(hw->txp ? *hw->txp++ : 0,
+> +			       hw->base + TINY_SPI_TXDATA);
+> +			hw->txc++;
+> +			writeb(hw->txp ? *hw->txp++ : 0,
+> +			       hw->base + TINY_SPI_TXDATA);
+> +			hw->txc++;
+> +			writeb(TINY_SPI_STATUS_TXR, hw->base + TINY_SPI_STATUS);
+> +		} else {
+> +			writeb(hw->txp ? *hw->txp++ : 0,
+> +			       hw->base + TINY_SPI_TXDATA);
+> +			hw->txc++;
+> +			writeb(TINY_SPI_STATUS_TXE, hw->base + TINY_SPI_STATUS);
+> +		}
+> +
+> +		wait_for_completion(&hw->done);
+> +	} else if (txp&&  rxp) {
+> +		/* we need to tighten the transfer loop */
+> +		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+> +		if (t->len>  1) {
+> +			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+> +			for (i = 2; i<  t->len; i++) {
+> +				u8 rx, tx = *txp++;
+> +				while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +					 TINY_SPI_STATUS_TXR))
+> +					cpu_relax();
 
-> The SSP has PCI configuration indicating how it is being assigned, which
-> is in vendor capability byte 6. The low 3 bits indicte the mode, where
-> mode 1 is an SPI master/slave, and in that case bit 6 is set for a slave.
+Putting the read status, cpu releax in an inline function would make this 
+function a lot easier to read.
 
-OK, cool - just checking as it's a common issue for these generic serial
-ports.
+> +				rx = readb(hw->base + TINY_SPI_TXDATA);
+> +				writeb(tx, hw->base + TINY_SPI_TXDATA);
+> +				*rxp++ = rx;
+> +			}
+> +			while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +				 TINY_SPI_STATUS_TXR))
+> +				cpu_relax();
+> +			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
+> +		}
+> +		while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +			 TINY_SPI_STATUS_TXE))
+> +			cpu_relax();
+> +		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
+> +	} else if (rxp) {
+> +		writeb(0, hw->base + TINY_SPI_TXDATA);
+> +		if (t->len>  1) {
+> +			writeb(0,
+> +			       hw->base + TINY_SPI_TXDATA);
+> +			for (i = 2; i<  t->len; i++) {
+> +				u8 rx;
+> +				while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +					 TINY_SPI_STATUS_TXR))
+> +					cpu_relax();
+> +				rx = readb(hw->base + TINY_SPI_TXDATA);
+> +				writeb(0,
+> +				       hw->base + TINY_SPI_TXDATA);
+> +				*rxp++ = rx;
+> +			}
+> +			while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +				 TINY_SPI_STATUS_TXR))
+> +				cpu_relax();
+> +			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
+> +		}
+> +		while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +			 TINY_SPI_STATUS_TXE))
+> +			cpu_relax();
+> +		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
+> +	} else if (txp) {
+> +		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+> +		if (t->len>  1) {
+> +			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+> +			for (i = 2; i<  t->len; i++) {
+> +				u8 tx = *txp++;
+> +				while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +					 TINY_SPI_STATUS_TXR))
+> +					cpu_relax();
+> +				writeb(tx, hw->base + TINY_SPI_TXDATA);
+> +			}
+> +		}
+> +		while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +			 TINY_SPI_STATUS_TXE))
+> +			cpu_relax();
+> +	} else {
+> +		writeb(0, hw->base + TINY_SPI_TXDATA);
+> +		if (t->len>  1) {
+> +			writeb(0,
+> +			       hw->base + TINY_SPI_TXDATA);
+> +			for (i = 2; i<  t->len; i++) {
+> +				while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +					 TINY_SPI_STATUS_TXR))
+> +					cpu_relax();
+> +				writeb(0,
+> +				       hw->base + TINY_SPI_TXDATA);
+> +			}
+> +		}
+> +		while (!(readb(hw->base + TINY_SPI_STATUS)&
+> +			 TINY_SPI_STATUS_TXE))
+> +			cpu_relax();
+> +	}
+> +	return t->len;
+> +}

@@ -1,83 +1,29 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH v4] spi: add OpenCores tiny SPI driver
-Date: Thu, 3 Feb 2011 12:03:53 +0100
-Message-ID: <20110203110353.GC6508@pengutronix.de>
-References: <1295925450-28550-1-git-send-email-thomas@wytron.com.tw>
- <1296729466-2936-1-git-send-email-thomas@wytron.com.tw>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 1/1] spi: intel_mid_ssp_spi: new SPI driver for intel
+	Medfield platform
+Date: Thu, 3 Feb 2011 13:28:00 +0000
+Message-ID: <20110203132800.GA17825@sirena.org.uk>
+References: <1296680512-2758-2-git-send-email-russ.gorby@intel.com> <20110202224054.7916e7af@lxorguk.ukuu.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0IvGJv3f9h+YhkrH"
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Russ Gorby <russ.gorby@intel.com>,
+	David Brownell <dbrownell@users.sourceforge.net>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	nios2-dev@sopc.et.ntust.edu.tw,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Thomas Chou <thomas@wytron.com.tw>
+	"open list:SPI SUBSYSTEM" <spi-devel-general@lists.sourceforge.net>,
+	open list <linux-kernel@vger.kernel.org>
+To: Alan Cox <alan@lxorguk.ukuu.org.uk>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1296729466-2936-1-git-send-email-thomas@wytron.com.tw>
+In-Reply-To: <20110202224054.7916e7af@lxorguk.ukuu.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Feb 02, 2011 at 10:40:54PM +0000, Alan Cox wrote:
 
---0IvGJv3f9h+YhkrH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> And this is the unified one that handles all the devices, but I gather
+> may need some fixing/test work on Medfield.
 
-On Thu, Feb 03, 2011 at 06:37:46PM +0800, Thomas Chou wrote:
-
-> This patch adds support of OpenCores tiny SPI driver.
-
-A few comments to probe().
-
-> +	/* find and map our resources */
-> +	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (res =3D=3D NULL) {
-> +		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
-> +		err =3D -ENOENT;
-> +		goto err_no_iores;
-> +	}
-> +	hw->base =3D ioremap(res->start, (res->end - res->start) + 1);
-
-No request_mem_region?
-Maybe ioremap_nocache?
-Please use the resource_size()-macro.
-
-> +err_register:
-> +	if (hw->irq >=3D 0)
-> +		free_irq(hw->irq, hw);
-> +err_no_irq:
-> +	iounmap(hw->base);
-> +err_no_iomap:
-> +err_no_iores:
-> +	spi_master_put(master);
-> +err_no_mem:
-> +err_no_dev:
-> +	return err;
-
-It may pay off to use managed devices (devm_*), so this part will become
-very simple.
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---0IvGJv3f9h+YhkrH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk1Ki5kACgkQD27XaX1/VRsjWACgkGCZiZmnBP199dPrM7XlWFoT
-OCcAoMPnjZqLyfKrpqzZONhCnyb4e6M4
-=/8Wg
------END PGP SIGNATURE-----
-
---0IvGJv3f9h+YhkrH--
+I've got the same question here as I had with Russ' patch: it looks like
+there's some overlap with the SSP ports used for audio (it's just a
+generic programmable serial port so even if it's not normally used for
+audio that's a possiblity), how is that handled?

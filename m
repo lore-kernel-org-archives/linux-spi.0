@@ -1,109 +1,169 @@
-From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-Subject: Re: [PATCH 1/3] davinci: spi: move event_q parameter to platform data
-Date: Fri, 04 Feb 2011 07:27:16 -0500
-Message-ID: <4D4BF0A4.9010509@criticallink.com>
-References: <1296779690-9723-1-git-send-email-michael.williamson@criticallink.com>
-	<1296779690-9723-2-git-send-email-michael.williamson@criticallink.com>
-	<4D4BEB1F.6060200@mvista.com>
+From: Michael Williamson <michael.williamson@criticallink.com>
+Subject: [PATCH v1] davinci: spi: move event queue parameter to platform data
+Date: Fri,  4 Feb 2011 09:09:12 -0500
+Message-ID: <1296828552-11765-1-git-send-email-michael.williamson@criticallink.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-        grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <4D4BEB1F.6060200-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: khilman@deeprootsystems.com, grant.likely@secretlab.ca,
+	dbrownell@users.sourceforge.net,
+	Michael Williamson <michael.williamson@criticallink.com>
+To: spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	davinci-linux-open-source@linux.davincidsp.com
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sergei,
+For DMA operation, the davinci spi driver needs an event queue number.
+Currently, this number is passed as a IORESOURCE_DMA.  This is not
+correct, as the event queue is not a DMA channel.  Pass the event queue
+via the platform data structure instead.
 
-On 2/4/2011 7:03 AM, Sergei Shtylyov wrote:
+On dm355 and dm365, move the eventq assignment for spi0 out of resources
+array and into platform data.
 
-> Hello.
-> 
-> On 04-02-2011 3:34, Michael Williamson wrote:
-> 
->> For DMA operation, the davinci spi driver needs an eventq number.
->> Currently, this number is passed as a IORESOURCE_DMA.  This is not
->> correct, as the eventq is not a DMA channel.  Pass the eventq
->> via the platform data structure instead.
-> 
->> Signed-off-by: Michael Williamson<michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
-> [...]
-> 
->> diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
->> index 38f4da5..0853a5f 100644
->> --- a/arch/arm/mach-davinci/include/mach/spi.h
->> +++ b/arch/arm/mach-davinci/include/mach/spi.h
-> [...]
->> @@ -39,13 +41,16 @@ enum {
->>    *        to populate if all chip-selects are internal.
->>    * @cshold_bug:    set this to true if the SPI controller on your chip requires
->>    *        a write to CSHOLD bit in between transfers (like in DM355).
->> + * @dma_event_q: DMA event_q to use if SPI_IO_TYPE_DMA is used for any device
-> 
->    s/event_q/event queue/?
-> 
->> + *        on the bus.
->>    */
->>   struct davinci_spi_platform_data {
->> -    u8    version;
->> -    u8    num_chipselect;
->> -    u8    intr_line;
->> -    u8    *chip_sel;
->> -    bool    cshold_bug;
->> +    u8            version;
->> +    u8            num_chipselect;
->> +    u8            intr_line;
->> +    u8            *chip_sel;
->> +    bool            cshold_bug;
->> +    enum dma_event_q    dma_event_q;
->>   };
->>
->>   /**
->> diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
->> index 6beab99..166a879 100644
->> --- a/drivers/spi/davinci_spi.c
->> +++ b/drivers/spi/davinci_spi.c
-> [...]
->> @@ -878,17 +877,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
->>       r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
->>       if (r)
->>           dma_tx_chan = r->start;
->> -    r = platform_get_resource(pdev, IORESOURCE_DMA, 2);
->> -    if (r)
->> -        dma_eventq = r->start;
->>
->>       dspi->bitbang.txrx_bufs = davinci_spi_bufs;
->>       if (dma_rx_chan != SPI_NO_RESOURCE&&
->> -        dma_tx_chan != SPI_NO_RESOURCE&&
->> -        dma_eventq != SPI_NO_RESOURCE) {
->> +        dma_tx_chan != SPI_NO_RESOURCE) {
->>           dspi->dma.rx_channel = dma_rx_chan;
->>           dspi->dma.tx_channel = dma_tx_chan;
->> -        dspi->dma.eventq = dma_eventq;
->> +        dspi->dma.eventq = pdata->dma_event_q;
-> 
->    It makes sense to merge this patch with the patches 2 and 3 as otherwise the bisectability is prevented for DM3[56]5 -- their 'dma_event_q' field will be anonymously initialized to 0 after this patch but should be 1 and 3 instead correspondingly. Although, this doesn't seem to be a fatal defect, so the patches can be kept separate... Don't know what's better.
-> 
+Signed-off-by: Michael Williamson <michael.williamson@criticallink.com>
+---
+Changes since v0:
+  - combined separate platform patches with driver patch to avoid
+    potential regression if doing a bissect.
+  - fixed up typo per comments.
 
+ arch/arm/mach-davinci/dm355.c            |    5 +----
+ arch/arm/mach-davinci/dm365.c            |    5 +----
+ arch/arm/mach-davinci/include/mach/spi.h |   15 ++++++++++-----
+ drivers/spi/davinci_spi.c                |   11 +++--------
+ 4 files changed, 15 insertions(+), 21 deletions(-)
 
-Barring any other comments, I will collapse the patches and resend.  
-I will correct the typo you mentioned above as well.
-
-Thanks.
-
--Mike
-
-
-> WBR, Sergei
+diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
+index a5f8a80..76364d1 100644
+--- a/arch/arm/mach-davinci/dm355.c
++++ b/arch/arm/mach-davinci/dm355.c
+@@ -403,16 +403,13 @@ static struct resource dm355_spi0_resources[] = {
+ 		.start = 16,
+ 		.flags = IORESOURCE_DMA,
+ 	},
+-	{
+-		.start = EVENTQ_1,
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct davinci_spi_platform_data dm355_spi0_pdata = {
+ 	.version 	= SPI_VERSION_1,
+ 	.num_chipselect = 2,
+ 	.cshold_bug	= true,
++	.dma_event_q	= EVENTQ_1,
+ };
+ static struct platform_device dm355_spi0_device = {
+ 	.name = "spi_davinci",
+diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
+index 02d2cc3..4604e72 100644
+--- a/arch/arm/mach-davinci/dm365.c
++++ b/arch/arm/mach-davinci/dm365.c
+@@ -625,6 +625,7 @@ static u64 dm365_spi0_dma_mask = DMA_BIT_MASK(32);
+ static struct davinci_spi_platform_data dm365_spi0_pdata = {
+ 	.version 	= SPI_VERSION_1,
+ 	.num_chipselect = 2,
++	.dma_event_q	= EVENTQ_3,
+ };
+ 
+ static struct resource dm365_spi0_resources[] = {
+@@ -645,10 +646,6 @@ static struct resource dm365_spi0_resources[] = {
+ 		.start = 16,
+ 		.flags = IORESOURCE_DMA,
+ 	},
+-	{
+-		.start = EVENTQ_3,
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device dm365_spi0_device = {
+diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
+index 38f4da5..0853a5f 100644
+--- a/arch/arm/mach-davinci/include/mach/spi.h
++++ b/arch/arm/mach-davinci/include/mach/spi.h
+@@ -19,6 +19,8 @@
+ #ifndef __ARCH_ARM_DAVINCI_SPI_H
+ #define __ARCH_ARM_DAVINCI_SPI_H
+ 
++#include <mach/edma.h>
++
+ #define SPI_INTERN_CS	0xFF
+ 
+ enum {
+@@ -39,13 +41,16 @@ enum {
+  *		to populate if all chip-selects are internal.
+  * @cshold_bug:	set this to true if the SPI controller on your chip requires
+  *		a write to CSHOLD bit in between transfers (like in DM355).
++ * @dma_event_q: DMA event_q to use if SPI_IO_TYPE_DMA is used for any device
++ *		on the bus.
+  */
+ struct davinci_spi_platform_data {
+-	u8	version;
+-	u8	num_chipselect;
+-	u8	intr_line;
+-	u8	*chip_sel;
+-	bool	cshold_bug;
++	u8			version;
++	u8			num_chipselect;
++	u8			intr_line;
++	u8			*chip_sel;
++	bool			cshold_bug;
++	enum dma_event_q	dma_event_q;
+ };
+ 
+ /**
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+index 6beab99..166a879 100644
+--- a/drivers/spi/davinci_spi.c
++++ b/drivers/spi/davinci_spi.c
+@@ -790,7 +790,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	struct resource *r, *mem;
+ 	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+ 	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+-	resource_size_t	dma_eventq = SPI_NO_RESOURCE;
+ 	int i = 0, ret = 0;
+ 	u32 spipc0;
+ 
+@@ -878,17 +877,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
+ 	if (r)
+ 		dma_tx_chan = r->start;
+-	r = platform_get_resource(pdev, IORESOURCE_DMA, 2);
+-	if (r)
+-		dma_eventq = r->start;
+ 
+ 	dspi->bitbang.txrx_bufs = davinci_spi_bufs;
+ 	if (dma_rx_chan != SPI_NO_RESOURCE &&
+-	    dma_tx_chan != SPI_NO_RESOURCE &&
+-	    dma_eventq != SPI_NO_RESOURCE) {
++	    dma_tx_chan != SPI_NO_RESOURCE) {
+ 		dspi->dma.rx_channel = dma_rx_chan;
+ 		dspi->dma.tx_channel = dma_tx_chan;
+-		dspi->dma.eventq = dma_eventq;
++		dspi->dma.eventq = pdata->dma_event_q;
+ 
+ 		ret = davinci_spi_request_dma(dspi);
+ 		if (ret)
+@@ -897,7 +892,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		dev_info(&pdev->dev, "DMA: supported\n");
+ 		dev_info(&pdev->dev, "DMA: RX channel: %d, TX channel: %d, "
+ 				"event queue: %d\n", dma_rx_chan, dma_tx_chan,
+-				dma_eventq);
++				pdata->dma_event_q);
+ 	}
+ 
+ 	dspi->get_rx = davinci_spi_rx_buf_u8;
+-- 
+1.7.0.4

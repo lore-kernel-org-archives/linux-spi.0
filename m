@@ -1,37 +1,49 @@
-From: Peter Korsgaard <jacmet@sunsite.dk>
-Subject: Re: [PATCH v7] spi: New driver for Altera SPI
-Date: Sun, 06 Feb 2011 21:23:22 +0100
-Message-ID: <87aai8zzd1.fsf@macbook.be.48ers.dk>
-References: <20110203173430.GC6180@angua.secretlab.ca>
-	<1296914523-13740-1-git-send-email-thomas@wytron.com.tw>
+From: "ADMIN" <noreplyADMIN-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Please Review
+Date: Sun, 6 Feb 2011 16:47:02 -0700
+Message-ID: <c9fc0f5a9cbac2089dbbc8cf0018f463@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	nios2-dev@sopc.et.ntust.edu.tw, linux-kernel@vger.kernel.org
-To: Thomas Chou <thomas@wytron.com.tw>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1296914523-13740-1-git-send-email-thomas@wytron.com.tw> (Thomas
-	Chou's message of "Sat, 5 Feb 2011 22:02:03 +0800")
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->>>>> "Thomas" == Thomas Chou <thomas@wytron.com.tw> writes:
+-----------------------------------------
+FREE INK & TONER PROMOTION
+-----------------------------------------
 
-Hi,
+Buy 1 Get 1 Free on all Ink Products
 
- Thomas> +++ b/drivers/spi/Kconfig
- Thomas> @@ -53,6 +53,13 @@ if SPI_MASTER
- 
- Thomas>  comment "SPI Master Controller Drivers"
- 
- Thomas> +config SPI_ALTERA
- Thomas> +	tristate "Altera SPI Controller"
- Thomas> +	default n
+We carry all fax, ink-jets, laser jets
+and copier toners and drums.
 
-'n' is the default anyway, so no need for this line.
+Save 80% on all products.
 
--- 
-Bye, Peter Korsgaard
+Hurry offer ends soon!
+
+** Call Today! 1 (800) 518-0350 **
+
+> Buy 3 Get 3 FREE
+> Buy 2 Get 2 FREE
+> Buy 1 - 50% Off
+> FREE Same Day Shipping
+
+** Call 1 (800) 518-0350 Now  !**
+
+
+
+------------------------------------------------------------------------------
+The modern datacenter depends on network connectivity to access resources
+and provide services. The best practices for maximizing a physical server's
+connectivity to a physical network are well understood - see how these
+rules translate into the virtual world? 
+http://p.sf.net/sfu/oracle-sfdevnlfb

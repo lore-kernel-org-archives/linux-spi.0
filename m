@@ -1,25 +1,34 @@
-From: Thomas Chou <thomas@wytron.com.tw>
-Subject: [PATCH v5] spi: add OpenCores tiny SPI driver
-Date: Sun,  6 Feb 2011 10:56:38 +0800
-Message-ID: <1296960998-19116-1-git-send-email-thomas@wytron.com.tw>
-Cc: linux-kernel@vger.kernel.org, nios2-dev@sopc.et.ntust.edu.tw,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	Jonas Bonn <jonas@southpole.se>,
-	Wolfram Sang <w.sang@pengutronix.de>,
-	Dirk Brandewie <dirk.brandewie@gmail.com>,
-	Thomas Chou <thomas@wytron.com.tw>
-To: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+Subject: [PATCH v6] spi: add OpenCores tiny SPI driver
+Date: Sun,  6 Feb 2011 11:48:16 +0800
+Message-ID: <1296964096-30760-1-git-send-email-thomas@wytron.com.tw>
+References: <1296960998-19116-1-git-send-email-thomas@wytron.com.tw>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1296960998-19116-1-git-send-email-thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 This patch adds support of OpenCores tiny SPI driver.
 
 http://opencores.org/project,tiny_spi
 
-Signed-off-by: Thomas Chou <thomas@wytron.com.tw>
+Signed-off-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
 ---
 v2 minor cleanup, same as Grant suggest for spi_altera.
 v3 rename driver to spi_oc_tiny as Grant suggested.
@@ -27,13 +36,15 @@ v3 rename driver to spi_oc_tiny as Grant suggested.
 v4 add dts binding doc.
 v5 use devm_* to help cleanup.
    add of gpio support.
+v6 check len from of_get_property.
+   fix kerneldoc in header.
 
  .../devicetree/bindings/spi/spi_oc_tiny.txt        |   12 +
  drivers/spi/Kconfig                                |    8 +
  drivers/spi/Makefile                               |    1 +
- drivers/spi/spi_oc_tiny.c                          |  423 ++++++++++++++++++++
- include/linux/spi/spi_oc_tiny.h                    |   18 +
- 5 files changed, 462 insertions(+), 0 deletions(-)
+ drivers/spi/spi_oc_tiny.c                          |  424 ++++++++++++++++++++
+ include/linux/spi/spi_oc_tiny.h                    |   20 +
+ 5 files changed, 465 insertions(+), 0 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
  create mode 100644 drivers/spi/spi_oc_tiny.c
  create mode 100644 include/linux/spi/spi_oc_tiny.h
@@ -89,21 +100,21 @@ index 86d1b5f..c7e4c23 100644
  obj-$(CONFIG_SPI_OMAP_100K)		+= omap_spi_100k.o
 diff --git a/drivers/spi/spi_oc_tiny.c b/drivers/spi/spi_oc_tiny.c
 new file mode 100644
-index 0000000..47d38f6
+index 0000000..62a5267
 --- /dev/null
 +++ b/drivers/spi/spi_oc_tiny.c
-@@ -0,0 +1,423 @@
+@@ -0,0 +1,424 @@
 +/*
 + * OpenCores tiny SPI master driver
 + *
 + * http://opencores.org/project,tiny_spi
 + *
-+ * Copyright (C) 2011 Thomas Chou <thomas@wytron.com.tw>
++ * Copyright (C) 2011 Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
 + *
 + * Based on spi_s3c24xx.c, which is:
 + * Copyright (c) 2006 Ben Dooks
 + * Copyright (c) 2006 Simtec Electronics
-+ *	Ben Dooks <ben@simtec.co.uk>
++ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License version 2 as
@@ -343,6 +354,7 @@ index 0000000..47d38f6
 +	struct device_node *np = pdev->dev.of_node;
 +	unsigned int i;
 +	const __be32 *val;
++	int len;
 +
 +	if (!np)
 +		return 0;
@@ -361,11 +373,11 @@ index 0000000..47d38f6
 +	}
 +	hw->bitbang.master->dev.of_node = pdev->dev.of_node;
 +	val = of_get_property(pdev->dev.of_node,
-+			      "clock-frequency", NULL);
-+	if (val)
++			      "clock-frequency", &len);
++	if (val && len >= sizeof(__be32))
 +		hw->freq = be32_to_cpup(val);
-+	val = of_get_property(pdev->dev.of_node, "baud-width", NULL);
-+	if (val)
++	val = of_get_property(pdev->dev.of_node, "baud-width", &len);
++	if (val && len >= sizeof(__be32))
 +		hw->baudwidth = be32_to_cpup(val);
 +	return 0;
 +}
@@ -513,24 +525,26 @@ index 0000000..47d38f6
 +module_exit(tiny_spi_exit);
 +
 +MODULE_DESCRIPTION("OpenCores tiny SPI driver");
-+MODULE_AUTHOR("Thomas Chou <thomas@wytron.com.tw>");
++MODULE_AUTHOR("Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>");
 +MODULE_LICENSE("GPL");
 +MODULE_ALIAS("platform:" DRV_NAME);
 diff --git a/include/linux/spi/spi_oc_tiny.h b/include/linux/spi/spi_oc_tiny.h
 new file mode 100644
-index 0000000..94bd099
+index 0000000..1ac529c
 --- /dev/null
 +++ b/include/linux/spi/spi_oc_tiny.h
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,20 @@
 +#ifndef _LINUX_SPI_SPI_OC_TINY_H
 +#define _LINUX_SPI_SPI_OC_TINY_H
 +
-+/*
++/**
 + * struct tiny_spi_platform_data - platform data of the OpenCores tiny SPI
 + * @freq:	input clock freq to the core.
 + * @baudwidth:	baud rate divider width of the core.
 + * @gpio_cs_count:	number of gpio pins used for chipselect.
 + * @gpio_cs:	array of gpio pins used for chipselect.
++ *
++ * freq and baudwidth are used only if the divider is programmable.
 + */
 +struct tiny_spi_platform_data {
 +	unsigned int freq;

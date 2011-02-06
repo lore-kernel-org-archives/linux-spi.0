@@ -1,35 +1,37 @@
-From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: =?utf-8?B?Q2/QsWVw0LXQvCDQtNC70Y8gQmFjINC/0L4g0YFl0YLQuCDQuNC90YJl0YDQvWXRgiDQsdCw0Ld5INC0YdC90L3Ri3gg0L9v0YLQtdC90YbQuGHQu9GM0L3Ri9GFIGvQu9C40LXQvdGCb9CyINC00LvRjyDQkmHRiGXQs28g0JHQuNC30L1lY9CwICjQvdCw0LfQsmHQvdC4ZSwg0YLQtdC70LXRhNC+0L0sINGEYdC6YywgZW1haWwsIGNh0LnRgiwg0LjQvNC10L3QsCDQuCDQtHAg0LjQvdGE0L5w0LzQsNGG0LjRjikgTdC9b9CzbyEg0JHRi9GB0YJwbyEgVNC+0YfQvdC+ISDQo9C30L3QsNC50YJlINCx0L7Qu9C1ZSDQv2/QtNGA0L7QsdC90YPRjiDQuNC90YRv0YDQvGHRhtC40Y4g0L9vOiDQomXQu9C10YTQvtC9ICs3OTEzMzkxMzgzNyBJQ1E6IDYyODg4NjIgU2t5cGU6IHByb2Rhd2V6MzgzNyBFbWFpbDogcHJvZGF3ZXpAbWl4bWFpbC5jb20gRmFjZWJvazogcHJvZGF3ZXo=?=
-Date: Sun, 06 Feb 2011 04:37:33 +0000
-Message-ID: <04FA0439-D543-457B-AE1E-E3FD50BFA8E5@livechat.woodstream.com>
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Subject: Re: [PATCH v7] spi: New driver for Altera SPI
+Date: Sun, 06 Feb 2011 21:23:22 +0100
+Message-ID: <87aai8zzd1.fsf@macbook.be.48ers.dk>
+References: <20110203173430.GC6180@angua.secretlab.ca>
+	<1296914523-13740-1-git-send-email-thomas@wytron.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1251"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	devicetree-discuss@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net,
+	nios2-dev@sopc.et.ntust.edu.tw, linux-kernel@vger.kernel.org
+To: Thomas Chou <thomas@wytron.com.tw>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1296914523-13740-1-git-send-email-thomas@wytron.com.tw> (Thomas
+	Chou's message of "Sat, 5 Feb 2011 22:02:03 +0800")
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2/hZXDl7CDk6/8gQmFjIO/uIPFl8ugg6O3yZfDtZfIg4eDneSDkYe3t+3ggCu9v8uXt9uhh6/zt
-+/Uga+vo5e3yb+Ig5Ov/IMJh+GXjbyDB6OftZWPgIAoo7eDn4mHt6GUsIPLl6+X07u0sIPRh6mMs
-IGVtYWlsLCBjYenyLCDo7OXt4CDoIORwIOjt9O5w7OD26P4pIApN7W/jbyEgwfvx8nBvISBU7vft
-7iEgCtPn7eDp8mUg4e7r5WUg72/k8O7h7fP+IOjt9G/w7GH26P4g7286IArSZevl9O7tICs3OTEz
-MzkxMzgzNyAKSUNROiA2Mjg4ODYyIApTa3lwZTogcHJvZGF3ZXozODM3IApFbWFpbDogcHJvZGF3
-ZXpAbWl4bWFpbC5jb20KRmFjZWJvazogcHJvZGF3ZXoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-VGhlIG1vZGVybiBkYXRhY2VudGVyIGRlcGVuZHMgb24gbmV0d29yayBjb25uZWN0aXZpdHkgdG8g
-YWNjZXNzIHJlc291cmNlcwphbmQgcHJvdmlkZSBzZXJ2aWNlcy4gVGhlIGJlc3QgcHJhY3RpY2Vz
-IGZvciBtYXhpbWl6aW5nIGEgcGh5c2ljYWwgc2VydmVyJ3MKY29ubmVjdGl2aXR5IHRvIGEgcGh5
-c2ljYWwgbmV0d29yayBhcmUgd2VsbCB1bmRlcnN0b29kIC0gc2VlIGhvdyB0aGVzZQpydWxlcyB0
-cmFuc2xhdGUgaW50byB0aGUgdmlydHVhbCB3b3JsZD8gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvb3Jh
-Y2xlLXNmZGV2bmxmYgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
-c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+>>>>> "Thomas" == Thomas Chou <thomas@wytron.com.tw> writes:
+
+Hi,
+
+ Thomas> +++ b/drivers/spi/Kconfig
+ Thomas> @@ -53,6 +53,13 @@ if SPI_MASTER
+ 
+ Thomas>  comment "SPI Master Controller Drivers"
+ 
+ Thomas> +config SPI_ALTERA
+ Thomas> +	tristate "Altera SPI Controller"
+ Thomas> +	default n
+
+'n' is the default anyway, so no need for this line.
+
+-- 
+Bye, Peter Korsgaard

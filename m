@@ -1,14 +1,12 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 1/4] spi/pl022: use dmaengine helper macros
-Date: Tue, 8 Feb 2011 13:03:12 +0100
-Message-ID: <1297166592-5098-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 4/4] spi/pl022: minor kerneldoc updates
+Date: Tue, 8 Feb 2011 13:03:55 +0100
+Message-ID: <1297166635-5205-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -23,83 +21,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This simplifies the DMA code a bit by using the dmaengine helpers.
-The cookie from descriptor submission can be ignored in this case
-as has been established in review of the MMCI/PL180 driver.
-
-Cc: Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Cc: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/amba-pl022.c |   27 ++++++++++-----------------
- 1 files changed, 10 insertions(+), 17 deletions(-)
+ drivers/spi/amba-pl022.c |   25 ++++++++++++++++---------
+ 1 files changed, 16 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 71a1219..4220aad 100644
+index 2b591f0..4cd05cc 100644
 --- a/drivers/spi/amba-pl022.c
 +++ b/drivers/spi/amba-pl022.c
-@@ -917,7 +917,6 @@ static int configure_dma(struct pl022 *pl022)
- 	struct dma_chan *txchan = pl022->dma_tx_channel;
- 	struct dma_async_tx_descriptor *rxdesc;
- 	struct dma_async_tx_descriptor *txdesc;
--	dma_cookie_t cookie;
- 
- 	/* Check that the channels are available */
- 	if (!rxchan || !txchan)
-@@ -962,10 +961,8 @@ static int configure_dma(struct pl022 *pl022)
- 		tx_conf.dst_addr_width = rx_conf.src_addr_width;
- 	BUG_ON(rx_conf.src_addr_width != tx_conf.dst_addr_width);
- 
--	rxchan->device->device_control(rxchan, DMA_SLAVE_CONFIG,
--				       (unsigned long) &rx_conf);
--	txchan->device->device_control(txchan, DMA_SLAVE_CONFIG,
--				       (unsigned long) &tx_conf);
-+	dmaengine_slave_config(rxchan, &rx_conf);
-+	dmaengine_slave_config(txchan, &tx_conf);
- 
- 	/* Create sglists for the transfers */
- 	pages = (pl022->cur_transfer->len >> PAGE_SHIFT) + 1;
-@@ -1018,23 +1015,19 @@ static int configure_dma(struct pl022 *pl022)
- 	rxdesc->callback_param = pl022;
- 
- 	/* Submit and fire RX and TX with TX last so we're ready to read! */
--	cookie = rxdesc->tx_submit(rxdesc);
--	if (dma_submit_error(cookie))
--		goto err_submit_rx;
--	cookie = txdesc->tx_submit(txdesc);
--	if (dma_submit_error(cookie))
--		goto err_submit_tx;
--	rxchan->device->device_issue_pending(rxchan);
--	txchan->device->device_issue_pending(txchan);
-+	dmaengine_submit(rxdesc);
-+	dmaengine_submit(txdesc);
-+	dma_async_issue_pending(rxchan);
-+	dma_async_issue_pending(txchan);
- 
- 	return 0;
- 
- err_submit_tx:
- err_submit_rx:
- err_txdesc:
--	txchan->device->device_control(txchan, DMA_TERMINATE_ALL, 0);
-+	dmaengine_terminate_all(txchan);
- err_rxdesc:
--	rxchan->device->device_control(rxchan, DMA_TERMINATE_ALL, 0);
-+	dmaengine_terminate_all(rxchan);
- 	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
- 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
- err_tx_sgmap:
-@@ -1101,8 +1094,8 @@ static void terminate_dma(struct pl022 *pl022)
- 	struct dma_chan *rxchan = pl022->dma_rx_channel;
- 	struct dma_chan *txchan = pl022->dma_tx_channel;
- 
--	rxchan->device->device_control(rxchan, DMA_TERMINATE_ALL, 0);
--	txchan->device->device_control(txchan, DMA_TERMINATE_ALL, 0);
-+	dmaengine_terminate_all(rxchan);
-+	dmaengine_terminate_all(txchan);
- 	unmap_free_dma_scatter(pl022);
- }
- 
+@@ -329,15 +329,16 @@ struct vendor_data {
+ /**
+  * struct pl022 - This is the private SSP driver data structure
+  * @adev: AMBA device model hookup
+- * @vendor: Vendor data for the IP block
+- * @phybase: The physical memory where the SSP device resides
+- * @virtbase: The virtual memory where the SSP is mapped
++ * @vendor: vendor data for the IP block
++ * @phybase: the physical memory where the SSP device resides
++ * @virtbase: the virtual memory where the SSP is mapped
++ * @clk: outgoing clock "SPICLK" for the SPI bus
+  * @master: SPI framework hookup
+  * @master_info: controller-specific data from machine setup
+- * @regs: SSP controller register's virtual address
+- * @pump_messages: Work struct for scheduling work to the workqueue
+- * @lock: spinlock to syncronise access to driver data
+  * @workqueue: a workqueue on which any spi_message request is queued
++ * @pump_messages: work struct for scheduling work to the workqueue
++ * @queue_lock: spinlock to syncronise access to message queue
++ * @queue: message queue
+  * @busy: workqueue is busy
+  * @running: workqueue is running
+  * @pump_transfers: Tasklet used in Interrupt Transfer mode
+@@ -348,8 +349,14 @@ struct vendor_data {
+  * @tx_end: end position in TX buffer to be read
+  * @rx: current position in RX buffer to be written
+  * @rx_end: end position in RX buffer to be written
+- * @readingtype: the type of read currently going on
+- * @writingtype: the type or write currently going on
++ * @read: the type of read currently going on
++ * @write: the type of write currently going on
++ * @exp_fifo_level: expected FIFO level
++ * @dma_rx_channel: optional channel for RX DMA
++ * @dma_tx_channel: optional channel for TX DMA
++ * @sgt_rx: scattertable for the RX transfer
++ * @sgt_tx: scattertable for the TX transfer
++ * @dummypage: a dummy page used for driving data on the bus with DMA
+  */
+ struct pl022 {
+ 	struct amba_device		*adev;
+@@ -397,8 +404,8 @@ struct pl022 {
+  * @cpsr: Value of Clock prescale register
+  * @n_bytes: how many bytes(power of 2) reqd for a given data width of client
+  * @enable_dma: Whether to enable DMA or not
+- * @write: function ptr to be used to write when doing xfer for this chip
+  * @read: function ptr to be used to read when doing xfer for this chip
++ * @write: function ptr to be used to write when doing xfer for this chip
+  * @cs_control: chip select callback provided by chip
+  * @xfer_type: polling/interrupt/DMA
+  *
 -- 
 1.7.3.2
 

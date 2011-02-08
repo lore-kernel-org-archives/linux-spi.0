@@ -1,51 +1,60 @@
-From: SDF_TYI-mD2mooF6G/k@public.gmane.org
-Subject: [SPAM] 企业年初头等大事
-Date: Wed, 9 Feb 2011 03:36:31 +0800
-Message-ID: <E1PmtMB-00039S-Dm@sfs-ml-2.v29.ch3.sourceforge.com>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH] spi/imx: select master mode for all channels
+Date: Tue,  8 Feb 2011 21:08:59 +0100
+Message-ID: <1297195739-24951-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Fabio Estevam <fabio.estevam@freescale.com>,
+	Jason Wang <jason77.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Richard Zhao <richard.zhao@freescale.com>,
+	Shawn Guo <shawn.guo@freescale.com>, kernel@pengutronix.de,
+	Yong Shen <yong.shen@freescale.com>, linux-arm-kernel@lists.infradead.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
-Pinpoint memory and threading errors before they happen.
-Find and fix more than 250 security defects in the development cycle.
-Locate bottlenecks in serial and parallel code that limit performance.
-http://p.sf.net/sfu/intel-dev2devfeb
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKVGhlIGhhcmR3YXJl
+IHNlZW1zIHRvIGhhdmUgYSByYWNlIGNvbmRpdGlvbiB3aGVuIHRoZSBpbmFjdGl2ZQpjaGFubmVs
+cyBhcmUgaW4gc2xhdmUgbW9kZS4gV2Ugc3VwcG9ydCBtYXN0ZXIgbW9kZSBvbmx5LCBzbwp3ZSBj
+YW4ganVzdCBzd2l0Y2ggYWxsIGNoYW5uZWxzIHRvIG1hc3RlciBtb2RlLgoKU2lnbmVkLW9mZi1i
+eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpbdWtsZWluZWs6IGFkZCBt
+b3JlIHZlcmJvc2UgY29tbWVudCBhYm91dCB0aGUgcmFjZV0KU2lnbmVkLW9mZi1ieTogVXdlIEts
+ZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkhlbGxvLAoK
+bWF5YmUgb25lIG9mIG91ciBmcmllbmRzIGF0IEZyZWVzY2FsZSBjYW4gY29tbWVudD8KCkJlc3Qg
+cmVnYXJkcwpVd2UKCiBkcml2ZXJzL3NwaS9zcGlfaW14LmMgfCAgIDEyICsrKysrKysrKy0tLQog
+MSBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9zcGkvc3BpX2lteC5jIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCmluZGV4
+IDFjZjlkNWYuLjY5ZDZkYmEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaV9pbXguYworKysg
+Yi9kcml2ZXJzL3NwaS9zcGlfaW14LmMKQEAgLTE3NCw3ICsxNzQsNyBAQCBzdGF0aWMgdW5zaWdu
+ZWQgaW50IHNwaV9pbXhfY2xrZGl2XzIodW5zaWduZWQgaW50IGZpbiwKICNkZWZpbmUgU1BJX0lN
+WDJfM19DVFJMCQkweDA4CiAjZGVmaW5lIFNQSV9JTVgyXzNfQ1RSTF9FTkFCTEUJCSgxIDw8ICAw
+KQogI2RlZmluZSBTUElfSU1YMl8zX0NUUkxfWENICQkoMSA8PCAgMikKLSNkZWZpbmUgU1BJX0lN
+WDJfM19DVFJMX01PREUoY3MpCSgxIDw8ICgoY3MpICsgIDQpKQorI2RlZmluZSBTUElfSU1YMl8z
+X0NUUkxfTU9ERV9NQVNLCSgweGYgPDwgNCkKICNkZWZpbmUgU1BJX0lNWDJfM19DVFJMX1BPU1RE
+SVZfT0ZGU0VUCTgKICNkZWZpbmUgU1BJX0lNWDJfM19DVFJMX1BSRURJVl9PRkZTRVQJMTIKICNk
+ZWZpbmUgU1BJX0lNWDJfM19DVFJMX0NTKGNzKQkJKChjcykgPDwgMTgpCkBAIC0yNTMsOCArMjUz
+LDE0IEBAIHN0YXRpYyBpbnQgX19tYXliZV91bnVzZWQgc3BpX2lteDJfM19jb25maWcoc3RydWN0
+IHNwaV9pbXhfZGF0YSAqc3BpX2lteCwKIHsKIAl1MzIgY3RybCA9IFNQSV9JTVgyXzNfQ1RSTF9F
+TkFCTEUsIGNmZyA9IDA7CiAKLQkvKiBzZXQgbWFzdGVyIG1vZGUgKi8KLQljdHJsIHw9IFNQSV9J
+TVgyXzNfQ1RSTF9NT0RFKGNvbmZpZy0+Y3MpOworCS8qCisJICogVGhlIGhhcmR3YXJlIHNlZW1z
+IHRvIGhhdmUgYSByYWNlIGNvbmRpdGlvbiB3aGVuIGNoYW5naW5nIG1vZGVzLiBUaGUKKwkgKiBj
+dXJyZW50IGFzc3VtcHRpb24gaXMgdGhhdCB0aGUgc2VsZWN0aW9uIG9mIHRoZSBjaGFubmVsIGFy
+cml2ZXMKKwkgKiBlYXJsaWVyIGluIHRoZSBoYXJkd2FyZSB0aGFuIHRoZSBtb2RlIGJpdHMgd2hl
+biB0aGV5IGFyZSB3cml0dGVuIGF0CisJICogdGhlIHNhbWUgdGltZS4KKwkgKiBTbyBzZXQgbWFz
+dGVyIG1vZGUgZm9yIGFsbCBjaGFubmVscyBhcyB3ZSBkbyBub3Qgc3VwcG9ydCBzbGF2ZSBtb2Rl
+LgorCSAqLworCWN0cmwgfD0gU1BJX0lNWDJfM19DVFJMX01PREVfTUFTSzsKIAogCS8qIHNldCBj
+bG9jayBzcGVlZCAqLwogCWN0cmwgfD0gc3BpX2lteDJfM19jbGtkaXYoc3BpX2lteC0+c3BpX2Ns
+aywgY29uZmlnLT5zcGVlZF9oeik7Ci0tIAoxLjcuMi4zCgoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QK
+bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

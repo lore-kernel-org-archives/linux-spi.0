@@ -1,95 +1,93 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 2/2] [RFC] spi/bitbang: Use a kthread worker instead of
-	workqueue
-Date: Tue,  8 Feb 2011 10:46:15 +0100
-Message-ID: <1297158375-25528-2-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1297158375-25528-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH 2/4] spi/pl022: disable core voltage when idle
+Date: Tue, 8 Feb 2011 13:03:32 +0100
+Message-ID: <1297166612-5135-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1297158375-25528-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Russell King <rmk+kernel@arm.linux.org.uk>,
+	Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
+	Linus Walleij <linus.walleij@stericsson.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKU2luY2UgdGhlIGNv
-bmN1cnJlbmN5IG1hbmFnZWQgd29ya3F1ZXVlcyBhcmUgbWVyZ2VkIHdlIG9mdGVuIGhhdmUKc2V2
-ZXJhbCBtaWNyb3NlY29uZHMgZGVsYXlzIGluIHNwaSB0cmFuc2ZlcnMuIFRoaXMgcGF0Y2ggcmVz
-b2x2ZXMKdGhpcyBieSB1c2luZyBhIGt0aHJlYWQgd29ya2VyIGluIHNwaV9iaXRiYW5nIGluc3Rl
-YWQuCgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+
-ClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0
-cm9uaXguZGU+Ci0tLQogZHJpdmVycy9zcGkvc3BpX2JpdGJhbmcuYyAgICAgICB8ICAgMTcgKysr
-KysrKysrKy0tLS0tLS0KIGluY2x1ZGUvbGludXgvc3BpL3NwaV9iaXRiYW5nLmggfCAgICA3ICsr
-KystLS0KIDIgZmlsZXMgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpX2JpdGJhbmcuYyBiL2RyaXZlcnMvc3BpL3Nw
-aV9iaXRiYW5nLmMKaW5kZXggMTRhNjNmNi4uZTJhODc0YSAxMDA2NDQKLS0tIGEvZHJpdmVycy9z
-cGkvc3BpX2JpdGJhbmcuYworKysgYi9kcml2ZXJzL3NwaS9zcGlfYml0YmFuZy5jCkBAIC0yNTQs
-NyArMjU0LDcgQEAgc3RhdGljIGludCBzcGlfYml0YmFuZ19idWZzKHN0cnVjdCBzcGlfZGV2aWNl
-ICpzcGksIHN0cnVjdCBzcGlfdHJhbnNmZXIgKnQpCiAgKiBEcml2ZXJzIGNhbiBwcm92aWRlIHdv
-cmQtYXQtYS10aW1lIGkvbyBwcmltaXRpdmVzLCBvciBwcm92aWRlCiAgKiB0cmFuc2Zlci1hdC1h
-LXRpbWUgb25lcyB0byBsZXZlcmFnZSBkbWEgb3IgZmlmbyBoYXJkd2FyZS4KICAqLwotc3RhdGlj
-IHZvaWQgYml0YmFuZ193b3JrKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykKK3N0YXRpYyB2b2lk
-IGJpdGJhbmdfd29yayhzdHJ1Y3Qga3RocmVhZF93b3JrICp3b3JrKQogewogCXN0cnVjdCBzcGlf
-Yml0YmFuZwkqYml0YmFuZyA9CiAJCWNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3Qgc3BpX2JpdGJh
-bmcsIHdvcmspOwpAQCAtMzk2LDcgKzM5Niw3IEBAIGludCBzcGlfYml0YmFuZ190cmFuc2Zlcihz
-dHJ1Y3Qgc3BpX2RldmljZSAqc3BpLCBzdHJ1Y3Qgc3BpX21lc3NhZ2UgKm0pCiAJCXN0YXR1cyA9
-IC1FTkVURE9XTjsKIAllbHNlIHsKIAkJbGlzdF9hZGRfdGFpbCgmbS0+cXVldWUsICZiaXRiYW5n
-LT5xdWV1ZSk7Ci0JCXF1ZXVlX3dvcmsoYml0YmFuZy0+d29ya3F1ZXVlLCAmYml0YmFuZy0+d29y
-ayk7CisJCXF1ZXVlX2t0aHJlYWRfd29yaygmYml0YmFuZy0+d29ya2VyLCAmYml0YmFuZy0+d29y
-ayk7CiAJfQogCXNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmJpdGJhbmctPmxvY2ssIGZsYWdzKTsK
-IApAQCAtNDMyLDExICs0MzIsMTIgQEAgRVhQT1JUX1NZTUJPTF9HUEwoc3BpX2JpdGJhbmdfdHJh
-bnNmZXIpOwogaW50IHNwaV9iaXRiYW5nX3N0YXJ0KHN0cnVjdCBzcGlfYml0YmFuZyAqYml0YmFu
-ZykKIHsKIAlpbnQJc3RhdHVzOworCXN0cnVjdCBzY2hlZF9wYXJhbSBwYXJhbSA9IHsgLnNjaGVk
-X3ByaW9yaXR5ID0gNDkgfTsKIAogCWlmICghYml0YmFuZy0+bWFzdGVyIHx8ICFiaXRiYW5nLT5j
-aGlwc2VsZWN0KQogCQlyZXR1cm4gLUVJTlZBTDsKIAotCUlOSVRfV09SSygmYml0YmFuZy0+d29y
-aywgYml0YmFuZ193b3JrKTsKKwlpbml0X2t0aHJlYWRfd29yaygmYml0YmFuZy0+d29yaywgYml0
-YmFuZ193b3JrKTsKIAlzcGluX2xvY2tfaW5pdCgmYml0YmFuZy0+bG9jayk7CiAJSU5JVF9MSVNU
-X0hFQUQoJmJpdGJhbmctPnF1ZXVlKTsKIApAQCAtNDYzLDEyICs0NjQsMTQgQEAgaW50IHNwaV9i
-aXRiYW5nX3N0YXJ0KHN0cnVjdCBzcGlfYml0YmFuZyAqYml0YmFuZykKIAogCS8qIHRoaXMgdGFz
-ayBpcyB0aGUgb25seSB0aGluZyB0byB0b3VjaCB0aGUgU1BJIGJpdHMgKi8KIAliaXRiYW5nLT5i
-dXN5ID0gMDsKLQliaXRiYW5nLT53b3JrcXVldWUgPSBjcmVhdGVfc2luZ2xldGhyZWFkX3dvcmtx
-dWV1ZSgKKwlpbml0X2t0aHJlYWRfd29ya2VyKCZiaXRiYW5nLT53b3JrZXIpOworCWJpdGJhbmct
-Pndvcmtlcl90YXNrID0ga3RocmVhZF9ydW4oa3RocmVhZF93b3JrZXJfZm4sICZiaXRiYW5nLT53
-b3JrZXIsCiAJCQlkZXZfbmFtZShiaXRiYW5nLT5tYXN0ZXItPmRldi5wYXJlbnQpKTsKLQlpZiAo
-Yml0YmFuZy0+d29ya3F1ZXVlID09IE5VTEwpIHsKKwlpZiAoYml0YmFuZy0+d29ya2VyX3Rhc2sg
-PT0gTlVMTCkgewogCQlzdGF0dXMgPSAtRUJVU1k7CiAJCWdvdG8gZXJyMTsKIAl9CisJc2NoZWRf
-c2V0c2NoZWR1bGVyKGJpdGJhbmctPndvcmtlcl90YXNrLCBTQ0hFRF9GSUZPLCAmcGFyYW0pOwog
-CiAJLyogZHJpdmVyIG1heSBnZXQgYnVzeSBiZWZvcmUgcmVnaXN0ZXIoKSByZXR1cm5zLCBlc3Bl
-Y2lhbGx5CiAJICogaWYgc29tZW9uZSByZWdpc3RlcmVkIGJvYXJkaW5mbyBmb3IgZGV2aWNlcwpA
-QCAtNDgwLDcgKzQ4Myw3IEBAIGludCBzcGlfYml0YmFuZ19zdGFydChzdHJ1Y3Qgc3BpX2JpdGJh
-bmcgKmJpdGJhbmcpCiAJcmV0dXJuIHN0YXR1czsKIAogZXJyMjoKLQlkZXN0cm95X3dvcmtxdWV1
-ZShiaXRiYW5nLT53b3JrcXVldWUpOworCWt0aHJlYWRfc3RvcChiaXRiYW5nLT53b3JrZXJfdGFz
-ayk7CiBlcnIxOgogCXJldHVybiBzdGF0dXM7CiB9CkBAIC00OTUsNyArNDk4LDcgQEAgaW50IHNw
-aV9iaXRiYW5nX3N0b3Aoc3RydWN0IHNwaV9iaXRiYW5nICpiaXRiYW5nKQogCiAJV0FSTl9PTigh
-bGlzdF9lbXB0eSgmYml0YmFuZy0+cXVldWUpKTsKIAotCWRlc3Ryb3lfd29ya3F1ZXVlKGJpdGJh
-bmctPndvcmtxdWV1ZSk7CisJa3RocmVhZF9zdG9wKGJpdGJhbmctPndvcmtlcl90YXNrKTsKIAog
-CXJldHVybiAwOwogfQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9zcGkvc3BpX2JpdGJhbmcu
-aCBiL2luY2x1ZGUvbGludXgvc3BpL3NwaV9iaXRiYW5nLmgKaW5kZXggZjk4N2EyYi4uMzZiYjNi
-ZSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9saW51eC9zcGkvc3BpX2JpdGJhbmcuaAorKysgYi9pbmNs
-dWRlL2xpbnV4L3NwaS9zcGlfYml0YmFuZy5oCkBAIC0xLDExICsxLDEyIEBACiAjaWZuZGVmCV9f
-U1BJX0JJVEJBTkdfSAogI2RlZmluZQlfX1NQSV9CSVRCQU5HX0gKIAotI2luY2x1ZGUgPGxpbnV4
-L3dvcmtxdWV1ZS5oPgorI2luY2x1ZGUgPGxpbnV4L2t0aHJlYWQuaD4KIAogc3RydWN0IHNwaV9i
-aXRiYW5nIHsKLQlzdHJ1Y3Qgd29ya3F1ZXVlX3N0cnVjdAkqd29ya3F1ZXVlOwotCXN0cnVjdCB3
-b3JrX3N0cnVjdAl3b3JrOworCXN0cnVjdCBrdGhyZWFkX3dvcmtlcgl3b3JrZXI7CisJc3RydWN0
-IHRhc2tfc3RydWN0CSp3b3JrZXJfdGFzazsKKwlzdHJ1Y3Qga3RocmVhZF93b3JrCXdvcms7CiAK
-IAlzcGlubG9ja190CQlsb2NrOwogCXN0cnVjdCBsaXN0X2hlYWQJcXVldWU7Ci0tIAoxLjcuMi4z
-CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSB1bHRpbWF0ZSBhbGwtaW4tb25lIHBlcmZvcm1h
-bmNlIHRvb2xraXQ6IEludGVsKFIpIFBhcmFsbGVsIFN0dWRpbyBYRToKUGlucG9pbnQgbWVtb3J5
-IGFuZCB0aHJlYWRpbmcgZXJyb3JzIGJlZm9yZSB0aGV5IGhhcHBlbi4KRmluZCBhbmQgZml4IG1v
-cmUgdGhhbiAyNTAgc2VjdXJpdHkgZGVmZWN0cyBpbiB0aGUgZGV2ZWxvcG1lbnQgY3ljbGUuCkxv
-Y2F0ZSBib3R0bGVuZWNrcyBpbiBzZXJpYWwgYW5kIHBhcmFsbGVsIGNvZGUgdGhhdCBsaW1pdCBw
-ZXJmb3JtYW5jZS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1kZXYyZGV2ZmViCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+This utilizes the new core voltage switch to power off the PL022
+core voltage when it's not in use transmitting packets, if and
+only if a core voltage switch is available.
+
+Cc: Russell King <rmk+kernel@arm.linux.org.uk>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/amba-pl022.c |   17 +++++++++++++----
+ 1 files changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 4220aad..8fdf530 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -508,9 +508,10 @@ static void giveback(struct pl022 *pl022)
+ 	msg->state = NULL;
+ 	if (msg->complete)
+ 		msg->complete(msg->context);
+-	/* This message is completed, so let's turn off the clocks! */
++	/* This message is completed, so let's turn off the clocks & power */
+ 	clk_disable(pl022->clk);
+ 	amba_pclk_disable(pl022->adev);
++	amba_vcore_disable(pl022->adev);
+ }
+ 
+ /**
+@@ -1475,9 +1476,11 @@ static void pump_messages(struct work_struct *work)
+ 	/* Setup the SPI using the per chip configuration */
+ 	pl022->cur_chip = spi_get_ctldata(pl022->cur_msg->spi);
+ 	/*
+-	 * We enable the clocks here, then the clocks will be disabled when
+-	 * giveback() is called in each method (poll/interrupt/DMA)
++	 * We enable the core voltage and clocks here, then the clocks
++	 * and core will be disabled when giveback() is called in each method
++	 * (poll/interrupt/DMA)
+ 	 */
++	amba_vcore_enable(pl022->adev);
+ 	amba_pclk_enable(pl022->adev);
+ 	clk_enable(pl022->clk);
+ 	restore_state(pl022);
+@@ -2123,8 +2126,12 @@ pl022_probe(struct amba_device *adev, struct amba_id *id)
+ 		goto err_spi_register;
+ 	}
+ 	dev_dbg(dev, "probe succeded\n");
+-	/* Disable the silicon block pclk and clock it when needed */
++	/*
++	 * Disable the silicon block pclk and any voltage domain and just
++	 * power it up and clock it when it's needed
++	 */
+ 	amba_pclk_disable(adev);
++	amba_vcore_disable(adev);
+ 	return 0;
+ 
+  err_spi_register:
+@@ -2189,9 +2196,11 @@ static int pl022_suspend(struct amba_device *adev, pm_message_t state)
+ 		return status;
+ 	}
+ 
++	amba_vcore_enable(adev);
+ 	amba_pclk_enable(adev);
+ 	load_ssp_default_config(pl022);
+ 	amba_pclk_disable(adev);
++	amba_vcore_disable(adev);
+ 	dev_dbg(&adev->dev, "suspended\n");
+ 	return 0;
+ }
+-- 
+1.7.3.2

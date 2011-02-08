@@ -1,92 +1,168 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 4/4] spi/pl022: minor kerneldoc updates
-Date: Tue, 8 Feb 2011 13:03:55 +0100
-Message-ID: <1297166635-5205-1-git-send-email-linus.walleij@stericsson.com>
+From: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Subject: [PATCH v2] davinci: spi: move event queue parameter to platform data
+Date: Tue,  8 Feb 2011 07:59:55 -0500
+Message-ID: <1297169995-31321-1-git-send-email-michael.williamson@criticallink.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+        davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+For DMA operation, the davinci spi driver needs an event queue number.
+Currently, this number is passed as a IORESOURCE_DMA.  This is not
+correct, as the event queue is not a DMA channel.  Pass the event queue
+via the platform data structure instead.
+
+On dm355 and dm365, move the eventq assignment for spi0 out of resources
+array and into platform data.
+
+Signed-off-by: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>
+Acked-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/amba-pl022.c |   25 ++++++++++++++++---------
- 1 files changed, 16 insertions(+), 9 deletions(-)
+Changes since v1:
+   - Add Sekhar's Ack.
+   - Really fix the typo.  This time for sure (blew the format patch
+     on last go around).
 
-diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 2b591f0..4cd05cc 100644
---- a/drivers/spi/amba-pl022.c
-+++ b/drivers/spi/amba-pl022.c
-@@ -329,15 +329,16 @@ struct vendor_data {
- /**
-  * struct pl022 - This is the private SSP driver data structure
-  * @adev: AMBA device model hookup
-- * @vendor: Vendor data for the IP block
-- * @phybase: The physical memory where the SSP device resides
-- * @virtbase: The virtual memory where the SSP is mapped
-+ * @vendor: vendor data for the IP block
-+ * @phybase: the physical memory where the SSP device resides
-+ * @virtbase: the virtual memory where the SSP is mapped
-+ * @clk: outgoing clock "SPICLK" for the SPI bus
-  * @master: SPI framework hookup
-  * @master_info: controller-specific data from machine setup
-- * @regs: SSP controller register's virtual address
-- * @pump_messages: Work struct for scheduling work to the workqueue
-- * @lock: spinlock to syncronise access to driver data
-  * @workqueue: a workqueue on which any spi_message request is queued
-+ * @pump_messages: work struct for scheduling work to the workqueue
-+ * @queue_lock: spinlock to syncronise access to message queue
-+ * @queue: message queue
-  * @busy: workqueue is busy
-  * @running: workqueue is running
-  * @pump_transfers: Tasklet used in Interrupt Transfer mode
-@@ -348,8 +349,14 @@ struct vendor_data {
-  * @tx_end: end position in TX buffer to be read
-  * @rx: current position in RX buffer to be written
-  * @rx_end: end position in RX buffer to be written
-- * @readingtype: the type of read currently going on
-- * @writingtype: the type or write currently going on
-+ * @read: the type of read currently going on
-+ * @write: the type of write currently going on
-+ * @exp_fifo_level: expected FIFO level
-+ * @dma_rx_channel: optional channel for RX DMA
-+ * @dma_tx_channel: optional channel for TX DMA
-+ * @sgt_rx: scattertable for the RX transfer
-+ * @sgt_tx: scattertable for the TX transfer
-+ * @dummypage: a dummy page used for driving data on the bus with DMA
+ arch/arm/mach-davinci/dm355.c            |    5 +----
+ arch/arm/mach-davinci/dm365.c            |    5 +----
+ arch/arm/mach-davinci/include/mach/spi.h |   15 ++++++++++-----
+ drivers/spi/davinci_spi.c                |   11 +++--------
+ 4 files changed, 15 insertions(+), 21 deletions(-)
+
+diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
+index a5f8a80..76364d1 100644
+--- a/arch/arm/mach-davinci/dm355.c
++++ b/arch/arm/mach-davinci/dm355.c
+@@ -403,16 +403,13 @@ static struct resource dm355_spi0_resources[] = {
+ 		.start = 16,
+ 		.flags = IORESOURCE_DMA,
+ 	},
+-	{
+-		.start = EVENTQ_1,
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct davinci_spi_platform_data dm355_spi0_pdata = {
+ 	.version 	= SPI_VERSION_1,
+ 	.num_chipselect = 2,
+ 	.cshold_bug	= true,
++	.dma_event_q	= EVENTQ_1,
+ };
+ static struct platform_device dm355_spi0_device = {
+ 	.name = "spi_davinci",
+diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
+index 02d2cc3..4604e72 100644
+--- a/arch/arm/mach-davinci/dm365.c
++++ b/arch/arm/mach-davinci/dm365.c
+@@ -625,6 +625,7 @@ static u64 dm365_spi0_dma_mask = DMA_BIT_MASK(32);
+ static struct davinci_spi_platform_data dm365_spi0_pdata = {
+ 	.version 	= SPI_VERSION_1,
+ 	.num_chipselect = 2,
++	.dma_event_q	= EVENTQ_3,
+ };
+ 
+ static struct resource dm365_spi0_resources[] = {
+@@ -645,10 +646,6 @@ static struct resource dm365_spi0_resources[] = {
+ 		.start = 16,
+ 		.flags = IORESOURCE_DMA,
+ 	},
+-	{
+-		.start = EVENTQ_3,
+-		.flags = IORESOURCE_DMA,
+-	},
+ };
+ 
+ static struct platform_device dm365_spi0_device = {
+diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
+index 38f4da5..7af305b 100644
+--- a/arch/arm/mach-davinci/include/mach/spi.h
++++ b/arch/arm/mach-davinci/include/mach/spi.h
+@@ -19,6 +19,8 @@
+ #ifndef __ARCH_ARM_DAVINCI_SPI_H
+ #define __ARCH_ARM_DAVINCI_SPI_H
+ 
++#include <mach/edma.h>
++
+ #define SPI_INTERN_CS	0xFF
+ 
+ enum {
+@@ -39,13 +41,16 @@ enum {
+  *		to populate if all chip-selects are internal.
+  * @cshold_bug:	set this to true if the SPI controller on your chip requires
+  *		a write to CSHOLD bit in between transfers (like in DM355).
++ * @dma_event_q: DMA event queue to use if SPI_IO_TYPE_DMA is used for any
++ *		device on the bus.
   */
- struct pl022 {
- 	struct amba_device		*adev;
-@@ -397,8 +404,8 @@ struct pl022 {
-  * @cpsr: Value of Clock prescale register
-  * @n_bytes: how many bytes(power of 2) reqd for a given data width of client
-  * @enable_dma: Whether to enable DMA or not
-- * @write: function ptr to be used to write when doing xfer for this chip
-  * @read: function ptr to be used to read when doing xfer for this chip
-+ * @write: function ptr to be used to write when doing xfer for this chip
-  * @cs_control: chip select callback provided by chip
-  * @xfer_type: polling/interrupt/DMA
-  *
+ struct davinci_spi_platform_data {
+-	u8	version;
+-	u8	num_chipselect;
+-	u8	intr_line;
+-	u8	*chip_sel;
+-	bool	cshold_bug;
++	u8			version;
++	u8			num_chipselect;
++	u8			intr_line;
++	u8			*chip_sel;
++	bool			cshold_bug;
++	enum dma_event_q	dma_event_q;
+ };
+ 
+ /**
+diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+index 6beab99..166a879 100644
+--- a/drivers/spi/davinci_spi.c
++++ b/drivers/spi/davinci_spi.c
+@@ -790,7 +790,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	struct resource *r, *mem;
+ 	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+ 	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+-	resource_size_t	dma_eventq = SPI_NO_RESOURCE;
+ 	int i = 0, ret = 0;
+ 	u32 spipc0;
+ 
+@@ -878,17 +877,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
+ 	if (r)
+ 		dma_tx_chan = r->start;
+-	r = platform_get_resource(pdev, IORESOURCE_DMA, 2);
+-	if (r)
+-		dma_eventq = r->start;
+ 
+ 	dspi->bitbang.txrx_bufs = davinci_spi_bufs;
+ 	if (dma_rx_chan != SPI_NO_RESOURCE &&
+-	    dma_tx_chan != SPI_NO_RESOURCE &&
+-	    dma_eventq != SPI_NO_RESOURCE) {
++	    dma_tx_chan != SPI_NO_RESOURCE) {
+ 		dspi->dma.rx_channel = dma_rx_chan;
+ 		dspi->dma.tx_channel = dma_tx_chan;
+-		dspi->dma.eventq = dma_eventq;
++		dspi->dma.eventq = pdata->dma_event_q;
+ 
+ 		ret = davinci_spi_request_dma(dspi);
+ 		if (ret)
+@@ -897,7 +892,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 		dev_info(&pdev->dev, "DMA: supported\n");
+ 		dev_info(&pdev->dev, "DMA: RX channel: %d, TX channel: %d, "
+ 				"event queue: %d\n", dma_rx_chan, dma_tx_chan,
+-				dma_eventq);
++				pdata->dma_event_q);
+ 	}
+ 
+ 	dspi->get_rx = davinci_spi_rx_buf_u8;
 -- 
-1.7.3.2
-
-
-------------------------------------------------------------------------------
-The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
-Pinpoint memory and threading errors before they happen.
-Find and fix more than 250 security defects in the development cycle.
-Locate bottlenecks in serial and parallel code that limit performance.
-http://p.sf.net/sfu/intel-dev2devfeb
+1.7.0.4

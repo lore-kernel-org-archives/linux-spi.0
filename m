@@ -1,11 +1,10 @@
-From: Ma Mutuelle Par Internet par Team Leaders <suruceanelena-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Votre assurance santé au meilleur prix
-Date: Mon, 7 Feb 2011 15:20:19 +0200
-Message-ID: <62f5eeb0d39f9a5d80af248bd7d8d6b8@localhost.localdomain>
-Reply-To: Ma Mutuelle Par Internet par Team Leaders <suruceanelena-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+From: "France Loisirs Finance par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Besoin d'argent, decouvrez nos offres de financement...
+Date: Tue,  8 Feb 2011 03:14:31 +0100 (CET)
+Message-ID: <lga1az.edq1n7@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,32 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-TWEgTXV0dWVsbGUgcGFyIEludGVybmV0CkNvbXBhcmV6IGdyYXR1aXRlbWVudCBsZXMgTXV0dWVs
-bGVzIFNhbnTDqQp2aWEgSW50ZXJuZXQgZXQgYWxsw6lnZXogdm90cmUgYnVkZ2V0IHNhbnTDqSEK
-CuKAoglEZXMgdGFyaWZmcyBjb21ww6l0aXRpZnM6ClZvdHJlIG11dHVlbGxlIMOgIHBhcnRpciBk
-ZSA3IGV1cm9zIC8gbW9pcwrigKIJVm90cmUgZGV2aXMgc3VyIG1lc3VyZSBkYW5zIGxlcyBtZWls
-bGV1cnMgZMOpbGFpcwrigKIJUGx1c2lldXJzIHRhcmlmZnMgZW4gMSBzZXVsIGNsaWMKClBsdXMg
-ZCdpbmZvcm1hdGlvbnM6Cmh0dHA6Ly93d3cud2VlZG9pdC5mci90cmFja2luZy90cmFja2luZ19h
-ZmYucGhwP2lkPVkyRnRjR0ZuYm1VOVZHVmhiU0JNWldGa1pYSnpYMDFoTFUxMWRIVmxiR3hsTFZC
-aGNpMUpiblJsY201bGRGOVdhWE4xWld3PQoKKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
-KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgpDb25mb3Jtw6ltZW50IMOgIGxh
-IGxvaSBpbmZvcm1hdGlxdWUgJiBsaWJlcnTDqXMgZHUgNiBqYW52aWVyIDE5NzgsIGplCmRpc3Bv
-c2UgZCd1biBkcm9pdCBkJ2FjY8OocywgZGUgcmVjdGlmaWNhdGlvbiBldCBkJ29wcG9zaXRpb24g
-YXV4CmRvbm7DqWVzIHBlcnNvbm5lbGxlcyBtZSBjb25jZXJuYW50LiAKQ2UgbWVzc2FnZSBjb21t
-ZXJjaWFsIHZvdXMgZXN0IGVudm95w6kgcGFyIOKAnFRlYW0gTGVhZGVyc+KAnS4uIFZvdXMKcmVj
-ZXZleiBjZSBtZXNzYWdlIHBhcmNlIHF1ZSB2b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdCBzdXIgbCd1
-biBkZXMKc2l0ZXMgcGFydGVuYWlyZXMgZGUg4oCcVGVhbSBMZWFkZXJz4oCdLiBWb3MgZG9ubsOp
-ZXMgbm9taW5hdGl2ZXMKbidvbnQgcGFzIMOpdMOpIHRyYW5zbWlzZXMgw6AgbCdhbm5vbmNldXIu
-IFNpIHZvdXMgbmUgc291aGFpdGV6IHBsdXMKcmVjZXZvaXIgbm90cmUgbGV0dHJlIGQnaW5mb3Jt
-YXRpb24gUmVtcGxpc3NleiBjZSBmb3JtdWxhaXJlOiAKaHR0cDovLzc3Ljg5LjI0Ny4xMzUvdW5z
-dWJzY3JpYmUvaW5kZXgucGhwP3E9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0CgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgbW9kZXJuIGRhdGFjZW50ZXIgZGVwZW5k
-cyBvbiBuZXR3b3JrIGNvbm5lY3Rpdml0eSB0byBhY2Nlc3MgcmVzb3VyY2VzCmFuZCBwcm92aWRl
-IHNlcnZpY2VzLiBUaGUgYmVzdCBwcmFjdGljZXMgZm9yIG1heGltaXppbmcgYSBwaHlzaWNhbCBz
-ZXJ2ZXIncwpjb25uZWN0aXZpdHkgdG8gYSBwaHlzaWNhbCBuZXR3b3JrIGFyZSB3ZWxsIHVuZGVy
-c3Rvb2QgLSBzZWUgaG93IHRoZXNlCnJ1bGVzIHRyYW5zbGF0ZSBpbnRvIHRoZSB2aXJ0dWFsIHdv
-cmxkPyAKaHR0cDovL3Auc2YubmV0L3NmdS9vcmFjbGUtc2ZkZXZubGZiCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
-bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+------------------------------------------------------------------------------
+The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
+Pinpoint memory and threading errors before they happen.
+Find and fix more than 250 security defects in the development cycle.
+Locate bottlenecks in serial and parallel code that limit performance.
+http://p.sf.net/sfu/intel-dev2devfeb

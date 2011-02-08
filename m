@@ -1,17 +1,19 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH] spi/imx: select master mode for all channels
-Date: Tue,  8 Feb 2011 21:08:59 +0100
-Message-ID: <1297195739-24951-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Kevin Hilman <khilman@ti.com>
+Subject: Re: [PATCH v2] davinci: spi: move event queue parameter to platform
+	data
+Date: Tue, 08 Feb 2011 13:58:54 -0800
+Message-ID: <87k4hakx29.fsf@ti.com>
+References: <1297169995-31321-1-git-send-email-michael.williamson@criticallink.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Fabio Estevam <fabio.estevam@freescale.com>,
-	Jason Wang <jason77.wang@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Richard Zhao <richard.zhao@freescale.com>,
-	Shawn Guo <shawn.guo@freescale.com>, kernel@pengutronix.de,
-	Yong Shen <yong.shen@freescale.com>, linux-arm-kernel@lists.infradead.org
-To: spi-devel-general@lists.sourceforge.net
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-arm-kernel@lists.infradead.org
+To: Michael Williamson <michael.williamson@criticallink.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1297169995-31321-1-git-send-email-michael.williamson@criticallink.com>
+	(Michael Williamson's message of "Tue, 8 Feb 2011 07:59:55 -0500")
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,38 +25,153 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKVGhlIGhhcmR3YXJl
-IHNlZW1zIHRvIGhhdmUgYSByYWNlIGNvbmRpdGlvbiB3aGVuIHRoZSBpbmFjdGl2ZQpjaGFubmVs
-cyBhcmUgaW4gc2xhdmUgbW9kZS4gV2Ugc3VwcG9ydCBtYXN0ZXIgbW9kZSBvbmx5LCBzbwp3ZSBj
-YW4ganVzdCBzd2l0Y2ggYWxsIGNoYW5uZWxzIHRvIG1hc3RlciBtb2RlLgoKU2lnbmVkLW9mZi1i
-eTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpbdWtsZWluZWs6IGFkZCBt
-b3JlIHZlcmJvc2UgY29tbWVudCBhYm91dCB0aGUgcmFjZV0KU2lnbmVkLW9mZi1ieTogVXdlIEts
-ZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCkhlbGxvLAoK
-bWF5YmUgb25lIG9mIG91ciBmcmllbmRzIGF0IEZyZWVzY2FsZSBjYW4gY29tbWVudD8KCkJlc3Qg
-cmVnYXJkcwpVd2UKCiBkcml2ZXJzL3NwaS9zcGlfaW14LmMgfCAgIDEyICsrKysrKysrKy0tLQog
-MSBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9zcGkvc3BpX2lteC5jIGIvZHJpdmVycy9zcGkvc3BpX2lteC5jCmluZGV4
-IDFjZjlkNWYuLjY5ZDZkYmEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaV9pbXguYworKysg
-Yi9kcml2ZXJzL3NwaS9zcGlfaW14LmMKQEAgLTE3NCw3ICsxNzQsNyBAQCBzdGF0aWMgdW5zaWdu
-ZWQgaW50IHNwaV9pbXhfY2xrZGl2XzIodW5zaWduZWQgaW50IGZpbiwKICNkZWZpbmUgU1BJX0lN
-WDJfM19DVFJMCQkweDA4CiAjZGVmaW5lIFNQSV9JTVgyXzNfQ1RSTF9FTkFCTEUJCSgxIDw8ICAw
-KQogI2RlZmluZSBTUElfSU1YMl8zX0NUUkxfWENICQkoMSA8PCAgMikKLSNkZWZpbmUgU1BJX0lN
-WDJfM19DVFJMX01PREUoY3MpCSgxIDw8ICgoY3MpICsgIDQpKQorI2RlZmluZSBTUElfSU1YMl8z
-X0NUUkxfTU9ERV9NQVNLCSgweGYgPDwgNCkKICNkZWZpbmUgU1BJX0lNWDJfM19DVFJMX1BPU1RE
-SVZfT0ZGU0VUCTgKICNkZWZpbmUgU1BJX0lNWDJfM19DVFJMX1BSRURJVl9PRkZTRVQJMTIKICNk
-ZWZpbmUgU1BJX0lNWDJfM19DVFJMX0NTKGNzKQkJKChjcykgPDwgMTgpCkBAIC0yNTMsOCArMjUz
-LDE0IEBAIHN0YXRpYyBpbnQgX19tYXliZV91bnVzZWQgc3BpX2lteDJfM19jb25maWcoc3RydWN0
-IHNwaV9pbXhfZGF0YSAqc3BpX2lteCwKIHsKIAl1MzIgY3RybCA9IFNQSV9JTVgyXzNfQ1RSTF9F
-TkFCTEUsIGNmZyA9IDA7CiAKLQkvKiBzZXQgbWFzdGVyIG1vZGUgKi8KLQljdHJsIHw9IFNQSV9J
-TVgyXzNfQ1RSTF9NT0RFKGNvbmZpZy0+Y3MpOworCS8qCisJICogVGhlIGhhcmR3YXJlIHNlZW1z
-IHRvIGhhdmUgYSByYWNlIGNvbmRpdGlvbiB3aGVuIGNoYW5naW5nIG1vZGVzLiBUaGUKKwkgKiBj
-dXJyZW50IGFzc3VtcHRpb24gaXMgdGhhdCB0aGUgc2VsZWN0aW9uIG9mIHRoZSBjaGFubmVsIGFy
-cml2ZXMKKwkgKiBlYXJsaWVyIGluIHRoZSBoYXJkd2FyZSB0aGFuIHRoZSBtb2RlIGJpdHMgd2hl
-biB0aGV5IGFyZSB3cml0dGVuIGF0CisJICogdGhlIHNhbWUgdGltZS4KKwkgKiBTbyBzZXQgbWFz
-dGVyIG1vZGUgZm9yIGFsbCBjaGFubmVscyBhcyB3ZSBkbyBub3Qgc3VwcG9ydCBzbGF2ZSBtb2Rl
-LgorCSAqLworCWN0cmwgfD0gU1BJX0lNWDJfM19DVFJMX01PREVfTUFTSzsKIAogCS8qIHNldCBj
-bG9jayBzcGVlZCAqLwogCWN0cmwgfD0gc3BpX2lteDJfM19jbGtkaXYoc3BpX2lteC0+c3BpX2Ns
-aywgY29uZmlnLT5zcGVlZF9oeik7Ci0tIAoxLjcuMi4zCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QK
-bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=
+Michael Williamson <michael.williamson@criticallink.com> writes:
+
+> For DMA operation, the davinci spi driver needs an event queue number.
+> Currently, this number is passed as a IORESOURCE_DMA.  This is not
+> correct, as the event queue is not a DMA channel.  Pass the event queue
+> via the platform data structure instead.
+>
+> On dm355 and dm365, move the eventq assignment for spi0 out of resources
+> array and into platform data.
+>
+> Signed-off-by: Michael Williamson <michael.williamson@criticallink.com>
+> Acked-by: Sekhar Nori <nsekhar@ti.com>
+
+With Grant's ack, will merge this through davinci tree.
+
+Kevin
+
+> ---
+> Changes since v1:
+>    - Add Sekhar's Ack.
+>    - Really fix the typo.  This time for sure (blew the format patch
+>      on last go around).
+>
+>  arch/arm/mach-davinci/dm355.c            |    5 +----
+>  arch/arm/mach-davinci/dm365.c            |    5 +----
+>  arch/arm/mach-davinci/include/mach/spi.h |   15 ++++++++++-----
+>  drivers/spi/davinci_spi.c                |   11 +++--------
+>  4 files changed, 15 insertions(+), 21 deletions(-)
+>
+> diff --git a/arch/arm/mach-davinci/dm355.c b/arch/arm/mach-davinci/dm355.c
+> index a5f8a80..76364d1 100644
+> --- a/arch/arm/mach-davinci/dm355.c
+> +++ b/arch/arm/mach-davinci/dm355.c
+> @@ -403,16 +403,13 @@ static struct resource dm355_spi0_resources[] = {
+>  		.start = 16,
+>  		.flags = IORESOURCE_DMA,
+>  	},
+> -	{
+> -		.start = EVENTQ_1,
+> -		.flags = IORESOURCE_DMA,
+> -	},
+>  };
+>  
+>  static struct davinci_spi_platform_data dm355_spi0_pdata = {
+>  	.version 	= SPI_VERSION_1,
+>  	.num_chipselect = 2,
+>  	.cshold_bug	= true,
+> +	.dma_event_q	= EVENTQ_1,
+>  };
+>  static struct platform_device dm355_spi0_device = {
+>  	.name = "spi_davinci",
+> diff --git a/arch/arm/mach-davinci/dm365.c b/arch/arm/mach-davinci/dm365.c
+> index 02d2cc3..4604e72 100644
+> --- a/arch/arm/mach-davinci/dm365.c
+> +++ b/arch/arm/mach-davinci/dm365.c
+> @@ -625,6 +625,7 @@ static u64 dm365_spi0_dma_mask = DMA_BIT_MASK(32);
+>  static struct davinci_spi_platform_data dm365_spi0_pdata = {
+>  	.version 	= SPI_VERSION_1,
+>  	.num_chipselect = 2,
+> +	.dma_event_q	= EVENTQ_3,
+>  };
+>  
+>  static struct resource dm365_spi0_resources[] = {
+> @@ -645,10 +646,6 @@ static struct resource dm365_spi0_resources[] = {
+>  		.start = 16,
+>  		.flags = IORESOURCE_DMA,
+>  	},
+> -	{
+> -		.start = EVENTQ_3,
+> -		.flags = IORESOURCE_DMA,
+> -	},
+>  };
+>  
+>  static struct platform_device dm365_spi0_device = {
+> diff --git a/arch/arm/mach-davinci/include/mach/spi.h b/arch/arm/mach-davinci/include/mach/spi.h
+> index 38f4da5..7af305b 100644
+> --- a/arch/arm/mach-davinci/include/mach/spi.h
+> +++ b/arch/arm/mach-davinci/include/mach/spi.h
+> @@ -19,6 +19,8 @@
+>  #ifndef __ARCH_ARM_DAVINCI_SPI_H
+>  #define __ARCH_ARM_DAVINCI_SPI_H
+>  
+> +#include <mach/edma.h>
+> +
+>  #define SPI_INTERN_CS	0xFF
+>  
+>  enum {
+> @@ -39,13 +41,16 @@ enum {
+>   *		to populate if all chip-selects are internal.
+>   * @cshold_bug:	set this to true if the SPI controller on your chip requires
+>   *		a write to CSHOLD bit in between transfers (like in DM355).
+> + * @dma_event_q: DMA event queue to use if SPI_IO_TYPE_DMA is used for any
+> + *		device on the bus.
+>   */
+>  struct davinci_spi_platform_data {
+> -	u8	version;
+> -	u8	num_chipselect;
+> -	u8	intr_line;
+> -	u8	*chip_sel;
+> -	bool	cshold_bug;
+> +	u8			version;
+> +	u8			num_chipselect;
+> +	u8			intr_line;
+> +	u8			*chip_sel;
+> +	bool			cshold_bug;
+> +	enum dma_event_q	dma_event_q;
+>  };
+>  
+>  /**
+> diff --git a/drivers/spi/davinci_spi.c b/drivers/spi/davinci_spi.c
+> index 6beab99..166a879 100644
+> --- a/drivers/spi/davinci_spi.c
+> +++ b/drivers/spi/davinci_spi.c
+> @@ -790,7 +790,6 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>  	struct resource *r, *mem;
+>  	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+>  	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+> -	resource_size_t	dma_eventq = SPI_NO_RESOURCE;
+>  	int i = 0, ret = 0;
+>  	u32 spipc0;
+>  
+> @@ -878,17 +877,13 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>  	r = platform_get_resource(pdev, IORESOURCE_DMA, 1);
+>  	if (r)
+>  		dma_tx_chan = r->start;
+> -	r = platform_get_resource(pdev, IORESOURCE_DMA, 2);
+> -	if (r)
+> -		dma_eventq = r->start;
+>  
+>  	dspi->bitbang.txrx_bufs = davinci_spi_bufs;
+>  	if (dma_rx_chan != SPI_NO_RESOURCE &&
+> -	    dma_tx_chan != SPI_NO_RESOURCE &&
+> -	    dma_eventq != SPI_NO_RESOURCE) {
+> +	    dma_tx_chan != SPI_NO_RESOURCE) {
+>  		dspi->dma.rx_channel = dma_rx_chan;
+>  		dspi->dma.tx_channel = dma_tx_chan;
+> -		dspi->dma.eventq = dma_eventq;
+> +		dspi->dma.eventq = pdata->dma_event_q;
+>  
+>  		ret = davinci_spi_request_dma(dspi);
+>  		if (ret)
+> @@ -897,7 +892,7 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>  		dev_info(&pdev->dev, "DMA: supported\n");
+>  		dev_info(&pdev->dev, "DMA: RX channel: %d, TX channel: %d, "
+>  				"event queue: %d\n", dma_rx_chan, dma_tx_chan,
+> -				dma_eventq);
+> +				pdata->dma_event_q);
+>  	}
+>  
+>  	dspi->get_rx = davinci_spi_rx_buf_u8;

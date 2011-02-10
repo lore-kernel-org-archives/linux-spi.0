@@ -1,44 +1,26 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH v6 0/6] OMAP: McSPI: Hwmod adaptation + runtime
- conversion
-Date: Wed, 9 Feb 2011 11:21:41 -0800
-Message-ID: <20110209192141.GB20795@atomide.com>
-References: <1296649335-31756-1-git-send-email-govindraj.raja@ti.com>
- <878vxvl9i6.fsf@ti.com>
+From: "energie photovoltaique" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Tout savoir sur les nouvelles dispositions du photovoltaique
+Date: Thu, 10 Feb 2011 03:14:34 +0100 (CET)
+Message-ID: <lgdq8k.9renz4@front07.g7r9.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "Govindraj.R" <govindraj.raja@ti.com>, linux-omap@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Paul Walmsley <paul@pwsan.com>, Charulatha V <charu@ti.com>
-To: Kevin Hilman <khilman@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <878vxvl9i6.fsf@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Kevin Hilman <khilman@ti.com> [110204 14:27]:
-> "Govindraj.R" <govindraj.raja@ti.com> writes:
-> 
-> > Changes invloves:
-> > ----------------
-> > 1) Addition of hwmod data for omap2/3/4.
-> > 2) McSPI driver hwmod adaptation with cleanup of base address
-> >    macros and using omap-device API's.
-> > 3) Runtime Conversion of McSPI driver.
-> >
-> > Changes from v5:
-> > ---------------
-> > Rebased on top of 2.6.38-rc3 as per Kevin's comments.
-> > http://www.spinics.net/lists/arm-kernel/msg112112.html
-> 
-> Thanks.
-> 
-> Reviewed-by: Kevin Hilman <khilman@ti.com>
 
-Thanks everybody, will queue.
-
-Tony
+------------------------------------------------------------------------------
+The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
+Pinpoint memory and threading errors before they happen.
+Find and fix more than 250 security defects in the development cycle.
+Locate bottlenecks in serial and parallel code that limit performance.
+http://p.sf.net/sfu/intel-dev2devfeb

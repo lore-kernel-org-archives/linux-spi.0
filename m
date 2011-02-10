@@ -1,121 +1,98 @@
-From: =?GB2312?B?x+vXqs/gudjIy9Sx?= <ipx-Nlq0BAG7N80@public.gmane.org>
-Subject: [SPAM] spi-devel-general销售数据分析
-Date: Thu, 10 Feb 2011 23:41:39 +0800
-Message-ID: <E1PnYeP-0001JM-B3@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi:add support for slave function
+	in current spi framework
+Date: Thu, 10 Feb 2011 09:01:00 -0700
+Message-ID: <AANLkTi=Q9WxtfaHAU_0wMpHLipFMDnhZ4O4iNytZUenB@mail.gmail.com>
+References: <1296463611-18764-1-git-send-email-Aaron.Wu06@gmail.com>
+	<20110202040522.GD29148@angua.secretlab.ca>
+	<AANLkTikh3XpMpTqk+=R+==6oDr6hjMq68pzyu5si+WeX@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        "Aaron.Wu" <Aaron.Wu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Aaron Wu <aaronwu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <AANLkTikh3XpMpTqk+=R+==6oDr6hjMq68pzyu5si+WeX-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-c3BpLWRldmVsLWdlbmVyYWzP+srbyv2+3bfWzvYt08PK/dfWy7W7sAoKyrG85LXYteOjujIwMTHE
-6jPUwjExLTEyyNXJ7tvaCsqxvOS12LXjo7oyMDExxOoz1MIxOC0xOcjVyc+6owrKsbzktdi146O6
-MjAxMcTqM9TCMjUtMjbI1bGxvqkKyrG85LXYteOjujIwMTHE6jXUwjEzLTE0yNXJ7tvaCsqxvOS1
-2LXjo7oyMDExxOo11MIyMC0yMcjVyc+6oyAKyrG85LXYteOjujIwMTHE6jXUwjI3LTI4yNWxsb6p
-Cgq30SAgICDTw6O6MjYwMNSqL8jLo6jM4bmpvbLS5aGizueyzaGit6LGsaGisui146Gi1PnLzbPC
-vaPAz8qm0dC3osjtvP61yKOpCsrav8621M/zo7rK0LOh19y84KGiytCzobfWzvbIy9SxoaLP+srb
-1ve53KGiz/rK29fcvOC8sMbky/u21NOqz/rK/b7dt9bO9tPQ0MvIpLXEyMvKvwoK18nRr7Xnu7Cj
-ujAyMC04MDU2MDYzOKO7MDIwLTg1OTE3OTQ1ICDQu9ChveOjqLK70OjSqrTLwODQxbz+x+u72Li0
-tefTytbBY2hpbmFtbWMyMDEwQDEyNi5jb23Ny9DFo6kKsb6/zrPMzOG5qcTa0bWjrLu2063AtLXn
-18nRrwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAKv86zzLGzvrCjusrQs6HTqs/6ysfG89K1tcTD
-/ML2o6zIu7b4o6zOqsr9srvJ2bXEtcTK0LOhsr+hos/6ytuyv7mk1/fIy9SxCtPJ09rIsbem06rP
-+rfWzva1xLjFxO66zbe9t6ijrMbz0rXA27v9tcS088G/yv2+3bXDsru1vdPQ0Ke1xMD708OjrNOq
-z/q31grO9ta7zaPB9NTayv2+3brN0MXPorXEvPK1pbvj19y6zcH3y67Vysq9tcTNqLGoo6zIsbem
-ttS/zbunoaLStc7xoaLTqs/6oaIKvrrV+be9w+a1xMnuyOu31s72o6y94bn7vvay39Xf1rvE3Ma+
-18WxvsTctcS3tNOmwLTUy9f3o6y+9rLftObU2rrctPO1xMqnCs7zt+fP1aGjsb6/zrPM18XR29Pa
-06rP+sr9vt21xLfWzva6zc2zvMajrL3MytrI57rOzdq+8sr9vt2xs7rztcS55sLJus3S/gq6rLXE
-0MXPoqGjzai5/dGnz7Cxvr/Os8zE+r2rv8nS1NXGztXTqs/6yv2+3bfWzva1xNbY0qq4xcTuus24
-37y2vLzE3KOszOEKyf2/xtGnudzA7brNv8bRp772st+1xMuuxr2howotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CszYsfDJ+cP3Cs6qwcuxo9akxeDRtdCnufujrMfr0K+0+LHKvMexvrXnxNSyorCy17BPZmZpY2Wj
-rLKizqpFeGNlbLzT1Ni31s72uaS+37/ioaMKs8K9o8DPyqa/zrPMvvnU+cvNQmxhZGVPZmZpY2W5
-pL7fz+SjrMfr16LS4rrLttTI7bz+yNXG2srHt/HOqsXg0bW1sczsyNXG2tLUt8C82cOwoaMKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq/zrPMtPO42ToK0ruhorW80dQKu6XBqs34tcS438vZt6LV
-ubzTyc/K0LOhvrrV+bXEvNO+56Osyrm1w8r919a7r9Oqz/q6zb6ryLfTqs/6vfjI68HLxvPStbXE
-ytPSsKOssqLS/cbwwcvTqs/6t73KvbXEvt6087jEseQuLi4KMS7Tw8r919bLtbuwCjIuyv3X1ruv
-06rP+tDCx/fKxgozLr6ryLfTqs/60a27two0Lsq1yqnTqs/6yv2+3bfWzva1xM+1zbOy37uuus3K
-tcqpCjUuyv2+3bfWzvbT683avvK5pL7fvPK96Qq2/qGi1rix6rfWzvYK1rix6rfWzvbKx9K71ta/
-7MvZtcTG89K1vKjQp7fWzvbK1rbOo6zKx7riwb/G89K1vaG/tde0v/a1xL2hv7XWuLHqo6wgsb69
-2rbUuPfA4Na4seq9+NDQye7I673izvajrAqyosrUzbzNuMrT1rix6rGzuvO1xNL+uqzQxc+ioaMK
-MS7P+srbvKjQp7XExsC5wNPrv7y6ywoyLrrqudvK0LOh1rix6gozLrmry76+rdOq17S/9ta4seoK
-NC6/zbunz+C52Na4seoKNS7K0LOh06rP+ta4seoKNi621Na4seq1xM+4u6+31s72o6y008r9vt21
-xLfWsrzH98rGye7I67fWzvbWuLHqCjcuyOe6zr2r1rix6rfWveK1vc/gudjTsM/s0vLX0wo4LrC4
-wP3R3cG3Csj9oaKzo7nmytW+3crVvK+6zda4serNs7zGCsO709DK/b7do6zTqs/6t9bO9r7Ns8nB
-y7/V1tDCpbjzoaOxvr3avenJ3Mr9vt3L0byvtcTLvMK3us23vbeoo6zOqtOqz/q31s72tey2qLzh
-yrW1xLv5tKGhowoxLta4serNs7zGt723qNPrwLTUtLjxyr0KMi7K/b7dwLTUtLrNytW8r82+vrYK
-My7K/b7dy9G8r7mkvt+6zcrWts4KNC7K/b7dse21xLnmu666zcnovMYKNS7K/b7dtcTT0NCnxtq6
-zbGjz8oKNi69q8S/seq6zUtQSc/gwawKy8Shor661fm31s72Csbz0rXX3MrH1Nq+utX51tDXs7Tz
-o6zI57n7xNzM4cew1KTWqr661fm21MrWtcTQxc+ius2y38LUo6zG89K1uPzI3dLXs8m5pqGjCjEu
-ytCzob661fm1xMvEuPay47TOCjIuyOe6zr3ntqi+utX5ttTK1gozLr661fm21MrWyv2+3crVvK8K
-NC7Q6MfztcS9u7Lmta/Q1Ao1Lsa3xcbXqru7vtjV8wo2LtDQ0rW+utX5waa31s72CjcuvrrV+bfW
-zva+2NXzCs7loaKzo9PDt9bO9re9t6gKyv2+3bfWzvbQ6NKq09DKtbzKtcS3vbeous3K1rbOo6zS
-1M/CtcS3vbeovau54bSp1Nqxvr/Os8zW0L340NDRp8+wus3R3cG3oaMKMS63vbLut9bO9goyLsqx
-vOTQ8sHQt9bO9rrNttSxyLfWzvYKMy7Gtcr9t9bO9go0Lrbg0rXO8cz1vP62r8yst9bA4Lvj19wK
-NS6/ycrTu6+31rbO0+u94bm5t9bO9grB+aGiytCzobX3sunT69bD0MW2yLfWzvYKytCzobX30dDK
-x7rPt6i78cihyv2+3bXE1tjSqsC01LSjrNKyyse/7MvZwcu94srQs6G3tNOmtcTNvr62o6yxvr3a
-zNbC28rQs6G197LptcSy37uuus3Ns7zGt723qKGjCjEuyOe6zrLfu67Su7TOytCzobX3sukKMi6z
-o7nmtfey6be9t6i6zc34yc+197Lpt723qAozLsjnus69+NDQvfjQ0M2zvMbRp8nP09DQp7XEs+nR
-+bX3sukKNC7A7b3izvOy7rXEwLTUtLfWzvYKNS6199HQs8mxvrXEst+7rtPrv9jWxgo2Lsjnus62
-1LPp0fm94bn7vfjQ0M2zvMYKNy7NqLn91sPQxbbIt9bO9rzGy+O197LpzvOy7grG36Giv827p8+4
-t9bT676ryLfTqs/6Cs7esu6x8LXEtPPW2sO9zOXTqs/60tG+rc7et6jC+tfjweO6zbXEytCzobu3
-vrPPwrXEvrrV+dKqx/Oho76ryLfTqs/6ysfP1tTavLDOtMC0tcS3otW5t73P8qOstvi/zbunz7i3
-1srHvqvIt9Oqz/q1xLv5tKGhowoxLr6ryLfTqs/6tPPH98rGCjIuv827p8+4t9a1xLzb1rUKMy6/
-zbunz7i31tProbAxttQx06rP+qGxtcTH+LHwCjQuu/nT2sr9vt3H/bavtcTPuLfWvenJ3Ao1Lrv5
-09rK/b7dx/22r7XEz7i31rXEvLjW1re9t6gKNi6/zbunyv2+3b/it9bO9rXEUkZN1rix6go3LrnL
-v821xLzb1rUoVk9DKbLiwb8KOC67+dPavtvA4M+4t9a3vbeotcTR3cG3Cjkuz7i31r3hufu1xNOm
-08MKsMuhosnM0rXUpLLivLzK9QrUpLLiysfG89K11tjSqrXEvvay39LAvt2jrMbz0rXNqLn91KSy
-4ry8yvW/ydLUucC8xs/C0ru8vrbIoaLE6rbItcTK0LOhuebEo6GiytCzodW809DCyqGiz/rK28G/
-tcihowoxLtSksuLEo9DNtcTA4NDNuMXK9goyLsjnus7RodTxus/KyrXE1KSy4sSj0M0KMy67+dPa
-yrG85NDywdC1xNK71Kq72Lnp1KSy4qOswP3I5wogaS4gyOe6ztSksuK5q8u+w/fE6qGiuvPE6rXE
-06rStcrVyOsKIGlpLiDI57rO1KSy4tDCxOq2yMn6svqzybG+CjQutuDUqrvYuem31s72o7rI57rO
-t9bO9rbguPbS8svYttTEv7Hq1rW1xNOwz+yzzLbIo6yw/LqsCmkuyOe6zr2owaK24LHkwb/Stc7x
-1KSy4sSj0M0KaWkuyOe6zsbAucDStc7xxKPQzbXE09DQp9DUCmlpaS7G89K1zeKyv7Hkwb+jqMD9
-yOe+rbzDuuq528r9vt2jqbXE0aHU8brNuf3Cywppdi68vr3a0vLL2LXEyrG85NDywdC72Lnpt9bO
-9go1LrvYuem31s720d3Bt6O6yOe6ztSksuLQwsrQs6G1xLnmxKO8sNbGtqi3otW5xL+x6gotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq9ssqmvenJ3KO6s8K9o8DPyqY6INDFz6K7
-r9eovNKhoklQTUHIz9akz+7Ev76twO2hok1DU0Whok1DREJBoaK+rbzDt9bO9sqmo6y009K1vq3R
-6bfhuLujrArU+Nb3s9a/qreitPPQzdX+uK7Stc7xz7XNs6Gi0vjQ0LDsuavPtc2zoaK159DF0rXO
-8c+1zbOhormk0rXX1Lavu6+/2NbGz7XNs7XIo6y4utTwuf1PQaGiCkVSUKGiQknPtc2ztcS8r7PJ
-0+vKtcqpoaPA+sjOz+7Ev76twO2jrLy8yvXX3Lzgo6y4sdfcvq3A7bXI1rDO8aGiyuzPpNX7uavL
-vtOq1Mu53MDto6yyxgrO8bncwO2hotDFz6K7r7ncwO2hosjLysLQ0NX+udzA7bmk1/ehowqzwsDP
-yqa9/MbaxeDRtcbz0rWjurart726vb/VoaLW0Ln6yb3SxravoaK9u9L4yqnC3rXCoaK98MOvvK/N
-xaGitqu358b7s7WhotHFt7yhotHH1t7WvdK1oaIK0tq1wLXn19OhosTJsbTLub/LyrPGt6GixM++
-qbnjz8PWw9K1o6i8r83Fo6mhoszsvfK8zrPboaLJz7qjxvvC1rv6oaLOsLDNy7nM2LO1tqW5qcWv
-z7XNs7XIxvPStaGjCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KobbP+srbyv2+3bfWzvbJzNK11KSy
-4ry8yvWht7Gow/u72Na0se2jqMfrtKvV5jAyMC02MjM1MTE1NqOpCgqyzrvhtaXOu8P7s8ajul9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KCrLO
-vNO12LXjo7q/2snPuqMgv9rJ7tvaIL/asbG+qQoKwarPtcjLo7pfX19fX19fX19fX19fX7Xnu7A6
-X19fX19fX19fX19fX19fX7Sr1eY6X19fX19fX19fX19fX19fXwoK08q8/qO6X19fX19fX19fX19f
-X1+yzrvhyMvK/TpfX19fX19fX1/Iy7fR08OjpKO6X19fX19fX19f1KoKCrLOu+HIy6O6X19fX19f
-X19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19fX19fX19fX18KCrLOu+HI
-y6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19fX19fX19f
-X18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9f
-X19fX19fX19fX18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2
-r7Xnu7Cjul9fX19fX19fX19fX18KCri2v+63vcq9o6jH69Gh1PG08qGwocyhsaOpo7qh9TGhos/W
-vfCh9TKhoteq1cqh9TOhorXnu+MKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CrG416I6x+vE
-+rDRsajD+7vY1rS72LSrztLLvqOszqrIt7GjxPqxqMP7zt7O8yzH68T61Nm0zrXnu7CjqDAyMC04
-MDU2MDYzOKOpyLfIzyEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgdWx0aW1hdGUgYWxsLWlu
-LW9uZSBwZXJmb3JtYW5jZSB0b29sa2l0OiBJbnRlbChSKSBQYXJhbGxlbCBTdHVkaW8gWEU6ClBp
-bnBvaW50IG1lbW9yeSBhbmQgdGhyZWFkaW5nIGVycm9ycyBiZWZvcmUgdGhleSBoYXBwZW4uCkZp
-bmQgYW5kIGZpeCBtb3JlIHRoYW4gMjUwIHNlY3VyaXR5IGRlZmVjdHMgaW4gdGhlIGRldmVsb3Bt
-ZW50IGN5Y2xlLgpMb2NhdGUgYm90dGxlbmVja3MgaW4gc2VyaWFsIGFuZCBwYXJhbGxlbCBjb2Rl
-IHRoYXQgbGltaXQgcGVyZm9ybWFuY2UuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtZGV2MmRl
-dmZlYgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+On Wed, Feb 9, 2011 at 7:25 PM, Aaron Wu <aaronwu06-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> Hi Grant,
+>
+> Just come back from the long holiday. Thanks very much for the comment and
+> hints. Following your idea here is some update of our plan:
+>
+> Yes the slave can not predict when the transaction is going to happen, and
+> it takes=A0time before the slave is ready for the transaction after the s=
+ystem
+> power on, so maybe=A0as a slave we should assert=A0an GPIO to inform the =
+master
+> that we are=A0ready once we finished the initialization? Then from the
+> application level, we issue a=A0blockable read, waitting for the master
+> to=A0initiate the=A0transaction.
+>
+> It's also true that what we do next is highly=A0up to what we get from the
+> master, so we plan to=A0put this=A0protocal=A0related strategy to the use=
+rspace.
+> The application is in charge of=A0analyzing each unit of data=A0the slave
+> receives, and=A0take the proper=A0action=A0by calling the slave driver op=
+erations.
+>
+> So basically the slave driver will reside=A0in a sub-directory as you
+> suggested, export the read/write and a couple of IOCTLs, it is capable of:
+> -- assert an GPIO once it's ready
+> -- being=A0configured=A0to operate at different speed, spi_mode 0~3,=A0wo=
+rd
+> length, etc.
+> --=A0read from the master
+> -- write to the master
+> -- duplex data transaction with the master
+>
+> It will make use of some of the existing data structures for spi master,
+> without cooperating with them. In the board file, there will be a
+> slave_spi_board_info, the slave framework will alloc and create related=
+=A0spi
+> slave device by scanning this table, much the same=A0like=A0how we did fo=
+r spi
+> master.
+
+I'm really not a fan of the struct spi_board_info approach.  If I were
+redesigning the spi infrastructure then I would not use this model.
+You'd be better off registering each spi slave instance separately as
+platform devices with extra information passed in the platform_data
+pointer.
+
+>
+> Apart for the common slave driver=A0mentioned above, there will be=A0one=
+=A0spi
+> slave controller driver file for each of the specific=A0slave controller,
+> where the slave operations is implemented=A0for different actual slave
+> controller=A0according to=A0their ASIC IP module specification.
+>
+> The main reason that we plan to through the strategy to user space
+> application is because there is no existing standard for the=A0transacted=
+ data
+> interpretation, this application=A0decide the=A0transaction protocol on b=
+ehalf
+> of the slave device, representing the=A0master=A0side programmer=A0a
+> specification=A0defining=A0the charactor of the slave device.
+>
+> Need your feed back before moving forward.
+
+I probably won't have much feedback until I actually see an
+implementation.  As long as the spi_slave functionality is distinctly
+separate from spi master then I don't have any conceptual problems
+with it.  It's the shoehorning spi slave mode into the spi master
+framework that really bothered me.
+
+g.

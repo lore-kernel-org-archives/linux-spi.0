@@ -1,15 +1,12 @@
-From: Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: MRST SPI
-Date: Thu, 10 Feb 2011 16:20:55 +0530
-Message-ID: <AANLkTincGiw4cd0iu12ZAA+ZdR6CcGyGBKqokREkV1wU@mail.gmail.com>
-References: <AANLkTimry3-NehWrundOuB_PWb420yOdrD1APaMXYkr6@mail.gmail.com>
-	<AANLkTin60qjesNcaPRiDftt8s83i7JTRkB7zbt1pW31-@mail.gmail.com>
+From: =?GB2312?B?x+vXqs/gudjIy9Sx?= <ipx-Nlq0BAG7N80@public.gmane.org>
+Subject: [SPAM] spi-devel-general销售数据分析
+Date: Thu, 10 Feb 2011 23:41:39 +0800
+Message-ID: <E1PnYeP-0001JM-B3@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTin60qjesNcaPRiDftt8s83i7JTRkB7zbt1pW31--JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,135 +17,105 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Following is the debug log from messages after enabling spi debug (starts at
-point when i call spi_w8r8()) :
-
-Jan 10 01:54:35 localhost klogd: [  100.202663]  [<c012484f>]
-__might_sleep+0xd9/0xe0
-Jan 10 01:54:35 localhost klogd: [  100.202699]  [<c059da0b>]
-wait_for_common+0x21/0xfd
-Jan 10 01:54:35 localhost klogd: [  100.202733]  [<c034b585>] ?
-dw_spi_transfer+0x97/0xaa
-Jan 10 01:54:35 localhost klogd: [  100.202764]  [<c0349417>] ?
-spi_async+0x7f/0x8d
-Jan 10 01:54:35 localhost klogd: [  100.202794]  [<c059db68>]
-wait_for_completion+0x12/0x14
-Jan 10 01:54:35 localhost klogd: [  100.202825]  [<c03496d0>]
-spi_sync+0x41/0x53
-Jan 10 01:54:35 localhost klogd: [  100.202859]  [<c0349835>]
-spi_write_then_read+0x153/0x193
-Jan 10 01:54:35 localhost klogd: [  100.202900]  [<c0349875>] ?
-spi_complete+0x0/0xa
-Jan 10 01:54:35 localhost klogd: [  100.202941]  [<dfbed212>]
-spi_trx_probe+0x1cd/0x220 [spitest]
-Jan 10 01:54:35 localhost klogd: [  100.202975]  [<c0349350>]
-spi_drv_probe+0x14/0x17
-Jan 10 01:54:35 localhost klogd: [  100.203009]  [<c031510f>]
-driver_probe_device+0x8f/0x117
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c03151da>]
-__driver_attach+0x43/0x5f
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0314a8d>]
-bus_for_each_dev+0x3d/0x67
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0314fd2>]
-driver_attach+0x14/0x16
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0315197>] ?
-__driver_attach+0x0/0x5f
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0314520>]
-bus_add_driver+0x10b/0x23b
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0287e8f>] ?
-kset_find_obj+0x56/0x5e
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<dfbf0000>] ?
-spi_trx_init+0x0/0x4c [spitest]
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0315417>]
-driver_register+0x79/0xe0
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<dfbf0000>] ?
-spi_trx_init+0x0/0x4c [spitest]
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0349e37>]
-spi_register_driver+0x39/0x3e
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<dfbf0018>]
-spi_trx_init+0x18/0x4c [spitest]
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c0101051>]
-do_one_initcall+0x4c/0x131
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c015a25e>]
-sys_init_module+0x77/0x199
-Jan 10 01:54:35 localhost klogd: [  100.203041]  [<c01027d7>]
-sysenter_do_call+0x12/0x26
-
-
-**************** my printk messages *******************************
-
-Regards,
-Tom
-
-
-On Thu, Feb 10, 2011 at 4:18 PM, Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-
-> Hi All,
->
-> I have a SPI device problem on MRST CDK.
->
-> I use a GPIO as SS because my slave device expects the SS to be low between
-> byte transfers.
-> My probe function does a read as:
->
-> int read_val;
-> -------
-> ---
-> read_val = spi_w8r8(&spi_dev,0x20);
->  if ( read_val < 0 )
-> printk ( "spi_read err\n");
-> else
->  printk ( "spi_read %d\n",read_val );
-> ----
-> --
->
-> The MRST SFI interface passes the device board info. Because, my device is
-> not listed in the IA32 f/w I modified the MRST.c code sfi_handle_spi_dev
-> function as:
->
-> while(dev->name[0])
-> {
->                 if (dev->type == SFI_DEV_TYPE_SPI &&
->                                 !strncmp(dev->name, spi_info->modalias,
-> 16)) {
->                         if (!strncmp("spi_old_device", spi_info->modalias,
-> 16)){
->                                 strncpy (spi_info->modalias,
-> "spi_my_dev",16);
->                                 pdata = dev->get_platform_data(spi_info);
->                                 pr_info ( "spi_old_device modalias to
-> spi_my_dev ");
->                         }
->                        else
->                        {
->                              pdata = dev->get_platform_data(spi_info);
->                        }
->                       break;
->                 }
->           dev++;
-> }
->
-> i also modified the devs_id array to change the platform_data
->
->  {"spi_old_dev", SFI_DEV_TYPE_SPI, 0, &no_platform_data}
->
-> The issue is  that for the spi_w8r8 call, i get multiple read (multiple *
-> (8 clock cycles/SS toggle))on the SPI bus.
->
-> Also regarding the spi->irq, is it the responsibility of the protocol
-> driver to register for this irq and handle it or does the spi framework or
-> master driver take care of this ?
->
-> Any pointers would be really helpful. ( attached is the test code)
->
-> Regards,
-> Tom
->
->
->
-------------------------------------------------------------------------------
-The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
-Pinpoint memory and threading errors before they happen.
-Find and fix more than 250 security defects in the development cycle.
-Locate bottlenecks in serial and parallel code that limit performance.
-http://p.sf.net/sfu/intel-dev2devfeb
+c3BpLWRldmVsLWdlbmVyYWzP+srbyv2+3bfWzvYt08PK/dfWy7W7sAoKyrG85LXYteOjujIwMTHE
+6jPUwjExLTEyyNXJ7tvaCsqxvOS12LXjo7oyMDExxOoz1MIxOC0xOcjVyc+6owrKsbzktdi146O6
+MjAxMcTqM9TCMjUtMjbI1bGxvqkKyrG85LXYteOjujIwMTHE6jXUwjEzLTE0yNXJ7tvaCsqxvOS1
+2LXjo7oyMDExxOo11MIyMC0yMcjVyc+6oyAKyrG85LXYteOjujIwMTHE6jXUwjI3LTI4yNWxsb6p
+Cgq30SAgICDTw6O6MjYwMNSqL8jLo6jM4bmpvbLS5aGizueyzaGit6LGsaGisui146Gi1PnLzbPC
+vaPAz8qm0dC3osjtvP61yKOpCsrav8621M/zo7rK0LOh19y84KGiytCzobfWzvbIy9SxoaLP+srb
+1ve53KGiz/rK29fcvOC8sMbky/u21NOqz/rK/b7dt9bO9tPQ0MvIpLXEyMvKvwoK18nRr7Xnu7Cj
+ujAyMC04MDU2MDYzOKO7MDIwLTg1OTE3OTQ1ICDQu9ChveOjqLK70OjSqrTLwODQxbz+x+u72Li0
+tefTytbBY2hpbmFtbWMyMDEwQDEyNi5jb23Ny9DFo6kKsb6/zrPMzOG5qcTa0bWjrLu2063AtLXn
+18nRrwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSAKv86zzLGzvrCjusrQs6HTqs/6ysfG89K1tcTD
+/ML2o6zIu7b4o6zOqsr9srvJ2bXEtcTK0LOhsr+hos/6ytuyv7mk1/fIy9SxCtPJ09rIsbem06rP
++rfWzva1xLjFxO66zbe9t6ijrMbz0rXA27v9tcS088G/yv2+3bXDsru1vdPQ0Ke1xMD708OjrNOq
+z/q31grO9ta7zaPB9NTayv2+3brN0MXPorXEvPK1pbvj19y6zcH3y67Vysq9tcTNqLGoo6zIsbem
+ttS/zbunoaLStc7xoaLTqs/6oaIKvrrV+be9w+a1xMnuyOu31s72o6y94bn7vvay39Xf1rvE3Ma+
+18WxvsTctcS3tNOmwLTUy9f3o6y+9rLftObU2rrctPO1xMqnCs7zt+fP1aGjsb6/zrPM18XR29Pa
+06rP+sr9vt21xLfWzva6zc2zvMajrL3MytrI57rOzdq+8sr9vt2xs7rztcS55sLJus3S/gq6rLXE
+0MXPoqGjzai5/dGnz7Cxvr/Os8zE+r2rv8nS1NXGztXTqs/6yv2+3bfWzva1xNbY0qq4xcTuus24
+37y2vLzE3KOszOEKyf2/xtGnudzA7brNv8bRp772st+1xMuuxr2howotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CszYsfDJ+cP3Cs6qwcuxo9akxeDRtdCnufujrMfr0K+0+LHKvMexvrXnxNSyorCy17BPZmZpY2Wj
+rLKizqpFeGNlbLzT1Ni31s72uaS+37/ioaMKs8K9o8DPyqa/zrPMvvnU+cvNQmxhZGVPZmZpY2W5
+pL7fz+SjrMfr16LS4rrLttTI7bz+yNXG2srHt/HOqsXg0bW1sczsyNXG2tLUt8C82cOwoaMKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq/zrPMtPO42ToK0ruhorW80dQKu6XBqs34tcS438vZt6LV
+ubzTyc/K0LOhvrrV+bXEvNO+56Osyrm1w8r919a7r9Oqz/q6zb6ryLfTqs/6vfjI68HLxvPStbXE
+ytPSsKOssqLS/cbwwcvTqs/6t73KvbXEvt6087jEseQuLi4KMS7Tw8r919bLtbuwCjIuyv3X1ruv
+06rP+tDCx/fKxgozLr6ryLfTqs/60a27two0Lsq1yqnTqs/6yv2+3bfWzva1xM+1zbOy37uuus3K
+tcqpCjUuyv2+3bfWzvbT683avvK5pL7fvPK96Qq2/qGi1rix6rfWzvYK1rix6rfWzvbKx9K71ta/
+7MvZtcTG89K1vKjQp7fWzvbK1rbOo6zKx7riwb/G89K1vaG/tde0v/a1xL2hv7XWuLHqo6wgsb69
+2rbUuPfA4Na4seq9+NDQye7I673izvajrAqyosrUzbzNuMrT1rix6rGzuvO1xNL+uqzQxc+ioaMK
+MS7P+srbvKjQp7XExsC5wNPrv7y6ywoyLrrqudvK0LOh1rix6gozLrmry76+rdOq17S/9ta4seoK
+NC6/zbunz+C52Na4seoKNS7K0LOh06rP+ta4seoKNi621Na4seq1xM+4u6+31s72o6y008r9vt21
+xLfWsrzH98rGye7I67fWzvbWuLHqCjcuyOe6zr2r1rix6rfWveK1vc/gudjTsM/s0vLX0wo4LrC4
+wP3R3cG3Csj9oaKzo7nmytW+3crVvK+6zda4serNs7zGCsO709DK/b7do6zTqs/6t9bO9r7Ns8nB
+y7/V1tDCpbjzoaOxvr3avenJ3Mr9vt3L0byvtcTLvMK3us23vbeoo6zOqtOqz/q31s72tey2qLzh
+yrW1xLv5tKGhowoxLta4serNs7zGt723qNPrwLTUtLjxyr0KMi7K/b7dwLTUtLrNytW8r82+vrYK
+My7K/b7dy9G8r7mkvt+6zcrWts4KNC7K/b7dse21xLnmu666zcnovMYKNS7K/b7dtcTT0NCnxtq6
+zbGjz8oKNi69q8S/seq6zUtQSc/gwawKy8Shor661fm31s72Csbz0rXX3MrH1Nq+utX51tDXs7Tz
+o6zI57n7xNzM4cew1KTWqr661fm21MrWtcTQxc+ius2y38LUo6zG89K1uPzI3dLXs8m5pqGjCjEu
+ytCzob661fm1xMvEuPay47TOCjIuyOe6zr3ntqi+utX5ttTK1gozLr661fm21MrWyv2+3crVvK8K
+NC7Q6MfztcS9u7Lmta/Q1Ao1Lsa3xcbXqru7vtjV8wo2LtDQ0rW+utX5waa31s72CjcuvrrV+bfW
+zva+2NXzCs7loaKzo9PDt9bO9re9t6gKyv2+3bfWzvbQ6NKq09DKtbzKtcS3vbeous3K1rbOo6zS
+1M/CtcS3vbeovau54bSp1Nqxvr/Os8zW0L340NDRp8+wus3R3cG3oaMKMS63vbLut9bO9goyLsqx
+vOTQ8sHQt9bO9rrNttSxyLfWzvYKMy7Gtcr9t9bO9go0Lrbg0rXO8cz1vP62r8yst9bA4Lvj19wK
+NS6/ycrTu6+31rbO0+u94bm5t9bO9grB+aGiytCzobX3sunT69bD0MW2yLfWzvYKytCzobX30dDK
+x7rPt6i78cihyv2+3bXE1tjSqsC01LSjrNKyyse/7MvZwcu94srQs6G3tNOmtcTNvr62o6yxvr3a
+zNbC28rQs6G197LptcSy37uuus3Ns7zGt723qKGjCjEuyOe6zrLfu67Su7TOytCzobX3sukKMi6z
+o7nmtfey6be9t6i6zc34yc+197Lpt723qAozLsjnus69+NDQvfjQ0M2zvMbRp8nP09DQp7XEs+nR
++bX3sukKNC7A7b3izvOy7rXEwLTUtLfWzvYKNS6199HQs8mxvrXEst+7rtPrv9jWxgo2Lsjnus62
+1LPp0fm94bn7vfjQ0M2zvMYKNy7NqLn91sPQxbbIt9bO9rzGy+O197LpzvOy7grG36Giv827p8+4
+t9bT676ryLfTqs/6Cs7esu6x8LXEtPPW2sO9zOXTqs/60tG+rc7et6jC+tfjweO6zbXEytCzobu3
+vrPPwrXEvrrV+dKqx/Oho76ryLfTqs/6ysfP1tTavLDOtMC0tcS3otW5t73P8qOstvi/zbunz7i3
+1srHvqvIt9Oqz/q1xLv5tKGhowoxLr6ryLfTqs/6tPPH98rGCjIuv827p8+4t9a1xLzb1rUKMy6/
+zbunz7i31tProbAxttQx06rP+qGxtcTH+LHwCjQuu/nT2sr9vt3H/bavtcTPuLfWvenJ3Ao1Lrv5
+09rK/b7dx/22r7XEz7i31rXEvLjW1re9t6gKNi6/zbunyv2+3b/it9bO9rXEUkZN1rix6go3LrnL
+v821xLzb1rUoVk9DKbLiwb8KOC67+dPavtvA4M+4t9a3vbeotcTR3cG3Cjkuz7i31r3hufu1xNOm
+08MKsMuhosnM0rXUpLLivLzK9QrUpLLiysfG89K11tjSqrXEvvay39LAvt2jrMbz0rXNqLn91KSy
+4ry8yvW/ydLUucC8xs/C0ru8vrbIoaLE6rbItcTK0LOhuebEo6GiytCzodW809DCyqGiz/rK28G/
+tcihowoxLtSksuLEo9DNtcTA4NDNuMXK9goyLsjnus7RodTxus/KyrXE1KSy4sSj0M0KMy67+dPa
+yrG85NDywdC1xNK71Kq72Lnp1KSy4qOswP3I5wogaS4gyOe6ztSksuK5q8u+w/fE6qGiuvPE6rXE
+06rStcrVyOsKIGlpLiDI57rO1KSy4tDCxOq2yMn6svqzybG+CjQutuDUqrvYuem31s72o7rI57rO
+t9bO9rbguPbS8svYttTEv7Hq1rW1xNOwz+yzzLbIo6yw/LqsCmkuyOe6zr2owaK24LHkwb/Stc7x
+1KSy4sSj0M0KaWkuyOe6zsbAucDStc7xxKPQzbXE09DQp9DUCmlpaS7G89K1zeKyv7Hkwb+jqMD9
+yOe+rbzDuuq528r9vt2jqbXE0aHU8brNuf3Cywppdi68vr3a0vLL2LXEyrG85NDywdC72Lnpt9bO
+9go1LrvYuem31s720d3Bt6O6yOe6ztSksuLQwsrQs6G1xLnmxKO8sNbGtqi3otW5xL+x6gotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq9ssqmvenJ3KO6s8K9o8DPyqY6INDFz6K7
+r9eovNKhoklQTUHIz9akz+7Ev76twO2hok1DU0Whok1DREJBoaK+rbzDt9bO9sqmo6y009K1vq3R
+6bfhuLujrArU+Nb3s9a/qreitPPQzdX+uK7Stc7xz7XNs6Gi0vjQ0LDsuavPtc2zoaK159DF0rXO
+8c+1zbOhormk0rXX1Lavu6+/2NbGz7XNs7XIo6y4utTwuf1PQaGiCkVSUKGiQknPtc2ztcS8r7PJ
+0+vKtcqpoaPA+sjOz+7Ev76twO2jrLy8yvXX3Lzgo6y4sdfcvq3A7bXI1rDO8aGiyuzPpNX7uavL
+vtOq1Mu53MDto6yyxgrO8bncwO2hotDFz6K7r7ncwO2hosjLysLQ0NX+udzA7bmk1/ehowqzwsDP
+yqa9/MbaxeDRtcbz0rWjurart726vb/VoaLW0Ln6yb3SxravoaK9u9L4yqnC3rXCoaK98MOvvK/N
+xaGitqu358b7s7WhotHFt7yhotHH1t7WvdK1oaIK0tq1wLXn19OhosTJsbTLub/LyrPGt6GixM++
+qbnjz8PWw9K1o6i8r83Fo6mhoszsvfK8zrPboaLJz7qjxvvC1rv6oaLOsLDNy7nM2LO1tqW5qcWv
+z7XNs7XIxvPStaGjCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KobbP+srbyv2+3bfWzvbJzNK11KSy
+4ry8yvWht7Gow/u72Na0se2jqMfrtKvV5jAyMC02MjM1MTE1NqOpCgqyzrvhtaXOu8P7s8ajul9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KCrLO
+vNO12LXjo7q/2snPuqMgv9rJ7tvaIL/asbG+qQoKwarPtcjLo7pfX19fX19fX19fX19fX7Xnu7A6
+X19fX19fX19fX19fX19fX7Sr1eY6X19fX19fX19fX19fX19fXwoK08q8/qO6X19fX19fX19fX19f
+X1+yzrvhyMvK/TpfX19fX19fX1/Iy7fR08OjpKO6X19fX19fX19f1KoKCrLOu+HIy6O6X19fX19f
+X19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19fX19fX19fX18KCrLOu+HI
+y6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19fX19fX19f
+X18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9f
+X19fX19fX19fX18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2
+r7Xnu7Cjul9fX19fX19fX19fX18KCri2v+63vcq9o6jH69Gh1PG08qGwocyhsaOpo7qh9TGhos/W
+vfCh9TKhoteq1cqh9TOhorXnu+MKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CrG416I6x+vE
++rDRsajD+7vY1rS72LSrztLLvqOszqrIt7GjxPqxqMP7zt7O8yzH68T61Nm0zrXnu7CjqDAyMC04
+MDU2MDYzOKOpyLfIzyEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgdWx0aW1hdGUgYWxsLWlu
+LW9uZSBwZXJmb3JtYW5jZSB0b29sa2l0OiBJbnRlbChSKSBQYXJhbGxlbCBTdHVkaW8gWEU6ClBp
+bnBvaW50IG1lbW9yeSBhbmQgdGhyZWFkaW5nIGVycm9ycyBiZWZvcmUgdGhleSBoYXBwZW4uCkZp
+bmQgYW5kIGZpeCBtb3JlIHRoYW4gMjUwIHNlY3VyaXR5IGRlZmVjdHMgaW4gdGhlIGRldmVsb3Bt
+ZW50IGN5Y2xlLgpMb2NhdGUgYm90dGxlbmVja3MgaW4gc2VyaWFsIGFuZCBwYXJhbGxlbCBjb2Rl
+IHRoYXQgbGltaXQgcGVyZm9ybWFuY2UuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtZGV2MmRl
+dmZlYgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

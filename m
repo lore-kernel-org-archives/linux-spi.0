@@ -1,78 +1,28 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] mcspi: Add support for GPIO chip select lines
-Date: Sat, 12 Feb 2011 01:33:24 -0700
-Message-ID: <20110212083324.GA17755@angua.secretlab.ca>
-References: <1b68c6791001272033q60dd31dbif4de285cd9bac83d@mail.gmail.com>
- <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com>
- <AANLkTi=L+ZfwVy+O=oAXx8EHGisCdW1Pg4U+dQa4ZzEN@mail.gmail.com>
- <871v58xf0k.fsf@gmail.com>
- <AANLkTi=d_xkhksY=qzUOmjYYs8OkX13+8_4byZtnX9i5@mail.gmail.com>
- <87y67fx5vb.fsf@gmail.com>
- <20101224032819.GC2491@angua.secretlab.ca>
- <878vzfr9h7.fsf@gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: mc13xxx-core, support for i2c, V4
+Date: Sat, 12 Feb 2011 01:40:35 -0700
+Message-ID: <20110212084035.GB17755@angua.secretlab.ca>
+References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: beagleboard <beagleboard@googlegroups.com>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	Eric Miao <eric.miao@canonical.com>
-To: Ben Gamari <bgamari.foss@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <878vzfr9h7.fsf@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <1294119299-18352-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 24, 2010 at 01:05:56AM -0500, Ben Gamari wrote:
-> On Thu, 23 Dec 2010 20:28:19 -0700, Grant Likely <grant.likely@secretlab.ca> wrote:
-> > On Thu, Dec 23, 2010 at 09:27:20PM -0500, Ben Gamari wrote:
-> > > I understand your concerns, but I'm not sure how to satisfy them without
-> > > crippling the design's ability to accomodate my use-case. I can't pass a
-> > > GPIO line per spi_board_info since in my case of a multiplexed CS
-> > > configuration a single pin's state does not uniquely determine the
-> > > desired CS. The only other option I can think of is that we somehow
-> > > provide a list of GPIOs for each bus and map the CS numbers to
-> > > permutations of GPIO states. Unfortunately, I don't know of any suitable
-> > > structure to put this GPIO list in. Perhaps I'm missing something obvious?
-> > 
-> > Close, but not quite.  Assign one gpio number to each cs state, and
-> > write a gpio controller driver that maps the linux-gpio number to the
-> > physical gpio state permutation.  The mapping from gpio# to ss# is
-> > 1:1, but the driver behind the gpio# can do whatever you need it to
-> > do.
-> > 
-> I see. I'm still not convinced that this is the route to take,
-> however. It seems like this virtual gpio interface is not only pretty
-> clunky (simple board file glue turns into an entire gpio chip driver),
-> it seems like this is a very inaccurate and not very useful way to
-> expose a multiplexed CS configuration; e.g. what is this chip driver to
-> do if the user tries to set two CS pins at once?
+On Tue, Jan 04, 2011 at 04:34:55PM +1100, Marc Reilly wrote:
+> Hi,
+> 
+> These patches add i2c support for the mc13xxx-core drive. For v4 I've tried to take
+> in all previous comments, hopefully making it better to follow, and bisectable.
 
-(Sorry for the really laggy reply)
-
-I don't see it being that big a deal.  gpio drivers are pretty
-lightweight and it is fine to have domain-specific limitations on how
-gpios for a particular "gpio controller" behave.  In your example, if
-the hardware doesn't support enabling 2 CS pins at once, then you make
-a choice, either setting one when the other is already set simply does
-not work; or it could reset the other state.  Either choice would be
-fine.  The SPI driver must do the right thing regardless and deselect
-the previous CS line before enabling a new one.
-
-The other alternative would be to implement a new SPI chipselect
-common infrastructure, but IMO, that would just end up looking like a
-duplication of the gpio infrastructure.
-
-Regardless, my point still stands, platform callbacks for what amounts
-to gpio manipulations doesn't make a whole lot of sense.
-
-> Is there precedent for
-> using the GPIO subsystem in this way?
-
-Yes, in drivers/spi look at mpc52xx_spi.c, davinci_spi.c, ath79_spi.c,
-atmel_spi.c, and many more.  Grep for gpio in drivers/spi.
+This series looks okay to me.  Since this is audio drivers, I expect
+that it would best be taken via the ASoC tree?  Have you sent it to
+Mark Brown and the ALSA list for review?
 
 g.
-

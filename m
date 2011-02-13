@@ -1,50 +1,73 @@
-From: Ben Gamari <bgamari.foss@gmail.com>
-Subject: Re: [PATCH] mcspi: Add support for GPIO chip select lines
-Date: Sun, 13 Feb 2011 17:07:54 -0500
-Message-ID: <87bp2fwptx.fsf@gmail.com>
-References: <1b68c6791001272033q60dd31dbif4de285cd9bac83d@mail.gmail.com> <1292954195-20204-2-git-send-email-bgamari.foss@gmail.com> <AANLkTi=L+ZfwVy+O=oAXx8EHGisCdW1Pg4U+dQa4ZzEN@mail.gmail.com> <871v58xf0k.fsf@gmail.com> <AANLkTi=d_xkhksY=qzUOmjYYs8OkX13+8_4byZtnX9i5@mail.gmail.com> <87y67fx5vb.fsf@gmail.com> <20101224032819.GC2491@angua.secretlab.ca> <878vzfr9h7.fsf@gmail.com> <20110212083324.GA17755@angua.secretlab.ca>
+From: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/2] mcspi: Add support for GPIO chip select lines
+Date: Sun, 13 Feb 2011 17:10:33 -0500
+Message-ID: <1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
+References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: beagleboard <beagleboard@googlegroups.com>,
-	linux-omap <linux-omap@vger.kernel.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	spi-devel-general <spi-devel-general@lists.sourceforge.net>,
-	Eric Miao <eric.miao@canonical.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20110212083324.GA17755@angua.secretlab.ca>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 12 Feb 2011 01:33:24 -0700, Grant Likely <grant.likely@secretlab.ca> wrote:
-> (Sorry for the really laggy reply)
-> 
-No worries, I was just starting to think about this again myself.
+Many applications require more chip select lines than the board or
+processor allow. Introduce a mechanism to allow use of GPIO pins as chip
+select lines with the McSPI controller.  To use this functionality, one
+simply specifies the GPIO number in spi_board_info.controller_data.
 
-> I don't see it being that big a deal.  gpio drivers are pretty
-> lightweight and it is fine to have domain-specific limitations on how
-> gpios for a particular "gpio controller" behave.  In your example, if
-> the hardware doesn't support enabling 2 CS pins at once, then you make
-> a choice, either setting one when the other is already set simply does
-> not work; or it could reset the other state.  Either choice would be
-> fine.  The SPI driver must do the right thing regardless and deselect
-> the previous CS line before enabling a new one.
-> 
-Having now finally having had a chance to implement a gpio_chip driver,
-I agree. It's quite simple and seems to fill the need pretty well
+Signed-off-by: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/omap2_mcspi.c |   13 ++++++++-----
+ 1 files changed, 8 insertions(+), 5 deletions(-)
 
-> The other alternative would be to implement a new SPI chipselect
-> common infrastructure, but IMO, that would just end up looking like a
-> duplication of the gpio infrastructure.
-> 
-I think you are probably right. GPIO seems to be a good fit.
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 951a160..ca4a7dc 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -35,6 +35,7 @@
+ #include <linux/slab.h>
+ 
+ #include <linux/spi/spi.h>
++#include <linux/gpio.h>
+ 
+ #include <plat/dma.h>
+ #include <plat/clock.h>
+@@ -235,11 +236,13 @@ static void omap2_mcspi_set_enable(const struct spi_device *spi, int enable)
+ 
+ static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
+ {
+-	u32 l;
+-
+-	l = mcspi_cached_chconf0(spi);
+-	MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
+-	mcspi_write_chconf0(spi, l);
++	if (spi->controller_data) {
++                gpio_set_value((unsigned) spi->controller_data, cs_active);
++	} else {
++		u32 l = mcspi_cached_chconf0(spi);
++		MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
++		mcspi_write_chconf0(spi, l);
++	}
+ }
+ 
+ static void omap2_mcspi_set_master_mode(struct spi_master *master)
+-- 
+1.7.0.4
 
-Patch coming shortly.  I use spi_board_info.controller_data to pass the
-gpio number to the controller which doesn't seem like the best way
-forward, but I wasn't sure how else to proceed. Also, since the gpio
-numbers are dynamically determined spi_board_info.controller_data must
-be filled in at runtime, which is also a bit of a bummer (although not
-easily solved as far as I can tell). Let me know what you think.
 
- - Ben
+------------------------------------------------------------------------------
+The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
+Pinpoint memory and threading errors before they happen.
+Find and fix more than 250 security defects in the development cycle.
+Locate bottlenecks in serial and parallel code that limit performance.
+http://p.sf.net/sfu/intel-dev2devfeb

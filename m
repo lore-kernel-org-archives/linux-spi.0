@@ -1,26 +1,47 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: mc13xxx-core, support for i2c, V4
-Date: Mon, 14 Feb 2011 14:39:49 +0000
-Message-ID: <20110214143949.GB32596@sirena.org.uk>
-References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au> <20110212084035.GB17755@angua.secretlab.ca> <201102141121.34676.philippe.retornaz@epfl.ch>
+From: "Gorby, Russ" <russ.gorby@intel.com>
+Subject: RE: [PATCH 0/1] Adding intel_mid_ssp_spi driver : 01/27/2011
+Date: Mon, 14 Feb 2011 09:22:49 -0800
+Message-ID: <4C5E6457CD7911469A07260381288C28D37127C9@orsmsx502.amr.corp.intel.com>
+References: <1296680512-2758-1-git-send-email-russ.gorby@intel.com>
+ <20110212091913.GD17755@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-To: Philippe R?tornaz <philippe.retornaz-p8DiymsW2f8@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201102141121.34676.philippe.retornaz-p8DiymsW2f8@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	"open list:SPI SUBSYSTEM" <spi-devel-general@lists.sourceforge.net>,
+	open list <linux-kernel@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20110212091913.GD17755@angua.secretlab.ca>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 14, 2011 at 11:21:34AM +0100, Philippe R?tornaz wrote:
+OK got it. Thanks.
 
-> AFAIK the audio part of the mc13783 has still not been merged.
-
-No, it hasn't.  Sacha posted something ages ago but it had a lot of
-problems and I've not seen any subsequent spins.
+>-----Original Message-----
+>From: Grant Likely [mailto:glikely@secretlab.ca] On Behalf Of Grant
+>Likely
+>Sent: Saturday, February 12, 2011 1:19 AM
+>To: Gorby, Russ
+>Cc: David Brownell; open list:SPI SUBSYSTEM; open list
+>Subject: Re: [PATCH 0/1] Adding intel_mid_ssp_spi driver : 01/27/2011
+>
+>On Wed, Feb 02, 2011 at 01:01:51PM -0800, Russ Gorby wrote:
+>> Hello SPI maintainers,
+>> I am sending a patch for the (new) intel_mid_ssp_spi driver for
+>> consideration for inclusion in the Linux Kernel. This is a SPI master
+>> controller driver that is being used for the intel MID platform
+>(Medfield).
+>> It uses the on-board Bulverde SSP controller configured for SPI
+>(spibus #3)
+>> running at 25Mhz.
+>
+>Hi Russ,
+>
+>Just for future reference, when you're only sending one patch, please
+>put your notes into the patch description itself, or immediately after
+>the --- line.  No need for a cover letter like this one.
+>
+>Thanks,
+>g.

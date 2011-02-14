@@ -1,46 +1,26 @@
-From: Philippe =?iso-8859-1?q?R=E9tornaz?= <philippe.retornaz@epfl.ch>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Subject: Re: mc13xxx-core, support for i2c, V4
-Date: Mon, 14 Feb 2011 11:21:34 +0100
-Message-ID: <201102141121.34676.philippe.retornaz@epfl.ch>
-References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au>
-	<20110212084035.GB17755@angua.secretlab.ca>
+Date: Mon, 14 Feb 2011 14:39:49 +0000
+Message-ID: <20110214143949.GB32596@sirena.org.uk>
+References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au> <20110212084035.GB17755@angua.secretlab.ca> <201102141121.34676.philippe.retornaz@epfl.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-i2c@vger.kernel.org, u.kleine-koenig@pengutronix.de,
-	Marc Reilly <marc@cpdesign.com.au>
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110212084035.GB17755@angua.secretlab.ca>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+To: Philippe R?tornaz <philippe.retornaz-p8DiymsW2f8@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201102141121.34676.philippe.retornaz-p8DiymsW2f8@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Le samedi, 12 f=E9vrier 2011 09.40:35, Grant Likely a =E9crit :
-> On Tue, Jan 04, 2011 at 04:34:55PM +1100, Marc Reilly wrote:
-> > Hi,
-> >
-> > These patches add i2c support for the mc13xxx-core drive. For v4 I've
-> > tried to take in all previous comments, hopefully making it better to
-> > follow, and bisectable.
-> =
+On Mon, Feb 14, 2011 at 11:21:34AM +0100, Philippe R?tornaz wrote:
 
-> This series looks okay to me.  Since this is audio drivers, I expect
-> that it would best be taken via the ASoC tree?  Have you sent it to
-> Mark Brown and the ALSA list for review?
+> AFAIK the audio part of the mc13783 has still not been merged.
 
-AFAIK the audio part of the mc13783 has still not been merged.
-
-Regards,
-
-Philippe
+No, it hasn't.  Sacha posted something ages ago but it had a lot of
+problems and I've not seen any subsequent spins.

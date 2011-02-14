@@ -1,8 +1,8 @@
 From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-Subject: [PATCH v8] spi: add OpenCores tiny SPI driver
-Date: Mon, 14 Feb 2011 10:15:58 +0800
-Message-ID: <1297649758-11828-1-git-send-email-thomas@wytron.com.tw>
-References: <AANLkTik6UcF0v43wRowV6+0xtKC6Kkwh30xvArefW23N@mail.gmail.com>
+Subject: [PATCH v8 resend] spi: add OpenCores tiny SPI driver
+Date: Mon, 14 Feb 2011 10:20:39 +0800
+Message-ID: <1297650039-12013-1-git-send-email-thomas@wytron.com.tw>
+References: <1297649758-11828-1-git-send-email-thomas@wytron.com.tw>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <AANLkTik6UcF0v43wRowV6+0xtKC6Kkwh30xvArefW23N-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1297649758-11828-1-git-send-email-thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
 	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
@@ -41,12 +41,14 @@ v6 check len from of_get_property.
 v7 remove default n from Kconfig.
 v8 condition module device table export for of.
 
+Sorry, forget to commit the last change.
+
  .../devicetree/bindings/spi/spi_oc_tiny.txt        |   12 +
  drivers/spi/Kconfig                                |    7 +
  drivers/spi/Makefile                               |    1 +
- drivers/spi/spi_oc_tiny.c                          |  421 ++++++++++++++++++++
+ drivers/spi/spi_oc_tiny.c                          |  425 ++++++++++++++++++++
  include/linux/spi/spi_oc_tiny.h                    |   20 +
- 5 files changed, 461 insertions(+), 0 deletions(-)
+ 5 files changed, 465 insertions(+), 0 deletions(-)
  create mode 100644 Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
  create mode 100644 drivers/spi/spi_oc_tiny.c
  create mode 100644 include/linux/spi/spi_oc_tiny.h
@@ -101,10 +103,10 @@ index 86d1b5f..c7e4c23 100644
  obj-$(CONFIG_SPI_OMAP_100K)		+= omap_spi_100k.o
 diff --git a/drivers/spi/spi_oc_tiny.c b/drivers/spi/spi_oc_tiny.c
 new file mode 100644
-index 0000000..fa82b90
+index 0000000..e99e545
 --- /dev/null
 +++ b/drivers/spi/spi_oc_tiny.c
-@@ -0,0 +1,421 @@
+@@ -0,0 +1,425 @@
 +/*
 + * OpenCores tiny SPI master driver
 + *
@@ -493,11 +495,15 @@ index 0000000..fa82b90
 +	return 0;
 +}
 +
++#ifdef CONFIG_OF
 +static const struct of_device_id tiny_spi_match[] = {
 +	{ .compatible = "opencores,tiny-spi-rtlsvn2", },
 +	{},
 +}
 +MODULE_DEVICE_TABLE(of, tiny_spi_match);
++#else /* CONFIG_OF */
++#define tiny_spi_match NULL
++#endif /* CONFIG_OF */
 +
 +static struct platform_driver tiny_spi_driver = {
 +	.probe = tiny_spi_probe,

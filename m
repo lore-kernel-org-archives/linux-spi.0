@@ -1,167 +1,212 @@
-From: Ryan Mallon <ryan@bluewatersys.com>
-Subject: Re: [PATCH v9] spi: New driver for Altera SPI
-Date: Wed, 16 Feb 2011 10:58:41 +1300
-Message-ID: <4D5AF711.3000508@bluewatersys.com>
-References: <1297142509-20158-1-git-send-email-thomas@wytron.com.tw> <1297649443-11491-1-git-send-email-thomas@wytron.com.tw> <4D58917E.9050408@bluewatersys.com> <4D5A2591.5090901@wytron.com.tw> <20110215194257.GB7649@angua.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/bfin_spi: support for multiples of 8bits with
+	hardware CS
+Date: Tue, 15 Feb 2011 15:06:18 -0700
+Message-ID: <20110215220618.GC28005@angua.secretlab.ca>
+References: <1294762748-25122-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Thomas Chou <thomas@wytron.com.tw>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-kernel@vger.kernel.org, nios2-dev@sopc.et.ntust.edu.tw,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20110215194257.GB7649@angua.secretlab.ca>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1294762748-25122-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 16/02/11 08:42, Grant Likely wrote:
-> On Tue, Feb 15, 2011 at 03:04:49PM +0800, Thomas Chou wrote:
->> Dear Ryan,
->>
->> On 02/14/2011 10:20 AM, Ryan Mallon wrote:
->>> On 02/14/2011 03:10 PM, Thomas Chou wrote:
->>>> This patch adds a new SPI driver to support the Altera SOPC Builder
->>>> SPI component. It uses the bitbanging library.
->>>>
->>>> Signed-off-by: Thomas Chou<thomas@wytron.com.tw>
->>>> ---
->>>> +struct altera_spi {
->>>> +	/* bitbang has to be first */
->>>> +	struct spi_bitbang bitbang;
->>> Is this still true? I had a quick look and can't see anything which
->>> relies on spi_bitbang being the first entry. Things like this should be
->>> using container_of so that position in the struct is irrelevant.
->>>
->>> ~Ryan
->>>
->> Yes, sadly true. This is due to the implementation of the bitbanging
->> library, spi_bitbang.c, which assumes the struct spi_bitbang is the
->> first of drvdata. Though it could be changed in the future (beyond
->> this little driver), every bitbanging library user has to follow
->> this for now.
-> Should be easy to fix if it is indeed still true (I haven't dug deep
-> enough to find the design error yet).  Anybody want to volunteer?
->
-> g.
->
-The problem is that spi_master_get_devdata is used to get both 
-struct spi_bitbang and the controller dependent structure, which means
-that struct spi_bitbang must be the first entry in the container
-structure.
+On Tue, Jan 11, 2011 at 11:19:07AM -0500, Mike Frysinger wrote:
+> From: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> 
+> We can do multiples of 8bit transfers when using the hardware CS and a
+> little bit of magic, so make it work.
+> 
+> Signed-off-by: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 
-The following incomplete, untested patch shows a possible way to fix
-this by introducing spi_alloc_master_bitbang. spi_master_get_devdata
-now returns a pointer to struct spi_bitbang only. Drivers which need
-an additional container struct should allocate it themselves and 
-pass the bitbang field to spi_alloc_master_bitbang. The driver 
-specific container can be fetched with:
+Applied, thanks
 
-static inline struct my_spi *to_my_spi(struct spi_master *master)
-{
-	struct spi_bitbang *bitbang = spi_master_get_devdata(master);
-	return container_of(bitbang, struct my_spi, bitbang);
-} 
+g.
 
-This patch only adds the alloc function and shows the necessary
-changes to the spi_gpio.c driver, which is actually pretty minimal.
-If there is any interest I can code up a proper patch.
+> ---
+>  drivers/spi/spi_bfin5xx.c |  103 +++++++++++++++++++++++++++++++--------------
+>  1 files changed, 71 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+> index 3f22351..e8d68b7 100644
+> --- a/drivers/spi/spi_bfin5xx.c
+> +++ b/drivers/spi/spi_bfin5xx.c
+> @@ -425,6 +425,7 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+>  	struct bfin_spi_slave_data *chip = drv_data->cur_chip;
+>  	struct spi_message *msg = drv_data->cur_msg;
+>  	int n_bytes = drv_data->n_bytes;
+> +	int loop = 0;
+>  
+>  	/* wait until transfer finished. */
+>  	while (!(read_STAT(drv_data) & BIT_STAT_RXS))
+> @@ -435,10 +436,15 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+>  		/* last read */
+>  		if (drv_data->rx) {
+>  			dev_dbg(&drv_data->pdev->dev, "last read\n");
+> -			if (n_bytes == 2)
+> -				*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
+> -			else if (n_bytes == 1)
+> -				*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
+> +			if (n_bytes % 2) {
+> +				u16 *buf = (u16 *)drv_data->rx;
+> +				for (loop = 0; loop < n_bytes / 2; loop++)
+> +					*buf++ = read_RDBR(drv_data);
+> +			} else {
+> +				u8 *buf = (u8 *)drv_data->rx;
+> +				for (loop = 0; loop < n_bytes; loop++)
+> +					*buf++ = read_RDBR(drv_data);
+> +			}
+>  			drv_data->rx += n_bytes;
+>  		}
+>  
+> @@ -458,29 +464,53 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+>  	if (drv_data->rx && drv_data->tx) {
+>  		/* duplex */
+>  		dev_dbg(&drv_data->pdev->dev, "duplex: write_TDBR\n");
+> -		if (drv_data->n_bytes == 2) {
+> -			*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
+> -			write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+> -		} else if (drv_data->n_bytes == 1) {
+> -			*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
+> -			write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+> +		if (n_bytes % 2) {
+> +			u16 *buf = (u16 *)drv_data->rx;
+> +			u16 *buf2 = (u16 *)drv_data->tx;
+> +			for (loop = 0; loop < n_bytes / 2; loop++) {
+> +				*buf++ = read_RDBR(drv_data);
+> +				write_TDBR(drv_data, *buf2++);
+> +			}
+> +		} else {
+> +			u8 *buf = (u8 *)drv_data->rx;
+> +			u8 *buf2 = (u8 *)drv_data->tx;
+> +			for (loop = 0; loop < n_bytes; loop++) {
+> +				*buf++ = read_RDBR(drv_data);
+> +				write_TDBR(drv_data, *buf2++);
+> +			}
+>  		}
+>  	} else if (drv_data->rx) {
+>  		/* read */
+>  		dev_dbg(&drv_data->pdev->dev, "read: write_TDBR\n");
+> -		if (drv_data->n_bytes == 2)
+> -			*(u16 *) (drv_data->rx) = read_RDBR(drv_data);
+> -		else if (drv_data->n_bytes == 1)
+> -			*(u8 *) (drv_data->rx) = read_RDBR(drv_data);
+> -		write_TDBR(drv_data, chip->idle_tx_val);
+> +		if (n_bytes % 2) {
+> +			u16 *buf = (u16 *)drv_data->rx;
+> +			for (loop = 0; loop < n_bytes / 2; loop++) {
+> +				*buf++ = read_RDBR(drv_data);
+> +				write_TDBR(drv_data, chip->idle_tx_val);
+> +			}
+> +		} else {
+> +			u8 *buf = (u8 *)drv_data->rx;
+> +			for (loop = 0; loop < n_bytes; loop++) {
+> +				*buf++ = read_RDBR(drv_data);
+> +				write_TDBR(drv_data, chip->idle_tx_val);
+> +			}
+> +		}
+>  	} else if (drv_data->tx) {
+>  		/* write */
+>  		dev_dbg(&drv_data->pdev->dev, "write: write_TDBR\n");
+> -		bfin_spi_dummy_read(drv_data);
+> -		if (drv_data->n_bytes == 2)
+> -			write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+> -		else if (drv_data->n_bytes == 1)
+> -			write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+> +		if (n_bytes % 2) {
+> +			u16 *buf = (u16 *)drv_data->tx;
+> +			for (loop = 0; loop < n_bytes / 2; loop++) {
+> +				read_RDBR(drv_data);
+> +				write_TDBR(drv_data, *buf++);
+> +			}
+> +		} else {
+> +			u8 *buf = (u8 *)drv_data->tx;
+> +			for (loop = 0; loop < n_bytes; loop++) {
+> +				read_RDBR(drv_data);
+> +				write_TDBR(drv_data, *buf++);
+> +			}
+> +		}
+>  	}
+>  
+>  	if (drv_data->tx)
+> @@ -651,16 +681,16 @@ static void bfin_spi_pump_transfers(unsigned long data)
+>  
+>  	/* Bits per word setup */
+>  	bits_per_word = transfer->bits_per_word ? : message->spi->bits_per_word;
+> -	if (bits_per_word == 8) {
+> -		drv_data->n_bytes = 1;
+> -		drv_data->len = transfer->len;
+> -		cr_width = 0;
+> -		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
+> -	} else if (bits_per_word == 16) {
+> -		drv_data->n_bytes = 2;
+> +	if ((bits_per_word > 0) && (bits_per_word % 16 == 0)) {
+> +		drv_data->n_bytes = bits_per_word/8;
+>  		drv_data->len = (transfer->len) >> 1;
+>  		cr_width = BIT_CTL_WORDSIZE;
+>  		drv_data->ops = &bfin_bfin_spi_transfer_ops_u16;
+> +	} else if ((bits_per_word > 0) && (bits_per_word % 8 == 0)) {
+> +		drv_data->n_bytes = bits_per_word/8;
+> +		drv_data->len = transfer->len;
+> +		cr_width = 0;
+> +		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
+>  	} else {
+>  		dev_err(&drv_data->pdev->dev, "transfer: unsupported bits_per_word\n");
+>  		message->status = -EINVAL;
+> @@ -815,10 +845,19 @@ static void bfin_spi_pump_transfers(unsigned long data)
+>  		if (drv_data->tx == NULL)
+>  			write_TDBR(drv_data, chip->idle_tx_val);
+>  		else {
+> -			if (bits_per_word == 8)
+> -				write_TDBR(drv_data, (*(u8 *) (drv_data->tx)));
+> -			else
+> -				write_TDBR(drv_data, (*(u16 *) (drv_data->tx)));
+> +			int loop;
+> +			if (bits_per_word % 16 == 0) {
+> +				u16 *buf = (u16 *)drv_data->tx;
+> +				for (loop = 0; loop < bits_per_word / 16;
+> +						loop++) {
+> +					write_TDBR(drv_data, *buf++);
+> +				}
+> +			} else if (bits_per_word % 8 == 0) {
+> +				u8 *buf = (u8 *)drv_data->tx;
+> +				for (loop = 0; loop < bits_per_word / 8; loop++)
+> +					write_TDBR(drv_data, *buf++);
+> +			}
+> +
+>  			drv_data->tx += drv_data->n_bytes;
+>  		}
+>  
+> @@ -1031,7 +1070,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+>  		chip->ctl_reg &= bfin_ctl_reg;
+>  	}
+>  
+> -	if (spi->bits_per_word != 8 && spi->bits_per_word != 16) {
+> +	if (spi->bits_per_word % 8) {
+>  		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
+>  				spi->bits_per_word);
+>  		goto error;
+> -- 
+> 1.7.4.rc1
+> 
 
-~Ryan
-
----
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 34bb17f..52ec691 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -27,6 +27,7 @@
- #include <linux/slab.h>
- #include <linux/mod_devicetable.h>
- #include <linux/spi/spi.h>
-+#include <linux/spi/spi_bitbang.h>
- #include <linux/of_spi.h>
- #include <linux/pm_runtime.h>
- 
-@@ -560,6 +561,24 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- }
- EXPORT_SYMBOL_GPL(spi_alloc_master);
- 
-+struct spi_master *spi_alloc_master_bitbang(struct device *dev,
-+					    struct spi_bitbang *bitbang)
-+{
-+	struct spi_master *master;
-+
-+	master = kzalloc(sizeof(struct spi_master), GFP_KERNEL);
-+	if (!master)
-+		return NULL;
-+
-+	device_initialize(&master->dev);
-+	master->dev.class = &spi_master_class;
-+	master->dev.parent = get_device(dev);
-+	spi_master_set_devdata(master, bitbang);
-+
-+	return master;
-+}
-+EXPORT_SYMBOL_GPL(spi_alloc_master_bitbang);
-+
- /**
-  * spi_register_master - register SPI master controller
-  * @master: initialized master, originally from spi_alloc_master()
-diff --git a/drivers/spi/spi_gpio.c b/drivers/spi/spi_gpio.c
-index 63e51b0..169dbf0 100644
---- a/drivers/spi/spi_gpio.c
-+++ b/drivers/spi/spi_gpio.c
-@@ -329,12 +329,17 @@ static int __init spi_gpio_probe(struct platform_device *pdev)
- 	if (status < 0)
- 		return status;
- 
--	master = spi_alloc_master(&pdev->dev, sizeof *spi_gpio);
--	if (!master) {
-+	spi_gpio = kzalloc(sizeof(struct spi_gpio), GFP_KERNEL);
-+	if (!spi_gpio) {
- 		status = -ENOMEM;
- 		goto gpio_free;
- 	}
--	spi_gpio = spi_master_get_devdata(master);
-+
-+	master = spi_alloc_master_bitbang(&pdev->dev, &spi_gpio->bitbang);
-+	if (!master) {
-+		status = -ENOMEM;
-+		goto spi_gpio_free;
-+	}
- 	platform_set_drvdata(pdev, spi_gpio);
- 
- 	spi_gpio->pdev = pdev;
-@@ -367,6 +372,8 @@ static int __init spi_gpio_probe(struct platform_device *pdev)
- 	status = spi_bitbang_start(&spi_gpio->bitbang);
- 	if (status < 0) {
- 		spi_master_put(spi_gpio->bitbang.master);
-+spi_gpio_free:
-+		kfree(spi_gpio);
- gpio_free:
- 		if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO)
- 			gpio_free(SPI_MISO_GPIO);
-@@ -391,6 +398,7 @@ static int __exit spi_gpio_remove(struct platform_device *pdev)
- 	/* stop() unregisters child devices too */
- 	status = spi_bitbang_stop(&spi_gpio->bitbang);
- 	spi_master_put(spi_gpio->bitbang.master);
-+	kfree(spi_gpio);
- 
- 	platform_set_drvdata(pdev, NULL);
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index b4d7710..3f72a34 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -336,7 +336,8 @@ static inline void spi_master_put(struct spi_master *master)
- /* the spi driver core manages memory for the spi_master classdev */
- extern struct spi_master *
- spi_alloc_master(struct device *host, unsigned size);
--
-+extern struct spi_master *
-+spi_alloc_master_bitbang(struct device *host, struct spi_bitbang *bitbang);
- extern int spi_register_master(struct spi_master *master);
- extern void spi_unregister_master(struct spi_master *master);
- 
+------------------------------------------------------------------------------
+The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
+Pinpoint memory and threading errors before they happen.
+Find and fix more than 250 security defects in the development cycle.
+Locate bottlenecks in serial and parallel code that limit performance.
+http://p.sf.net/sfu/intel-dev2devfeb

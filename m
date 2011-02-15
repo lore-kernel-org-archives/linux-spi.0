@@ -1,76 +1,56 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/8] intel_mid_ssp_spi: Re-introduce quirks fields
-Date: Mon, 14 Feb 2011 22:21:30 -0700
-Message-ID: <20110215052130.GB28029@angua.secretlab.ca>
-References: <20110209100231.555.90520.stgit@bob.linux.org.uk>
- <20110209100713.555.65955.stgit@bob.linux.org.uk>
+From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+Subject: Re: [PATCH v9] spi: New driver for Altera SPI
+Date: Tue, 15 Feb 2011 15:04:49 +0800
+Message-ID: <4D5A2591.5090901@wytron.com.tw>
+References: <1297142509-20158-1-git-send-email-thomas@wytron.com.tw>
+	<1297649443-11491-1-git-send-email-thomas@wytron.com.tw>
+	<4D58917E.9050408@bluewatersys.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net, russ.gorby@intel.com,
-	linux-kernel@vger.kernel.org
-To: Alan Cox <alan@lxorguk.ukuu.org.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20110209100713.555.65955.stgit@bob.linux.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Ryan Mallon <ryan-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <4D58917E.9050408-7Wk5F4Od5/oYd5yxfr4S2w@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 09, 2011 at 10:07:30AM +0000, Alan Cox wrote:
-> From: Alan Cox <alan@linux.intel.com>
-> 
-> This adds the quirks field to the driver and the flags. We don't yet
-> implement any of them so we don't confuse the driver.
-> 
-> Signed-off-by: Alan Cox <alan@linux.intel.com>
+Dear Ryan,
 
-Other than minor point, looks fine.  Looks like it should be squashed
-into patch #1.
+On 02/14/2011 10:20 AM, Ryan Mallon wrote:
+> On 02/14/2011 03:10 PM, Thomas Chou wrote:
+>> This patch adds a new SPI driver to support the Altera SOPC Builder
+>> SPI component. It uses the bitbanging library.
+>>
+>> Signed-off-by: Thomas Chou<thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+>> ---
+>
+>> +struct altera_spi {
+>> +	/* bitbang has to be first */
+>> +	struct spi_bitbang bitbang;
+>
+> Is this still true? I had a quick look and can't see anything which
+> relies on spi_bitbang being the first entry. Things like this should be
+> using container_of so that position in the struct is irrelevant.
+>
+> ~Ryan
+>
 
-g.
+Yes, sadly true. This is due to the implementation of the bitbanging 
+library, spi_bitbang.c, which assumes the struct spi_bitbang is the 
+first of drvdata. Though it could be changed in the future (beyond this 
+little driver), every bitbanging library user has to follow this for now.
 
-> ---
-> 
->  drivers/spi/intel_mid_ssp_spi.c |   11 ++++++++++-
->  1 files changed, 10 insertions(+), 1 deletions(-)
-> 
-> 
-> diff --git a/drivers/spi/intel_mid_ssp_spi.c b/drivers/spi/intel_mid_ssp_spi.c
-> index 19c62bc..f201edd 100644
-> --- a/drivers/spi/intel_mid_ssp_spi.c
-> +++ b/drivers/spi/intel_mid_ssp_spi.c
-> @@ -125,6 +125,15 @@ struct driver_data {
->  	/* SPI framework hookup */
->  	struct spi_master *master;
->  
-> +	/* Chip specific quirks */
-> +	int quirks;
-> +#define QUIRKS_PLATFORM_MRST		1
-> +#define QUIRKS_SRAM_ADDITIONAL_CPY	2
-> +#define QUIRKS_USE_PM_QOS		4
-> +#define QUIRKS_BIT_BANGING		8
-> +#define QUIRKS_SPI_SLAVE_CLOCK_MODE	16
-> +#define QUIRKS_PLATFORM_MDFL		32
-> +
->  	/* SSP register addresses */
->  	unsigned long paddr;
->  	void __iomem *ioaddr;
-> @@ -137,7 +146,6 @@ struct driver_data {
->  	u32 clear_sr;
->  	u32 mask_sr;
->  
-> -
-
-unrelated whitespace change.
-
->  	/* Current message transfer state info */
->  	struct tasklet_struct poll_transfer;
->  	struct spi_message *cur_msg;
-> @@ -1163,6 +1171,7 @@ static int intel_mid_ssp_spi_probe(struct pci_dev *pdev,
->  	}
->  
->  	drv_data = spi_master_get_devdata(master);
-> +	drv_data->quirks = ent->driver_data;
->  	drv_data->master = master;
->  	drv_data->pdev = pdev;
->  	drv_data->pwrstate = PWRSTATE_ON;
-> 
+Best regards,
+Thomas

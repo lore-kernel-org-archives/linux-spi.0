@@ -1,38 +1,48 @@
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [PATCH] spi: add support for SuperH SPI
-Date: Wed, 16 Feb 2011 17:09:58 +0900
-Message-ID: <4D5B8656.8090901@renesas.com>
-References: <4D59D738.4070304@renesas.com>
- <20110216025950.GM28005@angua.secretlab.ca>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH] spi/pl022: rid dangling labels
+Date: Wed, 16 Feb 2011 09:40:26 +0100
+Message-ID: <1297845626-13332-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	spi-devel-general@lists.sourceforge.net,
-	SH-Linux <linux-sh@vger.kernel.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-reply-to: <20110216025950.GM28005@angua.secretlab.ca>
-Sender: linux-sh-owner@vger.kernel.org
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/02/16 11:59, Grant Likely wrote:
-> On Tue, Feb 15, 2011 at 10:30:32AM +0900, Yoshihiro Shimoda wrote:
->> The SH7757 has SPI0 module. This patch supports it.
->>
->> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> 
-> Merged, thanks.  I made a few minor edits on style issues and to add
-> the __devinit/__devexit annotations to the probe/remove functions.
-> Please give it a spin to make sure I haven't broken anything when it
-> appears in my spi/next branch on git://git.secretlab.ca/git/linux-2.6
-> (sometime in the next 6 hours).
+From: Linus Walleij <linus.walleij@linaro.org>
 
-Thank you very much!
-I confirmed that the merged patch works correctly.
+Remove a compilation error regarding unused labels that came about
+when simplifying the DMA code.
 
-Thanks,
-Yoshihiro Shimoda
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/amba-pl022.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-> g.
-> 
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 4cd05cc..14a451b 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -1030,8 +1030,6 @@ static int configure_dma(struct pl022 *pl022)
+ 
+ 	return 0;
+ 
+-err_submit_tx:
+-err_submit_rx:
+ err_txdesc:
+ 	dmaengine_terminate_all(txchan);
+ err_rxdesc:
+-- 
+1.7.3.2

@@ -1,132 +1,446 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/imx: select master mode for all channels
-Date: Tue, 15 Feb 2011 19:44:30 -0700
-Message-ID: <AANLkTimYDNN3KQ1V9riDYPdmJe_J64euJzcPFLZpe4jd@mail.gmail.com>
-References: <1297195739-24951-1-git-send-email-u.kleine-koenig@pengutronix.de>
-	<20110215204417.GA28005@angua.secretlab.ca>
+Subject: Re: [PATCH v9] spi: New driver for Altera SPI
+Date: Tue, 15 Feb 2011 19:47:45 -0700
+Message-ID: <20110216024745.GK28005@angua.secretlab.ca>
+References: <1297142509-20158-1-git-send-email-thomas@wytron.com.tw>
+	<1297649443-11491-1-git-send-email-thomas@wytron.com.tw>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Richard Zhao <richard.zhao-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Yong Shen <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Shawn Guo <shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20110215204417.GA28005-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1297649443-11491-1-git-send-email-thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/2/15 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
-> On Tue, Feb 08, 2011 at 09:08:59PM +0100, Uwe Kleine-K=F6nig wrote:
->> From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->>
->> The hardware seems to have a race condition when the inactive
->> channels are in slave mode. We support master mode only, so
->> we can just switch all channels to master mode.
->>
->> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->> [ukleinek: add more verbose comment about the race]
->> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
->> ---
->> Hello,
->>
->> maybe one of our friends at Freescale can comment?
->
-> Any feedback on this one? =A0Or should I just merge it?
+On Mon, Feb 14, 2011 at 10:10:43AM +0800, Thomas Chou wrote:
+> This patch adds a new SPI driver to support the Altera SOPC Builder
+> SPI component. It uses the bitbanging library.
+> 
+> Signed-off-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
 
-I've gone ahead and merged it.  I can pull it back out if anyone
-complains though.
-
-Thanks,
+Applied, thanks.
 
 g.
 
->
-> g.
->
->>
->> Best regards
->> Uwe
->>
->> =A0drivers/spi/spi_imx.c | =A0 12 +++++++++---
->> =A01 files changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
->> index 1cf9d5f..69d6dba 100644
->> --- a/drivers/spi/spi_imx.c
->> +++ b/drivers/spi/spi_imx.c
->> @@ -174,7 +174,7 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fi=
-n,
->> =A0#define SPI_IMX2_3_CTRL =A0 =A0 =A0 =A0 =A0 =A0 =A00x08
->> =A0#define SPI_IMX2_3_CTRL_ENABLE =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << =A00)
->> =A0#define SPI_IMX2_3_CTRL_XCH =A0 =A0 =A0 =A0 =A0(1 << =A02)
->> -#define SPI_IMX2_3_CTRL_MODE(cs) =A0 =A0 (1 << ((cs) + =A04))
->> +#define SPI_IMX2_3_CTRL_MODE_MASK =A0 =A0(0xf << 4)
->> =A0#define SPI_IMX2_3_CTRL_POSTDIV_OFFSET =A0 =A0 =A0 8
->> =A0#define SPI_IMX2_3_CTRL_PREDIV_OFFSET =A0 =A0 =A0 =A012
->> =A0#define SPI_IMX2_3_CTRL_CS(cs) =A0 =A0 =A0 =A0 =A0 =A0 =A0 ((cs) << 1=
-8)
->> @@ -253,8 +253,14 @@ static int __maybe_unused spi_imx2_3_config(struct =
-spi_imx_data *spi_imx,
->> =A0{
->> =A0 =A0 =A0 u32 ctrl =3D SPI_IMX2_3_CTRL_ENABLE, cfg =3D 0;
->>
->> - =A0 =A0 /* set master mode */
->> - =A0 =A0 ctrl |=3D SPI_IMX2_3_CTRL_MODE(config->cs);
->> + =A0 =A0 /*
->> + =A0 =A0 =A0* The hardware seems to have a race condition when changing=
- modes. The
->> + =A0 =A0 =A0* current assumption is that the selection of the channel a=
-rrives
->> + =A0 =A0 =A0* earlier in the hardware than the mode bits when they are =
-written at
->> + =A0 =A0 =A0* the same time.
->> + =A0 =A0 =A0* So set master mode for all channels as we do not support =
-slave mode.
->> + =A0 =A0 =A0*/
->> + =A0 =A0 ctrl |=3D SPI_IMX2_3_CTRL_MODE_MASK;
->>
->> =A0 =A0 =A0 /* set clock speed */
->> =A0 =A0 =A0 ctrl |=3D spi_imx2_3_clkdiv(spi_imx->spi_clk, config->speed_=
-hz);
->> --
->> 1.7.2.3
->>
->>
->> ------------------------------------------------------------------------=
-------
->> The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
->> Pinpoint memory and threading errors before they happen.
->> Find and fix more than 250 security defects in the development cycle.
->> Locate bottlenecks in serial and parallel code that limit performance.
->> http://p.sf.net/sfu/intel-dev2devfeb
->> _______________________________________________
->> spi-devel-general mailing list
->> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
->> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
-Pinpoint memory and threading errors before they happen.
-Find and fix more than 250 security defects in the development cycle.
-Locate bottlenecks in serial and parallel code that limit performance.
-http://p.sf.net/sfu/intel-dev2devfeb
+> ---
+> v2 add devicetree support
+> v3 remove platform header, as Grant suggested.
+>    no irq resource means polling.
+> v4 minor cleanup, as Grant suggested.
+> v5 add compat version.
+> v6 change compatible vendor to uppercase, ALTR.
+>    add dts binding doc.
+> v7 use platform driver register.
+>    use devm_ to help cleanup.
+> v8 remove default n in Kconfig.
+> v9 condition module device table export for of.
+> 
+>  .../devicetree/bindings/spi/spi_altera.txt         |    4 +
+>  drivers/spi/Kconfig                                |    6 +
+>  drivers/spi/Makefile                               |    1 +
+>  drivers/spi/spi_altera.c                           |  339 ++++++++++++++++++++
+>  4 files changed, 350 insertions(+), 0 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi_altera.txt
+>  create mode 100644 drivers/spi/spi_altera.c
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi_altera.txt b/Documentation/devicetree/bindings/spi/spi_altera.txt
+> new file mode 100644
+> index 0000000..dda3759
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi_altera.txt
+> @@ -0,0 +1,4 @@
+> +Altera SPI
+> +
+> +Required properties:
+> +- compatible : should be "ALTR,spi-1.0".
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index bb233a9..e791579 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -53,6 +53,12 @@ if SPI_MASTER
+>  
+>  comment "SPI Master Controller Drivers"
+>  
+> +config SPI_ALTERA
+> +	tristate "Altera SPI Controller"
+> +	select SPI_BITBANG
+> +	help
+> +	  This is the driver for the Altera SPI Controller.
+> +
+>  config SPI_ATH79
+>  	tristate "Atheros AR71XX/AR724X/AR913X SPI controller driver"
+>  	depends on ATH79 && GENERIC_GPIO
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 86d1b5f..4d2e35a 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -9,6 +9,7 @@ ccflags-$(CONFIG_SPI_DEBUG) := -DDEBUG
+>  obj-$(CONFIG_SPI_MASTER)		+= spi.o
+>  
+>  # SPI master controller drivers (bus)
+> +obj-$(CONFIG_SPI_ALTERA)		+= spi_altera.o
+>  obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
+>  obj-$(CONFIG_SPI_ATH79)			+= ath79_spi.o
+>  obj-$(CONFIG_SPI_BFIN)			+= spi_bfin5xx.o
+> diff --git a/drivers/spi/spi_altera.c b/drivers/spi/spi_altera.c
+> new file mode 100644
+> index 0000000..5e001f3
+> --- /dev/null
+> +++ b/drivers/spi/spi_altera.c
+> @@ -0,0 +1,339 @@
+> +/*
+> + * Altera SPI driver
+> + *
+> + * Copyright (C) 2008 Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+> + *
+> + * Based on spi_s3c24xx.c, which is:
+> + * Copyright (c) 2006 Ben Dooks
+> + * Copyright (c) 2006 Simtec Electronics
+> + *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/init.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/errno.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/spi/spi_bitbang.h>
+> +#include <linux/io.h>
+> +#include <linux/of.h>
+> +
+> +#define DRV_NAME "spi_altera"
+> +
+> +#define ALTERA_SPI_RXDATA	0
+> +#define ALTERA_SPI_TXDATA	4
+> +#define ALTERA_SPI_STATUS	8
+> +#define ALTERA_SPI_CONTROL	12
+> +#define ALTERA_SPI_SLAVE_SEL	20
+> +
+> +#define ALTERA_SPI_STATUS_ROE_MSK	0x8
+> +#define ALTERA_SPI_STATUS_TOE_MSK	0x10
+> +#define ALTERA_SPI_STATUS_TMT_MSK	0x20
+> +#define ALTERA_SPI_STATUS_TRDY_MSK	0x40
+> +#define ALTERA_SPI_STATUS_RRDY_MSK	0x80
+> +#define ALTERA_SPI_STATUS_E_MSK		0x100
+> +
+> +#define ALTERA_SPI_CONTROL_IROE_MSK	0x8
+> +#define ALTERA_SPI_CONTROL_ITOE_MSK	0x10
+> +#define ALTERA_SPI_CONTROL_ITRDY_MSK	0x40
+> +#define ALTERA_SPI_CONTROL_IRRDY_MSK	0x80
+> +#define ALTERA_SPI_CONTROL_IE_MSK	0x100
+> +#define ALTERA_SPI_CONTROL_SSO_MSK	0x400
+> +
+> +struct altera_spi {
+> +	/* bitbang has to be first */
+> +	struct spi_bitbang bitbang;
+> +	struct completion done;
+> +
+> +	void __iomem *base;
+> +	int irq;
+> +	int len;
+> +	int count;
+> +	int bytes_per_word;
+> +	unsigned long imr;
+> +
+> +	/* data buffers */
+> +	const unsigned char *tx;
+> +	unsigned char *rx;
+> +};
+> +
+> +static inline struct altera_spi *altera_spi_to_hw(struct spi_device *sdev)
+> +{
+> +	return spi_master_get_devdata(sdev->master);
+> +}
+> +
+> +static void altera_spi_chipsel(struct spi_device *spi, int value)
+> +{
+> +	struct altera_spi *hw = altera_spi_to_hw(spi);
+> +
+> +	if (spi->mode & SPI_CS_HIGH) {
+> +		switch (value) {
+> +		case BITBANG_CS_INACTIVE:
+> +			writel(1 << spi->chip_select,
+> +			       hw->base + ALTERA_SPI_SLAVE_SEL);
+> +			hw->imr |= ALTERA_SPI_CONTROL_SSO_MSK;
+> +			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +			break;
+> +
+> +		case BITBANG_CS_ACTIVE:
+> +			hw->imr &= ~ALTERA_SPI_CONTROL_SSO_MSK;
+> +			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +			writel(0, hw->base + ALTERA_SPI_SLAVE_SEL);
+> +			break;
+> +		}
+> +	} else {
+> +		switch (value) {
+> +		case BITBANG_CS_INACTIVE:
+> +			hw->imr &= ~ALTERA_SPI_CONTROL_SSO_MSK;
+> +			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +			break;
+> +
+> +		case BITBANG_CS_ACTIVE:
+> +			writel(1 << spi->chip_select,
+> +			       hw->base + ALTERA_SPI_SLAVE_SEL);
+> +			hw->imr |= ALTERA_SPI_CONTROL_SSO_MSK;
+> +			writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +			break;
+> +		}
+> +	}
+> +}
+> +
+> +static int altera_spi_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int altera_spi_setup(struct spi_device *spi)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline unsigned int hw_txbyte(struct altera_spi *hw, int count)
+> +{
+> +	if (hw->tx) {
+> +		switch (hw->bytes_per_word) {
+> +		case 1:
+> +			return hw->tx[count];
+> +		case 2:
+> +			return (hw->tx[count * 2]
+> +				| (hw->tx[count * 2 + 1] << 8));
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int altera_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+> +{
+> +	struct altera_spi *hw = altera_spi_to_hw(spi);
+> +
+> +	hw->tx = t->tx_buf;
+> +	hw->rx = t->rx_buf;
+> +	hw->count = 0;
+> +	hw->bytes_per_word = (t->bits_per_word ? : spi->bits_per_word) / 8;
+> +	hw->len = t->len / hw->bytes_per_word;
+> +
+> +	if (hw->irq >= 0) {
+> +		/* enable receive interrupt */
+> +		hw->imr |= ALTERA_SPI_CONTROL_IRRDY_MSK;
+> +		writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +
+> +		/* send the first byte */
+> +		writel(hw_txbyte(hw, 0), hw->base + ALTERA_SPI_TXDATA);
+> +
+> +		wait_for_completion(&hw->done);
+> +		/* disable receive interrupt */
+> +		hw->imr &= ~ALTERA_SPI_CONTROL_IRRDY_MSK;
+> +		writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +	} else {
+> +		/* send the first byte */
+> +		writel(hw_txbyte(hw, 0), hw->base + ALTERA_SPI_TXDATA);
+> +
+> +		while (1) {
+> +			unsigned int rxd;
+> +
+> +			while (!(readl(hw->base + ALTERA_SPI_STATUS) &
+> +				 ALTERA_SPI_STATUS_RRDY_MSK))
+> +				cpu_relax();
+> +
+> +			rxd = readl(hw->base + ALTERA_SPI_RXDATA);
+> +			if (hw->rx) {
+> +				switch (hw->bytes_per_word) {
+> +				case 1:
+> +					hw->rx[hw->count] = rxd;
+> +					break;
+> +				case 2:
+> +					hw->rx[hw->count * 2] = rxd;
+> +					hw->rx[hw->count * 2 + 1] = rxd >> 8;
+> +					break;
+> +				}
+> +			}
+> +
+> +			hw->count++;
+> +
+> +			if (hw->count < hw->len)
+> +				writel(hw_txbyte(hw, hw->count),
+> +				       hw->base + ALTERA_SPI_TXDATA);
+> +			else
+> +				break;
+> +		}
+> +
+> +	}
+> +
+> +	return hw->count * hw->bytes_per_word;
+> +}
+> +
+> +static irqreturn_t altera_spi_irq(int irq, void *dev)
+> +{
+> +	struct altera_spi *hw = dev;
+> +	unsigned int rxd;
+> +
+> +	rxd = readl(hw->base + ALTERA_SPI_RXDATA);
+> +	if (hw->rx) {
+> +		switch (hw->bytes_per_word) {
+> +		case 1:
+> +			hw->rx[hw->count] = rxd;
+> +			break;
+> +		case 2:
+> +			hw->rx[hw->count * 2] = rxd;
+> +			hw->rx[hw->count * 2 + 1] = rxd >> 8;
+> +			break;
+> +		}
+> +	}
+> +
+> +	hw->count++;
+> +
+> +	if (hw->count < hw->len)
+> +		writel(hw_txbyte(hw, hw->count), hw->base + ALTERA_SPI_TXDATA);
+> +	else
+> +		complete(&hw->done);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int __devinit altera_spi_probe(struct platform_device *pdev)
+> +{
+> +	struct altera_spi_platform_data *platp = pdev->dev.platform_data;
+> +	struct altera_spi *hw;
+> +	struct spi_master *master;
+> +	struct resource *res;
+> +	int err = -ENODEV;
+> +
+> +	master = spi_alloc_master(&pdev->dev, sizeof(struct altera_spi));
+> +	if (!master)
+> +		return err;
+> +
+> +	/* setup the master state. */
+> +	master->bus_num = pdev->id;
+> +	master->num_chipselect = 16;
+> +	master->mode_bits = SPI_CS_HIGH;
+> +	master->setup = altera_spi_setup;
+> +
+> +	hw = spi_master_get_devdata(master);
+> +	platform_set_drvdata(pdev, hw);
+> +
+> +	/* setup the state for the bitbang driver */
+> +	hw->bitbang.master = spi_master_get(master);
+> +	if (!hw->bitbang.master)
+> +		return err;
+> +	hw->bitbang.setup_transfer = altera_spi_setupxfer;
+> +	hw->bitbang.chipselect = altera_spi_chipsel;
+> +	hw->bitbang.txrx_bufs = altera_spi_txrx;
+> +
+> +	/* find and map our resources */
+> +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (!res)
+> +		goto exit_busy;
+> +	if (!devm_request_mem_region(&pdev->dev, res->start, resource_size(res),
+> +				     pdev->name))
+> +		goto exit_busy;
+> +	hw->base = devm_ioremap_nocache(&pdev->dev, res->start,
+> +					resource_size(res));
+> +	if (!hw->base)
+> +		goto exit_busy;
+> +	/* program defaults into the registers */
+> +	hw->imr = 0;		/* disable spi interrupts */
+> +	writel(hw->imr, hw->base + ALTERA_SPI_CONTROL);
+> +	writel(0, hw->base + ALTERA_SPI_STATUS);	/* clear status reg */
+> +	if (readl(hw->base + ALTERA_SPI_STATUS) & ALTERA_SPI_STATUS_RRDY_MSK)
+> +		readl(hw->base + ALTERA_SPI_RXDATA);	/* flush rxdata */
+> +	/* irq is optional */
+> +	hw->irq = platform_get_irq(pdev, 0);
+> +	if (hw->irq >= 0) {
+> +		init_completion(&hw->done);
+> +		err = devm_request_irq(&pdev->dev, hw->irq, altera_spi_irq, 0,
+> +				       pdev->name, hw);
+> +		if (err)
+> +			goto exit;
+> +	}
+> +	/* find platform data */
+> +	if (!platp)
+> +		hw->bitbang.master->dev.of_node = pdev->dev.of_node;
+> +
+> +	/* register our spi controller */
+> +	err = spi_bitbang_start(&hw->bitbang);
+> +	if (err)
+> +		goto exit;
+> +	dev_info(&pdev->dev, "base %p, irq %d\n", hw->base, hw->irq);
+> +
+> +	return 0;
+> +
+> +exit_busy:
+> +	err = -EBUSY;
+> +exit:
+> +	platform_set_drvdata(pdev, NULL);
+> +	spi_master_put(master);
+> +	return err;
+> +}
+> +
+> +static int __devexit altera_spi_remove(struct platform_device *dev)
+> +{
+> +	struct altera_spi *hw = platform_get_drvdata(dev);
+> +	struct spi_master *master = hw->bitbang.master;
+> +
+> +	spi_bitbang_stop(&hw->bitbang);
+> +	platform_set_drvdata(dev, NULL);
+> +	spi_master_put(master);
+> +	return 0;
+> +}
+> +
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id altera_spi_match[] = {
+> +	{ .compatible = "ALTR,spi-1.0", },
+> +	{},
+> +}
+> +MODULE_DEVICE_TABLE(of, altera_spi_match);
+> +#else /* CONFIG_OF */
+> +#define altera_spi_match NULL
+> +#endif /* CONFIG_OF */
+> +
+> +static struct platform_driver altera_spi_driver = {
+> +	.probe = altera_spi_probe,
+> +	.remove = __devexit_p(altera_spi_remove),
+> +	.driver = {
+> +		.name = DRV_NAME,
+> +		.owner = THIS_MODULE,
+> +		.pm = NULL,
+> +		.of_match_table = altera_spi_match,
+> +	},
+> +};
+> +
+> +static int __init altera_spi_init(void)
+> +{
+> +	return platform_driver_register(&altera_spi_driver);
+> +}
+> +module_init(altera_spi_init);
+> +
+> +static void __exit altera_spi_exit(void)
+> +{
+> +	platform_driver_unregister(&altera_spi_driver);
+> +}
+> +module_exit(altera_spi_exit);
+> +
+> +MODULE_DESCRIPTION("Altera SPI driver");
+> +MODULE_AUTHOR("Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:" DRV_NAME);
+> -- 
+> 1.7.4
+> 

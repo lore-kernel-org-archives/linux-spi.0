@@ -1,571 +1,621 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v8 resend] spi: add OpenCores tiny SPI driver
-Date: Tue, 15 Feb 2011 19:47:09 -0700
-Message-ID: <20110216024709.GJ28005@angua.secretlab.ca>
-References: <1297649758-11828-1-git-send-email-thomas@wytron.com.tw>
-	<1297650039-12013-1-git-send-email-thomas@wytron.com.tw>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: add support for SuperH SPI
+Date: Tue, 15 Feb 2011 19:59:50 -0700
+Message-ID: <20110216025950.GM28005@angua.secretlab.ca>
+References: <4D59D738.4070304@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, nios2-dev-1eJk0qcHJCcaeqlQEoCUNoJY59XmG8rH@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	SH-Linux <linux-sh@vger.kernel.org>
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1297650039-12013-1-git-send-email-thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
-	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+In-Reply-To: <4D59D738.4070304@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 14, 2011 at 10:20:39AM +0800, Thomas Chou wrote:
-> This patch adds support of OpenCores tiny SPI driver.
+On Tue, Feb 15, 2011 at 10:30:32AM +0900, Yoshihiro Shimoda wrote:
+> The SH7757 has SPI0 module. This patch supports it.
 > 
-> http://opencores.org/project,tiny_spi
-> 
-> Signed-off-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-Applied, thanks.
+Merged, thanks.  I made a few minor edits on style issues and to add
+the __devinit/__devexit annotations to the probe/remove functions.
+Please give it a spin to make sure I haven't broken anything when it
+appears in my spi/next branch on git://git.secretlab.ca/git/linux-2.6
+(sometime in the next 6 hours).
 
 g.
 
 > ---
-> v2 minor cleanup, same as Grant suggest for spi_altera.
-> v3 rename driver to spi_oc_tiny as Grant suggested.
->    set version to tiny-spi-rtlsvn2 as Jonas suggested.
-> v4 add dts binding doc.
-> v5 use devm_* to help cleanup.
->    add of gpio support.
-> v6 check len from of_get_property.
->    fix kerneldoc in header.
-> v7 remove default n from Kconfig.
-> v8 condition module device table export for of.
+>  drivers/spi/Kconfig  |    6 +
+>  drivers/spi/Makefile |    1 +
+>  drivers/spi/spi_sh.c |  547 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 554 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/spi/spi_sh.c
 > 
-> Sorry, forget to commit the last change.
-> 
->  .../devicetree/bindings/spi/spi_oc_tiny.txt        |   12 +
->  drivers/spi/Kconfig                                |    7 +
->  drivers/spi/Makefile                               |    1 +
->  drivers/spi/spi_oc_tiny.c                          |  425 ++++++++++++++++++++
->  include/linux/spi/spi_oc_tiny.h                    |   20 +
->  5 files changed, 465 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
->  create mode 100644 drivers/spi/spi_oc_tiny.c
->  create mode 100644 include/linux/spi/spi_oc_tiny.h
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi_oc_tiny.txt b/Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
-> new file mode 100644
-> index 0000000..d95c0b3
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
-> @@ -0,0 +1,12 @@
-> +OpenCores tiny SPI
-> +
-> +Required properties:
-> +- compatible : should be "opencores,tiny-spi-rtlsvn2".
-> +- gpios : should specify GPIOs used for chipselect.
-> +Optional properties:
-> +- clock-frequency : input clock frequency to the core.
-> +- baud-width: width, in bits, of the programmable divider used to scale
-> +	the input clock to SCLK.
-> +
-> +The clock-frequency and baud-width properties are needed only if the divider
-> +is programmable. They are not needed if the divider is fixed.
 > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index bb233a9..8faa57a 100644
+> index bb233a9..1532d2c 100644
 > --- a/drivers/spi/Kconfig
 > +++ b/drivers/spi/Kconfig
-> @@ -231,6 +231,13 @@ config SPI_FSL_ESPI
->  	  From MPC8536, 85xx platform uses the controller, and all P10xx,
->  	  P20xx, P30xx,P40xx, P50xx uses this controller.
->  
-> +config SPI_OC_TINY
-> +	tristate "OpenCores tiny SPI"
-> +	depends on GENERIC_GPIO
-> +	select SPI_BITBANG
+> @@ -330,6 +330,12 @@ config SPI_SH_MSIOF
+>  	help
+>  	  SPI driver for SuperH MSIOF blocks.
+> 
+> +config SPI_SH
+> +	tristate "SuperH SPI controller"
+> +	depends on SUPERH
 > +	help
-> +	  This is the driver for OpenCores tiny SPI master controller.
+> +	  SPI driver for SuperH SPI blocks.
 > +
->  config SPI_OMAP_UWIRE
->  	tristate "OMAP1 MicroWire"
->  	depends on ARCH_OMAP1
+>  config SPI_SH_SCI
+>  	tristate "SuperH SCI SPI controller"
+>  	depends on SUPERH
 > diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index 86d1b5f..c7e4c23 100644
+> index 86d1b5f..068465f 100644
 > --- a/drivers/spi/Makefile
 > +++ b/drivers/spi/Makefile
-> @@ -27,6 +27,7 @@ obj-$(CONFIG_SPI_IMX)			+= spi_imx.o
->  obj-$(CONFIG_SPI_LM70_LLP)		+= spi_lm70llp.o
->  obj-$(CONFIG_SPI_PXA2XX)		+= pxa2xx_spi.o
->  obj-$(CONFIG_SPI_PXA2XX_PCI)		+= pxa2xx_spi_pci.o
-> +obj-$(CONFIG_SPI_OC_TINY)		+= spi_oc_tiny.o
->  obj-$(CONFIG_SPI_OMAP_UWIRE)		+= omap_uwire.o
->  obj-$(CONFIG_SPI_OMAP24XX)		+= omap2_mcspi.o
->  obj-$(CONFIG_SPI_OMAP_100K)		+= omap_spi_100k.o
-> diff --git a/drivers/spi/spi_oc_tiny.c b/drivers/spi/spi_oc_tiny.c
+> @@ -48,6 +48,7 @@ obj-$(CONFIG_SPI_TXX9)			+= spi_txx9.o
+>  obj-$(CONFIG_SPI_XILINX)		+= xilinx_spi.o
+>  obj-$(CONFIG_SPI_SH_SCI)		+= spi_sh_sci.o
+>  obj-$(CONFIG_SPI_SH_MSIOF)		+= spi_sh_msiof.o
+> +obj-$(CONFIG_SPI_SH)			+= spi_sh.o
+>  obj-$(CONFIG_SPI_STMP3XXX)		+= spi_stmp.o
+>  obj-$(CONFIG_SPI_NUC900)		+= spi_nuc900.o
+> 
+> diff --git a/drivers/spi/spi_sh.c b/drivers/spi/spi_sh.c
 > new file mode 100644
-> index 0000000..e99e545
+> index 0000000..247ef0b
 > --- /dev/null
-> +++ b/drivers/spi/spi_oc_tiny.c
-> @@ -0,0 +1,425 @@
+> +++ b/drivers/spi/spi_sh.c
+> @@ -0,0 +1,547 @@
 > +/*
-> + * OpenCores tiny SPI master driver
+> + * SH SPI bus driver
 > + *
-> + * http://opencores.org/project,tiny_spi
+> + * Copyright (C) 2011  Renesas Solutions Corp.
 > + *
-> + * Copyright (C) 2011 Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-> + *
-> + * Based on spi_s3c24xx.c, which is:
-> + * Copyright (c) 2006 Ben Dooks
-> + * Copyright (c) 2006 Simtec Electronics
-> + *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
+> + * Based on pxa2xx_spi.c:
+> + * Copyright (C) 2005 Stephen Street / StreetFire Sound Labs
 > + *
 > + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; version 2 of the License.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+> + *
 > + */
 > +
-> +#include <linux/init.h>
-> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <linux/sched.h>
 > +#include <linux/errno.h>
+> +#include <linux/timer.h>
+> +#include <linux/delay.h>
+> +#include <linux/list.h>
+> +#include <linux/workqueue.h>
+> +#include <linux/interrupt.h>
 > +#include <linux/platform_device.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/spi_bitbang.h>
-> +#include <linux/spi/spi_oc_tiny.h>
 > +#include <linux/io.h>
-> +#include <linux/gpio.h>
-> +#include <linux/of.h>
+> +#include <linux/spi/spi.h>
 > +
-> +#define DRV_NAME "spi_oc_tiny"
+> +#define DRIVER_VERSION	"2011-02-02"
 > +
-> +#define TINY_SPI_RXDATA 0
-> +#define TINY_SPI_TXDATA 4
-> +#define TINY_SPI_STATUS 8
-> +#define TINY_SPI_CONTROL 12
-> +#define TINY_SPI_BAUD 16
+> +#define SPI_SH_TBR		0x00
+> +#define SPI_SH_RBR		0x00
+> +#define SPI_SH_CR1		0x08
+> +#define SPI_SH_CR2		0x10
+> +#define SPI_SH_CR3		0x18
+> +#define SPI_SH_CR4		0x20
+> +#define SPI_SH_CR5		0x28
 > +
-> +#define TINY_SPI_STATUS_TXE 0x1
-> +#define TINY_SPI_STATUS_TXR 0x2
+> +/* CR1 */
+> +#define SPI_SH_TBE		0x80
+> +#define SPI_SH_TBF		0x40
+> +#define SPI_SH_RBE		0x20
+> +#define SPI_SH_RBF		0x10
+> +#define SPI_SH_PFONRD		0x08
+> +#define SPI_SH_SSDB		0x04
+> +#define SPI_SH_SSD		0x02
+> +#define SPI_SH_SSA		0x01
 > +
-> +struct tiny_spi {
-> +	/* bitbang has to be first */
-> +	struct spi_bitbang bitbang;
-> +	struct completion done;
+> +/* CR2 */
+> +#define SPI_SH_RSTF		0x80
+> +#define SPI_SH_LOOPBK		0x40
+> +#define SPI_SH_CPOL		0x20
+> +#define SPI_SH_CPHA		0x10
+> +#define SPI_SH_L1M0		0x08
 > +
-> +	void __iomem *base;
+> +/* CR3 */
+> +#define SPI_SH_MAX_BYTE		0xFF
+> +
+> +/* CR4 */
+> +#define SPI_SH_TBEI		0x80
+> +#define SPI_SH_TBFI		0x40
+> +#define SPI_SH_RBEI		0x20
+> +#define SPI_SH_RBFI		0x10
+> +#define SPI_SH_WPABRT		0x04
+> +#define SPI_SH_SSS		0x01
+> +
+> +/* CR8 */
+> +#define SPI_SH_P1L0		0x80
+> +#define SPI_SH_PP1L0		0x40
+> +#define SPI_SH_MUXI		0x20
+> +#define SPI_SH_MUXIRQ		0x10
+> +
+> +#define SPI_SH_FIFO_SIZE	32
+> +#define SPI_SH_SEND_TIMEOUT	(3 * HZ)
+> +#define SPI_SH_RECEIVE_TIMEOUT	(HZ >> 3)
+> +
+> +#undef DEBUG
+> +
+> +struct spi_sh_data {
+> +	void __iomem *addr;
 > +	int irq;
-> +	unsigned int freq;
-> +	unsigned int baudwidth;
-> +	unsigned int baud;
-> +	unsigned int speed_hz;
-> +	unsigned int mode;
-> +	unsigned int len;
-> +	unsigned int txc, rxc;
-> +	const u8 *txp;
-> +	u8 *rxp;
-> +	unsigned int gpio_cs_count;
-> +	int *gpio_cs;
+> +	struct spi_master *master;
+> +	struct list_head queue;
+> +	struct workqueue_struct *workqueue;
+> +	struct work_struct ws;
+> +	unsigned long cr1;
+> +	wait_queue_head_t wait;
+> +	spinlock_t lock;
 > +};
 > +
-> +static inline struct tiny_spi *tiny_spi_to_hw(struct spi_device *sdev)
+> +static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
+> +			     unsigned long offset)
 > +{
-> +	return spi_master_get_devdata(sdev->master);
+> +	writel(data, ss->addr + offset);
 > +}
 > +
-> +static unsigned int tiny_spi_baud(struct spi_device *spi, unsigned int hz)
+> +static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
 > +{
-> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
-> +
-> +	return min(DIV_ROUND_UP(hw->freq, hz * 2), (1U << hw->baudwidth)) - 1;
+> +	return readl(ss->addr + offset);
 > +}
 > +
-> +static void tiny_spi_chipselect(struct spi_device *spi, int is_active)
+> +static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
+> +				unsigned long offset)
 > +{
-> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
+> +	unsigned long tmp;
 > +
-> +	if (hw->gpio_cs_count) {
-> +		gpio_set_value(hw->gpio_cs[spi->chip_select],
-> +			(spi->mode & SPI_CS_HIGH) ? is_active : !is_active);
+> +	tmp = spi_sh_read(ss, offset);
+> +	tmp |= val;
+> +	spi_sh_write(ss, tmp, offset);
+> +}
+> +
+> +static void spi_sh_clear_bit(struct spi_sh_data *ss, unsigned long val,
+> +				unsigned long offset)
+> +{
+> +	unsigned long tmp;
+> +
+> +	tmp = spi_sh_read(ss, offset);
+> +	tmp &= ~val;
+> +	spi_sh_write(ss, tmp, offset);
+> +}
+> +
+> +static void clear_fifo(struct spi_sh_data *ss)
+> +{
+> +	spi_sh_set_bit(ss, SPI_SH_RSTF, SPI_SH_CR2);
+> +	spi_sh_clear_bit(ss, SPI_SH_RSTF, SPI_SH_CR2);
+> +}
+> +
+> +static int wait_receive_buffer(struct spi_sh_data *ss)
+> +{
+> +	int timeout = 100000;
+> +
+> +	while (spi_sh_read(ss, SPI_SH_CR1) & SPI_SH_RBE) {
+> +		udelay(10);
+> +		if (timeout-- < 0)
+> +			return -ETIMEDOUT;
 > +	}
-> +}
-> +
-> +static int tiny_spi_setup_transfer(struct spi_device *spi,
-> +				   struct spi_transfer *t)
-> +{
-> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
-> +	unsigned int baud = hw->baud;
-> +
-> +	if (t) {
-> +		if (t->speed_hz && t->speed_hz != hw->speed_hz)
-> +			baud = tiny_spi_baud(spi, t->speed_hz);
-> +	}
-> +	writel(baud, hw->base + TINY_SPI_BAUD);
-> +	writel(hw->mode, hw->base + TINY_SPI_CONTROL);
 > +	return 0;
 > +}
 > +
-> +static int tiny_spi_setup(struct spi_device *spi)
+> +static int wait_write_buffer_empty(struct spi_sh_data *ss)
 > +{
-> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
+> +	int timeout = 100000;
 > +
-> +	if (spi->max_speed_hz != hw->speed_hz) {
-> +		hw->speed_hz = spi->max_speed_hz;
-> +		hw->baud = tiny_spi_baud(spi, hw->speed_hz);
+> +	while (!(spi_sh_read(ss, SPI_SH_CR1) & SPI_SH_TBE)) {
+> +		udelay(10);
+> +		if (timeout-- < 0)
+> +			return -ETIMEDOUT;
 > +	}
-> +	hw->mode = spi->mode & (SPI_CPOL | SPI_CPHA);
 > +	return 0;
 > +}
 > +
-> +static inline void tiny_spi_wait_txr(struct tiny_spi *hw)
+> +static int spi_sh_send(struct spi_sh_data *ss, struct spi_message *mesg,
+> +			struct spi_transfer *t)
 > +{
-> +	while (!(readb(hw->base + TINY_SPI_STATUS) &
-> +		 TINY_SPI_STATUS_TXR))
-> +		cpu_relax();
-> +}
+> +	int i, retval = 0;
+> +	int remain = t->len;
+> +	int cur_len;
+> +	unsigned char *data;
+> +	unsigned long tmp;
+> +	long ret;
 > +
-> +static inline void tiny_spi_wait_txe(struct tiny_spi *hw)
-> +{
-> +	while (!(readb(hw->base + TINY_SPI_STATUS) &
-> +		 TINY_SPI_STATUS_TXE))
-> +		cpu_relax();
-> +}
+> +	if (t->len)
+> +		spi_sh_set_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
 > +
-> +static int tiny_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +	struct tiny_spi *hw = tiny_spi_to_hw(spi);
-> +	const u8 *txp = t->tx_buf;
-> +	u8 *rxp = t->rx_buf;
-> +	unsigned int i;
+> +	data = (unsigned char *)t->tx_buf;
+> +	while (remain > 0) {
+> +		cur_len = min(SPI_SH_FIFO_SIZE, remain);
+> +		for (i = 0; i < cur_len &&
+> +				!(spi_sh_read(ss, SPI_SH_CR4) &
+> +							SPI_SH_WPABRT) &&
+> +				!(spi_sh_read(ss, SPI_SH_CR1) & SPI_SH_TBF);
+> +				i++)
+> +			spi_sh_write(ss, (unsigned long)data[i], SPI_SH_TBR);
 > +
-> +	if (hw->irq >= 0) {
-> +		/* use intrrupt driven data transfer */
-> +		hw->len = t->len;
-> +		hw->txp = t->tx_buf;
-> +		hw->rxp = t->rx_buf;
-> +		hw->txc = 0;
-> +		hw->rxc = 0;
-> +
-> +		/* send the first byte */
-> +		if (t->len > 1) {
-> +			writeb(hw->txp ? *hw->txp++ : 0,
-> +			       hw->base + TINY_SPI_TXDATA);
-> +			hw->txc++;
-> +			writeb(hw->txp ? *hw->txp++ : 0,
-> +			       hw->base + TINY_SPI_TXDATA);
-> +			hw->txc++;
-> +			writeb(TINY_SPI_STATUS_TXR, hw->base + TINY_SPI_STATUS);
-> +		} else {
-> +			writeb(hw->txp ? *hw->txp++ : 0,
-> +			       hw->base + TINY_SPI_TXDATA);
-> +			hw->txc++;
-> +			writeb(TINY_SPI_STATUS_TXE, hw->base + TINY_SPI_STATUS);
+> +		if (spi_sh_read(ss, SPI_SH_CR4) & SPI_SH_WPABRT) {
+> +			/* Abort SPI operation */
+> +			spi_sh_set_bit(ss, SPI_SH_WPABRT, SPI_SH_CR4);
+> +			retval = -EIO;
+> +			break;
 > +		}
 > +
-> +		wait_for_completion(&hw->done);
-> +	} else if (txp && rxp) {
-> +		/* we need to tighten the transfer loop */
-> +		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
-> +		if (t->len > 1) {
-> +			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
-> +			for (i = 2; i < t->len; i++) {
-> +				u8 rx, tx = *txp++;
-> +				tiny_spi_wait_txr(hw);
-> +				rx = readb(hw->base + TINY_SPI_TXDATA);
-> +				writeb(tx, hw->base + TINY_SPI_TXDATA);
-> +				*rxp++ = rx;
+> +		cur_len = i;
+> +
+> +		remain -= cur_len;
+> +		data += cur_len;
+> +
+> +		if (remain > 0) {
+> +			ss->cr1 &= ~SPI_SH_TBE;
+> +			spi_sh_set_bit(ss, SPI_SH_TBE, SPI_SH_CR4);
+> +			ret = wait_event_interruptible_timeout(ss->wait,
+> +						 ss->cr1 & SPI_SH_TBE,
+> +						 SPI_SH_SEND_TIMEOUT);
+> +			if (ret == 0 && !(ss->cr1 & SPI_SH_TBE)) {
+> +				printk(KERN_ERR "%s: timeout\n", __func__);
+> +				return -ETIMEDOUT;
 > +			}
-> +			tiny_spi_wait_txr(hw);
-> +			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
-> +		}
-> +		tiny_spi_wait_txe(hw);
-> +		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
-> +	} else if (rxp) {
-> +		writeb(0, hw->base + TINY_SPI_TXDATA);
-> +		if (t->len > 1) {
-> +			writeb(0,
-> +			       hw->base + TINY_SPI_TXDATA);
-> +			for (i = 2; i < t->len; i++) {
-> +				u8 rx;
-> +				tiny_spi_wait_txr(hw);
-> +				rx = readb(hw->base + TINY_SPI_TXDATA);
-> +				writeb(0, hw->base + TINY_SPI_TXDATA);
-> +				*rxp++ = rx;
-> +			}
-> +			tiny_spi_wait_txr(hw);
-> +			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
-> +		}
-> +		tiny_spi_wait_txe(hw);
-> +		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
-> +	} else if (txp) {
-> +		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
-> +		if (t->len > 1) {
-> +			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
-> +			for (i = 2; i < t->len; i++) {
-> +				u8 tx = *txp++;
-> +				tiny_spi_wait_txr(hw);
-> +				writeb(tx, hw->base + TINY_SPI_TXDATA);
-> +			}
-> +		}
-> +		tiny_spi_wait_txe(hw);
-> +	} else {
-> +		writeb(0, hw->base + TINY_SPI_TXDATA);
-> +		if (t->len > 1) {
-> +			writeb(0, hw->base + TINY_SPI_TXDATA);
-> +			for (i = 2; i < t->len; i++) {
-> +				tiny_spi_wait_txr(hw);
-> +				writeb(0, hw->base + TINY_SPI_TXDATA);
-> +			}
-> +		}
-> +		tiny_spi_wait_txe(hw);
-> +	}
-> +	return t->len;
-> +}
-> +
-> +static irqreturn_t tiny_spi_irq(int irq, void *dev)
-> +{
-> +	struct tiny_spi *hw = dev;
-> +
-> +	writeb(0, hw->base + TINY_SPI_STATUS);
-> +	if (hw->rxc + 1 == hw->len) {
-> +		if (hw->rxp)
-> +			*hw->rxp++ = readb(hw->base + TINY_SPI_RXDATA);
-> +		hw->rxc++;
-> +		complete(&hw->done);
-> +	} else {
-> +		if (hw->rxp)
-> +			*hw->rxp++ = readb(hw->base + TINY_SPI_TXDATA);
-> +		hw->rxc++;
-> +		if (hw->txc < hw->len) {
-> +			writeb(hw->txp ? *hw->txp++ : 0,
-> +			       hw->base + TINY_SPI_TXDATA);
-> +			hw->txc++;
-> +			writeb(TINY_SPI_STATUS_TXR,
-> +			       hw->base + TINY_SPI_STATUS);
-> +		} else {
-> +			writeb(TINY_SPI_STATUS_TXE,
-> +			       hw->base + TINY_SPI_STATUS);
 > +		}
 > +	}
+> +
+> +	if (list_is_last(&t->transfer_list, &mesg->transfers)) {
+> +		tmp = spi_sh_read(ss, SPI_SH_CR1);
+> +		tmp = tmp & ~(SPI_SH_SSD | SPI_SH_SSDB);
+> +		spi_sh_write(ss, tmp, SPI_SH_CR1);
+> +		spi_sh_set_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+> +
+> +		ss->cr1 &= ~SPI_SH_TBE;
+> +		spi_sh_set_bit(ss, SPI_SH_TBE, SPI_SH_CR4);
+> +		ret = wait_event_interruptible_timeout(ss->wait,
+> +					 ss->cr1 & SPI_SH_TBE,
+> +					 SPI_SH_SEND_TIMEOUT);
+> +		if (ret == 0 && (ss->cr1 & SPI_SH_TBE)) {
+> +			printk(KERN_ERR "%s: timeout\n", __func__);
+> +			return -ETIMEDOUT;
+> +		}
+> +	}
+> +
+> +	return retval;
+> +}
+> +
+> +static int spi_sh_receive(struct spi_sh_data *ss, struct spi_message *mesg,
+> +			  struct spi_transfer *t)
+> +{
+> +	int i;
+> +	int remain = t->len;
+> +	int cur_len;
+> +	unsigned char *data;
+> +	unsigned long tmp;
+> +	long ret;
+> +
+> +	if (t->len > SPI_SH_MAX_BYTE)
+> +		spi_sh_write(ss, SPI_SH_MAX_BYTE, SPI_SH_CR3);
+> +	else
+> +		spi_sh_write(ss, t->len, SPI_SH_CR3);
+> +
+> +	tmp = spi_sh_read(ss, SPI_SH_CR1);
+> +	tmp = tmp & ~(SPI_SH_SSD | SPI_SH_SSDB);
+> +	spi_sh_write(ss, tmp, SPI_SH_CR1);
+> +	spi_sh_set_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+> +
+> +	wait_write_buffer_empty(ss);
+> +
+> +	data = (unsigned char *)t->rx_buf;
+> +	while (remain > 0) {
+> +		if (remain >= SPI_SH_FIFO_SIZE) {
+> +			ss->cr1 &= ~SPI_SH_RBF;
+> +			spi_sh_set_bit(ss, SPI_SH_RBF, SPI_SH_CR4);
+> +			ret = wait_event_interruptible_timeout(ss->wait,
+> +						 ss->cr1 & SPI_SH_RBF,
+> +						 SPI_SH_RECEIVE_TIMEOUT);
+> +			if (ret == 0 &&
+> +			    spi_sh_read(ss, SPI_SH_CR1) & SPI_SH_RBE) {
+> +				printk(KERN_ERR "%s: timeout\n", __func__);
+> +				return -ETIMEDOUT;
+> +			}
+> +		}
+> +
+> +		cur_len = min(SPI_SH_FIFO_SIZE, remain);
+> +		for (i = 0; i < cur_len; i++) {
+> +			if (wait_receive_buffer(ss))
+> +				break;
+> +			data[i] = (unsigned char)spi_sh_read(ss, SPI_SH_RBR);
+> +		}
+> +
+> +		remain -= cur_len;
+> +		data += cur_len;
+> +	}
+> +
+> +	/* deassert CS when SPI is receiving. */
+> +	if (t->len > SPI_SH_MAX_BYTE) {
+> +		clear_fifo(ss);
+> +		spi_sh_write(ss, 1, SPI_SH_CR3);
+> +	} else {
+> +		spi_sh_write(ss, 0, SPI_SH_CR3);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void spi_sh_work(struct work_struct *work)
+> +{
+> +	struct spi_sh_data *ss = container_of(work, struct spi_sh_data, ws);
+> +	struct spi_message *mesg;
+> +	struct spi_transfer *t;
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	pr_debug("%s: enter\n", __func__);
+> +
+> +	spin_lock_irqsave(&ss->lock, flags);
+> +	while (!list_empty(&ss->queue)) {
+> +		mesg = list_entry(ss->queue.next, struct spi_message, queue);
+> +		list_del_init(&mesg->queue);
+> +
+> +		spin_unlock_irqrestore(&ss->lock, flags);
+> +		list_for_each_entry(t, &mesg->transfers, transfer_list) {
+> +			pr_debug("tx_buf = %p, rx_buf = %p\n",
+> +					t->tx_buf, t->rx_buf);
+> +			pr_debug("len = %d, delay_usecs = %d\n",
+> +					t->len, t->delay_usecs);
+> +
+> +			if (t->tx_buf) {
+> +				ret = spi_sh_send(ss, mesg, t);
+> +				if (ret < 0)
+> +					goto error;
+> +			}
+> +			if (t->rx_buf) {
+> +				ret = spi_sh_receive(ss, mesg, t);
+> +				if (ret < 0)
+> +					goto error;
+> +			}
+> +			mesg->actual_length += t->len;
+> +		}
+> +		spin_lock_irqsave(&ss->lock, flags);
+> +
+> +		mesg->status = 0;
+> +		mesg->complete(mesg->context);
+> +	}
+> +
+> +	clear_fifo(ss);
+> +	spi_sh_set_bit(ss, SPI_SH_SSD, SPI_SH_CR1);
+> +	udelay(100);
+> +
+> +	spi_sh_clear_bit(ss, SPI_SH_SSA | SPI_SH_SSDB | SPI_SH_SSD,
+> +			 SPI_SH_CR1);
+> +
+> +	clear_fifo(ss);
+> +
+> +	spin_unlock_irqrestore(&ss->lock, flags);
+> +
+> +	return;
+> +
+> +error:
+> +	mesg->status = ret;
+> +	mesg->complete(mesg->context);
+> +
+> +	spi_sh_clear_bit(ss, SPI_SH_SSA | SPI_SH_SSDB | SPI_SH_SSD,
+> +			 SPI_SH_CR1);
+> +	clear_fifo(ss);
+> +
+> +}
+> +
+> +static int spi_sh_setup(struct spi_device *spi)
+> +{
+> +	struct spi_sh_data *ss = spi_master_get_devdata(spi->master);
+> +
+> +	if (!spi->bits_per_word)
+> +		spi->bits_per_word = 8;
+> +
+> +	pr_debug("%s: enter\n", __func__);
+> +
+> +	spi_sh_write(ss, 0xfe, SPI_SH_CR1);	/* SPI sycle stop */
+> +	spi_sh_write(ss, 0x00, SPI_SH_CR1);	/* CR1 init */
+> +	spi_sh_write(ss, 0x00, SPI_SH_CR3);	/* CR3 init */
+> +
+> +	clear_fifo(ss);
+> +
+> +	/* 1/8 clock */
+> +	spi_sh_write(ss, spi_sh_read(ss, SPI_SH_CR2) | 0x07, SPI_SH_CR2);
+> +	udelay(10);
+> +
+> +	return 0;
+> +}
+> +
+> +static int spi_sh_transfer(struct spi_device *spi, struct spi_message *mesg)
+> +{
+> +	struct spi_sh_data *ss = spi_master_get_devdata(spi->master);
+> +	unsigned long flags;
+> +
+> +	pr_debug("%s: enter\n", __func__);
+> +	pr_debug("\tmode = %02x\n", spi->mode);
+> +
+> +	spin_lock_irqsave(&ss->lock, flags);
+> +
+> +	mesg->actual_length = 0;
+> +	mesg->status = -EINPROGRESS;
+> +
+> +	spi_sh_clear_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+> +
+> +	list_add_tail(&mesg->queue, &ss->queue);
+> +	queue_work(ss->workqueue, &ss->ws);
+> +
+> +	spin_unlock_irqrestore(&ss->lock, flags);
+> +
+> +	return 0;
+> +}
+> +
+> +static void spi_sh_cleanup(struct spi_device *spi)
+> +{
+> +	struct spi_sh_data *ss = spi_master_get_devdata(spi->master);
+> +
+> +	pr_debug("%s: enter\n", __func__);
+> +
+> +	spi_sh_clear_bit(ss, SPI_SH_SSA | SPI_SH_SSDB | SPI_SH_SSD,
+> +			 SPI_SH_CR1);
+> +}
+> +
+> +static irqreturn_t spi_sh_irq(int irq, void *_ss)
+> +{
+> +	struct spi_sh_data *ss = (struct spi_sh_data *)_ss;
+> +	unsigned long cr1;
+> +
+> +	cr1 = spi_sh_read(ss, SPI_SH_CR1);
+> +	if (cr1 & SPI_SH_TBE)
+> +		ss->cr1 |= SPI_SH_TBE;
+> +	if (cr1 & SPI_SH_TBF)
+> +		ss->cr1 |= SPI_SH_TBF;
+> +	if (cr1 & SPI_SH_RBE)
+> +		ss->cr1 |= SPI_SH_RBE;
+> +	if (cr1 & SPI_SH_RBF)
+> +		ss->cr1 |= SPI_SH_RBF;
+> +
+> +	if (ss->cr1) {
+> +		spi_sh_clear_bit(ss, ss->cr1, SPI_SH_CR4);
+> +		wake_up(&ss->wait);
+> +	}
+> +
 > +	return IRQ_HANDLED;
 > +}
 > +
-> +#ifdef CONFIG_OF
-> +#include <linux/of_gpio.h>
-> +
-> +static int __devinit tiny_spi_of_probe(struct platform_device *pdev)
+> +static int spi_sh_remove(struct platform_device *pdev)
 > +{
-> +	struct tiny_spi *hw = platform_get_drvdata(pdev);
-> +	struct device_node *np = pdev->dev.of_node;
-> +	unsigned int i;
-> +	const __be32 *val;
-> +	int len;
+> +	struct spi_sh_data *ss = dev_get_drvdata(&pdev->dev);
 > +
-> +	if (!np)
-> +		return 0;
-> +	hw->gpio_cs_count = of_gpio_count(np);
-> +	if (hw->gpio_cs_count) {
-> +		hw->gpio_cs = devm_kzalloc(&pdev->dev,
-> +				hw->gpio_cs_count * sizeof(unsigned int),
-> +				GFP_KERNEL);
-> +		if (!hw->gpio_cs)
-> +			return -ENOMEM;
-> +	}
-> +	for (i = 0; i < hw->gpio_cs_count; i++) {
-> +		hw->gpio_cs[i] = of_get_gpio_flags(np, i, NULL);
-> +		if (hw->gpio_cs[i] < 0)
-> +			return -ENODEV;
-> +	}
-> +	hw->bitbang.master->dev.of_node = pdev->dev.of_node;
-> +	val = of_get_property(pdev->dev.of_node,
-> +			      "clock-frequency", &len);
-> +	if (val && len >= sizeof(__be32))
-> +		hw->freq = be32_to_cpup(val);
-> +	val = of_get_property(pdev->dev.of_node, "baud-width", &len);
-> +	if (val && len >= sizeof(__be32))
-> +		hw->baudwidth = be32_to_cpup(val);
+> +	destroy_workqueue(ss->workqueue);
+> +	free_irq(ss->irq, ss);
+> +	iounmap(ss->addr);
+> +	spi_master_put(ss->master);
+> +
 > +	return 0;
 > +}
-> +#else /* !CONFIG_OF */
-> +static int __devinit tiny_spi_of_probe(struct platform_device *pdev)
-> +{
-> +	return 0;
-> +}
-> +#endif /* CONFIG_OF */
 > +
-> +static int __devinit tiny_spi_probe(struct platform_device *pdev)
+> +static int spi_sh_probe(struct platform_device *pdev)
 > +{
-> +	struct tiny_spi_platform_data *platp = pdev->dev.platform_data;
-> +	struct tiny_spi *hw;
-> +	struct spi_master *master;
 > +	struct resource *res;
-> +	unsigned int i;
-> +	int err = -ENODEV;
+> +	struct spi_master *master;
+> +	struct spi_sh_data *ss;
+> +	int ret, irq;
 > +
-> +	master = spi_alloc_master(&pdev->dev, sizeof(struct tiny_spi));
-> +	if (!master)
-> +		return err;
-> +
-> +	/* setup the master state. */
-> +	master->bus_num = pdev->id;
-> +	master->num_chipselect = 255;
-> +	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-> +	master->setup = tiny_spi_setup;
-> +
-> +	hw = spi_master_get_devdata(master);
-> +	platform_set_drvdata(pdev, hw);
-> +
-> +	/* setup the state for the bitbang driver */
-> +	hw->bitbang.master = spi_master_get(master);
-> +	if (!hw->bitbang.master)
-> +		return err;
-> +	hw->bitbang.setup_transfer = tiny_spi_setup_transfer;
-> +	hw->bitbang.chipselect = tiny_spi_chipselect;
-> +	hw->bitbang.txrx_bufs = tiny_spi_txrx_bufs;
-> +
-> +	/* find and map our resources */
+> +	/* get base addr */
 > +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!res)
-> +		goto exit_busy;
-> +	if (!devm_request_mem_region(&pdev->dev, res->start, resource_size(res),
-> +				     pdev->name))
-> +		goto exit_busy;
-> +	hw->base = devm_ioremap_nocache(&pdev->dev, res->start,
-> +					resource_size(res));
-> +	if (!hw->base)
-> +		goto exit_busy;
-> +	/* irq is optional */
-> +	hw->irq = platform_get_irq(pdev, 0);
-> +	if (hw->irq >= 0) {
-> +		init_completion(&hw->done);
-> +		err = devm_request_irq(&pdev->dev, hw->irq, tiny_spi_irq, 0,
-> +				       pdev->name, hw);
-> +		if (err)
-> +			goto exit;
+> +	if (unlikely(res == NULL)) {
+> +		dev_err(&pdev->dev, "invalid resource\n");
+> +		return -EINVAL;
 > +	}
-> +	/* find platform data */
-> +	if (platp) {
-> +		hw->gpio_cs_count = platp->gpio_cs_count;
-> +		hw->gpio_cs = platp->gpio_cs;
-> +		if (platp->gpio_cs_count && !platp->gpio_cs)
-> +			goto exit_busy;
-> +		hw->freq = platp->freq;
-> +		hw->baudwidth = platp->baudwidth;
-> +	} else {
-> +		err = tiny_spi_of_probe(pdev);
-> +		if (err)
-> +			goto exit;
-> +	}
-> +	for (i = 0; i < hw->gpio_cs_count; i++) {
-> +		err = gpio_request(hw->gpio_cs[i], dev_name(&pdev->dev));
-> +		if (err)
-> +			goto exit_gpio;
-> +		gpio_direction_output(hw->gpio_cs[i], 1);
-> +	}
-> +	hw->bitbang.master->num_chipselect = max(1U, hw->gpio_cs_count);
 > +
-> +	/* register our spi controller */
-> +	err = spi_bitbang_start(&hw->bitbang);
-> +	if (err)
-> +		goto exit;
-> +	dev_info(&pdev->dev, "base %p, irq %d\n", hw->base, hw->irq);
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0) {
+> +		dev_err(&pdev->dev, "platform_get_irq error\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	master = spi_alloc_master(&pdev->dev, sizeof(struct spi_sh_data));
+> +	if (master == NULL) {
+> +		dev_err(&pdev->dev, "spi_alloc_master error.\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	ss = spi_master_get_devdata(master);
+> +	dev_set_drvdata(&pdev->dev, ss);
+> +
+> +	ss->irq = irq;
+> +	ss->master = master;
+> +	ss->addr = ioremap(res->start, resource_size(res));
+> +	if (ss->addr == NULL) {
+> +		dev_err(&pdev->dev, "ioremap error.\n");
+> +		ret = -ENOMEM;
+> +		goto error1;
+> +	}
+> +	INIT_LIST_HEAD(&ss->queue);
+> +	spin_lock_init(&ss->lock);
+> +	INIT_WORK(&ss->ws, spi_sh_work);
+> +	init_waitqueue_head(&ss->wait);
+> +	ss->workqueue = create_singlethread_workqueue(
+> +					dev_name(master->dev.parent));
+> +	if (ss->workqueue == NULL) {
+> +		dev_err(&pdev->dev, "create workqueue error\n");
+> +		ret = -EBUSY;
+> +		goto error2;
+> +	}
+> +
+> +	ret = request_irq(irq, spi_sh_irq, IRQF_DISABLED, "spi_sh", ss);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "request_irq error\n");
+> +		goto error3;
+> +	}
+> +
+> +	master->num_chipselect = 2;
+> +	master->bus_num = pdev->id;
+> +	master->setup = spi_sh_setup;
+> +	master->transfer = spi_sh_transfer;
+> +	master->cleanup = spi_sh_cleanup;
+> +
+> +	ret = spi_register_master(master);
+> +	if (ret < 0) {
+> +		printk(KERN_ERR "spi_register_master error.\n");
+> +		goto error4;
+> +	}
+> +
+> +	printk(KERN_INFO "spi_sh: version %s\n", DRIVER_VERSION);
 > +
 > +	return 0;
 > +
-> +exit_gpio:
-> +	while (i-- > 0)
-> +		gpio_free(hw->gpio_cs[i]);
-> +exit_busy:
-> +	err = -EBUSY;
-> +exit:
-> +	platform_set_drvdata(pdev, NULL);
+> +error4:
+> +	free_irq(irq, ss);
+> +error3:
+> +	destroy_workqueue(ss->workqueue);
+> +error2:
+> +	iounmap(ss->addr);
+> +error1:
 > +	spi_master_put(master);
-> +	return err;
+> +
+> +	return ret;
 > +}
 > +
-> +static int __devexit tiny_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct tiny_spi *hw = platform_get_drvdata(pdev);
-> +	struct spi_master *master = hw->bitbang.master;
-> +	unsigned int i;
-> +
-> +	spi_bitbang_stop(&hw->bitbang);
-> +	for (i = 0; i < hw->gpio_cs_count; i++)
-> +		gpio_free(hw->gpio_cs[i]);
-> +	platform_set_drvdata(pdev, NULL);
-> +	spi_master_put(master);
-> +	return 0;
-> +}
-> +
-> +#ifdef CONFIG_OF
-> +static const struct of_device_id tiny_spi_match[] = {
-> +	{ .compatible = "opencores,tiny-spi-rtlsvn2", },
-> +	{},
-> +}
-> +MODULE_DEVICE_TABLE(of, tiny_spi_match);
-> +#else /* CONFIG_OF */
-> +#define tiny_spi_match NULL
-> +#endif /* CONFIG_OF */
-> +
-> +static struct platform_driver tiny_spi_driver = {
-> +	.probe = tiny_spi_probe,
-> +	.remove = __devexit_p(tiny_spi_remove),
-> +	.driver = {
-> +		.name = DRV_NAME,
-> +		.owner = THIS_MODULE,
-> +		.pm = NULL,
-> +		.of_match_table = tiny_spi_match,
+> +static struct platform_driver spi_sh_driver = {
+> +	.probe =	spi_sh_probe,
+> +	.remove =	spi_sh_remove,
+> +	.driver		= {
+> +		.name = "sh_spi",
+> +		.owner	= THIS_MODULE,
 > +	},
 > +};
 > +
-> +static int __init tiny_spi_init(void)
+> +static int __init spi_sh_init(void)
 > +{
-> +	return platform_driver_register(&tiny_spi_driver);
+> +	return platform_driver_register(&spi_sh_driver);
 > +}
-> +module_init(tiny_spi_init);
 > +
-> +static void __exit tiny_spi_exit(void)
+> +static void __exit spi_sh_exit(void)
 > +{
-> +	platform_driver_unregister(&tiny_spi_driver);
+> +	platform_driver_unregister(&spi_sh_driver);
 > +}
-> +module_exit(tiny_spi_exit);
+> +module_init(spi_sh_init);
+> +module_exit(spi_sh_exit);
 > +
-> +MODULE_DESCRIPTION("OpenCores tiny SPI driver");
-> +MODULE_AUTHOR("Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>");
+> +MODULE_DESCRIPTION("SH SPI bus driver");
 > +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:" DRV_NAME);
-> diff --git a/include/linux/spi/spi_oc_tiny.h b/include/linux/spi/spi_oc_tiny.h
-> new file mode 100644
-> index 0000000..1ac529c
-> --- /dev/null
-> +++ b/include/linux/spi/spi_oc_tiny.h
-> @@ -0,0 +1,20 @@
-> +#ifndef _LINUX_SPI_SPI_OC_TINY_H
-> +#define _LINUX_SPI_SPI_OC_TINY_H
-> +
-> +/**
-> + * struct tiny_spi_platform_data - platform data of the OpenCores tiny SPI
-> + * @freq:	input clock freq to the core.
-> + * @baudwidth:	baud rate divider width of the core.
-> + * @gpio_cs_count:	number of gpio pins used for chipselect.
-> + * @gpio_cs:	array of gpio pins used for chipselect.
-> + *
-> + * freq and baudwidth are used only if the divider is programmable.
-> + */
-> +struct tiny_spi_platform_data {
-> +	unsigned int freq;
-> +	unsigned int baudwidth;
-> +	unsigned int gpio_cs_count;
-> +	int *gpio_cs;
-> +};
-> +
-> +#endif /* _LINUX_SPI_SPI_OC_TINY_H */
+> +MODULE_AUTHOR("Yoshihiro Shimoda");
+> +MODULE_ALIAS("platform:sh_spi");
 > -- 
-> 1.7.4
-> 
+> 1.7.1

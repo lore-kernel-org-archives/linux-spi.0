@@ -1,18 +1,21 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi/pl022: minor kerneldoc updates
-Date: Tue, 15 Feb 2011 15:09:38 -0700
-Message-ID: <20110215220938.GI28005@angua.secretlab.ca>
-References: <1297166635-5205-1-git-send-email-linus.walleij@stericsson.com>
+Subject: Re: [PATCH] spi/imx: select master mode for all channels
+Date: Tue, 15 Feb 2011 19:44:30 -0700
+Message-ID: <AANLkTimYDNN3KQ1V9riDYPdmJe_J64euJzcPFLZpe4jd@mail.gmail.com>
+References: <1297195739-24951-1-git-send-email-u.kleine-koenig@pengutronix.de>
+	<20110215204417.GA28005@angua.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Jason Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Richard Zhao <richard.zhao-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Yong Shen <yong.shen-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Shawn Guo <shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1297166635-5205-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <20110215204417.GA28005-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,76 +26,105 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 08, 2011 at 01:03:55PM +0100, Linus Walleij wrote:
-> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+2011/2/15 Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>:
+> On Tue, Feb 08, 2011 at 09:08:59PM +0100, Uwe Kleine-K=F6nig wrote:
+>> From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+>>
+>> The hardware seems to have a race condition when the inactive
+>> channels are in slave mode. We support master mode only, so
+>> we can just switch all channels to master mode.
+>>
+>> Signed-off-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+>> [ukleinek: add more verbose comment about the race]
+>> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+>> ---
+>> Hello,
+>>
+>> maybe one of our friends at Freescale can comment?
+>
+> Any feedback on this one? =A0Or should I just merge it?
 
-Applied, thanks.
+I've gone ahead and merged it.  I can pull it back out if anyone
+complains though.
+
+Thanks,
 
 g.
 
-> ---
->  drivers/spi/amba-pl022.c |   25 ++++++++++++++++---------
->  1 files changed, 16 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index 2b591f0..4cd05cc 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -329,15 +329,16 @@ struct vendor_data {
->  /**
->   * struct pl022 - This is the private SSP driver data structure
->   * @adev: AMBA device model hookup
-> - * @vendor: Vendor data for the IP block
-> - * @phybase: The physical memory where the SSP device resides
-> - * @virtbase: The virtual memory where the SSP is mapped
-> + * @vendor: vendor data for the IP block
-> + * @phybase: the physical memory where the SSP device resides
-> + * @virtbase: the virtual memory where the SSP is mapped
-> + * @clk: outgoing clock "SPICLK" for the SPI bus
->   * @master: SPI framework hookup
->   * @master_info: controller-specific data from machine setup
-> - * @regs: SSP controller register's virtual address
-> - * @pump_messages: Work struct for scheduling work to the workqueue
-> - * @lock: spinlock to syncronise access to driver data
->   * @workqueue: a workqueue on which any spi_message request is queued
-> + * @pump_messages: work struct for scheduling work to the workqueue
-> + * @queue_lock: spinlock to syncronise access to message queue
-> + * @queue: message queue
->   * @busy: workqueue is busy
->   * @running: workqueue is running
->   * @pump_transfers: Tasklet used in Interrupt Transfer mode
-> @@ -348,8 +349,14 @@ struct vendor_data {
->   * @tx_end: end position in TX buffer to be read
->   * @rx: current position in RX buffer to be written
->   * @rx_end: end position in RX buffer to be written
-> - * @readingtype: the type of read currently going on
-> - * @writingtype: the type or write currently going on
-> + * @read: the type of read currently going on
-> + * @write: the type of write currently going on
-> + * @exp_fifo_level: expected FIFO level
-> + * @dma_rx_channel: optional channel for RX DMA
-> + * @dma_tx_channel: optional channel for TX DMA
-> + * @sgt_rx: scattertable for the RX transfer
-> + * @sgt_tx: scattertable for the TX transfer
-> + * @dummypage: a dummy page used for driving data on the bus with DMA
->   */
->  struct pl022 {
->  	struct amba_device		*adev;
-> @@ -397,8 +404,8 @@ struct pl022 {
->   * @cpsr: Value of Clock prescale register
->   * @n_bytes: how many bytes(power of 2) reqd for a given data width of client
->   * @enable_dma: Whether to enable DMA or not
-> - * @write: function ptr to be used to write when doing xfer for this chip
->   * @read: function ptr to be used to read when doing xfer for this chip
-> + * @write: function ptr to be used to write when doing xfer for this chip
->   * @cs_control: chip select callback provided by chip
->   * @xfer_type: polling/interrupt/DMA
->   *
-> -- 
-> 1.7.3.2
-> 
+>
+> g.
+>
+>>
+>> Best regards
+>> Uwe
+>>
+>> =A0drivers/spi/spi_imx.c | =A0 12 +++++++++---
+>> =A01 files changed, 9 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi_imx.c b/drivers/spi/spi_imx.c
+>> index 1cf9d5f..69d6dba 100644
+>> --- a/drivers/spi/spi_imx.c
+>> +++ b/drivers/spi/spi_imx.c
+>> @@ -174,7 +174,7 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fi=
+n,
+>> =A0#define SPI_IMX2_3_CTRL =A0 =A0 =A0 =A0 =A0 =A0 =A00x08
+>> =A0#define SPI_IMX2_3_CTRL_ENABLE =A0 =A0 =A0 =A0 =A0 =A0 =A0 (1 << =A00)
+>> =A0#define SPI_IMX2_3_CTRL_XCH =A0 =A0 =A0 =A0 =A0(1 << =A02)
+>> -#define SPI_IMX2_3_CTRL_MODE(cs) =A0 =A0 (1 << ((cs) + =A04))
+>> +#define SPI_IMX2_3_CTRL_MODE_MASK =A0 =A0(0xf << 4)
+>> =A0#define SPI_IMX2_3_CTRL_POSTDIV_OFFSET =A0 =A0 =A0 8
+>> =A0#define SPI_IMX2_3_CTRL_PREDIV_OFFSET =A0 =A0 =A0 =A012
+>> =A0#define SPI_IMX2_3_CTRL_CS(cs) =A0 =A0 =A0 =A0 =A0 =A0 =A0 ((cs) << 1=
+8)
+>> @@ -253,8 +253,14 @@ static int __maybe_unused spi_imx2_3_config(struct =
+spi_imx_data *spi_imx,
+>> =A0{
+>> =A0 =A0 =A0 u32 ctrl =3D SPI_IMX2_3_CTRL_ENABLE, cfg =3D 0;
+>>
+>> - =A0 =A0 /* set master mode */
+>> - =A0 =A0 ctrl |=3D SPI_IMX2_3_CTRL_MODE(config->cs);
+>> + =A0 =A0 /*
+>> + =A0 =A0 =A0* The hardware seems to have a race condition when changing=
+ modes. The
+>> + =A0 =A0 =A0* current assumption is that the selection of the channel a=
+rrives
+>> + =A0 =A0 =A0* earlier in the hardware than the mode bits when they are =
+written at
+>> + =A0 =A0 =A0* the same time.
+>> + =A0 =A0 =A0* So set master mode for all channels as we do not support =
+slave mode.
+>> + =A0 =A0 =A0*/
+>> + =A0 =A0 ctrl |=3D SPI_IMX2_3_CTRL_MODE_MASK;
+>>
+>> =A0 =A0 =A0 /* set clock speed */
+>> =A0 =A0 =A0 ctrl |=3D spi_imx2_3_clkdiv(spi_imx->spi_clk, config->speed_=
+hz);
+>> --
+>> 1.7.2.3
+>>
+>>
+>> ------------------------------------------------------------------------=
+------
+>> The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
+>> Pinpoint memory and threading errors before they happen.
+>> Find and fix more than 250 security defects in the development cycle.
+>> Locate bottlenecks in serial and parallel code that limit performance.
+>> http://p.sf.net/sfu/intel-dev2devfeb
+>> _______________________________________________
+>> spi-devel-general mailing list
+>> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+>> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+>
 
-------------------------------------------------------------------------------
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
 The ultimate all-in-one performance toolkit: Intel(R) Parallel Studio XE:
 Pinpoint memory and threading errors before they happen.
 Find and fix more than 250 security defects in the development cycle.

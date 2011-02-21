@@ -1,56 +1,33 @@
-From: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: mc13xxx-core, support for i2c, V4
-Date: Mon, 21 Feb 2011 17:33:48 +0100
-Message-ID: <20110221163347.GG10686@sortiz-mobl>
-References: <1294119299-18352-1-git-send-email-marc@cpdesign.com.au>
- <20110212084035.GB17755@angua.secretlab.ca>
- <201102122111.30525.marc@cpdesign.com.au>
+From: 13560740732-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票――代/开
+Date: Tue, 22 Feb 2011 02:37:29 +0800
+Message-ID: <E1Pracw-0004u8-AM@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201102122111.30525.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-
-On Sat, Feb 12, 2011 at 09:11:30PM +1100, Marc Reilly wrote:
-> Hi Grant, 
-> 
-> Thanks for your comments,
-> 
-> On Saturday, February 12, 2011 07:40:35 pm Grant Likely wrote:
-> > On Tue, Jan 04, 2011 at 04:34:55PM +1100, Marc Reilly wrote:
-> > > Hi,
-> > > 
-> > > These patches add i2c support for the mc13xxx-core drive. For v4 I've
-> > > tried to take in all previous comments, hopefully making it better to
-> > > follow, and bisectable.
-> > 
-> > This series looks okay to me.  Since this is audio drivers, I expect
-> > that it would best be taken via the ASoC tree?  Have you sent it to
-> > Mark Brown and the ALSA list for review?
-> > 
-> > g.
-> 
-> Actually only the mc13873 has audio support. I think these IC's really fit 
-> better under the MFD tree, but silly me didn't add Samuel Ortiz (MFD 
-> maintainer) to this series... so included him now.
-> 
-> Samuel, are you the most appropriate to take this series in and would you like 
-> me to resend these patches to you? The thread archive is at [1]. 
-Yes, I would be the one taking those patches. Please resend the patch set to
-me, and I'll have a look. Has Uwe commented on them yet ?
-
-Cheers,
-Samuel.
-
--- 
-Intel Open Source Technology Centre
-http://oss.intel.com/
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2
+MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSB1bHRpbWF0ZSBhbGwtaW4tb25lIHBl
+cmZvcm1hbmNlIHRvb2xraXQ6IEludGVsKFIpIFBhcmFsbGVsIFN0dWRpbyBYRToKUGlucG9pbnQg
+bWVtb3J5IGFuZCB0aHJlYWRpbmcgZXJyb3JzIGJlZm9yZSB0aGV5IGhhcHBlbi4KRmluZCBhbmQg
+Zml4IG1vcmUgdGhhbiAyNTAgc2VjdXJpdHkgZGVmZWN0cyBpbiB0aGUgZGV2ZWxvcG1lbnQgY3lj
+bGUuCkxvY2F0ZSBib3R0bGVuZWNrcyBpbiBzZXJpYWwgYW5kIHBhcmFsbGVsIGNvZGUgdGhhdCBs
+aW1pdCBwZXJmb3JtYW5jZS4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1kZXYyZGV2ZmViCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

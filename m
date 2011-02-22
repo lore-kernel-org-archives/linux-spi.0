@@ -1,7 +1,7 @@
 From: Andres Salomon <dilinger@queued.net>
-Subject: [PATCH] spi/spi_altera: fix build error
-Date: Tue, 22 Feb 2011 13:23:03 -0800
-Message-ID: <20110222132303.6a78b8e0@queued.net>
+Subject: [PATCH] spi/spi_oc_tiny: fix build error
+Date: Tue, 22 Feb 2011 13:24:38 -0800
+Message-ID: <20110222132438.02d310e0@queued.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
@@ -14,38 +14,32 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-I ran into a build error while attempting to build the Feb 22nd
-linux-next tree.
-
-
-
-=46rom: Andres Salomon <dilinger@queued.net>
 
 =46ix the following build error due to a missing semicolon:
 
- CC [M]  drivers/spi/spi_altera.o
-drivers/spi/spi_altera.c:308: error: expected =E2=80=98,=E2=80=99 or =E2=
+ CC [M]  drivers/spi/spi_oc_tiny.o
+drivers/spi/spi_oc_tiny.c:394: error: expected =E2=80=98,=E2=80=99 or =E2=
 =80=98;=E2=80=99 before =E2=80=98extern=E2=80=99
-make[2]: *** [drivers/spi/spi_altera.o] Error 1
+make[2]: *** [drivers/spi/spi_oc_tiny.o] Error 1
 
 Signed-off-by: Andres Salomon <dilinger@queued.net>
 ---
- drivers/spi/spi_altera.c |    2 +-
+ drivers/spi/spi_oc_tiny.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi_altera.c b/drivers/spi/spi_altera.c
-index 5e001f3..4813a63 100644
---- a/drivers/spi/spi_altera.c
-+++ b/drivers/spi/spi_altera.c
-@@ -304,7 +304,7 @@ static int __devexit altera_spi_remove(struct platf=
-orm_device *dev)
- static const struct of_device_id altera_spi_match[] =3D {
- 	{ .compatible =3D "ALTR,spi-1.0", },
+diff --git a/drivers/spi/spi_oc_tiny.c b/drivers/spi/spi_oc_tiny.c
+index e99e545..f1bde66 100644
+--- a/drivers/spi/spi_oc_tiny.c
++++ b/drivers/spi/spi_oc_tiny.c
+@@ -390,7 +390,7 @@ static int __devexit tiny_spi_remove(struct platfor=
+m_device *pdev)
+ static const struct of_device_id tiny_spi_match[] =3D {
+ 	{ .compatible =3D "opencores,tiny-spi-rtlsvn2", },
  	{},
 -}
 +};
- MODULE_DEVICE_TABLE(of, altera_spi_match);
+ MODULE_DEVICE_TABLE(of, tiny_spi_match);
  #else /* CONFIG_OF */
- #define altera_spi_match NULL
+ #define tiny_spi_match NULL
 --=20
 1.7.2.3

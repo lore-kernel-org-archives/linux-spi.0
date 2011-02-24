@@ -1,44 +1,93 @@
-From: "Ovbin" <tydimr-FCRrzYWyONAAvxtiuMwx3w@public.gmane.org>
-Subject: Dov Hsxd
-Date: Thu, 24 Feb 2011 04:34:00 +0800
-Message-ID: <SERVER2b61LF1g0McH7000b6385@ada-arnhem.nl>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Hannu Heikkinen <ext-hannu.m.heikkinen@nokia.com>
+Subject: [PATCH 1/1] OMAP: McSPI: Off-by-one error in finding the right divisor
+Date: Thu, 24 Feb 2011 16:13:31 +0200
+Message-ID: <22be8985c86a32b9829ff740ce72bc4bd2e383cf.1298556551.git.ext-hannu.m.heikkinen@nokia.com>
+Content-Type: text/plain; charset="us-ascii"
+Cc: ext-phil.2.carmody@nokia.com
+To: linux-omap@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	dbrownell@users.sourceforge.net, grant.likely@secretlab.ca
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-sb6hodPQoaHSu6GhycOhodLUoaG30aGhwaqhoaGho9qj2aPIo9kNCrmroaG8uKGhsOOhobOkoaHJ
-z6Gh08Ohoc+1oaGhoaPFo8SjzqPEDQrLvqGhyq6hobXEoaG0+qGhxq+hocrKoaHK1qGhoaGjyqPJ
-oaGjyg0Kv8mhobzSoaG30aGhwO2hob7doaHW0KGhu/qhoaGho8+jz6Gho88NCs2ooaGx6aGh08Oh
-ocqxoaG++aGhoaGhoaPJoaGhoaPUo9WhoaPVDQq5/aGhsryhoba8oaG85KGhzqqhodHpoaGjs6Gh
-oaGj2qPaoaGjwQ0KudihodK7oaG/yaGhs6Shobj3oaG686Gho7ehoaGho8SjxqGho8YNCs+1oaHP
-36Gh1dKhoaOsoaG1paGhuLahoaO2oaGhoaPJo8yhoaPLDQrTxaGhs8ehobW9oaG30aGhzruhob/u
-oaGjsaGhoaGjzqPRoaGj0Q0Ku92hocrQoaG21KGh08OhodTaoaGhoaGho7ihoaGho9Sj1qGho9YN
-CrT6oaG1xKGhv9qhodanoaHLsKGhoaGhoaO5oaGhoaPZo8GhoaPCDQq/qqGhus+hobmroaGz9qGh
-zvGhoaGhoaGjtaGhoaGjxKPHoaGjxw0KuPehodf3oaHLvqGhuLShob7WoaGhoaGho7ChoaGho8mj
-zaGho80NCrXYoaG5q6Ghv6qhodTToaHL+aGhoaGhoaOxoaGhoaPOo9KhoaPSDQq3oqGhy76hob7f
-oaG1xKGhyeqhoaGhoaGjt6GhoaGj06PXoaGj2A0Kxq+hoaGhoaGhoaGhxq+hocHsoaGhoaGhoaGh
-oaGho9mhoaGhoaENCqGhoaGhoaGhoaGhob7doaGho6GhoaGhobPCoaGhoaGho8WhoaPLDQqhoaGh
-oaGhoaGhoaGhoaGhoaGhoaGhoaHJ+qGhoaGhoaPKoaGj0Q0KoaGhoaGhoaGhoaGhoaGhoaGhoaGh
-oaGhoaGhoaGhoaGj0KGho9cNCqGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGho9ShoaPC
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpGcmVlIFNvZnR3YXJlIERvd25sb2FkOiBJbmRleCwgU2Vh
-cmNoICYgQW5hbHl6ZSBMb2dzIGFuZCBvdGhlciBJVCBkYXRhIGluIApSZWFsLVRpbWUgd2l0aCBT
-cGx1bmsuIENvbGxlY3QsIGluZGV4IGFuZCBoYXJuZXNzIGFsbCB0aGUgZmFzdCBtb3ZpbmcgSVQg
-ZGF0YSAKZ2VuZXJhdGVkIGJ5IHlvdXIgYXBwbGljYXRpb25zLCBzZXJ2ZXJzIGFuZCBkZXZpY2Vz
-IHdoZXRoZXIgcGh5c2ljYWwsIHZpcnR1YWwKb3IgaW4gdGhlIGNsb3VkLiBEZWxpdmVyIGNvbXBs
-aWFuY2UgYXQgbG93ZXIgY29zdCBhbmQgZ2FpbiBuZXcgYnVzaW5lc3MgCmluc2lnaHRzLiBodHRw
-Oi8vcC5zZi5uZXQvc2Z1L3NwbHVuay1kZXYyZGV2IApfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Off-by-one error, gave erroneous divisor value 16 if speed_hz is over zero but
+less than OMAP2_MCSPI_MAX_FREQ / (1 << 15), that is, [1..1463].
+
+Also few overly complex bit shifts in divisor fixed.
+
+Also one dev_dgb line fixed, which indicated max speed exceeding transfer speed.
+
+Introducing a new function omap2_mcspi_calc_divisor() for getting the right
+divisor in omap2_mcspi_setup_transfer().
+
+Signed-off-by: Phil Carmody <ext-phil.2.carmody@nokia.com>
+Signed-off-by: Hannu Heikkinen <ext-hannu.m.heikkinen@nokia.com>
+---
+ drivers/spi/omap2_mcspi.c |   29 ++++++++++++++++++-----------
+ 1 files changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 36501ad..845248c 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -631,6 +631,17 @@ out:
+ 	return count - c;
+ }
+ 
++static u32 omap2_mcspi_calc_divisor(u32 speed_hz)
++{
++	u32 div;
++
++	for (div = 0; div < 15; div++)
++		if (speed_hz >= (OMAP2_MCSPI_MAX_FREQ >> div))
++			return div;
++
++	return 15;
++}
++
+ /* called only when no transfer is active to this device */
+ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 		struct spi_transfer *t)
+@@ -653,12 +664,8 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 	if (t && t->speed_hz)
+ 		speed_hz = t->speed_hz;
+ 
+-	if (speed_hz) {
+-		while (div <= 15 && (OMAP2_MCSPI_MAX_FREQ / (1 << div))
+-					> speed_hz)
+-			div++;
+-	} else
+-		div = 15;
++	speed_hz = min(speed_hz, OMAP2_MCSPI_MAX_FREQ);
++	div = omap2_mcspi_calc_divisor(speed_hz);
+ 
+ 	l = mcspi_cached_chconf0(spi);
+ 
+@@ -695,7 +702,7 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 	mcspi_write_chconf0(spi, l);
+ 
+ 	dev_dbg(&spi->dev, "setup: speed %d, sample %s edge, clk %s\n",
+-			OMAP2_MCSPI_MAX_FREQ / (1 << div),
++			OMAP2_MCSPI_MAX_FREQ >> div,
+ 			(spi->mode & SPI_CPHA) ? "trailing" : "leading",
+ 			(spi->mode & SPI_CPOL) ? "inverted" : "normal");
+ 
+@@ -996,10 +1003,10 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
+ 					t->bits_per_word);
+ 			return -EINVAL;
+ 		}
+-		if (t->speed_hz && t->speed_hz < OMAP2_MCSPI_MAX_FREQ/(1<<16)) {
+-			dev_dbg(&spi->dev, "%d Hz max exceeds %d\n",
+-					t->speed_hz,
+-					OMAP2_MCSPI_MAX_FREQ/(1<<16));
++		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
++			dev_dbg(&spi->dev, "speed_hz %d below minimum %d Hz\n",
++				t->speed_hz,
++				OMAP2_MCSPI_MAX_FREQ >> 15);
+ 			return -EINVAL;
+ 		}
+ 
+-- 
+1.7.3
+

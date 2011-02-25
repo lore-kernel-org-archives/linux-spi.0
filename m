@@ -1,39 +1,36 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCHv2 1/1] OMAP: McSPI: Off-by-one error in finding the
- right divisor
-Date: Thu, 24 Feb 2011 12:45:12 -0700
-Message-ID: <20110224194512.GB8907@angua.secretlab.ca>
-References: <2cfdc20e8a843b5c008b9beaa413e35deb0f24a3.1298574394.git.hannuxx@iki.fi>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-omap@vger.kernel.org,
+From: "Justin P. Mattock" <justinmattock@gmail.com>
+Subject: [PATCH 10/21]drivers:spi:spi_topcliff_pch.c remove one to many l's in the word.
+Date: Thu, 24 Feb 2011 22:12:50 -0800
+Message-ID: <1298614370-3841-1-git-send-email-justinmattock@gmail.com>
+Cc: dbrownell@users.sourceforge.net, grant.likely@secretlab.ca,
 	spi-devel-general@lists.sourceforge.net,
-	dbrownell@users.sourceforge.net, tony@atomide.com,
-	ext-phil.2.carmody@nokia.com
-To: hannuxx@iki.fi
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <2cfdc20e8a843b5c008b9beaa413e35deb0f24a3.1298574394.git.hannuxx@iki.fi>
-Sender: linux-omap-owner@vger.kernel.org
+	linux-kernel@vger.kernel.org,
+	"Justin P. Mattock" <justinmattock@gmail.com>
+To: trivial@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 24, 2011 at 09:31:33PM +0200, hannuxx@iki.fi wrote:
-> From: Hannu Heikkinen <ext-hannu.m.heikkinen@nokia.com>
-> 
-> Off-by-one error, gave erroneous divisor value 16 if speed_hz is over zero but
-> less than OMAP2_MCSPI_MAX_FREQ / (1 << 15), that is, [1..1463].
-> 
-> Also few overly complex bit shifts in divisor fixed.
-> 
-> Also one dev_dgb line fixed, which indicated max speed exceeding transfer speed.
-> 
-> Introducing a new function omap2_mcspi_calc_divisor() for getting the right
-> divisor in omap2_mcspi_setup_transfer().
-> 
-> Signed-off-by: Phil Carmody <ext-phil.2.carmody@nokia.com>
-> Signed-off-by: Hannu Heikkinen <ext-hannu.m.heikkinen@nokia.com>
+The patch below removes an extra "l" in the word.
 
-Applied, thanks.
+Signed-off-by: Justin P. Mattock <justinmattock@gmail.com>
 
-g.
+---
+ drivers/spi/spi_topcliff_pch.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+index 79e48d4..75f8f13 100644
+--- a/drivers/spi/spi_topcliff_pch.c
++++ b/drivers/spi/spi_topcliff_pch.c
+@@ -1022,7 +1022,7 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	board_dat->pdev = pdev;
+ 
+-	/* alllocate memory for SPI master */
++	/* allocate memory for SPI master */
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct pch_spi_data));
+ 	if (master == NULL) {
+ 		retval = -ENOMEM;
+-- 
+1.7.4.1

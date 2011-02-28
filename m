@@ -1,324 +1,35 @@
-From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v8 03/11] gpio: add ti-ssp gpio driver
-Date: Mon, 28 Feb 2011 18:04:32 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB593024BF35DAF@dbde02.ent.ti.com>
-References: <1295378505-15221-1-git-send-email-cyril@ti.com>
-	<1295378505-15221-4-git-send-email-cyril@ti.com>
+From: 13430544812-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Mon, 28 Feb 2011 22:44:38 +0800
+Message-ID: <E1Pu4KJ-0001as-Dj@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org" <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-To: "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1295378505-15221-4-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-On Wed, Jan 19, 2011 at 00:51:37, Chemparathy, Cyril wrote:
-> TI's SSP controller pins can be directly read and written to behave like a
-> GPIO.  This patch adds a GPIO driver that exposes such functionality.
-
-Can you please review and ack the GPIO part of this
-series too?
-
-I see that you have already acked the SPI part of this work.
-
-Thanks,
-Sekhar
-
-> 
-> Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-> ---
->  drivers/gpio/Kconfig       |   10 ++
->  drivers/gpio/Makefile      |    1 +
->  drivers/gpio/ti-ssp-gpio.c |  207 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/mfd/ti_ssp.h |    4 +
->  4 files changed, 222 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/gpio/ti-ssp-gpio.c
-> 
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index 3143ac7..05bbe4c 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -128,6 +128,16 @@ config GPIO_VX855
->  	  additional drivers must be enabled in order to use the
->  	  functionality of the device.
->  
-> +config GPIO_TI_SSP
-> +	tristate "TI Sequencer Serial Port - GPIO Support"
-> +	depends on MFD_TI_SSP
-> +	help
-> +	  Say yes here to support a GPIO interface on TI SSP port pins.
-> +	  Each SSP port translates into 4 GPIOs.
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called ti-ssp-gpio.
-> +
->  comment "I2C GPIO expanders:"
->  
->  config GPIO_MAX7300
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index bdf3dde..0e2a844 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -26,6 +26,7 @@ obj-$(CONFIG_GPIO_PL061)	+= pl061.o
->  obj-$(CONFIG_GPIO_STMPE)	+= stmpe-gpio.o
->  obj-$(CONFIG_GPIO_TC35892)	+= tc35892-gpio.o
->  obj-$(CONFIG_GPIO_TIMBERDALE)	+= timbgpio.o
-> +obj-$(CONFIG_GPIO_TI_SSP)	+= ti-ssp-gpio.o
->  obj-$(CONFIG_GPIO_TWL4030)	+= twl4030-gpio.o
->  obj-$(CONFIG_GPIO_UCB1400)	+= ucb1400_gpio.o
->  obj-$(CONFIG_GPIO_XILINX)	+= xilinx_gpio.o
-> diff --git a/drivers/gpio/ti-ssp-gpio.c b/drivers/gpio/ti-ssp-gpio.c
-> new file mode 100644
-> index 0000000..edc3142
-> --- /dev/null
-> +++ b/drivers/gpio/ti-ssp-gpio.c
-> @@ -0,0 +1,207 @@
-> +/*
-> + * Sequencer Serial Port (SSP) based virtual GPIO driver
-> + *
-> + * Copyright (C) 2010 Texas Instruments Inc
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/io.h>
-> +#include <linux/err.h>
-> +#include <linux/slab.h>
-> +#include <linux/gpio.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/mfd/ti_ssp.h>
-> +
-> +struct ti_ssp_gpio_chip {
-> +	struct gpio_chip		chip;
-> +	struct device			*dev;
-> +	spinlock_t			lock;
-> +	u8				out;
-> +	u32				iosel;
-> +};
-> +
-> +#define to_ssp_gpio_chip(c) container_of(c, struct ti_ssp_gpio_chip, chip)
-> +
-> +static int ti_ssp_gpio_dir_in(struct gpio_chip *chip, unsigned gpio_num)
-> +{
-> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-> +	int error = 0;
-> +
-> +	spin_lock(&gpio->lock);
-> +
-> +	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
-> +	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_IN);
-> +
-> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
-> +
-> +	spin_unlock(&gpio->lock);
-> +
-> +	return error;
-> +}
-> +
-> +static int ti_ssp_gpio_dir_out(struct gpio_chip *chip, unsigned gpio_num,
-> +			       int val)
-> +{
-> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-> +	int error;
-> +
-> +	spin_lock(&gpio->lock);
-> +
-> +	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
-> +	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_OUT);
-> +
-> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
-> +
-> +	if (error < 0)
-> +		goto error;
-> +
-> +	if (val)
-> +		gpio->out |= BIT(gpio_num);
-> +	else
-> +		gpio->out &= ~BIT(gpio_num);
-> +
-> +	error = ti_ssp_raw_write(gpio->dev, gpio->out);
-> +
-> +error:
-> +	spin_unlock(&gpio->lock);
-> +	return error;
-> +}
-> +
-> +static int ti_ssp_gpio_get(struct gpio_chip *chip, unsigned gpio_num)
-> +{
-> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-> +	int ret;
-> +
-> +	spin_lock(&gpio->lock);
-> +
-> +	ret = ti_ssp_raw_read(gpio->dev);
-> +	if (ret >= 0)
-> +		ret = !!(ret & BIT(gpio_num));
-> +
-> +	spin_unlock(&gpio->lock);
-> +	return ret;
-> +}
-> +
-> +static void ti_ssp_gpio_set(struct gpio_chip *chip, unsigned gpio_num, int val)
-> +{
-> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
-> +
-> +	spin_lock(&gpio->lock);
-> +
-> +	if (val)
-> +		gpio->out |= BIT(gpio_num);
-> +	else
-> +		gpio->out &= ~BIT(gpio_num);
-> +
-> +	ti_ssp_raw_write(gpio->dev, gpio->out);
-> +
-> +	spin_unlock(&gpio->lock);
-> +}
-> +
-> +static int __devinit ti_ssp_gpio_probe(struct platform_device *pdev)
-> +{
-> +	const struct ti_ssp_gpio_data *pdata = pdev->dev.platform_data;
-> +	struct device *dev = &pdev->dev;
-> +	struct ti_ssp_gpio_chip *gpio;
-> +	int error;
-> +
-> +	if (!pdata) {
-> +		dev_err(dev, "platform data not found\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	gpio = kzalloc(sizeof(*gpio), GFP_KERNEL);
-> +	if (!gpio) {
-> +		dev_err(dev, "cannot allocate driver data\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	gpio->dev = dev;
-> +	gpio->iosel = SSP_PIN_SEL(0, SSP_IN) | SSP_PIN_SEL(1, SSP_IN) |
-> +		      SSP_PIN_SEL(2, SSP_IN) | SSP_PIN_SEL(3, SSP_IN);
-> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
-> +	if (error < 0) {
-> +		dev_err(dev, "gpio io setup failed (%d)\n", error);
-> +		goto error;
-> +	}
-> +
-> +	spin_lock_init(&gpio->lock);
-> +	platform_set_drvdata(pdev, gpio);
-> +
-> +	gpio->chip.base  = pdata->start;
-> +	gpio->chip.ngpio = 4;
-> +	gpio->chip.dev   = &pdev->dev;
-> +	gpio->chip.label = "ti_ssp_gpio";
-> +	gpio->chip.owner = THIS_MODULE;
-> +	gpio->chip.get   = ti_ssp_gpio_get;
-> +	gpio->chip.set   = ti_ssp_gpio_set;
-> +	gpio->chip.direction_input  = ti_ssp_gpio_dir_in;
-> +	gpio->chip.direction_output = ti_ssp_gpio_dir_out;
-> +
-> +	error = gpiochip_add(&gpio->chip);
-> +	if (error < 0) {
-> +		dev_err(dev, "gpio chip registration failed (%d)\n", error);
-> +		goto error;
-> +	}
-> +
-> +	dev_info(dev, "ssp gpio interface registered\n");
-> +	return 0;
-> +
-> +error:
-> +	kfree(gpio);
-> +	return error;
-> +}
-> +
-> +static int __devexit ti_ssp_gpio_remove(struct platform_device *pdev)
-> +{
-> +	struct ti_ssp_gpio_chip *gpio = platform_get_drvdata(pdev);
-> +	int error;
-> +
-> +	error = gpiochip_remove(&gpio->chip);
-> +	if (error < 0)
-> +		return error;
-> +	kfree(gpio);
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver ti_ssp_gpio_driver = {
-> +	.probe		= ti_ssp_gpio_probe,
-> +	.remove		= __devexit_p(ti_ssp_gpio_remove),
-> +	.driver		= {
-> +		.name	= "ti-ssp-gpio",
-> +		.owner	= THIS_MODULE,
-> +	},
-> +};
-> +
-> +static int __init ti_ssp_gpio_init(void)
-> +{
-> +	return platform_driver_register(&ti_ssp_gpio_driver);
-> +}
-> +module_init(ti_ssp_gpio_init);
-> +
-> +static void __exit ti_ssp_gpio_exit(void)
-> +{
-> +	platform_driver_unregister(&ti_ssp_gpio_driver);
-> +}
-> +module_exit(ti_ssp_gpio_exit);
-> +
-> +MODULE_DESCRIPTION("GPIO interface for TI-SSP");
-> +MODULE_AUTHOR("Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>");
-> +MODULE_LICENSE("GPL");
-> +MODULE_ALIAS("platform:ti-ssp-gpio");
-> diff --git a/include/linux/mfd/ti_ssp.h b/include/linux/mfd/ti_ssp.h
-> index dbb4b43..10c65bb 100644
-> --- a/include/linux/mfd/ti_ssp.h
-> +++ b/include/linux/mfd/ti_ssp.h
-> @@ -38,6 +38,10 @@ struct ti_ssp_spi_data {
->  	void		(*select)(int cs);
->  };
->  
-> +struct ti_ssp_gpio_data {
-> +	int		start;
-> +};
-> +
->  /*
->   * Sequencer port IO pin configuration bits.  These do not correlate 1-1 with
->   * the hardware.  The iosel field in the port data combines iosel1 and iosel2,
-> -- 
-> 1.7.1
-> 
-> _______________________________________________
-> Davinci-linux-open-source mailing list
-> Davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
-> 
+xPq6w6O6CiAgICAgztK5q8u+09DSu7K/t9Yoye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQ
+oaIuLi4uLi4uLim3oqGqoarGsS8gtPq/qqO7CsjnOsbVzajJzMa3z/rK27eiL8axO9TLyuTStaGi
+vajW/tK1oaK9qNb+sLLXsNK1oaK547jm0rWhosbky/y3/s7x0NDStaGiss3S+9K1tcihowq587mr
+y77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjugogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICDVxc/IyfqjujEzNDMwNTQ0ODEyCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRnJlZSBT
+b2Z0d2FyZSBEb3dubG9hZDogSW5kZXgsIFNlYXJjaCAmIEFuYWx5emUgTG9ncyBhbmQgb3RoZXIg
+SVQgZGF0YSBpbiAKUmVhbC1UaW1lIHdpdGggU3BsdW5rLiBDb2xsZWN0LCBpbmRleCBhbmQgaGFy
+bmVzcyBhbGwgdGhlIGZhc3QgbW92aW5nIElUIGRhdGEgCmdlbmVyYXRlZCBieSB5b3VyIGFwcGxp
+Y2F0aW9ucywgc2VydmVycyBhbmQgZGV2aWNlcyB3aGV0aGVyIHBoeXNpY2FsLCB2aXJ0dWFsCm9y
+IGluIHRoZSBjbG91ZC4gRGVsaXZlciBjb21wbGlhbmNlIGF0IGxvd2VyIGNvc3QgYW5kIGdhaW4g
+bmV3IGJ1c2luZXNzIAppbnNpZ2h0cy4gaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZGV2MmRl
+diAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
+dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
+cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
+ZGV2ZWwtZ2VuZXJhbAo=

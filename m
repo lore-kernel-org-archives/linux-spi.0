@@ -1,794 +1,324 @@
-From: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-Subject: [PATCH v3] spi_topcliff_pch: support new device ML7213 IOH
-Date: Mon, 28 Feb 2011 20:47:57 +0900
-Message-ID: <1298893677-4406-1-git-send-email-tomoya-linux@dsn.okisemi.com>
-Cc: qi.wang@intel.com, yong.y.wang@intel.com, joel.clark@intel.com,
-	kok.howg.ewe@intel.com,
-	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-To: David Brownell <dbrownell@users.sourceforge.net>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v8 03/11] gpio: add ti-ssp gpio driver
+Date: Mon, 28 Feb 2011 18:04:32 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB593024BF35DAF@dbde02.ent.ti.com>
+References: <1295378505-15221-1-git-send-email-cyril@ti.com>
+	<1295378505-15221-4-git-send-email-cyril@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org" <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+To: "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1295378505-15221-4-git-send-email-cyril-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Support ML7213 device of OKI SEMICONDUCTOR.
-ML7213 is companion chip of Intel Atom E6xx series for IVI(In-Vehicle Infotainment).
-ML7213 is compatible for Intel EG20T PCH.
+Hi Grant,
 
-Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
----
- drivers/spi/Kconfig            |    5 +-
- drivers/spi/spi_topcliff_pch.c |  481 ++++++++++++++++++++--------------------
- 2 files changed, 250 insertions(+), 236 deletions(-)
+On Wed, Jan 19, 2011 at 00:51:37, Chemparathy, Cyril wrote:
+> TI's SSP controller pins can be directly read and written to behave like a
+> GPIO.  This patch adds a GPIO driver that exposes such functionality.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index bb233a9..6f6fb1f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -351,12 +351,15 @@ config SPI_TEGRA
- 	  SPI driver for NVidia Tegra SoCs
- 
- config SPI_TOPCLIFF_PCH
--	tristate "Topcliff PCH SPI Controller"
-+	tristate "Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH SPI controller"
- 	depends on PCI
- 	help
- 	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
- 	  used in some x86 embedded processors.
- 
-+	  This driver also supports the ML7213, a companion chip for the
-+	  Atom E6xx series and compatible with the Intel EG20T PCH.
-+
- config SPI_TXX9
- 	tristate "Toshiba TXx9 SPI controller"
- 	depends on GENERIC_GPIO && CPU_TX49XX
-diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
-index 79e48d4..93c9bce 100644
---- a/drivers/spi/spi_topcliff_pch.c
-+++ b/drivers/spi/spi_topcliff_pch.c
-@@ -26,6 +26,7 @@
- #include <linux/spi/spidev.h>
- #include <linux/module.h>
- #include <linux/device.h>
-+#include <linux/platform_device.h>
- 
- /* Register offsets */
- #define PCH_SPCR		0x00	/* SPI control register */
-@@ -35,6 +36,7 @@
- #define PCH_SPDRR		0x10	/* SPI read data register */
- #define PCH_SSNXCR		0x18	/* SSN Expand Control Register */
- #define PCH_SRST		0x1C	/* SPI reset register */
-+#define PCH_SPI_ADDRESS_SIZE	0x20
- 
- #define PCH_SPSR_TFD		0x000007C0
- #define PCH_SPSR_RFD		0x0000F800
-@@ -88,6 +90,16 @@
- #define PCH_CLOCK_HZ		50000000
- #define PCH_MAX_SPBR		1023
- 
-+/* Definition for ML7213 by OKI SEMICONDUCTOR */
-+#define PCI_VENDOR_ID_ROHM		0x10DB
-+#define PCI_DEVICE_ID_ML7213_SPI	0x802c
-+
-+/*
-+ * Set the number of SPI instance max
-+ * Intel EG20T PCH :		1ch
-+ * OKI SEMICONDUCTOR ML7213 IOH :	2ch
-+*/
-+#define PCH_SPI_MAX_DEV			2
- 
- /**
-  * struct pch_spi_data - Holds the SPI channel specific details
-@@ -121,6 +133,8 @@
-  * @cur_trans:			The current transfer that this SPI driver is
-  *				handling
-  * @board_dat:			Reference to the SPI device data structure
-+ * @plat_dev:			platform_device structure
-+ * @ch:				SPI channel number
-  */
- struct pch_spi_data {
- 	void __iomem *io_remap_addr;
-@@ -144,6 +158,8 @@ struct pch_spi_data {
- 	struct spi_message *current_msg;
- 	struct spi_transfer *cur_trans;
- 	struct pch_spi_board_data *board_dat;
-+	struct platform_device	*plat_dev;
-+	int ch;
- };
- 
- /**
-@@ -153,6 +169,7 @@ struct pch_spi_data {
-  * @pci_req_sts:	Status of pci_request_regions
-  * @suspend_sts:	Status of suspend
-  * @data:		Pointer to SPI channel data structure
-+ * @num:		The number of SPI device instance
-  */
- struct pch_spi_board_data {
- 	struct pci_dev *pdev;
-@@ -160,11 +177,18 @@ struct pch_spi_board_data {
- 	u8 pci_req_sts;
- 	u8 suspend_sts;
- 	struct pch_spi_data *data;
-+	int num;
-+};
-+
-+struct pch_pd_dev_save {
-+	int num;
-+	struct platform_device *pd_save[PCH_SPI_MAX_DEV];
- };
- 
- static struct pci_device_id pch_spi_pcidev_id[] = {
--	{PCI_DEVICE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_GE_SPI)},
--	{0,}
-+	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
-+	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
-+	{ }
- };
- 
- /**
-@@ -298,7 +322,6 @@ static irqreturn_t pch_spi_handler(int irq, void *dev_id)
- 	data = board_dat->data;
- 	io_remap_addr = data->io_remap_addr;
- 	spsr = io_remap_addr + PCH_SPSR;
--
- 	reg_spsr_val = ioread32(spsr);
- 
- 	/* Check if the interrupt is for SPI device */
-@@ -309,7 +332,6 @@ static irqreturn_t pch_spi_handler(int irq, void *dev_id)
- 
- 	dev_dbg(&board_dat->pdev->dev, "%s EXIT return value=%d\n",
- 		__func__, ret);
--
- 	return ret;
- }
- 
-@@ -412,7 +434,6 @@ static int pch_spi_setup(struct spi_device *pspi)
- 
- static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
- {
--
- 	struct spi_transfer *transfer;
- 	struct pch_spi_data *data = spi_master_get_devdata(pspi->master);
- 	int retval;
-@@ -469,7 +490,6 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
- 			}
- 		}
- 	}
--
- 	spin_lock_irqsave(&data->lock, flags);
- 
- 	/* We won't process any messages if we have been asked to terminate */
-@@ -621,7 +641,6 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw,
- 	data->transfer_active = true;
- }
- 
--
- static void pch_spi_nomore_transfer(struct pch_spi_data *data,
- 						struct spi_message *pmsg)
- {
-@@ -742,7 +761,6 @@ static void pch_spi_copy_rx_data(struct pch_spi_data *data, int bpw)
- 	}
- }
- 
--
- static void pch_spi_process_messages(struct work_struct *pwork)
- {
- 	struct spi_message *pmsg;
-@@ -884,46 +902,26 @@ static void pch_spi_free_resources(struct pch_spi_board_data *board_dat)
- 	/* disable interrupts & free IRQ */
- 	if (board_dat->irq_reg_sts) {
- 		/* disable interrupts */
--		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR, 0,
--				   PCH_ALL);
--
--		/* free IRQ */
--		free_irq(board_dat->pdev->irq, board_dat);
-+		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR,
-+				   0, PCH_ALL);
- 
- 		dev_dbg(&board_dat->pdev->dev,
--			"%s free_irq invoked successfully\n", __func__);
-+			"%s free_irq invoked successfully\n",
-+			__func__);
- 
- 		board_dat->irq_reg_sts = false;
- 	}
--
--	/* unmap PCI base address */
--	if (board_dat->data->io_remap_addr != 0) {
--		pci_iounmap(board_dat->pdev, board_dat->data->io_remap_addr);
--
--		board_dat->data->io_remap_addr = 0;
--
--		dev_dbg(&board_dat->pdev->dev,
--			"%s pci_iounmap invoked successfully\n", __func__);
--	}
--
--	/* release PCI region */
--	if (board_dat->pci_req_sts) {
--		pci_release_regions(board_dat->pdev);
--		dev_dbg(&board_dat->pdev->dev,
--			"%s pci_release_regions invoked successfully\n",
--			__func__);
--		board_dat->pci_req_sts = false;
--	}
- }
- 
- static int pch_spi_get_resources(struct pch_spi_board_data *board_dat)
- {
--	void __iomem *io_remap_addr;
--	int retval;
-+	int retval = 0;
-+
- 	dev_dbg(&board_dat->pdev->dev, "%s ENTRY\n", __func__);
- 
- 	/* create workqueue */
- 	board_dat->data->wk = create_singlethread_workqueue(KBUILD_MODNAME);
-+
- 	if (!board_dat->data->wk) {
- 		dev_err(&board_dat->pdev->dev,
- 			"%s create_singlet hread_workqueue failed\n", __func__);
-@@ -931,46 +929,13 @@ static int pch_spi_get_resources(struct pch_spi_board_data *board_dat)
- 		goto err_return;
- 	}
- 
--	dev_dbg(&board_dat->pdev->dev,
--		"%s create_singlethread_workqueue success\n", __func__);
--
--	retval = pci_request_regions(board_dat->pdev, KBUILD_MODNAME);
--	if (retval != 0) {
--		dev_err(&board_dat->pdev->dev,
--			"%s request_region failed\n", __func__);
--		goto err_return;
--	}
--
- 	board_dat->pci_req_sts = true;
- 
--	io_remap_addr = pci_iomap(board_dat->pdev, 1, 0);
--	if (io_remap_addr == 0) {
--		dev_err(&board_dat->pdev->dev,
--			"%s pci_iomap failed\n", __func__);
--		retval = -ENOMEM;
--		goto err_return;
--	}
--
--	/* calculate base address for all channels */
--	board_dat->data->io_remap_addr = io_remap_addr;
--
- 	/* reset PCH SPI h/w */
- 	pch_spi_reset(board_dat->data->master);
- 	dev_dbg(&board_dat->pdev->dev,
- 		"%s pch_spi_reset invoked successfully\n", __func__);
- 
--	/* register IRQ */
--	retval = request_irq(board_dat->pdev->irq, pch_spi_handler,
--			     IRQF_SHARED, KBUILD_MODNAME, board_dat);
--	if (retval != 0) {
--		dev_err(&board_dat->pdev->dev,
--			"%s request_irq failed\n", __func__);
--		goto err_return;
--	}
--
--	dev_dbg(&board_dat->pdev->dev, "%s request_irq returned=%d\n",
--		__func__, retval);
--
- 	board_dat->irq_reg_sts = true;
- 	dev_dbg(&board_dat->pdev->dev, "%s data->irq_reg_sts=true\n", __func__);
- 
-@@ -986,131 +951,96 @@ err_return:
- 	return retval;
- }
- 
--static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+static int __devinit pch_spi_pd_probe(struct platform_device *plat_dev)
- {
--
-+	int ret;
- 	struct spi_master *master;
--
--	struct pch_spi_board_data *board_dat;
--	int retval;
--
--	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
--
--	/* allocate memory for private data */
--	board_dat = kzalloc(sizeof(struct pch_spi_board_data), GFP_KERNEL);
--	if (board_dat == NULL) {
--		dev_err(&pdev->dev,
--			" %s memory allocation for private data failed\n",
--			__func__);
--		retval = -ENOMEM;
--		goto err_kmalloc;
--	}
--
--	dev_dbg(&pdev->dev,
--		"%s memory allocation for private data success\n", __func__);
--
--	/* enable PCI device */
--	retval = pci_enable_device(pdev);
--	if (retval != 0) {
--		dev_err(&pdev->dev, "%s pci_enable_device FAILED\n", __func__);
--
--		goto err_pci_en_device;
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(&plat_dev->dev);
-+
-+	master = spi_alloc_master(&board_dat->pdev->dev,
-+				  sizeof(struct pch_spi_data));
-+	if (!master) {
-+		dev_err(&plat_dev->dev, "spi_alloc_master[%d] failed.\n",
-+			plat_dev->id);
-+		return -ENOMEM;
- 	}
- 
--	dev_dbg(&pdev->dev, "%s pci_enable_device returned=%d\n",
--		__func__, retval);
--
--	board_dat->pdev = pdev;
-+	board_dat->data = spi_master_get_devdata(master);
-+	board_dat->data->master = master;
- 
--	/* alllocate memory for SPI master */
--	master = spi_alloc_master(&pdev->dev, sizeof(struct pch_spi_data));
--	if (master == NULL) {
--		retval = -ENOMEM;
--		dev_err(&pdev->dev, "%s Fail.\n", __func__);
--		goto err_spi_alloc_master;
-+	/* baseaddress + 0x20(offset) */
-+	board_dat->data->io_remap_addr = pci_iomap(board_dat->pdev, 1, 0) +
-+						   0x20 * plat_dev->id;
-+	if (!board_dat->data->io_remap_addr) {
-+		dev_err(&plat_dev->dev, "%s pci_iomap failed\n", __func__);
-+		ret = -ENOMEM;
-+		goto err_pci_iomap;
- 	}
- 
--	dev_dbg(&pdev->dev,
--		"%s spi_alloc_master returned non NULL\n", __func__);
-+	dev_dbg(&plat_dev->dev, "[ch%d] remap_addr=%p \n",
-+		plat_dev->id, board_dat->data->io_remap_addr);
- 
- 	/* initialize members of SPI master */
--	master->bus_num = -1;
-+	master->bus_num = plat_dev->id;
- 	master->num_chipselect = PCH_MAX_CS;
- 	master->setup = pch_spi_setup;
- 	master->transfer = pch_spi_transfer;
--	dev_dbg(&pdev->dev,
--		"%s transfer member of SPI master initialized\n", __func__);
--
--	board_dat->data = spi_master_get_devdata(master);
- 
--	board_dat->data->master = master;
-+	board_dat->data->plat_dev = plat_dev;
- 	board_dat->data->n_curnt_chip = 255;
--	board_dat->data->board_dat = board_dat;
- 	board_dat->data->status = STATUS_RUNNING;
-+	board_dat->data->board_dat = board_dat;
-+	board_dat->data->ch = plat_dev->id;
- 
- 	INIT_LIST_HEAD(&board_dat->data->queue);
- 	spin_lock_init(&board_dat->data->lock);
- 	INIT_WORK(&board_dat->data->work, pch_spi_process_messages);
- 	init_waitqueue_head(&board_dat->data->wait);
- 
--	/* allocate resources for PCH SPI */
--	retval = pch_spi_get_resources(board_dat);
--	if (retval) {
--		dev_err(&pdev->dev, "%s fail(retval=%d)\n", __func__, retval);
-+	ret = pch_spi_get_resources(board_dat);
-+	if (ret) {
-+		dev_err(&plat_dev->dev, "%s fail(retval=%d)\n", __func__, ret);
- 		goto err_spi_get_resources;
- 	}
- 
--	dev_dbg(&pdev->dev, "%s pch_spi_get_resources returned=%d\n",
--		__func__, retval);
--
--	/* save private data in dev */
--	pci_set_drvdata(pdev, board_dat);
--	dev_dbg(&pdev->dev, "%s invoked pci_set_drvdata\n", __func__);
-+	ret = request_irq(board_dat->pdev->irq, pch_spi_handler,
-+			  IRQF_SHARED, KBUILD_MODNAME, board_dat);
-+	if (ret) {
-+		dev_err(&plat_dev->dev,
-+			"%s request_irq failed\n", __func__);
-+		goto err_request_irq;
-+	}
- 
--	/* set master mode */
- 	pch_spi_set_master_mode(master);
--	dev_dbg(&pdev->dev,
--		"%s invoked pch_spi_set_master_mode\n", __func__);
- 
--	/* Register the controller with the SPI core. */
--	retval = spi_register_master(master);
--	if (retval != 0) {
--		dev_err(&pdev->dev,
-+	ret = spi_register_master(master);
-+	if (ret != 0) {
-+		dev_err(&plat_dev->dev,
- 			"%s spi_register_master FAILED\n", __func__);
--		goto err_spi_reg_master;
-+		goto err_spi_register_master;
- 	}
- 
--	dev_dbg(&pdev->dev, "%s spi_register_master returned=%d\n",
--		__func__, retval);
--
--
- 	return 0;
- 
--err_spi_reg_master:
--	spi_unregister_master(master);
-+err_spi_register_master:
-+	free_irq(board_dat->pdev->irq, board_dat);
-+err_request_irq:
-+	pch_spi_free_resources(board_dat);
- err_spi_get_resources:
--err_spi_alloc_master:
-+	pci_iounmap(board_dat->pdev, board_dat->data->io_remap_addr);
-+err_pci_iomap:
- 	spi_master_put(master);
--	pci_disable_device(pdev);
--err_pci_en_device:
--	kfree(board_dat);
--err_kmalloc:
--	return retval;
-+
-+	return ret;
- }
- 
--static void pch_spi_remove(struct pci_dev *pdev)
-+static int __devexit pch_spi_pd_remove(struct platform_device *plat_dev)
- {
--	struct pch_spi_board_data *board_dat = pci_get_drvdata(pdev);
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(&plat_dev->dev);
- 	int count;
- 
--	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
--
--	if (!board_dat) {
--		dev_err(&pdev->dev,
--			"%s pci_get_drvdata returned NULL\n", __func__);
--		return;
--	}
--
-+	dev_dbg(&plat_dev->dev, "%s:[ch%d] irq=%d \n",
-+		__func__, plat_dev->id, board_dat->pdev->irq);
- 	/* check for any pending messages; no action is taken if the queue
- 	 * is still full; but at least we tried.  Unload anyway */
- 	count = 500;
-@@ -1125,116 +1055,217 @@ static void pch_spi_remove(struct pci_dev *pdev)
- 	}
- 	spin_unlock(&board_dat->data->lock);
- 
--	/* Free resources allocated for PCH SPI */
- 	pch_spi_free_resources(board_dat);
--
-+	free_irq(board_dat->pdev->irq, board_dat);
-+	pci_iounmap(board_dat->pdev, board_dat->data->io_remap_addr);
- 	spi_unregister_master(board_dat->data->master);
-+	spi_master_put(board_dat->data->master);
-+	platform_set_drvdata(plat_dev, NULL);
- 
--	/* free memory for private data */
--	kfree(board_dat);
--
--	pci_set_drvdata(pdev, NULL);
--
--	/* disable PCI device */
--	pci_disable_device(pdev);
--
--	dev_dbg(&pdev->dev, "%s invoked pci_disable_device\n", __func__);
-+	return 0;
- }
- 
--#ifdef CONFIG_PM
--static int pch_spi_suspend(struct pci_dev *pdev, pm_message_t state)
-+static int pch_spi_pd_suspend(struct platform_device *pd_dev, pm_message_t state)
- {
- 	u8 count;
--	int retval;
--
--	struct pch_spi_board_data *board_dat = pci_get_drvdata(pdev);
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(&pd_dev->dev);
- 
--	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
-+	dev_dbg(&pd_dev->dev, "%s ENTRY\n", __func__);
- 
- 	if (!board_dat) {
--		dev_err(&pdev->dev,
-+		dev_err(&pd_dev->dev,
- 			"%s pci_get_drvdata returned NULL\n", __func__);
- 		return -EFAULT;
- 	}
- 
--	retval = 0;
- 	board_dat->suspend_sts = true;
- 
- 	/* check if the current message is processed:
- 	   Only after thats done the transfer will be suspended */
- 	count = 255;
--	while ((--count) > 0) {
-+	while ((--count) > 0)
- 		if (!(board_dat->data->bcurrent_msg_processing)) {
--			dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_"
--				"msg_processing = false\n", __func__);
- 			break;
--		} else {
--			dev_dbg(&pdev->dev, "%s board_dat->data->bCurrent_msg_"
--				"processing = true\n", __func__);
--		}
- 		msleep(PCH_SLEEP_TIME);
- 	}
- 
- 	/* Free IRQ */
- 	if (board_dat->irq_reg_sts) {
- 		/* disable all interrupts */
--		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR, 0,
--				   PCH_ALL);
-+		pch_spi_setclr_reg(board_dat->data->master, PCH_SPCR,
-+					   0, PCH_ALL);
- 		pch_spi_reset(board_dat->data->master);
- 
- 		free_irq(board_dat->pdev->irq, board_dat);
- 
- 		board_dat->irq_reg_sts = false;
--		dev_dbg(&pdev->dev,
-+		dev_dbg(&pd_dev->dev,
- 			"%s free_irq invoked successfully.\n", __func__);
- 	}
- 
-+	return 0;
-+}
-+
-+static int pch_spi_pd_resume(struct platform_device *pd_dev)
-+{
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(&pd_dev->dev);
-+	int retval;
-+
-+	if (!board_dat) {
-+		dev_err(&pd_dev->dev,
-+			"%s pci_get_drvdata returned NULL\n", __func__);
-+		return -EFAULT;
-+	}
-+
-+	if (!board_dat->irq_reg_sts) {
-+		/* register IRQ */
-+		retval = request_irq(board_dat->pdev->irq, pch_spi_handler,
-+				     IRQF_SHARED, KBUILD_MODNAME, board_dat);
-+		if (retval < 0) {
-+			dev_err(&pd_dev->dev,
-+				"%s request_irq failed\n", __func__);
-+			return retval;
-+		}
-+		board_dat->irq_reg_sts = true;
-+
-+		/* reset PCH SPI h/w */
-+		pch_spi_reset(board_dat->data->master);
-+		pch_spi_set_master_mode(board_dat->data->master);
-+
-+		/* set suspend status to false */
-+		board_dat->suspend_sts = false;
-+
-+	}
-+	return 0;
-+}
-+
-+static struct platform_driver pch_spi_pd_driver = {
-+	.driver = {
-+		.name = "pch-spi",
-+		.owner = THIS_MODULE,
-+	},
-+	.probe = pch_spi_pd_probe,
-+	.remove = __devexit_p(pch_spi_pd_remove),
-+	.suspend = pch_spi_pd_suspend,
-+	.resume = pch_spi_pd_resume
-+};
-+
-+static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct pch_spi_board_data board_dat;
-+	struct platform_device *pd_dev = NULL;
-+	int retval;
-+	int i;
-+	struct pch_pd_dev_save *pd_dev_save;
-+
-+	pd_dev_save = kzalloc(sizeof(struct pch_pd_dev_save), GFP_KERNEL);
-+	if (!pd_dev_save) {
-+		return -ENOMEM;
-+	}
-+
-+	retval = pci_request_regions(pdev, KBUILD_MODNAME);
-+	if (retval) {
-+		dev_err(&pdev->dev, "%s request_region failed\n", __func__);
-+		return retval;
-+	}
-+
-+	memset(&board_dat, 0, sizeof(board_dat));
-+	board_dat.pdev = pdev;
-+	board_dat.num = id->driver_data;
-+	pd_dev_save->num = id->driver_data;
-+
-+	retval = pci_enable_device(pdev);
-+	if (retval) {
-+		dev_err(&pdev->dev, "%s pci_enable_device failed\n", __func__);
-+		goto pci_enable_device;
-+	}
-+
-+	for (i = 0; i < board_dat.num; i++) {
-+		pd_dev = platform_device_alloc("pch-spi", i);
-+		if (!pd_dev) {
-+			dev_err(&pdev->dev, "platform_device_alloc failed\n");
-+			goto err_platform_device;
-+		}
-+		pd_dev->dev.release = NULL;
-+		pd_dev_save->pd_save[i] = pd_dev;
-+
-+		retval = platform_device_add_data(pd_dev, &board_dat,
-+						  sizeof(board_dat));
-+		if (retval) {
-+			dev_err(&pdev->dev,
-+				"platform_device_add_data failed\n");
-+			platform_device_put(pd_dev);
-+			goto err_platform_device;
-+		}
-+
-+		retval = platform_device_add(pd_dev);
-+		if (retval) {
-+			dev_err(&pdev->dev, "platform_device_add failed\n");
-+			platform_device_put(pd_dev);
-+			goto err_platform_device;
-+		}
-+	}
-+
-+	pci_set_drvdata(pdev, pd_dev_save);
-+
-+	return 0;
-+
-+err_platform_device:
-+	pci_disable_device(pdev);
-+pci_enable_device:
-+	pci_release_regions(pdev);
-+
-+	return retval;
-+}
-+
-+static void pch_spi_remove(struct pci_dev *pdev)
-+{
-+	int i;
-+	struct pch_pd_dev_save *pd_dev_save = pci_get_drvdata(pdev);
-+
-+	dev_dbg(&pdev->dev, "%s ENTRY:pdev=%p\n", __func__, pdev);
-+
-+	for (i = 0; i < pd_dev_save->num; i++)
-+		platform_device_unregister(pd_dev_save->pd_save[i]);
-+
-+	pci_disable_device(pdev);
-+	pci_release_regions(pdev);
-+	kfree(pd_dev_save);
-+}
-+
-+#ifdef CONFIG_PM
-+static int pch_spi_suspend(struct pci_dev *pdev, pm_message_t state)
-+{
-+	int retval;
-+	int i;
-+	struct pch_pd_dev_save *pd_dev_save = pci_get_drvdata(pdev);
-+
-+	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
-+
-+	for (i = 0; i < pd_dev_save->num; i++)
-+		pch_spi_pd_driver.suspend(pd_dev_save->pd_save[i], state);
-+
- 	/* save config space */
- 	retval = pci_save_state(pdev);
--
- 	if (retval == 0) {
--		dev_dbg(&pdev->dev, "%s pci_save_state returned=%d\n",
--			__func__, retval);
--		/* disable PM notifications */
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
--		dev_dbg(&pdev->dev,
--			"%s pci_enable_wake invoked successfully\n", __func__);
--		/* disable PCI device */
- 		pci_disable_device(pdev);
--		dev_dbg(&pdev->dev,
--			"%s pci_disable_device invoked successfully\n",
--			__func__);
--		/* move device to D3hot  state */
- 		pci_set_power_state(pdev, PCI_D3hot);
--		dev_dbg(&pdev->dev,
--			"%s pci_set_power_state invoked successfully\n",
--			__func__);
- 	} else {
- 		dev_err(&pdev->dev, "%s pci_save_state failed\n", __func__);
- 	}
- 
--	dev_dbg(&pdev->dev, "%s return=%d\n", __func__, retval);
--
- 	return retval;
- }
- 
- static int pch_spi_resume(struct pci_dev *pdev)
- {
- 	int retval;
--
--	struct pch_spi_board_data *board = pci_get_drvdata(pdev);
-+	int i;
-+	struct pch_pd_dev_save *pd_dev_save = pci_get_drvdata(pdev);
- 	dev_dbg(&pdev->dev, "%s ENTRY\n", __func__);
- 
--	if (!board) {
--		dev_err(&pdev->dev,
--			"%s pci_get_drvdata returned NULL\n", __func__);
--		return -EFAULT;
--	}
--
--	/* move device to DO power state */
- 	pci_set_power_state(pdev, PCI_D0);
--
--	/* restore state */
- 	pci_restore_state(pdev);
- 
- 	retval = pci_enable_device(pdev);
-@@ -1242,34 +1273,12 @@ static int pch_spi_resume(struct pci_dev *pdev)
- 		dev_err(&pdev->dev,
- 			"%s pci_enable_device failed\n", __func__);
- 	} else {
--		/* disable PM notifications */
- 		pci_enable_wake(pdev, PCI_D3hot, 0);
- 
--		/* register IRQ handler */
--		if (!board->irq_reg_sts) {
--			/* register IRQ */
--			retval = request_irq(board->pdev->irq, pch_spi_handler,
--					     IRQF_SHARED, KBUILD_MODNAME,
--					     board);
--			if (retval < 0) {
--				dev_err(&pdev->dev,
--					"%s request_irq failed\n", __func__);
--				return retval;
--			}
--			board->irq_reg_sts = true;
--
--			/* reset PCH SPI h/w */
--			pch_spi_reset(board->data->master);
--			pch_spi_set_master_mode(board->data->master);
--
--			/* set suspend status to false */
--			board->suspend_sts = false;
--
--		}
-+		for (i = 0; i < pd_dev_save->num; i++)
-+			pch_spi_pd_driver.resume(pd_dev_save->pd_save[i]);
- 	}
- 
--	dev_dbg(&pdev->dev, "%s returning=%d\n", __func__, retval);
--
- 	return retval;
- }
- #else
-@@ -1289,15 +1298,17 @@ static struct pci_driver pch_spi_pcidev = {
- 
- static int __init pch_spi_init(void)
- {
-+	platform_driver_register(&pch_spi_pd_driver);
- 	return pci_register_driver(&pch_spi_pcidev);
- }
- module_init(pch_spi_init);
- 
- static void __exit pch_spi_exit(void)
- {
-+	platform_driver_unregister(&pch_spi_pd_driver);
- 	pci_unregister_driver(&pch_spi_pcidev);
- }
- module_exit(pch_spi_exit);
- 
- MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("Topcliff PCH SPI PCI Driver");
-+MODULE_DESCRIPTION("Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH SPI Driver");
--- 
-1.7.4
+Can you please review and ack the GPIO part of this
+series too?
+
+I see that you have already acked the SPI part of this work.
+
+Thanks,
+Sekhar
+
+> 
+> Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+> ---
+>  drivers/gpio/Kconfig       |   10 ++
+>  drivers/gpio/Makefile      |    1 +
+>  drivers/gpio/ti-ssp-gpio.c |  207 ++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/ti_ssp.h |    4 +
+>  4 files changed, 222 insertions(+), 0 deletions(-)
+>  create mode 100644 drivers/gpio/ti-ssp-gpio.c
+> 
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index 3143ac7..05bbe4c 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -128,6 +128,16 @@ config GPIO_VX855
+>  	  additional drivers must be enabled in order to use the
+>  	  functionality of the device.
+>  
+> +config GPIO_TI_SSP
+> +	tristate "TI Sequencer Serial Port - GPIO Support"
+> +	depends on MFD_TI_SSP
+> +	help
+> +	  Say yes here to support a GPIO interface on TI SSP port pins.
+> +	  Each SSP port translates into 4 GPIOs.
+> +
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called ti-ssp-gpio.
+> +
+>  comment "I2C GPIO expanders:"
+>  
+>  config GPIO_MAX7300
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index bdf3dde..0e2a844 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -26,6 +26,7 @@ obj-$(CONFIG_GPIO_PL061)	+= pl061.o
+>  obj-$(CONFIG_GPIO_STMPE)	+= stmpe-gpio.o
+>  obj-$(CONFIG_GPIO_TC35892)	+= tc35892-gpio.o
+>  obj-$(CONFIG_GPIO_TIMBERDALE)	+= timbgpio.o
+> +obj-$(CONFIG_GPIO_TI_SSP)	+= ti-ssp-gpio.o
+>  obj-$(CONFIG_GPIO_TWL4030)	+= twl4030-gpio.o
+>  obj-$(CONFIG_GPIO_UCB1400)	+= ucb1400_gpio.o
+>  obj-$(CONFIG_GPIO_XILINX)	+= xilinx_gpio.o
+> diff --git a/drivers/gpio/ti-ssp-gpio.c b/drivers/gpio/ti-ssp-gpio.c
+> new file mode 100644
+> index 0000000..edc3142
+> --- /dev/null
+> +++ b/drivers/gpio/ti-ssp-gpio.c
+> @@ -0,0 +1,207 @@
+> +/*
+> + * Sequencer Serial Port (SSP) based virtual GPIO driver
+> + *
+> + * Copyright (C) 2010 Texas Instruments Inc
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program; if not, write to the Free Software
+> + * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+> + */
+> +
+> +#include <linux/init.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/io.h>
+> +#include <linux/err.h>
+> +#include <linux/slab.h>
+> +#include <linux/gpio.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/mfd/ti_ssp.h>
+> +
+> +struct ti_ssp_gpio_chip {
+> +	struct gpio_chip		chip;
+> +	struct device			*dev;
+> +	spinlock_t			lock;
+> +	u8				out;
+> +	u32				iosel;
+> +};
+> +
+> +#define to_ssp_gpio_chip(c) container_of(c, struct ti_ssp_gpio_chip, chip)
+> +
+> +static int ti_ssp_gpio_dir_in(struct gpio_chip *chip, unsigned gpio_num)
+> +{
+> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
+> +	int error = 0;
+> +
+> +	spin_lock(&gpio->lock);
+> +
+> +	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
+> +	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_IN);
+> +
+> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
+> +
+> +	spin_unlock(&gpio->lock);
+> +
+> +	return error;
+> +}
+> +
+> +static int ti_ssp_gpio_dir_out(struct gpio_chip *chip, unsigned gpio_num,
+> +			       int val)
+> +{
+> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
+> +	int error;
+> +
+> +	spin_lock(&gpio->lock);
+> +
+> +	gpio->iosel &= ~SSP_PIN_MASK(gpio_num);
+> +	gpio->iosel |=  SSP_PIN_SEL(gpio_num, SSP_OUT);
+> +
+> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
+> +
+> +	if (error < 0)
+> +		goto error;
+> +
+> +	if (val)
+> +		gpio->out |= BIT(gpio_num);
+> +	else
+> +		gpio->out &= ~BIT(gpio_num);
+> +
+> +	error = ti_ssp_raw_write(gpio->dev, gpio->out);
+> +
+> +error:
+> +	spin_unlock(&gpio->lock);
+> +	return error;
+> +}
+> +
+> +static int ti_ssp_gpio_get(struct gpio_chip *chip, unsigned gpio_num)
+> +{
+> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
+> +	int ret;
+> +
+> +	spin_lock(&gpio->lock);
+> +
+> +	ret = ti_ssp_raw_read(gpio->dev);
+> +	if (ret >= 0)
+> +		ret = !!(ret & BIT(gpio_num));
+> +
+> +	spin_unlock(&gpio->lock);
+> +	return ret;
+> +}
+> +
+> +static void ti_ssp_gpio_set(struct gpio_chip *chip, unsigned gpio_num, int val)
+> +{
+> +	struct ti_ssp_gpio_chip *gpio = to_ssp_gpio_chip(chip);
+> +
+> +	spin_lock(&gpio->lock);
+> +
+> +	if (val)
+> +		gpio->out |= BIT(gpio_num);
+> +	else
+> +		gpio->out &= ~BIT(gpio_num);
+> +
+> +	ti_ssp_raw_write(gpio->dev, gpio->out);
+> +
+> +	spin_unlock(&gpio->lock);
+> +}
+> +
+> +static int __devinit ti_ssp_gpio_probe(struct platform_device *pdev)
+> +{
+> +	const struct ti_ssp_gpio_data *pdata = pdev->dev.platform_data;
+> +	struct device *dev = &pdev->dev;
+> +	struct ti_ssp_gpio_chip *gpio;
+> +	int error;
+> +
+> +	if (!pdata) {
+> +		dev_err(dev, "platform data not found\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	gpio = kzalloc(sizeof(*gpio), GFP_KERNEL);
+> +	if (!gpio) {
+> +		dev_err(dev, "cannot allocate driver data\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	gpio->dev = dev;
+> +	gpio->iosel = SSP_PIN_SEL(0, SSP_IN) | SSP_PIN_SEL(1, SSP_IN) |
+> +		      SSP_PIN_SEL(2, SSP_IN) | SSP_PIN_SEL(3, SSP_IN);
+> +	error = ti_ssp_set_iosel(gpio->dev, gpio->iosel);
+> +	if (error < 0) {
+> +		dev_err(dev, "gpio io setup failed (%d)\n", error);
+> +		goto error;
+> +	}
+> +
+> +	spin_lock_init(&gpio->lock);
+> +	platform_set_drvdata(pdev, gpio);
+> +
+> +	gpio->chip.base  = pdata->start;
+> +	gpio->chip.ngpio = 4;
+> +	gpio->chip.dev   = &pdev->dev;
+> +	gpio->chip.label = "ti_ssp_gpio";
+> +	gpio->chip.owner = THIS_MODULE;
+> +	gpio->chip.get   = ti_ssp_gpio_get;
+> +	gpio->chip.set   = ti_ssp_gpio_set;
+> +	gpio->chip.direction_input  = ti_ssp_gpio_dir_in;
+> +	gpio->chip.direction_output = ti_ssp_gpio_dir_out;
+> +
+> +	error = gpiochip_add(&gpio->chip);
+> +	if (error < 0) {
+> +		dev_err(dev, "gpio chip registration failed (%d)\n", error);
+> +		goto error;
+> +	}
+> +
+> +	dev_info(dev, "ssp gpio interface registered\n");
+> +	return 0;
+> +
+> +error:
+> +	kfree(gpio);
+> +	return error;
+> +}
+> +
+> +static int __devexit ti_ssp_gpio_remove(struct platform_device *pdev)
+> +{
+> +	struct ti_ssp_gpio_chip *gpio = platform_get_drvdata(pdev);
+> +	int error;
+> +
+> +	error = gpiochip_remove(&gpio->chip);
+> +	if (error < 0)
+> +		return error;
+> +	kfree(gpio);
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver ti_ssp_gpio_driver = {
+> +	.probe		= ti_ssp_gpio_probe,
+> +	.remove		= __devexit_p(ti_ssp_gpio_remove),
+> +	.driver		= {
+> +		.name	= "ti-ssp-gpio",
+> +		.owner	= THIS_MODULE,
+> +	},
+> +};
+> +
+> +static int __init ti_ssp_gpio_init(void)
+> +{
+> +	return platform_driver_register(&ti_ssp_gpio_driver);
+> +}
+> +module_init(ti_ssp_gpio_init);
+> +
+> +static void __exit ti_ssp_gpio_exit(void)
+> +{
+> +	platform_driver_unregister(&ti_ssp_gpio_driver);
+> +}
+> +module_exit(ti_ssp_gpio_exit);
+> +
+> +MODULE_DESCRIPTION("GPIO interface for TI-SSP");
+> +MODULE_AUTHOR("Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:ti-ssp-gpio");
+> diff --git a/include/linux/mfd/ti_ssp.h b/include/linux/mfd/ti_ssp.h
+> index dbb4b43..10c65bb 100644
+> --- a/include/linux/mfd/ti_ssp.h
+> +++ b/include/linux/mfd/ti_ssp.h
+> @@ -38,6 +38,10 @@ struct ti_ssp_spi_data {
+>  	void		(*select)(int cs);
+>  };
+>  
+> +struct ti_ssp_gpio_data {
+> +	int		start;
+> +};
+> +
+>  /*
+>   * Sequencer port IO pin configuration bits.  These do not correlate 1-1 with
+>   * the hardware.  The iosel field in the port data combines iosel1 and iosel2,
+> -- 
+> 1.7.1
+> 
+> _______________________________________________
+> Davinci-linux-open-source mailing list
+> Davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
+> 

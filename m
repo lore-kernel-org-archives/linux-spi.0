@@ -1,54 +1,43 @@
-From: sadeveloppement <no-reply-ovr4uWkxOe82ceaDI+FvQg@public.gmane.org>
-Subject: =?utf-8?Q?Personnel?=
-Date: Wed, 2 Mar 2011 12:11:30 +0100
-Message-ID: <10431-19-6-0000030338@mta0.sbr13.net>
-Reply-To: sadeveloppement <sadeveloppement-maKroNwg2MA@public.gmane.org>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: spi_topcliff_pch: reload issue
+Date: Wed, 2 Mar 2011 15:07:56 -0700
+Message-ID: <20110302220756.GC22854@angua.secretlab.ca>
+References: <7FC6F7C4A6284C0FBD95D71D76B7528D@hacdom.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: sadeveloppement <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: 'David Brownell' <dbrownell@users.sourceforge.net>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, qi.wang@intel.com,
+	yong.y.wang@intel.com, joel.clark@intel.com,
+	kok.howg.ewe@intel.com,
+	Toshiharu Okada <toshiharu-linux@dsn.okisemi.com>
+To: Tomoya MORINAGA <morinaga526@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <7FC6F7C4A6284C0FBD95D71D76B7528D@hacdom.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Qm9uam91ciwKCkxlIHJhZGllc3Row6lzaXN0ZSBwZXJtZXQgZGUgZMOpY291dnJpciBkZXMgc291
-cmNlcywgcmV0cm91dmVyIHVuIG9iamV0IHBlcmR1IG91IHVuZSBwZXJzb25uZSBkaXNwYXJ1ZSwg
-w6l0YWJsaXIgdW4gZGlhZ25vc3RpYyBtw6lkaWNhbCwgZMOpdGVybWluZXIgbGEgcHJvZm9uZGV1
-ciBkJ3VuIHB1aXRzLCBzYXZvaXIgc2kgdW4gZXNwcml0IG91IHVuIGFuZ2UgZ2FyZGllbiB2ZXV0
-IHZvdXMgcGFybGVyIHBvdXIgdm91cyBhaWRlciwgdHJvdXZlciBkZSBs4oCZYXJnZW50IG91IGR1
-IHRyYXZhaWwsIHNhdm9pciBzaSBs4oCZw6p0cmUgcXVlIHZvdXMgYWltZXogZXN0IGzigJlob21t
-ZSBkZSB2b3RyZSB2aWUsIHNhdm9pciB2b3VzIGNvbnNlaWxsZXogZXQgdm91cyBzdWl2cmUgcG91
-ciB2b3VzIHRyb3V2ZXIgbOKAmcOqdHJlIGRlIHZvdHJlIHZpZSwgdHJvdXZlciBsZXMgcHJvYmzD
-qG1lcyBxdWkgdm91cyBlbXDDqmNoZSBkZSByw6l1c3NpciwgZXRjLiBPbiBkb2l0IGxlIG1vdCAi
-cmFkaWVzdGjDqXNpZSIgYXV4IGFiYsOpcyBCb3VseSBldCBCYXlhcmQuIENlIG1vdCBlc3QgY29t
-cG9zw6kgZHUgbW90IGxhdGluIHJhZGl1cywgcXVpIHNpZ25pZmllIMKrIHJheW9uIMK7IGV0IGR1
-IG1vdCBncmVjIGFpc3Row6pzaXMgcXVpIHZldXQgZGlyZSDCqyBzZW5zaWJpbGl0w6kgwrsuCgpO
-4oCZaMOpc2l0ZXogcGFzIMOgIG1lIGNvbnRhY3Rlciwgc2FkZXZlbG9wcGVtZW50QGxpdmUuZnIK
-CmNvbnN1bHRhdGlvbiAzMOKCrCwgbGllbiBwYXlwYWwgY2xpcXVleiBpY2kKCkV4cMOpcmllbmNl
-IGNvbmZpcm3DqWUgOgpBdm9pciBhaWTDqSBldCBzdWl2aSB1bmUgZW50cmVwcmlzZSDDoCBzZSBy
-ZWRyZXNzZXIgZXQgw6AgY29udGludWVyLCBhdm9pciBmYWlzIG9idGVuaXIgbGEgZ2FyZGUgZOKA
-mXVuIGVuZmFudCDDoCBzb24gcGFwYSBxdWkgw6l0YWl0IGRhbnMgdW5lIHNpdHVhdGlvbiB0ZXJy
-aWJsZSwgYXZvaXIgdHJvdXbDqSBkdSB0cmF2YWlsIMOgIHBsdXNpZXVycyBwZXJzb25uZXMgZMOp
-bXVuaSBldCBlbiBtYW5xdWUgZGUgY29uZmlhbmNlLCBwcsOpdmVuaXIgZGVzIGdlbnMgZGVzIGRh
-bmdlcnMgZnV0dXIsIHRyb3V2ZXIgbGVzIGNhdXNlcyBkZSBtYWxhZGllLCBldGMuCkxhIG91IGxh
-IHRlY2hub2xvZ2llIG91IGxlcyBpbnN0aXR1dGlvbnMgbmUgcGV1dmVudCB2b3VzIGFpZGVyLCBs
-ZXMgcHJpbmNpcGVzIGV0IHRlY2huaXF1ZXMgbmF0dXJlbCBzb250IGxhIHBvdXIgdm91cyB2ZW5p
-ciBlbiBhaWRlLCB1c2V6LWVuIHNhbnMgY3JhaW50ZSwgdm91cyBlbiBhcHByw6ljaWVyZXogbGVz
-IHLDqXN1bHRhdHMuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRnJlZSBTb2Z0d2FyZSBEb3dubG9h
-ZDogSW5kZXgsIFNlYXJjaCAmIEFuYWx5emUgTG9ncyBhbmQgb3RoZXIgSVQgZGF0YSBpbiAKUmVh
-bC1UaW1lIHdpdGggU3BsdW5rLiBDb2xsZWN0LCBpbmRleCBhbmQgaGFybmVzcyBhbGwgdGhlIGZh
-c3QgbW92aW5nIElUIGRhdGEgCmdlbmVyYXRlZCBieSB5b3VyIGFwcGxpY2F0aW9ucywgc2VydmVy
-cyBhbmQgZGV2aWNlcyB3aGV0aGVyIHBoeXNpY2FsLCB2aXJ0dWFsCm9yIGluIHRoZSBjbG91ZC4g
-RGVsaXZlciBjb21wbGlhbmNlIGF0IGxvd2VyIGNvc3QgYW5kIGdhaW4gbmV3IGJ1c2luZXNzIApp
-bnNpZ2h0cy4gaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZGV2MmRldiAKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Tue, Feb 22, 2011 at 10:22:11AM +0900, Tomoya MORINAGA wrote:
+> Hi,
+> 
+> issue: after reload the spi module, it can't do SPI communication.
+> 
+> We have faced issue when execute the following command.
+> insmod xxx.ko(Then, /dev/spidev0.0 is created with success)
+> rmmod xxx.ko (Then, /dev/spidev0.0 is deleted with success)
+> insmod xxx.ko(Then, /dev/spidev0.0 is created, however, below error message is showed)
+> 
+>   0000:02:0c.1: registered master spi0
+>   0000:02:0c.1: chipselect 0 already in use
+>   0000:02:0c.1: can't create new device for spidev
+> 
+> Do you have any information about the above ?
+
+Nope, I'm not an expert on that driver, but it definitely looks like a
+bug!  :-)  It *looks* like the spi_device slaves are not getting unregistered
+when the driver unloads.  That's where I would start investigating.
+The bug could either be in core code or the device driver itself, but
+I don't know without digging deeper.
+
+g.

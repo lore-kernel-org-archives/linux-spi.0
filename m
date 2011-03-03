@@ -1,17 +1,18 @@
-From: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Configuration of MAX7301
-Date: Fri, 4 Mar 2011 02:30:05 +0530
-Message-ID: <AANLkTimnndwyPE1Ar=W6rDyhceaKUo-QUkrjkXj3Y8mm@mail.gmail.com>
-References: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t@mail.gmail.com>
-	<AANLkTi=vnpu+L2r0-KcE=PuH=GB7r27b9P-2_M_+TKF=@mail.gmail.com>
-	<AANLkTikrs1GbLi7emicWN8pCLG79p+53Wn8sNuUKt-p=@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] mcspi: Add support for GPIO chip select lines
+Date: Thu, 03 Mar 2011 14:42:07 -0700
+Message-ID: <f7a269db-3bcf-4bac-8c38-b363e5c7bd0b@email.android.com>
+References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
+	<1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
+	<20110302215026.GA22854@angua.secretlab.ca>
+	<87sjv517yd.fsf@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
+To: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTikrs1GbLi7emicWN8pCLG79p+53Wn8sNuUKt-p=@mail.gmail.com>
+In-Reply-To: <87sjv517yd.fsf-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,108 +23,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I have made changes in the BSP such that the SPI works fine. Now I made
-changes in max7301.c
-
-1. changed the bits/word to 8
-
-2. called spi_write twice to transfer the 16 bits (yet to check with a DSO
-to ensure that this method works fine)
-
-3. commented the gpiochip_add call.
-Reason:
-The error when I call this from my probe function is
-gpiochip_add: gpios -1..26 (max7301) not registered
-max7301: probe of spi0.0 failed with error -28
-
-Finally, the MAX7301 doesn't seem to work :(
 
 
-On Thu, Mar 3, 2011 at 10:38 PM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>wrote:
+Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
-> I agree with you. Even in an example for MAX7301 with 8051 controller, they
-> are sending the first 8 bits followed by the next 8 bits. I am now clear
-> with the idea that this can be achieved this way. Thanks for your
-> suggestions.
-> I did some changes and the driver loads fine now. I want to know whether
-> the clock should be enabled by me or it ll be enabled when the pins are
-> configured as SPI pins.
+>> Yes, this is a better approach. However, I'd rather see the gpio
+>data
+>> passed as an array to the spi master platform_device via the
+>> private_data structure.
 >
->
-> On Thu, Mar 3, 2011 at 10:27 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>wrote:
->
->> On Thu, Mar 3, 2011 at 3:57 AM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> wrote:
->> > Hi,
->> >
->> > I am trying to interface the MAX7301 IC with my Samsung S3C2440
->> processor.
->> > The problem is the S3c supports only 8 bit word length for SPI transfer,
->> > whereas my MAX requires 16 bit word length.
->>
->> You're talking about spi which at it's heart is just a stream of bits.
->>  Not 8 bit, not 16 bit.  Just a stream.  The device may make
->> assumptions about how the stream is framed into 16 bit hunks, and the
->> spi_master may have limitations on how the data buffer is organized (8
->> bit bytes), but that does not prevent the two from working together.
->>
->> What you need to do is arrange the data in the transfer buffer so that
->> the bits get streamed out in the order expected by the MAX7301.  It's
->> educational to break out an oscilloscope and experiment with different
->> transfers so you can get familiar with how the bits appear on the
->> wire.  Then you'll be able to figure out how to arrange the transfer
->> so that the device gets what it needs.
->>
->> I do *not* recommend using the bitbang driver when you've got a proper
->> spi master at your disposal.
->>
->> g.
->>
->> > I couldn't find any info on the datasheet to use the IC on a 8 bit word
->> > length. can i make the max7301_write function,
->> >
->> > static int max7301_write(struct spi_device *spi, unsigned int reg,
->> unsigned
->> > int val)
->> > {
->> >    u8 command = reg & 0x7F;
->> >    u8 data = val & 0xFF;
->> >    spi_write(spi, (const u8*)&command, sizeof(command));
->> >    spi_write(spi, (const u8*)&data, sizeof(data));
->> >    return 0;
->> > }
->> >
->> > Will this make the IC work? Please share your ideas.
->> > --
->> > Regards
->> > Vikram
->> >
->> ------------------------------------------------------------------------------
->> > Free Software Download: Index, Search & Analyze Logs and other IT data
->> in
->> > Real-Time with Splunk. Collect, index and harness all the fast moving IT
->> data
->> > generated by your applications, servers and devices whether physical,
->> virtual
->> > or in the cloud. Deliver compliance at lower cost and gain new business
->> > insights. http://p.sf.net/sfu/splunk-dev2dev
->> > _______________________________________________
->> > spi-devel-general mailing list
->> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
->> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
->> >
->>
->>
->>
->> --
->> Grant Likely, B.Sc., P.Eng.
->> Secret Lab Technologies Ltd.
->>
->
->
+>Sorry for my ignorance but I really have no idea how one would hook
+>this
+>up in the board code (which IMHO is where this sort of chip select
+>configuration belongs). Looking at the beagleboard board file I see no
+>reference to a spi master platform_device. The SPI devices are
+>registered
+>through spi_register_board_info. Could you clarify how this would work?
+
+The spi_master platform device is registered somewhere in the inappropriate support code. You need to arrange to make sure the correct pdata is attached to it when it gets registered. There /should/ be a mechanism for doing so.
+
+All spi devices already specify a cs number anyway. What you can do is use the cs number as the lookup index into the gpio table, and remember to reserve a cs# for the 'native' cs line.
+
+g.
+
+-- 
+Sent from my Android phone with K-9 Mail. Please excuse my brevity.
 ------------------------------------------------------------------------------
-Free Software Download: Index, Search & Analyze Logs and other IT data in 
-Real-Time with Splunk. Collect, index and harness all the fast moving IT data 
-generated by your applications, servers and devices whether physical, virtual
-or in the cloud. Deliver compliance at lower cost and gain new business 
-insights. http://p.sf.net/sfu/splunk-dev2dev 
+What You Don't Know About Data Connectivity CAN Hurt You
+This paper provides an overview of data connectivity, details
+its effect on application quality, and explores various alternative
+solutions. http://p.sf.net/sfu/progress-d2d

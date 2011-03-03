@@ -1,15 +1,16 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: Configuration of MAX7301
-Date: Thu, 3 Mar 2011 03:07:11 -0800
-Message-ID: <AANLkTimzhpAFgJTGtc3AZz_QKQ+Ps5iHU8ML9g8UO=9j@mail.gmail.com>
+Date: Thu, 3 Mar 2011 06:21:01 -0500
+Message-ID: <AANLkTikH4EtEyvjtEbqTZGfhW54Eo9fXadAh_WY=oWKg@mail.gmail.com>
 References: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t@mail.gmail.com>
+	<AANLkTimzhpAFgJTGtc3AZz_QKQ+Ps5iHU8ML9g8UO=9j@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTimzhpAFgJTGtc3AZz_QKQ+Ps5iHU8ML9g8UO=9j-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,42 +21,79 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBNYXIgMywgMjAxMSBhdCAyOjU3IEFNLCBWaWtyYW0gTmFyYXlhbmFuIDx2aWtyYW0x
-ODZAZ21haWwuY29tPiB3cm90ZToKPiBIaSwKPgo+IEkgYW0gdHJ5aW5nIHRvIGludGVyZmFjZSB0
-aGUgTUFYNzMwMSBJQyB3aXRoIG15IFNhbXN1bmcgUzNDMjQ0MCBwcm9jZXNzb3IuCj4gVGhlIHBy
-b2JsZW0gaXMgdGhlIFMzYyBzdXBwb3J0cyBvbmx5IDggYml0IHdvcmQgbGVuZ3RoIGZvciBTUEkg
-dHJhbnNmZXIsCj4gd2hlcmVhcyBteSBNQVggcmVxdWlyZXMgMTYgYml0IHdvcmQgbGVuZ3RoLgo+
-IEkgY291bGRuJ3QgZmluZCBhbnkgaW5mbyBvbiB0aGUgZGF0YXNoZWV0IHRvIHVzZSB0aGUgSUMg
-b24gYSA4IGJpdCB3b3JkCj4gbGVuZ3RoLiBjYW4gaSBtYWtlIHRoZSBtYXg3MzAxX3dyaXRlIGZ1
-bmN0aW9uLAo+Cj4gc3RhdGljIGludCBtYXg3MzAxX3dyaXRlKHN0cnVjdCBzcGlfZGV2aWNlICpz
-cGksIHVuc2lnbmVkIGludCByZWcsIHVuc2lnbmVkCj4gaW50IHZhbCkKPiB7Cj4gwqAgwqB1OCBj
-b21tYW5kID0gcmVnICYgMHg3RjsKPiDCoCDCoHU4IGRhdGEgPSB2YWwgJiAweEZGOwo+IMKgIMKg
-c3BpX3dyaXRlKHNwaSwgKGNvbnN0IHU4KikmY29tbWFuZCwgc2l6ZW9mKGNvbW1hbmQpKTsKPiDC
-oCDCoHNwaV93cml0ZShzcGksIChjb25zdCB1OCopJmRhdGEsIHNpemVvZihkYXRhKSk7Cj4gwqAg
-wqByZXR1cm4gMDsKPiB9Cj4KPiBXaWxsIHRoaXMgbWFrZSB0aGUgSUMgd29yaz8gUGxlYXNlIHNo
-YXJlIHlvdXIgaWRlYXMuCgpJZiBNQVg3MzAxIGRvZXMgcmVxdWlyZSBleGFjdGx5IDE2YnB3LCB0
-eXBlY2FzdGluZyB3b3VsZG4ndCBkby4KCkZvciBzaW1wbGUgY29udHJvbCBwdXJwb3Nlcywgb25l
-IG9wdGlvbiBpcyB0byB1c2UgdGhlIFNQSSBwaW5zIHdpdGgKdGhlIGNvbW1vbiBiaXQtYmFuZ2lu
-ZyBkcml2ZXIuCgo+IC0tCj4gUmVnYXJkcwo+IFZpa3JhbQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQo+IEZyZWUgU29mdHdhcmUgRG93bmxvYWQ6IEluZGV4LCBTZWFyY2ggJiBBbmFseXplIExvZ3Mg
-YW5kIG90aGVyIElUIGRhdGEgaW4KPiBSZWFsLVRpbWUgd2l0aCBTcGx1bmsuIENvbGxlY3QsIGlu
-ZGV4IGFuZCBoYXJuZXNzIGFsbCB0aGUgZmFzdCBtb3ZpbmcgSVQgZGF0YQo+IGdlbmVyYXRlZCBi
-eSB5b3VyIGFwcGxpY2F0aW9ucywgc2VydmVycyBhbmQgZGV2aWNlcyB3aGV0aGVyIHBoeXNpY2Fs
-LCB2aXJ0dWFsCj4gb3IgaW4gdGhlIGNsb3VkLiBEZWxpdmVyIGNvbXBsaWFuY2UgYXQgbG93ZXIg
-Y29zdCBhbmQgZ2FpbiBuZXcgYnVzaW5lc3MKPiBpbnNpZ2h0cy4gaHR0cDovL3Auc2YubmV0L3Nm
-dS9zcGx1bmstZGV2MmRldgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCj4gc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0Cj4gc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cj4gaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwKPgoKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkZyZWUgU29mdHdhcmUgRG93bmxvYWQ6IEluZGV4LCBTZWFyY2ggJiBBbmFseXplIExvZ3Mg
-YW5kIG90aGVyIElUIGRhdGEgaW4gClJlYWwtVGltZSB3aXRoIFNwbHVuay4gQ29sbGVjdCwgaW5k
-ZXggYW5kIGhhcm5lc3MgYWxsIHRoZSBmYXN0IG1vdmluZyBJVCBkYXRhIApnZW5lcmF0ZWQgYnkg
-eW91ciBhcHBsaWNhdGlvbnMsIHNlcnZlcnMgYW5kIGRldmljZXMgd2hldGhlciBwaHlzaWNhbCwg
-dmlydHVhbApvciBpbiB0aGUgY2xvdWQuIERlbGl2ZXIgY29tcGxpYW5jZSBhdCBsb3dlciBjb3N0
-IGFuZCBnYWluIG5ldyBidXNpbmVzcyAKaW5zaWdodHMuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvc3Bs
-dW5rLWRldjJkZXYgCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Thanks for the hint.
+I tried using the MAX7301 with the bi banging driver. But it doesn't seem to
+get initialized.
+The Init code of max7301.c says this.
+static int __init max7301_init(void)
+{
+    return spi_register_driver(&max7301_driver);
+}
+/* register after spi postcore initcall and before
+ * subsys initcalls that may rely on these GPIOs
+ */
+subsys_initcall(max7301_init);
+
+1) Is it ok to call the spi_regiser_driver even when I use the bitbanging
+driver? I don't get any error or prints when I insert the module. I guess
+the spi_register_driver is not at all executed. If it is executed then it
+would have called the probe function. //Correct me if I am wrong.
+
+2) Is the line subsys_initcall really needed as my driver is going to get
+itself registered with the bit banging driver?
+
+On Thu, Mar 3, 2011 at 6:07 AM, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+
+> On Thu, Mar 3, 2011 at 2:57 AM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> wrote:
+> > Hi,
+> >
+> > I am trying to interface the MAX7301 IC with my Samsung S3C2440
+> processor.
+> > The problem is the S3c supports only 8 bit word length for SPI transfer,
+> > whereas my MAX requires 16 bit word length.
+> > I couldn't find any info on the datasheet to use the IC on a 8 bit word
+> > length. can i make the max7301_write function,
+> >
+> > static int max7301_write(struct spi_device *spi, unsigned int reg,
+> unsigned
+> > int val)
+> > {
+> >    u8 command = reg & 0x7F;
+> >    u8 data = val & 0xFF;
+> >    spi_write(spi, (const u8*)&command, sizeof(command));
+> >    spi_write(spi, (const u8*)&data, sizeof(data));
+> >    return 0;
+> > }
+> >
+> > Will this make the IC work? Please share your ideas.
+>
+> If MAX7301 does require exactly 16bpw, typecasting wouldn't do.
+>
+> For simple control purposes, one option is to use the SPI pins with
+> the common bit-banging driver.
+>
+> > --
+> > Regards
+> > Vikram
+> >
+> ------------------------------------------------------------------------------
+> > Free Software Download: Index, Search & Analyze Logs and other IT data in
+> > Real-Time with Splunk. Collect, index and harness all the fast moving IT
+> data
+> > generated by your applications, servers and devices whether physical,
+> virtual
+> > or in the cloud. Deliver compliance at lower cost and gain new business
+> > insights. http://p.sf.net/sfu/splunk-dev2dev
+> > _______________________________________________
+> > spi-devel-general mailing list
+> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> >
+>
+------------------------------------------------------------------------------
+Free Software Download: Index, Search & Analyze Logs and other IT data in 
+Real-Time with Splunk. Collect, index and harness all the fast moving IT data 
+generated by your applications, servers and devices whether physical, virtual
+or in the cloud. Deliver compliance at lower cost and gain new business 
+insights. http://p.sf.net/sfu/splunk-dev2dev 

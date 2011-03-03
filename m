@@ -1,15 +1,16 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: Configuration of MAX7301
-Date: Thu, 3 Mar 2011 09:57:48 -0700
-Message-ID: <AANLkTi=vnpu+L2r0-KcE=PuH=GB7r27b9P-2_M_+TKF=@mail.gmail.com>
+Date: Thu, 3 Mar 2011 22:38:53 +0530
+Message-ID: <AANLkTikrs1GbLi7emicWN8pCLG79p+53Wn8sNuUKt-p=@mail.gmail.com>
 References: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t@mail.gmail.com>
+	<AANLkTi=vnpu+L2r0-KcE=PuH=GB7r27b9P-2_M_+TKF=@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <AANLkTi=vnpu+L2r0-KcE=PuH=GB7r27b9P-2_M_+TKF=@mail.gmail.com>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,81 +21,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 3, 2011 at 3:57 AM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrot=
-e:
-> Hi,
+ I agree with you. Even in an example for MAX7301 with 8051 controller, they
+are sending the first 8 bits followed by the next 8 bits. I am now clear
+with the idea that this can be achieved this way. Thanks for your
+suggestions.
+I did some changes and the driver loads fine now. I want to know whether the
+clock should be enabled by me or it ll be enabled when the pins are
+configured as SPI pins.
+
+On Thu, Mar 3, 2011 at 10:27 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>wrote:
+
+> On Thu, Mar 3, 2011 at 3:57 AM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> wrote:
+> > Hi,
+> >
+> > I am trying to interface the MAX7301 IC with my Samsung S3C2440
+> processor.
+> > The problem is the S3c supports only 8 bit word length for SPI transfer,
+> > whereas my MAX requires 16 bit word length.
 >
-> I am trying to interface the MAX7301 IC with my Samsung S3C2440 processor.
-> The problem is the S3c supports only 8 bit word length for SPI transfer,
-> whereas my MAX requires 16 bit word length.
-
-You're talking about spi which at it's heart is just a stream of bits.
- Not 8 bit, not 16 bit.  Just a stream.  The device may make
-assumptions about how the stream is framed into 16 bit hunks, and the
-spi_master may have limitations on how the data buffer is organized (8
-bit bytes), but that does not prevent the two from working together.
-
-What you need to do is arrange the data in the transfer buffer so that
-the bits get streamed out in the order expected by the MAX7301.  It's
-educational to break out an oscilloscope and experiment with different
-transfers so you can get familiar with how the bits appear on the
-wire.  Then you'll be able to figure out how to arrange the transfer
-so that the device gets what it needs.
-
-I do *not* recommend using the bitbang driver when you've got a proper
-spi master at your disposal.
-
-g.
-
-> I couldn't find any info on the datasheet to use the IC on a 8 bit word
-> length. can i make the max7301_write function,
+> You're talking about spi which at it's heart is just a stream of bits.
+>  Not 8 bit, not 16 bit.  Just a stream.  The device may make
+> assumptions about how the stream is framed into 16 bit hunks, and the
+> spi_master may have limitations on how the data buffer is organized (8
+> bit bytes), but that does not prevent the two from working together.
 >
-> static int max7301_write(struct spi_device *spi, unsigned int reg, unsign=
-ed
-> int val)
-> {
-> =A0 =A0u8 command =3D reg & 0x7F;
-> =A0 =A0u8 data =3D val & 0xFF;
-> =A0 =A0spi_write(spi, (const u8*)&command, sizeof(command));
-> =A0 =A0spi_write(spi, (const u8*)&data, sizeof(data));
-> =A0 =A0return 0;
-> }
+> What you need to do is arrange the data in the transfer buffer so that
+> the bits get streamed out in the order expected by the MAX7301.  It's
+> educational to break out an oscilloscope and experiment with different
+> transfers so you can get familiar with how the bits appear on the
+> wire.  Then you'll be able to figure out how to arrange the transfer
+> so that the device gets what it needs.
 >
-> Will this make the IC work? Please share your ideas.
+> I do *not* recommend using the bitbang driver when you've got a proper
+> spi master at your disposal.
+>
+> g.
+>
+> > I couldn't find any info on the datasheet to use the IC on a 8 bit word
+> > length. can i make the max7301_write function,
+> >
+> > static int max7301_write(struct spi_device *spi, unsigned int reg,
+> unsigned
+> > int val)
+> > {
+> >    u8 command = reg & 0x7F;
+> >    u8 data = val & 0xFF;
+> >    spi_write(spi, (const u8*)&command, sizeof(command));
+> >    spi_write(spi, (const u8*)&data, sizeof(data));
+> >    return 0;
+> > }
+> >
+> > Will this make the IC work? Please share your ideas.
+> > --
+> > Regards
+> > Vikram
+> >
+> ------------------------------------------------------------------------------
+> > Free Software Download: Index, Search & Analyze Logs and other IT data in
+> > Real-Time with Splunk. Collect, index and harness all the fast moving IT
+> data
+> > generated by your applications, servers and devices whether physical,
+> virtual
+> > or in the cloud. Deliver compliance at lower cost and gain new business
+> > insights. http://p.sf.net/sfu/splunk-dev2dev
+> > _______________________________________________
+> > spi-devel-general mailing list
+> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> >
+>
+>
+>
 > --
-> Regards
-> Vikram
-> -------------------------------------------------------------------------=
------
-> Free Software Download: Index, Search & Analyze Logs and other IT data in
-> Real-Time with Splunk. Collect, index and harness all the fast moving IT =
-data
-> generated by your applications, servers and devices whether physical, vir=
-tual
-> or in the cloud. Deliver compliance at lower cost and gain new business
-> insights. http://p.sf.net/sfu/splunk-dev2dev
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.
 >
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-Free Software Download: Index, Search & Analyze Logs and other IT data in =
-
-Real-Time with Splunk. Collect, index and harness all the fast moving IT da=
-ta =
-
-generated by your applications, servers and devices whether physical, virtu=
-al
-or in the cloud. Deliver compliance at lower cost and gain new business =
-
-insights. http://p.sf.net/sfu/splunk-dev2dev =
+------------------------------------------------------------------------------
+Free Software Download: Index, Search & Analyze Logs and other IT data in 
+Real-Time with Splunk. Collect, index and harness all the fast moving IT data 
+generated by your applications, servers and devices whether physical, virtual
+or in the cloud. Deliver compliance at lower cost and gain new business 
+insights. http://p.sf.net/sfu/splunk-dev2dev 

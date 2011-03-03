@@ -1,7 +1,7 @@
 From: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: Configuration of MAX7301
-Date: Thu, 3 Mar 2011 06:21:01 -0500
-Message-ID: <AANLkTikH4EtEyvjtEbqTZGfhW54Eo9fXadAh_WY=oWKg@mail.gmail.com>
+Date: Thu, 3 Mar 2011 18:54:29 +0530
+Message-ID: <AANLkTim36xzif-heRergREZuy+7BJz2=ap4zK-qUXPRX@mail.gmail.com>
 References: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t@mail.gmail.com>
 	<AANLkTimzhpAFgJTGtc3AZz_QKQ+Ps5iHU8ML9g8UO=9j@mail.gmail.com>
 Mime-Version: 1.0
@@ -21,28 +21,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Thanks for the hint.
-I tried using the MAX7301 with the bi banging driver. But it doesn't seem to
-get initialized.
-The Init code of max7301.c says this.
-static int __init max7301_init(void)
-{
-    return spi_register_driver(&max7301_driver);
-}
-/* register after spi postcore initcall and before
- * subsys initcalls that may rely on these GPIOs
- */
-subsys_initcall(max7301_init);
+These are the changes I have done in my board file to make the max7301 work
+with S3C24xx spi driver.
 
-1) Is it ok to call the spi_regiser_driver even when I use the bitbanging
-driver? I don't get any error or prints when I insert the module. I guess
-the spi_register_driver is not at all executed. If it is executed then it
-would have called the probe function. //Correct me if I am wrong.
+static struct s3c2410_spi_info mini2440_spi0_platdata = {
+    .pin_cs = S3C2410_GPG(2),
+    .num_cs = 1,
+    .bus_num = 0,
+};
 
-2) Is the line subsys_initcall really needed as my driver is going to get
-itself registered with the bit banging driver?
+static struct max7301_platform_data max7301_info = {
+    .base = -1,
+};
+// The base is set as -1 since from max7301.c there is a call to
+gpiochip_add, which would return if there is no base set.
+>From the comment in the drivers/gpio/gpiolib.c
 
-On Thu, Mar 3, 2011 at 6:07 AM, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+ <http://lxr.linux.no/linux+*/drivers/gpio/gpiolib.c#L912>If
+chip->base is negative, this requests dynamic assignment of
+<http://lxr.linux.no/linux+*/drivers/gpio/gpiolib.c#L913>a range of
+valid GPIOs.
+
+static struct spi_board_info mini2440_spi_board_info[] __initdata = {
+    {
+        .modalias    = "max7301",
+        .platform_data    = &max7301_info,
+        .max_speed_hz    = 13000000,
+        .bus_num    = 0,
+        .chip_select    = 0,
+        .mode        = SPI_MODE_0,
+    },
+};
+
+And from board init I am configuring the pins for SPI
+
+    s3c2410_gpio_cfgpin(S3C2410_GPE(11), S3C2410_GPE11_SPIMISO0);
+    s3c2410_gpio_cfgpin(S3C2410_GPE(12), S3C2410_GPE12_SPIMOSI0);
+    s3c2410_gpio_cfgpin(S3C2410_GPE(13), S3C2410_GPE13_SPICLK0);
+    s3c2410_gpio_pullup(S3C2410_GPE(11), 0);
+    s3c2410_gpio_pullup(S3C2410_GPE(13), 0);
+    s3c2410_gpio_cfgpin(S3C2410_GPG(2), S3C2410_GPIO_OUTPUT);
+    s3c_device_spi0.dev.platform_data = &mini2440_spi0_platdata;
+    spi_register_board_info(mini2440_spi_board_info,
+        ARRAY_SIZE(mini2440_spi_board_info));
+
+And in the max7301.c I have changed the
+spi->bits_per_word = 8;
+
+as my SPI master driver would not initialize the value isn't equal to 8.
+
+When I insert the max7301 module now, I am getting error which traces back
+to the file drivers/gpio/gpiolib.c
+
+    if (status)
+        pr_err("gpiochip_add: gpios %d..%d (%s) not registered\n",
+            chip->base, chip->base + chip->ngpio - 1,
+            chip->label ? : "generic");
+
+gpiochip add: gpios -1...26 (max7301) not registered.
+
+I don't get a clear picture of what is wrong with the SPI configuration I
+have done.
+Can someone help me understanding what is wrong?
+
+On Thu, Mar 3, 2011 at 4:37 PM, Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
 > On Thu, Mar 3, 2011 at 2:57 AM, Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > wrote:

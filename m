@@ -1,17 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/2] mcspi: Add support for GPIO chip select lines
-Date: Wed, 2 Mar 2011 14:50:26 -0700
-Message-ID: <20110302215026.GA22854@angua.secretlab.ca>
-References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
-	<1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
+From: Vikram Narayanan <vikram186-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Configuration of MAX7301
+Date: Thu, 3 Mar 2011 05:57:28 -0500
+Message-ID: <AANLkTi=y=5Xs1GJVsMjxH-js6pDTn37844NNAGK2oM1t@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
-To: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1297635034-24504-1-git-send-email-bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,61 +17,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Feb 13, 2011 at 05:10:33PM -0500, Ben Gamari wrote:
-> Many applications require more chip select lines than the board or
-> processor allow. Introduce a mechanism to allow use of GPIO pins as chip
-> select lines with the McSPI controller.  To use this functionality, one
-> simply specifies the GPIO number in spi_board_info.controller_data.
-> 
-> Signed-off-by: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/omap2_mcspi.c |   13 ++++++++-----
->  1 files changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-> index 951a160..ca4a7dc 100644
-> --- a/drivers/spi/omap2_mcspi.c
-> +++ b/drivers/spi/omap2_mcspi.c
-> @@ -35,6 +35,7 @@
->  #include <linux/slab.h>
->  
->  #include <linux/spi/spi.h>
-> +#include <linux/gpio.h>
->  
->  #include <plat/dma.h>
->  #include <plat/clock.h>
-> @@ -235,11 +236,13 @@ static void omap2_mcspi_set_enable(const struct spi_device *spi, int enable)
->  
->  static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
->  {
-> -	u32 l;
-> -
-> -	l = mcspi_cached_chconf0(spi);
-> -	MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
-> -	mcspi_write_chconf0(spi, l);
-> +	if (spi->controller_data) {
-> +                gpio_set_value((unsigned) spi->controller_data, cs_active);
-> +	} else {
-> +		u32 l = mcspi_cached_chconf0(spi);
-> +		MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
-> +		mcspi_write_chconf0(spi, l);
-> +	}
+Hi,
 
-Yes, this is a better approach.  However, I'd rather see the gpio data
-passed as an array to the spi master platform_device via the
-private_data structure.  controller_data is really intended to be a
-pointer that the spi_master can populate if it needs to, so it is not
-a good idea to populate it in setup code instead.  Also, I see cs line
-wireups more as a property of the controller than a property of the
-device (there is some debate on this area, but in the end it probably
-is more important to be consistent about how the data is passed than
-the relative merits between master-centric or slave-centric; which
-really means I get to make the decision about which approach
-spi_masters should take).
+I am trying to interface the MAX7301 IC with my Samsung S3C2440 processor.
+The problem is the S3c supports only 8 bit word length for SPI transfer,
+whereas my MAX requires 16 bit word length.
+I couldn't find any info on the datasheet to use the IC on a 8 bit word
+length. can i make the max7301_write function,
 
-g.
+static int max7301_write(struct spi_device *spi, unsigned int reg, unsigned
+int val)
+{
+    u8 command = reg & 0x7F;
+    u8 data = val & 0xFF;
+    spi_write(spi, (const u8*)&command, sizeof(command));
+    spi_write(spi, (const u8*)&data, sizeof(data));
+    return 0;
+}
 
-
+Will this make the IC work? Please share your ideas.
+--
+Regards
+Vikram
 ------------------------------------------------------------------------------
 Free Software Download: Index, Search & Analyze Logs and other IT data in 
 Real-Time with Splunk. Collect, index and harness all the fast moving IT data 

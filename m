@@ -1,54 +1,89 @@
-From: "L'ALTRA DIMENSIONE" <benvenuti_nel-cflaBTCyWmVCqPbLTTcPyTUZDU+1vuVT@public.gmane.org>
-Subject: (unknown)
-Date: Fri, 4 Mar 2011 23:34:07 +0100
-Message-ID: <E1Pvdb8-00069b-AW@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] OMAP: McSPI: catch xfers of non-multiple SPI word size
+Date: Fri, 4 Mar 2011 22:26:06 -0700
+Message-ID: <20110305052606.GL7579@angua.secretlab.ca>
+References: <1298649311-9201-1-git-send-email-michael.jones@matrix-vision.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org, spi-devel-general@lists.sourceforge.net
+To: Michael Jones <michael.jones@matrix-vision.de>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1298649311-9201-1-git-send-email-michael.jones@matrix-vision.de>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Richiesta di autorizzazione all'invio dell'email
- =
+On Fri, Feb 25, 2011 at 04:55:11PM +0100, Michael Jones wrote:
+> If an SPI access was not a multiple of the SPI word size,
+> the while() loop would spin and the rx/tx ptrs would be incremented
+> indefinitely.
+> 
+> Signed-off-by: Michael Jones <michael.jones@matrix-vision.de>
 
- =
+Applied, thanks.
 
-L'Altra Dimensione  esegue  lavori di Ristrutturazione, imbiancature, contr=
-osoffittature,
-decorazione, coibentazioni termoacustici, trattamenti antimuffa, rifaciment=
-o tetti, canne fumarie ecc...
-Fornitura e posa di parquet, porte, finestre, zanzariere, sanitari, rubinet=
-teria, piastrelle ...
-www.laltradimensione.it
- =
+g.
 
-Informativa sulla Privacy: Non abbiamo alcun  Vs. dato personale, =E8 stato=
- raccolto da elenchi pubblici disponibili sia in forma cartacea che on-line=
- (Pagine Gialle, Pagine bianche, motori di ricerca) e sono trattati secondo=
- le disposizioni del D.Lgs 196/03.
-Qualora non desideriate ricevere in futuro comunicazioni commerciali dalla =
-ditta scrivente potete opporVi ed esercitare i diritti previsti dall'art. 7=
- del codice della privacy inviando un messaggio di posta elettronica clicca=
-ndo NON AUTORIZZO e indicando i dati da cancellare. Un messaggio Vi conferm=
-er=E0 l'accoglimento della Vs. istanza e la conseguente cancellazione della=
- vostra posta elettronica. =
-
- =
-
-NON AUTORIZZO
-
----------------------------------------------------------------------------=
----
-What You Don't Know About Data Connectivity CAN Hurt You
-This paper provides an overview of data connectivity, details
-its effect on application quality, and explores various alternative
-solutions. http://p.sf.net/sfu/progress-d2d
+> ---
+>  drivers/spi/omap2_mcspi.c |    9 ++++++---
+>  1 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+> index abb1ffb..9e439be 100644
+> --- a/drivers/spi/omap2_mcspi.c
+> +++ b/drivers/spi/omap2_mcspi.c
+> @@ -487,6 +487,9 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+>  	rx_reg		= base + OMAP2_MCSPI_RX0;
+>  	chstat_reg	= base + OMAP2_MCSPI_CHSTAT0;
+>  
+> +	if (c < (word_len>>3))
+> +		return 0;
+> +
+>  	if (word_len <= 8) {
+>  		u8		*rx;
+>  		const u8	*tx;
+> @@ -534,7 +537,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+>  				dev_vdbg(&spi->dev, "read-%d %02x\n",
+>  						word_len, *(rx - 1));
+>  			}
+> -		} while (c);
+> +		} while (c > (word_len>>3));
+>  	} else if (word_len <= 16) {
+>  		u16		*rx;
+>  		const u16	*tx;
+> @@ -581,7 +584,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+>  				dev_vdbg(&spi->dev, "read-%d %04x\n",
+>  						word_len, *(rx - 1));
+>  			}
+> -		} while (c);
+> +		} while (c > (word_len>>3));
+>  	} else if (word_len <= 32) {
+>  		u32		*rx;
+>  		const u32	*tx;
+> @@ -628,7 +631,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+>  				dev_vdbg(&spi->dev, "read-%d %08x\n",
+>  						word_len, *(rx - 1));
+>  			}
+> -		} while (c);
+> +		} while (c > (word_len>>3));
+>  	}
+>  
+>  	/* for TX_ONLY mode, be sure all words have shifted out */
+> -- 
+> 1.7.4.1
+> 
+> 
+> MATRIX VISION GmbH, Talstrasse 16, DE-71570 Oppenweiler
+> Registergericht: Amtsgericht Stuttgart, HRB 271090
+> Geschaeftsfuehrer: Gerhard Thullner, Werner Armingeon, Uwe Furtner
+> 
+> ------------------------------------------------------------------------------
+> Free Software Download: Index, Search & Analyze Logs and other IT data in 
+> Real-Time with Splunk. Collect, index and harness all the fast moving IT data 
+> generated by your applications, servers and devices whether physical, virtual
+> or in the cloud. Deliver compliance at lower cost and gain new business 
+> insights. http://p.sf.net/sfu/splunk-dev2dev 
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

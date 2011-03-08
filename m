@@ -1,11 +1,10 @@
-From: potrhb-NIFwobBhMwNv1O+Z8WTAqQ@public.gmane.org
-Subject: [SPAM] TO财务经理ミ（财务管理）
-Date: Tue, 8 Mar 2011 13:18:13 +0800
-Message-ID: <E1PwpKg-0006Tw-Cd@sfs-ml-4.v29.ch3.sourceforge.com>
+From: 15989349144-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 8 Mar 2011 16:49:26 +0800
+Message-ID: <E1Pwsbn-0000PT-SX@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,33 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-What You Don't Know About Data Connectivity CAN Hurt You
-This paper provides an overview of data connectivity, details
-its effect on application quality, and explores various alternative
-solutions. http://p.sf.net/sfu/progress-d2d
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtci12KOp09DBvLrDtcTG
+89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwrI5zooMSm6o7nYu/XO
+7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oqGqxrGjuwogICAoMym547jm0rWhorj3
+wOC3/s7x0rW3oqGqoarGsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGq
+z7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KV2hhdCBZb3UgRG9uJ3QgS25vdyBBYm91dCBEYXRhIENvbm5lY3Rpdml0eSBDQU4g
+SHVydCBZb3UKVGhpcyBwYXBlciBwcm92aWRlcyBhbiBvdmVydmlldyBvZiBkYXRhIGNvbm5lY3Rp
+dml0eSwgZGV0YWlscwppdHMgZWZmZWN0IG9uIGFwcGxpY2F0aW9uIHF1YWxpdHksIGFuZCBleHBs
+b3JlcyB2YXJpb3VzIGFsdGVybmF0aXZlCnNvbHV0aW9ucy4gaHR0cDovL3Auc2YubmV0L3NmdS9w
+cm9ncmVzcy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

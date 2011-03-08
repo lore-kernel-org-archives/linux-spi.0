@@ -1,11 +1,11 @@
-From: 15989349144-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 8 Mar 2011 16:49:26 +0800
-Message-ID: <E1Pwsbn-0000PT-SX@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Niclas Karlsson <niclas.karlsson-h3aQMNCITb4@public.gmane.org>
+Subject: Getting alot of zero values from ads7846 using atmel_spi
+Date: Tue, 08 Mar 2011 10:44:56 +0100
+Message-ID: <1299577496.13486.13.camel@SESTOWS194>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +17,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtci12KOp09DBvLrDtcTG
-89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwrI5zooMSm6o7nYu/XO
-7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oqGqxrGjuwogICAoMym547jm0rWhorj3
-wOC3/s7x0rW3oqGqoarGsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGq
-z7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KV2hhdCBZb3UgRG9uJ3QgS25vdyBBYm91dCBEYXRhIENvbm5lY3Rpdml0eSBDQU4g
-SHVydCBZb3UKVGhpcyBwYXBlciBwcm92aWRlcyBhbiBvdmVydmlldyBvZiBkYXRhIGNvbm5lY3Rp
-dml0eSwgZGV0YWlscwppdHMgZWZmZWN0IG9uIGFwcGxpY2F0aW9uIHF1YWxpdHksIGFuZCBleHBs
-b3JlcyB2YXJpb3VzIGFsdGVybmF0aXZlCnNvbHV0aW9ucy4gaHR0cDovL3Auc2YubmV0L3NmdS9w
-cm9ncmVzcy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi,
+I'm not sure this is the right mailinglist for my question, but I give
+it a shot.
+
+I'm working on a custom hardware running Linux kernel 2.6.32.3. The
+hardware is based on the AT91SAM9263-ek evaluation board and have touch
+screen attached to it. The touch screen controller is ads7846 and is
+connected to SPI.
+
+I'm in some trouble using the SPI (driver: atmel_spi).
+
+ads7846 have two extra inputs that I want to use. The problem is that
+when reading these inputs from sysfs I get a lot of zeroes when it
+should read ( when no sensor is connected) ~3300 mV, e.g. 
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+3299 <-- This one is correct.
+~# cat /sys/bus/spi/devices/spi0.1/in0_input
+0
+
+I have measured the input and it's stable at 3.3V.
+
+Do anyone know why I read so many zeroes?
+
+I have made some printk in ads7846.c to trace the problem. It seemed to
+read more correct values when I added the printks.
+
+Thank you for the help,
+Niclas
+
+------------------------------------------------------------------------------
+What You Don't Know About Data Connectivity CAN Hurt You
+This paper provides an overview of data connectivity, details
+its effect on application quality, and explores various alternative
+solutions. http://p.sf.net/sfu/progress-d2d

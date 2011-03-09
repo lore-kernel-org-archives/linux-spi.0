@@ -1,7 +1,7 @@
-From: "Gan =?ISO-8859-1?Q?Sant=E9?= par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Vous avez plus de 50 ans ? Profitez de garanties optimisees
-Date: Wed,  9 Mar 2011 02:45:45 +0100 (CET)
-Message-ID: <lhrpcr.v0wnj9@front02.r7g.com>
+From: "toit solaire" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Revendez votre électricité ! Calculez vos revenus solaires
+Date: Wed,  9 Mar 2011 03:27:37 +0100 (CET)
+Message-ID: <lhrqtv.hn7ccg@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

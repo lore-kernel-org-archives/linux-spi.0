@@ -1,7 +1,7 @@
-From: 15989349144-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Fri, 11 Mar 2011 14:53:24 +0800
-Message-ID: <E1PxwE4-0002Dm-HZ@sfs-ml-2.v29.ch3.sourceforge.com>
+From: hgyjgfhvhh-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] Ms，陈
+Date: Fri, 11 Mar 2011 17:01:40 +0800
+Message-ID: <E1PxyEK-0000nu-1n@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
@@ -17,16 +17,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtci12KOp09DBvLrDtcTG
-89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwrI5zooMSm6o7nYu/XO
-7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oqGqxrGjuwogICAoMym547jm0rWhorj3
-wOC3/s7x0rW3oqGqoarGsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGq
-z7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0tLS0t
+xPq6wwogIAogICDO0su+09B7ILeio6hmYaOpIHwgxrGjqHBpYW+jqSB9tPogoaG/qqOsyOfT0NDo
+0qrH69PrztLBqs+1o7swLTE1OTg2NzE0MDc0s8LQob3jCgogICAgICAgx+uxo8H0tMu6xdSkt8DS
+1Lrz09DTwyAgICAgIMjn09C08sjF1q60psfrwcK94iAg0LvQuwoKLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KQ29sb2NhdGlvbiB2cy4gTWFuYWdlZCBIb3N0aW5nCkEgcXVlc3Rpb24gYW5kIGFu
-c3dlciBndWlkZSB0byBkZXRlcm1pbmluZyB0aGUgYmVzdCBmaXQKZm9yIHlvdXIgb3JnYW5pemF0
-aW9uIC0gdG9kYXkgYW5kIGluIHRoZSBmdXR1cmUuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZXJu
-YXAtc2ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+LS0tCkNvbG9jYXRpb24gdnMuIE1hbmFnZWQgSG9zdGluZwpBIHF1ZXN0aW9uIGFuZCBhbnN3ZXIg
+Z3VpZGUgdG8gZGV0ZXJtaW5pbmcgdGhlIGJlc3QgZml0CmZvciB5b3VyIG9yZ2FuaXphdGlvbiAt
+IHRvZGF5IGFuZCBpbiB0aGUgZnV0dXJlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVybmFwLXNm
+ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

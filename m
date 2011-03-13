@@ -1,10 +1,11 @@
-From: hgyjgfhvhh-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] Ms，陈
-Date: Fri, 11 Mar 2011 17:01:40 +0800
-Message-ID: <E1PxyEK-0000nu-1n@sfs-ml-1.v29.ch3.sourceforge.com>
+From: midgcav-FOXd/ROa6Lw@public.gmane.org
+Subject: [SPAM] ¤.股权激励法.¤
+Date: Sun, 13 Mar 2011 09:07:58 +0800
+Message-ID: <E1PyZo2-000310-J8@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,14 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6wwogIAogICDO0su+09B7ILeio6hmYaOpIHwgxrGjqHBpYW+jqSB9tPogoaG/qqOsyOfT0NDo
-0qrH69PrztLBqs+1o7swLTE1OTg2NzE0MDc0s8LQob3jCgogICAgICAgx+uxo8H0tMu6xdSkt8DS
-1Lrz09DTwyAgICAgIMjn09C08sjF1q60psfrwcK94iAg0LvQuwoKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkNvbG9jYXRpb24gdnMuIE1hbmFnZWQgSG9zdGluZwpBIHF1ZXN0aW9uIGFuZCBhbnN3ZXIg
-Z3VpZGUgdG8gZGV0ZXJtaW5pbmcgdGhlIGJlc3QgZml0CmZvciB5b3VyIG9yZ2FuaXphdGlvbiAt
-IHRvZGF5IGFuZCBpbiB0aGUgZnV0dXJlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVybmFwLXNm
-ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Colocation vs. Managed Hosting
+A question and answer guide to determining the best fit
+for your organization - today and in the future.
+http://p.sf.net/sfu/internap-sfd2d
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

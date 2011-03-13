@@ -1,74 +1,67 @@
-From: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: GPIO chip select support in McSPI
-Date: Sun, 13 Mar 2011 15:04:11 -0400
-Message-ID: <87ipvmx2ok.fsf__17362.0535912507$1300043112$gmane$org@gmail.com>
-References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
-	<1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
-	<20110302215026.GA22854@angua.secretlab.ca>
-	<87sjv517yd.fsf@gmail.com>
-	<f7a269db-3bcf-4bac-8c38-b363e5c7bd0b@email.android.com>
+From: Jesper Juhl <jj@chaosbits.net>
+Subject: [PATCH] SPI: Fix a mem leak in dw_spi_setup()
+Date: Sun, 13 Mar 2011 22:22:45 +0100 (CET)
+Message-ID: <alpine.LNX.2.00.1103132216530.29706@swampdragon.chaosbits.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <f7a269db-3bcf-4bac-8c38-b363e5c7bd0b-2ueSQiBKiTY7tOexoI0I+QC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	David Brownell <dbrownell@users.sourceforge.net>
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-I've included the OMAP list so that I can hopefully get some feedback
-from folks more familiar with this code.
+In drivers/spi/dw_spi.c:dw_spi_setup() we may dynamically allocate memory 
+for 'chip' with 'kmalloc'. If we then later leave the function early due 
+to '!spi->max_speed_hz' we fail to release this memory again - causing a 
+leak when the 'chip' variable goes out of scope.
+As far as I can see, the cleanest fix for this is to simply move the test 
+for '!spi->max_speed_hz' to the top of the function before we even do the 
+dynamic allocation. This way we avoid the issue of having to remember to 
+free the memory again and we also avoid a lot of assignments that are 
+completely pointless in the failure case.
 
-Background:
+Signed-off-by: Jesper Juhl <jj@chaosbits.net>
+---
+ dw_spi.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-I've been working on adding support for GPIO chip select lines to the
-McSPI driver. Grant has been working with me to try getting the
-in-kernel interface right and we have finally converged on a solution
-whereby a table of GPIO lines will be passed to the McSPI driver through
-platform_device.device.platform_data. Unfortunately, as explained below,
-there is no clear path to support this in the current McSPI
-initialization code.
+ compile tested only.
+
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 22af77f..6cd678c 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -702,6 +702,11 @@ static int dw_spi_setup(struct spi_device *spi)
+ 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
+ 		return -EINVAL;
+ 
++	if (!spi->max_speed_hz) {
++		dev_err(&spi->dev, "No max speed HZ parameter\n");
++		return -EINVAL;
++	}
++
+ 	/* Only alloc on first setup */
+ 	chip = spi_get_ctldata(spi);
+ 	if (!chip) {
+@@ -746,13 +751,7 @@ static int dw_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 	chip->bits_per_word = spi->bits_per_word;
+-
+-	if (!spi->max_speed_hz) {
+-		dev_err(&spi->dev, "No max speed HZ parameter\n");
+-		return -EINVAL;
+-	}
+ 	chip->speed_hz = spi->max_speed_hz;
+-
+ 	chip->tmode = 0; /* Tx & Rx */
+ 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
+ 	chip->cr0 = (chip->bits_per_word - 1)
 
 
-On Thu, 03 Mar 2011 14:42:07 -0700, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> The spi_master platform device is registered somewhere in the
-> inappropriate support code. You need to arrange to make sure the
-> correct pdata is attached to it when it gets registered. There
-> /should/ be a mechanism for doing so.
-> 
-> All spi devices already specify a cs number anyway. What you can do is
-> use the cs number as the lookup index into the gpio table, and
-> remember to reserve a cs# for the 'native' cs line.
-> 
-I've done as you suggested and added support to the McSPI driver by
-passing a GPIO table through platform_data. A patch will be coming
-shortly.
-
-Unfortunately, I'm really not sure how to restructure the OMAP code to
-pass this information along. Currently the McSPI devices are registered
-in arch/arm/mach-omap2/devices.c (omap_init_mcspi). In order to make the
-GPIO CS support configurable by board code, we need some way to change
-the (currently static) platform_devices prior to registration. Does
-anyone have any suggestions on how this code could be refactored to
-allow for this with minimal code duplication? Obviously we could just
-move the platform_devices into the board files but this seems like a lot
-of code duplication to support functionality that few boards will use.
-
-Thoughts?
-
-- Ben
-
-------------------------------------------------------------------------------
-Colocation vs. Managed Hosting
-A question and answer guide to determining the best fit
-for your organization - today and in the future.
-http://p.sf.net/sfu/internap-sfd2d
+-- 
+Jesper Juhl <jj@chaosbits.net>            http://www.chaosbits.net/
+Plain text mails only, please.
+Don't top-post http://www.catb.org/~esr/jargon/html/T/top-post.html

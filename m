@@ -1,67 +1,31 @@
-From: Jesper Juhl <jj@chaosbits.net>
-Subject: [PATCH] SPI: Fix a mem leak in dw_spi_setup()
-Date: Sun, 13 Mar 2011 22:22:45 +0100 (CET)
-Message-ID: <alpine.LNX.2.00.1103132216530.29706@swampdragon.chaosbits.net>
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票――代/开
+Date: Mon, 14 Mar 2011 10:17:43 +0800
+Message-ID: <E1PyxLw-00089h-Of@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	David Brownell <dbrownell@users.sourceforge.net>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-In drivers/spi/dw_spi.c:dw_spi_setup() we may dynamically allocate memory 
-for 'chip' with 'kmalloc'. If we then later leave the function early due 
-to '!spi->max_speed_hz' we fail to release this memory again - causing a 
-leak when the 'chip' variable goes out of scope.
-As far as I can see, the cleanest fix for this is to simply move the test 
-for '!spi->max_speed_hz' to the top of the function before we even do the 
-dynamic allocation. This way we avoid the issue of having to remember to 
-free the memory again and we also avoid a lot of assignments that are 
-completely pointless in the failure case.
-
-Signed-off-by: Jesper Juhl <jj@chaosbits.net>
----
- dw_spi.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
- compile tested only.
-
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 22af77f..6cd678c 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -702,6 +702,11 @@ static int dw_spi_setup(struct spi_device *spi)
- 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
- 		return -EINVAL;
- 
-+	if (!spi->max_speed_hz) {
-+		dev_err(&spi->dev, "No max speed HZ parameter\n");
-+		return -EINVAL;
-+	}
-+
- 	/* Only alloc on first setup */
- 	chip = spi_get_ctldata(spi);
- 	if (!chip) {
-@@ -746,13 +751,7 @@ static int dw_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 	chip->bits_per_word = spi->bits_per_word;
--
--	if (!spi->max_speed_hz) {
--		dev_err(&spi->dev, "No max speed HZ parameter\n");
--		return -EINVAL;
--	}
- 	chip->speed_hz = spi->max_speed_hz;
--
- 	chip->tmode = 0; /* Tx & Rx */
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
- 	chip->cr0 = (chip->bits_per_word - 1)
-
-
--- 
-Jesper Juhl <jj@chaosbits.net>            http://www.chaosbits.net/
-Plain text mails only, please.
-Don't top-post http://www.catb.org/~esr/jargon/html/T/top-post.html
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
+1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
+tcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAg
+ICAgICC4utTwyMujutXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+Q29sb2NhdGlvbiB2cy4gTWFuYWdlZCBIb3N0aW5nCkEgcXVlc3Rpb24gYW5kIGFuc3dlciBndWlk
+ZSB0byBkZXRlcm1pbmluZyB0aGUgYmVzdCBmaXQKZm9yIHlvdXIgb3JnYW5pemF0aW9uIC0gdG9k
+YXkgYW5kIGluIHRoZSBmdXR1cmUuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZXJuYXAtc2ZkMmQK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

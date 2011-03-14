@@ -1,17 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: wait between bytes
-Date: Mon, 14 Mar 2011 16:17:59 -0600
-Message-ID: <AANLkTimYoL5SnxfBbzv1d8JpeGkXMjiyKLi=Kaw7WaUJ@mail.gmail.com>
-References: <AANLkTinPtp3h4uv_jvHjms02h9a-GbH=NtObQPEjVj2S@mail.gmail.com>
-	<20110314191126.GB16096@angua.secretlab.ca>
-	<AANLkTimYghAYwNQSW26=j4SnYkC_6d5frcAjkgNzF7kW@mail.gmail.com>
+From: =?GB2312?B?1cU=?=  <hgyjJGhh-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 小张
+Date: Tue, 15 Mar 2011 06:29:10 +0800
+Message-ID: <E1PzGGP-0006ZH-NF@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <AANLkTimYghAYwNQSW26=j4SnYkC_6d5frcAjkgNzF7kW-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,24 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 14, 2011 at 4:10 PM, Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi,
-> I thought=A0delay_usec is to create delay between transfers (i.e message
-> transfers ).
-
-Between transfers; but a single spi message can contain multiple
-transfers without twiddling the cs line.
-
-> Can it be used to create delay between bytes of a single message transfer?
-
-No, you'll have to construct a message of multiple single byte
-transfers in that case.
-
-g.
-
----------------------------------------------------------------------------=
----
-Colocation vs. Managed Hosting
-A question and answer guide to determining the best fit
-for your organization - today and in the future.
-http://p.sf.net/sfu/internap-sfd2d
+xOO6wwogICAgIAogICAgICAgztLLvr/J08W73bT6sOzDs7TZu+HWpMP3yukstci498DgLENPsvq1
+2NakLsbVu93WpChGQSxGRSwKCiAgIEZGLNHHzKss1tCwzSm1yLj3wODH5bnY1qTK6aGjzOG5qbTz
+0KG6y8/6taWjqLP2v9qxqLnYtaWjqS6zp7zSv8m6z9f3IM3Ly7C1paGuzPnPorWlICAKCiAgtPrA
+7cnMvOwgo6wgye7b2r34s/a/2rGoudi1yNK1zvEKICAgCiAgIMjn09DStc7x0OjSqr/JwLS159fJ
+0a+jutXF0KG94wogIAogICDBqs+1tee7sKO6MDc1NS0tMjU0MjAxNzcgICDK1rv6o7oxMzUzNDIy
+MTc2OAogCiAgIFFRo7ozODE4NzYzNDcgICAg08rP5KO6c3p5b25nZG9uZ2ppYW5nc0AxNjMuY29t
+ICAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDb2xvY2F0aW9uIHZzLiBNYW5hZ2VkIEhvc3RpbmcK
+QSBxdWVzdGlvbiBhbmQgYW5zd2VyIGd1aWRlIHRvIGRldGVybWluaW5nIHRoZSBiZXN0IGZpdApm
+b3IgeW91ciBvcmdhbml6YXRpb24gLSB0b2RheSBhbmQgaW4gdGhlIGZ1dHVyZS4KaHR0cDovL3Au
+c2YubmV0L3NmdS9pbnRlcm5hcC1zZmQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

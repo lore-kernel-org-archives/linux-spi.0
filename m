@@ -1,11 +1,11 @@
-From: 15817302760-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 税/票――代/开
-Date: Mon, 14 Mar 2011 10:17:43 +0800
-Message-ID: <E1PyxLw-00089h-Of@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Tom <tom.spi.devel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: wait between bytes
+Date: Mon, 14 Mar 2011 09:54:50 +0530
+Message-ID: <AANLkTinPtp3h4uv_jvHjms02h9a-GbH=NtObQPEjVj2S@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,15 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
-1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
-tcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAg
-ICAgICC4utTwyMujutXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-Q29sb2NhdGlvbiB2cy4gTWFuYWdlZCBIb3N0aW5nCkEgcXVlc3Rpb24gYW5kIGFuc3dlciBndWlk
-ZSB0byBkZXRlcm1pbmluZyB0aGUgYmVzdCBmaXQKZm9yIHlvdXIgb3JnYW5pemF0aW9uIC0gdG9k
-YXkgYW5kIGluIHRoZSBmdXR1cmUuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZXJuYXAtc2ZkMmQK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+Hi Everyone,
+
+Does SPI framework have a mechanism to insert a delay between the bytes of a
+multi-byte message (transmission or reception).
+i.e to handle scenarios where
+
+   1. the master is operating at a high frequency
+   2. slave at a lesser frequency
+   3. a gpio is used as a slave select
+   4. and byte by byte transfer using multiple spi_write is not a choice.
+
+Regards,
+Tom
+------------------------------------------------------------------------------
+Colocation vs. Managed Hosting
+A question and answer guide to determining the best fit
+for your organization - today and in the future.
+http://p.sf.net/sfu/internap-sfd2d

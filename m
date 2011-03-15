@@ -1,21 +1,16 @@
-From: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: GPIO chip select support in McSPI
-Date: Mon, 14 Mar 2011 22:22:31 -0400
-Message-ID: <877hc1t95k.fsf__36853.4337533221$1300155803$gmane$org@gmail.com>
-References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
-	<1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
-	<20110302215026.GA22854@angua.secretlab.ca>
-	<87sjv517yd.fsf@gmail.com>
-	<f7a269db-3bcf-4bac-8c38-b363e5c7bd0b@email.android.com>
-	<87ipvmx2ok.fsf@gmail.com>
-	<20110314192536.GF16096@angua.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: First bit of every byte received from an SPI transfer getting lost
+Date: Mon, 14 Mar 2011 21:52:42 -0600
+Message-ID: <20110315035242.GG5600@angua.secretlab.ca>
+References: <DC58AD99-F9A2-467F-8129-6635572678D7@mac.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org, linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: SPI Developer Mailing List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Elvis Dowson <elvis.dowson-ee4meeAH724@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20110314192536.GF16096-MrY2KI0G/OVr83L8+7iqerDks+cytr/Z@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <DC58AD99-F9A2-467F-8129-6635572678D7-ee4meeAH724@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,25 +21,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 14 Mar 2011 13:25:36 -0600, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> I see two solutions:
-> 1) platform code registers a bus notifier so that it gets called back
-> before the device gets bound to a driver.  Then it can augment the
-> platform data.
+On Sun, Feb 27, 2011 at 10:19:09PM +0400, Elvis Dowson wrote:
+>  Hi,
+>         I'm working on a custom beagleboard platform based on the OMAP3503 processor.
 > 
-This sounds like it might be a bit involved and I'm not terribly
-familiar with these facets of the driver model. This would probably be
-the more flexible approach but I think I'll stick with the simpler
-option.
-
-> 2) add an api to arch/arm/mach-omap2/devices.c for providing a cs
-> table before the device gets registered (must be called before
-> arch_initcall() time).
+> I have a Freescale Zigbee radio module connected to the SPI bus, and it is to be used for flashing the radio module's firmware image. 
 > 
-This is along the lines of what I was thinking. Any thoughts on how to
-get function called before arch_initcall()?
+> I am using a program derived from the spidev_test.c file in the android-2.6.32-kernel/Documentation/spi folder. 
+> 
+> The android linux kernel is a standard rowboat linux kernel based, which includes TI's platform support for OMAP35x from TI's arago OMAP PSP project.
+> 
+> The problem that I am having is that the first bit of every SPI byte transfer received from the slave zigbee module is a zero.
+> 
+> For example, 0xEA when transmitted, comes out as 0x6A. 
+> 
+> Here is an example message transmit and receive sequence. The zigbee module sends a zero for the first byte transferred, and then echoes the first byte sent, as a response in a subsequent transfer, as an acknowledgement.
+> 
+> Number of elements read from the firmware update file into the transmit buffer = 16
+> 
+> Displaying the contents of the transmit buffer array
+> 
+> 55 10 00 EA 76 10 00 EA 7D 10 00 EA 84 10 00 EA 
+> 
+> Displaying the contents of the receive buffer array
+> 
+> 00 00 55 10 00 6A 76 10 00 6A 7D 10 00 6A 04 10 
+> 
+> Number of bytes received = 16 bytes
+> 
+> Similarily, 0x84 changes to 0x04.
+> 
+> Looking at the binary representation, 
+> 
+> 0xEA = 1110 1010
+> 0x6A = 0110  1010
+> 
+> 0x84 = 1000 0100
+> 0x04 = 0000 0100
+> 
+> >From the above pattern, it looks like I'm losing the most significant bit for every 8-bit (1 byte) transfer.
+> 
+> Looking at the data pattern, the ones that come back correctly are the ones that don't need the 8th bit set to represent its value, e.g. 0x50, 0x10, 0x00, etc.
+> 
+> What could be causing the first bit stuck at 0 ?
 
-- Ben
+It could easily be a mismatch between the spi master and the spi slave
+on the transfer mode.  Look for SPI_MODE_{0,1,2,3}, and compare it
+with what the zigbee module expects.
+
+g.
+
+
+> 
+> 
+> Elvis Dowson
+> 
+> ------------------------------------------------------------------------------
+> Free Software Download: Index, Search & Analyze Logs and other IT data in 
+> Real-Time with Splunk. Collect, index and harness all the fast moving IT data 
+> generated by your applications, servers and devices whether physical, virtual
+> or in the cloud. Deliver compliance at lower cost and gain new business 
+> insights. http://p.sf.net/sfu/splunk-dev2dev 
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
 ------------------------------------------------------------------------------
 Colocation vs. Managed Hosting

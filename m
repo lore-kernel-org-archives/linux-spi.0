@@ -1,23 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: GPIO chip select support in McSPI
-Date: Mon, 14 Mar 2011 21:29:51 -0600
-Message-ID: <20110315032951.GA5600__20225.9064688862$1300163427$gmane$org@angua.secretlab.ca>
-References: <c0ffcf4415b8edbf55d653a620b92fbbbcd8fed7>
-	<1297635034-24504-1-git-send-email-bgamari.foss@gmail.com>
-	<20110302215026.GA22854@angua.secretlab.ca>
-	<87sjv517yd.fsf@gmail.com>
-	<f7a269db-3bcf-4bac-8c38-b363e5c7bd0b@email.android.com>
-	<87ipvmx2ok.fsf@gmail.com>
-	<20110314192536.GF16096@angua.secretlab.ca>
-	<877hc1t95k.fsf@gmail.com>
+From: Vqbgeq <arazw-aM4lJgx3ZPs@public.gmane.org>
+Subject: Gbdus Drml Etpqzmut
+Date: Wed, 16 Mar 2011 00:40:34 +0800
+Message-ID: <e870af58-87b9-434b-a11d-d80ae22faeab@prissa-dc01.oprissa.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-TtF/mJH4Jtrk1uMJSBkQmQ@public.gmane.org, linux-omap <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ben Gamari <bgamari.foss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <877hc1t95k.fsf-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,34 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 14, 2011 at 10:22:31PM -0400, Ben Gamari wrote:
-> On Mon, 14 Mar 2011 13:25:36 -0600, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> > I see two solutions:
-> > 1) platform code registers a bus notifier so that it gets called back
-> > before the device gets bound to a driver.  Then it can augment the
-> > platform data.
-> > 
-> This sounds like it might be a bit involved and I'm not terribly
-> familiar with these facets of the driver model. This would probably be
-> the more flexible approach but I think I'll stick with the simpler
-> option.
-> 
-> > 2) add an api to arch/arm/mach-omap2/devices.c for providing a cs
-> > table before the device gets registered (must be called before
-> > arch_initcall() time).
-> > 
-> This is along the lines of what I was thinking. Any thoughts on how to
-> get function called before arch_initcall()?
-
-You can call it from .init_machine()
-
-g.
-
-> 
-> - Ben
-
-------------------------------------------------------------------------------
-Colocation vs. Managed Hosting
-A question and answer guide to determining the best fit
-for your organization - today and in the future.
-http://p.sf.net/sfu/internap-sfd2d
+v8kgICAgICAgICAgufogICAgICAgICAgICDTxQ0K0ekgICAgICAgICAgtdggICAgICAgICAgICC7
+3Q0K1qQgICAgICAgICAgy7AgICAgICAgICAgICC0+g0KuvMgICAgICAgICAg0+AgICAgICAgICAg
+ICC/qg0K1NkgICAgICAgICAgtu4gICAgICAgICAgICC49w0KuLYgICAgICAgICAgt6IgICAgICAg
+ICAgICC12A0Kv+4gICAgICAgICAgxrEgICAgICAgICAgICDH+A0KDQoNCkkzNS85TzM0LzJJOTXN
+9b6twO3Bqs+1Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDb2xvY2F0aW9uIHZzLiBNYW5hZ2VkIEhv
+c3RpbmcKQSBxdWVzdGlvbiBhbmQgYW5zd2VyIGd1aWRlIHRvIGRldGVybWluaW5nIHRoZSBiZXN0
+IGZpdApmb3IgeW91ciBvcmdhbml6YXRpb24gLSB0b2RheSBhbmQgaW4gdGhlIGZ1dHVyZS4KaHR0
+cDovL3Auc2YubmV0L3NmdS9pbnRlcm5hcC1zZmQyZApfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,52 +1,70 @@
-From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
-Subject: RE: [PATCH v3] spi_topcliff_pch: support new device ML7213 IOH
-Date: Thu, 17 Mar 2011 09:07:49 +0900
-Message-ID: <EE7510FD61584A20B4047341949E05FA@hacdom.okisemi.com>
-References: <1298893677-4406-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v8 01/11] mfd: add driver for sequencer serial port
+Date: Thu, 17 Mar 2011 13:03:12 +0530
+Message-ID: <B85A65D85D7EB246BE421B3FB0FBB593024C307FE5@dbde02.ent.ti.com>
+References: <1295378505-15221-1-git-send-email-cyril@ti.com>
+	<1295378505-15221-2-git-send-email-cyril@ti.com>	<87tyh4u6uo.fsf@ti.com>
+	<20110131004001.GF2565@sortiz-mobl>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
-	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>
-To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
-	"'Grant Likely'" <grant.likely@secretlab.ca>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1298893677-4406-1-git-send-email-tomoya-linux@dsn.okisemi.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+        "linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org" <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+To: "Chemparathy, Cyril" <cyril-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20110131004001.GF2565@sortiz-mobl>
+Content-Language: en-US
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+Hi Cyril,
 
-Could you review this patch ?
-
-We hope this patch will be merged for 2.6.39.
-
-With Best Regards,
------------------------------------------
-Tomoya MORINAGA
-OKI SEMICONDUCTOR CO., LTD.
-
-> -----Original Message-----
-> From: Tomoya MORINAGA [mailto:tomoya-linux@dsn.okisemi.com] 
-> Sent: Monday, February 28, 2011 8:48 PM
-> To: David Brownell; Grant Likely; 
-> spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
-> Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
-> joel.clark@intel.com; kok.howg.ewe@intel.com; Tomoya MORINAGA
-> Subject: [PATCH v3] spi_topcliff_pch: support new device ML7213 IOH
+On Mon, Jan 31, 2011 at 06:10:02, Samuel Ortiz wrote:
+> Hi Kevin,
 > 
-> Support ML7213 device of OKI SEMICONDUCTOR.
-> ML7213 is companion chip of Intel Atom E6xx series for 
-> IVI(In-Vehicle Infotainment).
-> ML7213 is compatible for Intel EG20T PCH.
+> On Wed, Jan 19, 2011 at 09:43:43AM -0800, Kevin Hilman wrote:
+> > Samuel,
+> > 
+> > Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> writes:
+> > 
+> > > TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
+> > > device.  It has a built-in programmable execution engine that can be programmed
+> > > to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
+> > >
+> > > This patch adds a driver for this controller device.  The driver does not
+> > > expose a user-land interface.  Protocol drivers built on top of this layer are
+> > > expected to remain in-kernel.
+> > >
+> > > Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
+> > 
+> > Any comments on this driver?
+> The driver looks fine.
 > 
-> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-> ---
->  drivers/spi/Kconfig            |    5 +-
->  drivers/spi/spi_topcliff_pch.c |  481 
-> ++++++++++++++++++++--------------------
->  2 files changed, 250 insertions(+), 236 deletions(-)
 > 
+> > With your ack, I'll be happy to merge this via the davinci tree with the
+> > rest of the series.
+> Please go ahead and add my Acked-by: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+
+Patches in this series which have been Acked by respective maintainers
+have been included in the 2.6.39 pull request Kevin sent to Russell.
+
+Once 2.6.39-rc1 is out, can you please plan to rebase and repost the
+left out patches and ask the respective maintainers for their review and
+ack?
+
+Thanks,
+Sekhar

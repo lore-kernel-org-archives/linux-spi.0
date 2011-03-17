@@ -1,70 +1,96 @@
-From: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v8 01/11] mfd: add driver for sequencer serial port
-Date: Thu, 17 Mar 2011 13:03:12 +0530
-Message-ID: <B85A65D85D7EB246BE421B3FB0FBB593024C307FE5@dbde02.ent.ti.com>
-References: <1295378505-15221-1-git-send-email-cyril@ti.com>
-	<1295378505-15221-2-git-send-email-cyril@ti.com>	<87tyh4u6uo.fsf@ti.com>
-	<20110131004001.GF2565@sortiz-mobl>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] rtc-{ds1390,ds3234,m41t94}: Use spi_get_drvdata() for SPI
+ devices
+Date: Thu, 17 Mar 2011 14:47:56 +0100 (CET)
+Message-ID: <alpine.DEB.2.00.1103171446130.23741@ayla.of.borg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org" <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org" <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        "linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org" <linux-arm-kernel-xIg/pKzrS19vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-To: "Chemparathy, Cyril" <cyril-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20110131004001.GF2565@sortiz-mobl>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: TEXT/PLAIN; charset=ISO-8859-7
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: rtc-linux@googlegroups.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+To: Alessandro Zummo <a.zummo@towertech.it>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Cyril,
+The recently increased type checking in platform_get_drvdata() reveals =
+a few
+offenders:
 
-On Mon, Jan 31, 2011 at 06:10:02, Samuel Ortiz wrote:
-> Hi Kevin,
-> 
-> On Wed, Jan 19, 2011 at 09:43:43AM -0800, Kevin Hilman wrote:
-> > Samuel,
-> > 
-> > Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> writes:
-> > 
-> > > TI's sequencer serial port (TI-SSP) is a jack-of-all-trades type of serial port
-> > > device.  It has a built-in programmable execution engine that can be programmed
-> > > to operate as almost any serial bus (I2C, SPI, EasyScale, and others).
-> > >
-> > > This patch adds a driver for this controller device.  The driver does not
-> > > expose a user-land interface.  Protocol drivers built on top of this layer are
-> > > expected to remain in-kernel.
-> > >
-> > > Signed-off-by: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-> > 
-> > Any comments on this driver?
-> The driver looks fine.
-> 
-> 
-> > With your ack, I'll be happy to merge this via the davinci tree with the
-> > rest of the series.
-> Please go ahead and add my Acked-by: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+drivers/rtc/rtc-ds1390.c:161: warning: passing argument 1 of =A1platfor=
+m_get_drvdata=A2 from incompatible pointer type
+drivers/rtc/rtc-ds3234.c:161: warning: passing argument 1 of =A1platfor=
+m_get_drvdata=A2 from incompatible pointer type
+drivers/rtc/rtc-m41t94.c:139: warning: passing argument 1 of =A1platfor=
+m_get_drvdata=A2 from incompatible pointer type
 
-Patches in this series which have been Acked by respective maintainers
-have been included in the 2.6.39 pull request Kevin sent to Russell.
+Use spi_get_drvdata() instead of platform_get_drvdata().
 
-Once 2.6.39-rc1 is out, can you please plan to rebase and repost the
-left out patches and ask the respective maintainers for their review and
-ack?
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ drivers/rtc/rtc-ds1390.c |    2 +-
+ drivers/rtc/rtc-ds3234.c |    2 +-
+ drivers/rtc/rtc-m41t94.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks,
-Sekhar
+diff --git a/drivers/rtc/rtc-ds1390.c b/drivers/rtc/rtc-ds1390.c
+index 26a86d2..b038d2c 100644
+--- a/drivers/rtc/rtc-ds1390.c
++++ b/drivers/rtc/rtc-ds1390.c
+@@ -158,7 +158,7 @@ static int __devinit ds1390_probe(struct spi_device=
+ *spi)
+=20
+ static int __devexit ds1390_remove(struct spi_device *spi)
+ {
+-	struct ds1390 *chip =3D platform_get_drvdata(spi);
++	struct ds1390 *chip =3D spi_get_drvdata(spi);
+=20
+ 	rtc_device_unregister(chip->rtc);
+ 	kfree(chip);
+diff --git a/drivers/rtc/rtc-ds3234.c b/drivers/rtc/rtc-ds3234.c
+index a774ca3..bbd2622 100644
+--- a/drivers/rtc/rtc-ds3234.c
++++ b/drivers/rtc/rtc-ds3234.c
+@@ -158,7 +158,7 @@ static int __devinit ds3234_probe(struct spi_device=
+ *spi)
+=20
+ static int __devexit ds3234_remove(struct spi_device *spi)
+ {
+-	struct rtc_device *rtc =3D platform_get_drvdata(spi);
++	struct rtc_device *rtc =3D spi_get_drvdata(spi);
+=20
+ 	rtc_device_unregister(rtc);
+ 	return 0;
+diff --git a/drivers/rtc/rtc-m41t94.c b/drivers/rtc/rtc-m41t94.c
+index c8c97a4..e259ed7 100644
+--- a/drivers/rtc/rtc-m41t94.c
++++ b/drivers/rtc/rtc-m41t94.c
+@@ -136,7 +136,7 @@ static int __devinit m41t94_probe(struct spi_device=
+ *spi)
+=20
+ static int __devexit m41t94_remove(struct spi_device *spi)
+ {
+-	struct rtc_device *rtc =3D platform_get_drvdata(spi);
++	struct rtc_device *rtc =3D spi_get_drvdata(spi);
+=20
+ 	if (rtc)
+ 		rtc_device_unregister(rtc);
+--=20
+1.7.0.4
+
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-=
+m68k.org
+
+In personal conversations with technical people, I call myself a hacker=
+=2E But
+when I'm talking to journalists I just say "programmer" or something li=
+ke that.
+							    -- Linus Torvalds

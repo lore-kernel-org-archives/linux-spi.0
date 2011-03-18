@@ -1,50 +1,41 @@
-From: Jiri Slaby <jslaby@suse.cz>
-Subject: [PATCH 1/1] SPI: dw_spi, fix PPC build
-Date: Fri, 18 Mar 2011 10:41:17 +0100
-Message-ID: <1300441277-23961-1-git-send-email-jslaby@suse.cz>
+From: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi/dw_spi: improve the interrupt mode with the
+	batch ops
+Date: Fri, 18 Mar 2011 10:13:10 +0000
+Message-ID: <20110318101310.57aa860f@bob.linux.org.uk>
+References: <1300434656-16870-1-git-send-email-feng.tang@intel.com>
+	<1300434656-16870-5-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	jirislaby@gmail.com, Grant Likely <grant.likely@secretlab.ca>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>
-To: dbrownell@users.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Alek Du <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1300434656-16870-5-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently, build on PPC dies with:
-In file included from drivers/spi/dw_spi_mmio.c:16:
-include/linux/spi/dw_spi.h:147: error: field =E2=80=98tx_sgl=E2=80=99 h=
-as incomplete type
-include/linux/spi/dw_spi.h:149: error: field =E2=80=98rx_sgl=E2=80=99 h=
-as incomplete type
+On Fri, 18 Mar 2011 15:50:56 +0800
+Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
 
-Add linux/scatterlist.h include to dw_spi.h, because we need to know
-the contents of the structure.
+> spi/dw_spi: improve the interrupt mode with the batch ops
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
----
- include/linux/spi/dw_spi.h |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Look sane to me - only question I have is should the patches have a
 
-diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
-index 6cd10f6..fb0bce5 100644
---- a/include/linux/spi/dw_spi.h
-+++ b/include/linux/spi/dw_spi.h
-@@ -2,6 +2,7 @@
- #define DW_SPI_HEADER_H
-=20
- #include <linux/io.h>
-+#include <linux/scatterlist.h>
-=20
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
---=20
-1.7.4.1
+From: Alek Du <...>
+
+on them ?
+
+------------------------------------------------------------------------------
+Colocation vs. Managed Hosting
+A question and answer guide to determining the best fit
+for your organization - today and in the future.
+http://p.sf.net/sfu/internap-sfd2d

@@ -1,13 +1,11 @@
 From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/4] spi/dw_spi: change poll mode transfer from byte ops to
-	batch ops
-Date: Fri, 18 Mar 2011 15:50:55 +0800
-Message-ID: <1300434656-16870-4-git-send-email-feng.tang@intel.com>
+Subject: [PATCH 1/4] spi/dw_spi: unify the low level read/write routines
+Date: Fri, 18 Mar 2011 15:50:53 +0800
+Message-ID: <1300434656-16870-2-git-send-email-feng.tang@intel.com>
 References: <1300434656-16870-1-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Alek Du <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
 	dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -22,131 +20,213 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Current poll transfer will read/write one word, then wait till the
-hw is non-busy, it's not efficient. This patch will try to read/write
-as many words as permitted by hardware FIFO depth.
+The original version has many duplicated codes for null/u8/u16 case,
+so unify them to make it cleaner
 
-Signed-off-by: Alek Du <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/dw_spi.c |   71 +++++++++++++++++++++++++++++++++----------------
- 1 files changed, 48 insertions(+), 23 deletions(-)
+ drivers/spi/dw_spi.c       |  103 +++++++++++---------------------------------
+ include/linux/spi/dw_spi.h |    2 -
+ 2 files changed, 26 insertions(+), 79 deletions(-)
 
 diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 35ac2b9..ba8b394 100644
+index 22af77f..c83f6b1 100644
 --- a/drivers/spi/dw_spi.c
 +++ b/drivers/spi/dw_spi.c
-@@ -160,6 +160,37 @@ static inline void mrst_spi_debugfs_remove(struct dw_spi *dws)
+@@ -58,8 +58,6 @@ struct chip_data {
+ 	u8 bits_per_word;
+ 	u16 clk_div;		/* baud rate divider */
+ 	u32 speed_hz;		/* baud rate */
+-	int (*write)(struct dw_spi *dws);
+-	int (*read)(struct dw_spi *dws);
+ 	void (*cs_control)(u32 command);
+ };
+ 
+@@ -185,80 +183,45 @@ static void flush(struct dw_spi *dws)
+ 	wait_till_not_busy(dws);
  }
- #endif /* CONFIG_DEBUG_FS */
  
-+/* Return the max entries we can fill into tx fifo */
-+static inline u32 tx_max(struct dw_spi *dws)
-+{
-+	u32 tx_left, tx_room, rxtx_gap;
-+
-+	tx_left = (dws->tx_end - dws->tx) / dws->n_bytes;
-+	tx_room = dws->fifo_len - dw_readw(dws, txflr);
-+
-+	/*
-+	 * Another concern is about the tx/rx mismatch, we
-+	 * though to use (dws->fifo_len - rxflr - txflr) as
-+	 * one maximum value for tx, but it doesn't cover the
-+	 * data which is out of tx/rx fifo and inside the
-+	 * shift registers. So a control from sw point of
-+	 * view is taken.
-+	 */
-+	rxtx_gap =  ((dws->rx_end - dws->rx) - (dws->tx_end - dws->tx))
-+			/ dws->n_bytes;
-+
-+	return min3(tx_left, tx_room, (u32) (dws->fifo_len - rxtx_gap));
-+}
-+
-+/* Return the max entries we should read out of rx fifo */
-+static inline u32 rx_max(struct dw_spi *dws)
-+{
-+	u32 rx_left = (dws->rx_end - dws->rx) / dws->n_bytes;
-+
-+	return min(rx_left, (u32)dw_readw(dws, rxflr));
-+}
-+
-+
- static void wait_till_not_busy(struct dw_spi *dws)
+-static int null_writer(struct dw_spi *dws)
+-{
+-	u8 n_bytes = dws->n_bytes;
+-
+-	if (!(dw_readw(dws, sr) & SR_TF_NOT_FULL)
+-		|| (dws->tx == dws->tx_end))
+-		return 0;
+-	dw_writew(dws, dr, 0);
+-	dws->tx += n_bytes;
+ 
+-	wait_till_not_busy(dws);
+-	return 1;
+-}
+-
+-static int null_reader(struct dw_spi *dws)
++static int dw_writer(struct dw_spi *dws)
  {
- 	unsigned long end = jiffies + 1 + usecs_to_jiffies(5000);
-@@ -175,33 +206,30 @@ static void wait_till_not_busy(struct dw_spi *dws)
+-	u8 n_bytes = dws->n_bytes;
++	u16 txw = 0;
  
- static int dw_writer(struct dw_spi *dws)
- {
-+	u32 max = tx_max(dws);
- 	u16 txw = 0;
+-	while ((dw_readw(dws, sr) & SR_RF_NOT_EMPT)
+-		&& (dws->rx < dws->rx_end)) {
+-		dw_readw(dws, dr);
+-		dws->rx += n_bytes;
+-	}
+-	wait_till_not_busy(dws);
+-	return dws->rx == dws->rx_end;
+-}
+-
+-static int u8_writer(struct dw_spi *dws)
+-{
+ 	if (!(dw_readw(dws, sr) & SR_TF_NOT_FULL)
+ 		|| (dws->tx == dws->tx_end))
+ 		return 0;
  
+-	dw_writew(dws, dr, *(u8 *)(dws->tx));
+-	++dws->tx;
+-
+-	wait_till_not_busy(dws);
+-	return 1;
+-}
+-
+-static int u8_reader(struct dw_spi *dws)
+-{
+-	while ((dw_readw(dws, sr) & SR_RF_NOT_EMPT)
+-		&& (dws->rx < dws->rx_end)) {
+-		*(u8 *)(dws->rx) = dw_readw(dws, dr);
+-		++dws->rx;
++	/* Set the tx word if the transfer's original "tx" is not null */
++	if (dws->tx_end - dws->len) {
++		if (dws->n_bytes == 8)
++			txw = *(u8 *)(dws->tx);
++		else
++			txw = *(u16 *)(dws->tx);
+ 	}
+ 
+-	wait_till_not_busy(dws);
+-	return dws->rx == dws->rx_end;
+-}
+-
+-static int u16_writer(struct dw_spi *dws)
+-{
 -	if (!(dw_readw(dws, sr) & SR_TF_NOT_FULL)
 -		|| (dws->tx == dws->tx_end))
 -		return 0;
 -
--	/* Set the tx word if the transfer's original "tx" is not null */
--	if (dws->tx_end - dws->len) {
--		if (dws->n_bytes == 8)
--			txw = *(u8 *)(dws->tx);
--		else
--			txw = *(u16 *)(dws->tx);
-+	while (max--) {
-+		/* Set the tx word if the transfer's original "tx" is not null */
-+		if (dws->tx_end - dws->len) {
-+			if (dws->n_bytes == 8)
-+				txw = *(u8 *)(dws->tx);
-+			else
-+				txw = *(u16 *)(dws->tx);
-+		}
-+		dw_writew(dws, dr, txw);
-+		dws->tx += dws->n_bytes;
- 	}
+-	dw_writew(dws, dr, *(u16 *)(dws->tx));
+-	dws->tx += 2;
++	dw_writew(dws, dr, txw);
++	dws->tx += dws->n_bytes;
  
--	dw_writew(dws, dr, txw);
--	dws->tx += dws->n_bytes;
--
--	wait_till_not_busy(dws);
+ 	wait_till_not_busy(dws);
  	return 1;
  }
  
- static int dw_reader(struct dw_spi *dws)
+-static int u16_reader(struct dw_spi *dws)
++static int dw_reader(struct dw_spi *dws)
  {
-+	u32 max = rx_max(dws);
- 	u16 rxw;
+-	u16 temp;
++	u16 rxw;
  
--	while ((dw_readw(dws, sr) & SR_RF_NOT_EMPT)
--		&& (dws->rx < dws->rx_end)) {
-+	while (max--) {
- 		rxw = dw_readw(dws, dr);
- 		/* Care rx only if the transfer's original "rx" is not null */
- 		if (dws->rx_end - dws->len) {
-@@ -213,7 +241,6 @@ static int dw_reader(struct dw_spi *dws)
- 		dws->rx += dws->n_bytes;
+ 	while ((dw_readw(dws, sr) & SR_RF_NOT_EMPT)
+ 		&& (dws->rx < dws->rx_end)) {
+-		temp = dw_readw(dws, dr);
+-		*(u16 *)(dws->rx) = temp;
+-		dws->rx += 2;
++		rxw = dw_readw(dws, dr);
++		/* Care rx only if the transfer's original "rx" is not null */
++		if (dws->rx_end - dws->len) {
++			if (dws->n_bytes == 8)
++				*(u8 *)(dws->rx) = rxw;
++			else
++				*(u16 *)(dws->rx) = rxw;
++		}
++		dws->rx += dws->n_bytes;
  	}
  
--	wait_till_not_busy(dws);
- 	return dws->rx == dws->rx_end;
- }
+ 	wait_till_not_busy(dws);
+@@ -383,8 +346,8 @@ static irqreturn_t interrupt_transfer(struct dw_spi *dws)
+ 		left = (left > int_level) ? int_level : left;
  
-@@ -368,13 +395,11 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+ 		while (left--)
+-			dws->write(dws);
+-		dws->read(dws);
++			dw_writer(dws);
++		dw_reader(dws);
+ 
+ 		/* Re-enable the IRQ if there is still data left to tx */
+ 		if (dws->tx_end > dws->tx)
+@@ -417,13 +380,13 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
  /* Must be called inside pump_transfers() */
  static void poll_transfer(struct dw_spi *dws)
  {
--	while (dw_writer(dws))
-+	do {
-+		dw_writer(dws);
- 		dw_reader(dws);
--	/*
--	 * There is a possibility that the last word of a transaction
--	 * will be lost if data is not ready. Re-read to solve this issue.
--	 */
--	dw_reader(dws);
-+		cpu_relax();
-+	} while (dws->rx_end > dws->rx);
+-	while (dws->write(dws))
+-		dws->read(dws);
++	while (dw_writer(dws))
++		dw_reader(dws);
+ 	/*
+ 	 * There is a possibility that the last word of a transaction
+ 	 * will be lost if data is not ready. Re-read to solve this issue.
+ 	 */
+-	dws->read(dws);
++	dw_reader(dws);
  
  	dw_spi_xfer_done(dws);
  }
+@@ -483,8 +446,6 @@ static void pump_transfers(unsigned long data)
+ 	dws->tx_end = dws->tx + transfer->len;
+ 	dws->rx = transfer->rx_buf;
+ 	dws->rx_end = dws->rx + transfer->len;
+-	dws->write = dws->tx ? chip->write : null_writer;
+-	dws->read = dws->rx ? chip->read : null_reader;
+ 	dws->cs_change = transfer->cs_change;
+ 	dws->len = dws->cur_transfer->len;
+ 	if (chip != dws->prev_chip)
+@@ -520,18 +481,10 @@ static void pump_transfers(unsigned long data)
+ 		case 8:
+ 			dws->n_bytes = 1;
+ 			dws->dma_width = 1;
+-			dws->read = (dws->read != null_reader) ?
+-					u8_reader : null_reader;
+-			dws->write = (dws->write != null_writer) ?
+-					u8_writer : null_writer;
+ 			break;
+ 		case 16:
+ 			dws->n_bytes = 2;
+ 			dws->dma_width = 2;
+-			dws->read = (dws->read != null_reader) ?
+-					u16_reader : null_reader;
+-			dws->write = (dws->write != null_writer) ?
+-					u16_writer : null_writer;
+ 			break;
+ 		default:
+ 			printk(KERN_ERR "MRST SPI0: unsupported bits:"
+@@ -733,13 +686,9 @@ static int dw_spi_setup(struct spi_device *spi)
+ 	if (spi->bits_per_word <= 8) {
+ 		chip->n_bytes = 1;
+ 		chip->dma_width = 1;
+-		chip->read = u8_reader;
+-		chip->write = u8_writer;
+ 	} else if (spi->bits_per_word <= 16) {
+ 		chip->n_bytes = 2;
+ 		chip->dma_width = 2;
+-		chip->read = u16_reader;
+-		chip->write = u16_writer;
+ 	} else {
+ 		/* Never take >16b case for MRST SPIC */
+ 		dev_err(&spi->dev, "invalid wordsize\n");
+diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
+index 6cd10f6..4783c76 100644
+--- a/include/linux/spi/dw_spi.h
++++ b/include/linux/spi/dw_spi.h
+@@ -136,8 +136,6 @@ struct dw_spi {
+ 	u8			max_bits_per_word;	/* maxim is 16b */
+ 	u32			dma_width;
+ 	int			cs_change;
+-	int			(*write)(struct dw_spi *dws);
+-	int			(*read)(struct dw_spi *dws);
+ 	irqreturn_t		(*transfer_handler)(struct dw_spi *dws);
+ 	void			(*cs_control)(u32 command);
+ 
 -- 
 1.7.0.4
 

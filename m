@@ -1,62 +1,71 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/1] SPI: dw_spi, fix PPC build
-Date: Fri, 18 Mar 2011 09:51:02 -0600
-Message-ID: <20110318155102.GA22790@angua.secretlab.ca>
-References: <1300441277-23961-1-git-send-email-jslaby@suse.cz>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi/dw_spi: improve the interrupt mode with the
+	batch ops
+Date: Fri, 18 Mar 2011 09:54:57 -0600
+Message-ID: <20110318155457.GB22790@angua.secretlab.ca>
+References: <1300434656-16870-1-git-send-email-feng.tang@intel.com>
+	<1300434656-16870-5-git-send-email-feng.tang@intel.com>
+	<20110318101310.57aa860f@bob.linux.org.uk>
+	<20110318210325.02389634@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: dbrownell@users.sourceforge.net,
-	spi-devel-general@lists.sourceforge.net,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	jirislaby@gmail.com,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>
-To: Jiri Slaby <jslaby@suse.cz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"Du, Alek" <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1300441277-23961-1-git-send-email-jslaby@suse.cz>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20110318210325.02389634@feng-i7>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Mar 18, 2011 at 10:41:17AM +0100, Jiri Slaby wrote:
-> Currently, build on PPC dies with:
-> In file included from drivers/spi/dw_spi_mmio.c:16:
-> include/linux/spi/dw_spi.h:147: error: field =E2=80=98tx_sgl=E2=80=99=
- has incomplete type
-> include/linux/spi/dw_spi.h:149: error: field =E2=80=98rx_sgl=E2=80=99=
- has incomplete type
->=20
-> Add linux/scatterlist.h include to dw_spi.h, because we need to know
-> the contents of the structure.
->=20
-> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> Cc: David Brownell <dbrownell@users.sourceforge.net>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
+On Fri, Mar 18, 2011 at 09:03:25PM +0800, Feng Tang wrote:
+> Hi Alan,
+> 
+> On Fri, 18 Mar 2011 18:13:10 +0800
+> Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+> 
+> > On Fri, 18 Mar 2011 15:50:56 +0800
+> > Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> > 
+> > > spi/dw_spi: improve the interrupt mode with the batch ops
+> > 
+> > Look sane to me - only question I have is should the patches have a
+> > 
+> > From: Alek Du <...>
+> > 
+> > on them ?
+> 
+> 
+> I've strongly requested Alek to make the patches himself, but he is too busy
+> with his project and just give me a .35 version dw_spi.c. So to get it 
+> quickly upstream, I manually separate his change, modify a little, combined
+> with mine, test, add some comments and his Signed-off.
+> 
+> I really don't know the "From: " matters so much, and thought the signed-off
+> and the cover-letter already claim the right credit :). Is is possible
+> for Grant to change the "From: " to Alek when he would like to merge these
+> patches?
 
-Applied, thanks.
+I can (assuming I remember to).  However, I won't be picking them up
+until after the merge window closes.  Please remind me about them at that
+time.
 
+Thanks,
 g.
 
-> ---
->  include/linux/spi/dw_spi.h |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
->=20
-> diff --git a/include/linux/spi/dw_spi.h b/include/linux/spi/dw_spi.h
-> index 6cd10f6..fb0bce5 100644
-> --- a/include/linux/spi/dw_spi.h
-> +++ b/include/linux/spi/dw_spi.h
-> @@ -2,6 +2,7 @@
->  #define DW_SPI_HEADER_H
-> =20
->  #include <linux/io.h>
-> +#include <linux/scatterlist.h>
-> =20
->  /* Bit fields in CTRLR0 */
->  #define SPI_DFS_OFFSET			0
-> --=20
-> 1.7.4.1
->=20
->=20
+
+------------------------------------------------------------------------------
+Colocation vs. Managed Hosting
+A question and answer guide to determining the best fit
+for your organization - today and in the future.
+http://p.sf.net/sfu/internap-sfd2d

@@ -1,71 +1,161 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi/dw_spi: improve the interrupt mode with the
-	batch ops
-Date: Fri, 18 Mar 2011 09:54:57 -0600
-Message-ID: <20110318155457.GB22790@angua.secretlab.ca>
-References: <1300434656-16870-1-git-send-email-feng.tang@intel.com>
-	<1300434656-16870-5-git-send-email-feng.tang@intel.com>
-	<20110318101310.57aa860f@bob.linux.org.uk>
-	<20110318210325.02389634@feng-i7>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: [git pull] spi and gpio patches for 2.6.39
+Date: Fri, 18 Mar 2011 10:18:31 -0600
+Message-ID: <AANLkTikPiwRgm0DX9CzJacMxsfhPjTU-ksZjw9m2dkEO@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"Du, Alek" <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20110318210325.02389634@feng-i7>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Bernhard Walle <walle@corscience.de>,
+	Dirk Eibach <eibach@gdsys.de>,
+	Esben Haabendal <eha@doredevelopment.dk>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
+	Hannu Heikkinen <ext-hannu.m.heikkinen@nokia.com>,
+	Jiri Slaby <jirislaby@gmail.com>,
+	Linus Walleij <linus.walleij@stericsson.com>,
+	Michael Williamson <michael.williamson@criticallink.com>,
+	Peter Korsgaard <jacmet@gmail.com>,
+	Thomas Chou <thomas@wytron.com.tw>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Mar 18, 2011 at 09:03:25PM +0800, Feng Tang wrote:
-> Hi Alan,
-> 
-> On Fri, 18 Mar 2011 18:13:10 +0800
-> Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
-> 
-> > On Fri, 18 Mar 2011 15:50:56 +0800
-> > Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> > 
-> > > spi/dw_spi: improve the interrupt mode with the batch ops
-> > 
-> > Look sane to me - only question I have is should the patches have a
-> > 
-> > From: Alek Du <...>
-> > 
-> > on them ?
-> 
-> 
-> I've strongly requested Alek to make the patches himself, but he is too busy
-> with his project and just give me a .35 version dw_spi.c. So to get it 
-> quickly upstream, I manually separate his change, modify a little, combined
-> with mine, test, add some comments and his Signed-off.
-> 
-> I really don't know the "From: " matters so much, and thought the signed-off
-> and the cover-letter already claim the right credit :). Is is possible
-> for Grant to change the "From: " to Alek when he would like to merge these
-> patches?
+Hi Linus,
 
-I can (assuming I remember to).  However, I won't be picking them up
-until after the merge window closes.  Please remind me about them at that
-time.
+Here are the SPI and GPIO changes I've got queued up for 2.6.39
 
-Thanks,
 g.
 
+The following changes since commit 08351fc6a75731226e1112fc7254542bd3a2912e:
 
-------------------------------------------------------------------------------
-Colocation vs. Managed Hosting
-A question and answer guide to determining the best fit
-for your organization - today and in the future.
-http://p.sf.net/sfu/internap-sfd2d
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/cmetcalf/linux-tile
+(2011-03-17 19:34:12 -0700)
+
+are available in the git repository at:
+
+  git://git.secretlab.ca/git/linux-2.6 spi/next
+
+Axel Lin (2):
+      gpio: add MODULE_DEVICE_TABLE to pch_gpio and ml_ioh_gpio
+      gpio: Use __devexit at necessary places
+
+Bernhard Walle (1):
+      spi/spidev: Add 32 bit compat ioctl()
+
+Bob Liu (1):
+      spi/bfin_spi: support for multiples of 8bits with hardware CS
+
+Dirk Eibach (1):
+      gpio/pca953x: Fix wrong pointer type
+
+Esben Haabendal (1):
+      of_mmc_spi: add card detect irq support
+
+Geert Uytterhoeven (1):
+      spi/rtc-{ds1390,ds3234,m41t94}: Use spi_get_drvdata() for SPI devices
+
+Grant Likely (4):
+      Merge commit 'v2.6.38-rc4' into spi/next
+      Merge branch 'devicetree/next' into spi/next
+      Merge commit 'v2.6.38-rc8' into spi/next
+      Merge remote-tracking branch 'origin' into spi/next
+
+Guennadi Liakhovetski (2):
+      spi/spi_sh_msiof: cosmetic clean-up
+      spi/spi_sh_msiof: consolidate data in 8-bit mode into 32-bit words
+
+Hannu Heikkinen (1):
+      spi/omap_mcspi: Off-by-one error in finding the right divisor
+
+Jiri Slaby (1):
+      spi/dw_spi: Fix missing header
+
+Linus Walleij (4):
+      spi/pl022: use dmaengine helper macros
+      spi/pl022: disable core voltage when idle
+      spi/pl022: minor kerneldoc updates
+      spi/pl022: rid dangling labels
+
+Michael Jones (1):
+      spi/omap_mcspi: catch xfers of non-multiple SPI word size
+
+Michael Williamson (2):
+      spi/davinci: Use correct length parameter to dma_map_single calls
+      spi/davinci: Support DMA transfers larger than 65535 words
+
+Nikanth Karthikesan (1):
+      gpio/cs5535-gpio: Fix section mismatch
+
+Peter Korsgaard (1):
+      gpio/mcp23s08: support mcp23s17 variant
+
+Sascha Hauer (2):
+      spi/bitbang: check for setup_transfer during initialization
+      spi/imx: select master mode for all channels
+
+Sonic Zhang (1):
+      spi/bfin_spi: return immediately after skipping to next transfer
+
+Thomas Chou (2):
+      spi: add OpenCores tiny SPI driver
+      spi: New driver for Altera SPI
+
+Thomas Gleixner (6):
+      gpio/sx150x: Do not access I2C from mask/unmask functions
+      gpio; Make Intel chipset gpio drivers depend on x86
+      gpio/langwell: Fix broken irq_eoi change.
+      gpio/langwell: Convert irq name space
+      gpio/langwell: Simplify demux loop
+      gpio/langwell: Clear edge bit before handling
+
+Virupax Sadashivpetimath (1):
+      spi/pl022: remove dangling status check
+
+Yoshihiro Shimoda (1):
+      spi: add support for SuperH SPI
+
+ .../devicetree/bindings/mmc/mmc-spi-slot.txt       |    9 +-
+ .../devicetree/bindings/spi/spi_altera.txt         |    4 +
+ .../devicetree/bindings/spi/spi_oc_tiny.txt        |   12 +
+ drivers/gpio/74x164.c                              |    2 +-
+ drivers/gpio/Kconfig                               |   12 +-
+ drivers/gpio/cs5535-gpio.c                         |    6 +-
+ drivers/gpio/langwell_gpio.c                       |   43 +-
+ drivers/gpio/mc33880.c                             |    2 +-
+ drivers/gpio/mcp23s08.c                            |  191 +++++--
+ drivers/gpio/pca953x.c                             |   13 +-
+ drivers/gpio/sx150x.c                              |   54 ++-
+ drivers/mmc/host/of_mmc_spi.c                      |   26 +-
+ drivers/rtc/rtc-ds1390.c                           |    2 +-
+ drivers/rtc/rtc-ds3234.c                           |    2 +-
+ drivers/rtc/rtc-m41t94.c                           |    2 +-
+ drivers/spi/Kconfig                                |   19 +
+ drivers/spi/Makefile                               |    3 +
+ drivers/spi/amba-pl022.c                           |   73 ++--
+ drivers/spi/davinci_spi.c                          |   43 ++-
+ drivers/spi/omap2_mcspi.c                          |   38 +-
+ drivers/spi/spi_altera.c                           |  339 ++++++++++++
+ drivers/spi/spi_bfin5xx.c                          |  104 +++--
+ drivers/spi/spi_bitbang.c                          |   13 +-
+ drivers/spi/spi_imx.c                              |   12 +-
+ drivers/spi/spi_oc_tiny.c                          |  425 +++++++++++++++
+ drivers/spi/spi_sh.c                               |  543 ++++++++++++++++++++
+ drivers/spi/spi_sh_msiof.c                         |  127 ++++--
+ drivers/spi/spidev.c                               |   12 +
+ include/linux/spi/dw_spi.h                         |    1 +
+ include/linux/spi/mcp23s08.h                       |   15 +-
+ include/linux/spi/spi_oc_tiny.h                    |   20 +
+ 31 files changed, 1911 insertions(+), 256 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi_altera.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi_oc_tiny.txt
+ create mode 100644 drivers/spi/spi_altera.c
+ create mode 100644 drivers/spi/spi_oc_tiny.c
+ create mode 100644 drivers/spi/spi_sh.c
+ create mode 100644 include/linux/spi/spi_oc_tiny.h
+
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

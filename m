@@ -1,46 +1,65 @@
-From: =?UTF-8?Q?=E5=BF=97=E9=BE=99_=E5=BC=A0_=28LinkedIn_Invitations=29?=
-	<invitations-mkn/cI4rzrdWk0Htik3J/w@public.gmane.org>
-Subject: =?UTF-8?Q?Reminder_about_your_?=
-	=?UTF-8?Q?invitation_from_=E5=BF=97=E9=BE=99_=E5=BC=A0?=
-Date: Mon, 21 Mar 2011 09:44:02 +0000 (UTC)
-Message-ID: <448253332.3590663.1300700642050.JavaMail.app@ela4-bed47.prod>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Jarkko Nikula <jhnikula@gmail.com>
+Subject: [PATCH-v2.6.39] spi/omap_mcspi: Fix broken last word xfer
+Date: Mon, 21 Mar 2011 16:27:30 +0200
+Message-ID: <1300717650-28953-1-git-send-email-jhnikula@gmail.com>
+Cc: linux-omap@vger.kernel.org,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Jarkko Nikula <jhnikula@gmail.com>,
+	Michael Jones <michael.jones@matrix-vision.de>
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-TGlua2VkSW4KLS0tLS0tLS0tLS0tICAKClRoaXMgaXMgYSByZW1pbmRlciB0aGF0IG9uIE1hcmNo
-IDE2LCDlv5fpvpkg5bygIHNlbnQgeW91IGFuIGludml0YXRpb24gdG8gYmVjb21lIHBhcnQgb2Yg
-aGlzIG9yIGhlciBwcm9mZXNzaW9uYWwgbmV0d29yayBhdCBMaW5rZWRJbi4KCgoKRm9sbG93IHRo
-aXMgbGluayB0byBhY2NlcHQg5b+X6b6ZIOW8oCdzIGludml0YXRpb24uCgpodHRwczovL3d3dy5s
-aW5rZWRpbi5jb20vZS9nN3M0amMtZ2xqN2t1bTYtM2cvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
-Z2lyXzQ0NjEzMTQyMV8wL0VNTC1pbnZfMTdfcmVtLwoKU2lnbmluZyB1cCBpcyBmcmVlIGFuZCB0
-YWtlcyBsZXNzIHRoYW4gYSBtaW51dGUuCgoKT24gTWFyY2ggMTYsIOW/l+m+mSDlvKAgd3JvdGU6
-Cgo+IFRvOiAgW3NwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldF0KPiBGcm9t
-OiDlv5fpvpkg5bygIFt6aGFuZy56aGlsb25nQGdtYWlsLmNvbV0KPiBTdWJqZWN0OiBJbnZpdGF0
-aW9uIHRvIGNvbm5lY3Qgb24gTGlua2VkSW4KPgo+IEknZCBsaWtlIHRvIGFkZCB5b3UgdG8gbXkg
-cHJvZmVzc2lvbmFsIG5ldHdvcmsgb24gTGlua2VkSW4uCj4gCj4gLSDlv5fpvpkKCgpUaGUgb25s
-eSB3YXkgdG8gZ2V0IGFjY2VzcyB0byDlv5fpvpkg5bygJ3MgcHJvZmVzc2lvbmFsIG5ldHdvcmsg
-b24gTGlua2VkSW4gaXMgdGhyb3VnaCB0aGUgZm9sbG93aW5nIGxpbms6CgpodHRwczovL3d3dy5s
-aW5rZWRpbi5jb20vZS9nN3M0amMtZ2xqN2t1bTYtM2cvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
-Z2lyXzQ0NjEzMTQyMV8wL0VNTC1pbnZfMTdfcmVtLwoKWW91IGNhbiByZW1vdmUgeW91cnNlbGYg
-ZnJvbSDlv5fpvpkg5bygJ3MgbmV0d29yayBhdCBhbnkgdGltZS4KCgotLS0tLS0tLS0tLS0tLQoK
-CgogCi0tIAooYykgMjAxMSwgTGlua2VkSW4gQ29ycG9yYXRpb24KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkNvbG9jYXRpb24gdnMuIE1hbmFnZWQgSG9zdGluZwpBIHF1ZXN0aW9uIGFuZCBhbnN3ZXIg
-Z3VpZGUgdG8gZGV0ZXJtaW5pbmcgdGhlIGJlc3QgZml0CmZvciB5b3VyIG9yZ2FuaXphdGlvbiAt
-IHRvZGF5IGFuZCBpbiB0aGUgZnV0dXJlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVybmFwLXNm
-ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+Commit adef658 "spi/omap_mcspi: catch xfers of non-multiple SPI word size"
+broke the transmission of last word in cases where access is multiple of
+word size and word size is 16 or 32 bits.
+
+Fix this by replacing the test "c > (word_len>>3)" in do-while loops with
+"c >= 'pointer increment size'". This ensures that the last word is
+transmitted in above case and still allow to break the loop and prevent
+variable c underflow in cases where word size != 'pointer increment size'.
+
+Signed-off-by: Jarkko Nikula <jhnikula@gmail.com>
+Cc: Michael Jones <michael.jones@matrix-vision.de>
+---
+I noticed the issue with wl1251 WLAN driver on Nokia N900 using today's
+vanilla head a44f99c7efdb88fa41128065c9a9445c19894e34.
+---
+ drivers/spi/omap2_mcspi.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 3a5ed06..6f86ba0 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -517,7 +517,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				dev_vdbg(&spi->dev, "read-%d %02x\n",
+ 						word_len, *(rx - 1));
+ 			}
+-		} while (c > (word_len>>3));
++		} while (c);
+ 	} else if (word_len <= 16) {
+ 		u16		*rx;
+ 		const u16	*tx;
+@@ -564,7 +564,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				dev_vdbg(&spi->dev, "read-%d %04x\n",
+ 						word_len, *(rx - 1));
+ 			}
+-		} while (c > (word_len>>3));
++		} while (c >= 2);
+ 	} else if (word_len <= 32) {
+ 		u32		*rx;
+ 		const u32	*tx;
+@@ -611,7 +611,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				dev_vdbg(&spi->dev, "read-%d %08x\n",
+ 						word_len, *(rx - 1));
+ 			}
+-		} while (c > (word_len>>3));
++		} while (c >= 4);
+ 	}
+ 
+ 	/* for TX_ONLY mode, be sure all words have shifted out */
+-- 
+1.7.4.1
+

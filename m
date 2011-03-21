@@ -1,20 +1,14 @@
-From: Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>
-Subject: Re: dw_spi CS control/transfer modes
-Date: Mon, 21 Mar 2011 08:14:48 +0000
-Message-ID: <20110321081448.GB3273@pulham.picochip.com>
-References: <20110318201135.GE3393@pulham.picochip.com>
-	<20110321100642.24c326f9@feng-i7>
+From: =?UTF-8?Q?=E5=BF=97=E9=BE=99_=E5=BC=A0_=28LinkedIn_Invitations=29?=
+	<invitations-mkn/cI4rzrdWk0Htik3J/w@public.gmane.org>
+Subject: =?UTF-8?Q?Reminder_about_your_?=
+	=?UTF-8?Q?invitation_from_=E5=BF=97=E9=BE=99_=E5=BC=A0?=
+Date: Mon, 21 Mar 2011 09:44:02 +0000 (UTC)
+Message-ID: <448253332.3590663.1300700642050.JavaMail.app@ela4-bed47.prod>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>,
-	"george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org" <george-ofzTHo7+kyPpQY4QmZNtDQ@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20110321100642.24c326f9@feng-i7>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,43 +19,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Feng,
-
-On Mon, Mar 21, 2011 at 10:06:42AM +0800, Feng Tang wrote:
-> Hi Jamie,
-> 
-> On Sat, 19 Mar 2011 04:11:35 +0800
-> Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org> wrote:
-> 
-> > Hi,
-> > 
-> > I have a platform with a DesignWare SSI and I'm trying to use the
-> > dw_spi block using a GPIO for the chip select to workaround the
-> > problem of CS changing and the device losing state (we have a SPI
-> > flash attached), and I've found that using interrupt driven
-> > transfers, reading the SPI flash results in very few interrupts from
-> > the controller and a sluggish system (and no data from the flash).
-> > 
-> > However, I've found that removing the conditional transfer mode
-> > setting (effectively reverting commit 052dc7c45 [spi/dw_spi:
-> > conditional transfer mode changes]) allows everything to work fine by
-> > keeping the transfer mode to transmit+receive.
-> 
-> What version of code are you using? The "cs_control" will be default to
-> NULL if "dw_spi_chip" as the controller data doesn't explicitly set it,
-> and then that piece of code won't be called.
-
-Sorry, I should have specified that; I'm using next as of a couple of 
-days ago.  I am intentionally specifying a cs_control callback so that 
-we can control the chip select using GPIO as we've seen with this block 
-that allowing the FIFO to empty will cause the block driven CS to go 
-low.  If we use only the block controlled CS then we get all zero's back 
-from a programmed SPI flash.
-
-Jamie
-
-------------------------------------------------------------------------------
-Colocation vs. Managed Hosting
-A question and answer guide to determining the best fit
-for your organization - today and in the future.
-http://p.sf.net/sfu/internap-sfd2d
+TGlua2VkSW4KLS0tLS0tLS0tLS0tICAKClRoaXMgaXMgYSByZW1pbmRlciB0aGF0IG9uIE1hcmNo
+IDE2LCDlv5fpvpkg5bygIHNlbnQgeW91IGFuIGludml0YXRpb24gdG8gYmVjb21lIHBhcnQgb2Yg
+aGlzIG9yIGhlciBwcm9mZXNzaW9uYWwgbmV0d29yayBhdCBMaW5rZWRJbi4KCgoKRm9sbG93IHRo
+aXMgbGluayB0byBhY2NlcHQg5b+X6b6ZIOW8oCdzIGludml0YXRpb24uCgpodHRwczovL3d3dy5s
+aW5rZWRpbi5jb20vZS9nN3M0amMtZ2xqN2t1bTYtM2cvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
+Z2lyXzQ0NjEzMTQyMV8wL0VNTC1pbnZfMTdfcmVtLwoKU2lnbmluZyB1cCBpcyBmcmVlIGFuZCB0
+YWtlcyBsZXNzIHRoYW4gYSBtaW51dGUuCgoKT24gTWFyY2ggMTYsIOW/l+m+mSDlvKAgd3JvdGU6
+Cgo+IFRvOiAgW3NwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldF0KPiBGcm9t
+OiDlv5fpvpkg5bygIFt6aGFuZy56aGlsb25nQGdtYWlsLmNvbV0KPiBTdWJqZWN0OiBJbnZpdGF0
+aW9uIHRvIGNvbm5lY3Qgb24gTGlua2VkSW4KPgo+IEknZCBsaWtlIHRvIGFkZCB5b3UgdG8gbXkg
+cHJvZmVzc2lvbmFsIG5ldHdvcmsgb24gTGlua2VkSW4uCj4gCj4gLSDlv5fpvpkKCgpUaGUgb25s
+eSB3YXkgdG8gZ2V0IGFjY2VzcyB0byDlv5fpvpkg5bygJ3MgcHJvZmVzc2lvbmFsIG5ldHdvcmsg
+b24gTGlua2VkSW4gaXMgdGhyb3VnaCB0aGUgZm9sbG93aW5nIGxpbms6CgpodHRwczovL3d3dy5s
+aW5rZWRpbi5jb20vZS9nN3M0amMtZ2xqN2t1bTYtM2cvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
+Z2lyXzQ0NjEzMTQyMV8wL0VNTC1pbnZfMTdfcmVtLwoKWW91IGNhbiByZW1vdmUgeW91cnNlbGYg
+ZnJvbSDlv5fpvpkg5bygJ3MgbmV0d29yayBhdCBhbnkgdGltZS4KCgotLS0tLS0tLS0tLS0tLQoK
+CgogCi0tIAooYykgMjAxMSwgTGlua2VkSW4gQ29ycG9yYXRpb24KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCkNvbG9jYXRpb24gdnMuIE1hbmFnZWQgSG9zdGluZwpBIHF1ZXN0aW9uIGFuZCBhbnN3ZXIg
+Z3VpZGUgdG8gZGV0ZXJtaW5pbmcgdGhlIGJlc3QgZml0CmZvciB5b3VyIG9yZ2FuaXphdGlvbiAt
+IHRvZGF5IGFuZCBpbiB0aGUgZnV0dXJlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVybmFwLXNm
+ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

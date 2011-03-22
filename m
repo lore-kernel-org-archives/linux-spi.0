@@ -1,73 +1,59 @@
-From: Michael Jones <michael.jones@matrix-vision.de>
-Subject: Re: [PATCH-v2.6.39] spi/omap_mcspi: Fix broken last word xfer
-Date: Tue, 22 Mar 2011 09:19:21 +0100
-Message-ID: <4D885B89.8070608@matrix-vision.de>
-References: <1300717650-28953-1-git-send-email-jhnikula@gmail.com>
+From: Lidia <FRASAL00-mVYZEuE1kb+ZZhP80FC0mFaLukfFcmBPqJwNHeozFKw@public.gmane.org>
+Subject: Presito Personale assicurativo
+Date: Tue, 22 Mar 2011 21:12:10 +0100
+Message-ID: <68f0d9aeebc6904d9d1bc65edaed5e33@www.affareworld.info>
+Reply-To: Lidia <FRASAL00-mVYZEuE1kb+ZZhP80FC0mFaLukfFcmBPqJwNHeozFKw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>
-To: Jarkko Nikula <jhnikula@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1300717650-28953-1-git-send-email-jhnikula@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Owner: <mailto:FRASAL00-mVYZEuE1kb+ZZhP80FC0mFaLukfFcmBPqJwNHeozFKw@public.gmane.org> (Lidia)
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 03/21/2011 03:27 PM, Jarkko Nikula wrote:
-> Commit adef658 "spi/omap_mcspi: catch xfers of non-multiple SPI word size"
-> broke the transmission of last word in cases where access is multiple of
-> word size and word size is 16 or 32 bits.
-> 
-> Fix this by replacing the test "c > (word_len>>3)" in do-while loops with
-> "c >= 'pointer increment size'". This ensures that the last word is
-> transmitted in above case and still allow to break the loop and prevent
-> variable c underflow in cases where word size != 'pointer increment size'.
-> 
-> Signed-off-by: Jarkko Nikula <jhnikula@gmail.com>
-> Cc: Michael Jones <michael.jones@matrix-vision.de>
-> ---
-> I noticed the issue with wl1251 WLAN driver on Nokia N900 using today's
-> vanilla head a44f99c7efdb88fa41128065c9a9445c19894e34.
-> ---
->  drivers/spi/omap2_mcspi.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-> index 3a5ed06..6f86ba0 100644
-> --- a/drivers/spi/omap2_mcspi.c
-> +++ b/drivers/spi/omap2_mcspi.c
-> @@ -517,7 +517,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %02x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c);
->  	} else if (word_len <= 16) {
->  		u16		*rx;
->  		const u16	*tx;
-> @@ -564,7 +564,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %04x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c >= 2);
->  	} else if (word_len <= 32) {
->  		u32		*rx;
->  		const u32	*tx;
-> @@ -611,7 +611,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %08x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c >= 4);
->  	}
->  
->  	/* for TX_ONLY mode, be sure all words have shifted out */
+Prestiti aziendali - Finanziamenti ai privati - Agevolazioni per le aziende
+in crisi - Servizi innovativi
+ =
 
-Acked-by: Michael Jones <michael.jones@matrix-vision.de>
+Prestito con piano assicurativo
+( per tutte le categorie )
+ =
 
-MATRIX VISION GmbH, Talstrasse 16, DE-71570 Oppenweiler
-Registergericht: Amtsgericht Stuttgart, HRB 271090
-Geschaeftsfuehrer: Gerhard Thullner, Werner Armingeon, Uwe Furtner
+E' un prestito personale per tutti coloro che desiderano ottenere un
+finanziamento in tempi rapidi con la presentazione di pochi documenti. Il
+prestito assicurativo prevede una Copertura Assicurativa con Prestito
+Immediato da 1.000 a 3.000 Euro con la sola presentazione dei documenti
+personali e la dimostrazione di un reddito.
+
+La delibera =E8 immediata
+(anche per non censiti nelle banche dati)
+http://fineuropa8.x10.mx/prestito_assicurativo.html
+
+Prestiti aziendali - finanziamenti ai privati - Agevolazioni per le aziende
+in crisi - Servizi innovativi
+
+-------------------------------------------------------------------
+This e-mail was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org because you
+are subscribed to at least one of our mailing lists. If at any time you
+would like to remove yourself from our mailing list, please feel free to do
+so by visiting:
+http://www.affareworld.info/marketing/public/unsubscribe.php?g=3D1&addr=3Ds=
+pi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+
+---------------------------------------------------------------------------=
+---
+Enable your software for Intel(R) Active Management Technology to meet the
+growing manageability and security demands of your customers. Businesses
+are taking advantage of Intel(R) vPro (TM) technology - will your software =
+
+be a part of the solution? Download the Intel(R) Manageability Checker =
+
+today! http://p.sf.net/sfu/intel-dev2devmar

@@ -1,59 +1,45 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: [git pull] last device tree and spi changes for 2.6.39 merge window
-Date: Wed, 23 Mar 2011 23:54:36 -0600
-Message-ID: <AANLkTi=_o_WPfvH7jh9zr87+JXT4wRsVEzUzMvrgOrgf@mail.gmail.com>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: Your invitation from nitin vishnoi to connect on Ecademy
+Date: Thu, 24 Mar 2011 07:22:49 +0000 (GMT)
+Message-ID: <20110324072249.ADE0FD981C6@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Andres Salomon <dilinger@queued.net>,
-	spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss <devicetree-discuss@lists.ozlabs.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus,
+Ecademy - Exclusive business networking for the digital age
+_______________________________________________________________________
 
-A few last patches for .39.  It's such a small set that I put them all
-into one branch.  Please pull!
+Join me on Ecademy
+http://www.ecademy.com/account.php?op=signup&xref=517814
 
-Thanks,
-g.
+ Connect to the right people
+ Market your business
+ Grow revenue
 
-The following changes since commit 4bbba111d94781d34081c37856bbc5eb33f6c72a:
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+_______________________________________________________________________
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+The Ecademy Limited. Registered in England and Wales.
+Company Registration:3651083 VAT:718037736
 
-  Merge branch 'for-linus' of
-git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound-2.6
-(2011-03-23 07:58:09 -0700)
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 devicetree/merge
-
-Andres Salomon (1):
-      of/flattree: minor cleanups
-
-Grant Likely (3):
-      dt: Refactor of_platform_bus_probe()
-      dt: protect against NULL matches passed to of_match_node()
-      dt: eliminate OF_NO_DEEP_PROBE and test for NULL match table
-
-Jarkko Nikula (1):
-      spi/omap_mcspi: Fix broken last word xfer
-
-Philippe Langlais (1):
-      spi/pl022: Add loopback support for the SPI on 5500
-
- drivers/of/base.c           |    3 ++
- drivers/of/fdt.c            |    6 ++-
- drivers/of/platform.c       |   72 ++++++++++++++-----------------------------
- drivers/spi/amba-pl022.c    |   20 +++++++++++-
- drivers/spi/omap2_mcspi.c   |    6 ++--
- include/linux/of_platform.h |    3 --
- 6 files changed, 52 insertions(+), 58 deletions(-)
-
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+------------------------------------------------------------------------------
+Enable your software for Intel(R) Active Management Technology to meet the
+growing manageability and security demands of your customers. Businesses
+are taking advantage of Intel(R) vPro (TM) technology - will your software 
+be a part of the solution? Download the Intel(R) Manageability Checker 
+today! http://p.sf.net/sfu/intel-dev2devmar

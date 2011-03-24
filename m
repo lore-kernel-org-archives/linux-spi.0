@@ -1,75 +1,59 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH-v2.6.39] spi/omap_mcspi: Fix broken last word xfer
-Date: Wed, 23 Mar 2011 15:05:42 -0600
-Message-ID: <20110323210542.GA18421@ponder.secretlab.ca>
-References: <1300717650-28953-1-git-send-email-jhnikula@gmail.com>
+Subject: [git pull] last device tree and spi changes for 2.6.39 merge window
+Date: Wed, 23 Mar 2011 23:54:36 -0600
+Message-ID: <AANLkTi=_o_WPfvH7jh9zr87+JXT4wRsVEzUzMvrgOrgf@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org,
-	Michael Jones <michael.jones@matrix-vision.de>
-To: Jarkko Nikula <jhnikula@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1300717650-28953-1-git-send-email-jhnikula@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Andres Salomon <dilinger@queued.net>,
+	spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss <devicetree-discuss@lists.ozlabs.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Mar 21, 2011 at 04:27:30PM +0200, Jarkko Nikula wrote:
-> Commit adef658 "spi/omap_mcspi: catch xfers of non-multiple SPI word size"
-> broke the transmission of last word in cases where access is multiple of
-> word size and word size is 16 or 32 bits.
-> 
-> Fix this by replacing the test "c > (word_len>>3)" in do-while loops with
-> "c >= 'pointer increment size'". This ensures that the last word is
-> transmitted in above case and still allow to break the loop and prevent
-> variable c underflow in cases where word size != 'pointer increment size'.
-> 
-> Signed-off-by: Jarkko Nikula <jhnikula@gmail.com>
-> Cc: Michael Jones <michael.jones@matrix-vision.de>
+Hi Linus,
 
-Applied, thanks.
+A few last patches for .39.  It's such a small set that I put them all
+into one branch.  Please pull!
 
+Thanks,
 g.
 
-> ---
-> I noticed the issue with wl1251 WLAN driver on Nokia N900 using today's
-> vanilla head a44f99c7efdb88fa41128065c9a9445c19894e34.
-> ---
->  drivers/spi/omap2_mcspi.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-> index 3a5ed06..6f86ba0 100644
-> --- a/drivers/spi/omap2_mcspi.c
-> +++ b/drivers/spi/omap2_mcspi.c
-> @@ -517,7 +517,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %02x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c);
->  	} else if (word_len <= 16) {
->  		u16		*rx;
->  		const u16	*tx;
-> @@ -564,7 +564,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %04x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c >= 2);
->  	} else if (word_len <= 32) {
->  		u32		*rx;
->  		const u32	*tx;
-> @@ -611,7 +611,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
->  				dev_vdbg(&spi->dev, "read-%d %08x\n",
->  						word_len, *(rx - 1));
->  			}
-> -		} while (c > (word_len>>3));
-> +		} while (c >= 4);
->  	}
->  
->  	/* for TX_ONLY mode, be sure all words have shifted out */
-> -- 
-> 1.7.4.1
-> 
+The following changes since commit 4bbba111d94781d34081c37856bbc5eb33f6c72a:
+
+  Merge branch 'for-linus' of
+git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound-2.6
+(2011-03-23 07:58:09 -0700)
+
+are available in the git repository at:
+
+  git://git.secretlab.ca/git/linux-2.6 devicetree/merge
+
+Andres Salomon (1):
+      of/flattree: minor cleanups
+
+Grant Likely (3):
+      dt: Refactor of_platform_bus_probe()
+      dt: protect against NULL matches passed to of_match_node()
+      dt: eliminate OF_NO_DEEP_PROBE and test for NULL match table
+
+Jarkko Nikula (1):
+      spi/omap_mcspi: Fix broken last word xfer
+
+Philippe Langlais (1):
+      spi/pl022: Add loopback support for the SPI on 5500
+
+ drivers/of/base.c           |    3 ++
+ drivers/of/fdt.c            |    6 ++-
+ drivers/of/platform.c       |   72 ++++++++++++++-----------------------------
+ drivers/spi/amba-pl022.c    |   20 +++++++++++-
+ drivers/spi/omap2_mcspi.c   |    6 ++--
+ include/linux/of_platform.h |    3 --
+ 6 files changed, 52 insertions(+), 58 deletions(-)
+
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

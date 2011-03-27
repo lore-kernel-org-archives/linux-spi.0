@@ -1,7 +1,7 @@
-From: "EKE Transmission Belt Co.,Ltd." <sales-YxUCBSwMPyAJpw3Ha1VAttvLeJWuRmrY@public.gmane.org>
-Subject: Quotation: transmission belt
-Date: Sat, 26 Mar 2011 08:05:15 +0800 (CST)
-Message-ID: <72033dac.7cbb.12eef7aa341.Coremail.sales@transmission-belt.com>
+From: "Mes-placements.fr" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Mes-placementsLiberté, meilleur fonds euro 2010 du marché
+Date: Sun, 27 Mar 2011 23:02:26 +0200 (CEST)
+Message-ID: <liqiga.41zfcn@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,25 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear sir:
-    Glad to hear that you're on the market for transmission belt. We manufacture  transmission belt for several years, with the strength of timing belt and v belt, conveyor belt etc.with good quality and pretty competitive price.
-    Main Products:
-    .Timing belts
-    .Wrapped V belts
-    .Cogged V belts
-    .Ribbed v belts
-    .Variable speed belts
-    .Agricultural Machinery belts
-    .Pu open end belts
-   Should you have any questions, please do not hesitate to contact me,need free samples ,please email us.
- 
-Thanks & Best Regards
-Richard
-EKE Transmission Belt Co.,Ltd
-Tel:86-576-88153838
-Fax:86-576-88826629
-Email:sales-YxUCBSwMPyAJpw3Ha1VAttvLeJWuRmrY@public.gmane.org
-Web:http://www.transmission-belt.com
+
 ------------------------------------------------------------------------------
 Enable your software for Intel(R) Active Management Technology to meet the
 growing manageability and security demands of your customers. Businesses

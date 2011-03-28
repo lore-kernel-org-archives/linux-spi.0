@@ -1,7 +1,7 @@
-From: "Mes-placements.fr" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Mes-placementsLiberté, meilleur fonds euro 2010 du marché
-Date: Sun, 27 Mar 2011 23:02:26 +0200 (CEST)
-Message-ID: <liqiga.41zfcn@front07.g7r9.com>
+From: "Mutuelle Mcd par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Jusqu'a deux mois offerts, c'est le moment de changer de mutuelle
+Date: Mon, 28 Mar 2011 02:27:57 +0200 (CEST)
+Message-ID: <liqsc3.kowvoi@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

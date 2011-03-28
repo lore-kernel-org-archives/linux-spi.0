@@ -1,11 +1,13 @@
-From: "Mutuelle Mcd par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Jusqu'a deux mois offerts, c'est le moment de changer de mutuelle
-Date: Mon, 28 Mar 2011 02:27:57 +0200 (CEST)
-Message-ID: <liqsc3.kowvoi@front02.r7g.com>
+From: =?UTF-8?Q?=E5=BF=97=E9=BE=99_=E5=BC=A0_=28LinkedIn_Invitations=29?=
+	<invitations-mkn/cI4rzrdWk0Htik3J/w@public.gmane.org>
+Subject: =?UTF-8?Q?Reminder_about_your_?=
+	=?UTF-8?Q?invitation_from_=E5=BF=97=E9=BE=99_=E5=BC=A0?=
+Date: Mon, 28 Mar 2011 07:37:44 +0000 (UTC)
+Message-ID: <395201772.1440813.1301297864490.JavaMail.app@ela4-be61.prod>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,10 +19,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Enable your software for Intel(R) Active Management Technology to meet the
-growing manageability and security demands of your customers. Businesses
-are taking advantage of Intel(R) vPro (TM) technology - will your software 
-be a part of the solution? Download the Intel(R) Manageability Checker 
-today! http://p.sf.net/sfu/intel-dev2devmar
+TGlua2VkSW4KLS0tLS0tLS0tLS0tICAKClRoaXMgaXMgYSByZW1pbmRlciB0aGF0IG9uIE1hcmNo
+IDE2LCDlv5fpvpkg5bygIHNlbnQgeW91IGFuIGludml0YXRpb24gdG8gYmVjb21lIHBhcnQgb2Yg
+aGlzIG9yIGhlciBwcm9mZXNzaW9uYWwgbmV0d29yayBhdCBMaW5rZWRJbi4KCgoKRm9sbG93IHRo
+aXMgbGluayB0byBhY2NlcHQg5b+X6b6ZIOW8oCdzIGludml0YXRpb24uCgpodHRwczovL3d3dy5s
+aW5rZWRpbi5jb20vZS9nN3M0amMtZ2x0MzVlZWMtMXMvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
+Z2lyXzQ0NjEzMTQyMV8xL0VNTC1pbnZfMTdfcmVtLwoKU2lnbmluZyB1cCBpcyBmcmVlIGFuZCB0
+YWtlcyBsZXNzIHRoYW4gYSBtaW51dGUuCgoKT24gTWFyY2ggMTYsIOW/l+m+mSDlvKAgd3JvdGU6
+Cgo+IFRvOiAgW3NwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldF0KPiBGcm9t
+OiDlv5fpvpkg5bygIFt6aGFuZy56aGlsb25nQGdtYWlsLmNvbV0KPiBTdWJqZWN0OiBJbnZpdGF0
+aW9uIHRvIGNvbm5lY3Qgb24gTGlua2VkSW4KPgo+IEknZCBsaWtlIHRvIGFkZCB5b3UgdG8gbXkg
+cHJvZmVzc2lvbmFsIG5ldHdvcmsgb24gTGlua2VkSW4uCj4gCj4gLSDlv5fpvpkKCgpUaGUgb25s
+eSB3YXkgdG8gZ2V0IGFjY2VzcyB0byDlv5fpvpkg5bygJ3MgcHJvZmVzc2lvbmFsIG5ldHdvcmsg
+b24gTGlua2VkSW4gaXMgdGhyb3VnaCB0aGUgZm9sbG93aW5nIGxpbms6CgpodHRwczovL3d3dy5s
+aW5rZWRpbi5jb20vZS9nN3M0amMtZ2x0MzVlZWMtMXMvZG9pLzI1MTQ4ODQxNzYvUF9lVUMwOXMv
+Z2lyXzQ0NjEzMTQyMV8xL0VNTC1pbnZfMTdfcmVtLwoKWW91IGNhbiByZW1vdmUgeW91cnNlbGYg
+ZnJvbSDlv5fpvpkg5bygJ3MgbmV0d29yayBhdCBhbnkgdGltZS4KCgotLS0tLS0tLS0tLS0tLQoK
+CgogCi0tIAooYykgMjAxMSwgTGlua2VkSW4gQ29ycG9yYXRpb24KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCkVuYWJsZSB5b3VyIHNvZnR3YXJlIGZvciBJbnRlbChSKSBBY3RpdmUgTWFuYWdlbWVudCBU
+ZWNobm9sb2d5IHRvIG1lZXQgdGhlCmdyb3dpbmcgbWFuYWdlYWJpbGl0eSBhbmQgc2VjdXJpdHkg
+ZGVtYW5kcyBvZiB5b3VyIGN1c3RvbWVycy4gQnVzaW5lc3NlcwphcmUgdGFraW5nIGFkdmFudGFn
+ZSBvZiBJbnRlbChSKSB2UHJvIChUTSkgdGVjaG5vbG9neSAtIHdpbGwgeW91ciBzb2Z0d2FyZSAK
+YmUgYSBwYXJ0IG9mIHRoZSBzb2x1dGlvbj8gRG93bmxvYWQgdGhlIEludGVsKFIpIE1hbmFnZWFi
+aWxpdHkgQ2hlY2tlciAKdG9kYXkhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtZGV2MmRldm1h
+cgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

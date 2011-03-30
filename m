@@ -1,27 +1,77 @@
-From: "Orange Mediatics News" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] votre bimensuel gratuit pour mieux comprendre les nouvelles
-	technologies
-Date: Tue, 29 Mar 2011 08:51:04 +0200 (CEST)
-Message-ID: <lit4un.vixvuo@front02.r7g.com>
+From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
+Subject: RE: [PATCH v3] spi_topcliff_pch: support new device ML7213 IOH
+Date: Wed, 30 Mar 2011 20:03:59 +0900
+Message-ID: <27CE5E5AA24442B48903C9BB54FC6DB3@hacdom.okisemi.com>
+References: <1298893677-4406-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
+	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>
+To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
+	"'Grant Likely'" <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: 
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Grant,
 
-------------------------------------------------------------------------------
-Enable your software for Intel(R) Active Management Technology to meet the
-growing manageability and security demands of your customers. Businesses
-are taking advantage of Intel(R) vPro (TM) technology - will your software 
-be a part of the solution? Download the Intel(R) Manageability Checker 
-today! http://p.sf.net/sfu/intel-dev2devmar
+Could you review this patch ?
+
+We do hope this patch will be merged for 2.6.39.
+
+Thanks in advance,
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD. 
+
+> -----Original Message-----
+> From: Tomoya MORINAGA [mailto:tomoya-linux@dsn.okisemi.com] 
+> Sent: Thursday, March 17, 2011 9:08 AM
+> To: 'David Brownell'; 'Grant Likely'; 
+> 'spi-devel-general@lists.sourceforge.net'; 
+> 'linux-kernel@vger.kernel.org'
+> Cc: 'qi.wang@intel.com'; 'yong.y.wang@intel.com'; 
+> 'joel.clark@intel.com'; 'kok.howg.ewe@intel.com'
+> Subject: RE: [PATCH v3] spi_topcliff_pch: support new device 
+> ML7213 IOH
+> 
+> Hi Grant,
+> 
+> Could you review this patch ?
+> 
+> We hope this patch will be merged for 2.6.39.
+> 
+> With Best Regards,
+> -----------------------------------------
+> Tomoya MORINAGA
+> OKI SEMICONDUCTOR CO., LTD.
+> 
+> > -----Original Message-----
+> > From: Tomoya MORINAGA [mailto:tomoya-linux@dsn.okisemi.com]
+> > Sent: Monday, February 28, 2011 8:48 PM
+> > To: David Brownell; Grant Likely;
+> > spi-devel-general@lists.sourceforge.net; 
+> linux-kernel@vger.kernel.org
+> > Cc: qi.wang@intel.com; yong.y.wang@intel.com; joel.clark@intel.com; 
+> > kok.howg.ewe@intel.com; Tomoya MORINAGA
+> > Subject: [PATCH v3] spi_topcliff_pch: support new device ML7213 IOH
+> > 
+> > Support ML7213 device of OKI SEMICONDUCTOR.
+> > ML7213 is companion chip of Intel Atom E6xx series for 
+> IVI(In-Vehicle 
+> > Infotainment).
+> > ML7213 is compatible for Intel EG20T PCH.
+> > 
+> > Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+> > ---
+> >  drivers/spi/Kconfig            |    5 +-
+> >  drivers/spi/spi_topcliff_pch.c |  481
+> > ++++++++++++++++++++--------------------
+> >  2 files changed, 250 insertions(+), 236 deletions(-)
+> > 
+> 

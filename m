@@ -1,13 +1,17 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: Your invitation from nitin vishnoi to connect on Ecademy
-Date: Thu, 31 Mar 2011 08:36:59 +0100 (BST)
-Message-ID: <20110331073659.41AB6D9813E@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v2 3/4] spi/dw_spi: change poll mode transfer from byte
+	ops to batch ops
+Date: Thu, 31 Mar 2011 10:54:48 +0100
+Message-ID: <20110331105448.0f6d0bd4@bob.linux.org.uk>
+References: <1301497795-6924-1-git-send-email-feng.tang@intel.com>
+	<1301497795-6924-4-git-send-email-feng.tang@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1301497795-6924-4-git-send-email-feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,24 +22,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ecademy - Exclusive business networking for the digital age
-_______________________________________________________________________
+On Wed, 30 Mar 2011 23:09:54 +0800
+Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
 
-Join me on Ecademy
-http://www.ecademy.com/account.php?op=signup&xref=517814
+> From: Alek Du <alek.du-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> 
+> Current poll transfer will read/write one word, then wait till the
+> hw is non-busy, it's not efficient. This patch will try to read/write
+> as many words as permitted by hardware FIFO depth.
 
- Connect to the right people
- Market your business
- Grow revenue
+This is reported to cause a regression on internal testing. It's one of
+that set of changes which seems to be breaking the touchscreen.
 
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-_______________________________________________________________________
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-The Ecademy Limited. Registered in England and Wales.
-Company Registration:3651083 VAT:718037736
+Should we get that resolved before these go upstream ?
 
 ------------------------------------------------------------------------------
 Create and publish websites with WebMatrix

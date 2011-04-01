@@ -1,106 +1,85 @@
-From: Samuel Ortiz <sameo@linux.intel.com>
+From: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: [PATCH 07/19] timberdale: mfd_cell is now implicitly available
  to drivers
-Date: Fri, 1 Apr 2011 20:26:08 +0200
-Message-ID: <20110401182607.GC29397@sortiz-mobl>
+Date: Sat, 2 Apr 2011 01:52:39 +0200
+Message-ID: <20110401235239.GE29397@sortiz-mobl>
 References: <20110202195417.228e2656@queued.net>
  <20110202200812.3d8d6cba@queued.net>
  <20110331230522.GI437@ponder.secretlab.ca>
  <20110401112030.GA3447@sortiz-mobl>
  <20110401104756.2f5c6f7a@debxo>
+ <BANLkTi=bCd_+f=EG-O=U5VH_ZNjFhxkziQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	khali@linux-fr.org, ben-linux@fluff.org,
-	Peter Korsgaard <jacmet@sunsite.dk>,
-	Mauro Carvalho Chehab <mchehab@infradead.org>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
-	Mocean Laboratories <info@mocean-labs.com>
-To: Andres Salomon <dilinger@queued.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Andres Salomon <dilinger-pFFUokh25LWsTnJN9+BGXg@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org,
+	Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
+	Mauro Carvalho Chehab <mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mocean Laboratories <info-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20110401104756.2f5c6f7a@debxo>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <BANLkTi=bCd_+f=EG-O=U5VH_ZNjFhxkziQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Apr 01, 2011 at 10:47:56AM -0700, Andres Salomon wrote:
-> On Fri, 1 Apr 2011 13:20:31 +0200
-> Samuel Ortiz <sameo@linux.intel.com> wrote:
-> 
-> > Hi Grant,
-> > 
-> > On Thu, Mar 31, 2011 at 05:05:22PM -0600, Grant Likely wrote:
-> [...]
-> > > Gah.  Not all devices instantiated via mfd will be an mfd device,
-> > > which means that the driver may very well expect an *entirely
-> > > different* platform_device pointer; which further means a very high
-> > > potential of incorrectly dereferenced structures (as evidenced by a
-> > > patch series that is not bisectable).  For instance, the xilinx ip
-> > > cores are used by more than just mfd.
-> > I agree. Since the vast majority of the MFD subdevices are MFD
-> > specific IPs, I overlooked that part. The impacted drivers are the
-> > timberdale and the DaVinci voice codec ones.
-> 
-> Can you please provide pointers to what you're referring to?  The only
-> code that I could find that created platform devices prefixed with
-> 'timb-' or named 'xilinx_spi' was drivers/mfd/timberdale.c.
-The xilinx-spi, ocores-i2c, i2c-xiic drivers and to some extend the
-ks8842 ethernet driver are generic IPs that the timberdale SOC happens to
-use. So I agree it's extremely unlikely that anyone could come up with a
-platform that would be re-using e.g. the timb-radio IP, but I think it's less
-unikely for more generic IPs such as the xilinx-spi one.
+On Fri, Apr 01, 2011 at 11:56:35AM -0600, Grant Likely wrote:
+> On Fri, Apr 1, 2011 at 11:47 AM, Andres Salomon <dilinger-pFFUokh25LWsTnJN9+BGXg@public.gmane.org>=
+ wrote:
+> > On Fri, 1 Apr 2011 13:20:31 +0200
+> > Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
+> >
+> >> Hi Grant,
+> >>
+> >> On Thu, Mar 31, 2011 at 05:05:22PM -0600, Grant Likely wrote:
+> > [...]
+> >> > Gah. =A0Not all devices instantiated via mfd will be an mfd devi=
+ce,
+> >> > which means that the driver may very well expect an *entirely
+> >> > different* platform_device pointer; which further means a very h=
+igh
+> >> > potential of incorrectly dereferenced structures (as evidenced b=
+y a
+> >> > patch series that is not bisectable). =A0For instance, the xilin=
+x ip
+> >> > cores are used by more than just mfd.
+> >> I agree. Since the vast majority of the MFD subdevices are MFD
+> >> specific IPs, I overlooked that part. The impacted drivers are the
+> >> timberdale and the DaVinci voice codec ones.
+>=20
+> Another option is you could do this for MFD devices:
+>=20
+> struct mfd_device {
+>         struct platform_devce pdev;
+>         struct mfd_cell *cell;
+> };
+>=20
+> However, that requires that drivers using the mfd_cell will *never*
+> get instantiated outside of the mfd infrastructure, and there is no
+> way to protect against this so it is probably a bad idea.
+>=20
+> Or, mfd_cell could be added to platform_device directly which would
+> *by far* be the safest option at the cost of every platform_device
+> having a mostly unused mfd_cell pointer.  Not a significant cost in m=
+y
+> opinion.
+I thought about this one, but I had the impression people would want to=
+ kill
+me for adding an MFD specific pointer to platform_device. I guess it's =
+worth
+giving it a try since it would be a simple and safe solution.
+I'll look at it later this weekend.
 
-
-> > To fix that problem I propose 2 alternatives:
-> > 
-> > 1) When declaring the sub devices cells, the MFD driver should
-> > specify an mfd_data_size value for sub devices that are not MFD
-> > specific. It's the MFD driver responsibility to set the cell
-> > properly, and the non MFD specific drivers are kept MFD agnostic.
-> > See my patch below for the timberdale case.
-> > 
-> > 2) Revert the mfd_get_data() call for getting sub devices platform
-> > data pointers. That was introduced to ease the MFD cell sharing work,
-> > so if we take this route we'll need the cs5535 MFD driver to pass its
-> > cells as platform_data pointer. Andres, can you confirm that this
-> > would be fine for the mfd_clone_cell() routine to keep working ?
-> 
-> It would break mfd_clone_cell, as it uses mfd_get_cell to grab the one
-> to clone.  We could change it to accept the cell as an argument.  It
-> would also break mfd_cell_enable/disable, of course.
-I'm talking about reverting the default behaviour of passing the MFD cell as
-the platform data, and going back to the cell definitions setting their
-platform_data pointer explicitely. In that case, the cs5535 driver would have
-to do something like:
-
-diff --git a/drivers/mfd/cs5535-mfd.c b/drivers/mfd/cs5535-mfd.c
-index 155fa04..3e3841d 100644
---- a/drivers/mfd/cs5535-mfd.c
-+++ b/drivers/mfd/cs5535-mfd.c
-@@ -106,6 +106,7 @@ static __devinitdata struct mfd_cell cs5535_mfd_cells[] =
-{
-                .name = "cs5535-acpi",
-                .num_resources = 1,
-                .resources = &cs5535_mfd_resources[ACPI_BAR],
-+               .platform_data = &cs5535_mfd_cells[ACPI_BAR],
- 
-                .enable = cs5535_mfd_res_enable,
-                .disable = cs5535_mfd_res_disable,
-
-mfd_get_cell would then return &cs5535_mfd_cells[ACPI_BAR].
-
-This fix would put all sub devices drivers back to an MFD agnostic state,
-although the vast majority of them will certainly never be found anywhere else
-than in their current MFD SoC. That's why I'm still not sure which way to go
-to fix that problem.
+Thanks for the input.
 
 Cheers,
 Samuel.
 
--- 
+--=20
 Intel Open Source Technology Centre
 http://oss.intel.com/

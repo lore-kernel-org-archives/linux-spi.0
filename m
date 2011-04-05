@@ -1,34 +1,33 @@
-From: Bill Gatliff <bgat@billgatliff.com>
+From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: mourning the loss of David Brownell
-Date: Tue, 5 Apr 2011 11:17:20 -0700
-Message-ID: <BANLkTi=0Wj56uO0qAwMfkWNg0+PtKFiMiA@mail.gmail.com>
+Date: Tue, 5 Apr 2011 13:01:54 -0600
+Message-ID: <BANLkTik7xizExG-p5Fs7Cqz+UT3ATkwHGA@mail.gmail.com>
 References: <20110405034819.GA7872@kroah.com>
-	<Pine.LNX.4.44L0.1104051350480.1972-100000@iolanthe.rowland.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: Greg KH <greg@kroah.com>,
-	Kernel development list <linux-kernel@vger.kernel.org>,
-	USB list <linux-usb@vger.kernel.org>,
-	linux-omap@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, netdev@vger.kernel.org
-To: Alan Stern <stern@rowland.harvard.edu>
-Return-path: <netdev-owner@vger.kernel.org>
-In-Reply-To: <Pine.LNX.4.44L0.1104051350480.1972-100000@iolanthe.rowland.org>
-Sender: netdev-owner@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Greg KH <greg@kroah.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20110405034819.GA7872@kroah.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Guys:
+On Mon, Apr 4, 2011 at 9:48 PM, Greg KH <greg@kroah.com> wrote:
+> As I have seen this tangentally mentioned already a few times
+> publically, I figured it warranted it's own announcement now.
+>
+> Linux has lost a great developer with the passing of David Brownell
+> recently and he will be greatly missed.
+>
+> sadly,
+>
+> greg k -h
 
+Thank you Greg.
 
-David Brownell unknowingly inspired me to get involved in Linux as a
-profession.  I saw him as an individual working successfully on Free
-and Open Software, and have made an effort to emulate his success for
-over a decade now.
+It was a pleasure to work with David, and it broke my heart to hear
+that he had passed away.  My prayers and thoughts go out to his
+family.
 
-I deeply regret never taking the time to meet and thank him in person.
-
-
-b.g.
--- 
-Bill Gatliff
-bgat@billgatliff.com
+g.

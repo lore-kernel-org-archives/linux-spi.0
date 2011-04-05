@@ -1,9 +1,11 @@
-From: =?GB2312?B?wdbQob3j?= <guangdff666-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] æˆ‘å¸æœ‰ä½™é¢æ¼‚æ®å¼€å‡º,æŒ‰1%å·¦å³çº³å–,éªŒåä»˜æ¬¾
-Date: Tue, 5 Apr 2011 11:08:11 +0800
-Message-ID: <E1Q6wcm-0001or-Qn@sfs-ml-1.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============0967008165408679159=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?ISO-8859-1?Q?Fl=E1vio_Alberto_Lopes_Soares?= <flavioalsoares-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: how to access spi ADC on high sample rate ?
+Date: Tue, 5 Apr 2011 02:39:45 -0300
+Message-ID: <BANLkTin2zT9Wp3EUHLrdthuoU50S8cry2A@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -15,47 +17,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0967008165408679159==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+Hello all, I'm using an ads8320 analog/digital converter connected to a
+2S3C2440 Samsung ucontroller by a SPI bus, I'm using spidev driver on kernel
+2.6.32 to access it from user space and this works fine.
+The problem occurs because I want to access this adc in your max sample rate
+possible (100K Samples/s according datasheet, 50% of this for me will be
+great) saving this data, reading using an application in user space only
+reach 200 Samples/s in linux kernel, this is for me was not surprising
+because the application runs in user space and process scheduler time slice
+prevents achieve a faster sample rate. I want to know the best way to access
+this adc (I believe I need write a kernel driver), there's some reference
+example or documentation to do this ? Some audio capture driver can serve as
+reference ?
 
-ÖÂ£º¸÷¹«Ë¾¡¢ÆóÒµ¾­ÀíÃÇºÃ£¡
-    °²´ïÊµÒµÓĞÏŞ¹«Ë¾ÊÇ¼Ò¶àÔª»¯ÊµÒµ¹«Ë¾£¬ÊÇÆ¾×ÅÊµÁ¦ĞÛºñ²»¶Ï·¢Õ¹Óë¹úÄÚ¶à¼ÒÆóÒµ½¨Á¢ÁËÃÜÇĞÁªÃËºÏ×÷¹ØÏµ£¬±¾¹«Ë¾±¾×Å¿Æ¼¼´´Òµ¡¢Æ·ÖÊÁ¢Òµ¡¢·şÎñÊØÒµµÄÔ­ÔòÉîÊÜÖÚ¶à¿Í»§¹«Ë¾µÄĞÅÀµ¡£
-    ¹ó¹«Ë¾Ïë¼õÇáÄÉ¶¸ºµ£Âğ£¿ÎÒË¾ÏÖÓĞ¸÷ĞĞÒµÆ¯ÏòÍâÊÛÀí£¬µãÊı°´1%×óÓÒÄÉÈ¡£¬¿ÉÍøÉÏ²éÑ¯»ò¹ıÕÊºó¸¶¿î£»½ğ¶î´ó¿ÉÔÙÓÅ»İ£¿
-    ×¢£º±¾Ë¾ÒÔ×îÓÅÖÊ¿ì½İµÄ·şÎñ£¬×îÓÅ»İµÄ¼Û¸ñÓë¸÷´ó¹«Ë¾ºÏ×÷£»¾´Çë±£ÁôºÅÂë¼°ÓÊÏäÒÔ±ãÓĞĞè£¡
-    É÷ÖØÉùÃ÷£º¹ó¹«Ë¾¿ªµÄ×ÊÁÏÒ»ÂÉ¸øÓÚ±£ÃÜ£¡
-    ÁªÏµÈË£ºÁÖÈğ£¨ÒµÎñ¾­Àí£©
-    µç»°£º13710728911 
-    ÓÊÏä£ºgdandags-9Onoh4P/yGk@public.gmane.org               
-     Ë³ËÌ
-        ÉÌì÷£¡
-                  »¶Ó­¹ã´ó¹«Ë¾»İ¹Ë£¡ÈçÓĞ´ò½Á¾´ÇëÁÂ½â£¡
+Thanks in advance
 
-                         °²´ïÊµÒµÓĞÏŞ¹«Ë¾
-
-
---===============0967008165408679159==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Flavio Alberto Lopes Soares
 ------------------------------------------------------------------------------
 Xperia(TM) PLAY
 It's a major breakthrough. An authentic gaming
 smartphone on the nation's most reliable network.
 And it wants your games.
 http://p.sf.net/sfu/verizon-sfdev
---===============0967008165408679159==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0967008165408679159==--

@@ -1,41 +1,44 @@
-From: =?ISO-8859-1?Q?Fl=E1vio_Alberto_Lopes_Soares?= <flavioalsoares-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: how to access spi ADC on high sample rate ?
-Date: Tue, 5 Apr 2011 02:39:45 -0300
-Message-ID: <BANLkTin2zT9Wp3EUHLrdthuoU50S8cry2A@mail.gmail.com>
+From: Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: mourning the loss of David Brownell
+Date: Tue, 5 Apr 2011 14:10:53 -0400 (EDT)
+Message-ID: <Pine.LNX.4.44L0.1104051350480.1972-100000@iolanthe.rowland.org>
+References: <20110405034819.GA7872@kroah.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: Kernel development list <linux-kernel@vger.kernel.org>,
+	USB list <linux-usb@vger.kernel.org>,
+	<linux-omap@vger.kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>, <netdev@vger.kernel.org>
+To: Greg KH <greg@kroah.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20110405034819.GA7872@kroah.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello all, I'm using an ads8320 analog/digital converter connected to a
-2S3C2440 Samsung ucontroller by a SPI bus, I'm using spidev driver on kernel
-2.6.32 to access it from user space and this works fine.
-The problem occurs because I want to access this adc in your max sample rate
-possible (100K Samples/s according datasheet, 50% of this for me will be
-great) saving this data, reading using an application in user space only
-reach 200 Samples/s in linux kernel, this is for me was not surprising
-because the application runs in user space and process scheduler time slice
-prevents achieve a faster sample rate. I want to know the best way to access
-this adc (I believe I need write a kernel driver), there's some reference
-example or documentation to do this ? Some audio capture driver can serve as
-reference ?
+On Mon, 4 Apr 2011, Greg KH wrote:
 
-Thanks in advance
+> As I have seen this tangentally mentioned already a few times
+> publically, I figured it warranted it's own announcement now.
+> 
+> Linux has lost a great developer with the passing of David Brownell
+> recently and he will be greatly missed.
 
-Flavio Alberto Lopes Soares
-------------------------------------------------------------------------------
-Xperia(TM) PLAY
-It's a major breakthrough. An authentic gaming
-smartphone on the nation's most reliable network.
-And it wants your games.
-http://p.sf.net/sfu/verizon-sfdev
+David made contributions to a large number of areas in the Linux
+kernel.  Even a quick look through MAINTAINERS will show that he worked
+on USB controllers (OHCI, EHCI, OMAP and others), USB gadgets, USB
+networking, and SPI.  He was influential in the core USB design (the
+HCD "glue" layer and the scatter-gather library) and the development of
+Power Management (system sleep and the USB PM implementation).  His
+designs were elegant and his code was always a pleasure to read.
+
+He also was a big help to me personally, assisting in my initial entry
+to USB core development.  And he was the first person I met at the
+first Linux conference I attended.  I too will miss him.
+
+Alan Stern
+
+PS: A photo of David taken at the 2008 Linux Kernel Summit is available
+here:
+
+http://www.google.com/imgres?imgurl=http://farm4.static.flickr.com/3004/2949819475_98cbfc48b7.jpg&imgrefurl=http://www.flickr.com/photos/13825348%40N03/sets/72157608741347102/detail/&usg=__HjzUpixk_ITqzSnIhvUuWqdjQ_c=&h=500&w=333&sz=70&hl=en&start=0&zoom=1&tbnid=pixlWzZ4wUo1RM:&tbnh=132&tbnw=114&ei=w1mbTdXsCoO6sAOHp-j9Aw&prev=/search%3Fq%3Ddavid%2Bbrownell%26hl%3Den%26sa%3DX%26biw%3D1024%26bih%3D712%26tbm%3Disch%26prmd%3Divnso0%2C89&itbs=1&iact=hc&vpx=258&vpy=263&dur=7360&hovh=275&hovw=183&tx=85&ty=295&oei=w1mbTdXsCoO6sAOHp-j9Aw&page=1&ndsp=23&ved=1t:429,r:12,s:0&biw=1024&bih=712
+

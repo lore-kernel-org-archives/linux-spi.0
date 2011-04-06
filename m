@@ -1,106 +1,174 @@
-From: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: Fix race condition in stop_queue()
-Date: Wed,  6 Apr 2011 17:49:15 +0300
-Message-ID: <1302101355-31187-1-git-send-email-anarsoul__908.194148405705$1302101512$gmane$org@gmail.com>
-References: <201104061746.44134.anarsoul@gmail.com>
+From: Samuel Ortiz <sameo@linux.intel.com>
+Subject: Re: [PATCH 07/19] timberdale: mfd_cell is now implicitly available
+ to drivers
+Date: Wed, 6 Apr 2011 17:23:23 +0200
+Message-ID: <20110406152322.GA2757@sortiz-mobl>
+References: <20110202195417.228e2656@queued.net>
+ <20110202200812.3d8d6cba@queued.net>
+ <20110331230522.GI437@ponder.secretlab.ca>
+ <20110401112030.GA3447@sortiz-mobl>
+ <20110401104756.2f5c6f7a@debxo>
+ <BANLkTi=bCd_+f=EG-O=U5VH_ZNjFhxkziQ@mail.gmail.com>
+ <20110401235239.GE29397@sortiz-mobl>
+ <BANLkTi=bq=OGzXFp7qiBr7x_BnGOWf=DRQ@mail.gmail.com>
+ <20110404100314.GC2751@sortiz-mobl>
+ <20110405030428.GB29522@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>,
-	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	David Brownell <dbrownell-Rn4VEauK+AIRDUWM+popnw@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201104061746.44134.anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Andres Salomon <dilinger@queued.net>, linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	khali@linux-fr.org, ben-linux@fluff.org,
+	Peter Korsgaard <jacmet@sunsite.dk>,
+	Mauro Carvalho Chehab <mchehab@infradead.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
+	Mocean Laboratories <info@mocean-labs.com>,
+	Greg Kroah-Hartman <gregkh@suse.de>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20110405030428.GB29522@ponder.secretlab.ca>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-There's a race condition in stop_queue() in some drivers -
-if drv_data->queue is empty, but drv_data->busy is still set
-(or opposite situation) stop_queue will return -EBUSY.
-So fix loop condition to check that both drv_data->queue is empty
-and drv_data->busy is not set.
+On Mon, Apr 04, 2011 at 09:04:29PM -0600, Grant Likely wrote:
+> > The second step would be to get rid of mfd_get_data() and have all subdrivers
+> > going back to the regular platform_data way. They would no longer be dependant
+> > on the MFD code except for those who really need it. In that case they could
+> > just call mfd_get_cell() and get full access to their MFD cell.
+> 
+> The revert to platform_data needs to happen ASAP though.  If this
+> second step isn't ready really quickly, then the current patches
+> should be reverted to give some breathing room for creating the
+> replacement patches.  However, it's not such a rush if the below
+> patch really does eliminate all of the nastiness of the original
+> series. (I haven't looked and a rolled up diff of the first series and
+> this change, so I don't know for sure).
+I am done reverting these changes, with a final patch getting rid of
+mfd_get_data. See
+git://git.kernel.org/pub/scm/linux/kernel/git/sameo/mfd-2.6.git for-linus
 
-This patch affects following drivers:
-pxa2xx_spi
-spi_bfin5xx
-amba-pl022
-dw_spi
+I still need to give it a second review before pushing it to lkml for
+comments. It's 20 patches long, so I'm not entirely sure Linus would take that
+at that point.
+Pushing patch #1 would be enough for fixing the issues introduced by the
+original patchset, so I'm leaning toward pushing it and leaving the 19 other
+patches for the next merge window.
 
-Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+> In principle I agree with this patch.  Some comments below.
+Thanks for the comments. I think I addressed all of them in patch #1:
+
+
 ---
- drivers/spi/amba-pl022.c  |    2 +-
- drivers/spi/dw_spi.c      |    2 +-
- drivers/spi/pxa2xx_spi.c  |    2 +-
- drivers/spi/spi_bfin5xx.c |    2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/base/platform.c  |    1 +
+ drivers/mfd/mfd-core.c   |   15 +++++++++++++--
+ include/linux/device.h   |    3 +++
+ include/linux/mfd/core.h |    7 +++++--
+ 4 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-index 71a1219..23aaaa9 100644
---- a/drivers/spi/amba-pl022.c
-+++ b/drivers/spi/amba-pl022.c
-@@ -1553,7 +1553,7 @@ static int stop_queue(struct pl022 *pl022)
- 	 * A wait_queue on the pl022->busy could be used, but then the common
- 	 * execution path (pump_messages) would be required to call wake_up or
- 	 * friends on every SPI message. Do this instead */
--	while (!list_empty(&pl022->queue) && pl022->busy && limit--) {
-+	while ((!list_empty(&pl022->queue) || pl022->busy) && limit--) {
- 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
- 		msleep(10);
- 		spin_lock_irqsave(&pl022->queue_lock, flags);
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 22af77f..b53be4d 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -821,7 +821,7 @@ static int stop_queue(struct dw_spi *dws)
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index f051cff..bde6b97 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -149,6 +149,7 @@ static void platform_device_release(struct device *dev)
  
- 	spin_lock_irqsave(&dws->lock, flags);
- 	dws->run = QUEUE_STOPPED;
--	while (!list_empty(&dws->queue) && dws->busy && limit--) {
-+	while ((!list_empty(&dws->queue) || dws->busy) && limit--) {
- 		spin_unlock_irqrestore(&dws->lock, flags);
- 		msleep(10);
- 		spin_lock_irqsave(&dws->lock, flags);
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index 9592883..39cc10f 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -1493,7 +1493,7 @@ static int stop_queue(struct driver_data *drv_data)
- 	 * execution path (pump_messages) would be required to call wake_up or
- 	 * friends on every SPI message. Do this instead */
- 	drv_data->run = QUEUE_STOPPED;
--	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
-+	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
- 		spin_unlock_irqrestore(&drv_data->lock, flags);
- 		msleep(10);
- 		spin_lock_irqsave(&drv_data->lock, flags);
-diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index 3f22351..0e14f40 100644
---- a/drivers/spi/spi_bfin5xx.c
-+++ b/drivers/spi/spi_bfin5xx.c
-@@ -1244,7 +1244,7 @@ static inline int bfin_spi_stop_queue(struct bfin_spi_master_data *drv_data)
- 	 * friends on every SPI message. Do this instead
- 	 */
- 	drv_data->running = false;
--	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
-+	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
- 		spin_unlock_irqrestore(&drv_data->lock, flags);
- 		msleep(10);
- 		spin_lock_irqsave(&drv_data->lock, flags);
+ 	of_device_node_put(&pa->pdev.dev);
+ 	kfree(pa->pdev.dev.platform_data);
++	kfree(pa->pdev.dev.mfd_cell);
+ 	kfree(pa->pdev.resource);
+ 	kfree(pa);
+ }
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index d01574d..99b0d6d 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -18,6 +18,18 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+ 
++static int mfd_platform_add_cell(struct platform_device *pdev, const struct mfd_cell *cell)
++{
++	if (!cell)
++		return 0;
++
++	pdev->dev.mfd_cell = kmemdup(cell, sizeof(*cell), GFP_KERNEL);
++	if (!pdev->dev.mfd_cell)
++		return -ENOMEM;
++
++	return 0;
++}
++
+ int mfd_cell_enable(struct platform_device *pdev)
+ {
+ 	const struct mfd_cell *cell = mfd_get_cell(pdev);
+@@ -75,7 +87,7 @@ static int mfd_add_device(struct device *parent, int id,
+ 
+ 	pdev->dev.parent = parent;
+ 
+-	ret = platform_device_add_data(pdev, cell, sizeof(*cell));
++	ret = mfd_platform_add_cell(pdev, cell);
+ 	if (ret)
+ 		goto fail_res;
+ 
+@@ -123,7 +135,6 @@ static int mfd_add_device(struct device *parent, int id,
+ 
+ 	return 0;
+ 
+-/*	platform_device_del(pdev); */
+ fail_res:
+ 	kfree(res);
+ fail_device:
+diff --git a/include/linux/device.h b/include/linux/device.h
+index ab8dfc0..cf353cf 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -33,6 +33,7 @@ struct class;
+ struct subsys_private;
+ struct bus_type;
+ struct device_node;
++struct mfd_cell;
+ 
+ struct bus_attribute {
+ 	struct attribute	attr;
+@@ -444,6 +445,8 @@ struct device {
+ 	struct device_node	*of_node; /* associated device tree node */
+ 	const struct of_device_id *of_match; /* matching of_device_id from driver */
+ 
++	struct mfd_cell	*mfd_cell; /* MFD cell pointer */
++
+ 	dev_t			devt;	/* dev_t, creates the sysfs "dev" */
+ 
+ 	spinlock_t		devres_lock;
+diff --git a/include/linux/mfd/core.h b/include/linux/mfd/core.h
+index ad1b19a..28f81cf 100644
+--- a/include/linux/mfd/core.h
++++ b/include/linux/mfd/core.h
+@@ -86,7 +86,7 @@ extern int mfd_clone_cell(const char *cell, const char **clones,
+  */
+ static inline const struct mfd_cell *mfd_get_cell(struct platform_device *pdev)
+ {
+-	return pdev->dev.platform_data;
++	return pdev->dev.mfd_cell;
+ }
+ 
+ /*
+@@ -95,7 +95,10 @@ static inline const struct mfd_cell *mfd_get_cell(struct platform_device *pdev)
+  */
+ static inline void *mfd_get_data(struct platform_device *pdev)
+ {
+-	return mfd_get_cell(pdev)->mfd_data;
++	if (pdev->dev.mfd_cell)
++		return mfd_get_cell(pdev)->mfd_data;
++	else
++		return pdev->dev.platform_data;
+ }
+ 
+ extern int mfd_add_devices(struct device *parent, int id,
 -- 
-1.7.4.1
+1.7.2.3
 
-
-------------------------------------------------------------------------------
-Xperia(TM) PLAY
-It's a major breakthrough. An authentic gaming
-smartphone on the nation's most reliable network.
-And it wants your games.
-http://p.sf.net/sfu/verizon-sfdev
+-- 
+Intel Open Source Technology Centre
+http://oss.intel.com/

@@ -1,84 +1,106 @@
-From: Jidong Xiao <jidong.xiao@gmail.com>
-Subject: Re: mourning the loss of David Brownell
-Date: Tue, 5 Apr 2011 23:35:32 -0400
-Message-ID: <BANLkTikRJ+fBRJYfH=LEJk6dt58Gdk61Zg@mail.gmail.com>
-References: <BANLkTi=0Wj56uO0qAwMfkWNg0+PtKFiMiA@mail.gmail.com>
-	<Pine.LNX.4.44L0.1104051350480.1972-100000@iolanthe.rowland.org>
-	<20110406002144.GC6983@xanatos>
+From: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: Fix race condition in stop_queue()
+Date: Wed,  6 Apr 2011 17:49:15 +0300
+Message-ID: <1302101355-31187-1-git-send-email-anarsoul__908.194148405705$1302101512$gmane$org@gmail.com>
+References: <201104061746.44134.anarsoul@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Alan Stern <stern@rowland.harvard.edu>, Greg KH <greg@kroah.com>,
-	Oliver Neukum <oliver@neukum.org>,
-	Bill Gatliff <bgat@billgatliff.com>,
-	Kernel development list <linux-kernel@vger.kernel.org>,
-	USB list <linux-usb@vger.kernel.org>,
-	linux-omap@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, netdev@vger.kernel.org
-To: Sarah Sharp <sarah.a.sharp@linux.intel.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20110406002144.GC6983@xanatos>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>,
+	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AIRDUWM+popnw@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <201104061746.44134.anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 5, 2011 at 8:21 PM, Sarah Sharp
-<sarah.a.sharp@linux.intel.com> wrote:
-> On Tue, Apr 05, 2011 at 02:10:53PM -0400, Alan Stern wrote:
->> On Mon, 4 Apr 2011, Greg KH wrote:
->>
->> > As I have seen this tangentally mentioned already a few times
->> > publically, I figured it warranted it's own announcement now.
->> >
->> > Linux has lost a great developer with the passing of David Brownel=
-l
->> > recently and he will be greatly missed.
->>
->> David made contributions to a large number of areas in the Linux
->> kernel. =A0Even a quick look through MAINTAINERS will show that he w=
-orked
->> on USB controllers (OHCI, EHCI, OMAP and others), USB gadgets, USB
->> networking, and SPI. =A0He was influential in the core USB design (t=
-he
->> HCD "glue" layer and the scatter-gather library) and the development=
- of
->> Power Management (system sleep and the USB PM implementation). =A0Hi=
-s
->> designs were elegant and his code was always a pleasure to read.
->>
->> He also was a big help to me personally, assisting in my initial ent=
-ry
->> to USB core development. =A0And he was the first person I met at the
->> first Linux conference I attended. =A0I too will miss him.
->
-> On Tue, Apr 05, 2011 at 11:17:20AM -0700, Bill Gatliff wrote:
->> Guys:
->>
->>
->> David Brownell unknowingly inspired me to get involved in Linux as a
->> profession. =A0I saw him as an individual working successfully on Fr=
-ee
->> and Open Software, and have made an effort to emulate his success fo=
-r
->> over a decade now.
->>
->> I deeply regret never taking the time to meet and thank him in perso=
-n.
->
-> A reminder that we all are mortal. =A0Since David I can't thank David
-> either, I'd like to take a moment to thank Greg, Alan, and Oliver.
-> David, Greg, Alan, and Oliver were really great at putting up with my
-> newbie questions when I was first working on usbfs2, and I really
-> appreciate all the help, support, and feedback they've given me over =
-the
-> years. =A0Thank you!
->
-Me too. David and the other developers you mentioned here helped me a
-lot. So sad, he is so young.
+There's a race condition in stop_queue() in some drivers -
+if drv_data->queue is empty, but drv_data->busy is still set
+(or opposite situation) stop_queue will return -EBUSY.
+So fix loop condition to check that both drv_data->queue is empty
+and drv_data->busy is not set.
 
-Regards
-Jidong
---
-To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
-n
-the body of a message to majordomo@vger.kernel.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+This patch affects following drivers:
+pxa2xx_spi
+spi_bfin5xx
+amba-pl022
+dw_spi
+
+Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/amba-pl022.c  |    2 +-
+ drivers/spi/dw_spi.c      |    2 +-
+ drivers/spi/pxa2xx_spi.c  |    2 +-
+ drivers/spi/spi_bfin5xx.c |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 71a1219..23aaaa9 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -1553,7 +1553,7 @@ static int stop_queue(struct pl022 *pl022)
+ 	 * A wait_queue on the pl022->busy could be used, but then the common
+ 	 * execution path (pump_messages) would be required to call wake_up or
+ 	 * friends on every SPI message. Do this instead */
+-	while (!list_empty(&pl022->queue) && pl022->busy && limit--) {
++	while ((!list_empty(&pl022->queue) || pl022->busy) && limit--) {
+ 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
+ 		msleep(10);
+ 		spin_lock_irqsave(&pl022->queue_lock, flags);
+diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+index 22af77f..b53be4d 100644
+--- a/drivers/spi/dw_spi.c
++++ b/drivers/spi/dw_spi.c
+@@ -821,7 +821,7 @@ static int stop_queue(struct dw_spi *dws)
+ 
+ 	spin_lock_irqsave(&dws->lock, flags);
+ 	dws->run = QUEUE_STOPPED;
+-	while (!list_empty(&dws->queue) && dws->busy && limit--) {
++	while ((!list_empty(&dws->queue) || dws->busy) && limit--) {
+ 		spin_unlock_irqrestore(&dws->lock, flags);
+ 		msleep(10);
+ 		spin_lock_irqsave(&dws->lock, flags);
+diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
+index 9592883..39cc10f 100644
+--- a/drivers/spi/pxa2xx_spi.c
++++ b/drivers/spi/pxa2xx_spi.c
+@@ -1493,7 +1493,7 @@ static int stop_queue(struct driver_data *drv_data)
+ 	 * execution path (pump_messages) would be required to call wake_up or
+ 	 * friends on every SPI message. Do this instead */
+ 	drv_data->run = QUEUE_STOPPED;
+-	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
++	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
+ 		spin_unlock_irqrestore(&drv_data->lock, flags);
+ 		msleep(10);
+ 		spin_lock_irqsave(&drv_data->lock, flags);
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index 3f22351..0e14f40 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -1244,7 +1244,7 @@ static inline int bfin_spi_stop_queue(struct bfin_spi_master_data *drv_data)
+ 	 * friends on every SPI message. Do this instead
+ 	 */
+ 	drv_data->running = false;
+-	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
++	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
+ 		spin_unlock_irqrestore(&drv_data->lock, flags);
+ 		msleep(10);
+ 		spin_lock_irqsave(&drv_data->lock, flags);
+-- 
+1.7.4.1
+
+
+------------------------------------------------------------------------------
+Xperia(TM) PLAY
+It's a major breakthrough. An authentic gaming
+smartphone on the nation's most reliable network.
+And it wants your games.
+http://p.sf.net/sfu/verizon-sfdev

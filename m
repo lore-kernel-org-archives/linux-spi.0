@@ -1,78 +1,79 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Felipe Balbi <balbi@ti.com>
 Subject: Re: [PATCH 07/19] timberdale: mfd_cell is now implicitly available
  to drivers
-Date: Thu, 7 Apr 2011 01:04:04 -0700
-Message-ID: <20110407080404.GF6427@angua.secretlab.ca>
-References: <20110401235239.GE29397@sortiz-mobl>
- <BANLkTi=bq=OGzXFp7qiBr7x_BnGOWf=DRQ@mail.gmail.com>
+Date: Thu, 7 Apr 2011 11:09:22 +0300
+Message-ID: <20110407080921.GD29038@legolas.emea.dhcp.ti.com>
+References: <BANLkTi=bq=OGzXFp7qiBr7x_BnGOWf=DRQ@mail.gmail.com>
  <20110404100314.GC2751@sortiz-mobl>
  <20110405030428.GB29522@ponder.secretlab.ca>
  <20110406152322.GA2757@sortiz-mobl>
  <20110406155805.GA20095@suse.de>
  <20110406170537.GB2757@sortiz-mobl>
  <20110406175647.GA8048@suse.de>
- <20110406112557.5c4c9bfe@debxo>
- <20110406183854.GA10058@suse.de>
+ <20110406184733.GD2757@sortiz-mobl>
+ <20110406185902.GN25654@legolas.emea.dhcp.ti.com>
+ <20110406220900.GA16117@suse.de>
+Reply-To: balbi@ti.com
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Andres Salomon <dilinger-pFFUokh25LWsTnJN9+BGXg@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org,
-	Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
-	Mauro Carvalho Chehab <mchehab-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mocean Laboratories <info-l7gf1WXxx3uGw+nKnLezzg@public.gmane.org>
-To: Greg KH <gregkh-l3A5Bk7waGM@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Felipe Balbi <balbi@ti.com>, Samuel Ortiz <sameo@linux.intel.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Andres Salomon <dilinger@queued.net>,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	khali@linux-fr.org, ben-linux@fluff.org,
+	Peter Korsgaard <jacmet@sunsite.dk>,
+	Mauro Carvalho Chehab <mchehab@infradead.org>,
+	David Brownell <dbrownell@users.sourceforge.net>,
+	linux-i2c@vger.kernel.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
+	Mocean Laboratories <info@mocean-labs.com>
+To: Greg KH <gregkh@suse.de>
+Return-path: <linux-media-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20110406183854.GA10058-l3A5Bk7waGM@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <20110406220900.GA16117@suse.de>
+Sender: linux-media-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 06, 2011 at 11:38:54AM -0700, Greg KH wrote:
-> On Wed, Apr 06, 2011 at 11:25:57AM -0700, Andres Salomon wrote:
-> > > > We've been faced with the problem of being able to pass both MFD
-> > > > related data and a platform_data pointer to some of those drivers.
-> > > > Squeezing the MFD bits in the sub driver platform_data pointer
-> > > > doesn't work for drivers that know nothing about MFDs. It also adds
-> > > > an additional dependency on the MFD API to all MFD sub drivers.
-> > > > That prevents any of those drivers to eventually be used as plain
-> > > > platform device drivers.
-> > > 
-> > > Then they shouldn't be "plain" platform drivers, that should only be
-> > > reserved for drivers that are the "lowest" type.  Just make them MFD
-> > > devices and go from there.
+Hi,
+
+On Wed, Apr 06, 2011 at 03:09:00PM -0700, Greg KH wrote:
+> On Wed, Apr 06, 2011 at 09:59:02PM +0300, Felipe Balbi wrote:
+> > Hi,
 > > 
+> > On Wed, Apr 06, 2011 at 08:47:34PM +0200, Samuel Ortiz wrote:
+> > > > > > What is a "MFD cell pointer" and why is it needed in struct device?
+> > > > > An MFD cell is an MFD instantiated device.
+> > > > > MFD (Multi Function Device) drivers instantiate platform devices. Those
+> > > > > devices drivers sometimes need a platform data pointer, sometimes an MFD
+> > > > > specific pointer, and sometimes both. Also, some of those drivers have been
+> > > > > implemented as MFD sub drivers, while others know nothing about MFD and just
+> > > > > expect a plain platform_data pointer.
+> > > > 
+> > > > That sounds like a bug in those drivers, why not fix them to properly
+> > > > pass in the correct pointer?
+> > > Because they're drivers for generic IPs, not MFD ones. By forcing them to use
+> > > MFD specific structure and APIs, we make it more difficult for platform code
+> > > to instantiate them.
 > > 
-> > The problem is of mixing "plain" platform devices and MFD devices.
+> > I agree. What I do on those cases is to have a simple platform_device
+> > for the core IP driver and use platform_device_id tables to do runtime
+> > checks of the small differences. If one platform X doesn't use a
+> > platform_bus, it uses e.g. PCI, then you make a PCI "bridge" which
+> > allocates a platform_device with the correct name and adds that to the
+> > driver model.
+> > 
+> > See [1] (for the core driver) and [2] (for a PCI bridge driver) for an
+> > example of what I'm talking about.
 > 
-> Then don't do that.
+> Yes, thanks for providing a real example, this is the best way to handle
+> this.
 
->From my perspective, MFD devices are little more than a bag of
-platform_devices, with the MFD layer provides infrastructure for
-managing it.  It isn't that there are 'plain' platform device and
-'mfd' devices.  There are only platform_devices, but some of the
-drivers use additional data stored in a struct mfd.
+no problem.
 
-Personally, I'm not thrilled with the approach of using struct mfd, or
-more specifically making it available to drivers, but on the ugly
-scale it isn't very high.
+ps: that's the driver for the USB3 controller which will come on OMAP5.
+Driver being validate on a pre-silicon platform right now :-D In a few
+weeks I'll send the driver for integration.
 
-However, the changes on how struct mfd is passed that were merged in
-2.6.39 were actively dangerous and are going to be reverted.  Yet
-a method is still needed to pass the struct mfd in a safe way.  I
-don't have a problem with adding the mfd pointer to struct
-platform_device, even if it should just be a stop gap to something
-better.
-
-Independently, I have been experimenting with typesafe methods for
-attaching data to devices which may very well be the long term
-approach, but for the short term I see no problem with adding the mfd
-pointer, particularly because it is by far safer than any of the other
-immediately available options.
-
-g.
+-- 
+balbi

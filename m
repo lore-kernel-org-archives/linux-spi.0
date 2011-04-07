@@ -1,13 +1,12 @@
-From: "Anita Abdul" <anitaabdul-fOdFMYwuEsI@public.gmane.org>
-Subject: HELLO
-Date: Thu, 07 Apr 2011 13:53:50 +0800
-Message-ID: <HPPCdad09bf414f94fe899c7617a277baa28@hpPC>
-Reply-To: anitaabdulrazak-PkbjNfxxIAQqdlJmJB21zg@public.gmane.org
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: Your invitation from nitin vishnoi to connect on Ecademy
+Date: Thu,  7 Apr 2011 09:58:12 +0100 (BST)
+Message-ID: <20110407085812.97431D98161@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,36 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-	
+Ecademy - Exclusive business networking for the digital age
+_______________________________________________________________________
 
-I am writing this letter out of a genuine desperation to find a reliable partner in an unfolding transaction. I seek your help and
-genuine co-operation to our mutual benefit and I believe that you will
-not letdown the trust and confidence I am about to repose on you. I am
-Anita, Purchasing Manager to Gss solid minerals company. I used to represent my company to several Asian countries to purchase a product called Xsp solution, this is a chemical liquid use for cleaning Gold,
-Silvers, Stones and soon. Now, our company want to send another staff from our company duo to my inability to travel this time, that's why am contacting you.
+Join me on Ecademy
+http://www.ecademy.com/account.php?op=signup&xref=517814
 
+ Connect to the right people
+ Market your business
+ Grow revenue
 
-I will introduce you to my company's General Manager as the main supplier of the chemical. Per packet of the vaccine cost $6,500 in
-UNITED STATE, but in Asia Malaysia where I have been purchasing, it only cost $2,500 per packet and you will supply to my company at the
-rate of $5,100.Per packet.
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+_______________________________________________________________________
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+The Ecademy Limited. Registered in England and Wales.
+Company Registration:3651083 VAT:718037736
 
-
-Note, do not disclose the actual cost of the chemical i.e. $2,500 to my
-company GM as this will affect our profit. My company's directors don't know the seller of this product and the seller doesn't know my company directors, I 'll introduce you as the main supplier. My company normally purchase 20, 30-150cartons in each trip I make depending on the product we have left in the company. The distributor of this
-product is a Malaysian, you will purchase the product from the Malaysian dealer and supply to my company, my company will now pay you
-cash on delivery.
-
-
-Let the above mentioned be in mutual beneficiary for us and an opportunity to embark in future engagements. If you wish to take up this offer, kindly mail me and I will reply you with all the contact details and that of my GM whom you will contact and send you quotation. I will also give
-you the price to quote.If you have any question, feel free to ask or
-contact me through my personal e-mail
-(anitaabdulrazak-PkbjNfxxIAQqdlJmJB21zg@public.gmane.org)
-
-
-Best regards
-Anita Abdul Razak
-GSS Solid Minerals
-E-mail: anitaabdulrazak-PkbjNfxxIAQqdlJmJB21zg@public.gmane.org
 ------------------------------------------------------------------------------
 Xperia(TM) PLAY
 It's a major breakthrough. An authentic gaming

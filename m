@@ -1,21 +1,11 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Fix race condition in stop_queue()
-Date: Thu, 7 Apr 2011 11:18:32 -0700
-Message-ID: <20110407181832.GB3261@angua.secretlab.ca>
-References: <201104061746.44134.anarsoul@gmail.com>
-	<1302101355-31187-1-git-send-email-anarsoul@gmail.com>
+From: =?gb2312?B?x/yyqA==?= <wskcl-cIyJ/AgBmyo@public.gmane.org>
+Subject: [SPAM] 规避员工解除合同并索赔经济补偿的方法3CX96
+Date: Sat, 9 Apr 2011 06:33:23 +0800
+Message-ID: <201104082144.p38Lgg9Q028516-p38Lgg9u028516@fortimail.ibsa.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="----=vctpjv294_6600_268239003.039028"
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1302101355-31187-1-git-send-email-anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,92 +16,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 06, 2011 at 05:49:15PM +0300, Vasily Khoruzhick wrote:
-> There's a race condition in stop_queue() in some drivers -
-> if drv_data->queue is empty, but drv_data->busy is still set
-> (or opposite situation) stop_queue will return -EBUSY.
-> So fix loop condition to check that both drv_data->queue is empty
-> and drv_data->busy is not set.
-> 
-> This patch affects following drivers:
-> pxa2xx_spi
-> spi_bfin5xx
-> amba-pl022
-> dw_spi
-> 
-> Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+This is a multi-part message in MIME format.
 
-Applied, thanks.
+------=vctpjv294_6600_268239003.039028
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
 
-g.
+Z3lpYnRtbGpo18rBz7i9vP7W0C4NCg0Koba5pMnLsaPP1cz1wP2ht9Om08PQzb6r17y94rbB0+uy
+2df3st/C1Na4tbwuDQoNClZJUUtBVks=
 
-> ---
->  drivers/spi/amba-pl022.c  |    2 +-
->  drivers/spi/dw_spi.c      |    2 +-
->  drivers/spi/pxa2xx_spi.c  |    2 +-
->  drivers/spi/spi_bfin5xx.c |    2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index 71a1219..23aaaa9 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -1553,7 +1553,7 @@ static int stop_queue(struct pl022 *pl022)
->  	 * A wait_queue on the pl022->busy could be used, but then the common
->  	 * execution path (pump_messages) would be required to call wake_up or
->  	 * friends on every SPI message. Do this instead */
-> -	while (!list_empty(&pl022->queue) && pl022->busy && limit--) {
-> +	while ((!list_empty(&pl022->queue) || pl022->busy) && limit--) {
->  		spin_unlock_irqrestore(&pl022->queue_lock, flags);
->  		msleep(10);
->  		spin_lock_irqsave(&pl022->queue_lock, flags);
-> diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-> index 22af77f..b53be4d 100644
-> --- a/drivers/spi/dw_spi.c
-> +++ b/drivers/spi/dw_spi.c
-> @@ -821,7 +821,7 @@ static int stop_queue(struct dw_spi *dws)
->  
->  	spin_lock_irqsave(&dws->lock, flags);
->  	dws->run = QUEUE_STOPPED;
-> -	while (!list_empty(&dws->queue) && dws->busy && limit--) {
-> +	while ((!list_empty(&dws->queue) || dws->busy) && limit--) {
->  		spin_unlock_irqrestore(&dws->lock, flags);
->  		msleep(10);
->  		spin_lock_irqsave(&dws->lock, flags);
-> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> index 9592883..39cc10f 100644
-> --- a/drivers/spi/pxa2xx_spi.c
-> +++ b/drivers/spi/pxa2xx_spi.c
-> @@ -1493,7 +1493,7 @@ static int stop_queue(struct driver_data *drv_data)
->  	 * execution path (pump_messages) would be required to call wake_up or
->  	 * friends on every SPI message. Do this instead */
->  	drv_data->run = QUEUE_STOPPED;
-> -	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
-> +	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
->  		spin_unlock_irqrestore(&drv_data->lock, flags);
->  		msleep(10);
->  		spin_lock_irqsave(&drv_data->lock, flags);
-> diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-> index 3f22351..0e14f40 100644
-> --- a/drivers/spi/spi_bfin5xx.c
-> +++ b/drivers/spi/spi_bfin5xx.c
-> @@ -1244,7 +1244,7 @@ static inline int bfin_spi_stop_queue(struct bfin_spi_master_data *drv_data)
->  	 * friends on every SPI message. Do this instead
->  	 */
->  	drv_data->running = false;
-> -	while (!list_empty(&drv_data->queue) && drv_data->busy && limit--) {
-> +	while ((!list_empty(&drv_data->queue) || drv_data->busy) && limit--) {
->  		spin_unlock_irqrestore(&drv_data->lock, flags);
->  		msleep(10);
->  		spin_lock_irqsave(&drv_data->lock, flags);
-> -- 
-> 1.7.4.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+------=vctpjv294_6600_268239003.039028
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Xperia(TM) PLAY
@@ -119,3 +39,15 @@ It's a major breakthrough. An authentic gaming
 smartphone on the nation's most reliable network.
 And it wants your games.
 http://p.sf.net/sfu/verizon-sfdev
+------=vctpjv294_6600_268239003.039028
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=vctpjv294_6600_268239003.039028--

@@ -1,9 +1,11 @@
-From: =?gb2312?B?x/yyqA==?= <wskcl-cIyJ/AgBmyo@public.gmane.org>
-Subject: [SPAM] 规避员工解除合同并索赔经济补偿的方法3CX96
-Date: Sat, 9 Apr 2011 06:33:23 +0800
-Message-ID: <201104082144.p38Lgg9Q028516-p38Lgg9u028516@fortimail.ibsa.org>
+From: "zhang" <njnhckzjh-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 小 张
+Date: Sat, 9 Apr 2011 18:47:50 +0800
+Message-ID: <E1Q8Vhn-0001vq-I0@sfs-ml-3.v29.ch3.sourceforge.com>
+Reply-To: zbcxjhga-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=vctpjv294_6600_268239003.039028"
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,38 +18,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------=vctpjv294_6600_268239003.039028
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-Z3lpYnRtbGpo18rBz7i9vP7W0C4NCg0Koba5pMnLsaPP1cz1wP2ht9Om08PQzb6r17y94rbB0+uy
-2df3st/C1Na4tbwuDQoNClZJUUtBVks=
-
-
-------=vctpjv294_6600_268239003.039028
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Xperia(TM) PLAY
-It's a major breakthrough. An authentic gaming
-smartphone on the nation's most reliable network.
-And it wants your games.
-http://p.sf.net/sfu/verizon-sfdev
-------=vctpjv294_6600_268239003.039028
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=vctpjv294_6600_268239003.039028--
+IMT6usMhCgogICAgztLLvr/J08W73bT6sOzDs7TZu+HWpMP3yukstci498Dg1qTK6SxDT7L6tdjW
+pC7G1bvd1qQoRkEsRkUsRkYs0cfMqyzW0LDNo6y088q5ud3HqSm1yLj3wODH5bnY1qTK6aGjCiAK
+IMzhuam089ChusvP+rWlo6iz9r/asai52LWlo6lRUTM4MTg3NjM0NwoKICDI59PQ0OjSqsfr0+vO
+0sGqz7U7MTM1MzQyMjE3NjjQodXFCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KWHBlcmlhKFRNKSBQ
+TEFZCkl0J3MgYSBtYWpvciBicmVha3Rocm91Z2guIEFuIGF1dGhlbnRpYyBnYW1pbmcKc21hcnRw
+aG9uZSBvbiB0aGUgbmF0aW9uJ3MgbW9zdCByZWxpYWJsZSBuZXR3b3JrLgpBbmQgaXQgd2FudHMg
+eW91ciBnYW1lcy4KaHR0cDovL3Auc2YubmV0L3NmdS92ZXJpem9uLXNmZGV2Cl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
+aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
+Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

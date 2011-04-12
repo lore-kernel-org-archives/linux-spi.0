@@ -1,11 +1,11 @@
-From: "Network Services" <noreply.NSvcs-aVLDbEdftb8@public.gmane.org>
-Subject: Important Notification
-Date: Mon, 11 Apr 2011 22:40:03 -0700
-Message-ID: <df6fa73e72841902713f49af001240af@g2gm.com>
+From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
+Subject: Informativo - Beme estar equipamentos.
+Date: Tue, 12 Apr 2011 16:56:48 -0400
+Message-ID: <778209304f507d5f6a0d14010e6b154c@bemestarequipamentos.ind.br>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +17,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
 
-Do you want to gain new customers, strengthen your brand, and connect with past customers?
 
-Call 1 (800) 910-6550 to get FREE information on how our services can generate you top quality leads and sales!
+ <http://www.bemestarequipamentos.com.br>
 
-If you're free for a 5 minute call today - I can go over some examples and review your current set up for you.  
 
-Noell Peterson
-Business Development Services
-1 (800) 910-6550
 
+--
+Caso nao queira mais receber nossa mensagem, 
+http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
+
+Caso voce queira rever nossa mala
+diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
+Preferencia de formato
+http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=8
+
+
+--
+Powered by PHPlist, www.phplist.com --
 
 
 ------------------------------------------------------------------------------

@@ -1,7 +1,8 @@
-From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
-Subject: Informativo - Beme estar equipamentos.
-Date: Tue, 12 Apr 2011 16:56:48 -0400
-Message-ID: <778209304f507d5f6a0d14010e6b154c@bemestarequipamentos.ind.br>
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Monetising NFC 2011-2016 (Report)
+Date: Wed, 13 Apr 2011 03:06:03 +0100
+Message-ID: <20110413030603.39863421@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,26 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
- <http://www.bemestarequipamentos.com.br>
-
-
-
---
-Caso nao queira mais receber nossa mensagem, 
-http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
-
-Caso voce queira rever nossa mala
-diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
-Preferencia de formato
-http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=8
-
-
---
-Powered by PHPlist, www.phplist.com --
-
-
+Monetising NFC 2011-2016 (Report)
 ------------------------------------------------------------------------------
 Forrester Wave Report - Recovery time is now measured in hours and minutes
 not days. Key insights are discussed in the 2010 Forrester Wave Report as

@@ -1,14 +1,12 @@
-From: "Shambhavi Prasar" <hbco-ZqKVnIAttJDp4P8CbLYnNQ@public.gmane.org>
-Subject: Family Health Info
-Date: Thu, 14 Apr 2011 03:46:00 +0530
-Message-ID: <2561322232211259@meracore2>
-Reply-To: info-x8oUd5AYvYUeMlMGDA3zd73SaDeIAXZp0E9HWUfgJXw@public.gmane.org
+From: "votre Mutuelle" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Profitez de tarifs à vos mesures pour evitez les depenses inutiles
+Date: Thu, 14 Apr 2011 17:32:17 +0200 (CEST)
+Message-ID: <ljnfo7.mlfxq8@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,24 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-77u/IApIaSwKVmlzaXQgbXkgaW50ZXJlc3RpbmcgYmxvZyBvbiBoZWFsdGggYW5kIGJlYXV0eSBj
-YXJlLiBUaGUgYmxvZyBpcyBmdWxsIG9mIHJpY2ggaW5mb3JtYXRpb24uCgpWaXNpdCB0aGUgc2l0
-ZSBodHRwOi8vaGVhbHRoYmVhdXR5Y2FyZW9ubGluZS5jb20gPGh0dHA6Ly9oZWFsdGhiZWF1dHlj
-YXJlb25saW5lLmNvbT4KClRoYW5rcyBmb3IgeW91ciB0aW1lLgoKUmVnYXJkcyAuLi4KClNoYW1i
-aGF2aQoKTm90ZSA6TWFpbCBzZW50IHRvIDogc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0ICBJZiB5b3UgcmVjZWl2ZWQgdGhpcyBtYWlsIGFjY2lkZW50bHkga2luZGx5IFVu
-c3Vic2NyaWJlIE5vdyA8bWFpbHRvOnNoYW1iaGF2aUBoZWFsdGhiZWF1dHljYXJlb25saW5lLmNv
-bSA/c3ViamVjdD1VbnN1YnNjcmliZSBoYmNvPm9yIGZvcndhcmQgYSBjb3B5IG9mIHRoaXMgbWFp
-bCB0byBzaGFtYmhhdmlAaGVhbHRoYmVhdXR5Y2FyZW9ubGluZS5jb20gPG1haWx0bzpzaGFtYmhh
-dmlAaGVhbHRoYmVhdXR5Y2FyZW9ubGluZS5jb20+IAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQmVu
-ZWZpdGluZyBmcm9tIFNlcnZlciBWaXJ0dWFsaXphdGlvbjogQmV5b25kIEluaXRpYWwgV29ya2xv
-YWQgCkNvbnNvbGlkYXRpb24gLS0gSW5jcmVhc2luZyB0aGUgdXNlIG9mIHNlcnZlciB2aXJ0dWFs
-aXphdGlvbiBpcyBhIHRvcApwcmlvcml0eS5WaXJ0dWFsaXphdGlvbiBjYW4gcmVkdWNlIGNvc3Rz
-LCBzaW1wbGlmeSBtYW5hZ2VtZW50LCBhbmQgaW1wcm92ZSAKYXBwbGljYXRpb24gYXZhaWxhYmls
-aXR5IGFuZCBkaXNhc3RlciBwcm90ZWN0aW9uLiBMZWFybiBtb3JlIGFib3V0IGJvb3N0aW5nIAp0
-aGUgdmFsdWUgb2Ygc2VydmVyIHZpcnR1YWxpemF0aW9uLiBodHRwOi8vcC5zZi5uZXQvc2Z1L3Zt
-d2FyZS1zZmRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+Benefiting from Server Virtualization: Beyond Initial Workload 
+Consolidation -- Increasing the use of server virtualization is a top
+priority.Virtualization can reduce costs, simplify management, and improve 
+application availability and disaster protection. Learn more about boosting 
+the value of server virtualization. http://p.sf.net/sfu/vmware-sfdev2dev

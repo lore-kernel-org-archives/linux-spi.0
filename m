@@ -1,11 +1,11 @@
-From: "Emery" <giacomo.lucchesi-ihVZJaRskl1bRRN4PJnoQQ@public.gmane.org>
-Subject: [SPAM] The most excellent way to satisfy your babe!
-Date: Fri, 15 Apr 2011 18:27:32 +0300
-Message-ID: <002601cbfb7a$0a446ef0$f07248c6@4627da897bc7424xlrdqq>
+From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
+Subject: =?UTF-8?Q?Promo=E7=E3o_de_P=E1scoa_-_Bem_estar?=
+Date: Fri, 15 Apr 2011 13:14:22 -0400
+Message-ID: <f160ed1e75ff1e0c2674e34e79cc75a2@bemestarequipamentos.ind.br>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,8 +17,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Want to act like a pornstar? Dive into a magic pill! 
-http://mypsat.com/ivamsz6.html
+
+
+ Caso nao consiga visualizar Clique aqui !
+<http://www.bemestarequipamentos.com/fisica2.html>
+
+ <http:www.bemestarequipamentos.com.br>
+
+ <javascript:void(window.open(>
+Start Live Help Chat <http://www.liveon.com.br/bemestar/chat.php>
+
+ LiveZilla Live Chat <http://www.livezilla.net>
+
+
+
+--
+Caso nao queira mais receber nossa mensagem, 
+http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
+
+Caso voce queira rever nossa mala
+diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
+Preferencia de formato
+http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=25
+
+
+--
+Powered by PHPlist, www.phplist.com --
 
 
 ------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
-From: "Telesurveillance Domicile" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] 40 pourcent de remise, satisfait ou remboursé!
-Date: Fri, 15 Apr 2011 20:40:07 +0200 (CEST)
-Message-ID: <ljpj1a.63a1m1@front02.r7g.com>
+From: "Marjorie de BINCK.FR" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Jusqu'à 200 ordres offerts sans limite de montants
+Date: Sat, 16 Apr 2011 16:27:10 +0200 (CEST)
+Message-ID: <ljr1zs.hwc7w3@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

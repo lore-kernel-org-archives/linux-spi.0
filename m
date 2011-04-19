@@ -1,11 +1,11 @@
-From: 13560740732-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 你好：票/据―代/开
-Date: Tue, 19 Apr 2011 19:05:41 +0800
-Message-ID: <E1QC8kj-0000Ze-Fc@sfs-ml-1.v29.ch3.sourceforge.com>
+From: "Aude Thomas" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] devenez votre propre patron
+Date: Tue, 19 Apr 2011 17:01:05 +0200 (CEST)
+Message-ID: <ljwnkh.va6qlm@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NjA3NDA3
-MzIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpCZW5lZml0aW5nIGZyb20gU2VydmVyIFZpcnR1YWxp
-emF0aW9uOiBCZXlvbmQgSW5pdGlhbCBXb3JrbG9hZCAKQ29uc29saWRhdGlvbiAtLSBJbmNyZWFz
-aW5nIHRoZSB1c2Ugb2Ygc2VydmVyIHZpcnR1YWxpemF0aW9uIGlzIGEgdG9wCnByaW9yaXR5LlZp
-cnR1YWxpemF0aW9uIGNhbiByZWR1Y2UgY29zdHMsIHNpbXBsaWZ5IG1hbmFnZW1lbnQsIGFuZCBp
-bXByb3ZlIAphcHBsaWNhdGlvbiBhdmFpbGFiaWxpdHkgYW5kIGRpc2FzdGVyIHByb3RlY3Rpb24u
-IExlYXJuIG1vcmUgYWJvdXQgYm9vc3RpbmcgCnRoZSB2YWx1ZSBvZiBzZXJ2ZXIgdmlydHVhbGl6
-YXRpb24uIGh0dHA6Ly9wLnNmLm5ldC9zZnUvdm13YXJlLXNmZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+------------------------------------------------------------------------------
+Benefiting from Server Virtualization: Beyond Initial Workload 
+Consolidation -- Increasing the use of server virtualization is a top
+priority.Virtualization can reduce costs, simplify management, and improve 
+application availability and disaster protection. Learn more about boosting 
+the value of server virtualization. http://p.sf.net/sfu/vmware-sfdev2dev

@@ -1,98 +1,87 @@
-From: Jonathan Cameron <jic23@cam.ac.uk>
-Subject: Re: SPI read problem
-Date: Wed, 20 Apr 2011 14:48:00 +0100
-Message-ID: <4DAEE410.8020000@cam.ac.uk>
-References: <BANLkTi=1svkDQt+HyaHgnann1Vre7CLUNQ@mail.gmail.com>	<BANLkTimFd0ZuP2OQ4A_w7VFbDDN+rsvBtg@mail.gmail.com> <BANLkTi=9dROLwWH2J=Y_FmP+t=rkjMLBJg@mail.gmail.com>
+From: Niclas Karlsson <niclas.karlsson-h3aQMNCITb4@public.gmane.org>
+Subject: Re: Getting alot of zero values from ads7846 using atmel_spi
+Date: Wed, 20 Apr 2011 16:34:57 +0200
+Message-ID: <1303310097.19857.123.camel@SESTOWS194>
+References: <1299577496.13486.13.camel@SESTOWS194>
+	<20110310144145.GB4093601@jupiter.n2.diac24.net>
+	<1303118512.19857.105.camel@SESTOWS194>
+	<4DADF35B.2000600@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: =?UTF-8?B?5b6Q5bu66L6J?= <xujianhui168@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>
-To: "Murali K. Vemuri" <vemuri.muralikrishna@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <BANLkTi=9dROLwWH2J=Y_FmP+t=rkjMLBJg@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Kenneth Heitke <kheitke-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4DADF35B.2000600-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/20/11 05:40, Murali K. Vemuri wrote:
-> On Wed, Apr 20, 2011 at 12:19 PM, =E5=BE=90=E5=BB=BA=E8=BE=89 <xujian=
-hui168@gmail.com> wrote:
->> you can use tasklet.
->>
->> 2011/4/19 Murali K. Vemuri <vemuri.muralikrishna@gmail.com>
->>>
->>> Hello there,
->>> I have a device which is Written_to/Read_from using SPI Bus.
->>>
->>> I initialize the device like this:
->>>
->>> static int __init myDEV_init(void)
->>> {
->>>    return spi_register_driver(&myDEV_driver);
->>> }
->>> module_init(myDEV_init);
->>>
->>> My myDEV_probe() function looks like this:
->>>
->>> static int __devinit myDEV_probe(struct spi_device *spi)
->>> {
->>> .....
->>> .....
->>> /*when my CPU receives a particular IRQ, I have to do a spi_read() =
-and
->>> do couple of spi_write(), I am using like this:*/
->>> err =3D request_threaded_irq (MY_DEV_IRQ, NULL, myDEV_irq_thread,
->>>            IRQF_TRIGGER_RISING, "MYDEV", NULL);
-This should be fine.  The thread can sleep just fine. We do this
-all over the place.  Could be something to do with the irq
-handling on the device.
->>>
->>> return 0;
->>> }
->>>
->>> When the Interrupt is received by the CPU, myDEV_irq_thread is bein=
-g
->>> called.
->>> However, in the ISR I have to do  spi_read(). This is always return=
-ing
->>> "Timed out".
-That's very suspicious.  What spi controller are we dealing with here?
->>>
->>> To verify if the device is not at all working, along with registeri=
-ng
->>> for the IRQ, I also created a char device through I did a IOCTL.
->>> The IOCTL command in turn does spi_read(). In this case spi_read() =
-is
->>> successful.
->>>
->>> Since it is necessary to do spi_read() in my ISR, I searched around
->>> and found some information that
->>> spi_read() is callable only from contexts that can sleep.
->>>
->>> How can I make my ISR sleep? or is there any other way of doing thi=
-s?
->>>
->>> Any help is highly appreciated.
->>> Thanks & regards
->>> Murali
->>> --
->>> To unsubscribe from this list: send the line "unsubscribe linux-ker=
-nel" in
->>> the body of a message to majordomo@vger.kernel.org
->>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->>> Please read the FAQ at  http://www.tux.org/lkml/
->>
->>
->=20
-> Hi there,
->=20
-> I tried using "tasklet", "workqueue" and semaphore ... all my attempt=
-s failed.
-> if there is any other method I should try, please let me know.
-Something nastier is happening here.  It's not a problem with what you'=
-ve
-presented in this email.  Perhaps a minimum example of the full code su=
-rrounding
-the problem may help us diagnose it. =20
+tis 2011-04-19 klockan 14:40 -0600 skrev Kenneth Heitke:
+> On 04/18/2011 03:21 AM, Niclas Karlsson wrote:
+> > tor 2011-03-10 klockan 15:41 +0100 skrev David Lamparter:
+> >> On Tue, Mar 08, 2011 at 10:44:56AM +0100, Niclas Karlsson wrote:
+> >>> Do anyone know why I read so many zeroes?
+> >>
+> >> You're probably reading values faster than the chip supports. Check the
+> >> chip documentation for a maximum readout frequency or a ready flag.
+> >>> I have made some printk in ads7846.c to trace the problem. It seemed to
+> >>> read more correct values when I added the printks.
+> >>
+> >> A printk takes quite some time on an ARM like yours. The throttle makes
+> >> it work...
+> >
+> > I've made som further investigations. The atmel_spi.c driver utilize PDC
+> > (Peripheral DMA Controller) and when I was tracing the problem I
+> > discovered that the interrupt indicating the PDC has written the data to
+> > memory is fired before the data actually is written to memory. If a
+> > small delay is added after the interrupt (like a trace printk("The value
+> > is\n")) the PDC have enough time to write the data to the memory and I
+> > get correct values from the ADC connected to the SPI.
+> > Thoughts how to solve this?
+> 
+> Is it really the interrupt firing early or is it possible that you are 
+> still reading cached data.  I'm not familiar with the device or driver 
+> so I'm just throwing that out as a possibility.
+I have thought about it but I don't know how to test it. I disabled the
+ whole d-cache in the kernel configuration, but everything ran so slow
+that I don't know if it was the disabled of d-cache or if the timing
+became so much different.
+If I want to bring the d-cache up to sync, how do I do that?
+Is it possible to allocate memory which never will be stored in d-cache?
+/Niclas
+> >>
+> >>
+> >> David
+> >>
+> >> P.S.: you're lucky to not get crap values - seems they got the chip
+> >> design right...
+> >>
+> > /Niclas
+> > ------------------------------------------------------------------------------
+> > Benefiting from Server Virtualization: Beyond Initial Workload
+> > Consolidation -- Increasing the use of server virtualization is a top
+> > priority.Virtualization can reduce costs, simplify management, and improve
+> > application availability and disaster protection. Learn more about boosting
+> > the value of server virtualization. http://p.sf.net/sfu/vmware-sfdev2dev
+> > _______________________________________________
+> > spi-devel-general mailing list
+> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> >
+> 
+> 
+
+
+------------------------------------------------------------------------------
+Benefiting from Server Virtualization: Beyond Initial Workload 
+Consolidation -- Increasing the use of server virtualization is a top
+priority.Virtualization can reduce costs, simplify management, and improve 
+application availability and disaster protection. Learn more about boosting 
+the value of server virtualization. http://p.sf.net/sfu/vmware-sfdev2dev

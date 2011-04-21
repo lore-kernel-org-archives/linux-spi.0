@@ -1,223 +1,140 @@
-From: Jonathan Cameron <jic23@cam.ac.uk>
-Subject: Re: SPI read problem
-Date: Thu, 21 Apr 2011 12:35:57 +0100
-Message-ID: <4DB0169D.80901@cam.ac.uk>
-References: <BANLkTi=1svkDQt+HyaHgnann1Vre7CLUNQ@mail.gmail.com>	<BANLkTimFd0ZuP2OQ4A_w7VFbDDN+rsvBtg@mail.gmail.com>	<BANLkTi=9dROLwWH2J=Y_FmP+t=rkjMLBJg@mail.gmail.com>	<4DAEE410.8020000@cam.ac.uk>	<BANLkTikGGBCL4wA3gL_W0EaD02yJQDnO9Q@mail.gmail.com>	<BANLkTik95F6qeo13KmZ+oZ19YHkxtL15uQ@mail.gmail.com>	<BANLkTimo4BV5H-dMw4=P8KrsY7czR9a4mQ@mail.gmail.com> <BANLkTinnXPR_tmyK4HASpKD8Ze+T40eA+w@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Pei Lin <telent997@gmail.com>,
-	=?GB2312?B?0Oy9qLvU?= <xujianhui168@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>
-To: "Murali K. Vemuri" <vemuri.muralikrishna@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <BANLkTinnXPR_tmyK4HASpKD8Ze+T40eA+w@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Antonio Ospite <ospite@studenti.unina.it>
+Subject: [RESEND PATCH 2/4] mmc_spi.c: factor out the SD card shutdown sequence
+Date: Thu, 21 Apr 2011 14:27:51 +0200
+Message-ID: <1303388873-15467-3-git-send-email-ospite@studenti.unina.it>
+References: <1300733202-27316-1-git-send-email-ospite@studenti.unina.it>
+ <1303388873-15467-1-git-send-email-ospite@studenti.unina.it>
+Cc: Antonio Ospite <ospite@studenti.unina.it>,
+	Chris Ball <cjb@laptop.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	openezx-devel@lists.openezx.org,
+	spi-devel-general@lists.sourceforge.net
+To: linux-mmc@vger.kernel.org
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <1303388873-15467-1-git-send-email-ospite@studenti.unina.it>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/21/11 12:30, Murali K. Vemuri wrote:
-> 2011/4/21 Murali K. Vemuri <vemuri.muralikrishna@gmail.com>:
->> 2011/4/21 Pei Lin <telent997@gmail.com>:
->>> 2011/4/21 Murali K. Vemuri <vemuri.muralikrishna@gmail.com>:
->>>> On Wed, Apr 20, 2011 at 10:48 PM, Jonathan Cameron <jic23@cam.ac.u=
-k> wrote:
->>>>> On 04/20/11 05:40, Murali K. Vemuri wrote:
->>>>>> On Wed, Apr 20, 2011 at 12:19 PM, =D0=EC=BD=A8=BB=D4 <xujianhui1=
-68@gmail.com> wrote:
->>>>>>> you can use tasklet.
->>>>>>>
->>>>>>> 2011/4/19 Murali K. Vemuri <vemuri.muralikrishna@gmail.com>
->>>>>>>>
->>>>>>>> Hello there,
->>>>>>>> I have a device which is Written_to/Read_from using SPI Bus.
->>>>>>>>
->>>>>>>> I initialize the device like this:
->>>>>>>>
->>>>>>>> static int __init myDEV_init(void)
->>>>>>>> {
->>>>>>>>    return spi_register_driver(&myDEV_driver);
->>>>>>>> }
->>>>>>>> module_init(myDEV_init);
->>>>>>>>
->>>>>>>> My myDEV_probe() function looks like this:
->>>>>>>>
->>>>>>>> static int __devinit myDEV_probe(struct spi_device *spi)
->>>>>>>> {
->>>>>>>> .....
->>>>>>>> .....
->>>>>>>> /*when my CPU receives a particular IRQ, I have to do a spi_re=
-ad() and
->>>>>>>> do couple of spi_write(), I am using like this:*/
->>>>>>>> err =3D request_threaded_irq (MY_DEV_IRQ, NULL, myDEV_irq_thre=
-ad,
->>>>>>>>            IRQF_TRIGGER_RISING, "MYDEV", NULL);
->>>>> This should be fine.  The thread can sleep just fine. We do this
->>>>> all over the place.  Could be something to do with the irq
->>>>> handling on the device.
->>>>>>>>
->>>>>>>> return 0;
->>>>>>>> }
->>>>>>>>
->>>>>>>> When the Interrupt is received by the CPU, myDEV_irq_thread is=
- being
->>>>>>>> called.
->>>>>>>> However, in the ISR I have to do  spi_read(). This is always r=
-eturning
->>>>>>>> "Timed out".
->>>>> That's very suspicious.  What spi controller are we dealing with =
-here?
->>>>>>>>
->>>>>>>> To verify if the device is not at all working, along with regi=
-stering
->>>>>>>> for the IRQ, I also created a char device through I did a IOCT=
-L.
->>>>>>>> The IOCTL command in turn does spi_read(). In this case spi_re=
-ad() is
->>>>>>>> successful.
->>>>>>>>
->>>>>>>> Since it is necessary to do spi_read() in my ISR, I searched a=
-round
->>>>>>>> and found some information that
->>>>>>>> spi_read() is callable only from contexts that can sleep.
->>>>>>>>
->>>>>>>> How can I make my ISR sleep? or is there any other way of doin=
-g this?
->>>>>>>>
->>>>>>>> Any help is highly appreciated.
->>>>>>>> Thanks & regards
->>>>>>>> Murali
->>>>>>>> --
->>>>>>>> To unsubscribe from this list: send the line "unsubscribe linu=
-x-kernel" in
->>>>>>>> the body of a message to majordomo@vger.kernel.org
->>>>>>>> More majordomo info at  http://vger.kernel.org/majordomo-info.=
-html
->>>>>>>> Please read the FAQ at  http://www.tux.org/lkml/
->>>>>>>
->>>>>>>
->>>>>>
->>>>>> Hi there,
->>>>>>
->>>>>> I tried using "tasklet", "workqueue" and semaphore ... all my at=
-tempts failed.
->>>>>> if there is any other method I should try, please let me know.
->>>>> Something nastier is happening here.  It's not a problem with wha=
-t you've
->>>>> presented in this email.  Perhaps a minimum example of the full c=
-ode surrounding
->>>>> the problem may help us diagnose it.
->>>>>
->>>>
->>>> Thanks a lot for the inputs. this is the read function I have:
->>>> (What  I am trying to do is read register E6 of my device, the
->>>> register width is 16 bits.).
->>>>
->>>> static struct spi_device * my_SPI_DEV; (this is populated in the p=
-robe function)
->>>>
->>>> static int myDEV_read(u8 * buf, u16 len)
->>>> {
->>>>    int err;
->>>>    err =3D spi_read(my_SPI_DEV, buf, len);
->>>>    return err;
->>>> }
->>>> static int read_e6()
->>>> {
->>>>    u8 buf[3];
->>>>    int err;
->>>>    buf[0] =3D 0xe6;
->>>>    buf[1] =3D 0x00;
->>>>    buf[2] =3D 0x00;
->>>>    err =3D myDEV_read(buf, 3);
->>>>    printk(KERN_ERR "myDEV read returned: %d\n",err);
->>>>    return err;
->>>> }
->>>>
->>>> Now, this function read_e6() is called from the ISR I mentioned ab=
-ove.
->>>>
->>>
->>>
->>> spi_read will call spi_sync and this call may only be used from a
->>> context that may sleep.  The sleep
->>>  is non-interruptible, and has no timeout. should use in
->>> non-interruptable context.
->>> you should put the spi_read on context which can sleep, as bottom h=
-alf
->>> "work queue"
->>> Or use spi_async interface.
->>>
->> I added "workqueue", and got the same result. Also, I used "tasklet"
->> and got the same result.
->> spi_async does not seem to be working for me, returning EINVAL (-22)=
-=2E
->> spi_sync() seem to be returning 0 (supposed to be success) but no da=
-ta
->> coming out ... still investigating why ZEROS are returned instead of
->> valid data.
->>
->> if you have any suggestions, please let me know.
->>
->> Murali
->>>
->>>> 90% of time, the read returns "-5" (I/O Error) and about 10% time =
-it
->>>> gets "0".  However I added a little hexdump to check the content i=
-n
->>>> case the return value is "0". The register content is always "0".
->>>>
->>>> Please let me know if I am doing any mistake.
->>>> Thanks & regards
->>>> Murali
->>>> --
->>>> To unsubscribe from this list: send the line "unsubscribe linux-ke=
-rnel" in
->>>> the body of a message to majordomo@vger.kernel.org
->>>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->>>> Please read the FAQ at  http://www.tux.org/lkml/
->>>>
->>>
->>>
->>>
->>> --
->>> Best Regards
->>> Lin
->>>
->>
-> Okay, finally dug about and found that My chip was expecting the read
-> command in different style and I am sending in different style.
-> my spi_read() has to send only one byte (the register address ) on th=
-e
-> SIMO line and expect 2 bytes on the SOMI line.
-> I used a load of debug prints to find that my code (as below) is
-> providing the two bytes of space on SIMO line itself. So, what change=
-s
-> are needed in this code to read correctly?
->=20
-> static struct spi_device * my_SPI_DEV; (this is populated in the prob=
-e function)
->=20
-> static int myDEV_read(u8 * buf, u16 len)
-> {
->    int err;
->    err =3D spi_read(my_SPI_DEV, buf, len);
->    return err;
-> }
-> static int read_e6()
-> {
->    u8 buf[3];
->    int err;
->    buf[0] =3D 0xe6;
->    buf[1] =3D 0x00;
->    buf[2] =3D 0x00;
->    err =3D myDEV_read(buf, 3);
->    printk(KERN_ERR "myDEV read returned: %d\n",err);
->    return err;
-> }
+Factor out the SD card shutdown sequence to a dedicated
+mmc_spi_shutdownsequence() function in order to make mmc_spi_set_ios()
+more readable, and also for symmetry with mmc_spi_initsequence() which
+is already a dedicated function.
 
-int a =3D spi_w8r16(my_sPI_DEV, 0xe6);
+Signed-off-by: Antonio Ospite <ospite@studenti.unina.it>
+---
+ drivers/mmc/host/mmc_spi.c |   90 +++++++++++++++++++++++--------------------
+ 1 files changed, 48 insertions(+), 42 deletions(-)
 
-a should contain your result, or a negative if an
-error occurs.
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 49f5725..9eae23c 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -1176,6 +1176,51 @@ static void mmc_spi_initsequence(struct mmc_spi_host *host)
+ 	}
+ }
+ 
++/* See Section 6.4.2, in SD "Simplified Physical Layer Specification 2.0"
++ *
++ * If powering down, ground all card inputs to avoid power delivery from data
++ * lines!  On a shared SPI bus, this will probably be temporary; 6.4.2 of
++ * the simplified SD spec says this must last at least 1msec.
++ *
++ *   - Clock low means CPOL 0, e.g. mode 0
++ *   - MOSI low comes from writing zero
++ *   - Chipselect is usually active low...
++ */
++static void mmc_spi_shutdownsequence(struct mmc_spi_host *host)
++{
++	int mres;
++	u8 nullbyte = 0;
++
++	host->spi->mode &= ~(SPI_CPOL|SPI_CPHA);
++	mres = spi_setup(host->spi);
++	if (mres < 0)
++		dev_dbg(&host->spi->dev,
++			"switch to SPI mode 0 failed\n");
++
++	if (spi_write(host->spi, &nullbyte, 1) < 0)
++		dev_dbg(&host->spi->dev,
++			"put spi signals to low failed\n");
++
++	/*
++	 * Now clock should be low due to spi mode 0;
++	 * MOSI should be low because of written 0x00;
++	 * chipselect should be low (it is active low)
++	 * power supply is off, so now MMC is off too!
++	 *
++	 * FIXME no, chipselect can be high since the
++	 * device is inactive and SPI_CS_HIGH is clear...
++	 */
++	msleep(10);
++	if (mres == 0) {
++		host->spi->mode |= (SPI_CPOL|SPI_CPHA);
++		mres = spi_setup(host->spi);
++		if (mres < 0)
++			dev_dbg(&host->spi->dev,
++				"switch back to SPI mode 3"
++				" failed\n");
++	}
++}
++
+ static char *mmc_powerstring(u8 power_mode)
+ {
+ 	switch (power_mode) {
+@@ -1215,49 +1260,10 @@ static void mmc_spi_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		if (ios->power_mode == MMC_POWER_ON)
+ 			mmc_spi_initsequence(host);
+ 
+-		/* If powering down, ground all card inputs to avoid power
+-		 * delivery from data lines!  On a shared SPI bus, this
+-		 * will probably be temporary; 6.4.2 of the simplified SD
+-		 * spec says this must last at least 1msec.
+-		 *
+-		 *   - Clock low means CPOL 0, e.g. mode 0
+-		 *   - MOSI low comes from writing zero
+-		 *   - Chipselect is usually active low...
+-		 */
++		/* See 6.4.2 in the simplified SD card physical spec 2.0 */
+ 		if (mmc_spi_canpower(host) &&
+-		    ios->power_mode == MMC_POWER_OFF) {
+-			int mres;
+-			u8 nullbyte = 0;
+-
+-			host->spi->mode &= ~(SPI_CPOL|SPI_CPHA);
+-			mres = spi_setup(host->spi);
+-			if (mres < 0)
+-				dev_dbg(&host->spi->dev,
+-					"switch to SPI mode 0 failed\n");
+-
+-			if (spi_write(host->spi, &nullbyte, 1) < 0)
+-				dev_dbg(&host->spi->dev,
+-					"put spi signals to low failed\n");
+-
+-			/*
+-			 * Now clock should be low due to spi mode 0;
+-			 * MOSI should be low because of written 0x00;
+-			 * chipselect should be low (it is active low)
+-			 * power supply is off, so now MMC is off too!
+-			 *
+-			 * FIXME no, chipselect can be high since the
+-			 * device is inactive and SPI_CS_HIGH is clear...
+-			 */
+-			msleep(10);
+-			if (mres == 0) {
+-				host->spi->mode |= (SPI_CPOL|SPI_CPHA);
+-				mres = spi_setup(host->spi);
+-				if (mres < 0)
+-					dev_dbg(&host->spi->dev,
+-						"switch back to SPI mode 3"
+-						" failed\n");
+-			}
+-		}
++		    ios->power_mode == MMC_POWER_OFF)
++			mmc_spi_shutdownsequence(host);
+ 
+ 		host->power_mode = ios->power_mode;
+ 	}
+-- 
+1.7.4.4
+

@@ -1,12 +1,11 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: Final reminder to connect with nitin vishnoi on Ecademy
-Date: Sat, 23 Apr 2011 08:37:34 +0100 (BST)
-Message-ID: <20110423073734.954DDD9815C@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: 13538033334-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 你好：税/票――代/开
+Date: Sun, 24 Apr 2011 08:08:59 +0800
+Message-ID: <E1QDmsi-0006sT-Q5@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,28 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ecademy - Exclusive business networking for the digital age
-_______________________________________________________________________
-
-Join me on Ecademy
-http://www.ecademy.com/account.php?op=signup&xref=517814
-
- Connect to the right people
- Market your business
- Grow revenue
-
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-_______________________________________________________________________
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-The Ecademy Limited. Registered in England and Wales.
-Company Registration:3651083 VAT:718037736
-
-------------------------------------------------------------------------------
-Fulfilling the Lean Software Promise
-Lean software platforms are now widely adopted and the benefits have been 
-demonstrated beyond question. Learn why your peers are replacing JEE 
-containers with lightweight application servers - and what you can gain 
-from the move. http://p.sf.net/sfu/vmware-sfemails
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
+1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
+tcihowoKufO5q8u+yOfT0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAgICAgICAg
+ICAgICAgILi61PDIy6O61cXPyMn6KDApMTM1MzgwMzMzMzQKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQpGdWxmaWxsaW5nIHRoZSBMZWFuIFNvZnR3YXJlIFByb21pc2UKTGVhbiBzb2Z0d2FyZSBwbGF0
+Zm9ybXMgYXJlIG5vdyB3aWRlbHkgYWRvcHRlZCBhbmQgdGhlIGJlbmVmaXRzIGhhdmUgYmVlbiAK
+ZGVtb25zdHJhdGVkIGJleW9uZCBxdWVzdGlvbi4gTGVhcm4gd2h5IHlvdXIgcGVlcnMgYXJlIHJl
+cGxhY2luZyBKRUUgCmNvbnRhaW5lcnMgd2l0aCBsaWdodHdlaWdodCBhcHBsaWNhdGlvbiBzZXJ2
+ZXJzIC0gYW5kIHdoYXQgeW91IGNhbiBnYWluIApmcm9tIHRoZSBtb3ZlLiBodHRwOi8vcC5zZi5u
+ZXQvc2Z1L3Ztd2FyZS1zZmVtYWlscwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

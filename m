@@ -1,7 +1,7 @@
-From: "De Dietrich" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Passez aux chaudieres nouvelle génération: 2689 euros d'economies possibles!
-Date: Sun, 24 Apr 2011 09:20:52 +0200 (CEST)
-Message-ID: <lk5b2r.p1e3j6@front07.g7r9.com>
+From: "Le Rachat de Credit" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Reduisez fortement le montant mensuel de vos credits
+Date: Sun, 24 Apr 2011 09:41:56 +0200 (CEST)
+Message-ID: <lk5cks.adupdq@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

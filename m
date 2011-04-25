@@ -1,11 +1,11 @@
-From: 13430544812-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Mon, 25 Apr 2011 21:21:00 +0800
-Message-ID: <E1QELiq-0006vR-HZ@sfs-ml-1.v29.ch3.sourceforge.com>
+From: "Golf Datatech" <golfdatat-noreply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Serious Golfers, Your Assistance is Needed
+Date: Mon, 25 Apr 2011 16:02:38 -0700
+Message-ID: <5ca079020b3adcc23860d664001a7bcb@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_1036088034D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +17,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICAgztK5q8u+09DSu7K/t9Yoye7b2srQoaK2q924ytChornj1t3K0KGiLi4uLi4u
-Li4pt6KhqqGqxrEvILT6v6qjuwrI5zrG1c2oyczGt8/6ytu3oi/GsTvUy8rk0rWhor2o1v7StaGi
-vajW/rCy17DStaGiueO45tK1oaLG5Mv8t/7O8dDQ0rWhorLN0vvStbXIoaMKufO5q8u+yOfT0NDo
-0qqjrLu2063E+rXEwLS159PrztLBqs+1o7oKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-1cXPyMn6o7oxMzQzMDU0NDgxMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkZ1bGZpbGxpbmcgdGhl
-IExlYW4gU29mdHdhcmUgUHJvbWlzZQpMZWFuIHNvZnR3YXJlIHBsYXRmb3JtcyBhcmUgbm93IHdp
-ZGVseSBhZG9wdGVkIGFuZCB0aGUgYmVuZWZpdHMgaGF2ZSBiZWVuIApkZW1vbnN0cmF0ZWQgYmV5
-b25kIHF1ZXN0aW9uLiBMZWFybiB3aHkgeW91ciBwZWVycyBhcmUgcmVwbGFjaW5nIEpFRSAKY29u
-dGFpbmVycyB3aXRoIGxpZ2h0d2VpZ2h0IGFwcGxpY2F0aW9uIHNlcnZlcnMgLSBhbmQgd2hhdCB5
-b3UgY2FuIGdhaW4gCmZyb20gdGhlIG1vdmUuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvdm13YXJlLXNm
-ZW1haWxzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
-aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
-c3BpLWRldmVsLWdlbmVyYWwK
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_1036088034D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Are you dedicated to the game of golf and interested in its development? =
+Are you aware of new trends in the industry? Are you willing to share your =
+opinions with industry insiders?
+
+Then please take our golf survey ***See attached form to start survey***
+
+Golf Datatech, L.L.C., the golf industry's leading source of information =
+is recruiting serious golfers like you to participate in web based =
+research projects and be eligible to win golf merchandise.=20
+
+As a thank you for agreeing to participation the golf panel, all who sign =
+up will be in a random drawing for a "Premium" Driver* and twelve others =
+will be awarded a dozen golf balls=2E
+
+Your name remains strictly confidential with us and we NEVER solicit you =
+to purchase anything or sell your name to those who do. We simply want =
+your opinions on golf and equipment from time to time.
+
+
+------=SPLITOR00A_001_1036088034D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+WhatsUp Gold - Download Free Network Management Software
+The most intuitive, comprehensive, and cost-effective network 
+management toolset available today.  Delivers lowest initial 
+acquisition cost and overall TCO of any competing solution.
+http://p.sf.net/sfu/whatsupgold-sd
+------=SPLITOR00A_001_1036088034D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_1036088034D--

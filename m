@@ -1,13 +1,11 @@
-From: "APRIL - Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: attention =?ISO-8859-1?Q?=E7a?= a =?ISO-8859-1?Q?chang=E9?=! Votre
-	assurance =?ISO-8859-1?Q?sant=E9=20=E0?= partir de 14,
-	67euros par mois
-Date: Tue, 26 Apr 2011 01:16:09 +0200 (CEST)
-Message-ID: <lk8dyt.bo8lgt@front07.g7r9.com>
+From: <sale-mzk9dYGrzyzQT0dZR+AlfA@public.gmane.org>
+Subject: PCB Manufacturer of Siemens & Avaya--JXT Technologies Ltd
+Date: Tue, 26 Apr 2011 16:51:14 +0800 (CST)
+Message-ID: <1303807874338@mail161.cn4e.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,10 +17,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-WhatsUp Gold - Download Free Network Management Software
-The most intuitive, comprehensive, and cost-effective network 
-management toolset available today.  Delivers lowest initial 
-acquisition cost and overall TCO of any competing solution.
-http://p.sf.net/sfu/whatsupgold-sd
+RGVhciBmcmllbmQsDQogDQpHbGFkIHRvIGtub3cgdGhhdCB5b3VyIGFyZSBvbiB0aGUgbWFya2V0
+IG9mIGVsZWN0cm9uaWNzIGl0ZW1zLiBXZSBhcmUgc3BlY2lhbGl6ZWQgaW4gbWFudWZhY3R1cmlu
+ZyBQQ0IgZm9yIG91ciBnbG9iYWwgY3VzdG9tZXJzIGZvciBNb3JlIHRoYW4gNyB5ZWFycyBpbiBD
+aGluYS4gVGhlIGluZm9ybWF0aW9uIGJlbG93IGlzIHByb3ZpZGVkIGNvbnZlbmllbmNlIGZvciB5
+b3UgdG8ga25vdyB1czogDQogDQpDYXBhYmlsaXRpZXM6IDEtMjQgbGF5ZXJzIFJpZ2lkLCBGbGV4
+LCBSaWdpZC1mbGV4LCBBbHVtaW51bSBwY2IsIEhpZ2ggVGcsIEhpZ2gtZnJlcXVlbmN5LCBJbXBl
+ZGFuY2UgY29udHJvbCwgQnVyaWVkLWJsaW5kIHZpYXMgaG9sZXMsIEhESSwgTWV0YWwgYmFzZWQs
+IFRoaWNrIGNvcHBlciwgTWl4LW1hdGVyaWFsIGV0Y+KApg0KIA0KUXVpY2sgdHVybiBsZWFkIHRp
+bWVzOiAyNC03MiBob3VycyBkZWxpdmVyeSBhdmFpbGFibGUgZm9yIDEtOCBsYXllcnMgcGNiLg0K
+IA0KV2l0aCBnb29kIHF1YWxpdHkgYW5kIHByZXR0eSBjb21wZXRpdGl2ZSBwcmljZSBhcyB3ZWxs
+IGFzIGZhc3QgbGVhZHRpbWUuIFdlIGhhdmUgd29uIGhpZ2ggcmVwdXRhdGlvbiBpbiBFdXJvcGUs
+IE5vcnRoIEFtZXJpY2EsIEF1c3RyYWxpYSAsIE1pZGRsZSBFYXN0IGFuZCBKYXBhbiBldGMuLi4u
+ICANCiANClBsZWFzZSB0ZWxsIHVzIGFib3V0IHlvdXIgc3BlY2lmaWMgcmVxdWlyZW1lbnQsIFdl
+IGNhbiBtYW51ZmFjdHVyZSBvciBkZXNpZ24gd2hhdCB5b3VyIG5lZWRzLCBXZSBzaGFsbCBkbyBv
+dXIgYmVzdCB0byBzZXJ2ZSB5b3Ugd2VsbC4NCg0KUFM6IElmIHlvdSBkb24ndCBkZWFsIHdpdGgg
+dGhlIGltcG9ydCBvZiBQQ0IncyB3ZSB3b3VsZCBiZSBtb3N0IGdyYXRlZnVsIGlmIHRoaXMgbGV0
+dGVyIGNvdWxkIGJlIGZvcndhcmRlZCB0byBzb21lb25lIHdobyBkb2VzLg0KIA0KQWxsIHRoZSBi
+ZXN0LA0KQ2hpbnJ5ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PQ0KSnh0IEludGVybmF0aW9uYWwgTGltaXRlZA0KU2hlbnpoZW4g
+Snh0IFRlY2hub2xvZ3kgQ28uLCBMdGQNClRlbDogODYtNzU1LTI5NzYwOTE3IEV4dC4gNjAyIA0K
+RmF4OiA4Ni03NTUtMjkxODU2MDINCk1vYmlsZTogKzg2LTEzNDIxMzI2MTYyDQpFbWFpbDpzYWxl
+QGp4dHBjYi5jb20gDQpNc246IGp4dGNoaW5hc2FsZXMxQGhvdG1haWwuY29tDQpJQ1E6IGp4dGNo
+aW5hc2FsZXMxQGhvdG1haWwuY29tDQpTa3lwZToganh0c2FsZXMxICAgDQpXZWI6IHd3dy5qeHRw
+Y2IuY29tIA0KUCBQbGVhc2UgY29uc2lkZXIgdGhlIGVudmlyb25tZW50IGJlZm9yZSBwcmludGlu
+Zw0KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09DQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KV2hhdHNVcCBHb2xkIC0gRG93bmxvYWQg
+RnJlZSBOZXR3b3JrIE1hbmFnZW1lbnQgU29mdHdhcmUKVGhlIG1vc3QgaW50dWl0aXZlLCBjb21w
+cmVoZW5zaXZlLCBhbmQgY29zdC1lZmZlY3RpdmUgbmV0d29yayAKbWFuYWdlbWVudCB0b29sc2V0
+IGF2YWlsYWJsZSB0b2RheS4gIERlbGl2ZXJzIGxvd2VzdCBpbml0aWFsIAphY3F1aXNpdGlvbiBj
+b3N0IGFuZCBvdmVyYWxsIFRDTyBvZiBhbnkgY29tcGV0aW5nIHNvbHV0aW9uLgpodHRwOi8vcC5z
+Zi5uZXQvc2Z1L3doYXRzdXBnb2xkLXNkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

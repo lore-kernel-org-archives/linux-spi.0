@@ -1,15 +1,15 @@
-From: Jan Andersson <jan-FkzTOoA/JUnLoDKTGw+V6w@public.gmane.org>
-Subject: Re: [PATCH] spi: add support for aeroflex gaisler spimctrl
-Date: Sat, 30 Apr 2011 15:09:15 +0200
-Message-ID: <4DBC09FB.5070406@gaisler.se>
-References: <1304023295-5829-1-git-send-email-jan@gaisler.com>
+From: Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH V3] spi: add support for aeroflex gaisler spimctrl
+Date: Sat, 30 Apr 2011 15:38:25 +0200
+Message-ID: <1304170705-11319-1-git-send-email-jan@gaisler.com>
+References: <1304169112-11224-1-git-send-email-jan@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1304023295-5829-1-git-send-email-jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <1304169112-11224-1-git-send-email-jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,222 +20,433 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+This patch adds support for Aeroflex Gaisler SPI memory controller (SPIMCTRL).
+SPIMCTRL memory maps a SPI flash device into AMBA address space. The core
+also has a register interface where any command can be sent to the device.
 
-It seems something on my end ate your reply so I am replying to my own
-message pasting in your reply from the archive.
+The controller is typically found on LEON/GRLIB SoCs.
 
-Grant Likely wrote:
-> On Thu, Apr 28, 2011 at 10:41:35PM +0200, Jan Andersson wrote:
->> This patch adds support for Aeroflex Gaisler SPI memory controller
+Tested on GR-LEON4-ITX development board.
 
-[ .... ]
+Patch is against spi/next.
 
->>  drivers/spi/Kconfig       |    8 +
->>  drivers/spi/Makefile      |    1 +
->>  drivers/spi/ag_spimctrl.c |  354
-> +++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 363 insertions(+), 0 deletions(-)
->>  create mode 100644 drivers/spi/ag_spimctrl.c
->>
->> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
->> index fc14b8d..a1846da 100644
->> --- a/drivers/spi/Kconfig
->> +++ b/drivers/spi/Kconfig
->> @@ -53,6 +53,14 @@ if SPI_MASTER
->>
->>  comment "SPI Master Controller Drivers"
->>
->> +config SPI_AG_SPIMCTRL
->> +	tristate "Aeroflex Gaisler SPI memory controller"
->> +        depends on SPARC_LEON
->
-> inconsistent whitespace.  use tabs.
->
+Signed-off-by: Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+---
 
-Fixed.
+Changes in V3:
+* Patch V2 was missing grlib_spimctrl.c file
+Changes in V2:
+* Use IRQF_SHARED and check in interrupt handler if DONE flag is set,
+  otherwise return IRQ_NONE
+* Rename driver to match name of other LEON/GRLIB drivers
+* Fixes after comments from Grant Likely:
+** Fix inconsistent whitespace in Kconfig entry
+** Use of_node_get() when assigning hw->bitbang.master->dev.of_node
+** Use platform_get_resource() instead of hardcoding the offset into the
+   resource table
+---
+ drivers/spi/Kconfig          |    8 +
+ drivers/spi/Makefile         |    1 +
+ drivers/spi/grlib_spimctrl.c |  356 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 365 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/grlib_spimctrl.c
 
->> +	select SPI_BITBANG
->> +	help
->> +	  This is the driver for Aeroflex Gaisler's SPI memory controller
->> +	  (SPIMCTRL) found on some LEON/GRLIB SoCs.
->> +
->>  config SPI_ALTERA
->>  	tristate "Altera SPI Controller"
->>  	select SPI_BITBANG
->> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
->> index fd2fc5f..8a11a19 100644
->> --- a/drivers/spi/Makefile
->> +++ b/drivers/spi/Makefile
->> @@ -9,6 +9,7 @@ ccflags-$(CONFIG_SPI_DEBUG) := -DDEBUG
->>  obj-$(CONFIG_SPI_MASTER)		+= spi.o
->>
->>  # SPI master controller drivers (bus)
->> +obj-$(CONFIG_SPI_AG_SPIMCTRL)		+= ag_spimctrl.o
->>  obj-$(CONFIG_SPI_ALTERA)		+= spi_altera.o
->>  obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
->>  obj-$(CONFIG_SPI_ATH79)			+= ath79_spi.o
->> diff --git a/drivers/spi/ag_spimctrl.c b/drivers/spi/ag_spimctrl.c
->> new file mode 100644
->> index 0000000..022c1e8
->> --- /dev/null
->> +++ b/drivers/spi/ag_spimctrl.c
->> @@ -0,0 +1,354 @@
->> +/*
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index fc14b8d..be53561 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -53,6 +53,14 @@ if SPI_MASTER
+ 
+ comment "SPI Master Controller Drivers"
+ 
++config SPI_GRLIB_SPIMCTRL
++	tristate "Aeroflex Gaisler SPI memory controller"
++	depends on SPARC_LEON
++	select SPI_BITBANG
++	help
++	  This is the driver for Aeroflex Gaisler's SPI memory controller
++	  (SPIMCTRL) found on some LEON/GRLIB SoCs.
++
+ config SPI_ALTERA
+ 	tristate "Altera SPI Controller"
+ 	select SPI_BITBANG
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index fd2fc5f..a528000 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -9,6 +9,7 @@ ccflags-$(CONFIG_SPI_DEBUG) := -DDEBUG
+ obj-$(CONFIG_SPI_MASTER)		+= spi.o
+ 
+ # SPI master controller drivers (bus)
++obj-$(CONFIG_SPI_GRLIB_SPIMCTRL)	+= grlib_spimctrl.o
+ obj-$(CONFIG_SPI_ALTERA)		+= spi_altera.o
+ obj-$(CONFIG_SPI_ATMEL)			+= atmel_spi.o
+ obj-$(CONFIG_SPI_ATH79)			+= ath79_spi.o
+diff --git a/drivers/spi/grlib_spimctrl.c b/drivers/spi/grlib_spimctrl.c
+new file mode 100644
+index 0000000..0d068b6
+--- /dev/null
++++ b/drivers/spi/grlib_spimctrl.c
+@@ -0,0 +1,356 @@
++/*
++ * Driver for Aeroflex Gaisler SPIMCTRL
++ *
++ * SPIMCTRL maps SPI flash devices in a read-only memory area and also provides
++ * a register interface that allows any SPI command to be sent. This driver only
++ * makes use of the register interface.
++ *
++ * Copyright (c) 2011 Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
++ *
++ * This driver is based on:
++ *
++ * Altera SPI driver
++ * Copyright (C) 2008 Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
++ * which in turn was based on spi_s3c24xx.c, which is:
++ * Copyright (c) 2006 Ben Dooks
++ * Copyright (c) 2006 Simtec Electronics
++ *	Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/errno.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi_bitbang.h>
++#include <linux/io.h>
++#include <linux/of_irq.h>
++
++#define DRV_NAME "grlib-spimctrl"
++
++/* Core has one chip-select only */
++#define GR_SPIM_NUMCS	1
++
++/* Register offsets */
++#define GR_SPIM_CTRL	0x04
++#define GR_SPIM_STAT	0x08
++#define GR_SPIM_RX	0x0C
++#define GR_SPIM_TX	0x10
++
++/* Register fields */
++#define GR_SPIM_CTRL_CSN	(1 << 3)
++#define GR_SPIM_CTRL_IEN	(1 << 1)
++#define GR_SPIM_CTRL_USRC	(1 << 0)
++
++#define GR_SPIM_STAT_BUSY	(1 << 1)
++#define GR_SPIM_STAT_DONE	(1 << 0)
++
++
++struct gr_spimctrl {
++	/* bitbang has to be first */
++	struct spi_bitbang bitbang;
++	struct completion done;
++
++	void __iomem *base;
++	int irq;
++	int len;
++	int count;
++	u32 ctrl;
++
++	/* data buffers */
++	const unsigned char *tx;
++	unsigned char *rx;
++};
++
++static inline void gr_spim_write(u32 val, void __iomem *addr)
++{
++	iowrite32be(val, addr);
++}
++
++static inline u32 gr_spim_read(void __iomem *addr)
++{
++	return ioread32be(addr);
++}
++
++
++static inline struct gr_spimctrl *gr_spimctrl_spi_to_hw(struct spi_device *sdev)
++{
++	return spi_master_get_devdata(sdev->master);
++}
++
++static void gr_spimctrl_chipsel(struct spi_device *spi, int value)
++{
++	struct gr_spimctrl *hw = gr_spimctrl_spi_to_hw(spi);
++	u32 ctrl = hw->ctrl;
++
++	if (spi->mode & SPI_CS_HIGH) {
++		switch (value) {
++		case BITBANG_CS_INACTIVE:
++			hw->ctrl &= ~GR_SPIM_CTRL_CSN;
++			break;
++
++		case BITBANG_CS_ACTIVE:
++			hw->ctrl |= GR_SPIM_CTRL_CSN;
++			break;
++		}
++	} else {
++		switch (value) {
++		case BITBANG_CS_INACTIVE:
++			hw->ctrl |= GR_SPIM_CTRL_CSN;
++			break;
++
++		case BITBANG_CS_ACTIVE:
++			hw->ctrl &= ~GR_SPIM_CTRL_CSN;
++			break;
++		}
++	}
++	if (ctrl != hw->ctrl)
++		gr_spim_write(hw->ctrl, hw->base + GR_SPIM_CTRL);
++}
++
++static int gr_spimctrl_setupxfer(struct spi_device *spi, struct spi_transfer *t)
++{
++	/* the controller does not support mode changes so we just ignore them.
++	 * we can assume that the controller is attached to a memory device and
++	 * that the controller can communicate with this device.
++	 */
++
++	if (t && t->bits_per_word % 8)
++		return -EINVAL;
++
++	if (spi->bits_per_word % 8)
++		return -EINVAL;
++
++	if (spi->chip_select > GR_SPIM_NUMCS)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int gr_spimctrl_setup(struct spi_device *spi)
++{
++	return gr_spimctrl_setupxfer(spi, NULL);
++}
++
++static void gr_spimctrl_cleanup(struct spi_device *spi)
++{
++	struct gr_spimctrl *hw = gr_spimctrl_spi_to_hw(spi);
++
++	hw->ctrl &= ~GR_SPIM_CTRL_USRC;
++	gr_spim_write(hw->ctrl, hw->base + GR_SPIM_CTRL);
++}
++
++static int gr_spimctrl_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct gr_spimctrl *hw = gr_spimctrl_spi_to_hw(spi);
++
++	hw->tx = t->tx_buf;
++	hw->rx = t->rx_buf;
++	hw->count = 0;
++	hw->len = t->len;
++
++	if (hw->irq != NO_IRQ) {
++		/* interrupt driven transfer, send the first byte */
++		gr_spim_write(GR_SPIM_STAT_DONE, hw->base + GR_SPIM_STAT);
++		gr_spim_write(hw->tx ? *hw->tx++ : 0, hw->base + GR_SPIM_TX);
++		wait_for_completion(&hw->done);
++	} else {
++		/* polling */
++		do {
++			/* clear done bit, transmit, wait for receive .. */
++			gr_spim_write(GR_SPIM_STAT_DONE,
++				hw->base + GR_SPIM_STAT);
++
++			gr_spim_write(hw->tx ? *hw->tx++ : 0,
++				hw->base + GR_SPIM_TX);
++
++			while (!(gr_spim_read(hw->base + GR_SPIM_STAT) &
++					GR_SPIM_STAT_DONE))
++				cpu_relax();
++
++			if (hw->rx)
++				hw->rx[hw->count] =
++					gr_spim_read(hw->base + GR_SPIM_RX);
++
++			hw->count++;
++		} while (hw->count < hw->len);
++	}
++
++	return hw->count;
++}
++
++static irqreturn_t gr_spimctrl_irq(int irq, void *dev)
++{
++	struct gr_spimctrl *hw = dev;
++	u32 rxd;
++
++	if (!(gr_spim_read(hw->base + GR_SPIM_STAT) & GR_SPIM_STAT_DONE))
++		return IRQ_NONE;
++
++	if (hw->rx) {
++		rxd = gr_spim_read(hw->base + GR_SPIM_RX);
++		hw->rx[hw->count] = rxd;
++	}
++
++	hw->count++;
++
++	gr_spim_write(GR_SPIM_STAT_DONE, hw->base + GR_SPIM_STAT);
++
++	if (hw->count < hw->len)
++		gr_spim_write(hw->tx ? *hw->tx++ : 0, hw->base + GR_SPIM_TX);
++	else
++		complete(&hw->done);
++
++	return IRQ_HANDLED;
++}
++
++static int __devinit gr_spimctrl_probe(struct platform_device *pdev)
++{
++	struct gr_spimctrl *hw;
++	struct spi_master *master;
++	int err = -ENODEV;
++	struct resource *r;
++	u32 status;
++
++	master = spi_alloc_master(&pdev->dev, sizeof(struct gr_spimctrl));
++	if (!master)
++		return err;
++
++	/* setup the master state */
++	master->bus_num = pdev->id;
++	master->num_chipselect = GR_SPIM_NUMCS;
++	master->mode_bits = SPI_CS_HIGH;
++	master->setup = gr_spimctrl_setup;
++	master->cleanup = gr_spimctrl_cleanup;
++
++	hw = spi_master_get_devdata(master);
++	platform_set_drvdata(pdev, hw);
++
++	/* setup the state for the bitbang driver */
++	hw->bitbang.master = spi_master_get(master);
++	if (!hw->bitbang.master)
++		goto exit;
++	hw->bitbang.master->dev.of_node = of_node_get(pdev->dev.of_node);
++
++	hw->bitbang.setup_transfer = gr_spimctrl_setupxfer;
++	hw->bitbang.chipselect = gr_spimctrl_chipsel;
++	hw->bitbang.txrx_bufs = gr_spimctrl_txrx;
++
++	/* find and map our resources */
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	hw->base = of_ioremap(r, 0, resource_size(r), "ag-spimctrl regs");
++	if (!hw->base) {
++		err = -EBUSY;
++		goto exit;
++	}
++
++	/* check current hw state. if controller is busy, leave it alone */
++	status = gr_spim_read(hw->base + GR_SPIM_STAT);
++	if (status & GR_SPIM_STAT_BUSY) {
++		err = -EBUSY;
++		goto exit_iounmap;
++	}
++
++	/* save control register value to keep settings */
++	hw->ctrl = gr_spim_read(hw->base + GR_SPIM_CTRL);
++
++	/* irq is optional */
++	hw->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
++	if (hw->irq != NO_IRQ) {
++		init_completion(&hw->done);
++		err = request_irq(hw->irq, gr_spimctrl_irq, IRQF_SHARED,
++				pdev->name, hw);
++		if (err)
++			goto exit_iounmap;
++		/* enable interrupt, written to hw below */
++		hw->ctrl |= GR_SPIM_CTRL_IEN;
++	}
++
++	/* enter user mode so SPI comm. can be done via reg. interface */
++	if (!(hw->ctrl & GR_SPIM_CTRL_USRC)) {
++		hw->ctrl |= GR_SPIM_CTRL_USRC;
++		gr_spim_write(hw->ctrl, hw->base + GR_SPIM_CTRL);
++	}
++
++	/* register our spi controller */
++	err = spi_bitbang_start(&hw->bitbang);
++	if (err)
++		goto exit_iounmap;
++
++	dev_info(&pdev->dev, "base at 0x%p, irq %d, bus %d\n",
++		hw->base, hw->irq, master->bus_num);
++
++	return 0;
++
++exit_iounmap:
++	of_iounmap(r, hw->base, resource_size(r));
++exit:
++	spi_master_put(master);
++	platform_set_drvdata(pdev, NULL);
++	return err;
++}
++
++static int __devexit gr_spimctrl_remove(struct platform_device *pdev)
++{
++	struct gr_spimctrl *hw = platform_get_drvdata(pdev);
++	struct spi_master *master = hw->bitbang.master;
++	struct resource *r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	spi_bitbang_stop(&hw->bitbang);
++
++	/* bring hw out of user mode */
++	hw->ctrl &= ~GR_SPIM_CTRL_USRC;
++	gr_spim_write(hw->ctrl, hw->base + GR_SPIM_CTRL);
++
++	spi_master_put(master);
++
++	if (hw->irq != NO_IRQ)
++		free_irq(hw->irq, hw);
++	of_iounmap(r, hw->base,	resource_size(r));
++
++	platform_set_drvdata(pdev, NULL);
++
++	return 0;
++}
++
++#ifdef CONFIG_OF
++static const struct of_device_id gr_spimctrl_of_match[] = {
++	{ .name = "GAISLER_SPIMCTRL",},
++	{ .name = "01_045",},
++	{},
++};
++MODULE_DEVICE_TABLE(of, gr_spimctrl_of_match);
++#else /* CONFIG_OF */
++#define gr_spimctrl_of_match NULL
++#endif /* CONFIG_OF */
++
++static struct platform_driver gr_spimctrl_driver = {
++	.probe = gr_spimctrl_probe,
++	.remove = __devexit_p(gr_spimctrl_remove),
++	.driver = {
++		.name = DRV_NAME,
++		.owner = THIS_MODULE,
++		.pm = NULL,
++		.of_match_table = gr_spimctrl_of_match,
++	},
++};
++
++static int __init gr_spimctrl_init(void)
++{
++	return platform_driver_register(&gr_spimctrl_driver);
++}
++module_init(gr_spimctrl_init);
++
++static void __exit gr_spimctrl_exit(void)
++{
++	platform_driver_unregister(&gr_spimctrl_driver);
++}
++module_exit(gr_spimctrl_exit);
++
++MODULE_DESCRIPTION("Aeroflex Gaisler GRLIB SPIMCTRL driver");
++MODULE_AUTHOR("Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>");
++MODULE_LICENSE("GPL");
+-- 
+1.7.0.4
 
-[ ... ]
-
->> +
->> +static int __devinit ag_spimctrl_probe(struct platform_device *pdev)
->> +{
->> +	struct ag_spimctrl *hw;
->> +	struct spi_master *master;
->> +	int err = -ENODEV;
->> +	u32 status;
->> +
->> +	master = spi_alloc_master(&pdev->dev, sizeof(struct ag_spimctrl));
->> +	if (!master)
->> +		return err;
->> +
->> +	/* setup the master state */
->> +	master->bus_num = pdev->id;
->> +	master->num_chipselect = AG_SPIM_NUMCS;
->> +	master->mode_bits = SPI_CS_HIGH;
->> +	master->setup = ag_spimctrl_setup;
->> +	master->cleanup = ag_spimctrl_cleanup;
->> +
->> +	hw = spi_master_get_devdata(master);
->> +	platform_set_drvdata(pdev, hw);
->> +
->> +	/* setup the state for the bitbang driver */
->> +	hw->bitbang.master = spi_master_get(master);
->> +	if (!hw->bitbang.master)
->> +		goto exit;
->> +	hw->bitbang.master->dev.of_node = pdev->dev.of_node;
->
-> hw->bitbang.master->dev.of_node = of_node_get(pdev->dev.of_node);
->
-
-Fixed.
-
->> +
->> +	hw->bitbang.setup_transfer = ag_spimctrl_setupxfer;
->> +	hw->bitbang.chipselect = ag_spimctrl_chipsel;
->> +	hw->bitbang.txrx_bufs = ag_spimctrl_txrx;
->> +
->> +	/* find and map our resources */
->> +	hw->base = of_ioremap(&pdev->resource[AG_SPIM_REGBANK], 0,
->
-> Hmmm.  Will this device ever appear on anything other than a SPARC
-machine?
-> Using of_ioremap() makes the driver non-portable since only SPARC
-> implements it.  An alternative would be devm_ioremap()
->
-
-We will probably only see it on SPARC SoCs so I have left it as is for
-now. Let me know if you want it changed.
-
->> +			resource_size(&pdev->resource[AG_SPIM_REGBANK]),
->> +			"ag-spimctrl regs");
->
-> Instead of hardcoding the offset into the resource table, use
-> platform_get_resource(), with the IORESOURCE_MEM flag.
->
-
-Fixed
-
->> +	if (!hw->base) {
->> +		err = -EBUSY;
->> +		goto exit;
->> +	}
->> +
->> +	/* check current hw state. if controller is busy, leave it alone */
->> +	status = ag_spim_read(hw->base + AG_SPIM_STAT);
->> +	if (status & AG_SPIM_STAT_BUSY) {
->> +		err = -EBUSY;
->> +		goto exit_iounmap;
->> +	}
->> +
->> +	/* save control register value to keep settings */
->> +	hw->ctrl = ag_spim_read(hw->base + AG_SPIM_CTRL);
->> +
->> +	/* irq is optional */
->> +	hw->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
->
-> The irq should already be populated in the platform_device resource
-> table.  You shouldn't need to call irq_of_parse_and_map().
->
-
-I tried replacing the call with platform_get_irq() but did not get a
-sensible value back. I am not familiar with how these structures get
-populated. If I would follow how the irq is obtained in other drivers
-for these SoCs I would have done: hw->irq = pdev->archdata.irqs[0];
-
-I thought the call to irq_of_parse_and_map was cleaner, and the end
-result is the same. If the use of irq_of_parse_and_map is not acceptable
-I will need to dig deeper.
-
->> +	if (hw->irq != NO_IRQ) {
->> +		init_completion(&hw->done);
->> +		err = request_irq(hw->irq, ag_spimctrl_irq, 0, pdev->name, hw);
->> +		if (err)
->> +			goto exit_iounmap;
->> +		/* enable interrupt, written to hw below*/
->> +		hw->ctrl |= AG_SPIM_CTRL_IEN;
->> +	}
->> +
->> +	/* enter user mode so SPI comm. can be done via reg. interface */
->> +	if (!(hw->ctrl & AG_SPIM_CTRL_USRC)) {
->> +		hw->ctrl |= AG_SPIM_CTRL_USRC;
->> +		ag_spim_write(hw->ctrl, hw->base + AG_SPIM_CTRL);
->> +	}
->> +
-
-[ ... ]
-
->> +	platform_set_drvdata(pdev, NULL);
->> +
->> +	return 0;
->> +}
->> +
->> +#ifdef CONFIG_OF
->> +static const struct of_device_id ag_spimctrl_of_match[] = {
->> +	{ .name = "GAISLER_SPIMCTRL",},
->> +	{ .name = "01_045",},
->
-> Matching by name is deprecated and strongly discouraged.  You should
-> match by compatible property.  See
-> http://devicetree.org/Device_Tree_Usage for a description on how to
-> use the compatible property.
->
-
-Thanks for the link. GRLIB SoCs have one, or several, plug'n'play
-area(s) that are scanned by the loader. Currently the device tree for
-LEON/GRLIB SoCs is automatically generated at boot by a loader (quite
-convenient as the same linux image will work on many systems without the
-need for user intervention) that creates { .name = "<vendor id>_<device
-id>",} entries based on the information in plug'n'play. Apparently the
-machine generated tree does not comply to what is described in
-Device_Tree_Usage.
-
-It seem that to be compliant with Device_Tree_Usage, the loaders that
-generate the device tree will need to be modified. I have not been
-involved in that development but I can bring this up with the developers
-on Monday.
-
-Could you accept the current match table for now and when/if the loaders
-are updated we can submit patches that fixes all our drivers that use {
-.name = "<vendor>_<device>",}?
-
-I will send a V2 should you consider the changes above to be acceptable.
-In the V2 I will also add support for shared IRQs and after comments
-from a colleague I have renamed the driver to be consistent with names
-of other drivers for GRLIB SoCs.
-
-Thank you very much for the review!
-
-Best regards,
-  Jan
 
 ------------------------------------------------------------------------------
 WhatsUp Gold - Download Free Network Management Software

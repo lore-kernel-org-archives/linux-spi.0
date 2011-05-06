@@ -1,8 +1,9 @@
-From: M6deco <contact-45pnAnmuwWuy1Jsh9kmMZQ@public.gmane.org>
-Subject: M6deco vous a =?utf-8?Q?s=C3=A9lectionn=C3=A9?= pour remporter la
-	voiture de vos =?utf-8?Q?r=C3=AAves?=
-Date: Thu, 05 May 2011 11:47:51 +0200
-Message-ID: <1304588871.4dc2724716ad4@swift.generated>
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Mobile User Interface 2011-2016: Designing Compelling UI in iPhone
+	and Android Era
+Date: Fri, 6 May 2011 03:08:00 +0100
+Message-ID: <20110506030800.127482859@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,9 +19,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
- 
+Mobile User Interface 2011-2016: Designing Compelling UI in iPhone and Android Era
 ------------------------------------------------------------------------------
 WhatsUp Gold - Download Free Network Management Software
 The most intuitive, comprehensive, and cost-effective network 

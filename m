@@ -1,7 +1,7 @@
 From: nobody-e83xkrq8dvbB8XbDibcijQ@public.gmane.org (Unknown)
 Subject: ERBE
-Date: Sat,  7 May 2011 23:58:41 +0200 (CEST)
-Message-ID: <20110507235243.8345AA4E033@s248.silver.fastwebserver.de>
+Date: Mon,  9 May 2011 01:13:57 +0200 (CEST)
+Message-ID: <20110509004702.2F0DC126772C@s248.silver.fastwebserver.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 
 
-OFFICE <  inforlott-YDxpq3io04c@public.gmane.org  >
+OFFICE <infozsecs-YDxpq3io04c@public.gmane.org>
 
 Reply-To:
 
-  inforlott-YDxpq3io04c@public.gmane.org  
+infozsecs-YDxpq3io04c@public.gmane.org
 
 MIME-Version: 1.0
 
@@ -38,13 +38,9 @@ Content-Transfer-Encoding:
 
 
 
-dies ist meine zweite E-Mail an Sie, antworten Sie bitte auf die E-Mail, hier
-
-
-
 EUR 3,800,000,00, Erbschaft Geld, von, mein Mandant, der bei einem Autounfall starb, im Jahr 2008. er hat die gleichen, Nachname mit Ihnen
 
- Ich bin, ein Anwalt, wenn Sie daran interessiert sind, bitte kontaktieren Sie mich in meinem E-Mail    infozuss-YDxpq3io04c@public.gmane.org   
+Ich bin, ein Anwalt, wenn Sie daran interessiert sind, bitte kontaktieren Sie mich in meinem E-Mail   infoaabo-YDxpq3io04c@public.gmane.org 
 
 
 

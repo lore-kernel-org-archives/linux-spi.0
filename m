@@ -1,7 +1,7 @@
-From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
-Subject: [SPAM] Odontologia e na Bem estar
-Date: Tue, 10 May 2011 11:19:27 -0400
-Message-ID: <5b110b6fb5d8fa09689b644691dc7dc9@bemestarequipamentos.ind.br>
+From: "Sofinco - Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Beneficiez de notre taux promo pour realiser vos projets
+Date: Tue, 10 May 2011 19:04:46 +0200 (CEST)
+Message-ID: <lkzpbo.spy3y6@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -16,28 +16,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
-
-
-
- Caso nao consiga visualizar Clique aqui !
-<http://www.bemestarequipamentos.com/odon1.html>
-
- <http:www.bemestarequipamentos.com.br>
-
-
-
---
-Caso nao queira mais receber nossa mensagem, 
-http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
-
-Caso voce queira rever nossa mala
-diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
-Preferencia de formato
-http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=36
-
-
---
-Powered by PHPlist, www.phplist.com --
 
 
 ------------------------------------------------------------------------------

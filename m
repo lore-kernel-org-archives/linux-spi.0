@@ -1,50 +1,36 @@
-From: =?GB2312?B?v7XX2r6i?= <vfitx-noUgtLYs5ZjV+6/0yYnMOg@public.gmane.org>
-Subject: =?GB2312?B?NjU5uaTJy9SxuaS96LnKvty++Li0uaS1xLSmwO23vbeo?=
-Date: Tue, 10 May 2011 05:48:32 +0800
-Message-ID: <201105100548323720652@accesskenya.com>
+From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
+Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new device ML7213 IOH
+Date: Tue, 10 May 2011 14:59:00 +0900
+Message-ID: <1E339D61A60447BF8D1726A769D08FDA@hacdom.okisemi.com>
+References: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=uei163_1112_45228645.149973"
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
+	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>
+To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
+	"'Grant Likely'" <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-------=uei163_1112_45228645.149973
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: base64
+Hi Grant,
 
-Sk1ET0dYTkxWDQoNCsjDueO088bz0rXBy73i1cbO1dC9s+q4o8D7t72wuLXEyei8xrywxuS3qMLJ
-t+fP1bXEsNG/2NKqteMu18rBz7i9vP7W0A0KDQpYNi04XQ==
+> Sent: Wednesday, April 27, 2011 11:23 AM
+> To: David Brownell; Grant Likely; 
+> spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
+> Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
+> joel.clark@intel.com; kok.howg.ewe@intel.com; Tomoya MORINAGA
+> Subject: [PATCH v4 1/2] spi_topcliff_pch: support new device 
+> ML7213 IOH
 
+Could you review this patch ?
 
-------=uei163_1112_45228645.149973
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-WhatsUp Gold - Download Free Network Management Software
-The most intuitive, comprehensive, and cost-effective network 
-management toolset available today.  Delivers lowest initial 
-acquisition cost and overall TCO of any competing solution.
-http://p.sf.net/sfu/whatsupgold-sd
-------=uei163_1112_45228645.149973
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=uei163_1112_45228645.149973--
+With Best Regards,
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD.

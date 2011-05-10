@@ -1,36 +1,48 @@
-From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
-Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new device ML7213 IOH
-Date: Tue, 10 May 2011 14:59:00 +0900
-Message-ID: <1E339D61A60447BF8D1726A769D08FDA@hacdom.okisemi.com>
-References: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
+Subject: [SPAM] Odontologia e na Bem estar
+Date: Tue, 10 May 2011 11:19:27 -0400
+Message-ID: <5b110b6fb5d8fa09689b644691dc7dc9@bemestarequipamentos.ind.br>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
-	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>
-To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
-	"'Grant Likely'" <grant.likely@secretlab.ca>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com>
-Sender: linux-kernel-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
 
-> Sent: Wednesday, April 27, 2011 11:23 AM
-> To: David Brownell; Grant Likely; 
-> spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
-> Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
-> joel.clark@intel.com; kok.howg.ewe@intel.com; Tomoya MORINAGA
-> Subject: [PATCH v4 1/2] spi_topcliff_pch: support new device 
-> ML7213 IOH
 
-Could you review this patch ?
+ Caso nao consiga visualizar Clique aqui !
+<http://www.bemestarequipamentos.com/odon1.html>
 
-With Best Regards,
------------------------------------------
-Tomoya MORINAGA
-OKI SEMICONDUCTOR CO., LTD.
+ <http:www.bemestarequipamentos.com.br>
+
+
+
+--
+Caso nao queira mais receber nossa mensagem, 
+http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
+
+Caso voce queira rever nossa mala
+diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
+Preferencia de formato
+http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=36
+
+
+--
+Powered by PHPlist, www.phplist.com --
+
+
+------------------------------------------------------------------------------
+Achieve unprecedented app performance and reliability
+What every C/C++ and Fortran developer should know.
+Learn how Intel has extended the reach of its next-generation tools
+to help boost performance applications - inlcuding clusters.
+http://p.sf.net/sfu/intel-dev2devmay

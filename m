@@ -1,32 +1,105 @@
-From: 13560740732-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 税/票--代/开
-Date: Wed, 11 May 2011 21:40:12 +0800
-Message-ID: <E1QK9eC-0003S2-GC@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Antonio Ospite <ospite@studenti.unina.it>
+Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
+Date: Wed, 11 May 2011 22:53:37 +0200
+Message-ID: <20110511225337.094839a2.ospite@studenti.unina.it>
+References: <1303476191-20663-1-git-send-email-ospite@studenti.unina.it>
+	<1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
+	<20110511130852.GB12469@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Wed__11_May_2011_22_53_37_+0200_K.2=OBS.ZA83MALg"
+Cc: linux-mmc@vger.kernel.org, Chris Ball <cjb@laptop.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	openezx-devel@lists.openezx.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20110511130852.GB12469@opensource.wolfsonmicro.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsC0txrEvtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK28uwLS3G
-saO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsS+1yLXIoaMKufO5q8u+yOfT0NDo0qqj
-rLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2MDc0MDcz
-MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFjaGlldmUgdW5wcmVjZWRlbnRlZCBhcHAgcGVyZm9y
-bWFuY2UgYW5kIHJlbGlhYmlsaXR5CldoYXQgZXZlcnkgQy9DKysgYW5kIEZvcnRyYW4gZGV2ZWxv
-cGVyIHNob3VsZCBrbm93LgpMZWFybiBob3cgSW50ZWwgaGFzIGV4dGVuZGVkIHRoZSByZWFjaCBv
-ZiBpdHMgbmV4dC1nZW5lcmF0aW9uIHRvb2xzCnRvIGhlbHAgYm9vc3QgcGVyZm9ybWFuY2UgYXBw
-bGljYXRpb25zIC0gaW5sY3VkaW5nIGNsdXN0ZXJzLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVs
-LWRldjJkZXZtYXkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--Signature=_Wed__11_May_2011_22_53_37_+0200_K.2=OBS.ZA83MALg
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 11 May 2011 15:08:53 +0200
+Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+
+[...]
+> > +	switch (power_mode) {
+> > +	case MMC_POWER_OFF:
+> > +		if (host->vcc) {
+> > +			int ret =3D mmc_regulator_set_ocr(host->mmc,
+> > +							host->vcc, 0);
+> > +			if (ret)
+> > +				return ret;
+> > +		} else {
+> > +			host->pdata->setpower(&host->spi->dev, vdd);
+> > +		}
+> > +		break;
+> > +
+> > +	case MMC_POWER_UP:
+> > +		if (host->vcc) {
+> > +			int ret =3D mmc_regulator_set_ocr(host->mmc,
+> > +							host->vcc, vdd);
+> > +			if (ret)
+> > +				return ret;
+> > +		} else {
+> >  			host->pdata->setpower(&host->spi->dev, vdd);
+> > -			if (power_mode =3D=3D MMC_POWER_UP)
+> > -				msleep(host->powerup_msecs);
+> >  		}
+> > +		msleep(host->powerup_msecs);
+> > +		break;
+>=20
+> This stuff all looks like it should be factored out.
+>=20
+
+OK, avoiding some duplication will be good, I agree.
+
+I am resending a v4 with the equivalent code:
+
+	if (host->vcc) {
+		int ret;
+
+		if (power_mode =3D=3D MMC_POWER_OFF)
+			vdd =3D 0;
+
+		ret =3D mmc_regulator_set_ocr(host->mmc, host->vcc, vdd);
+		if (ret)
+			return ret;
+	} else {
+		host->pdata->setpower(&host->spi->dev, vdd);
+	}
+
+	if (power_mode =3D=3D MMC_POWER_UP)
+		msleep(host->powerup_msecs);
+
+
+Thanks,
+   Antonio
+
+--=20
+Antonio Ospite
+http://ao2.it
+
+PGP public key ID: 0x4553B001
+
+A: Because it messes up the order in which people normally read text.
+   See http://en.wikipedia.org/wiki/Posting_style
+Q: Why is top-posting such a bad thing?
+
+--Signature=_Wed__11_May_2011_22_53_37_+0200_K.2=OBS.ZA83MALg
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAk3K91EACgkQ5xr2akVTsAHR2QCfYVM0diWYql6mFtoCOawnnnPa
+O1sAoKOw1UQnu7XtbhhOneVhVTNaK+ku
+=9a0/
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__11_May_2011_22_53_37_+0200_K.2=OBS.ZA83MALg--

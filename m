@@ -1,14 +1,11 @@
-From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] spi: spi_sh: calling spi_unregister_master instead of
-	spi_master_put in spi_sh_remove
-Date: Wed, 11 May 2011 21:27:00 +0800
-Message-ID: <1305120420.6324.6.camel@phoenix>
+From: 13560740732-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票--代/开
+Date: Wed, 11 May 2011 21:40:12 +0800
+Message-ID: <E1QK9eC-0003S2-GC@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,40 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi_master_put() should only be used in error handling.
-Once spi_register_master() returns success, we should call
-spi_unregister_master() instead.
-
-Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi_sh.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi_sh.c b/drivers/spi/spi_sh.c
-index 869a07d..9eedd71 100644
---- a/drivers/spi/spi_sh.c
-+++ b/drivers/spi/spi_sh.c
-@@ -427,10 +427,10 @@ static int __devexit spi_sh_remove(struct platform_device *pdev)
- {
- 	struct spi_sh_data *ss = dev_get_drvdata(&pdev->dev);
- 
-+	spi_unregister_master(ss->master);
- 	destroy_workqueue(ss->workqueue);
- 	free_irq(ss->irq, ss);
- 	iounmap(ss->addr);
--	spi_master_put(ss->master);
- 
- 	return 0;
- }
--- 
-1.7.1
-
-
-
-
-------------------------------------------------------------------------------
-Achieve unprecedented app performance and reliability
-What every C/C++ and Fortran developer should know.
-Learn how Intel has extended the reach of its next-generation tools
-to help boost performance applications - inlcuding clusters.
-http://p.sf.net/sfu/intel-dev2devmay
+xPq6w6O6IAogICAgztK5q8u+09DLsC0txrEvtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK28uwLS3G
+saO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsS+1yLXIoaMKufO5q8u+yOfT0NDo0qqj
+rLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2MDc0MDcz
+MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFjaGlldmUgdW5wcmVjZWRlbnRlZCBhcHAgcGVyZm9y
+bWFuY2UgYW5kIHJlbGlhYmlsaXR5CldoYXQgZXZlcnkgQy9DKysgYW5kIEZvcnRyYW4gZGV2ZWxv
+cGVyIHNob3VsZCBrbm93LgpMZWFybiBob3cgSW50ZWwgaGFzIGV4dGVuZGVkIHRoZSByZWFjaCBv
+ZiBpdHMgbmV4dC1nZW5lcmF0aW9uIHRvb2xzCnRvIGhlbHAgYm9vc3QgcGVyZm9ybWFuY2UgYXBw
+bGljYXRpb25zIC0gaW5sY3VkaW5nIGNsdXN0ZXJzLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2ludGVs
+LWRldjJkZXZtYXkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

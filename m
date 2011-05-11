@@ -1,15 +1,18 @@
-From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: tle620x: add missing device_remove_file()
-Date: Wed, 11 May 2011 20:39:05 +0800
-Message-ID: <1305117545.6324.3.camel@phoenix>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
+Date: Wed, 11 May 2011 15:08:53 +0200
+Message-ID: <20110511130852.GB12469@opensource.wolfsonmicro.com>
+References: <1303476191-20663-1-git-send-email-ospite@studenti.unina.it>
+	<1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ben Dooks <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>,
-	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: openezx-devel-ZwoEplunGu3n3BO9LpVK+9i2O/JbrIOy@public.gmane.org, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1305110379-17218-1-git-send-email-ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,43 +23,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch includes below fixes:
-1. Add missing device_remove_file for dev_attr_status_show in tle62x0_remove.
-2. Fix tle62x0_probe error handling:
-   Currently, if the error happens when ptr > 0, gpio_attrs[0] is not
-   properly remove.
+On Wed, May 11, 2011 at 12:39:39PM +0200, Antonio Ospite wrote:
+> Add support for powering up SD cards driven by regulators.
+> This makes the mmc_spi driver work also with the Motorola A910 phone.
+> 
+> Signed-off-by: Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/tle62x0.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
+Reviwed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
-diff --git a/drivers/spi/tle62x0.c b/drivers/spi/tle62x0.c
-index a393895..32a4087 100644
---- a/drivers/spi/tle62x0.c
-+++ b/drivers/spi/tle62x0.c
-@@ -283,7 +283,7 @@ static int __devinit tle62x0_probe(struct spi_device *spi)
- 	return 0;
- 
-  err_gpios:
--	for (; ptr > 0; ptr--)
-+	while (--ptr >= 0)
- 		device_remove_file(&spi->dev, gpio_attrs[ptr]);
- 
- 	device_remove_file(&spi->dev, &dev_attr_status_show);
-@@ -301,6 +301,7 @@ static int __devexit tle62x0_remove(struct spi_device *spi)
- 	for (ptr = 0; ptr < st->nr_gpio; ptr++)
- 		device_remove_file(&spi->dev, gpio_attrs[ptr]);
- 
-+	device_remove_file(&spi->dev, &dev_attr_status_show);
- 	kfree(st);
- 	return 0;
- }
--- 
-1.7.1
+but
 
+> +	switch (power_mode) {
+> +	case MMC_POWER_OFF:
+> +		if (host->vcc) {
+> +			int ret = mmc_regulator_set_ocr(host->mmc,
+> +							host->vcc, 0);
+> +			if (ret)
+> +				return ret;
+> +		} else {
+> +			host->pdata->setpower(&host->spi->dev, vdd);
+> +		}
+> +		break;
+> +
+> +	case MMC_POWER_UP:
+> +		if (host->vcc) {
+> +			int ret = mmc_regulator_set_ocr(host->mmc,
+> +							host->vcc, vdd);
+> +			if (ret)
+> +				return ret;
+> +		} else {
+>  			host->pdata->setpower(&host->spi->dev, vdd);
+> -			if (power_mode == MMC_POWER_UP)
+> -				msleep(host->powerup_msecs);
+>  		}
+> +		msleep(host->powerup_msecs);
+> +		break;
 
-
+This stuff all looks like it should be factored out.
 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability

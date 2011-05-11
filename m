@@ -1,47 +1,32 @@
-From: viresh kumar <viresh.kumar@st.com>
-Subject: Re: [QUERY] Behavior of spi slave memories w.r.t chip select signal.
-Date: Wed, 11 May 2011 12:49:42 +0530
-Message-ID: <4DCA388E.5060003@st.com>
-References: <4DCA0B77.8060700@st.com>
-	<20110511071754.GN26703@pulham.picochip.com>
+From: 13538033334-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 你好：税/票――代/开
+Date: Wed, 11 May 2011 17:45:34 +0800
+Message-ID: <E1QK5zE-0002JD-3G@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Dinesh Kumar SHARMA <dinesh.sharma@st.com>,
-	Linus WALLEIJ <linus.walleij@stericsson.com>,
-	Armando VISCONTI <armando.visconti@st.com>,
-	Shiraz HASHIM <shiraz.hashim@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	Vikas MANOCHA <vikas.manocha@st.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Jamie Iles <jamie@jamieiles.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110511071754.GN26703@pulham.picochip.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/11/2011 12:47 PM, Jamie Iles wrote:
-> What SPI controller are you using?  I've seen a similar issue with the 
-> Synopsys DesignWare SPI controller where the controller manages the chip 
-> select itself, and once the FIFO is emptied the CS goes away, but the 
-> flash chip requires it to stay high for the whole transaction.  In this 
-> case the workaround is to use a GPIO as a chip select and there are 
-> other controllers that do the same thing for the same reason (I think 
-> that pxa2xx_spi is one of them).
-
-I am using amba pl022 controller and using external gpio's to control
-chip select signal. cs is kept low for entire message, but still i am facing
-this issue.
-
--- 
-viresh
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
+1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
+tcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAg
+ICAgICC4utTwyMujutXFz8jJ+igwKTEzNTM4MDMzMzM0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+QWNoaWV2ZSB1bnByZWNlZGVudGVkIGFwcCBwZXJmb3JtYW5jZSBhbmQgcmVsaWFiaWxpdHkKV2hh
+dCBldmVyeSBDL0MrKyBhbmQgRm9ydHJhbiBkZXZlbG9wZXIgc2hvdWxkIGtub3cuCkxlYXJuIGhv
+dyBJbnRlbCBoYXMgZXh0ZW5kZWQgdGhlIHJlYWNoIG9mIGl0cyBuZXh0LWdlbmVyYXRpb24gdG9v
+bHMKdG8gaGVscCBib29zdCBwZXJmb3JtYW5jZSBhcHBsaWNhdGlvbnMgLSBpbmxjdWRpbmcgY2x1
+c3RlcnMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWwtZGV2MmRldm1heQpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
+aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
+bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

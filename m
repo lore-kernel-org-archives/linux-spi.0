@@ -1,18 +1,16 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
-Date: Wed, 11 May 2011 15:08:53 +0200
-Message-ID: <20110511130852.GB12469@opensource.wolfsonmicro.com>
-References: <1303476191-20663-1-git-send-email-ospite@studenti.unina.it>
-	<1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
+From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 2/2] spi: spi_tegra: calling spi_unregister_master instead
+	of spi_master_put in spi_tegra_remove
+Date: Wed, 11 May 2011 21:28:16 +0800
+Message-ID: <1305120496.6324.8.camel@phoenix>
+References: <1305120420.6324.6.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: openezx-devel-ZwoEplunGu3n3BO9LpVK+9i2O/JbrIOy@public.gmane.org, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1305110379-17218-1-git-send-email-ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+In-Reply-To: <1305120420.6324.6.camel@phoenix>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,43 +21,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 11, 2011 at 12:39:39PM +0200, Antonio Ospite wrote:
-> Add support for powering up SD cards driven by regulators.
-> This makes the mmc_spi driver work also with the Motorola A910 phone.
-> 
-> Signed-off-by: Antonio Ospite <ospite-aNJ+ML1ZbiP93QAQaVx+gl6hYfS7NtTn@public.gmane.org>
+spi_master_put() should only be used in error handling.
+Once spi_register_master() returns success, we should call
+spi_unregister_master() instead.
 
-Reviwed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi_tegra.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-but
+diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+index 891e590..6c3aa6e 100644
+--- a/drivers/spi/spi_tegra.c
++++ b/drivers/spi/spi_tegra.c
+@@ -578,6 +578,7 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
+ 	master = dev_get_drvdata(&pdev->dev);
+ 	tspi = spi_master_get_devdata(master);
+ 
++	spi_unregister_master(master);
+ 	tegra_dma_free_channel(tspi->rx_dma);
+ 
+ 	dma_free_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+@@ -586,7 +587,6 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
+ 	clk_put(tspi->clk);
+ 	iounmap(tspi->base);
+ 
+-	spi_master_put(master);
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	release_mem_region(r->start, (r->end - r->start) + 1);
+ 
+-- 
+1.7.1
 
-> +	switch (power_mode) {
-> +	case MMC_POWER_OFF:
-> +		if (host->vcc) {
-> +			int ret = mmc_regulator_set_ocr(host->mmc,
-> +							host->vcc, 0);
-> +			if (ret)
-> +				return ret;
-> +		} else {
-> +			host->pdata->setpower(&host->spi->dev, vdd);
-> +		}
-> +		break;
-> +
-> +	case MMC_POWER_UP:
-> +		if (host->vcc) {
-> +			int ret = mmc_regulator_set_ocr(host->mmc,
-> +							host->vcc, vdd);
-> +			if (ret)
-> +				return ret;
-> +		} else {
->  			host->pdata->setpower(&host->spi->dev, vdd);
-> -			if (power_mode == MMC_POWER_UP)
-> -				msleep(host->powerup_msecs);
->  		}
-> +		msleep(host->powerup_msecs);
-> +		break;
 
-This stuff all looks like it should be factored out.
+
 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability

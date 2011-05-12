@@ -1,7 +1,7 @@
 From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
 Subject: [SPAM] Poltrona Idream com super desconto.
-Date: Thu, 12 May 2011 15:06:33 -0400
-Message-ID: <62de1e93d7915f276e0151b085833823@bemestarequipamentos.ind.br>
+Date: Thu, 12 May 2011 15:38:20 -0400
+Message-ID: <cbdc62425aa6ae18b9ded3b21022f591@bemestarequipamentos.ind.br>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -33,7 +33,7 @@ http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db
 Caso voce queira rever nossa mala
 diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
 Preferencia de formato
-http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=43
+http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=46
 
 
 --

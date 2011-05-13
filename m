@@ -1,42 +1,54 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/amba-pl022: work in polling or interrupt mode if
-	pl022_dma_probe fails
-Date: Fri, 13 May 2011 16:22:13 +0200
-Message-ID: <BANLkTik0RJTA8EVMEOnBS=M4t+KHH+MJRA@mail.gmail.com>
-References: <a105605733caadfea25034ce0b8af73eb907fd33.1305287569.git.viresh.kumar@st.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [QUERY] amba/pl022: DMA channel allocation always fail.
+Date: Fri, 13 May 2011 16:31:04 +0200
+Message-ID: <BANLkTinMH9TpTTzqoMPS7JZUBRss3pScWg@mail.gmail.com>
+References: <4DCD1D80.7060409@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: armando.visconti-qxv4g6HH51o@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, shiraz.hashim-qxv4g6HH51o@public.gmane.org
-To: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <a105605733caadfea25034ce0b8af73eb907fd33.1305287569.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Armando VISCONTI <armando.visconti@st.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	viresh kumar <viresh.linux@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Shiraz HASHIM <shiraz.hashim@st.com>
+To: viresh kumar <viresh.kumar@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <4DCD1D80.7060409@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/5/13 Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>:
+2011/5/13 viresh kumar <viresh.kumar@st.com>:
 
-> If pl022_dma_probe fails, we can try to transfer data in polling or interrupt
-> mode. Also, set platform_info->enable_dma to 0, so that no other code tries to
-> use dma.
+> amba/pl022 and my dma driver dw_dmac.c, both have registered init() routines
+> with subsys_initcall(). Now at bootup, spi boots up before DMA and so DMA
+> channels are never available at spi probe.
+>
+> What should be done to solve this issue?
 
-Sure why not!
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+If you check drivers/dma/ste_dma40.c you can see that our solution was to
+simply move the DMA engine to arch_initcall().
 
-Yours,
+Which sort of makes sense for a DMA engine.
+
+Does this work for dw_dmac.c?
+
+> One idea is allocate DMA channel as and when required, instead of allocating them
+> at probe. But in that case too i am not sure, that this issue will be solved.
+
+For the serial port I've added a real funny tweak to queue the ports
+and add DMA later since these are initialized very early.
+
+Check in drivers/tty/serial/amba-pl011.c
+
+Hope this helps,
 Linus Walleij
-
-------------------------------------------------------------------------------
-Achieve unprecedented app performance and reliability
-What every C/C++ and Fortran developer should know.
-Learn how Intel has extended the reach of its next-generation tools
-to help boost performance applications - inlcuding clusters.
-http://p.sf.net/sfu/intel-dev2devmay

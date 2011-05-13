@@ -1,46 +1,84 @@
-From: viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [QUERY] amba/pl022: DMA channel allocation always fail.
-Date: Fri, 13 May 2011 17:31:04 +0530
-Message-ID: <4DCD1D80.7060409@st.com>
+From: viresh kumar <viresh.linux@gmail.com>
+Subject: Re: [PATCH] spi/amba-pl022: work in polling or interrupt mode if
+	pl022_dma_probe fails
+Date: Fri, 13 May 2011 18:49:39 +0530
+Message-ID: <BANLkTi=V7Y1boyEVn5feSzUiZbUL5RhJyQ@mail.gmail.com>
+References: <a105605733caadfea25034ce0b8af73eb907fd33.1305287569.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
-	Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>
-To: "linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org" <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: armando.visconti@st.com, Shiraz HASHIM <shiraz.hashim@st.com>,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net
+To: linus.walleij@stericsson.com
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <a105605733caadfea25034ce0b8af73eb907fd33.1305287569.git.viresh.kumar@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Linus,
+On 5/13/11, Viresh Kumar <viresh.kumar@st.com> wrote:
+> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+> index 08de58e..82b98b8 100644
+> --- a/drivers/spi/amba-pl022.c
+> +++ b/drivers/spi/amba-pl022.c
+> @@ -1063,7 +1063,7 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+>  					    pl022->master_info->dma_filter,
+>  					    pl022->master_info->dma_rx_param);
+>  	if (!pl022->dma_rx_channel) {
+> -		dev_err(&pl022->adev->dev, "no RX DMA channel!\n");
+> +		dev_warn(&pl022->adev->dev, "no RX DMA channel!\n");
 
-amba/pl022 and my dma driver dw_dmac.c, both have registered init() routines
-with subsys_initcall(). Now at bootup, spi boots up before DMA and so DMA
-channels are never available at spi probe.
+Sorry, this must be dev_dbg
 
-What should be done to solve this issue?
+>  		goto err_no_rxchan;
+>  	}
+>
+> @@ -1071,13 +1071,13 @@ static int __init pl022_dma_probe(struct pl022
+> *pl022)
+>  					    pl022->master_info->dma_filter,
+>  					    pl022->master_info->dma_tx_param);
+>  	if (!pl022->dma_tx_channel) {
+> -		dev_err(&pl022->adev->dev, "no TX DMA channel!\n");
+> +		dev_warn(&pl022->adev->dev, "no TX DMA channel!\n");
 
-One idea is allocate DMA channel as and when required, instead of allocating them
-at probe. But in that case too i am not sure, that this issue will be solved.
-As, if spi slave device is added from board file, then it will also try to transfer
-data as soon as spi driver is up. So that too may be called before dma_probe().
+                dev_dbg
 
--- 
+>  		goto err_no_txchan;
+>  	}
+>
+>  	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!pl022->dummypage) {
+> -		dev_err(&pl022->adev->dev, "no DMA dummypage!\n");
+> +		dev_warn(&pl022->adev->dev, "no DMA dummypage!\n");
+
+                dev_dbg
+
+>  		goto err_no_dummypage;
+>  	}
+>
+> @@ -1093,6 +1093,8 @@ err_no_txchan:
+>  	dma_release_channel(pl022->dma_rx_channel);
+>  	pl022->dma_rx_channel = NULL;
+>  err_no_rxchan:
+> +	dev_warn(&pl022->adev->dev,
+
+        dev_err
+
+> +			"Failed to work in dma mode, work without dma!\n");
+>  	return -ENODEV;
+>  }
+>
+
+Will resend patch on Monday. Till that time, please see if this patch
+with mentioned changes is acceptable or not.
+
+--
 viresh
-
-------------------------------------------------------------------------------
-Achieve unprecedented app performance and reliability
-What every C/C++ and Fortran developer should know.
-Learn how Intel has extended the reach of its next-generation tools
-to help boost performance applications - inlcuding clusters.
-http://p.sf.net/sfu/intel-dev2devmay

@@ -1,12 +1,21 @@
-From: "Amaguiz - Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: votre assurance auto 25% moins chere en moyenne!
-Date: Fri, 13 May 2011 01:01:59 +0200 (CEST)
-Message-ID: <ll3v76.qlfwbn@front02.r7g.com>
+From: viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [QUERY] Behavior of spi slave memories w.r.t chip select signal.
+Date: Fri, 13 May 2011 09:22:57 +0530
+Message-ID: <4DCCAB19.2020302@st.com>
+References: <4DCA0B77.8060700@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Dinesh Kumar SHARMA <dinesh.sharma-qxv4g6HH51o@public.gmane.org>,
+	Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
+	Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>, Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>,
+	Vikas MANOCHA <vikas.manocha-qxv4g6HH51o@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org" <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4DCA0B77.8060700-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,6 +26,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 05/11/2011 09:37 AM, viresh kumar wrote:
+> 
+> Hello,
+> 
+> Following is what i understood after reading m25p80 driver and spi master
+> drivers in drivers/spi folder.
+> 
+> "chip_select signal controls start and end of transfer. For ex: if we have to read
+> status reg of spi memory, then we use write_and_then_read() routine. which writes
+> 0x9F in one spi transfer and writes dummy bytes and reads rx reg in other transfer.
+> And these two transfers are part of single spi_message.
+> 
+> Now, it is controllable to handle cs, and if we send cs_change == 0, then chip select
+> is activated at start of message and deactivated at end of message, instead at end
+> of every transfer.
+> 
+> Which means, even if there is a delay between command and dummy bytes received at
+> spi memory, current transfer will not be terminated by memory as cs is low."
+> 
+> Is this correct??
+> 
+> Actually i am seeing a different behavior by some of the spi memories, like m25p10.
+> If there is a delay between read_sts_reg command and dummy bytes, then 0xFFFFFF is
+> returned in response. If there is no delay then transfer always passes.
+> 
+
+Linus, Jamie,
+
+Have you ever seen this kind of issue? Which spi slave memories did you used for testing?
+I am using standard pl0022 and m25p80 driver. Tried in all modes: polling, interrupt, dma.
+
+-- 
+viresh
 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability

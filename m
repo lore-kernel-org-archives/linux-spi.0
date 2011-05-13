@@ -1,55 +1,89 @@
-From: viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [QUERY] Behavior of spi slave memories w.r.t chip select signal.
-Date: Fri, 13 May 2011 14:50:37 +0530
-Message-ID: <4DCCF7E5.2090009@st.com>
-References: <4DCA0B77.8060700@st.com>	<4DCCAB19.2020302@st.com>
-	<BANLkTik2OxGdQ7z1JBAsE+=gc5UCgx3wEA@mail.gmail.com>
+From: Viresh Kumar <viresh.kumar@st.com>
+Subject: [PATCH] spi/amba-pl022: work in polling or interrupt mode if
+	pl022_dma_probe fails
+Date: Fri, 13 May 2011 17:24:39 +0530
+Message-ID: <a105605733caadfea25034ce0b8af73eb907fd33.1305287569.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Dinesh Kumar SHARMA <dinesh.sharma-qxv4g6HH51o@public.gmane.org>,
-	Martin BERGSTROM <martin.bergstrom-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
-	Marcus COOPER <marcus.xm.cooper-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Vikas MANOCHA <vikas.manocha-qxv4g6HH51o@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Jamie Iles <jamie-wmLquQDDieKakBO8gow8eQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <BANLkTik2OxGdQ7z1JBAsE+=gc5UCgx3wEA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: armando.visconti@st.com, shiraz.hashim@st.com, viresh.linux@gmail.com
+To: <linus.walleij@stericsson.com>, <linux-arm-kernel@lists.infradead.org>,
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/13/2011 12:24 PM, Linus Walleij wrote:
-> 2011/5/13 viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>:
->> Linus, Jamie,
->>
->> Have you ever seen this kind of issue? Which spi slave memories did you used for testing?
->> I am using standard pl0022 and m25p80 driver. Tried in all modes: polling, interrupt, dma.
-> 
-> Not really. I'll throw in a few people on CC and see if they have some hints.
-> 
+If pl022_dma_probe fails, we can try to transfer data in polling or interrupt
+mode. Also, set platform_info->enable_dma to 0, so that no other code tries to
+use dma.
 
-Thanks guys.
+Signed-off-by: Viresh Kumar <viresh.kumar@st.com>
+---
+ drivers/spi/amba-pl022.c |   11 ++++++-----
+ 1 files changed, 6 insertions(+), 5 deletions(-)
 
-Issue is solved now, data must be latched on Rising Edge and i have passed phase as falling edge.
-
---
-viresh
-
-------------------------------------------------------------------------------
-Achieve unprecedented app performance and reliability
-What every C/C++ and Fortran developer should know.
-Learn how Intel has extended the reach of its next-generation tools
-to help boost performance applications - inlcuding clusters.
-http://p.sf.net/sfu/intel-dev2devmay
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 08de58e..82b98b8 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -1063,7 +1063,7 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+ 					    pl022->master_info->dma_filter,
+ 					    pl022->master_info->dma_rx_param);
+ 	if (!pl022->dma_rx_channel) {
+-		dev_err(&pl022->adev->dev, "no RX DMA channel!\n");
++		dev_warn(&pl022->adev->dev, "no RX DMA channel!\n");
+ 		goto err_no_rxchan;
+ 	}
+ 
+@@ -1071,13 +1071,13 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+ 					    pl022->master_info->dma_filter,
+ 					    pl022->master_info->dma_tx_param);
+ 	if (!pl022->dma_tx_channel) {
+-		dev_err(&pl022->adev->dev, "no TX DMA channel!\n");
++		dev_warn(&pl022->adev->dev, "no TX DMA channel!\n");
+ 		goto err_no_txchan;
+ 	}
+ 
+ 	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!pl022->dummypage) {
+-		dev_err(&pl022->adev->dev, "no DMA dummypage!\n");
++		dev_warn(&pl022->adev->dev, "no DMA dummypage!\n");
+ 		goto err_no_dummypage;
+ 	}
+ 
+@@ -1093,6 +1093,8 @@ err_no_txchan:
+ 	dma_release_channel(pl022->dma_rx_channel);
+ 	pl022->dma_rx_channel = NULL;
+ err_no_rxchan:
++	dev_warn(&pl022->adev->dev,
++			"Failed to work in dma mode, work without dma!\n");
+ 	return -ENODEV;
+ }
+ 
+@@ -2107,7 +2109,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	if (platform_info->enable_dma) {
+ 		status = pl022_dma_probe(pl022);
+ 		if (status != 0)
+-			goto err_no_dma;
++			platform_info->enable_dma = 0;
+ 	}
+ 
+ 	/* Initialize and start queue */
+@@ -2143,7 +2145,6 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+  err_init_queue:
+ 	destroy_queue(pl022);
+ 	pl022_dma_remove(pl022);
+- err_no_dma:
+ 	free_irq(adev->irq[0], pl022);
+  err_no_irq:
+ 	clk_put(pl022->clk);
+-- 
+1.7.2.2

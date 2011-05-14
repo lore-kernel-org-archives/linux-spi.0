@@ -1,26 +1,39 @@
-From: "Banque Accord par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Financez de nouveaux projets en regroupant vos credits
-Date: Sat, 14 May 2011 12:31:41 +0200 (CEST)
-Message-ID: <ll6lss.vfrjtz@front02.r7g.com>
+From: Axel Lin <axel.lin@gmail.com>
+Subject: [PATCH 1/2] spi: spi_nuc900: Use spi_bitbang_stop instead of
+ spi_unregister_master in nuc900_spi_remove
+Date: Sun, 15 May 2011 07:33:28 +0800
+Message-ID: <1305416008.24670.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Wan ZongShun <mcuos.com@gmail.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Calling spi_bitbang_stop() will also destroy bitbang->workqueue,
+which is created by calling spi_bitbang_start() in nuc900_spi_probe().
 
-------------------------------------------------------------------------------
-Achieve unprecedented app performance and reliability
-What every C/C++ and Fortran developer should know.
-Learn how Intel has extended the reach of its next-generation tools
-to help boost performance applications - inlcuding clusters.
-http://p.sf.net/sfu/intel-dev2devmay
+Signed-off-by: Axel Lin <axel.lin@gmail.com>
+---
+ drivers/spi/spi_nuc900.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi_nuc900.c b/drivers/spi/spi_nuc900.c
+index d5be18b..3cd15f6 100644
+--- a/drivers/spi/spi_nuc900.c
++++ b/drivers/spi/spi_nuc900.c
+@@ -463,7 +463,7 @@ static int __devexit nuc900_spi_remove(struct platform_device *dev)
+ 
+ 	platform_set_drvdata(dev, NULL);
+ 
+-	spi_unregister_master(hw->master);
++	spi_bitbang_stop(&hw->bitbang);
+ 
+ 	clk_disable(hw->clk);
+ 	clk_put(hw->clk);
+-- 
+1.7.1

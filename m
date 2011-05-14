@@ -1,7 +1,7 @@
-From: "Mercedes-Benz" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Ne manquez pas cette offre exceptionnelle
-Date: Sat, 14 May 2011 05:41:57 +0200 (CEST)
-Message-ID: <ll629s.j4qnsx@front07.g7r9.com>
+From: "Banque Accord par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Financez de nouveaux projets en regroupant vos credits
+Date: Sat, 14 May 2011 12:31:41 +0200 (CEST)
+Message-ID: <ll6lss.vfrjtz@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

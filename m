@@ -1,7 +1,7 @@
-From: "Sofinco par ReflexFleurs.com" <contact-45pnAnmuwWuy1Jsh9kmMZQ@public.gmane.org>
-Subject: =?utf-8?Q?r=C3=A9sultat_imm=C3=A9diat?= : choisissez votre lot
-Date: Mon, 16 May 2011 19:34:12 +0200
-Message-ID: <1305567252.4dd1601488cd0@swift.generated>
+From: "Photobox par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Nous recrutons des testeurs
+Date: Mon, 16 May 2011 20:56:43 +0200 (CEST)
+Message-ID: <llaxyf.3pbaw5@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,8 +18,6 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-
- 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability
 What every C/C++ and Fortran developer should know.

@@ -1,7 +1,7 @@
-From: publicidade-xAD2RN7kpGt7o4XItXny6yxiyBjnmHSgCHSie7aZMj4@public.gmane.org
-Subject: [SPAM] Oportunidade unica e na Bem estar
-Date: Thu, 12 May 2011 07:47:27 -0400
-Message-ID: <7e28cacdf94094f40f1444df657c894c@www.bemestarequipamentos.ind.br>
+From: "Sofinco par ReflexFleurs.com" <contact-45pnAnmuwWuy1Jsh9kmMZQ@public.gmane.org>
+Subject: =?utf-8?Q?r=C3=A9sultat_imm=C3=A9diat?= : choisissez votre lot
+Date: Mon, 16 May 2011 19:34:12 +0200
+Message-ID: <1305567252.4dd1601488cd0@swift.generated>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,27 +19,7 @@ List-Id: linux-spi.vger.kernel.org
 
 
 
- Caso nao consiga visualizar Clique aqui !
-<http://www.bemestarequipamentos.com/maio1.html>
-
- <http:www.bemestarequipamentos.com.br>
-
-
-
---
-Caso nao queira mais receber nossa mensagem, 
-http://bemestarequipamentos.ind.br/phplist/?p=unsubscribe&uid=21ec01fd67849d19db48601ce88ba4ae
-
-Caso voce queira rever nossa mala
-diretahttp://bemestarequipamentos.ind.br/phplist/?p=preferences&uid=21ec01fd67849d19db48601ce88ba4ae
-Preferencia de formato
-http://bemestarequipamentos.ind.br/phplist/?p=forward&uid=21ec01fd67849d19db48601ce88ba4ae&mid=41
-
-
---
-Powered by PHPlist, www.phplist.com --
-
-
+ 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability
 What every C/C++ and Fortran developer should know.

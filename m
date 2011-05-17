@@ -1,11 +1,23 @@
-From: =?GB2312?B?y9XI1cTI?= <xor-8QXDSOJrslQ@public.gmane.org>
-Subject: =?GB2312?B?MlVXZbj6taXUsbSmwO22qbWltcTE3MGm?=
-Date: Tue, 17 May 2011 06:33:11 +0800
-Message-ID: <52587055-dfa0-479c-afd1-d6d8352d5aeb@ex-server.1bizmail.com>
+From: viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH resend] spi/amba-pl022: work in polling or interrupt mode
+	if pl022_dma_probe fails
+Date: Tue, 17 May 2011 09:30:27 +0530
+Message-ID: <4DD1F2DB.9020308@st.com>
+References: <052261410dd8d224fc199518e646abf80bfa7d4c.1305518921.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0353337060531051901=="
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
+	"linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: "dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org" <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <052261410dd8d224fc199518e646abf80bfa7d4c.1305518921.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,157 +28,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0353337060531051901==
-Content-Type: text/plain; charset="GB2312"
-Content-Transfer-Encoding: base64
+On 05/16/2011 09:40 AM, Viresh KUMAR wrote:
+> If pl022_dma_probe fails, we can try to transfer data in polling or interrupt
+> mode. Also, set platform_info->enable_dma to 0, so that no other code tries to
+> use dma.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/amba-pl022.c |   11 ++++++-----
+>  1 files changed, 6 insertions(+), 5 deletions(-)
+> 
 
-NEY1WUhjRFkNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0KICAgICAgICAgICAg
-ICAgICAgICAgob4guPq1pdSxusvQxLmk1/e8vMTczOHJ/dPrst/C1Me/u6/RtcG3IKG/DQoNCiAg
-ICAgICAgICAgICAgICAgICAyMDExxOo11MIyMS0yMsjVIMnPILqjoaIyMDExxOo11MIyOC0yOcjV
-IMnuINvaDQogICAgICAgICAgICAgICAgICAgMjAxMcTqNtTCMjUtMjbI1SDJzyC6o6GiMjAxMcTq
-N9TCMDItMDPI1SDJ7iDb2g0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQqhvsrK
-us+21M/zob+jusbz0rW1xLj6taWhotK1zvGhorLJubqhosn6udzIy7XI16jWsMjL1LGjrLOns6Sh
-otfcvOChor6twO21yLjJsr+jrMjI1tS4+rWlDQq5pNf3tcTG5Mv7yMvUsaOs08jG5MrKus/WxtTs
-0M3G89K1tcTStc7xuLHX3LT4wey5x7jJyMvUsbyvzOWyzrvhoaPI59Tav86688TcvLDKsdXZv6rE
-2rK/DQrR0MzWu+HS6aOs1eu21M/W17S9+NDQt9bO9qGittSy36OsttTT2szhyf24+rWly67GvaOs
-zOG439TL1/fQp8LKo6y02b34v827p8L60uK1yKOstry74crVDQq1vbrcusO1xNCnufuhow0KDQqh
-vsirufrNs9K7t9HTw6G/o7rUrbjxOjI2MDDUqi/Iy6OszNi82zoxODAwL8jLILK71NnV27/bo6y2
-7sL6vLTWuaOsu7bTrc3FttOxqMP7ss680yENCqOouqzF4NG1oaLWuLaoxeDRtb3MssShojLM7M7n
-ss2horLoteO30bXIo6kNCg0Kob6/zrPMzNjJq6G/o7q357jxysfJ7sjrx7Oz9iy8r9aqyrbQ1KGi
-yKTOttDU0+u77sbD0NTT69K7xvCho9DOyr2w/MCoo7q9ssraoaLNvMq+oaK24MO9zOUNCr3M0aeh
-orbUu7Chorultq+horC4wP2hor/Nu6e0+rHtt9bP7bXIoaO9ssqmuPm+3dTaysC9587lsNnHv8bz
-0rXXydGvus3K2r/OtcS+rdHpLNPQtcS3xcq4DQq12L3itPDRp9SxtcTM4c7Kus3I1bOjuaTX99bQ
-tcTSycTRzsrM4qGjDQoNCqG+1vew7LWlzruhv6O6usMuxeAuzfggIHd3dy5ocHhjbi5jb20go6i4
-/LbgvqvGt7/Os8yjrL60x+vN+MnPsunRr6Gjo6kNCg0Kob7Rp8+w1tDQxKG/o7oNCg0Kye7b2rXn
-u7CjuqOoMDc1NaOpLTgxOTM5NDc4oaK0q9Xmo7qjqDA3NTWjqS04MTkzMTg3Mg0Kyc+6o7Xnu7Cj
-uqOoMDIxo6ktNTE2MSA5NTMyoaK0q9Xmo7qjqDAyMaOpLTUxMDcgODEzMA0KuePW3bXnu7CjuqOo
-MDIwo6ktNjExMyA2MjQ1oaK0q9Xmo7qjqDAyMKOpLTYxMTMgNjI0NSANCg0KsajD+9PKz+Sjumhw
-eHBlaXh1bkAxNjMuY29tIA0KqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlDQqhvr/O
-s8yxs76wob+jug0KDQogIMrQs6Gx5LXD1L3AtNS9stC/4aGiuKHU6qOhvbvG2rbMo6zGt9bWtuCj
-rMX6wb/QoaOszazWyruvo6y827jxz8K7rKOss8mxvsnPyf2jrMa31srRz7jxo6wNCraptaXS17Hk
-o6y/zbunzPTM3qOszc/Ht7v1v+6jrMOz0texo7uko6yy+siot9fV+bXIo6y2vLPJwcvG89K1sdjQ
-69Kqw+a21LXEsaTA3aGjtvjH0svm18UNCsrQs6G1xLei1bmjrNTL1/e5/bPM1tDQ6NKq0ru088X6
-uN/L2NbKtcS2qbWl1rTQ0MjL1LG1xMC0wvrX47/Nu6fQ6Mfzo6y4+rWl1LHU8rPJwcvN6rPJ1eIN
-CtK7yrnD/LK7v8m78sixtcTXqNK1yMuyxaGjDQoNCiAg08nT2rj6taW5pNf3yea8sMPmueOjrLbU
-xvPStdTL1/fTsM/ssci9z7Tzo6zL+dLUo6zV4rj2uaTX99OmuMO9u7j4xMfQqb7f09DXytbKtcTI
-y9SxwLQNCs3qs8mho7G+v86zzL2yyvbBy7j6taXUsbmk1/e1xLG+1srE2rqto6yyotXrttTSycTR
-zsrM4qOsveG6z7Xk0M2wuMD9o6zT0LXEt8XKuLXYvfjQ0MXg0bUNCqOs1rzU2rTy1Oy6z7jxoaK5
-/dOytcS4+rWlyMvUsaGjzai5/b+8ytS78bXDyM/WpKGjyrnE+sDtveK+q8voo6zVxs7Vt723qKOs
-vLPIob6t0emjrLv9vtsNCtaqyrajrMrHuPq1pdSxyM/WpMXg0bW6zb6twO3Iy9aw0rW7r9G1wbe1
-xMrX0aG/zrPMoaMNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppQ0Kob6/zrPMytXS
-5qG/o7ogDQoNCqHxIMDtveK4+rWltcTE2rqtoaK21M/zus3Izs7xo6zVxs7VuPq1pbncwO21xLHY
-sbi8vMTco7sgDQqh8SDVxs7VuPq1pbe9t6ijrMzhyf22qbWlvdPK1aGixsDJ86Git6K3xaGiuPrX
-2brNzeqzybXExNzBpqO7DQqh8SDIt7GjyMvUsb7f09Cx2NKqtcTXytbKo6zVxs7VuN/Qp7j6taW1
-xNSt1PKhoszYteO6zby8t6ijuyANCqHxINTL08PXqNK11rDE3KOs09DQp727wfehorm1zaijrL3i
-vva2qbWlzsrM4qOs0K2197SmwO2499bW1MvX98rCzvGjuyANCqHxIMDty7Oyv8PFudjPtaOs1cbO
-1bL6wb+hosa31sqhor27xtq6zbPJsb7LxLTz0qrL2LXE0K2197SmwO3E3MGmo7sNCqHxINPQ0Ke5
-3MDtv827p6GiuanTpsnM0+vG89K1tcS52M+1o6zM4bjfuanTpsG0tcTV+8zly9jWyqGjDQqppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCqG+vbLKptfKwPqhv2xlY3R1cmVyIHN5bm9w
-c2lzDQoNCqHv16i80r2yyqajusDuuePMqSDPyMn6DQoNCiAgIMDuz8jJ+qG2vdyz9rj6taXUsaG3
-uaTX98rWsuGx4Nb4yMuhotbQufq4+rWl1LHF4NG1yrXVvdeovNIs1MG428yoxvPStbncwO3R0L6/
-1tDQxMDtysKzpA0Ko6y5pNGny7bKv6OsuN+8trmks8zKpqOsx+W7qrTz0afJ7tva0dC+v9S6TUJB
-o6zPyLrz1NrDwKGiyNWhorqr18rN4sbzLMyouNu2wNfKxvPStbTTysK53MDtDQq5pNf3tuDE6qOs
-wPrIzrmks8yyv7mks8zKpqGiz9azodb3udyhosa31sq+rcDtoaLJ+rL6uLHX3LXI1rDO8aOs1NrK
-rsr91NjG87nc0rvP37XEw/7FwLn2tPINCtbQu/3A28HLt+G4u7XEudzA7b6t0emjrNPIxuTJ7trP
-uaSzp8n6svqhosa31sqhormks8y3vcPmtcS53MDt1MvX96OsttS/57n6uavLvsrkyOu1xLncwO3L
-vA0Kz+vGxNPQ0dC+v6Os0M6zycHLtsC+38zYyau1xMq1uMnQzdbG1OzG89K1udzA7be9t6i6zczl
-z7WhoyANCg0KIMDuz8jJ+r2rwPrKscqutuDE6rv9wNvG8MC0t+G4u7XEyfqy+tbG1OzT67ncwO2+
-rdHpo6y9+NDQxajL9cn9u6qjrNPaMjAwMC0yMDA0xOq85KOsz8i687P2DQqw5sHLoba93LP2uPq1
-pdSxobehoqG2xrfWyi/J+rL6L7mks8yhraGtsr/Dxdb3udy4+s7S0aeht8+1wdC01MrpoaKhtrXn
-19PQ0NK1SVNPOTAwMaO6MjAwMA0KyrXKqby8t6jT67C4wP2ht6GiobbXv9S9xrfWyrncv9iht6Gi
-obbJ+rL6z9azobncv9iht6Giobay1rSi0+vO78HPudy/2KG3tcjK6byuo6zK3LW9xvPStb3nDQq1
-xLjftsjW2MrTsqK4+NPowcu8q7jftcTGwLzboaPA7s/IyfrKtbz5vq3R6bfhuLuhor2yytq5/bPM
-wdC+2bTzwb+wuMD9oaLM2LHwx7+198q108PQ1LrNv8kNCrLZ1/fQ1KOsye7K3Mz9v87Iy9SxtcS6
-w8bAus3X8L60LtbBvfHA7s/IyfrOqsL61+PG89K1tcTKtbzK0OjSqizU2sirufq497XYs8m5pr7Z
-sOzBy7DZtuCzoQ0KvbLX+aOsytq/zsjLyv2077W9zfK24MjLtM6jrLKizqrK/bDZvNLG89K1zOG5
-qbn9udzA7dfJ0a+6zbnLzsq3/s7xoaMNCqmlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
-pQ0Kob7Rp8+wtPO42aG/Y3VycmljdWx1bSBpbnRyb2R1Y3Rpb24NCg0KofS4+rWl1LG1xLmk1/e6
-y9DEDQq4+rWl1LG9x8mrtqjOu6OstqjS5aGiuaTX97rL0MShotaw1PChotfp1q+hosjOzvGhotK1
-vKihosq5w/wNCrj6taW5pNf3zNjQ1KOssd/UtdDUoaK547e60NShorv6w9zQ1KGivrTStc6qsb4N
-Crj6taXUsdfKuPGjrMTasr/XyrjxudzA7aOs0NDStcTatcTLxNbW0M7P87T6se0NCrj6taXEo8q9
-o6y4+rWlwfezzKOszuXP7rmk1/fUrdTyDQrKtcqpv+eyv8PFuPq1pbXE0qq+96OstPLU7Lj6taXW
-tNDQwaYNCrj6taW1xNb30qq21M/zo6y4+sqyw7Sjv8j9tPPSqsvYDQrI57rOw+a21MvE1tbIy7rN
-we3A4A0K09DQp7/Lt/6wy7TzudbP8w0KuPq1pdSx0rW8qL+8usujrL+8usux7aGit723qKGivKTA
-+A0K087Pt6O6uf638LXEudzA7beo1PINCg0KofS4+rWl1LG0psDttqm1pbXExNzBpg0K08XWyrWl
-o6y8sbWlo6yx6te8tqm1pbjxyr2jrMrks/bT68rkyOu1xLaptaUNCsO7su607b3TytW/zbuntcTV
-/cq9tqm1pQ0K0K3S6aGius/NrKGiv827p9Kqx/OjrLaptaXGwMnz0+vK5LP2DQrSqrK70qqy5bWl
-o7+y5bWl1K3U8qGit723qA0KyOe6zrncwO1QL0+hom90DQrT67aptaW52MGqtcTUrbL6tdjV/rLf
-oaKy+sa3yM/WpKGizai52NX+st8NCkpJVKGiVk1JDQq4+rWluaTX99W5v6rB97PMDQqwuMD9o7rI
-57rOt8DWuaGwsvm1paGxDQoNCqH0uPq1pdSxudzA7bmks6e1xLy8xNwNCrzGu66+9rao1rTQ0KOs
-NE0xRdKqy9ihorPM0PKhotbGtsihosbz0rXOxLuvDQpBUFFQoaLQwrL6xre4+tfZudzA7aOssvrG
-t7y8yvXWuLHqoaLNvNa9oaLOxLz+oaLB47z+uea48crpDQpwbWOjrMjnus7Wxraoyfqy+rzGu64N
-Csjnus62vbTZzu/Bz7W9zrujrL/Y1sbJ+rL6vfi2yA0KuPe917bOxrfWyr/Y1sajrElRQ6GiSVBR
-Q6GiUUOholRRQ6GiRlFDoaJRQaGiT1FDoaLC6823vOzR6cfzDQqy+sG/o6zQp8LKo6zJ+rL6vdrF
-xKOszbO8xrfWzvbJ+rL6yv2+3Q0KyOe6ztCttfe0psDtyfqy+tLss6POysziDQpQU0mjrLL6uanP
-+sqntfe1xNai17ShotSt0vLT67bUst8NCsG91ta+9raotcSxyL3PDQqwuMD9o7pXTcjnus653MDt
-uam79bmks6cNCg0KofSz9r/a0M3G89K1uPq1pcSjyr0NCr3TytW/zbun1f3KvbaptaWjrNDF08PW
-pA0KyP3W1tH5sOW53MDto6zHqbDloaLK17z+yM+/yaGiyLfIzw0KuaSzp87vwc+1xNDox/O8xruu
-o6zJ+rL6vMa7rrCyxcWjrLj6vfjJ+rL6yrXKqQ0KuanTpsnMudzA7aOsv6q3oqGist+7rqGiv9jW
-xqGiuPq9+KGiuMTJxqOsy8279aGi0enK1aGivdPEyaGizcu79aGit7WyuQ0KzeLQrdf3oaLN4rD8
-t7253MDto6y3orv1x7C1xNe8sbi5pNf3DQrN6rPJuvO1xM2zvMa31s72DQrDs9LXz93a5aOs0dOz
-2b27xtq0psDto6y99Lyx1srBv8rCucq0psDto6y/7MvZz+zTpqGit7TTpg0KsLjA/aO6su7WrrrB
-wOWjrMqn1q7Hp8DvDQoNCqH0uPq1pbmk1/fA8dLHDQrA8dLHuebU8qOswPHSx7XE1/fTww0Kz+DT
-ydDEyfqjrMzYyuK2+NbY0qq1xMDx0scNCrK7zay5+rzSoaK12NPytcTA8dLHsu7S7A0KDQqh9Lj6
-taXUsbXEv827p7nYz7W53MDtDQq2qM67v827p6Git/7O8brNwvrX47nLv80NCr/Nu6e52M+1se3P
-1tDOyr2jrMa9vvm/zcHkDQq/zbunyfO6y7mks6e1xMH3s8yhorbUst+jrLjEyca6zdSkt8C068qp
-DQq/qs3Yv827p7XEx/61wKOsyOe6zrDvv827p9esx64NCtOutcO/zbun1tKzz7XEt723qA0Kus/X
-99Pkv+zKx7v5tKENCsH0z8LWtbXDu7PE7rXEsbPTsA0Kv827p7XE0MTKx8bz0rXX7rTztcTXytS0
-DQqwuMD9o7rC+tLitsjSu7fWx66yu9a1DQoNCqH0uPq1pbmk1/ey38LUDQrXpdeh1vfP36Os0tSy
-u7Hk06bN8rHko6y+2dK7t7TI/Q0Kzbi5/c+4vdqjrNXGztXQxc+io6y2xb74y8C9xw0K0LTSu7fd
-09C829a1tcSxqLjmo6y88r3gtvjT0NCnDQrJxtPDv6q74b3ivvbOyszio6yx2NKqtcS74dLpo6zT
-0Lvh09DS6Q0Kyrax8LKiy/i2qNLss6MNCrnmt7a7r9PruPHKvbuvtcS5pNf309DW+tPauPq1pQ0K
-v7Sw5dPrxL/K07ncwO2jrLmrv6rNuMP3tcS53MDtt6jU8g0KuaTX98S/serT68S/tcSjrLK70qqh
-sM6qyMvX97zeobENCtTwyM7Kx7rv19OjrMnGtP25pNf3o6zJxrT919S8ug0KyP3I/dbGoaK53MDt
-1sa64qGizqO7+tLiyrahotfU1ve53MDto6yyu82svLax8LnYz7W53MDttcSy38LUDQqwuMD9o7rK
-/cLry7zOrMSjyr21xKG20rXO8c2osaihtw0KDQqh9Lj6taW5pNf3uaS+3w0KudzA7bmkvt+1xMPu
-08OjrLj6taW1xLDLtPO5pL7fDQpQRENBoaLB97PMzbyhosqxvOS53MDtt6ihorzGu663qKGiuMrM
-2M28oaLNt8TUt+exqbeooaJGTUVBDQq5/bPMoaKzzNDyoaK55re2u6+horHq17y7r6Gi0KfCyrmr
-yr0NCtDCwM9RQ8bftPPK1reoo6w1V2h5oaI4RKGiQ0FSoaI4RA0KDQqh9Lj6taW5pNf3xNzBpszh
-yf3F4NH4DQq5tc2oxNzBpqOs1+nWr73hubnNvKOsu+OxqNPr1ri706Os1L3IqLncwO0NCtPrucu/
-zbm1zai1xLy8x8kNCsXQts/E3MGmo6y+rbOjsaOz1r7FuPbOo7v60uLKtg0KxsC828TcwaajrM7l
-z+65pNf3xsC8+A0KyrXVvcTcwaajrM7l1tbTwsb4o6zO5dbWz7C536OszuW49tKqx/MNCrPQytzE
-3MGmo6zBt77N0MTA7cvY1soNCr6tteSwuMD9t9bO9g0KDQqh9Lultq+jrNfU08nOyrTwDQrW99Kq
-uaTX98jOzvENCtP2tb21xM7KzOINCsDPtcS3vcq9DQq87MzW1K3S8g0KuPq1pbe9t6ihqszh0NEN
-CrjEyca687XEt73KvaOsuMTJxtCnufsNCrLOv7zK6byuoba93LP2uPq1pdSxobehoqG2vdO1pdPr
-uPq1pcq1stnPuL3aobcgDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUNCiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgILj6hs6GVLrL0MS5pNf3vLzE3Mzhyf3FY7LfwtSPiruv
-05a+mg0KDQqhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhoaGhICAgICAgoaGhvi0tiPMgw/sgu9gg
-iMwgse0tLaG/DQoNCiDViIL31ebWwcnu29qjuigwNzU1KaOtODE5MzE4NzIgj1bW3b+Csr+juigw
-MjApLTYxMTM2MjQ1IMnPuqOjuqOoMDIxo6k1MTA3ODEzMCAgxuTW0NK7zI68tL/JLg0KDQrG85hJ
-w/u3UTpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fIMjLlLU6X19fX18gyMsNCsKTwE3IyzpfX19fX19fX19fX19fX19fX19fIMKT
-wE3ritSSOl9fX19fX19fX19fX19fX19fX18gwpPATYL31eY6X19fX19fX19fX19fX19fX19fX19f
-DQrSxoTT64rUkjpfX19fX19fX19fX19fX19fX19fX18gRS1tYWlsOl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXw0KDQqFopX+tPqx7TpfX19fX19fX19fX19fX19fIIbOzrvCmoTVo7pf
-X19fX19fX19fX19fX19fXyDSxoTT64rUkqO6X19fX19fX19fX19fX19fX19fX19fDQqFopX+tPqx
-7TpfX19fX19fX19fX19fX19fIIbOzrvCmoTVo7pfX19fX19fX19fX19fX19fXyDSxoTT64rUkqO6
-X19fX19fX19fX19fX19fX19fX19fDQqFopX+tPqx7TpfX19fX19fX19fX19fX19fIIbOzrvCmoTV
-o7pfX19fX19fX19fX19fX19fXyDSxoTT64rUkqO6X19fX19fX19fX19fX19fX19fX19fDQqFopX+
-tPqx7TpfX19fX19fX19fX19fX19fIIbOzrvCmoTVo7pfX19fX19fX19fX19fX19fXyDSxoTT64rU
-kqO6X19fX19fX19fX19fX19fX19fX19fDQqFopX+tPqx7TpfX19fX19fX19fX19fX19fIIbOzrvC
-moTVo7pfX19fX19fX19fX19fX19fXyDSxoTT64rUkqO6X19fX19fX19fX19fX19fX19fX19fDQqF
-opX+tPqx7TpfX19fX19fX19fX19fX19fIIbOzrvCmoTVo7pfX19fX19fX19fX19fX19fXyDSxoTT
-64rUkqO6X19fX19fX19fX19fX19fX19fX19fDQoNCtLUz8KDyMjd1YjfeJPxtPKhsKHMobGjug0K
-uLa/7re9yr06IL/aIN5EjqQgIL/aIKxGvfAgIL/aINanxrEgIL/aIOuKhVIgICAghaK807XY/GOj
-ur/aIMnPILqjoaK/2iAgye4g29oNCg0KguTUXToNCjEu1YjE+rDRiPPD+7vYiMzVStXmzO66w+Hh
-u9iC987Sy76jrJ7ptF+xo8T6iPPD+59v1WAs1YjE+tTZtM7ritSStF/VSiENCjIusb7VbrPMv8m4
-+ZP+xvOYSdDo0qq9Tb+Xg8jTlqGjDQqppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
-qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaUN
-CjM3OTYzNDAz
+David,
+
+Sorry for missing you earlier in "to" list. Can you please push this
+through spi-devel tree.
+
+--
+viresh
+
+> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+> index dae886e..77f90de 100644
+> --- a/drivers/spi/amba-pl022.c
+> +++ b/drivers/spi/amba-pl022.c
+> @@ -1068,7 +1068,7 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+>  					    pl022->master_info->dma_filter,
+>  					    pl022->master_info->dma_rx_param);
+>  	if (!pl022->dma_rx_channel) {
+> -		dev_err(&pl022->adev->dev, "no RX DMA channel!\n");
+> +		dev_dbg(&pl022->adev->dev, "no RX DMA channel!\n");
+>  		goto err_no_rxchan;
+>  	}
+>  
+> @@ -1076,13 +1076,13 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+>  					    pl022->master_info->dma_filter,
+>  					    pl022->master_info->dma_tx_param);
+>  	if (!pl022->dma_tx_channel) {
+> -		dev_err(&pl022->adev->dev, "no TX DMA channel!\n");
+> +		dev_dbg(&pl022->adev->dev, "no TX DMA channel!\n");
+>  		goto err_no_txchan;
+>  	}
+>  
+>  	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>  	if (!pl022->dummypage) {
+> -		dev_err(&pl022->adev->dev, "no DMA dummypage!\n");
+> +		dev_dbg(&pl022->adev->dev, "no DMA dummypage!\n");
+>  		goto err_no_dummypage;
+>  	}
+>  
+> @@ -1098,6 +1098,8 @@ err_no_txchan:
+>  	dma_release_channel(pl022->dma_rx_channel);
+>  	pl022->dma_rx_channel = NULL;
+>  err_no_rxchan:
+> +	dev_err(&pl022->adev->dev,
+> +			"Failed to work in dma mode, work without dma!\n");
+>  	return -ENODEV;
+>  }
+>  
+> @@ -2111,7 +2113,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  	if (platform_info->enable_dma) {
+>  		status = pl022_dma_probe(pl022);
+>  		if (status != 0)
+> -			goto err_no_dma;
+> +			platform_info->enable_dma = 0;
+>  	}
+>  
+>  	/* Initialize and start queue */
+> @@ -2143,7 +2145,6 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>   err_init_queue:
+>  	destroy_queue(pl022);
+>  	pl022_dma_remove(pl022);
+> - err_no_dma:
+>  	free_irq(adev->irq[0], pl022);
+>   err_no_irq:
+>  	clk_put(pl022->clk);
 
 
---===============0353337060531051901==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+viresh
 
 ------------------------------------------------------------------------------
 Achieve unprecedented app performance and reliability
@@ -174,15 +114,3 @@ What every C/C++ and Fortran developer should know.
 Learn how Intel has extended the reach of its next-generation tools
 to help boost performance applications - inlcuding clusters.
 http://p.sf.net/sfu/intel-dev2devmay
---===============0353337060531051901==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0353337060531051901==--

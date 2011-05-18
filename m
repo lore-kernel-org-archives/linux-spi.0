@@ -1,34 +1,110 @@
-From: hgchgtkhzb-9Onoh4P/yGk@public.gmane.org
-Subject: [SPAM] 报关 商检 产地证
-Date: Thu, 19 May 2011 00:07:15 +0800
-Message-ID: <E1QMjH6-0003ed-0l@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Antonio Ospite <ospite@studenti.unina.it>
+Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
+Date: Wed, 18 May 2011 19:23:20 +0200
+Message-ID: <20110518192320.9dd69cb5.ospite@studenti.unina.it>
+References: <1303476191-20663-1-git-send-email-ospite@studenti.unina.it>
+	<1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
+	<20110511130852.GB12469@opensource.wolfsonmicro.com>
+	<20110511225337.094839a2.ospite@studenti.unina.it>
+	<20110511205703.GA24486@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Wed__18_May_2011_19_23_20_+0200_dTQ=7Gv38V.xphyG"
+Cc: linux-mmc@vger.kernel.org, Chris Ball <cjb@laptop.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	openezx-devel@lists.openezx.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20110511205703.GA24486@opensource.wolfsonmicro.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6wyEgCiAgsb65q8u+tPrA7cnu29ouuePW3bP2v9rC8rWlsai52C4gycy87CC088q5ud2808ep
-w7O02bvh1qTD98rpLENPsvq12NakLiAKCsbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm5
-3ceptcgpICDKtcGmsai52CzRsMfzs6e80rrP1/fNy8uwtaUgCgogICAgICAgICAgICAgICDM4bmp
-tPPQobrLz/q1paOos/a/2rGoudi1paOpIAoKIMGqz7XIyzvVxaGvUiAgwarPtbXnu7A7IDA3NTUt
-MjU0MjAxNzcgIDEzNjg2ODY4NTQ4ICBRUTsxMjIwNjIxNDMKCtPKz+SjujEyMjA2MjE0M0BxcS5j
-b20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpXaGF0IEV2ZXJ5IEMvQysrIGFuZCBGb3J0cmFuIGRl
-dmVsb3BlciBTaG91bGQgS25vdyEKUmVhZCB0aGlzIGFydGljbGUgYW5kIGxlYXJuIGhvdyBJbnRl
-bCBoYXMgZXh0ZW5kZWQgdGhlIHJlYWNoIG9mIGl0cyAKbmV4dC1nZW5lcmF0aW9uIHRvb2xzIHRv
-IGhlbHAgV2luZG93cyogYW5kIExpbnV4KiBDL0MrKyBhbmQgRm9ydHJhbiAKZGV2ZWxvcGVycyBi
-b29zdCBwZXJmb3JtYW5jZSBhcHBsaWNhdGlvbnMgLSBpbmNsdWRpbmcgY2x1c3RlcnMuIApodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2ludGVsLWRldjJkZXZtYXkKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--Signature=_Wed__18_May_2011_19_23_20_+0200_dTQ=7Gv38V.xphyG
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 11 May 2011 22:57:04 +0200
+Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+
+> On Wed, May 11, 2011 at 10:53:37PM +0200, Antonio Ospite wrote:
+>=20
+> > OK, avoiding some duplication will be good, I agree.
+>=20
+> > I am resending a v4 with the equivalent code:
+> >=20
+> > 	if (host->vcc) {
+> > 		int ret;
+> >=20
+> > 		if (power_mode =3D=3D MMC_POWER_OFF)
+> > 			vdd =3D 0;
+> >=20
+>=20
+> This isn't really what I meant - what I meant was that all this logic
+> looks like it's generic to multiple drivers.  We either set a regulator
+> or call a pdata callback to set power, both of which are completely
+> external to the controller.
+>
+
+So you mean something like the following:
+
+mmc_regulator_set_power(...)
+{
+	if (host->vcc) {
+		...
+	}
+
+	if (host->pdata && host->pdata->setpower)
+		host->pdata->setpower(mmc_dev(host->mmc), vdd);
+}
+
+I like  the idea, the only concern I have is that the mmc host drivers=20
+can call 'vcc' and 'pdata' and 'setpower' with arbitrary names, what is=20
+the kernel practice in cases like this where we want to use some common=20
+code accessing driver-specific structures? I can think to three=20
+alternatives right now:
+
+  1. Consider only code currently in mainline (names are consistently=20
+     vcc, pdata and setpower) and use a _macro_ based on that, assuming=20
+     than future patches are going to copy the var names anyways.
+
+  2. Add a proper function with all the needed parameters to abstract
+     the actual var names, this would be something like:
+     mmc_regulator_set_power(mmc, power_mode, vdd, vcc, pdata)
+     and yet checking for pdata->setpower can be tricky as 'setpower'=20
+     is an arbitrary name.
+
+  3. Move stuff from driver structures to subsystem structures, which I=20
+     don't think is needed in this case.
+
+  4. (The hidden lazy one) make the code equal across all the drivers
+     so new drivers copying it will be consistent, but still leave it=20
+     duplicate.
+
+Regards,
+   Antonio
+
+--=20
+Antonio Ospite
+http://ao2.it
+
+PGP public key ID: 0x4553B001
+
+A: Because it messes up the order in which people normally read text.
+   See http://en.wikipedia.org/wiki/Posting_style
+Q: Why is top-posting such a bad thing?
+
+--Signature=_Wed__18_May_2011_19_23_20_+0200_dTQ=7Gv38V.xphyG
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iEYEARECAAYFAk3UAIgACgkQ5xr2akVTsAGF/gCdE7NOA9H5YJyXiX+K8p1eKLOm
+8SsAn26KNQda6n5x93ZbueeP4wggzIH6
+=yK2I
+-----END PGP SIGNATURE-----
+
+--Signature=_Wed__18_May_2011_19_23_20_+0200_dTQ=7Gv38V.xphyG--

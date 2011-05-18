@@ -1,47 +1,27 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
-Date: Wed, 18 May 2011 12:42:12 -0700
-Message-ID: <20110518194211.GA5077@opensource.wolfsonmicro.com>
-References: <1303476191-20663-1-git-send-email-ospite@studenti.unina.it>
- <1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
- <20110511130852.GB12469@opensource.wolfsonmicro.com>
- <20110511225337.094839a2.ospite@studenti.unina.it>
- <20110511205703.GA24486@opensource.wolfsonmicro.com>
- <20110518192320.9dd69cb5.ospite@studenti.unina.it>
+From: "Orange Mediatics News" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] votre bimensuel gratuit pour mieux comprendre les nouvelles
+	technologies
+Date: Wed, 18 May 2011 22:31:53 +0200 (CEST)
+Message-ID: <lles9d.cu5tpe@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-mmc@vger.kernel.org, Chris Ball <cjb@laptop.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	openezx-devel@lists.openezx.org,
-	spi-devel-general@lists.sourceforge.net
-To: Antonio Ospite <ospite@studenti.unina.it>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20110518192320.9dd69cb5.ospite@studenti.unina.it>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 18, 2011 at 07:23:20PM +0200, Antonio Ospite wrote:
 
-> So you mean something like the following:
-
-> mmc_regulator_set_power(...)
-> {
-
-Yes.
-
->   2. Add a proper function with all the needed parameters to abstract
->      the actual var names, this would be something like:
->      mmc_regulator_set_power(mmc, power_mode, vdd, vcc, pdata)
->      and yet checking for pdata->setpower can be tricky as 'setpower' 
->      is an arbitrary name.
-
-This would be good.
-
->   3. Move stuff from driver structures to subsystem structures, which I 
->      don't think is needed in this case.
-
-Though this option is also common - often you get a mix of subsystem and
-device specific things with for example a subsystem wide data structure
-which the device keeps and passes into a function provided by the
-subsystem at appropriate moments.
+------------------------------------------------------------------------------
+What Every C/C++ and Fortran developer Should Know!
+Read this article and learn how Intel has extended the reach of its 
+next-generation tools to help Windows* and Linux* C/C++ and Fortran 
+developers boost performance applications - including clusters. 
+http://p.sf.net/sfu/intel-dev2devmay

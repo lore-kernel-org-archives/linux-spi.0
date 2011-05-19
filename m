@@ -1,49 +1,85 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer v2
-Date: Thu, 19 May 2011 20:06:32 +0200
-Message-ID: <BANLkTikR7A1Y4sumjZXS5ou3ex7PJOi1CA@mail.gmail.com>
-References: <1305821134-26147-1-git-send-email-linus.walleij@stericsson.com>
-	<BANLkTi=s4nzi=5f+Vvh3ABuspnKXQVUfLw@mail.gmail.com>
-	<BANLkTi=mQbPt9rcqEVyMLy3rkF2D7FMh=g@mail.gmail.com>
-	<BANLkTi=COt5Te4bF1M30A+R4Vqnz=kWiJA@mail.gmail.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: Use void pointers for data in simple SPI I/O
+ operations
+Date: Thu, 19 May 2011 13:00:34 -0600
+Message-ID: <20110519190034.GF5109@ponder.secretlab.ca>
+References: <1305065370-28616-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Magnus Templing <magnus.templing@stericsson.com>
-To: Vitaly Wool <vitalywool@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <BANLkTi=COt5Te4bF1M30A+R4Vqnz=kWiJA@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, patches@opensource.wolfsonmicro.com
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1305065370-28616-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/5/19 Vitaly Wool <vitalywool@gmail.com>:
-> On Thu, May 19, 2011 at 7:36 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
->>>
->>> just out of curiosity: is it a busy wait? Looks like it is...
->>
->> Yep that's the polling mode part. IRQ and DMA mode should
->> be the norm I guess.
->>
->> Magnus: do you have a specific use case for this thing?
->
-> Well, adding cpu_relax() somewhere in the loop might be not a bad idea...
+On Wed, May 11, 2011 at 12:09:30AM +0200, Mark Brown wrote:
+> Currently the simple SPI I/O operations all take pointers to u8 * buffers
+> to operate on. This creates needless type compatibility issues and the
+> underlying spi_transfer structure uses void pointers anyway so convert the
+> API over to take void pointers too.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
-OK sent a patch for it, and Grant applied it within something like
-30 seconds :-)
+Merged, thanks.
 
-I think on ARM that just boils down to a barrier() so it
-basically injects air in the pipeline when busywaiting, I never
-understood what that is good for, but it's a good marker anyway.
+g.
 
-Linus Walleij
+> ---
+>  drivers/spi/spi.c       |    4 ++--
+>  include/linux/spi/spi.h |    8 ++++----
+>  2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 82b9a42..2e13a14 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1047,8 +1047,8 @@ static u8	*buf;
+>   * spi_{async,sync}() calls with dma-safe buffers.
+>   */
+>  int spi_write_then_read(struct spi_device *spi,
+> -		const u8 *txbuf, unsigned n_tx,
+> -		u8 *rxbuf, unsigned n_rx)
+> +		const void *txbuf, unsigned n_tx,
+> +		void *rxbuf, unsigned n_rx)
+>  {
+>  	static DEFINE_MUTEX(lock);
+>  
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index b4d7710..bb4f5fb 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -581,7 +581,7 @@ extern int spi_bus_unlock(struct spi_master *master);
+>   * Callable only from contexts that can sleep.
+>   */
+>  static inline int
+> -spi_write(struct spi_device *spi, const u8 *buf, size_t len)
+> +spi_write(struct spi_device *spi, const void *buf, size_t len)
+>  {
+>  	struct spi_transfer	t = {
+>  			.tx_buf		= buf,
+> @@ -605,7 +605,7 @@ spi_write(struct spi_device *spi, const u8 *buf, size_t len)
+>   * Callable only from contexts that can sleep.
+>   */
+>  static inline int
+> -spi_read(struct spi_device *spi, u8 *buf, size_t len)
+> +spi_read(struct spi_device *spi, void *buf, size_t len)
+>  {
+>  	struct spi_transfer	t = {
+>  			.rx_buf		= buf,
+> @@ -620,8 +620,8 @@ spi_read(struct spi_device *spi, u8 *buf, size_t len)
+>  
+>  /* this copies txbuf and rxbuf data; for small transfers only! */
+>  extern int spi_write_then_read(struct spi_device *spi,
+> -		const u8 *txbuf, unsigned n_tx,
+> -		u8 *rxbuf, unsigned n_rx);
+> +		const void *txbuf, unsigned n_tx,
+> +		void *rxbuf, unsigned n_rx);
+>  
+>  /**
+>   * spi_w8r8 - SPI synchronous 8 bit write followed by 8 bit read
+> -- 
+> 1.7.5.1
+> 

@@ -1,20 +1,16 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer
-Date: Thu, 19 May 2011 16:23:23 +0200
-Message-ID: <20110519142323.GD2219@pengutronix.de>
-References: <1305807191-11704-1-git-send-email-linus.walleij@stericsson.com>
-	<20110519124454.GC2219@pengutronix.de>
-	<BANLkTinrk-FjMy1trDnsxwT_NTgQ5x_8Rg@mail.gmail.com>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH 1/2] spi/pl022: timeout on polled transfer v2
+Date: Thu, 19 May 2011 18:05:34 +0200
+Message-ID: <1305821134-26147-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0030896968=="
-Cc: Linus Walleij <linus.walleij@stericsson.com>,
-	Magnus Templing <magnus.templing@stericsson.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
-	linux-arm-kernel@lists.infradead.org
-To: Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Magnus Templing <magnus.templing@stericsson.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <BANLkTinrk-FjMy1trDnsxwT_NTgQ5x_8Rg@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,91 +22,81 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Magnus Templing <magnus.templing@stericsson.com>
 
---===============0030896968==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5gxpn/Q6ypwruk0T"
-Content-Disposition: inline
+This adds the missing handling of polling timeouts and deletes
+our last todo.
 
+Signed-off-by: Magnus Templing <magnus.templing@stericsson.com>
+Reviewed-by: Srinidhi Kasagar <srinidhi.kasagar@stericsson.com>
+[Fixups from review by Wolfram Sang]
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/amba-pl022.c |   23 +++++++++++++++--------
+ 1 files changed, 15 insertions(+), 8 deletions(-)
 
---5gxpn/Q6ypwruk0T
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 while (pl022->tx < pl022->tx_end || pl022->r=
-x < pl022->rx_end) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (time_after(jiffies, time=
-out)) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&pl=
-022->adev->dev,
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s: timeout=
-!\n", __func__);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 message->sta=
-te =3D STATE_ERROR;
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto out;
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> >> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 readwriter(pl022);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 }
->=20
-> What about we move readerwriter() above if (time_after...) then it atleast
-> gets one chance to run even if we're preempted for 10 seconds.
-
-This will fix the initial problem, but still exit early if e.g. the
-preemption came on a subsequent iteration of the while loop, say during
-readwriter().
-
->=20
-> Any other design patterns that'd be better?
-
-A bit better might be:
-
-	while (...) {
-		time =3D jiffies;
-		readwriter();
-		if (time_after(time, timeout)...)
-			...
-	}
-
-So you continue triggering transfers as long as the last one was in the
-valid timespan. In case of an preemption, you made sure you tried the
-whole timespan (+ the jitter) which is probably better than stop trying
-too early.
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---5gxpn/Q6ypwruk0T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk3VJ9sACgkQD27XaX1/VRsJawCcCvZSi0/KjKcLJNMq5ZKrMtlY
-3UcAn1XbrFuDa7xQ5/kL8/7K/MGP/Jia
-=elBY
------END PGP SIGNATURE-----
-
---5gxpn/Q6ypwruk0T--
-
-
---===============0030896968==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============0030896968==--
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 08de58e..18667de 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -24,11 +24,6 @@
+  * GNU General Public License for more details.
+  */
+ 
+-/*
+- * TODO:
+- * - add timeout on polled transfers
+- */
+-
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+@@ -287,6 +282,8 @@
+ 
+ #define CLEAR_ALL_INTERRUPTS  0x3
+ 
++#define SPI_POLLING_TIMEOUT 1000
++
+ 
+ /*
+  * The type of reading going on on this chip
+@@ -1378,6 +1375,7 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 	struct spi_transfer *transfer = NULL;
+ 	struct spi_transfer *previous = NULL;
+ 	struct chip_data *chip;
++	unsigned long time, timeout;
+ 
+ 	chip = pl022->cur_chip;
+ 	message = pl022->cur_msg;
+@@ -1415,9 +1413,18 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 		       SSP_CR1(pl022->virtbase));
+ 
+ 		dev_dbg(&pl022->adev->dev, "polling transfer ongoing ...\n");
+-		/* FIXME: insert a timeout so we don't hang here indefinitely */
+-		while (pl022->tx < pl022->tx_end || pl022->rx < pl022->rx_end)
++
++		timeout = jiffies + msecs_to_jiffies(SPI_POLLING_TIMEOUT);
++		while (pl022->tx < pl022->tx_end || pl022->rx < pl022->rx_end) {
++			time = jiffies;
+ 			readwriter(pl022);
++			if (time_after(time, timeout)) {
++				dev_warn(&pl022->adev->dev,
++				"%s: timeout!\n", __func__);
++				message->state = STATE_ERROR;
++				goto out;
++			}
++		}
+ 
+ 		/* Update total byte transferred */
+ 		message->actual_length += pl022->cur_transfer->len;
+@@ -1426,7 +1433,7 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 		/* Move to next transfer */
+ 		message->state = next_transfer(pl022);
+ 	}
+-
++out:
+ 	/* Handle end of message */
+ 	if (message->state == STATE_DONE)
+ 		message->status = 0;
+-- 
+1.7.3.2

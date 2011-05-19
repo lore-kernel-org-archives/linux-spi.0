@@ -1,35 +1,67 @@
-From: Newbidder <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
-Subject: =?iso-8859-15?Q?Une_montre_d'exception_=E0_part?=
-	=?iso-8859-15?Q?ir_d'un_centime_sur_NEWBIDDER?=
-Date: Thu, 19 May 2011 15:05:38 +0200 (CEST)
-Message-ID: <2449188521.76174.1305810338189@p4enginex1.emv2.com>
-Reply-To: newsletter-ZaYshRGIW9954TAoqtyWWQ@public.gmane.org
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer
+Date: Thu, 19 May 2011 15:23:24 +0200
+Message-ID: <BANLkTinrk-FjMy1trDnsxwT_NTgQ5x_8Rg@mail.gmail.com>
+References: <1305807191-11704-1-git-send-email-linus.walleij@stericsson.com>
+	<20110519124454.GC2219@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Linus Walleij <linus.walleij@stericsson.com>,
+	Magnus Templing <magnus.templing@stericsson.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org
+To: Wolfram Sang <w.sang@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20110519124454.GC2219@pengutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, May 19, 2011 at 2:44 PM, Wolfram Sang <w.sang@pengutronix.de> wrote:
 
-Une montre d'exception =E0 partir d'un centime sur newbidder http://p4tre.e=
-mv3.com/HS?a=3DENX7Cqm3dpdG8SA9MKJO8nTnGHxKLI8scvcStGb5lw8W0bBhOG5mpqVsje_H=
-hdBefVIC
----------------------------------------------------------------------------=
----
-What Every C/C++ and Fortran developer Should Know!
-Read this article and learn how Intel has extended the reach of its =
+> Hi,
+>
+>> - =A0 =A0 =A0 =A0 =A0 =A0 /* FIXME: insert a timeout so we don't hang he=
+re indefinitely */
+>> - =A0 =A0 =A0 =A0 =A0 =A0 while (pl022->tx < pl022->tx_end || pl022->rx =
+< pl022->rx_end)
+>> +
+>> + =A0 =A0 =A0 =A0 =A0 =A0 timeout =3D jiffies + msecs_to_jiffies(SPI_POL=
+LING_TIMEOUT);
+>
+> Won't you miss the transfer if you get interrupted here longer than
+> SPI_POLLING_TIMEOUT?
 
-next-generation tools to help Windows* and Linux* C/C++ and Fortran =
+Yeah... preempted for a second hm.
 
-developers boost performance applications - including clusters. =
+>> + =A0 =A0 =A0 =A0 =A0 =A0 while (pl022->tx < pl022->tx_end || pl022->rx =
+< pl022->rx_end) {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (time_after(jiffies, timeou=
+t)) {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_warn(&pl02=
+2->adev->dev,
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 "%s: timeout!\=
+n", __func__);
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 message->state=
+ =3D STATE_ERROR;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto out;
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 readwriter(pl022);
+>> + =A0 =A0 =A0 =A0 =A0 =A0 }
 
-http://p.sf.net/sfu/intel-dev2devmay
+What about we move readerwriter() above if (time_after...) then it atleast
+gets one chance to run even if we're preempted for 10 seconds.
+
+Any other design patterns that'd be better?
+
+Yours,
+Linus Walleij

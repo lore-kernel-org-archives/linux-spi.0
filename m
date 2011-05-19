@@ -1,20 +1,16 @@
-From: Vitaly Wool <vitalywool@gmail.com>
-Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer v2
-Date: Thu, 19 May 2011 19:40:30 +0200
-Message-ID: <BANLkTi=COt5Te4bF1M30A+R4Vqnz=kWiJA@mail.gmail.com>
-References: <1305821134-26147-1-git-send-email-linus.walleij@stericsson.com>
-	<BANLkTi=s4nzi=5f+Vvh3ABuspnKXQVUfLw@mail.gmail.com>
-	<BANLkTi=mQbPt9rcqEVyMLy3rkF2D7FMh=g@mail.gmail.com>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH] spi/pl022: use cpu_relax in the busy loop
+Date: Thu, 19 May 2011 20:01:25 +0200
+Message-ID: <1305828085-25135-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Magnus Templing <magnus.templing@stericsson.com>
-To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
+	Linus Walleij <linus.walleij@stericsson.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <BANLkTi=mQbPt9rcqEVyMLy3rkF2D7FMh=g@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -26,16 +22,25 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 19, 2011 at 7:36 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
->>
->> just out of curiosity: is it a busy wait? Looks like it is...
->
-> Yep that's the polling mode part. IRQ and DMA mode should
-> be the norm I guess.
->
-> Magnus: do you have a specific use case for this thing?
+This relaxes the cpu in the polling busy-wait loop.
 
-Well, adding cpu_relax() somewhere in the loop might be not a bad idea...
+Reported-by: Vitaly Wool <vitalywool@gmail.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/amba-pl022.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-Thanks,
-   Vitaly
+diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
+index 18667de..8a2b88a 100644
+--- a/drivers/spi/amba-pl022.c
++++ b/drivers/spi/amba-pl022.c
+@@ -1424,6 +1424,7 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 				message->state = STATE_ERROR;
+ 				goto out;
+ 			}
++			cpu_relax();
+ 		}
+ 
+ 		/* Update total byte transferred */
+-- 
+1.7.3.2

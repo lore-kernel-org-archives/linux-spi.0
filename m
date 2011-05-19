@@ -1,8 +1,8 @@
-From: "Orange Mediatics News" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] votre bimensuel gratuit pour mieux comprendre les nouvelles
-	technologies
-Date: Wed, 18 May 2011 22:31:53 +0200 (CEST)
-Message-ID: <lles9d.cu5tpe@front02.r7g.com>
+From: "De Dietrich" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Profitez de 2689 euros d'economies avec les chaudieres
+	nouvelle generation
+Date: Thu, 19 May 2011 09:37:04 +0200 (CEST)
+Message-ID: <llfmhu.9pey56@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

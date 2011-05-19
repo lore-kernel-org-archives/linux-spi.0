@@ -1,94 +1,35 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer
-Date: Thu, 19 May 2011 14:44:54 +0200
-Message-ID: <20110519124454.GC2219@pengutronix.de>
-References: <1305807191-11704-1-git-send-email-linus.walleij@stericsson.com>
+From: Newbidder <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
+Subject: =?iso-8859-15?Q?Une_montre_d'exception_=E0_part?=
+	=?iso-8859-15?Q?ir_d'un_centime_sur_NEWBIDDER?=
+Date: Thu, 19 May 2011 15:05:38 +0200 (CEST)
+Message-ID: <2449188521.76174.1305810338189@p4enginex1.emv2.com>
+Reply-To: newsletter-ZaYshRGIW9954TAoqtyWWQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1129458426=="
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Magnus Templing <magnus.templing@stericsson.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
-	linux-arm-kernel@lists.infradead.org
-To: Linus Walleij <linus.walleij@stericsson.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1305807191-11704-1-git-send-email-linus.walleij@stericsson.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============1129458426==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="69pVuxX8awAiJ7fD"
-Content-Disposition: inline
+Une montre d'exception =E0 partir d'un centime sur newbidder http://p4tre.e=
+mv3.com/HS?a=3DENX7Cqm3dpdG8SA9MKJO8nTnGHxKLI8scvcStGb5lw8W0bBhOG5mpqVsje_H=
+hdBefVIC
+---------------------------------------------------------------------------=
+---
+What Every C/C++ and Fortran developer Should Know!
+Read this article and learn how Intel has extended the reach of its =
 
+next-generation tools to help Windows* and Linux* C/C++ and Fortran =
 
---69pVuxX8awAiJ7fD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+developers boost performance applications - including clusters. =
 
-Hi,
-
-> -		/* FIXME: insert a timeout so we don't hang here indefinitely */
-> -		while (pl022->tx < pl022->tx_end || pl022->rx < pl022->rx_end)
-> +
-> +		timeout =3D jiffies + msecs_to_jiffies(SPI_POLLING_TIMEOUT);
-
-Won't you miss the transfer if you get interrupted here longer than
-SPI_POLLING_TIMEOUT?
-
-> +		while (pl022->tx < pl022->tx_end || pl022->rx < pl022->rx_end) {
-> +			if (time_after(jiffies, timeout)) {
-> +				dev_warn(&pl022->adev->dev,
-> +				"%s: timeout!\n", __func__);
-> +				message->state =3D STATE_ERROR;
-> +				goto out;
-> +			}
->  			readwriter(pl022);
-> +		}
-
-Regards,
-
-   Wolfram
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---69pVuxX8awAiJ7fD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk3VEMYACgkQD27XaX1/VRul9gCgyDrXeT0zitKbn1GnN5DapJdC
-CLcAn3JnWdo0Sr46O+7Uqd06er9RTAEd
-=6aIh
------END PGP SIGNATURE-----
-
---69pVuxX8awAiJ7fD--
-
-
---===============1129458426==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============1129458426==--
+http://p.sf.net/sfu/intel-dev2devmay

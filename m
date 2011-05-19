@@ -1,18 +1,21 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi/pl022: use cpu_relax in the busy loop
-Date: Thu, 19 May 2011 12:03:35 -0600
-Message-ID: <20110519180334.GA5013@ponder.secretlab.ca>
-References: <1305828085-25135-1-git-send-email-linus.walleij@stericsson.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/2] spi/pl022: timeout on polled transfer v2
+Date: Thu, 19 May 2011 20:06:32 +0200
+Message-ID: <BANLkTikR7A1Y4sumjZXS5ou3ex7PJOi1CA@mail.gmail.com>
+References: <1305821134-26147-1-git-send-email-linus.walleij@stericsson.com>
+	<BANLkTi=s4nzi=5f+Vvh3ABuspnKXQVUfLw@mail.gmail.com>
+	<BANLkTi=mQbPt9rcqEVyMLy3rkF2D7FMh=g@mail.gmail.com>
+	<BANLkTi=COt5Te4bF1M30A+R4Vqnz=kWiJA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
-	linux-arm-kernel@lists.infradead.org
-To: Linus Walleij <linus.walleij@stericsson.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Magnus Templing <magnus.templing@stericsson.com>
+To: Vitaly Wool <vitalywool@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1305828085-25135-1-git-send-email-linus.walleij@stericsson.com>
+In-Reply-To: <BANLkTi=COt5Te4bF1M30A+R4Vqnz=kWiJA@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,32 +27,23 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, May 19, 2011 at 08:01:25PM +0200, Linus Walleij wrote:
-> This relaxes the cpu in the polling busy-wait loop.
-> 
-> Reported-by: Vitaly Wool <vitalywool@gmail.com>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+2011/5/19 Vitaly Wool <vitalywool@gmail.com>:
+> On Thu, May 19, 2011 at 7:36 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
+>>>
+>>> just out of curiosity: is it a busy wait? Looks like it is...
+>>
+>> Yep that's the polling mode part. IRQ and DMA mode should
+>> be the norm I guess.
+>>
+>> Magnus: do you have a specific use case for this thing?
+>
+> Well, adding cpu_relax() somewhere in the loop might be not a bad idea...
 
-Applied, thanks.
+OK sent a patch for it, and Grant applied it within something like
+30 seconds :-)
 
-g.
+I think on ARM that just boils down to a barrier() so it
+basically injects air in the pipeline when busywaiting, I never
+understood what that is good for, but it's a good marker anyway.
 
-> ---
->  drivers/spi/amba-pl022.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/spi/amba-pl022.c b/drivers/spi/amba-pl022.c
-> index 18667de..8a2b88a 100644
-> --- a/drivers/spi/amba-pl022.c
-> +++ b/drivers/spi/amba-pl022.c
-> @@ -1424,6 +1424,7 @@ static void do_polling_transfer(struct pl022 *pl022)
->  				message->state = STATE_ERROR;
->  				goto out;
->  			}
-> +			cpu_relax();
->  		}
->  
->  		/* Update total byte transferred */
-> -- 
-> 1.7.3.2
-> 
+Linus Walleij

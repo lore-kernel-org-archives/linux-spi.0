@@ -1,27 +1,50 @@
-From: "De Dietrich" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Profitez de 2689 euros d'economies avec les chaudieres
-	nouvelle generation
-Date: Thu, 19 May 2011 09:37:04 +0200 (CEST)
-Message-ID: <llfmhu.9pey56@front07.g7r9.com>
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH 2/2] spi/pl022: mark driver non-experimental
+Date: Thu, 19 May 2011 14:13:19 +0200
+Message-ID: <1305807199-11739-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Lee Jones <lee.jones@linaro.org>,
+	Linus Walleij <linus.walleij@stericsson.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+This driver has no TODO, and is now used on several platforms:
+ARM, U300, Ux500, SPEAr and more. So drop the EXPERIMENTAL
+requirement.
 
-------------------------------------------------------------------------------
-What Every C/C++ and Fortran developer Should Know!
-Read this article and learn how Intel has extended the reach of its 
-next-generation tools to help Windows* and Linux* C/C++ and Fortran 
-developers boost performance applications - including clusters. 
-http://p.sf.net/sfu/intel-dev2devmay
+Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
+---
+ drivers/spi/Kconfig |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index fc14b8d..fbd96b2 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -271,8 +271,8 @@ config SPI_ORION
+ 	  This enables using the SPI master controller on the Orion chips.
+ 
+ config SPI_PL022
+-	tristate "ARM AMBA PL022 SSP controller (EXPERIMENTAL)"
+-	depends on ARM_AMBA && EXPERIMENTAL
++	tristate "ARM AMBA PL022 SSP controller"
++	depends on ARM_AMBA
+ 	default y if MACH_U300
+ 	default y if ARCH_REALVIEW
+ 	default y if INTEGRATOR_IMPD1
+-- 
+1.7.3.2

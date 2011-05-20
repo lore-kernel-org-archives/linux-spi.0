@@ -1,14 +1,10 @@
-From: SF news <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
-Subject: =?iso-8859-15?Q?Ouverture_des_ventes:_BIBICAR,_CROCS,_?=
-	=?iso-8859-15?Q?Accessoires_i_Phone_4,_LEVIS,_MISS_SIX?=
-	=?iso-8859-15?Q?TY,_ASPIRATEURS_ROBOTS_SAMSUNG,_SENSEO?=
-	=?iso-8859-15?Q?_et_pr=EAt_=E0_porter_femme_en_exclusivit=E9_?=
-Date: Fri, 20 May 2011 11:59:20 +0200 (CEST)
-Message-ID: <2449188521.77342.1305885560318@p4enginex1.emv2.com>
-Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: =?utf-8?B?5LiK5rW35rW36L+Q?= <shtmcl-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?B?5LiK5rW35Yiw5pel5pys5rW36L+Q5oql5Lu3?=
+Date: Fri, 20 May 2011 11:23:15 +0800
+Message-ID: <16054B7543BBF4CD71678F3D530460E1@epcj>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,39 +17,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-
-Pour consulter la version en ligne, rendez-vous sur cette page =
-
-
-Pour consulter la version en ligne, rendez-vous sur cette page
-En Exclusivit=E9 : BIBICAR, CROCS, Accessoires i Phone 4, LEVIS, MISS SIXTY=
-, ASPIRATEURS ROBOTS SAMSUNG, SENSEO et pr=EAt =E0 porter femme en exclusiv=
-it=E9 =
-
-
-Toujours disponible :ECO ENERGIE, MUSTICKER vibration, pendentifs A&H, Bijo=
-ux et Montres Guess, Manette PS3 SONY, Poussettes United of Benetton, V=EAt=
-ements pour b=E9b=E9s, Jeans de marque pour homme DIESEL, LEVIS, KAPORAL, B=
-oxer pour homme Calvin Klein et Boxer pour homme Calvin Klein  Camera HEDEN=
-, Tirelires FACEBANK et Manette de WII, PHILIPS, Polos et Tshirts ABERCROMB=
-IE, Montres BREO, Habits de plage Sun project, Soins Solaire, Tshirt ARAINA=
-, lunettes RAYBAN et H=E9licopt=E8res Radiocommand=E9s
-Electrom=E9nager AKOR, lunettes de marques et plein d'autres.
-
-
-
-
-
-
----------------------------------------------------------------------------=
----
-What Every C/C++ and Fortran developer Should Know!
-Read this article and learn how Intel has extended the reach of its =
-
-next-generation tools to help Windows* and Linux* C/C++ and Fortran =
-
-developers boost performance applications - including clusters. =
-
-http://p.sf.net/sfu/intel-dev2devmay
+MjAxMS0wNS0xOQ0K5oiR5Y+45LiT5Lia57uP6JCl5LiK5rW35Yiw5pel5pys5Zyw5Yy655qE6ZuG
+6KOF566x5pyN5Yqh44CCDQoNCuS4iua1t+WIsOaXpeacrOWBj+a4r+aZrumAmuafnOaKpeS7tw0K
+5paw5rO7ICQxMjAvMjBHUCAkMTUwLzQwR1AgJDE1MC80MEhRDQrnp4vnlLAgICQxMDAvMjBHUCAk
+MTUwLzQwR1AgJDE1MC80MEhRDQrlub/lspsgJDEyMC8yMEdQICQxNTAvNDBHUCAkMTUwLzQwSFEN
+CuawtOWymyAkMTIwLzIwR1AgJDE1MC80MEdQICQxNTAvNDBIUQ0K5p2+5bGxICQxMjAvMjBHUCAk
+MTUwLzQwR1AgJDE1MC80MEhRDQrlpKfliIYgJDIxMC8yMEdQICQzNTAvNDBHUCAkMzUwLzQwSFEN
+CuWvjOWxsSAkMTIwLzIwR1AgJDE1MC80MEdQICQxNTAvNDBIUQ0K5Y2g5bCP54mnICQxMjAvMjBH
+UCAkMTUwLzQwR1AgJDE1MC80MEhRDQrmr4/lkaggMiAzIDQgNSA2IOW8gOiIuQ0KDQrlhbbku5bm
+uK/lj6Por7fnlLXor53lkqjor6INCuaXpeacrOWfuuacrOa4r+mAmuefpe+8muS4remAmu+8jOWk
+p+aWsOWNju+8jOa1t+S4sO+8jOS7jjYvMeW8gOWni++8jOWPlua2iEVDUu+8iO+/pTMwMC82MDDv
+vInvvIzliqDmlLZDSUPvvIgkNTAvMTAw77yJ77yM5aaC6ZyA6KaB5Z+65pys5riv6L+Q6LS56K+3
+5p2l55S156Gu6K6k44CCDQoNCg0KTWljaGFlbCANCuaJi+acujogMTM5MTc5Nzc2NjMNCk1TTjog
+d2FuZzgxMjlAaG90bWFpbC5jb20NClFROjE3MDM5NDExNg0K5aaC5LiN6ZyA6KaB5qyh6YKu5Lu2
+77yM6K+35Zue5aSN5ZGK55+l77yM5oiR5bCG5Zyo5LiL5qyh5Y+R6YCB5Lit5Y+W5raI44CCCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQpXaGF0IEV2ZXJ5IEMvQysrIGFuZCBGb3J0cmFuIGRldmVsb3Bl
+ciBTaG91bGQgS25vdyEKUmVhZCB0aGlzIGFydGljbGUgYW5kIGxlYXJuIGhvdyBJbnRlbCBoYXMg
+ZXh0ZW5kZWQgdGhlIHJlYWNoIG9mIGl0cyAKbmV4dC1nZW5lcmF0aW9uIHRvb2xzIHRvIGhlbHAg
+V2luZG93cyogYW5kIExpbnV4KiBDL0MrKyBhbmQgRm9ydHJhbiAKZGV2ZWxvcGVycyBib29zdCBw
+ZXJmb3JtYW5jZSBhcHBsaWNhdGlvbnMgLSBpbmNsdWRpbmcgY2x1c3RlcnMuIApodHRwOi8vcC5z
+Zi5uZXQvc2Z1L2ludGVsLWRldjJkZXZtYXkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

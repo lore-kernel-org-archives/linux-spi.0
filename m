@@ -1,17 +1,16 @@
-From: Jan Andersson <jan-FkzTOoA/JUnLoDKTGw+V6w@public.gmane.org>
-Subject: Re: [PATCH V3] spi: add support for aeroflex gaisler spimctrl
-Date: Fri, 20 May 2011 09:26:19 +0200
-Message-ID: <4DD6179B.60503@gaisler.se>
-References: <1304169112-11224-1-git-send-email-jan@gaisler.com>
-	<1304170705-11319-1-git-send-email-jan@gaisler.com>
+From: SF news <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
+Subject: =?iso-8859-15?Q?Ouverture_des_ventes:_BIBICAR,_CROCS,_?=
+	=?iso-8859-15?Q?Accessoires_i_Phone_4,_LEVIS,_MISS_SIX?=
+	=?iso-8859-15?Q?TY,_ASPIRATEURS_ROBOTS_SAMSUNG,_SENSEO?=
+	=?iso-8859-15?Q?_et_pr=EAt_=E0_porter_femme_en_exclusivit=E9_?=
+Date: Fri, 20 May 2011 11:59:20 +0200 (CEST)
+Message-ID: <2449188521.77342.1305885560318@p4enginex1.emv2.com>
+Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Daniel Hellstrom <daniel-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1304170705-11319-1-git-send-email-jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,29 +21,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/30/2011 03:38 PM, Jan Andersson wrote:
-> This patch adds support for Aeroflex Gaisler SPI memory controller (SPIMCTRL).
-> SPIMCTRL memory maps a SPI flash device into AMBA address space. The core
-> also has a register interface where any command can be sent to the device.
-> 
-> The controller is typically found on LEON/GRLIB SoCs.
-> 
-> Tested on GR-LEON4-ITX development board.
-> 
-> Patch is against spi/next.
-> 
-> Signed-off-by: Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 
-Hi Grant,
 
-Any chance of you picking this one up?
 
-Best regards,
-  Jan
+Pour consulter la version en ligne, rendez-vous sur cette page =
 
-------------------------------------------------------------------------------
+
+Pour consulter la version en ligne, rendez-vous sur cette page
+En Exclusivit=E9 : BIBICAR, CROCS, Accessoires i Phone 4, LEVIS, MISS SIXTY=
+, ASPIRATEURS ROBOTS SAMSUNG, SENSEO et pr=EAt =E0 porter femme en exclusiv=
+it=E9 =
+
+
+Toujours disponible :ECO ENERGIE, MUSTICKER vibration, pendentifs A&H, Bijo=
+ux et Montres Guess, Manette PS3 SONY, Poussettes United of Benetton, V=EAt=
+ements pour b=E9b=E9s, Jeans de marque pour homme DIESEL, LEVIS, KAPORAL, B=
+oxer pour homme Calvin Klein et Boxer pour homme Calvin Klein  Camera HEDEN=
+, Tirelires FACEBANK et Manette de WII, PHILIPS, Polos et Tshirts ABERCROMB=
+IE, Montres BREO, Habits de plage Sun project, Soins Solaire, Tshirt ARAINA=
+, lunettes RAYBAN et H=E9licopt=E8res Radiocommand=E9s
+Electrom=E9nager AKOR, lunettes de marques et plein d'autres.
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
 What Every C/C++ and Fortran developer Should Know!
-Read this article and learn how Intel has extended the reach of its 
-next-generation tools to help Windows* and Linux* C/C++ and Fortran 
-developers boost performance applications - including clusters. 
+Read this article and learn how Intel has extended the reach of its =
+
+next-generation tools to help Windows* and Linux* C/C++ and Fortran =
+
+developers boost performance applications - including clusters. =
+
 http://p.sf.net/sfu/intel-dev2devmay

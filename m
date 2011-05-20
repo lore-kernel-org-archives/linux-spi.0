@@ -1,68 +1,50 @@
-From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
-Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new device ML7213 IOH
-Date: Fri, 20 May 2011 09:06:59 +0900
-Message-ID: <21D707796ECF4290AA525D28D8FF7461@hacdom.okisemi.com>
-References: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com> <1E339D61A60447BF8D1726A769D08FDA@hacdom.okisemi.com>
+From: Jan Andersson <jan-FkzTOoA/JUnLoDKTGw+V6w@public.gmane.org>
+Subject: Re: [PATCH V3] spi: add support for aeroflex gaisler spimctrl
+Date: Fri, 20 May 2011 09:26:19 +0200
+Message-ID: <4DD6179B.60503@gaisler.se>
+References: <1304169112-11224-1-git-send-email-jan@gaisler.com>
+	<1304170705-11319-1-git-send-email-jan@gaisler.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
-	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
-	"'Toshiharu Okada'" <toshiharu-linux@dsn.okisemi.com>
-To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
-	"'Grant Likely'" <grant.likely@secretlab.ca>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1E339D61A60447BF8D1726A769D08FDA@hacdom.okisemi.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Daniel Hellstrom <daniel-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1304170705-11319-1-git-send-email-jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Hi Grant
+On 04/30/2011 03:38 PM, Jan Andersson wrote:
+> This patch adds support for Aeroflex Gaisler SPI memory controller (SPIMCTRL).
+> SPIMCTRL memory maps a SPI flash device into AMBA address space. The core
+> also has a register interface where any command can be sent to the device.
+> 
+> The controller is typically found on LEON/GRLIB SoCs.
+> 
+> Tested on GR-LEON4-ITX development board.
+> 
+> Patch is against spi/next.
+> 
+> Signed-off-by: Jan Andersson <jan-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 
-Could you review this patch ASAP?
-There is little time to be integrated to 2.6.40.
+Hi Grant,
 
-Thanks,
------------------------------------------
-Tomoya MORINAGA
-OKI SEMICONDUCTOR CO., LTD.
+Any chance of you picking this one up?
 
-> -----Original Message-----
-> From: linux-kernel-owner@vger.kernel.org 
-> [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of 
-> Tomoya MORINAGA
-> Sent: Tuesday, May 10, 2011 2:59 PM
-> To: 'David Brownell'; 'Grant Likely'; 
-> spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
-> Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
-> joel.clark@intel.com; kok.howg.ewe@intel.com
-> Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new 
-> device ML7213 IOH
-> 
-> Hi Grant,
-> 
-> > Sent: Wednesday, April 27, 2011 11:23 AM
-> > To: David Brownell; Grant Likely;
-> > spi-devel-general@lists.sourceforge.net; 
-> linux-kernel@vger.kernel.org
-> > Cc: qi.wang@intel.com; yong.y.wang@intel.com; joel.clark@intel.com; 
-> > kok.howg.ewe@intel.com; Tomoya MORINAGA
-> > Subject: [PATCH v4 1/2] spi_topcliff_pch: support new device
-> > ML7213 IOH
-> 
-> Could you review this patch ?
-> 
-> With Best Regards,
-> -----------------------------------------
-> Tomoya MORINAGA
-> OKI SEMICONDUCTOR CO., LTD.
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe 
-> linux-kernel" in the body of a message to 
-> majordomo@vger.kernel.org More majordomo info at  
-> http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
-> 
+Best regards,
+  Jan
+
+------------------------------------------------------------------------------
+What Every C/C++ and Fortran developer Should Know!
+Read this article and learn how Intel has extended the reach of its 
+next-generation tools to help Windows* and Linux* C/C++ and Fortran 
+developers boost performance applications - including clusters. 
+http://p.sf.net/sfu/intel-dev2devmay

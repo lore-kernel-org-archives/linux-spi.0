@@ -1,12 +1,15 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: LTE Ecosystem Report 2011-2016
-Date: Mon, 23 May 2011 03:10:43 +0100
-Message-ID: <20110523031043.1204464484@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: SF news <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
+Subject: =?iso-8859-15?Q?Ouverture_des_ventes_:_Tshirts_Homme_Calvin_?=
+	=?iso-8859-15?Q?KLEIN_GUESS_DIESEL_ENERGIE,_Tshirts_pour_femm?=
+	=?iso-8859-15?Q?e_GUESS_PINKO_DOLCE&GABBANA_MISS_SIXTY,_Brace?=
+	=?iso-8859-15?Q?lets_MAGIC_BANDZ_et_AQUA_COLOR_en_exclusivit=E9?=
+Date: Mon, 23 May 2011 10:21:43 +0200 (CEST)
+Message-ID: <2449188521.79210.1306138903235@p4enginex1.emv2.com>
+Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,10 +21,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-LTE Ecosystem Report 2011-2016
-------------------------------------------------------------------------------
+
+
+
+Pour consulter la version en ligne, rendez-vous sur cette page =
+
+
+Pour consulter la version en ligne, rendez-vous sur cette page
+En Exclusivit=E9 :  Tshirts Homme Calvin KLEIN GUESS DIESEL ENERGIE, Tshirt=
+ pour femme GUESS PINKO DOLCE&GABBANA MISS SIXTY, Bracelets MAGIC BANDZ et =
+AQUA COLOR.
+
+Toujours disponible :BIBICAR, CROCS, Accessoires i Phone 4, LEVIS, MISS SIX=
+TY, ASPIRATEURS ROBOTS SAMSUNG, SENSEO et pr=EAt =E0 porter femme, ECO ENER=
+GIE, MUSTICKER vibration, pendentifs A&H, Bijoux et Montres Guess, Manette =
+PS3 SONY, Poussettes United of Benetton, V=EAtements pour b=E9b=E9s, Jeans =
+de marque pour homme DIESEL, LEVIS, KAPORAL, Boxer pour homme Calvin Klein =
+et Boxer pour homme Calvin Klein  Camera HEDEN, Tirelires FACEBANK et Manet=
+te de WII, PHILIPS, Polos et Tshirts ABERCROMBIE, Montres BREO, Habits de p=
+lage Sun project, Soins Solaire, Tshirt ARAINA, lunettes RAYBAN et H=E9lico=
+pt=E8res Radiocommand=E9s
+Electrom=E9nager AKOR, lunettes de marques et plein d'autres.
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
 What Every C/C++ and Fortran developer Should Know!
-Read this article and learn how Intel has extended the reach of its 
-next-generation tools to help Windows* and Linux* C/C++ and Fortran 
-developers boost performance applications - including clusters. 
+Read this article and learn how Intel has extended the reach of its =
+
+next-generation tools to help Windows* and Linux* C/C++ and Fortran =
+
+developers boost performance applications - including clusters. =
+
 http://p.sf.net/sfu/intel-dev2devmay

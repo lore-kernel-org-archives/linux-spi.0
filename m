@@ -1,39 +1,99 @@
-From: Nap Travel <info-1ueHpAvqD+QS+FvcfC7Uqw@public.gmane.org>
-Subject: Promocion Cruceros
-Date: Sun, 22 May 2011 09:08:58 +0000 (UTC)
-Message-ID: <a53fb00b.7b3cb088.1c0.spi-devel-general=lists.sourceforge.net@perfit-mail.net>
-Reply-To: Nap Travel <info-1ueHpAvqD+QS+FvcfC7Uqw@public.gmane.org>
+From: "Tomoya MORINAGA" <tomoya-linux@dsn.okisemi.com>
+Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new device ML7213 IOH
+Date: Mon, 23 May 2011 10:59:15 +0900
+Message-ID: <F46A2C4A4BF84E15B320BBB63C0EF936@hacdom.okisemi.com>
+References: <1303871010-8319-1-git-send-email-tomoya-linux@dsn.okisemi.com> <1E339D61A60447BF8D1726A769D08FDA@hacdom.okisemi.com> <21D707796ECF4290AA525D28D8FF7461@hacdom.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
+	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
+	"'Toshiharu Okada'" <toshiharu-linux@dsn.okisemi.com>
+To: "'David Brownell'" <dbrownell@users.sourceforge.net>,
+	"'Grant Likely'" <grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <21D707796ECF4290AA525D28D8FF7461@hacdom.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VmVyc2nDs24gT25saW5lOiBodHRwOi8vcGVtbG4uY29tL3BlbS92P3A9dGxyMDNFd0tzNU9LdTBR
-S0ZoMEdkdyUzRCUzRAoKClBvciBmYXZvciB1dGlsaWNlIHVuIGNsaWVudGUgZGUgZW1haWwgY29u
-IHNvcG9ydGUgSFRNTCBwYXJhIHZpc3VhbGl6YXIgY29ycmVjdGFtZW50ZSBlc3RlIGVtYWlsLCBv
-IGFjY2VkYSBhIGxhIHZlcnNpb24gb25saW5lIGFxdWk6IGh0dHA6Ly9wZW1sbi5jb20vcGVtL3Y/
-cD10bHIwM0V3S3M1T0t1MFFLRmgwR2R3JTNEJTNECgotLS0KRXN0ZSBtZW5zYWplIGZ1ZSBlbnZp
-YWRvIGEgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHBvciBOQVAgVFJB
-VkVMCgpGTE9SSURBIDg5MCwgQlMgQVMsIEFyZ2VudGluYSAKUGFyYSBkZWphciBkZSByZWNpYmly
-IGVzdG9zIG1lbnNhamVzLCBoYWdhIGNsaWNrIGVuIGVsIHNpZ3VpZW50ZSBlbmxhY2U6IGRlc3Vz
-Y3JpYmlyIFsgaHR0cDovL3BlbWxuLmNvbS9wbC91P3A9dGxyMDNFd0tzNU9LdTBRS0ZoMEdkdyUz
-RCUzRCBdIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KV2hhdCBFdmVyeSBDL0MrKyBhbmQgRm9ydHJh
-biBkZXZlbG9wZXIgU2hvdWxkIEtub3chClJlYWQgdGhpcyBhcnRpY2xlIGFuZCBsZWFybiBob3cg
-SW50ZWwgaGFzIGV4dGVuZGVkIHRoZSByZWFjaCBvZiBpdHMgCm5leHQtZ2VuZXJhdGlvbiB0b29s
-cyB0byBoZWxwIFdpbmRvd3MqIGFuZCBMaW51eCogQy9DKysgYW5kIEZvcnRyYW4gCmRldmVsb3Bl
-cnMgYm9vc3QgcGVyZm9ybWFuY2UgYXBwbGljYXRpb25zIC0gaW5jbHVkaW5nIGNsdXN0ZXJzLiAK
-aHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1kZXYyZGV2bWF5Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Grant,
+
+Could you review this patch ASAP? 
+I worry this spi patch can not be integrated to the latest kernel again.
+
+With Best Regards,
+-----------------------------------------
+Tomoya MORINAGA
+OKI SEMICONDUCTOR CO., LTD.
+
+> -----Original Message-----
+> From: linux-kernel-owner@vger.kernel.org 
+> [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of 
+> Tomoya MORINAGA
+> Sent: Friday, May 20, 2011 9:07 AM
+> To: 'David Brownell'; 'Grant Likely'; 
+> spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
+> Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
+> joel.clark@intel.com; kok.howg.ewe@intel.com; 'Toshiharu Okada'
+> Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new 
+> device ML7213 IOH
+> 
+>  Hi Grant
+> 
+> Could you review this patch ASAP?
+> There is little time to be integrated to 2.6.40.
+> 
+> Thanks,
+> -----------------------------------------
+> Tomoya MORINAGA
+> OKI SEMICONDUCTOR CO., LTD.
+> 
+> > -----Original Message-----
+> > From: linux-kernel-owner@vger.kernel.org
+> > [mailto:linux-kernel-owner@vger.kernel.org] On Behalf Of Tomoya 
+> > MORINAGA
+> > Sent: Tuesday, May 10, 2011 2:59 PM
+> > To: 'David Brownell'; 'Grant Likely'; 
+> > spi-devel-general@lists.sourceforge.net; 
+> linux-kernel@vger.kernel.org
+> > Cc: qi.wang@intel.com; yong.y.wang@intel.com; joel.clark@intel.com; 
+> > kok.howg.ewe@intel.com
+> > Subject: RE: [PATCH v4 1/2] spi_topcliff_pch: support new device 
+> > ML7213 IOH
+> > 
+> > Hi Grant,
+> > 
+> > > Sent: Wednesday, April 27, 2011 11:23 AM
+> > > To: David Brownell; Grant Likely;
+> > > spi-devel-general@lists.sourceforge.net;
+> > linux-kernel@vger.kernel.org
+> > > Cc: qi.wang@intel.com; yong.y.wang@intel.com; 
+> joel.clark@intel.com; 
+> > > kok.howg.ewe@intel.com; Tomoya MORINAGA
+> > > Subject: [PATCH v4 1/2] spi_topcliff_pch: support new device
+> > > ML7213 IOH
+> > 
+> > Could you review this patch ?
+> > 
+> > With Best Regards,
+> > -----------------------------------------
+> > Tomoya MORINAGA
+> > OKI SEMICONDUCTOR CO., LTD.
+> > 
+> > --
+> > To unsubscribe from this list: send the line "unsubscribe 
+> > linux-kernel" in the body of a message to majordomo@vger.kernel.org 
+> > More majordomo info at http://vger.kernel.org/majordomo-info.html
+> > Please read the FAQ at  http://www.tux.org/lkml/
+> > 
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe 
+> linux-kernel" in the body of a message to 
+> majordomo@vger.kernel.org More majordomo info at  
+> http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+> 

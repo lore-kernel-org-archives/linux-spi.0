@@ -1,11 +1,15 @@
-From: 13410458452-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票--代/开
-Date: Tue, 24 May 2011 01:23:52 +0800
-Message-ID: <E1QOYrE-0004is-9O@sfs-ml-3.v29.ch3.sourceforge.com>
+From: SF news <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
+Subject: =?iso-8859-15?Q?Ouverture_des_ventes:_Bijoux_BLUE_PEARLS,_L?=
+	=?iso-8859-15?Q?unettes_et_accessoires_GIANFRANCO_FERRE,_Mon?=
+	=?iso-8859-15?Q?tres_LAMBORGHINI,_Univers_pour_b=E9b=E9s_LILOUM?=
+	=?iso-8859-15?Q?IAKA_et_Montres_PIERRE_CARDIN_en_exclusivit=E9?=
+Date: Tue, 24 May 2011 08:46:33 +0200 (CEST)
+Message-ID: <2449188521.80267.1306219593328@p4enginex2.emv2.com>
+Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +21,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQtci12CnK
-x9K7vNK8r7+qt6Khosn6svqhos/6ytvT2tK7zOW1xLTz0M3X27rPuavLvqGjCiAgICDP1rG+uavL
-vtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGuo7vTxbvdtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK27ei
-LS3GsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeiLS3GsS+1yLXIoaMKICAKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM0MTA0NTg0
-NTIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpXaGF0IEV2ZXJ5IEMvQysrIGFuZCBGb3J0cmFuIGRl
-dmVsb3BlciBTaG91bGQgS25vdyEKUmVhZCB0aGlzIGFydGljbGUgYW5kIGxlYXJuIGhvdyBJbnRl
-bCBoYXMgZXh0ZW5kZWQgdGhlIHJlYWNoIG9mIGl0cyAKbmV4dC1nZW5lcmF0aW9uIHRvb2xzIHRv
-IGhlbHAgV2luZG93cyogYW5kIExpbnV4KiBDL0MrKyBhbmQgRm9ydHJhbiAKZGV2ZWxvcGVycyBi
-b29zdCBwZXJmb3JtYW5jZSBhcHBsaWNhdGlvbnMgLSBpbmNsdWRpbmcgY2x1c3RlcnMuIApodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2ludGVsLWRldjJkZXZtYXkKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+
+Pour consulter la version en ligne, rendez-vous sur cette page
+En Exclusivit=E9 : =
+
+Ouverture des ventes: Bijoux BLUE PEARLS, Lunettes et accessoires GIANFRANC=
+O FERRE, Montres LAMBORGHINI, Univers pour b=E9b=E9s LILOUMIAKA et Montres =
+PIERRE CARDIN en exclusivit=E9
+Toujours disponible :BIBICAR, CROCS, Accessoires i Phone 4, LEVIS, MISS SIX=
+TY, ASPIRATEURS ROBOTS SAMSUNG, SENSEO et pr=EAt =E0 porter femme, ECO ENER=
+GIE, MUSTICKER vibration, pendentifs A&H, Bijoux et Montres Guess, Manette =
+PS3 SONY, V=EAtements pour b=E9b=E9s, Jeans de marque pour homme DIESEL, LE=
+VIS, KAPORAL, Boxer pour homme Calvin Klein et Boxer pour homme Calvin Klei=
+n  Camera HEDEN, Tirelires FACEBANK et Manette de WII, PHILIPS, Polos et Ts=
+hirts ABERCROMBIE, Montres BREO, Habits de plage Sun project, Soins Solaire=
+, Tshirt ARAINA, lunettes RAYBAN et H=E9licopt=E8res Radiocommand=E9s
+Electrom=E9nager AKOR, lunettes de marques et plein d'autres.
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+vRanger cuts backup time in half-while increasing security.
+With the market-leading solution for virtual backup and recovery, =
+
+you get blazing-fast, flexible, and affordable data protection.
+Download your free trial now. =
+
+http://p.sf.net/sfu/quest-d2dcopy1

@@ -1,42 +1,60 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi/spi_bfin_sport: new driver
- for a SPI bus via the Blackfin SPORT peripheral
-Date: Wed, 25 May 2011 16:04:17 -0400
-Message-ID: <BANLkTinYifemkzffF8_MWPuwhXp_h=1v-w@mail.gmail.com>
-References: <1294773725-4026-1-git-send-email-vapier@gentoo.org>
-	<1301302631-21857-1-git-send-email-vapier@gentoo.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/5] dmaengine: add ep93xx DMA support
+Date: Wed, 25 May 2011 22:47:14 +0200
+Message-ID: <BANLkTin8Trn-44Op+GbxrgocFrnPuXUZ2w@mail.gmail.com>
+References: <cover.1306082097.git.mika.westerberg@iki.fi>
+	<e6777eb9f7228ee1dadec1f0c9f16c3afc44c307.1306082097.git.mika.westerberg@iki.fi>
+	<BANLkTi=3z3kO5VEe2up8Mfm+bNXkY3baUw@mail.gmail.com>
+	<20110525195413.GC2996@acer>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Cliff Cai <cliff.cai-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-        Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <1301302631-21857-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: linux-arm-kernel@lists.infradead.org,
+	Vinod Koul <vinod.koul@intel.com>,
+	linux-kernel@vger.kernel.org, hsweeten@visionengravers.com,
+	ryan@bluewatersys.com, Dan Williams <dan.j.williams@intel.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi mailing list <spi-devel-general@lists.sourceforge.net>
+To: Mika Westerberg <mika.westerberg@iki.fi>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20110525195413.GC2996@acer>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gTW9uLCBNYXIgMjgsIDIwMTEgYXQgMDQ6NTcsIE1pa2UgRnJ5c2luZ2VyIHdyb3RlOgo+IFRo
-ZSBCbGFja2ZpbiBTUE9SVCBwZXJpcGhlcmFsIGlzIGEgcHJldHR5IGZsZXhpYmxlIGRldmljZS4g
-wqBXaXRoIGVub3VnaAo+IGNvYWNoaW5nLCB3ZSBjYW4gbWFrZSBpdCBnZW5lcmF0ZSBTUEkgY29t
-cGF0aWJsZSB3YXZlZm9ybXMuIMKgVGhpcyBpcwo+IGRlc2lyYWJsZSBhcyB0aGUgU1BPUlQgY2Fu
-IHJ1biBhdCBtdWNoIGhpZ2hlciBjbG9jayBmcmVxdWVuY2llcyB0aGFuIHRoZQo+IGRlZGljYXRl
-ZCBvbi1jaGlwIFNQSSBwZXJpcGhlcmFsLCBhbmQgaXQgY2FuIGRvIGZ1bGwgZHVwbGV4IERNQS4g
-wqBJdCBhbHNvCj4gb3BlbnMgdXAgdGhlIHBvc3NpYmlsaXR5IG9mIG11bHRpcGxlIFNQSSBidXNl
-cyBpbiBjYXNlIHNvbWVvbmUgd2FudHMgdG8KPiBkZWRpY2F0ZSBhIHdob2xlIGJ1cyB0byBhIHNw
-ZWNpZmljIHBhcnQgdGhhdCBkb2VzIG5vdCBwbGF5IHdlbGwgd2l0aAo+IG90aGVycy4KCmkgZG9u
-dCB0aGluayB0aGVyZSB3YXMgYW55IGZlZWRiYWNrIGxlZnQgZm9yIHVzIHRvIGFkZHJlc3MgaGVy
-ZSAuLi4KLW1pa2UKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdApVY2xpbnV4LWRpc3QtZGV2ZWxAYmxh
-Y2tmaW4udWNsaW51eC5vcmcKaHR0cHM6Ly9ibGFja2Zpbi51Y2xpbnV4Lm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL3VjbGludXgtZGlzdC1kZXZlbA==
+2011/5/25 Mika Westerberg <mika.westerberg@iki.fi>:
+
+> I re-checked the specs and indeed, as discussed previously, it is clear that
+> Cirrus (or ARM) copied the interface from other. Even the wording in the
+> document is identical in many places. However, in ep93xx User's Guide, there
+> is no mention about SSP being AMBA PrimeCell peripheral. For UARTs it is
+> mentioned... go figure.
+>
+> There are differences also, some of the bits in control registers are in
+> different places. Interrupt registers are completely different and there is no
+> DMA control register at all. The same things we discussed before.
+
+But it really does not matter. The amba-pl022.c driver has all the same
+deviations for things called "PL023" that are not pure PL022 either.
+I just made the driver a bit more flexible, supporting both.
+
+If the people doing drivers/usb/musb/* had done the same thing we
+would have had what, 5 drivers for similar hardware?
+
+> Back then, it wasn't known how the M2M DMA interface (the one used
+> by SSP and IDE) was going to be implemented.
+
+But I knew, having just written the needed extensions to dmaengine.
+And I said so. But I realize I'm maybe not considered an authoritative
+source on the subject, and I'm biased.
+
+> IMHO it is better to have ep93xx implementation on its own driver since it is
+> not a real AMBA PL022 peripheral but some weird hack made by Cirrus (although
+> my opinions are bit biased).
+
+I disagree because it's IMO at first sight no more deviant than our "PL023"
+variants that still use the same pl022 driver.
+
+Is there some inexepensive hardware with EP93xx I can get to fix this
+myself?
+
+Yours,
+Linus Walleij

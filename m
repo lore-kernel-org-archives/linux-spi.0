@@ -1,28 +1,31 @@
-From: Enquete =?utf-8?Q?r=C3=A9mun=C3=A9r=C3=A9e?= <contact-45pnAnmuwWuy1Jsh9kmMZQ@public.gmane.org>
-Subject: donnez votre avis et remportez un iPad 2
-Date: Fri, 27 May 2011 03:28:02 +0200
-Message-ID: <1306459682.4ddefe22c1b70@swift.generated>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: tle620x: add missing device_remove_file()
+Date: Thu, 26 May 2011 21:31:00 -0600
+Message-ID: <20110527033100.GL5032@ponder.secretlab.ca>
+References: <1305117545.6324.3.camel@phoenix>
+ <4DCB9985.2050100@simtec.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Axel Lin <axel.lin@gmail.com>, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Ben Dooks <ben@simtec.co.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4DCB9985.2050100@simtec.co.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, May 12, 2011 at 09:25:41AM +0100, Ben Dooks wrote:
+> On 11/05/11 13:39, Axel Lin wrote:
+> >This patch includes below fixes:
+> >1. Add missing device_remove_file for dev_attr_status_show in tle62x0_remove.
+> >2. Fix tle62x0_probe error handling:
+> >    Currently, if the error happens when ptr>  0, gpio_attrs[0] is not
+> >    properly remove.
+> >
+> >Signed-off-by: Axel Lin<axel.lin@gmail.com>
+> Acked-by: Ben Dooks <ben-linux@fluff.org>
 
+Applied, thanks.
 
- 
-------------------------------------------------------------------------------
-vRanger cuts backup time in half-while increasing security.
-With the market-leading solution for virtual backup and recovery, 
-you get blazing-fast, flexible, and affordable data protection.
-Download your free trial now. 
-http://p.sf.net/sfu/quest-d2dcopy1
+g.

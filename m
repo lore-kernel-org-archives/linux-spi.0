@@ -1,11 +1,13 @@
-From: "Bel" <jellybeann-556DOUNzYko@public.gmane.org>
-Subject: [SPAM] The best of the anti-ED meddds are here!
-Date: Sat, 28 May 2011 13:10:47 +0530
-Message-ID: <000c01cc1d0b$46043b70$48b13cd5@userjesfec>
+From: Skyrock <contact-45pnAnmuwWuy1Jsh9kmMZQ@public.gmane.org>
+Subject: votre adresse a =?utf-8?Q?=C3=A9t=C3=A9_s=C3=A9lectionn=C3=A9e?= !
+	=?utf-8?Q?D=C3=A9couvrez?= vite si vous avez =?utf-8?Q?gagn=C3=A9?= un
+	IPAD
+Date: Sun, 29 May 2011 10:12:20 +0200
+Message-ID: <1306656740.4de1ffe4175dc@swift.generated>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,12 +19,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://poltech.wielun.pl/shock.html Desire to act like a xxxstar? Ram a 
-blu-colored pilule!
-X-Antivirus: avast! (VPS 0617-3, 04/28/2006), Outbound message
-X-Antivirus-Status: Clean
 
 
+ 
 ------------------------------------------------------------------------------
 vRanger cuts backup time in half-while increasing security.
 With the market-leading solution for virtual backup and recovery, 

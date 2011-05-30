@@ -1,8 +1,7 @@
-From: "EPS TELESURVEILLANCE par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Adoptez la =?ISO-8859-1?Q?s=E9curit=E9?= TOUT COMPRIS
-	=?ISO-8859-1?Q?=E0?= prix =?ISO-8859-1?Q?in=E9dit?=!
-Date: Mon, 30 May 2011 15:31:42 +0200 (CEST)
-Message-ID: <lm0g8s.osod4o@front07.g7r9.com>
+From: "Orange Mediatics News" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] les nouvelles technologies à votre portée gratuitement avec notre bimensuel
+Date: Mon, 30 May 2011 20:55:03 +0200 (CEST)
+Message-ID: <lm0vsj.d7s42j@front02.r7g.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

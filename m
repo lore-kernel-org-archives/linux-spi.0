@@ -1,42 +1,32 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v3] mmc_spi.c: add support for the regulator framework
-Date: Tue, 31 May 2011 11:05:28 +0100
-Message-ID: <20110531100528.GB7067@opensource.wolfsonmicro.com>
-References: <1305110379-17218-1-git-send-email-ospite@studenti.unina.it>
- <20110511130852.GB12469@opensource.wolfsonmicro.com>
- <20110511225337.094839a2.ospite@studenti.unina.it>
- <20110511205703.GA24486@opensource.wolfsonmicro.com>
- <20110518192320.9dd69cb5.ospite@studenti.unina.it>
- <20110518194211.GA5077@opensource.wolfsonmicro.com>
- <20110523171023.4df5af10.ospite@studenti.unina.it>
- <20110530110749.332df87a.ospite@studenti.unina.it>
- <20110530101447.GA5782@opensource.wolfsonmicro.com>
- <20110530125757.483d6f4c.ospite@studenti.unina.it>
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 31 May 2011 23:23:17 +0800
+Message-ID: <E1QRQn0-0002Pc-EU@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	openezx-devel@lists.openezx.org, Chris Ball <cjb@laptop.org>,
-	linux-mmc@vger.kernel.org, spi-devel-general@lists.sourceforge.net
-To: Antonio Ospite <ospite@studenti.unina.it>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20110530125757.483d6f4c.ospite@studenti.unina.it>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 30, 2011 at 12:57:57PM +0200, Antonio Ospite wrote:
-
-> It is cleaner and more uniform indeed, but it does not solve the problem
-> I am seeing, the issue is still there when pdata is NULL, we are at the
-> same point as before (the current code checks for (pdata &&
-> pdata->field)), and we cannot pass pdata directly as a function argument
-> (can we?) as it is driver specific as well.
-
-You can do a nasty type punning trick if the generic pdata is the first
-member of the platform data, otherwise the easiest thing is usually to
-provide a defualt pdata if the pdata is NULL.
-
-I'd expect that in a lot of cases the standard platform data would be
-the only platform data so for many drivers they wouldn't need to worry
-about extra data but perhaps MMC isn't like that, I've never really
-looked at the code.
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2ltcGxpZnkgZGF0
+YSBiYWNrdXAgYW5kIHJlY292ZXJ5IGZvciB5b3VyIHZpcnR1YWwgZW52aXJvbm1lbnQgd2l0aCB2
+UmFuZ2VyLiAKSW5zdGFsbGF0aW9uJ3MgYSBzbmFwLCBhbmQgZmxleGlibGUgcmVjb3Zlcnkgb3B0
+aW9ucyBtZWFuIHlvdXIgZGF0YSBpcyBzYWZlLApzZWN1cmUgYW5kIHRoZXJlIHdoZW4geW91IG5l
+ZWQgaXQuIERhdGEgcHJvdGVjdGlvbiBtYWdpYz8KTm9wZSAtIEl0J3MgdlJhbmdlci4gR2V0IHlv
+dXIgZnJlZSB0cmlhbCBkb3dubG9hZCB0b2RheS4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvcXVlc3Qt
+c2ZkZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

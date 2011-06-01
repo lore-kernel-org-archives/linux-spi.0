@@ -1,11 +1,12 @@
-From: 15817302760-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 31 May 2011 23:23:17 +0800
-Message-ID: <E1QRQn0-0002Pc-EU@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Govindraj.R" <govindraj.raja-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 3/3] omap2_spi: fix compilation warning.
+Date: Wed, 1 Jun 2011 11:31:24 +0530
+Message-ID: <1306908084-28959-1-git-send-email-govindraj.raja@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "Govindraj.R" <govindraj.raja-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2ltcGxpZnkgZGF0
-YSBiYWNrdXAgYW5kIHJlY292ZXJ5IGZvciB5b3VyIHZpcnR1YWwgZW52aXJvbm1lbnQgd2l0aCB2
-UmFuZ2VyLiAKSW5zdGFsbGF0aW9uJ3MgYSBzbmFwLCBhbmQgZmxleGlibGUgcmVjb3Zlcnkgb3B0
-aW9ucyBtZWFuIHlvdXIgZGF0YSBpcyBzYWZlLApzZWN1cmUgYW5kIHRoZXJlIHdoZW4geW91IG5l
-ZWQgaXQuIERhdGEgcHJvdGVjdGlvbiBtYWdpYz8KTm9wZSAtIEl0J3MgdlJhbmdlci4gR2V0IHlv
-dXIgZnJlZSB0cmlhbCBkb3dubG9hZCB0b2RheS4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvcXVlc3Qt
-c2ZkZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+fix below compilation warning.
+
+drivers/spi/omap2_mcspi.c: In function 'omap2_mcspi_txrx_dma':
+drivers/spi/omap2_mcspi.c:301: warning: 'elements' may be used uninitialized in this function
+
+Signed-off-by: Govindraj.R <govindraj.raja-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/omap2_mcspi.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
+index 6f86ba0..969cdd2 100644
+--- a/drivers/spi/omap2_mcspi.c
++++ b/drivers/spi/omap2_mcspi.c
+@@ -298,7 +298,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 	unsigned int		count, c;
+ 	unsigned long		base, tx_reg, rx_reg;
+ 	int			word_len, data_type, element_count;
+-	int			elements;
++	int			elements = 0;
+ 	u32			l;
+ 	u8			* rx;
+ 	const u8		* tx;
+-- 
+1.7.0.4
+
+
+------------------------------------------------------------------------------
+Simplify data backup and recovery for your virtual environment with vRanger. 
+Installation's a snap, and flexible recovery options mean your data is safe,
+secure and there when you need it. Data protection magic?
+Nope - It's vRanger. Get your free trial download today. 
+http://p.sf.net/sfu/quest-sfdev2dev

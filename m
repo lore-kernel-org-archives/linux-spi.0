@@ -1,12 +1,14 @@
-From: "Govindraj.R" <govindraj.raja-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 3/3] omap2_spi: fix compilation warning.
-Date: Wed, 1 Jun 2011 11:31:24 +0530
-Message-ID: <1306908084-28959-1-git-send-email-govindraj.raja@ti.com>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi: bitbang: initialize bits_per_word as specified by spi
+	message
+Date: Wed,  1 Jun 2011 18:36:49 +0200
+Message-ID: <1306946209-28553-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "Govindraj.R" <govindraj.raja-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,31 +20,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-fix below compilation warning.
+SPI protocol drivers can submit messages specifying needed bits_per_word
+parameter for a message transfer. The bitbang driver currently ignores
+bits_per_word given by a singe message and always uses master's
+bits_per_word parameter. Only use master's bits_per_word when a
+message didn't specify needed bits_per_word for ongoing transfer.
 
-drivers/spi/omap2_mcspi.c: In function 'omap2_mcspi_txrx_dma':
-drivers/spi/omap2_mcspi.c:301: warning: 'elements' may be used uninitialized in this function
-
-Signed-off-by: Govindraj.R <govindraj.raja-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 ---
- drivers/spi/omap2_mcspi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi_bitbang.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-index 6f86ba0..969cdd2 100644
---- a/drivers/spi/omap2_mcspi.c
-+++ b/drivers/spi/omap2_mcspi.c
-@@ -298,7 +298,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
- 	unsigned int		count, c;
- 	unsigned long		base, tx_reg, rx_reg;
- 	int			word_len, data_type, element_count;
--	int			elements;
-+	int			elements = 0;
- 	u32			l;
- 	u8			* rx;
- 	const u8		* tx;
+diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+index 14a63f6..bb38c83 100644
+--- a/drivers/spi/spi_bitbang.c
++++ b/drivers/spi/spi_bitbang.c
+@@ -68,7 +68,7 @@ static unsigned bitbang_txrx_8(
+ 	unsigned		ns,
+ 	struct spi_transfer	*t
+ ) {
+-	unsigned		bits = spi->bits_per_word;
++	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u8		*tx = t->tx_buf;
+ 	u8			*rx = t->rx_buf;
+@@ -94,7 +94,7 @@ static unsigned bitbang_txrx_16(
+ 	unsigned		ns,
+ 	struct spi_transfer	*t
+ ) {
+-	unsigned		bits = spi->bits_per_word;
++	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u16		*tx = t->tx_buf;
+ 	u16			*rx = t->rx_buf;
+@@ -120,7 +120,7 @@ static unsigned bitbang_txrx_32(
+ 	unsigned		ns,
+ 	struct spi_transfer	*t
+ ) {
+-	unsigned		bits = spi->bits_per_word;
++	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u32		*tx = t->tx_buf;
+ 	u32			*rx = t->rx_buf;
 -- 
-1.7.0.4
+1.7.1
 
 
 ------------------------------------------------------------------------------

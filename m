@@ -1,14 +1,11 @@
-From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH] spi: bitbang: initialize bits_per_word as specified by spi
-	message
-Date: Wed,  1 Jun 2011 18:36:49 +0200
-Message-ID: <1306946209-28553-1-git-send-email-agust@denx.de>
+From: hgchgtkhzb-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 出口报关  商检
+Date: Thu, 2 Jun 2011 15:45:27 +0800
+Message-ID: <E1QS2ar-0007CC-IW@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,55 +17,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SPI protocol drivers can submit messages specifying needed bits_per_word
-parameter for a message transfer. The bitbang driver currently ignores
-bits_per_word given by a singe message and always uses master's
-bits_per_word parameter. Only use master's bits_per_word when a
-message didn't specify needed bits_per_word for ongoing transfer.
-
-Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
----
- drivers/spi/spi_bitbang.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
-index 14a63f6..bb38c83 100644
---- a/drivers/spi/spi_bitbang.c
-+++ b/drivers/spi/spi_bitbang.c
-@@ -68,7 +68,7 @@ static unsigned bitbang_txrx_8(
- 	unsigned		ns,
- 	struct spi_transfer	*t
- ) {
--	unsigned		bits = spi->bits_per_word;
-+	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
- 	unsigned		count = t->len;
- 	const u8		*tx = t->tx_buf;
- 	u8			*rx = t->rx_buf;
-@@ -94,7 +94,7 @@ static unsigned bitbang_txrx_16(
- 	unsigned		ns,
- 	struct spi_transfer	*t
- ) {
--	unsigned		bits = spi->bits_per_word;
-+	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
- 	unsigned		count = t->len;
- 	const u16		*tx = t->tx_buf;
- 	u16			*rx = t->rx_buf;
-@@ -120,7 +120,7 @@ static unsigned bitbang_txrx_32(
- 	unsigned		ns,
- 	struct spi_transfer	*t
- ) {
--	unsigned		bits = spi->bits_per_word;
-+	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
- 	unsigned		count = t->len;
- 	const u32		*tx = t->tx_buf;
- 	u32			*rx = t->rx_buf;
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
-Simplify data backup and recovery for your virtual environment with vRanger. 
-Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Data protection magic?
-Nope - It's vRanger. Get your free trial download today. 
-http://p.sf.net/sfu/quest-sfdev2dev
+xPq6wyEgCiAgsb65q8u+tPrA7cnu29ouuePW3bP2v9rC8rWlsai52C4gycy87CC088q5ud2808ep
+w7O02bvh1qTD98rpLENPsvq12NakLiAKCsbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm5
+3ceptcgpICDKtcGmsai52CzRsMfzs6e80rrP1/fNy8uwtaUgCgogICAgICAgICAgICAgICDM4bmp
+tPPQobrLz/q1paOos/a/2rGoudi1paOpIAoKIMGqz7XIyzvVxaGvUyDBqs+1tee7sDsgMDc1NS0y
+NTQyMDE3NyAgICAxMzUzNDIyMTc2OCAgIFFROzM4MTg3NjM0NwoK08rP5KO7YTgxMjMzNDY2QDE2
+My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTaW1wbGlmeSBkYXRhIGJhY2t1cCBhbmQgcmVj
+b3ZlcnkgZm9yIHlvdXIgdmlydHVhbCBlbnZpcm9ubWVudCB3aXRoIHZSYW5nZXIuIApJbnN0YWxs
+YXRpb24ncyBhIHNuYXAsIGFuZCBmbGV4aWJsZSByZWNvdmVyeSBvcHRpb25zIG1lYW4geW91ciBk
+YXRhIGlzIHNhZmUsCnNlY3VyZSBhbmQgdGhlcmUgd2hlbiB5b3UgbmVlZCBpdC4gRGF0YSBwcm90
+ZWN0aW9uIG1hZ2ljPwpOb3BlIC0gSXQncyB2UmFuZ2VyLiBHZXQgeW91ciBmcmVlIHRyaWFsIGRv
+d25sb2FkIHRvZGF5LiAKaHR0cDovL3Auc2YubmV0L3NmdS9xdWVzdC1zZmRldjJkZXYKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
+YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
+dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
+ZXJhbAo=

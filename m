@@ -1,11 +1,12 @@
-From: hgchgtkhzb-9Onoh4P/yGk@public.gmane.org
-Subject: [SPAM] 出口报关  商检
-Date: Thu, 2 Jun 2011 15:45:27 +0800
-Message-ID: <E1QS2ar-0007CC-IW@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Jenny.Smith <jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: Hello Would You Like To Earn
+Date: Thu, 02 Jun 2011 07:31:35 -0500
+Message-ID: <E1QS73n-0005n9-5f@somerset.websitewelcome.com>
+Reply-To: jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,19 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6wyEgCiAgsb65q8u+tPrA7cnu29ouuePW3bP2v9rC8rWlsai52C4gycy87CC088q5ud2808ep
-w7O02bvh1qTD98rpLENPsvq12NakLiAKCsbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm5
-3ceptcgpICDKtcGmsai52CzRsMfzs6e80rrP1/fNy8uwtaUgCgogICAgICAgICAgICAgICDM4bmp
-tPPQobrLz/q1paOos/a/2rGoudi1paOpIAoKIMGqz7XIyzvVxaGvUyDBqs+1tee7sDsgMDc1NS0y
-NTQyMDE3NyAgICAxMzUzNDIyMTc2OCAgIFFROzM4MTg3NjM0NwoK08rP5KO7YTgxMjMzNDY2QDE2
-My5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTaW1wbGlmeSBkYXRhIGJhY2t1cCBhbmQgcmVj
-b3ZlcnkgZm9yIHlvdXIgdmlydHVhbCBlbnZpcm9ubWVudCB3aXRoIHZSYW5nZXIuIApJbnN0YWxs
-YXRpb24ncyBhIHNuYXAsIGFuZCBmbGV4aWJsZSByZWNvdmVyeSBvcHRpb25zIG1lYW4geW91ciBk
-YXRhIGlzIHNhZmUsCnNlY3VyZSBhbmQgdGhlcmUgd2hlbiB5b3UgbmVlZCBpdC4gRGF0YSBwcm90
-ZWN0aW9uIG1hZ2ljPwpOb3BlIC0gSXQncyB2UmFuZ2VyLiBHZXQgeW91ciBmcmVlIHRyaWFsIGRv
-d25sb2FkIHRvZGF5LiAKaHR0cDovL3Auc2YubmV0L3NmdS9xdWVzdC1zZmRldjJkZXYKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+Hello spi-devel-general
+
+Would you like to earn an extra $200 everyday?, for just 45 minutes work? You could quit your job and make double the money at home working for yourself.
+
+visit->http:tinyurl.com/3ot9sgy
+
+Regards,
+
+Jenny Smith
+
+Survey Human Resources Dept.
+
+
+
+------------------------------------------------------------------------------
+Simplify data backup and recovery for your virtual environment with vRanger. 
+Installation's a snap, and flexible recovery options mean your data is safe,
+secure and there when you need it. Data protection magic?
+Nope - It's vRanger. Get your free trial download today. 
+http://p.sf.net/sfu/quest-sfdev2dev

@@ -1,63 +1,82 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 3/3] omap2_spi: fix compilation warning.
-Date: Fri, 3 Jun 2011 14:59:54 -0600
-Message-ID: <20110603205954.GJ17972@ponder.secretlab.ca>
-References: <1306908084-28959-1-git-send-email-govindraj.raja@ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: initialize bits_per_word as specified by
+	spi message
+Date: Fri, 3 Jun 2011 15:01:29 -0600
+Message-ID: <20110603210129.GK17972@ponder.secretlab.ca>
+References: <1306946209-28553-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, stable@kernel.org
-To: "Govindraj.R" <govindraj.raja@ti.com>
-Return-path: <stable-bounces@linux.kernel.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1306908084-28959-1-git-send-email-govindraj.raja@ti.com>
-List-Unsubscribe: <http://linux.kernel.org/mailman/options/stable>,
-	<mailto:stable-request@linux.kernel.org?subject=unsubscribe>
-List-Archive: <http://linux.kernel.org/mailman/private/stable/>
-List-Post: <mailto:stable@linux.kernel.org>
-List-Help: <mailto:stable-request@linux.kernel.org?subject=help>
-List-Subscribe: <http://linux.kernel.org/mailman/listinfo/stable>,
-	<mailto:stable-request@linux.kernel.org?subject=subscribe>
-Sender: stable-bounces@linux.kernel.org
-Errors-To: stable-bounces@linux.kernel.org
+In-Reply-To: <1306946209-28553-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 01, 2011 at 11:31:24AM +0530, Govindraj.R wrote:
-> fix below compilation warning.
+On Wed, Jun 01, 2011 at 06:36:49PM +0200, Anatolij Gustschin wrote:
+> SPI protocol drivers can submit messages specifying needed bits_per_word
+> parameter for a message transfer. The bitbang driver currently ignores
+> bits_per_word given by a singe message and always uses master's
+> bits_per_word parameter. Only use master's bits_per_word when a
+> message didn't specify needed bits_per_word for ongoing transfer.
 > 
-> drivers/spi/omap2_mcspi.c: In function 'omap2_mcspi_txrx_dma':
-> drivers/spi/omap2_mcspi.c:301: warning: 'elements' may be used uninitialized in this function
-> 
-> Signed-off-by: Govindraj.R <govindraj.raja@ti.com>
+> Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 
-Applied, thanks.
-
-Should got to stable too.
+Looks right to me.  Merged.
 
 g.
 
 > ---
->  drivers/spi/omap2_mcspi.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+>  drivers/spi/spi_bitbang.c |    6 +++---
+>  1 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/spi/omap2_mcspi.c b/drivers/spi/omap2_mcspi.c
-> index 6f86ba0..969cdd2 100644
-> --- a/drivers/spi/omap2_mcspi.c
-> +++ b/drivers/spi/omap2_mcspi.c
-> @@ -298,7 +298,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
->  	unsigned int		count, c;
->  	unsigned long		base, tx_reg, rx_reg;
->  	int			word_len, data_type, element_count;
-> -	int			elements;
-> +	int			elements = 0;
->  	u32			l;
->  	u8			* rx;
->  	const u8		* tx;
+> diff --git a/drivers/spi/spi_bitbang.c b/drivers/spi/spi_bitbang.c
+> index 14a63f6..bb38c83 100644
+> --- a/drivers/spi/spi_bitbang.c
+> +++ b/drivers/spi/spi_bitbang.c
+> @@ -68,7 +68,7 @@ static unsigned bitbang_txrx_8(
+>  	unsigned		ns,
+>  	struct spi_transfer	*t
+>  ) {
+> -	unsigned		bits = spi->bits_per_word;
+> +	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+>  	unsigned		count = t->len;
+>  	const u8		*tx = t->tx_buf;
+>  	u8			*rx = t->rx_buf;
+> @@ -94,7 +94,7 @@ static unsigned bitbang_txrx_16(
+>  	unsigned		ns,
+>  	struct spi_transfer	*t
+>  ) {
+> -	unsigned		bits = spi->bits_per_word;
+> +	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+>  	unsigned		count = t->len;
+>  	const u16		*tx = t->tx_buf;
+>  	u16			*rx = t->rx_buf;
+> @@ -120,7 +120,7 @@ static unsigned bitbang_txrx_32(
+>  	unsigned		ns,
+>  	struct spi_transfer	*t
+>  ) {
+> -	unsigned		bits = spi->bits_per_word;
+> +	unsigned		bits = t->bits_per_word ? : spi->bits_per_word;
+>  	unsigned		count = t->len;
+>  	const u32		*tx = t->tx_buf;
+>  	u32			*rx = t->rx_buf;
 > -- 
-> 1.7.0.4
+> 1.7.1
 > 
 
-_______________________________________________
-stable mailing list
-stable@linux.kernel.org
-http://linux.kernel.org/mailman/listinfo/stable
+------------------------------------------------------------------------------
+Simplify data backup and recovery for your virtual environment with vRanger.
+Installation's a snap, and flexible recovery options mean your data is safe,
+secure and there when you need it. Discover what all the cheering's about.
+Get your free trial download today. 
+http://p.sf.net/sfu/quest-dev2dev2 

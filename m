@@ -1,40 +1,31 @@
-From: Jenny.Smith <jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: Hello Would You Like To Earn
-Date: Fri, 03 Jun 2011 00:07:52 -0500
-Message-ID: <E1QSMbw-0002YD-UT@somerset.websitewelcome.com>
-Reply-To: jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] gpio: 74x164: remove unnecessary defines and prototype
+Date: Fri, 3 Jun 2011 11:37:25 -0600
+Message-ID: <20110603173725.GC15616@ponder.secretlab.ca>
+References: <201105271635.59593.hartleys@visionengravers.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201105271635.59593.hartleys@visionengravers.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello spi-devel-general
+On Fri, May 27, 2011 at 04:35:59PM -0700, H Hartley Sweeten wrote:
+> Remove the #define GEN_74X164_GPIO_COUNT since it's only used in
+> one place and it's meaning is obvious.  Also remove the #define
+> GEN_74X164_DRIVER_NAME and use spi->modalias to set the gpio chip's
+> label and the string "74x164" for the driver name.
+> 
+> Reorder the code slightly to remove the need to prototype
+> gen_74x164_set_value.
+> 
+> Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
 
-Would you like to earn an extra $200 everyday?, for just 45 minutes work? You could quit your job and make double the money at home working for yourself.
+Applied, thanks.
 
-visit->http:tinyurl.com/3ot9sgy
-
-Regards,
-
-Jenny Smith
-
-Survey Human Resources Dept.
-
-
-
-------------------------------------------------------------------------------
-Simplify data backup and recovery for your virtual environment with vRanger.
-Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Discover what all the cheering's about.
-Get your free trial download today. 
-http://p.sf.net/sfu/quest-dev2dev2 
+g.

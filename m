@@ -1,7 +1,7 @@
 From: Jenny.Smith <jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
 Subject: Hello Would You Like To Earn
-Date: Thu, 02 Jun 2011 07:31:35 -0500
-Message-ID: <E1QS73n-0005n9-5f@somerset.websitewelcome.com>
+Date: Fri, 03 Jun 2011 00:07:52 -0500
+Message-ID: <E1QSMbw-0002YD-UT@somerset.websitewelcome.com>
 Reply-To: jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -33,8 +33,8 @@ Survey Human Resources Dept.
 
 
 ------------------------------------------------------------------------------
-Simplify data backup and recovery for your virtual environment with vRanger. 
+Simplify data backup and recovery for your virtual environment with vRanger.
 Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Data protection magic?
-Nope - It's vRanger. Get your free trial download today. 
-http://p.sf.net/sfu/quest-sfdev2dev
+secure and there when you need it. Discover what all the cheering's about.
+Get your free trial download today. 
+http://p.sf.net/sfu/quest-dev2dev2 

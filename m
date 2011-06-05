@@ -1,103 +1,86 @@
 From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: [PATCH] spi: reorganize drivers
-Date: Sun, 5 Jun 2011 08:37:00 -0600
-Message-ID: <BANLkTin93sqhJ1hmefv0AqgEZvSEQYFiMg@mail.gmail.com>
-References: <20110605071725.26517.11573.stgit@ponder> <20110605081331.GA3499@acer>
+Date: Sun, 5 Jun 2011 14:55:37 -0600
+Message-ID: <BANLkTimgbxmBnTN9Sb55-hkbBi1AEfiPdg@mail.gmail.com>
+References: <20110605071725.26517.11573.stgit@ponder> <BANLkTinoEQf2a65KwQZOVK_4H9DSfqybjA@mail.gmail.com>
+ <20110605075458.GA2712@tarshish> <BANLkTi=5XLxcZiBcZT8W4Gh+Ph_BUjs-yw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
+Cc: Baruch Siach <baruch@tkos.co.il>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org
-To: Mika Westerberg <mika.westerberg@iki.fi>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20110605081331.GA3499@acer>
+In-Reply-To: <BANLkTi=5XLxcZiBcZT8W4Gh+Ph_BUjs-yw@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jun 5, 2011 at 2:13 AM, Mika Westerberg <mika.westerberg@iki.fi=
-> wrote:
-> On Sun, Jun 05, 2011 at 01:18:14AM -0600, Grant Likely wrote:
->> [repost: I had a typo on the spi-devel-general mailing list address]
+On Sun, Jun 5, 2011 at 5:49 AM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> On Sun, Jun 5, 2011 at 09:54, Baruch Siach <baruch@tkos.co.il> wrote:
+>> On Sun, Jun 05, 2011 at 01:13:28PM +0530, Jassi Brar wrote:
+>>> On Sun, Jun 5, 2011 at 12:48 PM, Grant Likely <grant.likely@secretlab.ca> wrote:
+>>> > [repost: I had a typo on the spi-devel-general mailing list address]
+>>> >
+>>> > Sort the SPI makefile and enforce the naming convention spi_*.c for
+>>> > spi drivers.
 >>
->> Sort the SPI makefile and enforce the naming convention spi_*.c for
->> spi drivers.
+>> [snip]
 >>
->> This change also rolls the contents of atmel_spi.h into the .c file
->> since there is only one user of that particular include file.
+>>> Though the spi_ prefix seems redundant considering the files are in
+>>> 'spi' directory.
+>>> Just a thought, no objection.
 >>
->> Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
->> ---
->> =A0drivers/spi/Makefile =A0 =A0 =A0 =A0 =A0 =A0| =A0 80 ++++++++----=
--------
->> =A0drivers/spi/atmel_spi.h =A0 =A0 =A0 =A0 | =A0167 ----------------=
------------------------
->> =A0drivers/spi/spi_ath79.c =A0 =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_atmel.c =A0 =A0 =A0 =A0 | =A0155 ++++++++++++++++=
-++++++++++++++++++++
->> =A0drivers/spi/spi_au1550.c =A0 =A0 =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_coldfire_qspi.c | =A0 =A00
->> =A0drivers/spi/spi_davinci.c =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_dw.c =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A02
->> =A0drivers/spi/spi_dw.h =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_dw_mid.c =A0 =A0 =A0 =A0| =A0 =A02
->> =A0drivers/spi/spi_dw_mmio.c =A0 =A0 =A0 | =A0 =A02
->> =A0drivers/spi/spi_dw_pci.c =A0 =A0 =A0 =A0| =A0 =A02
->> =A0drivers/spi/spi_ep93xx.c =A0 =A0 =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_mpc512x_psc.c =A0 | =A0 =A00
->> =A0drivers/spi/spi_mpc52xx.c =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_mpc52xx_psc.c =A0 | =A0 =A00
->> =A0drivers/spi/spi_omap2_mcspi.c =A0 | =A0 =A00
->> =A0drivers/spi/spi_omap_100k.c =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_omap_uwire.c =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_orion.c =A0 =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_pl022.c =A0 =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_pxa2xx.c =A0 =A0 =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_pxa2xx_pci.c =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_ti_ssp.c =A0 =A0 =A0 =A0| =A0 =A00
->> =A0drivers/spi/spi_tle62x0.c =A0 =A0 =A0 | =A0 =A00
->> =A0drivers/spi/spi_xilinx.c =A0 =A0 =A0 =A0| =A0 =A00
->> =A026 files changed, 192 insertions(+), 218 deletions(-)
->> =A0delete mode 100644 drivers/spi/atmel_spi.h
->> =A0rename drivers/spi/{ath79_spi.c =3D> spi_ath79.c} (100%)
->> =A0rename drivers/spi/{atmel_spi.c =3D> spi_atmel.c} (85%)
->> =A0rename drivers/spi/{au1550_spi.c =3D> spi_au1550.c} (100%)
->> =A0rename drivers/spi/{coldfire_qspi.c =3D> spi_coldfire_qspi.c} (10=
-0%)
->> =A0rename drivers/spi/{davinci_spi.c =3D> spi_davinci.c} (100%)
->> =A0rename drivers/spi/{dw_spi.c =3D> spi_dw.c} (99%)
->> =A0rename drivers/spi/{dw_spi.h =3D> spi_dw.h} (100%)
->> =A0rename drivers/spi/{dw_spi_mid.c =3D> spi_dw_mid.c} (99%)
->> =A0rename drivers/spi/{dw_spi_mmio.c =3D> spi_dw_mmio.c} (99%)
->> =A0rename drivers/spi/{dw_spi_pci.c =3D> spi_dw_pci.c} (99%)
->> =A0rename drivers/spi/{ep93xx_spi.c =3D> spi_ep93xx.c} (100%)
->> =A0rename drivers/spi/{mpc512x_psc_spi.c =3D> spi_mpc512x_psc.c} (10=
-0%)
->> =A0rename drivers/spi/{mpc52xx_spi.c =3D> spi_mpc52xx.c} (100%)
->> =A0rename drivers/spi/{mpc52xx_psc_spi.c =3D> spi_mpc52xx_psc.c} (10=
-0%)
->> =A0rename drivers/spi/{omap2_mcspi.c =3D> spi_omap2_mcspi.c} (100%)
->> =A0rename drivers/spi/{omap_spi_100k.c =3D> spi_omap_100k.c} (100%)
->> =A0rename drivers/spi/{omap_uwire.c =3D> spi_omap_uwire.c} (100%)
->> =A0rename drivers/spi/{orion_spi.c =3D> spi_orion.c} (100%)
->> =A0rename drivers/spi/{amba-pl022.c =3D> spi_pl022.c} (100%)
->> =A0rename drivers/spi/{pxa2xx_spi.c =3D> spi_pxa2xx.c} (100%)
->> =A0rename drivers/spi/{pxa2xx_spi_pci.c =3D> spi_pxa2xx_pci.c} (100%=
-)
->> =A0rename drivers/spi/{ti-ssp-spi.c =3D> spi_ti_ssp.c} (100%)
->> =A0rename drivers/spi/{tle62x0.c =3D> spi_tle62x0.c} (100%)
->> =A0rename drivers/spi/{xilinx_spi.c =3D> spi_xilinx.c} (100%)
+>> When looking at the list of loaded modules (e.g. in an Oops message), the name
+>> "spi_xilinx" is much more meaningful than just "xilinx", for example.
 >
-> We also have things like this in drivers/spi/Kconfig:
->
-> config SPI_DAVINCI
-> =A0 =A0 =A0 =A0...
->
-> =A0 =A0 =A0 =A0This driver can also be built as a module. The module =
-will
-> =A0 =A0 =A0 =A0be called davinci_spi <--- This is now wrong
->
-> should these be converted as well?
+> Plus, when dropping the prefix, spi_xilinx.ko and gpio-xilinx.ko
+> become the same...
 
-yes.
+Exactly.  We essentially have a flat namespace for modules, despite
+the fact of them being organized into directories.  At least for the
+subsystems I maintain, I'd like to have a consistent prefix for that
+reason.
+
+> So now we have spi_<name>.c (with underscore) and gpio-<name>.c (with dash)?
+> And other subsystems go with <name>-<type>.c instead, e.g.
+> drivers/mfd/wm831x-spi.c?
+
+On a brief survey of drivers:
+
+apci: *.c
+ata: pata_*.c, sata_*.c
+atm: *.c
+block: *.c
+bluetooth: *.c
+crypto: *.c
+dma: *dma.c
+gpio: gpio-*.c (after applying my patch)
+hid: hid-*.c
+hwmon: *.c
+i2c: i2c-*.c
+ide: *.c and ide-*.c
+input: *.c
+leds: leds-*.c
+mca: mca-*.c
+md: largely dm-*.c
+mfd: *.c
+mmc: *.c
+mtd: *.c
+net: *.c
+rtc: rtc-*.c
+scsi: *.c and scsi_*.c for core code
+spi: (before patch) mix of spi_*.c and *_spi.c and *.c
+uio: uio_*.c
+virtio: virtio_*.c
+wdt: *wdt.c and *_wdt.c
+
+So, in this (admittedly incomplete) survey, I see 5 users of the
+"prefix_" pattern, 8 of the "prefix-" pattern, a small number using a
+suffix, and a whole lot without any pattern at all.  Personally, I
+prefer the using a prefix with a '-', but in the spi directory there
+was already a number of drivers using '_', so it was smaller impact to
+change to using that instead of a dash.  If people don't think it is a
+big deal though, then I'll change it to '-' to match the gpio change.
 
 g.

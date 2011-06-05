@@ -1,55 +1,89 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+From: Mika Westerberg <mika.westerberg@iki.fi>
 Subject: Re: [PATCH] spi: reorganize drivers
-Date: Sun, 5 Jun 2011 10:54:58 +0300
-Message-ID: <20110605075458.GA2712@tarshish>
+Date: Sun, 5 Jun 2011 11:13:31 +0300
+Message-ID: <20110605081331.GA3499@acer>
 References: <20110605071725.26517.11573.stgit@ponder>
-	<BANLkTinoEQf2a65KwQZOVK_4H9DSfqybjA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <BANLkTinoEQf2a65KwQZOVK_4H9DSfqybjA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <20110605071725.26517.11573.stgit@ponder>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jassi,
+On Sun, Jun 05, 2011 at 01:18:14AM -0600, Grant Likely wrote:
+> [repost: I had a typo on the spi-devel-general mailing list address]
+> 
+> Sort the SPI makefile and enforce the naming convention spi_*.c for
+> spi drivers.
+> 
+> This change also rolls the contents of atmel_spi.h into the .c file
+> since there is only one user of that particular include file.
+> 
+> Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+> ---
+>  drivers/spi/Makefile            |   80 ++++++++-----------
+>  drivers/spi/atmel_spi.h         |  167 ---------------------------------------
+>  drivers/spi/spi_ath79.c         |    0 
+>  drivers/spi/spi_atmel.c         |  155 ++++++++++++++++++++++++++++++++++++
+>  drivers/spi/spi_au1550.c        |    0 
+>  drivers/spi/spi_coldfire_qspi.c |    0 
+>  drivers/spi/spi_davinci.c       |    0 
+>  drivers/spi/spi_dw.c            |    2 
+>  drivers/spi/spi_dw.h            |    0 
+>  drivers/spi/spi_dw_mid.c        |    2 
+>  drivers/spi/spi_dw_mmio.c       |    2 
+>  drivers/spi/spi_dw_pci.c        |    2 
+>  drivers/spi/spi_ep93xx.c        |    0 
+>  drivers/spi/spi_mpc512x_psc.c   |    0 
+>  drivers/spi/spi_mpc52xx.c       |    0 
+>  drivers/spi/spi_mpc52xx_psc.c   |    0 
+>  drivers/spi/spi_omap2_mcspi.c   |    0 
+>  drivers/spi/spi_omap_100k.c     |    0 
+>  drivers/spi/spi_omap_uwire.c    |    0 
+>  drivers/spi/spi_orion.c         |    0 
+>  drivers/spi/spi_pl022.c         |    0 
+>  drivers/spi/spi_pxa2xx.c        |    0 
+>  drivers/spi/spi_pxa2xx_pci.c    |    0 
+>  drivers/spi/spi_ti_ssp.c        |    0 
+>  drivers/spi/spi_tle62x0.c       |    0 
+>  drivers/spi/spi_xilinx.c        |    0 
+>  26 files changed, 192 insertions(+), 218 deletions(-)
+>  delete mode 100644 drivers/spi/atmel_spi.h
+>  rename drivers/spi/{ath79_spi.c => spi_ath79.c} (100%)
+>  rename drivers/spi/{atmel_spi.c => spi_atmel.c} (85%)
+>  rename drivers/spi/{au1550_spi.c => spi_au1550.c} (100%)
+>  rename drivers/spi/{coldfire_qspi.c => spi_coldfire_qspi.c} (100%)
+>  rename drivers/spi/{davinci_spi.c => spi_davinci.c} (100%)
+>  rename drivers/spi/{dw_spi.c => spi_dw.c} (99%)
+>  rename drivers/spi/{dw_spi.h => spi_dw.h} (100%)
+>  rename drivers/spi/{dw_spi_mid.c => spi_dw_mid.c} (99%)
+>  rename drivers/spi/{dw_spi_mmio.c => spi_dw_mmio.c} (99%)
+>  rename drivers/spi/{dw_spi_pci.c => spi_dw_pci.c} (99%)
+>  rename drivers/spi/{ep93xx_spi.c => spi_ep93xx.c} (100%)
+>  rename drivers/spi/{mpc512x_psc_spi.c => spi_mpc512x_psc.c} (100%)
+>  rename drivers/spi/{mpc52xx_spi.c => spi_mpc52xx.c} (100%)
+>  rename drivers/spi/{mpc52xx_psc_spi.c => spi_mpc52xx_psc.c} (100%)
+>  rename drivers/spi/{omap2_mcspi.c => spi_omap2_mcspi.c} (100%)
+>  rename drivers/spi/{omap_spi_100k.c => spi_omap_100k.c} (100%)
+>  rename drivers/spi/{omap_uwire.c => spi_omap_uwire.c} (100%)
+>  rename drivers/spi/{orion_spi.c => spi_orion.c} (100%)
+>  rename drivers/spi/{amba-pl022.c => spi_pl022.c} (100%)
+>  rename drivers/spi/{pxa2xx_spi.c => spi_pxa2xx.c} (100%)
+>  rename drivers/spi/{pxa2xx_spi_pci.c => spi_pxa2xx_pci.c} (100%)
+>  rename drivers/spi/{ti-ssp-spi.c => spi_ti_ssp.c} (100%)
+>  rename drivers/spi/{tle62x0.c => spi_tle62x0.c} (100%)
+>  rename drivers/spi/{xilinx_spi.c => spi_xilinx.c} (100%)
 
-On Sun, Jun 05, 2011 at 01:13:28PM +0530, Jassi Brar wrote:
-> On Sun, Jun 5, 2011 at 12:48 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> > [repost: I had a typo on the spi-devel-general mailing list address]
-> >
-> > Sort the SPI makefile and enforce the naming convention spi_*.c for
-> > spi drivers.
+We also have things like this in drivers/spi/Kconfig:
 
-[snip]
+config SPI_DAVINCI
+	...
 
-> Though the spi_ prefix seems redundant considering the files are in
-> 'spi' directory.
-> Just a thought, no objection.
+	This driver can also be built as a module. The module will
+	be called davinci_spi <--- This is now wrong
 
-When looking at the list of loaded modules (e.g. in an Oops message), the name 
-"spi_xilinx" is much more meaningful than just "xilinx", for example.
-
-baruch
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-------------------------------------------------------------------------------
-Simplify data backup and recovery for your virtual environment with vRanger.
-Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Discover what all the cheering's about.
-Get your free trial download today. 
-http://p.sf.net/sfu/quest-dev2dev2 
+should these be converted as well?

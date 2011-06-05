@@ -1,8 +1,8 @@
-From: Jenny.Smith <jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: Hello Would You Like To Earn
-Date: Sat, 04 Jun 2011 10:57:22 -0500
-Message-ID: <E1QStE2-0000u3-PP@somerset.websitewelcome.com>
-Reply-To: jenny_smith-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Smartphones in Enterprises Report 2011-2016
+Date: Sun, 5 Jun 2011 03:06:36 +0100
+Message-ID: <20110605030636.-1967550093@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,20 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello spi-devel-general
-
-Would you like to earn an extra $200 everyday?, for just 45 minutes work? You could quit your job and make double the money at home working for yourself.
-
-visit->http:tinyurl.com/3ot9sgy
-
-Regards,
-
-Jenny Smith
-
-Survey Human Resources Dept.
-
-
-
+Smartphones in Enterprises Report 2011-2016
 ------------------------------------------------------------------------------
 Simplify data backup and recovery for your virtual environment with vRanger.
 Installation's a snap, and flexible recovery options mean your data is safe,

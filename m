@@ -1,16 +1,16 @@
-From: Jean Delvare <khali@linux-fr.org>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 Subject: Re: [PATCH] spi: reorganize drivers
-Date: Mon, 6 Jun 2011 11:17:13 +0200
-Message-ID: <20110606111713.2b801103@endymion.delvare>
+Date: Mon, 06 Jun 2011 18:29:07 +0900
+Message-ID: <1307352547.7586.6.camel@mulgrave.site>
 References: <20110605071725.26517.11573.stgit@ponder>
-	<201106061100.38249.arnd@arndb.de>
+	 <201106061100.38249.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 Cc: Grant Likely <grant.likely@secretlab.ca>,
 	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	"Jean Delvare (PC drivers, core)" <khali@linux-fr.org>,
 	"Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
 	linux-pcmcia@lists.infradead.org,
 	Matt Porter <mporter@kernel.crashing.org>,
 	Alexandre Bounine <alexandre.bounine@idt.com>,
@@ -28,7 +28,7 @@ In-Reply-To: <201106061100.38249.arnd@arndb.de>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 6 Jun 2011 11:00:38 +0200, Arnd Bergmann wrote:
+On Mon, 2011-06-06 at 11:00 +0200, Arnd Bergmann wrote:
 > On Sunday 05 June 2011, Grant Likely wrote:
 > >  rename drivers/spi/{omap2_mcspi.c => spi_omap2_mcspi.c} (100%)
 > >  rename drivers/spi/{omap_spi_100k.c => spi_omap_100k.c} (100%)
@@ -78,7 +78,17 @@ On Mon, 6 Jun 2011 11:00:38 +0200, Arnd Bergmann wrote:
 > 
 > Opinions? Move or don't move?
 
-No opinion, I just don't care.
+I'd say it only makes sense if we do it for all busses ... so USB and
+PCI would have to move too.  Logically, the bus code should move and we
+should be left with the drivers in both of those directories.  I'd also
+say that we don't have to deepen the tree: /bus would be fine.  That
+way, /drivers/<bus> would be only for <bus> specific drivers, with non
+bus specific drivers we just group them by function as now.
 
--- 
-Jean Delvare
+What about the half busses (like SCSI)?
+
+Finally, is there any real point (other than we can do it)?  what is
+actually helped by having the bus code obviously separated from the
+driver code (assuming we sort out what is bus and what is driver)?
+
+James

@@ -1,59 +1,77 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH v2] spi: reorganize drivers
-Date: Mon, 6 Jun 2011 09:27:45 +0200
-Message-ID: <20110606072744.GB4132@pengutronix.de>
-References: <20110606071829.10334.90865.stgit@ponder>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi: reorganize drivers
+Date: Mon, 6 Jun 2011 11:00:38 +0200
+Message-ID: <201106061100.38249.arnd@arndb.de>
+References: <20110605071725.26517.11573.stgit@ponder>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CUfgB8w4ZwR/yMy5"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20110606071829.10334.90865.stgit@ponder>
-Sender: linux-kernel-owner@vger.kernel.org
+	Russell King <linux@arm.linux.org.uk>, linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	"Jean Delvare (PC drivers, core)" <khali@linux-fr.org>,
+	"Ben Dooks (embedded platforms)" <ben-lin
+Return-path: <linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20110605071725.26517.11573.stgit@ponder>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-pcmcia>,
+	<mailto:linux-pcmcia-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-pcmcia/>
+List-Post: <mailto:linux-pcmcia@lists.infradead.org>
+List-Help: <mailto:linux-pcmcia-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-pcmcia>,
+	<mailto:linux-pcmcia-request@lists.infradead.org?subject=subscribe>
+Sender: linux-pcmcia-bounces@lists.infradead.org
+Errors-To: linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sunday 05 June 2011, Grant Likely wrote:
+>  rename drivers/spi/{omap2_mcspi.c => spi_omap2_mcspi.c} (100%)
+>  rename drivers/spi/{omap_spi_100k.c => spi_omap_100k.c} (100%)
+>  rename drivers/spi/{omap_uwire.c => spi_omap_uwire.c} (100%)
+>  rename drivers/spi/{orion_spi.c => spi_orion.c} (100%)
+>  rename drivers/spi/{amba-pl022.c => spi_pl022.c} (100%)
+>  rename drivers/spi/{pxa2xx_spi.c => spi_pxa2xx.c} (100%)
+>  rename drivers/spi/{pxa2xx_spi_pci.c => spi_pxa2xx_pci.c} (100%)
+>  rename drivers/spi/{ti-ssp-spi.c => spi_ti_ssp.c} (100%)
+>  rename drivers/spi/{tle62x0.c => spi_tle62x0.c} (100%)
+>  rename drivers/spi/{xilinx_spi.c => spi_xilinx.c} (100%)
 
---CUfgB8w4ZwR/yMy5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I recently looked at the directory structure in drivers/ and found a lot
+of bus drivers with very few files, plus a few bus drivers with a lot
+of files in them besides directories for non-bus specific subsystems.
 
-On Mon, Jun 06, 2011 at 01:18:29AM -0600, Grant Likely wrote:
-> Sort the SPI makefile and enforce the naming convention spi_*.c for
-> spi drivers.
->=20
-> This change also rolls the contents of atmel_spi.h into the .c file
-> since there is only one user of that particular include file.
->=20
-> v2: - Use 'spi-' prefix instead of 'spi_' to match what seems to be
->       be the predominant pattern for subsystem prefixes.
->     - Clean up filenames in Kconfig and header comment blocks
->=20
-> Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+I think it would be good to move them into a deeper directory drivers/bus/
+if we have support from the maintainers, and it's probably better if we
+only have to move the files once to reduce the amount of churn on the
+MAINTAINERS file and any out of tree patches.
 
+Specifically, I'd like to do these moves:
 
-/me likes.
+drivers/{ => bus}/amba
+drivers/{ => bus}/dio
+drivers/{ => bus}/eisa
+drivers/{ => bus}/firewire
+drivers/{ => bus}/i2c
+drivers/{ => bus}/mca
+drivers/{ => bus}/nubus
+drivers/{ => bus}/pcmcia
+drivers/{ => bus}/rapidio
+drivers/{ => bus}/sbus
+drivers/{ => bus}/spi
+drivers/{ => bus}/ssb
+drivers/{ => bus}/tc
+drivers/{ => bus}/uwb
+drivers/{ => bus}/virtio
+drivers/{ => bus}/vlync
+drivers/{ => bus}/w1
+drivers/{ => bus}/zorro
 
-Acked-by: Wolfram Sang <w.sang@pengutronix.de>
+This leaves out the two most common buses, USB and PCI, mostly because
+the directories contain a lot of stuff that is not really bus code
+but actual drivers. It does include i2c and spi, which stick out by
+being a lot larger than most others.
 
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Opinions? Move or don't move?
 
---CUfgB8w4ZwR/yMy5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEARECAAYFAk3sgXAACgkQD27XaX1/VRtCaQCbBnnq9KDustylYR4kihXAla/5
-tpwAn0IRBo8yQ+AUSDFsowb2sFaTowos
-=udRD
------END PGP SIGNATURE-----
-
---CUfgB8w4ZwR/yMy5--
+	Arnd

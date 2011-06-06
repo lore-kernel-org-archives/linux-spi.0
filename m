@@ -1,94 +1,59 @@
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH] spi: reorganize drivers
-Date: Mon, 06 Jun 2011 18:29:07 +0900
-Message-ID: <1307352547.7586.6.camel@mulgrave.site>
+Date: Mon, 6 Jun 2011 12:01:37 +0200
+Message-ID: <BANLkTim_hZJ=eBRcGqG89-3OjQ_NB0xECQ@mail.gmail.com>
 References: <20110605071725.26517.11573.stgit@ponder>
-	 <201106061100.38249.arnd@arndb.de>
+	<201106061100.38249.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Stefan Richter <stefanr@s5r6.in-berlin.de>,
-	"Jean Delvare (PC drivers, core)" <khali@linux-fr.org>,
-	"Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
-	linux-pcmcia@lists.infradead.org,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alexandre.bounine@idt.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Michael Buesch <mb@bu3sch.de>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
 	"Maciej W. Rozycki" <macro@linux-mips.org>,
 	Rusty Russell <rusty@rustcorp.com.au>,
-	Florian Fainelli <florian@openwrt.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Michael Buesch <mb@bu3sch.de>, linux-pcmcia@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Alexandre Bounine <alexandre.bounine@idt.com>,
+	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	"Ben Dooks \(embedded platforms\)" <ben-linux@fluff.org>,
+	"Jean Delvare \(PC drivers, core\)" <khali@linux-fr.org>,
 	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Russell King <linux@arm.linux.org.uk>
+	Matt Porter <mporter@kernel.crashing.org>,
+	"David S. Miller" <davem@davemloft.net>
 To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org>
 In-Reply-To: <201106061100.38249.arnd@arndb.de>
-Sender: linux-kernel-owner@vger.kernel.org
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-pcmcia>,
+	<mailto:linux-pcmcia-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-pcmcia/>
+List-Post: <mailto:linux-pcmcia@lists.infradead.org>
+List-Help: <mailto:linux-pcmcia-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-pcmcia>,
+	<mailto:linux-pcmcia-request@lists.infradead.org?subject=subscribe>
+Sender: linux-pcmcia-bounces@lists.infradead.org
+Errors-To: linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 2011-06-06 at 11:00 +0200, Arnd Bergmann wrote:
-> On Sunday 05 June 2011, Grant Likely wrote:
-> >  rename drivers/spi/{omap2_mcspi.c => spi_omap2_mcspi.c} (100%)
-> >  rename drivers/spi/{omap_spi_100k.c => spi_omap_100k.c} (100%)
-> >  rename drivers/spi/{omap_uwire.c => spi_omap_uwire.c} (100%)
-> >  rename drivers/spi/{orion_spi.c => spi_orion.c} (100%)
-> >  rename drivers/spi/{amba-pl022.c => spi_pl022.c} (100%)
-> >  rename drivers/spi/{pxa2xx_spi.c => spi_pxa2xx.c} (100%)
-> >  rename drivers/spi/{pxa2xx_spi_pci.c => spi_pxa2xx_pci.c} (100%)
-> >  rename drivers/spi/{ti-ssp-spi.c => spi_ti_ssp.c} (100%)
-> >  rename drivers/spi/{tle62x0.c => spi_tle62x0.c} (100%)
-> >  rename drivers/spi/{xilinx_spi.c => spi_xilinx.c} (100%)
-> 
-> I recently looked at the directory structure in drivers/ and found a lot
-> of bus drivers with very few files, plus a few bus drivers with a lot
-> of files in them besides directories for non-bus specific subsystems.
-> 
-> I think it would be good to move them into a deeper directory drivers/bus/
-> if we have support from the maintainers, and it's probably better if we
-> only have to move the files once to reduce the amount of churn on the
-> MAINTAINERS file and any out of tree patches.
-> 
-> Specifically, I'd like to do these moves:
-> 
-> drivers/{ => bus}/amba
-> drivers/{ => bus}/dio
-> drivers/{ => bus}/eisa
-> drivers/{ => bus}/firewire
-> drivers/{ => bus}/i2c
-> drivers/{ => bus}/mca
-> drivers/{ => bus}/nubus
-> drivers/{ => bus}/pcmcia
-> drivers/{ => bus}/rapidio
-> drivers/{ => bus}/sbus
-> drivers/{ => bus}/spi
-> drivers/{ => bus}/ssb
-> drivers/{ => bus}/tc
-> drivers/{ => bus}/uwb
-> drivers/{ => bus}/virtio
-> drivers/{ => bus}/vlync
-> drivers/{ => bus}/w1
-> drivers/{ => bus}/zorro
-> 
-> This leaves out the two most common buses, USB and PCI, mostly because
-> the directories contain a lot of stuff that is not really bus code
-> but actual drivers. It does include i2c and spi, which stick out by
-> being a lot larger than most others.
-> 
-> Opinions? Move or don't move?
-
-I'd say it only makes sense if we do it for all busses ... so USB and
-PCI would have to move too.  Logically, the bus code should move and we
-should be left with the drivers in both of those directories.  I'd also
-say that we don't have to deepen the tree: /bus would be fine.  That
-way, /drivers/<bus> would be only for <bus> specific drivers, with non
-bus specific drivers we just group them by function as now.
-
-What about the half busses (like SCSI)?
-
-Finally, is there any real point (other than we can do it)?  what is
-actually helped by having the bus code obviously separated from the
-driver code (assuming we sort out what is bus and what is driver)?
-
-James
+T24gTW9uLCBKdW4gNiwgMjAxMSBhdCAxMTowMCwgQXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5k
+ZT4gd3JvdGU6Cj4gSSByZWNlbnRseSBsb29rZWQgYXQgdGhlIGRpcmVjdG9yeSBzdHJ1Y3R1cmUg
+aW4gZHJpdmVycy8gYW5kIGZvdW5kIGEgbG90Cj4gb2YgYnVzIGRyaXZlcnMgd2l0aCB2ZXJ5IGZl
+dyBmaWxlcywgcGx1cyBhIGZldyBidXMgZHJpdmVycyB3aXRoIGEgbG90Cj4gb2YgZmlsZXMgaW4g
+dGhlbSBiZXNpZGVzIGRpcmVjdG9yaWVzIGZvciBub24tYnVzIHNwZWNpZmljIHN1YnN5c3RlbXMu
+Cj4KPiBJIHRoaW5rIGl0IHdvdWxkIGJlIGdvb2QgdG8gbW92ZSB0aGVtIGludG8gYSBkZWVwZXIg
+ZGlyZWN0b3J5IGRyaXZlcnMvYnVzLwo+IGlmIHdlIGhhdmUgc3VwcG9ydCBmcm9tIHRoZSBtYWlu
+dGFpbmVycywgYW5kIGl0J3MgcHJvYmFibHkgYmV0dGVyIGlmIHdlCj4gb25seSBoYXZlIHRvIG1v
+dmUgdGhlIGZpbGVzIG9uY2UgdG8gcmVkdWNlIHRoZSBhbW91bnQgb2YgY2h1cm4gb24gdGhlCj4g
+TUFJTlRBSU5FUlMgZmlsZSBhbmQgYW55IG91dCBvZiB0cmVlIHBhdGNoZXMuCj4KPiBTcGVjaWZp
+Y2FsbHksIEknZCBsaWtlIHRvIGRvIHRoZXNlIG1vdmVzOgo+Cj4gZHJpdmVycy97ID0+IGJ1c30v
+em9ycm8KCihpZiB3ZSBnbyB0aGF0IHdheSBpbiBnZW5lcmFsKQoKQWNrZWQtYnk6IEdlZXJ0IFV5
+dHRlcmhvZXZlbiA8Z2VlcnRAbGludXgtbTY4ay5vcmc+CgpHcntvZXRqZSxlZXRpbmd9cywKCsKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIEdlZXJ0CgotLQpHZWVydCBVeXR0ZXJo
+b2V2ZW4gLS0gVGhlcmUncyBsb3RzIG9mIExpbnV4IGJleW9uZCBpYTMyIC0tIGdlZXJ0QGxpbnV4
+LW02OGsub3JnCgpJbiBwZXJzb25hbCBjb252ZXJzYXRpb25zIHdpdGggdGVjaG5pY2FsIHBlb3Bs
+ZSwgSSBjYWxsIG15c2VsZiBhIGhhY2tlci4gQnV0CndoZW4gSSdtIHRhbGtpbmcgdG8gam91cm5h
+bGlzdHMgSSBqdXN0IHNheSAicHJvZ3JhbW1lciIgb3Igc29tZXRoaW5nIGxpa2UgdGhhdC4KwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqDCoCDCoMKgIC0tIExpbnVzIFRv
+cnZhbGRzCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
+aW51eCBQQ01DSUEgcmVpbXBsZW1lbnRhdGlvbiBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
+b3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtcGNtY2lhCg==

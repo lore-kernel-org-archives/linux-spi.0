@@ -1,42 +1,76 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+From: Jean Delvare <khali@linux-fr.org>
 Subject: Re: [PATCH] spi: reorganize drivers
-Date: Mon, 6 Jun 2011 10:08:39 +0100
-Message-ID: <20110606090839.GA10508@n2100.arm.linux.org.uk>
+Date: Mon, 6 Jun 2011 11:17:13 +0200
+Message-ID: <20110606111713.2b801103@endymion.delvare>
 References: <20110605071725.26517.11573.stgit@ponder>
 	<201106061100.38249.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	"Ben Dooks (embedded platforms)" <ben-linux@fluff.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-pcmcia@lists.infradead.org,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Alexandre Bounine <alexandre.bounine@idt.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Michael Buesch <mb@bu3sch.de>,
 	"Maciej W. Rozycki" <macro@linux-mips.org>,
 	Rusty Russell <rusty@rustcorp.com.au>,
-	Michael Buesch <mb@bu3sch.de>, linux-pcmcia@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Florian Fainelli <florian@openwrt.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Alexandre Bounine <alexandre.bounine@idt.com>,
-	Stefan Richter <stefanr@s5r6.in-berlin.de>,
+	Florian Fainelli <florian@openwrt.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Ben Dooks \(embedded platforms\)" <ben-linux@fluff.org>,
-	"Jean Delvare \(PC drivers, core\)" <khali@linux-fr.org>,
 	spi-devel-general@lists.sourceforge.net,
-	Matt Porter <mporter@kernel.crashing.org>,
-	"David S. Miller" <davem@davemloft.net>
+	linux-kernel@vger.kernel.org, Russell King <linux@arm.linux.org.uk>
 To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <201106061100.38249.arnd@arndb.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-pcmcia>,
-	<mailto:linux-pcmcia-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-pcmcia/>
-List-Post: <mailto:linux-pcmcia@lists.infradead.org>
-List-Help: <mailto:linux-pcmcia-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-pcmcia>,
-	<mailto:linux-pcmcia-request@lists.infradead.org?subject=subscribe>
-Sender: linux-pcmcia-bounces@lists.infradead.org
-Errors-To: linux-pcmcia-bounces+glkpd-linux-pcmcia=m.gmane.org@lists.infradead.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jun 06, 2011 at 11:00:38AM +0200, Arnd Bergmann wrote:
+On Mon, 6 Jun 2011 11:00:38 +0200, Arnd Bergmann wrote:
+> On Sunday 05 June 2011, Grant Likely wrote:
+> >  rename drivers/spi/{omap2_mcspi.c => spi_omap2_mcspi.c} (100%)
+> >  rename drivers/spi/{omap_spi_100k.c => spi_omap_100k.c} (100%)
+> >  rename drivers/spi/{omap_uwire.c => spi_omap_uwire.c} (100%)
+> >  rename drivers/spi/{orion_spi.c => spi_orion.c} (100%)
+> >  rename drivers/spi/{amba-pl022.c => spi_pl022.c} (100%)
+> >  rename drivers/spi/{pxa2xx_spi.c => spi_pxa2xx.c} (100%)
+> >  rename drivers/spi/{pxa2xx_spi_pci.c => spi_pxa2xx_pci.c} (100%)
+> >  rename drivers/spi/{ti-ssp-spi.c => spi_ti_ssp.c} (100%)
+> >  rename drivers/spi/{tle62x0.c => spi_tle62x0.c} (100%)
+> >  rename drivers/spi/{xilinx_spi.c => spi_xilinx.c} (100%)
+> 
+> I recently looked at the directory structure in drivers/ and found a lot
+> of bus drivers with very few files, plus a few bus drivers with a lot
+> of files in them besides directories for non-bus specific subsystems.
+> 
+> I think it would be good to move them into a deeper directory drivers/bus/
+> if we have support from the maintainers, and it's probably better if we
+> only have to move the files once to reduce the amount of churn on the
+> MAINTAINERS file and any out of tree patches.
+> 
+> Specifically, I'd like to do these moves:
+> 
+> drivers/{ => bus}/amba
+> drivers/{ => bus}/dio
+> drivers/{ => bus}/eisa
+> drivers/{ => bus}/firewire
+> drivers/{ => bus}/i2c
+> drivers/{ => bus}/mca
+> drivers/{ => bus}/nubus
+> drivers/{ => bus}/pcmcia
+> drivers/{ => bus}/rapidio
+> drivers/{ => bus}/sbus
+> drivers/{ => bus}/spi
+> drivers/{ => bus}/ssb
+> drivers/{ => bus}/tc
+> drivers/{ => bus}/uwb
+> drivers/{ => bus}/virtio
+> drivers/{ => bus}/vlync
+> drivers/{ => bus}/w1
+> drivers/{ => bus}/zorro
+> 
 > This leaves out the two most common buses, USB and PCI, mostly because
 > the directories contain a lot of stuff that is not really bus code
 > but actual drivers. It does include i2c and spi, which stick out by
@@ -44,8 +78,7 @@ On Mon, Jun 06, 2011 at 11:00:38AM +0200, Arnd Bergmann wrote:
 > 
 > Opinions? Move or don't move?
 
-I don't see much point in adding an additional level of directories.
-All that it'll do is add to the shell filename completion workload
-and wear out our tab keys faster...
+No opinion, I just don't care.
 
-We'll still have these directories with not a lot under them.
+-- 
+Jean Delvare

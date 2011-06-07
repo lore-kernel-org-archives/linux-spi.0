@@ -1,10 +1,10 @@
 From: "李佳颖Jonah_Mcneil" <rqqtmdwboozhkt-yn7cS+6glETCXmymsgaQcQ@public.gmane.org>
 Subject: [SPAM] 更详细解说!!McleanR
 Date: Tue, 07 Jun 2011 09:53:24 +0600
-Message-ID: <LIMASOFT-SBSN3UmvRm0000886e@LIMASOFT-SBS.LIMASOFT.local>
+Message-ID: <LIMASOFT-SBSMvAXiTe00008860@LIMASOFT-SBS.LIMASOFT.local>
 Reply-To: 李佳颖Jonah_Mcneil <rqqtmdwboozhkt-yn7cS+6glETCXmymsgaQcQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1319731494832422322=="
+Content-Type: multipart/mixed; boundary="===============3244665250636942862=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,7 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1319731494832422322==
+--===============3244665250636942862==
 Content-Type: text/plain;
 Content-Transfer-Encoding: quoted-printable
 
@@ -30,7 +30,7 @@ Content-Transfer-Encoding: quoted-printable
 =B8=B6=BF=EE=A3=A1=C8=C8=CF=DF:137-_-6189_-_5O17=C1=AA=CF=B5?=C9=FA
 
 
---===============1319731494832422322==
+--===============3244665250636942862==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -41,7 +41,7 @@ EditLive Enterprise is the world's most technically advanced content
 authoring tool. Experience the power of Track Changes, Inline Image
 Editing and ensure content is compliant with Accessibility Checking.
 http://p.sf.net/sfu/ephox-dev2dev
---===============1319731494832422322==
+--===============3244665250636942862==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -52,4 +52,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1319731494832422322==--
+--===============3244665250636942862==--

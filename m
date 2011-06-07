@@ -1,36 +1,23 @@
-From: Unknown <unknown@unknown.invalid>
+From: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 Subject: [PATCH/RESEND 2/2] spi_topcliff_pch: DMA support
-Date: Fri,  2 Jan 2009 08:29:06 +0900
-Message-ID: <43217.6099312075$1307425150@news.gmane.org>
-References: <y>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>,
-	toshiharu-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org, kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-From: y
-In-Reply-To: <y>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Date: Tue,  7 Jun 2011 14:50:11 +0900
+Message-ID: <1307425811-5030-2-git-send-email-tomoya-linux@dsn.okisemi.com>
+References: <1307425811-5030-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Cc: qi.wang@intel.com, yong.y.wang@intel.com, joel.clark@intel.com,
+	kok.howg.ewe@intel.com, toshiharu-linux@dsn.okisemi.com,
+	Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+To: David Brownell <dbrownell@users.sourceforge.net>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1307425811-5030-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
-
-From: Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
 
 This patch enables this SPI driver works with DMA mode.
 
-Signed-off-by: Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
+Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 ---
  drivers/spi/spi_topcliff_pch.c |  612 ++++++++++++++++++++++++++++++++--------
  1 files changed, 492 insertions(+), 120 deletions(-)
@@ -1016,10 +1003,3 @@ index 88bd472..f543ff6 100644
  MODULE_DESCRIPTION("Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH SPI Driver");
 -- 
 1.7.4
-
-
-------------------------------------------------------------------------------
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev

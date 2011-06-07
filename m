@@ -1,38 +1,63 @@
-From: "Ouverture des ventes :" <Newsletter-aRCsrEPsanzQPHrQK4gDJnP7kWk+RT5R@public.gmane.org>
-Subject: PLUS QUE 48H pour les boxers Calvin KLEIN
-Date: Mon, 6 Jun 2011 20:49:02 +0200 (CEST)
-Message-ID: <2449188521.98288.1307386142818@p4enginex2.emv2.com>
-Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [PATCH v2] spi: reorganize drivers
+Date: Tue, 7 Jun 2011 10:28:29 +0800
+Message-ID: <20110607102829.01392e7e@feng-i7>
+References: <20110606071829.10334.90865.stgit@ponder>
+	<BANLkTinqVf+uK+5T_X-EkXw-YE67DJL1Pg@mail.gmail.com>
+	<BANLkTinmfufSkSnmiKWWEgpaR-usbiV5tA@mail.gmail.com>
+	<4DED0510.1030600@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Mike Frysinger <vapier.adi@gmail.com>
+To: Dirk Brandewie <dirk.brandewie@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4DED0510.1030600@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, 7 Jun 2011 00:49:20 +0800
+Dirk Brandewie <dirk.brandewie@gmail.com> wrote:
 
-http://p4tre.emv3.com/HS?a=3DENX7Cqm3dpdG8SA9MKJOpArnGHxKLIUHNPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBefVMb
-Ouverture des Ventes : =
+> On 06/06/2011 09:38 AM, Grant Likely wrote:
+> > On Mon, Jun 6, 2011 at 10:31 AM, Mike
+> > Frysinger<vapier.adi@gmail.com>  wrote:
+> >> On Mon, Jun 6, 2011 at 03:18, Grant Likely wrote:
+> >>> Sort the SPI makefile and enforce the naming convention spi_*.c
+> >>> for spi drivers.
+> >>
+> >> spi_topcliff_pch.c uses KBUILD_MODNAME with a few funcs, but
+> >> perhaps those are only for /proc/ status tracking ?  worth double
+> >> checking ...
+> >
+> > I just talked with Dirk Brandewie, who has a major rewrite to the
+> > topcliff spi driver.  I'll let him comment on whether or not
+> > changing KBUILD_MODNAME will cause any problems.
+> >
+> 
+> My changes are to the designware driver :-) I will get my patches
+> re-based onto the spi-next branch and see if there any issues.
 
-Chaussures JONAK, maillots femme et draps de plage, Soir=E9es C=E2lines, LU=
-XURY Make-up et s=E9ries TV en exclusivit=E9
+If there is major rewrite to the dw_spi driver, please submit to this
+list, as it is used by many devices out there and needs a broad review
 
-http://p4tre.emv3.com/HS?a=3DENX7Cqm3dpdG8SA9MKJOpArnGHxKLIUHNPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBefVMb
----------------------------------------------------------------------------=
----
-Simplify data backup and recovery for your virtual environment with vRanger.
-Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Discover what all the cheering's about.
-Get your free trial download today. =
+Thanks,
+Feng
 
-http://p.sf.net/sfu/quest-dev2dev2 =
+> 
+> --Dirk
+> 
+> ------------------------------------------------------------------------------
+> Simplify data backup and recovery for your virtual environment with
+> vRanger. Installation's a snap, and flexible recovery options mean
+> your data is safe, secure and there when you need it. Discover what
+> all the cheering's about. Get your free trial download today. 
+> http://p.sf.net/sfu/quest-dev2dev2 
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

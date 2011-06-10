@@ -1,11 +1,10 @@
-From: British Finance Monitoring Unit <bfmulondon-gH+WsCr1+wQ1GQ1Ptb7lUw@public.gmane.org>
-Subject: [SPAM] PAYMENT CERTIFIED AND APPROVED TO YOU RECENTLY
-Date: Thu,  9 Jun 2011 13:33:24 +0100 (BST)
-Message-ID: <20110609123553.45335198DC58@vps.linux22-hoster.gr>
-Reply-To: ianreed_bfmulondon-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
+From: =?GB2312?B?xeDRtQ==?= <fd-DHYG5n6h+j0@public.gmane.org>
+Subject: [SPAM] spi-devel-general专业PPT及Excel的应用
+Date: Sat, 11 Jun 2011 01:49:10 +0800
+Message-ID: <E1QV5pr-00026D-9k@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,67 +17,119 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
->From the Desk Of Mr. Ian Reed.
-Office Of The Director:
-The British Finance Monitoring Unit,
-(Debt/Payment Relief & Accreditation
-Office) London England.
-Tel: +44-7700018104                                             
-Fax: +44-8447747771 
- 
-
-Attn: Sir,
- 
-Be inform that it has come to our notice that a huge sum of money has been credited in your name for transfer and is currently floating in the International Banking Community/Computerized Financial Database. 
- 
-Under the stipulated Law of the Government of Great Britain, Wales and other member countries of the United Nations, any huge amount of money that has been found in the international computer data system waiting to be transferred without claims for a period of 6 months or less,  shall be confiscated and forfeited to the United Nations account.
- 
-We do hereby ask you to contact this office immediately for ratification within the 5 working days of this notice by forwarding to us all your current information including your direct telephone  number and postal address where  your payment release documents will be send to you in order for us to confirm your personal receipt of this fund or consider your fund confiscated. 
- 
-Be informed that as soon as we receive your current data then we will endorse with the legal preparation of your payment release documents and immediately instruct our authorized Bank of International Settlement (BIS) to release your funds by forwarding your file to them for immediate payment consideration.  This email and its attachments are confidential.
- 
- 
-FIRST NAME:--------------------------------------------------------- 
- 
-LAST NAME:----------------------------------------------------------
-
-SEX:----------------------------------------------------------------------
- 
-AGE:-------------------------------------------------------------
- 
-OCCUPATION:-------------------------------------------------------------
- 
-FULL ADDRESS:-------------------------------------------------------------
-
-NATIONALITY: -----------------------------------------------------------------
-
-TEL / MOBILE #:-------------------------------------------------------------------
-
- 
-I  ...................................................................hereby declare that the above DATA are true, and in case of any unforeseen circumstances. 
- 
- 
-We appreciate your urgent co-operation by replying through  Email.
-
-OFFICIAL USE ONLY BY THIS OFFICE (BFMU)
- 
- 
-Verified by: ------------------------------  Confirmed by: -----------------------------
- 
-Your's Faithfully,
- 
-Mr. Ian Reed.
-The Director
-British Finance Monitoring Unit. 
- 
-
-CONFIDENTIALITY NOTICE: THIS COMMUNICATION AND ITS ATTACHMENTS MAY CONTAIN NON-PUBLIC, CONFIDENTIAL OR LEGALLY PRIVILEGED INFORMATION. THE UNLAWFUL INTERCEPTION, USE OR DISCLOSURE OF SUCH INFORMATION IS PROHIBITED. IF YOU ARE NOT THE INTENDED RECIPIENT, OR HAVE RECEIVED THIS COMMUNICATION IN ERROR, PLEASE NOTIFY THE SENDER IMMEDIATELY BY REPLY EMAIL AND DELETE ALL COPIES OF THIS COMMUNICATION AND ATTACHMENTS WITHOUT READING OR SAVING THEM.
-
-
-
-------------------------------------------------------------------------------
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev
+c3BpLWRldmVsLWdlbmVyYWzG89K1sNfB7LrL0MSw7LmrvLzE3KOoUFBUK0V4Y2Vso6kKIArKsbzk
+tdi146O6MjAxMcTqNtTCMTctMTjI1SAgyc+6owrKsbzktdi146O6MjAxMcTqNtTCMjQtMjXI1SAg
+sbG+qQoKt9EgICAg08OjujI2MDDUqi/Iy6OozOG5qb2y0uWhos7nss2horeixrGhorLoteO1yKOp
+Csrav8621M/zo7rX3L6twO2jrLj3sr/Dxdb3udyjrLLGzvGyv6GiytCzobK/oaLTqs/6sr+1yM/g
+udiyv8PFuaTX98jL1LEKCtfJ0a+157uwo7owMjAtODA1NjA2MzijuzAyMC04NTkxNzk0NSDQu9Ch
+veOjqLK70OjSqrTLwODQxbz+x+u72Li0tefTytbBY2hpbmFtbWMyMDEwQDEyNi5jb23Ny9DFo6kK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUFBUv86zzNT5y83K/cquuPa+
+q8PAUFBUxKOw5bywyv2w2bj2uPfA4L6rw8DNvMq+oaMKy/nT0L/Os8y++b/Ju/HU+UJsYWRlT2Zm
+aWNluaS+38/ko6y5pL7fz+S1xLK/t9a96cncvPuxvs7ExKnOsqGjCrPCvaPAz8qmw7+49ry+tsi4
+/NDC0ru0zkV4Y2xlLVBQVL/Os8y087jZo6zT69auxeTM17XEQmxhZGVPZmZpY2W5pL7f0rK9q82s
+sr3J/by2o6y98brztcS/zrPMvauyyQrTw0JsYWRlT2ZmaWNltcSw5rG+usXX986qv86zzLHgusXS
+1Mzlz9a4/NDCtcTH6b/2oaMKv86zzLTzuNk6CrXa0rvM7Neo0rW7w7XGxqzWxtf3vLzK9QrSu6Gi
+tNOwuMD9v7S7w7XGxqzWxtf3wO3E7goxLrvDtcbGrLC4wP3Su6O6zqrKssO01eK49rvDtcbGrNPQ
+zbzGrNPQtq+7rbu5yse63MTRv7SjvwoyLrvDtcbGrLC4wP22/qO6v7S/tMSzysC95zUwMMe/xvPS
+tbXEuLHX3LLDtcS7w7XGxqzKx9T1w7TX9rXECjMuu8O1xsassLjA/cj9o7qz9tfUwaq6z7n6xLO7
++rm5tcS7w7XGxqyjrL+0v7TL+8PHysfI57rOse3P1tHPy+C7sMzitcQKNC67w7XGxqywuMD9y8Sj
+utT4vq3Kx8Sz1f64rtKq1LG1xLvDtcbGrKOsv7S/tMv7ysfU9cO0tPK2r7nb1tq1xAq2/qGitPK6
+w7v5tKHKx7Xa0ruyvaOhCjEuzai5/dK7uPbQobLiytSjrL+0v7TE47XE1sbX98uuxr3I57rOIAoy
+LsC0vLi49rzytaW1xMD919OjrMjDxOO0pcDgxdTNqKOs0ae74TE1MLbguPbQzte0tcTKudPDt723
+qAozLtTZ0d3Bt7y4uPa+q7LKtcSwuMD9o6y3tMnkoaK71LnioaLI4buvsd/UtaGixaTH+qGiwOLM
+qLrNIDMtRCDQ/deqKqOstry/ydLU0ae1vQo0LtLVyvXX1qGissq659fWoaLNvLC4zsTX1tH50fm+
+q82oCsj9oaLN5teqy9iyxKOs1PbHv7utw+ax7c/WwaYKMS6/7MvZvPSyw9XVxqyjrLvxyKHL+dDo
+0qq1xMvYssQKMi7I57rOuPjV1casL828xqzU9rzTu6rA9rXEvrW/8tCnufsKMy6+q8i3tcTL2LLE
+vPS8rby8x8mjrMTj0rK/ydLUseSzrMjLCjQu0bnL9c28xqyz37Tno6zKuTQwTbXEzsS8/rHks8k2
+TQo1Ls28xqy1/rzTtcTX6brP0Ke5+wrLxKGizbzKvrXE98jBpqOsU21hcnRBcnTTptPDvLzHyQox
+LrTTv93U787E19a1vb6rw8DNvMq+tcTOsLTzv+fUvQoyLlNtYXJ0QVJU0Ke5+7XEs/XM5dHpCjMu
+tNPQp7n7tb3F5Mmro6xTbWFydEFSVMPmw+a52wo0Lr3MxOPN5teqU21hcnRBUlSjrNStwLRTbWFy
+dEFydLu5v8nS1NXi0fmx5KOsv+zAtLS0vajK9NPaxOPX1Ly6tcRTbWFydEFydArO5aGiudjXotX7
+zOXQp7n7o6zBy73ixcWw5rXE0qq14woxLsqyw7TKx7Dmyr2jrLbUu8O1xsastcTWxtf309DKssO0
+sO/W+qO/CjIuzqrKssO00OjSqrLOv7zP36O/CjMusObKvcnovMa1xNK7uPbW0NDEo6w1uPa7+bG+
+teMgCjQuxLiw5bXEuabE3Lywt7bA/dHdyr4gCjUuu8O1xsas1sbX97XEvNO3qNSt1PK6zbz1t6jU
+rdTyCjYutPO80sC01dKy56Osv7S/tMjnus64xL341eLQqbvDtcbGrCAKwfmhornb1tq1xNHbx/LE
+49f21vejrL3xzOzE47avu63By8O7o78KMS7HxsfGy8TW1ravu63A4NDNtcS21LHICjIuv7S/tLav
+u63Kx8jnus7KudK7uPa4tNTTtcS7rcPmseS1w7zytaUKMy7Iw9PFw8C1xM7E19bLxsuuwffMygo0
+Ls7SvNK1xM28se274cz4zuggCjUutq+7rdKyu+G5/cm9s7UgCjYu0vTA1s/sxvDAtAo3LrDRzfjV
+vsrX0rO2r7utsOG1vVBQVMDvCjguuty6w7rcx7+087XE0ru49ravu63KtcD9CsbfoaK4+Lnb1tq1
+42NvbG9yIHNlZSBzZWWjrNHVyau1xNOm08PSqrXjCjEuyP27+cmr1K3A7brNUG93ZXJwb2ludLXE
+0dXJq8zlz7UKMi7T67mry75DScnovMbF5MzXtcTR1cmryei8xgozLsXkyau1xMj9z+67+bG+1K3U
+8go0LsXkyau3vbC4vLDTptPDvLzHyQo1Ls+1zbPF5MmrxcyhorXayP23vcXkyavFzLXE06bTwwo2
+Lsjnus7Eo7fCw73M5bXExeTJq7e9sLgKICAgCrXatv7M7EV4Y2Vsuq/K/brNzbO8xszY0bUK0ruh
+osr9vt3K5MjrtcS8vMfJCjEuyrLDtNH5tcSx7bjxuPzI3dLXt9bO9rrNzbO8xqO/CjIuyOe6zrzy
+u6/K5Mjr1ti4tNDUtcTOxNfWCjMuyOe6zsnovMbT0NfU0enWpLmmxNy1xLHtuPHEo7DlCrb+oaK5
+q8q9u/m0oQoxLsjnus7KudPDQmxhZGVvZmZpY2W5pL7fv+zL2eSvwMC6zbLp1dK6r8r9CjIuwem7
+7tL908O1pdSquPEKMy6y5cjruq/K/bXEyrG68sjnus6y6b+0ss7K/bmmxNwKNC7Oqsqyw7TOosjt
+y7XVxs7Vyv3X6bmryr2yxcTcs8nOqkV4Y2VsuN/K1go1Lsjnus7Kubmryr24/NPFw8CyosfS0tfT
+2sDtveIKyP2hosLfvK26r8r9ysfStc7xvajEo7XEu/m0oQoxLsq508NJRrqvyv3Ktc/Wwt+8rcXQ
+ts+1xLC4wP0KMi7B6bvuyrnTw9ProaK78qGit8fC37ytveK+9rbgzPW8/sXQts8KMy7I57rOt9ay
+48q1z9a4tNTTtcTC37ytCsvEoaLOxLG+uq/K/QoxLsvm0uKz6cihzsSxvrXE0ruyv7fWCjIuy+bS
+4tfpus/OxLG+CjMuvavOxLG+16q7u7PJy/nQ6Mbky/vA4NDNtcTK/b7dCjQuwPvTw87Esb66r8r9
+yrXP1sr9vt2/ycrTu68KzuWhosq5se248bHktcPTxcPACjEuzqrKssO0se248dbQu+Gz9s/WI0RJ
+VqGiI05BTUWhoiNOL0EKMi7I57rOsdzD4rP2z9YjtO3O86Osysex7bjxseS1w7jJvrsKwfmhotOm
+08Oy6dXSuq/K/bzyu6+5pNf3CjEuyOe6zrj5vt252Lz819bU2sHt0ru49rHt1tCy6dXSyv2+3Qoy
+Lsjnus64+b7dtuC49rnYvPzX1tTawe3Su7j2se3W0LLp1dLGpcXkz+4KMy7I57rOwPvTw7mryr3X
+1LavtKbA7byo0Ke/vLrLxsC2qAo0LrK708PRp8+wseCzzNKyv8nS1NC00ru49sr9vt2y6dGvs8zQ
+8go1LsD708Oy6dXSuq/K/cq1z9bK/b7d19S2r8K8yOsKxt+hosqxvOS6r8r906bTwwoxLtPJyNXG
+2sr9vt3W0LPpyKHE6tTCyNXKsbzkyv2+3QoyLrj5vt3I69awyrG85NfUtq+8xsvjuaTB5AozLrj5
+vt3J7bfd1qTX1LavvMbL48TqweQKNC68xsvjwb249sjVxtrWrrzk09C24MnZuaTX98jVCjUuyejW
+w8qxvOS1xM/Uyr648cq9CrDLoaKyxs7xuq/K/QoxLrXItu6xvr3wus21yLbusb7PorT7v+63vcq9
+tcSxvr3wus3A+8+ivMbL4woyLrnMtqjXyrL61du+ybXEvMbL47e9t6gKMy7I57rOvMbL48Tasr/K
+1dLmwsoKNC7I57rOvMbL482218q72LGotcSx37zKyv2+3Qq+xaGis6PTw82zvMa6r8r9us3Ns7zG
+t723qAoxLrzGy+O3+7rPzPW8/rXEvMfCvMr9wb8KMi7I57rOyrXP1rbgzPW8/rfWwOC749fcCjMu
+RXhjZWwyMDA30MLU9s2zvMa6r8r9CjQuwPvTw8r91+m5q8q9yrXP1r/sy9m1xMa1yv231s72CjUu
+wPvTw8r91+m5q8q9yrXP1r/sy9m24Mz1vP6749fcCsquoaLK/b7dzbjK07Ht06bTw7TzyKsKMS7I
+57rO1sbX97Ljtf6x7QoyLsjnus7Wxtf3vbuy5rHtCjMutuC8trfWwOC749fcCjQutq/MrMr9vt25
+/cLLCjUuyv2+3dTaxOqhory+tsihotTCoaLI1bK7zazKsbzkvLax8MnPtcS749fcCjYu19S2r7zG
+y+O499bWzbO8xta4seoKYSnGvb75z/rK27buCmIpz/rK27Lu0uy2yApjKbDZt9axyApkKdfUtqjS
+5da4seoKNy7K/b7dv8nK07uvt9a2zrrNxrXK/c2zvMYKOC7I57rOvavNuMrTse24+b7dxLO31sDg
+19a2ztfUtq+31rjus8m24Lj2uaTX97HtCjkuyOe6zsn6s8nK/b7dzbjK0828o6yyor340NC2r8ys
+t9bO9grKrtK7oaLK/b7dse21xLCyyKvQ1AoxLsjnus6xo7ukuavKvbK7sbvO89DeuMQKMi7I57rO
+yejWw7/JseC8rcf40/K6zbK7v8mx4Lytx/jT8gozLsjnus7J6NbDzsS1tbfDzsrD3MLrCsno1sO5
+pNf3se3S/rLYCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq9ssqmvenJ3Dogs8K9o8DPyqY6INDFz6K7r9eovNKh
+oklQTUHIz9akz+7Ev76twO2hok1DU0Whok1DREJBoaK+rbzDt9bO9sqmo6y009K1vq3R6bfhuLuj
+rArU+Nb3s9a/qreitPPQzdX+uK7Stc7xz7XNs6Gi0vjQ0LDsuavPtc2zoaK159DF0rXO8c+1zbOh
+ormk0rXX1Lavu6+/2NbGz7XNs7XIo6y4utTwuf1PQaGiCkVSUKGiQknPtc2ztcS8r7PJ0+vKtcqp
+oaPA+sjOz+7Ev76twO2jrLy8yvXX3Lzgo6y4sdfcvq3A7bXI1rDO8aGiyuzPpNX7uavLvtOq1Mu5
+3MDto6yyxgrO8bncwO2hotDFz6K7r7ncwO2hosjLysLQ0NX+udzA7bmk1/ehowqzwr2jwM/KpsnD
+s6S1xL/Os8zT0KO6CqG2yrXTw8bz0rXK/b7dzbO8xrrNt9bO9ry8yvWhtwqhtteo0rW7w7XGxqy6
+zc28se3Wxtf3vLzK9aG3CqG2z9a0+s/uxL+53MDtobcKobZFeGNlbKGiQWNjZXNzus1QT1dFUlBP
+SU5U1Nq53MDt1tC1xMq11b3Uy9PDobcKs8LAz8qmvfzG2sXg0bXG89K1o7q2q7e9ur2/1aGixcrB
+69Cs0rWhorijzO/SvcHGoaLS+NHjvfDI2qGiuf62+7H10sa2r6GitPPBrMnMxre9u9LXy/mhogrI
+qsHWsPzXsKGi17/Wvs7vwfehorfwyb3SxravoaK2q7fn1sPStaGivfDT8tK9wca87NHpoaK9u9L4
+yqnC3rXCoaLW0LOuzNjW1rfAzrGhor3ww6+8rwrNxaGiuqPRzM7vwfehotbQufqy4srUvLzK9dHQ
+vr/UuqGitqu358b7s7WhotHFt7yhorG0x9fTpLb508PGt6GixubV/bLY0qmhorTvt+G158TUoaLI
+8ArBotS2tquhotbQ0MLNvMjxoaLPssCztcLB+erNz/C9ur3wyvShorzOs9u5+rzKw7PS16GivM7Q
+y7ijw6+hot3tvM7I1baryrHXsKGiwaLLs8q10rWhogq22MbTueK156Giy9XW3c3yzaihorqjwaKj
+qLyvzcWjqaGiyc+6o8LWzKXP8L26oaLOsLb7ztbC/Lv60LWhorGm3LC/xry8vqvD3Lv60LWhotHH
+1t7WvQrStaGi0tq1wLXn19OhosTJsbTLub/LyrPGt6GixM++qbnjz8PWw9K1o6i8r83Fo6mhoszs
+vfK8zrPboaLJz7qjxvvC1rv6oaLOsLDNy7nM2LO1tqW5qQrFr8+1zbO1yMbz0rWhowogLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQqhtsbz0rWw18HsusvQxLDsuau8vMTco6hQUFQrRXhjZWyjqbjfvLbT
+ptPDobexqMP7u9jWtLHto6jH67Sr1eYwMjAtNjIzNTExNTajqQoKss4gu+EgtaUgzrsgw/sgs8aj
+ul9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+CrLOILzTILXYILXjo7ogv9rJz7qjICAgICAgv9rJ7tvaICAgIL/asbG+qQoKwarPtcjLo7pfX19f
+X19fX19fX19fX7Xnu7A6X19fX19fX19fX19fX19fX7Sr1eY6X19fX19fX19fX19fX19fXwoK08q8
+/qO6X19fX19fX19fX19fX18gss4gu+EgyMsgyv06X19fX19fX19fyMsgt9Eg08Mgo6Sjul9fX19f
+X19fX9SqIAoKss4gu+EgyMujul9fX19fX19fX19fy/kgyM4g1rAgzvGjul9fX19fX19fX19fX9LG
+ILavILXnILuwo7pfX19fX19fX19fX19fIAoKss4gu+EgyMujul9fX19fX19fX19fy/kgyM4g1rAg
+zvGjul9fX19fX19fX19fX9LGILavILXnILuwo7pfX19fX19fX19fX19fIAoKss4gu+EgyMujul9f
+X19fX19fX19fy/kgyM4g1rAgzvGjul9fX19fX19fX19fX9LGILavILXnILuwo7pfX19fX19fX19f
+X19fIAoKss4gu+EgyMujul9fX19fX19fX19fy/kgyM4g1rAgzvGjul9fX19fX19fX19fX9LGILav
+ILXnILuwo7pfX19fX19fX19fX19fIAoKuLa/7re9yr2jqMfr0aHU8bTyobChzKGxo6mjuiCh9TGh
+os/WvfAgofUyoaLXqtXKIKH1M6Gitee74yAKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CrG4
+16I6x+vE+rDRsajD+7vY1rS72LSrztLLvqOszqrIt7GjxPqxqMP7zt7O8yzH68T61Nm0zrXnu7Cj
+qDAyMC04MDU2MDYzOKOpyLfIzyEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFZGl0TGl2ZSBFbnRl
+cnByaXNlIGlzIHRoZSB3b3JsZCdzIG1vc3QgdGVjaG5pY2FsbHkgYWR2YW5jZWQgY29udGVudAph
+dXRob3JpbmcgdG9vbC4gRXhwZXJpZW5jZSB0aGUgcG93ZXIgb2YgVHJhY2sgQ2hhbmdlcywgSW5s
+aW5lIEltYWdlCkVkaXRpbmcgYW5kIGVuc3VyZSBjb250ZW50IGlzIGNvbXBsaWFudCB3aXRoIEFj
+Y2Vzc2liaWxpdHkgQ2hlY2tpbmcuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvZXBob3gtZGV2MmRldgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

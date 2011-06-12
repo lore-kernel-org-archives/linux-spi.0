@@ -1,7 +1,7 @@
-From: "Tryba par Plein Temps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Demandez votre devis =?ISO-8859-1?Q?Fen=EAtre?=!
-Date: Sun, 12 Jun 2011 06:57:29 +0200 (CEST)
-Message-ID: <lmnv3t.ddqxno@front02.r7g.com>
+From: "bienprevoir.fr" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] 7,1% - Placement exclusif - Assurance vie
+Date: Sun, 12 Jun 2011 23:40:48 +0200 (CEST)
+Message-ID: <lmp5k0.ug5n7v@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

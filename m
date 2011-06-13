@@ -1,25 +1,36 @@
-From: "bienprevoir.fr" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] 7,1% - Placement exclusif - Assurance vie
-Date: Sun, 12 Jun 2011 23:40:48 +0200 (CEST)
-Message-ID: <lmp5k0.ug5n7v@front07.g7r9.com>
+From: Virupax Sadashivpetimath <virupax.sadashivpetimath@stericsson.com>
+Subject: [PATCH] spi-pl022: Add missing return value update
+Date: Mon, 13 Jun 2011 16:23:46 +0530
+Message-ID: <1307962426-19230-1-git-send-email-virupax.sadashivpetimath@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: <spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>, <linus.walleij@linaro.org>,
+	<virupax.sadashivpetimath@stericsson.com>
+To: <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Return error on out of range cpsdvsr value.
 
-------------------------------------------------------------------------------
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath@stericsson.com>
+---
+ drivers/spi/spi-pl022.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 2541705..b3bd8d8 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1859,6 +1859,7 @@ static int pl022_setup(struct spi_device *spi)
+ 	}
+ 	if ((clk_freq.cpsdvsr < CPSDVR_MIN)
+ 	    || (clk_freq.cpsdvsr > CPSDVR_MAX)) {
++		status = -EINVAL;
+ 		dev_err(&spi->dev,
+ 			"cpsdvsr is configured incorrectly\n");
+ 		goto err_config_params;
+-- 
+1.7.4.3

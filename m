@@ -1,8 +1,10 @@
-From: =?GB2312?B?wdbQob3j?= <guangdf66-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] æˆ‘å¸æœ‰ä½™é¢æ¼‚æ®å¼€å‡º,æŒ‰1%å·¦å³çº³å–,éªŒåä»˜æ¬¾
-Date: Tue, 14 Jun 2011 12:07:08 +0800
-Message-ID: <E1QWKuH-0002Ft-B0@sfs-ml-2.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============6718528699125564823=="
+From: =?GB2312?B?wLy8zNK1?= <sulin.chen-7ATn9IY35WjQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] 89437åº”æ”¶è´¦æ¬¾ç®¡cç†çš„æ–¹æ³•åŠå®æ–½
+Date: Wed, 15 Jun 2011 00:36:27 +0800
+Message-ID: <46576.4452390887$1308071040@news.gmane.org>
+Reply-To: hpxpeixun-Mj/0Miq2reM@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="----=nqalj183_7808_317856069.686541"
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -15,27 +17,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============6718528699125564823==
+This is a multi-part message in MIME format.
+
+------=nqalj183_7808_317856069.686541
 Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+	charset="GB2312"
+Content-Transfer-Encoding: base64
 
-ÖÂ£º¸÷¹«Ë¾¡¢ÆóÒµ¾­ÀíÃÇºÃ£¡
-    °²´ïÊµÒµÓĞÏŞ¹«Ë¾ÊÇ¼Ò¶àÔª»¯ÊµÒµ¹«Ë¾£¬ÊÇÆ¾×ÅÊµÁ¦ĞÛºñ²»¶Ï·¢Õ¹Óë¹úÄÚ¶à¼ÒÆóÒµ½¨Á¢ÁËÃÜÇĞÁªÃËºÏ×÷¹ØÏµ£¬±¾¹«Ë¾±¾×Å¿Æ¼¼´´Òµ¡¢Æ·ÖÊÁ¢Òµ¡¢·şÎñÊØÒµµÄÔ­ÔòÉîÊÜÖÚ¶à¿Í»§¹«Ë¾µÄĞÅÀµ¡£
-    ¹ó¹«Ë¾Ïë¼õÇáÄÉ¶¸ºµ£Âğ£¿ÎÒË¾ÏÖÓĞ¸÷ĞĞÒµÆ¯ÏòÍâÊÛÀí£¬µãÊı°´1%×óÓÒÄÉÈ¡£¬¿ÉÍøÉÏ²éÑ¯»ò¹ıÕÊºó¸¶¿î£»½ğ¶î´ó¿ÉÔÙÓÅ»İ£¿
-    ×¢£º±¾Ë¾ÒÔ×îÓÅÖÊ¿ì½İµÄ·şÎñ£¬×îÓÅ»İµÄ¼Û¸ñÓë¸÷´ó¹«Ë¾ºÏ×÷£»¾´Çë±£ÁôºÅÂë¼°ÓÊÏäÒÔ±ãÓĞĞè£¡
-    É÷ÖØÉùÃ÷£º¹ó¹«Ë¾¿ªµÄ×ÊÁÏÒ»ÂÉ¸øÓÚ±£ÃÜ£¡
-    ÁªÏµÈË£ºÁÖÈğ£¨ÒµÎñ¾­Àí£©
-    µç»°£º13710728911 
-    ÓÊÏä£ºgdandags-9Onoh4P/yGk@public.gmane.org               
-     Ë³ËÌ
-        ÉÌì÷£¡
-                  »¶Ó­¹ã´ó¹«Ë¾»İ¹Ë£¡ÈçÓĞ´ò½Á¾´ÇëÁÂ½â£¡
-
-                         °²´ïÊµÒµÓĞÏŞ¹«Ë¾
+QXV2NjdNDQoNCsflzvrT4sba06bK1dXLv+61xLvYytXB97PMLLzTv+zHt7/utN/K1SzN7LvYxvPS
+tbT01cqhoru11crL8MqnLg0KDQo0ODIzNzPXyjPBz7z7uL1lvP4u
 
 
---===============6718528699125564823==
+------=nqalj183_7808_317856069.686541
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -46,7 +39,7 @@ EditLive Enterprise is the world's most technically advanced content
 authoring tool. Experience the power of Track Changes, Inline Image
 Editing and ensure content is compliant with Accessibility Checking.
 http://p.sf.net/sfu/ephox-dev2dev
---===============6718528699125564823==
+------=nqalj183_7808_317856069.686541
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -57,4 +50,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============6718528699125564823==--
+------=nqalj183_7808_317856069.686541--

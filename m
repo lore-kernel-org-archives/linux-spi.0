@@ -1,54 +1,100 @@
 From: dirk.brandewie@gmail.com
-Subject: [PATCH 0/5] Designware SPI driver update
-Date: Wed, 15 Jun 2011 10:23:03 -0700
-Message-ID: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
-Cc: Dirk Brandewie <dirk.brandewie@gmail.com>
+Subject: [PATCH 2/5] spi/dw_spi: expose dw_spi platform data stucture.
+Date: Wed, 15 Jun 2011 10:23:05 -0700
+Message-ID: <1308158588-17249-3-git-send-email-dirk.brandewie@gmail.com>
+References: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
+Cc: Dirk Brandewie <dirk.brandewie@gmail.com>,
+	Alan Cox <alan@linux.intel.com>
 To: linux-kernel@vger.kernel.org,
 	spi-devel-general@lists.sourceforge.net
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Dirk Brandewie <dirk.brandewie@gmail.com>
 
-This patch set reworks the Designware SPI driver. This patch set is
-based on commit f8f82d4 on spi/next
+This patch move the definition of the dw_spi_chip structure to
+a header file available to the client drivers.
 
-Patch 1:
-      Fixes trivial typo from commit f8f82d4 in spi/next
-
-Patch 2:
-      exports the platform data structure for client driver use.
-
-Patch 3:
-      Reworks the core message and transfer handling.
-
-Patch 4:
-      Changes internal function naming convention to match new file
-      names.
-
-Patch 5:
-      Adds runtime power management to the PCI driver.
-
-
-
-Dirk Brandewie (5):
-  spi/makefile:  Fix typo from reorganize drivers patch.
-  spi/dw_spi: expose dw_spi platform data stucture.
-  dw_spi: rework message processing
-  spi/spi-dw: update function naming convention
-  spi_dw_pci: Add runtime power management
-
- drivers/spi/Makefile       |    2 +-
- drivers/spi/spi-dw-mid.c   |   47 +-
- drivers/spi/spi-dw-mmio.c  |   34 +-
- drivers/spi/spi-dw-pci.c   |   69 ++-
- drivers/spi/spi-dw.c       | 1674 +++++++++++++++++++-------------------------
- drivers/spi/spi-dw.h       |  138 ++--
- include/linux/spi/spi-dw.h |   20 +
- 7 files changed, 930 insertions(+), 1054 deletions(-)
- rewrite drivers/spi/spi-dw.c (62%)
+Signed-off-by: Dirk Brandewie <dirk.brandewie@gmail.com>
+Signed-off-by: Alan Cox <alan@linux.intel.com>
+---
+ drivers/spi/spi-dw.h       |   20 +-------------------
+ include/linux/spi/spi-dw.h |   20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+), 19 deletions(-)
  create mode 100644 include/linux/spi/spi-dw.h
 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 7a5e78d..97baff6 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/io.h>
+ #include <linux/scatterlist.h>
++#include <linux/spi/dw_spi.h>
+ 
+ /* Bit fields in CTRLR0 */
+ #define SPI_DFS_OFFSET			0
+@@ -49,12 +50,6 @@
+ /* TX RX interrupt level threshold, max can be 256 */
+ #define SPI_INT_THRESHOLD		32
+ 
+-enum dw_ssi_type {
+-	SSI_MOTO_SPI = 0,
+-	SSI_TI_SSP,
+-	SSI_NS_MICROWIRE,
+-};
+-
+ struct dw_spi_reg {
+ 	u32	ctrl0;
+ 	u32	ctrl1;
+@@ -208,19 +203,6 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
+ 	dw_writel(dws, imr, new_mask);
+ }
+ 
+-/*
+- * Each SPI slave device to work with dw_api controller should
+- * has such a structure claiming its working mode (PIO/DMA etc),
+- * which can be save in the "controller_data" member of the
+- * struct spi_device
+- */
+-struct dw_spi_chip {
+-	u8 poll_mode;	/* 0 for contoller polling mode */
+-	u8 type;	/* SPI/SSP/Micrwire */
+-	u8 enable_dma;
+-	void (*cs_control)(u32 command);
+-};
+-
+ extern int dw_spi_add_host(struct dw_spi *dws);
+ extern void dw_spi_remove_host(struct dw_spi *dws);
+ extern int dw_spi_suspend_host(struct dw_spi *dws);
+diff --git a/include/linux/spi/spi-dw.h b/include/linux/spi/spi-dw.h
+new file mode 100644
+index 0000000..75dba03
+--- /dev/null
++++ b/include/linux/spi/spi-dw.h
+@@ -0,0 +1,20 @@
++#ifndef DW_SPI_H
++#define DW_SPI_H
++
++enum dw_ssi_type {
++	SSI_MOTO_SPI = 0,
++	SSI_TI_SSP,
++	SSI_NS_MICROWIRE,
++};
++
++/*
++ * Each SPI slave device to work with dw_api controller should
++ * has such a structure claiming its working mode (PIO/DMA etc),
++ * which can be save in the "controller_data" member of the
++ * struct spi_device
++ */
++struct dw_spi_chip {
++	u8 type;	/* SPI/SSP/Micrwire */
++	u8 enable_dma;
++};
++#endif /* DW_SPI_H */
 -- 
 1.7.3.4

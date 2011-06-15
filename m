@@ -1,7 +1,8 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [PATCH 1/2] gpio/tegra: Move Tegra gpio driver to drivers/gpio
-Date: Wed, 15 Jun 2011 13:37:54 -0600
-Message-ID: <20110615193734.23641.8004.stgit__29849.5207251564$1308166716$gmane$org@ponder>
+Subject: [PATCH 2/2] gpio/tegra: add devicetree support
+Date: Wed, 15 Jun 2011 13:38:04 -0600
+Message-ID: <20110615193759.23641.26212.stgit__19076.5409185135$1308166718$gmane$org@ponder>
+References: <20110615193734.23641.8004.stgit@ponder>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -10,6 +11,7 @@ To: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>, linux-kernel
 	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>,
 	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general@list
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20110615193734.23641.8004.stgit@ponder>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,50 +22,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-As part of the gpio driver consolidation, this patch moves the Tegra driver
-into drivers/gpio
+Add support for decoding gpios from the device tree
 
 Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 ---
+ .../devicetree/bindings/gpio/gpio_nvidia.txt       |    7 +++++++
+ drivers/gpio/gpio-tegra.c                          |   10 ++++++++++
+ 2 files changed, 17 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
 
-If there are no objections, I'll merge this via gpio/next
-
-g.
-
- arch/arm/mach-tegra/Makefile |    1 -
- drivers/gpio/Makefile        |    1 +
- drivers/gpio/gpio-tegra.c    |    0 
- 3 files changed, 1 insertions(+), 1 deletions(-)
- rename arch/arm/mach-tegra/gpio.c => drivers/gpio/gpio-tegra.c (100%)
-
-diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
-index 823c703..ed58ef9 100644
---- a/arch/arm/mach-tegra/Makefile
-+++ b/arch/arm/mach-tegra/Makefile
-@@ -4,7 +4,6 @@ obj-y                                   += io.o
- obj-y                                   += irq.o
- obj-y                                   += clock.o
- obj-y                                   += timer.o
--obj-y                                   += gpio.o
- obj-y                                   += pinmux.o
- obj-y                                   += powergate.o
- obj-y					+= fuse.o
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 68e3bfd..0fbdd75 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -43,6 +43,7 @@ obj-$(CONFIG_GPIO_SCH)		+= gpio-sch.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
- obj-$(CONFIG_GPIO_SX150X)	+= gpio-sx150x.o
- obj-$(CONFIG_GPIO_TC3589X)	+= gpio-tc3589x.o
-+obj-$(CONFIG_ARCH_TEGRA)	+= gpio-tegra.o
- obj-$(CONFIG_GPIO_TIMBERDALE)	+= gpio-timberdale.o
- obj-$(CONFIG_GPIO_TPS65910)	+= gpio-tps65910.o
- obj-$(CONFIG_GPIO_TWL4030)	+= gpio-twl4030.o
-diff --git a/arch/arm/mach-tegra/gpio.c b/drivers/gpio/gpio-tegra.c
-similarity index 100%
-rename from arch/arm/mach-tegra/gpio.c
-rename to drivers/gpio/gpio-tegra.c
+diff --git a/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt b/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
+new file mode 100644
+index 0000000..afb3ff3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
+@@ -0,0 +1,7 @@
++NVIDIA Tegra 2 GPIO controller
++
++Required properties:
++- compatible : "nvidia,tegra250-gpio"
++- #gpio-cells : Should be two. The first cell is the pin number and the
++  second cell is used to specify optional parameters (currently unused).
++- gpio-controller : Marks the device node as a GPIO controller.
+diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+index 919d638..13afb88 100644
+--- a/drivers/gpio/gpio-tegra.c
++++ b/drivers/gpio/gpio-tegra.c
+@@ -23,6 +23,7 @@
+ 
+ #include <linux/io.h>
+ #include <linux/gpio.h>
++#include <linux/of.h>
+ 
+ #include <asm/mach/irq.h>
+ 
+@@ -340,6 +341,15 @@ static int __init tegra_gpio_init(void)
+ 		}
+ 	}
+ 
++#ifdef CONFIG_OF_GPIO
++	/*
++	 * This isn't ideal, but it gets things hooked up until this
++	 * driver is converted into a platform_device
++	 */
++	tegra_gpio_chip.of_node = of_find_compatible_node(NULL, NULL,
++						"nvidia,tegra250-gpio");
++#endif /* CONFIG_OF_GPIO */
++
+ 	gpiochip_add(&tegra_gpio_chip);
+ 
+ 	for (i = INT_GPIO_BASE; i < (INT_GPIO_BASE + TEGRA_NR_GPIOS); i++) {
 
 
 ------------------------------------------------------------------------------

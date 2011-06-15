@@ -1,9 +1,8 @@
 From: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Subject: Re: [PATCH 2/2] gpio/tegra: add devicetree support
-Date: Wed, 15 Jun 2011 13:09:21 -0700
-Message-ID: <BANLkTinLnMSJOka2o6VTu3fJW2pCoacUKa2hH8kTtGvCV=Pw5w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] gpio/tegra: Move Tegra gpio driver to drivers/gpio
+Date: Wed, 15 Jun 2011 13:11:26 -0700
+Message-ID: <BANLkTim-Up4xvwBpkN-3B8HFg86G7M3TUfSQUv5Tq_0Kf15wcw@mail.gmail.com>
 References: <20110615193734.23641.8004.stgit@ponder>
-	<20110615193759.23641.26212.stgit@ponder>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Cc: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -13,14 +12,21 @@ Cc: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>, linux-kernel
 	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20110615193759.23641.26212.stgit@ponder>
+In-Reply-To: <20110615193734.23641.8004.stgit@ponder>
 Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 15, 2011 at 12:38 PM, Grant Likely
+On Wed, Jun 15, 2011 at 12:37 PM, Grant Likely
 <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> Add support for decoding gpios from the device tree
+> As part of the gpio driver consolidation, this patch moves the Tegra driver
+> into drivers/gpio
 >
 > Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
 Acked-by: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+
+Colin said he had plans to do it, or I would already have sent this
+out. Thanks for doing it! :)
+
+
+-Olof

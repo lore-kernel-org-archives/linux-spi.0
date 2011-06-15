@@ -1,17 +1,15 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [PATCH 2/2] gpio/tegra: add devicetree support
-Date: Wed, 15 Jun 2011 13:38:04 -0600
-Message-ID: <20110615193759.23641.26212.stgit__19076.5409185135$1308166718$gmane$org@ponder>
-References: <20110615193734.23641.8004.stgit@ponder>
+From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi/bfin_spi: fix reverse condition during interrupt mode
+Date: Wed, 15 Jun 2011 15:41:11 -0400
+Message-ID: <1308166871-27312-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general@list
+Cc: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org, Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20110615193734.23641.8004.stgit@ponder>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,56 +20,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for decoding gpios from the device tree
+From: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Commit 4d676fc5c39a677aa72148 "drivers:spi_bfin5xx: add support for
+multiples of 8bits" introduced a bug during interrupt mode.  The if
+condition was inverted which can cause some bugs such as the SPI
+mmc in interrupt mode fails to detect SD cards.
+
+Signed-off-by: Bob Liu <lliubbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/gpio/gpio_nvidia.txt       |    7 +++++++
- drivers/gpio/gpio-tegra.c                          |   10 ++++++++++
- 2 files changed, 17 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
+ drivers/spi/spi_bfin5xx.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt b/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
-new file mode 100644
-index 0000000..afb3ff3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/gpio_nvidia.txt
-@@ -0,0 +1,7 @@
-+NVIDIA Tegra 2 GPIO controller
-+
-+Required properties:
-+- compatible : "nvidia,tegra250-gpio"
-+- #gpio-cells : Should be two. The first cell is the pin number and the
-+  second cell is used to specify optional parameters (currently unused).
-+- gpio-controller : Marks the device node as a GPIO controller.
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 919d638..13afb88 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -23,6 +23,7 @@
- 
- #include <linux/io.h>
- #include <linux/gpio.h>
-+#include <linux/of.h>
- 
- #include <asm/mach/irq.h>
- 
-@@ -340,6 +341,15 @@ static int __init tegra_gpio_init(void)
- 		}
- 	}
- 
-+#ifdef CONFIG_OF_GPIO
-+	/*
-+	 * This isn't ideal, but it gets things hooked up until this
-+	 * driver is converted into a platform_device
-+	 */
-+	tegra_gpio_chip.of_node = of_find_compatible_node(NULL, NULL,
-+						"nvidia,tegra250-gpio");
-+#endif /* CONFIG_OF_GPIO */
-+
- 	gpiochip_add(&tegra_gpio_chip);
- 
- 	for (i = INT_GPIO_BASE; i < (INT_GPIO_BASE + TEGRA_NR_GPIOS); i++) {
+diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
+index f706dba..ae30fa3 100644
+--- a/drivers/spi/spi_bfin5xx.c
++++ b/drivers/spi/spi_bfin5xx.c
+@@ -436,7 +436,7 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+ 		/* last read */
+ 		if (drv_data->rx) {
+ 			dev_dbg(&drv_data->pdev->dev, "last read\n");
+-			if (n_bytes % 2) {
++			if (!(n_bytes % 2)) {
+ 				u16 *buf = (u16 *)drv_data->rx;
+ 				for (loop = 0; loop < n_bytes / 2; loop++)
+ 					*buf++ = read_RDBR(drv_data);
+@@ -464,7 +464,7 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+ 	if (drv_data->rx && drv_data->tx) {
+ 		/* duplex */
+ 		dev_dbg(&drv_data->pdev->dev, "duplex: write_TDBR\n");
+-		if (n_bytes % 2) {
++		if (!(n_bytes % 2)) {
+ 			u16 *buf = (u16 *)drv_data->rx;
+ 			u16 *buf2 = (u16 *)drv_data->tx;
+ 			for (loop = 0; loop < n_bytes / 2; loop++) {
+@@ -482,7 +482,7 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+ 	} else if (drv_data->rx) {
+ 		/* read */
+ 		dev_dbg(&drv_data->pdev->dev, "read: write_TDBR\n");
+-		if (n_bytes % 2) {
++		if (!(n_bytes % 2)) {
+ 			u16 *buf = (u16 *)drv_data->rx;
+ 			for (loop = 0; loop < n_bytes / 2; loop++) {
+ 				*buf++ = read_RDBR(drv_data);
+@@ -498,7 +498,7 @@ static irqreturn_t bfin_spi_pio_irq_handler(int irq, void *dev_id)
+ 	} else if (drv_data->tx) {
+ 		/* write */
+ 		dev_dbg(&drv_data->pdev->dev, "write: write_TDBR\n");
+-		if (n_bytes % 2) {
++		if (!(n_bytes % 2)) {
+ 			u16 *buf = (u16 *)drv_data->tx;
+ 			for (loop = 0; loop < n_bytes / 2; loop++) {
+ 				read_RDBR(drv_data);
+-- 
+1.7.5.3
 
 
 ------------------------------------------------------------------------------

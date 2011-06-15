@@ -1,59 +1,65 @@
-From: Stephen Warren <swarren@nvidia.com>
-Subject: RE: [PATCH] spi/tegra: add devicetree support
-Date: Wed, 15 Jun 2011 12:25:49 -0700
-Message-ID: <74CDBE0F657A3D45AFBB94109FB122FF04992C060C@HQMAIL01.nvidia.com>
-References: <20110615190754.11693.26335.stgit@ponder>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi/tegra: add devicetree support
+Date: Wed, 15 Jun 2011 13:29:11 -0600
+Message-ID: <BANLkTimi8n-yik5g=f2jhVQPZoKLuWKgHQ@mail.gmail.com>
+References: <20110615190754.11693.26335.stgit@ponder> <74CDBE0F657A3D45AFBB94109FB122FF04992C060C@HQMAIL01.nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: Grant Likely <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: "spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kerne
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Erik Gilling <konkers@android.com>
+To: Stephen Warren <swarren@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20110615190754.11693.26335.stgit@ponder>
-Content-Language: en-US
+In-Reply-To: <74CDBE0F657A3D45AFBB94109FB122FF04992C060C@HQMAIL01.nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-R3JhbnQgTGlrZWx5IHdyb3RlIGF0IFdlZG5lc2RheSwgSnVuZSAxNSwgMjAxMSAxOjA4IFBNOg0K
-PiBBbGxvdyB0aGUgdGVncmEgc3BpIGRyaXZlciB0byBvYnRhaW4gcG9wdWxhdGUgdGhlIHNwaSBi
-dXMgd2l0aCBkZXZpY2VzDQoNClJlbW90ZSAib2J0YWluIj8NCg0KPiBmcm9tIHRoZSBkZXZpY2Ug
-dHJlZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEdyYW50IExpa2VseSA8Z3JhbnQubGlrZWx5QHNl
-Y3JldGxhYi5jYT4NCj4gLS0tDQo+ICAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpX252
-aWRpYS50eHQgICAgICAgICB8ICAgIDUgKysrKysNCj4gIGRyaXZlcnMvc3BpL3NwaS10ZWdyYS5j
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxMiArKysrKysrKysrKysNCj4gIDIgZmls
-ZXMgY2hhbmdlZCwgMTcgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkNCj4gIGNyZWF0ZSBt
-b2RlIDEwMDY0NCBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaV9udmlk
-aWEudHh0DQo+IA0KPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRp
-bmdzL3NwaS9zcGlfbnZpZGlhLnR4dCBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5n
-cy9zcGkvc3BpX252aWRpYS50eHQNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAw
-MDAwMC4uYmRlNDUwYg0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2
-aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpX252aWRpYS50eHQNCj4gQEAgLTAsMCArMSw1IEBADQo+
-ICtOVklESUEgVGVncmEgMiBTUEkgZGV2aWNlDQo+ICsNCj4gK1JlcXVpcmVkIHByb3BlcnRpZXM6
-DQo+ICstIGNvbXBhdGlibGUgOiBzaG91bGQgYmUgIm52aWRpYSx0ZWdyYTI1MC1zcGkiLg0KPiAr
-LSBncGlvcyA6IHNob3VsZCBzcGVjaWZ5IEdQSU9zIHVzZWQgZm9yIGNoaXBzZWxlY3QuDQoNCkFy
-ZSB0aGluZ3MgbGlrZSByZWcsIGludGVycnVwdHMsIGFuZCBvdGhlciBnZW5lcmFsIHN0dWZmIGlt
-cGxpY2l0Pw0KSSBub3RpY2UgdGhhdCBmc2wtc3BpLnR4dCBkb2VzIHNwZWNpZnkgdGhvc2UsIGJ1
-dCBzcGlfYWx0ZXJhLnR4dA0KYW5kIHNwaV9vY190aW55LnR4dCBkb24ndC4NCg0KT3RoZXJ3aXNl
-LCBMR1RNLg0KDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktdGVncmEuYyBiL2RyaXZl
-cnMvc3BpL3NwaS10ZWdyYS5jDQo+IGluZGV4IDhlMzA3MjcuLmE0M2NlZWIgMTAwNjQ0DQo+IC0t
-LSBhL2RyaXZlcnMvc3BpL3NwaS10ZWdyYS5jDQo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS10ZWdy
-YS5jDQo+IEBAIC01NDYsNiArNTQ2LDcgQEAgc3RhdGljIGludCBfX2luaXQgc3BpX3RlZ3JhX3By
-b2JlKHN0cnVjdA0KPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ICAJdHNwaS0+cnhfZG1hX3Jl
-cS5yZXFfc2VsID0gc3BpX3RlZ3JhX3JlcV9zZWxzW3BkZXYtPmlkXTsNCj4gIAl0c3BpLT5yeF9k
-bWFfcmVxLmRldiA9IHRzcGk7DQo+IA0KPiArCW1hc3Rlci0+ZGV2Lm9mX25vZGUgPSBwZGV2LT5k
-ZXYub2Zfbm9kZTsNCj4gIAlyZXQgPSBzcGlfcmVnaXN0ZXJfbWFzdGVyKG1hc3Rlcik7DQo+IA0K
-PiAgCWlmIChyZXQgPCAwKQ0KPiBAQCAtNTk1LDEwICs1OTYsMjEgQEAgc3RhdGljIGludCBfX2Rl
-dmV4aXQgc3BpX3RlZ3JhX3JlbW92ZShzdHJ1Y3QNCj4gcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0K
-PiANCj4gIE1PRFVMRV9BTElBUygicGxhdGZvcm06c3BpX3RlZ3JhIik7DQo+IA0KPiArI2lmZGVm
-IENPTkZJR19PRg0KPiArc3RhdGljIHN0cnVjdCBvZl9kZXZpY2VfaWQgc3BpX3RlZ3JhX29mX21h
-dGNoX3RhYmxlW10gX19kZXZpbml0ZGF0YSA9IHsNCj4gKwl7IC5jb21wYXRpYmxlID0gIm52aWRp
-YSx0ZWdyYTI1MC1zcGkiLCB9LA0KPiArCXt9DQo+ICt9Ow0KPiArTU9EVUxFX0RFVklDRV9UQUJM
-RShvZiwgc3BpX3RlZ3JhX29mX21hdGNoX3RhYmxlKTsNCj4gKyNlbHNlIC8qIENPTkZJR19PRiAq
-Lw0KPiArI2RlZmluZSBzcGlfdGVncmFfb2ZfbWF0Y2hfdGFibGUgTlVMTA0KPiArI2VuZGlmIC8q
-IENPTkZJR19PRiAqLw0KPiArDQo+ICBzdGF0aWMgc3RydWN0IHBsYXRmb3JtX2RyaXZlciBzcGlf
-dGVncmFfZHJpdmVyID0gew0KPiAgCS5kcml2ZXIgPSB7DQo+ICAJCS5uYW1lID0JCSJzcGlfdGVn
-cmEiLA0KPiAgCQkub3duZXIgPQlUSElTX01PRFVMRSwNCj4gKwkJLm9mX21hdGNoX3RhYmxlID0g
-c3BpX3RlZ3JhX29mX21hdGNoX3RhYmxlLA0KPiAgCX0sDQo+ICAJLnJlbW92ZSA9CV9fZGV2ZXhp
-dF9wKHNwaV90ZWdyYV9yZW1vdmUpLA0KPiAgfTsNCg0KLS0gDQpudnB1YmxpYw0KDQo=
+On Wed, Jun 15, 2011 at 1:25 PM, Stephen Warren <swarren@nvidia.com> wr=
+ote:
+> Grant Likely wrote at Wednesday, June 15, 2011 1:08 PM:
+>> Allow the tegra spi driver to obtain populate the spi bus with devic=
+es
+>
+> Remote "obtain"?
+
+heh, oops.
+
+>
+>> from the device tree.
+>>
+>> Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+>> ---
+>> =A0.../devicetree/bindings/spi/spi_nvidia.txt =A0 =A0 =A0 =A0 | =A0 =
+=A05 +++++
+>> =A0drivers/spi/spi-tegra.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0| =A0 12 ++++++++++++
+>> =A02 files changed, 17 insertions(+), 0 deletions(-)
+>> =A0create mode 100644 Documentation/devicetree/bindings/spi/spi_nvid=
+ia.txt
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/spi_nvidia.txt b/=
+Documentation/devicetree/bindings/spi/spi_nvidia.txt
+>> new file mode 100644
+>> index 0000000..bde450b
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/spi/spi_nvidia.txt
+>> @@ -0,0 +1,5 @@
+>> +NVIDIA Tegra 2 SPI device
+>> +
+>> +Required properties:
+>> +- compatible : should be "nvidia,tegra250-spi".
+>> +- gpios : should specify GPIOs used for chipselect.
+>
+> Are things like reg, interrupts, and other general stuff implicit?
+> I notice that fsl-spi.txt does specify those, but spi_altera.txt
+> and spi_oc_tiny.txt don't.
+
+yeah, standard properties are pretty much implicit.  I don't bother
+writing the words if there isn't much value to them.  I've been
+contemplating a tool that will take DT documentation written in a
+certain form, and automatically fill in standard properties as needed,
+but that's a project for another day.
+
+g.

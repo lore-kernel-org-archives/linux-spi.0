@@ -1,13 +1,11 @@
-From: =?iso-8859-15?Q?BMW_Offres_Eph=E9m=E8res_?= <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Votre_BMW_S=E9rie_1_r=E9cente?=
-	=?iso-8859-15?Q?_avec_GPS_=E0_240=A4_/_mois._?=
-Date: Wed, 15 Jun 2011 08:05:19 +0200 (CEST)
-Message-ID: <3236305005.109156.1308117919839@p4enginex1.emv2.com>
-Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: 13560740732-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票――代/开
+Date: Wed, 15 Jun 2011 14:56:26 +0800
+Message-ID: <E1QWk1l-0003YO-Qb@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,15 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-Les Offres Eph=E9m=E8res BMW, saisissez-les avant qu?elles ne s?envolent. =
-
-Votre BMW 116d 115ch r=E9cente avec GPS =E0 240=A4 /mois.=BB
-
----------------------------------------------------------------------------=
----
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NjA3NDA3
+MzIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFZGl0TGl2ZSBFbnRlcnByaXNlIGlzIHRoZSB3b3Js
+ZCdzIG1vc3QgdGVjaG5pY2FsbHkgYWR2YW5jZWQgY29udGVudAphdXRob3JpbmcgdG9vbC4gRXhw
+ZXJpZW5jZSB0aGUgcG93ZXIgb2YgVHJhY2sgQ2hhbmdlcywgSW5saW5lIEltYWdlCkVkaXRpbmcg
+YW5kIGVuc3VyZSBjb250ZW50IGlzIGNvbXBsaWFudCB3aXRoIEFjY2Vzc2liaWxpdHkgQ2hlY2tp
+bmcuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvZXBob3gtZGV2MmRldgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

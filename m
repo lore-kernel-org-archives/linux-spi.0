@@ -1,10 +1,11 @@
-From: Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 1/2] gpio/tegra: Move Tegra gpio driver to drivers/gpio
-Date: Wed, 15 Jun 2011 13:21:56 -0700
-Message-ID: <BANLkTinij15PZw11Y3Qt=PV1kkP1pw1oaszTdMfD55Cf8cOJkw@mail.gmail.com>
-References: <20110615193734.23641.8004.stgit@ponder>
+Date: Wed, 15 Jun 2011 14:48:48 -0600
+Message-ID: <BANLkTik6C1mBeitYkA+NNM6XAhNY9cbgOw@mail.gmail.com>
+References: <20110615193734.23641.8004.stgit@ponder> <BANLkTinij15PZw11Y3Qt=PV1kkP1pw1oaszTdMfD55Cf8cOJkw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>,
 	lkml <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	linux-tegra <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -13,28 +14,44 @@ Cc: Erik Gilling <konkers-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20110615193734.23641.8004.stgit@ponder>
+In-Reply-To: <BANLkTinij15PZw11Y3Qt=PV1kkP1pw1oaszTdMfD55Cf8cOJkw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 15, 2011 at 12:37 PM, Grant Likely
-<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> As part of the gpio driver consolidation, this patch moves the Tegra driver
-> into drivers/gpio
+On Wed, Jun 15, 2011 at 2:21 PM, Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org> wrote=
+:
+> On Wed, Jun 15, 2011 at 12:37 PM, Grant Likely
+> <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>> As part of the gpio driver consolidation, this patch moves the Tegra=
+ driver
+>> into drivers/gpio
+>>
+>> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+>> ---
+>>
+>> If there are no objections, I'll merge this via gpio/next
 >
-> Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> ---
+> I have this patch as part of a series that should get posted later
+> this week, as well as a patch on top of it that depends on this chang=
+e
+> and another change in my tree, but I'm pessimistic that my series wil=
+l
+> get in to 3.1 since it depends on some common consolidation that
+> hasn't been agreed upon yet. =A0So,
+> Acked-by: Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
 >
-> If there are no objections, I'll merge this via gpio/next
+> Put it in gpio/next, and I'll make sure any other Tegra patches with
+> dependencies get pulled after yours.
 
-I have this patch as part of a series that should get posted later
-this week, as well as a patch on top of it that depends on this change
-and another change in my tree, but I'm pessimistic that my series will
-get in to 3.1 since it depends on some common consolidation that
-hasn't been agreed upon yet.  So,
-Acked-by: Colin Cross <ccross-z5hGa2qSFaRBDgjK7y7TUQ@public.gmane.org>
+How about I put it in a separate branch so that if you need to pull it
+for dependencies then you can do so without pulling in all the
+gpio/next commits.
 
-Put it in gpio/next, and I'll make sure any other Tegra patches with
-dependencies get pulled after yours.
+g.
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

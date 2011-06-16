@@ -1,87 +1,64 @@
-From: Eric Miao <eric.y.miao@gmail.com>
-Subject: Re: Slow spi_sync() on pxa2xx_spi
-Date: Thu, 16 Jun 2011 18:02:20 +0800
-Message-ID: <BANLkTi=FJgwcBHsE=sLK4shzpdJYWwq3Pg@mail.gmail.com>
-References: <20110616082112.GA10075@excalibur.local>
-	<BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g@mail.gmail.com>
-	<20110616091931.GB10075@excalibur.local>
-	<20110616095934.GC10075@excalibur.local>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 4/4] mach-u300: set apropriate FIFO trigger levels
+Date: Thu, 16 Jun 2011 06:22:35 -0600
+Message-ID: <20110616122235.GA31534@ponder.secretlab.ca>
+References: <1308212094-22592-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Stefan Schmidt <stefan@datenfreihafen.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110616095934.GC10075@excalibur.local>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1308212094-22592-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBKdW4gMTYsIDIwMTEgYXQgNTo1OSBQTSwgU3RlZmFuIFNjaG1pZHQKPHN0ZWZhbkBk
-YXRlbmZyZWloYWZlbi5vcmc+IHdyb3RlOgo+IEhlbGxvLgo+Cj4gT24gVGh1LCAyMDExLTA2LTE2
-IGF0IDExOjE5LCBTdGVmYW4gU2NobWlkdCB3cm90ZToKPj4KPj4gT24gVGh1LCAyMDExLTA2LTE2
-IGF0IDE2OjM0LCBFcmljIE1pYW8gd3JvdGU6Cj4+ID4KPj4gPiBXaGF0IGlzIHRoZSBTUEkgZnJl
-cXVlbmN5Pwo+Pgo+PiBJIHRyaWVkIHZhcmlvdXMgc2V0dGluZ3MgaW4gLm1heF9zcGVlZF9oeiBm
-cm9tIHRoZSBvcmlnaW5hbCA2LjYgTUh0IHRvCj4+IDEwIE1IeiBhbmQgMTNNSHogYXMgbWF4aW11
-bSBvZiB0aGUgY29udHJvbGxlci4gRGlkIGFsc28gbm90IGNoYW5nZQo+PiBhbnl0aGluZyBmb3Ig
-bWUuCj4+Cj4+IFRoYXQgcmVtaW5kcyBtZSB0aGF0IGFmdGVyIGRlZmluaW5nIERFQlVHIGluIHB4
-YTJ4eF9zcGkgaXQgZGlkIGFsd2F5cwo+PiByZXBvcnQgMTNNSHogdG8gbWUuIE5lZWQgdG8gaGF2
-ZSBhIGxvb2sgYXQgaXQuCj4KPiBFaXRoZXIgdGhlIGRlYnVnIHN0YXRlbWVudCBvciB0aGUgc2V0
-dGluZyBpcyBpbmRlZWQgd3JvbmcuCj4KPiBbIMKgIMKgMC42OTY3NTldIHNwaSBzcGkxLjA6IDEz
-MDAwMDAwIEh6IGFjdHVhbCwgUElPCj4gWyDCoCDCoDAuNzE1NzYwXSBzcGkgc3BpMy4wOiAxMzAw
-MDAwMCBIeiBhY3R1YWwsIFBJTwo+Cj4gV2hpY2ggY29tZXMgZnJvbSB0aGlzIHBhcnQgb2YgdGhl
-IGRyaXZlciAod2l0aCAjZGVmaW5lIERFQlVHIHNldCk6Cj4KPiDCoCDCoCDCoCDCoC8qIE5PVEU6
-IMKgUFhBMjV4X1NTUCBfY291bGRfIHVzZSBleHRlcm5hbCBjbG9ja2luZyAuLi4gKi8KPiDCoCDC
-oCDCoCDCoGlmICghcHhhMjV4X3NzcF9jb21wKGRydl9kYXRhKSkKPiDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoGRldl9kYmcoJnNwaS0+ZGV2LCAiJWxkIEh6IGFjdHVhbCwgJXNcbiIsCj4gwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjbGtfZ2V0X3JhdGUoc3NwLT5jbGspCj4gwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAvICgxICsgKChjaGlw
-LT5jcjAgJiBTU0NSMF9TQ1IoMHhmZmYpKSA+PiA4KSksCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqBjaGlwLT5lbmFibGVfZG1hID8gIkRNQSIgOiAiUElPIik7Cj4gwqAgwqAg
-wqAgwqBlbHNlCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBkZXZfZGJnKCZzcGktPmRldiwgIiVs
-ZCBIeiBhY3R1YWwsICVzXG4iLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-Y2xrX2dldF9yYXRlKHNzcC0+Y2xrKSAvIDIKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoC8gKDEgKyAoKGNoaXAtPmNyMCAmIFNTQ1IwX1NDUigweDBmZikp
-ID4+IDgpKSwKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNoaXAtPmVuYWJs
-ZV9kbWEgPyAiRE1BIiA6ICJQSU8iKTsKPgo+IEJ1dCB0aGUgYm9hcmQgZmlsZSBoYXMgdGhpczoK
-Pgo+IHN0YXRpYyBzdHJ1Y3Qgc3BpX2JvYXJkX2luZm8gc3BpX2JvYXJkX2luZm9bXSBfX2luaXRk
-YXRhID0gewo+IMKgIMKgIMKgIMKgewo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLm1vZGFsaWFz
-ID0gImxpczNsMDJkcSIsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAubWF4X3NwZWVkX2h6ID0g
-ODAwMDAwMCwvKiA4TUh6IG1heCBzcGkgZnJlcXVlbmN5IGF0IDNWICovCj4gwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAuYnVzX251bSA9IDEsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAuY2hpcF9z
-ZWxlY3QgPSAwLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLmNvbnRyb2xsZXJfZGF0YSA9ICZz
-dGFjY2VsX2NoaXBfaW5mbywKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoC5pcnEgPSBJUlFfR1BJ
-Tyg5NiksCj4gwqAgwqAgwqAgwqB9LCB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAubW9kYWxp
-YXMgPSAiY2MyNDIwIiwKPiAvLyDCoCDCoCDCoCDCoCDCoCDCoCDCoC5tYXhfc3BlZWRfaHogPSA2
-NTAwMDAwLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLm1heF9zcGVlZF9oeiA9IDEwMDAwMDAw
-LCAvKiAxME1IeiAqLwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLmJ1c19udW0gPSAzLAo+IMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgLmNoaXBfc2VsZWN0ID0gMCwKPiDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoC5jb250cm9sbGVyX2RhdGEgPSAmY2MyNDIwX2luZm8sCj4gwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAucGxhdGZvcm1fZGF0YSA9ICZjYzI0MjBfcGRhdGEsCj4KPiDCoCDCoCDCoCDCoH0s
-Cj4gfTsKPgo+IEl0cyBuZWl0aGVyIDhNSHogZm9yIHNwaTEuMCBub3IgMTBNSHogZm9yIHNwaTMu
-MC4KPgo+IEFkZGluZyBzb21lIGRlYnVnIGluZm8gc2hvd3MgbWUgdGhhdCB0aGUgZHJpdmVyIGdl
-dHMgdGhlIGRhdGEgZmluZSBmb3JtIHRoZQo+IHBsYXRmb3JtIGRhdGE6Cj4gWyDCoCDCoDAuNjk1
-NzcwXSBzcGkgc3BpMS4wOiBjaGlwLT5zcGVlZF9oejogODAwMDAwMCwgc3BpLT5tYXhfc3BlZWRf
-aHo6IDgwMDAwMDAKPiBbIMKgIMKgMC42OTU4NzJdIHNwaSBzcGkxLjA6IDEzMDAwMDAwIEh6IGFj
-dHVhbCwgUElPCj4gWyDCoCDCoDAuNzE0ODI0XSBzcGkgc3BpMy4wOiBjaGlwLT5zcGVlZF9oejog
-MTAwMDAwMDAsIHNwaS0+bWF4X3NwZWVkX2h6OiAxMDAwMDAwMAo+IFsgwqAgwqAwLjcxNDkyOV0g
-c3BpIHNwaTMuMDogMTMwMDAwMDAgSHogYWN0dWFsLCBQSU8KPgo+IFRoYXRzIGRpcmVjdGx5IGFi
-b3ZlIHRoZSBjaGlwLT5jcjAgYW5kIGNoaXAtPmNyMSBjYWxjdWxhdGlvbnMuIElzIHRoaXMganVz
-dCB0aGUKPiBpbml0aWFsIHNlZXRpbmcgYW5kIGl0IGdldHMgb3ZlcndyaXR0ZW4gYmVmb3JlIGEg
-dHJhbnNmZXIgb3IgaXMgdGhlIHNwZWVkCj4gY2FsY3VsYXRpb24gd3Jvbmc/CgpFdmVyeSBTUEkg
-Y2hpcCBoYXMgYSBjbG9jayBzZXR0aW5nLCBzbyBzcGlfc2V0dXAoKSB3aWxsIGJlIGRvbmUgYmVm
-b3JlCmV2ZXJ5IHRyYW5zZmVyLCB0aGF0J3MgbXkgdW5kZXJzdGFuZGluZy4gRG8gY2hlY2sgdGhl
-IHJlc3VsdGluZyBTQ0NSCnJlZ2lzdGVyIHNldHRpbmdzIHRvIGNvbmZpcm0gaXQncyBub3Qgc2V0
-dXAgY29ycmVjdGx5IGJlZm9yZSBlYWNoIHRyYW5zZmVyLgoKPgo+IHJlZ2FyZHMKPiBTdGVmYW4g
-U2NobWlkdAo+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9s
-aW51eC1hcm0ta2VybmVsCg==
+On Thu, Jun 16, 2011 at 10:14:54AM +0200, Linus Walleij wrote:
+> From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> The U300 just defined the fill level limits for the FIFOs to
+> 1 item out of habit. It can easily handle four.
+> 
+> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+I assume this one will go via your tree?
+
+g.
+
+> ---
+>  arch/arm/mach-u300/spi.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-u300/spi.c b/arch/arm/mach-u300/spi.c
+> index 5767208..7b597e2 100644
+> --- a/arch/arm/mach-u300/spi.c
+> +++ b/arch/arm/mach-u300/spi.c
+> @@ -40,8 +40,8 @@ struct pl022_config_chip dummy_chip_info = {
+>  	.hierarchy = SSP_MASTER,
+>  	/* 0 = drive TX even as slave, 1 = do not drive TX as slave */
+>  	.slave_tx_disable = 0,
+> -	.rx_lev_trig = SSP_RX_1_OR_MORE_ELEM,
+> -	.tx_lev_trig = SSP_TX_1_OR_MORE_EMPTY_LOC,
+> +	.rx_lev_trig = SSP_RX_4_OR_MORE_ELEM,
+> +	.tx_lev_trig = SSP_TX_4_OR_MORE_EMPTY_LOC,
+>  	.ctrl_len = SSP_BITS_12,
+>  	.wait_state = SSP_MWIRE_WAIT_ZERO,
+>  	.duplex = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
+> -- 
+> 1.7.3.2
+> 
+
+------------------------------------------------------------------------------
+EditLive Enterprise is the world's most technically advanced content
+authoring tool. Experience the power of Track Changes, Inline Image
+Editing and ensure content is compliant with Accessibility Checking.
+http://p.sf.net/sfu/ephox-dev2dev

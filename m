@@ -1,11 +1,12 @@
-From: "Mon Guide chauffe-eau solaire" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: [SPAM] Recevez un ebook sur le chauffe-eau solaire  sans frais
-Date: Wed, 15 Jun 2011 23:30:59 +0200 (CEST)
-Message-ID: <lmup3n.rj2cxd@front02.r7g.com>
+From: Guide Gratuit <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?T=E9l=E9chargez_le_guide_des_radiateurs_=E0_inertie?=
+Date: Thu, 16 Jun 2011 07:37:53 +0200 (CEST)
+Message-ID: <3236305005.111871.1308202673523@p4enginex2.emv2.com>
+Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,7 +19,12 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-------------------------------------------------------------------------------
+T=E9l=E9chargez le guide des radiateurs =E0 inertie
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJObwXnGHxKLIFH8PcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VIZ
+
+---------------------------------------------------------------------------=
+---
 EditLive Enterprise is the world's most technically advanced content
 authoring tool. Experience the power of Track Changes, Inline Image
 Editing and ensure content is compliant with Accessibility Checking.

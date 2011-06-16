@@ -1,102 +1,96 @@
-From: Grant Likely <grant.likely@secretlab.ca>
+From: Dirk Brandewie <dirk.brandewie@gmail.com>
 Subject: Re: [PATCH 3/5] dw_spi: rework message processing
-Date: Thu, 16 Jun 2011 10:40:04 -0600
-Message-ID: <20110616164004.GF3795@ponder.secretlab.ca>
-References: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
- <1308158588-17249-4-git-send-email-dirk.brandewie@gmail.com>
- <20110616131425.GD31534@ponder.secretlab.ca>
- <4DFA2965.1000708@gmail.com>
+Date: Thu, 16 Jun 2011 10:28:16 -0700
+Message-ID: <4DFA3D30.2070909@gmail.com>
+References: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>	<1308158588-17249-4-git-send-email-dirk.brandewie@gmail.com> <20110616220003.7ac89d56@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Dirk Brandewie <dirk.brandewie@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>, alan@linux.intel.com,
+	alek.du@intel.com
+To: Feng Tang <feng.tang@intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <4DFA2965.1000708@gmail.com>
+In-Reply-To: <20110616220003.7ac89d56@feng-i7>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 16, 2011 at 09:03:49AM -0700, Dirk Brandewie wrote:
-> On 06/16/2011 06:14 AM, Grant Likely wrote:
-> >On Wed, Jun 15, 2011 at 10:23:06AM -0700, dirk.brandewie@gmail.com wrote:
-> >>From: Dirk Brandewie<dirk.brandewie@gmail.com>
-> >>
-> >>NOTE: patch created git format-patch --break-rewrites=/50%
-> >>
-> >>This patch reworks the message pump worker thread function to run
-> >>until all messages queued to the driver have been handled. The
-> >>function to handle individual spi_transfers is now a synchronus
-> >>function the tasklet to handle spi_transfers has been removed. Work
-> >>for the worker thread is only queued in host controller transfer
-> >>function.
-> >>
-> >>Psuedo code for new thread function:
-> >>   message = get_message()
-> >>   while (message){
-> >>     for_each_transfer_in_msg(message){
-> >>       transfer_setup(transfer)
-> >>       do_transfer()
-> >>     }
-> >>     complete_message()
-> >>     message = get_message()
-> >>   }
-> >>
-> >>Changes that fell out of the message thread changes:
-> >>Non-DMA transfers that are larger than the size of the controller FIFO
-> >>are handled as interrupt driven transfers.
-> >>
-> >>Common FIFO handling functions shared PIO and interrupt transfers.
-> >>
-> >>Simplified queue stop/start funcitons.
-> >>
-> >>Cleanup fixes:
-> >>Changed exported all exported function names to have dw_spi_ prefix
-> >>
-> >>Removed support for registering chip select control function. Setting
-> >>the slave chip select is handled by setting the SER (Slave enable
-> >>register)
-> >
-> >What about for implementations that use a GPIO for the SPI chip
-> >select?  It is very common for board designs to use GPIOs for
-> >multiplexing the SPI bus.
-> 
-> OK I can put that back. I took it out for the following reason.
-> 
-> The Slave Enable Register (SER) must be set for the IP block to
-> start the transfer.  The bit in SER directly control a separate chip
-> select pin while there is an active transfer.  This gives four chip
-> selects in the direct mapping case and up to fifteen if the slave
-> chip selects are muxed together.
-> 
-> >
-> >>
-> >>Removed code that looked at the cs_change hint in the
-> >>spi_transfer. Software has no contorl over whether the slave chip
-> >>select is de-asserted at the end of the transfer.  Once the TX FIFO
-> >>goes empty the slave chip select is dropped.
-> >
-> >This sounds wrong.  cs_change is *not* merely a hint.  It must be respected.
-> >If the driver has no direct control over the CS line, then it is
-> >incumbent on the driver to guaranteed that the cs deassert condition
-> >does not occur.  This will probably mean chaining up all the transfers
-> >in a message so that the TX FIFO remains full.  If cs_change is
-> >requested, then the FIFO must be allowed to empty before kicking of
-> >the next group of transfers.
-> >
-> 
-> I agree it is wrong that the driver can not directly control the chip select :-)
-> 
-> I could probably manage to get the PIO and interrupt case to honor
-> this but would add a fair bit of complexity, I have no idea how to
-> make the DMA case work I am open to suggestions :-).  The current
-> driver has this issue I just made it explicit maybe we should add a
-> warning message in the driver to let client driver writers aware of
-> the Silicon behaviour.
+On 06/16/2011 07:00 AM, Feng Tang wrote:
+> Hi Dirk,
+>
+> IMHO, the patch is too big, it contains too many changes to the original
+> drivers, and we can't see clearly what you've changed to each logical
+> code part or section, If possible, could you separate this patch to
+> several small ones in a logical way.
+>
+> First, I have some questions, what devices have you tested with this patch?
+> high speed, low speed? Do you have any performance data to show the benefit
+> of this change? Current dw_spi driver has been tested with many devices, so
+> to not break them or cause obvious regression, we have to be cautious.
 
-Use scatter/gather DMA or a bounce buffer to chain up contiguous
-transfers into a single DMA operation.  "Best effort" is not okay in
-this situation, the behaviour is required even if it does add
-complexity.
+See Thread with grant for list of environments where it has been tested.
+The boot time of the platforms it is being used on decreased 2-5 seconds with no 
+regressions reported.  It has been in use/under test for ~3 months in various 
+Meego and Android builds.  It clears all the bugs reported against the driver 
+that I am aware of.  If you can give me pointers to teams/projects that are 
+using v2.6.37+ kernels I would be more that happy to provide them with patches 
+for their kernel to ensure we get the most comprehensive test possible.
 
-g.
+>
+> Here are some general comments according to the commit logs:
+> 1. I think the threaded irq handling is a good idea. And let driver chose to
+>     use poll or interrupt is good, some other spi controller driver has used
+>     that way for a long time
+> 2. Why you remove the cs_change code, in some case, the controller is only
+>     be used by one device, we don't need do the config for every single
+>     spi_transfer
+
+There is no guarantee that all the transfers in a given spi_message have the 
+same values for  speed_hz, bits_per_word, cs_change and delay_usecs atleast 
+nothing I could find put that restriction in place. Since we need to deal with 
+possible changes (although unlikely) it gets rid some state we need to maintain 
+and makes the code path common for all transfers.
+
+> 3. Why do you remove the chip select control code, dw_spi controller hw has
+>     some problem in chip select controller by SER, and thus many devices has
+>     to use external GPIO has their chip select, this is real world usages!
+
+Which devices/platforms are you referring to?  I was unable to find any 
+platforms or client drivers using this functionality. If they are not public 
+please respond internally.  In any case it is mute since I already agreed to put 
+is back in in my response to Grant.
+
+> 4. I saw you enable both TX/RX interrupt when doing interrupt transfer, spi
+>     devices' TX/RX are born to be simutaneous, when one word is sent over
+>     TX line, a RX word will be received from RX line, so both the orignal
+>     interrupt transfer handling written by me and the later optimization
+>     from Alek Du only enable TX interrupt, which will only generate half of
+>     IRQs comparing to enble both TX/RX, this is huge when the data rate is
+>     several Mb per second
+
+I the current driver the txfltr register is set to 0 (FIFO empty) in the 
+interrupt transfer case which will drop chip select every FIFO length bytes.
+
+In my transfer setup the RX FIFO interrupt is set to a value lower than the TX 
+threshold which will keep both interrupts from firing at the same time.
+
+The TX interrupt will drive the transfer until there are less than tx_threshold 
+bytes left to transfer then by the RX interrupt to drive the remainder of the 
+transfer without dropping chip select.
+
+> 5. Why do you change the logic of filling TX FIFO, the logic comes from use
+>     case that the dw_spi driver is dealing with several high speed devices.
+>
+
+The version of the driver that I started with did not have the current fifo 
+handling code.  I finished my changes before they showed up in the AC tree or 
+the upstream kernel.  I picked up most to the fifo handling logic from the 
+current driver with the exception of the rxtx_gap calculation which was not 
+needed with the way I am maintaining the state and the addition of a check to 
+avoid the register read in tx_max/rx_max if all bytes have been sent/received.
+This avoids some overhead in the interrupt case.
+
+> Thanks,
+> Feng
+>

@@ -1,19 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi/pl022: support runtime PM
-Date: Thu, 16 Jun 2011 08:27:30 -0600
-Message-ID: <20110616142730.GB2255@ponder.secretlab.ca>
-References: <1308212080-22516-1-git-send-email-linus.walleij@stericsson.com>
+Subject: Re: [PATCH 3/4] spi/pl022: strengthen FIFO watermark level checks
+Date: Thu, 16 Jun 2011 08:27:35 -0600
+Message-ID: <20110616142735.GC2255@ponder.secretlab.ca>
+References: <1308212086-22553-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rabin Vincent <rabin.vincent-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1308212080-22516-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <1308212086-22553-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,17 +22,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 16, 2011 at 10:14:40AM +0200, Linus Walleij wrote:
-> From: Rabin Vincent <rabin.vincent-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+On Thu, Jun 16, 2011 at 10:14:46AM +0200, Linus Walleij wrote:
+> From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > 
-> Insert notifiers for the runtime PM API. With this the runtime
-> PM layer kicks in to action where used.
+> The platform configuration can select custom FIFO watermarks, but
+> these may conflict the actual FIFO size of the PL022 variant if
+> set too high. So strengthen the sanity checks to deny any
+> conflicting settings.
 > 
-> Signed-off-by: Rabin Vincent <rabin.vincent-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Reviewed-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Reviewed-by: Jonas Aberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Reviewed-by: Srinidhi Kasagar <srinidhi.kasagar-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> [Rebased to Linux 3.0-rc3, edit description]
 > Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 Applied, thanks.
@@ -42,54 +37,75 @@ Applied, thanks.
 g.
 
 > ---
->  drivers/spi/spi-pl022.c |    6 ++++++
->  1 files changed, 6 insertions(+), 0 deletions(-)
+>  drivers/spi/spi-pl022.c |   48 +++++++++++++++++++++++++++++++++++++++++++---
+>  1 files changed, 44 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index ac7c727..48fa8b0 100644
+> index 48fa8b0..eba88c7 100644
 > --- a/drivers/spi/spi-pl022.c
 > +++ b/drivers/spi/spi-pl022.c
-> @@ -40,6 +40,7 @@
->  #include <linux/dmaengine.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/scatterlist.h>
-> +#include <linux/pm_runtime.h>
->  
->  /*
->   * This macro is used to define some register default values.
-> @@ -517,6 +518,7 @@ static void giveback(struct pl022 *pl022)
->  	clk_disable(pl022->clk);
->  	amba_pclk_disable(pl022->adev);
->  	amba_vcore_disable(pl022->adev);
-> +	pm_runtime_put(&pl022->adev->dev);
->  }
->  
->  /**
-> @@ -1542,6 +1544,7 @@ static void pump_messages(struct work_struct *work)
->  	 * and core will be disabled when giveback() is called in each method
->  	 * (poll/interrupt/DMA)
->  	 */
-> +	pm_runtime_get_sync(&pl022->adev->dev);
->  	amba_vcore_enable(pl022->adev);
->  	amba_pclk_enable(pl022->adev);
->  	clk_enable(pl022->clk);
-> @@ -2143,6 +2146,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+> @@ -1678,17 +1678,57 @@ static int verify_controller_parameters(struct pl022 *pl022,
+>  			"Communication mode is configured incorrectly\n");
+>  		return -EINVAL;
 >  	}
->  	printk(KERN_INFO "pl022: mapped registers from 0x%08x to %p\n",
->  	       adev->res.start, pl022->virtbase);
-> +	pm_runtime_enable(dev);
-> +	pm_runtime_resume(dev);
->  
->  	pl022->clk = clk_get(&adev->dev, NULL);
->  	if (IS_ERR(pl022->clk)) {
-> @@ -2204,6 +2209,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->  	destroy_queue(pl022);
->  	pl022_dma_remove(pl022);
->  	free_irq(adev->irq[0], pl022);
-> +	pm_runtime_disable(&adev->dev);
->   err_no_irq:
->  	clk_put(pl022->clk);
->   err_no_clk:
+> -	if ((chip_info->rx_lev_trig < SSP_RX_1_OR_MORE_ELEM)
+> -	    || (chip_info->rx_lev_trig > SSP_RX_32_OR_MORE_ELEM)) {
+> +	switch (chip_info->rx_lev_trig) {
+> +	case SSP_RX_1_OR_MORE_ELEM:
+> +	case SSP_RX_4_OR_MORE_ELEM:
+> +	case SSP_RX_8_OR_MORE_ELEM:
+> +		/* These are always OK, all variants can handle this */
+> +		break;
+> +	case SSP_RX_16_OR_MORE_ELEM:
+> +		if (pl022->vendor->fifodepth < 16) {
+> +			dev_err(&pl022->adev->dev,
+> +			"RX FIFO Trigger Level is configured incorrectly\n");
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	case SSP_RX_32_OR_MORE_ELEM:
+> +		if (pl022->vendor->fifodepth < 32) {
+> +			dev_err(&pl022->adev->dev,
+> +			"RX FIFO Trigger Level is configured incorrectly\n");
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	default:
+>  		dev_err(&pl022->adev->dev,
+>  			"RX FIFO Trigger Level is configured incorrectly\n");
+>  		return -EINVAL;
+> +		break;
+>  	}
+> -	if ((chip_info->tx_lev_trig < SSP_TX_1_OR_MORE_EMPTY_LOC)
+> -	    || (chip_info->tx_lev_trig > SSP_TX_32_OR_MORE_EMPTY_LOC)) {
+> +	switch (chip_info->tx_lev_trig) {
+> +	case SSP_TX_1_OR_MORE_EMPTY_LOC:
+> +	case SSP_TX_4_OR_MORE_EMPTY_LOC:
+> +	case SSP_TX_8_OR_MORE_EMPTY_LOC:
+> +		/* These are always OK, all variants can handle this */
+> +		break;
+> +	case SSP_TX_16_OR_MORE_EMPTY_LOC:
+> +		if (pl022->vendor->fifodepth < 16) {
+> +			dev_err(&pl022->adev->dev,
+> +			"TX FIFO Trigger Level is configured incorrectly\n");
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	case SSP_TX_32_OR_MORE_EMPTY_LOC:
+> +		if (pl022->vendor->fifodepth < 32) {
+> +			dev_err(&pl022->adev->dev,
+> +			"TX FIFO Trigger Level is configured incorrectly\n");
+> +			return -EINVAL;
+> +		}
+> +		break;
+> +	default:
+>  		dev_err(&pl022->adev->dev,
+>  			"TX FIFO Trigger Level is configured incorrectly\n");
+>  		return -EINVAL;
+> +		break;
+>  	}
+>  	if (chip_info->iface == SSP_INTERFACE_NATIONAL_MICROWIRE) {
+>  		if ((chip_info->ctrl_len < SSP_BITS_4)
 > -- 
 > 1.7.3.2
 > 

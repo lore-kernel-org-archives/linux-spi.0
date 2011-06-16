@@ -1,7 +1,7 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 3/4] spi/pl022: strengthen FIFO watermark level checks
-Date: Thu, 16 Jun 2011 10:14:46 +0200
-Message-ID: <1308212086-22553-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 4/4] mach-u300: set apropriate FIFO trigger levels
+Date: Thu, 16 Jun 2011 10:14:54 +0200
+Message-ID: <1308212094-22592-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,82 +21,29 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-The platform configuration can select custom FIFO watermarks, but
-these may conflict the actual FIFO size of the PL022 variant if
-set too high. So strengthen the sanity checks to deny any
-conflicting settings.
+The U300 just defined the fill level limits for the FIFOs to
+1 item out of habit. It can easily handle four.
 
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   48 +++++++++++++++++++++++++++++++++++++++++++---
- 1 files changed, 44 insertions(+), 4 deletions(-)
+ arch/arm/mach-u300/spi.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 48fa8b0..eba88c7 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1678,17 +1678,57 @@ static int verify_controller_parameters(struct pl022 *pl022,
- 			"Communication mode is configured incorrectly\n");
- 		return -EINVAL;
- 	}
--	if ((chip_info->rx_lev_trig < SSP_RX_1_OR_MORE_ELEM)
--	    || (chip_info->rx_lev_trig > SSP_RX_32_OR_MORE_ELEM)) {
-+	switch (chip_info->rx_lev_trig) {
-+	case SSP_RX_1_OR_MORE_ELEM:
-+	case SSP_RX_4_OR_MORE_ELEM:
-+	case SSP_RX_8_OR_MORE_ELEM:
-+		/* These are always OK, all variants can handle this */
-+		break;
-+	case SSP_RX_16_OR_MORE_ELEM:
-+		if (pl022->vendor->fifodepth < 16) {
-+			dev_err(&pl022->adev->dev,
-+			"RX FIFO Trigger Level is configured incorrectly\n");
-+			return -EINVAL;
-+		}
-+		break;
-+	case SSP_RX_32_OR_MORE_ELEM:
-+		if (pl022->vendor->fifodepth < 32) {
-+			dev_err(&pl022->adev->dev,
-+			"RX FIFO Trigger Level is configured incorrectly\n");
-+			return -EINVAL;
-+		}
-+		break;
-+	default:
- 		dev_err(&pl022->adev->dev,
- 			"RX FIFO Trigger Level is configured incorrectly\n");
- 		return -EINVAL;
-+		break;
- 	}
--	if ((chip_info->tx_lev_trig < SSP_TX_1_OR_MORE_EMPTY_LOC)
--	    || (chip_info->tx_lev_trig > SSP_TX_32_OR_MORE_EMPTY_LOC)) {
-+	switch (chip_info->tx_lev_trig) {
-+	case SSP_TX_1_OR_MORE_EMPTY_LOC:
-+	case SSP_TX_4_OR_MORE_EMPTY_LOC:
-+	case SSP_TX_8_OR_MORE_EMPTY_LOC:
-+		/* These are always OK, all variants can handle this */
-+		break;
-+	case SSP_TX_16_OR_MORE_EMPTY_LOC:
-+		if (pl022->vendor->fifodepth < 16) {
-+			dev_err(&pl022->adev->dev,
-+			"TX FIFO Trigger Level is configured incorrectly\n");
-+			return -EINVAL;
-+		}
-+		break;
-+	case SSP_TX_32_OR_MORE_EMPTY_LOC:
-+		if (pl022->vendor->fifodepth < 32) {
-+			dev_err(&pl022->adev->dev,
-+			"TX FIFO Trigger Level is configured incorrectly\n");
-+			return -EINVAL;
-+		}
-+		break;
-+	default:
- 		dev_err(&pl022->adev->dev,
- 			"TX FIFO Trigger Level is configured incorrectly\n");
- 		return -EINVAL;
-+		break;
- 	}
- 	if (chip_info->iface == SSP_INTERFACE_NATIONAL_MICROWIRE) {
- 		if ((chip_info->ctrl_len < SSP_BITS_4)
+diff --git a/arch/arm/mach-u300/spi.c b/arch/arm/mach-u300/spi.c
+index 5767208..7b597e2 100644
+--- a/arch/arm/mach-u300/spi.c
++++ b/arch/arm/mach-u300/spi.c
+@@ -40,8 +40,8 @@ struct pl022_config_chip dummy_chip_info = {
+ 	.hierarchy = SSP_MASTER,
+ 	/* 0 = drive TX even as slave, 1 = do not drive TX as slave */
+ 	.slave_tx_disable = 0,
+-	.rx_lev_trig = SSP_RX_1_OR_MORE_ELEM,
+-	.tx_lev_trig = SSP_TX_1_OR_MORE_EMPTY_LOC,
++	.rx_lev_trig = SSP_RX_4_OR_MORE_ELEM,
++	.tx_lev_trig = SSP_TX_4_OR_MORE_EMPTY_LOC,
+ 	.ctrl_len = SSP_BITS_12,
+ 	.wait_state = SSP_MWIRE_WAIT_ZERO,
+ 	.duplex = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
 -- 
 1.7.3.2
 

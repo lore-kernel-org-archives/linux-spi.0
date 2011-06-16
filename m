@@ -1,55 +1,72 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 4/4] mach-u300: set apropriate FIFO trigger levels
-Date: Thu, 16 Jun 2011 10:14:54 +0200
-Message-ID: <1308212094-22592-1-git-send-email-linus.walleij@stericsson.com>
+From: Stefan Schmidt <stefan@datenfreihafen.org>
+Subject: Slow spi_sync() on pxa2xx_spi
+Date: Thu, 16 Jun 2011 10:21:12 +0200
+Message-ID: <20110616082112.GA10075@excalibur.local>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Eric Miao <eric.y.miao@gmail.com>, linux-arm-kernel@lists.infradead.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Hello.
 
-The U300 just defined the fill level limits for the FIFOs to
-1 item out of habit. It can easily handle four.
+I'm working on the Imote2 (pxa27x based) platform [1] which includes a
+radio chip (cc2420, IEEE 802.15.4) connected over SPI [2].
 
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- arch/arm/mach-u300/spi.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+The problem I'm facing is that the spi_sync() call of the driver to
+write/read from the registers over the SPI bus takes up to 26 milli
+seconds. The minimum I measured was 500 micro seconds for the call.
 
-diff --git a/arch/arm/mach-u300/spi.c b/arch/arm/mach-u300/spi.c
-index 5767208..7b597e2 100644
---- a/arch/arm/mach-u300/spi.c
-+++ b/arch/arm/mach-u300/spi.c
-@@ -40,8 +40,8 @@ struct pl022_config_chip dummy_chip_info = {
- 	.hierarchy = SSP_MASTER,
- 	/* 0 = drive TX even as slave, 1 = do not drive TX as slave */
- 	.slave_tx_disable = 0,
--	.rx_lev_trig = SSP_RX_1_OR_MORE_ELEM,
--	.tx_lev_trig = SSP_TX_1_OR_MORE_EMPTY_LOC,
-+	.rx_lev_trig = SSP_RX_4_OR_MORE_ELEM,
-+	.tx_lev_trig = SSP_TX_4_OR_MORE_EMPTY_LOC,
- 	.ctrl_len = SSP_BITS_12,
- 	.wait_state = SSP_MWIRE_WAIT_ZERO,
- 	.duplex = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
--- 
-1.7.3.2
+That creates a problem as the workflow to send a frame over the radio
+includes to write to a spi register for sending out the frame from a
+pre-filled FIFO. Then wait up to 320 micro seconds for a GPIO to raise
+and polling a status register until a TX_ACTIVE bit is no longer set
+afterwards.
 
+But the first register write to initiate the sending already takes so
+long that the GPIO is already low again and the TX_ACTIVE is also gone
+when I come back from the spi_sync() call.
 
-------------------------------------------------------------------------------
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev
+It really smells like I'm doing something seriously wrong here. For
+the pxa2xx_spi driver I already tried various options without any
+difference I could see. Enable/disbale DMA, different tx/rx
+thresholds, different dma burst sizes, different timeout, etc.
+
+I can only explain the long time with some sleeping in SPI while
+other parts are scheduled. Is there a way to avoid this for SPI? Or
+is there an API I did not found yet to cover my needs?
+
+The measurement is done with getnstimeofday btw and I verified that a
+basic operation like two multiplications are down in the 5 micro
+seconds area which gives me faith that the measurements should be
+correct:
+
+getnstimeofday (&before);
+ret = spi_sync(lp->spi, &msg);
+getnstimeofday (&after);
+
+result = timespec_sub(after, before);
+printk("Strobe time: %lu secs and %lu nsecs (strobe %i)\n", (long)result.tv_sec, result.tv_nsec, addr);
+
+I'm out of ideas what to change here. The only option, I want to
+avoid, is trying to drive the SPI pins manually and see if I have
+better results with bit-banging it myself.
+
+regards
+Stefan Schmidt
+
+[1] Board: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=arch/arm/mach-pxa/stargate2.c
+[2] Driver:
+http://linux-zigbee.git.sourceforge.net/git/gitweb.cgi?p=linux-zigbee/kernel;a=blob;f=drivers/ieee802154/cc2420.c;h=50761de6eb2d87014b6e43daa4ed642319d10567;hb=6a1a3375886ba69b1969ceb5df3007a4f1791d27

@@ -1,86 +1,119 @@
-From: Eric Miao <eric.y.miao@gmail.com>
+From: Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
 Subject: Re: Slow spi_sync() on pxa2xx_spi
-Date: Thu, 16 Jun 2011 16:34:35 +0800
-Message-ID: <BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g@mail.gmail.com>
+Date: Thu, 16 Jun 2011 11:19:31 +0200
+Message-ID: <20110616091931.GB10075@excalibur.local>
 References: <20110616082112.GA10075@excalibur.local>
+	<BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Stefan Schmidt <stefan@datenfreihafen.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110616082112.GA10075@excalibur.local>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 16, 2011 at 4:21 PM, Stefan Schmidt
-<stefan@datenfreihafen.org> wrote:
-> Hello.
->
-> I'm working on the Imote2 (pxa27x based) platform [1] which includes a
-> radio chip (cc2420, IEEE 802.15.4) connected over SPI [2].
->
-> The problem I'm facing is that the spi_sync() call of the driver to
-> write/read from the registers over the SPI bus takes up to 26 milli
-> seconds. The minimum I measured was 500 micro seconds for the call.
->
-> That creates a problem as the workflow to send a frame over the radio
-> includes to write to a spi register for sending out the frame from a
-> pre-filled FIFO. Then wait up to 320 micro seconds for a GPIO to raise
-> and polling a status register until a TX_ACTIVE bit is no longer set
-> afterwards.
->
-> But the first register write to initiate the sending already takes so
-> long that the GPIO is already low again and the TX_ACTIVE is also gone
-> when I come back from the spi_sync() call.
->
-> It really smells like I'm doing something seriously wrong here. For
-> the pxa2xx_spi driver I already tried various options without any
-> difference I could see. Enable/disbale DMA, different tx/rx
-> thresholds, different dma burst sizes, different timeout, etc.
->
-> I can only explain the long time with some sleeping in SPI while
-> other parts are scheduled. Is there a way to avoid this for SPI? Or
-> is there an API I did not found yet to cover my needs?
->
-> The measurement is done with getnstimeofday btw and I verified that a
-> basic operation like two multiplications are down in the 5 micro
-> seconds area which gives me faith that the measurements should be
-> correct:
->
-> getnstimeofday (&before);
-> ret = spi_sync(lp->spi, &msg);
-> getnstimeofday (&after);
->
-> result = timespec_sub(after, before);
-> printk("Strobe time: %lu secs and %lu nsecs (strobe %i)\n", (long)result.tv_sec, result.tv_nsec, addr);
->
-> I'm out of ideas what to change here. The only option, I want to
-> avoid, is trying to drive the SPI pins manually and see if I have
-> better results with bit-banging it myself.
+Hello.
 
-What is the SPI frequency?
+On Thu, 2011-06-16 at 16:34, Eric Miao wrote:
+> On Thu, Jun 16, 2011 at 4:21 PM, Stefan Schmidt
+> <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org> wrote:
+> > Hello.
+> >
+> > I'm working on the Imote2 (pxa27x based) platform [1] which includes a
+> > radio chip (cc2420, IEEE 802.15.4) connected over SPI [2].
+> >
+> > The problem I'm facing is that the spi_sync() call of the driver to
+> > write/read from the registers over the SPI bus takes up to 26 milli
+> > seconds. The minimum I measured was 500 micro seconds for the call.
+> >
+> > That creates a problem as the workflow to send a frame over the radio
+> > includes to write to a spi register for sending out the frame from a
+> > pre-filled FIFO. Then wait up to 320 micro seconds for a GPIO to raise
+> > and polling a status register until a TX_ACTIVE bit is no longer set
+> > afterwards.
+> >
+> > But the first register write to initiate the sending already takes so
+> > long that the GPIO is already low again and the TX_ACTIVE is also gone
+> > when I come back from the spi_sync() call.
+> >
+> > It really smells like I'm doing something seriously wrong here. For
+> > the pxa2xx_spi driver I already tried various options without any
+> > difference I could see. Enable/disbale DMA, different tx/rx
+> > thresholds, different dma burst sizes, different timeout, etc.
+> >
+> > I can only explain the long time with some sleeping in SPI while
+> > other parts are scheduled. Is there a way to avoid this for SPI? Or
+> > is there an API I did not found yet to cover my needs?
+> >
+> > The measurement is done with getnstimeofday btw and I verified that a
+> > basic operation like two multiplications are down in the 5 micro
+> > seconds area which gives me faith that the measurements should be
+> > correct:
+> >
+> > getnstimeofday (&before);
+> > ret = spi_sync(lp->spi, &msg);
+> > getnstimeofday (&after);
+> >
+> > result = timespec_sub(after, before);
+> > printk("Strobe time: %lu secs and %lu nsecs (strobe %i)\n", (long)result.tv_sec, result.tv_nsec, addr);
+> >
+> > I'm out of ideas what to change here. The only option, I want to
+> > avoid, is trying to drive the SPI pins manually and see if I have
+> > better results with bit-banging it myself.
+> 
+> What is the SPI frequency?
 
-For PIO, the transfer actually happens in the interrupt handler so it's
-supposed to be fast (did you enable threaded IRQ by the way?).
+I tried various settings in .max_speed_hz from the original 6.6 MHt to
+10 MHz and 13MHz as maximum of the controller. Did also not change
+anything for me.
 
-And since the transfer happens on message base, what is the size
-of each of your message? And if it could be enlarged to big blocks.
+That reminds me that after defining DEBUG in pxa2xx_spi it did always
+report 13MHz to me. Need to have a look at it.
 
->
-> regards
-> Stefan Schmidt
->
-> [1] Board: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=blob;f=arch/arm/mach-pxa/stargate2.c
-> [2] Driver:
-> http://linux-zigbee.git.sourceforge.net/git/gitweb.cgi?p=linux-zigbee/kernel;a=blob;f=drivers/ieee802154/cc2420.c;h=50761de6eb2d87014b6e43daa4ed642319d10567;hb=6a1a3375886ba69b1969ceb5df3007a4f1791d27
->
+> For PIO, the transfer actually happens in the interrupt handler so it's
+> supposed to be fast (did you enable threaded IRQ by the way?).
+
+You mean with request_threaded_irq()? (Seems there is no config option
+for it) No, I'm not using it neither did I modify the pxa2xx_spi
+driver to use it.
+
+Thanks for the informations about PIO happen in the interrupt handler.
+We already suspected that DMA might come with some overhead and for
+our smallish register access we did not need it. Sadly .enable_dma = 0
+did not make any difference. Will have another look into this.
+
+I'm on 2.6.38 here btw. But the pxa2xx_spi driver did not get mayn
+updates since then. The only commit that may be interested  is this
+one:
+http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=850a28ecd8044ef36b2c7699d2e3736a410b4d0a
+
+> And since the transfer happens on message base, what is the size
+> of each of your message? And if it could be enlarged to big blocks.
+
+Its either 8bit or 16bit for a message. The mentioned problem happens
+on a 8 bit message. It does nothing else then writing to a defined
+register address to trigger the hardware sending the data in the FIFO.
+
+The FIFO reading and writing has no time critical elements here and
+gets pre-filled.
+
+regards
+Stefan Schmidt
+
+------------------------------------------------------------------------------
+EditLive Enterprise is the world's most technically advanced content
+authoring tool. Experience the power of Track Changes, Inline Image
+Editing and ensure content is compliant with Accessibility Checking.
+http://p.sf.net/sfu/ephox-dev2dev

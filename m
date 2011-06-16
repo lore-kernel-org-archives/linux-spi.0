@@ -1,19 +1,19 @@
-From: Stefan Schmidt <stefan@datenfreihafen.org>
+From: Eric Miao <eric.y.miao@gmail.com>
 Subject: Re: Slow spi_sync() on pxa2xx_spi
-Date: Thu, 16 Jun 2011 11:59:34 +0200
-Message-ID: <20110616095934.GC10075@excalibur.local>
+Date: Thu, 16 Jun 2011 18:02:20 +0800
+Message-ID: <BANLkTi=FJgwcBHsE=sLK4shzpdJYWwq3Pg@mail.gmail.com>
 References: <20110616082112.GA10075@excalibur.local>
 	<BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g@mail.gmail.com>
 	<20110616091931.GB10075@excalibur.local>
+	<20110616095934.GC10075@excalibur.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, Eric Miao <eric.y.miao@gmail.com>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general@lists.sourceforge.net,
 	linux-arm-kernel@lists.infradead.org
 To: Stefan Schmidt <stefan@datenfreihafen.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20110616091931.GB10075@excalibur.local>
+In-Reply-To: <20110616095934.GC10075@excalibur.local>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,74 +25,63 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
-
-On Thu, 2011-06-16 at 11:19, Stefan Schmidt wrote:
-> 
-> On Thu, 2011-06-16 at 16:34, Eric Miao wrote:
-> > 
-> > What is the SPI frequency?
-> 
-> I tried various settings in .max_speed_hz from the original 6.6 MHt to
-> 10 MHz and 13MHz as maximum of the controller. Did also not change
-> anything for me.
-> 
-> That reminds me that after defining DEBUG in pxa2xx_spi it did always
-> report 13MHz to me. Need to have a look at it.
-
-Either the debug statement or the setting is indeed wrong.
-
-[    0.696759] spi spi1.0: 13000000 Hz actual, PIO
-[    0.715760] spi spi3.0: 13000000 Hz actual, PIO
-
-Which comes from this part of the driver (with #define DEBUG set):
-
-        /* NOTE:  PXA25x_SSP _could_ use external clocking ... */
-        if (!pxa25x_ssp_comp(drv_data))
-                dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
-                        clk_get_rate(ssp->clk)
-                                / (1 + ((chip->cr0 & SSCR0_SCR(0xfff)) >> 8)),
-                        chip->enable_dma ? "DMA" : "PIO");
-        else
-                dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
-                        clk_get_rate(ssp->clk) / 2
-                                / (1 + ((chip->cr0 & SSCR0_SCR(0x0ff)) >> 8)),
-                        chip->enable_dma ? "DMA" : "PIO");
-
-But the board file has this:
-
-static struct spi_board_info spi_board_info[] __initdata = {
-        {
-                .modalias = "lis3l02dq",
-                .max_speed_hz = 8000000,/* 8MHz max spi frequency at 3V */
-                .bus_num = 1,
-                .chip_select = 0,
-                .controller_data = &staccel_chip_info,
-                .irq = IRQ_GPIO(96),
-        }, {
-                .modalias = "cc2420",
-//              .max_speed_hz = 6500000,
-                .max_speed_hz = 10000000, /* 10MHz */
-                .bus_num = 3,
-                .chip_select = 0,
-                .controller_data = &cc2420_info,
-                .platform_data = &cc2420_pdata,
-
-        },
-};
-
-Its neither 8MHz for spi1.0 nor 10MHz for spi3.0.
-
-Adding some debug info shows me that the driver gets the data fine form the
-platform data:
-[    0.695770] spi spi1.0: chip->speed_hz: 8000000, spi->max_speed_hz: 8000000
-[    0.695872] spi spi1.0: 13000000 Hz actual, PIO
-[    0.714824] spi spi3.0: chip->speed_hz: 10000000, spi->max_speed_hz: 10000000
-[    0.714929] spi spi3.0: 13000000 Hz actual, PIO
-
-Thats directly above the chip->cr0 and chip->cr1 calculations. Is this just the
-initial seeting and it gets overwritten before a transfer or is the speed
-calculation wrong?
-
-regards
-Stefan Schmidt
+T24gVGh1LCBKdW4gMTYsIDIwMTEgYXQgNTo1OSBQTSwgU3RlZmFuIFNjaG1pZHQKPHN0ZWZhbkBk
+YXRlbmZyZWloYWZlbi5vcmc+IHdyb3RlOgo+IEhlbGxvLgo+Cj4gT24gVGh1LCAyMDExLTA2LTE2
+IGF0IDExOjE5LCBTdGVmYW4gU2NobWlkdCB3cm90ZToKPj4KPj4gT24gVGh1LCAyMDExLTA2LTE2
+IGF0IDE2OjM0LCBFcmljIE1pYW8gd3JvdGU6Cj4+ID4KPj4gPiBXaGF0IGlzIHRoZSBTUEkgZnJl
+cXVlbmN5Pwo+Pgo+PiBJIHRyaWVkIHZhcmlvdXMgc2V0dGluZ3MgaW4gLm1heF9zcGVlZF9oeiBm
+cm9tIHRoZSBvcmlnaW5hbCA2LjYgTUh0IHRvCj4+IDEwIE1IeiBhbmQgMTNNSHogYXMgbWF4aW11
+bSBvZiB0aGUgY29udHJvbGxlci4gRGlkIGFsc28gbm90IGNoYW5nZQo+PiBhbnl0aGluZyBmb3Ig
+bWUuCj4+Cj4+IFRoYXQgcmVtaW5kcyBtZSB0aGF0IGFmdGVyIGRlZmluaW5nIERFQlVHIGluIHB4
+YTJ4eF9zcGkgaXQgZGlkIGFsd2F5cwo+PiByZXBvcnQgMTNNSHogdG8gbWUuIE5lZWQgdG8gaGF2
+ZSBhIGxvb2sgYXQgaXQuCj4KPiBFaXRoZXIgdGhlIGRlYnVnIHN0YXRlbWVudCBvciB0aGUgc2V0
+dGluZyBpcyBpbmRlZWQgd3JvbmcuCj4KPiBbIMKgIMKgMC42OTY3NTldIHNwaSBzcGkxLjA6IDEz
+MDAwMDAwIEh6IGFjdHVhbCwgUElPCj4gWyDCoCDCoDAuNzE1NzYwXSBzcGkgc3BpMy4wOiAxMzAw
+MDAwMCBIeiBhY3R1YWwsIFBJTwo+Cj4gV2hpY2ggY29tZXMgZnJvbSB0aGlzIHBhcnQgb2YgdGhl
+IGRyaXZlciAod2l0aCAjZGVmaW5lIERFQlVHIHNldCk6Cj4KPiDCoCDCoCDCoCDCoC8qIE5PVEU6
+IMKgUFhBMjV4X1NTUCBfY291bGRfIHVzZSBleHRlcm5hbCBjbG9ja2luZyAuLi4gKi8KPiDCoCDC
+oCDCoCDCoGlmICghcHhhMjV4X3NzcF9jb21wKGRydl9kYXRhKSkKPiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoGRldl9kYmcoJnNwaS0+ZGV2LCAiJWxkIEh6IGFjdHVhbCwgJXNcbiIsCj4gwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjbGtfZ2V0X3JhdGUoc3NwLT5jbGspCj4gwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAvICgxICsgKChjaGlw
+LT5jcjAgJiBTU0NSMF9TQ1IoMHhmZmYpKSA+PiA4KSksCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqBjaGlwLT5lbmFibGVfZG1hID8gIkRNQSIgOiAiUElPIik7Cj4gwqAgwqAg
+wqAgwqBlbHNlCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBkZXZfZGJnKCZzcGktPmRldiwgIiVs
+ZCBIeiBhY3R1YWwsICVzXG4iLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+Y2xrX2dldF9yYXRlKHNzcC0+Y2xrKSAvIDIKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoC8gKDEgKyAoKGNoaXAtPmNyMCAmIFNTQ1IwX1NDUigweDBmZikp
+ID4+IDgpKSwKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNoaXAtPmVuYWJs
+ZV9kbWEgPyAiRE1BIiA6ICJQSU8iKTsKPgo+IEJ1dCB0aGUgYm9hcmQgZmlsZSBoYXMgdGhpczoK
+Pgo+IHN0YXRpYyBzdHJ1Y3Qgc3BpX2JvYXJkX2luZm8gc3BpX2JvYXJkX2luZm9bXSBfX2luaXRk
+YXRhID0gewo+IMKgIMKgIMKgIMKgewo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLm1vZGFsaWFz
+ID0gImxpczNsMDJkcSIsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAubWF4X3NwZWVkX2h6ID0g
+ODAwMDAwMCwvKiA4TUh6IG1heCBzcGkgZnJlcXVlbmN5IGF0IDNWICovCj4gwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAuYnVzX251bSA9IDEsCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAuY2hpcF9z
+ZWxlY3QgPSAwLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLmNvbnRyb2xsZXJfZGF0YSA9ICZz
+dGFjY2VsX2NoaXBfaW5mbywKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoC5pcnEgPSBJUlFfR1BJ
+Tyg5NiksCj4gwqAgwqAgwqAgwqB9LCB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAubW9kYWxp
+YXMgPSAiY2MyNDIwIiwKPiAvLyDCoCDCoCDCoCDCoCDCoCDCoCDCoC5tYXhfc3BlZWRfaHogPSA2
+NTAwMDAwLAo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLm1heF9zcGVlZF9oeiA9IDEwMDAwMDAw
+LCAvKiAxME1IeiAqLwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLmJ1c19udW0gPSAzLAo+IMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgLmNoaXBfc2VsZWN0ID0gMCwKPiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoC5jb250cm9sbGVyX2RhdGEgPSAmY2MyNDIwX2luZm8sCj4gwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAucGxhdGZvcm1fZGF0YSA9ICZjYzI0MjBfcGRhdGEsCj4KPiDCoCDCoCDCoCDCoH0s
+Cj4gfTsKPgo+IEl0cyBuZWl0aGVyIDhNSHogZm9yIHNwaTEuMCBub3IgMTBNSHogZm9yIHNwaTMu
+MC4KPgo+IEFkZGluZyBzb21lIGRlYnVnIGluZm8gc2hvd3MgbWUgdGhhdCB0aGUgZHJpdmVyIGdl
+dHMgdGhlIGRhdGEgZmluZSBmb3JtIHRoZQo+IHBsYXRmb3JtIGRhdGE6Cj4gWyDCoCDCoDAuNjk1
+NzcwXSBzcGkgc3BpMS4wOiBjaGlwLT5zcGVlZF9oejogODAwMDAwMCwgc3BpLT5tYXhfc3BlZWRf
+aHo6IDgwMDAwMDAKPiBbIMKgIMKgMC42OTU4NzJdIHNwaSBzcGkxLjA6IDEzMDAwMDAwIEh6IGFj
+dHVhbCwgUElPCj4gWyDCoCDCoDAuNzE0ODI0XSBzcGkgc3BpMy4wOiBjaGlwLT5zcGVlZF9oejog
+MTAwMDAwMDAsIHNwaS0+bWF4X3NwZWVkX2h6OiAxMDAwMDAwMAo+IFsgwqAgwqAwLjcxNDkyOV0g
+c3BpIHNwaTMuMDogMTMwMDAwMDAgSHogYWN0dWFsLCBQSU8KPgo+IFRoYXRzIGRpcmVjdGx5IGFi
+b3ZlIHRoZSBjaGlwLT5jcjAgYW5kIGNoaXAtPmNyMSBjYWxjdWxhdGlvbnMuIElzIHRoaXMganVz
+dCB0aGUKPiBpbml0aWFsIHNlZXRpbmcgYW5kIGl0IGdldHMgb3ZlcndyaXR0ZW4gYmVmb3JlIGEg
+dHJhbnNmZXIgb3IgaXMgdGhlIHNwZWVkCj4gY2FsY3VsYXRpb24gd3Jvbmc/CgpFdmVyeSBTUEkg
+Y2hpcCBoYXMgYSBjbG9jayBzZXR0aW5nLCBzbyBzcGlfc2V0dXAoKSB3aWxsIGJlIGRvbmUgYmVm
+b3JlCmV2ZXJ5IHRyYW5zZmVyLCB0aGF0J3MgbXkgdW5kZXJzdGFuZGluZy4gRG8gY2hlY2sgdGhl
+IHJlc3VsdGluZyBTQ0NSCnJlZ2lzdGVyIHNldHRpbmdzIHRvIGNvbmZpcm0gaXQncyBub3Qgc2V0
+dXAgY29ycmVjdGx5IGJlZm9yZSBlYWNoIHRyYW5zZmVyLgoKPgo+IHJlZ2FyZHMKPiBTdGVmYW4g
+U2NobWlkdAo+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9s
+aW51eC1hcm0ta2VybmVsCg==

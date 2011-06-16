@@ -1,17 +1,18 @@
-From: Eric Miao <eric.y.miao@gmail.com>
+From: Stefan Schmidt <stefan@datenfreihafen.org>
 Subject: Re: Slow spi_sync() on pxa2xx_spi
-Date: Thu, 16 Jun 2011 17:44:16 +0800
-Message-ID: <BANLkTinU+chEbZRpFSdRH_dPE2vhK_7pHg@mail.gmail.com>
+Date: Thu, 16 Jun 2011 11:59:34 +0200
+Message-ID: <20110616095934.GC10075@excalibur.local>
 References: <20110616082112.GA10075@excalibur.local>
 	<BANLkTikuo_fHbw9FFMtorpg15vOnXMK-+g@mail.gmail.com>
 	<20110616091931.GB10075@excalibur.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general@lists.sourceforge.net,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net, Eric Miao <eric.y.miao@gmail.com>,
 	linux-arm-kernel@lists.infradead.org
 To: Stefan Schmidt <stefan@datenfreihafen.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
 In-Reply-To: <20110616091931.GB10075@excalibur.local>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
@@ -24,82 +25,74 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBKdW4gMTYsIDIwMTEgYXQgNToxOSBQTSwgU3RlZmFuIFNjaG1pZHQKPHN0ZWZhbkBk
-YXRlbmZyZWloYWZlbi5vcmc+IHdyb3RlOgo+IEhlbGxvLgo+Cj4gT24gVGh1LCAyMDExLTA2LTE2
-IGF0IDE2OjM0LCBFcmljIE1pYW8gd3JvdGU6Cj4+IE9uIFRodSwgSnVuIDE2LCAyMDExIGF0IDQ6
-MjEgUE0sIFN0ZWZhbiBTY2htaWR0Cj4+IDxzdGVmYW5AZGF0ZW5mcmVpaGFmZW4ub3JnPiB3cm90
-ZToKPj4gPiBIZWxsby4KPj4gPgo+PiA+IEknbSB3b3JraW5nIG9uIHRoZSBJbW90ZTIgKHB4YTI3
-eCBiYXNlZCkgcGxhdGZvcm0gWzFdIHdoaWNoIGluY2x1ZGVzIGEKPj4gPiByYWRpbyBjaGlwIChj
-YzI0MjAsIElFRUUgODAyLjE1LjQpIGNvbm5lY3RlZCBvdmVyIFNQSSBbMl0uCj4+ID4KPj4gPiBU
-aGUgcHJvYmxlbSBJJ20gZmFjaW5nIGlzIHRoYXQgdGhlIHNwaV9zeW5jKCkgY2FsbCBvZiB0aGUg
-ZHJpdmVyIHRvCj4+ID4gd3JpdGUvcmVhZCBmcm9tIHRoZSByZWdpc3RlcnMgb3ZlciB0aGUgU1BJ
-IGJ1cyB0YWtlcyB1cCB0byAyNiBtaWxsaQo+PiA+IHNlY29uZHMuIFRoZSBtaW5pbXVtIEkgbWVh
-c3VyZWQgd2FzIDUwMCBtaWNybyBzZWNvbmRzIGZvciB0aGUgY2FsbC4KPj4gPgo+PiA+IFRoYXQg
-Y3JlYXRlcyBhIHByb2JsZW0gYXMgdGhlIHdvcmtmbG93IHRvIHNlbmQgYSBmcmFtZSBvdmVyIHRo
-ZSByYWRpbwo+PiA+IGluY2x1ZGVzIHRvIHdyaXRlIHRvIGEgc3BpIHJlZ2lzdGVyIGZvciBzZW5k
-aW5nIG91dCB0aGUgZnJhbWUgZnJvbSBhCj4+ID4gcHJlLWZpbGxlZCBGSUZPLiBUaGVuIHdhaXQg
-dXAgdG8gMzIwIG1pY3JvIHNlY29uZHMgZm9yIGEgR1BJTyB0byByYWlzZQo+PiA+IGFuZCBwb2xs
-aW5nIGEgc3RhdHVzIHJlZ2lzdGVyIHVudGlsIGEgVFhfQUNUSVZFIGJpdCBpcyBubyBsb25nZXIg
-c2V0Cj4+ID4gYWZ0ZXJ3YXJkcy4KPj4gPgo+PiA+IEJ1dCB0aGUgZmlyc3QgcmVnaXN0ZXIgd3Jp
-dGUgdG8gaW5pdGlhdGUgdGhlIHNlbmRpbmcgYWxyZWFkeSB0YWtlcyBzbwo+PiA+IGxvbmcgdGhh
-dCB0aGUgR1BJTyBpcyBhbHJlYWR5IGxvdyBhZ2FpbiBhbmQgdGhlIFRYX0FDVElWRSBpcyBhbHNv
-IGdvbmUKPj4gPiB3aGVuIEkgY29tZSBiYWNrIGZyb20gdGhlIHNwaV9zeW5jKCkgY2FsbC4KPj4g
-Pgo+PiA+IEl0IHJlYWxseSBzbWVsbHMgbGlrZSBJJ20gZG9pbmcgc29tZXRoaW5nIHNlcmlvdXNs
-eSB3cm9uZyBoZXJlLiBGb3IKPj4gPiB0aGUgcHhhMnh4X3NwaSBkcml2ZXIgSSBhbHJlYWR5IHRy
-aWVkIHZhcmlvdXMgb3B0aW9ucyB3aXRob3V0IGFueQo+PiA+IGRpZmZlcmVuY2UgSSBjb3VsZCBz
-ZWUuIEVuYWJsZS9kaXNiYWxlIERNQSwgZGlmZmVyZW50IHR4L3J4Cj4+ID4gdGhyZXNob2xkcywg
-ZGlmZmVyZW50IGRtYSBidXJzdCBzaXplcywgZGlmZmVyZW50IHRpbWVvdXQsIGV0Yy4KPj4gPgo+
-PiA+IEkgY2FuIG9ubHkgZXhwbGFpbiB0aGUgbG9uZyB0aW1lIHdpdGggc29tZSBzbGVlcGluZyBp
-biBTUEkgd2hpbGUKPj4gPiBvdGhlciBwYXJ0cyBhcmUgc2NoZWR1bGVkLiBJcyB0aGVyZSBhIHdh
-eSB0byBhdm9pZCB0aGlzIGZvciBTUEk/IE9yCj4+ID4gaXMgdGhlcmUgYW4gQVBJIEkgZGlkIG5v
-dCBmb3VuZCB5ZXQgdG8gY292ZXIgbXkgbmVlZHM/Cj4+ID4KPj4gPiBUaGUgbWVhc3VyZW1lbnQg
-aXMgZG9uZSB3aXRoIGdldG5zdGltZW9mZGF5IGJ0dyBhbmQgSSB2ZXJpZmllZCB0aGF0IGEKPj4g
-PiBiYXNpYyBvcGVyYXRpb24gbGlrZSB0d28gbXVsdGlwbGljYXRpb25zIGFyZSBkb3duIGluIHRo
-ZSA1IG1pY3JvCj4+ID4gc2Vjb25kcyBhcmVhIHdoaWNoIGdpdmVzIG1lIGZhaXRoIHRoYXQgdGhl
-IG1lYXN1cmVtZW50cyBzaG91bGQgYmUKPj4gPiBjb3JyZWN0Ogo+PiA+Cj4+ID4gZ2V0bnN0aW1l
-b2ZkYXkgKCZiZWZvcmUpOwo+PiA+IHJldCA9IHNwaV9zeW5jKGxwLT5zcGksICZtc2cpOwo+PiA+
-IGdldG5zdGltZW9mZGF5ICgmYWZ0ZXIpOwo+PiA+Cj4+ID4gcmVzdWx0ID0gdGltZXNwZWNfc3Vi
-KGFmdGVyLCBiZWZvcmUpOwo+PiA+IHByaW50aygiU3Ryb2JlIHRpbWU6ICVsdSBzZWNzIGFuZCAl
-bHUgbnNlY3MgKHN0cm9iZSAlaSlcbiIsIChsb25nKXJlc3VsdC50dl9zZWMsIHJlc3VsdC50dl9u
-c2VjLCBhZGRyKTsKPj4gPgo+PiA+IEknbSBvdXQgb2YgaWRlYXMgd2hhdCB0byBjaGFuZ2UgaGVy
-ZS4gVGhlIG9ubHkgb3B0aW9uLCBJIHdhbnQgdG8KPj4gPiBhdm9pZCwgaXMgdHJ5aW5nIHRvIGRy
-aXZlIHRoZSBTUEkgcGlucyBtYW51YWxseSBhbmQgc2VlIGlmIEkgaGF2ZQo+PiA+IGJldHRlciBy
-ZXN1bHRzIHdpdGggYml0LWJhbmdpbmcgaXQgbXlzZWxmLgo+Pgo+PiBXaGF0IGlzIHRoZSBTUEkg
-ZnJlcXVlbmN5Pwo+Cj4gSSB0cmllZCB2YXJpb3VzIHNldHRpbmdzIGluIC5tYXhfc3BlZWRfaHog
-ZnJvbSB0aGUgb3JpZ2luYWwgNi42IE1IdCB0bwo+IDEwIE1IeiBhbmQgMTNNSHogYXMgbWF4aW11
-bSBvZiB0aGUgY29udHJvbGxlci4gRGlkIGFsc28gbm90IGNoYW5nZQo+IGFueXRoaW5nIGZvciBt
-ZS4KPgo+IFRoYXQgcmVtaW5kcyBtZSB0aGF0IGFmdGVyIGRlZmluaW5nIERFQlVHIGluIHB4YTJ4
-eF9zcGkgaXQgZGlkIGFsd2F5cwo+IHJlcG9ydCAxM01IeiB0byBtZS4gTmVlZCB0byBoYXZlIGEg
-bG9vayBhdCBpdC4KPgo+PiBGb3IgUElPLCB0aGUgdHJhbnNmZXIgYWN0dWFsbHkgaGFwcGVucyBp
-biB0aGUgaW50ZXJydXB0IGhhbmRsZXIgc28gaXQncwo+PiBzdXBwb3NlZCB0byBiZSBmYXN0IChk
-aWQgeW91IGVuYWJsZSB0aHJlYWRlZCBJUlEgYnkgdGhlIHdheT8pLgo+Cj4gWW91IG1lYW4gd2l0
-aCByZXF1ZXN0X3RocmVhZGVkX2lycSgpPyAoU2VlbXMgdGhlcmUgaXMgbm8gY29uZmlnIG9wdGlv
-bgo+IGZvciBpdCkgTm8sIEknbSBub3QgdXNpbmcgaXQgbmVpdGhlciBkaWQgSSBtb2RpZnkgdGhl
-IHB4YTJ4eF9zcGkKPiBkcml2ZXIgdG8gdXNlIGl0Lgo+Cj4gVGhhbmtzIGZvciB0aGUgaW5mb3Jt
-YXRpb25zIGFib3V0IFBJTyBoYXBwZW4gaW4gdGhlIGludGVycnVwdCBoYW5kbGVyLgo+IFdlIGFs
-cmVhZHkgc3VzcGVjdGVkIHRoYXQgRE1BIG1pZ2h0IGNvbWUgd2l0aCBzb21lIG92ZXJoZWFkIGFu
-ZCBmb3IKPiBvdXIgc21hbGxpc2ggcmVnaXN0ZXIgYWNjZXNzIHdlIGRpZCBub3QgbmVlZCBpdC4g
-U2FkbHkgLmVuYWJsZV9kbWEgPSAwCj4gZGlkIG5vdCBtYWtlIGFueSBkaWZmZXJlbmNlLiBXaWxs
-IGhhdmUgYW5vdGhlciBsb29rIGludG8gdGhpcy4KPgo+IEknbSBvbiAyLjYuMzggaGVyZSBidHcu
-IEJ1dCB0aGUgcHhhMnh4X3NwaSBkcml2ZXIgZGlkIG5vdCBnZXQgbWF5bgo+IHVwZGF0ZXMgc2lu
-Y2UgdGhlbi4gVGhlIG9ubHkgY29tbWl0IHRoYXQgbWF5IGJlIGludGVyZXN0ZWQgwqBpcyB0aGlz
-Cj4gb25lOgo+IGh0dHA6Ly9naXQua2VybmVsLm9yZy8/cD1saW51eC9rZXJuZWwvZ2l0L3RvcnZh
-bGRzL2xpbnV4LTIuNi5naXQ7YT1jb21taXQ7aD04NTBhMjhlY2Q4MDQ0ZWYzNmIyYzc2OTlkMmUz
-NzM2YTQxMGI0ZDBhCj4KPj4gQW5kIHNpbmNlIHRoZSB0cmFuc2ZlciBoYXBwZW5zIG9uIG1lc3Nh
-Z2UgYmFzZSwgd2hhdCBpcyB0aGUgc2l6ZQo+PiBvZiBlYWNoIG9mIHlvdXIgbWVzc2FnZT8gQW5k
-IGlmIGl0IGNvdWxkIGJlIGVubGFyZ2VkIHRvIGJpZyBibG9ja3MuCj4KPiBJdHMgZWl0aGVyIDhi
-aXQgb3IgMTZiaXQgZm9yIGEgbWVzc2FnZS4gVGhlIG1lbnRpb25lZCBwcm9ibGVtIGhhcHBlbnMK
-PiBvbiBhIDggYml0IG1lc3NhZ2UuIEl0IGRvZXMgbm90aGluZyBlbHNlIHRoZW4gd3JpdGluZyB0
-byBhIGRlZmluZWQKPiByZWdpc3RlciBhZGRyZXNzIHRvIHRyaWdnZXIgdGhlIGhhcmR3YXJlIHNl
-bmRpbmcgdGhlIGRhdGEgaW4gdGhlIEZJRk8uCgpUaGlzIG1pZ2h0IGdldCB0b28gbXVjaCBvdmVy
-aGVhZC4gSSBkaWRuJ3QgY2hlY2sgdGhlIHNvdXJjZSBjb2RlLCBidXQKbXkgZ3Vlc3MgaXMgaXQn
-cyB3YWl0aW5nIGZvciBpbnRlcnJ1cHQgZm9yIGVhY2ggbWVzc2FnZSwgYW5kIG9uY2UgdGhlCmlu
-dGVycnVwdCBvZiBtZXNzYWdlIGJlaW5nIGZsdXNoZWQgb3V0IGhhcHBlbnMsIGl0IHN0YXJ0cyB0
-aGUgbmV4dCBvbmUKd2FpdGluZyBmb3IgdGhlIEZJRk8gZW1wdHkgaW50ZXJydXB0IGNvbWluZy4g
-RGlkIHlvdSB0cnkgc3R1ZmYgbW9yZQpieXRlcyBpbnRvIGEgc2luZ2xlIG1lc3NhZ2U/Cgo+Cj4g
-VGhlIEZJRk8gcmVhZGluZyBhbmQgd3JpdGluZyBoYXMgbm8gdGltZSBjcml0aWNhbCBlbGVtZW50
-cyBoZXJlIGFuZAo+IGdldHMgcHJlLWZpbGxlZC4KPgo+IHJlZ2FyZHMKPiBTdGVmYW4gU2NobWlk
-dAo+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51
-eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1h
-cm0ta2VybmVsCg==
+Hello.
+
+On Thu, 2011-06-16 at 11:19, Stefan Schmidt wrote:
+> 
+> On Thu, 2011-06-16 at 16:34, Eric Miao wrote:
+> > 
+> > What is the SPI frequency?
+> 
+> I tried various settings in .max_speed_hz from the original 6.6 MHt to
+> 10 MHz and 13MHz as maximum of the controller. Did also not change
+> anything for me.
+> 
+> That reminds me that after defining DEBUG in pxa2xx_spi it did always
+> report 13MHz to me. Need to have a look at it.
+
+Either the debug statement or the setting is indeed wrong.
+
+[    0.696759] spi spi1.0: 13000000 Hz actual, PIO
+[    0.715760] spi spi3.0: 13000000 Hz actual, PIO
+
+Which comes from this part of the driver (with #define DEBUG set):
+
+        /* NOTE:  PXA25x_SSP _could_ use external clocking ... */
+        if (!pxa25x_ssp_comp(drv_data))
+                dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
+                        clk_get_rate(ssp->clk)
+                                / (1 + ((chip->cr0 & SSCR0_SCR(0xfff)) >> 8)),
+                        chip->enable_dma ? "DMA" : "PIO");
+        else
+                dev_dbg(&spi->dev, "%ld Hz actual, %s\n",
+                        clk_get_rate(ssp->clk) / 2
+                                / (1 + ((chip->cr0 & SSCR0_SCR(0x0ff)) >> 8)),
+                        chip->enable_dma ? "DMA" : "PIO");
+
+But the board file has this:
+
+static struct spi_board_info spi_board_info[] __initdata = {
+        {
+                .modalias = "lis3l02dq",
+                .max_speed_hz = 8000000,/* 8MHz max spi frequency at 3V */
+                .bus_num = 1,
+                .chip_select = 0,
+                .controller_data = &staccel_chip_info,
+                .irq = IRQ_GPIO(96),
+        }, {
+                .modalias = "cc2420",
+//              .max_speed_hz = 6500000,
+                .max_speed_hz = 10000000, /* 10MHz */
+                .bus_num = 3,
+                .chip_select = 0,
+                .controller_data = &cc2420_info,
+                .platform_data = &cc2420_pdata,
+
+        },
+};
+
+Its neither 8MHz for spi1.0 nor 10MHz for spi3.0.
+
+Adding some debug info shows me that the driver gets the data fine form the
+platform data:
+[    0.695770] spi spi1.0: chip->speed_hz: 8000000, spi->max_speed_hz: 8000000
+[    0.695872] spi spi1.0: 13000000 Hz actual, PIO
+[    0.714824] spi spi3.0: chip->speed_hz: 10000000, spi->max_speed_hz: 10000000
+[    0.714929] spi spi3.0: 13000000 Hz actual, PIO
+
+Thats directly above the chip->cr0 and chip->cr1 calculations. Is this just the
+initial seeting and it gets overwritten before a transfer or is the speed
+calculation wrong?
+
+regards
+Stefan Schmidt

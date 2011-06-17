@@ -1,30 +1,31 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: [GIT PULL] spi fixes for v3.0-rc3
-Date: Fri, 17 Jun 2011 09:04:53 -0600
-Message-ID: <BANLkTikTPiqJZe1WeToBckWTPf_YYqRbew@mail.gmail.com>
+From: 13642347266-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 税/票--代/开
+Date: Sat, 18 Jun 2011 01:48:02 +0800
+Message-ID: <E1QXd9K-0001o2-20@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The following changes since commit 2c53b436a30867eb6b47dd7bab23ba638d1fb0d2:
-
-  Linux 3.0-rc3 (2011-06-13 15:29:59 -0700)
-
-are available in the git repository at:
-  git://git.secretlab.ca/git/linux-2.6 spi/merge
-
-Mike Frysinger (1):
-      spi/bfin_spi: fix handling of default bits per word setting
-
- drivers/spi/spi_bfin5xx.c |    7 ++++---
- 1 files changed, 4 insertions(+), 3 deletions(-)
-
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yKOp09DS
+u7K/t9bXqNPDt6ItLcaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6
+ICAKICAgICAgICC4utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KRWRpdExpdmUgRW50ZXJwcmlzZSBpcyB0aGUgd29ybGQncyBtb3N0IHRlY2huaWNhbGx5
+IGFkdmFuY2VkIGNvbnRlbnQKYXV0aG9yaW5nIHRvb2wuIEV4cGVyaWVuY2UgdGhlIHBvd2VyIG9m
+IFRyYWNrIENoYW5nZXMsIElubGluZSBJbWFnZQpFZGl0aW5nIGFuZCBlbnN1cmUgY29udGVudCBp
+cyBjb21wbGlhbnQgd2l0aCBBY2Nlc3NpYmlsaXR5IENoZWNraW5nLgpodHRwOi8vcC5zZi5uZXQv
+c2Z1L2VwaG94LWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

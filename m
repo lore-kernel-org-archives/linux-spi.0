@@ -1,8 +1,9 @@
 From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/4] spi/bfin_spi: fix handling of default bits per word
+Subject: [PATCH 1/4 v2] spi/bfin_spi: fix handling of default bits per word
 	setting
-Date: Fri, 17 Jun 2011 04:16:55 -0400
-Message-ID: <1308298618-23461-1-git-send-email-vapier@gentoo.org>
+Date: Fri, 17 Jun 2011 04:35:37 -0400
+Message-ID: <1308299737-3806-1-git-send-email-vapier@gentoo.org>
+References: <1308298618-23461-1-git-send-email-vapier@gentoo.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,6 +12,7 @@ To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1308298618-23461-1-git-send-email-vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,14 +36,26 @@ So in the transfer logic, have a bits_per_word setting of 0 fall into the
 
 Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi_bfin5xx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+v2
+	- wasn't quite as simple as i'd hope ...
+
+ drivers/spi/spi_bfin5xx.c |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi_bfin5xx.c b/drivers/spi/spi_bfin5xx.c
-index ae30fa3..c491057 100644
+index ae30fa3..1f123b9 100644
 --- a/drivers/spi/spi_bfin5xx.c
 +++ b/drivers/spi/spi_bfin5xx.c
-@@ -687,7 +687,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+@@ -681,13 +681,14 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	drv_data->cs_change = transfer->cs_change;
+ 
+ 	/* Bits per word setup */
+-	bits_per_word = transfer->bits_per_word ? : message->spi->bits_per_word;
+-	if ((bits_per_word > 0) && (bits_per_word % 16 == 0)) {
++	bits_per_word = transfer->bits_per_word ? :
++		message->spi->bits_per_word ? : 8;
++	if (bits_per_word % 16 == 0) {
+ 		drv_data->n_bytes = bits_per_word/8;
  		drv_data->len = (transfer->len) >> 1;
  		cr_width = BIT_CTL_WORDSIZE;
  		drv_data->ops = &bfin_bfin_spi_transfer_ops_u16;

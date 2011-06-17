@@ -1,159 +1,80 @@
-From: Feng Tang <feng.tang@intel.com>
+From: "Du, Alek" <alek.du@intel.com>
 Subject: Re: [PATCH 3/5] dw_spi: rework message processing
-Date: Fri, 17 Jun 2011 09:22:20 +0800
-Message-ID: <20110617092220.41532d97@feng-i7>
+Date: Fri, 17 Jun 2011 09:34:26 +0800
+Message-ID: <20110617093426.40f0be34@dxy2>
 References: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
 	<1308158588-17249-4-git-send-email-dirk.brandewie@gmail.com>
 	<20110616220003.7ac89d56@feng-i7>
-	<4DFA3D30.2070909@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+Cc: "dirk.brandewie@gmail.com" <dirk.brandewie@gmail.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
-	"alan@linux.intel.com" <alan@linux.intel.com>,
-	"Du, Alek" <alek.du@intel.com>
-To: Dirk Brandewie <dirk.brandewie@gmail.com>
+	"alan@linux.intel.com" <alan@linux.intel.com>
+To: "Tang, Feng" <feng.tang@intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4DFA3D30.2070909@gmail.com>
+In-Reply-To: <20110616220003.7ac89d56@feng-i7>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 17 Jun 2011 01:28:16 +0800
-Dirk Brandewie <dirk.brandewie@gmail.com> wrote:
+On Thu, 16 Jun 2011 22:00:03 +0800
+"Tang, Feng" <feng.tang@intel.com> wrote:
 
-> On 06/16/2011 07:00 AM, Feng Tang wrote:
-> > Hi Dirk,
+> Hi Dirk,
+> 
+> On Thu, 16 Jun 2011 01:23:06 +0800
+> "dirk.brandewie@gmail.com" <dirk.brandewie@gmail.com> wrote:
+> 
+> > From: Dirk Brandewie <dirk.brandewie@gmail.com>
 > >
-> > IMHO, the patch is too big, it contains too many changes to the
-> > original drivers, and we can't see clearly what you've changed to
-> > each logical code part or section, If possible, could you separate
-> > this patch to several small ones in a logical way.
+> > NOTE: patch created git format-patch --break-rewrites=/50%
 > >
-> > First, I have some questions, what devices have you tested with
-> > this patch? high speed, low speed? Do you have any performance data
-> > to show the benefit of this change? Current dw_spi driver has been
-> > tested with many devices, so to not break them or cause obvious
-> > regression, we have to be cautious.
-> 
-> See Thread with grant for list of environments where it has been
-> tested. The boot time of the platforms it is being used on decreased
-> 2-5 seconds with no regressions reported.  It has been in use/under
-> test for ~3 months in various Meego and Android builds.  It clears
-> all the bugs reported against the driver that I am aware of.  If you
-> can give me pointers to teams/projects that are using v2.6.37+
-> kernels I would be more that happy to provide them with patches for
-> their kernel to ensure we get the most comprehensive test possible.
-
-I was not asking about the environments, but the actual devices connect.
-to and work with the dw_spi controller, here is a quote from one of
-my previous email of devices listing:
-
-----------------------------------------------------------------------------
-I don't know all the devices and users, but here is what I know: I've tested
-Max3110 spi-uart (in-tree), Option GTM501L high-speed 3G modem (out of tree),
-ektf1236 spi touch screen (out of tree). Alek Du (Cced) should have tested
-current dw_spi driver with some spi bluetooth device and modem device. Also
-the original author fordw_spi_mmio.c Jean-Hugues Deschense should have some
-experience too. 
------------------------------------------------------------------------------
-Meego or Android doesn't mean much for a device driver, as all these OSes are
-using the same Linux kernel.
-
-Is "2-5 seconds boot time cuts" the only performance data you got? The current
-driver has 2 phases, first is the original one from me, the second is the 
-optimization by Alek Du which introduce the batch operation for TX/RX FIFO, 
-Alek mentioned the boot time cut too, so I guess the boot time gain is tested
-against the original driver, not the current mainstream driver, right?
-
-For the kernel version you mentioned, my thought is the kernel version diff
-between 2.6.35 and 2.6.37 doesn't mean much to a simple dw_spi device driver's
-performance? some users of dw_spi driver are still using 2.6.35 kernel with
-all new optimizations back ported, I have no power to force them upgrade the
-kernel, but if the dw_spi driver is the same, then the performance data is
-mostly trustable.
-
-> 
+> > This patch reworks the message pump worker thread function to run
+> > until all messages queued to the driver have been handled. The
+> > function to handle individual spi_transfers is now a synchronus
+> > function the tasklet to handle spi_transfers has been removed. Work
+> > for the worker thread is only queued in host controller transfer
+> > function.
 > >
-> > Here are some general comments according to the commit logs:
-> > 1. I think the threaded irq handling is a good idea. And let driver
-> > chose to use poll or interrupt is good, some other spi controller
-> > driver has used that way for a long time
-> > 2. Why you remove the cs_change code, in some case, the controller
-> > is only be used by one device, we don't need do the config for
-> > every single spi_transfer
-> 
-> There is no guarantee that all the transfers in a given spi_message
-> have the same values for  speed_hz, bits_per_word, cs_change and
-> delay_usecs atleast nothing I could find put that restriction in
-> place. Since we need to deal with possible changes (although
-> unlikely) it gets rid some state we need to maintain and makes the
-> code path common for all transfers.
-
-right, if you look at the driver, cs_change is only judge condition
-for judge, speed_hz, bits_per_word's change are counted in too. Otherwise
-the driver should fail years ago.
-
-> 
-> > 3. Why do you remove the chip select control code, dw_spi
-> > controller hw has some problem in chip select controller by SER,
-> > and thus many devices has to use external GPIO has their chip
-> > select, this is real world usages!
-> 
-> Which devices/platforms are you referring to?  I was unable to find
-> any platforms or client drivers using this functionality. If they are
-> not public please respond internally.  In any case it is mute since I
-> already agreed to put is back in in my response to Grant.
-
-Some intel platforms used/are using that, I got requests to help them
-on it. Also some community guys are using that (though I don't know the
-detail),  as this piece of code is introduced by Shore George once made
-some change according to their specific change, see commit 052dc7c4
-
-> 
-> > 4. I saw you enable both TX/RX interrupt when doing interrupt
-> > transfer, spi devices' TX/RX are born to be simutaneous, when one
-> > word is sent over TX line, a RX word will be received from RX line,
-> > so both the orignal interrupt transfer handling written by me and
-> > the later optimization from Alek Du only enable TX interrupt, which
-> > will only generate half of IRQs comparing to enble both TX/RX, this
-> > is huge when the data rate is several Mb per second
-> 
-> I the current driver the txfltr register is set to 0 (FIFO empty) in
-> the interrupt transfer case which will drop chip select every FIFO
-> length bytes.
-> 
-> In my transfer setup the RX FIFO interrupt is set to a value lower
-> than the TX threshold which will keep both interrupts from firing at
-> the same time.
-> 
-> The TX interrupt will drive the transfer until there are less than
-> tx_threshold bytes left to transfer then by the RX interrupt to drive
-> the remainder of the transfer without dropping chip select.
-
-What I set is half-empty for TX interrupt, so the FIFO will get filled
-long before it's drained. I don't have any HW protocol analyzer or
-logical analyzer, so I can't totally guarantee it won't happen
-
-> 
-> > 5. Why do you change the logic of filling TX FIFO, the logic comes
-> > from use case that the dw_spi driver is dealing with several high
-> > speed devices.
+> > Psuedo code for new thread function:
+> >   message = get_message()
+> >   while (message){
+> >     for_each_transfer_in_msg(message){
+> >       transfer_setup(transfer)
+> >       do_transfer()
+> >     }
+> >     complete_message()
+> >     message = get_message()
+> >   }
 > >
-> 
-> The version of the driver that I started with did not have the
-> current fifo handling code.  I finished my changes before they showed
-> up in the AC tree or the upstream kernel.  I picked up most to the
-> fifo handling logic from the current driver with the exception of the
-> rxtx_gap calculation which was not needed with the way I am
-> maintaining the state and the addition of a check to avoid the
-> register read in tx_max/rx_max if all bytes have been sent/received.
-> This avoids some overhead in the interrupt case.
-
-If there is no performance again, I would hold on any change.
-
-> 
-> > Thanks,
-> > Feng
+> > Changes that fell out of the message thread changes:
+> > Non-DMA transfers that are larger than the size of the controller FIFO
+> > are handled as interrupt driven transfers.
 > >
+> > Common FIFO handling functions shared PIO and interrupt transfers.
+> >
+> > Simplified queue stop/start funcitons.
+> >
+> > Cleanup fixes:
+> > Changed exported all exported function names to have dw_spi_ prefix
+> >
+> > Removed support for registering chip select control function. Setting
+> > the slave chip select is handled by setting the SER (Slave enable
+> > register)
+> >
+
+Removing this, you already break the TI spi BT module which requires that it
+controls the chip select instead of controller.
+
+When TX FIFO empty (means TX draining fast) the CS pin will de-assert.
+In order to support those spi slaves that cannot stand this, the chip
+select control function callback was added to this driver. Please don't
+break previous contribution please.
+
+And again, it is meaningless to enable both TX and RX fifo threshold interrupts,
+since they are connected in hardware.
+
+Thanks,
+Alek

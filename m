@@ -1,69 +1,159 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi-topcliff-pch: Support new device ML7223 IOH
-Date: Thu, 16 Jun 2011 18:49:44 -0600
-Message-ID: <20110617004944.GA10160@ponder.secretlab.ca>
-References: <1308270865-18878-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [PATCH 3/5] dw_spi: rework message processing
+Date: Fri, 17 Jun 2011 09:22:20 +0800
+Message-ID: <20110617092220.41532d97@feng-i7>
+References: <1308158588-17249-1-git-send-email-dirk.brandewie@gmail.com>
+	<1308158588-17249-4-git-send-email-dirk.brandewie@gmail.com>
+	<20110616220003.7ac89d56@feng-i7>
+	<4DFA3D30.2070909@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, qi.wang@intel.com,
-	yong.y.wang@intel.com, joel.clark@intel.com,
-	kok.howg.ewe@intel.com, toshiharu-linux@dsn.okisemi.com
-To: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"alan@linux.intel.com" <alan@linux.intel.com>,
+	"Du, Alek" <alek.du@intel.com>
+To: Dirk Brandewie <dirk.brandewie@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1308270865-18878-1-git-send-email-tomoya-linux@dsn.okisemi.com>
+In-Reply-To: <4DFA3D30.2070909@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 17, 2011 at 09:34:25AM +0900, Tomoya MORINAGA wrote:
-> Support new device OKI SEMICONDUCTOR ML7223 IOH(Input/Output Hub).
-> The ML7223 IOH is for MP(Media Phone) use.
-> The ML7223 is companion chip for Intel Atom E6xx series.
-> The ML7223 is completely compatible for Intel EG20T PCH.
-> 
-> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
+On Fri, 17 Jun 2011 01:28:16 +0800
+Dirk Brandewie <dirk.brandewie@gmail.com> wrote:
 
-Applied, thanks.
-
-g.
-
-> ---
->  drivers/spi/spi-topcliff-pch.c |    5 ++++-
->  1 files changed, 4 insertions(+), 1 deletions(-)
+> On 06/16/2011 07:00 AM, Feng Tang wrote:
+> > Hi Dirk,
+> >
+> > IMHO, the patch is too big, it contains too many changes to the
+> > original drivers, and we can't see clearly what you've changed to
+> > each logical code part or section, If possible, could you separate
+> > this patch to several small ones in a logical way.
+> >
+> > First, I have some questions, what devices have you tested with
+> > this patch? high speed, low speed? Do you have any performance data
+> > to show the benefit of this change? Current dw_spi driver has been
+> > tested with many devices, so to not break them or cause obvious
+> > regression, we have to be cautious.
 > 
-> diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-> index 1b8030b..5b574cf 100644
-> --- a/drivers/spi/spi-topcliff-pch.c
-> +++ b/drivers/spi/spi-topcliff-pch.c
-> @@ -95,11 +95,13 @@
->  /* Definition for ML7213 by OKI SEMICONDUCTOR */
->  #define PCI_VENDOR_ID_ROHM		0x10DB
->  #define PCI_DEVICE_ID_ML7213_SPI	0x802c
-> +#define PCI_DEVICE_ID_ML7223_SPI	0x800F
->  
->  /*
->   * Set the number of SPI instance max
->   * Intel EG20T PCH :		1ch
->   * OKI SEMICONDUCTOR ML7213 IOH :	2ch
-> + * OKI SEMICONDUCTOR ML7223 IOH :	1ch
->  */
->  #define PCH_SPI_MAX_DEV			2
->  
-> @@ -212,6 +214,7 @@ struct pch_pd_dev_save {
->  static struct pci_device_id pch_spi_pcidev_id[] = {
->  	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
->  	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
-> +	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7223_SPI), 1, },
->  	{ }
->  };
->  
-> @@ -1711,4 +1714,4 @@ MODULE_PARM_DESC(use_dma,
->  		 "to use DMA for data transfers pass 1 else 0; default 1");
->  
->  MODULE_LICENSE("GPL");
-> -MODULE_DESCRIPTION("Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH SPI Driver");
-> +MODULE_DESCRIPTION("Intel EG20T PCH / OKI SEMICONDUCTOR ML7xxx IOH SPI Driver");
-> -- 
-> 1.7.4
+> See Thread with grant for list of environments where it has been
+> tested. The boot time of the platforms it is being used on decreased
+> 2-5 seconds with no regressions reported.  It has been in use/under
+> test for ~3 months in various Meego and Android builds.  It clears
+> all the bugs reported against the driver that I am aware of.  If you
+> can give me pointers to teams/projects that are using v2.6.37+
+> kernels I would be more that happy to provide them with patches for
+> their kernel to ensure we get the most comprehensive test possible.
+
+I was not asking about the environments, but the actual devices connect.
+to and work with the dw_spi controller, here is a quote from one of
+my previous email of devices listing:
+
+----------------------------------------------------------------------------
+I don't know all the devices and users, but here is what I know: I've tested
+Max3110 spi-uart (in-tree), Option GTM501L high-speed 3G modem (out of tree),
+ektf1236 spi touch screen (out of tree). Alek Du (Cced) should have tested
+current dw_spi driver with some spi bluetooth device and modem device. Also
+the original author fordw_spi_mmio.c Jean-Hugues Deschense should have some
+experience too. 
+-----------------------------------------------------------------------------
+Meego or Android doesn't mean much for a device driver, as all these OSes are
+using the same Linux kernel.
+
+Is "2-5 seconds boot time cuts" the only performance data you got? The current
+driver has 2 phases, first is the original one from me, the second is the 
+optimization by Alek Du which introduce the batch operation for TX/RX FIFO, 
+Alek mentioned the boot time cut too, so I guess the boot time gain is tested
+against the original driver, not the current mainstream driver, right?
+
+For the kernel version you mentioned, my thought is the kernel version diff
+between 2.6.35 and 2.6.37 doesn't mean much to a simple dw_spi device driver's
+performance? some users of dw_spi driver are still using 2.6.35 kernel with
+all new optimizations back ported, I have no power to force them upgrade the
+kernel, but if the dw_spi driver is the same, then the performance data is
+mostly trustable.
+
 > 
+> >
+> > Here are some general comments according to the commit logs:
+> > 1. I think the threaded irq handling is a good idea. And let driver
+> > chose to use poll or interrupt is good, some other spi controller
+> > driver has used that way for a long time
+> > 2. Why you remove the cs_change code, in some case, the controller
+> > is only be used by one device, we don't need do the config for
+> > every single spi_transfer
+> 
+> There is no guarantee that all the transfers in a given spi_message
+> have the same values for  speed_hz, bits_per_word, cs_change and
+> delay_usecs atleast nothing I could find put that restriction in
+> place. Since we need to deal with possible changes (although
+> unlikely) it gets rid some state we need to maintain and makes the
+> code path common for all transfers.
+
+right, if you look at the driver, cs_change is only judge condition
+for judge, speed_hz, bits_per_word's change are counted in too. Otherwise
+the driver should fail years ago.
+
+> 
+> > 3. Why do you remove the chip select control code, dw_spi
+> > controller hw has some problem in chip select controller by SER,
+> > and thus many devices has to use external GPIO has their chip
+> > select, this is real world usages!
+> 
+> Which devices/platforms are you referring to?  I was unable to find
+> any platforms or client drivers using this functionality. If they are
+> not public please respond internally.  In any case it is mute since I
+> already agreed to put is back in in my response to Grant.
+
+Some intel platforms used/are using that, I got requests to help them
+on it. Also some community guys are using that (though I don't know the
+detail),  as this piece of code is introduced by Shore George once made
+some change according to their specific change, see commit 052dc7c4
+
+> 
+> > 4. I saw you enable both TX/RX interrupt when doing interrupt
+> > transfer, spi devices' TX/RX are born to be simutaneous, when one
+> > word is sent over TX line, a RX word will be received from RX line,
+> > so both the orignal interrupt transfer handling written by me and
+> > the later optimization from Alek Du only enable TX interrupt, which
+> > will only generate half of IRQs comparing to enble both TX/RX, this
+> > is huge when the data rate is several Mb per second
+> 
+> I the current driver the txfltr register is set to 0 (FIFO empty) in
+> the interrupt transfer case which will drop chip select every FIFO
+> length bytes.
+> 
+> In my transfer setup the RX FIFO interrupt is set to a value lower
+> than the TX threshold which will keep both interrupts from firing at
+> the same time.
+> 
+> The TX interrupt will drive the transfer until there are less than
+> tx_threshold bytes left to transfer then by the RX interrupt to drive
+> the remainder of the transfer without dropping chip select.
+
+What I set is half-empty for TX interrupt, so the FIFO will get filled
+long before it's drained. I don't have any HW protocol analyzer or
+logical analyzer, so I can't totally guarantee it won't happen
+
+> 
+> > 5. Why do you change the logic of filling TX FIFO, the logic comes
+> > from use case that the dw_spi driver is dealing with several high
+> > speed devices.
+> >
+> 
+> The version of the driver that I started with did not have the
+> current fifo handling code.  I finished my changes before they showed
+> up in the AC tree or the upstream kernel.  I picked up most to the
+> fifo handling logic from the current driver with the exception of the
+> rxtx_gap calculation which was not needed with the way I am
+> maintaining the state and the addition of a check to avoid the
+> register read in tx_max/rx_max if all bytes have been sent/received.
+> This avoids some overhead in the interrupt case.
+
+If there is no performance again, I would hold on any change.
+
+> 
+> > Thanks,
+> > Feng
+> >

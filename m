@@ -1,11 +1,12 @@
-From: 13642347266-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 税/票--代/开
-Date: Sat, 18 Jun 2011 01:48:02 +0800
-Message-ID: <E1QXd9K-0001o2-20@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Google in Mobile 2011 Report
+Date: Sat, 18 Jun 2011 03:47:10 +0100
+Message-ID: <20110618034710.-841915750@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,15 +18,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yKOp09DS
-u7K/t9bXqNPDt6ItLcaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6
-ICAKICAgICAgICC4utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KRWRpdExpdmUgRW50ZXJwcmlzZSBpcyB0aGUgd29ybGQncyBtb3N0IHRlY2huaWNhbGx5
-IGFkdmFuY2VkIGNvbnRlbnQKYXV0aG9yaW5nIHRvb2wuIEV4cGVyaWVuY2UgdGhlIHBvd2VyIG9m
-IFRyYWNrIENoYW5nZXMsIElubGluZSBJbWFnZQpFZGl0aW5nIGFuZCBlbnN1cmUgY29udGVudCBp
-cyBjb21wbGlhbnQgd2l0aCBBY2Nlc3NpYmlsaXR5IENoZWNraW5nLgpodHRwOi8vcC5zZi5uZXQv
-c2Z1L2VwaG94LWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Google in Mobile 2011 Report
+------------------------------------------------------------------------------
+EditLive Enterprise is the world's most technically advanced content
+authoring tool. Experience the power of Track Changes, Inline Image
+Editing and ensure content is compliant with Accessibility Checking.
+http://p.sf.net/sfu/ephox-dev2dev

@@ -1,16 +1,14 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/pxa2xx: Remove unavailable ssp_type from documentation
-Date: Sat, 18 Jun 2011 22:39:17 -0600
-Message-ID: <BANLkTimroWr+meX2hiXDe58HMgsJT2cGbw@mail.gmail.com>
-References: <1308420126-19696-1-git-send-email-stefan@datenfreihafen.org>
+From: =?koi8-r?B?0M/M1d7J1Ngg?= <bethdudas-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQyMCDS1cI=?=
+Date: Mon, 20 Jun 2011 02:42:51 +0400
+Message-ID: <50FD6F30682C45B6B5D6BE91275B37C5@oecs>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Randy Dunlap <rdunlap-/UHa2rfvQTnk1uMJSBkQmQ@public.gmane.org>, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1308420126-19696-1-git-send-email-stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,75 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Applied, thanks.
-
-g.
-
-On Sat, Jun 18, 2011 at 12:02 PM, Stefan Schmidt
-<stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org> wrote:
-> Since commit
->
-> commit 2f1a74e5a2de0459139b85af95e901448726c375
-> Author: eric miao <eric.miao-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
-> Date: =A0 Wed Nov 21 18:50:53 2007 +0800
->
-> =A0 =A0[ARM] pxa: make pxa2xx_spi driver use ssp_request()/ssp_free()
->
-> the ssp_type field in struct pxa2xx_spi_master is no longer available.
->
-> Signed-off-by: Stefan Schmidt <stefan-OrPQZGeq07wqhVmZOOOmNx2eb7JE58TQ@public.gmane.org>
-> ---
-> =A0Documentation/spi/pxa2xx | =A0 =A05 -----
-> =A01 files changed, 0 insertions(+), 5 deletions(-)
->
-> diff --git a/Documentation/spi/pxa2xx b/Documentation/spi/pxa2xx
-> index 68a4fe3..641be56 100644
-> --- a/Documentation/spi/pxa2xx
-> +++ b/Documentation/spi/pxa2xx
-> @@ -22,15 +22,11 @@ Typically a SPI master is defined in the arch/.../mac=
-h-*/board-*.c as a
-> =A0found in include/linux/spi/pxa2xx_spi.h:
->
-> =A0struct pxa2xx_spi_master {
-> - =A0 =A0 =A0 enum pxa_ssp_type ssp_type;
-> =A0 =A0 =A0 =A0u32 clock_enable;
-> =A0 =A0 =A0 =A0u16 num_chipselect;
-> =A0 =A0 =A0 =A0u8 enable_dma;
-> =A0};
->
-> -The "pxa2xx_spi_master.ssp_type" field must have a value between 1 and 3=
- and
-> -informs the driver which features a particular SSP supports.
-> -
-> =A0The "pxa2xx_spi_master.clock_enable" field is used to enable/disable t=
-he
-> =A0corresponding SSP peripheral block in the "Clock Enable Register (CKEN=
-"). See
-> =A0the "PXA2xx Developer Manual" section "Clocks and Power Management".
-> @@ -61,7 +57,6 @@ static struct resource pxa_spi_nssp_resources[] =3D {
-> =A0};
->
-> =A0static struct pxa2xx_spi_master pxa_nssp_master_info =3D {
-> - =A0 =A0 =A0 .ssp_type =3D PXA25x_NSSP, /* Type of SSP */
-> =A0 =A0 =A0 =A0.clock_enable =3D CKEN_NSSP, /* NSSP Peripheral clock */
-> =A0 =A0 =A0 =A0.num_chipselect =3D 1, /* Matches the number of chips atta=
-ched to NSSP */
-> =A0 =A0 =A0 =A0.enable_dma =3D 1, /* Enables NSSP DMA */
-> --
-> 1.7.5.4
->
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
----------------------------------------------------------------------------=
----
-EditLive Enterprise is the world's most technically advanced content
-authoring tool. Experience the power of Track Changes, Inline Image
-Editing and ensure content is compliant with Accessibility Checking.
-http://p.sf.net/sfu/ephox-dev2dev
+5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQ1MSDS1cIK
+Cu3P08vXwSDA0i7MycPBIC0gMS45NzQyMDUgwcTSIC0gNDk1NyDS1cIKCu3P08vXwSDGydouzMnD
+wSAtIDcuNzk1NDg4IMHE0iAtIDg0MjEg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
+d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFZGl0TGl2ZSBFbnRlcnByaXNl
+IGlzIHRoZSB3b3JsZCdzIG1vc3QgdGVjaG5pY2FsbHkgYWR2YW5jZWQgY29udGVudAphdXRob3Jp
+bmcgdG9vbC4gRXhwZXJpZW5jZSB0aGUgcG93ZXIgb2YgVHJhY2sgQ2hhbmdlcywgSW5saW5lIElt
+YWdlCkVkaXRpbmcgYW5kIGVuc3VyZSBjb250ZW50IGlzIGNvbXBsaWFudCB3aXRoIEFjY2Vzc2li
+aWxpdHkgQ2hlY2tpbmcuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvZXBob3gtZGV2MmRldgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

@@ -1,33 +1,132 @@
-From: Chevignon <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Soldes_jusqu'=E0_-50%?=
-Date: Wed, 22 Jun 2011 10:46:28 +0200 (CEST)
-Message-ID: <3236305005.120879.1308732388874@p4enginex1.emv2.com>
-Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Axel Lin <axel.lin@gmail.com>
+Subject: [PATCH] spi: omap2-mcspi: fix omap2_mcspi_probe error handling
+Date: Wed, 22 Jun 2011 21:57:57 +0800
+Message-ID: <1308751077.4846.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Samuel Ortiz <sameo@linux.intel.com>,
+	Juha Yrjola <juha.yrjola@nokia.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This patch includes below fixes for error handling:
+1. return proper error if kcalloc for mcspi->dma_channels fails
+2. return proper error if omap2_mcspi_master_setup fails
+3. properly release allocated resources in error paths and
+   improve the naming of goto labels.
 
-
-Chevignon : Soldes jusqu'=E0 -50% sur une selection d'articles d=E8s le 22 =
-juin en boutique et sur notre E-shop
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJOA9XnGHxKLIMwKPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VIq
----------------------------------------------------------------------------=
+Signed-off-by: Axel Lin <axel.lin@gmail.com>
 ---
-Simplify data backup and recovery for your virtual environment with vRanger.
-Installation's a snap, and flexible recovery options mean your data is safe,
-secure and there when you need it. Data protection magic?
-Nope - It's vRanger. Get your free trial download today.
-http://p.sf.net/sfu/quest-sfdev2dev
+ drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++++------------------
+ 1 files changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index fde3a2d..74f444d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1087,7 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	struct omap2_mcspi_platform_config *pdata = pdev->dev.platform_data;
+ 	struct omap2_mcspi	*mcspi;
+ 	struct resource		*r;
+-	int			status = 0, i;
++	int			status, i;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+ 	if (master == NULL) {
+@@ -1114,12 +1114,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (r == NULL) {
+ 		status = -ENODEV;
+-		goto err1;
++		goto err_put_master;
+ 	}
+ 	if (!request_mem_region(r->start, resource_size(r),
+ 				dev_name(&pdev->dev))) {
+ 		status = -EBUSY;
+-		goto err1;
++		goto err_put_master;
+ 	}
+ 
+ 	r->start += pdata->regs_offset;
+@@ -1129,7 +1129,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	if (!mcspi->base) {
+ 		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+ 		status = -ENOMEM;
+-		goto err2;
++		goto err_release_mem_region;
+ 	}
+ 
+ 	mcspi->dev = &pdev->dev;
+@@ -1143,8 +1143,10 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 			sizeof(struct omap2_mcspi_dma),
+ 			GFP_KERNEL);
+ 
+-	if (mcspi->dma_channels == NULL)
+-		goto err2;
++	if (mcspi->dma_channels == NULL) {
++		status = -ENOMEM;
++		goto err_iounmap;
++	}
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		char dma_ch_name[14];
+@@ -1156,7 +1158,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
+ 			status = -ENODEV;
+-			break;
++			goto err_free_dma_channels;
+ 		}
+ 
+ 		mcspi->dma_channels[i].dma_rx_channel = -1;
+@@ -1167,7 +1169,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
+ 			status = -ENODEV;
+-			break;
++			goto err_free_dma_channels;
+ 		}
+ 
+ 		mcspi->dma_channels[i].dma_tx_channel = -1;
+@@ -1176,23 +1178,24 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	if (status || omap2_mcspi_master_setup(mcspi) < 0)
+-		goto err3;
++	status = omap2_mcspi_master_setup(mcspi);
++	if (status)
++		goto err_free_dma_channels;
+ 
+ 	status = spi_register_master(master);
+ 	if (status < 0)
+-		goto err4;
++		goto err_free_dma_channels;
+ 
+-	return status;
++	return 0;
+ 
+-err4:
+-	spi_master_put(master);
+-err3:
++err_free_dma_channels:
+ 	kfree(mcspi->dma_channels);
+-err2:
+-	release_mem_region(r->start, resource_size(r));
++err_iounmap:
+ 	iounmap(mcspi->base);
+-err1:
++err_release_mem_region:
++	release_mem_region(r->start, resource_size(r));
++err_put_master:
++	spi_master_put(master);
+ 	return status;
+ }
+ 
+-- 
+1.7.4.1

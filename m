@@ -1,69 +1,170 @@
-From: "=?gb2312?Q?=D7=EE=D0=C2=BA=A3=CD=E2=C2=F2=BC=D2?="
-	<test-m7kR7JSYlWqGGiaOOsIlZSwD8/FfD2ys@public.gmane.org>
-Subject: [SPAM]
-	=?gb2312?Q?2011=B4=BA=BC=BE109=BD=EC=B9=E3=BD=BB=BB=E1=C2=F2=BC=D2=A1=A2=D5=B9=BB=E1=C2=F2=BC=D2=A3=ACB2B=D1=AF=C5=CC=C2=F2=BC=D2=B9=B2256=CD=F2_=BD=F6298=D4=AA_?=
-Date: Wed, 22 Jun 2011 15:22:33 +0000 (UTC)
-Message-ID: <BD-FP1alxyPyF1BcI3E000012dc@diamondfinancial.ca>
-Reply-To: 298buyersceo-O5WfVfzUwx8@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: omap2-mcspi: fix omap2_mcspi_probe error handling
+Date: Wed, 22 Jun 2011 09:29:05 -0600
+Message-ID: <BANLkTimQ55xBwzoxnSAKznG-GTHZ+LtShw@mail.gmail.com>
+References: <1308751077.4846.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?sjobergr@mail=2Enih=2Egov?=" <sjobergr-2loH/HJHQuifRvmTrFJqzg@public.gmane.org>,
-	"=?gb2312?Q?rickymartinrealtor@gmail=2Ecom?="
-	<rickymartinrealtor-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"=?gb2312?Q?aerickson@dpstelecom=2Ecom?
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Thu, 22 Sep 2016 20:07:11 +0800
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel@vger.kernel.org, Samuel Ortiz <sameo@linux.intel.com>,
+	Juha Yrjola <juha.yrjola@nokia.com>,
+	spi-devel-general@lists.sourceforge.net
+To: Axel Lin <axel.lin@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1308751077.4846.1.camel@phoenix>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CjIwMTG0ury+MTA5vey54727u+HC8rzSoaLVubvhwvK80qOsQjJC0a/FzMLyvNK5sjI1Ns3yIL32
-Mjk41KohCgrSu7myOLj2sPwoyv2+3crHyKvQ0NK1tcSjrLC01dXQ0NK1t9a6w8Dgo6yyosfSv8nS
-1LC01dW52Lz8tMqy6dGvtcQpo7ogCjGjrDIwMTG0ury+MTA5vey54727u+HC8rzSz9azodGvxczK
-/b7dv+LQws/Ks/bCr6Oss6y8ttDCz8rC8rzSo6zQws/Kyv2+3aOsyN3S17PJtaWjoSAKMqOsubrC
-8rrzv8nS1MPit9G4/NDCMjAxMcfvvL654727u+ErMjAxMrS6vL654727u+HC8rzSyv2+3aGjzKuz
-rNa1wcuhowozo6zX7tDCyKvH8sLyvNK/4iy5sjQ1MTY2MMz1yv2+3aGjICjX7tDCuPzQwsjVxtog
-MjAxMS0wNS0xNsjVKQo0o6wyMDA4xOosMjAwOcTqLDIwMTDE6iC0ury+K8fvvL654727u+HC8rzS
-w/vCvKOsMTAzIDEwNCAxMDUgMTA2IDEwNyAxMDggubLB+b3sILmyMTIwLjbN8sr9vt2howo1o6wy
-MDEwxOq5+rzKtNnP+tCtu+GjqFBQQUmjqbPJ1LHD+7WlIFBQQUkgTWVtYmVycyBEaXJlY3Rvcnmj
-rLfHs6PW2NKqtcS088LyvNKhowo2o6wyMDEwxOq1vc/juNuyybm6tcS5+s3iv83Iy8P7wrwoz+O4
-28Ozt6K+1szhuakpo6y5sjcuMs3yyv2+3aOss6y8ttbY0qq1xMLyvNKhowo3o6w0OC42OM3yzPXX
-7tDCwvK80tGvxcyjrLm6wvK688O/1MK4/NDCIDEtMs3yzPWjrLD8wKgysr+31qOsMaOs1+7QwrXE
-0a/FzCAyo6zX7tDCtcTVubvhwvK80qGjw+K30bj80MIzNrj21MKhowo4o6zLzbzb1rUyMDAw1Kq1
-xMvEv+5FbWFpbMi6LbeiyO28/iy2vMrHxsa94rDmLMTc08C+w8q508MsysfEv8ewytCzocnP1+66
-w7XEyLott6K7+sHLoaMgCgq5siAyNTbN8rj2wvK80qOsw7+49r7509BFbWFpbC4gCiAK0qq1xNel
-vfTBqs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTBqs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTB
-qs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTBqs+1UVE6IDEwMjcyNDcwNTgKu/LV38GivLS72Li0
-08rP5DogMTAyNzI0NzA1OEBxcS5jb20Ku/LV38GivLS72Li008rP5DogMTAyNzI0NzA1OEBxcS5j
-b20Ku/LV38GivLS72Li008rP5DogMTAyNzI0NzA1OEBxcS5jb20KCgoKs8/Qxc6qsb6jrMjnufuy
-u9DFyM6xvsjLLL/J0tTX38zUsaa9u9LXLMrVtb3K/b7d0enWpDEwzOy689TZuLa/7izV4srHttTE
-+tfuusO1xLGj1c/By6GjIAoKCgrQoby8x8mjuiAKsNEyNTbN8sLyvNLIurei0tTSu7Hpo6y++bvh
-09DK/cenuPa72Li0tcSjrNXi0Km+zcrHt8ezo7jf1srBv7XEwvK80qGjIArKudPDztLDx8vNtcTI
-ureiyO28/qOsMy01zOy+zb/JzerIq7eizeqhowoKCgoKCrnjvbu74cLyvNKwtLL6xrfA4LHwt9bA
-4KOst9bOqtLUz8K8uMDgo7oKMSCw7LmryeixuAoyILHg1q+8sMzZzPq5pNLVxrcKMyCyo8GnCjQg
-ss2z+NPDvt8KNSCztcG+CjYgtPPQzbv60LW8sMnosbgKNyC159fTtefG+Ao4ILXn19PP+7fRxrcK
-OSC3xNavCjEwILf+17AKMTEguPbIy7ukwO0KMTIguaSzzLv60LUKMTMguaS+3woxNCC7r7mkCjE1
-ILzGy+O7+rywzajRtgoxNiC80r7T08PGtwoxNyC80r7T17DKzgoxOCC80r7fCjE5ILzS08O158b3
-CjIwIL2o1v68sNewys6yxMHPCjIxIL3ayNXTw8a3CjIyIMDxxre8sNT5xrcKMjMgxKbN0LO1CjI0
-IMb7s7XF5Lz+CjI1IMqzxrcKMjYgzNW0yQoyNyDM+sqvCjI4IM3mvt8KMjkgzsDUoQozMCDO5b3w
-CjMxINCh0M27+tC1CjMyINCsCjMzINDdz9DTw8a3CjM0INK9wcYKMzUg1KHK0rL6xrcKMzYg1LDB
-1gozNyDV1cP3svrGtwozOCDW07Ht0du+tQozOSDX1NDQs7UKNDAgsPwKCgrQws/Kyv2+3S2zybWl
-wsq8q7jfCtDCz8rK/b7dLbPJtaXCyryruN8K0MLPysr9vt0ts8m1pcLKvKu43wrQws/Kyv2+3S2z
-ybWlwsq8q7jfCtDCz8rK/b7dLbPJtaXCyryruN8KCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2lt
-cGxpZnkgZGF0YSBiYWNrdXAgYW5kIHJlY292ZXJ5IGZvciB5b3VyIHZpcnR1YWwgZW52aXJvbm1l
-bnQgd2l0aCB2UmFuZ2VyLgpJbnN0YWxsYXRpb24ncyBhIHNuYXAsIGFuZCBmbGV4aWJsZSByZWNv
-dmVyeSBvcHRpb25zIG1lYW4geW91ciBkYXRhIGlzIHNhZmUsCnNlY3VyZSBhbmQgdGhlcmUgd2hl
-biB5b3UgbmVlZCBpdC4gRGF0YSBwcm90ZWN0aW9uIG1hZ2ljPwpOb3BlIC0gSXQncyB2UmFuZ2Vy
-LiBHZXQgeW91ciBmcmVlIHRyaWFsIGRvd25sb2FkIHRvZGF5LgpodHRwOi8vcC5zZi5uZXQvc2Z1
-L3F1ZXN0LXNmZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Wed, Jun 22, 2011 at 7:57 AM, Axel Lin <axel.lin@gmail.com> wrote:
+> This patch includes below fixes for error handling:
+> 1. return proper error if kcalloc for mcspi->dma_channels fails
+> 2. return proper error if omap2_mcspi_master_setup fails
+> 3. properly release allocated resources in error paths and
+> =A0 improve the naming of goto labels.
+
+Is this to be applied immediately, or queued up in linux-next for v3.1?
+
+g.
+
+>
+> Signed-off-by: Axel Lin <axel.lin@gmail.com>
+> ---
+> =A0drivers/spi/spi-omap2-mcspi.c | =A0 39 +++++++++++++++++++++------=
+------------
+> =A01 files changed, 21 insertions(+), 18 deletions(-)
+>
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mc=
+spi.c
+> index fde3a2d..74f444d 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -1087,7 +1087,7 @@ static int __init omap2_mcspi_probe(struct plat=
+form_device *pdev)
+> =A0 =A0 =A0 =A0struct omap2_mcspi_platform_config *pdata =3D pdev->de=
+v.platform_data;
+> =A0 =A0 =A0 =A0struct omap2_mcspi =A0 =A0 =A0*mcspi;
+> =A0 =A0 =A0 =A0struct resource =A0 =A0 =A0 =A0 *r;
+> - =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D =
+0, i;
+> + =A0 =A0 =A0 int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status, i;
+>
+> =A0 =A0 =A0 =A0master =3D spi_alloc_master(&pdev->dev, sizeof *mcspi)=
+;
+> =A0 =A0 =A0 =A0if (master =3D=3D NULL) {
+> @@ -1114,12 +1114,12 @@ static int __init omap2_mcspi_probe(struct pl=
+atform_device *pdev)
+> =A0 =A0 =A0 =A0r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> =A0 =A0 =A0 =A0if (r =3D=3D NULL) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -ENODEV;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_put_master;
+> =A0 =A0 =A0 =A0}
+> =A0 =A0 =A0 =A0if (!request_mem_region(r->start, resource_size(r),
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_na=
+me(&pdev->dev))) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -EBUSY;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err1;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_put_master;
+> =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0r->start +=3D pdata->regs_offset;
+> @@ -1129,7 +1129,7 @@ static int __init omap2_mcspi_probe(struct plat=
+form_device *pdev)
+> =A0 =A0 =A0 =A0if (!mcspi->base) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&pdev->dev, "can't ioremap MCS=
+PI\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -ENOMEM;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err2;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_release_mem_region;
+> =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0mcspi->dev =3D &pdev->dev;
+> @@ -1143,8 +1143,10 @@ static int __init omap2_mcspi_probe(struct pla=
+tform_device *pdev)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0sizeof(struct omap2_mc=
+spi_dma),
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0GFP_KERNEL);
+>
+> - =A0 =A0 =A0 if (mcspi->dma_channels =3D=3D NULL)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err2;
+> + =A0 =A0 =A0 if (mcspi->dma_channels =3D=3D NULL) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D -ENOMEM;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_iounmap;
+> + =A0 =A0 =A0 }
+>
+> =A0 =A0 =A0 =A0for (i =3D 0; i < master->num_chipselect; i++) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0char dma_ch_name[14];
+> @@ -1156,7 +1158,7 @@ static int __init omap2_mcspi_probe(struct plat=
+form_device *pdev)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (!dma_res) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&pdev->dev, "c=
+annot get DMA RX channel\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -ENODEV;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_free_dma_chann=
+els;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mcspi->dma_channels[i].dma_rx_channel =
+=3D -1;
+> @@ -1167,7 +1169,7 @@ static int __init omap2_mcspi_probe(struct plat=
+form_device *pdev)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0if (!dma_res) {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&pdev->dev, "c=
+annot get DMA TX channel\n");
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0status =3D -ENODEV;
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 break;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_free_dma_chann=
+els;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0}
+>
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0mcspi->dma_channels[i].dma_tx_channel =
+=3D -1;
+> @@ -1176,23 +1178,24 @@ static int __init omap2_mcspi_probe(struct pl=
+atform_device *pdev)
+>
+> =A0 =A0 =A0 =A0pm_runtime_enable(&pdev->dev);
+>
+> - =A0 =A0 =A0 if (status || omap2_mcspi_master_setup(mcspi) < 0)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err3;
+> + =A0 =A0 =A0 status =3D omap2_mcspi_master_setup(mcspi);
+> + =A0 =A0 =A0 if (status)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_free_dma_channels;
+>
+> =A0 =A0 =A0 =A0status =3D spi_register_master(master);
+> =A0 =A0 =A0 =A0if (status < 0)
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err4;
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 goto err_free_dma_channels;
+>
+> - =A0 =A0 =A0 return status;
+> + =A0 =A0 =A0 return 0;
+>
+> -err4:
+> - =A0 =A0 =A0 spi_master_put(master);
+> -err3:
+> +err_free_dma_channels:
+> =A0 =A0 =A0 =A0kfree(mcspi->dma_channels);
+> -err2:
+> - =A0 =A0 =A0 release_mem_region(r->start, resource_size(r));
+> +err_iounmap:
+> =A0 =A0 =A0 =A0iounmap(mcspi->base);
+> -err1:
+> +err_release_mem_region:
+> + =A0 =A0 =A0 release_mem_region(r->start, resource_size(r));
+> +err_put_master:
+> + =A0 =A0 =A0 spi_master_put(master);
+> =A0 =A0 =A0 =A0return status;
+> =A0}
+>
+> --
+> 1.7.4.1
+>
+>
+>
+>
+
+
+
+--=20
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

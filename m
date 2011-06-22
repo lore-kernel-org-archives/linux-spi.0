@@ -1,17 +1,13 @@
-From: "=?gb2312?Q?=D7=EE=D0=C2=BA=A3=CD=E2=C2=F2=BC=D2?=" <root-OQfv878mSYE@public.gmane.org>
-Subject: =?gb2312?Q?2011=B4=BA=BC=BE109=BD=EC=B9=E3=BD=BB=BB=E1=C2=F2=BC=D2=A1=A2=D5=B9=BB=E1=C2=F2=BC=D2=A3=ACB2B=D1=AF=C5=CC=C2=F2=BC=D2=B9=B2256=CD=F2_=BD=F6298=D4=AA_?=
-Date: Wed, 22 Jun 2011 07:27:06 +0000 (UTC)
-Message-ID: <20110622072812.324255475C@mail.jp2.cl>
-Reply-To: 298buyersceo-O5WfVfzUwx8@public.gmane.org
+From: Chevignon <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Soldes_jusqu'=E0_-50%?=
+Date: Wed, 22 Jun 2011 10:46:28 +0200 (CEST)
+Message-ID: <3236305005.120879.1308732388874@p4enginex1.emv2.com>
+Reply-To: newslette-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?sjobergr@mail=2Enih=2Egov?=" <sjobergr-2loH/HJHQuifRvmTrFJqzg@public.gmane.org>,
-	"=?gb2312?Q?rickymartinrealtor@gmail=2Ecom?="
-	<rickymartinrealtor-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"=?gb2312?Q?aerickson@dpstelecom=2Ecom?
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Thu, 22 Sep 2016 15:21:51 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,46 +18,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CjIwMTG0ury+MTA5vey54727u+HC8rzSoaLVubvhwvK80qOsQjJC0a/FzMLyvNK5sjI1Ns3yIL32
-Mjk41KohCgrSu7myOLj2sPwoyv2+3crHyKvQ0NK1tcSjrLC01dXQ0NK1t9a6w8Dgo6yyosfSv8nS
-1LC01dW52Lz8tMqy6dGvtcQpo7ogCjGjrDIwMTG0ury+MTA5vey54727u+HC8rzSz9azodGvxczK
-/b7dv+LQws/Ks/bCr6Oss6y8ttDCz8rC8rzSo6zQws/Kyv2+3aOsyN3S17PJtaWjoSAKMqOsubrC
-8rrzv8nS1MPit9G4/NDCMjAxMcfvvL654727u+ErMjAxMrS6vL654727u+HC8rzSyv2+3aGjzKuz
-rNa1wcuhowozo6zX7tDCyKvH8sLyvNK/4iy5sjQ1MTY2MMz1yv2+3aGjICjX7tDCuPzQwsjVxtog
-MjAxMS0wNS0xNsjVKQo0o6wyMDA4xOosMjAwOcTqLDIwMTDE6iC0ury+K8fvvL654727u+HC8rzS
-w/vCvKOsMTAzIDEwNCAxMDUgMTA2IDEwNyAxMDggubLB+b3sILmyMTIwLjbN8sr9vt2howo1o6wy
-MDEwxOq5+rzKtNnP+tCtu+GjqFBQQUmjqbPJ1LHD+7WlIFBQQUkgTWVtYmVycyBEaXJlY3Rvcnmj
-rLfHs6PW2NKqtcS088LyvNKhowo2o6wyMDEwxOq1vc/juNuyybm6tcS5+s3iv83Iy8P7wrwoz+O4
-28Ozt6K+1szhuakpo6y5sjcuMs3yyv2+3aOss6y8ttbY0qq1xMLyvNKhowo3o6w0OC42OM3yzPXX
-7tDCwvK80tGvxcyjrLm6wvK688O/1MK4/NDCIDEtMs3yzPWjrLD8wKgysr+31qOsMaOs1+7QwrXE
-0a/FzCAyo6zX7tDCtcTVubvhwvK80qGjw+K30bj80MIzNrj21MKhowo4o6zLzbzb1rUyMDAw1Kq1
-xMvEv+5FbWFpbMi6LbeiyO28/iy2vMrHxsa94rDmLMTc08C+w8q508MsysfEv8ewytCzocnP1+66
-w7XEyLott6K7+sHLoaMgCgq5siAyNTbN8rj2wvK80qOsw7+49r7509BFbWFpbC4gCiAK0qq1xNel
-vfTBqs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTBqs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTB
-qs+1UVE6IDEwMjcyNDcwNTgK0qq1xNelvfTBqs+1UVE6IDEwMjcyNDcwNTgKu/LV38GivLS72Li0
-08rP5DogMTAyNzI0NzA1OEBxcS5jb20Ku/LV38GivLS72Li008rP5DogMTAyNzI0NzA1OEBxcS5j
-b20Ku/LV38GivLS72Li008rP5DogMTAyNzI0NzA1OEBxcS5jb20KCgoKs8/Qxc6qsb6jrMjnufuy
-u9DFyM6xvsjLLL/J0tTX38zUsaa9u9LXLMrVtb3K/b7d0enWpDEwzOy689TZuLa/7izV4srHttTE
-+tfuusO1xLGj1c/By6GjIAoKCgrQoby8x8mjuiAKsNEyNTbN8sLyvNLIurei0tTSu7Hpo6y++bvh
-09DK/cenuPa72Li0tcSjrNXi0Km+zcrHt8ezo7jf1srBv7XEwvK80qGjIArKudPDztLDx8vNtcTI
-ureiyO28/qOsMy01zOy+zb/JzerIq7eizeqhowoKCgoKCrnjvbu74cLyvNKwtLL6xrfA4LHwt9bA
-4KOst9bOqtLUz8K8uMDgo7oKMSCw7LmryeixuAoyILHg1q+8sMzZzPq5pNLVxrcKMyCyo8GnCjQg
-ss2z+NPDvt8KNSCztcG+CjYgtPPQzbv60LW8sMnosbgKNyC159fTtefG+Ao4ILXn19PP+7fRxrcK
-OSC3xNavCjEwILf+17AKMTEguPbIy7ukwO0KMTIguaSzzLv60LUKMTMguaS+3woxNCC7r7mkCjE1
-ILzGy+O7+rywzajRtgoxNiC80r7T08PGtwoxNyC80r7T17DKzgoxOCC80r7fCjE5ILzS08O158b3
-CjIwIL2o1v68sNewys6yxMHPCjIxIL3ayNXTw8a3CjIyIMDxxre8sNT5xrcKMjMgxKbN0LO1CjI0
-IMb7s7XF5Lz+CjI1IMqzxrcKMjYgzNW0yQoyNyDM+sqvCjI4IM3mvt8KMjkgzsDUoQozMCDO5b3w
-CjMxINCh0M27+tC1CjMyINCsCjMzINDdz9DTw8a3CjM0INK9wcYKMzUg1KHK0rL6xrcKMzYg1LDB
-1gozNyDV1cP3svrGtwozOCDW07Ht0du+tQozOSDX1NDQs7UKNDAgsPwKCgrQws/Kyv2+3S2zybWl
-wsq8q7jfCtDCz8rK/b7dLbPJtaXCyryruN8K0MLPysr9vt0ts8m1pcLKvKu43wrQws/Kyv2+3S2z
-ybWlwsq8q7jfCtDCz8rK/b7dLbPJtaXCyryruN8KCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2lt
-cGxpZnkgZGF0YSBiYWNrdXAgYW5kIHJlY292ZXJ5IGZvciB5b3VyIHZpcnR1YWwgZW52aXJvbm1l
-bnQgd2l0aCB2UmFuZ2VyLgpJbnN0YWxsYXRpb24ncyBhIHNuYXAsIGFuZCBmbGV4aWJsZSByZWNv
-dmVyeSBvcHRpb25zIG1lYW4geW91ciBkYXRhIGlzIHNhZmUsCnNlY3VyZSBhbmQgdGhlcmUgd2hl
-biB5b3UgbmVlZCBpdC4gRGF0YSBwcm90ZWN0aW9uIG1hZ2ljPwpOb3BlIC0gSXQncyB2UmFuZ2Vy
-LiBHZXQgeW91ciBmcmVlIHRyaWFsIGRvd25sb2FkIHRvZGF5LgpodHRwOi8vcC5zZi5uZXQvc2Z1
-L3F1ZXN0LXNmZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+
+Chevignon : Soldes jusqu'=E0 -50% sur une selection d'articles d=E8s le 22 =
+juin en boutique et sur notre E-shop
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJOA9XnGHxKLIMwKPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VIq
+---------------------------------------------------------------------------=
+---
+Simplify data backup and recovery for your virtual environment with vRanger.
+Installation's a snap, and flexible recovery options mean your data is safe,
+secure and there when you need it. Data protection magic?
+Nope - It's vRanger. Get your free trial download today.
+http://p.sf.net/sfu/quest-sfdev2dev

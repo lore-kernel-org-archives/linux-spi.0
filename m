@@ -1,52 +1,158 @@
-From: dirk.brandewie@gmail.com
-Subject: [PATCH 10/11] spi-dw: Move checking of max_speed_hz value to be a prerequisite in spi_dw_setup
-Date: Wed, 22 Jun 2011 19:00:12 -0700
-Message-ID: <1308794413-11069-11-git-send-email-dirk.brandewie@gmail.com>
+From: dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: [PATCH 05/11] spi-dw: split spi_dw_enable_chip() into
+	spi_dw_enable()/spi_dw_disable()
+Date: Wed, 22 Jun 2011 19:00:07 -0700
+Message-ID: <1308794413-11069-6-git-send-email-dirk.brandewie@gmail.com>
 References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com>
-Cc: Dirk Brandewie <dirk.brandewie@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1308794413-11069-1-git-send-email-dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Dirk Brandewie <dirk.brandewie@gmail.com>
+From: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Move the check of spi->max_speed_hz to be a prerequisite of
-spi_dw_setup().
+Split spi_dw_enable_chip() into two inline functions for readabilty.
 
-Signed-off-by: Dirk Brandewie <dirk.brandewie@gmail.com>
+Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-dw.c |    9 +++++----
- 1 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi-dw-mid.c |    4 ++--
+ drivers/spi/spi-dw.c     |   16 ++++++++--------
+ drivers/spi/spi-dw.h     |    9 +++++++--
+ 3 files changed, 17 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index 7659cef..78e64d3 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -115,7 +115,7 @@ static int mid_spi_dma_transfer(struct spi_dw *dws, int cs_change)
+ 
+ 	/* 1. setup DMA related registers */
+ 	if (cs_change) {
+-		spi_dw_enable_chip(dws, 0);
++		spi_dw_disable(dws);
+ 		dw_writew(dws, dmardlr, 0xf);
+ 		dw_writew(dws, dmatdlr, 0x10);
+ 		if (dws->tx_dma)
+@@ -123,7 +123,7 @@ static int mid_spi_dma_transfer(struct spi_dw *dws, int cs_change)
+ 		if (dws->rx_dma)
+ 			dma_ctrl |= 0x1;
+ 		dw_writew(dws, dmacr, dma_ctrl);
+-		spi_dw_enable_chip(dws, 1);
++		spi_dw_enable(dws);
+ 	}
+ 
+ 	dws->dma_chan_done = 0;
 diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 35b952b..7b3f607 100644
+index 3d98e4c..ad92826 100644
 --- a/drivers/spi/spi-dw.c
 +++ b/drivers/spi/spi-dw.c
-@@ -634,6 +634,11 @@ static int spi_dw_setup(struct spi_device *spi)
- 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
- 		return -EINVAL;
+@@ -293,7 +293,7 @@ static void spi_dw_giveback(struct spi_dw *dws)
+ static void spi_dw_int_error_stop(struct spi_dw *dws, const char *msg)
+ {
+ 	/* Stop the hw */
+-	spi_dw_enable_chip(dws, 0);
++	spi_dw_disable(dws);
  
-+	if (!spi->max_speed_hz) {
-+		dev_err(&spi->dev, "No max speed HZ parameter\n");
-+		return -EINVAL;
-+	}
-+
- 	/* Only alloc on first setup */
- 	chip = spi_get_ctldata(spi);
- 	if (!chip) {
-@@ -675,10 +680,6 @@ static int spi_dw_setup(struct spi_device *spi)
+ 	dev_err(&dws->master->dev, "%s\n", msg);
+ 	dws->cur_msg->state = ERROR_STATE;
+@@ -518,7 +518,7 @@ static void spi_dw_pump_transfers(unsigned long data)
+ 	 *	3. control value changes
+ 	 */
+ 	if (dw_readw(dws, ctrl0) != cr0 || cs_change || clk_div || imask) {
+-		spi_dw_enable_chip(dws, 0);
++		spi_dw_disable(dws);
+ 
+ 		if (dw_readw(dws, ctrl0) != cr0)
+ 			dw_writew(dws, ctrl0, cr0);
+@@ -533,7 +533,7 @@ static void spi_dw_pump_transfers(unsigned long data)
+ 		if (txint_level)
+ 			dw_writew(dws, txfltr, txint_level);
+ 
+-		spi_dw_enable_chip(dws, 1);
++		spi_dw_enable(dws);
+ 		if (cs_change)
+ 			dws->prev_chip = chip;
  	}
- 	chip->bits_per_word = spi->bits_per_word;
+@@ -776,9 +776,9 @@ static int destroy_queue(struct spi_dw *dws)
+ /* Restart the controller, disable all interrupts, clean rx fifo */
+ static void spi_dw_hw_init(struct spi_dw *dws)
+ {
+-	spi_dw_enable_chip(dws, 0);
++	spi_dw_disable(dws);
+ 	spi_dw_mask_intr(dws, 0xff);
+-	spi_dw_enable_chip(dws, 1);
++	spi_dw_enable(dws);
  
--	if (!spi->max_speed_hz) {
--		dev_err(&spi->dev, "No max speed HZ parameter\n");
--		return -EINVAL;
--	}
- 	chip->speed_hz = spi->max_speed_hz;
+ 	/*
+ 	 * Try to detect the FIFO depth if not set by interface driver,
+@@ -868,7 +868,7 @@ err_queue_alloc:
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
+ err_diable_hw:
+-	spi_dw_enable_chip(dws, 0);
++	spi_dw_disable(dws);
+ 	free_irq(dws->irq, dws);
+ err_free_master:
+ 	spi_master_put(master);
+@@ -893,7 +893,7 @@ void __devexit spi_dw_remove_host(struct spi_dw *dws)
  
- 	chip->tmode = 0; /* Tx & Rx */
+ 	if (dws->dma_ops && dws->dma_ops->dma_exit)
+ 		dws->dma_ops->dma_exit(dws);
+-	spi_dw_enable_chip(dws, 0);
++	spi_dw_disable(dws);
+ 	/* Disable clk */
+ 	spi_dw_set_clk(dws, 0);
+ 	free_irq(dws->irq, dws);
+@@ -910,7 +910,7 @@ int spi_dw_suspend_host(struct spi_dw *dws)
+ 	ret = spi_dw_stop_queue(dws);
+ 	if (ret)
+ 		return ret;
+-	spi_dw_enable_chip(dws, 0);
++	spi_dw_disable(dws);
+ 	spi_dw_set_clk(dws, 0);
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 6a1ee63..860bc34 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -161,9 +161,14 @@ struct spi_dw {
+ #define dw_writew(dw, name, val) \
+ 	__raw_writew((val), &(((struct spi_dw_reg *)dw->regs)->name))
+ 
+-static inline void spi_dw_enable_chip(struct spi_dw *dws, int enable)
++static inline void spi_dw_enable(struct spi_dw *dws)
+ {
+-	dw_writel(dws, ssienr, (enable ? 1 : 0));
++	dw_writel(dws, ssienr, 1);
++}
++
++static inline void spi_dw_disable(struct spi_dw *dws)
++{
++	dw_writel(dws, ssienr, 0);
+ }
+ 
+ static inline void spi_dw_set_clk(struct spi_dw *dws, u16 div)
 -- 
 1.7.3.4
+
+
+------------------------------------------------------------------------------
+Simplify data backup and recovery for your virtual environment with vRanger.
+Installation's a snap, and flexible recovery options mean your data is safe,
+secure and there when you need it. Data protection magic?
+Nope - It's vRanger. Get your free trial download today.
+http://p.sf.net/sfu/quest-sfdev2dev

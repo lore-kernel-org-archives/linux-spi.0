@@ -1,7 +1,7 @@
 From: dirk.brandewie@gmail.com
-Subject: [PATCH 01/11] spi-dw: expose platform data stucture.
-Date: Wed, 22 Jun 2011 19:00:03 -0700
-Message-ID: <1308794413-11069-2-git-send-email-dirk.brandewie@gmail.com>
+Subject: [PATCH 10/11] spi-dw: Move checking of max_speed_hz value to be a prerequisite in spi_dw_setup
+Date: Wed, 22 Jun 2011 19:00:12 -0700
+Message-ID: <1308794413-11069-11-git-send-email-dirk.brandewie@gmail.com>
 References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com>
 Cc: Dirk Brandewie <dirk.brandewie@gmail.com>
 To: linux-kernel@vger.kernel.org,
@@ -13,122 +13,40 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Dirk Brandewie <dirk.brandewie@gmail.com>
 
-Expose the platform data structure for use by client drivers. ATM
-there are not any in-tree drivers using the driver (that I can
-find). This patch exposes the platform data needed for client drivers.
+Move the check of spi->max_speed_hz to be a prerequisite of
+spi_dw_setup().
 
 Signed-off-by: Dirk Brandewie <dirk.brandewie@gmail.com>
 ---
- drivers/spi/spi-dw.c       |    3 ---
- drivers/spi/spi-dw.h       |   18 +-----------------
- include/linux/spi/spi-dw.h |   42 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 43 insertions(+), 20 deletions(-)
- create mode 100644 include/linux/spi/spi-dw.h
+ drivers/spi/spi-dw.c |    9 +++++----
+ 1 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index ece5f69..61f7ed8 100644
+index 35b952b..7b3f607 100644
 --- a/drivers/spi/spi-dw.c
 +++ b/drivers/spi/spi-dw.c
-@@ -38,9 +38,6 @@
- #define QUEUE_RUNNING	0
- #define QUEUE_STOPPED	1
+@@ -634,6 +634,11 @@ static int spi_dw_setup(struct spi_device *spi)
+ 	if (spi->bits_per_word != 8 && spi->bits_per_word != 16)
+ 		return -EINVAL;
  
--#define MRST_SPI_DEASSERT	0
--#define MRST_SPI_ASSERT		1
--
- /* Slave spi_dev related */
- struct chip_data {
- 	u16 cr0;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 7a5e78d..92bee30 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -3,6 +3,7 @@
- 
- #include <linux/io.h>
- #include <linux/scatterlist.h>
-+#include <linux/spi/spi-dw.h>
- 
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
-@@ -49,11 +50,6 @@
- /* TX RX interrupt level threshold, max can be 256 */
- #define SPI_INT_THRESHOLD		32
- 
--enum dw_ssi_type {
--	SSI_MOTO_SPI = 0,
--	SSI_TI_SSP,
--	SSI_NS_MICROWIRE,
--};
- 
- struct dw_spi_reg {
- 	u32	ctrl0;
-@@ -208,18 +204,6 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
- 	dw_writel(dws, imr, new_mask);
- }
- 
--/*
-- * Each SPI slave device to work with dw_api controller should
-- * has such a structure claiming its working mode (PIO/DMA etc),
-- * which can be save in the "controller_data" member of the
-- * struct spi_device
-- */
--struct dw_spi_chip {
--	u8 poll_mode;	/* 0 for contoller polling mode */
--	u8 type;	/* SPI/SSP/Micrwire */
--	u8 enable_dma;
--	void (*cs_control)(u32 command);
--};
- 
- extern int dw_spi_add_host(struct dw_spi *dws);
- extern void dw_spi_remove_host(struct dw_spi *dws);
-diff --git a/include/linux/spi/spi-dw.h b/include/linux/spi/spi-dw.h
-new file mode 100644
-index 0000000..787b154
---- /dev/null
-+++ b/include/linux/spi/spi-dw.h
-@@ -0,0 +1,42 @@
-+/*
-+ *
-+ * Copyright (c) 2009, Intel Corporation.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program; if not, write to the Free Software Foundation, Inc.,
-+ * 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
-+ */
++	if (!spi->max_speed_hz) {
++		dev_err(&spi->dev, "No max speed HZ parameter\n");
++		return -EINVAL;
++	}
 +
-+#ifndef _SPI_DW_H_
-+#define _SPI_DW_H_
-+enum spi_dw_ssi_type {
-+	SSI_MOTO_SPI = 0,
-+	SSI_TI_SSP,
-+	SSI_NS_MICROWIRE,
-+};
-+
-+#define MRST_SPI_DEASSERT	0
-+#define MRST_SPI_ASSERT		1
-+
-+/*
-+ * Each SPI slave device to work with dw_api controller should
-+ * has such a structure claiming its working mode (PIO/DMA etc),
-+ * which can be save in the "controller_data" member of the
-+ * struct spi_device
-+ */
-+struct spi_dw_chip {
-+	u8 poll_mode;	/* 0 for contoller polling mode */
-+	u8 type;	/* SPI/SSP/Micrwire */
-+	u8 enable_dma;
-+	void (*cs_control)(u32 command);
-+};
-+#endif
+ 	/* Only alloc on first setup */
+ 	chip = spi_get_ctldata(spi);
+ 	if (!chip) {
+@@ -675,10 +680,6 @@ static int spi_dw_setup(struct spi_device *spi)
+ 	}
+ 	chip->bits_per_word = spi->bits_per_word;
+ 
+-	if (!spi->max_speed_hz) {
+-		dev_err(&spi->dev, "No max speed HZ parameter\n");
+-		return -EINVAL;
+-	}
+ 	chip->speed_hz = spi->max_speed_hz;
+ 
+ 	chip->tmode = 0; /* Tx & Rx */
 -- 
 1.7.3.4

@@ -1,7 +1,7 @@
 From: dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: [PATCH 07/11] spi-dw: Set number of available chip selects correctly
-Date: Wed, 22 Jun 2011 19:00:09 -0700
-Message-ID: <1308794413-11069-8-git-send-email-dirk.brandewie@gmail.com>
+Subject: [PATCH 06/11] spi-dw: Force error on out of range chip select.
+Date: Wed, 22 Jun 2011 19:00:08 -0700
+Message-ID: <1308794413-11069-7-git-send-email-dirk.brandewie@gmail.com>
 References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,29 +23,27 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Only four chip selects are available directly off the pins of the
-master.
+BUG_ON() if the selected chip select is out of range.
 
 Signed-off-by: Dirk Brandewie <dirk.brandewie-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-dw-mid.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+ drivers/spi/spi-dw.h |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 78e64d3..1d11268 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -211,7 +211,9 @@ int spi_dw_mid_init(struct spi_dw *dws)
- 	dws->max_freq = MRST_SPI_CLK_BASE / (clk_cdiv + 1);
- 	iounmap(clk_reg);
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 860bc34..3fa4c13 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -178,8 +178,7 @@ static inline void spi_dw_set_clk(struct spi_dw *dws, u16 div)
  
--	dws->num_cs = 16;
-+	dws->num_cs = 4;        /* spi_dw_chip_sel() bits 0-3 are
-+				 * valid in the slave enable register
-+				 */
- 	dws->fifo_len = 40;	/* FIFO has 40 words buffer */
+ static inline void spi_dw_chip_sel(struct spi_dw *dws, u16 cs)
+ {
+-	if (cs > dws->num_cs)
+-		return;
++	BUG_ON(cs >= dws->master->num_chipselect);
  
- #ifdef CONFIG_SPI_DW_MID_DMA
+ 	if (dws->cs_control)
+ 		dws->cs_control(SPI_DW_ASSERT);
 -- 
 1.7.3.4
 

@@ -1,49 +1,59 @@
 From: Dirk Brandewie <dirk.brandewie@gmail.com>
-Subject: Re: [PATCH 08/11] spi-dw: Ensure fifo lenght is set.
-Date: Wed, 22 Jun 2011 21:20:11 -0700
-Message-ID: <4E02BEFB.2030508@gmail.com>
-References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com> <1308794413-11069-9-git-send-email-dirk.brandewie@gmail.com> <BANLkTi=Jv2aVuHqVXh77aGxMFV_Q_wXQCg@mail.gmail.com>
+Subject: Re: [PATCH 01/11] spi-dw: expose platform data stucture.
+Date: Wed, 22 Jun 2011 21:37:30 -0700
+Message-ID: <4E02C30A.5040106@gmail.com>
+References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com> <1308794413-11069-2-git-send-email-dirk.brandewie@gmail.com> <BANLkTin9Ouf76VEFRam+eo=H7Gw3Tv6OLA@mail.gmail.com> <4E02BA68.2010108@gmail.com> <127d80e7-0bb6-4961-891e-2ab791ac6368@email.android.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Cc: linux-kernel@vger.kernel.org,
 	spi-devel-general@lists.sourceforge.net
-To: Grant Likely <grant.likely@secretlab.ca>
+To: "glikely@secretlab.ca" <grant.likely@secretlab.ca>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <BANLkTi=Jv2aVuHqVXh77aGxMFV_Q_wXQCg@mail.gmail.com>
+In-Reply-To: <127d80e7-0bb6-4961-891e-2ab791ac6368@email.android.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/22/2011 08:55 PM, Grant Likely wrote:
-> On Wed, Jun 22, 2011 at 8:00 PM,<dirk.brandewie@gmail.com>  wrote:
->> From: Dirk Brandewie<dirk.brandewie@gmail.com>
->>
->> Bug on fifo_len not being set.  The fifo sizing routine does not work
->> since the txfltr register can not be written while the controller is
->> enabled. The max value of txfltr can be larger than the fifo.  The
->> register allows values upto 0x3f (63) the fifo depth on the Intel
->> SOC's if 40
->>
->> Signed-off-by: Dirk Brandewie<dirk.brandewie@gmail.com>
->> ---
->>   drivers/spi/spi-dw.c |   18 ++----------------
->>   1 files changed, 2 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
->> index ad92826..cc38aa0 100644
->> --- a/drivers/spi/spi-dw.c
->> +++ b/drivers/spi/spi-dw.c
->> @@ -776,25 +776,11 @@ static int destroy_queue(struct spi_dw *dws)
->>   /* Restart the controller, disable all interrupts, clean rx fifo */
->>   static void spi_dw_hw_init(struct spi_dw *dws)
->>   {
->> +       BUG_ON(!dws->fifo_len);
->> +
+On 06/22/2011 09:03 PM, glikely@secretlab.ca wrote:
 >
-> Ditto here.  BUG is too big a reaction.  Fail to initialize the
-> device, sure, and print a warning, but don't BUG.
+>
+> Dirk Brandewie<dirk.brandewie@gmail.com>  wrote:
+>
+>> On 06/22/2011 08:47 PM, Grant Likely wrote:
+>>> On Wed, Jun 22, 2011 at 8:00 PM,<dirk.brandewie@gmail.com>   wrote:
+>>>> From: Dirk Brandewie<dirk.brandewie@gmail.com>
+>>>>
+>>>> Expose the platform data structure for use by client drivers. ATM
+>>>> there are not any in-tree drivers using the driver (that I can
+>>>> find). This patch exposes the platform data needed for client
+>> drivers.
+>>>
+>>> ?  Why would client drivers want to muck with this configuration?  I
+>>> can understand the dw_spi driver being able to have per-spi_device
+>>> configuration, but spi_drivers absolutely should not have visibility
+>>> into bus-specific details.  Am I misunderstanding something.
+>>>
+>>
+>> Most of these config options don't need to be client configurable IMHO
+>> but they
+>> are being used ATM by drivers that aren't upstream and the current
+>> controller
+>> driver uses them.  This patch is to give a smooth transition
+>> (bisectable) to my
+>> change that reworks the core message and transfer handling code.
+>>
+>> This allows me to provide patches to the developers of the out of tree
+>> drivers
+>> that should be coming in RSN and exposes the interface they are using
+>> now.
+>
+> My question still stands. Are you expecting spi_driver code to manipulate this data?
+>
+>
 
-Ack,  I was trying to make sure the bug got caught while I was working towards 
-getting the rest of my changes in.
+The current drivers behaviour is driven by this data provided by the client. 
+This makes the current client drivers work since some have not picked picked up 
+your change moving dw_spi.h out of include/linux/spi (right answer IMHO) and 
+provides the interface they are using now.
 
 --Dirk

@@ -1,59 +1,94 @@
-From: Dirk Brandewie <dirk.brandewie@gmail.com>
-Subject: Re: [PATCH 01/11] spi-dw: expose platform data stucture.
-Date: Wed, 22 Jun 2011 21:37:30 -0700
-Message-ID: <4E02C30A.5040106@gmail.com>
-References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com> <1308794413-11069-2-git-send-email-dirk.brandewie@gmail.com> <BANLkTin9Ouf76VEFRam+eo=H7Gw3Tv6OLA@mail.gmail.com> <4E02BA68.2010108@gmail.com> <127d80e7-0bb6-4961-891e-2ab791ac6368@email.android.com>
+From: Feng Tang <feng.tang@intel.com>
+Subject: Re: [PATCH 09/11] spi-dw: Fix condition in spi_dw_{writer/reader}
+Date: Thu, 23 Jun 2011 13:09:21 +0800
+Message-ID: <20110623130921.574d299a@feng-i7>
+References: <1308794413-11069-1-git-send-email-dirk.brandewie@gmail.com>
+	<1308794413-11069-10-git-send-email-dirk.brandewie@gmail.com>
+	<20110623104506.3cfd55ce@feng-i7>
+	<4E02AE6E.5010307@gmail.com>
+	<20110623112552.6f22c3de@feng-i7>
+	<4E02B33A.3060805@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: "glikely@secretlab.ca" <grant.likely@secretlab.ca>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+To: Dirk Brandewie <dirk.brandewie@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <127d80e7-0bb6-4961-891e-2ab791ac6368@email.android.com>
+In-Reply-To: <4E02B33A.3060805@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/22/2011 09:03 PM, glikely@secretlab.ca wrote:
->
->
-> Dirk Brandewie<dirk.brandewie@gmail.com>  wrote:
->
->> On 06/22/2011 08:47 PM, Grant Likely wrote:
->>> On Wed, Jun 22, 2011 at 8:00 PM,<dirk.brandewie@gmail.com>   wrote:
->>>> From: Dirk Brandewie<dirk.brandewie@gmail.com>
->>>>
->>>> Expose the platform data structure for use by client drivers. ATM
->>>> there are not any in-tree drivers using the driver (that I can
->>>> find). This patch exposes the platform data needed for client
->> drivers.
->>>
->>> ?  Why would client drivers want to muck with this configuration?  I
->>> can understand the dw_spi driver being able to have per-spi_device
->>> configuration, but spi_drivers absolutely should not have visibility
->>> into bus-specific details.  Am I misunderstanding something.
->>>
->>
->> Most of these config options don't need to be client configurable IMHO
->> but they
->> are being used ATM by drivers that aren't upstream and the current
->> controller
->> driver uses them.  This patch is to give a smooth transition
->> (bisectable) to my
->> change that reworks the core message and transfer handling code.
->>
->> This allows me to provide patches to the developers of the out of tree
->> drivers
->> that should be coming in RSN and exposes the interface they are using
->> now.
->
-> My question still stands. Are you expecting spi_driver code to manipulate this data?
->
->
+On Thu, 23 Jun 2011 11:30:02 +0800
+Dirk Brandewie <dirk.brandewie@gmail.com> wrote:
 
-The current drivers behaviour is driven by this data provided by the client. 
-This makes the current client drivers work since some have not picked picked up 
-your change moving dw_spi.h out of include/linux/spi (right answer IMHO) and 
-provides the interface they are using now.
+> This patch should have been:
+> 
+> spi-dw: Fix condition in spi_dw_{writer/reader}
+> 
+> From: Dirk Brandewie <dirk.brandewie@gmail.com>
+> 
+> Fix the condition based on whether the current transfer has a tx/rx
+> buffer.
+> 
+> Signed-off-by: Dirk Brandewie <dirk.brandewie@gmail.com>
+> ---
+>   drivers/spi/spi-dw.c |   10 +++++-----
+>   1 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+> index 96ae4a7..0a848bc 100644
+> --- a/drivers/spi/spi-dw.c
+> +++ b/drivers/spi/spi-dw.c
+> @@ -193,15 +193,15 @@ static void spi_dw_writer(struct spi_dw *dws)
+>          u16 txw = 0;
+> 
+>          while (max--) {
+> -               /* Set the tx word if the transfer's original "tx" is
+> not null */
+> -               if (dws->tx_end - dws->len) {
+> +               /* Set the tx word if the transfer's "tx" is not null
+> */
+> +               if (dws->tx) {
+>                          if (dws->n_bytes == 1)
+>                                  txw = *(u8 *)(dws->tx);
+>                          else
+>                                  txw = *(u16 *)(dws->tx);
+> +                       dws->tx += dws->n_bytes;
+>                  }
+>                  dw_writew(dws, dr, txw);
+> -               dws->tx += dws->n_bytes;
+>          }
+>   }
 
---Dirk
+emm, this patch still break the NULL original tx buf case, as it is used in
+
+/* Return the max entries we can fill into tx fifo */
+static inline u32 tx_max(struct dw_spi *dws)
+{
+	u32 tx_left, tx_room, rxtx_gap;
+
+	tx_left = (dws->tx_end - dws->tx) / dws->n_bytes;
+	tx_room = dws->fifo_len - dw_readw(dws, txflr);
+
+
+
+> 
+> @@ -213,13 +213,13 @@ static void spi_dw_reader(struct spi_dw *dws)
+>          while (max--) {
+>                  rxw = dw_readw(dws, dr);
+>                  /* Care rx only if the transfer's original "rx" is
+> not null */
+> -               if (dws->rx_end - dws->len) {
+> +               if (dws->rx) {
+>                          if (dws->n_bytes == 1)
+>                                  *(u8 *)(dws->rx) = rxw;
+>                          else
+>                                  *(u16 *)(dws->rx) = rxw;
+> +                       dws->rx += dws->n_bytes;
+>                  }
+> -               dws->rx += dws->n_bytes;
+>          }
+>   }
+> 

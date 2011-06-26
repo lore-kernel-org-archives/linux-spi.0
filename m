@@ -1,11 +1,12 @@
-From: 15989349144-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开--发/票
-Date: Sat, 25 Jun 2011 10:19:21 +0800
-Message-ID: <E1QaISz-0007H2-6p@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "monabanq. par Pleintemps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: Profitez d'une =?ISO-8859-1?Q?=E9pargne?= performante toute
+	l'=?ISO-8859-1?Q?ann=E9e?= [chez monabanq.]
+Date: Sun, 26 Jun 2011 03:22:17 +0200 (CEST)
+Message-ID: <lndigz.je38py@front02.r7g.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yLXYo6nT
-0MG8usO1xMbz0rXQzs/zoaPP1rG+uavLvtPQ0ruyv7fW16jTw8uwLS3GsbT6v6qjuwrI5zooMSm6
-o7nYu/XO7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oi3GsaO7CiAgICgzKbnjuObS
-taGiuPfA4Lf+zvHStbeiLS3GsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO
-0sGqz7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJ
-VCBpbmZyYXN0cnVjdHVyZSBjb250YWlucyBhIApkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21l
-cnMsIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLCBzZWN1cml0eSAKdGhyZWF0cywgZnJhdWR1bGVu
-dCBhY3Rpdml0eSBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgZGF0YSBhbmQgbWFrZXMgCnNl
-bnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4uIApodHRw
-Oi8vcC5zZi5uZXQvc2Z1L3NwbHVuay1kMmQtYzEKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure contains a 
+definitive record of customers, application performance, security 
+threats, fraudulent activity and more. Splunk takes this data and makes 
+sense of it. Business sense. IT sense. Common sense.. 
+http://p.sf.net/sfu/splunk-d2d-c1

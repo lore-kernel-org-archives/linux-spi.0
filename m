@@ -1,8 +1,8 @@
-From: "monabanq. par Pleintemps" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
-Subject: Profitez d'une =?ISO-8859-1?Q?=E9pargne?= performante toute
-	l'=?ISO-8859-1?Q?ann=E9e?= [chez monabanq.]
-Date: Sun, 26 Jun 2011 03:22:17 +0200 (CEST)
-Message-ID: <lndigz.je38py@front02.r7g.com>
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Google in Mobile 2011 Report
+Date: Sun, 26 Jun 2011 03:07:22 +0100
+Message-ID: <20110626030722.314499656@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
+Google in Mobile 2011 Report
 ------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a 
 definitive record of customers, application performance, security 

@@ -1,8 +1,7 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Google in Mobile 2011 Report
-Date: Sun, 26 Jun 2011 03:07:22 +0100
-Message-ID: <20110626030722.314499656@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: "jennifer-Z0aFoVdT4gr7AeATowfL80EOCMrvLtNR@public.gmane.org" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
+Subject: [SPAM] Dernière année pour effacer vos impôts
+Date: Sun, 26 Jun 2011 13:57:29 +0200 (CEST)
+Message-ID: <lnebvs.vj8zjr@front07.g7r9.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,10 +17,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Google in Mobile 2011 Report
+
 ------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a 
-definitive record of customers, application performance, security 
-threats, fraudulent activity and more. Splunk takes this data and makes 
-sense of it. Business sense. IT sense. Common sense.. 
-http://p.sf.net/sfu/splunk-d2d-c1
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security 
+threats, fraudulent activity, and more. Splunk takes this data and makes 
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2

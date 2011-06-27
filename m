@@ -1,11 +1,13 @@
-From: "Erasmus" <s@cerexa.com>
-Subject: [SPAM] Want to act like a xxxstar? Take a wonder med!
-Date: Mon, 27 Jun 2011 16:15:27 +0800
-Message-ID: <001b01cc34a3$9f65bc20$2192d0e4@user036a28bc80pdkxx>
+From: =?koi8-r?B?1d7F1CA=?= <Fquad-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzNyDS1cI=?=
+Date: Tue, 28 Jun 2011 03:04:07 +0400
+Message-ID: <D2A85BABDF05432B94BF37CC60D05FC3@xnqcabs>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,12 +19,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Desire to act like a xxx star? Take a magictab! http://nodes1.com/exactly.html
-
-
-------------------------------------------------------------------------------
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security 
-threats, fraudulent activity, and more. Splunk takes this data and makes 
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2d-c2
+5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQ4MyDS1cIK
+Cu3P08vXwSDA0i7MycPBIC0gMS45ODU3MDAgwcTSIC0gNDk4MiDS1cIKCu3P08vXwSDGydouzMnD
+wSAtIDcuNzM4NTgxIMHE0iAtIDg0Njcg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
+d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBbGwgb2YgdGhlIGRhdGEgZ2Vu
+ZXJhdGVkIGluIHlvdXIgSVQgaW5mcmFzdHJ1Y3R1cmUgaXMgc2VyaW91c2x5IHZhbHVhYmxlLgpX
+aHk/IEl0IGNvbnRhaW5zIGEgZGVmaW5pdGl2ZSByZWNvcmQgb2YgYXBwbGljYXRpb24gcGVyZm9y
+bWFuY2UsIHNlY3VyaXR5IAp0aHJlYXRzLCBmcmF1ZHVsZW50IGFjdGl2aXR5LCBhbmQgbW9yZS4g
+U3BsdW5rIHRha2VzIHRoaXMgZGF0YSBhbmQgbWFrZXMgCnNlbnNlIG9mIGl0LiBJVCBzZW5zZS4g
+QW5kIGNvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJkLWMyCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
+cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
+aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
+bmVyYWwK

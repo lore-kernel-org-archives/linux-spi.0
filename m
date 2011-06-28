@@ -1,17 +1,14 @@
-From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-Subject: [PATCH 4/5] spi: remove obsolete spi-s3c24xx-gpio driver
-Date: Tue, 28 Jun 2011 14:49:16 +0200
-Message-ID: <1309265357-15879-5-git-send-email-jacmet@sunsite.dk>
-References: <1309265357-15879-1-git-send-email-jacmet@sunsite.dk>
+From: Promorama <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Philips_vous_rembourse_ju?=
+	=?iso-8859-15?Q?squ'=E0_500=A4_sur_votre_t=E9l=E9?=
+Date: Tue, 28 Jun 2011 15:28:07 +0200 (CEST)
+Message-ID: <3236305005.129921.1309267687422@p4enginex1.emv2.com>
+Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-To: ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1309265357-15879-1-git-send-email-jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,263 +19,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-It was equivalent to spi-gpio, and there's no longer any in-tree users
-of it, so get rid of it.
+ Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
+gne.
 
-Signed-off-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+[IMG]
+[IMG]
+[IMG]
+[IMG]
+
+                               www.promorama.com
+
+  Partagez cette offre avec vos amis sur Facebook ou Twitter Share this ema=
+il
+  Pour vous d=E9sinscrire de notre lettre d'information merci de suivre ce =
+lien
+---------------------------------------------------------------------------=
 ---
- drivers/spi/Kconfig            |   10 --
- drivers/spi/Makefile           |    1 -
- drivers/spi/spi-s3c24xx-gpio.c |  200 ----------------------------------------
- 3 files changed, 0 insertions(+), 211 deletions(-)
- delete mode 100644 drivers/spi/spi-s3c24xx-gpio.c
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index c013481..9aafa98 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -313,16 +313,6 @@ config SPI_S3C24XX_FIQ
- 	  no free DMA channels, or when doing transfers that required both
- 	  TX and RX data paths.
- 
--config SPI_S3C24XX_GPIO
--	tristate "Samsung S3C24XX series SPI by GPIO"
--	depends on ARCH_S3C2410 && EXPERIMENTAL
--	select SPI_BITBANG
--	help
--	  SPI driver for Samsung S3C24XX series ARM SoCs using
--	  GPIO lines to provide the SPI bus. This can be used where
--	  the inbuilt hardware cannot provide the transfer mode, or
--	  where the board is using non hardware connected pins.
--
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
- 	depends on (ARCH_S3C64XX || ARCH_S5P64X0)
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index b60b04b..61c3261 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -44,7 +44,6 @@ obj-$(CONFIG_SPI_PL022)			+= spi-pl022.o
- obj-$(CONFIG_SPI_PPC4xx)		+= spi-ppc4xx.o
- obj-$(CONFIG_SPI_PXA2XX)		+= spi-pxa2xx.o
- obj-$(CONFIG_SPI_PXA2XX_PCI)		+= spi-pxa2xx-pci.o
--obj-$(CONFIG_SPI_S3C24XX_GPIO)		+= spi-s3c24xx-gpio.o
- obj-$(CONFIG_SPI_S3C24XX)		+= spi-s3c24xx-hw.o
- spi-s3c24xx-hw-y			:= spi-s3c24xx.o
- spi-s3c24xx-hw-$(CONFIG_SPI_S3C24XX_FIQ) += spi-s3c24xx-fiq.o
-diff --git a/drivers/spi/spi-s3c24xx-gpio.c b/drivers/spi/spi-s3c24xx-gpio.c
-deleted file mode 100644
-index 2d3c085..0000000
---- a/drivers/spi/spi-s3c24xx-gpio.c
-+++ /dev/null
-@@ -1,200 +0,0 @@
--/*
-- * Copyright (c) 2006 Ben Dooks
-- * Copyright (c) 2006 Simtec Electronics
-- *
-- * S3C24XX GPIO based SPI driver
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
--*/
--
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/delay.h>
--#include <linux/spinlock.h>
--#include <linux/workqueue.h>
--#include <linux/platform_device.h>
--#include <linux/gpio.h>
--
--#include <linux/spi/spi.h>
--#include <linux/spi/spi_bitbang.h>
--
--#include <mach/regs-gpio.h>
--#include <mach/spi-gpio.h>
--#include <mach/hardware.h>
--
--struct s3c2410_spigpio {
--	struct spi_bitbang		 bitbang;
--
--	struct s3c2410_spigpio_info	*info;
--	struct platform_device		*dev;
--};
--
--static inline struct s3c2410_spigpio *spidev_to_sg(struct spi_device *spi)
--{
--	return spi_master_get_devdata(spi->master);
--}
--
--static inline void setsck(struct spi_device *dev, int on)
--{
--	struct s3c2410_spigpio *sg = spidev_to_sg(dev);
--	s3c2410_gpio_setpin(sg->info->pin_clk, on ? 1 : 0);
--}
--
--static inline void setmosi(struct spi_device *dev, int on)
--{
--	struct s3c2410_spigpio *sg = spidev_to_sg(dev);
--	s3c2410_gpio_setpin(sg->info->pin_mosi, on ? 1 : 0);
--}
--
--static inline u32 getmiso(struct spi_device *dev)
--{
--	struct s3c2410_spigpio *sg = spidev_to_sg(dev);
--	return s3c2410_gpio_getpin(sg->info->pin_miso) ? 1 : 0;
--}
--
--#define spidelay(x) ndelay(x)
--
--#include "spi-bitbang-txrx.h"
--
--
--static u32 s3c2410_spigpio_txrx_mode0(struct spi_device *spi,
--				      unsigned nsecs, u32 word, u8 bits)
--{
--	return bitbang_txrx_be_cpha0(spi, nsecs, 0, 0, word, bits);
--}
--
--static u32 s3c2410_spigpio_txrx_mode1(struct spi_device *spi,
--				      unsigned nsecs, u32 word, u8 bits)
--{
--	return bitbang_txrx_be_cpha1(spi, nsecs, 0, 0, word, bits);
--}
--
--static u32 s3c2410_spigpio_txrx_mode2(struct spi_device *spi,
--				      unsigned nsecs, u32 word, u8 bits)
--{
--	return bitbang_txrx_be_cpha0(spi, nsecs, 1, 0, word, bits);
--}
--
--static u32 s3c2410_spigpio_txrx_mode3(struct spi_device *spi,
--				      unsigned nsecs, u32 word, u8 bits)
--{
--	return bitbang_txrx_be_cpha1(spi, nsecs, 1, 0, word, bits);
--}
--
--
--static void s3c2410_spigpio_chipselect(struct spi_device *dev, int value)
--{
--	struct s3c2410_spigpio *sg = spidev_to_sg(dev);
--
--	if (sg->info && sg->info->chip_select)
--		(sg->info->chip_select)(sg->info, value);
--}
--
--static int s3c2410_spigpio_probe(struct platform_device *dev)
--{
--	struct s3c2410_spigpio_info *info;
--	struct spi_master	*master;
--	struct s3c2410_spigpio  *sp;
--	int ret;
--
--	master = spi_alloc_master(&dev->dev, sizeof(struct s3c2410_spigpio));
--	if (master == NULL) {
--		dev_err(&dev->dev, "failed to allocate spi master\n");
--		ret = -ENOMEM;
--		goto err;
--	}
--
--	sp = spi_master_get_devdata(master);
--
--	platform_set_drvdata(dev, sp);
--
--	/* copy in the plkatform data */
--	info = sp->info = dev->dev.platform_data;
--
--	/* setup spi bitbang adaptor */
--	sp->bitbang.master = spi_master_get(master);
--	sp->bitbang.master->bus_num = info->bus_num;
--	sp->bitbang.master->num_chipselect = info->num_chipselect;
--	sp->bitbang.chipselect = s3c2410_spigpio_chipselect;
--
--	sp->bitbang.txrx_word[SPI_MODE_0] = s3c2410_spigpio_txrx_mode0;
--	sp->bitbang.txrx_word[SPI_MODE_1] = s3c2410_spigpio_txrx_mode1;
--	sp->bitbang.txrx_word[SPI_MODE_2] = s3c2410_spigpio_txrx_mode2;
--	sp->bitbang.txrx_word[SPI_MODE_3] = s3c2410_spigpio_txrx_mode3;
--
--	/* set state of spi pins, always assume that the clock is
--	 * available, but do check the MOSI and MISO. */
--	s3c2410_gpio_setpin(info->pin_clk, 0);
--	s3c2410_gpio_cfgpin(info->pin_clk, S3C2410_GPIO_OUTPUT);
--
--	if (info->pin_mosi < S3C2410_GPH10) {
--		s3c2410_gpio_setpin(info->pin_mosi, 0);
--		s3c2410_gpio_cfgpin(info->pin_mosi, S3C2410_GPIO_OUTPUT);
--	}
--
--	if (info->pin_miso != S3C2410_GPA0 && info->pin_miso < S3C2410_GPH10)
--		s3c2410_gpio_cfgpin(info->pin_miso, S3C2410_GPIO_INPUT);
--
--	ret = spi_bitbang_start(&sp->bitbang);
--	if (ret)
--		goto err_no_bitbang;
--
--	return 0;
--
-- err_no_bitbang:
--	spi_master_put(sp->bitbang.master);
-- err:
--	return ret;
--
--}
--
--static int s3c2410_spigpio_remove(struct platform_device *dev)
--{
--	struct s3c2410_spigpio *sp = platform_get_drvdata(dev);
--
--	spi_bitbang_stop(&sp->bitbang);
--	spi_master_put(sp->bitbang.master);
--
--	return 0;
--}
--
--/* all gpio should be held over suspend/resume, so we should
-- * not need to deal with this
--*/
--
--#define s3c2410_spigpio_suspend NULL
--#define s3c2410_spigpio_resume NULL
--
--/* work with hotplug and coldplug */
--MODULE_ALIAS("platform:spi_s3c24xx_gpio");
--
--static struct platform_driver s3c2410_spigpio_drv = {
--	.probe		= s3c2410_spigpio_probe,
--        .remove		= s3c2410_spigpio_remove,
--        .suspend	= s3c2410_spigpio_suspend,
--        .resume		= s3c2410_spigpio_resume,
--        .driver		= {
--		.name	= "spi_s3c24xx_gpio",
--		.owner	= THIS_MODULE,
--        },
--};
--
--static int __init s3c2410_spigpio_init(void)
--{
--        return platform_driver_register(&s3c2410_spigpio_drv);
--}
--
--static void __exit s3c2410_spigpio_exit(void)
--{
--        platform_driver_unregister(&s3c2410_spigpio_drv);
--}
--
--module_init(s3c2410_spigpio_init);
--module_exit(s3c2410_spigpio_exit);
--
--MODULE_DESCRIPTION("S3C24XX SPI Driver");
--MODULE_AUTHOR("Ben Dooks, <ben-Y5A6D6n0/KfQXOPxS62xeg@public.gmane.org>");
--MODULE_LICENSE("GPL");
--- 
-1.7.5.4
-
-
-------------------------------------------------------------------------------
 All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security 
-threats, fraudulent activity, and more. Splunk takes this data and makes 
+Why? It contains a definitive record of application performance, security =
+
+threats, fraudulent activity, and more. Splunk takes this data and makes =
+
 sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-d2d-c2

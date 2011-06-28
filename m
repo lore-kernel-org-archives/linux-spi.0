@@ -1,13 +1,13 @@
-From: =?koi8-r?B?1d7F1CA=?= <Fquad-j9pdmedNgrk@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzNyDS1cI=?=
-Date: Tue, 28 Jun 2011 03:04:07 +0400
-Message-ID: <D2A85BABDF05432B94BF37CC60D05FC3@xnqcabs>
+From: =?koi8-r?B?08zFxNPU18nFIA==?= <paqcmtt-XzQKRVe1yT0V+D8aMU/kSg@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ1NyDS1cI=?=
+Date: Tue, 28 Jun 2011 12:52:55 +0400
+Message-ID: <905667CD4C094876921AF8FA10B30591@tbruey>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="koi8-r"
 Content-Transfer-Encoding: base64
-To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
-	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
-	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+To: fedor-mnO0GIe32D0@public.gmane.org, congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org, diktor-SYPjacQAEmk@public.gmane.org, info-G2tT1RKrIAQ@public.gmane.org,
+	transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org, gostnorm-5URONGGNgjI@public.gmane.org, ternedvig-JGs/UdohzUI@public.gmane.org, valeev-SYPjacQAEmk@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,9 +19,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQ4MyDS1cIK
-Cu3P08vXwSDA0i7MycPBIC0gMS45ODU3MDAgwcTSIC0gNDk4MiDS1cIKCu3P08vXwSDGydouzMnD
-wSAtIDcuNzM4NTgxIMHE0iAtIDg0Njcg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
+5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQ2MSDS1cIK
+Cu3P08vXwSDA0i7MycPBIC0gMS45MTIzMjMgwcTSIC0gNDk2MCDS1cIKCu3P08vXwSDGydouzMnD
+wSAtIDcuNzA5OTcwIMHE0iAtIDg0NDQg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
 d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBbGwgb2YgdGhlIGRhdGEgZ2Vu
 ZXJhdGVkIGluIHlvdXIgSVQgaW5mcmFzdHJ1Y3R1cmUgaXMgc2VyaW91c2x5IHZhbHVhYmxlLgpX

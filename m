@@ -1,32 +1,46 @@
-From: Promorama <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Power_balance_=E0_5=A4?=
-Date: Wed, 29 Jun 2011 18:00:39 +0200 (CEST)
-Message-ID: <3236305005.132254.1309363239663@p4enginex1.emv2.com>
-Reply-To: newslette-yjAUSFX465YAvxtiuMwx3w@public.gmane.org
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Subject: Re: [PATCH 0/5] remove spi-s3c24xx-gpio driver
+Date: Wed, 29 Jun 2011 19:00:53 +0200
+Message-ID: <87ipro4loa.fsf@macbook.be.48ers.dk>
+References: <1309265357-15879-1-git-send-email-jacmet@sunsite.dk>
+	<20110628212443.GI21138@trinity.fluff.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org, ben-linux@fluff.org
+To: Ben Dooks <ben@trinity.fluff.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20110628212443.GI21138@trinity.fluff.org> (Ben Dooks's message
+	of "Tue, 28 Jun 2011 22:24:43 +0100")
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+>>>>> "Ben" == Ben Dooks <ben@trinity.fluff.org> writes:
 
-Bracelet power balance =E0 5=A4 sur http://p4tre.emv3.com/HS?a=3DENX7Cqnmay=
-mC8SA9MKJN32TnGHxKLL_qqfcStGb5lw8W0bBhOG5mpqVsje_HhdBQ4VGd
----------------------------------------------------------------------------=
----
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security =
+ >> The spi-s3c24xx-gpio driver is functionally equivalent to the spi-gpio
+ >> driver (but precedes it). The driver has seen very little development 
+ >> since it got added back in 2006, and there's only 2 in-tree users of it.
+ >> 
+ >> This patch series moves the remaining users to the spi-gpio driver and
+ >> then finally removes the driver.
+ >> 
+ >> Compile tested only as I don't have access to the hardware.
 
-threats, fraudulent activity, and more. Splunk takes this data and makes =
+ Ben> I've not really got much in the way of access either, however the
+ Ben> series looks sane to me.
 
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2d-c2
+ Ben> Acked-by: Ben Dooks <ben-linux@fluff.org>
+
+Great, will you handle the series or should it go through the spi tree?
+
+-- 
+Bye, Peter Korsgaard

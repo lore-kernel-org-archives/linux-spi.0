@@ -1,11 +1,11 @@
-From: hgchgtkhzb-9Onoh4P/yGk@public.gmane.org
-Subject: [SPAM] 报关  报检  产地证
-Date: Wed, 29 Jun 2011 17:43:40 +0800
-Message-ID: <E1QbrIx-0005F2-7Q@sfs-ml-2.v29.ch3.sourceforge.com>
+From: "The 9 Steps for The Best Health" <thebesthealth1no-reply-atinT6P9Z8heoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Is Cancer Curable?
+Date: Wed, 29 Jun 2011 04:28:00 -0700
+Message-ID: <d02acf5339cc8dfa09f7f3be00197af1@ymail.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_903743453D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +17,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6wyEgCiAgsb65q8u+tPrA7cnu29ouuePW3bP2v9rC8rWlsai52C4gycy87CC088q5ud2808ep
-w7O02bvh1qTD98rpLENPsvq12NakLiAKCsbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm5
-3ceptcgpICDKtcGmsai52CzRsMfzs6e80rrP1/fNy8uwtaUgCgogICAgICAgICAgICAgICDM4bmp
-tPPQobrLz/q1paOos/a/2rGoudi1paOpIAoKIMGqz7XIyzvVxc/IyfrBqs+1tee7sDsgMDc1NS0y
-NTQyMDE3NyAgICAxMzY4Njg2ODU0OCAgIFFROzEyMjA2MjE0MwoK08rP5KO7MTIyMDYyMTQzQHFx
-LmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsbCBvZiB0aGUgZGF0YSBnZW5lcmF0ZWQgaW4g
-eW91ciBJVCBpbmZyYXN0cnVjdHVyZSBpcyBzZXJpb3VzbHkgdmFsdWFibGUuCldoeT8gSXQgY29u
-dGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSwgc2Vj
-dXJpdHkgCnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHksIGFuZCBtb3JlLiBTcGx1bmsgdGFr
-ZXMgdGhpcyBkYXRhIGFuZCBtYWtlcyAKc2Vuc2Ugb2YgaXQuIElUIHNlbnNlLiBBbmQgY29tbW9u
-IHNlbnNlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L3NwbHVuay1kMmQtYzIKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_903743453D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Is Cancer Curable? A lot of people think so. View this attached form and =
+you decide.
+
+
+------=SPLITOR00A_001_903743453D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security 
+threats, fraudulent activity, and more. Splunk takes this data and makes 
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2
+------=SPLITOR00A_001_903743453D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_903743453D--

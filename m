@@ -1,21 +1,12 @@
-From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
-Subject: Re: [PATCH 0/5] remove spi-s3c24xx-gpio driver
-Date: Wed, 29 Jun 2011 19:51:10 +0200
-Message-ID: <87ei2c4jch.fsf@macbook.be.48ers.dk>
-References: <1309265357-15879-1-git-send-email-jacmet@sunsite.dk>
-	<20110628212443.GI21138@trinity.fluff.org>
-	<87ipro4loa.fsf@macbook.be.48ers.dk>
-	<BANLkTi=693aHH=8BTAyrKWc1padiozpT6A@mail.gmail.com>
+From: "Gayle H." <GayleH.NoReply-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Proposal Attached
+Date: Wed, 29 Jun 2011 12:00:13 -0700
+Message-ID: <0dbe4fa49a07e63dba9aaca7001b5e69@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org,
-	Ben Dooks <ben-SMNkleLxa3Z6Wcw2j4pizdi2O/JbrIOy@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_282813859D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <BANLkTi=693aHH=8BTAyrKWc1padiozpT6A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org> (Grant
-	Likely's message of "Wed, 29 Jun 2011 11:17:51 -0600")
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,18 +17,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->>>>> "Grant" == Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> writes:
+This is a multi-part message in MIME format.
 
- >> Great, will you handle the series or should it go through the spi tree?
+------=SPLITOR00A_001_282813859D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
- Grant> With the big spi driver rename, it should probably either go via the
- Grant> spi tree, or be put into a topic branch that can be merged by both the
- Grant> spi and samsung trees.
+I would like to speak to you about printing your company's business cards=2E
+We are the largest online business card management company in the United =
+States. We offer the highest quality business cards combined with a very =
+easy to use ordering system=2E
+=20
+I have attached a proposal highlighting our services. You may also view a =
+video from the "Watch Video" link on the attached information sheet=2E
 
-Both is fine by me. Let me know if you want me to do something.
+***Please review the attached proposal for details.***
 
--- 
-Bye, Peter Korsgaard
+I look forward to working with your company.=20
+
+Sincerely,
+Gayle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =
+<mailto:stopthisstuff-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@=
+lists.sourceforge.net&body=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>=20
+7090 N Oracle Rd, Tucson AZ 85704
+
+
+------=SPLITOR00A_001_282813859D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 All of the data generated in your IT infrastructure is seriously valuable.
@@ -45,3 +73,15 @@ Why? It contains a definitive record of application performance, security
 threats, fraudulent activity, and more. Splunk takes this data and makes 
 sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-d2d-c2
+------=SPLITOR00A_001_282813859D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_282813859D--

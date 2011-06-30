@@ -1,45 +1,48 @@
-From: Pavel Herrmann <morpheus.ibis@gmail.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: kernel panic in spi_complete() on spitz (PXA270)
-Date: Thu, 30 Jun 2011 17:36:57 +0200
-Message-ID: <22208110.jIqhYvKY9h@bloomfield>
-References: <1308845380.4533.54.camel@oct.suse.cz> <1309445118.4406.47.camel@oct.suse.cz> <201106301709.48818.marek.vasut@gmail.com>
+Date: Thu, 30 Jun 2011 08:59:58 -0700
+Message-ID: <20110630155957.GF3249@opensource.wolfsonmicro.com>
+References: <1308845380.4533.54.camel@oct.suse.cz>
+ <201106301352.21684.marek.vasut@gmail.com>
+ <1309445118.4406.47.camel@oct.suse.cz>
+ <4E0C957F.8080807@compulab.co.il>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Marek Vasut <marek.vasut@gmail.com>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Stanislav Brabec <utx@penguin.cz>,
+	Marek Vasut <marek.vasut@gmail.com>,
 	linux-arm-kernel@lists.infradead.org,
 	zaurus-devel@lists.linuxtogo.org,
-	spi-devel-general@lists.sourceforge.net,
-	Igor Grinberg <grinberg@compulab.co.il>, vapier@gentoo.org,
+	spi-devel-general@lists.sourceforge.net, vapier@gentoo.org,
 	khilman@deeprootsystems.com, dmitry.torokhov@gmail.com,
 	linux-kernel@vger.kernel.org, pavel@ucw.cz,
 	linux-input@vger.kernel.org, eric.y.miao@gmail.com,
-	akpm@linux-foundation.org, broonie@opensource.wolfsonmicro.com
-To: Stanislav Brabec <utx@penguin.cz>
+	akpm@linux-foundation.org
+To: Igor Grinberg <grinberg@compulab.co.il>
 Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <201106301709.48818.marek.vasut@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <4E0C957F.8080807@compulab.co.il>
 Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday, June 30, 2011 04:45:18 PM Stanislav Brabec wrote:
-> Then I tried to apply "[PATCH] MAX1111: Fix race condition causing NULL
-> pointer exception", connected charger that periodically disconnects and
-> not seen the crash again. No OOPS was seen after ~100 reconnects.
-> 
-> So I guess that MAX1111 AC voltage reading (via SPI) was involved in an
-> incorrect moment and race happened there and your MAX1111 race condition
-> fix fixes it.
+On Thu, Jun 30, 2011 at 06:25:51PM +0300, Igor Grinberg wrote:
+> On 06/30/11 17:45, Stanislav Brabec wrote:
 
-Hi,
+> > from this thread. Without it, ADS7846 does not work on spitz (ADS7846
+> > does not have any dedicated regulator there). I want to
+> > add .needs_regulator bool to ads7846.c and send the patch again to the
+> > list.
 
-Are you using the first or second version of the patch? if the former, please 
-use v2 (sent a few days later), which has solved the same problem by using a 
-mutex instead of allocating message data on stack (which is not good for DMA)
+> Please, don't...
+> I thought we've finished discussing the regulator issue...
 
-as for the backstory, this crash ocurrs when a short (measured in time spent) 
-message was enqueued after a long message, so that the short one finished first 
-(the actual bug was present even if the long one finished first, but in that 
-case there was double complete() on the one completion instead of a NULL 
-dereference)
+> Instead of patching the driver and the platform data and the board file,
+> you should do _either_ of the following:
+> 1) add regulator definition for ads7846 into the board file
+> 2) enable the CONFIG_REGULATOR_DUMMY in your kernel configuration
+> 3) use regulator_use_dummy_regulator() call in the board file.
 
-Pavel
+> Using either of the above, you will not need the patch for ads7846, only for the board file.
+
+Yes, we've been through this repeatedly.  None of these options take any
+appreciable time to implement, it'd be much more productive to just do
+so.

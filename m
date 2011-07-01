@@ -1,56 +1,152 @@
-From: Stanislav Brabec <utx-ZsETY1VsSgLrBKCeMvbIDA@public.gmane.org>
-Subject: Re: kernel panic in spi_complete() on spitz (PXA270)
-Date: Fri, 01 Jul 2011 00:20:15 +0200
-Message-ID: <1309472415.6630.8.camel@utx.lan>
-References: <1308845380.4533.54.camel@oct.suse.cz>
-	<201106301352.21684.marek.vasut@gmail.com>
-	<1309445118.4406.47.camel@oct.suse.cz>
-	<4E0C957F.8080807@compulab.co.il>
-	<1309450406.4406.59.camel@oct.suse.cz>
-	<4E0CB518.2080703@compulab.co.il>
-	<20110630180105.GA5064@opensource.wolfsonmicro.com>
-	<4E0CE189.1020000@compulab.co.il>
-Reply-To: Zaurus PDA developers list <zaurus-devel-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org>
+From: padma venkat <padma.kvr@gmail.com>
+Subject: Re: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
+Date: Fri, 1 Jul 2011 11:16:11 +0530
+Message-ID: <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+References: <1309437536-9315-1-git-send-email-padma.v@samsung.com>
+	<1309437536-9315-2-git-send-email-padma.v@samsung.com>
+	<BANLkTi=L7QeN75ebWFXdp_V5Pw1zEc-ZtA@mail.gmail.com>
+	<BANLkTimeWUbD2Ej16KKmuzwSCFz8HOhyKQ@mail.gmail.com>
+	<BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
+	<BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org, zaurus-devel-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Igor Grinberg <grinberg-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
-Return-path: <zaurus-devel-bounces-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <4E0CE189.1020000-UTxiZqZC01RS1MOuV/RT9w@public.gmane.org>
-List-Unsubscribe: <http://lists.linuxtogo.org/cgi-bin/mailman/options/zaurus-devel>,
-	<mailto:zaurus-devel-request-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.linuxtogo.org/pipermail/zaurus-devel>
-List-Post: <mailto:zaurus-devel-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:zaurus-devel-request-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.linuxtogo.org/cgi-bin/mailman/listinfo/zaurus-devel>,
-	<mailto:zaurus-devel-request-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: zaurus-devel-bounces-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org
-Errors-To: zaurus-devel-bounces-cunTk1MwBs/k6gDgw6ADrEB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Padmavathi Venna <padma.v@samsung.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>, kgene.kim@samsung.com,
+	sbkim73@samsung.com, grant.likely@secretlab.ca,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
+	naushad@samsung.com
+To: Tony Nadackal <tonykn@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Igor Grinberg wrote:
+Hi Tony,
 
-> Stanislav,
-> Can't you define a fixed voltage regulator for the ads7846 in spitz board file?
-> This shouldn't be a hard task and is the right solution from the regulator API POV.
+On Thu, Jun 30, 2011 at 4:30 PM, Tony Nadackal <tonykn@gmail.com> wrote=
+:
+> Hi Padma,
+> With regards to your patch, even though one can check the tx done sta=
+tus
+> using the TX_DONE bit, the present macro itself would work perfectly =
+fine if
+> the 'fifo_lvl_mask' is set properly.
+> For example in 6450 channel 1, the fifo_lvl_mask should be 0x1ff (for=
+ 9bits,
+> 15:23), while even in your patch, it is wrongly set as 0x7f(only 7bit=
+s).
+>
+> Thus, if this fifo_lvl_mask was defined correctly, the existing macro=
+ would
+> itself have worked.
+Thanks for your comment.
+I considered changing to the fifo_lvl_mask to 1ff as you mentioned.
+But I  think that the fifo_lvl_mask reflects the actual FIFO capacity
+in the SPI driver.
+=46or the failing channels the FIFO trigger level is 64 bytes and so i
+retained that value.
+In the driver it polls till the FIFO capacity level otherwise it goes
+for DMA.So if we keep
+the FIFO level as 1ff when the actual capacity is 7f then it fails.
 
-Yes, I can.
+Jassi what do you think about this?
 
-ADS7846 needs more definitions in the platform file to work well on
-spitz. The current platform definition is not sufficient and pointer
-noise makes it unusable (e. g. 100 pixels jumps). I am comparing Lineo's
-2.4 code with 2.6 algorithm and experimenting to get the best results.
+Thanks&Regards
+Padma
 
--- 
-
-________________________________________________________________________
-Stanislav Brabec
-http://www.penguin.cz/~utx
+> Thanks,
+> Tony
+>
+> On Thu, Jun 30, 2011 at 3:22 PM, Jassi Brar <jassisinghbrar@gmail.com=
+>
+> wrote:
+>>
+>> On Thu, Jun 30, 2011 at 2:35 PM, padma venkat <padma.kvr@gmail.com> =
+wrote:
+>> > Hi,
+>> >
+>> > On Thu, Jun 30, 2011 at 12:38 PM, Jassi Brar <jassisinghbrar@gmail=
+=2Ecom>
+>> > wrote:
+>> >> On Thu, Jun 30, 2011 at 6:08 PM, Padmavathi Venna <padma.v@samsun=
+g.com>
+>> >> wrote:
+>> >>> Fixed the bug in transmission status check for 64 bytes FIFO
+>> >>> level.
+>> >>>
+>> >>> Signed-off-by: Padmavathi Venna <padma.v@samsung.com>
+>> >>> ---
+>> >>> =A0drivers/spi/spi_s3c64xx.c | =A0 =A04 +---
+>> >>> =A01 files changed, 1 insertions(+), 3 deletions(-)
+>> >>>
+>> >>> diff --git a/drivers/spi/spi_s3c64xx.c b/drivers/spi/spi_s3c64xx=
+=2Ehc
+>> >>> index 795828b..8945e20 100644
+>> >>> --- a/drivers/spi/spi_s3c64xx.c
+>> >>> +++ b/drivers/spi/spi_s3c64xx.c
+>> >>> @@ -116,9 +116,7 @@
+>> >>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0(((i)->fifo_lvl_mask + 1))) \
+>> >>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0? 1 : 0)
+>> >>>
+>> >>> -#define S3C64XX_SPI_ST_TX_DONE(v, i) ((((v) >> (i)->rx_lvl_offs=
+et) &
+>> >>> \
+>> >>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 (((i)->fifo_lvl_mask + 1) <<
+>> >>> 1)) \
+>> >>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 ? 1 : 0)
+>> >>> +#define S3C64XX_SPI_ST_TX_DONE(v, i) (((v) & (1 << (i)->tx_st_d=
+one))
+>> >>> ? 1 : 0)
+>> >>
+>> >> IIRC the macro is already designed to deduct tx-done levels from =
+other
+>> >> fields.
+>> >> Could you please _explain_ with one example where it fails ? It i=
+s
+>> >> difficult to see without
+>> >> numbers.
+>> > The existing macro fails for following scenarios.
+>> > 1) S5P64X0 channel 1
+>> > 2) S5PV210 channel 1
+>> > 3) S5PV310 channel 1 and channel 2
+>> >
+>> > The FIFO data level supported in the above SoCs either 64 or 256
+>> > bytes depending on the channel. Because of this the TX_DONE
+>> > is the 25 bit in the status register.
+>> >
+>> > The existing macro works for the following scenarios
+>> > 1) S3C6410 all channels
+>> > 2) S5PC100 all channels
+>> >
+>> > The FIFO data level supported in the above SoCs 64 bytes
+>> > on all the channels. Because of this the TX_DONE is the 21 bit
+>> > in the status register.
+>> >
+>> > So when we use the existing macro for the non-working SoCs
+>> > it is not anding with the TX_DONE bit but it is only anding the bi=
+ts
+>> > earlier to TX_DONE bit.
+>> >
+>>
+>> I see.
+>> I don't have access to post s3c64xx datasheets. Please confirm if TX=
+_DONE
+>> bit at same offset for all channels of an SoC. If so, I am OK with
+>> these 2 patches.
+>>
+>> Thanks,
+>> Jassi
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe
+>> linux-samsung-soc" in
+>> the body of a message to majordomo@vger.kernel.org
+>> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
+>
+>

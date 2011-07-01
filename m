@@ -1,86 +1,77 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
-Date: Fri, 1 Jul 2011 11:43:08 +0530
-Message-ID: <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
-References: <1309437536-9315-1-git-send-email-padma.v@samsung.com>
-	<1309437536-9315-2-git-send-email-padma.v@samsung.com>
-	<BANLkTi=L7QeN75ebWFXdp_V5Pw1zEc-ZtA@mail.gmail.com>
-	<BANLkTimeWUbD2Ej16KKmuzwSCFz8HOhyKQ@mail.gmail.com>
-	<BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
-	<BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
-	<BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
-	<BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
-	<BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
+From: Open en ville <sandrine-A+lxSsK1OnwbbyeyzbMmyGXOZRLVBwAaUBSOeVevoDU@public.gmane.org>
+Subject: =?iso-8859-15?Q?Soldes_d=E9co_jusqu'=E0_-87%?=
+Date: Fri, 1 Jul 2011 18:31:33 +0200 (CEST)
+Message-ID: <1691856606.415625.1309537893625@p3enginer3.emv2.com>
+Reply-To: Bon Plan Open en ville <lesbonsplansdeco-LwRz8MGG/zxWj0EZb7rXcA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Tony Nadackal <tonykn@gmail.com>,
-	Padmavathi Venna <padma.v@samsung.com>, kgene.kim@samsung.com,
-	sbkim73@samsung.com, grant.likely@secretlab.ca,
-	spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
-	naushad@samsung.com
-To: padma venkat <padma.kvr@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 1, 2011 at 11:29 AM, padma venkat <padma.kvr@gmail.com> wro=
-te:
-> Hi Jassi,
->
-> On Fri, Jul 1, 2011 at 11:22 AM, Jassi Brar <jassisinghbrar@gmail.com=
-> wrote:
->> On Fri, Jul 1, 2011 at 11:16 AM, padma venkat <padma.kvr@gmail.com> =
-wrote:
->>> Hi Tony,
->>>
->>> On Thu, Jun 30, 2011 at 4:30 PM, Tony Nadackal <tonykn@gmail.com> w=
-rote:
->>>> Hi Padma,
->>>> With regards to your patch, even though one can check the tx done =
-status
->>>> using the TX_DONE bit, the present macro itself would work perfect=
-ly fine if
->>>> the 'fifo_lvl_mask' is set properly.
->>>> For example in 6450 channel 1, the fifo_lvl_mask should be 0x1ff (=
-for 9bits,
->>>> 15:23), while even in your patch, it is wrongly set as 0x7f(only 7=
-bits).
->>>>
->>>> Thus, if this fifo_lvl_mask was defined correctly, the existing ma=
-cro would
->>>> itself have worked.
->>> Thanks for your comment.
->>> I considered changing to the fifo_lvl_mask to 1ff as you mentioned.
->>> But I =C2=A0think that the fifo_lvl_mask reflects the actual FIFO c=
-apacity
->>> in the SPI driver.
->>> For the failing channels the FIFO trigger level is 64 bytes and so =
-i
->>> retained that value.
->>> In the driver it polls till the FIFO capacity level otherwise it go=
-es
->>> for DMA.So if we keep
->>> the FIFO level as 1ff when the actual capacity is 7f then it fails.
->>>
->>> Jassi what do you think about this?
->>>
->>
->> 'fifo_lvl_mask' is h/w specific and can't be set for convenience.
->>
->> I don't have access to post-s3c64xx datasheets.
->> Please check and reply if TX_DONE bit is at same offset for all
->> channels of an SoC, because
->> I suspect it's otherwise.
->>
-> Yes. The TX_DONE bit is at the same offset for all the channels of an=
- SoC.
-> in S5P64X0,S5PV210 and S5PV310 it is at offset 25.
->
 
-Then, Patches-1,2
+Open en ville vous pr=E9sente sa s=E9lection produit du jour : Toute la d=
+=E9co design =E0 prix imbattables.
 
-Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
+Pour =EAtre sur de r=E9ceptionner notre courrier ajoutez : lesbonsplansdeco=
+@decoopen.fr =E0 votre carnet d'adresse : =
+
+
+OPEN EN VILLE http://p3trc.emv2.com/HM?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxKLBET=
+iPcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyH
+
+- Objets deco &agrave; partir de 1Euro http://p3trc.emv2.com/HS?a=3DENX7Cql=
+CWp8x8SA9MKJJjHPnGHxKLBETifcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyE
+- Table relevable http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxK=
+LBETjvcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyF
+- Fauteuil Crapaud http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHx=
+KLBETj_cStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyK
+- Canape Fixe =
+
+
+
+Attention ne rater pas notre offre du jour sur Open en ville.
+
+
+Pour certains la d=E9co =E0 petits prix rime avec d=E9lais maxi.OPEN EN VIL=
+LE, c'est :
+- 30 ans d'exp=E9rience (cr=E9e en 1986)
+- plus de 15 points de vente en France
+- plus de 10 000m=B2 de stock. =
+
+
+Aujourd'hui Open en Ville s'engage =E0 vous livrer dans les 15 jours et vou=
+s rembourser la diff=E9rence si vous trouvez moins cher.
+
+Nos services et livraisons.
+- Enl=E8vement GRATUIT =E0 notre entrep=F4t
+- Livraison en bas de chez vous
+- Livraison dans votre appartement
+- Installation et livraison
+
+Vente aux professionnels:
+Pour toute information,veuillez nous contacter au 01 60 21 66 62
+
+Ne plus adresser de courrier =E0 cette adresse : =
+
+
+http://p3trc.emv2.com/HD?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxKLBETjPcStGb5lw8W0b=
+BhOG5mpqVsje_Hhe-m7lyL
+---------------------------------------------------------------------------=
+---
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security =
+
+threats, fraudulent activity, and more. Splunk takes this data and makes =
+
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2

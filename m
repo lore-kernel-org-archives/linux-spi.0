@@ -1,7 +1,7 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
+From: padma venkat <padma.kvr@gmail.com>
 Subject: Re: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
-Date: Fri, 1 Jul 2011 11:22:31 +0530
-Message-ID: <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
+Date: Fri, 1 Jul 2011 11:29:02 +0530
+Message-ID: <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
 References: <1309437536-9315-1-git-send-email-padma.v@samsung.com>
 	<1309437536-9315-2-git-send-email-padma.v@samsung.com>
 	<BANLkTi=L7QeN75ebWFXdp_V5Pw1zEc-ZtA@mail.gmail.com>
@@ -9,8 +9,9 @@ References: <1309437536-9315-1-git-send-email-padma.v@samsung.com>
 	<BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
 	<BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
 	<BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+	<BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Tony Nadackal <tonykn@gmail.com>,
 	Padmavathi Venna <padma.v@samsung.com>, kgene.kim@samsung.com,
@@ -19,49 +20,58 @@ Cc: Tony Nadackal <tonykn@gmail.com>,
 	linux-samsung-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
 	naushad@samsung.com
-To: padma venkat <padma.kvr@gmail.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+In-Reply-To: <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 1, 2011 at 11:16 AM, padma venkat <padma.kvr@gmail.com> wro=
-te:
-> Hi Tony,
->
-> On Thu, Jun 30, 2011 at 4:30 PM, Tony Nadackal <tonykn@gmail.com> wro=
-te:
->> Hi Padma,
->> With regards to your patch, even though one can check the tx done st=
-atus
->> using the TX_DONE bit, the present macro itself would work perfectly=
- fine if
->> the 'fifo_lvl_mask' is set properly.
->> For example in 6450 channel 1, the fifo_lvl_mask should be 0x1ff (fo=
-r 9bits,
->> 15:23), while even in your patch, it is wrongly set as 0x7f(only 7bi=
-ts).
+Hi Jassi,
+
+On Fri, Jul 1, 2011 at 11:22 AM, Jassi Brar <jassisinghbrar@gmail.com> =
+wrote:
+> On Fri, Jul 1, 2011 at 11:16 AM, padma venkat <padma.kvr@gmail.com> w=
+rote:
+>> Hi Tony,
 >>
->> Thus, if this fifo_lvl_mask was defined correctly, the existing macr=
-o would
->> itself have worked.
-> Thanks for your comment.
-> I considered changing to the fifo_lvl_mask to 1ff as you mentioned.
-> But I =C2=A0think that the fifo_lvl_mask reflects the actual FIFO cap=
-acity
-> in the SPI driver.
-> For the failing channels the FIFO trigger level is 64 bytes and so i
-> retained that value.
-> In the driver it polls till the FIFO capacity level otherwise it goes
-> for DMA.So if we keep
-> the FIFO level as 1ff when the actual capacity is 7f then it fails.
+>> On Thu, Jun 30, 2011 at 4:30 PM, Tony Nadackal <tonykn@gmail.com> wr=
+ote:
+>>> Hi Padma,
+>>> With regards to your patch, even though one can check the tx done s=
+tatus
+>>> using the TX_DONE bit, the present macro itself would work perfectl=
+y fine if
+>>> the 'fifo_lvl_mask' is set properly.
+>>> For example in 6450 channel 1, the fifo_lvl_mask should be 0x1ff (f=
+or 9bits,
+>>> 15:23), while even in your patch, it is wrongly set as 0x7f(only 7b=
+its).
+>>>
+>>> Thus, if this fifo_lvl_mask was defined correctly, the existing mac=
+ro would
+>>> itself have worked.
+>> Thanks for your comment.
+>> I considered changing to the fifo_lvl_mask to 1ff as you mentioned.
+>> But I =A0think that the fifo_lvl_mask reflects the actual FIFO capac=
+ity
+>> in the SPI driver.
+>> For the failing channels the FIFO trigger level is 64 bytes and so i
+>> retained that value.
+>> In the driver it polls till the FIFO capacity level otherwise it goe=
+s
+>> for DMA.So if we keep
+>> the FIFO level as 1ff when the actual capacity is 7f then it fails.
+>>
+>> Jassi what do you think about this?
+>>
 >
-> Jassi what do you think about this?
+> 'fifo_lvl_mask' is h/w specific and can't be set for convenience.
 >
-
-'fifo_lvl_mask' is h/w specific and can't be set for convenience.
-
-I don't have access to post-s3c64xx datasheets.
-Please check and reply if TX_DONE bit is at same offset for all
-channels of an SoC, because
-I suspect it's otherwise.
+> I don't have access to post-s3c64xx datasheets.
+> Please check and reply if TX_DONE bit is at same offset for all
+> channels of an SoC, because
+> I suspect it's otherwise.
+>
+Yes. The TX_DONE bit is at the same offset for all the channels of an S=
+oC.
+in S5P64X0,S5PV210 and S5PV310 it is at offset 25.

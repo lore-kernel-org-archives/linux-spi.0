@@ -1,11 +1,10 @@
-From: Open en ville <sandrine-A+lxSsK1OnwbbyeyzbMmyGXOZRLVBwAaUBSOeVevoDU@public.gmane.org>
-Subject: =?iso-8859-15?Q?Soldes_d=E9co_jusqu'=E0_-87%?=
-Date: Fri, 1 Jul 2011 18:31:33 +0200 (CEST)
-Message-ID: <1691856606.415625.1309537893625@p3enginer3.emv2.com>
-Reply-To: Bon Plan Open en ville <lesbonsplansdeco-LwRz8MGG/zxWj0EZb7rXcA@public.gmane.org>
+From: "Gayle H." <GayleH.NoReply18-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Please Review
+Date: Sat, 2 Jul 2011 15:22:09 -0700
+Message-ID: <490e08f1ff6a880c94e4874b001d466a@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_67781390D"
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,60 +17,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format.
 
-Open en ville vous pr=E9sente sa s=E9lection produit du jour : Toute la d=
-=E9co design =E0 prix imbattables.
+------=SPLITOR00A_001_67781390D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Pour =EAtre sur de r=E9ceptionner notre courrier ajoutez : lesbonsplansdeco=
-@decoopen.fr =E0 votre carnet d'adresse : =
+I would like to speak to you about printing your company's business cards=2E
+We are the largest online business card management company in the United =
+States. We offer the highest quality business cards combined with a very =
+easy to use ordering system=2E
+=20
+I have attached a proposal highlighting our services. You may also view a =
+video from the "Watch Video" link on the attached information sheet=2E
 
+***Please review the attached proposal for details.***
 
-OPEN EN VILLE http://p3trc.emv2.com/HM?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxKLBET=
-iPcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyH
+I look forward to working with your company.=20
 
-- Objets deco &agrave; partir de 1Euro http://p3trc.emv2.com/HS?a=3DENX7Cql=
-CWp8x8SA9MKJJjHPnGHxKLBETifcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyE
-- Table relevable http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxK=
-LBETjvcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyF
-- Fauteuil Crapaud http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHx=
-KLBETj_cStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lyK
-- Canape Fixe =
-
-
-
-Attention ne rater pas notre offre du jour sur Open en ville.
-
-
-Pour certains la d=E9co =E0 petits prix rime avec d=E9lais maxi.OPEN EN VIL=
-LE, c'est :
-- 30 ans d'exp=E9rience (cr=E9e en 1986)
-- plus de 15 points de vente en France
-- plus de 10 000m=B2 de stock. =
+Sincerely,
+Gayle
 
 
-Aujourd'hui Open en Ville s'engage =E0 vous livrer dans les 15 jours et vou=
-s rembourser la diff=E9rence si vous trouvez moins cher.
-
-Nos services et livraisons.
-- Enl=E8vement GRATUIT =E0 notre entrep=F4t
-- Livraison en bas de chez vous
-- Livraison dans votre appartement
-- Installation et livraison
-
-Vente aux professionnels:
-Pour toute information,veuillez nous contacter au 01 60 21 66 62
-
-Ne plus adresser de courrier =E0 cette adresse : =
 
 
-http://p3trc.emv2.com/HD?a=3DENX7CqlCWp8x8SA9MKJJjHPnGHxKLBETjPcStGb5lw8W0b=
-BhOG5mpqVsje_Hhe-m7lyL
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =
+<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-gene=
+ral-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>=20
+
+7090 N Oracle Rd, Tucson AZ 85704
+
+
+------=SPLITOR00A_001_67781390D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security =
-
-threats, fraudulent activity, and more. Splunk takes this data and makes =
-
+Why? It contains a definitive record of application performance, security 
+threats, fraudulent activity, and more. Splunk takes this data and makes 
 sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-d2d-c2
+------=SPLITOR00A_001_67781390D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_67781390D--

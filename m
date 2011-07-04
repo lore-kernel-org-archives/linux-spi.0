@@ -1,88 +1,97 @@
-From: "Gayle H." <GayleH.NoReply18-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Please Review
-Date: Sat, 2 Jul 2011 15:22:09 -0700
-Message-ID: <490e08f1ff6a880c94e4874b001d466a@g2gm.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO
+ level
+Date: Mon, 4 Jul 2011 00:55:01 -0600
+Message-ID: <20110704065501.GP15152@ponder.secretlab.ca>
+References: <1309437536-9315-1-git-send-email-padma.v@samsung.com>
+ <1309437536-9315-2-git-send-email-padma.v@samsung.com>
+ <BANLkTi=L7QeN75ebWFXdp_V5Pw1zEc-ZtA@mail.gmail.com>
+ <BANLkTimeWUbD2Ej16KKmuzwSCFz8HOhyKQ@mail.gmail.com>
+ <BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
+ <BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
+ <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+ <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
+ <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
+ <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_67781390D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: padma venkat <padma.kvr@gmail.com>,
+	Tony Nadackal <tonykn@gmail.com>,
+	Padmavathi Venna <padma.v@samsung.com>, kgene.kim@samsung.com,
+	sbkim73@samsung.com, spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
+	naushad@samsung.com
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Fri, Jul 01, 2011 at 11:43:08AM +0530, Jassi Brar wrote:
+> On Fri, Jul 1, 2011 at 11:29 AM, padma venkat <padma.kvr@gmail.com> w=
+rote:
+> > Hi Jassi,
+> >
+> > On Fri, Jul 1, 2011 at 11:22 AM, Jassi Brar <jassisinghbrar@gmail.c=
+om> wrote:
+> >> On Fri, Jul 1, 2011 at 11:16 AM, padma venkat <padma.kvr@gmail.com=
+> wrote:
+> >>> Hi Tony,
+> >>>
+> >>> On Thu, Jun 30, 2011 at 4:30 PM, Tony Nadackal <tonykn@gmail.com>=
+ wrote:
+> >>>> Hi Padma,
+> >>>> With regards to your patch, even though one can check the tx don=
+e status
+> >>>> using the TX_DONE bit, the present macro itself would work perfe=
+ctly fine if
+> >>>> the 'fifo_lvl_mask' is set properly.
+> >>>> For example in 6450 channel 1, the fifo_lvl_mask should be 0x1ff=
+ (for 9bits,
+> >>>> 15:23), while even in your patch, it is wrongly set as 0x7f(only=
+ 7bits).
+> >>>>
+> >>>> Thus, if this fifo_lvl_mask was defined correctly, the existing =
+macro would
+> >>>> itself have worked.
+> >>> Thanks for your comment.
+> >>> I considered changing to the fifo_lvl_mask to 1ff as you mentione=
+d.
+> >>> But I =A0think that the fifo_lvl_mask reflects the actual FIFO ca=
+pacity
+> >>> in the SPI driver.
+> >>> For the failing channels the FIFO trigger level is 64 bytes and s=
+o i
+> >>> retained that value.
+> >>> In the driver it polls till the FIFO capacity level otherwise it =
+goes
+> >>> for DMA.So if we keep
+> >>> the FIFO level as 1ff when the actual capacity is 7f then it fail=
+s.
+> >>>
+> >>> Jassi what do you think about this?
+> >>>
+> >>
+> >> 'fifo_lvl_mask' is h/w specific and can't be set for convenience.
+> >>
+> >> I don't have access to post-s3c64xx datasheets.
+> >> Please check and reply if TX_DONE bit is at same offset for all
+> >> channels of an SoC, because
+> >> I suspect it's otherwise.
+> >>
+> > Yes. The TX_DONE bit is at the same offset for all the channels of =
+an SoC.
+> > in S5P64X0,S5PV210 and S5PV310 it is at offset 25.
+> >
+>=20
+> Then, Patches-1,2
+>=20
+> Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
 
-------=SPLITOR00A_001_67781390D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Are these bug fixes that should be in v3.0, or do I queue them up for v=
+3.1?
 
-I would like to speak to you about printing your company's business cards=2E
-We are the largest online business card management company in the United =
-States. We offer the highest quality business cards combined with a very =
-easy to use ordering system=2E
-=20
-I have attached a proposal highlighting our services. You may also view a =
-video from the "Watch Video" link on the attached information sheet=2E
-
-***Please review the attached proposal for details.***
-
-I look forward to working with your company.=20
-
-Sincerely,
-Gayle
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Unsubscribe From Future Messages =
-<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-gene=
-ral-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>=20
-
-7090 N Oracle Rd, Tucson AZ 85704
-
-
-------=SPLITOR00A_001_67781390D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security 
-threats, fraudulent activity, and more. Splunk takes this data and makes 
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2d-c2
-------=SPLITOR00A_001_67781390D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_67781390D--
+g.

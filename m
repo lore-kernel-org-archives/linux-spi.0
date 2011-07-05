@@ -1,62 +1,59 @@
 From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH 0/5] remove spi-s3c24xx-gpio driver
-Date: Tue, 05 Jul 2011 14:45:25 +0900
-Message-ID: <009e01cc3ad6$c14049d0$43c0dd70$%kim@samsung.com>
-References: <1309265357-15879-1-git-send-email-jacmet@sunsite.dk>
-	<20110628212443.GI21138@trinity.fluff.org>
-	<87ipro4loa.fsf@macbook.be.48ers.dk>
-	<BANLkTi=693aHH=8BTAyrKWc1padiozpT6A@mail.gmail.com>
-	<87ei2c4jch.fsf@macbook.be.48ers.dk>
-	<20110704165134.GF28042@ponder.secretlab.ca>
+Subject: RE: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
+Date: Tue, 05 Jul 2011 14:51:08 +0900
+Message-ID: <009f01cc3ad7$8e350200$aa9f0600$%kim@samsung.com>
+References: <BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
+ <BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
+ <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+ <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
+ <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
+ <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
+ <20110704065501.GP15152@ponder.secretlab.ca>
+ <CACxGe6urrZ9=1OgcaYF6EtvJokAyFTbFCnHPWsCY+sETVze8-w@mail.gmail.com>
+ <005501cc3a30$6c916190$45b424b0$%kim@samsung.com>
+ <005601cc3a32$64bd5fd0$2e381f70$%kim@samsung.com>
+ <20110704150607.GA29977@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	'Ben Dooks' <ben@trinity.fluff.org>, ben-linux@fluff.org,
-	linux-arm-kernel@lists.infradead.org
-To: 'Grant Likely' <grant.likely@secretlab.ca>,
-	'Peter Korsgaard' <jacmet@sunsite.dk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-reply-to: <20110704165134.GF28042@ponder.secretlab.ca>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: 'Jassi Brar' <jassisinghbrar@gmail.com>,
+	'padma venkat' <padma.kvr@gmail.com>,
+	'Tony Nadackal' <tonykn@gmail.com>,
+	'Padmavathi Venna' <padma.v@samsung.com>, sbkim73@samsung.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
+	naushad@samsung.com
+To: 'Grant Likely' <grant.likely@secretlab.ca>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <20110704150607.GA29977@ponder.secretlab.ca>
 Content-language: ko
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 Grant Likely wrote:
 > 
-> On Wed, Jun 29, 2011 at 07:51:10PM +0200, Peter Korsgaard wrote:
-> > >>>>> "Grant" == Grant Likely <grant.likely@secretlab.ca> writes:
-> >
-> >  >> Great, will you handle the series or should it go through the spi
-tree?
-> >
-> >  Grant> With the big spi driver rename, it should probably either go via
-the
-> >  Grant> spi tree, or be put into a topic branch that can be merged by
-both the
-> >  Grant> spi and samsung trees.
-> >
-> > Both is fine by me. Let me know if you want me to do something.
+> On Mon, Jul 04, 2011 at 07:08:55PM +0900, Kukjin Kim wrote:
+> > Kukjin Kim wrote:
+> > >
+> > > Thanks Grant, Jassi and all,
+> > >
+> > > I will apply these 1 and 2 in my -fix tree for 3.0 with your acks.
+> > >
+> > Oops, this needs previous 'cleanup spi platform specific code' so can't
+> > apply -fix tree now.
 > 
-> It's pretty minimal arch/arm impact, and it depends on the big rename
-> patch, so why don't I just merge it directly into spi/next without a
-> topic branch.
-
+> There may also be conflicts with the heavy rework in the spi tree.
+> Kgene, when you pick up this series, can you put it into a separate
+> topic branch and merge that into your main tree?  That way if there
+> are difficult conflicts, then I can also merge that same topic branch
+> into spi/next to resolve them.
+> 
 Hi Grant,
 
-I agree with you, it is not expected this makes some conflicts between spi
-and samsung tree.
-
-I think Ben's ack is enough on this, if required,
-Acked-by: Kukjin Kim <kgene.kim@samsung.com>
+Sure, no problem. I'm waiting for Padmavathi's new patch which is based on
+old code not new SPI code. When I merge topic branch for this into my tree,
+let you know immediately. Then if any problems, let's talk again :)
 
 Thanks.
 

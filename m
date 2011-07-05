@@ -1,15 +1,15 @@
-From: Holger Brunck <holger.brunck@keymile.com>
+From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: [PATCH] spi/fsl_spi: fix CPM spi driver
-Date: Tue, 05 Jul 2011 16:31:50 +0200
-Message-ID: <4E132056.4000301@keymile.com>
+Date: Tue, 5 Jul 2011 12:00:10 -0600
+Message-ID: <20110705180010.GA7393@ponder.secretlab.ca>
 References: <1308587517-20640-1-git-send-email-holger.brunck@keymile.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linuxppc-dev@lists.ozlabs.org, Holger Brunck <holger.brunck@keymile.com>,
-	spi-devel-general@lists.sourceforge.net
-To: Grant Likely <grant.likely@secretlab.ca>
+Cc: spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
+To: Holger Brunck <holger.brunck@keymile.com>
 Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+Content-Disposition: inline
 In-Reply-To: <1308587517-20640-1-git-send-email-holger.brunck@keymile.com>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
 	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -22,17 +22,7 @@ Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozla
 Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-is this patch in your eyes ok to be scheduled for the next linux merge window or
-is something missing? Or should it go through the powerpc tree and not through
-your spi tree?
-
-Please let me know your opinion.
-
-Best regards
-Holger Brunck
-
-On 06/20/2011 06:31 PM, Holger Brunck wrote:
+On Mon, Jun 20, 2011 at 06:31:57PM +0200, Holger Brunck wrote:
 > This patch fixes the freescale spi driver for CPM. Without this
 > patch SPI on CPM failed because cpm_muram_alloc_fixed tries to
 > allocate muram in an preserved area. The error reported was:
@@ -47,6 +37,11 @@ On 06/20/2011 06:31 PM, Holger Brunck wrote:
 > Signed-off-by: Holger Brunck <holger.brunck@keymile.com>
 > cc: Grant Likely <grant.likely@secretlab.ca>
 > cc: spi-devel-general@lists.sourceforge.net
+
+Applied, thanks.
+
+g.
+
 > ---
 > This was the same problem reported and discussed on ppc-dev for CPM1:
 > http://lists.ozlabs.org/pipermail/linuxppc-dev/2010-September/085739.html
@@ -111,3 +106,6 @@ On 06/20/2011 06:31 PM, Holger Brunck wrote:
 >  	return pram_ofs;
 >  }
 >  
+> -- 
+> 1.7.1
+> 

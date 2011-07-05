@@ -1,122 +1,51 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi/fsl_spi: fix CPM spi driver
-Date: Tue, 5 Jul 2011 12:00:46 -0600
-Message-ID: <20110705180046.GB7393@ponder.secretlab.ca>
-References: <1308587517-20640-1-git-send-email-holger.brunck@keymile.com>
-	<4E132056.4000301@keymile.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
-To: Holger Brunck <holger.brunck@keymile.com>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-Content-Disposition: inline
-In-Reply-To: <4E132056.4000301@keymile.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
-	<mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi/tegra: Use engineering names in DT compatible property
+Date: Tue,  5 Jul 2011 14:18:02 -0600
+Message-ID: <1309897082-22695-1-git-send-email-swarren@nvidia.com>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 05, 2011 at 04:31:50PM +0200, Holger Brunck wrote:
-> Hi Grant,
-> is this patch in your eyes ok to be scheduled for the next linux merge window or
-> is something missing? Or should it go through the powerpc tree and not through
-> your spi tree?
+Engineering names are more stable than marketing names. Hence, use them
+for Device Tree compatible properties instead.
 
-No, I just hadn't gotten to it yet.  Sometimes I need to be pinged.
-I've merged it.
+Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+Grant, this is against devicetree/arm, and also makes sense for
+devicetree/test.
 
-g.
+ .../devicetree/bindings/spi/spi_nvidia.txt         |    2 +-
+ drivers/spi/spi_tegra.c                            |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> Please let me know your opinion.
-> 
-> Best regards
-> Holger Brunck
-> 
-> On 06/20/2011 06:31 PM, Holger Brunck wrote:
-> > This patch fixes the freescale spi driver for CPM. Without this
-> > patch SPI on CPM failed because cpm_muram_alloc_fixed tries to
-> > allocate muram in an preserved area. The error reported was:
-> > 
-> > mpc8xxx_spi f0011a80.spi: can't allocate spi parameter ram
-> > mpc8xxx_spi: probe of f0011a80.spi failed with error -12
-> > 
-> > Now the driver uses of_iomap to get access to this area
-> > similar to i2c driver driver in the i2c-cpm.c which has a
-> > similar device tree node. This is tested on a MPC8247 with CPM2.
-> > 
-> > Signed-off-by: Holger Brunck <holger.brunck@keymile.com>
-> > cc: Grant Likely <grant.likely@secretlab.ca>
-> > cc: spi-devel-general@lists.sourceforge.net
-> > ---
-> > This was the same problem reported and discussed on ppc-dev for CPM1:
-> > http://lists.ozlabs.org/pipermail/linuxppc-dev/2010-September/085739.html
-> > 
-> >  drivers/spi/spi_fsl_spi.c |   28 +++++++++++-----------------
-> >  1 files changed, 11 insertions(+), 17 deletions(-)
-> > 
-> > diff --git a/drivers/spi/spi_fsl_spi.c b/drivers/spi/spi_fsl_spi.c
-> > index 7963c9b..ca57edf 100644
-> > --- a/drivers/spi/spi_fsl_spi.c
-> > +++ b/drivers/spi/spi_fsl_spi.c
-> > @@ -684,7 +684,7 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
-> >  	struct device_node *np = dev->of_node;
-> >  	const u32 *iprop;
-> >  	int size;
-> > -	unsigned long spi_base_ofs;
-> > +	void __iomem *spi_base;
-> >  	unsigned long pram_ofs = -ENOMEM;
-> >  
-> >  	/* Can't use of_address_to_resource(), QE muram isn't at 0. */
-> > @@ -702,33 +702,27 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
-> >  		return pram_ofs;
-> >  	}
-> >  
-> > -	/* CPM1 and CPM2 pram must be at a fixed addr. */
-> > -	if (!iprop || size != sizeof(*iprop) * 4)
-> > -		return -ENOMEM;
-> > -
-> > -	spi_base_ofs = cpm_muram_alloc_fixed(iprop[2], 2);
-> > -	if (IS_ERR_VALUE(spi_base_ofs))
-> > -		return -ENOMEM;
-> > +	spi_base = of_iomap(np, 1);
-> > +	if (spi_base == NULL)
-> > +		return -EINVAL;
-> >  
-> >  	if (mspi->flags & SPI_CPM2) {
-> >  		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
-> > -		if (!IS_ERR_VALUE(pram_ofs)) {
-> > -			u16 __iomem *spi_base = cpm_muram_addr(spi_base_ofs);
-> > -
-> > -			out_be16(spi_base, pram_ofs);
-> > -		}
-> > +		out_be16(spi_base, pram_ofs);
-> >  	} else {
-> > -		struct spi_pram __iomem *pram = cpm_muram_addr(spi_base_ofs);
-> > +		struct spi_pram __iomem *pram = spi_base;
-> >  		u16 rpbase = in_be16(&pram->rpbase);
-> >  
-> >  		/* Microcode relocation patch applied? */
-> >  		if (rpbase)
-> >  			pram_ofs = rpbase;
-> > -		else
-> > -			return spi_base_ofs;
-> > +		else {
-> > +			pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
-> > +			out_be16(spi_base, pram_ofs);
-> > +		}
-> >  	}
-> >  
-> > -	cpm_muram_free(spi_base_ofs);
-> > +	iounmap(spi_base);
-> >  	return pram_ofs;
-> >  }
-> >  
-> 
+diff --git a/Documentation/devicetree/bindings/spi/spi_nvidia.txt b/Documentation/devicetree/bindings/spi/spi_nvidia.txt
+index bde450b..6b9e518 100644
+--- a/Documentation/devicetree/bindings/spi/spi_nvidia.txt
++++ b/Documentation/devicetree/bindings/spi/spi_nvidia.txt
+@@ -1,5 +1,5 @@
+ NVIDIA Tegra 2 SPI device
+ 
+ Required properties:
+-- compatible : should be "nvidia,tegra250-spi".
++- compatible : should be "nvidia,tegra20-spi".
+ - gpios : should specify GPIOs used for chipselect.
+diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
+index 1e7de98..b0e3586 100644
+--- a/drivers/spi/spi_tegra.c
++++ b/drivers/spi/spi_tegra.c
+@@ -598,7 +598,7 @@ MODULE_ALIAS("platform:spi_tegra");
+ 
+ #ifdef CONFIG_OF
+ static struct of_device_id spi_tegra_of_match_table[] __devinitdata = {
+-	{ .compatible = "nvidia,tegra250-spi", },
++	{ .compatible = "nvidia,tegra20-spi", },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, spi_tegra_of_match_table);
+-- 
+1.7.0.4

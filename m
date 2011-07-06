@@ -1,63 +1,78 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/tegra: Use engineering names in DT compatible
- property
-Date: Tue, 5 Jul 2011 23:38:59 -0600
-Message-ID: <20110706053859.GD9978@ponder.secretlab.ca>
-References: <1309897082-22695-1-git-send-email-swarren@nvidia.com>
+From: Kukjin Kim <kgene.kim@samsung.com>
+Subject: RE: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
+Date: Wed, 06 Jul 2011 15:22:08 +0900
+Message-ID: <00c101cc3ba5$0b573910$2205ab30$%kim@samsung.com>
+References: <BANLkTi=9c5asfr=Jg6xwjQZW_a369UO64Q@mail.gmail.com>
+ <BANLkTinFnFwBGi693JTD_iDykA2VkV+HOw@mail.gmail.com>
+ <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
+ <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
+ <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
+ <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
+ <20110704065501.GP15152@ponder.secretlab.ca>
+ <CACxGe6urrZ9=1OgcaYF6EtvJokAyFTbFCnHPWsCY+sETVze8-w@mail.gmail.com>
+ <005501cc3a30$6c916190$45b424b0$%kim@samsung.com>
+ <005601cc3a32$64bd5fd0$2e381f70$%kim@samsung.com>
+ <20110704150607.GA29977@ponder.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1309897082-22695-1-git-send-email-swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7BIT
+Cc: 'Jassi Brar' <jassisinghbrar@gmail.com>,
+	'padma venkat' <padma.kvr@gmail.com>,
+	'Tony Nadackal' <tonykn@gmail.com>,
+	'Padmavathi Venna' <padma.v@samsung.com>, sbkim73@samsung.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
+	naushad@samsung.com
+To: 'Kukjin Kim' <kgene.kim@samsung.com>,
+	'Grant Likely' <grant.likely@secretlab.ca>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: 
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 05, 2011 at 02:18:02PM -0600, Stephen Warren wrote:
-> Engineering names are more stable than marketing names. Hence, use them
-> for Device Tree compatible properties instead.
+Kukjin Kim wrote:
 > 
-> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> ---
-> Grant, this is against devicetree/arm, and also makes sense for
-> devicetree/test.
+> Grant Likely wrote:
+> >
+> > On Mon, Jul 04, 2011 at 07:08:55PM +0900, Kukjin Kim wrote:
+> > > Kukjin Kim wrote:
+> > > >
+> > > > Thanks Grant, Jassi and all,
+> > > >
+> > > > I will apply these 1 and 2 in my -fix tree for 3.0 with your acks.
+> > > >
+> > > Oops, this needs previous 'cleanup spi platform specific code' so
+can't
+> > > apply -fix tree now.
+> >
+> > There may also be conflicts with the heavy rework in the spi tree.
+> > Kgene, when you pick up this series, can you put it into a separate
+> > topic branch and merge that into your main tree?  That way if there
+> > are difficult conflicts, then I can also merge that same topic branch
+> > into spi/next to resolve them.
+> >
+> Hi Grant,
+> 
+> Sure, no problem. I'm waiting for Padmavathi's new patch which is based on
+old
+> code not new SPI code. When I merge topic branch for this into my tree,
+let you
+> know immediately. Then if any problems, let's talk again :)
 
-Applied to spi/next, thanks.
+Hi,
 
-g.
+I made topic branch for this based on 3.0-rc6.
+git://git.kernel.org/pub/scm/linux/kernel/git/kgene/linux-samsung.git
+#for-spi
 
-> 
->  .../devicetree/bindings/spi/spi_nvidia.txt         |    2 +-
->  drivers/spi/spi_tegra.c                            |    2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi_nvidia.txt b/Documentation/devicetree/bindings/spi/spi_nvidia.txt
-> index bde450b..6b9e518 100644
-> --- a/Documentation/devicetree/bindings/spi/spi_nvidia.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi_nvidia.txt
-> @@ -1,5 +1,5 @@
->  NVIDIA Tegra 2 SPI device
->  
->  Required properties:
-> -- compatible : should be "nvidia,tegra250-spi".
-> +- compatible : should be "nvidia,tegra20-spi".
->  - gpios : should specify GPIOs used for chipselect.
-> diff --git a/drivers/spi/spi_tegra.c b/drivers/spi/spi_tegra.c
-> index 1e7de98..b0e3586 100644
-> --- a/drivers/spi/spi_tegra.c
-> +++ b/drivers/spi/spi_tegra.c
-> @@ -598,7 +598,7 @@ MODULE_ALIAS("platform:spi_tegra");
->  
->  #ifdef CONFIG_OF
->  static struct of_device_id spi_tegra_of_match_table[] __devinitdata = {
-> -	{ .compatible = "nvidia,tegra250-spi", },
-> +	{ .compatible = "nvidia,tegra20-spi", },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, spi_tegra_of_match_table);
-> -- 
-> 1.7.0.4
-> 
+If any problems, please let me know :)
+
+Thanks.
+
+Best regards,
+Kgene.
+--
+Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+SW Solution Development Team, Samsung Electronics Co., Ltd.

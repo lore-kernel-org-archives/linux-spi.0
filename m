@@ -1,90 +1,34 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH 2/2] SPI: SAMSUNG: Bug fix for SPI with different FIFO level
-Date: Wed, 06 Jul 2011 16:17:05 +0900
-Message-ID: <00cf01cc3bac$b81fd790$285f86b0$%kim@samsung.com>
-References: <BANLkTik0LERxBHmJc5ZnRotnD4CSveR-UQ@mail.gmail.com>
- <BANLkTim9wdrqDgXVUjxzMv9cdWViLww=Bg@mail.gmail.com>
- <BANLkTim40x4X_--K0z7gdodDjor0MUam5Q@mail.gmail.com>
- <BANLkTinf6ec1yXeaFkZjHMnqZp7yymDq-w@mail.gmail.com>
- <20110704065501.GP15152@ponder.secretlab.ca>
- <CACxGe6urrZ9=1OgcaYF6EtvJokAyFTbFCnHPWsCY+sETVze8-w@mail.gmail.com>
- <005501cc3a30$6c916190$45b424b0$%kim@samsung.com>
- <005601cc3a32$64bd5fd0$2e381f70$%kim@samsung.com>
- <20110704150607.GA29977@ponder.secretlab.ca>
- <00c101cc3ba5$0b573910$2205ab30$%kim@samsung.com>
- <20110706063027.GK9978@ponder.secretlab.ca>
+From: Chevignon <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?3=E8me_d=E9marque,_TOUT_A_-50%_CHEZ_CHEVIGNON?=
+Date: Wed, 6 Jul 2011 10:45:03 +0200 (CEST)
+Message-ID: <3236305005.142713.1309941903377@p4enginex2.emv2.com>
+Reply-To: soldes-z2kSNmc3sHARaeofl0zfrzvVvYADlmjq@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7BIT
-Cc: 'Jassi Brar' <jassisinghbrar@gmail.com>,
-	'padma venkat' <padma.kvr@gmail.com>,
-	'Tony Nadackal' <tonykn@gmail.com>,
-	'Padmavathi Venna' <padma.v@samsung.com>, sbkim73@samsung.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, tony.kn@samsung.com,
-	naushad@samsung.com
-To: 'Grant Likely' <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <20110706063027.GK9978@ponder.secretlab.ca>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Grant Likely wrote:
-> 
-> On Wed, Jul 06, 2011 at 03:22:08PM +0900, Kukjin Kim wrote:
-> > Kukjin Kim wrote:
-> > >
-> > > Grant Likely wrote:
-> > > >
-> > > > On Mon, Jul 04, 2011 at 07:08:55PM +0900, Kukjin Kim wrote:
-> > > > > Kukjin Kim wrote:
-> > > > > >
-> > > > > > Thanks Grant, Jassi and all,
-> > > > > >
-> > > > > > I will apply these 1 and 2 in my -fix tree for 3.0 with your
-acks.
-> > > > > >
-> > > > > Oops, this needs previous 'cleanup spi platform specific code' so
-> > can't
-> > > > > apply -fix tree now.
-> > > >
-> > > > There may also be conflicts with the heavy rework in the spi tree.
-> > > > Kgene, when you pick up this series, can you put it into a separate
-> > > > topic branch and merge that into your main tree?  That way if there
-> > > > are difficult conflicts, then I can also merge that same topic
-branch
-> > > > into spi/next to resolve them.
-> > > >
-> > > Hi Grant,
-> > >
-> > > Sure, no problem. I'm waiting for Padmavathi's new patch which is
-based on
-> > old
-> > > code not new SPI code. When I merge topic branch for this into my
-tree,
-> > let you
-> > > know immediately. Then if any problems, let's talk again :)
-> >
-> > Hi,
-> >
-> > I made topic branch for this based on 3.0-rc6.
-> > git://git.kernel.org/pub/scm/linux/kernel/git/kgene/linux-samsung.git
-> > #for-spi
-> 
-> Okay.  If there are problems, then I'll merge it.  Thanks.
-> 
 
-Maybe 'If there are not problems'?
 
-Anyway, where do you want to merge this -next or -fix? I think, this is
-required for 3.0.
+3=E8me d=E9marque, TOUT A -50% CHEZ CHEVIGNON http://p4tre.emv3.com/HS?a=3D=
+ENX7CqnmaymC8SA9MKJN9oPnGHxKLLjtY_cStGb5lw8W0bBhOG5mpqVsje_HhdBQ4VHz
 
-Thanks.
+---------------------------------------------------------------------------=
+---
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security =
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+threats, fraudulent activity, and more. Splunk takes this data and makes =
+
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2

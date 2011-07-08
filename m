@@ -1,49 +1,72 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/6] Add device tree support for imx spi driver
-Date: Fri, 8 Jul 2011 13:01:42 -0600
-Message-ID: <20110708190142.GD9070@ponder.secretlab.ca>
-References: <1310113654-25887-1-git-send-email-shawn.guo@linaro.org>
+Subject: Re: [PATCH] dw_spi: Add spi number into spi irq desc
+Date: Fri, 8 Jul 2011 13:07:46 -0600
+Message-ID: <20110708190746.GE9070@ponder.secretlab.ca>
+References: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04001D4@shsmsx502.ccr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, patches@linaro.org
-To: Shawn Guo <shawn.guo@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: "Tang, Feng" <feng.tang@intel.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: "Liu, ShuoX" <shuox.liu@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1310113654-25887-1-git-send-email-shawn.guo@linaro.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04001D4@shsmsx502.ccr.corp.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 08, 2011 at 04:27:28PM +0800, Shawn Guo wrote:
-> The patch set makes some cleanups on imx spi driver to get it ready
-> for adding device tree probe and then add the support.
+On Fri, Jul 08, 2011 at 02:24:31PM +0800, Liu, ShuoX wrote:
+> From b260c4e51487364552886b0327fe98d66e850168 Mon Sep 17 00:00:00 2001
+> From: ShuoX Liu <shuox.liu@intel.com>
+> Date: Thu, 7 Jul 2011 16:09:41 +0800
+> Subject: [PATCH] dw_spi: Add spi number into spi irq desc
 > 
-> Those two dt helper function related patches are carried here to
-> resolve the dependency.  They should be on the way to sit on Grant's
-> devicetree/next branch.
-> 
-> Rob Herring (1):
->       dt: add helper function to read u32 arrays
-> 
-> Shawn Guo (5):
->       ARM: mxc: remove unnecessary header file inclusion from gpio.h
->       spi/imx: use soc name in spi device type naming scheme
->       spi/imx: copy gpio number passed by platform data into driver private data
->       dt: add empty of_property_read_u32[_array] for non-dt
->       spi/imx: add device tree probe support
+> Signed-off-by: ShuoX Liu <shuox.liu@intel.com>
 
-Okay, I tried to apply this series, but the first patch that removes
-the includes caused a build failure, so I've dropped it.  What tree
-are these patches based on top of?
+Patch does not apply against current spi/next (linux-next).
 
 g.
+
+> ---
+>  drivers/spi/dw_spi.c |    4 +++-
+>  drivers/spi/dw_spi.h |    1 +
+>  2 files changed, 4 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
+> index 919fa9d..68a3026 100644
+> --- a/drivers/spi/dw_spi.c
+> +++ b/drivers/spi/dw_spi.c
+> @@ -818,9 +818,11 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
+>  	dws->prev_chip = NULL;
+>  	dws->dma_inited = 0;
+>  	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
+> +	snprintf(dws->name, sizeof(dws->name), "dw_spi%d",
+> +			dws->bus_num);
+>  
+>  	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
+> -			"dw_spi", dws);
+> +			dws->name, dws);
+>  	if (ret < 0) {
+>  		dev_err(&master->dev, "can not get IRQ\n");
+>  		goto err_free_master;
+> diff --git a/drivers/spi/dw_spi.h b/drivers/spi/dw_spi.h
+> index 7a5e78d..8b7b07b 100644
+> --- a/drivers/spi/dw_spi.h
+> +++ b/drivers/spi/dw_spi.h
+> @@ -96,6 +96,7 @@ struct dw_spi {
+>  	struct spi_device	*cur_dev;
+>  	struct device		*parent_dev;
+>  	enum dw_ssi_type	type;
+> +	char			name[16];
+>  
+>  	void __iomem		*regs;
+>  	unsigned long		paddr;
+> -- 
+> 1.7.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/

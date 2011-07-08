@@ -1,59 +1,49 @@
-From: "Liu, ShuoX" <shuox.liu@intel.com>
-Subject: [PATCH] dw_spi: Add spi number into spi irq desc
-Date: Fri, 8 Jul 2011 14:24:31 +0800
-Message-ID: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04001D4@shsmsx502.ccr.corp.intel.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 0/6] Add device tree support for imx spi driver
+Date: Fri,  8 Jul 2011 16:27:28 +0800
+Message-ID: <1310113654-25887-1-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Tang, Feng" <feng.tang@intel.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From b260c4e51487364552886b0327fe98d66e850168 Mon Sep 17 00:00:00 2001
-From: ShuoX Liu <shuox.liu@intel.com>
-Date: Thu, 7 Jul 2011 16:09:41 +0800
-Subject: [PATCH] dw_spi: Add spi number into spi irq desc
+The patch set makes some cleanups on imx spi driver to get it ready
+for adding device tree probe and then add the support.
 
-Signed-off-by: ShuoX Liu <shuox.liu@intel.com>
----
- drivers/spi/dw_spi.c |    4 +++-
- drivers/spi/dw_spi.h |    1 +
- 2 files changed, 4 insertions(+), 1 deletions(-)
+Those two dt helper function related patches are carried here to
+resolve the dependency.  They should be on the way to sit on Grant's
+devicetree/next branch.
 
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 919fa9d..68a3026 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -818,9 +818,11 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
- 	dws->prev_chip = NULL;
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
-+	snprintf(dws->name, sizeof(dws->name), "dw_spi%d",
-+			dws->bus_num);
- 
- 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
--			"dw_spi", dws);
-+			dws->name, dws);
- 	if (ret < 0) {
- 		dev_err(&master->dev, "can not get IRQ\n");
- 		goto err_free_master;
-diff --git a/drivers/spi/dw_spi.h b/drivers/spi/dw_spi.h
-index 7a5e78d..8b7b07b 100644
---- a/drivers/spi/dw_spi.h
-+++ b/drivers/spi/dw_spi.h
-@@ -96,6 +96,7 @@ struct dw_spi {
- 	struct spi_device	*cur_dev;
- 	struct device		*parent_dev;
- 	enum dw_ssi_type	type;
-+	char			name[16];
- 
- 	void __iomem		*regs;
- 	unsigned long		paddr;
--- 
-1.7.1
+Rob Herring (1):
+      dt: add helper function to read u32 arrays
+
+Shawn Guo (5):
+      ARM: mxc: remove unnecessary header file inclusion from gpio.h
+      spi/imx: use soc name in spi device type naming scheme
+      spi/imx: copy gpio number passed by platform data into driver private data
+      dt: add empty of_property_read_u32[_array] for non-dt
+      spi/imx: add device tree probe support
+
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +
+ arch/arm/mach-imx/clock-imx25.c                    |    7 +-
+ arch/arm/mach-mx5/clock-mx51-mx53.c                |   11 +-
+ arch/arm/plat-mxc/devices/platform-spi_imx.c       |   12 +-
+ arch/arm/plat-mxc/include/mach/gpio.h              |    2 -
+ drivers/of/base.c                                  |   19 +-
+ drivers/spi/Kconfig                                |   15 -
+ drivers/spi/spi-imx.c                              |  468 ++++++++++----------
+ include/linux/of.h                                 |   29 ++-
+ 9 files changed, 317 insertions(+), 268 deletions(-)

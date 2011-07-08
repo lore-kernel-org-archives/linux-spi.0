@@ -1,20 +1,36 @@
-From: Feng Tang <feng.tang@intel.com>
-Subject: Re: [PATCH] dw_spi: Add spi number into spi irq desc
-Date: Fri, 8 Jul 2011 12:44:32 +0800
-Message-ID: <20110708124432.23eb6848@feng-i7>
+From: "Liu, ShuoX" <shuox.liu@intel.com>
+Subject: RE: [PATCH] dw_spi: Add spi number into spi irq desc
+Date: Fri, 8 Jul 2011 12:52:28 +0800
+Message-ID: <6E3BC7F7C9A4BF4286DD4C043110F30B59E0400124@shsmsx502.ccr.corp.intel.com>
 References: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04000E2@shsmsx502.ccr.corp.intel.com>
+ <20110708124432.23eb6848@feng-i7>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Liu, ShuoX" <shuox.liu@intel.com>
+To: "Tang, Feng" <feng.tang@intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04000E2@shsmsx502.ccr.corp.intel.com>
+In-Reply-To: <20110708124432.23eb6848@feng-i7>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
+
+Thank you for your quick response.
+That is not a must. I just followed struct i2c_adapter. What about your idea?
+
+Best Regards,
+Shuo liu
+
+
+-----Original Message-----
+From: Tang, Feng 
+Sent: Friday, July 08, 2011 12:45 PM
+To: Liu, ShuoX
+Cc: grant.likely@secretlab.ca; spi-devel-general@lists.sourceforge.net; linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dw_spi: Add spi number into spi irq desc
 
 Hi Shuo,
 

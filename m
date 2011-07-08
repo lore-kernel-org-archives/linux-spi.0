@@ -1,7 +1,7 @@
 From: Grant Likely <grant.likely@secretlab.ca>
 Subject: Re: [PATCH] dw_spi: Add spi number into spi irq desc
-Date: Fri, 8 Jul 2011 13:07:46 -0600
-Message-ID: <20110708190746.GE9070@ponder.secretlab.ca>
+Date: Fri, 8 Jul 2011 13:09:24 -0600
+Message-ID: <20110708190924.GF9070@ponder.secretlab.ca>
 References: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04001D4@shsmsx502.ccr.corp.intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -24,7 +24,7 @@ On Fri, Jul 08, 2011 at 02:24:31PM +0800, Liu, ShuoX wrote:
 > 
 > Signed-off-by: ShuoX Liu <shuox.liu@intel.com>
 
-Patch does not apply against current spi/next (linux-next).
+Actually, the problem was just the files were renamed.  Applied, thanks.
 
 g.
 

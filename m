@@ -1,15 +1,13 @@
 From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 3/6] spi/imx: copy gpio number passed by platform data into
-	driver private data
-Date: Fri,  8 Jul 2011 16:27:31 +0800
-Message-ID: <1310113654-25887-4-git-send-email-shawn.guo@linaro.org>
+Subject: [PATCH 4/6] dt: add helper function to read u32 arrays
+Date: Fri,  8 Jul 2011 16:27:32 +0800
+Message-ID: <1310113654-25887-5-git-send-email-shawn.guo@linaro.org>
 References: <1310113654-25887-1-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 In-Reply-To: <1310113654-25887-1-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
@@ -24,46 +22,95 @@ Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06c
 Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SXQgY29waWVzIGdwaW8gbnVtYmVyIHBhc3NlZCB2aWEgcGxhdGZvcm0gZGF0YSBlbWJlZGRlZCBw
-b2ludGVyIGludG8KZHJpdmVyIHByaXZhdGUgZGF0YSwgc28gdGhhdCB3ZSBkbyBub3QgbmVlZCB0
-byByZWZlciB0byB0aGlzIGVtYmVkZGVkCnBvaW50ZXIgcGFzc2VkIGJ5IHBsYXRmb3JtIGRhdGEg
-YWZ0ZXIgcHJvYmUgZnVuY3Rpb24gZXhpdHMuCgpTaWduZWQtb2ZmLWJ5OiBTaGF3biBHdW8gPHNo
-YXduLmd1b0BsaW5hcm8ub3JnPgpDYzogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
-Z0BwZW5ndXRyb25peC5kZT4KQ2M6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5k
-ZT4KQ2M6IEdyYW50IExpa2VseSA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4KLS0tCiBkcml2
-ZXJzL3NwaS9zcGktaW14LmMgfCAgIDEyICsrKysrKystLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCA3
-IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkv
-c3BpLWlteC5jIGIvZHJpdmVycy9zcGkvc3BpLWlteC5jCmluZGV4IDNkNGVmYWUuLmI5Y2QzMWYg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYworKysgYi9kcml2ZXJzL3NwaS9zcGkt
-aW14LmMKQEAgLTg0LDcgKzg0LDYgQEAgc3RydWN0IHNwaV9pbXhfZGF0YSB7CiAJaW50IGlycTsK
-IAlzdHJ1Y3QgY2xrICpjbGs7CiAJdW5zaWduZWQgbG9uZyBzcGlfY2xrOwotCWludCAqY2hpcHNl
-bGVjdDsKIAogCXVuc2lnbmVkIGludCBjb3VudDsKIAl2b2lkICgqdHgpKHN0cnVjdCBzcGlfaW14
-X2RhdGEgKik7CkBAIC05NCw2ICs5Myw3IEBAIHN0cnVjdCBzcGlfaW14X2RhdGEgewogCXVuc2ln
-bmVkIGludCB0eGZpZm87IC8qIG51bWJlciBvZiB3b3JkcyBwdXNoZWQgaW4gdHggRklGTyAqLwog
-CiAJc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhICpkZXZ0eXBlX2RhdGE7CisJaW50IGNoaXBz
-ZWxlY3RbMF07CiB9OwogCiBzdGF0aWMgaW5saW5lIGludCBpc19pbXgyN19jc3BpKHN0cnVjdCBz
-cGlfaW14X2RhdGEgKmQpCkBAIC03NDMsNyArNzQzLDcgQEAgc3RhdGljIGludCBfX2RldmluaXQg
-c3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQogCXN0cnVjdCBzcGlf
-bWFzdGVyICptYXN0ZXI7CiAJc3RydWN0IHNwaV9pbXhfZGF0YSAqc3BpX2lteDsKIAlzdHJ1Y3Qg
-cmVzb3VyY2UgKnJlczsKLQlpbnQgaSwgcmV0OworCWludCBpLCByZXQsIG51bV9jczsKIAogCW14
-Y19wbGF0Zm9ybV9pbmZvID0gZGV2X2dldF9wbGF0ZGF0YSgmcGRldi0+ZGV2KTsKIAlpZiAoIW14
-Y19wbGF0Zm9ybV9pbmZvKSB7CkBAIC03NTEsMjAgKzc1MSwyMiBAQCBzdGF0aWMgaW50IF9fZGV2
-aW5pdCBzcGlfaW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCiAJCXJldHVy
-biAtRUlOVkFMOwogCX0KIAotCW1hc3RlciA9IHNwaV9hbGxvY19tYXN0ZXIoJnBkZXYtPmRldiwg
-c2l6ZW9mKHN0cnVjdCBzcGlfaW14X2RhdGEpKTsKKwludW1fY3MgPSBteGNfcGxhdGZvcm1faW5m
-by0+bnVtX2NoaXBzZWxlY3Q7CisJbWFzdGVyID0gc3BpX2FsbG9jX21hc3RlcigmcGRldi0+ZGV2
-LAorCQkJc2l6ZW9mKHN0cnVjdCBzcGlfaW14X2RhdGEpICsgc2l6ZW9mKGludCkgKiBudW1fY3Mp
-OwogCWlmICghbWFzdGVyKQogCQlyZXR1cm4gLUVOT01FTTsKIAogCXBsYXRmb3JtX3NldF9kcnZk
-YXRhKHBkZXYsIG1hc3Rlcik7CiAKIAltYXN0ZXItPmJ1c19udW0gPSBwZGV2LT5pZDsKLQltYXN0
-ZXItPm51bV9jaGlwc2VsZWN0ID0gbXhjX3BsYXRmb3JtX2luZm8tPm51bV9jaGlwc2VsZWN0Owor
-CW1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgPSBudW1fY3M7CiAKIAlzcGlfaW14ID0gc3BpX21hc3Rl
-cl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwogCXNwaV9pbXgtPmJpdGJhbmcubWFzdGVyID0gc3BpX21h
-c3Rlcl9nZXQobWFzdGVyKTsKLQlzcGlfaW14LT5jaGlwc2VsZWN0ID0gbXhjX3BsYXRmb3JtX2lu
-Zm8tPmNoaXBzZWxlY3Q7CiAKIAlmb3IgKGkgPSAwOyBpIDwgbWFzdGVyLT5udW1fY2hpcHNlbGVj
-dDsgaSsrKSB7CisJCXNwaV9pbXgtPmNoaXBzZWxlY3RbaV0gPSBteGNfcGxhdGZvcm1faW5mby0+
-Y2hpcHNlbGVjdFtpXTsKIAkJaWYgKHNwaV9pbXgtPmNoaXBzZWxlY3RbaV0gPCAwKQogCQkJY29u
-dGludWU7CiAJCXJldCA9IGdwaW9fcmVxdWVzdChzcGlfaW14LT5jaGlwc2VsZWN0W2ldLCBEUklW
-RVJfTkFNRSk7Ci0tIAoxLjcuNC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpkZXZpY2V0cmVlLWRpc2N1c3MgbWFpbGluZyBsaXN0CmRldmljZXRyZWUt
-ZGlzY3Vzc0BsaXN0cy5vemxhYnMub3JnCmh0dHBzOi8vbGlzdHMub3psYWJzLm9yZy9saXN0aW5m
-by9kZXZpY2V0cmVlLWRpc2N1c3MK
+From: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+
+Rework of_property_read_u32 to read an array of values. Then
+of_property_read_u32 becomes an inline with array size of 1.
+
+Also make struct device_node ptr const.
+
+Signed-off-by: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+Cc: Thomas Abraham <thomas.abraham-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+---
+ drivers/of/base.c  |   19 +++++++++++++------
+ include/linux/of.h |   14 ++++++++++++--
+ 2 files changed, 25 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 9f5293f..736cf5f 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -620,32 +620,39 @@ struct device_node *of_find_node_by_phandle(phandle handle)
+ EXPORT_SYMBOL(of_find_node_by_phandle);
+ 
+ /**
+- * of_property_read_u32 - Find and read a 32 bit integer from a property
++ * of_property_read_u32_array - Find and read an array of 32 bit integers
++ * from a property.
++ *
+  * @np:		device node from which the property value is to be read.
+  * @propname:	name of the property to be searched.
+  * @out_value:	pointer to return value, modified only if return value is 0.
+  *
+- * Search for a property in a device node and read a 32-bit value from
++ * Search for a property in a device node and read 32-bit value(s) from
+  * it. Returns 0 on success, -EINVAL if the property does not exist,
+  * -ENODATA if property does not have a value, and -EOVERFLOW if the
+  * property data isn't large enough.
+  *
+  * The out_value is modified only if a valid u32 value can be decoded.
+  */
+-int of_property_read_u32(struct device_node *np, char *propname, u32 *out_value)
++int of_property_read_u32_array(const struct device_node *np, char *propname,
++			       u32 *out_values, size_t sz)
+ {
+ 	struct property *prop = of_find_property(np, propname, NULL);
++	const __be32 *val;
+ 
+ 	if (!prop)
+ 		return -EINVAL;
+ 	if (!prop->value)
+ 		return -ENODATA;
+-	if (sizeof(*out_value) > prop->length)
++	if ((sz * sizeof(*out_values)) > prop->length)
+ 		return -EOVERFLOW;
+-	*out_value = be32_to_cpup(prop->value);
++
++	val = prop->value;
++	while (sz--)
++		*out_values++ = be32_to_cpup(val++);
+ 	return 0;
+ }
+-EXPORT_SYMBOL_GPL(of_property_read_u32);
++EXPORT_SYMBOL_GPL(of_property_read_u32_array);
+ 
+ /**
+  * of_property_read_string - Find and read a string from a property
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 69afeec..4761046 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -196,8 +196,18 @@ extern struct device_node *of_find_node_with_property(
+ extern struct property *of_find_property(const struct device_node *np,
+ 					 const char *name,
+ 					 int *lenp);
+-extern int of_property_read_u32(struct device_node *np, char *propname,
+-					u32 *out_value);
++extern int of_property_read_u32_array(const struct device_node *np,
++				      char *propname,
++				      u32 *out_values,
++				      size_t sz);
++
++static inline int of_property_read_u32(const struct device_node *np,
++				       char *propname,
++				       u32 *out_value)
++{
++	return of_property_read_u32_array(np, propname, out_value, 1);
++}
++
+ extern int of_property_read_string(struct device_node *np, char *propname,
+ 					const char **out_string);
+ extern int of_device_is_compatible(const struct device_node *device,
+-- 
+1.7.4.1

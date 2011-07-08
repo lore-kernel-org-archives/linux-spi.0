@@ -1,59 +1,194 @@
-From: "Liu, ShuoX" <shuox.liu@intel.com>
-Subject: [PATCH] dw_spi: Add spi number into spi irq desc
-Date: Fri, 8 Jul 2011 11:51:05 +0800
-Message-ID: <6E3BC7F7C9A4BF4286DD4C043110F30B59E04000E2@shsmsx502.ccr.corp.intel.com>
+From: "MADE IN ETHIC" <contact-TsiibZnPZeLJYJS2v6QWAQ@public.gmane.org>
+Subject: [SPAM] Vente flash la Vie devant soie -80%
+Date: Fri, 08 Jul 2011 04:29:50 +0000 (CET)
+Message-ID: <110708042950.-59926351900003440@ofnm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Tang, Feng" <feng.tang@intel.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->From 2efa9dbb5c4b1d8fa798d1792498ae21fc3a9d04 Mon Sep 17 00:00:00 2001
-From: ShuoX Liu <shuox.liu@intel.com>
-Date: Thu, 7 Jul 2011 16:09:41 +0800
-Subject: [PATCH] dw_spi: Add spi number into spi irq desc
 
-Signed-off-by: ShuoX Liu <shuox.liu@intel.com>
+
+
+
+
+
+
+ =
+
+ Si le message ne s'affiche pas correctement, vous pouvez acc=E9der =E0 =
+
+ la version en ligne.
+ =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+** Suivant conditions sur notre site.
+Pas int=E9ress=E9 ? d=E9sinscription
+
+
+
+
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/dw_spi.c |    4 +++-
- drivers/spi/dw_spi.h |    1 +
- 2 files changed, 4 insertions(+), 1 deletions(-)
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security =
 
-diff --git a/drivers/spi/dw_spi.c b/drivers/spi/dw_spi.c
-index 919fa9d..68a3026 100644
---- a/drivers/spi/dw_spi.c
-+++ b/drivers/spi/dw_spi.c
-@@ -818,9 +818,11 @@ int __devinit dw_spi_add_host(struct dw_spi *dws)
- 	dws->prev_chip = NULL;
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
-+	snprintf(dws->name, sizeof(dws->name), "dw_spi%d",
-+			dws->bus_num);
- 
- 	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED,
--			"dw_spi", dws);
-+			dws->name, dws);
- 	if (ret < 0) {
- 		dev_err(&master->dev, "can not get IRQ\n");
- 		goto err_free_master;
-diff --git a/drivers/spi/dw_spi.h b/drivers/spi/dw_spi.h
-index 7a5e78d..c7b9165 100644
---- a/drivers/spi/dw_spi.h
-+++ b/drivers/spi/dw_spi.h
-@@ -96,6 +96,7 @@ struct dw_spi {
- 	struct spi_device	*cur_dev;
- 	struct device		*parent_dev;
- 	enum dw_ssi_type	type;
-+	char			name[48];
- 
- 	void __iomem		*regs;
- 	unsigned long		paddr;
--- 
-1.7.1
+threats, fraudulent activity, and more. Splunk takes this data and makes =
+
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2

@@ -1,354 +1,57 @@
-From: "Imjeans" <contact-9iLXYGX+TvNWj0EZb7rXcA@public.gmane.org>
-Subject: [SPAM] Profitez des soldes sur IMAJEANS.FR
-Date: Sat, 09 Jul 2011 05:36:07 +0000 (CET)
-Message-ID: <110709053607.-50888624300001032@ofnm43.com>
+From: Shawn Guo <shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 0/6] Add device tree support for imx spi driver
+Date: Sat, 9 Jul 2011 14:44:41 +0800
+Message-ID: <20110709064440.GD13962@S2100-06.ap.freescale.net>
+References: <1310113654-25887-1-git-send-email-shawn.guo@linaro.org>
+	<20110708190142.GD9070@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20110708190142.GD9070-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-    =A0=A0
-
-
-
-    Jeans et toiles Levi's =E0 - 30%=A0
-
-    501=A0=E0 partir de 55.30 =80 frais de port offert !!!
-
-
-
-    =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-                    Levis 401 kaki
-
-                =
-
-
-                    79=80=A0=A0 55.30=80
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    Levis 501 get visual
-
-                =
-
-
-                    79=80=A0 55.30=80
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    Levis 501 black ditch
-
-                =
-
-
-                    79=80=A0=A0 55.30=80
-
-            =
-
-
-        =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-            =
-
-
-                =
-
-
-            =
-
-
-                =
-
-
-        =
-
-
-    =
-
-
-
-
-
-
-    =A0
-
-
-
-    =
-
-
-
-
-    =A0Nos LEVIS 501 permanents =E0=A0prix incroyable
-
-    =A069=A0=80 frais de port inclus !
-
-
-
-    le jean authentique ind=E9modable ,=A0une forme droite intemporelle , f=
-ermeture bouton ,
-
-    denim 100% coton et 5=A0poches .=A0
-
-
-
-    =A0
-
-
-
-    =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-                    501=A0Black
-
-                =
-
-
-                    69=80=A0
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    501 Stone
-
-                =
-
-
-                    69 =80=A0=A0
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    501=A0Lav=E9
-
-                =
-
-
-                    69=80=A0
-
-            =
-
-
-        =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-            =
-
-
-                =A0=A0=A0=A0
-
-            =
-
-
-                =
-
-
-        =
-
-
-    =
-
-
-
-
-
-
-    =A0
-
-
-
-    =A0=A0=A0=A0 =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 =A0 =A0
-
-
-
-    Profitez de notre large s=E9lection de=A0jeans et toiles de marque =E0 =
-prix r=E9duit=A0
-
-
-
-    =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-                    Lee Cooper dark stone
-
-                =
-
-
-                    60=80=A0=A0 42=80
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    Wangler 4RRB Lone star
-
-                =
-
-
-                    79=80=A0=A0 55.30=80
-
-            =
-
-
-            =
-
-
-                =
-
-
-                    Lee Brooklyn beige
-
-                =
-
-
-                    60=80=A0=A0=A0=A0 42=80
-
-            =
-
-
-        =
-
-
-        =
-
-
-            =
-
-
-                =
-
-
-            =
-
-
-                =
-
-
-            =
-
-
-                =
-
-
-        =
-
-
-    =
-
-
-
-
-
-
-    =A0
-
-
-
-    Livraison gratuite en colissimo, Retour possible=A0dans un d=E9lai de=
-=A015 jours pour les articles sold=E9s,=A0vous =EAtes satisfait ou rembours=
-=E9 .
-
-
-
-    A bient=F4t sur imajeans.fr
----------------------------------------------------------------------------=
----
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security =
-
-threats, fraudulent activity, and more. Splunk takes this data and makes =
-
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2d-c2
+On Fri, Jul 08, 2011 at 01:01:42PM -0600, Grant Likely wrote:
+> On Fri, Jul 08, 2011 at 04:27:28PM +0800, Shawn Guo wrote:
+> > The patch set makes some cleanups on imx spi driver to get it ready
+> > for adding device tree probe and then add the support.
+> > 
+> > Those two dt helper function related patches are carried here to
+> > resolve the dependency.  They should be on the way to sit on Grant's
+> > devicetree/next branch.
+> > 
+> > Rob Herring (1):
+> >       dt: add helper function to read u32 arrays
+> > 
+> > Shawn Guo (5):
+> >       ARM: mxc: remove unnecessary header file inclusion from gpio.h
+> >       spi/imx: use soc name in spi device type naming scheme
+> >       spi/imx: copy gpio number passed by platform data into driver private data
+> >       dt: add empty of_property_read_u32[_array] for non-dt
+> >       spi/imx: add device tree probe support
+> 
+> Okay, I tried to apply this series, but the first patch that removes
+> the includes caused a build failure, so I've dropped it.  What tree
+> are these patches based on top of?
+> 
+I based the series off linux-next.  Since it will go through your
+spi/next tree, I will repost the series against it, with splitting
+patch #2 into small pieces to address Sascha's comment.
+
+-- 
+Regards,
+Shawn

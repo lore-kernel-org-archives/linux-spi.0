@@ -1,15 +1,13 @@
 From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 6/7] spi/imx: copy gpio number passed by platform data into
-	driver private data
-Date: Sun, 10 Jul 2011 01:16:40 +0800
-Message-ID: <1310231801-18761-7-git-send-email-shawn.guo@linaro.org>
+Subject: [PATCH v2 7/7] spi/imx: add device tree probe support
+Date: Sun, 10 Jul 2011 01:16:41 +0800
+Message-ID: <1310231801-18761-8-git-send-email-shawn.guo@linaro.org>
 References: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 In-Reply-To: <1310231801-18761-1-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
@@ -24,46 +22,144 @@ Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06c
 Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SXQgY29waWVzIGdwaW8gbnVtYmVyIHBhc3NlZCB2aWEgcGxhdGZvcm0gZGF0YSBlbWJlZGRlZCBw
-b2ludGVyIGludG8KZHJpdmVyIHByaXZhdGUgZGF0YSwgc28gdGhhdCB3ZSBkbyBub3QgbmVlZCB0
-byByZWZlciB0byB0aGlzIGVtYmVkZGVkCnBvaW50ZXIgcGFzc2VkIGJ5IHBsYXRmb3JtIGRhdGEg
-YWZ0ZXIgcHJvYmUgZnVuY3Rpb24gZXhpdHMuCgpTaWduZWQtb2ZmLWJ5OiBTaGF3biBHdW8gPHNo
-YXduLmd1b0BsaW5hcm8ub3JnPgpDYzogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5p
-Z0BwZW5ndXRyb25peC5kZT4KQ2M6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5k
-ZT4KQ2M6IEdyYW50IExpa2VseSA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT4KLS0tCiBkcml2
-ZXJzL3NwaS9zcGktaW14LmMgfCAgIDEyICsrKysrKystLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCA3
-IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkv
-c3BpLWlteC5jIGIvZHJpdmVycy9zcGkvc3BpLWlteC5jCmluZGV4IDJlZDljMzIuLmFkNjE4Mjgg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYworKysgYi9kcml2ZXJzL3NwaS9zcGkt
-aW14LmMKQEAgLTg0LDcgKzg0LDYgQEAgc3RydWN0IHNwaV9pbXhfZGF0YSB7CiAJaW50IGlycTsK
-IAlzdHJ1Y3QgY2xrICpjbGs7CiAJdW5zaWduZWQgbG9uZyBzcGlfY2xrOwotCWludCAqY2hpcHNl
-bGVjdDsKIAogCXVuc2lnbmVkIGludCBjb3VudDsKIAl2b2lkICgqdHgpKHN0cnVjdCBzcGlfaW14
-X2RhdGEgKik7CkBAIC05NCw2ICs5Myw3IEBAIHN0cnVjdCBzcGlfaW14X2RhdGEgewogCXVuc2ln
-bmVkIGludCB0eGZpZm87IC8qIG51bWJlciBvZiB3b3JkcyBwdXNoZWQgaW4gdHggRklGTyAqLwog
-CiAJc3RydWN0IHNwaV9pbXhfZGV2dHlwZV9kYXRhICpkZXZ0eXBlX2RhdGE7CisJaW50IGNoaXBz
-ZWxlY3RbMF07CiB9OwogCiBzdGF0aWMgaW5saW5lIGludCBpc19pbXgyN19jc3BpKHN0cnVjdCBz
-cGlfaW14X2RhdGEgKmQpCkBAIC03NDMsNyArNzQzLDcgQEAgc3RhdGljIGludCBfX2RldmluaXQg
-c3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQogCXN0cnVjdCBzcGlf
-bWFzdGVyICptYXN0ZXI7CiAJc3RydWN0IHNwaV9pbXhfZGF0YSAqc3BpX2lteDsKIAlzdHJ1Y3Qg
-cmVzb3VyY2UgKnJlczsKLQlpbnQgaSwgcmV0OworCWludCBpLCByZXQsIG51bV9jczsKIAogCW14
-Y19wbGF0Zm9ybV9pbmZvID0gZGV2X2dldF9wbGF0ZGF0YSgmcGRldi0+ZGV2KTsKIAlpZiAoIW14
-Y19wbGF0Zm9ybV9pbmZvKSB7CkBAIC03NTEsMjAgKzc1MSwyMiBAQCBzdGF0aWMgaW50IF9fZGV2
-aW5pdCBzcGlfaW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCiAJCXJldHVy
-biAtRUlOVkFMOwogCX0KIAotCW1hc3RlciA9IHNwaV9hbGxvY19tYXN0ZXIoJnBkZXYtPmRldiwg
-c2l6ZW9mKHN0cnVjdCBzcGlfaW14X2RhdGEpKTsKKwludW1fY3MgPSBteGNfcGxhdGZvcm1faW5m
-by0+bnVtX2NoaXBzZWxlY3Q7CisJbWFzdGVyID0gc3BpX2FsbG9jX21hc3RlcigmcGRldi0+ZGV2
-LAorCQkJc2l6ZW9mKHN0cnVjdCBzcGlfaW14X2RhdGEpICsgc2l6ZW9mKGludCkgKiBudW1fY3Mp
-OwogCWlmICghbWFzdGVyKQogCQlyZXR1cm4gLUVOT01FTTsKIAogCXBsYXRmb3JtX3NldF9kcnZk
-YXRhKHBkZXYsIG1hc3Rlcik7CiAKIAltYXN0ZXItPmJ1c19udW0gPSBwZGV2LT5pZDsKLQltYXN0
-ZXItPm51bV9jaGlwc2VsZWN0ID0gbXhjX3BsYXRmb3JtX2luZm8tPm51bV9jaGlwc2VsZWN0Owor
-CW1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgPSBudW1fY3M7CiAKIAlzcGlfaW14ID0gc3BpX21hc3Rl
-cl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwogCXNwaV9pbXgtPmJpdGJhbmcubWFzdGVyID0gc3BpX21h
-c3Rlcl9nZXQobWFzdGVyKTsKLQlzcGlfaW14LT5jaGlwc2VsZWN0ID0gbXhjX3BsYXRmb3JtX2lu
-Zm8tPmNoaXBzZWxlY3Q7CiAKIAlmb3IgKGkgPSAwOyBpIDwgbWFzdGVyLT5udW1fY2hpcHNlbGVj
-dDsgaSsrKSB7CisJCXNwaV9pbXgtPmNoaXBzZWxlY3RbaV0gPSBteGNfcGxhdGZvcm1faW5mby0+
-Y2hpcHNlbGVjdFtpXTsKIAkJaWYgKHNwaV9pbXgtPmNoaXBzZWxlY3RbaV0gPCAwKQogCQkJY29u
-dGludWU7CiAJCXJldCA9IGdwaW9fcmVxdWVzdChzcGlfaW14LT5jaGlwc2VsZWN0W2ldLCBEUklW
-RVJfTkFNRSk7Ci0tIAoxLjcuNC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpkZXZpY2V0cmVlLWRpc2N1c3MgbWFpbGluZyBsaXN0CmRldmljZXRyZWUt
-ZGlzY3Vzc0BsaXN0cy5vemxhYnMub3JnCmh0dHBzOi8vbGlzdHMub3psYWJzLm9yZy9saXN0aW5m
-by9kZXZpY2V0cmVlLWRpc2N1c3MK
+It adds device tree probe support for spi-imx driver.
+
+Signed-off-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+---
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +++++++++++
+ drivers/spi/spi-imx.c                              |   38 ++++++++++++++++----
+ 2 files changed, 53 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+new file mode 100644
+index 0000000..9841057
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+@@ -0,0 +1,22 @@
++* Freescale (Enhanced) Configurable Serial Peripheral Interface
++  (CSPI/eCSPI) for i.MX
++
++Required properties:
++- compatible : Should be "fsl,<soc>-cspi" or "fsl,<soc>-ecspi"
++- reg : Offset and length of the register set for the device
++- interrupts : Should contain CSPI/eCSPI interrupt
++- fsl,spi-num-chipselects : Contains the number of the chipselect
++- cs-gpios : Specifies the gpio pins to be used for chipselects.
++
++Example:
++
++ecspi@70010000 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	compatible = "fsl,imx51-ecspi";
++	reg = <0x70010000 0x4000>;
++	interrupts = <36>;
++	fsl,spi-num-chipselects = <2>;
++	cs-gpios = <&gpio3 24 0>, /* GPIO4_24 */
++		   <&gpio3 25 0>; /* GPIO4_25 */
++};
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index ad61828..5456bcc 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -34,6 +34,9 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/types.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/of_gpio.h>
+ 
+ #include <mach/spi.h>
+ 
+@@ -606,6 +609,16 @@ static struct platform_device_id spi_imx_devtype[] = {
+ 	}
+ };
+ 
++static const struct of_device_id spi_imx_dt_ids[] = {
++	{ .compatible = "fsl,imx1-cspi", .data = &imx1_cspi_devtype_data, },
++	{ .compatible = "fsl,imx21-cspi", .data = &imx21_cspi_devtype_data, },
++	{ .compatible = "fsl,imx27-cspi", .data = &imx27_cspi_devtype_data, },
++	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
++	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
++	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
++	{ /* sentinel */ }
++};
++
+ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -739,19 +752,25 @@ static void spi_imx_cleanup(struct spi_device *spi)
+ 
+ static int __devinit spi_imx_probe(struct platform_device *pdev)
+ {
+-	struct spi_imx_master *mxc_platform_info;
++	struct device_node *np = pdev->dev.of_node;
++	const struct of_device_id *of_id =
++			of_match_device(spi_imx_dt_ids, &pdev->dev);
++	struct spi_imx_master *mxc_platform_info =
++			dev_get_platdata(&pdev->dev);
+ 	struct spi_master *master;
+ 	struct spi_imx_data *spi_imx;
+ 	struct resource *res;
+ 	int i, ret, num_cs;
+ 
+-	mxc_platform_info = dev_get_platdata(&pdev->dev);
+-	if (!mxc_platform_info) {
++	if (!np && !mxc_platform_info) {
+ 		dev_err(&pdev->dev, "can't get the platform data\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	num_cs = mxc_platform_info->num_chipselect;
++	ret = of_property_read_u32(np, "fsl,spi-num-chipselects", &num_cs);
++	if (ret < 0)
++		num_cs = mxc_platform_info->num_chipselect;
++
+ 	master = spi_alloc_master(&pdev->dev,
+ 			sizeof(struct spi_imx_data) + sizeof(int) * num_cs);
+ 	if (!master)
+@@ -766,9 +785,12 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+ 	spi_imx->bitbang.master = spi_master_get(master);
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+-		spi_imx->chipselect[i] = mxc_platform_info->chipselect[i];
+-		if (spi_imx->chipselect[i] < 0)
++		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
++		if (cs_gpio < 0)
++			cs_gpio = mxc_platform_info->chipselect[i];
++		if (cs_gpio < 0)
+ 			continue;
++		spi_imx->chipselect[i] = cs_gpio;
+ 		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
+ 		if (ret) {
+ 			while (i > 0) {
+@@ -790,7 +812,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+ 
+ 	init_completion(&spi_imx->xfer_done);
+ 
+-	spi_imx->devtype_data =
++	spi_imx->devtype_data = of_id ? of_id->data :
+ 		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -838,6 +860,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+ 
+ 	spi_imx->devtype_data->intctrl(spi_imx, 0);
+ 
++	master->dev.of_node = pdev->dev.of_node;
+ 	ret = spi_bitbang_start(&spi_imx->bitbang);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
+@@ -900,6 +923,7 @@ static struct platform_driver spi_imx_driver = {
+ 	.driver = {
+ 		   .name = DRIVER_NAME,
+ 		   .owner = THIS_MODULE,
++		   .of_match_table = spi_imx_dt_ids,
+ 		   },
+ 	.id_table = spi_imx_devtype,
+ 	.probe = spi_imx_probe,
+-- 
+1.7.4.1

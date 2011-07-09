@@ -1,14 +1,17 @@
 From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH v2 0/7] Add device tree support for imx spi driver
-Date: Sun, 10 Jul 2011 01:16:34 +0800
-Message-ID: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
+Subject: [PATCH v2 1/7] spi/imx: do not make copy of spi_imx_devtype_data
+Date: Sun, 10 Jul 2011 01:16:35 +0800
+Message-ID: <1310231801-18761-2-git-send-email-shawn.guo@linaro.org>
+References: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1310231801-18761-1-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
 	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
@@ -20,28 +23,72 @@ Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06c
 Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The patch set makes some cleanups on imx spi driver to get it ready
-for adding device tree probe and then add the support.
-
-Changes since v1:
- * Split the big patch into small ones per Sascha's comment
- * Drop the patch cleaning mxc/mach/gpio.h from the series.  Will
-   post it separately later.
- * Drop dt helper patches, as they are on Grant's tree
-
-Shawn Guo (7):
-      spi/imx: do not make copy of spi_imx_devtype_data
-      spi/imx: use mx21 to name SPI_IMX_VER_0_0 function and macro
-      spi/imx: do not use spi_imx2_3 to name SPI_IMX_VER_2_3 function and macro
-      spi/imx: merge type SPI_IMX_VER_0_7 into SPI_IMX_VER_0_4
-      spi/imx: use soc name in spi device type naming scheme
-      spi/imx: copy gpio number passed by platform data into driver private data
-      spi/imx: add device tree probe support
-
- .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +
- arch/arm/mach-imx/clock-imx25.c                    |    7 +-
- arch/arm/mach-mx5/clock-mx51-mx53.c                |   11 +-
- arch/arm/plat-mxc/devices/platform-spi_imx.c       |   12 +-
- drivers/spi/Kconfig                                |   15 -
- drivers/spi/spi-imx.c                              |  468 ++++++++++----------
- 6 files changed, 277 insertions(+), 258 deletions(-)
+c3BpX2lteF9kZXZ0eXBlX2RhdGEgaGFzIGFscmVhZHkgYmVlbiBkcml2ZXIgcHJpdmF0ZSBkYXRh
+LiAgVGhlcmUgaXMKcmVhbGx5IG5vIG5lZWQgdG8gbWFrZSBhIGNvcHkgaW4gc3BpX2lteF9kYXRh
+LiAgSW5zdGVhZCwgYSByZWZlcmVuY2UKcG9pbnRlciB3b3JrcyBwZXJmZWN0bHkgZmluZS4KClNp
+Z25lZC1vZmYtYnk6IFNoYXduIEd1byA8c2hhd24uZ3VvQGxpbmFyby5vcmc+CkNjOiBVd2UgS2xl
+aW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgpDYzogU2FzY2hhIEhh
+dWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgpDYzogR3JhbnQgTGlrZWx5IDxncmFudC5saWtl
+bHlAc2VjcmV0bGFiLmNhPgotLS0KIGRyaXZlcnMvc3BpL3NwaS1pbXguYyB8ICAgMjQgKysrKysr
+KysrKysrLS0tLS0tLS0tLS0tCiAxIGZpbGVzIGNoYW5nZWQsIDEyIGluc2VydGlvbnMoKyksIDEy
+IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYyBiL2RyaXZl
+cnMvc3BpL3NwaS1pbXguYwppbmRleCA2OWQ2ZGJhLi4xYzU1ZGM5IDEwMDY0NAotLS0gYS9kcml2
+ZXJzL3NwaS9zcGktaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWlteC5jCkBAIC05Niw3ICs5
+Niw3IEBAIHN0cnVjdCBzcGlfaW14X2RhdGEgewogCWNvbnN0IHZvaWQgKnR4X2J1ZjsKIAl1bnNp
+Z25lZCBpbnQgdHhmaWZvOyAvKiBudW1iZXIgb2Ygd29yZHMgcHVzaGVkIGluIHR4IEZJRk8gKi8K
+IAotCXN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSBkZXZ0eXBlX2RhdGE7CisJc3RydWN0IHNw
+aV9pbXhfZGV2dHlwZV9kYXRhICpkZXZ0eXBlX2RhdGE7CiB9OwogCiAjZGVmaW5lIE1YQ19TUElf
+QlVGX1JYKHR5cGUpCQkJCQkJXApAQCAtNTM5LDcgKzUzOSw3IEBAIHN0YXRpYyB2b2lkIF9fbWF5
+YmVfdW51c2VkIG14MV9yZXNldChzdHJ1Y3Qgc3BpX2lteF9kYXRhICpzcGlfaW14KQogICogVGhl
+c2UgdmVyc2lvbiBudW1iZXJzIGFyZSB0YWtlbiBmcm9tIHRoZSBGcmVlc2NhbGUgZHJpdmVyLiAg
+VW5mb3J0dW5hdGVseSBpdAogICogZG9lc24ndCBzdXBwb3J0IGkuTVgxLCBzbyB0aGlzIGVudHJ5
+IGRvZXNuJ3QgbWF0Y2ggdGhlIHNjaGVtZS4gOi0oCiAgKi8KLXN0YXRpYyBzdHJ1Y3Qgc3BpX2lt
+eF9kZXZ0eXBlX2RhdGEgc3BpX2lteF9kZXZ0eXBlX2RhdGFbXSBfX2RldmluaXRkYXRhID0gewor
+c3RhdGljIHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSBzcGlfaW14X2RldnR5cGVfZGF0YVtd
+ID0gewogI2lmZGVmIENPTkZJR19TUElfSU1YX1ZFUl9JTVgxCiAJW1NQSV9JTVhfVkVSX0lNWDFd
+ID0gewogCQkuaW50Y3RybCA9IG14MV9pbnRjdHJsLApAQCAtNjA3LDIxICs2MDcsMjEgQEAgc3Rh
+dGljIHZvaWQgc3BpX2lteF9jaGlwc2VsZWN0KHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIGludCBp
+c19hY3RpdmUpCiAKIHN0YXRpYyB2b2lkIHNwaV9pbXhfcHVzaChzdHJ1Y3Qgc3BpX2lteF9kYXRh
+ICpzcGlfaW14KQogewotCXdoaWxlIChzcGlfaW14LT50eGZpZm8gPCBzcGlfaW14LT5kZXZ0eXBl
+X2RhdGEuZmlmb3NpemUpIHsKKwl3aGlsZSAoc3BpX2lteC0+dHhmaWZvIDwgc3BpX2lteC0+ZGV2
+dHlwZV9kYXRhLT5maWZvc2l6ZSkgewogCQlpZiAoIXNwaV9pbXgtPmNvdW50KQogCQkJYnJlYWs7
+CiAJCXNwaV9pbXgtPnR4KHNwaV9pbXgpOwogCQlzcGlfaW14LT50eGZpZm8rKzsKIAl9CiAKLQlz
+cGlfaW14LT5kZXZ0eXBlX2RhdGEudHJpZ2dlcihzcGlfaW14KTsKKwlzcGlfaW14LT5kZXZ0eXBl
+X2RhdGEtPnRyaWdnZXIoc3BpX2lteCk7CiB9CiAKIHN0YXRpYyBpcnFyZXR1cm5fdCBzcGlfaW14
+X2lzcihpbnQgaXJxLCB2b2lkICpkZXZfaWQpCiB7CiAJc3RydWN0IHNwaV9pbXhfZGF0YSAqc3Bp
+X2lteCA9IGRldl9pZDsKIAotCXdoaWxlIChzcGlfaW14LT5kZXZ0eXBlX2RhdGEucnhfYXZhaWxh
+YmxlKHNwaV9pbXgpKSB7CisJd2hpbGUgKHNwaV9pbXgtPmRldnR5cGVfZGF0YS0+cnhfYXZhaWxh
+YmxlKHNwaV9pbXgpKSB7CiAJCXNwaV9pbXgtPnJ4KHNwaV9pbXgpOwogCQlzcGlfaW14LT50eGZp
+Zm8tLTsKIAl9CkBAIC02MzUsMTIgKzYzNSwxMiBAQCBzdGF0aWMgaXJxcmV0dXJuX3Qgc3BpX2lt
+eF9pc3IoaW50IGlycSwgdm9pZCAqZGV2X2lkKQogCQkvKiBObyBkYXRhIGxlZnQgdG8gcHVzaCwg
+YnV0IHN0aWxsIHdhaXRpbmcgZm9yIHJ4IGRhdGEsCiAJCSAqIGVuYWJsZSByZWNlaXZlIGRhdGEg
+YXZhaWxhYmxlIGludGVycnVwdC4KIAkJICovCi0JCXNwaV9pbXgtPmRldnR5cGVfZGF0YS5pbnRj
+dHJsKAorCQlzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPmludGN0cmwoCiAJCQkJc3BpX2lteCwgTVhD
+X0lOVF9SUik7CiAJCXJldHVybiBJUlFfSEFORExFRDsKIAl9CiAKLQlzcGlfaW14LT5kZXZ0eXBl
+X2RhdGEuaW50Y3RybChzcGlfaW14LCAwKTsKKwlzcGlfaW14LT5kZXZ0eXBlX2RhdGEtPmludGN0
+cmwoc3BpX2lteCwgMCk7CiAJY29tcGxldGUoJnNwaV9pbXgtPnhmZXJfZG9uZSk7CiAKIAlyZXR1
+cm4gSVJRX0hBTkRMRUQ7CkBAIC02NzcsNyArNjc3LDcgQEAgc3RhdGljIGludCBzcGlfaW14X3Nl
+dHVweGZlcihzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpLAogCX0gZWxzZQogCQlCVUcoKTsKIAotCXNw
+aV9pbXgtPmRldnR5cGVfZGF0YS5jb25maWcoc3BpX2lteCwgJmNvbmZpZyk7CisJc3BpX2lteC0+
+ZGV2dHlwZV9kYXRhLT5jb25maWcoc3BpX2lteCwgJmNvbmZpZyk7CiAKIAlyZXR1cm4gMDsKIH0K
+QEAgLTY5Niw3ICs2OTYsNyBAQCBzdGF0aWMgaW50IHNwaV9pbXhfdHJhbnNmZXIoc3RydWN0IHNw
+aV9kZXZpY2UgKnNwaSwKIAogCXNwaV9pbXhfcHVzaChzcGlfaW14KTsKIAotCXNwaV9pbXgtPmRl
+dnR5cGVfZGF0YS5pbnRjdHJsKHNwaV9pbXgsIE1YQ19JTlRfVEUpOworCXNwaV9pbXgtPmRldnR5
+cGVfZGF0YS0+aW50Y3RybChzcGlfaW14LCBNWENfSU5UX1RFKTsKIAogCXdhaXRfZm9yX2NvbXBs
+ZXRpb24oJnNwaV9pbXgtPnhmZXJfZG9uZSk7CiAKQEAgLTgxMSw3ICs4MTEsNyBAQCBzdGF0aWMg
+aW50IF9fZGV2aW5pdCBzcGlfaW14X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYp
+CiAJaW5pdF9jb21wbGV0aW9uKCZzcGlfaW14LT54ZmVyX2RvbmUpOwogCiAJc3BpX2lteC0+ZGV2
+dHlwZV9kYXRhID0KLQkJc3BpX2lteF9kZXZ0eXBlX2RhdGFbcGRldi0+aWRfZW50cnktPmRyaXZl
+cl9kYXRhXTsKKwkJJnNwaV9pbXhfZGV2dHlwZV9kYXRhW3BkZXYtPmlkX2VudHJ5LT5kcml2ZXJf
+ZGF0YV07CiAKIAlyZXMgPSBwbGF0Zm9ybV9nZXRfcmVzb3VyY2UocGRldiwgSU9SRVNPVVJDRV9N
+RU0sIDApOwogCWlmICghcmVzKSB7CkBAIC04NTQsOSArODU0LDkgQEAgc3RhdGljIGludCBfX2Rl
+dmluaXQgc3BpX2lteF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQogCWNsa19l
+bmFibGUoc3BpX2lteC0+Y2xrKTsKIAlzcGlfaW14LT5zcGlfY2xrID0gY2xrX2dldF9yYXRlKHNw
+aV9pbXgtPmNsayk7CiAKLQlzcGlfaW14LT5kZXZ0eXBlX2RhdGEucmVzZXQoc3BpX2lteCk7CisJ
+c3BpX2lteC0+ZGV2dHlwZV9kYXRhLT5yZXNldChzcGlfaW14KTsKIAotCXNwaV9pbXgtPmRldnR5
+cGVfZGF0YS5pbnRjdHJsKHNwaV9pbXgsIDApOworCXNwaV9pbXgtPmRldnR5cGVfZGF0YS0+aW50
+Y3RybChzcGlfaW14LCAwKTsKIAogCXJldCA9IHNwaV9iaXRiYW5nX3N0YXJ0KCZzcGlfaW14LT5i
+aXRiYW5nKTsKIAlpZiAocmV0KSB7Ci0tIAoxLjcuNC4xCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpkZXZpY2V0cmVlLWRpc2N1c3MgbWFpbGluZyBsaXN0
+CmRldmljZXRyZWUtZGlzY3Vzc0BsaXN0cy5vemxhYnMub3JnCmh0dHBzOi8vbGlzdHMub3psYWJz
+Lm9yZy9saXN0aW5mby9kZXZpY2V0cmVlLWRpc2N1c3MK

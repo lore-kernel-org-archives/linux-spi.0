@@ -1,177 +1,47 @@
-From: "Mooviin.com" <newsletter-sz0nxO4wV+RBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Soldes Meubles & Design jusqu'à -50%
-Date: Sat, 09 Jul 2011 11:28:31 +0000 (CET)
-Message-ID: <110709112831.35405946500003708@ofnm44.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH v2 0/7] Add device tree support for imx spi driver
+Date: Sun, 10 Jul 2011 01:16:34 +0800
+Message-ID: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+	<mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-Mooviin.com est votre sp=E9cialiste Meubles & D=E9co pour tous les styles e=
-t tous les budgets. Du 22 juin au 26 juillet profitez de nos soldes excepti=
-onnelles ! =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-Mooviin, Meubles & Design pour tous! Avec Mooviin, les marques et les=A0ten=
-dances sont accessibles =E0 tous et vibrent=A0avec les go=FBts de chacun. M=
-ooviin saisit les opportunit=E9s,=A0suit les marques qui innovent et les me=
-t =E0=A0disposition d&rsquo;une client=E8le avide de nouveaut=E9s. Avec ce =
-nom qui clame le mouvement et=A0l&rsquo;enthousiasme, l&rsquo;enseigne veut=
- aller plus loin=A0dans sa promesse : achat en ligne, livraison=A0rapide et=
- soign=E9e, mais aussi un vrai=A0espace d&rsquo;exposition pour voir et tou=
-cher en confiance =E0 Seynod (74). =
-
-
-Pour toute question N=B0 azur (tarif appel local) :=A00810 200=A0512. =
-
-*Valable du 22 juin au 26 juillet dans la limite des stocks disponibles, no=
-n cumulable avec les autres promotions en cours. =
-
- =
-
- =
-
- =
-
- =
-
-
-
----------------------------------------------------------------------------=
----
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security =
-
-threats, fraudulent activity, and more. Splunk takes this data and makes =
-
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2d-c2
+The patch set makes some cleanups on imx spi driver to get it ready
+for adding device tree probe and then add the support.
+
+Changes since v1:
+ * Split the big patch into small ones per Sascha's comment
+ * Drop the patch cleaning mxc/mach/gpio.h from the series.  Will
+   post it separately later.
+ * Drop dt helper patches, as they are on Grant's tree
+
+Shawn Guo (7):
+      spi/imx: do not make copy of spi_imx_devtype_data
+      spi/imx: use mx21 to name SPI_IMX_VER_0_0 function and macro
+      spi/imx: do not use spi_imx2_3 to name SPI_IMX_VER_2_3 function and macro
+      spi/imx: merge type SPI_IMX_VER_0_7 into SPI_IMX_VER_0_4
+      spi/imx: use soc name in spi device type naming scheme
+      spi/imx: copy gpio number passed by platform data into driver private data
+      spi/imx: add device tree probe support
+
+ .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +
+ arch/arm/mach-imx/clock-imx25.c                    |    7 +-
+ arch/arm/mach-mx5/clock-mx51-mx53.c                |   11 +-
+ arch/arm/plat-mxc/devices/platform-spi_imx.c       |   12 +-
+ drivers/spi/Kconfig                                |   15 -
+ drivers/spi/spi-imx.c                              |  468 ++++++++++----------
+ 6 files changed, 277 insertions(+), 258 deletions(-)

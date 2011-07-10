@@ -1,76 +1,39 @@
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-Subject: [PATCH v3] pxa2xx_spi: fix memory corruption
-Date: Sun, 10 Jul 2011 18:18:19 +0300
-Message-ID: <1310311099-24638-1-git-send-email-anarsoul@gmail.com>
-References: <201107101609.31405.anarsoul@gmail.com>
+From: =?iso-8859-15?Q?Photocit=E9?= par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: [SPAM] 100 Tirages Photos pour 5 euros -65%
+Date: Sun, 10 Jul 2011 17:35:10 +0200
+Message-ID: <1310312110.4e19c6aec71eb@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vasily Khoruzhick <anarsoul@gmail.com>
-To: Marek Vasut <marek.vasut@gmail.com>,
-	"Russell King - ARM Linux" <linux@arm.linux.org.uk>,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net, Eric Miao <eri
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <201107101609.31405.anarsoul@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-pxa2xx_spi_probe allocates struct driver_data and null_dma_buf
-at same time via spi_alloc_master(), but then calculates
-null_dma_buf pointer incorrectly, and it causes memory corruption
-later if DMA usage is enabled.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Lien miroir : http://m10-fr.com/miroir.php?param=3DYT0xMyZiPTU1NCZjPTM5MzM3=
+NjEmZD0yMDExLTA3LTEwIDE3OjIwOjAxJmU9MSZmPTU1NCZnPTU1NCZoPTU1NA=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/unsubscribe.php?param=3DYT0xMy=
+ZiPTU1NCZjPTM5MzM3NjEmZD0yMDExLTA3LTEwIDE3OjIwOjAxJmU9MSZmPTU1NCZnPTU1NCZoP=
+TU1NA=3D=3D
+
+
+---------------------------------------------------------------------------=
 ---
-v2: - add u8 __null_dma_buf[16] to the end of driver_data structure
-    and use it as null_dma_buf after alignment.
-    - use PTR_ALIGN instead of ALIGN
-v3: - drop (u8 *) cast, use & operator instead, change array name
- drivers/spi/pxa2xx_spi.c |    9 +++++----
- 1 files changed, 5 insertions(+), 4 deletions(-)
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security =
 
-diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-index dc25bee..b25fe27 100644
---- a/drivers/spi/pxa2xx_spi.c
-+++ b/drivers/spi/pxa2xx_spi.c
-@@ -106,6 +106,7 @@ struct driver_data {
- 	int rx_channel;
- 	int tx_channel;
- 	u32 *null_dma_buf;
-+	u8 null_dma_buf_unaligned[16];
- 
- 	/* SSP register addresses */
- 	void __iomem *ioaddr;
-@@ -1543,8 +1544,8 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	/* Allocate master with space for drv_data and null dma buffer */
--	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
-+	/* Allocate master with space for drv_data */
-+	master = spi_alloc_master(dev, sizeof(struct driver_data));
- 	if (!master) {
- 		dev_err(&pdev->dev, "cannot alloc spi_master\n");
- 		pxa_ssp_free(ssp);
-@@ -1569,8 +1570,8 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
- 	master->transfer = transfer;
- 
- 	drv_data->ssp_type = ssp->type;
--	drv_data->null_dma_buf = (u32 *)ALIGN((u32)(drv_data +
--						sizeof(struct driver_data)), 8);
-+	drv_data->null_dma_buf =
-+		(u32 *)PTR_ALIGN(&drv_data->null_dma_buf_unaligned, 8);
- 
- 	drv_data->ioaddr = ssp->mmio_base;
- 	drv_data->ssdr_physical = ssp->phys_base + SSDR;
--- 
-1.7.5.rc3
+threats, fraudulent activity, and more. Splunk takes this data and makes =
+
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2d-c2

@@ -1,52 +1,35 @@
-From: =?utf-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
-Subject: Re: [PATCH v2 1/7] spi/imx: do not make copy of spi_imx_devtype_data
-Date: Mon, 11 Jul 2011 09:49:07 +0200
-Message-ID: <19994.43763.88454.662575@ipc1.ka-ro>
-References: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
-	<1310231801-18761-2-git-send-email-shawn.guo@linaro.org>
-	<19994.41750.920408.162356@ipc1.ka-ro>
-	<20110711073136.GA13840@pengutronix.de>
+From: =?koi8-r?B?0NLJ19nLwdTYIA==?= <leith11-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQyMyDS1cI=?=
+Date: Mon, 11 Jul 2011 12:55:38 +0400
+Message-ID: <E7F50D6428084F77A7E984D1B19160C3@iwca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="koi8-r"
 Content-Transfer-Encoding: base64
-Cc: patches@linaro.org, devicetree-discuss@lists.ozlabs.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-arm-kernel@lists.infradead.org
-To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110711073136.GA13840@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VXdlIEtsZWluZS1Lw7ZuaWcgd3JpdGVzOgo+IE9uIE1vbiwgSnVsIDExLCAyMDExIGF0IDA5OjE1
-OjM0QU0gKzAyMDAsIExvdGhhciBXYcOfbWFubiB3cm90ZToKPiA+IEhpLAo+ID4gCj4gPiBTaGF3
-biBHdW8gd3JpdGVzOgo+ID4gPiBzcGlfaW14X2RldnR5cGVfZGF0YSBoYXMgYWxyZWFkeSBiZWVu
-IGRyaXZlciBwcml2YXRlIGRhdGEuICBUaGVyZSBpcwo+ID4gPiByZWFsbHkgbm8gbmVlZCB0byBt
-YWtlIGEgY29weSBpbiBzcGlfaW14X2RhdGEuICBJbnN0ZWFkLCBhIHJlZmVyZW5jZQo+ID4gPiBw
-b2ludGVyIHdvcmtzIHBlcmZlY3RseSBmaW5lLgo+ID4gPiAKPiA+IFlvdSBvYnZpb3VzbHkgb3Zl
-cmxvb2tlZCwgdGhhdCB0aGUgY29weSBpcyBkb25lIG9uIHB1cnBvc2UgdG8ga2VlcAo+ID4gb25s
-eSB0aGUgZGF0YSB0aGF0IGlzIGFjdHVhbGx5IG5lZWRlZCBhbmQgZGlzY2FyZCBldmVyeXRoaW5n
-IGVsc2UKPiA+IGFmdGVyIGluaXRpYWxpc2F0aW9uLgo+IHRob3VnaCB5b3UgY291bGQgYXJndWUg
-dGhhdCBfX2RldmluaXRkYXRhIGlzbid0IGRpc2NhcmRlZCBvbiBtb2Rlcm4KPiBzeXN0ZW1zIGFu
-eWhvdyAoYW5kIFNoYXduJ3MgcGF0Y2ggdGFrZXMgY2FyZSBvZiByZW1vdmluZyB0aGF0Cj4gYW5u
-b3RhdGlvbikuCj4gClNoYXduJ3MgY29tbWVudCBzaG91bGQgcHJvYmFibHkgaGF2ZSByZWZsZWN0
-ZWQgdGhhdC4uLgoKCkxvdGhhciBXYcOfbWFubgotLSAKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KCkthLVJvIGVsZWN0cm9uaWNzIEdt
-YkggfCBQYXNjYWxzdHJhw59lIDIyIHwgRCAtIDUyMDc2IEFhY2hlbgpQaG9uZTogKzQ5IDI0MDgg
-MTQwMi0wIHwgRmF4OiArNDkgMjQwOCAxNDAyLTEwCkdlc2Now6RmdHNmw7xocmVyOiBNYXR0aGlh
-cyBLYXVzc2VuCkhhbmRlbHNyZWdpc3RlcmVpbnRyYWc6IEFtdHNnZXJpY2h0IEFhY2hlbiwgSFJC
-IDQ5OTYKCnd3dy5rYXJvLWVsZWN0cm9uaWNzLmRlIHwgaW5mb0BrYXJvLWVsZWN0cm9uaWNzLmRl
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51
-eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVh
-ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1h
-cm0ta2VybmVsCg==
+5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQ0MyDS1cIK
+Cu3P08vXwSDA0i7MycPBIC0gMS45MjI3MTUgwcTSIC0gNDkwOSDS1cIKCu3P08vXwSDGydouzMnD
+wSAtIDcuNzc2MDI2IMHE0iAtIDg0NzYg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
+d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBbGwgb2YgdGhlIGRhdGEgZ2Vu
+ZXJhdGVkIGluIHlvdXIgSVQgaW5mcmFzdHJ1Y3R1cmUgaXMgc2VyaW91c2x5IHZhbHVhYmxlLgpX
+aHk/IEl0IGNvbnRhaW5zIGEgZGVmaW5pdGl2ZSByZWNvcmQgb2YgYXBwbGljYXRpb24gcGVyZm9y
+bWFuY2UsIHNlY3VyaXR5IAp0aHJlYXRzLCBmcmF1ZHVsZW50IGFjdGl2aXR5LCBhbmQgbW9yZS4g
+U3BsdW5rIHRha2VzIHRoaXMgZGF0YSBhbmQgbWFrZXMgCnNlbnNlIG9mIGl0LiBJVCBzZW5zZS4g
+QW5kIGNvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJkLWMyCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
+cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
+aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
+bmVyYWwK

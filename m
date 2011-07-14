@@ -1,13 +1,12 @@
-From: =?koi8-r?B?1dPUwdcg?= <jblair1948-j9pdmedNgrk@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzNCDS1cI=?=
-Date: Thu, 14 Jul 2011 13:31:19 +0400
-Message-ID: <A5E8BC6AC59A43A390433A20A6016D7B@aiufij>
+From: "Smatis par Darci" <charlene-ZDnqbotyZsvTgsrL2yHzbg@public.gmane.org>
+Subject: [SPAM] Votre mutuelle a moitié prix
+Date: Thu, 14 Jul 2011 10:59:55 +0000 (CET)
+Message-ID: <110714105955.-168458230900002488@ofnm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
-	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
-	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,17 +18,233 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQwNSDS1cIK
-Cu3P08vXwSDA0i7MycPBIC0gMS45Nzk3NDYgwcTSIC0gNDkzOSDS1cIKCu3P08vXwSDGydouzMnD
-wSAtIDcuNzg3NjkwIMHE0iAtIDg0OTMg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
-d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBcHBTdW1vIFByZXNlbnRzIGEg
-RlJFRSBWaWRlbyBmb3IgdGhlIFNvdXJjZUZvcmdlIENvbW11bml0eSBieSBFcmljIApSaWVzLCB0
-aGUgY3JlYXRvciBvZiB0aGUgTGVhbiBTdGFydHVwIE1ldGhvZG9sb2d5IG9uICJMZWFuIFN0YXJ0
-dXAgClNlY3JldHMgUmV2ZWFsZWQuIiBUaGlzIHZpZGVvIHNob3dzIHlvdSBob3cgdG8gdmFsaWRh
-dGUgeW91ciBpZGVhcywgCm9wdGltaXplIHlvdXIgaWRlYXMgYW5kIGlkZW50aWZ5IHlvdXIgYnVz
-aW5lc3Mgc3RyYXRlZ3kuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwc3Vtb3NmZGV2MmRldgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+
+
+Si vous ne parvenez pas =E0 lire cet email, vous pouvez le visualiser, en c=
+liquant sur ce lien.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMPOSEZ VOTRE MUTUELLE AU MEILLEUR PRIX
+
+
+
+
+
+
+
+
+
+Acc=E9dez =E0 votre devis ici >>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+JEUNES
+
+
+
+
+
+
+
+
+
+
+FAMILLES
+
+
+
+
+
+
+
+
+
+
+SENIORS
+
+
+
+
+
+
+
+
+
+
+
+
+=A0=A0Bonus Optique
+
+=A0=A0Doublez votre forfait
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+=A0=A0Bonus Enfants
+
+=A0=A0Gratuit d=E8s le 3eme
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+=A0=A0Bonus Fid=E9lit=E9
+
+=A0=A0Soyez r=E9compens=E9s
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+AppSumo Presents a FREE Video for the SourceForge Community by Eric =
+
+Ries, the creator of the Lean Startup Methodology on "Lean Startup =
+
+Secrets Revealed." This video shows you how to validate your ideas, =
+
+optimize your ideas and identify your business strategy.
+http://p.sf.net/sfu/appsumosfdev2dev

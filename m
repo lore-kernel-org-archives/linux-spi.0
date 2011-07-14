@@ -1,11 +1,10 @@
-From: "lrl" <cjc-/XbtIIGrLHPM1kAEIRd3EQ@public.gmane.org>
-Subject: =?gb2312?B?MzM4ODg0NM2o1c3Kscbav7S6w9bQufq+rbzD?=
-Date: Thu, 14 Jul 2011 23:38:19 +0800
-Message-ID: <E2E6479FC6FAF28806F98ED0C828CD1A@uboqksqpa>
-Reply-To: changyuntong66-KN7UnAbNpbg@public.gmane.org
+From: "Gayle H." <GayleH.NoReply6-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Proposal Attached
+Date: Thu, 14 Jul 2011 16:34:52 -0700
+Message-ID: <a2c94c8d52649d0f6070f4bb0011bee0@g2gm.com>
 Mime-Version: 1.0
 Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0191_01AB7C52.13464320"
+	boundary="----=SPLITOR00A_001_572217968D"
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,76 +17,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-------=_NextPart_000_0191_01AB7C52.13464320
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_572217968D
 Content-Type: text/plain;
-	name="=?gb2312?B?tPq3otfKwc8udHh0?="
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
-	filename="=?gb2312?B?tPq3otfKwc8udHh0?="
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-yOfS4rnjuOa0+reiICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAle0xJU1RfTUFSTzF9
-DQoNCqhYqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSo
-aKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoWw0KqFWjtKmm
-o6+pprrFqaahoammoaGppsG/qaa5+qmmpuCppqbgqaaju6mmpuGpprrXqaa7qqmmtbWppqGhqabW
-pKmmo7KppqOzqaajs6mm17CpptT2qaa0+qmmvfipptK7qaahoahVDQqoVaOxqaajr6mmwuuppsj9
-qabXyammudipprj3qabI7ammvfCppsTPqaaju6mmwqWppqO7qabGt6mmoaGpprvyqaajtqmmo7Wp
-pqGhqaahoqmm1rWppsDtqabJ56mmo7qppqGhqFUNCqhVoaGppqP3qaahoammo7qpptGvqabPtamm
-tdipprD8qabJs6mmvqmppr3wqaam4Kmmu8appsXGqaahoammufOppqGjqaajtammo7SpprK7qabL
-sKmmuPepprvhqabHo6mmoaGoVQ0KqFWj0ammo/eppqGhqabM4ammteepprW9qaa2vKmmpuGppsjt
-qaa+xammutCppsa3qaa616mmz+OppqGhqabLvqmmo+OppqGhqaahoammtq+ppqGiqaa12Kmmvq2p
-psrWqaahoahVDQqoVaPRqaaj96mm08qpprmpqaa7sKmms6Sppr/Jqaaju6mmsPypps7lqabXsKmm
-tcCppsKlqabRzKmmoaGpptaxqaaj76mmoaGppqO2qaay+qmmycyppre9qaa8w6mmxvOppqGhqFUN
-CqhVo7qppqGjqaa8/qmmvquppqOxqaa+w6mm0tSpprTzqaam4amm1q6pprX2qaam4ammpuCppqOs
-qaahoammvdOppqPtqabH66mmoaGppqGiqabGt6mm0v2pprrNqabStammoaGoVQ0KqFWhoammo/Gp
-prXYqabXvKmmo7OpprXEqaa79amm0NyppqO7qabX8Kmm0+OppqO7qaajsammsb6ppqGhqabIpamm
-yOepprGjqaajsKmmy7Cpps/6qabLsKmm0LOpptPrqaahoahVDQqoVaOzqaaj6amm1reppsirqaaj
-sammus+pprW9qabDqKmm3L2ppqGiqabMqKmmu8appqO5qaay+qmmoaGppsuwqaa586mmtOappqGh
-qabO8ammytupptK1qaa3oqmmy7CppqGhqFUNCqhVo7eppqP5qaa086mmuaSppqO2qabX96mmuLap
-pqbgqabI2Kmm1+qppqO7qaa616mmo7Gppsa3qaa2/qmmzvGppsu+qabBqqmmo7apprT6qaahoqmm
-zvGpptW5qabO8amm1sKoVQ0KqFWjsqmmo+WppsirqabJzKmmo7ippqOsqaa/7qmmyrGpps31qabK
-r6mmus2ppsKlqaajtqmmz/qppqO6qaa+1qmm1Nqpps+1qaahoammv6qpprnjqaajrKmmo6ypprK/
-qabG86hVDQqoVaO1qaaj7ammoaGppsbzqaajsKmmxtqppqOsqaa0+qmmpuCppty9qabM7Kmmwv6p
-pqbhqabK26mmtc2pprXWqaa3oqmmt72ppqOyqabNs6mmuOapps6qqaa6z6mmw8WpptK1qFUNCqhV
-o7ippqPsqaa2qKmm0rWppqO0qaa0/ammt72pprDmqabAtqmmyNipps/CqabM7Kmmo7uppsX6qaa8
-26mmv9uppsaxqabKvammoaGpptK7qaahoqmmxvOppsDtqaajrKmmuLqoVQ0KqFWjtqmmoaOpptbG
-qabD+6mmo7mppsT6qaax46mm1LCppsjtqabN9ammpuCpptPOqaa7xqmmt6KppsX6qaa6y6mmtcSp
-ptLUqaajt6mmt6KpptTLqabStammsdypprTuqabU8KhVDQqoVaOzqaaj46mmuPeppsK8qaajtamm
-tcSppr/sqaa9x6mmsPyppqGiqabTsqmmo7upprrXqabLzammt6KpprbUqabV5qmmt8CppqGhqabG
-sammyuSppqGiqabLsKmmvaippsjLqFUNCqhVo7eppqPvqabW1qmmoaGppqO1qabAtKmmvd2pptOy
-qaam4ammo7upprrQqaa7xqmmwqWppsDxqaa436mmoaOpps6xqaaxuKmmwdappqGiqaa3oqmmtaWp
-ptPQqabT0Kmmu/KoVQ0KqFWjuammo+2ppsbzqaahoammo7OpprXnqaaho6mmutCppqGiqaa7xqmm
-puGpprrXqaam4Kmm19SpprW1qaahoammt72pptPDqaa+rammss2ppsaxqabOu6mm0Keppsbzqaay
-xqhVDQqoVaGhqaajr6mm0rWppsbzqaahoammo6GpptDFqaam4ammpuCppszsqaahoqmmwqWpptDF
-qabTw6mmz+OppqGhqabD5qmmo6GppsDtqabS+6mmoaKpprT6qabKuamm1q6pps7xqFUNCqhVoaGp
-pqGhqabD+6mm0rWpptXFqaaj0amm08OppqO7qabAtqmm19OpptOhqabC+qmmzOypprXEqabRzKmm
-oaGpptPQqaahoammwaqppraoqabG5Kmmv6qpprmrqabHxamm0ruoVQ0KqFXP+qmmoaGppsK8qaa0
-q6mmyfqppqPRqaajq6mmuPypptOyqaaju6mmz/OppszsqabTzqmmvNGppszHqaahoammyM6pptPK
-qabPtammtu6ppsv8qabL+ammy76ppqOsqaa34qhVDQqoVcrbqaa156mmoaGpptXmqaahoammo7qp
-prf+qaa24KmmutCpprasqabUxqmm0MeppqbhqabGt6mm0cyppqGhqaa6zqmmz+SpprXnqaa3oqmm
-t/6pptDoqabU9qmm0PupptDFqFUNCqhVoaKppruwqaahoammusWppqGhqaajsammzvGppsa3qaam
-4amms+apptHMqaaju6mmo7uppqOsqaa+xqmmoaGpptLJqaajuqmmu7CppsaxqabO8amm0qqppta1
-qaa0q6mmoaGoVQ0KqFXStammo7GpprnZqabC66mmoaGppqO1qabKx6mmxcappqO7qabPxKmmoaKp
-pteoqaa7xqmm1K2pprmrqaahoammwseppqP4qaajuqmmtcippqGiqaa1xKmmoaOppsuwqaahoahV
-DQqoVc7xqaajs6mmt72pprTzqaahoammo7ipptf2qaa7tqmmpuCpprLdqaa+s6mmuampprrXqaaz
-p6mmy76ppqGhqaa78qmmo+mppqOxqaaho6mm1+KppreiqabX3ammt6ippqGhqFUNCqhV1LGppqO2
-qabN+KmmyKuppqGhqaajtammyfqpptOtqaa7xqmmpuCppr3nqaa5+qmmwqWpptHMqaazpKmmoaGp
-prWjqaaj5ammo7OppqPRqabB3qmmxrGpprrhqaajrKmmoaGoVQ0KqFXA+6mmo7ipptW+qaahoamm
-oaGppqOzqabS4qmmwLSpptOyqabTsqmm0/GpprH2qaam4Kmmy7+ppsbaqaahoamm0MSppqPjqaaj
-tammo7qppqGiqaajuqmmy7Cpprf+qaahoahVDQqoVb2jqaajsqmmo+ippqGhqaahoammo7Spptau
-qaa156mmutCpprrQqabPqqmmud2pps7KqabI7ammxfqppqGhqaajrKmmo/qppqOzqaajsammuaSp
-prT6qabO8ammzvGppqGhqFUNCqhVoaGppqO0qaaj9Kmms7WppqGhqaajuKmmuPmpptGvqaam4amm
-puGppqGiqaam4KmmtcCppqbgqaa3oqmmoaGppr/JqaajuKmmo7ippqOwqaazzKmmv6qpprT6qabG
-86mmoaGoVQ0KqFWhoammo7KppqP0qabW96mmoaGppqOzqaaxvqmmvNuppqO7qaaju6mmuuypprX2
-qaam4amm07Kpprj3qaahoammyc+ppqO4qaajsammoaGppr2oqaa3tqmmwO2pptK1qaahoahVDQqo
-VaGhqaajtammo/CppsrWqaahoammo7WppqOsqaaju6mm0/GppsvVqaa606mm0+OppqO7qaam4amm
-1tappqGhqabN+Kmmo8CppqO2qaajuamm1v6pps6nqaa5q6mmo6yppqGhqFUNCqhVoaGppqO4qaaj
-uqmmu/qppqGhqaajtqmm1sqppsirqabPqqmm0cypprXAqabMqKmmu8apptbQqaa436mmoaGpprLp
-qaajsammo7appqGhqaawsqmmo7qppsu+qaa02ammoaGoVQ0KqF6oVKhrqFSoa6hUqGuoVKhrqFSo
-a6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhr
-qFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhhDQo=
+I would like to speak to you about printing your company's business cards=2E
+We are the largest online business card management company in the United =
+States. We offer the highest quality business cards combined with a very =
+easy to use ordering system=2E
 
-------=_NextPart_000_0191_01AB7C52.13464320
+***Please review the attached proposal for details.***
+
+I look forward to working with your company.=20
+
+Sincerely,
+Gayle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =
+<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-gene=
+ral-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>=20
+
+7090 N Oracle Rd, Tucson AZ 85704
+
+
+------=SPLITOR00A_001_572217968D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -99,7 +71,7 @@ Ries, the creator of the Lean Startup Methodology on "Lean Startup
 Secrets Revealed." This video shows you how to validate your ideas, 
 optimize your ideas and identify your business strategy.
 http://p.sf.net/sfu/appsumosfdev2dev
-------=_NextPart_000_0191_01AB7C52.13464320
+------=SPLITOR00A_001_572217968D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -110,4 +82,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-------=_NextPart_000_0191_01AB7C52.13464320--
+------=SPLITOR00A_001_572217968D--

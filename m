@@ -1,19 +1,22 @@
-From: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Marek Vasut <marek.vasut.n900-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v3] pxa2xx_spi: fix memory corruption
-Date: Thu, 14 Jul 2011 15:17:35 +0300
-Message-ID: <201107141517.36147.anarsoul@gmail.com>
+Date: Thu, 14 Jul 2011 14:21:20 +0200
+Message-ID: <1310646080.5606.2.camel@konomi>
 References: <201107101609.31405.anarsoul@gmail.com>
 	<1310311099-24638-1-git-send-email-anarsoul@gmail.com>
+	<201107141517.36147.anarsoul@gmail.com>
+Reply-To: Marek Vasut <marek.vasut.n900-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
 	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1310311099-24638-1-git-send-email-anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <201107141517.36147.anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-ID: <1310646080.5606.1.camel@konomi>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,61 +27,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sunday 10 July 2011 18:18:19 Vasily Khoruzhick wrote:
-> pxa2xx_spi_probe allocates struct driver_data and null_dma_buf
-> at same time via spi_alloc_master(), but then calculates
-> null_dma_buf pointer incorrectly, and it causes memory corruption
-> later if DMA usage is enabled.
-
-Ping?
-
-> Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> v2: - add u8 __null_dma_buf[16] to the end of driver_data structure
->     and use it as null_dma_buf after alignment.
->     - use PTR_ALIGN instead of ALIGN
-> v3: - drop (u8 *) cast, use & operator instead, change array name
->  drivers/spi/pxa2xx_spi.c |    9 +++++----
->  1 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> index dc25bee..b25fe27 100644
-> --- a/drivers/spi/pxa2xx_spi.c
-> +++ b/drivers/spi/pxa2xx_spi.c
-> @@ -106,6 +106,7 @@ struct driver_data {
->  	int rx_channel;
->  	int tx_channel;
->  	u32 *null_dma_buf;
-> +	u8 null_dma_buf_unaligned[16];
-> 
->  	/* SSP register addresses */
->  	void __iomem *ioaddr;
-> @@ -1543,8 +1544,8 @@ static int __devinit pxa2xx_spi_probe(struct
-> platform_device *pdev) return -ENODEV;
->  	}
-> 
-> -	/* Allocate master with space for drv_data and null dma buffer */
-> -	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
-> +	/* Allocate master with space for drv_data */
-> +	master = spi_alloc_master(dev, sizeof(struct driver_data));
->  	if (!master) {
->  		dev_err(&pdev->dev, "cannot alloc spi_master\n");
->  		pxa_ssp_free(ssp);
-> @@ -1569,8 +1570,8 @@ static int __devinit pxa2xx_spi_probe(struct
-> platform_device *pdev) master->transfer = transfer;
-> 
->  	drv_data->ssp_type = ssp->type;
-> -	drv_data->null_dma_buf = (u32 *)ALIGN((u32)(drv_data +
-> -						sizeof(struct driver_data)), 8);
-> +	drv_data->null_dma_buf =
-> +		(u32 *)PTR_ALIGN(&drv_data->null_dma_buf_unaligned, 8);
-> 
->  	drv_data->ioaddr = ssp->mmio_base;
->  	drv_data->ssdr_physical = ssp->phys_base + SSDR;
-
-------------------------------------------------------------------------------
-AppSumo Presents a FREE Video for the SourceForge Community by Eric 
-Ries, the creator of the Lean Startup Methodology on "Lean Startup 
-Secrets Revealed." This video shows you how to validate your ideas, 
-optimize your ideas and identify your business strategy.
-http://p.sf.net/sfu/appsumosfdev2dev
+PiBPbiBTdW5kYXkgMTAgSnVseSAyMDExIDE4OjE4OjE5IFZhc2lseSBLaG9ydXpoaWNrIHdyb3Rl
+Ogo+ID4gcHhhMnh4X3NwaV9wcm9iZSBhbGxvY2F0ZXMgc3RydWN0IGRyaXZlcl9kYXRhIGFuZCBu
+dWxsX2RtYV9idWYKPiA+IGF0IHNhbWUgdGltZSB2aWEgc3BpX2FsbG9jX21hc3RlcigpLCBidXQg
+dGhlbiBjYWxjdWxhdGVzCj4gPiBudWxsX2RtYV9idWYgcG9pbnRlciBpbmNvcnJlY3RseSwgYW5k
+IGl0IGNhdXNlcyBtZW1vcnkgY29ycnVwdGlvbgo+ID4gbGF0ZXIgaWYgRE1BIHVzYWdlIGlzIGVu
+YWJsZWQuCj4gCj4gUGluZz8KClBvbmchCgo+IAo+ID4gU2lnbmVkLW9mZi1ieTogVmFzaWx5IEto
+b3J1emhpY2sgPGFuYXJzb3VsQGdtYWlsLmNvbT4KPiA+IC0tLQo+ID4gdjI6IC0gYWRkIHU4IF9f
+bnVsbF9kbWFfYnVmWzE2XSB0byB0aGUgZW5kIG9mIGRyaXZlcl9kYXRhIHN0cnVjdHVyZQo+ID4g
+YW5kIHVzZSBpdCBhcyBudWxsX2RtYV9idWYgYWZ0ZXIgYWxpZ25tZW50Lgo+ID4gLSB1c2UgUFRS
+X0FMSUdOIGluc3RlYWQgb2YgQUxJR04KPiA+IHYzOiAtIGRyb3AgKHU4ICopIGNhc3QsIHVzZSAm
+IG9wZXJhdG9yIGluc3RlYWQsIGNoYW5nZSBhcnJheSBuYW1lCj4gPiBkcml2ZXJzL3NwaS9weGEy
+eHhfc3BpLmMgfMKgIMKgIMKgICA5ICsrKysrLS0tLQo+ID4gMSBmaWxlcyBjaGFuZ2VkLCA1IGlu
+c2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJz
+L3NwaS9weGEyeHhfc3BpLmMgYi9kcml2ZXJzL3NwaS9weGEyeHhfc3BpLmMKPiA+IGluZGV4IGRj
+MjViZWUuLmIyNWZlMjcgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9weGEyeHhfc3BpLmMK
+PiA+ICsrKyBiL2RyaXZlcnMvc3BpL3B4YTJ4eF9zcGkuYwo+ID4gQEAgLTEwNiw2ICsxMDYsNyBA
+QCBzdHJ1Y3QgZHJpdmVyX2RhdGEgewo+ID4gwqDCoMKgIGludCByeF9jaGFubmVsOwo+ID4gwqDC
+oMKgIGludCB0eF9jaGFubmVsOwo+ID4gwqDCoMKgIHUzMiAqbnVsbF9kbWFfYnVmOwo+ID4gK8Kg
+wqDCoCB1OCBudWxsX2RtYV9idWZfdW5hbGlnbmVkWzE2XTsKPiA+IAo+ID4gwqDCoMKgIC8qIFNT
+UCByZWdpc3RlciBhZGRyZXNzZXMgKi8KPiA+IMKgwqDCoCB2b2lkIF9faW9tZW0gKmlvYWRkcjsK
+PiA+IEBAIC0xNTQzLDggKzE1NDQsOCBAQCBzdGF0aWMgaW50IF9fZGV2aW5pdCBweGEyeHhfc3Bp
+X3Byb2JlKHN0cnVjdAo+ID4gcGxhdGZvcm1fZGV2aWNlICpwZGV2KSByZXR1cm4gLUVOT0RFVjsK
+PiA+IMKgwqDCoCB9Cj4gPiAKPiA+IC3CoMKgwqAgLyogQWxsb2NhdGUgbWFzdGVyIHdpdGggc3Bh
+Y2UgZm9yIGRydl9kYXRhIGFuZCBudWxsIGRtYSBidWZmZXIgKi8KPiA+IC3CoMKgwqAgbWFzdGVy
+ID0gc3BpX2FsbG9jX21hc3RlcihkZXYsIHNpemVvZihzdHJ1Y3QgZHJpdmVyX2RhdGEpICsgMTYp
+Owo+ID4gK8KgwqDCoCAvKiBBbGxvY2F0ZSBtYXN0ZXIgd2l0aCBzcGFjZSBmb3IgZHJ2X2RhdGEg
+Ki8KPiA+ICvCoMKgwqAgbWFzdGVyID0gc3BpX2FsbG9jX21hc3RlcihkZXYsIHNpemVvZihzdHJ1
+Y3QgZHJpdmVyX2RhdGEpKTsKPiA+IMKgwqDCoCBpZiAoIW1hc3Rlcikgewo+ID4gwqDCoMKgIMKg
+wqDCoCBkZXZfZXJyKCZwZGV2LT5kZXYsICJjYW5ub3QgYWxsb2Mgc3BpX21hc3RlclxuIik7Cj4g
+PiDCoMKgwqAgwqDCoMKgIHB4YV9zc3BfZnJlZShzc3ApOwo+ID4gQEAgLTE1NjksOCArMTU3MCw4
+IEBAIHN0YXRpYyBpbnQgX19kZXZpbml0IHB4YTJ4eF9zcGlfcHJvYmUoc3RydWN0Cj4gPiBwbGF0
+Zm9ybV9kZXZpY2UgKnBkZXYpIG1hc3Rlci0+dHJhbnNmZXIgPSB0cmFuc2ZlcjsKPiA+IAo+ID4g
+wqDCoMKgIGRydl9kYXRhLT5zc3BfdHlwZSA9IHNzcC0+dHlwZTsKPiA+IC3CoMKgwqAgZHJ2X2Rh
+dGEtPm51bGxfZG1hX2J1ZiA9ICh1MzIgKilBTElHTigodTMyKShkcnZfZGF0YSArCj4gPiAtwqDC
+oMKgIMKgwqDCoCDCoMKgwqAgwqDCoMKgIMKgwqDCoCDCoMKgwqAgc2l6ZW9mKHN0cnVjdCBkcml2
+ZXJfZGF0YSkpLCA4KTsKPiA+ICvCoMKgwqAgZHJ2X2RhdGEtPm51bGxfZG1hX2J1ZiA9Cj4gPiAr
+wqDCoMKgIMKgwqDCoCAodTMyICopUFRSX0FMSUdOKCZkcnZfZGF0YS0+bnVsbF9kbWFfYnVmX3Vu
+YWxpZ25lZCwgOCk7Cj4gPiAKPiA+IMKgwqDCoCBkcnZfZGF0YS0+aW9hZGRyID0gc3NwLT5tbWlv
+X2Jhc2U7Cj4gPiDCoMKgwqAgZHJ2X2RhdGEtPnNzZHJfcGh5c2ljYWwgPSBzc3AtPnBoeXNfYmFz
+ZSArIFNTRFI7CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFwcFN1bW8gUHJlc2VudHMgYSBGUkVF
+IFZpZGVvIGZvciB0aGUgU291cmNlRm9yZ2UgQ29tbXVuaXR5IGJ5IEVyaWMgClJpZXMsIHRoZSBj
+cmVhdG9yIG9mIHRoZSBMZWFuIFN0YXJ0dXAgTWV0aG9kb2xvZ3kgb24gIkxlYW4gU3RhcnR1cCAK
+U2VjcmV0cyBSZXZlYWxlZC4iIFRoaXMgdmlkZW8gc2hvd3MgeW91IGhvdyB0byB2YWxpZGF0ZSB5
+b3VyIGlkZWFzLCAKb3B0aW1pemUgeW91ciBpZGVhcyBhbmQgaWRlbnRpZnkgeW91ciBidXNpbmVz
+cyBzdHJhdGVneS4KaHR0cDovL3Auc2YubmV0L3NmdS9hcHBzdW1vc2ZkZXYyZGV2Cl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

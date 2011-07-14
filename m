@@ -1,12 +1,12 @@
-From: Thomas De Schampheleire <patrickdepinguin+spidevel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: FSL eSPI driver: incorrect buffer offset for received bytes
-Date: Thu, 14 Jul 2011 16:46:07 +0200
-Message-ID: <CAAXf6LVL7vxu76Tawqacrm1HirdnSfv1pMFL8W2S8d36RYhUXw@mail.gmail.com>
+From: "lrl" <cjc-/XbtIIGrLHPM1kAEIRd3EQ@public.gmane.org>
+Subject: =?gb2312?B?MzM4ODg0NM2o1c3Kscbav7S6w9bQufq+rbzD?=
+Date: Thu, 14 Jul 2011 23:38:19 +0800
+Message-ID: <E2E6479FC6FAF28806F98ED0C828CD1A@uboqksqpa>
+Reply-To: changyuntong66-KN7UnAbNpbg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ronny Meeus <ronny.meeus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0191_01AB7C52.13464320"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,109 +18,80 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+------=_NextPart_000_0191_01AB7C52.13464320
+Content-Type: text/plain;
+	name="=?gb2312?B?tPq3otfKwc8udHh0?="
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="=?gb2312?B?tPq3otfKwc8udHh0?="
 
-I am having problems with the eSPI driver on Freescale P40xx, while
-accessing an EEPROM memory device (AT25040). I prepare an spi_transfer
-structure with a tx and rx buffer, and e.g. len = 6 (bytes).
+yOfS4rnjuOa0+reiICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAle0xJU1RfTUFSTzF9
+DQoNCqhYqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSo
+aKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoaKhUqGioVKhoqFSoWw0KqFWjtKmm
+o6+pprrFqaahoammoaGppsG/qaa5+qmmpuCppqbgqaaju6mmpuGpprrXqaa7qqmmtbWppqGhqabW
+pKmmo7KppqOzqaajs6mm17CpptT2qaa0+qmmvfipptK7qaahoahVDQqoVaOxqaajr6mmwuuppsj9
+qabXyammudipprj3qabI7ammvfCppsTPqaaju6mmwqWppqO7qabGt6mmoaGpprvyqaajtqmmo7Wp
+pqGhqaahoqmm1rWppsDtqabJ56mmo7qppqGhqFUNCqhVoaGppqP3qaahoammo7qpptGvqabPtamm
+tdipprD8qabJs6mmvqmppr3wqaam4Kmmu8appsXGqaahoammufOppqGjqaajtammo7SpprK7qabL
+sKmmuPepprvhqabHo6mmoaGoVQ0KqFWj0ammo/eppqGhqabM4ammteepprW9qaa2vKmmpuGppsjt
+qaa+xammutCppsa3qaa616mmz+OppqGhqabLvqmmo+OppqGhqaahoammtq+ppqGiqaa12Kmmvq2p
+psrWqaahoahVDQqoVaPRqaaj96mm08qpprmpqaa7sKmms6Sppr/Jqaaju6mmsPypps7lqabXsKmm
+tcCppsKlqabRzKmmoaGpptaxqaaj76mmoaGppqO2qaay+qmmycyppre9qaa8w6mmxvOppqGhqFUN
+CqhVo7qppqGjqaa8/qmmvquppqOxqaa+w6mm0tSpprTzqaam4amm1q6pprX2qaam4ammpuCppqOs
+qaahoammvdOppqPtqabH66mmoaGppqGiqabGt6mm0v2pprrNqabStammoaGoVQ0KqFWhoammo/Gp
+prXYqabXvKmmo7OpprXEqaa79amm0NyppqO7qabX8Kmm0+OppqO7qaajsammsb6ppqGhqabIpamm
+yOepprGjqaajsKmmy7Cpps/6qabLsKmm0LOpptPrqaahoahVDQqoVaOzqaaj6amm1reppsirqaaj
+sammus+pprW9qabDqKmm3L2ppqGiqabMqKmmu8appqO5qaay+qmmoaGppsuwqaa586mmtOappqGh
+qabO8ammytupptK1qaa3oqmmy7CppqGhqFUNCqhVo7eppqP5qaa086mmuaSppqO2qabX96mmuLap
+pqbgqabI2Kmm1+qppqO7qaa616mmo7Gppsa3qaa2/qmmzvGppsu+qabBqqmmo7apprT6qaahoqmm
+zvGpptW5qabO8amm1sKoVQ0KqFWjsqmmo+WppsirqabJzKmmo7ippqOsqaa/7qmmyrGpps31qabK
+r6mmus2ppsKlqaajtqmmz/qppqO6qaa+1qmm1Nqpps+1qaahoammv6qpprnjqaajrKmmo6ypprK/
+qabG86hVDQqoVaO1qaaj7ammoaGppsbzqaajsKmmxtqppqOsqaa0+qmmpuCppty9qabM7Kmmwv6p
+pqbhqabK26mmtc2pprXWqaa3oqmmt72ppqOyqabNs6mmuOapps6qqaa6z6mmw8WpptK1qFUNCqhV
+o7ippqPsqaa2qKmm0rWppqO0qaa0/ammt72pprDmqabAtqmmyNipps/CqabM7Kmmo7uppsX6qaa8
+26mmv9uppsaxqabKvammoaGpptK7qaahoqmmxvOppsDtqaajrKmmuLqoVQ0KqFWjtqmmoaOpptbG
+qabD+6mmo7mppsT6qaax46mm1LCppsjtqabN9ammpuCpptPOqaa7xqmmt6KppsX6qaa6y6mmtcSp
+ptLUqaajt6mmt6KpptTLqabStammsdypprTuqabU8KhVDQqoVaOzqaaj46mmuPeppsK8qaajtamm
+tcSppr/sqaa9x6mmsPyppqGiqabTsqmmo7upprrXqabLzammt6KpprbUqabV5qmmt8CppqGhqabG
+sammyuSppqGiqabLsKmmvaippsjLqFUNCqhVo7eppqPvqabW1qmmoaGppqO1qabAtKmmvd2pptOy
+qaam4ammo7upprrQqaa7xqmmwqWppsDxqaa436mmoaOpps6xqaaxuKmmwdappqGiqaa3oqmmtaWp
+ptPQqabT0Kmmu/KoVQ0KqFWjuammo+2ppsbzqaahoammo7OpprXnqaaho6mmutCppqGiqaa7xqmm
+puGpprrXqaam4Kmm19SpprW1qaahoammt72pptPDqaa+rammss2ppsaxqabOu6mm0Keppsbzqaay
+xqhVDQqoVaGhqaajr6mm0rWppsbzqaahoammo6GpptDFqaam4ammpuCppszsqaahoqmmwqWpptDF
+qabTw6mmz+OppqGhqabD5qmmo6GppsDtqabS+6mmoaKpprT6qabKuamm1q6pps7xqFUNCqhVoaGp
+pqGhqabD+6mm0rWpptXFqaaj0amm08OppqO7qabAtqmm19OpptOhqabC+qmmzOypprXEqabRzKmm
+oaGpptPQqaahoammwaqppraoqabG5Kmmv6qpprmrqabHxamm0ruoVQ0KqFXP+qmmoaGppsK8qaa0
+q6mmyfqppqPRqaajq6mmuPypptOyqaaju6mmz/OppszsqabTzqmmvNGppszHqaahoammyM6pptPK
+qabPtammtu6ppsv8qabL+ammy76ppqOsqaa34qhVDQqoVcrbqaa156mmoaGpptXmqaahoammo7qp
+prf+qaa24KmmutCpprasqabUxqmm0MeppqbhqabGt6mm0cyppqGhqaa6zqmmz+SpprXnqaa3oqmm
+t/6pptDoqabU9qmm0PupptDFqFUNCqhVoaKppruwqaahoammusWppqGhqaajsammzvGppsa3qaam
+4amms+apptHMqaaju6mmo7uppqOsqaa+xqmmoaGpptLJqaajuqmmu7CppsaxqabO8amm0qqppta1
+qaa0q6mmoaGoVQ0KqFXStammo7GpprnZqabC66mmoaGppqO1qabKx6mmxcappqO7qabPxKmmoaKp
+pteoqaa7xqmm1K2pprmrqaahoammwseppqP4qaajuqmmtcippqGiqaa1xKmmoaOppsuwqaahoahV
+DQqoVc7xqaajs6mmt72pprTzqaahoammo7ipptf2qaa7tqmmpuCpprLdqaa+s6mmuampprrXqaaz
+p6mmy76ppqGhqaa78qmmo+mppqOxqaaho6mm1+KppreiqabX3ammt6ippqGhqFUNCqhV1LGppqO2
+qabN+KmmyKuppqGhqaajtammyfqpptOtqaa7xqmmpuCppr3nqaa5+qmmwqWpptHMqaazpKmmoaGp
+prWjqaaj5ammo7OppqPRqabB3qmmxrGpprrhqaajrKmmoaGoVQ0KqFXA+6mmo7ipptW+qaahoamm
+oaGppqOzqabS4qmmwLSpptOyqabTsqmm0/GpprH2qaam4Kmmy7+ppsbaqaahoamm0MSppqPjqaaj
+tammo7qppqGiqaajuqmmy7Cpprf+qaahoahVDQqoVb2jqaajsqmmo+ippqGhqaahoammo7Spptau
+qaa156mmutCpprrQqabPqqmmud2pps7KqabI7ammxfqppqGhqaajrKmmo/qppqOzqaajsammuaSp
+prT6qabO8ammzvGppqGhqFUNCqhVoaGppqO0qaaj9Kmms7WppqGhqaajuKmmuPmpptGvqaam4amm
+puGppqGiqaam4KmmtcCppqbgqaa3oqmmoaGppr/JqaajuKmmo7ippqOwqaazzKmmv6qpprT6qabG
+86mmoaGoVQ0KqFWhoammo7KppqP0qabW96mmoaGppqOzqaaxvqmmvNuppqO7qaaju6mmuuypprX2
+qaam4amm07Kpprj3qaahoammyc+ppqO4qaajsammoaGppr2oqaa3tqmmwO2pptK1qaahoahVDQqo
+VaGhqaajtammo/CppsrWqaahoammo7WppqOsqaaju6mm0/GppsvVqaa606mm0+OppqO7qaam4amm
+1tappqGhqabN+Kmmo8CppqO2qaajuamm1v6pps6nqaa5q6mmo6yppqGhqFUNCqhVoaGppqO4qaaj
+uqmmu/qppqGhqaajtqmm1sqppsirqabPqqmm0cypprXAqabMqKmmu8apptbQqaa436mmoaGpprLp
+qaajsammo7appqGhqaawsqmmo7qppsu+qaa02ammoaGoVQ0KqF6oVKhrqFSoa6hUqGuoVKhrqFSo
+a6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhr
+qFSoa6hUqGuoVKhrqFSoa6hUqGuoVKhhDQo=
 
-This transfer is eventually handled by fsl_espi_do_one_msg(). Below
-are some excerpts (note: these come from a slightly older version of
-the driver, but judging from the code newer versions exhibit the same
-problems I'm discussing here):
-
-        u8 *rx_buf = NULL;
-        list_for_each_entry(t, &m->transfers, transfer_list) {
-                [...]
-                if (t->tx_buf)
-                        n_tx += t->len;
-
-                if (t->rx_buf) {
-                        n_rx += t->len;
-                        rx_buf = t->rx_buf;
-                }
-        }
-
-Here, we have one rx_buf local to the function, and an t->rx_buf per
-transfer. The transfer list is iterated, and each time a transfer has
-a non-NULL rx_buf pointer, the function-local rx_buf is overwritten.
-I do not understand this: all previous values of rx_buf are lost. The
-way I see it, this code can only work if there is only one transfer
-handled at a time in fsl_espi_do_one_msg().
-Am I forgetting something?
-
-
-Later on, a new transfer list is assembled, with tx and rx buffers
-strung together in one local_buf.
-
-        list_for_each_entry(t, &m->transfers, transfer_list) {
-                if (t->tx_buf) {
-                        memcpy(local_buf + i, t->tx_buf, t->len);
-                        i += t->len;
-                }
-        }
-
-        trans.len = n_tx + n_rx;
-        trans.tx_buf = local_buf;
-        trans.rx_buf = local_buf + n_tx;
-        spi_message_add_tail(&trans, &message);
-
-So local_buf is structured as follows: (assuming 3 transfers in the
-list, with tx0 / rx0 the corresponding set of bytes for each transfer)
-
-| tx0 | tx1 | tx2 | ... | rx0 | rx1 | rx2 | ...
-
-What I do not understand is why trans.len is set to the sum of n_tx
-and n_rx. The eSPI controller is normally doing full-duplex
-transactions, in which tx and rx happens at the same time. If I want
-to receive 6 bytes, I also have to send 6 bytes.
-Could you explain why trans.len is double the original t->len?
-
-
-Then, still in fsl_espi_do_one_msg(), the transfer is initiated with
-fsl_espi_bufs(). After that, the received data is copied back:
-
-        list_for_each_entry(t, &message.transfers, transfer_list) {
-                [...]
-                if (rx_buf)
-                        memcpy(rx_buf, t->rx_buf + n_tx, n_rx);
-                [...]
-        }
-
-As mentioned above, I cannot imagine that this works if there is more
-than one transfer in the list, since rx_buf will always point to the
-buffer of the last transfer.
-
-But more importantly, I think that the from-offset in the memcpy
-statement is incorrect: the interrupt routine has placed the received
-bytes at trans.rx_buf, which was set to local_buf + n_tx. In the
-current memcpy statement, an extra n_tx is added to the receive
-buffer, so in fact it becomes trans.rx_buf + 2*n_tx. Given the layout
-of the local_buf, memcpy is going to copy the wrong bytes.
-
-This is indeed what I see when reading my EEPROM device: if I request
-6 bytes at offset 0, the first 2 bytes I receive are 0xffff (which is
-normal; this is the data sent by the device while receiving the opcode
-and read offset), followed by four 'real' bytes coming from memory,
-but from memory offset 4 (6 (transfer length) - 2 (EEPROM device first
-two dummy bytes)). The larger the transfer length, the farther apart
-the returned and expected bytes are.
-
-If I patch the eSPI driver, so that the memcpy is looking as follows,
-then I receive the bytes that I expect. No incorrect offset is used.
-
-        list_for_each_entry(t, &message.transfers, transfer_list) {
-                [...]
-                if (rx_buf)
-                        memcpy(rx_buf, t->rx_buf, n_rx);
-                [...]
-        }
-
-
-Am I missing something in my analysis, or is this really a bug?
-
-Thanks,
-Thomas
+------=_NextPart_000_0191_01AB7C52.13464320
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 AppSumo Presents a FREE Video for the SourceForge Community by Eric 
@@ -128,3 +99,15 @@ Ries, the creator of the Lean Startup Methodology on "Lean Startup
 Secrets Revealed." This video shows you how to validate your ideas, 
 optimize your ideas and identify your business strategy.
 http://p.sf.net/sfu/appsumosfdev2dev
+------=_NextPart_000_0191_01AB7C52.13464320
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_0191_01AB7C52.13464320--

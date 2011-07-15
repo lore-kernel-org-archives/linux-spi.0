@@ -1,21 +1,19 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v3] pxa2xx_spi: fix memory corruption
-Date: Thu, 14 Jul 2011 20:53:31 -0600
-Message-ID: <20110715025331.GL2927@ponder.secretlab.ca>
-References: <201107101609.31405.anarsoul@gmail.com>
-	<1310311099-24638-1-git-send-email-anarsoul@gmail.com>
+Subject: Re: [PATCH v2 7/7] spi/imx: add device tree probe support
+Date: Thu, 14 Jul 2011 20:53:46 -0600
+Message-ID: <20110715025346.GT2927@ponder.secretlab.ca>
+References: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
+	<1310231801-18761-8-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1310311099-24638-1-git-send-email-anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1310231801-18761-8-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,66 +24,153 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jul 10, 2011 at 06:18:19PM +0300, Vasily Khoruzhick wrote:
-> pxa2xx_spi_probe allocates struct driver_data and null_dma_buf
-> at same time via spi_alloc_master(), but then calculates
-> null_dma_buf pointer incorrectly, and it causes memory corruption
-> later if DMA usage is enabled.
+On Sun, Jul 10, 2011 at 01:16:41AM +0800, Shawn Guo wrote:
+> It adds device tree probe support for spi-imx driver.
 > 
-> Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> v2: - add u8 __null_dma_buf[16] to the end of driver_data structure
->     and use it as null_dma_buf after alignment.
->     - use PTR_ALIGN instead of ALIGN
-> v3: - drop (u8 *) cast, use & operator instead, change array name
->  drivers/spi/pxa2xx_spi.c |    9 +++++----
->  1 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> index dc25bee..b25fe27 100644
-> --- a/drivers/spi/pxa2xx_spi.c
-> +++ b/drivers/spi/pxa2xx_spi.c
-> @@ -106,6 +106,7 @@ struct driver_data {
->  	int rx_channel;
->  	int tx_channel;
->  	u32 *null_dma_buf;
-> +	u8 null_dma_buf_unaligned[16];
+> Signed-off-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
-Don't dma buffers need to be cache-line aligned?  How large is the
-actual transfer?  Using the __aligned() or __cacheline_aligned
-attribute is the correct way to make sure you've got a data buffer
-that can be used for DMA mixed with other stuff.  Then you don't need
-to fool around with PTR_ALIGN or anything.
+Applied, thanks.
 
 g.
 
+> ---
+>  .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +++++++++++
+>  drivers/spi/spi-imx.c                              |   38 ++++++++++++++++----
+>  2 files changed, 53 insertions(+), 7 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> new file mode 100644
+> index 0000000..9841057
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
+> @@ -0,0 +1,22 @@
+> +* Freescale (Enhanced) Configurable Serial Peripheral Interface
+> +  (CSPI/eCSPI) for i.MX
+> +
+> +Required properties:
+> +- compatible : Should be "fsl,<soc>-cspi" or "fsl,<soc>-ecspi"
+> +- reg : Offset and length of the register set for the device
+> +- interrupts : Should contain CSPI/eCSPI interrupt
+> +- fsl,spi-num-chipselects : Contains the number of the chipselect
+> +- cs-gpios : Specifies the gpio pins to be used for chipselects.
+> +
+> +Example:
+> +
+> +ecspi@70010000 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	compatible = "fsl,imx51-ecspi";
+> +	reg = <0x70010000 0x4000>;
+> +	interrupts = <36>;
+> +	fsl,spi-num-chipselects = <2>;
+> +	cs-gpios = <&gpio3 24 0>, /* GPIO4_24 */
+> +		   <&gpio3 25 0>; /* GPIO4_25 */
+> +};
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index ad61828..5456bcc 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -34,6 +34,9 @@
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/spi_bitbang.h>
+>  #include <linux/types.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/of_gpio.h>
 >  
->  	/* SSP register addresses */
->  	void __iomem *ioaddr;
-> @@ -1543,8 +1544,8 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
->  		return -ENODEV;
+>  #include <mach/spi.h>
+>  
+> @@ -606,6 +609,16 @@ static struct platform_device_id spi_imx_devtype[] = {
+>  	}
+>  };
+>  
+> +static const struct of_device_id spi_imx_dt_ids[] = {
+> +	{ .compatible = "fsl,imx1-cspi", .data = &imx1_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx21-cspi", .data = &imx21_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx27-cspi", .data = &imx27_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
+> +	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
+> +	{ /* sentinel */ }
+> +};
+> +
+>  static void spi_imx_chipselect(struct spi_device *spi, int is_active)
+>  {
+>  	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+> @@ -739,19 +752,25 @@ static void spi_imx_cleanup(struct spi_device *spi)
+>  
+>  static int __devinit spi_imx_probe(struct platform_device *pdev)
+>  {
+> -	struct spi_imx_master *mxc_platform_info;
+> +	struct device_node *np = pdev->dev.of_node;
+> +	const struct of_device_id *of_id =
+> +			of_match_device(spi_imx_dt_ids, &pdev->dev);
+> +	struct spi_imx_master *mxc_platform_info =
+> +			dev_get_platdata(&pdev->dev);
+>  	struct spi_master *master;
+>  	struct spi_imx_data *spi_imx;
+>  	struct resource *res;
+>  	int i, ret, num_cs;
+>  
+> -	mxc_platform_info = dev_get_platdata(&pdev->dev);
+> -	if (!mxc_platform_info) {
+> +	if (!np && !mxc_platform_info) {
+>  		dev_err(&pdev->dev, "can't get the platform data\n");
+>  		return -EINVAL;
 >  	}
 >  
-> -	/* Allocate master with space for drv_data and null dma buffer */
-> -	master = spi_alloc_master(dev, sizeof(struct driver_data) + 16);
-> +	/* Allocate master with space for drv_data */
-> +	master = spi_alloc_master(dev, sizeof(struct driver_data));
->  	if (!master) {
->  		dev_err(&pdev->dev, "cannot alloc spi_master\n");
->  		pxa_ssp_free(ssp);
-> @@ -1569,8 +1570,8 @@ static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
->  	master->transfer = transfer;
+> -	num_cs = mxc_platform_info->num_chipselect;
+> +	ret = of_property_read_u32(np, "fsl,spi-num-chipselects", &num_cs);
+> +	if (ret < 0)
+> +		num_cs = mxc_platform_info->num_chipselect;
+> +
+>  	master = spi_alloc_master(&pdev->dev,
+>  			sizeof(struct spi_imx_data) + sizeof(int) * num_cs);
+>  	if (!master)
+> @@ -766,9 +785,12 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+>  	spi_imx->bitbang.master = spi_master_get(master);
 >  
->  	drv_data->ssp_type = ssp->type;
-> -	drv_data->null_dma_buf = (u32 *)ALIGN((u32)(drv_data +
-> -						sizeof(struct driver_data)), 8);
-> +	drv_data->null_dma_buf =
-> +		(u32 *)PTR_ALIGN(&drv_data->null_dma_buf_unaligned, 8);
+>  	for (i = 0; i < master->num_chipselect; i++) {
+> -		spi_imx->chipselect[i] = mxc_platform_info->chipselect[i];
+> -		if (spi_imx->chipselect[i] < 0)
+> +		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+> +		if (cs_gpio < 0)
+> +			cs_gpio = mxc_platform_info->chipselect[i];
+> +		if (cs_gpio < 0)
+>  			continue;
+> +		spi_imx->chipselect[i] = cs_gpio;
+>  		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
+>  		if (ret) {
+>  			while (i > 0) {
+> @@ -790,7 +812,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
 >  
->  	drv_data->ioaddr = ssp->mmio_base;
->  	drv_data->ssdr_physical = ssp->phys_base + SSDR;
+>  	init_completion(&spi_imx->xfer_done);
+>  
+> -	spi_imx->devtype_data =
+> +	spi_imx->devtype_data = of_id ? of_id->data :
+>  		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
+>  
+>  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> @@ -838,6 +860,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+>  
+>  	spi_imx->devtype_data->intctrl(spi_imx, 0);
+>  
+> +	master->dev.of_node = pdev->dev.of_node;
+>  	ret = spi_bitbang_start(&spi_imx->bitbang);
+>  	if (ret) {
+>  		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
+> @@ -900,6 +923,7 @@ static struct platform_driver spi_imx_driver = {
+>  	.driver = {
+>  		   .name = DRIVER_NAME,
+>  		   .owner = THIS_MODULE,
+> +		   .of_match_table = spi_imx_dt_ids,
+>  		   },
+>  	.id_table = spi_imx_devtype,
+>  	.probe = spi_imx_probe,
 > -- 
-> 1.7.5.rc3
+> 1.7.4.1
 > 
 
 ------------------------------------------------------------------------------

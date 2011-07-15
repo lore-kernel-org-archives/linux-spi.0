@@ -1,19 +1,21 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2 7/7] spi/imx: add device tree probe support
-Date: Thu, 14 Jul 2011 20:53:46 -0600
-Message-ID: <20110715025346.GT2927@ponder.secretlab.ca>
+Subject: Re: [PATCH v2 3/7] spi/imx: do not use spi_imx2_3 to name
+	SPI_IMX_VER_2_3 function and macro
+Date: Thu, 14 Jul 2011 20:53:45 -0600
+Message-ID: <20110715025345.GS2927@ponder.secretlab.ca>
 References: <1310231801-18761-1-git-send-email-shawn.guo@linaro.org>
-	<1310231801-18761-8-git-send-email-shawn.guo@linaro.org>
+	<1310231801-18761-4-git-send-email-shawn.guo@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1310231801-18761-8-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1310231801-18761-4-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,10 +26,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jul 10, 2011 at 01:16:41AM +0800, Shawn Guo wrote:
-> It adds device tree probe support for spi-imx driver.
-> 
+On Sun, Jul 10, 2011 at 01:16:37AM +0800, Shawn Guo wrote:
+> It's confusing to use spi_imx2_3 to name SPI_IMX_VER_2_3 function
+> and macro, as it easily make people think of imx2 and imx3.  It's
+> better to use specific soc name just like what other SPI_IMX_VER
+> do.  For SPI_IMX_VER_2_3 case, it will be mx51.  To distinguish it
+> from CSPI on mx51, mx51_ecspi might be a good choice.
+> =
+
 > Signed-off-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Cc: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
 Applied, thanks.
@@ -35,147 +44,239 @@ Applied, thanks.
 g.
 
 > ---
->  .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   22 +++++++++++
->  drivers/spi/spi-imx.c                              |   38 ++++++++++++++++----
->  2 files changed, 53 insertions(+), 7 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> new file mode 100644
-> index 0000000..9841057
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl-imx-cspi.txt
-> @@ -0,0 +1,22 @@
-> +* Freescale (Enhanced) Configurable Serial Peripheral Interface
-> +  (CSPI/eCSPI) for i.MX
-> +
-> +Required properties:
-> +- compatible : Should be "fsl,<soc>-cspi" or "fsl,<soc>-ecspi"
-> +- reg : Offset and length of the register set for the device
-> +- interrupts : Should contain CSPI/eCSPI interrupt
-> +- fsl,spi-num-chipselects : Contains the number of the chipselect
-> +- cs-gpios : Specifies the gpio pins to be used for chipselects.
-> +
-> +Example:
-> +
-> +ecspi@70010000 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	compatible = "fsl,imx51-ecspi";
-> +	reg = <0x70010000 0x4000>;
-> +	interrupts = <36>;
-> +	fsl,spi-num-chipselects = <2>;
-> +	cs-gpios = <&gpio3 24 0>, /* GPIO4_24 */
-> +		   <&gpio3 25 0>; /* GPIO4_25 */
-> +};
+>  drivers/spi/spi-imx.c |  107 +++++++++++++++++++++++++------------------=
+------
+>  1 files changed, 54 insertions(+), 53 deletions(-)
+> =
+
 > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index ad61828..5456bcc 100644
+> index ad928b1..052959df 100644
 > --- a/drivers/spi/spi-imx.c
 > +++ b/drivers/spi/spi-imx.c
-> @@ -34,6 +34,9 @@
->  #include <linux/spi/spi.h>
->  #include <linux/spi/spi_bitbang.h>
->  #include <linux/types.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
-> +#include <linux/of_gpio.h>
->  
->  #include <mach/spi.h>
->  
-> @@ -606,6 +609,16 @@ static struct platform_device_id spi_imx_devtype[] = {
->  	}
->  };
->  
-> +static const struct of_device_id spi_imx_dt_ids[] = {
-> +	{ .compatible = "fsl,imx1-cspi", .data = &imx1_cspi_devtype_data, },
-> +	{ .compatible = "fsl,imx21-cspi", .data = &imx21_cspi_devtype_data, },
-> +	{ .compatible = "fsl,imx27-cspi", .data = &imx27_cspi_devtype_data, },
-> +	{ .compatible = "fsl,imx31-cspi", .data = &imx31_cspi_devtype_data, },
-> +	{ .compatible = "fsl,imx35-cspi", .data = &imx35_cspi_devtype_data, },
-> +	{ .compatible = "fsl,imx51-ecspi", .data = &imx51_ecspi_devtype_data, },
-> +	{ /* sentinel */ }
-> +};
-> +
->  static void spi_imx_chipselect(struct spi_device *spi, int is_active)
->  {
->  	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
-> @@ -739,19 +752,25 @@ static void spi_imx_cleanup(struct spi_device *spi)
->  
->  static int __devinit spi_imx_probe(struct platform_device *pdev)
->  {
-> -	struct spi_imx_master *mxc_platform_info;
-> +	struct device_node *np = pdev->dev.of_node;
-> +	const struct of_device_id *of_id =
-> +			of_match_device(spi_imx_dt_ids, &pdev->dev);
-> +	struct spi_imx_master *mxc_platform_info =
-> +			dev_get_platdata(&pdev->dev);
->  	struct spi_master *master;
->  	struct spi_imx_data *spi_imx;
->  	struct resource *res;
->  	int i, ret, num_cs;
->  
-> -	mxc_platform_info = dev_get_platdata(&pdev->dev);
-> -	if (!mxc_platform_info) {
-> +	if (!np && !mxc_platform_info) {
->  		dev_err(&pdev->dev, "can't get the platform data\n");
->  		return -EINVAL;
->  	}
->  
-> -	num_cs = mxc_platform_info->num_chipselect;
-> +	ret = of_property_read_u32(np, "fsl,spi-num-chipselects", &num_cs);
-> +	if (ret < 0)
-> +		num_cs = mxc_platform_info->num_chipselect;
-> +
->  	master = spi_alloc_master(&pdev->dev,
->  			sizeof(struct spi_imx_data) + sizeof(int) * num_cs);
->  	if (!master)
-> @@ -766,9 +785,12 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
->  	spi_imx->bitbang.master = spi_master_get(master);
->  
->  	for (i = 0; i < master->num_chipselect; i++) {
-> -		spi_imx->chipselect[i] = mxc_platform_info->chipselect[i];
-> -		if (spi_imx->chipselect[i] < 0)
-> +		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-> +		if (cs_gpio < 0)
-> +			cs_gpio = mxc_platform_info->chipselect[i];
-> +		if (cs_gpio < 0)
->  			continue;
-> +		spi_imx->chipselect[i] = cs_gpio;
->  		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
->  		if (ret) {
->  			while (i > 0) {
-> @@ -790,7 +812,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
->  
->  	init_completion(&spi_imx->xfer_done);
->  
-> -	spi_imx->devtype_data =
-> +	spi_imx->devtype_data = of_id ? of_id->data :
->  		(struct spi_imx_devtype_data *) pdev->id_entry->driver_data;
->  
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> @@ -838,6 +860,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
->  
->  	spi_imx->devtype_data->intctrl(spi_imx, 0);
->  
-> +	master->dev.of_node = pdev->dev.of_node;
->  	ret = spi_bitbang_start(&spi_imx->bitbang);
->  	if (ret) {
->  		dev_err(&pdev->dev, "bitbang start failed with %d\n", ret);
-> @@ -900,6 +923,7 @@ static struct platform_driver spi_imx_driver = {
->  	.driver = {
->  		   .name = DRIVER_NAME,
->  		   .owner = THIS_MODULE,
-> +		   .of_match_table = spi_imx_dt_ids,
->  		   },
->  	.id_table = spi_imx_devtype,
->  	.probe = spi_imx_probe,
-> -- 
-> 1.7.4.1
-> 
+> @@ -171,30 +171,30 @@ static unsigned int spi_imx_clkdiv_2(unsigned int f=
+in,
+>  	return 7;
+>  }
+>  =
 
-------------------------------------------------------------------------------
-AppSumo Presents a FREE Video for the SourceForge Community by Eric 
-Ries, the creator of the Lean Startup Methodology on "Lean Startup 
-Secrets Revealed." This video shows you how to validate your ideas, 
+> -#define SPI_IMX2_3_CTRL		0x08
+> -#define SPI_IMX2_3_CTRL_ENABLE		(1 <<  0)
+> -#define SPI_IMX2_3_CTRL_XCH		(1 <<  2)
+> -#define SPI_IMX2_3_CTRL_MODE_MASK	(0xf << 4)
+> -#define SPI_IMX2_3_CTRL_POSTDIV_OFFSET	8
+> -#define SPI_IMX2_3_CTRL_PREDIV_OFFSET	12
+> -#define SPI_IMX2_3_CTRL_CS(cs)		((cs) << 18)
+> -#define SPI_IMX2_3_CTRL_BL_OFFSET	20
+> -
+> -#define SPI_IMX2_3_CONFIG	0x0c
+> -#define SPI_IMX2_3_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+> -#define SPI_IMX2_3_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+> -#define SPI_IMX2_3_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+> -#define SPI_IMX2_3_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+> -
+> -#define SPI_IMX2_3_INT		0x10
+> -#define SPI_IMX2_3_INT_TEEN		(1 <<  0)
+> -#define SPI_IMX2_3_INT_RREN		(1 <<  3)
+> -
+> -#define SPI_IMX2_3_STAT		0x18
+> -#define SPI_IMX2_3_STAT_RR		(1 <<  3)
+> +#define MX51_ECSPI_CTRL		0x08
+> +#define MX51_ECSPI_CTRL_ENABLE		(1 <<  0)
+> +#define MX51_ECSPI_CTRL_XCH		(1 <<  2)
+> +#define MX51_ECSPI_CTRL_MODE_MASK	(0xf << 4)
+> +#define MX51_ECSPI_CTRL_POSTDIV_OFFSET	8
+> +#define MX51_ECSPI_CTRL_PREDIV_OFFSET	12
+> +#define MX51_ECSPI_CTRL_CS(cs)		((cs) << 18)
+> +#define MX51_ECSPI_CTRL_BL_OFFSET	20
+> +
+> +#define MX51_ECSPI_CONFIG	0x0c
+> +#define MX51_ECSPI_CONFIG_SCLKPHA(cs)	(1 << ((cs) +  0))
+> +#define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+> +#define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+> +#define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+> +
+> +#define MX51_ECSPI_INT		0x10
+> +#define MX51_ECSPI_INT_TEEN		(1 <<  0)
+> +#define MX51_ECSPI_INT_RREN		(1 <<  3)
+> +
+> +#define MX51_ECSPI_STAT		0x18
+> +#define MX51_ECSPI_STAT_RR		(1 <<  3)
+>  =
+
+>  /* MX51 eCSPI */
+> -static unsigned int spi_imx2_3_clkdiv(unsigned int fin, unsigned int fsp=
+i)
+> +static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fsp=
+i)
+>  {
+>  	/*
+>  	 * there are two 4-bit dividers, the pre-divider divides by
+> @@ -222,36 +222,37 @@ static unsigned int spi_imx2_3_clkdiv(unsigned int =
+fin, unsigned int fspi)
+>  =
+
+>  	pr_debug("%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
+>  			__func__, fin, fspi, post, pre);
+> -	return (pre << SPI_IMX2_3_CTRL_PREDIV_OFFSET) |
+> -		(post << SPI_IMX2_3_CTRL_POSTDIV_OFFSET);
+> +	return (pre << MX51_ECSPI_CTRL_PREDIV_OFFSET) |
+> +		(post << MX51_ECSPI_CTRL_POSTDIV_OFFSET);
+>  }
+>  =
+
+> -static void __maybe_unused spi_imx2_3_intctrl(struct spi_imx_data *spi_i=
+mx, int enable)
+> +static void __maybe_unused
+> +mx51_ecspi_intctrl(struct spi_imx_data *spi_imx, int enable)
+>  {
+>  	unsigned val =3D 0;
+>  =
+
+>  	if (enable & MXC_INT_TE)
+> -		val |=3D SPI_IMX2_3_INT_TEEN;
+> +		val |=3D MX51_ECSPI_INT_TEEN;
+>  =
+
+>  	if (enable & MXC_INT_RR)
+> -		val |=3D SPI_IMX2_3_INT_RREN;
+> +		val |=3D MX51_ECSPI_INT_RREN;
+>  =
+
+> -	writel(val, spi_imx->base + SPI_IMX2_3_INT);
+> +	writel(val, spi_imx->base + MX51_ECSPI_INT);
+>  }
+>  =
+
+> -static void __maybe_unused spi_imx2_3_trigger(struct spi_imx_data *spi_i=
+mx)
+> +static void __maybe_unused mx51_ecspi_trigger(struct spi_imx_data *spi_i=
+mx)
+>  {
+>  	u32 reg;
+>  =
+
+> -	reg =3D readl(spi_imx->base + SPI_IMX2_3_CTRL);
+> -	reg |=3D SPI_IMX2_3_CTRL_XCH;
+> -	writel(reg, spi_imx->base + SPI_IMX2_3_CTRL);
+> +	reg =3D readl(spi_imx->base + MX51_ECSPI_CTRL);
+> +	reg |=3D MX51_ECSPI_CTRL_XCH;
+> +	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
+>  }
+>  =
+
+> -static int __maybe_unused spi_imx2_3_config(struct spi_imx_data *spi_imx,
+> +static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>  		struct spi_imx_config *config)
+>  {
+> -	u32 ctrl =3D SPI_IMX2_3_CTRL_ENABLE, cfg =3D 0;
+> +	u32 ctrl =3D MX51_ECSPI_CTRL_ENABLE, cfg =3D 0;
+>  =
+
+>  	/*
+>  	 * The hardware seems to have a race condition when changing modes. The
+> @@ -260,42 +261,42 @@ static int __maybe_unused spi_imx2_3_config(struct =
+spi_imx_data *spi_imx,
+>  	 * the same time.
+>  	 * So set master mode for all channels as we do not support slave mode.
+>  	 */
+> -	ctrl |=3D SPI_IMX2_3_CTRL_MODE_MASK;
+> +	ctrl |=3D MX51_ECSPI_CTRL_MODE_MASK;
+>  =
+
+>  	/* set clock speed */
+> -	ctrl |=3D spi_imx2_3_clkdiv(spi_imx->spi_clk, config->speed_hz);
+> +	ctrl |=3D mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz);
+>  =
+
+>  	/* set chip select to use */
+> -	ctrl |=3D SPI_IMX2_3_CTRL_CS(config->cs);
+> +	ctrl |=3D MX51_ECSPI_CTRL_CS(config->cs);
+>  =
+
+> -	ctrl |=3D (config->bpw - 1) << SPI_IMX2_3_CTRL_BL_OFFSET;
+> +	ctrl |=3D (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
+>  =
+
+> -	cfg |=3D SPI_IMX2_3_CONFIG_SBBCTRL(config->cs);
+> +	cfg |=3D MX51_ECSPI_CONFIG_SBBCTRL(config->cs);
+>  =
+
+>  	if (config->mode & SPI_CPHA)
+> -		cfg |=3D SPI_IMX2_3_CONFIG_SCLKPHA(config->cs);
+> +		cfg |=3D MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
+>  =
+
+>  	if (config->mode & SPI_CPOL)
+> -		cfg |=3D SPI_IMX2_3_CONFIG_SCLKPOL(config->cs);
+> +		cfg |=3D MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+>  =
+
+>  	if (config->mode & SPI_CS_HIGH)
+> -		cfg |=3D SPI_IMX2_3_CONFIG_SSBPOL(config->cs);
+> +		cfg |=3D MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+>  =
+
+> -	writel(ctrl, spi_imx->base + SPI_IMX2_3_CTRL);
+> -	writel(cfg, spi_imx->base + SPI_IMX2_3_CONFIG);
+> +	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+> +	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+>  =
+
+>  	return 0;
+>  }
+>  =
+
+> -static int __maybe_unused spi_imx2_3_rx_available(struct spi_imx_data *s=
+pi_imx)
+> +static int __maybe_unused mx51_ecspi_rx_available(struct spi_imx_data *s=
+pi_imx)
+>  {
+> -	return readl(spi_imx->base + SPI_IMX2_3_STAT) & SPI_IMX2_3_STAT_RR;
+> +	return readl(spi_imx->base + MX51_ECSPI_STAT) & MX51_ECSPI_STAT_RR;
+>  }
+>  =
+
+> -static void __maybe_unused spi_imx2_3_reset(struct spi_imx_data *spi_imx)
+> +static void __maybe_unused mx51_ecspi_reset(struct spi_imx_data *spi_imx)
+>  {
+>  	/* drain receive buffer */
+> -	while (spi_imx2_3_rx_available(spi_imx))
+> +	while (mx51_ecspi_rx_available(spi_imx))
+>  		readl(spi_imx->base + MXC_CSPIRXDATA);
+>  }
+>  =
+
+> @@ -583,11 +584,11 @@ static struct spi_imx_devtype_data spi_imx_devtype_=
+data[] =3D {
+>  #endif
+>  #ifdef CONFIG_SPI_IMX_VER_2_3
+>  	[SPI_IMX_VER_2_3] =3D {
+> -		.intctrl =3D spi_imx2_3_intctrl,
+> -		.config =3D spi_imx2_3_config,
+> -		.trigger =3D spi_imx2_3_trigger,
+> -		.rx_available =3D spi_imx2_3_rx_available,
+> -		.reset =3D spi_imx2_3_reset,
+> +		.intctrl =3D mx51_ecspi_intctrl,
+> +		.config =3D mx51_ecspi_config,
+> +		.trigger =3D mx51_ecspi_trigger,
+> +		.rx_available =3D mx51_ecspi_rx_available,
+> +		.reset =3D mx51_ecspi_reset,
+>  		.fifosize =3D 64,
+>  	},
+>  #endif
+> -- =
+
+> 1.7.4.1
+> =
+
+
+---------------------------------------------------------------------------=
+---
+AppSumo Presents a FREE Video for the SourceForge Community by Eric =
+
+Ries, the creator of the Lean Startup Methodology on "Lean Startup =
+
+Secrets Revealed." This video shows you how to validate your ideas, =
+
 optimize your ideas and identify your business strategy.
 http://p.sf.net/sfu/appsumosfdev2dev

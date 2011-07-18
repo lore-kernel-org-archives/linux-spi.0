@@ -1,82 +1,35 @@
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-Subject: Re: [PATCH v3] pxa2xx_spi: fix memory corruption
-Date: Mon, 18 Jul 2011 10:56:51 +0300
-Message-ID: <201107181056.51782.anarsoul@gmail.com>
-References: <201107101609.31405.anarsoul@gmail.com>
-	<1310311099-24638-1-git-send-email-anarsoul@gmail.com>
-	<20110715025331.GL2927@ponder.secretlab.ca>
+From: =?koi8-r?B?0M/Lz8zFzsnFIA==?= <VIPette-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ0NSDS1cI=?=
+Date: Mon, 18 Jul 2011 12:04:38 +0400
+Message-ID: <46EA78A9AB76449B963B61C796278B48@jnrb>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell@users.sourceforge.net>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	spi-devel-general@lists.sourceforge.net, Eric Miao <eric.y.miao@gmail.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110715025331.GL2927@ponder.secretlab.ca>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 15 July 2011 05:53:31 Grant Likely wrote:
-> On Sun, Jul 10, 2011 at 06:18:19PM +0300, Vasily Khoruzhick wrote:
-> > pxa2xx_spi_probe allocates struct driver_data and null_dma_buf
-> > at same time via spi_alloc_master(), but then calculates
-> > null_dma_buf pointer incorrectly, and it causes memory corruption
-> > later if DMA usage is enabled.
-> > 
-> > Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-> > ---
-> > v2: - add u8 __null_dma_buf[16] to the end of driver_data structure
-> > 
-> >     and use it as null_dma_buf after alignment.
-> >     - use PTR_ALIGN instead of ALIGN
-> > 
-> > v3: - drop (u8 *) cast, use & operator instead, change array name
-> > 
-> >  drivers/spi/pxa2xx_spi.c |    9 +++++----
-> >  1 files changed, 5 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> > index dc25bee..b25fe27 100644
-> > --- a/drivers/spi/pxa2xx_spi.c
-> > +++ b/drivers/spi/pxa2xx_spi.c
-> > @@ -106,6 +106,7 @@ struct driver_data {
-> > 
-> >  	int rx_channel;
-> >  	int tx_channel;
-> >  	u32 *null_dma_buf;
-> > 
-> > +	u8 null_dma_buf_unaligned[16];
-> 
-> Don't dma buffers need to be cache-line aligned? 
-
-No, on PXA2xx they need to be 8-bytes aligned (according to PXA27x developer's 
-manual)
-
-> How large is the actual transfer?
-
-Looks like 8 bytes, but I'm not sure, I'm not author of driver and did not dig 
-deeply into its code. Just attempting to fix memory corruption.
-
-> Using the __aligned() or __cacheline_aligned
-> attribute is the correct way to make sure you've got a data buffer
-> that can be used for DMA mixed with other stuff.  Then you don't need
-> to fool around with PTR_ALIGN or anything.
-
-Errr, it can't be applied to struct field, right? But driver needs per-device 
-null_dma_buf (there's 3 SPI controllers on PXA2xx)
-
-> g.
-
-Regards
-Vasily
+5S3N3MrMIPLB09PZzMvJIAoK8NLPws7B0SDSwdPT2czLwSAtIDEvMyDCwdrZIC0gMTQyOCDS1cIK
+Cu3P08vXwSDA0i7MycPBIC0gMS45NTU2MDQgwcTSIC0gNDk4OCDS1cIKCu3P08vXwSDGydouzMnD
+wSAtIDcuNzQ3MTUzIMHE0iAtIDg0Mjkg0tXCCgrQz8TSz8LOxcUgzsEg08HK1MUgIGh0dHA6Ly93
+d3cuYWFhLTEwMS5jb20vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBcHBTdW1vIFByZXNlbnRzIGEg
+RlJFRSBWaWRlbyBmb3IgdGhlIFNvdXJjZUZvcmdlIENvbW11bml0eSBieSBFcmljIApSaWVzLCB0
+aGUgY3JlYXRvciBvZiB0aGUgTGVhbiBTdGFydHVwIE1ldGhvZG9sb2d5IG9uICJMZWFuIFN0YXJ0
+dXAgClNlY3JldHMgUmV2ZWFsZWQuIiBUaGlzIHZpZGVvIHNob3dzIHlvdSBob3cgdG8gdmFsaWRh
+dGUgeW91ciBpZGVhcywgCm9wdGltaXplIHlvdXIgaWRlYXMgYW5kIGlkZW50aWZ5IHlvdXIgYnVz
+aW5lc3Mgc3RyYXRlZ3kuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwc3Vtb3NmZGV2MmRldgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

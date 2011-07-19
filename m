@@ -1,14 +1,11 @@
-From: Thomas De Schampheleire <patrickdepinguin+spidevel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] FSL eSPI driver: fix byte-vs-character and receive buffer
-	problems
-Date: Tue, 19 Jul 2011 14:21:22 +0200
-Message-ID: <60740d4b3d09a322a975.1311078082@localhost6.localdomain6>
+From: =?GB2312?B?wdbPyMn6?= <baoguan-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 进出口报关合作
+Date: Tue, 19 Jul 2011 21:10:46 +0800
+Message-ID: <E1QjA3k-0001pz-Sv@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: derek.kwindt-cfy2TCaE7SFv+uJa97DSA9BPR1lH4CV8@public.gmane.org, ronny.meeus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, kumar.gala-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,160 +17,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The Freescale eSPI driver has several problems related to transaction
-counting and receive buffer offset.
-- The len field in struct spi_transfer is counted in bytes, while the TRANLEN
-  field in the eSPI controller is counted in characters. The relation between
-  both is given by the bits_per_word variable. The original driver always
-  used t->len for TRANLEN, which is not correct when bits_per_word is larger
-  than 8.
-- The interrupt handler allowed the remaining bytes (mspi->len) to become
-  negative, due to an unconditional -4 even when the number of bytes received
-  was less. Additionally, the interrupt handler incorrectly assumed that with
-  each interrupt only one character was transmitted. This was not the case
-  since fsl_espi_cpu_bufs() always transmits in blocks of 32 bit, which is
-  always more than one character (the exact number depending on
-  bits_per_word).
-- In fsl_espi_do_one_msg(), the driver sets the length of the transfer being
-  prepared as (n_tx + n_rx), which is incorrect since these are full-duplex
-  transactions. Moreover, the bytes received from the controller where written
-  at the wrong offset in the driver's receive buffer. Specifically, they were
-  written n_tx too far.
-
-Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
----
-
-Note that this patch is against an earlier version of the eSPI driver than the
-one which is currently in the Linux tree. The aspects of the driver that I changed
-are still relevant for the new version though.
-I would like to get some feedback from the original author (Mingkai Hu) or
-others, to verify my changes in other conditions. I have tested 8 and 16 bit
-transfers on a temperature sensor and an EEPROM device, but do not have
-devices accepting other bits_per_word values.
-
-
- spi_fsl_espi.c |   37 +++++++++++++++++++++++++------------
- spi_fsl_lib.h  |    1 +
- 2 files changed, 26 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/spi/spi_fsl_espi.c b/drivers/spi/spi_fsl_espi.c
---- a/drivers/spi/spi_fsl_espi.c
-+++ b/drivers/spi/spi_fsl_espi.c
-@@ -212,7 +212,7 @@
- 			    bool is_dma_mapped)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
--	unsigned int len = t->len;
-+	unsigned int count;
- 	u8 bits_per_word;
- 	int ret;
- 
-@@ -221,23 +221,31 @@
- 		bits_per_word = t->bits_per_word;
- 
- 	mpc8xxx_spi->len = t->len;
--	len = roundup(len, 4) / 4;
--
- 	mpc8xxx_spi->tx = t->tx_buf;
- 	mpc8xxx_spi->rx = t->rx_buf;
-+	mpc8xxx_spi->bits_per_word = bits_per_word;
- 
- 	INIT_COMPLETION(mpc8xxx_spi->done);
- 
-+	/* Convert between t->len (in bytes) and count (in characters) */
-+	if (bits_per_word <= 8) {
-+		count = t->len;
-+	} else if (bits_per_word <= 16) {
-+		count = t->len >> 1;
-+	} else {
-+		return -EINVAL;
-+	}
-+
- 	/* Set SPCOM[CS] and SPCOM[TRANLEN] field */
--	if ((t->len - 1) > SPCOM_TRANLEN_MAX) {
-+	if ((count - 1) > SPCOM_TRANLEN_MAX) {
- 		dev_err(mpc8xxx_spi->dev, "Transaction length (%d)"
--				" beyond the SPCOM[TRANLEN] field\n", t->len);
-+				" beyond the SPCOM[TRANLEN] field\n", count);
- 		return -EINVAL;
- 	}
- 	mpc8xxx_spi_write_reg(&mpc8xxx_spi->espi_base->command,
--		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(t->len - 1)));
-+		(SPCOM_CS(spi->chip_select) | SPCOM_TRANLEN(count - 1)));
- 
--	ret = fsl_espi_cpu_bufs(mpc8xxx_spi, t, len);
-+	ret = fsl_espi_cpu_bufs(mpc8xxx_spi, t, count);
- 	if (ret)
- 		return ret;
- 
-@@ -301,7 +309,7 @@
- 		}
- 	}
- 
--	trans.len = n_tx + n_rx;
-+	trans.len = n_tx;
- 	trans.tx_buf = local_buf;
- 	trans.rx_buf = local_buf + n_tx;
- 	spi_message_add_tail(&trans, &message);
-@@ -324,7 +332,7 @@
- 		m->actual_length += t->len;
- 
- 		if (rx_buf)
--			memcpy(rx_buf, t->rx_buf + n_tx, n_rx);
-+			memcpy(rx_buf, t->rx_buf, n_rx);
- 
- 		if (t->delay_usecs)
- 			udelay(t->delay_usecs);
-@@ -402,6 +410,7 @@
- 		if (mspi->len >= 4) {
- 			rx_data = mpc8xxx_spi_read_reg(
- 					&mspi->espi_base->receive);
-+			mspi->len -= 4;
- 		} else {
- 			tmp = mspi->len;
- 			rx_data = 0;
-@@ -412,10 +421,9 @@
- 			}
- 
- 			rx_data <<= (4 - mspi->len) * 8;
-+			mspi->len = 0;
- 		}
- 
--		mspi->len -= 4;
--
- 		if (mspi->rx)
- 			mspi->get_rx(rx_data, mspi);
- 	}
-@@ -430,7 +438,12 @@
- 	/* Clear the events */
- 	mpc8xxx_spi_write_reg(&mspi->espi_base->event, events);
- 
--	mspi->count -= 1;
-+	if (mspi->bits_per_word <= 8) {
-+		mspi->count = mspi->len;
-+	} else if (mspi->bits_per_word <= 16) {
-+		mspi->count = mspi->len >> 1;
-+	}
-+
- 	if (mspi->count) {
- 		u32 word = mspi->get_tx(mspi);
- 
-diff --git a/drivers/spi/spi_fsl_lib.h b/drivers/spi/spi_fsl_lib.h
---- a/drivers/spi/spi_fsl_lib.h
-+++ b/drivers/spi/spi_fsl_lib.h
-@@ -56,6 +56,7 @@
- 	void (*spi_remove) (struct mpc8xxx_spi *mspi);
- 
- 	unsigned int count;
-+	u8 bits_per_word;
- 	unsigned int irq;
- 
- 	unsigned nsecs;		/* (clock cycle time)/2 */
-
-------------------------------------------------------------------------------
-Magic Quadrant for Content-Aware Data Loss Prevention
-Research study explores the data loss prevention market. Includes in-depth
-analysis on the changes within the DLP market, and the criteria used to
-evaluate the strengths and weaknesses of these DLP solutions.
-http://www.accelacomm.com/jaw/sfnl/114/51385063/
+Csnu29rK0NPAtqu9qL34s/a/2tPQz965q8u+ysfSu7zS1NrJ7teisuGjrNPJzeK+rcOzsr+horqj
+udjX3MrwxfrXvKOs07XT0L34s/a/2sious2xqLnYyKi1xMbz0rWjrLOkxtq008rCvfiz9r/aoaKx
+qLnYuaTX96GjuavLvsq1wabQ27rxo6zKx7yvvfiz9r/ayrXO78Oz0tejrLT6wO279c7vvfiz9r/a
+sai52NPa0rvM5bXE19u6z9DUuavLvqGjCrmry74i1tjQxdP+oaK439Cnwsqhor6rs8+6z9f3Is6q
+vq3Tqtfa1ryjrNTaye7b2s7EvfW2yaGiu8q42qGi0c7M76Giyd+/2rXIuPe/2rC2yejT0LGoudjQ
+0KGj0+u497TztKy5q8u+vLDUy8rkuavLvtPQwby6w7XEus/X97nYz7Whowq5q8u+sfyz0CKzz9DF
+oaLXqNK1oaK5stOuIrXEvq3TqsDtxO4svOGz1tPDu6fWwcnPoaK3/s7xtdrSu6Os0tSzz9DFt/7O
+8b/Nu6ejrLK7ts8gtLTQwqGisru2z7Os1L2jrNLRvq2zyc6q0ru80tTaye7b2rGoudjQ0NK1xsS+
+38q1waa6zbnmxKO1xMbz0rWhoyAKyOe587mks6cvuavLvsrHs/a/2s3Ly7DQzbvy0ruw48TJy7DI
+y7XExvPStaOstauz9r/au/XO78G/09DP3qOssOzA7c3Ly7C27rbIydmho7/J0tTT687SuavLvrrP
+1/ejrLmry77U2snu29q497/asLbT0LTzwb+79c7v0Oiw7MDtsai52LP2v9qjrLL6xrfW2rbgoaPO
+3tDoufPLvtffu/UsztLLvr/J0tTTw8/gttTTprXEyrW79bDvufO5q8u+1/axqLnYzcvLsKOssOzA
+7b/sy9mjrM6quaSzp6GiuavLvrS01Oy4/LTztcTA+8jzoaMK0ruhosnu29rSu7y2sai52LT6wO2j
+qMPesrwvw7HX0y/W8dbGxrcvt/7XsC/Iy9TsuO8vxL680r7fL1BVIFBWQ8rWtPwvxKO+3y/T6smh
+L8/ksPyjqbnxu/WzpMba09DTxbvdo6yxqLnYt9G4272ot9EyMDDUqsirsPyhowq2/qGiz+O427D8
+y7C9+L/ao6yw7MDtx+W52L/svd2wssiroaMgxtW79bzbuPG4/NPQ08XKxqOow96yvCC158TUxeS8
+/iC67L7GILXn19PW3LHfsvrGt8Dgo6kKyP2hormry77U2snMvOy+1teisuHN4sOztaXWpM+1zbOj
+rL/JtPq/zbun08W73bDswO0gsvq12NakoaLJzLzso6yz9r/aytW747rLz/q1pcLytaWz9r/aoaMK
+ICAgo6jE+tDo0qrU9cO00fm9+LP2v9q3/s7xo6zO0sPHvs3T0Mqyw7TR+bf+zvG4+rzbuPGjobrP
+1/e5stOuILu2063AtLXn18nRr6Gjy7PXo8nM7PejoaOpCgrJ7tvaytDTwLarvai9+LP2v9rT0M/e
+uavLvgpTSEVOWkhFTiBZT05HRE9OR0pJQU4gSU1QT1JUIEFORCBFWFBPUlQgQ08uLExURArBqs+1
+yMujutXFufq4uwpNb2JpbGWjujEzNjg2ODg1MjA3IFRlbDowNzU1LTIyMzUxNDUxCk1TTjogeW9u
+Z2RvbmdqaWFuQGhvdG1haWwuY29tIFFRo7oxODQzODQ0OTYgCgotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KTWFnaWMgUXVhZHJhbnQgZm9yIENvbnRlbnQtQXdhcmUgRGF0YSBMb3NzIFByZXZlbnRpb24K
+UmVzZWFyY2ggc3R1ZHkgZXhwbG9yZXMgdGhlIGRhdGEgbG9zcyBwcmV2ZW50aW9uIG1hcmtldC4g
+SW5jbHVkZXMgaW4tZGVwdGgKYW5hbHlzaXMgb24gdGhlIGNoYW5nZXMgd2l0aGluIHRoZSBETFAg
+bWFya2V0LCBhbmQgdGhlIGNyaXRlcmlhIHVzZWQgdG8KZXZhbHVhdGUgdGhlIHN0cmVuZ3RocyBh
+bmQgd2Vha25lc3NlcyBvZiB0aGVzZSBETFAgc29sdXRpb25zLgpodHRwOi8vd3d3LmFjY2VsYWNv
+bW0uY29tL2phdy9zZm5sLzExNC81MTM4NTA2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

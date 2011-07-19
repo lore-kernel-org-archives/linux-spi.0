@@ -1,11 +1,12 @@
-From: =?GB2312?B?wdbPyMn6?= <baoguan-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] 进出口报关合作
-Date: Tue, 19 Jul 2011 21:10:46 +0800
-Message-ID: <E1QjA3k-0001pz-Sv@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "Nap Travel" <naptravel-mtXQsPWOBrN1hkz5HykvtkEOCMrvLtNR@public.gmane.org>
+Subject: Propuestas de viajes Julio 2011
+Date: Tue, 19 Jul 2011 13:32:09 -0300 (ART)
+Message-ID: <20110719163209.68E93214173@emark15>
+Reply-To: info-1ueHpAvqD+QS+FvcfC7Uqw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,36 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Csnu29rK0NPAtqu9qL34s/a/2tPQz965q8u+ysfSu7zS1NrJ7teisuGjrNPJzeK+rcOzsr+horqj
-udjX3MrwxfrXvKOs07XT0L34s/a/2sious2xqLnYyKi1xMbz0rWjrLOkxtq008rCvfiz9r/aoaKx
-qLnYuaTX96GjuavLvsq1wabQ27rxo6zKx7yvvfiz9r/ayrXO78Oz0tejrLT6wO279c7vvfiz9r/a
-sai52NPa0rvM5bXE19u6z9DUuavLvqGjCrmry74i1tjQxdP+oaK439Cnwsqhor6rs8+6z9f3Is6q
-vq3Tqtfa1ryjrNTaye7b2s7EvfW2yaGiu8q42qGi0c7M76Giyd+/2rXIuPe/2rC2yejT0LGoudjQ
-0KGj0+u497TztKy5q8u+vLDUy8rkuavLvtPQwby6w7XEus/X97nYz7Whowq5q8u+sfyz0CKzz9DF
-oaLXqNK1oaK5stOuIrXEvq3TqsDtxO4svOGz1tPDu6fWwcnPoaK3/s7xtdrSu6Os0tSzz9DFt/7O
-8b/Nu6ejrLK7ts8gtLTQwqGisru2z7Os1L2jrNLRvq2zyc6q0ru80tTaye7b2rGoudjQ0NK1xsS+
-38q1waa6zbnmxKO1xMbz0rWhoyAKyOe587mks6cvuavLvsrHs/a/2s3Ly7DQzbvy0ruw48TJy7DI
-y7XExvPStaOstauz9r/au/XO78G/09DP3qOssOzA7c3Ly7C27rbIydmho7/J0tTT687SuavLvrrP
-1/ejrLmry77U2snu29q497/asLbT0LTzwb+79c7v0Oiw7MDtsai52LP2v9qjrLL6xrfW2rbgoaPO
-3tDoufPLvtffu/UsztLLvr/J0tTTw8/gttTTprXEyrW79bDvufO5q8u+1/axqLnYzcvLsKOssOzA
-7b/sy9mjrM6quaSzp6GiuavLvrS01Oy4/LTztcTA+8jzoaMK0ruhosnu29rSu7y2sai52LT6wO2j
-qMPesrwvw7HX0y/W8dbGxrcvt/7XsC/Iy9TsuO8vxL680r7fL1BVIFBWQ8rWtPwvxKO+3y/T6smh
-L8/ksPyjqbnxu/WzpMba09DTxbvdo6yxqLnYt9G4272ot9EyMDDUqsirsPyhowq2/qGiz+O427D8
-y7C9+L/ao6yw7MDtx+W52L/svd2wssiroaMgxtW79bzbuPG4/NPQ08XKxqOow96yvCC158TUxeS8
-/iC67L7GILXn19PW3LHfsvrGt8Dgo6kKyP2hormry77U2snMvOy+1teisuHN4sOztaXWpM+1zbOj
-rL/JtPq/zbun08W73bDswO0gsvq12NakoaLJzLzso6yz9r/aytW747rLz/q1pcLytaWz9r/aoaMK
-ICAgo6jE+tDo0qrU9cO00fm9+LP2v9q3/s7xo6zO0sPHvs3T0Mqyw7TR+bf+zvG4+rzbuPGjobrP
-1/e5stOuILu2063AtLXn18nRr6Gjy7PXo8nM7PejoaOpCgrJ7tvaytDTwLarvai9+LP2v9rT0M/e
-uavLvgpTSEVOWkhFTiBZT05HRE9OR0pJQU4gSU1QT1JUIEFORCBFWFBPUlQgQ08uLExURArBqs+1
-yMujutXFufq4uwpNb2JpbGWjujEzNjg2ODg1MjA3IFRlbDowNzU1LTIyMzUxNDUxCk1TTjogeW9u
-Z2RvbmdqaWFuQGhvdG1haWwuY29tIFFRo7oxODQzODQ0OTYgCgotLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0KTWFnaWMgUXVhZHJhbnQgZm9yIENvbnRlbnQtQXdhcmUgRGF0YSBMb3NzIFByZXZlbnRpb24K
-UmVzZWFyY2ggc3R1ZHkgZXhwbG9yZXMgdGhlIGRhdGEgbG9zcyBwcmV2ZW50aW9uIG1hcmtldC4g
-SW5jbHVkZXMgaW4tZGVwdGgKYW5hbHlzaXMgb24gdGhlIGNoYW5nZXMgd2l0aGluIHRoZSBETFAg
-bWFya2V0LCBhbmQgdGhlIGNyaXRlcmlhIHVzZWQgdG8KZXZhbHVhdGUgdGhlIHN0cmVuZ3RocyBh
-bmQgd2Vha25lc3NlcyBvZiB0aGVzZSBETFAgc29sdXRpb25zLgpodHRwOi8vd3d3LmFjY2VsYWNv
-bW0uY29tL2phdy9zZm5sLzExNC81MTM4NTA2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Propuestas de viajes Julio 2011
+------------------------------------------------------------------------------
+Magic Quadrant for Content-Aware Data Loss Prevention
+Research study explores the data loss prevention market. Includes in-depth
+analysis on the changes within the DLP market, and the criteria used to
+evaluate the strengths and weaknesses of these DLP solutions.
+http://www.accelacomm.com/jaw/sfnl/114/51385063/

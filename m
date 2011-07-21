@@ -1,12 +1,11 @@
-From: "Smatis par Darci" <charlene-ZDnqbotyZsvTgsrL2yHzbg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Votre_mutuelle_a_moiti=E9_prix?=
-Date: Thu, 21 Jul 2011 10:39:03 +0000 (CET)
-Message-ID: <110721103903.-39256632400001432@ofnm40.com>
+From: =?GB2312?B?1cXJ+g==?= <rtgfgergsergs-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 报关--单证
+Date: Thu, 21 Jul 2011 15:47:34 +0800
+Message-ID: <E1Qjnzq-0008D1-At@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,231 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-Si vous ne parvenez pas =E0 lire cet email, vous pouvez le visualiser, en c=
-liquant sur ce lien.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-COMPOSEZ VOTRE MUTUELLE AU MEILLEUR PRIX
-
-
-
-
-
-
-
-
-
-Acc=E9dez =E0 votre devis ici >>>
-
-
-
-
-
-
-
-
-
-
-
-
-
-JEUNES
-
-
-
-
-
-
-
-
-
-
-FAMILLES
-
-
-
-
-
-
-
-
-
-
-SENIORS
-
-
-
-
-
-
-
-
-
-
-
-
-=A0=A0Bonus Optique
-
-=A0=A0Doublez votre forfait
-
-=A0=A0Bonus Coup Dur
-=A0=A0Assur=E9 sans cotiser
-
-=A0=A0Bonus Parrainage
-=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
-
-
-
-
-
-
-=A0=A0Bonus Enfants
-
-=A0=A0Gratuit d=E8s le 3eme
-
-=A0=A0Bonus Coup Dur
-=A0=A0Assur=E9 sans cotiser
-
-=A0=A0Bonus Parrainage
-=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
-
-
-
-
-
-=A0=A0Bonus Fid=E9lit=E9
-
-=A0=A0Soyez r=E9compens=E9s
-
-=A0=A0Bonus Coup Dur
-=A0=A0Assur=E9 sans cotiser
-
-=A0=A0Bonus Parrainage
-=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- Mon Devis ici -
-
-
-
-
-
-
-
-
-
-- Mon Devis ici -
-
-
-
-
-
-
-
-
-
-- Mon Devis ici -
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------=
----
-5 Ways to Improve & Secure Unified Communications
-Unified Communications promises greater efficiencies for business. UC can =
-
-improve internal communications as well as offer faster, more efficient ways
-to interact with customers and streamline customer service. Learn more!
-http://www.accelacomm.com/jaw/sfnl/114/51426253/
+IAogIMT6usMhICAKICAgCiAgICAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/
+2rWl1qS0+sDtuavLvqOs09DXxbfhuLu1xAoKICCz9r/avq3R6brN08XKxrXEvNu48aOsv8nS1CAg
+zqq587mry760+sDt0tTPwrP2v9rStc7xCgogIDEuzOG5qbrLz/q1paOosai52LWlo6kKCiAgMi5D
+T7L6tdjWpC4gxtW73dakKEZBLEZFLEZGLNHHzKss1tCwzaOstPPKubndx6m1yCkgCgogIDMuwvK1
+pbGoudijrMnMvOyjrM3Ps7UKCiAgNC7KtcGmsai52CwKCiAgx+u05sH0sbjTw6Osu7bTrcTjtcTA
+tLXn18nRr6O6CgogIMGqz7XIy6O61cXPyMn6ICAgICAgwarPtbXnu7CjujA3NTUtMjU0MjAxNzcg
+IMrWu/qjujEzNjg2ODY4NTQ4CgogIFFRo7oxMjIwNjIxNDMgICDTys/ko7pzenlvbmdkb25namlh
+bmdzQDE2My5jb20gIDEyMjA2MjE0M0BxcS5jb20KCiAgICAgICAgICAgICAgICAgICAgICCxvrnj
+uOazpMba09DQpwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCjUgV2F5cyB0byBJbXByb3ZlICYgU2Vj
+dXJlIFVuaWZpZWQgQ29tbXVuaWNhdGlvbnMKVW5pZmllZCBDb21tdW5pY2F0aW9ucyBwcm9taXNl
+cyBncmVhdGVyIGVmZmljaWVuY2llcyBmb3IgYnVzaW5lc3MuIFVDIGNhbiAKaW1wcm92ZSBpbnRl
+cm5hbCBjb21tdW5pY2F0aW9ucyBhcyB3ZWxsIGFzIG9mZmVyIGZhc3RlciwgbW9yZSBlZmZpY2ll
+bnQgd2F5cwp0byBpbnRlcmFjdCB3aXRoIGN1c3RvbWVycyBhbmQgc3RyZWFtbGluZSBjdXN0b21l
+ciBzZXJ2aWNlLiBMZWFybiBtb3JlIQpodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5s
+LzExNC81MTQyNjI1My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

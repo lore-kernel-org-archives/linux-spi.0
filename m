@@ -1,13 +1,12 @@
-From: Open en ville <sandrine-A+lxSsK1OnwbbyeyzbMmyGXOZRLVBwAaUBSOeVevoDU@public.gmane.org>
-Subject: =?iso-8859-15?Q?Derni=E8res_pi=E8ces:_La_semaine_d?=
-	=?iso-8859-15?Q?es_prix_fracass=E9s_jusqu'=E0_-_85%?=
-Date: Thu, 21 Jul 2011 19:14:12 +0200 (CEST)
-Message-ID: <1691856606.457044.1311268452093@p3enginer1.emv2.com>
-Reply-To: Bon Plan Open en ville <lesbonsplansdeco-LwRz8MGG/zxWj0EZb7rXcA@public.gmane.org>
+From: "Smatis par Darci" <charlene-ZDnqbotyZsvTgsrL2yHzbg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Votre_mutuelle_a_moiti=E9_prix?=
+Date: Thu, 21 Jul 2011 10:39:03 +0000 (CET)
+Message-ID: <110721103903.-39256632400001432@ofnm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,54 +19,225 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-Open en ville vous pr=E9sente sa s=E9lection produit du jour : Toute la d=
-=E9co design =E0 prix imbattables.
 
-Pour =EAtre sur de r=E9ceptionner notre courrier ajoutez : lesbonsplansdeco=
-@decoopen.fr =E0 votre carnet d'adresse : =
-
-
-OPEN EN VILLE http://p3trc.emv2.com/HM?a=3DENX7CqlCWp8x8SA9MKJJIq7nGHxKLATi=
-xPcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP-
-
-- Chaise Jardin 15 =A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq7=
-nGHxKLATixfcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP_
-- Tabouret de bar 39 =A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJI=
-q7nGHxKLATi2vcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP8
-- Canape Style 250=A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq7n=
-GHxKLATi2_cStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP9
-- Table de Jardin 25=A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq=
-7nGHxKLATi2PcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lMC
+Si vous ne parvenez pas =E0 lire cet email, vous pouvez le visualiser, en c=
+liquant sur ce lien.
 
 
 
-Attention ne rater pas notre offre du jour sur Open en ville.
 
 
-Pour certains la d=E9co =E0 petits prix rime avec d=E9lais maxi.OPEN EN VIL=
-LE, c'est :
-- 30 ans d'exp=E9rience (cr=E9e en 1986)
-- plus de 15 points de vente en France
-- plus de 10 000m=B2 de stock. =
 
 
-Aujourd'hui Open en Ville s'engage =E0 vous livrer dans les 15 jours et vou=
-s rembourser la diff=E9rence si vous trouvez moins cher.
-
-Nos services et livraisons.
-- Enl=E8vement GRATUIT =E0 notre entrep=F4t
-- Livraison en bas de chez vous
-- Livraison dans votre appartement
-- Installation et livraison
-
-Vente aux professionnels:
-Pour toute information,veuillez nous contacter au 01 60 21 66 62
-
-Ne plus adresser de courrier =E0 cette adresse : =
 
 
-http://p3trc.emv2.com/HD?a=3DENX7CqlCWp8x8SA9MKJJIq7nGHxKLATi2fcStGb5lw8W0b=
-BhOG5mpqVsje_Hhe-m7lMD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMPOSEZ VOTRE MUTUELLE AU MEILLEUR PRIX
+
+
+
+
+
+
+
+
+
+Acc=E9dez =E0 votre devis ici >>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+JEUNES
+
+
+
+
+
+
+
+
+
+
+FAMILLES
+
+
+
+
+
+
+
+
+
+
+SENIORS
+
+
+
+
+
+
+
+
+
+
+
+
+=A0=A0Bonus Optique
+
+=A0=A0Doublez votre forfait
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+=A0=A0Bonus Enfants
+
+=A0=A0Gratuit d=E8s le 3eme
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+=A0=A0Bonus Fid=E9lit=E9
+
+=A0=A0Soyez r=E9compens=E9s
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---------------------------------------------------------------------------=
 ---
 5 Ways to Improve & Secure Unified Communications

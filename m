@@ -1,12 +1,13 @@
-From: "Photocite  par Darci" <line-Mq/ykjSewZ2BKb74m2480w@public.gmane.org>
-Subject: [SPAM] 100 tirages photos à 5 
-Date: Wed, 20 Jul 2011 10:57:11 +0000 (CET)
-Message-ID: <110720105711.130258958300001492@ofnm44.com>
+From: Open en ville <sandrine-A+lxSsK1OnwbbyeyzbMmyGXOZRLVBwAaUBSOeVevoDU@public.gmane.org>
+Subject: =?iso-8859-15?Q?Derni=E8res_pi=E8ces:_La_semaine_d?=
+	=?iso-8859-15?Q?es_prix_fracass=E9s_jusqu'=E0_-_85%?=
+Date: Thu, 21 Jul 2011 19:14:12 +0200 (CEST)
+Message-ID: <1691856606.457044.1311268452093@p3enginer1.emv2.com>
+Reply-To: Bon Plan Open en ville <lesbonsplansdeco-LwRz8MGG/zxWj0EZb7rXcA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,330 +20,59 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
+Open en ville vous pr=E9sente sa s=E9lection produit du jour : Toute la d=
+=E9co design =E0 prix imbattables.
 
+Pour =EAtre sur de r=E9ceptionner notre courrier ajoutez : lesbonsplansdeco=
+@decoopen.fr =E0 votre carnet d'adresse : =
 
-developpement photo
 
+OPEN EN VILLE http://p3trc.emv2.com/HM?a=3DENX7CqlCWp8x8SA9MKJJIq7nGHxKLATi=
+xPcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP-
 
+- Chaise Jardin 15 =A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq7=
+nGHxKLATixfcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP_
+- Tabouret de bar 39 =A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJI=
+q7nGHxKLATi2vcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP8
+- Canape Style 250=A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq7n=
+GHxKLATi2_cStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lP9
+- Table de Jardin 25=A4 http://p3trc.emv2.com/HS?a=3DENX7CqlCWp8x8SA9MKJJIq=
+7nGHxKLATi2PcStGb5lw8W0bBhOG5mpqVsje_Hhe-m7lMC
 
 
-livre photo
 
+Attention ne rater pas notre offre du jour sur Open en ville.
 
 
+Pour certains la d=E9co =E0 petits prix rime avec d=E9lais maxi.OPEN EN VIL=
+LE, c'est :
+- 30 ans d'exp=E9rience (cr=E9e en 1986)
+- plus de 15 points de vente en France
+- plus de 10 000m=B2 de stock. =
 
-cadeaux photos
 
+Aujourd'hui Open en Ville s'engage =E0 vous livrer dans les 15 jours et vou=
+s rembourser la diff=E9rence si vous trouvez moins cher.
 
+Nos services et livraisons.
+- Enl=E8vement GRATUIT =E0 notre entrep=F4t
+- Livraison en bas de chez vous
+- Livraison dans votre appartement
+- Installation et livraison
 
+Vente aux professionnels:
+Pour toute information,veuillez nous contacter au 01 60 21 66 62
 
-poster photo et toile
+Ne plus adresser de courrier =E0 cette adresse : =
 
 
-
-
-logiciel photocite
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- Vente Flash 5 JOURS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   =
-
-
-
-
-
-
-
-
-Papier haut de gamme, brillance des couleurs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- OFFRE SPECIALE
-
-
-
-
- POSTER PHOTO
-
-
-
-
-
- CADEAUX PHOTOS
-
- FORMAT XXL
-
-
-
-
-
-
-
-
- =
-
-
-
-
-
-
-
-
-
-
-
-
-
-D=E9veloppez vos plus belles photos en grand format ! =
-
-   A partir de 5.90=80 les 2 =
-
-   =
-
-
-
-
-
-
-Si vous achetez un cadeau photo, le deuxi=E8me est =E0 moiti=E9 prix !
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Nos avantages
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Mon colis =E0 disposition
- dans + de 200  magasins en France
-
-Livraison - Retrait en magasin
-   =
-
-
-Paiement en ligne
-   ou en magasin
-   =
-
-
-Livraison =E0 domicile ou chez un ami
-   =
-
-
-Service apr=E8s-vente 5 jours sur 7
-  =
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Moyens de paiements s=E9curis=E9s
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*Voir conditions d'obtention sur le site
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+http://p3trc.emv2.com/HD?a=3DENX7CqlCWp8x8SA9MKJJIq7nGHxKLATi2fcStGb5lw8W0b=
+BhOG5mpqVsje_Hhe-m7lMD
 ---------------------------------------------------------------------------=
 ---
-10 Tips for Better Web Security
-Learn 10 ways to better secure your business today. Topics covered include:
-Web security, SSL, hacker attacks & Denial of Service (DoS), private keys,
-security Microsoft Exchange, secure Instant Messaging, and much more.
-http://www.accelacomm.com/jaw/sfnl/114/51426210/
+5 Ways to Improve & Secure Unified Communications
+Unified Communications promises greater efficiencies for business. UC can =
+
+improve internal communications as well as offer faster, more efficient ways
+to interact with customers and streamline customer service. Learn more!
+http://www.accelacomm.com/jaw/sfnl/114/51426253/

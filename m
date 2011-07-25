@@ -1,11 +1,12 @@
-From: "Frrxu Jfhikuebk" <hio71948-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Lqsk Djlyg
-Date: Sun, 24 Jul 2011 17:26:48 +0500
-Message-ID: <E1Qkxrn-0000O0-8H@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: Frrxu Jfhikuebk <hio71948-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: "Smatis par Darci" <charlene-ZDnqbotyZsvTgsrL2yHzbg@public.gmane.org>
+Subject: [SPAM] Votre mutuelle a moitié prix
+Date: Mon, 25 Jul 2011 10:03:26 +0000 (CET)
+Message-ID: <110725100326.166084881300001452@ofnm46.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0302530976822158396=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,35 +18,232 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0302530976822158396==
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
 
-=B1z=A6n=A1I=B3q=B9L=C3=F6=ABY=A5N/\=B6}=A6U=C3=FE=B5o/\=B2=BC.137/6189/5O=
-17=B3=AF=A5=CD=C1p=C3=B4 
-Ks Pm  Xaetbcalq  QhtrbxdUatl Hvszgzsuxha Hboxjjhr Wnwo
 
---===============0302530976822158396==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Si vous ne parvenez pas =E0 lire cet email, vous pouvez le visualiser, en c=
+liquant sur ce lien.
 
-------------------------------------------------------------------------------
-Magic Quadrant for Content-Aware Data Loss Prevention
-Research study explores the data loss prevention market. Includes in-depth
-analysis on the changes within the DLP market, and the criteria used to
-evaluate the strengths and weaknesses of these DLP solutions.
-http://www.accelacomm.com/jaw/sfnl/114/51385063/
---===============0302530976822158396==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0302530976822158396==--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+COMPOSEZ VOTRE MUTUELLE AU MEILLEUR PRIX
+
+
+
+
+
+
+
+
+
+Acc=E9dez =E0 votre devis ici >>>
+
+
+
+
+
+
+
+
+
+
+
+
+
+JEUNES
+
+
+
+
+
+
+
+
+
+
+FAMILLES
+
+
+
+
+
+
+
+
+
+
+SENIORS
+
+
+
+
+
+
+
+
+
+
+
+
+=A0=A0Bonus Optique
+
+=A0=A0Doublez votre forfait
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+=A0=A0Bonus Enfants
+
+=A0=A0Gratuit d=E8s le 3eme
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+=A0=A0Bonus Fid=E9lit=E9
+
+=A0=A0Soyez r=E9compens=E9s
+
+=A0=A0Bonus Coup Dur
+=A0=A0Assur=E9 sans cotiser
+
+=A0=A0Bonus Parrainage
+=A0=A045=80 par parrainage =A0=A0Jusqu&rsquo;=E0 450=80 /an
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+- Mon Devis ici -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+Storage Efficiency Calculator
+This modeling tool is based on patent-pending intellectual property that
+has been used successfully in hundreds of IBM storage optimization engage-
+ments, worldwide.  Store less, Store more with what you own, Move data to =
+
+the right place. Try It Now! http://www.accelacomm.com/jaw/sfnl/114/5142737=
+8/

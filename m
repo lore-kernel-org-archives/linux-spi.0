@@ -1,13 +1,11 @@
-From: =?koi8-r?B?0NLPx87P2iA=?= <vaknights-j9pdmedNgrk@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ1NCDS1cI=?=
-Date: Wed, 27 Jul 2011 14:35:22 +0400
-Message-ID: <FA7E30CE3AE5470DBD693080776004CC@qrrg>
+From: =?gb2312?B?sNf2zg==?= <person-PQq/Z0M86EoMtEltO0NOkP8+0UxHXcjY@public.gmane.org>
+Subject: =?gb2312?B?OTA5OMbz0rXE2rK/v9jWxrXEyei8xtSt1PI=?=
+Date: Thu, 28 Jul 2011 07:22:54 +0800
+Message-ID: <201107280722549877127@traceboard.com.cn>
+Reply-To: hpxpeixun-Mj/0Miq2reM@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
-	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>,
+Content-Type: multipart/mixed; boundary="----=oqhse226_1197_48780512.1742991"
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,15 +17,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0MDMg0tXC
-CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk2NjU2MiDBxNIgLSA0OTY2INLVwgogCu3P08vXwSDGydou
-zMnDwSAtIDcuNzgzMjUyIMHE0iAtIDg0MDMg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
-Oi8vd3d3LmFhYS0xMDEuY29tL2kyLmh0bWwKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdvdCBJbnB1
-dD8gICBTbGFzaGRvdCBOZWVkcyBZb3UuClRha2Ugb3VyIHF1aWNrIHN1cnZleSBvbmxpbmUuICBD
-b21lIG9uLCB3ZSBkb24ndCBhc2sgZm9yIGhlbHAgb2Z0ZW4uClBsdXMsIHlvdSdsbCBnZXQgYSBj
-aGFuY2UgdG8gd2luICQxMDAgdG8gc3BlbmQgb24gVGhpbmtHZWVrLgpodHRwOi8vcC5zZi5uZXQv
-c2Z1L3NsYXNoZG90LXN1cnZleQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This is a multi-part message in MIME format.
+
+------=oqhse226_1197_48780512.1742991
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+VWJYbTNsDQoNCg0KxvPStcTasr/J82O8xrywxNqyv7/Y1sbT67LGzvG358/VudxswO0uDQoNCjU4
+MzU0Mw==
+
+
+------=oqhse226_1197_48780512.1742991
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Got Input?   Slashdot Needs You.
+Take our quick survey online.  Come on, we don't ask for help often.
+Plus, you'll get a chance to win $100 to spend on ThinkGeek.
+http://p.sf.net/sfu/slashdot-survey
+------=oqhse226_1197_48780512.1742991
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=oqhse226_1197_48780512.1742991--

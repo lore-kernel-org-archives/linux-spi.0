@@ -1,12 +1,13 @@
-From: "Spartoo.com par Darci" <linda-JoumICOvKlFQN8Qx+DHUkg@public.gmane.org>
-Subject: [SPAM] Jusqu'à -70%  dernier coup de balai en livraison gratuite
-Date: Tue, 26 Jul 2011 23:35:43 +0000 (CET)
-Message-ID: <110726233543.5355051000003516@ofnm44.com>
+From: =?koi8-r?B?0NLPx87P2iA=?= <vaknights-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ1NCDS1cI=?=
+Date: Wed, 27 Jul 2011 14:35:22 +0400
+Message-ID: <FA7E30CE3AE5470DBD693080776004CC@qrrg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
+	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>,
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,132 +19,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-  =
-
- =
-
-  =
-
-
- =
-
- =
-
- =
-
- =
-
-  =
-
- =
-
- =
-
- =
-
-
- =
-
-
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
-
-
- =
-
-
-
-
- =
-
- =
-
- =
-
-
-
-
-
-
- =
-
-
-
-   =
-
-
-
-    =
-
-     =
-
-     =
-
-      Spartoo.com est le site leader de vente de chaussures sur internet. N=
-otre objectif est de vous proposer en permanence les marques et les mod=E8l=
-es de chaussures qui font la mode : baskets, ballerines, tongs, bottes, esc=
-arpins... Et m=EAme des pantoufles ! =
-
-     =
-
-     =
-
-      # La richesse de l?offre : plus de 400 marques (Converse, Kickers, Do=
-c Martens, Pataugas, Nike...) et plus de 15000 mod=E8les en ligne. Visitez =
-et d=E9couvrez les diff=E9rents Styles que nous vous proposons : Casual, Ch=
-ic Chic, Sport, Sneakers, etc..Vous y trouverez des chaussures tendances, u=
-n large choix de marques appr=E9ci=E9es et reconnues.
-      =
-
-      # La simplicit=E9 d?achat : SPARTOO.COM facilite votre navigation. Tr=
-ouvez votre paire de chaussures en un minimum de clics !
-      =
-
-      # L'excellence du service : Votre satisfaction est notre pr=E9occupat=
-ion majeure. Faites vous plaisir chez SPARTOO.COM pour une commande en tout=
-e confiance.
-      =
-
-       - La livraison gratuite
-       - Le retour et l'=E9change gratuits
-       - Le paiement s=E9curis=E9 par le cryptage des donn=E9es
-       - Le suivi du colis pour conna=EEtre =E0 tout instant l?avancement d=
-e votre commande
-       - La mise en relation avec les sp=E9cialistes de notre service clien=
-t qui r=E9pondent =E0 toutes vos questions via notre Call center ou par mail
-       - Les aides en ligne avec notre FAQ
-       =
-
-      Enfin, nos prestataires (logistique, colissimo, le r=E9seau KIALA, la=
- banque CIC) ont =E9t=E9 choisis pour leur s=E9rieux et la qualit=E9 de leu=
-rs services.
-
-Les c=E9l=E9brit=E9s nomm=E9es ou figur=E9es dans cette newsletter n'ont pa=
-s approuv=E9 ni recommand=E9 les produits de la s=E9lection.
-     =
-
-     =
-
-    =
-
-   =
-
-   =
-
----------------------------------------------------------------------------=
----
-Got Input?   Slashdot Needs You.
-Take our quick survey online.  Come on, we don't ask for help often.
-Plus, you'll get a chance to win $100 to spend on ThinkGeek.
-http://p.sf.net/sfu/slashdot-survey
+5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0MDMg0tXC
+CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk2NjU2MiDBxNIgLSA0OTY2INLVwgogCu3P08vXwSDGydou
+zMnDwSAtIDcuNzgzMjUyIMHE0iAtIDg0MDMg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
+Oi8vd3d3LmFhYS0xMDEuY29tL2kyLmh0bWwKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdvdCBJbnB1
+dD8gICBTbGFzaGRvdCBOZWVkcyBZb3UuClRha2Ugb3VyIHF1aWNrIHN1cnZleSBvbmxpbmUuICBD
+b21lIG9uLCB3ZSBkb24ndCBhc2sgZm9yIGhlbHAgb2Z0ZW4uClBsdXMsIHlvdSdsbCBnZXQgYSBj
+aGFuY2UgdG8gd2luICQxMDAgdG8gc3BlbmQgb24gVGhpbmtHZWVrLgpodHRwOi8vcC5zZi5uZXQv
+c2Z1L3NsYXNoZG90LXN1cnZleQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

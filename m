@@ -1,11 +1,11 @@
-From: =?gb2312?B?sNf2zg==?= <person-PQq/Z0M86EoMtEltO0NOkP8+0UxHXcjY@public.gmane.org>
-Subject: =?gb2312?B?OTA5OMbz0rXE2rK/v9jWxrXEyei8xtSt1PI=?=
-Date: Thu, 28 Jul 2011 07:22:54 +0800
-Message-ID: <201107280722549877127@traceboard.com.cn>
-Reply-To: hpxpeixun-Mj/0Miq2reM@public.gmane.org
+From: "The 9 Steps" <9stepsno-reply-atinT6P9Z8heoWH0uzbU5w@public.gmane.org>
+Subject: [SPAM] Is Cancer Curable?
+Date: Wed, 27 Jul 2011 19:13:00 -0700
+Message-ID: <25112f0cf013b0395797586a001494b7@ymail.net>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=oqhse226_1197_48780512.1742991"
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_194794968D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,16 +19,15 @@ List-Id: linux-spi.vger.kernel.org
 
 This is a multi-part message in MIME format.
 
-------=oqhse226_1197_48780512.1742991
+------=SPLITOR00A_001_194794968D
 Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-VWJYbTNsDQoNCg0KxvPStcTasr/J82O8xrywxNqyv7/Y1sbT67LGzvG358/VudxswO0uDQoNCjU4
-MzU0Mw==
+Is Cancer Curable? View this attached form and you decide. 
 
 
-------=oqhse226_1197_48780512.1742991
+------=SPLITOR00A_001_194794968D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -39,7 +38,7 @@ Got Input?   Slashdot Needs You.
 Take our quick survey online.  Come on, we don't ask for help often.
 Plus, you'll get a chance to win $100 to spend on ThinkGeek.
 http://p.sf.net/sfu/slashdot-survey
-------=oqhse226_1197_48780512.1742991
+------=SPLITOR00A_001_194794968D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,4 +49,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-------=oqhse226_1197_48780512.1742991--
+------=SPLITOR00A_001_194794968D--

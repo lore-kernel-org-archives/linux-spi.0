@@ -1,12 +1,12 @@
-From: "TOTALCAD" <juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Experimente como ZWCAD puede aumentar su productividad
-Date: Tue, 26 Jul 2011 10:49:57 -0500
-Message-ID: <2bb222fec3b7b29120a90aee833a253f@totalcad.ondamkt.com>
-Reply-To: juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Alterego Design" <info-sy0TgwXdb9X+c+kxmsPfmkEOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] MOBILIER DESIGN
+Date: Fri, 29 Jul 2011 07:03:03 +0000 (CET)
+Message-ID: <110729070303.25319016800002464@ofnm44.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +18,242 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdG90YWxj
-YWQub25kYW1rdC5jb20vZGlzcGxheS5waHA/TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4
-NTQ2ZTFkN2YxMTFjNTgmUz0zNDImTD04NiZOPTI4NwoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBu
-b3Nzb3MKRW1haWxzOmh0dHA6Ly90b3RhbGNhZC5vbmRhbWt0LmNvbS91bnN1YnNjcmliZS5waHA/
-TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4NTQ2ZTFkN2YxMTFjNTgmTD04NiZOPTM0Mgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KR290IElucHV0PyAgIFNsYXNoZG90IE5lZWRzIFlvdS4KVGFr
-ZSBvdXIgcXVpY2sgc3VydmV5IG9ubGluZS4gIENvbWUgb24sIHdlIGRvbid0IGFzayBmb3IgaGVs
-cCBvZnRlbi4KUGx1cywgeW91J2xsIGdldCBhIGNoYW5jZSB0byB3aW4gJDEwMCB0byBzcGVuZCBv
-biBUaGlua0dlZWsuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2xhc2hkb3Qtc3VydmV5Cl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+
+
+
+ =
+
+
+ Cet email est au format HTML, si vous ne parvenez pas =C3=A0 le lire, cliq=
+uez ici
+ =
+
+
+
+
+
+
+
+
+
+=A0
+
+
+VISITEZ NOTRE SITE WEB =A0|=A0 REJOIGNEZ-NOUS SUR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ =
+
+
+
+ =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  =
+
+   =
+
+  =
+
+  =
+
+   =
+
+  =
+
+  =
+
+=A0
+
+
+
+Vous n'=C3=AAtes actuellement pas abonn=C3=A9 =C3=A0 la newsletter d'Altere=
+go-Design.
+Si vous souhaitez dans le futur recevoir la newsletter, =
+
+cliquez ici pour vous inscrire
+Copyright =C2=A9 2011 Alterego-Design. Tous droits r=C3=A9serv=C3=A9s.
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+Got Input?   Slashdot Needs You.
+Take our quick survey online.  Come on, we don't ask for help often.
+Plus, you'll get a chance to win $100 to spend on ThinkGeek.
+http://p.sf.net/sfu/slashdot-survey

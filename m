@@ -1,12 +1,13 @@
-From: Votre expert protection <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Mon, 1 Aug 2011 12:23:33 +0200 (CEST)
-Message-ID: <3236305005.183031.1312194213394@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Huawei Report 2011: Securing New Markets and Gaining Competitive
+	Advantage in the LTE Domain (Report)
+Date: Tue, 2 Aug 2011 03:07:54 +0100
+Message-ID: <20110802030754.-783694171@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +19,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                    ligne.
-                                              Service personnalis=E9
-    [IMG]                                     Alarme haute s=E9curit=E9
-             Syst=E8me Alarme                   Protection 24/24h
-            T=E9l=E9surveillance                  Contr=F4le =E0 distance
-                                              D=E9tecteurs d'images
-                MES DEVIS GRATUITS ICI [IMG] [IMG] [IMG] [IMG]
-                                  [IMG] [IMG]
-      Vous avez la possibilit* de vous retirer de notre liste d'envoi de
-                   mails par l?interm*diaire de ce raccourci
----------------------------------------------------------------------------=
----
-Got Input?   Slashdot Needs You.
-Take our quick survey online.  Come on, we don't ask for help often.
-Plus, you'll get a chance to win $100 to spend on ThinkGeek.
-http://p.sf.net/sfu/slashdot-survey
+Huawei Report 2011: Securing New Markets and Gaining Competitive Advantage in the LTE Domain (Report)
+------------------------------------------------------------------------------
+BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
+The must-attend event for mobile developers. Connect with experts. 
+Get tools for creating Super Apps. See the latest technologies.
+Sessions, hands-on labs, demos & much more. Register early & save!
+http://p.sf.net/sfu/rim-blackberry-1

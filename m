@@ -1,28 +1,71 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Huawei Report 2011: Securing New Markets and Gaining Competitive
-	Advantage in the LTE Domain (Report)
-Date: Tue, 2 Aug 2011 03:07:54 +0100
-Message-ID: <20110802030754.-783694171@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: Linus Walleij <linus.walleij@stericsson.com>
+Subject: [PATCH] spi/pl022: remove function cannot exit
+Date: Tue,  2 Aug 2011 11:29:24 +0200
+Message-ID: <1312277364-12945-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Linus Walleij <linus.walleij@linaro.org>, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Huawei Report 2011: Securing New Markets and Gaining Competitive Advantage in the LTE Domain (Report)
-------------------------------------------------------------------------------
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-The must-attend event for mobile developers. Connect with experts. 
-Get tools for creating Super Apps. See the latest technologies.
-Sessions, hands-on labs, demos & much more. Register early & save!
-http://p.sf.net/sfu/rim-blackberry-1
+From: Linus Walleij <linus.walleij@linaro.org>
+
+The remove function in the PL022 driver cannot abort the remove
+function any way, so restructure the code so as not to make that
+assumption. Remove will now proceed no matter whether it can
+stop the transfer queue or not.
+
+Reported-by: Russell King <linux@arm.linux.org.uk>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/spi-pl022.c |   11 +++--------
+ 1 files changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index eba88c7..730b4a3 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2267,17 +2267,13 @@ static int __devexit
+ pl022_remove(struct amba_device *adev)
+ {
+ 	struct pl022 *pl022 = amba_get_drvdata(adev);
+-	int status = 0;
++
+ 	if (!pl022)
+ 		return 0;
+ 
+ 	/* Remove the queue */
+-	status = destroy_queue(pl022);
+-	if (status != 0) {
+-		dev_err(&adev->dev,
+-			"queue remove failed (%d)\n", status);
+-		return status;
+-	}
++	if (destroy_queue(pl022) != 0)
++		dev_err(&adev->dev, "queue remove failed\n");
+ 	load_ssp_default_config(pl022);
+ 	pl022_dma_remove(pl022);
+ 	free_irq(adev->irq[0], pl022);
+@@ -2289,7 +2285,6 @@ pl022_remove(struct amba_device *adev)
+ 	spi_unregister_master(pl022->master);
+ 	spi_master_put(pl022->master);
+ 	amba_set_drvdata(adev, NULL);
+-	dev_dbg(&adev->dev, "remove succeeded\n");
+ 	return 0;
+ }
+ 
+-- 
+1.7.6

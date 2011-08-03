@@ -1,52 +1,33 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: spi/spi-pl022: Query on working of DMA mode
-Date: Wed, 3 Aug 2011 16:58:53 +0200
-Message-ID: <CACRpkdYk-jGCfYFjyOX9Lb=krG2A894wW7_Th4EjYgKi7CJaLQ@mail.gmail.com>
-References: <4E3931B7.3010400@st.com>
+From: 13538033334-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Wed, 3 Aug 2011 23:53:52 +0800
+Message-ID: <E1QodlN-0002tA-Du@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "linus.walleij@stericsson.com" <linus.walleij@stericsson.com>,
-	Armando VISCONTI <armando.visconti@st.com>,
-	Shiraz HASHIM <shiraz.hashim@st.com>,
-	viresh kumar <viresh.linux@gmail.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: viresh kumar <viresh.kumar@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <4E3931B7.3010400@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 3, 2011 at 1:32 PM, viresh kumar <viresh.kumar@st.com> wrote:
-
-> tasklet_schedule(pump_transfers)
-> pump_transfers(unsigned long data)
-> configure_dma(pl022)
-> sg_alloc_table(&pl022->sgt_rx, pages, GFP_KERNEL);
->
-> Here, allocation is requested with GFP_KERNEL flag, from a tasklet.
-> Which gives following crash logs:
-
-What happens if you replace it with GFP_NOWAIT?
-
-That should work for everybody.
-
-Or you could remove the tasklet allover and replace it with a workqueue.
-
-> Is DMA mode working in your case?
-
-Yes, magically :-/
-
-Yours,
-Linus Walleij
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7AtLcaxL7T6v6qjuwrI5zoKICAgKDEpxtXN
+qMnMxrfP+srby7AtLcaxo7sKICAgKDIpueO45tK1oaK498Dgt/7O8dK1y7AtLcaxL7XItcihowq5
+87mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4
+utTwyMujutXFz8jJ+igwKTEzNTM4MDMzMzM0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQmxhY2tC
+ZXJyeSZyZWc7IERldkNvbiBBbWVyaWNhcywgT2N0LiAxOC0yMCwgU2FuIEZyYW5jaXNjbywgQ0EK
+VGhlIG11c3QtYXR0ZW5kIGV2ZW50IGZvciBtb2JpbGUgZGV2ZWxvcGVycy4gQ29ubmVjdCB3aXRo
+IGV4cGVydHMuIApHZXQgdG9vbHMgZm9yIGNyZWF0aW5nIFN1cGVyIEFwcHMuIFNlZSB0aGUgbGF0
+ZXN0IHRlY2hub2xvZ2llcy4KU2Vzc2lvbnMsIGhhbmRzLW9uIGxhYnMsIGRlbW9zICYgbXVjaCBt
+b3JlLiBSZWdpc3RlciBlYXJseSAmIHNhdmUhCmh0dHA6Ly9wLnNmLm5ldC9zZnUvcmltLWJsYWNr
+YmVycnktMQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,38 +1,52 @@
-From: Sunil Kumar D <cbitsunil-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: SPI continuous clock on clk pin
-Date: Wed, 3 Aug 2011 17:03:33 +0530
-Message-ID: <CABBaYQpXyn09VuLO0Dgn8R-UpPrmyAiKD1j9QbkCvSVcKJxmwQ@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: spi/spi-pl022: Query on working of DMA mode
+Date: Wed, 3 Aug 2011 16:58:53 +0200
+Message-ID: <CACRpkdYk-jGCfYFjyOX9Lb=krG2A894wW7_Th4EjYgKi7CJaLQ@mail.gmail.com>
+References: <4E3931B7.3010400@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "linus.walleij@stericsson.com" <linus.walleij@stericsson.com>,
+	Armando VISCONTI <armando.visconti@st.com>,
+	Shiraz HASHIM <shiraz.hashim@st.com>,
+	viresh kumar <viresh.linux@gmail.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: viresh kumar <viresh.kumar@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <4E3931B7.3010400@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi ,
-I am using Gumstix board SPI device as master.
-I configured it for 12Mhz max speed.
-Is there any option to get continuous clock on clk pin of SPI.?
-Currently when Iam operating at 12Mhz, I have observed around 370ns of delay
+On Wed, Aug 3, 2011 at 1:32 PM, viresh kumar <viresh.kumar@st.com> wrote:
 
-between two consecutive bytes.
-Can I get one continuous clock for whatever bytes I transfer or receive?
+> tasklet_schedule(pump_transfers)
+> pump_transfers(unsigned long data)
+> configure_dma(pl022)
+> sg_alloc_table(&pl022->sgt_rx, pages, GFP_KERNEL);
+>
+> Here, allocation is requested with GFP_KERNEL flag, from a tasklet.
+> Which gives following crash logs:
 
-Thanks in advance.
+What happens if you replace it with GFP_NOWAIT?
 
-Regards,
-Sunil
-------------------------------------------------------------------------------
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-The must-attend event for mobile developers. Connect with experts. 
-Get tools for creating Super Apps. See the latest technologies.
-Sessions, hands-on labs, demos & much more. Register early & save!
-http://p.sf.net/sfu/rim-blackberry-1
+That should work for everybody.
+
+Or you could remove the tasklet allover and replace it with a workqueue.
+
+> Is DMA mode working in your case?
+
+Yes, magically :-/
+
+Yours,
+Linus Walleij

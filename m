@@ -1,57 +1,44 @@
-From: "Toshiharu Okada" <toshiharu-linux@dsn.okisemi.com>
-Subject: Re: [PATCH] spi_topcliff_pch: supports a spi mode setup and bit order setup by IO control
-Date: Thu, 4 Aug 2011 09:20:10 +0900
-Message-ID: <06E5A35FD5B340D6A7022BD0298B1A83@hacdom.okisemi.com>
-References: <1311141414-12867-1-git-send-email-toshiharu-linux@dsn.okisemi.com>
+From: "Tina Larson" <TLarson_NoReply-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
+Subject: Please Review
+Date: Wed, 3 Aug 2011 19:32:00 -0700
+Message-ID: <37872e58b64c16fa13e0f9560017551e@qmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-2022-jp"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
-	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
-	<tomoya-linux@dsn.okisemi.com>
-To: "Toshiharu Okada" <toshiharu-linux@dsn.okisemi.com>,
-	<grant.likely@secretlab.ca>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+Hello,
 
-Could you review this patch?
-Thanks in advance.
+I have access to people in your area who are actively looking to refinance.
+This is not a referral so there are no referral fees or hidden costs. Your cost is a flat fee of $3.00 per person. 
 
-Best Regards
-Toshiharu Okada
------ Original Message ----- 
-Sent: Wednesday, July 20, 2011 2:56 PM
-Subject: [PATCH] spi_topcliff_pch: supports a spi mode setup and bit order 
-setup by IO control
+Please call us today at 1 (888) 595-5688 for more information.
+_____________________________________________________________________________________
+
+We also offer a full host of mailing services from direct mail to help you acquire more exclusive leads to billing. 
+Our prices are great and we've been seeing HUGE response rates well over 2%!!! Call today for more information.
+
+Thanks,
+
+Tina Larson
+Marketing Consultant
+Ph 888-595-5688
 
 
-This patch supports a spi mode setup and bit order setup by IO control.
-    spi mode:     mode 0 to mode 3
-    bit order:    LSB first, MSB first
 
-Signed-off-by: Toshiharu Okada <toshiharu-linux@dsn.okisemi.com>
----
- drivers/spi/spi_topcliff_pch.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
-index 79e48d4..dec83c9 100644
---- a/drivers/spi/spi_topcliff_pch.c
-+++ b/drivers/spi/spi_topcliff_pch.c
-@@ -1038,6 +1038,7 @@ static int pch_spi_probe(struct pci_dev *pdev, const 
-struct pci_device_id *id)
-  master->num_chipselect = PCH_MAX_CS;
-  master->setup = pch_spi_setup;
-  master->transfer = pch_spi_transfer;
-+ master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
-  dev_dbg(&pdev->dev,
-  "%s transfer member of SPI master initialized\n", __func__);
-
--- 
-1.7.4.4
+------------------------------------------------------------------------------
+BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
+The must-attend event for mobile developers. Connect with experts. 
+Get tools for creating Super Apps. See the latest technologies.
+Sessions, hands-on labs, demos & much more. Register early & save!
+http://p.sf.net/sfu/rim-blackberry-1

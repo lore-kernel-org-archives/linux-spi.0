@@ -1,44 +1,57 @@
-From: 13435596414-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 原厂烟丝
-Date: Wed, 3 Aug 2011 23:54:07 +0800
-Message-ID: <E1Qodlb-0002wE-J6@sfs-ml-1.v29.ch3.sourceforge.com>
+From: "Toshiharu Okada" <toshiharu-linux@dsn.okisemi.com>
+Subject: Re: [PATCH] spi_topcliff_pch: supports a spi mode setup and bit order setup by IO control
+Date: Thu, 4 Aug 2011 09:20:10 +0900
+Message-ID: <06E5A35FD5B340D6A7022BD0298B1A83@hacdom.okisemi.com>
+References: <1311141414-12867-1-git-send-email-toshiharu-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain;
+	charset="iso-2022-jp"
+Content-Transfer-Encoding: 7bit
+Cc: <qi.wang@intel.com>, <yong.y.wang@intel.com>,
+	<joel.clark@intel.com>, <kok.howg.ewe@intel.com>,
+	<tomoya-linux@dsn.okisemi.com>
+To: "Toshiharu Okada" <toshiharu-linux@dsn.okisemi.com>,
+	<grant.likely@secretlab.ca>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-u7bTrcC0tefHosy418nRr6OhIAoo1ebRzL3T1qcuxL660Ckgu8a618KlOjE5MTYgICAgIDM2MNSq
-L8z1ICAKKNXm0cy909anLsS+utApILvGutfCpcL+zOzTziAgICAzODDUqi/M9SAKKNXm0cy909an
-LsS+utApIMTPvqm+xc7l1q7X8CAgICA0ODDUqi/M9SAKKNXm0cy909anLsS+utApINfqyq/cvcjY
-zfUgICAgICA0NjDUqi/M9SAgCijV5tHMvdPWpy7EvrrQKSC6zczsz8IgICAgICAgICAgNDYw1Kov
-zPUgIAoo1K2zp9HMy78pyO3T8c+qICAgICAgICAgICAgICAgIDEzMNSqL8z1ICAKKNSts6fRzMu/
-KSAzMjguMzI5yO3W0LuqICAgICAgICAyODDUqi/M9SAKKNSts6fRzMu/KSDTstbQu6ogICAgICAg
-ICAgICAgICAyNjDUqi/M9SAKKNSts6fRzMu/KSC2rLPmz8Sy3SAgICAgICAgICAgICAzNjDUqi/M
-9SAgICAgICAgICAgICAgICAgICAKwLbI7dy9yNjN9SAgICAgICAgICAgICAgICAgICAgICAyMjDU
-qi/M9SAKwLbTsty9yNjN9SAgICAgICAgICAgICAgICAgICAgICAxODDUqi/M9SAKu8a618Klwv7M
-7NDHICAgICAgICAgICAgICAgICAgICAxNjDUqi/M9SAKu8a618Kl1eTGtyAgICAgICAgICAgICAg
-ICAgICAgICAyMDDUqi/M9SAKysrTw9Pro6jLzcDxoaK5q8u+zcW5uqGi0cy+xsnM0NChosX6t6Kh
-osHjytspIL3w0rbJzNDQtc2828X6t6LV/dfa1MbP9rjft8LV5s/j0cyjrCDLs9ejyczs9yDQ6NKq
-x+vBqs+1o6HVxdChveMgMTM0MzU1OTY0MTQgUVExMzU4ODUwMDUxIAq98NK2yczQ0M6qxPrM4bmp
-uN++q7fCz+PRzM+1wdAuKLD817C3wM6xMTAwJSzRzMu/s8nJqzEwMCUsv9q40L7Fs8kpu7bTrcC0
-tefHosy418nRry7VxdChveMgMTM0MzU1OTY0MTQgUVExMzU4ODUwMDUxIAogICAKCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpCbGFja0JlcnJ5JnJlZzsgRGV2Q29uIEFtZXJpY2FzLCBPY3QuIDE4LTIw
-LCBTYW4gRnJhbmNpc2NvLCBDQQpUaGUgbXVzdC1hdHRlbmQgZXZlbnQgZm9yIG1vYmlsZSBkZXZl
-bG9wZXJzLiBDb25uZWN0IHdpdGggZXhwZXJ0cy4gCkdldCB0b29scyBmb3IgY3JlYXRpbmcgU3Vw
-ZXIgQXBwcy4gU2VlIHRoZSBsYXRlc3QgdGVjaG5vbG9naWVzLgpTZXNzaW9ucywgaGFuZHMtb24g
-bGFicywgZGVtb3MgJiBtdWNoIG1vcmUuIFJlZ2lzdGVyIGVhcmx5ICYgc2F2ZSEKaHR0cDovL3Au
-c2YubmV0L3NmdS9yaW0tYmxhY2tiZXJyeS0xCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi Grant,
+
+Could you review this patch?
+Thanks in advance.
+
+Best Regards
+Toshiharu Okada
+----- Original Message ----- 
+Sent: Wednesday, July 20, 2011 2:56 PM
+Subject: [PATCH] spi_topcliff_pch: supports a spi mode setup and bit order 
+setup by IO control
+
+
+This patch supports a spi mode setup and bit order setup by IO control.
+    spi mode:     mode 0 to mode 3
+    bit order:    LSB first, MSB first
+
+Signed-off-by: Toshiharu Okada <toshiharu-linux@dsn.okisemi.com>
+---
+ drivers/spi/spi_topcliff_pch.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+index 79e48d4..dec83c9 100644
+--- a/drivers/spi/spi_topcliff_pch.c
++++ b/drivers/spi/spi_topcliff_pch.c
+@@ -1038,6 +1038,7 @@ static int pch_spi_probe(struct pci_dev *pdev, const 
+struct pci_device_id *id)
+  master->num_chipselect = PCH_MAX_CS;
+  master->setup = pch_spi_setup;
+  master->transfer = pch_spi_transfer;
++ master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+  dev_dbg(&pdev->dev,
+  "%s transfer member of SPI master initialized\n", __func__);
+
+-- 
+1.7.4.4

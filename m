@@ -1,44 +1,50 @@
-From: "Tina Larson" <TLarson_NoReply-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: Please Review
-Date: Wed, 3 Aug 2011 19:32:00 -0700
-Message-ID: <37872e58b64c16fa13e0f9560017551e@qmail.com>
+From: viresh kumar <viresh.kumar@st.com>
+Subject: Re: spi/spi-pl022: Query on working of DMA mode
+Date: Thu, 4 Aug 2011 09:09:39 +0530
+Message-ID: <4E3A147B.9060305@st.com>
+References: <4E3931B7.3010400@st.com>
+	<CACRpkdYk-jGCfYFjyOX9Lb=krG2A894wW7_Th4EjYgKi7CJaLQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Linus WALLEIJ <linus.walleij@stericsson.com>,
+	Armando VISCONTI <armando.visconti@st.com>,
+	Shiraz HASHIM <shiraz.hashim@st.com>,
+	viresh kumar <viresh.linux@gmail.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CACRpkdYk-jGCfYFjyOX9Lb=krG2A894wW7_Th4EjYgKi7CJaLQ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+On 08/03/2011 08:28 PM, Linus Walleij wrote:
+>> > Here, allocation is requested with GFP_KERNEL flag, from a tasklet.
+>> > Which gives following crash logs:
+> What happens if you replace it with GFP_NOWAIT?
+> 
+> That should work for everybody.
+> 
+> Or you could remove the tasklet allover and replace it with a workqueue.
+> 
 
-I have access to people in your area who are actively looking to refinance.
-This is not a referral so there are no referral fees or hidden costs. Your cost is a flat fee of $3.00 per person. 
+Ok. I will fix this and include in my patchset.
 
-Please call us today at 1 (888) 595-5688 for more information.
-_____________________________________________________________________________________
+>> > Is DMA mode working in your case?
+> Yes, magically :-/
 
-We also offer a full host of mailing services from direct mail to help you acquire more exclusive leads to billing. 
-Our prices are great and we've been seeing HUGE response rates well over 2%!!! Call today for more information.
+But how? Don't you have any message with more than one transfer in it?
 
-Thanks,
-
-Tina Larson
-Marketing Consultant
-Ph 888-595-5688
-
-
-
-------------------------------------------------------------------------------
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-The must-attend event for mobile developers. Connect with experts. 
-Get tools for creating Super Apps. See the latest technologies.
-Sessions, hands-on labs, demos & much more. Register early & save!
-http://p.sf.net/sfu/rim-blackberry-1
+-- 
+viresh

@@ -1,44 +1,40 @@
-From: viresh kumar <viresh.kumar@st.com>
-Subject: Re: spi/spi-pl022: Query on working of DMA mode
-Date: Thu, 4 Aug 2011 15:52:53 +0530
-Message-ID: <4E3A72FD.6060404@st.com>
-References: <4E3931B7.3010400@st.com>	<CACRpkdYk-jGCfYFjyOX9Lb=krG2A894wW7_Th4EjYgKi7CJaLQ@mail.gmail.com>	<4E3A147B.9060305@st.com>
-	<CACRpkdZW2tj=JdfqFzif_bPt0UJ8wOmsMuOeBhSjH4+qUA3pSA@mail.gmail.com>
+From: Peage parzabaion <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: Ne payez plus vos frais d'autoroute pendant 1 an
+Date: Thu, 4 Aug 2011 12:27:27 +0200 (CEST)
+Message-ID: <3236305005.191541.1312453647965@p4enginex2.emv2.com>
+Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linus WALLEIJ <linus.walleij@stericsson.com>,
-	Armando VISCONTI <armando.visconti@st.com>,
-	Shiraz HASHIM <shiraz.hashim@st.com>,
-	viresh kumar <viresh.linux@gmail.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CACRpkdZW2tj=JdfqFzif_bPt0UJ8wOmsMuOeBhSjH4+qUA3pSA@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/04/2011 03:46 PM, Linus Walleij wrote:
-> No maybe not, my test cases are for single messages, and on production
-> systems we mainly use IRQ-driven traffic. I need to have these
-> tests added I believe :-/
-> 
-> If you fix this up it will be much appreciated!
+ Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
+gne.
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoie de mail=
+s par
+                        l'intermediaire de ce raccourci
 
-Ya I am fixing this up. I have resolved this yesterday only, with GFP_NOWAIT.
-But it looks there are few more issues. Let me fix everything first
-and then will send patchset with updates.
+   [IMG]
+   Gagnez votre pass d'autoroute
+   gratuit pour 1 an!*
+   [IMG]                                     [IMG]
+   [IMG]                                     Participez
+   *r=E9compense pay=E9e jusqu'=E0 =A4500
+---------------------------------------------------------------------------=
+---
+BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
+The must-attend event for mobile developers. Connect with experts. =
 
--- 
-viresh
+Get tools for creating Super Apps. See the latest technologies.
+Sessions, hands-on labs, demos & much more. Register early & save!
+http://p.sf.net/sfu/rim-blackberry-1

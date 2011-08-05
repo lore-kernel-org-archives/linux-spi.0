@@ -1,12 +1,12 @@
-From: Peage parzabaion <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: Ne payez plus vos frais d'autoroute pendant 1 an
-Date: Thu, 4 Aug 2011 12:27:27 +0200 (CEST)
-Message-ID: <3236305005.191541.1312453647965@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: "Service Mutuelleland  par Darci" <meline-A59TnM6BThhLYspyqldFCA@public.gmane.org>
+Subject: [SPAM] Dossier Mutuelle : vos cotisations pour la rentrée
+Date: Fri, 05 Aug 2011 04:19:37 +0000 (CET)
+Message-ID: <110805041937.-170434218600005088@ofnm46.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
- Vous avez la possibilit=E9 de vous retirer de notre liste d'envoie de mail=
-s par
-                        l'intermediaire de ce raccourci
 
-   [IMG]
-   Gagnez votre pass d'autoroute
-   gratuit pour 1 an!*
-   [IMG]                                     [IMG]
-   [IMG]                                     Participez
-   *r=E9compense pay=E9e jusqu'=E0 =A4500
+
+Bonjour
+,
+
+Je
+suis
+Olivier de Mutuelle-land.com.
+Chez Mutuelle-land.com, nous pensons que la protection de votre sant=E9
+m=E9rite une attention toute particuli=E8re.
+
+C'est
+pourquoi, nous vous proposons un comparatif
+personnalis=E9
+afin de vous faire b=E9n=E9ficier d'une formule de mutuelle qui corresponde
+vraiment =E0 vos besoins en d=E9penses sant=E9.
+
+En
+r=E9pondant
+aux questions de notre formulaire
+de comparaison,
+vous d=E9couvrirez des offres qui r=E9pondent =E0 vos attentes parmi le plus
+grand panel d'offres de mutuelles sant=E9 du march=E9.
+
+En
+faisant
+jouer la concurrence, vous faites d'importantes
+=E9conomies sur votre contrat de mutuelle sant=E9 !
+
+Profitez
+des
+offres de mutuelles individuelles :
+Je
+fais des =E9conomies en comparant les
+offres de mutuelles individuelles
+
+Sur
+Mutuelle-land.com, nous vous proposons aussi de suivre
+l'actualit=E9 de la sant=E9 et des mutuelles au quotidien ainsi que des
+dossiers conseils afin de vous orienter dans vos d=E9marches pour un
+remboursement optimal.
+
+Toute
+l'=E9quipe
+de Mutuelle-land.com est =E0 votre =E9coute,
+
+Olivier,
+Responsable du Service Client
+
+
 ---------------------------------------------------------------------------=
 ---
 BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA

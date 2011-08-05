@@ -1,7 +1,7 @@
-From: "Domaines Reserves par Darci" <angelique-vRupbBuk8uoK5OFHrNHjP2DISPv4uevg@public.gmane.org>
-Subject: [SPAM] 19 seulement les 6 bouteilles de Puisseguin Saint Emilion
-Date: Fri, 05 Aug 2011 07:51:02 +0000 (CET)
-Message-ID: <110805075102.20487670700001796@ofnm41.com>
+From: "Assurland par Darci" <solene-W1lL2DsXnfjK4eaRnvWNww@public.gmane.org>
+Subject: [SPAM] Résiliation de votre contrat d'assurance
+Date: Fri, 05 Aug 2011 15:05:49 +0000 (CET)
+Message-ID: <110805150549.88692162500001484@ofnm44.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -23,22 +23,6 @@ List-Id: linux-spi.vger.kernel.org
 
 
 
- =
-
- =
-
-Offre privil=E8ge Sp=E9ciale D=E9couverte Les Domaines R=E9serv=E9s
- Si cet email ne s'affiche pas correctement, vous pouvez le visualiser, gr=
-=E2ce =E0 ce lien
- =
-
-  =
-
-  =
-
- =
-
- =
 
 
 
@@ -46,32 +30,6 @@ Offre privil=E8ge Sp=E9ciale D=E9couverte Les Domaines R=E9serv=E9s
 
 
 
-  =
-
- =
-
- =
-
-
- =
-
-  =
-
-
-  =
-
-
- =
-
- =
-
- =
-
- =
-
- =
-
- =
 
 
 
@@ -79,26 +37,28 @@ Offre privil=E8ge Sp=E9ciale D=E9couverte Les Domaines R=E9serv=E9s
 
 
 
- =
+Quel
+assureur choisir ?
 
-  Qui sommes-nous?
- Chaque mois un nouveau cru d'exception =E0 d=E9couvrir =
-
- Une s=E9lection rigoureuse confi=E9e =E0 un &oelig;nologue
-  de renom =
-
- Une garantie de
-satisfaction absolue =
-
-  =
+Etudiez
+les offres des assureurs =E0 la loupe !
 
 
 
 
- =
 
- Conditions g=E9n=E9rales de vente - Garanties - Mentions l=E9gales
-  =
+
+Assurland.com
+interroge pour vous 54 assureurs et vous =
+
+permet d'=E9conomiser en
+choisissant le meilleur tarif !
+
+
+
+
+
+
 
 
 

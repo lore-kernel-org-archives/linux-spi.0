@@ -1,12 +1,12 @@
-From: "TOTALCAD" <juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Curso - Servicios  TotalCAD
-Date: Mon, 01 Aug 2011 09:01:42 -0500
-Message-ID: <9ad874378a809a55daa1d35ec73292c7@totalcad.ondamkt.com>
-Reply-To: juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Votre expert protection par Darci" <nina-A1hmK2eqDLC9fJwOl8BoTlAUjnlXr6A1@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Fri, 05 Aug 2011 06:15:11 +0000 (CET)
+Message-ID: <110805061511.78106354300003224@ofnm49.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +18,111 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdG90YWxj
-YWQub25kYW1rdC5jb20vZGlzcGxheS5waHA/TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4
-NTQ2ZTFkN2YxMTFjNTgmUz0zNDgmTD04NiZOPTI5OQoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBu
-b3Nzb3MKRW1haWxzOmh0dHA6Ly90b3RhbGNhZC5vbmRhbWt0LmNvbS91bnN1YnNjcmliZS5waHA/
-TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4NTQ2ZTFkN2YxMTFjNTgmTD04NiZOPTM0OAot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KQmxhY2tCZXJyeSZyZWc7IERldkNvbiBBbWVyaWNhcywgT2N0
-LiAxOC0yMCwgU2FuIEZyYW5jaXNjbywgQ0EKVGhlIG11c3QtYXR0ZW5kIGV2ZW50IGZvciBtb2Jp
-bGUgZGV2ZWxvcGVycy4gQ29ubmVjdCB3aXRoIGV4cGVydHMuIApHZXQgdG9vbHMgZm9yIGNyZWF0
-aW5nIFN1cGVyIEFwcHMuIFNlZSB0aGUgbGF0ZXN0IHRlY2hub2xvZ2llcy4KU2Vzc2lvbnMsIGhh
-bmRzLW9uIGxhYnMsIGRlbW9zICYgbXVjaCBtb3JlLiBSZWdpc3RlciBlYXJseSAmIHNhdmUhCmh0
-dHA6Ly9wLnNmLm5ldC9zZnUvcmltLWJsYWNrYmVycnktMQpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
-cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+
+
+
+
+ =
+
+ =
+
+  =
+
+  =
+
+  =
+
+  =
+
+  Syst=E8me Alarme =
+
+ T=E9l=E9surveillance
+  =
+
+ =
+
+ =
+
+   =
+
+   =
+
+   Service personnalis=E9
+   =
+
+   =
+
+   =
+
+   Alarme haute s=E9curit=E9
+   =
+
+   =
+
+   =
+
+   Protection 24/24h
+   =
+
+   =
+
+   =
+
+   Contr=F4le =E0 distance
+   =
+
+   =
+
+   =
+
+   D=E9tecteurs d&rsquo;images
+   =
+
+    =
+
+ =
+
+
+
+
+
+
+ =
+
+ =
+
+ =
+
+ =
+
+ =
+
+ =
+
+ =
+
+
+
+
+
+ =
+
+ =
+
+ =
+
+ =
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
+The must-attend event for mobile developers. Connect with experts. =
+
+Get tools for creating Super Apps. See the latest technologies.
+Sessions, hands-on labs, demos & much more. Register early & save!
+http://p.sf.net/sfu/rim-blackberry-1

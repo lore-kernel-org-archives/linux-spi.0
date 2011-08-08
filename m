@@ -1,12 +1,13 @@
-From: "Radiateurinertie par Darci" <laura-es+y4u6pKaKkE4gdLlDxNGDISPv4uevg@public.gmane.org>
-Subject: [SPAM] Téléchargez le guide des radiateurs à inertie
-Date: Mon, 08 Aug 2011 13:59:11 +0000 (CET)
-Message-ID: <110808135911.186723345300001116@ofnm42.com>
+From: =?koi8-r?B?zc/T1CA=?= <stevenr51-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ2OCDS1cI=?=
+Date: Tue, 9 Aug 2011 02:06:28 +0400
+Message-ID: <039F27016E3F4F1E9D64DD8B27C3427E@ixgv>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,63 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-
-
-
-
- =
-
-
-
-
-
-
-
-
-T=C9L=C9CHARGEZ LE GUIDE GRATUIT DES RADIATEURS =C0 INERTIE
-
-
-
-
-et
-d=E9couvrez les avantages et inconv=E9nients de ce type de radiateur!
-Dans
-ce guide, vous trouverez de nombreuses r=E9ponses =E0 vos questions&hellip;
-Comment
-fonctionne un radiateur =E0 inertie?
-Quels
-budgets pr=E9voir pour de tels radiateurs?
-Etc.
-&hellip;et des tableaux
-r=E9capitulatifs qui vous aideront =E0 faire le bon choix!
-Tableau
-des diff=E9rents modes de chauffage =E9lectrique
-Tableau
-comparatif des grandes marques du chauffage =E9lectrique
-Pour
-t=E9l=E9charger gratuitement le guide des radiateurs =E0 inertie
-rendez-vous sur:
-
-
-
-
-
-Meilleur radiateur =E0 inertie.com
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------=
----
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-The must-attend event for mobile developers. Connect with experts. =
-
-Get tools for creating Super Apps. See the latest technologies.
-Sessions, hands-on labs, demos & much more. Register early & save!
-http://p.sf.net/sfu/rim-blackberry-1
+5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0ODEg0tXC
+CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk0ODU1MCDBxNIgLSA0OTI0INLVwgogCu3P08vXwSDGydou
+zMnDwSAtIDcuNzA1NjUxIMHE0iAtIDg0MTEg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
+Oi8vd3d3LmFhYS0xMDEuY29tL2kyLmh0bWwKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCnViZXJTVk4n
+cyByaWNoIHN5c3RlbSBhbmQgdXNlciBhZG1pbmlzdHJhdGlvbiBjYXBhYmlsaXRpZXMgYW5kIG1v
+ZGVsIApjb25maWd1cmF0aW9uIHRha2UgdGhlIGhhc3NsZSBvdXQgb2YgZGVwbG95aW5nIGFuZCBt
+YW5hZ2luZyBTdWJ2ZXJzaW9uIGFuZCAKdGhlIHRvb2xzIGRldmVsb3BlcnMgdXNlIHdpdGggaXQu
+IExlYXJuIG1vcmUgYWJvdXQgdWJlclNWTiBhbmQgZ2V0IGEgZnJlZSAKZG93bmxvYWQgYXQ6ICBo
+dHRwOi8vcC5zZi5uZXQvc2Z1L3dhbmRpc2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
+CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
+dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

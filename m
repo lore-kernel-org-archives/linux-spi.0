@@ -1,7 +1,7 @@
-From: "Service rencontre par Darci" <clhoe-6Hh69IaD5SHs4gduXPcV7mDISPv4uevg@public.gmane.org>
-Subject: [SPAM] 12 mois offerts pour faire de nouvelles rencontres
-Date: Sat, 06 Aug 2011 12:20:03 +0000 (CET)
-Message-ID: <110806122003.30741462900003980@ofnm41.com>
+From: "Radiateurinertie par Darci" <laura-es+y4u6pKaKkE4gdLlDxNGDISPv4uevg@public.gmane.org>
+Subject: [SPAM] Téléchargez le guide des radiateurs à inertie
+Date: Mon, 08 Aug 2011 13:59:11 +0000 (CET)
+Message-ID: <110808135911.186723345300001116@ofnm42.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -24,57 +24,44 @@ List-Id: linux-spi.vger.kernel.org
 
 
 
-
-
-
- =
-
-
- =
-
-  =
-
- =
-
-  =
-
- Nous avons tir=E9 au sort 3 gagnants qui remportent :
- =
-
-  =
-
-  =
-
-  =
-
-Votre e-mail a =E9t=E9 s=E9lectionn=E9 :
-
-
-
- Vous fa=EEtes partie des 3 gagnants ! =
-
-  =
-
-
- =
-
  =
 
 
 
 
-  =
 
 
 
-   Profitez-en en cliquant ici ! =
 
-  =
+T=C9L=C9CHARGEZ LE GUIDE GRATUIT DES RADIATEURS =C0 INERTIE
 
-  =
 
- =
 
+
+et
+d=E9couvrez les avantages et inconv=E9nients de ce type de radiateur!
+Dans
+ce guide, vous trouverez de nombreuses r=E9ponses =E0 vos questions&hellip;
+Comment
+fonctionne un radiateur =E0 inertie?
+Quels
+budgets pr=E9voir pour de tels radiateurs?
+Etc.
+&hellip;et des tableaux
+r=E9capitulatifs qui vous aideront =E0 faire le bon choix!
+Tableau
+des diff=E9rents modes de chauffage =E9lectrique
+Tableau
+comparatif des grandes marques du chauffage =E9lectrique
+Pour
+t=E9l=E9charger gratuitement le guide des radiateurs =E0 inertie
+rendez-vous sur:
+
+
+
+
+
+Meilleur radiateur =E0 inertie.com
 
 
 

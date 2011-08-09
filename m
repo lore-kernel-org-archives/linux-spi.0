@@ -1,14 +1,20 @@
-From: =?koi8-r?B?zsHT1NXQzMXOycUg?= <ieiqcqtvi-XzQKRVe1yT0V+D8aMU/kSg@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ5OSDS1cI=?=
-Date: Tue, 09 Aug 2011 13:22:00 +0400
-Message-ID: <88F88800ACD2404B99ABBBA1CCF58371@lzjcmb>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH 2/6] spi/spi-pl022: Use GFP_NOWAIT for allocation from tasklet
+Date: Tue, 9 Aug 2011 16:35:19 +0530
+Message-ID: <cb966698764017627e85a4c85d1d781cf3fc9819.1312887860.git.viresh.kumar@st.com>
+References: <cover.1312887860.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: fedor-mnO0GIe32D0@public.gmane.org, congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org, diktor-SYPjacQAEmk@public.gmane.org, info-G2tT1RKrIAQ@public.gmane.org,
-	transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org, gostnorm-5URONGGNgjI@public.gmane.org, ternedvig-JGs/UdohzUI@public.gmane.org, valeev-SYPjacQAEmk@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: vipin.kumar-qxv4g6HH51o@public.gmane.org, viresh.kumar-qxv4g6HH51o@public.gmane.org, rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org,
+	bhavna.yadav-qxv4g6HH51o@public.gmane.org, bhupesh.sharma-qxv4g6HH51o@public.gmane.org,
+	pratyush.anand-qxv4g6HH51o@public.gmane.org, armando.visconti-qxv4g6HH51o@public.gmane.org,
+	shiraz.hashim-qxv4g6HH51o@public.gmane.org, amit.virdi-qxv4g6HH51o@public.gmane.org, vipulkumar.samar-qxv4g6HH51o@public.gmane.org,
+	deepak.sikri-qxv4g6HH51o@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <cover.1312887860.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,16 +25,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0NzAg0tXC
-CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjkwNzUwNCDBxNIgLSA0OTMyINLVwgogCu3P08vXwSDGydou
-zMnDwSAtIDcuNzM0Mjg5IMHE0iAtIDg0NTEg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
-Oi8vd3d3LmFhYS0xMDEuY29tL2kzLmh0bWwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp1YmVyU1ZO
-J3MgcmljaCBzeXN0ZW0gYW5kIHVzZXIgYWRtaW5pc3RyYXRpb24gY2FwYWJpbGl0aWVzIGFuZCBt
-b2RlbCAKY29uZmlndXJhdGlvbiB0YWtlIHRoZSBoYXNzbGUgb3V0IG9mIGRlcGxveWluZyBhbmQg
-bWFuYWdpbmcgU3VidmVyc2lvbiBhbmQgCnRoZSB0b29scyBkZXZlbG9wZXJzIHVzZSB3aXRoIGl0
-LiBMZWFybiBtb3JlIGFib3V0IHViZXJTVk4gYW5kIGdldCBhIGZyZWUgCmRvd25sb2FkIGF0OiAg
-aHR0cDovL3Auc2YubmV0L3NmdS93YW5kaXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+tasklets don't allow invocation to sleeping routines. In configure_dma()
+routine, sg_alloc_table() was called with GFP_KERNEL flag and so this causes
+crash when called from tasklet.
+
+Replace GFP_KERNEL with GFP_NOWAIT to get this fixed.
+
+Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index f600d00..cbd9afe 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1019,11 +1019,11 @@ static int configure_dma(struct pl022 *pl022)
+ 	pages = (pl022->cur_transfer->len >> PAGE_SHIFT) + 1;
+ 	dev_dbg(&pl022->adev->dev, "using %d pages for transfer\n", pages);
+ 
+-	ret = sg_alloc_table(&pl022->sgt_rx, pages, GFP_KERNEL);
++	ret = sg_alloc_table(&pl022->sgt_rx, pages, GFP_NOWAIT);
+ 	if (ret)
+ 		goto err_alloc_rx_sg;
+ 
+-	ret = sg_alloc_table(&pl022->sgt_tx, pages, GFP_KERNEL);
++	ret = sg_alloc_table(&pl022->sgt_tx, pages, GFP_NOWAIT);
+ 	if (ret)
+ 		goto err_alloc_tx_sg;
+ 
+-- 
+1.7.2.2
+
+
+------------------------------------------------------------------------------
+uberSVN's rich system and user administration capabilities and model 
+configuration take the hassle out of deploying and managing Subversion and 
+the tools developers use with it. Learn more about uberSVN and get a free 
+download at:  http://p.sf.net/sfu/wandisco-dev2dev

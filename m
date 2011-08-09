@@ -1,175 +1,59 @@
-From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH 4/6] spi/spi-pl022: calculate_effective_freq() must set rate
-	<= requested rate
-Date: Tue, 9 Aug 2011 16:35:21 +0530
-Message-ID: <abd4dbaedf226ad29461775bcd969810c87c305d.1312887860.git.viresh.kumar@st.com>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Subject: Re: [PATCH 2/6] spi/spi-pl022: Use GFP_NOWAIT for allocation from
+	tasklet
+Date: Tue, 9 Aug 2011 16:56:22 +0530
+Message-ID: <CABb+yY3CuYqNcpvdP8fa6FsaN3EBDAXivKSP56gRh6-oPyp2Mg@mail.gmail.com>
 References: <cover.1312887860.git.viresh.kumar@st.com>
+	<cb966698764017627e85a4c85d1d781cf3fc9819.1312887860.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: vipin.kumar-qxv4g6HH51o@public.gmane.org, viresh.kumar-qxv4g6HH51o@public.gmane.org, rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org,
-	bhavna.yadav-qxv4g6HH51o@public.gmane.org, bhupesh.sharma-qxv4g6HH51o@public.gmane.org,
-	pratyush.anand-qxv4g6HH51o@public.gmane.org, armando.visconti-qxv4g6HH51o@public.gmane.org,
-	shiraz.hashim-qxv4g6HH51o@public.gmane.org, amit.virdi-qxv4g6HH51o@public.gmane.org, vipulkumar.samar-qxv4g6HH51o@public.gmane.org,
-	deepak.sikri-qxv4g6HH51o@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <cover.1312887860.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
+	bhupesh.sharma@st.com, armando.visconti@st.com,
+	linus.walleij@linaro.org, grant.likely@secretlab.ca,
+	vipin.kumar@st.com, shiraz.hashim@st.com, amit.virdi@st.com,
+	vipulkumar.samar@st.com, viresh.linux@gmail.com,
+	deepak.sikri@st.com, spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Viresh Kumar <viresh.kumar@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <cb966698764017627e85a4c85d1d781cf3fc9819.1312887860.git.viresh.kumar@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-There were few issues with calculate_effective_freq() routine:
-- It was returning first rate found >= requested rate. Now, if system have spi's
-  rate as 83 MHz, with possible prescaled rates as 83, 41.5, 20.75, 13.83 (as we
-  can prescale with multiples of 2). If user has given rate to be programmed as
-  22 MHz, then driver programmes it to 41.5 MHz. This looks to be incorrect, as
-  user might have given the upper limit of the device, and we are programming it
-  above it.
-- Driver finds the first satisfying rate and programmes it, but with other
-  values of scr & cpsdvsr, it is possible to get more closer rate.
-
-This patch fixes these two issues, with some reformatting inside the code.
-This also creates a macro to calculate prescaled rate based on spi's rate,
-cpsdvsr and scr.
-
-Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
----
- drivers/spi/spi-pl022.c |   98 ++++++++++++++++++++++------------------------
- 1 files changed, 47 insertions(+), 51 deletions(-)
-
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 452952b..e0cfb8c 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1791,67 +1791,63 @@ static int pl022_transfer(struct spi_device *spi, struct spi_message *msg)
- 	return 0;
- }
- 
--static int calculate_effective_freq(struct pl022 *pl022,
--				    int freq,
--				    struct ssp_clock_params *clk_freq)
-+#define SPI_RATE(rate, cpsdvsr, scr)	(rate / (cpsdvsr * (1 + scr)))
-+static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
-+				    ssp_clock_params * clk_freq)
- {
- 	/* Lets calculate the frequency parameters */
--	u16 cpsdvsr = 2;
--	u16 scr = 0;
--	bool freq_found = false;
--	u32 rate;
--	u32 max_tclk;
--	u32 min_tclk;
-+	u16 cpsdvsr = CPSDVR_MIN, scr = SCR_MIN;
-+	u32 rate, max_tclk, min_tclk, best_freq = 0, best_cpsdvsr = 0,
-+		best_scr = 0, tmp, found = 0;
- 
- 	rate = clk_get_rate(pl022->clk);
- 	/* cpsdvscr = 2 & scr 0 */
--	max_tclk = (rate / (CPSDVR_MIN * (1 + SCR_MIN)));
-+	max_tclk = SPI_RATE(rate, CPSDVR_MIN, SCR_MIN);
- 	/* cpsdvsr = 254 & scr = 255 */
--	min_tclk = (rate / (CPSDVR_MAX * (1 + SCR_MAX)));
--
--	if ((freq <= max_tclk) && (freq >= min_tclk)) {
--		while (cpsdvsr <= CPSDVR_MAX && !freq_found) {
--			while (scr <= SCR_MAX && !freq_found) {
--				if ((rate /
--				     (cpsdvsr * (1 + scr))) > freq)
--					scr += 1;
--				else {
--					/*
--					 * This bool is made true when
--					 * effective frequency >=
--					 * target frequency is found
--					 */
--					freq_found = true;
--					if ((rate /
--					     (cpsdvsr * (1 + scr))) != freq) {
--						if (scr == SCR_MIN) {
--							cpsdvsr -= 2;
--							scr = SCR_MAX;
--						} else
--							scr -= 1;
--					}
--				}
--			}
--			if (!freq_found) {
--				cpsdvsr += 2;
--				scr = SCR_MIN;
--			}
--		}
--		if (cpsdvsr != 0) {
--			dev_dbg(&pl022->adev->dev,
--				"SSP Effective Frequency is %u\n",
--				(rate / (cpsdvsr * (1 + scr))));
--			clk_freq->cpsdvsr = (u8) (cpsdvsr & 0xFF);
--			clk_freq->scr = (u8) (scr & 0xFF);
--			dev_dbg(&pl022->adev->dev,
--				"SSP cpsdvsr = %d, scr = %d\n",
--				clk_freq->cpsdvsr, clk_freq->scr);
--		}
--	} else {
-+	min_tclk = SPI_RATE(rate, CPSDVR_MAX, SCR_MAX);
-+
-+	if (!((freq <= max_tclk) && (freq >= min_tclk))) {
- 		dev_err(&pl022->adev->dev,
- 			"controller data is incorrect: out of range frequency");
- 		return -EINVAL;
- 	}
-+
-+	/*
-+	 * best_freq will give closest possible available rate (<= requested
-+	 * freq) for all values of scr & cpsdvsr.
-+	 */
-+	while ((cpsdvsr <= CPSDVR_MAX) && !found) {
-+		while (scr <= SCR_MAX) {
-+			tmp = SPI_RATE(rate, cpsdvsr, scr);
-+
-+			if (tmp > freq)
-+				scr++;
-+			/*
-+			 * If found exact value, update and break.
-+			 * If found more closer value, update and continue.
-+			 */
-+			else if ((tmp == freq) || (tmp > best_freq)) {
-+				best_freq = tmp;
-+				best_cpsdvsr = cpsdvsr;
-+				best_scr = scr;
-+
-+				if (tmp == freq)
-+					break;
-+			}
-+			scr++;
-+		}
-+		cpsdvsr += 2;
-+		scr = SCR_MIN;
-+	}
-+
-+	clk_freq->cpsdvsr = (u8) (best_cpsdvsr & 0xFF);
-+	clk_freq->scr = (u8) (best_scr & 0xFF);
-+	dev_dbg(&pl022->adev->dev,
-+		"SSP Target Frequency is: %u, Effective Frequency is %u\n",
-+		freq, best_freq);
-+	dev_dbg(&pl022->adev->dev, "SSP cpsdvsr = %d, scr = %d\n",
-+		clk_freq->cpsdvsr, clk_freq->scr);
-+
- 	return 0;
- }
- 
--- 
-1.7.2.2
-
-
-------------------------------------------------------------------------------
-uberSVN's rich system and user administration capabilities and model 
-configuration take the hassle out of deploying and managing Subversion and 
-the tools developers use with it. Learn more about uberSVN and get a free 
-download at:  http://p.sf.net/sfu/wandisco-dev2dev
+T24gVHVlLCBBdWcgOSwgMjAxMSBhdCA0OjM1IFBNLCBWaXJlc2ggS3VtYXIgPHZpcmVzaC5rdW1h
+ckBzdC5jb20+IHdyb3RlOgo+IHRhc2tsZXRzIGRvbid0IGFsbG93IGludm9jYXRpb24gdG8gc2xl
+ZXBpbmcgcm91dGluZXMuIEluIGNvbmZpZ3VyZV9kbWEoKQo+IHJvdXRpbmUsIHNnX2FsbG9jX3Rh
+YmxlKCkgd2FzIGNhbGxlZCB3aXRoIEdGUF9LRVJORUwgZmxhZyBhbmQgc28gdGhpcyBjYXVzZXMK
+PiBjcmFzaCB3aGVuIGNhbGxlZCBmcm9tIHRhc2tsZXQuCj4KPiBSZXBsYWNlIEdGUF9LRVJORUwg
+d2l0aCBHRlBfTk9XQUlUIHRvIGdldCB0aGlzIGZpeGVkLgo+Cj4gU2lnbmVkLW9mZi1ieTogVmly
+ZXNoIEt1bWFyIDx2aXJlc2gua3VtYXJAc3QuY29tPgo+IC0tLQo+IMKgZHJpdmVycy9zcGkvc3Bp
+LXBsMDIyLmMgfCDCoCDCoDQgKystLQo+IMKgMSBmaWxlcyBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLXBsMDIy
+LmMgYi9kcml2ZXJzL3NwaS9zcGktcGwwMjIuYwo+IGluZGV4IGY2MDBkMDAuLmNiZDlhZmUgMTAw
+NjQ0Cj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLXBsMDIyLmMKPiArKysgYi9kcml2ZXJzL3NwaS9z
+cGktcGwwMjIuYwo+IEBAIC0xMDE5LDExICsxMDE5LDExIEBAIHN0YXRpYyBpbnQgY29uZmlndXJl
+X2RtYShzdHJ1Y3QgcGwwMjIgKnBsMDIyKQo+IMKgIMKgIMKgIMKgcGFnZXMgPSAocGwwMjItPmN1
+cl90cmFuc2Zlci0+bGVuID4+IFBBR0VfU0hJRlQpICsgMTsKPiDCoCDCoCDCoCDCoGRldl9kYmco
+JnBsMDIyLT5hZGV2LT5kZXYsICJ1c2luZyAlZCBwYWdlcyBmb3IgdHJhbnNmZXJcbiIsIHBhZ2Vz
+KTsKPgo+IC0gwqAgwqAgwqAgcmV0ID0gc2dfYWxsb2NfdGFibGUoJnBsMDIyLT5zZ3RfcngsIHBh
+Z2VzLCBHRlBfS0VSTkVMKTsKPiArIMKgIMKgIMKgIHJldCA9IHNnX2FsbG9jX3RhYmxlKCZwbDAy
+Mi0+c2d0X3J4LCBwYWdlcywgR0ZQX05PV0FJVCk7Cj4gwqAgwqAgwqAgwqBpZiAocmV0KQo+IMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgZ290byBlcnJfYWxsb2Nfcnhfc2c7Cj4KPiAtIMKgIMKgIMKg
+IHJldCA9IHNnX2FsbG9jX3RhYmxlKCZwbDAyMi0+c2d0X3R4LCBwYWdlcywgR0ZQX0tFUk5FTCk7
+Cj4gKyDCoCDCoCDCoCByZXQgPSBzZ19hbGxvY190YWJsZSgmcGwwMjItPnNndF90eCwgcGFnZXMs
+IEdGUF9OT1dBSVQpOwo+IMKgIMKgIMKgIMKgaWYgKHJldCkKPiDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoGdvdG8gZXJyX2FsbG9jX3R4X3NnOwoKU2luY2UgdGhpcyBjb3VsZCBiZSBjYWxsZWQgZnJv
+bSB3aGVuIHdlIGFjdHVhbGx5IG5lZWQgdGhlIHRyYW5zZmVyIHN0YXJ0LAptYXliZSB3ZSBjb3Vs
+ZCB0cnkgaGFyZGVyIHVzaW5nIEdGUF9BVE9NSUMgaW5zdGVhZCA/CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcg
+bGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

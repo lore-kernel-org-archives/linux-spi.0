@@ -1,7 +1,8 @@
 From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH 0/6] spi/spi-pl022 fixes
-Date: Tue, 9 Aug 2011 16:35:17 +0530
-Message-ID: <cover.1312887860.git.viresh.kumar@st.com>
+Subject: [PATCH 3/6] spi/spi-pl022: Don't allocate more sg than required.
+Date: Tue, 9 Aug 2011 16:35:20 +0530
+Message-ID: <5796146a77035a0dadefd2fb430e87156c6c2114.1312887860.git.viresh.kumar@st.com>
+References: <cover.1312887860.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,6 +14,7 @@ Cc: vipin.kumar-qxv4g6HH51o@public.gmane.org, viresh.kumar-qxv4g6HH51o@public.gm
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <cover.1312887860.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,39 +25,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus,
+In routine configure_dma(), if transfer->len = PAGE_SIZE, then pages is one more
+than required. While leads to one more sg getting allocated.
 
-This patchset mainly covers following fixes:
-- formatting related issues
-- Passing GFP_NOWAIT for sg allocation from tasklet
-- Fixing calculate_effective_freq() routine
-- Allocate/free DMA channels as and when required.
+This is wrong. Correct this to allocate correct number of sg.
 
-I have rebased them on linux-next/master over following patch:
+Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-commit 9be355da3bae9feb09cdaf80c3ab560f1f0172cb
-Author: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
-Date:   Tue Aug 9 13:30:19 2011 +1000
-
-    Add linux-next specific files for 20110809
-    
-    Signed-off-by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
-
-Looking forward to see your view on the patchset.
-
-Viresh Kumar (6):
-  spi/spi-pl022: Resolve formatting issues
-  spi/spi-pl022: Use GFP_NOWAIT for allocation from tasklet
-  spi/spi-pl022: Don't allocate more sg than required.
-  spi/spi-pl022: calculate_effective_freq() must set rate <= requested
-    rate
-  spi/spi-pl022: Call pl022_dma_remove(pl022) only if enable_dma is
-    true
-  spi/spi-pl022: Request/free DMA channels as and when required.
-
- drivers/spi/spi-pl022.c |  265 ++++++++++++++++++++++++++---------------------
- 1 files changed, 147 insertions(+), 118 deletions(-)
-
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index cbd9afe..452952b 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1016,7 +1016,8 @@ static int configure_dma(struct pl022 *pl022)
+ 	dmaengine_slave_config(txchan, &tx_conf);
+ 
+ 	/* Create sglists for the transfers */
+-	pages = (pl022->cur_transfer->len >> PAGE_SHIFT) + 1;
++	pages = ((pl022->cur_transfer->len + (1 << PAGE_SHIFT) - 1)
++			>> PAGE_SHIFT);
+ 	dev_dbg(&pl022->adev->dev, "using %d pages for transfer\n", pages);
+ 
+ 	ret = sg_alloc_table(&pl022->sgt_rx, pages, GFP_NOWAIT);
 -- 
 1.7.2.2
 

@@ -1,8 +1,7 @@
 From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH 6/6] spi/spi-pl022: Request/free DMA channels as and when
-	required.
-Date: Tue, 9 Aug 2011 16:35:23 +0530
-Message-ID: <68a2f54a8c2cc542278f3fe6678c555716b8f4d9.1312887860.git.viresh.kumar@st.com>
+Subject: [PATCH 1/6] spi/spi-pl022: Resolve formatting issues
+Date: Tue, 9 Aug 2011 16:35:18 +0530
+Message-ID: <a72e7189be95278b97614fe9ab7d307d422d54e4.1312887860.git.viresh.kumar@st.com>
 References: <cover.1312887860.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,199 +25,220 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently we request DMA channels at probe time and free them at remove. They
-are always occupied, irrespective of their usage.
-
-They must be allocated when they are required and must be freed after we are
-done with transfers. So that they can be used by other users.
+There were few formatting related issues in code. This patch fixes them.
+Fixes include:
+- Remove extra blank lines
+- align code to 80 cols
+- combine several lines to one line
+- Replace multiple spaces with tabs
+- Remove spaces before labels
 
 Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   98 +++++++++++++++++++++++++++++++++-------------
- 1 files changed, 70 insertions(+), 28 deletions(-)
+ drivers/spi/spi-pl022.c |   54 +++++++++++++++++-----------------------------
+ 1 files changed, 20 insertions(+), 34 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index e2333e7..3653f00 100644
+index 730b4a3..f600d00 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -389,6 +389,7 @@ struct pl022 {
- 	struct sg_table			sgt_rx;
- 	struct sg_table			sgt_tx;
- 	char				*dummypage;
-+	dma_cap_mask_t			mask;
- #endif
+@@ -113,7 +113,6 @@
+ #define SSP_CR0_MASK_CSS_ST	(0x1FUL << 16)
+ #define SSP_CR0_MASK_FRF_ST	(0x3UL << 21)
+ 
+-
+ /*
+  * SSP Control Register 0  - SSP_CR1
+  */
+@@ -283,7 +282,6 @@
+ 
+ #define SPI_POLLING_TIMEOUT 1000
+ 
+-
+ /*
+  * The type of reading going on on this chip
+  */
+@@ -752,7 +750,6 @@ static void readwriter(struct pl022 *pl022)
+ 	 */
+ }
+ 
+-
+ /**
+  * next_transfer - Move to the Next transfer in the current spi message
+  * @pl022: SSP driver private data structure
+@@ -1534,8 +1531,7 @@ static void pump_messages(struct work_struct *work)
+ 	/* Initial message state */
+ 	pl022->cur_msg->state = STATE_START;
+ 	pl022->cur_transfer = list_entry(pl022->cur_msg->transfers.next,
+-					    struct spi_transfer,
+-					    transfer_list);
++					    struct spi_transfer, transfer_list);
+ 
+ 	/* Setup the SPI using the per chip configuration */
+ 	pl022->cur_chip = spi_get_ctldata(pl022->cur_msg->spi);
+@@ -1557,7 +1553,6 @@ static void pump_messages(struct work_struct *work)
+ 		do_interrupt_dma_transfer(pl022);
+ }
+ 
+-
+ static int __init init_queue(struct pl022 *pl022)
+ {
+ 	INIT_LIST_HEAD(&pl022->queue);
+@@ -1566,8 +1561,8 @@ static int __init init_queue(struct pl022 *pl022)
+ 	pl022->running = false;
+ 	pl022->busy = false;
+ 
+-	tasklet_init(&pl022->pump_transfers,
+-			pump_transfers,	(unsigned long)pl022);
++	tasklet_init(&pl022->pump_transfers, pump_transfers,
++			(unsigned long)pl022);
+ 
+ 	INIT_WORK(&pl022->pump_messages, pump_messages);
+ 	pl022->workqueue = create_singlethread_workqueue(
+@@ -1578,7 +1573,6 @@ static int __init init_queue(struct pl022 *pl022)
+ 	return 0;
+ }
+ 
+-
+ static int start_queue(struct pl022 *pl022)
+ {
+ 	unsigned long flags;
+@@ -1601,7 +1595,6 @@ static int start_queue(struct pl022 *pl022)
+ 	return 0;
+ }
+ 
+-
+ static int stop_queue(struct pl022 *pl022)
+ {
+ 	unsigned long flags;
+@@ -1861,7 +1854,6 @@ static int calculate_effective_freq(struct pl022 *pl022,
+ 	return 0;
+ }
+ 
+-
+ /*
+  * A piece of default chip info unless the platform
+  * supplies it.
+@@ -1879,7 +1871,6 @@ static const struct pl022_config_chip pl022_default_chip_info = {
+ 	.cs_control = null_cs_control,
  };
  
-@@ -1093,16 +1094,33 @@ err_alloc_rx_sg:
- 
- static int __init pl022_dma_probe(struct pl022 *pl022)
- {
--	dma_cap_mask_t mask;
-+	/* set dma mask */
-+	dma_cap_zero(pl022->mask);
-+	dma_cap_set(DMA_SLAVE, pl022->mask);
- 
--	/* Try to acquire a generic DMA engine slave channel */
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
-+	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!pl022->dummypage) {
-+		dev_err(&pl022->adev->dev,
-+			"Failed to work in dma mode, work without dma!\n");
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
-+static int pl022_alloc_dmachan(struct pl022 *pl022)
-+{
- 	/*
--	 * We need both RX and TX channels to do DMA, else do none
--	 * of them.
-+	 * Both channels should be allocated or not allocated. It is wrong if
-+	 * only one allocated
- 	 */
--	pl022->dma_rx_channel = dma_request_channel(mask,
-+	if (pl022->dma_rx_channel && pl022->dma_tx_channel)
-+		return 0;
-+
-+	BUG_ON(pl022->dma_rx_channel || pl022->dma_tx_channel);
-+
-+	/* We need both RX and TX channels to do DMA, else do none of them. */
-+	pl022->dma_rx_channel = dma_request_channel(pl022->mask,
- 					    pl022->master_info->dma_filter,
- 					    pl022->master_info->dma_rx_param);
- 	if (!pl022->dma_rx_channel) {
-@@ -1110,7 +1128,7 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
- 		goto err_no_rxchan;
- 	}
- 
--	pl022->dma_tx_channel = dma_request_channel(mask,
-+	pl022->dma_tx_channel = dma_request_channel(pl022->mask,
- 					    pl022->master_info->dma_filter,
- 					    pl022->master_info->dma_tx_param);
- 	if (!pl022->dma_tx_channel) {
-@@ -1118,20 +1136,12 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
- 		goto err_no_txchan;
- 	}
- 
--	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
--	if (!pl022->dummypage) {
--		dev_dbg(&pl022->adev->dev, "no DMA dummypage!\n");
--		goto err_no_dummypage;
--	}
 -
--	dev_info(&pl022->adev->dev, "setup for DMA on RX %s, TX %s\n",
-+	dev_dbg(&pl022->adev->dev, "setup for DMA on RX %s, TX %s\n",
- 		 dma_chan_name(pl022->dma_rx_channel),
- 		 dma_chan_name(pl022->dma_tx_channel));
+ /**
+  * pl022_setup - setup function registered to SPI master framework
+  * @spi: spi device which is requesting setup
+@@ -1956,7 +1947,6 @@ static int pl022_setup(struct spi_device *spi)
+ 		goto err_config_params;
+ 	}
  
+-
+ 	status = verify_controller_parameters(pl022, chip_info);
+ 	if (status) {
+ 		dev_err(&spi->dev, "controller data is incorrect");
+@@ -2096,12 +2086,13 @@ static int pl022_setup(struct spi_device *spi)
+ 	}
+ 	SSP_WRITE_BITS(chip->cr1, SSP_DISABLED, SSP_CR1_MASK_SSE, 1);
+ 	SSP_WRITE_BITS(chip->cr1, chip_info->hierarchy, SSP_CR1_MASK_MS, 2);
+-	SSP_WRITE_BITS(chip->cr1, chip_info->slave_tx_disable, SSP_CR1_MASK_SOD, 3);
++	SSP_WRITE_BITS(chip->cr1, chip_info->slave_tx_disable, SSP_CR1_MASK_SOD,
++		3);
+ 
+ 	/* Save controller_state */
+ 	spi_set_ctldata(spi, chip);
+ 	return status;
+- err_config_params:
++err_config_params:
+ 	spi_set_ctldata(spi, NULL);
+ 	kfree(chip);
+ 	return status;
+@@ -2122,7 +2113,6 @@ static void pl022_cleanup(struct spi_device *spi)
+ 	kfree(chip);
+ }
+ 
+-
+ static int __devinit
+ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ {
+@@ -2243,23 +2233,23 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	amba_vcore_disable(adev);
  	return 0;
  
--err_no_dummypage:
--	dma_release_channel(pl022->dma_tx_channel);
- err_no_txchan:
- 	dma_release_channel(pl022->dma_rx_channel);
- 	pl022->dma_rx_channel = NULL;
-@@ -1143,22 +1153,30 @@ err_no_rxchan:
+- err_spi_register:
+- err_start_queue:
+- err_init_queue:
++err_spi_register:
++err_start_queue:
++err_init_queue:
+ 	destroy_queue(pl022);
+ 	pl022_dma_remove(pl022);
+ 	free_irq(adev->irq[0], pl022);
+ 	pm_runtime_disable(&adev->dev);
+- err_no_irq:
++err_no_irq:
+ 	clk_put(pl022->clk);
+- err_no_clk:
++err_no_clk:
+ 	iounmap(pl022->virtbase);
+- err_no_ioremap:
++err_no_ioremap:
+ 	amba_release_regions(adev);
+- err_no_ioregion:
++err_no_ioregion:
+ 	spi_master_put(master);
+- err_no_master:
+- err_no_pdata:
++err_no_master:
++err_no_pdata:
+ 	return status;
+ }
  
- static void terminate_dma(struct pl022 *pl022)
- {
--	struct dma_chan *rxchan = pl022->dma_rx_channel;
--	struct dma_chan *txchan = pl022->dma_tx_channel;
+@@ -2337,7 +2327,6 @@ static struct vendor_data vendor_arm = {
+ 	.loopback = true,
+ };
+ 
 -
--	dmaengine_terminate_all(rxchan);
--	dmaengine_terminate_all(txchan);
--	unmap_free_dma_scatter(pl022);
-+	if (pl022->dma_rx_channel)
-+		dmaengine_terminate_all(pl022->dma_rx_channel);
-+	if (pl022->dma_tx_channel)
-+		dmaengine_terminate_all(pl022->dma_tx_channel);
- }
+ static struct vendor_data vendor_st = {
+ 	.fifodepth = 32,
+ 	.max_bpw = 32,
+@@ -2392,9 +2381,9 @@ static struct amba_id pl022_ids[] = {
+ 		 * and 32 locations deep TX/RX FIFO but no extended
+ 		 * CR0/CR1 register
+ 		 */
+-		.id     = 0x00080023,
+-		.mask   = 0xffffffff,
+-		.data   = &vendor_st_pl023,
++		.id	= 0x00080023,
++		.mask	= 0xffffffff,
++		.data	= &vendor_st_pl023,
+ 	},
+ 	{
+ 		.id	= 0x10080023,
+@@ -2411,23 +2400,20 @@ static struct amba_driver pl022_driver = {
+ 	.id_table	= pl022_ids,
+ 	.probe		= pl022_probe,
+ 	.remove		= __devexit_p(pl022_remove),
+-	.suspend        = pl022_suspend,
+-	.resume         = pl022_resume,
++	.suspend	= pl022_suspend,
++	.resume		= pl022_resume,
+ };
  
--static void pl022_dma_remove(struct pl022 *pl022)
-+static void pl022_free_dmachan(struct pl022 *pl022)
+-
+ static int __init pl022_init(void)
  {
--	if (pl022->busy)
--		terminate_dma(pl022);
- 	if (pl022->dma_tx_channel)
- 		dma_release_channel(pl022->dma_tx_channel);
- 	if (pl022->dma_rx_channel)
- 		dma_release_channel(pl022->dma_rx_channel);
-+
-+	pl022->dma_rx_channel = pl022->dma_tx_channel = NULL;
-+}
-+
-+static void pl022_dma_remove(struct pl022 *pl022)
-+{
-+	if (pl022->busy) {
-+		terminate_dma(pl022);
-+		unmap_free_dma_scatter(pl022);
-+	}
-+
-+	pl022_free_dmachan(pl022);
- 	kfree(pl022->dummypage);
+ 	return amba_driver_register(&pl022_driver);
  }
+-
+ subsys_initcall(pl022_init);
  
-@@ -1176,6 +1194,19 @@ static inline int pl022_dma_probe(struct pl022 *pl022)
- static inline void pl022_dma_remove(struct pl022 *pl022)
+ static void __exit pl022_exit(void)
  {
+ 	amba_driver_unregister(&pl022_driver);
  }
-+
-+static inline int pl022_alloc_dmachan(struct pl022 *pl022)
-+{
-+	return 0;
-+}
-+
-+static inline void terminate_dma(struct pl022 *pl022)
-+{
-+}
-+
-+static void pl022_free_dmachan(struct pl022 *pl022)
-+{
-+}
- #endif
+-
+ module_exit(pl022_exit);
  
- /**
-@@ -1401,16 +1432,20 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
- 	}
- 	/* If we're using DMA, set up DMA here */
- 	if (pl022->cur_chip->enable_dma) {
-+		int status = pl022_alloc_dmachan(pl022);
-+		if (status)
-+			goto switch_to_irq_mode;
-+
- 		/* Configure DMA transfer */
- 		if (configure_dma(pl022)) {
- 			dev_dbg(&pl022->adev->dev,
- 				"configuration of DMA failed, fall back to interrupt mode\n");
--			goto err_config_dma;
-+			goto switch_to_irq_mode;
- 		}
- 		/* Disable interrupts in DMA mode, IRQ from DMA controller */
- 		irqflags = DISABLE_ALL_INTERRUPTS;
- 	}
--err_config_dma:
-+switch_to_irq_mode:
- 	/* Enable SSP, turn on interrupts */
- 	writew((readw(SSP_CR1(pl022->virtbase)) | SSP_CR1_MASK_SSE),
- 	       SSP_CR1(pl022->virtbase));
-@@ -1513,7 +1548,14 @@ static void pump_messages(struct work_struct *work)
- 	spin_lock_irqsave(&pl022->queue_lock, flags);
- 	if (list_empty(&pl022->queue) || !pl022->running) {
- 		pl022->busy = false;
-+
- 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
-+
-+		/* free dma channels */
-+		if (pl022->master_info->enable_dma) {
-+			terminate_dma(pl022);
-+			pl022_free_dmachan(pl022);
-+		}
- 		return;
- 	}
- 	/* Make sure we are not already running a message */
+ MODULE_AUTHOR("Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>");
 -- 
 1.7.2.2
 

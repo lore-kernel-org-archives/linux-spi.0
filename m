@@ -1,18 +1,14 @@
-From: "=?gb2312?Q?Google=C2=F2=BC=D2?=" <admin-J0of1frlU83M1kAEIRd3EQ@public.gmane.org>
-Subject: [SPAM] =?gb2312?Q?=C3=BF=CC=EC=B6=BC=D3=D0=C2=F2=BC=D2=D1=AF=C5=CC,
-	=BD=F6=D0=E8=D2=AA10=D4=AA-=BD=F0=CB=B6=CD=E2=C3=B3=D3=C5=BB=AF?=
-Date: Tue, 9 Aug 2011 01:48:45 +0000 (UTC)
-Message-ID: <201108071843274.SM06040@gate-fb99b0afee>
-Reply-To: buyerssearchceo-O5WfVfzUwx8@public.gmane.org
+From: =?koi8-r?B?zsHT1NXQzMXOycUg?= <ieiqcqtvi-XzQKRVe1yT0V+D8aMU/kSg@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ5OSDS1cI=?=
+Date: Tue, 09 Aug 2011 13:22:00 +0400
+Message-ID: <88F88800ACD2404B99ABBBA1CCF58371@lzjcmb>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
+Content-Type: text/plain; charset="koi8-r"
 Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?sjobergr@mail=2Enih=2Egov?=" <sjobergr-2loH/HJHQuifRvmTrFJqzg@public.gmane.org>,
-	"=?gb2312?Q?rickymartinrealtor@gmail=2Ecom?="
-	<rickymartinrealtor-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"=?gb2312?Q?aerickson@dpstelecom=2Ecom?
+To: fedor-mnO0GIe32D0@public.gmane.org, congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org, diktor-SYPjacQAEmk@public.gmane.org, info-G2tT1RKrIAQ@public.gmane.org,
+	transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org, gostnorm-5URONGGNgjI@public.gmane.org, ternedvig-JGs/UdohzUI@public.gmane.org, valeev-SYPjacQAEmk@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Mon, 6 Aug 2018 18:41:15 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,19 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgrN4sOz1L3AtNS9xNHX9qO/CkIyQrXEv827p9bKwb+y7qGi0a/FzLbgoaKzyb27ydmhorLO1bm3
-0dPDuN+jrNW5u+G1xLiyuMfVraOs0Ke5+7LuoaMKCsO/zOy2vNPQwvK80tGvxcwsvfbQ6NKqMTDU
-qi4Kw7/M7La809DC8rzS0a/FzCy99tDo0qoxMNSqLgrDv8zstrzT0MLyvNLRr8XMLL320OjSqjEw
-1KouCgrWp7PW1qe4trGmtaOxo7270tcgKM/It6K79bKisLLXsMno1sPI7bz+o6zIu7rzuLa/7ikg
-s7m117Tyz/vE+rXEILnLwsehowoKx+vBqs+1o7oKUVE6ODc4ODIwNzM2ICAgZW1haWw6IDg3ODgy
-MDczNkBxcS5jb20KUVE6ODc4ODIwNzM2ICAgZW1haWw6IDg3ODgyMDczNkBxcS5jb20KUVE6ODc4
-ODIwNzM2ICAgZW1haWw6IDg3ODgyMDczNkBxcS5jb20KCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CnViZXJTVk4ncyByaWNoIHN5c3RlbSBhbmQgdXNlciBhZG1pbmlzdHJhdGlvbiBjYXBhYmlsaXRp
-ZXMgYW5kIG1vZGVsIApjb25maWd1cmF0aW9uIHRha2UgdGhlIGhhc3NsZSBvdXQgb2YgZGVwbG95
-aW5nIGFuZCBtYW5hZ2luZyBTdWJ2ZXJzaW9uIGFuZCAKdGhlIHRvb2xzIGRldmVsb3BlcnMgdXNl
-IHdpdGggaXQuIExlYXJuIG1vcmUgYWJvdXQgdWJlclNWTiBhbmQgZ2V0IGEgZnJlZSAKZG93bmxv
-YWQgYXQ6ICBodHRwOi8vcC5zZi5uZXQvc2Z1L3dhbmRpc2NvLWRldjJkZXYKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0NzAg0tXC
+CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjkwNzUwNCDBxNIgLSA0OTMyINLVwgogCu3P08vXwSDGydou
+zMnDwSAtIDcuNzM0Mjg5IMHE0iAtIDg0NTEg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
+Oi8vd3d3LmFhYS0xMDEuY29tL2kzLmh0bWwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp1YmVyU1ZO
+J3MgcmljaCBzeXN0ZW0gYW5kIHVzZXIgYWRtaW5pc3RyYXRpb24gY2FwYWJpbGl0aWVzIGFuZCBt
+b2RlbCAKY29uZmlndXJhdGlvbiB0YWtlIHRoZSBoYXNzbGUgb3V0IG9mIGRlcGxveWluZyBhbmQg
+bWFuYWdpbmcgU3VidmVyc2lvbiBhbmQgCnRoZSB0b29scyBkZXZlbG9wZXJzIHVzZSB3aXRoIGl0
+LiBMZWFybiBtb3JlIGFib3V0IHViZXJTVk4gYW5kIGdldCBhIGZyZWUgCmRvd25sb2FkIGF0OiAg
+aHR0cDovL3Auc2YubmV0L3NmdS93YW5kaXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

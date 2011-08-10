@@ -1,39 +1,22 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
-	when required.
-Date: Wed, 10 Aug 2011 16:54:36 +0530
-Message-ID: <CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
+From: Viresh Kumar <viresh.kumar@st.com>
+Subject: [PATCH V3 3/6] spi/spi-pl022: Don't allocate more sg than required.
+Date: Wed, 10 Aug 2011 17:12:11 +0530
+Message-ID: <2c858c49e0f854dd45c4489056ba2625683686b1.1312965741.git.viresh.kumar@st.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
-	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
-	<20110810090042.GE1831@n2100.arm.linux.org.uk>
-	<4E424F7B.2000800@st.com>
-	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
-	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
-	<20110810104025.GK1831@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
-	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>, "Koul,
-	Vinod" <vinod.koul@intel.com>,
-	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
-	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>, "Williams,
-	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infrad
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
+	bhupesh.sharma@st.com, armando.visconti@st.com,
+	linus.walleij@linaro.org, jassisinghbrar@gmail.com,
+	linux@arm.linux.org.uk, vipin.kumar@st.com, shiraz.hashim@st.com,
+	amit.virdi@st.com, vipulkumar.samar@st.com,
+	viresh.linux@gmail.com, deepak.sikri@st.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: <grant.likely@secretlab.ca>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110810104025.GK1831@n2100.arm.linux.org.uk>
+In-Reply-To: <cover.1312965741.git.viresh.kumar@st.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -45,77 +28,29 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkLCBBdWcgMTAsIDIwMTEgYXQgNDoxMCBQTSwgUnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4
-CjxsaW51eEBhcm0ubGludXgub3JnLnVrPiB3cm90ZToKPiBPbiBXZWQsIEF1ZyAxMCwgMjAxMSBh
-dCAwNDowMToxM1BNICswNTMwLCBKYXNzaSBCcmFyIHdyb3RlOgo+PiBPbiBXZWQsIEF1ZyAxMCwg
-MjAxMSBhdCAzOjMxIFBNLCBLb3VsLCBWaW5vZCA8dmlub2Qua291bEBpbnRlbC5jb20+IHdyb3Rl
-Ogo+PiA+IE9uIFdlZCwgMjAxMS0wOC0xMCBhdCAxNDo1OSArMDUzMCwgdmlyZXNoIGt1bWFyIHdy
-b3RlOgo+PiA+PiBPbiAwOC8xMC8yMDExIDAyOjMwIFBNLCBSdXNzZWxsIEtpbmcgLSBBUk0gTGlu
-dXggd3JvdGU6Cj4+ID4+ID4+ID4gVGhleSBtdXN0IGJlIGFsbG9jYXRlZCB3aGVuIHRoZXkgYXJl
-IHJlcXVpcmVkIGFuZCBtdXN0IGJlIGZyZWVkIGFmdGVyIHdlIGFyZQo+PiA+PiA+PiA+IGRvbmUg
-d2l0aCB0cmFuc2ZlcnMuIFNvIHRoYXQgdGhleSBjYW4gYmUgdXNlZCBieSBvdGhlciB1c2Vycy4K
-Pj4gPj4gPiBXaGljaCBETUEgZW5naW5lIGRyaXZlciByZXF1aXJlcyB0aGlzPwo+PiA+PiA+Cj4+
-ID4+Cj4+ID4+IGR3X2RtYWMuYwo+PiA+Pgo+PiA+PiA+IE5vcm1hbGx5LCB3aGVuIHdlIGhhdmUg
-RE1BIGVuZ2luZSBkcml2ZXJzIHdpdGggbXVsdGlwbGUgcmVxdWVzdCBzaWduYWxzLAo+PiA+PiA+
-IHRoZSBzbGF2ZSBwZXJpcGhlcmFsIHNpZGUgcHVibGlzaGVzIHNldmVyYWwgdmlydHVhbCBjaGFu
-bmVscyB3aGljaCBhcmUKPj4gPj4gPiBjbGFpbWVkIGJ5IHRoZSBwZXJpcGhlcmFsIGRyaXZlcnMu
-IMKgVGhpcyAoYW1vbmdzdCBvdGhlciB0aGluZ3MpIGFsbG93cwo+PiA+PiA+IHRoZSBwZXJpcGhl
-cmFsIGRyaXZlcnMgdG8gaG9sZCBjbGFpbSB0byBvbmUgb2YgdGhlIHZpcnR1YWwgY2hhbm5lbHMK
-Pj4gPj4gPiBhbGwgdGhlIHRpbWUgdGhhdCBpdCdzIHJlcXVpcmVkLgo+PiA+Pgo+PiA+PiBJZiB1
-c2VycyBvZiBETUEgZXhwZWN0IERNQSBlbmdpbmUgZHJpdmVycyB0byB3b3JrIHRoaXMgd2F5LCB0
-aGVuIHdlIHNob3VsZAo+PiA+PiBoYXZlIHRoaXMgbWVudGlvbmVkIGNsZWFybHkgaW4gRE1BIHNs
-YXZlIGRvY3VtZW50YXRpb24uCj4+ID4+Cj4+ID4+IEBEYW4vVmlub2Q6IFdoYXQgZG8geW91IHNh
-eT8KPj4gPiBJIHdvdWxkIGFncmVlIG9uIGJvdGggY291bnRzIDopCj4+ID4KPj4gPiBJbiBzb21l
-IGNhc2VzIGl0IGRvZXMgbWFrZSBzZW5zZSB0byBob2xkIHRoZSBjaGFubmVsIGZvciB0aGUgbGlm
-ZXRpbWUKPj4gPiBsaWtlIHVhcnQgb3Igd2hlcmUgdGhlIGNoYW5uZWwgaGFzIGJlZW4gdGllZCB0
-byBhbiBpbnRlcmZhY2UgYnkgU29DCj4+ID4gZGVzaWduZXIuCj4+ID4gQnV0IGluIHNvbWUgY2Fz
-ZXMgbGlrZSBkd19kbWFjIGl0IHNlZW1zIHlvdSBjYW4gYXNzaWduIGNoYW5uZWxzCj4+ID4gZHlu
-YW1pY2FsbHkgdG8gZWFjaCB1c2FnZSwgYW5kIHJ1bnRpbWUgYWxsb2NhdGlvbiBlbnN1cmVzIHdl
-IGhhdmUgYmVzdAo+PiA+IHV0aWxpemF0aW9uLgo+PiA+IFNvIGkgd291bGQgYXJndWUgdGhhdCB0
-aGVyZSBpcyBubyAib25lIHNpemUgZml0cyBhbGwiIGhlcmUsIGlmIHlvdSBjYW4KPj4gPiBtYW5h
-Z2UgY2hhbm5lbHMgZHluYW1pY2FsbHkgYW5kIHV0aWxpemUgbW9yZSBlZmZpY2llbnRseSB0aGVu
-IGdvIGFoZWFkLAo+PiA+IGJ1dCBpZiB5b3UgY2FudCAoaC93IGFuZCB1c2FnZSBjb25zdHJhaW50
-KSB0aGVuIHlvdSBzaG91bGQgbm90IGJlIGZvcmNlZAo+PiA+IHRvIGRvIHNvLgo+Pgo+PiBUaGUg
-aWRlYSBpcyB0byBoYXZlIGNoYW5uZWwgYWxsb2NhdGlvbiBhcyBwdXJlbHkgYSBzL3cgdGhpbmcg
-LSBubwo+PiBhY3R1YWwgY29tbWl0bWVudAo+PiBvZiBoL3cgcmVzb3VyY2VzLiBTbyB3ZSBjYW4g
-YWZmb3JkIHRvIGhhdmUgY2hhbm5lbCBhbGxvY2F0ZWQgZm9yIHRoZQo+PiB3aG9sZSBsaWZldGlt
-ZQo+PiBvZiBhIGNsaWVudC4KPj4KPj4gU29tZSBkbWFjIGRyaXZlcnMgYXJlIHdyaXR0ZW4gJ2lt
-cHJvcGVybHknLCBrZWVwaW5nIGluIG1pbmQgdGhlCj4+IHBsYXRmb3JtcyB0aGF0IGhhdmUgZml4
-ZWQKPj4gUmVxU2lnLT5QZXJpIG1hcCBhbmQgbm8gbW9yZSBjbGllbnRzIHRoYW4gYWN0dWFsIHJl
-cS1zaWdzIGFyZSBhY3RpdmUKPj4gc2ltdWx0YW5lb3VzbHkuCj4+IEJ1dCBzdWNoIGRtYWMgZHJp
-dmVycyB3aWxsIGZhaWwgaWYgYSBuZXcgcGxhdGZvcm0gZGVjaWRlcyB0byBoaWphY2sgcmVxLXNp
-Z25hbHMuCj4+Cj4+IFNvLCBpbWhvLCBpdCBpcyBhYnNvbHV0ZWx5IGEgZ29vZCB0aGluZyBmb3Ig
-ZXZlcnkgZG1hYyBkcml2ZXIgdG8gYmUKPj4gZGVzaWduZWQgZm9yIHJlLXJvdXRhYmxlCj4+IFJl
-cVNpZy0+UGVyaSBtYXAuLi4gd2hpY2ggd291bGQgZm9yY2UgdGhlaXIgZGVzaWduIHRvIGFsbG9j
-YXRlCj4+IHZpcnR1YWwvc29mdHdhcmUgY2hhbm5lbHMgdG8gY2xpZW50cwo+PiB3aXRob3V0IGNv
-bW1pdCBtdWNoKGFueT8pIGgvdyByZXNvdXJjZXMuCj4KPiBXZSBkaXNjdXNzZWQgY2hhbm5lbCBh
-bGxvY2F0aW9uIGF0IExpbmFyby4gwqBIb3dldmVyLCBJIGFtIG5vdyBfcmVhbGx5Xwo+IGRpc2Fw
-cG9pbnRlZC4KSG9uZXN0bHksIEkgZG9uJ3Qgc2VlIGhvdyB0aGlzIGRldmlhdGVzIGZyb20gbXkg
-cHJvcG9zYWwgYW5kIHdoeSB5b3UgdGhpbmsKYSBkbWFjIGRyaXZlciBkZXNpZ25lZCBmb3IgZml4
-ZWQgUmVxU2lnLT5QZXJpIG1hcCBpcyBmdXR1cmUtcHJvb2YgKG15IHRoYXQKdmVyeSBhc3NlcnRp
-b24gbWFkZSB5b3UgcmVhbGx5IGRpc2FwcG9pbnRlZCkhCgpBbGwgdGhlIFBMMDgwIHBsYXRmb3Jt
-cyB0aGF0IEkgaGF2ZSB3b3JrZWQsIGhhZCBhIGZpeGVkIG1hcC4uLmFuZCBJIGFtIHN1cmUgeW91
-CndvdWxkbid0IGhhdmUgYmVlbiBoYXBweSBsb29raW5nIGF0IGEgZG1hYyBkcml2ZXIgYmFzZWQg
-dXBvbiB0aGF0IGFzc3VtcHRpb24uClNpbWlsYXJseSBmb3IgYW55IG90aGVyIGRtYWMgZHJpdmVy
-IGRldmVsb3BlciwgaXQgbWFrZXMgc2Vuc2UgdG8gYmUgc2FmZSBieQphc3N1bWluZyB0aGUgZG1h
-YyBjb3VsZCBoYXZlIGZsZXhpYmxlIG1hcCBvbiBzb21lIHBsYXRmb3JtLiBBbmQgdGhpcyBwcmVj
-aXNlbHkKd2h5IEkgc2FpZAp7CiBTbywgaW1obywgaXQgaXMgYWJzb2x1dGVseSBhIGdvb2QgdGhp
-bmcgZm9yIGV2ZXJ5IGRtYWMgZHJpdmVyIHRvIGJlCiBkZXNpZ25lZCBmb3IgcmUtcm91dGFibGUg
-UmVxU2lnLT5QZXJpIG1hcC4uLiB3aGljaCB3b3VsZCBmb3JjZSB0aGVpcgpkZXNpZ24gdG8gYWxs
-b2NhdGUKIHZpcnR1YWwvc29mdHdhcmUgY2hhbm5lbHMgdG8gY2xpZW50cyB3aXRob3V0IGNvbW1p
-dCBtdWNoKGFueT8pIGgvdyByZXNvdXJjZXMuCn0KCgo+IEkgZGlzY3Vzc2VkIHRoaXMgd2l0aCBM
-aW51cyBvbiB0aGUgYnVzIGJhY2sgZnJvbSBDYW1icmlkZ2UgaW4gdGhlIGV2ZW5pbmcsCj4gYW5k
-IGl0IGFwcGVhcnMgdGhhdCB0aGUgc3RvcnkgeW91IGdhdmUgbWUgd2FzIGluYWNjdXJhdGUgLSBM
-aW51cyBoYWQgbm90Cj4gYWdyZWVkIHRvIHlvdXIgcHJvcG9zYWwgYW5kIHNhdyBtb3JlIG9yIGxl
-c3MgdGhlIHNhbWUgcHJvYmxlbXMgd2l0aCBpdAo+IHdoaWNoIEkndmUgYmVlbiBvbiBhdCB5b3Ug
-YWJvdXQgdmlhIHlvdXIgb3RoZXIgZW1haWwgYWxpYXMvbGttbC4gwqBTbyB0aGF0J3MKPiBlc3Nl
-bnRpYWxseSBpbnZhbGlkYXRlZCBldmVyeXRoaW5nIHdlIGRpc2N1c3NlZCB0aGVyZSBhcyBwYXJ0
-IG9mIG15IHRoaW5raW5nCj4gd2FzICJpZiBMaW51cyBpcyBoYXBweSB3aXRoIGl0LCB0aGVuLi4u
-Ii4KSUlSQywgTGludXMgVyBtYWlubHkgb3BpbmVkIHRvIGludm9sdmUgZGV2aWNlIHBvaW50ZXIg
-ZHVyaW5nIGNoYW5uZWwgc2VsZWN0aW9uLgpPdGhlciB0aGFuIHRoYXQgSSB0aG91Z2h0IHRoZXJl
-IHdhcyBvbmx5IGFtYmlndWl0eSBhYm91dCBpbXBsZW1lbnRhdGlvbiBkZXRhaWxzLgoKTGludXMg
-Vywgd2FzIHRoZXJlIGFueXRoaW5nIHlvdSBzYWlkIHdvdWxkbid0IHdvcmsgd2l0aCB0aGUgc2No
-ZW1lID8KUGxlYXNlIHRlbGwgbm93IG9uIHRoZSByZWNvcmQuCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlz
-dApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==
+In routine configure_dma(), if transfer->len = PAGE_SIZE, then pages is one more
+than required. While leads to one more sg getting allocated.
+
+This is wrong. Correct this to allocate correct number of sg.
+
+Signed-off-by: Viresh Kumar <viresh.kumar@st.com>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 80116be..832361e3a 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1016,7 +1016,7 @@ static int configure_dma(struct pl022 *pl022)
+ 	dmaengine_slave_config(txchan, &tx_conf);
+ 
+ 	/* Create sglists for the transfers */
+-	pages = (pl022->cur_transfer->len >> PAGE_SHIFT) + 1;
++	pages = DIV_ROUND_UP(pl022->cur_transfer->len, PAGE_SIZE);
+ 	dev_dbg(&pl022->adev->dev, "using %d pages for transfer\n", pages);
+ 
+ 	ret = sg_alloc_table(&pl022->sgt_rx, pages, GFP_ATOMIC);
+-- 
+1.7.2.2

@@ -1,37 +1,39 @@
 From: Russell King - ARM Linux <linux@arm.linux.org.uk>
 Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
 	when required.
-Date: Wed, 10 Aug 2011 11:32:25 +0100
-Message-ID: <20110810103225.GJ1831@n2100.arm.linux.org.uk>
+Date: Wed, 10 Aug 2011 11:40:25 +0100
+Message-ID: <20110810104025.GK1831@n2100.arm.linux.org.uk>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 	<20110810090042.GE1831@n2100.arm.linux.org.uk>
 	<4E424F7B.2000800@st.com>
 	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
-	<4E4259F5.8060402@st.com>
+	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Pratyush ANAND <pratyush.anand@st.com>,
-	Rajeev KUMAR <rajeev-dlh.kumar@st.com>, Bhavna YADAV <bhavna.yadav@st.com>,
-	Bhupesh SHARMA <bhupesh.sharma@st.com>,
-	Shiraz HASHIM <shiraz.hashim@st.com>, "Koul, Vinod" <vinod.koul@intel.com>,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
+	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
+	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
+	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
+	"shiraz.hashim@st.com" <shiraz.hashim@st.com>, "Koul,
+	Vinod" <vinod.koul@intel.com>,
 	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
 	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	Vipin KUMAR <vipin.kumar@st.com>,
-	Armando VISCONTI <armando.visconti@st.com>, Amit VIRDI <Amit.VIRDI@st.com>,
-	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
+	"vipin.kumar@st.com" <vipin.kumar@st.com>,
+	"armando.visconti@st.com" <armando.visconti@st.com>,
+	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
+	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
 	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	Deepak SIKRI <deepak.sikri@st.com>,
+	"deepak.sikri@st.com" <deepak.sikri@st.com>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>, "Williams,
 	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: viresh kumar <viresh.kumar@st.com>
+	<linux-arm-kernel@lists.infrad
+To: Jassi Brar <jassisinghbrar@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <4E4259F5.8060402@st.com>
+In-Reply-To: <CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -43,21 +45,82 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 10, 2011 at 03:44:13PM +0530, viresh kumar wrote:
-> On 08/10/2011 03:31 PM, Koul, Vinod wrote:
-> > And on your patch, are you able to dynamically assign the channels for
-> > platform? What is the intended usage? (as Russell articulated it is bad
-> > to dynamically assign channel for something like uart)
-> 
-> Are you talking about channels or DMA request lines? For channels yes,
-> we can always allocate channels as they are independent of peripherals.
-> About request lines, they are muxed in our case between several
-> peripherals, but support for that has to be added in dw_dmac.
+On Wed, Aug 10, 2011 at 04:01:13PM +0530, Jassi Brar wrote:
+> On Wed, Aug 10, 2011 at 3:31 PM, Koul, Vinod <vinod.koul@intel.com> wrote:
+> > On Wed, 2011-08-10 at 14:59 +0530, viresh kumar wrote:
+> >> On 08/10/2011 02:30 PM, Russell King - ARM Linux wrote:
+> >> >> > They must be allocated when they are required and must be freed a=
+fter we are
+> >> >> > done with transfers. So that they can be used by other users.
+> >> > Which DMA engine driver requires this?
+> >> >
+> >>
+> >> dw_dmac.c
+> >>
+> >> > Normally, when we have DMA engine drivers with multiple request sign=
+als,
+> >> > the slave peripheral side publishes several virtual channels which a=
+re
+> >> > claimed by the peripheral drivers. =A0This (amongst other things) al=
+lows
+> >> > the peripheral drivers to hold claim to one of the virtual channels
+> >> > all the time that it's required.
+> >>
+> >> If users of DMA expect DMA engine drivers to work this way, then we sh=
+ould
+> >> have this mentioned clearly in DMA slave documentation.
+> >>
+> >> @Dan/Vinod: What do you say?
+> > I would agree on both counts :)
+> >
+> > In some cases it does make sense to hold the channel for the lifetime
+> > like uart or where the channel has been tied to an interface by SoC
+> > designer.
+> > But in some cases like dw_dmac it seems you can assign channels
+> > dynamically to each usage, and runtime allocation ensures we have best
+> > utilization.
+> > So i would argue that there is no "one size fits all" here, if you can
+> > manage channels dynamically and utilize more efficiently then go ahead,
+> > but if you cant (h/w and usage constraint) then you should not be forced
+> > to do so.
+> =
 
-Right, and when you do, you'll probably have to go to a virtual channel
-implementation, which solves the problem of keeping a channel allocated
-and makes this patch redundant.
+> The idea is to have channel allocation as purely a s/w thing - no
+> actual commitment
+> of h/w resources. So we can afford to have channel allocated for the
+> whole lifetime
+> of a client.
+> =
 
-I assert that any DMA engine implementation where request signals can
-be assigned dynamically to DMA channels should be using a virtual channel
-implementation.
+> Some dmac drivers are written 'improperly', keeping in mind the
+> platforms that have fixed
+> ReqSig->Peri map and no more clients than actual req-sigs are active
+> simultaneously.
+> But such dmac drivers will fail if a new platform decides to hijack req-s=
+ignals.
+> =
+
+> So, imho, it is absolutely a good thing for every dmac driver to be
+> designed for re-routable
+> ReqSig->Peri map... which would force their design to allocate
+> virtual/software channels to clients
+> without commit much(any?) h/w resources.
+
+We discussed channel allocation at Linaro.  However, I am now _really_
+disappointed.
+
+I discussed this with Linus on the bus back from Cambridge in the evening,
+and it appears that the story you gave me was inaccurate - Linus had not
+agreed to your proposal and saw more or less the same problems with it
+which I've been on at you about via your other email alias/lkml.  So that's
+essentially invalidated everything we discussed there as part of my thinking
+was "if Linus is happy with it, then...".
+
+I am now convinced that you'll say *anything* just to get your idea into
+the kernel.
+
+So, the stakes have now been raised further for you: what I want to see
+from you is a _working_ _implementation_ for those three platforms which
+I outlined.  I don't want more discussion.  I want patches from you.
+Nothing else.  We'll then review the code changes themselves rather than
+a vague idea communicated by email/verbally.

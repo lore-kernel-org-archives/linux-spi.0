@@ -1,64 +1,32 @@
-From: viresh kumar <viresh.kumar@st.com>
-Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
-	when required.
-Date: Wed, 10 Aug 2011 14:59:31 +0530
-Message-ID: <4E424F7B.2000800@st.com>
-References: <cover.1312965741.git.viresh.kumar@st.com>
-	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
-	<20110810090042.GE1831@n2100.arm.linux.org.uk>
+From: 13642347266-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Wed, 10 Aug 2011 17:53:09 +0800
+Message-ID: <E1Qr5Sm-0002FI-3p@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Pratyush ANAND <pratyush.anand@st.com>,
-	Rajeev KUMAR <rajeev-dlh.kumar@st.com>, Bhavna YADAV <bhavna.yadav@st.com>,
-	Bhupesh SHARMA <bhupesh.sharma@st.com>,
-	Armando VISCONTI <armando.visconti@st.com>,
-	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
-	Vipin KUMAR <vipin.kumar@st.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	Shiraz HASHIM <shiraz.hashim@st.com>, Amit VIRDI <Amit.VIRDI@st.com>,
-	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	Deepak SIKRI <deepak.sikri@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Koul, Vinod" <vinod.koul@intel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110810090042.GE1831@n2100.arm.linux.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/10/2011 02:30 PM, Russell King - ARM Linux wrote:
->> > They must be allocated when they are required and must be freed after we are
->> > done with transfers. So that they can be used by other users.
-> Which DMA engine driver requires this?
-> 
-
-dw_dmac.c
-
-> Normally, when we have DMA engine drivers with multiple request signals,
-> the slave peripheral side publishes several virtual channels which are
-> claimed by the peripheral drivers.  This (amongst other things) allows
-> the peripheral drivers to hold claim to one of the virtual channels
-> all the time that it's required.
-
-If users of DMA expect DMA engine drivers to work this way, then we should
-have this mentioned clearly in DMA slave documentation.
-
-@Dan/Vinod: What do you say?
-
--- 
-viresh
+xPq6w6O6CiAgICCxvrmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yKOp09DS
+u7K/t9bXqNPDt6ItLcaxtPq/qqO7CiAgICAKICAgIMjn09DQ6NKqo6y7ttOtxPrT687SwarPtaO6
+ICAKICAgICAgICC4utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KdWJlclNWTidzIHJpY2ggc3lzdGVtIGFuZCB1c2VyIGFkbWluaXN0cmF0aW9uIGNhcGFi
+aWxpdGllcyBhbmQgbW9kZWwgCmNvbmZpZ3VyYXRpb24gdGFrZSB0aGUgaGFzc2xlIG91dCBvZiBk
+ZXBsb3lpbmcgYW5kIG1hbmFnaW5nIFN1YnZlcnNpb24gYW5kIAp0aGUgdG9vbHMgZGV2ZWxvcGVy
+cyB1c2Ugd2l0aCBpdC4gTGVhcm4gbW9yZSBhYm91dCB1YmVyU1ZOIGFuZCBnZXQgYSBmcmVlIApk
+b3dubG9hZCBhdDogIGh0dHA6Ly9wLnNmLm5ldC9zZnUvd2FuZGlzY28tZGV2MmRldgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

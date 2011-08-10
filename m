@@ -1,66 +1,185 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH 0/6] spi/spi-pl022 fixes
-Date: Wed, 10 Aug 2011 16:12:51 +0200
-Message-ID: <201108101612.51825.arnd@arndb.de>
-References: <cover.1312887860.git.viresh.kumar@st.com>
-	<4E420144.4010001@st.com>
-	<CAKnu2MoTQTYMa4JvWyr7sPMhPyziTtnLeZLySUYxcuQC2Vu-6Q@mail.gmail.com>
+From: Vinod Koul <vkoul@infradead.org>
+Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
+	when required.
+Date: Thu, 11 Aug 2011 02:28:03 +0530
+Message-ID: <1313009883.1603.25.camel@vkoul-udesk3>
+References: <cover.1312965741.git.viresh.kumar@st.com>
+	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
+	<20110810090042.GE1831@n2100.arm.linux.org.uk>
+	<4E424F7B.2000800@st.com>
+	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
+	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
+	<20110810104025.GK1831@n2100.arm.linux.org.uk>
+	<CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
+	<CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
+	<CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Pratyush ANAND <pratyush.anand-qxv4g6HH51o@public.gmane.org>, viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	Rajeev KUMAR <rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org>, Bhavna YADAV <bhavna.yadav-qxv4g6HH51o@public.gmane.org>,
-	Bhupesh SHARMA <bhupesh.sharma-qxv4g6HH51o@public.gmane.org>,
-	Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
-	Vipin KUMAR <vipin.kumar-qxv4g6HH51o@public.gmane.org>, Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>,
-	Amit VIRDI <Amit.VIRDI-qxv4g6HH51o@public.gmane.org>,
-	Vipul Kumar SAMAR <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
-	Deepak SIKRI <deepak.sikri-qxv4g6HH51o@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAKnu2MoTQTYMa4JvWyr7sPMhPyziTtnLeZLySUYxcuQC2Vu-6Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
+	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	"armando.visconti@st.com" <armando.visconti@st.com>,
+	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
+	vinod.koul@intel.com, Linus Walleij <linus.walleij@linaro.org>,
+	"vipin.kumar@st.com" <vipin.kumar@st.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
+	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
+	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
+	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
+	"deepak.sikri@st.com" <deepak.sikri@st.com>,
+	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>, "Williams,
+	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-a
+To: Jassi Brar <jassisinghbrar@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 10 August 2011, Linus Walleij wrote:
-> The basic assumption is that patches are orthogonal and apply
-> without conflicts, i.e. patch different parts of the kernel tree or
-> different lines in the same file.
+On Wed, 2011-08-10 at 18:46 +0530, Jassi Brar wrote:
+> On Wed, Aug 10, 2011 at 5:24 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
+> > On Wed, Aug 10, 2011 at 1:24 PM, Jassi Brar <jassisinghbrar@gmail.com> wrote:
+> >> On Wed, Aug 10, 2011 at 4:10 PM, Russell King - ARM Linux
+> >>>
+> >>> I discussed this with Linus on the bus back from Cambridge in the evening,
+> >>> and it appears that the story you gave me was inaccurate - Linus had not
+> >>> agreed to your proposal and saw more or less the same problems with it
+> >>> which I've been on at you about via your other email alias/lkml.  So that's
+> >>> essentially invalidated everything we discussed there as part of my thinking
+> >>> was "if Linus is happy with it, then...".
+> >>
+> >> IIRC, Linus W mainly opined to involve device pointer during channel selection.
+> >> Other than that I thought there was only ambiguity about implementation details.
+> >
+> > Bah now we have two "Linus oracles" in this world instead
+> > of just one... haha :-)
+> >
 > 
-> Second assumption is that if patches do collide, the subsystem
-> maintainer can solve most conflicts, and is expected to do
-> so. Torvalds sets an example by requesting that subsystem
-> maintainers do not fixup conflicts between subsystems so he
-> can see them himself.
 > 
-> Then there are special cases when you get a strong
-> coupling between patches.
+> >> Linus W, was there anything you said wouldn't work with the scheme ?
+> >> Please tell now on the record.
+> >
+> > It would *work* but the current proposal is *not elegant* IMO.
 > 
-> In these special cases, ask the subsystem maintainer what to
-> base the patches on. Usually it's some commit on the subsystem
-> tree rather than -next.
+> would *work*  -> You could find no case that the scheme wouldn't support.
+> *not elegant*  -> Your opinion. Let us see.
 > 
-> This is my understanding of how we work, maybe I should
-> patch Documentation/development-process/*, Arnd do you have
-> anything to add?
+> 
+> > I think your scheme passing in a device ID and instance tuple
+> > e.g. REQ(MMC,2) would *work*, but I don't think it is a proper
+> > solution and I would never ACK it, as I said.
+> As much as I would feel 'deprived' of your ACK, I am not yet changing
+> the implementation for that part.
+> 
+> 
+> > The lookup of a device DMA channel should follow the
+> > design pattern set by regulators and clocks.
+> Nopes. It depends upon the subsystem.
+> We should strive towards making this scheme as 'standalone' as
+> possible.
+> Client having to specify the device it wants a channel for, is a
+> waste - otherwise we don't fully get rid of platform assistance for
+> channel selection!
+On one of the platforms I work on we have 3 DMACs, peripheral 1, 2 and 3
+can only use channels from controller 1, and the peripherals 4, 5 from
+controller 2 and so on. They _absolutely_ need channel from specific
+controller, so above suits it :).
+Btw all three controllers _have_exactly_same_caps_ so dma engine will
+not see any difference in channels. They don't know which peripherals
+are connected to them, that's platform information which this scheme
+seems to be suited to...
+Can you tell me how your scheme will work in this case?
 
-No, your explanations are pretty much what I would have said.
-
-	Arnd
-
-------------------------------------------------------------------------------
-uberSVN's rich system and user administration capabilities and model 
-configuration take the hassle out of deploying and managing Subversion and 
-the tools developers use with it. Learn more about uberSVN and get a free 
-download at:  http://p.sf.net/sfu/wandisco-dev2dev
+> Also that way, a client is actually asking for a 'channel' rather than
+> only specifying its requirements to the API and the API has enough
+> information to return the appropriate channel(which is what I propose).
+> 
+> > Which means
+> > you use struct device * or alternatively a string (if the
+> > instance is not available) to look it up, such that:
+> >
+> > struct dma_slave_map {
+> >   char name[16];
+> >   struct device *dev;
+> >   char dev_name[16];
+> >   struct devive *dma_dev;
+> >   char dma_dev_name[16];
+> > };
+> >
+> > struct dma_slave_map[] = {
+> >  {
+> >     .name = "MMC-RX",
+> >     .dev_name = "mmc.0",
+> >     .dma_dev_name = "pl08x.0",
+> >  },
+> >  {
+> >     .name = "MMC-TX",
+> >     .dev_name = "mmc.0",
+> >     .dma_dev_name = "pl08x.0",
+> >  },
+> >  {
+> >     .name = "SSP-RX",
+> >     .dev_name = "pl022.0",
+> >     .dma_dev_name = "pl08x.1",
+> >  },
+> 
+> 1) This is implementation detail.
+> 2) Not a very good one at that.
+>      a) Just think how many bytes you take to specify a channel ?
+>          Mine takes less than 4 bytes for equivalent information.
+>      b) Think about the mess of string copy, compare etc, when we can
+>          simply extract and manipulate bit-fields from, say, u32?
+> 
+> 
+> >
+> > The dmaengine core should take this mapping, and
+> > the device driver would only have to:
+> >
+> > struct dma_chan *rxc;
+> > struct dma_chan *txc;
+> > struct device *dev;
+> >
+> > rxc = dma_request_slave_channel(dev, "MMC-RX");
+> > txc = dma_request_slave_channel(dev, "MMC-TX");
+> Absolutely "not-very-good" !
+> We can do without the 'dev' argument.
+> How does a client request duplex channel ?
+>    MMC-RXTX or MMC-TXRX or TXRX-MMC ?
+> Do you propose to implement a string parser in the core ?!
+> Not to mention how limited requirements this scheme could
+> express to the core.
+> 
+> 
+> > I also recognized that you needed a priority scheme and
+> > a few other bits for the above,
+> You didn't recognize. I told you. IIRC you suggested I should actually
+> sell that point!
+> The priority is an additional feature that easily helps a situation when
+> a peri could be reached from two different dmacs and the board can
+> prioritize an already busy dmac over the one that would only serve
+> this peripheral - to save power by keeping the idle dmac off.
+> Your string manipulation would only get messier if it had to support
+> that feature.
+> 
+> > If the majority is happy with this scheme I can even
+> > try implementing it.
+> Interesting! Only a few days ago you were seeing eternal sunshine in
+> filter-functions... and now you plan to implement my proposal by
+> replacing bit-fields with strings.
+> Frankly, I don't care much who, if anybody, implements it anymore.
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

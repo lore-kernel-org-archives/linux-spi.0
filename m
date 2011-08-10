@@ -1,24 +1,33 @@
-From: Sergei Shtylyov <sshtylyov@mvista.com>
+From: viresh kumar <viresh.kumar@st.com>
 Subject: Re: [PATCH V2 3/6] spi/spi-pl022: Don't allocate more sg than
 	required.
-Date: Wed, 10 Aug 2011 15:42:46 +0400
-Message-ID: <4E426EB6.9020408@ru.mvista.com>
+Date: Wed, 10 Aug 2011 17:16:09 +0530
+Message-ID: <4E426F81.5080606@st.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<94a975df64a78bb533c85774a5bbd052c73fa5ba.1312965741.git.viresh.kumar@st.com>
+	<4E426EB6.9020408@ru.mvista.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
-	bhupesh.sharma@st.com, armando.visconti@st.com,
-	linus.walleij@linaro.org, jassisinghbrar@gmail.com,
-	vipin.kumar@st.com, grant.likely@secretlab.ca,
-	shiraz.hashim@st.com, amit.virdi@st.com, vipulkumar.samar@st.com,
-	viresh.linux@gmail.com, deepak.sikri@st.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Viresh Kumar <viresh.kumar@st.com>
+Cc: Pratyush ANAND <pratyush.anand@st.com>,
+	Rajeev KUMAR <rajeev-dlh.kumar@st.com>, Bhavna YADAV <bhavna.yadav@st.com>,
+	Bhupesh SHARMA <bhupesh.sharma@st.com>,
+	Armando VISCONTI <armando.visconti@st.com>,
+	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
+	Vipin KUMAR <vipin.kumar@st.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	Shiraz HASHIM <shiraz.hashim@st.com>, Amit VIRDI <Amit.VIRDI@st.com>,
+	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
+	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
+	Deepak SIKRI <deepak.sikri@st.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Sergei Shtylyov <sshtylyov@mvista.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <94a975df64a78bb533c85774a5bbd052c73fa5ba.1312965741.git.viresh.kumar@st.com>
+In-Reply-To: <4E426EB6.9020408@ru.mvista.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -30,33 +39,14 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
+On 08/10/2011 05:12 PM, Sergei Shtylyov wrote:
+>> > -	pages = (pl022->cur_transfer->len>>  PAGE_SHIFT) + 1;
+>> > +	pages = ((pl022->cur_transfer->len + (1 << PAGE_SHIFT) - 1)
+>> > +			>>  PAGE_SHIFT);
+>     No need for parens around the rvalue.
 
-On 10-08-2011 12:50, Viresh Kumar wrote:
+Oops, that was a mistake. Anyway i have send V3 for the same and this issue
+is not present anymore.
 
-> In routine configure_dma(), if transfer->len = PAGE_SIZE, then pages is one more
-> than required. While leads to one more sg getting allocated.
-
-> This is wrong. Correct this to allocate correct number of sg.
-
-> Signed-off-by: Viresh Kumar<viresh.kumar@st.com>
-> Tested-by: Linus Walleij<linus.walleij@linaro.org>
-> ---
->   drivers/spi/spi-pl022.c |    3 ++-
->   1 files changed, 2 insertions(+), 1 deletions(-)
-
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index 80116be..1c8b9ec 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -1016,7 +1016,8 @@ static int configure_dma(struct pl022 *pl022)
->   	dmaengine_slave_config(txchan,&tx_conf);
->
->   	/* Create sglists for the transfers */
-> -	pages = (pl022->cur_transfer->len>>  PAGE_SHIFT) + 1;
-> +	pages = ((pl022->cur_transfer->len + (1 << PAGE_SHIFT) - 1)
-> +			>>  PAGE_SHIFT);
-
-    No need for parens around the rvalue.
-
-WBR, Sergei
+-- 
+viresh

@@ -1,133 +1,131 @@
-From: Axel Lin <axel.lin@gmail.com>
-Subject: [PATCH RESEND] spi: omap2-mcspi: fix omap2_mcspi_probe error
- handling
-Date: Wed, 10 Aug 2011 19:55:18 +0800
-Message-ID: <1312977318.2434.1.camel@phoenix>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
+	when required.
+Date: Wed, 10 Aug 2011 18:46:38 +0530
+Message-ID: <CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
+References: <cover.1312965741.git.viresh.kumar@st.com>
+	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
+	<20110810090042.GE1831@n2100.arm.linux.org.uk>
+	<4E424F7B.2000800@st.com>
+	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
+	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
+	<20110810104025.GK1831@n2100.arm.linux.org.uk>
+	<CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
+	<CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Samuel Ortiz <sameo@linux.intel.com>,
-	Juha Yrjola <juha.yrjola@nokia.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
+	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
+	"shiraz.hashim@st.com" <shiraz.hashim@st.com>, "Koul,
+	Vinod" <vinod.koul@intel.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"vipin.kumar@st.com" <vipin.kumar@st.com>,
+	"armando.visconti@st.com" <armando.visconti@st.com>,
+	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
+	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
+	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
+	"deepak.sikri@st.com" <deepak.sikri@st.com>,
+	"bhavna.yadav@st.com" <bhavna.yadav@st.com>, "Williams,
+	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch includes below fixes for error handling:
-1. return proper error if kcalloc for mcspi->dma_channels fails
-2. return proper error if omap2_mcspi_master_setup fails
-3. properly release allocated resources in error paths and
-   improve the naming of goto labels.
-
-Signed-off-by: Axel Lin <axel.lin@gmail.com>
----
- drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++++------------------
- 1 files changed, 21 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index fde3a2d..74f444d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1087,7 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	struct omap2_mcspi_platform_config *pdata = pdev->dev.platform_data;
- 	struct omap2_mcspi	*mcspi;
- 	struct resource		*r;
--	int			status = 0, i;
-+	int			status, i;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
- 	if (master == NULL) {
-@@ -1114,12 +1114,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (r == NULL) {
- 		status = -ENODEV;
--		goto err1;
-+		goto err_put_master;
- 	}
- 	if (!request_mem_region(r->start, resource_size(r),
- 				dev_name(&pdev->dev))) {
- 		status = -EBUSY;
--		goto err1;
-+		goto err_put_master;
- 	}
- 
- 	r->start += pdata->regs_offset;
-@@ -1129,7 +1129,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	if (!mcspi->base) {
- 		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
- 		status = -ENOMEM;
--		goto err2;
-+		goto err_release_mem_region;
- 	}
- 
- 	mcspi->dev = &pdev->dev;
-@@ -1143,8 +1143,10 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 			sizeof(struct omap2_mcspi_dma),
- 			GFP_KERNEL);
- 
--	if (mcspi->dma_channels == NULL)
--		goto err2;
-+	if (mcspi->dma_channels == NULL) {
-+		status = -ENOMEM;
-+		goto err_iounmap;
-+	}
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		char dma_ch_name[14];
-@@ -1156,7 +1158,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 		if (!dma_res) {
- 			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
- 			status = -ENODEV;
--			break;
-+			goto err_free_dma_channels;
- 		}
- 
- 		mcspi->dma_channels[i].dma_rx_channel = -1;
-@@ -1167,7 +1169,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 		if (!dma_res) {
- 			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
- 			status = -ENODEV;
--			break;
-+			goto err_free_dma_channels;
- 		}
- 
- 		mcspi->dma_channels[i].dma_tx_channel = -1;
-@@ -1176,23 +1178,24 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 
- 	pm_runtime_enable(&pdev->dev);
- 
--	if (status || omap2_mcspi_master_setup(mcspi) < 0)
--		goto err3;
-+	status = omap2_mcspi_master_setup(mcspi);
-+	if (status)
-+		goto err_free_dma_channels;
- 
- 	status = spi_register_master(master);
- 	if (status < 0)
--		goto err4;
-+		goto err_free_dma_channels;
- 
--	return status;
-+	return 0;
- 
--err4:
--	spi_master_put(master);
--err3:
-+err_free_dma_channels:
- 	kfree(mcspi->dma_channels);
--err2:
--	release_mem_region(r->start, resource_size(r));
-+err_iounmap:
- 	iounmap(mcspi->base);
--err1:
-+err_release_mem_region:
-+	release_mem_region(r->start, resource_size(r));
-+err_put_master:
-+	spi_master_put(master);
- 	return status;
- }
- 
--- 
-1.7.4.1
+T24gV2VkLCBBdWcgMTAsIDIwMTEgYXQgNToyNCBQTSwgTGludXMgV2FsbGVpaiA8bGludXMud2Fs
+bGVpakBsaW5hcm8ub3JnPiB3cm90ZToKPiBPbiBXZWQsIEF1ZyAxMCwgMjAxMSBhdCAxOjI0IFBN
+LCBKYXNzaSBCcmFyIDxqYXNzaXNpbmdoYnJhckBnbWFpbC5jb20+IHdyb3RlOgo+PiBPbiBXZWQs
+IEF1ZyAxMCwgMjAxMSBhdCA0OjEwIFBNLCBSdXNzZWxsIEtpbmcgLSBBUk0gTGludXgKPj4+Cj4+
+PiBJIGRpc2N1c3NlZCB0aGlzIHdpdGggTGludXMgb24gdGhlIGJ1cyBiYWNrIGZyb20gQ2FtYnJp
+ZGdlIGluIHRoZSBldmVuaW5nLAo+Pj4gYW5kIGl0IGFwcGVhcnMgdGhhdCB0aGUgc3RvcnkgeW91
+IGdhdmUgbWUgd2FzIGluYWNjdXJhdGUgLSBMaW51cyBoYWQgbm90Cj4+PiBhZ3JlZWQgdG8geW91
+ciBwcm9wb3NhbCBhbmQgc2F3IG1vcmUgb3IgbGVzcyB0aGUgc2FtZSBwcm9ibGVtcyB3aXRoIGl0
+Cj4+PiB3aGljaCBJJ3ZlIGJlZW4gb24gYXQgeW91IGFib3V0IHZpYSB5b3VyIG90aGVyIGVtYWls
+IGFsaWFzL2xrbWwuIMKgU28gdGhhdCdzCj4+PiBlc3NlbnRpYWxseSBpbnZhbGlkYXRlZCBldmVy
+eXRoaW5nIHdlIGRpc2N1c3NlZCB0aGVyZSBhcyBwYXJ0IG9mIG15IHRoaW5raW5nCj4+PiB3YXMg
+ImlmIExpbnVzIGlzIGhhcHB5IHdpdGggaXQsIHRoZW4uLi4iLgo+Pgo+PiBJSVJDLCBMaW51cyBX
+IG1haW5seSBvcGluZWQgdG8gaW52b2x2ZSBkZXZpY2UgcG9pbnRlciBkdXJpbmcgY2hhbm5lbCBz
+ZWxlY3Rpb24uCj4+IE90aGVyIHRoYW4gdGhhdCBJIHRob3VnaHQgdGhlcmUgd2FzIG9ubHkgYW1i
+aWd1aXR5IGFib3V0IGltcGxlbWVudGF0aW9uIGRldGFpbHMuCj4KPiBCYWggbm93IHdlIGhhdmUg
+dHdvICJMaW51cyBvcmFjbGVzIiBpbiB0aGlzIHdvcmxkIGluc3RlYWQKPiBvZiBqdXN0IG9uZS4u
+LiBoYWhhIDotKQo+CgoKPj4gTGludXMgVywgd2FzIHRoZXJlIGFueXRoaW5nIHlvdSBzYWlkIHdv
+dWxkbid0IHdvcmsgd2l0aCB0aGUgc2NoZW1lID8KPj4gUGxlYXNlIHRlbGwgbm93IG9uIHRoZSBy
+ZWNvcmQuCj4KPiBJdCB3b3VsZCAqd29yayogYnV0IHRoZSBjdXJyZW50IHByb3Bvc2FsIGlzICpu
+b3QgZWxlZ2FudCogSU1PLgoKd291bGQgKndvcmsqICAtPiBZb3UgY291bGQgZmluZCBubyBjYXNl
+IHRoYXQgdGhlIHNjaGVtZSB3b3VsZG4ndCBzdXBwb3J0Lgoqbm90IGVsZWdhbnQqICAtPiBZb3Vy
+IG9waW5pb24uIExldCB1cyBzZWUuCgoKPiBJIHRoaW5rIHlvdXIgc2NoZW1lIHBhc3NpbmcgaW4g
+YSBkZXZpY2UgSUQgYW5kIGluc3RhbmNlIHR1cGxlCj4gZS5nLiBSRVEoTU1DLDIpIHdvdWxkICp3
+b3JrKiwgYnV0IEkgZG9uJ3QgdGhpbmsgaXQgaXMgYSBwcm9wZXIKPiBzb2x1dGlvbiBhbmQgSSB3
+b3VsZCBuZXZlciBBQ0sgaXQsIGFzIEkgc2FpZC4KQXMgbXVjaCBhcyBJIHdvdWxkIGZlZWwgJ2Rl
+cHJpdmVkJyBvZiB5b3VyIEFDSywgSSBhbSBub3QgeWV0IGNoYW5naW5nCnRoZSBpbXBsZW1lbnRh
+dGlvbiBmb3IgdGhhdCBwYXJ0LgoKCj4gVGhlIGxvb2t1cCBvZiBhIGRldmljZSBETUEgY2hhbm5l
+bCBzaG91bGQgZm9sbG93IHRoZQo+IGRlc2lnbiBwYXR0ZXJuIHNldCBieSByZWd1bGF0b3JzIGFu
+ZCBjbG9ja3MuCk5vcGVzLiBJdCBkZXBlbmRzIHVwb24gdGhlIHN1YnN5c3RlbS4KV2Ugc2hvdWxk
+IHN0cml2ZSB0b3dhcmRzIG1ha2luZyB0aGlzIHNjaGVtZSBhcyAnc3RhbmRhbG9uZScgYXMKcG9z
+c2libGUuCkNsaWVudCBoYXZpbmcgdG8gc3BlY2lmeSB0aGUgZGV2aWNlIGl0IHdhbnRzIGEgY2hh
+bm5lbCBmb3IsIGlzIGEKd2FzdGUgLSBvdGhlcndpc2Ugd2UgZG9uJ3QgZnVsbHkgZ2V0IHJpZCBv
+ZiBwbGF0Zm9ybSBhc3Npc3RhbmNlIGZvcgpjaGFubmVsIHNlbGVjdGlvbiEKQWxzbyB0aGF0IHdh
+eSwgYSBjbGllbnQgaXMgYWN0dWFsbHkgYXNraW5nIGZvciBhICdjaGFubmVsJyByYXRoZXIgdGhh
+bgpvbmx5IHNwZWNpZnlpbmcgaXRzIHJlcXVpcmVtZW50cyB0byB0aGUgQVBJIGFuZCB0aGUgQVBJ
+IGhhcyBlbm91Z2gKaW5mb3JtYXRpb24gdG8gcmV0dXJuIHRoZSBhcHByb3ByaWF0ZSBjaGFubmVs
+KHdoaWNoIGlzIHdoYXQgSSBwcm9wb3NlKS4KCj4gV2hpY2ggbWVhbnMKPiB5b3UgdXNlIHN0cnVj
+dCBkZXZpY2UgKiBvciBhbHRlcm5hdGl2ZWx5IGEgc3RyaW5nIChpZiB0aGUKPiBpbnN0YW5jZSBp
+cyBub3QgYXZhaWxhYmxlKSB0byBsb29rIGl0IHVwLCBzdWNoIHRoYXQ6Cj4KPiBzdHJ1Y3QgZG1h
+X3NsYXZlX21hcCB7Cj4gwqAgY2hhciBuYW1lWzE2XTsKPiDCoCBzdHJ1Y3QgZGV2aWNlICpkZXY7
+Cj4gwqAgY2hhciBkZXZfbmFtZVsxNl07Cj4gwqAgc3RydWN0IGRldml2ZSAqZG1hX2RldjsKPiDC
+oCBjaGFyIGRtYV9kZXZfbmFtZVsxNl07Cj4gfTsKPgo+IHN0cnVjdCBkbWFfc2xhdmVfbWFwW10g
+PSB7Cj4gwqB7Cj4gwqAgwqAgLm5hbWUgPSAiTU1DLVJYIiwKPiDCoCDCoCAuZGV2X25hbWUgPSAi
+bW1jLjAiLAo+IMKgIMKgIC5kbWFfZGV2X25hbWUgPSAicGwwOHguMCIsCj4gwqB9LAo+IMKgewo+
+IMKgIMKgIC5uYW1lID0gIk1NQy1UWCIsCj4gwqAgwqAgLmRldl9uYW1lID0gIm1tYy4wIiwKPiDC
+oCDCoCAuZG1hX2Rldl9uYW1lID0gInBsMDh4LjAiLAo+IMKgfSwKPiDCoHsKPiDCoCDCoCAubmFt
+ZSA9ICJTU1AtUlgiLAo+IMKgIMKgIC5kZXZfbmFtZSA9ICJwbDAyMi4wIiwKPiDCoCDCoCAuZG1h
+X2Rldl9uYW1lID0gInBsMDh4LjEiLAo+IMKgfSwKCjEpIFRoaXMgaXMgaW1wbGVtZW50YXRpb24g
+ZGV0YWlsLgoyKSBOb3QgYSB2ZXJ5IGdvb2Qgb25lIGF0IHRoYXQuCiAgICAgYSkgSnVzdCB0aGlu
+ayBob3cgbWFueSBieXRlcyB5b3UgdGFrZSB0byBzcGVjaWZ5IGEgY2hhbm5lbCA/CiAgICAgICAg
+IE1pbmUgdGFrZXMgbGVzcyB0aGFuIDQgYnl0ZXMgZm9yIGVxdWl2YWxlbnQgaW5mb3JtYXRpb24u
+CiAgICAgYikgVGhpbmsgYWJvdXQgdGhlIG1lc3Mgb2Ygc3RyaW5nIGNvcHksIGNvbXBhcmUgZXRj
+LCB3aGVuIHdlIGNhbgogICAgICAgICBzaW1wbHkgZXh0cmFjdCBhbmQgbWFuaXB1bGF0ZSBiaXQt
+ZmllbGRzIGZyb20sIHNheSwgdTMyPwoKCj4KPiBUaGUgZG1hZW5naW5lIGNvcmUgc2hvdWxkIHRh
+a2UgdGhpcyBtYXBwaW5nLCBhbmQKPiB0aGUgZGV2aWNlIGRyaXZlciB3b3VsZCBvbmx5IGhhdmUg
+dG86Cj4KPiBzdHJ1Y3QgZG1hX2NoYW4gKnJ4YzsKPiBzdHJ1Y3QgZG1hX2NoYW4gKnR4YzsKPiBz
+dHJ1Y3QgZGV2aWNlICpkZXY7Cj4KPiByeGMgPSBkbWFfcmVxdWVzdF9zbGF2ZV9jaGFubmVsKGRl
+diwgIk1NQy1SWCIpOwo+IHR4YyA9IGRtYV9yZXF1ZXN0X3NsYXZlX2NoYW5uZWwoZGV2LCAiTU1D
+LVRYIik7CkFic29sdXRlbHkgIm5vdC12ZXJ5LWdvb2QiICEKV2UgY2FuIGRvIHdpdGhvdXQgdGhl
+ICdkZXYnIGFyZ3VtZW50LgpIb3cgZG9lcyBhIGNsaWVudCByZXF1ZXN0IGR1cGxleCBjaGFubmVs
+ID8KICAgTU1DLVJYVFggb3IgTU1DLVRYUlggb3IgVFhSWC1NTUMgPwpEbyB5b3UgcHJvcG9zZSB0
+byBpbXBsZW1lbnQgYSBzdHJpbmcgcGFyc2VyIGluIHRoZSBjb3JlID8hCk5vdCB0byBtZW50aW9u
+IGhvdyBsaW1pdGVkIHJlcXVpcmVtZW50cyB0aGlzIHNjaGVtZSBjb3VsZApleHByZXNzIHRvIHRo
+ZSBjb3JlLgoKCj4gSSBhbHNvIHJlY29nbml6ZWQgdGhhdCB5b3UgbmVlZGVkIGEgcHJpb3JpdHkg
+c2NoZW1lIGFuZAo+IGEgZmV3IG90aGVyIGJpdHMgZm9yIHRoZSBhYm92ZSwKWW91IGRpZG4ndCBy
+ZWNvZ25pemUuIEkgdG9sZCB5b3UuIElJUkMgeW91IHN1Z2dlc3RlZCBJIHNob3VsZCBhY3R1YWxs
+eQpzZWxsIHRoYXQgcG9pbnQhClRoZSBwcmlvcml0eSBpcyBhbiBhZGRpdGlvbmFsIGZlYXR1cmUg
+dGhhdCBlYXNpbHkgaGVscHMgYSBzaXR1YXRpb24gd2hlbgphIHBlcmkgY291bGQgYmUgcmVhY2hl
+ZCBmcm9tIHR3byBkaWZmZXJlbnQgZG1hY3MgYW5kIHRoZSBib2FyZCBjYW4KcHJpb3JpdGl6ZSBh
+biBhbHJlYWR5IGJ1c3kgZG1hYyBvdmVyIHRoZSBvbmUgdGhhdCB3b3VsZCBvbmx5IHNlcnZlCnRo
+aXMgcGVyaXBoZXJhbCAtIHRvIHNhdmUgcG93ZXIgYnkga2VlcGluZyB0aGUgaWRsZSBkbWFjIG9m
+Zi4KWW91ciBzdHJpbmcgbWFuaXB1bGF0aW9uIHdvdWxkIG9ubHkgZ2V0IG1lc3NpZXIgaWYgaXQg
+aGFkIHRvIHN1cHBvcnQKdGhhdCBmZWF0dXJlLgoKPiBJZiB0aGUgbWFqb3JpdHkgaXMgaGFwcHkg
+d2l0aCB0aGlzIHNjaGVtZSBJIGNhbiBldmVuCj4gdHJ5IGltcGxlbWVudGluZyBpdC4KSW50ZXJl
+c3RpbmchIE9ubHkgYSBmZXcgZGF5cyBhZ28geW91IHdlcmUgc2VlaW5nIGV0ZXJuYWwgc3Vuc2hp
+bmUgaW4KZmlsdGVyLWZ1bmN0aW9ucy4uLiBhbmQgbm93IHlvdSBwbGFuIHRvIGltcGxlbWVudCBt
+eSBwcm9wb3NhbCBieQpyZXBsYWNpbmcgYml0LWZpZWxkcyB3aXRoIHN0cmluZ3MuCkZyYW5rbHks
+IEkgZG9uJ3QgY2FyZSBtdWNoIHdobywgaWYgYW55Ym9keSwgaW1wbGVtZW50cyBpdCBhbnltb3Jl
+LgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgt
+YXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQu
+b3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJt
+LWtlcm5lbAo=

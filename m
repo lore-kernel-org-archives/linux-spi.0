@@ -1,145 +1,133 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
-	when required.
-Date: Wed, 10 Aug 2011 13:54:34 +0200
-Message-ID: <CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
-References: <cover.1312965741.git.viresh.kumar@st.com>
-	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
-	<20110810090042.GE1831@n2100.arm.linux.org.uk>
-	<4E424F7B.2000800@st.com>
-	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
-	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
-	<20110810104025.GK1831@n2100.arm.linux.org.uk>
-	<CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
+From: Axel Lin <axel.lin@gmail.com>
+Subject: [PATCH RESEND] spi: omap2-mcspi: fix omap2_mcspi_probe error
+ handling
+Date: Wed, 10 Aug 2011 19:55:18 +0800
+Message-ID: <1312977318.2434.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
-	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>, "Koul,
-	Vinod" <vinod.koul@intel.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
-	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>, "Williams,
-	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.
-To: Jassi Brar <jassisinghbrar@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Samuel Ortiz <sameo@linux.intel.com>,
+	Juha Yrjola <juha.yrjola@nokia.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 10, 2011 at 1:24 PM, Jassi Brar <jassisinghbrar@gmail.com> wrot=
-e:
-> On Wed, Aug 10, 2011 at 4:10 PM, Russell King - ARM Linux
->>
->> I discussed this with Linus on the bus back from Cambridge in the evenin=
-g,
->> and it appears that the story you gave me was inaccurate - Linus had not
->> agreed to your proposal and saw more or less the same problems with it
->> which I've been on at you about via your other email alias/lkml. =A0So t=
-hat's
->> essentially invalidated everything we discussed there as part of my thin=
-king
->> was "if Linus is happy with it, then...".
->
-> IIRC, Linus W mainly opined to involve device pointer during channel sele=
-ction.
-> Other than that I thought there was only ambiguity about implementation d=
-etails.
+This patch includes below fixes for error handling:
+1. return proper error if kcalloc for mcspi->dma_channels fails
+2. return proper error if omap2_mcspi_master_setup fails
+3. properly release allocated resources in error paths and
+   improve the naming of goto labels.
 
-Bah now we have two "Linus oracles" in this world instead
-of just one... haha :-)
+Signed-off-by: Axel Lin <axel.lin@gmail.com>
+---
+ drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++++------------------
+ 1 files changed, 21 insertions(+), 18 deletions(-)
 
-> Linus W, was there anything you said wouldn't work with the scheme ?
-> Please tell now on the record.
-
-It would *work* but the current proposal is *not elegant* IMO.
-
-Let me put it like this:
-
-Yes, there is a problem with how all platforms have to pass in a
-filter function and some opaque cookie for every driver to look up
-its DMA channel.
-
-You seem to want to address this problem, which is good.
-
-I think your scheme passing in a device ID and instance tuple
-e.g. REQ(MMC,2) would *work*, but I don't think it is a proper
-solution and I would never ACK it, as I said.
-
-The lookup of a device DMA channel should follow the
-design pattern set by regulators and clocks. Which means
-you use struct device * or alternatively a string (if the
-instance is not available) to look it up, such that:
-
-struct dma_slave_map {
-   char name[16];
-   struct device *dev;
-   char dev_name[16];
-   struct devive *dma_dev;
-   char dma_dev_name[16];
-};
-
-struct dma_slave_map[] =3D {
-  {
-     .name =3D "MMC-RX",
-     .dev_name =3D "mmc.0",
-     .dma_dev_name =3D "pl08x.0",
-  },
-  {
-     .name =3D "MMC-TX",
-     .dev_name =3D "mmc.0",
-     .dma_dev_name =3D "pl08x.0",
-  },
-  {
-     .name =3D "SSP-RX",
-     .dev_name =3D "pl022.0",
-     .dma_dev_name =3D "pl08x.1",
-  },
-  ...
-};
-
-The dmaengine core should take this mapping, and
-the device driver would only have to:
-
-struct dma_chan *rxc;
-struct dma_chan *txc;
-struct device *dev;
-
-rxc =3D dma_request_slave_channel(dev, "MMC-RX");
-txc =3D dma_request_slave_channel(dev, "MMC-TX");
-
-I also recognized that you needed a priority scheme and
-a few other bits for the above, so struct dma_slave_map
-may need a few more members, but the above would
-sure solve all usecases we have today. mem2mem could
-use the old request function and doesn't need anything
-like this.
-
-Pros: well established design pattern, channels tied to
-devices, intuitive for anyone who used clock or
-regulator frameworks.
-
-If the majority is happy with this scheme I can even
-try implementing it.
-
-Yours,
-Linus Walleij
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index fde3a2d..74f444d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1087,7 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	struct omap2_mcspi_platform_config *pdata = pdev->dev.platform_data;
+ 	struct omap2_mcspi	*mcspi;
+ 	struct resource		*r;
+-	int			status = 0, i;
++	int			status, i;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+ 	if (master == NULL) {
+@@ -1114,12 +1114,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (r == NULL) {
+ 		status = -ENODEV;
+-		goto err1;
++		goto err_put_master;
+ 	}
+ 	if (!request_mem_region(r->start, resource_size(r),
+ 				dev_name(&pdev->dev))) {
+ 		status = -EBUSY;
+-		goto err1;
++		goto err_put_master;
+ 	}
+ 
+ 	r->start += pdata->regs_offset;
+@@ -1129,7 +1129,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	if (!mcspi->base) {
+ 		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+ 		status = -ENOMEM;
+-		goto err2;
++		goto err_release_mem_region;
+ 	}
+ 
+ 	mcspi->dev = &pdev->dev;
+@@ -1143,8 +1143,10 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 			sizeof(struct omap2_mcspi_dma),
+ 			GFP_KERNEL);
+ 
+-	if (mcspi->dma_channels == NULL)
+-		goto err2;
++	if (mcspi->dma_channels == NULL) {
++		status = -ENOMEM;
++		goto err_iounmap;
++	}
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		char dma_ch_name[14];
+@@ -1156,7 +1158,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
+ 			status = -ENODEV;
+-			break;
++			goto err_free_dma_channels;
+ 		}
+ 
+ 		mcspi->dma_channels[i].dma_rx_channel = -1;
+@@ -1167,7 +1169,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
+ 			status = -ENODEV;
+-			break;
++			goto err_free_dma_channels;
+ 		}
+ 
+ 		mcspi->dma_channels[i].dma_tx_channel = -1;
+@@ -1176,23 +1178,24 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	if (status || omap2_mcspi_master_setup(mcspi) < 0)
+-		goto err3;
++	status = omap2_mcspi_master_setup(mcspi);
++	if (status)
++		goto err_free_dma_channels;
+ 
+ 	status = spi_register_master(master);
+ 	if (status < 0)
+-		goto err4;
++		goto err_free_dma_channels;
+ 
+-	return status;
++	return 0;
+ 
+-err4:
+-	spi_master_put(master);
+-err3:
++err_free_dma_channels:
+ 	kfree(mcspi->dma_channels);
+-err2:
+-	release_mem_region(r->start, resource_size(r));
++err_iounmap:
+ 	iounmap(mcspi->base);
+-err1:
++err_release_mem_region:
++	release_mem_region(r->start, resource_size(r));
++err_put_master:
++	spi_master_put(master);
+ 	return status;
+ }
+ 
+-- 
+1.7.4.1

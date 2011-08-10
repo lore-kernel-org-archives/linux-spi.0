@@ -1,74 +1,226 @@
-From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH V2 5/6] spi/spi-pl022: Call pl022_dma_remove(pl022) only if
-	enable_dma is true
-Date: Wed, 10 Aug 2011 14:20:58 +0530
-Message-ID: <3b94e4c3ce4689a41f4293863cbd9d8e164cd14c.1312965742.git.viresh.kumar@st.com>
+From: Viresh Kumar <viresh.kumar@st.com>
+Subject: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and when
+	required.
+Date: Wed, 10 Aug 2011 14:20:59 +0530
+Message-ID: <566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: pratyush.anand-qxv4g6HH51o@public.gmane.org, viresh.kumar-qxv4g6HH51o@public.gmane.org, rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org,
-	bhavna.yadav-qxv4g6HH51o@public.gmane.org, bhupesh.sharma-qxv4g6HH51o@public.gmane.org,
-	armando.visconti-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	vipin.kumar-qxv4g6HH51o@public.gmane.org, shiraz.hashim-qxv4g6HH51o@public.gmane.org, amit.virdi-qxv4g6HH51o@public.gmane.org,
-	vipulkumar.samar-qxv4g6HH51o@public.gmane.org, deepak.sikri-qxv4g6HH51o@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <cover.1312965741.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
+	bhupesh.sharma@st.com, armando.visconti@st.com,
+	linus.walleij@linaro.org, jassisinghbrar@gmail.com,
+	vipin.kumar@st.com, shiraz.hashim@st.com, amit.virdi@st.com,
+	vipulkumar.samar@st.com, viresh.linux@gmail.com,
+	deepak.sikri@st.com, spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1312965741.git.viresh.kumar@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-pl022_dma_remove() should be called only if enable_dma is true. There is no
-point calling it when pl022_dma_probe() is not called, which again depends on
-enable_dma.
+Currently we request DMA channels at probe time and free them at remove. They
+are always occupied, irrespective of their usage.
 
-Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Tested-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+They must be allocated when they are required and must be freed after we are
+done with transfers. So that they can be used by other users.
+
+Signed-off-by: Viresh Kumar <viresh.kumar@st.com>
+Tested-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-pl022.c |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pl022.c |   98 +++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 70 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index d1bcc79..01e84e3 100644
+index 01e84e3..a596b96 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -2238,7 +2238,9 @@ err_spi_register:
- err_start_queue:
- err_init_queue:
- 	destroy_queue(pl022);
--	pl022_dma_remove(pl022);
-+	if (platform_info->enable_dma)
-+		pl022_dma_remove(pl022);
+@@ -389,6 +389,7 @@ struct pl022 {
+ 	struct sg_table			sgt_rx;
+ 	struct sg_table			sgt_tx;
+ 	char				*dummypage;
++	dma_cap_mask_t			mask;
+ #endif
+ };
+ 
+@@ -1093,16 +1094,33 @@ err_alloc_rx_sg:
+ 
+ static int __init pl022_dma_probe(struct pl022 *pl022)
+ {
+-	dma_cap_mask_t mask;
++	/* set dma mask */
++	dma_cap_zero(pl022->mask);
++	dma_cap_set(DMA_SLAVE, pl022->mask);
+ 
+-	/* Try to acquire a generic DMA engine slave channel */
+-	dma_cap_zero(mask);
+-	dma_cap_set(DMA_SLAVE, mask);
++	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!pl022->dummypage) {
++		dev_err(&pl022->adev->dev,
++			"Failed to work in dma mode, work without dma!\n");
++		return -ENODEV;
++	}
 +
- 	free_irq(adev->irq[0], pl022);
- 	pm_runtime_disable(&adev->dev);
- err_no_irq:
-@@ -2266,7 +2268,9 @@ pl022_remove(struct amba_device *adev)
- 	if (destroy_queue(pl022) != 0)
- 		dev_err(&adev->dev, "queue remove failed\n");
- 	load_ssp_default_config(pl022);
--	pl022_dma_remove(pl022);
-+	if (pl022->master_info->enable_dma)
-+		pl022_dma_remove(pl022);
++	return 0;
++}
 +
- 	free_irq(adev->irq[0], pl022);
- 	clk_disable(pl022->clk);
- 	clk_put(pl022->clk);
++static int pl022_alloc_dmachan(struct pl022 *pl022)
++{
+ 	/*
+-	 * We need both RX and TX channels to do DMA, else do none
+-	 * of them.
++	 * Both channels should be allocated or not allocated. It is wrong if
++	 * only one allocated
+ 	 */
+-	pl022->dma_rx_channel = dma_request_channel(mask,
++	if (pl022->dma_rx_channel && pl022->dma_tx_channel)
++		return 0;
++
++	BUG_ON(pl022->dma_rx_channel || pl022->dma_tx_channel);
++
++	/* We need both RX and TX channels to do DMA, else do none of them. */
++	pl022->dma_rx_channel = dma_request_channel(pl022->mask,
+ 					    pl022->master_info->dma_filter,
+ 					    pl022->master_info->dma_rx_param);
+ 	if (!pl022->dma_rx_channel) {
+@@ -1110,7 +1128,7 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+ 		goto err_no_rxchan;
+ 	}
+ 
+-	pl022->dma_tx_channel = dma_request_channel(mask,
++	pl022->dma_tx_channel = dma_request_channel(pl022->mask,
+ 					    pl022->master_info->dma_filter,
+ 					    pl022->master_info->dma_tx_param);
+ 	if (!pl022->dma_tx_channel) {
+@@ -1118,20 +1136,12 @@ static int __init pl022_dma_probe(struct pl022 *pl022)
+ 		goto err_no_txchan;
+ 	}
+ 
+-	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!pl022->dummypage) {
+-		dev_dbg(&pl022->adev->dev, "no DMA dummypage!\n");
+-		goto err_no_dummypage;
+-	}
+-
+-	dev_info(&pl022->adev->dev, "setup for DMA on RX %s, TX %s\n",
++	dev_dbg(&pl022->adev->dev, "setup for DMA on RX %s, TX %s\n",
+ 		 dma_chan_name(pl022->dma_rx_channel),
+ 		 dma_chan_name(pl022->dma_tx_channel));
+ 
+ 	return 0;
+ 
+-err_no_dummypage:
+-	dma_release_channel(pl022->dma_tx_channel);
+ err_no_txchan:
+ 	dma_release_channel(pl022->dma_rx_channel);
+ 	pl022->dma_rx_channel = NULL;
+@@ -1143,22 +1153,30 @@ err_no_rxchan:
+ 
+ static void terminate_dma(struct pl022 *pl022)
+ {
+-	struct dma_chan *rxchan = pl022->dma_rx_channel;
+-	struct dma_chan *txchan = pl022->dma_tx_channel;
+-
+-	dmaengine_terminate_all(rxchan);
+-	dmaengine_terminate_all(txchan);
+-	unmap_free_dma_scatter(pl022);
++	if (pl022->dma_rx_channel)
++		dmaengine_terminate_all(pl022->dma_rx_channel);
++	if (pl022->dma_tx_channel)
++		dmaengine_terminate_all(pl022->dma_tx_channel);
+ }
+ 
+-static void pl022_dma_remove(struct pl022 *pl022)
++static void pl022_free_dmachan(struct pl022 *pl022)
+ {
+-	if (pl022->busy)
+-		terminate_dma(pl022);
+ 	if (pl022->dma_tx_channel)
+ 		dma_release_channel(pl022->dma_tx_channel);
+ 	if (pl022->dma_rx_channel)
+ 		dma_release_channel(pl022->dma_rx_channel);
++
++	pl022->dma_rx_channel = pl022->dma_tx_channel = NULL;
++}
++
++static void pl022_dma_remove(struct pl022 *pl022)
++{
++	if (pl022->busy) {
++		terminate_dma(pl022);
++		unmap_free_dma_scatter(pl022);
++	}
++
++	pl022_free_dmachan(pl022);
+ 	kfree(pl022->dummypage);
+ }
+ 
+@@ -1176,6 +1194,19 @@ static inline int pl022_dma_probe(struct pl022 *pl022)
+ static inline void pl022_dma_remove(struct pl022 *pl022)
+ {
+ }
++
++static inline int pl022_alloc_dmachan(struct pl022 *pl022)
++{
++	return 0;
++}
++
++static inline void terminate_dma(struct pl022 *pl022)
++{
++}
++
++static void pl022_free_dmachan(struct pl022 *pl022)
++{
++}
+ #endif
+ 
+ /**
+@@ -1401,16 +1432,20 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
+ 	}
+ 	/* If we're using DMA, set up DMA here */
+ 	if (pl022->cur_chip->enable_dma) {
++		int status = pl022_alloc_dmachan(pl022);
++		if (status)
++			goto switch_to_irq_mode;
++
+ 		/* Configure DMA transfer */
+ 		if (configure_dma(pl022)) {
+ 			dev_dbg(&pl022->adev->dev,
+ 				"configuration of DMA failed, fall back to interrupt mode\n");
+-			goto err_config_dma;
++			goto switch_to_irq_mode;
+ 		}
+ 		/* Disable interrupts in DMA mode, IRQ from DMA controller */
+ 		irqflags = DISABLE_ALL_INTERRUPTS;
+ 	}
+-err_config_dma:
++switch_to_irq_mode:
+ 	/* Enable SSP, turn on interrupts */
+ 	writew((readw(SSP_CR1(pl022->virtbase)) | SSP_CR1_MASK_SSE),
+ 	       SSP_CR1(pl022->virtbase));
+@@ -1513,7 +1548,14 @@ static void pump_messages(struct work_struct *work)
+ 	spin_lock_irqsave(&pl022->queue_lock, flags);
+ 	if (list_empty(&pl022->queue) || !pl022->running) {
+ 		pl022->busy = false;
++
+ 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
++
++		/* free dma channels */
++		if (pl022->master_info->enable_dma) {
++			terminate_dma(pl022);
++			pl022_free_dmachan(pl022);
++		}
+ 		return;
+ 	}
+ 	/* Make sure we are not already running a message */
 -- 
 1.7.2.2
-
-
-------------------------------------------------------------------------------
-uberSVN's rich system and user administration capabilities and model 
-configuration take the hassle out of deploying and managing Subversion and 
-the tools developers use with it. Learn more about uberSVN and get a free 
-download at:  http://p.sf.net/sfu/wandisco-dev2dev

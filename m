@@ -1,11 +1,11 @@
 From: viresh kumar <viresh.kumar@st.com>
-Subject: Re: [PATCH V2 3/6] spi/spi-pl022: Don't allocate more sg
-	than	required.
-Date: Wed, 10 Aug 2011 14:35:54 +0530
-Message-ID: <4E4249F2.1020406@st.com>
+Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
+	when required.
+Date: Wed, 10 Aug 2011 14:59:31 +0530
+Message-ID: <4E424F7B.2000800@st.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
-	<94a975df64a78bb533c85774a5bbd052c73fa5ba.1312965741.git.viresh.kumar@st.com>
-	<20110810085431.GD1831@n2100.arm.linux.org.uk>
+	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
+	<20110810090042.GE1831@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -25,9 +25,11 @@ Cc: Pratyush ANAND <pratyush.anand@st.com>,
 	<spi-devel-general@lists.sourceforge.net>,
 	"linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Koul, Vinod" <vinod.koul@intel.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20110810085431.GD1831@n2100.arm.linux.org.uk>
+In-Reply-To: <20110810090042.GE1831@n2100.arm.linux.org.uk>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -39,14 +41,24 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/10/2011 02:24 PM, Russell King - ARM Linux wrote:
-> It would be far better for this to be:
+On 08/10/2011 02:30 PM, Russell King - ARM Linux wrote:
+>> > They must be allocated when they are required and must be freed after we are
+>> > done with transfers. So that they can be used by other users.
+> Which DMA engine driver requires this?
 > 
-> 	pages = DIV_ROUND_UP(pl022->cur_transfer->len, PAGE_SIZE);
-> 
-> The compiler will probably optimize it to the same code anyway.
 
-I thought of it too, but missed to update code. Thanks.
+dw_dmac.c
+
+> Normally, when we have DMA engine drivers with multiple request signals,
+> the slave peripheral side publishes several virtual channels which are
+> claimed by the peripheral drivers.  This (amongst other things) allows
+> the peripheral drivers to hold claim to one of the virtual channels
+> all the time that it's required.
+
+If users of DMA expect DMA engine drivers to work this way, then we should
+have this mentioned clearly in DMA slave documentation.
+
+@Dan/Vinod: What do you say?
 
 -- 
 viresh

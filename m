@@ -1,60 +1,50 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 0/6] spi/spi-pl022 fixes
-Date: Tue, 9 Aug 2011 22:10:35 +0200
-Message-ID: <CACRpkdatTqnSMxKzhYo=EYpP21buN0tosx1Y1aVc7RLe58wfgg@mail.gmail.com>
-References: <cover.1312887860.git.viresh.kumar@st.com>
+From: viresh kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH 2/6] spi/spi-pl022: Use GFP_NOWAIT for allocation from
+	tasklet
+Date: Wed, 10 Aug 2011 08:57:42 +0530
+Message-ID: <4E41FAAE.40907@st.com>
+References: <cover.1312887860.git.viresh.kumar@st.com>	<cb966698764017627e85a4c85d1d781cf3fc9819.1312887860.git.viresh.kumar@st.com>
+	<CABb+yY3CuYqNcpvdP8fa6FsaN3EBDAXivKSP56gRh6-oPyp2Mg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: vipin.kumar@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
-	bhupesh.sharma@st.com, pratyush.anand@st.com,
-	armando.visconti@st.com, grant.likely@secretlab.ca,
-	shiraz.hashim@st.com, amit.virdi@st.com, vipulkumar.samar@st.com,
-	viresh.linux@gmail.com, deepak.sikri@st.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Viresh Kumar <viresh.kumar@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <cover.1312887860.git.viresh.kumar@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Pratyush ANAND <pratyush.anand-qxv4g6HH51o@public.gmane.org>,
+	Rajeev KUMAR <rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org>, Bhavna YADAV <bhavna.yadav-qxv4g6HH51o@public.gmane.org>,
+	Bhupesh SHARMA <bhupesh.sharma-qxv4g6HH51o@public.gmane.org>,
+	Armando VISCONTI <armando.visconti-qxv4g6HH51o@public.gmane.org>,
+	"linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Vipin KUMAR <vipin.kumar-qxv4g6HH51o@public.gmane.org>, Shiraz HASHIM <shiraz.hashim-qxv4g6HH51o@public.gmane.org>,
+	Amit VIRDI <Amit.VIRDI-qxv4g6HH51o@public.gmane.org>,
+	Vipul Kumar SAMAR <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Deepak SIKRI <deepak.sikri-qxv4g6HH51o@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CABb+yY3CuYqNcpvdP8fa6FsaN3EBDAXivKSP56gRh6-oPyp2Mg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 9, 2011 at 1:05 PM, Viresh Kumar <viresh.kumar@st.com> wrote:
+On 08/09/2011 04:56 PM, Jassi Brar wrote:
+> Since this could be called from when we actually need the transfer start,
+> maybe we could try harder using GFP_ATOMIC instead ?
 
-> This patchset mainly covers following fixes:
-> - formatting related issues
-> - Passing GFP_NOWAIT for sg allocation from tasklet
-> - Fixing calculate_effective_freq() routine
-> - Allocate/free DMA channels as and when required.
+Yes. Will do it.
 
-Excellent work Viresh, apart from the small comment on 4/6
-they all look good.
+-- 
+viresh
 
-I also tested them all on the U300, works perfectly.
-
-Please fixup 4/6 and respin with my:
-Tested-by: Linus Walleij <linus.walleij@linaro.org>
-
-So that Grant can pick them up.
-
-> I have rebased them on linux-next/master over following patch:
->
-> commit 9be355da3bae9feb09cdaf80c3ab560f1f0172cb
-> Author: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: =A0 Tue Aug 9 13:30:19 2011 +1000
->
-> =A0 =A0Add linux-next specific files for 20110809
-
-They all work perfectly well on top of v3.1-rc1, please use
-mainline kernel tags as patch base if you can.
-
-Yours,
-Linus Walleij
+------------------------------------------------------------------------------
+uberSVN's rich system and user administration capabilities and model 
+configuration take the hassle out of deploying and managing Subversion and 
+the tools developers use with it. Learn more about uberSVN and get a free 
+download at:  http://p.sf.net/sfu/wandisco-dev2dev

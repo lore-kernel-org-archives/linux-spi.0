@@ -1,10 +1,10 @@
 From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [PATCH V2 3/6] spi/spi-pl022: Don't allocate more sg than
-	required.
-Date: Wed, 10 Aug 2011 09:54:31 +0100
-Message-ID: <20110810085431.GD1831@n2100.arm.linux.org.uk>
+Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
+	when required.
+Date: Wed, 10 Aug 2011 10:00:42 +0100
+Message-ID: <20110810090042.GE1831@n2100.arm.linux.org.uk>
 References: <cover.1312965741.git.viresh.kumar@st.com>
-	<94a975df64a78bb533c85774a5bbd052c73fa5ba.1312965741.git.viresh.kumar@st.com>
+	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,7 +19,7 @@ Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
 To: Viresh Kumar <viresh.kumar@st.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <94a975df64a78bb533c85774a5bbd052c73fa5ba.1312965741.git.viresh.kumar@st.com>
+In-Reply-To: <566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -31,32 +31,25 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 10, 2011 at 02:20:56PM +0530, Viresh Kumar wrote:
-> In routine configure_dma(), if transfer->len = PAGE_SIZE, then pages is one more
-> than required. While leads to one more sg getting allocated.
+On Wed, Aug 10, 2011 at 02:20:59PM +0530, Viresh Kumar wrote:
+> Currently we request DMA channels at probe time and free them at remove. They
+> are always occupied, irrespective of their usage.
 > 
-> This is wrong. Correct this to allocate correct number of sg.
-> 
-> Signed-off-by: Viresh Kumar <viresh.kumar@st.com>
-> Tested-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/spi/spi-pl022.c |    3 ++-
->  1 files changed, 2 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index 80116be..1c8b9ec 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -1016,7 +1016,8 @@ static int configure_dma(struct pl022 *pl022)
->  	dmaengine_slave_config(txchan, &tx_conf);
->  
->  	/* Create sglists for the transfers */
-> -	pages = (pl022->cur_transfer->len >> PAGE_SHIFT) + 1;
-> +	pages = ((pl022->cur_transfer->len + (1 << PAGE_SHIFT) - 1)
-> +			>> PAGE_SHIFT);
+> They must be allocated when they are required and must be freed after we are
+> done with transfers. So that they can be used by other users.
 
-It would be far better for this to be:
+Which DMA engine driver requires this?
 
-	pages = DIV_ROUND_UP(pl022->cur_transfer->len, PAGE_SIZE);
+Normally, when we have DMA engine drivers with multiple request signals,
+the slave peripheral side publishes several virtual channels which are
+claimed by the peripheral drivers.  This (amongst other things) allows
+the peripheral drivers to hold claim to one of the virtual channels
+all the time that it's required.
 
-The compiler will probably optimize it to the same code anyway.
+This actually results in better usage of the DMA controller, as the
+virtual channels can be assigned to physical channels dynamically
+according to what the physical channels are doing.
+
+Plus, actually, the idea that DMA channels should be a short-term thing
+is broken as soon as you start considering things like UARTs, where you
+need a channel tied up long-term for the receive side of things.

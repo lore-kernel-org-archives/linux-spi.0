@@ -1,39 +1,36 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+From: Jassi Brar <jassisinghbrar@gmail.com>
 Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
 	when required.
-Date: Wed, 10 Aug 2011 11:40:25 +0100
-Message-ID: <20110810104025.GK1831@n2100.arm.linux.org.uk>
+Date: Wed, 10 Aug 2011 16:18:42 +0530
+Message-ID: <CABb+yY2T7qEZNLH1E8U+oiLUDQC+fGfrT82KExmOtV09UcqQeQ@mail.gmail.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 	<20110810090042.GE1831@n2100.arm.linux.org.uk>
 	<4E424F7B.2000800@st.com>
-	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
-	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
+	<CABb+yY0Qvuhrn+FUhWDHMwUjv=nR4MOfLeDfTzG17HXEuu2pmA@mail.gmail.com>
+	<20110810103052.GI1831@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
-	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>, "Koul,
-	Vinod" <vinod.koul@intel.com>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Pratyush ANAND <pratyush.anand@st.com>,
+	Rajeev KUMAR <rajeev-dlh.kumar@st.com>, Bhavna YADAV <bhavna.yadav@st.com>,
+	Bhupesh SHARMA <bhupesh.sharma@st.com>,
+	Shiraz HASHIM <shiraz.hashim@st.com>, "Koul, Vinod" <vinod.koul@intel.com>,
 	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+	Vipin KUMAR <vipin.kumar@st.com>,
 	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
-	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
+	Armando VISCONTI <armando.visconti@st.com>, Amit VIRDI <Amit.VIRDI@st.com>,
+	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
 	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	"deepak.sikri@st.com" <deepak.sikri@st.com>,
+	Deepak SIKRI <deepak.sikri@st.com>,
 	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>, "Williams,
-	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infrad
-To: Jassi Brar <jassisinghbrar@gmail.com>
+	<spi-devel-general@lists.sourceforge.net>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
+In-Reply-To: <20110810103052.GI1831@n2100.arm.linux.org.uk>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -45,82 +42,40 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 10, 2011 at 04:01:13PM +0530, Jassi Brar wrote:
-> On Wed, Aug 10, 2011 at 3:31 PM, Koul, Vinod <vinod.koul@intel.com> wrote:
-> > On Wed, 2011-08-10 at 14:59 +0530, viresh kumar wrote:
-> >> On 08/10/2011 02:30 PM, Russell King - ARM Linux wrote:
-> >> >> > They must be allocated when they are required and must be freed a=
-fter we are
-> >> >> > done with transfers. So that they can be used by other users.
-> >> > Which DMA engine driver requires this?
-> >> >
-> >>
-> >> dw_dmac.c
-> >>
-> >> > Normally, when we have DMA engine drivers with multiple request sign=
-als,
-> >> > the slave peripheral side publishes several virtual channels which a=
-re
-> >> > claimed by the peripheral drivers. =A0This (amongst other things) al=
-lows
-> >> > the peripheral drivers to hold claim to one of the virtual channels
-> >> > all the time that it's required.
-> >>
-> >> If users of DMA expect DMA engine drivers to work this way, then we sh=
-ould
-> >> have this mentioned clearly in DMA slave documentation.
-> >>
-> >> @Dan/Vinod: What do you say?
-> > I would agree on both counts :)
-> >
-> > In some cases it does make sense to hold the channel for the lifetime
-> > like uart or where the channel has been tied to an interface by SoC
-> > designer.
-> > But in some cases like dw_dmac it seems you can assign channels
-> > dynamically to each usage, and runtime allocation ensures we have best
-> > utilization.
-> > So i would argue that there is no "one size fits all" here, if you can
-> > manage channels dynamically and utilize more efficiently then go ahead,
-> > but if you cant (h/w and usage constraint) then you should not be forced
-> > to do so.
-> =
-
-> The idea is to have channel allocation as purely a s/w thing - no
-> actual commitment
-> of h/w resources. So we can afford to have channel allocated for the
-> whole lifetime
-> of a client.
-> =
-
-> Some dmac drivers are written 'improperly', keeping in mind the
-> platforms that have fixed
-> ReqSig->Peri map and no more clients than actual req-sigs are active
-> simultaneously.
-> But such dmac drivers will fail if a new platform decides to hijack req-s=
-ignals.
-> =
-
-> So, imho, it is absolutely a good thing for every dmac driver to be
-> designed for re-routable
-> ReqSig->Peri map... which would force their design to allocate
-> virtual/software channels to clients
-> without commit much(any?) h/w resources.
-
-We discussed channel allocation at Linaro.  However, I am now _really_
-disappointed.
-
-I discussed this with Linus on the bus back from Cambridge in the evening,
-and it appears that the story you gave me was inaccurate - Linus had not
-agreed to your proposal and saw more or less the same problems with it
-which I've been on at you about via your other email alias/lkml.  So that's
-essentially invalidated everything we discussed there as part of my thinking
-was "if Linus is happy with it, then...".
-
-I am now convinced that you'll say *anything* just to get your idea into
-the kernel.
-
-So, the stakes have now been raised further for you: what I want to see
-from you is a _working_ _implementation_ for those three platforms which
-I outlined.  I don't want more discussion.  I want patches from you.
-Nothing else.  We'll then review the code changes themselves rather than
-a vague idea communicated by email/verbally.
+T24gV2VkLCBBdWcgMTAsIDIwMTEgYXQgNDowMCBQTSwgUnVzc2VsbCBLaW5nIC0gQVJNIExpbnV4
+CjxsaW51eEBhcm0ubGludXgub3JnLnVrPiB3cm90ZToKPiBPbiBXZWQsIEF1ZyAxMCwgMjAxMSBh
+dCAwMzozOToyOFBNICswNTMwLCBKYXNzaSBCcmFyIHdyb3RlOgo+PiBPbiBXZWQsIEF1ZyAxMCwg
+MjAxMSBhdCAyOjU5IFBNLCB2aXJlc2gga3VtYXIgPHZpcmVzaC5rdW1hckBzdC5jb20+IHdyb3Rl
+Ogo+PiA+IE9uIDA4LzEwLzIwMTEgMDI6MzAgUE0sIFJ1c3NlbGwgS2luZyAtIEFSTSBMaW51eCB3
+cm90ZToKPj4gPj4+ID4gVGhleSBtdXN0IGJlIGFsbG9jYXRlZCB3aGVuIHRoZXkgYXJlIHJlcXVp
+cmVkIGFuZCBtdXN0IGJlIGZyZWVkIGFmdGVyIHdlIGFyZQo+PiA+Pj4gPiBkb25lIHdpdGggdHJh
+bnNmZXJzLiBTbyB0aGF0IHRoZXkgY2FuIGJlIHVzZWQgYnkgb3RoZXIgdXNlcnMuCj4+ID4+IFdo
+aWNoIERNQSBlbmdpbmUgZHJpdmVyIHJlcXVpcmVzIHRoaXM/Cj4+ID4+Cj4+ID4KPj4gPiBkd19k
+bWFjLmMKPj4gPgo+PiA+PiBOb3JtYWxseSwgd2hlbiB3ZSBoYXZlIERNQSBlbmdpbmUgZHJpdmVy
+cyB3aXRoIG11bHRpcGxlIHJlcXVlc3Qgc2lnbmFscywKPj4gPj4gdGhlIHNsYXZlIHBlcmlwaGVy
+YWwgc2lkZSBwdWJsaXNoZXMgc2V2ZXJhbCB2aXJ0dWFsIGNoYW5uZWxzIHdoaWNoIGFyZQo+PiA+
+PiBjbGFpbWVkIGJ5IHRoZSBwZXJpcGhlcmFsIGRyaXZlcnMuIMKgVGhpcyAoYW1vbmdzdCBvdGhl
+ciB0aGluZ3MpIGFsbG93cwo+PiA+PiB0aGUgcGVyaXBoZXJhbCBkcml2ZXJzIHRvIGhvbGQgY2xh
+aW0gdG8gb25lIG9mIHRoZSB2aXJ0dWFsIGNoYW5uZWxzCj4+ID4+IGFsbCB0aGUgdGltZSB0aGF0
+IGl0J3MgcmVxdWlyZWQuCj4+ID4KPj4gPiBJZiB1c2VycyBvZiBETUEgZXhwZWN0IERNQSBlbmdp
+bmUgZHJpdmVycyB0byB3b3JrIHRoaXMgd2F5LCB0aGVuIHdlIHNob3VsZAo+PiA+IGhhdmUgdGhp
+cyBtZW50aW9uZWQgY2xlYXJseSBpbiBETUEgc2xhdmUgZG9jdW1lbnRhdGlvbi4KPj4KPj4gVGhl
+IHJlcXVpcmVtZW50IHN0ZW1zIGZyb20gdGhlIGZhY3QgdGhhdCBtb3N0IERNQUNzKGVzcCB0aGly
+ZCBwYXJ0eSkgY291bGQgYmUKPj4gbWFkZSB0byByZXJvdXRlIHJlcS1zaWduYWxzIGJ5IHRoZSBw
+bGF0Zm9ybSwgaXQgaGFzIG5vdCBtdWNoIHRvIGRvIHdpdGggdGhlIEFQSS4KPj4gSU1PLCBhbGwg
+ZG1hYyBkcml2ZXJzIHNob3VsZCBiZSBpbXBsZW1lbnRlZCB0aGF0IHdheSB0byBiZSBvbiB0aGUg
+c2FmZXIgc2lkZS4KPgo+IE5vIGl0IGlzbid0LiDCoEl0J3MgdG8gZG8gd2l0aCBob3cgdGhlIHBo
+eXNpY2FsIGNoYW5uZWxzIGFyZSB1c2VkLgpJTU8sIGEgZG1hYyBkcml2ZXIgZGV2ZWxvcGVyIHNl
+ZXMgb25seSB0d28gYXNwZWN0cyAtICJ2aXJ0dWFsIGNoYW5uZWwiCmF0IGZyb250ZW5kIGFuZAoi
+UmVxU2lnL1BoeUNoYW4iIG1hbmFnZW1lbnQgYXQgdGhlIGJhY2tlbmQuICBXaGlsZSBSZXFTaWcg
+YW5kIFBoeXNpY2FsIENoYW5uZWxzCmFyZSBkaWZmZXJlbnQgaC93IGVudGl0aWVzLCB0aGUgZHJp
+dmVyIGRldmVsb3BlciB1c3VhbGx5IHdvcmtzIGhhdmluZwp0aWVkIHRoZW0gdG9nZXRoZXIuCgpG
+b3IgZXgsIFBMMzMwIGhhcyA4IHBoeXNpY2FsIGNoYW5uZWxzKEFSTSBjYWxscyB0aGVtIHRocmVh
+ZHMpIGFuZCAzMgpwZXJpcGhlcmFsIGludGVyZmFjZXMoUmVxU2lnKSwKd2hlcmUgYXMgdGhlIGRt
+YWMgZHJpdmVyIGZyZWVseSBhbGxvY2F0ZXMgMzIgdmlydHVhbCBjaGFubmVscyBhbmQKa2VlcHMg
+aW4gbWluZCB0aGF0IG9ubHkgOCBwZXJpcGhlcmFsCmludGVyZmFjZXMgY2FuIGJlIGFjdGl2ZSBh
+dCBhbnkgdGltZS4KClNvIEkgYW0gdW5hYmxlIHRvIHNlZSBob3cgSSBzYWlkIHNvbWV0aGluZyBk
+aWZmZXJlbnQgdGhhdCB5b3UgZG8uCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpsaW51eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2Vy
+bmVsQGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9saW51eC1hcm0ta2VybmVsCg==

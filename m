@@ -1,11 +1,12 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Managed Services in LTE Era Report 2011-2016
-Date: Thu, 11 Aug 2011 00:40:12 +0100
-Message-ID: <20110811004012.48840078@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: "A MELHOR LISTA do BRASIL" <contato-WImKk2PUdL8aX7bSAbp7wqMq/dM2szkN@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?NSBNaWxow7VlcyBkZSBFTUFJTFMgVsOBTElET1MgMjAxMS0+ICBIT0pFIGFwZW5hcyBSJDk5?=
+Date: Thu, 11 Aug 2011 08:10:16 +0400
+Message-ID: <4bf4e47a237fa094e967434b2eb0ea61@ganhar-muito.co.cc>
+Reply-To: contato-WImKk2PUdL8aX7bSAbp7wqMq/dM2szkN@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,10 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Managed Services in LTE Era Report 2011-2016
-------------------------------------------------------------------------------
-Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
-user administration capabilities and model configuration. Take 
-the hassle out of deploying and managing Subversion and the 
-tools developers use with it. 
-http://p.sf.net/sfu/wandisco-dev2dev
+U2V1IGNsaWVudGUgZGUgRW1haWwgbsOjbyBwb2RlIGxlciBlc3RlIEVtYWlsLgoKUGFyYSB2aXN1
+YWxpesOhLWxvIG9uLWxpbmUsIHBvciBmYXZvciwgY2xpcXVlIGFxdWk6Cmh0dHA6Ly9nYW5oYXIt
+bXVpdG8uY28uY2Mvc2lzdGVtYWRlZW52aW8vZGlzcGxheS5waHA/TT02NDU1MDImQz1jZDNlMGU0
+NjZkOGZkZjVjZTNjMTVmNGVlMDczNjU2MCZTPTEwJkw9MTAmTj00CgoKCgoKUGFyYSBwYXJhciBk
+ZSByZWNlYmVyIG5vc3NvcwpFbWFpbHM6aHR0cDovL2dhbmhhci1tdWl0by5jby5jYy9zaXN0ZW1h
+ZGVlbnZpby91bnN1YnNjcmliZS5waHA/TT02NDU1MDImQz1jZDNlMGU0NjZkOGZkZjVjZTNjMTVm
+NGVlMDczNjU2MCZMPTEwJk49MTAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCBhIEZSRUUgRE9X
+TkxPQUQhIGFuZCBsZWFybiBtb3JlIGFib3V0IHViZXJTVk4gcmljaCBzeXN0ZW0sIAp1c2VyIGFk
+bWluaXN0cmF0aW9uIGNhcGFiaWxpdGllcyBhbmQgbW9kZWwgY29uZmlndXJhdGlvbi4gVGFrZSAK
+dGhlIGhhc3NsZSBvdXQgb2YgZGVwbG95aW5nIGFuZCBtYW5hZ2luZyBTdWJ2ZXJzaW9uIGFuZCB0
+aGUgCnRvb2xzIGRldmVsb3BlcnMgdXNlIHdpdGggaXQuIApodHRwOi8vcC5zZi5uZXQvc2Z1L3dh
+bmRpc2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

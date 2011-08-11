@@ -1,8 +1,8 @@
-From: "Koul, Vinod" <vinod.koul@intel.com>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
 	when required.
-Date: Fri, 12 Aug 2011 04:05:05 +0530
-Message-ID: <1313102105.1603.35.camel@vkoul-udesk3>
+Date: Thu, 11 Aug 2011 22:35:55 +0530
+Message-ID: <CABb+yY3gi40JyoruEnm06wKJp79_kzjdkwRuGF9vjnUbcb5sOg@mail.gmail.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 	<20110810090042.GE1831@n2100.arm.linux.org.uk>
@@ -19,94 +19,95 @@ References: <cover.1312965741.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
-	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
-	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>, "Williams,
-	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: "pratyush.anand-qxv4g6HH51o@public.gmane.org" <pratyush.anand-qxv4g6HH51o@public.gmane.org>,
+	"rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org" <rajeev-dlh.kumar-qxv4g6HH51o@public.gmane.org>,
+	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"bhupesh.sharma-qxv4g6HH51o@public.gmane.org" <bhupesh.sharma-qxv4g6HH51o@public.gmane.org>,
+	"shiraz.hashim-qxv4g6HH51o@public.gmane.org" <shiraz.hashim-qxv4g6HH51o@public.gmane.org>,
+	"armando.visconti-qxv4g6HH51o@public.gmane.org" <armando.visconti-qxv4g6HH51o@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"vipin.kumar-qxv4g6HH51o@public.gmane.org" <vipin.kumar-qxv4g6HH51o@public.gmane.org>, "Koul,
+	Vinod" <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "Amit.VIRDI-qxv4g6HH51o@public.gmane.org" <Amit.VIRDI-qxv4g6HH51o@public.gmane.org>,
+	"vipulkumar.samar-qxv4g6HH51o@public.gmane.org" <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	"deepak.sikri-qxv4g6HH51o@public.gmane.org" <deepak.sikri-qxv4g6HH51o@public.gmane.org>,
+	"bhavna.yadav-qxv4g6HH51o@public.gmane.org" <bhavna.yadav-qxv4g6HH51o@public.gmane.org>, "Williams,
+	Dan J" <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2011-08-11 at 16:48 +0200, Linus Walleij wrote:
-> 2011/8/11 Jassi Brar <jassisinghbrar@gmail.com>:
-> 
-> > Do you have any reason for using device pointer and strings, other
-> > than just "because clock and regulator use them" ??
-> 
+On Thu, Aug 11, 2011 at 8:18 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> 2011/8/11 Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+>
+>> Do you have any reason for using device pointer and strings, other
+>> than just "because clock and regulator use them" ??
+>
 > Basically no.
-> 
-> But I think these frameworks are very workable and proven
-> to work in practice. So I like them.
-> 
-> When setting up the platform the coder would to be aware
-> that there are totally orthogonal concepts, which IMO
-> makes things complicated.
-> 
-> >>> Do you propose to implement a string parser in the core ?!
-> >>
-> >> Yes, the clock and regulator framework already does that.
-> >> But it is only used when you cannot pass in a struct device *
-> >> directly, like from device tree.
-> >
-> > Dude, I have utter disrespect for using strings in a case such as
-> > expressing requirements.
-> 
+
+Dear, I am speechless !!
+Best of luck.
+
+>>>> Do you propose to implement a string parser in the core ?!
+>>>
+>>> Yes, the clock and regulator framework already does that.
+>>> But it is only used when you cannot pass in a struct device *
+>>> directly, like from device tree.
+>>
+>> Dude, I have utter disrespect for using strings in a case such as
+>> expressing requirements.
+>
 > It's mainly a strcmp(), and it's only comparing to the
 > well-established namespace that all devices have anyway,
 > due to the way the device model is done.
-> 
+>
 > Basically when binding clocks or regulators it's:
-> 
+>
 > struct device *dev;
 > strcmp(map_string, dev_name(dev));
-> 
+>
 > By this time struct device exist of course, since
 > it's the device driver calling to get its clock/regulator.
-> 
+>
 > dev_name() comes from <linux/device.h> and basically
 > takes the kobject name or an optional initilizer name
 > for the device. So the names are pretty static, you don't
 > need to parse them, just compare.
-> 
-> > I have already explained how we can easily and in a _better_ way
-> > do without them (again see my last reply to Vindo's setup).
-> > Tell me 1 reason why using strings, in this case, would be better ?
-> 
+I think I know why and how clkdev and regulator use strings.
+Here we are talking about dmac possibly expressing 8 parameters
+as strings, not just 2.
+
+
+>> I have already explained how we can easily and in a _better_ way
+>> do without them (again see my last reply to Vindo's setup).
+>> Tell me 1 reason why using strings, in this case, would be better ?
+>
 > I have no other reasons than the above.
-> 
+>
 > People like Russell (clkdevice) and Liam Girdwood (regulator)
 > who I know are smarter than me and have worked with
 > these subsystems for years choose that model, so I trust
 > their judgement.
-I would agree the overhead of using strings is negligible if you compare
-the benefits it gives in usability and being easy for someone to
-configure.
-Jassi being samsung asoc maintainer should already agree to that :-)
+Let me provide you even more 'ammunition'
+ASoC and USB-Gadget employs strings too
+Though only Regulators, ASoC and CLKDEV(?) really _have-to_
+employ strings.
+USB-Gadget use them mainly for historical reasons - we can very well
+replace that scheme with bit-fields as I propose.
 
-
--- 
-~Vinod
+------------------------------------------------------------------------------
+Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
+user administration capabilities and model configuration. Take 
+the hassle out of deploying and managing Subversion and the 
+tools developers use with it. 
+http://p.sf.net/sfu/wandisco-dev2dev

@@ -1,8 +1,8 @@
-From: Jassi Brar <jassisinghbrar@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
 	when required.
-Date: Thu, 11 Aug 2011 19:52:29 +0530
-Message-ID: <CABb+yY0G_OeVgQs4ySVMQBcBh2q=nUhj+U+=tZG751WT9qRYuA@mail.gmail.com>
+Date: Thu, 11 Aug 2011 16:48:54 +0200
+Message-ID: <CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg@mail.gmail.com>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 	<20110810090042.GE1831@n2100.arm.linux.org.uk>
@@ -14,29 +14,30 @@ References: <cover.1312965741.git.viresh.kumar@st.com>
 	<CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
 	<CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
 	<CAKnu2Mo=9wusKrc7DeL9fk-fq3pY1D3WKHXYmo+b9w5GbyzegA@mail.gmail.com>
+	<CABb+yY0G_OeVgQs4ySVMQBcBh2q=nUhj+U+=tZG751WT9qRYuA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
 	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
 	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>, "Koul,
-	Vinod" <vinod.koul@intel.com>, "vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
 	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
+	"armando.visconti@st.com" <armando.visconti@st.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"vipin.kumar@st.com" <vipin.kumar@st.com>, "Koul,
+	Vinod" <vinod.koul@intel.com>, "Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
 	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
 	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
 	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>, "Williams,
+	"bhavna.yadav@st.com" <bhavna.yadav@st.com>, "Williams,
 	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.o
-To: Linus Walleij <linus.walleij@linaro.org>
+To: Jassi Brar <jassisinghbrar@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CAKnu2Mo=9wusKrc7DeL9fk-fq3pY1D3WKHXYmo+b9w5GbyzegA@mail.gmail.com>
+In-Reply-To: <CABb+yY0G_OeVgQs4ySVMQBcBh2q=nUhj+U+=tZG751WT9qRYuA@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -48,58 +49,56 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVGh1LCBBdWcgMTEsIDIwMTEgYXQgNjoyNSBQTSwgTGludXMgV2FsbGVpaiA8bGludXMud2Fs
-bGVpakBsaW5hcm8ub3JnPiB3cm90ZToKPiAyMDExLzgvMTAgSmFzc2kgQnJhciA8amFzc2lzaW5n
-aGJyYXJAZ21haWwuY29tPjoKPj4gT24gV2VkLCBBdWcgMTAsIDIwMTEgYXQgNToyNCBQTSwgTGlu
-dXMgV2FsbGVpaiA8bGludXMud2FsbGVpakBsaW5hcm8ub3JnPiB3cm90ZToKPj4+PiBMaW51cyBX
-LCB3YXMgdGhlcmUgYW55dGhpbmcgeW91IHNhaWQgd291bGRuJ3Qgd29yayB3aXRoIHRoZSBzY2hl
-bWUgPwo+Pj4+IFBsZWFzZSB0ZWxsIG5vdyBvbiB0aGUgcmVjb3JkLgo+Pj4KPj4+IEl0IHdvdWxk
-ICp3b3JrKiBidXQgdGhlIGN1cnJlbnQgcHJvcG9zYWwgaXMgKm5vdCBlbGVnYW50KiBJTU8uCj4+
-Cj4+IHdvdWxkICp3b3JrKiDCoC0+IFlvdSBjb3VsZCBmaW5kIG5vIGNhc2UgdGhhdCB0aGUgc2No
-ZW1lIHdvdWxkbid0IHN1cHBvcnQuCj4KPiBXZWxsIHRoZXJlIGlzIHRoZSB1c2VjYXNlIHdoZXJl
-IHdlIGhhdmUgYSBsb3Qgb2YgZGV2aWNlcywgYnV0IGl0IGlzCj4gdHJ1ZSB3ZSBkb24ndCBoYXZl
-IHRoYXQga2luZCBvZiBoYXJkd2FyZSBhcm91bmQuCkkgYW0gcGlzc2VkIG9mZiBieSBSdXNzZWxs
-J3MgYWxsZWdhdGlvbiB0aGF0CnsKTGludXMgaGFkIG5vdCBhZ3JlZWQgdG8geW91ciBwcm9wb3Nh
-bCBhbmQgc2F3IG1vcmUgb3IgbGVzcyB0aGUgc2FtZQpwcm9ibGVtcyB3aXRoIGl0IHdoaWNoIEkn
-dmUgYmVlbiBvbiBhdCB5b3UgYWJvdXQgdmlhIHlvdXIgb3RoZXIgZW1haWwKYWxpYXMvbGttbC4K
-fQp3aGVyZWFzIHdoYXQgeW91IHNheSBub3csIGFuZCB3aGVuIHdlIGRpc2N1c3NlZCwgZG9lcyBu
-b3QgcmVwZWF0IGEgc2luZ2xlCmNvbmNlcm4gb2YgaGlzIQpZb3UgbmV2ZXIgc2F5L3NhaWQgd2hh
-dCAncHJvYmxlbScgZG8geW91IHNlZS4KClJ1c3NlbGwgaGFzIGJlZW4gc2tlcHRpY2FsIGlmIG15
-IGlkZWEgd291bGQgd29yayBhdCBhbGwgZm9yIGhpcwp2ZXJzYXRpbGUgc2V0dXBzLgpXaGlsZSB5
-b3Ugc2F5IGl0IHdvdWxkICp3b3JrKiBidXQgeW91IGp1c3Qgd2FudCB0aGUgaWRlYSBpbXBsZW1l
-bnRlZAp1c2luZyBkZXZpY2UgcG9pbnRlciBhbmQgc3RyaW5ncyAhCgpCdHcsIGRvIGJyaW5nIG9u
-IGFueSBlc290ZXJpYyBzZXR1cCB0aGF0IHlvdSBoYXZlIGluIG1pbmQgZXZlbiBpZiB5b3UgbmV2
-ZXIKZXhwZWN0IHRvIGhhdmUgaXQgaW4gcmVhbC4KCkkgYW0gbm90IG1hcnJpZWQgdG8gbXkgaWRl
-YS4gSSBkb24ndCB3YW5uYSBwdXNoIGFueSBmdXJ0aGVyIGlmIGl0IHdvdWxkbid0IHdvcmsuCgpU
-aGUgYmlnZ2VzdCBjaGFsbGVuZ2UgSSBzZWUgaXMgdGhlIGh1Z2UgbW9kaWZpY2F0aW9uIG5lZWRl
-ZC4gTm90IHNvbWUKd2VpcmQgc2V0dXAgIQoKPj4gQ2xpZW50IGhhdmluZyB0byBzcGVjaWZ5IHRo
-ZSBkZXZpY2UgaXQgd2FudHMgYSBjaGFubmVsIGZvciwgaXMgYQo+PiB3YXN0ZSAtIG90aGVyd2lz
-ZSB3ZSBkb24ndCBmdWxseSBnZXQgcmlkIG9mIHBsYXRmb3JtIGFzc2lzdGFuY2UgZm9yCj4+IGNo
-YW5uZWwgc2VsZWN0aW9uIQo+Cj4gSSB0aGluayBJIHNhdyB5b3UgcHJvcG9zYWwgZGVmaW5lIFJF
-UShNTUMsMikgZm9yIGV4YW1wbGUsCj4gaXNuJ3QgdGhhdCBzcGVjaWZ5aW5nIHRoZSBkZXZpY2U/
-Ck5vdCB1c2luZyBwbGF0Zm9ybSBwcm92aWRlZCBkZXZpY2UgcG9pbnRlcnMsIGJ1dCBieSB1c2lu
-ZyBnbG9iYWxseQpkZWZpbmVkIHZhbHVlcy4gKFNlZSBteSBsYXN0IHJlcGx5IHRvIFZpbm9kJ3Mg
-c2V0dXAKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvcGlwZXJtYWlsL2xpbnV4LWFybS1rZXJu
-ZWwvMjAxMS1BdWd1c3QvMDYwODYwLmh0bWwpCgpUaGUgbm90aW9uIG9mICJtdXN0LXVzZSIgZGV2
-aWNlIHBvaW50ZXIgc3Vja3MhCk1vcmUgc28gd2hlbiB3ZSBjYW4gaGF2ZSBzaW1wbGVyIGFuZCBh
-dCBsZWFzdCBhcyBnb29kIGltcGxlbWVudGF0aW9uCndpdGhvdXQgdXNpbmcgdGhlbSAhCgpEbyB5
-b3UgaGF2ZSBhbnkgcmVhc29uIGZvciB1c2luZyBkZXZpY2UgcG9pbnRlciBhbmQgc3RyaW5ncywg
-b3RoZXIKdGhhbiBqdXN0ICJiZWNhdXNlIGNsb2NrIGFuZCByZWd1bGF0b3IgdXNlIHRoZW0iID8/
-Cgo+Pj4gcnhjID0gZG1hX3JlcXVlc3Rfc2xhdmVfY2hhbm5lbChkZXYsICJNTUMtUlgiKTsKPj4+
-IHR4YyA9IGRtYV9yZXF1ZXN0X3NsYXZlX2NoYW5uZWwoZGV2LCAiTU1DLVRYIik7Cj4+Cj4+IEFi
-c29sdXRlbHkgIm5vdC12ZXJ5LWdvb2QiICEKPj4gV2UgY2FuIGRvIHdpdGhvdXQgdGhlICdkZXYn
-IGFyZ3VtZW50Lgo+Cj4gWW91IHN0aWxsIG5lZWQgdG8gcGFzcyBpbiBzb21ldGhpbmcgcmVmZXJy
-aW5nIHlvdSBiYWNrIHRvCj4gdGhlIGRldmljZS4KTm9wZXMuIEFzIEkgc2FpZCBwbGVhc2Ugc2Vl
-IG15IHJlcGx5IHRvIFZpbm9kJ3Mgc2V0dXAuCgoKPj4gRG8geW91IHByb3Bvc2UgdG8gaW1wbGVt
-ZW50IGEgc3RyaW5nIHBhcnNlciBpbiB0aGUgY29yZSA/IQo+Cj4gWWVzLCB0aGUgY2xvY2sgYW5k
-IHJlZ3VsYXRvciBmcmFtZXdvcmsgYWxyZWFkeSBkb2VzIHRoYXQuCj4gQnV0IGl0IGlzIG9ubHkg
-dXNlZCB3aGVuIHlvdSBjYW5ub3QgcGFzcyBpbiBhIHN0cnVjdCBkZXZpY2UgKgo+IGRpcmVjdGx5
-LCBsaWtlIGZyb20gZGV2aWNlIHRyZWUuCkR1ZGUsIEkgaGF2ZSB1dHRlciBkaXNyZXNwZWN0IGZv
-ciB1c2luZyBzdHJpbmdzIGluIGEgY2FzZSBzdWNoIGFzCmV4cHJlc3NpbmcgcmVxdWlyZW1lbnRz
-LgpJIGhhdmUgYWxyZWFkeSBleHBsYWluZWQgaG93IHdlIGNhbiBlYXNpbHkgYW5kIGluIGEgX2Jl
-dHRlcl8gd2F5CmRvIHdpdGhvdXQgdGhlbSAoYWdhaW4gc2VlIG15IGxhc3QgcmVwbHkgdG8gVmlu
-ZG8ncyBzZXR1cCkuClRlbGwgbWUgMSByZWFzb24gd2h5IHVzaW5nIHN0cmluZ3MsIGluIHRoaXMg
-Y2FzZSwgd291bGQgYmUgYmV0dGVyID8KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0CmxpbnV4LWFybS1r
-ZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwK
+2011/8/11 Jassi Brar <jassisinghbrar@gmail.com>:
+
+> Do you have any reason for using device pointer and strings, other
+> than just "because clock and regulator use them" ??
+
+Basically no.
+
+But I think these frameworks are very workable and proven
+to work in practice. So I like them.
+
+When setting up the platform the coder would to be aware
+that there are totally orthogonal concepts, which IMO
+makes things complicated.
+
+>>> Do you propose to implement a string parser in the core ?!
+>>
+>> Yes, the clock and regulator framework already does that.
+>> But it is only used when you cannot pass in a struct device *
+>> directly, like from device tree.
+>
+> Dude, I have utter disrespect for using strings in a case such as
+> expressing requirements.
+
+It's mainly a strcmp(), and it's only comparing to the
+well-established namespace that all devices have anyway,
+due to the way the device model is done.
+
+Basically when binding clocks or regulators it's:
+
+struct device *dev;
+strcmp(map_string, dev_name(dev));
+
+By this time struct device exist of course, since
+it's the device driver calling to get its clock/regulator.
+
+dev_name() comes from <linux/device.h> and basically
+takes the kobject name or an optional initilizer name
+for the device. So the names are pretty static, you don't
+need to parse them, just compare.
+
+> I have already explained how we can easily and in a _better_ way
+> do without them (again see my last reply to Vindo's setup).
+> Tell me 1 reason why using strings, in this case, would be better ?
+
+I have no other reasons than the above.
+
+People like Russell (clkdevice) and Liam Girdwood (regulator)
+who I know are smarter than me and have worked with
+these subsystems for years choose that model, so I trust
+their judgement.
+
+Thanks,
+Linus Walleij

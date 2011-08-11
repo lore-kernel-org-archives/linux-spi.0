@@ -1,8 +1,8 @@
-From: Linus Walleij <linus.walleij@linaro.org>
+From: "Koul, Vinod" <vinod.koul@intel.com>
 Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
 	when required.
-Date: Thu, 11 Aug 2011 16:48:54 +0200
-Message-ID: <CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg@mail.gmail.com>
+Date: Fri, 12 Aug 2011 04:05:05 +0530
+Message-ID: <1313102105.1603.35.camel@vkoul-udesk3>
 References: <cover.1312965741.git.viresh.kumar@st.com>
 	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
 	<20110810090042.GE1831@n2100.arm.linux.org.uk>
@@ -15,6 +15,7 @@ References: <cover.1312965741.git.viresh.kumar@st.com>
 	<CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
 	<CAKnu2Mo=9wusKrc7DeL9fk-fq3pY1D3WKHXYmo+b9w5GbyzegA@mail.gmail.com>
 	<CABb+yY0G_OeVgQs4ySVMQBcBh2q=nUhj+U+=tZG751WT9qRYuA@mail.gmail.com>
+	<CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,22 +23,23 @@ Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
 	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
 	Russell King - ARM Linux <linux@arm.linux.org.uk>,
 	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
 	"armando.visconti@st.com" <armando.visconti@st.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	"vipin.kumar@st.com" <vipin.kumar@st.com>,
 	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>, "Koul,
-	Vinod" <vinod.koul@intel.com>, "Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
+	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
+	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
 	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
 	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
 	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>, "Williams,
+	"bhavna.yadav@st.com" <bhavna.yadav@st.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>, "Williams,
 	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.o
-To: Jassi Brar <jassisinghbrar@gmail.com>
+	<linux-arm-kernel@lists.infradead
+To: Linus Walleij <linus.walleij@linaro.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CABb+yY0G_OeVgQs4ySVMQBcBh2q=nUhj+U+=tZG751WT9qRYuA@mail.gmail.com>
+In-Reply-To: <CAKnu2MptC8HWCNo6W+X9rawn6MCwAe3DB3B5UcHD1tCD9tA2cg@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -49,56 +51,62 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/8/11 Jassi Brar <jassisinghbrar@gmail.com>:
+On Thu, 2011-08-11 at 16:48 +0200, Linus Walleij wrote:
+> 2011/8/11 Jassi Brar <jassisinghbrar@gmail.com>:
+> 
+> > Do you have any reason for using device pointer and strings, other
+> > than just "because clock and regulator use them" ??
+> 
+> Basically no.
+> 
+> But I think these frameworks are very workable and proven
+> to work in practice. So I like them.
+> 
+> When setting up the platform the coder would to be aware
+> that there are totally orthogonal concepts, which IMO
+> makes things complicated.
+> 
+> >>> Do you propose to implement a string parser in the core ?!
+> >>
+> >> Yes, the clock and regulator framework already does that.
+> >> But it is only used when you cannot pass in a struct device *
+> >> directly, like from device tree.
+> >
+> > Dude, I have utter disrespect for using strings in a case such as
+> > expressing requirements.
+> 
+> It's mainly a strcmp(), and it's only comparing to the
+> well-established namespace that all devices have anyway,
+> due to the way the device model is done.
+> 
+> Basically when binding clocks or regulators it's:
+> 
+> struct device *dev;
+> strcmp(map_string, dev_name(dev));
+> 
+> By this time struct device exist of course, since
+> it's the device driver calling to get its clock/regulator.
+> 
+> dev_name() comes from <linux/device.h> and basically
+> takes the kobject name or an optional initilizer name
+> for the device. So the names are pretty static, you don't
+> need to parse them, just compare.
+> 
+> > I have already explained how we can easily and in a _better_ way
+> > do without them (again see my last reply to Vindo's setup).
+> > Tell me 1 reason why using strings, in this case, would be better ?
+> 
+> I have no other reasons than the above.
+> 
+> People like Russell (clkdevice) and Liam Girdwood (regulator)
+> who I know are smarter than me and have worked with
+> these subsystems for years choose that model, so I trust
+> their judgement.
+I would agree the overhead of using strings is negligible if you compare
+the benefits it gives in usability and being easy for someone to
+configure.
+Jassi being samsung asoc maintainer should already agree to that :-)
 
-> Do you have any reason for using device pointer and strings, other
-> than just "because clock and regulator use them" ??
 
-Basically no.
-
-But I think these frameworks are very workable and proven
-to work in practice. So I like them.
-
-When setting up the platform the coder would to be aware
-that there are totally orthogonal concepts, which IMO
-makes things complicated.
-
->>> Do you propose to implement a string parser in the core ?!
->>
->> Yes, the clock and regulator framework already does that.
->> But it is only used when you cannot pass in a struct device *
->> directly, like from device tree.
->
-> Dude, I have utter disrespect for using strings in a case such as
-> expressing requirements.
-
-It's mainly a strcmp(), and it's only comparing to the
-well-established namespace that all devices have anyway,
-due to the way the device model is done.
-
-Basically when binding clocks or regulators it's:
-
-struct device *dev;
-strcmp(map_string, dev_name(dev));
-
-By this time struct device exist of course, since
-it's the device driver calling to get its clock/regulator.
-
-dev_name() comes from <linux/device.h> and basically
-takes the kobject name or an optional initilizer name
-for the device. So the names are pretty static, you don't
-need to parse them, just compare.
-
-> I have already explained how we can easily and in a _better_ way
-> do without them (again see my last reply to Vindo's setup).
-> Tell me 1 reason why using strings, in this case, would be better ?
-
-I have no other reasons than the above.
-
-People like Russell (clkdevice) and Liam Girdwood (regulator)
-who I know are smarter than me and have worked with
-these subsystems for years choose that model, so I trust
-their judgement.
-
-Thanks,
-Linus Walleij
+-- 
+~Vinod

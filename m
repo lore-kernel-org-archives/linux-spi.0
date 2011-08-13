@@ -1,11 +1,10 @@
-From: "TOTALCAD" <juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Elija un CAD ORIGINAL hasta 12 de Agosto !!
-Date: Mon, 08 Aug 2011 10:59:12 -0500
-Message-ID: <cc0f8b02a5dc1fbedf6c60b4d31ebc79@totalcad.ondamkt.com>
-Reply-To: juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Xckjfidb" <lnkgmj-ajiIr28wjQpBDgjK7y7TUQ@public.gmane.org>
+Subject: Znvvlpi Ahvud Cdnw
+Date: Sun, 14 Aug 2011 01:20:16 +0800
+Message-ID: <20110814022230470.3285@nwmail.oddspark.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; charset="GB2312";
+	boundary="9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +17,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdG90YWxj
-YWQub25kYW1rdC5jb20vZGlzcGxheS5waHA/TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4
-NTQ2ZTFkN2YxMTFjNTgmUz0zNTYmTD04NiZOPTMwNAoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBu
-b3Nzb3MKRW1haWxzOmh0dHA6Ly90b3RhbGNhZC5vbmRhbWt0LmNvbS91bnN1YnNjcmliZS5waHA/
-TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4NTQ2ZTFkN2YxMTFjNTgmTD04NiZOPTM1Ngot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KRlJFRSBET1dOTE9BRCAtIHViZXJTVk4gd2l0aCBTb2NpYWwg
-Q29kaW5nIGZvciBTdWJ2ZXJzaW9uLgpTdWJ2ZXJzaW9uIG1hZGUgZWFzeSB3aXRoIGEgY29tcGxl
-dGUgYWRtaW4gY29uc29sZS4gRWFzeSAKdG8gdXNlLCBlYXN5IHRvIG1hbmFnZSwgZWFzeSB0byBp
-bnN0YWxsLCBlYXN5IHRvIGV4dGVuZC4gCkdldCBhIEZyZWUgZG93bmxvYWQgb2YgdGhlIG5ldyBv
-cGVuIEFMTSBTdWJ2ZXJzaW9uIHBsYXRmb3JtIG5vdy4KaHR0cDovL3Auc2YubmV0L3NmdS93YW5k
-aXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+This is a multi-part message in MIME format
+
+--9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+
+Sfzkp Ufdkj Mcjgk
+供应-中-华、黄=鹤=楼=等！完全分辩不出！详细请看附件！Hsowffz Yzsnkhc Mdcya
+Tnlvkhn Rpryotune Splhkyg
+
+--9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+FREE DOWNLOAD - uberSVN with Social Coding for Subversion.
+Subversion made easy with a complete admin console. Easy 
+to use, easy to manage, easy to install, easy to extend. 
+Get a Free download of the new open ALM Subversion platform now.
+http://p.sf.net/sfu/wandisco-dev2dev
+--9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn--

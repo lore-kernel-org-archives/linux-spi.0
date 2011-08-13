@@ -1,51 +1,32 @@
-From: Sonic Zhang <sonic.adi@gmail.com>
-Subject: [PATCH v2] spi:spi_bfin5xx: SPI SSEL deasserted too early in soft irq mode.
-Date: Fri, 12 Aug 2011 10:48:53 +0800
-Message-ID: <1313117333-26763-1-git-send-email-sonic.adi@gmail.com>
+From: 13560740732-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 发/票――代/开
+Date: Sat, 13 Aug 2011 21:55:13 +0800
+Message-ID: <E1QsEh8-0000C4-MM@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	LKML <linux-kernel@vger.kernel.org>,
-	<uclinux-dist-devel@blackfin.uclinux.org>,
-	Sonic Zhang <sonic.zhang@analog.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Sonic Zhang <sonic.zhang@analog.com>
-
-Poll the FIFO till it is empty before deassert SSEL in pump_transfers in
-soft irq mode. No polling is necessary in interrupt mode and error handling.
-
-Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
----
- drivers/spi/spi-bfin5xx.c |    5 ++++-
- 1 files changed, 4 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index b8d25f2..7e03e7d 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -587,6 +587,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 	if (message->state == DONE_STATE) {
- 		dev_dbg(&drv_data->pdev->dev, "transfer: all done!\n");
- 		message->status = 0;
-+		bfin_spi_flush(drv_data);
- 		bfin_spi_giveback(drv_data);
- 		return;
- 	}
-@@ -870,8 +871,10 @@ static void bfin_spi_pump_transfers(unsigned long data)
- 		message->actual_length += drv_data->len_in_bytes;
- 		/* Move to next transfer of this msg */
- 		message->state = bfin_spi_next_transfer(drv_data);
--		if (drv_data->cs_change)
-+		if (drv_data->cs_change) {
-+			bfin_spi_flush(drv_data);
- 			bfin_spi_cs_deactive(drv_data, chip);
-+		}
- 	}
- 
- 	/* Schedule next transfer tasklet */
--- 
-1.7.0.4
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NjA3NDA3
+MzIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpGUkVFIERPV05MT0FEIC0gdWJlclNWTiB3aXRoIFNv
+Y2lhbCBDb2RpbmcgZm9yIFN1YnZlcnNpb24uClN1YnZlcnNpb24gbWFkZSBlYXN5IHdpdGggYSBj
+b21wbGV0ZSBhZG1pbiBjb25zb2xlLiBFYXN5IAp0byB1c2UsIGVhc3kgdG8gbWFuYWdlLCBlYXN5
+IHRvIGluc3RhbGwsIGVhc3kgdG8gZXh0ZW5kLiAKR2V0IGEgRnJlZSBkb3dubG9hZCBvZiB0aGUg
+bmV3IG9wZW4gQUxNIFN1YnZlcnNpb24gcGxhdGZvcm0gbm93LgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L3dhbmRpc2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

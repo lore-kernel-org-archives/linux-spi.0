@@ -1,11 +1,9 @@
-From: "Xckjfidb" <lnkgmj-ajiIr28wjQpBDgjK7y7TUQ@public.gmane.org>
-Subject: Znvvlpi Ahvud Cdnw
-Date: Sun, 14 Aug 2011 01:20:16 +0800
-Message-ID: <20110814022230470.3285@nwmail.oddspark.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; charset="GB2312";
-	boundary="9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?1dTFrsq/?= <smqyyuwubu-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 妫寕瀹炰笟鏈夋紓鎹唬開，1点左右纳取，详见内容
+Date: Tue, 16 Aug 2011 11:16:17 +0800
+Message-ID: <E1QtA8Z-0001Hi-Sf@sfs-ml-1.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============2121287679829091124=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,29 +15,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
-Content-Type: text/plain
+--===============2121287679829091124==
+Content-Type: text/plain;
+	charset="gb2312"
 Content-Transfer-Encoding: 8bit
 
-Sfzkp Ufdkj Mcjgk
-供应-中-华、黄=鹤=楼=等！完全分辩不出！详细请看附件！Hsowffz Yzsnkhc Mdcya
-Tnlvkhn Rpryotune Splhkyg
+各大企业公司您们好！
+    森茂实业公司成立于1996年，是一家集团公司。本集团共拥有十余家下属企业，遍及广东、江苏、上海、北京、山东等地区，我司在不断成长过程中注重人才的吸收和培养，拥有一批高素质的经营管理团队和专业技术人才，我司致力于创建高效和谐的企业环境，用专业、自信的合作精神为各大企业的发展与永续强劲的原动力。
+    如果贵企业（公司）若有以下情况请与我们联系！
+    1、公司为一般纳稅企业没有优惠政策而想减轻纳稅负担的。
+    2、对外销售商品或提供技术服务而贵司暂未申领發漂的。
+    3、外出采购或公干而服务商没有提供可以报销發漂的。
+    4、公司帐目进项与出项差额过大的，需补充差额的。
+    5、公司做帐或进销存方面如需用到的。
+    现有各种：商品销售、广告业、建筑业、服务业、租赁、培训、科技、印刷、运输、医疗、机械等漂据代理。[稅点按1个点纳取，大金额可降底优惠]
+    提供的所有漂据可上网查询或到有关部门查验，可过帐后再付费用。
+    郑重承诺：我司已进一步完善我们管理制度，优化服务，并履行保密制度，希望能成为您事业发展强而有力的好帮手。
+        欢迎来电咨询，洽谈合作！
+        业务部联系人：赵丽芸女士   
+              电  话：13826496893
+        请保留联系号码，以备不时之需！
+                                 
+                                森茂实业有限公司
 
---9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
+
+--===============2121287679829091124==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
 ------------------------------------------------------------------------------
-FREE DOWNLOAD - uberSVN with Social Coding for Subversion.
-Subversion made easy with a complete admin console. Easy 
-to use, easy to manage, easy to install, easy to extend. 
-Get a Free download of the new open ALM Subversion platform now.
-http://p.sf.net/sfu/wandisco-dev2dev
---9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn
+uberSVN's rich system and user administration capabilities and model 
+configuration take the hassle out of deploying and managing Subversion and 
+the tools developers use with it. Learn more about uberSVN and get a free 
+download at:  http://p.sf.net/sfu/wandisco-dev2dev
+
+--===============2121287679829091124==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,4 +62,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---9omUCT0h8ybZmhAgnsoiT=_fXZ4WrAqrgn--
+--===============2121287679829091124==--

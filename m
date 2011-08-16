@@ -1,183 +1,36 @@
-From: "Koul, Vinod" <vinod.koul@intel.com>
-Subject: Re: [PATCH V2 6/6] spi/spi-pl022: Request/free DMA channels as and
-	when required.
-Date: Tue, 16 Aug 2011 17:25:27 +0530
-Message-ID: <1313495727.1603.83.camel@vkoul-udesk3>
-References: <cover.1312965741.git.viresh.kumar@st.com>
-	<566c0525199f498f04422d4c3b2ddd7466648c20.1312965742.git.viresh.kumar@st.com>
-	<20110810090042.GE1831@n2100.arm.linux.org.uk>
-	<4E424F7B.2000800@st.com>
-	<438BB0150E931F4B9CE701519A4463010871804A15@bgsmsx502.gar.corp.intel.com>
-	<CABb+yY3SnqKN78U7vLbom1i00m=ThnRVQDVM_iX1TPu=+XzSNQ@mail.gmail.com>
-	<20110810104025.GK1831@n2100.arm.linux.org.uk>
-	<CABb+yY3=q5Nq1wtM6Av2DrgUfjZR_Ao40QhBhv_ik9naAd5wRg@mail.gmail.com>
-	<CACRpkdaCyUJ3A9VWfsVuwJj3DGVkvjc2_ZOD4yM4YX3NPxAAYQ@mail.gmail.com>
-	<CABb+yY2Usd5=RW6BV69UW=Tq0zQW6LCtT2GhfdHGA61ZU3aNcQ@mail.gmail.com>
-	<1313009883.1603.25.camel@vkoul-udesk3>
-	<CABb+yY0Hy9DcHf+D0OrrGjxkR=V8sa4Q-Kvd1iH01oChnoEE6w@mail.gmail.com>
+From: "SUCESSO em VENDAS" <contato-WImKk2PUdL8aX7bSAbp7wqMq/dM2szkN@public.gmane.org>
+Subject: [SPAM] 3 MILHÕES de EMAIL ABERTOS hoje apenas R$149
+Date: Tue, 16 Aug 2011 04:41:09 +0400
+Message-ID: <6729ecd85e407982f954f9c190aba32d@ganhar-muito.co.cc>
+Reply-To: contato-WImKk2PUdL8aX7bSAbp7wqMq/dM2szkN@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "pratyush.anand@st.com" <pratyush.anand@st.com>,
-	"rajeev-dlh.kumar@st.com" <rajeev-dlh.kumar@st.com>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"bhupesh.sharma@st.com" <bhupesh.sharma@st.com>,
-	"armando.visconti@st.com" <armando.visconti@st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"vipin.kumar@st.com" <vipin.kumar@st.com>,
-	"shiraz.hashim@st.com" <shiraz.hashim@st.com>,
-	"Amit.VIRDI@st.com" <Amit.VIRDI@st.com>,
-	"vipulkumar.samar@st.com" <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	"deepak.sikri@st.com" <deepak.sikri@st.com>,
-	"bhavna.yadav@st.com" <bhavna.yadav@st.com>, "Williams,
-	Dan J" <dan.j.williams@intel.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infrad
-To: Jassi Brar <jassisinghbrar@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CABb+yY0Hy9DcHf+D0OrrGjxkR=V8sa4Q-Kvd1iH01oChnoEE6w@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2011-08-11 at 00:29 +0530, Jassi Brar wrote:
-> On Thu, Aug 11, 2011 at 2:28 AM, Vinod Koul <vkoul@infradead.org> wrote:
-> >> > The lookup of a device DMA channel should follow the
-> >> > design pattern set by regulators and clocks.
-> >> Nopes. It depends upon the subsystem.
-> >> We should strive towards making this scheme as 'standalone' as
-> >> possible.
-> >> Client having to specify the device it wants a channel for, is a
-> >> waste - otherwise we don't fully get rid of platform assistance for
-> >> channel selection!
-> > On one of the platforms I work on we have 3 DMACs, peripheral 1, 2 and 3
-> > can only use channels from controller 1, and the peripherals 4, 5 from
-> > controller 2 and so on. They _absolutely_ need channel from specific
-> > controller, so above suits it :).
-> > Btw all three controllers _have_exactly_same_caps_ so dma engine will
-> > not see any difference in channels. They don't know which peripherals
-> > are connected to them, that's platform information which this scheme
-> > seems to be suited to...
-> > Can you tell me how your scheme will work in this case?
-> Actually the setup is quite simple.
-> Say, the Peri-4 is the UART which could only be reached from DMAC-2.
-> 
-> DMAENGINE should simply manage a pool of total channels in the platform,
-> disregarding the dmacs they come from.
-> 
-> Each channel in the common pool will have a 'capability-tag' of u32 type - which
-> specifies various capabilities of the channel expressed in bit-fields.
-> It is the job of
-> platform (via dmac driver) to set 'tag' of each channel appropriately.
-> Among others, a channel's reach to a particular device is a
-> 'capability' (expressed
-> in 7-bits DEV_TYPE field-mask of the 'tag')
-> 
-> In your case, while setting up channels before adding them to the common pool,
-> the platform (via dmac driver) will ensure exactly the channel which
-> can reach UART
-> has set DEV_UART value in the DEV_TYPE field of its capability-tag.
-> 
-> After all the dmac instances have been probed, _exactly_ one channel in the pool
-> will have the 'UART' capability mentioned in the DEV_TYPE field.
-> 
-> The serial driver(client), will simply specify 'Ability to reach UART'
-> as one of its
-> requirements to the core - by setting the DEV_TYPE field with DEV_UART value
-> of the 'request-tag' (a u32 number, say).
-> 
-> While searching for appropriate channel for the serial client, the core will
-> iterate over the pool and, of course, only one channel will have DEV_TYPE
-> field set to DEV_UART - the one which platform decided!
-> 
-> Please have a look at the end of  https://lkml.org/lkml/2011/7/29/211
-> (esp the helpers) to get an idea of data structures involved.
-> 
-> 
-> *******************************
-> UART(client) driver snippet :-
-> *******************************
-> struct dma_chan *chan_rx;
-> u32 req_cap;
-> 
-> /* Reset the requirement list */
-> DCH_RESET_CAP(req_cap);
-> 
-> /* Specify ability to reach UART as a requirement */
-> DCH_REQCAP_DEV(req_cap, DCHAN_TODEV_UART);
-> 
-> /* Specify we require to Read from UART */
-> DCH_REQCAP_P2M(req_cap);
-> 
-> /* ...... specify other requirements */
-> 
-> /* Ask for the channel */
-> chan_rx = dma_request_channel(req_cap);
-> 
-> 
-> 
-> ***************
-> dmaengine.c
-> ***************
-> struct dma_chan *dma_request_channel(u32 req_cap)  // typedef u32 to
-> look nice ;)
-> {
->  struct dma_chan *ch;
-> 
->            /* !!! Not final implementation !!! */
->  list_for_each_entry(ch, &channel_pool, chan_node) {
->       if (GET_DEVTYPE(req_cap) != GET_DEVTYPE(ch->tag))
->           continue;
-> 
->       if ((IS_DCH_M2M(req_cap) && !IS_DCH_M2M(ch->tag))
->          continue;
-> 
->       if ((IS_DCH_M2P(req_cap) && !IS_DCH_M2P(ch->tag))
->          continue;
-> 
->       if ((IS_DCH_P2M(req_cap) && !IS_DCH_P2M(ch->tag))
->          continue;
-> 
->       if ((IS_DCH_P2P(req_cap) && !IS_DCH_P2P(ch->tag))
->          continue;
-> 
->       /* weed out channels that don't have further capabilities required */
-> 
->       /* At the end of checks this channel meets every requirement */
->       return ch;
->   }
->   /* Will never reach here in a bug-free platform */
->   return NULL;
-> }
-> 
-> 
-> **************************************
-> DMAC <- PLATFORM <- BOARD
-> ***************************************
-> Well, that is between dmac and platform and out of scope of DMAENGINE API.
-> They can decide upon any data structure to pass the info needed.
-> 
-> But at some point someone must set :-
->   _Only_ for the channel of DMAC-2 that could talk to the UART.
-That is why I am skeptical about this implementation approach. Here
-CHAN_TODEV_UART is how peripheral is connected to DMAC which is a
-platform capability which magically needs to be published by generic
-DMAC driver and requested by UART driver...
-Sorry I still don't get this schema and how it can be scaled and be
-generic enough to let it carry with various implementations.
-
-Can you publish your complete idea rather than bits and pieces...
-
-
--- 
-~Vinod
+U2V1IGNsaWVudGUgZGUgRW1haWwgbsOjbyBwb2RlIGxlciBlc3RlIEVtYWlsLgoKUGFyYSB2aXN1
+YWxpesOhLWxvIG9uLWxpbmUsIHBvciBmYXZvciwgY2xpcXVlIGFxdWk6Cmh0dHA6Ly9nYW5oYXIt
+bXVpdG8uY28uY2Mvc2lzdGVtYWRlZW52aW8vZGlzcGxheS5waHA/TT02NDU1MDImQz1jZDNlMGU0
+NjZkOGZkZjVjZTNjMTVmNGVlMDczNjU2MCZTPTEyJkw9MTAmTj0xCgoKCgoKUGFyYSBwYXJhciBk
+ZSByZWNlYmVyIG5vc3NvcwpFbWFpbHM6aHR0cDovL2dhbmhhci1tdWl0by5jby5jYy9zaXN0ZW1h
+ZGVlbnZpby91bnN1YnNjcmliZS5waHA/TT02NDU1MDImQz1jZDNlMGU0NjZkOGZkZjVjZTNjMTVm
+NGVlMDczNjU2MCZMPTEwJk49MTIKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCnViZXJTVk4ncyByaWNo
+IHN5c3RlbSBhbmQgdXNlciBhZG1pbmlzdHJhdGlvbiBjYXBhYmlsaXRpZXMgYW5kIG1vZGVsIApj
+b25maWd1cmF0aW9uIHRha2UgdGhlIGhhc3NsZSBvdXQgb2YgZGVwbG95aW5nIGFuZCBtYW5hZ2lu
+ZyBTdWJ2ZXJzaW9uIGFuZCAKdGhlIHRvb2xzIGRldmVsb3BlcnMgdXNlIHdpdGggaXQuIExlYXJu
+IG1vcmUgYWJvdXQgdWJlclNWTiBhbmQgZ2V0IGEgZnJlZSAKZG93bmxvYWQgYXQ6ICBodHRwOi8v
+cC5zZi5uZXQvc2Z1L3dhbmRpc2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

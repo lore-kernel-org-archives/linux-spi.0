@@ -1,13 +1,13 @@
-From: "Mario" <portaleitaliano-OGIqH3qG3r9Wk0Htik3J/w@public.gmane.org>
-Subject: =?UTF-8?B?SW50ZXJlc3NhbnRlIG5vdml0w6A=?=
-Date: Thu, 18 Aug 2011 19:50:27 +0200
-Message-ID: <20110818175116.43AB64046251@smtp.inmail24.com>
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: M2M 2011: Opportunities and Challenges with Connected Devices
+Date: Fri, 19 Aug 2011 00:39:02 +0100
+Message-ID: <20110819003902.739970671@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,22 +18,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2VnbmFsaWFtbyB1bidpbnRlcmVzc2FudGUgbm92aXTDoApQb3J0YWxlIEl0YWxpYW5vIHVubyAg
-c3RydW1lbnRvIGQnaW5mb3JtYXppb25lIHNlbXByZSBhZ2dpb3JuYXRvIHN1aSBzZWd1ZW50aSBh
-cmdvbWVudGk6IAogRmluYW56YSBlIGltcHJlc2EsIGFnZXZvbGF6aW9uaSwgc29sdXppb25pIGZp
-bmFuemlhcmllIHBlciBwcml2YXRpIGUgYXppZW5kZSwgcHJvdGVzdGEgcG9wb2xhcmUsIGNvbnNp
-Z2xpIGUgaW5mb3JtYXppb25lIHN1bCBzaXN0ZW1hIGZpc2NhbGUsIGNyb25hY2EsIHBvc3NpYmls
-aXTDoCBkaSBwdWJibGljaXp6YXJlIGxhIHR1YSBhemllbmRhIGdyYXRpcywgc29uZGFnZ2ksIGVj
-b25vbWlhLCB3ZWIgdHYsIHdlYiByYWRpby4gClZpc2l0YSBpbCBzaXRvCgoKClJlbW92ZQoKCi0t
-LS0tLS0tLS0NCgpORVcgWm9uZXIgUGhvdG8gU3R1ZGlvIEZyZWUgLSBpcyBhIGZyZWUgcHJvZ3Jh
-bSBmb3IgZXZlcnkgc3RlcCBpbiB0aGUgcHJvY2Vzcw0KCm9mIG1hbmFnaW5nLCBlZGl0aW5nLCBh
-bmQgc2hhcmluZyBwaWN0dXJlcy4gIC0tLSBmcmVlcGhvdG9zdHVkaW8uY29tIA0KCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpHZXQgYSBGUkVFIERPV05MT0FEISBhbmQgbGVhcm4gbW9yZSBhYm91dCB1
-YmVyU1ZOIHJpY2ggc3lzdGVtLCAKdXNlciBhZG1pbmlzdHJhdGlvbiBjYXBhYmlsaXRpZXMgYW5k
-IG1vZGVsIGNvbmZpZ3VyYXRpb24uIFRha2UgCnRoZSBoYXNzbGUgb3V0IG9mIGRlcGxveWluZyBh
-bmQgbWFuYWdpbmcgU3VidmVyc2lvbiBhbmQgdGhlIAp0b29scyBkZXZlbG9wZXJzIHVzZSB3aXRo
-IGl0LiBodHRwOi8vcC5zZi5uZXQvc2Z1L3dhbmRpc2NvLWQyZC0yCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+M2M 2011: Opportunities and Challenges with Connected Devices
+------------------------------------------------------------------------------
+Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
+user administration capabilities and model configuration. Take 
+the hassle out of deploying and managing Subversion and the 
+tools developers use with it. http://p.sf.net/sfu/wandisco-d2d-2

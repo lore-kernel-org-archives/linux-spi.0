@@ -1,8 +1,7 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: Your invitation from nitin vishnoi to connect on Ecademy
-Date: Fri, 19 Aug 2011 05:07:40 +0100 (BST)
-Message-ID: <20110819040740.5F739D98156@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: Telecom Personal <info-LS+HbC+WUqzI+FpzV3gA9V5d5/JKYTjDqSblbbW8eSQ@public.gmane.org>
+Subject: [SPAM] Para responsables inscriptos y monotributistas
+Date: Fri, 19 Aug 2011 03:34:27 -0300
+Message-ID: <d14ecb6d3b46fa09241f142e47a4cb41@avalmarketing.outmailing.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,24 +17,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ecademy - Exclusive business networking for the digital age
-_______________________________________________________________________
-
-Join me on Ecademy
-http://www.ecademy.com/account.php?op=signup&xref=517814
-
- Connect to the right people
- Market your business
- Grow revenue
-
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-_______________________________________________________________________
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-The Ecademy Limited. Registered in England and Wales.
-Company Registration:3651083 VAT:718037736
+This is a message in multipart MIME format. Your mail client should not be displaying this. Consider upgrading your mail client to view this message correctly.
 
 ------------------------------------------------------------------------------
 Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 

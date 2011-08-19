@@ -1,8 +1,8 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: M2M 2011: Opportunities and Challenges with Connected Devices
-Date: Fri, 19 Aug 2011 00:39:02 +0100
-Message-ID: <20110819003902.739970671@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: Your invitation from nitin vishnoi to connect on Ecademy
+Date: Fri, 19 Aug 2011 05:07:40 +0100 (BST)
+Message-ID: <20110819040740.5F739D98156@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,7 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-M2M 2011: Opportunities and Challenges with Connected Devices
+Ecademy - Exclusive business networking for the digital age
+_______________________________________________________________________
+
+Join me on Ecademy
+http://www.ecademy.com/account.php?op=signup&xref=517814
+
+ Connect to the right people
+ Market your business
+ Grow revenue
+
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+_______________________________________________________________________
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+The Ecademy Limited. Registered in England and Wales.
+Company Registration:3651083 VAT:718037736
+
 ------------------------------------------------------------------------------
 Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
 user administration capabilities and model configuration. Take 

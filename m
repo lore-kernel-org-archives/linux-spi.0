@@ -1,7 +1,8 @@
-From: Telecom Personal <info-LS+HbC+WUqzI+FpzV3gA9V5d5/JKYTjDqSblbbW8eSQ@public.gmane.org>
-Subject: [SPAM] Para responsables inscriptos y monotributistas
-Date: Fri, 19 Aug 2011 03:34:27 -0300
-Message-ID: <d14ecb6d3b46fa09241f142e47a4cb41@avalmarketing.outmailing.com>
+From: "Nap Travel" <info-1ueHpAvqD+QS+FvcfC7Uqw@public.gmane.org>
+Subject: Catalogo de viajes Agosto 2011
+Date: Fri, 19 Aug 2011 06:06:12 -0300 (ART)
+Message-ID: <20110819090612.A3BB11906B6@emark15>
+Reply-To: info-1ueHpAvqD+QS+FvcfC7Uqw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,8 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a message in multipart MIME format. Your mail client should not be displaying this. Consider upgrading your mail client to view this message correctly.
-
+Catalogo de viajes Agosto 2011
 ------------------------------------------------------------------------------
 Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
 user administration capabilities and model configuration. Take 

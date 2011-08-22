@@ -1,13 +1,11 @@
-From: =?koi8-r?B?zcXeIA==?= <RayNichols-j9pdmedNgrk@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ4NyDS1cI=?=
-Date: Mon, 22 Aug 2011 04:48:13 +0400
-Message-ID: <52691D2F29FD412EA0AF9D900EE8210A@dosc>
+From: "BRUNO CUEVAS" <cote-sun-immo-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Subject: French Riviera properties
+Date: Mon, 22 Aug 2011 18:07:04 +0200
+Message-ID: <3d24cd804140a9206b2a2c9132a40ab1@wanadoo.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
-	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
-	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,16 +17,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0NzAg0tXC
-CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjkzMDQ4MCDBxNIgLSA0OTI2INLVwgogCu3P08vXwSDGydou
-zMnDwSAtIDcuNzI2MTc5IMHE0iAtIDg0NDIg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
-Oi8vd3d3LmFhYS0xMDEuY29tL2kyLmh0bWwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp1YmVyU1ZO
-J3MgcmljaCBzeXN0ZW0gYW5kIHVzZXIgYWRtaW5pc3RyYXRpb24gY2FwYWJpbGl0aWVzIGFuZCBt
-b2RlbCAKY29uZmlndXJhdGlvbiB0YWtlIHRoZSBoYXNzbGUgb3V0IG9mIGRlcGxveWluZyBhbmQg
-bWFuYWdpbmcgU3VidmVyc2lvbiBhbmQgCnRoZSB0b29scyBkZXZlbG9wZXJzIHVzZSB3aXRoIGl0
-LiBMZWFybiBtb3JlIGFib3V0IHViZXJTVk4gYW5kIGdldCBhIGZyZWUgCmRvd25sb2FkIGF0OiAg
-aHR0cDovL3Auc2YubmV0L3NmdS93YW5kaXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+=04 =04 =04 =04   Prestige Real Estate from Monaco to Cap Ferrat =
+
+We are pleased to introduce our new website. Exclusively for you, the best =
+deal actually. =
+
+  =
+
+ PROPRIETE AVEC VUE 180 DEGRES PANORAMIQUE =
+
+Nous consulter    SAINT JEAN CAP FERRAT - Propri=E9t=E9 de ma=EEtre =
+
+Nous consulter     =
+
+
+Cote Sun Immobilier =
+
+ 11 avenue de France =
+
+06190 Roquebrune Cap Martin =
+
+Tel: +33 (0)4 93 41 94 94   Fax: 04 93 41 94 95  =
+
+Contact : cote-sun-immo-39ZsbGIQGT5GWvitb5QawA@public.gmane.org =
+
+To visit our site, click here.   =
+
+
+*************************************************************
+Pour ne plus recevoir ce message cliquer sur le lien suivant:
+http://www.stat-enreg-3.com/out/desinscrquestion.php?u=3D42542&b=3DI&c=3D16=
+2010&m=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&lng=3Dang
+**********************************************************
+---------------------------------------------------------------------------=
+---
+uberSVN's rich system and user administration capabilities and model =
+
+configuration take the hassle out of deploying and managing Subversion and =
+
+the tools developers use with it. Learn more about uberSVN and get a free =
+
+download at:  http://p.sf.net/sfu/wandisco-dev2dev

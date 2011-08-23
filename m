@@ -1,38 +1,71 @@
-From: Roman Lapin <lampus.lapin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Question about Chip Select Decoding for AT91
-Date: Tue, 23 Aug 2011 12:30:00 +0400
-Message-ID: <CACsCNcmdbcy-TO8SuO4PXT+gvLPyZyj-11hn+ZfkqMFhYkW0Rg@mail.gmail.com>
+From: Jiri Slaby <jirislaby@gmail.com>
+Subject: Re: [PATCH] SPI: fix build with CONFIG_SPI_FSL_ESPI=m
+Date: Tue, 23 Aug 2011 10:49:36 +0200
+Message-ID: <4E5369A0.4080701@gmail.com>
+References: <1314086345-2818-1-git-send-email-jslaby@suse.cz>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+To: Jiri Slaby <jslaby@suse.cz>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1314086345-2818-1-git-send-email-jslaby@suse.cz>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello. I am newbie in kernel development.
-I want to realize chip select decoding function for AT91. And I'm finding
-the simplest method for it.
-I have some questions:
-1. Why sizes of variables u8 spi_device.mode, u16 spi_master.mode_bits and
-u32 bad_bits in spi_setup() are different?
-I've wanted to use variable spi_device.mode for saving cs_dec flag, but I
-couldn't do it, because spi_device.mode is fully used for other flags.
-2. I want to use spi_device.controller_data to pass pointer to GPIO array
-used for CS pins. If cs_dec flag is set, so I can interpret pointer in
-spi_device.controller_data
-as pointer to array of CS pins GPIO, in either case it will be interpreted
-as one CS pin GPIO. Is it right way?
-Sorry for my bad english.
-------------------------------------------------------------------------------
-Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
-user administration capabilities and model configuration. Take 
-the hassle out of deploying and managing Subversion and the 
-tools developers use with it. http://p.sf.net/sfu/wandisco-d2d-2
+On 08/23/2011 09:59 AM, Jiri Slaby wrote:
+> When spi_fsl_espi is chosen to be built as a module, there is a build
+> error because we test only CONFIG_SPI_FSL_ESPI in declaration of
+> struct mpc8xxx_spi in drivers/spi/spi_fsl_lib.h.
+> 
+> We need to add a test for CONFIG_SPI_FSL_ESPI_MODULE too.
+> 
+> The error looks like:
+> drivers/spi/spi_fsl_espi.c: In function 'fsl_espi_bufs':
+> drivers/spi/spi_fsl_espi.c:232: error: 'struct mpc8xxx_spi' has no member named 'len'
+> ...
+> 
+> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+> ---
+>  drivers/spi/spi-fsl-lib.h |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+> index cbe881b..97968de 100644
+> --- a/drivers/spi/spi-fsl-lib.h
+> +++ b/drivers/spi/spi-fsl-lib.h
+> @@ -28,7 +28,7 @@ struct mpc8xxx_spi {
+>  	/* rx & tx bufs from the spi_transfer */
+>  	const void *tx;
+>  	void *rx;
+> -#ifdef CONFIG_SPI_FSL_ESPI
+> +#if defined(CONFIG_SPI_FSL_ESPI) || defined(CONFIG_SPI_FSL_ESPI_MODULE)
+>  	int len;
+>  #endif
+
+Oh, and there are still link errors:
+ERROR: "mpc8xxx_spi_tx_buf_u32" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_rx_buf_u32" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_tx_buf_u16" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_rx_buf_u16" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_tx_buf_u8" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_rx_buf_u8" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "of_mpc8xxx_spi_probe" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_strmode" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_probe" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_remove" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "to_of_pinfo" [drivers/spi/spi_fsl_spi.ko] undefined!
+ERROR: "mpc8xxx_spi_tx_buf_u32" [drivers/spi/spi_fsl_espi.ko] undefined!
+ERROR: "mpc8xxx_spi_rx_buf_u32" [drivers/spi/spi_fsl_espi.ko] undefined!
+ERROR: "of_mpc8xxx_spi_probe" [drivers/spi/spi_fsl_espi.ko] undefined!
+ERROR: "mpc8xxx_spi_probe" [drivers/spi/spi_fsl_espi.ko] undefined!
+ERROR: "mpc8xxx_spi_remove" [drivers/spi/spi_fsl_espi.ko] undefined!
+
+The functions are not exported...
+
+Should I export all those or deny CONFIG_SPI_FSL_ESPI=m?
+
+thanks,
+-- 
+js

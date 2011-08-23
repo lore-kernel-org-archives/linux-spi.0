@@ -1,71 +1,61 @@
-From: Jiri Slaby <jirislaby@gmail.com>
-Subject: Re: [PATCH] SPI: fix build with CONFIG_SPI_FSL_ESPI=m
-Date: Tue, 23 Aug 2011 10:49:36 +0200
-Message-ID: <4E5369A0.4080701@gmail.com>
-References: <1314086345-2818-1-git-send-email-jslaby@suse.cz>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-To: Jiri Slaby <jslaby@suse.cz>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1314086345-2818-1-git-send-email-jslaby@suse.cz>
-Sender: linux-kernel-owner@vger.kernel.org
+From: =?GB2312?B?wdbQob3j?= <gdcndhyu-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: [SPAM] æˆ‘å¸æœ‰ä½™é¢æ¼‚æ®å¼€å‡º,æŒ‰1%å·¦å³çº³å–,éªŒåä»˜æ¬¾
+Date: Tue, 23 Aug 2011 20:09:46 +0800
+Message-ID: <E1Qvpnc-0007b6-7h@sfs-ml-1.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============3213039028096532278=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/23/2011 09:59 AM, Jiri Slaby wrote:
-> When spi_fsl_espi is chosen to be built as a module, there is a build
-> error because we test only CONFIG_SPI_FSL_ESPI in declaration of
-> struct mpc8xxx_spi in drivers/spi/spi_fsl_lib.h.
-> 
-> We need to add a test for CONFIG_SPI_FSL_ESPI_MODULE too.
-> 
-> The error looks like:
-> drivers/spi/spi_fsl_espi.c: In function 'fsl_espi_bufs':
-> drivers/spi/spi_fsl_espi.c:232: error: 'struct mpc8xxx_spi' has no member named 'len'
-> ...
-> 
-> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> ---
->  drivers/spi/spi-fsl-lib.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-> index cbe881b..97968de 100644
-> --- a/drivers/spi/spi-fsl-lib.h
-> +++ b/drivers/spi/spi-fsl-lib.h
-> @@ -28,7 +28,7 @@ struct mpc8xxx_spi {
->  	/* rx & tx bufs from the spi_transfer */
->  	const void *tx;
->  	void *rx;
-> -#ifdef CONFIG_SPI_FSL_ESPI
-> +#if defined(CONFIG_SPI_FSL_ESPI) || defined(CONFIG_SPI_FSL_ESPI_MODULE)
->  	int len;
->  #endif
+--===============3213039028096532278==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 
-Oh, and there are still link errors:
-ERROR: "mpc8xxx_spi_tx_buf_u32" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_rx_buf_u32" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_tx_buf_u16" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_rx_buf_u16" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_tx_buf_u8" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_rx_buf_u8" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "of_mpc8xxx_spi_probe" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_strmode" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_probe" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_remove" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "to_of_pinfo" [drivers/spi/spi_fsl_spi.ko] undefined!
-ERROR: "mpc8xxx_spi_tx_buf_u32" [drivers/spi/spi_fsl_espi.ko] undefined!
-ERROR: "mpc8xxx_spi_rx_buf_u32" [drivers/spi/spi_fsl_espi.ko] undefined!
-ERROR: "of_mpc8xxx_spi_probe" [drivers/spi/spi_fsl_espi.ko] undefined!
-ERROR: "mpc8xxx_spi_probe" [drivers/spi/spi_fsl_espi.ko] undefined!
-ERROR: "mpc8xxx_spi_remove" [drivers/spi/spi_fsl_espi.ko] undefined!
+ÖÂ£º¸÷¹«Ë¾¡¢ÆóÒµ¾­ÀíÃÇºÃ£¡
+    °²´ïÊµÒµÓĞÏŞ¹«Ë¾ÊÇ¼Ò¶àÔª»¯ÊµÒµ¹«Ë¾£¬ÊÇÆ¾×ÅÊµÁ¦ĞÛºñ²»¶Ï·¢Õ¹Óë¹úÄÚ¶à¼ÒÆóÒµ½¨Á¢ÁËÃÜÇĞÁªÃËºÏ×÷¹ØÏµ£¬±¾¹«Ë¾±¾×Å¿Æ¼¼´´Òµ¡¢Æ·ÖÊÁ¢Òµ¡¢·şÎñÊØÒµµÄÔ­ÔòÉîÊÜÖÚ¶à¿Í»§¹«Ë¾µÄĞÅÀµ¡£
+    ¹ó¹«Ë¾Ïë¼õÇáÄÉ¶¸ºµ£Âğ£¿ÎÒË¾ÏÖÓĞ¸÷ĞĞÒµÆ¯ÏòÍâÊÛÀí£¬µãÊı°´1%×óÓÒÄÉÈ¡£¬¿ÉÍøÉÏ²éÑ¯»ò¹ıÕÊºó¸¶¿î£»½ğ¶î´ó¿ÉÔÙÓÅ»İ£¿
+    ×¢£º±¾Ë¾ÒÔ×îÓÅÖÊ¿ì½İµÄ·şÎñ£¬×îÓÅ»İµÄ¼Û¸ñÓë¸÷´ó¹«Ë¾ºÏ×÷£»¾´Çë±£ÁôºÅÂë¼°ÓÊÏäÒÔ±ãÓĞĞè£¡
+    É÷ÖØÉùÃ÷£º¹ó¹«Ë¾¿ªµÄ×ÊÁÏÒ»ÂÉ¸øÓÚ±£ÃÜ£¡
+    ÁªÏµÈË£ºÁÖÈğ£¨ÒµÎñ¾­Àí£©
+    µç»°£º13710728911 
+    ÓÊÏä£ºgdandags-9Onoh4P/yGk@public.gmane.org               
+     Ë³ËÌ
+        ÉÌì÷£¡
+                  »¶Ó­¹ã´ó¹«Ë¾»İ¹Ë£¡ÈçÓĞ´ò½Á¾´ÇëÁÂ½â£¡
 
-The functions are not exported...
+                         °²´ïÊµÒµÓĞÏŞ¹«Ë¾
 
-Should I export all those or deny CONFIG_SPI_FSL_ESPI=m?
 
-thanks,
--- 
-js
+--===============3213039028096532278==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
+user administration capabilities and model configuration. Take 
+the hassle out of deploying and managing Subversion and the 
+tools developers use with it. http://p.sf.net/sfu/wandisco-d2d-2
+
+--===============3213039028096532278==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3213039028096532278==--

@@ -1,83 +1,38 @@
-From: Sonic Zhang <sonic.adi@gmail.com>
-Subject: Re: [PATCH v2] spi:spi_bfin5xx: SPI SSEL deasserted too early in soft
- irq mode.
-Date: Tue, 23 Aug 2011 16:16:51 +0800
-Message-ID: <CAJxxZ0ME9vKgLHbFA1ZmuYRwfNvQaojDLhgBbeMa9qcoWj7-7Q@mail.gmail.com>
-References: <1313117333-26763-1-git-send-email-sonic.adi@gmail.com>
+From: Roman Lapin <lampus.lapin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Question about Chip Select Decoding for AT91
+Date: Tue, 23 Aug 2011 12:30:00 +0400
+Message-ID: <CACsCNcmdbcy-TO8SuO4PXT+gvLPyZyj-11hn+ZfkqMFhYkW0Rg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	LKML <linux-kernel@vger.kernel.org>,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	Sonic Zhang <sonic.zhang@analog.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1313117333-26763-1-git-send-email-sonic.adi@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-Any comments?
-
-
-Sonic Zhang
-
-On Fri, Aug 12, 2011 at 10:48 AM, Sonic Zhang <sonic.adi@gmail.com> wro=
-te:
-> From: Sonic Zhang <sonic.zhang@analog.com>
->
-> Poll the FIFO till it is empty before deassert SSEL in pump_transfers=
- in
-> soft irq mode. No polling is necessary in interrupt mode and error ha=
-ndling.
->
-> Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
-> ---
-> =A0drivers/spi/spi-bfin5xx.c | =A0 =A05 ++++-
-> =A01 files changed, 4 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-> index b8d25f2..7e03e7d 100644
-> --- a/drivers/spi/spi-bfin5xx.c
-> +++ b/drivers/spi/spi-bfin5xx.c
-> @@ -587,6 +587,7 @@ static void bfin_spi_pump_transfers(unsigned long=
- data)
-> =A0 =A0 =A0 =A0if (message->state =3D=3D DONE_STATE) {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dev_dbg(&drv_data->pdev->dev, "transfe=
-r: all done!\n");
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0message->status =3D 0;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 bfin_spi_flush(drv_data);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bfin_spi_giveback(drv_data);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return;
-> =A0 =A0 =A0 =A0}
-> @@ -870,8 +871,10 @@ static void bfin_spi_pump_transfers(unsigned lon=
-g data)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0message->actual_length +=3D drv_data->=
-len_in_bytes;
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* Move to next transfer of this msg *=
-/
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0message->state =3D bfin_spi_next_trans=
-fer(drv_data);
-> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (drv_data->cs_change)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (drv_data->cs_change) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 bfin_spi_flush(drv_data=
-);
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0bfin_spi_cs_deactive(d=
-rv_data, chip);
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 }
-> =A0 =A0 =A0 =A0}
->
-> =A0 =A0 =A0 =A0/* Schedule next transfer tasklet */
-> --
-> 1.7.0.4
->
->
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kerne=
-l" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at =A0http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at =A0http://www.tux.org/lkml/
->
+Hello. I am newbie in kernel development.
+I want to realize chip select decoding function for AT91. And I'm finding
+the simplest method for it.
+I have some questions:
+1. Why sizes of variables u8 spi_device.mode, u16 spi_master.mode_bits and
+u32 bad_bits in spi_setup() are different?
+I've wanted to use variable spi_device.mode for saving cs_dec flag, but I
+couldn't do it, because spi_device.mode is fully used for other flags.
+2. I want to use spi_device.controller_data to pass pointer to GPIO array
+used for CS pins. If cs_dec flag is set, so I can interpret pointer in
+spi_device.controller_data
+as pointer to array of CS pins GPIO, in either case it will be interpreted
+as one CS pin GPIO. Is it right way?
+Sorry for my bad english.
+------------------------------------------------------------------------------
+Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
+user administration capabilities and model configuration. Take 
+the hassle out of deploying and managing Subversion and the 
+tools developers use with it. http://p.sf.net/sfu/wandisco-d2d-2

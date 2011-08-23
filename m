@@ -1,9 +1,13 @@
-From: =?GB2312?B?wdbQob3j?= <gdcndhyu-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] æˆ‘å¸æœ‰ä½™é¢æ¼‚æ®å¼€å‡º,æŒ‰1%å·¦å³çº³å–,éªŒåä»˜æ¬¾
-Date: Tue, 23 Aug 2011 20:09:46 +0800
-Message-ID: <E1Qvpnc-0007b6-7h@sfs-ml-1.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============3213039028096532278=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?koi8-r?B?0NLF19LB1MnU2CA=?= <mlcel-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQ0MSDS1cI=?=
+Date: Wed, 24 Aug 2011 03:52:03 +0400
+Message-ID: <FB744A9FEF3B4F049853A0D9D2071E2B@tktnpq>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -15,47 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3213039028096532278==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-
-ÖÂ£º¸÷¹«Ë¾¡¢ÆóÒµ¾­ÀíÃÇºÃ£¡
-    °²´ïÊµÒµÓĞÏŞ¹«Ë¾ÊÇ¼Ò¶àÔª»¯ÊµÒµ¹«Ë¾£¬ÊÇÆ¾×ÅÊµÁ¦ĞÛºñ²»¶Ï·¢Õ¹Óë¹úÄÚ¶à¼ÒÆóÒµ½¨Á¢ÁËÃÜÇĞÁªÃËºÏ×÷¹ØÏµ£¬±¾¹«Ë¾±¾×Å¿Æ¼¼´´Òµ¡¢Æ·ÖÊÁ¢Òµ¡¢·şÎñÊØÒµµÄÔ­ÔòÉîÊÜÖÚ¶à¿Í»§¹«Ë¾µÄĞÅÀµ¡£
-    ¹ó¹«Ë¾Ïë¼õÇáÄÉ¶¸ºµ£Âğ£¿ÎÒË¾ÏÖÓĞ¸÷ĞĞÒµÆ¯ÏòÍâÊÛÀí£¬µãÊı°´1%×óÓÒÄÉÈ¡£¬¿ÉÍøÉÏ²éÑ¯»ò¹ıÕÊºó¸¶¿î£»½ğ¶î´ó¿ÉÔÙÓÅ»İ£¿
-    ×¢£º±¾Ë¾ÒÔ×îÓÅÖÊ¿ì½İµÄ·şÎñ£¬×îÓÅ»İµÄ¼Û¸ñÓë¸÷´ó¹«Ë¾ºÏ×÷£»¾´Çë±£ÁôºÅÂë¼°ÓÊÏäÒÔ±ãÓĞĞè£¡
-    É÷ÖØÉùÃ÷£º¹ó¹«Ë¾¿ªµÄ×ÊÁÏÒ»ÂÉ¸øÓÚ±£ÃÜ£¡
-    ÁªÏµÈË£ºÁÖÈğ£¨ÒµÎñ¾­Àí£©
-    µç»°£º13710728911 
-    ÓÊÏä£ºgdandags-9Onoh4P/yGk@public.gmane.org               
-     Ë³ËÌ
-        ÉÌì÷£¡
-                  »¶Ó­¹ã´ó¹«Ë¾»İ¹Ë£¡ÈçÓĞ´ò½Á¾´ÇëÁÂ½â£¡
-
-                         °²´ïÊµÒµÓĞÏŞ¹«Ë¾
-
-
---===============3213039028096532278==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Get a FREE DOWNLOAD! and learn more about uberSVN rich system, 
-user administration capabilities and model configuration. Take 
-the hassle out of deploying and managing Subversion and the 
-tools developers use with it. http://p.sf.net/sfu/wandisco-d2d-2
-
---===============3213039028096532278==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3213039028096532278==--
+5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0NzIg0tXC
+CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjkzODAyNiDBxNIgLSA0OTQ2INLVwgogCu3P08vXwSDGydou
+zMnDwSAtIDcuNzM2MDQwIMHE0iAtIDg0NDMg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
+Oi8vd3d3LmFhYS0xMDEuY29tL2kyLmh0bWwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFTUMgVk5Y
+OiB0aGUgd29ybGQncyBzaW1wbGVzdCBzdG9yYWdlLCBzdGFydGluZyB1bmRlciAkMTBLClRoZSBv
+bmx5IHVuaWZpZWQgc3RvcmFnZSBzb2x1dGlvbiB0aGF0IG9mZmVycyB1bmlmaWVkIG1hbmFnZW1l
+bnQgClVwIHRvIDE2MCUgbW9yZSBwb3dlcmZ1bCB0aGFuIGFsdGVybmF0aXZlcyBhbmQgMjUlIG1v
+cmUgZWZmaWNpZW50LiAKR3VhcmFudGVlZC4gaHR0cDovL3Auc2YubmV0L3NmdS9lbWMtdm54LWRl
+djJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
+LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
+cGktZGV2ZWwtZ2VuZXJhbAo=

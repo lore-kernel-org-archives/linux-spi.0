@@ -1,60 +1,43 @@
-From: "BRUNO CUEVAS" <cote-sun-immo-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
-Subject: French Riviera properties
-Date: Mon, 22 Aug 2011 18:07:04 +0200
-Message-ID: <3d24cd804140a9206b2a2c9132a40ab1@wanadoo.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Jiri Slaby <jslaby@suse.cz>
+Subject: [PATCH] SPI: fix build with CONFIG_SPI_FSL_ESPI=m
+Date: Tue, 23 Aug 2011 09:59:05 +0200
+Message-ID: <1314086345-2818-1-git-send-email-jslaby@suse.cz>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	jirislaby@gmail.com, Jiri Slaby <jslaby@suse.cz>
+To: grant.likely@secretlab.ca
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-=04 =04 =04 =04   Prestige Real Estate from Monaco to Cap Ferrat =
+When spi_fsl_espi is chosen to be built as a module, there is a build
+error because we test only CONFIG_SPI_FSL_ESPI in declaration of
+struct mpc8xxx_spi in drivers/spi/spi_fsl_lib.h.
 
-We are pleased to introduce our new website. Exclusively for you, the best =
-deal actually. =
+We need to add a test for CONFIG_SPI_FSL_ESPI_MODULE too.
 
-  =
+The error looks like:
+drivers/spi/spi_fsl_espi.c: In function 'fsl_espi_bufs':
+drivers/spi/spi_fsl_espi.c:232: error: 'struct mpc8xxx_spi' has no member named 'len'
+...
 
- PROPRIETE AVEC VUE 180 DEGRES PANORAMIQUE =
-
-Nous consulter    SAINT JEAN CAP FERRAT - Propri=E9t=E9 de ma=EEtre =
-
-Nous consulter     =
-
-
-Cote Sun Immobilier =
-
- 11 avenue de France =
-
-06190 Roquebrune Cap Martin =
-
-Tel: +33 (0)4 93 41 94 94   Fax: 04 93 41 94 95  =
-
-Contact : cote-sun-immo-39ZsbGIQGT5GWvitb5QawA@public.gmane.org =
-
-To visit our site, click here.   =
-
-
-*************************************************************
-Pour ne plus recevoir ce message cliquer sur le lien suivant:
-http://www.stat-enreg-3.com/out/desinscrquestion.php?u=3D42542&b=3DI&c=3D16=
-2010&m=3Dspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&lng=3Dang
-**********************************************************
----------------------------------------------------------------------------=
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
 ---
-uberSVN's rich system and user administration capabilities and model =
+ drivers/spi/spi-fsl-lib.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-configuration take the hassle out of deploying and managing Subversion and =
-
-the tools developers use with it. Learn more about uberSVN and get a free =
-
-download at:  http://p.sf.net/sfu/wandisco-dev2dev
+diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+index cbe881b..97968de 100644
+--- a/drivers/spi/spi-fsl-lib.h
++++ b/drivers/spi/spi-fsl-lib.h
+@@ -28,7 +28,7 @@ struct mpc8xxx_spi {
+ 	/* rx & tx bufs from the spi_transfer */
+ 	const void *tx;
+ 	void *rx;
+-#ifdef CONFIG_SPI_FSL_ESPI
++#if defined(CONFIG_SPI_FSL_ESPI) || defined(CONFIG_SPI_FSL_ESPI_MODULE)
+ 	int len;
+ #endif
+ 
+-- 
+1.7.6

@@ -1,7 +1,8 @@
 From: Stanimir Varbanov <svarbanov@mm-sol.com>
-Subject: [PATCH/RFC 1/2] spi: flash: Add power method into flash platform data
-Date: Thu, 25 Aug 2011 16:29:11 +0300
-Message-ID: <6cd6bb457380caea3e69735485ab2bc58c5aafd3.1314278151.git.svarbanov@mm-sol.com>
+Subject: [PATCH/RFC 2/2] mtd: m25p80: Call a platform power method in the
+	driver
+Date: Thu, 25 Aug 2011 16:29:12 +0300
+Message-ID: <b7d4ea5c5ca058568f4d561914fa8becfa9324e1.1314278151.git.svarbanov@mm-sol.com>
 References: <cover.1314278151.git.svarbanov@mm-sol.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,42 +26,114 @@ Sender: linux-mtd-bounces@lists.infradead.org
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-For embedded devices or devices sensible to the power consumption
-is reasonable to have a way to control the flash chips power. This
-change in flash_platform_data makes possible to control the power
-supply of the flash memory chip by adding a "power" method to it.
+On some devices the flash chip could be powered off when m25p driver
+is probed. To avoid erroneous detection the power of the chip must be
+turn on, add a power function in m25p_probe to switch on the power by
+platform data. The power will be turned off at the probe end.
 
-The platform then could attach a callback and control power supply
-by it's choice. For example by other regulator driver, GPIO or
-do nothing.
+Also implement a get/put_device callbacks to power on/off the flash
+chip.
 
 Signed-off-by: Stanimir Varbanov <svarbanov@mm-sol.com>
 ---
- include/linux/spi/flash.h |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ drivers/mtd/devices/m25p80.c |   41 +++++++++++++++++++++++++++++++++++++----
+ 1 files changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/spi/flash.h b/include/linux/spi/flash.h
-index 3f22932..045a6fc 100644
---- a/include/linux/spi/flash.h
-+++ b/include/linux/spi/flash.h
-@@ -10,6 +10,7 @@ struct mtd_partition;
-  * @nr_parts: number of mtd_partitions for static partitoning
-  * @type: optional flash device type (e.g. m25p80 vs m25p64), for use
-  *	with chips that can't be queried for JEDEC or other IDs
-+ * @power: method called to enable or disable Vcc
-  *
-  * Board init code (in arch/.../mach-xxx/board-yyy.c files) can
-  * provide information about SPI flash parts (such as DataFlash) to
-@@ -26,6 +27,9 @@ struct flash_platform_data {
- 	char		*type;
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index e6ba034..6ab5896 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -806,6 +806,27 @@ static const struct spi_device_id *__devinit jedec_probe(struct spi_device *spi)
+ 	return ERR_PTR(-ENODEV);
+ }
  
- 	/* we'll likely add more ... use JEDEC IDs, etc */
++static void m25p_power(struct flash_platform_data *pdata, int on)
++{
++	if (pdata && pdata->power)
++		pdata->power(on);
++}
 +
-+	/* on = 0 disable Vcc, on != 0 enable Vcc */
-+	void (*power)(int on);
- };
++static int m25p_get_device(struct mtd_info *mtd)
++{
++	struct flash_platform_data *pdata = mtd->dev.parent->platform_data;
++
++	m25p_power(pdata, 1);
++
++	return 0;
++}
++
++static void m25p_put_device(struct mtd_info *mtd)
++{
++	struct flash_platform_data *pdata = mtd->dev.parent->platform_data;
++
++	m25p_power(pdata, 0);
++}
  
- #endif
+ /*
+  * board specific setup should have ensured the SPI clock used here
+@@ -820,6 +841,7 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 	struct flash_info		*info;
+ 	unsigned			i;
+ 	struct mtd_part_parser_data	ppdata;
++	int				ret;
+ 
+ 	/* Platform data helps sort out which chip type we have, as
+ 	 * well as how this board partitions it.  If we don't have
+@@ -845,12 +867,16 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 
+ 	info = (void *)id->driver_data;
+ 
++	/* power on device while probing */
++	m25p_power(data, 1);
++
+ 	if (info->jedec_id) {
+ 		const struct spi_device_id *jid;
+ 
+ 		jid = jedec_probe(spi);
+ 		if (IS_ERR(jid)) {
+-			return PTR_ERR(jid);
++			ret = PTR_ERR(jid);
++			goto out;
+ 		} else if (jid != id) {
+ 			/*
+ 			 * JEDEC knows better, so overwrite platform ID. We
+@@ -867,12 +893,15 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 	}
+ 
+ 	flash = kzalloc(sizeof *flash, GFP_KERNEL);
+-	if (!flash)
+-		return -ENOMEM;
++	if (!flash) {
++		ret = -ENOMEM;
++		goto out;
++	}
+ 	flash->command = kmalloc(MAX_CMD_SIZE + FAST_READ_DUMMY_BYTE, GFP_KERNEL);
+ 	if (!flash->command) {
+ 		kfree(flash);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto out;
+ 	}
+ 
+ 	flash->spi = spi;
+@@ -902,6 +931,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 	flash->mtd.size = info->sector_size * info->n_sectors;
+ 	flash->mtd.erase = m25p80_erase;
+ 	flash->mtd.read = m25p80_read;
++	flash->mtd.get_device = m25p_get_device;
++	flash->mtd.put_device = m25p_put_device;
+ 
+ 	/* sst flash chips use AAI word program */
+ 	if (JEDEC_MFR(info->jedec_id) == CFI_MFR_SST)
+@@ -956,6 +987,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
+ 				flash->mtd.eraseregions[i].erasesize / 1024,
+ 				flash->mtd.eraseregions[i].numblocks);
+ 
++out:
++	m25p_power(data, 0);
+ 
+ 	/* partitions should match sector boundaries; and it may be good to
+ 	 * use readonly partitions for writeprotected sectors (BP2..BP0).
 -- 
 1.7.4.1
 

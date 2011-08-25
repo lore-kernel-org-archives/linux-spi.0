@@ -1,143 +1,53 @@
-From: Stanimir Varbanov <svarbanov@mm-sol.com>
-Subject: [PATCH/RFC 2/2] mtd: m25p80: Call a platform power method in the
-	driver
-Date: Thu, 25 Aug 2011 16:29:12 +0300
-Message-ID: <b7d4ea5c5ca058568f4d561914fa8becfa9324e1.1314278151.git.svarbanov@mm-sol.com>
-References: <cover.1314278151.git.svarbanov@mm-sol.com>
+From: "zfxyz" <bjhhjmq-ZySGJgZx7nw@public.gmane.org>
+Subject: =?utf-8?B?4omh5oC757uP55CG5pS24omh?=
+Date: Fri, 26 Aug 2011 03:13:18 +0800
+Message-ID: <E92ED4347EE3475B5314C806D658740C@jyaj>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: grant.likely@secretlab.ca, Stanimir Varbanov <svarbanov@mm-sol.com>,
-	artem.bityutskiy@intel.com, dwmw2@infradead.org
-To: spi-devel-general@lists.sourceforge.net,
-	linux-mtd@lists.infradead.org
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <cover.1314278151.git.svarbanov@mm-sol.com>
-In-Reply-To: <cover.1314278151.git.svarbanov@mm-sol.com>
-References: <cover.1314278151.git.svarbanov@mm-sol.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: linux-mtd-bounces@lists.infradead.org
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0FF3_017C5EDF.150415B0"
+To: <spf-ho7bU40aBxoKzvIcpAloPCcNLX7Ozgzk@public.gmane.org>, <spfs001-k+cT0dCbe1g@public.gmane.org>, <spgjkf-KN7UnAbNpbg@public.gmane.org>,
+	<sph-NqVLqf53zhDby3iVrkZq2A@public.gmane.org>, <sphealth-uB8bxKUEBrdWk0Htik3J/w@public.gmane.org>,
+	<sphinx01-rbQqYLFhARYjMQNPswyZYszWQAQhF3cR@public.gmane.org>, <sphs-80VuKPhAE1s@public.gmane.org>, <spi-It09lz0wkojYtjvyW6yDsg@public.gmane.org>,
+	<spicl@
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On some devices the flash chip could be powered off when m25p driver
-is probed. To avoid erroneous detection the power of the chip must be
-turn on, add a power function in m25p_probe to switch on the power by
-platform data. The power will be turned off at the probe end.
+This is a multi-part message in MIME format.
 
-Also implement a get/put_device callbacks to power on/off the flash
-chip.
-
-Signed-off-by: Stanimir Varbanov <svarbanov@mm-sol.com>
----
- drivers/mtd/devices/m25p80.c |   41 +++++++++++++++++++++++++++++++++++++----
- 1 files changed, 37 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index e6ba034..6ab5896 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -806,6 +806,27 @@ static const struct spi_device_id *__devinit jedec_probe(struct spi_device *spi)
- 	return ERR_PTR(-ENODEV);
- }
- 
-+static void m25p_power(struct flash_platform_data *pdata, int on)
-+{
-+	if (pdata && pdata->power)
-+		pdata->power(on);
-+}
-+
-+static int m25p_get_device(struct mtd_info *mtd)
-+{
-+	struct flash_platform_data *pdata = mtd->dev.parent->platform_data;
-+
-+	m25p_power(pdata, 1);
-+
-+	return 0;
-+}
-+
-+static void m25p_put_device(struct mtd_info *mtd)
-+{
-+	struct flash_platform_data *pdata = mtd->dev.parent->platform_data;
-+
-+	m25p_power(pdata, 0);
-+}
- 
- /*
-  * board specific setup should have ensured the SPI clock used here
-@@ -820,6 +841,7 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 	struct flash_info		*info;
- 	unsigned			i;
- 	struct mtd_part_parser_data	ppdata;
-+	int				ret;
- 
- 	/* Platform data helps sort out which chip type we have, as
- 	 * well as how this board partitions it.  If we don't have
-@@ -845,12 +867,16 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 
- 	info = (void *)id->driver_data;
- 
-+	/* power on device while probing */
-+	m25p_power(data, 1);
-+
- 	if (info->jedec_id) {
- 		const struct spi_device_id *jid;
- 
- 		jid = jedec_probe(spi);
- 		if (IS_ERR(jid)) {
--			return PTR_ERR(jid);
-+			ret = PTR_ERR(jid);
-+			goto out;
- 		} else if (jid != id) {
- 			/*
- 			 * JEDEC knows better, so overwrite platform ID. We
-@@ -867,12 +893,15 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 	}
- 
- 	flash = kzalloc(sizeof *flash, GFP_KERNEL);
--	if (!flash)
--		return -ENOMEM;
-+	if (!flash) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
- 	flash->command = kmalloc(MAX_CMD_SIZE + FAST_READ_DUMMY_BYTE, GFP_KERNEL);
- 	if (!flash->command) {
- 		kfree(flash);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto out;
- 	}
- 
- 	flash->spi = spi;
-@@ -902,6 +931,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 	flash->mtd.size = info->sector_size * info->n_sectors;
- 	flash->mtd.erase = m25p80_erase;
- 	flash->mtd.read = m25p80_read;
-+	flash->mtd.get_device = m25p_get_device;
-+	flash->mtd.put_device = m25p_put_device;
- 
- 	/* sst flash chips use AAI word program */
- 	if (JEDEC_MFR(info->jedec_id) == CFI_MFR_SST)
-@@ -956,6 +987,8 @@ static int __devinit m25p_probe(struct spi_device *spi)
- 				flash->mtd.eraseregions[i].erasesize / 1024,
- 				flash->mtd.eraseregions[i].numblocks);
- 
-+out:
-+	m25p_power(data, 0);
- 
- 	/* partitions should match sector boundaries; and it may be good to
- 	 * use readonly partitions for writeprotected sectors (BP2..BP0).
--- 
-1.7.4.1
+------=_NextPart_000_0FF3_017C5EDF.150415B0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+------=_NextPart_000_0FF3_017C5EDF.150415B0
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+EMC VNX: the world's simplest storage, starting under $10K
+The only unified storage solution that offers unified management 
+Up to 160% more powerful than alternatives and 25% more efficient. 
+Guaranteed. http://p.sf.net/sfu/emc-vnx-dev2dev
+------=_NextPart_000_0FF3_017C5EDF.150415B0
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_0FF3_017C5EDF.150415B0--

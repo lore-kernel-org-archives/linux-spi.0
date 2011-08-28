@@ -1,68 +1,81 @@
-From: Stanimir Varbanov <svarbanov@mm-sol.com>
-Subject: Re: [PATCH/RFC 2/2] mtd: m25p80: Call a platform power method in
-	the	driver
-Date: Sun, 28 Aug 2011 13:29:13 +0300
-Message-ID: <4E5A1879.2000508@mm-sol.com>
-References: <cover.1314278151.git.svarbanov@mm-sol.com>	<b7d4ea5c5ca058568f4d561914fa8becfa9324e1.1314278151.git.svarbanov@mm-sol.com>
-	<20110828052215.GA7033@sapphire.tkos.co.il>
+From: Peter Huewe <peterhuewe@gmx.de>
+Subject: [PATCH] spi: Fix builderror in spi-pl022.c
+Date: Sun, 28 Aug 2011 21:26:59 +0200
+Message-ID: <1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
+References: <E1Qvo1q-0000qv-TQ@rmk-PC.arm.linux.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, linux-mtd@lists.infradead.org
-To: Baruch Siach <baruch@tkos.co.il>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20110828052215.GA7033@sapphire.tkos.co.il>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
-	<mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: linux-mtd-bounces@lists.infradead.org
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rjw@sisk.pl>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-pm@lists.linux-foundation.org, Peter Huewe <peterhuewe@gmx.de>,
+	linux-arm-kernel@lists.infradead.org
+To: Russell King <rmk+kernel@arm.linux.org.uk>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <E1Qvo1q-0000qv-TQ@rmk-PC.arm.linux.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi, Baruch
+This patch fixes a build error, introduced by commit (67fc8b9f, "PM: add
+runtime PM support to core Primecell driver") which unfortunately was a little
+bit incomplete and did contain a typo (11 instead of 22).
+I'm not sure how this patch could have been tested back then, if it
+doesn't even compile ;)
 
-Thanks for the comments !
+The build failure was:
+drivers/spi/spi-pl022.c:2292: error: 'adev' undeclared (first use in
+this function)
+drivers/spi/spi-pl022.c:2344: error: 'pl022_suspend' undeclared here
+(not in a function)
 
-Baruch Siach wrote:
-> Hi Stanimir,
-> 
-> On Thu, Aug 25, 2011 at 04:29:12PM +0300, Stanimir Varbanov wrote:
->> On some devices the flash chip could be powered off when m25p driver
->> is probed. To avoid erroneous detection the power of the chip must be
->> turn on, add a power function in m25p_probe to switch on the power by
->> platform data. The power will be turned off at the probe end.
-> 
-> [snip]
-> 
->> +	/* power on device while probing */
->> +	m25p_power(data, 1);
-> 
-> [snip]
-> 
->> +out:
->> +	m25p_power(data, 0);
-> 
-> Shouldn't you power off in m25p_remove() as well?
-> 
+The build failure appears e.g. for the u8500 and realview defconfig.
 
-IMO, no, because m25p_power(off) is called from m25p_put_device(). Then 
-m25p_put_device() is called from mtdchar::mtd_close(). m25p_remove must
-fail if user didn't close mtdchar /dev/mtdX device.
+LinuxVersion: linux next-20110826
 
-The motivation to use power on/off in m25p_probe is because the flash 
-chip might be not powered when driver probe is called. The chip is powered
-on on the probe begging and powered off after JEDEC probe pass.
+Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
+---
+ drivers/spi/spi-pl022.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-> baruch
-> 
-
-regards,
-Stan
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 078338f..3520cf9 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2282,14 +2282,14 @@ pl022_remove(struct amba_device *adev)
+ }
+ 
+ #ifdef CONFIG_SUSPEND
+-static int pl011_suspend(struct device *dev)
++static int pl022_suspend(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+ 	int status = 0;
+ 
+ 	status = stop_queue(pl022);
+ 	if (status) {
+-		dev_warn(&adev->dev, "suspend cannot stop queue\n");
++		dev_warn(dev, "suspend cannot stop queue\n");
+ 		return status;
+ 	}
+ 
+@@ -2298,7 +2298,7 @@ static int pl011_suspend(struct device *dev)
+ 	load_ssp_default_config(pl022);
+ 	amba_pclk_disable(pl022->adev);
+ 	amba_vcore_disable(pl022->adev);
+-	dev_dbg(&adev->dev, "suspended\n");
++	dev_dbg(dev, "suspended\n");
+ 	return 0;
+ }
+ 
+-- 
+1.7.3.4

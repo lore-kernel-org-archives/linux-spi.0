@@ -1,13 +1,13 @@
-From: "TOTALCAD" <juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Usted Merece un CAD con Precio Justo y Alta Calidad!No Espere
-	Mas! Aproveche Nuestra Promocion!
-Date: Mon, 29 Aug 2011 09:31:22 -0500
-Message-ID: <70be6b9e6721f9dcc34bc45954bea241@totalcad.ondamkt.com>
-Reply-To: juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: =?koi8-r?B?2sHPxM7PIA==?= <bkiwibear-j9pdmedNgrk@public.gmane.org>
+Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzNyDS1cI=?=
+Date: Tue, 30 Aug 2011 01:50:39 +0400
+Message-ID: <05BD72CFED5A4694BE7829AAC2FE8F27@ezlsg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="koi8-r"
 Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
+	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
+	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,18 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdG90YWxj
-YWQub25kYW1rdC5jb20vZGlzcGxheS5waHA/TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4
-NTQ2ZTFkN2YxMTFjNTgmUz0zNzcmTD04NiZOPTMyNAoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBu
-b3Nzb3MKRW1haWxzOmh0dHA6Ly90b3RhbGNhZC5vbmRhbWt0LmNvbS91bnN1YnNjcmliZS5waHA/
-TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4NTQ2ZTFkN2YxMTFjNTgmTD04NiZOPTM3Nwot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KRU1DIFZOWDogdGhlIHdvcmxkJ3Mgc2ltcGxlc3Qgc3RvcmFn
-ZSwgc3RhcnRpbmcgdW5kZXIgJDEwSwpUaGUgb25seSB1bmlmaWVkIHN0b3JhZ2Ugc29sdXRpb24g
-dGhhdCBvZmZlcnMgdW5pZmllZCBtYW5hZ2VtZW50IApVcCB0byAxNjAlIG1vcmUgcG93ZXJmdWwg
-dGhhbiBhbHRlcm5hdGl2ZXMgYW5kIDI1JSBtb3JlIGVmZmljaWVudC4gCkd1YXJhbnRlZWQuIGh0
-dHA6Ly9wLnNmLm5ldC9zZnUvZW1jLXZueC1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0Mzcg0tXC
+CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk5OTg0NCDBxNIgLSA0OTU0INLVwgogCu3P08vXwSDGydou
+zMnDwSAtIDcuNzg5NDU0IMHE0iAtIDg0MDkg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
+Oi8vd3d3LmFhYS0xMDEuY29tLwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU3BlY2lhbCBPZmZlciAt
+LSBEb3dubG9hZCBBcmNTaWdodCBMb2dnZXIgZm9yIEZSRUUhCkZpbmFsbHksIGEgd29ybGQtY2xh
+c3MgbG9nIG1hbmFnZW1lbnQgc29sdXRpb24gYXQgYW4gZXZlbiBiZXR0ZXIgCnByaWNlLWZyZWUh
+IEFuZCB5b3UnbGwgZ2V0IGEgZnJlZSAiTG92ZSBUaHkgTG9ncyIgdC1zaGlydCB3aGVuIHlvdQpk
+b3dubG9hZCBMb2dnZXIuIFNlY3VyZSB5b3VyIGZyZWUgQXJjU2lnaHQgTG9nZ2VyIFRPREFZIQpo
+dHRwOi8vcC5zZi5uZXQvc2Z1L2FyY3Npc2dodGRldjJkZXYKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
+CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
+dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

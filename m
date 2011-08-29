@@ -1,51 +1,36 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: Fix builderror in spi-pl022.c
-Date: Mon, 29 Aug 2011 10:41:39 +0200
-Message-ID: <CACRpkdavhLpsfFwHy3jnHO3o9EC+e6=dt1joMGQD_e3O=HTT-A@mail.gmail.com>
-References: <E1Qvo1q-0000qv-TQ@rmk-PC.arm.linux.org.uk>
-	<1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
+From: "TOTALCAD" <juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Usted Merece un CAD con Precio Justo y Alta Calidad!No Espere
+	Mas! Aproveche Nuestra Promocion!
+Date: Mon, 29 Aug 2011 09:31:22 -0500
+Message-ID: <70be6b9e6721f9dcc34bc45954bea241@totalcad.ondamkt.com>
+Reply-To: juangonzalez920-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>, linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rjw@sisk.pl>, spi-devel-general@lists.sourceforge.net,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	linux-pm@lists.linux-foundation.org, linux-arm-kernel@lists.infradead.org
-To: Peter Huewe <peterhuewe@gmx.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Aug 28, 2011 at 9:26 PM, Peter Huewe <peterhuewe@gmx.de> wrote:
-
-> This patch fixes a build error, introduced by commit (67fc8b9f, "PM: add
-> runtime PM support to core Primecell driver") which unfortunately was a little
-> bit incomplete and did contain a typo (11 instead of 22).
-> I'm not sure how this patch could have been tested back then, if it
-> doesn't even compile ;)
->
-> The build failure was:
-> drivers/spi/spi-pl022.c:2292: error: 'adev' undeclared (first use in
-> this function)
-> drivers/spi/spi-pl022.c:2344: error: 'pl022_suspend' undeclared here
-> (not in a function)
->
-> The build failure appears e.g. for the u8500 and realview defconfig.
->
-> LinuxVersion: linux next-20110826
->
-> Signed-off-by: Peter Huewe <peterhuewe@gmx.de>
-
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-
-Thanks!
-Linus Walleij
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdG90YWxj
+YWQub25kYW1rdC5jb20vZGlzcGxheS5waHA/TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4
+NTQ2ZTFkN2YxMTFjNTgmUz0zNzcmTD04NiZOPTMyNAoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBu
+b3Nzb3MKRW1haWxzOmh0dHA6Ly90b3RhbGNhZC5vbmRhbWt0LmNvbS91bnN1YnNjcmliZS5waHA/
+TT01ODY3ODM5JkM9YzQ3YjJiZWRhYTIzZThmN2Q4NTQ2ZTFkN2YxMTFjNTgmTD04NiZOPTM3Nwot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KRU1DIFZOWDogdGhlIHdvcmxkJ3Mgc2ltcGxlc3Qgc3RvcmFn
+ZSwgc3RhcnRpbmcgdW5kZXIgJDEwSwpUaGUgb25seSB1bmlmaWVkIHN0b3JhZ2Ugc29sdXRpb24g
+dGhhdCBvZmZlcnMgdW5pZmllZCBtYW5hZ2VtZW50IApVcCB0byAxNjAlIG1vcmUgcG93ZXJmdWwg
+dGhhbiBhbHRlcm5hdGl2ZXMgYW5kIDI1JSBtb3JlIGVmZmljaWVudC4gCkd1YXJhbnRlZWQuIGh0
+dHA6Ly9wLnNmLm5ldC9zZnUvZW1jLXZueC1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

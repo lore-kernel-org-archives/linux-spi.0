@@ -1,11 +1,11 @@
-From: "Carly Amber" <Carly.Amber-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] RE: Access
-Date: Sun, 28 Aug 2011 18:54:24 -0700
-Message-ID: <c4afe2fb220f5b262a1aed4a0016a63d@qmail.com>
+From: hgchgtkhzb-9Onoh4P/yGk@public.gmane.org
+Subject: [SPAM] 长期供应单证
+Date: Mon, 29 Aug 2011 11:04:25 +0800
+Message-ID: <E1Qxs8X-0000vD-HU@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,22 +17,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
-
-I have access to people who are looking to do business with your company. This is not a referral so there are no referral fees or hidden costs. Your cost is as low as $15.00 per person. 
-
-Please call us today at 1 (888) 595-5688 for more information.
-
-Thanks,
-
-Carly Amber
-National Account Manager
-Phone: 1 (888) 595-5688
-
-
-
-------------------------------------------------------------------------------
-EMC VNX: the world's simplest storage, starting under $10K
-The only unified storage solution that offers unified management 
-Up to 160% more powerful than alternatives and 25% more efficient. 
-Guaranteed. http://p.sf.net/sfu/emc-vnx-dev2dev
+xPq6wyEgIAogCiAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/2rWl1qS0+sDt
+uavLvqOs09DXxbfhuLsKCrXEs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQgIM6qufO5q8u+tPrA
+7dLUz8Kz9r/a0rXO8QoKIDEuzOG5qbTz0KG6y8/6taWjqLGoudi1paOpCgogMi5DT7L6tdjWpC4g
+xtW73dakKEZBLEZFLEZGLNHHzKss1tCwzaOstPPKubndx6m1yCkgCgogMy7KtcGmsai52CzRsMfz
+s6e80rrP1/fNy8uwCgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jusGqz7XIy6O61cXQ
+ob3jICAKCiAgwarPtbXnu7CjujEzNTM0MjIxNzY4ICAwNzU1LTI1NDIwMTc3IFFRo7ozODE4NzYz
+NDcgICDTys/ko7pBODEyMzM0NjZAMTYzLmNvbQoKICAgICAgICAgICAgICAgILG+ueO45rOkxtrT
+0NCnCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRU1DIFZOWDogdGhlIHdvcmxkJ3Mgc2ltcGxlc3Qg
+c3RvcmFnZSwgc3RhcnRpbmcgdW5kZXIgJDEwSwpUaGUgb25seSB1bmlmaWVkIHN0b3JhZ2Ugc29s
+dXRpb24gdGhhdCBvZmZlcnMgdW5pZmllZCBtYW5hZ2VtZW50IApVcCB0byAxNjAlIG1vcmUgcG93
+ZXJmdWwgdGhhbiBhbHRlcm5hdGl2ZXMgYW5kIDI1JSBtb3JlIGVmZmljaWVudC4gCkd1YXJhbnRl
+ZWQuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvZW1jLXZueC1kZXYyZGV2Cl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
+bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
+cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

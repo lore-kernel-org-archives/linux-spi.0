@@ -1,13 +1,12 @@
-From: =?koi8-r?B?2sHPxM7PIA==?= <bkiwibear-j9pdmedNgrk@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzNyDS1cI=?=
-Date: Tue, 30 Aug 2011 01:50:39 +0400
-Message-ID: <05BD72CFED5A4694BE7829AAC2FE8F27@ezlsg>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: Your invitation from nitin vishnoi to connect on Ecademy
+Date: Tue, 30 Aug 2011 08:00:54 +0100 (BST)
+Message-ID: <20110830070054.C3252D98159@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
-	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>,
-	<valeev-SYPjacQAEmk@public.gmane.org>, <spi-devel-general@lists.s
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,16 +18,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0Mzcg0tXC
-CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk5OTg0NCDBxNIgLSA0OTU0INLVwgogCu3P08vXwSDGydou
-zMnDwSAtIDcuNzg5NDU0IMHE0iAtIDg0MDkg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
-Oi8vd3d3LmFhYS0xMDEuY29tLwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU3BlY2lhbCBPZmZlciAt
-LSBEb3dubG9hZCBBcmNTaWdodCBMb2dnZXIgZm9yIEZSRUUhCkZpbmFsbHksIGEgd29ybGQtY2xh
-c3MgbG9nIG1hbmFnZW1lbnQgc29sdXRpb24gYXQgYW4gZXZlbiBiZXR0ZXIgCnByaWNlLWZyZWUh
-IEFuZCB5b3UnbGwgZ2V0IGEgZnJlZSAiTG92ZSBUaHkgTG9ncyIgdC1zaGlydCB3aGVuIHlvdQpk
-b3dubG9hZCBMb2dnZXIuIFNlY3VyZSB5b3VyIGZyZWUgQXJjU2lnaHQgTG9nZ2VyIFRPREFZIQpo
-dHRwOi8vcC5zZi5uZXQvc2Z1L2FyY3Npc2dodGRldjJkZXYKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
-dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Ecademy - Exclusive business networking for the digital age
+_______________________________________________________________________
+
+Join me on Ecademy
+http://www.ecademy.com/account.php?op=signup&xref=517814
+
+ Connect to the right people
+ Market your business
+ Grow revenue
+
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+_______________________________________________________________________
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+The Ecademy Limited. Registered in England and Wales.
+Company Registration:3651083 VAT:718037736
+
+------------------------------------------------------------------------------
+Special Offer -- Download ArcSight Logger for FREE!
+Finally, a world-class log management solution at an even better 
+price-free! And you'll get a free "Love Thy Logs" t-shirt when you
+download Logger. Secure your free ArcSight Logger TODAY!
+http://p.sf.net/sfu/arcsisghtdev2dev

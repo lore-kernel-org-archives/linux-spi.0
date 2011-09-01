@@ -1,37 +1,60 @@
-From: =?GB2312?B?1cXJ+g==?= <gaegsdgrgts-KN7UnAbNpbg@public.gmane.org>
-Subject: [SPAM] 核销单批文
-Date: Thu, 1 Sep 2011 15:13:21 +0800
-Message-ID: <E1Qz1VW-0006t2-Pu@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Viresh Kumar <viresh.kumar@st.com>
+Subject: Re: [PATCH V2 0/6] spi/spi-pl022 fixes
+Date: Thu, 1 Sep 2011 15:34:43 +0530
+Message-ID: <4E5F58BB.4020205@st.com>
+References: <cover.1312965741.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Pratyush ANAND <pratyush.anand@st.com>,
+	Rajeev KUMAR <rajeev-dlh.kumar@st.com>, Bhavna YADAV <bhavna.yadav@st.com>,
+	Bhupesh SHARMA <bhupesh.sharma@st.com>,
+	Armando VISCONTI <armando.visconti@st.com>,
+	"linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
+	Vipin KUMAR <vipin.kumar@st.com>, Shiraz HASHIM <shiraz.hashim@st.com>,
+	Amit VIRDI <Amit.VIRDI@st.com>,
+	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
+	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
+	Deepak SIKRI <deepak.sikri@st.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <cover.1312965741.git.viresh.kumar@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-IAogIMT6usMhICAKICAgCiAgICAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/
-2rWl1qS0+sDtuavLvqOs09DXxbfhuLu1xAoKICCz9r/avq3R6brN08XKxrXEvNu48aOsv8nS1CAg
-zqq587mry760+sDt0tTPwrP2v9rStc7xCgogIDEuzOG5qbrLz/q1paOosai52LWlo6kKCiAgMi5D
-T7L6tdjWpC4gxtW73dakKEZBLEZFLEZGLNHHzKss1tCwzaOstPPKubndx6m1yCkgCgogIDMuwvK1
-pbGoudijrMnMvOyjrM3Ps7UKCiAgx+u05sH0sbjTw6Osu7bTrcTjtcTAtLXn18nRr6O6CgogIMGq
-z7XIy6O61cXPyMn6ICAgICAgwarPtbXnu7CjujA3NTUtMjU0MjAxNzcgIMrWu/qjujEzNjg2ODY4
-NTQ4CgogIFFRo7oxMjIwNjIxNDMgICDTys/ko7pzenlvbmdkb25namlhbmdzQDE2My5jb20gIDEy
-MjA2MjE0M0BxcS5jb20KCiAgICAgICAgICAgICAgICAgICAgICCxvrnjuOazpMba09DQpwoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tClNwZWNpYWwgT2ZmZXIgLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9n
-Z2VyIGZvciBGUkVFIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0
-aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIApwcmljZS1mcmVlISBBbmQgeW91J2xsIGdldCBhIGZyZWUg
-IkxvdmUgVGh5IExvZ3MiIHQtc2hpcnQgd2hlbiB5b3UKZG93bmxvYWQgTG9nZ2VyLiBTZWN1cmUg
-eW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEKaHR0cDovL3Auc2YubmV0L3NmdS9hcmNz
-aXNnaHRkZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 8/10/2011 2:20 PM, Viresh KUMAR wrote:
+> Hi Grant,
+> 
+> I have added Tested-by: Linus Walleij <linus.walleij@linaro.org> on all patches.
+> 
+> This patchset mainly covers following fixes:
+> - formatting related issues
+> - Passing GFP_ATOMIC for sg allocation from tasklet
+> - Fixing calculate_effective_freq() routine
+> - Allocate/free DMA channels as and when required.
+> 
+
+Grant,
+
+Did you already pushed this patchset?
+There are few concerns on PATCH 6/6 and i am not sure if there are any decisions
+on it.
+@Linus: What do you say?
+
+So, probably you can push first 5 patches for now.
+
+--
+viresh

@@ -1,69 +1,48 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [uclinux-dist-devel] [PATCH v2] spi:spi_bfin5xx: SPI SSEL
-	deasserted too early in soft irq mode.
-Date: Thu, 1 Sep 2011 20:52:54 +0800
-Message-ID: <CAGsJ_4xGJoz7JNQHBtK7pC+sn+pUZsibgiBNPnL=Vdyii-JsDA@mail.gmail.com>
-References: <1313117333-26763-1-git-send-email-sonic.adi@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Sonic Zhang <sonic.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1313117333-26763-1-git-send-email-sonic.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH V3 3/5] staging:iio:magnetometer:ak8975 Don't use irq_to_gpio()
+Date: Thu,  1 Sep 2011 16:04:29 -0600
+Message-ID: <1314914676-28397-3-git-send-email-swarren@nvidia.com>
+References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	Andrew Chew <achew-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1314914676-28397-1-git-send-email-swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-MjAxMS84LzEyIFNvbmljIFpoYW5nIDxzb25pYy5hZGlAZ21haWwuY29tPjoKPiBGcm9tOiBTb25p
-YyBaaGFuZyA8c29uaWMuemhhbmdAYW5hbG9nLmNvbT4KPgo+IFBvbGwgdGhlIEZJRk8gdGlsbCBp
-dCBpcyBlbXB0eSBiZWZvcmUgZGVhc3NlcnQgU1NFTCBpbiBwdW1wX3RyYW5zZmVycyBpbgo+IHNv
-ZnQgaXJxIG1vZGUuIE5vIHBvbGxpbmcgaXMgbmVjZXNzYXJ5IGluIGludGVycnVwdCBtb2RlIGFu
-ZCBlcnJvciBoYW5kbGluZy4KPgo+IFNpZ25lZC1vZmYtYnk6IFNvbmljIFpoYW5nIDxzb25pYy56
-aGFuZ0BhbmFsb2cuY29tPgoKQWNrZWQtYnk6IEJhcnJ5IFNvbmcgPDIxY25iYW9AZ21haWwuY29t
-PgoKaXQgaXMgYWN0dWFsbHkgbWFraW5nIHN1cmUgdGhlIGxhc3QgbWVzc2FnZSBpcyBmaW5pc2hl
-ZC4KCj4gLS0tCj4gwqBkcml2ZXJzL3NwaS9zcGktYmZpbjV4eC5jIHwgwqAgwqA1ICsrKystCj4g
-wqAxIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKPgo+IGRp
-ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktYmZpbjV4eC5jIGIvZHJpdmVycy9zcGkvc3BpLWJm
-aW41eHguYwo+IGluZGV4IGI4ZDI1ZjIuLjdlMDNlN2QgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9z
-cGkvc3BpLWJmaW41eHguYwo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1iZmluNXh4LmMKPiBAQCAt
-NTg3LDYgKzU4Nyw3IEBAIHN0YXRpYyB2b2lkIGJmaW5fc3BpX3B1bXBfdHJhbnNmZXJzKHVuc2ln
-bmVkIGxvbmcgZGF0YSkKPiDCoCDCoCDCoCDCoGlmIChtZXNzYWdlLT5zdGF0ZSA9PSBET05FX1NU
-QVRFKSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBkZXZfZGJnKCZkcnZfZGF0YS0+cGRldi0+
-ZGV2LCAidHJhbnNmZXI6IGFsbCBkb25lIVxuIik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBt
-ZXNzYWdlLT5zdGF0dXMgPSAwOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYmZpbl9zcGlfZmx1
-c2goZHJ2X2RhdGEpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYmZpbl9zcGlfZ2l2ZWJhY2so
-ZHJ2X2RhdGEpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgcmV0dXJuOwo+IMKgIMKgIMKgIMKg
-fQo+IEBAIC04NzAsOCArODcxLDEwIEBAIHN0YXRpYyB2b2lkIGJmaW5fc3BpX3B1bXBfdHJhbnNm
-ZXJzKHVuc2lnbmVkIGxvbmcgZGF0YSkKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG1lc3NhZ2Ut
-PmFjdHVhbF9sZW5ndGggKz0gZHJ2X2RhdGEtPmxlbl9pbl9ieXRlczsKPiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoC8qIE1vdmUgdG8gbmV4dCB0cmFuc2ZlciBvZiB0aGlzIG1zZyAqLwo+IMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgbWVzc2FnZS0+c3RhdGUgPSBiZmluX3NwaV9uZXh0X3RyYW5zZmVy
-KGRydl9kYXRhKTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChkcnZfZGF0YS0+Y3NfY2hh
-bmdlKQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGRydl9kYXRhLT5jc19jaGFuZ2UpIHsK
-PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJmaW5fc3BpX2ZsdXNoKGRydl9k
-YXRhKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGJmaW5fc3BpX2NzX2Rl
-YWN0aXZlKGRydl9kYXRhLCBjaGlwKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0KPiDCoCDC
-oCDCoCDCoH0KPgo+IMKgIMKgIMKgIMKgLyogU2NoZWR1bGUgbmV4dCB0cmFuc2ZlciB0YXNrbGV0
-ICovCj4gLS0KPiAxLjcuMC40Cj4KPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCj4gVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdAo+IFVjbGlu
-dXgtZGlzdC1kZXZlbEBibGFja2Zpbi51Y2xpbnV4Lm9yZwo+IGh0dHBzOi8vYmxhY2tmaW4udWNs
-aW51eC5vcmcvbWFpbG1hbi9saXN0aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWwKCi0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpTcGVjaWFsIE9mZmVyIC0tIERvd25sb2FkIEFyY1NpZ2h0IExvZ2dlciBmb3Ig
-RlJFRSEKRmluYWxseSwgYSB3b3JsZC1jbGFzcyBsb2cgbWFuYWdlbWVudCBzb2x1dGlvbiBhdCBh
-biBldmVuIGJldHRlciAKcHJpY2UtZnJlZSEgQW5kIHlvdSdsbCBnZXQgYSBmcmVlICJMb3ZlIFRo
-eSBMb2dzIiB0LXNoaXJ0IHdoZW4geW91CmRvd25sb2FkIExvZ2dlci4gU2VjdXJlIHlvdXIgZnJl
-ZSBBcmNTaWdodCBMb2dnZXIgVE9EQVkhCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXJjc2lzZ2h0ZGV2
-MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+Tegra doesn't have irq_to_gpio() any more, and ak8975 is included in
+tegra_defconfig. This causes a build failure.
+
+Instead, obtain the GPIO ID corresponding to the chip's IRQ from the new
+i2c_client field irq_gpio.
+
+Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/staging/iio/magnetometer/ak8975.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/staging/iio/magnetometer/ak8975.c b/drivers/staging/iio/magnetometer/ak8975.c
+index a17fa9f..14076da 100644
+--- a/drivers/staging/iio/magnetometer/ak8975.c
++++ b/drivers/staging/iio/magnetometer/ak8975.c
+@@ -477,7 +477,7 @@ static int ak8975_probe(struct i2c_client *client,
+ 	int err;
+ 
+ 	/* Grab and set up the supplied GPIO. */
+-	eoc_gpio = irq_to_gpio(client->irq);
++	eoc_gpio = client->irq_gpio;
+ 
+ 	/* We may not have a GPIO based IRQ to scan, that is fine, we will
+ 	   poll if so */
+-- 
+1.7.0.4

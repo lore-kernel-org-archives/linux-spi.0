@@ -1,11 +1,11 @@
-From: =?GB2312?B?x+vXqtPQudjIy8rC?= <jy-zMBu1of8wms@public.gmane.org>
-Subject: =?GB2312?B?c3BpLWRldmVsLWdlbmVyYWy7qs6qz+7Ev7ncwO25pL7f0+vEo7Dl1MvTww==?=
-Date: Thu, 1 Sep 2011 09:00:37 +0800
-Message-ID: <E1Qyve1-0002FJ-VB@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "=?windows-1252?Q?1_(866)_680-9096?=" <BizSvcs253-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] View the Attached Brochure!
+Date: Wed, 31 Aug 2011 18:43:22 -0700
+Message-ID: <090111f93db170e6e62c5a400018fa3d@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_480057812D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,131 +17,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-u6rOqs/uxL+53MDtuaS+39PrxKOw5dTL08MKCsqxvOS12LXjo7oyMDExxOo51MIxNi0xN8jVIMnP
-uqMKyrG85LXYteOjujIwMTHE6jnUwjIzLTI0yNUgye7b2gq30dPDo7oyODAw1KovIMjLo6iw/MCo
-18rBz7fRoaLO57LNvLDJz8/Czuey6LXjtcijqQq21M/zo7rG88rC0rW1pc671rTQ0LLjo6yw/MCo
-z+7Ev9fcvOChorK/w8W+rcDtoaK437y2z+7Ev76twO2hos/uxL/NxbbTs8nUsbXIoaMKv86zzMzY
-teOjusq11b21xM/uxL/R3cG3ICArICCwuMD9t9bO9iAgKyAgsLjA/dHQzNYgICsgIMq1vMqy2df3
-CgrXydGvtee7sKO6MDIwLTgwNTYwNjM4o7swMjAtODU5MTc5NDUg0LvQob3jo6iyu9DotMvQxbz+
-x+u72LXn08rWwWNoaW5hbW1jMjAxMEAxMjYuY29tzcvQxaOpCj09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT0Ksb60zsXg0bXKx86qwcvKuc/uxL++rcDtus3P7sS/1+mzydSx1cbO1c/WtPrP
-7sS/udzA7daqyrbU2s/uxL/W0LXE06bTw6Gjwcu94s/uxL+53MDto6zVxs7VCs/gudi1xM/uxL+5
-3MDtuaS+39Taz+7Ev9bQ1PXDtNTL08Ojv8jnus7Wxraoz+7Ev8S/seqjv8jnus69+NDQuaTX97fW
-veKjv8jnus7Wxraoz+7Ev7ncwO28xgq7rqO/yOe6ztbGtqjP7sS/v9jWxrzGu66jv8jnus7Wxrao
-z+7Ev9TwyM6+2NXzo7/I57rO1sa2qM/uxL+53MDtubXNqLzGu66jv8jnus7Wxraoz+7Ev7fnz9UK
-udzA7bzGu66jv7XItcihowrX986qz+7Ev7ncwO3KtdW9z7XB0MXg0bWjrNTaxeDRtcbavOTDv7j2
-0KHX6dGh1PHSu7j2z+7Ev7340NDKtbLZo6y008/uxL/I57rOxvS2r6GiyOe6ztf2z+4KxL+8xruu
-oaLI57rO1/bP7sS/yrXKqaOsyOe6ztf2z+7Ev7/Y1sajrMjnus621M/uxL+9+NDQytXOsqOsvfjQ
-0Mirw+bKtdW9tcTR3cG3oaPAz8qm1ri1vM/uCsS/zeqzyaOssqK21M/uxL/W0LP2z9a1xM7KzOK9
-+NDQyrXKsda4tbyhowrO0sPHx7+197/OzMPW0Lultq/KvbXEvbvB96OszazKsc7Sw8e9q8zhuanS
-u9CpwbfPsKOssqLSqsfzss7T69XfvfjQ0LC4wP231s72oaLH6b6w0d3Bt6GjztIKw8fSsrvhvavP
-7sS/udzA7dbQs6O8+7XE0rvQqc7KzOLM4bP2wLTT67TzvNLSu8bwzNbC26GjCi0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQoxLtXGztXP1rT6z+7Ev7ncwO3Wqsq21NrP7sS/1tC1xNOm08Mg
-ICAgMi7Vxs7Vz+7Ev7ncwO23vbeovLDKudPDCjMuzOG438/gudi53MDtxNzBpiAgICAgICAgICAg
-ICAgICAgICAgICA0LszhuN/P7sS/vMa7rsTcwaYKNS6808e/ttTP7sS/tcTKtcqpus2/2NbGxNzB
-piAgICAgICAgICAgIDYuvPXJ2c/uxL+zybG+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCrvGt8m66MDPyqajrMflu6q089GnvMzQ+L3M0/3Rp9S6zNjGuL2yyqajrLGxvqm089GnRURQ
-uN+2y8Xg0bWyv8zYxri9ssqmo6zW0Ln6yMvD8bTz0afF4NG10acK1LrM2Ma4vbLKpqOsyczRp9S6
-warDy8zYxri9ssqmo6zW0LnYtOW53M6vu+HF4NG11tDQxLjfvLa9ssqmo6y24LzSuavLvtfJ0a+5
-y87KoaMKu8bAz8qmwPrIzsbz0rW4sdfcssOhosrC0rWyv9fcvq3A7aGiz+7Ev76twO21yNawzvGj
-rLOkxtq008rCz+7Ev7ncwO2hotOqz/qy37uuoaKy+sa3udzA7brNCsbz0rXUy9Oqo6y7/cDbwcu3
-4bi7tcTKtdW9vq3R6aGju8bAz8qmx7HQxNHQvr/P7sS/udzA7aGi0dC3orncwO2horL6xre53MDt
-us3Iztaw18q48aOsttS5+gq8ysnPz8i9+Mbz0rW1xM/uxL+53MDtoaLR0LeiudzA7aGisvrGt7nc
-wO26zcjLwabXytS0udzA7b340NDJ7sjr0dC+v6OsttSyqNL0z+7Ev7ncwO3M5c+1o6wKSUJNudzA
-7czlz7WjrLuqzqrR0LeiudzA7brNyMvBptfK1LS53MDtzOXPtaOszqLI7bL6xre53MDtzOXPtbrN
-svrGt9W9wtS53MDtvfjQ0MnuyOvR0L6/o6y94Qq6z9bQufrG89K1y/m0prXEt6LVub3Xts6jrNX7
-wO2z9srKus/G89K1srvNrLei1bm917bOtcTP7sS/udzA7aGi0dC3orncwO2horL6xre53MDtv86z
-zLrNyMvBpgrXytS0udzA7czlz7WjrL2yytrP7sS/udzA7aGi0dC3orncwO26zbL6xrfVvcLUudzA
-7bXIv86zzL38sNmzoaOssqLU2rn6xNrCys/Izcaz9rv509q/zbunus3K0AqzodDox/O1xNHQt6K5
-3MDtus2y+sa3udzA7cSjyr2jrMrHufrE2tfu1OfSu8X60dC+v7L6xre53MDtzOXPtbXEyMvKv6Gj
-CrK/t9azybmmsLjA/aO6CtbQufq73cbVoaLI/dDHvK/NxaGiTEehosPAtcS8r83FoaLJ8dbdyv3C
-66Giyc+6o7G0tvuhorGxt72xvLPboaK088zG0sa2r6GiueO159TLzaihorvj1LS8r83FoaIKuN+1
-yL3M0/2z9rDmyeehotPD09HI7bz+oaK437XCyO28/qGisbG+qc/WtPqhosjVsvpOSVNTQU6hoteh
-19y8r83FoaLG5sjwxvuztaGi0eC+qdL7wc+hos2syMoKzMO5ybfdoaKxsb6pu6+5pNHQvr/UuqGi
-sbG+qcqv0825q8u+oaLNrLe9zf7K06GiwurKz8qzxrehosyr19PEzMn6zu+hotbQufq/xtGn1Lq5
-4rXn0dC+v9S6oaIKsbG+qbrszKvR9NKp0rWhotDCyrG0+r2hv7Wy+tK1vK/NxaGiyc+6o7e90MS/
-xry80dC+v8v5oaKhotbQufrSxravoaLW0Ln6tefQxaGitKvJ8aGitqu3vbq9v9W1yLXIoaMKytq/
-zrfnuPGjugrG5Mrav87H4cvJu+7Gw6Os08TErLfnyKQsycbT2tL9tbzRp9Sxzai5/cq1vMqwuMD9
-wLS808nuttS/zszitcTIz8q2us3A7b3io7u088G/tcTXydGvsLjA/cn6tq8K0M7P87XYsO/W+sbz
-0rW94r72zsrM4qO7z+C52Lmkvt+6zcSjsOW1xNOm08PKubn6vMrPyL34tcS53MDtwO3E7tG4y9nC
-5LXYo7sKu8bAz8qmtcQ0OjM6Mjoxytq/zrfnuPGjugo0o7o0MCXKsbzkvfjQ0MDtwtu6zbe9t6i9
-sr3iCjOjujMwJcqxvOS9+NDQsLjA/dHQzNa6zcG3z7AKMqO6MjAlyrG85L340NDR0MzWCjGjujEw
-JcqxvOS9+NDQ19y94QotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCrXa0rvVwgnP7sS/0+vP7sS/udzA7QoxoaIJyrLD
-tMrHz+7Ev6O/IAoJz+7Ev7ao0uUKCc/uxL+53MDttqjS5QoJz+7Ev7ncwO21xMzYteMKCc/uxL+5
-3MDts6O8+87KzOK31s72CjKhognKssO0ysfP7sS/udzA7aO/CgnP7sS/udzA7bXEObTzxNrI3QoJ
-z+7Ev7ncwO21xDW087n9s8wKss6/vMSjsOWjuqG2z+7Ev7ncwO3K1rLhobcKCrXatv7VwgnP7sS/
-xvS2r73Xts65pL7f0+vEo7DlCjGhognBos/uyerH6woJ1sa2qM/uxL/VwrPMCgnWxraoz+7Ev7P1
-sr23ts6ny7XD98rpCgnIzsP8z+7Ev76twO2hqqGquPjP7sS/vq3A7crayKggCgnP7sS/xvS2r7vh
-0ukKMqGiCdfpvajP7sS/zcW20woJz+7Ev9fp1q+94bm5CgnWsMTcyr3X6davveG5uQoJz+7Ev8q9
-1+nWr73hubkKCb7Y1fPKvdfp1q+94bm5CgnHv77Y1fPX6davveG5uQoJyPW+2NXz1+nWr73hubkK
-Cbvsus++2NXz1+nWr73hubkKCc/uxL++rcDttcTWsNTwCgnP7sS/vq3A7bXExNzBptKqx/MKCc/u
-xL++rcDttcTW99KquaTX99aw1PAKCc/uxL/X6bPJ1LG1xNaw1PAKM6GiCbLfu666zdbG1/fIzs7x
-yukKCc/uxL/D6Mr2CgnP7sS/wO+zzLGuCgnP7sS/xsC827Hq17wKCc/uxL+4yc+1yMsKNKGiCc/u
-xL/G9Lavu+EKCc/uxL/Ev7HqCgnP7sS/udzA7be9yr0KCc/uxL+5pNf3t73KvQq7qs6qz+7Ev8b0
-tq+5pL7f0+vEo7Dl1MvTw6O6CgnP7sS/1+mzydSxo6jEo7Dlo6kKCc/uxL/Izs7xyumjqMSjsOWj
-qQoJsvrGt7+qt6LIzs7xyumjqMSjsOWjqQqwuMD9t9bO9tPrwbfPsKO6Cgq12sj91cIJz+7Ev7zG
-u66917bOuaS+39PrxKOw5QoxoaIJuaTX97fWveK94bm5o6hXQlOjqQoJz+7Ev7mk1/e31r3iCglX
-QlO31r3itcTO88f4CglXQlO31r3itcS8uNbWsrvNrLe9t6gKMqGiCc/uxL/U8MjOvtjV8wozoaIJ
-u+62r8XF0PIKNKGiCc/uxL/XytS0oaK5pMbaoaKzybG+usvL4wo1oaIJz+7Ev734tsi8xruuCgm4
-yszYzbwKCbnYvPzCt762t6gKNqGiCc/uxL+358/VudzA7bzGu64KCbfnz9W53MDttcTW2NKq0NQK
-Ccq2sfDP7sS/t+fP1QoJzbfE1Lfnsam3qAoJvOyy6bHtt6gKCdeovNLF0LbPt6gKCVNXT1S31s72
-t6gKCc/uxL+358/VxsC5wAoJz+7Ev7fnz9XTprbUCgnP7sS/t+fP1bncwO28xruuCgm358/V07DP
-7NbcxtoKCbC4wP3R0MzWo7rWxraoz+7Ev7ncwO28xruuCjehognP7sS/ubXNqLncwO28xruuCgm5
-tc2oudzA7bXE1tjSqtDUCgnP7sS/ubXNqLXE0qrH8woJz+7Ev7m1zai+2NXzzbwKCc/uxL++rcDt
-ubXNqL7Y1fPNvAoJz+7Ev9fpzajRtre9yr0KCbm1zajW0LXEuf3Cy9Pr1c+wrQoJsvrJ+rm1zajV
-z7CttcTUrdLyCgnP7sS/xvS2r7vh0ukKCbm1zai53MDtvMa7rgoJ09DQp7m1zai1xLe9yr0KCc/u
-xL++rcDt1Nq5tc2o1tC1xNf308MKCc/uxL/NxbbTs8nUsdauvOS1xLm1zagKsLjA/dHQzNajutbG
-tqjP7sS/ubXNqLzGu64Ku6rOqs/uxL+53MDtxKOw5bLOv7wKCVdCU6OoxKOw5aOpCgm9+LbIvMa7
-rrHto6jEo7Dlo6kKCbfnz9W53MDtse2jqMSjsOWjqQoJubXNqLzGu66x7aOoxKOw5aOpCglQRVJU
-zby1xLvm1sajqMSjsOWjqQoJz+7Ev9bcsajEo7DlCgnP7sS/1MKxqMSjsOUKCc/uxL/A77PMsa61
-48no1sMKCc/uxL/UpL6vtePJ6NbDCgnVvdX5tdjNvAoKtdrLxNXCCc/uxL/Ktcqp0+u84L/Yvde2
-zrmkvt/T68SjsOUKMaGiCc/uxL+5tc2oudzA7QoyoaIJz+7Ev7zgv9i3vbeo0+u5pL7fCgnTptPD
-vfi2yLzGu66x7QoJ1dm8r7vh0ukKCbnbsuzT67zssukKCc/uxL+4+tfZvMa7rgoJtqjG2re0wKHT
-67GouOYKM6GiCc/uxL+x5Lj8udzA7QqwuMD90dDM1qO61sa2qM/uxL+1xL34tsjNvAq7qs6qz+7E
-v7ncwO3Eo7Dlss6/vKO6CgnP7sS/u+HS6bzN0qqjqMSjsOWjqQoJz+7Ev9e0zKyxqLjmo6jEo7Dl
-o6kKCc/uxL+x5Lj8udzA7bHto6jEo7Dlo6kKCc/uxL+53MDt1sa2yAoJ0+O5x828Cgm21LLfse0K
-CVBEQ0HRrbu3CgoKtdrO5dXCCc/uxL/K1c6yvde2zrmkvt/T68SjsOUKMaGiCcbAucDT69HpytUK
-MqGiCc/uxL/X3L3hCgnP7sS/19y94bvh0ukKCc/uxL/X3L3hse2jqMSjsOWjqQozoaIJzsS8/rnp
-tbUKuaS+36O6z+7Ev9fcveHP4LnYse248QoJz+7Ev9fcveGx7aOoxKOw5aOpCgq12sH51cIJ0dC3
-os/uxL+1xL+8usvT67ykwPgKMaGiCc/uxL/NxbbTtcS8qNCnudzA7QoyoaIJz+7Ev76twO28sNfp
-1LG1xFBCQwozoaIJz+7Ev7XEv7y6y9Kqy9gKNKGiCdHQt6LNxbbTtcS8pMD4CrC4wP3R0MzWo7rI
-57rOv7y6y7rNvKTA+NHQzNbIy9SxCrmkvt/T68SjsOWjugoJz+7Ev83FttNQS0mjqMSjsOWjqQoJ
-0dC3orj2yMtQQkOjqMSjsOWjqQoJz+7Ev7PJsb66y8vj1sa2yAoJz+7Ev7+8usvT672xwPjWxrbI
-Cgq12sbf1cIJz+7Ev7PJuaa1xLnYvPzSqsvYCjGhognStb3nz+7Ev7PJuaa1xLnYvPzS8svYCjKh
-ognStb3nz+7Ev8qnsNy1xLnYvPzS8svYCjOhogmzybmmz+7Ev7ncwO24973Xts7W2NKqudi8/LXj
-CrC4wP3R0MzWo7rP7sS/s8m5prXEudi8/LXj09DExNCpo78Ktdqwy9XCCc/uxL+53MDtyO28/lBy
-b2plY3QyMDA3yrXVvdHdwbcKo6jSqsfzw7/Iy8XksbixyrzHsb6158TUo6yyotSk17BQcm9qZWN0
-MjAwN8jtvP6jqQoxoaIJV0JTuaTX97fWveIKMqGiCdfK1LTQ6Mfzt9bO9tPr18rUtNDox/Ox7Qoz
-oaIJuaTG2sbAucAKNKGiCcew1sPIzs7xCjWhogm24M/uxL+53MDt0+vXytS0tffF5Ao2oaIJtuDP
-7sS/udzA7bncwO3T67zgv9gKN6GiCbPJsb66y8vjCjihogm5pNf3yNXKsbzktffV+wo5oaIJz+7E
-v7ywyrG4+tfZCrC4wP3Bt8+wo7q24M/uxL+4yszYzby1xNbGtqgKtdq+xdXCCdfcveG6zbTw0skK
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQqhtruqzqrP7sS/udzA7bmkvt/T68Sj
-sOXUy9PDobexqMP7u9jWtLHto6jH67Sr1eYwMjAtNjIzNTExNTajqQoKss4gu+EgtaUgzrsgw/sg
-s8ajul9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KCrLOILzTILXYILXjo7ogv9rJz7qjIL/aye7b2iAgv9qxsb6pCgrBqs+1yMujul9fX19fX19f
-X19fX19ftee7sDpfX19fX19fX19fX19fX19ftKvV5jpfX19fX19fX19fX19fX19fCgrTyrz+o7pf
-X19fX19fX19fX19fXyCyziC74SDIyyDK/TpfX19fX19fX1/IyyC30SDTwyCjpKO6X19fX19fX19f
-1KoKCrLOILvhIMjLo7pfX19fX19fX19fX8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC1
-5yC7sKO6X19fX19fX19fX19fXwoKss4gu+EgyMujul9fX19fX19fX19fy/kgyM4g1rAgzvGjul9f
-X19fX19fX19fX9LGILavILXnILuwo7pfX19fX19fX19fX19fCgqyziC74SDIy6O6X19fX19fX19f
-X1/L+SDIziDWsCDO8aO6X19fX19fX19fX19f0sYgtq8gtecgu7Cjul9fX19fX19fX19fX18KCrLO
-ILvhIMjLo7pfX19fX19fX19fX8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC15yC7sKO6
-X19fX19fX19fX19fXwoKuLa/7re9yr2jqMfr0aHU8bTyobChzKGxo6mjuiCh9TGhos/WvfAgofUy
-oaLXqtXKIKH1M6Gitee74wo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KsbjXojrH68T6sNGx
-qMP7u9jWtLvYtKvO0su+o6zOqsi3saPE+rGow/vO3s7zLMfrxPrU2bTOtee7sKOoMDIwLTgwNTYw
-NjM4o6nIt8jPIQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNwZWNpYWwgT2ZmZXIgLS0gRG93bmxv
-YWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVFIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBt
-YW5hZ2VtZW50IHNvbHV0aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIApwcmljZS1mcmVlISBBbmQgeW91
-J2xsIGdldCBhIGZyZWUgIkxvdmUgVGh5IExvZ3MiIHQtc2hpcnQgd2hlbiB5b3UKZG93bmxvYWQg
-TG9nZ2VyLiBTZWN1cmUgeW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEKaHR0cDovL3Au
-c2YubmV0L3NmdS9hcmNzaXNnaHRkZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_480057812D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+FACT:=20
+PROMOTIONAL PRODUCTS OUTLAST=20
+ANY OTHER ADVERTISING! HIGHER RETURNS!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~SUMMER BLOWOUT SALE!~~~~~=20
+~~PROMO ITEMS UNDER $1.39 EA~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~Highlighters
+~Mini-tools
+~Sports Bottles=20
+~GOlf items
+~Koozies
+~Stress Balls
+~Pens=20
+~Screen Cleaners
+
+Much Much more..=2E
+
+To learn more view our=20
+attached brochure=2E
+
+or call
+1-866-680-9096
+
+Expires 9/10/11
+
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =
+<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-gene=
+ral-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+------=SPLITOR00A_001_480057812D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Special Offer -- Download ArcSight Logger for FREE!
+Finally, a world-class log management solution at an even better 
+price-free! And you'll get a free "Love Thy Logs" t-shirt when you
+download Logger. Secure your free ArcSight Logger TODAY!
+http://p.sf.net/sfu/arcsisghtdev2dev
+------=SPLITOR00A_001_480057812D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_480057812D--

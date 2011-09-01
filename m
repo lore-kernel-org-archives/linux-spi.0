@@ -1,9 +1,8 @@
 From: Stephen Warren <swarren@nvidia.com>
 Subject: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
 	i2c_board_info.
-Date: Thu,  1 Sep 2011 16:04:32 -0600
-Message-ID: <1314914676-28397-6-git-send-email-swarren@nvidia.com>
-References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
+Date: Thu,  1 Sep 2011 16:04:27 -0600
+Message-ID: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -16,7 +15,6 @@ To: Greg Kroah-Hartman <gregkh@suse.de>, Jean Delvare <khali@linux-fr.org>,
 	Ben Dooks <ben-linux@fluff.org>, Jonathan Cameron <jic23@cam.ac.uk>,
 	Grant Likely <grant.likely@secretlab.ca>, A
 Return-path: <devel-bounces@linuxdriverproject.org>
-In-Reply-To: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
 List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
 	<mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
 List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel>

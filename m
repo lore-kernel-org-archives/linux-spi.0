@@ -1,61 +1,69 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH V2 0/6] spi/spi-pl022 fixes
-Date: Thu, 1 Sep 2011 12:56:05 +0200
-Message-ID: <CACRpkdYeq9in+U_tyvb=yVuX2t5TnkUSsO+BozUGVJwZVh+4Ag@mail.gmail.com>
-References: <cover.1312965741.git.viresh.kumar@st.com>
-	<4E5F58BB.4020205@st.com>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [uclinux-dist-devel] [PATCH v2] spi:spi_bfin5xx: SPI SSEL
+	deasserted too early in soft irq mode.
+Date: Thu, 1 Sep 2011 20:52:54 +0800
+Message-ID: <CAGsJ_4xGJoz7JNQHBtK7pC+sn+pUZsibgiBNPnL=Vdyii-JsDA@mail.gmail.com>
+References: <1313117333-26763-1-git-send-email-sonic.adi@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vipin KUMAR <vipin.kumar@st.com>, Rajeev KUMAR <rajeev-dlh.kumar@st.com>,
-	Bhavna YADAV <bhavna.yadav@st.com>, Bhupesh SHARMA <bhupesh.sharma@st.com>,
-	Pratyush ANAND <pratyush.anand@st.com>,
-	Armando VISCONTI <armando.visconti@st.com>,
-	"jassisinghbrar@gmail.com" <jassisinghbrar@gmail.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	Shiraz HASHIM <shiraz.hashim@st.com>, Amit VIRDI <Amit.VIRDI@st.com>,
-	Vipul Kumar SAMAR <vipulkumar.samar@st.com>,
-	"viresh.linux@gmail.com" <viresh.linux@gmail.com>,
-	Deepak SIKRI <deepak.sikri@st.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Viresh Kumar <viresh.kumar@st.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <4E5F58BB.4020205@st.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Sonic Zhang <sonic.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1313117333-26763-1-git-send-email-sonic.adi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 1, 2011 at 12:04 PM, Viresh Kumar <viresh.kumar@st.com> wrote:
-> On 8/10/2011 2:20 PM, Viresh KUMAR wrote:
->>
->> This patchset mainly covers following fixes:
->> - formatting related issues
->> - Passing GFP_ATOMIC for sg allocation from tasklet
->> - Fixing calculate_effective_freq() routine
->> - Allocate/free DMA channels as and when required.
->>
->
-> Grant,
->
-> Did you already pushed this patchset?
-> There are few concerns on PATCH 6/6 and i am not sure if there are any decisions
-> on it.
-> @Linus: What do you say?
-
-I agree. Acked-by: Linus Walleij <linus.walleij@linaro.org> for
-all except 6/6, it's probably just as possible to keep the channel handle
-taken in the driver if we modify the affected DMA driver instead.
-This would be better for performance I think.
-
-Thanks,
-Linus Walleij
+MjAxMS84LzEyIFNvbmljIFpoYW5nIDxzb25pYy5hZGlAZ21haWwuY29tPjoKPiBGcm9tOiBTb25p
+YyBaaGFuZyA8c29uaWMuemhhbmdAYW5hbG9nLmNvbT4KPgo+IFBvbGwgdGhlIEZJRk8gdGlsbCBp
+dCBpcyBlbXB0eSBiZWZvcmUgZGVhc3NlcnQgU1NFTCBpbiBwdW1wX3RyYW5zZmVycyBpbgo+IHNv
+ZnQgaXJxIG1vZGUuIE5vIHBvbGxpbmcgaXMgbmVjZXNzYXJ5IGluIGludGVycnVwdCBtb2RlIGFu
+ZCBlcnJvciBoYW5kbGluZy4KPgo+IFNpZ25lZC1vZmYtYnk6IFNvbmljIFpoYW5nIDxzb25pYy56
+aGFuZ0BhbmFsb2cuY29tPgoKQWNrZWQtYnk6IEJhcnJ5IFNvbmcgPDIxY25iYW9AZ21haWwuY29t
+PgoKaXQgaXMgYWN0dWFsbHkgbWFraW5nIHN1cmUgdGhlIGxhc3QgbWVzc2FnZSBpcyBmaW5pc2hl
+ZC4KCj4gLS0tCj4gwqBkcml2ZXJzL3NwaS9zcGktYmZpbjV4eC5jIHwgwqAgwqA1ICsrKystCj4g
+wqAxIGZpbGVzIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKPgo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktYmZpbjV4eC5jIGIvZHJpdmVycy9zcGkvc3BpLWJm
+aW41eHguYwo+IGluZGV4IGI4ZDI1ZjIuLjdlMDNlN2QgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9z
+cGkvc3BpLWJmaW41eHguYwo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1iZmluNXh4LmMKPiBAQCAt
+NTg3LDYgKzU4Nyw3IEBAIHN0YXRpYyB2b2lkIGJmaW5fc3BpX3B1bXBfdHJhbnNmZXJzKHVuc2ln
+bmVkIGxvbmcgZGF0YSkKPiDCoCDCoCDCoCDCoGlmIChtZXNzYWdlLT5zdGF0ZSA9PSBET05FX1NU
+QVRFKSB7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBkZXZfZGJnKCZkcnZfZGF0YS0+cGRldi0+
+ZGV2LCAidHJhbnNmZXI6IGFsbCBkb25lIVxuIik7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBt
+ZXNzYWdlLT5zdGF0dXMgPSAwOwo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgYmZpbl9zcGlfZmx1
+c2goZHJ2X2RhdGEpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgYmZpbl9zcGlfZ2l2ZWJhY2so
+ZHJ2X2RhdGEpOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgcmV0dXJuOwo+IMKgIMKgIMKgIMKg
+fQo+IEBAIC04NzAsOCArODcxLDEwIEBAIHN0YXRpYyB2b2lkIGJmaW5fc3BpX3B1bXBfdHJhbnNm
+ZXJzKHVuc2lnbmVkIGxvbmcgZGF0YSkKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG1lc3NhZ2Ut
+PmFjdHVhbF9sZW5ndGggKz0gZHJ2X2RhdGEtPmxlbl9pbl9ieXRlczsKPiDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoC8qIE1vdmUgdG8gbmV4dCB0cmFuc2ZlciBvZiB0aGlzIG1zZyAqLwo+IMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgbWVzc2FnZS0+c3RhdGUgPSBiZmluX3NwaV9uZXh0X3RyYW5zZmVy
+KGRydl9kYXRhKTsKPiAtIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGlmIChkcnZfZGF0YS0+Y3NfY2hh
+bmdlKQo+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgaWYgKGRydl9kYXRhLT5jc19jaGFuZ2UpIHsK
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIGJmaW5fc3BpX2ZsdXNoKGRydl9k
+YXRhKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGJmaW5fc3BpX2NzX2Rl
+YWN0aXZlKGRydl9kYXRhLCBjaGlwKTsKPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIH0KPiDCoCDC
+oCDCoCDCoH0KPgo+IMKgIMKgIMKgIMKgLyogU2NoZWR1bGUgbmV4dCB0cmFuc2ZlciB0YXNrbGV0
+ICovCj4gLS0KPiAxLjcuMC40Cj4KPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCj4gVWNsaW51eC1kaXN0LWRldmVsIG1haWxpbmcgbGlzdAo+IFVjbGlu
+dXgtZGlzdC1kZXZlbEBibGFja2Zpbi51Y2xpbnV4Lm9yZwo+IGh0dHBzOi8vYmxhY2tmaW4udWNs
+aW51eC5vcmcvbWFpbG1hbi9saXN0aW5mby91Y2xpbnV4LWRpc3QtZGV2ZWwKCi0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQpTcGVjaWFsIE9mZmVyIC0tIERvd25sb2FkIEFyY1NpZ2h0IExvZ2dlciBmb3Ig
+RlJFRSEKRmluYWxseSwgYSB3b3JsZC1jbGFzcyBsb2cgbWFuYWdlbWVudCBzb2x1dGlvbiBhdCBh
+biBldmVuIGJldHRlciAKcHJpY2UtZnJlZSEgQW5kIHlvdSdsbCBnZXQgYSBmcmVlICJMb3ZlIFRo
+eSBMb2dzIiB0LXNoaXJ0IHdoZW4geW91CmRvd25sb2FkIExvZ2dlci4gU2VjdXJlIHlvdXIgZnJl
+ZSBBcmNTaWdodCBMb2dnZXIgVE9EQVkhCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXJjc2lzZ2h0ZGV2
+MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

@@ -1,7 +1,7 @@
 From: Stephen Warren <swarren@nvidia.com>
 Subject: [PATCH V3 2/5] spi: Add irq_gpio field to struct spi_device, spi_board_info.
-Date: Thu,  1 Sep 2011 16:04:28 -0600
-Message-ID: <1314914676-28397-2-git-send-email-swarren@nvidia.com>
+Date: Thu,  1 Sep 2011 16:04:33 -0600
+Message-ID: <1314914676-28397-7-git-send-email-swarren@nvidia.com>
 References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
 Cc: Russell King <linux@arm.linux.org.uk>,
 	Jonathan Cameron <jic23@cam.ac.uk>,

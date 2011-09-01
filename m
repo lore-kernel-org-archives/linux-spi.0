@@ -1,11 +1,11 @@
-From: "=?windows-1252?Q?1_(866)_680-9096?=" <BizSvcs253-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] View the Attached Brochure!
-Date: Wed, 31 Aug 2011 18:43:22 -0700
-Message-ID: <090111f93db170e6e62c5a400018fa3d@g2gm.com>
+From: =?GB2312?B?1cXJ+g==?= <gaegsdgrgts-KN7UnAbNpbg@public.gmane.org>
+Subject: [SPAM] 核销单批文
+Date: Thu, 1 Sep 2011 15:13:21 +0800
+Message-ID: <E1Qz1VW-0006t2-Pu@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_480057812D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,72 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------=SPLITOR00A_001_480057812D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-FACT:=20
-PROMOTIONAL PRODUCTS OUTLAST=20
-ANY OTHER ADVERTISING! HIGHER RETURNS!
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-~~~~~SUMMER BLOWOUT SALE!~~~~~=20
-~~PROMO ITEMS UNDER $1.39 EA~~
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~Highlighters
-~Mini-tools
-~Sports Bottles=20
-~GOlf items
-~Koozies
-~Stress Balls
-~Pens=20
-~Screen Cleaners
-
-Much Much more..=2E
-
-To learn more view our=20
-attached brochure=2E
-
-or call
-1-866-680-9096
-
-Expires 9/10/11
-
-
-
-
-
-
-Click This Link to Unsubscribe From Future Messages =
-<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-gene=
-ral-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
-------=SPLITOR00A_001_480057812D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Special Offer -- Download ArcSight Logger for FREE!
-Finally, a world-class log management solution at an even better 
-price-free! And you'll get a free "Love Thy Logs" t-shirt when you
-download Logger. Secure your free ArcSight Logger TODAY!
-http://p.sf.net/sfu/arcsisghtdev2dev
-------=SPLITOR00A_001_480057812D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_480057812D--
+IAogIMT6usMhICAKICAgCiAgICAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/
+2rWl1qS0+sDtuavLvqOs09DXxbfhuLu1xAoKICCz9r/avq3R6brN08XKxrXEvNu48aOsv8nS1CAg
+zqq587mry760+sDt0tTPwrP2v9rStc7xCgogIDEuzOG5qbrLz/q1paOosai52LWlo6kKCiAgMi5D
+T7L6tdjWpC4gxtW73dakKEZBLEZFLEZGLNHHzKss1tCwzaOstPPKubndx6m1yCkgCgogIDMuwvK1
+pbGoudijrMnMvOyjrM3Ps7UKCiAgx+u05sH0sbjTw6Osu7bTrcTjtcTAtLXn18nRr6O6CgogIMGq
+z7XIy6O61cXPyMn6ICAgICAgwarPtbXnu7CjujA3NTUtMjU0MjAxNzcgIMrWu/qjujEzNjg2ODY4
+NTQ4CgogIFFRo7oxMjIwNjIxNDMgICDTys/ko7pzenlvbmdkb25namlhbmdzQDE2My5jb20gIDEy
+MjA2MjE0M0BxcS5jb20KCiAgICAgICAgICAgICAgICAgICAgICCxvrnjuOazpMba09DQpwoKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tClNwZWNpYWwgT2ZmZXIgLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9n
+Z2VyIGZvciBGUkVFIQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0
+aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIApwcmljZS1mcmVlISBBbmQgeW91J2xsIGdldCBhIGZyZWUg
+IkxvdmUgVGh5IExvZ3MiIHQtc2hpcnQgd2hlbiB5b3UKZG93bmxvYWQgTG9nZ2VyLiBTZWN1cmUg
+eW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBUT0RBWSEKaHR0cDovL3Auc2YubmV0L3NmdS9hcmNz
+aXNnaHRkZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

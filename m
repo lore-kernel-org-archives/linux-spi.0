@@ -1,110 +1,72 @@
-From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Subject: [PATCH 2/2] sh: use DMA with MSIOF SPI on the sh7724 ecovec board
-Date: Fri, 2 Sep 2011 17:13:35 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.1109021712470.4731@axis700.grange>
-References: <Pine.LNX.4.64.1109021706480.4731@axis700.grange>
+From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
+  i2c_board_info.
+Date: Fri, 2 Sep 2011 11:24:04 -0700
+Message-ID: <74CDBE0F657A3D45AFBB94109FB122FF04B327A628@HQMAIL01.nvidia.com>
+References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
+	<20110902085620.4ad918c4@endymion.delvare>	<4E609F9C.5020403@cam.ac.uk>
+ <20110902112435.69c9e8f7@endymion.delvare>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: linux-sh@vger.kernel.org, Grant Likely <grant.likely@secretlab.ca>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <Pine.LNX.4.64.1109021706480.4731@axis700.grange>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Andrew Chew <AChew-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	"linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org" <devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
+Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20110902112435.69c9e8f7-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
+Content-Language: en-US
+Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On ecovec MSIOF0 is connected to an SD/MMC slot, this patch adds DMA
-support on it.
+Jean Delvare wrote at Friday, September 02, 2011 3:25 AM:
+> Hi Jonathan,
+> 
+> On Fri, 02 Sep 2011 10:19:24 +0100, Jonathan Cameron wrote:
+> > On 09/02/11 07:56, Jean Delvare wrote:
+> > > Stephen,
+> > >
+> > > Can you please fix your e-mail client / system / whatever so that your
+> > > patch series are no longer sent duplicated?
+> > >
+> > > On Thu,  1 Sep 2011 16:04:27 -0600, Stephen Warren wrote:
+> > >> Some devices use a single pin as both an IRQ and a GPIO. In that case,
+> > >> irq_gpio is the GPIO ID for that pin. Not all drivers use this feature.
+> > >> Where they do, and the use of this feature is optional, and the system
+> > >> wishes to disable this feature, this field must be explicitly set to a
+> > >> defined invalid GPIO ID, such as -1.
+> > >>
+> > >> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> > >> ---
+> > >> v3: Also add the field to i2c_board_info, and copy the field from
+> > >>     i2c_board_info to i2c_client upon instantiation
+> > >
+> > > I don't get the idea. The i2c core doesn't make any use of the field,
+> > > and that field will only be used by a few drivers amongst the 420+
+> > > i2c drivers in the tree. This looks like a waste of memory. What's wrong
+> > > with including the new field in the private platform or arch data
+> > > structure for drivers which need it?
+> >
+> > Why not make it platform data for now and 'if' it becomes way more common
+> > (probably won't) we can always propose adding as a general field at a later
+> > date.
+> 
+> Yes, this sounds like a much more reasonable approach.
 
-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
----
- arch/sh/boards/mach-ecovec24/setup.c   |    8 +++++++-
- arch/sh/include/cpu-sh4/cpu/sh7724.h   |    4 ++++
- arch/sh/kernel/cpu/sh4a/setup-sh7724.c |   20 ++++++++++++++++++++
- 3 files changed, 31 insertions(+), 1 deletions(-)
+BTW, if that's the direction that's decided, just take the first version
+of the patchset I posted, plus Jonathan Cameron's subsequent patch to
+modify ak8975 to accept GPIO ID through platform data.
 
-diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
-index 22faf2a..16747a8 100644
---- a/arch/sh/boards/mach-ecovec24/setup.c
-+++ b/arch/sh/boards/mach-ecovec24/setup.c
-@@ -10,6 +10,7 @@
- 
- #include <linux/init.h>
- #include <linux/device.h>
-+#include <linux/dma-mapping.h>
- #include <linux/platform_device.h>
- #include <linux/mmc/host.h>
- #include <linux/mmc/sh_mmcif.h>
-@@ -653,6 +654,8 @@ static struct spi_board_info spi_bus[] = {
- /* MSIOF0 */
- static struct sh_msiof_spi_info msiof0_data = {
- 	.num_chipselect = 1,
-+	.slave_id_tx = SHDMA_SLAVE_MSIOF0_TX,
-+	.slave_id_rx = SHDMA_SLAVE_MSIOF0_RX,
- };
- 
- static struct resource msiof0_resources[] = {
-@@ -668,11 +671,14 @@ static struct resource msiof0_resources[] = {
- 	},
- };
- 
-+u64 msiof0_dmamask = DMA_BIT_MASK(32);
-+
- static struct platform_device msiof0_device = {
- 	.name		= "spi_sh_msiof",
- 	.id		= 0, /* MSIOF0 */
- 	.dev = {
--		.platform_data = &msiof0_data,
-+		.platform_data	= &msiof0_data,
-+		.dma_mask	= &msiof0_dmamask,
- 	},
- 	.num_resources	= ARRAY_SIZE(msiof0_resources),
- 	.resource	= msiof0_resources,
-diff --git a/arch/sh/include/cpu-sh4/cpu/sh7724.h b/arch/sh/include/cpu-sh4/cpu/sh7724.h
-index cbc47e6..10f9292 100644
---- a/arch/sh/include/cpu-sh4/cpu/sh7724.h
-+++ b/arch/sh/include/cpu-sh4/cpu/sh7724.h
-@@ -310,6 +310,10 @@ enum {
- 	SHDMA_SLAVE_SDHI0_RX,
- 	SHDMA_SLAVE_SDHI1_TX,
- 	SHDMA_SLAVE_SDHI1_RX,
-+	SHDMA_SLAVE_MSIOF0_TX,
-+	SHDMA_SLAVE_MSIOF0_RX,
-+	SHDMA_SLAVE_MSIOF1_TX,
-+	SHDMA_SLAVE_MSIOF1_RX,
- };
- 
- extern struct clk sh7724_fsimcka_clk;
-diff --git a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-index a37dd72..d6626fe 100644
---- a/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-+++ b/arch/sh/kernel/cpu/sh4a/setup-sh7724.c
-@@ -152,6 +152,26 @@ static const struct sh_dmae_slave_config sh7724_dmae_slaves[] = {
- 		.addr		= 0x04cf0030,
- 		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_16BIT),
- 		.mid_rid	= 0xca,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF0_TX,
-+		.addr		= 0xa4c40050,
-+		.chcr		= DM_FIX | SM_INC | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x51,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF0_RX,
-+		.addr		= 0xa4c40060,
-+		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x52,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF1_TX,
-+		.addr		= 0xa4c50050,
-+		.chcr		= DM_FIX | SM_INC | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x55,
-+	}, {
-+		.slave_id	= SHDMA_SLAVE_MSIOF1_RX,
-+		.addr		= 0xa4c50060,
-+		.chcr		= DM_INC | SM_FIX | 0x800 | TS_INDEX2VAL(XMIT_SZ_8BIT),
-+		.mid_rid	= 0x56,
- 	},
- };
- 
 -- 
-1.7.2.5
-
+nvpublic

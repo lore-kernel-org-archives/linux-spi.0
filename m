@@ -1,34 +1,110 @@
-From: =?koi8-r?B?1NXEwSA=?= <ogzqezj-XzQKRVe1yT0V+D8aMU/kSg@public.gmane.org>
-Subject: =?koi8-r?B?0sHT09nMy8kgz9QgMTQzOSDS1cI=?=
-Date: Fri, 02 Sep 2011 02:31:55 +0400
-Message-ID: <2B3A44E2A92644FD9F57A998516AEE20@tczf>
+From: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
+ i2c_board_info.
+Date: Fri, 2 Sep 2011 08:56:20 +0200
+Message-ID: <20110902085620.4ad918c4@endymion.delvare>
+References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: fedor-mnO0GIe32D0@public.gmane.org, congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org, diktor-SYPjacQAEmk@public.gmane.org, info-G2tT1RKrIAQ@public.gmane.org,
-	transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org, gostnorm-5URONGGNgjI@public.gmane.org, ternedvig-JGs/UdohzUI@public.gmane.org, valeev-SYPjacQAEmk@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Andrew Chew <achew-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1314914676-28397-1-git-send-email-swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5S3N3MrMIPLB09PZzMvJIAogCvDSz8LOwdEg0sHT09nMy8EgLSAxLzMgwsHa2SAtIDE0MjMg0tXC
-CiAK7c/Ty9fBIMDSLszJw8EgLSAxLjk1NzE0MiDBxNIgLSA0OTIxINLVwgogCu3P08vXwSDGydou
-zMnDwSAtIDcuNzU5NjM3IMHE0iAtIDg0MTAg0tXCCiAK0M/E0s/CzsXFIM7BINPBytTFICBodHRw
-Oi8vd3d3LmFhYS0xMDEuY29tL2kxLmh0bWwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTcGVjaWFs
-IE9mZmVyIC0tIERvd25sb2FkIEFyY1NpZ2h0IExvZ2dlciBmb3IgRlJFRSEKRmluYWxseSwgYSB3
-b3JsZC1jbGFzcyBsb2cgbWFuYWdlbWVudCBzb2x1dGlvbiBhdCBhbiBldmVuIGJldHRlciAKcHJp
-Y2UtZnJlZSEgQW5kIHlvdSdsbCBnZXQgYSBmcmVlICJMb3ZlIFRoeSBMb2dzIiB0LXNoaXJ0IHdo
-ZW4geW91CmRvd25sb2FkIExvZ2dlci4gU2VjdXJlIHlvdXIgZnJlZSBBcmNTaWdodCBMb2dnZXIg
-VE9EQVkhCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXJjc2lzZ2h0ZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Stephen,
+
+Can you please fix your e-mail client / system / whatever so that your
+patch series are no longer sent duplicated?
+
+On Thu,  1 Sep 2011 16:04:27 -0600, Stephen Warren wrote:
+> Some devices use a single pin as both an IRQ and a GPIO. In that case,
+> irq_gpio is the GPIO ID for that pin. Not all drivers use this feature.
+> Where they do, and the use of this feature is optional, and the system
+> wishes to disable this feature, this field must be explicitly set to a
+> defined invalid GPIO ID, such as -1.
+> 
+> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> ---
+> v3: Also add the field to i2c_board_info, and copy the field from
+>     i2c_board_info to i2c_client upon instantiation
+
+I don't get the idea. The i2c core doesn't make any use of the field,
+and that field will only be used by a few drivers amongst the 420+
+i2c drivers in the tree. This looks like a waste of memory. What's wrong
+with including the new field in the private platform or arch data
+structure for drivers which need it?
+
+> 
+>  drivers/i2c/i2c-core.c |    1 +
+>  include/linux/i2c.h    |    9 +++++++++
+>  2 files changed, 10 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+> index 131079a..da12540 100644
+> --- a/drivers/i2c/i2c-core.c
+> +++ b/drivers/i2c/i2c-core.c
+> @@ -518,6 +518,7 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
+>  	client->flags = info->flags;
+>  	client->addr = info->addr;
+>  	client->irq = info->irq;
+> +	client->irq_gpio = info->irq_gpio;
+>  
+>  	strlcpy(client->name, info->type, sizeof(client->name));
+>  
+> diff --git a/include/linux/i2c.h b/include/linux/i2c.h
+> index 3fad485..49e2e36 100644
+> --- a/include/linux/i2c.h
+> +++ b/include/linux/i2c.h
+> @@ -192,6 +192,12 @@ struct i2c_driver {
+>   * @driver: device's driver, hence pointer to access routines
+>   * @dev: Driver model device node for the slave.
+>   * @irq: indicates the IRQ generated by this device (if any)
+> + * @irq_gpio: some devices use a single pin as both an IRQ and a GPIO. In
+> + *	that case, irq_gpio is the GPIO ID for that pin. Not all drivers
+> + *	use this feature. Where they do, and the use of this feature is
+> + *	optional, and the system wishes to disable this feature, this
+> + *	field must be explicitly set to a defined invalid GPIO ID, such
+> + *	as -1.
+>   * @detected: member of an i2c_driver.clients list or i2c-core's
+>   *	userspace_devices list
+>   *
+> @@ -209,6 +215,7 @@ struct i2c_client {
+>  	struct i2c_driver *driver;	/* and our access routines	*/
+>  	struct device dev;		/* the device structure		*/
+>  	int irq;			/* irq issued by device		*/
+> +	int irq_gpio;			/* gpio corresponding to irq	*/
+>  	struct list_head detected;
+>  };
+>  #define to_i2c_client(d) container_of(d, struct i2c_client, dev)
+> @@ -240,6 +247,7 @@ static inline void i2c_set_clientdata(struct i2c_client *dev, void *data)
+>   * @archdata: copied into i2c_client.dev.archdata
+>   * @of_node: pointer to OpenFirmware device node
+>   * @irq: stored in i2c_client.irq
+> + * @irq_gpio: stored in i2c_client.irq_gpio
+>   *
+>   * I2C doesn't actually support hardware probing, although controllers and
+>   * devices may be able to use I2C_SMBUS_QUICK to tell whether or not there's
+> @@ -260,6 +268,7 @@ struct i2c_board_info {
+>  	struct dev_archdata	*archdata;
+>  	struct device_node *of_node;
+>  	int		irq;
+> +	int		irq_gpio;
+>  };
+>  
+>  /**
+
+
+-- 
+Jean Delvare

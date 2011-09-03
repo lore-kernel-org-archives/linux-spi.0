@@ -1,72 +1,45 @@
-From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
-  i2c_board_info.
-Date: Fri, 2 Sep 2011 11:24:04 -0700
-Message-ID: <74CDBE0F657A3D45AFBB94109FB122FF04B327A628@HQMAIL01.nvidia.com>
-References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
-	<20110902085620.4ad918c4@endymion.delvare>	<4E609F9C.5020403@cam.ac.uk>
- <20110902112435.69c9e8f7@endymion.delvare>
+From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
+Subject: Your invitation from nitin vishnoi to connect on Ecademy
+Date: Sat,  3 Sep 2011 08:15:15 +0100 (BST)
+Message-ID: <20110903071515.F0769D981F5@ecweb2.ecademy.com>
+Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Andrew Chew <AChew-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org" <devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20110902112435.69c9e8f7-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
-Content-Language: en-US
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Jean Delvare wrote at Friday, September 02, 2011 3:25 AM:
-> Hi Jonathan,
-> 
-> On Fri, 02 Sep 2011 10:19:24 +0100, Jonathan Cameron wrote:
-> > On 09/02/11 07:56, Jean Delvare wrote:
-> > > Stephen,
-> > >
-> > > Can you please fix your e-mail client / system / whatever so that your
-> > > patch series are no longer sent duplicated?
-> > >
-> > > On Thu,  1 Sep 2011 16:04:27 -0600, Stephen Warren wrote:
-> > >> Some devices use a single pin as both an IRQ and a GPIO. In that case,
-> > >> irq_gpio is the GPIO ID for that pin. Not all drivers use this feature.
-> > >> Where they do, and the use of this feature is optional, and the system
-> > >> wishes to disable this feature, this field must be explicitly set to a
-> > >> defined invalid GPIO ID, such as -1.
-> > >>
-> > >> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-> > >> ---
-> > >> v3: Also add the field to i2c_board_info, and copy the field from
-> > >>     i2c_board_info to i2c_client upon instantiation
-> > >
-> > > I don't get the idea. The i2c core doesn't make any use of the field,
-> > > and that field will only be used by a few drivers amongst the 420+
-> > > i2c drivers in the tree. This looks like a waste of memory. What's wrong
-> > > with including the new field in the private platform or arch data
-> > > structure for drivers which need it?
-> >
-> > Why not make it platform data for now and 'if' it becomes way more common
-> > (probably won't) we can always propose adding as a general field at a later
-> > date.
-> 
-> Yes, this sounds like a much more reasonable approach.
+Ecademy - Exclusive business networking for the digital age
+_______________________________________________________________________
 
-BTW, if that's the direction that's decided, just take the first version
-of the patchset I posted, plus Jonathan Cameron's subsequent patch to
-modify ak8975 to accept GPIO ID through platform data.
+Join me on Ecademy
+http://www.ecademy.com/account.php?op=signup&xref=517814
 
--- 
-nvpublic
+ Connect to the right people
+ Market your business
+ Grow revenue
+
+nitin vishnoi
+nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+_______________________________________________________________________
+This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To avoid receiving these emails in the future go to
+http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
+The Ecademy Limited. Registered in England and Wales.
+Company Registration:3651083 VAT:718037736
+
+------------------------------------------------------------------------------
+Special Offer -- Download ArcSight Logger for FREE!
+Finally, a world-class log management solution at an even better 
+price-free! And you'll get a free "Love Thy Logs" t-shirt when you
+download Logger. Secure your free ArcSight Logger TODAY!
+http://p.sf.net/sfu/arcsisghtdev2dev

@@ -1,8 +1,8 @@
-From: nitin vishnoi <connecting.business-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org>
-Subject: Your invitation from nitin vishnoi to connect on Ecademy
-Date: Sat,  3 Sep 2011 08:15:15 +0100 (BST)
-Message-ID: <20110903071515.F0769D981F5@ecweb2.ecademy.com>
-Reply-To: invite-unsubscribe-H7oPPvtLhMNBDgjK7y7TUQ@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Mobile Social Networking 2011-2016 (Report)
+Date: Sun, 4 Sep 2011 00:38:39 +0100
+Message-ID: <20110904003839.720046359@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,25 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ecademy - Exclusive business networking for the digital age
-_______________________________________________________________________
-
-Join me on Ecademy
-http://www.ecademy.com/account.php?op=signup&xref=517814
-
- Connect to the right people
- Market your business
- Grow revenue
-
-nitin vishnoi
-nitvishnoi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-_______________________________________________________________________
-This email was sent to spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To avoid receiving these emails in the future go to
-http://www.ecademy.com/blockinvites.php?e=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org      
-The Ecademy Limited. Registered in England and Wales.
-Company Registration:3651083 VAT:718037736
-
+Mobile Social Networking 2011-2016 (Report)
 ------------------------------------------------------------------------------
 Special Offer -- Download ArcSight Logger for FREE!
 Finally, a world-class log management solution at an even better 

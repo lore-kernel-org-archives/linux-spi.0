@@ -1,18 +1,10 @@
-From: "=?gb2312?Q?=BD=F610=D4=AA=C3=BF=CC=EC?=" <test-/yRKpl58aSNWk0Htik3J/w@public.gmane.org>
-Subject: =?gb2312?Q?=C8=BA=B7=A2=C8=ED=BC=FE+=C2=F2=BC=D2=CB=D1=CB=F7=BB=FA+109=BD=EC=B9=E3=BD=BB=BB=E1=C2=F2=BC=D2=A1=A2=BA=A3=B9=D8=CA=FD=BE=DD,
-	B2B=D1=AF=C5=CC=C2=F2=BC=D2500=CD=F2=A1=A3?=
-Date: Mon, 5 Sep 2011 14:14:06 +0000 (UTC)
-Message-ID: <HADESkaXiom6WQaV2uB0000b168@Hades.hiyutech.com>
-Reply-To: buyerssearchceo-O5WfVfzUwx8@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"=?gb2312?Q?spidey@eyou=2Ecom?=" <spidey-OLhLAXdVt80@public.gmane.org>,
-	"=?gb2312?Q?shqy@mail=2Etsing
+From: =?GB2312?B?x+vXqs/gudjIy9Sx?= <hrl-pCALNHjy0Tg@public.gmane.org>
+Subject: [SPAM] æ³¨å¡‘é›¶ç¼ºé™·é«˜çº§æŠ€æœ¯
+Date: Tue, 6 Sep 2011 00:02:39 +0800
+Message-ID: <E1R0bdB-0001NM-Ox@sfs-ml-2.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============2940186544049063316=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Mon, 3 Sep 2018 13:29:59 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,42 +15,125 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Csi6t6LI7bz+KzEwOb3sueO9u7vhwvK80qGiuqO52Mr9vt2hosvRy/fS/cfmwvK80ixCMkLRr8XM
-wvK80rmyNTAwzfIsvfYxMNSqw7/M7KGjIArIureiyO28/isxMDm97Lnjvbu74cLyvNKhorqjudjK
-/b7doaLL0cv30v3H5sLyvNIsQjJC0a/FzMLyvNK5sjUwMM3yLL32MTDUqsO/zOyhoyAKsaPWpMO/
-zOy2vNPQwvK80rvYuLShowqxo9akw7/M7La809DC8rzSu9i4tKGjCrGj1qTDv8zstrzT0MLyvNK7
-2Li0oaMKCjGhosi6t6LI7bz+o7ogstnX97zytaWjrLmmxNzHv7Tzo6zEo7fCyMu5pLLZ1/fEo8q9
-o6y1vbTvwsq436OsyNW3osvNNc3yt+LS1MnPoaMgCjKhojUwMM3ywvK80tfK1LSjuiDU+cvNtcQ1
-MDDN8sLyvNLXytS0v+KjrLj80MIgKL/J0tSwtNXVxPq1xLL6xrfM4cihs/bAtKOsuPy+q9e8v6q3
-oimhoyAKM6Gis6y8trqjzeLC8rzSRW1haWzL0cv3u/qjuiDE2tbDwcs2MDDN8tDQ0rW52Lz8tMqj
-rLj5vt2zpM6ytMrL0cv3o6y94bn7uPy+q8i3xqXF5KO7w7/M7MTcy9HL9zEtMs3y0tTJz8LyvNLV
-5sq1RU1BSUyjrLPJtaXCyrjfoaMgCiAKCtKqtcTXpb30warPtVFROiA3NjgzMjAzMDUgICC78tXf
-waK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCtKqtcTXpb30warPtVFROiA3NjgzMjAzMDUg
-ICC78tXfwaK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCtKqtcTXpb30warPtVFROiA3Njgz
-MjAzMDUgICC78tXfwaK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCgoKw+K30dT5y806CtK7
-ubI4uPaw/CjK/b7dysfIq9DQ0rW1xKOssLTV1dDQ0rW31rrDwOCjrLKix9K/ydLUsLTV1bnYvPy0
-yrLp0a+1xCmjuiAKMaOsMjAxMbS6vL4xMDm97Lnjvbu74cLyvNLP1rOh0a/FzMr9vt2/4tDCz8qz
-9sKvo6yzrLy20MLPysLyvNKjrNDCz8rK/b7do6zI3dLXs8m1paOhIAoyo6y5usLyuvO/ydLUw+K3
-0bj80MIyMDExx++8vrnjvbu74SsyMDEytLq8vrnjvbu74cLyvNLK/b7doaPMq7Os1rXBy6GjCjOj
-rNfu0MLIq8fywvK80r/iLLmyNDUxNjYwzPXK/b7doaMgKNfu0MK4/NDCyNXG2iAyMDExLTA1LTE2
-yNUpCjSjrDIwMDjE6iwyMDA5xOosMjAxMMTqILS6vL4rx++8vrnjvbu74cLyvNLD+8K8o6wxMDMg
-MTA0IDEwNSAxMDYgMTA3IDEwOCC5ssH5vewgubIxMjAuNs3yyv2+3aGjCjWjrDIwMTDE6rn6vMq0
-2c/60K274aOoUFBBSaOps8nUscP7taUgUFBBSSBNZW1iZXJzIERpcmVjdG9yeaOst8ezo9bY0qq1
-xLTzwvK80qGjCjajrDIwMTDE6rW9z+O427LJubq1xLn6zeK/zcjLw/vCvCjP47jbw7O3or7WzOG5
-qSmjrLmyNy4yzfLK/b7do6yzrLy21tjSqrXEwvK80qGjCjejrDQ4LjY4zfLM9dfu0MLC8rzS0a/F
-zKOsubrC8rrzw7/Uwrj80MIgMS0yzfLM9aOssPzAqDKyv7fWo6wxo6zX7tDCtcTRr8XMIDKjrNfu
-0MK1xNW5u+HC8rzSoaPD4rfRuPzQwjM2uPbUwqGjCjijrDIwMDnE6rqjudjM4bWlyv2+3XBpZXJz
-sObK/b7dIDHHp83yoaMKCgqzz9DFzqqxvqOs1qez1tanuLaxprWjsaO9u9LXICjPyLeiu/WyorCy
-17DJ6NbDyLq3osjtvP6jrMi7uvO4tr/uKSCzubXXtPLP+8T6tcQgucvCx6GjCgogCgoKIAoKvqvX
-vMr9vt0ts8m1pcLKvKu43wq+q9e8yv2+3S2zybWlwsq8q7jfCr6r17zK/b7dLbPJtaXCyryruN8K
-vqvXvMr9vt0ts8m1pcLKvKu43wq+q9e8yv2+3S2zybWlwsq8q7jfCgoKLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tClNwZWNpYWwgT2ZmZXIgLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVF
-IQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0aW9uIGF0IGFuIGV2
-ZW4gYmV0dGVyIApwcmljZS1mcmVlISBBbmQgeW91J2xsIGdldCBhIGZyZWUgIkxvdmUgVGh5IExv
-Z3MiIHQtc2hpcnQgd2hlbiB5b3UKZG93bmxvYWQgTG9nZ2VyLiBTZWN1cmUgeW91ciBmcmVlIEFy
-Y1NpZ2h0IExvZ2dlciBUT0RBWSEKaHR0cDovL3Auc2YubmV0L3NmdS9hcmNzaXNnaHRkZXYyZGV2
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
-bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
-dmVsLWdlbmVyYWwK
+--===============2940186544049063316==
+Content-Type: text/plain;charset="GB2312"
+
+×¢ËÜÁãÈ±ÏÝ¸ß¼¶¼¼Êõ
+
+Ê±¼äµØµã£º2011Äê9ÔÂ17-18ÈÕ   ÉÏº£   
+Ê±¼äµØµã£º2011Äê9ÔÂ24-25ÈÕ   ÉîÛÚ
+¶ÔÏó×¢ËÜÆóÒµ×Ü¾­Àí¡¢×¢ËÜ³§³¤¡¢¸±×Ü¡¢×¢ËÜ²¿¾­Àí/Ö÷¹Ü¡¢×¢ËÜÆ·ÖÊ¾­Àí/Ö÷¹Ü¡¢×¢ËÜ¹¤³Ì¾­Àí/Ö÷¹Ü¡¢
+×¢ËÜÊÔÄ£¹¤³ÌÊ¦¡¢×¢ËÜÉú²ú¹¤³ÌÊ¦¡¢×¢ËÜÆ·ÖÊ¹¤³ÌÊ¦¡¢×¢ËÜ×é³¤/Áì°à/¼¼ÊõÔ±µÈ
+ÊÕ·Ñ£º2600 /ÈË£¨°üÀ¨×ÊÁÏ·Ñ¡¢Îç²Í¼°ÉÏÏÂÎç²èµãµÈ£©
+
+×ÉÑ¯µç»°£º020-80560638£»020-85917945  Ð»Ð¡½ã£¨²»Ðè´ËÀàÐÅ¼þÇë¸´µçÓÊÖÁchinammc2010-KN7UnAbNpbg@public.gmane.orgÍËÐÅ£©
+----------------------------------------------------------------------------------
+×¢ËÜÉú²ú¹ý³ÌÖÐ¾­³£³öÏÖ¸÷ÖÖÆ·ÖÊÈ±ÏÝºÍÒì³£ÏÖÏó£»³¤ÆÚÒÔÀ´£¬´ó¶àÊý×¢ËÜ¹¤×÷Õß½öÆ¾¾­Ñé´¦Àí£¬Ã¤Ä¿µ÷
+»úÊ±¼ä³¤£¬Ô­ÁÏÀË·Ñ´ó£¬¶ÔÒ»Ð©ÎÊÌâÈ±·¦¿ÆÑ§ÏµÍ³µØ·ÖÎö¡£×¢ËÜ¼Ó¹¤ÊÇÒ»ÃÅÖªÊ¶Ãæ¹ã¡¢¼¼ÊõÐÔÇ¿µÄÐÐÒµ£¬
+½öÆ¾¾­ÑéÊÇ²»¹»µÄ¡£"×¢ËÜÈ±ÏÝÔ­Òò·ÖÎöÓë½â¾ö·½°¸"¸ß¼¶Ñ§Êõ½²×ùÊÇ×¨ÎªÑ§Ï°´¦Àí¸÷ÖÖ×¢ËÜÈ±ÏÝºÍÒì³£ÎÊ
+Ìâ´¦Àí·½·¨¡¢Ìá¸ß·ÖÎöÎÊÌâ/´¦ÀíÎÊÌâÄÜÁ¦µÄ×¢ËÜ¼¼Êõ/¹ÜÀíÈËÔ±¶ø¿ªÉè¡£ÄÚÈÝ¶ÀÌØ
+1.»ùÓÚÃÀ¹ú×¢ËÜ³ÉÐÍ×¨ÒµÑµÁ·¶àÃ½Ìå£¬È«Ãæ¼¯ÖÐ¹úÄÚÍâ×¢ËÜ³ÉÐÍ¹¤ÒÕ¡¢×¢ËÜ³ÉÐÍ»úÐµ¼°ËÜ½º²ÄÁÏ·½ÃæµÄÆóÒµ¡¢×¨¼ÒºÍÑ§ÕßµÄÖÇ»ÝÓë¾­Ñé£»
+2.¸ß¶ÈÖÇÄÜ»¯µÄ»¥¶¯Ê½¶àÃ½ÌåÆ½Ì¨£¬Í¬Ê±¾ßÓÐÉùÒô¡¢Í¼Æ¬ºÍÎÄ×Ö±í´ïÐ§¹û£»
+3.ºê¹ÛÓëÎ¢¹ÛµÄÈ«·½Î»½âÎö£¬¹ý³ÌµÄ¶¯Ì¬ÏÔÊ¾£¬È«ÕæÕ¹ÏÖ³ÉÐÍÏÖ³¡Ëù²»ÄÜ¿´µ½µÄÄÚÈÝ
+------------------------------------------------------------------------
+1. È«ÃæÈÚºÏÄ£ÐÍ¾ßÉè¼ÆÓë×¢ËÜÏÖ³¡Éú²ú¼¼ÄÜ£¬ÎªÆóÒµÅàÑøÄ£¾ßÓë×¢ËÜµÄ¼¼Êõ×¨¼Ò¡£Ñ§Ô±¿ÉÒÔ×Ô´øÑùÆ·²Î¼Ó¿Î³Ì£¬¿Î³ÌÖÐÑ¡³öÓÐ´ú±íÐÔµÄ°¸Àý½øÐÐÏêÏ¸½â´ð£»
+2. »ùÓÚÃÀ¹ú×¢ËÜ³ÉÐÍ×¨ÒµÑµ~Á·¶àÃ½Ìå£¬È«Ãæ¼¯ÖÐ¹úÄÚÍâ×¢ËÜÄ£¾ß¡¢×¢ËÜ³ÉÐÍ¹¤ÒÕ¡¢×¢ËÜ³ÉÐÍ»úÐµ¼°ËÜÁÏ²ÄÁÏ·½ÃæµÄÆóÒµ¡¢×¨¼ÒºÍÑ§ÕßµÄÖÇÄÜÓë¾­Ñé£»
+3. ¸ß¶ÈÖÇÄÜ»¯µÄ½»»¥Ê½¶àÃ½ÌåÆ½Ì¨£¬Í¬Ê±¾ßÓÐÉùÒô¡¢Í¼Æ¬ºÍÎÄ×Ö±í´ïÐ§¹û£»
+4. ºê¹ÛÓëÎ¢¹ÛµÄÈ«·½Î»½âÎö£¬¹ý³ÌµÄ¶¯Ì¬ÏÔÊ¾£¬È«ÕæÕ¹ÏÖ³ÉÐÍÏÖ³¡Ëù²»ÄÜ¿´µ½µÄÄÚÈÝ¡£
+-------------------------------------------------------------------------------------------
+µÚÒ»²¿·Ö£º×¢ËÜ³ÉÐÍ¹¤ÒÕ»ù´¡
+1.ÎÂ¶È¡¢Ñ¹Á¦¡¢ËÙ¶ÈÓëÀäÈ´¿ØÖÆµÄÄ¿µÄ¡¢²Ù×÷Óë½á¹û£»
+2.×¢ËÜ»úÉè¶¨µÄµ÷ÕûÈçºÎÓ°Ïì¹¤ÒÕÓëÆ·ÖÊ£»
+3.ÓÅ»¯ÂÝ¸Ë¿ØÖÆÉè¶¨£»
+4.¶à¶Î³äÌîÓë¶à¶Î±£Ñ¹¿ØÖÆ£»½á¾§¡¢·Ç½á¾§Óë·Ö×Ó/ÏËÎ¬ÅÅÏò¶Ô¹¤ÒÕ¼°Æ·ÖÊµÄÓ°Ïì£»
+5.ÄÚÓ¦Á¦¡¢ÀäÈ´ËÙ¶È¡¢ËÜÁÏÊÕËõ¶ÔËÜ¼þÆ·ÖÊµÄÓ°Ïì£»
+6.ËÜÁÏÁ÷±äÁ¦Ñ§£ºËÜÁÏÈçºÎÁ÷¶¯¡¢ÅÅÏòÓë¸Ä±äÕ³¶È£¬¼ôÇÐÓë·Ö×Ó/ÏËÎ¬ÅÅÏò¹ØÏµ£»
+7.½½×¢ÏµÍ³¡¢ÀäÈ´ÏµÍ³¡¢Ä£¾ß½á¹¹Óë×¢ËÜ¹¤ÒÕÖ®¼äµÄ¹ØÏµ¡£
+µÚ¶þ²¿·Ö£ºÄ£ËÜÏÖ³¡ÎÊÌâ·ÖÎöÓë½â¾ö¶Ô²ß
+Ëõ¿×¡¢ËõË®¡¢²»±¥Ä£¡¢Ã«±ß¡¢ÈÛ½ÓºÛ¡¢ÒøË¿¡¢ÅçºÛ¡¢ÉÕ½¹¡¢ÇÌÇú±äÐÎ¡¢¿ªÁÑ/ÆÆÁÑ¡¢³ß´ç³¬²î¼°ÆäËü³£¼û×¢ËÜÎÊÌâÃèÊö¡¢Ô­Òò·ÖÎö£¬ÒÔ¼°ÔÚÄ£¾ßÉè¼Æ¡¢³ÉÐÍ¹¤ÒÕ¿ØÖÆ¡¢²úÆ·Éè¼Æ¼°ËÜÁÏ²ÄÁÏµÈ·½ÃæÖ®½â¾ö¶Ô²ß¡£
+1. ×¢ËÜ¼þÖÜ±ßÈ±½º¡¢²»±¥Ä£µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+2. Åú·æ£¨Ã«±ß£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+3. ×¢ËÜ¼þ±íÃæËõË®¡¢Ëõ¿×£¨Õæ¿ÕÅÝ£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+4. ÒøÎÆ£¨ÁÏ»¨¡¢Ë®»¨£©¡¢ÉÕ½¹¡¢ÆøÎÆµÄÔ­Òò·ÖÎö½â¾ö¶Ô²ß£»
+5. ×¢ËÜ¼þ±íÃæË®²¨ÎÆ¡¢Á÷ÎÆ£¨Á÷ºÛ£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+6. ×¢ËÜ¼þ±íÃæ¼ÐË®ÎÆ£¨ÈÛ½ÓºÛ£©¡¢ÅçÉäÎÆ£¨ÉßÎÆ£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+7. ×¢ËÜ¼þ±íÃæÁÑÎÆ£¨¹êÁÑ£©¡¢¶¥°×£¨¶¥±¬£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+8. ×¢ËÜ¼þ±íÃæÉ«²î¡¢¹âÔó²»Á¼¡¢»ìÉ«¡¢ºÚÌõ¡¢ºÚµãµÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+9. ×¢ËÜ¼þÇÌÇú±äÐÎ¡¢ÄÚÓ¦Á¦¿ªÁÑµÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+10. ×¢ËÜ¼þ³ß´çÆ«²îµÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+11. ×¢ËÜ¼þÕ³Ä£¡¢ÍÏ»¨£¨À­ÉË£©¡¢ÍÏ°×µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+12. ×¢ËÜ¼þÍ¸Ã÷¶È²»×ã¡¢Ç¿¶È²»×ã£¨´à¶Ï£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+13. ×¢ËÜ¼þ±íÃæÀäÁÏ°ß¡¢ÆðÆ¤£¨·Ö²ã£©µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+14. ×¢ËÜ¼þ½ðÊôÇ¶¼þ²»Á¼µÄÔ­Òò·ÖÎö¼°½â¾ö¶Ô²ß£»
+15. Åç×ìÁ÷ÏÑ£¨Á÷Ìé£©¡¢Â©½º¡¢Ë®¿ÚÀ­Ë¿¡¢Åç×ì¶ÂÈû¡¢¿ªÄ£À§ÄÑµÄÔ­Òò·ÖÎö¼°¸ÄÉÆ´ëÊ©£»
+16. ÀûÓÃCAEÄ£Á÷·ÖÎö¼¼Êõ¿ìËÙµØÓÐÐ§½â¾ö×¢ËÜÏÖ³¡ÎÊÌâ¡£
+µÚÈý²¿·Ö£ºÄ£¾ßÓÅ»¯Éè¼ÆÓëÊ¹ÓÃ
+1. ×¢ËÜÄ£¾ßµÄ½á¹¹¡¢×é³É¡¢·ÖÀà¼°¹¦ÄÜ£»
+2. ½½×¢ÏµÍ³£¨½½¿Ú¡¢Á÷µÀ¡¢ÀäÁÏ¾®µÈ£©ÓÅ»¯Éè¼Æ£»
+3. ÀäÈ´ÏµÍ³£¨Ë®Â·¡¢¸ôË®Æ¬¡¢îëÍ²µÈ£©ÓÅ»¯Éè¼Æ£»
+4. ËõË®ÂÊµÄÉè¶¨Óëµ÷Õû£»
+5. ½½×¢ÏµÍ³¡¢ÀäÈ´ÏµÍ³¡¢Ä£¾ß½á¹¹Óë×¢ËÜ¹¤ÒÕÖ®¼äµÄ¹ØÏµ£»
+6. Ä£¾ßµÄ°²×°¡¢µ÷ÊÔ¹¤×÷ºÍÎ¬»¤±£Ñø£»
+7. ÀûÓÃCAEÄ£Á÷·ÖÎö¼¼Êõ½øÐÐÄ£¾ßÓÅ»¯Éè¼Æ¡£
+µÚËÄ²¿·Ö£ºÄ£ËÜÐÂ¹¤ÒÕÏà¹Ø
+1. ÈÈÁ÷µÀ¼¼ÊõÓ¦ÓÃ¼°Ïà¹ØÎÊÌâ½â¾ö£»2.Ë«É«³ÉÐÍ¼¼ÊõÓ¦ÓÃ¼°Ïà¹ØÎÊÌâ½â¾ö£»
+2. ÆøÌå¸¨Öú³ÉÐÍ¼¼ÊõÓ¦ÓÃ¼°Ïà¹ØÎÊÌâ½â¾ö£»
+µÚÎå²¿·Ö£º°¸Àý·ÖÎö
+---------------------------------------------------------
+µËÒæÉÆÏÈÉúÖÐ¹ú½Ü³ö×¢ËÜ¼¼Êõ¡¢Ä£¾ßÉè¼ÆÓÅ»¯¼¼ÊõÅàÑµÊµÕ½×¨¼Ò£¬Ë¶Ê¿£¬ÏÈºóÔÚÃÀ¡¢µÂ¡¢Ì¨×Ê
+ÍâÆó¡¢´ÓÊÂÏà¹Ø¹¤×÷¶àÄê£¬ÀúÈÎ¹¤³ÌÊ¦¡¢Ö÷¹Ü¡¢¾­ÀíµÈÖ°Îñ£¬ÔÚÉè¼ÆÉú²úÒ»Ïß¶àÄêÃþÅÀ¹ö´ò£¬
+²¢ÔÚ×ÉÑ¯¹ËÎÊÖÐ»ýÀÛÁË·á¸»µÄ¾­Ñé£¬ÓÈÆäÉîÚÏ×¢ËÜÈ±ÏÝÔ­Òò·ÖÎöÓë½â¾ö·½°¸¡¢Ä£¾ßÉè¼ÆÓÅ»¯¼¼
+Êõ£¬¶Ô×¢ËÜ»úÐµ¡¢ËÜÁÏ²ÄÁÏ¾ßÓÐÏàµ±µÄ¼¼Êõ¹¦µ×£¬ÐÎ³ÉÁË¶À¾ßÌØÉ«µÄÊµ¸ÉÐÍÄ£¾ß/×¢ËÜ¼¼Êõ·½
+·¨ºÍÌåÏµ¡£µËÀÏÊ¦Êµ¼ù¾­Ñé·á¸»¡¢½²ÊÚ¹ý³ÌÁÐ¾Ù´óÁ¿°¸Àý¡¢ÌØ±ðÇ¿µ÷ÊµÓÃÐÔºÍ¿É²Ù×÷ÐÔ£¬ÉîÊÜ
+Ìý¿ÎÈËÔ±µÄºÃÆÀºÍ×ð¾´¡£ÖÁ½ñÀîÀÏÊ¦ÎªÂú×ãÆóÒµµÄÊµ¼ÊÐèÒª£¬ÏÈºó¾Ù°ìÁË×¢ËÜ¼¼Êõ¡¢Ä£¾ßÉè¼Æ
+ÓÅ»¯¼¼Êõ·½ÃæµÄÄÚÑµ¡¢¹«¿ª¿Î³Ì¹²¼Æ600¶à³¡£¬²ÎÑµÆóÒµ4000¼Ò×óÓÒ£¬ÅàÑøÁËÒ»´óÅúÓÅÐãµÄÆó
+Òµ¼¼ÊõÈË²Å£¬Ä¿Ç°Ö÷Òª·Ö²¼ÔÚÉÏº£¡¢ÉîÛÚ¡¢¹ã¶«¡¢½­ÕãµØÇø´óÖÐÐÍÉú²úÐÍÆóÒµ¡£Îª¹úÄÚÆóÒµÉú
+²ú¼¼ÊõÅàÑµ¹¤×÷×ö³öÁËÍ»³ö¹±Ï×£¬ÊµÊµÔÚÔÚÎªÆóÒµ½â¾öÁËÉè¼ÆÓëÉú²úÄÑÌâ¡£
+--------------------------------------------------------------------------------
+¡¶×¢ËÜÁãÈ±ÏÝ¸ß¼¶¼¼Êõ¡·±¨Ãû»ØÖ´±í£¨Çë´«Õæ020-62351156£©
+
+²Î »á µ¥ Î» Ãû ³Æ£º_______________________________________________________
+
+²Î ¼Ó µØ µã£º ¿ÚÉÏº£    ¿ÚÉîÛÚ
+
+ÁªÏµÈË£º______________µç»°:________________´«Õæ:________________
+
+ÓÊ¼þ£º______________ ²Î »á ÈË Êý:_________ÈË ·Ñ ÓÃ £¤£º_________Ôª 
+
+²Î »á ÈË£º___________Ëù ÈÎ Ö° Îñ£º____________ÒÆ ¶¯ µç »°£º_____________ 
+
+²Î »á ÈË£º___________Ëù ÈÎ Ö° Îñ£º____________ÒÆ ¶¯ µç »°£º_____________ 
+
+²Î »á ÈË£º___________Ëù ÈÎ Ö° Îñ£º____________ÒÆ ¶¯ µç »°£º_____________ 
+
+²Î »á ÈË£º___________Ëù ÈÎ Ö° Îñ£º____________ÒÆ ¶¯ µç »°£º_____________ 
+
+¸¶¿î·½Ê½£¨ÇëÑ¡Ôñ´ò¡°¡Ì¡±£©£º ¡õ1¡¢ÏÖ½ð ¡õ2¡¢×ªÕÊ ¡õ3¡¢µç»ã 
+====================================================================================
+±¸×¢:ÇëÄú°Ñ±¨Ãû»ØÖ´»Ø´«ÎÒË¾£¬ ‘È·±£Äú±¨ÃûÎÞÎó,ÇëÄúÔÙ´Îµç»°£¨020-80560638£©È·ÈÏ!
+
+
+--===============2940186544049063316==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Special Offer -- Download ArcSight Logger for FREE!
+Finally, a world-class log management solution at an even better 
+price-free! And you'll get a free "Love Thy Logs" t-shirt when you
+download Logger. Secure your free ArcSight Logger TODAY!
+http://p.sf.net/sfu/arcsisghtdev2dev
+--===============2940186544049063316==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============2940186544049063316==--

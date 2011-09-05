@@ -1,41 +1,64 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: Fix builderror in spi-pl022.c
-Date: Mon, 5 Sep 2011 14:45:00 +0200
-Message-ID: <CACRpkdb=Bt2j4iMV5NJHmPG8wDi6__CRD6kn_KOoaQ1R6uwrWQ@mail.gmail.com>
-References: <E1Qvo1q-0000qv-TQ@rmk-PC.arm.linux.org.uk>
-	<1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
+From: "=?gb2312?Q?=BD=F610=D4=AA=C3=BF=CC=EC?=" <test-/yRKpl58aSNWk0Htik3J/w@public.gmane.org>
+Subject: =?gb2312?Q?=C8=BA=B7=A2=C8=ED=BC=FE+=C2=F2=BC=D2=CB=D1=CB=F7=BB=FA+109=BD=EC=B9=E3=BD=BB=BB=E1=C2=F2=BC=D2=A1=A2=BA=A3=B9=D8=CA=FD=BE=DD,
+	B2B=D1=AF=C5=CC=C2=F2=BC=D2500=CD=F2=A1=A3?=
+Date: Mon, 5 Sep 2011 14:14:06 +0000 (UTC)
+Message-ID: <HADESkaXiom6WQaV2uB0000b168@Hades.hiyutech.com>
+Reply-To: buyerssearchceo-O5WfVfzUwx8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rjw@sisk.pl>,
-	spi-devel-general@lists.sourceforge.net,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	linux-pm@lists.linux-foundation.org, Peter Huewe <peterhuewe@gmx.de>,
-	linux-arm-kernel@lists.infradead.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"=?gb2312?Q?spidey@eyou=2Ecom?=" <spidey-OLhLAXdVt80@public.gmane.org>,
+	"=?gb2312?Q?shqy@mail=2Etsing
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Mon, 3 Sep 2018 13:29:59 +0800
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Aug 28, 2011 at 9:26 PM, Peter Huewe <peterhuewe@gmx.de> wrote:
-
-> This patch fixes a build error, introduced by commit (67fc8b9f, "PM: add
-> runtime PM support to core Primecell driver") which unfortunately was a little
-> bit incomplete and did contain a typo (11 instead of 22).
-> I'm not sure how this patch could have been tested back then, if it
-> doesn't even compile ;)
-
-Grant can you please apply this patch? Right now linux-next is
-breaking because of this missing patch...
-
-Thanks,
-Linus Walleij
+Csi6t6LI7bz+KzEwOb3sueO9u7vhwvK80qGiuqO52Mr9vt2hosvRy/fS/cfmwvK80ixCMkLRr8XM
+wvK80rmyNTAwzfIsvfYxMNSqw7/M7KGjIArIureiyO28/isxMDm97Lnjvbu74cLyvNKhorqjudjK
+/b7doaLL0cv30v3H5sLyvNIsQjJC0a/FzMLyvNK5sjUwMM3yLL32MTDUqsO/zOyhoyAKsaPWpMO/
+zOy2vNPQwvK80rvYuLShowqxo9akw7/M7La809DC8rzSu9i4tKGjCrGj1qTDv8zstrzT0MLyvNK7
+2Li0oaMKCjGhosi6t6LI7bz+o7ogstnX97zytaWjrLmmxNzHv7Tzo6zEo7fCyMu5pLLZ1/fEo8q9
+o6y1vbTvwsq436OsyNW3osvNNc3yt+LS1MnPoaMgCjKhojUwMM3ywvK80tfK1LSjuiDU+cvNtcQ1
+MDDN8sLyvNLXytS0v+KjrLj80MIgKL/J0tSwtNXVxPq1xLL6xrfM4cihs/bAtKOsuPy+q9e8v6q3
+oimhoyAKM6Gis6y8trqjzeLC8rzSRW1haWzL0cv3u/qjuiDE2tbDwcs2MDDN8tDQ0rW52Lz8tMqj
+rLj5vt2zpM6ytMrL0cv3o6y94bn7uPy+q8i3xqXF5KO7w7/M7MTcy9HL9zEtMs3y0tTJz8LyvNLV
+5sq1RU1BSUyjrLPJtaXCyrjfoaMgCiAKCtKqtcTXpb30warPtVFROiA3NjgzMjAzMDUgICC78tXf
+waK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCtKqtcTXpb30warPtVFROiA3NjgzMjAzMDUg
+ICC78tXfwaK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCtKqtcTXpb30warPtVFROiA3Njgz
+MjAzMDUgICC78tXfwaK8tLvYuLTTys/kOiA3NjgzMjAzMDVAcXEuY29tCgoKw+K30dT5y806CtK7
+ubI4uPaw/CjK/b7dysfIq9DQ0rW1xKOssLTV1dDQ0rW31rrDwOCjrLKix9K/ydLUsLTV1bnYvPy0
+yrLp0a+1xCmjuiAKMaOsMjAxMbS6vL4xMDm97Lnjvbu74cLyvNLP1rOh0a/FzMr9vt2/4tDCz8qz
+9sKvo6yzrLy20MLPysLyvNKjrNDCz8rK/b7do6zI3dLXs8m1paOhIAoyo6y5usLyuvO/ydLUw+K3
+0bj80MIyMDExx++8vrnjvbu74SsyMDEytLq8vrnjvbu74cLyvNLK/b7doaPMq7Os1rXBy6GjCjOj
+rNfu0MLIq8fywvK80r/iLLmyNDUxNjYwzPXK/b7doaMgKNfu0MK4/NDCyNXG2iAyMDExLTA1LTE2
+yNUpCjSjrDIwMDjE6iwyMDA5xOosMjAxMMTqILS6vL4rx++8vrnjvbu74cLyvNLD+8K8o6wxMDMg
+MTA0IDEwNSAxMDYgMTA3IDEwOCC5ssH5vewgubIxMjAuNs3yyv2+3aGjCjWjrDIwMTDE6rn6vMq0
+2c/60K274aOoUFBBSaOps8nUscP7taUgUFBBSSBNZW1iZXJzIERpcmVjdG9yeaOst8ezo9bY0qq1
+xLTzwvK80qGjCjajrDIwMTDE6rW9z+O427LJubq1xLn6zeK/zcjLw/vCvCjP47jbw7O3or7WzOG5
+qSmjrLmyNy4yzfLK/b7do6yzrLy21tjSqrXEwvK80qGjCjejrDQ4LjY4zfLM9dfu0MLC8rzS0a/F
+zKOsubrC8rrzw7/Uwrj80MIgMS0yzfLM9aOssPzAqDKyv7fWo6wxo6zX7tDCtcTRr8XMIDKjrNfu
+0MK1xNW5u+HC8rzSoaPD4rfRuPzQwjM2uPbUwqGjCjijrDIwMDnE6rqjudjM4bWlyv2+3XBpZXJz
+sObK/b7dIDHHp83yoaMKCgqzz9DFzqqxvqOs1qez1tanuLaxprWjsaO9u9LXICjPyLeiu/WyorCy
+17DJ6NbDyLq3osjtvP6jrMi7uvO4tr/uKSCzubXXtPLP+8T6tcQgucvCx6GjCgogCgoKIAoKvqvX
+vMr9vt0ts8m1pcLKvKu43wq+q9e8yv2+3S2zybWlwsq8q7jfCr6r17zK/b7dLbPJtaXCyryruN8K
+vqvXvMr9vt0ts8m1pcLKvKu43wq+q9e8yv2+3S2zybWlwsq8q7jfCgoKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tClNwZWNpYWwgT2ZmZXIgLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVF
+IQpGaW5hbGx5LCBhIHdvcmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0aW9uIGF0IGFuIGV2
+ZW4gYmV0dGVyIApwcmljZS1mcmVlISBBbmQgeW91J2xsIGdldCBhIGZyZWUgIkxvdmUgVGh5IExv
+Z3MiIHQtc2hpcnQgd2hlbiB5b3UKZG93bmxvYWQgTG9nZ2VyLiBTZWN1cmUgeW91ciBmcmVlIEFy
+Y1NpZ2h0IExvZ2dlciBUT0RBWSEKaHR0cDovL3Auc2YubmV0L3NmdS9hcmNzaXNnaHRkZXYyZGV2
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
+bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
+dmVsLWdlbmVyYWwK

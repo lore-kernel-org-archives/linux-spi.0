@@ -1,54 +1,52 @@
-From: "zkbhlx" <sales-xtd+B2eCk3u81eZEIcUDRw@public.gmane.org>
-Subject: =?utf-8?B?4piGKEVIUynlronlhajjgIHlgaXlurfkuI7njq/looPnrqHnkIbimIY=?=
-Date: Mon, 5 Sep 2011 03:34:08 +0800
-Message-ID: <D799E972E7D4A743E00253912304BD02@mqu>
+From: Paul Mundt <lethal@linux-sh.org>
+Subject: Re: [PATCH 1/2] SPI: spi_sh_msiof: implement DMA support
+Date: Mon, 5 Sep 2011 13:59:11 +0900
+Message-ID: <20110905045911.GE22142@linux-sh.org>
+References: <Pine.LNX.4.64.1109021706480.4731@axis700.grange> <Pine.LNX.4.64.1109021712180.4731@axis700.grange>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0651_01D5BEA4.10564EB0"
-To: <spf998-9Onoh4P/yGk@public.gmane.org>, <spgcszl-k+cT0dCbe1g@public.gmane.org>, <spgygs-GveOkT2v/s5BDgjK7y7TUQ@public.gmane.org>,
-	<spend-OLhLAXdVt80@public.gmane.org>, <sphinxwang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <spi-C57EsOxMCyNBDgjK7y7TUQ@public.gmane.org>,
-	<spiceliang-Xb2Y1Dfb9CI@public.gmane.org>, <sperkins-4JChGXwtQXVcoe9F9rXP/2ui9UKz+5OX@public.gmane.org>,
-	<spi-
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org,
+	Grant Likely <grant.likely@secretlab.ca>
+To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.1109021712180.4731@axis700.grange>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Fri, Sep 02, 2011 at 05:13:31PM +0200, Guennadi Liakhovetski wrote:
+> Use the sh_dma dmaengine driver to support DMA on MSIOF.
+> 
+> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 
-------=_NextPart_000_0651_01D5BEA4.10564EB0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+No real opinion one way or the other, just a couple observations.
 
+> +static void sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+> +{
+..
+> +	p->dummypage = alloc_page(GFP_KERNEL);
+> +	if (!p->dummypage)
+> +		return;
+> +
+..
+> +echantx:
+> +	__free_pages(p->dummypage, 0);
+> +}
+> +
+alloc_page() can be balanced out with __free_page().
 
-------=_NextPart_000_0651_01D5BEA4.10564EB0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+> @@ -695,11 +1030,11 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
+>  
+>  	ret = spi_bitbang_stop(&p->bitbang);
+>  	if (!ret) {
+> +		sh_msiof_release_dma(p);
+>  		pm_runtime_disable(&pdev->dev);
+>  		free_irq(platform_get_irq(pdev, 0), p);
+>  		iounmap(p->mapbase);
+>  		clk_put(p->clk);
+> -		spi_master_put(p->bitbang.master);
+>  	}
+>  	return ret;
+>  }
 
-------------------------------------------------------------------------------
-Special Offer -- Download ArcSight Logger for FREE!
-Finally, a world-class log management solution at an even better 
-price-free! And you'll get a free "Love Thy Logs" t-shirt when you
-download Logger. Secure your free ArcSight Logger TODAY!
-http://p.sf.net/sfu/arcsisghtdev2dev
-------=_NextPart_000_0651_01D5BEA4.10564EB0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_000_0651_01D5BEA4.10564EB0--
+You've also killed off the spi_master_put() here.

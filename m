@@ -1,7 +1,8 @@
 From: Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
-Subject: [PATCH 5/5] spi-topcliff-pch: Fix overrun issue
-Date: Tue,  6 Sep 2011 16:58:34 +0900
-Message-ID: <1315295914-6862-5-git-send-email-tomoya-linux@dsn.okisemi.com>
+Subject: [PATCH 4/5] spi-topcliff-pch: Add recovery processing in case FIFO
+	overrun error occurs
+Date: Tue,  6 Sep 2011 16:58:33 +0900
+Message-ID: <1315295914-6862-4-git-send-email-tomoya-linux@dsn.okisemi.com>
 References: <1315295914-6862-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,88 +25,99 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-We found that adding load, Rx data sometimes drops.(with DMA transfer mode)
-The cause is that before starting Rx-DMA processing, Tx-DMA processing starts.
-This causes FIFO overrun occurs.
-
-This patch fixes the issue by modifying FIFO tx-threshold and DMA descriptor
-size like below.
-
-                      Current                   this patch
-Rx-descriptor   4Byte+12Byte*341    -->    12Byte*340-4Byte-12Byte
-Rx-threshold                   (Not modified)
-Tx-descriptor   4Byte+12Byte*341    -->    16Byte-12Byte*340
-Rx-threshold    12Byte              -->    2Byte
+Add recovery processing in case FIFO overrun error occurs with DMA transfer mode.
 
 Signed-off-by: Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c |   28 +++++++++++++++++++++++-----
- 1 files changed, 23 insertions(+), 5 deletions(-)
+ drivers/spi/spi-topcliff-pch.c |   31 ++++++++++++++++++++++++-------
+ 1 files changed, 24 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 5be1142..c02fa62 100644
+index c4d6fb9..5be1142 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -50,6 +50,8 @@
- #define PCH_RX_THOLD		7
- #define PCH_RX_THOLD_MAX	15
+@@ -355,15 +355,25 @@ static irqreturn_t pch_spi_handler(int irq, void *dev_id)
+ 			"%s returning due to suspend\n", __func__);
+ 		return IRQ_NONE;
+ 	}
+-	if (data->use_dma)
+-		return IRQ_NONE;
  
-+#define PCH_TX_THOLD		2
-+
- #define PCH_MAX_BAUDRATE	5000000
- #define PCH_MAX_FIFO_DEPTH	16
+ 	io_remap_addr = data->io_remap_addr;
+ 	spsr = io_remap_addr + PCH_SPSR;
+
+ 	reg_spsr_val = ioread32(spsr);
  
-@@ -1043,8 +1045,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	/* set receive fifo threshold and transmit fifo threshold */
- 	pch_spi_setclr_reg(data->master, PCH_SPCR,
- 			   ((size - 1) << SPCR_RFIC_FIELD) |
--			   ((PCH_MAX_FIFO_DEPTH - PCH_DMA_TRANS_SIZE) <<
--			    SPCR_TFIC_FIELD),
-+			   (PCH_TX_THOLD << SPCR_TFIC_FIELD),
- 			   MASK_RFIC_SPCR_BITS | MASK_TFIC_SPCR_BITS);
- 
- 	spin_unlock_irqrestore(&data->lock, flags);
-@@ -1055,13 +1056,20 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	/* offset, length setting */
- 	sg = dma->sg_rx_p;
- 	for (i = 0; i < num; i++, sg++) {
--		if (i == 0) {
--			sg->offset = 0;
-+		if (i == (num - 2)) {
-+			sg->offset = size * i;
-+			sg->offset = sg->offset * (*bpw / 8);
- 			sg_set_page(sg, virt_to_page(dma->rx_buf_virt), rem,
- 				    sg->offset);
- 			sg_dma_len(sg) = rem;
-+		} else if (i == (num - 1)) {
-+			sg->offset = size * (i - 1) + rem;
-+			sg->offset = sg->offset * (*bpw / 8);
-+			sg_set_page(sg, virt_to_page(dma->rx_buf_virt), size,
-+				    sg->offset);
-+			sg_dma_len(sg) = size;
- 		} else {
--			sg->offset = rem + size * (i - 1);
-+			sg->offset = size * i;
- 			sg->offset = sg->offset * (*bpw / 8);
- 			sg_set_page(sg, virt_to_page(dma->rx_buf_virt), size,
- 				    sg->offset);
-@@ -1085,6 +1093,16 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 	dma->desc_rx = desc_rx;
- 
- 	/* TX */
-+	if (data->bpw_len > PCH_DMA_TRANS_SIZE) {
-+		num = data->bpw_len / PCH_DMA_TRANS_SIZE;
-+		size = PCH_DMA_TRANS_SIZE;
-+		rem = 16;
-+	} else {
-+		num = 1;
-+		size = data->bpw_len;
-+		rem = data->bpw_len;
+-	if (reg_spsr_val & SPSR_ORF_BIT)
+-		dev_err(&board_dat->pdev->dev, "%s Over run error", __func__);
++	if (reg_spsr_val & SPSR_ORF_BIT) {
++		dev_err(&board_dat->pdev->dev, "%s Over run error\n", __func__);
++		if (data->current_msg->complete != 0) {
++			data->transfer_complete = true;
++			data->current_msg->status = -EIO;
++			data->current_msg->complete(data->current_msg->context);
++			data->bcurrent_msg_processing = false;
++			data->current_msg = NULL;
++			data->cur_trans = NULL;
++		}
 +	}
 +
- 	dma->sg_tx_p = kzalloc(sizeof(struct scatterlist)*num, GFP_ATOMIC);
- 	sg_init_table(dma->sg_tx_p, num); /* Initialize SG table */
- 	/* offset, length setting */
++	if (data->use_dma)
++		return IRQ_NONE;
+ 
+ 	/* Check if the interrupt is for SPI device */
+ 	if (reg_spsr_val & (SPSR_FI_BIT | SPSR_RFI_BIT)) {
+@@ -817,10 +827,11 @@ static void pch_spi_copy_rx_data_for_dma(struct pch_spi_data *data, int bpw)
+ 	}
+ }
+ 
+-static void pch_spi_start_transfer(struct pch_spi_data *data)
++static int pch_spi_start_transfer(struct pch_spi_data *data)
+ {
+ 	struct pch_spi_dma_ctrl *dma;
+ 	unsigned long flags;
++	int rtn;
+ 
+ 	dma = &data->dma;
+ 
+@@ -835,7 +846,9 @@ static void pch_spi_start_transfer(struct pch_spi_data *data)
+ 				 initiating the transfer. */
+ 	dev_dbg(&data->master->dev,
+ 		"%s:waiting for transfer to get over\n", __func__);
+-	wait_event_interruptible(data->wait, data->transfer_complete);
++	rtn = wait_event_interruptible_timeout(data->wait,
++					       data->transfer_complete,
++					       msecs_to_jiffies(2 * HZ));
+ 
+ 	dma_sync_sg_for_cpu(&data->master->dev, dma->sg_rx_p, dma->nent,
+ 			    DMA_FROM_DEVICE);
+@@ -862,6 +875,8 @@ static void pch_spi_start_transfer(struct pch_spi_data *data)
+ 	pch_spi_clear_fifo(data->master);
+ 
+ 	spin_unlock_irqrestore(&data->lock, flags);
++
++	return rtn;
+ }
+ 
+ static void pch_dma_rx_complete(void *arg)
+@@ -1182,7 +1197,8 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 
+ 		if (data->use_dma) {
+ 			pch_spi_handle_dma(data, &bpw);
+-			pch_spi_start_transfer(data);
++			if (!pch_spi_start_transfer(data))
++				goto out;
+ 			pch_spi_copy_rx_data_for_dma(data, bpw);
+ 		} else {
+ 			pch_spi_set_tx(data, &bpw);
+@@ -1218,6 +1234,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 
+ 	} while (data->cur_trans != NULL);
+ 
++out:
+ 	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_HIGH);
+ 	if (data->use_dma)
+ 		pch_spi_release_dma(data);
 -- 
 1.7.4.4
 

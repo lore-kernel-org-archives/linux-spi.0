@@ -1,33 +1,53 @@
-From: 13430544812-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票--代/开
-Date: Tue, 6 Sep 2011 22:57:44 +0800
-Message-ID: <E1R0x5T-0001Wy-Ck@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: Re: [PATCH 1/2] SPI: spi_sh_msiof: implement DMA support
+Date: Wed, 7 Sep 2011 07:16:46 +0900
+Message-ID: <CANqRtoTKxuRzOTcuL9vknNrn_k7HPZCJh3A4iGr9vczrqhfcqA@mail.gmail.com>
+References: <Pine.LNX.4.64.1109021706480.4731@axis700.grange>
+	<Pine.LNX.4.64.1109021712180.4731@axis700.grange>
+	<20110905045911.GE22142@linux-sh.org>
+	<Pine.LNX.4.64.1109050925170.13066@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Paul Mundt <lethal@linux-sh.org>,
+	spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org
+To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <Pine.LNX.4.64.1109050925170.13066@axis700.grange>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICAgztK5q8u+09DSu7K/t9Yoye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQ
-oaIuLi4uLi4uLim3oi0txrEvILT6v6qjuwrI5zrG1c2oyczGt8/6ytu3oi/GsTvUy8rk0rWhor2o
-1v7StaGivajW/rCy17DStaGiueO45tK1oaLG5Mv8t/7O8dDQ0rWhorLN0vvStbXIoaMKufO5q8u+
-yOfT0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7oKICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAg1cXPyMn6o7oxMzQzMDU0NDgxMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNwZWNpYWwg
-T2ZmZXIgLS0gRG93bmxvYWQgQXJjU2lnaHQgTG9nZ2VyIGZvciBGUkVFIQpGaW5hbGx5LCBhIHdv
-cmxkLWNsYXNzIGxvZyBtYW5hZ2VtZW50IHNvbHV0aW9uIGF0IGFuIGV2ZW4gYmV0dGVyIApwcmlj
-ZS1mcmVlISBBbmQgeW91J2xsIGdldCBhIGZyZWUgIkxvdmUgVGh5IExvZ3MiIHQtc2hpcnQgd2hl
-biB5b3UKZG93bmxvYWQgTG9nZ2VyLiBTZWN1cmUgeW91ciBmcmVlIEFyY1NpZ2h0IExvZ2dlciBU
-T0RBWSEKaHR0cDovL3Auc2YubmV0L3NmdS9hcmNzaXNnaHRkZXYyZGV2Cl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
-bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Mon, Sep 5, 2011 at 4:26 PM, Guennadi Liakhovetski
+<g.liakhovetski@gmx.de> wrote:
+> On Mon, 5 Sep 2011, Paul Mundt wrote:
+>> On Fri, Sep 02, 2011 at 05:13:31PM +0200, Guennadi Liakhovetski wrot=
+e:
+>> > Use the sh_dma dmaengine driver to support DMA on MSIOF.
+>> >
+>> > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+
+>> > @@ -695,11 +1030,11 @@ static int sh_msiof_spi_remove(struct platf=
+orm_device *pdev)
+>> >
+>> > =A0 =A0 ret =3D spi_bitbang_stop(&p->bitbang);
+>> > =A0 =A0 if (!ret) {
+>> > + =A0 =A0 =A0 =A0 =A0 sh_msiof_release_dma(p);
+>> > =A0 =A0 =A0 =A0 =A0 =A0 pm_runtime_disable(&pdev->dev);
+>> > =A0 =A0 =A0 =A0 =A0 =A0 free_irq(platform_get_irq(pdev, 0), p);
+>> > =A0 =A0 =A0 =A0 =A0 =A0 iounmap(p->mapbase);
+>> > =A0 =A0 =A0 =A0 =A0 =A0 clk_put(p->clk);
+>> > - =A0 =A0 =A0 =A0 =A0 spi_master_put(p->bitbang.master);
+>> > =A0 =A0 }
+>> > =A0 =A0 return ret;
+>> > =A0}
+>>
+>> You've also killed off the spi_master_put() here.
+>
+> Yes, spi_bitbang_stop() does it all already.
+
+So it's a bug fix built-in to a feature patch? If so, please break out
+and submit as a fix.
+
+Thanks,
+
+/ magnus

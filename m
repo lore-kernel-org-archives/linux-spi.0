@@ -1,7 +1,7 @@
 From: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
-Subject: [PATCH 3/5] spi-topcliff-pch: Fix CPU read complete condition issue
-Date: Tue,  6 Sep 2011 16:58:32 +0900
-Message-ID: <1315295914-6862-3-git-send-email-tomoya-linux@dsn.okisemi.com>
+Subject: [PATCH 2/5] spi-topcliff-pch: Fix SSN Control issue
+Date: Tue,  6 Sep 2011 16:58:31 +0900
+Message-ID: <1315295914-6862-2-git-send-email-tomoya-linux@dsn.okisemi.com>
 References: <1315295914-6862-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Cc: qi.wang@intel.com, yong.y.wang@intel.com, joel.clark@intel.com,
 	kok.howg.ewe@intel.com, toshiharu-linux@dsn.okisemi.com,
@@ -14,47 +14,64 @@ In-Reply-To: <1315295914-6862-1-git-send-email-tomoya-linux@dsn.okisemi.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We found Rx data sometimes drops.(with non-DMA transfer mode)
-The cause is read complete condition is not true.
-
+During processing 1 command/data series,
+SSN should keep LOW.
+However, currently, SSN becomes HIGH.
 This patch fixes the issue.
 
 Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.okisemi.com>
 ---
- drivers/spi/spi-topcliff-pch.c |   19 +++++++++++--------
- 1 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/spi/spi-topcliff-pch.c |   10 +++-------
+ 1 files changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index b5c681a..c4d6fb9 100644
+index 1b98b7e..b5c681a 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -320,16 +320,19 @@ static void pch_spi_handler_sub(struct pch_spi_data *data, u32 reg_spsr_val,
+@@ -58,6 +58,7 @@
+ #define PCH_SLEEP_TIME		10
  
- 	/* if transfer complete interrupt */
- 	if (reg_spsr_val & SPSR_FI_BIT) {
--		if (tx_index < bpw_len)
-+		if ((tx_index == bpw_len) && (rx_index == tx_index)) {
-+			/* disable interrupts */
-+			pch_spi_setclr_reg(data->master, PCH_SPCR, 0, PCH_ALL);
-+
-+			/* transfer is completed;
-+			   inform pch_spi_process_messages */
-+			data->transfer_complete = true;
-+			data->transfer_active = false;
-+			wake_up(&data->wait);
-+		} else {
- 			dev_err(&data->master->dev,
- 				"%s : Transfer is not completed", __func__);
--		/* disable interrupts */
--		pch_spi_setclr_reg(data->master, PCH_SPCR, 0, PCH_ALL);
+ #define SSN_LOW			0x02U
++#define SSN_HIGH		0x03U
+ #define SSN_NO_CONTROL		0x00U
+ #define PCH_MAX_CS		0xFF
+ #define PCI_DEVICE_ID_GE_SPI	0x8816
+@@ -758,10 +759,6 @@ static void pch_spi_set_ir(struct pch_spi_data *data)
+ 
+ 	wait_event_interruptible(data->wait, data->transfer_complete);
+ 
+-	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_NO_CONTROL);
+-	dev_dbg(&data->master->dev,
+-		"%s:no more control over SSN-writing 0 to SSNXCR.", __func__);
 -
--		/* transfer is completed;inform pch_spi_process_messages */
--		data->transfer_complete = true;
--		data->transfer_active = false;
--		wake_up(&data->wait);
-+		}
- 	}
- }
+ 	/* clear all interrupts */
+ 	pch_spi_writereg(data->master, PCH_SPSR,
+ 			 pch_spi_readreg(data->master, PCH_SPSR));
+@@ -850,9 +847,6 @@ static void pch_spi_start_transfer(struct pch_spi_data *data)
+ 	kfree(dma->sg_rx_p);
  
+ 	spin_lock_irqsave(&data->lock, flags);
+-	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_NO_CONTROL);
+-	dev_dbg(&data->master->dev,
+-		"%s:no more control over SSN-writing 0 to SSNXCR.", __func__);
+ 
+ 	/* clear fifo threshold, disable interrupts, disable SPI transfer */
+ 	pch_spi_setclr_reg(data->master, PCH_SPCR, 0,
+@@ -1162,6 +1156,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 	if (data->use_dma)
+ 		pch_spi_request_dma(data,
+ 				    data->current_msg->spi->bits_per_word);
++	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_NO_CONTROL);
+ 	do {
+ 		/* If we are already processing a message get the next
+ 		transfer structure from the message otherwise retrieve
+@@ -1220,6 +1215,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 
+ 	} while (data->cur_trans != NULL);
+ 
++	pch_spi_writereg(data->master, PCH_SSNXCR, SSN_HIGH);
+ 	if (data->use_dma)
+ 		pch_spi_release_dma(data);
+ }
 -- 
 1.7.4.4

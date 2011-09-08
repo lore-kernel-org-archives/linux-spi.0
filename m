@@ -1,13 +1,11 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] spi_dw: move spi_dw_chip definition to a header file in
-	include/linux/spi/
-Date: Thu,  8 Sep 2011 15:23:35 +0800
-Message-ID: <1315466615-6043-1-git-send-email-feng.tang@intel.com>
+From: "Patrick Thomas" <PThomas284-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] RE: New Clients
+Date: Thu, 8 Sep 2011 02:38:14 -0700
+Message-ID: <11f1334ecf48c6bb5512d4010012c696@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_345408375D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,93 +17,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-So that it could be used to setup slave device's platform data, when platform
-boot code enumerates and registers those spi slave devices.
+This is a multi-part message in MIME format.
 
-Signed-off-by: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-dw.h                |   20 +-------------------
- include/linux/spi/spi-dw-platform.h |   23 +++++++++++++++++++++++
- 2 files changed, 24 insertions(+), 19 deletions(-)
- create mode 100644 include/linux/spi/spi-dw-platform.h
+------=SPLITOR00A_001_345408375D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 8b7b07b..290688f 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -3,6 +3,7 @@
- 
- #include <linux/io.h>
- #include <linux/scatterlist.h>
-+#include <linux/spi/spi-dw-platform.h>
- 
- /* Bit fields in CTRLR0 */
- #define SPI_DFS_OFFSET			0
-@@ -49,12 +50,6 @@
- /* TX RX interrupt level threshold, max can be 256 */
- #define SPI_INT_THRESHOLD		32
- 
--enum dw_ssi_type {
--	SSI_MOTO_SPI = 0,
--	SSI_TI_SSP,
--	SSI_NS_MICROWIRE,
--};
--
- struct dw_spi_reg {
- 	u32	ctrl0;
- 	u32	ctrl1;
-@@ -209,19 +204,6 @@ static inline void spi_umask_intr(struct dw_spi *dws, u32 mask)
- 	dw_writel(dws, imr, new_mask);
- }
- 
--/*
-- * Each SPI slave device to work with dw_api controller should
-- * has such a structure claiming its working mode (PIO/DMA etc),
-- * which can be save in the "controller_data" member of the
-- * struct spi_device
-- */
--struct dw_spi_chip {
--	u8 poll_mode;	/* 0 for contoller polling mode */
--	u8 type;	/* SPI/SSP/Micrwire */
--	u8 enable_dma;
--	void (*cs_control)(u32 command);
--};
--
- extern int dw_spi_add_host(struct dw_spi *dws);
- extern void dw_spi_remove_host(struct dw_spi *dws);
- extern int dw_spi_suspend_host(struct dw_spi *dws);
-diff --git a/include/linux/spi/spi-dw-platform.h b/include/linux/spi/spi-dw-platform.h
-new file mode 100644
-index 0000000..7c283c6
---- /dev/null
-+++ b/include/linux/spi/spi-dw-platform.h
-@@ -0,0 +1,23 @@
-+#ifndef SPI_DW_PLATFORM_HEADER_H
-+#define SPI_DW_PLATFORM_HEADER_H
-+
-+enum dw_ssi_type {
-+	SSI_MOTO_SPI = 0,
-+	SSI_TI_SSP,
-+	SSI_NS_MICROWIRE,
-+};
-+
-+/*
-+ * Each SPI slave device to work with dw_api controller should
-+ * has such a structure claiming its working mode (PIO/DMA etc),
-+ * which can be save in the "controller_data" member of the
-+ * struct spi_device
-+ */
-+struct dw_spi_chip {
-+	u8 poll_mode;	/* 0 for contoller polling mode */
-+	u8 type;	/* SPI/SSP/Micrwire */
-+	u8 enable_dma;
-+	void (*cs_control)(u32 command);
-+};
-+
-+#endif /* SPI_DW_PLATFORM_HEADER_H */
--- 
-1.7.1
+Do you want to get your products/ services in front of millions of =
+potential customers?
 
+When you launch an e-mail marketing program with our company, you will =
+have access to powerful tools that can help you grow revenue, find new =
+customers and achieve your online marketing goals=2E
+
+No other form of advertising can offer you as much response for such a low =
+cost=2E
+
+---Attached you will find our FREE info packet!---
+
+Rent our targeted e-mail database - consisting of over 200+ Million =
+Consumers , =09
+45+ Million Businesses, 40+ Million Homeowners & 20K+ Search Filters. =09
+
+   Email Services Includes:
+
+> Creation of E-mail Ad=09
+> Use of Our Databases=09
+> Tracking Results Are Provided=09
+> Send Your Ad Through Our Servers=09
+> Breakup Your Blast Into Multiple Sends=09
+> Use Different Ads Per Blast to Gauge Response=09
+> Consider us your one stop solution!=09
+
+---Attached you will find our FREE info packet!---
+
+Patrick Thomas
+Email Deployment Services
+Call 1 (888) 570-7776 Today!
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =09
+<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmnegEbju0hdhLg@public.gmane.org=
+orge.net>
+
+
+------=SPLITOR00A_001_345408375D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Doing More with Less: The Next Generation Virtual Desktop 
@@ -113,3 +77,15 @@ What are the key obstacles that have prevented many mid-market businesses
 from deploying virtual desktops?   How do next-generation virtual desktops
 provide companies an easier-to-deploy, easier-to-manage and more affordable
 virtual desktop model.http://www.accelacomm.com/jaw/sfnl/114/51426474/
+------=SPLITOR00A_001_345408375D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_345408375D--

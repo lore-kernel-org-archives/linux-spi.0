@@ -1,12 +1,11 @@
-From: Chevignon Store <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: Nouvelle Collection Automne-Hiver 2011 - Frais de livraison offerts
-Date: Tue, 13 Sep 2011 10:16:34 +0200 (CEST)
-Message-ID: <3236305005.266254.1315901794912@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Telecom Personal <info-LS+HbC+WUqzI+FpzV3gA9V5d5/JKYTjDqSblbbW8eSQ@public.gmane.org>
+Subject: [SPAM] Para responsables inscriptos y monotributistas
+Date: Tue, 13 Sep 2011 08:42:13 -0300
+Message-ID: <ca906a8fa557d4c61ee3dd01f596ab97@avalmarketing.outmailing.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,27 +17,11 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
-s par
-                        l'intermediaire de ce raccourci
+This is a message in multipart MIME format. Your mail client should not be displaying this. Consider upgrading your mail client to view this message correctly.
 
-   [IMG]
-   [IMG]
-   [IMG]  [IMG]  [IMG]    [IMG]  [IMG]  [IMG]    [IMG]  [IMG]     [IMG] [IM=
-G]
-   [IMG]
-   [IMG]
-   [IMG]
-   [IMG]               [IMG]                  [IMG]             [IMG]
-   [IMG]            [IMG]                  [IMG]           [IMG]
-   [IMG]                                                      [IMG]
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-Learn about the latest advances in developing for the =
-
+Learn about the latest advances in developing for the 
 BlackBerry&reg; mobile platform with sessions, labs & more.
 See new tools and technologies. Register for BlackBerry&reg; DevCon today!
-http://p.sf.net/sfu/rim-devcon-copy1 =
+http://p.sf.net/sfu/rim-devcon-copy1 

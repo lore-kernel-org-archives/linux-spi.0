@@ -1,10 +1,12 @@
-From: Telecom Personal <info-LS+HbC+WUqzI+FpzV3gA9V5d5/JKYTjDqSblbbW8eSQ@public.gmane.org>
-Subject: [SPAM] Para responsables inscriptos y monotributistas
-Date: Tue, 13 Sep 2011 08:42:13 -0300
-Message-ID: <ca906a8fa557d4c61ee3dd01f596ab97@avalmarketing.outmailing.com>
+From: "NOVA LISTA" <contato-cS7m5nTEsIQZzgA3xcj9ew@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?Miw0IE1pbGjDtWVzIGRlIEVNQUlMUyBkZSBQRVNTT0FTIEbDjVNJQ0FTIC0+IGhvamUgUiQxMjk=?=
+Date: Tue, 13 Sep 2011 20:48:06 -0600
+Message-ID: <ee7cb3e054bf3787066c81f8e4cb8a40@prhospedagem.net>
+Reply-To: contato-cS7m5nTEsIQZzgA3xcj9ew@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,11 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a message in multipart MIME format. Your mail client should not be displaying this. Consider upgrading your mail client to view this message correctly.
-
-------------------------------------------------------------------------------
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-Learn about the latest advances in developing for the 
-BlackBerry&reg; mobile platform with sessions, labs & more.
-See new tools and technologies. Register for BlackBerry&reg; DevCon today!
-http://p.sf.net/sfu/rim-devcon-copy1 
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vcHJob3Nw
+ZWRhZ2VtLm5ldC9zaXN0ZW1hZGVlbWFpbHMvZGlzcGxheS5waHA/TT03NTE5NyZDPTQyYTA2NGQ3
+N2Y0NmM0OGJlYjQ5MmIyYzU4NDgyNGVjJlM9NCZMPTMmTj0xCgoKUGFyYSBwYXJhciBkZSByZWNl
+YmVyIG5vc3NvcwplLW1haWxzOmh0dHA6Ly9wcmhvc3BlZGFnZW0ubmV0L3Npc3RlbWFkZWVtYWls
+cy91bnN1YnNjcmliZS5waHA/TT03NTE5NyZDPTQyYTA2NGQ3N2Y0NmM0OGJlYjQ5MmIyYzU4NDgy
+NGVjJkw9MyZOPTQKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkJsYWNrQmVycnkmcmVnOyBEZXZDb24g
+QW1lcmljYXMsIE9jdC4gMTgtMjAsIFNhbiBGcmFuY2lzY28sIENBCkxlYXJuIGFib3V0IHRoZSBs
+YXRlc3QgYWR2YW5jZXMgaW4gZGV2ZWxvcGluZyBmb3IgdGhlIApCbGFja0JlcnJ5JnJlZzsgbW9i
+aWxlIHBsYXRmb3JtIHdpdGggc2Vzc2lvbnMsIGxhYnMgJiBtb3JlLgpTZWUgbmV3IHRvb2xzIGFu
+ZCB0ZWNobm9sb2dpZXMuIFJlZ2lzdGVyIGZvciBCbGFja0JlcnJ5JnJlZzsgRGV2Q29uIHRvZGF5
+IQpodHRwOi8vcC5zZi5uZXQvc2Z1L3JpbS1kZXZjb24tY29weTEgCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
+bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
+cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

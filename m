@@ -1,24 +1,25 @@
-From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi/imx: Fix spi-imx when the hardware SPI chipselects are
+From: Fabio Estevam <fabio.estevam@freescale.com>
+Subject: [PATCH v2] spi/imx: Fix spi-imx when the hardware SPI chipselects are
 	used
-Date: Thu, 15 Sep 2011 15:26:49 -0300
-Message-ID: <1316111209-13452-1-git-send-email-fabio.estevam@freescale.com>
+Date: Thu, 15 Sep 2011 15:28:57 -0300
+Message-ID: <1316111337-13485-1-git-send-email-fabio.estevam@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: shawn.guo@freescale.com, grant.likely@secretlab.ca, kernel@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <fabio.estevam@freescale.com>
+To: <spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 commit 22a85e4cd51 (spi/imx: add device tree probe support) broke spi-imx usage
@@ -59,25 +60,29 @@ Fix this issue by using the original chip select logic and make spi-imx to work 
 Tested on a mx31pdk that uses the hardware SPI chipselect pins and also
 on a mx27pdk that uses GPIO as SPI chipselect.
 
-Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
 ---
- drivers/spi/spi-imx.c |    8 +++-----
- 1 files changed, 3 insertions(+), 5 deletions(-)
+Changes since v1:
+- Fix the logic for the internal chip select case and
+keep the usage of of_get_named_gpio for getting the cs_gpio
+
+ drivers/spi/spi-imx.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 8ac6542..7821c48 100644
+index 8ac6542..d917fa3 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -783,12 +783,10 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.master = spi_master_get(master);
+@@ -784,11 +784,13 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
  
  	for (i = 0; i < master->num_chipselect; i++) {
--		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
 -		if (cs_gpio < 0)
--			cs_gpio = mxc_platform_info->chipselect[i];
--		if (cs_gpio < 0)
-+		spi_imx->chipselect[i] = mxc_platform_info->chipselect[i];
-+		if (spi_imx->chipselect[i] < 0)
++		if (cs_gpio < 0) {
+ 			cs_gpio = mxc_platform_info->chipselect[i];
++			spi_imx->chipselect[i] = cs_gpio;
++		}
+ 		if (cs_gpio < 0)
  			continue;
 -		spi_imx->chipselect[i] = cs_gpio;
 +
@@ -86,12 +91,3 @@ index 8ac6542..7821c48 100644
  			while (i > 0) {
 -- 
 1.7.1
-
-
-
-------------------------------------------------------------------------------
-Doing More with Less: The Next Generation Virtual Desktop 
-What are the key obstacles that have prevented many mid-market businesses
-from deploying virtual desktops?   How do next-generation virtual desktops
-provide companies an easier-to-deploy, easier-to-manage and more affordable
-virtual desktop model.http://www.accelacomm.com/jaw/sfnl/114/51426474/

@@ -1,59 +1,43 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v2] spi/imx: Fix spi-imx when the hardware SPI
-	chipselects are used
-Date: Thu, 15 Sep 2011 15:01:46 -0600
-Message-ID: <20110915210146.GH3523@ponder.secretlab.ca>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] spi/imx: Fix spi-imx when the hardware SPI chipselects
+	are used
+Date: Thu, 15 Sep 2011 18:24:46 -0300
+Message-ID: <CAOMZO5DWaP0r=fRvR-VpaRWF1hLm4Cg8FF+etMpGniT8tb5O8g@mail.gmail.com>
 References: <1316111337-13485-1-git-send-email-fabio.estevam@freescale.com>
-	<20110915195243.GH11297@pengutronix.de>
-	<20110915201909.GI11297@pengutronix.de>
+	<20110915210108.GG3523@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Fabio Estevam <fabio.estevam@freescale.com>,
-	spi-devel-general@lists.sourceforge.net, kernel@pengutronix.de,
-	shawn.guo@freescale.com, linux-arm-kernel@lists.infradead.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20110915201909.GI11297@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20110915210108.GG3523-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 15, 2011 at 10:19:09PM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello again,
-> =
-
-> On Thu, Sep 15, 2011 at 09:52:43PM +0200, Uwe Kleine-K=F6nig wrote:
-> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> > index 8ac6542..fa594d6 100644
-> > --- a/drivers/spi/spi-imx.c
-> > +++ b/drivers/spi/spi-imx.c
-> > @@ -786,9 +786,11 @@ static int __devinit spi_imx_probe(struct platform=
-_device *pdev)
-> >  		int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
-> >  		if (cs_gpio < 0)
-> >  			cs_gpio =3D mxc_platform_info->chipselect[i];
-> > +
-> > +		spi_imx->chipselect[i] =3D cs_gpio;
-> >  		if (cs_gpio < 0)
-> >  			continue;
-> > -		spi_imx->chipselect[i] =3D cs_gpio;
-> > +
-> >  		ret =3D gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
-> >  		if (ret) {
-> >  			while (i > 0) {
-> Having said that I wonder how to specify to use an internal chipselect
-> via DT?
-
-It would be done with a blank gpio specifier which is supported by the GPIO=
- binding.
-
-g.
+R3JhbnQsCgpPbiBUaHUsIFNlcCAxNSwgMjAxMSBhdCA2OjAxIFBNLCBHcmFudCBMaWtlbHkgPGdy
+YW50Lmxpa2VseUBzZWNyZXRsYWIuY2E+IHdyb3RlOgouLi4KPiBJdCBsb29rcyBsaWtlIHRoZSBy
+ZW1vdmFsIG9mIHRoaXMgbGluZSB3aWxsIGJyZWFrIERUIHVzZXJzLiDCoFBlcmhhcHMKPiB0aGUg
+c3BpX2lteC0+Y2hpcHNlbGVjdFtpXSBsaW5lIHNob3VsZCBqdXN0IGJlIG1vdmVkIGJlZm9yZSB0
+aGUKPiAnaWYgKGNwX2dwaW8gPCAwKScgbGluZS4KClllcywgdGhpcyBpcyBhZGRyZXNzZWQgaW4g
+djMgbm93LgoKVGhhbmtzLAoKRmFiaW8gRXN0ZXZhbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkRv
+aW5nIE1vcmUgd2l0aCBMZXNzOiBUaGUgTmV4dCBHZW5lcmF0aW9uIFZpcnR1YWwgRGVza3RvcCAK
+V2hhdCBhcmUgdGhlIGtleSBvYnN0YWNsZXMgdGhhdCBoYXZlIHByZXZlbnRlZCBtYW55IG1pZC1t
+YXJrZXQgYnVzaW5lc3Nlcwpmcm9tIGRlcGxveWluZyB2aXJ0dWFsIGRlc2t0b3BzPyAgIEhvdyBk
+byBuZXh0LWdlbmVyYXRpb24gdmlydHVhbCBkZXNrdG9wcwpwcm92aWRlIGNvbXBhbmllcyBhbiBl
+YXNpZXItdG8tZGVwbG95LCBlYXNpZXItdG8tbWFuYWdlIGFuZCBtb3JlIGFmZm9yZGFibGUKdmly
+dHVhbCBkZXNrdG9wIG1vZGVsLmh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0
+LzUxNDI2NDc0LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
+bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,51 +1,64 @@
-From: Service des gagnants <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: Bravo, 12 mois offerts
-Date: Mon, 19 Sep 2011 19:13:42 +0200 (CEST)
-Message-ID: <3236305005.285102.1316452422575@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Stephen Warren <swarren@nvidia.com>
+Subject: RE: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
+	i2c_board_info.
+Date: Mon, 19 Sep 2011 14:59:07 -0700
+Message-ID: <74CDBE0F657A3D45AFBB94109FB122FF04B7321434@HQMAIL01.nvidia.com>
+References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
+	<20110902085620.4ad918c4@endymion.delvare> <4E609F9C.5020403@cam.ac.uk>
+	<20110902112435.69c9e8f7@endymion.delvare>
+	<74CDBE0F657A3D45AFBB94109FB122FF04B327A628@HQMAIL01.nvidia.com>
+	<20110906225708.GA28957@kroah.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+	Andrew Chew <AChew@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+	Jonathan Cameron <jic23@cam.ac.uk>, Ben Dooks <ben-linux@fluff.org>,
+	Jean Delvare <khali@linux-fr.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
+To: Greg KH <greg@kroah.com>
+Return-path: <devel-bounces@linuxdriverproject.org>
+In-Reply-To: <20110906225708.GA28957@kroah.com>
+Content-Language: en-US
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
+	<mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel>
+List-Post: <mailto:devel@linuxdriverproject.org>
+List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
+	<mailto:devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: devel-bounces@linuxdriverproject.org
+Sender: devel-bounces@linuxdriverproject.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
-s par
-                        l'intermediaire de ce raccourci
+Greg KH wrote at Tuesday, September 06, 2011 4:57 PM:
+> On Fri, Sep 02, 2011 at 11:24:04AM -0700, Stephen Warren wrote:
+> > Jean Delvare wrote at Friday, September 02, 2011 3:25 AM:
+...
+> > > > Why not make it platform data for now and 'if' it becomes way more common
+> > > > (probably won't) we can always propose adding as a general field at a later
+> > > > date.
+> > >
+> > > Yes, this sounds like a much more reasonable approach.
+> >
+> > BTW, if that's the direction that's decided, just take the first version
+> > of the patchset I posted, plus Jonathan Cameron's subsequent patch to
+> > modify ak8975 to accept GPIO ID through platform data.
+> 
+> I don't know which patchset that would be, can you please just resend
+> what you want applied so that I know I get the correct one?
 
-    Bonjour,
-    La rentr=E9e est l=E0, il faut en profiter !
+Sorry for the slow response; I was on vacation for the last couple weeks.
+I've now posted an updated version of this patchset, without any of the
+changes for I2C/SPI core/types/...
 
-    Superencontre est heureux d'annoncer les noms des trois personnes
-    choisies au hasard qui recevront les 12 mois offerts !
-    Notre syst=E8me nous indique que votre email figure sur la liste des
-    gagnants :
-
-    1. aurore428-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-    2. spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-    3. marinaPaname-Qt13gs6zZMY@public.gmane.org
-
-    Pour profiter de votre gain :cliquez ici
-    Encore bravo et =E0 bient=F4t !
-
-    Le service gagnants
-    12 mois gratuits sur Superencontre
----------------------------------------------------------------------------=
----
-BlackBerry&reg; DevCon Americas, Oct. 18-20, San Francisco, CA
-Learn about the latest advances in developing for the =
-
-BlackBerry&reg; mobile platform with sessions, labs & more.
-See new tools and technologies. Register for BlackBerry&reg; DevCon today!
-http://p.sf.net/sfu/rim-devcon-copy1 =
+-- 
+nvpublic

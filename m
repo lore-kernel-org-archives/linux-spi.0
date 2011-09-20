@@ -1,64 +1,58 @@
-From: Stephen Warren <swarren@nvidia.com>
-Subject: RE: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
-	i2c_board_info.
-Date: Mon, 19 Sep 2011 14:59:07 -0700
-Message-ID: <74CDBE0F657A3D45AFBB94109FB122FF04B7321434@HQMAIL01.nvidia.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH V3 1/5] i2c: Add irq_gpio field to struct i2c_client,
+ i2c_board_info.
+Date: Mon, 19 Sep 2011 22:16:29 -0600
+Message-ID: <20110920041629.GC30517@ponder.secretlab.ca>
 References: <1314914676-28397-1-git-send-email-swarren@nvidia.com>
-	<20110902085620.4ad918c4@endymion.delvare> <4E609F9C.5020403@cam.ac.uk>
-	<20110902112435.69c9e8f7@endymion.delvare>
-	<74CDBE0F657A3D45AFBB94109FB122FF04B327A628@HQMAIL01.nvidia.com>
-	<20110906225708.GA28957@kroah.com>
+ <20110902085620.4ad918c4@endymion.delvare>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
-	Andrew Chew <AChew@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
-	Jonathan Cameron <jic23@cam.ac.uk>, Ben Dooks <ben-linux@fluff.org>,
-	Jean Delvare <khali@linux-fr.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>
-To: Greg KH <greg@kroah.com>
-Return-path: <devel-bounces@linuxdriverproject.org>
-In-Reply-To: <20110906225708.GA28957@kroah.com>
-Content-Language: en-US
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
-	<mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel>
-List-Post: <mailto:devel@linuxdriverproject.org>
-List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
-	<mailto:devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: devel-bounces@linuxdriverproject.org
-Sender: devel-bounces@linuxdriverproject.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Andrew Chew <achew-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20110902085620.4ad918c4-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Greg KH wrote at Tuesday, September 06, 2011 4:57 PM:
-> On Fri, Sep 02, 2011 at 11:24:04AM -0700, Stephen Warren wrote:
-> > Jean Delvare wrote at Friday, September 02, 2011 3:25 AM:
-...
-> > > > Why not make it platform data for now and 'if' it becomes way more common
-> > > > (probably won't) we can always propose adding as a general field at a later
-> > > > date.
-> > >
-> > > Yes, this sounds like a much more reasonable approach.
-> >
-> > BTW, if that's the direction that's decided, just take the first version
-> > of the patchset I posted, plus Jonathan Cameron's subsequent patch to
-> > modify ak8975 to accept GPIO ID through platform data.
+On Fri, Sep 02, 2011 at 08:56:20AM +0200, Jean Delvare wrote:
+> Stephen,
 > 
-> I don't know which patchset that would be, can you please just resend
-> what you want applied so that I know I get the correct one?
+> Can you please fix your e-mail client / system / whatever so that your
+> patch series are no longer sent duplicated?
+> 
+> On Thu,  1 Sep 2011 16:04:27 -0600, Stephen Warren wrote:
+> > Some devices use a single pin as both an IRQ and a GPIO. In that case,
+> > irq_gpio is the GPIO ID for that pin. Not all drivers use this feature.
+> > Where they do, and the use of this feature is optional, and the system
+> > wishes to disable this feature, this field must be explicitly set to a
+> > defined invalid GPIO ID, such as -1.
+> > 
+> > Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> > ---
+> > v3: Also add the field to i2c_board_info, and copy the field from
+> >     i2c_board_info to i2c_client upon instantiation
+> 
+> I don't get the idea. The i2c core doesn't make any use of the field,
+> and that field will only be used by a few drivers amongst the 420+
+> i2c drivers in the tree. This looks like a waste of memory. What's wrong
+> with including the new field in the private platform or arch data
+> structure for drivers which need it?
 
-Sorry for the slow response; I was on vacation for the last couple weeks.
-I've now posted an updated version of this patchset, without any of the
-changes for I2C/SPI core/types/...
+I have to second the concern; but for a different reason.  This
+shouldn't even remotely be necessary.  If the pin is used as an
+interrupt, then interrupt controller driver (which I would assume is
+also the gpio controller driver) should be responsible for setting up
+the pin so that it can be used correctly as a irq line.  Why does the
+gpio number need to be explicitly passed?
 
--- 
-nvpublic
+g.

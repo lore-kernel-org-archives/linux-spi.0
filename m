@@ -1,46 +1,79 @@
-From: Le Panel de Consommateurs <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Enqu=EAte_r=E9mun=E9r=E9e?=
-Date: Tue, 20 Sep 2011 16:21:45 +0200 (CEST)
-Message-ID: <3236305005.286883.1316528505283@p4enginex1.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH V2 1/6] spi/spi-pl022: Resolve formatting issues
+Date: Tue, 20 Sep 2011 11:17:06 -0600
+Message-ID: <20110920171706.GA7781@ponder.secretlab.ca>
+References: <cover.1312965741.git.viresh.kumar@st.com>
+	<a72e7189be95278b97614fe9ab7d307d422d54e4.1312965741.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: pratyush.anand@st.com, rajeev-dlh.kumar@st.com, bhavna.yadav@st.com,
+	bhupesh.sharma@st.com, armando.visconti@st.com,
+	linus.walleij@linaro.org, jassisinghbrar@gmail.com,
+	vipin.kumar@st.com, shiraz.hashim@st.com, amit.virdi@st.com,
+	vipulkumar.samar@st.com, viresh.linux@gmail.com,
+	deepak.sikri@st.com, spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Viresh Kumar <viresh.kumar@st.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <a72e7189be95278b97614fe9ab7d307d422d54e4.1312965741.git.viresh.kumar@st.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails =
-par
-                        l'intermediaire de ce raccourci
+On Wed, Aug 10, 2011 at 02:20:54PM +0530, Viresh Kumar wrote:
+> There were few formatting related issues in code. This patch fixes them.
+> Fixes include:
+> - Remove extra blank lines
+> - align code to 80 cols
+> - combine several lines to one line
+> - Replace multiple spaces with tabs
+> - Remove spaces before labels
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@st.com>
+> Tested-by: Linus Walleij <linus.walleij@linaro.org>
+> @@ -2243,23 +2233,23 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  	amba_vcore_disable(adev);
+>  	return 0;
+>  
+> - err_spi_register:
+> - err_start_queue:
+> - err_init_queue:
+> +err_spi_register:
+> +err_start_queue:
+> +err_init_queue:
+>  	destroy_queue(pl022);
+>  	pl022_dma_remove(pl022);
+>  	free_irq(adev->irq[0], pl022);
+>  	pm_runtime_disable(&adev->dev);
+> - err_no_irq:
+> +err_no_irq:
+>  	clk_put(pl022->clk);
+> - err_no_clk:
+> +err_no_clk:
+>  	iounmap(pl022->virtbase);
+> - err_no_ioremap:
+> +err_no_ioremap:
+>  	amba_release_regions(adev);
+> - err_no_ioregion:
+> +err_no_ioregion:
+>  	spi_master_put(master);
+> - err_no_master:
+> - err_no_pdata:
+> +err_no_master:
+> +err_no_pdata:
 
-                          Quelconsommateuretesvous.com
-              F=E9licitations !
+These label indentations are actually on purpose.  I'll apply the rest
+of the patch, but I'm going to remove this hunk.  Indenting error
+labels by 1 space makes 'diff' show the function name instead of the
+label in the context line.
 
-      Vous avez =E9t=E9 s=E9lectionn=E9 pour
-     participer =E0 une =E9tude intitul=E9e
-       quelconsommateuretesvous.com        A l'issu de cette enqu*te vous
-       vous permettant de gagner de        pourrez d*couvrir votre profil
-    nombreux lots d'une valeur de 500 =A4             consommateur
-
-      Pour valider votre inscription,
-         r=E9pondez au questionnaire
-    Cela vous prendra environ 5 minutes
-         R*pondez au questionnaire
----------------------------------------------------------------------------=
----
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2dcopy1
+g.

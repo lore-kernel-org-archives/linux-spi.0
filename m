@@ -1,13 +1,22 @@
-From: Piscines Desjoyaux parZabaion <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: Calculez combien peut couter la piscine de vos reves
-Date: Wed, 21 Sep 2011 13:23:39 +0200 (CEST)
-Message-ID: <3236305005.289842.1316604219839@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix builderror in spi-pl022.c
+Date: Wed, 21 Sep 2011 14:10:52 +0100
+Message-ID: <20110921131052.GG17169@n2100.arm.linux.org.uk>
+References: <E1Qvo1q-0000qv-TQ@rmk-PC.arm.linux.org.uk>
+	<1314559619-19923-1-git-send-email-peterhuewe@gmx.de>
+	<CACRpkdb=Bt2j4iMV5NJHmPG8wDi6__CRD6kn_KOoaQ1R6uwrWQ@mail.gmail.com>
+	<CACRpkdbsUMCvBofKjExiB2wCbK9CwpcXr5xmShJ4SHEGAAH4Bw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "Rafael J. Wysocki" <rjw-KKrjLPT3xs0@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-pm-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org, Peter Huewe <peterhuewe-Mmb7MZpHnFY@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdbsUMCvBofKjExiB2wCbK9CwpcXr5xmShJ4SHEGAAH4Bw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,39 +27,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-                                 Advertisement
+On Tue, Sep 20, 2011 at 10:45:41PM +0200, Linus Walleij wrote:
+> On Mon, Sep 5, 2011 at 2:45 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> > On Sun, Aug 28, 2011 at 9:26 PM, Peter Huewe <peterhuewe-Mmb7MZpHnFY@public.gmane.org> wrote:
+> >
+> >> This patch fixes a build error, introduced by commit (67fc8b9f, "PM: add
+> >> runtime PM support to core Primecell driver") which unfortunately was a little
+> >> bit incomplete and did contain a typo (11 instead of 22).
+> >> I'm not sure how this patch could have been tested back then, if it
+> >> doesn't even compile ;)
+> >
+> > Grant can you please apply this patch? Right now linux-next is
+> > breaking because of this missing patch...
+> 
+> Ping on this... ignore if it's been picked already.
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-    Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
-                      par l'intermediaire de ce raccourci
-   Desjoyaux Piscines : bien plus qu'une piscine, un nouvel art de vivre
+Isn't it already fixed?  I've had this in my tree for quite some time
+(since 5th September) which should also be in linux-next.
 
-   Et vous, quelle couleur de piscine =EAtes-vous?
-   Desjoyaux pack led colors
-   Desjoyaux pack led colors
-   * Le pack projecteur =E0 led couleurs. Valeur r=E9elle du pack led color=
-s :
-   650,55*. Offre valable pour tout achat d'une piscine Desjoyaux comprenant
-   un groupe de filtration. Offre valable du 9 septembre 2011 au 15 octobre
-   2011 dans les magasins participants.
-   Offre non cumulable avec d'autres promotions en cours
+b21c57c ARM: 7079/1: spi: Fix builderror in spi-pl022.c
+612f2eb PM: add runtime PM support to MMCI
+67fc8b9 PM: add runtime PM support to core Primecell driver
 
-   Conform=E9ment =E0 la loi "informatique et libert=E9s"du 6 janvier 1978,=
- vous
-   pouvez =E0 tout moment demander =E0 acc=E9der, faire rectifier ou suppri=
-mer les
-   informations personnelles vous concernant ou vous opposer =E0 leur
-   traitement. Vous pouvez joindre notre service clients au 04 77 36 34 90 =
-ou
-   par courrier =E0 Desjoyaux ? La Gouyonni=E8re ? 42480 La Fouillouse
-   =A9 Groupe Desjoyaux
-   Desjoyaux.com | la gamme JD spas | La boutique en ligne | Concessionnair=
-es
-   Desjoyaux
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a
 definitive record of customers, application performance, security
 threats, fraudulent activity and more. Splunk takes this data and makes

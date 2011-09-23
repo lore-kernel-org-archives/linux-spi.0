@@ -1,11 +1,11 @@
-From: 13642347266-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Fri, 23 Sep 2011 06:18:47 +0800
-Message-ID: <E1R6rbc-0001ea-UF@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "P Thomas" <PThomasEBU-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] RE: New Clients
+Date: Thu, 22 Sep 2011 21:07:37 -0700
+Message-ID: <e365cd23fbcab0369ba2ae6b001f012d@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_883077500D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +17,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
-w7eioaqhqsaxtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK27eioarGsaO7CiAgICgyKbnjuObStaGi
-uPfA4Lf+zvHStbeioaqhqsaxtci1yKGjCiAKyOfT0NDo0qqjrLu2063E+tPrztLBqs+1o7ogIAq4
-utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRo
-ZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSBj
-b250YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVy
-Zm9ybWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUu
-IFNwbHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBz
-ZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmst
-ZDJkY29weTEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+This is a multi-part message in MIME format.
+
+------=SPLITOR00A_001_883077500D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Do you want to get your products/ services in front of millions of =
+potential customers?
+
+When you launch an e-mail marketing program with our company, you will =
+have access to powerful tools that can help you grow revenue, find new =
+customers and achieve your online marketing goals=2E
+
+No other form of advertising can offer you as much response for such a low =
+cost=2E
+
+---Attached you will find our FREE info packet!---
+
+Rent our targeted e-mail database - consisting of over 200+ Million =
+Consumers , =09
+45+ Million Businesses, 40+ Million Homeowners & 20K+ Search Filters. =09
+
+   Email Services Includes:
+
+> Creation of E-mail Ad=09
+> Use of Our Databases=09
+> Tracking Results Are Provided=09
+> Send Your Ad Through Our Servers=09
+> Breakup Your Blast Into Multiple Sends=09
+> Use Different Ads Per Blast to Gauge Response=09
+> Consider us your one stop solution!=09
+
+---Attached you will find our FREE info packet!---
+
+Patrick Thomas
+Email Deployment Services
+Call 1 (800) 281-8610 Today!
+
+
+
+
+
+Click This Link to Unsubscribe From Future Messages =09
+<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmnegEbju0hdhLg@public.gmane.org=
+orge.net>
+
+
+------=SPLITOR00A_001_883077500D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security
+threats, fraudulent activity, and more. Splunk takes this data and makes
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2dcopy2
+------=SPLITOR00A_001_883077500D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_883077500D--

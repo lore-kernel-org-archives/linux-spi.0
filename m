@@ -1,10 +1,11 @@
-From: "P Thomas" <PThomasEBU-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] RE: New Clients
-Date: Thu, 22 Sep 2011 21:07:37 -0700
-Message-ID: <e365cd23fbcab0369ba2ae6b001f012d@ymail.com>
+From: BelAir <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: BEL AIR Offre Exclusive sur la collection Automne/Hiver 2011 - 2012
+Date: Fri, 23 Sep 2011 10:51:20 +0200 (CEST)
+Message-ID: <3236305005.297017.1316767880884@p4enginex2.emv2.com>
+Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_883077500D"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,75 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+   Pour visualiser correctement ce message, acc*dez * notre version en ligne
+             Pour *tre s*r(e) de recevoir tous nos emails, ajoutez
+         sophie-Au+jM+4sXUQLJGd9R7c1USnhhQzus1+wK0hWoVG7kpM@public.gmane.org * votre carnet d'adresses
 
-------=SPLITOR00A_001_883077500D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+                         Profitez des Codes "Bienvenue"
+      Valable sur l'ensemble de la Collection Automne / Hiver 2011 - 2012
+ BEL20 : -20* pour 100* d'achat / BEL40 : -40* pour 200* d'achat / BEL80 : -80*
+                               pour 400* d'achat
 
-Do you want to get your products/ services in front of millions of =
-potential customers?
+Sp*ciale Bienvenue sur Bel Air Paris
+Profitez des Codes "bienvenue" - valable sur l'ensemble de la Collection
+Automne Hiver 2011 / 2012
+      [IMG]
+      Code
+      BEL20            - 20*
+                  d*s 100* d'achat
+      [IMG]
+                  [IMG]            Profitez des Codes "bienvenue" - valable sur
+[IMG] Code                         l'ensemble de la Collection Automne Hiver
+      BEL40 [IMG]      - 40*       2011 / 2012
+                  d*s 200* d'achat
+      [IMG]
+                  [IMG]
+      Code
+      BEL80            - 80*
+                  d*s 400* d'achat
+Profitez des Codes "bienvenue" - valable sur l'ensemble de la Collection
+Automne Hiver 2011 / 2012
+                          Rejoignez nous sur Facebook
 
-When you launch an e-mail marketing program with our company, you will =
-have access to powerful tools that can help you grow revenue, find new =
-customers and achieve your online marketing goals=2E
+       Vous recevez cet email car vous avez demand* le suivi des lettres
+                         d'informations Bel Air Paris
+        Pour cesser de recevoir nos emails, rendez-vous sur cette page.
 
-No other form of advertising can offer you as much response for such a low =
-cost=2E
+  Vous souhaitez obtenir plus d'informations sur nos articles ou sur Bel Air
+                                    Paris,
+            cliquez sur service client ou A propos de Bel Air Paris
 
----Attached you will find our FREE info packet!---
-
-Rent our targeted e-mail database - consisting of over 200+ Million =
-Consumers , =09
-45+ Million Businesses, 40+ Million Homeowners & 20K+ Search Filters. =09
-
-   Email Services Includes:
-
-> Creation of E-mail Ad=09
-> Use of Our Databases=09
-> Tracking Results Are Provided=09
-> Send Your Ad Through Our Servers=09
-> Breakup Your Blast Into Multiple Sends=09
-> Use Different Ads Per Blast to Gauge Response=09
-> Consider us your one stop solution!=09
-
----Attached you will find our FREE info packet!---
-
-Patrick Thomas
-Email Deployment Services
-Call 1 (800) 281-8610 Today!
-
-
-
-
-
-Click This Link to Unsubscribe From Future Messages =09
-<mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=3Dspi-devel-general-5NWGOfrQmnegEbju0hdhLg@public.gmane.org=
-orge.net>
-
-
-------=SPLITOR00A_001_883077500D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+  Vous souhaitez obtenir plus d'informations sur nos articles ou sur Bel Air
+                       Paris, cliquez sur service client
+  A propos de Bel Air Paris, leader dans le secteur du pr*t * port* f*minin -
+                          v*tements et accessoires .
+Nous exp*dions chaque jour des milliers de colis. En commandant sur notre site
+                                  internet :
+                             www.belair-paris.fr,
+  vous b*n*ficiez de toutes les garanties de s*rieux, de s*curit* et de prix
+            ainsi que d'un r*el service client * votre disposition.
 ------------------------------------------------------------------------------
 All of the data generated in your IT infrastructure is seriously valuable.
 Why? It contains a definitive record of application performance, security
 threats, fraudulent activity, and more. Splunk takes this data and makes
 sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-d2dcopy2
-------=SPLITOR00A_001_883077500D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_883077500D--

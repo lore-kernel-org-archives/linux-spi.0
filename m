@@ -1,74 +1,53 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: detect wrong transfer->len values
-Date: Fri, 23 Sep 2011 17:32:04 -0600
-Message-ID: <20110923233204.GJ24631@ponder.secretlab.ca>
-References: <1316779158-12578-1-git-send-email-michael.thalmeier@hale.at>
+From: "og" <itchina-w5jB6fWg7S75VFQoXvjmMA@public.gmane.org>
+Subject: [SPAM] ≒内部审计与财务风险管理≒
+Date: Sat, 24 Sep 2011 09:59:54 +0800
+Message-ID: <238EB11ED418159989F823F4FF21C109@ddsen>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Michael Thalmeier <michael.thalmeier@hale.at>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1316779158-12578-1-git-send-email-michael.thalmeier@hale.at>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_05F1_019047E6.100A3750"
+To: <spchr-KN7UnAbNpbg@public.gmane.org>, <sphunt-/ercUPi9s3hBDgjK7y7TUQ@public.gmane.org>, <spice-XBySfICj7OfQT0dZR+AlfA@public.gmane.org>,
+	<spiceyang-Xb2Y1Dfb9CI@public.gmane.org>, <spicdl-9Onoh4P/yGk@public.gmane.org>, <spetrozza-jwbjtHdT7zGvtWMKqPWiAg@public.gmane.org>,
+	<spider_woman_17-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>, <spi-devel-general@lists
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 23, 2011 at 01:59:18PM +0200, Michael Thalmeier wrote:
-> From: Helmut Raiger <helmut.raiger@hale.at>
-> 
-> 
-> Signed-off-by: Michael Thalmeier <michael.thalmeier@hale.at>
-> ---
->  drivers/spi/spi.c |   12 +++++++++++-
->  1 files changed, 11 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 4d1b9f5..70adac3 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -760,6 +760,17 @@ EXPORT_SYMBOL_GPL(spi_setup);
->  static int __spi_async(struct spi_device *spi, struct spi_message *message)
->  {
->  	struct spi_master *master = spi->master;
-> +	struct spi_transfer *xfer;
-> +
-> +	/* check if number of bytes relates to bits per word mode */
-> +	list_for_each_entry(xfer, &message->transfers, transfer_list) {
-> +		u8 bpw = xfer->bits_per_word ?
-> +				xfer->bits_per_word : spi->bits_per_word;
-> +
-> +		if ((bpw == 16 && (xfer->len & 1)) ||
-> +			(bpw == 32 && (xfer->len & 3)))
-> +			return -EINVAL;
-> +	}
+This is a multi-part message in MIME format.
 
-Rather than turning this into a hard fail; you should make it a
-WARN_ONCE().  I wouldn't be surprised if a lot of drivers have the bad
-behaviour, and applying this patch could have far reaching
-consequences, including boards failing to boot.
+------=_NextPart_000_05F1_019047E6.100A3750
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-g.
 
->  
->  	/* Half-duplex links include original MicroWire, and ones with
->  	 * only one data pin like SPI_3WIRE (switches direction) or where
-> @@ -768,7 +779,6 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->  	 */
->  	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
->  			|| (spi->mode & SPI_3WIRE)) {
-> -		struct spi_transfer *xfer;
+------=_NextPart_000_05F1_019047E6.100A3750
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Unrelated change?
+------------------------------------------------------------------------------
+All of the data generated in your IT infrastructure is seriously valuable.
+Why? It contains a definitive record of application performance, security
+threats, fraudulent activity, and more. Splunk takes this data and makes
+sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-d2dcopy2
+------=_NextPart_000_05F1_019047E6.100A3750
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
->  		unsigned flags = master->flags;
->  
->  		list_for_each_entry(xfer, &message->transfers, transfer_list) {
-> -- 
-> 1.7.6.2
-> 
-> 
-> 
-> --
-> Scanned by MailScanner.
-> 
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_05F1_019047E6.100A3750--

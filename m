@@ -1,12 +1,11 @@
-From: qbuevh Moderator <qbuevh-owner-hHKSG33TihhbjbujkaE4pw@public.gmane.org>
-Subject: Welcome to the qbuevh group
-Date: 28 Sep 2011 06:09:15 -0000
-Message-ID: <1317190155.331.14289.w3@yahoogroups.com>
-Reply-To: qbuevh-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org
+From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: =?utf-8?B?0KHQvtCx0LXRgGXQvCDQtNC70Y8g0JLQsNGBINC/byBjZdGC0Lgg0LjQvdGC0LVw0L3QtdGCINCxYdC30YMg0LRh0L3QvdGL0YUg0L9v0YLQtdC90YbQuNCw0LvRjNC90Yt4INC60LvQuNC10L3RgtC+0LIg0LTQu9GPIELQsNGIZdCz0L4g0JHQuNC30L3QtWPQsCAo0L3QsNC30LJh0L3QuGUg0YLQtdC70LXRhNC+0L0g0YTQsGvRgSBlLW1haWwg0LjQvGXQvWEgcNC+0LTQsCDQtNC10Y/RgtC10LvRjNC9b9GB0YLQuCDRgtC+0LLQsNGA0YsgedGB0Lt50LPQuCDQuNGC0LQpINCj0LfQvWHRgtGMINC/b9C00YDQvtCx0L1l0LUgQtGLINC80L7QtmXRgtC1INC/byBFbWFpbDogcHJvZGF3ZXpAbWl4bWFpbC5jb20=?=
+Date: Sat, 24 Sep 2011 07:50:32 +0700 (WIT)
+Message-ID: <20110924005034.0A6AA1C33E97@server-09.grdc.esdm.go.id.local>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,62 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Hello,
-
-I've added you to my qbuevh group at Yahoo! Groups, a free, 
-easy-to-use service. Yahoo! Groups makes it easy to send and receive
-group messages, coordinate events, share photos and files, and more.
-
-
-Description of the group:
-------------------------------------------------------------------------
-w5703v7cnp8ck126h 
-
-Complete your Yahoo! Groups account:
-----------------------------------------------------------------------
-Your email address has been added to the email list of a Yahoo! Group.
-To gain access to all of your group's web features (previous messages,
-photos, files, calendar, etc.) and easier control of your message
-delivery options, we highly recommend that you complete your account
-by connecting your email address to a Yahoo account. It is easy and free.
-Please visit:
-http://groups.yahoo.com/convacct?email=spi-devel-general%40lists.sourceforge.net&list=qbuevh
-
-Important information about the qbuevh group
-------------------------------------------------------------------------
-* To send a message to the members of this group, send an email to:
-  qbuevh-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
-  
-* To leave the group, you can unsubscribe by replying to this message,
-  or by sending an email to:
-  qbuevh-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
-
-Regards,
-
-Moderator, qbuevh 
-
-Report abuse:
-------------------------------------------------------------------------
-Because Yahoo! Groups values your privacy, it is a violation of our 
-service rules for moderators to add subscribers to a group against
-their wishes. If you feel this has happened, please notify us:
-http://help.yahoo.com/l/us/yahoo/groups/original/members/forms/abuse.html 
-
-You may also change your email preferences to prevent group owners from
-adding you to their groups. To do so, please go here:
-http://groups.yahoo.com/s?tag=fzAuffCql6mzDekJ89oj8Gpq-eIVX2aM5NK2gjaKASpuXGMSDBfcX0lkfA8eEHJNevAoqN_R8_Lvb4b8bJ0Z2CH-TdVNPbU-xO1f5dKHKw
-
-Your use of Yahoo! Groups is subject to:
-http://docs.yahoo.com/info/terms/
- 
-
-
-
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2dcopy1
+0e7h5fBl7CDk6/8gwuDxIO9vIGNl8ugg6O3y5XDt5fIg4WHn8yDkYe3t+/UgCu9v8uXt9ujg6/zt
++3gg6uvo5e3y7uIg5Ov/IELg+GXj7iDB6Oft5WPgIAoo7eDn4mHt6GUg8uXr5fTu7SD04GvxIGUt
+bWFpbCDo7GXtYSBw7uTgIOTl//Ll6/ztb/Hy6CDy7uLg8PsgefHreePoIOjy5CkgCtPn7WHy/CDv
+b+Tw7uHtZeUgQvsg7O7mZfLlIO9vIApFbWFpbDogcHJvZGF3ZXpAbWl4bWFpbC5jb20gCgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4g
+eW91ciBJVCBpbmZyYXN0cnVjdHVyZSBjb250YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1
+c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVk
+dWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2Vz
+CnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0
+cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJkY29weTEKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

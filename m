@@ -1,12 +1,17 @@
-From: "Golf Vacations" <golfvaca-nowatch-atinT6P9Z8heoWH0uzbU5w@public.gmane.org>
-Subject: Special Packages for Reynolds Plantation
-Date: Mon, 26 Sep 2011 08:22:14 -0700
-Message-ID: <ebd5c5948ed0c93301f8d0ba00166180@ymail.net>
+From: =?utf-8?B?5L+d6K+B5pyJ5Lmw5a625Zue5aSN?= <admin-ii1NoeAH1A4@public.gmane.org>
+Subject: [SPAM] =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuivmnIDmlrDlub/kuqTkvJrkubDlrrbjgIHmtbc=?=
+	关数据,B2B询盘买家500万。
+Date: Mon, 26 Sep 2011 17:44:21 +0000 (UTC)
+Message-ID: <20120927013451855231@hs-s.net>
+Reply-To: 1339625218-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_1182746828D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spellsec-YDxpq3io04c@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<spiffymonkey91-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>, <spincyclemobile-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>,
+	<spion1000-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>, <spiritlaughing15-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>, <spivals@
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Thu, 27 Sep 2012 01:34:40 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,41 +22,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------=SPLITOR00A_001_1182746828D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-99 Ways To Get Away To REYNOLDS PLANTATION=20
-
-Traditions Getaway  - Ultimate Test Drive Package - Family Retreat - Golfing
-
-*** View the attached form to our $99 packages !***
-
-
-------=SPLITOR00A_001_1182746828D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2dcopy1
-------=SPLITOR00A_001_1182746828D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_1182746828D--
+576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrbjgIHlsZXk
+vJrkubDlrrbjgIHmtbflhbPmlbDmja4sQjJC6K+i55uY5Lmw5a62NTAw5LiH44CCDQoNCuS4gOWF
+sTjkuKrljIUo5pWw5o2u5piv5YWo6KGM5Lia55qE77yM5oyJ54Wn6KGM5Lia5YiG5aW957G777yM
+5bm25LiU5Y+v5Lul5oyJ54Wn5YWz6ZSu6K+N5p+l6K+i55qEKe+8miANCjHvvIwyMDEx5pil5a2j
+MTA55bGK5bm/5Lqk5Lya5Lmw5a625pWw5o2u5bqT5paw6bKc5Ye654KJ77yM6LaF57qn5paw6bKc
+5Lmw5a6277yM5paw6bKc5pWw5o2u77yM5a655piT5oiQ5Y2V77yBIA0KMu+8jOacgOaWsOWFqOeQ
+g+S5sOWutuW6kyzlhbE0NTE2NjDmnaHmlbDmja7jgIIgDQoz77yMMjAwOOW5tCwyMDA55bm0LDIw
+MTDlubQg5pil5a2jK+eni+Wto+W5v+S6pOS8muS5sOWutuWQjeW9le+8jDEwMyAxMDQgMTA1IDEw
+NiAxMDcgMTA4IOWFseWFreWxiiDlhbExMjAuNuS4h+aVsOaNruOAgg0KNO+8jDIwMTDlubTlm73p
+mYXkv4PplIDljY/kvJrvvIhQUEFJ77yJ5oiQ5ZGY5ZCN5Y2VIFBQQUkgTWVtYmVycyBEaXJlY3Rv
+cnnvvIzpnZ7luLjph43opoHnmoTlpKfkubDlrrbjgIINCjXvvIwyMDEw5bm05Yiw6aaZ5riv6YeH
+6LSt55qE5Zu95aSW5a6i5Lq65ZCN5b2VKOmmmea4r+i0uOWPkeWxgOaPkOS+mynvvIzlhbE3LjLk
+uIfmlbDmja7vvIzotoXnuqfph43opoHnmoTkubDlrrbjgIINCjbvvIw2MC445LiH5p2h5pyA5paw
+5Zu95aSWQjJC5Lmw5a626K+i55uY44CCDQo377yMMjAwOeW5tOa1t+WFs+aPkOWNleaVsOaNrnBp
+ZXJz54mI5pWw5o2uIDHljYPkuIfjgIINCjjvvIznvqTlj5Hova/ku7bvvIznvqTlj5Hova/ku7bn
+moTpg6jnvbLkuI7lronoo4XjgIINCg0K5YWxIDUwMOS4h+S4quS5sOWutu+8jOavj+S4quWdh+ac
+iUVtYWlsLiANCg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/l
+pKnpg73mnInkubDlrrblm57lpI3jgIINCg0K6KaB55qE5oqT57Sn6IGU57O7UVE6IDEzMzk2MjUy
+MTggICDmiJbogIXnq4vljbPlm57lpI3pgq7nrrE6IDEzMzk2MjUyMThAcXEuY29tDQropoHnmoTm
+ipPntKfogZTns7tRUTogMTMzOTYyNTIxOCAgIOaIluiAheeri+WNs+WbnuWkjemCrueusTogMTMz
+OTYyNTIxOEBxcS5jb20NCuimgeeahOaKk+e0p+iBlOezu1FROiAxMzM5NjI1MjE4ICAg5oiW6ICF
+56uL5Y2z5Zue5aSN6YKu566xOiAxMzM5NjI1MjE4QHFxLmNvbQ0KDQoNCuivmuS/oeS4uuacrO+8
+jOWmguaenOS4jeS/oeS7u+acrOS6uizlj6/ku6XotbDmt5jlrp3kuqTmmJMs5pS26LSn6aqM6K+B
+5ZCO5YaN5LuY5qy+LOi/meaYr+WvueaCqOacgOWlveeahOS/nemanOS6huOAgiANCg0K5L+d6K+B
+5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57l
+pI3jgIINCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0KDQoNCg0KDQrlub/kuqTk
+vJrkubDlrrbmjInkuqflk4HnsbvliKvliIbnsbvvvIzliIbkuLrku6XkuIvlh6DnsbvvvJoNCjEg
+5Yqe5YWs6K6+5aSHDQoyIOe8lue7h+WPiuiXpOmTgeW3peiJuuWTgQ0KMyDnjrvnkoMNCjQg6aSQ
+5Y6o55So5YW3DQo1IOi9pui+hg0KNiDlpKflnovmnLrmorDlj4rorr7lpIcNCjcg55S15a2Q55S1
+5rCUDQo4IOeUteWtkOa2iOi0ueWTgQ0KOSDnurrnu4cNCjEwIOacjeijhQ0KMTEg5Liq5Lq65oqk
+55CGDQoxMiDlt6XnqIvmnLrmorANCjEzIOW3peWFtw0KMTQg5YyW5belDQoxNSDorqHnrpfmnLrl
+j4rpgJrorq8NCjE2IOWutuWxheeUqOWTgQ0KMTcg5a625bGF6KOF6aWwDQoxOCDlrrblhbcNCjE5
+IOWutueUqOeUteWZqA0KMjAg5bu6562R5Y+K6KOF6aWw5p2Q5paZDQoyMSDoioLml6XnlKjlk4EN
+CjIyIOekvOWTgeWPiui1oOWTgQ0KMjMg5pGp5omY6L2mDQoyNCDmsb3ovabphY3ku7YNCjI1IOmj
+n+WTgQ0KMjYg6Zm255O3DQoyNyDpk4Hnn7MNCjI4IOeOqeWFtw0KMjkg5Y2r5rW0DQozMCDkupTp
+h5ENCjMxIOWwj+Wei+acuuaisA0KMzIg6Z6LDQozMyDkvJHpl7LnlKjlk4ENCjM0IOWMu+eWlw0K
+MzUg5rW05a6k5Lqn5ZOBDQozNiDlm63mnpcNCjM3IOeFp+aYjuS6p+WTgQ0KMzgg6ZKf6KGo55y8
+6ZWcDQozOSDoh6rooYzovaYNCjQwIOWMhQ0KDQoNCuS/neivgeavj+WkqemDveacieS5sOWutuWb
+nuWkjeOAgg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnp
+g73mnInkubDlrrblm57lpI3jgIINCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K
+5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+QWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVj
+dHVyZSBjb250YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGljYXRp
+b24gcGVyZm9ybWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5k
+IG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNp
+bmVzcyBzZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9z
+cGx1bmstZDJkY29weTEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

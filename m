@@ -1,13 +1,15 @@
-From: Photos Gratuites par zabaion <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Exclu_rentr=E9e_:_Recevez_vos_50_tirages_pour_0_euro_?=
-Date: Sun, 25 Sep 2011 09:53:07 +0200 (CEST)
-Message-ID: <3236305005.298262.1316937187918@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Michael Thalmeier <michael.thalmeier-UFQbV3CfTj8@public.gmane.org>
+Subject: [PATCH v2] spi: detect wrong transfer->len values
+Date: Mon, 26 Sep 2011 10:55:18 +0200
+Message-ID: <1317027318-4889-1-git-send-email-michael.thalmeier@hale.at>
+References: <20110923233204.GJ24631@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20110923233204.GJ24631-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,38 +20,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-           Recevez 50 Tirages Photo Gratuits - Inscrivez-vous vite !
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-                   zabaion vous a selectionn=E9 pour recevoir :
-                                50 Tirages photo
-       Cr=E9ez votre compte en 5 secondes.      PHOTO
-       T=E9l=E9chargez vos 50 photos              Format 10x15 - Garantie de
-       pr=E9f=E9r=E9es.                             qualit=C3=A9 HP - Papie=
-r qualit=C3=A9
-       Impressions en 24h                     PREMIUM
-       Livraison =E0 domicile.
-       Partagez vos photos avec vos
-       proches.
-           Cr=E9ez votre compte
-             d=E8s maintenant
-      Offre valable jusqu'au 30 Septembre
-      50 PHOTOS
-        Faites confiance au N=BA1 mondial de la photo num=E9rique en ligne !
-   snapfish by HP Offre r=E9serv=E9e aux nouveaux clients en France
-                  m=E9tropolitaine et Monaco, valable une seule fois sur le
-                  format 10x15, hors frais de port, jusqu'au 30/09/11 inclu=
-s.
-                  Les tirages sont cr=E9dit=E9s sur le compte au t=E9l=E9ch=
-argement
-                  de la premi=E8re photo, puis valables 60 jours.
-    Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de ma=
-ils
-                      par l'intermediaire de ce raccourci
----------------------------------------------------------------------------=
+From: Helmut Raiger <helmut.raiger-UFQbV3CfTj8@public.gmane.org>
+
+Instead of returning an error, which could have unknown consequences for
+different drivers, just use dev_WARN_ONCE to output a warning.
+
+Signed-off-by: Michael Thalmeier <michael.thalmeier-UFQbV3CfTj8@public.gmane.org>
 ---
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security
-threats, fraudulent activity, and more. Splunk takes this data and makes
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2dcopy2
+ drivers/spi/spi.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4d1b9f5..49f6666 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -760,6 +760,20 @@ EXPORT_SYMBOL_GPL(spi_setup);
+ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_master *master = spi->master;
++	struct spi_transfer *xfer;
++
++	/* check if number of bytes relates to bits per word mode */
++	list_for_each_entry(xfer, &message->transfers, transfer_list) {
++		u8 bpw = xfer->bits_per_word ?
++				xfer->bits_per_word : spi->bits_per_word;
++
++		dev_WARN_ONCE(&spi->dev,
++				((bpw == 16 && (xfer->len & 1)) ||
++				(bpw == 32 && (xfer->len & 3))),
++				"incorrect number of bytes detected: "
++				"bpw=%u xfer->len=%u", bpw, xfer->len);
++
++	}
+ 
+ 	/* Half-duplex links include original MicroWire, and ones with
+ 	 * only one data pin like SPI_3WIRE (switches direction) or where
+@@ -768,7 +782,6 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+ 	 */
+ 	if ((master->flags & SPI_MASTER_HALF_DUPLEX)
+ 			|| (spi->mode & SPI_3WIRE)) {
+-		struct spi_transfer *xfer;
+ 		unsigned flags = master->flags;
+ 
+ 		list_for_each_entry(xfer, &message->transfers, transfer_list) {
+-- 
+1.7.6.2
+
+
+
+--
+Scanned by MailScanner.
+
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure contains a
+definitive record of customers, application performance, security
+threats, fraudulent activity and more. Splunk takes this data and makes
+sense of it. Business sense. IT sense. Common sense.
+http://p.sf.net/sfu/splunk-d2dcopy1

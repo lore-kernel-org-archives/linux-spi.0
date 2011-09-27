@@ -1,16 +1,17 @@
-From: =?utf-8?B?5LuFMTDlhYPmr4/lpKk=?= <admin-qw4+Yg8ztLHFmrvas/0qC7VCufUGDwFn@public.gmane.org>
-Subject: [SPAM] *****SPAM***** =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrY=?=
+From: =?utf-8?B?5LuFMTDlhYPmr4/lpKk=?= <root-ZBlv8BrqZc/k1uMJSBkQmQ@public.gmane.org>
+Subject: [SPAM] =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrY=?=
 	、海关数据,B2B询盘买家500万。
-Date: Tue, 27 Sep 2011 15:48:02 +0000 (UTC)
-Message-ID: <3601B663B29FEF45D8F88120B0282887@lrcwaunm>
+Date: Tue, 27 Sep 2011 18:59:58 +0000 (UTC)
+Message-ID: <20120928030020327003@inetview.net>
+Reply-To: 1339625218-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----------=_4E81BF68.43731799"
-To: <specializedequipment-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <spices-RuTGJwh49Ls+Va1GwOuvDg@public.gmane.org>,
-	<spid223-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>, <spiderfittings-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <spiero-UJ1721UooWLQT0dZR+AlfA@public.gmane.org>,
-	<spike
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <speedharris-YDxpq3io04c@public.gmane.org>, <spencer12345-uAjRD0nVeow@public.gmane.org>, <sperry-6a2N537RU4LQT0dZR+AlfA@public.gmane.org>,
+	<sph02-RuTGJwh49Ls+Va1GwOuvDg@public.gmane.org>, <spicy.justinmathew-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<spiegel-y0SuaQ+Y2/RWk0Htik3J/w@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5urNAH6kLmebB@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Thu, 27 Sep 2012 15:17:31 +0800
+Date: Fri, 28 Sep 2012 03:00:15 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,71 +22,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------------=_4E81BF68.43731799
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Spam detection software, running on the system "DiskStation", has
-identified this incoming email as possible spam.  The original message
-has been attached to this so you can view it (if it isn't spam) or label
-similar future email.  If you have any questions, see
-admin for details.
-
-Content preview:  =E7=BE=A4=E5=8F=91=E8=BD=AF=E4=BB=B6+109=E5=B1=8A=E5=B9=
-=BF=E4=BA=A4=E4=BC=9A=E4=B9=B0=E5=AE=B6=E3=80=81=E6=B5=B7=E5=85=B3=E6=95=B0=
-=E6=8D=AE=E3=80=81=E6=90=9C=E7=B4=A2=E5=BC=95=E6=93=8E=E4=B9=B0=E5=AE=B6,=
-B2B=E8=AF=A2=E7=9B=98=E4=B9=B0=E5=AE=B6=E5=85=B1500=E4=B8=87,=E4=BB=8510=E5=
-=85=83=E6=AF=8F=E5=A4=A9=E3=80=82
-   =E7=BE=A4=E5=8F=91=E8=BD=AF=E4=BB=B6+109=E5=B1=8A=E5=B9=BF=E4=BA=A4=E4=
-=BC=9A=E4=B9=B0=E5=AE=B6=E3=80=81=E6=B5=B7=E5=85=B3=E6=95=B0=E6=8D=AE=E3=80=
-=81=E6=90=9C=E7=B4=A2=E5=BC=95=E6=93=8E=E4=B9=B0=E5=AE=B6,B2B=E8=AF=A2=E7=
-=9B=98=E4=B9=B0=E5=AE=B6=E5=85=B1500=E4=B8=87,=E4=BB=8510=E5=85=83=E6=AF=8F=
-=E5=A4=A9=E3=80=82
-   =E4=BF=9D=E8=AF=81=E6=AF=8F=E5=A4=A9=E9=83=BD=E6=9C=89=E4=B9=B0=E5=AE=B6=
-=E5=9B=9E=E5=A4=8D=E3=80=82 =E4=BF=9D=E8=AF=81=E6=AF=8F=E5=A4=A9=E9=83=BD=
-=E6=9C=89=E4=B9=B0=E5=AE=B6=E5=9B=9E=E5=A4=8D=E3=80=82 =E4=BF=9D=E8=AF=81=
-=E6=AF=8F=E5=A4=A9=E9=83=BD=E6=9C=89=E4=B9=B0=E5=AE=B6=E5=9B=9E=E5=A4=8D=E3=
-=80=82
-   [...]=20
-
-Content analysis details:   (5.8 points, 5.0 required)
-
- pts rule name              description
----- ---------------------- ---------------------------------------------=
------
--1.4 ALL_TRUSTED            Passed through trusted hosts only via SMTP
- 3.9 DATE_IN_FUTURE_96_XX   Date: is 96 hours or more after Received: dat=
-e
- 3.2 SUSPICIOUS_RECIPS      Similar addresses in recipient list
- 0.0 MIME_BASE64_BLANKS     RAW: Extra blank lines in base64 encoding
- 0.1 AWL                    AWL: From: address is in the auto white-list
-
-
-
-------------=_4E81BF68.43731799
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2dcopy1
-------------=_4E81BF68.43731799
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------------=_4E81BF68.43731799--
+576k5Y+R6L2v5Lu2KzEwOeWxiuW5v+S6pOS8muS5sOWutuOAgea1t+WFs+aVsOaNruOAgeaQnOe0
+ouW8leaTjuS5sOWutixCMkLor6Lnm5jkubDlrrblhbE1MDDkuIcs5LuFMTDlhYPmr4/lpKnjgIIg
+DQrnvqTlj5Hova/ku7YrMTA55bGK5bm/5Lqk5Lya5Lmw5a6244CB5rW35YWz5pWw5o2u44CB5pCc
+57Si5byV5pOO5Lmw5a62LEIyQuivouebmOS5sOWutuWFsTUwMOS4hyzku4UxMOWFg+avj+WkqeOA
+giANCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K5L+d6K+B5q+P5aSp6YO95pyJ
+5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57lpI3jgIINCg0KMeOA
+gee+pOWPkei9r+S7tu+8miDmk43kvZznroDljZXvvIzlip/og73lvLrlpKfvvIzmqKHku7/kurrl
+t6Xmk43kvZzmqKHlvI/vvIzliLDovr7njofpq5jvvIzml6Xlj5HpgIE15LiH5bCB5Lul5LiK44CC
+IA0KMuOAgTUwMOS4h+S5sOWutui1hOa6kO+8miDotaDpgIHnmoQ1MDDkuIfkubDlrrbotYTmupDl
+upPvvIzmm7TmlrAgKOWPr+S7peaMieeFp+aCqOeahOS6p+WTgeaPkOWPluWHuuadpe+8jOabtOey
+vuWHhuW8gOWPkSnjgIIgDQoz44CB6LaF57qn5rW35aSW5Lmw5a62RW1haWzmkJzntKLmnLrvvJog
+5YaF572u5LqGNjAw5LiH6KGM5Lia5YWz6ZSu6K+N77yM5qC55o2u6ZW/5bC+6K+N5pCc57Si77yM
+57uT5p6c5pu057K+56Gu5Yy56YWN77yb5q+P5aSp6IO95pCc57SiMS0y5LiH5Lul5LiK5Lmw5a62
+55yf5a6eRU1BSUzvvIzmiJDljZXnjofpq5jjgIIgDQogDQoNCuimgeeahOaKk+e0p+iBlOezu1FR
+OiAxMzM5NjI1MjE4ICAg5oiW6ICF56uL5Y2z5Zue5aSN6YKu566xOiAxMzM5NjI1MjE4QHFxLmNv
+bQ0K6KaB55qE5oqT57Sn6IGU57O7UVE6IDEzMzk2MjUyMTggICDmiJbogIXnq4vljbPlm57lpI3p
+gq7nrrE6IDEzMzk2MjUyMThAcXEuY29tDQropoHnmoTmipPntKfogZTns7tRUTogMTMzOTYyNTIx
+OCAgIOaIluiAheeri+WNs+WbnuWkjemCrueusTogMTMzOTYyNTIxOEBxcS5jb20NCiANCuWFjei0
+uei1oOmAgToNCuS4gOWFsTjkuKrljIUo5pWw5o2u5piv5YWo6KGM5Lia55qE77yM5oyJ54Wn6KGM
+5Lia5YiG5aW957G777yM5bm25LiU5Y+v5Lul5oyJ54Wn5YWz6ZSu6K+N5p+l6K+i55qEKe+8miAN
+CjHvvIwyMDEx5pil5a2jMTA55bGK5bm/5Lqk5Lya5Lmw5a62546w5Zy66K+i55uY5pWw5o2u5bqT
+5paw6bKc5Ye654KJ77yM6LaF57qn5paw6bKc5Lmw5a6277yM5paw6bKc5pWw5o2u77yM5a655piT
+5oiQ5Y2V77yBIA0KMu+8jOi0reS5sOWQjuWPr+S7peWFjei0ueabtOaWsDIwMTHnp4vlraPlub/k
+uqTkvJorMjAxMuaYpeWto+W5v+S6pOS8muS5sOWutuaVsOaNruOAguWkqui2heWAvOS6huOAgg0K
+M++8jOacgOaWsOWFqOeQg+S5sOWutuW6kyzlhbE0NTE2NjDmnaHmlbDmja7jgIIgKOacgOaWsOab
+tOaWsOaXpeacnyAyMDExLTA1LTE25pelKQ0KNO+8jDIwMDjlubQsMjAwOeW5tCwyMDEw5bm0IOaY
+peWtoyvnp4vlraPlub/kuqTkvJrkubDlrrblkI3lvZXvvIwxMDMgMTA0IDEwNSAxMDYgMTA3IDEw
+OCDlhbHlha3lsYog5YWxMTIwLjbkuIfmlbDmja7jgIINCjXvvIwyMDEw5bm05Zu96ZmF5L+D6ZSA
+5Y2P5Lya77yIUFBBSe+8ieaIkOWRmOWQjeWNlSBQUEFJIE1lbWJlcnMgRGlyZWN0b3J577yM6Z2e
+5bi46YeN6KaB55qE5aSn5Lmw5a6244CCDQo277yMMjAxMOW5tOWIsOmmmea4r+mHh+i0reeahOWb
+veWkluWuouS6uuWQjeW9lSjpppnmuK/otLjlj5HlsYDmj5Dkvpsp77yM5YWxNy4y5LiH5pWw5o2u
+77yM6LaF57qn6YeN6KaB55qE5Lmw5a6244CCDQo377yMNDguNjjkuIfmnaHmnIDmlrDkubDlrrbo
+r6Lnm5jvvIzotK3kubDlkI7mr4/mnIjmm7TmlrAgMS0y5LiH5p2h77yM5YyF5ousMumDqOWIhu+8
+jDHvvIzmnIDmlrDnmoTor6Lnm5ggMu+8jOacgOaWsOeahOWxleS8muS5sOWutuOAguWFjei0ueab
+tOaWsDM25Liq5pyI44CCDQo477yMMjAwOeW5tOa1t+WFs+aPkOWNleaVsOaNrnBpZXJz54mI5pWw
+5o2uIDHljYPkuIfjgIINCg0KDQror5rkv6HkuLrmnKzvvIzmlK/mjIHmlK/ku5jlrp3mi4Xkv53k
+uqTmmJMgKOWFiOWPkei0p+W5tuWuieijheiuvue9rue+pOWPkei9r+S7tu+8jOeEtuWQjuS7mOas
+vikg5b275bqV5omT5raI5oKo55qEIOmhvuiZkeOAgg0KDQogDQoNCg0KIA0KDQrnsr7lh4bmlbDm
+ja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bm
+lbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7l
+h4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBk
+YXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSBjb250
+YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9y
+bWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUuIFNw
+bHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5z
+ZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJk
+Y29weTEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
+LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
+cGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,12 +1,12 @@
-From: =?iso-8859-15?Q?Imp=F4ts_2012?= <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Exclusivit=E9,_l'immobilier_=E0_petit_prix?=
-Date: Tue, 27 Sep 2011 14:38:16 +0200 (CEST)
-Message-ID: <3236305005.307037.1317127096359@p4enginex1.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: MyMutuelle par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Hallucinant ! Seulement 6.81 euros par mois
+Date: Tue, 27 Sep 2011 15:51:26 +0200
+Message-ID: <1317131486.4e81d4de84fb8@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
-s par
-                        l'intermediaire de ce raccourci
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-    Reflexe Patrimoine, zero euro pendant 9 ou 15 ans, zero euro d apport
-    Plus que quelque moi pour devenir proprietaire, actable 2011
-    Decouvrez en exclusivit=C3=A9 nos programmes Paris IDF Grand Nord Rhones
-    Alpes PACA - Important le BBC va chuter de 22 a 16 pour cent en 2012
-    Si vous payez plus de 2500, obtenez une etude personnalisee
-    Grace a la nouvelle loi scellier, devenez proprietaire, constituez vous
-    un patrimoine, pr=C3=A9parez votre retraite
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTE5MzImYz0yMTkwMDMwMyZkPT=
+IwMTEtMDktMjcgMTU6NDA6MDEmZT0xJmY9MTkzMiZnPTE5MzImaD0xOTMy
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTE5MzImY=
+z0yMTkwMDMwMyZkPTIwMTEtMDktMjcgMTU6NDA6MDEmZT0xJmY9MTkzMiZnPTE5MzImaD0xOTMy
+
+
 ---------------------------------------------------------------------------=
 ---
 All the data continuously generated in your IT infrastructure contains a

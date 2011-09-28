@@ -1,17 +1,13 @@
-From: =?utf-8?B?5LuFMTDlhYPmr4/lpKk=?= <root-ZBlv8BrqZc/k1uMJSBkQmQ@public.gmane.org>
-Subject: [SPAM] =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrY=?=
-	、海关数据,B2B询盘买家500万。
-Date: Tue, 27 Sep 2011 18:59:58 +0000 (UTC)
-Message-ID: <20120928030020327003@inetview.net>
-Reply-To: 1339625218-9uewiaClKEY@public.gmane.org
+From: qbuevh Moderator <qbuevh-owner-hHKSG33TihhbjbujkaE4pw@public.gmane.org>
+Subject: Welcome to the qbuevh group
+Date: 28 Sep 2011 06:09:15 -0000
+Message-ID: <1317190155.331.14289.w3@yahoogroups.com>
+Reply-To: qbuevh-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <speedharris-YDxpq3io04c@public.gmane.org>, <spencer12345-uAjRD0nVeow@public.gmane.org>, <sperry-6a2N537RU4LQT0dZR+AlfA@public.gmane.org>,
-	<sph02-RuTGJwh49Ls+Va1GwOuvDg@public.gmane.org>, <spicy.justinmathew-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<spiegel-y0SuaQ+Y2/RWk0Htik3J/w@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5urNAH6kLmebB@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Fri, 28 Sep 2012 03:00:15 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,54 +18,62 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-576k5Y+R6L2v5Lu2KzEwOeWxiuW5v+S6pOS8muS5sOWutuOAgea1t+WFs+aVsOaNruOAgeaQnOe0
-ouW8leaTjuS5sOWutixCMkLor6Lnm5jkubDlrrblhbE1MDDkuIcs5LuFMTDlhYPmr4/lpKnjgIIg
-DQrnvqTlj5Hova/ku7YrMTA55bGK5bm/5Lqk5Lya5Lmw5a6244CB5rW35YWz5pWw5o2u44CB5pCc
-57Si5byV5pOO5Lmw5a62LEIyQuivouebmOS5sOWutuWFsTUwMOS4hyzku4UxMOWFg+avj+WkqeOA
-giANCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K5L+d6K+B5q+P5aSp6YO95pyJ
-5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57lpI3jgIINCg0KMeOA
-gee+pOWPkei9r+S7tu+8miDmk43kvZznroDljZXvvIzlip/og73lvLrlpKfvvIzmqKHku7/kurrl
-t6Xmk43kvZzmqKHlvI/vvIzliLDovr7njofpq5jvvIzml6Xlj5HpgIE15LiH5bCB5Lul5LiK44CC
-IA0KMuOAgTUwMOS4h+S5sOWutui1hOa6kO+8miDotaDpgIHnmoQ1MDDkuIfkubDlrrbotYTmupDl
-upPvvIzmm7TmlrAgKOWPr+S7peaMieeFp+aCqOeahOS6p+WTgeaPkOWPluWHuuadpe+8jOabtOey
-vuWHhuW8gOWPkSnjgIIgDQoz44CB6LaF57qn5rW35aSW5Lmw5a62RW1haWzmkJzntKLmnLrvvJog
-5YaF572u5LqGNjAw5LiH6KGM5Lia5YWz6ZSu6K+N77yM5qC55o2u6ZW/5bC+6K+N5pCc57Si77yM
-57uT5p6c5pu057K+56Gu5Yy56YWN77yb5q+P5aSp6IO95pCc57SiMS0y5LiH5Lul5LiK5Lmw5a62
-55yf5a6eRU1BSUzvvIzmiJDljZXnjofpq5jjgIIgDQogDQoNCuimgeeahOaKk+e0p+iBlOezu1FR
-OiAxMzM5NjI1MjE4ICAg5oiW6ICF56uL5Y2z5Zue5aSN6YKu566xOiAxMzM5NjI1MjE4QHFxLmNv
-bQ0K6KaB55qE5oqT57Sn6IGU57O7UVE6IDEzMzk2MjUyMTggICDmiJbogIXnq4vljbPlm57lpI3p
-gq7nrrE6IDEzMzk2MjUyMThAcXEuY29tDQropoHnmoTmipPntKfogZTns7tRUTogMTMzOTYyNTIx
-OCAgIOaIluiAheeri+WNs+WbnuWkjemCrueusTogMTMzOTYyNTIxOEBxcS5jb20NCiANCuWFjei0
-uei1oOmAgToNCuS4gOWFsTjkuKrljIUo5pWw5o2u5piv5YWo6KGM5Lia55qE77yM5oyJ54Wn6KGM
-5Lia5YiG5aW957G777yM5bm25LiU5Y+v5Lul5oyJ54Wn5YWz6ZSu6K+N5p+l6K+i55qEKe+8miAN
-CjHvvIwyMDEx5pil5a2jMTA55bGK5bm/5Lqk5Lya5Lmw5a62546w5Zy66K+i55uY5pWw5o2u5bqT
-5paw6bKc5Ye654KJ77yM6LaF57qn5paw6bKc5Lmw5a6277yM5paw6bKc5pWw5o2u77yM5a655piT
-5oiQ5Y2V77yBIA0KMu+8jOi0reS5sOWQjuWPr+S7peWFjei0ueabtOaWsDIwMTHnp4vlraPlub/k
-uqTkvJorMjAxMuaYpeWto+W5v+S6pOS8muS5sOWutuaVsOaNruOAguWkqui2heWAvOS6huOAgg0K
-M++8jOacgOaWsOWFqOeQg+S5sOWutuW6kyzlhbE0NTE2NjDmnaHmlbDmja7jgIIgKOacgOaWsOab
-tOaWsOaXpeacnyAyMDExLTA1LTE25pelKQ0KNO+8jDIwMDjlubQsMjAwOeW5tCwyMDEw5bm0IOaY
-peWtoyvnp4vlraPlub/kuqTkvJrkubDlrrblkI3lvZXvvIwxMDMgMTA0IDEwNSAxMDYgMTA3IDEw
-OCDlhbHlha3lsYog5YWxMTIwLjbkuIfmlbDmja7jgIINCjXvvIwyMDEw5bm05Zu96ZmF5L+D6ZSA
-5Y2P5Lya77yIUFBBSe+8ieaIkOWRmOWQjeWNlSBQUEFJIE1lbWJlcnMgRGlyZWN0b3J577yM6Z2e
-5bi46YeN6KaB55qE5aSn5Lmw5a6244CCDQo277yMMjAxMOW5tOWIsOmmmea4r+mHh+i0reeahOWb
-veWkluWuouS6uuWQjeW9lSjpppnmuK/otLjlj5HlsYDmj5Dkvpsp77yM5YWxNy4y5LiH5pWw5o2u
-77yM6LaF57qn6YeN6KaB55qE5Lmw5a6244CCDQo377yMNDguNjjkuIfmnaHmnIDmlrDkubDlrrbo
-r6Lnm5jvvIzotK3kubDlkI7mr4/mnIjmm7TmlrAgMS0y5LiH5p2h77yM5YyF5ousMumDqOWIhu+8
-jDHvvIzmnIDmlrDnmoTor6Lnm5ggMu+8jOacgOaWsOeahOWxleS8muS5sOWutuOAguWFjei0ueab
-tOaWsDM25Liq5pyI44CCDQo477yMMjAwOeW5tOa1t+WFs+aPkOWNleaVsOaNrnBpZXJz54mI5pWw
-5o2uIDHljYPkuIfjgIINCg0KDQror5rkv6HkuLrmnKzvvIzmlK/mjIHmlK/ku5jlrp3mi4Xkv53k
-uqTmmJMgKOWFiOWPkei0p+W5tuWuieijheiuvue9rue+pOWPkei9r+S7tu+8jOeEtuWQjuS7mOas
-vikg5b275bqV5omT5raI5oKo55qEIOmhvuiZkeOAgg0KDQogDQoNCg0KIA0KDQrnsr7lh4bmlbDm
-ja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bm
-lbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7lh4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQrnsr7l
-h4bmlbDmja4t5oiQ5Y2V546H5p6B6auYDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBk
-YXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSBjb250
-YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9y
-bWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUuIFNw
-bHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5z
-ZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJk
-Y29weTEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+
+Hello,
+
+I've added you to my qbuevh group at Yahoo! Groups, a free, 
+easy-to-use service. Yahoo! Groups makes it easy to send and receive
+group messages, coordinate events, share photos and files, and more.
+
+
+Description of the group:
+------------------------------------------------------------------------
+w5703v7cnp8ck126h 
+
+Complete your Yahoo! Groups account:
+----------------------------------------------------------------------
+Your email address has been added to the email list of a Yahoo! Group.
+To gain access to all of your group's web features (previous messages,
+photos, files, calendar, etc.) and easier control of your message
+delivery options, we highly recommend that you complete your account
+by connecting your email address to a Yahoo account. It is easy and free.
+Please visit:
+http://groups.yahoo.com/convacct?email=spi-devel-general%40lists.sourceforge.net&list=qbuevh
+
+Important information about the qbuevh group
+------------------------------------------------------------------------
+* To send a message to the members of this group, send an email to:
+  qbuevh-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
+  
+* To leave the group, you can unsubscribe by replying to this message,
+  or by sending an email to:
+  qbuevh-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
+
+Regards,
+
+Moderator, qbuevh 
+
+Report abuse:
+------------------------------------------------------------------------
+Because Yahoo! Groups values your privacy, it is a violation of our 
+service rules for moderators to add subscribers to a group against
+their wishes. If you feel this has happened, please notify us:
+http://help.yahoo.com/l/us/yahoo/groups/original/members/forms/abuse.html 
+
+You may also change your email preferences to prevent group owners from
+adding you to their groups. To do so, please go here:
+http://groups.yahoo.com/s?tag=fzAuffCql6mzDekJ89oj8Gpq-eIVX2aM5NK2gjaKASpuXGMSDBfcX0lkfA8eEHJNevAoqN_R8_Lvb4b8bJ0Z2CH-TdVNPbU-xO1f5dKHKw
+
+Your use of Yahoo! Groups is subject to:
+http://docs.yahoo.com/info/terms/
+ 
+
+
+
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure contains a
+definitive record of customers, application performance, security
+threats, fraudulent activity and more. Splunk takes this data and makes
+sense of it. Business sense. IT sense. Common sense.
+http://p.sf.net/sfu/splunk-d2dcopy1

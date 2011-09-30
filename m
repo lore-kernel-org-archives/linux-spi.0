@@ -1,7 +1,7 @@
-From: Choisir-Mutuelles par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Comparez les offres de tous les assureurs et faites le bon choix
-Date: Fri, 30 Sep 2011 16:02:42 +0200
-Message-ID: <1317391362.4e85cc02e5716@mc10.fr>
+From: RegimeDukan par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: une =?iso-8859-15?Q?m=E9thode?= naturelle pour retrouver ma ligne
+Date: Fri, 30 Sep 2011 16:06:37 +0200
+Message-ID: <1317391597.4e85cced40326@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTE4NjcmYz0yMTkwMDMwMyZkPT=
-IwMTEtMDktMzAgMTU6NTA6MDEmZT0xJmY9MTg2NyZnPTE4NjcmaD0xODY3
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTE5NDgmYz0yMTkwMDMwMyZkPT=
+IwMTEtMDktMzAgMTU6NTA6MDEmZT0xJmY9MTk0OCZnPTE5NDgmaD0xOTQ4
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTE4NjcmY=
-z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6NTA6MDEmZT0xJmY9MTg2NyZnPTE4NjcmaD0xODY3
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTE5NDgmY=
+z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6NTA6MDEmZT0xJmY9MTk0OCZnPTE5NDgmaD0xOTQ4
 
 
 ---------------------------------------------------------------------------=

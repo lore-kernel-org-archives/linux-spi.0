@@ -1,7 +1,7 @@
-From: Club =?iso-8859-15?Q?Priv=E9?= par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Une =?iso-8859-15?Q?s=E9lection?= de voyage -70%
-Date: Fri, 30 Sep 2011 15:35:34 +0200
-Message-ID: <1317389734.4e85c5a614cd4@mc10.fr>
+From: Le guide GaultMillau par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Vivez un Week-End de =?iso-8859-15?Q?r=EAve=2E?=
+Date: Fri, 30 Sep 2011 15:50:59 +0200
+Message-ID: <1317390659.4e85c943b5772@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwMjkmYz0yMTkwMDMwMyZkPT=
-IwMTEtMDktMzAgMTU6MjA6MDEmZT0xJmY9MjAyOSZnPTIwMjkmaD0yMDI5
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTE5NDQmYz0yMTkwMDMwMyZkPT=
+IwMTEtMDktMzAgMTU6NDA6MDEmZT0xJmY9MTk0NCZnPTE5NDQmaD0xOTQ0
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwMjkmY=
-z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6MjA6MDEmZT0xJmY9MjAyOSZnPTIwMjkmaD0yMDI5
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTE5NDQmY=
+z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6NDA6MDEmZT0xJmY9MTk0NCZnPTE5NDQmaD0xOTQ0
 
 
 ---------------------------------------------------------------------------=

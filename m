@@ -1,7 +1,8 @@
-From: Equilibre Au Naturel par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Perdez 8 kilos en 2 mois naturellement
-Date: Fri, 30 Sep 2011 15:33:33 +0200
-Message-ID: <1317389613.4e85c52d15549@mc10.fr>
+From: Swiss Life par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: =?iso-8859-15?Q?L=92assurance_sant=E9?= qui
+	=?iso-8859-15?Q?s=92adapte_=E0?= vos besoins
+Date: Fri, 30 Sep 2011 15:34:30 +0200
+Message-ID: <1317389670.4e85c56643aa4@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwMjcmYz0yMTkwMDMwMyZkPT=
-IwMTEtMDktMzAgMTU6MzA6MDEmZT0xJmY9MjAyNyZnPTIwMjcmaD0yMDI3
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTE4NDImYz0yMTkwMDMwMyZkPT=
+IwMTEtMDktMzAgMTU6MzA6MDEmZT0xJmY9MTg0MiZnPTE4NDImaD0xODQy
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwMjcmY=
-z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6MzA6MDEmZT0xJmY9MjAyNyZnPTIwMjcmaD0yMDI3
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTE4NDImY=
+z0yMTkwMDMwMyZkPTIwMTEtMDktMzAgMTU6MzA6MDEmZT0xJmY9MTg0MiZnPTE4NDImaD0xODQy
 
 
 ---------------------------------------------------------------------------=

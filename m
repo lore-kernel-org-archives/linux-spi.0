@@ -1,11 +1,11 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Mobile VoIP Report 2011-2016: Opportunities and Challenges
-Date: Sun, 2 Oct 2011 03:10:06 +0100
-Message-ID: <20111002031006.1437433000@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: CAM par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Seul Top Mutuelle compare plus de 20 assureurs au meilleur tarif
+Date: Mon, 03 Oct 2011 15:03:12 +0200
+Message-ID: <1317646992.4e89b2909f722@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,10 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Mobile VoIP Report 2011-2016: Opportunities and Challenges
-------------------------------------------------------------------------------
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security
-threats, fraudulent activity, and more. Splunk takes this data and makes
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2dcopy2
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwNTMmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMDMgMTU6MDA6MDEmZT0xJmY9MjA1MyZnPTIwNTMmaD0yMDUz
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwNTMmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMDMgMTU6MDA6MDEmZT0xJmY9MjA1MyZnPTIwNTMmaD0yMDUz
+
+
+---------------------------------------------------------------------------=
+---
+All the data continuously generated in your IT infrastructure contains a
+definitive record of customers, application performance, security
+threats, fraudulent activity and more. Splunk takes this data and makes
+sense of it. Business sense. IT sense. Common sense.
+http://p.sf.net/sfu/splunk-d2dcopy1

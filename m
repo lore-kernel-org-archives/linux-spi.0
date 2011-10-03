@@ -1,7 +1,9 @@
-From: CAM par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Seul Top Mutuelle compare plus de 20 assureurs au meilleur tarif
-Date: Mon, 03 Oct 2011 15:03:12 +0200
-Message-ID: <1317646992.4e89b2909f722@mc10.fr>
+From: Meilleurchoix par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Possesseurs de piscine, avez vous =?iso-8859-15?Q?pens=E9_=E0?= un
+	abri ? =?iso-8859-15?Q?T=E9l=E9char?=
+	=?iso-8859-15?Q?gez?= le guide gratuit
+Date: Mon, 03 Oct 2011 15:33:02 +0200
+Message-ID: <1317648782.4e89b98e78cc5@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +22,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwNTMmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMDMgMTU6MDA6MDEmZT0xJmY9MjA1MyZnPTIwNTMmaD0yMDUz
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwNTYmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMDMgMTU6MjA6MDEmZT0xJmY9MjA1NiZnPTIwNTYmaD0yMDU2
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwNTMmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMDMgMTU6MDA6MDEmZT0xJmY9MjA1MyZnPTIwNTMmaD0yMDUz
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwNTYmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMDMgMTU6MjA6MDEmZT0xJmY9MjA1NiZnPTIwNTYmaD0yMDU2
 
 
 ---------------------------------------------------------------------------=

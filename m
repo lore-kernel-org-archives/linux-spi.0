@@ -1,17 +1,13 @@
-From: "Tomoya MORINAGA" <Tomoya.Morinaga-nk68H3w8R80TBYAz+LHnZg@public.gmane.org>
-Subject: RE: [GIT PULL] spi driver bug fixes
-Date: Wed, 5 Oct 2011 13:44:21 +0900
-Message-ID: <95F40BC8A9814963B7347EF0C1B3B50B__7666.18841230429$1317791382$gmane$org@hacdom.okisemi.com>
-References: <CACxGe6uPnXm4Ehk0Bwss_B48j3oUtE1L8SSTyCE6nC2b9K0hhA@mail.gmail.com>
+From: nnaqbp Moderator <nnaqbp-owner-hHKSG33TihhbjbujkaE4pw@public.gmane.org>
+Subject: Welcome to the nnaqbp group
+Date: 5 Oct 2011 11:31:19 -0000
+Message-ID: <1317814279.230.71394.w3@yahoogroups.com>
+Reply-To: nnaqbp-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "'Grant Likely'" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	"'Linus Torvalds'" <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	"'Linux Kernel Mailing List'" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<spi-devel-general@list
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACxGe6uPnXm4Ehk0Bwss_B48j3oUtE1L8SSTyCE6nC2b9K0hhA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,50 +18,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, October 05, 2011 1:15 AM, Grant Likely wrote:
-> Tomoya, are these applicable for the stable tree?
-Yes, these are applicable for the stable.
 
-------
-Tomoya
-ROHM Co., Ltd.
+Hello,
 
------Original Message-----
-From: glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On Behalf Of Grant Likely
-Sent: Wednesday, October 05, 2011 1:15 AM
-To: Linus Torvalds; Linux Kernel Mailing List; spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; Tomoya
-MORINAGA; stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Subject: [GIT PULL] spi driver bug fixes
-
-Hi Linus,
-
-Here are some bug fixes for the topcliff spi driver.
-
-Tomoya, are these applicable for the stable tree?
-
-The following changes since commit 0f86267b79bc6e357b8606077c7f70239045ea9c:
-
-  Merge branch 'hwmon-for-linus' of git://github.com/groeck/linux
-(2011-10-03 12:54:56 -0700)
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 spi/merge
-
-Tomoya MORINAGA (5):
-      spi-topcliff-pch: add tx-memory clear after complete transmitting
-      spi-topcliff-pch: Fix SSN Control issue
-      spi-topcliff-pch: Fix CPU read complete condition issue
-      spi-topcliff-pch: Add recovery processing in case FIFO overrun error occurs
-      spi-topcliff-pch: Fix overrun issue
-
- drivers/spi/spi-topcliff-pch.c |   93 ++++++++++++++++++++++++++++------------
- 1 files changed, 66 insertions(+), 27 deletions(-)
+I've added you to my nnaqbp group at Yahoo! Groups, a free, 
+easy-to-use service. Yahoo! Groups makes it easy to send and receive
+group messages, coordinate events, share photos and files, and more.
 
 
---
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Description of the group:
+------------------------------------------------------------------------
+a7v1rqu27w 
+
+Complete your Yahoo! Groups account:
+----------------------------------------------------------------------
+Your email address has been added to the email list of a Yahoo! Group.
+To gain access to all of your group's web features (previous messages,
+photos, files, calendar, etc.) and easier control of your message
+delivery options, we highly recommend that you complete your account
+by connecting your email address to a Yahoo account. It is easy and free.
+Please visit:
+http://groups.yahoo.com/convacct?email=spi-devel-general%40lists.sourceforge.net&list=nnaqbp
+
+Important information about the nnaqbp group
+------------------------------------------------------------------------
+* To send a message to the members of this group, send an email to:
+  nnaqbp-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
+  
+* To leave the group, you can unsubscribe by replying to this message,
+  or by sending an email to:
+  nnaqbp-unsubscribe-hHKSG33TihhbjbujkaE4pw@public.gmane.org 
+
+Regards,
+
+Moderator, nnaqbp 
+
+Report abuse:
+------------------------------------------------------------------------
+Because Yahoo! Groups values your privacy, it is a violation of our 
+service rules for moderators to add subscribers to a group against
+their wishes. If you feel this has happened, please notify us:
+http://help.yahoo.com/l/us/yahoo/groups/original/members/forms/abuse.html 
+
+You may also change your email preferences to prevent group owners from
+adding you to their groups. To do so, please go here:
+http://groups.yahoo.com/s?tag=yl4Bsjoy-hM0b8vDtVnoHhGXgm0Fw2ME35E2QqIWVpZBFHex1XvXsQ9EOViNftOsFUy3_nwHlBwnPMkGRXM0XroNX86OWyQ4FdN5xfAUNeo
+
+Your use of Yahoo! Groups is subject to:
+http://docs.yahoo.com/info/terms/
+ 
+
+
 
 
 ------------------------------------------------------------------------------

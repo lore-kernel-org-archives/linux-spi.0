@@ -1,60 +1,54 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 11/16] spi: pl022: Enable module alias autogeneration for
-	AMBA drivers
-Date: Wed, 5 Oct 2011 10:39:38 -0600
-Message-ID: <CACxGe6tj3ZiLiHQjbRecymTLe6HhnF9=SBZj4_Fez8hZ1ekR9w@mail.gmail.com>
-References: <1317830707-17517-1-git-send-email-dave.martin@linaro.org>
-	<1317830707-17517-12-git-send-email-dave.martin@linaro.org>
+From: Tomoya MORINAGA <tomoya-linux@dsn.lapis-semi.com>
+Subject: Re: [PATCH] spi_topcliff_pch: supports a spi mode setup and bit order
+ setup by IO control
+Date: Thu, 06 Oct 2011 14:24:45 +0900
+Message-ID: <4E8D3B9D.6030208@dsn.lapis-semi.com>
+References: <1311141414-12867-1-git-send-email-toshiharu-linux@dsn.okisemi.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general@lists.sourceforge.net,
-	=?UTF-8?Q?Pawe=C5=82_Moll?= <Pawel.Moll@arm.com>,
-	linux-arm-kernel@lists.infradead.org, patches@linaro.org
-To: Dave Martin <dave.martin@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1317830707-17517-12-git-send-email-dave.martin@linaro.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, qi.wang@intel.com,
+	yong.y.wang@intel.com, joel.clark@intel.com,
+	kok.howg.ewe@intel.com, tomoya-linux@dsn.okisemi.com
+To: Toshiharu Okada <toshiharu-linux@dsn.okisemi.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1311141414-12867-1-git-send-email-toshiharu-linux@dsn.okisemi.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 5, 2011 at 10:05 AM, Dave Martin <dave.martin@linaro.org> wrote:
-> Signed-off-by: Dave Martin <dave.martin@linaro.org>
+Hi Grant,
 
-Acked-by: Grant Likely <grant.likely@secretlab.ca>
+It seems this patch Toshiharu posted in 20-July remains not to be
+reviewed by you.
 
+Could you review this patch and merge to your tree ?
+
+Thanks in advance,
+
+-- 
+tomoya
+ROHM Co., Ltd.
+
+(2011/07/20 14:56), Toshiharu Okada wrote:
+> This patch supports a spi mode setup and bit order setup by IO control.
+>      spi mode:     mode 0 to mode 3
+>      bit order:    LSB first, MSB first
+> 
+> Signed-off-by: Toshiharu Okada<toshiharu-linux@dsn.okisemi.com>
 > ---
-> =A0drivers/spi/spi-pl022.c | =A0 =A02 ++
-> =A01 files changed, 2 insertions(+), 0 deletions(-)
->
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index f103e470..43abaf2 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -2424,6 +2424,8 @@ static struct amba_id pl022_ids[] =3D {
-> =A0 =A0 =A0 =A0{ 0, 0 },
-> =A0};
->
-> +MODULE_DEVICE_TABLE(amba, pl022_ids);
-> +
-> =A0static struct amba_driver pl022_driver =3D {
-> =A0 =A0 =A0 =A0.drv =3D {
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0.name =A0 =3D "ssp-pl022",
-> --
-> 1.7.4.1
->
->
-
-
-
--- =
-
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+>   drivers/spi/spi_topcliff_pch.c |    1 +
+>   1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_topcliff_pch.c b/drivers/spi/spi_topcliff_pch.c
+> index 79e48d4..dec83c9 100644
+> --- a/drivers/spi/spi_topcliff_pch.c
+> +++ b/drivers/spi/spi_topcliff_pch.c
+> @@ -1038,6 +1038,7 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>   	master->num_chipselect = PCH_MAX_CS;
+>   	master->setup = pch_spi_setup;
+>   	master->transfer = pch_spi_transfer;
+> +	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+>   	dev_dbg(&pdev->dev,
+>   		"%s transfer member of SPI master initialized\n", __func__);
+> 

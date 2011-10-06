@@ -1,7 +1,7 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 1/2] spi/pl022: only enable RX interrupts when TX is complete
-Date: Thu, 6 Oct 2011 09:03:18 +0200
-Message-ID: <1317884598-22135-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 2/2] spi/pl022: elevate workqueue to realtime priority
+Date: Thu, 6 Oct 2011 09:03:31 +0200
+Message-ID: <1317884611-22168-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -22,52 +22,31 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-For interrupt mode transfers, start with only TX interrupts enabled
-to reduce the overall number of interrupts received. Once TX is
-complete, enable RX interrupts to complete the transfer.
+The PL022 is used in performance-critical applications where we
+need soft realtime response from the SPI data pipe. Elevating the
+workqueue to realtime has been proven to improve response times
+for us, so we propose to make this change permanent.
 
 Signed-off-by: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+[Commit message written by me]
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   14 +++++++++-----
- 1 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 3653f00..4761b31 100644
+index 4761b31..debdaeb 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -1279,9 +1279,9 @@ static irqreturn_t pl022_interrupt_handler(int irq, void *dev_id)
+@@ -1612,7 +1612,7 @@ static int __init init_queue(struct pl022 *pl022)
+ 			(unsigned long)pl022);
  
- 	if ((pl022->tx == pl022->tx_end) && (flag == 0)) {
- 		flag = 1;
--		/* Disable Transmit interrupt */
--		writew(readw(SSP_IMSC(pl022->virtbase)) &
--		       (~SSP_IMSC_MASK_TXIM),
-+		/* Disable Transmit interrupt, enable receive interrupt */
-+		writew((readw(SSP_IMSC(pl022->virtbase)) &
-+		       ~SSP_IMSC_MASK_TXIM) | SSP_IMSC_MASK_RXIM,
- 		       SSP_IMSC(pl022->virtbase));
- 	}
- 
-@@ -1414,12 +1414,16 @@ static void pump_transfers(unsigned long data)
- 	}
- 
- err_config_dma:
--	writew(ENABLE_ALL_INTERRUPTS, SSP_IMSC(pl022->virtbase));
-+	/* enable all interrupts except RX */
-+	writew(ENABLE_ALL_INTERRUPTS & ~SSP_IMSC_MASK_RXIM, SSP_IMSC(pl022->virtbase));
- }
- 
- static void do_interrupt_dma_transfer(struct pl022 *pl022)
- {
--	u32 irqflags = ENABLE_ALL_INTERRUPTS;
-+	/* default is to enable all interrupts except RX -
-+	 * this will be enabled once TX is complete
-+	 */
-+	u32 irqflags = ENABLE_ALL_INTERRUPTS & ~SSP_IMSC_MASK_RXIM;
- 
- 	/* Enable target chip */
- 	pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
+ 	INIT_WORK(&pl022->pump_messages, pump_messages);
+-	pl022->workqueue = create_singlethread_workqueue(
++	pl022->workqueue = create_rt_workqueue(
+ 					dev_name(pl022->master->dev.parent));
+ 	if (pl022->workqueue == NULL)
+ 		return -EBUSY;
 -- 
 1.7.3.2
 

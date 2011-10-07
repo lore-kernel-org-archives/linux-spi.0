@@ -1,13 +1,12 @@
-From: =?iso-8859-15?Q?Electricit=E9_Verte?= <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?Forte_rentabilite, _credit_d'imp=F4ts,
-	_aides_fiscales?=
-Date: Fri, 7 Oct 2011 09:41:49 +0200 (CEST)
-Message-ID: <3236305005.337371.1317973309697@p4enginex1.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Bracelet_=C3=A9nergie_/_Weekend_=C3=A0_Marrakech_/_Appareil_ant?=
+	=?UTF-8?Q?icellulite?=
+Date: Fri, 7 Oct 2011 14:06:25 +0200
+Message-ID: <30b980dcc8b94388b36804015b084458@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,20 +18,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-    Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de ma=
-ils
-                      par l'intermediaire de ce raccourci
-     Produisez de l energie propre et generez un revenu complementaire
-     Pourquoi pas vous, des revenus reguliers garantis pendant vingt ans
-     Obtenez une etude
-     Reduisez vos impots, valorisez votre maison
-     Proteger l environnement, generez un revenu
----------------------------------------------------------------------------=
----
-All of the data generated in your IT infrastructure is seriously valuable.
-Why? It contains a definitive record of application performance, security
-threats, fraudulent activity, and more. Splunk takes this data and makes
-sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-d2dcopy2
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8wMGY2MDM0
+NGEyMjgxYTE4L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvMDBmNjAzNDRhMjI4MWExOC9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkJSQUNFTEVUIEVORVJH
+SUUgOiBSRVRST1VWRVogw4lRVUlMSUJSRSBFVCBGT1JDRSwgRVQgT1BUSU1JU0VaIFZPUyBQRVJG
+T1JNQU5DRVMgR1LDgkNFIEFVIEJSQUNFTEVUIMKrIFNZTkVSR1kgwrssIDXigqwgQVUgTElFVSBE
+RSAyOeKCrAkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9n
+YXRld2F5LzAwZjYwMzQ0YTIyODFhMTgvZGlzY291bnQvZGV0YWlsLzU3OC1icmFjZWxldC1lbmVy
+Z2llLXN5bmVyZ3ktZGtkb10KCjXigqwKVmFsZXVyOiAyOeKCrAnDiWNvbm9taXNlejogMjTigqwJ
+RG9uczogMC4xNeKCrAkKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
+ZXIvZ2F0ZXdheS8wMGY2MDM0NGEyMjgxYTE4L2Rpc2NvdW50L2RldGFpbC81NzgtYnJhY2VsZXQt
+ZW5lcmdpZS1zeW5lcmd5LWRrZG9dCgoKClVuIGJyYWNlbGV0IFN5bmVyZ3kgVW5lIGFtw6lsaW9y
+YXRpb24gZGUgdm9zIHBlcmZvcm1hbmNlcyBVbiBnYWluIGTigJnDqXF1aWxpYnJlIGV0IGRlIGZv
+cmNlIFtodHRwOi8vd3d3LmZhY2Vib29rLmNvbS9zaGFyZS5waHA/dT1odHRwJTNBJTJGJTJGd3d3
+LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY1NzgtYnJhY2VsZXQtZW5lcmdp
+ZS1zeW5lcmd5LWRrZG9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
+ZXIvZ2F0ZXdheS8wMGY2MDM0NGEyMjgxYTE4L3BhZ2UvdHdpdHRlci8/dXJsPWh0dHAlM0ElMkYl
+MkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjU3OC1icmFjZWxldC1l
+bmVyZ2llLXN5bmVyZ3ktZGtkbyZhbXA7bWVzc2FnZT1CUkFDRUxFVCBFTkVSR0lFIDogUkVUUk9V
+VkVaIMOJUVVJTElCUkUgRVQgRk9SQ0UsIEVUIE9QVElNSVNFWiBWT1MgUEVSRk9STUFOQ0VTIEdS
+w4JDRSBBVSBCUkFDRUxFVCDCqyBTWU5FUkdZIMK7LCA14oKsIEFVIExJRVUgREUgMjnigqxdCltt
+YWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRl
+cyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBwbHVzIGfD
+qW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVzIHLDqWR1
+Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVzIGFzc29j
+aWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
+bGV0dGVyL2dhdGV3YXkvMDBmNjAzNDRhMjI4MWExOC9kaXNjb3VudC9kZXRhaWwvNTc4LWJyYWNl
+bGV0LWVuZXJnaWUtc3luZXJneS1ka2RvXQoKCgoKCgpFbmNvcmUgcGx1cyBkJ29mZnJlcyAhCQpW
+YWxldXIyNjUmZXVybzsJUmVtaXNlNTElCcOJY29ub21pc2V6MTM2JmV1cm87CURvbnMzLjg3JmV1
+cm87CQpXRUVLIEVORCBBIE1BUlJBS0VDSCA6IFPDqWpvdXJuZXogw6AgMiBkYW5zIHVuIHJpYWQg
+cGxlaW4gZGUgY2hhcm1lLCAxMjnigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgMjY14oKsICEgW2h0
+dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAwZjYwMzQ0
+YTIyODFhMTgvZGlzY291bnQvZGV0YWlsLzU2OS1yaWFkLW1hcnJha2VjaC1wYXMtY2hlcl0KU2V1
+bGVtZW50MTI54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS8wMGY2MDM0NGEyMjgxYTE4L2Rpc2NvdW50L2RldGFpbC81NjktcmlhZC1tYXJyYWtl
+Y2gtcGFzLWNoZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvMDBmNjAzNDRhMjI4MWExOC9kaXNjb3VudC9kZXRhaWwvNTY5LXJpYWQtbWFycmFr
+ZWNoLXBhcy1jaGVyXQoKCgpWYWxldXIzMzQmZXVybzsJUmVtaXNlNjklCcOJY29ub21pc2V6MjMw
+JmV1cm87CURvbnMzLjEyJmV1cm87CQpBUFBBUkVJTCBBTlRJQ0VMTFVMSVRFIDogRWxpbWluZXog
+dm90cmUgcGVhdSBkJiMwMzk7b3JhbmdlIGdyw6JjZSBhdSBIb21lIFVsdHJhc29uaWMgQ29udG91
+ciBTeXN0ZW0sIDEwNOKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSAzMzTigqwgW2h0dHA6Ly93d3cu
+bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAwZjYwMzQ0YTIyODFhMTgv
+ZGlzY291bnQvZGV0YWlsLzU1NC1hcHBhcmVpbC1hbnRpY2VsbHVsaXRlXQpTZXVsZW1lbnQxMDTi
+gqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAw
+ZjYwMzQ0YTIyODFhMTgvZGlzY291bnQvZGV0YWlsLzU1NC1hcHBhcmVpbC1hbnRpY2VsbHVsaXRl
+XQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAw
+ZjYwMzQ0YTIyODFhMTgvZGlzY291bnQvZGV0YWlsLzU1NC1hcHBhcmVpbC1hbnRpY2VsbHVsaXRl
+XQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5LzAwZjYwMzQ0YTIyODFhMTgvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93
+d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAwZjYwMzQ0YTIyODFh
+MTgvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzAwZjYwMzQ0YTIyODFhMTgvYXNzb2NpYXRpb25zLWNh
+cml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBGb3VuZGF0aW9u
+IEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDovL3d3dy5sb3Zp
+bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMDBmNjAzNDRhMjI4MWExOC92aWV3
+L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5LzAwZjYwMzQ0YTIyODFhMTgvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVu
+JmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIG9m
+IHRoZSBkYXRhIGdlbmVyYXRlZCBpbiB5b3VyIElUIGluZnJhc3RydWN0dXJlIGlzIHNlcmlvdXNs
+eSB2YWx1YWJsZS4KV2h5PyBJdCBjb250YWlucyBhIGRlZmluaXRpdmUgcmVjb3JkIG9mIGFwcGxp
+Y2F0aW9uIHBlcmZvcm1hbmNlLCBzZWN1cml0eQp0aHJlYXRzLCBmcmF1ZHVsZW50IGFjdGl2aXR5
+LCBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgZGF0YSBhbmQgbWFrZXMKc2Vuc2Ugb2YgaXQu
+IElUIHNlbnNlLiBBbmQgY29tbW9uIHNlbnNlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L3NwbHVuay1k
+MmRjb3B5MgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,17 +1,17 @@
-From: =?utf-8?B?5LuFMTDlhYPmr4/lpKk=?= <test-lOiqn6beeurM1kAEIRd3EQ@public.gmane.org>
+From: =?utf-8?B?5LuFMTDlhYPmr4/lpKk=?= <admin-6UGm5B2qKmZv1O+Z8WTAqQ@public.gmane.org>
 Subject: [SPAM] =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuivmnIDmlrDlub/kuqTkvJrkubDlrrbjgIHmtbc=?=
 	关数据,B2B询盘买家500万。
-Date: Fri, 7 Oct 2011 21:29:47 +0000 (UTC)
-Message-ID: <20121008052708188370@chrb.com.cn>
+Date: Sat, 8 Oct 2011 09:02:41 +0000 (UTC)
+Message-ID: <20121008170305183301@aimer.com.cn>
 Reply-To: 1339625218-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-To: <smileflowerlily-jkcFjwZmHHM@public.gmane.org>, <speedymtls-YDxpq3io04c@public.gmane.org>, <sminerals-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<smitama-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <spernaweiland-oe7qfRrRQfcdWmXj+hCI//P6llvjuJOh@public.gmane.org>,
-	<spglassman-kt+e9JA1QaI@public.gmane.org>, <spicelands-Q0sI9+o+5pKPj0qlVqjRXw@public.gmane.org>, <spide1
+To: <speechesbeyond-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>, <speedo_man_brief-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>,
+	<speedy_104a-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>, <speleoc-Qt13gs6zZMY@public.gmane.org>, <spencer-rhamZ04aORePm+gJULTNRw@public.gmane.org>,
+	<spendy-OkBJjv/7T2XQT0dZR+AlfA@public.gmane.org>, <spetreolle-Qt13gs6zZMY@public.gmane.org>, <spgrap
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Mon, 8 Oct 2012 05:26:58 +0800
+Date: Mon, 8 Oct 2012 17:02:51 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>

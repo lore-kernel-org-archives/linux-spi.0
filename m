@@ -1,11 +1,11 @@
-From: RegimeDukan par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: une =?iso-8859-15?Q?m=E9thode?= naturelle pour retrouver ma ligne
-Date: Sun, 09 Oct 2011 17:11:22 +0200
-Message-ID: <1318173082.4e91b99aefe30@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: [SPAM] Mobile Advertising 2011-2016: Industry Outlook (Report)
+Date: Mon, 10 Oct 2011 00:40:22 +0100
+Message-ID: <20111010004022.561244890@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,18 +18,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwNzEmYz0zOTMzNzYxJmQ9Mj=
-AxMS0xMC0wOSAxNzowMDowMSZlPTEmZj0yMDcxJmc9MjA3MSZoPTIwNzE=3D
-
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwNzEmY=
-z0zOTMzNzYxJmQ9MjAxMS0xMC0wOSAxNzowMDowMSZlPTEmZj0yMDcxJmc9MjA3MSZoPTIwNzE=
-=3D
-
-
----------------------------------------------------------------------------=
----
+Mobile Advertising 2011-2016: Industry Outlook (Report)
+------------------------------------------------------------------------------
 All of the data generated in your IT infrastructure is seriously valuable.
 Why? It contains a definitive record of application performance, security
 threats, fraudulent activity, and more. Splunk takes this data and makes

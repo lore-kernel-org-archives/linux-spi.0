@@ -1,13 +1,13 @@
-From: EPS TELESURVEILLANCE <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?S=E9curit=E9_tout_compris_=E0_partir_?=
-	=?iso-8859-15?Q?de_seulement_19,50_Euros/mois_!?=
-Date: Thu, 13 Oct 2011 10:31:30 +0200 (CEST)
-Message-ID: <3236305005.353498.1318494690920@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: "(( ACENT - Oferta Radio TalkAbout ))" <acent-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?TW90b3JvbGEgVDUwMjU6IEhvbW9sb2dhZG8gYy8gU2VsbyBBbmF0ZWwsIE1hbnVhbCBlbSBQb3J0dWd1w6pzIHBvciBSJCAyMjksMDAgKyBGcmV0ZQ==?=
+Date: Wed, 12 Oct 2011 17:36:04 +0400
+Message-ID: <b9d80af97ba05c832aae518e4167b8a5@184.22.115.208>
+Reply-To: acent-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,24 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-    Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
-                      par l'intermediaire de ce raccourci
-    EPS              EPS n*1 de la t*l*surveillance en France avec 2000
-    T*l*surveillance abonn*s
-    En France, chaque jour 1000 EPS, des offres s*curit* tout compris *
-    foyers sont victimes        partir de seulement 19,50 euros par mois.
-    d'effractions               Renseignez-vous gratuitement
-    En France, chaque jour 1000 Frais d'installation offerts + mise *
-    foyers sont victimes        disposition gratuite du materiel +
-    d'effractions               satisfait ou rembours* pendant 1 mois
-    En France, chaque jour 1000 foyers    Renseignez-vous Renseignez-vous
-    sont victimes d'effractions           gratuitement    gratuitement
-    [IMG]
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2d-oct
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vMTg0LjIy
+LjExNS4yMDgvfnJhZGlvbW90L2Rpc3BsYXkucGhwP009MzY2MzExNSZDPTYxZjNhYmNmNWU4ZTFh
+OGIwYmE1NTM5NTYzY2QwMTAyJlM9NTcmTD02Jk49MjEKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIg
+bm9zc29zCkVtYWlsczpodHRwOi8vMTg0LjIyLjExNS4yMDgvfnJhZGlvbW90L3Vuc3Vic2NyaWJl
+LnBocD9NPTM2NjMxMTUmQz02MWYzYWJjZjVlOGUxYThiMGJhNTUzOTU2M2NkMDEwMiZMPTYmTj01
+NwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0
+ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSBjb250YWlucyBhCmRlZmluaXRpdmUgcmVjb3Jk
+IG9mIGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UsIHNlY3VyaXR5CnRocmVhdHMs
+IGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIGRhdGEgYW5k
+IG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5z
+ZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJkLW9jdApfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

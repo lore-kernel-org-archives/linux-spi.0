@@ -1,12 +1,11 @@
-From: Guide Gratuit par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Telechargez le guide des traitements anti-humidite pour la maison
-Date: Wed, 12 Oct 2011 16:01:03 +0200
-Message-ID: <1318428063.4e959d9f7123f@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Thu, 13 Oct 2011 04:04:48 +0800
+Message-ID: <E1RE52r-0008Bj-VD@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIxOTkmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMTIgMTU6NTA6MDEmZT0xJmY9MjE5OSZnPTIxOTkmaD0yMTk5
-
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIxOTkmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMTIgMTU6NTA6MDEmZT0xJmY9MjE5OSZnPTIxOTkmaD0yMTk5
-
-
----------------------------------------------------------------------------=
----
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2d-oct
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTE1ODE3MzAyNzYwCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRh
+IGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSBjb250YWlu
+cyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9ybWFu
+Y2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkgYW5kIG1vcmUuIFNwbHVu
+ayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBCdXNpbmVzcyBzZW5zZS4g
+SVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmstZDJkLW9j
+dApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

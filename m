@@ -1,11 +1,17 @@
-From: "Wvybaa" <ydki-fndskDDRqOEAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] 统一地理学
-Date: Fri, 14 Oct 2011 16:46:46 +0800
-Message-ID: <AASRVR012BG4dhqwrUU000034b8@wpbawning.net>
+From: =?utf-8?B?5L+d6K+B5pyJ5Lmw5a625Zue5aSN?= <admin-6UGm5B2qKmZv1O+Z8WTAqQ@public.gmane.org>
+Subject: [SPAM] =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuivmnIDmlrDlub/kuqTkvJrkubDlrrbjgIHmtbc=?=
+	关数据,B2B询盘买家500万。
+Date: Fri, 14 Oct 2011 21:35:40 +0000 (UTC)
+Message-ID: <20121015053613273384@aimer.com.cn>
+Reply-To: 1339625218-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3630394405826720105=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spgupta24-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <spidabuild1-/E1597aS9LQ@public.gmane.org>, <spiderhuman-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <spiese-/E1597aS9LQ@public.gmane.org>,
+	<spike-71nMQpG/udrtRgLqZ5aouw@public.gmane.org>, <spikemuffin-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>, <s
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Mon, 15 Oct 2012 05:36:00 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -16,36 +22,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3630394405826720105==
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-
-VkZTSEPE+rrDIbjQ1njE+rTy6V+xvrmry77gXbz+Ls7Sy76/yYOeLbvdtPotsOy498Dgusy20sax
-IA0KS1RMyMgvz9+jujE1T09POTdPMU8zINXFvq3A7Q==
-
-
---===============3630394405826720105==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2d-oct
---===============3630394405826720105==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3630394405826720105==--
+576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrbjgIHlsZXk
+vJrkubDlrrbjgIHmtbflhbPmlbDmja4sQjJC6K+i55uY5Lmw5a62NTAw5LiH44CCDQoNCuS4gOWF
+sTjkuKrljIUo5pWw5o2u5piv5YWo6KGM5Lia55qE77yM5oyJ54Wn6KGM5Lia5YiG5aW957G777yM
+5bm25LiU5Y+v5Lul5oyJ54Wn5YWz6ZSu6K+N5p+l6K+i55qEKe+8miANCjHvvIwyMDEx5pil5a2j
+MTA55bGK5bm/5Lqk5Lya5Lmw5a625pWw5o2u5bqT5paw6bKc5Ye654KJ77yM6LaF57qn5paw6bKc
+5Lmw5a6277yM5paw6bKc5pWw5o2u77yM5a655piT5oiQ5Y2V77yBIA0KMu+8jOacgOaWsOWFqOeQ
+g+S5sOWutuW6kyzlhbE0NTE2NjDmnaHmlbDmja7jgIIgDQoz77yMMjAwOOW5tCwyMDA55bm0LDIw
+MTDlubQg5pil5a2jK+eni+Wto+W5v+S6pOS8muS5sOWutuWQjeW9le+8jDEwMyAxMDQgMTA1IDEw
+NiAxMDcgMTA4IOWFseWFreWxiiDlhbExMjAuNuS4h+aVsOaNruOAgg0KNO+8jDIwMTDlubTlm73p
+mYXkv4PplIDljY/kvJrvvIhQUEFJ77yJ5oiQ5ZGY5ZCN5Y2VIFBQQUkgTWVtYmVycyBEaXJlY3Rv
+cnnvvIzpnZ7luLjph43opoHnmoTlpKfkubDlrrbjgIINCjXvvIwyMDEw5bm05Yiw6aaZ5riv6YeH
+6LSt55qE5Zu95aSW5a6i5Lq65ZCN5b2VKOmmmea4r+i0uOWPkeWxgOaPkOS+mynvvIzlhbE3LjLk
+uIfmlbDmja7vvIzotoXnuqfph43opoHnmoTkubDlrrbjgIINCjbvvIw2MC445LiH5p2h5pyA5paw
+5Zu95aSWQjJC5Lmw5a626K+i55uY44CCDQo377yMMjAwOeW5tOa1t+WFs+aPkOWNleaVsOaNrnBp
+ZXJz54mI5pWw5o2uIDHljYPkuIfjgIINCjjvvIznvqTlj5Hova/ku7bvvIznvqTlj5Hova/ku7bn
+moTpg6jnvbLkuI7lronoo4XjgIINCg0K5YWxIDUwMOS4h+S4quS5sOWutu+8jOavj+S4quWdh+ac
+iUVtYWlsLiANCg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/l
+pKnpg73mnInkubDlrrblm57lpI3jgIINCg0K6KaB55qE5oqT57Sn6IGU57O7UVE6IDEzMzk2MjUy
+MTggICDmiJbogIXnq4vljbPlm57lpI3pgq7nrrE6IDEzMzk2MjUyMThAcXEuY29tDQropoHnmoTm
+ipPntKfogZTns7tRUTogMTMzOTYyNTIxOCAgIOaIluiAheeri+WNs+WbnuWkjemCrueusTogMTMz
+OTYyNTIxOEBxcS5jb20NCuimgeeahOaKk+e0p+iBlOezu1FROiAxMzM5NjI1MjE4ICAg5oiW6ICF
+56uL5Y2z5Zue5aSN6YKu566xOiAxMzM5NjI1MjE4QHFxLmNvbQ0KDQror5rkv6HkuLrmnKzvvIzl
+poLmnpzkuI3kv6Hku7vmnKzkuros5Y+v5Lul6LWw5reY5a6d5Lqk5piTLOaUtui0p+mqjOivgeWQ
+juWGjeS7mOasvizov5nmmK/lr7nmgqjmnIDlpb3nmoTkv53pmpzkuobjgIIgDQoNCuS/neivgeav
+j+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN
+44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57lpI3jgIINCg0KDQoNCg0K5bm/5Lqk5Lya
+5Lmw5a625oyJ5Lqn5ZOB57G75Yir5YiG57G777yM5YiG5Li65Lul5LiL5Yeg57G777yaDQoxIOWK
+nuWFrOiuvuWkhw0KMiDnvJbnu4flj4rol6Tpk4Hlt6Xoibrlk4ENCjMg546755KDDQo0IOmkkOWO
+qOeUqOWFtw0KNSDovabovoYNCjYg5aSn5Z6L5py65qKw5Y+K6K6+5aSHDQo3IOeUteWtkOeUteaw
+lA0KOCDnlLXlrZDmtojotLnlk4ENCjkg57q657uHDQoxMCDmnI3oo4UNCjExIOS4quS6uuaKpOeQ
+hg0KMTIg5bel56iL5py65qKwDQoxMyDlt6XlhbcNCjE0IOWMluW3pQ0KMTUg6K6h566X5py65Y+K
+6YCa6K6vDQoxNiDlrrblsYXnlKjlk4ENCjE3IOWutuWxheijhemlsA0KMTgg5a625YW3DQoxOSDl
+rrbnlKjnlLXlmagNCjIwIOW7uuetkeWPiuijhemlsOadkOaWmQ0KMjEg6IqC5pel55So5ZOBDQoy
+MiDnpLzlk4Hlj4rotaDlk4ENCjIzIOaRqeaJmOi9pg0KMjQg5rG96L2m6YWN5Lu2DQoyNSDpo5/l
+k4ENCjI2IOmZtueTtw0KMjcg6ZOB55+zDQoyOCDnjqnlhbcNCjI5IOWNq+a1tA0KMzAg5LqU6YeR
+DQozMSDlsI/lnovmnLrmorANCjMyIOmeiw0KMzMg5LyR6Zey55So5ZOBDQozNCDljLvnlpcNCjM1
+IOa1tOWupOS6p+WTgQ0KMzYg5Zut5p6XDQozNyDnhafmmI7kuqflk4ENCjM4IOmSn+ihqOecvOmV
+nA0KMzkg6Ieq6KGM6L2mDQo0MCDljIUNCg0KDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57l
+pI3jgIINCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K5L+d6K+B5q+P5aSp6YO9
+5pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57lpI3jgIINCuS/
+neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFs
+bCB0aGUgZGF0YSBjb250aW51b3VzbHkgZ2VuZXJhdGVkIGluIHlvdXIgSVQgaW5mcmFzdHJ1Y3R1
+cmUgY29udGFpbnMgYQpkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21lcnMsIGFwcGxpY2F0aW9u
+IHBlcmZvcm1hbmNlLCBzZWN1cml0eQp0aHJlYXRzLCBmcmF1ZHVsZW50IGFjdGl2aXR5IGFuZCBt
+b3JlLiBTcGx1bmsgdGFrZXMgdGhpcyBkYXRhIGFuZCBtYWtlcwpzZW5zZSBvZiBpdC4gQnVzaW5l
+c3Mgc2Vuc2UuIElUIHNlbnNlLiBDb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc3Bs
+dW5rLWQyZC1vY3QKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

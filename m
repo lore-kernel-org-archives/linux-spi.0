@@ -1,12 +1,13 @@
-From: Le Panel de Consommateurs <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Enqu=EAte_r=E9mun=E9r=E9e?=
-Date: Fri, 14 Oct 2011 09:35:20 +0200 (CEST)
-Message-ID: <3236305005.358016.1318577720049@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: "Spartoo.com par Planduweb" <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -60% sur plus de 15000
+	=?iso-8859-15?Q?mod=E8les=2E?= Livraison gratuite.
+Date: Fri, 14 Oct 2011 15:14:36 +0200
+Message-ID: <1318598076.4e9835bccad5a@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,25 +19,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails =
-par
-                        l'intermediaire de ce raccourci
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-                          Quelconsommateuretesvous.com
-              F=E9licitations !
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyOTQmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMTQgMTU6MDA6MDEmZT0xJmY9MjI5NCZnPTIyOTQmaD0yMjk0
 
-      Vous avez =E9t=E9 s=E9lectionn=E9 pour
-     participer =E0 une =E9tude intitul=E9e
-       quelconsommateuretesvous.com        A l'issu de cette enqu*te vous
-       vous permettant de gagner de        pourrez d*couvrir votre profil
-    nombreux lots d'une valeur de 500 =A4             consommateur
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyOTQmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMTQgMTU6MDA6MDEmZT0xJmY9MjI5NCZnPTIyOTQmaD0yMjk0
 
-      Pour valider votre inscription,
-         r=E9pondez au questionnaire
-    Cela vous prendra environ 5 minutes
-         R*pondez au questionnaire
+
 ---------------------------------------------------------------------------=
 ---
 All the data continuously generated in your IT infrastructure contains a

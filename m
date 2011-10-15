@@ -1,8 +1,10 @@
-From: Equiforme par Planduweb <contact-u0UxngN8lzAFQeE35raUng@public.gmane.org>
-Subject: Perte de poids =?iso-8859-15?Q?localis=E9?=
-Date: Sat, 15 Oct 2011 15:43:30 +0200
-Message-ID: <1318686210.4e998e02b7112@mc10.fr>
-Reply-To: contact-u0UxngN8lzAFQeE35raUng@public.gmane.org
+From: Willemse par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Le =?iso-8859-15?Q?ch=E8vrefeuille?= d'hiver
+	=?iso-8859-15?Q?4=8099?= au lieu de =?iso-8859-15?Q?9=8099?= +
+	=?iso-8859-15?Q?S=E9cateur?= et gants gratuits
+Date: Sat, 15 Oct 2011 15:46:47 +0200
+Message-ID: <1318686407.4e998ec79efe1@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,11 +22,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyNzQmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMTUgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyMTImYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMTUgMTU6MTA6MDEmZT0xJmY9MjIxMiZnPTIyMTImaD0yMjEy
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyNzQmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMTUgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyMTImY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMTUgMTU6MTA6MDEmZT0xJmY9MjIxMiZnPTIyMTImaD0yMjEy
 
 
 ---------------------------------------------------------------------------=

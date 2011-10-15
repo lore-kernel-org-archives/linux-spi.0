@@ -1,14 +1,11 @@
-From: Willemse par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Le =?iso-8859-15?Q?ch=E8vrefeuille?= d'hiver
-	=?iso-8859-15?Q?4=8099?= au lieu de =?iso-8859-15?Q?9=8099?= +
-	=?iso-8859-15?Q?S=E9cateur?= et gants gratuits
-Date: Sat, 15 Oct 2011 15:46:47 +0200
-Message-ID: <1318686407.4e998ec79efe1@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: "Geffrey S." <GeoffreyS-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] RE: New Clients
+Date: Sat, 15 Oct 2011 10:39:55 -0700
+Message-ID: <120b852cd389d52e5fde27ab0015544a@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,17 +17,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Do you want to get your products/ services in front of millions of potential customers?
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyMTImYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMTUgMTU6MTA6MDEmZT0xJmY9MjIxMiZnPTIyMTImaD0yMjEy
+When you launch an e-mail marketing program with our company, you will have access to powerful tools that can help you grow revenue, find new customers and achieve your online marketing goals.
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyMTImY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMTUgMTU6MTA6MDEmZT0xJmY9MjIxMiZnPTIyMTImaD0yMjEy
+No other form of advertising can offer you as much response for such a low cost.
+
+Call 1 (800) 324-6281 Today!
+
+Rent our targeted e-mail database - consisting of over 200+ Million Consumers , 	
+45+ Million Businesses, 40+ Million Homeowners & 20K+ Search Filters. 	
+
+   Email Services Includes:
+
+> Creation of E-mail Ad	
+> Use of Our Databases	
+> Tracking Results Are Provided	
+> Send Your Ad Through Our Servers	
+> Breakup Your Blast Into Multiple Sends	
+> Use Different Ads Per Blast to Gauge Response	
+> Consider us your one stop solution!	
+
+Call 1 (800) 324-6281 Today!
+
+Geoffrey S.
+Email Deployment Services
+Call 1 (800) 324-6281 Today!
 
 
----------------------------------------------------------------------------=
----
+
+------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a
 definitive record of customers, application performance, security
 threats, fraudulent activity and more. Splunk takes this data and makes

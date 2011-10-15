@@ -1,9 +1,8 @@
-From: CFF-Fashion <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Nouvelle Collection RIVALDI-KAPORAL-GSTAR =?iso-8859-15?Q?=E0?=
-	prix =?iso-8859-15?Q?cass?= =?iso-8859-15?Q?=E9s?=
-Date: Sat, 15 Oct 2011 15:08:22 +0200
-Message-ID: <1318684102.4e9985c6c09e6@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Equiforme par Planduweb <contact-u0UxngN8lzAFQeE35raUng@public.gmane.org>
+Subject: Perte de poids =?iso-8859-15?Q?localis=E9?=
+Date: Sat, 15 Oct 2011 15:43:30 +0200
+Message-ID: <1318686210.4e998e02b7112@mc10.fr>
+Reply-To: contact-u0UxngN8lzAFQeE35raUng@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyOTkmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMTUgMTU6MDA6MDEmZT0xJmY9MjI5OSZnPTIyOTkmaD0yMjk5
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyNzQmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMTUgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyOTkmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMTUgMTU6MDA6MDEmZT0xJmY9MjI5OSZnPTIyOTkmaD0yMjk5
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyNzQmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMTUgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
 
 
 ---------------------------------------------------------------------------=

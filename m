@@ -1,17 +1,16 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 3/3] spi/pl022: skip default configuration before suspending
-Date: Mon, 17 Oct 2011 15:12:43 +0200
-Message-ID: <1318857163-32193-1-git-send-email-linus.walleij@stericsson.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi/pl022: elevate workqueue to realtime priority
+Date: Mon, 17 Oct 2011 15:09:34 +0200
+Message-ID: <CACRpkdZpQLEh0GqeB4y2mcSj2a5f+KzdZqkeF68MCnMAhNEMnQ@mail.gmail.com>
+References: <1317884611-22168-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1317884611-22168-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,39 +21,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+On Thu, Oct 6, 2011 at 9:03 AM, Linus Walleij
+<linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
 
-The loading of the default configuration before suspending has
-been in the driver since its inception, but it is not really
-needed. Especially so since we take to all the trouble of
-enabling and disabling power and clock just to do this. Let's
-scrap this now.
+> From: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+>
+> The PL022 is used in performance-critical applications where we
+> need soft realtime response from the SPI data pipe. Elevating the
+> workqueue to realtime has been proven to improve response times
+> for us, so we propose to make this change permanent.
+>
+> Signed-off-by: Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> [Commit message written by me]
+> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pl022.c |    5 -----
- 1 files changed, 0 insertions(+), 5 deletions(-)
+Grant, drop this patch. create_rt_workqueue() is deleted
+from the kernel, we need to figure out a better way to
+elevate our priorities. (I wonder how...)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 0a1d8ed..29dc70f 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2342,11 +2342,6 @@ static int pl022_suspend(struct amba_device *adev, pm_message_t state)
- 		return status;
- 	}
- 
--	amba_vcore_enable(adev);
--	amba_pclk_enable(adev);
--	load_ssp_default_config(pl022);
--	amba_pclk_disable(adev);
--	amba_vcore_disable(adev);
- 	dev_dbg(&adev->dev, "suspended\n");
- 	return 0;
- }
--- 
-1.7.3.2
+(Patch [1/2] should still be OK though.)
 
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a

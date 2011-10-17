@@ -1,14 +1,14 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 1/3] spi/pl022: fix build warnings
-Date: Mon, 17 Oct 2011 15:12:22 +0200
-Message-ID: <1318857142-32127-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 2/3] spi/pl022: disable the PL022 block when unused
+Date: Mon, 17 Oct 2011 15:12:34 +0200
+Message-ID: <1318857154-32160-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -22,30 +22,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-The driver build complains with newer compilers unless you
-initialize this struct properly.
+Make sure we clear the enable bit when the block is not used.
+This will save some energy in certain hardware versions.
 
-Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi-pl022.c |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index debdaeb..91700bb 100644
+index 91700bb..0a1d8ed 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -1930,7 +1930,7 @@ static int pl022_setup(struct spi_device *spi)
- {
- 	struct pl022_config_chip const *chip_info;
- 	struct chip_data *chip;
--	struct ssp_clock_params clk_freq = {0, };
-+	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
- 	int status = 0;
- 	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
- 	unsigned int bits = spi->bits_per_word;
+@@ -513,7 +513,12 @@ static void giveback(struct pl022 *pl022)
+ 	msg->state = NULL;
+ 	if (msg->complete)
+ 		msg->complete(msg->context);
+-	/* This message is completed, so let's turn off the clocks & power */
++
++	/* disable the SPI/SSP operation */
++	writew((readw(SSP_CR1(pl022->virtbase)) &
++		(~SSP_CR1_MASK_SSE)), SSP_CR1(pl022->virtbase));
++
++	/* This message is completed, so let's turn off the clock! */
+ 	clk_disable(pl022->clk);
+ 	amba_pclk_disable(pl022->adev);
+ 	amba_vcore_disable(pl022->adev);
 -- 
 1.7.3.2
 

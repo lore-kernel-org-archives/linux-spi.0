@@ -1,12 +1,16 @@
-From: Le Panel de Consommateurs <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Enqu=EAte_r=E9mun=E9r=E9e?=
-Date: Mon, 17 Oct 2011 09:13:53 +0200 (CEST)
-Message-ID: <3236305005.366959.1318835633021@p4enginex1.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH 1/3] spi/pl022: fix build warnings
+Date: Mon, 17 Oct 2011 15:12:22 +0200
+Message-ID: <1318857142-32127-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,27 +22,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails =
-par
-                        l'intermediaire de ce raccourci
+From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-                          Quelconsommateuretesvous.com
-              F=E9licitations !
+The driver build complains with newer compilers unless you
+initialize this struct properly.
 
-      Vous avez =E9t=E9 s=E9lectionn=E9 pour
-     participer =E0 une =E9tude intitul=E9e
-       quelconsommateuretesvous.com        A l'issu de cette enqu*te vous
-       vous permettant de gagner de        pourrez d*couvrir votre profil
-    nombreux lots d'une valeur de 500 =A4             consommateur
-
-      Pour valider votre inscription,
-         r=E9pondez au questionnaire
-    Cela vous prendra environ 5 minutes
-         R*pondez au questionnaire
----------------------------------------------------------------------------=
+Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index debdaeb..91700bb 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1930,7 +1930,7 @@ static int pl022_setup(struct spi_device *spi)
+ {
+ 	struct pl022_config_chip const *chip_info;
+ 	struct chip_data *chip;
+-	struct ssp_clock_params clk_freq = {0, };
++	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
+ 	int status = 0;
+ 	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
+ 	unsigned int bits = spi->bits_per_word;
+-- 
+1.7.3.2
+
+
+------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a
 definitive record of customers, application performance, security
 threats, fraudulent activity and more. Splunk takes this data and makes

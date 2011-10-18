@@ -1,18 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: SPI Slave Mode
-Date: Tue, 18 Oct 2011 08:04:31 -0600
-Message-ID: <CACxGe6uJ-nBXXqeFskE5yQ+4GUUNexOpgd5JcNe6BiSkgt63RQ@mail.gmail.com>
-References: <A542D8ED20514C4E88DE6D8CF343C2D901227C40@uksrpblkexb01.detica.com>
-	<4E9D6CAE.6080001@whoi.edu>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Collier_diffuseur_d'huiles_essentielles_/_Livre_photo_personnal?=
+	=?UTF-8?Q?is=C3=A9_/_Appareil_=C3=A0_abdos?=
+Date: Tue, 18 Oct 2011 18:15:28 +0200
+Message-ID: <38a8f3277a5e888c046ba8736eb65800@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "Holdsworth, Joel" <Joel.Holdsworth-IHqVjY1oUdQYQ022hMJolFaTQe2KTcn/@public.gmane.org>, "Beaumont,
-	Charlie \(UK Gloucester\)" <Charlie.Beaumont-IHqVjY1oUdQYQ022hMJolFaTQe2KTcn/@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4E9D6CAE.6080001-/d+BM93fTQY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,55 +18,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 18, 2011 at 6:10 AM, Ned Forrester <nforrester-/d+BM93fTQY@public.gmane.org> wrote:
-> On 10/18/2011 06:13 AM, Holdsworth, Joel wrote:
->> Hi All,
->>
->> My team are working on an embedded system where we need our application
->> processor to be an SPI slave. The documentation that I have read is very
->> clear that this is currently not supported. I am trying to find out if
->> there is any work planned or underway to add support for this feature,
->> or what work would be required to add support. Would this be the simple
->> addition of a small family of infrastructure functions? Or a major
->> overhaul of the subsystem?
->
-> Or is it even possible? =A0It depends on what you want to accomplish.
->
->> Does anyone have any information about these things?
->
-> There was considerable discussion of this several years ago.
-> I don't think anything has changed since then.
->
-> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg00=
-306.html
->
-> The short answer is that generalized slave operation requires nearly-inst=
-ant
-> response from the slave, something that an OS is in capable of. =A0Howeve=
-r,
-> it can work in specialized circumstances, such as when it is possible to =
-always
-> predict the next request from the master. =A0Data streaming with a single=
- master
-> and slave is such an example.
-
-Yes, pretty much.  It isn't so much that Linux is incapable of doing
-it, but it really is an entirely different model from the spi master
-infrastructure in the kernel.  I have no problem sharing SPI master
-data structures and code between a theoretical SPI slave subsystem,
-but the model is sufficiently different that I haven't seen any
-approach where it makes sense to try and make the spi master subsystem
-handle spi slave operations.
-
-USB is very much in the same vein.  While USB host and USB gadget do
-share a bit of code, they are essentially separate subsystems.
-
-g.
-
----------------------------------------------------------------------------=
----
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2d-oct
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS83NmI2MDMz
+OWI4Y2VjZWJhL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvNzZiNjAzMzliOGNlY2ViYS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkNPTExJRVIgRElGRlVT
+RVVSIETigJlIVUlMRVMgRVNTRU5USUVMTEVTIDogQWxsaWV6IGJpZW4tw6p0cmUgZXQgY29xdWV0
+dGVyaWUsIDIx4oKsIGF1IGxpZXUgZGUgNDLigqwgIQkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVh
+bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvZGlzY291bnQv
+ZGV0YWlsLzYyNC1jb2xsaWVyLWRpZmZ1c2V1ci1odWlsZXMtZXNzZW50aWVsbGVzLWFyb21hdGhl
+cmFwaWVdCgoyMeKCrApWYWxldXI6IDQy4oKsCcOJY29ub21pc2V6OiAyMeKCrAlEb25zOiAwLjU3
+4oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
+Lzc2YjYwMzM5YjhjZWNlYmEvZGlzY291bnQvZGV0YWlsLzYyNC1jb2xsaWVyLWRpZmZ1c2V1ci1o
+dWlsZXMtZXNzZW50aWVsbGVzLWFyb21hdGhlcmFwaWVdCgoKClVuIGJpam91IGRpZmZ1c2V1ciBk
+4oCZaHVpbGVzIGVzc2VudGllbGxlcyBldCBwYXJmdW1zIEF2ZWMgdW4gbcOpZGFpbGxvbiBjYWJv
+Y2hvbiBlbiBjw6lyYW1pcXVlIFVuIGNvcmRvbiBlbiB2ZWxvdXJzIGV0IGFyZ2VudCBQb3VyIHVu
+IHNlbnRpbWVudCBkZSBiaWVuLcOqdHJlIHBhcmZ1bcOpIHRvdXRlIGxhIGpvdXJuw6llICEgVW5l
+IGlkw6llIGNhZGVhdSBzdXBlciBMb3ZpbmfCoCEgW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3No
+YXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRl
+dGFpbCUyRjYyNC1jb2xsaWVyLWRpZmZ1c2V1ci1odWlsZXMtZXNzZW50aWVsbGVzLWFyb21hdGhl
+cmFwaWVdCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
+eS83NmI2MDMzOWI4Y2VjZWJhL3BhZ2UvdHdpdHRlci8/dXJsPWh0dHAlM0ElMkYlMkZ3d3cubG92
+aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjYyNC1jb2xsaWVyLWRpZmZ1c2V1ci1o
+dWlsZXMtZXNzZW50aWVsbGVzLWFyb21hdGhlcmFwaWUmYW1wO21lc3NhZ2U9Q09MTElFUiBESUZG
+VVNFVVIgROKAmUhVSUxFUyBFU1NFTlRJRUxMRVMgOiBBbGxpZXogYmllbi3DqnRyZSBldCBjb3F1
+ZXR0ZXJpZSwgMjHigqwgYXUgbGlldSBkZSA0MuKCrCAhXQpbbWFpbHRvOj9zdWJqZWN0PUomIzAz
+OTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMmYW1w
+O2JvZHk9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBk
+ZSBkZWFscyEgTG92aW5nIERlYWxzIG9mZnJlIGRlcyByw6lkdWN0aW9ucyBpbmNyb3lhYmxlcyBl
+dCByZXZlcnNlIHVuIHBvdXJjZW50YWdlIMOgIGRlcyBhc3NvY2lhdGlvbnMgY2FyaXRhdGl2ZXMu
+IGh0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzc2YjYw
+MzM5YjhjZWNlYmEvZGlzY291bnQvZGV0YWlsLzYyNC1jb2xsaWVyLWRpZmZ1c2V1ci1odWlsZXMt
+ZXNzZW50aWVsbGVzLWFyb21hdGhlcmFwaWVdCgoKCgoKCkVuY29yZSBwbHVzIGQnb2ZmcmVzICEJ
+ClZhbGV1cjIwJmV1cm87CVJlbWlzZTU1JQnDiWNvbm9taXNlejExJmV1cm87CURvbnMwLjI3JmV1
+cm87CQpMSVZSRSBQSE9UTyBQRVJTT05OQUxJU8OJIDogQ29uc2VydmV6IHRvdXMgdm9zIHNvdXZl
+bmlycyBkYW5zIHVuIGpvbGkgbGl2cmUgYXZlYyBQaG90b2NpdMOpLCA54oKsIHNldWxlbWVudCBh
+dSBsaWV1IGRlIDIw4oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
+ZXIvZ2F0ZXdheS83NmI2MDMzOWI4Y2VjZWJhL2Rpc2NvdW50L2RldGFpbC82MTItbGl2cmUtcGhv
+dG8tcGVyc29ubmFsaXNlLXBob3RvY2l0ZV0KU2V1bGVtZW50OeKCrCBbaHR0cDovL3d3dy5sb3Zp
+bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNzZiNjAzMzliOGNlY2ViYS9kaXNj
+b3VudC9kZXRhaWwvNjEyLWxpdnJlLXBob3RvLXBlcnNvbm5hbGlzZS1waG90b2NpdGVdCgpbaHR0
+cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNzZiNjAzMzli
+OGNlY2ViYS9kaXNjb3VudC9kZXRhaWwvNjEyLWxpdnJlLXBob3RvLXBlcnNvbm5hbGlzZS1waG90
+b2NpdGVdCgoKClZhbGV1cjg5JmV1cm87CVJlbWlzZTQ5JQnDiWNvbm9taXNlejQ0JmV1cm87CURv
+bnMxLjM1JmV1cm87CQpUT1RBTCBBQkRPIDogTXVzY2xleiB2b3MgYWJkb21pbmF1eCBldCB2b3Mg
+bXVzY2xlcyBvYmxpcXVlcyBkZSBjaGV6IHZvdXMsIDQ14oKsIHNldWxlbWVudCBhdSBsaWV1IGRl
+IDg54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
+eS83NmI2MDMzOWI4Y2VjZWJhL2Rpc2NvdW50L2RldGFpbC82MjUtdG90YWwtYWJkby1wYXMtY2hl
+cl0KU2V1bGVtZW50NDXigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
+dHRlci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvZGlzY291bnQvZGV0YWlsLzYyNS10b3RhbC1h
+YmRvLXBhcy1jaGVyXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvZGlzY291bnQvZGV0YWlsLzYyNS10b3RhbC1hYmRv
+LXBhcy1jaGVyXQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
+dHRlci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10K
+W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzc2YjYw
+MzM5YjhjZWNlYmEvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5n
+ZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvYXNzb2Np
+YXRpb25zLWNhcml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBG
+b3VuZGF0aW9uIEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDov
+L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNzZiNjAzMzliOGNl
+Y2ViYS92aWV3L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzc2YjYwMzM5YjhjZWNlYmEvdW5zdWJzY3JpYmUvP2xh
+bmd1YWdlPWVuJmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0
+cnVjdHVyZSBjb250YWlucyBhCmRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGlj
+YXRpb24gcGVyZm9ybWFuY2UsIHNlY3VyaXR5CnRocmVhdHMsIGZyYXVkdWxlbnQgYWN0aXZpdHkg
+YW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIGRhdGEgYW5kIG1ha2VzCnNlbnNlIG9mIGl0LiBC
+dXNpbmVzcyBzZW5zZS4gSVQgc2Vuc2UuIENvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9zcGx1bmstZDJkLW9jdApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

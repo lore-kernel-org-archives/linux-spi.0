@@ -1,20 +1,20 @@
 From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi/pl022: fix build warnings
-Date: Tue, 18 Oct 2011 14:43:20 +0530
-Message-ID: <4E9D4330.3020107@st.com>
-References: <1318857142-32127-1-git-send-email-linus.walleij@stericsson.com>
+Subject: Re: [PATCH 2/3] spi/pl022: disable the PL022 block when unused
+Date: Tue, 18 Oct 2011 14:43:27 +0530
+Message-ID: <4E9D4337.3030700@st.com>
+References: <1318857154-32160-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Jonas ABERG <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Virupax SADASHIVPETIMATH <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
 	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Linus WALLEIJ <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1318857142-32127-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <1318857154-32160-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,30 +26,35 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 On 10/17/2011 6:42 PM, Linus WALLEIJ wrote:
-> From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 > 
-> The driver build complains with newer compilers unless you
-> initialize this struct properly.
+> Make sure we clear the enable bit when the block is not used.
+> This will save some energy in certain hardware versions.
 > 
-> Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 > Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > ---
->  drivers/spi/spi-pl022.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+>  drivers/spi/spi-pl022.c |    7 ++++++-
+>  1 files changed, 6 insertions(+), 1 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index debdaeb..91700bb 100644
+> index 91700bb..0a1d8ed 100644
 > --- a/drivers/spi/spi-pl022.c
 > +++ b/drivers/spi/spi-pl022.c
-> @@ -1930,7 +1930,7 @@ static int pl022_setup(struct spi_device *spi)
->  {
->  	struct pl022_config_chip const *chip_info;
->  	struct chip_data *chip;
-> -	struct ssp_clock_params clk_freq = {0, };
-> +	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
->  	int status = 0;
->  	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
->  	unsigned int bits = spi->bits_per_word;
+> @@ -513,7 +513,12 @@ static void giveback(struct pl022 *pl022)
+>  	msg->state = NULL;
+>  	if (msg->complete)
+>  		msg->complete(msg->context);
+> -	/* This message is completed, so let's turn off the clocks & power */
+> +
+> +	/* disable the SPI/SSP operation */
+> +	writew((readw(SSP_CR1(pl022->virtbase)) &
+> +		(~SSP_CR1_MASK_SSE)), SSP_CR1(pl022->virtbase));
+> +
+> +	/* This message is completed, so let's turn off the clock! */
+>  	clk_disable(pl022->clk);
+>  	amba_pclk_disable(pl022->adev);
+>  	amba_vcore_disable(pl022->adev);
 
 Reviewed-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 

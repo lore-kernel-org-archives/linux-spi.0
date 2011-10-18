@@ -1,14 +1,20 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: [patch] spi/spidev: handle integer wrap in spidev_message()
-Date: Tue, 18 Oct 2011 09:23:23 +0300
-Message-ID: <20111018062323.GK27732@elgon.mountain>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi/pl022: fix build warnings
+Date: Tue, 18 Oct 2011 14:43:20 +0530
+Message-ID: <4E9D4330.3020107@st.com>
+References: <1318857142-32127-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Jonas ABERG <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Linus WALLEIJ <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1318857142-32127-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,27 +25,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-"k_tmp->len" and "total" are unsigned integers.  The first message
-could be close to "bufsiz" (4096) and then the next message could be
-4GB which would cause an integer overflow.
+On 10/17/2011 6:42 PM, Linus WALLEIJ wrote:
+> From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> 
+> The driver build complains with newer compilers unless you
+> initialize this struct properly.
+> 
+> Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi-pl022.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> index debdaeb..91700bb 100644
+> --- a/drivers/spi/spi-pl022.c
+> +++ b/drivers/spi/spi-pl022.c
+> @@ -1930,7 +1930,7 @@ static int pl022_setup(struct spi_device *spi)
+>  {
+>  	struct pl022_config_chip const *chip_info;
+>  	struct chip_data *chip;
+> -	struct ssp_clock_params clk_freq = {0, };
+> +	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
+>  	int status = 0;
+>  	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
+>  	unsigned int bits = spi->bits_per_word;
 
-Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
----
-I have not tested this.
+Reviewed-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 830adbe..aab05e1 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -241,7 +241,7 @@ static int spidev_message(struct spidev_data *spidev,
- 		k_tmp->len = u_tmp->len;
- 
- 		total += k_tmp->len;
--		if (total > bufsiz) {
-+		if (total > bufsiz || total < k_tmp->len) {
- 			status = -EMSGSIZE;
- 			goto done;
- 		}
+-- 
+viresh
 
 ------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure contains a

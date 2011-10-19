@@ -1,12 +1,11 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: [SPAM] Mobile Device Management Report 2011-2016
-Date: Wed, 19 Oct 2011 03:10:03 +0100
-Message-ID: <20111019031003.1347795328@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: 13435596414-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 原厂烟丝
+Date: Wed, 19 Oct 2011 13:25:51 +0800
+Message-ID: <E1RGOe5-0001sw-43@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,10 +17,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Mobile Device Management Report 2011-2016
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure contains a
-definitive record of customers, application performance, security
-threats, fraudulent activity and more. Splunk takes this data and makes
-sense of it. Business sense. IT sense. Common sense.
-http://p.sf.net/sfu/splunk-d2d-oct
+vfDStsnM0NDOqsT6zOG5qbjfvqu3wtXmz+PRzKOsysrTw7e2zqejutfUs+kuy83A8S7F+reiLsHj
+ytsuuavLvi6+xrDJLr7GteoutsSzoS7N+LDJLtPpwNazocv5tciho6Opo6i79bW9v+y13bT6ytW/
+7qOptci5q8a9vbvS18a9zKijob/auNC0vM/jo6y827jxyrW73aOssrvKx9DQvNLE0bHn1eYgzrGh
+oyAgICAgICAgICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a618KlOjE5MTYgICAgIDM2
+MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrX
+wqXC/szs084gICAgMzgw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKKNXm0cy9
+09anLsS+utApIMTPvqm+xc7l1q7X8CAgICA0NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCijV5tHMvdPWpy7EvrrQKSDX6sqv3L3I2M31ICAgICAgNDYw1KovzPUgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKKNXm0cy909anLsS+utApILrNzOzPwiAgICAgICAgICA0NjDU
+qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAq7xrrXwqWjqMLbtcCjqSAyODDUqi/M
+9SAgICAgICAgICAgICC7xrrXwqWjqM7KtcCjqSAzMjDUqi/M9SAgICAgICAgICAgIAqjqNSts6fR
+zMu/o6m19tPjzKggICAgICAgICAgICAgIDQ2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCijUrbOn0czLvykgMzI4LjMyOcjt1tC7qiAgICAgICAgMjgw1KovzPUgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKKNSts6fRzMu/KSDTstbQu6ogICAgICAgICAgICAgICAyNjDU
+qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1K2zp9HMy78pILass+bPxLLdICAg
+ICAgICAgICAgIDM2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijUrbOn0czL
+vykgyO298Mmzy9XRzCAgICAgICAgICAgMjAw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAKKNSts6fRzMu/KdPxz6qjqL6zveejqSAgNDYw1KovzPUgICAgCijUrbOn0czLvykgu8bc
+vcjYzfUgICAgICAgICAgICAgMTYw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+uuwgILrTICC1wCAgICjEvrrQLtXm0cy909anKSAgICAzNjDUqi/M9SAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrXwqXXz73wICAgICAgMzIw1KovzPUgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKwLbI7dy9yNjN9SAgICAgICAgICAgICAyMjDUqi/M
+9SAgwLbTsty9yNjN9SAgICAgICAgICAgICAxODDUqi/M9SAKyO27xrrXwqXC/szs0McgICAgICAg
+ICAgICAyMDDUqi/M9SAgu8a618Kl1eTGtyAgICAgICAgICAgICAgICAgICAgICAyMjDUqi/M9SAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIMjt07IgINPxICDPqiAgICAgICAgIDEzMNSqL8z1
+ICAgICAgICAgICAgICAgICAg1MYgINHMIKOo06HP86OpICAgICAgMzYw1KovzPUgICAgICAgyO0g
+INTGICDRzCAgICAgICAgMTMw1KovzPUgICAgICAgICAgu8YgyO0gzOwg19MgICAgICAyNjDUqi/M
+9SAgICAgICAgICAKILTzICDQ3CAgw6ggICAgICjUrbOn0czLvykgICAgICAgMzAw1KovzPUgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKINPQ0OjSqsGqz7WjujEzNDM1NTk2NDE00KHVxS7C
+8tHMvNNRUaO6MTM1ODg1MDA1MSC7ttOt0MLAz7/Nu6fAtLXnx6LMuMT6usMhICAKCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQpBbGwgdGhlIGRhdGEgY29udGludW91c2x5IGdlbmVyYXRlZCBpbiB5b3Vy
+IElUIGluZnJhc3RydWN0dXJlIGNvbnRhaW5zIGEKZGVmaW5pdGl2ZSByZWNvcmQgb2YgY3VzdG9t
+ZXJzLCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSwgc2VjdXJpdHkKdGhyZWF0cywgZnJhdWR1bGVu
+dCBhY3Rpdml0eSBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgZGF0YSBhbmQgbWFrZXMKc2Vu
+c2Ugb2YgaXQuIEJ1c2luZXNzIHNlbnNlLiBJVCBzZW5zZS4gQ29tbW9uIHNlbnNlLgpodHRwOi8v
+cC5zZi5uZXQvc2Z1L3NwbHVuay1kMmQtb2N0Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

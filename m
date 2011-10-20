@@ -1,17 +1,18 @@
-From: =?utf-8?B?5LuFMTDlhYPmr4/lpKnjgII=?= <test-qi2xZY0whbknDS1+zs4M5A@public.gmane.org>
+From: =?utf-8?B?5LuFMTDlhYPmr4/lpKnjgII=?= <admin-2jlZOv+wI/DQT0dZR+AlfA@public.gmane.org>
 Subject: =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuivmnIDmlrDlub/kuqTkvJrkubDlrrbjgIHmtbc=?=
 	=?utf-8?B?5YWz5pWw5o2uLEIyQuivouebmOS5sOWutjUwMOS4h+OAgg==?=
-Date: Thu, 20 Oct 2011 09:03:11 +0000 (UTC)
-Message-ID: <20121020170323637478@smsc.sh.cn>
+Date: Thu, 20 Oct 2011 14:56:31 +0000 (UTC)
+Message-ID: <20121020225653072600@kinsun.com>
 Reply-To: 467643975-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-To: <firstratepets-YDxpq3io04c@public.gmane.org>, <ly4862798-KN7UnAbNpbg@public.gmane.org>, <peerawut-W45X8A759TzNvy9tFN6x7g@public.gmane.org>,
-	<yhchu-WDWttccU8mk@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<zhongg555-dbdLmdGazhY@public.gmane.org>, <heroes1114-Y9sIeH5OGRo@public.gmane.org>, <icimpre
+To: <ktwomeymalone-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	<20040508154811.26879.00000742-beyUzFxMxBBGyKhy+UYuEA@public.gmane.org>, <liuyindong108-Xb2Y1Dfb9CI@public.gmane.org>,
+	<sales-BmO5AbEon0yTIn2KbdtrRQ@public.gmane.org>, <whcykj-yXaBOgVEpG7QT0dZR+AlfA@public.gmane.org>, <sales-qrioG+EgCSfMFIMGWPqnnw@public.gmane.org>,
+	<ly4862798@126.
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Sat, 20 Oct 2012 17:03:18 +0800
+Date: Sat, 20 Oct 2012 22:56:47 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>

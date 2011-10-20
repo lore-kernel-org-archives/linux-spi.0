@@ -1,13 +1,17 @@
-From: ABARTH <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: Venez essayer l'ensemble de la gamme ABARTH
-Date: Thu, 20 Oct 2011 09:43:34 +0200 (CEST)
-Message-ID: <3236305005.376500.1319096614582@p4enginex2.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: =?utf-8?B?5LuFMTDlhYPmr4/lpKnjgII=?= <test-qi2xZY0whbknDS1+zs4M5A@public.gmane.org>
+Subject: =?utf-8?B?576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuivmnIDmlrDlub/kuqTkvJrkubDlrrbjgIHmtbc=?=
+	=?utf-8?B?5YWz5pWw5o2uLEIyQuivouebmOS5sOWutjUwMOS4h+OAgg==?=
+Date: Thu, 20 Oct 2011 09:03:11 +0000 (UTC)
+Message-ID: <20121020170323637478@smsc.sh.cn>
+Reply-To: 467643975-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <firstratepets-YDxpq3io04c@public.gmane.org>, <ly4862798-KN7UnAbNpbg@public.gmane.org>, <peerawut-W45X8A759TzNvy9tFN6x7g@public.gmane.org>,
+	<yhchu-WDWttccU8mk@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<zhongg555-dbdLmdGazhY@public.gmane.org>, <heroes1114-Y9sIeH5OGRo@public.gmane.org>, <icimpre
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Sat, 20 Oct 2012 17:03:18 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,36 +22,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-    Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
-                      par l'intermediaire de ce raccourci
-   Abarth - You've got it or not*
-   Jusqu'au 31 octobre, b*n*ficiez d'offres de financement
-   exceptionnelles
-   Abarth Punto Evo       Abarth 500          Abarth 500C
-   239*/mois              219*/mois           249*/mois
-    1.4 TURBO MULTIAIR   1.4 TURBO T-JET 135  1.4 TURBO T-JET 140
-    165 ch               ch                   ch
-    Couple maxi : 250 =E0  Couple maxi : 206    Couple maxi : 206 =E0
-    2 250                =E0a 2 000             2 000
-    tr/mn 0 =E0 100 km/h   tr/mn 0 =E0 100 km/h   tr/mn 0 =E0 100 km/h
-    : 7,9 s              : 7,9 s              : 8,1 s
-    Emissions de CO2 :   Emissions de CO2 :   Emissions de CO2 :
-    142 g/km             155 g/km             151 g/km
-    Consommation : 6     Consommation : 6,5   Consommation : 6,5
-    l/100 km             l/100 km             l/100 km
-   En savoir plus
-    En savoir plus sur les offres de financement exceptionnelles
-    Cliquez ici
-
-   abarth.fr a world of performance since 1949**
----------------------------------------------------------------------------=
----
-The demand for IT networking professionals continues to grow, and the
-demand for specialized networking skills is growing even more rapidly.
-Take a complimentary Learning@Ciosco Self-Assessment and learn =
-
-about Cisco certifications, training, and career opportunities. =
-
-http://p.sf.net/sfu/cisco-dev2dev
+576k5Y+R6L2v5Lu2K+S5sOWutuaQnOe0ouacuisxMDnlsYrlub/kuqTkvJrkubDlrrbjgIHlsZXk
+vJrkubDlrrbjgIHmtbflhbPmlbDmja4sQjJC6K+i55uY5Lmw5a62NTAw5LiH44CCDQoNCuS4gOWF
+sTjkuKrljIUo5pWw5o2u5piv5YWo6KGM5Lia55qE77yM5oyJ54Wn6KGM5Lia5YiG5aW957G777yM
+5bm25LiU5Y+v5Lul5oyJ54Wn5YWz6ZSu6K+N5p+l6K+i55qEKe+8miANCjHvvIwyMDEx5pil5a2j
+MTA55bGK5bm/5Lqk5Lya5Lmw5a625pWw5o2u5bqT5paw6bKc5Ye654KJ77yM6LaF57qn5paw6bKc
+5Lmw5a6277yM5paw6bKc5pWw5o2u77yM5a655piT5oiQ5Y2V77yBIA0KMu+8jOacgOaWsOWFqOeQ
+g+S5sOWutuW6kyzlhbE0NTE2NjDmnaHmlbDmja7jgIIgDQoz77yMMjAwOOW5tCwyMDA55bm0LDIw
+MTDlubQg5pil5a2jK+eni+Wto+W5v+S6pOS8muS5sOWutuWQjeW9le+8jDEwMyAxMDQgMTA1IDEw
+NiAxMDcgMTA4IOWFseWFreWxiiDlhbExMjAuNuS4h+aVsOaNruOAgg0KNO+8jDIwMTDlubTlm73p
+mYXkv4PplIDljY/kvJrvvIhQUEFJ77yJ5oiQ5ZGY5ZCN5Y2VIFBQQUkgTWVtYmVycyBEaXJlY3Rv
+cnnvvIzpnZ7luLjph43opoHnmoTlpKfkubDlrrbjgIINCjXvvIwyMDEw5bm05Yiw6aaZ5riv6YeH
+6LSt55qE5Zu95aSW5a6i5Lq65ZCN5b2VKOmmmea4r+i0uOWPkeWxgOaPkOS+mynvvIzlhbE3LjLk
+uIfmlbDmja7vvIzotoXnuqfph43opoHnmoTkubDlrrbjgIINCjbvvIw2MC445LiH5p2h5pyA5paw
+5Zu95aSWQjJC5Lmw5a626K+i55uY44CCDQo377yMMjAwOeW5tOa1t+WFs+aPkOWNleaVsOaNrnBp
+ZXJz54mI5pWw5o2uIDHljYPkuIfjgIINCjjvvIznvqTlj5Hova/ku7bvvIznvqTlj5Hova/ku7bn
+moTpg6jnvbLkuI7lronoo4XjgIINCg0K5YWxIDUwMOS4h+S4quS5sOWutu+8jOavj+S4quWdh+ac
+iUVtYWlsLiANCg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/l
+pKnpg73mnInkubDlrrblm57lpI3jgIINCg0K6KaB55qE5oqT57Sn6IGU57O7UVE6IDQ2NzY0Mzk3
+NSAgIOaIluiAheeri+WNs+WbnuWkjemCrueusTogIDQ2NzY0Mzk3NUBxcS5jb20NCuimgeeahOaK
+k+e0p+iBlOezu1FROiA0Njc2NDM5NzUgICDmiJbogIXnq4vljbPlm57lpI3pgq7nrrE6ICA0Njc2
+NDM5NzVAcXEuY29tDQropoHnmoTmipPntKfogZTns7tRUTogNDY3NjQzOTc1ICAg5oiW6ICF56uL
+5Y2z5Zue5aSN6YKu566xOiAgNDY3NjQzOTc1QHFxLmNvbQ0KDQoNCuivmuS/oeS4uuacrO+8jOWm
+guaenOS4jeS/oeS7u+acrOS6uizlj6/ku6XotbDmt5jlrp3kuqTmmJMs5pS26LSn6aqM6K+B5ZCO
+5YaN5LuY5qy+LOi/meaYr+WvueaCqOacgOWlveeahOS/nemanOS6huOAgiANCg0K5L+d6K+B5q+P
+5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73mnInkubDlrrblm57lpI3j
+gIINCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0KDQoNCg0KDQrlub/kuqTkvJrk
+ubDlrrbmjInkuqflk4HnsbvliKvliIbnsbvvvIzliIbkuLrku6XkuIvlh6DnsbvvvJoNCjEg5Yqe
+5YWs6K6+5aSHDQoyIOe8lue7h+WPiuiXpOmTgeW3peiJuuWTgQ0KMyDnjrvnkoMNCjQg6aSQ5Y6o
+55So5YW3DQo1IOi9pui+hg0KNiDlpKflnovmnLrmorDlj4rorr7lpIcNCjcg55S15a2Q55S15rCU
+DQo4IOeUteWtkOa2iOi0ueWTgQ0KOSDnurrnu4cNCjEwIOacjeijhQ0KMTEg5Liq5Lq65oqk55CG
+DQoxMiDlt6XnqIvmnLrmorANCjEzIOW3peWFtw0KMTQg5YyW5belDQoxNSDorqHnrpfmnLrlj4rp
+gJrorq8NCjE2IOWutuWxheeUqOWTgQ0KMTcg5a625bGF6KOF6aWwDQoxOCDlrrblhbcNCjE5IOWu
+tueUqOeUteWZqA0KMjAg5bu6562R5Y+K6KOF6aWw5p2Q5paZDQoyMSDoioLml6XnlKjlk4ENCjIy
+IOekvOWTgeWPiui1oOWTgQ0KMjMg5pGp5omY6L2mDQoyNCDmsb3ovabphY3ku7YNCjI1IOmjn+WT
+gQ0KMjYg6Zm255O3DQoyNyDpk4Hnn7MNCjI4IOeOqeWFtw0KMjkg5Y2r5rW0DQozMCDkupTph5EN
+CjMxIOWwj+Wei+acuuaisA0KMzIg6Z6LDQozMyDkvJHpl7LnlKjlk4ENCjM0IOWMu+eWlw0KMzUg
+5rW05a6k5Lqn5ZOBDQozNiDlm63mnpcNCjM3IOeFp+aYjuS6p+WTgQ0KMzgg6ZKf6KGo55y86ZWc
+DQozOSDoh6rooYzovaYNCjQwIOWMhQ0KDQoNCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWk
+jeOAgg0K5L+d6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQrkv53or4Hmr4/lpKnpg73m
+nInkubDlrrblm57lpI3jgIINCuS/neivgeavj+WkqemDveacieS5sOWutuWbnuWkjeOAgg0K5L+d
+6K+B5q+P5aSp6YO95pyJ5Lmw5a625Zue5aSN44CCDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhl
+IGRlbWFuZCBmb3IgSVQgbmV0d29ya2luZyBwcm9mZXNzaW9uYWxzIGNvbnRpbnVlcyB0byBncm93
+LCBhbmQgdGhlCmRlbWFuZCBmb3Igc3BlY2lhbGl6ZWQgbmV0d29ya2luZyBza2lsbHMgaXMgZ3Jv
+d2luZyBldmVuIG1vcmUgcmFwaWRseS4KVGFrZSBhIGNvbXBsaW1lbnRhcnkgTGVhcm5pbmdAQ2lv
+c2NvIFNlbGYtQXNzZXNzbWVudCBhbmQgbGVhcm4gCmFib3V0IENpc2NvIGNlcnRpZmljYXRpb25z
+LCB0cmFpbmluZywgYW5kIGNhcmVlciBvcHBvcnR1bml0aWVzLiAKaHR0cDovL3Auc2YubmV0L3Nm
+dS9jaXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

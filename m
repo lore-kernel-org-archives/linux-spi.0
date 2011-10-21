@@ -1,11 +1,12 @@
-From: 13560740732-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Fri, 21 Oct 2011 20:34:47 +0800
-Message-ID: <E1RHEJP-0006TY-Bg@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Equiforme par Planduweb <contact-u0UxngN8lzAFQeE35raUng@public.gmane.org>
+Subject: Perte de poids =?iso-8859-15?Q?localis=E9?=
+Date: Fri, 21 Oct 2011 15:40:59 +0200
+Message-ID: <1319204460.4ea1766c01b01@mc10.fr>
+Reply-To: contact-u0UxngN8lzAFQeE35raUng@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NjA3NDA3
-MzIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgZGVtYW5kIGZvciBJVCBuZXR3b3JraW5nIHBy
-b2Zlc3Npb25hbHMgY29udGludWVzIHRvIGdyb3csIGFuZCB0aGUKZGVtYW5kIGZvciBzcGVjaWFs
-aXplZCBuZXR3b3JraW5nIHNraWxscyBpcyBncm93aW5nIGV2ZW4gbW9yZSByYXBpZGx5LgpUYWtl
-IGEgY29tcGxpbWVudGFyeSBMZWFybmluZ0BDaXNjbyBTZWxmLUFzc2Vzc21lbnQgYW5kIGxlYXJu
-IAphYm91dCBDaXNjbyBjZXJ0aWZpY2F0aW9ucywgdHJhaW5pbmcsIGFuZCBjYXJlZXIgb3Bwb3J0
-dW5pdGllcy4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvY2lzY28tZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIyNzQmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMjEgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIyNzQmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMjEgMTU6MzA6MDEmZT0xJmY9MjI3NCZnPTIyNzQmaD0yMjc0
+
+
+---------------------------------------------------------------------------=
+---
+The demand for IT networking professionals continues to grow, and the
+demand for specialized networking skills is growing even more rapidly.
+Take a complimentary Learning@Cisco Self-Assessment and learn =
+
+about Cisco certifications, training, and career opportunities. =
+
+http://p.sf.net/sfu/cisco-dev2dev

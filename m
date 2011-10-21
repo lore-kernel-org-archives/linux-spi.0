@@ -1,14 +1,12 @@
-From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
-Date: Fri, 21 Oct 2011 16:08:44 +0200
-Message-ID: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH RFC] OMAP: SPI: Use a workqueue per omap2_mcspi controller
+Date: Fri, 21 Oct 2011 20:55:05 +0530
+Message-ID: <1319210705-18677-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,68 +18,96 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Since we are always runtime resumed when leaving probe
-the clock must be enabled. To accomplish that we are able
-to be runtime suspended after probe in the case when no
-request is going to be recieved, a runtime_idle function
-has been implemented.
+Currently all the spi controllers share the work queue.
+This patch allocates a work queue per controller.
 
-Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
-Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
+Signed-off-by: Steve Wilkins <steve.wilkins-h1fkBy42UK5l57MIdRCFDg@public.gmane.org> 
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   18 +++++++++++++++++-
- 1 files changed, 17 insertions(+), 1 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |   19 +++++++++++--------
+ 1 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index f103e47..ad48fba 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2184,6 +2184,12 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 		goto  err_clk_prep;
- 	}
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index fde3a2d..62173ec 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -121,6 +121,7 @@ struct omap2_mcspi {
+ 	/* SPI1 has 4 channels, while SPI2 has 2 */
+ 	struct omap2_mcspi_dma	*dma_channels;
+ 	struct  device		*dev;
++	struct workqueue_struct *wq;
+ };
  
-+	status = clk_enable(pl022->clk);
-+	if (status) {
-+		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
-+		goto err_no_clk_en;
+ struct omap2_mcspi_cs {
+@@ -143,8 +144,6 @@ struct omap2_mcspi_regs {
+ 
+ static struct omap2_mcspi_regs omap2_mcspi_ctx[OMAP2_MCSPI_MAX_CTRL];
+ 
+-static struct workqueue_struct *omap2_mcspi_wq;
+-
+ #define MOD_REG_BIT(val, mask, set) do { \
+ 	if (set) \
+ 		val |= mask; \
+@@ -1043,7 +1042,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
+ 
+ 	spin_lock_irqsave(&mcspi->lock, flags);
+ 	list_add_tail(&m->queue, &mcspi->msg_queue);
+-	queue_work(omap2_mcspi_wq, &mcspi->work);
++	queue_work(mcspi->wq, &mcspi->work);
+ 	spin_unlock_irqrestore(&mcspi->lock, flags);
+ 
+ 	return 0;
+@@ -1088,6 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	struct omap2_mcspi	*mcspi;
+ 	struct resource		*r;
+ 	int			status = 0, i;
++	char			wq_name[20];
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+ 	if (master == NULL) {
+@@ -1111,6 +1111,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	mcspi = spi_master_get_devdata(master);
+ 	mcspi->master = master;
+ 
++	sprintf(wq_name, "omap2_mcspi/%d", master->bus_num);
++	mcspi->wq = alloc_workqueue(wq_name, WQ_MEM_RECLAIM, 1);
++	if (mcspi->wq == NULL) {
++		status = -ENOMEM;
++		goto err1;
 +	}
 +
- 	/* Disable SSP */
- 	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
- 	       SSP_CR1(pl022->virtbase));
-@@ -2237,6 +2243,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	free_irq(adev->irq[0], pl022);
-  err_no_irq:
-+	clk_disable(pl022->clk);
-+ err_no_clk_en:
- 	clk_unprepare(pl022->clk);
-  err_clk_prep:
- 	clk_put(pl022->clk);
-@@ -2342,11 +2350,19 @@ static int pl022_runtime_resume(struct device *dev)
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (r == NULL) {
+ 		status = -ENODEV;
+@@ -1216,6 +1223,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+ 	spi_unregister_master(master);
+ 	iounmap(base);
+ 	kfree(dma_channels);
++	destroy_workqueue(mcspi->wq);
  
  	return 0;
  }
-+
-+static int pl022_runtime_idle(struct device *dev)
-+{
-+	pm_runtime_suspend(dev);
-+	return 0;
-+}
- #endif
+@@ -1274,10 +1282,6 @@ static struct platform_driver omap2_mcspi_driver = {
  
- static const struct dev_pm_ops pl022_dev_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
--	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
-+	SET_RUNTIME_PM_OPS(pl022_runtime_suspend,
-+			   pl022_runtime_resume,
-+			   pl022_runtime_idle)
- };
+ static int __init omap2_mcspi_init(void)
+ {
+-	omap2_mcspi_wq = create_singlethread_workqueue(
+-				omap2_mcspi_driver.driver.name);
+-	if (omap2_mcspi_wq == NULL)
+-		return -1;
+ 	return platform_driver_probe(&omap2_mcspi_driver, omap2_mcspi_probe);
+ }
+ subsys_initcall(omap2_mcspi_init);
+@@ -1286,7 +1290,6 @@ static void __exit omap2_mcspi_exit(void)
+ {
+ 	platform_driver_unregister(&omap2_mcspi_driver);
  
- static struct vendor_data vendor_arm = {
+-	destroy_workqueue(omap2_mcspi_wq);
+ }
+ module_exit(omap2_mcspi_exit);
+ 
 -- 
-1.7.5.4
+1.7.1
 
 
 ------------------------------------------------------------------------------

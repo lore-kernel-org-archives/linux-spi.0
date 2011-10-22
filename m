@@ -1,93 +1,98 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: =?UTF-8?Q?Gravure_sur_smartphone_/_Collier_diffuseur_d'huiles_essentielle?=
-	=?UTF-8?Q?s_/_Livre_photo_personnalis=C3=A9?=
-Date: Sat, 22 Oct 2011 05:25:16 +0200
-Message-ID: <c7084dfbcacf4d3d8515d97ddd7dc431@www.lovingdeals.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Yong Zhang <yong.zhang0@gmail.com>
+Subject: [PATCH 43/49] spi: irq: Remove IRQF_DISABLED
+Date: Sat, 22 Oct 2011 17:56:55 +0800
+Message-ID: <1319277421-9203-44-git-send-email-yong.zhang0@gmail.com>
+References: <1319277421-9203-1-git-send-email-yong.zhang0@gmail.com>
+Cc: tglx@linutronix.de, Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1319277421-9203-1-git-send-email-yong.zhang0@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMx
-NjNjMjEyNTc5L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvMzlhMDAzMTYzYzIxMjU3OS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkdSQVZVUkUgUEVSU09O
-TkFMSVPDiUUgUE9VUiBTTUFSVFBIT05FIDogQ3VzdG9taXNleiB2b3RyZSBCbGFja2JlcnJ5LCBp
-UGhvbmUgb3UgU2Ftc3VuZyBHYWxheHksIDEw4oKsIGF1IGxpZXUgZGUgMzDigqwJCgoKCltodHRw
-Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMxNjNj
-MjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MzEtZ3JhdnVyZS1wZXJzb25uYWxpc2VlLXNtYXJ0cGhv
-bmUtY29xdWVdCgoxMOKCrApWYWxldXI6IDMw4oKsCcOJY29ub21pc2V6OiAyMOKCrAlEb25zOiAw
-LjMw4oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5LzM5YTAwMzE2M2MyMTI1NzkvZGlzY291bnQvZGV0YWlsLzYzMS1ncmF2dXJlLXBlcnNvbm5h
-bGlzZWUtc21hcnRwaG9uZS1jb3F1ZV0KCgoKVW5lIGNvcXVlIHByb3RlY3RyaWNlIHNtYXJ0cGhv
-bmUgZW4gYWx1bWluaXVtIChpUGhvbmUsIEJsYWNrYmVycnksIFNhbXN1bmcgR2FsYXh5Li4uKSBV
-bmUgcGhvdG8sIHVuIHRleHRlIG91IHVuIGxvZ28gZGUgdm90cmUgY2hvaXggZ3JhdsOpIHN1ciBs
-YSBjb3F1ZSBVbiB0w6lsw6lwaG9uZSBwcm90w6lnw6kgZXQgY3VzdG9taXPDqSDDoCB2b3RyZSBn
-b8O7dCAhIAoKW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0dHAlM0ElMkYl
-MkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjYzMS1ncmF2dXJlLXBl
-cnNvbm5hbGlzZWUtc21hcnRwaG9uZS1jb3F1ZV0KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
-YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvcGFnZS90d2l0dGVyLz91
-cmw9aHR0cCUzQSUyRiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJG
-NjMxLWdyYXZ1cmUtcGVyc29ubmFsaXNlZS1zbWFydHBob25lLWNvcXVlJmFtcDttZXNzYWdlPUdS
-QVZVUkUgUEVSU09OTkFMSVPDiUUgUE9VUiBTTUFSVFBIT05FIDogQ3VzdG9taXNleiB2b3RyZSBC
-bGFja2JlcnJ5LCBpUGhvbmUgb3UgU2Ftc3VuZyBHYWxheHksIDEw4oKsIGF1IGxpZXUgZGUgMzDi
-gqxdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6ly
-ZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBw
-bHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVz
-IHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVz
-IGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
-bi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIxMjU3OS9kaXNjb3VudC9kZXRhaWwvNjMx
-LWdyYXZ1cmUtcGVyc29ubmFsaXNlZS1zbWFydHBob25lLWNvcXVlXQoKCgoKCgpFbmNvcmUgcGx1
-cyBkJ29mZnJlcyAhCQpWYWxldXI0MiZldXJvOwlSZW1pc2U1MCUJw4ljb25vbWlzZXoyMSZldXJv
-OwlEb25zMC41NyZldXJvOwkKQ09MTElFUiBESUZGVVNFVVIgROKAmUhVSUxFUyBFU1NFTlRJRUxM
-RVMgOiBBbGxpZXogYmllbi3DqnRyZSBldCBjb3F1ZXR0ZXJpZSwgMjHigqwgYXUgbGlldSBkZSA0
-MuKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
-eS8zOWEwMDMxNjNjMjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MjQtY29sbGllci1kaWZmdXNldXIt
-aHVpbGVzLWVzc2VudGllbGxlcy1hcm9tYXRoZXJhcGllXQpTZXVsZW1lbnQyMeKCrCBbaHR0cDov
-L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIx
-MjU3OS9kaXNjb3VudC9kZXRhaWwvNjI0LWNvbGxpZXItZGlmZnVzZXVyLWh1aWxlcy1lc3NlbnRp
-ZWxsZXMtYXJvbWF0aGVyYXBpZV0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
-d3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMxNjNjMjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MjQtY29s
-bGllci1kaWZmdXNldXItaHVpbGVzLWVzc2VudGllbGxlcy1hcm9tYXRoZXJhcGllXQoKCgpWYWxl
-dXIyMCZldXJvOwlSZW1pc2U1NSUJw4ljb25vbWlzZXoxMSZldXJvOwlEb25zMC4yNyZldXJvOwkK
-TElWUkUgUEhPVE8gUEVSU09OTkFMSVPDiSA6IENvbnNlcnZleiB0b3VzIHZvcyBzb3V2ZW5pcnMg
-ZGFucyB1biBqb2xpIGxpdnJlIGF2ZWMgUGhvdG9jaXTDqSwgOeKCrCBzZXVsZW1lbnQgYXUgbGll
-dSBkZSAyMOKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
-dGV3YXkvMzlhMDAzMTYzYzIxMjU3OS9kaXNjb3VudC9kZXRhaWwvNjEyLWxpdnJlLXBob3RvLXBl
-cnNvbm5hbGlzZS1waG90b2NpdGVdClNldWxlbWVudDnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVh
-bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvZGlzY291bnQv
-ZGV0YWlsLzYxMi1saXZyZS1waG90by1wZXJzb25uYWxpc2UtcGhvdG9jaXRlXQoKW2h0dHA6Ly93
-d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1
-NzkvZGlzY291bnQvZGV0YWlsLzYxMi1saXZyZS1waG90by1wZXJzb25uYWxpc2UtcGhvdG9jaXRl
-XQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5LzM5YTAwMzE2M2MyMTI1NzkvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93
-d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1
-NzkvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
-YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvYXNzb2NpYXRpb25zLWNh
-cml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBGb3VuZGF0aW9u
-IEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIxMjU3OS92aWV3
-L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
-c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVu
-JmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhlIGRl
-bWFuZCBmb3IgSVQgbmV0d29ya2luZyBwcm9mZXNzaW9uYWxzIGNvbnRpbnVlcyB0byBncm93LCBh
-bmQgdGhlCmRlbWFuZCBmb3Igc3BlY2lhbGl6ZWQgbmV0d29ya2luZyBza2lsbHMgaXMgZ3Jvd2lu
-ZyBldmVuIG1vcmUgcmFwaWRseS4KVGFrZSBhIGNvbXBsaW1lbnRhcnkgTGVhcm5pbmdAQ2lzY28g
-U2VsZi1Bc3Nlc3NtZW50IGFuZCBsZWFybiAKYWJvdXQgQ2lzY28gY2VydGlmaWNhdGlvbnMsIHRy
-YWluaW5nLCBhbmQgY2FyZWVyIG9wcG9ydHVuaXRpZXMuIApodHRwOi8vcC5zZi5uZXQvc2Z1L2Np
-c2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Since commit [e58aa3d2: genirq: Run irq handlers with interrupts disabled],
+We run all interrupt handlers with interrupts disabled
+and we even check and yell when an interrupt handler
+returns with interrupts enabled (see commit [b738a50a:
+genirq: Warn when handler enables interrupts]).
+
+So now this flag is a NOOP and can be removed.
+
+Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+---
+ drivers/spi/spi-bfin5xx.c       |    2 +-
+ drivers/spi/spi-coldfire-qspi.c |    2 +-
+ drivers/spi/spi-ppc4xx.c        |    2 +-
+ drivers/spi/spi-sh-msiof.c      |    2 +-
+ drivers/spi/spi-sh.c            |    2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index b8d25f2..3b83ff8 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -1098,7 +1098,7 @@ static int bfin_spi_setup(struct spi_device *spi)
+ 
+ 	if (chip->pio_interrupt && !drv_data->irq_requested) {
+ 		ret = request_irq(drv_data->spi_irq, bfin_spi_pio_irq_handler,
+-			IRQF_DISABLED, "BFIN_SPI", drv_data);
++			0, "BFIN_SPI", drv_data);
+ 		if (ret) {
+ 			dev_err(&spi->dev, "Unable to register spi IRQ\n");
+ 			goto error;
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index ae2cd1c..7397c4d 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -487,7 +487,7 @@ static int __devinit mcfqspi_probe(struct platform_device *pdev)
+ 		goto fail2;
+ 	}
+ 
+-	status = request_irq(mcfqspi->irq, mcfqspi_irq_handler, IRQF_DISABLED,
++	status = request_irq(mcfqspi->irq, mcfqspi_irq_handler, 0,
+ 			     pdev->name, mcfqspi);
+ 	if (status) {
+ 		dev_dbg(&pdev->dev, "request_irq failed\n");
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index b267fd9..8ec43e0 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -514,7 +514,7 @@ static int __init spi_ppc4xx_of_probe(struct platform_device *op)
+ 	/* Request IRQ */
+ 	hw->irqnum = irq_of_parse_and_map(np, 0);
+ 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+-			  IRQF_DISABLED, "spi_ppc4xx_of", (void *)hw);
++			  0, "spi_ppc4xx_of", (void *)hw);
+ 	if (ret) {
+ 		dev_err(dev, "unable to allocate interrupt\n");
+ 		goto free_gpios;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2f61a84..51b14c9 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -636,7 +636,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		goto err2;
+ 	}
+ 
+-	ret = request_irq(i, sh_msiof_spi_irq, IRQF_DISABLED,
++	ret = request_irq(i, sh_msiof_spi_irq, 0,
+ 			  dev_name(&pdev->dev), p);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "unable to request irq\n");
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index 9eedd71..e0343d4 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -484,7 +484,7 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+ 		goto error2;
+ 	}
+ 
+-	ret = request_irq(irq, spi_sh_irq, IRQF_DISABLED, "spi_sh", ss);
++	ret = request_irq(irq, spi_sh_irq, 0, "spi_sh", ss);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "request_irq error\n");
+ 		goto error3;
+-- 
+1.7.1

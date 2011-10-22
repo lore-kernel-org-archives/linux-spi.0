@@ -1,12 +1,12 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH RFC] OMAP: SPI: Use a workqueue per omap2_mcspi controller
-Date: Fri, 21 Oct 2011 20:55:05 +0530
-Message-ID: <1319210705-18677-1-git-send-email-shubhrajyoti@ti.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Gravure_sur_smartphone_/_Collier_diffuseur_d'huiles_essentielle?=
+	=?UTF-8?Q?s_/_Livre_photo_personnalis=C3=A9?=
+Date: Sat, 22 Oct 2011 05:25:16 +0200
+Message-ID: <c7084dfbcacf4d3d8515d97ddd7dc431@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,101 +18,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently all the spi controllers share the work queue.
-This patch allocates a work queue per controller.
-
-Signed-off-by: Steve Wilkins <steve.wilkins-h1fkBy42UK5l57MIdRCFDg@public.gmane.org> 
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c |   19 +++++++++++--------
- 1 files changed, 11 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index fde3a2d..62173ec 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -121,6 +121,7 @@ struct omap2_mcspi {
- 	/* SPI1 has 4 channels, while SPI2 has 2 */
- 	struct omap2_mcspi_dma	*dma_channels;
- 	struct  device		*dev;
-+	struct workqueue_struct *wq;
- };
- 
- struct omap2_mcspi_cs {
-@@ -143,8 +144,6 @@ struct omap2_mcspi_regs {
- 
- static struct omap2_mcspi_regs omap2_mcspi_ctx[OMAP2_MCSPI_MAX_CTRL];
- 
--static struct workqueue_struct *omap2_mcspi_wq;
--
- #define MOD_REG_BIT(val, mask, set) do { \
- 	if (set) \
- 		val |= mask; \
-@@ -1043,7 +1042,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
- 
- 	spin_lock_irqsave(&mcspi->lock, flags);
- 	list_add_tail(&m->queue, &mcspi->msg_queue);
--	queue_work(omap2_mcspi_wq, &mcspi->work);
-+	queue_work(mcspi->wq, &mcspi->work);
- 	spin_unlock_irqrestore(&mcspi->lock, flags);
- 
- 	return 0;
-@@ -1088,6 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	struct omap2_mcspi	*mcspi;
- 	struct resource		*r;
- 	int			status = 0, i;
-+	char			wq_name[20];
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
- 	if (master == NULL) {
-@@ -1111,6 +1111,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	mcspi = spi_master_get_devdata(master);
- 	mcspi->master = master;
- 
-+	sprintf(wq_name, "omap2_mcspi/%d", master->bus_num);
-+	mcspi->wq = alloc_workqueue(wq_name, WQ_MEM_RECLAIM, 1);
-+	if (mcspi->wq == NULL) {
-+		status = -ENOMEM;
-+		goto err1;
-+	}
-+
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (r == NULL) {
- 		status = -ENODEV;
-@@ -1216,6 +1223,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
- 	spi_unregister_master(master);
- 	iounmap(base);
- 	kfree(dma_channels);
-+	destroy_workqueue(mcspi->wq);
- 
- 	return 0;
- }
-@@ -1274,10 +1282,6 @@ static struct platform_driver omap2_mcspi_driver = {
- 
- static int __init omap2_mcspi_init(void)
- {
--	omap2_mcspi_wq = create_singlethread_workqueue(
--				omap2_mcspi_driver.driver.name);
--	if (omap2_mcspi_wq == NULL)
--		return -1;
- 	return platform_driver_probe(&omap2_mcspi_driver, omap2_mcspi_probe);
- }
- subsys_initcall(omap2_mcspi_init);
-@@ -1286,7 +1290,6 @@ static void __exit omap2_mcspi_exit(void)
- {
- 	platform_driver_unregister(&omap2_mcspi_driver);
- 
--	destroy_workqueue(omap2_mcspi_wq);
- }
- module_exit(omap2_mcspi_exit);
- 
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
-The demand for IT networking professionals continues to grow, and the
-demand for specialized networking skills is growing even more rapidly.
-Take a complimentary Learning@Cisco Self-Assessment and learn 
-about Cisco certifications, training, and career opportunities. 
-http://p.sf.net/sfu/cisco-dev2dev
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMx
+NjNjMjEyNTc5L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvMzlhMDAzMTYzYzIxMjU3OS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkdSQVZVUkUgUEVSU09O
+TkFMSVPDiUUgUE9VUiBTTUFSVFBIT05FIDogQ3VzdG9taXNleiB2b3RyZSBCbGFja2JlcnJ5LCBp
+UGhvbmUgb3UgU2Ftc3VuZyBHYWxheHksIDEw4oKsIGF1IGxpZXUgZGUgMzDigqwJCgoKCltodHRw
+Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMxNjNj
+MjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MzEtZ3JhdnVyZS1wZXJzb25uYWxpc2VlLXNtYXJ0cGhv
+bmUtY29xdWVdCgoxMOKCrApWYWxldXI6IDMw4oKsCcOJY29ub21pc2V6OiAyMOKCrAlEb25zOiAw
+LjMw4oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5LzM5YTAwMzE2M2MyMTI1NzkvZGlzY291bnQvZGV0YWlsLzYzMS1ncmF2dXJlLXBlcnNvbm5h
+bGlzZWUtc21hcnRwaG9uZS1jb3F1ZV0KCgoKVW5lIGNvcXVlIHByb3RlY3RyaWNlIHNtYXJ0cGhv
+bmUgZW4gYWx1bWluaXVtIChpUGhvbmUsIEJsYWNrYmVycnksIFNhbXN1bmcgR2FsYXh5Li4uKSBV
+bmUgcGhvdG8sIHVuIHRleHRlIG91IHVuIGxvZ28gZGUgdm90cmUgY2hvaXggZ3JhdsOpIHN1ciBs
+YSBjb3F1ZSBVbiB0w6lsw6lwaG9uZSBwcm90w6lnw6kgZXQgY3VzdG9taXPDqSDDoCB2b3RyZSBn
+b8O7dCAhIAoKW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0dHAlM0ElMkYl
+MkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjYzMS1ncmF2dXJlLXBl
+cnNvbm5hbGlzZWUtc21hcnRwaG9uZS1jb3F1ZV0KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvcGFnZS90d2l0dGVyLz91
+cmw9aHR0cCUzQSUyRiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJG
+NjMxLWdyYXZ1cmUtcGVyc29ubmFsaXNlZS1zbWFydHBob25lLWNvcXVlJmFtcDttZXNzYWdlPUdS
+QVZVUkUgUEVSU09OTkFMSVPDiUUgUE9VUiBTTUFSVFBIT05FIDogQ3VzdG9taXNleiB2b3RyZSBC
+bGFja2JlcnJ5LCBpUGhvbmUgb3UgU2Ftc3VuZyBHYWxheHksIDEw4oKsIGF1IGxpZXUgZGUgMzDi
+gqxdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6ly
+ZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBw
+bHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVz
+IHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVz
+IGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIxMjU3OS9kaXNjb3VudC9kZXRhaWwvNjMx
+LWdyYXZ1cmUtcGVyc29ubmFsaXNlZS1zbWFydHBob25lLWNvcXVlXQoKCgoKCgpFbmNvcmUgcGx1
+cyBkJ29mZnJlcyAhCQpWYWxldXI0MiZldXJvOwlSZW1pc2U1MCUJw4ljb25vbWlzZXoyMSZldXJv
+OwlEb25zMC41NyZldXJvOwkKQ09MTElFUiBESUZGVVNFVVIgROKAmUhVSUxFUyBFU1NFTlRJRUxM
+RVMgOiBBbGxpZXogYmllbi3DqnRyZSBldCBjb3F1ZXR0ZXJpZSwgMjHigqwgYXUgbGlldSBkZSA0
+MuKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
+eS8zOWEwMDMxNjNjMjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MjQtY29sbGllci1kaWZmdXNldXIt
+aHVpbGVzLWVzc2VudGllbGxlcy1hcm9tYXRoZXJhcGllXQpTZXVsZW1lbnQyMeKCrCBbaHR0cDov
+L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIx
+MjU3OS9kaXNjb3VudC9kZXRhaWwvNjI0LWNvbGxpZXItZGlmZnVzZXVyLWh1aWxlcy1lc3NlbnRp
+ZWxsZXMtYXJvbWF0aGVyYXBpZV0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
+d3NsZXR0ZXIvZ2F0ZXdheS8zOWEwMDMxNjNjMjEyNTc5L2Rpc2NvdW50L2RldGFpbC82MjQtY29s
+bGllci1kaWZmdXNldXItaHVpbGVzLWVzc2VudGllbGxlcy1hcm9tYXRoZXJhcGllXQoKCgpWYWxl
+dXIyMCZldXJvOwlSZW1pc2U1NSUJw4ljb25vbWlzZXoxMSZldXJvOwlEb25zMC4yNyZldXJvOwkK
+TElWUkUgUEhPVE8gUEVSU09OTkFMSVPDiSA6IENvbnNlcnZleiB0b3VzIHZvcyBzb3V2ZW5pcnMg
+ZGFucyB1biBqb2xpIGxpdnJlIGF2ZWMgUGhvdG9jaXTDqSwgOeKCrCBzZXVsZW1lbnQgYXUgbGll
+dSBkZSAyMOKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
+dGV3YXkvMzlhMDAzMTYzYzIxMjU3OS9kaXNjb3VudC9kZXRhaWwvNjEyLWxpdnJlLXBob3RvLXBl
+cnNvbm5hbGlzZS1waG90b2NpdGVdClNldWxlbWVudDnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVh
+bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvZGlzY291bnQv
+ZGV0YWlsLzYxMi1saXZyZS1waG90by1wZXJzb25uYWxpc2UtcGhvdG9jaXRlXQoKW2h0dHA6Ly93
+d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1
+NzkvZGlzY291bnQvZGV0YWlsLzYxMi1saXZyZS1waG90by1wZXJzb25uYWxpc2UtcGhvdG9jaXRl
+XQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5LzM5YTAwMzE2M2MyMTI1NzkvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93
+d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1
+NzkvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvYXNzb2NpYXRpb25zLWNh
+cml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBGb3VuZGF0aW9u
+IEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDovL3d3dy5sb3Zp
+bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzlhMDAzMTYzYzIxMjU3OS92aWV3
+L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5LzM5YTAwMzE2M2MyMTI1NzkvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVu
+JmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhlIGRl
+bWFuZCBmb3IgSVQgbmV0d29ya2luZyBwcm9mZXNzaW9uYWxzIGNvbnRpbnVlcyB0byBncm93LCBh
+bmQgdGhlCmRlbWFuZCBmb3Igc3BlY2lhbGl6ZWQgbmV0d29ya2luZyBza2lsbHMgaXMgZ3Jvd2lu
+ZyBldmVuIG1vcmUgcmFwaWRseS4KVGFrZSBhIGNvbXBsaW1lbnRhcnkgTGVhcm5pbmdAQ2lzY28g
+U2VsZi1Bc3Nlc3NtZW50IGFuZCBsZWFybiAKYWJvdXQgQ2lzY28gY2VydGlmaWNhdGlvbnMsIHRy
+YWluaW5nLCBhbmQgY2FyZWVyIG9wcG9ydHVuaXRpZXMuIApodHRwOi8vcC5zZi5uZXQvc2Z1L2Np
+c2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,76 +1,96 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] OMAP: SPI: Fix the trying to free nonexistent resource
- error
-Date: Mon, 24 Oct 2011 13:45:07 +0200
-Message-ID: <20111024114507.GK8708@ponder.secretlab.ca>
-References: <1319451864-8212-1-git-send-email-shubhrajyoti@ti.com>
+Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
+Date: Mon, 24 Oct 2011 14:03:42 +0200
+Message-ID: <20111024120342.GQ8708@ponder.secretlab.ca>
+References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org
+To: Ulf Hansson <ulf.hansson@stericsson.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <1319451864-8212-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 24, 2011 at 03:54:24PM +0530, Shubhrajyoti D wrote:
-> Currently there is a request_mem_region(r->start, ..
-> followed by r->start += pdata->regs_offset;
+On Fri, Oct 21, 2011 at 04:08:44PM +0200, Ulf Hansson wrote:
+> Since we are always runtime resumed when leaving probe
+> the clock must be enabled. To accomplish that we are able
+> to be runtime suspended after probe in the case when no
+> request is going to be recieved, a runtime_idle function
+> has been implemented.
 > 
-> And then in remove
-> 
->    r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->    release_mem_region(r->start, resource_size(r));
-> 
-> Here the offset addition is not taken care. Fix the code for the
-> same.
-> 
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
+> Signed-off-by: Ulf Hansson <ulf.hansson@stericsson.com>
+> Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
 
-Applied, thanks.
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+
+Since it depends on Russell's tree, I'm okay with it going in that way.
 
 g.
 
 > ---
->  drivers/spi/spi-omap2-mcspi.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
+>  drivers/spi/spi-pl022.c |   18 +++++++++++++++++-
+>  1 files changed, 17 insertions(+), 1 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 06dc9a9..471b0f3 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -1123,15 +1123,15 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  		status = -ENODEV;
->  		goto err1;
->  	}
-> +	r->start += pdata->regs_offset;
-> +	r->end += pdata->regs_offset;
-> +	mcspi->phys = r->start;
->  	if (!request_mem_region(r->start, resource_size(r),
->  				dev_name(&pdev->dev))) {
->  		status = -EBUSY;
->  		goto err1;
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> index f103e47..ad48fba 100644
+> --- a/drivers/spi/spi-pl022.c
+> +++ b/drivers/spi/spi-pl022.c
+> @@ -2184,6 +2184,12 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  		goto  err_clk_prep;
 >  	}
 >  
-> -	r->start += pdata->regs_offset;
-> -	r->end += pdata->regs_offset;
-> -	mcspi->phys = r->start;
->  	mcspi->base = ioremap(r->start, resource_size(r));
->  	if (!mcspi->base) {
->  		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+> +	status = clk_enable(pl022->clk);
+> +	if (status) {
+> +		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
+> +		goto err_no_clk_en;
+> +	}
+> +
+>  	/* Disable SSP */
+>  	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
+>  	       SSP_CR1(pl022->virtbase));
+> @@ -2237,6 +2243,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  
+>  	free_irq(adev->irq[0], pl022);
+>   err_no_irq:
+> +	clk_disable(pl022->clk);
+> + err_no_clk_en:
+>  	clk_unprepare(pl022->clk);
+>   err_clk_prep:
+>  	clk_put(pl022->clk);
+> @@ -2342,11 +2350,19 @@ static int pl022_runtime_resume(struct device *dev)
+>  
+>  	return 0;
+>  }
+> +
+> +static int pl022_runtime_idle(struct device *dev)
+> +{
+> +	pm_runtime_suspend(dev);
+> +	return 0;
+> +}
+>  #endif
+>  
+>  static const struct dev_pm_ops pl022_dev_pm_ops = {
+>  	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
+> -	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
+> +	SET_RUNTIME_PM_OPS(pl022_runtime_suspend,
+> +			   pl022_runtime_resume,
+> +			   pl022_runtime_idle)
+>  };
+>  
+>  static struct vendor_data vendor_arm = {
 > -- 
-> 1.7.1
+> 1.7.5.4
 > 
-> 
-> ------------------------------------------------------------------------------
-> The demand for IT networking professionals continues to grow, and the
-> demand for specialized networking skills is growing even more rapidly.
-> Take a complimentary Learning@Cisco Self-Assessment and learn 
-> about Cisco certifications, training, and career opportunities. 
-> http://p.sf.net/sfu/cisco-dev2dev
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

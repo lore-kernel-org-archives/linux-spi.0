@@ -1,20 +1,13 @@
-From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
-Date: Mon, 24 Oct 2011 09:38:08 +0200
-Message-ID: <4EA515E0.9060509@stericsson.com>
-References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
-	<CACRpkdY2Csh58QbtnfYikr-VtYR_wDRfC2_X_+wR3OPhgTBE3w@mail.gmail.com>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] OMAP: SPI: Fix the trying to free nonexistent resource error
+Date: Mon, 24 Oct 2011 15:54:24 +0530
+Message-ID: <1319451864-8212-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkdY2Csh58QbtnfYikr-VtYR_wDRfC2_X_+wR3OPhgTBE3w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,37 +18,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Linus Walleij wrote:
-> On Fri, Oct 21, 2011 at 4:08 PM, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
-> 
->> Since we are always runtime resumed when leaving probe
->> the clock must be enabled. To accomplish that we are able
->> to be runtime suspended after probe in the case when no
->> request is going to be recieved, a runtime_idle function
->> has been implemented.
->>
->> Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
->> Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
->> Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
-> 
-> Skip the gerrit weirdo stuff.
+Currently there is a request_mem_region(r->start, ..
+followed by r->start += pdata->regs_offset;
 
-Sorry, for not cleaning up the commit msg, my bad. I fix.
+And then in remove
 
-> 
-> Notice that this patch cannot be merged until Russell's
-> AMBA PM patches are merged, so put this in Russell's
-> patch tracker so he can put it on his AMBA PM branch.
->
+   r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+   release_mem_region(r->start, resource_size(r));
 
-I will do!
+Here the offset addition is not taken care. Fix the code for the
+same.
 
-> But looks correct.
-> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> 
-> Yours,
-> Linus Walleij
-> 
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 06dc9a9..471b0f3 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1123,15 +1123,15 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 		status = -ENODEV;
+ 		goto err1;
+ 	}
++	r->start += pdata->regs_offset;
++	r->end += pdata->regs_offset;
++	mcspi->phys = r->start;
+ 	if (!request_mem_region(r->start, resource_size(r),
+ 				dev_name(&pdev->dev))) {
+ 		status = -EBUSY;
+ 		goto err1;
+ 	}
+ 
+-	r->start += pdata->regs_offset;
+-	r->end += pdata->regs_offset;
+-	mcspi->phys = r->start;
+ 	mcspi->base = ioremap(r->start, resource_size(r));
+ 	if (!mcspi->base) {
+ 		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+-- 
+1.7.1
 
 
 ------------------------------------------------------------------------------

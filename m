@@ -1,10 +1,11 @@
-From: "pkDXCitG" <pkDXCitG-yvbj9ozWCiOh6J55Ss3d3w@public.gmane.org>
-Subject: =?GB2312?B?bHpzYcTQyMujrM6qyrLDtMTjzaayu8bwwLSjv6OhoaOho6GjbG9nYw==?=
-Date: Sun, 23 Oct 2011 15:04:15 +0800
-Message-ID: <201110231504156870146@yiwue.info>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Parfums_de_marques,_35=E2=82=AC_au_lieu_de_70=E2=82=AC?=
+Date: Mon, 24 Oct 2011 05:21:10 +0200
+Message-ID: <b82bd87d4bb530f8ef8a501d05c3f88a@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="----=nmw253_4461_182185580.326617"
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,37 +17,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------=nmw253_4461_182185580.326617
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-
-ZHVmYQ0KxOO6wyBzcGktZGV2ZWwtZ2VuZXJhbDogDQpmdnpjDQp4eGpsDQoyMDExxOoxMNTCMjPI
-1WFsYWwNCrTL1sIg16PJzOz3o6Fid3NpeXNlaWNrbg==
-
-------=nmw253_4461_182185580.326617
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-The demand for IT networking professionals continues to grow, and the
-demand for specialized networking skills is growing even more rapidly.
-Take a complimentary Learning@Cisco Self-Assessment and learn 
-about Cisco certifications, training, and career opportunities. 
-http://p.sf.net/sfu/cisco-dev2dev
-------=nmw253_4461_182185580.326617
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=nmw253_4461_182185580.326617--
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9iZjViMDMx
+ZThkNzMwZjRmL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvYmY1YjAzMWU4ZDczMGY0Zi9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJClBBUkZVTVMgRFVUWSBG
+UkVFIDogTGFuY8O0bWUsIExvbGl0YSBMZW1waWNrYSwgQXp6YXJvLCBHaXZlbmNoeS4uLiBWb3Mg
+cGFyZnVtcyBwcsOpZsOpcsOpcyBncsOiY2Ugw6AgdW4gYm9uIGQmIzAzOTthY2hhdCBkJiMwMzk7
+dW5lIHZhbGV1ciBkZSA3MOKCrCBwb3VyIDM14oKsCQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
+cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYmY1YjAzMWU4ZDczMGY0Zi9kaXNjb3VudC9k
+ZXRhaWwvNjU0LXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgozNeKC
+rApWYWxldXI6IDcw4oKsCcOJY29ub21pc2V6OiAzNeKCrAlEb25zOiAxLjA14oKsCQoKW2h0dHA6
+Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2JmNWIwMzFlOGQ3
+MzBmNGYvZGlzY291bnQvZGV0YWlsLzY1NC1wYXJmdW1zLWRlLW1hcnF1ZS1wYXMtY2hlcnMtbG92
+aW5nLWRlYWxzXQoKCgpVbiBib24gZOKAmWFjaGF0IGTigJl1bmUgdmFsZXVyIGRlIDcw4oKsIHBv
+dXIgMzXigqwgc2V1bGVtZW50IExlIHBhcmZ1bSBkZSB2b3RyZSBjaG9peCBwYXJtaSB1bmUgbGFy
+Z2Ugc8OpbGVjdGlvbiBkZSBwYXJmdW1zIGRlIGdyYW5kZXMgbWFycXVlc8KgOiBBenphcm8sIENh
+bHZpbiBLbGVpbiwgRGllc2VsLCBCdXJiZXJyeSwgTGFnYXJmZWxkLCBBZGlkYXMsIENlcnJ1dGkg
+ZXQgcGx1c8KgISBVbmUgYm9ubmUgaWTDqWUgY2FkZWF1IFtodHRwOi8vd3d3LmZhY2Vib29rLmNv
+bS9zaGFyZS5waHA/dT1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQl
+MkZkZXRhaWwlMkY2NTQtcGFyZnVtcy1kZS1tYXJxdWUtcGFzLWNoZXJzLWxvdmluZy1kZWFsc10K
+W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2JmNWIw
+MzFlOGQ3MzBmNGYvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUzQSUyRiUyRnd3dy5sb3ZpbmdkZWFs
+cy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGNjU0LXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVy
+cy1sb3ZpbmctZGVhbHMmYW1wO21lc3NhZ2U9UEFSRlVNUyBEVVRZIEZSRUUgOiBMYW5jw7RtZSwg
+TG9saXRhIExlbXBpY2thLCBBenphcm8sIEdpdmVuY2h5Li4uIFZvcyBwYXJmdW1zIHByw6lmw6ly
+w6lzIGdyw6JjZSDDoCB1biBib24gZCYjMDM5O2FjaGF0IGQmIzAzOTt1bmUgdmFsZXVyIGRlIDcw
+4oKsIHBvdXIgMzXigqxdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUg
+cGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOp
+Y291dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVh
+bHMgb2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNl
+bnRhZ2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3Zpbmdk
+ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYmY1YjAzMWU4ZDczMGY0Zi9kaXNjb3Vu
+dC9kZXRhaWwvNjU0LXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgoK
+CgoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkv
+YmY1YjAzMWU4ZDczMGY0Zi9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5s
+b3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYmY1YjAzMWU4ZDczMGY0Zi9h
+c3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvYmY1YjAzMWU4ZDczMGY0Zi9hc3NvY2lhdGlvbnMtY2FyaXRh
+dGl2ZXMvXQoKCkwnYWZhCVLDqnZlcyBkJ2VuZmFudHMJU3VyZnJpZGVyIEZvdW5kYXRpb24gRXVy
+b3BlCQoKCgoKCgpTaG93IGVtYWlsIGF0IHRoZSB3ZWJzaXRlIFtodHRwOi8vd3d3LmxvdmluZ2Rl
+YWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9iZjViMDMxZThkNzMwZjRmL3ZpZXcvXQp8
+IFNlIGTDqXNpbnNjcmlyZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvYmY1YjAzMWU4ZDczMGY0Zi91bnN1YnNjcmliZS8/bGFuZ3VhZ2U9ZW4mYW1w
+O2NvZGU9N2RiODAzZWUwN2UwNDI4MV0KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgZGVtYW5k
+IGZvciBJVCBuZXR3b3JraW5nIHByb2Zlc3Npb25hbHMgY29udGludWVzIHRvIGdyb3csIGFuZCB0
+aGUKZGVtYW5kIGZvciBzcGVjaWFsaXplZCBuZXR3b3JraW5nIHNraWxscyBpcyBncm93aW5nIGV2
+ZW4gbW9yZSByYXBpZGx5LgpUYWtlIGEgY29tcGxpbWVudGFyeSBMZWFybmluZ0BDaXNjbyBTZWxm
+LUFzc2Vzc21lbnQgYW5kIGxlYXJuIAphYm91dCBDaXNjbyBjZXJ0aWZpY2F0aW9ucywgdHJhaW5p
+bmcsIGFuZCBjYXJlZXIgb3Bwb3J0dW5pdGllcy4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvY2lzY28t
+ZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,109 +1,51 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 43/49] spi: irq: Remove IRQF_DISABLED
-Date: Mon, 24 Oct 2011 14:14:30 +0200
-Message-ID: <20111024121430.GS8708@ponder.secretlab.ca>
-References: <1319277421-9203-1-git-send-email-yong.zhang0@gmail.com>
- <1319277421-9203-44-git-send-email-yong.zhang0@gmail.com>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
+Date: Mon, 24 Oct 2011 13:50:30 +0100
+Message-ID: <20111024125030.GB17693@n2100.arm.linux.org.uk>
+References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
+	<20111024120342.GQ8708@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, tglx@linutronix.de,
-	spi-devel-general@lists.sourceforge.net
-To: Yong Zhang <yong.zhang0@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1319277421-9203-44-git-send-email-yong.zhang0@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20111024120342.GQ8708-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Oct 22, 2011 at 05:56:55PM +0800, Yong Zhang wrote:
-> Since commit [e58aa3d2: genirq: Run irq handlers with interrupts disabled],
-> We run all interrupt handlers with interrupts disabled
-> and we even check and yell when an interrupt handler
-> returns with interrupts enabled (see commit [b738a50a:
-> genirq: Warn when handler enables interrupts]).
+On Mon, Oct 24, 2011 at 02:03:42PM +0200, Grant Likely wrote:
+> On Fri, Oct 21, 2011 at 04:08:44PM +0200, Ulf Hansson wrote:
+> > Since we are always runtime resumed when leaving probe
+> > the clock must be enabled. To accomplish that we are able
+> > to be runtime suspended after probe in the case when no
+> > request is going to be recieved, a runtime_idle function
+> > has been implemented.
+> > 
+> > Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
+> > Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> > Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
 > 
-> So now this flag is a NOOP and can be removed.
+> Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 > 
-> Signed-off-by: Yong Zhang <yong.zhang0@gmail.com>
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> Since it depends on Russell's tree, I'm okay with it going in that way.
 
-Applied, thanks.
+I've received this patch in the patch system, but I'm not planning to
+apply it yet because it depends on two branches in my tree (amba and clk).
 
-g.
-
-> ---
->  drivers/spi/spi-bfin5xx.c       |    2 +-
->  drivers/spi/spi-coldfire-qspi.c |    2 +-
->  drivers/spi/spi-ppc4xx.c        |    2 +-
->  drivers/spi/spi-sh-msiof.c      |    2 +-
->  drivers/spi/spi-sh.c            |    2 +-
->  5 files changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-> index b8d25f2..3b83ff8 100644
-> --- a/drivers/spi/spi-bfin5xx.c
-> +++ b/drivers/spi/spi-bfin5xx.c
-> @@ -1098,7 +1098,7 @@ static int bfin_spi_setup(struct spi_device *spi)
->  
->  	if (chip->pio_interrupt && !drv_data->irq_requested) {
->  		ret = request_irq(drv_data->spi_irq, bfin_spi_pio_irq_handler,
-> -			IRQF_DISABLED, "BFIN_SPI", drv_data);
-> +			0, "BFIN_SPI", drv_data);
->  		if (ret) {
->  			dev_err(&spi->dev, "Unable to register spi IRQ\n");
->  			goto error;
-> diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-> index ae2cd1c..7397c4d 100644
-> --- a/drivers/spi/spi-coldfire-qspi.c
-> +++ b/drivers/spi/spi-coldfire-qspi.c
-> @@ -487,7 +487,7 @@ static int __devinit mcfqspi_probe(struct platform_device *pdev)
->  		goto fail2;
->  	}
->  
-> -	status = request_irq(mcfqspi->irq, mcfqspi_irq_handler, IRQF_DISABLED,
-> +	status = request_irq(mcfqspi->irq, mcfqspi_irq_handler, 0,
->  			     pdev->name, mcfqspi);
->  	if (status) {
->  		dev_dbg(&pdev->dev, "request_irq failed\n");
-> diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-> index b267fd9..8ec43e0 100644
-> --- a/drivers/spi/spi-ppc4xx.c
-> +++ b/drivers/spi/spi-ppc4xx.c
-> @@ -514,7 +514,7 @@ static int __init spi_ppc4xx_of_probe(struct platform_device *op)
->  	/* Request IRQ */
->  	hw->irqnum = irq_of_parse_and_map(np, 0);
->  	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
-> -			  IRQF_DISABLED, "spi_ppc4xx_of", (void *)hw);
-> +			  0, "spi_ppc4xx_of", (void *)hw);
->  	if (ret) {
->  		dev_err(dev, "unable to allocate interrupt\n");
->  		goto free_gpios;
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 2f61a84..51b14c9 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -636,7 +636,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
->  		goto err2;
->  	}
->  
-> -	ret = request_irq(i, sh_msiof_spi_irq, IRQF_DISABLED,
-> +	ret = request_irq(i, sh_msiof_spi_irq, 0,
->  			  dev_name(&pdev->dev), p);
->  	if (ret) {
->  		dev_err(&pdev->dev, "unable to request irq\n");
-> diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-> index 9eedd71..e0343d4 100644
-> --- a/drivers/spi/spi-sh.c
-> +++ b/drivers/spi/spi-sh.c
-> @@ -484,7 +484,7 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
->  		goto error2;
->  	}
->  
-> -	ret = request_irq(irq, spi_sh_irq, IRQF_DISABLED, "spi_sh", ss);
-> +	ret = request_irq(irq, spi_sh_irq, 0, "spi_sh", ss);
->  	if (ret < 0) {
->  		dev_err(&pdev->dev, "request_irq error\n");
->  		goto error3;
-> -- 
-> 1.7.1
-> 
+------------------------------------------------------------------------------
+The demand for IT networking professionals continues to grow, and the
+demand for specialized networking skills is growing even more rapidly.
+Take a complimentary Learning@Cisco Self-Assessment and learn 
+about Cisco certifications, training, and career opportunities. 
+http://p.sf.net/sfu/cisco-dev2dev

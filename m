@@ -1,53 +1,34 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
-Date: Mon, 24 Oct 2011 16:58:07 +0200
-Message-ID: <CAKnu2Mov-ORJ=KD0g0Wd-gr5pHmCMccWmZ74+8mhDzPJzUqr7g@mail.gmail.com>
-References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
-	<20111024120342.GQ8708@ponder.secretlab.ca>
-	<20111024125030.GB17693@n2100.arm.linux.org.uk>
+From: 15989349144-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Wed, 26 Oct 2011 05:52:57 +0800
+Message-ID: <E1RIowp-0006WT-Qh@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
-	Ulf Hansson <ulf.hansson@stericsson.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20111024125030.GB17693@n2100.arm.linux.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2011/10/24 Russell King - ARM Linux <linux@arm.linux.org.uk>:
-> On Mon, Oct 24, 2011 at 02:03:42PM +0200, Grant Likely wrote:
->> On Fri, Oct 21, 2011 at 04:08:44PM +0200, Ulf Hansson wrote:
->> > Since we are always runtime resumed when leaving probe
->> > the clock must be enabled. To accomplish that we are able
->> > to be runtime suspended after probe in the case when no
->> > request is going to be recieved, a runtime_idle function
->> > has been implemented.
->> >
->> > Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
->> > Signed-off-by: Ulf Hansson <ulf.hansson@stericsson.com>
->> > Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
->>
->> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->>
->> Since it depends on Russell's tree, I'm okay with it going in that way.
->
-> I've received this patch in the patch system, but I'm not planning to
-> apply it yet because it depends on two branches in my tree (amba and clk).
-
-We can fixup that in the aftermath of the merge window, no
-hurries.
-
-Yours,
-Linus Walleij
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yLXYo6nT
+0MG8usO1xMbz0rXQzs/zoaPP1rG+uavLvtPQ0ruyv7fW16jTw8uwLS3GsbT6v6qjuwrI5zooMSm6
+o7nYu/XO7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oi3GsaO7CiAgICgzKbnjuObS
+taGiuPfA4Lf+zvHStbeiLS3GsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO
+0sGqz7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KVGhlIGRlbWFuZCBmb3IgSVQgbmV0d29ya2luZyBwcm9mZXNzaW9uYWxzIGNv
+bnRpbnVlcyB0byBncm93LCBhbmQgdGhlCmRlbWFuZCBmb3Igc3BlY2lhbGl6ZWQgbmV0d29ya2lu
+ZyBza2lsbHMgaXMgZ3Jvd2luZyBldmVuIG1vcmUgcmFwaWRseS4KVGFrZSBhIGNvbXBsaW1lbnRh
+cnkgTGVhcm5pbmdAQ2lzY28gU2VsZi1Bc3Nlc3NtZW50IGFuZCBsZWFybiAKYWJvdXQgQ2lzY28g
+Y2VydGlmaWNhdGlvbnMsIHRyYWluaW5nLCBhbmQgY2FyZWVyIG9wcG9ydHVuaXRpZXMuIApodHRw
+Oi8vcC5zZi5uZXQvc2Z1L2Npc2NvLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

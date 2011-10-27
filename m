@@ -1,11 +1,10 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: Avertisseur radar / Parfums de marques / Appareil de rajeunissement
-	de peau
-Date: Wed, 26 Oct 2011 05:16:22 +0200
-Message-ID: <12f75cf3543b8618081840c4f3e19ec3@www.lovingdeals.fr>
+From: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Kernel Panics when trying to use at25 eeprom driver
+Date: Thu, 27 Oct 2011 15:03:19 +0100
+Message-ID: <CAN=k24=-t+uX_SbcO4Mqy4_CvuyO+ocwuFdtuZLqKfO7GojgfQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,78 +17,114 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJl
-M2NhNTNmNTY1L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvYThlMzAyZTNjYTUzZjU2NS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkFWRVJUSVNTRVVSIFJB
-REFSIERBTkVXIEFSMjAgOiBQb3VyIHNhdm9pciBxdWFuZCBsZXZlciBsZSBwaWVkIGdyw6JjZSDD
-oCBISSBURUNIIElOTk9WQVRJT04sIDIw4oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDUz4oKsCQoK
-CgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYThl
-MzAyZTNjYTUzZjU2NS9kaXNjb3VudC9kZXRhaWwvNjYxLWF2ZXJ0aXNzZXVyLXJhZGFyLWRhbmV3
-LWFyMjAtcGFzLWNoZXJdCgoyMOKCrApWYWxldXI6IDUz4oKsCcOJY29ub21pc2V6OiAzM+KCrAlE
-b25zOiAwLjYw4oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
-ci9nYXRld2F5L2E4ZTMwMmUzY2E1M2Y1NjUvZGlzY291bnQvZGV0YWlsLzY2MS1hdmVydGlzc2V1
-ci1yYWRhci1kYW5ldy1hcjIwLXBhcy1jaGVyXQoKCgpVbiBhdmVydGlzc2V1ciByYWRhciBEYW5l
-dyBBUjIwIFVuIGRlc2lnbiBkaXNjcmV0IGV0IMOpbMOpZ2FudCBBdmVydGlzc2VtZW50IHZvY2Fs
-IGV0IGx1bWluZXV4IETDqXRlY3Rpb24gZGVzIHJhZGFycyBmaXhlcyBldCB6b25lcyDDoCByaXNx
-dWVzIEVucmVnaXN0cmV6IHZvcyBwcm9wcmVzIHBvaW50cyBk4oCZYWxlcnRlIG3DqW1vaXJlIExp
-bWl0ZXVyIGRlIHZpdGVzc2UgKGF2ZXJ0aXNzZW1lbnQgZMOpcGFzc2VtZW50IGRlIHZpdGVzc2Up
-IFtodHRwOi8vd3d3LmZhY2Vib29rLmNvbS9zaGFyZS5waHA/dT1odHRwJTNBJTJGJTJGd3d3Lmxv
-dmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY2NjEtYXZlcnRpc3NldXItcmFkYXIt
-ZGFuZXctYXIyMC1wYXMtY2hlcl0KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
-c2xldHRlci9nYXRld2F5L2E4ZTMwMmUzY2E1M2Y1NjUvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUz
-QSUyRiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGNjYxLWF2ZXJ0
-aXNzZXVyLXJhZGFyLWRhbmV3LWFyMjAtcGFzLWNoZXImYW1wO21lc3NhZ2U9QVZFUlRJU1NFVVIg
-UkFEQVIgREFORVcgQVIyMCA6IFBvdXIgc2F2b2lyIHF1YW5kIGxldmVyIGxlIHBpZWQgZ3LDomNl
-IMOgIEhJIFRFQ0ggSU5OT1ZBVElPTiwgMjDigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgNTPigqxd
-ClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4
-IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBwbHVz
-IGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVzIHLD
-qWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVzIGFz
-c29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
-ZXdzbGV0dGVyL2dhdGV3YXkvYThlMzAyZTNjYTUzZjU2NS9kaXNjb3VudC9kZXRhaWwvNjYxLWF2
-ZXJ0aXNzZXVyLXJhZGFyLWRhbmV3LWFyMjAtcGFzLWNoZXJdCgoKCgoKCkVuY29yZSBwbHVzIGQn
-b2ZmcmVzICEJClZhbGV1cjcwJmV1cm87CVJlbWlzZTUwJQnDiWNvbm9taXNlejM1JmV1cm87CURv
-bnMxLjA1JmV1cm87CQpQQVJGVU1TIERVVFkgRlJFRSA6IExhbmPDtG1lLCBMb2xpdGEgTGVtcGlj
-a2EsIEF6emFybywgR2l2ZW5jaHkuLi4gVm9zIHBhcmZ1bXMgcHLDqWbDqXLDqXMgZ3LDomNlIMOg
-IHVuIGJvbiBkJiMwMzk7YWNoYXQgZCYjMDM5O3VuZSB2YWxldXIgZGUgNzDigqwgcG91ciAzNeKC
-rCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYThl
-MzAyZTNjYTUzZjU2NS9kaXNjb3VudC9kZXRhaWwvNjU0LXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1j
-aGVycy1sb3ZpbmctZGVhbHNdClNldWxlbWVudDM14oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNmNTY1L2Rpc2NvdW50L2Rl
-dGFpbC82NTQtcGFyZnVtcy1kZS1tYXJxdWUtcGFzLWNoZXJzLWxvdmluZy1kZWFsc10KCltodHRw
-Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2Nh
-NTNmNTY1L2Rpc2NvdW50L2RldGFpbC82NTQtcGFyZnVtcy1kZS1tYXJxdWUtcGFzLWNoZXJzLWxv
-dmluZy1kZWFsc10KCgoKVmFsZXVyMzM0JmV1cm87CVJlbWlzZTcxJQnDiWNvbm9taXNlejIzOCZl
-dXJvOwlEb25zMi44OCZldXJvOwkKQVBQQVJFSUwgREUgUkFKRVVOSVNTRU1FTlQgREUgUEVBVSA6
-IHVuZSBwZWF1IGZlcm1lIGV0IMOpY2xhdGFudGUgYXZlYyBsZSBGYWNlbGlmdCAmYW1wOyBSZWp1
-dmVuYXRpb24gRGV2aWNlLCA5NuKCrCBhdSBsaWV1IGRlIDMzNOKCrCBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYThlMzAyZTNjYTUzZjU2NS9kaXNj
-b3VudC9kZXRhaWwvNjUzLWFwcGFyZWlsLWxpZnRpbmctdmlzYWdlLXJhamV1bmlzc2VtZW50LXBl
-YXVdClNldWxlbWVudDk24oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
-ZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNmNTY1L2Rpc2NvdW50L2RldGFpbC82NTMtYXBwYXJl
-aWwtbGlmdGluZy12aXNhZ2UtcmFqZXVuaXNzZW1lbnQtcGVhdV0KCltodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNmNTY1L2Rpc2Nv
-dW50L2RldGFpbC82NTMtYXBwYXJlaWwtbGlmdGluZy12aXNhZ2UtcmFqZXVuaXNzZW1lbnQtcGVh
-dV0KCgoKCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0
-ZXdheS9hOGUzMDJlM2NhNTNmNTY1L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCltodHRwOi8v
-d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNm
-NTY1L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
-L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNmNTY1L2Fzc29jaWF0aW9ucy1j
-YXJpdGF0aXZlcy9dCgoKTCdhZmEJUsOqdmVzIGQnZW5mYW50cwlTdXJmcmlkZXIgRm91bmRhdGlv
-biBFdXJvcGUJCgoKCgoKClNob3cgZW1haWwgYXQgdGhlIHdlYnNpdGUgW2h0dHA6Ly93d3cubG92
-aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2E4ZTMwMmUzY2E1M2Y1NjUvdmll
-dy9dCnwgU2UgZMOpc2luc2NyaXJlIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
-d3NsZXR0ZXIvZ2F0ZXdheS9hOGUzMDJlM2NhNTNmNTY1L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1l
-biZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0MjgxXQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoZSBk
-ZW1hbmQgZm9yIElUIG5ldHdvcmtpbmcgcHJvZmVzc2lvbmFscyBjb250aW51ZXMgdG8gZ3Jvdywg
-YW5kIHRoZQpkZW1hbmQgZm9yIHNwZWNpYWxpemVkIG5ldHdvcmtpbmcgc2tpbGxzIGlzIGdyb3dp
-bmcgZXZlbiBtb3JlIHJhcGlkbHkuClRha2UgYSBjb21wbGltZW50YXJ5IExlYXJuaW5nQENpc2Nv
-IFNlbGYtQXNzZXNzbWVudCBhbmQgbGVhcm4gCmFib3V0IENpc2NvIGNlcnRpZmljYXRpb25zLCB0
-cmFpbmluZywgYW5kIGNhcmVlciBvcHBvcnR1bml0aWVzLiAKaHR0cDovL3Auc2YubmV0L3NmdS9j
-aXNjby1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hello,
+
+I'm hoping someone maybe able to help me fix my problem, before I do
+something silly ;-)
+
+I have been developing a system based on the Freescale i.MX53 SoC and the
+2.6.35 kernel, as part of the project I need to write a custom kernel
+driver that will use the SPI interface. In an effort to make sure the bus
+is operating as described by the OEM I tried to test the bus using an SPI
+EEPROM (AT25512) and the at25 driver.
+
+When I load the at25 module the kernel panics with the following message,
+which I traced to a line in drivers/spi/spi.c the problem is rooted in the
+function spi_async and the line that is causing problems is, return
+master->transfer(spi, message);
+
+[   26.694166] Unable to handle kernel NULL pointer dereference at virtual
+address 00000000
+[   26.716855] pgd = 80004000
+[   26.719576] [00000000] *pgd=00000000
+[   26.723178] Internal error: Oops: 17 [#1] PREEMPT
+[   26.727889] last sysfs file: /sys/class/gsl_kmod/gsl_kmod/dev
+[   26.733646] Modules linked in: at25(+)
+[   26.737432] CPU: 0    Not tainted  (2.6.35.3-744-g27fdf7b-gd22ecaa-dirty
+#64)
+[   26.744594] PC is at mxc_spi_buf_tx_u8+0x1c/0x28
+[   26.749223] LR is at spi_put_tx_data+0x34/0x5c
+[   26.753676] pc : [<80241900>]    lr : [<80241a50>]    psr: 60000013
+[   26.753686] sp : 95123ee8  ip : 802418f8  fp : 95123ef4
+[   26.765180] r10: 95122000  r9 : 95108800  r8 : 95108718
+[   26.770413] r7 : 00000000  r6 : 95108718  r5 : 00000001  r4 : 9686e000
+[   26.776950] r3 : 00000000  r2 : 95108718  r1 : 00000001  r0 : 95108718
+[   26.783488] Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment
+kernel
+[   26.790808] Control: 10c5387d  Table: 853a0019  DAC: 00000017
+[   26.796564] Process mxc_spi.0 (pid: 144, stack limit = 0x951222e8)
+[   26.802753] Stack: (0x95123ee8 to 0x95124000)
+[   26.807122] 3ee0:                   95123f14 95123ef8 80241a50 802418f0
+95108718 95429d80
+[   26.815315] 3f00: 95108800 00000000 95123f34 95123f18 802425cc 80241a28
+95429d80 00000000
+[   26.823509] 3f20: 95429dc4 95429da4 95123f74 95123f38 80240bfc 802424ec
+9510872c 80241aa4
+[   26.831702] 3f40: 00000000 ffffffff 95109b28 95122000 95109b20 95109b28
+95108720 9510871c
+[   26.839895] 3f60: 80240a70 804a29c0 95123fc4 95123f78 8009b414 80240a7c
+95122000 950968a0
+[   26.848089] 3f80: 95123fc4 00000000 950968a0 8009f80c 95123f90 95123f90
+95123fc4 95029d98
+[   26.856282] 3fa0: 95123fcc 8009b214 95109b20 00000000 00000000 00000000
+95123ff4 95123fc8
+[   26.864475] 3fc0: 8009f34c 8009b220 00000000 00000000 95123fd0 95123fd0
+95029d98 8009f2c0
+[   26.872668] 3fe0: 8005916c 00000013 00000000 95123ff8 8005916c 8009f2cc
+00000fff 00000fff
+[   26.880877] [<80241900>] (mxc_spi_buf_tx_u8+0x1c/0x28) from [<80241a50>]
+(spi_put_tx_data+0x34/0x5c)
+[   26.890031] [<80241a50>] (spi_put_tx_data+0x34/0x5c) from [<802425cc>]
+(mxc_spi_transfer+0xec/0x16c)
+[   26.899185] [<802425cc>] (mxc_spi_transfer+0xec/0x16c) from [<80240bfc>]
+(bitbang_work+0x18c/0x314)
+[   26.908254] [<80240bfc>] (bitbang_work+0x18c/0x314) from [<8009b414>]
+(worker_thread+0x200/0x2b4)
+[   26.917152] [<8009b414>] (worker_thread+0x200/0x2b4) from [<8009f34c>]
+(kthread+0x8c/0x94)
+[   26.925441] [<8009f34c>] (kthread+0x8c/0x94) from [<8005916c>]
+(kernel_thread_exit+0x0/0x8)
+[   26.933811] Code: e92d4000 ebf859fe e590304c e1a02000 (e4d30001)
+[   26.940129] ---[ end trace 671158ca92b68e5b ]---
+
+It would seem to be a problem with one of the two structures being used in
+master->transfer, but I am struggling to work out which one it would be.
+
+For the sake of completeness below is the EEPROMS's platform data and the
+register function to go with them, just in case I have made a fatal mistake
+in the configuration.
+
+static struct spi_eeprom at25512 = {
+.name = "at25512",
+ .byte_len = 65536,
+.page_size = 128,
+ .flags = EE_ADDR2,
+};
+
+static struct spi_board_info eft_spi_board_info[] __initdata = {
+ {
+.modalias = "at25",
+ .max_speed_hz = 5000000,
+.bus_num = 1,
+ .chip_select = 0,
+.platform_data   = &at25512,
+ .mode = SPI_MODE_0,
+//.irq = 99,
+ //.controller_data = NULL,
+},
+};
+
+Located in init function: spi_register_board_info(eft_spi_board_info,
+ARRAY_SIZE(eft_spi_board_info));
+
+I really hope someone can assist.
+
+Kind regards
+
+Wayne
+------------------------------------------------------------------------------
+The demand for IT networking professionals continues to grow, and the
+demand for specialized networking skills is growing even more rapidly.
+Take a complimentary Learning@Cisco Self-Assessment and learn 
+about Cisco certifications, training, and career opportunities. 
+http://p.sf.net/sfu/cisco-dev2dev

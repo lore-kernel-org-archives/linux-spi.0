@@ -1,18 +1,12 @@
-From: Tomoya MORINAGA <tomoya-linux-8lRStDepK8iSL1NxhRU65dBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH 2/2] spi-topcliff-pch: Change company name OKI SEMICONDUCTOR
-	to LAPIS Semiconductor
-Date: Fri, 28 Oct 2011 09:35:22 +0900
-Message-ID: <1319762122-7019-2-git-send-email-tomoya-linux@dsn.lapis-semi.com>
-References: <1319762122-7019-1-git-send-email-tomoya-linux@dsn.lapis-semi.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: Envie d'un ventre plat et d'une solution anti-cellulite ?
+Date: Fri, 28 Oct 2011 05:14:10 +0200
+Message-ID: <9fb33073d17e7f8ab0bd84b25f55d079@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Tomoya MORINAGA <tomoya-linux-8lRStDepK8iSL1NxhRU65dBPR1lH4CV8@public.gmane.org>, kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1319762122-7019-1-git-send-email-tomoya-linux-8lRStDepK8iSL1NxhRU65dBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,62 +17,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On October 1 in 2011,
-OKI SEMICONDUCTOR Co., Ltd. changed the company name in to LAPIS Semiconductor Co., Ltd.
-
-Signed-off-by: Tomoya MORINAGA <tomoya-linux-8lRStDepK8iSL1NxhRU65dBPR1lH4CV8@public.gmane.org>
----
- drivers/spi/spi-topcliff-pch.c |   12 ++++++------
- 1 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 2b1e966..7086583 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1,7 +1,7 @@
- /*
-  * SPI bus driver for the Topcliff PCH used by Intel SoCs
-  *
-- * Copyright (C) 2010 OKI SEMICONDUCTOR Co., LTD.
-+ * Copyright (C) 2011 LAPIS Semiconductor Co., Ltd.
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-@@ -95,7 +95,7 @@
- #define PCH_CLOCK_HZ		50000000
- #define PCH_MAX_SPBR		1023
- 
--/* Definition for ML7213/ML7831 by OKI SEMICONDUCTOR */
-+/* Definition for ML7213/ML7223/ML7831 by LAPIS Semiconductor */
- #define PCI_VENDOR_ID_ROHM		0x10DB
- #define PCI_DEVICE_ID_ML7213_SPI	0x802c
- #define PCI_DEVICE_ID_ML7223_SPI	0x800F
-@@ -104,9 +104,9 @@
- /*
-  * Set the number of SPI instance max
-  * Intel EG20T PCH :		1ch
-- * OKI SEMICONDUCTOR ML7213 IOH :	2ch
-- * OKI SEMICONDUCTOR ML7223 IOH :	1ch
-- * OKI SEMICONDUCTOR ML7831 IOH :	1ch
-+ * LAPIS Semiconductor ML7213 IOH :	2ch
-+ * LAPIS Semiconductor ML7223 IOH :	1ch
-+ * LAPIS Semiconductor ML7831 IOH :	1ch
- */
- #define PCH_SPI_MAX_DEV			2
- 
-@@ -1756,4 +1756,4 @@ MODULE_PARM_DESC(use_dma,
- 		 "to use DMA for data transfers pass 1 else 0; default 1");
- 
- MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("Intel EG20T PCH/OKI SEMICONDUCTOR ML7xxx IOH SPI Driver");
-+MODULE_DESCRIPTION("Intel EG20T PCH/LAPIS Semiconductor ML7xxx IOH SPI Driver");
--- 
-1.7.4.4
-
-
-------------------------------------------------------------------------------
-The demand for IT networking professionals continues to grow, and the
-demand for specialized networking skills is growing even more rapidly.
-Take a complimentary Learning@Cisco Self-Assessment and learn 
-about Cisco certifications, training, and career opportunities. 
-http://p.sf.net/sfu/cisco-dev2dev
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9mNzVjMDJm
+N2U4MjQ4MGYxL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvZjc1YzAyZjdlODI0ODBmMS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJClNIT1JUWSBNSU5DRVVS
+IFZFTlRSRSBQTEFUIDogRGl0ZXMgYXUgcmV2b2lyIMOgIGxhIGNlbGx1bGl0ZSBldCDDoCBsYSBw
+ZWF1IGTigJlvcmFuZ2UgYXZlYyBCZWF1dHkgTGluZSwgMjDigqwgc2V1bGVtZW50IGF1IGxpZXUg
+ZGUgNDDigqwgIQkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5L2Y3NWMwMmY3ZTgyNDgwZjEvZGlzY291bnQvZGV0YWlsLzY3MC1zaG9ydHktbWlu
+Y2V1ci1wYXMtY2hlci1iZWF1dHktbGluZV0KCjIw4oKsClZhbGV1cjogNDDigqwJw4ljb25vbWlz
+ZXo6IDIw4oKsCURvbnM6IDAuNjDigqwJCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9kaXNjb3VudC9kZXRhaWwvNjcw
+LXNob3J0eS1taW5jZXVyLXBhcy1jaGVyLWJlYXV0eS1saW5lXQoKCgpVbiBzaG9ydHkgbWluY2V1
+ciB2ZW50cmUgcGxhdCBkZSBCZWF1dHkgTGluZSzCoExlYWRlciBkdSBtYXJjaMOpIGVuIGNvc23D
+qXRvdGV4dGlsZSBEaXNjcmV0IHNvdXMgbGVzIHbDqnRlbWVudHMgRGVzIGNlbnRpbcOodHJlcyBk
+ZSB0b3VyIGRlIHZlbnRyZSwgZGUgaGFuY2hlcyBldCBkZSBjdWlzc2VzIGVuIG1vaW5zIEFkaWV1
+IMOgIGxhIGNlbGx1bGl0ZSBldCBsYSBwZWF1IGTigJlvcmFuZ2UgQm9uam91ciDDoCB1bmUgcGVh
+dSBmZXJtZcKgISBbaHR0cDovL3d3dy5mYWNlYm9vay5jb20vc2hhcmUucGhwP3U9aHR0cCUzQSUy
+RiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGNjcwLXNob3J0eS1t
+aW5jZXVyLXBhcy1jaGVyLWJlYXV0eS1saW5lXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9wYWdlL3R3aXR0ZXIvP3Vy
+bD1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY2
+NzAtc2hvcnR5LW1pbmNldXItcGFzLWNoZXItYmVhdXR5LWxpbmUmYW1wO21lc3NhZ2U9U0hPUlRZ
+IE1JTkNFVVIgVkVOVFJFIFBMQVQgOiBEaXRlcyBhdSByZXZvaXIgw6AgbGEgY2VsbHVsaXRlIGV0
+IMOgIGxhIHBlYXUgZOKAmW9yYW5nZSBhdmVjIEJlYXV0eSBMaW5lLCAyMOKCrCBzZXVsZW1lbnQg
+YXUgbGlldSBkZSA0MOKCrCAhXQpbbWFpbHRvOj9zdWJqZWN0PUomIzAzOTthaSBkw6ljb3V2ZXJ0
+IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SiYjMDM5O2Fp
+IGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyEgTG92aW5n
+IERlYWxzIG9mZnJlIGRlcyByw6lkdWN0aW9ucyBpbmNyb3lhYmxlcyBldCByZXZlcnNlIHVuIHBv
+dXJjZW50YWdlIMOgIGRlcyBhc3NvY2lhdGlvbnMgY2FyaXRhdGl2ZXMuIGh0dHA6Ly93d3cubG92
+aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2Y3NWMwMmY3ZTgyNDgwZjEvZGlz
+Y291bnQvZGV0YWlsLzY3MC1zaG9ydHktbWluY2V1ci1wYXMtY2hlci1iZWF1dHktbGluZV0KCgoK
+CgoKRW5jb3JlIHBsdXMgZCdvZmZyZXMgIQkKVmFsZXVyNTMmZXVybzsJUmVtaXNlNjIlCcOJY29u
+b21pc2V6MzMmZXVybzsJRG9uczAuNjAmZXVybzsJCkFWRVJUSVNTRVVSIFJBREFSIERBTkVXIEFS
+MjAgOiBQb3VyIHNhdm9pciBxdWFuZCBsZXZlciBsZSBwaWVkIGdyw6JjZSDDoCBISSBURUNIIElO
+Tk9WQVRJT04sIDIw4oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDUz4oKsIFtodHRwOi8vd3d3Lmxv
+dmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9mNzVjMDJmN2U4MjQ4MGYxL2Rp
+c2NvdW50L2RldGFpbC82NjEtYXZlcnRpc3NldXItcmFkYXItZGFuZXctYXIyMC1wYXMtY2hlcl0K
+U2V1bGVtZW50MjDigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5L2Y3NWMwMmY3ZTgyNDgwZjEvZGlzY291bnQvZGV0YWlsLzY2MS1hdmVydGlzc2V1
+ci1yYWRhci1kYW5ldy1hcjIwLXBhcy1jaGVyXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2Y3NWMwMmY3ZTgyNDgwZjEvZGlzY291bnQvZGV0YWls
+LzY2MS1hdmVydGlzc2V1ci1yYWRhci1kYW5ldy1hcjIwLXBhcy1jaGVyXQoKCgpWYWxldXI3MCZl
+dXJvOwlSZW1pc2U1MCUJw4ljb25vbWlzZXozNSZldXJvOwlEb25zMS4wNSZldXJvOwkKUEFSRlVN
+UyBEVVRZIEZSRUUgOiBMYW5jw7RtZSwgTG9saXRhIExlbXBpY2thLCBBenphcm8sIEdpdmVuY2h5
+Li4uIFZvcyBwYXJmdW1zIHByw6lmw6lyw6lzIGdyw6JjZSDDoCB1biBib24gZCYjMDM5O2FjaGF0
+IGQmIzAzOTt1bmUgdmFsZXVyIGRlIDcw4oKsIHBvdXIgMzXigqwgW2h0dHA6Ly93d3cubG92aW5n
+ZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2Y3NWMwMmY3ZTgyNDgwZjEvZGlzY291
+bnQvZGV0YWlsLzY1NC1wYXJmdW1zLWRlLW1hcnF1ZS1wYXMtY2hlcnMtbG92aW5nLWRlYWxzXQpT
+ZXVsZW1lbnQzNeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9kaXNjb3VudC9kZXRhaWwvNjU0LXBhcmZ1bXMtZGUt
+bWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
+ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9kaXNjb3VudC9kZXRh
+aWwvNjU0LXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgoKCgoKCgpb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZjc1YzAy
+ZjdlODI0ODBmMS9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3Zpbmdk
+ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9hc3NvY2lh
+dGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
+bGV0dGVyL2dhdGV3YXkvZjc1YzAyZjdlODI0ODBmMS9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMv
+XQoKCkwnYWZhCVLDqnZlcyBkJ2VuZmFudHMJU3VyZnJpZGVyIEZvdW5kYXRpb24gRXVyb3BlCQoK
+CgoKCgpTaG93IGVtYWlsIGF0IHRoZSB3ZWJzaXRlIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
+L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9mNzVjMDJmN2U4MjQ4MGYxL3ZpZXcvXQp8IFNlIGTD
+qXNpbnNjcmlyZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
+dGV3YXkvZjc1YzAyZjdlODI0ODBmMS91bnN1YnNjcmliZS8/bGFuZ3VhZ2U9ZW4mYW1wO2NvZGU9
+N2RiODAzZWUwN2UwNDI4MV0KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGUgZGVtYW5kIGZvciBJ
+VCBuZXR3b3JraW5nIHByb2Zlc3Npb25hbHMgY29udGludWVzIHRvIGdyb3csIGFuZCB0aGUKZGVt
+YW5kIGZvciBzcGVjaWFsaXplZCBuZXR3b3JraW5nIHNraWxscyBpcyBncm93aW5nIGV2ZW4gbW9y
+ZSByYXBpZGx5LgpUYWtlIGEgY29tcGxpbWVudGFyeSBMZWFybmluZ0BDaXNjbyBTZWxmLUFzc2Vz
+c21lbnQgYW5kIGxlYXJuIAphYm91dCBDaXNjbyBjZXJ0aWZpY2F0aW9ucywgdHJhaW5pbmcsIGFu
+ZCBjYXJlZXIgb3Bwb3J0dW5pdGllcy4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvY2lzY28tZGV2MmRl
+dgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

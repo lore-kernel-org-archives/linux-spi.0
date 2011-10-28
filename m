@@ -1,7 +1,7 @@
 From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 Subject: [PATCH 0/3] OMAP: SPI: Driver updates
-Date: Fri, 28 Oct 2011 17:11:52 +0530
-Message-ID: <1319802115-16499-1-git-send-email-shubhrajyoti@ti.com>
+Date: Fri, 28 Oct 2011 17:14:16 +0530
+Message-ID: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

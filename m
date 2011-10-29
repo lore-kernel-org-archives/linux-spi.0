@@ -1,71 +1,50 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/3] OMAP: SPI: call pm_runtime_disable in error path and
- remove
-Date: Sat, 29 Oct 2011 14:06:55 +0200
-Message-ID: <20111029120655.GE22592@ponder.secretlab.ca>
-References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
- <1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: i.MX: GPIO based SPI chip selects question
+Date: Sat, 29 Oct 2011 13:51:02 +0200
+Message-ID: <20111029115102.GC22592@ponder.secretlab.ca>
+References: <CAN=k24kKWd9TPDbkWTCOSn48FNOi9DUALGd9XmeQ_xOJ=Kxd9g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	"Hebbar, Gururaja" <gururaja.hebbar@ti.com>,
-	linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <CAN=k24kKWd9TPDbkWTCOSn48FNOi9DUALGd9XmeQ_xOJ=Kxd9g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 28, 2011 at 05:14:18PM +0530, Shubhrajyoti D wrote:
-> omap mcspi probe() doesnt call pm_runtime  disable functions
-> in case of failure. remove() doesnt call pm_runtime disable. This could
-> lead to warnings as below on subsequent insmod.
+On Fri, Oct 28, 2011 at 02:06:16PM +0100, Wayne Tams wrote:
+> Hi,
 > 
-> ~# insmod spi-omap2-mcspi.ko
-> [  255.383671] omap2_mcspi omap2_mcspi.1: Unbalanced pm_runtime_enable!
-> ...
-> 
-> This patch adds the pm_runtime disable() at appropriate stages.
-> 
-> Signed-off-by: Hebbar, Gururaja <gururaja.hebbar@ti.com>
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> Can I use GPIO pins on my i.mx53 for SPI chip select, I have found little
+> on the web that can help me, I am hoping that it is straight-forward enough
+> for me to implement it? Perhaps there is a macro that I can use in the
+> spi_board_info structure that will let me declare the GPIO?
 
-Nitpick: please use the format "spi/<device>: ...." for the subject
-line of spi patches.  It's just a consistency thing that I like.
+Yes, you can, but you may need to modify the spi driver to twiddle
+gpios between transfers.  Not all drivers have it implemented.
 
-Picked up for v3.3, thanks.
+Bonus points if you create a generic gpio ss handling hook that all
+the spi drivers can use.
 
 g.
 
-> ---
->  drivers/spi/spi-omap2-mcspi.c |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 471b0f3..6875a0b 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -1195,6 +1195,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  err4:
->  	spi_master_put(master);
->  err3:
-> +	pm_runtime_disable(&pdev->dev);
->  	kfree(mcspi->dma_channels);
->  err2:
->  	release_mem_region(r->start, resource_size(r));
-> @@ -1216,6 +1217,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->  	dma_channels = mcspi->dma_channels;
->  
->  	omap2_mcspi_disable_clocks(mcspi);
-> +	pm_runtime_disable(&pdev->dev);
->  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	release_mem_region(r->start, resource_size(r));
->  
-> -- 
-> 1.7.1
+> If it is not possible, could anyone offer a suggestion on a solution for
+> adding more chips selects, perhaps there is another platform out there that
+> implements this sort of GPIO functionality?
 > 
+> Many thanks
 > 
+> Wayne
 > ------------------------------------------------------------------------------
 > The demand for IT networking professionals continues to grow, and the
 > demand for specialized networking skills is growing even more rapidly.
@@ -74,5 +53,11 @@ g.
 > http://p.sf.net/sfu/cisco-dev2dev
 > _______________________________________________
 > spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------------------------------------------------------------------------------
+Get your Android app more play: Bring it to the BlackBerry PlayBook 
+in minutes. BlackBerry App World&#153; now supports Android&#153; Apps 
+for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple 
+it is! http://p.sf.net/sfu/android-dev2dev

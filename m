@@ -1,115 +1,141 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] OMAP: SPI: Use a workqueue per omap2_mcspi controller
-Date: Sat, 29 Oct 2011 14:03:19 +0200
-Message-ID: <20111029120319.GD22592@ponder.secretlab.ca>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 3/3] OMAP: SPI: Correct the error path
+Date: Sat, 29 Oct 2011 14:07:09 +0200
+Message-ID: <20111029120709.GF22592@ponder.secretlab.ca>
 References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
- <1319802259-16565-2-git-send-email-shubhrajyoti@ti.com>
+	<1319802259-16565-4-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Steve Wilkins <steve.wilkins@raymarine.com>
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+To: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1319802259-16565-2-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1319802259-16565-4-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 28, 2011 at 05:14:17PM +0530, Shubhrajyoti D wrote:
-> Currently all the spi controllers share the work queue.
-> This patch allocates a work queue per controller.
+On Fri, Oct 28, 2011 at 05:14:19PM +0530, Shubhrajyoti D wrote:
+> Currently McSPI driver doesnt follow correct failure fallback steps
+> attempting to correct the same.
+> Also
+> -  label names changed  to give meaningful names.
+> - Setting the driver data to NULL in remove
 > 
-> Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> Signed-off-by: Hebbar, Gururaja <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 
 Applied for v3.3, thanks.
 
 g.
 
 > ---
->  drivers/spi/spi-omap2-mcspi.c |   19 +++++++++++--------
->  1 files changed, 11 insertions(+), 8 deletions(-)
+>  drivers/spi/spi-omap2-mcspi.c |   32 ++++++++++++++++++++------------
+>  1 files changed, 20 insertions(+), 12 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index a8b614b..471b0f3 100644
+> index 6875a0b..abe2fee 100644
 > --- a/drivers/spi/spi-omap2-mcspi.c
 > +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -121,6 +121,7 @@ struct omap2_mcspi {
->  	/* SPI1 has 4 channels, while SPI2 has 2 */
->  	struct omap2_mcspi_dma	*dma_channels;
->  	struct  device		*dev;
-> +	struct workqueue_struct *wq;
->  };
+> @@ -1115,13 +1115,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  	mcspi->wq = alloc_workqueue(wq_name, WQ_MEM_RECLAIM, 1);
+>  	if (mcspi->wq == NULL) {
+>  		status = -ENOMEM;
+> -		goto err1;
+> +		goto free_master;
+>  	}
 >  
->  struct omap2_mcspi_cs {
-> @@ -143,8 +144,6 @@ struct omap2_mcspi_regs {
->  
->  static struct omap2_mcspi_regs omap2_mcspi_ctx[OMAP2_MCSPI_MAX_CTRL];
->  
-> -static struct workqueue_struct *omap2_mcspi_wq;
-> -
->  #define MOD_REG_BIT(val, mask, set) do { \
->  	if (set) \
->  		val |= mask; \
-> @@ -1043,7 +1042,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
->  
->  	spin_lock_irqsave(&mcspi->lock, flags);
->  	list_add_tail(&m->queue, &mcspi->msg_queue);
-> -	queue_work(omap2_mcspi_wq, &mcspi->work);
-> +	queue_work(mcspi->wq, &mcspi->work);
->  	spin_unlock_irqrestore(&mcspi->lock, flags);
->  
->  	return 0;
-> @@ -1088,6 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  	struct omap2_mcspi	*mcspi;
->  	struct resource		*r;
->  	int			status = 0, i;
-> +	char			wq_name[20];
->  
->  	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
->  	if (master == NULL) {
-> @@ -1111,6 +1111,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  	mcspi = spi_master_get_devdata(master);
->  	mcspi->master = master;
->  
-> +	sprintf(wq_name, "omap2_mcspi/%d", master->bus_num);
-> +	mcspi->wq = alloc_workqueue(wq_name, WQ_MEM_RECLAIM, 1);
-> +	if (mcspi->wq == NULL) {
-> +		status = -ENOMEM;
-> +		goto err1;
-> +	}
-> +
 >  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 >  	if (r == NULL) {
 >  		status = -ENODEV;
-> @@ -1216,6 +1223,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->  	spi_unregister_master(master);
+> -		goto err1;
+> +		goto free_master;
+>  	}
+>  	r->start += pdata->regs_offset;
+>  	r->end += pdata->regs_offset;
+> @@ -1129,14 +1129,14 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  	if (!request_mem_region(r->start, resource_size(r),
+>  				dev_name(&pdev->dev))) {
+>  		status = -EBUSY;
+> -		goto err1;
+> +		goto free_master;
+>  	}
+>  
+>  	mcspi->base = ioremap(r->start, resource_size(r));
+>  	if (!mcspi->base) {
+>  		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+>  		status = -ENOMEM;
+> -		goto err2;
+> +		goto release_region;
+>  	}
+>  
+>  	mcspi->dev = &pdev->dev;
+> @@ -1151,7 +1151,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  			GFP_KERNEL);
+>  
+>  	if (mcspi->dma_channels == NULL)
+> -		goto err2;
+> +		goto unmap_io;
+>  
+>  	for (i = 0; i < master->num_chipselect; i++) {
+>  		char dma_ch_name[14];
+> @@ -1181,26 +1181,33 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  		mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
+>  	}
+>  
+> +	if (status < 0)
+> +		goto dma_chnl_free;
+> +
+>  	pm_runtime_enable(&pdev->dev);
+>  
+>  	if (status || omap2_mcspi_master_setup(mcspi) < 0)
+> -		goto err3;
+> +		goto disable_pm;
+>  
+>  	status = spi_register_master(master);
+>  	if (status < 0)
+> -		goto err4;
+> +		goto err_spi_register;
+>  
+>  	return status;
+>  
+> -err4:
+> +err_spi_register:
+>  	spi_master_put(master);
+> -err3:
+> +disable_pm:
+>  	pm_runtime_disable(&pdev->dev);
+> +dma_chnl_free:
+>  	kfree(mcspi->dma_channels);
+> -err2:
+> -	release_mem_region(r->start, resource_size(r));
+> +unmap_io:
+>  	iounmap(mcspi->base);
+> -err1:
+> +release_region:
+> +	release_mem_region(r->start, resource_size(r));
+> +free_master:
+> +	kfree(master);
+> +	platform_set_drvdata(pdev, NULL);
+>  	return status;
+>  }
+>  
+> @@ -1226,6 +1233,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
 >  	iounmap(base);
 >  	kfree(dma_channels);
-> +	destroy_workqueue(mcspi->wq);
+>  	destroy_workqueue(mcspi->wq);
+> +	platform_set_drvdata(pdev, NULL);
 >  
 >  	return 0;
 >  }
-> @@ -1274,10 +1282,6 @@ static struct platform_driver omap2_mcspi_driver = {
->  
->  static int __init omap2_mcspi_init(void)
->  {
-> -	omap2_mcspi_wq = create_singlethread_workqueue(
-> -				omap2_mcspi_driver.driver.name);
-> -	if (omap2_mcspi_wq == NULL)
-> -		return -1;
->  	return platform_driver_probe(&omap2_mcspi_driver, omap2_mcspi_probe);
->  }
->  subsys_initcall(omap2_mcspi_init);
-> @@ -1286,7 +1290,6 @@ static void __exit omap2_mcspi_exit(void)
->  {
->  	platform_driver_unregister(&omap2_mcspi_driver);
->  
-> -	destroy_workqueue(omap2_mcspi_wq);
->  }
->  module_exit(omap2_mcspi_exit);
->  
 > -- 
 > 1.7.1
 > 
@@ -122,5 +148,11 @@ g.
 > http://p.sf.net/sfu/cisco-dev2dev
 > _______________________________________________
 > spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------------------------------------------------------------------------------
+Get your Android app more play: Bring it to the BlackBerry PlayBook 
+in minutes. BlackBerry App World&#153; now supports Android&#153; Apps 
+for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple 
+it is! http://p.sf.net/sfu/android-dev2dev

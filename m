@@ -1,89 +1,78 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/2] spi-topcliff-pch: Support new device LAPIS
- Semiconductor ML7831 IOH
-Date: Sat, 29 Oct 2011 17:12:28 +0200
-Message-ID: <20111029151228.GC10954@ponder.secretlab.ca>
-References: <1319762122-7019-1-git-send-email-tomoya-linux@dsn.lapis-semi.com>
+Subject: Re: [PATCH 2/3] OMAP: SPI: call pm_runtime_disable in error path and
+ remove
+Date: Sat, 29 Oct 2011 14:06:55 +0200
+Message-ID: <20111029120655.GE22592@ponder.secretlab.ca>
+References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
+ <1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, qi.wang@intel.com,
-	yong.y.wang@intel.com, joel.clark@intel.com, kok.howg.ewe@intel.com
-To: Tomoya MORINAGA <tomoya-linux@dsn.lapis-semi.com>
+	"Hebbar, Gururaja" <gururaja.hebbar@ti.com>,
+	linux-kernel@vger.kernel.org
+To: Shubhrajyoti D <shubhrajyoti@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1319762122-7019-1-git-send-email-tomoya-linux@dsn.lapis-semi.com>
+In-Reply-To: <1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 28, 2011 at 09:35:21AM +0900, Tomoya MORINAGA wrote:
-> ML7831 is companion chip for Intel Atom E6xx series.
+On Fri, Oct 28, 2011 at 05:14:18PM +0530, Shubhrajyoti D wrote:
+> omap mcspi probe() doesnt call pm_runtime  disable functions
+> in case of failure. remove() doesnt call pm_runtime disable. This could
+> lead to warnings as below on subsequent insmod.
 > 
-> Signed-off-by: Tomoya MORINAGA <tomoya-linux@dsn.lapis-semi.com>
+> ~# insmod spi-omap2-mcspi.ko
+> [  255.383671] omap2_mcspi omap2_mcspi.1: Unbalanced pm_runtime_enable!
+> ...
+> 
+> This patch adds the pm_runtime disable() at appropriate stages.
+> 
+> Signed-off-by: Hebbar, Gururaja <gururaja.hebbar@ti.com>
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
 
-Applied both for 3.3, thanks.
+Nitpick: please use the format "spi/<device>: ...." for the subject
+line of spi patches.  It's just a consistency thing that I like.
+
+Picked up for v3.3, thanks.
 
 g.
 
 > ---
->  drivers/spi/Kconfig            |    6 +++---
->  drivers/spi/spi-topcliff-pch.c |    5 ++++-
->  2 files changed, 7 insertions(+), 4 deletions(-)
+>  drivers/spi/spi-omap2-mcspi.c |    2 ++
+>  1 files changed, 2 insertions(+), 0 deletions(-)
 > 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index a1fd73d..6168516 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -346,14 +346,14 @@ config SPI_TI_SSP
->  	  serial port.
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index 471b0f3..6875a0b 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -1195,6 +1195,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  err4:
+>  	spi_master_put(master);
+>  err3:
+> +	pm_runtime_disable(&pdev->dev);
+>  	kfree(mcspi->dma_channels);
+>  err2:
+>  	release_mem_region(r->start, resource_size(r));
+> @@ -1216,6 +1217,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>  	dma_channels = mcspi->dma_channels;
 >  
->  config SPI_TOPCLIFF_PCH
-> -	tristate "Intel EG20T PCH/OKI SEMICONDUCTOR ML7213 IOH SPI controller"
-> +	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
->  	depends on PCI
->  	help
->  	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
->  	  used in some x86 embedded processors.
->  
-> -	  This driver also supports the ML7213, a companion chip for the
-> -	  Atom E6xx series and compatible with the Intel EG20T PCH.
-> +	  This driver also supports the ML7213/ML7223/ML7831, a companion chip
-> +	  for the Atom E6xx series and compatible with the Intel EG20T PCH.
->  
->  config SPI_TXX9
->  	tristate "Toshiba TXx9 SPI controller"
-> diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-> index 6a80749..2b1e966 100644
-> --- a/drivers/spi/spi-topcliff-pch.c
-> +++ b/drivers/spi/spi-topcliff-pch.c
-> @@ -95,16 +95,18 @@
->  #define PCH_CLOCK_HZ		50000000
->  #define PCH_MAX_SPBR		1023
->  
-> -/* Definition for ML7213 by OKI SEMICONDUCTOR */
-> +/* Definition for ML7213/ML7831 by OKI SEMICONDUCTOR */
->  #define PCI_VENDOR_ID_ROHM		0x10DB
->  #define PCI_DEVICE_ID_ML7213_SPI	0x802c
->  #define PCI_DEVICE_ID_ML7223_SPI	0x800F
-> +#define PCI_DEVICE_ID_ML7831_SPI	0x8816
->  
->  /*
->   * Set the number of SPI instance max
->   * Intel EG20T PCH :		1ch
->   * OKI SEMICONDUCTOR ML7213 IOH :	2ch
->   * OKI SEMICONDUCTOR ML7223 IOH :	1ch
-> + * OKI SEMICONDUCTOR ML7831 IOH :	1ch
->  */
->  #define PCH_SPI_MAX_DEV			2
->  
-> @@ -218,6 +220,7 @@ static struct pci_device_id pch_spi_pcidev_id[] = {
->  	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
->  	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
->  	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7223_SPI), 1, },
-> +	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7831_SPI), 1, },
->  	{ }
->  };
+>  	omap2_mcspi_disable_clocks(mcspi);
+> +	pm_runtime_disable(&pdev->dev);
+>  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	release_mem_region(r->start, resource_size(r));
 >  
 > -- 
-> 1.7.4.4
+> 1.7.1
 > 
+> 
+> ------------------------------------------------------------------------------
+> The demand for IT networking professionals continues to grow, and the
+> demand for specialized networking skills is growing even more rapidly.
+> Take a complimentary Learning@Cisco Self-Assessment and learn 
+> about Cisco certifications, training, and career opportunities. 
+> http://p.sf.net/sfu/cisco-dev2dev
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

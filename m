@@ -1,60 +1,126 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: i.MX: GPIO based SPI chip selects question
-Date: Sat, 29 Oct 2011 22:44:51 +0200
-Message-ID: <20111029204450.GA31910@tarshish>
-References: <CAN=k24kKWd9TPDbkWTCOSn48FNOi9DUALGd9XmeQ_xOJ=Kxd9g@mail.gmail.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 1/3] OMAP: SPI: Use a workqueue per omap2_mcspi controller
+Date: Sat, 29 Oct 2011 14:03:19 +0200
+Message-ID: <20111029120319.GD22592@ponder.secretlab.ca>
+References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
+ <1319802259-16565-2-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Steve Wilkins <steve.wilkins@raymarine.com>
+To: Shubhrajyoti D <shubhrajyoti@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAN=k24kKWd9TPDbkWTCOSn48FNOi9DUALGd9XmeQ_xOJ=Kxd9g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <1319802259-16565-2-git-send-email-shubhrajyoti@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wayne,
+On Fri, Oct 28, 2011 at 05:14:17PM +0530, Shubhrajyoti D wrote:
+> Currently all the spi controllers share the work queue.
+> This patch allocates a work queue per controller.
+> 
+> Signed-off-by: Steve Wilkins <steve.wilkins@raymarine.com>
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
 
-On Fri, Oct 28, 2011 at 02:06:16PM +0100, Wayne Tams wrote:
-> Can I use GPIO pins on my i.mx53 for SPI chip select, I have found little
-> on the web that can help me, I am hoping that it is straight-forward enough
-> for me to implement it? Perhaps there is a macro that I can use in the
-> spi_board_info structure that will let me declare the GPIO?
+Applied for v3.3, thanks.
 
-If you are using the mainline kernel then the SPI driver 
-(drivers/spi/spi-imx.c) supports the use of GPIO lines for chip-select 
-exclusively. You can find an i.MX53 specific example in 
-arch/arm/mach-mx5/board-mx53_evk.c (look for the mx53_evk_spi_data struct).  
-This example demonstrate the use of two GPIOs for chip-select, but the list of 
-chip-selects can be longer.
+g.
 
-Since you appear to be using the Freescale supplied kernel (as I infer from 
-your previous question on this list), you are probably using different driver.  
-This driver (likely 
-http://opensource.freescale.com/git?p=imx/linux-2.6-imx.git;a=blob;f=drivers/spi/mxc_spi.c;h=8c722686a0e1a419b417c0e2f98a4d6f028cf02e;hb=a1cd8a787a18da69ac4e48cfc876623bd7323799) 
-does not support GPIOs for chip-select.
-
-Freescale seem to have abandoned their in-house non mainlined SPI driver in a 
-later version of their kernel (rel_imx_2.6.38_11.09.01 tag in 
-http://opensource.freescale.com/git) so you may want to update your kernel.
-
-baruch
-
--- 
-                                                     ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
-
-------------------------------------------------------------------------------
-Get your Android app more play: Bring it to the BlackBerry PlayBook 
-in minutes. BlackBerry App World&#153; now supports Android&#153; Apps 
-for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple 
-it is! http://p.sf.net/sfu/android-dev2dev
+> ---
+>  drivers/spi/spi-omap2-mcspi.c |   19 +++++++++++--------
+>  1 files changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index a8b614b..471b0f3 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -121,6 +121,7 @@ struct omap2_mcspi {
+>  	/* SPI1 has 4 channels, while SPI2 has 2 */
+>  	struct omap2_mcspi_dma	*dma_channels;
+>  	struct  device		*dev;
+> +	struct workqueue_struct *wq;
+>  };
+>  
+>  struct omap2_mcspi_cs {
+> @@ -143,8 +144,6 @@ struct omap2_mcspi_regs {
+>  
+>  static struct omap2_mcspi_regs omap2_mcspi_ctx[OMAP2_MCSPI_MAX_CTRL];
+>  
+> -static struct workqueue_struct *omap2_mcspi_wq;
+> -
+>  #define MOD_REG_BIT(val, mask, set) do { \
+>  	if (set) \
+>  		val |= mask; \
+> @@ -1043,7 +1042,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
+>  
+>  	spin_lock_irqsave(&mcspi->lock, flags);
+>  	list_add_tail(&m->queue, &mcspi->msg_queue);
+> -	queue_work(omap2_mcspi_wq, &mcspi->work);
+> +	queue_work(mcspi->wq, &mcspi->work);
+>  	spin_unlock_irqrestore(&mcspi->lock, flags);
+>  
+>  	return 0;
+> @@ -1088,6 +1087,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  	struct omap2_mcspi	*mcspi;
+>  	struct resource		*r;
+>  	int			status = 0, i;
+> +	char			wq_name[20];
+>  
+>  	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+>  	if (master == NULL) {
+> @@ -1111,6 +1111,13 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>  	mcspi = spi_master_get_devdata(master);
+>  	mcspi->master = master;
+>  
+> +	sprintf(wq_name, "omap2_mcspi/%d", master->bus_num);
+> +	mcspi->wq = alloc_workqueue(wq_name, WQ_MEM_RECLAIM, 1);
+> +	if (mcspi->wq == NULL) {
+> +		status = -ENOMEM;
+> +		goto err1;
+> +	}
+> +
+>  	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	if (r == NULL) {
+>  		status = -ENODEV;
+> @@ -1216,6 +1223,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>  	spi_unregister_master(master);
+>  	iounmap(base);
+>  	kfree(dma_channels);
+> +	destroy_workqueue(mcspi->wq);
+>  
+>  	return 0;
+>  }
+> @@ -1274,10 +1282,6 @@ static struct platform_driver omap2_mcspi_driver = {
+>  
+>  static int __init omap2_mcspi_init(void)
+>  {
+> -	omap2_mcspi_wq = create_singlethread_workqueue(
+> -				omap2_mcspi_driver.driver.name);
+> -	if (omap2_mcspi_wq == NULL)
+> -		return -1;
+>  	return platform_driver_probe(&omap2_mcspi_driver, omap2_mcspi_probe);
+>  }
+>  subsys_initcall(omap2_mcspi_init);
+> @@ -1286,7 +1290,6 @@ static void __exit omap2_mcspi_exit(void)
+>  {
+>  	platform_driver_unregister(&omap2_mcspi_driver);
+>  
+> -	destroy_workqueue(omap2_mcspi_wq);
+>  }
+>  module_exit(omap2_mcspi_exit);
+>  
+> -- 
+> 1.7.1
+> 
+> 
+> ------------------------------------------------------------------------------
+> The demand for IT networking professionals continues to grow, and the
+> demand for specialized networking skills is growing even more rapidly.
+> Take a complimentary Learning@Cisco Self-Assessment and learn 
+> about Cisco certifications, training, and career opportunities. 
+> http://p.sf.net/sfu/cisco-dev2dev
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

@@ -1,8 +1,7 @@
-From: Mes Pierres =?iso-8859-15?Q?Pr=E9cieuses?= par Planduweb
-	<contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Gagnez un solitaire d une valeur de 10 999 euros
-Date: Sun, 30 Oct 2011 15:32:23 +0100
-Message-ID: <1319985143.4ead5ff7dbd9c@mc10.fr>
+From: Service rencontre par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: 12 mois offerts pour faire de nouvelles rencontres
+Date: Sun, 30 Oct 2011 15:50:31 +0100
+Message-ID: <1319986231.4ead64372a4cd@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI2MTImYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMzAgMTU6MjA6MDEmZT0xJmY9MjYxMiZnPTI2MTImaD0yNjEy
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI0MTYmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMzAgMTU6NDA6MDEmZT0xJmY9MjQxNiZnPTI0MTYmaD0yNDE2
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI2MTImY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6MjA6MDEmZT0xJmY9MjYxMiZnPTI2MTImaD0yNjEy
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI0MTYmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NDA6MDEmZT0xJmY9MjQxNiZnPTI0MTYmaD0yNDE2
 
 
 ---------------------------------------------------------------------------=

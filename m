@@ -1,7 +1,8 @@
-From: Le Figaro - Avis du Vin par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Qui veut gagner des grands crus
-Date: Sun, 30 Oct 2011 15:58:21 +0100
-Message-ID: <1319986701.4ead660dad7d2@mc10.fr>
+From: La =?iso-8859-15?Q?r=E9f=E9rence?= du meuble
+	=?iso-8859-15?Q?Su=E9dois?= par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: 25euros en cheque cadeau IKEA
+Date: Sun, 30 Oct 2011 16:00:48 +0100
+Message-ID: <1319986848.4ead66a038614@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI1NjMmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjU2MyZnPTI1NjMmaD0yNTYz
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI0OTUmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjQ5NSZnPTI0OTUmaD0yNDk1
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI1NjMmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjU2MyZnPTI1NjMmaD0yNTYz
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI0OTUmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjQ5NSZnPTI0OTUmaD0yNDk1
 
 
 ---------------------------------------------------------------------------=

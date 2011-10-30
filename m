@@ -1,12 +1,12 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: =?UTF-8?Q?D=C3=A9couvrez_le_Gyro_Bowl,
-	_pour_des_repas_secou=C3=A9s_mais_j?=
-	=?UTF-8?Q?amais_renvers=C3=A9s_!?=
-Date: Sun, 30 Oct 2011 05:12:07 +0100
-Message-ID: <4e92a6c57560742699cc5686956adac9@www.lovingdeals.fr>
+From: Mes Pierres =?iso-8859-15?Q?Pr=E9cieuses?= par Planduweb
+	<contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Gagnez un solitaire d une valeur de 10 999 euros
+Date: Sun, 30 Oct 2011 15:32:23 +0100
+Message-ID: <1319985143.4ead5ff7dbd9c@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,52 +19,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9jZGYyMDJm
-ZDRjZTc5MzliL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvY2RmMjAyZmQ0Y2U3OTM5Yi9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJClVOIEdZUk8gQk9XTCA6
-IFBvdXIgZGVzIGdvw7t0ZXJzIGV0IGRlcyByZXBhcyBzZWNvdcOpcyBtYWlzIGphbWFpcyByZW52
-ZXJzw6lzLCBzZXVsZW1lbnQgMTTigqwgYXUgbGlldSBkZSAzNeKCrAkKCgoKW2h0dHA6Ly93d3cu
-bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2NkZjIwMmZkNGNlNzkzOWIv
-ZGlzY291bnQvZGV0YWlsLzY3NS1neXJvLWJvd2wtcGFzLWNoZXItbG92aW5nLWRlYWxzXQoKMTTi
-gqwKVmFsZXVyOiAzNeKCrAnDiWNvbm9taXNlejogMjHigqwJRG9uczogMC40MuKCrAkKCltodHRw
-Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9jZGYyMDJmZDRj
-ZTc5MzliL2Rpc2NvdW50L2RldGFpbC82NzUtZ3lyby1ib3dsLXBhcy1jaGVyLWxvdmluZy1kZWFs
-c10KCgoKVW4gR3lybyBCb3dsIFVuIG9iamV0IGluZGlzcGVuc2FibGUgcG91ciBsZXMgZ2/Du3Rl
-cnMgZXQgcmVwYXMgZGVzIGVuZmFudHMgRGVzIHJlcGFzIGludGFjdHMgbWFsZ3LDqSBs4oCZYWdp
-dGF0aW9uIGRlcyBlbmZhbnRzIFVuIGRlc2lnbiByaWdvbG8gVW5lIGlkw6llIGNhZGVhdSBMb3Zp
-bmcgZXQgcHJhdGlxdWXCoCEgW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0
-dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjY3NS1n
-eXJvLWJvd2wtcGFzLWNoZXItbG92aW5nLWRlYWxzXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
-ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvY2RmMjAyZmQ0Y2U3OTM5Yi9wYWdlL3R3aXR0ZXIv
-P3VybD1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwl
-MkY2NzUtZ3lyby1ib3dsLXBhcy1jaGVyLWxvdmluZy1kZWFscyZhbXA7bWVzc2FnZT1VTiBHWVJP
-IEJPV0wgOiBQb3VyIGRlcyBnb8O7dGVycyBldCBkZXMgcmVwYXMgc2Vjb3XDqXMgbWFpcyBqYW1h
-aXMgcmVudmVyc8Opcywgc2V1bGVtZW50IDE04oKsIGF1IGxpZXUgZGUgMzXigqxdClttYWlsdG86
-P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRlcyBzaXRl
-cyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBwbHVzIGfDqW7DqXJl
-dXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVzIHLDqWR1Y3Rpb25z
-IGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVzIGFzc29jaWF0aW9u
-cyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
-L2dhdGV3YXkvY2RmMjAyZmQ0Y2U3OTM5Yi9kaXNjb3VudC9kZXRhaWwvNjc1LWd5cm8tYm93bC1w
-YXMtY2hlci1sb3ZpbmctZGVhbHNdCgoKCgoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
-ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvY2RmMjAyZmQ0Y2U3OTM5Yi9hc3NvY2lhdGlvbnMtY2Fy
-aXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
-dGV3YXkvY2RmMjAyZmQ0Y2U3OTM5Yi9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDov
-L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvY2RmMjAyZmQ0Y2U3
-OTM5Yi9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQoKCkwnYWZhCVLDqnZlcyBkJ2VuZmFudHMJ
-U3VyZnJpZGVyIEZvdW5kYXRpb24gRXVyb3BlCQoKCgoKCgpTaG93IGVtYWlsIGF0IHRoZSB3ZWJz
-aXRlIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9j
-ZGYyMDJmZDRjZTc5MzliL3ZpZXcvXQp8IFNlIGTDqXNpbnNjcmlyZSBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvY2RmMjAyZmQ0Y2U3OTM5Yi91bnN1
-YnNjcmliZS8/bGFuZ3VhZ2U9ZW4mYW1wO2NvZGU9N2RiODAzZWUwN2UwNDI4MV0KCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpHZXQgeW91ciBBbmRyb2lkIGFwcCBtb3JlIHBsYXk6IEJyaW5nIGl0IHRv
-IHRoZSBCbGFja0JlcnJ5IFBsYXlCb29rIAppbiBtaW51dGVzLiBCbGFja0JlcnJ5IEFwcCBXb3Js
-ZCYjMTUzOyBub3cgc3VwcG9ydHMgQW5kcm9pZCYjMTUzOyBBcHBzIApmb3IgdGhlIEJsYWNrQmVy
-cnkmcmVnOyBQbGF5Qm9vayYjMTUzOy4gRGlzY292ZXIganVzdCBob3cgZWFzeSBhbmQgc2ltcGxl
-IAppdCBpcyEgaHR0cDovL3Auc2YubmV0L3NmdS9hbmRyb2lkLWRldjJkZXYKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI2MTImYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMzAgMTU6MjA6MDEmZT0xJmY9MjYxMiZnPTI2MTImaD0yNjEy
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI2MTImY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6MjA6MDEmZT0xJmY9MjYxMiZnPTI2MTImaD0yNjEy
+
+
+---------------------------------------------------------------------------=
+---
+Get your Android app more play: Bring it to the BlackBerry PlayBook =
+
+in minutes. BlackBerry App World&#153; now supports Android&#153; Apps =
+
+for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple =
+
+it is! http://p.sf.net/sfu/android-dev2dev

@@ -1,7 +1,7 @@
-From: Service rencontre par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: 12 mois offerts pour faire de nouvelles rencontres
-Date: Sun, 30 Oct 2011 15:50:31 +0100
-Message-ID: <1319986231.4ead64372a4cd@mc10.fr>
+From: Le Figaro - Avis du Vin par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Qui veut gagner des grands crus
+Date: Sun, 30 Oct 2011 15:58:21 +0100
+Message-ID: <1319986701.4ead660dad7d2@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI0MTYmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMzAgMTU6NDA6MDEmZT0xJmY9MjQxNiZnPTI0MTYmaD0yNDE2
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI1NjMmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjU2MyZnPTI1NjMmaD0yNTYz
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI0MTYmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NDA6MDEmZT0xJmY9MjQxNiZnPTI0MTYmaD0yNDE2
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI1NjMmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjU2MyZnPTI1NjMmaD0yNTYz
 
 
 ---------------------------------------------------------------------------=

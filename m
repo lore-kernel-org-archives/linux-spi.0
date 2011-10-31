@@ -1,14 +1,19 @@
-From: La =?iso-8859-15?Q?r=E9f=E9rence?= du meuble
-	=?iso-8859-15?Q?Su=E9dois?= par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: 25euros en cheque cadeau IKEA
-Date: Sun, 30 Oct 2011 16:00:48 +0100
-Message-ID: <1319986848.4ead66a038614@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 2/3] OMAP: SPI: call pm_runtime_disable in error path
+	and remove
+Date: Mon, 31 Oct 2011 10:46:50 +0530
+Message-ID: <4EAE2F42.1010906@ti.com>
+References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
+	<1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
+	<20111029120655.GE22592@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20111029120655.GE22592-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,21 +24,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Saturday 29 October 2011 05:36 PM, Grant Likely wrote:
+> On Fri, Oct 28, 2011 at 05:14:18PM +0530, Shubhrajyoti D wrote:
+>> omap mcspi probe() doesnt call pm_runtime  disable functions
+>> in case of failure. remove() doesnt call pm_runtime disable. This could
+>> lead to warnings as below on subsequent insmod.
+>>
+>> ~# insmod spi-omap2-mcspi.ko
+>> [  255.383671] omap2_mcspi omap2_mcspi.1: Unbalanced pm_runtime_enable!
+>> ...
+>>
+>> This patch adds the pm_runtime disable() at appropriate stages.
+>>
+>> Signed-off-by: Hebbar, Gururaja<gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+>> Signed-off-by: Shubhrajyoti D<shubhrajyoti-l0cyMroinI0@public.gmane.org>
+> Nitpick: please use the format "spi/<device>: ...." for the subject
+> line of spi patches.  It's just a consistency thing that I like.
+Henceforth I will take care
+> Picked up for v3.3, thanks.
+>
+> g.
+>
+>> ---
+>>   drivers/spi/spi-omap2-mcspi.c |    2 ++
+>>   1 files changed, 2 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+>> index 471b0f3..6875a0b 100644
+>> --- a/drivers/spi/spi-omap2-mcspi.c
+>> +++ b/drivers/spi/spi-omap2-mcspi.c
+>> @@ -1195,6 +1195,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+>>   err4:
+>>   	spi_master_put(master);
+>>   err3:
+>> +	pm_runtime_disable(&pdev->dev);
+>>   	kfree(mcspi->dma_channels);
+>>   err2:
+>>   	release_mem_region(r->start, resource_size(r));
+>> @@ -1216,6 +1217,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+>>   	dma_channels = mcspi->dma_channels;
+>>
+>>   	omap2_mcspi_disable_clocks(mcspi);
+>> +	pm_runtime_disable(&pdev->dev);
+>>   	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>   	release_mem_region(r->start, resource_size(r));
+>>
+>> -- 
+>> 1.7.1
+>>
+>>
+>> ------------------------------------------------------------------------------
+>> The demand for IT networking professionals continues to grow, and the
+>> demand for specialized networking skills is growing even more rapidly.
+>> Take a complimentary Learning@Cisco Self-Assessment and learn
+>> about Cisco certifications, training, and career opportunities.
+>> http://p.sf.net/sfu/cisco-dev2dev
+>> _______________________________________________
+>> spi-devel-general mailing list
+>> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+>> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI0OTUmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjQ5NSZnPTI0OTUmaD0yNDk1
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI0OTUmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTAtMzAgMTU6NTA6MDEmZT0xJmY9MjQ5NSZnPTI0OTUmaD0yNDk1
-
-
----------------------------------------------------------------------------=
----
-Get your Android app more play: Bring it to the BlackBerry PlayBook =
-
-in minutes. BlackBerry App World&#153; now supports Android&#153; Apps =
-
-for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple =
-
+------------------------------------------------------------------------------
+Get your Android app more play: Bring it to the BlackBerry PlayBook 
+in minutes. BlackBerry App World&#153; now supports Android&#153; Apps 
+for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple 
 it is! http://p.sf.net/sfu/android-dev2dev

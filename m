@@ -1,19 +1,16 @@
-From: Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/3] OMAP: SPI: call pm_runtime_disable in error path
-	and remove
-Date: Mon, 31 Oct 2011 10:46:50 +0530
-Message-ID: <4EAE2F42.1010906@ti.com>
-References: <1319802259-16565-1-git-send-email-shubhrajyoti@ti.com>
-	<1319802259-16565-3-git-send-email-shubhrajyoti@ti.com>
-	<20111029120655.GE22592@ponder.secretlab.ca>
+From: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: i.MX: GPIO based SPI chip selects question
+Date: Mon, 31 Oct 2011 09:26:25 +0000
+Message-ID: <CAN=k24nenVPG=V6mvhaRajTL2BORdN7KYmP2R16P72rkkLx6Eg@mail.gmail.com>
+References: <CAN=k24kKWd9TPDbkWTCOSn48FNOi9DUALGd9XmeQ_xOJ=Kxd9g@mail.gmail.com>
+	<20111029204450.GA31910@tarshish>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20111029120655.GE22592-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+In-Reply-To: <20111029204450.GA31910@tarshish>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,69 +21,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 29 October 2011 05:36 PM, Grant Likely wrote:
-> On Fri, Oct 28, 2011 at 05:14:18PM +0530, Shubhrajyoti D wrote:
->> omap mcspi probe() doesnt call pm_runtime  disable functions
->> in case of failure. remove() doesnt call pm_runtime disable. This could
->> lead to warnings as below on subsequent insmod.
->>
->> ~# insmod spi-omap2-mcspi.ko
->> [  255.383671] omap2_mcspi omap2_mcspi.1: Unbalanced pm_runtime_enable!
->> ...
->>
->> This patch adds the pm_runtime disable() at appropriate stages.
->>
->> Signed-off-by: Hebbar, Gururaja<gururaja.hebbar-l0cyMroinI0@public.gmane.org>
->> Signed-off-by: Shubhrajyoti D<shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> Nitpick: please use the format "spi/<device>: ...." for the subject
-> line of spi patches.  It's just a consistency thing that I like.
-Henceforth I will take care
-> Picked up for v3.3, thanks.
+On Sat, Oct 29, 2011 at 9:44 PM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+> Hi Wayne,
 >
-> g.
+> On Fri, Oct 28, 2011 at 02:06:16PM +0100, Wayne Tams wrote:
+>> Can I use GPIO pins on my i.mx53 for SPI chip select, I have found little
+>> on the web that can help me, I am hoping that it is straight-forward eno=
+ugh
+>> for me to implement it? Perhaps there is a macro that I can use in the
+>> spi_board_info structure that will let me declare the GPIO?
 >
->> ---
->>   drivers/spi/spi-omap2-mcspi.c |    2 ++
->>   1 files changed, 2 insertions(+), 0 deletions(-)
->>
->> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
->> index 471b0f3..6875a0b 100644
->> --- a/drivers/spi/spi-omap2-mcspi.c
->> +++ b/drivers/spi/spi-omap2-mcspi.c
->> @@ -1195,6 +1195,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->>   err4:
->>   	spi_master_put(master);
->>   err3:
->> +	pm_runtime_disable(&pdev->dev);
->>   	kfree(mcspi->dma_channels);
->>   err2:
->>   	release_mem_region(r->start, resource_size(r));
->> @@ -1216,6 +1217,7 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->>   	dma_channels = mcspi->dma_channels;
->>
->>   	omap2_mcspi_disable_clocks(mcspi);
->> +	pm_runtime_disable(&pdev->dev);
->>   	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>   	release_mem_region(r->start, resource_size(r));
->>
->> -- 
->> 1.7.1
->>
->>
->> ------------------------------------------------------------------------------
->> The demand for IT networking professionals continues to grow, and the
->> demand for specialized networking skills is growing even more rapidly.
->> Take a complimentary Learning@Cisco Self-Assessment and learn
->> about Cisco certifications, training, and career opportunities.
->> http://p.sf.net/sfu/cisco-dev2dev
->> _______________________________________________
->> spi-devel-general mailing list
->> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
->> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> If you are using the mainline kernel then the SPI driver
+> (drivers/spi/spi-imx.c) supports the use of GPIO lines for chip-select
+> exclusively. You can find an i.MX53 specific example in
+> arch/arm/mach-mx5/board-mx53_evk.c (look for the mx53_evk_spi_data struct=
+).
+> This example demonstrate the use of two GPIOs for chip-select, but the li=
+st of
+> chip-selects can be longer.
 
+That looks promising, I assume you mean that your quoted example makes
+use of the driver spi-imx?
+>
+> Since you appear to be using the Freescale supplied kernel (as I infer fr=
+om
+> your previous question on this list), you are probably using different dr=
+iver.
+> This driver (likely
+> http://opensource.freescale.com/git?p=3Dimx/linux-2.6-imx.git;a=3Dblob;f=
+=3Ddrivers/spi/mxc_spi.c;h=3D8c722686a0e1a419b417c0e2f98a4d6f028cf02e;hb=3D=
+a1cd8a787a18da69ac4e48cfc876623bd7323799)
+> does not support GPIOs for chip-select.
 
-------------------------------------------------------------------------------
-Get your Android app more play: Bring it to the BlackBerry PlayBook 
-in minutes. BlackBerry App World&#153; now supports Android&#153; Apps 
-for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple 
+I should of added that I am using a kernel from a BSP supplied by
+Emtrion, as you guessed correctly, it based on the Freescale kernel
+which uses the mxc_spi driver.
+>
+> Freescale seem to have abandoned their in-house non mainlined SPI driver =
+in a
+> later version of their kernel (rel_imx_2.6.38_11.09.01 tag in
+> http://opensource.freescale.com/git) so you may want to update your kerne=
+l.
+
+I will have a look at how much of an impact using the mainlined kernel
+will have on the operation of my SoM. A little off topic, bearing in
+mind my inexperience with Linux, can I upgrade the kernel using git
+and will the differences between the mainlined and Emtrion kernel be
+highlighted? It is just that there could be some Emtrion kernel adds
+that I could miss which may impact my board operation, memory mapping
+etc.
+
+Just to summarise, are these the options available to me? If so I will
+figure out which method will be best for me to do:
+
+1) Hack the existing mxc_spi driver and add support for GPIO chip-select
+2) Upgrade the kernel to the latest mainlined version and use the
+spi-imx driver included in that
+3) Hack the kernel to use the spi_imx driver already included in the
+BSP which has GPIO chip-select support
+4) Update my BSP SPI driver to the mainlined version
+
+Thank you for your help Baruch (and Grant) much appreciated,
+>
+> baruch
+>
+> --
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ~. .~ =A0 Tk Open Systems
+> =3D}------------------------------------------------ooO--U--Ooo----------=
+--{=3D
+> =A0 - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+>
+
+---------------------------------------------------------------------------=
+---
+Get your Android app more play: Bring it to the BlackBerry PlayBook =
+
+in minutes. BlackBerry App World&#153; now supports Android&#153; Apps =
+
+for the BlackBerry&reg; PlayBook&#153;. Discover just how easy and simple =
+
 it is! http://p.sf.net/sfu/android-dev2dev

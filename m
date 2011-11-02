@@ -1,13 +1,17 @@
-From: "Emails de EMPRESAS v. 2012" <contato-EyIKC3pvHhK9kgvBcwk4+lFxho7qSwChxddQ6fo/n9Y@public.gmane.org>
-Subject: [SPAM] 4 MILHÕES de EMAILS de EMPRESAS por R$94
-Date: Wed, 02 Nov 2011 14:52:41 +0300
-Message-ID: <b1b8647bbf9cbbe380f49e4324f3a309@net10emailsdobrasil.co.cc>
-Reply-To: contato-EyIKC3pvHhK9kgvBcwk4+lFxho7qSwChxddQ6fo/n9Y@public.gmane.org
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
+Date: Wed, 2 Nov 2011 14:16:28 +0000
+Message-ID: <20111102141628.GG19187@n2100.arm.linux.org.uk>
+References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1319206124-17549-1-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,16 +22,99 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgRW1haWwgbsOjbyBwb2RlIGxlciBlc3RlIEVtYWlsLgoKUGFyYSB2aXN1
-YWxpesOhLWxvIG9uLWxpbmUsIHBvciBmYXZvciwgY2xpcXVlIGFxdWk6Cmh0dHA6Ly9uZXQxMGVt
-YWlsc2RvYnJhc2lsLmNvLmNjL3Npc3RlbWFkZWVudmlvL2Rpc3BsYXkucGhwP009ODIxMjg4JkM9
-OTcyZTg4ODYwOWM0OTkyMjc1YjI3OTAzYzVjZTVmMjEmUz0xMyZMPTEzJk49MQoKCgoKClBhcmEg
-cGFyYXIgZGUgcmVjZWJlciBub3Nzb3MKRW1haWxzOmh0dHA6Ly9uZXQxMGVtYWlsc2RvYnJhc2ls
-LmNvLmNjL3Npc3RlbWFkZWVudmlvL3Vuc3Vic2NyaWJlLnBocD9NPTgyMTI4OCZDPTk3MmU4ODg2
-MDljNDk5MjI3NWIyNzkwM2M1Y2U1ZjIxJkw9MTMmTj0xMwotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-UlNBJiMxNzQ7IENvbmZlcmVuY2UgMjAxMgpTYXZlICQ3MDAgYnkgTm92IDE4ClJlZ2lzdGVyIG5v
-dyYjMzM7Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvcnNhLXNmZGV2MmRldjEKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Fri, Oct 21, 2011 at 04:08:44PM +0200, Ulf Hansson wrote:
+> Since we are always runtime resumed when leaving probe
+> the clock must be enabled. To accomplish that we are able
+> to be runtime suspended after probe in the case when no
+> request is going to be recieved, a runtime_idle function
+> has been implemented.
+> 
+> Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
+> Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
+
+Sorry Ulf, this patch has issues.
+
+>  drivers/spi/spi-pl022.c |   18 +++++++++++++++++-
+>  1 files changed, 17 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> index f103e47..ad48fba 100644
+> --- a/drivers/spi/spi-pl022.c
+> +++ b/drivers/spi/spi-pl022.c
+> @@ -2184,6 +2184,12 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  		goto  err_clk_prep;
+>  	}
+>  
+> +	status = clk_enable(pl022->clk);
+> +	if (status) {
+> +		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
+> +		goto err_no_clk_en;
+> +	}
+> +
+>  	/* Disable SSP */
+>  	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
+>  	       SSP_CR1(pl022->virtbase));
+
+Ok - this is a bug fix.
+
+> @@ -2237,6 +2243,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>  
+>  	free_irq(adev->irq[0], pl022);
+>   err_no_irq:
+> +	clk_disable(pl022->clk);
+> + err_no_clk_en:
+>  	clk_unprepare(pl022->clk);
+>   err_clk_prep:
+>  	clk_put(pl022->clk);
+
+As is this.
+
+> @@ -2342,11 +2350,19 @@ static int pl022_runtime_resume(struct device *dev)
+>  
+>  	return 0;
+>  }
+> +
+> +static int pl022_runtime_idle(struct device *dev)
+> +{
+> +	pm_runtime_suspend(dev);
+> +	return 0;
+> +}
+>  #endif
+>  
+>  static const struct dev_pm_ops pl022_dev_pm_ops = {
+>  	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
+> -	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
+> +	SET_RUNTIME_PM_OPS(pl022_runtime_suspend,
+> +			   pl022_runtime_resume,
+> +			   pl022_runtime_idle)
+
+This is an unnecessary change.
+
+The bus-level ops runtime PM ops call pm_generic_runtime_idle() when
+its 'runtime_idle' operation is invoked.  Let's look at the code
+there:
+
+int pm_generic_runtime_idle(struct device *dev)
+{
+        const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+
+        if (pm && pm->runtime_idle) {
+                int ret = pm->runtime_idle(dev);
+                if (ret)
+                        return ret;
+        }
+
+        pm_runtime_suspend(dev);
+        return 0;
+}
+
+If the driver has a NULL runtime idle, then generic code will call
+pm_runtime_suspend() for the device.  So, adding a runtime_idle callback
+to a driver to explicitly call pm_runtime_suspend() is not required.
+
+------------------------------------------------------------------------------
+RSA&#174; Conference 2012
+Save $700 by Nov 18
+Register now&#33;
+http://p.sf.net/sfu/rsa-sfdev2dev1

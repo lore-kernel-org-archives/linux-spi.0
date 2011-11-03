@@ -1,17 +1,13 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
-Date: Wed, 2 Nov 2011 14:16:28 +0000
-Message-ID: <20111102141628.GG19187@n2100.arm.linux.org.uk>
-References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Sur-matelas_=C3=A0_m=C3=A9moire_de_forme_/_Calendrier_personnal?=
+	=?UTF-8?Q?is=C3=A9_/_Gyro_Bowl?=
+Date: Thu, 3 Nov 2011 05:08:21 +0100
+Message-ID: <011133304035f55fc25969d7391315ff@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1319206124-17549-1-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,99 +18,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 21, 2011 at 04:08:44PM +0200, Ulf Hansson wrote:
-> Since we are always runtime resumed when leaving probe
-> the clock must be enabled. To accomplish that we are able
-> to be runtime suspended after probe in the case when no
-> request is going to be recieved, a runtime_idle function
-> has been implemented.
-> 
-> Change-Id: I6cb86f2cad30ecaab16f512daf4674b039b18213
-> Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Reviewed-on: http://gerrit.lud.stericsson.com/gerrit/34447
-
-Sorry Ulf, this patch has issues.
-
->  drivers/spi/spi-pl022.c |   18 +++++++++++++++++-
->  1 files changed, 17 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index f103e47..ad48fba 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -2184,6 +2184,12 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->  		goto  err_clk_prep;
->  	}
->  
-> +	status = clk_enable(pl022->clk);
-> +	if (status) {
-> +		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
-> +		goto err_no_clk_en;
-> +	}
-> +
->  	/* Disable SSP */
->  	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
->  	       SSP_CR1(pl022->virtbase));
-
-Ok - this is a bug fix.
-
-> @@ -2237,6 +2243,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->  
->  	free_irq(adev->irq[0], pl022);
->   err_no_irq:
-> +	clk_disable(pl022->clk);
-> + err_no_clk_en:
->  	clk_unprepare(pl022->clk);
->   err_clk_prep:
->  	clk_put(pl022->clk);
-
-As is this.
-
-> @@ -2342,11 +2350,19 @@ static int pl022_runtime_resume(struct device *dev)
->  
->  	return 0;
->  }
-> +
-> +static int pl022_runtime_idle(struct device *dev)
-> +{
-> +	pm_runtime_suspend(dev);
-> +	return 0;
-> +}
->  #endif
->  
->  static const struct dev_pm_ops pl022_dev_pm_ops = {
->  	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
-> -	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
-> +	SET_RUNTIME_PM_OPS(pl022_runtime_suspend,
-> +			   pl022_runtime_resume,
-> +			   pl022_runtime_idle)
-
-This is an unnecessary change.
-
-The bus-level ops runtime PM ops call pm_generic_runtime_idle() when
-its 'runtime_idle' operation is invoked.  Let's look at the code
-there:
-
-int pm_generic_runtime_idle(struct device *dev)
-{
-        const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
-
-        if (pm && pm->runtime_idle) {
-                int ret = pm->runtime_idle(dev);
-                if (ret)
-                        return ret;
-        }
-
-        pm_runtime_suspend(dev);
-        return 0;
-}
-
-If the driver has a NULL runtime idle, then generic code will call
-pm_runtime_suspend() for the device.  So, adding a runtime_idle callback
-to a driver to explicitly call pm_runtime_suspend() is not required.
-
-------------------------------------------------------------------------------
-RSA&#174; Conference 2012
-Save $700 by Nov 18
-Register now&#33;
-http://p.sf.net/sfu/rsa-sfdev2dev1
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJj
+ODE4NDQ0ODI0L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvODU4NDAyYzgxODQ0NDgyNC9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCjEgU1VSLU1BVEVMQVMg
+QSBNRU1PSVJFIERFIEZPUk1FIDE0MCB4IDE5MCB4IDYgQ00gOiBPZmZyZXotdm91cyB1biBzb21t
+ZWlsIHBhcmZhaXQgYXZlYyBEb3Jzb3JlbGF4LCAxODnigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUg
+Mzk54oKsICEJCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50L2RldGFpbC83MDAtc3VyLW1hdGVsYXMt
+ZG9yc29yZWxheC1wYXMtY2hlcl0KCjE4OeKCrApWYWxldXI6IDM5OeKCrAnDiWNvbm9taXNlejog
+MjEw4oKsCURvbnM6IDUuNjfigqwJCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
+ZXdzbGV0dGVyL2dhdGV3YXkvODU4NDAyYzgxODQ0NDgyNC9kaXNjb3VudC9kZXRhaWwvNzAwLXN1
+ci1tYXRlbGFzLWRvcnNvcmVsYXgtcGFzLWNoZXJdCgoKCjEgc3VyLW1hdGVsYXMgRG9yc29yZWxh
+eCDDoCBtw6ltb2lyZSBkZSBmb3JtZSAxNDB4MTkweDZjbSAxMDAlIHZpc2Nvw6lsYXN0aXF1ZSBD
+b25mb3J0IGV0IHNvdXRpZW4gaW5jb21wYXJhYmxlcyBVbiBzb21tZWlsIHByb2ZvbmQgZXQgcsOp
+cGFyYXRldXLCoCEgW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0dHAlM0El
+MkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjcwMC1zdXItbWF0
+ZWxhcy1kb3Jzb3JlbGF4LXBhcy1jaGVyXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvODU4NDAyYzgxODQ0NDgyNC9wYWdlL3R3aXR0ZXIvP3VybD1o
+dHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY3MDAt
+c3VyLW1hdGVsYXMtZG9yc29yZWxheC1wYXMtY2hlciZhbXA7bWVzc2FnZT0xIFNVUi1NQVRFTEFT
+IEEgTUVNT0lSRSBERSBGT1JNRSAxNDAgeCAxOTAgeCA2IENNIDogT2ZmcmV6LXZvdXMgdW4gc29t
+bWVpbCBwYXJmYWl0IGF2ZWMgRG9yc29yZWxheCwgMTg54oKsIHNldWxlbWVudCBhdSBsaWV1IGRl
+IDM5OeKCrCAhXQpbbWFpbHRvOj9zdWJqZWN0PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMg
+Z8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SiYjMDM5O2FpIGTDqWNvdXZl
+cnQgbGUgcGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyEgTG92aW5nIERlYWxzIG9m
+ZnJlIGRlcyByw6lkdWN0aW9ucyBpbmNyb3lhYmxlcyBldCByZXZlcnNlIHVuIHBvdXJjZW50YWdl
+IMOgIGRlcyBhc3NvY2lhdGlvbnMgY2FyaXRhdGl2ZXMuIGh0dHA6Ly93d3cubG92aW5nZGVhbHMu
+ZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5Lzg1ODQwMmM4MTg0NDQ4MjQvZGlzY291bnQvZGV0
+YWlsLzcwMC1zdXItbWF0ZWxhcy1kb3Jzb3JlbGF4LXBhcy1jaGVyXQoKCgoKCgpFbmNvcmUgcGx1
+cyBkJ29mZnJlcyAhCQpWYWxldXI0MTkmZXVybzsJUmVtaXNlNTMlCcOJY29ub21pc2V6MjIwJmV1
+cm87CURvbnM1LjY3JmV1cm87CQoxIFNVUi1NQVRFTEFTIEEgTUVNT0lSRSBERSBGT1JNRSAxNjAg
+eCAyMDAgeCA2IENNIDogT2ZmcmV6LXZvdXMgdW4gc29tbWVpbCBwYXJmYWl0IGF2ZWMgRG9yc29y
+ZWxheCwgMTk54oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDQxOeKCrCAhIFtodHRwOi8vd3d3Lmxv
+dmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rp
+c2NvdW50L2RldGFpbC83MDQtc3VyLW1hdGVsYXMtZG9yc29yZWxheC1wYXMtY2hlcl0KU2V1bGVt
+ZW50MTk54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0
+ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50L2RldGFpbC83MDQtc3VyLW1hdGVsYXMtZG9y
+c29yZWxheC1wYXMtY2hlcl0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
+ZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50L2RldGFpbC83MDQtc3VyLW1h
+dGVsYXMtZG9yc29yZWxheC1wYXMtY2hlcl0KCgoKVmFsZXVyMjAmZXVybzsJUmVtaXNlNTAlCcOJ
+Y29ub21pc2V6MTAmZXVybzsJRG9uczAuMzAmZXVybzsJCkNBTEVORFJJRVIgTVVSQUwgQTMgUEVS
+U09OTkFMSVPDiSA6IEF2ZWMgdm9zIHBob3RvcywgY3LDqWV6IHVuIGNhbGVuZHJpZXIgcXVpIHZv
+dXMgYWNjb21wYWduZXJhIHRvdXQgYXUgbG9uZyBkZSAyMDEyLCAxMOKCrCBhdSBsaWV1IGRlIDIw
+4oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84
+NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50L2RldGFpbC82ODAtY2FsZW5kcmllci1tdXJhbC1waG90
+by1wZXJzb25uYWxpc2UtYTNdClNldWxlbWVudDEw4oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxz
+LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50L2Rl
+dGFpbC82ODAtY2FsZW5kcmllci1tdXJhbC1waG90by1wZXJzb25uYWxpc2UtYTNdCgpbaHR0cDov
+L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvODU4NDAyYzgxODQ0
+NDgyNC9kaXNjb3VudC9kZXRhaWwvNjgwLWNhbGVuZHJpZXItbXVyYWwtcGhvdG8tcGVyc29ubmFs
+aXNlLWEzXQoKCgoKVmFsZXVyMzUmZXVybzsJUmVtaXNlNjAlCcOJY29ub21pc2V6MjEmZXVybzsJ
+RG9uczAuNDImZXVybzsJClVOIEdZUk8gQk9XTCA6IFBvdXIgZGVzIGdvw7t0ZXJzIGV0IGRlcyBy
+ZXBhcyBzZWNvdcOpcyBtYWlzIGphbWFpcyByZW52ZXJzw6lzLCBzZXVsZW1lbnQgMTTigqwgYXUg
+bGlldSBkZSAzNeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvODU4NDAyYzgxODQ0NDgyNC9kaXNjb3VudC9kZXRhaWwvNjc1LWd5cm8tYm93bC1w
+YXMtY2hlci1sb3ZpbmctZGVhbHNdClNldWxlbWVudDE04oKsIFtodHRwOi8vd3d3LmxvdmluZ2Rl
+YWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Rpc2NvdW50
+L2RldGFpbC82NzUtZ3lyby1ib3dsLXBhcy1jaGVyLWxvdmluZy1kZWFsc10KCltodHRwOi8vd3d3
+LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0
+L2Rpc2NvdW50L2RldGFpbC82NzUtZ3lyby1ib3dsLXBhcy1jaGVyLWxvdmluZy1kZWFsc10KCgoK
+VmFsZXVyNDAmZXVybzsJUmVtaXNlNTAlCcOJY29ub21pc2V6MjAmZXVybzsJRG9uczAuNjAmZXVy
+bzsJClNIT1JUWSBNSU5DRVVSIFZFTlRSRSBQTEFUIDogRGl0ZXMgYXUgcmV2b2lyIMOgIGxhIGNl
+bGx1bGl0ZSBldCDDoCBsYSBwZWF1IGTigJlvcmFuZ2UgYXZlYyBCZWF1dHkgTGluZSwgMjDigqwg
+c2V1bGVtZW50IGF1IGxpZXUgZGUgNDDigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvODU4NDAyYzgxODQ0NDgyNC9kaXNjb3VudC9kZXRhaWwv
+Njc5LXNob3J0eS1taW5jZXVyLXBhcy1jaGVyLWJlYXV0eS1saW5lXQpTZXVsZW1lbnQyMOKCrCBb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvODU4NDAy
+YzgxODQ0NDgyNC9kaXNjb3VudC9kZXRhaWwvNjc5LXNob3J0eS1taW5jZXVyLXBhcy1jaGVyLWJl
+YXV0eS1saW5lXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9n
+YXRld2F5Lzg1ODQwMmM4MTg0NDQ4MjQvZGlzY291bnQvZGV0YWlsLzY3OS1zaG9ydHktbWluY2V1
+ci1wYXMtY2hlci1iZWF1dHktbGluZV0KCgoKCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
+L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Fzc29jaWF0aW9ucy1j
+YXJpdGF0aXZlcy9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCltodHRw
+Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4
+NDQ0ODI0L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCgoKTCdhZmEJUsOqdmVzIGQnZW5mYW50
+cwlTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUJCgoKCgoKClNob3cgZW1haWwgYXQgdGhlIHdl
+YnNpdGUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
+Lzg1ODQwMmM4MTg0NDQ4MjQvdmlldy9dCnwgU2UgZMOpc2luc2NyaXJlIFtodHRwOi8vd3d3Lmxv
+dmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS84NTg0MDJjODE4NDQ0ODI0L3Vu
+c3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0MjgxXQoKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tClJTQShSKSBDb25mZXJlbmNlIDIwMTIKU2F2ZSAkNzAwIGJ5IE5vdiAx
+OApSZWdpc3RlciBub3cKaHR0cDovL3Auc2YubmV0L3NmdS9yc2Etc2ZkZXYyZGV2MQpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

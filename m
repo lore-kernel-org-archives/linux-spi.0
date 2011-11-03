@@ -1,22 +1,20 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Subject: Re: [PATCH 1/1] atmel/spi: fix missing probe during the switch to
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH v2] atmel/spi: fix missing probe during the switch to
 	module_platform_driver
-Date: Thu, 3 Nov 2011 16:14:26 +0100
-Message-ID: <20111103151426.GJ7136@game.jcrosoft.org>
+Date: Thu, 3 Nov 2011 15:18:55 +0000
+Message-ID: <20111103151855.GP12913@n2100.arm.linux.org.uk>
 References: <1320331706-4946-1-git-send-email-plagnioj@jcrosoft.com>
-	<CAC4N5ENm9Q+MGb89V2S6QFE0KrB72BXxEBLm7EtAvwDdJEGSjA@mail.gmail.com>
+	<1320333042-24880-1-git-send-email-plagnioj@jcrosoft.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Grant Likely <grant.likely@secretlab.ca>,
 	spi-devel-general@lists.sourceforge.net,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Nicolas Ferre <nicolas.ferre@atmel.com>,
-	linux-arm-kernel@lists.infradead.org
-To: Deepak Saxena <dsaxena@plexity.net>
+	Greg Kroah-Hartman <gregkh@suse.de>, linux-arm-kernel@lists.infradead.org
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <CAC4N5ENm9Q+MGb89V2S6QFE0KrB72BXxEBLm7EtAvwDdJEGSjA@mail.gmail.com>
+In-Reply-To: <1320333042-24880-1-git-send-email-plagnioj@jcrosoft.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -28,56 +26,34 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10:55 Thu 03 Nov     , Deepak Saxena wrote:
-> On Thu, Nov 3, 2011 at 10:48 AM, Jean-Christophe PLAGNIOL-VILLARD
-> <plagnioj@jcrosoft.com> wrote:
-> > in commit 940ab889
-> >
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > Cc: Greg Kroah-Hartman <gregkh@suse.de>
-> > Cc: Grant Likely <grant.likely@secretlab.ca>
-> > Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-> > ---
-> > =A0arch/arm/mach-at91/include/mach/at91_aic.h | =A0 =A02 +-
-> > =A0drivers/spi/spi-atmel.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
- =A01 +
-> > =A02 files changed, 2 insertions(+), 1 deletions(-)
-> >
-> > diff --git a/arch/arm/mach-at91/include/mach/at91_aic.h b/arch/arm/mach=
--at91/include/mach/at91_aic.h
-> > index 4b0a57e..f163bb6 100644
-> > --- a/arch/arm/mach-at91/include/mach/at91_aic.h
-> > +++ b/arch/arm/mach-at91/include/mach/at91_aic.h
-> > @@ -20,7 +20,7 @@
-> > =A0extern void __iomem *at91_aic_base;
-> >
-> > =A0#define at91_aic_read(field) \
-> > - =A0 =A0 =A0 __raw_read(at91_aic_base + field)
-> > + =A0 =A0 =A0 __raw_readl(at91_aic_base + field)
-> >
-> > =A0#define at91_aic_write(field, value) \
-> > =A0 =A0 =A0 =A0__raw_writel(value, at91_aic_base + field);
-> > diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> > index 79665e2..a691240 100644
-> > --- a/drivers/spi/spi-atmel.c
-> > +++ b/drivers/spi/spi-atmel.c
-> > @@ -1072,6 +1072,7 @@ static struct platform_driver atmel_spi_driver =
-=3D {
-> > =A0 =A0 =A0 =A0},
-> > =A0 =A0 =A0 =A0.suspend =A0 =A0 =A0 =A0=3D atmel_spi_suspend,
-> > =A0 =A0 =A0 =A0.resume =A0 =A0 =A0 =A0 =3D atmel_spi_resume,
-> > + =A0 =A0 =A0 .probe =A0 =A0 =A0 =A0 =A0=3D atmel_spi_probe,
-> > =A0 =A0 =A0 =A0.remove =A0 =A0 =A0 =A0 =3D __exit_p(atmel_spi_remove),
-> > =A0};
-> > =A0module_platform_driver(atmel_spi_driver);
-> =
+On Thu, Nov 03, 2011 at 11:10:42PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> in commit 940ab889
 
-> Jean,
-> =
+This kind of commit message is, frankly, utter crap.
 
-> This looks it should be two separate patches, one for the missing probe,
-> one for the raw_read -> raw_readl.
-Yes I found when I receive the e-mail and already send the v2
+With all the complaints that have been on this mailing list about raw
+commit IDs without saying what the commit was, it completely astounds
+me that someone in your position (allegedly a co-maintainer of a SoC)
+would make such an error.
 
-Best Regards,
-J.
+Please generate a much better commit message.  Maybe something like:
+
+----
+Commit 940ab889 (blah blah blah) converted this driver to use
+module_platform_driver, but due to the use of platform_driver_probe(),
+this resulted in the call to atmel_spi_probe being lost.  Place the
+call to this function into the driver structure.
+
+As atmel_spi_probe is marked __init, this will cause a section mismatch
+error, so ... <fill this in for the point below>
+----
+
+And, you're forgetting to fix this properly (maybe you don't care about
+section mismatch errors - are you going to create another patch for that
+as well?)  Did you even build-test this patch and pay attention to any
+warnings issued, or were you just pleased to get a zImage at the end?
+
+static int __init atmel_spi_probe(struct platform_device *pdev)
+
+__init is not compatible with having a pointer in the platform driver
+structure.  It needs to be __devinit.

@@ -1,55 +1,83 @@
-From: 13435596414-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 原厂烟丝
-Date: Thu, 3 Nov 2011 22:57:35 +0800
-Message-ID: <E1RLyzb-0006kk-Ha@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/1] atmel/spi: fix missing probe during the switch to
+	module_platform_driver
+Date: Thu, 3 Nov 2011 16:14:26 +0100
+Message-ID: <20111103151426.GJ7136@game.jcrosoft.org>
+References: <1320331706-4946-1-git-send-email-plagnioj@jcrosoft.com>
+	<CAC4N5ENm9Q+MGb89V2S6QFE0KrB72BXxEBLm7EtAvwDdJEGSjA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Nicolas Ferre <nicolas.ferre@atmel.com>,
+	linux-arm-kernel@lists.infradead.org
+To: Deepak Saxena <dsaxena@plexity.net>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <CAC4N5ENm9Q+MGb89V2S6QFE0KrB72BXxEBLm7EtAvwDdJEGSjA@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-vfDStsnM0NDOqsT6zOG5qbjfvqu3wtXmz+PRzKOsysrTw7e2zqejutfUs+kuy83A8S7F+reiLsHj
-ytsuuavLvi6+xrDJLr7GteoutsSzoS7N+LDJLtPpwNazocv5tciho6Opo6i79bW9v+y13bT6ytW/
-7qOptci5q8a9vbvS18a9zKijob/auNC0vM/jo6y827jxyrW73aOssrvKx9DQvNLE0bHn1eYgzrGh
-oyAgICAgICAgICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a618KlOjE5MTYgICAgIDM2
-MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrX
-wqXC/szs084gICAgMzgw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKKNXm0cy9
-09anLsS+utApIMTPvqm+xc7l1q7X8CAgICA0NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgCijV5tHMvdPWpy7EvrrQKSDX6sqv3L3I2M31ICAgICAgNDYw1KovzPUgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAKKNXm0cy909anLsS+utApILrNzOzPwiAgICAgICAgICA0NjDU
-qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAq7xrrXwqWjqMLbtcCjqSAyODDUqi/M
-9SAgICAgICAgICAgICC7xrrXwqWjqM7KtcCjqSAzMjDUqi/M9SAgICAgICAgICAgIAqjqNSts6fR
-zMu/o6m19tPjzKggICAgICAgICAgICAgIDQ2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgCijUrbOn0czLvykgMzI4LjMyOcjt1tC7qiAgICAgICAgMjgw1KovzPUgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAKKNSts6fRzMu/KSDTstbQu6ogICAgICAgICAgICAgICAyNjDU
-qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1K2zp9HMy78pILass+bPxLLdICAg
-ICAgICAgICAgIDM2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijUrbOn0czL
-vykgyO298Mmzy9XRzCAgICAgICAgICAgMjAw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAKKNSts6fRzMu/KdPxz6qjqL6zveejqSAgNDYw1KovzPUgICAgCijUrbOn0czLvykgu8bc
-vcjYzfUgICAgICAgICAgICAgMTYw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
-uuwgILrTICC1wCAgICjEvrrQLtXm0cy909anKSAgICAzNjDUqi/M9SAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrXwqXXz73wICAgICAgMzIw1KovzPUgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAKwLbI7dy9yNjN9SAgICAgICAgICAgICAyMjDUqi/M
-9SAgwLbTsty9yNjN9SAgICAgICAgICAgICAxODDUqi/M9QrI7bvGutfCpcL+zOzQxyAgICAgICAg
-ICAgIDIwMNSqL8z1ICC7xrrXwqXV5Ma3ICAgICAgICAgICAgICAgICAgICAgIDIyMNSqL8z1ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgyO3TsiAg0/EgIM+qICAgICAgICAgMTMw1KovzPUg
-ICAgICAgICAgICAgICAgICDUxiAg0cwgo6jToc/zo6kgICAgICAzNjDUqi/M9SAgICAgICDI7SAg
-1MYgINHMICAgICAgICAxMzDUqi/M9SAgICAgICAgICC7xiDI7SDM7CDX0yAgICAgIDI2MNSqL8z1
-ICAgICAgICAgIAogtPMgINDcICDDqCAgICAgKNSts6fRzMu/KSAgICAgICAzMDDUqi/M9SAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIAog09DQ6NKqwarPtaO6MTM0MzU1OTY0MTTQodXFLsLy
-0cy801FRo7oxMzU4ODUwMDUxILu2063QwsDPv827p8C0tefHosy4xPq6wyEgCgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KUlNBKFIpIENvbmZlcmVuY2UgMjAxMgpTYXZlICQ3MDAgYnkgTm92IDE4ClJl
-Z2lzdGVyIG5vdwpodHRwOi8vcC5zZi5uZXQvc2Z1L3JzYS1zZmRldjJkZXYxCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 10:55 Thu 03 Nov     , Deepak Saxena wrote:
+> On Thu, Nov 3, 2011 at 10:48 AM, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+> > in commit 940ab889
+> >
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > Cc: Greg Kroah-Hartman <gregkh@suse.de>
+> > Cc: Grant Likely <grant.likely@secretlab.ca>
+> > Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+> > ---
+> > =A0arch/arm/mach-at91/include/mach/at91_aic.h | =A0 =A02 +-
+> > =A0drivers/spi/spi-atmel.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ =A01 +
+> > =A02 files changed, 2 insertions(+), 1 deletions(-)
+> >
+> > diff --git a/arch/arm/mach-at91/include/mach/at91_aic.h b/arch/arm/mach=
+-at91/include/mach/at91_aic.h
+> > index 4b0a57e..f163bb6 100644
+> > --- a/arch/arm/mach-at91/include/mach/at91_aic.h
+> > +++ b/arch/arm/mach-at91/include/mach/at91_aic.h
+> > @@ -20,7 +20,7 @@
+> > =A0extern void __iomem *at91_aic_base;
+> >
+> > =A0#define at91_aic_read(field) \
+> > - =A0 =A0 =A0 __raw_read(at91_aic_base + field)
+> > + =A0 =A0 =A0 __raw_readl(at91_aic_base + field)
+> >
+> > =A0#define at91_aic_write(field, value) \
+> > =A0 =A0 =A0 =A0__raw_writel(value, at91_aic_base + field);
+> > diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> > index 79665e2..a691240 100644
+> > --- a/drivers/spi/spi-atmel.c
+> > +++ b/drivers/spi/spi-atmel.c
+> > @@ -1072,6 +1072,7 @@ static struct platform_driver atmel_spi_driver =
+=3D {
+> > =A0 =A0 =A0 =A0},
+> > =A0 =A0 =A0 =A0.suspend =A0 =A0 =A0 =A0=3D atmel_spi_suspend,
+> > =A0 =A0 =A0 =A0.resume =A0 =A0 =A0 =A0 =3D atmel_spi_resume,
+> > + =A0 =A0 =A0 .probe =A0 =A0 =A0 =A0 =A0=3D atmel_spi_probe,
+> > =A0 =A0 =A0 =A0.remove =A0 =A0 =A0 =A0 =3D __exit_p(atmel_spi_remove),
+> > =A0};
+> > =A0module_platform_driver(atmel_spi_driver);
+> =
+
+> Jean,
+> =
+
+> This looks it should be two separate patches, one for the missing probe,
+> one for the raw_read -> raw_readl.
+Yes I found when I receive the e-mail and already send the v2
+
+Best Regards,
+J.

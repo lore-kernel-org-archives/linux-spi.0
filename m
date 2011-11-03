@@ -1,36 +1,41 @@
-From: Club =?iso-8859-15?Q?Priv=E9?= par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Une =?iso-8859-15?Q?s=E9lection?= de voyage -70%
-Date: Thu, 03 Nov 2011 17:11:12 +0100
-Message-ID: <1320336672.4eb2bd204c835@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH V2] spi/pl022: Enable clock in probe
+Date: Thu, 3 Nov 2011 17:19:06 +0100
+Message-ID: <CACRpkdamE9Qrah9Fc+b86QcohZ7Pnzsh3nNHvdf_6-HCTTPYhQ@mail.gmail.com>
+References: <1320335741-5309-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net, Lee Jones <lee.jones@linaro.org>,
+	linux-arm-kernel@lists.infradead.org
+To: Ulf Hansson <ulf.hansson@stericsson.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1320335741-5309-1-git-send-email-ulf.hansson@stericsson.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Thu, Nov 3, 2011 at 4:55 PM, Ulf Hansson <ulf.hansson@stericsson.com> wr=
+ote:
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIxNzgmYz0zOTMzNzYxJmQ9Mj=
-AxMS0xMS0wMyAxNzowMDowMSZlPTEmZj0yMTc4Jmc9MjE3OCZoPTIxNzg=3D
+> Make sure we enable the clock before leaving probe.
+>
+> Signed-off-by: Ulf Hansson <ulf.hansson@stericsson.com>
+> ---
+>
+> Changes in v2:
+> =A0 =A0 =A0 =A0-Remove runtime_idle
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIxNzgmY=
-z0zOTMzNzYxJmQ9MjAxMS0xMS0wMyAxNzowMDowMSZlPTEmZj0yMTc4Jmc9MjE3OCZoPTIxNzg=
-=3D
+Looking good
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-
----------------------------------------------------------------------------=
----
-RSA(R) Conference 2012
-Save $700 by Nov 18
-Register now
-http://p.sf.net/sfu/rsa-sfdev2dev1
+Please put this v2 in Russell's tracker.
+Linus

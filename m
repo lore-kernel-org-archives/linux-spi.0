@@ -1,24 +1,17 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [PATCH v2] atmel/spi: fix missing probe during the switch to
-	module_platform_driver
-Date: Thu, 3 Nov 2011 18:08:21 +0000
-Message-ID: <20111103180821.GR12913@n2100.arm.linux.org.uk>
-References: <1320331706-4946-1-git-send-email-plagnioj@jcrosoft.com>
-	<1320333042-24880-1-git-send-email-plagnioj@jcrosoft.com>
-	<20111103151855.GP12913@n2100.arm.linux.org.uk>
-	<20111103165113.GL7136@game.jcrosoft.org>
-	<20111103174338.GQ12913@n2100.arm.linux.org.uk>
-	<20111103180338.GN7136@game.jcrosoft.org>
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: [PATCH v5] atmel/spi: fix missing probe
+Date: Fri,  4 Nov 2011 02:16:06 +0800
+Message-ID: <1320344166-31077-1-git-send-email-plagnioj@jcrosoft.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Grant Likely <grant.likely@secretlab.ca>,
 	spi-devel-general@lists.sourceforge.net,
-	Greg Kroah-Hartman <gregkh@suse.de>, linux-arm-kernel@lists.infradead.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>
+To: linux-arm-kernel@lists.infradead.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <20111103180338.GN7136@game.jcrosoft.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
 	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -30,22 +23,59 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 03, 2011 at 07:03:38PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 17:43 Thu 03 Nov     , Russell King - ARM Linux wrote:
-> > On Thu, Nov 03, 2011 at 05:51:13PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > this is an other fix I do not want to fix 2 issue in one commit and I do care
-> > > of mismatch erros I fix them all the time I send patch for some rm9200 few
-> > > weeks ago
-> > 
-> > It should not be a separate patch - it's all to do with fixing the
-> > original problem.
-> 
-> yes when we was supposed to swtch to module_platform_driver we use the .probe
-> which is suposed to be __devinit in this case but I was prefering to do it in
-> 2 steps
+Commit 940ab889 "drivercore: Add helper macro for platform_driver boilerplate"
+converted this driver to use module_platform_driver, but due to the use
+of platform_driver_probe(), this resulted in the call to atmel_spi_probe being
+lost. Place the call to this function into the driver structure.
 
-Then do the __devinit transformation _first_ so you don't introduce a new
-bug in the middle of your 'fix'.
+fix section missmatch
 
-But I personally think you're just creating needless churn by splitting
-this one logical change.
+atmel_spi_probe is marked __init where it's supposed to be __devinit
+atmel_spi_remove is marked __exit where it's supposed to be __devexit
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Greg Kroah-Hartman <gregkh@suse.de>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>
+---
+V5:
+
+	do it in in patch
+
+Best Regards,
+J.
+ drivers/spi/spi-atmel.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 79665e2..16d6a83 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -907,7 +907,7 @@ static void atmel_spi_cleanup(struct spi_device *spi)
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-static int __init atmel_spi_probe(struct platform_device *pdev)
++static int __devinit atmel_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource		*regs;
+ 	int			irq;
+@@ -1003,7 +1003,7 @@ out_free:
+ 	return ret;
+ }
+ 
+-static int __exit atmel_spi_remove(struct platform_device *pdev)
++static int __devexit atmel_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master	*master = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_master_get_devdata(master);
+@@ -1072,6 +1072,7 @@ static struct platform_driver atmel_spi_driver = {
+ 	},
+ 	.suspend	= atmel_spi_suspend,
+ 	.resume		= atmel_spi_resume,
++	.probe		= atmel_spi_probe,
+ 	.remove		= __exit_p(atmel_spi_remove),
+ };
+ module_platform_driver(atmel_spi_driver);
+-- 
+1.7.7

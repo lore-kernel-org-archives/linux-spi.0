@@ -1,14 +1,19 @@
-From: APRIL par affilibuz <news-aRCsrEPsanzp/bQmFP7BarGZzIjr6fyc@public.gmane.org>
-Subject: =?iso-8859-15?Q?Sant=E9,_protection_accident,_pr?=
-	=?iso-8859-15?Q?ot=E9gez_votre_famille_avec_APRIL?=
-Date: Thu, 3 Nov 2011 09:50:11 +0100 (CET)
-Message-ID: <3236305005.421928.1320310211038@p4enginex1.emv2.com>
-Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Enable clock in probe an use runtime_idle
+Date: Thu, 3 Nov 2011 14:59:53 +0100
+Message-ID: <4EB29E59.4040509@stericsson.com>
+References: <1319206124-17549-1-git-send-email-ulf.hansson@stericsson.com>
+	<20111102141628.GG19187@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20111102141628.GG19187-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,63 +24,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Si vous ne pouvez pas visualiser ce message, consulter notre version en li=
-gne.
-  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
-s par
-                        l'intermediaire de ce raccourci
+>> @@ -2342,11 +2350,19 @@ static int pl022_runtime_resume(struct device *dev)
+>>  
+>>  	return 0;
+>>  }
+>> +
+>> +static int pl022_runtime_idle(struct device *dev)
+>> +{
+>> +	pm_runtime_suspend(dev);
+>> +	return 0;
+>> +}
+>>  #endif
+>>  
+>>  static const struct dev_pm_ops pl022_dev_pm_ops = {
+>>  	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
+>> -	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
+>> +	SET_RUNTIME_PM_OPS(pl022_runtime_suspend,
+>> +			   pl022_runtime_resume,
+>> +			   pl022_runtime_idle)
+> 
+> This is an unnecessary change.
+> 
+> The bus-level ops runtime PM ops call pm_generic_runtime_idle() when
+> its 'runtime_idle' operation is invoked.  Let's look at the code
+> there:
+> 
+> int pm_generic_runtime_idle(struct device *dev)
+> {
+>         const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
+> 
+>         if (pm && pm->runtime_idle) {
+>                 int ret = pm->runtime_idle(dev);
+>                 if (ret)
+>                         return ret;
+>         }
+> 
+>         pm_runtime_suspend(dev);
+>         return 0;
+> }
+> 
+> If the driver has a NULL runtime idle, then generic code will call
+> pm_runtime_suspend() for the device.  So, adding a runtime_idle callback
+> to a driver to explicitly call pm_runtime_suspend() is not required.
+> 
 
-                          Compl=E9mentaire sant=E9 APRIL :
-                      L'assurance d'=EAtre rembours=E9 en 24h
+You are somewhat correct. But the patch is still needed as is!
 
-    L'assurance d'=EAtre rembours=E9 en   L'assurance d'=EAtre L'assurance =
-d'=EAtre
-    24h                               rembours=E9 en 24h   rembours=E9 en 2=
-4h
-    L'assurance d'=EAtre rembours=E9 en   L'assurance d'=EAtre L'assurance =
-d'=EAtre
-    24h                               rembours=E9 en 24h   rembours=E9 en 2=
-4h
-    L'assurance d'=EAtre rembours=E9 en   L'assurance d'=EAtre L'assurance =
-d'=EAtre
-    24h                               rembours=E9 en 24h   rembours=E9 en 2=
-4h
-    L'assurance d'=EAtre rembours=E9 en   L'assurance d'=EAtre L'assurance =
-d'=EAtre
-    24h                               rembours=E9 en 24h   rembours=E9 en 2=
-4h
+Reason is simply that after a probe, driver core is calling 
+pm_runtime_put_sync. This will not go through the 
+pm_generic_runtime_idle function, but directly to __pm_runtime_idle.
 
-     *Un contrat Garantie Familiale Accident APRIL offert pendant 12 mois =
-=E0
-                         l'adh=E9rent du contrat Famille
-& Sant=E9 - capital de 30 000 euros en cas de d=E9c=E8s, indemnisation =E0 =
-partir de 30%
-                                 d'invalidit=E9.
-Offre valable pour toute demande d'adh=E9sion au contrat Famille & Sant=E9 =
-re=E7ue par
-             APRIL Sant=E9 Pr=E9voyance du 29 ao=C3=BBt au 31 d=E9cembre 20=
-11
- (adh=E9rent de 74 ans maximum r=E9sidant en France continentale hors Corse=
- et DROM
-                                 hors Mayotte).
- Produits con=E7us et g=E9r=E9s par APRIL Sant=E9 Pr=E9voyance et assur=E9s=
- par la MUTUELLE
-                                    GENERALE
-(Famille & Sant=E9 hors Bonus optique), SWISS LIFE Pr=E9voyance et Sant=E9 =
-(Famille &
-                         Sant=E9 pour le Bonus optique),
-       et ACE European Group Limited (Garantie Familiale Accident APRIL).
 
- APRIL Sant=E9 Pr=E9voyance - S.A. au capital de 500 000 euros; - RCS Lyon =
-428 702
-                                      419.
-   Interm=E9diaire en assurances - immatricul=E9e =E0 l=C2?ORIAS sous le n=
-=B007 002 609
-                                 (www.orias.fr)
-   Autorit=E9 de Contr=F4le Prudentiel - 61 rue Taitbout - 75436 Paris cede=
-x 09.
----------------------------------------------------------------------------=
----
+
+
+
+------------------------------------------------------------------------------
 RSA(R) Conference 2012
 Save $700 by Nov 18
 Register now

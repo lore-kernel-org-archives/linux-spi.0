@@ -1,14 +1,11 @@
-From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH V2] spi/pl022: Enable clock in probe
-Date: Thu, 3 Nov 2011 16:55:41 +0100
-Message-ID: <1320335741-5309-1-git-send-email-ulf.hansson@stericsson.com>
+From: "Karen Miller" <KarenM473-fkoMlgatuWA@public.gmane.org>
+Subject: [SPAM] Re: Proposal
+Date: Thu, 3 Nov 2011 09:09:04 -0700
+Message-ID: <93b8e224252526954dbb9084001a6130@juno.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_301742781D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,50 +17,68 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Make sure we enable the clock before leaving probe.
+This is a multi-part message in MIME format.
 
-Signed-off-by: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
----
+------=SPLITOR00A_001_301742781D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Changes in v2:
-	-Remove runtime_idle
+Are you the correct person to speak with about printing your company's =
+business cards? =09
 
----
- drivers/spi/spi-pl022.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+We offer the highest quality business cards combined with a very easy to =
+use online =09
+ordering system at no charge.	=09
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index f103e47..5559b22 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2184,6 +2184,12 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 		goto  err_clk_prep;
- 	}
- 
-+	status = clk_enable(pl022->clk);
-+	if (status) {
-+		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
-+		goto err_no_clk_en;
-+	}
-+
- 	/* Disable SSP */
- 	writew((readw(SSP_CR1(pl022->virtbase)) & (~SSP_CR1_MASK_SSE)),
- 	       SSP_CR1(pl022->virtbase));
-@@ -2237,6 +2243,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 
- 	free_irq(adev->irq[0], pl022);
-  err_no_irq:
-+	clk_disable(pl022->clk);
-+ err_no_clk_en:
- 	clk_unprepare(pl022->clk);
-  err_clk_prep:
- 	clk_put(pl022->clk);
--- 
-1.7.5.4
+ * Please review the attached brochure regarding our services. * =09
 
+If I have contacted the incorrect person please forward this e-mail for =
+me. =09
+
+Thank you in advance, I look forward to working with your company.=09
+
+Sincerely,=09
+Karen=09
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Unsubscribe Here: <mailto:deletethisaddress @ =
+gmx.com?subject=3DUnsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+------=SPLITOR00A_001_301742781D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 RSA(R) Conference 2012
 Save $700 by Nov 18
 Register now
 http://p.sf.net/sfu/rsa-sfdev2dev1
+------=SPLITOR00A_001_301742781D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_301742781D--

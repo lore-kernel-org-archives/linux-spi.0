@@ -1,59 +1,28 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [PATCH v2] atmel/spi: fix missing probe during the switch to
-	module_platform_driver
-Date: Thu, 3 Nov 2011 15:18:55 +0000
-Message-ID: <20111103151855.GP12913@n2100.arm.linux.org.uk>
-References: <1320331706-4946-1-git-send-email-plagnioj@jcrosoft.com>
-	<1320333042-24880-1-git-send-email-plagnioj@jcrosoft.com>
+From: 15817302760-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Thu, 3 Nov 2011 23:25:18 +0800
+Message-ID: <E1RLzBe-0005Uv-9y@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Greg Kroah-Hartman <gregkh@suse.de>, linux-arm-kernel@lists.infradead.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1320333042-24880-1-git-send-email-plagnioj@jcrosoft.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 03, 2011 at 11:10:42PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> in commit 940ab889
-
-This kind of commit message is, frankly, utter crap.
-
-With all the complaints that have been on this mailing list about raw
-commit IDs without saying what the commit was, it completely astounds
-me that someone in your position (allegedly a co-maintainer of a SoC)
-would make such an error.
-
-Please generate a much better commit message.  Maybe something like:
-
-----
-Commit 940ab889 (blah blah blah) converted this driver to use
-module_platform_driver, but due to the use of platform_driver_probe(),
-this resulted in the call to atmel_spi_probe being lost.  Place the
-call to this function into the driver structure.
-
-As atmel_spi_probe is marked __init, this will cause a section mismatch
-error, so ... <fill this in for the point below>
-----
-
-And, you're forgetting to fix this properly (maybe you don't care about
-section mismatch errors - are you going to create another patch for that
-as well?)  Did you even build-test this patch and pay attention to any
-warnings issued, or were you just pleased to get a zImage at the end?
-
-static int __init atmel_spi_probe(struct platform_device *pdev)
-
-__init is not compatible with having a pointer in the platform driver
-structure.  It needs to be __devinit.
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qjuwq587mry77I59PQ0OjS
+qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxNTgxNzMwMjc2MAoK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tClJTQShSKSBDb25mZXJlbmNlIDIwMTIKU2F2ZSAkNzAwIGJ5
+IE5vdiAxOApSZWdpc3RlciBub3cKaHR0cDovL3Auc2YubmV0L3NmdS9yc2Etc2ZkZXYyZGV2MQpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

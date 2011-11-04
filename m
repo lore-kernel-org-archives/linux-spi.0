@@ -1,7 +1,9 @@
-From: Service rencontre par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: 12 mois offerts pour faire de nouvelles rencontres
-Date: Fri, 04 Nov 2011 15:27:04 +0100
-Message-ID: <1320416824.4eb3f638a315d@mc10.fr>
+From: Diagnostic =?iso-8859-15?Q?cr=E9dit?= par Planduweb
+	<contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Regroupez vos =?iso-8859-15?Q?cr=E9dits?= en un seul
+	=?iso-8859-15?Q?=E0?= un meilleur taux.
+Date: Fri, 04 Nov 2011 15:53:38 +0100
+Message-ID: <1320418418.4eb3fc72ca345@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +22,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI2NzImYz0yMTkwMDMwMyZkPT=
-IwMTEtMTEtMDQgMTU6MTA6MDEmZT0xJmY9MjY3MiZnPTI2NzImaD0yNjcy
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwOTYmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTEtMDQgMTU6MzA6MDEmZT0xJmY9MjA5NiZnPTIwOTYmaD0yMDk2
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI2NzImY=
-z0yMTkwMDMwMyZkPTIwMTEtMTEtMDQgMTU6MTA6MDEmZT0xJmY9MjY3MiZnPTI2NzImaD0yNjcy
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwOTYmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTEtMDQgMTU6MzA6MDEmZT0xJmY9MjA5NiZnPTIwOTYmaD0yMDk2
 
 
 ---------------------------------------------------------------------------=

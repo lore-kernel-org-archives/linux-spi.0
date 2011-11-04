@@ -1,9 +1,8 @@
-From: Diagnostic =?iso-8859-15?Q?cr=E9dit?= par Planduweb
+From: Mes Pierres =?iso-8859-15?Q?Pr=E9cieuses?= par Planduweb
 	<contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Regroupez vos =?iso-8859-15?Q?cr=E9dits?= en un seul
-	=?iso-8859-15?Q?=E0?= un meilleur taux.
-Date: Fri, 04 Nov 2011 15:53:38 +0100
-Message-ID: <1320418418.4eb3fc72ca345@mc10.fr>
+Subject: Gagnez un solitaire d une valeur de 10 999 euros
+Date: Fri, 04 Nov 2011 16:19:19 +0100
+Message-ID: <1320419959.4eb402771ed3a@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -22,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIwOTYmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTEtMDQgMTU6MzA6MDEmZT0xJmY9MjA5NiZnPTIwOTYmaD0yMDk2
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI1MzcmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTEtMDQgMTU6NTA6MDEmZT0xJmY9MjUzNyZnPTI1MzcmaD0yNTM3
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIwOTYmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTEtMDQgMTU6MzA6MDEmZT0xJmY9MjA5NiZnPTIwOTYmaD0yMDk2
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI1MzcmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTEtMDQgMTU6NTA6MDEmZT0xJmY9MjUzNyZnPTI1MzcmaD0yNTM3
 
 
 ---------------------------------------------------------------------------=

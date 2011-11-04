@@ -1,98 +1,31 @@
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
-Subject: Re: [PATCH v5] atmel/spi: fix missing probe
-Date: Fri, 04 Nov 2011 09:55:12 +0100
-Message-ID: <4EB3A870.3050107@atmel.com>
-References: <1320344166-31077-1-git-send-email-plagnioj@jcrosoft.com>
+From: 13410458452-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 发/票――代/开
+Date: Fri, 4 Nov 2011 21:06:00 +0800
+Message-ID: <E1RMJTM-0002R6-CL@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	linux-arm-kernel@lists.infradead.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1320344166-31077-1-git-send-email-plagnioj@jcrosoft.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
-	<mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/03/2011 07:16 PM, Jean-Christophe PLAGNIOL-VILLARD :
-> Commit 940ab889 "drivercore: Add helper macro for platform_driver boilerplate"
-> converted this driver to use module_platform_driver, but due to the use
-> of platform_driver_probe(), this resulted in the call to atmel_spi_probe being
-> lost. Place the call to this function into the driver structure.
-> 
-> fix section missmatch
-> 
-> atmel_spi_probe is marked __init where it's supposed to be __devinit
-> atmel_spi_remove is marked __exit where it's supposed to be __devexit
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Greg Kroah-Hartman <gregkh@suse.de>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>
-
-Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-
-J. can you please queue it in:
-
-git://github.com/at91linux/linux-at91.git   at91-fixes
-
-We may also need to rebase the material already there (one patch) on a
-newer linus' kernel...
-
-Thanks, bye,
-
-> ---
-> V5:
-> 
-> 	do it in in patch
-> 
-> Best Regards,
-> J.
->  drivers/spi/spi-atmel.c |    5 +++--
->  1 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 79665e2..16d6a83 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -907,7 +907,7 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->  
->  /*-------------------------------------------------------------------------*/
->  
-> -static int __init atmel_spi_probe(struct platform_device *pdev)
-> +static int __devinit atmel_spi_probe(struct platform_device *pdev)
->  {
->  	struct resource		*regs;
->  	int			irq;
-> @@ -1003,7 +1003,7 @@ out_free:
->  	return ret;
->  }
->  
-> -static int __exit atmel_spi_remove(struct platform_device *pdev)
-> +static int __devexit atmel_spi_remove(struct platform_device *pdev)
->  {
->  	struct spi_master	*master = platform_get_drvdata(pdev);
->  	struct atmel_spi	*as = spi_master_get_devdata(master);
-> @@ -1072,6 +1072,7 @@ static struct platform_driver atmel_spi_driver = {
->  	},
->  	.suspend	= atmel_spi_suspend,
->  	.resume		= atmel_spi_resume,
-> +	.probe		= atmel_spi_probe,
->  	.remove		= __exit_p(atmel_spi_remove),
->  };
->  module_platform_driver(atmel_spi_driver);
-
-
--- 
-Nicolas Ferre
+xPq6w6O6IAogICAgztK5q8u+1Nooye7b2srQoaK2q924ytChornj1t3K0LXItdgpysfSu7zSvK+/
+qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howogICAgz9axvrmry77T0NK7sr+3
+1reiLcaxo7vLsMLKtc3BrqO708W73bT6v6qjuwrI5zooMSnG1c2oyczGt8/6ytu3oqGqoarGsaO7
+CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowogIAq587mry77I59PQ0OjS
+qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkxMzQxMDQ1ODQ1MgoK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tClJTQShSKSBDb25mZXJlbmNlIDIwMTIKU2F2ZSAkNzAwIGJ5
+IE5vdiAxOApSZWdpc3RlciBub3cKaHR0cDovL3Auc2YubmV0L3NmdS9yc2Etc2ZkZXYyZGV2MQpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

@@ -1,12 +1,12 @@
-From: The Kooples <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Vente_Priv=E9e_The_Kooples?=
-Date: Wed, 9 Nov 2011 01:47:50 +0100 (CET)
-Message-ID: <3236305005.441118.1320799670179@p4enginex1.emv2.com>
-Reply-To: newsletter-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Pas_envie_de_faire_le_m=C3=A9nage_=3F_Votre_robot_aspirateur_le?=
+	=?UTF-8?Q?_fait_pour_vous_!?=
+Date: Wed, 9 Nov 2011 05:04:11 +0100
+Message-ID: <f9de0329880386a23054f9332f439c76@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,31 +18,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-                Vente Priv*e The Kooples "Anciennes collections"
-       Si vous ne pouvez lire cet e-mail, rendez vous sur version online.
-
-   [IMG]
-
-               Vente Priv*e                          Vente Priv*e
-               Vente Priv*e                          Vente Priv*e
-
-
-
-                         SUIVEZ THE KOOPLES SUR       Facebook        Twitter
-
-
-
-
-.
-    Afin de recevoir toutes les news The Kooples, nous vous vous invitons *
-     enregistrer contact-UA8cYCusSuJnJPCzBmQnvUEOCMrvLtNR@public.gmane.org dans votre carnet d'adresses.
-
-       Si vous souhaitez stopper l'envoi d'informations de la part de The
-                      Kooples, rendez-vous sur cette page.
-
-
-------------------------------------------------------------------------------
-RSA(R) Conference 2012
-Save $700 by Nov 18
-Register now
-http://p.sf.net/sfu/rsa-sfdev2dev1
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lZmU3MDJi
+NGViMmYyMTNkL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvZWZlNzAyYjRlYjJmMjEzZC9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJClJPQk9DTEVBTkVSIDIw
+MTUgRElGRlVTRVIgT0lMIDogTGUgcm9ib3QgYXV0b25vbWUgcXVpIGFzcGlyZSB0b3V0IHN1ciBz
+b24gcGFzc2FnZSBldCBkaWZmdXNlIGRlcyBodWlsZXMgZXNzZW50aWVsbGVzLCAyNDnigqwgYXUg
+bGlldSBkZSA0OTnigqwgIQkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2QvZGlzY291bnQvZGV0YWlsLzczMy1yb2Jv
+dC1hc3BpcmF0ZXVyLWRpZmZ1c2V1ci1odWlsZXMtZXNzZW50aWVsbGVzXQoKMjQ54oKsClZhbGV1
+cjogNDk54oKsCcOJY29ub21pc2V6OiAyNTDigqwJRG9uczogMTAuNDfigqwJCgpbaHR0cDovL3d3
+dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZWZlNzAyYjRlYjJmMjEz
+ZC9kaXNjb3VudC9kZXRhaWwvNzMzLXJvYm90LWFzcGlyYXRldXItZGlmZnVzZXVyLWh1aWxlcy1l
+c3NlbnRpZWxsZXNdCgoKClVuIFJvYm9DbGVhbmVyIDIwMTUgRGlmZnVzZXIgT2lsIFVuIHNvbCBk
+w6lwb3Vzc2nDqXLDqSBzYW5zIGVmZm9ydCBVbiByb2JvdCAyIGVuIDEgcXVpIGZlcmEgdm90cmUg
+Ym9uaGV1ciBVbiBjYWRlYXUgZGUgTm/Dq2wgdHLDqHMgTG92aW5nICEgCltodHRwOi8vd3d3LmZh
+Y2Vib29rLmNvbS9zaGFyZS5waHA/dT1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJG
+ZGlzY291bnQlMkZkZXRhaWwlMkY3MzMtcm9ib3QtYXNwaXJhdGV1ci1kaWZmdXNldXItaHVpbGVz
+LWVzc2VudGllbGxlc10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2QvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUzQSUyRiUy
+Rnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGNzMzLXJvYm90LWFzcGly
+YXRldXItZGlmZnVzZXVyLWh1aWxlcy1lc3NlbnRpZWxsZXMmYW1wO21lc3NhZ2U9Uk9CT0NMRUFO
+RVIgMjAxNSBESUZGVVNFUiBPSUwgOiBMZSByb2JvdCBhdXRvbm9tZSBxdWkgYXNwaXJlIHRvdXQg
+c3VyIHNvbiBwYXNzYWdlIGV0IGRpZmZ1c2UgZGVzIGh1aWxlcyBlc3NlbnRpZWxsZXMsIDI0OeKC
+rCBhdSBsaWV1IGRlIDQ5OeKCrCAhXQpbbWFpbHRvOj9zdWJqZWN0PUomIzAzOTthaSBkw6ljb3V2
+ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SiYjMDM5
+O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyEgTG92
+aW5nIERlYWxzIG9mZnJlIGRlcyByw6lkdWN0aW9ucyBpbmNyb3lhYmxlcyBldCByZXZlcnNlIHVu
+IHBvdXJjZW50YWdlIMOgIGRlcyBhc3NvY2lhdGlvbnMgY2FyaXRhdGl2ZXMuIGh0dHA6Ly93d3cu
+bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2Qv
+ZGlzY291bnQvZGV0YWlsLzczMy1yb2JvdC1hc3BpcmF0ZXVyLWRpZmZ1c2V1ci1odWlsZXMtZXNz
+ZW50aWVsbGVzXQoKCgoKCgpFbmNvcmUgcGx1cyBkJ29mZnJlcyAhCQpWYWxldXI5MCZldXJvOwlS
+ZW1pc2U1MCUJw4ljb25vbWlzZXo0NSZldXJvOwlEb25zMS4zNSZldXJvOwkKQ09GRlJFVCBE4oCZ
+SFVJTEVTIEVTU0VOVElFTExFUyA6IELDqW7DqWZpY2lleiBkZXMgYmllbmZhaXRzIGRlIGzigJlh
+cm9tYXRow6lyYXBpZSBncsOiY2Ugw6AgdW4gY29mZnJldCBkZSAzIGZsYWNvbnMgZOKAmWh1aWxl
+cyBlc3NlbnRpZWxsZXMsIDQ14oKsIGF1IGxpZXUgZGUgOTDigqwgW2h0dHA6Ly93d3cubG92aW5n
+ZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2QvZGlzY291
+bnQvZGV0YWlsLzczNS1odWlsZXMtZXNzZW50aWVsbGVzLWtpdC1hcm9tYXRoZXJhcGllXQpTZXVs
+ZW1lbnQ0NeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
+dGV3YXkvZWZlNzAyYjRlYjJmMjEzZC9kaXNjb3VudC9kZXRhaWwvNzM1LWh1aWxlcy1lc3NlbnRp
+ZWxsZXMta2l0LWFyb21hdGhlcmFwaWVdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvZWZlNzAyYjRlYjJmMjEzZC9kaXNjb3VudC9kZXRhaWwvNzM1
+LWh1aWxlcy1lc3NlbnRpZWxsZXMta2l0LWFyb21hdGhlcmFwaWVdCgoKClZhbGV1cjEwJmV1cm87
+CVJlbWlzZTcwJQnDiWNvbm9taXNlejcmZXVybzsJRG9uczAuMDkmZXVybzsJCkNSRUVaIFZPVFJF
+IEFMQlVNIFBIT1RPUyBQT1VSIFNFVUxFTUVOVCAz4oKsIDogVW4gbGl2cmUgcGhvdG9zICZxdW90
+O0NvbGxlY3Rpb24gNTImcXVvdDsgcmVtcGxpIGRlIHNvdXZlbmlycyBncsOiY2Ugw6Agc21hcnRw
+aG90byBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkv
+ZWZlNzAyYjRlYjJmMjEzZC9kaXNjb3VudC9kZXRhaWwvNzMwLWFsYnVtLXBob3Rvcy1zb3V2ZW5p
+ci1zbWFydHBob3RvXQpTZXVsZW1lbnQz4oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2Fk
+bWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lZmU3MDJiNGViMmYyMTNkL2Rpc2NvdW50L2RldGFpbC83
+MzAtYWxidW0tcGhvdG9zLXNvdXZlbmlyLXNtYXJ0cGhvdG9dCgpbaHR0cDovL3d3dy5sb3Zpbmdk
+ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZWZlNzAyYjRlYjJmMjEzZC9kaXNjb3Vu
+dC9kZXRhaWwvNzMwLWFsYnVtLXBob3Rvcy1zb3V2ZW5pci1zbWFydHBob3RvXQoKCgoKCgoKW2h0
+dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2VmZTcwMmI0
+ZWIyZjIxM2QvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVh
+bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2QvYXNzb2NpYXRp
+b25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
+dHRlci9nYXRld2F5L2VmZTcwMmI0ZWIyZjIxM2QvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10K
+CgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBGb3VuZGF0aW9uIEV1cm9wZQkKCgoK
+CgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZWZlNzAyYjRlYjJmMjEzZC92aWV3L10KfCBTZSBkw6lz
+aW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5L2VmZTcwMmI0ZWIyZjIxM2QvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVuJmFtcDtjb2RlPTdk
+YjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUlNBKFIpIENvbmZlcmVuY2Ug
+MjAxMgpTYXZlICQ3MDAgYnkgTm92IDE4ClJlZ2lzdGVyIG5vdwpodHRwOi8vcC5zZi5uZXQvc2Z1
+L3JzYS1zZmRldjJkZXYxCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

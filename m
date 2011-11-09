@@ -1,7 +1,7 @@
-From: Locostia Sante par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Votre devis mutuelle gratuit
-Date: Wed, 09 Nov 2011 15:44:22 +0100
-Message-ID: <1320849862.4eba91c6f04f5@mc10.fr>
+From: "Jemedepense.com par Planduweb" <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Gganez 1 an de sport gratuit
+Date: Wed, 09 Nov 2011 15:45:11 +0100
+Message-ID: <1320849911.4eba91f7851cb@mc10.fr>
 Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTIxNTEmYz0yMTkwMDMwMyZkPT=
-IwMTEtMTEtMDkgMTU6NDA6MDEmZT0xJmY9MjE1MSZnPTIxNTEmaD0yMTUx
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI2OTMmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTEtMDkgMTU6MzA6MDEmZT0xJmY9MjY5MyZnPTI2OTMmaD0yNjkz
 
-Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTIxNTEmY=
-z0yMTkwMDMwMyZkPTIwMTEtMTEtMDkgMTU6NDA6MDEmZT0xJmY9MjE1MSZnPTIxNTEmaD0yMTUx
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI2OTMmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTEtMDkgMTU6MzA6MDEmZT0xJmY9MjY5MyZnPTI2OTMmaD0yNjkz
 
 
 ---------------------------------------------------------------------------=

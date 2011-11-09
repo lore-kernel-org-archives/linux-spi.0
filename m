@@ -1,14 +1,14 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 2/6] spi/pl022: fix build warnings
-Date: Wed, 9 Nov 2011 11:38:59 +0100
-Message-ID: <1320835139-31235-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 4/6] spi/pl022: skip default configuration before suspending
+Date: Wed, 9 Nov 2011 11:39:14 +0100
+Message-ID: <1320835154-31303-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -22,30 +22,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-The driver build complains with newer compilers unless you
-initialize this struct properly.
+The loading of the default configuration before suspending has
+been in the driver since its inception, but it is not really
+needed. Especially so since we take to all the trouble of
+enabling and disabling power and clock just to do this. Let's
+scrap this now.
 
-Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ drivers/spi/spi-pl022.c |    7 +------
+ 1 files changed, 1 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index b251926..305f2ba 100644
+index fa3eaae..bffad2a 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -1885,7 +1885,7 @@ static int pl022_setup(struct spi_device *spi)
- {
- 	struct pl022_config_chip const *chip_info;
- 	struct chip_data *chip;
--	struct ssp_clock_params clk_freq = {0, };
-+	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
- 	int status = 0;
- 	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
- 	unsigned int bits = spi->bits_per_word;
+@@ -2314,12 +2314,7 @@ static int pl022_suspend(struct device *dev)
+ 		return status;
+ 	}
+ 
+-	amba_vcore_enable(pl022->adev);
+-	amba_pclk_enable(pl022->adev);
+-	load_ssp_default_config(pl022);
+-	amba_pclk_disable(pl022->adev);
+-	amba_vcore_disable(pl022->adev);
+-	dev_dbg(dev, "suspended\n");
++	dev_dbg(&adev->dev, "suspended\n");
+ 	return 0;
+ }
+ 
 -- 
 1.7.3.2
 

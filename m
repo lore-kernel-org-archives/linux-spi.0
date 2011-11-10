@@ -1,169 +1,65 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH] spi/s3c64xx: Log error interrupts
-Date: Thu, 10 Nov 2011 11:11:37 +0000
-Message-ID: <1320923497-26465-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: "BE CONNECTED" <newsletter-sz0nxO4wV+RBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Chaises & Tabourets de bar : 4+2 offerts jusquau 20 novembre !
+Date: Thu, 10 Nov 2011 14:14:48 +0000 (CET)
+Message-ID: <111110141448.67470836700003604@ofnm44.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
- patches@opensource.wolfsonmicro.com, linux-arm-kernel@lists.infradead.org,
- Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Grant Likely <grant.likely@secretlab.ca>,
- Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Although the hardware supports interrupts we're not currently using them
-at all since for small transfers the overhead is greater than that for
-busy waiting and for large transfers we have interrupts from the DMA.
-This means that if the hardware reports an error (especially one which
-might not stall transfer) we might miss it.
 
-Take a first pass at dealing with such errors by enabling the interrupt
-if we can and logging the errors if they happen. Ideally we'd report the
-error via the affected transfer but since we're in master mode it's very
-difficult to trigger errors at present and this code is much simpler.
+Si ce message ne s'affiche pas correctement, visualisez le gr=E2ce =E0 ce l=
+ien. (http://www.mooviin.com/operation-chaises?utm_source=3DNewsFMOPChaises=
+&utm_medium=3Demail&utm_campaign=3DOPChaises)
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Du 7 au 20 novembre, profitez d=B4une offre exceptionnelle : 4 chaises + 2 =
+offertes !
+(http://ofnm44.com/sd2z5mefnirqenoyql/index0.html)
+(http://ofnm44.com/lo2mymcpnqigwwgyjy/index1.html)
+(http://ofnm44.com/yy2wnm3kn0cqdvjbgd/index2.html)
+(http://ofnm44.com/dg2pgmtsnwqg0eqbos/index3.html)
+(http://ofnm44.com/wy1ang0uvrfqvijl3y/index4.html)
+(http://ofnm44.com/zg1vggiyvcognhqlhl/index5.html)
+(http://ofnm44.com/nd1i5gfxvdpqlro2as/index6.html)
+(http://ofnm44.com/4o1kygk5ve3g2mg2id/index7.html)
+(http://ofnm44.com/kdnuphv1na4q3go5rl/index8.html)
+(http://ofnm44.com/vonhsh1mnjkgpqg55y/index9.html)
+(http://ofnm44.com/nrohxy1jcopamr0waj/index10.html)
+(http://ofnm44.com/4wvuahexwhpokmsjij/index11.html)
+(http://ofnm44.com/cszo4vyilzvcfsj3ks/index12.html)
+(http://ofnm44.com/xocdsjprh0vmly12vs/index13.html)
+(http://ofnm44.com/0ci5of0qamwnudig3o/index14.html)
+Mooviin, Meubles & Design pour tous! Avec Mooviin, les marques et les tenda=
+nces sont accessibles =E0 tous et vibrent avec les go=FBts de chacun. Moovi=
+in saisit les opportunit=E9s, suit les marques qui innovent et les met =E0 =
+disposition d=B4une client=E8le avide de nouveaut=E9s. Avec ce nom qui clam=
+e le mouvement et l=B4enthousiasme, l=B4enseigne veut aller plus loin dans =
+sa promesse : achat en ligne, livraison rapide et soign=E9e, mais aussi un =
+vrai espace d=B4exposition pour voir et toucher en confiance =E0 Seynod (74=
+).
+Pour toute question N=B0 azur (tarif appel local) : 0810 200 512.
+*Du 7 au 20 novembre, commandez 6 chaises ou tabourets identiques parmi la =
+s=E9lection propos=E9e sur le site www.mooviin.com (www.mooviin.com), deux =
+identiques vous seront offerts! La remise est automatiquement calcul=E9e da=
+ns votre panier. Offre valable dans la limite des stocks disponibles, non c=
+umulable avec toute autre op=E9ration promotionnelle en cours.
+Vous ne souhaitez plus recevoir notre newsletter ? Se d=E9sinscrire (http:/=
+/www.mooviin.com/newsletter/subscriber/unsubscribe/id/3139/code/183bgp3o1oq=
+bp5weum0dusq4bwb8u7lv/)
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-s3c64xx.c |   57 +++++++++++++++++++++++++++++++++++++++++++-
- 1 files changed, 55 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index dcf7e10..8172173 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -20,6 +20,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/workqueue.h>
-+#include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
-@@ -153,6 +154,7 @@ struct s3c64xx_spi_dma_data {
-  * @tx_dmach: Controller's DMA channel for Tx.
-  * @sfr_start: BUS address of SPI controller regs.
-  * @regs: Pointer to ioremap'ed controller registers.
-+ * @irq: interrupt
-  * @xfer_completion: To indicate completion of xfer task.
-  * @cur_mode: Stores the active configuration of the controller.
-  * @cur_bpw: Stores the active bits per word settings.
-@@ -171,6 +173,7 @@ struct s3c64xx_spi_driver_data {
- 	struct list_head                queue;
- 	spinlock_t                      lock;
- 	unsigned long                   sfr_start;
-+	int				irq;
- 	struct completion               xfer_completion;
- 	unsigned                        state;
- 	unsigned                        cur_mode, cur_bpw;
-@@ -930,6 +933,33 @@ setup_exit:
- 	return err;
- }
- 
-+static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = data;
-+	struct spi_master *spi = sdd->master;
-+	unsigned int val;
-+
-+	val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
-+
-+	val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
-+		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
-+		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
-+		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
-+
-+	writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
-+
-+	if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
-+		dev_err(&spi->dev, "RX overrun\n");
-+	if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
-+		dev_err(&spi->dev, "RX underrun\n");
-+	if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
-+		dev_err(&spi->dev, "TX overrun\n");
-+	if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
-+		dev_err(&spi->dev, "TX underrun\n");
-+
-+	return IRQ_HANDLED;
-+}
-+
- static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- {
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-@@ -970,7 +1000,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct s3c64xx_spi_info *sci;
- 	struct spi_master *master;
--	int ret;
-+	int ret, irq;
- 	char clk_name[16];
- 
- 	if (pdev->id < 0) {
-@@ -1006,6 +1036,12 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 		return -ENXIO;
- 	}
- 
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
-+		return irq;
-+	}
-+
- 	master = spi_alloc_master(&pdev->dev,
- 				sizeof(struct s3c64xx_spi_driver_data));
- 	if (master == NULL) {
-@@ -1100,10 +1136,21 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	INIT_WORK(&sdd->work, s3c64xx_spi_work);
- 	INIT_LIST_HEAD(&sdd->queue);
- 
-+	ret = request_irq(sdd->irq, s3c64xx_spi_irq, 0, "spi-s3c64xx", sdd);
-+	if (ret != 0) {
-+		dev_err(&pdev->dev, "Failed to request IRQ: %d\n",
-+			ret);
-+		goto err8;
-+	}
-+
-+	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
-+	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
-+	       sdd->regs + S3C64XX_SPI_INT_EN);
-+
- 	if (spi_register_master(master)) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		ret = -EBUSY;
--		goto err8;
-+		goto err9;
- 	}
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d "
-@@ -1115,6 +1162,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err9:
-+	free_irq(sdd->irq, sdd);
- err8:
- 	destroy_workqueue(sdd->workqueue);
- err7:
-@@ -1153,6 +1202,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_master(master);
- 
-+	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
-+
-+	free_irq(sdd->irq, sdd);
-+
- 	destroy_workqueue(sdd->workqueue);
- 
- 	clk_disable(sdd->src_clk);
--- 
-1.7.7.2
+RSA(R) Conference 2012
+Save $700 by Nov 18
+Register now
+http://p.sf.net/sfu/rsa-sfdev2dev1

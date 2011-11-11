@@ -1,12 +1,13 @@
-From: "La Revelación de los Misterios" <contact-xPy25mqK65fCjPmqmGkzoEzdiZCgik9O@public.gmane.org>
-Subject: [SPAM] Serie El Secreto de la Tercera Puerta
-Date: Fri, 11 Nov 2011 13:26:11 -0300
-Message-ID: <20111111162558.BF8DD4301FA@relay2.capfed1.sinectis.com.ar>
-Reply-To: La Revelación de los Misterios <contact-xPy25mqK65fCjPmqmGkzoEzdiZCgik9O@public.gmane.org>
+From: Le Lynx par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= 250 euros
+	=?iso-8859-15?Q?d=27=E9conomie?= sur votre assurance auto
+Date: Fri, 11 Nov 2011 19:52:31 +0100
+Message-ID: <1321037551.4ebd6eef09a89@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +19,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-La Revelaci=F3n de los Misterios
-Serie "El Secreto de la Tercera Puerta"
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-http://www.latercerapuerta.com.ar
-info-xPy25mqK65fCjPmqmGkzoEzdiZCgik9O@public.gmane.org
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0xMyZiPTI3ODkmYz0yMTkwMDMwMyZkPT=
+IwMTEtMTEtMTEgMTU6MTA6MDEmZT0xJmY9Mjc4OSZnPTI3ODkmaD0yNzg5
 
-Ver Video
-http://www.youtube.com/watch?v=3DmcYRKcpFjOQ
-
-
-
-
-
-
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0xMyZiPTI3ODkmY=
+z0yMTkwMDMwMyZkPTIwMTEtMTEtMTEgMTU6MTA6MDEmZT0xJmY9Mjc4OSZnPTI3ODkmaD0yNzg5
 
 
 ---------------------------------------------------------------------------=

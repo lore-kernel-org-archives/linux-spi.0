@@ -1,12 +1,11 @@
-From: Mysuelly <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: MYSUELLY Lance sa boutique en ligne - Frais de port offerts
-Date: Tue, 15 Nov 2011 12:15:14 +0100 (CET)
-Message-ID: <3236305005.459286.1321355714338@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: 13642347266-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 发/票――代/开
+Date: Tue, 15 Nov 2011 21:34:29 +0800
+Message-ID: <E1RQJA4-0003cx-7s@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous ne pouvez pas visualiser ce message, consulter notre version en
-                                     ligne.
-    Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de ma=
-ils
-                      par l'intermediaire de ce raccourci
-   MYSUELLY
-   Lancement du site E-shop
-   Les frais de livraison sont offerts jusqu'au 15 D=E9cembre 2011.
-   Rendez-vous sur mysuelly.fr/shop
----------------------------------------------------------------------------=
----
-RSA(R) Conference 2012
-Save $700 by Nov 18
-Register now
-http://p.sf.net/sfu/rsa-sfdev2dev1
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtcijqdPQ0ruyv7fW16jT
+w7eioaqhqsaxtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK27eioarGsaO7CiAgICgyKbnjuObStaGi
+uPfA4Lf+zvHStbeioaqhqsaxtci1yKGjCiAKyOfT0NDo0qqjrLu2063E+tPrztLBqs+1o7ogIAq4
+utTwyMujutXFz8jJ+igwKTEzNjQyMzQ3MjY2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUlNBKFIp
+IENvbmZlcmVuY2UgMjAxMgpTYXZlICQ3MDAgYnkgTm92IDE4ClJlZ2lzdGVyIG5vdwpodHRwOi8v
+cC5zZi5uZXQvc2Z1L3JzYS1zZmRldjJkZXYxCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,104 +1,47 @@
-From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/5] drivercore: Generalize module_platform_driver
-Date: Thu, 17 Nov 2011 06:51:35 +0000
-Message-ID: <4EC4AEF7.7030803@kernel.org>
-References: <1321434819-23678-1-git-send-email-lars@metafoo.de> <1321434819-23678-2-git-send-email-lars@metafoo.de> <CACxGe6twCU9Nb+b00ei83jxaz0YnVa6nT0ra6Kp0c4PO7hjT6Q@mail.gmail.com>
+From: "webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org" <webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org>
+Subject: [SPAM] Account Will Be Closed
+Date: Thu, 17 Nov 2011 09:09:49 -0800
+Message-ID: <99177762.20111117090949@webmaster.info>
+Reply-To: "webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org" <y.account-dbdLmdGazhY@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	Michael Hennerich <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CACxGe6twCU9Nb+b00ei83jxaz0YnVa6nT0ra6Kp0c4PO7hjT6Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/16/2011 05:11 PM, Grant Likely wrote:
-> On Wed, Nov 16, 2011 at 2:13 AM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
->> This patch generalizes the module_platform_driver macro and introduces a new
->> module_driver macro. The module_driver macro takes a driver name, a register
->> and a unregister function for this driver type. Using these it construct the
->> module init and exit sections which register and unregister the driver. Since
->> such init/exit sections are commonly found in drivers this macro can be used
->> to eliminate a lot of boilerplate code.
->>
->> The macro is not intended to be used by driver modules directly, instead it
->> should be used to generate bus specific macros for registering drivers like
->> the module_platform_driver macro.
->>
->> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-> 
-> Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Acked-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> 
->> ---
->>  include/linux/init.h            |   21 +++++++++++++++++++++
->>  include/linux/platform_device.h |   12 ++----------
->>  2 files changed, 23 insertions(+), 10 deletions(-)
->>
->> diff --git a/include/linux/init.h b/include/linux/init.h
->> index 9146f39..3e2d238 100644
->> --- a/include/linux/init.h
->> +++ b/include/linux/init.h
->> @@ -346,4 +346,25 @@ void __init parse_early_options(char *cmdline);
->>  #define __exit_p(x) NULL
->>  #endif
->>
->> +/**
->> + * module_driver() - Helper macro for drivers that don't do anything
->> + * special in module init/exit. This eliminates a lot of boilerplate.
->> + * Each module may only use this macro once, and calling it replaces
->> + * module_init() and module_exit().
->> + * Use this macro to construct bus specific macros for registering
->> + * drivers.
->> + */
->> +#define module_driver(__driver, __register, __unregister) \
->> +static int __init __driver##_init(void) \
->> +{ \
->> +       return __register(&(__driver)); \
->> +} \
->> +module_init(__driver##_init); \
->> +static void __exit __driver##_exit(void) \
->> +{ \
->> +       __unregister(&(__driver)); \
->> +} \
->> +module_exit(__driver##_exit);
->> +
->>  #endif /* _LINUX_INIT_H */
->> +
->> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
->> index 2a23f7d..165a8d1 100644
->> --- a/include/linux/platform_device.h
->> +++ b/include/linux/platform_device.h
->> @@ -196,16 +196,8 @@ static inline void platform_set_drvdata(struct platform_device *pdev, void *data
->>  * calling it replaces module_init() and module_exit()
->>  */
->>  #define module_platform_driver(__platform_driver) \
->> -static int __init __platform_driver##_init(void) \
->> -{ \
->> -       return platform_driver_register(&(__platform_driver)); \
->> -} \
->> -module_init(__platform_driver##_init); \
->> -static void __exit __platform_driver##_exit(void) \
->> -{ \
->> -       platform_driver_unregister(&(__platform_driver)); \
->> -} \
->> -module_exit(__platform_driver##_exit);
->> +       module_driver(__platform_driver, platform_driver_register, \
->> +                       platform_driver_unregister)
->>
->>  extern struct platform_device *platform_create_bundle(struct platform_driver *driver,
->>                                        int (*probe)(struct platform_device *),
->> --
->> 1.7.7.1
->>
->>
->>
-> 
-> 
-> 
+Dear Account User,
+
+We encountered a problem with our database and a lot of records were lost, we are restoring our database to enable us serve you better. Your Yahoo! Account details are required so as to store in our database to keep your account active.
+
+Failure to do this will lose account permanently.
+
+To update and enable us restore your account details in our data base to keep your account active, you are required to provide us the details below urgently.
+Click the reply button to enter details below.
+
+E-mail Address:
+Password :
+Date of Birth:
+Country or Territory:
+Alternative E-mail:
+
+
+Make sure the details above are correct to enable us restore your account details, this will help prevent your account from suspending or closing.
+
+Note: YOUR DETAILS WILL NOT BE SHARED..
+WEB MASTER TEAM
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure 
+contains a definitive record of customers, application performance, 
+security threats, fraudulent activity, and more. Splunk takes this 
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

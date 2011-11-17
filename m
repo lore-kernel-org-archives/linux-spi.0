@@ -1,12 +1,12 @@
-From: "webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org" <webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org>
-Subject: [SPAM] Account Will Be Closed
-Date: Thu, 17 Nov 2011 09:09:49 -0800
-Message-ID: <99177762.20111117090949@webmaster.info>
-Reply-To: "webmaster-Rrbileazn+kDie4ONvY22w@public.gmane.org" <y.account-dbdLmdGazhY@public.gmane.org>
+From: EPS TELESURVEILLANCE <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez_la_s=E9curit=E9_TOUT_COMPRIS_!?=
+Date: Thu, 17 Nov 2011 10:49:00 +0100 (CET)
+Message-ID: <3236305005.468672.1321523340670@p4enginex1.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,27 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Account User,
+    Si vous ne pouvez pas visualiser ce message, consulter notre version en
+                                     ligne.
 
-We encountered a problem with our database and a lot of records were lost, we are restoring our database to enable us serve you better. Your Yahoo! Account details are required so as to store in our database to keep your account active.
-
-Failure to do this will lose account permanently.
-
-To update and enable us restore your account details in our data base to keep your account active, you are required to provide us the details below urgently.
-Click the reply button to enter details below.
-
-E-mail Address:
-Password :
-Date of Birth:
-Country or Territory:
-Alternative E-mail:
-
-
-Make sure the details above are correct to enable us restore your account details, this will help prevent your account from suspending or closing.
-
-Note: YOUR DETAILS WILL NOT BE SHARED..
-WEB MASTER TEAM
-
+   Aujourd'hui, 1000 foyers seront victimes d'une effraction...
+   Qu'attendez-vous pour prot*ger votre domicile
+   Alarme + t*l*surveillance * partir de 19,50 EUR / mois, frais
+   d'installation OFFERTS !
+   En savoir plus
+   EPS: le N*1 de la t*l*surveillance en France avec plus de 230 000
+   abonn*s
+        Vous recevez cet email de la part de Affilibaz. Vous avez la
+       possibilit* de vous retirer de notre liste d'envoi de mails par
+   l'intermediaire de ce raccourci. Affilibaz - 42 Rue de l'Aqueduc, 75010
+                                    Paris
 ------------------------------------------------------------------------------
 All the data continuously generated in your IT infrastructure 
 contains a definitive record of customers, application performance, 

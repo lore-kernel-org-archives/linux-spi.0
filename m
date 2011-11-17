@@ -1,48 +1,37 @@
-From: Greg KH <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] drivercore: Generalize module_platform_driver
-Date: Thu, 17 Nov 2011 12:04:11 -0800
-Message-ID: <20111117200411.GA8691@kroah.com>
-References: <1321434819-23678-1-git-send-email-lars@metafoo.de>
- <1321434819-23678-2-git-send-email-lars@metafoo.de>
+From: "ATELNEX - Revenda Premium Motorola" <atelnex-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?TEFOw4dBTUVOVE8gRVA0NTBTIC0gTyBSw4FESU8gTUFJUyBWRU5ESURPIERPIEJSQVNJTCwgQUdPUkEgQ09NIE5PVkFTIEZVTkNJT05BTElEQURFUyAgIQ==?=
+Date: Thu, 17 Nov 2011 22:36:58 +0300
+Message-ID: <e2f64602c96dbe5ce6f0c3b0288dfa1e@radio-motorola.net>
+Reply-To: atelnex-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michael Hennerich <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1321434819-23678-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 16, 2011 at 10:13:35AM +0100, Lars-Peter Clausen wrote:
-> This patch generalizes the module_platform_driver macro and introduces a new
-> module_driver macro. The module_driver macro takes a driver name, a register
-> and a unregister function for this driver type. Using these it construct the
-> module init and exit sections which register and unregister the driver. Since
-> such init/exit sections are commonly found in drivers this macro can be used
-> to eliminate a lot of boilerplate code.
-> 
-> The macro is not intended to be used by driver modules directly, instead it
-> should be used to generate bus specific macros for registering drivers like
-> the module_platform_driver macro.
-> 
-> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-> Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> Acked-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Acked-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> ---
->  include/linux/init.h            |   21 +++++++++++++++++++++
-
-I've moved this from init.h (which is trying to get away from
-module-specific stuff) to device.h, which is where this really should
-be.
-
-thanks,
-
-greg k-h
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vcmFkaW8t
+bW90b3JvbGEubmV0L2Rpc3BsYXkucGhwP009MzY2MzExNSZDPTYxZjNhYmNmNWU4ZTFhOGIwYmE1
+NTM5NTYzY2QwMTAyJlM9ODUmTD02Jk49NDMKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9zc29z
+CkVtYWlsczpodHRwOi8vcmFkaW8tbW90b3JvbGEubmV0L3Vuc3Vic2NyaWJlLnBocD9NPTM2NjMx
+MTUmQz02MWYzYWJjZjVlOGUxYThiMGJhNTUzOTU2M2NkMDEwMiZMPTYmTj04NQotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJ
+VCBpbmZyYXN0cnVjdHVyZSAKY29udGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21l
+cnMsIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLCAKc2VjdXJpdHkgdGhyZWF0cywgZnJhdWR1bGVu
+dCBhY3Rpdml0eSwgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIApkYXRhIGFuZCBtYWtlcyBz
+ZW5zZSBvZiBpdC4gSVQgc2Vuc2UuIEFuZCBjb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNmLm5ldC9z
+ZnUvc3BsdW5rLW5vdmQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

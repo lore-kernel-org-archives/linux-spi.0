@@ -1,12 +1,12 @@
-From: "ATELNEX - Revenda Premium Motorola" <atelnex-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org>
-Subject: [SPAM]
-	=?UTF-8?B?TEFOw4dBTUVOVE8gRVA0NTBTIC0gTyBSw4FESU8gTUFJUyBWRU5ESURPIERPIEJSQVNJTCwgQUdPUkEgQ09NIE5PVkFTIEZVTkNJT05BTElEQURFUyAgIQ==?=
-Date: Thu, 17 Nov 2011 22:36:58 +0300
-Message-ID: <e2f64602c96dbe5ce6f0c3b0288dfa1e@radio-motorola.net>
-Reply-To: atelnex-6JDqOhG4TnoWLPG85pMNt6xOck334EZe@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Consumer MVNOs Report 2011-2016: Designing Successful Strategies for
+	Monetising Smartphone & LTE Growth
+Date: Fri, 18 Nov 2011 03:12:28 +0000
+Message-ID: <20111118031228.-351481343@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,19 +19,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vcmFkaW8t
-bW90b3JvbGEubmV0L2Rpc3BsYXkucGhwP009MzY2MzExNSZDPTYxZjNhYmNmNWU4ZTFhOGIwYmE1
-NTM5NTYzY2QwMTAyJlM9ODUmTD02Jk49NDMKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9zc29z
-CkVtYWlsczpodHRwOi8vcmFkaW8tbW90b3JvbGEubmV0L3Vuc3Vic2NyaWJlLnBocD9NPTM2NjMx
-MTUmQz02MWYzYWJjZjVlOGUxYThiMGJhNTUzOTU2M2NkMDEwMiZMPTYmTj04NQotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJ
-VCBpbmZyYXN0cnVjdHVyZSAKY29udGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21l
-cnMsIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLCAKc2VjdXJpdHkgdGhyZWF0cywgZnJhdWR1bGVu
-dCBhY3Rpdml0eSwgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIApkYXRhIGFuZCBtYWtlcyBz
-ZW5zZSBvZiBpdC4gSVQgc2Vuc2UuIEFuZCBjb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNmLm5ldC9z
-ZnUvc3BsdW5rLW5vdmQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Consumer MVNOs Report 2011-2016: Designing Successful Strategies for Monetising Smartphone & LTE Growth
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure 
+contains a definitive record of customers, application performance, 
+security threats, fraudulent activity, and more. Splunk takes this 
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

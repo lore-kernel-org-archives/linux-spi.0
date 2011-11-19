@@ -1,16 +1,11 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi/pl022: make the chip deselect handling thread safe
-Date: Fri, 18 Nov 2011 15:06:09 +0100
-Message-ID: <1321625169-15782-1-git-send-email-linus.walleij@stericsson.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Stylos_efface-rayures_/_GPS_/_H=C3=A9licopt=C3=A8re?=
+Date: Sat, 19 Nov 2011 04:59:16 +0100
+Message-ID: <d8aef723c54996758f440eb2e0d4e74e@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,193 +17,115 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-
-There is a possibility that the pump_message and giveback
-run in parallel on a SMP system. Both the pump_message and
-giveback threads work on the same SPI message queue.
-Results will be in correct if the pump_message gets to
-work on the queue first.
-
-when the pump_message works with the queue, it reads the
-head of the queue and removes it from the queue. pump_message
-activates the chip select depending on this message read.
-
-This leads to giveback working on the modified queue or a
-emptied queue. If the queue is empty or if the next message on
-the queue (which is not the actual next message, as the pump
-message has removed the next message from the queue) is not for
-the same SPI device as that Of the previous one, giveback will
-de-activate the chip select activated by pump_message(),
-which is wrong.
-
-To solve this problem pump_message is made not to run and
-access the queue until the giveback is done handling the queue.
-I.e. by making the cur_msg NULL after the giveback has read the
-queue.
-
-Also a state variable has been introduced to keep track of when
-the CS for next message is already activated and avoid to
-double-activate it.
-
-Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pl022.c |   72 ++++++++++++++++++++++++-----------------------
- 1 files changed, 37 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 13988a3..1cff8ad 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -340,6 +340,10 @@ struct vendor_data {
-  * @cur_msg: Pointer to current spi_message being processed
-  * @cur_transfer: Pointer to current spi_transfer
-  * @cur_chip: pointer to current clients chip(assigned from controller_state)
-+ * @next_msg_cs_active: the next message in the queue has been examined
-+ *  and it was found that it uses the same chip select as the previous
-+ *  message, so we left it active after the previous transfer, and it's
-+ *  active already.
-  * @tx: current position in TX buffer to be read
-  * @tx_end: end position in TX buffer to be read
-  * @rx: current position in RX buffer to be written
-@@ -373,6 +377,7 @@ struct pl022 {
- 	struct spi_message		*cur_msg;
- 	struct spi_transfer		*cur_transfer;
- 	struct chip_data		*cur_chip;
-+	bool				next_msg_cs_active;
- 	void				*tx;
- 	void				*tx_end;
- 	void				*rx;
-@@ -445,23 +450,9 @@ static void giveback(struct pl022 *pl022)
- 	struct spi_transfer *last_transfer;
- 	unsigned long flags;
- 	struct spi_message *msg;
--	void (*curr_cs_control) (u32 command);
-+	pl022->next_msg_cs_active = false;
- 
--	/*
--	 * This local reference to the chip select function
--	 * is needed because we set curr_chip to NULL
--	 * as a step toward termininating the message.
--	 */
--	curr_cs_control = pl022->cur_chip->cs_control;
--	spin_lock_irqsave(&pl022->queue_lock, flags);
--	msg = pl022->cur_msg;
--	pl022->cur_msg = NULL;
--	pl022->cur_transfer = NULL;
--	pl022->cur_chip = NULL;
--	queue_work(pl022->workqueue, &pl022->pump_messages);
--	spin_unlock_irqrestore(&pl022->queue_lock, flags);
--
--	last_transfer = list_entry(msg->transfers.prev,
-+	last_transfer = list_entry(pl022->cur_msg->transfers.prev,
- 					struct spi_transfer,
- 					transfer_list);
- 
-@@ -473,18 +464,13 @@ static void giveback(struct pl022 *pl022)
- 		 */
- 		udelay(last_transfer->delay_usecs);
- 
--	/*
--	 * Drop chip select UNLESS cs_change is true or we are returning
--	 * a message with an error, or next message is for another chip
--	 */
--	if (!last_transfer->cs_change)
--		curr_cs_control(SSP_CHIP_DESELECT);
--	else {
-+	if (!last_transfer->cs_change) {
- 		struct spi_message *next_msg;
- 
--		/* Holding of cs was hinted, but we need to make sure
--		 * the next message is for the same chip.  Don't waste
--		 * time with the following tests unless this was hinted.
-+		/*
-+		 * cs_change was not set. We can keep the chip select
-+		 * enabled if there is message in the queue and it is
-+		 * for the same spi device.
- 		 *
- 		 * We cannot postpone this until pump_messages, because
- 		 * after calling msg->complete (below) the driver that
-@@ -501,14 +487,26 @@ static void giveback(struct pl022 *pl022)
- 					struct spi_message, queue);
- 		spin_unlock_irqrestore(&pl022->queue_lock, flags);
- 
--		/* see if the next and current messages point
--		 * to the same chip
-+		/*
-+		 * see if the next and current messages point
-+		 * to the same spi device.
- 		 */
--		if (next_msg && next_msg->spi != msg->spi)
-+		if (next_msg && next_msg->spi != pl022->cur_msg->spi)
- 			next_msg = NULL;
--		if (!next_msg || msg->state == STATE_ERROR)
--			curr_cs_control(SSP_CHIP_DESELECT);
-+		if (!next_msg || pl022->cur_msg->state == STATE_ERROR)
-+			pl022->cur_chip->cs_control(SSP_CHIP_DESELECT);
-+		else
-+			pl022->next_msg_cs_active = true;
- 	}
-+
-+	spin_lock_irqsave(&pl022->queue_lock, flags);
-+	msg = pl022->cur_msg;
-+	pl022->cur_msg = NULL;
-+	pl022->cur_transfer = NULL;
-+	pl022->cur_chip = NULL;
-+	queue_work(pl022->workqueue, &pl022->pump_messages);
-+	spin_unlock_irqrestore(&pl022->queue_lock, flags);
-+
- 	msg->state = NULL;
- 	if (msg->complete)
- 		msg->complete(msg->context);
-@@ -1350,7 +1348,7 @@ static void pump_transfers(unsigned long data)
- 			 */
- 			udelay(previous->delay_usecs);
- 
--		/* Drop chip select only if cs_change is requested */
-+		/* Reselect chip select only if cs_change was requested */
- 		if (previous->cs_change)
- 			pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
- 	} else {
-@@ -1389,8 +1387,10 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
- 	 */
- 	u32 irqflags = ENABLE_ALL_INTERRUPTS & ~SSP_IMSC_MASK_RXIM;
- 
--	/* Enable target chip */
--	pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
-+	/* Enable target chip, if not already active */
-+	if (!pl022->next_msg_cs_active)
-+		pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
-+
- 	if (set_up_next_transfer(pl022, pl022->cur_transfer)) {
- 		/* Error path */
- 		pl022->cur_msg->state = STATE_ERROR;
-@@ -1445,7 +1445,8 @@ static void do_polling_transfer(struct pl022 *pl022)
- 		} else {
- 			/* STATE_START */
- 			message->state = STATE_RUNNING;
--			pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
-+			if (!pl022->next_msg_cs_active)
-+				pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
- 		}
- 
- 		/* Configuration Changing Per Transfer */
-@@ -1604,6 +1605,7 @@ static int start_queue(struct pl022 *pl022)
- 	pl022->cur_msg = NULL;
- 	pl022->cur_transfer = NULL;
- 	pl022->cur_chip = NULL;
-+	pl022->next_msg_cs_active = false;
- 	spin_unlock_irqrestore(&pl022->queue_lock, flags);
- 
- 	queue_work(pl022->workqueue, &pl022->pump_messages);
--- 
-1.7.3.2
-
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
-data and makes sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-novd2d
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNlMDI2
+Y2RhNTA4ZjRkL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvMzRjZTAyNmNkYTUwOGY0ZC9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCjIgU1RZTE9TIEVGRkFD
+RS1SQVlVUkVTICZxdW90O2ZpeCBpdCEgUFJPJnF1b3Q7IDogUG91ciBxdWUgdm90cmUgdm9pdHVy
+ZSByZWRldmllbm5lIGNvbW1lIG5ldXZlLCAxNOKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSA0MOKC
+rCAhCQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU4LXN0eWxvcy1lZmZhY2UtcmF5
+dXJlLXNpbW9uaXotcGFzLWNoZXJdCgoxNOKCrApWYWxldXI6IDQw4oKsCcOJY29ub21pc2V6OiAy
+NuKCrAlEb25zOiAwLjQy4oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0YWlsLzc1OC1zdHls
+b3MtZWZmYWNlLXJheXVyZS1zaW1vbml6LXBhcy1jaGVyXQoKCgoyIHN0eWxvcyBlZmZhY2UtcmF5
+dXJlcyA0IHBpbmNlYXV4IGludGVyY2hhbmdlYWJsZXMgVW5lIGNhcnJvc3NlcmllIHNhbnMgw6ln
+cmF0aWdudXJlcyBVbmUgdm9pdHVyZSBjb21tZSBuZXV2ZcKgISBbaHR0cDovL3d3dy5mYWNlYm9v
+ay5jb20vc2hhcmUucGhwP3U9aHR0cCUzQSUyRiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2Nv
+dW50JTJGZGV0YWlsJTJGNzU4LXN0eWxvcy1lZmZhY2UtcmF5dXJlLXNpbW9uaXotcGFzLWNoZXJd
+CltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNl
+MDI2Y2RhNTA4ZjRkL3BhZ2UvdHdpdHRlci8/dXJsPWh0dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVh
+bHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjc1OC1zdHlsb3MtZWZmYWNlLXJheXVyZS1zaW1v
+bml6LXBhcy1jaGVyJmFtcDttZXNzYWdlPTIgU1RZTE9TIEVGRkFDRS1SQVlVUkVTICZxdW90O2Zp
+eCBpdCEgUFJPJnF1b3Q7IDogUG91ciBxdWUgdm90cmUgdm9pdHVyZSByZWRldmllbm5lIGNvbW1l
+IG5ldXZlLCAxNOKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSA0MOKCrCAhXQpbbWFpbHRvOj9zdWJq
+ZWN0PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUg
+ZGVhbHMmYW1wO2JvZHk9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6lyZXV4IGRl
+cyBzaXRlcyBkZSBkZWFscyEgTG92aW5nIERlYWxzIG9mZnJlIGRlcyByw6lkdWN0aW9ucyBpbmNy
+b3lhYmxlcyBldCByZXZlcnNlIHVuIHBvdXJjZW50YWdlIMOgIGRlcyBhc3NvY2lhdGlvbnMgY2Fy
+aXRhdGl2ZXMuIGh0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0YWlsLzc1OC1zdHlsb3MtZWZmYWNlLXJh
+eXVyZS1zaW1vbml6LXBhcy1jaGVyXQoKCgoKCgpFbmNvcmUgcGx1cyBkJ29mZnJlcyAhCQpWYWxl
+dXIxMTkmZXVybzsJUmVtaXNlNTMlCcOJY29ub21pc2V6NjMmZXVybzsJRG9uczEuNjgmZXVybzsJ
+CkdQUyBEQU5FVyAtIEdTMTcwIDogTGFpc3Nlei12b3VzIGd1aWRlciBwYXIgY2UgR1BTIMOpbMOp
+Z2FudCDDoCB1dGlsaXNhdGlvbiBpbnR1aXRpdmUgcG91ciBzZXVsZW1lbnQgNTbigqwgYXUgbGll
+dSBkZSAxMTnigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzg2LWdwcy1kYW5ldy1w
+YXMtY2hlcl0KU2V1bGVtZW50NTbigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
+bmV3c2xldHRlci9nYXRld2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0YWlsLzc4Ni1n
+cHMtZGFuZXctcGFzLWNoZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
+bGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzg2LWdwcy1k
+YW5ldy1wYXMtY2hlcl0KCgoKVmFsZXVyMjkmZXVybzsJUmVtaXNlNTIlCcOJY29ub21pc2V6MTUm
+ZXVybzsJRG9uczAuNDImZXVybzsJCkxPVCBERSAxNSBGTEVVUlMgREUgVEjDiSA6IETDqWNvcmV6
+IHZvdHJlIHRow6lpw6hyZSBldCBkw6lndXN0ZXogdW4gc2F2b3VyZXV4IHRow6kgdmVydCBhdmVj
+IGNlcyBmbGV1cnMgZGUgdGjDqSwgMTTigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgMjnigqwgISBb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAy
+NmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU3LWZsZXVycy1kZS10aGUtdmVydC1wYXNzLWF2
+YW50YWdlXQpTZXVsZW1lbnQxNOKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
+ZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU3LWZs
+ZXVycy1kZS10aGUtdmVydC1wYXNzLWF2YW50YWdlXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMu
+ZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0
+YWlsLzc1Ny1mbGV1cnMtZGUtdGhlLXZlcnQtcGFzcy1hdmFudGFnZV0KCgoKClZhbGV1cjY1JmV1
+cm87CVJlbWlzZTY2JQnDiWNvbm9taXNlejQzJmV1cm87CURvbnMwLjY2JmV1cm87CQpMT1QgREUg
+NCBUT1VQSUVTIERSQUdPTiBCQUxMIFogOiBWb3MgZW5mYW50cyBkZXZpZW5uZW50IGxlcyBow6ly
+b3MgZGVzIGNvdXJzIGRlIHLDqWNyw6ksIDIy4oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDY14oKs
+IFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNl
+MDI2Y2RhNTA4ZjRkL2Rpc2NvdW50L2RldGFpbC83NjQtdG91cGllcy1kcmFnb25iYWxsei1jYWRl
+YXUtbm9lbC1lbmZhbnRzXQpTZXVsZW1lbnQyMuKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
+ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRh
+aWwvNzY0LXRvdXBpZXMtZHJhZ29uYmFsbHotY2FkZWF1LW5vZWwtZW5mYW50c10KCltodHRwOi8v
+d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNlMDI2Y2RhNTA4
+ZjRkL2Rpc2NvdW50L2RldGFpbC83NjQtdG91cGllcy1kcmFnb25iYWxsei1jYWRlYXUtbm9lbC1l
+bmZhbnRzXQoKCgpWYWxldXI3NSZldXJvOwlSZW1pc2U1NSUJw4ljb25vbWlzZXo0MSZldXJvOwlE
+b25zMS4wMiZldXJvOwkKTEUgRkxZSU5HIEZJU0gsIExFIFBPSVNTT04gQ0xPV04gT1UgUkVRVUlO
+IFFVSSBWT0xFIDogQWRvcHRleiBjZSBwb2lzc29uIHTDqWzDqWNvbW1hbmTDqSBnb25mbMOpIMOg
+IGzigJlow6lsaXVtLCAzNOKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSA3NeKCrCBbaHR0cDovL3d3
+dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0
+ZC9kaXNjb3VudC9kZXRhaWwvNzU2LWZseWluZy1maXNoLXRlbGVjb21tYW5kZS1wYXMtY2hlcl0K
+U2V1bGVtZW50MzTigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0YWlsLzc1Ni1mbHlpbmctZmlz
+aC10ZWxlY29tbWFuZGUtcGFzLWNoZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU2
+LWZseWluZy1maXNoLXRlbGVjb21tYW5kZS1wYXMtY2hlcl0KCgoKClZhbGV1cjQwJmV1cm87CVJl
+bWlzZTUyJQnDiWNvbm9taXNlejIxJmV1cm87CURvbnMwLjU3JmV1cm87CQpIw4lMSUNPUFTDiFJF
+IFJBRElPLUNPTU1BTkTDiSBTV09SRFNNQU4gOiBEZXZlbmV6IGxlIHBpbG90ZSBk4oCZdW4gaMOp
+bGljb3B0w6hyZSBTIDEwNyBwb3VyIHNldWxlbWVudCAxOeKCrCBhdSBsaWV1IGRlIDQw4oKsIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNlMDI2
+Y2RhNTA4ZjRkL2Rpc2NvdW50L2RldGFpbC83NTUtaGVsaWNvcHRlcmUtcmFkaW8tY29tbWFuZGUt
+c3dvcmRzbWFuLW5vZWxdClNldWxlbWVudDE54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
+L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNlMDI2Y2RhNTA4ZjRkL2Rpc2NvdW50L2RldGFp
+bC83NTUtaGVsaWNvcHRlcmUtcmFkaW8tY29tbWFuZGUtc3dvcmRzbWFuLW5vZWxdCgpbaHR0cDov
+L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUw
+OGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU1LWhlbGljb3B0ZXJlLXJhZGlvLWNvbW1hbmRlLXN3b3Jk
+c21hbi1ub2VsXQoKCgpWYWxldXIzMSZldXJvOwlSZW1pc2UzOSUJw4ljb25vbWlzZXoxMiZldXJv
+OwlEb25zMC41NyZldXJvOwkKMiBCT05ORVRTIERFIExBIEJPVVRJUVVFIERFIE1Bw4tMSUEgOiBQ
+csOpcGFyZXotdm91cyBwb3VyIGzigJloaXZlciBhdmVjIHVuIGxvb2sgYXUgdG9wLCAxOeKCrCBh
+dSBsaWV1IGRlIDMx4oKsICEgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
+dHRlci9nYXRld2F5LzM0Y2UwMjZjZGE1MDhmNGQvZGlzY291bnQvZGV0YWlsLzc1OS1ib25uZXQt
+cGFzLWNoZXItYm91dGlxdWUtZGUtbWFlbGlhXQpTZXVsZW1lbnQxOeKCrCBbaHR0cDovL3d3dy5s
+b3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9k
+aXNjb3VudC9kZXRhaWwvNzU5LWJvbm5ldC1wYXMtY2hlci1ib3V0aXF1ZS1kZS1tYWVsaWFdCgpb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAy
+NmNkYTUwOGY0ZC9kaXNjb3VudC9kZXRhaWwvNzU5LWJvbm5ldC1wYXMtY2hlci1ib3V0aXF1ZS1k
+ZS1tYWVsaWFdCgoKCgoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAy
+NmNkYTUwOGY0ZC9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3Zpbmdk
+ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC9hc3NvY2lh
+dGlvbnMtY2FyaXRhdGl2ZXMvXQoKCkwnYWZhCVLDqnZlcyBkJ2VuZmFudHMJU3VyZnJpZGVyIEZv
+dW5kYXRpb24gRXVyb3BlCQoKCgoKCgpTaG93IGVtYWlsIGF0IHRoZSB3ZWJzaXRlIFtodHRwOi8v
+d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGNlMDI2Y2RhNTA4
+ZjRkL3ZpZXcvXQp8IFNlIGTDqXNpbnNjcmlyZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRjZTAyNmNkYTUwOGY0ZC91bnN1YnNjcmliZS8/bGFu
+Z3VhZ2U9ZW4mYW1wO2NvZGU9N2RiODAzZWUwN2UwNDI4MV0KCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQpBbGwgdGhlIGRhdGEgY29udGludW91c2x5IGdlbmVyYXRlZCBpbiB5b3VyIElUIGluZnJhc3Ry
+dWN0dXJlIApjb250YWlucyBhIGRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3RvbWVycywgYXBwbGlj
+YXRpb24gcGVyZm9ybWFuY2UsIApzZWN1cml0eSB0aHJlYXRzLCBmcmF1ZHVsZW50IGFjdGl2aXR5
+LCBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgCmRhdGEgYW5kIG1ha2VzIHNlbnNlIG9mIGl0
+LiBJVCBzZW5zZS4gQW5kIGNvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0L3NmdS9zcGx1bmst
+bm92ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
+aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
+c3BpLWRldmVsLWdlbmVyYWwK

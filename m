@@ -1,132 +1,562 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: DERNIERE CHANCE : Offres de la semaine
-Date: Sun, 20 Nov 2011 04:59:03 +0100
-Message-ID: <92cd24b6dc3a92de4284061263ce270a@www.lovingdeals.fr>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
+Date: Mon, 21 Nov 2011 21:16:55 +0100
+Message-ID: <1321906615-11392-1-git-send-email-florian@openwrt.org>
+Cc: spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
+        ralf@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-mips-bounce@linux-mips.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2
-ODhhODYyYjA5L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvMzRiNjAyNjg4YTg2MmIwOS9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkjDiUxJQ09QVMOIUkUg
-UkFESU8tQ09NTUFORMOJIFNXT1JEU01BTiA6IERldmVuZXogbGUgcGlsb3RlIGTigJl1biBow6ls
-aWNvcHTDqHJlIFMgMTA3IHBvdXIgc2V1bGVtZW50IDE54oKsIGF1IGxpZXUgZGUgNDDigqwJCgoK
-CltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2
-MDI2ODhhODYyYjA5L2Rpc2NvdW50L2RldGFpbC83NTUtaGVsaWNvcHRlcmUtcmFkaW8tY29tbWFu
-ZGUtc3dvcmRzbWFuLW5vZWxdCgoxOeKCrApWYWxldXI6IDQw4oKsCcOJY29ub21pc2V6OiAyMeKC
-rAlEb25zOiAwLjU34oKsCQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
-dHRlci9nYXRld2F5LzM0YjYwMjY4OGE4NjJiMDkvZGlzY291bnQvZGV0YWlsLzc1NS1oZWxpY29w
-dGVyZS1yYWRpby1jb21tYW5kZS1zd29yZHNtYW4tbm9lbF0KCgoKVW4gaMOpbGljb3B0w6hyZSBy
-YWRpby1jb21tYW5kw6kgU3dvcmRzbWFuIExlIGZhbWV1eCBtb2TDqGxlIFMxMDcgRGVzIHBpcm91
-ZXR0ZXMgcmlzcXXDqWVzIGV0IGNhc2NhZGVzIGRpZ25lcyBkZXMgZmlsbXMgYW3DqXJpY2FpbnMg
-VW4gYW11c2VtZW50IHNhbnMgZmluIFVuIGNhZGVhdSBkZSBOb8OrbCB0csOocyBMb3ZpbmcgISBb
-aHR0cDovL3d3dy5mYWNlYm9vay5jb20vc2hhcmUucGhwP3U9aHR0cCUzQSUyRiUyRnd3dy5sb3Zp
-bmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGNzU1LWhlbGljb3B0ZXJlLXJhZGlvLWNv
-bW1hbmRlLXN3b3Jkc21hbi1ub2VsXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
-ZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9wYWdlL3R3aXR0ZXIvP3VybD1odHRw
-JTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY3NTUtaGVs
-aWNvcHRlcmUtcmFkaW8tY29tbWFuZGUtc3dvcmRzbWFuLW5vZWwmYW1wO21lc3NhZ2U9SMOJTElD
-T1BUw4hSRSBSQURJTy1DT01NQU5Ew4kgU1dPUkRTTUFOIDogRGV2ZW5leiBsZSBwaWxvdGUgZOKA
-mXVuIGjDqWxpY29wdMOocmUgUyAxMDcgcG91ciBzZXVsZW1lbnQgMTnigqwgYXUgbGlldSBkZSA0
-MOKCrF0KW21haWx0bzo/c3ViamVjdD1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBwbHVzIGfDqW7D
-qXJldXggZGVzIHNpdGVzIGRlIGRlYWxzJmFtcDtib2R5PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxl
-IHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMhIExvdmluZyBEZWFscyBvZmZyZSBk
-ZXMgcsOpZHVjdGlvbnMgaW5jcm95YWJsZXMgZXQgcmV2ZXJzZSB1biBwb3VyY2VudGFnZSDDoCBk
-ZXMgYXNzb2NpYXRpb25zIGNhcml0YXRpdmVzLiBodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2Fk
-bWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2NvdW50L2RldGFpbC83
-NTUtaGVsaWNvcHRlcmUtcmFkaW8tY29tbWFuZGUtc3dvcmRzbWFuLW5vZWxdCgoKCgoKCkVuY29y
-ZSBwbHVzIGQnb2ZmcmVzICEJClZhbGV1cjI5JmV1cm87CVJlbWlzZTUyJQnDiWNvbm9taXNlejE1
-JmV1cm87CURvbnMwLjQyJmV1cm87CQpMT1QgREUgMTUgRkxFVVJTIERFIFRIw4kgOiBEw6ljb3Jl
-eiB2b3RyZSB0aMOpacOocmUgZXQgZMOpZ3VzdGV6IHVuIHNhdm91cmV1eCB0aMOpIHZlcnQgYXZl
-YyBjZXMgZmxldXJzIGRlIHRow6ksIDE04oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDI54oKsICEg
-W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM0YjYw
-MjY4OGE4NjJiMDkvZGlzY291bnQvZGV0YWlsLzc1Ny1mbGV1cnMtZGUtdGhlLXZlcnQtcGFzcy1h
-dmFudGFnZV0KU2V1bGVtZW50MTTigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
-bmV3c2xldHRlci9nYXRld2F5LzM0YjYwMjY4OGE4NjJiMDkvZGlzY291bnQvZGV0YWlsLzc1Ny1m
-bGV1cnMtZGUtdGhlLXZlcnQtcGFzcy1hdmFudGFnZV0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2NvdW50L2Rl
-dGFpbC83NTctZmxldXJzLWRlLXRoZS12ZXJ0LXBhc3MtYXZhbnRhZ2VdCgoKClZhbGV1cjQwJmV1
-cm87CVJlbWlzZTY1JQnDiWNvbm9taXNlejI2JmV1cm87CURvbnMwLjQyJmV1cm87CQoyIFNUWUxP
-UyBFRkZBQ0UtUkFZVVJFUyAmcXVvdDtmaXggaXQhIFBSTyZxdW90OyA6IFBvdXIgcXVlIHZvdHJl
-IHZvaXR1cmUgcmVkZXZpZW5uZSBjb21tZSBuZXV2ZSwgMTTigqwgc2V1bGVtZW50IGF1IGxpZXUg
-ZGUgNDDigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
-dGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzU4LXN0eWxvcy1lZmZhY2Ut
-cmF5dXJlLXNpbW9uaXotcGFzLWNoZXJdClNldWxlbWVudDE04oKsIFtodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2Nv
-dW50L2RldGFpbC83NTgtc3R5bG9zLWVmZmFjZS1yYXl1cmUtc2ltb25pei1wYXMtY2hlcl0KClto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2
-ODhhODYyYjA5L2Rpc2NvdW50L2RldGFpbC83NTgtc3R5bG9zLWVmZmFjZS1yYXl1cmUtc2ltb25p
-ei1wYXMtY2hlcl0KCgoKClZhbGV1cjExOSZldXJvOwlSZW1pc2U1MyUJw4ljb25vbWlzZXo2MyZl
-dXJvOwlEb25zMS42OCZldXJvOwkKR1BTIERBTkVXIC0gR1MxNzAgOiBMYWlzc2V6LXZvdXMgZ3Vp
-ZGVyIHBhciBjZSBHUFMgw6lsw6lnYW50IMOgIHV0aWxpc2F0aW9uIGludHVpdGl2ZSBwb3VyIHNl
-dWxlbWVudCA1NuKCrCBhdSBsaWV1IGRlIDExOeKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2NvdW50L2Rl
-dGFpbC83ODYtZ3BzLWRhbmV3LXBhcy1jaGVyXQpTZXVsZW1lbnQ1NuKCrCBbaHR0cDovL3d3dy5s
-b3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9k
-aXNjb3VudC9kZXRhaWwvNzg2LWdwcy1kYW5ldy1wYXMtY2hlcl0KCltodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2Nv
-dW50L2RldGFpbC83ODYtZ3BzLWRhbmV3LXBhcy1jaGVyXQoKCgpWYWxldXI3NSZldXJvOwlSZW1p
-c2U1NSUJw4ljb25vbWlzZXo0MSZldXJvOwlEb25zMS4wMiZldXJvOwkKTEUgRkxZSU5HIEZJU0gs
-IExFIFBPSVNTT04gQ0xPV04gT1UgUkVRVUlOIFFVSSBWT0xFIDogQWRvcHRleiBjZSBwb2lzc29u
-IHTDqWzDqWNvbW1hbmTDqSBnb25mbMOpIMOgIGzigJlow6lsaXVtLCAzNOKCrCBzZXVsZW1lbnQg
-YXUgbGlldSBkZSA3NeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzU2LWZseWluZy1m
-aXNoLXRlbGVjb21tYW5kZS1wYXMtY2hlcl0KU2V1bGVtZW50MzTigqwgW2h0dHA6Ly93d3cubG92
-aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM0YjYwMjY4OGE4NjJiMDkvZGlz
-Y291bnQvZGV0YWlsLzc1Ni1mbHlpbmctZmlzaC10ZWxlY29tbWFuZGUtcGFzLWNoZXJdCgpbaHR0
-cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4
-YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzU2LWZseWluZy1maXNoLXRlbGVjb21tYW5kZS1wYXMt
-Y2hlcl0KCgoKClZhbGV1cjY1JmV1cm87CVJlbWlzZTY2JQnDiWNvbm9taXNlejQzJmV1cm87CURv
-bnMwLjY2JmV1cm87CQpMT1QgREUgNCBUT1VQSUVTIERSQUdPTiBCQUxMIFogOiBWb3MgZW5mYW50
-cyBkZXZpZW5uZW50IGxlcyBow6lyb3MgZGVzIGNvdXJzIGRlIHLDqWNyw6ksIDIy4oKsIHNldWxl
-bWVudCBhdSBsaWV1IGRlIDY14oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
-d3NsZXR0ZXIvZ2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2NvdW50L2RldGFpbC83NjQtdG91
-cGllcy1kcmFnb25iYWxsei1jYWRlYXUtbm9lbC1lbmZhbnRzXQpTZXVsZW1lbnQyMuKCrCBbaHR0
-cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4
-YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzY0LXRvdXBpZXMtZHJhZ29uYmFsbHotY2FkZWF1LW5v
-ZWwtZW5mYW50c10KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
-Z2F0ZXdheS8zNGI2MDI2ODhhODYyYjA5L2Rpc2NvdW50L2RldGFpbC83NjQtdG91cGllcy1kcmFn
-b25iYWxsei1jYWRlYXUtbm9lbC1lbmZhbnRzXQoKCgpWYWxldXIzMSZldXJvOwlSZW1pc2UzOSUJ
-w4ljb25vbWlzZXoxMiZldXJvOwlEb25zMC41NyZldXJvOwkKMiBCT05ORVRTIERFIExBIEJPVVRJ
-UVVFIERFIE1Bw4tMSUEgOiBQcsOpcGFyZXotdm91cyBwb3VyIGzigJloaXZlciBhdmVjIHVuIGxv
-b2sgYXUgdG9wLCAxOeKCrCBhdSBsaWV1IGRlIDMx4oKsICEgW2h0dHA6Ly93d3cubG92aW5nZGVh
-bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM0YjYwMjY4OGE4NjJiMDkvZGlzY291bnQv
-ZGV0YWlsLzc1OS1ib25uZXQtcGFzLWNoZXItYm91dGlxdWUtZGUtbWFlbGlhXQpTZXVsZW1lbnQx
-OeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkv
-MzRiNjAyNjg4YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzU5LWJvbm5ldC1wYXMtY2hlci1ib3V0
-aXF1ZS1kZS1tYWVsaWFdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9kaXNjb3VudC9kZXRhaWwvNzU5LWJvbm5ldC1w
-YXMtY2hlci1ib3V0aXF1ZS1kZS1tYWVsaWFdCgoKCgoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
-cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9hc3NvY2lhdGlv
-bnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIwOS9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpb
-aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAy
-Njg4YTg2MmIwOS9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQoKCkwnYWZhCVLDqnZlcyBkJ2Vu
-ZmFudHMJU3VyZnJpZGVyIEZvdW5kYXRpb24gRXVyb3BlCQoKCgoKCgpTaG93IGVtYWlsIGF0IHRo
-ZSB3ZWJzaXRlIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0
-ZXdheS8zNGI2MDI2ODhhODYyYjA5L3ZpZXcvXQp8IFNlIGTDqXNpbnNjcmlyZSBbaHR0cDovL3d3
-dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzRiNjAyNjg4YTg2MmIw
-OS91bnN1YnNjcmliZS8/bGFuZ3VhZ2U9ZW4mYW1wO2NvZGU9N2RiODAzZWUwN2UwNDI4MV0KCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpBbGwgdGhlIGRhdGEgY29udGludW91c2x5IGdlbmVyYXRlZCBp
-biB5b3VyIElUIGluZnJhc3RydWN0dXJlIApjb250YWlucyBhIGRlZmluaXRpdmUgcmVjb3JkIG9m
-IGN1c3RvbWVycywgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UsIApzZWN1cml0eSB0aHJlYXRzLCBm
-cmF1ZHVsZW50IGFjdGl2aXR5LCBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgCmRhdGEgYW5k
-IG1ha2VzIHNlbnNlIG9mIGl0LiBJVCBzZW5zZS4gQW5kIGNvbW1vbiBzZW5zZS4KaHR0cDovL3Au
-c2YubmV0L3NmdS9zcGx1bmstbm92ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+This patch adds support for the SPI controller found on the Broadcom BCM63xx
+SoCs.
+
+Signed-off-by: Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+The platform related changes have been submitted on the linux-mips ml:
+http://www.linux-mips.org/archives/linux-mips/2011-11/msg00547.html
+
+Ralf, if Grant is okay with that patch, it probably makes sense to merge this
+controller via your tree since it depends on the arch/mips/bcm63xx knobs.
+
+ drivers/spi/Kconfig       |    6 +
+ drivers/spi/Makefile      |    1 +
+ drivers/spi/spi-bcm63xx.c |  494 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 501 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi-bcm63xx.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 52e2900..8aecc4e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -94,6 +94,12 @@ config SPI_AU1550
+ 	  If you say yes to this option, support will be included for the
+ 	  Au1550 SPI controller (may also work with Au1200,Au1210,Au1250).
+ 
++config SPI_BCM63XX
++	tristate "Broadcom BCM63xx SPI controller"
++	depends on BCM63XX
++	help
++          Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
++
+ config SPI_BITBANG
+ 	tristate "Utilities for Bitbanging SPI masters"
+ 	help
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 61c3261..be38f73 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
+ obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
+ obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
+ obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
++obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
+ obj-$(CONFIG_SPI_BFIN)			+= spi-bfin5xx.o
+ obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+new file mode 100644
+index 0000000..9f01fc8
+--- /dev/null
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -0,0 +1,494 @@
++/*
++ * Broadcom BCM63xx SPI controller support
++ *
++ * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
++ * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version 2
++ * of the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the
++ * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/clk.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <linux/spi/spi.h>
++#include <linux/completion.h>
++#include <linux/err.h>
++
++#include <bcm63xx_dev_spi.h>
++
++#define PFX		KBUILD_MODNAME
++#define DRV_VER		"0.1.2"
++
++struct bcm63xx_spi {
++	spinlock_t              lock;
++	int			stopping;
++	struct completion	done;
++
++	void __iomem		*regs;
++	int			irq;
++
++	/* Platform data */
++	u32			speed_hz;
++	unsigned		fifo_size;
++
++	/* Data buffers */
++	const unsigned char	*tx_ptr;
++	unsigned char		*rx_ptr;
++
++	/* data iomem */
++	u8 __iomem		*tx_io;
++	const u8 __iomem	*rx_io;
++
++	int			remaining_bytes;
++
++	struct clk		*clk;
++	struct platform_device	*pdev;
++};
++
++static inline u8 bcm_spi_readb(struct bcm63xx_spi *bs,
++				unsigned int offset)
++{
++	return bcm_readw(bs->regs + bcm63xx_spireg(offset));
++}
++
++static inline u16 bcm_spi_readw(struct bcm63xx_spi *bs,
++				unsigned int offset)
++{
++	return bcm_readw(bs->regs + bcm63xx_spireg(offset));
++}
++
++static inline void bcm_spi_writeb(struct bcm63xx_spi *bs,
++				  u8 value, unsigned int offset)
++{
++	bcm_writeb(value, bs->regs + bcm63xx_spireg(offset));
++}
++
++static inline void bcm_spi_writew(struct bcm63xx_spi *bs,
++				  u16 value, unsigned int offset)
++{
++	bcm_writew(value, bs->regs + bcm63xx_spireg(offset));
++}
++
++static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
++				      struct spi_transfer *t)
++{
++	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
++	u8 bits_per_word;
++	u8 clk_cfg;
++	u32 hz;
++	unsigned int div;
++
++	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
++	hz = (t) ? t->speed_hz : spi->max_speed_hz;
++	if (bits_per_word != 8) {
++		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
++			__func__, bits_per_word);
++		return -EINVAL;
++	}
++
++	if (spi->chip_select > spi->master->num_chipselect) {
++		dev_err(&spi->dev, "%s, unsupported slave %d\n",
++			__func__, spi->chip_select);
++		return -EINVAL;
++	}
++
++	/* Check clock setting */
++	div = (bs->speed_hz / hz);
++	switch (div) {
++	case 2:
++		clk_cfg = SPI_CLK_25MHZ;
++		break;
++	case 4:
++		clk_cfg = SPI_CLK_12_50MHZ;
++		break;
++	case 8:
++		clk_cfg = SPI_CLK_6_250MHZ;
++		break;
++	case 16:
++		clk_cfg = SPI_CLK_3_125MHZ;
++		break;
++	case 32:
++		clk_cfg = SPI_CLK_1_563MHZ;
++		break;
++	case 64:
++		clk_cfg = SPI_CLK_0_781MHZ;
++		break;
++	case 128:
++	default:
++		/* Set to slowest mode for compatibility */
++		clk_cfg = SPI_CLK_0_391MHZ;
++		break;
++	}
++
++	bcm_spi_writeb(bs, clk_cfg, SPI_CLK_CFG);
++	dev_dbg(&spi->dev, "Setting clock register to %d (hz %d, cmd %02x)\n",
++		div, hz, clk_cfg);
++
++	return 0;
++}
++
++/* the spi->mode bits understood by this driver: */
++#define MODEBITS (SPI_CPOL | SPI_CPHA)
++
++static int bcm63xx_spi_setup(struct spi_device *spi)
++{
++	struct bcm63xx_spi *bs;
++	int ret;
++
++	bs = spi_master_get_devdata(spi->master);
++
++	if (bs->stopping)
++		return -ESHUTDOWN;
++
++	if (!spi->bits_per_word)
++		spi->bits_per_word = 8;
++
++	if (spi->mode & ~MODEBITS) {
++		dev_err(&spi->dev, "%s, unsupported mode bits %x\n",
++			__func__, spi->mode & ~MODEBITS);
++		return -EINVAL;
++	}
++
++	ret = bcm63xx_spi_setup_transfer(spi, NULL);
++	if (ret < 0) {
++		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
++			spi->mode & ~MODEBITS);
++		return ret;
++	}
++
++	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
++		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
++
++	return 0;
++}
++
++/* Fill the TX FIFO with as many bytes as possible */
++static void bcm63xx_spi_fill_tx_fifo(struct bcm63xx_spi *bs)
++{
++	u8 size;
++
++	/* Fill the Tx FIFO with as many bytes as possible */
++	size = bs->remaining_bytes < bs->fifo_size ? bs->remaining_bytes :
++		bs->fifo_size;
++	memcpy_toio(bs->tx_io, bs->tx_ptr, size);
++	bs->remaining_bytes -= size;
++}
++
++static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
++	u16 msg_ctl;
++	u16 cmd;
++
++	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
++		t->tx_buf, t->rx_buf, t->len);
++
++	/* Transmitter is inhibited */
++	bs->tx_ptr = t->tx_buf;
++	bs->rx_ptr = t->rx_buf;
++	init_completion(&bs->done);
++
++	if (t->tx_buf) {
++		bs->remaining_bytes = t->len;
++		bcm63xx_spi_fill_tx_fifo(bs);
++	}
++
++	/* Enable the command done interrupt which
++	 * we use to determine completion of a command */
++	bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
++
++	/* Fill in the Message control register */
++	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
++
++	if (t->rx_buf && t->tx_buf)
++		msg_ctl |= (SPI_FD_RW << SPI_MSG_TYPE_SHIFT);
++	else if (t->rx_buf)
++		msg_ctl |= (SPI_HD_R << SPI_MSG_TYPE_SHIFT);
++	else if (t->tx_buf)
++		msg_ctl |= (SPI_HD_W << SPI_MSG_TYPE_SHIFT);
++
++	bcm_spi_writew(bs, msg_ctl, SPI_MSG_CTL);
++
++	/* Issue the transfer */
++	cmd = SPI_CMD_START_IMMEDIATE;
++	cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
++	cmd |= (spi->chip_select << SPI_CMD_DEVICE_ID_SHIFT);
++	bcm_spi_writew(bs, cmd, SPI_CMD);
++	wait_for_completion(&bs->done);
++
++	/* Disable the CMD_DONE interrupt */
++	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
++
++	return t->len - bs->remaining_bytes;
++}
++
++static int bcm63xx_transfer(struct spi_device *spi, struct spi_message *m)
++{
++	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
++	struct spi_transfer *t;
++	int ret = 0;
++
++	if (unlikely(list_empty(&m->transfers)))
++		return -EINVAL;
++
++	if (bs->stopping)
++		return -ESHUTDOWN;
++
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		ret += bcm63xx_txrx_bufs(spi, t);
++	}
++
++	m->complete(m->context);
++
++	return ret;
++}
++
++/* This driver supports single master mode only. Hence
++ * CMD_DONE is the only interrupt we care about
++ */
++static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
++{
++	struct spi_master *master = (struct spi_master *)dev_id;
++	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
++	u8 intr;
++	u16 cmd;
++
++	/* Read interupts and clear them immediately */
++	intr = bcm_spi_readb(bs, SPI_INT_STATUS);
++	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
++	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
++
++	/* A tansfer completed */
++	if (intr & SPI_INTR_CMD_DONE) {
++		u8 rx_tail;
++
++		rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
++
++		/* Read out all the data */
++		if (rx_tail)
++			memcpy_fromio(bs->rx_ptr, bs->rx_io, rx_tail);
++
++		/* See if there is more data to send */
++		if (bs->remaining_bytes > 0) {
++			bcm63xx_spi_fill_tx_fifo(bs);
++
++			/* Start the transfer */
++			bcm_spi_writew(bs, SPI_HD_W << SPI_MSG_TYPE_SHIFT,
++				       SPI_MSG_CTL);
++			cmd = bcm_spi_readw(bs, SPI_CMD);
++			cmd |= SPI_CMD_START_IMMEDIATE;
++			cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
++			bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
++			bcm_spi_writew(bs, cmd, SPI_CMD);
++		} else
++			complete(&bs->done);
++	}
++
++	return IRQ_HANDLED;
++}
++
++
++static int __init bcm63xx_spi_probe(struct platform_device *pdev)
++{
++	struct resource *r;
++	struct device *dev = &pdev->dev;
++	struct bcm63xx_spi_pdata *pdata = pdev->dev.platform_data;
++	int irq;
++	struct spi_master *master;
++	struct clk *clk;
++	struct bcm63xx_spi *bs;
++	int ret;
++
++	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!r) {
++		dev_err(dev, "no iomem\n");
++		ret = -ENXIO;
++		goto out;
++	}
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "no irq\n");
++		ret = -ENXIO;
++		goto out;
++	}
++
++	clk = clk_get(dev, "spi");
++	if (IS_ERR(clk)) {
++		dev_err(dev, "no clock for device\n");
++		ret = -ENODEV;
++		goto out;
++	}
++
++	master = spi_alloc_master(dev, sizeof(*bs));
++	if (!master) {
++		dev_err(dev, "out of memory\n");
++		ret = -ENOMEM;
++		goto out_free;
++	}
++
++	bs = spi_master_get_devdata(master);
++	init_completion(&bs->done);
++
++	platform_set_drvdata(pdev, master);
++	bs->pdev = pdev;
++
++	if (!request_mem_region(r->start, resource_size(r), PFX)) {
++		dev_err(dev, "iomem request failed\n");
++		ret = -ENXIO;
++		goto out_put_master;
++	}
++
++	bs->regs = ioremap_nocache(r->start, resource_size(r));
++	if (!bs->regs) {
++		dev_err(dev, "unable to ioremap regs\n");
++		ret = -ENOMEM;
++		goto out_put_master;
++	}
++	bs->irq = irq;
++	bs->clk = clk;
++	bs->fifo_size = pdata->fifo_size;
++
++	ret = request_irq(irq, bcm63xx_spi_interrupt, 0, pdev->name, master);
++	if (ret) {
++		dev_err(dev, "unable to request irq\n");
++		goto out_unmap;
++	}
++
++	master->bus_num = pdata->bus_num;
++	master->num_chipselect = pdata->num_chipselect;
++	master->setup = bcm63xx_spi_setup;
++	master->transfer = bcm63xx_transfer;
++	bs->speed_hz = pdata->speed_hz;
++	bs->stopping = 0;
++	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
++	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
++	spin_lock_init(&bs->lock);
++
++	/* Initialize hardware */
++	clk_enable(bs->clk);
++	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
++
++	/* register and we are done */
++	ret = spi_register_master(master);
++	if (ret) {
++		dev_err(dev, "spi register failed\n");
++		goto out_reset_hw;
++	}
++
++	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
++		 r->start, irq, bs->fifo_size, DRV_VER);
++
++	return 0;
++
++out_reset_hw:
++	clk_disable(clk);
++	free_irq(irq, master);
++out_unmap:
++	iounmap(bs->regs);
++out_put_master:
++	spi_master_put(master);
++out_free:
++	clk_put(clk);
++out:
++	return ret;
++}
++
++static int __exit bcm63xx_spi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
++	struct resource	*r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++
++	/* reset spi block */
++	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
++	spin_lock(&bs->lock);
++	bs->stopping = 1;
++
++	/* HW shutdown */
++	clk_disable(bs->clk);
++	clk_put(bs->clk);
++
++	spin_unlock(&bs->lock);
++
++	free_irq(bs->irq, master);
++	iounmap(bs->regs);
++	release_mem_region(r->start, r->end - r->start);
++	platform_set_drvdata(pdev, 0);
++	spi_unregister_master(master);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int bcm63xx_spi_suspend(struct platform_device *pdev, pm_message_t mesg)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
++
++	clk_disable(bs->clk);
++
++	return 0;
++}
++
++static int bcm63xx_spi_resume(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
++
++	clk_enable(bs->clk);
++
++	return 0;
++}
++#else
++#define bcm63xx_spi_suspend	NULL
++#define bcm63xx_spi_resume	NULL
++#endif
++
++static struct platform_driver bcm63xx_spi_driver = {
++	.driver = {
++		.name	= "bcm63xx-spi",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= bcm63xx_spi_probe,
++	.remove		= __exit_p(bcm63xx_spi_remove),
++	.suspend	= bcm63xx_spi_suspend,
++	.resume		= bcm63xx_spi_resume,
++};
++
++
++static int __init bcm63xx_spi_init(void)
++{
++	return platform_driver_register(&bcm63xx_spi_driver);
++}
++
++static void __exit bcm63xx_spi_exit(void)
++{
++	platform_driver_unregister(&bcm63xx_spi_driver);
++}
++
++module_init(bcm63xx_spi_init);
++module_exit(bcm63xx_spi_exit);
++
++MODULE_ALIAS("platform:bcm63xx_spi");
++MODULE_AUTHOR("Florian Fainelli <florian@openwrt.org>");
++MODULE_AUTHOR("Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>");
++MODULE_DESCRIPTION("Broadcom BCM63xx SPI Controller driver");
++MODULE_LICENSE("GPL");
++MODULE_VERSION(DRV_VER);
+-- 
+1.7.5.4

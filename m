@@ -1,45 +1,101 @@
-From: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Subject: Re: config SPI_STMP3XXX
-Date: Tue, 22 Nov 2011 11:24:06 +0100
-Message-ID: <1321957446.32195.70.camel@x61.thuisdomein>
-References: <1321955482.32195.55.camel@x61.thuisdomein>
-	<20111122095629.GA2734@pengutronix.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shawn Guo <shawn.guo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20111122095629.GA2734-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Dave Martin <dave.martin@linaro.org>
+Subject: [GIT PULL] ARM: amba: Enable module alias autogeneration for AMBA drivers
+Date: Tue, 22 Nov 2011 11:32:53 +0000
+Message-ID: <1321961573-4562-1-git-send-email-dave.martin@linaro.org>
+Cc: patches@linaro.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Alan Cox <alan@linux.intel.com>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	alsa-devel@alsa-project.org, Chris Ball <cjb@laptop.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Julia Lawall <julia@diku.dk>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, Paul Mundt <lethal@linux-sh.org>,
+	=?UTF-8?q?Pawe=C5=82=20Moll?= <Pawel.Moll@arm.com>,
+	rtc-linux@googlegroups.com,
+	spi-devel-general@lists.sourceforge.net,
+	Takashi Iwai <tiwai@suse.de>,
+	Vinod Koul <vi
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-input-owner@vger.kernel.org>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2011-11-22 at 10:56 +0100, Wolfram Sang wrote:
-> > 1) Are there any plans to port this driver to the mxs sub-architecture?
-[...]
-> There are definately plans, it just takes longer than expected :( I will
-> take care of it.
+Hi Russell,
 
-Thanks. I'll stop worrying about this invalid Kconfig dependency for
-now. (The rest of this message would have been similar to what I wrote
-Wolfram regarding the Watchdog driver, so that adds no value.)
+This series enables the general infrastructure for modalias
+generation to work for AMBA devices, and enables it in the affected
+drivers.
+
+Since there are several patches here, I though it better to send a
+pull request.
+
+The first two patches (subject lines "ARM: amba: ...") are the core
+patches; the remainder of the patches are the driver changes --
+each is trivial and simply adds a MODULE_DEVICE_ALIAS() entry.
+
+I have Acks on some of the driver patches and no comments on the
+rest.  I've been circulating these for some time, so if you're
+happy to pull those driver patches via your tree, please go ahead.
+
+Otherwise, let me know and I can continue trying to push the driver
+patches via other routes.
+
+Cheers
+---Dave
+
+The following changes since commit cfcfc9eca2bcbd26a8e206baeb005b055dbf8e37:
+
+  Linux 3.2-rc2 (2011-11-15 15:02:59 -0200)
+
+are available in the git repository at:
+  git://git.linaro.org/people/dmart/linux-2.6-arm.git arm/amba-modalias+for-rmk
+
+Dave Martin (16):
+      ARM: amba: Move definition of struct amba_id to mod_devicetable.h
+      ARM: amba: Auto-generate AMBA driver module aliases during modpost
+      hwrng: nomadik: Enable module alias autogeneration for AMBA drivers
+      dmaengine: pl08x: Enable module alias autogeneration for AMBA drivers
+      dmaengine: pl330: Enable module alias autogeneration for AMBA drivers
+      gpio: pl061: Enable module alias autogeneration for AMBA drivers
+      input: ambakmi: Enable module alias autogeneration for AMBA drivers
+      mmc: mmci: Enable module alias autogeneration for AMBA drivers
+      rtc: pl030: Enable module alias autogeneration for AMBA drivers
+      rtc: pl031: Enable module alias autogeneration for AMBA drivers
+      spi: pl022: Enable module alias autogeneration for AMBA drivers
+      serial: pl010: Enable module alias autogeneration for AMBA drivers
+      serial: pl011: Enable module alias autogeneration for AMBA drivers
+      fbdev: amba: Enable module alias autogeneration for AMBA drivers
+      watchdog: sp805: Enable module alias autogeneration for AMBA drivers
+      sound: aaci: Enable module alias autogeneration for AMBA drivers
+
+ drivers/amba/bus.c                   |    4 ++
+ drivers/char/hw_random/nomadik-rng.c |    2 +
+ drivers/dma/amba-pl08x.c             |    2 +
+ drivers/dma/pl330.c                  |    2 +
+ drivers/gpio/gpio-pl061.c            |    2 +
+ drivers/input/serio/ambakmi.c        |    2 +
+ drivers/mmc/host/mmci.c              |    2 +
+ drivers/rtc/rtc-pl030.c              |    2 +
+ drivers/rtc/rtc-pl031.c              |    2 +
+ drivers/spi/spi-pl022.c              |    2 +
+ drivers/tty/serial/amba-pl010.c      |    2 +
+ drivers/tty/serial/amba-pl011.c      |    2 +
+ drivers/video/amba-clcd.c            |    2 +
+ drivers/watchdog/sp805_wdt.c         |    2 +
+ include/linux/amba/bus.h             |    7 +---
+ include/linux/mod_devicetable.h      |   18 ++++++++
+ scripts/mod/file2alias.c             |   72 ++++++++++++++++++++++++++++++++++
+ sound/arm/aaci.c                     |    2 +
+ 18 files changed, 123 insertions(+), 6 deletions(-)
 
 
-Paul Bolle
 
 
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
-data and makes sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-novd2d

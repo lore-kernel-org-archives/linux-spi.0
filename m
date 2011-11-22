@@ -1,11 +1,15 @@
-From: "TICHOUPS" <contact-ZCFbhHTJHspWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Chaussons cuir souple de 0 à 6 ans à prix mini + livraison gratuite.
-Date: Tue, 22 Nov 2011 07:20:35 +0000 (CET)
-Message-ID: <111122072035.-206065332000000736@ofnm38.com>
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH 2/7] spi/pl022: fix build warnings
+Date: Tue, 22 Nov 2011 09:24:42 +0100
+Message-ID: <1321950282-4716-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,77 +22,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+From: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+
+The driver build complains with newer compilers unless you
+initialize this struct properly.
+
+Reviewed-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Signed-off-by: Jonas Aaberg <jonas.aberg-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ChangeLog v1->v2:
+- Add Viresh's Reviewed-by
+---
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 5b7209f..0d0b165 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1886,7 +1886,7 @@ static int pl022_setup(struct spi_device *spi)
+ {
+ 	struct pl022_config_chip const *chip_info;
+ 	struct chip_data *chip;
+-	struct ssp_clock_params clk_freq = {0, };
++	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
+ 	int status = 0;
+ 	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
+ 	unsigned int bits = spi->bits_per_word;
+-- 
+1.7.3.2
 
 
 ------------------------------------------------------------------------------

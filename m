@@ -1,12 +1,17 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: =?UTF-8?Q?Coffret_vin_/_Pouf_g=C3=A9ant_/_Mini_PC?=
-Date: Wed, 23 Nov 2011 04:58:07 +0100
-Message-ID: <d3457e17f058e96b07e4c43442291dbe@www.lovingdeals.fr>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
+Date: Wed, 23 Nov 2011 20:41:18 +0100
+Message-ID: <201111232041.18477.florian@openwrt.org>
+References: <1321906615-11392-1-git-send-email-florian@openwrt.org>
+	<CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,116 +22,154 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3
-OGQwNTY4NzgzL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvZTQ0MzAyNzhkMDU2ODc4My9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkNPRkZSRVQgw4AgVklO
-IEFWRUMgRMOJQ0FOVEVVUiBFVCBQT01QRSDDgCBWSURFIFVuZSBib25uZSBkw6lndXN0YXRpb24g
-ZXQgdW5lIHBhcmZhaXRlIGNvbnNlcnZhdGlvbiBkZSB2b3MgdmlucywgMTTigqwgYXUgbGlldSBk
-ZSAyOeKCrCAhCQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
-L2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODA5LWNvZmZyZXQtdmlu
-LWRlY2FudGV1ci1wb21wZS12aWRlXQoKMTTigqwKVmFsZXVyOiAyOeKCrAnDiWNvbm9taXNlejog
-MTXigqwJRG9uczogMC40MuKCrAkKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
-d3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3OGQwNTY4NzgzL2Rpc2NvdW50L2RldGFpbC84MDktY29m
-ZnJldC12aW4tZGVjYW50ZXVyLXBvbXBlLXZpZGVdCgoKClVuIGTDqWNhbnRldXIgVW5lIHBvbXBl
-IMOgIHZpZGUgVW4gdmluIHByw6lzZXJ2w6kgVW5lIG1laWxsZXVyZSBkw6lndXN0YXRpb24gVW4g
-Y29mZnJldCBpZMOpYWwgw6Agb2ZmcmlyIGF1eCBhbWF0ZXVycyBkZSB2aW4gcG91ciBOb8OrbCAh
-IApbaHR0cDovL3d3dy5mYWNlYm9vay5jb20vc2hhcmUucGhwP3U9aHR0cCUzQSUyRiUyRnd3dy5s
-b3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGODA5LWNvZmZyZXQtdmluLWRlY2Fu
-dGV1ci1wb21wZS12aWRlXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9wYWdlL3R3aXR0ZXIvP3VybD1odHRwJTNBJTJG
-JTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY4MDktY29mZnJldC12
-aW4tZGVjYW50ZXVyLXBvbXBlLXZpZGUmYW1wO21lc3NhZ2U9Q09GRlJFVCDDgCBWSU4gQVZFQyBE
-w4lDQU5URVVSIEVUIFBPTVBFIMOAIFZJREUgVW5lIGJvbm5lIGTDqWd1c3RhdGlvbiBldCB1bmUg
-cGFyZmFpdGUgY29uc2VydmF0aW9uIGRlIHZvcyB2aW5zLCAxNOKCrCBhdSBsaWV1IGRlIDI54oKs
-ICFdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6luw6ly
-ZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291dmVydCBsZSBw
-bHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMgb2ZmcmUgZGVz
-IHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRhZ2Ugw6AgZGVz
-IGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
-bi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODA5
-LWNvZmZyZXQtdmluLWRlY2FudGV1ci1wb21wZS12aWRlXQoKCgoKCgpFbmNvcmUgcGx1cyBkJ29m
-ZnJlcyAhCQpWYWxldXIxMTkmZXVybzsJUmVtaXNlNTAlCcOJY29ub21pc2V6NjAmZXVybzsJRG9u
-czEuNzcmZXVybzsJClBPVUYgSU5GVVJOIEJJR0JPWSBYWEwgOiBVbiBjb3Vzc2luIGfDqWFudCBl
-dCBjb25mb3J0YWJsZSBhdSBkZXNpZ24gb3JpZ2luYWwsIDU54oKsIHNldWxlbWVudCBhdSBsaWV1
-IGRlIDExOeKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
-Z2F0ZXdheS9lNDQzMDI3OGQwNTY4NzgzL2Rpc2NvdW50L2RldGFpbC84MDYtY291c3Npbi1nZWFu
-dC1iaWdib3ktaW5mdXJuLXBhcy1jaGVyXQpTZXVsZW1lbnQ1OeKCrCBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNj
-b3VudC9kZXRhaWwvODA2LWNvdXNzaW4tZ2VhbnQtYmlnYm95LWluZnVybi1wYXMtY2hlcl0KClto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3
-OGQwNTY4NzgzL2Rpc2NvdW50L2RldGFpbC84MDYtY291c3Npbi1nZWFudC1iaWdib3ktaW5mdXJu
-LXBhcy1jaGVyXQoKCgpWYWxldXI1OCZldXJvOwlSZW1pc2U1MCUJw4ljb25vbWlzZXoyOSZldXJv
-OwlEb25zMC44NyZldXJvOwkKMiDDiVBJTEFURVVSUyBXSVpaSVQgKyAxIEtJVCBNQU5VQ1VSRSBF
-VCBNQVFVSUxMQUdFIDogQWRpZXUgYXV4IHBvaWxzIGRpc2dyYWNpZXV4IGV0IGJvbmpvdXIgYXV4
-IG1haW5zIHN1YmxpbcOpZXMsIDI54oKsIGF1IGxpZXUgZGUgNTjigqwgISBbaHR0cDovL3d3dy5s
-b3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9k
-aXNjb3VudC9kZXRhaWwvODI1LWVwaWxhdGV1ci1raXQtbWFudWN1cmUtd2l6eml0XQpTZXVsZW1l
-bnQyOeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODI1LWVwaWxhdGV1ci1raXQtbWFu
-dWN1cmUtd2l6eml0XQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
-ci9nYXRld2F5L2U0NDMwMjc4ZDA1Njg3ODMvZGlzY291bnQvZGV0YWlsLzgyNS1lcGlsYXRldXIt
-a2l0LW1hbnVjdXJlLXdpenppdF0KCgoKClZhbGV1cjE4JmV1cm87CVJlbWlzZTUwJQnDiWNvbm9t
-aXNlejkmZXVybzsJRG9uczAuMjcmZXVybzsJCjQgQk9VQ0hPTlMgRU4gU0lMSUNPTkUgUE9VUiBC
-T1VURUlMTEVTIERFIFZJTiBFVCBDSEFNUEFHTkUgOiBDb25zZXJ2ZXogdm9zIGJvbm5lcyBib3V0
-ZWlsbGVzIGNvbW1lIGlsIHNlIGRvaXQsIDnigqwgYXUgbGlldSBkZSAxOOKCrCAhIFtodHRwOi8v
-d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3OGQwNTY4
-NzgzL2Rpc2NvdW50L2RldGFpbC84NDItYm91Y2hvbnMtc2lsaWNvbmUtcGFzLWNoZXJdClNldWxl
-bWVudDnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5L2U0NDMwMjc4ZDA1Njg3ODMvZGlzY291bnQvZGV0YWlsLzg0Mi1ib3VjaG9ucy1zaWxpY29u
-ZS1wYXMtY2hlcl0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
-Z2F0ZXdheS9lNDQzMDI3OGQwNTY4NzgzL2Rpc2NvdW50L2RldGFpbC84NDItYm91Y2hvbnMtc2ls
-aWNvbmUtcGFzLWNoZXJdCgoKClZhbGV1cjI0OSZldXJvOwlSZW1pc2U2MCUJw4ljb25vbWlzZXox
-NTAmZXVybzsJRG9uczIuOTcmZXVybzsJCk1JTkkgUEMgQU5EUk9JRCA34oCZ4oCZIDogVm90cmUg
-b3JkaW5hdGV1ciBkZSBwb2NoZSBxdWkgdm91cyBmYWNpbGl0ZSBsYSB2aWUgZXQgdm91cyBhY2Nv
-bXBhZ25lIHBhcnRvdXQgcG91ciA5OeKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSAyNDnigqwgW2h0
-dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2U0NDMwMjc4
-ZDA1Njg3ODMvZGlzY291bnQvZGV0YWlsLzgzNC1taW5pLXBjLWFuZHJvaWQtb3JkaW5hdGV1ci1w
-b2NoZS1ub2VsXQpTZXVsZW1lbnQ5OeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
-bi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODM0
-LW1pbmktcGMtYW5kcm9pZC1vcmRpbmF0ZXVyLXBvY2hlLW5vZWxdCgpbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNj
-b3VudC9kZXRhaWwvODM0LW1pbmktcGMtYW5kcm9pZC1vcmRpbmF0ZXVyLXBvY2hlLW5vZWxdCgoK
-CgpWYWxldXIxNDcmZXVybzsJUmVtaXNlNTUlCcOJY29ub21pc2V6ODEmZXVybzsJRG9uczEuOTgm
-ZXVybzsJCkVMRUNUUk9OSUMgU0tJTiBDTEVBTlNFUiA6IEzigJlhcHBhcmVpbCDDqWxlY3Ryb25p
-cXVlIHF1aSBuZXR0b2llIHZvdHJlIHBlYXUgZW4gcHJvZm9uZGV1ciBldCBsdWkgcmVkb25uZSBk
-ZSBs4oCZw6ljbGF0LCA2NuKCrCBhdSBsaWV1IGRlIDE0N+KCrCBbaHR0cDovL3d3dy5sb3Zpbmdk
-ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3Vu
-dC9kZXRhaWwvODM3LW5ldHRveWFudC1kZS1wZWF1LWVsZWN0cm9uaXF1ZV0KU2V1bGVtZW50Njbi
-gqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2U0
-NDMwMjc4ZDA1Njg3ODMvZGlzY291bnQvZGV0YWlsLzgzNy1uZXR0b3lhbnQtZGUtcGVhdS1lbGVj
-dHJvbmlxdWVdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
-dGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODM3LW5ldHRveWFudC1kZS1w
-ZWF1LWVsZWN0cm9uaXF1ZV0KCgoKVmFsZXVyNjUmZXVybzsJUmVtaXNlNzElCcOJY29ub21pc2V6
-NDYmZXVybzsJRG9uczAuNTcmZXVybzsJCkJPTiBE4oCZQUNIQVQgUE9VUiBMRVMgQklKT1VYIERF
-IExBIENSw4lBVFJJQ0UgJnF1b3Q7RsOJRS1DSSBGw4lFLcOHQSZxdW90OyA6IE9mZnJlei12b3Vz
-IGRlcyBiaWpvdXggw6lsw6lnYW50cyBldCBnbGFtb3VycywgMTnigqwgc2V1bGVtZW50IGF1IGxp
-ZXUgZGUgNjXigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
-L2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4My9kaXNjb3VudC9kZXRhaWwvODA4LWJvbi1kLWFjaGF0
-LWJpam91eC1mZWVjaWZlZWNhLWNhZGVhdS1ub2VsXQpTZXVsZW1lbnQxOeKCrCBbaHR0cDovL3d3
-dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvZTQ0MzAyNzhkMDU2ODc4
-My9kaXNjb3VudC9kZXRhaWwvODA4LWJvbi1kLWFjaGF0LWJpam91eC1mZWVjaWZlZWNhLWNhZGVh
-dS1ub2VsXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5L2U0NDMwMjc4ZDA1Njg3ODMvZGlzY291bnQvZGV0YWlsLzgwOC1ib24tZC1hY2hhdC1iaWpv
-dXgtZmVlY2lmZWVjYS1jYWRlYXUtbm9lbF0KCgoKCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3OGQwNTY4NzgzL2Fzc29jaWF0aW9u
-cy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
-ZXIvZ2F0ZXdheS9lNDQzMDI3OGQwNTY4NzgzL2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dClto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3
-OGQwNTY4NzgzL2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCgoKTCdhZmEJUsOqdmVzIGQnZW5m
-YW50cwlTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUJCgoKCgoKClNob3cgZW1haWwgYXQgdGhl
-IHdlYnNpdGUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5L2U0NDMwMjc4ZDA1Njg3ODMvdmlldy9dCnwgU2UgZMOpc2luc2NyaXJlIFtodHRwOi8vd3d3
-LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9lNDQzMDI3OGQwNTY4Nzgz
-L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0MjgxXQoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCkFsbCB0aGUgZGF0YSBjb250aW51b3VzbHkgZ2VuZXJhdGVkIGlu
-IHlvdXIgSVQgaW5mcmFzdHJ1Y3R1cmUgCmNvbnRhaW5zIGEgZGVmaW5pdGl2ZSByZWNvcmQgb2Yg
-Y3VzdG9tZXJzLCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSwgCnNlY3VyaXR5IHRocmVhdHMsIGZy
-YXVkdWxlbnQgYWN0aXZpdHksIGFuZCBtb3JlLiBTcGx1bmsgdGFrZXMgdGhpcyAKZGF0YSBhbmQg
-bWFrZXMgc2Vuc2Ugb2YgaXQuIElUIHNlbnNlLiBBbmQgY29tbW9uIHNlbnNlLgpodHRwOi8vcC5z
-Zi5uZXQvc2Z1L3NwbHVuay1ub3ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi  Shubhrajyoti
+
+Le mardi 22 novembre 2011 09:26:07, Shubhrajyoti Datta a =E9crit :
+> Hi Florian,
+> =
+
+> On Tue, Nov 22, 2011 at 1:46 AM, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> =
+
+wrote:
+[snip]
+> > +       bs->irq =3D irq;
+> > +       bs->clk =3D clk;
+> > +       bs->fifo_size =3D pdata->fifo_size;
+> > +
+> > +       ret =3D request_irq(irq, bcm63xx_spi_interrupt, 0, pdev->name,
+> > master); +       if (ret) {
+> > +               dev_err(dev, "unable to request irq\n");
+> > +               goto out_unmap;
+> > +       }
+> =
+
+> Could this be a threaded irq ?
+
+I see no reasons why it could not. Is this a requirement for accepting new =
+
+drivers? I see no drivers doing this in Grant's spi/next branch.
+
+> =
+
+> > +
+> > +       master->bus_num =3D pdata->bus_num;
+> > +       master->num_chipselect =3D pdata->num_chipselect;
+> > +       master->setup =3D bcm63xx_spi_setup;
+> > +       master->transfer =3D bcm63xx_transfer;
+> > +       bs->speed_hz =3D pdata->speed_hz;
+> > +       bs->stopping =3D 0;
+> > +       bs->tx_io =3D (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+> > +       bs->rx_io =3D (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DAT=
+A));
+> > +       spin_lock_init(&bs->lock);
+> > +
+> > +       /* Initialize hardware */
+> > +       clk_enable(bs->clk);
+> > +       bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
+> > +
+> > +       /* register and we are done */
+> > +       ret =3D spi_register_master(master);
+> > +       if (ret) {
+> > +               dev_err(dev, "spi register failed\n");
+> > +               goto out_reset_hw;
+> > +       }
+> > +
+> > +       dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
+> > +                r->start, irq, bs->fifo_size, DRV_VER);
+> > +
+> > +       return 0;
+> > +
+> > +out_reset_hw:
+> > +       clk_disable(clk);
+> > +       free_irq(irq, master);
+> > +out_unmap:
+> > +       iounmap(bs->regs);
+> > +out_put_master:
+> > +       spi_master_put(master);
+> > +out_free:
+> > +       clk_put(clk);
+> > +out:
+> > +       return ret;
+> > +}
+> > +
+> > +static int __exit bcm63xx_spi_remove(struct platform_device *pdev)
+> > +{
+> > +       struct spi_master *master =3D platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs =3D spi_master_get_devdata(master);
+> > +       struct resource *r =3D platform_get_resource(pdev, IORESOURCE_M=
+EM,
+> > 0); +
+> > +       /* reset spi block */
+> > +       bcm_spi_writeb(bs, 0, SPI_INT_MASK);
+> > +       spin_lock(&bs->lock);
+> > +       bs->stopping =3D 1;
+> > +
+> > +       /* HW shutdown */
+> > +       clk_disable(bs->clk);
+> > +       clk_put(bs->clk);
+> > +
+> > +       spin_unlock(&bs->lock);
+> > +
+> > +       free_irq(bs->irq, master);
+> > +       iounmap(bs->regs);
+> > +       release_mem_region(r->start, r->end - r->start);
+> > +       platform_set_drvdata(pdev, 0);
+> > +       spi_unregister_master(master);
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +#ifdef CONFIG_PM
+> > +static int bcm63xx_spi_suspend(struct platform_device *pdev,
+> > pm_message_t mesg) +{
+> > +       struct spi_master *master =3D platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs =3D spi_master_get_devdata(master);
+> > +
+> > +       clk_disable(bs->clk);
+> > +
+> > +       return 0;
+> > +}
+> > +
+> > +static int bcm63xx_spi_resume(struct platform_device *pdev)
+> > +{
+> > +       struct spi_master *master =3D platform_get_drvdata(pdev);
+> > +       struct bcm63xx_spi *bs =3D spi_master_get_devdata(master);
+> > +
+> > +       clk_enable(bs->clk);
+> > +
+> > +       return 0;
+> > +}
+> > +#else
+> > +#define bcm63xx_spi_suspend    NULL
+> > +#define bcm63xx_spi_resume     NULL
+> > +#endif
+> > +
+> > +static struct platform_driver bcm63xx_spi_driver =3D {
+> > +       .driver =3D {
+> > +               .name   =3D "bcm63xx-spi",
+> > +               .owner  =3D THIS_MODULE,
+> > +       },
+> > +       .probe          =3D bcm63xx_spi_probe,
+> > +       .remove         =3D __exit_p(bcm63xx_spi_remove),
+> > +       .suspend        =3D bcm63xx_spi_suspend,
+> > +       .resume         =3D bcm63xx_spi_resume,
+> =
+
+> Could we move to dev pm ops?
+
+Sure, I have fixed that in version 2 of the patch.
+
+-- =
+
+Florian
+
+---------------------------------------------------------------------------=
+---
+All the data continuously generated in your IT infrastructure =
+
+contains a definitive record of customers, application performance, =
+
+security threats, fraudulent activity, and more. Splunk takes this =
+
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

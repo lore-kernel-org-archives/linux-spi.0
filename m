@@ -1,17 +1,12 @@
-From: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>
-Subject: Re: [PATCH] spi: nuc900: Include linux/module.h
-Date: Wed, 23 Nov 2011 22:16:19 -0500
-Message-ID: <20111124031619.GC10880@windriver.com>
-References: <1322104251.16201.8.camel@phoenix>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: =?UTF-8?Q?Bijoux_/_Coffret_=C3=A0_vin_/_Epilateurs_+_Kit_manucure?=
+Date: Thu, 24 Nov 2011 04:57:24 +0100
+Message-ID: <0091cccb7272629124c9c4e542ee9793@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Grant
-To: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1322104251.16201.8.camel@phoenix>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,66 +17,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-[[PATCH] spi: nuc900: Include linux/module.h] On 24/11/2011 (Thu 11:10) Axel Lin wrote:
-
-> Include linux/module.h to fix below build error:
-
-Looks fine to me ; I'll assume that this is going upstream via the
-nuc900 maintainer since the module split up is old news at this point
-in time.
-
-Thanks,
-Paul.
-
-> 
->   CC      drivers/spi/spi-nuc900.o
-> drivers/spi/spi-nuc900.c:484: error: 'THIS_MODULE' undeclared here (not in a function)
-> drivers/spi/spi-nuc900.c:489: error: expected declaration specifiers or '...' before string constant
-> drivers/spi/spi-nuc900.c:489: warning: data definition has no type or storage class
-> drivers/spi/spi-nuc900.c:489: warning: type defaults to 'int' in declaration of 'MODULE_AUTHOR'
-> drivers/spi/spi-nuc900.c:489: warning: function declaration isn't a prototype
-> drivers/spi/spi-nuc900.c:490: error: expected declaration specifiers or '...' before string constant
-> drivers/spi/spi-nuc900.c:490: warning: data definition has no type or storage class
-> drivers/spi/spi-nuc900.c:490: warning: type defaults to 'int' in declaration of 'MODULE_DESCRIPTION'
-> drivers/spi/spi-nuc900.c:490: warning: function declaration isn't a prototype
-> drivers/spi/spi-nuc900.c:491: error: expected declaration specifiers or '...' before string constant
-> drivers/spi/spi-nuc900.c:491: warning: data definition has no type or storage class
-> drivers/spi/spi-nuc900.c:491: warning: type defaults to 'int' in declaration of 'MODULE_LICENSE'
-> drivers/spi/spi-nuc900.c:491: warning: function declaration isn't a prototype
-> drivers/spi/spi-nuc900.c:492: error: expected declaration specifiers or '...' before string constant
-> drivers/spi/spi-nuc900.c:492: warning: data definition has no type or storage class
-> drivers/spi/spi-nuc900.c:492: warning: type defaults to 'int' in declaration of 'MODULE_ALIAS'
-> drivers/spi/spi-nuc900.c:492: warning: function declaration isn't a prototype
-> make[2]: *** [drivers/spi/spi-nuc900.o] Error 1
-> make[1]: *** [drivers/spi] Error 2
-> make: *** [drivers] Error 2
-> 
-> Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-nuc900.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
-> index 21c70b2..182e9c8 100644
-> --- a/drivers/spi/spi-nuc900.c
-> +++ b/drivers/spi/spi-nuc900.c
-> @@ -8,6 +8,7 @@
->   *
->   */
->  
-> +#include <linux/module.h>
->  #include <linux/init.h>
->  #include <linux/spinlock.h>
->  #include <linux/workqueue.h>
-> -- 
-> 1.7.5.4
-> 
-> 
-> 
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
-data and makes sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-novd2d
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81MmM5MDI0
+MmE2MGQyMzdjL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvNTJjOTAyNDJhNjBkMjM3Yy9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkJPTiBE4oCZQUNIQVQg
+UE9VUiBMRVMgQklKT1VYIERFIExBIENSw4lBVFJJQ0UgJnF1b3Q7RsOJRS1DSSBGw4lFLcOHQSZx
+dW90OyA6IE9mZnJlei12b3VzIGRlcyBiaWpvdXggw6lsw6lnYW50cyBldCBnbGFtb3VycywgMTni
+gqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgNjXigqwgIQkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVh
+bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzUyYzkwMjQyYTYwZDIzN2MvZGlzY291bnQv
+ZGV0YWlsLzgwOC1ib24tZC1hY2hhdC1iaWpvdXgtZmVlY2lmZWVjYS1jYWRlYXUtbm9lbF0KCjE5
+4oKsClZhbGV1cjogNjXigqwJw4ljb25vbWlzZXo6IDQ24oKsCURvbnM6IDAuNTfigqwJCgpbaHR0
+cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJh
+NjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODA4LWJvbi1kLWFjaGF0LWJpam91eC1mZWVjaWZlZWNh
+LWNhZGVhdS1ub2VsXQoKCgpVbiBib24gZOKAmWFjaGF0IEbDqWUtQ2kgRsOpZS3Dh2EgZOKAmXVu
+ZSB2YWxldXIgZGUgNjXigqwgVW4gY2hvaXggcGFybWkgdW5lIGxhcmdlIGNvbGxlY3Rpb24gZGUg
+Ymlqb3V4IERlcyBjcsOpYXRpb25zIGZhaXQgbWFpbiBEZXMgYmlqb3V4IGZhY2lsZXMgw6AgcG9y
+dGVyIFVuIGNhZGVhdSBkZSBOb8OrbCBMb3ZpbmfCoHBvdXIgbGVzIGNvcXVldHRlc8KgISAKW2h0
+dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubG92aW5n
+ZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjgwOC1ib24tZC1hY2hhdC1iaWpvdXgtZmVl
+Y2lmZWVjYS1jYWRlYXUtbm9lbF0KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5LzUyYzkwMjQyYTYwZDIzN2MvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUz
+QSUyRiUyRnd3dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGODA4LWJvbi1k
+LWFjaGF0LWJpam91eC1mZWVjaWZlZWNhLWNhZGVhdS1ub2VsJmFtcDttZXNzYWdlPUJPTiBE4oCZ
+QUNIQVQgUE9VUiBMRVMgQklKT1VYIERFIExBIENSw4lBVFJJQ0UgJnF1b3Q7RsOJRS1DSSBGw4lF
+LcOHQSZxdW90OyA6IE9mZnJlei12b3VzIGRlcyBiaWpvdXggw6lsw6lnYW50cyBldCBnbGFtb3Vy
+cywgMTnigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgNjXigqwgIV0KW21haWx0bzo/c3ViamVjdD1K
+JiMwMzk7YWkgZMOpY291dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxz
+JmFtcDtib2R5PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMgc2l0
+ZXMgZGUgZGVhbHMhIExvdmluZyBEZWFscyBvZmZyZSBkZXMgcsOpZHVjdGlvbnMgaW5jcm95YWJs
+ZXMgZXQgcmV2ZXJzZSB1biBwb3VyY2VudGFnZSDDoCBkZXMgYXNzb2NpYXRpb25zIGNhcml0YXRp
+dmVzLiBodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81
+MmM5MDI0MmE2MGQyMzdjL2Rpc2NvdW50L2RldGFpbC84MDgtYm9uLWQtYWNoYXQtYmlqb3V4LWZl
+ZWNpZmVlY2EtY2FkZWF1LW5vZWxdCgoKCgoKCkVuY29yZSBwbHVzIGQnb2ZmcmVzICEJClZhbGV1
+cjI5JmV1cm87CVJlbWlzZTUyJQnDiWNvbm9taXNlejE1JmV1cm87CURvbnMwLjQyJmV1cm87CQpD
+T0ZGUkVUIMOAIFZJTiBBVkVDIETDiUNBTlRFVVIgRVQgUE9NUEUgw4AgVklERSBVbmUgYm9ubmUg
+ZMOpZ3VzdGF0aW9uIGV0IHVuZSBwYXJmYWl0ZSBjb25zZXJ2YXRpb24gZGUgdm9zIHZpbnMsIDE0
+4oKsIGF1IGxpZXUgZGUgMjnigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
+ZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODA5LWNv
+ZmZyZXQtdmluLWRlY2FudGV1ci1wb21wZS12aWRlXQpTZXVsZW1lbnQxNOKCrCBbaHR0cDovL3d3
+dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3
+Yy9kaXNjb3VudC9kZXRhaWwvODA5LWNvZmZyZXQtdmluLWRlY2FudGV1ci1wb21wZS12aWRlXQoK
+W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzUyYzkw
+MjQyYTYwZDIzN2MvZGlzY291bnQvZGV0YWlsLzgwOS1jb2ZmcmV0LXZpbi1kZWNhbnRldXItcG9t
+cGUtdmlkZV0KCgoKVmFsZXVyMTE5JmV1cm87CVJlbWlzZTUwJQnDiWNvbm9taXNlejYwJmV1cm87
+CURvbnMxLjc3JmV1cm87CQpQT1VGIElORlVSTiBCSUdCT1kgWFhMIDogVW4gY291c3NpbiBnw6lh
+bnQgZXQgY29uZm9ydGFibGUgYXUgZGVzaWduIG9yaWdpbmFsLCA1OeKCrCBzZXVsZW1lbnQgYXUg
+bGlldSBkZSAxMTnigqwgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODA2LWNvdXNzaW4t
+Z2VhbnQtYmlnYm95LWluZnVybi1wYXMtY2hlcl0KU2V1bGVtZW50NTnigqwgW2h0dHA6Ly93d3cu
+bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzUyYzkwMjQyYTYwZDIzN2Mv
+ZGlzY291bnQvZGV0YWlsLzgwNi1jb3Vzc2luLWdlYW50LWJpZ2JveS1pbmZ1cm4tcGFzLWNoZXJd
+CgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJj
+OTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODA2LWNvdXNzaW4tZ2VhbnQtYmlnYm95LWlu
+ZnVybi1wYXMtY2hlcl0KCgoKClZhbGV1cjU4JmV1cm87CVJlbWlzZTUwJQnDiWNvbm9taXNlejI5
+JmV1cm87CURvbnMwLjg3JmV1cm87CQoyIMOJUElMQVRFVVJTIFdJWlpJVCArIDEgS0lUIE1BTlVD
+VVJFIEVUIE1BUVVJTExBR0UgOiBBZGlldSBhdXggcG9pbHMgZGlzZ3JhY2lldXggZXQgYm9uam91
+ciBhdXggbWFpbnMgc3VibGltw6llcywgMjnigqwgYXUgbGlldSBkZSA1OOKCrCAhIFtodHRwOi8v
+d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81MmM5MDI0MmE2MGQy
+MzdjL2Rpc2NvdW50L2RldGFpbC84MjUtZXBpbGF0ZXVyLWtpdC1tYW51Y3VyZS13aXp6aXRdClNl
+dWxlbWVudDI54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS81MmM5MDI0MmE2MGQyMzdjL2Rpc2NvdW50L2RldGFpbC84MjUtZXBpbGF0ZXVyLWtp
+dC1tYW51Y3VyZS13aXp6aXRdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
+bGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODI1LWVwaWxh
+dGV1ci1raXQtbWFudWN1cmUtd2l6eml0XQoKCgpWYWxldXIxOCZldXJvOwlSZW1pc2U1MCUJw4lj
+b25vbWlzZXo5JmV1cm87CURvbnMwLjI3JmV1cm87CQo0IEJPVUNIT05TIEVOIFNJTElDT05FIFBP
+VVIgQk9VVEVJTExFUyBERSBWSU4gRVQgQ0hBTVBBR05FIDogQ29uc2VydmV6IHZvcyBib25uZXMg
+Ym91dGVpbGxlcyBjb21tZSBpbCBzZSBkb2l0LCA54oKsIGF1IGxpZXUgZGUgMTjigqwgISBbaHR0
+cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJh
+NjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODQyLWJvdWNob25zLXNpbGljb25lLXBhcy1jaGVyXQpT
+ZXVsZW1lbnQ54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS81MmM5MDI0MmE2MGQyMzdjL2Rpc2NvdW50L2RldGFpbC84NDItYm91Y2hvbnMtc2ls
+aWNvbmUtcGFzLWNoZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODQyLWJvdWNob25z
+LXNpbGljb25lLXBhcy1jaGVyXQoKCgoKVmFsZXVyMjQ5JmV1cm87CVJlbWlzZTYwJQnDiWNvbm9t
+aXNlejE1MCZldXJvOwlEb25zMi45NyZldXJvOwkKTUlOSSBQQyBBTkRST0lEIDfigJnigJkgOiBW
+b3RyZSBvcmRpbmF0ZXVyIGRlIHBvY2hlIHF1aSB2b3VzIGZhY2lsaXRlIGxhIHZpZSBldCB2b3Vz
+IGFjY29tcGFnbmUgcGFydG91dCBwb3VyIDk54oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDI0OeKC
+rCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJj
+OTAyNDJhNjBkMjM3Yy9kaXNjb3VudC9kZXRhaWwvODM0LW1pbmktcGMtYW5kcm9pZC1vcmRpbmF0
+ZXVyLXBvY2hlLW5vZWxdClNldWxlbWVudDk54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
+L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81MmM5MDI0MmE2MGQyMzdjL2Rpc2NvdW50L2RldGFp
+bC84MzQtbWluaS1wYy1hbmRyb2lkLW9yZGluYXRldXItcG9jaGUtbm9lbF0KCltodHRwOi8vd3d3
+LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81MmM5MDI0MmE2MGQyMzdj
+L2Rpc2NvdW50L2RldGFpbC84MzQtbWluaS1wYy1hbmRyb2lkLW9yZGluYXRldXItcG9jaGUtbm9l
+bF0KCgoKVmFsZXVyMTQ3JmV1cm87CVJlbWlzZTU1JQnDiWNvbm9taXNlejgxJmV1cm87CURvbnMx
+Ljk4JmV1cm87CQpFTEVDVFJPTklDIFNLSU4gQ0xFQU5TRVIgOiBM4oCZYXBwYXJlaWwgw6lsZWN0
+cm9uaXF1ZSBxdWkgbmV0dG9pZSB2b3RyZSBwZWF1IGVuIHByb2ZvbmRldXIgZXQgbHVpIHJlZG9u
+bmUgZGUgbOKAmcOpY2xhdCwgNjbigqwgYXUgbGlldSBkZSAxNDfigqwgW2h0dHA6Ly93d3cubG92
+aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzUyYzkwMjQyYTYwZDIzN2MvZGlz
+Y291bnQvZGV0YWlsLzgzNy1uZXR0b3lhbnQtZGUtcGVhdS1lbGVjdHJvbmlxdWVdClNldWxlbWVu
+dDY24oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
+eS81MmM5MDI0MmE2MGQyMzdjL2Rpc2NvdW50L2RldGFpbC84MzctbmV0dG95YW50LWRlLXBlYXUt
+ZWxlY3Ryb25pcXVlXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5LzUyYzkwMjQyYTYwZDIzN2MvZGlzY291bnQvZGV0YWlsLzgzNy1uZXR0b3lhbnQt
+ZGUtcGVhdS1lbGVjdHJvbmlxdWVdCgoKCgoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9hc3NvY2lhdGlvbnMtY2Fy
+aXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
+dGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQpbaHR0cDov
+L3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBk
+MjM3Yy9hc3NvY2lhdGlvbnMtY2FyaXRhdGl2ZXMvXQoKCkwnYWZhCVLDqnZlcyBkJ2VuZmFudHMJ
+U3VyZnJpZGVyIEZvdW5kYXRpb24gRXVyb3BlCQoKCgoKCgpTaG93IGVtYWlsIGF0IHRoZSB3ZWJz
+aXRlIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS81
+MmM5MDI0MmE2MGQyMzdjL3ZpZXcvXQp8IFNlIGTDqXNpbnNjcmlyZSBbaHR0cDovL3d3dy5sb3Zp
+bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvNTJjOTAyNDJhNjBkMjM3Yy91bnN1
+YnNjcmliZS8/bGFuZ3VhZ2U9ZW4mYW1wO2NvZGU9N2RiODAzZWUwN2UwNDI4MV0KCi0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQpBbGwgdGhlIGRhdGEgY29udGludW91c2x5IGdlbmVyYXRlZCBpbiB5b3Vy
+IElUIGluZnJhc3RydWN0dXJlIApjb250YWlucyBhIGRlZmluaXRpdmUgcmVjb3JkIG9mIGN1c3Rv
+bWVycywgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UsIApzZWN1cml0eSB0aHJlYXRzLCBmcmF1ZHVs
+ZW50IGFjdGl2aXR5LCBhbmQgbW9yZS4gU3BsdW5rIHRha2VzIHRoaXMgCmRhdGEgYW5kIG1ha2Vz
+IHNlbnNlIG9mIGl0LiBJVCBzZW5zZS4gQW5kIGNvbW1vbiBzZW5zZS4KaHR0cDovL3Auc2YubmV0
+L3NmdS9zcGx1bmstbm92ZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

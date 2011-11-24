@@ -1,41 +1,74 @@
-From: Ben Dooks <ben-i2c-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>
-Subject: Re: [PATCH 3/5] SPI: Add helper macro for spi_driver boilerplate
-Date: Thu, 24 Nov 2011 00:13:42 +0000
-Message-ID: <20111124001342.GN19115@trinity.fluff.org>
-References: <1321434819-23678-1-git-send-email-lars@metafoo.de> <1321434819-23678-4-git-send-email-lars@metafoo.de> <CACxGe6tz0ppZj=a_e4rkgNxzhQ4MSCtXKXGk_dPov80QDU4MCg@mail.gmail.com>
+From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: nuc900: Include linux/module.h
+Date: Thu, 24 Nov 2011 11:10:51 +0800
+Message-ID: <1322104251.16201.8.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
-	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>,
-	Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michael Hennerich <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CACxGe6tz0ppZj=a_e4rkgNxzhQ4MSCtXKXGk_dPov80QDU4MCg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Paul Gortmaker <paul.gortmaker-CWA4WttNNZF54TAoqtyWWQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 16, 2011 at 10:12:54AM -0700, Grant Likely wrote:
-> On Wed, Nov 16, 2011 at 2:13 AM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
-> > This patch introduces the module_spi_driver macro which is a convenience macro
-> > for SPI driver modules similar to module_platform_driver. It is intended to be
-> > used by drivers which init/exit section does nothing but register/unregister
-> > the SPI driver. By using this macro it is possible to eliminate a few lines of
-> > boilerplate code per SPI driver.
-> >
-> > Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-> 
-> Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Include linux/module.h to fix below build error:
 
-I'm begining to think we need to make some of these driver and device
-bits more generic... there seems to be so much similar but not quite
-the same code.
+  CC      drivers/spi/spi-nuc900.o
+drivers/spi/spi-nuc900.c:484: error: 'THIS_MODULE' undeclared here (not in a function)
+drivers/spi/spi-nuc900.c:489: error: expected declaration specifiers or '...' before string constant
+drivers/spi/spi-nuc900.c:489: warning: data definition has no type or storage class
+drivers/spi/spi-nuc900.c:489: warning: type defaults to 'int' in declaration of 'MODULE_AUTHOR'
+drivers/spi/spi-nuc900.c:489: warning: function declaration isn't a prototype
+drivers/spi/spi-nuc900.c:490: error: expected declaration specifiers or '...' before string constant
+drivers/spi/spi-nuc900.c:490: warning: data definition has no type or storage class
+drivers/spi/spi-nuc900.c:490: warning: type defaults to 'int' in declaration of 'MODULE_DESCRIPTION'
+drivers/spi/spi-nuc900.c:490: warning: function declaration isn't a prototype
+drivers/spi/spi-nuc900.c:491: error: expected declaration specifiers or '...' before string constant
+drivers/spi/spi-nuc900.c:491: warning: data definition has no type or storage class
+drivers/spi/spi-nuc900.c:491: warning: type defaults to 'int' in declaration of 'MODULE_LICENSE'
+drivers/spi/spi-nuc900.c:491: warning: function declaration isn't a prototype
+drivers/spi/spi-nuc900.c:492: error: expected declaration specifiers or '...' before string constant
+drivers/spi/spi-nuc900.c:492: warning: data definition has no type or storage class
+drivers/spi/spi-nuc900.c:492: warning: type defaults to 'int' in declaration of 'MODULE_ALIAS'
+drivers/spi/spi-nuc900.c:492: warning: function declaration isn't a prototype
+make[2]: *** [drivers/spi/spi-nuc900.o] Error 1
+make[1]: *** [drivers/spi] Error 2
+make: *** [drivers] Error 2
 
+Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-nuc900.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
+index 21c70b2..182e9c8 100644
+--- a/drivers/spi/spi-nuc900.c
++++ b/drivers/spi/spi-nuc900.c
+@@ -8,6 +8,7 @@
+  *
+  */
+ 
++#include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
 -- 
-Ben Dooks, ben-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, http://www.fluff.org/ben/
+1.7.5.4
 
-Large Hadron Colada: A large Pina Colada that makes the universe disappear.
+
+
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure 
+contains a definitive record of customers, application performance, 
+security threats, fraudulent activity, and more. Splunk takes this 
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

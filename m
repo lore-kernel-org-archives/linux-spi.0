@@ -1,10 +1,10 @@
-From: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: mxc_spi producing kernel panic during spi_async
-Date: Fri, 25 Nov 2011 16:38:10 +0000
-Message-ID: <CAN=k24=6uvoBTobj3RGZGD8qec_dqtWp47OXGEaUmDPKhdkwPw@mail.gmail.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: Appareil nettoyage de peau / Mini PC / Bijoux
+Date: Sat, 26 Nov 2011 04:56:27 +0100
+Message-ID: <ee2839fc9938314d7865b5b78bdbf1d9@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,80 +17,117 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello all,
-
-I am needing some help understanding a kernel panic when I try to load
-the at25 eeprom driver, I have traced it to the spi_async function in
-drivers/spi/spi.c but I do not know where to go to from here. I have
-found some similar issues in forum posts but threads never offer a
-solution which has left me scratching my head. Perhaps I am missing
-something in my kernel configuration?
-
-I am using the 2.6.35 kernel and mxc_spi driver for my i.Mx53
-platform. The message returned from the kernel is as follows
-
-best regards
-
-Wayne
-
-# modprobe at25
-[   14.378564] 1
-[   14.380286] Unable to handle kernel NULL pointer dereference at
-virtual address 00000000
-[   14.394892] pgd = 80004000
-[   14.397618] [00000000] *pgd=00000000
-[   14.401220] Internal error: Oops: 17 [#1] PREEMPT
-[   14.405932] last sysfs file: /sys/class/gsl_kmod/gsl_kmod/dev
-[   14.411687] Modules linked in: at25(+)
-[   14.415474] CPU: 0    Not tainted  (2.6.35.3-744-g27fdf7b-g7e6da4e-dirty #24)
-[   14.422635] PC is at mxc_spi_buf_tx_u8+0x1c/0x28
-[   14.427263] LR is at spi_put_tx_data+0x34/0x5c
-[   14.431716] pc : [<80210ae0>]    lr : [<80210c30>]    psr: 60000013
-[   14.431726] sp : 990e3ee8  ip : 80210ad8  fp : 990e3ef4
-[   14.443220] r10: 990e2000  r9 : 990c4600  r8 : 990c4518
-[   14.448453] r7 : 00000000  r6 : 990c4518  r5 : 00000001  r4 : 9a866000
-[   14.454989] r3 : 00000000  r2 : 990c4518  r1 : 00000001  r0 : 990c4518
-[   14.461528] Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM
-Segment kernel
-[   14.468848] Control: 10c5387d  Table: 89410019  DAC: 00000017
-[   14.474602] Process mxc_spi.1 (pid: 145, stack limit = 0x990e22e8)
-[   14.480792] Stack: (0x990e3ee8 to 0x990e4000)
-[   14.485162] 3ee0:                   990e3f14 990e3ef8 80210c30
-80210ad0 990c4518 993c3d80
-[   14.493356] 3f00: 990c4600 00000000 990e3f34 990e3f18 802117ac
-80210c08 993c3d80 00000000
-[   14.501550] 3f20: 993c3dc4 993c3da4 990e3f74 990e3f38 8021066c
-802116cc 990c452c 80210c84
-[   14.509744] 3f40: 00000000 ffffffff 990c5b88 990e2000 990c5b80
-990c5b88 990c4520 990c451c
-[   14.517938] 3f60: 802104e0 80480d80 990e3fc4 990e3f78 8006c4a4
-802104ec 9908f9e0 9908f9e0
-[   14.526131] 3f80: 990e3fc4 00000000 9908f9e0 8007089c 990e3f90
-990e3f90 990e3fc4 99029d98
-[   14.534325] 3fa0: 990e3fcc 8006c2a4 990c5b80 00000000 00000000
-00000000 990e3ff4 990e3fc8
-[   14.542518] 3fc0: 800703dc 8006c2b0 00000000 00000000 990e3fd0
-990e3fd0 99029d98 80070350
-[   14.550711] 3fe0: 8002a16c 00000013 00000000 990e3ff8 8002a16c
-8007035c 00000000 00000000
-[   14.558918] [<80210ae0>] (mxc_spi_buf_tx_u8+0x1c/0x28) from
-[<80210c30>] (spi_put_tx_data+0x34/0x5c)
-[   14.568073] [<80210c30>] (spi_put_tx_data+0x34/0x5c) from
-[<802117ac>] (mxc_spi_transfer+0xec/0x16c)
-[   14.577225] [<802117ac>] (mxc_spi_transfer+0xec/0x16c) from
-[<8021066c>] (bitbang_work+0x18c/0x314)
-[   14.586294] [<8021066c>] (bitbang_work+0x18c/0x314) from
-[<8006c4a4>] (worker_thread+0x200/0x2b4)
-[   14.595192] [<8006c4a4>] (worker_thread+0x200/0x2b4) from
-[<800703dc>] (kthread+0x8c/0x94)
-[   14.603479] [<800703dc>] (kthread+0x8c/0x94) from [<8002a16c>]
-(kernel_thread_exit+0x0/0x8)
-[   14.611850] Code: e92d4000 ebf86186 e590304c e1a02000 (e4d30001)
-[   14.620165] ---[ end trace 46f1e82486d44485 ]---
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
-data and makes sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-novd2d
+Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1
+NTg2M2ZlNWQ2L3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
+MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
+YXkvYWYwMzAyNTU4NjNmZTVkNi9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCkVMRUNUUk9OSUMgU0tJ
+TiBDTEVBTlNFUiA6IEzigJlhcHBhcmVpbCDDqWxlY3Ryb25pcXVlIHF1aSBuZXR0b2llIHZvdHJl
+IHBlYXUgZW4gcHJvZm9uZGV1ciBldCBsdWkgcmVkb25uZSBkZSBs4oCZw6ljbGF0LCA2NuKCrCBh
+dSBsaWV1IGRlIDE0N+KCrAkKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgzNy1uZXR0
+b3lhbnQtZGUtcGVhdS1lbGVjdHJvbmlxdWVdCgo2NuKCrApWYWxldXI6IDE0N+KCrAnDiWNvbm9t
+aXNlejogODHigqwJRG9uczogMS45OOKCrAkKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2Fk
+bWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L2Rpc2NvdW50L2RldGFpbC84
+MzctbmV0dG95YW50LWRlLXBlYXUtZWxlY3Ryb25pcXVlXQoKCgpVbiBhcHBhcmVpbCBFbGVjdHJv
+bmljIFNraW4gQ2xlYW5zZXIgNCBhY2Nlc3NvaXJlcyA6IHVuZSDDqXBvbmdlIGNvc23DqXRpcXVl
+LCB1biBwaW5jZWF1IGRvdXgsIHVuZSBwaWVycmUgcG9uY2UgZXQgdW4gdmVybmlzIMOgIG9uZ2xl
+IFVuZSBwZWF1IHJhZGlldXNlIERlcyBtYWlucyBldCBkZXMgcGllZHMgc3VibGltw6lzICEgCgoK
+W2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubG92
+aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjgzNy1uZXR0b3lhbnQtZGUtcGVhdS1l
+bGVjdHJvbmlxdWVdCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L3BhZ2UvdHdpdHRlci8/dXJsPWh0dHAlM0ElMkYlMkZ3
+d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjgzNy1uZXR0b3lhbnQtZGUt
+cGVhdS1lbGVjdHJvbmlxdWUmYW1wO21lc3NhZ2U9RUxFQ1RST05JQyBTS0lOIENMRUFOU0VSIDog
+TOKAmWFwcGFyZWlsIMOpbGVjdHJvbmlxdWUgcXVpIG5ldHRvaWUgdm90cmUgcGVhdSBlbiBwcm9m
+b25kZXVyIGV0IGx1aSByZWRvbm5lIGRlIGzigJnDqWNsYXQsIDY24oKsIGF1IGxpZXUgZGUgMTQ3
+4oKsXQpbbWFpbHRvOj9zdWJqZWN0PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOp
+cmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUg
+cGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyEgTG92aW5nIERlYWxzIG9mZnJlIGRl
+cyByw6lkdWN0aW9ucyBpbmNyb3lhYmxlcyBldCByZXZlcnNlIHVuIHBvdXJjZW50YWdlIMOgIGRl
+cyBhc3NvY2lhdGlvbnMgY2FyaXRhdGl2ZXMuIGh0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
+aW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgz
+Ny1uZXR0b3lhbnQtZGUtcGVhdS1lbGVjdHJvbmlxdWVdCgoKCgoKCkVuY29yZSBwbHVzIGQnb2Zm
+cmVzICEJClZhbGV1cjI0OSZldXJvOwlSZW1pc2U2MCUJw4ljb25vbWlzZXoxNTAmZXVybzsJRG9u
+czIuOTcmZXVybzsJCk1JTkkgUEMgQU5EUk9JRCA34oCZ4oCZIDogVm90cmUgb3JkaW5hdGV1ciBk
+ZSBwb2NoZSBxdWkgdm91cyBmYWNpbGl0ZSBsYSB2aWUgZXQgdm91cyBhY2NvbXBhZ25lIHBhcnRv
+dXQgcG91ciA5OeKCrCBzZXVsZW1lbnQgYXUgbGlldSBkZSAyNDnigqwgW2h0dHA6Ly93d3cubG92
+aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlz
+Y291bnQvZGV0YWlsLzgzNC1taW5pLXBjLWFuZHJvaWQtb3JkaW5hdGV1ci1wb2NoZS1ub2VsXQpT
+ZXVsZW1lbnQ5OeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvYWYwMzAyNTU4NjNmZTVkNi9kaXNjb3VudC9kZXRhaWwvODM0LW1pbmktcGMtYW5k
+cm9pZC1vcmRpbmF0ZXVyLXBvY2hlLW5vZWxdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9h
+ZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYWYwMzAyNTU4NjNmZTVkNi9kaXNjb3VudC9kZXRhaWwv
+ODM0LW1pbmktcGMtYW5kcm9pZC1vcmRpbmF0ZXVyLXBvY2hlLW5vZWxdCgoKClZhbGV1cjY1JmV1
+cm87CVJlbWlzZTcxJQnDiWNvbm9taXNlejQ2JmV1cm87CURvbnMwLjU3JmV1cm87CQpCT04gROKA
+mUFDSEFUIFBPVVIgTEVTIEJJSk9VWCBERSBMQSBDUsOJQVRSSUNFICZxdW90O0bDiUUtQ0kgRsOJ
+RS3Dh0EmcXVvdDsgOiBPZmZyZXotdm91cyBkZXMgYmlqb3V4IMOpbMOpZ2FudHMgZXQgZ2xhbW91
+cnMsIDE54oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDY14oKsICEgW2h0dHA6Ly93d3cubG92aW5n
+ZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291
+bnQvZGV0YWlsLzgwOC1ib24tZC1hY2hhdC1iaWpvdXgtZmVlY2lmZWVjYS1jYWRlYXUtbm9lbF0K
+U2V1bGVtZW50MTnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
+ci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgwOC1ib24tZC1hY2hh
+dC1iaWpvdXgtZmVlY2lmZWVjYS1jYWRlYXUtbm9lbF0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxz
+LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L2Rpc2NvdW50L2Rl
+dGFpbC84MDgtYm9uLWQtYWNoYXQtYmlqb3V4LWZlZWNpZmVlY2EtY2FkZWF1LW5vZWxdCgoKCgpW
+YWxldXIyOSZldXJvOwlSZW1pc2U1MiUJw4ljb25vbWlzZXoxNSZldXJvOwlEb25zMC40MiZldXJv
+OwkKQ09GRlJFVCDDgCBWSU4gQVZFQyBEw4lDQU5URVVSIEVUIFBPTVBFIMOAIFZJREUgVW5lIGJv
+bm5lIGTDqWd1c3RhdGlvbiBldCB1bmUgcGFyZmFpdGUgY29uc2VydmF0aW9uIGRlIHZvcyB2aW5z
+LCAxNOKCrCBhdSBsaWV1IGRlIDI54oKsICEgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
+aW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgw
+OS1jb2ZmcmV0LXZpbi1kZWNhbnRldXItcG9tcGUtdmlkZV0KU2V1bGVtZW50MTTigqwgW2h0dHA6
+Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYz
+ZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgwOS1jb2ZmcmV0LXZpbi1kZWNhbnRldXItcG9tcGUtdmlk
+ZV0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9h
+ZjAzMDI1NTg2M2ZlNWQ2L2Rpc2NvdW50L2RldGFpbC84MDktY29mZnJldC12aW4tZGVjYW50ZXVy
+LXBvbXBlLXZpZGVdCgoKClZhbGV1cjExOSZldXJvOwlSZW1pc2U1MCUJw4ljb25vbWlzZXo2MCZl
+dXJvOwlEb25zMS43NyZldXJvOwkKUE9VRiBJTkZVUk4gQklHQk9ZIFhYTCA6IFVuIGNvdXNzaW4g
+Z8OpYW50IGV0IGNvbmZvcnRhYmxlIGF1IGRlc2lnbiBvcmlnaW5hbCwgNTnigqwgc2V1bGVtZW50
+IGF1IGxpZXUgZGUgMTE54oKsICEgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgwNi1jb3Vz
+c2luLWdlYW50LWJpZ2JveS1pbmZ1cm4tcGFzLWNoZXJdClNldWxlbWVudDU54oKsIFtodHRwOi8v
+d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2M2Zl
+NWQ2L2Rpc2NvdW50L2RldGFpbC84MDYtY291c3Npbi1nZWFudC1iaWdib3ktaW5mdXJuLXBhcy1j
+aGVyXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
+L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgwNi1jb3Vzc2luLWdlYW50LWJpZ2Jv
+eS1pbmZ1cm4tcGFzLWNoZXJdCgoKCgpWYWxldXI2NSZldXJvOwlSZW1pc2U0NSUJw4ljb25vbWlz
+ZXoyOSZldXJvOwlEb25zMC44NyZldXJvOwkKMiDDiVBJTEFURVVSUyBXSVpaSVQgKyAxIEtJVCBN
+QU5VQ1VSRSBFVCBNQVFVSUxMQUdFIDogQWRpZXUgYXV4IHBvaWxzIGRpc2dyYWNpZXV4IGV0IGJv
+bmpvdXIgYXV4IG1haW5zIHN1YmxpbcOpZXMsIDM24oKsIGF1IGxpZXUgZGUgNjXigqwgISBbaHR0
+cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYWYwMzAyNTU4
+NjNmZTVkNi9kaXNjb3VudC9kZXRhaWwvODI1LWVwaWxhdGV1ci1raXQtbWFudWN1cmUtd2l6eml0
+XQpTZXVsZW1lbnQzNuKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvYWYwMzAyNTU4NjNmZTVkNi9kaXNjb3VudC9kZXRhaWwvODI1LWVwaWxhdGV1
+ci1raXQtbWFudWN1cmUtd2l6eml0XQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
+bmV3c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzgyNS1l
+cGlsYXRldXIta2l0LW1hbnVjdXJlLXdpenppdF0KCgoKVmFsZXVyMTgmZXVybzsJUmVtaXNlNTAl
+CcOJY29ub21pc2V6OSZldXJvOwlEb25zMC4yNyZldXJvOwkKNCBCT1VDSE9OUyBFTiBTSUxJQ09O
+RSBQT1VSIEJPVVRFSUxMRVMgREUgVklOIEVUIENIQU1QQUdORSA6IENvbnNlcnZleiB2b3MgYm9u
+bmVzIGJvdXRlaWxsZXMgY29tbWUgaWwgc2UgZG9pdCwgOeKCrCBhdSBsaWV1IGRlIDE44oKsICEg
+W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2FmMDMw
+MjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzg0Mi1ib3VjaG9ucy1zaWxpY29uZS1wYXMtY2hl
+cl0KU2V1bGVtZW50OeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvYWYwMzAyNTU4NjNmZTVkNi9kaXNjb3VudC9kZXRhaWwvODQyLWJvdWNob25z
+LXNpbGljb25lLXBhcy1jaGVyXQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
+c2xldHRlci9nYXRld2F5L2FmMDMwMjU1ODYzZmU1ZDYvZGlzY291bnQvZGV0YWlsLzg0Mi1ib3Vj
+aG9ucy1zaWxpY29uZS1wYXMtY2hlcl0KCgoKCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZy
+L2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L2Fzc29jaWF0aW9ucy1j
+YXJpdGF0aXZlcy9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCltodHRw
+Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2
+M2ZlNWQ2L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCgoKTCdhZmEJUsOqdmVzIGQnZW5mYW50
+cwlTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUJCgoKCgoKClNob3cgZW1haWwgYXQgdGhlIHdl
+YnNpdGUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
+L2FmMDMwMjU1ODYzZmU1ZDYvdmlldy9dCnwgU2UgZMOpc2luc2NyaXJlIFtodHRwOi8vd3d3Lmxv
+dmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9hZjAzMDI1NTg2M2ZlNWQ2L3Vu
+c3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0MjgxXQoKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCkFsbCB0aGUgZGF0YSBjb250aW51b3VzbHkgZ2VuZXJhdGVkIGluIHlv
+dXIgSVQgaW5mcmFzdHJ1Y3R1cmUgCmNvbnRhaW5zIGEgZGVmaW5pdGl2ZSByZWNvcmQgb2YgY3Vz
+dG9tZXJzLCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSwgCnNlY3VyaXR5IHRocmVhdHMsIGZyYXVk
+dWxlbnQgYWN0aXZpdHksIGFuZCBtb3JlLiBTcGx1bmsgdGFrZXMgdGhpcyAKZGF0YSBhbmQgbWFr
+ZXMgc2Vuc2Ugb2YgaXQuIElUIHNlbnNlLiBBbmQgY29tbW9uIHNlbnNlLgpodHRwOi8vcC5zZi5u
+ZXQvc2Z1L3NwbHVuay1ub3ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

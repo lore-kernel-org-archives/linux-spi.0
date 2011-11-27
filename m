@@ -1,12 +1,18 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: DERNIERE CHANCE : Offres de la semaine
-Date: Sun, 27 Nov 2011 04:56:15 +0100
-Message-ID: <38915ac7e4b91403b6bb52b835a63f56@www.lovingdeals.fr>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: mxc_spi producing kernel panic during spi_async
+Date: Sun, 27 Nov 2011 12:22:27 +0200
+Message-ID: <20111127102226.GB5951@tarshish>
+References: <CAN=k24=6uvoBTobj3RGZGD8qec_dqtWp47OXGEaUmDPKhdkwPw@mail.gmail.com>
+	<20111126170829.GA5951@tarshish>
+	<CAN=k24kxSbJh1nQ=V8MZ8PwukhDD2Vs+sqS4r2tysrTxrhEw9Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wayne Tams <wayne.tams-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAN=k24kxSbJh1nQ=V8MZ8PwukhDD2Vs+sqS4r2tysrTxrhEw9Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,118 +23,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1
-MGQ4OThjZTZjL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvOTAyNzAyNTBkODk4Y2U2Yy9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJCk1JTkkgUEMgQU5EUk9J
-RCA34oCZ4oCZIDogVm90cmUgb3JkaW5hdGV1ciBkZSBwb2NoZSBxdWkgdm91cyBmYWNpbGl0ZSBs
-YSB2aWUgZXQgdm91cyBhY2NvbXBhZ25lIHBhcnRvdXQgcG91ciA5OeKCrCBzZXVsZW1lbnQgYXUg
-bGlldSBkZSAyNDnigqwJCgoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
-ZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MzQtbWluaS1w
-Yy1hbmRyb2lkLW9yZGluYXRldXItcG9jaGUtbm9lbF0KCjk54oKsClZhbGV1cjogMjQ54oKsCcOJ
-Y29ub21pc2V6OiAxNTDigqwJRG9uczogMi45N+KCrAkKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2Rl
-dGFpbC84MzQtbWluaS1wYy1hbmRyb2lkLW9yZGluYXRldXItcG9jaGUtbm9lbF0KCgoKVW4gTWlu
-aSBQQyBBbmRyb2lkIGF2ZWMgw6ljcmFuIExDRCA34oCZ4oCZIFVuIGZvcm1hdCDCqyBvcmRpbmF0
-ZXVyIGRlIHBvY2hlwqDCuyBpZMOpYWzCoDogMjE1IHggMTQ1IHggMjggbW0gRGUgbm9tYnJldXNl
-cyBvcHRpb25zIExlIEdvb2dsZSBBcHAtUGFjayBwcsOpaW5zdGFsbMOpIFVuIGNhZGVhdSBpZMOp
-YWwgcG91ciBwYXNzZXIgdW4gTG92aW5nIE5vw6tswqAhIAoKW2h0dHA6Ly93d3cuZmFjZWJvb2su
-Y29tL3NoYXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3Vu
-dCUyRmRldGFpbCUyRjgzNC1taW5pLXBjLWFuZHJvaWQtb3JkaW5hdGV1ci1wb2NoZS1ub2VsXQpb
-aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAy
-NTBkODk4Y2U2Yy9wYWdlL3R3aXR0ZXIvP3VybD1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxz
-LmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkY4MzQtbWluaS1wYy1hbmRyb2lkLW9yZGluYXRldXIt
-cG9jaGUtbm9lbCZhbXA7bWVzc2FnZT1NSU5JIFBDIEFORFJPSUQgN+KAmeKAmSA6IFZvdHJlIG9y
-ZGluYXRldXIgZGUgcG9jaGUgcXVpIHZvdXMgZmFjaWxpdGUgbGEgdmllIGV0IHZvdXMgYWNjb21w
-YWduZSBwYXJ0b3V0IHBvdXIgOTnigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgMjQ54oKsXQpbbWFp
-bHRvOj9zdWJqZWN0PUomIzAzOTthaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMg
-c2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1cyBnw6lu
-w6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyEgTG92aW5nIERlYWxzIG9mZnJlIGRlcyByw6lkdWN0
-aW9ucyBpbmNyb3lhYmxlcyBldCByZXZlcnNlIHVuIHBvdXJjZW50YWdlIMOgIGRlcyBhc3NvY2lh
-dGlvbnMgY2FyaXRhdGl2ZXMuIGh0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xl
-dHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvZGlzY291bnQvZGV0YWlsLzgzNC1taW5pLXBj
-LWFuZHJvaWQtb3JkaW5hdGV1ci1wb2NoZS1ub2VsXQoKCgoKCgpFbmNvcmUgcGx1cyBkJ29mZnJl
-cyAhCQpWYWxldXIxMTkmZXVybzsJUmVtaXNlNTAlCcOJY29ub21pc2V6NjAmZXVybzsJRG9uczEu
-NzcmZXVybzsJClBPVUYgSU5GVVJOIEJJR0JPWSBYWEwgOiBVbiBjb3Vzc2luIGfDqWFudCBldCBj
-b25mb3J0YWJsZSBhdSBkZXNpZ24gb3JpZ2luYWwsIDU54oKsIHNldWxlbWVudCBhdSBsaWV1IGRl
-IDExOeKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0
-ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MDYtY291c3Npbi1nZWFudC1i
-aWdib3ktaW5mdXJuLXBhcy1jaGVyXQpTZXVsZW1lbnQ1OeKCrCBbaHR0cDovL3d3dy5sb3Zpbmdk
-ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAyNTBkODk4Y2U2Yy9kaXNjb3Vu
-dC9kZXRhaWwvODA2LWNvdXNzaW4tZ2VhbnQtYmlnYm95LWluZnVybi1wYXMtY2hlcl0KCltodHRw
-Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4
-OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MDYtY291c3Npbi1nZWFudC1iaWdib3ktaW5mdXJuLXBh
-cy1jaGVyXQoKCgpWYWxldXI2NSZldXJvOwlSZW1pc2U0NSUJw4ljb25vbWlzZXoyOSZldXJvOwlE
-b25zMC44NyZldXJvOwkKMiDDiVBJTEFURVVSUyBXSVpaSVQgKyAxIEtJVCBNQU5VQ1VSRSBFVCBN
-QVFVSUxMQUdFIDogQWRpZXUgYXV4IHBvaWxzIGRpc2dyYWNpZXV4IGV0IGJvbmpvdXIgYXV4IG1h
-aW5zIHN1YmxpbcOpZXMsIDM24oKsIGF1IGxpZXUgZGUgNjXigqwgISBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAyNTBkODk4Y2U2Yy9kaXNj
-b3VudC9kZXRhaWwvODI1LWVwaWxhdGV1ci1raXQtbWFudWN1cmUtd2l6eml0XQpTZXVsZW1lbnQz
-NuKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkv
-OTAyNzAyNTBkODk4Y2U2Yy9kaXNjb3VudC9kZXRhaWwvODI1LWVwaWxhdGV1ci1raXQtbWFudWN1
-cmUtd2l6eml0XQoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9n
-YXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvZGlzY291bnQvZGV0YWlsLzgyNS1lcGlsYXRldXIta2l0
-LW1hbnVjdXJlLXdpenppdF0KCgoKClZhbGV1cjY1JmV1cm87CVJlbWlzZTcxJQnDiWNvbm9taXNl
-ejQ2JmV1cm87CURvbnMwLjU3JmV1cm87CQpCT04gROKAmUFDSEFUIFBPVVIgTEVTIEJJSk9VWCBE
-RSBMQSBDUsOJQVRSSUNFICZxdW90O0bDiUUtQ0kgRsOJRS3Dh0EmcXVvdDsgOiBPZmZyZXotdm91
-cyBkZXMgYmlqb3V4IMOpbMOpZ2FudHMgZXQgZ2xhbW91cnMsIDE54oKsIHNldWxlbWVudCBhdSBs
-aWV1IGRlIDY14oKsICEgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
-ci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvZGlzY291bnQvZGV0YWlsLzgwOC1ib24tZC1hY2hh
-dC1iaWpvdXgtZmVlY2lmZWVjYS1jYWRlYXUtbm9lbF0KU2V1bGVtZW50MTnigqwgW2h0dHA6Ly93
-d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNl
-NmMvZGlzY291bnQvZGV0YWlsLzgwOC1ib24tZC1hY2hhdC1iaWpvdXgtZmVlY2lmZWVjYS1jYWRl
-YXUtbm9lbF0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0
-ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MDgtYm9uLWQtYWNoYXQtYmlq
-b3V4LWZlZWNpZmVlY2EtY2FkZWF1LW5vZWxdCgoKClZhbGV1cjI5JmV1cm87CVJlbWlzZTUyJQnD
-iWNvbm9taXNlejE1JmV1cm87CURvbnMwLjQyJmV1cm87CQpDT0ZGUkVUIMOAIFZJTiBBVkVDIETD
-iUNBTlRFVVIgRVQgUE9NUEUgw4AgVklERSBVbmUgYm9ubmUgZMOpZ3VzdGF0aW9uIGV0IHVuZSBw
-YXJmYWl0ZSBjb25zZXJ2YXRpb24gZGUgdm9zIHZpbnMsIDE04oKsIGF1IGxpZXUgZGUgMjnigqwg
-ISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAy
-NzAyNTBkODk4Y2U2Yy9kaXNjb3VudC9kZXRhaWwvODA5LWNvZmZyZXQtdmluLWRlY2FudGV1ci1w
-b21wZS12aWRlXQpTZXVsZW1lbnQxNOKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
-bi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAyNTBkODk4Y2U2Yy9kaXNjb3VudC9kZXRhaWwvODA5
-LWNvZmZyZXQtdmluLWRlY2FudGV1ci1wb21wZS12aWRlXQoKW2h0dHA6Ly93d3cubG92aW5nZGVh
-bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvZGlzY291bnQv
-ZGV0YWlsLzgwOS1jb2ZmcmV0LXZpbi1kZWNhbnRldXItcG9tcGUtdmlkZV0KCgoKClZhbGV1cjE4
-JmV1cm87CVJlbWlzZTUwJQnDiWNvbm9taXNlejkmZXVybzsJRG9uczAuMjcmZXVybzsJCjQgQk9V
-Q0hPTlMgRU4gU0lMSUNPTkUgUE9VUiBCT1VURUlMTEVTIERFIFZJTiBFVCBDSEFNUEFHTkUgOiBD
-b25zZXJ2ZXogdm9zIGJvbm5lcyBib3V0ZWlsbGVzIGNvbW1lIGlsIHNlIGRvaXQsIDnigqwgYXUg
-bGlldSBkZSAxOOKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
-ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2RldGFpbC84NDItYm91Y2hvbnMt
-c2lsaWNvbmUtcGFzLWNoZXJdClNldWxlbWVudDnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMu
-ZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvZGlzY291bnQvZGV0
-YWlsLzg0Mi1ib3VjaG9ucy1zaWxpY29uZS1wYXMtY2hlcl0KCltodHRwOi8vd3d3LmxvdmluZ2Rl
-YWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50
-L2RldGFpbC84NDItYm91Y2hvbnMtc2lsaWNvbmUtcGFzLWNoZXJdCgoKClZhbGV1cjE0NyZldXJv
-OwlSZW1pc2U1NSUJw4ljb25vbWlzZXo4MSZldXJvOwlEb25zMS45OCZldXJvOwkKRUxFQ1RST05J
-QyBTS0lOIENMRUFOU0VSIDogTOKAmWFwcGFyZWlsIMOpbGVjdHJvbmlxdWUgcXVpIG5ldHRvaWUg
-dm90cmUgcGVhdSBlbiBwcm9mb25kZXVyIGV0IGx1aSByZWRvbm5lIGRlIGzigJnDqWNsYXQsIDY2
-4oKsIGF1IGxpZXUgZGUgMTQ34oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
-d3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MzctbmV0
-dG95YW50LWRlLXBlYXUtZWxlY3Ryb25pcXVlXQpTZXVsZW1lbnQ2NuKCrCBbaHR0cDovL3d3dy5s
-b3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAyNTBkODk4Y2U2Yy9k
-aXNjb3VudC9kZXRhaWwvODM3LW5ldHRveWFudC1kZS1wZWF1LWVsZWN0cm9uaXF1ZV0KCltodHRw
-Oi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS85MDI3MDI1MGQ4
-OThjZTZjL2Rpc2NvdW50L2RldGFpbC84MzctbmV0dG95YW50LWRlLXBlYXUtZWxlY3Ryb25pcXVl
-XQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
-d2F5LzkwMjcwMjUwZDg5OGNlNmMvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93
-d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNl
-NmMvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
-YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvYXNzb2NpYXRpb25zLWNh
-cml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZhbnRzCVN1cmZyaWRlciBGb3VuZGF0aW9u
-IEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUgd2Vic2l0ZSBbaHR0cDovL3d3dy5sb3Zp
-bmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvOTAyNzAyNTBkODk4Y2U2Yy92aWV3
-L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3
-c2xldHRlci9nYXRld2F5LzkwMjcwMjUwZDg5OGNlNmMvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVu
-JmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRo
-ZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJVCBpbmZyYXN0cnVjdHVyZSAK
-Y29udGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21lcnMsIGFwcGxpY2F0aW9uIHBl
-cmZvcm1hbmNlLCAKc2VjdXJpdHkgdGhyZWF0cywgZnJhdWR1bGVudCBhY3Rpdml0eSwgYW5kIG1v
-cmUuIFNwbHVuayB0YWtlcyB0aGlzIApkYXRhIGFuZCBtYWtlcyBzZW5zZSBvZiBpdC4gSVQgc2Vu
-c2UuIEFuZCBjb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc3BsdW5rLW5vdmQyZApf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
-Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
-bC1nZW5lcmFsCg==
+Hi Wayne,
+
+On Sat, Nov 26, 2011 at 09:13:31PM +0000, Wayne Tams wrote:
+> On Sat, Nov 26, 2011 at 5:08 PM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+> > On Fri, Nov 25, 2011 at 04:38:10PM +0000, Wayne Tams wrote:
+> >> I am needing some help understanding a kernel panic when I try to load
+> >> the at25 eeprom driver, I have traced it to the spi_async function in
+> >> drivers/spi/spi.c but I do not know where to go to from here. I have
+> >> found some similar issues in forum posts but threads never offer a
+> >> solution which has left me scratching my head. Perhaps I am missing
+> >> something in my kernel configuration?
+> >>
+> >> I am using the 2.6.35 kernel and mxc_spi driver for my i.Mx53
+> >> platform. The message returned from the kernel is as follows
+> >
+> > Since the mxc_spi is not in the mainline kernel, people here can't help you
+> > much. Try using the mainlined spi_imx driver (renamed to spi-imx since kenrel
+> > version 3.1).
+> 
+> Oh sorry, it didn't click that mxc_spi was not in the mainline. I
+> think I need to find out why this driver was favored over the spi-imx
+> driver? Hopefully whoever from Freescale that can answer that question
+> should hopefully help me get to the root of the problem.
+
+Just don't hold your breath while waiting for a response from Freescale.
+
+Note that a newer version of the Freescale i.MX BSP (based on 2.6.38) has 
+abandoned this driver entirely.
+
+baruch
+
+-- 
+                                                     ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+
+------------------------------------------------------------------------------
+All the data continuously generated in your IT infrastructure 
+contains a definitive record of customers, application performance, 
+security threats, fraudulent activity, and more. Splunk takes this 
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

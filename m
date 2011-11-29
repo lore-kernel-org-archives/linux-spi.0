@@ -1,20 +1,12 @@
-From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3] pxa2xx_spi: fix memory corruption
-Date: Tue, 29 Nov 2011 15:31:55 +0100
-Message-ID: <201111291531.56138.marek.vasut@gmail.com>
-References: <201107101609.31405.anarsoul@gmail.com>
-	<201107181056.51782.anarsoul@gmail.com>
-	<1322575504.7024.0.camel@anarsoul-laptop>
+From: 13435596414-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 原厂烟丝
+Date: Wed, 30 Nov 2011 00:54:09 +0800
+Message-ID: <E1RVQwY-0008Jb-9v@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1322575504.7024.0.camel@anarsoul-laptop>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,73 +17,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> On Mon, 2011-07-18 at 10:56 +0300, Vasily Khoruzhick wrote:
-> > On Friday 15 July 2011 05:53:31 Grant Likely wrote:
-> > > On Sun, Jul 10, 2011 at 06:18:19PM +0300, Vasily Khoruzhick wrote:
-> > > > pxa2xx_spi_probe allocates struct driver_data and null_dma_buf
-> > > > at same time via spi_alloc_master(), but then calculates
-> > > > null_dma_buf pointer incorrectly, and it causes memory corruption
-> > > > later if DMA usage is enabled.
-> > > > 
-> > > > Signed-off-by: Vasily Khoruzhick <anarsoul-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > > > ---
-> > > > v2: - add u8 __null_dma_buf[16] to the end of driver_data structure
-> > > > 
-> > > >     and use it as null_dma_buf after alignment.
-> > > >     - use PTR_ALIGN instead of ALIGN
-> > > > 
-> > > > v3: - drop (u8 *) cast, use & operator instead, change array name
-> > > > 
-> > > >  drivers/spi/pxa2xx_spi.c |    9 +++++----
-> > > >  1 files changed, 5 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/spi/pxa2xx_spi.c b/drivers/spi/pxa2xx_spi.c
-> > > > index dc25bee..b25fe27 100644
-> > > > --- a/drivers/spi/pxa2xx_spi.c
-> > > > +++ b/drivers/spi/pxa2xx_spi.c
-> > > > @@ -106,6 +106,7 @@ struct driver_data {
-> > > > 
-> > > >  	int rx_channel;
-> > > >  	int tx_channel;
-> > > >  	u32 *null_dma_buf;
-> > > > 
-> > > > +	u8 null_dma_buf_unaligned[16];
-> > > 
-> > > Don't dma buffers need to be cache-line aligned?
-> > 
-> > No, on PXA2xx they need to be 8-bytes aligned (according to PXA27x
-> > developer's manual)
-> > 
-> > > How large is the actual transfer?
-> > 
-> > Looks like 8 bytes, but I'm not sure, I'm not author of driver and did
-> > not dig deeply into its code. Just attempting to fix memory corruption.
-> > 
-> > > Using the __aligned() or __cacheline_aligned
-> > > attribute is the correct way to make sure you've got a data buffer
-> > > that can be used for DMA mixed with other stuff.  Then you don't need
-> > > to fool around with PTR_ALIGN or anything.
-> > 
-> > Errr, it can't be applied to struct field, right? But driver needs
-> > per-device null_dma_buf (there's 3 SPI controllers on PXA2xx)
-> > 
-> > > g.
-> > 
-> > Regards
-> > Vasily
-> 
-> So, any chance to see this patch merged?
-> 
-> Regards
-> Vasily
-
-I have no idea, were all problems addressed ?
-
-M
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
-data and makes sense of it. IT sense. And common sense.
-http://p.sf.net/sfu/splunk-novd2d
+Cr3w0rbJzNDQzqrE+szhuam4376rt8LV5s/j0cyjrMrK08O3ts6no7rX1LPpLsvNwPEuxfq3oi7B
+48rbLrmry74uvsawyS6+xrXqLrbEs6EuzfiwyS7T6cDWs6HL+bXIoaOjqaOou/W1vb/std20+srV
+v+6jqbXIuavGvb270tfGvcyoo6G/2rjQtLzP46OsvNu48cq1u92jrLK7ysfQ0LzSxNGx59XmIM6x
+oaMgICAgICAgICAgICAgICAgICAgICAKKNXm0cy909anLsS+utApILvGutfCpToxOTE2ICAgICAz
+NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a6
+18Klwv7M7NPOICAgIDM4MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijV5tHM
+vdPWpy7EvrrQKSDEz76pvsXO5dau1/AgICAgNDYw1KovzPUgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIAoo1ebRzL3T1qcuxL660Ckg1+rKr9y9yNjN9SAgICAgIDQ2MNSqL8z1ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC6zczsz8IgICAgICAgICAgNDYw
+1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKu8a618Klo6jC27XAo6kgMjgw1Kov
+zPUgICAgICAgICAgICAgu8a618Klo6jOyrXAo6kgMzIw1KovzPUgICAgICAgICAgICAKo6jUrbOn
+0czLv6OptfbT48yoICAgICAgICAgICAgICA0NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIAoo1K2zp9HMy78pIDMyOC4zMjnI7dbQu6ogICAgICAgIDI4MNSqL8z1ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgCijUrbOn0czLvykg07LW0LuqICAgICAgICAgICAgICAgMjYw
+1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKKNSts6fRzMu/KSC2rLPmz8Sy3SAg
+ICAgICAgICAgICAzNjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1K2zp9HM
+y78pIMjtvfDJs8vV0cwgICAgICAgICAgIDIwMNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCijUrbOn0czLvynT8c+qo6i+s73no6kgIDQ2MNSqL8z1ICAgIAoo1K2zp9HMy78pILvG
+3L3I2M31ICAgICAgICAgICAgIDE2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAK
+ILrsICC60yAgtcAgICAoxL660C7V5tHMvdPWpykgICAgMzYw1KovzPUgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a618Kl18+98CAgICAgIDMyMNSqL8z1ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgCsC2yO3cvcjYzfUgICAgICAgICAgICAgMjIw1Kov
+zPUgIMC207LcvcjYzfUgICAgICAgICAgICAgMTgw1KovzPXI7bvGutfCpcL+zOzQxyAgICAgICAg
+ICAgIDIwMNSqL8z1ICC7xrrXwqXV5Ma3ICAgICAgICAgICAgICAgICAgICAgIDIyMNSqL8z1ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgyO3TsiAg0/EgIM+qICAgICAgICAgMTMw1KovzPUg
+ICAgICAgICAgICAgICAgICDUxiAg0cwgo6jToc/zo6kgICAgICAzNjDUqi/M9SAgICAgICDI7SAg
+1MYgINHMICAgICAgICAxMzDUqi/M9SAgICAgICAgICC7xiDI7SDM7CDX0yAgICAgIDI2MNSqL8z1
+ICAgICAgICAgIAogtPMgINDcICDDqCAgICAgKNSts6fRzMu/KSAgICAgICAzMDDUqi/M9SAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAog09DQ6NKqwarPtaO6MTM0MzU1OTY0MTTQodXFLsLy
+0cy801FRo7oxMzU4ODUwMDUxILu2063QwsDPv827p8C0tefHosy4xPq6wwoKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCkFsbCB0aGUgZGF0YSBjb250aW51b3VzbHkgZ2VuZXJhdGVkIGluIHlvdXIgSVQg
+aW5mcmFzdHJ1Y3R1cmUgCmNvbnRhaW5zIGEgZGVmaW5pdGl2ZSByZWNvcmQgb2YgY3VzdG9tZXJz
+LCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSwgCnNlY3VyaXR5IHRocmVhdHMsIGZyYXVkdWxlbnQg
+YWN0aXZpdHksIGFuZCBtb3JlLiBTcGx1bmsgdGFrZXMgdGhpcyAKZGF0YSBhbmQgbWFrZXMgc2Vu
+c2Ugb2YgaXQuIElUIHNlbnNlLiBBbmQgY29tbW9uIHNlbnNlLgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L3NwbHVuay1ub3ZkMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

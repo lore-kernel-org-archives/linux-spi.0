@@ -1,11 +1,12 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: Parfums de marque / Tablette tactile / Bijoux
-Date: Thu, 1 Dec 2011 04:55:33 +0100
-Message-ID: <0376020bf57143d206b560d55bb6a47b@www.lovingdeals.fr>
+From: =?iso-8859-15?Q?Le_march=E9_de_no=EBl?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: Vos cadeaux de Noel jusqu'a -75% !
+Date: Thu, 1 Dec 2011 13:17:16 +0100 (CET)
+Message-ID: <3236305005.513372.1322741836537@p4enginex1.emv2.com>
+Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,121 +18,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2Ugbidlc3QgcGFzIHZvdHJlIHZpbGxlPyBNb2RpZmlleiB2b3MgcGFyYW3DqHRyZXMgaWNpIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIy
-YmY0ZmI3YTFjL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbiZhbXA7Y29kZT03ZGI4MDNlZTA3ZTA0
-MjgxXQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvMWU1MjAyMmJmNGZiN2ExYy9dCgoKCkwnT0ZGUkUgRFUgSk9VUjoJClBBUkZVTVMgRFVUWSBG
-UkVFIDogTGFuY8O0bWUsIExvbGl0YSBMZW1waWNrYSwgQXp6YXJvLCBHaXZlbmNoeS4uLiBWb3Mg
-cGFyZnVtcyBwcsOpZsOpcsOpcyBncsOiY2Ugw6AgdW4gYm9uIGQmIzAzOTthY2hhdCBkJiMwMzk7
-dW5lIHZhbGV1ciBkZSA3MOKCrCBwb3VyIDM14oKsCQoKCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
-cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9k
-ZXRhaWwvODgxLXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgozNeKC
-rApWYWxldXI6IDcw4oKsCcOJY29ub21pc2V6OiAzNeKCrAlEb25zOiAxLjA14oKsCQoKW2h0dHA6
-Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRm
-YjdhMWMvZGlzY291bnQvZGV0YWlsLzg4MS1wYXJmdW1zLWRlLW1hcnF1ZS1wYXMtY2hlcnMtbG92
-aW5nLWRlYWxzXQoKCgpVbiBib24gZOKAmWFjaGF0IGTigJl1bmUgdmFsZXVyIGRlIDcw4oKsIHBv
-dXIgMzXigqwgc2V1bGVtZW50IExlIHBhcmZ1bSBkZSB2b3RyZSBjaG9peCBwYXJtaSB1bmUgbGFy
-Z2Ugc8OpbGVjdGlvbiBkZSBwYXJmdW1zIGRlIGdyYW5kZXMgbWFycXVlc8KgOiBBenphcm8sIENh
-bHZpbiBLbGVpbiwgRGllc2VsLCBCdXJiZXJyeSwgTGFnYXJmZWxkLCBBZGlkYXMsIENlcnJ1dGkg
-ZXQgcGx1c8KgISBVbmUgYm9ubmUgaWTDqWUgY2FkZWF1IFtodHRwOi8vd3d3LmZhY2Vib29rLmNv
-bS9zaGFyZS5waHA/dT1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2RlYWxzLmZyJTJGZGlzY291bnQl
-MkZkZXRhaWwlMkY4ODEtcGFyZnVtcy1kZS1tYXJxdWUtcGFzLWNoZXJzLWxvdmluZy1kZWFsc10K
-W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIw
-MjJiZjRmYjdhMWMvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUzQSUyRiUyRnd3dy5sb3ZpbmdkZWFs
-cy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGODgxLXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVy
-cy1sb3ZpbmctZGVhbHMmYW1wO21lc3NhZ2U9UEFSRlVNUyBEVVRZIEZSRUUgOiBMYW5jw7RtZSwg
-TG9saXRhIExlbXBpY2thLCBBenphcm8sIEdpdmVuY2h5Li4uIFZvcyBwYXJmdW1zIHByw6lmw6ly
-w6lzIGdyw6JjZSDDoCB1biBib24gZCYjMDM5O2FjaGF0IGQmIzAzOTt1bmUgdmFsZXVyIGRlIDcw
-4oKsIHBvdXIgMzXigqxdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUg
-cGx1cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOp
-Y291dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVh
-bHMgb2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNl
-bnRhZ2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3Zpbmdk
-ZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3Vu
-dC9kZXRhaWwvODgxLXBhcmZ1bXMtZGUtbWFycXVlLXBhcy1jaGVycy1sb3ZpbmctZGVhbHNdCgoK
-CgoKCkVuY29yZSBwbHVzIGQnb2ZmcmVzICEJClZhbGV1cjI2NCZldXJvOwlSZW1pc2U2MiUJw4lj
-b25vbWlzZXoxNjUmZXVybzsJRG9uczIuOTcmZXVybzsJClRBQkxFVFRFIFRBQ1RJTEUgKyBDTEFW
-SUVSICsgUE9DSEVUVEUgOiBPZmZyZXotdm91cyB1biBvYmpldCBtdWx0aW3DqWRpYSB1dGlsZSBl
-dCBtb2Rlcm5lLCBldCBzZXMgYWNjZXNzb2lyZXMsIDk54oKsIGF1IGxpZXUgZGUgMjY04oKsIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIy
-YmY0ZmI3YTFjL2Rpc2NvdW50L2RldGFpbC84ODYtdGFibGV0dGUtdGFjdGlsZS1wb2NoZXR0ZS1j
-bGF2aWVyLWNhZGVhdS1ub2VsXQpTZXVsZW1lbnQ5OeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
-cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9k
-ZXRhaWwvODg2LXRhYmxldHRlLXRhY3RpbGUtcG9jaGV0dGUtY2xhdmllci1jYWRlYXUtbm9lbF0K
-CltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUy
-MDIyYmY0ZmI3YTFjL2Rpc2NvdW50L2RldGFpbC84ODYtdGFibGV0dGUtdGFjdGlsZS1wb2NoZXR0
-ZS1jbGF2aWVyLWNhZGVhdS1ub2VsXQoKCgpWYWxldXI0MCZldXJvOwlSZW1pc2U2MCUJw4ljb25v
-bWlzZXoyNCZldXJvOwlEb25zMC40OCZldXJvOwkKT1ZOSSBVRk8gTVlTVEVSWSA6IMOJcGF0ZXog
-dm9zIGFtaXMgZW4gZmFpc2FudCB2b2xlciBjZXR0ZSBzb3Vjb3VwZSB2b2xhbnRlIGdyw6JjZSDD
-oCB2b3Mgc3VwZXJwb3V2b2lycywgMiBVRk8gcG91ciAxNuKCrCBhdSBsaWV1IGRlIDQw4oKsICEg
-W2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIw
-MjJiZjRmYjdhMWMvZGlzY291bnQvZGV0YWlsLzg2My1vdm5pLXVmby1teXN0ZXJ5LXBhcy1jYWRl
-YXUtbm9lbF0KU2V1bGVtZW50MTbigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
-bmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMvZGlzY291bnQvZGV0YWlsLzg2My1v
-dm5pLXVmby1teXN0ZXJ5LXBhcy1jYWRlYXUtbm9lbF0KCltodHRwOi8vd3d3LmxvdmluZ2RlYWxz
-LmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIyYmY0ZmI3YTFjL2Rpc2NvdW50L2Rl
-dGFpbC84NjMtb3ZuaS11Zm8tbXlzdGVyeS1wYXMtY2FkZWF1LW5vZWxdCgoKCgpWYWxldXI1MCZl
-dXJvOwlSZW1pc2U2MiUJw4ljb25vbWlzZXozMSZldXJvOwlEb25zMC41NyZldXJvOwkKVk9ZQU5D
-RSBQQVIgVMOJTMOJUEhPTkUgOiBGYW1pbGxlLCBhbW91ciwgdHJhdmFpbOKApiBEw6ljb3V2cmV6
-IHZvdHJlIGF2ZW5pciBncsOiY2UgYXUgZG9uIGRlIEtyaXN0YSBLYXN0ZWxsYSwgMTnigqwgYXUg
-bGlldSBkZSA1MOKCrCAhIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0
-ZXIvZ2F0ZXdheS8xZTUyMDIyYmY0ZmI3YTFjL2Rpc2NvdW50L2RldGFpbC84NjQtdm95YW5jZS10
-ZWxlcGhvbmUta3Jpc3RhLWthc3RlbGxhLTIwMTItcGFzLWNoZXJdClNldWxlbWVudDE54oKsIFto
-dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIy
-YmY0ZmI3YTFjL2Rpc2NvdW50L2RldGFpbC84NjQtdm95YW5jZS10ZWxlcGhvbmUta3Jpc3RhLWth
-c3RlbGxhLTIwMTItcGFzLWNoZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
-ZXdzbGV0dGVyL2dhdGV3YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9kZXRhaWwvODY0LXZv
-eWFuY2UtdGVsZXBob25lLWtyaXN0YS1rYXN0ZWxsYS0yMDEyLXBhcy1jaGVyXQoKCgpWYWxldXI3
-NCZldXJvOwlSZW1pc2UzOSUJw4ljb25vbWlzZXoyOSZldXJvOwlEb25zMS4xNyZldXJvOwkKQ09M
-TElFUiDCqyBDQVNDQURFIERFIDQgUEVSTEVTIMK7IDogU3VibGltZXogdm90cmUgdGVudWUgZ3LD
-omNlIMOgIGNlIHNhdXRvaXIgZGUgNCBwZXJsZXMgcm91Z2VzIG91IG5vaXJlcywgNDXigqwgc2V1
-bGVtZW50IGF1IGxpZXUgZGUgNzTigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
-bmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMvZGlzY291bnQvZGV0YWlsLzg2Mi1j
-b2xsaWVyLXBlcmxlcy1iaWpvdS1saWxhLWxpY2VdClNldWxlbWVudDQ14oKsIFtodHRwOi8vd3d3
-LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIyYmY0ZmI3YTFj
-L2Rpc2NvdW50L2RldGFpbC84NjItY29sbGllci1wZXJsZXMtYmlqb3UtbGlsYS1saWNlXQoKW2h0
-dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJi
-ZjRmYjdhMWMvZGlzY291bnQvZGV0YWlsLzg2Mi1jb2xsaWVyLXBlcmxlcy1iaWpvdS1saWxhLWxp
-Y2VdCgoKCgpWYWxldXIzNSZldXJvOwlSZW1pc2U1NCUJw4ljb25vbWlzZXoxOSZldXJvOwlEb25z
-MC40OCZldXJvOwkKTEUgUEFSQVBMVUlFIEJPVVRFSUxMRSA6IFBhciB0ZW1wcyBwbHV2aWV1eCwg
-c29ydGV6IHZvdHJlIGpvbGkgcGFyYXBsdWllIG9yaWdpbmFsIGNhY2jDqSBkYW5zIHVuZSBib3V0
-ZWlsbGUsIDE24oKsIHNldWxlbWVudCBhdSBsaWV1IGRlIDM14oKsICEgW2h0dHA6Ly93d3cubG92
-aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMvZGlz
-Y291bnQvZGV0YWlsLzkwNy1wYXJhcGx1aWUtYm91dGVpbGxlLWNhZGVhdS1ub2VsXQpTZXVsZW1l
-bnQxNuKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9kZXRhaWwvOTA3LXBhcmFwbHVpZS1ib3V0ZWls
-bGUtY2FkZWF1LW5vZWxdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvMWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9kZXRhaWwvOTA3LXBhcmFwbHVp
-ZS1ib3V0ZWlsbGUtY2FkZWF1LW5vZWxdCgoKClZhbGV1cjY4MCZldXJvOwlSZW1pc2U1OSUJw4lj
-b25vbWlzZXo0MDEmZXVybzsJRG9uczguMzcmZXVybzsJCk1BVEVMQVMgw4AgTUVNT0lSRSBERSBG
-T1JNRSAxNDB4MTkweDIwY20gOiBEw6ljb3V2cmV6IHVuZSBub3V2ZWxsZSBtYW5pw6hyZSBkZSBk
-b3JtaXIgYXZlYyBEb3Jzb3JlbGF4LCAyNznigqwgc2V1bGVtZW50IGF1IGxpZXUgZGUgNjgw4oKs
-ICEgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFl
-NTIwMjJiZjRmYjdhMWMvZGlzY291bnQvZGV0YWlsLzg4Mi1tYXRlbGFzLW1lbW9pcmUtZGUtZm9y
-bWUtZG9yc29yZWxheC1wYXMtY2hlcl0KU2V1bGVtZW50Mjc54oKsIFtodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8xZTUyMDIyYmY0ZmI3YTFjL2Rpc2Nv
-dW50L2RldGFpbC84ODItbWF0ZWxhcy1tZW1vaXJlLWRlLWZvcm1lLWRvcnNvcmVsYXgtcGFzLWNo
-ZXJdCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkv
-MWU1MjAyMmJmNGZiN2ExYy9kaXNjb3VudC9kZXRhaWwvODgyLW1hdGVsYXMtbWVtb2lyZS1kZS1m
-b3JtZS1kb3Jzb3JlbGF4LXBhcy1jaGVyXQoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMu
-ZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMvYXNzb2NpYXRpb25z
-LWNhcml0YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRl
-ci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0
-dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJi
-ZjRmYjdhMWMvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KCgpMJ2FmYQlSw6p2ZXMgZCdlbmZh
-bnRzCVN1cmZyaWRlciBGb3VuZGF0aW9uIEV1cm9wZQkKCgoKCgoKU2hvdyBlbWFpbCBhdCB0aGUg
-d2Vic2l0ZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3
-YXkvMWU1MjAyMmJmNGZiN2ExYy92aWV3L10KfCBTZSBkw6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cu
-bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzFlNTIwMjJiZjRmYjdhMWMv
-dW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVuJmFtcDtjb2RlPTdkYjgwM2VlMDdlMDQyODFdCgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4g
-eW91ciBJVCBpbmZyYXN0cnVjdHVyZSAKY29udGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBj
-dXN0b21lcnMsIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLCAKc2VjdXJpdHkgdGhyZWF0cywgZnJh
-dWR1bGVudCBhY3Rpdml0eSwgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIApkYXRhIGFuZCBt
-YWtlcyBzZW5zZSBvZiBpdC4gSVQgc2Vuc2UuIEFuZCBjb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNm
-Lm5ldC9zZnUvc3BsdW5rLW5vdmQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+                       Trouvez le cadeau id=E9al pour No=EBl
+    Si vous ne parvenez pas =E0 lire cet e-mail, vous pouvez le visualiser =
+en
+                             cliquant sur ce lien.
+
+   Le march* de No*l
+
+      Linge           Sacs et                  Vente  Mobilier
+Femme   de   Enfant accessoires Homme Lingerie priv=E9e   d=E9co   Bijoux C=
+haussures
+      maison
+
+   [IMG]
+
+   happytime : 1 coffret achet* =3D 100* offerts
+
+   Delamaison.fr : 18* offerts avec le code AVENTNOEL2011
+
+   Misscoquines : 10* de r*duction * partir de 50* achat avec le code :
+   cestnoel
+
+   KAPORAL : -20%* avec le code NOEL2011 + livraison offerte
+
+   Nature & D*couverte : 5* de r*duction et frais de ports offerts * partir
+   de 79* d'achat avec le code : kdonoel
+
+   Vente Secret : 15* offerts * partir de 75* d'achats avec le code
+   SECRET2011
+
+   Fleurance Nature : de -45% * -70% sur vos cadeaux cosm*tique BIO avec le
+   code promo : NOEL
+
+   HP : La r*duction de No*l, 6% de r&eacuteduction + livraison offerte avec
+   le code promo : CESTNOELHP. hors produits en promotion
+
+   Tati : Les Prix givr*s, -40% sur les manteaux enfants
+
+   Cultura : 10% de r*duction * partir de 50* d'achat hors Livre grce au co=
+de
+   promo : 133E3FA4
+
+   Blancheporte : jusqu'* -75% + livraison gratuite d*s 29* avec le code
+   avantage : 699066
+
+   [IMG]
+
+       Conform=E9ment =E0 la Loi Informatique et Libert=E9s du 06/01/1978, =
+vous
+                disposez d?un droit d?acc=E8s, de rectification et
+       de suppression des donn=E9es vous concernant et d?opposition =E0 leur
+                                  traitement.
+
+          Si vous souhaitez vous d=E9sabonner, rendez-vous sur ce lien.
+---------------------------------------------------------------------------=
+---
+All the data continuously generated in your IT infrastructure =
+
+contains a definitive record of customers, application performance, =
+
+security threats, fraudulent activity, and more. Splunk takes this =
+
+data and makes sense of it. IT sense. And common sense.
+http://p.sf.net/sfu/splunk-novd2d

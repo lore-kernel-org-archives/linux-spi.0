@@ -1,18 +1,13 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/s3c64xx: Log error interrupts
-Date: Fri, 2 Dec 2011 19:43:32 +0530
-Message-ID: <CABb+yY0KBX9J+0zjkkU5O-NoiRNkZY1TrbPfc8ak65hWWSFwhQ@mail.gmail.com>
-References: <1322479918-7818-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<CACRpkdaKJk_NLisVUFihdyMi9fT5fQnOSWErxTUgd4nUcMm-CA@mail.gmail.com>
+From: Le Monde Du Bagage <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Vos_bagages_=E0_prix_exceptionnels?=
+Date: Sat, 3 Dec 2011 07:41:03 +0100 (CET)
+Message-ID: <3236305005.514877.1322894463693@p4enginex1.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Jassi Brar <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkdaKJk_NLisVUFihdyMi9fT5fQnOSWErxTUgd4nUcMm-CA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,38 +18,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 2, 2011 at 5:16 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Nov 28, 2011 at 12:31 PM, Mark Brown
-> <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->
->> Although the hardware supports interrupts we're not currently using them
->> at all since for small transfers the overhead is greater than that for
->> busy waiting and for large transfers we have interrupts from the DMA.
->> This means that if the hardware reports an error (especially one which
->> might not stall transfer) we might miss it.
->>
->> Take a first pass at dealing with such errors by enabling the interrupt
->> if we can and logging the errors if they happen. Ideally we'd report the
->> error via the affected transfer but since we're in master mode it's very
->> difficult to trigger errors at present and this code is much simpler.
->>
->> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
->
-> Looks good to me:
-> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
-> (Cc:ing Jassi so he doesn't miss this.)
->
-Linus, thanks for looping me in.
-Though due to my changed priorities, I wouldn't mind me being kept out
-of Samsung matters.
+    LMDB :: Du samedi 3 au vendredi 9 d=E9cembre 2011 : Soldes Flottants, T=
+op
+                                    D=E9part !
 
-Cheers,
--Jassi
+    Si vous ne pouvez pas visualiser ce message, consulter notre version en
+                                     ligne.
+   LMDB, toutes les grandes marques de bagage sur Internet : Pascal
+   Morabito, Torrente, Travel One, In=E8s de la Fressange
+   Soldes Flottants, Top d=E9part !
+   Exceptionnelle avant les vacances ! Du samedi 3 au vendredi 9 d=E9cembre,
+   des bagages de grandes marques =E0 prix mini
+   moins 70 pourcent sur tout et jusqu'=E0 - 80 pourcent
+   Soldes Flottants :: moins 70 pourcent sur tout et jusqu'=E0 - 80 pourcent
+   J'en profite imm=E9diatement
+   les avantages clients
 
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
+   Bruce Field       Pascal Morabito       Platinium      Corinne Cobson
+
+   Ines de la Fressange TravelOne     Torrente Couture    Free     Rodier
+
+   Sp=E9cialiste depuis 15 ans dans l'accueil et la gestion des bagages des
+        Clients "La Premi=E8re" et des classes "Affaires" d'Air France.
+    Cr=E9e par S=E9bastien Vogel, le site Internet permet aux Clients "Haute
+     Contribution" de retrouver leurs services d'une mani=E8re permanente.
+   Nous avons comme fournisseurs les meilleurs fabricants de valises. Nous
+   vous proposons des bagages de tr=E8s haute qualit=E9, con=E7us pour de g=
+rands
+      cr=E9ateurs comme Torrente, Pascal Morabito, In=E8s de La Fressange,
+        Corinne Cobson, Bruce Field, Free, et plus r=E9cemment Rodier.
+
+                               Nos engagements
+
+    La livraison offerte par colissimo suivi, garantie sous 72h en France
+                 m=E9tropolitaine et ce sans minimum d'achat.
+
+    1er site de bagagerie =E0 vous offrir la garantie de vos bagages sur un
+                            voyage aller-retour.
+
+    Satisfait ou rembours=E9, vous disposez de 15 jours pour retourner les
+                                  articles.
+
+   Ensemble de 3 valises rigides - Ensemble de 2 valises rigides - Valises
+   rigides - Ensemble de 3 valises souples - Ensemble de 2 valises souples
+     - Valises Souples - Sacs =E0 Roulettes - Sacs Cabine - Vanity Case -
+   Porte-habits =E0 Roulettes - Trousses de Toilette - Cadenas et Sangles -
+                      Poussettes de March=E9 - Business.
+    Vous recevez cet email de la part de Affilibaz. Vous avez la possibilit=
+=E9
+   de vous retirer de notre liste d'envoi de mails par l'intermediaire de ce
+            raccourci. Affilibaz - 42 Rue de l'Aqueduc, 75010 Paris
+---------------------------------------------------------------------------=
+---
+All the data continuously generated in your IT infrastructure =
+
+contains a definitive record of customers, application performance, =
+
+security threats, fraudulent activity, and more. Splunk takes this =
+
 data and makes sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-novd2d

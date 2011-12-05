@@ -1,153 +1,80 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 1/3] spi/s3c64xx: Log error interrupts
-Date: Mon,  5 Dec 2011 21:01:01 +0000
-Message-ID: <1323118863-19890-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: spi-devel-general@lists.sourceforge.net,
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 2/2] spi/s3c64xx: Implement runtime PM support
+Date: Mon, 5 Dec 2011 22:41:21 +0100
+Message-ID: <CACRpkdYPdV2_Hr8hO_CAhZ=MvqcBiNdgwySbATcPSfwFRvkARg@mail.gmail.com>
+References: <1323103813-5325-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+	<1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
 	linux-samsung-soc@vger.kernel.org,
-	patches@opensource.wolfsonmicro.com,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>
+	Magnus Damm <magnus.damm@gmail.com>
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Although the hardware supports interrupts we're not currently using them
-at all since for small transfers the overhead is greater than that for
-busy waiting and for large transfers we have interrupts from the DMA.
-This means that if the hardware reports an error (especially one which
-might not stall transfer) we might miss it.
+On Mon, Dec 5, 2011 at 5:50 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
 
-Take a first pass at dealing with such errors by enabling the interrupt
-if we can and logging the errors if they happen. Ideally we'd report the
-error via the affected transfer but since we're in master mode it's very
-difficult to trigger errors at present and this code is much simpler.
+> Enable and disable the clocks to the SPI controller using runtime PM.=
+ This
+> serves the dual purpose of reducing power consumption a little and le=
+tting
+> the core know when the device is idle.
+(...)
+> +#ifdef CONFIG_PM_RUNTIME
+> +static int s3c64xx_spi_runtime_suspend(struct device *dev)
+> +{
+> + =A0 =A0 =A0 struct spi_master *master =3D spi_master_get(dev_get_dr=
+vdata(dev));
+> + =A0 =A0 =A0 struct s3c64xx_spi_driver_data *sdd =3D spi_master_get_=
+devdata(master);
+> +
+> + =A0 =A0 =A0 clk_disable(sdd->clk);
+> + =A0 =A0 =A0 clk_disable(sdd->src_clk);
+> +
+> + =A0 =A0 =A0 return 0;
+> +}
+> +
+> +static int s3c64xx_spi_runtime_resume(struct device *dev)
+> +{
+> + =A0 =A0 =A0 struct spi_master *master =3D spi_master_get(dev_get_dr=
+vdata(dev));
+> + =A0 =A0 =A0 struct s3c64xx_spi_driver_data *sdd =3D spi_master_get_=
+devdata(master);
+> +
+> + =A0 =A0 =A0 clk_enable(sdd->src_clk);
+> + =A0 =A0 =A0 clk_enable(sdd->clk);
+> +
+> + =A0 =A0 =A0 return 0;
+> +}
+> +#endif /* CONFIG_PM_RUNTIME */
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/spi/spi-s3c64xx.c |   56 +++++++++++++++++++++++++++++++++++++++++++-
- 1 files changed, 54 insertions(+), 2 deletions(-)
+This is similar to how I'm doing things in my drivers so this looks
+good to me, Acked-by.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index dcf7e10..9b16406 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -20,6 +20,7 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/workqueue.h>
-+#include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
-@@ -153,6 +154,7 @@ struct s3c64xx_spi_dma_data {
-  * @tx_dmach: Controller's DMA channel for Tx.
-  * @sfr_start: BUS address of SPI controller regs.
-  * @regs: Pointer to ioremap'ed controller registers.
-+ * @irq: interrupt
-  * @xfer_completion: To indicate completion of xfer task.
-  * @cur_mode: Stores the active configuration of the controller.
-  * @cur_bpw: Stores the active bits per word settings.
-@@ -930,6 +932,33 @@ setup_exit:
- 	return err;
- }
- 
-+static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = data;
-+	struct spi_master *spi = sdd->master;
-+	unsigned int val;
-+
-+	val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
-+
-+	val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
-+		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
-+		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
-+		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
-+
-+	writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
-+
-+	if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
-+		dev_err(&spi->dev, "RX overrun\n");
-+	if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
-+		dev_err(&spi->dev, "RX underrun\n");
-+	if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
-+		dev_err(&spi->dev, "TX overrun\n");
-+	if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
-+		dev_err(&spi->dev, "TX underrun\n");
-+
-+	return IRQ_HANDLED;
-+}
-+
- static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- {
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-@@ -970,7 +999,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct s3c64xx_spi_info *sci;
- 	struct spi_master *master;
--	int ret;
-+	int ret, irq;
- 	char clk_name[16];
- 
- 	if (pdev->id < 0) {
-@@ -1006,6 +1035,12 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 		return -ENXIO;
- 	}
- 
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
-+		return irq;
-+	}
-+
- 	master = spi_alloc_master(&pdev->dev,
- 				sizeof(struct s3c64xx_spi_driver_data));
- 	if (master == NULL) {
-@@ -1100,10 +1135,21 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	INIT_WORK(&sdd->work, s3c64xx_spi_work);
- 	INIT_LIST_HEAD(&sdd->queue);
- 
-+	ret = request_irq(irq, s3c64xx_spi_irq, 0, "spi-s3c64xx", sdd);
-+	if (ret != 0) {
-+		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
-+			irq, ret);
-+		goto err8;
-+	}
-+
-+	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
-+	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
-+	       sdd->regs + S3C64XX_SPI_INT_EN);
-+
- 	if (spi_register_master(master)) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		ret = -EBUSY;
--		goto err8;
-+		goto err9;
- 	}
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d "
-@@ -1115,6 +1161,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
-+err9:
-+	free_irq(irq, sdd);
- err8:
- 	destroy_workqueue(sdd->workqueue);
- err7:
-@@ -1153,6 +1201,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_master(master);
- 
-+	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
-+
-+	free_irq(platform_get_irq(pdev, 0), sdd);
-+
- 	destroy_workqueue(sdd->workqueue);
- 
- 	clk_disable(sdd->src_clk);
--- 
-1.7.7.3
+Just wanted to mention that I had this discussion with Magnus Damm
+about how they do this in shmobile: in there their central runtime PM
+policy in arch/arm/mach-shmobile/pm_runtime.c adds in the
+pm_clk_notifier from drivers/base/power/clock_ops.c to gate/ungate
+the clocks centrally acting on bus notifiers without any per-driver
+hooks like these.
+
+I clearly see that in this platform it's *not* going to work since
+for this one driver atleast, there are two clocks, not just one,
+that need to be managed for the device.
+
+So I guess that some platforms will do central clock
+management and some will do driver-local management.
+
+I fear for the day one of these devices turn up in two platforms:
+one using central clock management and one using
+distributed clock management ...
+
+Yours,
+Linus Walleij

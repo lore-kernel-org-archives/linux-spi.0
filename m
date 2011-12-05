@@ -1,8 +1,7 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 3/3] spi/s3c64xx: Implement runtime PM support
-Date: Mon,  5 Dec 2011 21:01:03 +0000
-Message-ID: <1323118863-19890-3-git-send-email-broonie@opensource.wolfsonmicro.com>
-References: <1323118863-19890-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 1/3] spi/s3c64xx: Log error interrupts
+Date: Mon,  5 Dec 2011 21:01:01 +0000
+Message-ID: <1323118863-19890-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Cc: spi-devel-general@lists.sourceforge.net,
 	linux-samsung-soc@vger.kernel.org,
 	patches@opensource.wolfsonmicro.com,
@@ -11,119 +10,144 @@ To: Linus Walleij <linus.walleij@linaro.org>,
 	Kukjin Kim <kgene.kim@samsung.com>,
 	Grant Likely <grant.likely@secretlab.ca>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1323118863-19890-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable and disable the clocks to the SPI controller using runtime PM. This
-serves the dual purpose of reducing power consumption a little and letting
-the core know when the device is idle.
+Although the hardware supports interrupts we're not currently using them
+at all since for small transfers the overhead is greater than that for
+busy waiting and for large transfers we have interrupts from the DMA.
+This means that if the hardware reports an error (especially one which
+might not stall transfer) we might miss it.
+
+Take a first pass at dealing with such errors by enabling the interrupt
+if we can and logging the errors if they happen. Ideally we'd report the
+error via the affected transfer but since we're in master mode it's very
+difficult to trigger errors at present and this code is much simpler.
 
 Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 39 insertions(+), 0 deletions(-)
+ drivers/spi/spi-s3c64xx.c |   56 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 54 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index d0c70f2..b899af66 100644
+index dcf7e10..9b16406 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -25,6 +25,7 @@
+@@ -20,6 +20,7 @@
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/workqueue.h>
++#include <linux/interrupt.h>
+ #include <linux/delay.h>
  #include <linux/clk.h>
  #include <linux/dma-mapping.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- 
- #include <mach/dma.h>
-@@ -782,6 +783,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
- 	while (!acquire_dma(sdd))
- 		msleep(10);
- 
-+	pm_runtime_get_sync(&sdd->pdev->dev);
-+
- 	spin_lock_irqsave(&sdd->lock, flags);
- 
- 	while (!list_empty(&sdd->queue)
-@@ -810,6 +813,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
- 	/* Free DMA channels */
- 	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
- 	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
-+
-+	pm_runtime_put(&sdd->pdev->dev);
+@@ -153,6 +154,7 @@ struct s3c64xx_spi_dma_data {
+  * @tx_dmach: Controller's DMA channel for Tx.
+  * @sfr_start: BUS address of SPI controller regs.
+  * @regs: Pointer to ioremap'ed controller registers.
++ * @irq: interrupt
+  * @xfer_completion: To indicate completion of xfer task.
+  * @cur_mode: Stores the active configuration of the controller.
+  * @cur_bpw: Stores the active bits per word settings.
+@@ -930,6 +932,33 @@ setup_exit:
+ 	return err;
  }
  
- static int s3c64xx_spi_transfer(struct spi_device *spi,
-@@ -892,6 +897,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 		goto setup_exit;
++static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
++{
++	struct s3c64xx_spi_driver_data *sdd = data;
++	struct spi_master *spi = sdd->master;
++	unsigned int val;
++
++	val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
++
++	val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
++		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
++		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
++		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
++
++	writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
++
++	if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
++		dev_err(&spi->dev, "RX overrun\n");
++	if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
++		dev_err(&spi->dev, "RX underrun\n");
++	if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
++		dev_err(&spi->dev, "TX overrun\n");
++	if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
++		dev_err(&spi->dev, "TX underrun\n");
++
++	return IRQ_HANDLED;
++}
++
+ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+ {
+ 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+@@ -970,7 +999,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 	struct s3c64xx_spi_driver_data *sdd;
+ 	struct s3c64xx_spi_info *sci;
+ 	struct spi_master *master;
+-	int ret;
++	int ret, irq;
+ 	char clk_name[16];
+ 
+ 	if (pdev->id < 0) {
+@@ -1006,6 +1035,12 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 		return -ENXIO;
  	}
  
-+	pm_runtime_get_sync(&sdd->pdev->dev);
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
++		return irq;
++	}
 +
- 	/* Check if we can provide the requested rate */
- 	if (!sci->clk_from_cmu) {
- 		u32 psr, speed;
-@@ -924,6 +931,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 			err = -EINVAL;
+ 	master = spi_alloc_master(&pdev->dev,
+ 				sizeof(struct s3c64xx_spi_driver_data));
+ 	if (master == NULL) {
+@@ -1100,10 +1135,21 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 	INIT_WORK(&sdd->work, s3c64xx_spi_work);
+ 	INIT_LIST_HEAD(&sdd->queue);
+ 
++	ret = request_irq(irq, s3c64xx_spi_irq, 0, "spi-s3c64xx", sdd);
++	if (ret != 0) {
++		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
++			irq, ret);
++		goto err8;
++	}
++
++	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
++	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
++	       sdd->regs + S3C64XX_SPI_INT_EN);
++
+ 	if (spi_register_master(master)) {
+ 		dev_err(&pdev->dev, "cannot register SPI master\n");
+ 		ret = -EBUSY;
+-		goto err8;
++		goto err9;
  	}
  
-+	pm_runtime_put(&sdd->pdev->dev);
-+
- setup_exit:
+ 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d "
+@@ -1115,6 +1161,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
  
- 	/* setup() returns with device de-selected */
-@@ -1159,6 +1168,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 					mem_res->end, mem_res->start,
- 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
- 
-+	pm_runtime_enable(&pdev->dev);
-+
  	return 0;
  
- err9:
-@@ -1192,6 +1203,8 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 	struct resource	*mem_res;
- 	unsigned long flags;
++err9:
++	free_irq(irq, sdd);
+ err8:
+ 	destroy_workqueue(sdd->workqueue);
+ err7:
+@@ -1153,6 +1201,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
  
-+	pm_runtime_disable(&pdev->dev);
-+
- 	spin_lock_irqsave(&sdd->lock, flags);
- 	sdd->state |= SUSPND;
- 	spin_unlock_irqrestore(&sdd->lock, flags);
-@@ -1272,8 +1285,34 @@ static int s3c64xx_spi_resume(struct device *dev)
- }
- #endif /* CONFIG_PM */
+ 	spi_unregister_master(master);
  
-+#ifdef CONFIG_PM_RUNTIME
-+static int s3c64xx_spi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
++	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
 +
-+	clk_disable(sdd->clk);
-+	clk_disable(sdd->src_clk);
++	free_irq(platform_get_irq(pdev, 0), sdd);
 +
-+	return 0;
-+}
-+
-+static int s3c64xx_spi_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-+
-+	clk_enable(sdd->src_clk);
-+	clk_enable(sdd->clk);
-+
-+	return 0;
-+}
-+#endif /* CONFIG_PM_RUNTIME */
-+
- static const struct dev_pm_ops s3c64xx_spi_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
-+	SET_RUNTIME_PM_OPS(s3c64xx_spi_runtime_suspend,
-+			   s3c64xx_spi_runtime_resume, NULL)
- };
+ 	destroy_workqueue(sdd->workqueue);
  
- static struct platform_driver s3c64xx_spi_driver = {
+ 	clk_disable(sdd->src_clk);
 -- 
 1.7.7.3

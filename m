@@ -1,14 +1,12 @@
-From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: use gpio_request_one() instead of spi_gpio_alloc()
-	helper function
-Date: Mon, 05 Dec 2011 15:50:47 +0800
-Message-ID: <1323071447.20963.3.camel@phoenix>
+From: Le Monde Du Bagage <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Vos_bagages_=E0_prix_exceptionnels?=
+Date: Mon, 5 Dec 2011 10:03:41 +0100 (CET)
+Message-ID: <3236305005.523437.1323075821586@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,73 +18,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+    LMDB :: Du samedi 3 au vendredi 9 d=E9cembre 2011 : Soldes Flottants, T=
+op
+                                    D=E9part !
+
+    Si vous ne pouvez pas visualiser ce message, consulter notre version en
+                                     ligne.
+   LMDB, toutes les grandes marques de bagage sur Internet : Pascal
+   Morabito, Torrente, Travel One, In=E8s de la Fressange
+   Soldes Flottants, Top d=E9part !
+   Exceptionnelle avant les vacances ! Du samedi 3 au vendredi 9 d=E9cembre,
+   des bagages de grandes marques =E0 prix mini
+   moins 70 pourcent sur tout et jusqu'=E0 - 80 pourcent
+   Soldes Flottants :: moins 70 pourcent sur tout et jusqu'=E0 - 80 pourcent
+   J'en profite imm=E9diatement
+   les avantages clients
+
+   Bruce Field       Pascal Morabito       Platinium      Corinne Cobson
+
+   Ines de la Fressange TravelOne     Torrente Couture    Free     Rodier
+
+   Sp=E9cialiste depuis 15 ans dans l'accueil et la gestion des bagages des
+        Clients "La Premi=E8re" et des classes "Affaires" d'Air France.
+    Cr=E9e par S=E9bastien Vogel, le site Internet permet aux Clients "Haute
+     Contribution" de retrouver leurs services d'une mani=E8re permanente.
+   Nous avons comme fournisseurs les meilleurs fabricants de valises. Nous
+   vous proposons des bagages de tr=E8s haute qualit=E9, con=E7us pour de g=
+rands
+      cr=E9ateurs comme Torrente, Pascal Morabito, In=E8s de La Fressange,
+        Corinne Cobson, Bruce Field, Free, et plus r=E9cemment Rodier.
+
+                               Nos engagements
+
+    La livraison offerte par colissimo suivi, garantie sous 72h en France
+                 m=E9tropolitaine et ce sans minimum d'achat.
+
+    1er site de bagagerie =E0 vous offrir la garantie de vos bagages sur un
+                            voyage aller-retour.
+
+    Satisfait ou rembours=E9, vous disposez de 15 jours pour retourner les
+                                  articles.
+
+   Ensemble de 3 valises rigides - Ensemble de 2 valises rigides - Valises
+   rigides - Ensemble de 3 valises souples - Ensemble de 2 valises souples
+     - Valises Souples - Sacs =E0 Roulettes - Sacs Cabine - Vanity Case -
+   Porte-habits =E0 Roulettes - Trousses de Toilette - Cadenas et Sangles -
+                      Poussettes de March=E9 - Business.
+    Vous recevez cet email de la part de Affilibaz. Vous avez la possibilit=
+=E9
+   de vous retirer de notre liste d'envoi de mails par l'intermediaire de ce
+            raccourci. Affilibaz - 42 Rue de l'Aqueduc, 75010 Paris
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-gpio.c |   21 ++++-----------------
- 1 files changed, 4 insertions(+), 17 deletions(-)
+All the data continuously generated in your IT infrastructure =
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index e093d3e..85c2eca 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -256,20 +256,6 @@ static void spi_gpio_cleanup(struct spi_device *spi)
- 	spi_bitbang_cleanup(spi);
- }
- 
--static int __init spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
--{
--	int value;
--
--	value = gpio_request(pin, label);
--	if (value == 0) {
--		if (is_in)
--			value = gpio_direction_input(pin);
--		else
--			value = gpio_direction_output(pin, 0);
--	}
--	return value;
--}
--
- static int __init
- spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
- 	u16 *res_flags)
-@@ -279,7 +265,8 @@ spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
- 	/* NOTE:  SPI_*_GPIO symbols may reference "pdata" */
- 
- 	if (SPI_MOSI_GPIO != SPI_GPIO_NO_MOSI) {
--		value = spi_gpio_alloc(SPI_MOSI_GPIO, label, false);
-+		value = gpio_request_one(SPI_MOSI_GPIO, GPIOF_OUT_INIT_LOW,
-+					 label);
- 		if (value)
- 			goto done;
- 	} else {
-@@ -288,7 +275,7 @@ spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
- 	}
- 
- 	if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO) {
--		value = spi_gpio_alloc(SPI_MISO_GPIO, label, true);
-+		value = gpio_request_one(SPI_MISO_GPIO, GPIOF_IN, label);
- 		if (value)
- 			goto free_mosi;
- 	} else {
-@@ -296,7 +283,7 @@ spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
- 		*res_flags |= SPI_MASTER_NO_RX;
- 	}
- 
--	value = spi_gpio_alloc(SPI_SCK_GPIO, label, false);
-+	value = gpio_request_one(SPI_SCK_GPIO, GPIOF_OUT_INIT_LOW, label);
- 	if (value)
- 		goto free_miso;
- 
--- 
-1.7.5.4
+contains a definitive record of customers, application performance, =
 
+security threats, fraudulent activity, and more. Splunk takes this =
 
-
-
-------------------------------------------------------------------------------
-All the data continuously generated in your IT infrastructure 
-contains a definitive record of customers, application performance, 
-security threats, fraudulent activity, and more. Splunk takes this 
 data and makes sense of it. IT sense. And common sense.
 http://p.sf.net/sfu/splunk-novd2d

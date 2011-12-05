@@ -1,127 +1,60 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 2/2] spi/s3c64xx: Implement runtime PM support
-Date: Mon,  5 Dec 2011 16:50:13 +0000
-Message-ID: <1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com>
-References: <1323103813-5325-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1323103813-5325-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: =?utf-8?B?SW50ZWdyYXRpdmUgTWVkaWNpbmUgQ29uZmVyZW5jZQ==?=
+	<paragon-7e3lAeKKTbWZuzBka8ofvg@public.gmane.org>
+Subject: =?utf-8?B?MyBSZWFzb25zIHdoeSB5b3Ugc2hvdWxkIGF0dGVuZA==?=
+Date: 5 Dec 2011 21:46:34 +0200
+Message-ID: <E1RXeTV-0008HI-I8@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: integrativemed2012-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable and disable the clocks to the SPI controller using runtime PM. This
-serves the dual purpose of reducing power consumption a little and letting
-the core know when the device is idle.
-
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
----
- drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 39 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index fef1c90..9031783 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -25,6 +25,7 @@
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
- 
- #include <mach/dma.h>
-@@ -782,6 +783,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
- 	while (!acquire_dma(sdd))
- 		msleep(10);
- 
-+	pm_runtime_get_sync(&sdd->pdev->dev);
-+
- 	spin_lock_irqsave(&sdd->lock, flags);
- 
- 	while (!list_empty(&sdd->queue)
-@@ -810,6 +813,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
- 	/* Free DMA channels */
- 	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
- 	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
-+
-+	pm_runtime_put(&sdd->pdev->dev);
- }
- 
- static int s3c64xx_spi_transfer(struct spi_device *spi,
-@@ -892,6 +897,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 		goto setup_exit;
- 	}
- 
-+	pm_runtime_get_sync(&sdd->pdev->dev);
-+
- 	/* Check if we can provide the requested rate */
- 	if (!sci->clk_from_cmu) {
- 		u32 psr, speed;
-@@ -924,6 +931,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 			err = -EINVAL;
- 	}
- 
-+	pm_runtime_put(&sdd->pdev->dev);
-+
- setup_exit:
- 
- 	/* setup() returns with device de-selected */
-@@ -1159,6 +1168,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 					mem_res->end, mem_res->start,
- 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
- 
-+	pm_runtime_enable(&pdev->dev);
-+
- 	return 0;
- 
- err9:
-@@ -1192,6 +1203,8 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 	struct resource	*mem_res;
- 	unsigned long flags;
- 
-+	pm_runtime_disable(&pdev->dev);
-+
- 	spin_lock_irqsave(&sdd->lock, flags);
- 	sdd->state |= SUSPND;
- 	spin_unlock_irqrestore(&sdd->lock, flags);
-@@ -1272,8 +1285,34 @@ static int s3c64xx_spi_resume(struct device *dev)
- }
- #endif /* CONFIG_PM */
- 
-+#ifdef CONFIG_PM_RUNTIME
-+static int s3c64xx_spi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-+
-+	clk_disable(sdd->clk);
-+	clk_disable(sdd->src_clk);
-+
-+	return 0;
-+}
-+
-+static int s3c64xx_spi_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-+
-+	clk_enable(sdd->src_clk);
-+	clk_enable(sdd->clk);
-+
-+	return 0;
-+}
-+#endif /* CONFIG_PM_RUNTIME */
-+
- static struct dev_pm_ops s3c64xx_spi_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
-+	SET_RUNTIME_PM_OPS(s3c64xx_spi_runtime_suspend,
-+			   s3c64xx_spi_runtime_resume, NULL)
- };
- 
- static struct platform_driver s3c64xx_spi_driver = {
--- 
-1.7.7.3
+DQpJZiB5b3UgaGF2ZSB0cm91YmxlIHJlYWRpbmcgdGhpcyBuZXdzbGV0dGVyLCB2aWV3IHRoZSB3
+ZWIgdmVyc2lvbiBoZXJlDQoNCmh0dHA6Ly9pdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmls
+L3IuYXNoeD9oPWh0dHAlM2ElMmYlMmZpdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmlsJTJm
+c2VuZGluZyUyZndlYnBhZ2UuYXNweCUzZmQlM2QxMDI1NzA5MzU3OTk5NjczNDk4NzY0ODA2NTcz
+OTI3OTYzMzM4MCUyNnclM2QxJTI2YXIlM2QwJTI2aXNEZSUzZFRydWUlMjZyZmwlM2RGYWxzZSUy
+NnBsJTNkMSUyNmwlM2QxMTY2MTI3JTI2c2xsJTNkMiUyNm1sdCUzZFRydWUmbD0xMTY2MTI3JmQ9
+MTAyNTcwOTM1Nzk5OTY3MzQ5ODc2NDgwNjU3MzkyNzk2MzMzODBUaGUgSmVydXNhbGVtIEludGVy
+bmF0aW9uYWwgQ29uZmVyZW5jZSBvbkludGVncmF0aXZlIE1lZGljaW5lTWF5IDEzLTE1LCAyMDEy
+LCBKZXJ1c2FsZW1SZWdpc3RyYXRpb24gUGFja2FnZXNBYnN0cmFjdCBTdWJtaXNzaW9uQ29uZmVy
+ZW5jZSBUb3BpY3NGaWVsZHMgb2YgSW50ZXJlc3RTY2llbnRpZmljIGNvbW1pdHRlZUdlcm1hbkZy
+YW5jaEVuZ2xpc2hUaGUgY29uZmVyZW5jZSB3aWxsIGZvY3VzIG9uIHZhcmlvdXMgZmllbGRzIG9m
+IEludGVncmF0aXZlIE1lZGljaW5lwqBzdWNoIGFzOiBDb21wbGVtZW50YXJ5IGFuZCBBbHRlcm5h
+dGl2ZSBNZWRpY2luZSzCoE5hdHVyb3BhdGh5LCBDaGlyb3ByYWN0aWMgTWVkaWNpbmUsIEhlcmJh
+bGlzbSwgVHJhZGl0aW9uYWwgQ2hpbmVzZSBNZWRpY2luZSBhbmQgbW9yZTMgcmVhc29ucyB3aHkg
+DQp5b3Ugc2hvdWxkIGpvaW4gdXMgYW5kIHBhcnRpY2lwYXRlIGluIHRoZSBKZXJ1c2FsZW0gDQpJ
+bnRlcm5hdGlvbmFsIENvbmZlcmVuY2Ugb24gSW50ZWdyYXRpdmUgTWVkaWNpbmU6VGFrZSBhbiBh
+Y3RpdmUgcGFydCBpbiBkZXZlbG9waW5nIHRoZSBmdXR1cmUgb2YgDQpJbnRlZ3JhdGl2ZSBNZWRp
+Y2luZU1lZXQgaHVuZHJlZHMgb2YgZXhwZXJ0IGZyb20gYWxsIG92ZXIgdGhlIHdvcmxkIEVuam95
+IEplcnVzYWxlbSBpbiB0aGUgU3ByaW5nIC0NCmFuIGFtYXppbmcgYW5jaWVudCBjaXR5IHdpdGgg
+YmVhdXRpZnVsIGhpc3RvcmljIHNpdGVzUGxlYXNlIHZpc2l0IHRoZSBjb25mZXJlbmNlIHdlYiBz
+aXRlIGFuZCByZWdpc3RlcmVkIHRvZGF5UmVnaXN0ZXIgTm93Q2FsbCBmb3IgQWJzdHJhY3RXZSB3
+YXJtbHkgaW52aXRlIHlvdSB0byBzdWJtaXQgeW91ciBhYnN0cmFjdCBmb3IgdGhlIGNvbmZlcmVu
+Y2UgZm9yIE9yYWwsIFBvc3RlciBvciBXb3Jrc2hvcCBwcmVzZW50YXRpb24uQWJzdHJhY3QgbWF5
+IGJlIHN1Ym1pdHRlZCBmb3IgYW55IHRvcGljIHJlbGV2YW50IHRvIGFueSBpbnRlZ3JhdGl2ZSBt
+ZWRpY2luZSBmaWVsZC5DbGljayBoZXJlwqBmb3IgYWJzdHJhY3Qgc3VibWlzc2lvbiBkZXRhaWxz
+IGFuZCBvbmxpbmUgc3lzdGVtIHd3dy5tZWRpY29udmVudGlvbi5jb21Db25ncmVzcyBTZWNyZXRh
+cmlhdDogUGFyYWdvbi1Db252ZW50aW9ucyANCklmIHlvdSBwcmVmZXIgbm90IHRvIHJlY2VpdmUg
+ZnV0dXJlIGVtYWlsIGNvbW11bmljYXRpb25zIGZyb20gdXMsIHBsZWFzZSB1bnN1YnNjcmliZSBo
+ZXJlVGhpcyBuZXdzbGV0dGVyIHdhcyBzZW50IHVzaW5nIElUbmV3c2xldHRlcgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KQWxsIHRoZSBkYXRhIGNvbnRpbnVvdXNseSBnZW5lcmF0ZWQgaW4geW91ciBJ
+VCBpbmZyYXN0cnVjdHVyZSAKY29udGFpbnMgYSBkZWZpbml0aXZlIHJlY29yZCBvZiBjdXN0b21l
+cnMsIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLCAKc2VjdXJpdHkgdGhyZWF0cywgZnJhdWR1bGVu
+dCBhY3Rpdml0eSwgYW5kIG1vcmUuIFNwbHVuayB0YWtlcyB0aGlzIApkYXRhIGFuZCBtYWtlcyBz
+ZW5zZSBvZiBpdC4gSVQgc2Vuc2UuIEFuZCBjb21tb24gc2Vuc2UuCmh0dHA6Ly9wLnNmLm5ldC9z
+ZnUvc3BsdW5rLW5vdmQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

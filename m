@@ -1,21 +1,13 @@
-From: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH] spi/s3c64xx: Log error interrupts
-Date: Tue, 06 Dec 2011 19:38:03 +0900
-Message-ID: <02dd01ccb403$22189640$6649c2c0$%kim@samsung.com>
-References: <1322479918-7818-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<CACRpkdaKJk_NLisVUFihdyMi9fT5fQnOSWErxTUgd4nUcMm-CA@mail.gmail.com>
-	<CABb+yY0KBX9J+0zjkkU5O-NoiRNkZY1TrbPfc8ak65hWWSFwhQ@mail.gmail.com>
+From: "=?UTF-8?Q?Cr=C3=A9ation_nature?=" <Creation-nature-39ZsbGIQGT5GWvitb5QawA@public.gmane.org>
+Subject: [SPAM] promo -20% sur le site bio et naturel  polange.com
+Date: Tue, 06 Dec 2011 12:30:16 +0000 (CET)
+Message-ID: <111206123016.-83245913300004960@ofnm38.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	'Mark Brown' <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	'Jassi Brar' <jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: 'Jassi Brar' <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	'Linus Walleij' <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <CABb+yY0KBX9J+0zjkkU5O-NoiRNkZY1TrbPfc8ak65hWWSFwhQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-language: ko
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,59 +18,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Jassi Brar wrote:
-> 
-> On Fri, Dec 2, 2011 at 5:16 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> wrote:
-> > On Mon, Nov 28, 2011 at 12:31 PM, Mark Brown
-> > <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> >
-> >> Although the hardware supports interrupts we're not currently using
-> them
-> >> at all since for small transfers the overhead is greater than that for
-> >> busy waiting and for large transfers we have interrupts from the DMA.
-> >> This means that if the hardware reports an error (especially one which
-> >> might not stall transfer) we might miss it.
-> >>
-> >> Take a first pass at dealing with such errors by enabling the interrupt
-> >> if we can and logging the errors if they happen. Ideally we'd report
-> the
-> >> error via the affected transfer but since we're in master mode it's
-> very
-> >> difficult to trigger errors at present and this code is much simpler.
-> >>
-> >> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> >
-> > Looks good to me:
-> > Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> >
 
-Looks ok to me, too.
-
-Acked-by: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-
-(Cc'ed Grant Likely)
-
-As I know, Grant will pick this up in his spi tree with our ack after his backing.
-
-Thanks.
-
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
-
-> > (Cc:ing Jassi so he doesn't miss this.)
-> >
-> Linus, thanks for looping me in.
-> Though due to my changed priorities, I wouldn't mind me being kept out
-> of Samsung matters.
-> 
-> Cheers,
-> -Jassi
-
-
+(http://ofnm38.com/oltymzwqchgievxsdd/index0.html)
+(http://ofnm38.com/gjtglzqicg1hwecsys/index1.html)
+(http://ofnm38.com/jstdzzpwc2hidnftll/index2.html)
+(http://ofnm38.com/qqtojzs0cnmh0w1tsy/index3.html)
+(http://ofnm38.com/rsfxzydnqmaivrfdks/index4.html)
 ------------------------------------------------------------------------------
 Cloud Services Checklist: Pricing and Packaging Optimization
 This white paper is intended to serve as a reference, checklist and point of 

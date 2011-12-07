@@ -1,57 +1,58 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller
- driver
-Date: Wed, 7 Dec 2011 22:27:10 +0100
-Message-ID: <20111207212710.GD3744@pengutronix.de>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH spi-next] spi: add Broadcom BCM63xx SPI controller driver
+Date: Wed, 7 Dec 2011 23:02:24 +0100
+Message-ID: <201112072302.25001.florian@openwrt.org>
 References: <1321906615-11392-1-git-send-email-florian@openwrt.org>
- <CAM=Q2cudxgW-B_TEDgBrdk4CFB9LgZqE9db6vDH+MJEgJeCQcg@mail.gmail.com>
- <201111232041.18477.florian@openwrt.org>
+	<201111232041.18477.florian@openwrt.org>
+	<20111207212710.GD3744@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="VMt1DrMGOVs3KQwf"
-Cc: Shubhrajyoti Datta <omaplinuxkernel@gmail.com>,
-        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>,
-        linux-mips@linux-mips.org, ralf@linux-mips.org,
-        spi-devel-general@lists.sourceforge.net
-To: Florian Fainelli <florian@openwrt.org>
-Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <201111232041.18477.florian@openwrt.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+Cc: Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
+	Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20111207212710.GD3744-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello Wolfram,
 
---VMt1DrMGOVs3KQwf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Le mercredi 07 d=E9cembre 2011 22:27:10, Wolfram Sang a =E9crit :
+> > > Could we move to dev pm ops?
+> > =
 
-> > Could we move to dev pm ops?
->=20
-> Sure, I have fixed that in version 2 of the patch.
+> > Sure, I have fixed that in version 2 of the patch.
+> =
 
-Have you sent that already?
+> Have you sent that already?
 
-Regards,
+Not yet, so if you have any other comments, feel free to let me know so tha=
+t I =
 
-   Wolfram
+can fold the fixes in version 2 of the patch.
 
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Thanks
+-- =
 
---VMt1DrMGOVs3KQwf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+Florian
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
+---------------------------------------------------------------------------=
+---
+Cloud Services Checklist: Pricing and Packaging Optimization
+This white paper is intended to serve as a reference, checklist and point o=
+f =
 
-iEYEARECAAYFAk7f2i4ACgkQD27XaX1/VRt0HgCgi4KsJr9qog+cdPc9JN7UC8T1
-HtcAnjY1GMMe+lhyQlZfQYPph6wlvBhs
-=+6TV
------END PGP SIGNATURE-----
+discussion for anyone considering optimizing the pricing and packaging mode=
+l =
 
---VMt1DrMGOVs3KQwf--
+of a cloud services business. Read Now!
+http://www.accelacomm.com/jaw/sfnl/114/51491232/

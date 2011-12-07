@@ -1,20 +1,22 @@
 From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH 4/7] spi/pl022: move device disable to workqueue thread
-Date: Wed, 7 Dec 2011 21:22:03 +0100
-Message-ID: <20111207202203.GA3744@pengutronix.de>
-References: <1321950301-4782-1-git-send-email-linus.walleij@stericsson.com>
- <4ECB5D2E.1000906@st.com>
- <CACRpkdYSGWAB29gHhKjpyEQDAaLoTbPM6-Qz0FosL3X4TNwxdg@mail.gmail.com>
+Subject: Re: [PATCH v3] pxa2xx_spi: fix memory corruption
+Date: Wed, 7 Dec 2011 21:35:59 +0100
+Message-ID: <20111207203559.GB3744@pengutronix.de>
+References: <201107101609.31405.anarsoul@gmail.com>
+ <1310311099-24638-1-git-send-email-anarsoul@gmail.com>
+ <20110715025331.GL2927@ponder.secretlab.ca>
+ <201107181056.51782.anarsoul@gmail.com>
+ <1322575504.7024.0.camel@anarsoul-laptop>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5126750392866484065=="
-Cc: "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>,
- Linus WALLEIJ <linus.walleij@stericsson.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Christopher BLAIR <chris.blair@stericsson.com>
-To: Linus Walleij <linus.walleij@linaro.org>
+Content-Type: multipart/mixed; boundary="===============0763946738950786739=="
+Cc: David Brownell <dbrownell@users.sourceforge.net>,
+ Russell King - ARM Linux <linux@arm.linux.org.uk>,
+ Grant Likely <grant.likely@secretlab.ca>, Marek Vasut <marek.vasut@gmail.com>,
+ spi-devel-general@lists.sourceforge.net, Eric Miao <eric.y.miao@gmail.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Vasily Khoruzhick <anarsoul@gmail.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CACRpkdYSGWAB29gHhKjpyEQDAaLoTbPM6-Qz0FosL3X4TNwxdg@mail.gmail.com>
+In-Reply-To: <1322575504.7024.0.camel@anarsoul-laptop>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,41 +29,22 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============5126750392866484065==
+--===============0763946738950786739==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IJpNTDwzlM2Ie8A6"
+	protocol="application/pgp-signature"; boundary="+pHx0qQiF2pBVqBT"
 Content-Disposition: inline
 
 
---IJpNTDwzlM2Ie8A6
-Content-Type: text/plain; charset=iso-8859-15
+--+pHx0qQiF2pBVqBT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Linus,
+> So, any chance to see this patch merged?
 
-On Tue, Nov 22, 2011 at 10:28:44AM +0100, Linus Walleij wrote:
-> On Tue, Nov 22, 2011 at 9:28 AM, Viresh Kumar <viresh.kumar@st.com> wrote:
-> > On 11/22/2011 1:55 PM, Linus WALLEIJ wrote:
-> >> =A0 =A0 =A0 if (list_empty(&pl022->queue) || !pl022->running) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 if (pl022->busy) {
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm_runtime_put(&pl022->adev-=
->dev);
-> >> + =A0 =A0 =A0 =A0 =A0 =A0 }
-> >
-> > We used to get warnings from checkpatch, for single line code inside {}.
-> > Don't we get them anymore?
->=20
-> It's driven by heuristics, I think it only warns on the first level since
-> elsewhere you may want braces for readability.
->=20
-> But I'll take it out when I add you Reviewed-by...
+Can you resend please (with acks you may have received meanwhile)?
 
-Does that imply you will send out a V3 of this series somewhen and I
-don't need to add this right now to the for-grant branch I am currently
-preparing?
-
-Thanks,
+Regards,
 
    Wolfram
 
@@ -69,7 +52,7 @@ Thanks,
 Pengutronix e.K.                           | Wolfram Sang                |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
---IJpNTDwzlM2Ie8A6
+--+pHx0qQiF2pBVqBT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 Content-Disposition: inline
@@ -77,15 +60,15 @@ Content-Disposition: inline
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk7fyusACgkQD27XaX1/VRtXpQCaAyUFwE9wLRDcCKCMzgsVgd8t
-zVkAn3jCJpj97O2kmyrNz3tcbwzThact
-=w/2r
+iEYEARECAAYFAk7fzi8ACgkQD27XaX1/VRu6GgCePnHBGhEOba3ZfyCPAGEpfb+v
+PxAAnjr8uz6177XuCnCICAu0k3vJXoE9
+=8qcu
 -----END PGP SIGNATURE-----
 
---IJpNTDwzlM2Ie8A6--
+--+pHx0qQiF2pBVqBT--
 
 
---===============5126750392866484065==
+--===============0763946738950786739==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -96,4 +79,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============5126750392866484065==--
+--===============0763946738950786739==--

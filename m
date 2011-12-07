@@ -1,18 +1,12 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH/RFC] spi: Fix device unregistration when unregistering the
-	bus master
-Date: Tue, 6 Dec 2011 20:32:53 +0100
-Message-ID: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw@mail.gmail.com>
-References: <1322486604-27808-1-git-send-email-laurent.pinchart@ideasonboard.com>
-	<CACRpkdZf0pcdJyh2Th=KbrcCa=D-aqCiMCNoCmPGQo3iFZpsdg@mail.gmail.com>
-	<201112061722.48910.laurent.pinchart@ideasonboard.com>
+From: jnlkjcgw-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 外贸-单证
+Date: Wed, 7 Dec 2011 20:44:55 +0800
+Message-ID: <E1RYGyg-0003iz-US@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201112061722.48910.laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,38 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 6, 2011 at 5:22 PM, Laurent Pinchart
-<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
-> Hi Linus,
->> The latter should be:
->>
->> =A0 =A0 =A0 =A0 struct device =A0 =A0 =A0 =A0 =A0 *dev =3D master->dev;
->>
->> Just my =800.01...
->
-> I agree with you, that was my initial approach as well. However, it chang=
-es
-> the parent-child relationships and might break applications relying on th=
-at
-> relationship in sysfs for instance. Would that be acceptable ?
-
-In my experience people use the /sys/class/* interfaces and don't
-traverse hierarchies much.
-
-But I'm not to speak about such things...
-
-I would have put the patch in and see if somebody screams ...
-
-Linus Walleij
-
----------------------------------------------------------------------------=
----
-Cloud Services Checklist: Pricing and Packaging Optimization
-This white paper is intended to serve as a reference, checklist and point o=
-f =
-
-discussion for anyone considering optimizing the pricing and packaging mode=
-l =
-
-of a cloud services business. Read Now!
-http://www.accelacomm.com/jaw/sfnl/114/51491232/
+ICAKICDE+rrDISAgCiAgIAogICAgICCxvrmry77Kx9K7vNLTtdPQvfiz9r/asai52LXI0rvH0LP2
+v9q1pdaktPrA7bmry76jrNPQ18W34bi7tcQKCiAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
+IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAxLszhuam6y8/6taWjqLGoudi1paOpCgogIDIu
+Q0+y+rXY1qQuIMbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm53ceptcgpIAoKICAzLsLy
+taWxqLnYo6zJzLzso6zNz7O1CgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKICDB
+qs+1yMujutXFz8jJ+iAgICAgIMGqz7W157uwo7owNzU1LTI1NDI1NDk1ICDK1rv6o7oxMzY4Njg2
+ODU0OAoKICBRUaO6MTIyMDYyMTQzICAg08rP5KO6c3p5b25nZG9uZ2ppYW5nc0AxNjMuY29tICAx
+MjIwNjIxNDNAcXEuY29tCgogICAgICAgICAgICAgICAgICAgICAgsb6547jms6TG2tPQ0KcKCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQpDbG91ZCBTZXJ2aWNlcyBDaGVja2xpc3Q6IFByaWNpbmcgYW5k
+IFBhY2thZ2luZyBPcHRpbWl6YXRpb24KVGhpcyB3aGl0ZSBwYXBlciBpcyBpbnRlbmRlZCB0byBz
+ZXJ2ZSBhcyBhIHJlZmVyZW5jZSwgY2hlY2tsaXN0IGFuZCBwb2ludCBvZiAKZGlzY3Vzc2lvbiBm
+b3IgYW55b25lIGNvbnNpZGVyaW5nIG9wdGltaXppbmcgdGhlIHByaWNpbmcgYW5kIHBhY2thZ2lu
+ZyBtb2RlbCAKb2YgYSBjbG91ZCBzZXJ2aWNlcyBidXNpbmVzcy4gUmVhZCBOb3chCmh0dHA6Ly93
+d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0LzUxNDkxMjMyLwpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

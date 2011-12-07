@@ -1,37 +1,99 @@
-From: jnlkjcgw-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 外贸-单证
-Date: Wed, 7 Dec 2011 20:44:55 +0800
-Message-ID: <E1RYGyg-0003iz-US@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Wolfram Sang <w.sang@pengutronix.de>
+Subject: Re: [PATCH 4/7] spi/pl022: move device disable to workqueue thread
+Date: Wed, 7 Dec 2011 21:22:03 +0100
+Message-ID: <20111207202203.GA3744@pengutronix.de>
+References: <1321950301-4782-1-git-send-email-linus.walleij@stericsson.com>
+ <4ECB5D2E.1000906@st.com>
+ <CACRpkdYSGWAB29gHhKjpyEQDAaLoTbPM6-Qz0FosL3X4TNwxdg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============5126750392866484065=="
+Cc: "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>,
+ Linus WALLEIJ <linus.walleij@stericsson.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Christopher BLAIR <chris.blair@stericsson.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CACRpkdYSGWAB29gHhKjpyEQDAaLoTbPM6-Qz0FosL3X4TNwxdg@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAKICDE+rrDISAgCiAgIAogICAgICCxvrmry77Kx9K7vNLTtdPQvfiz9r/asai52LXI0rvH0LP2
-v9q1pdaktPrA7bmry76jrNPQ18W34bi7tcQKCiAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
-IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAxLszhuam6y8/6taWjqLGoudi1paOpCgogIDIu
-Q0+y+rXY1qQuIMbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm53ceptcgpIAoKICAzLsLy
-taWxqLnYo6zJzLzso6zNz7O1CgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKICDB
-qs+1yMujutXFz8jJ+iAgICAgIMGqz7W157uwo7owNzU1LTI1NDI1NDk1ICDK1rv6o7oxMzY4Njg2
-ODU0OAoKICBRUaO6MTIyMDYyMTQzICAg08rP5KO6c3p5b25nZG9uZ2ppYW5nc0AxNjMuY29tICAx
-MjIwNjIxNDNAcXEuY29tCgogICAgICAgICAgICAgICAgICAgICAgsb6547jms6TG2tPQ0KcKCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpDbG91ZCBTZXJ2aWNlcyBDaGVja2xpc3Q6IFByaWNpbmcgYW5k
-IFBhY2thZ2luZyBPcHRpbWl6YXRpb24KVGhpcyB3aGl0ZSBwYXBlciBpcyBpbnRlbmRlZCB0byBz
-ZXJ2ZSBhcyBhIHJlZmVyZW5jZSwgY2hlY2tsaXN0IGFuZCBwb2ludCBvZiAKZGlzY3Vzc2lvbiBm
-b3IgYW55b25lIGNvbnNpZGVyaW5nIG9wdGltaXppbmcgdGhlIHByaWNpbmcgYW5kIHBhY2thZ2lu
-ZyBtb2RlbCAKb2YgYSBjbG91ZCBzZXJ2aWNlcyBidXNpbmVzcy4gUmVhZCBOb3chCmh0dHA6Ly93
-d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0LzUxNDkxMjMyLwpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
-IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
-dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--===============5126750392866484065==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="IJpNTDwzlM2Ie8A6"
+Content-Disposition: inline
+
+
+--IJpNTDwzlM2Ie8A6
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Linus,
+
+On Tue, Nov 22, 2011 at 10:28:44AM +0100, Linus Walleij wrote:
+> On Tue, Nov 22, 2011 at 9:28 AM, Viresh Kumar <viresh.kumar@st.com> wrote:
+> > On 11/22/2011 1:55 PM, Linus WALLEIJ wrote:
+> >> =A0 =A0 =A0 if (list_empty(&pl022->queue) || !pl022->running) {
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 if (pl022->busy) {
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pm_runtime_put(&pl022->adev-=
+>dev);
+> >> + =A0 =A0 =A0 =A0 =A0 =A0 }
+> >
+> > We used to get warnings from checkpatch, for single line code inside {}.
+> > Don't we get them anymore?
+>=20
+> It's driven by heuristics, I think it only warns on the first level since
+> elsewhere you may want braces for readability.
+>=20
+> But I'll take it out when I add you Reviewed-by...
+
+Does that imply you will send out a V3 of this series somewhen and I
+don't need to add this right now to the for-grant branch I am currently
+preparing?
+
+Thanks,
+
+   Wolfram
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--IJpNTDwzlM2Ie8A6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAk7fyusACgkQD27XaX1/VRtXpQCaAyUFwE9wLRDcCKCMzgsVgd8t
+zVkAn3jCJpj97O2kmyrNz3tcbwzThact
+=w/2r
+-----END PGP SIGNATURE-----
+
+--IJpNTDwzlM2Ie8A6--
+
+
+--===============5126750392866484065==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============5126750392866484065==--

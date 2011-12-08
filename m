@@ -1,61 +1,45 @@
-From: Wolfram Sang <w.sang@pengutronix.de>
-Subject: Re: [PATCH] spi: use gpio_request_one() instead of spi_gpio_alloc()
- helper function
-Date: Thu, 8 Dec 2011 09:46:29 +0100
-Message-ID: <20111208084629.GA23908@pengutronix.de>
-References: <1323071447.20963.3.camel@phoenix>
- <20111207212109.GA1314@pengutronix.de>
- <CAF+7xWmnYsjM-mcx=2pvKavE6RAnLFv2Ey0N1+0_n46G3Km27w@mail.gmail.com>
+From: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi-topcliff-pch: Fix count calculation issue
+Date: Thu, 8 Dec 2011 18:00:15 +0900
+Message-ID: <CANKRQnjiNgu2J1cXB2yEPwt9vNmUPs7nXf9_tp7LC=tcAh-z=A@mail.gmail.com>
+References: <1321511841-12824-1-git-send-email-tomoya.rohm@gmail.com>
+	<20111207204344.GC3744@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5vNYLRcllDrimb99"
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Linus Walleij <linus.walleij@linaro.org>
-To: Axel Lin <axel.lin@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAF+7xWmnYsjM-mcx=2pvKavE6RAnLFv2Ey0N1+0_n46G3Km27w@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20111207204344.GC3744-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+2011/12/8, Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>:
+>>
+>> Signed-off-by: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>
+> Which branch is this patch based on?
 
---5vNYLRcllDrimb99
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch was created for linux-3.2.
+However, other patches which have dependency are not sent to upstream yet.
+So, I'll send the patch series again.
+Sorry, for inconvenience.
 
-On Thu, Dec 08, 2011 at 09:36:23AM +0800, Axel Lin wrote:
-> 2011/12/8 Wolfram Sang <w.sang@pengutronix.de>:
-> > On Mon, Dec 05, 2011 at 03:50:47PM +0800, Axel Lin wrote:
-> >> Signed-off-by: Axel Lin <axel.lin@gmail.com>
-> >
-> > This will make the driver depend on GPIOLIB, currently it depends only
-> > on GENERIC_GPIO. That needs to be addressed and made sure it won't cause
-> > a regression for the in-kernel users.
-> >
-> Ah. You are right.
-> GPIOLIB can be optional or not available at all in some
-> architecture/configurations.
-> Thanks for your review.
+thanks,
+tomoya
 
-Note that there are plans to make GPIOLIB mandatory, but we are not there y=
-et.
-
---=20
-Pengutronix e.K.                           | Wolfram Sang                |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
---5vNYLRcllDrimb99
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iEYEARECAAYFAk7geWUACgkQD27XaX1/VRtVUACfd8wA/1RPl/ris/ba6dbNRAUK
-rcsAn1NtofA8Kuc+P2ny3oenAoJ2HYC3
-=z4Qj
------END PGP SIGNATURE-----
-
---5vNYLRcllDrimb99--
+------------------------------------------------------------------------------
+Cloud Services Checklist: Pricing and Packaging Optimization
+This white paper is intended to serve as a reference, checklist and point of 
+discussion for anyone considering optimizing the pricing and packaging model 
+of a cloud services business. Read Now!
+http://www.accelacomm.com/jaw/sfnl/114/51491232/

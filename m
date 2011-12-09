@@ -1,7 +1,7 @@
 From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 4/4] spi/gpio: fix section mismatch warning
-Date: Fri,  9 Dec 2011 21:32:35 +0100
-Message-ID: <1323462755-14369-5-git-send-email-w.sang@pengutronix.de>
+Subject: [PATCH 3/4] spi/fsl-espi: disable CONFIG_SPI_FSL_ESPI=m build
+Date: Fri,  9 Dec 2011 21:32:34 +0100
+Message-ID: <1323462755-14369-4-git-send-email-w.sang@pengutronix.de>
 References: <1323462755-14369-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,44 +20,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Manuel Lauss <manuel.lauss-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+From: Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
 
-Fixes:
-The function __devinit spi_gpio_probe() references
-a function __init spi_gpio_alloc.isra.4().
-If spi_gpio_alloc.isra.4 is only used by spi_gpio_probe then
-annotate spi_gpio_alloc.isra.4 with a matching annotation.
+When spi_fsl_espi is chosen to be built as a module, there is a build
+error because we test only CONFIG_SPI_FSL_ESPI in declaration of
+struct mpc8xxx_spi in drivers/spi/spi_fsl_lib.h. Also some called
+functions are not exported.
 
-[wsa: fix spi_gpio_request(), too]
+So we forbid CONFIG_SPI_FSL_ESPI to be tristate here.
 
-Signed-off-by: Manuel Lauss <manuel.lauss-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+The error looks like:
+drivers/spi/spi_fsl_espi.c: In function 'fsl_espi_bufs':
+drivers/spi/spi_fsl_espi.c:232: error: 'struct mpc8xxx_spi' has no member named 'len'
+...
+
+Signed-off-by: Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
+Acked-by: Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
- drivers/spi/spi-gpio.c |    4 ++--
+ drivers/spi/Kconfig |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index e093d3e..0094c64 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -256,7 +256,7 @@ static void spi_gpio_cleanup(struct spi_device *spi)
- 	spi_bitbang_cleanup(spi);
- }
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index a1fd73d..8ba4510 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -199,7 +199,7 @@ config SPI_FSL_LIB
+ 	depends on FSL_SOC
  
--static int __init spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
-+static int __devinit spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
- {
- 	int value;
+ config SPI_FSL_SPI
+-	tristate "Freescale SPI controller"
++	bool "Freescale SPI controller"
+ 	depends on FSL_SOC
+ 	select SPI_FSL_LIB
+ 	help
+@@ -208,7 +208,7 @@ config SPI_FSL_SPI
+ 	  MPC8569 uses the controller in QE mode, MPC8610 in cpu mode.
  
-@@ -270,7 +270,7 @@ static int __init spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
- 	return value;
- }
- 
--static int __init
-+static int __devinit
- spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
- 	u16 *res_flags)
- {
+ config SPI_FSL_ESPI
+-	tristate "Freescale eSPI controller"
++	bool "Freescale eSPI controller"
+ 	depends on FSL_SOC
+ 	select SPI_FSL_LIB
+ 	help
 -- 
 1.7.2.5
 

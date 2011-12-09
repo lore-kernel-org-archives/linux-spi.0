@@ -1,8 +1,8 @@
 From: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/4][RESEND] spi-topcliff-pch: supports a spi mode setup and
-	bit order setup by IO control
-Date: Fri,  9 Dec 2011 13:13:28 +0900
-Message-ID: <1323404009-3476-2-git-send-email-tomoya.rohm@gmail.com>
+Subject: [PATCH 4/4] spi-topcliff-pch: add recovery processing in case
+	wait-event timeout
+Date: Fri,  9 Dec 2011 13:13:29 +0900
+Message-ID: <1323404009-3476-3-git-send-email-tomoya.rohm@gmail.com>
 References: <1323404009-3476-1-git-send-email-tomoya.rohm@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,27 +23,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch supports a spi mode setup and bit order setup by IO control.
-    spi mode:     mode 0 to mode 3
-    bit order:    LSB first, MSB first
+Currently, pch_spi_start_transfer failure is not anticipated.
+This patch adds the processing.
 
 Signed-off-by: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ drivers/spi/spi-topcliff-pch.c |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 7339765..1864555 100644
+index 1864555..10b684c 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1430,6 +1430,7 @@ static int __devinit pch_spi_pd_probe(struct platform_device *plat_dev)
- 	master->num_chipselect = PCH_MAX_CS;
- 	master->setup = pch_spi_setup;
- 	master->transfer = pch_spi_transfer;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
- 
- 	data->board_dat = board_dat;
- 	data->plat_dev = plat_dev;
+@@ -1262,8 +1262,16 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 			char *save_rx_buf = data->cur_trans->rx_buf;
+ 			for (i = 0; i < cnt; i ++) {
+ 				pch_spi_handle_dma(data, &bpw);
+-				if (!pch_spi_start_transfer(data))
++				if (!pch_spi_start_transfer(data)) {
++					data->transfer_complete = true;
++					data->current_msg->status = -EIO;
++					data->current_msg->complete
++						   (data->current_msg->context);
++					data->bcurrent_msg_processing = false;
++					data->current_msg = NULL;
++					data->cur_trans = NULL;
+ 					goto out;
++				}
+ 				pch_spi_copy_rx_data_for_dma(data, bpw);
+ 			}
+ 			data->cur_trans->rx_buf = save_rx_buf;
 -- 
 1.7.4.4
 

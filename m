@@ -1,13 +1,15 @@
 From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [GIT PULL] spi updates for Linux 3.2
-Date: Fri,  9 Dec 2011 21:32:31 +0100
-Message-ID: <1323462755-14369-1-git-send-email-w.sang@pengutronix.de>
+Subject: [PATCH 4/4] spi/gpio: fix section mismatch warning
+Date: Fri,  9 Dec 2011 21:32:35 +0100
+Message-ID: <1323462755-14369-5-git-send-email-w.sang@pengutronix.de>
+References: <1323462755-14369-1-git-send-email-w.sang@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1323462755-14369-1-git-send-email-w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,42 +20,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus,
+From: Manuel Lauss <manuel.lauss-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
 
-please pull the following spi updates for 3.2 which I collected on Grant's
-behalf while he is on his sabbatical. These updates include three build fixes
-and one section mismatch removal. I don't know if you trust our git-server, so
-I attach the patches as a series as well, trivial as they are.
+Fixes:
+The function __devinit spi_gpio_probe() references
+a function __init spi_gpio_alloc.isra.4().
+If spi_gpio_alloc.isra.4 is only used by spi_gpio_probe then
+annotate spi_gpio_alloc.isra.4 with a matching annotation.
 
-Thanks,
+[wsa: fix spi_gpio_request(), too]
 
-   Wolfram
+Signed-off-by: Manuel Lauss <manuel.lauss-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-gpio.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-The following changes since commit 5611cc4572e889b62a7b4c72a413536bf6a9c416:
-
-  Linux 3.2-rc4 (2011-12-01 14:56:01 -0800)
-
-are available in the git repository at:
-  git://git.pengutronix.de/git/wsa/linux-2.6.git spi/for-3.2
-
-Axel Lin (1):
-  spi/nuc900: Include linux/module.h
-
-Gabor Juhos (1):
-  spi/ath79: fix compile error due to missing include
-
-Jiri Slaby (1):
-  spi/fsl-espi: disable CONFIG_SPI_FSL_ESPI=m build
-
-Manuel Lauss (1):
-  spi/gpio: fix section mismatch warning
-
- drivers/spi/Kconfig      |    4 ++--
- drivers/spi/spi-ath79.c  |    1 +
- drivers/spi/spi-gpio.c   |    4 ++--
- drivers/spi/spi-nuc900.c |    1 +
- 4 files changed, 6 insertions(+), 4 deletions(-)
-
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index e093d3e..0094c64 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -256,7 +256,7 @@ static void spi_gpio_cleanup(struct spi_device *spi)
+ 	spi_bitbang_cleanup(spi);
+ }
+ 
+-static int __init spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
++static int __devinit spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
+ {
+ 	int value;
+ 
+@@ -270,7 +270,7 @@ static int __init spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
+ 	return value;
+ }
+ 
+-static int __init
++static int __devinit
+ spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
+ 	u16 *res_flags)
+ {
 -- 
 1.7.2.5
 

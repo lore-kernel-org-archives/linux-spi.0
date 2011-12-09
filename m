@@ -1,18 +1,15 @@
-From: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 4/4] spi-topcliff-pch: add recovery processing in case
-	wait-event timeout
-Date: Fri,  9 Dec 2011 13:13:29 +0900
-Message-ID: <1323404009-3476-3-git-send-email-tomoya.rohm@gmail.com>
-References: <1323404009-3476-1-git-send-email-tomoya.rohm@gmail.com>
+From: =?iso-8859-15?Q?No=EBl_Magical_Tour_Toys=27R=27Us?=
+	<news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?Stop,_Dernier_arr=EAt_sur_les_PRO?=
+	=?iso-8859-15?Q?MOS_avant_No=EBl_chez_Toys"R"Us_!?=
+Date: Fri, 9 Dec 2011 07:41:53 +0100 (CET)
+Message-ID: <3236305005.536726.1323412913891@p4enginex1.emv2.com>
+Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1323404009-3476-1-git-send-email-tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,43 +20,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently, pch_spi_start_transfer failure is not anticipated.
-This patch adds the processing.
+       Si ce message ne s'affiche pas correctement, merci de cliquer ici.
 
-Signed-off-by: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+                                   Toys R Us
+
+      Cat=E9gories H*ros   H=E9ros    s=E9lection =E2ge   M=E9ga Packs    P=
+romotions
+
+                                     [IMG]
+
+       Voir toutes les promos        Feuillettez le magazine promotionnel
+
+                                     [IMG]
+
+                             Trouver le bon cadeau
+
+      de 0 * 12 mois        de 12 * 24 mois       2 ans       de 3 * 4 ans
+
+      de 5 * 7 ans       de 8 * 11 ans      de 12 * 14 ans      les grands
+
+   moins de 10 *
+   de 10 * 20 *                                     Notre moteur de recherc=
+he
+   de 20 * 30 *
+   de 30 * 40 *
+
+                                Par carte cadeau
+
+   Service      Satisfait ou    Service       Transactions      Livraison
+   cadeau       rembours*       Client *      s*curis*es        express
+                                votre *coute
+
+                  Babies"R"Us  Trouver son Magasin  Devenir Fan sur Facebook
+
+   Conform=E9ment =E0 la loi n=B078-17 du 6 janvier 1978 dite loi Informati=
+que et
+   Libert=E9s, vous disposez d'un droit d'acc=E8s, d'opposition et de
+   rectification des informations personnelles vous concernant et pouvez
+   l'exercer directement sur le site internet via =AB Mon Compte =BB ou par
+   courrier adress=E9 =E0 TOYS"R"US - Service Data - 2, rue Thomas Edison -=
+ La
+   Remise - Lisses - 91044 Evry C=E9dex en indiquant votre nom, pr=E9nom, a=
+dresse
+   compl=E8te et adresse e-mail.
+
+   Pour ne plus recevoir de courriels de Zabaloc, il vous suffit de vous
+   rendre sur cette page..
+          =A9 2010 Geoffrey, LLC. Tous droits r=E9serv=E9s. Toys''R''Us.fr/=
+Babies''R''Us.fr :
+   Conditions g=E9n=E9rales, Politique de confidentialit=E9, Informations l=
+=E9gales.
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-topcliff-pch.c |   10 +++++++++-
- 1 files changed, 9 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 1864555..10b684c 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1262,8 +1262,16 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 			char *save_rx_buf = data->cur_trans->rx_buf;
- 			for (i = 0; i < cnt; i ++) {
- 				pch_spi_handle_dma(data, &bpw);
--				if (!pch_spi_start_transfer(data))
-+				if (!pch_spi_start_transfer(data)) {
-+					data->transfer_complete = true;
-+					data->current_msg->status = -EIO;
-+					data->current_msg->complete
-+						   (data->current_msg->context);
-+					data->bcurrent_msg_processing = false;
-+					data->current_msg = NULL;
-+					data->cur_trans = NULL;
- 					goto out;
-+				}
- 				pch_spi_copy_rx_data_for_dma(data, bpw);
- 			}
- 			data->cur_trans->rx_buf = save_rx_buf;
--- 
-1.7.4.4
-
-
-------------------------------------------------------------------------------
 Cloud Services Checklist: Pricing and Packaging Optimization
-This white paper is intended to serve as a reference, checklist and point of 
-discussion for anyone considering optimizing the pricing and packaging model 
+This white paper is intended to serve as a reference, checklist and point o=
+f =
+
+discussion for anyone considering optimizing the pricing and packaging mode=
+l =
+
 of a cloud services business. Read Now!
 http://www.accelacomm.com/jaw/sfnl/114/51491232/

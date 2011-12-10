@@ -1,8 +1,8 @@
 From: Monnier Freres <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
 Subject: =?iso-8859-15?Q?100=A4_de_Cadeau_de_Bienvenue_sur_votre?=
 	=?iso-8859-15?Q?_prochain_sac_=E0_main_de_grande_marque?=
-Date: Sat, 10 Dec 2011 07:51:43 +0100 (CET)
-Message-ID: <3236305005.541697.1323499903144@p4enginex1.emv2.com>
+Date: Sat, 10 Dec 2011 16:18:20 +0100 (CET)
+Message-ID: <3236305005.544197.1323530300731@p4enginex2.emv2.com>
 Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"

@@ -1,15 +1,13 @@
-From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: [PATCH v2] spi: Fix device unregistration when unregistering the bus
-	master
-Date: Mon, 12 Dec 2011 01:15:06 +0100
-Message-ID: <1323648906-24863-1-git-send-email-laurent.pinchart@ideasonboard.com>
-References: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw@mail.gmail.com>
+From: "sales-Mwr0nvBLZuFsrtGKrzkHOVaTQe2KTcn/@public.gmane.org" <sales-Mwr0nvBLZuFsrtGKrzkHOVaTQe2KTcn/@public.gmane.org>
+Subject: Japanese used cars 50% discount for the christmas BONAZA
+Date: Tue, 13 Dec 2011 03:44:57 +0530
+Message-ID: <27375458.20111213034457@JapaneseVehicles.com>
+Reply-To: "sales-Mwr0nvBLZuFsrtGKrzkHOVaTQe2KTcn/@public.gmane.org" <y.account-dbdLmdGazhY@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,36 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Device are added as children of the bus master's parent device, but
-spi_unregister_master() looks for devices to unregister in the bus
-master's children. This results in the child devices not being
-unregistered.
 
-Fix this by registering devices as direct children of the bus master.
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
----
- drivers/spi/spi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2e13a14..b423fe9 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -318,7 +318,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- 	}
+  Dear Sir/Madam
+We are a Japanese used car export company selling Japanese used cars and foreign cars.
+We export Japanese used cars to various countries in the world. We have extensive stocks of
+Japanese used cars which satisfy your needs.We guarantee Good condition, Good price, Quick
+service. Right now we are giving 50% discount for the Christmas BONAZA on a few stocks of land cruiser jeeps.
+We have only 30 units in stocks and you could be lucky to get 1 unit for your self.. CIF to darrasalam or any port in east-south Africa is 9,000usd.We are giving 50% discount because it is our marketing strategy to attract more customers
+in Africa and to sell off the overflow of new stocks for closing of the year.If you are not capable of purchasing the land cruiser or if it is not your choice of your dream car,you can also inform us so that we can post to you your choice vehicle with a little discount.We want you to take an advantage of this opportunity. we have not yet uploaded the pictures of the landcruiers on our website,but can be sent directly to your email address upon your request.
+ Sincerely yours,
+Mr. Wayne Turgeon
+Sales Department
  
- 	spi->master = master;
--	spi->dev.parent = dev;
-+	spi->dev.parent = &master->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
- 	device_initialize(&spi->dev);
--- 
-Regards,
-
-Laurent Pinchart
-
+TEL:+81-52-219-9024      
+FAX:+81-52-219-9025
+www.JapaneseVehicles.com Trust Company Ltd.
+3/F, Sakae VT Bldg. 3-10-32 Nishiki, Naka-ku,Nagoya 460-0003 JAPAN
 
 ------------------------------------------------------------------------------
 Learn Windows Azure Live!  Tuesday, Dec 13, 2011

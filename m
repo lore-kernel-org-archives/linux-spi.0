@@ -1,12 +1,18 @@
-From: "Osmond Wheeler" <dnemb002-59/9UTdFgWM1+H2MjNKeRw@public.gmane.org>
-Subject: [SPAM] Bank of America: Bill payment issue
-Date: Wed, 14 Dec 2011 08:29:00 -0600
-Message-ID: <002501ccba6c$d78a4860$2f535dce@BAT1JAX9251457oyy3g8>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2] spi: Fix device unregistration when unregistering the
+	bus master
+Date: Tue, 13 Dec 2011 16:45:20 -0700
+Message-ID: <20111213234520.GA24922@ponder.secretlab.ca>
+References: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw@mail.gmail.com>
+	<1323648906-24863-1-git-send-email-laurent.pinchart@ideasonboard.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1323648906-24863-1-git-send-email-laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,85 +23,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Dec 12, 2011 at 01:15:06AM +0100, Laurent Pinchart wrote:
+> Device are added as children of the bus master's parent device, but
+> spi_unregister_master() looks for devices to unregister in the bus
+> master's children. This results in the child devices not being
+> unregistered.
+> 
+> Fix this by registering devices as direct children of the bus master.
+> 
+> Signed-off-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+> ---
+>  drivers/spi/spi.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 2e13a14..b423fe9 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -318,7 +318,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
+>  	}
+>  
+>  	spi->master = master;
+> -	spi->dev.parent = dev;
+> +	spi->dev.parent = &master->dev;
+>  	spi->dev.bus = &spi_bus_type;
+>  	spi->dev.release = spidev_release;
+>  	device_initialize(&spi->dev);
 
-To: 		Dear Bank of America customer
-Account: 	CHECKING
-Date: 		12/14/2011
+Yes, I agree and I think this is the correct fix.  However, I'd like
+to make sure it behaves correctly.  Can you test and confirm that
+with this patch in place and an spi_device in use (bound to a driver)
+that the kernel will either refuse to unbind the driver, or correctly
+release the spi_driver from the spi_device?
 
-The most recent ALERTS for your account are now available to =
-
-download online.
-
-Please follow the link to get ALERT message here:
-http://americanlawnandtreeservice.com/alert/id/MAOPO812934821/
-
-Set up Alerts to be notified 5 days before your payment is due =
-
-to help avoid late payments. Sign in to Online Banking and select =
-
-the Alerts tab to activate the Credit Card Payment Due Alert.
-
-Want to confirm this email is from Bank of America? Sign in to =
-
-Online Banking and go to Alerts. The Alerts History lists the =
-
-Alerts sent to you in the past 60 days. =
-
-
-Osmond Wheeler
-
----------------------------------------------------------------------------
----------------------------------------------------------------------------
-
-Email preferences
-This is a service email from Bank of America. Please note that =
-
-you may receive service email in accordance with your Bank of =
-
-America service agreements, whether or not you elect to receive =
-
-promotional email.
-
-Contact us about this email
-Please do not reply to this email with sensitive information, =
-
-such as an account number, PIN, password, or Online ID. The security =
-
-and confidentiality of your personal information is important =
-
-to us. If you have any questions, please either call the toll-free =
-
-customer service phone number on your account statement or visit =
-
-the Bank of America website to access the Contact Us page, so =
-
-we can properly verify your identity.
-
-Privacy and security
-Keeping your financial information secure is one of our most =
-
-important responsibilities. For an explanation of how we manage =
-
-customer information, please visit the Bank of America website =
-
-to read our Privacy Policy. You can also learn how Bank of America =
-
-keeps your personal information secure and how you can help protect =
-
-yourself.
-
-Bank of America Email, 8th Floor-NC1-002-08-25, 101 South Tryon =
-
-St., Charlotte, NC 28255-0001
-
-Bank of America, N.A. Member FDIC. Equal Housing Lender
-A=BF 2011 Bank of America Corporation. All rights reserved.
+Thanks,
+g.
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Cloud Computing - Latest Buzzword or a Glimpse of the Future?
-This paper surveys cloud computing today: What are the benefits? =
-
+This paper surveys cloud computing today: What are the benefits? 
 Why are businesses embracing it? What are its payoffs and pitfalls?
 http://www.accelacomm.com/jaw/sdnl/114/51425149/

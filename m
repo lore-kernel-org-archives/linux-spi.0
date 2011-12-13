@@ -1,12 +1,17 @@
-From: 13435596414-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: =?GB2312?B?1K2zp9HMy78=?=
-Date: Wed, 14 Dec 2011 04:24:48 +0800
-Message-ID: <E1RaYuB-0005g8-Mu@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: Fix device unregistration when unregistering the
+	bus master
+Date: Tue, 13 Dec 2011 23:10:39 +0100
+Message-ID: <CACRpkdZx3dNzyo1LZzqeix5uQGMPU+z479oTWGH+ZZpgoj5mxA@mail.gmail.com>
+References: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw@mail.gmail.com>
+	<1323648906-24863-1-git-send-email-laurent.pinchart@ideasonboard.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1323648906-24863-1-git-send-email-laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,42 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-vfDStsnM0NDOqsT6zOG5qbjfvqu3wtXmz+PRzKOsysrTw7e2zqejutfUs+kuy83A8S7F+reiLsHj
-ytsuuavLvi6+xrDJLr7GteoutsSzoS7N+LDJLtPpwNazocv5tciho6Opo6i79bW9v+y13bT6ytW/
-7qOptci5q8a9vbvS18a9zKijob/auNC0vM/jo6y827jxyrW73aOssrvKx9DQvNLE0bHn1eYgzrGh
-oyAgICAgICAgICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a618KlOjE5MTYgICAgIDM2
-MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrX
-wqXC/szs084gICAgMzgw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKKNXm0cy9
-09anLsS+utApIMTPvqm+xc7l1q7X8CAgICA0NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgCijV5tHMvdPWpy7EvrrQKSDX6sqv3L3I2M31ICAgICAgNDYw1KovzPUgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAKKNXm0cy909anLsS+utApILrNzOzPwiAgICAgICAgICA0NjDU
-qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAq7xrrXwqWjqMLbtcCjqSAyODDUqi/M
-9SAgICAgICAgICAgICC7xrrXwqWjqM7KtcCjqSAzMjDUqi/M9SAgICAgICAgICAgIAqjqNSts6fR
-zMu/o6m19tPjzKggICAgICAgICAgICAgIDQ2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgCijUrbOn0czLvykgMzI4LjMyOcjt1tC7qiAgICAgICAgMjgw1KovzPUgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAKKNSts6fRzMu/KSDTstbQu6ogICAgICAgICAgICAgICAyNjDU
-qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1K2zp9HMy78pILass+bPxLLdICAg
-ICAgICAgICAgIDM2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijUrbOn0czL
-vykgyO298Mmzy9XRzCAgICAgICAgICAgMjAw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAKKNSts6fRzMu/KdPxz6qjqL6zveejqSAgNDYw1KovzPUgICAgCijUrbOn0czLvykgu8bc
-vcjYzfUgICAgICAgICAgICAgMTYw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
-uuwgILrTICC1wCAgICjEvrrQLtXm0cy909anKSAgICAzNjDUqi/M9SAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrXwqXXz73wICAgICAgMzIw1KovzPUgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAKwLbI7dy9yNjN9SAgICAgICAgICAgICAyMjDUqi/M
-9SAgwLbTsty9yNjN9SAgICAgICAgICAgICAxODDUqi/M9cjtu8a618Klwv7M7NDHICAgICAgICAg
-ICAgMjAw1KovzPUgILvGutfCpdXkxrcgICAgICAgICAgICAgICAgICAgICAgMjIw1KovzPUgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICDI7dOyICDT8SAgz6ogICAgICAgICAxMzDUqi/M9SAg
-ICAgICAgICAgICAgICAgINTGICDRzCCjqNOhz/OjqSAgICAgIDM2MNSqL8z1ICAgICAgIMjtICDU
-xiAg0cwgICAgICAgIDEzMNSqL8z1ICAgICAgICAgILvGIMjtIMzsINfTICAgICAgMjYw1KovzPUg
-ICAgICAgICAgCiC08yAg0NwgIMOoICAgICAo1K2zp9HMy78pICAgICAgIDMwMNSqL8z1ICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgCiDT0NDo0qrBqs+1o7oxMzQzNTU5NjQxNNCh1cUuwvLR
-zLzTUVGjujEzNTg4NTAwNTEgu7bTrdDCwM+/zbunwLS158eizLjE+rrDIQoKLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tClN5c3RlbXMgT3B0aW1pemF0aW9uIFNlbGYgQXNzZXNzbWVudApJbXByb3ZlIGVm
-ZmljaWVuY3kgYW5kIHV0aWxpemF0aW9uIG9mIElUIHJlc291cmNlcy4gRHJpdmUgb3V0IGNvc3Qg
-YW5kIAppbXByb3ZlIHNlcnZpY2UgZGVsaXZlcnkuIFRha2UgNSBtaW51dGVzIHRvIHVzZSB0aGlz
-IFN5c3RlbXMgT3B0aW1pemF0aW9uIApTZWxmIEFzc2Vzc21lbnQuIGh0dHA6Ly93d3cuYWNjZWxh
-Y29tbS5jb20vamF3L3NkbmwvMTE0LzUxNDUwMDU0LwpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Mon, Dec 12, 2011 at 1:15 AM, Laurent Pinchart
+<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
+
+> Device are added as children of the bus master's parent device, but
+> spi_unregister_master() looks for devices to unregister in the bus
+> master's children. This results in the child devices not being
+> unregistered.
+>
+> Fix this by registering devices as direct children of the bus master.
+>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+
+Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+Thanks,
+Linus Walleij
+
+------------------------------------------------------------------------------
+Systems Optimization Self Assessment
+Improve efficiency and utilization of IT resources. Drive out cost and 
+improve service delivery. Take 5 minutes to use this Systems Optimization 
+Self Assessment. http://www.accelacomm.com/jaw/sdnl/114/51450054/

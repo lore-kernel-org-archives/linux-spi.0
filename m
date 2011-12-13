@@ -1,199 +1,59 @@
-From: Heiko =?iso-8859-15?q?St=FCbner?= <heiko@sntech.de>
-Subject: Re: [PATCH 2/2] spi/s3c64xx: Implement runtime PM support
-Date: Tue, 13 Dec 2011 16:02:41 +0100
-Message-ID: <201112131602.43395.heiko@sntech.de>
-References: <1323103813-5325-1-git-send-email-broonie@opensource.wolfsonmicro.com> <1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com> <201112131549.45384.heiko@sntech.de>
+From: 13435596414-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 原厂烟丝
+Date: Wed, 14 Dec 2011 00:55:58 +0800
+Message-ID: <E1RaVdn-00074O-Gr@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <201112131549.45384.heiko@sntech.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Am Dienstag, 13. Dezember 2011, 15:49:44 schrieb Heiko St=FCbner:
-> Am Montag, 5. Dezember 2011, 17:50:13 schrieb Mark Brown:
-> > Enable and disable the clocks to the SPI controller using runtime P=
-M.
-> > This serves the dual purpose of reducing power consumption a little=
- and
-> > letting the core know when the device is idle.
-> >=20
-> > Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
->=20
-> Acked-by: Heiko Stuebner <heiko@sntech.de
->=20
-> Kgene and/or Grant: could we move this forward, as I would like to pr=
-ofit
-> from this change later on too :-)
-
-it seems I got the wrong patch and the one from 2011-12-05 21:01 +0000
-	[PATCH 3/3] spi/s3c64xx: Implement runtime PM support
-which seems to have the same content would have been the correct one to=
- ack=20
-and ping.
-
-
-Sorry for the confusion
-Heiko
-
-> Thanks
-> Heiko
->=20
-> > ---
-> >=20
-> >  drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++++=
-++++++
-> >  1 files changed, 39 insertions(+), 0 deletions(-)
-> >=20
-> > diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> > index fef1c90..9031783 100644
-> > --- a/drivers/spi/spi-s3c64xx.c
-> > +++ b/drivers/spi/spi-s3c64xx.c
-> > @@ -25,6 +25,7 @@
-> >=20
-> >  #include <linux/clk.h>
-> >  #include <linux/dma-mapping.h>
-> >  #include <linux/platform_device.h>
-> >=20
-> > +#include <linux/pm_runtime.h>
-> >=20
-> >  #include <linux/spi/spi.h>
-> > =20
-> >  #include <mach/dma.h>
-> >=20
-> > @@ -782,6 +783,8 @@ static void s3c64xx_spi_work(struct work_struct
-> > *work)
-> >=20
-> >  	while (!acquire_dma(sdd))
-> >  =09
-> >  		msleep(10);
-> >=20
-> > +	pm_runtime_get_sync(&sdd->pdev->dev);
-> > +
-> >=20
-> >  	spin_lock_irqsave(&sdd->lock, flags);
-> >  =09
-> >  	while (!list_empty(&sdd->queue)
-> >=20
-> > @@ -810,6 +813,8 @@ static void s3c64xx_spi_work(struct work_struct
-> > *work)
-> >=20
-> >  	/* Free DMA channels */
-> >  	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
-> >  	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
-> >=20
-> > +
-> > +	pm_runtime_put(&sdd->pdev->dev);
-> >=20
-> >  }
-> > =20
-> >  static int s3c64xx_spi_transfer(struct spi_device *spi,
-> >=20
-> > @@ -892,6 +897,8 @@ static int s3c64xx_spi_setup(struct spi_device =
-*spi)
-> >=20
-> >  		goto setup_exit;
-> >  =09
-> >  	}
-> >=20
-> > +	pm_runtime_get_sync(&sdd->pdev->dev);
-> > +
-> >=20
-> >  	/* Check if we can provide the requested rate */
-> >  	if (!sci->clk_from_cmu) {
-> >  =09
-> >  		u32 psr, speed;
-> >=20
-> > @@ -924,6 +931,8 @@ static int s3c64xx_spi_setup(struct spi_device =
-*spi)
-> >=20
-> >  			err =3D -EINVAL;
-> >  =09
-> >  	}
-> >=20
-> > +	pm_runtime_put(&sdd->pdev->dev);
-> > +
-> >=20
-> >  setup_exit:
-> >  	/* setup() returns with device de-selected */
-> >=20
-> > @@ -1159,6 +1168,8 @@ static int __init s3c64xx_spi_probe(struct
-> > platform_device *pdev) mem_res->end, mem_res->start,
-> >=20
-> >  					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
-> >=20
-> > +	pm_runtime_enable(&pdev->dev);
-> > +
-> >=20
-> >  	return 0;
-> > =20
-> >  err9:
-> > @@ -1192,6 +1203,8 @@ static int s3c64xx_spi_remove(struct
-> > platform_device *pdev) struct resource	*mem_res;
-> >=20
-> >  	unsigned long flags;
-> >=20
-> > +	pm_runtime_disable(&pdev->dev);
-> > +
-> >=20
-> >  	spin_lock_irqsave(&sdd->lock, flags);
-> >  	sdd->state |=3D SUSPND;
-> >  	spin_unlock_irqrestore(&sdd->lock, flags);
-> >=20
-> > @@ -1272,8 +1285,34 @@ static int s3c64xx_spi_resume(struct device =
-*dev)
-> >=20
-> >  }
-> >  #endif /* CONFIG_PM */
-> >=20
-> > +#ifdef CONFIG_PM_RUNTIME
-> > +static int s3c64xx_spi_runtime_suspend(struct device *dev)
-> > +{
-> > +	struct spi_master *master =3D spi_master_get(dev_get_drvdata(dev)=
-);
-> > +	struct s3c64xx_spi_driver_data *sdd =3D spi_master_get_devdata(ma=
-ster);
-> > +
-> > +	clk_disable(sdd->clk);
-> > +	clk_disable(sdd->src_clk);
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int s3c64xx_spi_runtime_resume(struct device *dev)
-> > +{
-> > +	struct spi_master *master =3D spi_master_get(dev_get_drvdata(dev)=
-);
-> > +	struct s3c64xx_spi_driver_data *sdd =3D spi_master_get_devdata(ma=
-ster);
-> > +
-> > +	clk_enable(sdd->src_clk);
-> > +	clk_enable(sdd->clk);
-> > +
-> > +	return 0;
-> > +}
-> > +#endif /* CONFIG_PM_RUNTIME */
-> > +
-> >=20
-> >  static struct dev_pm_ops s3c64xx_spi_pm =3D {
-> > =20
-> >  	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
-> >=20
-> > +	SET_RUNTIME_PM_OPS(s3c64xx_spi_runtime_suspend,
-> > +			   s3c64xx_spi_runtime_resume, NULL)
-> >=20
-> >  };
-> > =20
-> >  static struct platform_driver s3c64xx_spi_driver =3D {
->=20
-> --
-> To unsubscribe from this list: send the line "unsubscribe
-> linux-samsung-soc" in the body of a message to majordomo@vger.kernel.=
-org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+vfDStsnM0NDOqsT6zOG5qbjfvqu3wtXmz+PRzKOsysrTw7e2zqejutfUs+kuy83A8S7F+reiLsHj
+ytsuuavLvi6+xrDJLr7GteoutsSzoS7N+LDJLtPpwNazocv5tciho6Opo6i79bW9v+y13bT6ytW/
+7qOptci5q8a9vbvS18a9zKijob/auNC0vM/jo6y827jxyrW73aOssrvKx9DQvNLE0bHn1eYgzrGh
+oyAgICAgICAgICAgICAgICAgICAgIAoo1ebRzL3T1qcuxL660Ckgu8a618KlOjE5MTYgICAgIDM2
+MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrX
+wqXC/szs084gICAgMzgw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKKNXm0cy9
+09anLsS+utApIMTPvqm+xc7l1q7X8CAgICA0NjDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCijV5tHMvdPWpy7EvrrQKSDX6sqv3L3I2M31ICAgICAgNDYw1KovzPUgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKKNXm0cy909anLsS+utApILrNzOzPwiAgICAgICAgICA0NjDU
+qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAq7xrrXwqWjqMLbtcCjqSAyODDUqi/M
+9SAgICAgICAgICAgICC7xrrXwqWjqM7KtcCjqSAzMjDUqi/M9SAgICAgICAgICAgIAqjqNSts6fR
+zMu/o6m19tPjzKggICAgICAgICAgICAgIDQ2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCijUrbOn0czLvykgMzI4LjMyOcjt1tC7qiAgICAgICAgMjgw1KovzPUgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKKNSts6fRzMu/KSDTstbQu6ogICAgICAgICAgICAgICAyNjDU
+qi/M9SAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoo1K2zp9HMy78pILass+bPxLLdICAg
+ICAgICAgICAgIDM2MNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCijUrbOn0czL
+vykgyO298Mmzy9XRzCAgICAgICAgICAgMjAw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAKKNSts6fRzMu/KdPxz6qjqL6zveejqSAgNDYw1KovzPUgICAgCijUrbOn0czLvykgu8bc
+vcjYzfUgICAgICAgICAgICAgMTYw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+uuwgILrTICC1wCAgICjEvrrQLtXm0cy909anKSAgICAzNjDUqi/M9SAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCijV5tHMvdPWpy7EvrrQKSC7xrrXwqXXz73wICAgICAgMzIw1KovzPUgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKwLbI7dy9yNjN9SAgICAgICAgICAgICAyMjDUqi/M
+9SAgwLbTsty9yNjN9SAgICAgICAgICAgICAxODDUqi/M9SAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIMjtu8a618Klwv7M7NDHICAgICAgICAgICAgMjAw1KovzPUgILvGutfCpdXkxrcgICAg
+ICAgICAgICAgICAgICAgICAgMjIw1KovzPUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDI
+7dOyICDT8SAgz6ogICAgICAgICAxMzDUqi/M9SAgICAgICAgICAgICAgICAgINTGICDRzCCjqNOh
+z/OjqSAgICAgIDM2MNSqL8z1ICAgICAgIMjtICDUxiAg0cwgICAgICAgIDEzMNSqL8z1ICAgICAg
+ICAgILvGIMjtIMzsINfTICAgICAgMjYw1KovzPUgICAgICAgICAgCiC08yAg0NwgIMOoICAgICAo
+1K2zp9HMy78pICAgICAgIDMwMNSqL8z1ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiDT
+0NDo0qrBqs+1o7oxMzQzNTU5NjQxNNCh1cUuwvLRzLzTUVGjujEzNTg4NTAwNTEgu7bTrdDCwM+/
+zbunwLS158eizLjE+rrDISAgIAoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTeXN0ZW1zIE9wdGlt
+aXphdGlvbiBTZWxmIEFzc2Vzc21lbnQKSW1wcm92ZSBlZmZpY2llbmN5IGFuZCB1dGlsaXphdGlv
+biBvZiBJVCByZXNvdXJjZXMuIERyaXZlIG91dCBjb3N0IGFuZCAKaW1wcm92ZSBzZXJ2aWNlIGRl
+bGl2ZXJ5LiBUYWtlIDUgbWludXRlcyB0byB1c2UgdGhpcyBTeXN0ZW1zIE9wdGltaXphdGlvbiAK
+U2VsZiBBc3Nlc3NtZW50LiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZG5sLzExNC81
+MTQ1MDA1NC8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

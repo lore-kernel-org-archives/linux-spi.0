@@ -1,38 +1,139 @@
-From: David Brown <davidb@codeaurora.org>
-Subject: Re: [PATCH v2] spi: QUP based bus driver for Qualcomm MSM chipsets
-Date: Mon, 12 Dec 2011 14:36:05 -0800
-Message-ID: <20111212223604.GA21861@huya.qualcomm.com>
-References: <y>
- <1321307907-31508-1-git-send-email-harinij@codeaurora.org>
- <20111207223757.GE3744@pengutronix.de>
- <4EE68003.1090802@codeaurora.org>
+From: Heiko =?iso-8859-15?q?St=FCbner?= <heiko@sntech.de>
+Subject: Re: [PATCH 2/2] spi/s3c64xx: Implement runtime PM support
+Date: Tue, 13 Dec 2011 15:49:44 +0100
+Message-ID: <201112131549.45384.heiko@sntech.de>
+References: <1323103813-5325-1-git-send-email-broonie@opensource.wolfsonmicro.com> <1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Wolfram Sang <w.sang@pengutronix.de>, grant.likely@secretlab.ca,
-	bryanh@codeaurora.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kheitke@codeaurora.org,
-	spi-devel-general@lists.sourceforge.net, davidb@codeaurora.org,
-	linux-arm-kernel@lists.infradead.org
-To: Harini Jayaraman <harinij@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <4EE68003.1090802@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
+Cc: Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1323103813-5325-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 12, 2011 at 03:28:19PM -0700, Harini Jayaraman wrote:
+Am Montag, 5. Dezember 2011, 17:50:13 schrieb Mark Brown:
+> Enable and disable the clocks to the SPI controller using runtime PM. This
+> serves the dual purpose of reducing power consumption a little and letting
+> the core know when the device is idle.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Heiko Stuebner <heiko@sntech.de
 
-> Thanks Wolfram for taking time to review this patch. I appreciate
-> your comments and will incorporate them in to the next version of
-> the patch.
-> ... 806 lines of excessive context ...
+Kgene and/or Grant: could we move this forward, as I would like to profit from 
+this change later on too :-)
 
-Please trim your replies to only include the parts you are replying
-to.
 
-Thanks,
-David
+Thanks
+Heiko
 
--- 
-Sent by an employee of the Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum.
+> ---
+>  drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 39 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index fef1c90..9031783 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/clk.h>
+>  #include <linux/dma-mapping.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/spi/spi.h>
+> 
+>  #include <mach/dma.h>
+> @@ -782,6 +783,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
+>  	while (!acquire_dma(sdd))
+>  		msleep(10);
+> 
+> +	pm_runtime_get_sync(&sdd->pdev->dev);
+> +
+>  	spin_lock_irqsave(&sdd->lock, flags);
+> 
+>  	while (!list_empty(&sdd->queue)
+> @@ -810,6 +813,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
+>  	/* Free DMA channels */
+>  	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
+>  	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
+> +
+> +	pm_runtime_put(&sdd->pdev->dev);
+>  }
+> 
+>  static int s3c64xx_spi_transfer(struct spi_device *spi,
+> @@ -892,6 +897,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+>  		goto setup_exit;
+>  	}
+> 
+> +	pm_runtime_get_sync(&sdd->pdev->dev);
+> +
+>  	/* Check if we can provide the requested rate */
+>  	if (!sci->clk_from_cmu) {
+>  		u32 psr, speed;
+> @@ -924,6 +931,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+>  			err = -EINVAL;
+>  	}
+> 
+> +	pm_runtime_put(&sdd->pdev->dev);
+> +
+>  setup_exit:
+> 
+>  	/* setup() returns with device de-selected */
+> @@ -1159,6 +1168,8 @@ static int __init s3c64xx_spi_probe(struct
+> platform_device *pdev) mem_res->end, mem_res->start,
+>  					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
+> 
+> +	pm_runtime_enable(&pdev->dev);
+> +
+>  	return 0;
+> 
+>  err9:
+> @@ -1192,6 +1203,8 @@ static int s3c64xx_spi_remove(struct platform_device
+> *pdev) struct resource	*mem_res;
+>  	unsigned long flags;
+> 
+> +	pm_runtime_disable(&pdev->dev);
+> +
+>  	spin_lock_irqsave(&sdd->lock, flags);
+>  	sdd->state |= SUSPND;
+>  	spin_unlock_irqrestore(&sdd->lock, flags);
+> @@ -1272,8 +1285,34 @@ static int s3c64xx_spi_resume(struct device *dev)
+>  }
+>  #endif /* CONFIG_PM */
+> 
+> +#ifdef CONFIG_PM_RUNTIME
+> +static int s3c64xx_spi_runtime_suspend(struct device *dev)
+> +{
+> +	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> +	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+> +
+> +	clk_disable(sdd->clk);
+> +	clk_disable(sdd->src_clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int s3c64xx_spi_runtime_resume(struct device *dev)
+> +{
+> +	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> +	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+> +
+> +	clk_enable(sdd->src_clk);
+> +	clk_enable(sdd->clk);
+> +
+> +	return 0;
+> +}
+> +#endif /* CONFIG_PM_RUNTIME */
+> +
+>  static struct dev_pm_ops s3c64xx_spi_pm = {
+>  	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
+> +	SET_RUNTIME_PM_OPS(s3c64xx_spi_runtime_suspend,
+> +			   s3c64xx_spi_runtime_resume, NULL)
+>  };
+> 
+>  static struct platform_driver s3c64xx_spi_driver = {

@@ -1,10 +1,9 @@
-From: "MyArtInvest.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: Achetez des parts d'oeuvre d'art contemporain
-Date: Wed, 14 Dec 2011 12:04:40 +0100 (CET)
-Message-ID: <3236305005.552794.1323860680838@p4enginex2.emv2.com>
-Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: "Osmond Wheeler" <dnemb002-59/9UTdFgWM1+H2MjNKeRw@public.gmane.org>
+Subject: [SPAM] Bank of America: Bill payment issue
+Date: Wed, 14 Dec 2011 08:29:00 -0600
+Message-ID: <002501ccba6c$d78a4860$2f535dce@BAT1JAX9251457oyy3g8>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,84 +17,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-       Si vous ne pouvez pas visualiser correctement ce mail, cliquez ici
 
-   Logo                                      DEVENEZ ACTIONNAIRE D'UNE OEUV=
-RE
-        HOME / OEUVRES / BOURSE D'=C9CHANGE / D=CAFISCALISATION / FORUM / C=
-ONTACT
-                                   Separateur
+To: 		Dear Bank of America customer
+Account: 	CHECKING
+Date: 		12/14/2011
 
-                           -  VU =C0 LA T=C9L=C9VISION !  -
+The most recent ALERTS for your account are now available to =
 
-My Art Invest vous propose d'acheter des parts d'*uvre A l'honneur !
-d'art contemporain. Que vous soyez un passionn* d'art  JEAN-MICHEL BASQUIAT=
- //ou d'investissement. Venez visitez notre site, car il  ROMA PAYS OFF
-vous int*ressera forcement.                            S=E9rigraphie en cou=
-leurs
-Comment *a marche ? Chaque *uvre est divis*e en 100    111 x 110 cm
-parts, vous pouvez acheter autant de part que vous le  Edition de 85 exempl=
-aires
-souhaitez. Et les revendre quand vous le souhaitez. Le Oeuvre num=E9rot=E9e,
-prix d'une part varie d'une *uvre * une autre mais     encadr=E9e et sign=
-=E9e
-reste tr*s accessible.                                 200 =A4 la part
-Cette bourse de l'art en ligne permet de revendre vos
-parts sur la plateforme d'*change pour r*cup*rer votre
-investissement avec sa plus value, d*s que la c*te de
-votre artiste grimpe. Investir dans le march* de l'art
-peut s'av*rer tr*s lucratif, avec tr*s peu d'apport au
-d*part.
-Nous vous proposons chaque semaine 3 * 5 *uvres
-diff*rentes d'artistes cot*s comme Jeff Koons, Takashi
-Murakami, Damien Hirst, Richard Orlinski. Des artistes
-contemporains et avant-gardistes que vous ne
-connaissez peut-*tre pas tous. Mais vous allez tr*s
-vite d*couvrir et investir dans leurs oeuvres.
+download online.
 
-Mr Brainwash                            Takashi Murakami
-Mr  Brainwash   (MBW),  pseudonyme   de Cette oeuvre  rend  hommage  au  c*=
-l*bre
-Thierry Guetta, est un artiste fran*ais artiste   fran*ais   Yves   Klein. =
-   La
-d'art  urbain  au  centre  du  film  de r*putation    de    Takashi    Mura=
-kami,
-Banksy, Faites le mur ! Quelques ventes mondialement connu, n'est plus *  f=
-aire,
-aux   ench*res   ont   d*j*   eu   lieu pr*sent dans les  plus grands mus*e=
-s  et
-concernant les  *uvres de  MBW qui  ont collections  il  demeure  un  tr*s =
-  bon
-atteint jusqu'* 120 000 dollars US.     investissement.
+Please follow the link to get ALERT message here:
+http://americanlawnandtreeservice.com/alert/id/MAOPO812934821/
 
-//JUXTAPOSE                             //HOMMAGE A IKB 1957
+Set up Alerts to be notified 5 days before your payment is due =
 
-S*rigraphie avec finition peinture * la Oeuvre sign*e et num*rot*e
-main                                    Edition 300 exemplaires
-Num*rot* et sign*                       Taille 74 x 53 cm
-96 x127 cm                              Oeuvre encadr*e
-30 * la part                            19,50 * la part
+to help avoid late payments. Sign in to Online Banking and select =
+
+the Alerts tab to activate the Credit Card Payment Due Alert.
+
+Want to confirm this email is from Bank of America? Sign in to =
+
+Online Banking and go to Alerts. The Alerts History lists the =
+
+Alerts sent to you in the past 60 days. =
 
 
-Ce  courriel  et  les  documents  qui  y  sont  attaches  peuvent  contenir=
-  des
-informations confidentielles. Si vous n'*tes pas le destinataire escompte, =
-merci
-d'en informer l'exp*diteur imm*diatement  et de d*truire  ce courriel ainsi=
-  que
-tous les documents  attaches de votre  syst*me informatique. Toute  divulga=
-tion,
-copie du pr*sent courriel et des documents attaches sans autorisation  pr*a=
-lable
-de son *metteur est interdite.
+Osmond Wheeler
 
-Nous sommes conscients et respectueux des lois sur la libert* informatique =
-et la
-confiance en l'*conomie num*rique. Si vous ne d*sirez plus recevoir de  cou=
-rrier
-*lectronique de notre part,  veuillez cliquer ICI. Votre  adresse email ne =
- sera
-jamais transmise ni utilis*e par des tiers.
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+Email preferences
+This is a service email from Bank of America. Please note that =
+
+you may receive service email in accordance with your Bank of =
+
+America service agreements, whether or not you elect to receive =
+
+promotional email.
+
+Contact us about this email
+Please do not reply to this email with sensitive information, =
+
+such as an account number, PIN, password, or Online ID. The security =
+
+and confidentiality of your personal information is important =
+
+to us. If you have any questions, please either call the toll-free =
+
+customer service phone number on your account statement or visit =
+
+the Bank of America website to access the Contact Us page, so =
+
+we can properly verify your identity.
+
+Privacy and security
+Keeping your financial information secure is one of our most =
+
+important responsibilities. For an explanation of how we manage =
+
+customer information, please visit the Bank of America website =
+
+to read our Privacy Policy. You can also learn how Bank of America =
+
+keeps your personal information secure and how you can help protect =
+
+yourself.
+
+Bank of America Email, 8th Floor-NC1-002-08-25, 101 South Tryon =
+
+St., Charlotte, NC 28255-0001
+
+Bank of America, N.A. Member FDIC. Equal Housing Lender
+A=BF 2011 Bank of America Corporation. All rights reserved.
+
+
 ---------------------------------------------------------------------------=
 ---
 Cloud Computing - Latest Buzzword or a Glimpse of the Future?

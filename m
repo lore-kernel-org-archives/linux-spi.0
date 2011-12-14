@@ -1,27 +1,25 @@
-From: Barry Song <Barry.Song@csr.com>
-Subject: [PATCH v2] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Wed, 14 Dec 2011 16:03:55 +0800
-Message-ID: <1323849835-17995-1-git-send-email-Barry.Song@csr.com>
+From: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Subject: [PATCH v2 RESEND] SPI: add CSR SiRFprimaII SPI controller driver
+Date: Wed, 14 Dec 2011 16:23:27 +0800
+Message-ID: <1323851007-29838-1-git-send-email-Barry.Song@csr.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Zhiwu Song <zhiwu.song@csr.com>, Barry Song <Baohua.Song@csr.com>,
- linux-arm-kernel@lists.infradead.org, workgroup.linux@csr.com,
- w.sang@pengutronix.de
-To: <grant.likely@secretlab.ca>, <spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Zhiwu Song <zhiwu.song@csr.com>
+From: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
 
 CSR SiRFprimaII has two SPIs (SPI0 and SPI1). Features:
 * Master and slave modes
@@ -33,19 +31,19 @@ CSR SiRFprimaII has two SPIs (SPI0 and SPI1). Features:
 * Configurable SPI_CLK phase
 * Configurable MSB/LSB first
 
-Signed-off-by: Zhiwu Song <zhiwu.song@csr.com>
-Signed-off-by: Barry Song <Baohua.Song@csr.com>
+Signed-off-by: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
 ---
  -v2:
- fix bundle of minor issues Wolfram Sang pointed out;
- use Wolfram Sang's new devm_request_mem_region api, refer to:
- https://lkml.org/lkml/2011/10/25/226
+  fix bundle of minor issues Wolfram Sang pointed out;
+  use Wolfram Sang's new devm_request_and_ioremap() api, refer to:
+    https://lkml.org/lkml/2011/10/25/226
 
  drivers/spi/Kconfig          |    7 +
  drivers/spi/Makefile         |    1 +
- drivers/spi/spi-sirf.c       |  629 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-sirf.c       |  627 ++++++++++++++++++++++++++++++++++++++++++
  include/linux/spi/spi-sirf.h |   27 ++
- 4 files changed, 664 insertions(+), 0 deletions(-)
+ 4 files changed, 662 insertions(+), 0 deletions(-)
  create mode 100644 drivers/spi/spi-sirf.c
  create mode 100644 include/linux/spi/spi-sirf.h
 
@@ -61,8 +59,8 @@ index a1fd73d..3dccd54 100644
 +        tristate "CSR SiRFprimaII SPI controller"
 +	depends on ARCH_PRIMA2
 +	select SPI_BITBANG
-+        help
-+          SPI driver for CSR SiRFprimaII SoCs
++	help
++	  SPI driver for CSR SiRFprimaII SoCs
 +
  config SPI_STMP3XXX
  	tristate "Freescale STMP37xx/378x SPI/SSP controller"
@@ -81,10 +79,10 @@ index 61c3261..e919846 100644
  obj-$(CONFIG_SPI_TI_SSP)		+= spi-ti-ssp.o
 diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
 new file mode 100644
-index 0000000..b904e4e
+index 0000000..fc38e97
 --- /dev/null
 +++ b/drivers/spi/spi-sirf.c
-@@ -0,0 +1,629 @@
+@@ -0,0 +1,627 @@
 +/*
 + * SPI bus driver for CSR SiRFprimaII
 + *
@@ -192,9 +190,9 @@ index 0000000..b904e4e
 +#define FIFO_START		BIT(1)
 +
 +/* FIFO CTRL */
-+#define FIFO_WIDTH_BYTE		(0<<0)
-+#define FIFO_WIDTH_WORD		(1<<0)
-+#define FIFO_WIDTH_DWORD	(2<<0)
++#define FIFO_WIDTH_BYTE		(0 << 0)
++#define FIFO_WIDTH_WORD		(1 << 0)
++#define FIFO_WIDTH_DWORD	(2 << 0)
 +
 +/* FIFO Status */
 +#define	FIFO_LEVEL_MASK		0xFF
@@ -203,12 +201,12 @@ index 0000000..b904e4e
 +
 +/* 256 bytes rx/tx FIFO */
 +#define FIFO_SIZE		256
-+#define DATA_FRAME_LEN_MAX	(64*1024)
++#define DATA_FRAME_LEN_MAX	(64 * 1024)
 +
-+#define FIFO_SC(x)		((x)&0x3F)
-+#define FIFO_LC(x)		(((x)&0x3F)<<10)
-+#define FIFO_HC(x)		(((x)&0x3F)<<20)
-+#define FIFO_THD(x)		(((x)&0xFF)<<2)
++#define FIFO_SC(x)		((x) & 0x3F)
++#define FIFO_LC(x)		(((x) & 0x3F) << 10)
++#define FIFO_HC(x)		(((x) & 0x3F) << 20)
++#define FIFO_THD(x)		(((x) & 0xFF) << 2)
 +
 +struct sirfsoc_spi {
 +	struct spi_bitbang bitbang;
@@ -307,7 +305,6 @@ index 0000000..b904e4e
 +	u32 spi_stat = readl(sspi->base + SPI_INT_STATUS);
 +	u32 word = 0;
 +
-+	/* clear intr status */
 +	writel(spi_stat, sspi->base + SPI_INT_STATUS);
 +
 +	/* Error Conditions */
@@ -563,8 +560,7 @@ index 0000000..b904e4e
 +		goto free_master;
 +	}
 +
-+	sspi->base = devm_ioremap(&dev->dev, mem_res->start, mem_res->end -
-+		mem_res->start + 1);
++	sspi->base = devm_request_and_ioremap(&dev->dev, mem_res);
 +	if (sspi->base == NULL) {
 +		dev_err(&dev->dev, "IO remap failed!\n");
 +		ret = -ENOMEM;
@@ -711,8 +707,8 @@ index 0000000..b904e4e
 +module_platform_driver(spi_sirfsoc_driver);
 +
 +MODULE_DESCRIPTION("SiRF SoC SPI master driver");
-+MODULE_AUTHOR("Zhiwu Song <Zhiwu.Song@csr.com>, "
-+		"Barry Song <Baohua.Song@csr.com>");
++MODULE_AUTHOR("Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>, "
++		"Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>");
 +MODULE_LICENSE("GPL v2");
 diff --git a/include/linux/spi/spi-sirf.h b/include/linux/spi/spi-sirf.h
 new file mode 100644
@@ -754,3 +750,9 @@ index 0000000..0e647b0
 
 Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
 More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
+
+------------------------------------------------------------------------------
+Cloud Computing - Latest Buzzword or a Glimpse of the Future?
+This paper surveys cloud computing today: What are the benefits? 
+Why are businesses embracing it? What are its payoffs and pitfalls?
+http://www.accelacomm.com/jaw/sdnl/114/51425149/

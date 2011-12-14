@@ -1,18 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2] spi: Fix device unregistration when unregistering the
-	bus master
-Date: Tue, 13 Dec 2011 16:45:20 -0700
-Message-ID: <20111213234520.GA24922@ponder.secretlab.ca>
-References: <CACRpkda685p+fe_P5Ww=4Qtup6qmCe_oqiwTqN+KAaAktPNKFw@mail.gmail.com>
-	<1323648906-24863-1-git-send-email-laurent.pinchart@ideasonboard.com>
+From: 15989349144-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Thu, 15 Dec 2011 00:20:50 +0800
+Message-ID: <E1RarZJ-0005uH-Qj@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1323648906-24863-1-git-send-email-laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,45 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 12, 2011 at 01:15:06AM +0100, Laurent Pinchart wrote:
-> Device are added as children of the bus master's parent device, but
-> spi_unregister_master() looks for devices to unregister in the bus
-> master's children. This results in the child devices not being
-> unregistered.
-> 
-> Fix this by registering devices as direct children of the bus master.
-> 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-> ---
->  drivers/spi/spi.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 2e13a14..b423fe9 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -318,7 +318,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
->  	}
->  
->  	spi->master = master;
-> -	spi->dev.parent = dev;
-> +	spi->dev.parent = &master->dev;
->  	spi->dev.bus = &spi_bus_type;
->  	spi->dev.release = spidev_release;
->  	device_initialize(&spi->dev);
-
-Yes, I agree and I think this is the correct fix.  However, I'd like
-to make sure it behaves correctly.  Can you test and confirm that
-with this patch in place and an spi_device in use (bound to a driver)
-that the kernel will either refuse to unbind the driver, or correctly
-release the spi_driver from the spi_device?
-
-Thanks,
-g.
-
-
-------------------------------------------------------------------------------
-Cloud Computing - Latest Buzzword or a Glimpse of the Future?
-This paper surveys cloud computing today: What are the benefits? 
-Why are businesses embracing it? What are its payoffs and pitfalls?
-http://www.accelacomm.com/jaw/sdnl/114/51425149/
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChos/Dw8XK0KGiyc+6o8rQoaK549bdytC1yLXYo6nT
+0MG8usO1xMbz0rXQzs/zoaPP1rG+uavLvtPQ0ruyv7fW16jTw8uwLS3GsbT6v6qjuwrI5zooMSm6
+o7nYu/XO7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oi3GsaO7CiAgICgzKbnjuObS
+taGiuPfA4Lf+zvHStbeiLS3GsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO
+0sGqz7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KQ2xvdWQgQ29tcHV0aW5nIC0gTGF0ZXN0IEJ1enp3b3JkIG9yIGEgR2xpbXBz
+ZSBvZiB0aGUgRnV0dXJlPwpUaGlzIHBhcGVyIHN1cnZleXMgY2xvdWQgY29tcHV0aW5nIHRvZGF5
+OiBXaGF0IGFyZSB0aGUgYmVuZWZpdHM/IApXaHkgYXJlIGJ1c2luZXNzZXMgZW1icmFjaW5nIGl0
+PyBXaGF0IGFyZSBpdHMgcGF5b2ZmcyBhbmQgcGl0ZmFsbHM/Cmh0dHA6Ly93d3cuYWNjZWxhY29t
+bS5jb20vamF3L3NkbmwvMTE0LzUxNDI1MTQ5LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
+Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

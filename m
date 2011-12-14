@@ -1,17 +1,13 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Wed, 14 Dec 2011 16:26:14 +0800
-Message-ID: <CAGsJ_4zDFWH2iVqV4_payr2TEYG5NhAuz2EbpBJn2Uq0uuJOSQ@mail.gmail.com>
-References: <1323849835-17995-1-git-send-email-Barry.Song@csr.com>
+From: "MyArtInvest.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: Achetez des parts d'oeuvre d'art contemporain
+Date: Wed, 14 Dec 2011 12:04:40 +0100 (CET)
+Message-ID: <3236305005.552794.1323860680838@p4enginex2.emv2.com>
+Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1323849835-17995-1-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,28 +18,88 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-MjAxMS8xMi8xNCBCYXJyeSBTb25nIDxCYXJyeS5Tb25nQGNzci5jb20+Ogo+IEZyb206IFpoaXd1
-IFNvbmcgPHpoaXd1LnNvbmdAY3NyLmNvbT4KPgo+IENTUiBTaVJGcHJpbWFJSSBoYXMgdHdvIFNQ
-SXMgKFNQSTAgYW5kIFNQSTEpLiBGZWF0dXJlczoKPiAqIE1hc3RlciBhbmQgc2xhdmUgbW9kZXMK
-PiAqIDgtLzEyLS8xNi0vMzItYml0IGRhdGEgdW5pdAo+ICogMjU2IGJ5dGVzIHJlY2VpdmUgZGF0
-YSBGSUZPIGFuZCAyNTYgYnl0ZXMgdHJhbnNtaXQgZGF0YSBGSUZPCj4gKiBNdWx0aS11bml0IGZy
-YW1lCj4gKiBDb25maWd1cmFibGUgU1BJX0VOIChjaGlwIHNlbGVjdCBwaW4pIGFjdGl2ZSBzdGF0
-ZQo+ICogQ29uZmlndXJhYmxlIFNQSV9DTEsgcG9sYXJpdHkKPiAqIENvbmZpZ3VyYWJsZSBTUElf
-Q0xLIHBoYXNlCj4gKiBDb25maWd1cmFibGUgTVNCL0xTQiBmaXJzdAo+Cj4gU2lnbmVkLW9mZi1i
-eTogWmhpd3UgU29uZyA8emhpd3Uuc29uZ0Bjc3IuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEJhcnJ5
-IFNvbmcgPEJhb2h1YS5Tb25nQGNzci5jb20+Cj4gLS0tCj4gwqAtdjI6Cj4gwqBmaXggYnVuZGxl
-IG9mIG1pbm9yIGlzc3VlcyBXb2xmcmFtIFNhbmcgcG9pbnRlZCBvdXQ7Cj4gwqB1c2UgV29sZnJh
-bSBTYW5nJ3MgbmV3IGRldm1fcmVxdWVzdF9tZW1fcmVnaW9uIGFwaSwgcmVmZXIgdG86Cj4gwqBo
-dHRwczovL2xrbWwub3JnL2xrbWwvMjAxMS8xMC8yNS8yMjYKCnNvcnJ5LiBkdWUgdG8gc29tZSBt
-aXNvcGVyYXRpb25zIGFuZCB0eXBvcyBpbiBpdCwgcGxzIGlnbm9yZSBpdCBhbmQgcmVhZAoiW1BB
-VENIIHYyIFJFU0VORF0gU1BJOiBhZGQgQ1NSIFNpUkZwcmltYUlJIFNQSSBjb250cm9sbGVyIGRy
-aXZlciIgIGluc3RlYWQuCgotYmFycnkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDbG91ZCBDb21w
-dXRpbmcgLSBMYXRlc3QgQnV6endvcmQgb3IgYSBHbGltcHNlIG9mIHRoZSBGdXR1cmU/ClRoaXMg
-cGFwZXIgc3VydmV5cyBjbG91ZCBjb21wdXRpbmcgdG9kYXk6IFdoYXQgYXJlIHRoZSBiZW5lZml0
-cz8gCldoeSBhcmUgYnVzaW5lc3NlcyBlbWJyYWNpbmcgaXQ/IFdoYXQgYXJlIGl0cyBwYXlvZmZz
-IGFuZCBwaXRmYWxscz8KaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2RubC8xMTQvNTE0
-MjUxNDkvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
-aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
-c3BpLWRldmVsLWdlbmVyYWwK
+       Si vous ne pouvez pas visualiser correctement ce mail, cliquez ici
+
+   Logo                                      DEVENEZ ACTIONNAIRE D'UNE OEUV=
+RE
+        HOME / OEUVRES / BOURSE D'=C9CHANGE / D=CAFISCALISATION / FORUM / C=
+ONTACT
+                                   Separateur
+
+                           -  VU =C0 LA T=C9L=C9VISION !  -
+
+My Art Invest vous propose d'acheter des parts d'*uvre A l'honneur !
+d'art contemporain. Que vous soyez un passionn* d'art  JEAN-MICHEL BASQUIAT=
+ //ou d'investissement. Venez visitez notre site, car il  ROMA PAYS OFF
+vous int*ressera forcement.                            S=E9rigraphie en cou=
+leurs
+Comment *a marche ? Chaque *uvre est divis*e en 100    111 x 110 cm
+parts, vous pouvez acheter autant de part que vous le  Edition de 85 exempl=
+aires
+souhaitez. Et les revendre quand vous le souhaitez. Le Oeuvre num=E9rot=E9e,
+prix d'une part varie d'une *uvre * une autre mais     encadr=E9e et sign=
+=E9e
+reste tr*s accessible.                                 200 =A4 la part
+Cette bourse de l'art en ligne permet de revendre vos
+parts sur la plateforme d'*change pour r*cup*rer votre
+investissement avec sa plus value, d*s que la c*te de
+votre artiste grimpe. Investir dans le march* de l'art
+peut s'av*rer tr*s lucratif, avec tr*s peu d'apport au
+d*part.
+Nous vous proposons chaque semaine 3 * 5 *uvres
+diff*rentes d'artistes cot*s comme Jeff Koons, Takashi
+Murakami, Damien Hirst, Richard Orlinski. Des artistes
+contemporains et avant-gardistes que vous ne
+connaissez peut-*tre pas tous. Mais vous allez tr*s
+vite d*couvrir et investir dans leurs oeuvres.
+
+Mr Brainwash                            Takashi Murakami
+Mr  Brainwash   (MBW),  pseudonyme   de Cette oeuvre  rend  hommage  au  c*=
+l*bre
+Thierry Guetta, est un artiste fran*ais artiste   fran*ais   Yves   Klein. =
+   La
+d'art  urbain  au  centre  du  film  de r*putation    de    Takashi    Mura=
+kami,
+Banksy, Faites le mur ! Quelques ventes mondialement connu, n'est plus *  f=
+aire,
+aux   ench*res   ont   d*j*   eu   lieu pr*sent dans les  plus grands mus*e=
+s  et
+concernant les  *uvres de  MBW qui  ont collections  il  demeure  un  tr*s =
+  bon
+atteint jusqu'* 120 000 dollars US.     investissement.
+
+//JUXTAPOSE                             //HOMMAGE A IKB 1957
+
+S*rigraphie avec finition peinture * la Oeuvre sign*e et num*rot*e
+main                                    Edition 300 exemplaires
+Num*rot* et sign*                       Taille 74 x 53 cm
+96 x127 cm                              Oeuvre encadr*e
+30 * la part                            19,50 * la part
+
+
+Ce  courriel  et  les  documents  qui  y  sont  attaches  peuvent  contenir=
+  des
+informations confidentielles. Si vous n'*tes pas le destinataire escompte, =
+merci
+d'en informer l'exp*diteur imm*diatement  et de d*truire  ce courriel ainsi=
+  que
+tous les documents  attaches de votre  syst*me informatique. Toute  divulga=
+tion,
+copie du pr*sent courriel et des documents attaches sans autorisation  pr*a=
+lable
+de son *metteur est interdite.
+
+Nous sommes conscients et respectueux des lois sur la libert* informatique =
+et la
+confiance en l'*conomie num*rique. Si vous ne d*sirez plus recevoir de  cou=
+rrier
+*lectronique de notre part,  veuillez cliquer ICI. Votre  adresse email ne =
+ sera
+jamais transmise ni utilis*e par des tiers.
+---------------------------------------------------------------------------=
+---
+Cloud Computing - Latest Buzzword or a Glimpse of the Future?
+This paper surveys cloud computing today: What are the benefits? =
+
+Why are businesses embracing it? What are its payoffs and pitfalls?
+http://www.accelacomm.com/jaw/sdnl/114/51425149/

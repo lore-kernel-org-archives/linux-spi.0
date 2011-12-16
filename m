@@ -1,11 +1,12 @@
-From: 15989349144-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Fri, 16 Dec 2011 13:41:03 +0800
-Message-ID: <E1RbQXe-0007bW-7Q@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Le Panel de Consommateurs <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Remportez 2 500 EUR
+Date: Fri, 16 Dec 2011 08:20:35 +0100 (CET)
+Message-ID: <3236305005.560810.1324020035604@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,19 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CgogICAgztK5q8u+1Nooye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQtci12KOp
-09DBvLrDtcTG89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwoKyOc6
-KDEpuqO52Lv1zu+9+L/avcm/7srpo7sKCiAgICgyKcbVzajJzMa3z/rK27eioarGsaO7CgogICAo
-Mym547jm0rWhorj3wOC3/s7x0rW3oqGqoarGsbXItcihowoKufO5q8u+yOfT0NDo0qqjrLu2063E
-+rXEwLS159PrztLBqs+1o7ogIAoKICAKCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0
-CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gV2luZG93cyBBenVyZSBMaXZlISAgVHVlc2Rh
-eSwgRGVjIDEzLCAyMDExCk1pY3Jvc29mdCBpcyBob2xkaW5nIGEgc3BlY2lhbCBMZWFybiBXaW5k
-b3dzIEF6dXJlIHRyYWluaW5nIGV2ZW50IGZvciAKZGV2ZWxvcGVycy4gSXQgd2lsbCBwcm92aWRl
-IGEgZ3JlYXQgd2F5IHRvIGxlYXJuIFdpbmRvd3MgQXp1cmUgYW5kIHdoYXQgaXQgCnByb3ZpZGVz
-LiBZb3UgY2FuIGF0dGVuZCB0aGUgZXZlbnQgYnkgd2F0Y2hpbmcgaXQgc3RyZWFtZWQgTElWRSBv
-bmxpbmUuICAKTGVhcm4gbW9yZSBhdCBodHRwOi8vcC5zZi5uZXQvc2Z1L21zLXdpbmRvd3NhenVy
-ZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
-ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
-ZXZlbC1nZW5lcmFsCg==
+    Si vous ne pouvez pas visualiser ce message, consulter notre version en
+                                     ligne.
+   [IMG]                    quelconsommateuretesvous.com
+                                 F=E9licitations !
+
+                 Vous avez =E9t=E9 s=E9lectionn=E9 pour participer =E0 une
+                   =E9tude intitul=E9e quelconsommateuretesvous.com
+                            vous permettant de gagner
+   [IMG]
+                               1 ch=E8que de 2 500=A4
+
+                         Pour valider votre inscription,
+                            r=E9pondez au questionnaire
+                       Cela vous prendra environ 5 minutes
+   [IMG] d*couvrez votre profil consommateur *      R*pondez aux questions
+         l'issu de cette enqu*te.
+        Vous recevez cet email de la part de Affilibaz. Vous avez la
+       possibilit* de vous retirer de notre liste d'envoi de mails par
+   l'intermediaire de ce raccourci. Affilibaz - 42 Rue de l'Aqueduc, 75010
+                                    Paris
+---------------------------------------------------------------------------=
+---
+Learn Windows Azure Live!  Tuesday, Dec 13, 2011
+Microsoft is holding a special Learn Windows Azure training event for =
+
+developers. It will provide a great way to learn Windows Azure and what it =
+
+provides. You can attend the event by watching it streamed LIVE online.  =
+
+Learn more at http://p.sf.net/sfu/ms-windowsazure

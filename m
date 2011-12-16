@@ -1,14 +1,11 @@
-From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: Convert to DEFINE_PCI_DEVICE_TABLE
-Date: Thu, 15 Dec 2011 08:11:25 +0800
-Message-ID: <1323907885.7773.0.camel@phoenix>
+From: 15989349144-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Fri, 16 Dec 2011 13:41:03 +0800
+Message-ID: <E1RbQXe-0007bW-7Q@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant, Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	Tomoya MORINAGA <tomoya-linux-ECg8zkTtlr0C6LszWs/t0g@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Sebastian
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,64 +17,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert static struct pci_device_id *[] to static DEFINE_PCI_DEVICE_TABLE
-tables.
-
-Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-dw-pci.c       |    2 +-
- drivers/spi/spi-pxa2xx-pci.c   |    2 +-
- drivers/spi/spi-topcliff-pch.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index f64250e..14f7cc9 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -149,7 +149,7 @@ static int spi_resume(struct pci_dev *pdev)
- #define spi_resume	NULL
- #endif
- 
--static const struct pci_device_id pci_ids[] __devinitdata = {
-+static DEFINE_PCI_DEVICE_TABLE(pci_ids) = {
- 	/* Intel MID platform SPI controller 0 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0800) },
- 	{},
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 8caa07d..3fb44af 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -151,7 +151,7 @@ static void __devexit ce4100_spi_remove(struct pci_dev *dev)
- 	kfree(spi_info);
- }
- 
--static struct pci_device_id ce4100_spi_devices[] __devinitdata = {
-+static DEFINE_PCI_DEVICE_TABLE(ce4100_spi_devices) = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2e6a) },
- 	{ },
- };
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 99ec279..17274a5 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -214,7 +214,7 @@ struct pch_pd_dev_save {
- 	struct pch_spi_board_data *board_dat;
- };
- 
--static struct pci_device_id pch_spi_pcidev_id[] = {
-+static DEFINE_PCI_DEVICE_TABLE(pch_spi_pcidev_id) = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
- 	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
- 	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7223_SPI), 1, },
--- 
-1.7.5.4
-
-
-
-
-------------------------------------------------------------------------------
-10 Tips for Better Server Consolidation
-Server virtualization is being driven by many needs.  
-But none more important than the need to reduce IT complexity 
-while improving strategic productivity.  Learn More! 
-http://www.accelacomm.com/jaw/sdnl/114/51507609/
+xPq6w6O6CgogICAgztK5q8u+1Nooye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQtci12KOp
+09DBvLrDtcTG89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwoKyOc6
+KDEpuqO52Lv1zu+9+L/avcm/7srpo7sKCiAgICgyKcbVzajJzMa3z/rK27eioarGsaO7CgogICAo
+Mym547jm0rWhorj3wOC3/s7x0rW3oqGqoarGsbXItcihowoKufO5q8u+yOfT0NDo0qqjrLu2063E
++rXEwLS159PrztLBqs+1o7ogIAoKICAKCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0
+CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gV2luZG93cyBBenVyZSBMaXZlISAgVHVlc2Rh
+eSwgRGVjIDEzLCAyMDExCk1pY3Jvc29mdCBpcyBob2xkaW5nIGEgc3BlY2lhbCBMZWFybiBXaW5k
+b3dzIEF6dXJlIHRyYWluaW5nIGV2ZW50IGZvciAKZGV2ZWxvcGVycy4gSXQgd2lsbCBwcm92aWRl
+IGEgZ3JlYXQgd2F5IHRvIGxlYXJuIFdpbmRvd3MgQXp1cmUgYW5kIHdoYXQgaXQgCnByb3ZpZGVz
+LiBZb3UgY2FuIGF0dGVuZCB0aGUgZXZlbnQgYnkgd2F0Y2hpbmcgaXQgc3RyZWFtZWQgTElWRSBv
+bmxpbmUuICAKTGVhcm4gbW9yZSBhdCBodHRwOi8vcC5zZi5uZXQvc2Z1L21zLXdpbmRvd3NhenVy
+ZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

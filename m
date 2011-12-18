@@ -1,12 +1,13 @@
-From: megafon-6blLBdKBZCGHXe+LvDLADg@public.gmane.org
-Subject: (Needed) Customer Service Reps
-Date: Sat, 17 Dec 2011 10:16:56 +0000
-Message-ID: <E1RbrK4-0007NI-GO@sfs-ml-3.v29.ch3.sourceforge.com>
+From: =?GB2312?B?x+vXqs/gudjIy9Sx?= <ty-D43PNBG5txk@public.gmane.org>
+Subject: [SPAM] spi-devel-general降低采购成本及供应商谈判
+Date: Sun, 18 Dec 2011 13:57:20 +0000 (UTC)
+Message-ID: <E1RcHDk-0004bn-5G@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Wed, 18 Dec 2013 20:53:58 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,55 +18,115 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Potential Hire,
-
-Our Human Resource Department has encountered your contact details for 
-potential employment. We currently have an open administrative position, 
-which will allow employees to work from their residence or personal office 
-(home). This position pays a standard salary of $2,000/month. Benefits are 
-available after a 3 month probationary period (medical/dental). 
-After 1 year of employment, employees will be available to advance to 
-available staff positions.
-
-Brief Duties:  Agents will support the company by handling transfers from 
-investors and clients located in their parent country. The agent receives 
-funds to their financial institution on behalf of the company. The agent 
-then proceeds to process the funds based on the company's procedures.
-
-Requirements:  
-- Mobile Phone (with sms)
-- Computer with internet (PC/Mac/or smart phone with internet)
-- Transportation
-- Bank Account (personal or business)
-- 21 years of age or older (or 18+ if mature)
-- Currently reside in the United States
-- Ability to follow directions well
-
-Apply:  Vacancies are limited while there is still time. Interested 
-applicants should respond immediately. Your response should include your 
-first and last name, full address, and your contact number. A member of our 
-staff will contact you with more information. Following directions are vital, 
-so ensure when responding, to include all requested information listed above. 
-If you do not adhere to this request, you may no longer be considered for 
-this position pasted this point. 
-
-Be sure to submit your reply to apjohnson106-EMRzualFZlQ@public.gmane.org
-
-This employment offer is very serious. If you are not genuinely interested 
-in beginning work immediately, do not respond. We utilize a Hiring Firm to 
-eliminate fictitious employment inquires. After it is confirmed that you are 
-sincerely interested in the available position, we will forward you our 
-company details. 
-
---
-Best Regards,
-April Johnson 
-Employment Services
-
-
-------------------------------------------------------------------------------
-Learn Windows Azure Live!  Tuesday, Dec 13, 2011
-Microsoft is holding a special Learn Windows Azure training event for 
-developers. It will provide a great way to learn Windows Azure and what it 
-provides. You can attend the event by watching it streamed LIVE online.  
-Learn more at http://p.sf.net/sfu/ms-windowsazure
+vbW1zbLJubqzybG+vLC5qdOmyczMuMXQvLzHyQoKMjAxMsTqMDHUwjUtNsjVICAgICCxsb6pCr/O
+s8y30dPDo7oyODAwo6iw/MCo18rBz7fRoaLO57LNvLDJz8/Czuey6LXjtcijqQq/zrPMttTP86O6
+ssm5utfcvOChor6twO2horLJubrW97ncoaLGt9bKsr/Dxb6twO2hormpu/XJzLiotbzKpqGiuLrU
+8LLJubq1xLix19y1yMjL1LEKCtfJ0a+157uwo7owMjAtODA1NjA2MzijuzAyMC04NTkxNzk0NdC7
+0KG94wogICAgICAgICAgMDc1NS02MTI4NzU1MiAgs8LQob3jo6iyu9Do0qq0y8Dg0MW8/sfru9i4
+tLXn08rWwWNoaW5hbW1jMjAxMEAxMjYuY29tzcvQxaOpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCtTayKvH8r3wyNrOo7v6u7e+s8/CLMTc1LShotStssTBz7zbuPG+rbbMxtq087f5z8K1
+97rzo6zT1rTzt/nJz9XHo6zKtczlvq28w86019+z9rXNw9SjrArK0LOh0OjH89LAvsnGo8jto6zV
+67bU1sbU7Mbz0rXD5sHZ18Wyv7fWx7/Kxrmp06bJzLzbuPHCorbPoaK5qbv11tzG2rOkoaK9u7v1
+sru8sMqxo6zWygrBv7K7zsi2qKOsuanTprK7xeTM16OstbzWwsixu/W78rv90bmjrLLJubqyv8PF
+s+W1sb7Iu/C206Osw6bT2rG8w/y1yM7KzOKjrM2ouf3F4NG1oaK08wrBv7C4wP231s72us3Eo8Ti
+zLjF0KOsyrnRp9SxwO294tW9wtSyybm6tcTJ7r/Muq3S5aOs1cbO1cjnus7TptPD1b3C1LLJubrL
+vM/ro6zTxbuvssm5ugrH/rXAo6yz5LfW1fu6z83isr/XytS0o6yyu7bPvbW1zbPJsb6ju7LJubrI
+57rOx7DG2rLO0+u5pLPMv6q3oqOszcay+sa3vfix6te8u6+jrLTyxsa5qQrTpsnMwqK2z7rNvbW1
+zbLJubqzybG+tNPJ6LzGv6rKvKO71fu6z8Tasr/Q6Mfz18rUtKOstPLGxrmp06bJzMKits+jrMq1
+0NDNs9K7ssm5uqOs1Pa80wqyybm6zLjF0LPvwuujrMzhyf2yybm6zLjF0Ly8xNyjrNLUtO+1vb21
+tc2yybm6s8mxvrrNzOHJ/cbz0rW6y9DEvrrV+cGm1q7Ev7XEoaMKCrbUvvi087bgyv3G89K1tvjR
+1KOsssm5utK71rHKx9Owz+y5q8u+s8m5prrN06/A+8Tcwaa1xLnYvPzS8svYoaPN4rK/ssm5utW8
+vt25q8u+t9HTw7XECtfutPOyv7fWo6zVvLmry77Gvb75t9HTw7XENjAltb04MCWho8v50tSjrLLJ
+ubq30dPDtcTC1M6ivbW1zb2rttS5q8u+tcTTr8D7svrJ+tbYtPPTsM/sCqGjyOe6ztTL08PT0NCn
+tcSyybm6s8mxvrncwO23vbeottTG89K1wLTLtdbBudjW2NKqo6zV4sPFv86zzMrHSFCyybm6vq3R
+6bXEuN+2yMWoy/WjrMv8CtfcveHBy0hQIMH5yq624MTqtcSyybm6udzA7cq1vPmjrM2ouf3J7sjr
+x7Oz9rXEsLjA/bfWzva6zcq11b2+rdHptcS31s/to6zaucrNs/a/xtGntcSyyQq5urncwO23vbeo
+o6yw79b6xvPStczhyf2yybm6tcTLrsa9oaMKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQq1
+2tK7vbIgssm5utPruanTpsG0udzA7bXEwO3E7goxLr661fm7t76zttTG89K1ssm5urXEzPTVvQoy
+Lsbz0rWyybm60+vG5Mv81rDE3NauvOS1xLnYz7UKMy66zs69ssm5utfczOWzybG+vLC05rv11tzX
+qsLKo78KNC6yybm6s8mxvrbUvq3TqtK1vKi1xNOwz+wKNS6007LJubq1vbmp06bJzLnYz7W53MDt
+CrXatv69siCyybm6st/C1NbGtqijrMirw+a9tbXNssm5urPJsb4KMS6yybm6u/mxvsS/serT67jE
+vfjEv7HqCjIuv827p9PruanTpsnMtcS147bUteO5tc2oxKPKvQozLrOjvPu1xLLJubqy38LUo6iw
+uMD9o6kKNC7C8qOowvSjqbe9ytCzobXYzru1xMXQtqjT68bAucAKNS65qdOmycy6z9S8tcTA4NDN
+CjYussm5us7vwc+1xEFCQ7fWzva3vbeoCjcuz7i31rLJubqy38LUo6y9tbXNssm5utfcs8mxvgpp
+LrXNs8mxvi+1zbfnz9XO79fKtcSyybm6st/C1AppaS61zbPJsb4vuN+358/Vzu/XyrXEssm5urLf
+wtQKaWlpLrjfs8mxvi+1zbfnz9XO79fKtcSyybm6st/C1Appdi6437PJsb4vuN+358/Vzu/XyrXE
+ssm5urLfwtQKOC6/vMLHuanTpsnMx9C7u7PJsb61xLLJubqy38LUCjkusLjA/aO6tuC80rmry761
+xLmp06bJzLncwO2y38LUCrXayP29siCyybm6vK/W0Luv0+vB97PMudzA7QoxLrLJubrW0Lv11LSj
+qFNvdXJjaW5no6m53MDt0+u2qbv1o6hPcmRlcmluZ6Op1rDE3LfWwOsKMi66z7jxuanTpsnMw/vC
+vKOoQVZMo6m53MDtCjMussm5usrayKjT67LJubq8r9bQu68KNC68r9bQssm5urXExKPKvdPrsLjA
+/Qo1LrLJubrWsNTwt9bBotSt1PIKNi7G89K1ssm5usH3s8y1xL2owaIKNy6wuMD9o7qyybm6wfez
+zNTZ1Oy1xLe9t6gKtdrLxL2yILmp06bJzMbAucDT69Gh1PG3vbeoCjEuu/XUtLncwO2jrbmp06bJ
+zLncwO3I/bK/x/qjusbAucChorzgv9jT68bAvNsKMi65qdOmyczGwLnA0+vRodTxtcTG37j2sr3W
+6AozLrmp06bJzMbAucC1xLLOv7yx6te8o6jKtcD9o6kKaS6+rdOq0+uyxs7xoaLWysG/udzA7aGi
+yfqy+rncwO2hos7vwc+53MDtCmlpLtbG1Oy7t76zoaK8vMr1xNzBpqGisvrP+sXkus+1yAo0LsbA
+ucCx6te8us28xrfWz7XNswo1Lrmp06bJzMbAucDW0LXE1sq7r7Hq17wKNi6yybm6t73KvbXE0aHU
+8aO61dCx6tPrsci827LJuboKNy6wuMD9t9bO9qO61dCx6rLJubrKtc7xCrXazuW9siC5qdOmycy1
+xNK1vKi53MDtCjEuuanTpsnMyNWzo7zgv9i1xNKqteMKMi65qdOmycy84Lncs8y2yLXE16q7uwoz
+Lsjnus684La9us24xMnGuanTpsnMsvrGt7XE1srBvwo0Lr27xtq53MDttcS3vbeoyrXO8Qo1Lrmp
+06bJzNK1vKjGwLzbtcTSqsvYCjYuu/nT2sbAvNux6te8tcTStbyoxsC827e9t6gKNy7KtcD9o7pC
+TlNGtcS5qdOmyczStbyoxsC827Hq17wKtdrB+b2yILLJubqzybG+t9bO9ryw0um827y8x8kKMS6y
+ybm6vNu48bXEubmzyQoyLsqyw7TKx7PJsb631s72o7+zybG+0qrL2NPrs8mxvrav0vIKMy7A+9PD
+uanTpsnMt9bP7rGovNsKNC7Tr8D7teO31s72t723qCBCcmVhay1FdmVuIFBvaW50CjUu0afPsMf6
+z9+8sNOm08MKNi6yybm6zLjF0Nf30rXSqsHsCjcuyOe6zsfJw+7A+9PDzLjF0LXEyrG7+go4LrLJ
+ubrMuMXQtcS55ruuo7rUpLLioaLRp8+woaK31s720+uy38LUCjkuyq649rOj08O1xMy4xdC8vMfJ
+0+vKtcD9CjEwLsPmttS5qdOmyczSqtXHvNu1xMfpvrAKtdrG372yILLJubq/4rTms8mxvr/Y1sYK
+MTEuuanP8raptaWyybm60+vP8r/itOayybm6o6hTVE8vU1RTo6kKMTIuv+K05sf9tq+1xLPJsb4K
+aS605rv1s9bT0LPJsb4KaWkusrmz5Lapu/WzybG+CmlpaS62z8HPy/DKp7PJsb4KMTMu1tzXqr/i
+tOa1xL/Y1sYKaS6+rbzDtqm79cX6wb9FT1HT67apu/W14wppaS6+q9Lmy7zP60pJVAppaWkuyrXA
+/aO6zu/Bz7+0sOXArbavz7XNswoxNC7TsM/ssLLIq7/itOa1xNLyy9gKaS63/s7xy67GvdPruanT
+psL61+PCygppaS7M4bjfvMa7rrXE17zIt9DUCmlpaS7L9bbMuanTpsnMtcS9u7v1xtoKaXYusLjA
+/bfWzvajusTEwO/J6NbDsLLIq7/itOajvwoxNS7O78HP0OjH87zGu65NUlAKMTYutefX07uvssm5
+urXEyrXKqQoxNy6/4rTmv9jWxrXEs6O8+7e9t6i+2cD9CrXasMu9siC5qdOmwbSyybm60K3NrNPr
+Vk1JCjE4Lrmp06bBtLncwO21xMH3s8zT69awxNwKMTkuuanTpsnMudzA7b/itOZWTUkKMjAusLjA
+/bfWzvajulZNSdbQ0MS1xNTL1/fB97PMCjIxLsq1yqlWTUm21Lmp0OjLq7e9tcS6w7SmCjIyLlZN
+SbXEz9bXtNPrzvPH+AoyMy6wuMD9o7q5qdOmycyyybm60K3NrLzGu64KPT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT0KyrfOxNTCz8jJ+gpNci5zaGk6IMflu6q089GnuaTRp8u2yr/Rp867oaPD
+wLn6zu/B97ncwO3Qrbvhu+HUsaOsINT41NpJQk25q8u+uaTX97bgxOqjrDIwMDDE6gq808jrSFAt
+u93G1bmry76jrLTTysLG89K1udzA7c+1zbMoRVJQKbrNuanTpsG0udzA7ShTQ00ptcS94r72t72w
+uMnovMahosq1yqm6zcbz0rXXydGvoaMKyrfPyMn61PjOqsr9sNm80taqw/u1xMbz0rXM4bmpxeDR
+taGiuanTpsG0udzA7aGizu/B97ncwO2horLJubq53MDtoaLG89K10MXPoruv0+vB97PM1tgK1+mj
+rLvxtcO547e6tcS6w8bAoaMKoaEgIDE5OTbE6tbBMjAwMMTqyrfPyMn6vNPI67n6vMrJzNK1u/rG
+96OoSUJNo6m5q8u+o6y008rCxvPStbncwO3Ptc2zKEVSUCm6zbmp06bBtLncwO0KKFNDTSm1xL3i
+vva3vbC4yei8xqGiyrXKqbrNxvPStdfJ0a+5pNf3o6zU+M6qtuC80rn6xNrWqsP7tcTG89K1zOG5
+qbncwO3XydGvoaKyybm6zu/B9wq6zbmp06bBtLncwO3F4NG1oaK159fTyczO8b3ivva3vbC4tci3
+/s7xoaMyMDAwxOrWwb3xvNPI69bQufq73cbVuavLvqOstaPIzrTz1sbU7NK10+u5qQrTpsG0udzA
+7dfJ0a/X3Lzgo6zOqr/Nu6fM4bmpIEVSUKGiuanTpsG0oaLO78H3udzA7brN0K3NrMnMzvG1yLe9
+w+a1xNfJ0a+6zb3ivva3vbC4yrXKqQq3/s7xo6yw/MCowarP67yvzcW1xLmp06bBtLncwO2horqj
+tvu8r83Fzu/B97ncwO2hosnPuqOxtLb7Q1BD0K3NrLL6xrfJ6LzGoaLEybCuy7m31s/6Cs7vwfe5
+3MDtoaLW0M3i1Mu6o9TL0rXO8cH3s8zTxbuvoaKxsb6p0r3SqbnJt93O78H31tDQxMnovMa1yLXI
+oaMyMDAxxOq78bXD1tC5+rvdxtW93LP2Crmxz9e9saOovfDKqL2xo6mhowrKt8/IyfrKx9bQufq7
+3cbVuavLvrncwO3Rp9S6ytrIqL2yyqahosflu6q089Gnzu/B99PruanTpsG0udzA7bjfvLa5y87K
+oaKxsb6ptPPRp7LJubrT6wq5qdOmwbS85tawucvOyr2yyqajrNT4zqrK/bDZvNLG89K1xeDRtcbz
+0rXO78H3udzA7aGissm5urncwO2hormp06bBtLncwO26zcbz0rXB97PM1tjX6Qq3vcPm0unM4qOs
+u/G1w7njt7q1xMjPv8m6zbrDxsCho9b30qrK3NG1v827p9PQo7rJz7qjyP3B4rXnzN2hotbQ0MvN
+qNG2oaLBqs/rvK/NxaGi1tC5+grN4tTLoaKxpsm9uNbM+qGizKvUrbjWzPqhornj1t2xvszvoaLB
+6NTGvK/NxaOoxvuztcXkvP6jqaGixbW7+dHHoaLB4efnwtbMpbXIoaMKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KxeDRtbvY1rSx7SCjqLTLse24tNbG09DQp6OptKvV5tbBo7owMjAt
+NjIzNTExNTYKCs7StaXOu7myo9+j36PfIMjLsajD+7LOvNMgMjAxMMTqX19fX19fX19fX18g1Nog
+X19fX19fIL7ZsOy1xCC9tbXNssm5urPJsb68sLmp06bJzMy4xdC8vMfJo7sKCrWlzrvD+7PGo7qj
+36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pfo9+j36Pf
+o9+j36Pfo9+j36Pfo9+j36PfCgrF4NG1warPtcjLo7qj36Pfo9+j36Pfo9+j36Pfo98gwarPtbXn
+u7CjuqPfo9+j36Pfo9+j36Pfo9+j3yDBqs+1tKvV5qO6o9+j36Pfo9+j36Pfo9+j3yAKCtLGtq+1
+57uwo7qj36Pfo9+j36Pfo9+j36Pfo9+j36Pfo98gtefX09PKz+SjuqPfo9+j36Pfo9+j36Pfo9+j
+36Pfo9+j36Pfo9+j36Pfo9+j3yAKCrLOvNPIy8r9o7qj36Pfo9+j3yDIyyC30dPD19y8xqO6o9+j
+36Pfo9+j36PfINSqCgqyziC74SDIy6O6o9+j36Pfo9+j36Pfo9+j3yDL+cjO1rDO8aO6o9+j36Pf
+o9+j36Pfo9+j36Pfo98g0sa2r7Xnu7CjuqPfo9+j36Pfo9+j36Pfo9+j3yAKCrLOILvhIMjLo7qj
+36Pfo9+j36Pfo9+j36PfIMv5yM7WsM7xo7qj36Pfo9+j36Pfo9+j36Pfo9+j3yDSxravtee7sKO6
+o9+j36Pfo9+j36Pfo9+j36PfIAoKss4gu+EgyMujuqPfo9+j36Pfo9+j36Pfo98gy/nIztawzvGj
+uqPfo9+j36Pfo9+j36Pfo9+j36PfINLGtq+157uwo7qj36Pfo9+j36Pfo9+j36Pfo98gCgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gV2luZG93cyBBenVyZSBMaXZlISAgVHVlc2RheSwgRGVj
+IDEzLCAyMDExCk1pY3Jvc29mdCBpcyBob2xkaW5nIGEgc3BlY2lhbCBMZWFybiBXaW5kb3dzIEF6
+dXJlIHRyYWluaW5nIGV2ZW50IGZvciAKZGV2ZWxvcGVycy4gSXQgd2lsbCBwcm92aWRlIGEgZ3Jl
+YXQgd2F5IHRvIGxlYXJuIFdpbmRvd3MgQXp1cmUgYW5kIHdoYXQgaXQgCnByb3ZpZGVzLiBZb3Ug
+Y2FuIGF0dGVuZCB0aGUgZXZlbnQgYnkgd2F0Y2hpbmcgaXQgc3RyZWFtZWQgTElWRSBvbmxpbmUu
+ICAKTGVhcm4gbW9yZSBhdCBodHRwOi8vcC5zZi5uZXQvc2Z1L21zLXdpbmRvd3NhenVyZQpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

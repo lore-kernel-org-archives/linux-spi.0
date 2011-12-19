@@ -1,27 +1,48 @@
-From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Mobile Messaging Market 2011-2016 (Report)
-Date: Mon, 19 Dec 2011 03:11:29 +0000
-Message-ID: <20111219031129.-1968133936@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: Dave Martin <dave.martin@linaro.org>
+Subject: Re: [GIT PULL] ARM: amba: Enable module alias autogeneration for
+ AMBA drivers
+Date: Mon, 19 Dec 2011 13:24:09 +0000
+Message-ID: <20111219132409.GB2031@linaro.org>
+References: <20111206151541.GA13774@linaro.org>
+ <1321961573-4562-1-git-send-email-dave.martin@linaro.org>
+ <20111206155911.GA11902@mail.gnudd.com>
+ <20111206161815.GD13769@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux@arm.linux.org.uk, patches@linaro.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	alan@linux.intel.com, a.zummo@towertech.it,
+	alsa-devel@alsa-project.org, cjb@laptop.org,
+	dan.j.williams@intel.com, dmitry.torokhov@gmail.com,
+	grant.likely@secretlab.ca, perex@perex.cz,
+	jassisinghbrar@gmail.com, julia@diku.dk, linus.walleij@linaro.org,
+	linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, lethal@linux-sh.org,
+	Pawel.Moll@arm.com, rtc-linux@googlegroups.com,
+	spi-devel-general@lists.sourceforge.net, tiwai@suse.de,
+	vinod.koul@intel.com, wim@iguana.be
+To: Alessandro Rubini <rubini@unipv.it>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20111206161815.GD13769@linaro.org>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Mobile Messaging Market 2011-2016 (Report)
-------------------------------------------------------------------------------
-Learn Windows Azure Live!  Tuesday, Dec 13, 2011
-Microsoft is holding a special Learn Windows Azure training event for 
-developers. It will provide a great way to learn Windows Azure and what it 
-provides. You can attend the event by watching it streamed LIVE online.  
-Learn more at http://p.sf.net/sfu/ms-windowsazure
+Hi Russell,
+
+This one isn't urgent, but I'm not seeing the amba modalias patches
+anywhere yet.  Did you have any outstanding concerns which need to be
+resolved?
+
+If you can suggest when/if these are likely to merge that would be great.
+
+Since Alessandro is now expecting to have to rebase on top of the amba
+additions anyway, we shouldn't need to worry about conflicting with his
+patches.
+
+Of course, if you've already merged these somewhere, then there's no
+problem.
+
+Cheers
+---Dave

@@ -1,45 +1,53 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [GIT PULL] ARM: amba: Enable module alias autogeneration for
-	AMBA drivers
-Date: Mon, 19 Dec 2011 21:39:42 +0000
-Message-ID: <20111219213942.GM14542@n2100.arm.linux.org.uk>
-References: <20111206151541.GA13774@linaro.org> <1321961573-4562-1-git-send-email-dave.martin@linaro.org> <20111206155911.GA11902@mail.gnudd.com> <20111206161815.GD13769@linaro.org> <20111219132409.GB2031@linaro.org>
+From: =?GB2312?B?zuLF4ND9?= <dhlrosario-rqnLyWh8XQhM3YmQoIpPTg@public.gmane.org>
+Subject: =?GB2312?B?ZzZ5NzK9tbXN08O5pLeowsm358/Vus2zybG+tcjOyszi?=
+Date: Tue, 20 Dec 2011 15:20:13 +0800
+Message-ID: <201112201520133082756@infovia.com.ar>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Alessandro Rubini <rubini@unipv.it>, patches@linaro.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	alan@linux.intel.com, a.zummo@towertech.it,
-	alsa-devel@alsa-project.org, cjb@laptop.org,
-	dan.j.williams@intel.com, dmitry.torokhov@gmail.com,
-	grant.likely@secretlab.ca, perex@perex.cz,
-	jassisinghbrar@gmail.com, julia@diku.dk, linus.walleij@linaro.org,
-	linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, lethal@linux-sh.org,
-	Pawel.Moll@arm.com, rtc-linux@googlegroups.com,
-	spi-devel-general@lists.sourceforge.net, tiwai@suse.de,
-	vinod.koul@intel.com, wim@iguana.be
-To: Dave Martin <dave.martin@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20111219132409.GB2031@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="----=hlb636_4650_190174021.549562"
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Dec 19, 2011 at 01:24:09PM +0000, Dave Martin wrote:
-> Hi Russell,
-> 
-> This one isn't urgent, but I'm not seeing the amba modalias patches
-> anywhere yet.  Did you have any outstanding concerns which need to be
-> resolved?
-> 
-> If you can suggest when/if these are likely to merge that would be great.
-> 
-> Since Alessandro is now expecting to have to rebase on top of the amba
-> additions anyway, we shouldn't need to worry about conflicting with his
-> patches.
-> 
-> Of course, if you've already merged these somewhere, then there's no
-> problem.
+This is a multi-part message in MIME format.
 
-I have pulled it, I just haven't merged it in anywhere yet.
+------=hlb636_4650_190174021.549562
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+
+uL12ZHVyeW8NCg0KDQq55re208O5pLncwO0svPXJ2bK7sdjSqrXEs8mxvtans/Ysyse547Tz08PI
+y7WlzrvGyNTaw7y93rXEzsrM4i4NCg0KDQo5ODUzOTG8/g==
+
+
+------=hlb636_4650_190174021.549562
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Write once. Port to many.
+Get the SDK and tools to simplify cross-platform app development. Create 
+new or port existing apps to sell to consumers worldwide. Explore the 
+Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
+http://p.sf.net/sfu/intel-appdev
+------=hlb636_4650_190174021.549562
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=hlb636_4650_190174021.549562--

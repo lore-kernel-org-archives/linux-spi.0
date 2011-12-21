@@ -1,13 +1,13 @@
-From: Promorama <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: URGENT NOEL : Livraison en 24h
-Date: Wed, 21 Dec 2011 13:36:28 +0100 (CET)
-Message-ID: <3236305005.577961.1324470988316@p4enginex1.emv2.com>
-Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: "Finanziamenti&Prestiti" <testrestltd-IWqWACnzNjyonA0d6jMUrA@public.gmane.org>
+Subject: New message
+Date: Wed, 21 Dec 2011 17:18:29 +0100
+Message-ID: <E1RdOsW-0000qQ-DJ@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,15 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-       Si vous ne pouvez pas visualiser correctement ce mail, cliquez ici
-[IMG]
-[IMG]
-[IMG]
-[IMG]
-[IMG]
-[IMG] PROMORAMA vous garantit une livraison en 24h aux prix les plus bas ! [IMG]
-[IMG]
-                Pour ne plus recevoir de newsletter, cliquez ici
+Finanziamenti&Prestiti
+Assistenza alle Aziende in crisi
+Soluzioni per l'Azienda e la Famiglia
+Consulta il sito
+Finanziamenti&Prestiti
+
+
+per non ricevere ulteriori news clicchi qui
+
 ------------------------------------------------------------------------------
 Write once. Port to many.
 Get the SDK and tools to simplify cross-platform app development. Create 

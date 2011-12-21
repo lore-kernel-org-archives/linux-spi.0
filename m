@@ -1,7 +1,8 @@
-From: "Katie Hale" <mbankston-QWnz5OdRUAzQXOPxS62xeg@public.gmane.org>
-Subject: [SPAM] Attention! Changes in FDIC policy
-Date: Wed, 21 Dec 2011 17:19:58 +0700
-Message-ID: <002f01ccbfca$81f0e950$a419e17b@MICROSOF358E82w7c>
+From: Promorama <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: URGENT NOEL : Livraison en 24h
+Date: Wed, 21 Dec 2011 13:36:28 +0100 (CET)
+Message-ID: <3236305005.577961.1324470988316@p4enginex1.emv2.com>
+Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,27 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Attn: Owner/Manager
-
-Herewith we would like to inform you about the latest alterations in the 
-FDIC insurance coverage. 
-
-During the period from December 31, 2010 to December 31, 2012 all funds in a 
-"noninterest-bearing transaction account" are insured in full by the FDIC. 
-Please note, that this arrangement is temporary and in addition to the 
-FDIC's basic deposit insurance regulations.
-
-The term "noninterest-bearing transaction account" includes a usual checking 
-account or demand deposit account on which no interest is paid. 
-
-To get more details of this temporary FDIC arrangement, please view the link 
-below: http://www.viduasa.com/932c34/index.html
-
-Yours sincerely,
-Katie Hale
-FDIC
-
-
+       Si vous ne pouvez pas visualiser correctement ce mail, cliquez ici
+[IMG]
+[IMG]
+[IMG]
+[IMG]
+[IMG]
+[IMG] PROMORAMA vous garantit une livraison en 24h aux prix les plus bas ! [IMG]
+[IMG]
+                Pour ne plus recevoir de newsletter, cliquez ici
 ------------------------------------------------------------------------------
 Write once. Port to many.
 Get the SDK and tools to simplify cross-platform app development. Create 

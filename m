@@ -1,31 +1,61 @@
-From: 15817302760-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Thu, 22 Dec 2011 19:10:40 +0800
-Message-ID: <E1RdgXt-0006EH-8x@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Dave Martin <dave.martin@linaro.org>
+Subject: Re: [GIT PULL] ARM: amba: Enable module alias autogeneration for
+ AMBA drivers
+Date: Thu, 22 Dec 2011 11:21:25 +0000
+Message-ID: <20111222112125.GA2573@localhost>
+References: <20111206151541.GA13774@linaro.org>
+ <1321961573-4562-1-git-send-email-dave.martin@linaro.org>
+ <20111206155911.GA11902@mail.gnudd.com>
+ <20111206161815.GD13769@linaro.org>
+ <20111219132409.GB2031@linaro.org>
+ <20111219213942.GM14542@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Alessandro Rubini <rubini@unipv.it>, patches@linaro.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	alan@linux.intel.com, a.zummo@towertech.it,
+	alsa-devel@alsa-project.org, cjb@laptop.org,
+	dan.j.williams@intel.com, dmitry.torokhov@gmail.com,
+	grant.likely@secretlab.ca, perex@perex.cz,
+	jassisinghbrar@gmail.com, julia@diku.dk, linus.walleij@linaro.org,
+	linux-fbdev@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, lethal@linux-sh.org,
+	Pawel.Moll@arm.com, rtc-linux@googlegroups.com,
+	spi-devel-general@lists.sourceforge.net, tiwai@suse.de,
+	vinod.koul@intel.com, wim@iguana.be
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-input-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20111219213942.GM14542@n2100.arm.linux.org.uk>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6KhqqGqxrEvtPq/qqO7CrnzuavLvsjn09DQ
-6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAoKuLrU8MjLo7rVxc/IyfooMCkxNTgxNzMwMjc2
-MAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCldyaXRlIG9uY2UuIFBvcnQgdG8gbWFueS4KR2V0IHRo
-ZSBTREsgYW5kIHRvb2xzIHRvIHNpbXBsaWZ5IGNyb3NzLXBsYXRmb3JtIGFwcCBkZXZlbG9wbWVu
-dC4gQ3JlYXRlIApuZXcgb3IgcG9ydCBleGlzdGluZyBhcHBzIHRvIHNlbGwgdG8gY29uc3VtZXJz
-IHdvcmxkd2lkZS4gRXhwbG9yZSB0aGUgCkludGVsIEFwcFVwU00gcHJvZ3JhbSBkZXZlbG9wZXIg
-b3Bwb3J0dW5pdHkuIGFwcGRldmVsb3Blci5pbnRlbC5jb20vam9pbgpodHRwOi8vcC5zZi5uZXQv
-c2Z1L2ludGVsLWFwcGRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Mon, Dec 19, 2011 at 09:39:42PM +0000, Russell King - ARM Linux wrote:
+> On Mon, Dec 19, 2011 at 01:24:09PM +0000, Dave Martin wrote:
+> > Hi Russell,
+> > 
+> > This one isn't urgent, but I'm not seeing the amba modalias patches
+> > anywhere yet.  Did you have any outstanding concerns which need to be
+> > resolved?
+> > 
+> > If you can suggest when/if these are likely to merge that would be great.
+> > 
+> > Since Alessandro is now expecting to have to rebase on top of the amba
+> > additions anyway, we shouldn't need to worry about conflicting with his
+> > patches.
+> > 
+> > Of course, if you've already merged these somewhere, then there's no
+> > problem.
+> 
+> I have pulled it, I just haven't merged it in anywhere yet.
+
+OK, great -- thanks.
+
+I wasn't too familiar with the procedure, so I just wanted
+to be sure that I hadn't done things wrong.
+
+Have a good Christmas in the meantime!
+
+Cheers
+---Dave

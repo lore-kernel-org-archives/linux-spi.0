@@ -1,11 +1,11 @@
-From: "Integrative Medicine Conference" <paragon-7e3lAeKKTbWZuzBka8ofvg@public.gmane.org>
-Subject: Seasons Greetings from Integrative Medicine 2012
-Date: 24 Dec 2011 03:34:24 +0200
-Message-ID: <E1ReGTV-0000Aq-Ui@sfs-ml-2.v29.ch3.sourceforge.com>
-Reply-To: integrativemed2012-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Jerry Burke<jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Connected Home Report 2011-2016: A paradigm shift in the way we live
+Date: Sun, 25 Dec 2011 00:41:28 +0000
+Message-ID: <20111225004128.-1458746436@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,40 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-DQpJZiB5b3UgaGF2ZSB0cm91YmxlIHJlYWRpbmcgdGhpcyBuZXdzbGV0dGVyLCB2aWV3IHRoZSB3
-ZWIgdmVyc2lvbiBoZXJlDQoNCmh0dHA6Ly9pdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmls
-L3IuYXNoeD9oPWh0dHAlM2ElMmYlMmZpdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmlsJTJm
-c2VuZGluZyUyZndlYnBhZ2UuYXNweCUzZmQlM2QxMDI1NzA5MzU3OTk5NjczNDk4NzY0ODA2NTcz
-OTI3OTYzNTEwNyUyNnclM2QxJTI2YXIlM2QwJTI2aXNEZSUzZFRydWUlMjZyZmwlM2RGYWxzZSUy
-NnBsJTNkMSUyNmwlM2QxMTgzMTI5JTI2c2xsJTNkMiUyNm1sdCUzZFRydWUmbD0xMTgzMTI5JmQ9
-MTAyNTcwOTM1Nzk5OTY3MzQ5ODc2NDgwNjU3MzkyNzk2MzUxMDdUaGUgSmVydXNhbGVtIEludGVy
-bmF0aW9uYWwgQ29uZmVyZW5jZSBvbkludGVncmF0aXZlIE1lZGljaW5lTWF5IDEzLTE1LCAyMDEy
-LCBKZXJ1c2FsZW1BYnN0cmFjdCBTdWJtaXNzaW9uIFRvcGljc1Byb2dyYW0gYXQgYSBHbGFuY2VS
-ZWdpc3RyYXRpb25TZWxlY3QgeW91ciBDb25mZXJlbmNlIFJlZ2lzdHJhdGlvbiwgQWNjb21tb2Rh
-dGlvbiBhbmQgVG91cnMgcGFja2FnZSwgYW5kIHRoZW7igKYganVzdCBib29rIHlvdXIgZmxpZ2h0
-IUJvb2sgYmVmb3JlIEZlYnJ1YXJ5IDI1dGggLCAyMDEyIGZvciBlYXJseSBib29raW5nIGZlZXMg
-UmVnaXN0cmF0aW9uIFBhY2thZ2VzVGhlIEludGVybmF0aW9uYWwgQ29uZ3Jlc3Mgb24gSW50ZWdy
-YXRpdmUgTWVkaWNpbmUgQ29uZmVyZW5jZSBicmluZ3MgdG9nZXRoZXIgcGh5c2ljaWFucyBhbmQg
-dGhlcmFwaXN0cyBmcm9tIGFsbCBvdmVyIHRoZSB3b3JsZCBmb3IgYSBzY2llbnRpZmljIG1lZXRp
-bmcgYW5kIGRpYWxvZyBvbiB0aGUgbWV0aG9kcywgdGVjaG5pcXVlcyBhbmQgcHJvZ3Jlc3Mgb2Yg
-aW50ZWdyYXRpdmUgbWVkaWNpbmUuVGhlIGNvbmZlcmVuY2Ugd2lsbCBmb2N1cyBvbiB2YXJpb3Vz
-IGZpZWxkcyBvZiBJbnRlZ3JhdGl2ZSBNZWRpY2luZSBzdWNoIGFzOiBDb21wbGVtZW50YXJ5IGFu
-ZCBBbHRlcm5hdGl2ZSBNZWRpY2luZSwgTmF0dXJvcGF0aHksIENoaXJvcHJhY3RpYyBNZWRpY2lu
-ZSwgSGVyYmFsaXNtLCBUcmFkaXRpb25hbCBDaGluZXNlIE1lZGljaW5lLCBBeXVydmVkYSwgTWVk
-aXRhdGlvbiwgWW9nYSwgQmlvZmVlZGJhY2ssIEh5cG5vc2lzLCBIb21lb3BhdGh5LCBBY3VwdW5j
-dHVyZSwgTnV0cml0aW9uYWwtQmFzZWQgVGhlcmFwaWVzIGFuZCBtYW55IG1vcmUuV2UgaW52aXRl
-IHlvdSB0byBzdWJtaXTCoHlvdXIgYWJzdHJhY3QgZm9yIHRoZSByZXZpZXcgb2YgdGhlIFNjaWVu
-dGlmaWMgQ29tbWl0dGVlLA0KY2xpY2sgaGVyZSB0byBzdWJtaXRTZWFzb24ncyBHcmVldGluZ3Mg
-DQpmcm9tIHRoZSBIb2x5IExhbmRDb25ncmVzcyBTZWNyZXRhcmlhdDogUGFyYWdvbi1Db252ZW50
-aW9ucw0KIA0KSWYgeW91IHByZWZlciBub3QgdG8gcmVjZWl2ZSBmdXR1cmUgZW1haWwgY29tbXVu
-aWNhdGlvbnMgZnJvbSB1cywgcGxlYXNlIHVuc3Vic2NyaWJlIGhlcmVUaGlzIG5ld3NsZXR0ZXIg
-d2FzIHNlbnQgdXNpbmcgSVRuZXdzbGV0dGVyCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpXcml0ZSBv
-bmNlLiBQb3J0IHRvIG1hbnkuCkdldCB0aGUgU0RLIGFuZCB0b29scyB0byBzaW1wbGlmeSBjcm9z
-cy1wbGF0Zm9ybSBhcHAgZGV2ZWxvcG1lbnQuIENyZWF0ZSAKbmV3IG9yIHBvcnQgZXhpc3Rpbmcg
-YXBwcyB0byBzZWxsIHRvIGNvbnN1bWVycyB3b3JsZHdpZGUuIEV4cGxvcmUgdGhlIApJbnRlbCBB
-cHBVcFNNIHByb2dyYW0gZGV2ZWxvcGVyIG9wcG9ydHVuaXR5LiBhcHBkZXZlbG9wZXIuaW50ZWwu
-Y29tL2pvaW4KaHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbC1hcHBkZXYKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Connected Home Report 2011-2016: A paradigm shift in the way we live
+------------------------------------------------------------------------------
+Write once. Port to many.
+Get the SDK and tools to simplify cross-platform app development. Create 
+new or port existing apps to sell to consumers worldwide. Explore the 
+Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
+http://p.sf.net/sfu/intel-appdev

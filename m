@@ -1,12 +1,12 @@
-From: "Invitation de Marie" <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
-Subject: Marie vous a laisser un message
-Date: Sun, 25 Dec 2011 23:38:54 +0100
-Message-ID: <20111225223854.1AB73FCA41F@user-0abd738fba>
-Reply-To: Invitation de Marie <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
+From: "Dr. Pierre Ricaud par Aventmedia" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: Votre CADEAU de bienvenue est disponible
+Date: Mon, 26 Dec 2011 09:04:23 +0100 (CET)
+Message-ID: <3236305005.586661.1324886663974@p4enginex2.emv2.com>
+Reply-To: newsletters-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,29 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Invitation de Marie
-
-Des centaines de sejours a gagner pour deux personnes
-c est simple, inscription en moins de 2 minutes
-
-PARTICIPATION ( "http://www.vacances-travels.net/inscription-go-travels.html" )
-
-Chaque semaine des vacances au soleil :
-vous vous inscrivez et vous attendez d etre tiree au sort, 
-une inscription est valable pour les prochains tirages. 
-
-
- 
- 
-
-
-Ne plus recevoir LIEN ( "http://www.vacancy-travels.com/desinscriptions.html" ) 
-
-
-
-------------------------------------------------------------------------------
+Si vous ne parvenez pas =E0 lire cet email correctement, cliquez ici
+Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mails =
+par
+l'intermediaire de ce raccourci
+[IMG]
+Dr. Pierre Ricaud                           OFFRE DE BIENVENUE          [IM=
+G]
+Votre 1er CADEAU OFFERT : la Base Lissante, valeur 22CUR.
+-50% sur TOUT le site !
+Vos privil=E8ges internet.
+^(1)Valable sur les 6 premiers articles dans le panier.
+Offre valable jusqu'au 04/01/2012 uniquement sur la boutique www.ricaud.com,
+dans la limite du stock disponible et non cumulable avec les offres propos=
+=E9es en
+magasin ou en vente par correspondance.
+---------------------------------------------------------------------------=
+---
 Write once. Port to many.
-Get the SDK and tools to simplify cross-platform app development. Create 
-new or port existing apps to sell to consumers worldwide. Explore the 
+Get the SDK and tools to simplify cross-platform app development. Create =
+
+new or port existing apps to sell to consumers worldwide. Explore the =
+
 Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
 http://p.sf.net/sfu/intel-appdev

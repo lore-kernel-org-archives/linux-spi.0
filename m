@@ -1,12 +1,11 @@
-From: "Assurtourix.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: Faites le bon choix avec Assurtourix, votre comparateur d'assurance !
-Date: Tue, 27 Dec 2011 11:12:46 +0100 (CET)
-Message-ID: <3236305005.591876.1324980766682@p4enginex1.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 你好：税/票--代/开
+Date: Tue, 27 Dec 2011 21:16:50 +0800
+Message-ID: <E1RfWt2-0006fr-0I@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,52 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-       Si vous ne pouvez pas visualiser correctement ce mail, cliquez ici
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-                                Assurtourix est un nouveau
-                                comparateur d'assurance en       Assurtouri=
-x.com
-Assurtourix.com - Comparateur   ligne, ind=E9pendant, et g*r* par  - Compar=
-ateur
-d'assurance en ligne            un cabinet de courtage.          d'assuranc=
-e en
-                                                                 ligne
-                                Sur notre site, vous pourrez
-                                comparer et choisir :
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com  Faites le bon choix pour votre
-- Comparateur             assurance !            Assurtourix.com - Comparat=
-eur
-d'assurance en  Assurtourix.com - Comparateur    d'assurance en ligne
-ligne           d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com
-- Comparateur        Ou connectez-vous sur       Assurtourix.com - Comparat=
-eur
-d'assurance en        www.assurtourix.com        d'assurance en ligne
-ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com - Comparateur d'assurance en ligne
-Assurtourix.com Assurtourix.com Assurtourix.com  Assurtourix.com Assurtouri=
-x.com
-- Comparateur   - Comparateur   - Comparateur    - Comparateur   - Comparat=
-eur
-d'assurance en  d'assurance en  d'assurance en   d'assurance en  d'assuranc=
-e en
-ligne           ligne           ligne            ligne           ligne
-                Pour ne plus recevoir de newsletter, cliquez ici
----------------------------------------------------------------------------=
----
-Write once. Port to many.
-Get the SDK and tools to simplify cross-platform app development. Create =
-
-new or port existing apps to sell to consumers worldwide. Explore the =
-
-Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
-http://p.sf.net/sfu/intel-appdev
+xPq6w6O6IAogICAgztK5q8u+09DLsC0txrEvtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK28uwLS3G
+saO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsS+1yLXIoaMKufO5q8u+yOfT0NDo0qqj
+rLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2MDc0MDcz
+MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCldyaXRlIG9uY2UuIFBvcnQgdG8gbWFueS4KR2V0IHRo
+ZSBTREsgYW5kIHRvb2xzIHRvIHNpbXBsaWZ5IGNyb3NzLXBsYXRmb3JtIGFwcCBkZXZlbG9wbWVu
+dC4gQ3JlYXRlIApuZXcgb3IgcG9ydCBleGlzdGluZyBhcHBzIHRvIHNlbGwgdG8gY29uc3VtZXJz
+IHdvcmxkd2lkZS4gRXhwbG9yZSB0aGUgCkludGVsIEFwcFVwU00gcHJvZ3JhbSBkZXZlbG9wZXIg
+b3Bwb3J0dW5pdHkuIGFwcGRldmVsb3Blci5pbnRlbC5jb20vam9pbgpodHRwOi8vcC5zZi5uZXQv
+c2Z1L2ludGVsLWFwcGRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

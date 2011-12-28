@@ -1,11 +1,12 @@
-From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 你好：税/票--代/开
-Date: Tue, 27 Dec 2011 21:16:50 +0800
-Message-ID: <E1RfWt2-0006fr-0I@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "Votre carte Auchan" <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
+Subject: [SPAM] Votre fidelité récompensée en voyages
+Date: Wed, 28 Dec 2011 08:00:23 +0100
+Message-ID: <20111228042743.FA02E8FE214@poste6>
+Reply-To: Votre carte Auchan <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsC0txrEvtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK28uwLS3G
-saO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsS+1yLXIoaMKufO5q8u+yOfT0NDo0qqj
-rLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2MDc0MDcz
-MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCldyaXRlIG9uY2UuIFBvcnQgdG8gbWFueS4KR2V0IHRo
-ZSBTREsgYW5kIHRvb2xzIHRvIHNpbXBsaWZ5IGNyb3NzLXBsYXRmb3JtIGFwcCBkZXZlbG9wbWVu
-dC4gQ3JlYXRlIApuZXcgb3IgcG9ydCBleGlzdGluZyBhcHBzIHRvIHNlbGwgdG8gY29uc3VtZXJz
-IHdvcmxkd2lkZS4gRXhwbG9yZSB0aGUgCkludGVsIEFwcFVwU00gcHJvZ3JhbSBkZXZlbG9wZXIg
-b3Bwb3J0dW5pdHkuIGFwcGRldmVsb3Blci5pbnRlbC5jb20vam9pbgpodHRwOi8vcC5zZi5uZXQv
-c2Z1L2ludGVsLWFwcGRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Auchan Voyages
+
+Des centaines de sejours a gagner pour deux personnes
+c est simple, inscription en moins de 2 minutes
+
+PARTICIPATION ( "http://www.vacances-travels.net/inscription-go-travels.html" )
+
+Chaque semaine des vacances au soleil :
+vous vous inscrivez vous et attendez d etre tiree au sort, 
+une inscription est valable pour les prochains tirages. 
+
+
+ 
+ 
+
+
+Ne plus recevoir LIEN ( "http://www.vacances-travels.com/desinscriptions.html" ) 
+
+
+
+------------------------------------------------------------------------------
+Write once. Port to many.
+Get the SDK and tools to simplify cross-platform app development. Create 
+new or port existing apps to sell to consumers worldwide. Explore the 
+Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
+http://p.sf.net/sfu/intel-appdev

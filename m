@@ -1,12 +1,13 @@
-From: "Votre carte Auchan" <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
-Subject: [SPAM] Votre fidelité récompensée en voyages
-Date: Wed, 28 Dec 2011 08:00:23 +0100
-Message-ID: <20111228042743.FA02E8FE214@poste6>
-Reply-To: Votre carte Auchan <contact-rhnBMBZvwNslxDUhr8JVneTW4wlIGRCZ@public.gmane.org>
+From: =?iso-8859-15?Q?Sylvie_-_D=E9partement_des_Enquetes_Consommateur?=
+	<contact-bj29gWGnfKqr2UA2gzxMdXS5uNuOjpZe@public.gmane.org>
+Subject: un iPhone 4S a gagner
+Date: Wed, 28 Dec 2011 09:43:45 +0100 (CET)
+Message-ID: <12160148893.1370818.1325061825244@p2enginex1.emv2.com>
+Reply-To: contact-bj29gWGnfKqr2UA2gzxMdXS5uNuOjpZe@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,29 +19,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Auchan Voyages
+      Pour =EAtre sur de bien visualiser ce message, acc=E9dez =E0 la versi=
+on en
+                                     ligne.
+    Vous recevez ce message suite =E0 votre inscription =E0 notre programme=
+ Top
+                                   privileges
 
-Des centaines de sejours a gagner pour deux personnes
-c est simple, inscription en moins de 2 minutes
+      remportez un iPhone 4S en r=E9pondant =E0
+                                 cette enqu=EAte
+                                   C'est ICI
 
-PARTICIPATION ( "http://www.vacances-travels.net/inscription-go-travels.html" )
+[IMG]             [IMG]                                        [IMG]
+[IMG]                          [IMG]
+[IMG]             [IMG]                                        [IMG]
 
-Chaque semaine des vacances au soleil :
-vous vous inscrivez vous et attendez d etre tiree au sort, 
-une inscription est valable pour les prochains tirages. 
+[IMG]                      [IMG]                      [IMG]
+                         voir r=E9glement de l'op=E9ration
 
-
- 
- 
-
-
-Ne plus recevoir LIEN ( "http://www.vacances-travels.com/desinscriptions.html" ) 
-
-
-
-------------------------------------------------------------------------------
+        Conform=E9ment =E0 la loi Informatique et libert=E9s, vous pouvez v=
+ous
+    d=E9sabonner =E0 tout moment du programme des bons plans de Top privile=
+ges.
+   Vous disposez =E9galement d'un droit d'acc=E8s et de rectification des d=
+onn=E9es
+                                vous concernant.
+    Si vous ne souhaitez plus recevoir de messages des partenaires de notre
+                             programme, cliquez-ici
+---------------------------------------------------------------------------=
+---
 Write once. Port to many.
-Get the SDK and tools to simplify cross-platform app development. Create 
-new or port existing apps to sell to consumers worldwide. Explore the 
+Get the SDK and tools to simplify cross-platform app development. Create =
+
+new or port existing apps to sell to consumers worldwide. Explore the =
+
 Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
 http://p.sf.net/sfu/intel-appdev

@@ -1,12 +1,13 @@
-From: LOVING DEALS <communication-RhsbR+zLBKgtmO77HQc9tgarMo1Zsyi2VpNB7YpNyf8@public.gmane.org>
-Subject: voyance/rencontres/voyage
-Date: Thu, 29 Dec 2011 13:01:41 +0100 (CET)
-Message-ID: <548672825.84732.1325160101372@p5enginer2.emv2.com>
-Reply-To: LOVING DEALS <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+From: "4475749" <qvxvarghesecks-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: Re:IRS:E-trade Bankruptcy 233e4ca0c0590253
+Date: Fri, 30 Dec 2011 04:07:41 +0800
+Message-ID: <798131.42857.bm@smtp142.mail.ukl.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============7620721555043313701=="
+To: sphy-bJEeYj9oJeDQT0dZR+AlfA@public.gmane.org, sphynx500-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org, sphynxlover-Bdlq13kUjeyLZ21kGMrzwg@public.gmane.org,
+	sphz28-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org, spi-amsterdam-dUsxN/C1/n1Wk0Htik3J/w@public.gmane.org, spi-chennai-dUsxN/C1/n1Wk0Htik3J/w@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-esjrnls-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org,
+	spi-estecgroup-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org, spi-estechgroup-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,84 +19,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-   Pour visualiser correctement cette page, consultez notre version en ligne
+--===============7620721555043313701==
+Content-Type: text/plain
+Content-Transfer-Encoding: base64
 
-                    =
-
-
-
-    L'OFFRE DU JOUR:
-    VOYANCE PAR T=C9L=C9PHONE : Famille, amour, travail? D=E1couvrez votre =
-avenir
-    gr=E2ce au don de Krista Kastella, 19=A4 au lieu de 50=A4 !
-
-
-                19=A4
-           Valeur: 50=A4
-           =C9conomisez: 31=A4
-            Dons: 0.57=A4
-
-                                    =
-
-
-
-             * Une s=E9ance de voyance par t=E9l=E9phone
-             * Une anticipation sur le futur
-             * Des r=E9ponses =E0 vos questions
-             * Des pr=E9visions pour la nouvelle ann=E9e qui arrive !
-
-                     =
-
-
-
-          Encore plus d'offres !
-
-
-     Valeur  Remise  =C9conomisez  Dons     Valeur  Remise  =C9conomisez  D=
-ons
-     1390=A4   80%     1110=A4       8.40=A4    25=A4     0%      0=A4     =
-     0.75=A4
-
-      S=C9JOUR EN THA=CFLANDE :                CARTE CADEAU LOVING
-      Passez des vacances de               DEALS DE 25=A4 : Pour
-      r=EAve sur l'=EEle de Kho  Seulement     No=EBl, faites plaisir =E0 S=
-eulement
-      Samui, =E0 deux ou en      280=A4        vos proches en leur       25=
-=A4
-      famille, pour 280=A4                   offrant le choix parmi
-      seulement !                          les offres les plus
-                                           Loving !
-  =
+DQpYUlpIUVdXSVBKWk/nTW9yZWluZm9tcmF0aW9uIGhlcmUg42h0dHA6Ly9nb28uZ2wvZzE4RzF9
+XeENCg==
+u92STEnIlZywaPz0WlrZpSc=
 
 
 
 
-     Valeur  Remise  =C9conomisez  Dons     Valeur  Remise  =C9conomisez  D=
-ons
-     59=A4     83%     49=A4         0.30=A4    299=A4    91%     272=A4   =
-     0.81=A4
-
-      2 BRACELETS =C9NERGIE +                ABONNEMENT =C0 L'AGENCE
-      4 HOLOGRAMMES :                      DE RENCONTRE SELECT
-      Retrouvez =E9quilibre et Seulement     RENDEZ-VOUS : Trouvez  Seuleme=
-nt
-      force, et optimisez       10=A4        l'=E2me s*ur dans les 12    27=
-=A4
-      vos performances pour                prochains mois, 27=A4
-      10=A4 seulement au lieu                seulement au lieu de
-      de 59=A4                               299=A4 !
 
 
-   L'afa          R=EAves d'enfants         Surfrider Foundation Europe
 
-         Pour =EAtre retir=E9 de notre liste de diffusion, d=E9sabonnez-vous
+--===============7620721555043313701==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
 infrastructure or vast IT resources to deliver seamless, secure access to
-virtual desktops. With this all-in-one solution, easily deploy virtual =
-
-desktops for less than the cost of PCs and save 60% on VDI infrastructure =
-
+virtual desktops. With this all-in-one solution, easily deploy virtual 
+desktops for less than the cost of PCs and save 60% on VDI infrastructure 
 costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox
+--===============7620721555043313701==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7620721555043313701==--

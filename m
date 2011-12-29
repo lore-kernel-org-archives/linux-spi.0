@@ -1,13 +1,11 @@
-From: "4475749" <qvxvarghesecks-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: Re:IRS:E-trade Bankruptcy 233e4ca0c0590253
-Date: Fri, 30 Dec 2011 04:07:41 +0800
-Message-ID: <798131.42857.bm@smtp142.mail.ukl.yahoo.com>
+From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 你好：税/票--代/开
+Date: Fri, 30 Dec 2011 04:49:45 +0800
+Message-ID: <E1RgMuM-0003Bs-Ki@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7620721555043313701=="
-To: sphy-bJEeYj9oJeDQT0dZR+AlfA@public.gmane.org, sphynx500-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org, sphynxlover-Bdlq13kUjeyLZ21kGMrzwg@public.gmane.org,
-	sphz28-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org, spi-amsterdam-dUsxN/C1/n1Wk0Htik3J/w@public.gmane.org, spi-chennai-dUsxN/C1/n1Wk0Htik3J/w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-esjrnls-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org,
-	spi-estecgroup-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org, spi-estechgroup-5D4hn0x8dLtBDgjK7y7TUQ@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,41 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7620721555043313701==
-Content-Type: text/plain
-Content-Transfer-Encoding: base64
-
-DQpYUlpIUVdXSVBKWk/nTW9yZWluZm9tcmF0aW9uIGhlcmUg42h0dHA6Ly9nb28uZ2wvZzE4RzF9
-XeENCg==
-u92STEnIlZywaPz0WlrZpSc=
-
-
-
-
-
-
-
---===============7620721555043313701==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
-infrastructure or vast IT resources to deliver seamless, secure access to
-virtual desktops. With this all-in-one solution, easily deploy virtual 
-desktops for less than the cost of PCs and save 60% on VDI infrastructure 
-costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox
---===============7620721555043313701==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7620721555043313701==--
+xPq6w6O6IAogICAgztK5q8u+09DLsC0txrEvtPq/qqO7CsjnOigxKcbVzajJzMa3z/rK28uwLS3G
+saO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwLS3GsS+1yLXIoaMKufO5q8u+yOfT0NDo0qqj
+rLu2063E+rXEwLS159PrztLBqs+1o7ogCgogICAguLrU8MjLo7rVxc/IyfooMCkxMzU2MDc0MDcz
+MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClJpZGljdWxvdXNseSBlYXN5IFZESS4gV2l0aCBDaXRy
+aXggVkRJLWluLWEtQm94LCB5b3UgZG9uJ3QgbmVlZCBhIGNvbXBsZXgKaW5mcmFzdHJ1Y3R1cmUg
+b3IgdmFzdCBJVCByZXNvdXJjZXMgdG8gZGVsaXZlciBzZWFtbGVzcywgc2VjdXJlIGFjY2VzcyB0
+bwp2aXJ0dWFsIGRlc2t0b3BzLiBXaXRoIHRoaXMgYWxsLWluLW9uZSBzb2x1dGlvbiwgZWFzaWx5
+IGRlcGxveSB2aXJ0dWFsIApkZXNrdG9wcyBmb3IgbGVzcyB0aGFuIHRoZSBjb3N0IG9mIFBDcyBh
+bmQgc2F2ZSA2MCUgb24gVkRJIGluZnJhc3RydWN0dXJlIApjb3N0cy4gVHJ5IGl0IGZyZWUhIGh0
+dHA6Ly9wLnNmLm5ldC9zZnUvQ2l0cml4LVZESWluYWJveApfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

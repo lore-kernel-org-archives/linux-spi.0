@@ -1,48 +1,40 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/tegra: depend instead of select TEGRA_SYSTEM_DMA
-Date: Mon, 2 Jan 2012 02:01:47 -0700
-Message-ID: <20120102090147.GN18381@ponder.secretlab.ca>
-References: <1324598277-4751-1-git-send-email-olof@lixom.net>
+From: "Rendezvousdeco.com par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Offre =?iso-8859-15?Q?Sp=E9ciale?= du 3 au 9 janvier : Promotions
+	et Livraison offerte sur tout le site
+Date: Tue, 03 Jan 2012 12:08:37 +0100
+Message-ID: <1325588917.4f02e1b525acb@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1324598277-4751-1-git-send-email-olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 22, 2011 at 03:57:57PM -0800, Olof Johansson wrote:
-> It's unlikely that anyone ever wants to turn off SYSTEM_DMA, but just in
-> case, it makes more sense to have the driver depend on it than select it.
-> 
-> Signed-off-by: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Applied, thanks
+Lien miroir : http://mail.mc10.fr/mc10_m/YT04JmI9NDQ5OSZjPTE5NjE2NDEmZD0yMD=
+EyLTAxLTAzIDExOjIwOjAxJmU9MSZoPTQ0OTkmZj00NDk5Jmc9NDQ5OQ=3D=3D
 
-g.
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT04JmI9NDQ5OSZjP=
+TE5NjE2NDEmZD0yMDEyLTAxLTAzIDExOjIwOjAxJmU9MSZoPTQ0OTkmZj00NDk5Jmc9NDQ5OQ=
+=3D=3D
 
-> ---
->  drivers/spi/Kconfig |    3 +--
->  1 files changed, 1 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 3d292be..326f77a 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -332,8 +332,7 @@ config SPI_STMP3XXX
->  
->  config SPI_TEGRA
->  	tristate "Nvidia Tegra SPI controller"
-> -	depends on ARCH_TEGRA
-> -	select TEGRA_SYSTEM_DMA
-> +	depends on ARCH_TEGRA && TEGRA_SYSTEM_DMA
->  	help
->  	  SPI driver for NVidia Tegra SoCs
->  
-> -- 
-> 1.7.8.GIT
-> 
+
+---------------------------------------------------------------------------=
+---
+Write once. Port to many.
+Get the SDK and tools to simplify cross-platform app development. Create =
+
+new or port existing apps to sell to consumers worldwide. Explore the =
+
+Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
+http://p.sf.net/sfu/intel-appdev

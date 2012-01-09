@@ -1,102 +1,40 @@
-From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
-Subject: [PATCH 2/2] S3C24XX: move spi-s3c24xx platdata out of mach
-Date: Sun, 8 Jan 2012 22:23:32 +0100
-Message-ID: <201201082223.32677.heiko@sntech.de>
-References: <201201082222.11305.heiko@sntech.de>
+From: Toner Service par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Livraison offerte : Vos cartouches d'encre =?iso-8859-15?Q?=E0?=
+	prix discount chez vous
+Date: Mon, 09 Jan 2012 01:16:50 +0100
+Message-ID: <1326068210.4f0a31f233ad8@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net
-To: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <201201082222.11305.heiko@sntech.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi.h now only contains the definition of the platform data structure
-for the driver in spi-s3c24xx.c . Therefore it does not need to stay
-in include/mach but can instead live in linux/spi/s3c24xx.h .
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NDQ3NiZjPTE5NjE2NDEmZD0yMDEy=
+LTAxLTA5IDAxOjAwOjAxJmU9MSZoPTQ0NzYmZj00NDc2Jmc9NDQ3Ng=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NDQ3NiZjPTE=
+5NjE2NDEmZD0yMDEyLTAxLTA5IDAxOjAwOjAxJmU9MSZoPTQ0NzYmZj00NDc2Jmc9NDQ3Ng=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
 ---
- arch/arm/mach-s3c2410/include/mach/spi.h |   27 ---------------------------
- arch/arm/mach-s3c2440/mach-gta02.c       |    2 +-
- drivers/spi/spi-s3c24xx.c                |    2 +-
- 3 files changed, 2 insertions(+), 29 deletions(-)
- delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
+Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
+infrastructure or vast IT resources to deliver seamless, secure access to
+virtual desktops. With this all-in-one solution, easily deploy virtual =
 
-diff --git a/arch/arm/mach-s3c2410/include/mach/spi.h b/arch/arm/mach-s3c2410/include/mach/spi.h
-deleted file mode 100644
-index 2a686c0..0000000
---- a/arch/arm/mach-s3c2410/include/mach/spi.h
-+++ /dev/null
-@@ -1,27 +0,0 @@
--/* arch/arm/mach-s3c2410/include/mach/spi.h
-- *
-- * Copyright (c) 2006 Simtec Electronics
-- *	Ben Dooks <ben@simtec.co.uk>
-- *
-- * S3C2410 - SPI Controller platform_device info
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
--*/
--
--#ifndef __ASM_ARCH_SPI_H
--#define __ASM_ARCH_SPI_H __FILE__
--
--struct s3c2410_spi_info {
--	int			 pin_cs;	/* simple gpio cs */
--	unsigned int		 num_cs;	/* total chipselects */
--	int			 bus_num;       /* bus number to use. */
--
--	unsigned int		 use_fiq:1;	/* use fiq */
--
--	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
--	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
--};
--
--#endif /* __ASM_ARCH_SPI_H */
-diff --git a/arch/arm/mach-s3c2440/mach-gta02.c b/arch/arm/mach-s3c2440/mach-gta02.c
-index e8d2eb9..236514c 100644
---- a/arch/arm/mach-s3c2440/mach-gta02.c
-+++ b/arch/arm/mach-s3c2440/mach-gta02.c
-@@ -38,6 +38,7 @@
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
- #include <linux/spi/spi.h>
-+#include <linux/spi/s3c24xx.h>
- 
- #include <linux/mmc/host.h>
- 
-@@ -73,7 +74,6 @@
- #include <mach/regs-gpioj.h>
- #include <mach/fb.h>
- 
--#include <mach/spi.h>
- #include <plat/usb-control.h>
- #include <mach/regs-mem.h>
- #include <mach/hardware.h>
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index fc06453..8ee7d79 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -24,10 +24,10 @@
- 
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-+#include <linux/spi/s3c24xx.h>
- #include <linux/module.h>
- 
- #include <plat/regs-spi.h>
--#include <mach/spi.h>
- 
- #include <plat/fiq.h>
- #include <asm/fiq.h>
--- 
-1.7.2.3
+desktops for less than the cost of PCs and save 60% on VDI infrastructure =
+
+costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox

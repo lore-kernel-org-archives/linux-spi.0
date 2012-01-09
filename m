@@ -1,13 +1,12 @@
-From: "Smartphoto par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: =?iso-8859-15?Q?D=E9veloppez?= vos 100 plus belles photos pour
-	9euros livraison incluse
-Date: Mon, 09 Jan 2012 21:27:52 +0100
-Message-ID: <1326140872.4f0b4dc87e829@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: "Rosy Lingerie" <rosy-lingerie-7g+OvVFPKgtWj0EZb7rXcA@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Offre_d=E9couverte_exceptionnelle?=
+Date: Mon, 09 Jan 2012 21:16:10 +0000 (CET)
+Message-ID: <120109211610.122474038600003580@ofnm49.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,16 +18,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NDU3NCZjPTE5NjE2NDEmZD0yMDEy=
-LTAxLTA4IDE0OjAwOjAxJmU9MSZoPTQ1NzQmZj00NTc0Jmc9NDU3NA=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NDU3NCZjPTE=
-5NjE2NDEmZD0yMDEyLTAxLTA4IDE0OjAwOjAxJmU9MSZoPTQ1NzQmZj00NTc0Jmc9NDU3NA=3D=
-=3D
 
 
+Offre=A0d=E9couverte=A0-30%
+sur=A0les=A0nouvelles=A0collections=A0de=A0lingerie=A0f=E9minine
+avec=A0le=A0code=A0PE12
+
+Rosy,=A0lingerie=A0=E9l=E9gante=A0et=A0raffin=E9e,
+Sans=A0Complexe,=A0lingerie=A0jusqu=92au=A0bonnet=A0F=A0!
+Et=A0Billet=A0Doux=A0pour=A0changer=A0de=A0parure=A0aussi=A0souvent=A0que=
+=A0d=92humeur=A0!
+
+Et=A0n=92oubliez=A0pas=A0les=A0soldes=A0dans=A048H=A0!!
+
+=AB=A0-30%=A0=E0=A0valoir=A0sur=A0la=A0nouvelle=A0collection=A0Printemps-Et=
+=E9=A02012,=A0avec=A0le=A0code=A0PE12,=A0non=A0cumulable=A0avec=A0une=A0aut=
+re=A0offre=A0ou=A0code=A0promo,=A0valable=A0jusqu=92au=A016=A0janvier=A0201=
+1,=A0sur=A0le=A0sit=A0ewww.sanscomplexe-lingerie.com.=A0Les=A0soldes=A0sur=
+=A0les=A0anciennes=A0collections=A0d=E9buteront=A0le=A0mercredi=A011=A0janv=
+ier=A02011.=A0=BB
+=AB=A0-30%=A0=E0=A0valoir=A0sur=A0la=A0nouvelle=A0collection=A0Printemps-Et=
+=E9=A02012,=A0avec=A0le=A0code=A0PE12,=A0non=A0cumulable=A0avec=A0une=A0aut=
+re=A0offre=A0ou=A0code=A0promo,=A0valable=A0jusqu=92au=A016=A0janvier=A0201=
+1,=A0sur=A0le=A0site=A0www.rosy.fr.=A0Les=A0soldes=A0sur=A0les=A0anciennes=
+=A0collections=A0d=E9buteront=A0le=A0mercredi=A011=A0janvier=A02011.=A0=BB
+=AB=A0-30%=A0=E0=A0valoir=A0sur=A0la=A0nouvelle=A0collection=A0Printemps-Et=
+=E9=A02012,=A0avec=A0le=A0code=A0PE12,=A0non=A0cumulable=A0avec=A0une=A0aut=
+re=A0offre=A0ou=A0code=A0promo,=A0valable=A0jusqu=92au=A016=A0janvier=A0201=
+1,=A0sur=A0le=A0site=A0www.billetdoux-lingerie.com.=A0La=A0parure=A0=E0=A0p=
+artir=A0de=A017?=A0b=E9n=E9ficie=A0d=E9j=E0=A0de=A0la=A0remise=A0=E0=A0-30%=
+.=A0Les=A0soldes=A0sur=A0les=A0anciennes=A0collections=A0d=E9buteront=A0le=
+=A0mercredi=A011=A0janvier=A02011.=A0=BB
 ---------------------------------------------------------------------------=
 ---
 Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex

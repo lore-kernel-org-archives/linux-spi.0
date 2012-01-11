@@ -1,11 +1,12 @@
-From: 13410458452-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Wed, 11 Jan 2012 18:08:24 +0800
-Message-ID: <E1Rkv6c-0003EP-Vl@sfs-ml-2.v29.ch3.sourceforge.com>
+From: PYRENEX <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: SOLDES Pyrenex -30% sur toutes les DOUDOUNES
+Date: Wed, 11 Jan 2012 14:32:24 +0100 (CET)
+Message-ID: <3236305005.622656.1326288744441@p4enginex2.emv2.com>
+Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,20 +18,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAoKICAgIM7SuavLvtTaKMnu29rK0KGiz8PDxcrQoaLJz7qjytChornj1t3K0LXItdgp
-ysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howoKICAgIM/Wsb65
-q8u+09DSu7K/t9a3oi3GsaO7y7DCyrXNwa6ju9PFu920+r+qo7sKCsjnOigxKcbVzajJzMa3z/rK
-27eioaqhqsaxo7sKCiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowoKICAK
-CrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAoKuLrU8MjLo7rVxc/Iyfoo
-MCkxMzQxMDQ1ODQ1MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClJpZGljdWxvdXNseSBlYXN5IFZE
-SS4gV2l0aCBDaXRyaXggVkRJLWluLWEtQm94LCB5b3UgZG9uJ3QgbmVlZCBhIGNvbXBsZXgKaW5m
-cmFzdHJ1Y3R1cmUgb3IgdmFzdCBJVCByZXNvdXJjZXMgdG8gZGVsaXZlciBzZWFtbGVzcywgc2Vj
-dXJlIGFjY2VzcyB0bwp2aXJ0dWFsIGRlc2t0b3BzLiBXaXRoIHRoaXMgYWxsLWluLW9uZSBzb2x1
-dGlvbiwgZWFzaWx5IGRlcGxveSB2aXJ0dWFsIApkZXNrdG9wcyBmb3IgbGVzcyB0aGFuIHRoZSBj
-b3N0IG9mIFBDcyBhbmQgc2F2ZSA2MCUgb24gVkRJIGluZnJhc3RydWN0dXJlIApjb3N0cy4gVHJ5
-IGl0IGZyZWUhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvQ2l0cml4LVZESWluYWJveApfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+                       Si vous avez des difficult=E9s pour visualiser la
+   Pyrenex - Logo      newsletter Pyrenex, consultez notre version en ligne.
+                       Pyrenex - Soldes, moins 30%
+   Pyrenex - Soldes, moins 30%
+   Pyrenex - Soldes, moins 30%
+   Pyrenex - Homme                     Pyrenex - Femme Pyrenex - Enfant
+   Pyrenex - Soldes premium
+   Paiement s=E9curis=E9           Livraison Chrono ou Colissimo   Retour s=
+ous 30
+                               48h                             jours
+                       Pyrenex Pyrenex                 Pyrenex
+   Pyrenex - Soldes,   -       -       Pyrenex -       -       Pyrenex -
+   moins 30%           Soldes, Soldes, Soldes, moins   Soldes, Soldes, moins
+                       moins   moins   30%             moins   30%
+                       30%     30%                     30%
+
+   .
+
+   Offre valable sur les articles de la collection automne-hiver 2012
+   identifi=E9s par le taux -30 %. Offre non cumulable avec toute autre
+   op=E9ration. Les soldes se d=E9rouleront du 11 janvier (8h) au 14 f=E9vr=
+ier 2012
+   sur www.pyrenex.com et dans les boutiques distributrices en France
+   m=E9tropolitaine sauf exceptions. Les soldes auront lieu du 4 janvier au=
+ 7
+   f=E9vrier 2012 pour les Landes et les Pyr=E9n=E9es-Atlantiques et la Guy=
+ane, du
+   2 janvier au 5 f=E9vrier 2012 : pour la Meuse, la Meurthe-et-Moselle, la
+   Moselle et les Vosges. Conform=E9ment =E0 la loi "Informatique et Libert=
+=E9s" du
+   06 Janvier 1978, vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectificat=
+ion, de
+   modification et de suppression aux donn=E9es vous concernant.
+   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
+ls
+   par l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
+infrastructure or vast IT resources to deliver seamless, secure access to
+virtual desktops. With this all-in-one solution, easily deploy virtual =
+
+desktops for less than the cost of PCs and save 60% on VDI infrastructure =
+
+costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox

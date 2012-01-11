@@ -1,12 +1,15 @@
-From: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH RESEND] spi/imx: simplify error handling to free gpios
-Date: Tue, 10 Jan 2012 15:27:36 +0800
-Message-ID: <1326180456.4956.7.camel@phoenix>
+From: "Chevignon.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?SOLDES_:_jusqu=3F=E0_-50%_sur_les_Cuirs, _Doudounes,
+	_Mant?=
+	=?iso-8859-15?Q?eaux, _Pulls, _Gilets, _Chaussures, _Accessoires,
+	_Denims?=
+Date: Wed, 11 Jan 2012 02:34:53 +0100 (CET)
+Message-ID: <3236305005.622877.1326245693230@p4enginex2.emv2.com>
+Reply-To: newsletters-z2kSNmc3sHCaMJb+Lgu22Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,55 +21,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Simplify the error handling by moving the code to free gpios in one place.
+             Vous recevez cet email de la part de Chevignon Store.
+    Si vous ne pouvez pas visualiser ce message, consulter notre version en
+                                     ligne.
+    Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de ma=
+ils
+                      par l'intermediaire de ce raccourci
 
-Signed-off-by: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-imx.c |   11 +++--------
- 1 files changed, 3 insertions(+), 8 deletions(-)
+Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
+infrastructure or vast IT resources to deliver seamless, secure access to
+virtual desktops. With this all-in-one solution, easily deploy virtual =
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index c6e697f..31054e3 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -793,13 +793,8 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 
- 		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
- 		if (ret) {
--			while (i > 0) {
--				i--;
--				if (spi_imx->chipselect[i] >= 0)
--					gpio_free(spi_imx->chipselect[i]);
--			}
- 			dev_err(&pdev->dev, "can't get cs gpios\n");
--			goto out_master_put;
-+			goto out_gpio_free;
- 		}
- 	}
- 
-@@ -881,10 +876,10 @@ out_iounmap:
- out_release_mem:
- 	release_mem_region(res->start, resource_size(res));
- out_gpio_free:
--	for (i = 0; i < master->num_chipselect; i++)
-+	while (--i >= 0) {
- 		if (spi_imx->chipselect[i] >= 0)
- 			gpio_free(spi_imx->chipselect[i]);
--out_master_put:
-+	}
- 	spi_master_put(master);
- 	kfree(master);
- 	platform_set_drvdata(pdev, NULL);
--- 
-1.7.5.4
+desktops for less than the cost of PCs and save 60% on VDI infrastructure =
 
-
-
-
-------------------------------------------------------------------------------
-Write once. Port to many.
-Get the SDK and tools to simplify cross-platform app development. Create 
-new or port existing apps to sell to consumers worldwide. Explore the 
-Intel AppUpSM program developer opportunity. appdeveloper.intel.com/join
-http://p.sf.net/sfu/intel-appdev
+costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox

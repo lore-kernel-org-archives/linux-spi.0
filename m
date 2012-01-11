@@ -1,13 +1,11 @@
-From: Confirmation carte membre <contact-bj29gWGnfKqr2UA2gzxMdXS5uNuOjpZe@public.gmane.org>
-Subject: =?iso-8859-15?Q?_activez_votre_carte_membre_voyage_p?=
-	=?iso-8859-15?Q?riv=E9_et_recevez_les_offres_privileges?=
-Date: Wed, 11 Jan 2012 07:28:55 +0100 (CET)
-Message-ID: <12160148893.1390316.1326263335696@p2enginex2.emv2.com>
-Reply-To: contact-6sMn+78pGNmNkL4izmWrTwC/G2K4zDHf@public.gmane.org
+From: 13410458452-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 发/票――代/开
+Date: Wed, 11 Jan 2012 18:08:24 +0800
+Message-ID: <E1Rkv6c-0003EP-Vl@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,54 +17,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-      Pour =EAtre sur de bien visualiser ce message, acc=E9dez =E0 la versi=
-on en
-                                     ligne.
-    Vous recevez ce message suite =E0 votre inscription =E0 notre programme=
- Top
-                                   privileges
-
-       jusqu'=E0 -70% sur vos prochains voyages
-                                   C'est ICI
-
-                   voyageprive.com
-                   voyageprive.com       voyageprive.com
-                   voyageprive.com
-                   TOP Privileges vous a choisi parmi ses
-                   membres privil=E9gi=E9s pour profiter d'un
-                   acc=E8s gratuit et priv=E9
-                   =E0 voyageprive- 1er site de ventes priv=E9es
-                   de voyages haut de gamme.
-                   Un acc=E8s vous permettant de profiter de
-                   r=E9ductions jusqu'=E0 -70% sur vos prochains
-                   voyages ainsi que tous les avantages
-   voyageprive.com exclusifs r=E9serv=E9s aux membres du club.    voyagepri=
-ve.com
-
-                   Ne perdez pas une minute, activez votre
-                   carte gratuitement pour d=E9couvrir d=E8s
-                   maintenant toutes les offres de voyages en
-                   cours =E0 tarifs privil=E9gi=E9s.
-                   voyageprive.com
-                   Valider  spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-                   voyageprive.com
-                   [IMG]
-
-        Conform=E9ment =E0 la loi Informatique et libert=E9s, vous pouvez v=
-ous
-    d=E9sabonner =E0 tout moment du programme des bons plans de Top privile=
-ges.
-   Vous disposez =E9galement d'un droit d'acc=E8s et de rectification des d=
-onn=E9es
-                                vous concernant.
-    Si vous ne souhaitez plus recevoir de messages des partenaires de notre
-                             programme, cliquez-ici
----------------------------------------------------------------------------=
----
-Ridiculously easy VDI. With Citrix VDI-in-a-Box, you don't need a complex
-infrastructure or vast IT resources to deliver seamless, secure access to
-virtual desktops. With this all-in-one solution, easily deploy virtual =
-
-desktops for less than the cost of PCs and save 60% on VDI infrastructure =
-
-costs. Try it free! http://p.sf.net/sfu/Citrix-VDIinabox
+xPq6w6O6IAoKICAgIM7SuavLvtTaKMnu29rK0KGiz8PDxcrQoaLJz7qjytChornj1t3K0LXItdgp
+ysfSu7zSvK+/qreioaLJ+rL6oaLP+srb09rSu8zltcS089DN19u6z7mry76howoKICAgIM/Wsb65
+q8u+09DSu7K/t9a3oi3GsaO7y7DCyrXNwa6ju9PFu920+r+qo7sKCsjnOigxKcbVzajJzMa3z/rK
+27eioaqhqsaxo7sKCiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeioaqhqsaxL7XItcihowoKICAK
+CrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6IAoKuLrU8MjLo7rVxc/Iyfoo
+MCkxMzQxMDQ1ODQ1MgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClJpZGljdWxvdXNseSBlYXN5IFZE
+SS4gV2l0aCBDaXRyaXggVkRJLWluLWEtQm94LCB5b3UgZG9uJ3QgbmVlZCBhIGNvbXBsZXgKaW5m
+cmFzdHJ1Y3R1cmUgb3IgdmFzdCBJVCByZXNvdXJjZXMgdG8gZGVsaXZlciBzZWFtbGVzcywgc2Vj
+dXJlIGFjY2VzcyB0bwp2aXJ0dWFsIGRlc2t0b3BzLiBXaXRoIHRoaXMgYWxsLWluLW9uZSBzb2x1
+dGlvbiwgZWFzaWx5IGRlcGxveSB2aXJ0dWFsIApkZXNrdG9wcyBmb3IgbGVzcyB0aGFuIHRoZSBj
+b3N0IG9mIFBDcyBhbmQgc2F2ZSA2MCUgb24gVkRJIGluZnJhc3RydWN0dXJlIApjb3N0cy4gVHJ5
+IGl0IGZyZWUhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvQ2l0cml4LVZESWluYWJveApfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
+YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
+Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
+Cg==

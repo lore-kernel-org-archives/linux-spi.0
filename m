@@ -1,11 +1,11 @@
-From: IKKS <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: SOLDES : -40% sur IKKS E-Shop
-Date: Thu, 12 Jan 2012 07:35:17 +0100 (CET)
-Message-ID: <3236305005.626023.1326350117977@p4enginex2.emv2.com>
+From: =?iso-8859-15?Q?SIN=C9QUANONE?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?SOLDES_Sin=E9quanone_jusqu'=E0_-50%_!_?=
+Date: Thu, 12 Jan 2012 13:50:19 +0100 (CET)
+Message-ID: <3236305005.622630.1326372619332@p4enginex1.emv2.com>
 Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,56 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-                        IKKS SOLDES -40% d=E8s 3 articles
-    Si vous ne parvenez pas =E0 lire cet e-mail, vous pouvez le visualiser =
-en
-                             cliquant sur ce lien.
+   Si vous avez des difficult&eacute;s pour visualiser la newsletter Sin&eacute;quanone,
+   consultez notre version en ligne.
 
-   IKKS                                                     Boutique en lig=
-ne
-
-
-       FEMME          HOMME          GAR=C7ON          FILLE          B=C9B=
-=C9
+                                      Sinequanone - Soldes jusqu'&agrave; -50%
+   Sinequanone - Soldes jusqu'&agrave; -50%  Soldes du 11 janvier au 14 f&eacute;vrier 2012
+                                      www.sinequanone.com
 
 
-                           SOLDES -40% d=E8s 3 articles
+   Capeline                      Manteau               Capeline
+   Robe                                                Robe
+      1. CAPELINE 30CUR 45CUR    2. CAPELINE 30CUR 45CUR    3. ROBE 65CUR
+                          79,90CUR ? CEINTURE 39,90CUR
+      4. MANTEAU 170CUR 229CUR ? PANTALON 40CUR 49,90CUR    5. ROBE 60CUR
+   79,90CUR ? ECHARPE 30CUR 45CUR
+   Filet
 
-                                        Collections IKKS
-                                     Femme, Enfant & Homme
-                              -40% =E0 partir de 3 articles achet=E9s,
-                               -30% pour 1 ou 2 articles achet=E9s
-   Collection IKKS
-                                           D*couvrez
+   * Offre valable sur une s&eacute;lection d'articles de la collection
+   automne-hiver 2012 identifi&eacute;s par un pictogramme sur le site, hors points
+   rouges. Offre non cumulable avec toute autre op&eacute;ration en cours. Les
+   soldes se d&eacute;rouleront du 11 janvier (8h) au 14 f&eacute;vrier 2012 sur
+   www.sinequanone.com et dans les boutiques Sinequanone en France
+   m&eacute;tropolitaine (Zone nationale) sauf exceptions. Les soldes auront lieu du
+   4 janvier au 7 f&eacute;vrier 2012 pour les Landes et les Pyr&eacute;n&eacute;es-Atlantiques et
+   la Guyane, du 2 janvier au 5 f&eacute;vrier 2012 : pour la Meuse, la
+   Meurthe-et-Moselle, la Moselle et les Vosges.
 
-                    (=E0 partir du 11 janvier 2012 hors parfums et collecti=
-ons
-                                           =E9t=E9 2012)
-
-
-   Enfant             Femme             Homme             Chaussures
-
-   Facebook                  Twitter                  Youtube
-
-    Conditions de l'offre :
-    * Offre valable =E0 partir du 11/01/2012 sur IKKS E-Shop.
-    Offre valable sur articles signal=E9s sur les collections HIVER 2011.
-    Pour 1 ou 2 articles achet=E9s simultan=E9ment et concern=E9s par l'off=
-re, une
-    remise de -30% sur le prix conseill=E9 de ces articles sera effectu=E9e.
-    Pour 3 articles et plus achet=E9s simultan=E9ment et concern=E9s par l'=
-offre,
-    une remise de -40% sur le prix conseill=E9 de ces articles sera effectu=
-=E9e.
-
-       Conform=E9ment =E0 la Loi Informatique et Libert=E9s du 06/01/1978, =
-vous
-      disposez d?un droit d?acc=E8s, de rectification et de suppression des
-           donn=E9es vous concernant et d?opposition =E0 leur traitement.
-
-          Si vous souhaitez vous d=E9sabonner, rendez-vous sur ce lien.
----------------------------------------------------------------------------=
----
+   Conform&eacute;ment &agrave; la loi "Informatique et Libert&eacute;s" du 06 Janvier 1978, vous
+   b&eacute;n&eacute;ficiez d'un droit d'acc&egrave;s,
+   de rectification, de modification et de suppression aux donn&eacute;es vous
+   concernant.
+   Vous avez la possibilit&eacute; de vous retirer de notre liste d'envoi de mails
+   par l'intermediaire de ce raccourci.
+------------------------------------------------------------------------------
 RSA(R) Conference 2012
 Mar 27 - Feb 2
 Save $400 by Jan. 27

@@ -1,13 +1,20 @@
-From: PYRENEX <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: SOLDES Pyrenex -30% sur toutes les DOUDOUNES
-Date: Fri, 13 Jan 2012 08:17:32 +0100 (CET)
-Message-ID: <3236305005.628590.1326439052838@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Subject: Re: [PATCH 1/5] drivercore: Generalize module_platform_driver
+Date: Fri, 13 Jan 2012 10:07:19 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.1201131003270.29680@axis700.grange>
+References: <1321434819-23678-1-git-send-email-lars@metafoo.de>
+	<1321434819-23678-2-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Michael Hennerich <Michael.Hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Greg Kroah-Hartman <gregkh-l3A5Bk7waGM@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1321434819-23678-2-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,44 +25,104 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-                       Si vous avez des difficult=E9s pour visualiser la
-   Pyrenex - Logo      newsletter Pyrenex, consultez notre version en ligne.
-                       Pyrenex - Soldes, moins 30%
-   Pyrenex - Soldes, moins 30%
-   Pyrenex - Soldes, moins 30%
-   Pyrenex - Homme                     Pyrenex - Femme Pyrenex - Enfant
-   Pyrenex - Soldes premium
-   Paiement s=E9curis=E9           Livraison Chrono ou Colissimo   Retour s=
-ous 30
-                               48h                             jours
-                       Pyrenex Pyrenex                 Pyrenex
-   Pyrenex - Soldes,   -       -       Pyrenex -       -       Pyrenex -
-   moins 30%           Soldes, Soldes, Soldes, moins   Soldes, Soldes, moins
-                       moins   moins   30%             moins   30%
-                       30%     30%                     30%
+I didn't find this patch either in "next" or in Greg's "driver-core" 
+trees, so, couldn't generate a patch and had to comment here:
 
-   .
+On Wed, 16 Nov 2011, Lars-Peter Clausen wrote:
 
-   Offre valable sur les articles de la collection automne-hiver 2012
-   identifi=E9s par le taux -30 %. Offre non cumulable avec toute autre
-   op=E9ration. Les soldes se d=E9rouleront du 11 janvier (8h) au 14 f=E9vr=
-ier 2012
-   sur www.pyrenex.com et dans les boutiques distributrices en France
-   m=E9tropolitaine sauf exceptions. Les soldes auront lieu du 4 janvier au=
- 7
-   f=E9vrier 2012 pour les Landes et les Pyr=E9n=E9es-Atlantiques et la Guy=
-ane, du
-   2 janvier au 5 f=E9vrier 2012 : pour la Meuse, la Meurthe-et-Moselle, la
-   Moselle et les Vosges. Conform=E9ment =E0 la loi "Informatique et Libert=
-=E9s" du
-   06 Janvier 1978, vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectificat=
-ion, de
-   modification et de suppression aux donn=E9es vous concernant.
-   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
-ls
-   par l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
+> This patch generalizes the module_platform_driver macro and introduces a new
+> module_driver macro. The module_driver macro takes a driver name, a register
+> and a unregister function for this driver type. Using these it construct the
+> module init and exit sections which register and unregister the driver. Since
+> such init/exit sections are commonly found in drivers this macro can be used
+> to eliminate a lot of boilerplate code.
+> 
+> The macro is not intended to be used by driver modules directly, instead it
+> should be used to generate bus specific macros for registering drivers like
+> the module_platform_driver macro.
+> 
+> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+> ---
+>  include/linux/init.h            |   21 +++++++++++++++++++++
+>  include/linux/platform_device.h |   12 ++----------
+>  2 files changed, 23 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/linux/init.h b/include/linux/init.h
+> index 9146f39..3e2d238 100644
+> --- a/include/linux/init.h
+> +++ b/include/linux/init.h
+> @@ -346,4 +346,25 @@ void __init parse_early_options(char *cmdline);
+>  #define __exit_p(x) NULL
+>  #endif
+>  
+> +/**
+> + * module_driver() - Helper macro for drivers that don't do anything
+> + * special in module init/exit. This eliminates a lot of boilerplate.
+> + * Each module may only use this macro once, and calling it replaces
+> + * module_init() and module_exit().
+> + * Use this macro to construct bus specific macros for registering
+> + * drivers.
+> + */
+> +#define module_driver(__driver, __register, __unregister) \
+> +static int __init __driver##_init(void) \
+> +{ \
+> +	return __register(&(__driver)); \
+> +} \
+> +module_init(__driver##_init); \
+> +static void __exit __driver##_exit(void) \
+> +{ \
+> +	__unregister(&(__driver)); \
+> +} \
+> +module_exit(__driver##_exit);
+
+Shall we maybe remove the trailing semicolon above?
+
+Thanks
+Guennadi
+
+> +
+>  #endif /* _LINUX_INIT_H */
+> +
+> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+> index 2a23f7d..165a8d1 100644
+> --- a/include/linux/platform_device.h
+> +++ b/include/linux/platform_device.h
+> @@ -196,16 +196,8 @@ static inline void platform_set_drvdata(struct platform_device *pdev, void *data
+>   * calling it replaces module_init() and module_exit()
+>   */
+>  #define module_platform_driver(__platform_driver) \
+> -static int __init __platform_driver##_init(void) \
+> -{ \
+> -	return platform_driver_register(&(__platform_driver)); \
+> -} \
+> -module_init(__platform_driver##_init); \
+> -static void __exit __platform_driver##_exit(void) \
+> -{ \
+> -	platform_driver_unregister(&(__platform_driver)); \
+> -} \
+> -module_exit(__platform_driver##_exit);
+> +	module_driver(__platform_driver, platform_driver_register, \
+> +			platform_driver_unregister)
+>  
+>  extern struct platform_device *platform_create_bundle(struct platform_driver *driver,
+>  					int (*probe)(struct platform_device *),
+> -- 
+> 1.7.7.1
+> 
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+> 
+
 ---
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
+http://www.open-technology.de/
+
+------------------------------------------------------------------------------
 RSA(R) Conference 2012
 Mar 27 - Feb 2
 Save $400 by Jan. 27

@@ -1,58 +1,31 @@
-From: Greg KH <gregkh@suse.de>
-Subject: Re: [PATCH 1/5] drivercore: Generalize module_platform_driver
-Date: Fri, 13 Jan 2012 10:23:26 -0800
-Message-ID: <20120113182326.GA30411@suse.de>
-References: <1321434819-23678-1-git-send-email-lars@metafoo.de>
- <1321434819-23678-2-git-send-email-lars@metafoo.de>
- <Pine.LNX.4.64.1201131003270.29680@axis700.grange>
+From: 15989349144-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Sat, 14 Jan 2012 08:41:00 +0800
+Message-ID: <E1Rlrg9-0001ns-VP@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Jean Delvare <khali@linux-fr.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-i2c@vger.kernel.org, spi-devel-general@lists.sourceforge.net
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.1201131003270.29680@axis700.grange>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 13, 2012 at 10:07:19AM +0100, Guennadi Liakhovetski wrote:
-> I didn't find this patch either in "next" or in Greg's "driver-core" 
-> trees, so, couldn't generate a patch and had to comment here:
-
-It's in Linus's tree now.
-
-> > +/**
-> > + * module_driver() - Helper macro for drivers that don't do anything
-> > + * special in module init/exit. This eliminates a lot of boilerplate.
-> > + * Each module may only use this macro once, and calling it replaces
-> > + * module_init() and module_exit().
-> > + * Use this macro to construct bus specific macros for registering
-> > + * drivers.
-> > + */
-> > +#define module_driver(__driver, __register, __unregister) \
-> > +static int __init __driver##_init(void) \
-> > +{ \
-> > +	return __register(&(__driver)); \
-> > +} \
-> > +module_init(__driver##_init); \
-> > +static void __exit __driver##_exit(void) \
-> > +{ \
-> > +	__unregister(&(__driver)); \
-> > +} \
-> > +module_exit(__driver##_exit);
-> 
-> Shall we maybe remove the trailing semicolon above?
-
-Sure, but either way it doesn't really matter.
-
-Care to send a fix-up patch that I can apply for 3.4?
-
-thanks,
-
-greg k-h
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtci12KOp09DBvLrDtcTG
+89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwrI5zooMSm6o7nYu/XO
+7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oqGqxrGjuwogICAoMym547jm0rWhorj3
+wOC3/s7x0rW3oqGqoarGsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGq
+z7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KUlNBKFIpIENvbmZlcmVuY2UgMjAxMgpNYXIgMjcgLSBGZWIgMgpTYXZlICQ0MDAg
+YnkgSmFuLiAyNwpSZWdpc3RlciBub3chCmh0dHA6Ly9wLnNmLm5ldC9zZnUvcnNhLXNmZGV2MmRl
+djIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
+dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
+cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
+ZGV2ZWwtZ2VuZXJhbAo=

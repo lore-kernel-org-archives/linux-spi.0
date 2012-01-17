@@ -1,13 +1,14 @@
-From: Mauboussin Parfums <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: SOLDES : Votre cadeau Mauboussin
-Date: Mon, 16 Jan 2012 18:51:58 +0100 (CET)
-Message-ID: <3236305005.635838.1326736318572@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: "=?iso-8859-1?Q?Dessous_Ch=E9ri_via_Monplanshopping?="
+	<nepasrepondre-aioAEvWYTQCsLRgOK+YWsFaPQRlvutdw@public.gmane.org>
+Subject: 0,70 euros les shortys dentelles liquidation totale stock limite
+Date: Tue, 17 Jan 2012 08:46:24 GMT
+Message-ID: <20120117084616.vtoaocoabtoietamvroastiivtoavt@agence-diffusion.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Owner: <mailto:nepasrepondre-aioAEvWYTQCsLRgOK+YWsFaPQRlvutdw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,36 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-   Si vous avez des difficult*s * lire ce message cliquez ici.
-   Mauboussin Parfums
+Soldes Dessous ch=E9ri
+Des prix jamais vus
+0.70 euro les shortys soit moins 80 pourcent =
 
-
-   Cadeau Mauboussin
-
-   Pour l'achat d'une Eau de Parfum MAUBOUSSIN Pour Elle
-   50 ml (45*) ou 100 ml (59*) au choix,
-
-   Cr*me parfum*e Pour Elle de Mauboussin
-   nous vous offrons une Cr*me Parfum*e pour le Corps (100 ml)
-   MAUBOUSSIN Pour Elle * la Poudre de Diamants*.
-   LIVRAISON GRATUITE
-   PROFITEZ DE L'OFFRE
-
-                                     Votre code promo : Soldes
-
-    *Offre valable jusqu'au 31/01/12 pour toutes commandes pass*es sur le
-    site, pour l'achat d'une EDP MAUBOUSSIN Pour Elle 50 ml ou 100 ml, et
-    dans la limite des stocks disponibles.
-    Frais d'exp*dition offerts.
-
-                                   www.mauboussinparfums.com
-
-   Si vous ne souhaitez plus recevoir de messages de notre part,Vous avez la
-        possibilit* de vous retirer de notre liste d'envoi de mails par
-                        l'intermediaire de ce raccourci
-------------------------------------------------------------------------------
-RSA(R) Conference 2012
-Mar 27 - Feb 2
-Save $400 by Jan. 27
-Register now!
-http://p.sf.net/sfu/rsa-sfdev2dev2
+http://trkmps.monplanshopping.com/clickers/trkclic.php?idlink=3D190&idint=
+=3DJXBUC&idcamp=3D186
+---------------------------------------------------------------------------=
+---
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

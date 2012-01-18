@@ -1,13 +1,14 @@
-From: "log-Sm+iiP7JDwdQUgkFAh4kEw@public.gmane.org" <loginfo-Sm+iiP7JDwdQUgkFAh4kEw@public.gmane.org>
-Subject: log-Sm+iiP7JDwdQUgkFAh4kEw@public.gmane.org
-Date: Wed, 18 Jan 2012 04:29:02 +0100
-Message-ID: <C478BA4B-704A-41C3-AB82-E9F5384AD492@mail2.misterdomain.eu>
+From: =?iso-8859-15?Q?SIN=C9QUANONE?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?Good_news_!_Livraison_OFFERTE_po?=
+	=?iso-8859-15?Q?ur_la_2=E8me_d=E9marque_Sin=E9quanone_!?=
+Date: Wed, 18 Jan 2012 09:57:25 +0100 (CET)
+Message-ID: <3236305005.638850.1326877045168@p4enginex2.emv2.com>
+Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,18 +19,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Buongiorno =
+   Si vous avez des difficult=E9s pour visualiser la newsletter Sin=E9quano=
+ne,
+   consultez notre version en ligne.
 
-Sul sito  http://specialeprestiti.ns360.info/ =
+   Sinequanone
+   Sinequanone - Livraison offerte d=E8s 120CUR d'achat
+   Sinequanone - Soldes 2=E8me d=E9marque
+   Du 18 janvier au 14 f=E9vrier 2012, en boutique et sur l'E-shop
+   Sinequanone - Soldes      www.sinequanone.com     Sinequanone - Soldes
+   Sinequanone - Soldes 2=E8me d=E9marque
 
-troverete importanti informazioni per finanziamenti  e servizi alle aziende.
-Distinti saluti.
-La Direzione.
-Questo messaggio =E8 semplice e privo di immagini per evitare diffusione di=
- maleware.
+   * Les soldes sont valables sur une s=E9lection d'articles de la collecti=
+on
+   automne-hiver 2012 identifi=E9s par un pictogramme sur le site, hors poi=
+nts
+   rouges. Offre non cumulable avec toute autre op=E9ration en cours. Les
+   soldes se d=E9rouleront du 11 janvier (8h) au 14 f=E9vrier 2012 sur
+   www.sinequanone.com et dans les boutiques Sinequanone en France
+   m=E9tropolitaine (Zone nationale) sauf exceptions. Les frais de port sont
+   offerts automatiquement dans le panier =E0 partir de 120 euros de produi=
+ts
+   achet=E9s.
 
-Per non ricevere ulteriori aggiornamenti clicchi qui.
+   Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 197=
+8, vous
+   b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification e=
+t de
+   suppression aux donn=E9es vous concernant.
 
+   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
+ls
+   par l'intermediaire de ce raccourci.
 ---------------------------------------------------------------------------=
 ---
 Keep Your Developer Skills Current with LearnDevNow!

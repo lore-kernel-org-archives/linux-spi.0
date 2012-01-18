@@ -1,14 +1,13 @@
-From: =?iso-8859-15?Q?SIN=C9QUANONE?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Good_news_!_Livraison_OFFERTE_po?=
-	=?iso-8859-15?Q?ur_la_2=E8me_d=E9marque_Sin=E9quanone_!?=
-Date: Wed, 18 Jan 2012 09:57:25 +0100 (CET)
-Message-ID: <3236305005.638850.1326877045168@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: "Megadeal par Monplanshopping" <bonsplans-Nl0AcLfg5I0VScT1SaBQr6D2Alem9Vsd0E9HWUfgJXw@public.gmane.org>
+Subject: les soldes toute l annee sur les bons plans pres de chez vous
+Date: Wed, 18 Jan 2012 10:12:16 GMT
+Message-ID: <20120118101203.plisdlisclibnlbmplisdpnsplispl@mynews.monplanshopping.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Owner: <mailto:bonsplans-Nl0AcLfg5I0VScT1SaBQr6D2Alem9Vsd0E9HWUfgJXw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,38 +18,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-   Si vous avez des difficult=E9s pour visualiser la newsletter Sin=E9quano=
-ne,
-   consultez notre version en ligne.
-
-   Sinequanone
-   Sinequanone - Livraison offerte d=E8s 120CUR d'achat
-   Sinequanone - Soldes 2=E8me d=E9marque
-   Du 18 janvier au 14 f=E9vrier 2012, en boutique et sur l'E-shop
-   Sinequanone - Soldes      www.sinequanone.com     Sinequanone - Soldes
-   Sinequanone - Soldes 2=E8me d=E9marque
-
-   * Les soldes sont valables sur une s=E9lection d'articles de la collecti=
-on
-   automne-hiver 2012 identifi=E9s par un pictogramme sur le site, hors poi=
-nts
-   rouges. Offre non cumulable avec toute autre op=E9ration en cours. Les
-   soldes se d=E9rouleront du 11 janvier (8h) au 14 f=E9vrier 2012 sur
-   www.sinequanone.com et dans les boutiques Sinequanone en France
-   m=E9tropolitaine (Zone nationale) sauf exceptions. Les frais de port sont
-   offerts automatiquement dans le panier =E0 partir de 120 euros de produi=
-ts
-   achet=E9s.
-
-   Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 197=
-8, vous
-   b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification e=
-t de
-   suppression aux donn=E9es vous concernant.
-
-   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
-ls
-   par l'intermediaire de ce raccourci.
+Le megadeal du jour.
+Chaque jour, les meilleurs plans dans votre ville, aujourd'hui, jusqu'=E0 m=
+oins 80 pourcent sur des places de cin=E9ma, cours de cuisine macarons, s=
+=E9ances de sport ou Week end ski Alpe d'huez
+http://trkmps.monplanshopping.com/clickers/trkclic.php?idlink=3D210&idint=
+=3DJXBUC&idcamp=3D187
 ---------------------------------------------------------------------------=
 ---
 Keep Your Developer Skills Current with LearnDevNow!

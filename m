@@ -1,59 +1,76 @@
-From: Grant Likely <grant.likely@secretlab.ca>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Subject: Re: [PATCH] RFC: spi/sa1100: rewrite the SA1100 SPI driver
-Date: Thu, 19 Jan 2012 10:53:07 -0700
-Message-ID: <CACxGe6sx59tDyH_32GkjnsYif_kJi=R64pV0_7DD5=9WUsfEYg@mail.gmail.com>
+Date: Thu, 19 Jan 2012 17:57:14 +0000
+Message-ID: <20120119175714.GF10404@n2100.arm.linux.org.uk>
 References: <1326841236-25178-1-git-send-email-linus.walleij@linaro.org>
- <20120117231314.GA1068@n2100.arm.linux.org.uk>
- <CACRpkdbynmvcjOY=7_6wK3YTJHpS16Y0fU-Ka3-qw6Vt+eXy0A@mail.gmail.com>
- <20120118123037.GF1068@n2100.arm.linux.org.uk>
- <CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g@mail.gmail.com>
+	<20120117231314.GA1068@n2100.arm.linux.org.uk>
+	<CACRpkdbynmvcjOY=7_6wK3YTJHpS16Y0fU-Ka3-qw6Vt+eXy0A@mail.gmail.com>
+	<20120118123037.GF1068@n2100.arm.linux.org.uk>
+	<CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Nicolas Pitre <nicolas.pitre@linaro.org>,
- spi-devel-general@lists.sourceforge.net,
- Kristoffer Ericson <kristoffer.ericson@gmail.com>,
- Russell King - ARM Linux <linux@arm.linux.org.uk>,
- linux-arm-kernel@lists.infradead.org
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Nicolas Pitre <nicolas.pitre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kristoffer Ericson <kristoffer.ericson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 19, 2012 at 10:49 AM, Linus Walleij
-<linus.walleij@linaro.org> wrote:
+On Thu, Jan 19, 2012 at 06:49:25PM +0100, Linus Walleij wrote:
 > On Wed, Jan 18, 2012 at 1:30 PM, Russell King - ARM Linux
-> <linux@arm.linux.org.uk> wrote:
->> On Wed, Jan 18, 2012 at 01:13:29PM +0100, Linus Walleij wrote:
->
->>> We usually merge drivers for microwire, TI, Motorola ... etc into
->>> drivers/spi as well. It's a good enough fit, the differences are very
->>> small. This is how we configure mode from the PL022 driver platform data:
->>
->> How do you send audio data at 16-bit 2 channel 48kHz continuously with
->> the SPI subsystem?
->
+> <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
+> > On Wed, Jan 18, 2012 at 01:13:29PM +0100, Linus Walleij wrote:
+> 
+> >> We usually merge drivers for microwire, TI, Motorola ... etc into
+> >> drivers/spi as well. It's a good enough fit, the differences are very
+> >> small. This is how we configure mode from the PL022 driver platform data:
+> >
+> > How do you send audio data at 16-bit 2 channel 48kHz continuously with
+> > the SPI subsystem?
+> 
 > Can't say because we haven't used it for audio transfers. However
 > I am pretty convinced that it'd work because we're running a
 > 20 Mbit data link on that SPI port.
->
+> 
 > To get the high data rates we have an internal message queue in
 > the driver that saturates the SPI port. Sometimes we even start to
 > run parts of the driver in parallel on two cores: CPU0 is handling
 > IRQs from the driver while CPU1 is preparing messages to/from
 > the SPI subsystem.
 
-It's not the hardware that is the issue, it is the SPI subsystem which
-is absolutely not set up for the kind of low-latency (note: not
-high-throughput) transfers that are wanted for audio streams.
+A SMP system, which SA1100 is not.
 
-g.
+With audio on the SA1100, we have to keep both DMA transfer buffer
+pointers filled to ensure that audio does not suffer.  I don't see
+submitting multiple SPI transfers into the SPI subsystem would be
+able to do that without waiting for the previous transfer to stop
+completely before starting the next - and that implies the DMA
+transfer completes before starting to program up the next one.
+
+What I'm saying is that SPI will want DMA activity to complete _and_
+end before it starts on the next transfer, which is going to create
+a break in the data output.
+
+Given that audio here just requires the SSP to be configured, and
+then everything else is just DMA, I don't see why we need to waste
+cycles fiddling with the SPI subsystem with its inherent batching
+of transfers.
+
+------------------------------------------------------------------------------
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

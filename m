@@ -1,78 +1,68 @@
-From: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi-topcliff-pch: Modify pci-bus number dynamically
-	to get DMA device info
-Date: Thu, 19 Jan 2012 11:34:43 +0900
-Message-ID: <CANKRQniO55ZO+15Wt63Jtj4_MJk3b04_KXZT4bcrOaJjBedzyQ@mail.gmail.com>
-References: <1323403905-3432-1-git-send-email-tomoya.rohm@gmail.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support
+Date: Thu, 19 Jan 2012 15:22:24 +0800
+Message-ID: <20120119072222.GD2247@S2101-09.ap.freescale.net>
+References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1323403905-3432-1-git-send-email-tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1326934894-29516-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant.
+Hi Marc,
 
-More than a month has been passed since I posted the following patches.
-However still not reviewed yet.
+On Thu, Jan 19, 2012 at 12:01:31PM +1100, Marc Reilly wrote:
+> Hi,
+>=20
+> This series (based on 3.2) adds I2C support for the mc13xxx family PM=
+ICs.
+> The patches are similar, but not identical to my previous patches for=
+ this [1], the
+> main difference being the way the config items are done in patch 2.
+>=20
+The series looks nice.
 
-[PATCH 1/4] spi-topcliff-pch: Modify pci-bus number dynamically to get
-DMA device info
-[PATCH 2/4] spi-topcliff-pch: Fix issue for transmitting over 4KByte
-[PATCH 3/4][RESEND] spi-topcliff-pch: supports a spi mode setup and
-bit order setup by IO control
-[PATCH 4/4] spi-topcliff-pch: add recovery processing in case wait-event ti=
-meout
+> I don't have the hardware to retest on SPI hardware, I'd appreciate i=
+f someone could=20
+> double check it still works.
+>=20
+I just gave it a spin on my imx51 babbage board where mc13892 is
+connected on spi.  The spi access works fine as before, since the part
+still gets recognized correctly.
 
-Could you review these ?
+BTW, I see the following compile error.
 
-thanks,
-tomoya
+  CC      drivers/regulator/mc13892-regulator.o
+In file included from include/linux/mfd/mc13892.h:12:0,
+                 from drivers/regulator/mc13892-regulator.c:13:
+include/linux/mfd/mc13xxx.h:87:15: error: field =E2=80=98lock=E2=80=99 =
+has incomplete type
 
-2011/12/9 Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> Signed-off-by: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> =A0drivers/spi/spi-topcliff-pch.c | =A0 =A03 ++-
-> =A01 files changed, 2 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pc=
-h.c
-> index 99ec279..fcd9462 100644
-> --- a/drivers/spi/spi-topcliff-pch.c
-> +++ b/drivers/spi/spi-topcliff-pch.c
-> @@ -920,7 +920,8 @@ static void pch_spi_request_dma(struct pch_spi_data *=
-data, int bpw)
-> =A0 =A0 =A0 =A0dma_cap_set(DMA_SLAVE, mask);
->
-> =A0 =A0 =A0 =A0/* Get DMA's dev information */
-> - =A0 =A0 =A0 dma_dev =3D pci_get_bus_and_slot(2, PCI_DEVFN(12, 0));
-> + =A0 =A0 =A0 dma_dev =3D pci_get_bus_and_slot(data->board_dat->pdev->bus=
-->number,
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
- =A0PCI_DEVFN(12, 0));
->
-> =A0 =A0 =A0 =A0/* Set Tx DMA */
-> =A0 =A0 =A0 =A0param =3D &dma->param_tx;
-> --
-> 1.7.4.4
->
+And I fixed it as below.
 
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+---8<----
+diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.h
+index c17fc60..4ca8439 100644
+--- a/include/linux/mfd/mc13xxx.h
++++ b/include/linux/mfd/mc13xxx.h
+@@ -10,6 +10,7 @@
+ #define __LINUX_MFD_MC13XXX_H
+
+ #include <linux/interrupt.h>
++#include <linux/mutex.h>
+
+ struct mc13xxx;
+
+---->8---
+
+--=20
+Regards,
+Shawn

@@ -1,208 +1,78 @@
-From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: [PATCH 3/3] mfd: mc13xxx-core: Add i2c driver
-Date: Thu, 19 Jan 2012 12:01:34 +1100
-Message-ID: <1326934894-29516-4-git-send-email-marc@cpdesign.com.au>
-References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1326934894-29516-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi-topcliff-pch: Modify pci-bus number dynamically
+	to get DMA device info
+Date: Thu, 19 Jan 2012 11:34:43 +0900
+Message-ID: <CANKRQniO55ZO+15Wt63Jtj4_MJk3b04_KXZT4bcrOaJjBedzyQ@mail.gmail.com>
+References: <1323403905-3432-1-git-send-email-tomoya.rohm@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: kok.howg.ewe-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, qi.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, joel.clark-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	yong.y.wang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1323403905-3432-1-git-send-email-tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Adds support for mc13xxx family ICs connected via i2c.
+Hi Grant.
 
-Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+More than a month has been passed since I posted the following patches.
+However still not reviewed yet.
+
+[PATCH 1/4] spi-topcliff-pch: Modify pci-bus number dynamically to get
+DMA device info
+[PATCH 2/4] spi-topcliff-pch: Fix issue for transmitting over 4KByte
+[PATCH 3/4][RESEND] spi-topcliff-pch: supports a spi mode setup and
+bit order setup by IO control
+[PATCH 4/4] spi-topcliff-pch: add recovery processing in case wait-event ti=
+meout
+
+Could you review these ?
+
+thanks,
+tomoya
+
+2011/12/9 Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> Signed-off-by: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+> =A0drivers/spi/spi-topcliff-pch.c | =A0 =A03 ++-
+> =A01 files changed, 2 insertions(+), 1 deletions(-)
+>
+> diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pc=
+h.c
+> index 99ec279..fcd9462 100644
+> --- a/drivers/spi/spi-topcliff-pch.c
+> +++ b/drivers/spi/spi-topcliff-pch.c
+> @@ -920,7 +920,8 @@ static void pch_spi_request_dma(struct pch_spi_data *=
+data, int bpw)
+> =A0 =A0 =A0 =A0dma_cap_set(DMA_SLAVE, mask);
+>
+> =A0 =A0 =A0 =A0/* Get DMA's dev information */
+> - =A0 =A0 =A0 dma_dev =3D pci_get_bus_and_slot(2, PCI_DEVFN(12, 0));
+> + =A0 =A0 =A0 dma_dev =3D pci_get_bus_and_slot(data->board_dat->pdev->bus=
+->number,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0PCI_DEVFN(12, 0));
+>
+> =A0 =A0 =A0 =A0/* Set Tx DMA */
+> =A0 =A0 =A0 =A0param =3D &dma->param_tx;
+> --
+> 1.7.4.4
+>
+
+---------------------------------------------------------------------------=
 ---
- drivers/mfd/Kconfig         |    8 +++-
- drivers/mfd/Makefile        |    1 +
- drivers/mfd/mc13xxx-i2c.c   |  120 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/mc13xxx.h |    5 ++-
- 4 files changed, 132 insertions(+), 2 deletions(-)
- create mode 100644 drivers/mfd/mc13xxx-i2c.c
-
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 6cf84c8..08afc84 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -515,7 +515,7 @@ config MFD_MC13783
- 
- config MFD_MC13XXX
- 	tristate "Support Freescale MC13783 or MC13892"
--	depends on SPI_MASTER
-+	depends on SPI_MASTER || I2C
- 	select MFD_CORE
- 	select MFD_MC13783
- 	help
-@@ -538,6 +538,12 @@ config MFD_MC13XXX_SPI
- 	help
- 	  Select this if your MC13xxx is connected via an SPI bus.
- 
-+config MFD_MC13XXX_I2C
-+	tristate "I2C interface"
-+	depends on I2C
-+	help
-+	  Select this if your MC13xxx is connected via an I2C bus.
-+
- endchoice
- 
- config ABX500_CORE
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 3856820..5db8b76 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -52,6 +52,7 @@ obj-$(CONFIG_TWL6040_CORE)	+= twl6040-core.o twl6040-irq.o
- 
- obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx-core.o
- obj-$(CONFIG_MFD_MC13XXX_SPI)	+= mc13xxx-spi.o
-+obj-$(CONFIG_MFD_MC13XXX_I2C)	+= mc13xxx-i2c.o
- 
- obj-$(CONFIG_MFD_CORE)		+= mfd-core.o
- 
-diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
-new file mode 100644
-index 0000000..9965481
---- /dev/null
-+++ b/drivers/mfd/mc13xxx-i2c.c
-@@ -0,0 +1,120 @@
-+/*
-+ * Copyright 2009-2010 Creative Product Design
-+ * Marc Reilly marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
-+ *
-+ * This program is free software; you can redistribute it and/or modify it under
-+ * the terms of the GNU General Public License version 2 as published by the
-+ * Free Software Foundation.
-+ */
-+
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/mfd/core.h>
-+#include <linux/mfd/mc13xxx.h>
-+#include <linux/i2c.h>
-+
-+static int mc13xxx_i2c_reg_read(struct mc13xxx *mc13xxx, unsigned int offset,
-+		u32 *val)
-+{
-+	int ret;
-+	unsigned char buf[3] = {0, 0, 0};
-+
-+	ret = i2c_smbus_read_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
-+	*val = buf[0] << 16 | buf[1] << 8 | buf[2];
-+
-+	return ret == 3 ? 0 : ret;
-+}
-+
-+static int mc13xxx_i2c_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
-+		u32 val)
-+{
-+	int ret;
-+	unsigned char buf[3];
-+
-+	buf[0] = (val >> 16) & 0xff;
-+	buf[1] = (val >> 8) & 0xff;
-+	buf[2] = val & 0xff;
-+
-+	ret = i2c_smbus_write_i2c_block_data(mc13xxx->i2cclient,
-+			offset, 3, buf);
-+
-+	return ret;
-+}
-+
-+static int mc13xxx_i2c_probe(struct i2c_client *client,
-+		const struct i2c_device_id *id)
-+{
-+	struct mc13xxx *mc13xxx;
-+	struct mc13xxx_platform_data *pdata = dev_get_platdata(&client->dev);
-+	int ret;
-+
-+	if (!pdata) {
-+		dev_err(&client->dev, "invalid platform data\n");
-+		return -EINVAL;
-+	}
-+
-+	mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
-+	if (!mc13xxx)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&client->dev, mc13xxx);
-+	mc13xxx->dev = &client->dev;
-+	mc13xxx->i2cclient = client;
-+	mc13xxx->read_dev = mc13xxx_i2c_reg_read;
-+	mc13xxx->write_dev = mc13xxx_i2c_reg_write;
-+
-+	ret = mc13xxx_common_init(mc13xxx, pdata, client->irq);
-+
-+	if (ret == 0 && (id->driver_data != mc13xxx->ictype))
-+		dev_warn(mc13xxx->dev,
-+				"device id doesn't match auto detection!\n");
-+
-+	return ret;
-+}
-+
-+static int __devexit mc13xxx_i2c_remove(struct i2c_client *client)
-+{
-+	struct mc13xxx *mc13xxx = dev_get_drvdata(&client->dev);
-+
-+	free_irq(client->irq, mc13xxx);
-+
-+	mfd_remove_devices(&client->dev);
-+
-+	kfree(mc13xxx);
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id mc13xxx_i2c_idtable[] = {
-+	{"mc13892", MC13XXX_ID_MC13892},
-+	{ }
-+};
-+
-+static struct i2c_driver mc13xxx_i2c_driver = {
-+	.driver = {
-+		.owner = THIS_MODULE,
-+		.name = "mc13xxx-i2c"
-+	},
-+	.id_table = mc13xxx_i2c_idtable,
-+	.probe = mc13xxx_i2c_probe,
-+	.remove = __devexit_p(mc13xxx_i2c_remove),
-+};
-+
-+static int __init mc13xxx_i2c_init(void)
-+{
-+	return i2c_add_driver(&mc13xxx_i2c_driver);
-+}
-+subsys_initcall(mc13xxx_i2c_init);
-+
-+static void __exit mc13xxx_i2c_exit(void)
-+{
-+	i2c_del_driver(&mc13xxx_i2c_driver);
-+}
-+module_exit(mc13xxx_i2c_exit);
-+
-+MODULE_DESCRIPTION("i2c driver for Freescale MC13XXX PMIC");
-+MODULE_AUTHOR("Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.h
-index abf77d3..c17fc60 100644
---- a/include/linux/mfd/mc13xxx.h
-+++ b/include/linux/mfd/mc13xxx.h
-@@ -76,7 +76,10 @@ enum mc13xxx_id {
- };
- 
- struct mc13xxx {
--	struct spi_device *spidev;
-+	union {
-+		struct spi_device *spidev;
-+		struct i2c_client *i2cclient;
-+	};
- 
- 	struct device *dev;
- 	enum mc13xxx_id ictype;
--- 
-1.7.3.4
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

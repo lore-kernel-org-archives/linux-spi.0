@@ -1,11 +1,11 @@
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
 	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH 1/3] mc13xxx-core: Prepare for separate spi and i2c
- backends.
-Date: Thu, 19 Jan 2012 08:51:48 +0100
-Message-ID: <20120119075148.GB4066@pengutronix.de>
+Subject: Re: [PATCH 2/3] mfd: mc13xxx-core: Move spi specific code into
+ separate module.
+Date: Thu, 19 Jan 2012 09:08:43 +0100
+Message-ID: <20120119080843.GC4066@pengutronix.de>
 References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
- <1326934894-29516-2-git-send-email-marc@cpdesign.com.au>
+ <1326934894-29516-3-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Transfer-Encoding: QUOTED-PRINTABLE
@@ -15,186 +15,122 @@ Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7
 To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1326934894-29516-2-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+In-Reply-To: <1326934894-29516-3-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Marc,
+Hello,
 
-I'm glad you respin the series. Some comments below.
-
-On Thu, Jan 19, 2012 at 12:01:32PM +1100, Marc Reilly wrote:
-> This patch abstracts the bus specific operations from the driver core=
-=2E
-> Read and write handlers are introduced and generic initialization is
-> consolidated into mc13xxx_comon_init. The irq member is removed becau=
-se
-> it is unused.
+On Thu, Jan 19, 2012 at 12:01:33PM +1100, Marc Reilly wrote:
+> All spi specific code is moved into a new module. The mc13xxx
+> struct moves to the include file by necessity.
+>=20
+> A new config choice selects the bus type with SPI as the first item
+> (default selection) to remain compatible with existing configs.
 >=20
 > Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 > ---
->  drivers/mfd/mc13xxx-core.c  |  162 +++++++++++++++++++++++++--------=
----------
->  include/linux/mfd/mc13xxx.h |    5 ++
->  2 files changed, 101 insertions(+), 66 deletions(-)
+>  drivers/mfd/Kconfig         |   23 +++++-
+>  drivers/mfd/Makefile        |    1 +
+>  drivers/mfd/mc13xxx-core.c  |  174 ---------------------------------=
+----------
+>  drivers/mfd/mc13xxx-spi.c   |  173 +++++++++++++++++++++++++++++++++=
++++++++++
+>  include/linux/mfd/mc13xxx.h |   23 ++++++
+>  5 files changed, 216 insertions(+), 178 deletions(-)
+>  create mode 100644 drivers/mfd/mc13xxx-spi.c
 >=20
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index f1391c2..6cf84c8 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -514,17 +514,32 @@ config MFD_MC13783
+>  	tristate
+> =20
+>  config MFD_MC13XXX
+> -	tristate "Support Freescale MC13783 and MC13892"
+> +	tristate "Support Freescale MC13783 or MC13892"
+>  	depends on SPI_MASTER
+>  	select MFD_CORE
+>  	select MFD_MC13783
+>  	help
+> -	  Support for the Freescale (Atlas) PMIC and audio CODECs
+> -	  MC13783 and MC13892.
+> -	  This driver provides common support for accessing  the device,
+> +	  Enable support for the Freescale MC13783 and MC13892 PMICs.
+> +	  This driver provides common support for accessing the device,
+>  	  additional drivers must be enabled in order to use the
+>  	  functionality of the device.
+> =20
+> +choice
+> +	tristate "MC13XXX Bus interface type"
+s/tristate/prompt/ and I would prefer MC13xxx but not care much.
+
+> +	depends on MFD_MC13XXX
+> +	default MFD_MC13XXX_SPI
+> +	help
+> +	  The MC13XXX family can be connected over an SPI or I2C bus.
+> +	  Select the appropriate option for your hardware configuration.
+> +
+> +config MFD_MC13XXX_SPI
+> +	tristate "SPI interface"
+> +	depends on SPI_MASTER
+> +	help
+> +	  Select this if your MC13xxx is connected via an SPI bus.
+> +
+> +endchoice
+> +
+Hmm, you cannot have both, spi and i2c support?
+
+What do you think about:
+
+menuconfig MFD_MC13XXX
+	...
+
+if MFD_MC13XXX
+
+config MFD_MC13XXX_SPI
+	bool "MC13xxx spi bus interface" if SPI_MASTER && I2C
+	default SPI_MASTER
+	...
+
+config MFD_MC13XXX_I2C
+	bool "MC13xxx i2c bus interface" if SPI_MASTER && I2C
+	default I2C
+	...
+
+endif # MFD_MC13XXX
+
+This way the bus type is even selected automatically when only one of
+spi and i2c support is enabled. (I havn't tested that though.)
+
+=09
+>  config ABX500_CORE
+>  	bool "ST-Ericsson ABX500 Mixed Signal Circuit register functions"
+>  	default y if ARCH_U300 || ARCH_U8500
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index b2292eb..3856820 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -51,6 +51,7 @@ obj-$(CONFIG_TWL6030_PWM)	+=3D twl6030-pwm.o
+>  obj-$(CONFIG_TWL6040_CORE)	+=3D twl6040-core.o twl6040-irq.o
+> =20
+>  obj-$(CONFIG_MFD_MC13XXX)	+=3D mc13xxx-core.o
+> +obj-$(CONFIG_MFD_MC13XXX_SPI)	+=3D mc13xxx-spi.o
+> =20
+>  obj-$(CONFIG_MFD_CORE)		+=3D mfd-core.o
+> =20
 > diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
-> index e9619ac..3c3079f 100644
+> index 3c3079f..53732c0 100644
 > --- a/drivers/mfd/mc13xxx-core.c
 > +++ b/drivers/mfd/mc13xxx-core.c
-> @@ -19,10 +19,22 @@
+> @@ -15,33 +15,9 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/mutex.h>
+>  #include <linux/interrupt.h>
+> -#include <linux/spi/spi.h>
 >  #include <linux/mfd/core.h>
 >  #include <linux/mfd/mc13xxx.h>
-> =20
-> +enum mc13xxx_id {
-> +	MC13XXX_ID_MC13783,
-> +	MC13XXX_ID_MC13892,
-> +	MC13XXX_ID_INVALID,
-> +};
-> +
->  struct mc13xxx {
->  	struct spi_device *spidev;
-> +
-> +	struct device *dev;
-> +	enum mc13xxx_id ictype;
-> +
->  	struct mutex lock;
-> -	int irq;
-> +
-> +	int (*read_dev)(struct mc13xxx *, unsigned int, u32 *);
-> +	int (*write_dev)(struct mc13xxx *, unsigned int, u32);
-> =20
->  	irq_handler_t irqhandler[MC13XXX_NUM_IRQ];
->  	void *irqdata[MC13XXX_NUM_IRQ];
-> @@ -140,36 +152,32 @@ struct mc13xxx {
->  void mc13xxx_lock(struct mc13xxx *mc13xxx)
->  {
->  	if (!mutex_trylock(&mc13xxx->lock)) {
-> -		dev_dbg(&mc13xxx->spidev->dev, "wait for %s from %pf\n",
-> +		dev_dbg(mc13xxx->dev, "wait for %s from %pf\n",
->  				__func__, __builtin_return_address(0));
-> =20
->  		mutex_lock(&mc13xxx->lock);
->  	}
-> -	dev_dbg(&mc13xxx->spidev->dev, "%s from %pf\n",
-> +	dev_dbg(mc13xxx->dev, "%s from %pf\n",
->  			__func__, __builtin_return_address(0));
->  }
->  EXPORT_SYMBOL(mc13xxx_lock);
-> =20
->  void mc13xxx_unlock(struct mc13xxx *mc13xxx)
->  {
-> -	dev_dbg(&mc13xxx->spidev->dev, "%s from %pf\n",
-> +	dev_dbg(mc13xxx->dev, "%s from %pf\n",
->  			__func__, __builtin_return_address(0));
->  	mutex_unlock(&mc13xxx->lock);
->  }
->  EXPORT_SYMBOL(mc13xxx_unlock);
-> =20
->  #define MC13XXX_REGOFFSET_SHIFT 25
-> -int mc13xxx_reg_read(struct mc13xxx *mc13xxx, unsigned int offset, u=
-32 *val)
-> +static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx,
-> +				unsigned int offset, u32 *val)
->  {
->  	struct spi_transfer t;
->  	struct spi_message m;
->  	int ret;
-> =20
-> -	BUG_ON(!mutex_is_locked(&mc13xxx->lock));
-> -
-> -	if (offset > MC13XXX_NUMREGS)
-> -		return -EINVAL;
-> -
->  	*val =3D offset << MC13XXX_REGOFFSET_SHIFT;
-> =20
->  	memset(&t, 0, sizeof(t));
-> @@ -191,26 +199,17 @@ int mc13xxx_reg_read(struct mc13xxx *mc13xxx, u=
-nsigned int offset, u32 *val)
-> =20
->  	*val &=3D 0xffffff;
-> =20
-> -	dev_vdbg(&mc13xxx->spidev->dev, "[0x%02x] -> 0x%06x\n", offset, *va=
-l);
-> -
->  	return 0;
->  }
-> -EXPORT_SYMBOL(mc13xxx_reg_read);
-> =20
-> -int mc13xxx_reg_write(struct mc13xxx *mc13xxx, unsigned int offset, =
-u32 val)
-> +static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, unsigned i=
-nt offset,
-> +		u32 val)
->  {
->  	u32 buf;
->  	struct spi_transfer t;
->  	struct spi_message m;
->  	int ret;
-> =20
-> -	BUG_ON(!mutex_is_locked(&mc13xxx->lock));
-> -
-> -	dev_vdbg(&mc13xxx->spidev->dev, "[0x%02x] <- 0x%06x\n", offset, val=
-);
-> -
-> -	if (offset > MC13XXX_NUMREGS || val > 0xffffff)
-> -		return -EINVAL;
-> -
->  	buf =3D 1 << 31 | offset << MC13XXX_REGOFFSET_SHIFT | val;
-> =20
->  	memset(&t, 0, sizeof(t));
-> @@ -231,6 +230,34 @@ int mc13xxx_reg_write(struct mc13xxx *mc13xxx, u=
-nsigned int offset, u32 val)
-> =20
->  	return 0;
->  }
-> +
-> +int mc13xxx_reg_read(struct mc13xxx *mc13xxx, unsigned int offset, u=
-32 *val)
-> +{
-> +	int ret;
-> +
-> +	BUG_ON(!mutex_is_locked(&mc13xxx->lock));
-> +
-> +	if (offset > MC13XXX_NUMREGS)
-> +		return -EINVAL;
-> +
-> +	ret =3D mc13xxx->read_dev(mc13xxx, offset, val);
-> +	dev_vdbg(mc13xxx->dev, "[0x%02x] -> 0x%06x\n", offset, *val);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL(mc13xxx_reg_read);
-> +
-> +int mc13xxx_reg_write(struct mc13xxx *mc13xxx, unsigned int offset, =
-u32 val)
-> +{
-> +	BUG_ON(!mutex_is_locked(&mc13xxx->lock));
-> +
-> +	dev_vdbg(mc13xxx->dev, "[0x%02x] <- 0x%06x\n", offset, val);
-> +
-> +	if (offset > MC13XXX_NUMREGS || val > 0xffffff)
-> +		return -EINVAL;
-> +
-> +	return mc13xxx->write_dev(mc13xxx, offset, val);
-> +}
->  EXPORT_SYMBOL(mc13xxx_reg_write);
-> =20
->  int mc13xxx_reg_rmw(struct mc13xxx *mc13xxx, unsigned int offset,
-> @@ -435,7 +462,7 @@ static int mc13xxx_irq_handle(struct mc13xxx *mc1=
-3xxx,
->  			if (handled =3D=3D IRQ_HANDLED)
->  				num_handled++;
->  		} else {
-> -			dev_err(&mc13xxx->spidev->dev,
-> +			dev_err(mc13xxx->dev,
->  					"BUG: irq %u but no handler\n",
->  					baseirq + irq);
-> =20
-> @@ -471,25 +498,23 @@ static irqreturn_t mc13xxx_irq_thread(int irq, =
-void *data)
->  	return IRQ_RETVAL(handled);
->  }
 > =20
 > -enum mc13xxx_id {
 > -	MC13XXX_ID_MC13783,
@@ -202,161 +138,319 @@ void *data)
 > -	MC13XXX_ID_INVALID,
 > -};
 > -
->  static const char *mc13xxx_chipname[] =3D {
->  	[MC13XXX_ID_MC13783] =3D "mc13783",
->  	[MC13XXX_ID_MC13892] =3D "mc13892",
->  };
+> -struct mc13xxx {
+> -	struct spi_device *spidev;
+> -
+> -	struct device *dev;
+> -	enum mc13xxx_id ictype;
+> -
+> -	struct mutex lock;
+> -
+> -	int (*read_dev)(struct mc13xxx *, unsigned int, u32 *);
+> -	int (*write_dev)(struct mc13xxx *, unsigned int, u32);
+> -
+> -	irq_handler_t irqhandler[MC13XXX_NUM_IRQ];
+> -	void *irqdata[MC13XXX_NUM_IRQ];
+> -
+> -	int adcflags;
+> -};
+> -
+>  #define MC13XXX_IRQSTAT0	0
+>  #define MC13XXX_IRQSTAT0_ADCDONEI	(1 << 0)
+>  #define MC13XXX_IRQSTAT0_ADCBISDONEI	(1 << 1)
+> @@ -170,67 +146,6 @@ void mc13xxx_unlock(struct mc13xxx *mc13xxx)
+>  }
+>  EXPORT_SYMBOL(mc13xxx_unlock);
 > =20
->  #define maskval(reg, mask)	(((reg) & (mask)) >> __ffs(mask))
-> -static int mc13xxx_identify(struct mc13xxx *mc13xxx, enum mc13xxx_id=
- *id)
-> +static int mc13xxx_identify(struct mc13xxx *mc13xxx)
->  {
->  	u32 icid;
->  	u32 revision;
-> -	const char *name;
->  	int ret;
-> =20
-> +	/*
-> +	 * Get the generation ID from register 46, as apparently some older
-> +	 * IC revisions only have this info at this location. Newer ICs see=
-m to
-> +	 * have both.
-> +	 */
->  	ret =3D mc13xxx_reg_read(mc13xxx, 46, &icid);
->  	if (ret)
->  		return ret;
-> @@ -498,26 +523,23 @@ static int mc13xxx_identify(struct mc13xxx *mc1=
-3xxx, enum mc13xxx_id *id)
-> =20
->  	switch (icid) {
->  	case 2:
-> -		*id =3D MC13XXX_ID_MC13783;
-> -		name =3D "mc13783";
-> +		mc13xxx->ictype =3D MC13XXX_ID_MC13783;
->  		break;
->  	case 7:
-> -		*id =3D MC13XXX_ID_MC13892;
-> -		name =3D "mc13892";
-> +		mc13xxx->ictype =3D MC13XXX_ID_MC13892;
->  		break;
->  	default:
-> -		*id =3D MC13XXX_ID_INVALID;
-> +		mc13xxx->ictype =3D MC13XXX_ID_INVALID;
->  		break;
->  	}
-> =20
-> -	if (*id =3D=3D MC13XXX_ID_MC13783 || *id =3D=3D MC13XXX_ID_MC13892)=
- {
-> +	if (mc13xxx->ictype =3D=3D MC13XXX_ID_MC13783 ||
-> +			mc13xxx->ictype =3D=3D MC13XXX_ID_MC13892) {
->  		ret =3D mc13xxx_reg_read(mc13xxx, MC13XXX_REVISION, &revision);
-> -		if (ret)
-> -			return ret;
-> =20
-> -		dev_info(&mc13xxx->spidev->dev, "%s: rev: %d.%d, "
-> +		dev_info(mc13xxx->dev, "%s: rev: %d.%d, "
->  				"fin: %d, fab: %d, icid: %d/%d\n",
-> -				mc13xxx_chipname[*id],
-> +				mc13xxx_chipname[mc13xxx->ictype],
->  				maskval(revision, MC13XXX_REVISION_REVFULL),
->  				maskval(revision, MC13XXX_REVISION_REVMETAL),
->  				maskval(revision, MC13XXX_REVISION_FIN),
-> @@ -526,32 +548,18 @@ static int mc13xxx_identify(struct mc13xxx *mc1=
-3xxx, enum mc13xxx_id *id)
->  				maskval(revision, MC13XXX_REVISION_ICIDCODE));
->  	}
-> =20
-> -	if (*id !=3D MC13XXX_ID_INVALID) {
-> -		const struct spi_device_id *devid =3D
-> -			spi_get_device_id(mc13xxx->spidev);
-> -		if (!devid || devid->driver_data !=3D *id)
-> -			dev_warn(&mc13xxx->spidev->dev, "device id doesn't "
-> -					"match auto detection!\n");
-> -	}
+> -#define MC13XXX_REGOFFSET_SHIFT 25
+> -static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx,
+> -				unsigned int offset, u32 *val)
+> -{
+> -	struct spi_transfer t;
+> -	struct spi_message m;
+> -	int ret;
+> -
+> -	*val =3D offset << MC13XXX_REGOFFSET_SHIFT;
+> -
+> -	memset(&t, 0, sizeof(t));
+> -
+> -	t.tx_buf =3D val;
+> -	t.rx_buf =3D val;
+> -	t.len =3D sizeof(u32);
+> -
+> -	spi_message_init(&m);
+> -	spi_message_add_tail(&t, &m);
+> -
+> -	ret =3D spi_sync(mc13xxx->spidev, &m);
+> -
+> -	/* error in message.status implies error return from spi_sync */
+> -	BUG_ON(!ret && m.status);
+> -
+> -	if (ret)
+> -		return ret;
+> -
+> -	*val &=3D 0xffffff;
 > -
 > -	return 0;
-> +	return (mc13xxx->ictype =3D=3D MC13XXX_ID_INVALID) ? -ENODEV : 0;
->  }
-> =20
->  static const char *mc13xxx_get_chipname(struct mc13xxx *mc13xxx)
->  {
-> -	const struct spi_device_id *devid =3D
-> -		spi_get_device_id(mc13xxx->spidev);
+> -}
 > -
-> -	if (!devid)
-> -		return NULL;
+> -static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, unsigned i=
+nt offset,
+> -		u32 val)
+> -{
+> -	u32 buf;
+> -	struct spi_transfer t;
+> -	struct spi_message m;
+> -	int ret;
 > -
-> -	return mc13xxx_chipname[devid->driver_data];
-> +	return mc13xxx_chipname[mc13xxx->ictype];
->  }
-> =20
->  int mc13xxx_get_flags(struct mc13xxx *mc13xxx)
+> -	buf =3D 1 << 31 | offset << MC13XXX_REGOFFSET_SHIFT | val;
+> -
+> -	memset(&t, 0, sizeof(t));
+> -
+> -	t.tx_buf =3D &buf;
+> -	t.rx_buf =3D &buf;
+> -	t.len =3D sizeof(u32);
+> -
+> -	spi_message_init(&m);
+> -	spi_message_add_tail(&t, &m);
+> -
+> -	ret =3D spi_sync(mc13xxx->spidev, &m);
+> -
+> -	BUG_ON(!ret && m.status);
+> -
+> -	if (ret)
+> -		return ret;
+> -
+> -	return 0;
+> -}
+> -
+>  int mc13xxx_reg_read(struct mc13xxx *mc13xxx, unsigned int offset, u=
+32 *val)
 >  {
->  	struct mc13xxx_platform_data *pdata =3D
-> -		dev_get_platdata(&mc13xxx->spidev->dev);
-> +		dev_get_platdata(mc13xxx->dev);
-> =20
->  	return pdata->flags;
->  }
-> @@ -588,7 +596,7 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc1=
-3xxx, unsigned int mode,
->  	};
->  	init_completion(&adcdone_data.done);
-> =20
-> -	dev_dbg(&mc13xxx->spidev->dev, "%s\n", __func__);
-> +	dev_dbg(mc13xxx->dev, "%s\n", __func__);
-> =20
->  	mc13xxx_lock(mc13xxx);
-> =20
-> @@ -630,7 +638,7 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc1=
-3xxx, unsigned int mode,
->  		return -EINVAL;
->  	}
-> =20
-> -	dev_dbg(&mc13xxx->spidev->dev, "%s: request irq\n", __func__);
-> +	dev_dbg(mc13xxx->dev, "%s: request irq\n", __func__);
->  	mc13xxx_irq_request(mc13xxx, MC13XXX_IRQ_ADCDONE,
->  			mc13xxx_handler_adcdone, __func__, &adcdone_data);
->  	mc13xxx_irq_ack(mc13xxx, MC13XXX_IRQ_ADCDONE);
-> @@ -688,7 +696,7 @@ static int mc13xxx_add_subdevice_pdata(struct mc1=
-3xxx *mc13xxx,
->  	if (!cell.name)
->  		return -ENOMEM;
-> =20
-> -	return mfd_add_devices(&mc13xxx->spidev->dev, -1, &cell, 1, NULL, 0=
-);
-> +	return mfd_add_devices(mc13xxx->dev, -1, &cell, 1, NULL, 0);
->  }
-> =20
->  static int mc13xxx_add_subdevice(struct mc13xxx *mc13xxx, const char=
- *format)
-> @@ -700,7 +708,6 @@ static int mc13xxx_probe(struct spi_device *spi)
->  {
->  	struct mc13xxx *mc13xxx;
->  	struct mc13xxx_platform_data *pdata =3D dev_get_platdata(&spi->dev)=
-;
-> -	enum mc13xxx_id id;
 >  	int ret;
+> @@ -704,46 +619,6 @@ static int mc13xxx_add_subdevice(struct mc13xxx =
+*mc13xxx, const char *format)
+>  	return mc13xxx_add_subdevice_pdata(mc13xxx, format, NULL, 0);
+>  }
 > =20
->  	if (!pdata) {
-> @@ -717,13 +724,36 @@ static int mc13xxx_probe(struct spi_device *spi=
-)
->  	spi->bits_per_word =3D 32;
->  	spi_setup(spi);
+> -static int mc13xxx_probe(struct spi_device *spi)
+> -{
+> -	struct mc13xxx *mc13xxx;
+> -	struct mc13xxx_platform_data *pdata =3D dev_get_platdata(&spi->dev)=
+;
+> -	int ret;
+> -
+> -	if (!pdata) {
+> -		dev_err(&spi->dev, "invalid platform data\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	mc13xxx =3D kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
+> -	if (!mc13xxx)
+> -		return -ENOMEM;
+> -
+> -	dev_set_drvdata(&spi->dev, mc13xxx);
+> -	spi->mode =3D SPI_MODE_0 | SPI_CS_HIGH;
+> -	spi->bits_per_word =3D 32;
+> -	spi_setup(spi);
+> -
+> -	mc13xxx->dev =3D &spi->dev;
+> -	mc13xxx->spidev =3D spi;
+> -	mc13xxx->read_dev =3D mc13xxx_spi_reg_read;
+> -	mc13xxx->write_dev =3D mc13xxx_spi_reg_write;
+> -
+> -	ret =3D mc13xxx_common_init(mc13xxx, pdata, spi->irq);
+> -
+> -	if (ret) {
+> -		dev_set_drvdata(&spi->dev, NULL);
+> -	} else {
+> -		const struct spi_device_id *devid =3D
+> -			spi_get_device_id(mc13xxx->spidev);
+> -		if (!devid || devid->driver_data !=3D mc13xxx->ictype)
+> -			dev_warn(mc13xxx->dev,
+> -				"device id doesn't match auto detection!\n");
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+>  int mc13xxx_common_init(struct mc13xxx *mc13xxx,
+>  		struct mc13xxx_platform_data *pdata, int irq)
+>  {
+> @@ -805,55 +680,6 @@ err_revision:
+>  }
+>  EXPORT_SYMBOL_GPL(mc13xxx_common_init);
 > =20
+> -static int __devexit mc13xxx_remove(struct spi_device *spi)
+> -{
+> -	struct mc13xxx *mc13xxx =3D dev_get_drvdata(&spi->dev);
+> -
+> -	free_irq(mc13xxx->spidev->irq, mc13xxx);
+> -
+> -	mfd_remove_devices(&spi->dev);
+> -
+> -	kfree(mc13xxx);
+> -
+> -	return 0;
+> -}
+> -
+> -static const struct spi_device_id mc13xxx_device_id[] =3D {
+> -	{
+> -		.name =3D "mc13783",
+> -		.driver_data =3D MC13XXX_ID_MC13783,
+> -	}, {
+> -		.name =3D "mc13892",
+> -		.driver_data =3D MC13XXX_ID_MC13892,
+> -	}, {
+> -		/* sentinel */
+> -	}
+> -};
+> -MODULE_DEVICE_TABLE(spi, mc13xxx_device_id);
+> -
+> -static struct spi_driver mc13xxx_driver =3D {
+> -	.id_table =3D mc13xxx_device_id,
+> -	.driver =3D {
+> -		.name =3D "mc13xxx",
+> -		.bus =3D &spi_bus_type,
+> -		.owner =3D THIS_MODULE,
+> -	},
+> -	.probe =3D mc13xxx_probe,
+> -	.remove =3D __devexit_p(mc13xxx_remove),
+> -};
+> -
+> -static int __init mc13xxx_init(void)
+> -{
+> -	return spi_register_driver(&mc13xxx_driver);
+> -}
+> -subsys_initcall(mc13xxx_init);
+> -
+> -static void __exit mc13xxx_exit(void)
+> -{
+> -	spi_unregister_driver(&mc13xxx_driver);
+> -}
+> -module_exit(mc13xxx_exit);
+> -
+>  MODULE_DESCRIPTION("Core driver for Freescale MC13XXX PMIC");
+>  MODULE_AUTHOR("Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/mfd/mc13xxx-spi.c b/drivers/mfd/mc13xxx-spi.c
+> new file mode 100644
+> index 0000000..8958b44
+> --- /dev/null
+> +++ b/drivers/mfd/mc13xxx-spi.c
+> @@ -0,0 +1,173 @@
+> +/*
+> + * Copyright 2009-2010 Pengutronix
+> + * Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> + *
+> + * loosely based on an earlier driver that has
+> + * Copyright 2009 Pengutronix, Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> + *
+> + * This program is free software; you can redistribute it and/or mod=
+ify it under
+> + * the terms of the GNU General Public License version 2 as publishe=
+d by the
+> + * Free Software Foundation.
+> + */
+> +
+> +#include <linux/slab.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/mutex.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/mc13xxx.h>
+> +
+> +#define MC13XXX_REGOFFSET_SHIFT 25
+> +static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx,
+> +				unsigned int offset, u32 *val)
+> +{
+> +	struct spi_transfer t;
+> +	struct spi_message m;
+> +	int ret;
+> +
+> +	*val =3D offset << MC13XXX_REGOFFSET_SHIFT;
+> +
+> +	memset(&t, 0, sizeof(t));
+> +
+> +	t.tx_buf =3D val;
+> +	t.rx_buf =3D val;
+> +	t.len =3D sizeof(u32);
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t, &m);
+> +
+> +	ret =3D spi_sync(mc13xxx->spidev, &m);
+> +
+> +	/* error in message.status implies error return from spi_sync */
+> +	BUG_ON(!ret && m.status);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val &=3D 0xffffff;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, unsigned i=
+nt offset,
+> +		u32 val)
+> +{
+> +	u32 buf;
+> +	struct spi_transfer t;
+> +	struct spi_message m;
+> +	int ret;
+> +
+> +	buf =3D 1 << 31 | offset << MC13XXX_REGOFFSET_SHIFT | val;
+> +
+> +	memset(&t, 0, sizeof(t));
+> +
+> +	t.tx_buf =3D &buf;
+> +	t.rx_buf =3D &buf;
+> +	t.len =3D sizeof(u32);
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t, &m);
+> +
+> +	ret =3D spi_sync(mc13xxx->spidev, &m);
+> +
+> +	BUG_ON(!ret && m.status);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mc13xxx_spi_probe(struct spi_device *spi)
+> +{
+> +	struct mc13xxx *mc13xxx;
+> +	struct mc13xxx_platform_data *pdata =3D dev_get_platdata(&spi->dev)=
+;
+> +	int ret;
+> +
+> +	if (!pdata) {
+> +		dev_err(&spi->dev, "invalid platform data\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	mc13xxx =3D kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
+> +	if (!mc13xxx)
+> +		return -ENOMEM;
+> +
+> +	dev_set_drvdata(&spi->dev, mc13xxx);
+> +	spi->mode =3D SPI_MODE_0 | SPI_CS_HIGH;
+> +	spi->bits_per_word =3D 32;
+> +	spi_setup(spi);
+> +
 > +	mc13xxx->dev =3D &spi->dev;
->  	mc13xxx->spidev =3D spi;
+> +	mc13xxx->spidev =3D spi;
 > +	mc13xxx->read_dev =3D mc13xxx_spi_reg_read;
 > +	mc13xxx->write_dev =3D mc13xxx_spi_reg_write;
 > +
 > +	ret =3D mc13xxx_common_init(mc13xxx, pdata, spi->irq);
-small nitpick: IMHO declaring mc13xxx_common_init globally isn't needed=
-=2E
-=46or example drivers/mfd/mc13xxx.h would be enough. And this only in
-patch 2 if you rearrage it to be defined before mc13xxx_probe.
-EXPORT_SYMBOL can then come in patch 2, too.
-
 > +
 > +	if (ret) {
 > +		dev_set_drvdata(&spi->dev, NULL);
@@ -371,41 +465,91 @@ EXPORT_SYMBOL can then come in patch 2, too.
 > +	return ret;
 > +}
 > +
-> +int mc13xxx_common_init(struct mc13xxx *mc13xxx,
-> +		struct mc13xxx_platform_data *pdata, int irq)
+> +static int __devexit mc13xxx_spi_remove(struct spi_device *spi)
 > +{
-> +	int ret;
+> +	struct mc13xxx *mc13xxx =3D dev_get_drvdata(&spi->dev);
+> +
+> +	free_irq(mc13xxx->spidev->irq, mc13xxx);
+> +
+> +	mfd_remove_devices(&spi->dev);
+> +
+> +	kfree(mc13xxx);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct spi_device_id mc13xxx_device_id[] =3D {
+> +	{
+> +		.name =3D "mc13783",
+> +		.driver_data =3D MC13XXX_ID_MC13783,
+> +	}, {
+> +		.name =3D "mc13892",
+> +		.driver_data =3D MC13XXX_ID_MC13892,
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
+> +
+> +static struct spi_driver mc13xxx_spi_driver =3D {
+> +	.id_table =3D mc13xxx_device_id,
+> +	.driver =3D {
+> +		.name =3D "mc13xxx",
+> +		.bus =3D &spi_bus_type,
+> +		.owner =3D THIS_MODULE,
+> +	},
+> +	.probe =3D mc13xxx_spi_probe,
+> +	.remove =3D __devexit_p(mc13xxx_spi_remove),
+> +};
+> +
+> +static int __init mc13xxx_spi_init(void)
+> +{
+> +	return spi_register_driver(&mc13xxx_spi_driver);
+> +}
+> +subsys_initcall(mc13xxx_spi_init);
+> +
+> +static void __exit mc13xxx_spi_exit(void)
+> +{
+> +	spi_unregister_driver(&mc13xxx_spi_driver);
+> +}
+> +module_exit(mc13xxx_spi_exit);
+> +
+> +MODULE_DESCRIPTION("SPI driver for Freescale MC13XXX PMIC");
+> +MODULE_AUTHOR("Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>");
+> +MODULE_LICENSE("GPL v2");
+> diff --git a/include/linux/mfd/mc13xxx.h b/include/linux/mfd/mc13xxx.=
+h
+> index 3e38f72..abf77d3 100644
+> --- a/include/linux/mfd/mc13xxx.h
+> +++ b/include/linux/mfd/mc13xxx.h
+> @@ -69,6 +69,29 @@ int mc13xxx_adc_do_conversion(struct mc13xxx *mc13=
+xxx,
 > =20
->  	mutex_init(&mc13xxx->lock);
->  	mc13xxx_lock(mc13xxx);
+>  #define MC13XXX_NUM_IRQ		46
 > =20
-> -	ret =3D mc13xxx_identify(mc13xxx, &id);
-> -	if (ret || id =3D=3D MC13XXX_ID_INVALID)
-> +	ret =3D mc13xxx_identify(mc13xxx);
-> +	if (ret)
->  		goto err_revision;
-> =20
->  	/* mask all irqs */
-> @@ -735,14 +765,13 @@ static int mc13xxx_probe(struct spi_device *spi=
-)
->  	if (ret)
->  		goto err_mask;
-> =20
-> -	ret =3D request_threaded_irq(spi->irq, NULL, mc13xxx_irq_thread,
-> +	ret =3D request_threaded_irq(irq, NULL, mc13xxx_irq_thread,
->  			IRQF_ONESHOT | IRQF_TRIGGER_HIGH, "mc13xxx", mc13xxx);
-> =20
->  	if (ret) {
->  err_mask:
->  err_revision:
-> -		mc13xxx_unlock(mc13xxx);
-> -		dev_set_drvdata(&spi->dev, NULL);
-> +		mutex_unlock(&mc13xxx->lock);
-What is the reason to switch back to an explicit mutex_unlock?
-(My guess is a wrong conflict resolution during rebase in the presence
-of commit e1b88eb0e08335d2f6c.)
-
-Other than that I'm happy with the patch.
+> +enum mc13xxx_id {
+> +	MC13XXX_ID_MC13783,
+> +	MC13XXX_ID_MC13892,
+> +	MC13XXX_ID_INVALID,
+> +};
+> +
+> +struct mc13xxx {
+> +	struct spi_device *spidev;
+> +
+> +	struct device *dev;
+> +	enum mc13xxx_id ictype;
+> +
+> +	struct mutex lock;
+> +
+> +	int (*read_dev)(struct mc13xxx *, unsigned int, u32 *);
+> +	int (*write_dev)(struct mc13xxx *, unsigned int, u32);
+> +
+> +	irq_handler_t irqhandler[MC13XXX_NUM_IRQ];
+> +	void *irqdata[MC13XXX_NUM_IRQ];
+> +
+> +	int adcflags;
+> +};
+> +
+this should go to drivers/mfd/mc13xxx.h, too.
 
 Best regards
 Uwe

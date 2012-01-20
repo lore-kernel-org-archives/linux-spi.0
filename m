@@ -1,60 +1,58 @@
-From: =?iso-8859-15?Q?Soldes_SIN=C9QUANONE?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Profitez_de_la_livraison_OFFERTE_p?=
-	=?iso-8859-15?Q?our_la_2=E8me_d=E9marque_Sin=E9quanone_!?=
-Date: Fri, 20 Jan 2012 09:23:46 +0100 (CET)
-Message-ID: <3236305005.644702.1327047826220@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: Arnaud Patard (Rtp) <arnaud.patard-dQbF7i+pzddAfugRpC6u6w@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support
+Date: Fri, 20 Jan 2012 11:36:07 +0100
+Message-ID: <878vl2lkyw.fsf@lebrac.rtp-net.org>
+References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
+	<87lip4kktc.fsf@lebrac.rtp-net.org>
+	<20120119112941.GC29494@sirena.org.uk>
+	<201201201855.35971.marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <201201201855.35971.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org> (Marc Reilly's message
+	of "Fri, 20 Jan 2012 18:55:35 +1100")
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-   Si vous avez des difficult=E9s pour visualiser la newsletter Sin=E9quano=
-ne,
-   consultez notre version en ligne.
+Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org> writes:
 
-   Sinequanone
-   Sinequanone - Livraison offerte d=E8s 120CUR d'achat
-   Sinequanone - Soldes 2=E8me d=E9marque
-   Du 18 janvier au 14 f=E9vrier 2012, en boutique et sur l'E-shop
-   Sinequanone - Soldes      www.sinequanone.com     Sinequanone - Soldes
-   Sinequanone - Soldes 2=E8me d=E9marque
+> Hi,
 
-   * Les soldes sont valables sur une s=E9lection d'articles de la collecti=
-on
-   automne-hiver 2012 identifi=E9s par un pictogramme sur le site, hors poi=
-nts
-   rouges. Offre non cumulable avec toute autre op=E9ration en cours. Les
-   soldes se d=E9rouleront du 11 janvier (8h) au 14 f=E9vrier 2012 sur
-   www.sinequanone.com et dans les boutiques Sinequanone en France
-   m=E9tropolitaine (Zone nationale) sauf exceptions. Les frais de port sont
-   offerts automatiquement dans le panier =E0 partir de 120 euros de produi=
-ts
-   achet=E9s.
+Hi,
 
-   Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 197=
-8, vous
-   b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification e=
-t de
-   suppression aux donn=E9es vous concernant.
+>
+> Thankyou all for your feedback and comments. I'll use them for a V2 but 
+> Samuel, I'd like to know if you'd like me to base them on a specific branch 
+> before I do.
+>
+> Shawn, thanks for testing!
+>
+> On Thursday, January 19, 2012 10:29:41 PM Mark Brown wrote:
+>> On Thu, Jan 19, 2012 at 12:12:31PM +0100, Arnaud Patard wrote:
+>> > I've never looked at regmap deeply but can't it be done with regmap or is
+>> > it just a bad idea ?
+>> 
+>> Glancing quickly at the existing code it should map on reasonably well,
+>> though a new format definition may be required for the 25 bit shift that
+>> would be trivial.
+>
+> I'm sadly unfamiliar with regmap, is it a far superior solution? does it need 
 
-   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
-ls
-   par l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+The aim of regmap is to provide a solution for chip running either on
+i2c or spi, that's why I thought it would be interesting to use it
+instead of rewriting similar code.
+
+> to used now? (ie. I'm relucant to totally rework this now. Please convince me 
+> I need to if required.)
+
+I don't know. I've no strong opinion about it. Moreover, nothing
+prevents you to try to merge this version and then convert to regmap,
+say once the 25 bit shift problem noticed by Mark is fixed.
+
+Arnaud

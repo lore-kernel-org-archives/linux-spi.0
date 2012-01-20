@@ -1,23 +1,22 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [PATCH] RFC: spi/sa1100: rewrite the SA1100 SPI driver
-Date: Thu, 19 Jan 2012 17:57:14 +0000
-Message-ID: <20120119175714.GF10404@n2100.arm.linux.org.uk>
-References: <1326841236-25178-1-git-send-email-linus.walleij@linaro.org>
-	<20120117231314.GA1068@n2100.arm.linux.org.uk>
-	<CACRpkdbynmvcjOY=7_6wK3YTJHpS16Y0fU-Ka3-qw6Vt+eXy0A@mail.gmail.com>
-	<20120118123037.GF1068@n2100.arm.linux.org.uk>
-	<CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g@mail.gmail.com>
+From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support
+Date: Fri, 20 Jan 2012 18:55:35 +1100
+Message-ID: <201201201855.35971.marc@cpdesign.com.au>
+References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
+	<87lip4kktc.fsf@lebrac.rtp-net.org>
+	<20120119112941.GC29494@sirena.org.uk>
+Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Nicolas Pitre <nicolas.pitre-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kristoffer Ericson <kristoffer.ericson-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Cc: Arnaud Patard <arnaud.patard-dQbF7i+pzddAfugRpC6u6w@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYdwKmrL6K9P05COxMVRgHECj_4CUE9COYiuFsQj5N39g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20120119112941.GC29494-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,46 +27,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 19, 2012 at 06:49:25PM +0100, Linus Walleij wrote:
-> On Wed, Jan 18, 2012 at 1:30 PM, Russell King - ARM Linux
-> <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
-> > On Wed, Jan 18, 2012 at 01:13:29PM +0100, Linus Walleij wrote:
+Hi,
+
+Thankyou all for your feedback and comments. I'll use them for a V2 but 
+Samuel, I'd like to know if you'd like me to base them on a specific branch 
+before I do.
+
+Shawn, thanks for testing!
+
+On Thursday, January 19, 2012 10:29:41 PM Mark Brown wrote:
+> On Thu, Jan 19, 2012 at 12:12:31PM +0100, Arnaud Patard wrote:
+> > I've never looked at regmap deeply but can't it be done with regmap or is
+> > it just a bad idea ?
 > 
-> >> We usually merge drivers for microwire, TI, Motorola ... etc into
-> >> drivers/spi as well. It's a good enough fit, the differences are very
-> >> small. This is how we configure mode from the PL022 driver platform data:
-> >
-> > How do you send audio data at 16-bit 2 channel 48kHz continuously with
-> > the SPI subsystem?
-> 
-> Can't say because we haven't used it for audio transfers. However
-> I am pretty convinced that it'd work because we're running a
-> 20 Mbit data link on that SPI port.
-> 
-> To get the high data rates we have an internal message queue in
-> the driver that saturates the SPI port. Sometimes we even start to
-> run parts of the driver in parallel on two cores: CPU0 is handling
-> IRQs from the driver while CPU1 is preparing messages to/from
-> the SPI subsystem.
+> Glancing quickly at the existing code it should map on reasonably well,
+> though a new format definition may be required for the 25 bit shift that
+> would be trivial.
 
-A SMP system, which SA1100 is not.
+I'm sadly unfamiliar with regmap, is it a far superior solution? does it need 
+to used now? (ie. I'm relucant to totally rework this now. Please convince me 
+I need to if required.)
 
-With audio on the SA1100, we have to keep both DMA transfer buffer
-pointers filled to ensure that audio does not suffer.  I don't see
-submitting multiple SPI transfers into the SPI subsystem would be
-able to do that without waiting for the previous transfer to stop
-completely before starting the next - and that implies the DMA
-transfer completes before starting to program up the next one.
-
-What I'm saying is that SPI will want DMA activity to complete _and_
-end before it starts on the next transfer, which is going to create
-a break in the data output.
-
-Given that audio here just requires the SSP to be configured, and
-then everything else is just DMA, I don't see why we need to waste
-cycles fiddling with the SPI subsystem with its inherent batching
-of transfers.
-
+Cheers,
+Marc
 ------------------------------------------------------------------------------
 Keep Your Developer Skills Current with LearnDevNow!
 The most comprehensive online learning library for Microsoft developers

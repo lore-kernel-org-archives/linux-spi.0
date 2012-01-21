@@ -1,7 +1,7 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 2/3] spi/s3c64xx: Convert to dev_pm_ops
-Date: Sat, 21 Jan 2012 13:24:24 +0000
-Message-ID: <1327152265-10789-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 3/3] spi/s3c64xx: Implement runtime PM support
+Date: Sat, 21 Jan 2012 13:24:25 +0000
+Message-ID: <1327152265-10789-3-git-send-email-broonie@opensource.wolfsonmicro.com>
 References: <20120121132329.GA10751@opensource.wolfsonmicro.com>
  <1327152265-10789-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Cc: spi-devel-general@lists.sourceforge.net,
@@ -14,66 +14,117 @@ In-Reply-To: <1327152265-10789-1-git-send-email-broonie@opensource.wolfsonmicro.
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In preparation for the addition of runtime PM ops.
+Enable and disable the clocks to the SPI controller using runtime PM. This
+serves the dual purpose of reducing power consumption a little and letting
+the core know when the device is idle.
 
 Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
 ---
- drivers/spi/spi-s3c64xx.c |   19 ++++++++++---------
- 1 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 39 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index d56066b..56dbdf1 100644
+index 56dbdf1..b0b843b 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1231,9 +1231,9 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+@@ -25,6 +25,7 @@
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/platform_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+ 
+ #include <mach/dma.h>
+@@ -782,6 +783,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
+ 	while (!acquire_dma(sdd))
+ 		msleep(10);
+ 
++	pm_runtime_get_sync(&sdd->pdev->dev);
++
+ 	spin_lock_irqsave(&sdd->lock, flags);
+ 
+ 	while (!list_empty(&sdd->queue)
+@@ -810,6 +813,8 @@ static void s3c64xx_spi_work(struct work_struct *work)
+ 	/* Free DMA channels */
+ 	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
+ 	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
++
++	pm_runtime_put(&sdd->pdev->dev);
  }
  
- #ifdef CONFIG_PM
--static int s3c64xx_spi_suspend(struct platform_device *pdev, pm_message_t state)
-+static int s3c64xx_spi_suspend(struct device *dev)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+ static int s3c64xx_spi_transfer(struct spi_device *spi,
+@@ -892,6 +897,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 		goto setup_exit;
+ 	}
+ 
++	pm_runtime_get_sync(&sdd->pdev->dev);
++
+ 	/* Check if we can provide the requested rate */
+ 	if (!sci->clk_from_cmu) {
+ 		u32 psr, speed;
+@@ -924,6 +931,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 			err = -EINVAL;
+ 	}
+ 
++	pm_runtime_put(&sdd->pdev->dev);
++
+ setup_exit:
+ 
+ 	/* setup() returns with device de-selected */
+@@ -1164,6 +1173,8 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 					mem_res->end, mem_res->start,
+ 					sdd->rx_dma.dmach, sdd->tx_dma.dmach);
+ 
++	pm_runtime_enable(&pdev->dev);
++
+ 	return 0;
+ 
+ err9:
+@@ -1197,6 +1208,8 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	struct resource	*mem_res;
  	unsigned long flags;
  
-@@ -1253,9 +1253,10 @@ static int s3c64xx_spi_suspend(struct platform_device *pdev, pm_message_t state)
- 	return 0;
++	pm_runtime_disable(&pdev->dev);
++
+ 	spin_lock_irqsave(&sdd->lock, flags);
+ 	sdd->state |= SUSPND;
+ 	spin_unlock_irqrestore(&sdd->lock, flags);
+@@ -1277,8 +1290,34 @@ static int s3c64xx_spi_resume(struct device *dev)
  }
- 
--static int s3c64xx_spi_resume(struct platform_device *pdev)
-+static int s3c64xx_spi_resume(struct device *dev)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
- 	unsigned long flags;
-@@ -1274,19 +1275,19 @@ static int s3c64xx_spi_resume(struct platform_device *pdev)
- 
- 	return 0;
- }
--#else
--#define s3c64xx_spi_suspend	NULL
--#define s3c64xx_spi_resume	NULL
  #endif /* CONFIG_PM */
  
-+static const struct dev_pm_ops s3c64xx_spi_pm = {
-+	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
-+};
++#ifdef CONFIG_PM_RUNTIME
++static int s3c64xx_spi_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
++	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
 +
- static struct platform_driver s3c64xx_spi_driver = {
- 	.driver = {
- 		.name	= "s3c64xx-spi",
- 		.owner = THIS_MODULE,
-+		.pm = &s3c64xx_spi_pm,
- 	},
- 	.remove = s3c64xx_spi_remove,
--	.suspend = s3c64xx_spi_suspend,
--	.resume = s3c64xx_spi_resume,
++	clk_disable(sdd->clk);
++	clk_disable(sdd->src_clk);
++
++	return 0;
++}
++
++static int s3c64xx_spi_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
++	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
++
++	clk_enable(sdd->src_clk);
++	clk_enable(sdd->clk);
++
++	return 0;
++}
++#endif /* CONFIG_PM_RUNTIME */
++
+ static const struct dev_pm_ops s3c64xx_spi_pm = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(s3c64xx_spi_suspend, s3c64xx_spi_resume)
++	SET_RUNTIME_PM_OPS(s3c64xx_spi_runtime_suspend,
++			   s3c64xx_spi_runtime_resume, NULL)
  };
- MODULE_ALIAS("platform:s3c64xx-spi");
  
+ static struct platform_driver s3c64xx_spi_driver = {
 -- 
 1.7.7.3

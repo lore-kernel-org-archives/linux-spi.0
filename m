@@ -1,45 +1,44 @@
-From: David Brown <davidb@codeaurora.org>
-Subject: Re: [PATCH v2] spi: QUP based bus driver for Qualcomm MSM chipsets
-Date: Mon, 23 Jan 2012 07:58:51 -0800
-Message-ID: <20120123155851.GA25417@codeaurora.org>
-References: <y>
- <1321307907-31508-1-git-send-email-harinij@codeaurora.org>
- <20120123104220.GV1068@n2100.arm.linux.org.uk>
+From: "TICHOUPS" <contact-ZCFbhHTJHspWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] SOLDES : chaussons cuir souple de 0 à 6 ans à prix mini + livraison gratuite
+Date: Mon, 23 Jan 2012 16:10:12 +0000 (CET)
+Message-ID: <120123161012.22792089500003280@ofnm46.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Harini Jayaraman <harinij@codeaurora.org>,
-	grant.likely@secretlab.ca, bryanh@codeaurora.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kheitke@codeaurora.org, spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120123104220.GV1068@n2100.arm.linux.org.uk>
-Sender: linux-arm-msm-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 23, 2012 at 10:42:20AM +0000, Russell King - ARM Linux wrote:
-> Not specific to this patch, but I notice that you have in your headers:
-> 
-> In-Reply-To: <y>
-> References: <y>
-> 
-> This is rather annoying, because it means that anyone else who has the
-> same lines ends up having their messages attached to your messages as
-> part of the same thread.
-> 
-> I think you need to read the documentation for git-send-email again -
-> and check that you're using the arguments concerning message ids and
-> threading correctly.
 
-More specifically, when git-send-email promps for an email address or
-a message id, realize it's not asking a yes or not question.  The
-default it prints in brackets is what you get if you press enter.  If
-you press 'y', the reply will be from 'y' as seen here.
 
-David
 
--- 
-Sent by an employee of the Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------
+Try before you buy = See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

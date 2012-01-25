@@ -1,44 +1,38 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH] spi: Add spi-s3c64xx driver dependency on ARCH_EXYNOS4
-Date: Wed, 25 Jan 2012 17:20:59 +0100
-Message-ID: <1327508459-30814-1-git-send-email-s.nawrocki@samsung.com>
+From: 3Suisses par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: =?iso-8859-15?Q?3i=E8me_D=C9MARQUE?= et livraison gratuite
+	=?iso-8859-15?Q?d=E8s?= 59 euros*
+Date: Wed, 25 Jan 2012 17:39:47 +0100
+Message-ID: <1327509587.4f203053da6a8@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN
-Content-Transfer-Encoding: 7BIT
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, kgene.kim@samsung.com,
-	riverful.kim@samsung.com, sw0312.kim@samsung.com,
-	m.szyprowski@samsung.com,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Jaswinder Singh <jassi.brar@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>
-To: grant.likely@secretlab.ca
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi-s3c64xx driver is also used on Exynos4 so update the dependency
-to enable build on those platforms.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Cc: Jaswinder Singh <jassi.brar@samsung.com>
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+Lien miroir : http://mail.mc10.fr/mc10_m/YT04JmI9NTQ3NyZjPTE5NjE2NDEmZD0yMD=
+EyLTAxLTI1IDE3OjIwOjAxJmU9MSZoPTU0NzYmZj01NDc3Jmc9NTQ3Nw=3D=3D
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT04JmI9NTQ3NyZjP=
+TE5NjE2NDEmZD0yMDEyLTAxLTI1IDE3OjIwOjAxJmU9MSZoPTU0NzYmZj01NDc3Jmc9NTQ3Nw=
+=3D=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 3f9a47e..a9f8faf 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -299,7 +299,7 @@ config SPI_S3C24XX_FIQ
- 
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
--	depends on (ARCH_S3C64XX || ARCH_S5P64X0)
-+	depends on (ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS4)
- 	select S3C64XX_DMA if ARCH_S3C64XX
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
--- 
-1.7.8.3
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

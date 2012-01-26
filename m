@@ -1,49 +1,79 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: Add spi-s3c64xx driver dependency on ARCH_EXYNOS4
-Date: Wed, 25 Jan 2012 11:31:21 -0700
-Message-ID: <20120125183121.GB3192@ponder.secretlab.ca>
-References: <1327508459-30814-1-git-send-email-s.nawrocki@samsung.com>
+From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK decoding for access
+ size
+Date: Thu, 26 Jan 2012 17:43:57 +0900
+Message-ID: <4F21124D.6030601@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, kgene.kim@samsung.com,
-	riverful.kim@samsung.com, sw0312.kim@samsung.com,
-	m.szyprowski@samsung.com, Jaswinder Singh <jassi.brar@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1327508459-30814-1-git-send-email-s.nawrocki@samsung.com>
-Content-Disposition: inline
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	SH-Linux <linux-sh@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 25, 2012 at 05:20:59PM +0100, Sylwester Nawrocki wrote:
-> The spi-s3c64xx driver is also used on Exynos4 so update the dependency
-> to enable build on those platforms.
-> 
-> Cc: Jaswinder Singh <jassi.brar@samsung.com>
-> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+This SPI controller's access size is 32, or 8-bit. The previous driver
+supported 32-bit only. So, this patch adds IORESOURCE_MEM_TYPE_MASK
+decoding, an then, the driver can handle the SPI controller of 8-bit.
+This patch also changes the readl/writel to ioread*/iowrite*.
 
-Applied, thanks.
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+---
+ drivers/spi/spi-sh.c |   25 +++++++++++++++++++++++--
+ 1 files changed, 23 insertions(+), 2 deletions(-)
 
-> ---
->  drivers/spi/Kconfig |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 3f9a47e..a9f8faf 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -299,7 +299,7 @@ config SPI_S3C24XX_FIQ
->  
->  config SPI_S3C64XX
->  	tristate "Samsung S3C64XX series type SPI"
-> -	depends on (ARCH_S3C64XX || ARCH_S5P64X0)
-> +	depends on (ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS4)
->  	select S3C64XX_DMA if ARCH_S3C64XX
->  	help
->  	  SPI driver for Samsung S3C64XX and newer SoCs.
-> -- 
-> 1.7.8.3
-> 
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index 70c8af9..79442c3 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -92,17 +92,26 @@ struct spi_sh_data {
+ 	unsigned long cr1;
+ 	wait_queue_head_t wait;
+ 	spinlock_t lock;
++	int width;
+ };
+
+ static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
+ 			     unsigned long offset)
+ {
+-	writel(data, ss->addr + offset);
++	if (ss->width == 8)
++		iowrite8(data, ss->addr + (offset >> 2));
++	else if (ss->width == 32)
++		iowrite32(data, ss->addr + offset);
+ }
+
+ static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
+ {
+-	return readl(ss->addr + offset);
++	if (ss->width == 8)
++		return ioread8(ss->addr + (offset >> 2));
++	else if (ss->width == 32)
++		return ioread32(ss->addr + offset);
++	else
++		return 0;
+ }
+
+ static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
+@@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+ 	ss = spi_master_get_devdata(master);
+ 	dev_set_drvdata(&pdev->dev, ss);
+
++	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
++	case IORESOURCE_MEM_8BIT:
++		ss->width = 8;
++		break;
++	case IORESOURCE_MEM_32BIT:
++		ss->width = 32;
++		break;
++	default:
++		dev_err(&pdev->dev, "No support width\n");
++		ret = -ENODEV;
++		goto error1;
++	}
+ 	ss->irq = irq;
+ 	ss->master = master;
+ 	ss->addr = ioremap(res->start, resource_size(res));
+-- 
+1.7.1

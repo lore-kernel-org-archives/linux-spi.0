@@ -1,79 +1,55 @@
-From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK decoding for access
- size
-Date: Thu, 26 Jan 2012 17:43:57 +0900
-Message-ID: <4F21124D.6030601@renesas.com>
+From: "CORINE DE FARME" <newsletter_corinedefarme-/m+UfqrgI5R1/2lLxa5JtAVB4TfmtpSe@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Soldes_jusqu=27=E0_-70%_=21_Toilette_b=E9b=E9=2C_Soins_Fe?=
+	=?ISO-8859-1?Q?mme=2C_Parfums?=
+Date: Thu, 26 Jan 2012 09:51:19 +0000 (CET)
+Message-ID: <120126095119.17933491100004360@ofnm49.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	SH-Linux <linux-sh@vger.kernel.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This SPI controller's access size is 32, or 8-bit. The previous driver
-supported 32-bit only. So, this patch adds IORESOURCE_MEM_TYPE_MASK
-decoding, an then, the driver can handle the SPI controller of 8-bit.
-This patch also changes the readl/writel to ioread*/iowrite*.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0Si=A0vous=A0ne=A0visualisez=A0pas=A0correctement=
+=A0cet=A0email,=A0suivez=A0ce=A0lien=A0(http://ofnm49.com/jbzdne5o0f10kk53j=
+l.htm)
+(http://ofnm49.com/p02t5r4zeh5drppbwl/index0.html)
+(http://ofnm49.com/mf2cyrobegali5mbzy/index1.html)
+(http://ofnm49.com/5b22nrrje2xdc35ynd/index2.html)
+(http://ofnm49.com/r12xgrdaenjlqary4s/index3.html)
+Corine=A0de=A0Farme.fr=A0est=A0la=A0boutique=A0en=A0ligne=A0des=A0produits=
+=A0de=A0soins=A0et=A0de=A0beaut=E9=A0pour=A0toute=A0la=A0famille.=A0
+Gammes=A0naturelles,=A0gestes=A0essentiels=A0de=A0la=A0beaut=E9,=A0parfums=
+=A0ou=A0produits=A0solaires,=A0chacun=A0y=A0trouve=A0son
+produit=A0adapt=E9=A0et=A0=E0=A0petit=A0prix,=A0des=A0formules=A0s=E9curita=
+ires,=A0des=A0produits=A0test=E9s,=A0efficaces,=A0agr=E9ables=A0et=A0beaux.=
+=A0
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0Si=A0vous=A0ne=A0souhaitez=A0plus=A0recevoir=A0d'email=A0de=
+=A0notre=A0part,=A0suivez=A0ce=A0lien=A0(http://ofnm49.com/ma3c2toxgqxuaavc=
+ml.htm)
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-sh.c |   25 +++++++++++++++++++++++--
- 1 files changed, 23 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index 70c8af9..79442c3 100644
---- a/drivers/spi/spi-sh.c
-+++ b/drivers/spi/spi-sh.c
-@@ -92,17 +92,26 @@ struct spi_sh_data {
- 	unsigned long cr1;
- 	wait_queue_head_t wait;
- 	spinlock_t lock;
-+	int width;
- };
-
- static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
- 			     unsigned long offset)
- {
--	writel(data, ss->addr + offset);
-+	if (ss->width == 8)
-+		iowrite8(data, ss->addr + (offset >> 2));
-+	else if (ss->width == 32)
-+		iowrite32(data, ss->addr + offset);
- }
-
- static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
- {
--	return readl(ss->addr + offset);
-+	if (ss->width == 8)
-+		return ioread8(ss->addr + (offset >> 2));
-+	else if (ss->width == 32)
-+		return ioread32(ss->addr + offset);
-+	else
-+		return 0;
- }
-
- static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
-@@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
- 	ss = spi_master_get_devdata(master);
- 	dev_set_drvdata(&pdev->dev, ss);
-
-+	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
-+	case IORESOURCE_MEM_8BIT:
-+		ss->width = 8;
-+		break;
-+	case IORESOURCE_MEM_32BIT:
-+		ss->width = 32;
-+		break;
-+	default:
-+		dev_err(&pdev->dev, "No support width\n");
-+		ret = -ENODEV;
-+		goto error1;
-+	}
- 	ss->irq = irq;
- 	ss->master = master;
- 	ss->addr = ioremap(res->start, resource_size(res));
--- 
-1.7.1
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

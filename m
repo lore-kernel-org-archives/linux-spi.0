@@ -1,141 +1,142 @@
-From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
-Subject: [PATCH v2 2/2] S3C24XX: move spi-s3c24xx platdata out of mach
-Date: Fri, 27 Jan 2012 10:40:08 +0100
-Message-ID: <201201271040.08945.heiko@sntech.de>
-References: <201201082222.11305.heiko@sntech.de> <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
+From: =?GB2312?B?x+vXqsjLysI=?= <gd-loPk3dEggqY@public.gmane.org>
+Subject: [SPAM] spi-devel-general狼性销售精英二天一夜
+Date: Fri, 27 Jan 2012 21:21:37 +0800
+Message-ID: <E1RqlkI-0007Qh-Th@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: "'Grant Likely'" <grant.likely@secretlab.ca>,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi.h now only contains the definition of the platform data structure
-for the driver in spi-s3c24xx.c . Therefore it does not need to stay
-in include/mach but can instead live in linux/spi/s3c24xx.h .
-
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
----
-Sorry for messing up, but it seems I forgot to readd the moved spi header
-in the original submission of the second patch, which I noticed just now.
-As your cleanup-s3c24xx branch is not pushed out yet, could you please
-replace it with this one, which adds the forgotten file.
-
- arch/arm/mach-s3c2410/include/mach/spi.h |   27 ---------------------------
- arch/arm/mach-s3c2440/mach-gta02.c       |    2 +-
- drivers/spi/spi-s3c24xx.c                |    2 +-
- include/linux/spi/s3c24xx.h              |   26 ++++++++++++++++++++++++++
- 4 files changed, 28 insertions(+), 29 deletions(-)
- delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
- create mode 100644 include/linux/spi/s3c24xx.h
-
-diff --git a/arch/arm/mach-s3c2410/include/mach/spi.h b/arch/arm/mach-s3c2410/include/mach/spi.h
-deleted file mode 100644
-index 2a686c0..0000000
---- a/arch/arm/mach-s3c2410/include/mach/spi.h
-+++ /dev/null
-@@ -1,27 +0,0 @@
--/* arch/arm/mach-s3c2410/include/mach/spi.h
-- *
-- * Copyright (c) 2006 Simtec Electronics
-- *	Ben Dooks <ben@simtec.co.uk>
-- *
-- * S3C2410 - SPI Controller platform_device info
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
--*/
--
--#ifndef __ASM_ARCH_SPI_H
--#define __ASM_ARCH_SPI_H __FILE__
--
--struct s3c2410_spi_info {
--	int			 pin_cs;	/* simple gpio cs */
--	unsigned int		 num_cs;	/* total chipselects */
--	int			 bus_num;       /* bus number to use. */
--
--	unsigned int		 use_fiq:1;	/* use fiq */
--
--	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
--	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
--};
--
--#endif /* __ASM_ARCH_SPI_H */
-diff --git a/arch/arm/mach-s3c2440/mach-gta02.c b/arch/arm/mach-s3c2440/mach-gta02.c
-index 5859e60..cf270f5 100644
---- a/arch/arm/mach-s3c2440/mach-gta02.c
-+++ b/arch/arm/mach-s3c2440/mach-gta02.c
-@@ -38,6 +38,7 @@
- #include <linux/platform_device.h>
- #include <linux/serial_core.h>
- #include <linux/spi/spi.h>
-+#include <linux/spi/s3c24xx.h>
- 
- #include <linux/mmc/host.h>
- 
-@@ -73,7 +74,6 @@
- #include <mach/regs-gpioj.h>
- #include <mach/fb.h>
- 
--#include <mach/spi.h>
- #include <plat/usb-control.h>
- #include <mach/regs-mem.h>
- #include <mach/hardware.h>
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index fc06453..8ee7d79 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -24,10 +24,10 @@
- 
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
-+#include <linux/spi/s3c24xx.h>
- #include <linux/module.h>
- 
- #include <plat/regs-spi.h>
--#include <mach/spi.h>
- 
- #include <plat/fiq.h>
- #include <asm/fiq.h>
-diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
-new file mode 100644
-index 0000000..c23b923
---- /dev/null
-+++ b/include/linux/spi/s3c24xx.h
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (c) 2006 Simtec Electronics
-+ *	Ben Dooks <ben@simtec.co.uk>
-+ *
-+ * S3C2410 - SPI Controller platform_device info
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+*/
-+
-+#ifndef __LINUX_SPI_S3C24XX_H
-+#define __LINUX_SPI_S3C24XX_H __FILE__
-+
-+struct s3c2410_spi_info {
-+	int			 pin_cs;	/* simple gpio cs */
-+	unsigned int		 num_cs;	/* total chipselects */
-+	int			 bus_num;       /* bus number to use. */
-+
-+	unsigned int		 use_fiq:1;	/* use fiq */
-+
-+	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
-+	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
-+};
-+
-+#endif /* __LINUX_SPI_S3C24XX_H */
--- 
-1.7.5.4
+vfDFxs/6ytsyzOzSu9K5yrXVvQqhqqGq1v3U7M/6ytvSu8/fyrXVvbXa0rvGt8XGv86zzAoKyrG8
+5LXYteOjujIwMTLE6jAy1MIyNS0yNsjVye7b2grKsbzktdi146O6MjAxMsTqMDPUwjEwLTExyNXJ
+z7qjCsqxvOS12LXjo7oyMDEyxOowM9TCMjQtMjXI1bGxvqkKyrG85LXYteOjujIwMTLE6jA01MIx
+NC0xNcjVye7b2grKsbzktdi146O6MjAxMsTqMDTUwjIxLTIyyNXJz7qjCsqxvOS12LXjo7oyMDEy
+xOowNdTCMTItMTPI1bGxvqkKyrG85LXYteOjujIwMTLE6jA11MIyNi0yN8jVye7b2grKsbzktdi1
+46O6MjAxMsTqMDbUwjA5LTEwyNXJz7qjCsqxvOS12LXjo7oyMDEyxOowNtTCMTYtMTfI1bGxvqkK
+MjUwMNSqL8jLo6iw/MCo18rBz7fRoaLO57LNvLDJz8/Czuey6LXjtcijqQq21M/zo7rP+srb19y8
+4KGix/jT8r6twO2hos/6ytu+rcDtoaLStc7xtPqx7aGiz/rK28Xg0bXXqNSxtcihowq9zNGnxKPK
+vaO6INHdvbIru6W2ryuwuMD9K9HdwbcKCtfJ0a+157uwo7owMjAtODA1NjA2MzggICAwMjAtODU5
+MTc5NDUgINC70KG946O7CiAgICAgICAgICAwNzU1LTYxMjg3NTUyICCzwtChveOjqLK70OjSqrTL
+wODQxbz+x+u72Li0tefTytbBdHVpeGluMjAxMkAxMjYuY29tzcvQxaOpCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQrL+dPQx7/V38ntyc+2vL7f09Cz4MLjtcTAx9DUCsv509DOsLTzz/rK276r06K2
+vMrH0tTVvba3u/G1w9fw0c8Ky/nT0LnavvzP+srbzcW207a8ysfS1MDHzqrKprXEzPrRqs3FttMK
+Cr/Os8zHsNHUo7oKzqrKssO009C1xNK1zvHUscv50/a1vbXEv827p76ts6PKx8Lpt7POyszi0ru0
+87bRo78KzqrKssO009C1xNK1zvHUsdX7zOy2vNTatPK9tNPNo6yzyczsvdC/4MGszOyjrLK71LjS
+4rj8tuC1xM22yOujvwrOqsqyw7TT0LXE0rXO8dSxuPq9+L/Nu6fBvaGiyP3E6qOsv9rLrra8y7W4
+ycHLo6y+zcrH0rvWsc7et6i077PJus/X96O/Cs6qyrLDtNPQtcTStc7x1LG63MWswaahorrc0MG/
+4KOstau+zcrH0rvWsbP2srvBy9K1vKijv7W9tdfKx8TEwO/X9rTtwcujvwrOqsqyw7TT0LXEv827
+p8P3w/fT0LL6xrfQ6Mfzo6zSstPQ0aHU8c7Sw8e6z9f3tcTS4s/yo6y1q9fu1tW7ucrH0aHU8cTj
+tcS+utX5ttTK1qOs1+7W1bXE1K3S8rW9tdfU2sTEo78KzqrKssO009C1xNK1zvHUsdX7zOyxp9S5
+uavLvtOqz/rM5c+1sru9ociroaKxp9S5svrGt8O709C+utX508XKxqOszazR+bXEsvrGt6Os09C1
+xNK1zvHUsdK1vKi3rbG2o6zP+srb1rHP38nPyf2jrMv7w8fWrrzktcTH+LHwtb2118rHyrLDtKO/
+CtLyzqqhraGty/vDx7XEzcW208O709CyzrzTuf2htr3wxcbP+srbMszs0rvSucq11b3RtcG3obcK
+Cr/Os8zK1dLmo7oK1Nq/zbun0MTW0L2owaK4/LjftcS/ydDFtsgKu/G1w7j8tuC/zbuntcS72LXn
+o6zN2r7yuPy24L/Nu6e1xNfK1LQKvbW1zbG7v827p77cvvi1xLfnz9WjrMihtcO4/LrDtcTP+srb
+0rW8qArRp8+w1+7T0NCntcS/qrOhsNejrLalvOK1xDUuOdLU0KG1w7Tz1se72wrAx7XA1b22t8Gm
+0+u5pdDE1sHJz7XExKe57c/6ytvIw7/Nu6fSsrfov/EKw7/Su7j2uaXQxM/6ytu8vMfJtrzT0Mj0
+uMm49sq11b2wuMD9t9bO9ryw0d3Btwqw68Tqw7vT0M/6ytu1vc/6ytu52r78tcTKtdW9z/rK27y8
+x8mjrMnPzfK0zsPmttTD5s/6ytu1xL6t0emjoQqhraGtoa2hraGtoa2hraGtoa2hrQq/zrPMtPO4
+2aO6CsvEtPPP+srb1se72yu98MXGz/rK29DFxO69qMGiKzEyuPawuMD9t9bO9isxOLTzvLzHyQoK
+tdrSu7K/t92jur3wxcbP+srbtcTLxLTz1se72wq40qGqoarRqtDUtcTX8NHPICAKz/rK28rHs+DC
+49Gq0Mi1xNW9trcKxP7UuNW9y8DSsr72srvP8r/WvuXH/Lf+Cr/J0tSzybmmo6y/ydLUyqew3KOs
+vviyu7/J0tS3xcb6Cr/soaqhqr74ttS+utX5tcTS4sq2CtPA1Laxo7PWzqO7+tLiyrYKwMe37tDQ
+yfq05rXa0rvVvba3vqvJ8QrTwNS2sru07bn9yM66zr/J0tSz1MjitcS7+rvhCsjMoaqhqsTN0NS7
+8bXD1b27+grDv7TOuaW798ewtryx2NDrwcu94rbUytYKwMe74bXI09rKsbv6s8nK7Mqx1Nmz9srW
+CsDHtcSytsHUvLzHyb+/uvPM7MSlwbcKzcW206Gqoaq6z9f31sLKpArAx8T+1LjOqs3FttPO/sn8
+19S8urXE0NTD/ArAx7XA1+7OsLTztcTGt9bKvs3Kx7rP1/e+q8nxCgq12rb+sr+31qO6z/rK28rH
+0MXQxLXE16rSxqOsx+nQ97XEuNDIvgq9qMGi1f3It7XE0MXE7qGqoarLvM/rysfUrdLyo6zStbyo
+yse94bn7CrbU19S8urXE0MXE7grO0srHyKvKwL3n1+7T0Mu1t/7BprXEyMujoQrO0sTc1NrIzrrO
+tdi3vaOsyM66zsqxvOTP+srbyM66zrL6xre4+MjOus7Iy6OhCrbUz/rK27XE0MXE7grOqsqyw7TO
+0rXEx67SqrfF1NrL+8PHtcS/2rT8wO+joQrO0r/Kzfuxu77cvvgxNTAwtM6jrMTjtb2118Tcvty+
++M7StuDJ2bTOo6EKttS5q8u+tcTQxcTuCsjnufvO0sDrv6qjrM7S0ru2qNKqtPjJz8jZ0/6joc2s
+ysLKx87S1+66w7XE1qTD96OhCtTaztKxp9S5uavLvqGisvrGt8ewo6zO0tKqz8jP68/rzazR+cz1
+vP7PwtPF0OO1xM2sysLKx9T1w7TX9rW9tcSjoQq21L/Nu6e1xNDFxO4K0rvH0LPJvbu2vMrHzqrB
+y7Cuo6EKsNm31tausNm1xML60uKxo9ako6zE47u509DKssO0wO3Tyb7cvvjO0qOhCgq12sj9sr+3
+1qO6ytvHsNe8sbihqqGqvvbKpM/6ytu1xLrL0MS5pNf3CtDOz/PXvLG4CtDOz/PKx7nLv829qMGi
+0MXIzrjQtcS7+bShCr+0xvDAtNKqz/HQ0NK1tcTXqLzSCtei0uK7+bG+tcTJzM7xwPHSxwrXqNK1
+17yxuAq21LL6xre1xMHLveIKttS5y7/NtcTIz9aq0+vBy73iCtT2vNOx39S11qrKtgrP+srby8Sx
+pgrD+8asCr/Nu6fXysHPCrHKvMexvgrHqdS8uaS+3wrP+srb1KTR3QrP+srbxL+1xMrHyrLDtAq/
+zbunxL+1xMrHyrLDtAq/ycTcs/bP1rXEv7m+3LXjCsjnus6zyb27Cgq12svEsr+31qO6vfDFxs/6
+ytvKrrXAyfrLwLnYoaqhqrnYudjP4L/bo6y+9sqk0rW8qArP+srbtdrSu7nYCsD708PIy7XEusPG
+5tDEoaqhqtS8vPu/zbuno6zIw7/Nu6fO3rSmv8nM0wq08svA0rKyu9Kqz+DQxcex1Nq/zbuntcS5
+7cH00dQKxP7UuM/g0MXKwMnP09C57aOs0rLEqs/g0MXHsdTav827p9Xi1cXX7Ao5NyXHsdTav827
+p8u1obDH67j4ztLB9NHUo6zO0rvhuPjE47vYuLShsdfu1tW2vMO709C72Li0CtT1w7S8pLeix7HU
+2r/Nu6e6w8bm0MSjrNL9xvDQy8ik1ve2r7j4xOO72Li0CrC4wP231s72Cs/6ytu12rb+udgKyOe6
+ztPQ0Ke1xL+qs6GhqqGqv6rG9L/Nu6e1xNDEw8XKx8/6ytvX7tbY0qq1xNK7sNHUv7PXCr3is/3X
+vMqxuLDUvLW9uavLvr/Nu6e5ytLisru907Xnu7C78rz7w+a1xNPQ0Key38LUCrC4wP231s72Cs/6
+ytu12sj9udgKubXNqLXEyP3SqsvYCsjnus6z9bK9vajBor/Nu6e1xNDFyM640AqwuMD9t9bO9grP
++srbtdrLxLnYCtXrttTIy7nf0NTLvM6soaqhqtL9tbyhsMrHobG1xM7KzOIKzqrKssO00ru/qsq8
+srvE3MjDv827p8u1obCyu6GxtcS7+rvhCsex1Nqzyb27oaqhqsjDv827p7K7zaO1xMu1obDKx6Os
+ysehraGtobEKsLjA/bfWzvYKy7XKssO0u7DE3Lmlxsa/zbuntcTQxMDtt8DP3wrU9cO0uPy/7LXE
+x9DI69b3zOLS/bW8v827pwrI57rOvejW+r/Nu6e1xLuwzOLH0Mjrz/rK27uwzOIKsLjA/bfWzvYK
+z/rK27XazuW52ArI57rO09DQp7XEvenJ3LL6xrcKzqrKssO00ru/qsq8vs3Sqr3pydyy+sa31+66
+w7XEusO0pgrU9cO0v+zL2b2owaK/zbunttSy+sa3tcTIz7/JtsgKsLjA/bfWzvYKz/rK27Xawfm5
+2Aq1pbW21rHI66Os1rG1t7vGwfqhqqGqzdq+8sex1Nq/zbuntcTQ6MfzCsex1Nq/zbunvty++LK7
+ysfV67bUxOOjrL7cvvjKx8jLtcTPsLnfCsex1Nq/zbuny/vX1Ly60rKyu9aqtcDU9cO0tb2118/r
+0qrKssO0CtT1w7Sw79b6x7HU2r/Nu6fV0rP21ebV/bXE0OjH8wqwuMD9t9bO9grI57rO1eu21NPa
+vq/M6NDUuN+yu9S40uLLtbuwtcTHsdTav827pwrSu7DRx8u/qsex1Nq/zbun1+ywzbXE1L+z16Gq
+oaq08r+qx7HU2r/Nu6e1xLuwz7vX0wqwuMD9t9bO9grP+srbtdrG37nYCsXQts/HsdTav827p7+5
+vty147XE1ea82aOsscaz9tXmz+AKx7HU2r/Nu6cxML7k1+6zo9PDtcTNxs3Q1q60ygq5y7/Nvty+
++LXEyP3W1tfus6O8+7XE0vLL2AqwuMD9t9bO9grP+srbtdqwy7nYCsjnus694rP9x7HU2r/Nu6e1
+xL+5vty14wq94rP9v7m+3LXjtcS5pdDEusvQxLmryr0Kx7HU2r/Nu6fKrrTzv7m+3LXjtcS94rP9
+t723qAqwuMD9t9bO9grP+srbtdq+xbnYCte8yLfF0LbPx7HU2r/Nu6e1xLm6wvLQxbrFCsex1Nq/
+zbun17yxuLm6wvK1xDIwuPa2r9f3Csjnus7HycPuu9jTpsex1Nq/zbuntcS5usLy0MW6xaGqoarI
+t8jPs8m9uwqwuMD9t9bO9gqyu9KqyMO827jxseSzycTjs8m9u7XEsO29xcqvCrGovNvHsNKqyLe2
+qLXE0ru8/tbY0qrKws/uCsqyw7TKx7q6saSw/LGovNu3qArUy9f30MTA7dGn07DP7Mex1Nq/zbun
+sai827eoCrC4wP231s72Cs/6ytu12squudgKwdnDxdK7vcWhqqGqs8m9uwqzyb27yrG5y7/NtcTQ
+xMDt1c+wrQrOqsqyw7Szyb271q6687Tyy8C2vLK7xNzLtaGw0LvQu6GxCrPJvbu689Kq1/bExNCp
+1tjSqrXEtq/X9wqwuMD9t9bO9goKtdrO5bK/t9ajur3wxcbP+srb1sLKpLXEyrG85Leo1PIKt9bW
+08DtwtuhqsjDz/rK27XE0rW8qLet0ruxtgrI/bK9z/rK27eooarIw8/6ytvKsbzkuPzD98i3CrTT
+1sa2qMflzvq1xM/6ytvStbyoxL+x6r+qyrwK0tTW1c6qzKihqrTTz7i92rnmu67P+srbuaTX9wrM
+4bjfs8m5psLKoaqw0bmk1/fX9rXDuPy6wwrX1M7St9bO9reooarM4cn9saHI9bXEudi8/Ly8x8kK
+tsW++M/7s/3Ay7fRyrG85LXEz/rK29DQzqoKwPvTw7rDuaTX98qxvOSxttT2z/rK29K1vKgKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0Ks8LKqdPu
+wM/KprXEvenJ3ArKtdW9xcnP+srb0bXBt72yyqYKsNmzx9XQxrjM2Ma4z/rK27nLzsoKxvSzzLn6
+vMrG89K118nRr7ncwO3K18+vucvOygrDwLn6QUlUQcjP1qRQVFS5+rzKuN+8ttaw0rXF4NG1yqYK
+x+W7qrTz0aehos/Dw8W089GnoaLJx823tPPRp0VNQkHM2NH7xeDRtb2yyqYK07XT0DfE6rXEz/rK
+283FttO53MDtvq3R6aOsMTC1xMq11b3P+srbvq3R6aOstNOw68Tqw7vT0NK1vKijrLW9s8nOqs/6
+ytu52r78tcS36L/x0rXO8dSxo6wKu/3A28nPzfK0ztPrv827p8PmttTD5sq11b3P+srbvq3R6aOs
+IM6qwcvKytOm1Nq438e/tsi1xNG5wabPwrmk1/e6zc27xsbX1M7So6zP4LzMz/LKwL3nCs/6ytu5
+2r78x8ehpLyqwK21wqGiysC959PFysbMuMXQtPPKpsLevdyhpLXAya2hosrAvee12tK7x7HS4sq2
+tPPKprCytqvE4aGkwt6x9rXIysC957TzyqYK0afPsKOsx7HQxNHQvr/P+srb0rvP38jL1LG1xMq1
+vMrQ6Mfzo6yyorPQtKvT2rj3wezT8rXEtqW84rTzyqa+q7uqoaK94brPyc/N8rTOz/rK28q11b2+
+rQrR6aOs1fu6z7PJ0rvM18q11b3P+srb0bXBt8+1zbOho9T4zqpJQk2hotbQufrSxravoaLFtbv5
+0cehotLLu6rEvtK1oaLM7LzKtefG96GisNmzx9XQxrihogqzsbrqu/mhotH0ueKxo8/VoaLT0bDu
+saPP1aGiyP2+xbyvzcWhoszsxOrJzMOzoaLDycTdzLm5+rzKvK/NxbXIxvPStczhuanF4NG1us3X
+ydGvt/7O8aGjCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0Koba98MXGz/rK2zLM7NK70rnKtdW9obex
+qMP7u9jWtLHto6jH67Sr1eYwMjAtNjIzNTExNTajqQoKss674bWlzrvD+7PGo7pfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCgqyzrzTtdi146O6
+v9rJz7qjIL/aye7b2iC/2rGxvqm/2rnj1t0KCsGqz7XIy6O6X19fX19fX19fX19fX1+157uwOl9f
+X19fX19fX19fX19fX1+0q9XmOl9fX19fX19fX19fX19fX18KCtPKvP6jul9fX19fX19fX19fX19f
+ss674cjLyv06X19fX19fX19fyMu30dPDo6Sjul9fX19fX19fX9SqCgqyzrvhyMujul9fX19fX19f
+X19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19fX19fX19fX19fCgqyzrvhyMuj
+ul9fX19fX19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19fX19fX19fX19f
+CgqyzrvhyMujul9fX19fX19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19f
+X19fX19fX19fCgqyzrvhyMujul9fX19fX19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+1
+57uwo7pfX19fX19fX19fX19fCgq4tr/ut73KvaOox+vRodTxtPKhsKHMobGjqaO6ofUxoaLP1r3w
+ofUyoaLXqtXKofUzoaK157vjCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQqxuNeiOsfrxPqw
+0bGow/u72Na0u9i0q87Sy76jrM6qyLexo8T6sajD+87ezvMsx+vE+tTZtM6157uwo6gwMjAtODA1
+NjA2Mzijqci3yM8hCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVHJ5IGJlZm9yZSB5b3UgYnV5ID0g
+U2VlIG91ciBleHBlcnRzIGluIGFjdGlvbiEKVGhlIG1vc3QgY29tcHJlaGVuc2l2ZSBvbmxpbmUg
+bGVhcm5pbmcgbGlicmFyeSBmb3IgTWljcm9zb2Z0IGRldmVsb3BlcnMKaXMganVzdCAkOTkuOTkh
+IFZpc3VhbCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCAtIHBsdXMgSFRNTDUsIENTUzMsIE1WQzMs
+Ck1ldHJvIFN0eWxlIEFwcHMsIG1vcmUuIEZyZWUgZnV0dXJlIHJlbGVhc2VzIHdoZW4geW91IHN1
+YnNjcmliZSBub3chCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbGVhcm5kZXZub3ctZGV2MgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

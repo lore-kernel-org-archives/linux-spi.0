@@ -1,71 +1,141 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH 0/2] S3C24XX: remove some spi left overs
-Date: Fri, 27 Jan 2012 17:15:32 +0900
-Message-ID: <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
-References: <201201082222.11305.heiko@sntech.de>
+From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
+Subject: [PATCH v2 2/2] S3C24XX: move spi-s3c24xx platdata out of mach
+Date: Fri, 27 Jan 2012 10:40:08 +0100
+Message-ID: <201201271040.08945.heiko@sntech.de>
+References: <201201082222.11305.heiko@sntech.de> <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-samsung-soc@vger.kernel.org,
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: "'Grant Likely'" <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	spi-devel-general@lists.sourceforge.net
-To: =?iso-8859-1?Q?'Heiko_St=FCbner'?= <heiko@sntech.de>,
-	'Grant Likely' <grant.likely@secretlab.ca>
+To: Kukjin Kim <kgene.kim@samsung.com>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <201201082222.11305.heiko@sntech.de>
-Content-language: ko
+In-Reply-To: <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Heiko St=FCbner wrote:
->=20
-> This series removes unused setup-code of the s3c24xx spi driver.
->=20
-> It has no current in kernel users and also no development activity tr=
-ying
-> to change this. I also checked the upstream git of the only board inc=
-luding
-> the spi.h file (the gta02 at http://git.openmoko.org). The setup call=
-s
-> are also not used there.
->=20
-> I recall a thread some time back talking about removing the spi-s3c24=
-xx
-> driver altogether, but as current linux-next still carries the driver
-> I'm not sure what became of it. So this series does the next smaller =
-thing.
->=20
->=20
-> Heiko Stuebner (2):
->   S3C24XX: remove unused spi gpio setup functions
->   S3C24XX: move spi-s3c24xx platdata out of mach
->=20
->  arch/arm/mach-s3c2410/include/mach/spi.h     |   38 ----------------=
-----------
->  arch/arm/mach-s3c2440/mach-gta02.c           |    2 +-
->  arch/arm/plat-s3c24xx/Kconfig                |   20 -------------
->  arch/arm/plat-s3c24xx/Makefile               |    6 ----
->  arch/arm/plat-s3c24xx/spi-bus0-gpe11_12_13.c |   36 ----------------=
---------
->  arch/arm/plat-s3c24xx/spi-bus1-gpd8_9_10.c   |   38 ----------------=
-----------
->  arch/arm/plat-s3c24xx/spi-bus1-gpg5_6_7.c    |   36 ----------------=
---------
->  drivers/spi/spi-s3c24xx.c                    |    2 +-
->  8 files changed, 2 insertions(+), 176 deletions(-)
->  delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
->  delete mode 100644 arch/arm/plat-s3c24xx/spi-bus0-gpe11_12_13.c
->  delete mode 100644 arch/arm/plat-s3c24xx/spi-bus1-gpd8_9_10.c
->  delete mode 100644 arch/arm/plat-s3c24xx/spi-bus1-gpg5_6_7.c
->=20
-> --
-> 1.7.2.3
+spi.h now only contains the definition of the platform data structure
+for the driver in spi-s3c24xx.c . Therefore it does not need to stay
+in include/mach but can instead live in linux/spi/s3c24xx.h .
 
-Looks good :)
-Applied in my cleanup-s3c24xx, thanks.
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+Sorry for messing up, but it seems I forgot to readd the moved spi header
+in the original submission of the second patch, which I noticed just now.
+As your cleanup-s3c24xx branch is not pushed out yet, could you please
+replace it with this one, which adds the forgotten file.
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+ arch/arm/mach-s3c2410/include/mach/spi.h |   27 ---------------------------
+ arch/arm/mach-s3c2440/mach-gta02.c       |    2 +-
+ drivers/spi/spi-s3c24xx.c                |    2 +-
+ include/linux/spi/s3c24xx.h              |   26 ++++++++++++++++++++++++++
+ 4 files changed, 28 insertions(+), 29 deletions(-)
+ delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
+ create mode 100644 include/linux/spi/s3c24xx.h
+
+diff --git a/arch/arm/mach-s3c2410/include/mach/spi.h b/arch/arm/mach-s3c2410/include/mach/spi.h
+deleted file mode 100644
+index 2a686c0..0000000
+--- a/arch/arm/mach-s3c2410/include/mach/spi.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/* arch/arm/mach-s3c2410/include/mach/spi.h
+- *
+- * Copyright (c) 2006 Simtec Electronics
+- *	Ben Dooks <ben@simtec.co.uk>
+- *
+- * S3C2410 - SPI Controller platform_device info
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+-*/
+-
+-#ifndef __ASM_ARCH_SPI_H
+-#define __ASM_ARCH_SPI_H __FILE__
+-
+-struct s3c2410_spi_info {
+-	int			 pin_cs;	/* simple gpio cs */
+-	unsigned int		 num_cs;	/* total chipselects */
+-	int			 bus_num;       /* bus number to use. */
+-
+-	unsigned int		 use_fiq:1;	/* use fiq */
+-
+-	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
+-	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+-};
+-
+-#endif /* __ASM_ARCH_SPI_H */
+diff --git a/arch/arm/mach-s3c2440/mach-gta02.c b/arch/arm/mach-s3c2440/mach-gta02.c
+index 5859e60..cf270f5 100644
+--- a/arch/arm/mach-s3c2440/mach-gta02.c
++++ b/arch/arm/mach-s3c2440/mach-gta02.c
+@@ -38,6 +38,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/serial_core.h>
+ #include <linux/spi/spi.h>
++#include <linux/spi/s3c24xx.h>
+ 
+ #include <linux/mmc/host.h>
+ 
+@@ -73,7 +74,6 @@
+ #include <mach/regs-gpioj.h>
+ #include <mach/fb.h>
+ 
+-#include <mach/spi.h>
+ #include <plat/usb-control.h>
+ #include <mach/regs-mem.h>
+ #include <mach/hardware.h>
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index fc06453..8ee7d79 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -24,10 +24,10 @@
+ 
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
++#include <linux/spi/s3c24xx.h>
+ #include <linux/module.h>
+ 
+ #include <plat/regs-spi.h>
+-#include <mach/spi.h>
+ 
+ #include <plat/fiq.h>
+ #include <asm/fiq.h>
+diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
+new file mode 100644
+index 0000000..c23b923
+--- /dev/null
++++ b/include/linux/spi/s3c24xx.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (c) 2006 Simtec Electronics
++ *	Ben Dooks <ben@simtec.co.uk>
++ *
++ * S3C2410 - SPI Controller platform_device info
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++*/
++
++#ifndef __LINUX_SPI_S3C24XX_H
++#define __LINUX_SPI_S3C24XX_H __FILE__
++
++struct s3c2410_spi_info {
++	int			 pin_cs;	/* simple gpio cs */
++	unsigned int		 num_cs;	/* total chipselects */
++	int			 bus_num;       /* bus number to use. */
++
++	unsigned int		 use_fiq:1;	/* use fiq */
++
++	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
++	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
++};
++
++#endif /* __LINUX_SPI_S3C24XX_H */
+-- 
+1.7.5.4

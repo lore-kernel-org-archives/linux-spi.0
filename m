@@ -1,66 +1,61 @@
-From: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [PATCH] intel_mid_ssp_spi: Moorestown and Medfield SPI for SSP
-	devices
-Date: Thu, 26 Jan 2012 20:22:50 +0000
-Message-ID: <20120126202250.02d8a4ac@pyramind.ukuu.org.uk>
-References: <20120126175730.13631.67348.stgit@bob.linux.org.uk>
-	<CACxGe6uHm54gKkBdCDxhJdwxGnCKPW0wWPwbXA+vT_qijfMFAg@mail.gmail.com>
+From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK decoding for
+ access size
+Date: Fri, 27 Jan 2012 10:14:49 +0900
+Message-ID: <4F21FA89.4060709@renesas.com>
+References: <4F21124D.6030601@renesas.com> <20120126102220.GE26283@linux-sh.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACxGe6uHm54gKkBdCDxhJdwxGnCKPW0wWPwbXA+vT_qijfMFAg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	SH-Linux <linux-sh@vger.kernel.org>
+To: Paul Mundt <lethal@linux-sh.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-reply-to: <20120126102220.GE26283@linux-sh.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 26 Jan 2012 12:18:41 -0700
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+2012/01/26 19:22, Paul Mundt wrote:
+> On Thu, Jan 26, 2012 at 05:43:57PM +0900, Shimoda, Yoshihiro wrote:
+[ snip ]
+>>  static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
+>> @@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+>>  	ss = spi_master_get_devdata(master);
+>>  	dev_set_drvdata(&pdev->dev, ss);
+>>
+>> +	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
+>> +	case IORESOURCE_MEM_8BIT:
+>> +		ss->width = 8;
+>> +		break;
+>> +	case IORESOURCE_MEM_32BIT:
+>> +		ss->width = 32;
+>> +		break;
+>> +	default:
+>> +		dev_err(&pdev->dev, "No support width\n");
+>> +		ret = -ENODEV;
+>> +		goto error1;
+> 
+> If the default up to this point has been 32-bit only then it makes sense
+> for 32 to still remain the default. The 8-bit user is presumably a new
+> one and therefore has no existing platform data configuration to worry
+> about, while this change would require existing users to be updated for
+> the new 32-bit flag to behave the same way they have up until now. 
 
-> On Thu, Jan 26, 2012 at 10:57 AM, Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org> wro=
-te:
-> > From: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> >
-> > This driver is a fusion of various internal drivers into a single
-> > driver for the SPI slave/master on the Intel Moorestown and Medfield
-> > SSP devices.
-> >
-> > Signed-off-by: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> > [Queueing and runtime pm added]
-> > Signed-off-by: Kristen Carlson Accardi <kristen-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> > [Ported to the -next tree DMA engine, stripped Moorestown, further clea=
-nup]
-> > Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> > ---
-> >
-> > =A0drivers/spi/Kconfig =A0 =A0 =A0 =A0 =A0 =A0 | =A0 =A08
-> > =A0drivers/spi/Makefile =A0 =A0 =A0 =A0 =A0 =A0| =A0 =A02
-> > =A0drivers/spi/spi-intel-mid-ssp.c | 1426 +++++++++++++++++++++++++++++=
-++++++++++
-> > =A0drivers/spi/spi-intel-mid-ssp.h | =A0308 ++++++++
-> =
+Thank you for your comment.
+Unfortunately, the value of IORESOURCE_MEM_8BIT is (0<<3), so existing users
+will not enter to the default.
 
-> Haven't reviewed the patch yet, but I've got a question on this.  Are
-> there any other users of this header file?  Can I just roll it into
-> the .c file if I pick up the patch?
+> If you wish to do this incrementally then you can of course convert all
+> of the existing platforms to the new mechanism for 32-bit as well and
+> then simply error out as above for the undefined width case, but I still
+> think it makes more sense to have a usable default.
 
-They can be rolled together. There is a driver pending for the device in
-I=B2S mode but there isn't anything in common.
+I think so. But, I think I cannot write such a code using IORESOURCE_MEM_*BIT
+by the above reason.
+At the moment, existing platform which uses this driver is one only. And,
+I already sent a patch to modify the resource.
+http://marc.info/?l=linux-sh&m=132756762518679&w=2
 
-Alan
-
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+Best regards,
+Yoshihiro Shimoda

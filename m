@@ -1,35 +1,42 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/3] spi/s3c64xx diagnostic and PM updates
-Date: Mon, 30 Jan 2012 08:37:07 -0700
-Message-ID: <20120130153707.GL28397@ponder.secretlab.ca>
-References: <20120121132329.GA10751@opensource.wolfsonmicro.com>
- <CACxGe6t_h9=U=TpK57XvLUKixmZRwovr_JionXBE39mSrTVHRQ@mail.gmail.com>
- <20120121151341.GB20505@sirena.org.uk>
+From: Yves Rocher via Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Votre_invitation_=E0_l'anniversaire_Yves_Rocher._?=
+Date: Mon, 30 Jan 2012 17:25:57 +0100 (CET)
+Message-ID: <3236305005.667909.1327940757954@p4enginex1.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120121151341.GB20505@sirena.org.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Jan 21, 2012 at 03:13:41PM +0000, Mark Brown wrote:
-> On Sat, Jan 21, 2012 at 07:27:23AM -0700, Grant Likely wrote:
-> 
-> > Pushed out to git://git.secretlab.ca/git/linux-2.6.git spi/merge.
-> > I'll ask Linus to pull in a couple of days after it has hit
-> > linux-next.
-> 
-> Thanks.  Obviously it'd be nice to get it into 3.3 but I don't see a
-> huge rush and it did miss the merge window - it doesn't fix any bugs
-> and without a bunch of other work in cpuidle that's not been done yet
-> the power gains from the runtime PM are vanishingly small.
+        Si vous ne visualisez pas correctement ce message, cliquez ici.
 
-Okay, I've moved it over to spi/next instead.  It will be ready for the
-v3.4 merge window.
+                Grand jeu sp=E9cial 10 ans du site internet ici !
+    Grand jeu sp=E9cial 10 ans du site internet
+    Grand jeu sp=E9cial 10 ans du site internet
+    Grand jeu sp=E9cial 10 ans du site internet
 
-g.
+   Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier 19=
+78, vous
+                              pouvez =E0 tout moment
+demander =E0 acc=E9der, faire rectifier ou supprimer les informations perso=
+nnelles.
+  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
+s par
+                        l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Try before you buy =3D See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

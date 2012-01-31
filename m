@@ -1,7 +1,7 @@
 From: Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 1/9 v3] MIPS: BCM63XX: add IRQ_SPI and CPU specific SPI IRQ values
-Date: Tue, 31 Jan 2012 15:10:40 +0100
-Message-ID: <1328019048-5892-2-git-send-email-florian@openwrt.org>
+Subject: [PATCH 7/9 v3] MIPS: BCM63XX: add stub to register the SPI platform driver
+Date: Tue, 31 Jan 2012 15:10:46 +0100
+Message-ID: <1328019048-5892-8-git-send-email-florian@openwrt.org>
 References: <1328019048-5892-1-git-send-email-florian@openwrt.org>
 Cc: linux-mips@linux-mips.org, grant.likely@secretlab.ca,
         spi-devel-general@lists.sourceforge.net,
@@ -13,72 +13,256 @@ Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 List-Id: linux-spi.vger.kernel.org
 
+This patch adds the necessary stub to register the SPI platform driver.
+Since the registers are shuffled between the 4 BCM63xx CPUs supported by
+this SPI driver we also need to generate the internal register layout and
+export this layout for the driver to use it properly.
+
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-No changes in v1 and v2
+Changes since v2:
+- added different resource size due to different fifo sizes
 
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
+No changes in v1
 
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-index 5b8d15b..9975727 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h
-@@ -478,6 +478,7 @@ static inline unsigned long bcm63xx_regset_address(enum bcm63xx_regs_set set)
-  */
- enum bcm63xx_irq {
- 	IRQ_TIMER = 0,
-+	IRQ_SPI,
- 	IRQ_UART0,
- 	IRQ_UART1,
- 	IRQ_DSL,
-@@ -509,6 +510,7 @@ enum bcm63xx_irq {
-  * 6338 irqs
-  */
- #define BCM_6338_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
-+#define BCM_6338_SPI_IRQ		(IRQ_INTERNAL_BASE + 1)
- #define BCM_6338_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6338_UART1_IRQ		0
- #define BCM_6338_DSL_IRQ		(IRQ_INTERNAL_BASE + 5)
-@@ -539,6 +541,7 @@ enum bcm63xx_irq {
-  * 6345 irqs
-  */
- #define BCM_6345_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
-+#define BCM_6345_SPI_IRQ		0
- #define BCM_6345_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6345_UART1_IRQ		0
- #define BCM_6345_DSL_IRQ		(IRQ_INTERNAL_BASE + 3)
-@@ -569,6 +572,7 @@ enum bcm63xx_irq {
-  * 6348 irqs
-  */
- #define BCM_6348_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
-+#define BCM_6348_SPI_IRQ		(IRQ_INTERNAL_BASE + 1)
- #define BCM_6348_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6348_UART1_IRQ		0
- #define BCM_6348_DSL_IRQ		(IRQ_INTERNAL_BASE + 4)
-@@ -599,6 +603,7 @@ enum bcm63xx_irq {
-  * 6358 irqs
-  */
- #define BCM_6358_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
-+#define BCM_6358_SPI_IRQ		(IRQ_INTERNAL_BASE + 1)
- #define BCM_6358_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6358_UART1_IRQ		(IRQ_INTERNAL_BASE + 3)
- #define BCM_6358_DSL_IRQ		(IRQ_INTERNAL_BASE + 29)
-@@ -638,6 +643,7 @@ enum bcm63xx_irq {
- #define BCM_6368_HIGH_IRQ_BASE		(IRQ_INTERNAL_BASE + 32)
+ arch/mips/bcm63xx/Makefile                         |    3 +-
+ arch/mips/bcm63xx/dev-spi.c                        |  119 ++++++++++++++++++++
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 +++++++++++++++
+ 3 files changed, 210 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/dev-spi.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+
+diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
+index 6dfdc69..4049cd5 100644
+--- a/arch/mips/bcm63xx/Makefile
++++ b/arch/mips/bcm63xx/Makefile
+@@ -1,5 +1,6 @@
+ obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o \
+-		   dev-dsp.o dev-enet.o dev-pcmcia.o dev-uart.o dev-wdt.o
++		   dev-dsp.o dev-enet.o dev-pcmcia.o dev-spi.o dev-uart.o \
++		   dev-wdt.o
+ obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
  
- #define BCM_6368_TIMER_IRQ		(IRQ_INTERNAL_BASE + 0)
-+#define BCM_6368_SPI_IRQ		(IRQ_INTERNAL_BASE + 1)
- #define BCM_6368_UART0_IRQ		(IRQ_INTERNAL_BASE + 2)
- #define BCM_6368_UART1_IRQ		(IRQ_INTERNAL_BASE + 3)
- #define BCM_6368_DSL_IRQ		(IRQ_INTERNAL_BASE + 4)
-@@ -677,6 +683,7 @@ extern const int *bcm63xx_irqs;
- 
- #define __GEN_CPU_IRQ_TABLE(__cpu)					\
- 	[IRQ_TIMER]		= BCM_## __cpu ##_TIMER_IRQ,		\
-+	[IRQ_SPI]		= BCM_## __cpu ##_SPI_IRQ,		\
- 	[IRQ_UART0]		= BCM_## __cpu ##_UART0_IRQ,		\
- 	[IRQ_UART1]		= BCM_## __cpu ##_UART1_IRQ,		\
- 	[IRQ_DSL]		= BCM_## __cpu ##_DSL_IRQ,		\
+ obj-y		+= boards/
+diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
+new file mode 100644
+index 0000000..67fa45b
+--- /dev/null
++++ b/arch/mips/bcm63xx/dev-spi.c
+@@ -0,0 +1,119 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2009-2011 Florian Fainelli <florian@openwrt.org>
++ * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
++ */
++
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/export.h>
++#include <linux/platform_device.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++
++#include <bcm63xx_cpu.h>
++#include <bcm63xx_dev_spi.h>
++#include <bcm63xx_regs.h>
++
++#ifdef BCMCPU_RUNTIME_DETECT
++/*
++ * register offsets
++ */
++static const unsigned long bcm6338_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6338)
++};
++
++static const unsigned long bcm6348_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6348)
++};
++
++static const unsigned long bcm6358_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6358)
++};
++
++static const unsigned long bcm6368_regs_spi[] = {
++	__GEN_SPI_REGS_TABLE(6368)
++};
++
++const unsigned long *bcm63xx_regs_spi;
++EXPORT_SYMBOL(bcm63xx_regs_spi);
++
++static __init void bcm63xx_spi_regs_init(void)
++{
++	if (BCMCPU_IS_6338())
++		bcm63xx_regs_spi = bcm6338_regs_spi;
++	if (BCMCPU_IS_6348())
++		bcm63xx_regs_spi = bcm6348_regs_spi;
++	if (BCMCPU_IS_6358())
++		bcm63xx_regs_spi = bcm6358_regs_spi;
++	if (BCMCPU_IS_6368())
++		bcm63xx_regs_spi = bcm6368_regs_spi;
++}
++#else
++static __init void bcm63xx_spi_regs_init(void) { }
++#endif
++
++static struct resource spi_resources[] = {
++	{
++		.start		= -1, /* filled at runtime */
++		.end		= -1, /* filled at runtime */
++		.flags		= IORESOURCE_MEM,
++	},
++	{
++		.start		= -1, /* filled at runtime */
++		.flags		= IORESOURCE_IRQ,
++	},
++};
++
++static struct bcm63xx_spi_pdata spi_pdata = {
++	.bus_num		= 0,
++	.num_chipselect		= 8,
++};
++
++static struct platform_device bcm63xx_spi_device = {
++	.name		= "bcm63xx-spi",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(spi_resources),
++	.resource	= spi_resources,
++	.dev		= {
++		.platform_data = &spi_pdata,
++	},
++};
++
++int __init bcm63xx_spi_register(void)
++{
++	struct clk *periph_clk;
++
++	if (BCMCPU_IS_6345())
++		return -ENODEV;
++
++	periph_clk = clk_get(NULL, "periph");
++	if (IS_ERR(periph_clk)) {
++		pr_err("unable to get periph clock\n");
++		return -ENODEV;
++	}
++
++	/* Set bus frequency */
++	spi_pdata.speed_hz = clk_get_rate(periph_clk);
++
++	spi_resources[0].start = bcm63xx_regset_address(RSET_SPI);
++	spi_resources[0].end = spi_resources[0].start;
++	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
++
++	if (BCMCPU_IS_6338() || BCMCPU_IS_6348()) {
++		spi_resources[0].end += BCM_6338_RSET_SPI_SIZE - 1;
++		spi_pdata.fifo_size = SPI_6338_MSG_DATA_SIZE;
++	}
++
++	if (BCMCPU_IS_6358() || BCMCPU_IS_6368()) {
++		spi_resources[0].end += BCM_6358_RSET_SPI_SIZE - 1;
++		spi_pdata.fifo_size = SPI_6358_MSG_DATA_SIZE;
++	}
++
++	bcm63xx_spi_regs_init();
++
++	return platform_device_register(&bcm63xx_spi_device);
++}
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+new file mode 100644
+index 0000000..7d98dbe
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+@@ -0,0 +1,89 @@
++#ifndef BCM63XX_DEV_SPI_H
++#define BCM63XX_DEV_SPI_H
++
++#include <linux/types.h>
++#include <bcm63xx_io.h>
++#include <bcm63xx_regs.h>
++
++int __init bcm63xx_spi_register(void);
++
++struct bcm63xx_spi_pdata {
++	unsigned int	fifo_size;
++	int		bus_num;
++	int		num_chipselect;
++	u32		speed_hz;
++};
++
++enum bcm63xx_regs_spi {
++	SPI_CMD,
++	SPI_INT_STATUS,
++	SPI_INT_MASK_ST,
++	SPI_INT_MASK,
++	SPI_ST,
++	SPI_CLK_CFG,
++	SPI_FILL_BYTE,
++	SPI_MSG_TAIL,
++	SPI_RX_TAIL,
++	SPI_MSG_CTL,
++	SPI_MSG_DATA,
++	SPI_RX_DATA,
++};
++
++#define __GEN_SPI_RSET_BASE(__cpu, __rset)				\
++	case SPI_## __rset:						\
++		return SPI_## __cpu ##_## __rset;
++
++#define __GEN_SPI_RSET(__cpu)						\
++	switch (reg) {							\
++	__GEN_SPI_RSET_BASE(__cpu, CMD)					\
++	__GEN_SPI_RSET_BASE(__cpu, INT_STATUS)				\
++	__GEN_SPI_RSET_BASE(__cpu, INT_MASK_ST)				\
++	__GEN_SPI_RSET_BASE(__cpu, INT_MASK)				\
++	__GEN_SPI_RSET_BASE(__cpu, ST)					\
++	__GEN_SPI_RSET_BASE(__cpu, CLK_CFG)				\
++	__GEN_SPI_RSET_BASE(__cpu, FILL_BYTE)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_TAIL)				\
++	__GEN_SPI_RSET_BASE(__cpu, RX_TAIL)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_CTL)				\
++	__GEN_SPI_RSET_BASE(__cpu, MSG_DATA)				\
++	__GEN_SPI_RSET_BASE(__cpu, RX_DATA)				\
++	}
++
++#define __GEN_SPI_REGS_TABLE(__cpu)					\
++	[SPI_CMD]		= SPI_## __cpu ##_CMD,			\
++	[SPI_INT_STATUS]	= SPI_## __cpu ##_INT_STATUS,		\
++	[SPI_INT_MASK_ST]	= SPI_## __cpu ##_INT_MASK_ST,		\
++	[SPI_INT_MASK]		= SPI_## __cpu ##_INT_MASK,		\
++	[SPI_ST]		= SPI_## __cpu ##_ST,			\
++	[SPI_CLK_CFG]		= SPI_## __cpu ##_CLK_CFG,		\
++	[SPI_FILL_BYTE]		= SPI_## __cpu ##_FILL_BYTE,		\
++	[SPI_MSG_TAIL]		= SPI_## __cpu ##_MSG_TAIL,		\
++	[SPI_RX_TAIL]		= SPI_## __cpu ##_RX_TAIL,		\
++	[SPI_MSG_CTL]		= SPI_## __cpu ##_MSG_CTL,		\
++	[SPI_MSG_DATA]		= SPI_## __cpu ##_MSG_DATA,		\
++	[SPI_RX_DATA]		= SPI_## __cpu ##_RX_DATA,
++
++static inline unsigned long bcm63xx_spireg(enum bcm63xx_regs_spi reg)
++{
++#ifdef BCMCPU_RUNTIME_DETECT
++	extern const unsigned long *bcm63xx_regs_spi;
++
++	return bcm63xx_regs_spi[reg];
++#else
++#ifdef CONFIG_BCM63XX_CPU_6338
++	__GEN_SPI_RSET(6338)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6348
++	__GEN_SPI_RSET(6348)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6358
++	__GEN_SPI_RSET(6358)
++#endif
++#ifdef CONFIG_BCM63XX_CPU_6368
++	__GEN_SPI_RSET(6368)
++#endif
++#endif
++	return 0;
++}
++
++#endif /* BCM63XX_DEV_SPI_H */
 -- 
 1.7.5.4

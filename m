@@ -1,59 +1,119 @@
-From: 3Suisses <news-aRCsrEPsanzp/bQmFP7BarGZzIjr6fyc@public.gmane.org>
-Subject: Encore plus de soldes Jusque -80% sur 3suisses.fr
-Date: Tue, 31 Jan 2012 11:50:29 +0100 (CET)
-Message-ID: <3236305005.674595.1328007029807@p4enginex2.emv2.com>
-Reply-To: newsletters-7lNnFWq+ovLCXR85Y8Hu3Q@public.gmane.org
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 1/3] of_spi: add generic binding support to specify ncs
+ gpio in the slave
+Date: Tue, 31 Jan 2012 12:07:12 +0100
+Message-ID: <20120131110712.GI705@game.jcrosoft.org>
+References: <1327937271-23668-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120130185458.GO28397@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120130185458.GO28397-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
+On 11:54 Mon 30 Jan     , Grant Likely wrote:
+> On Mon, Jan 30, 2012 at 04:27:49PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > This will allow to use gpio for chip select with no modification in the
+> > driver binding
+> > 
+> > When use the ncs-gpio, the gpio number will be passed via the controller_data
+> > and the number of chip select will automatically increased.
+> > 
+> > When a spi master have only gpio chip select and is probe via dt check the
+> > number of chip select only when adding slave.
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+> > Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+> > Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > ---
+> >  Documentation/devicetree/bindings/spi/spi-bus.txt |    9 ++++++-
+> >  drivers/of/of_spi.c                               |   27 ++++++++++++++------
+> >  drivers/spi/spi.c                                 |    2 +-
+> >  3 files changed, 28 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > index e782add..1dccf35 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > @@ -21,9 +21,16 @@ assumption that board specific platform code will be used to manage
+> >  chip selects.  Individual drivers can define additional properties to
+> >  support describing the chip select layout.
+> >  
+> > +If a gpio a specified to the SPI slave and no hardware chip select is present
+> > +the reg property #address-cells and #size-cells are not needed.
+> > +
+> > +When use the ncs-gpio the gpio number will be passed via the controller_data
+> > +and the number of chip select will automatically increased.
+> > +
+> >  SPI slave nodes must be children of the SPI master node and can
+> >  contain the following properties.
+> > -- reg             - (required) chip select address of device.
+> > +- reg             - (required if no ncs-gpio) chip select address of device.
+> > +- ncs-gpio        - (required if no reg) chip select gpio of device.
+> 
+> There is already precedence for using gpios for chip selects.  The slave device
+> nodes remain as they are and it is the responsibility of the spi bus node
+> to have a gpios property with a list of SS gpios.  The order of the gpios
+> property should match the 'reg' address numbering of the child node.
+> 
+> I don't like the idea of having multiple bindings for the slave address of
+> the spi device (reg or ncs-gpio)
+> 
+> What I want to see is generic SS helper code that spi bus drivers
+> default to and correctly implement parsing of chip select gpios.
+> 
+> I'm not going to apply this patch.
+I do not want to see any of managment in the driver, I want a generic way to
+specify only gpio cs and hw and gpio cs
 
-                 ENCORE PLUS DE SOLDES & PROMOS JUSQU'A -80%* !
-   3suisses
-       Femme  Homme Enfant Maison High Tech Loisirs Marques Promos Soldes
-   [IMG]
-   [IMG]
-   [IMG]
+spi1: spi@fffcc000 {
+	ncs-gpios = <&pioB 3 0>;
+	status = "okay";
+	mmc-slot@0 {
+		reg = <0>;
+		compatible = "mmc-spi-slot";
+		gpios = <&pioC 4 0   /* CD */
+			>;
+		voltage-ranges = <3200 3400>;
+		spi-max-frequency = <20000000>;
+	};
+};
 
-   [IMG]                                        > CLIQUEZ ICI           [IM=
-G]
+as on atmel spi we have no HW spi the cs is 0
+if there is 3 hw cs the reg will be 3
 
-   [IMG]
-            Enchant=E9 ou           Livraison en 24h            Paiement
-            rembours=E9   livraison Gratuit            paiement s=E9curis=
-=E9
-   enchante en savoir   24 heures =E0 l'espace ou au   securise en savoir p=
-lus
-            plus                  point relais
-                                  en savoir plus
+we have 4 hw chipselect 3 enabled and one gpio chipselect
 
-   blog                                facebook
-   * voir les conditions sur le site
+spi1: spi@fffcc000 {
+	ncs-hw = < 0 1 1 1>;
+	ncs-gpios = <&pioB 3 0>;
+	status = "okay";
+	mmc-slot@0 {
+		reg = <3>;
+		compatible = "mmc-spi-slot";
+		gpios = <&pioC 4 0   /* CD */
+			>;
+		voltage-ranges = <3200 3400>;
+		spi-max-frequency = <20000000>;
+	};
+};
 
-   Conform*ment * la loi " informatique et libert*s " du 6 janvier 1978, vo=
-us
-                              pouvez * tout moment
-demander * acc*der, faire rectifier ou supprimer les informations personnel=
-les.
-  Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails =
-par
-                        l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+the idea is to pass the ncs_pin in the spi_device so the driver just have
+to check if the chipselect is hw or gpio and then use it the right way
+
+Best Regards,
+J.

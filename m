@@ -1,119 +1,170 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 1/3] of_spi: add generic binding support to specify ncs
- gpio in the slave
-Date: Tue, 31 Jan 2012 12:07:12 +0100
-Message-ID: <20120131110712.GI705@game.jcrosoft.org>
-References: <1327937271-23668-1-git-send-email-plagnioj@jcrosoft.com>
- <20120130185458.GO28397@ponder.secretlab.ca>
+From: Kukjin Kim <kgene.kim@samsung.com>
+Subject: RE: [PATCH v2 2/2] S3C24XX: move spi-s3c24xx platdata out of mach
+Date: Tue, 31 Jan 2012 20:20:44 +0900
+Message-ID: <04a101cce00a$5fcee0b0$1f6ca210$%kim@samsung.com>
+References: <201201082222.11305.heiko@sntech.de>
+ <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
+ <201201271040.08945.heiko@sntech.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20120130185458.GO28397-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: 'Grant Likely' <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net
+To: =?iso-8859-1?Q?'Heiko_St=FCbner'?= <heiko@sntech.de>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <201201271040.08945.heiko@sntech.de>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11:54 Mon 30 Jan     , Grant Likely wrote:
-> On Mon, Jan 30, 2012 at 04:27:49PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > This will allow to use gpio for chip select with no modification in the
-> > driver binding
-> > 
-> > When use the ncs-gpio, the gpio number will be passed via the controller_data
-> > and the number of chip select will automatically increased.
-> > 
-> > When a spi master have only gpio chip select and is probe via dt check the
-> > number of chip select only when adding slave.
-> > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-> > Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> > Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> > ---
-> >  Documentation/devicetree/bindings/spi/spi-bus.txt |    9 ++++++-
-> >  drivers/of/of_spi.c                               |   27 ++++++++++++++------
-> >  drivers/spi/spi.c                                 |    2 +-
-> >  3 files changed, 28 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > index e782add..1dccf35 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > @@ -21,9 +21,16 @@ assumption that board specific platform code will be used to manage
-> >  chip selects.  Individual drivers can define additional properties to
-> >  support describing the chip select layout.
-> >  
-> > +If a gpio a specified to the SPI slave and no hardware chip select is present
-> > +the reg property #address-cells and #size-cells are not needed.
-> > +
-> > +When use the ncs-gpio the gpio number will be passed via the controller_data
-> > +and the number of chip select will automatically increased.
-> > +
-> >  SPI slave nodes must be children of the SPI master node and can
-> >  contain the following properties.
-> > -- reg             - (required) chip select address of device.
-> > +- reg             - (required if no ncs-gpio) chip select address of device.
-> > +- ncs-gpio        - (required if no reg) chip select gpio of device.
-> 
-> There is already precedence for using gpios for chip selects.  The slave device
-> nodes remain as they are and it is the responsibility of the spi bus node
-> to have a gpios property with a list of SS gpios.  The order of the gpios
-> property should match the 'reg' address numbering of the child node.
-> 
-> I don't like the idea of having multiple bindings for the slave address of
-> the spi device (reg or ncs-gpio)
-> 
-> What I want to see is generic SS helper code that spi bus drivers
-> default to and correctly implement parsing of chip select gpios.
-> 
-> I'm not going to apply this patch.
-I do not want to see any of managment in the driver, I want a generic way to
-specify only gpio cs and hw and gpio cs
+Heiko St=FCbner wrote:
+>=20
+> spi.h now only contains the definition of the platform data structure
+> for the driver in spi-s3c24xx.c . Therefore it does not need to stay
+> in include/mach but can instead live in linux/spi/s3c24xx.h .
+>=20
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+> ---
+> Sorry for messing up, but it seems I forgot to readd the moved spi he=
+ader
+> in the original submission of the second patch, which I noticed just =
+now.
+> As your cleanup-s3c24xx branch is not pushed out yet, could you pleas=
+e
+> replace it with this one, which adds the forgotten file.
+>=20
+OK, I replaced with this. And I'm not sure Grant is ok on this.
 
-spi1: spi@fffcc000 {
-	ncs-gpios = <&pioB 3 0>;
-	status = "okay";
-	mmc-slot@0 {
-		reg = <0>;
-		compatible = "mmc-spi-slot";
-		gpios = <&pioC 4 0   /* CD */
-			>;
-		voltage-ranges = <3200 3400>;
-		spi-max-frequency = <20000000>;
-	};
-};
+Grant, this looks ok to me and I'd like to apply this in samsung tree.
+So if any problem to send this via samsung tree, please let me know.
 
-as on atmel spi we have no HW spi the cs is 0
-if there is 3 hw cs the reg will be 3
+Thanks.
 
-we have 4 hw chipselect 3 enabled and one gpio chipselect
+Best regards,
+Kgene.
+--
+Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+SW Solution Development Team, Samsung Electronics Co., Ltd.
 
-spi1: spi@fffcc000 {
-	ncs-hw = < 0 1 1 1>;
-	ncs-gpios = <&pioB 3 0>;
-	status = "okay";
-	mmc-slot@0 {
-		reg = <3>;
-		compatible = "mmc-spi-slot";
-		gpios = <&pioC 4 0   /* CD */
-			>;
-		voltage-ranges = <3200 3400>;
-		spi-max-frequency = <20000000>;
-	};
-};
-
-the idea is to pass the ncs_pin in the spi_device so the driver just have
-to check if the chipselect is hw or gpio and then use it the right way
-
-Best Regards,
-J.
+>  arch/arm/mach-s3c2410/include/mach/spi.h |   27
+--------------------------
+> -
+>  arch/arm/mach-s3c2440/mach-gta02.c       |    2 +-
+>  drivers/spi/spi-s3c24xx.c                |    2 +-
+>  include/linux/spi/s3c24xx.h              |   26
+++++++++++++++++++++++++++
+>  4 files changed, 28 insertions(+), 29 deletions(-)
+>  delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
+>  create mode 100644 include/linux/spi/s3c24xx.h
+>=20
+> diff --git a/arch/arm/mach-s3c2410/include/mach/spi.h b/arch/arm/mach=
+-
+> s3c2410/include/mach/spi.h
+> deleted file mode 100644
+> index 2a686c0..0000000
+> --- a/arch/arm/mach-s3c2410/include/mach/spi.h
+> +++ /dev/null
+> @@ -1,27 +0,0 @@
+> -/* arch/arm/mach-s3c2410/include/mach/spi.h
+> - *
+> - * Copyright (c) 2006 Simtec Electronics
+> - *	Ben Dooks <ben@simtec.co.uk>
+> - *
+> - * S3C2410 - SPI Controller platform_device info
+> - *
+> - * This program is free software; you can redistribute it and/or mod=
+ify
+> - * it under the terms of the GNU General Public License version 2 as
+> - * published by the Free Software Foundation.
+> -*/
+> -
+> -#ifndef __ASM_ARCH_SPI_H
+> -#define __ASM_ARCH_SPI_H __FILE__
+> -
+> -struct s3c2410_spi_info {
+> -	int			 pin_cs;	/* simple gpio cs */
+> -	unsigned int		 num_cs;	/* total chipselects */
+> -	int			 bus_num;       /* bus number to use. */
+> -
+> -	unsigned int		 use_fiq:1;	/* use fiq */
+> -
+> -	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
+> -	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+> -};
+> -
+> -#endif /* __ASM_ARCH_SPI_H */
+> diff --git a/arch/arm/mach-s3c2440/mach-gta02.c b/arch/arm/mach-
+> s3c2440/mach-gta02.c
+> index 5859e60..cf270f5 100644
+> --- a/arch/arm/mach-s3c2440/mach-gta02.c
+> +++ b/arch/arm/mach-s3c2440/mach-gta02.c
+> @@ -38,6 +38,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/serial_core.h>
+>  #include <linux/spi/spi.h>
+> +#include <linux/spi/s3c24xx.h>
+>=20
+>  #include <linux/mmc/host.h>
+>=20
+> @@ -73,7 +74,6 @@
+>  #include <mach/regs-gpioj.h>
+>  #include <mach/fb.h>
+>=20
+> -#include <mach/spi.h>
+>  #include <plat/usb-control.h>
+>  #include <mach/regs-mem.h>
+>  #include <mach/hardware.h>
+> diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+> index fc06453..8ee7d79 100644
+> --- a/drivers/spi/spi-s3c24xx.c
+> +++ b/drivers/spi/spi-s3c24xx.c
+> @@ -24,10 +24,10 @@
+>=20
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/spi_bitbang.h>
+> +#include <linux/spi/s3c24xx.h>
+>  #include <linux/module.h>
+>=20
+>  #include <plat/regs-spi.h>
+> -#include <mach/spi.h>
+>=20
+>  #include <plat/fiq.h>
+>  #include <asm/fiq.h>
+> diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.=
+h
+> new file mode 100644
+> index 0000000..c23b923
+> --- /dev/null
+> +++ b/include/linux/spi/s3c24xx.h
+> @@ -0,0 +1,26 @@
+> +/*
+> + * Copyright (c) 2006 Simtec Electronics
+> + *	Ben Dooks <ben@simtec.co.uk>
+> + *
+> + * S3C2410 - SPI Controller platform_device info
+> + *
+> + * This program is free software; you can redistribute it and/or mod=
+ify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> +*/
+> +
+> +#ifndef __LINUX_SPI_S3C24XX_H
+> +#define __LINUX_SPI_S3C24XX_H __FILE__
+> +
+> +struct s3c2410_spi_info {
+> +	int			 pin_cs;	/* simple gpio cs */
+> +	unsigned int		 num_cs;	/* total chipselects */
+> +	int			 bus_num;       /* bus number to use. */
+> +
+> +	unsigned int		 use_fiq:1;	/* use fiq */
+> +
+> +	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
+> +	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+> +};
+> +
+> +#endif /* __LINUX_SPI_S3C24XX_H */
+> --
+> 1.7.5.4

@@ -1,170 +1,44 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH v2 2/2] S3C24XX: move spi-s3c24xx platdata out of mach
-Date: Tue, 31 Jan 2012 20:20:44 +0900
-Message-ID: <04a101cce00a$5fcee0b0$1f6ca210$%kim@samsung.com>
-References: <201201082222.11305.heiko@sntech.de>
- <01b201ccdccb$d6923680$83b6a380$%kim@samsung.com>
- <201201271040.08945.heiko@sntech.de>
+From: Jxtpcb <sales03-mzk9dYGrzyzQT0dZR+AlfA@public.gmane.org>
+Subject: Re:PCB factory/ round the clock service
+Date: Tue, 31 Jan 2012 19:45:09 +0800 (CST)
+Message-ID: <1328010309150@mail161.cn4e.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: 'Grant Likely' <grant.likely@secretlab.ca>,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net
-To: =?iso-8859-1?Q?'Heiko_St=FCbner'?= <heiko@sntech.de>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <201201271040.08945.heiko@sntech.de>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Heiko St=FCbner wrote:
->=20
-> spi.h now only contains the definition of the platform data structure
-> for the driver in spi-s3c24xx.c . Therefore it does not need to stay
-> in include/mach but can instead live in linux/spi/s3c24xx.h .
->=20
-> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-> ---
-> Sorry for messing up, but it seems I forgot to readd the moved spi he=
-ader
-> in the original submission of the second patch, which I noticed just =
-now.
-> As your cleanup-s3c24xx branch is not pushed out yet, could you pleas=
-e
-> replace it with this one, which adds the forgotten file.
->=20
-OK, I replaced with this. And I'm not sure Grant is ok on this.
-
-Grant, this looks ok to me and I'd like to apply this in samsung tree.
-So if any problem to send this via samsung tree, please let me know.
-
-Thanks.
-
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
-
->  arch/arm/mach-s3c2410/include/mach/spi.h |   27
---------------------------
-> -
->  arch/arm/mach-s3c2440/mach-gta02.c       |    2 +-
->  drivers/spi/spi-s3c24xx.c                |    2 +-
->  include/linux/spi/s3c24xx.h              |   26
-++++++++++++++++++++++++++
->  4 files changed, 28 insertions(+), 29 deletions(-)
->  delete mode 100644 arch/arm/mach-s3c2410/include/mach/spi.h
->  create mode 100644 include/linux/spi/s3c24xx.h
->=20
-> diff --git a/arch/arm/mach-s3c2410/include/mach/spi.h b/arch/arm/mach=
--
-> s3c2410/include/mach/spi.h
-> deleted file mode 100644
-> index 2a686c0..0000000
-> --- a/arch/arm/mach-s3c2410/include/mach/spi.h
-> +++ /dev/null
-> @@ -1,27 +0,0 @@
-> -/* arch/arm/mach-s3c2410/include/mach/spi.h
-> - *
-> - * Copyright (c) 2006 Simtec Electronics
-> - *	Ben Dooks <ben@simtec.co.uk>
-> - *
-> - * S3C2410 - SPI Controller platform_device info
-> - *
-> - * This program is free software; you can redistribute it and/or mod=
-ify
-> - * it under the terms of the GNU General Public License version 2 as
-> - * published by the Free Software Foundation.
-> -*/
-> -
-> -#ifndef __ASM_ARCH_SPI_H
-> -#define __ASM_ARCH_SPI_H __FILE__
-> -
-> -struct s3c2410_spi_info {
-> -	int			 pin_cs;	/* simple gpio cs */
-> -	unsigned int		 num_cs;	/* total chipselects */
-> -	int			 bus_num;       /* bus number to use. */
-> -
-> -	unsigned int		 use_fiq:1;	/* use fiq */
-> -
-> -	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
-> -	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
-> -};
-> -
-> -#endif /* __ASM_ARCH_SPI_H */
-> diff --git a/arch/arm/mach-s3c2440/mach-gta02.c b/arch/arm/mach-
-> s3c2440/mach-gta02.c
-> index 5859e60..cf270f5 100644
-> --- a/arch/arm/mach-s3c2440/mach-gta02.c
-> +++ b/arch/arm/mach-s3c2440/mach-gta02.c
-> @@ -38,6 +38,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/serial_core.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/spi/s3c24xx.h>
->=20
->  #include <linux/mmc/host.h>
->=20
-> @@ -73,7 +74,6 @@
->  #include <mach/regs-gpioj.h>
->  #include <mach/fb.h>
->=20
-> -#include <mach/spi.h>
->  #include <plat/usb-control.h>
->  #include <mach/regs-mem.h>
->  #include <mach/hardware.h>
-> diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-> index fc06453..8ee7d79 100644
-> --- a/drivers/spi/spi-s3c24xx.c
-> +++ b/drivers/spi/spi-s3c24xx.c
-> @@ -24,10 +24,10 @@
->=20
->  #include <linux/spi/spi.h>
->  #include <linux/spi/spi_bitbang.h>
-> +#include <linux/spi/s3c24xx.h>
->  #include <linux/module.h>
->=20
->  #include <plat/regs-spi.h>
-> -#include <mach/spi.h>
->=20
->  #include <plat/fiq.h>
->  #include <asm/fiq.h>
-> diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.=
-h
-> new file mode 100644
-> index 0000000..c23b923
-> --- /dev/null
-> +++ b/include/linux/spi/s3c24xx.h
-> @@ -0,0 +1,26 @@
-> +/*
-> + * Copyright (c) 2006 Simtec Electronics
-> + *	Ben Dooks <ben@simtec.co.uk>
-> + *
-> + * S3C2410 - SPI Controller platform_device info
-> + *
-> + * This program is free software; you can redistribute it and/or mod=
-ify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> +*/
-> +
-> +#ifndef __LINUX_SPI_S3C24XX_H
-> +#define __LINUX_SPI_S3C24XX_H __FILE__
-> +
-> +struct s3c2410_spi_info {
-> +	int			 pin_cs;	/* simple gpio cs */
-> +	unsigned int		 num_cs;	/* total chipselects */
-> +	int			 bus_num;       /* bus number to use. */
-> +
-> +	unsigned int		 use_fiq:1;	/* use fiq */
-> +
-> +	void (*gpio_setup)(struct s3c2410_spi_info *spi, int enable);
-> +	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
-> +};
-> +
-> +#endif /* __LINUX_SPI_S3C24XX_H */
-> --
-> 1.7.5.4
+DQoNCkRlYXIgU2lyLA0KDQpKWFQgdGVjaG5vbG9neSBoZXJlLCBzcGVjaWFsaXplZCBpbiBwY2Ig
+bWFudWZhY3R1cmluZyBmb3IgbW9yZSB0aGFuIDcgeWVhcnMuIA0KDQpDYXBhYmlsaXRpZXM6IDEt
+MjQgbGF5ZXJzIFJpZ2lkLCBGbGV4LCBSaWdpZC1mbGV4LCBBbHVtaW51bSBwY2IsIEhpZ2ggVGcs
+IEhpZ2gtZnJlcXVlbmN5LCBJbXBlZGFuY2UgY29udHJvbCwgQnVyaWVkLWJsaW5kIHZpYXMgaG9s
+ZXMsIEhESSwgTWV0YWwgYmFzZWQsIFRoaWNrIGNvcHBlciwgTWl4LW1hdGVyaWFsIGV0Y+KApg0K
+UXVpY2stdHVybiBsZWFkIHRpbWVzOiAyNC03MiBob3VycyBkZWxpdmVyeSBhdmFpbGFibGUgZm9y
+IDEtNiBsYXllcnMgcGNiLg0KDQpBbnkgcXVlc3Rpb25zIHBsZWFzZSBmZWVsIGZyZWUgdG8gY29u
+dGFjdCBtZS4gVGhhbmtzLg0KDQpQUzogSWYgeW91IGRvbid0IGRlYWwgd2l0aCBQQ0IsIHdlIHdv
+dWxkIGJlIG1vc3QgZ3JhdGVmdWwgaWYgdGhpcyBsZXR0ZXIgY291bGQgYmUgZm9yd2FyZGVkIHRv
+IHNvbWVvbmUgd2hvIGRvZXMuDQotLS0NCkJlc3QgIHJlZ2FyZHMhDQoNCkRhbm55IChTYWxlcyBN
+YW5hZ2VyKQ0KSnh0IEludGVybmF0aW9uYWwgTGltaXRlZA0KVGVsOiA4Ni03NTUtMjk3NjA5MTcg
+DQpIUDogODYtMTU5ODY3NjQyOTYNCk1TTjogIGp4dGNoaW5hc2FsZXMxQGhvdG1haWwuY29tIA0K
+U2t5cGU6IGp4dHNhbGVzMSAgDQpXZWI6IHd3dy5qeHRwY2IuY29tICANClAgUGxlYXNlIGNvbnNp
+ZGVyIHRoZSBlbnZpcm9ubWVudCBiZWZvcmUgcHJpbnRpbmcNCj09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09IAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KS2VlcCBZb3Vy
+IERldmVsb3BlciBTa2lsbHMgQ3VycmVudCB3aXRoIExlYXJuRGV2Tm93IQpUaGUgbW9zdCBjb21w
+cmVoZW5zaXZlIG9ubGluZSBsZWFybmluZyBsaWJyYXJ5IGZvciBNaWNyb3NvZnQgZGV2ZWxvcGVy
+cwppcyBqdXN0ICQ5OS45OSEgVmlzdWFsIFN0dWRpbywgU2hhcmVQb2ludCwgU1FMIC0gcGx1cyBI
+VE1MNSwgQ1NTMywgTVZDMywKTWV0cm8gU3R5bGUgQXBwcywgbW9yZS4gRnJlZSBmdXR1cmUgcmVs
+ZWFzZXMgd2hlbiB5b3Ugc3Vic2NyaWJlIG5vdyEKaHR0cDovL3Auc2YubmV0L3NmdS9sZWFybmRl
+dm5vdy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

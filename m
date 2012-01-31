@@ -1,44 +1,48 @@
-From: Jxtpcb <sales03-mzk9dYGrzyzQT0dZR+AlfA@public.gmane.org>
-Subject: Re:PCB factory/ round the clock service
-Date: Tue, 31 Jan 2012 19:45:09 +0800 (CST)
-Message-ID: <1328010309150@mail161.cn4e.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 0/9 v3] MIPS: BCM63XX: add support for SPI
+Date: Tue, 31 Jan 2012 15:10:39 +0100
+Message-ID: <1328019048-5892-1-git-send-email-florian@openwrt.org>
+Cc: linux-mips@linux-mips.org, grant.likely@secretlab.ca,
+        spi-devel-general@lists.sourceforge.net,
+        Florian Fainelli <florian@openwrt.org>
+To: ralf@linux-mips.org
+Return-path: <linux-mips-bounce@linux-mips.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCkRlYXIgU2lyLA0KDQpKWFQgdGVjaG5vbG9neSBoZXJlLCBzcGVjaWFsaXplZCBpbiBwY2Ig
-bWFudWZhY3R1cmluZyBmb3IgbW9yZSB0aGFuIDcgeWVhcnMuIA0KDQpDYXBhYmlsaXRpZXM6IDEt
-MjQgbGF5ZXJzIFJpZ2lkLCBGbGV4LCBSaWdpZC1mbGV4LCBBbHVtaW51bSBwY2IsIEhpZ2ggVGcs
-IEhpZ2gtZnJlcXVlbmN5LCBJbXBlZGFuY2UgY29udHJvbCwgQnVyaWVkLWJsaW5kIHZpYXMgaG9s
-ZXMsIEhESSwgTWV0YWwgYmFzZWQsIFRoaWNrIGNvcHBlciwgTWl4LW1hdGVyaWFsIGV0Y+KApg0K
-UXVpY2stdHVybiBsZWFkIHRpbWVzOiAyNC03MiBob3VycyBkZWxpdmVyeSBhdmFpbGFibGUgZm9y
-IDEtNiBsYXllcnMgcGNiLg0KDQpBbnkgcXVlc3Rpb25zIHBsZWFzZSBmZWVsIGZyZWUgdG8gY29u
-dGFjdCBtZS4gVGhhbmtzLg0KDQpQUzogSWYgeW91IGRvbid0IGRlYWwgd2l0aCBQQ0IsIHdlIHdv
-dWxkIGJlIG1vc3QgZ3JhdGVmdWwgaWYgdGhpcyBsZXR0ZXIgY291bGQgYmUgZm9yd2FyZGVkIHRv
-IHNvbWVvbmUgd2hvIGRvZXMuDQotLS0NCkJlc3QgIHJlZ2FyZHMhDQoNCkRhbm55IChTYWxlcyBN
-YW5hZ2VyKQ0KSnh0IEludGVybmF0aW9uYWwgTGltaXRlZA0KVGVsOiA4Ni03NTUtMjk3NjA5MTcg
-DQpIUDogODYtMTU5ODY3NjQyOTYNCk1TTjogIGp4dGNoaW5hc2FsZXMxQGhvdG1haWwuY29tIA0K
-U2t5cGU6IGp4dHNhbGVzMSAgDQpXZWI6IHd3dy5qeHRwY2IuY29tICANClAgUGxlYXNlIGNvbnNp
-ZGVyIHRoZSBlbnZpcm9ubWVudCBiZWZvcmUgcHJpbnRpbmcNCj09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09IAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KS2VlcCBZb3Vy
-IERldmVsb3BlciBTa2lsbHMgQ3VycmVudCB3aXRoIExlYXJuRGV2Tm93IQpUaGUgbW9zdCBjb21w
-cmVoZW5zaXZlIG9ubGluZSBsZWFybmluZyBsaWJyYXJ5IGZvciBNaWNyb3NvZnQgZGV2ZWxvcGVy
-cwppcyBqdXN0ICQ5OS45OSEgVmlzdWFsIFN0dWRpbywgU2hhcmVQb2ludCwgU1FMIC0gcGx1cyBI
-VE1MNSwgQ1NTMywgTVZDMywKTWV0cm8gU3R5bGUgQXBwcywgbW9yZS4gRnJlZSBmdXR1cmUgcmVs
-ZWFzZXMgd2hlbiB5b3Ugc3Vic2NyaWJlIG5vdyEKaHR0cDovL3Auc2YubmV0L3NmdS9sZWFybmRl
-dm5vdy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+This patch set depend on the serie "MIPS: BCM63XX: misc cleanup" and
+adds support for the SPI controller found in BCM63xx SoCs.
+
+Grant, it probably makes sense to get this merged via the MIPS tree
+since it mostly depends on it.
+
+Florian Fainelli (9):
+  MIPS: BCM63XX: add IRQ_SPI and CPU specific SPI IRQ values
+  MIPS: BCM63XX: define BCM6358 SPI base address
+  MIPS: BCM63XX: add BCM6368 SPI clock mask
+  MIPS: BCM63XX: define SPI register sizes.
+  MIPS: BCM63XX: remove SPI2 register
+  MIPS: BCM63XX: define internal registers offsets of the SPI
+    controller
+  MIPS: BCM63XX: add stub to register the SPI platform driver
+  MIPS: BCM63XX: make board setup code register the spi platform device
+  spi: add Broadcom BCM63xx SPI controller driver
+
+ arch/mips/bcm63xx/Makefile                         |    3 +-
+ arch/mips/bcm63xx/boards/board_bcm963xx.c          |    3 +
+ arch/mips/bcm63xx/clk.c                            |    6 +-
+ arch/mips/bcm63xx/dev-spi.c                        |  119 +++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |   23 +-
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 ++++
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |  119 +++++
+ drivers/spi/Kconfig                                |    6 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-bcm63xx.c                          |  486 ++++++++++++++++++++
+ 10 files changed, 842 insertions(+), 13 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/dev-spi.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+ create mode 100644 drivers/spi/spi-bcm63xx.c
+
+-- 
+1.7.5.4

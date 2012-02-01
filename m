@@ -1,27 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH] spi/spi-altera: Allow to explicitely override bus number
  via dts
-Date: Wed, 1 Feb 2012 10:57:51 -0700
-Message-ID: <CACxGe6u_wWEdoRC0O=bh8UhKG2qE-ZrNtJjULxJVmNTeZkoKvw@mail.gmail.com>
+Date: Wed, 1 Feb 2012 10:59:20 -0700
+Message-ID: <CACxGe6sZst_rt4AJWt23Zc9QNqT29KYFFoVk5AxooM=MG5DRiw@mail.gmail.com>
 References: <1328025246-23450-1-git-send-email-tklauser@distanz.ch>
- <20120201135524.GD13723@sirena.org.uk>
- <CAMVnO+kWX=NYi+YU9H5nRc9UksCJLQUi-_Kj9UASwoiqZj9tGA@mail.gmail.com>
- <20120201140838.GE13723@sirena.org.uk>
- <CAMVnO+m5DTYeK9mHcciqU-y7HGP-d9FXWkvTV4ZJJLTRqjK7LQ@mail.gmail.com>
- <20120201143558.GF13723@sirena.org.uk>
- <CAMVnO+n2SW=e7EP-MjLbFeF7ZW6e=FwL=UdOd=cd-XN=C132Qg@mail.gmail.com>
- <20120201150517.GG13723@sirena.org.uk>
- <CAMVnO+kvjbxW7EdMe_YF=oSp0bR-RqaP_rPM57tyHzGKhsoNxg@mail.gmail.com>
- <20120201154204.GH13723@sirena.org.uk>
- <CAMVnO+nB77XOQHfL1zZLve_=z6vFk_HMF+hj=iMTAuOAYSRExA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-To: Frederic LAMBERT <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <CAMVnO+nB77XOQHfL1zZLve_=z6vFk_HMF+hj=iMTAuOAYSRExA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1328025246-23450-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
  <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
@@ -33,32 +24,39 @@ Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06c
 Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 1, 2012 at 8:52 AM, Frederic LAMBERT <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 2012/2/1 Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+On Tue, Jan 31, 2012 at 8:54 AM, Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org> wrote:
+> From: Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 >
->>
->> Well, something that walks all block devices on Linux is very
->> straightforward... =A0It sounds like you just want logic along the lines
->> of "find a block device and offer the option of overriding by providing
->> a specific path for use with a file", is that about right?
->>
+> Until now we let the code in spi.c assign us the bus number if the platfo=
+rm
+> device didn't specify its id. This patch adds the possibility to explicit=
+ely
+> specify the bus number via device tree.
 >
-> Well, yes, excepted that the file *is* equivalent to a block device for my
-> piece of code!
+> Signed-off-by: Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+> ---
+> diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+> index 4813a63..d5bf52b 100644
+> --- a/drivers/spi/spi-altera.c
+> +++ b/drivers/spi/spi-altera.c
+> @@ -226,6 +226,15 @@ static int __devinit altera_spi_probe(struct platfor=
+m_device *pdev)
+> =A0 =A0 =A0 =A0if (!master)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return err;
+>
+> + =A0 =A0 =A0 /* bus_num is dynamically assigned when undefined (see spi.=
+c) =A0*/
+> + =A0 =A0 =A0 /* look for a DTS entry to override this */
+> + =A0 =A0 =A0 if (pdev->id =3D=3D -1 && pdev->dev.of_node !=3D 0) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 tmp;
+> +
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (of_property_read_u32(pdev->dev.of_node,=
+ "bus-number", &tmp) =3D=3D 0)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdev->id =3D tmp;
 
-The answer here is to use the data provided by the kernel to find the
-correct device.  Hard coding bus numbers (or any other globally
-visible number space for that matter) has all kinds of problems and it
-is by design that spi bus drivers are not allowed to choose a bus
-number when they are created from DT data.
-
-Instead, your code should either be using udev, or doing the same
-thing that udev does to find a specific hardware device.  The uevent
-attribute in devices that appear under /dev/bus/spi/devices should be
-used to compare with the full device tree path.  I've just written a
-patch that should give you the information that you need and I'll cc:
-you when I post it.  I'll try to get it merged for v3.4.  This
-approach will allow you to find the correct device in a reliable way
-that won't be affected by bus numbering changes.
+BTW, it is absolutely illegal for device drivers to modify the
+pdev->id field.  Once a device is registered, the id and name cannot
+be changed.
 
 g.

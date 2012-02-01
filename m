@@ -1,18 +1,28 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/spi-altera: Allow to explicitely override bus number
- via dts
-Date: Wed, 1 Feb 2012 10:59:20 -0700
-Message-ID: <CACxGe6sZst_rt4AJWt23Zc9QNqT29KYFFoVk5AxooM=MG5DRiw@mail.gmail.com>
-References: <1328025246-23450-1-git-send-email-tklauser@distanz.ch>
+From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Subject: Re: [PATCH] spi/spi-altera: Allow to explicitely override bus
+ number via dts
+Date: Wed, 1 Feb 2012 18:10:37 +0000
+Message-ID: <20120201181037.GB24063@sirena.org.uk>
+References: <20120201135524.GD13723@sirena.org.uk>
+ <CAMVnO+kWX=NYi+YU9H5nRc9UksCJLQUi-_Kj9UASwoiqZj9tGA@mail.gmail.com>
+ <20120201140838.GE13723@sirena.org.uk>
+ <CAMVnO+m5DTYeK9mHcciqU-y7HGP-d9FXWkvTV4ZJJLTRqjK7LQ@mail.gmail.com>
+ <20120201143558.GF13723@sirena.org.uk>
+ <CAMVnO+n2SW=e7EP-MjLbFeF7ZW6e=FwL=UdOd=cd-XN=C132Qg@mail.gmail.com>
+ <20120201150517.GG13723@sirena.org.uk>
+ <CAMVnO+kvjbxW7EdMe_YF=oSp0bR-RqaP_rPM57tyHzGKhsoNxg@mail.gmail.com>
+ <20120201154204.GH13723@sirena.org.uk>
+ <CAMVnO+nB77XOQHfL1zZLve_=z6vFk_HMF+hj=iMTAuOAYSRExA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
-To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+ Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+To: Frederic LAMBERT <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <1328025246-23450-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMVnO+nB77XOQHfL1zZLve_=z6vFk_HMF+hj=iMTAuOAYSRExA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
  <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
@@ -24,39 +34,16 @@ Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06c
 Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 31, 2012 at 8:54 AM, Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org> wrote:
-> From: Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->
-> Until now we let the code in spi.c assign us the bus number if the platfo=
-rm
-> device didn't specify its id. This patch adds the possibility to explicit=
-ely
-> specify the bus number via device tree.
->
-> Signed-off-by: Frederic Lambert <frdrc66-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-> ---
-> diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-> index 4813a63..d5bf52b 100644
-> --- a/drivers/spi/spi-altera.c
-> +++ b/drivers/spi/spi-altera.c
-> @@ -226,6 +226,15 @@ static int __devinit altera_spi_probe(struct platfor=
-m_device *pdev)
-> =A0 =A0 =A0 =A0if (!master)
-> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return err;
->
-> + =A0 =A0 =A0 /* bus_num is dynamically assigned when undefined (see spi.=
-c) =A0*/
-> + =A0 =A0 =A0 /* look for a DTS entry to override this */
-> + =A0 =A0 =A0 if (pdev->id =3D=3D -1 && pdev->dev.of_node !=3D 0) {
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 u32 tmp;
-> +
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 if (of_property_read_u32(pdev->dev.of_node,=
- "bus-number", &tmp) =3D=3D 0)
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 pdev->id =3D tmp;
+On Wed, Feb 01, 2012 at 04:52:14PM +0100, Frederic LAMBERT wrote:
 
-BTW, it is absolutely illegal for device drivers to modify the
-pdev->id field.  Once a device is registered, the id and name cannot
-be changed.
+> Yes, that seems simple said like that.
+> It was thus more simple for me, at that time, to modify a specific driver
+> for a specific port (Nios2), than to modify a core used by every one.
+> Question of time, and confidence in my own capacities :-).
+> The other point being the change acceptation (and the time it takes) by the
+> community...
 
-g.
+In this case doing something generic would be easier to get merged
+(modulo the "don't do that" issue) - people are being a lot more wary
+about driver specific changes that should be generic than they used to
+be.

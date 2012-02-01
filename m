@@ -1,63 +1,53 @@
-From: Maxime Bizon <mbizon@freebox.fr>
-Subject: Re: [PATCH v4] spi: add Broadcom BCM63xx SPI controller driver
-Date: Wed, 01 Feb 2012 12:22:09 +0100
-Message-ID: <1328095329.4936.21.camel@sakura.staff.proxad.net>
-References: <1328019048-5892-10-git-send-email-florian@openwrt.org>
-         <1328091249-10389-1-git-send-email-florian@openwrt.org>
-Reply-To: mbizon@freebox.fr
+From: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Subject: [PATCH] spi/nuc900: Remove unnecessary memset of struct nuc900_spi
+Date: Wed,  1 Feb 2012 13:33:42 +0100
+Message-ID: <1328099622-14058-1-git-send-email-tklauser@distanz.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ANSI_X3.4-1968"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: ralf@linux-mips.org, linux-mips@linux-mips.org,
-        spi-devel-general@lists.sourceforge.net,
-        Tanguy Bouzeloc <tanguy.bouzeloc@efixo.com>
-To: Florian Fainelli <florian@openwrt.org>
-Return-path: <linux-mips-bounce@linux-mips.org>
-In-Reply-To: <1328091249-10389-1-git-send-email-florian@openwrt.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+The memory allocated using kzalloc by spi_alloc_master so it doesn't
+need to be set to 0 again.
 
-On Wed, 2012-02-01 at 11:14 +0100, Florian Fainelli wrote:
+Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+---
+ drivers/spi/spi-nuc900.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-Hi Florian,
-
-> +struct bcm63xx_spi {
-> +	spinlock_t		lock;
-
-this lock is never actually used
-
-it is referenced only once in device removal path
-
-> +	int			stopping;
-
-this can be removed by changing device removal path to first call
-spi_unregister_master. that way the spi stack cannot call spi_transfer
-anymore and we don't need to abort these calls.
-
-
-> +static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-> +{
-
-> [...]
-
-> +	bcm_spi_writew(bs, cmd, SPI_CMD);
-> +	wait_for_completion(&bs->done);
-> +
-
-bcm63xx_txrx_bufs() is called by bcm63xx_transfer(), and according to
-Documentation/spi/spi-summary:
-
-    master->transfer(struct spi_device *spi, struct spi_message *message)
-	This must not sleep.  Its responsibility is arrange that the
-        transfer happens and its complete() callback is issued.  The two
-        will normally happen later, after other transfers complete, and
-        if the controller is idle it will need to be kickstarted.
-
-So we cannot do a synchronous wait here, this must be pushed to a
-workqueue or kthread.
-
-
+diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
+index 182e9c8..dae8be2 100644
+--- a/drivers/spi/spi-nuc900.c
++++ b/drivers/spi/spi-nuc900.c
+@@ -360,8 +360,6 @@ static int __devinit nuc900_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	hw = spi_master_get_devdata(master);
+-	memset(hw, 0, sizeof(struct nuc900_spi));
+-
+ 	hw->master = spi_master_get(master);
+ 	hw->pdata  = pdev->dev.platform_data;
+ 	hw->dev = &pdev->dev;
 -- 
-Maxime
+1.7.5.4
+
+
+------------------------------------------------------------------------------
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

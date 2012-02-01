@@ -1,61 +1,56 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 9/9 v3] spi: add Broadcom BCM63xx SPI controller driver
-Date: Tue, 31 Jan 2012 14:59:14 -0700
-Message-ID: <CACxGe6vsW6u5s26vat=M4J-+39NK5L=ccydQaVkGHYZpeV=gOw@mail.gmail.com>
-References: <1328019048-5892-1-git-send-email-florian@openwrt.org>
-	<1328019048-5892-10-git-send-email-florian@openwrt.org>
-	<20120131201922.GE22611@ponder.secretlab.ca>
-	<201201312220.41561.florian@openwrt.org>
+From: Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
+Subject: Re: [PATCH 1/3] spi/s3c64xx: Log error interrupts
+Date: Wed, 1 Feb 2012 11:50:34 +0530
+Message-ID: <CAM=Q2cvR5=PFLS92C5rtHQgXxent+mb4s3ZPiL7sb3WcO1hr3A@mail.gmail.com>
+References: <20120121132329.GA10751@opensource.wolfsonmicro.com>
+	<1327152265-10789-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+	<CAM=Q2ctA6o0wW4LMW=Jpe7HPGbm4S-UySURToXrC1r4kOe08Rg@mail.gmail.com>
+	<20120129214028.GC2994@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-	ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201201312220.41561.florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20120129214028.GC2994@opensource.wolfsonmicro.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 31, 2012 at 2:20 PM, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wro=
-te:
-> On Tuesday 31 January 2012 21:19:22 Grant Likely wrote:
->> > +static const struct dev_pm_ops bcm63xx_spi_pm_ops =3D {
->> > + =A0 .suspend =A0 =A0 =A0 =A0=3D bcm63xx_spi_suspend,
->> > + =A0 .resume =A0 =A0 =A0 =A0 =3D bcm63xx_spi_resume,
->> > +};
->> > +
->> > +#define BCM63XX_SPI_PM_OPS (&bcm63xx_spi_pm_ops)
->> > +#else
->> > +#define BCM63XX_SPI_PM_OPS NULL
->>
->> A bit ugly. =A0Do this instead in the else clause and drop the
->> BCM63XX_SPI_PM_OPS:
->>
->> #define bcm63xx_spi_pm_ops NULL
+Hi Mark,
+
+On Mon, Jan 30, 2012 at 3:10 AM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> On Sat, Jan 28, 2012 at 10:30:36PM +0530, Shubhrajyoti Datta wrote:
 >
-> This won't work, because driver.pm must be set to a pointer to a struct
-> dev_pm_ops, that's why I used this trick to make it build fine in both ca=
-ses.
-> If I follow your advice, with driver.pm =3D &bcm63xx_spi_pm_ops, it won't=
- build
-> for CONFIG_PM=3Dn.
+> Please delete irrelevant context from your replies.
+>
+>> > + =A0 ret =3D request_irq(irq, s3c64xx_spi_irq, 0, "spi-s3c64xx", =
+sdd);
+>
+>> Could we have a threaded irq instead and there are prints and that m=
+ay get
+>> executed in interrupt context.
+>
+> So, clearly we *could*. =A0However I think that's not going to be as
+> helpful. =A0These errors are never supposed to happen (and if they do
+> indicate a fairly serious problem) so the performance impact shouldn'=
+t
+> be our primary concern and if they do happen then my suspicion is tha=
+t
+> the timing information will be very important. =A0I expect that knowi=
+ng
+> exactly when the error occurred is likely to help diagnose what cause=
+d
+> it by virtue of knowing what other things were going on in the system=
+ at
+> that time.
+I agree .
 
-Okay, fair enough.
-
-g.
-
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+My only concern was that incase someone wants to add prints in the irq
+that may be handy.
+However as you rightly pointed that timing is surely to be more of a co=
+ncern.
+Thanks for the explanation.

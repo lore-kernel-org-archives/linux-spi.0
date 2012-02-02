@@ -1,17 +1,16 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/nuc900: Remove unnecessary memset of struct nuc900_spi
-Date: Wed, 1 Feb 2012 17:11:07 -0700
-Message-ID: <20120202001107.GC15343@ponder.secretlab.ca>
-References: <1328099622-14058-1-git-send-email-tklauser@distanz.ch>
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH 0/3] spi: generalize message queueing
+Date: Thu, 2 Feb 2012 13:59:21 +0100
+Message-ID: <1328187561-12875-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1328099622-14058-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,36 +21,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 01, 2012 at 01:33:42PM +0100, Tobias Klauser wrote:
-> The memory allocated using kzalloc by spi_alloc_master so it doesn't
-> need to be set to 0 again.
-> 
-> Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Merged, thanks.
+This is a patch series based on a suggestion from Mark Brown
+to make the message queueing found in PL022 more general.
 
-g.
+[1/3] is just the same minor update to the PL022 driver
+ that was discussed before (I hope this can atleast go in).
 
-> ---
->  drivers/spi/spi-nuc900.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
-> index 182e9c8..dae8be2 100644
-> --- a/drivers/spi/spi-nuc900.c
-> +++ b/drivers/spi/spi-nuc900.c
-> @@ -360,8 +360,6 @@ static int __devinit nuc900_spi_probe(struct platform_device *pdev)
->  	}
->  
->  	hw = spi_master_get_devdata(master);
-> -	memset(hw, 0, sizeof(struct nuc900_spi));
-> -
->  	hw->master = spi_master_get(master);
->  	hw->pdata  = pdev->dev.platform_data;
->  	hw->dev = &pdev->dev;
-> -- 
-> 1.7.5.4
-> 
+[2/3] refactors the master registration a bit (could probably
+  be nice no matter whether the next gets merged)
+
+[3/3] is the bulf of the patch set moving the transfer queue
+  out of the PL022 driver and rewriting it a bit, making it
+  generic.
+
+I have pretty good hopes for that this queueing code is solid,
+my colleague Chris Blair has run very demanding megabit loads
+using this queue, and I've left most of the logic in it intact.
+
+So tell me if this is the right direction, else let's just do
+[1/3] and maybe [2/3].
+
+Linus Walleij
+
+
+Chris Blair (1):
+  spi/pl022: Add high priority message pump support
+
+Linus Walleij (2):
+  spi: split spi_register_master
+  spi: create an optional message queueing infrastructure
+
+ Documentation/spi/spi-summary |   56 +++++-
+ drivers/spi/Kconfig           |    5 +
+ drivers/spi/spi-pl022.c       |  288 ++++++---------------------
+ drivers/spi/spi.c             |  444 ++++++++++++++++++++++++++++++++++++++---
+ include/linux/amba/pl022.h    |    3 +
+ include/linux/spi/spi.h       |   53 +++++
+ 6 files changed, 584 insertions(+), 265 deletions(-)
+
+-- 
+1.7.8
+
 
 ------------------------------------------------------------------------------
 Keep Your Developer Skills Current with LearnDevNow!

@@ -1,55 +1,38 @@
-From: Danny Kukawka <danny.kukawka@bisect.de>
-Subject: [PATCH] spi-topcliff-pch: rename pch_spi_pcidev to pch_spi_pcidev_driver
-Date: Thu,  2 Feb 2012 14:20:30 +0100
-Message-ID: <1328188830-28133-3-git-send-email-danny.kukawka@bisect.de>
-References: <1328188830-28133-1-git-send-email-danny.kukawka@bisect.de>
-Cc: Danny Kukawka <dkukawka@suse.de>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1328188830-28133-1-git-send-email-danny.kukawka@bisect.de>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Cofinoga par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Pour vos projets 2012, =?iso-8859-15?Q?b=E9n=E9ficiez?= d'un taux
+	garanti en toute =?iso-8859-15?Q?simplicit=E9?=
+Date: Thu, 02 Feb 2012 17:49:21 +0100
+Message-ID: <1328201361.4f2abe9196b03@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Rename static struct pci_driver pch_spi_pcidev to
-pch_spi_pcidev_driver to get rid of warnings from modpost checks.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Danny Kukawka <danny.kukawka@bisect.de>
+Lien miroir : http://mail.mc10.fr/mc10_m/YT04JmI9NTgzMyZjPTE5NjE2NDEmZD0yMD=
+EyLTAyLTAyIDE3OjEwOjAxJmU9MSZoPTU4MzImZj01ODMzJmc9NTgzMw=3D=3D
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT04JmI9NTgzMyZjP=
+TE5NjE2NDEmZD0yMDEyLTAyLTAyIDE3OjEwOjAxJmU9MSZoPTU4MzImZj01ODMzJmc9NTgzMw=
+=3D=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-topcliff-pch.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 2a6429d..10182eb 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1720,7 +1720,7 @@ static int pch_spi_resume(struct pci_dev *pdev)
- 
- #endif
- 
--static struct pci_driver pch_spi_pcidev = {
-+static struct pci_driver pch_spi_pcidev_driver = {
- 	.name = "pch_spi",
- 	.id_table = pch_spi_pcidev_id,
- 	.probe = pch_spi_probe,
-@@ -1736,7 +1736,7 @@ static int __init pch_spi_init(void)
- 	if (ret)
- 		return ret;
- 
--	ret = pci_register_driver(&pch_spi_pcidev);
-+	ret = pci_register_driver(&pch_spi_pcidev_driver);
- 	if (ret)
- 		return ret;
- 
-@@ -1746,7 +1746,7 @@ module_init(pch_spi_init);
- 
- static void __exit pch_spi_exit(void)
- {
--	pci_unregister_driver(&pch_spi_pcidev);
-+	pci_unregister_driver(&pch_spi_pcidev_driver);
- 	platform_driver_unregister(&pch_spi_pd_driver);
- }
- module_exit(pch_spi_exit);
--- 
-1.7.7.3
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

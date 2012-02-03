@@ -1,14 +1,18 @@
-From: =?iso-8859-15?Q?SIN=C9QUANONE?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?LAST_CHANCE_!_Derniers_prix,_derni=E8re_d=E9?=
-	=?iso-8859-15?Q?marque,_et_toujours_la_livraison_OFFERTE?=
-Date: Fri, 3 Feb 2012 09:56:07 +0100 (CET)
-Message-ID: <3236305005.686043.1328259367167@p4enginex1.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 3/3] spi: create an optional message queueing
+	infrastructure
+Date: Fri, 3 Feb 2012 15:00:23 +0100
+Message-ID: <CACRpkdYZjpAnxqv8=LQkXL9U4Yd=xHysj7hY6iQwgKf-vZPLbA@mail.gmail.com>
+References: <1328187599-12982-1-git-send-email-linus.walleij@stericsson.com>
+	<20120202160522.GF22048@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120202160522.GF22048-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,34 +23,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-   Si vous avez des difficult=E9s pour visualiser la newsletter Sin=E9quano=
-ne,
-   consultez notre version en ligne.
+On Thu, Feb 2, 2012 at 5:05 PM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+>[Me]
+>> + * This function checks if there is any spi message in the queue that
+>> + * needs processing and delegate control to appropriate function
+>> + * do_polling_transfer()/do_interrupt_dma_transfer()
+>> + * based on the kind of the transfer
+>
+> This comment is bitrotted - the do_X_transfer functions are pl022
+> specific. =A0I had initially thought that this was another opportunity for
+> code sharing but it turns out that unlike the s3c64xx driver pl022 is
+> not switching between the two modes based on transfer size so we do need
+> different logic.
 
-   Sinequanone
-   Sinequanone - Livraison offerte d=E8s 120CUR d'achat
-   Sinequanone - Soldes Derniers prix
-   Du 18 janvier au 14 f=E9vrier 2012, en boutique et sur l'E-shop
-   Sinequanone - Soldes      www.sinequanone.com     Sinequanone - Soldes
-   Sinequanone - Soldes Derniers prix
+Yes atleast for now, I looked at the per-transfer pump we have
+but I cannot right now figure out if that part can also be genericizied
+so lets do it piecemal.
 
-   * Offre valable sur une s=E9lection d'articles de la collection
-   automne-hiver 2012 identifi=E9s par un pictogramme sur le site, hors poi=
-nts
-   rouges. Offre non cumulable avec toute autre op=E9ration en cours. Les
-   soldes se d=E9roulent du 11 janvier (8h) au 14 f=E9vrier 2012 sur
-   www.sinequanone.com et dans les boutiques Sinequanone en France
-   m=E9tropolitaine (Zone nationale) sauf exceptions.
+Fixing the comment in v2.
 
-   Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 197=
-8, vous
-   b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification e=
-t de
-   suppression aux donn=E9es vous concernant.
+Thanks,
+Linus Walleij
 
-   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
-ls
-   par l'intermediaire de ce raccourci.
 ---------------------------------------------------------------------------=
 ---
 Try before you buy =3D See our experts in action!

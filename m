@@ -1,18 +1,19 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 3/3] spi: create an optional message queueing
 	infrastructure
-Date: Fri, 3 Feb 2012 15:00:23 +0100
-Message-ID: <CACRpkdYZjpAnxqv8=LQkXL9U4Yd=xHysj7hY6iQwgKf-vZPLbA@mail.gmail.com>
+Date: Fri, 3 Feb 2012 15:01:57 +0100
+Message-ID: <CACRpkdbk5nytVnE81Rhp3AhA7+o2uhReopaCyoPWHA52oDK4Gg@mail.gmail.com>
 References: <1328187599-12982-1-git-send-email-linus.walleij@stericsson.com>
-	<20120202160522.GF22048@opensource.wolfsonmicro.com>
+	<20120202185247.GR15343@ponder.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
 	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120202160522.GF22048-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <20120202185247.GR15343-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,25 +24,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 2, 2012 at 5:05 PM, Mark Brown
-<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->[Me]
->> + * This function checks if there is any spi message in the queue that
->> + * needs processing and delegate control to appropriate function
->> + * do_polling_transfer()/do_interrupt_dma_transfer()
->> + * based on the kind of the transfer
->
-> This comment is bitrotted - the do_X_transfer functions are pl022
-> specific. =A0I had initially thought that this was another opportunity for
-> code sharing but it turns out that unlike the s3c64xx driver pl022 is
-> not switching between the two modes based on transfer size so we do need
-> different logic.
+On Thu, Feb 2, 2012 at 7:52 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wr=
+ote:
 
-Yes atleast for now, I looked at the per-transfer pump we have
-but I cannot right now figure out if that part can also be genericizied
-so lets do it piecemal.
+> This looks really good. =A0In fact, can you think of any reason why we wo=
+uldn't
+> force all spi drivers to use central queueing? =A0I don't see any advanta=
+ge
+> in leaving the old mechanism in place other than to allow driver to trans=
+ition
+> from the old API.
 
-Fixing the comment in v2.
+Not really... except that it'll be hard to convert all drivers.
+
+> There is also the spi_bitbang which also implements its own message
+> queue and workqueue. =A0Several drivers make use of even if they don't
+> do bitbanging.
+
+Sound like they're abusing it then :-/
+
+> Can you investigate dropping patch 2 and making the normal register
+> function set up queued transfers if the transfer hook is not set. =A0If
+> it is set, then make the kernel complain to the console, quietly at
+> first, but we'll get louder before ultimately removing the
+> non-queued interface. =A0Thoughts?
+
+OK I'll post v2 soon with these changes.
 
 Thanks,
 Linus Walleij

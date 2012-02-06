@@ -1,44 +1,49 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: [git pull] SPI changes for v3.3-rc2
-Date: Sun, 5 Feb 2012 23:28:15 -0700
-Message-ID: <CACxGe6uf6BpnHUFF7Svx_-C+ZGFop3T=TGGRi8kFQCgH56E4yA@mail.gmail.com>
+From: "Dr. Pierre Ricaud par MailandGo" <actu-whIDP1ESC80L5zYn5HY2KwC/G2K4zDHf@public.gmane.org>
+Subject: Vos 3 cadeaux vous attendent
+Date: Mon, 6 Feb 2012 16:28:13 +0100 (CET)
+Message-ID: <3236305005.694246.1328542093425@p4enginex1.emv2.com>
+Reply-To: newsletters-i7nxTNKT9dhBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	spi-devel-general@lists.sourceforge.net,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Linus
-
-A couple of minor SPI fixes.  Description in signed tag.  Please pull.
-
-g.
-
-The following changes since commit 23783f817bceedd6d4e549385e3f400ea64059e5:
-
-  Merge tag 'pm-fixes-for-3.3-rc3' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-(2012-02-04 15:21:39 -0800)
-
-are available in the git repository at:
-
-  git://git.secretlab.ca/git/linux-2.6 spi-for-linus
-
-Danny Kukawka (1):
-      spi-topcliff-pch: rename pch_spi_pcidev to pch_spi_pcidev_driver
-
-Sylwester Nawrocki (1):
-      spi: Add spi-s3c64xx driver dependency on ARCH_EXYNOS4
-
- drivers/spi/Kconfig            |    2 +-
- drivers/spi/spi-topcliff-pch.c |    6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+Recevez en CADEAU votre sublime sac griff=E9 DANIEL HECHTER, cliquez ici.
+D=E9couvrez les nouvelles tendances beaut=E9 2012 =E0 prix plaisir, cliquez=
+ ici
+Si vous ne parvenez pas =E0 lire cet email correctement, cliquez ici
+[IMG]
+Dr. Pierre Ricaud                     25 ans d'innovations beaut=E9        =
+[IMG]
+Recevez en CADEAU votre sublime sac griff=E9 DANIEL HECHTER.
+Les tendance Maquillage 2012 =E0 PRIX PLAISIR !
+[IMG] Lingettes D=E9maquillantes : 7CUR90  Vernis Ongles Parfaits : 4CUR95 =
+au lieu
+      les 2 paquets.                     de 9CUR.
+[IMG] Peeling =C9clat : 4CUR50 seulement. Mascara Cils Parfaits : 9CUR90
+                                        seulement.
+Vos privil=E8ges internet.
+Offre valable jusqu'au 22/02/2012 uniquement sur la boutique www.ricaud.com,
+dans la limite du stock disponible et non cumulable avec les offres propos=
+=E9es en
+magasin ou en vente par correspondance.
+Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mails =
+par
+l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Try before you buy =3D See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

@@ -1,12 +1,12 @@
-From: "lnfo-3Cs22e5xLmF3+QwDJ9on6Q@public.gmane.org" <lnfo-3Cs22e5xLmF3+QwDJ9on6Q@public.gmane.org>
-Subject: [SPAM]
-Date: Tue, 7 Feb 2012 11:24:46 -0800
-Message-ID: <65216197.20120207112446@everycar.jp>
-Reply-To: "lnfo-3Cs22e5xLmF3+QwDJ9on6Q@public.gmane.org" <suzuki_evryco1-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org>
+From: Kaporal Officiel <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?Soldes_jusqu'=E0_-70_pourcent_+_des_surprises...?=
+Date: Tue, 7 Feb 2012 16:34:19 +0100 (CET)
+Message-ID: <3236305005.698332.1328628859819@p4enginex1.emv2.com>
+Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,28 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+          Un souci de visualisation, consulter notre version en ligne
+   [IMG]
+   [IMG]
+   [IMG]
+   [IMG]
 
-  Dear Sir/Madam
+                               ++ SOLDES HIVER ++
+                       Jusqu'au 14 f=E9vrier 2012 minuit !
+                          Pour utiliser votre coupon,
+                     indiquez "SOLDEPLUS" sous votre panier
+      et b=E9n=E9ficiez de -10% sur l'int=E9gralit=E9 de votre commande en =
+PLUS !
 
-We are a Japanese used car export company selling Japanese used cars and foreign cars.
-We export Japanese used cars to various countries in the world. We have extensive stocks of
-Japanese used cars which satisfy your needs. We guarantee Good condition, Good price, Quick service. Right now we are giving 50% discount for the  2012 BONAZA  which will end on 30th of Feb because we have a few stocks of Land cruiser jeeps.
-We have only 30 units in stocks and you could be lucky to get 1 unit for yourself.. CIF to Darussalam or any port in east-south Africa is 9,000usd.We are giving 50% discount because it is our marketing strategy to attract more customers in Africa and to sell off the old stocks for last year.If you are not capable of purchasing the land cruiser or if it is not your choice of your dream car, you can also inform us so that we Can post to you your choice vehicle with a little discount. We want you to take an advantage of this opportunity. We have not yet Uploaded the pictures of the land cruisers on our website, but can be sent directly to your email address upon your request.
-Sincerely yours,
-Head office:Tel: +81-25-211-3260 Fax: +81-25-211-3264 
- 1-8-5, Kamioumi, Chuo-ku, Niigata-shi, Niigata-ken, JAPAN 
+                           La livraison est offerte !
 
-UK Branch Office.
-Harbour House, 126 Thorpe Rd, Norwich
-Tel:44 701113 4305
-Fax:44 70 928 94286
-EMAI: suzuki_evryco1-/E1597aS9LR3+QwDJ9on6Q@public.gmane.org
-http://www.everycar.jp
-  
-Kaigen Suzuki,
-Sales Team Manager
+      D=E9couvrez les nouveaux mod=E8les Homme / Femme / Kids de la collect=
+ion
+                               printemps/=E9t=E9 2012
 
-------------------------------------------------------------------------------
+        Les soldes hiver sur les mod=E8les de la collection Hiver 2011-12
+
+    Et sur la collection Et=E9 2011 profitez encore de remises de -30 =E0 -=
+70% !
+
+             Attention les stocks sont limit=E9s ! Profitez en vite !
+             Offre non cumulable - dans la limite des stocks dispo
+    Coupon valable sur la collection Hiver 2011 & Et=E9 2012, non valable s=
+ur
+                                   l'=E9t=E9 2011
+     Les frais de retour sont offerts pour toute demande d'=E9change sur les
+                              articles Et=E9 2012 !
+                Pour vous d=E9sinscrire rendez vous sur cette page
+---------------------------------------------------------------------------=
+---
 Keep Your Developer Skills Current with LearnDevNow!
 The most comprehensive online learning library for Microsoft developers
 is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,

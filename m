@@ -1,69 +1,42 @@
-From: Kyoungil Kim <ki0351.kim@samsung.com>
-Subject: [PATCH] spi: Compatibility with direction which is used in samsung DMA
- operation
-Date: Wed, 08 Feb 2012 15:54:40 +0900
-Message-ID: <000501cce62e$87b4d100$971e7300$%kim@samsung.com>
+From: Yves Rocher via Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Votre_invitation_=E0_l'anniversaire_Yves_Rocher._?=
+Date: Wed, 8 Feb 2012 07:47:49 +0100 (CET)
+Message-ID: <3236305005.698847.1328683669679@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: 'Grant Likely' <grant.likely@secretlab.ca>,
-	'Kukjin Kim' <kgene.kim@samsung.com>,
-	'Kyoungil Kim' <ki0351.kim@samsung.com>
-To: spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
-Signed-off-by: Kyoungil Kim <ki0351.kim@samsung.com>
----
- drivers/spi/spi-s3c64xx.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+        Si vous ne visualisez pas correctement ce message, cliquez ici.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index f3b7f6a..1972377 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -239,7 +239,7 @@ static void s3c64xx_spi_dmacb(void *data)
- 	struct s3c64xx_spi_dma_data *dma = data;
- 	unsigned long flags;
- 
--	if (dma->direction == DMA_FROM_DEVICE)
-+	if (dma->direction == DMA_DEV_TO_MEM)
- 		sdd = container_of(data,
- 			struct s3c64xx_spi_driver_data, rx_dma);
- 	else
-@@ -248,7 +248,7 @@ static void s3c64xx_spi_dmacb(void *data)
- 
- 	spin_lock_irqsave(&sdd->lock, flags);
- 
--	if (dma->direction == DMA_FROM_DEVICE) {
-+	if (dma->direction == DMA_DEV_TO_MEM) {
- 		sdd->state &= ~RXBUSY;
- 		if (!(sdd->state & TXBUSY))
- 			complete(&sdd->xfer_completion);
-@@ -268,7 +268,7 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 	struct samsung_dma_prep info;
- 	struct samsung_dma_config config;
- 
--	if (dma->direction == DMA_FROM_DEVICE) {
-+	if (dma->direction == DMA_DEV_TO_MEM) {
- 		sdd = container_of((void *)dma,
- 			struct s3c64xx_spi_driver_data, rx_dma);
- 
-@@ -1028,9 +1028,9 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	sdd->pdev = pdev;
- 	sdd->sfr_start = mem_res->start;
- 	sdd->tx_dma.dmach = dmatx_res->start;
--	sdd->tx_dma.direction = DMA_TO_DEVICE;
-+	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
- 	sdd->rx_dma.dmach = dmarx_res->start;
--	sdd->rx_dma.direction = DMA_FROM_DEVICE;
-+	sdd->rx_dma.direction = DMA_DEV_TO_MEM;
- 
- 	sdd->cur_bpw = 8;
- 
--- 
-1.7.1
+                Grand jeu sp=E9cial 10 ans du site internet ici !
+    Grand jeu sp=E9cial 10 ans du site internet
+    Grand jeu sp=E9cial 10 ans du site internet
+    Grand jeu sp=E9cial 10 ans du site internet
+
+   Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier 19=
+78, vous
+                              pouvez =E0 tout moment
+demander =E0 acc=E9der, faire rectifier ou supprimer les informations perso=
+nnelles.
+  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
+s par
+                        l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

@@ -1,42 +1,62 @@
-From: Yves Rocher via Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?Votre_invitation_=E0_l'anniversaire_Yves_Rocher._?=
-Date: Wed, 8 Feb 2012 07:47:49 +0100 (CET)
-Message-ID: <3236305005.698847.1328683669679@p4enginex2.emv2.com>
-Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH] spi: Add the use of DMA config operation
+Date: Wed, 08 Feb 2012 11:05:33 +0100
+Message-ID: <4F3248ED.8030408@samsung.com>
+References: <000401cce62e$3c0cd5e0$b42681a0$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	'Kukjin Kim' <kgene.kim@samsung.com>
+To: Kyoungil Kim <ki0351.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <000401cce62e$3c0cd5e0$b42681a0$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
+Hi,
 
-                Grand jeu sp=E9cial 10 ans du site internet ici !
-    Grand jeu sp=E9cial 10 ans du site internet
-    Grand jeu sp=E9cial 10 ans du site internet
-    Grand jeu sp=E9cial 10 ans du site internet
+On 02/08/2012 07:52 AM, Kyoungil Kim wrote:
+> Config operation is separated from request operation in DMA common op=
+eration.
+> Because spi driver can change the DMA config for every message.
+> So this patch is using the separated DMA config operation.
+>=20
+> Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
+> Signed-off-by: Kyoungil Kim <ki0351.kim@samsung.com>
+> ---
+>  drivers/spi/spi-s3c64xx.c |   35 +++++++++++++++++++++--------------
+>  1 files changed, 21 insertions(+), 14 deletions(-)
 
-   Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier 19=
-78, vous
-                              pouvez =E0 tout moment
-demander =E0 acc=E9der, faire rectifier ou supprimer les informations perso=
-nnelles.
-  Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mail=
-s par
-                        l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+I'm getting following compilation errors with this patch:
+
+  CC      drivers/spi/spi-s3c64xx.o
+drivers/spi/spi-s3c64xx.c: In function =91prepare_dma=92:
+drivers/spi/spi-s3c64xx.c:268: error: storage size of =91info=92 isn=92=
+t known
+drivers/spi/spi-s3c64xx.c:269: error: storage size of =91config=92 isn=92=
+t known
+drivers/spi/spi-s3c64xx.c:278: error: =91struct samsung_dma_ops=92 has =
+no member
+named =91config=92
+drivers/spi/spi-s3c64xx.c:286: error: =91struct samsung_dma_ops=92 has =
+no member
+named =91config=92
+drivers/spi/spi-s3c64xx.c:269: warning: unused variable =91config=92
+drivers/spi/spi-s3c64xx.c:268: warning: unused variable =91info=92
+drivers/spi/spi-s3c64xx.c: In function =91acquire_dma=92:
+drivers/spi/spi-s3c64xx.c:302: error: storage size of =91req=92 isn=92t=
+ known
+drivers/spi/spi-s3c64xx.c:302: warning: unused variable =91req=92
+
+Which tree has it been created off of ?
+
+It seems there are some patches not yet in mainline that it depends on.
+
+
+Thanks,
+--=20
+Sylwester Nawrocki
+Samsung Poland R&D Center

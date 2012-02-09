@@ -1,71 +1,49 @@
-From: Barry Song <Barry.Song@csr.com>
-Subject: RE: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Thu, 9 Feb 2012 03:38:15 +0000
-Message-ID: <5EB3BFCD089AD643B9BB63439F5FD5E99CB90C53@SHAASIEXM01.ASIA.ROOT.PRI>
-References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
- <20120208162639.GJ15647@game.jcrosoft.org>
+From: Easy Alarme par Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Vos 3 devis alarme sont disponibles
+Date: Thu, 9 Feb 2012 08:27:04 +0100 (CET)
+Message-ID: <3236305005.702732.1328772424832@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>,
- DL-SHA-WorkGroupLinux <Workgroup.Linux@csr.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Zhiwu Song <Zhiwu.Song@csr.com>
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>, Barry Song
- <21cnbao@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20120208162639.GJ15647@game.jcrosoft.org>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> -----Original Message-----
-> From: Jean-Christophe PLAGNIOL-VILLARD [mailto:plagnioj@jcrosoft.com]
-> Sent: Thursday, February 09, 2012 12:27 AM
-> To: Barry Song
-> Cc: grant.likely@secretlab.ca; spi-devel-general@lists.sourceforge.net; Barry
-> Song; linux-arm-kernel@lists.infradead.org; DL-SHA-WorkGroupLinux; Zhiwu
-> Song
-> Subject: Re: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
-> 
->  +
-> > +static int spi_sirfsoc_setup(struct spi_device *spi)
-> > +{
-> > +	struct spi_bitbang *bitbang;
-> > +	struct sirfsoc_spi *sspi;
-> > +
-> > +	if (!spi->max_speed_hz)
-> > +		return -EINVAL;
-> > +
-> > +	sspi = spi_master_get_devdata(spi->master);
-> > +	bitbang = &sspi->bitbang;
-> why do you need this?
+     Si vous rencontrez des probl=E8mes pour afficher ce message, cliquez i=
+ci
+   easy alarme                  Le Gardien de votre   [IMG]
+                                tranquillit=E9
+   Augmentation de 19% des      1 cambriolage toutes  [IMG]
+   cambriolages                 les minutes
+   [IMG]                        [IMG]                 [IMG]
+   Avec Easy Alarme oubliez les
+   cambriolages. Partez         [IMG]                 [IMG]
+   tranquille !
+   100 % SECURIT=C9               FORMULE TOUT COMPRIS  INTERVENTION =E0
+                                                      DOMICILE
+   Protection des biens et des  Syst=E8me d'alarme      Capteur d'images
+   personnes
+   Service Personnalis=E9         Contr=F4le =E0 distance   Alerte =E0 la p=
+olice
+   [IMG]                        Mon Devis Gratuit     [IMG]
+                                *Ventes Priv=E9es
+                              **Achetez maintenant
+   Pour vous d=E9sabonner de cette newsletter et ne plus recevoir de messag=
+e de
+                          MONNIER Fr=E8res, cliquez ici
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
 
-Jean, thanks! it is redundant code which misses cleanup. I'd like to wait whether Grant has more feedback and fix those together with this one.
-
-> > +
-> > +	if (!spi->bits_per_word)
-> > +		spi->bits_per_word = 8;
-> > +
-> > +	return spi_sirfsoc_setup_transfer(spi, NULL);
-> > +}
-> 
-> Best Regards,
-> J.
-
--barry
-
-
-
-Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
-More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

@@ -1,18 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Thu, 9 Feb 2012 07:23:40 -0800
-Message-ID: <20120209152340.GB11249@ponder.secretlab.ca>
-References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
+Subject: Re: [PATCH RESEND] intel_mid_ssp_spi: Moorestown and Medfield SPI
+	for SSP devices
+Date: Thu, 9 Feb 2012 07:31:21 -0800
+Message-ID: <20120209153121.GC11249@ponder.secretlab.ca>
+References: <20120208104059.23036.78003.stgit@bob.linux.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1328717446-4526-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20120208104059.23036.78003.stgit-Z/y2cZnRghHXmaaqVzeoHQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,813 +22,390 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 09, 2012 at 12:10:46AM +0800, Barry Song wrote:
-> From: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
+On Wed, Feb 08, 2012 at 10:41:10AM +0000, Alan Cox wrote:
+> From: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 > 
-> CSR SiRFprimaII has two SPIs (SPI0 and SPI1). Features:
-> * Master and slave modes
-> * 8-/12-/16-/32-bit data unit
-> * 256 bytes receive data FIFO and 256 bytes transmit data FIFO
-> * Multi-unit frame
-> * Configurable SPI_EN (chip select pin) active state
-> * Configurable SPI_CLK polarity
-> * Configurable SPI_CLK phase
-> * Configurable MSB/LSB first
+> This driver is a fusion of various internal drivers into a single
+> driver for the SPI slave/master on the Intel Moorestown and Medfield
+> SSP devices.
 > 
-> Signed-off-by: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
-> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+> Signed-off-by: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> [Queueing and runtime pm added]
+> Signed-off-by: Kristen Carlson Accardi <kristen-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> [Ported to the -next tree DMA engine]
+> Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 > ---
->  -v3:
->  add missed SIRFSOC_SPI_ prefix before macros for registers;
->  move writel/readl into tx/rx word functions;
->  fix some other coding styles Grant pointed out;
->  add missed device tree binding file.
 > 
->  Documentation/devicetree/bindings/spi/spi_sirf.txt |   14 +
->  drivers/spi/Kconfig                                |    7 +
->  drivers/spi/Makefile                               |    1 +
->  drivers/spi/spi-sirf.c                             |  665 ++++++++++++++++++++
->  include/linux/spi/spi-sirf.h                       |   27 +
->  5 files changed, 714 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi_sirf.txt
->  create mode 100644 drivers/spi/spi-sirf.c
->  create mode 100644 include/linux/spi/spi-sirf.h
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi_sirf.txt b/Documentation/devicetree/bindings/spi/spi_sirf.txt
-> new file mode 100644
-> index 0000000..f7a58aa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi_sirf.txt
-> @@ -0,0 +1,14 @@
-> +* CSR SiRFprimaII Serial Peripheral Interface
-> +
-> +Required properties:
-> +- compatible : Should be "sirf,prima2-spi"
-> +- reg : Offset and length of the register set for the device
-> +- interrupts : Should contain SPI interrupt
-> +
-> +Example:
-> +
-> +spi0: spi@b00d0000 {
-> +	compatible = "sirf,prima2-spi";
-> +	reg = <0xb00d0000 0x10000>;
-> +	interrupts = <15>;
-> +};
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 3f9a47e..8311cc2 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -324,6 +324,13 @@ config SPI_SH_SCI
->  	help
->  	  SPI driver for SuperH SCI blocks.
->  
-> +config SPI_SIRF
-> +        tristate "CSR SiRFprimaII SPI controller"
-> +	depends on ARCH_PRIMA2
-> +	select SPI_BITBANG
-> +	help
-> +	  SPI driver for CSR SiRFprimaII SoCs
-> +
->  config SPI_STMP3XXX
->  	tristate "Freescale STMP37xx/378x SPI/SSP controller"
->  	depends on ARCH_STMP3XXX && SPI_MASTER
+>  drivers/spi/Kconfig             |    8 
+>  drivers/spi/Makefile            |    2 
+>  drivers/spi/spi-intel-mid-ssp.c | 1426 +++++++++++++++++++++++++++++++++++++++
+>  drivers/spi/spi-intel-mid-ssp.h |  308 ++++++++
+
+If this is merging several of the drivers, what is the plan for the existing
+SPI_DESIGNWARE and SPI_TOPCLIFF_PCH drivers?  Or are those for different
+devices?
+
+...
 > diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index 61c3261..e919846 100644
+> index 61c3261..e81757a 100644
 > --- a/drivers/spi/Makefile
 > +++ b/drivers/spi/Makefile
-> @@ -51,6 +51,7 @@ obj-$(CONFIG_SPI_S3C64XX)		+= spi-s3c64xx.o
->  obj-$(CONFIG_SPI_SH)			+= spi-sh.o
->  obj-$(CONFIG_SPI_SH_MSIOF)		+= spi-sh-msiof.o
->  obj-$(CONFIG_SPI_SH_SCI)		+= spi-sh-sci.o
-> +obj-$(CONFIG_SPI_SIRF)		+= spi-sirf.o
->  obj-$(CONFIG_SPI_STMP3XXX)		+= spi-stmp.o
->  obj-$(CONFIG_SPI_TEGRA)			+= spi-tegra.o
->  obj-$(CONFIG_SPI_TI_SSP)		+= spi-ti-ssp.o
-> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+> @@ -58,4 +58,4 @@ obj-$(CONFIG_SPI_TLE62X0)		+= spi-tle62x0.o
+>  obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
+>  obj-$(CONFIG_SPI_TXX9)			+= spi-txx9.o
+>  obj-$(CONFIG_SPI_XILINX)		+= spi-xilinx.o
+> -
+> +obj-$(CONFIG_SPI_INTEL_MID_SSP)		+= spi-intel-mid-ssp.o
+
+I'm trying to keep this list alphabetized.
+
+...
+> +#ifdef DUMP_RX
+> +static void dump_trailer(const struct device *dev, char *buf, int len, int sz)
+> +{
+> +	int tlen1 = (len < sz ? len : sz);
+> +	int tlen2 =  ((len - sz) > sz) ? sz : (len - sz);
+> +	unsigned char *p;
+> +	static char msg[MAX_SPI_TRANSFER_SIZE];
+> +
+> +	memset(msg, '\0', sizeof(msg));
+> +	p = buf;
+> +	while (p < buf + tlen1)
+> +		sprintf(msg, "%s%02x", msg, (unsigned int)*p++);
+> +
+> +	if (tlen2 > 0) {
+> +		sprintf(msg, "%s .....", msg);
+> +		p = (buf+len) - tlen2;
+> +		while (p < buf + len)
+> +			sprintf(msg, "%s%02x", msg, (unsigned int)*p++);
+> +	}
+> +
+> +	dev_info(dev, "DUMP: %p[0:%d ... %d:%d]:%s", buf, tlen1 - 1,
+> +		   len-tlen2, len - 1, msg);
+> +}
+> +#endif
+
+Yet another hex dump debug utility function?  What about lib/hexdump.c?
+
+...
+> diff --git a/drivers/spi/spi-intel-mid-ssp.h b/drivers/spi/spi-intel-mid-ssp.h
 > new file mode 100644
-> index 0000000..6f326cb
+> index 0000000..11fad57
 > --- /dev/null
-> +++ b/drivers/spi/spi-sirf.c
-> @@ -0,0 +1,665 @@
+> +++ b/drivers/spi/spi-intel-mid-ssp.h
+
+How much of this stuff is actually needed in a .h file?  If it is only used
+by the .c file, then I want it moved there.
+
+> @@ -0,0 +1,308 @@
 > +/*
-> + * SPI bus driver for CSR SiRFprimaII
+> + *  Copyright (C) Intel 2009
+> + *  Ken Mills <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> + *  Sylvain Centelles <sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 > + *
-> + * Copyright (c) 2011 Cambridge Silicon Radio Limited, a CSR plc group company.
+> + * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > + *
-> + * Licensed under GPLv2 or later.
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, write to the Free Software
+> + *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+> + *
+> + * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> + *
+> + */
+> +#ifndef SPI_INTEL_MID_SSP_H_
+> +#define SPI_INTEL_MID_SSP_H_
+> +
+> +#define PCI_MRST_DMAC1_ID	0x0814
+> +#define PCI_MDFL_DMAC1_ID	0x0827
+> +
+> +#define SSP_NOT_SYNC 0x400000
+> +#define MAX_SPI_TRANSFER_SIZE 8192
+> +#define MAX_BITBANGING_LOOP   10000
+> +#define SPI_FIFO_SIZE 16
+> +
+> +/* PM QoS define */
+> +#define MIN_EXIT_LATENCY 20
+> +
+> +/* SSP assignement configuration from PCI config */
+> +#define SSP_CFG_GET_MODE(ssp_cfg)	((ssp_cfg) & 0x07)
+> +#define SSP_CFG_GET_SPI_BUS_NB(ssp_cfg)	(((ssp_cfg) >> 3) & 0x07)
+> +#define SSP_CFG_IS_SPI_SLAVE(ssp_cfg)	((ssp_cfg) & 0x40)
+> +#define SSP_CFG_SPI_MODE_ID		1
+> +/* adid field offset is 6 inside the vendor specific capability */
+> +#define VNDR_CAPABILITY_ADID_OFFSET	6
+> +
+> +/* Driver's quirk flags */
+> +/* This workarround bufferizes data in the audio fabric SDRAM from  */
+> +/* where the DMA transfers will operate. Should be enabled only for */
+> +/* SPI slave mode.                                                  */
+> +#define QUIRKS_DMA_USE_NO_TRAIL		2
+> +/* If set, the driver will use PM_QOS to reduce the latency         */
+> +/* introduced by the deeper C-states which may produce over/under   */
+> +/* run issues. Must be used in slave mode. In master mode, the      */
+> +/* latency is not critical, but setting this workarround  may       */
+> +/* improve the SPI throughput.                                      */
+> +#define QUIRKS_USE_PM_QOS		4
+> +/* This quirks is set on Medfield                                   */
+> +#define QUIRKS_PLATFORM_MDFL		16
+> +/* If set, SPI is in slave clock mode                               */
+> +#define QUIRKS_SPI_SLAVE_CLOCK_MODE	64
+> +
+> +/* Uncomment to get RX and TX short dumps after each transfer */
+> +/* #define DUMP_RX 1 */
+> +#define MAX_TRAILING_BYTE_RETRY 16
+> +#define MAX_TRAILING_BYTE_LOOP 100
+> +#define DELAY_TO_GET_A_WORD 3
+> +#define DFLT_TIMEOUT_VAL 500
+> +
+> +#define DEFINE_SSP_REG(reg, off) \
+> +static inline u32 read_##reg(void *p) { return __raw_readl(p + (off)); } \
+> +static inline void write_##reg(u32 v, void *p) { __raw_writel(v, p + (off)); }
+> +
+> +#define RX_DIRECTION 0
+> +#define TX_DIRECTION 1
+> +
+> +#define I2C_ACCESS_USDELAY 10
+> +
+> +#define DFLT_BITS_PER_WORD 16
+> +#define MIN_BITS_PER_WORD     4
+> +#define MAX_BITS_PER_WORD     32
+> +#define DFLT_FIFO_BURST_SIZE	IMSS_FIFO_BURST_8
+> +
+> +#define TRUNCATE(x, a) ((x) & ~((a)-1))
+> +
+> +DEFINE_SSP_REG(SSCR0, 0x00)
+> +DEFINE_SSP_REG(SSCR1, 0x04)
+> +DEFINE_SSP_REG(SSSR, 0x08)
+> +DEFINE_SSP_REG(SSITR, 0x0c)
+> +DEFINE_SSP_REG(SSDR, 0x10)
+> +DEFINE_SSP_REG(SSTO, 0x28)
+> +DEFINE_SSP_REG(SSPSP, 0x2c)
+> +
+> +DEFINE_SSP_REG(I2CCTRL, 0x00);
+> +DEFINE_SSP_REG(I2CDATA, 0x04);
+> +
+> +DEFINE_SSP_REG(GPLR1, 0x04);
+> +DEFINE_SSP_REG(GPDR1, 0x0c);
+> +DEFINE_SSP_REG(GPSR1, 0x14);
+> +DEFINE_SSP_REG(GPCR1, 0x1C);
+> +DEFINE_SSP_REG(GAFR1_U, 0x44);
+> +
+> +#define SYSCFG  0x20bc0
+> +
+> +#define SRAM_BASE_ADDR 0xfffdc000
+> +#define SRAM_RX_ADDR   SRAM_BASE_ADDR
+> +#define SRAM_TX_ADDR  (SRAM_BASE_ADDR + MAX_SPI_TRANSFER_SIZE)
+> +
+> +#define SSCR0_DSS   (0x0000000f)     /* Data Size Select (mask) */
+> +#define SSCR0_DataSize(x)  ((x) - 1)    /* Data Size Select [4..16] */
+> +#define SSCR0_FRF   (0x00000030)     /* FRame Format (mask) */
+> +#define SSCR0_Motorola        (0x0 << 4)         /* Motorola's SPI mode */
+> +#define SSCR0_ECS   (1 << 6) /* External clock select */
+> +#define SSCR0_SSE   (1 << 7) /* Synchronous Serial Port Enable */
+> +
+> +#define SSCR0_SCR   (0x000fff00)      /* Serial Clock Rate (mask) */
+> +#define SSCR0_SerClkDiv(x) (((x) - 1) << 8) /* Divisor [1..4096] */
+> +#define SSCR0_EDSS  (1 << 20)           /* Extended data size select */
+> +#define SSCR0_NCS   (1 << 21)           /* Network clock select */
+> +#define SSCR0_RIM    (1 << 22)           /* Receive FIFO overrrun int mask */
+> +#define SSCR0_TUM   (1 << 23)           /* Transmit FIFO underrun int mask */
+> +#define SSCR0_FRDC (0x07000000)     /* Frame rate divider control (mask) */
+> +#define SSCR0_SlotsPerFrm(x) (((x) - 1) << 24) /* Time slots per frame */
+> +#define SSCR0_ADC   (1 << 30)           /* Audio clock select */
+> +#define SSCR0_MOD  (1 << 31)           /* Mode (normal or network) */
+> +
+> +#define SSCR1_RIE    (1 << 0) /* Receive FIFO Interrupt Enable */
+> +#define SSCR1_TIE     (1 << 1) /* Transmit FIFO Interrupt Enable */
+> +#define SSCR1_LBM   (1 << 2) /* Loop-Back Mode */
+> +#define SSCR1_SPO   (1 << 3) /* SSPSCLK polarity setting */
+> +#define SSCR1_SPH   (1 << 4) /* Motorola SPI SSPSCLK phase setting */
+> +#define SSCR1_MWDS           (1 << 5) /* Microwire Transmit Data Size */
+> +#define SSCR1_TFT    (0x000003c0)     /* Transmit FIFO Threshold (mask) */
+> +#define SSCR1_TxTresh(x) (((x) - 1) << 6) /* level [1..16] */
+> +#define SSCR1_RFT    (0x00003c00)     /* Receive FIFO Threshold (mask) */
+> +#define SSCR1_RxTresh(x) (((x) - 1) << 10) /* level [1..16] */
+> +
+> +#define SSSR_TNF		(1 << 2)	/* Tx FIFO Not Full */
+> +#define SSSR_RNE		(1 << 3)	/* Rx FIFO Not Empty */
+> +#define SSSR_BSY		(1 << 4)	/* SSP Busy */
+> +#define SSSR_TFS		(1 << 5)	/* Tx FIFO Service Request */
+> +#define SSSR_RFS		(1 << 6)	/* Rx FIFO Service Request */
+> +#define SSSR_ROR		(1 << 7)	/* Rx FIFO Overrun */
+> +#define SSSR_TFL_MASK           (0x0F << 8)     /* Tx FIFO level field mask */
+> +
+> +#define SSCR0_TIM    (1 << 23)          /* Transmit FIFO Under Run Int Mask */
+> +#define SSCR0_RIM    (1 << 22)          /* Receive FIFO Over Run int Mask */
+> +#define SSCR0_NCS    (1 << 21)          /* Network Clock Select */
+> +#define SSCR0_EDSS   (1 << 20)          /* Extended Data Size Select */
+> +
+> +#define SSCR0_TISSP      (1 << 4)  /* TI Sync Serial Protocol */
+> +#define SSCR0_PSP        (3 << 4)  /* PSP - Programmable Serial Protocol */
+> +#define SSCR1_TTELP      (1 << 31) /* TXD Tristate Enable Last Phase */
+> +#define SSCR1_TTE        (1 << 30) /* TXD Tristate Enable */
+> +#define SSCR1_EBCEI      (1 << 29) /* Enable Bit Count Error interrupt */
+> +#define SSCR1_SCFR       (1 << 28) /* Slave Clock free Running */
+> +#define SSCR1_ECRA       (1 << 27) /* Enable Clock Request A */
+> +#define SSCR1_ECRB       (1 << 26) /* Enable Clock request B */
+> +#define SSCR1_SCLKDIR    (1 << 25) /* Serial Bit Rate Clock Direction */
+> +#define SSCR1_SFRMDIR    (1 << 24) /* Frame Direction */
+> +#define SSCR1_RWOT       (1 << 23) /* Receive Without Transmit */
+> +#define SSCR1_TRAIL      (1 << 22) /* Trailing Byte */
+> +#define SSCR1_TSRE       (1 << 21) /* Transmit Service Request Enable */
+> +#define SSCR1_RSRE       (1 << 20) /* Receive Service Request Enable */
+> +#define SSCR1_TINTE      (1 << 19) /* Receiver Time-out Interrupt enable */
+> +#define SSCR1_PINTE      (1 << 18) /* Trailing Byte Interupt Enable */
+> +#define SSCR1_STRF       (1 << 15) /* Select FIFO or EFWR */
+> +#define SSCR1_EFWR       (1 << 14) /* Enable FIFO Write/Read */
+> +#define SSCR1_IFS        (1 << 16) /* Invert Frame Signal */
+> +
+> +#define SSSR_BCE         (1 << 23) /* Bit Count Error */
+> +#define SSSR_CSS         (1 << 22) /* Clock Synchronisation Status */
+> +#define SSSR_TUR         (1 << 21) /* Transmit FIFO Under Run */
+> +#define SSSR_EOC         (1 << 20) /* End Of Chain */
+> +#define SSSR_TINT        (1 << 19) /* Receiver Time-out Interrupt */
+> +#define SSSR_PINT        (1 << 18) /* Peripheral Trailing Byte Interrupt */
+> +
+> +#define SSPSP_FSRT       (1 << 25)   /* Frame Sync Relative Timing */
+> +#define SSPSP_DMYSTOP(x) ((x) << 23) /* Dummy Stop */
+> +#define SSPSP_SFRMWDTH(x)((x) << 16) /* Serial Frame Width */
+> +#define SSPSP_SFRMDLY(x) ((x) << 9)  /* Serial Frame Delay */
+> +#define SSPSP_DMYSTRT(x) ((x) << 7)  /* Dummy Start */
+> +#define SSPSP_STRTDLY(x) ((x) << 4)  /* Start Delay */
+> +#define SSPSP_ETDS       (1 << 3)    /* End of Transfer data State */
+> +#define SSPSP_SFRMP      (1 << 2)    /* Serial Frame Polarity */
+> +#define SSPSP_SCMODE(x)  ((x) << 0)  /* Serial Bit Rate Clock Mode */
+> +
+> +/*
+> + * For testing SSCR1 changes that require SSP restart, basically
+> + * everything except the service and interrupt enables
 > + */
 > +
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/slab.h>
-> +#include <linux/clk.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/of.h>
-> +#include <linux/bitops.h>
-> +#include <linux/err.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/spi/spi_bitbang.h>
-> +#include <linux/pinctrl/pinmux.h>
-> +#include <linux/spi/spi-sirf.h>
+> +#define SSCR1_CHANGE_MASK (SSCR1_TTELP | SSCR1_TTE | SSCR1_SCFR \
+> +				| SSCR1_ECRA | SSCR1_ECRB | SSCR1_SCLKDIR \
+> +				| SSCR1_SFRMDIR | SSCR1_RWOT | SSCR1_TRAIL \
+> +				| SSCR1_IFS | SSCR1_STRF | SSCR1_EFWR \
+> +				| SSCR1_RFT | SSCR1_TFT | SSCR1_MWDS \
+> +				| SSCR1_SPH | SSCR1_SPO | SSCR1_LBM)
 > +
-> +#define DRIVER_NAME "sirfsoc_spi"
+> +struct callback_param {
+> +	void *drv_context;
+> +	u32 direction;
+> +};
 > +
-> +#define SIRFSOC_SPI_CTRL		0x0000
-> +#define SIRFSOC_SPI_CMD			0x0004
-> +#define SIRFSOC_SPI_TX_RX_EN		0x0008
-> +#define SIRFSOC_SPI_INT_EN		0x000C
-> +#define SIRFSOC_SPI_INT_STATUS		0x0010
-> +#define SIRFSOC_SPI_TX_DMA_IO_CTRL	0x0100
-> +#define SIRFSOC_SPI_TX_DMA_IO_LEN	0x0104
-> +#define SIRFSOC_SPI_TXFIFO_CTRL		0x0108
-> +#define SIRFSOC_SPI_TXFIFO_LEVEL_CHK	0x010C
-> +#define SIRFSOC_SPI_TXFIFO_OP		0x0110
-> +#define SIRFSOC_SPI_TXFIFO_STATUS	0x0114
-> +#define SIRFSOC_SPI_TXFIFO_DATA		0x0118
-> +#define SIRFSOC_SPI_RX_DMA_IO_CTRL	0x0120
-> +#define SIRFSOC_SPI_RX_DMA_IO_LEN	0x0124
-> +#define SIRFSOC_SPI_RXFIFO_CTRL		0x0128
-> +#define SIRFSOC_SPI_RXFIFO_LEVEL_CHK	0x012C
-> +#define SIRFSOC_SPI_RXFIFO_OP		0x0130
-> +#define SIRFSOC_SPI_RXFIFO_STATUS	0x0134
-> +#define SIRFSOC_SPI_RXFIFO_DATA		0x0138
-> +#define SIRFSOC_SPI_DUMMY_DELAY_CTL	0x0144
+> +struct ssp_driver_context {
+> +	/* Driver model hookup */
+> +	struct pci_dev *pdev;
 > +
-> +/* SPI CTRL register defines */
-> +#define SIRFSOC_SPI_SLV_MODE		BIT(16)
-> +#define SIRFSOC_SPI_CMD_MODE		BIT(17)
-> +#define SIRFSOC_SPI_CS_IO_OUT		BIT(18)
-> +#define SIRFSOC_SPI_CS_IO_MODE		BIT(19)
-> +#define SIRFSOC_SPI_CLK_IDLE_STAT	BIT(20)
-> +#define SIRFSOC_SPI_CS_IDLE_STAT	BIT(21)
-> +#define SIRFSOC_SPI_TRAN_MSB		BIT(22)
-> +#define SIRFSOC_SPI_DRV_POS_EDGE	BIT(23)
-> +#define SIRFSOC_SPI_CS_HOLD_TIME	BIT(24)
-> +#define SIRFSOC_SPI_CLK_SAMPLE_MODE	BIT(25)
-> +#define SIRFSOC_SPI_TRAN_DAT_FORMAT_8	(0 << 26)
-> +#define SIRFSOC_SPI_TRAN_DAT_FORMAT_12	(1 << 26)
-> +#define SIRFSOC_SPI_TRAN_DAT_FORMAT_16	(2 << 26)
-> +#define SIRFSOC_SPI_TRAN_DAT_FORMAT_32	(3 << 26)
-> +#define SIRFSOC_SPI_CMD_BYTE_NUM(x)		((x & 3) << 28)
-> +#define SIRFSOC_SPI_ENA_AUTO_CLR		BIT(30)
-> +#define SIRFSOC_SPI_MUL_DAT_MODE		BIT(31)
+> +	/* SPI framework hookup */
+> +	struct spi_master *master;
 > +
-> +/* Interrupt Enable */
-> +#define SIRFSOC_SPI_RX_DONE_INT_EN		BIT(0)
-> +#define SIRFSOC_SPI_TX_DONE_INT_EN		BIT(1)
-> +#define SIRFSOC_SPI_RX_OFLOW_INT_EN		BIT(2)
-> +#define SIRFSOC_SPI_TX_UFLOW_INT_EN		BIT(3)
-> +#define SIRFSOC_SPI_RX_IO_DMA_INT_EN	BIT(4)
-> +#define SIRFSOC_SPI_TX_IO_DMA_INT_EN	BIT(5)
-> +#define SIRFSOC_SPI_RXFIFO_FULL_INT_EN	BIT(6)
-> +#define SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN	BIT(7)
-> +#define SIRFSOC_SPI_RXFIFO_THD_INT_EN	BIT(8)
-> +#define SIRFSOC_SPI_TXFIFO_THD_INT_EN	BIT(9)
-> +#define SIRFSOC_SPI_FRM_END_INT_EN	BIT(10)
+> +	/* SSP register addresses */
+> +	unsigned long paddr;
+> +	void *ioaddr;
+> +	int irq;
 > +
-> +#define SIRFSOC_SPI_INT_MASK_ALL		0x1FFF
+> +	/* SSP masks*/
+> +	u32 cr1_sig;
+> +	u32 cr1;
+> +	u32 clear_sr;
+> +	u32 mask_sr;
 > +
-> +/* Interrupt status */
-> +#define SIRFSOC_SPI_RX_DONE		BIT(0)
-> +#define SIRFSOC_SPI_TX_DONE		BIT(1)
-> +#define SIRFSOC_SPI_RX_OFLOW		BIT(2)
-> +#define SIRFSOC_SPI_TX_UFLOW		BIT(3)
-> +#define SIRFSOC_SPI_RX_FIFO_FULL	BIT(6)
-> +#define SIRFSOC_SPI_TXFIFO_EMPTY	BIT(7)
-> +#define SIRFSOC_SPI_RXFIFO_THD_REACH	BIT(8)
-> +#define SIRFSOC_SPI_TXFIFO_THD_REACH	BIT(9)
-> +#define SIRFSOC_SPI_FRM_END		BIT(10)
+> +	struct tasklet_struct poll_transfer;
 > +
-> +/* TX RX enable */
-> +#define SIRFSOC_SPI_RX_EN		BIT(0)
-> +#define SIRFSOC_SPI_TX_EN		BIT(1)
-> +#define SIRFSOC_SPI_CMD_TX_EN		BIT(2)
+> +	spinlock_t lock;
 > +
-> +#define SIRFSOC_SPI_IO_MODE_SEL		BIT(0)
-> +#define SIRFSOC_SPI_RX_DMA_FLUSH	BIT(2)
-> +
-> +/* FIFO OPs */
-> +#define SIRFSOC_SPI_FIFO_RESET		BIT(0)
-> +#define SIRFSOC_SPI_FIFO_START		BIT(1)
-> +
-> +/* FIFO CTRL */
-> +#define SIRFSOC_SPI_FIFO_WIDTH_BYTE	(0 << 0)
-> +#define SIRFSOC_SPI_FIFO_WIDTH_WORD	(1 << 0)
-> +#define SIRFSOC_SPI_FIFO_WIDTH_DWORD	(2 << 0)
-> +
-> +/* FIFO Status */
-> +#define	SIRFSOC_SPI_FIFO_LEVEL_MASK	0xFF
-> +#define SIRFSOC_SPI_FIFO_FULL		BIT(8)
-> +#define SIRFSOC_SPI_FIFO_EMPTY		BIT(9)
-> +
-> +/* 256 bytes rx/tx FIFO */
-> +#define SIRFSOC_SPI_FIFO_SIZE		256
-> +#define SIRFSOC_SPI_DAT_FRM_LEN_MAX	(64 * 1024)
-> +
-> +#define SIRFSOC_SPI_FIFO_SC(x)		((x) & 0x3F)
-> +#define SIRFSOC_SPI_FIFO_LC(x)		(((x) & 0x3F) << 10)
-> +#define SIRFSOC_SPI_FIFO_HC(x)		(((x) & 0x3F) << 20)
-> +#define SIRFSOC_SPI_FIFO_THD(x)		(((x) & 0xFF) << 2)
-> +
-> +struct sirfsoc_spi {
-> +	struct spi_bitbang bitbang;
-> +	struct completion done;
-> +
-> +	u32 irq;
-
-irq is set once and never used outside the probe function.  Doesn't need
-to be here.
-
-> +	void __iomem *base;
-> +	u32 ctrl_freq;  /* SPI controller clock speed */
-> +	struct clk *clk;
-> +	int bus_num;
-
-bus_num is unused
-
-> +	struct pinmux *pmx;
-> +
-> +	/* rx & tx bufs from the spi_transfer */
-> +	const void *tx;
+> +	/* Current message transfer state info */
+> +	struct spi_message *cur_msg;
+> +	size_t len;
+> +	size_t len_dma_rx;
+> +	size_t len_dma_tx;
+> +	void *tx;
+> +	void *tx_end;
 > +	void *rx;
+> +	void *rx_end;
+> +	bool dma_initialized;
+> +	int dma_mapped;
+> +	dma_addr_t rx_dma;
+> +	dma_addr_t tx_dma;
+> +	u8 n_bytes;
+> +	int (*write)(struct ssp_driver_context *drv_context);
+> +	int (*read)(struct ssp_driver_context *drv_context);
 > +
-> +	/* place received word into rx buffer */
-> +	void (*rx_word) (struct sirfsoc_spi *);
-> +	/* get word from tx buffer for sending */
-> +	void (*tx_word) (struct sirfsoc_spi *);
+> +	struct intel_mid_dma_slave    dmas_tx;
+> +	struct intel_mid_dma_slave    dmas_rx;
+> +	struct dma_chan    *txchan;
+> +	struct dma_chan    *rxchan;
+> +	struct workqueue_struct *dma_wq;
+> +	struct work_struct complete_work;
 > +
-> +	/* number of words left to be tranmitted/received */
-> +	unsigned int left_tx_cnt;
-> +	unsigned int left_rx_cnt;
+> +	spinlock_t 		queue_lock;
+> +	struct list_head	queue;
+> +	struct workqueue_struct	*transfer_queue;
+> +	struct work_struct	transfer_work;
+> +	bool			running;
 > +
-> +	/* tasklet to push tx msg into FIFO */
-> +	struct tasklet_struct tasklet_tx;
+> +	int txdma_done;
+> +	int rxdma_done;
+> +	struct callback_param tx_param;
+> +	struct callback_param rx_param;
+> +	struct pci_dev *dmac1;
+> +
+> +	unsigned long quirks;
+> +	u32 rx_fifo_threshold;
 > +};
 > +
-> +static void spi_sirfsoc_rx_word_u8(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data;
-> +	u8 *rx = sspi->rx;
-> +
-> +	data = readl(sspi->base + SIRFSOC_SPI_RXFIFO_DATA);
-> +
-> +	if (rx) {
-> +		*rx++ = (u8) data;
-> +		sspi->rx = rx;
-> +	}
-> +
-> +	sspi->left_rx_cnt--;
-> +}
-> +
-> +static void spi_sirfsoc_tx_word_u8(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data = 0;
-> +	const u8 *tx = sspi->tx;
-> +
-> +	if (tx) {
-> +		data = *tx++;
-> +		sspi->tx = tx;
-> +	}
-> +
-> +	writel(data, sspi->base + SIRFSOC_SPI_TXFIFO_DATA);
-> +	sspi->left_tx_cnt--;
-> +}
-> +
-> +static void spi_sirfsoc_rx_word_u16(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data;
-> +	u16 *rx = sspi->rx;
-> +
-> +	data = readl(sspi->base + SIRFSOC_SPI_RXFIFO_DATA);
-> +
-> +	if (rx) {
-> +		*rx++ = (u16) data;
-> +		sspi->rx = rx;
-> +	}
-> +
-> +	sspi->left_rx_cnt--;
-> +}
-> +
-> +static void spi_sirfsoc_tx_word_u16(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data = 0;
-> +	const u16 *tx = sspi->tx;
-> +
-> +	if (tx) {
-> +		data = *tx++;
-> +		sspi->tx = tx;
-> +	}
-> +
-> +	writel(data, sspi->base + SIRFSOC_SPI_TXFIFO_DATA);
-> +	sspi->left_tx_cnt--;
-> +}
-> +
-> +static void spi_sirfsoc_rx_word_u32(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data;
-> +	u32 *rx = sspi->rx;
-> +
-> +	data = readl(sspi->base + SIRFSOC_SPI_RXFIFO_DATA);
-> +
-> +	if (rx) {
-> +		*rx++ = (u32) data;
-> +		sspi->rx = rx;
-> +	}
-> +
-> +	sspi->left_rx_cnt--;
-> +
-> +}
-> +
-> +static void spi_sirfsoc_tx_word_u32(struct sirfsoc_spi *sspi)
-> +{
-> +	u32 data = 0;
-> +	const u32 *tx = sspi->tx;
-> +
-> +	if (tx) {
-> +		data = *tx++;
-> +		sspi->tx = tx;
-> +	}
-> +
-> +	writel(data, sspi->base + SIRFSOC_SPI_TXFIFO_DATA);
-> +	sspi->left_tx_cnt--;
-> +}
-> +
-> +static void spi_sirfsoc_tasklet_tx(unsigned long arg)
-> +{
-> +	struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
-> +
-> +	/* Fill Tx FIFO while there are left words to be transmitted */
-> +	while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
-> +			SIRFSOC_SPI_FIFO_FULL)) &&
-> +			sspi->left_tx_cnt)
-> +		sspi->tx_word(sspi);
-
-Potential problem: if for any reason the device stalls and the FULL bit
-doesn't get cleared, then this function will be stuck in a tight loop.  This
-may not be an issue, but it should be considered.
-
-> +}
-> +
-> +static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
-> +{
-> +	struct sirfsoc_spi *sspi = dev_id;
-> +	u32 spi_stat = readl(sspi->base + SIRFSOC_SPI_INT_STATUS);
-> +
-> +	writel(spi_stat, sspi->base + SIRFSOC_SPI_INT_STATUS);
-> +
-> +	/* Error Conditions */
-> +	if (spi_stat & SIRFSOC_SPI_RX_OFLOW ||
-> +			spi_stat & SIRFSOC_SPI_TX_UFLOW) {
-> +		complete(&sspi->done);
-> +		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-> +	}
-> +
-> +	if (spi_stat & SIRFSOC_SPI_FRM_END) {
-> +		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
-> +				& SIRFSOC_SPI_FIFO_EMPTY)) &&
-> +				sspi->left_rx_cnt)
-> +			sspi->rx_word(sspi);
-> +
-> +		/* Received all words */
-> +		if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
-> +			complete(&sspi->done);
-> +			writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-> +		}
-> +	}
-> +
-> +	if (spi_stat & SIRFSOC_SPI_RXFIFO_THD_REACH ||
-> +		spi_stat & SIRFSOC_SPI_TXFIFO_THD_REACH ||
-> +		spi_stat & SIRFSOC_SPI_RX_FIFO_FULL ||
-> +		spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
-> +		tasklet_schedule(&sspi->tasklet_tx);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int spi_sirfsoc_transfer(struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +	struct sirfsoc_spi *sspi;
-> +	int timeout = t->len * 10;
-> +	sspi = spi_master_get_devdata(spi->master);
-> +
-> +	sspi->tx = t->tx_buf;
-> +	sspi->rx = t->rx_buf;
-> +	sspi->left_tx_cnt = sspi->left_rx_cnt = t->len;
-> +	INIT_COMPLETION(sspi->done);
-> +
-> +	writel(SIRFSOC_SPI_INT_MASK_ALL, sspi->base + SIRFSOC_SPI_INT_STATUS);
-> +
-> +	if (t->len == 1) {
-> +		writel(readl(sspi->base + SIRFSOC_SPI_CTRL) |
-> +			SIRFSOC_SPI_ENA_AUTO_CLR,
-> +			sspi->base + SIRFSOC_SPI_CTRL);
-> +		writel(0, sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
-> +		writel(0, sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
-> +	} else if ((t->len > 1) && (t->len < SIRFSOC_SPI_DAT_FRM_LEN_MAX)) {
-> +		writel(readl(sspi->base + SIRFSOC_SPI_CTRL) |
-> +				SIRFSOC_SPI_MUL_DAT_MODE |
-> +				SIRFSOC_SPI_ENA_AUTO_CLR,
-> +			sspi->base + SIRFSOC_SPI_CTRL);
-> +		writel(t->len - 1, sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
-> +		writel(t->len - 1, sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
-> +	} else {
-> +		writel(readl(sspi->base + SIRFSOC_SPI_CTRL),
-> +			sspi->base + SIRFSOC_SPI_CTRL);
-> +		writel(0, sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
-> +		writel(0, sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
-> +	}
-> +
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +
-> +	/* fill up the Tx FIFO */
-> +	while (!(readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) & SIRFSOC_SPI_FIFO_FULL)
-> +			&& (sspi->left_tx_cnt > 0))
-> +		sspi->tx_word(sspi);
-> +
-> +	writel(SIRFSOC_SPI_RX_OFLOW_INT_EN | SIRFSOC_SPI_TX_UFLOW_INT_EN |
-> +		SIRFSOC_SPI_RXFIFO_THD_INT_EN | SIRFSOC_SPI_TXFIFO_THD_INT_EN |
-> +		SIRFSOC_SPI_FRM_END_INT_EN | SIRFSOC_SPI_RXFIFO_FULL_INT_EN |
-> +		SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN, sspi->base + SIRFSOC_SPI_INT_EN);
-> +	writel(SIRFSOC_SPI_RX_EN | SIRFSOC_SPI_TX_EN, sspi->base + SIRFSOC_SPI_TX_RX_EN);
-> +
-> +	if (wait_for_completion_timeout(&sspi->done, timeout) == 0)
-> +		dev_err(&spi->dev, "transfer timeout\n");
-> +
-> +	/* TX, RX FIFO stop */
-> +	writel(0, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(0, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +	writel(0, sspi->base + SIRFSOC_SPI_TX_RX_EN);
-> +	writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
-> +
-> +	return t->len - sspi->left_rx_cnt;
-> +}
-> +
-> +static void spi_sirfsoc_chipselect(struct spi_device *spi, int value)
-> +{
-> +	struct sirfsoc_spi *sspi = spi_master_get_devdata(spi->master);
-> +	struct sirfsoc_spi_ctrldata *ctl_data = spi->controller_data;
-
-Where does controller_data come from?  It is not set in the driver, and it is
-*not* something that the spi_device driver or the board code is allowed to set.
-
-If the driver needs controller_data, then it needs to be added to each spi
-device by the spi controller driver when the slave device is registered.
-
-> +	u32 regval = readl(sspi->base + SIRFSOC_SPI_CTRL);
-> +
-> +	switch (value) {
-> +	case BITBANG_CS_ACTIVE:
-> +		if (ctl_data->cs_type == SIRFSOC_SPI_CS_HW_CTRL) {
-> +			/*
-> +			 * In hardware control mode, CS output is controlled
-> +			 * by the CS hardware logic
-> +			 */
-> +			regval &= ~SIRFSOC_SPI_CS_IO_OUT;
-> +			if (ctl_data->cs_hold_clk == SIRFSOC_SPI_CS_HOLD_2)
-> +				regval |= SIRFSOC_SPI_CS_HOLD_TIME;
-> +		} else if (ctl_data->cs_type == SIRFSOC_SPI_CS_RISC_IO) {
-> +			/*
-> +			 * In I/O mode, CS outputs the value of the
-> +			 * SIRFSOC_SPI_CS_IO_OUT bit
-> +			 */
-> +			regval |= SIRFSOC_SPI_CS_IO_OUT;
-> +			if (spi->mode & SPI_CS_HIGH)
-> +				regval |= SIRFSOC_SPI_CS_IO_OUT;
-> +		} else if (ctl_data->cs_type == SIRFSOC_SPI_CS_GPIO)
-> +			ctl_data->chip_select();
-> +		break;
-> +	case BITBANG_CS_INACTIVE:
-> +		if (ctl_data->cs_type == SIRFSOC_SPI_CS_RISC_IO) {
-> +			if (spi->mode & SPI_CS_HIGH)
-> +				regval &= ~SIRFSOC_SPI_CS_IO_OUT;
-> +			else
-> +				regval |= SIRFSOC_SPI_CS_IO_OUT;
-> +		} else if (ctl_data->cs_type == SIRFSOC_SPI_CS_GPIO)
-> +			ctl_data->chip_deselect();
-> +		break;
-> +	}
-> +	writel(regval, sspi->base + SIRFSOC_SPI_CTRL);
-> +}
-> +
-> +static int
-> +spi_sirfsoc_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
-> +{
-> +	struct sirfsoc_spi *sspi;
-> +	u8 bits_per_word = 0;
-> +	int hz = 0;
-> +	u32 regval;
-> +	u32 txfifo_ctrl, rxfifo_ctrl;
-> +	u32 fifo_size = SIRFSOC_SPI_FIFO_SIZE / 4;
-> +
-> +	sspi = spi_master_get_devdata(spi->master);
-> +
-> +	bits_per_word = t && t->bits_per_word ? t->bits_per_word :
-> +		spi->bits_per_word;
-> +	hz = t && t->speed_hz ? t->speed_hz : spi->max_speed_hz;
-> +
-> +	/* Enable IO mode for RX, TX */
-> +	writel(SIRFSOC_SPI_IO_MODE_SEL, sspi->base + SIRFSOC_SPI_TX_DMA_IO_CTRL);
-> +	writel(SIRFSOC_SPI_IO_MODE_SEL, sspi->base + SIRFSOC_SPI_RX_DMA_IO_CTRL);
-> +	regval = (sspi->ctrl_freq / (2 * hz)) - 1;
-> +
-> +	if (regval > 0xFFFF || regval < 0) {
-> +		dev_err(&spi->dev, "Speed %d not supported\n", hz);
-> +		return -EINVAL;
-> +	}
-> +
-> +	switch (bits_per_word) {
-> +	case 8:
-> +		regval |= SIRFSOC_SPI_TRAN_DAT_FORMAT_8;
-> +		sspi->rx_word = spi_sirfsoc_rx_word_u8;
-> +		sspi->tx_word = spi_sirfsoc_tx_word_u8;
-> +		txfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_BYTE;
-> +		rxfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_BYTE;
-> +		break;
-> +	case 12:
-> +	case 16:
-> +		regval |= (bits_per_word ==  12) ? SIRFSOC_SPI_TRAN_DAT_FORMAT_12 :
-> +			SIRFSOC_SPI_TRAN_DAT_FORMAT_16;
-> +		sspi->rx_word = spi_sirfsoc_rx_word_u16;
-> +		sspi->tx_word = spi_sirfsoc_tx_word_u16;
-> +		txfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_WORD;
-> +		rxfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_WORD;
-> +		break;
-> +	case 32:
-> +		regval |= SIRFSOC_SPI_TRAN_DAT_FORMAT_32;
-> +		sspi->rx_word = spi_sirfsoc_rx_word_u32;
-> +		sspi->tx_word = spi_sirfsoc_tx_word_u32;
-> +		txfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_DWORD;
-> +		rxfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
-> +					SIRFSOC_SPI_FIFO_WIDTH_DWORD;
-> +		break;
-> +	default:
-> +		dev_err(&spi->dev, "Bits per word %d not supported\n",
-> +		       bits_per_word);
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (!(spi->mode & SPI_CS_HIGH))
-> +		regval |= SIRFSOC_SPI_CS_IDLE_STAT;
-> +	if (!(spi->mode & SPI_LSB_FIRST))
-> +		regval |= SIRFSOC_SPI_TRAN_MSB;
-> +	if (spi->mode & SPI_CPOL)
-> +		regval |= SIRFSOC_SPI_CLK_IDLE_STAT;
-> +
-> +	/*
-> +	 * Data should be driven at least 1/2 cycle before the fetch edge to make
-> +	 * sure that data gets stable at the fetch edge.
-> +	 */
-> +	if (((spi->mode & SPI_CPOL) && (spi->mode & SPI_CPHA)) ||
-> +	    (!(spi->mode & SPI_CPOL) && !(spi->mode & SPI_CPHA)))
-> +		regval &= ~SIRFSOC_SPI_DRV_POS_EDGE;
-> +	else
-> +		regval |= SIRFSOC_SPI_DRV_POS_EDGE;
-> +
-> +	writel(SIRFSOC_SPI_FIFO_SC(fifo_size - 2) |
-> +			SIRFSOC_SPI_FIFO_LC(fifo_size / 2) |
-> +			SIRFSOC_SPI_FIFO_HC(2),
-> +		sspi->base + SIRFSOC_SPI_TXFIFO_LEVEL_CHK);
-> +	writel(SIRFSOC_SPI_FIFO_SC(2) |
-> +			SIRFSOC_SPI_FIFO_LC(fifo_size / 2) |
-> +			SIRFSOC_SPI_FIFO_HC(fifo_size - 2),
-> +		sspi->base + SIRFSOC_SPI_RXFIFO_LEVEL_CHK);
-> +	writel(txfifo_ctrl, sspi->base + SIRFSOC_SPI_TXFIFO_CTRL);
-> +	writel(rxfifo_ctrl, sspi->base + SIRFSOC_SPI_RXFIFO_CTRL);
-> +
-> +	writel(regval, sspi->base + SIRFSOC_SPI_CTRL);
-> +	return 0;
-> +}
-> +
-> +static int spi_sirfsoc_setup(struct spi_device *spi)
-> +{
-> +	struct spi_bitbang *bitbang;
-> +	struct sirfsoc_spi *sspi;
-> +
-> +	if (!spi->max_speed_hz)
-> +		return -EINVAL;
-> +
-> +	sspi = spi_master_get_devdata(spi->master);
-> +	bitbang = &sspi->bitbang;
-> +
-> +	if (!spi->bits_per_word)
-> +		spi->bits_per_word = 8;
-> +
-> +	return spi_sirfsoc_setup_transfer(spi, NULL);
-> +}
-> +
-> +static int __devinit spi_sirfsoc_probe(struct platform_device *pdev)
-> +{
-> +	struct sirfsoc_spi *sspi;
-> +	struct spi_master *master;
-> +	struct resource *mem_res;
-> +	int ret;
-> +
-> +	master = spi_alloc_master(&pdev->dev, sizeof(*sspi));
-> +	if (!master) {
-> +		dev_err(&pdev->dev, "Unable to allocate SPI master\n");
-> +		return -ENOMEM;
-> +	}
-> +	platform_set_drvdata(pdev, master);
-> +	sspi = spi_master_get_devdata(master);
-> +
-> +	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +	if (!mem_res) {
-> +		dev_err(&pdev->dev, "Unable to get IO resource\n");
-> +		ret = -ENOMEM;
-> +		goto free_master;
-> +	}
-> +
-> +	sspi->base = devm_request_and_ioremap(&pdev->dev, mem_res);
-> +	if (!sspi->base) {
-> +		dev_err(&pdev->dev, "IO remap failed!\n");
-> +		ret = -ENOMEM;
-> +		goto free_master;
-> +	}
-> +
-> +	sspi->irq = platform_get_irq(pdev, 0);
-> +	if (sspi->irq < 0) {
-> +		ret = -ENXIO;
-> +		goto free_master;
-> +	}
-> +	ret = devm_request_irq(&pdev->dev, sspi->irq, spi_sirfsoc_irq, 0,
-> +				DRIVER_NAME, sspi);
-> +	if (ret)
-> +		goto free_master;
-> +
-> +	sspi->bitbang.master = spi_master_get(master);
-> +	sspi->bitbang.chipselect = spi_sirfsoc_chipselect;
-> +	sspi->bitbang.setup_transfer = spi_sirfsoc_setup_transfer;
-> +	sspi->bitbang.txrx_bufs = spi_sirfsoc_transfer;
-> +	sspi->bitbang.master->setup = spi_sirfsoc_setup;
-> +	sspi->bitbang.master->num_chipselect = 0xFFFF;
-> +	master->bus_num = pdev->id;
-> +	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
-> +
-> +	sspi->pmx = pinmux_get(&pdev->dev, NULL);
-> +	ret = IS_ERR(sspi->pmx);
-> +	if (ret)
-> +		goto free_master;
-> +
-> +	pinmux_enable(sspi->pmx);
-> +
-> +	sspi->clk = clk_get(&pdev->dev, NULL);
-> +	if (IS_ERR(sspi->clk)) {
-> +		ret = -EINVAL;
-> +		goto free_pmx;
-> +	}
-> +	clk_enable(sspi->clk);
-> +	sspi->ctrl_freq = clk_get_rate(sspi->clk);
-> +
-> +	init_completion(&sspi->done);
-> +
-> +	tasklet_init(&sspi->tasklet_tx, spi_sirfsoc_tasklet_tx,
-> +		     (unsigned long)sspi);
-> +
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +	/* We are not using dummy delay between command and data */
-> +	writel(0, sspi->base + SIRFSOC_SPI_DUMMY_DELAY_CTL);
-> +
-> +	ret = spi_bitbang_start(&sspi->bitbang);
-> +	if (ret)
-> +		goto free_clk;
-> +
-> +	dev_info(&pdev->dev, "registerred, bus number = %d\n", master->bus_num);
-> +
-> +	return 0;
-> +
-> +free_clk:
-> +	clk_disable(sspi->clk);
-> +	clk_put(sspi->clk);
-> +free_pmx:
-> +	pinmux_disable(sspi->pmx);
-> +	pinmux_put(sspi->pmx);
-> +free_master:
-> +	spi_master_put(master);
-> +
-> +	return ret;
-> +}
-> +
-> +static int  __devexit spi_sirfsoc_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_master *master;
-> +	struct sirfsoc_spi *sspi;
-> +
-> +	master = platform_get_drvdata(pdev);
-> +	sspi = spi_master_get_devdata(master);
-> +
-> +	spi_bitbang_stop(&sspi->bitbang);
-> +	clk_disable(sspi->clk);
-> +	clk_put(sspi->clk);
-> +	pinmux_disable(sspi->pmx);
-> +	pinmux_put(sspi->pmx);
-> +	spi_master_put(master);
-> +	return 0;
-> +}
-> +
-> +#ifdef CONFIG_PM
-> +static int spi_sirfsoc_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct sirfsoc_spi *sspi = spi_master_get_devdata(master);
-> +
-> +	clk_disable(sspi->clk);
-> +	return 0;
-> +}
-> +
-> +static int spi_sirfsoc_resume(struct device *dev)
-> +{
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct sirfsoc_spi *sspi = spi_master_get_devdata(master);
-> +
-> +	clk_enable(sspi->clk);
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> +	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct dev_pm_ops spi_sirfsoc_pm_ops = {
-> +	.suspend = spi_sirfsoc_suspend,
-> +	.resume = spi_sirfsoc_resume,
+> +struct chip_data {
+> +	u32 cr0;
+> +	u32 cr1;
+> +	u32 timeout;
+> +	u8 n_bytes;
+> +	u8 dma_enabled;
+> +	u8 bits_per_word;
+> +	u32 speed_hz;
+> +	int (*write)(struct ssp_driver_context *drv_context);
+> +	int (*read)(struct ssp_driver_context *drv_context);
 > +};
-> +#endif
 > +
-> +static const struct of_device_id spi_sirfsoc_of_match[] = {
-> +	{ .compatible = "sirf,prima2-spi", },
-> +	{}
+> +
+> +enum intel_mid_ssp_spi_fifo_burst {
+> +	IMSS_FIFO_BURST_1,
+> +	IMSS_FIFO_BURST_4,
+> +	IMSS_FIFO_BURST_8
 > +};
-> +MODULE_DEVICE_TABLE(of, sirfsoc_spi_of_match);
 > +
-> +static struct platform_driver spi_sirfsoc_driver = {
-> +	.driver = {
-> +		.name = DRIVER_NAME,
-> +		.owner = THIS_MODULE,
-> +#ifdef CONFIG_PM
-> +		.pm     = &spi_sirfsoc_pm_ops,
-> +#endif
-> +		.of_match_table = spi_sirfsoc_of_match,
-> +	},
-> +	.probe = spi_sirfsoc_probe,
-> +	.remove = __devexit_p(spi_sirfsoc_remove),
-> +};
-> +module_platform_driver(spi_sirfsoc_driver);
-> +
-> +MODULE_DESCRIPTION("SiRF SoC SPI master driver");
-> +MODULE_AUTHOR("Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>, "
-> +		"Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>");
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/include/linux/spi/spi-sirf.h b/include/linux/spi/spi-sirf.h
-> new file mode 100644
-> index 0000000..0a985fe
-> --- /dev/null
-> +++ b/include/linux/spi/spi-sirf.h
-> @@ -0,0 +1,27 @@
-> +/*
-> + * include/linux/spi/spi_sirfsoc.h
-> + *
-> + * Copyright (c) 2011 Cambridge Silicon Radio Limited, a CSR plc group company.
-> + *
-> + * Licensed under GPLv2 or later.
+> +/* spi_board_info.controller_data for SPI slave devices,
+> + * copied to spi_device.platform_data ... mostly for dma tuning
 > + */
-> +
-> +#ifndef __SIRFSOC_SPI_H__
-> +#define __SIRFSOC_SPI_H__
-> +
-> +struct sirfsoc_spi_ctrldata {
-> +	int cs_type;
-> +	void (*chip_select) (void);
-> +	void (*chip_deselect) (void);
-> +	int cs_hold_clk;
+> +struct intel_mid_ssp_spi_chip {
+> +	enum intel_mid_ssp_spi_fifo_burst burst_size;
+> +	u32 timeout;
+> +	u8 enable_loopback;
+> +	u8 dma_enabled;
 > +};
 > +
-> +#define SIRFSOC_SPI_CS_HW_CTRL	1
-> +#define SIRFSOC_SPI_CS_RISC_IO	2
-> +#define SIRFSOC_SPI_CS_GPIO		3
-> +#define SIRFSOC_SPI_CS_SW_CTRL	4
 > +
-> +#define SIRFSOC_SPI_CS_HOLD_1	0
-> +#define SIRFSOC_SPI_CS_HOLD_2	1
+> +#define SPI_DIB_NAME_LEN  16
+> +#define SPI_DIB_SPEC_INFO_LEN      10
 > +
-> +#endif
-> -- 
-> 1.7.0.4
+> +struct spi_dib_header {
+> +	u32       signature;
+> +	u32       length;
+> +	u8         rev;
+> +	u8         checksum;
+> +	u8         dib[0];
+> +} __attribute__((packed));
+> +
+> +#endif /* SPI_INTEL_MID_SSP_H_*/
 > 
 
 ------------------------------------------------------------------------------

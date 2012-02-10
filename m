@@ -1,12 +1,11 @@
-From: "Mydestock.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: Toupies Beyblade et Rapidity en stock !
-Date: Fri, 10 Feb 2012 08:10:59 +0100 (CET)
-Message-ID: <3236305005.706918.1328857859233@p4enginex2.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 你好：税/票――代/开
+Date: Fri, 10 Feb 2012 18:19:42 +0800
+Message-ID: <E1RvnZy-0004aI-PA@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-                                 Pour consulter la version en ligne, cliquez ici
-mydestock.com
- Toupies Beyblade
- TOUPIES BEYBLADE ET RAPIDITYPrix d*fiant toute concurrence
-   Alors que toute l'Europe est en rupture de stock, Mydestock.com vous
- propose de vous livrer en 72H vos beyblades tant r*clam*es par vos enfants!
-En savoir plus
-                 Vous recevez cet e-mail de la part de Zabaloc.
-  Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails par
-                        l'intermediaire de ce raccourci.
-------------------------------------------------------------------------------
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+xPq6w6O6IAoKztK5q8u+09DLsKGqoarGsS+0+r+qo7sKCsjnOigxKcbVzajJzMa3z/rK28uwoaqh
+qsaxo7sKCiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XItcihowoKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogCgogICAguLrU8MjLo7rVxc/IyfooMCkx
+MzU2MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9uICYgQ2xvdWQg
+TWFuYWdlbWVudCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRpbmcgbWFrZXMg
+dXNlIG9mIHZpcnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxzbyBmb2N1c2Vz
+IG9uIGFsbG93aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2aWNlLgpodHRw
+Oi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
+bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
+L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

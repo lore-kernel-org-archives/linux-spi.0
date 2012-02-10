@@ -1,14 +1,18 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH RFC] spi/gpio: start with CS non-active
-Date: Thu,  9 Feb 2012 22:21:45 +0100
-Message-ID: <1328822505-7039-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH RESEND] intel_mid_ssp_spi: Moorestown and Medfield SPI
+	for SSP devices
+Date: Fri, 10 Feb 2012 09:18:22 +0800
+Message-ID: <20120210091822.6008453c@feng-i7>
+References: <20120208104059.23036.78003.stgit@bob.linux.org.uk>
+	<20120209153121.GC11249@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120209153121.GC11249-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,34 +23,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlIGNoaXAgc2VsZWN0IGxpbmUgd2FzIGNvbmZpZ3VyZWQgYXMgb3V0cHV0IHdpdGggdGhlIGlu
-aXRpYWwgdmFsdWUKYmVpbmcgYWN0aXZlIGV4cGxpY2l0bHkuIEl0IHdhcyBsYXRlciBkZWFzc2Vy
-dGVkIGR1cmluZwpzcGlfYml0YmFuZ19zZXR1cCgpIHdpdGhvdXQgYW55IGNsb2NrIGFjdGl2aXR5
-IGluIGJldHdlZW4uIFNvIGl0IG1ha2VzCm5vIHNlbnNlIHRvIGFjdGl2YXRlIHRoZSBkZXZpY2Ug
-YXQgYWxsIGFuZCB0aGUgY2hpcCBzZWxlY3QgbGluZSBjYW4KYmV0dGVyIHN0YXJ0IG5vbi1hY3Rp
-dmUuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBl
-bmd1dHJvbml4LmRlPgotLS0KSGVsbG8sCgpJJ20gbm90IHN1cmUgaWYgYW4gYWN0aXZlIGNoaXAg
-c2VsZWN0IGxpbmUgd2l0aG91dCBhbnkgY2xvY2sgYWN0aXZpdHkgY2FuCmNvbmZ1c2UgYSBkZXZp
-Y2UuIElmIHNvLCB0aGlzIHBhdGNoIG1pZ2h0IHF1YWxpZnkgYXMgZml4LiBCdXQgd2l0aCBteQps
-aW1pdGVkIGtub3dsZWRnZSBhYm91dCBzcGkgaXQncyBhbHNvIHBvc3NpYmxlIHRoYXQgSSBqdXN0
-IG1pc3Mgd2h5IHRoZQphY3RpdmUgY2hpcCBzZWxlY3QgaXMgaW1wb3J0YW50LiBGb3IgdGhlIGRl
-dmljZXMgSSBoYXZlIGl0IGRvZXNuJ3Qgc2VlbQp0byBtYWtlIGEgZGlmZmVyZW5jZS4KCkJlc3Qg
-cmVnYXJkcwpVd2UKCiBkcml2ZXJzL3NwaS9zcGktZ3Bpby5jIHwgICAgMyArKy0KIDEgZmlsZXMg
-Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvc3BpL3NwaS1ncGlvLmMgYi9kcml2ZXJzL3NwaS9zcGktZ3Bpby5jCmluZGV4IDAwOTRj
-NjQuLjBiNTZjZmMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL3NwaS1ncGlvLmMKKysrIGIvZHJp
-dmVycy9zcGkvc3BpLWdwaW8uYwpAQCAtMjM1LDcgKzIzNSw4IEBAIHN0YXRpYyBpbnQgc3BpX2dw
-aW9fc2V0dXAoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkKIAkJCXN0YXR1cyA9IGdwaW9fcmVxdWVz
-dChjcywgZGV2X25hbWUoJnNwaS0+ZGV2KSk7CiAJCQlpZiAoc3RhdHVzKQogCQkJCXJldHVybiBz
-dGF0dXM7Ci0JCQlzdGF0dXMgPSBncGlvX2RpcmVjdGlvbl9vdXRwdXQoY3MsIHNwaS0+bW9kZSAm
-IFNQSV9DU19ISUdIKTsKKwkJCXN0YXR1cyA9IGdwaW9fZGlyZWN0aW9uX291dHB1dChjcywKKwkJ
-CQkJIShzcGktPm1vZGUgJiBTUElfQ1NfSElHSCkpOwogCQl9CiAJfQogCWlmICghc3RhdHVzKQot
-LSAKMS43LjkKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVmlydHVhbGl6YXRpb24gJiBDbG91ZCBN
-YW5hZ2VtZW50IFVzaW5nIENhcGFjaXR5IFBsYW5uaW5nCkNsb3VkIGNvbXB1dGluZyBtYWtlcyB1
-c2Ugb2YgdmlydHVhbGl6YXRpb24gLSBidXQgY2xvdWQgY29tcHV0aW5nIAphbHNvIGZvY3VzZXMg
-b24gYWxsb3dpbmcgY29tcHV0aW5nIHRvIGJlIGRlbGl2ZXJlZCBhcyBhIHNlcnZpY2UuCmh0dHA6
-Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0LzUxNTIxMjIzLwpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hi Grant,
+
+On Thu, 9 Feb 2012 07:31:21 -0800
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+
+> On Wed, Feb 08, 2012 at 10:41:10AM +0000, Alan Cox wrote:
+> > From: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> > 
+> > This driver is a fusion of various internal drivers into a single
+> > driver for the SPI slave/master on the Intel Moorestown and Medfield
+> > SSP devices.
+> > 
+> > Signed-off-by: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> > [Queueing and runtime pm added]
+> > Signed-off-by: Kristen Carlson Accardi <kristen-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> > [Ported to the -next tree DMA engine]
+> > Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> > ---
+> > 
+> >  drivers/spi/Kconfig             |    8 
+> >  drivers/spi/Makefile            |    2 
+> >  drivers/spi/spi-intel-mid-ssp.c | 1426
+> > +++++++++++++++++++++++++++++++++++++++ drivers/spi/spi-intel-mid-ssp.h |
+> > 308 ++++++++
+> 
+> If this is merging several of the drivers, what is the plan for the existing
+> SPI_DESIGNWARE and SPI_TOPCLIFF_PCH drivers?  Or are those for different
+> devices?
+
+The DESIGNWARE controller has a different HW IP core, so the 2 drivers can't
+be merged. And for the TOPCLIFF one, seems it also use a different HW IP than
+this one, so I guess it can't be merged either.
+
+Thanks,
+Feng
+
+------------------------------------------------------------------------------
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing 
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

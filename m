@@ -1,18 +1,22 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH RESEND] intel_mid_ssp_spi: Moorestown and Medfield SPI
-	for SSP devices
-Date: Fri, 10 Feb 2012 09:18:22 +0800
-Message-ID: <20120210091822.6008453c@feng-i7>
-References: <20120208104059.23036.78003.stgit@bob.linux.org.uk>
-	<20120209153121.GC11249@ponder.secretlab.ca>
+From: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Subject: RE: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
+Date: Fri, 10 Feb 2012 05:06:15 +0000
+Message-ID: <5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5@SHAASIEXM01.ASIA.ROOT.PRI>
+References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
+	<20120209152340.GB11249@ponder.secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Alan Cox <alan-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <Workgroup.Linux-kQvG35nSl+M@public.gmane.org>,
+	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120209153121.GC11249-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+In-Reply-To: <20120209152340.GB11249-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,41 +28,64 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 Hi Grant,
-
-On Thu, 9 Feb 2012 07:31:21 -0800
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-
-> On Wed, Feb 08, 2012 at 10:41:10AM +0000, Alan Cox wrote:
-> > From: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> > 
-> > This driver is a fusion of various internal drivers into a single
-> > driver for the SPI slave/master on the Intel Moorestown and Medfield
-> > SSP devices.
-> > 
-> > Signed-off-by: Mathieu SOULARD <mathieux.soulard-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> > [Queueing and runtime pm added]
-> > Signed-off-by: Kristen Carlson Accardi <kristen-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> > [Ported to the -next tree DMA engine]
-> > Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> > ---
-> > 
-> >  drivers/spi/Kconfig             |    8 
-> >  drivers/spi/Makefile            |    2 
-> >  drivers/spi/spi-intel-mid-ssp.c | 1426
-> > +++++++++++++++++++++++++++++++++++++++ drivers/spi/spi-intel-mid-ssp.h |
-> > 308 ++++++++
+> > +
+> > +struct sirfsoc_spi {
+> > +	struct spi_bitbang bitbang;
+> > +	struct completion done;
+> > +
+> > +	u32 irq;
 > 
-> If this is merging several of the drivers, what is the plan for the existing
-> SPI_DESIGNWARE and SPI_TOPCLIFF_PCH drivers?  Or are those for different
-> devices?
+> irq is set once and never used outside the probe function.  Doesn't need
+> to be here.
 
-The DESIGNWARE controller has a different HW IP core, so the 2 drivers can't
-be merged. And for the TOPCLIFF one, seems it also use a different HW IP than
-this one, so I guess it can't be merged either.
+ok
+> 
+> > +	void __iomem *base;
+> > +	u32 ctrl_freq;  /* SPI controller clock speed */
+> > +	struct clk *clk;
+> > +	int bus_num;
+> 
+> bus_num is unused
 
-Thanks,
-Feng
+Ok.
 
+> > +
+> > +static void spi_sirfsoc_tasklet_tx(unsigned long arg)
+> > +{
+> > +	struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
+> > +
+> > +	/* Fill Tx FIFO while there are left words to be transmitted */
+> > +	while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
+> > +			SIRFSOC_SPI_FIFO_FULL)) &&
+> > +			sspi->left_tx_cnt)
+> > +		sspi->tx_word(sspi);
+> 
+> Potential problem: if for any reason the device stalls and the FULL bit
+> doesn't get cleared, then this function will be stuck in a tight loop.  This
+> may not be an issue, but it should be considered.
+
+Might timeout check.
+
+> > +
+> > +static void spi_sirfsoc_chipselect(struct spi_device *spi, int value)
+> > +{
+> > +	struct sirfsoc_spi *sspi = spi_master_get_devdata(spi->master);
+> > +	struct sirfsoc_spi_ctrldata *ctl_data = spi->controller_data;
+> 
+> Where does controller_data come from?  It is not set in the driver, and it is
+> *not* something that the spi_device driver or the board code is allowed to set.
+> 
+> If the driver needs controller_data, then it needs to be added to each spi
+> device by the spi controller driver when the slave device is registered.
+> 
+The controller_data is mainly for various kinds of chip selection. We might have a CS pin, a GPIO from prima2, or a GPIO from an extended MCU side by side with prima2.
+It seems like you think this driver should handle all different kinds of chip selection support and implement those callbacks in it? And every spi client use DT to describe the CS pin?
+
+-barry
+
+
+Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
+More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
 ------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
 Cloud computing makes use of virtualization - but cloud computing 

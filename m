@@ -1,12 +1,12 @@
-From: "Mr Alan Liu " <alan-yIbu05n628CIHLpNUPlkaAC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] HeSheng Mould Mr Alan Liu
-Date: Fri, 10 Feb 2012 13:18:49 +0800
-Message-ID: <E1Rvisj-0001sw-LY@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: alan-yIbu05n628CIHLpNUPlkaAC/G2K4zDHf@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Promo exclusive, -10% sur toutes les =?iso-8859-15?Q?t=EAtes?= de lit
+Date: Fri, 10 Feb 2012 07:53:49 +0100
+Message-ID: <1328856829.4f34befd5a0b8@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,43 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Sir or Madam ,
- 
-     This is Alan  liu  from He  Sheng Mould Co .,Ltd. We are factory in  China   
- 
-specializing  in injection moulding ,AL casting and  metal stamping ,also supply 
- 
-products.We are good at OEM and ODM based on our oversea  clients' instruction.
- 
-      Welcome to visit our website :www.hesmould.com to know our factory details.
- 
-If you have any inquiry of plastic or die casting and stamping parts in your
- 
-company now,you could send us the drawings or samples to us,we will  evaluate it
- 
-carefully and then send you our best offer.
- 
-Best Regards
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Alan Liu( sales engineer )
-----------------------------
-He Sheng Mould CO.,LTD
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0yNyZiPTYxODAmYz0yMzY0MzcmZD0yMD=
+EyLTAyLTEwIDA3OjQwOjAxJmU9MSZoPTYxNzkmZj02MTgwJmc9NjE4MA=3D=3D
 
-Tel: 0086 0755-29112320
- 
-Fax: 0086 0755-26607311
- 
-Mobile: 0086 134 1091 8804
- 
-MSN:Tomathliu-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
- 
-Skype:thomas_080808
- 
- 
- 
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0yNyZiPTYxODAmY=
+z0yMzY0MzcmZD0yMDEyLTAyLTEwIDA3OjQwOjAxJmU9MSZoPTYxNzkmZj02MTgwJmc9NjE4MA=
+=3D=3D
 
-------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------=
+---
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
+Cloud computing makes use of virtualization - but cloud computing =
+
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

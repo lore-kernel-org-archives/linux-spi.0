@@ -1,11 +1,12 @@
-From: 13560740732-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Fri, 10 Feb 2012 18:19:42 +0800
-Message-ID: <E1RvnZy-0004aI-PA@sfs-ml-2.v29.ch3.sourceforge.com>
+From: "CONSUM" <joannecrawfordfoundation-puGfsi27rH1aa/9Udqfwiw@public.gmane.org>
+Subject: [SPAM] Re: Joanne Crawford Orphanage For All
+Date: Fri, 10 Feb 2012 16:00:34 -0500
+Message-ID: <9633a83db503fbe9c7ea572510d08373@demarriotttrading.vipmailer.in>
+Reply-To: crawfordjoanne99-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,15 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAoKztK5q8u+09DLsKGqoarGsS+0+r+qo7sKCsjnOigxKcbVzajJzMa3z/rK28uwoaqh
-qsaxo7sKCiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XItcihowoKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCgogCgogICAguLrU8MjLo7rVxc/IyfooMCkx
-MzU2MDc0MDczMgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9uICYgQ2xvdWQg
-TWFuYWdlbWVudCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRpbmcgbWFrZXMg
-dXNlIG9mIHZpcnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxzbyBmb2N1c2Vz
-IG9uIGFsbG93aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2aWNlLgpodHRw
-Oi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Your email client cannot read this email.
+To view it online, please go here:
+http://demarriotttrading.vipmailer.in/display.php?M=344779&C=0601048a0c2ffcbac5f7012407f5995d&S=7&L=2&N=2
+
+
+To stop receiving these
+emails:http://demarriotttrading.vipmailer.in/unsubscribe.php?M=344779&C=0601048a0c2ffcbac5f7012407f5995d&L=2&N=7
+------------------------------------------------------------------------------
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing 
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

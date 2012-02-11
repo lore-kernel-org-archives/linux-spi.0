@@ -1,11 +1,12 @@
-From: =?GB2312?B?x+vXqtDox/PIy9Sx?= <jy-K4NWz3uICA8@public.gmane.org>
-Subject: [SPAM] spi-devel-general郎咸平-2012开局财经大解构
-Date: Sat, 11 Feb 2012 16:34:53 +0800
-Message-ID: <E1Rw8Q2-0004ma-9v@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Guy Degrenne <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Derniers_jours_=E0_-_60%_et_livraison_gratuite?=
+Date: Sat, 11 Feb 2012 10:18:00 +0100 (CET)
+Message-ID: <3236305005.710805.1328951880683@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,34 +18,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-wMnPzMa9vczK2r2rurG8+7XEyKvM7NHdvbItLTIwMTK/qr7Wssa+rbTzveK5uQoKyc+6oyAgICAz
-1MIxMMjVCgrC0srA1tDPyNaqz8i+9dXfyqSjoQq5+sTao7qhsMvEzfLS2r7IytChsbXEuvPSxdai
-MjAxMsTqvK/W0LGst6IKufq8yqO6obDFt9WuzqO7+qGi0sHAysqv083Oo7v6obHLq9bYtPK798Oz
-0tcKCgrX1DIwMDjE6tLUwLSjrLTzsr+31r6tvMO3otW51rvKx7qjytDy18Klo6y9qMDr1NrO97e9
-ufq80rK7v8mz1tD4tcTV/riu1qez9rrN0MLQy76tvMPM5bXExd3EraGjCjEyxOrV4sG91tbWp7PW
-0vLL2La8u+HP+8qno6y6o8rQ8tfCpb2ru+HGxsPwoaPI57n7xOPIz86qMjAwOMTqtcTH6b/20tG+
-rbrcu7WjrMTHw7TU2ry0vau1vcC0CrXEMjAxMsTqo6zPtbrDsLLIq7T4sMmho8rAvee/ycTcsru7
-4bvZw/CjrLWryOeyu7v9vKvTprbUxOO1xLLGuLu9q7vhy/XLrqGjCgqh9NbQufq9q734yOtN0M3P
-+7fRveG5uaOssvrGt8novMa1vM/yuMPI57rO06a21KO/Cgqh9MjOus7Su7j2ss7T68650fjW0Ln6
-obDNttfKw83K3qGxtcSy+tK1us3G89K1yse38ba8vau74b34yOuy+sTcuf3Ko7rNuuy6o7661fnW
-0KO/Cgqh9NPJ09q827jxsru2z8nP1cejrMqv0826zcqzxrezpMbawLS/tLa8vavD5sHZuanTpr30
-1cW1xL7Ww+ajrNPQyrLDtNH5tcTNttfKu/q74aO/Cgqh9Lmk0rW98Mr0xrfXytS0vLDG5Mn6svrJ
-zLL60rXK17WxxuSz5aOsuMPI57rO06a21KO/Cgqh9LDNzvehotOhtsi/ycTcs/bP1rv1sdK087f5
-seHWtaOsttTLrbvh1OyzybPlu/ejvwoKofTDwLn61f7Wzr2pvtbP3tbGwcvDwLn6ssbV/sCp1cWj
-rMPA1Kq74bfxyf3WtaO/Cgqh9NbQufq3v7XYsvrF3cStu+G38cbGwdGjrMrHt/G9tbXNtPPX2snM
-xre827jxo78KCqH0tcK5+rvht/G12tK7uPbG+tPDxbfUqqO/wu2/y7bUxbfUqrTzt/nJz9XHo78K
-CqH01tC5+rbUsMS/87L6tcTQ6MfztPO3+c/Cu6yjrLDE1Kq74dTi0c/W2MXXytujvwoKofTI1dSy
-1cfKxry0vavNo9a5o7+w0ceut8XI1bG+tcjT2rfFtb3L6da9u/rA76O/CgoKvM6x9s+vo7ozODAw
-1KqjuyAgufOx9s+vo7o0ODAw1KoKCtGn1LG21M/zo7q2rcrCs6Shotfco6i4saOpvq3A7aGi19y8
-4KGixvPStdbQuN+919b3udy8sMbz0rXTqs/61tC437LjudzA7cjLyr+howoK18nRr7Xnu7CjujAy
-MC04MDU2MDYzOCAgIDAyMC04NTkxNzk0NSAg0LvQob3jo7sKICAgICAgICAgIDA3NTUtNjEyODc1
-NTIgILPC0KG946OosrvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sF0dWl4aW4yMDEyQDEyNi5jb23N
-y9DFo6kKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpWaXJ0dWFsaXphdGlvbiAmIENsb3VkIE1hbmFn
-ZW1lbnQgVXNpbmcgQ2FwYWNpdHkgUGxhbm5pbmcKQ2xvdWQgY29tcHV0aW5nIG1ha2VzIHVzZSBv
-ZiB2aXJ0dWFsaXphdGlvbiAtIGJ1dCBjbG91ZCBjb21wdXRpbmcgCmFsc28gZm9jdXNlcyBvbiBh
-bGxvd2luZyBjb21wdXRpbmcgdG8gYmUgZGVsaXZlcmVkIGFzIGEgc2VydmljZS4KaHR0cDovL3d3
-dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZubC8xMTQvNTE1MjEyMjMvCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+                        3=E8me d=E9marque chez Guy Degrenne
+  Si ce message ne s'affiche pas correctement, visualisez la version en lig=
+ne.
+
+   Guy Degrenne
+   Vaisselle de table - couverts - verrerie - platerie - culinaire - soldes
+   [IMG]
+
+                                     EXCEPTIONNEL !
+   3*me d*marque                        jusqu'=E0                  [IMG]
+                                          -60%
+                                     de r=E9duction *
+
+   [IMG]
+
+                                  Mais aussi :
+                                  LA LIVRAISON
+   [IMG]                            GRATUITE              [IMG]
+                               pour toute commande
+                             en ligne de plus de 80=A4
+
+   J'en profite
+   Notre s*lection
+
+   [IMG]              [IMG]              [IMG]              [IMG]
+
+       Assiette              Verres               Mug                 Coffr=
+et
+       plate                 Troquet              Modulo              24
+       carr=E9e                                     Nature              Pi=
+=E8ces
+[IMG]  Modulo   [IMG] [IMG]  1,96=A4   [IMG] [IMG]  Lichen [IMG] [IMG]  Sol=
+stice [IMG]
+       Color                 4,90=A4                3,16=A4               s=
+wing
+       Safran                                     7,90=A4               dor=
+=E9
+       4,36=A4                                                          79,=
+60=A4
+       10,90=A4                                                         199=
+,00=A4
+
+   [IMG]              [IMG]              [IMG]              [IMG]
+
+   [IMG]  -60%  [IMG] [IMG]  -60%  [IMG] [IMG]  -60%  [IMG] [IMG] -60%  [IM=
+G]
+
+   D*couvrez les autres produits en soldes
+   Les services Guy Degrenne
+
+   [IMG]             [IMG]               [IMG]  [IMG]          Carte
+                                                               privil*ge
+   T=E9l=E9chargez notre Liste des points de E-shop Devenez fan de Vos poin=
+ts de
+       catalogue     vente Guy Degrenne          Guy Degrenne  fid=E9lit=E9=
+ aussi
+      interactif                                                  cumul=E9s
+                                                                pendant les
+                                                                   soldes
+                                                                > En savoir
+                                                                    plus
+                                                               [IMG]
+
+   Contact
+       Pour toute demande, n'h=E9sitez pas =E0 nous contacter ici
+   *Offre valable en France m=E9tropolitaine, Monaco et Belgique
+   dans les boutiques,franchises, grands magasins et d=E9taillants
+   participants (hors GD factory) et sur l?eshop
+   www.guydegrenne.fr/eshop. Offre non cumulable avec les autres
+   offres en cours. Taux de remise applicable par escompte de
+   caisse sur les produits Guy Degrenne signal=E9s en point de
+   vente. Valable jusqu'au 14/02/2012.
+   Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 197=
+8, vous
+   b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification e=
+t de
+   suppression aux donn=E9es vous concernant.
+
+   Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
+   par l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

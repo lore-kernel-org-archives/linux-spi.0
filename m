@@ -1,11 +1,11 @@
-From: "CONSUM" <joannecrawfordfoundation-puGfsi27rH1aa/9Udqfwiw@public.gmane.org>
-Subject: [SPAM] Re: Joanne Crawford Orphanage For All
-Date: Fri, 10 Feb 2012 16:00:34 -0500
-Message-ID: <9633a83db503fbe9c7ea572510d08373@demarriotttrading.vipmailer.in>
-Reply-To: crawfordjoanne99-/E1597aS9LTXPF5Rlphj1Q@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: La livraison =?iso-8859-15?Q?sold=E9e=2C?= -50% sur la livraison!
+Date: Sat, 11 Feb 2012 05:59:36 +0100
+Message-ID: <1328936376.4f35f5b864e6a@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,15 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://demarriotttrading.vipmailer.in/display.php?M=344779&C=0601048a0c2ffcbac5f7012407f5995d&S=7&L=2&N=2
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://mail.mc10.fr/mc10_m/YT0yNyZiPTYyMDAmYz0yMzY0MzcmZD0yMD=
+EyLTAyLTExIDA1OjMwOjAxJmU9MSZoPTYxOTkmZj02MjAwJmc9NjIwMA=3D=3D
+
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT0yNyZiPTYyMDAmY=
+z0yMzY0MzcmZD0yMDEyLTAyLTExIDA1OjMwOjAxJmU9MSZoPTYxOTkmZj02MjAwJmc9NjIwMA=
+=3D=3D
 
 
-To stop receiving these
-emails:http://demarriotttrading.vipmailer.in/unsubscribe.php?M=344779&C=0601048a0c2ffcbac5f7012407f5995d&L=2&N=7
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
+Cloud computing makes use of virtualization - but cloud computing =
+
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

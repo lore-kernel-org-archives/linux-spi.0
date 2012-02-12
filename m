@@ -1,15 +1,12 @@
-From: Le Club des =?iso-8859-15?Q?Cr=E9ateurs?= de
-	=?iso-8859-15?Q?Beaut=E9?= par GalerieDesMarques.fr
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Vente Flash Saint Valentin : tout =?iso-8859-15?Q?=E0?= -50 %* et
-	livraison offerte*
-Date: Sat, 11 Feb 2012 19:47:05 +0100
-Message-ID: <1328986025.4f36b7a9d424f@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Cdiscount - TopPrivileges <contact-bj29gWGnfKqr2UA2gzxMdXS5uNuOjpZe@public.gmane.org>
+Subject: Vente Flash, 24h seulement pour en profiter
+Date: Sun, 12 Feb 2012 06:27:36 +0100 (CET)
+Message-ID: <12160148893.1438023.1329024456333@p2enginex2.emv2.com>
+Reply-To: contact-6sMn+78pGNmNkL4izmWrTwC/G2K4zDHf@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,16 +18,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+      Pour =EAtre sur de bien visualiser ce message, acc=E9dez =E0 la versi=
+on en
+                                     ligne.
+    Vous recevez ce message suite =E0 votre inscription =E0 notre programme=
+ Top
+                                   privileges
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NjIzNiZjPTE5NjE2NDEmZD0yMDEy=
-LTAyLTExIDE4OjMwOjAxJmU9MSZoPTYyMzUmZj02MjM2Jmc9NjIzNg=3D=3D
+        24h pour profiter des ventes Flash!
+                                   C'est ICI
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NjIzNiZjPTE=
-5NjE2NDEmZD0yMDEyLTAyLTExIDE4OjMwOjAxJmU9MSZoPTYyMzUmZj02MjM2Jmc9NjIzNg=3D=
-=3D
+                                                    12/02/12
+    Cdiscount                     Offre du jour     Devenez fan de Cdiscount
+    N=B01 du e-commerce en France ! Vente Flash !     [IMG]
+    Vente
+    Flash*
+    Jusqu'=E0
+    minuit
+    Dans tous les magasins
+    Sur produits signal=E9s.
+
+   Cdiscount s engage sur...                                    Suivez-nous
+                                                                sur...
+   ...les prix ! ... le     ... le conseil   ... la s=E9curit=E9    ... Twi=
+tter
+                 choix !    avant vente !    des paiments !     ... Facebook
 
 
+   Les offres pr=E9sent=E9es dans cette newsletter sont valables dans la li=
+mite
+   des stocks disponibles.
+
+
+        Conform=E9ment =E0 la loi Informatique et libert=E9s, vous pouvez v=
+ous
+    d=E9sabonner =E0 tout moment du programme des bons plans de Top privile=
+ges.
+   Vous disposez =E9galement d'un droit d'acc=E8s et de rectification des d=
+onn=E9es
+                                vous concernant.
+    Si vous ne souhaitez plus recevoir de messages des partenaires de notre
+                             programme, cliquez-ici
 ---------------------------------------------------------------------------=
 ---
 Virtualization & Cloud Management Using Capacity Planning

@@ -1,22 +1,16 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Mon, 13 Feb 2012 11:32:15 +0800
-Message-ID: <CAGsJ_4x2aKpwkgUrM06Stjq-U2z+0Zo4uWM_22NLYfJhxnPDyw@mail.gmail.com>
-References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
-	<20120209152340.GB11249@ponder.secretlab.ca>
-	<5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5@SHAASIEXM01.ASIA.ROOT.PRI>
+From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Subject: [SPI] Fix section mismatch in spi-pl022.c
+Date: Mon, 13 Feb 2012 09:52:29 +0000
+Message-ID: <20120213095228.GC15338@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <Workgroup.Linux-kQvG35nSl+M@public.gmane.org>,
-	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5-W2enlP78h2wYZnBWG7VmBdnKn0HB1kRyVQQcQy+6Uvc@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,37 +21,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pj4gPiArc3RhdGljIHZvaWQgc3BpX3NpcmZzb2NfdGFza2xldF90eCh1bnNpZ25lZCBsb25nIGFy
-ZykKPj4gPiArewo+PiA+ICsgwqAgc3RydWN0IHNpcmZzb2Nfc3BpICpzc3BpID0gKHN0cnVjdCBz
-aXJmc29jX3NwaSAqKWFyZzsKPj4gPiArCj4+ID4gKyDCoCAvKiBGaWxsIFR4IEZJRk8gd2hpbGUg
-dGhlcmUgYXJlIGxlZnQgd29yZHMgdG8gYmUgdHJhbnNtaXR0ZWQgKi8KPj4gPiArIMKgIHdoaWxl
-ICghKChyZWFkbChzc3BpLT5iYXNlICsgU0lSRlNPQ19TUElfVFhGSUZPX1NUQVRVUykgJgo+PiA+
-ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgU0lSRlNPQ19TUElfRklGT19GVUxMKSkgJiYK
-Pj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNzcGktPmxlZnRfdHhfY250KQo+PiA+
-ICsgwqAgwqAgwqAgwqAgwqAgc3NwaS0+dHhfd29yZChzc3BpKTsKPj4KPj4gUG90ZW50aWFsIHBy
-b2JsZW06IGlmIGZvciBhbnkgcmVhc29uIHRoZSBkZXZpY2Ugc3RhbGxzIGFuZCB0aGUgRlVMTCBi
-aXQKPj4gZG9lc24ndCBnZXQgY2xlYXJlZCwgdGhlbiB0aGlzIGZ1bmN0aW9uIHdpbGwgYmUgc3R1
-Y2sgaW4gYSB0aWdodCBsb29wLiDCoFRoaXMKPj4gbWF5IG5vdCBiZSBhbiBpc3N1ZSwgYnV0IGl0
-IHNob3VsZCBiZSBjb25zaWRlcmVkLgo+Cj4gTWlnaHQgdGltZW91dCBjaGVjay4KCmFmdGVyIGNo
-ZWNraW5nIGFnYWluLCB0aGUgb3JpZ2luYWwgY29kZXMgYXJlIHJpZ2h0Lgp0aGlzIGZ1bmN0aW9u
-IHdpbGwgbm90IGJlIGluIGEgdGlnaHQgbG9vcCBhY3R1YWxseSBiZWNhdXNlIGl0IGRvZXNuJ3QK
-ZG8gYW55IGxvb3Agd2FpdGluZy4gaWYgU0lSRlNPQ19TUElfRklGT19GVUxMIGlzIG5vdCBjbGVh
-cmVkIGZvciBzb21lCmhhcmR3YXJlIHJlYXNvbiwgdGhpcyBsb29wIGRvZXNuJ3Qgd2FpdCB0aGUg
-RklGT19GVUxMIHRvIGJlIGNsZWFyZWQsCmJ1dCBqdXN0IGdvZXMgb3V0c2lkZSBkaXJlY3RseS4K
-T25seSB3aGVuIHRoZSBGSUZPIGlzIG5vdCBmdWxsLCBpdCBzZW5kcyBhIHdvcmQgYnkgc3NwaS0+
-dHhfd29yZChzc3BpKTsKaWYgRklGT19GVUxMIGRvZXNuJ3QgZ2V0IGNsZWFyZWQgZm9yIHNvbWUg
-cmVhc29ucywgZmluYWxseSwKd2FpdF9mb3JfY29tcGxldGlvbl90aW1lb3V0KCkgIHRpbWVvdXQg
-d2lsbCBoYXBwZW4gZm9yIHRoZSB3aG9sZSBzcGkKdHJhbnNmZXIuCgpvbiB0aGUgb3RoZXIgaGFu
-ZCwgaWYgU0lSRlNPQ19TUElfRklGT19GVUxMIGlzIGFsd2F5IG5vdCBzZXQsCnNzcGktPnR4X3dv
-cmQoc3NwaSkgd2lsbCBkZWNyZWFzZSBzc3BpLT5sZWZ0X3R4X2NudCBhbmQgZmlubmFsbHkgbWFr
-ZQp0aGUgbG9vcCBkZWFkLgoKLWJhcnJ5CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVHJ5IGJlZm9y
-ZSB5b3UgYnV5ID0gU2VlIG91ciBleHBlcnRzIGluIGFjdGlvbiEKVGhlIG1vc3QgY29tcHJlaGVu
-c2l2ZSBvbmxpbmUgbGVhcm5pbmcgbGlicmFyeSBmb3IgTWljcm9zb2Z0IGRldmVsb3BlcnMKaXMg
-anVzdCAkOTkuOTkhIFZpc3VhbCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCAtIHBsdXMgSFRNTDUs
-IENTUzMsIE1WQzMsCk1ldHJvIFN0eWxlIEFwcHMsIG1vcmUuIEZyZWUgZnV0dXJlIHJlbGVhc2Vz
-IHdoZW4geW91IHN1YnNjcmliZSBub3chCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbGVhcm5kZXZub3ct
-ZGV2MgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+From: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+
+WARNING: drivers/spi/built-in.o(.devinit.text+0xdb8): Section mismatch in reference from the function pl022_probe() to the function .init.text:pl022_dma_probe()
+The function __devinit pl022_probe() references
+a function __init pl022_dma_probe().
+If pl022_dma_probe is only used by pl022_probe then
+annotate pl022_dma_probe with a matching annotation.
+
+Signed-off-by: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 2f9cb43..f37ad22 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1083,7 +1083,7 @@ static int configure_dma(struct pl022 *pl022)
+ 	return -ENOMEM;
+ }
+ 
+-static int __init pl022_dma_probe(struct pl022 *pl022)
++static int __devinit pl022_dma_probe(struct pl022 *pl022)
+ {
+ 	dma_cap_mask_t mask;
+ 
+
+------------------------------------------------------------------------------
+Try before you buy = See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

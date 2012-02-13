@@ -1,13 +1,22 @@
-From: "Amoureux.com" <news-aRCsrEPsanzp/bQmFP7BarGZzIjr6fyc@public.gmane.org>
-Subject: =?iso-8859-15?Q?La_neige_c'est_moins_froid_=E0_deux?=
-Date: Sun, 12 Feb 2012 09:54:30 +0100 (CET)
-Message-ID: <3236305005.710694.1329036870943@p4enginex2.emv2.com>
-Reply-To: newsletters-7lNnFWq+ovLCXR85Y8Hu3Q@public.gmane.org
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
+Date: Mon, 13 Feb 2012 11:32:15 +0800
+Message-ID: <CAGsJ_4x2aKpwkgUrM06Stjq-U2z+0Zo4uWM_22NLYfJhxnPDyw@mail.gmail.com>
+References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
+	<20120209152340.GB11249@ponder.secretlab.ca>
+	<5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5@SHAASIEXM01.ASIA.ROOT.PRI>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <Workgroup.Linux-kQvG35nSl+M@public.gmane.org>,
+	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5-W2enlP78h2wYZnBWG7VmBdnKn0HB1kRyVQQcQy+6Uvc@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,36 +27,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    Si vous rencontrez des probl=E8mes pour afficher ce message, cliquez ici
-    La neige, c'est moins froid quand on est deux !
-    Amoureux.com, Rencontres 100% gratuites et S*rieuses
-    INSCRIPTION >
-
-        Des milliers d'annonces
-     nouvelles chaque jour pr=E8s de
-      chez vous, partout dans le
-        monde et tout cela sans
-    abonnement.
-    Amoureux.com est le site leader
-     de la rencontre gratuite sur
-           Internet (Source
-     Nielsen/NetRating ao*t 2007)
-       Les services de rencontre
-       d'Amoureux.com sont 100%
-          gratuits y compris
-    l'inscription au site.
-    Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 19=
-78,
-    vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modifica=
-tion
-    et de suppression aux donn=E9es vous concernant.
-
-    Vous avez la possibilit* de vous retirer de notre liste d'envoi de
-    mails par l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
----
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+Pj4gPiArc3RhdGljIHZvaWQgc3BpX3NpcmZzb2NfdGFza2xldF90eCh1bnNpZ25lZCBsb25nIGFy
+ZykKPj4gPiArewo+PiA+ICsgwqAgc3RydWN0IHNpcmZzb2Nfc3BpICpzc3BpID0gKHN0cnVjdCBz
+aXJmc29jX3NwaSAqKWFyZzsKPj4gPiArCj4+ID4gKyDCoCAvKiBGaWxsIFR4IEZJRk8gd2hpbGUg
+dGhlcmUgYXJlIGxlZnQgd29yZHMgdG8gYmUgdHJhbnNtaXR0ZWQgKi8KPj4gPiArIMKgIHdoaWxl
+ICghKChyZWFkbChzc3BpLT5iYXNlICsgU0lSRlNPQ19TUElfVFhGSUZPX1NUQVRVUykgJgo+PiA+
+ICsgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgU0lSRlNPQ19TUElfRklGT19GVUxMKSkgJiYK
+Pj4gPiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNzcGktPmxlZnRfdHhfY250KQo+PiA+
+ICsgwqAgwqAgwqAgwqAgwqAgc3NwaS0+dHhfd29yZChzc3BpKTsKPj4KPj4gUG90ZW50aWFsIHBy
+b2JsZW06IGlmIGZvciBhbnkgcmVhc29uIHRoZSBkZXZpY2Ugc3RhbGxzIGFuZCB0aGUgRlVMTCBi
+aXQKPj4gZG9lc24ndCBnZXQgY2xlYXJlZCwgdGhlbiB0aGlzIGZ1bmN0aW9uIHdpbGwgYmUgc3R1
+Y2sgaW4gYSB0aWdodCBsb29wLiDCoFRoaXMKPj4gbWF5IG5vdCBiZSBhbiBpc3N1ZSwgYnV0IGl0
+IHNob3VsZCBiZSBjb25zaWRlcmVkLgo+Cj4gTWlnaHQgdGltZW91dCBjaGVjay4KCmFmdGVyIGNo
+ZWNraW5nIGFnYWluLCB0aGUgb3JpZ2luYWwgY29kZXMgYXJlIHJpZ2h0Lgp0aGlzIGZ1bmN0aW9u
+IHdpbGwgbm90IGJlIGluIGEgdGlnaHQgbG9vcCBhY3R1YWxseSBiZWNhdXNlIGl0IGRvZXNuJ3QK
+ZG8gYW55IGxvb3Agd2FpdGluZy4gaWYgU0lSRlNPQ19TUElfRklGT19GVUxMIGlzIG5vdCBjbGVh
+cmVkIGZvciBzb21lCmhhcmR3YXJlIHJlYXNvbiwgdGhpcyBsb29wIGRvZXNuJ3Qgd2FpdCB0aGUg
+RklGT19GVUxMIHRvIGJlIGNsZWFyZWQsCmJ1dCBqdXN0IGdvZXMgb3V0c2lkZSBkaXJlY3RseS4K
+T25seSB3aGVuIHRoZSBGSUZPIGlzIG5vdCBmdWxsLCBpdCBzZW5kcyBhIHdvcmQgYnkgc3NwaS0+
+dHhfd29yZChzc3BpKTsKaWYgRklGT19GVUxMIGRvZXNuJ3QgZ2V0IGNsZWFyZWQgZm9yIHNvbWUg
+cmVhc29ucywgZmluYWxseSwKd2FpdF9mb3JfY29tcGxldGlvbl90aW1lb3V0KCkgIHRpbWVvdXQg
+d2lsbCBoYXBwZW4gZm9yIHRoZSB3aG9sZSBzcGkKdHJhbnNmZXIuCgpvbiB0aGUgb3RoZXIgaGFu
+ZCwgaWYgU0lSRlNPQ19TUElfRklGT19GVUxMIGlzIGFsd2F5IG5vdCBzZXQsCnNzcGktPnR4X3dv
+cmQoc3NwaSkgd2lsbCBkZWNyZWFzZSBzc3BpLT5sZWZ0X3R4X2NudCBhbmQgZmlubmFsbHkgbWFr
+ZQp0aGUgbG9vcCBkZWFkLgoKLWJhcnJ5CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVHJ5IGJlZm9y
+ZSB5b3UgYnV5ID0gU2VlIG91ciBleHBlcnRzIGluIGFjdGlvbiEKVGhlIG1vc3QgY29tcHJlaGVu
+c2l2ZSBvbmxpbmUgbGVhcm5pbmcgbGlicmFyeSBmb3IgTWljcm9zb2Z0IGRldmVsb3BlcnMKaXMg
+anVzdCAkOTkuOTkhIFZpc3VhbCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCAtIHBsdXMgSFRNTDUs
+IENTUzMsIE1WQzMsCk1ldHJvIFN0eWxlIEFwcHMsIG1vcmUuIEZyZWUgZnV0dXJlIHJlbGVhc2Vz
+IHdoZW4geW91IHN1YnNjcmliZSBub3chCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbGVhcm5kZXZub3ct
+ZGV2MgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

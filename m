@@ -1,23 +1,23 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v3] SPI: add CSR SiRFprimaII SPI controller driver
-Date: Mon, 13 Feb 2012 12:40:14 -0700
-Message-ID: <20120213194014.GG11077@ponder.secretlab.ca>
+Date: Tue, 14 Feb 2012 09:58:46 +0800
+Message-ID: <CAGsJ_4wLRzYQw8MZt1CpNY27ta7-CquLPVPxe0L5U0XL8bgeUA@mail.gmail.com>
 References: <1328717446-4526-1-git-send-email-21cnbao@gmail.com>
 	<20120209152340.GB11249@ponder.secretlab.ca>
 	<5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5@SHAASIEXM01.ASIA.ROOT.PRI>
+	<20120213194014.GG11077@ponder.secretlab.ca>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	DL-SHA-WorkGroupLinux <Workgroup.Linux-kQvG35nSl+M@public.gmane.org>,
-	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+	Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5EB3BFCD089AD643B9BB63439F5FD5E99CB93BC5-W2enlP78h2wYZnBWG7VmBdnKn0HB1kRyVQQcQy+6Uvc@public.gmane.org>
+In-Reply-To: <20120213194014.GG11077-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,78 +28,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 10, 2012 at 05:06:15AM +0000, Barry Song wrote:
-> Hi Grant,
-> > > +
-> > > +struct sirfsoc_spi {
-> > > +	struct spi_bitbang bitbang;
-> > > +	struct completion done;
-> > > +
-> > > +	u32 irq;
-> > 
-> > irq is set once and never used outside the probe function.  Doesn't need
-> > to be here.
-> 
-> ok
-> > 
-> > > +	void __iomem *base;
-> > > +	u32 ctrl_freq;  /* SPI controller clock speed */
-> > > +	struct clk *clk;
-> > > +	int bus_num;
-> > 
-> > bus_num is unused
-> 
-> Ok.
-> 
-> > > +
-> > > +static void spi_sirfsoc_tasklet_tx(unsigned long arg)
-> > > +{
-> > > +	struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
-> > > +
-> > > +	/* Fill Tx FIFO while there are left words to be transmitted */
-> > > +	while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
-> > > +			SIRFSOC_SPI_FIFO_FULL)) &&
-> > > +			sspi->left_tx_cnt)
-> > > +		sspi->tx_word(sspi);
-> > 
-> > Potential problem: if for any reason the device stalls and the FULL bit
-> > doesn't get cleared, then this function will be stuck in a tight loop.  This
-> > may not be an issue, but it should be considered.
-> 
-> Might timeout check.
-> 
-> > > +
-> > > +static void spi_sirfsoc_chipselect(struct spi_device *spi, int value)
-> > > +{
-> > > +	struct sirfsoc_spi *sspi = spi_master_get_devdata(spi->master);
-> > > +	struct sirfsoc_spi_ctrldata *ctl_data = spi->controller_data;
-> > 
-> > Where does controller_data come from?  It is not set in the driver, and it is
-> > *not* something that the spi_device driver or the board code is allowed to set.
-> > 
-> > If the driver needs controller_data, then it needs to be added to each spi
-> > device by the spi controller driver when the slave device is registered.
-> > 
-> The controller_data is mainly for various kinds of chip selection. We might have a CS pin, a GPIO from prima2, or a GPIO from an extended MCU side by side with prima2.
-> It seems like you think this driver should handle all different kinds of chip selection support and implement those callbacks in it? And every spi client use DT to describe the CS pin?
-
-What I am saying is that controller_data should not be prepopulated at
-spi_device registration time.  That pointer is 'owned' by the spi controller
-and if it is used, should be set by the spi_master.
-
-If the spi_master needs a controller_data pointer, then that data should
-either be passed to the spi_master via the spi_master's platform_data, or it
-should be decoded from the device tree.  In either case, it is the
-responsibility of the spi_master driver to set the value of controller_data
-for each of its spi_device children.
-
-Does that make sense?
-
-g.
-
-------------------------------------------------------------------------------
-Try before you buy = See our experts in action!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-dev2
+MjAxMi8yLzE0IEdyYW50IExpa2VseSA8Z3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYT46Cj4gT24g
+RnJpLCBGZWIgMTAsIDIwMTIgYXQgMDU6MDY6MTVBTSArMDAwMCwgQmFycnkgU29uZyB3cm90ZToK
+Pj4gSGkgR3JhbnQsCj4+ID4gPiArCj4+ID4gPiArc3RydWN0IHNpcmZzb2Nfc3BpIHsKPj4gPiA+
+ICsgc3RydWN0IHNwaV9iaXRiYW5nIGJpdGJhbmc7Cj4+ID4gPiArIHN0cnVjdCBjb21wbGV0aW9u
+IGRvbmU7Cj4+ID4gPiArCj4+ID4gPiArIHUzMiBpcnE7Cj4+ID4KPj4gPiBpcnEgaXMgc2V0IG9u
+Y2UgYW5kIG5ldmVyIHVzZWQgb3V0c2lkZSB0aGUgcHJvYmUgZnVuY3Rpb24uIMKgRG9lc24ndCBu
+ZWVkCj4+ID4gdG8gYmUgaGVyZS4KPj4KPj4gb2sKPj4gPgo+PiA+ID4gKyB2b2lkIF9faW9tZW0g
+KmJhc2U7Cj4+ID4gPiArIHUzMiBjdHJsX2ZyZXE7IMKgLyogU1BJIGNvbnRyb2xsZXIgY2xvY2sg
+c3BlZWQgKi8KPj4gPiA+ICsgc3RydWN0IGNsayAqY2xrOwo+PiA+ID4gKyBpbnQgYnVzX251bTsK
+Pj4gPgo+PiA+IGJ1c19udW0gaXMgdW51c2VkCj4+Cj4+IE9rLgo+Pgo+PiA+ID4gKwo+PiA+ID4g
+K3N0YXRpYyB2b2lkIHNwaV9zaXJmc29jX3Rhc2tsZXRfdHgodW5zaWduZWQgbG9uZyBhcmcpCj4+
+ID4gPiArewo+PiA+ID4gKyBzdHJ1Y3Qgc2lyZnNvY19zcGkgKnNzcGkgPSAoc3RydWN0IHNpcmZz
+b2Nfc3BpICopYXJnOwo+PiA+ID4gKwo+PiA+ID4gKyAvKiBGaWxsIFR4IEZJRk8gd2hpbGUgdGhl
+cmUgYXJlIGxlZnQgd29yZHMgdG8gYmUgdHJhbnNtaXR0ZWQgKi8KPj4gPiA+ICsgd2hpbGUgKCEo
+KHJlYWRsKHNzcGktPmJhc2UgKyBTSVJGU09DX1NQSV9UWEZJRk9fU1RBVFVTKSAmCj4+ID4gPiAr
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIFNJUkZTT0NfU1BJX0ZJRk9fRlVMTCkpICYmCj4+ID4g
+PiArIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIHNzcGktPmxlZnRfdHhfY250KQo+PiA+ID4gKyDC
+oCDCoCDCoCDCoCBzc3BpLT50eF93b3JkKHNzcGkpOwo+PiA+Cj4+ID4gUG90ZW50aWFsIHByb2Js
+ZW06IGlmIGZvciBhbnkgcmVhc29uIHRoZSBkZXZpY2Ugc3RhbGxzIGFuZCB0aGUgRlVMTCBiaXQK
+Pj4gPiBkb2Vzbid0IGdldCBjbGVhcmVkLCB0aGVuIHRoaXMgZnVuY3Rpb24gd2lsbCBiZSBzdHVj
+ayBpbiBhIHRpZ2h0IGxvb3AuIMKgVGhpcwo+PiA+IG1heSBub3QgYmUgYW4gaXNzdWUsIGJ1dCBp
+dCBzaG91bGQgYmUgY29uc2lkZXJlZC4KPj4KPj4gTWlnaHQgdGltZW91dCBjaGVjay4KPj4KPj4g
+PiA+ICsKPj4gPiA+ICtzdGF0aWMgdm9pZCBzcGlfc2lyZnNvY19jaGlwc2VsZWN0KHN0cnVjdCBz
+cGlfZGV2aWNlICpzcGksIGludCB2YWx1ZSkKPj4gPiA+ICt7Cj4+ID4gPiArIHN0cnVjdCBzaXJm
+c29jX3NwaSAqc3NwaSA9IHNwaV9tYXN0ZXJfZ2V0X2RldmRhdGEoc3BpLT5tYXN0ZXIpOwo+PiA+
+ID4gKyBzdHJ1Y3Qgc2lyZnNvY19zcGlfY3RybGRhdGEgKmN0bF9kYXRhID0gc3BpLT5jb250cm9s
+bGVyX2RhdGE7Cj4+ID4KPj4gPiBXaGVyZSBkb2VzIGNvbnRyb2xsZXJfZGF0YSBjb21lIGZyb20/
+IMKgSXQgaXMgbm90IHNldCBpbiB0aGUgZHJpdmVyLCBhbmQgaXQgaXMKPj4gPiAqbm90KiBzb21l
+dGhpbmcgdGhhdCB0aGUgc3BpX2RldmljZSBkcml2ZXIgb3IgdGhlIGJvYXJkIGNvZGUgaXMgYWxs
+b3dlZCB0byBzZXQuCj4+ID4KPj4gPiBJZiB0aGUgZHJpdmVyIG5lZWRzIGNvbnRyb2xsZXJfZGF0
+YSwgdGhlbiBpdCBuZWVkcyB0byBiZSBhZGRlZCB0byBlYWNoIHNwaQo+PiA+IGRldmljZSBieSB0
+aGUgc3BpIGNvbnRyb2xsZXIgZHJpdmVyIHdoZW4gdGhlIHNsYXZlIGRldmljZSBpcyByZWdpc3Rl
+cmVkLgo+PiA+Cj4+IFRoZSBjb250cm9sbGVyX2RhdGEgaXMgbWFpbmx5IGZvciB2YXJpb3VzIGtp
+bmRzIG9mIGNoaXAgc2VsZWN0aW9uLiBXZSBtaWdodCBoYXZlIGEgQ1MgcGluLCBhIEdQSU8gZnJv
+bSBwcmltYTIsIG9yIGEgR1BJTyBmcm9tIGFuIGV4dGVuZGVkIE1DVSBzaWRlIGJ5IHNpZGUgd2l0
+aCBwcmltYTIuCj4+IEl0IHNlZW1zIGxpa2UgeW91IHRoaW5rIHRoaXMgZHJpdmVyIHNob3VsZCBo
+YW5kbGUgYWxsIGRpZmZlcmVudCBraW5kcyBvZiBjaGlwIHNlbGVjdGlvbiBzdXBwb3J0IGFuZCBp
+bXBsZW1lbnQgdGhvc2UgY2FsbGJhY2tzIGluIGl0PyBBbmQgZXZlcnkgc3BpIGNsaWVudCB1c2Ug
+RFQgdG8gZGVzY3JpYmUgdGhlIENTIHBpbj8KPgo+IFdoYXQgSSBhbSBzYXlpbmcgaXMgdGhhdCBj
+b250cm9sbGVyX2RhdGEgc2hvdWxkIG5vdCBiZSBwcmVwb3B1bGF0ZWQgYXQKPiBzcGlfZGV2aWNl
+IHJlZ2lzdHJhdGlvbiB0aW1lLiDCoFRoYXQgcG9pbnRlciBpcyAnb3duZWQnIGJ5IHRoZSBzcGkg
+Y29udHJvbGxlcgo+IGFuZCBpZiBpdCBpcyB1c2VkLCBzaG91bGQgYmUgc2V0IGJ5IHRoZSBzcGlf
+bWFzdGVyLgoKIGkgdGhpbmsgeWVzLiBpbiBteSBjYXNlLCBhY3R1YWxseSBzcGkgY29udHJvbGxl
+ciBkcml2ZXIgb25seSB1c2VzCmNvbnRyb2xsZXIgZGF0YSB0byBkaWZmZXJlbnRpYXRlIHRocmVl
+IGtpbmRzIG9mIGNoaXAgc2VsZWN0OgoxLiBvbmUgb25seSBIVyBwaW4gaW4gc3BpIGNvbnRyb2xs
+ZXIKMi4gZ3BpbyBmcm9tIHByaW1hMgozLiBncGlvIGZyb20gYW5vdGhlciBNQ1UgY29ubmVjdGVk
+IHdpdGggcHJpbWEyCgpzbyBubyBtYXR0ZXIgd2hhdCB0aGUgY2hpcCBzZWxlY3Rpb25zIGNvbWUg
+ZnJvbSwgdGhleSBzaG91bGQgYmVsb3dzIHRvCnNwaSBjb250cm9sbGVyIGRyaXZlci4gMiBhbmQg
+MyBhcmUgYWN0dWFsbHkgc2FtZSBiZWNhdXNlIGFjdHVhbGx5IHdlCm5lZWQgYSBncGlvIGRyaXZl
+ciBmb3IgMyBhcyB3ZWxsLiBncGlvIGZyb20gTUNVIHNob3VsZCBhbHNvIGJlIHVzZWQKYmFzZWQg
+b24gZ2VuZXJpYyBMaW51eCBBUElzLgpUaGUgb25seSBwcm9ibGVtIGlzIGhvdyB0byBkaWZmZXJl
+bnRpYXRlIDEgYW5kIDIvMywgbm93IGluIG15IHBhdGNoCnY0LCBzcGkgY29udHJvbGxlciBkYXRh
+IGlzIGRlbGV0ZWQsIGlmIGdwaW8gaXMgc2V0IHRvIDAgaW4gQ1MgYXJyYXkgb2YKRFQsIGkgdGhp
+bmsgaXQgYXMgYSBDUyBwaW4gZnJvbSBzcGkgY29udHJvbGxlciwgb3RoZXJ3aXNlIGl0IGlzIGdw
+aW8uCmRvIHlvdSBoYXZlIGFueSBiZXR0ZXIgaWRlYSBhYm91dCBpdD8KCj4KPiBJZiB0aGUgc3Bp
+X21hc3RlciBuZWVkcyBhIGNvbnRyb2xsZXJfZGF0YSBwb2ludGVyLCB0aGVuIHRoYXQgZGF0YSBz
+aG91bGQKPiBlaXRoZXIgYmUgcGFzc2VkIHRvIHRoZSBzcGlfbWFzdGVyIHZpYSB0aGUgc3BpX21h
+c3RlcidzIHBsYXRmb3JtX2RhdGEsIG9yIGl0Cj4gc2hvdWxkIGJlIGRlY29kZWQgZnJvbSB0aGUg
+ZGV2aWNlIHRyZWUuIMKgSW4gZWl0aGVyIGNhc2UsIGl0IGlzIHRoZQo+IHJlc3BvbnNpYmlsaXR5
+IG9mIHRoZSBzcGlfbWFzdGVyIGRyaXZlciB0byBzZXQgdGhlIHZhbHVlIG9mIGNvbnRyb2xsZXJf
+ZGF0YQo+IGZvciBlYWNoIG9mIGl0cyBzcGlfZGV2aWNlIGNoaWxkcmVuLgo+Cj4gRG9lcyB0aGF0
+IG1ha2Ugc2Vuc2U/Cj4KPiBnLgoKLWJhcnJ5CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KS2VlcCBZ
+b3VyIERldmVsb3BlciBTa2lsbHMgQ3VycmVudCB3aXRoIExlYXJuRGV2Tm93IQpUaGUgbW9zdCBj
+b21wcmVoZW5zaXZlIG9ubGluZSBsZWFybmluZyBsaWJyYXJ5IGZvciBNaWNyb3NvZnQgZGV2ZWxv
+cGVycwppcyBqdXN0ICQ5OS45OSEgVmlzdWFsIFN0dWRpbywgU2hhcmVQb2ludCwgU1FMIC0gcGx1
+cyBIVE1MNSwgQ1NTMywgTVZDMywKTWV0cm8gU3R5bGUgQXBwcywgbW9yZS4gRnJlZSBmdXR1cmUg
+cmVsZWFzZXMgd2hlbiB5b3Ugc3Vic2NyaWJlIG5vdyEKaHR0cDovL3Auc2YubmV0L3NmdS9sZWFy
+bmRldm5vdy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

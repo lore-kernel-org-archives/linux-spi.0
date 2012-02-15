@@ -1,11 +1,11 @@
-From: Corine de Farme par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Coffrets cadeaux parfum Disney =?iso-8859-15?Q?=E0?= -30%
-Date: Thu, 16 Feb 2012 05:06:06 +0100
-Message-ID: <1329365166.4f3c80ae7273e@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "dan" <ophir-hSpKs+mlTg6DDmSrUyEkBM0W7lVtrG30@public.gmane.org>
+Subject: Conference
+Date: Wed, 15 Feb 2012 23:51:05 +0200
+Message-ID: <14e0d8eb4235b015fbb4401f0360f1e1@brainconfernc.org>
+Reply-To: ophir-hSpKs+mlTg6DDmSrUyEkBM0W7lVtrG30@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTYzMDYmYz0xMDE5MjkzJmQ9MjAx=
-Mi0wMi0xNiAwNDo0MDowMSZlPTEmaD02MzA1JmY9NjMwNiZnPTYzMDY=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTYzMDYmYz0=
-xMDE5MjkzJmQ9MjAxMi0wMi0xNiAwNDo0MDowMSZlPTEmaD02MzA1JmY9NjMwNiZnPTYzMDY=3D
-
-
----------------------------------------------------------------------------=
----
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+UGh5c2ljaWFucywgVGhlcmFwaXN0cyBhbmQgTWVkaWNhbCBQcm9mZXNzaW9uYWxzIC0KCldlIGlu
+dml0ZSB5b3UgdG9qb2luIHVzIGluIHRoZSBJbnRlcm5hdGlvbmFsIENvbmZlcmVuY2Ugb24gSW50
+ZWdyYXRpdmUKTWVkaWNpbmUuCgoKVGhlIGNvbmZlcmVuY2Ugd2lsbCB0YWtlIHBsYWNlIGluIEpl
+cnVzYWxlbSBvbiBNYXkgMTMtMTUsIDIwMTIKCkFuZCB3aWxsIGZvY3VzIG9uIGludGVncmF0aW5n
+IGNvbnZlbnRpb25hbCBhbmQgYWx0ZXJuYXRpdmUgbWVkaWNpbmUgaW4gYWxsCmZpZWxkcy4KCgpG
+b3IgZnVydGhlciBpbmZvcm1hdGlvbiBlbnRlciB0aGUgY29uZmVyZW5jZSB3ZWJzaXRlIGF0OgoK
+d3d3Lm1lZGljb252ZW50aW9uLmNvbQoKUG91ciBkZXMgSW5mb3JtYXRpb25zIGVuIEZyYW7Dp2Fp
+cyBDbGlxdWV6IEljaQpGw7xyIEluZm9ybWF0aW9uZW4gaW4gRGV1dHNjaGVyIFNwcmFjaGUgSGll
+ciBLbGlja2VuCgogVW5zdWJzY3JpYmUgbWUgZnJvbSB0aGlzIGxpc3QKQ2xpY2sgdGhpcyBsaW5r
+IHRvIHVuc3Vic2NyaWJlOgpodHRwOi8vYnJhaW5jb25mZXJuYy5vcmcvYXBwcy91bnN1YnNjcmli
+ZS5waHA/TT01MzIxMjAmQz00MmJlNjg1YjRlYjRmODYyY2IzZWM3Y2Y2NjdlY2E3YSZMPTM1Jk49
+NjQKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9uICYgQ2xvdWQgTWFuYWdlbWVu
+dCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRpbmcgbWFrZXMgdXNlIG9mIHZp
+cnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxzbyBmb2N1c2VzIG9uIGFsbG93
+aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2aWNlLgpodHRwOi8vd3d3LmFj
+Y2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
+CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
+dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

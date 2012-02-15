@@ -1,13 +1,14 @@
-From: "Chevignon.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Prix_Ronds_pour_la_Fin_de_Collection_:_la_4=E8m?=
-	=?iso-8859-15?Q?e_D=E9marque_d=E9marre_en_Boutique_et_sur_l'E-shop?=
-Date: Wed, 15 Feb 2012 02:53:15 +0100 (CET)
-Message-ID: <3236305005.720487.1329270795653@p4enginex1.emv2.com>
-Reply-To: newsletters-z2kSNmc3sHCaMJb+Lgu22Q@public.gmane.org
+From: "Dealnco (Ventes exclusives)"
+	<dealnco-ventes-exclusives-112153-ukBTKbWEZbGZuzBka8ofvg@public.gmane.org>
+Subject: [SPAM] Vente IPhones 4S de -40 à -90 pourcent
+Date: Wed, 15 Feb 2012 08:56:34 +0100
+Message-ID: <121143e98767580e088390515818cbf4@localhost.localdomain>
+Reply-To: "Dealnco \(Ventes exclusives\)" <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,34 +20,11 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vous recevez cet email de la part de CHEVIGNON.COM
-Si vous ne pouvez pas visualiser ce message, consulter notre version en lig=
-ne.
-[IMG]
-    Cuirs       Doudounes   Manteaux  Pulls  Chemises   Pantalons    Access=
-oires       Femme
-[IMG]
-[IMG]
-                 OFFRE VALABLE SUR CHEVIGNON.COM ET EN BOUTIQUE. HORS DESTO=
-CKAGE
-           PAIEMENT                SATISFAIT           SUIVI DE COMMANDE RE=
-JOIGNEZ-NOUS
-CHEVIGNON SECURISE    CHEVIGNON   OU         CHEVIGNON EN LIGNE          SU=
-R            CHEVIGNON
-                                  REMBOURSE
+Si vous desirez visualiser ce mail au format html, recopiez l'adresse suivante dans votre navigateur: http://www.vmdisu.info/view.html?id=112153&ref=h4e6bf6589fb4
 
-Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
-vous b=E9n=E9ficiez d'un droit
-d'acc=E8s, de rectification, de modification et de suppression aux donn=E9e=
-s vous concernant.
 
-Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mails =
-par l'intermediaire de
-ce raccourci.
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
+Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

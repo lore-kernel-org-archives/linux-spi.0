@@ -1,17 +1,13 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: create a message queueing infrastructure
-Date: Wed, 15 Feb 2012 23:44:14 +0100
-Message-ID: <CACRpkdaPXE_-2jTHquwKTztyOCzwAwppRjtAF+XDCdD+TBms_Q@mail.gmail.com>
-References: <1328277836-4598-1-git-send-email-linus.walleij@stericsson.com>
+From: Be-Outdoor par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Tous dehors pour les soldes
+Date: Thu, 16 Feb 2012 00:37:21 +0100
+Message-ID: <1329349041.4f3c41b1c52ae@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1328277836-4598-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,24 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 3, 2012 at 3:03 PM, Linus Walleij
-<linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
-> This rips the message queue in the PL022 driver out and pushes
-> it into (optional) common infrastructure. Drivers that want to
-> use the message pumping thread will need to define the new
-> per-messags transfer methods and leave the deprecated transfer()
-> method as NULL.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTYyNzImYz0xMDE5MjkzJmQ9MjAx=
+Mi0wMi0xNiAwMDozMDowMSZlPTEmaD02MjcxJmY9NjI3MiZnPTYyNzI=3D
 
-Grant, are you happy with this patch?
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTYyNzImYz0=
+xMDE5MjkzJmQ9MjAxMi0wMi0xNiAwMDozMDowMSZlPTEmaD02MjcxJmY9NjI3MiZnPTYyNzI=3D
 
-Yours,
-Linus Walleij
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
+Cloud computing makes use of virtualization - but cloud computing =
+
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

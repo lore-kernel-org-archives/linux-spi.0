@@ -1,13 +1,13 @@
-From: Danny Kukawka <danny.kukawka-2YacvwyR+KOzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH v2] spi-topcliff-pch: fix -Wuninitialized warning
-Date: Tue, 14 Feb 2012 15:35:03 +0100
-Message-ID: <1329230103-26465-1-git-send-email-danny.kukawka@bisect.de>
+From: "Chevignon.com" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?Prix_Ronds_pour_la_Fin_de_Collection_:_la_4=E8m?=
+	=?iso-8859-15?Q?e_D=E9marque_d=E9marre_en_Boutique_et_sur_l'E-shop?=
+Date: Wed, 15 Feb 2012 02:53:15 +0100 (CET)
+Message-ID: <3236305005.720487.1329270795653@p4enginex1.emv2.com>
+Reply-To: newsletters-z2kSNmc3sHCaMJb+Lgu22Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Danny Kukawka <dkukawka-l3A5Bk7waGM@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,52 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Rml4IGZvcjoKZHJpdmVycy9zcGkvc3BpLXRvcGNsaWZmLXBjaC5jOiBJbiBmdW5jdGlvbiDigJhw
-Y2hfc3BpX2hhbmRsZXJfc3Vi4oCZOgpkcml2ZXJzL3NwaS9zcGktdG9wY2xpZmYtcGNoLmM6MzI1
-OjE3OiB3YXJuaW5nOiDigJhicHdfbGVu4oCZIG1heSBiZQogIHVzZWQgdW5pbml0aWFsaXplZCBp
-biB0aGlzIGZ1bmN0aW9uIFstV3VuaW5pdGlhbGl6ZWRdCmRyaXZlcnMvc3BpL3NwaS10b3BjbGlm
-Zi1wY2guYzozMjU6NDI6IHdhcm5pbmc6IOKAmHJ4X2luZGV44oCZIG1heSBiZQogIHVzZWQgdW5p
-bml0aWFsaXplZCBpbiB0aGlzIGZ1bmN0aW9uIFstV3VuaW5pdGlhbGl6ZWRdCmRyaXZlcnMvc3Bp
-L3NwaS10b3BjbGlmZi1wY2guYzozMjU6NDI6IHdhcm5pbmc6IOKAmHR4X2luZGV44oCZIG1heSBi
-ZQogIHVzZWQgdW5pbml0aWFsaXplZCBpbiB0aGlzIGZ1bmN0aW9uIFstV3VuaW5pdGlhbGl6ZWRd
-CgpNb3ZlIHVzYWdlIG9mIHR4X2luZGV4LCByeF9pbmRleCBhbmQgYnB3X2xlbiBpbnRvIHRoZSBz
-YW1lCmJsb2NrIGFzIHdoZXJlIHRoZXkgYXJlIHNldCB0byBwcmV2ZW50IHVuaW5pdGlhbGl6ZWQg
-dXNhZ2UuCgp2MjogaW5zdGVhZCBvZiBpbml0IHZhcmlhYmxlcyB3aXRoIDAgbW92ZSB0aGUgd2hv
-bGUgYmxvY2sKClNpZ25lZC1vZmYtYnk6IERhbm55IEt1a2F3a2EgPGRhbm55Lmt1a2F3a2FAYmlz
-ZWN0LmRlPgotLS0KIGRyaXZlcnMvc3BpL3NwaS10b3BjbGlmZi1wY2guYyB8ICAgMzMgKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlcyBjaGFuZ2VkLCAxNyBpbnNlcnRpb25z
-KCspLCAxNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktdG9wY2xp
-ZmYtcGNoLmMgYi9kcml2ZXJzL3NwaS9zcGktdG9wY2xpZmYtcGNoLmMKaW5kZXggMTAxODJlYi4u
-MTEwNzQ2OSAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvc3BpLXRvcGNsaWZmLXBjaC5jCisrKyBi
-L2RyaXZlcnMvc3BpL3NwaS10b3BjbGlmZi1wY2guYwpAQCAtMzE4LDIyICszMTgsMjMgQEAgc3Rh
-dGljIHZvaWQgcGNoX3NwaV9oYW5kbGVyX3N1YihzdHJ1Y3QgcGNoX3NwaV9kYXRhICpkYXRhLCB1
-MzIgcmVnX3Nwc3JfdmFsLAogCQlkYXRhLT50eF9pbmRleCA9IHR4X2luZGV4OwogCQlkYXRhLT5y
-eF9pbmRleCA9IHJ4X2luZGV4OwogCi0JfQotCi0JLyogaWYgdHJhbnNmZXIgY29tcGxldGUgaW50
-ZXJydXB0ICovCi0JaWYgKHJlZ19zcHNyX3ZhbCAmIFNQU1JfRklfQklUKSB7Ci0JCWlmICgodHhf
-aW5kZXggPT0gYnB3X2xlbikgJiYgKHJ4X2luZGV4ID09IHR4X2luZGV4KSkgewotCQkJLyogZGlz
-YWJsZSBpbnRlcnJ1cHRzICovCi0JCQlwY2hfc3BpX3NldGNscl9yZWcoZGF0YS0+bWFzdGVyLCBQ
-Q0hfU1BDUiwgMCwgUENIX0FMTCk7Ci0KLQkJCS8qIHRyYW5zZmVyIGlzIGNvbXBsZXRlZDsKLQkJ
-CSAgIGluZm9ybSBwY2hfc3BpX3Byb2Nlc3NfbWVzc2FnZXMgKi8KLQkJCWRhdGEtPnRyYW5zZmVy
-X2NvbXBsZXRlID0gdHJ1ZTsKLQkJCWRhdGEtPnRyYW5zZmVyX2FjdGl2ZSA9IGZhbHNlOwotCQkJ
-d2FrZV91cCgmZGF0YS0+d2FpdCk7Ci0JCX0gZWxzZSB7Ci0JCQlkZXZfZXJyKCZkYXRhLT5tYXN0
-ZXItPmRldiwKLQkJCQkiJXMgOiBUcmFuc2ZlciBpcyBub3QgY29tcGxldGVkIiwgX19mdW5jX18p
-OworCQkvKiBpZiB0cmFuc2ZlciBjb21wbGV0ZSBpbnRlcnJ1cHQgKi8KKwkJaWYgKHJlZ19zcHNy
-X3ZhbCAmIFNQU1JfRklfQklUKSB7CisJCQlpZiAoKHR4X2luZGV4ID09IGJwd19sZW4pICYmIChy
-eF9pbmRleCA9PSB0eF9pbmRleCkpIHsKKwkJCQkvKiBkaXNhYmxlIGludGVycnVwdHMgKi8KKwkJ
-CQlwY2hfc3BpX3NldGNscl9yZWcoZGF0YS0+bWFzdGVyLCBQQ0hfU1BDUiwgMCwKKwkJCQkJCSAg
-IFBDSF9BTEwpOworCisJCQkJLyogdHJhbnNmZXIgaXMgY29tcGxldGVkOworCQkJCSAgIGluZm9y
-bSBwY2hfc3BpX3Byb2Nlc3NfbWVzc2FnZXMgKi8KKwkJCQlkYXRhLT50cmFuc2Zlcl9jb21wbGV0
-ZSA9IHRydWU7CisJCQkJZGF0YS0+dHJhbnNmZXJfYWN0aXZlID0gZmFsc2U7CisJCQkJd2FrZV91
-cCgmZGF0YS0+d2FpdCk7CisJCQl9IGVsc2UgeworCQkJCWRldl9lcnIoJmRhdGEtPm1hc3Rlci0+
-ZGV2LAorCQkJCQkiJXMgOiBUcmFuc2ZlciBpcyBub3QgY29tcGxldGVkIiwKKwkJCQkJX19mdW5j
-X18pOworCQkJfQogCQl9CiAJfQogfQotLSAKMS43LjcuMwoKCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQpLZWVwIFlvdXIgRGV2ZWxvcGVyIFNraWxscyBDdXJyZW50IHdpdGggTGVhcm5EZXZOb3chClRo
-ZSBtb3N0IGNvbXByZWhlbnNpdmUgb25saW5lIGxlYXJuaW5nIGxpYnJhcnkgZm9yIE1pY3Jvc29m
-dCBkZXZlbG9wZXJzCmlzIGp1c3QgJDk5Ljk5ISBWaXN1YWwgU3R1ZGlvLCBTaGFyZVBvaW50LCBT
-UUwgLSBwbHVzIEhUTUw1LCBDU1MzLCBNVkMzLApNZXRybyBTdHlsZSBBcHBzLCBtb3JlLiBGcmVl
-IGZ1dHVyZSByZWxlYXNlcyB3aGVuIHlvdSBzdWJzY3JpYmUgbm93IQpodHRwOi8vcC5zZi5uZXQv
-c2Z1L2xlYXJuZGV2bm93LWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Vous recevez cet email de la part de CHEVIGNON.COM
+Si vous ne pouvez pas visualiser ce message, consulter notre version en lig=
+ne.
+[IMG]
+    Cuirs       Doudounes   Manteaux  Pulls  Chemises   Pantalons    Access=
+oires       Femme
+[IMG]
+[IMG]
+                 OFFRE VALABLE SUR CHEVIGNON.COM ET EN BOUTIQUE. HORS DESTO=
+CKAGE
+           PAIEMENT                SATISFAIT           SUIVI DE COMMANDE RE=
+JOIGNEZ-NOUS
+CHEVIGNON SECURISE    CHEVIGNON   OU         CHEVIGNON EN LIGNE          SU=
+R            CHEVIGNON
+                                  REMBOURSE
+
+Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
+vous b=E9n=E9ficiez d'un droit
+d'acc=E8s, de rectification, de modification et de suppression aux donn=E9e=
+s vous concernant.
+
+Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mails =
+par l'intermediaire de
+ce raccourci.
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

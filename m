@@ -1,11 +1,14 @@
-From: "dan" <ophir-hSpKs+mlTg6DDmSrUyEkBM0W7lVtrG30@public.gmane.org>
-Subject: Conference
-Date: Wed, 15 Feb 2012 23:51:05 +0200
-Message-ID: <14e0d8eb4235b015fbb4401f0360f1e1@brainconfernc.org>
-Reply-To: ophir-hSpKs+mlTg6DDmSrUyEkBM0W7lVtrG30@public.gmane.org
+From: Le Club des =?iso-8859-15?Q?Cr=E9ateurs?= de
+	=?iso-8859-15?Q?Beaut=E9?= par GalerieDesMarques.fr
+	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: - 50 % sur le maquillage : =?iso-8859-15?Q?s=E9ance?= de shopping
+	sans limite
+Date: Thu, 16 Feb 2012 13:27:10 +0100
+Message-ID: <1329395230.4f3cf61e8b8f5@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,23 +21,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UGh5c2ljaWFucywgVGhlcmFwaXN0cyBhbmQgTWVkaWNhbCBQcm9mZXNzaW9uYWxzIC0KCldlIGlu
-dml0ZSB5b3UgdG9qb2luIHVzIGluIHRoZSBJbnRlcm5hdGlvbmFsIENvbmZlcmVuY2Ugb24gSW50
-ZWdyYXRpdmUKTWVkaWNpbmUuCgoKVGhlIGNvbmZlcmVuY2Ugd2lsbCB0YWtlIHBsYWNlIGluIEpl
-cnVzYWxlbSBvbiBNYXkgMTMtMTUsIDIwMTIKCkFuZCB3aWxsIGZvY3VzIG9uIGludGVncmF0aW5n
-IGNvbnZlbnRpb25hbCBhbmQgYWx0ZXJuYXRpdmUgbWVkaWNpbmUgaW4gYWxsCmZpZWxkcy4KCgpG
-b3IgZnVydGhlciBpbmZvcm1hdGlvbiBlbnRlciB0aGUgY29uZmVyZW5jZSB3ZWJzaXRlIGF0OgoK
-d3d3Lm1lZGljb252ZW50aW9uLmNvbQoKUG91ciBkZXMgSW5mb3JtYXRpb25zIGVuIEZyYW7Dp2Fp
-cyBDbGlxdWV6IEljaQpGw7xyIEluZm9ybWF0aW9uZW4gaW4gRGV1dHNjaGVyIFNwcmFjaGUgSGll
-ciBLbGlja2VuCgogVW5zdWJzY3JpYmUgbWUgZnJvbSB0aGlzIGxpc3QKQ2xpY2sgdGhpcyBsaW5r
-IHRvIHVuc3Vic2NyaWJlOgpodHRwOi8vYnJhaW5jb25mZXJuYy5vcmcvYXBwcy91bnN1YnNjcmli
-ZS5waHA/TT01MzIxMjAmQz00MmJlNjg1YjRlYjRmODYyY2IzZWM3Y2Y2NjdlY2E3YSZMPTM1Jk49
-NjQKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9uICYgQ2xvdWQgTWFuYWdlbWVu
-dCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRpbmcgbWFrZXMgdXNlIG9mIHZp
-cnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxzbyBmb2N1c2VzIG9uIGFsbG93
-aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2aWNlLgpodHRwOi8vd3d3LmFj
-Y2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
-dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NjUwOSZjPTE5NjE2NDEmZD0yMDEy=
+LTAyLTE2IDEzOjEwOjAxJmU9MSZoPTY1MDgmZj02NTA5Jmc9NjUwOQ=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NjUwOSZjPTE=
+5NjE2NDEmZD0yMDEyLTAyLTE2IDEzOjEwOjAxJmU9MSZoPTY1MDgmZj02NTA5Jmc9NjUwOQ=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

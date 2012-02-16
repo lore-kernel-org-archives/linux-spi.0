@@ -1,11 +1,9 @@
-From: Le Club des =?iso-8859-15?Q?Cr=E9ateurs?= de
-	=?iso-8859-15?Q?Beaut=E9?= par GalerieDesMarques.fr
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: - 50 % sur le maquillage : =?iso-8859-15?Q?s=E9ance?= de shopping
-	sans limite
-Date: Thu, 16 Feb 2012 13:27:10 +0100
-Message-ID: <1329395230.4f3cf61e8b8f5@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Vente =?iso-8859-15?Q?priv=E9e?= en =?iso-8859-15?Q?exclusivit=E9?=
+	pour les membres
+Date: Thu, 16 Feb 2012 19:28:08 +0100
+Message-ID: <1329416888.4f3d4ab89e0ba@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -23,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NjUwOSZjPTE5NjE2NDEmZD0yMDEy=
-LTAyLTE2IDEzOjEwOjAxJmU9MSZoPTY1MDgmZj02NTA5Jmc9NjUwOQ=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTYzMDEmYz0yMzY0MzcmZD0yMDEy=
+LTAyLTE2IDE4OjMwOjAxJmU9MSZoPTYzMDAmZj02MzAxJmc9NjMwMQ=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NjUwOSZjPTE=
-5NjE2NDEmZD0yMDEyLTAyLTE2IDEzOjEwOjAxJmU9MSZoPTY1MDgmZj02NTA5Jmc9NjUwOQ=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTYzMDEmYz0=
+yMzY0MzcmZD0yMDEyLTAyLTE2IDE4OjMwOjAxJmU9MSZoPTYzMDAmZj02MzAxJmc9NjMwMQ=3D=
 =3D
 
 

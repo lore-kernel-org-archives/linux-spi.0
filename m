@@ -1,14 +1,12 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: [PATCH] spi: Mark spi_register_board_info() __devinit
-Date: Fri, 17 Feb 2012 16:23:29 -0800
-Message-ID: <1329524609-1777-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Andrew Paige <andrew.paige80-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Job Offer !
+Date: 18 Feb 2012 04:52:17 +0100
+Message-ID: <20120218035217.9073.qmail@host.mundotunning.com>
+Reply-To: andrew.paige80-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,33 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Some systems have SPI devices located on plugin modules which are
-enumerated at runtime as devices. The drivers for these plugin modules
-need to register their SPI devices at probe() time so want to be able
-to call spi_register_board_info() but that function is currently marked
-as __init rather than __devinit so this usage isn't legal. Change the
-annotation to __devinit to handle this.
 
-Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
----
- drivers/spi/spi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 909e303..0c833a9 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -484,7 +484,7 @@ static void spi_match_master_to_boardinfo(struct spi_master *master,
-  * The board info passed can safely be __initdata ... but be careful of
-  * any embedded pointers (platform_data, etc), they're copied as-is.
-  */
--int __init
-+int __devinit
- spi_register_board_info(struct spi_board_info const *info, unsigned n)
- {
- 	struct boardinfo *bi;
--- 
-1.7.9
+Would you like to work as a Feedback Specialist? Please contact me for more details. No application fee required. Thanks, Andrew
+
 
 
 ------------------------------------------------------------------------------

@@ -1,12 +1,13 @@
-From: Zalando par Zabaloc <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?La_nouvelle_collection_est_arriv=E9e?=
-Date: Tue, 21 Feb 2012 12:34:27 +0100 (CET)
-Message-ID: <3236305005.727999.1329824067674@p4enginex1.emv2.com>
-Reply-To: newsletter-DROSCh0pd+ZBDgjK7y7TUQ@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Vente =?iso-8859-15?Q?priv=E9e?= : -50% sur la commode Duchesse
+	cette semaine
+Date: Tue, 21 Feb 2012 13:15:20 +0100
+Message-ID: <1329826521.4f438ad90090b@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
-                          Op*ration Boots et Bottes !
-   [IMG]                   Mode, Chaussures, sport & Beaut*
-   [IMG]
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-         Livraison      Retour pr*pay*      Service client gratuit
-         gratuite       sous 30 jours            0800 940 651
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTY2ODImYz0yMzY0MzcmZD0yMDEy=
+LTAyLTIxIDEzOjAwOjAxJmU9MSZoPTY2ODEmZj02NjgyJmc9NjY4Mg=3D=3D
 
-        Jusqu'* - 70%, offre valable du 11 janvier au 14 f*vrier 2012.
-     Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier =
-1978,
-                           vous pouvez =E0 tout moment
-       demander =E0 acc=E9der, faire rectifier ou supprimer les informations
-                                 personnelles.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTY2ODImYz0=
+yMzY0MzcmZD0yMDEyLTAyLTIxIDEzOjAwOjAxJmU9MSZoPTY2ODEmZj02NjgyJmc9NjY4Mg=3D=
+=3D
 
-   Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
-                     par l'intermediaire de ce raccourci.
+
 ---------------------------------------------------------------------------=
 ---
 Keep Your Developer Skills Current with LearnDevNow!

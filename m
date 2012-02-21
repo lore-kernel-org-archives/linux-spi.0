@@ -1,58 +1,34 @@
-From: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: mc13xxx: add I2C support
-Date: Mon, 20 Feb 2012 17:50:53 +0100
-Message-ID: <20120220165053.GA5387@sortiz-mobl>
-References: <1326934894-29516-1-git-send-email-marc@cpdesign.com.au>
- <87lip4kktc.fsf@lebrac.rtp-net.org>
- <20120119112941.GC29494@sirena.org.uk>
- <201201201855.35971.marc@cpdesign.com.au>
+From: 15989349144-KN7UnAbNpbg@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 21 Feb 2012 19:07:30 +0800
+Message-ID: <E1RznZS-0004Gq-Al@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Arnaud Patard <arnaud.patard-dQbF7i+pzddAfugRpC6u6w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mkl-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201201201855.35971.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Marc,
-
-On Fri, Jan 20, 2012 at 06:55:35PM +1100, Marc Reilly wrote:
-> Hi,
-> 
-> Thankyou all for your feedback and comments. I'll use them for a V2 but 
-> Samuel, I'd like to know if you'd like me to base them on a specific branch 
-> before I do.
-Please rebase it against my for-next branch.
-
-
-> Shawn, thanks for testing!
-> 
-> On Thursday, January 19, 2012 10:29:41 PM Mark Brown wrote:
-> > On Thu, Jan 19, 2012 at 12:12:31PM +0100, Arnaud Patard wrote:
-> > > I've never looked at regmap deeply but can't it be done with regmap or is
-> > > it just a bad idea ?
-> > 
-> > Glancing quickly at the existing code it should map on reasonably well,
-> > though a new format definition may be required for the 25 bit shift that
-> > would be trivial.
-> 
-> I'm sadly unfamiliar with regmap, is it a far superior solution? does it need 
-> to used now? (ie. I'm relucant to totally rework this now. Please convince me 
-> I need to if required.)
-I think Mark exposed the advantages of using regmap. It's not a mandatory API
-usage at that point, but since we still have about 4 weeks before the next
-merge window opens, and since the changes wouldn't be a huge piece of work,
-I'd recommend switching to it now.
-
-Cheers,
-Samuel. 
-
--- 
-Intel Open Source Technology Centre
-http://oss.intel.com/
+xPq6w6O6CiAgICDO0rmry77U2ijJ7tvaytChorar3bjK0KGiuePW3crQtci12KOp09DBvLrDtcTG
+89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwrI5zooMSm6o7nYu/XO
+7734v9q9yb/uyumjuwogICAoMinG1c2oyczGt8/6ytu3oqGqxrGjuwogICAoMym547jm0rWhorj3
+wOC3/s7x0rW3oqGqoarGsbXItcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGq
+z7WjuiAgCiAgCiAgICC4utTwyMujutXFz8jJ+igwKTE1OTg5MzQ5MTQ0CgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KS2VlcCBZb3VyIERldmVsb3BlciBTa2lsbHMgQ3VycmVudCB3aXRoIExlYXJuRGV2
+Tm93IQpUaGUgbW9zdCBjb21wcmVoZW5zaXZlIG9ubGluZSBsZWFybmluZyBsaWJyYXJ5IGZvciBN
+aWNyb3NvZnQgZGV2ZWxvcGVycwppcyBqdXN0ICQ5OS45OSEgVmlzdWFsIFN0dWRpbywgU2hhcmVQ
+b2ludCwgU1FMIC0gcGx1cyBIVE1MNSwgQ1NTMywgTVZDMywKTWV0cm8gU3R5bGUgQXBwcywgbW9y
+ZS4gRnJlZSBmdXR1cmUgcmVsZWFzZXMgd2hlbiB5b3Ugc3Vic2NyaWJlIG5vdyEKaHR0cDovL3Au
+c2YubmV0L3NmdS9sZWFybmRldm5vdy1kMmQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

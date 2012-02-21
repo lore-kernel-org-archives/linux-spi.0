@@ -1,10 +1,7 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Tue, 21 Feb 2012 19:56:43 +0100
-Message-ID: <1329850603.4f43e8ebf2485@mc10.fr>
+From: Club =?iso-8859-15?Q?Priv=E9?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Retrouvez nos meilleures offres de la semaine
+Date: Tue, 21 Feb 2012 21:58:02 +0100
+Message-ID: <1329857882.4f44055abb9c0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3MzgmYz00MzI1ODEmZD0yMDEy=
-LTAyLTIxIDE5OjUwOjAxJmU9MSZoPTY3MzcmZj02NzM4Jmc9NjczOA=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3MzMmYz00NDU2MzkmZD0yMDEy=
+LTAyLTIxIDIxOjQwOjAxJmU9MSZoPTY3MzImZj02NzMzJmc9NjczMw=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3MzgmYz0=
-0MzI1ODEmZD0yMDEyLTAyLTIxIDE5OjUwOjAxJmU9MSZoPTY3MzcmZj02NzM4Jmc9NjczOA=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3MzMmYz0=
+0NDU2MzkmZD0yMDEyLTAyLTIxIDIxOjQwOjAxJmU9MSZoPTY3MzImZj02NzMzJmc9NjczMw=3D=
 =3D
 
 

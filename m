@@ -1,37 +1,36 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi/s3c64xx: Convert to using core message queue
-Date: Wed, 22 Feb 2012 10:07:06 +0100
-Message-ID: <CACRpkdawRwsT9SBS7BjyEnZzV3Z+Fe=NKVde2ghxjxCuqWJaNg@mail.gmail.com>
-References: <1329346112-1647-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Promotion -50% sur tout le site
+Date: Wed, 22 Feb 2012 14:27:50 +0100
+Message-ID: <1329917270.4f44ed56d6513@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1329346112-1647-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 15, 2012 at 11:48 PM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> Convert the s3c64xx driver to using the new message queue factored out of
-> the pl022 driver by Linus Walleij, saving us a nice block of code and
-> getting the benefits of improvements implemented in the core.
->
-> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3NDcmYz0yMTkxNTA3JmQ9MjAx=
+Mi0wMi0yMiAxNDoxMDowMSZlPTEmaD02NzQ2JmY9Njc0NyZnPTY3NDc=3D
 
-Hi Mark,
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3NDcmYz0=
+yMTkxNTA3JmQ9MjAxMi0wMi0yMiAxNDoxMDowMSZlPTEmaD02NzQ2JmY9Njc0NyZnPTY3NDc=3D
 
-I tried to include this patch for my patch series but it seems it might be
-dependent on other stuff already applied in the SPI tree so I couldn't
-get it to apply.
 
-However I guess if Grant picks up the latest (v3) version of the
-core patch it should apply just as fine on top of that one.
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
 
-Yours,
-Linus Walleij
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

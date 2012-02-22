@@ -1,7 +1,7 @@
-From: Club =?iso-8859-15?Q?Priv=E9?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Retrouvez nos meilleures offres de la semaine
-Date: Tue, 21 Feb 2012 21:58:02 +0100
-Message-ID: <1329857882.4f44055abb9c0@mc10.fr>
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 12 mois offerts pour faire de nouvelles rencontres
+Date: Wed, 22 Feb 2012 06:35:08 +0100
+Message-ID: <1329888908.4f447e8c07e49@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,18 +20,18 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3MzMmYz00NDU2MzkmZD0yMDEy=
-LTAyLTIxIDIxOjQwOjAxJmU9MSZoPTY3MzImZj02NzMzJmc9NjczMw=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3MTMmYz00MjA4ODMmZD0yMDEy=
+LTAyLTIyIDA2OjMwOjAxJmU9MSZoPTY3MTImZj02NzEzJmc9NjcxMw=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3MzMmYz0=
-0NDU2MzkmZD0yMDEyLTAyLTIxIDIxOjQwOjAxJmU9MSZoPTY3MzImZj02NzMzJmc9NjczMw=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3MTMmYz0=
+0MjA4ODMmZD0yMDEyLTAyLTIyIDA2OjMwOjAxJmU9MSZoPTY3MTImZj02NzEzJmc9NjcxMw=3D=
 =3D
 
 
 ---------------------------------------------------------------------------=
 ---
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

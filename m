@@ -1,12 +1,13 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Livraison offerte =?iso-8859-15?Q?jusqu=27=E0?= mercredi !
-Date: Thu, 23 Feb 2012 08:36:26 +0100
-Message-ID: <1329982586.4f45ec7ab8bb8@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: controller drivers don't need to depend on SPI_MASTER
+	explicitly
+Date: Thu, 23 Feb 2012 10:37:55 +0100
+Message-ID: <1329989875-11756-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +19,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTY4MjAmYz0yMzY0MzcmZD0yMDEy=
-LTAyLTIzIDA4OjEwOjAxJmU9MSZoPTY4MTkmZj02ODIwJmc9NjgyMA=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTY4MjAmYz0=
-yMzY0MzcmZD0yMDEyLTAyLTIzIDA4OjEwOjAxJmU9MSZoPTY4MTkmZj02ODIwJmc9NjgyMA=3D=
-=3D
-
-
----------------------------------------------------------------------------=
----
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+VGhleSBhcmUgYWxsIGRlZmluZWQgaW4gYW4gaWYgU1BJX01BU1RFUiAuLi4gZW5kaWYgYmxvY2su
+CgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29lbmlnQHBlbmd1
+dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvc3BpL0tjb25maWcgfCAgIDExICsrKysrLS0tLS0tCiAx
+IGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3NwaS9LY29uZmlnIGIvZHJpdmVycy9zcGkvS2NvbmZpZwppbmRleCA4Mjkz
+NjU4Li5jMWZiNTY4IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9LY29uZmlnCisrKyBiL2RyaXZl
+cnMvc3BpL0tjb25maWcKQEAgLTEyNiw3ICsxMjYsNyBAQCBjb25maWcgU1BJX0NPTERGSVJFX1FT
+UEkKIAogY29uZmlnIFNQSV9EQVZJTkNJCiAJdHJpc3RhdGUgIlRleGFzIEluc3RydW1lbnRzIERh
+VmluY2kvREE4eC9PTUFQLUwvQU0xeCBTb0MgU1BJIGNvbnRyb2xsZXIiCi0JZGVwZW5kcyBvbiBT
+UElfTUFTVEVSICYmIEFSQ0hfREFWSU5DSQorCWRlcGVuZHMgb24gQVJDSF9EQVZJTkNJCiAJc2Vs
+ZWN0IFNQSV9CSVRCQU5HCiAJaGVscAogCSAgU1BJIG1hc3RlciBjb250cm9sbGVyIGZvciBEYVZp
+bmNpL0RBOHgvT01BUC1ML0FNMXggU1BJIG1vZHVsZXMuCkBAIC0xODgsNyArMTg4LDcgQEAgY29u
+ZmlnIFNQSV9NUEM1Mnh4X1BTQwogCiBjb25maWcgU1BJX01QQzUxMnhfUFNDCiAJdHJpc3RhdGUg
+IkZyZWVzY2FsZSBNUEM1MTJ4IFBTQyBTUEkgY29udHJvbGxlciIKLQlkZXBlbmRzIG9uIFNQSV9N
+QVNURVIgJiYgUFBDX01QQzUxMngKKwlkZXBlbmRzIG9uIFBQQ19NUEM1MTJ4CiAJaGVscAogCSAg
+VGhpcyBlbmFibGVzIHVzaW5nIHRoZSBGcmVlc2NhbGUgTVBDNTEyMSBQcm9ncmFtbWFibGUgU2Vy
+aWFsCiAJICBDb250cm9sbGVyIGluIFNQSSBtYXN0ZXIgbW9kZS4KQEAgLTIzOCw3ICsyMzgsNyBA
+QCBjb25maWcgU1BJX09NQVAyNFhYCiAKIGNvbmZpZyBTUElfT01BUF8xMDBLCiAJdHJpc3RhdGUg
+Ik9NQVAgU1BJIDEwMEsiCi0JZGVwZW5kcyBvbiBTUElfTUFTVEVSICYmIChBUkNIX09NQVA4NTAg
+fHwgQVJDSF9PTUFQNzMwKQorCWRlcGVuZHMgb24gQVJDSF9PTUFQODUwIHx8IEFSQ0hfT01BUDcz
+MAogCWhlbHAKIAkgIE9NQVAgU1BJIDEwMEsgbWFzdGVyIGNvbnRyb2xsZXIgZm9yIG9tYXA3eHgg
+Ym9hcmRzLgogCkBAIC0yNjIsNyArMjYyLDcgQEAgY29uZmlnIFNQSV9QTDAyMgogCiBjb25maWcg
+U1BJX1BQQzR4eAogCXRyaXN0YXRlICJQUEM0eHggU1BJIENvbnRyb2xsZXIiCi0JZGVwZW5kcyBv
+biBQUEMzMiAmJiA0eHggJiYgU1BJX01BU1RFUgorCWRlcGVuZHMgb24gUFBDMzIgJiYgNHh4CiAJ
+c2VsZWN0IFNQSV9CSVRCQU5HCiAJaGVscAogCSAgVGhpcyBzZWxlY3RzIGEgZHJpdmVyIGZvciB0
+aGUgUFBDNHh4IFNQSSBDb250cm9sbGVyLgpAQCAtMzI2LDcgKzMyNiw3IEBAIGNvbmZpZyBTUElf
+U0hfU0NJCiAKIGNvbmZpZyBTUElfU1RNUDNYWFgKIAl0cmlzdGF0ZSAiRnJlZXNjYWxlIFNUTVAz
+N3h4LzM3OHggU1BJL1NTUCBjb250cm9sbGVyIgotCWRlcGVuZHMgb24gQVJDSF9TVE1QM1hYWCAm
+JiBTUElfTUFTVEVSCisJZGVwZW5kcyBvbiBBUkNIX1NUTVAzWFhYCiAJaGVscAogCSAgU1BJIGRy
+aXZlciBmb3IgRnJlZXNjYWxlIFNUTVAzN3h4LzM3OHggU29DIFNTUCBpbnRlcmZhY2UKIApAQCAt
+Mzg0LDcgKzM4NCw2IEBAIGNvbmZpZyBTUElfTlVDOTAwCiAKIGNvbmZpZyBTUElfREVTSUdOV0FS
+RQogCXRyaXN0YXRlICJEZXNpZ25XYXJlIFNQSSBjb250cm9sbGVyIGNvcmUgc3VwcG9ydCIKLQlk
+ZXBlbmRzIG9uIFNQSV9NQVNURVIKIAloZWxwCiAJICBnZW5lcmFsIGRyaXZlciBmb3IgU1BJIGNv
+bnRyb2xsZXIgY29yZSBmcm9tIERlc2lnbldhcmUKIAotLSAKMS43LjkKCgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KVmlydHVhbGl6YXRpb24gJiBDbG91ZCBNYW5hZ2VtZW50IFVzaW5nIENhcGFjaXR5
+IFBsYW5uaW5nCkNsb3VkIGNvbXB1dGluZyBtYWtlcyB1c2Ugb2YgdmlydHVhbGl6YXRpb24gLSBi
+dXQgY2xvdWQgY29tcHV0aW5nIAphbHNvIGZvY3VzZXMgb24gYWxsb3dpbmcgY29tcHV0aW5nIHRv
+IGJlIGRlbGl2ZXJlZCBhcyBhIHNlcnZpY2UuCmh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3
+L3NmbmwvMTE0LzUxNTIxMjIzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

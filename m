@@ -1,11 +1,10 @@
-From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Promotion -50% sur tout le site
-Date: Wed, 22 Feb 2012 14:27:50 +0100
-Message-ID: <1329917270.4f44ed56d6513@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Jeffrey Eigner <jeigner-i6nAvj0qFg+B+jHODAdFcQ@public.gmane.org>
+Subject: Jeffrey Eigner/Corp/Celestica is out of the office.
+Date: Wed, 22 Feb 2012 19:32:40 -0500
+Message-ID: <OFA46E5094.271C5206-ON852579AD.0002FDA8-852579AD.0002FDA8@celestica.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTY3NDcmYz0yMTkxNTA3JmQ9MjAx=
-Mi0wMi0yMiAxNDoxMDowMSZlPTEmaD02NzQ2JmY9Njc0NyZnPTY3NDc=3D
+I will be out of the office starting  02/22/2012 and will not return until
+03/05/2012.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTY3NDcmYz0=
-yMTkxNTA3JmQ9MjAxMi0wMi0yMiAxNDoxMDowMSZlPTEmaD02NzQ2JmY9Njc0NyZnPTY3NDc=3D
+ I am travelling and will have limited email and phone access. Please
+contact John Sandhu for any urgent business matter.
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
+Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

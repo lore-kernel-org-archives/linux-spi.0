@@ -1,12 +1,13 @@
-From: Invitation CanalSat par Affilibuz <news-aRCsrEPsanzp/bQmFP7BarGZzIjr6fyc@public.gmane.org>
-Subject: A l'intention de spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Date: Fri, 24 Feb 2012 09:12:28 +0100 (CET)
-Message-ID: <3236305005.728005.1330071148601@p4enginex2.emv2.com>
-Reply-To: newsletters-7lNnFWq+ovLCXR85Y8Hu3Q@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: 10 jours =?iso-8859-15?Q?=E0?= prix coutant, sur des milliers
+	d'articles
+Date: Fri, 24 Feb 2012 18:43:25 +0100
+Message-ID: <1330105406.4f47cc3e2d1f0@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,30 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
-                   Les rennes ont une proposition pour vous?
-   [IMG]
-                                   Invitation
-                            pour [[PRENOM]] [[NOM]]
-               Les rennes de CANALSAT vous invitent =E0 leur show.
-   [IMG]               Venez vite et tentez de remporter                [IM=
-G]
-         [IMG]     [IMG]       de nombreux cadeaux.      [IMG]
-         [IMG]              [IMG]                     [IMG]
-         [IMG]     [IMG]                                [IMG]
-   [IMG]
-                                   *R=E8glement
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-        Jeu gratuit sans obligation d'achat. Photos non contractuelles.
-   Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier 19=
-78, vous
-                              pouvez =E0 tout moment
-       demander =E0 acc=E9der, faire rectifier ou supprimer les informations
-                                 personnelles.
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Njk4MiZjPTE5NjE2NDEmZD0yMDEy=
+LTAyLTI0IDE4OjIwOjAxJmU9MSZoPTY5ODEmZj02OTgyJmc9Njk4Mg=3D=3D
 
-    Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de ma=
-ils
-                      par l'intermediaire de ce raccourci.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Njk4MiZjPTE=
+5NjE2NDEmZD0yMDEyLTAyLTI0IDE4OjIwOjAxJmU9MSZoPTY5ODEmZj02OTgyJmc9Njk4Mg=3D=
+=3D
+
+
 ---------------------------------------------------------------------------=
 ---
 Virtualization & Cloud Management Using Capacity Planning

@@ -1,13 +1,12 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: 10 jours =?iso-8859-15?Q?=E0?= prix coutant, sur des milliers
-	d'articles
-Date: Fri, 24 Feb 2012 18:43:25 +0100
-Message-ID: <1330105406.4f47cc3e2d1f0@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Email selectionne par Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Pause Canal+, remportez une semaine en Guadeloupe
+Date: Mon, 27 Feb 2012 09:08:30 +0100 (CET)
+Message-ID: <3236305005.728001.1330330110453@p4enginex1.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,20 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+        Si vous ne visualisez pas correctement ce message, cliquez ici.
+                  [[PRENOM]], reposez-vous le temps de gagner?
+   [IMG]                   [IMG]                     [IMG]
+            Besoin d'une pause ?
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Njk4MiZjPTE5NjE2NDEmZD0yMDEy=
-LTAyLTI0IDE4OjIwOjAxJmU9MSZoPTY5ODEmZj02OTgyJmc9Njk4Mg=3D=3D
+            D=E9tendez-vous quelques instants...                  [IMG]
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Njk4MiZjPTE=
-5NjE2NDEmZD0yMDEyLTAyLTI0IDE4OjIwOjAxJmU9MSZoPTY5ODEmZj02OTgyJmc9Njk4Mg=3D=
-=3D
+            Jouez avec les programmes de CANAL+
+            et tentez de gagner de nombreux cadeaux* !
+   [IMG]                                  [IMG]             [IMG]
+   [IMG]
+   [IMG]                    [IMG]                    [IMG]
+   *R=E8glement
 
-
+   Jeu gratuit sans obligation d'achat. Photos non contractuelles.
+   Conform=E9ment =E0 la loi "informatique et libert=E9s" du 6 janvier 1978
+   modifi=E9e, vous pouvez =E0 tout moment demander =E0 acc=E9der, faire re=
+ctifier ou
+   supprimer les informations personnelles vous concernant ou vous opposer =
+=E0
+   leur traitement par Canalplus.fr.
+   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
+ls
+   par l'intermediaire de ce raccourci.
 ---------------------------------------------------------------------------=
 ---
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+Try before you buy =3D See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

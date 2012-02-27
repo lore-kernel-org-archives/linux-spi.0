@@ -1,12 +1,10 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: Trivial warning fix
-Date: Mon, 27 Feb 2012 19:29:05 +0530
-Message-ID: <1330351145-3564-1-git-send-email-shubhrajyoti@ti.com>
+From: "Michael Bernhard" <MB.NoReply38-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: Are you taking on new clients?
+Date: Mon, 27 Feb 2012 10:02:14 -0700
+Message-ID: <45a63123dc2eea996b171b11001dc660@ymail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vitaly Wool <vwool-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,37 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The loop count i traverses for ntrans which is unsigned
-so make the loop count i also unsigned.
+Hello, 
 
-Fix the below warning
-In file included from drivers/spi/spi-omap2-mcspi.c:38:
-include/linux/spi/spi.h: In function 'spi_message_alloc':
-include/linux/spi/spi.h:556: warning: comparison between signed and unsigned integer expressions
+If you are taking on new clients, I would like you to contact me at 1 (800) 504-4880 Ext. 230 to discuss the benefits of e-mail marketing. 
 
-Cc: Vitaly Wool <vwool-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
-Untested !
+We can direct thousands of interested prospects to your company.
 
- include/linux/spi/spi.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Thank You,
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 176fce9..6ae4993 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -549,7 +549,7 @@ static inline struct spi_message *spi_message_alloc(unsigned ntrans, gfp_t flags
- 			+ ntrans * sizeof(struct spi_transfer),
- 			flags);
- 	if (m) {
--		int i;
-+		unsigned i;
- 		struct spi_transfer *t = (struct spi_transfer *)(m + 1);
- 
- 		INIT_LIST_HEAD(&m->transfers);
--- 
-1.7.0.4
+Michael Bernhard
+E-mail Marketing Services
+Scottsdale, AZ
+1 (800) 504-4880 Ext. 230
+
+
+
+
+
+
+
+
+
+If you do not wish to receive this type of e-mail, please click <mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
 
 
 ------------------------------------------------------------------------------

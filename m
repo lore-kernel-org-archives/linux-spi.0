@@ -1,11 +1,12 @@
-From: Email selectionne par Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: Pause Canal+, remportez une semaine en Guadeloupe
-Date: Mon, 27 Feb 2012 09:08:30 +0100 (CET)
-Message-ID: <3236305005.728001.1330330110453@p4enginex1.emv2.com>
-Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: Trivial warning fix
+Date: Mon, 27 Feb 2012 19:29:05 +0530
+Message-ID: <1330351145-3564-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vitaly Wool <vwool-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,33 +19,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
-                  [[PRENOM]], reposez-vous le temps de gagner?
-   [IMG]                   [IMG]                     [IMG]
-            Besoin d'une pause ?
+The loop count i traverses for ntrans which is unsigned
+so make the loop count i also unsigned.
 
-            D=E9tendez-vous quelques instants...                  [IMG]
+Fix the below warning
+In file included from drivers/spi/spi-omap2-mcspi.c:38:
+include/linux/spi/spi.h: In function 'spi_message_alloc':
+include/linux/spi/spi.h:556: warning: comparison between signed and unsigned integer expressions
 
-            Jouez avec les programmes de CANAL+
-            et tentez de gagner de nombreux cadeaux* !
-   [IMG]                                  [IMG]             [IMG]
-   [IMG]
-   [IMG]                    [IMG]                    [IMG]
-   *R=E8glement
-
-   Jeu gratuit sans obligation d'achat. Photos non contractuelles.
-   Conform=E9ment =E0 la loi "informatique et libert=E9s" du 6 janvier 1978
-   modifi=E9e, vous pouvez =E0 tout moment demander =E0 acc=E9der, faire re=
-ctifier ou
-   supprimer les informations personnelles vous concernant ou vous opposer =
-=E0
-   leur traitement par Canalplus.fr.
-   Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de mai=
-ls
-   par l'intermediaire de ce raccourci.
----------------------------------------------------------------------------=
+Cc: Vitaly Wool <vwool-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
-Try before you buy =3D See our experts in action!
+Untested !
+
+ include/linux/spi/spi.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 176fce9..6ae4993 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -549,7 +549,7 @@ static inline struct spi_message *spi_message_alloc(unsigned ntrans, gfp_t flags
+ 			+ ntrans * sizeof(struct spi_transfer),
+ 			flags);
+ 	if (m) {
+-		int i;
++		unsigned i;
+ 		struct spi_transfer *t = (struct spi_transfer *)(m + 1);
+ 
+ 		INIT_LIST_HEAD(&m->transfers);
+-- 
+1.7.0.4
+
+
+------------------------------------------------------------------------------
+Try before you buy = See our experts in action!
 The most comprehensive online learning library for Microsoft developers
 is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
 Metro Style Apps, more. Free future releases when you subscribe now!

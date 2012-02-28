@@ -1,13 +1,12 @@
-From: EPS TELESURVEILLANCE par Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?S=E9curit=E9_tout_compris_=E0_partir_?=
-	=?iso-8859-15?Q?de_seulement_19,50_Euros/mois_!?=
-Date: Tue, 28 Feb 2012 09:58:25 +0100 (CET)
-Message-ID: <3236305005.728003.1330419505168@p4enginex1.emv2.com>
-Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
+From: Club =?iso-8859-15?Q?Priv=E9?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Retrouvez nos meilleures offres de la semaine
+Date: Tue, 28 Feb 2012 11:22:23 +0100
+Message-ID: <1330424543.4f4caadfa21ba@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,22 +18,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-   Aujourd'hui, 1000 foyers seront victimes d'une effraction...
-   Qu'attendez-vous pour prot*ger votre domicile
-   Alarme + t*l*surveillance * partir de 19,50 EUR / mois, frais
-   d'installation OFFERTS !
-   En savoir plus
-   EPS: le N*1 de la t*l*surveillance en France avec plus de 230 000 abonn*s
-   Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier 19=
-78, vous
-                              pouvez =E0 tout moment
-       demander =E0 acc=E9der, faire rectifier ou supprimer les informations
-                                 personnelles.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzQmYz00NDU2MzkmZD0yMDEy=
+LTAyLTI4IDEwOjQwOjAxJmU9MSZoPTcwNzMmZj03MDc0Jmc9NzA3NA=3D=3D
 
-    Vous avez la possibilit* de vous retirer de notre liste d'envoi de mails
-                      par l'intermediaire de ce raccourci.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzQmYz0=
+0NDU2MzkmZD0yMDEyLTAyLTI4IDEwOjQwOjAxJmU9MSZoPTcwNzMmZj03MDc0Jmc9NzA3NA=3D=
+=3D
+
+
 ---------------------------------------------------------------------------=
 ---
 Keep Your Developer Skills Current with LearnDevNow!

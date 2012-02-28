@@ -1,11 +1,13 @@
-From: shzhshitsmmmyy8452-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 发/票--代/开
-Date: Tue, 28 Feb 2012 23:47:14 +0800
-Message-ID: <E1S2PHG-0006Ar-Lv@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Camif Habitat par Plein Temps <camif-habitat-par-120008-ukBTKbWEZbGZuzBka8ofvg@public.gmane.org>
+Subject: [SPAM] Des travaux qui se passent bien, c'est possible
+Date: Tue, 28 Feb 2012 21:36:34 +0100
+Message-ID: <0f25b1ca5e605e71584b47f60c49de14@localhost.localdomain>
+Reply-To: Camif Habitat par Plein Temps <privileges-BQzCAz/s1vZLBLenUCvkVg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +19,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICDP1rG+uavLvtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGuo7vTxbvdtPq/qqO7Csjn
-OigxKcbVzajJzMa3z/rK27eiLS3GsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeiLS3GsS+1
-yLXIoaMKICAKufO5q8u+yOfT0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O6
-1cXPyMn6KDApMTM0MTA0NTg0NTIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpLZWVwIFlvdXIgRGV2
-ZWxvcGVyIFNraWxscyBDdXJyZW50IHdpdGggTGVhcm5EZXZOb3chClRoZSBtb3N0IGNvbXByZWhl
-bnNpdmUgb25saW5lIGxlYXJuaW5nIGxpYnJhcnkgZm9yIE1pY3Jvc29mdCBkZXZlbG9wZXJzCmlz
-IGp1c3QgJDk5Ljk5ISBWaXN1YWwgU3R1ZGlvLCBTaGFyZVBvaW50LCBTUUwgLSBwbHVzIEhUTUw1
-LCBDU1MzLCBNVkMzLApNZXRybyBTdHlsZSBBcHBzLCBtb3JlLiBGcmVlIGZ1dHVyZSByZWxlYXNl
-cyB3aGVuIHlvdSBzdWJzY3JpYmUgbm93IQpodHRwOi8vcC5zZi5uZXQvc2Z1L2xlYXJuZGV2bm93
-LWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+Si vous desirez visualiser ce mail au format html, recopiez l'adresse suivante dans votre navigateur: http://www.vytispod.info/view.html?id=120008&ref=h4e6afb5793b5
+
+
+------------------------------------------------------------------------------
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

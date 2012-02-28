@@ -1,10 +1,8 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Tue, 28 Feb 2012 13:05:35 +0100
-Message-ID: <1330430735.4f4cc30f49646@mc10.fr>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
+	avec Weight Watchers
+Date: Tue, 28 Feb 2012 13:58:29 +0100
+Message-ID: <1330433909.4f4ccf7596661@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzUmYz00MzI1ODEmZD0yMDEy=
-LTAyLTI4IDExOjAwOjAxJmU9MSZoPTcwNzQmZj03MDc1Jmc9NzA3NQ=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzYmYz00MzI1ODEmZD0yMDEy=
+LTAyLTI4IDExOjIwOjAxJmU9MSZoPTcwNzUmZj03MDc2Jmc9NzA3Ng=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzUmYz0=
-0MzI1ODEmZD0yMDEyLTAyLTI4IDExOjAwOjAxJmU9MSZoPTcwNzQmZj03MDc1Jmc9NzA3NQ=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzYmYz0=
+0MzI1ODEmZD0yMDEyLTAyLTI4IDExOjIwOjAxJmU9MSZoPTcwNzUmZj03MDc2Jmc9NzA3Ng=3D=
 =3D
 
 

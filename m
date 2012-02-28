@@ -1,13 +1,11 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Tue, 28 Feb 2012 13:58:29 +0100
-Message-ID: <1330433909.4f4ccf7596661@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: shzhshitsmmmyy8452-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 发/票--代/开
+Date: Tue, 28 Feb 2012 23:47:14 +0800
+Message-ID: <E1S2PHG-0006Ar-Lv@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,20 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzYmYz00MzI1ODEmZD0yMDEy=
-LTAyLTI4IDExOjIwOjAxJmU9MSZoPTcwNzUmZj03MDc2Jmc9NzA3Ng=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzYmYz0=
-0MzI1ODEmZD0yMDEyLTAyLTI4IDExOjIwOjAxJmU9MSZoPTcwNzUmZj03MDc2Jmc9NzA3Ng=3D=
-=3D
-
-
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+xPq6w6O6IAogICDP1rG+uavLvtPQ0ruyv7fWt6ItxrGju8uwwsq1zcGuo7vTxbvdtPq/qqO7Csjn
+OigxKcbVzajJzMa3z/rK27eiLS3GsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStbeiLS3GsS+1
+yLXIoaMKICAKufO5q8u+yOfT0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O6
+1cXPyMn6KDApMTM0MTA0NTg0NTIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpLZWVwIFlvdXIgRGV2
+ZWxvcGVyIFNraWxscyBDdXJyZW50IHdpdGggTGVhcm5EZXZOb3chClRoZSBtb3N0IGNvbXByZWhl
+bnNpdmUgb25saW5lIGxlYXJuaW5nIGxpYnJhcnkgZm9yIE1pY3Jvc29mdCBkZXZlbG9wZXJzCmlz
+IGp1c3QgJDk5Ljk5ISBWaXN1YWwgU3R1ZGlvLCBTaGFyZVBvaW50LCBTUUwgLSBwbHVzIEhUTUw1
+LCBDU1MzLCBNVkMzLApNZXRybyBTdHlsZSBBcHBzLCBtb3JlLiBGcmVlIGZ1dHVyZSByZWxlYXNl
+cyB3aGVuIHlvdSBzdWJzY3JpYmUgbm93IQpodHRwOi8vcC5zZi5uZXQvc2Z1L2xlYXJuZGV2bm93
+LWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

@@ -1,7 +1,8 @@
-From: Club =?iso-8859-15?Q?Priv=E9?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Retrouvez nos meilleures offres de la semaine
-Date: Tue, 28 Feb 2012 11:22:23 +0100
-Message-ID: <1330424543.4f4caadfa21ba@mc10.fr>
+From: Leader mondial du deal par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez?= les restaurants les plus
+	=?iso-8859-15?Q?fr=E9quent=E9s?= de votre ville.
+Date: Tue, 28 Feb 2012 12:49:43 +0100
+Message-ID: <1330429783.4f4cbf574b7c6@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzQmYz00NDU2MzkmZD0yMDEy=
-LTAyLTI4IDEwOjQwOjAxJmU9MSZoPTcwNzMmZj03MDc0Jmc9NzA3NA=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzEmYz0yNTMxMCZkPTIwMTIt=
+MDItMjggMTA6MzA6MDEmZT0xJmg9NzA3MCZmPTcwNzEmZz03MDcx
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzQmYz0=
-0NDU2MzkmZD0yMDEyLTAyLTI4IDEwOjQwOjAxJmU9MSZoPTcwNzMmZj03MDc0Jmc9NzA3NA=3D=
-=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzEmYz0=
+yNTMxMCZkPTIwMTItMDItMjggMTA6MzA6MDEmZT0xJmg9NzA3MCZmPTcwNzEmZz03MDcx
 
 
 ---------------------------------------------------------------------------=

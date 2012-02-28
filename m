@@ -1,8 +1,10 @@
-From: Leader mondial du deal par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?D=E9couvrez?= les restaurants les plus
-	=?iso-8859-15?Q?fr=E9quent=E9s?= de votre ville.
-Date: Tue, 28 Feb 2012 12:49:43 +0100
-Message-ID: <1330429783.4f4cbf574b7c6@mc10.fr>
+From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
+Date: Tue, 28 Feb 2012 13:05:35 +0100
+Message-ID: <1330430735.4f4cc30f49646@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +23,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzEmYz0yNTMxMCZkPTIwMTIt=
-MDItMjggMTA6MzA6MDEmZT0xJmg9NzA3MCZmPTcwNzEmZz03MDcx
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcwNzUmYz00MzI1ODEmZD0yMDEy=
+LTAyLTI4IDExOjAwOjAxJmU9MSZoPTcwNzQmZj03MDc1Jmc9NzA3NQ=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzEmYz0=
-yNTMxMCZkPTIwMTItMDItMjggMTA6MzA6MDEmZT0xJmg9NzA3MCZmPTcwNzEmZz03MDcx
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcwNzUmYz0=
+0MzI1ODEmZD0yMDEyLTAyLTI4IDExOjAwOjAxJmU9MSZoPTcwNzQmZj03MDc1Jmc9NzA3NQ=3D=
+=3D
 
 
 ---------------------------------------------------------------------------=

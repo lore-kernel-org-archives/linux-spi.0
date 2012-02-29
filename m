@@ -1,11 +1,12 @@
-From: vsvsfgsvjoy-Z5GbTsQsua1BDgjK7y7TUQ@public.gmane.org
-Subject: [SPAM] 外贸-单证
-Date: Thu, 1 Mar 2012 01:39:45 +0800
-Message-ID: <E1S2nWp-0004WB-ET@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 12 mois offerts pour faire de nouvelles rencontres
+Date: Wed, 29 Feb 2012 23:27:23 +0100
+Message-ID: <1330554443.4f4ea64badfc7@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,20 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAKICDE+rrDISAgCiAgIAogICAgICCxvrmry76zpMbatPrA7bGoudi1yNK7x9Cz9r/ataXWpKOs
-09C34bi7tcSz9r/avq3R6brN08XKxrXEvNu48aOsv8nOqrnzuavLvrT6wO3S1M/Cs/a/2tK1zvEK
-CiAgMS7M4bmpusvP+rWlo6ixqLnYtaWjqQoKICAyLkNPsvq12NakLiDG1bvd1qQoRkEsRkUsRkYs
-0cfMqyzW0LDNo6y088q5ud3HqbXIKSAKCiAgMy7C8rWlsai52KOsycy87KOszc+ztQoKICDH67Tm
-wfSxuNPDo6y7ttOtxOO1xMC0tefXydGvo7oKCiAgwarPtcjLo7rVxdChveMgICAgIMGqz7W157uw
-o7owNzU1LTI1NDIwMTc3ICDK1rv6o7oxMzUzNDIyMTc2OAoKICBRUaO6MzgxODc2MzQ3ICAg08rP
-5KO6QTgxMjMzNDY2QDE2My5jb20gIDM4MTg3NjM0N0BxcS5jb20KCiAgICAgICAgICAgICAgICAg
-ICAgICCxvrnjuOazpMba09DQpwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9u
-ICYgQ2xvdWQgTWFuYWdlbWVudCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRp
-bmcgbWFrZXMgdXNlIG9mIHZpcnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxz
-byBmb2N1c2VzIG9uIGFsbG93aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2
-aWNlLgpodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
-bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
-Z2VuZXJhbAo=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcyMTMmYz00MjA4ODMmZD0yMDEy=
+LTAyLTI5IDE1OjIwOjAxJmU9MSZoPTcyMTImZj03MjEzJmc9NzIxMw=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcyMTMmYz0=
+0MjA4ODMmZD0yMDEyLTAyLTI5IDE1OjIwOjAxJmU9MSZoPTcyMTImZj03MjEzJmc9NzIxMw=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

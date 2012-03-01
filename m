@@ -1,12 +1,12 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 12 mois offerts pour faire de nouvelles rencontres
-Date: Wed, 29 Feb 2012 23:27:23 +0100
-Message-ID: <1330554443.4f4ea64badfc7@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Subject: [SPAM] I am Julia, 27 y.o. I am single lady, looking for boyfriend,
+	and you?
+Date: Thu, 01 Mar 2012 03:32:41 +0000
+Message-ID: <E1S2wkz-0007aW-7Q@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +18,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTcyMTMmYz00MjA4ODMmZD0yMDEy=
-LTAyLTI5IDE1OjIwOjAxJmU9MSZoPTcyMTImZj03MjEzJmc9NzIxMw=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTcyMTMmYz0=
-0MjA4ODMmZD0yMDEyLTAyLTI5IDE1OjIwOjAxJmU9MSZoPTcyMTImZj03MjEzJmc9NzIxMw=3D=
-=3D
+I am Julia 31       y.o.
+I am single lady, looking for boyfriend, and you?
+I am on-line       now, let`s chat? 
+my profile and new photos are here:       
+http://maria012012.com.ua
 
 
----------------------------------------------------------------------------=
----
+ 
+
+
+(To unsubscribe follow the link)
+http://maria012012.com.ua
+
+------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
+Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

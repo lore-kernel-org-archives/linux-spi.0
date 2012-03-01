@@ -1,12 +1,9 @@
-From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] I am Julia, 27 y.o. I am single lady, looking for boyfriend,
-	and you?
-Date: Thu, 01 Mar 2012 03:32:41 +0000
-Message-ID: <E1S2wkz-0007aW-7Q@sfs-ml-2.v29.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: =?GB2312?B?1dTFrsq/?= <smqyyewubuc-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 妫寕鍏徃鏈夋紓鎹唬開，0.8%纳取，额大优惠
+Date: Thu, 1 Mar 2012 15:15:15 +0800
+Message-ID: <E1S30EV-0005tX-1e@sfs-ml-3.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============6467843523599032641=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,21 +15,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I am Julia 31       y.o.
-I am single lady, looking for boyfriend, and you?
-I am on-line       now, let`s chat? 
-my profile and new photos are here:       
-http://maria012012.com.ua
+--===============6467843523599032641==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+
+各大企业公司您们好！
+    森茂实业公司成立于1996年，是一家集团公司。本集团共拥有十余家下属企业，遍及广东、江苏、上海、北京、山东等地区，我司在不断成长过程中注重人才的吸收和培养，拥有一批高素质的经营管理团队和专业技术人才，我司致力于创建高效和谐的企业环境，用专业、自信的合作精神为各大企业的发展与永续强劲的原动力。
+    如果贵企业（公司）若有以下情况请与我们联系！
+    1、公司为一般纳稅企业没有优惠政策而想减轻纳稅负担的。
+    2、对外销售商品或提供技术服务而贵司暂未申领發漂的。
+    3、外出采购或公干而服务商没有提供可以报销發漂的。
+    4、公司帐目进项与出项差额过大的，需补充差额的。
+    5、公司做帐或进销存方面如需用到的。
+    现有各种：商品销售、广告业、建筑业、服务业、租赁、培训、科技、印刷、运输、医疗、机械等漂据代理。[稅点按0.8%左右纳取，大面额可降底优惠]
+    提供的所有漂据可上网查询或到有关部门查验，可过帐后再付费用。
+    郑重承诺：我司已进一步完善我们管理制度，优化服务，并履行保密制度，希望能为您公司减轻纳税负担。
+        欢迎来电咨询，洽谈合作！
+        业务部联系人：赵丽芸女士   
+              电  话：13826496893
+        请保留联系号码，以备不时之需！
+                                 
+                                森茂实业有限公司
 
 
- 
-
-
-(To unsubscribe follow the link)
-http://maria012012.com.ua
+--===============6467843523599032641==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
 Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/
+--===============6467843523599032641==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============6467843523599032641==--

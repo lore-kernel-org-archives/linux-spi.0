@@ -1,15 +1,12 @@
-From: "=?gb2312?B?cGFya2VyNDI1Nzk=?=" <parker42579-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?vm/Xt8qx6We1xLfWt9bD68Pro6zSu7K90ru49sRf06HP8tfFs8m5prjf?=
-	=?gb2312?B?t+XFyrXHoaM=?=
-Date: Sat, 3 Mar 2012 17:49:23 +0800 (CST)
-Message-ID: <4F51E923.00014F.09410@cnapp12>
+From: "I Love Parfum" <noreply-O3/8nGBsm4VSL0CvmOMexA@public.gmane.org>
+Subject: =?UTF-8?B?RnVzaGlhIChzYWNzIMOgIG1haW4gZW4gY3VpciksIExpY2Vuc2UgT00gZXQgUFNHIChsaW5nZSBkZSBsaXQsIGFjY2Vzc29pcmVzKSwgTGluZ2VyaWUsIE1ldWJsZXMgZGVzaWducw==?=
+Date: Fri, 02 Mar 2012 16:30:25 +0100
+Message-ID: <3930a10c5fa04479c0df4634be3e35bc@www.universvip.fr>
+Reply-To: noreply-O3/8nGBsm4VSL0CvmOMexA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: spiderzy-OlFFNeSka43QT0dZR+AlfA@public.gmane.org, spiderzhu1982-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spidi-sXJsrNKGaAyJEg79ku39Cmmf7q9y5QC9@public.gmane.org, spideryang-9Onoh4P/yGk@public.gmane.org
-To: spiderxiano01-9Onoh4P/yGk@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,14 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAgIMTjusOjoQ0KICAgICAgICANCiAgDQogICAgICAgICAgICAgICAgDQogICAgICAgICAgICAg
-ICAgICAgICAgICAgIA0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVmlydHVhbGl6YXRpb24gJiBD
-bG91ZCBNYW5hZ2VtZW50IFVzaW5nIENhcGFjaXR5IFBsYW5uaW5nCkNsb3VkIGNvbXB1dGluZyBt
-YWtlcyB1c2Ugb2YgdmlydHVhbGl6YXRpb24gLSBidXQgY2xvdWQgY29tcHV0aW5nIAphbHNvIGZv
-Y3VzZXMgb24gYWxsb3dpbmcgY29tcHV0aW5nIHRvIGJlIGRlbGl2ZXJlZCBhcyBhIHNlcnZpY2Uu
-Cmh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0LzUxNTIxMjIzLwpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+Q2hhcmFkZSA6IHByb2ZpdGV6IGRlIHLDqWR1Y3Rpb24ganVzcXUnw6AgLTkwJSBzdXIgbGVzIHZv
+aWxhZ2VzLCByaWRlYXV4IGV0CmNvdXNzaW5zLgpMaW5nZXJpZSBHcmFjeWEgZXQgRGFyZXgsIE1l
+dWJsZXMgZGVzaWducywgU2FjcyDDoCBtYWluIGN1aXJzIEZ1c2hpYSwKTGljZW5zZSBPTSBldCBQ
+U0cgOiBsaW5nZSBkZSBsaXQsIGFjY2Vzc29pcmVzLAoKVm90cmUgbG9naWNpZWwgZGUgbWVzc2Fn
+ZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2UgY29ycmVjdGVtZW50LgpDb25zdWx0ZXog
+bGEgdmVyc2lvbiBlbiBsaWduZSA6Cmh0dHA6Ly93d3cudW5pdmVyc3ZpcC5mci9kaWZmdXNpb24v
+ZGlzcGxheS5waHA/TT05MTc2NzcyJkM9MzNlODY0NDY2MzA1MjcwZmY5NGVhM2EyNzE1NzhiNzkm
+Uz0xMTMmTD02MiZOPTEuCgoKUG91ciBuZSBwbHVzIHJlY2V2b2lyIGRlIG1lc3NhZ2VzIGRlIG5v
+dHJlIHBhcnQsIHN1aXZleiBjZSBsaWVuIDoKaHR0cDovL3d3dy51bml2ZXJzdmlwLmZyL2RpZmZ1
+c2lvbi91bnN1YnNjcmliZS5waHA/TT05MTc2NzcyJkM9MzNlODY0NDY2MzA1MjcwZmY5NGVhM2Ey
+NzE1NzhiNzkmTD02MiZOPTExMwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9u
+ICYgQ2xvdWQgTWFuYWdlbWVudCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRp
+bmcgbWFrZXMgdXNlIG9mIHZpcnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxz
+byBmb2N1c2VzIG9uIGFsbG93aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2
+aWNlLgpodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

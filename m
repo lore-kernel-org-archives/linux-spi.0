@@ -1,40 +1,48 @@
-From: "I Love Parfum" <noreply-O3/8nGBsm4VSL0CvmOMexA@public.gmane.org>
-Subject: =?UTF-8?B?RnVzaGlhIChzYWNzIMOgIG1haW4gZW4gY3VpciksIExpY2Vuc2UgT00gZXQgUFNHIChsaW5nZSBkZSBsaXQsIGFjY2Vzc29pcmVzKSwgTGluZ2VyaWUsIE1ldWJsZXMgZGVzaWducw==?=
-Date: Fri, 02 Mar 2012 16:30:25 +0100
-Message-ID: <3930a10c5fa04479c0df4634be3e35bc@www.universvip.fr>
-Reply-To: noreply-O3/8nGBsm4VSL0CvmOMexA@public.gmane.org
+From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko@sntech.de>
+Subject: [PATCH 6/6] spi/s3c64xx: Allow usage for ARCH_S3C24XX
+Date: Sun, 4 Mar 2012 19:09:10 +0100
+Message-ID: <201203041909.10400.heiko@sntech.de>
+References: <201203041902.38318.heiko@sntech.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: ben-linux@fluff.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net
+To: Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <201203041902.38318.heiko@sntech.de>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2hhcmFkZSA6IHByb2ZpdGV6IGRlIHLDqWR1Y3Rpb24ganVzcXUnw6AgLTkwJSBzdXIgbGVzIHZv
-aWxhZ2VzLCByaWRlYXV4IGV0CmNvdXNzaW5zLgpMaW5nZXJpZSBHcmFjeWEgZXQgRGFyZXgsIE1l
-dWJsZXMgZGVzaWducywgU2FjcyDDoCBtYWluIGN1aXJzIEZ1c2hpYSwKTGljZW5zZSBPTSBldCBQ
-U0cgOiBsaW5nZSBkZSBsaXQsIGFjY2Vzc29pcmVzLAoKVm90cmUgbG9naWNpZWwgZGUgbWVzc2Fn
-ZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2UgY29ycmVjdGVtZW50LgpDb25zdWx0ZXog
-bGEgdmVyc2lvbiBlbiBsaWduZSA6Cmh0dHA6Ly93d3cudW5pdmVyc3ZpcC5mci9kaWZmdXNpb24v
-ZGlzcGxheS5waHA/TT05MTc2NzcyJkM9MzNlODY0NDY2MzA1MjcwZmY5NGVhM2EyNzE1NzhiNzkm
-Uz0xMTMmTD02MiZOPTEuCgoKUG91ciBuZSBwbHVzIHJlY2V2b2lyIGRlIG1lc3NhZ2VzIGRlIG5v
-dHJlIHBhcnQsIHN1aXZleiBjZSBsaWVuIDoKaHR0cDovL3d3dy51bml2ZXJzdmlwLmZyL2RpZmZ1
-c2lvbi91bnN1YnNjcmliZS5waHA/TT05MTc2NzcyJkM9MzNlODY0NDY2MzA1MjcwZmY5NGVhM2Ey
-NzE1NzhiNzkmTD02MiZOPTExMwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClZpcnR1YWxpemF0aW9u
-ICYgQ2xvdWQgTWFuYWdlbWVudCBVc2luZyBDYXBhY2l0eSBQbGFubmluZwpDbG91ZCBjb21wdXRp
-bmcgbWFrZXMgdXNlIG9mIHZpcnR1YWxpemF0aW9uIC0gYnV0IGNsb3VkIGNvbXB1dGluZyAKYWxz
-byBmb2N1c2VzIG9uIGFsbG93aW5nIGNvbXB1dGluZyB0byBiZSBkZWxpdmVyZWQgYXMgYSBzZXJ2
-aWNlLgpodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZm5sLzExNC81MTUyMTIyMy8KX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
-bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
-Z2VuZXJhbAo=
+Newer SoCs from the S3C24XX line, namely S3C2416/2443/2450 contain
+hsspi-controllers compatible with the s3c64xx type.
+
+The previous patches enabled platform support for it, so make the
+driver also usable for the S3C24xx architecture.
+
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+---
+As it is part of a series this probably needs an ack from Grant Likely
+and should be merged via the samsung tree.
+
+ drivers/spi/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ac92194..e411364 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -299,7 +299,7 @@ config SPI_S3C24XX_FIQ
+ 
+ config SPI_S3C64XX
+ 	tristate "Samsung S3C64XX series type SPI"
+-	depends on (ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
++	depends on (ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
+ 	select S3C64XX_DMA if ARCH_S3C64XX
+ 	help
+ 	  SPI driver for Samsung S3C64XX and newer SoCs.
+-- 
+1.7.2.3

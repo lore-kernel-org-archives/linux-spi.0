@@ -1,12 +1,14 @@
-From: vsvsfgsvjoy-Z5GbTsQsua1BDgjK7y7TUQ@public.gmane.org
-Subject: [SPAM] 报关/单证
-Date: Tue, 6 Mar 2012 07:51:02 +0800
-Message-ID: <E1S4hhx-0007LK-Lj@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Saadi Gaddafi<ffesed-EMRzualFZlQ@public.gmane.org>
+Subject: you have time to discuss??
+Date: Mon, 05 Mar 2012 16:42:57 -0800
+Message-ID: <MBEXCH2K3A2MwzPNnyc0000e61c@MBEXCH2K3.phocle.muddyboots.com>
+Reply-To: saadi78-dbdLmdGazhY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Description: Mail message body
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,21 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAKICDE+rrDISAgCiAgIAogICAgICCxvrmry77Kx9K7vNLTtdPQvfiz9r/asai52LXI0rvH0LP2
-v9q1pdaktPrA7bmry76jrNPQ18W34bi7tcQKCiAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
-IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAxLszhuam6y8/6taWjqLGoudi1paOpCgogIDIu
-Q0+y+rXY1qQuIMbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm53ceptcgpIAoKICAzLsLy
-taWxqLnYo6zJzLzso6zNz7O1CgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKICDB
-qs+1yMujutXFz8jJ+iAgICAgIMGqz7W157uwo7owNzU1LTI1NDI1NDk1ICDK1rv6o7oxMzY4Njg2
-ODU0OAoKICBRUaO6MTIyMDYyMTQzICAg08rP5KO6c3p5b25nZG9uZ2ppYW5nc0AxNjMuY29tICAx
-MjIwNjIxNDNAcXEuY29tCgogICAgICAgICAgICAgICAgICAgICAgsb6547jms6TG2tPQ0KcKCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpUcnkgYmVmb3JlIHlvdSBidXkgPSBTZWUgb3VyIGV4cGVydHMg
-aW4gYWN0aW9uIQpUaGUgbW9zdCBjb21wcmVoZW5zaXZlIG9ubGluZSBsZWFybmluZyBsaWJyYXJ5
-IGZvciBNaWNyb3NvZnQgZGV2ZWxvcGVycwppcyBqdXN0ICQ5OS45OSEgVmlzdWFsIFN0dWRpbywg
-U2hhcmVQb2ludCwgU1FMIC0gcGx1cyBIVE1MNSwgQ1NTMywgTVZDMywKTWV0cm8gU3R5bGUgQXBw
-cywgbW9yZS4gRnJlZSBmdXR1cmUgcmVsZWFzZXMgd2hlbiB5b3Ugc3Vic2NyaWJlIG5vdyEKaHR0
-cDovL3Auc2YubmV0L3NmdS9sZWFybmRldm5vdy1kZXYyCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+would
+like
+to
+discuss
+a
+project
+with
+you.
+Please
+email
+me
+back.
+via saadi78-dbdLmdGazhY@public.gmane.org
+
+------------------------------------------------------------------------------
+Keep Your Developer Skills Current with LearnDevNow!
+The most comprehensive online learning library for Microsoft developers
+is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
+Metro Style Apps, more. Free future releases when you subscribe now!
+http://p.sf.net/sfu/learndevnow-d2d

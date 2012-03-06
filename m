@@ -1,71 +1,59 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: create a message queueing infrastructure
-Date: Tue, 6 Mar 2012 13:26:46 +0100
-Message-ID: <CACRpkdb4QWXpUcmVOX+1C3qSKNQ7GwrjE1ZuiKGVwG8mrgiWpQ@mail.gmail.com>
-References: <1329901538-8644-1-git-send-email-linus.walleij@stericsson.com>
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH RFC] spi/omap: Trivial cleanup
+Date: Tue, 06 Mar 2012 18:45:13 +0530
+Message-ID: <4F560DE1.3090809@ti.com>
+References: <1330524246-8864-1-git-send-email-shubhrajyoti@ti.com> <4F55E412.5050409@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1329901538-8644-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+To: "Cousson, Benoit" <b-cousson@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4F55E412.5050409@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 22, 2012 at 10:05 AM, Linus Walleij
-<linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
-
-> From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On Tuesday 06 March 2012 03:46 PM, Cousson, Benoit wrote:
+> Hi Shubhro,
 >
-> This rips the message queue in the PL022 driver out and pushes
-> it into (optional) common infrastructure. Drivers that want to
-> use the message pumping thread will need to define the new
-> per-messags transfer methods and leave the deprecated transfer()
-> method as NULL.
+> On 2/29/2012 3:04 PM, Shubhrajyoti D wrote:
+>> The context is stored directly inside drvdata structure post
+>> [f887876 spi/omap: Remove bus_num usage for instance index].
+>> Remove the OMAP2_MCSPI_MAX_CTRL macro as it is not needed anymore.
+>>
+>> Cc: Benoit Cousson<b-cousson@ti.com>
+>> Signed-off-by: Shubhrajyoti D<shubhrajyoti@ti.com>
 >
-> Most of the design is described in the documentation changes that
-> are included in this patch.
+> Thanks for that extra cleanup, I missed it.
 >
-> Since there is a queue that need to be stopped when the system
-> is suspending/resuming, two new calls are implemented for the
-> device drivers to call in their suspend()/resume() functions:
-> spi_master_suspend() and spi_master_resume().
+> Acked-by: Benoit Cousson <b-cousson@ti.com>
 >
-> ChangeLog v1->v2:
-> - Remove Kconfig entry and do not make the queue support optional
-> =A0at all, instead be more agressive and have it as part of the
-> =A0compulsory infrastructure.
-> - If the .transfer() method is implemented, delete print a small
-> =A0deprecation notice and do not start the transfer pump.
-> - Fix a bitrotted comment.
-> ChangeLog v2->v3:
-> - Fix up a problematic sequence courtesy of Chris Blair.
-> - Stop rather than destroy the queue on suspend() courtesy of
-> =A0Chris Blair.
-
-Ping on this! Would be nice to see in linux-next if we go for this.
-
-> Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-
-Mark can we have your explicit ACK?
-
-Yours,
-Linus Walleij
-
----------------------------------------------------------------------------=
----
-Keep Your Developer Skills Current with LearnDevNow!
-The most comprehensive online learning library for Microsoft developers
-is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-Metro Style Apps, more. Free future releases when you subscribe now!
-http://p.sf.net/sfu/learndevnow-d2d
+>> ---
+>> Applies on Benoit's for_3.4/dt_spi_eth
+>>
+>>   drivers/spi/spi-omap2-mcspi.c |    3 ---
+>>   1 files changed, 0 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-omap2-mcspi.c
+>> b/drivers/spi/spi-omap2-mcspi.c
+>> index d1eb26c..3526281 100644
+>> --- a/drivers/spi/spi-omap2-mcspi.c
+>> +++ b/drivers/spi/spi-omap2-mcspi.c
+>> @@ -45,9 +45,6 @@
+>>
+>>   #define OMAP2_MCSPI_MAX_FREQ        48000000
+>>
+>> -/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
+>> -#define OMAP2_MCSPI_MAX_CTRL         4
+>> -
+>
+> I guess it can be included in the "spi/omap: Remove bus_num usage for
+> instance index"?
+> Is that OK for you?
+Yes, sure.
+>
+>
+> Thanks,
+> Benoit
+>

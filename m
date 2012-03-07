@@ -1,11 +1,12 @@
-From: shzhshitsmmmyy3334-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 代/开--发/票
-Date: Wed, 7 Mar 2012 19:02:06 +0800
-Message-ID: <E1S5EdW-0006Dy-Kn@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Laetizia <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Vous pouvez maitriser votre destin
+Date: Wed, 7 Mar 2012 12:44:11 +0100 (CET)
+Message-ID: <3236305005.783455.1331120651255@p4enginex2.emv2.com>
+Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7AtLcaxL7T6v6qjuwrI5zoKICAgKDEpxtXN
-qMnMxrfP+srby7AtLcaxo7sKICAgKDIpueO45tK1oaK498Dgt/7O8dK1y7AtLcaxL7XItcihowq5
-87mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4
-utTwyMujutXFz8jJ+igwKTEzNTM4MDMzMzM0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVmlydHVh
-bGl6YXRpb24gJiBDbG91ZCBNYW5hZ2VtZW50IFVzaW5nIENhcGFjaXR5IFBsYW5uaW5nCkNsb3Vk
-IGNvbXB1dGluZyBtYWtlcyB1c2Ugb2YgdmlydHVhbGl6YXRpb24gLSBidXQgY2xvdWQgY29tcHV0
-aW5nIAphbHNvIGZvY3VzZXMgb24gYWxsb3dpbmcgY29tcHV0aW5nIHRvIGJlIGRlbGl2ZXJlZCBh
-cyBhIHNlcnZpY2UuCmh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3NmbmwvMTE0LzUxNTIx
-MjIzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+        Si vous ne visualisez pas correctement ce message, cliquez ici.
+              Et si votre destin =E9tait en train de changer ?
+     La fin des ennuis, le vrai bonheur, vous le m=E9ritez tellement !
+           Votre voyance gratuite c'est le =ABcoup de pouce=BB que
+              vous accorde votre destin pour vous permettre
+                d'avoir toutes les chances de votre c=F4t=E9.
+            sans qu'il vous en co=FBte un seul centime d'euro !
+    Votre voyance d'aide    Laissez-vous guider   Consultez l'un des
+    imm=E9diate sur trois     vers toutes les       plus grands voyants
+    mois                    r=E9ussites             au monde
+    Vous avez besoin d'une  N'avancez plus jamais Venez au rendez-vous
+    aide pr=E9cise            en solitaire
+    Je peux vous aider      Je peux vous aider    Je peux vous aider
+    comme personne n'a pu   comme personne n'a pu comme personne n'a
+    le faire =E0 ce jour.     le faire =E0 ce jour.   pu le faire =E0 ce
+                                                  jour.
+    Je peux vous aider      Je peux vous aider    Je peux vous aider
+    comme personne n'a pu   comme personne n'a pu comme personne n'a
+    le faire =E0 ce jour.     le faire =E0 ce jour.   pu le faire =E0 ce
+                                                  jour.
+        D=E9couvrez comment votre voyance peut d=E9tecter les origines
+        cach=E9es de vos probl=E8mes; bloquer les sources malfaisantes
+              qui peuvent exister dans votre entourage, pour
+                   vous faire une vie pleine d'argent,
+                        de r=E9ussites et de joies.
+     Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier =
+1978,
+                           vous pouvez =E0 tout moment
+       demander =E0 acc=E9der, faire rectifier ou supprimer les informations
+                                 personnelles.
+
+      Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de
+                  mails par l'intermediaire de ce raccourci.
+---------------------------------------------------------------------------=
+---
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing =
+
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

@@ -1,12 +1,13 @@
-From: Laetizia <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: Vous pouvez maitriser votre destin
-Date: Wed, 7 Mar 2012 12:44:11 +0100 (CET)
-Message-ID: <3236305005.783455.1331120651255@p4enginex2.emv2.com>
-Reply-To: newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?S=E9rie_limit=E9e=2C?= 50% de
+	=?iso-8859-15?Q?r=E9duction?= sur la malle croco !
+Date: Wed, 07 Mar 2012 13:27:24 +0100
+Message-ID: <1331123244.4f57542cdfb88@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,39 +19,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
-              Et si votre destin =E9tait en train de changer ?
-     La fin des ennuis, le vrai bonheur, vous le m=E9ritez tellement !
-           Votre voyance gratuite c'est le =ABcoup de pouce=BB que
-              vous accorde votre destin pour vous permettre
-                d'avoir toutes les chances de votre c=F4t=E9.
-            sans qu'il vous en co=FBte un seul centime d'euro !
-    Votre voyance d'aide    Laissez-vous guider   Consultez l'un des
-    imm=E9diate sur trois     vers toutes les       plus grands voyants
-    mois                    r=E9ussites             au monde
-    Vous avez besoin d'une  N'avancez plus jamais Venez au rendez-vous
-    aide pr=E9cise            en solitaire
-    Je peux vous aider      Je peux vous aider    Je peux vous aider
-    comme personne n'a pu   comme personne n'a pu comme personne n'a
-    le faire =E0 ce jour.     le faire =E0 ce jour.   pu le faire =E0 ce
-                                                  jour.
-    Je peux vous aider      Je peux vous aider    Je peux vous aider
-    comme personne n'a pu   comme personne n'a pu comme personne n'a
-    le faire =E0 ce jour.     le faire =E0 ce jour.   pu le faire =E0 ce
-                                                  jour.
-        D=E9couvrez comment votre voyance peut d=E9tecter les origines
-        cach=E9es de vos probl=E8mes; bloquer les sources malfaisantes
-              qui peuvent exister dans votre entourage, pour
-                   vous faire une vie pleine d'argent,
-                        de r=E9ussites et de joies.
-     Conform=E9ment =E0 la loi " informatique et libert=E9s " du 6 janvier =
-1978,
-                           vous pouvez =E0 tout moment
-       demander =E0 acc=E9der, faire rectifier ou supprimer les informations
-                                 personnelles.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-      Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de
-                  mails par l'intermediaire de ce raccourci.
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTczODQmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTA3IDEzOjAwOjAxJmU9MSZoPTczODMmZj03Mzg0Jmc9NzM4NA=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTczODQmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTA3IDEzOjAwOjAxJmU9MSZoPTczODMmZj03Mzg0Jmc9NzM4NA=3D=
+=3D
+
+
 ---------------------------------------------------------------------------=
 ---
 Virtualization & Cloud Management Using Capacity Planning

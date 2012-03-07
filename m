@@ -1,59 +1,78 @@
-From: Shubhrajyoti <shubhrajyoti@ti.com>
-Subject: Re: [PATCH RFC] spi/omap: Trivial cleanup
-Date: Tue, 06 Mar 2012 18:45:13 +0530
-Message-ID: <4F560DE1.3090809@ti.com>
-References: <1330524246-8864-1-git-send-email-shubhrajyoti@ti.com> <4F55E412.5050409@ti.com>
+From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
+Subject: [PATCH RESEND] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK decoding for
+ access size
+Date: Wed, 07 Mar 2012 14:45:37 +0900
+Message-ID: <4F56F601.2070405@renesas.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: "Cousson, Benoit" <b-cousson@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <4F55E412.5050409@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+	SH-Linux <linux-sh@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 06 March 2012 03:46 PM, Cousson, Benoit wrote:
-> Hi Shubhro,
->
-> On 2/29/2012 3:04 PM, Shubhrajyoti D wrote:
->> The context is stored directly inside drvdata structure post
->> [f887876 spi/omap: Remove bus_num usage for instance index].
->> Remove the OMAP2_MCSPI_MAX_CTRL macro as it is not needed anymore.
->>
->> Cc: Benoit Cousson<b-cousson@ti.com>
->> Signed-off-by: Shubhrajyoti D<shubhrajyoti@ti.com>
->
-> Thanks for that extra cleanup, I missed it.
->
-> Acked-by: Benoit Cousson <b-cousson@ti.com>
->
->> ---
->> Applies on Benoit's for_3.4/dt_spi_eth
->>
->>   drivers/spi/spi-omap2-mcspi.c |    3 ---
->>   1 files changed, 0 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/spi/spi-omap2-mcspi.c
->> b/drivers/spi/spi-omap2-mcspi.c
->> index d1eb26c..3526281 100644
->> --- a/drivers/spi/spi-omap2-mcspi.c
->> +++ b/drivers/spi/spi-omap2-mcspi.c
->> @@ -45,9 +45,6 @@
->>
->>   #define OMAP2_MCSPI_MAX_FREQ        48000000
->>
->> -/* OMAP2 has 3 SPI controllers, while OMAP3 has 4 */
->> -#define OMAP2_MCSPI_MAX_CTRL         4
->> -
->
-> I guess it can be included in the "spi/omap: Remove bus_num usage for
-> instance index"?
-> Is that OK for you?
-Yes, sure.
->
->
-> Thanks,
-> Benoit
->
+This SPI controller's access size is 32, or 8-bit. The previous driver
+supported 32-bit only. So, this patch adds IORESOURCE_MEM_TYPE_MASK
+decoding, an then, the driver can handle the SPI controller of 8-bit.
+
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+---
+ drivers/spi/spi-sh.c |   25 +++++++++++++++++++++++--
+ 1 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index 70c8af9..79442c3 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -92,17 +92,26 @@ struct spi_sh_data {
+ 	unsigned long cr1;
+ 	wait_queue_head_t wait;
+ 	spinlock_t lock;
++	int width;
+ };
+
+ static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
+ 			     unsigned long offset)
+ {
+-	writel(data, ss->addr + offset);
++	if (ss->width == 8)
++		iowrite8(data, ss->addr + (offset >> 2));
++	else if (ss->width == 32)
++		iowrite32(data, ss->addr + offset);
+ }
+
+ static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
+ {
+-	return readl(ss->addr + offset);
++	if (ss->width == 8)
++		return ioread8(ss->addr + (offset >> 2));
++	else if (ss->width == 32)
++		return ioread32(ss->addr + offset);
++	else
++		return 0;
+ }
+
+ static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
+@@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+ 	ss = spi_master_get_devdata(master);
+ 	dev_set_drvdata(&pdev->dev, ss);
+
++	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
++	case IORESOURCE_MEM_8BIT:
++		ss->width = 8;
++		break;
++	case IORESOURCE_MEM_32BIT:
++		ss->width = 32;
++		break;
++	default:
++		dev_err(&pdev->dev, "No support width\n");
++		ret = -ENODEV;
++		goto error1;
++	}
+ 	ss->irq = irq;
+ 	ss->master = master;
+ 	ss->addr = ioremap(res->start, resource_size(res));
+-- 
+1.7.1

@@ -1,86 +1,49 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH RESEND] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK
- decoding for access size
-Date: Wed, 7 Mar 2012 19:26:36 -0700
-Message-ID: <20120308022636.GB1964@ponder.secretlab.ca>
-References: <4F56F601.2070405@renesas.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v3] spi: create a message queueing infrastructure
+Date: Wed, 7 Mar 2012 19:26:22 -0700
+Message-ID: <20120308022622.GA1964@ponder.secretlab.ca>
+References: <1329901538-8644-1-git-send-email-linus.walleij@stericsson.com>
+	<CACRpkdb4QWXpUcmVOX+1C3qSKNQ7GwrjE1ZuiKGVwG8mrgiWpQ@mail.gmail.com>
+	<20120306123507.GQ19635@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	SH-Linux <linux-sh@vger.kernel.org>
-To: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <4F56F601.2070405@renesas.com>
-Sender: linux-sh-owner@vger.kernel.org
+In-Reply-To: <20120306123507.GQ19635-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 07, 2012 at 02:45:37PM +0900, Shimoda, Yoshihiro wrote:
-> This SPI controller's access size is 32, or 8-bit. The previous driver
-> supported 32-bit only. So, this patch adds IORESOURCE_MEM_TYPE_MASK
-> decoding, an then, the driver can handle the SPI controller of 8-bit.
+On Tue, Mar 06, 2012 at 12:35:08PM +0000, Mark Brown wrote:
+> On Tue, Mar 06, 2012 at 01:26:46PM +0100, Linus Walleij wrote:
+> > On Wed, Feb 22, 2012 at 10:05 AM, Linus Walleij
 > 
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> > > Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> 
+> > Mark can we have your explicit ACK?
+> 
+> I'm pretty sure I already said
+> 
+> Tested-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
 Applied, thanks.
 
 g.
 
-> ---
->  drivers/spi/spi-sh.c |   25 +++++++++++++++++++++++--
->  1 files changed, 23 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-> index 70c8af9..79442c3 100644
-> --- a/drivers/spi/spi-sh.c
-> +++ b/drivers/spi/spi-sh.c
-> @@ -92,17 +92,26 @@ struct spi_sh_data {
->  	unsigned long cr1;
->  	wait_queue_head_t wait;
->  	spinlock_t lock;
-> +	int width;
->  };
-> 
->  static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
->  			     unsigned long offset)
->  {
-> -	writel(data, ss->addr + offset);
-> +	if (ss->width == 8)
-> +		iowrite8(data, ss->addr + (offset >> 2));
-> +	else if (ss->width == 32)
-> +		iowrite32(data, ss->addr + offset);
->  }
-> 
->  static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
->  {
-> -	return readl(ss->addr + offset);
-> +	if (ss->width == 8)
-> +		return ioread8(ss->addr + (offset >> 2));
-> +	else if (ss->width == 32)
-> +		return ioread32(ss->addr + offset);
-> +	else
-> +		return 0;
->  }
-> 
->  static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
-> @@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
->  	ss = spi_master_get_devdata(master);
->  	dev_set_drvdata(&pdev->dev, ss);
-> 
-> +	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
-> +	case IORESOURCE_MEM_8BIT:
-> +		ss->width = 8;
-> +		break;
-> +	case IORESOURCE_MEM_32BIT:
-> +		ss->width = 32;
-> +		break;
-> +	default:
-> +		dev_err(&pdev->dev, "No support width\n");
-> +		ret = -ENODEV;
-> +		goto error1;
-> +	}
->  	ss->irq = irq;
->  	ss->master = master;
->  	ss->addr = ioremap(res->start, resource_size(res));
-> -- 
-> 1.7.1
+------------------------------------------------------------------------------
+Virtualization & Cloud Management Using Capacity Planning
+Cloud computing makes use of virtualization - but cloud computing 
+also focuses on allowing computing to be delivered as a service.
+http://www.accelacomm.com/jaw/sfnl/114/51521223/

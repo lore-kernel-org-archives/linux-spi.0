@@ -1,208 +1,86 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH 1/4 v4] of_spi: add generic binding support to specify cs gpio
-Date: Wed,  7 Mar 2012 13:23:06 +0100
-Message-ID: <1331122989-14451-1-git-send-email-plagnioj@jcrosoft.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH RESEND] spi: spi-sh: add IORESOURCE_MEM_TYPE_MASK
+ decoding for access size
+Date: Wed, 7 Mar 2012 19:26:36 -0700
+Message-ID: <20120308022636.GB1964@ponder.secretlab.ca>
+References: <4F56F601.2070405@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	SH-Linux <linux-sh@vger.kernel.org>
+To: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4F56F601.2070405@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This will allow to use gpio for chip select with no modification in the
-driver binding
+On Wed, Mar 07, 2012 at 02:45:37PM +0900, Shimoda, Yoshihiro wrote:
+> This SPI controller's access size is 32, or 8-bit. The previous driver
+> supported 32-bit only. So, this patch adds IORESOURCE_MEM_TYPE_MASK
+> decoding, an then, the driver can handle the SPI controller of 8-bit.
+> 
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-When use the cs-gpios, the gpio number will be passed via the cs_gpio field
-and the number of chip select will automatically increased.
+Applied, thanks.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
----
-v4:
-	use cs_gpio to pass the gpio number
+g.
 
-Best Regards,
-J.
- Documentation/devicetree/bindings/spi/spi-bus.txt |    6 ++
- drivers/spi/spi.c                                 |   57 +++++++++++++++++++-
- include/linux/spi/spi.h                           |    6 ++
- 3 files changed, 66 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index e782add..c253379 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -12,6 +12,7 @@ The SPI master node requires the following properties:
- - #size-cells     - should be zero.
- - compatible      - name of SPI bus controller following generic names
-     		recommended practice.
-+- cs-gpios	  - (optional) gpios chip select.
- No other properties are required in the SPI bus node.  It is assumed
- that a driver for an SPI bus device will understand that it is an SPI bus.
- However, the binding does not attempt to define the specific method for
-@@ -21,6 +22,8 @@ assumption that board specific platform code will be used to manage
- chip selects.  Individual drivers can define additional properties to
- support describing the chip select layout.
- 
-+If cs-gpios is used the number of chip select will automatically increased.
-+
- SPI slave nodes must be children of the SPI master node and can
- contain the following properties.
- - reg             - (required) chip select address of device.
-@@ -34,6 +37,9 @@ contain the following properties.
- - spi-cs-high     - (optional) Empty property indicating device requires
-     		chip select active high
- 
-+If a gpio chipselect is used for the SPI slave the gpio number will be passed
-+via the controller_data
-+
- SPI example for an MPC5200 SPI bus:
- 	spi@f00 {
- 		#address-cells = <1>;
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index b2ccdea..c1d0955 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -28,6 +28,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/spi/spi.h>
- #include <linux/of_spi.h>
-+#include <linux/of_gpio.h>
- #include <linux/pm_runtime.h>
- #include <linux/export.h>
- 
-@@ -322,6 +323,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- 	spi->dev.parent = &master->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
-+	spi->cs_gpio = -EINVAL;
- 	device_initialize(&spi->dev);
- 	return spi;
- }
-@@ -339,15 +341,16 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
- int spi_add_device(struct spi_device *spi)
- {
- 	static DEFINE_MUTEX(spi_add_lock);
--	struct device *dev = spi->master->dev.parent;
-+	struct spi_master *master = spi->master;
-+	struct device *dev = master->dev.parent;
- 	struct device *d;
- 	int status;
- 
- 	/* Chipselects are numbered 0..max; validate. */
--	if (spi->chip_select >= spi->master->num_chipselect) {
-+	if (spi->chip_select >= master->num_chipselect) {
- 		dev_err(dev, "cs%d >= max %d\n",
- 			spi->chip_select,
--			spi->master->num_chipselect);
-+			master->num_chipselect);
- 		return -EINVAL;
- 	}
- 
-@@ -371,6 +374,13 @@ int spi_add_device(struct spi_device *spi)
- 		goto done;
- 	}
- 
-+	if (master->num_gpio_cs &&
-+	    spi->chip_select >= master->first_gpio_cs) {
-+		int num = spi->chip_select - master->first_gpio_cs;
-+
-+		spi->cs_gpio = master->cs_gpios[num];
-+	}
-+
- 	/* Drivers may modify this initial i/o setup, but will
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
-@@ -561,6 +571,43 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- }
- EXPORT_SYMBOL_GPL(spi_alloc_master);
- 
-+#ifdef CONFIG_OF
-+static int of_spi_register_master(struct spi_master *master)
-+{
-+	int nb, i;
-+	int *cs;
-+	struct device_node *np = master->dev.of_node;
-+
-+	if (!np)
-+		return 0;
-+
-+	nb = of_gpio_named_count(np, "cs-gpios");
-+
-+	if (nb < 1)
-+		return 0;
-+
-+	cs = devm_kzalloc(&master->dev, sizeof(int) * nb, GFP_KERNEL);
-+	master->cs_gpios = cs;
-+
-+	if (!master->cs_gpios)
-+		return -ENOMEM;
-+
-+	master->first_gpio_cs = master->num_chipselect;
-+	master->num_chipselect += nb;
-+	master->num_gpio_cs = nb;
-+
-+	for (i = 0; i < nb; i++)
-+		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+
-+	return 0;
-+}
-+#else
-+static int of_spi_register_master(struct spi_master *master)
-+{
-+	return 0;
-+}
-+#endif
-+
- /**
-  * spi_register_master - register SPI master controller
-  * @master: initialized master, originally from spi_alloc_master()
-@@ -592,6 +639,10 @@ int spi_register_master(struct spi_master *master)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	status = of_spi_register_master(master);
-+	if (status)
-+		return status;
-+
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
- 	 */
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 176fce9..7dcf031 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -89,6 +89,7 @@ struct spi_device {
- 	void			*controller_state;
- 	void			*controller_data;
- 	char			modalias[SPI_NAME_SIZE];
-+	int			cs_gpio;	/* chip select gpio */
- 
- 	/*
- 	 * likely need more hooks for more protocol options affecting how
-@@ -318,6 +319,11 @@ struct spi_master {
- 
- 	/* called on release() to free memory provided by spi_master */
- 	void			(*cleanup)(struct spi_device *spi);
-+
-+	/* gpio chip select */
-+	int			*cs_gpios;
-+	int			first_gpio_cs;
-+	int			num_gpio_cs;
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
--- 
-1.7.7
+> ---
+>  drivers/spi/spi-sh.c |   25 +++++++++++++++++++++++--
+>  1 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+> index 70c8af9..79442c3 100644
+> --- a/drivers/spi/spi-sh.c
+> +++ b/drivers/spi/spi-sh.c
+> @@ -92,17 +92,26 @@ struct spi_sh_data {
+>  	unsigned long cr1;
+>  	wait_queue_head_t wait;
+>  	spinlock_t lock;
+> +	int width;
+>  };
+> 
+>  static void spi_sh_write(struct spi_sh_data *ss, unsigned long data,
+>  			     unsigned long offset)
+>  {
+> -	writel(data, ss->addr + offset);
+> +	if (ss->width == 8)
+> +		iowrite8(data, ss->addr + (offset >> 2));
+> +	else if (ss->width == 32)
+> +		iowrite32(data, ss->addr + offset);
+>  }
+> 
+>  static unsigned long spi_sh_read(struct spi_sh_data *ss, unsigned long offset)
+>  {
+> -	return readl(ss->addr + offset);
+> +	if (ss->width == 8)
+> +		return ioread8(ss->addr + (offset >> 2));
+> +	else if (ss->width == 32)
+> +		return ioread32(ss->addr + offset);
+> +	else
+> +		return 0;
+>  }
+> 
+>  static void spi_sh_set_bit(struct spi_sh_data *ss, unsigned long val,
+> @@ -464,6 +473,18 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+>  	ss = spi_master_get_devdata(master);
+>  	dev_set_drvdata(&pdev->dev, ss);
+> 
+> +	switch (res->flags & IORESOURCE_MEM_TYPE_MASK) {
+> +	case IORESOURCE_MEM_8BIT:
+> +		ss->width = 8;
+> +		break;
+> +	case IORESOURCE_MEM_32BIT:
+> +		ss->width = 32;
+> +		break;
+> +	default:
+> +		dev_err(&pdev->dev, "No support width\n");
+> +		ret = -ENODEV;
+> +		goto error1;
+> +	}
+>  	ss->irq = irq;
+>  	ss->master = master;
+>  	ss->addr = ioremap(res->start, resource_size(res));
+> -- 
+> 1.7.1

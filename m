@@ -1,50 +1,49 @@
-From: =?GB2312?B?x+vXqtDox/PIy9Sx?= <fdi-GS5c11kerUE@public.gmane.org>
-Subject: [SPAM] 朗咸平-2012开局财经大解构
-Date: Thu, 8 Mar 2012 15:13:22 +0800
-Message-ID: <E1S5XXR-00045M-RV@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: [git pull] spi section mismatch bug fix
+Date: Thu, 8 Mar 2012 11:31:48 -0700
+Message-ID: <CACxGe6tUg9ahP=9XE3KJQA-UJtfyT3a_Gb3fU-2mC53DJe1KAg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-wMnPzMa9vczK2r2rurG8+7XEyKvM7NHdvbItLTIwMTK/qr7Wssa+rbTzveK5uQoKyc+6oyAgICAz
-1MIxMMjVCgrC0srA1tDPyNaqz8i+9dXfyqSjoQq5+sTao7qhsMvEzfLS2r7IytChsbXEuvPSxdai
-MjAxMsTqvK/W0LGst6IKufq8yqO6obDFt9WuzqO7+qGi0sHAysqv083Oo7v6obHLq9bYtPK798Oz
-0tcKCgrX1DIwMDjE6tLUwLSjrLTzsr+31r6tvMO3otW51rvKx7qjytDy18Klo6y9qMDr1NrO97e9
-ufq80rK7v8mz1tD4tcTV/riu1qez9rrN0MLQy76tvMPM5bXExd3EraGjCjEyxOrV4sG91tbWp7PW
-0vLL2La8u+HP+8qno6y6o8rQ8tfCpb2ru+HGxsPwoaPI57n7xOPIz86qMjAwOMTqtcTH6b/20tG+
-rbrcu7WjrMTHw7TU2ry0vau1vcC0CrXEMjAxMsTqo6zPtbrDsLLIq7T4sMmho8rAvee/ycTcsru7
-4bvZw/CjrLWryOeyu7v9vKvTprbUxOO1xLLGuLu9q7vhy/XLrqGjCgqh9NbQufq9q734yOtN0M3P
-+7fRveG5uaOssvrGt8novMa1vM/yuMPI57rO06a21KO/Cgqh9MjOus7Su7j2ss7T68650fjW0Ln6
-obDNttfKw83K3qGxtcSy+tK1us3G89K1yse38ba8vau74b34yOuy+sTcuf3Ko7rNuuy6o7661fnW
-0KO/Cgqh9NPJ09q827jxsru2z8nP1cejrMqv0826zcqzxrezpMbawLS/tLa8vavD5sHZuanTpr30
-1cW1xL7Ww+ajrNPQyrLDtNH5tcTNttfKu/q74aO/Cgqh9Lmk0rW98Mr0xrfXytS0vLDG5Mn6svrJ
-zLL60rXK17WxxuSz5aOsuMPI57rO06a21KO/Cgqh9LDNzvehotOhtsi/ycTcs/bP1rv1sdK087f5
-seHWtaOsttTLrbvh1OyzybPlu/ejvwoKofTDwLn61f7Wzr2pvtbP3tbGwcvDwLn6ssbV/sCp1cWj
-rMPA1Kq74bfxyf3WtaO/Cgqh9NbQufq3v7XYsvrF3cStu+G38cbGwdGjrMrHt/G9tbXNtPPX2snM
-xre827jxo78KCqH0tcK5+rvht/G12tK7uPbG+tPDxbfUqqO/wu2/y7bUxbfUqrTzt/nJz9XHo78K
-CqH01tC5+rbUsMS/87L6tcTQ6MfztPO3+c/Cu6yjrLDE1Kq74dTi0c/W2MXXytujvwoKofTI1dSy
-1cfKxry0vavNo9a5o7+w0ceut8XI1bG+tcjT2rfFtb3L6da9u/rA76O/CgoKvM6x9s+vo7ozODAw
-1KqjuyAgufOx9s+vo7o0ODAw1KoKCtGn1LG21M/zo7q2rcrCs6Shotfco6i4saOpvq3A7aGi19y8
-4KGixvPStdbQuN+919b3udy8sMbz0rXTqs/61tC437LjudzA7cjLyr+howoK18nRr7Xnu7CjujAy
-MC04MDU2MDYzOCAgIDAyMC04NTkxNzk0NSAg0LvQob3jo7sKICAgICAgICAgIDA3NTUtNjEyODc1
-NTIgILPC0KG946OosrvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sF0dWl4aW4yMDEyQDEyNi5jb23N
-y9DFo6kKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpWaXJ0dWFsaXphdGlvbiAmIENsb3VkIE1hbmFn
-ZW1lbnQgVXNpbmcgQ2FwYWNpdHkgUGxhbm5pbmcKQ2xvdWQgY29tcHV0aW5nIG1ha2VzIHVzZSBv
-ZiB2aXJ0dWFsaXphdGlvbiAtIGJ1dCBjbG91ZCBjb21wdXRpbmcgCmFsc28gZm9jdXNlcyBvbiBh
-bGxvd2luZyBjb21wdXRpbmcgdG8gYmUgZGVsaXZlcmVkIGFzIGEgc2VydmljZS4KaHR0cDovL3d3
-dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZubC8xMTQvNTE1MjEyMjMvCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi Linus,
+
+Here's one more bug fix for spi.
+
+The following changes since commit d65b4e98d7ea3038b767b70fe8be959b2913f16d:
+
+  Linux 3.3-rc3 (2012-02-08 19:21:53 -0800)
+
+are available in the git repository at:
+
+  git://git.secretlab.ca/git/linux-2.6 spi-for-linus
+
+for you to fetch changes up to a5ab6291b1fc73e0dc71caf2eaa0de1de7b11aaa:
+
+  Fix section mismatch in spi-pl022.c (2012-02-13 11:57:58 -0700)
+
+----------------------------------------------------------------
+SPI section mismatch bug fix for v3.3-rc3
+
+Russell King (1):
+      Fix section mismatch in spi-pl022.c
+
+Minor fix for pl022_dma_probe() function which was put in the wrong section.
+
+----------------------------------------------------------------
+Russell King (1):
+      Fix section mismatch in spi-pl022.c
+
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

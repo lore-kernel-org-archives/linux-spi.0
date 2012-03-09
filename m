@@ -1,14 +1,10 @@
-From: Le Club des =?iso-8859-15?Q?Cr=E9ateurs?= de
-	=?iso-8859-15?Q?Beaut=E9?= par GalerieDesMarques.fr
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: 5 produits pour =?iso-8859-15?Q?29=2C90=80?= seulement et 1 cadeau
-	=?iso-8859-15?Q?agn=E8s?= b.
-Date: Fri, 09 Mar 2012 01:51:54 +0100
-Message-ID: <1331254314.4f59542a6b7b0@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: "=?gb2312?B?aG9uZ3RhbmdkdWowOTc=?=" <hongtangduj097-WVlzvzqoTvw@public.gmane.org>
+Subject: =?gb2312?B?QaG+KrBsKirGsSq0+irA7Sqhvw==?=
+Date: Fri, 9 Mar 2012 16:23:19 +0800 (CST)
+Message-ID: <4F59BDF7.000017.17196@bjapp53>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============4519148883795319845=="
+Cc: spidey-9Onoh4P/yGk@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -21,20 +17,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NzIxNSZjPTE5NjE2NDEmZD0yMDEy=
-LTAzLTA4IDIyOjIwOjAxJmU9MSZoPTcyMTQmZj03MjE1Jmc9NzIxNQ=3D=3D
+--===============4519148883795319845==
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NzIxNSZjPTE=
-5NjE2NDEmZD0yMDEyLTAzLTA4IDIyOjIwOjAxJmU9MSZoPTcyMTQmZj03MjE1Jmc9NzIxNQ=3D=
-=3D
+ICAgINm8yb3QyLHJ18TviDZ3V1pFNkd5UWUNCjk0NTQ0NzA3MjANCmVXVHhWVHRhDQo4Njg3
+ODFVcW1QYW9LDQpKOXBjT2R1aWINCkhMalFUVFZUWA0KcnpQcE4NCjZJZmZIVTVRQ1o0ICAg
+ICANCg0K
+--===============4519148883795319845==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
+Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/
+--===============4519148883795319845==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4519148883795319845==--

@@ -1,61 +1,82 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] trivial: spi-pl022.c: fix a wrong kerneldoc comment
-Date: Fri, 09 Mar 2012 14:56:41 -0700
-Message-ID: <20120309215641.287F83E0880@localhost>
-References: <1328718213-17375-1-git-send-email-federico.vaga@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Federico Vaga <federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, giancarlo.asnaghi-qxv4g6HH51o@public.gmane.org,
-	rubini-kaDoWcXyVrEAvxtiuMwx3w@public.gmane.org
-To: Federico Vaga <federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1328718213-17375-1-git-send-email-federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: Compatibility with direction which is used in samsung DMA operation
+Date: Fri, 09 Mar 2012 14:58:56 -0700
+Message-ID: <20120309215856.802E73E0880@localhost>
+References: <000501cce62e$87b4d100$971e7300$%kim@samsung.com>
+Cc: 'Kukjin Kim' <kgene.kim@samsung.com>,
+	'Kyoungil Kim' <ki0351.kim@samsung.com>
+To: Kyoungil Kim <ki0351.kim@samsung.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <000501cce62e$87b4d100$971e7300$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed,  8 Feb 2012 17:23:33 +0100, Federico Vaga <federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Signed-off-by: Federico Vaga <federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/spi/spi-pl022.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index 2f9cb43..286572d 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -1495,7 +1495,7 @@ out:
->  
->  /**
->   * pump_messages - Workqueue function which processes spi message queue
-> - * @data: pointer to private data of SSP driver
-> + * @work: pointer to the pump_messages work structure within pl022 structure
->   *
->   * This function checks if there is any spi message in the queue that
->   * needs processing and delegate control to appropriate function
+On Wed, 08 Feb 2012 15:54:40 +0900, Kyoungil Kim <ki0351.kim@samsung.com> wrote:
+> Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
+> Signed-off-by: Kyoungil Kim <ki0351.kim@samsung.com>
 
-Patch obsolete after applying the core-queuing patch from Linus
+I'm sorry, I don't understand the reason for the patch.  Please help a poor
+maintainer out and include the reason *why* the patch is needed in the
+commit text.
+
+(repost with a proper commit log message).
 
 g.
 
+> ---
+>  drivers/spi/spi-s3c64xx.c |   10 +++++-----
+>  1 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index f3b7f6a..1972377 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -239,7 +239,7 @@ static void s3c64xx_spi_dmacb(void *data)
+>  	struct s3c64xx_spi_dma_data *dma = data;
+>  	unsigned long flags;
+>  
+> -	if (dma->direction == DMA_FROM_DEVICE)
+> +	if (dma->direction == DMA_DEV_TO_MEM)
+>  		sdd = container_of(data,
+>  			struct s3c64xx_spi_driver_data, rx_dma);
+>  	else
+> @@ -248,7 +248,7 @@ static void s3c64xx_spi_dmacb(void *data)
+>  
+>  	spin_lock_irqsave(&sdd->lock, flags);
+>  
+> -	if (dma->direction == DMA_FROM_DEVICE) {
+> +	if (dma->direction == DMA_DEV_TO_MEM) {
+>  		sdd->state &= ~RXBUSY;
+>  		if (!(sdd->state & TXBUSY))
+>  			complete(&sdd->xfer_completion);
+> @@ -268,7 +268,7 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
+>  	struct samsung_dma_prep info;
+>  	struct samsung_dma_config config;
+>  
+> -	if (dma->direction == DMA_FROM_DEVICE) {
+> +	if (dma->direction == DMA_DEV_TO_MEM) {
+>  		sdd = container_of((void *)dma,
+>  			struct s3c64xx_spi_driver_data, rx_dma);
+>  
+> @@ -1028,9 +1028,9 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+>  	sdd->pdev = pdev;
+>  	sdd->sfr_start = mem_res->start;
+>  	sdd->tx_dma.dmach = dmatx_res->start;
+> -	sdd->tx_dma.direction = DMA_TO_DEVICE;
+> +	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
+>  	sdd->rx_dma.dmach = dmarx_res->start;
+> -	sdd->rx_dma.direction = DMA_FROM_DEVICE;
+> +	sdd->rx_dma.direction = DMA_DEV_TO_MEM;
+>  
+>  	sdd->cur_bpw = 8;
+>  
 > -- 
-> 1.7.7.6
+> 1.7.1
+> 
 > 
 
 -- 
 Grant Likely, B.Sc, P.Eng.
 Secret Lab Technologies,Ltd.
-
-------------------------------------------------------------------------------
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/

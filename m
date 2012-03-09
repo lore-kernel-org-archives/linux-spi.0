@@ -1,18 +1,15 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/4 v4] of_spi: add generic binding support to specify cs
-	gpio
-Date: Fri, 09 Mar 2012 08:14:45 -0700
-Message-ID: <20120309151445.97E2B3E0901@localhost>
-References: <1331122989-14451-1-git-send-email-plagnioj@jcrosoft.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Subject: Re: [PATCH 6/6] spi/s3c64xx: Allow usage for ARCH_S3C24XX
+Date: Fri, 09 Mar 2012 10:52:10 -0700
+Message-ID: <20120309175210.21B2C3E0880@localhost>
+References: <201203041902.38318.heiko@sntech.de>
+	<201203041909.10400.heiko@sntech.de>
+Content-Type: multipart/mixed; boundary="===============1899010109105207814=="
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org
+To: Heiko Stübner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1331122989-14451-1-git-send-email-plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <201203041909.10400.heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,219 +20,68 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed,  7 Mar 2012 13:23:06 +0100, Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org> wrote:
-> This will allow to use gpio for chip select with no modification in the
-> driver binding
+--===============1899010109105207814==
+
+On Sun, 4 Mar 2012 19:09:10 +0100, Heiko Stübner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org> wrote:
+> Newer SoCs from the S3C24XX line, namely S3C2416/2443/2450 contain
+> hsspi-controllers compatible with the s3c64xx type.
 > 
-> When use the cs-gpios, the gpio number will be passed via the cs_gpio field
-> and the number of chip select will automatically increased.
+> The previous patches enabled platform support for it, so make the
+> driver also usable for the S3C24xx architecture.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-> Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Signed-off-by: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+
+Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+
 > ---
-> v4:
-> 	use cs_gpio to pass the gpio number
+> As it is part of a series this probably needs an ack from Grant Likely
+> and should be merged via the samsung tree.
 > 
-> Best Regards,
-> J.
->  Documentation/devicetree/bindings/spi/spi-bus.txt |    6 ++
->  drivers/spi/spi.c                                 |   57 +++++++++++++++++++-
->  include/linux/spi/spi.h                           |    6 ++
->  3 files changed, 66 insertions(+), 3 deletions(-)
+>  drivers/spi/Kconfig |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> index e782add..c253379 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> @@ -12,6 +12,7 @@ The SPI master node requires the following properties:
->  - #size-cells     - should be zero.
->  - compatible      - name of SPI bus controller following generic names
->      		recommended practice.
-> +- cs-gpios	  - (optional) gpios chip select.
->  No other properties are required in the SPI bus node.  It is assumed
->  that a driver for an SPI bus device will understand that it is an SPI bus.
->  However, the binding does not attempt to define the specific method for
-> @@ -21,6 +22,8 @@ assumption that board specific platform code will be used to manage
->  chip selects.  Individual drivers can define additional properties to
->  support describing the chip select layout.
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index ac92194..e411364 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -299,7 +299,7 @@ config SPI_S3C24XX_FIQ
 >  
-> +If cs-gpios is used the number of chip select will automatically increased.
-> +
->  SPI slave nodes must be children of the SPI master node and can
->  contain the following properties.
->  - reg             - (required) chip select address of device.
-> @@ -34,6 +37,9 @@ contain the following properties.
->  - spi-cs-high     - (optional) Empty property indicating device requires
->      		chip select active high
->  
-> +If a gpio chipselect is used for the SPI slave the gpio number will be passed
-> +via the controller_data
-> +
->  SPI example for an MPC5200 SPI bus:
->  	spi@f00 {
->  		#address-cells = <1>;
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index b2ccdea..c1d0955 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -28,6 +28,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/spi/spi.h>
->  #include <linux/of_spi.h>
-> +#include <linux/of_gpio.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/export.h>
->  
-> @@ -322,6 +323,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
->  	spi->dev.parent = &master->dev;
->  	spi->dev.bus = &spi_bus_type;
->  	spi->dev.release = spidev_release;
-> +	spi->cs_gpio = -EINVAL;
->  	device_initialize(&spi->dev);
->  	return spi;
->  }
-> @@ -339,15 +341,16 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
->  int spi_add_device(struct spi_device *spi)
->  {
->  	static DEFINE_MUTEX(spi_add_lock);
-> -	struct device *dev = spi->master->dev.parent;
-> +	struct spi_master *master = spi->master;
-> +	struct device *dev = master->dev.parent;
->  	struct device *d;
->  	int status;
->  
->  	/* Chipselects are numbered 0..max; validate. */
-> -	if (spi->chip_select >= spi->master->num_chipselect) {
-> +	if (spi->chip_select >= master->num_chipselect) {
->  		dev_err(dev, "cs%d >= max %d\n",
->  			spi->chip_select,
-> -			spi->master->num_chipselect);
-> +			master->num_chipselect);
->  		return -EINVAL;
->  	}
->  
-> @@ -371,6 +374,13 @@ int spi_add_device(struct spi_device *spi)
->  		goto done;
->  	}
->  
-> +	if (master->num_gpio_cs &&
-> +	    spi->chip_select >= master->first_gpio_cs) {
-> +		int num = spi->chip_select - master->first_gpio_cs;
-> +
-> +		spi->cs_gpio = master->cs_gpios[num];
-
-spi->cs_gpio isn't used anywhere.
-
-> +	}
-> +
->  	/* Drivers may modify this initial i/o setup, but will
->  	 * normally rely on the device being setup.  Devices
->  	 * using SPI_CS_HIGH can't coexist well otherwise...
-> @@ -561,6 +571,43 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
->  }
->  EXPORT_SYMBOL_GPL(spi_alloc_master);
->  
-> +#ifdef CONFIG_OF
-> +static int of_spi_register_master(struct spi_master *master)
-> +{
-> +	int nb, i;
-> +	int *cs;
-> +	struct device_node *np = master->dev.of_node;
-> +
-> +	if (!np)
-> +		return 0;
-> +
-> +	nb = of_gpio_named_count(np, "cs-gpios");
-> +
-> +	if (nb < 1)
-> +		return 0;
-> +
-> +	cs = devm_kzalloc(&master->dev, sizeof(int) * nb, GFP_KERNEL);
-> +	master->cs_gpios = cs;
-> +
-> +	if (!master->cs_gpios)
-> +		return -ENOMEM;
-> +
-> +	master->first_gpio_cs = master->num_chipselect;
-> +	master->num_chipselect += nb;
-> +	master->num_gpio_cs = nb;
-
-I think this can be simplified.  Rather than trying to optimize by having
-a set of integrated cs lines followed by a gpio set, I think it would be
-better to have a single cs_gpios table that covers the whole range of
-num_chipselect; even if they overlap natural cs lines.  That will make for
-an easier to use binding since users won't need to remember how many natural
-cs lines are on the device when filling the cs-gpios property.  It will
-also make the code simpler because first_gpio_cs and num_gpio_cs can both
-be eliminated.  It also means the core can have exact knowledge about which
-gpio is associated with which cs number.
-
-> +
-> +	for (i = 0; i < nb; i++)
-> +		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-> +
-> +	return 0;
-> +}
-> +#else
-> +static int of_spi_register_master(struct spi_master *master)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
->  /**
->   * spi_register_master - register SPI master controller
->   * @master: initialized master, originally from spi_alloc_master()
-> @@ -592,6 +639,10 @@ int spi_register_master(struct spi_master *master)
->  	if (!dev)
->  		return -ENODEV;
->  
-> +	status = of_spi_register_master(master);
-> +	if (status)
-> +		return status;
-> +
->  	/* even if it's just one always-selected device, there must
->  	 * be at least one chipselect
->  	 */
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 176fce9..7dcf031 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -89,6 +89,7 @@ struct spi_device {
->  	void			*controller_state;
->  	void			*controller_data;
->  	char			modalias[SPI_NAME_SIZE];
-> +	int			cs_gpio;	/* chip select gpio */
->  
->  	/*
->  	 * likely need more hooks for more protocol options affecting how
-> @@ -318,6 +319,11 @@ struct spi_master {
->  
->  	/* called on release() to free memory provided by spi_master */
->  	void			(*cleanup)(struct spi_device *spi);
-> +
-> +	/* gpio chip select */
-> +	int			*cs_gpios;
-> +	int			first_gpio_cs;
-> +	int			num_gpio_cs;
->  };
->  
->  static inline void *spi_master_get_devdata(struct spi_master *master)
+>  config SPI_S3C64XX
+>  	tristate "Samsung S3C64XX series type SPI"
+> -	depends on (ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
+> +	depends on (ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5P64X0 || ARCH_EXYNOS)
+>  	select S3C64XX_DMA if ARCH_S3C64XX
+>  	help
+>  	  SPI driver for Samsung S3C64XX and newer SoCs.
 > -- 
-> 1.7.7
+> 1.7.2.3
 > 
-> _______________________________________________
-> devicetree-discuss mailing list
-> devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> https://lists.ozlabs.org/listinfo/devicetree-discuss
 
 -- 
 Grant Likely, B.Sc, P.Eng.
 Secret Lab Technologies,Ltd.
+
+
+--===============1899010109105207814==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
 Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/
+--===============1899010109105207814==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============1899010109105207814==--

@@ -1,78 +1,69 @@
-From: Kyoungil Kim <ki0351.kim@samsung.com>
-Subject: [PATCH] spi: Compatibility with direction which is used in samsung DMA
- operation
-Date: Sat, 10 Mar 2012 09:48:46 +0900
-Message-ID: <003801ccfe57$8ccff2f0$a66fd8d0$%kim@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: 'Grant Likely' <grant.likely@secretlab.ca>,
-	'Kukjin Kim' <kgene.kim@samsung.com>,
-	'Kyoungil Kim' <ki0351.kim@samsung.com>
-To: spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH RESEND] spi/imx: simplify error handling to free gpios
+Date: Fri, 09 Mar 2012 16:27:10 -0700
+Message-ID: <20120309232710.45C763E08B7@localhost>
+References: <1326180456.4956.7.camel@phoenix>
+Cc: Shawn Guo <shawn.guo@linaro.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	spi-devel-general@lists.sourceforge.net
+To: Axel Lin <axel.lin@gmail.com>, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1326180456.4956.7.camel@phoenix>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-I found that there are two kind of direction type.
-First one is dma_data_direction defined in include/linux/dma-direction.h.
-It is used for parameter of dma_map/unmap_single in spi-s3c64xx.
-The other one is dma_transter_direction defined in include/linux/dmaengine.h.
-It is used for direction of samsung DMA operation
-(arch/arm/plat-samsung/dma-ops.c).
-This patch is just some changes to use direction defines
-which is used in samsung DMA operation.
+On Tue, 10 Jan 2012 15:27:36 +0800, Axel Lin <axel.lin@gmail.com> wrote:
+> Simplify the error handling by moving the code to free gpios in one place.
+> 
+> Signed-off-by: Axel Lin <axel.lin@gmail.com>
+> Acked-by: Shawn Guo <shawn.guo@linaro.org>
 
-Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
-Signed-off-by: Kyoungil Kim <ki0351.kim@samsung.com>
----
- drivers/spi/spi-s3c64xx.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+Applied, thanks.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index dcf7e10..003a1bf 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -239,7 +239,7 @@ static void s3c64xx_spi_dmacb(void *data)
- 	struct s3c64xx_spi_dma_data *dma = data;
- 	unsigned long flags;
- 
--	if (dma->direction == DMA_FROM_DEVICE)
-+	if (dma->direction == DMA_DEV_TO_MEM)
- 		sdd = container_of(data,
- 			struct s3c64xx_spi_driver_data, rx_dma);
- 	else
-@@ -248,7 +248,7 @@ static void s3c64xx_spi_dmacb(void *data)
- 
- 	spin_lock_irqsave(&sdd->lock, flags);
- 
--	if (dma->direction == DMA_FROM_DEVICE) {
-+	if (dma->direction == DMA_DEV_TO_MEM) {
- 		sdd->state &= ~RXBUSY;
- 		if (!(sdd->state & TXBUSY))
- 			complete(&sdd->xfer_completion);
-@@ -267,7 +267,7 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 	struct s3c64xx_spi_driver_data *sdd;
- 	struct samsung_dma_prep_info info;
- 
--	if (dma->direction == DMA_FROM_DEVICE)
-+	if (dma->direction == DMA_DEV_TO_MEM) {
- 		sdd = container_of((void *)dma,
- 			struct s3c64xx_spi_driver_data, rx_dma);
- 	else
-@@ -1021,9 +1021,9 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	sdd->pdev = pdev;
- 	sdd->sfr_start = mem_res->start;
- 	sdd->tx_dma.dmach = dmatx_res->start;
--	sdd->tx_dma.direction = DMA_TO_DEVICE;
-+	sdd->tx_dma.direction = DMA_MEM_TO_DEV;
- 	sdd->rx_dma.dmach = dmarx_res->start;
--	sdd->rx_dma.direction = DMA_FROM_DEVICE;
-+	sdd->rx_dma.direction = DMA_DEV_TO_MEM;
- 
- 	sdd->cur_bpw = 8;
- 
+g.
+
+> ---
+>  drivers/spi/spi-imx.c |   11 +++--------
+>  1 files changed, 3 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index c6e697f..31054e3 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -793,13 +793,8 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
+>  
+>  		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
+>  		if (ret) {
+> -			while (i > 0) {
+> -				i--;
+> -				if (spi_imx->chipselect[i] >= 0)
+> -					gpio_free(spi_imx->chipselect[i]);
+> -			}
+>  			dev_err(&pdev->dev, "can't get cs gpios\n");
+> -			goto out_master_put;
+> +			goto out_gpio_free;
+>  		}
+>  	}
+>  
+> @@ -881,10 +876,10 @@ out_iounmap:
+>  out_release_mem:
+>  	release_mem_region(res->start, resource_size(res));
+>  out_gpio_free:
+> -	for (i = 0; i < master->num_chipselect; i++)
+> +	while (--i >= 0) {
+>  		if (spi_imx->chipselect[i] >= 0)
+>  			gpio_free(spi_imx->chipselect[i]);
+> -out_master_put:
+> +	}
+>  	spi_master_put(master);
+>  	kfree(master);
+>  	platform_set_drvdata(pdev, NULL);
+> -- 
+> 1.7.5.4
+> 
+> 
+> 
+
 -- 
-1.7.1
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies,Ltd.

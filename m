@@ -1,67 +1,184 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: Trivial warning fix
-Date: Fri, 09 Mar 2012 10:57:48 -0700
-Message-ID: <20120309175748.49BD13E0880@localhost>
-References: <1330351145-3564-1-git-send-email-shubhrajyoti@ti.com>
-Cc: Vitaly Wool <vwool@ru.mvista.com>, linux-kernel@vger.kernel.org,
-	Shubhrajyoti D <shubhrajyoti@ti.com>
-To: Shubhrajyoti D <shubhrajyoti@ti.com>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1330351145-3564-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH 1/4 v4] of_spi: add generic binding support to specify
+ cs gpio
+Date: Fri, 9 Mar 2012 19:02:32 +0100
+Message-ID: <20120309180232.GR27213@game.jcrosoft.org>
+References: <1331122989-14451-1-git-send-email-plagnioj@jcrosoft.com>
+ <20120309151445.97E2B3E0901@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120309151445.97E2B3E0901@localhost>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 27 Feb 2012 19:29:05 +0530, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
-> The loop count i traverses for ntrans which is unsigned
-> so make the loop count i also unsigned.
+On 08:14 Fri 09 Mar     , Grant Likely wrote:
+> On Wed,  7 Mar 2012 13:23:06 +0100, Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org> wrote:
+> > This will allow to use gpio for chip select with no modification in the
+> > driver binding
+> > 
+> > When use the cs-gpios, the gpio number will be passed via the cs_gpio field
+> > and the number of chip select will automatically increased.
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+> > Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+> > Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > ---
+> > v4:
+> > 	use cs_gpio to pass the gpio number
+> > 
+> > Best Regards,
+> > J.
+> >  Documentation/devicetree/bindings/spi/spi-bus.txt |    6 ++
+> >  drivers/spi/spi.c                                 |   57 +++++++++++++++++++-
+> >  include/linux/spi/spi.h                           |    6 ++
+> >  3 files changed, 66 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > index e782add..c253379 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > @@ -12,6 +12,7 @@ The SPI master node requires the following properties:
+> >  - #size-cells     - should be zero.
+> >  - compatible      - name of SPI bus controller following generic names
+> >      		recommended practice.
+> > +- cs-gpios	  - (optional) gpios chip select.
+> >  No other properties are required in the SPI bus node.  It is assumed
+> >  that a driver for an SPI bus device will understand that it is an SPI bus.
+> >  However, the binding does not attempt to define the specific method for
+> > @@ -21,6 +22,8 @@ assumption that board specific platform code will be used to manage
+> >  chip selects.  Individual drivers can define additional properties to
+> >  support describing the chip select layout.
+> >  
+> > +If cs-gpios is used the number of chip select will automatically increased.
+> > +
+> >  SPI slave nodes must be children of the SPI master node and can
+> >  contain the following properties.
+> >  - reg             - (required) chip select address of device.
+> > @@ -34,6 +37,9 @@ contain the following properties.
+> >  - spi-cs-high     - (optional) Empty property indicating device requires
+> >      		chip select active high
+> >  
+> > +If a gpio chipselect is used for the SPI slave the gpio number will be passed
+> > +via the controller_data
+> > +
+> >  SPI example for an MPC5200 SPI bus:
+> >  	spi@f00 {
+> >  		#address-cells = <1>;
+> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> > index b2ccdea..c1d0955 100644
+> > --- a/drivers/spi/spi.c
+> > +++ b/drivers/spi/spi.c
+> > @@ -28,6 +28,7 @@
+> >  #include <linux/mod_devicetable.h>
+> >  #include <linux/spi/spi.h>
+> >  #include <linux/of_spi.h>
+> > +#include <linux/of_gpio.h>
+> >  #include <linux/pm_runtime.h>
+> >  #include <linux/export.h>
+> >  
+> > @@ -322,6 +323,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
+> >  	spi->dev.parent = &master->dev;
+> >  	spi->dev.bus = &spi_bus_type;
+> >  	spi->dev.release = spidev_release;
+> > +	spi->cs_gpio = -EINVAL;
+> >  	device_initialize(&spi->dev);
+> >  	return spi;
+> >  }
+> > @@ -339,15 +341,16 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
+> >  int spi_add_device(struct spi_device *spi)
+> >  {
+> >  	static DEFINE_MUTEX(spi_add_lock);
+> > -	struct device *dev = spi->master->dev.parent;
+> > +	struct spi_master *master = spi->master;
+> > +	struct device *dev = master->dev.parent;
+> >  	struct device *d;
+> >  	int status;
+> >  
+> >  	/* Chipselects are numbered 0..max; validate. */
+> > -	if (spi->chip_select >= spi->master->num_chipselect) {
+> > +	if (spi->chip_select >= master->num_chipselect) {
+> >  		dev_err(dev, "cs%d >= max %d\n",
+> >  			spi->chip_select,
+> > -			spi->master->num_chipselect);
+> > +			master->num_chipselect);
+> >  		return -EINVAL;
+> >  	}
+> >  
+> > @@ -371,6 +374,13 @@ int spi_add_device(struct spi_device *spi)
+> >  		goto done;
+> >  	}
+> >  
+> > +	if (master->num_gpio_cs &&
+> > +	    spi->chip_select >= master->first_gpio_cs) {
+> > +		int num = spi->chip_select - master->first_gpio_cs;
+> > +
+> > +		spi->cs_gpio = master->cs_gpios[num];
 > 
-> Fix the below warning
-> In file included from drivers/spi/spi-omap2-mcspi.c:38:
-> include/linux/spi/spi.h: In function 'spi_message_alloc':
-> include/linux/spi/spi.h:556: warning: comparison between signed and unsigned integer expressions
-> 
-> Cc: Vitaly Wool <vwool@ru.mvista.com>
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
-> ---
+> spi->cs_gpio isn't used anywhere.
+driver
+as example atmel spi
 
-Applied, thanks.
+I choose to let the driver to manage it as they may need to manange specific
+register when using both hw and gpio cs
+> 
+> > +	}
+> > +
+> >  	/* Drivers may modify this initial i/o setup, but will
+> >  	 * normally rely on the device being setup.  Devices
+> >  	 * using SPI_CS_HIGH can't coexist well otherwise...
+> > @@ -561,6 +571,43 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
+> >  }
+> >  EXPORT_SYMBOL_GPL(spi_alloc_master);
+> >  
+> > +#ifdef CONFIG_OF
+> > +static int of_spi_register_master(struct spi_master *master)
+> > +{
+> > +	int nb, i;
+> > +	int *cs;
+> > +	struct device_node *np = master->dev.of_node;
+> > +
+> > +	if (!np)
+> > +		return 0;
+> > +
+> > +	nb = of_gpio_named_count(np, "cs-gpios");
+> > +
+> > +	if (nb < 1)
+> > +		return 0;
+> > +
+> > +	cs = devm_kzalloc(&master->dev, sizeof(int) * nb, GFP_KERNEL);
+> > +	master->cs_gpios = cs;
+> > +
+> > +	if (!master->cs_gpios)
+> > +		return -ENOMEM;
+> > +
+> > +	master->first_gpio_cs = master->num_chipselect;
+> > +	master->num_chipselect += nb;
+> > +	master->num_gpio_cs = nb;
+> 
+> I think this can be simplified.  Rather than trying to optimize by having
+> a set of integrated cs lines followed by a gpio set, I think it would be
+> better to have a single cs_gpios table that covers the whole range of
+> num_chipselect; even if they overlap natural cs lines.  That will make for
+> an easier to use binding since users won't need to remember how many natural
+> cs lines are on the device when filling the cs-gpios property.  It will
+> also make the code simpler because first_gpio_cs and num_gpio_cs can both
+> be eliminated.  It also means the core can have exact knowledge about which
+> gpio is associated with which cs number.
+ok why not so I feel the array with -EINVAL for hw cs;
 
-g.
-
-> Untested !
-> 
->  include/linux/spi/spi.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 176fce9..6ae4993 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -549,7 +549,7 @@ static inline struct spi_message *spi_message_alloc(unsigned ntrans, gfp_t flags
->  			+ ntrans * sizeof(struct spi_transfer),
->  			flags);
->  	if (m) {
-> -		int i;
-> +		unsigned i;
->  		struct spi_transfer *t = (struct spi_transfer *)(m + 1);
->  
->  		INIT_LIST_HEAD(&m->transfers);
-> -- 
-> 1.7.0.4
-> 
-> 
-> ------------------------------------------------------------------------------
-> Try before you buy = See our experts in action!
-> The most comprehensive online learning library for Microsoft developers
-> is just $99.99! Visual Studio, SharePoint, SQL - plus HTML5, CSS3, MVC3,
-> Metro Style Apps, more. Free future releases when you subscribe now!
-> http://p.sf.net/sfu/learndevnow-dev2
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies,Ltd.
+Best Regards,
+J.

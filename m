@@ -1,69 +1,37 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH RESEND] spi/imx: simplify error handling to free gpios
-Date: Fri, 09 Mar 2012 16:27:10 -0700
-Message-ID: <20120309232710.45C763E08B7@localhost>
-References: <1326180456.4956.7.camel@phoenix>
-Cc: Shawn Guo <shawn.guo@linaro.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	spi-devel-general@lists.sourceforge.net
-To: Axel Lin <axel.lin@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] spi-topcliff-pch: Modify pci-bus number dynamically to get DMA device info
+Date: Fri, 09 Mar 2012 16:45:58 -0700
+Message-ID: <20120309234558.692513E093E@localhost>
+References: <1323403905-3432-1-git-send-email-tomoya.rohm@gmail.com>
+Cc: qi.wang@intel.com, yong.y.wang@intel.com, joel.clark@intel.com,
+	kok.howg.ewe@intel.com, Wolfram Sang <w.sang@pengutronix.de>,
+	Tomoya MORINAGA <tomoya.rohm@gmail.com>
+To: Tomoya MORINAGA <tomoya.rohm@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1326180456.4956.7.camel@phoenix>
+In-Reply-To: <1323403905-3432-1-git-send-email-tomoya.rohm@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 10 Jan 2012 15:27:36 +0800, Axel Lin <axel.lin@gmail.com> wrote:
-> Simplify the error handling by moving the code to free gpios in one place.
+On Fri,  9 Dec 2011 13:11:42 +0900, Tomoya MORINAGA <tomoya.rohm@gmail.com> wrote:
+> Signed-off-by: Tomoya MORINAGA <tomoya.rohm@gmail.com>
+> ---
+>  drivers/spi/spi-topcliff-pch.c |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
 > 
-> Signed-off-by: Axel Lin <axel.lin@gmail.com>
-> Acked-by: Shawn Guo <shawn.guo@linaro.org>
+> diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+> index 99ec279..fcd9462 100644
+> --- a/drivers/spi/spi-topcliff-pch.c
+> +++ b/drivers/spi/spi-topcliff-pch.c
+> @@ -920,7 +920,8 @@ static void pch_spi_request_dma(struct pch_spi_data *data, int bpw)
+>  	dma_cap_set(DMA_SLAVE, mask);
+>  
+>  	/* Get DMA's dev information */
+> -	dma_dev = pci_get_bus_and_slot(2, PCI_DEVFN(12, 0));
+> +	dma_dev = pci_get_bus_and_slot(data->board_dat->pdev->bus->number,
+> +				       PCI_DEVFN(12, 0));
 
-Applied, thanks.
+Applied, thanks
 
 g.
-
-> ---
->  drivers/spi/spi-imx.c |   11 +++--------
->  1 files changed, 3 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index c6e697f..31054e3 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -793,13 +793,8 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
->  
->  		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
->  		if (ret) {
-> -			while (i > 0) {
-> -				i--;
-> -				if (spi_imx->chipselect[i] >= 0)
-> -					gpio_free(spi_imx->chipselect[i]);
-> -			}
->  			dev_err(&pdev->dev, "can't get cs gpios\n");
-> -			goto out_master_put;
-> +			goto out_gpio_free;
->  		}
->  	}
->  
-> @@ -881,10 +876,10 @@ out_iounmap:
->  out_release_mem:
->  	release_mem_region(res->start, resource_size(res));
->  out_gpio_free:
-> -	for (i = 0; i < master->num_chipselect; i++)
-> +	while (--i >= 0) {
->  		if (spi_imx->chipselect[i] >= 0)
->  			gpio_free(spi_imx->chipselect[i]);
-> -out_master_put:
-> +	}
->  	spi_master_put(master);
->  	kfree(master);
->  	platform_set_drvdata(pdev, NULL);
-> -- 
-> 1.7.5.4
-> 
-> 
-> 
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies,Ltd.

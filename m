@@ -1,9 +1,11 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Thu, 08 Mar 2012 22:12:00 +0100
-Message-ID: <1331241120.4f5920a0bb2fe@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Le Club des =?iso-8859-15?Q?Cr=E9ateurs?= de
+	=?iso-8859-15?Q?Beaut=E9?= par GalerieDesMarques.fr
+	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: 5 produits pour =?iso-8859-15?Q?29=2C90=80?= seulement et 1 cadeau
+	=?iso-8859-15?Q?agn=E8s?= b.
+Date: Fri, 09 Mar 2012 01:51:54 +0100
+Message-ID: <1331254314.4f59542a6b7b0@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,11 +23,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTczOTcmYz00ODM2MTImZD0yMDEy=
-LTAzLTA4IDIwOjEwOjAxJmU9MSZoPTczOTYmZj03Mzk3Jmc9NzM5Nw=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9NzIxNSZjPTE5NjE2NDEmZD0yMDEy=
+LTAzLTA4IDIyOjIwOjAxJmU9MSZoPTcyMTQmZj03MjE1Jmc9NzIxNQ=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTczOTcmYz0=
-0ODM2MTImZD0yMDEyLTAzLTA4IDIwOjEwOjAxJmU9MSZoPTczOTYmZj03Mzk3Jmc9NzM5Nw=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9NzIxNSZjPTE=
+5NjE2NDEmZD0yMDEyLTAzLTA4IDIyOjIwOjAxJmU9MSZoPTcyMTQmZj03MjE1Jmc9NzIxNQ=3D=
 =3D
 
 

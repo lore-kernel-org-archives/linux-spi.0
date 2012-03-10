@@ -1,13 +1,15 @@
-From: Stop Cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Votre alarme remboursée
-Date: Sat, 10 Mar 2012 08:23:57 +0100
-Message-ID: <1331364237.4f5b018d20326@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: [patch] spi: release lock on error path in spi_pump_messages()
+Date: Sat, 10 Mar 2012 11:57:29 +0300
+Message-ID: <20120310085729.GB4647@elgon.mountain>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,20 +20,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+We should release the lock here and enable IRQs before returning.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTc1OTUmYz00Mzg3NzkmZD0yMDEy=
-LTAzLTA5IDE0OjEwOjAxJmU9MSZoPTc1OTQmZj03NTk1Jmc9NzU5NQ=3D=3D
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTc1OTUmYz0=
-0Mzg3NzkmZD0yMDEyLTAzLTA5IDE0OjEwOjAxJmU9MSZoPTc1OTQmZj03NTk1Jmc9NzU5NQ=3D=
-=3D
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5ae1e84..ab1bdce 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -535,6 +535,7 @@ static void spi_pump_messages(struct kthread_work *work)
+ 			if (ret) {
+ 				dev_err(&master->dev,
+ 					"failed to unprepare transfer hardware\n");
++				spin_unlock_irqrestore(&master->queue_lock, flags);
+ 				return;
+ 			}
+ 		}
 
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing =
-
+Cloud computing makes use of virtualization - but cloud computing 
 also focuses on allowing computing to be delivered as a service.
 http://www.accelacomm.com/jaw/sfnl/114/51521223/

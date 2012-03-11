@@ -1,58 +1,67 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 Subject: Re: [patch] spi: release lock on error path in spi_pump_messages()
-Date: Sat, 10 Mar 2012 19:43:07 -0700
-Message-ID: <20120311024307.AA5E33E0950@localhost>
-References: <20120310085729.GB4647@elgon.mountain> <4F5B2113.3060103@bfs.de>
+Date: Sun, 11 Mar 2012 09:20:59 +0300
+Message-ID: <20120311062059.GB3337@mwanda>
+References: <20120310085729.GB4647@elgon.mountain>
+ <4F5B2113.3060103@bfs.de>
+ <20120311024307.AA5E33E0950@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: wharms-fPG8STNUNVg@public.gmane.org, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4F5B2113.3060103-fPG8STNUNVg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
+Cc: wharms@bfs.de, spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20120311024307.AA5E33E0950@localhost>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 10 Mar 2012 10:38:27 +0100, walter harms <wharms-fPG8STNUNVg@public.gmane.org> wrote:
-> 
-> 
-> Am 10.03.2012 09:57, schrieb Dan Carpenter:
-> > We should release the lock here and enable IRQs before returning.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-> > 
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 5ae1e84..ab1bdce 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -535,6 +535,7 @@ static void spi_pump_messages(struct kthread_work *work)
-> >  			if (ret) {
-> >  				dev_err(&master->dev,
-> >  					"failed to unprepare transfer hardware\n");
-> > +				spin_unlock_irqrestore(&master->queue_lock, flags);
-> >  				return;
-> >  			}
-> >  		}
-> 
-> 
-> hi Dan,
-> do you want to protect dev_err() by a spn_lock ?
 
-Applied, after moving unlock above the dev_err.
+--0eh6TmSyL6TZE2Uz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-g.
+On Sat, Mar 10, 2012 at 07:43:07PM -0700, Grant Likely wrote:
+> On Sat, 10 Mar 2012 10:38:27 +0100, walter harms <wharms@bfs.de> wrote:
+> > hi Dan,
+> > do you want to protect dev_err() by a spn_lock ?
+>=20
+> Applied, after moving unlock above the dev_err.
+>=20
+
+Thanks.
+
+I was going to resend this with Walter's change btw.  I wasn't going
+to ignore his review comments.
+
+Anyway, thanks again Grant and Walter.
+
+regards,
+dan carpenter
 
 
-------------------------------------------------------------------------------
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+--0eh6TmSyL6TZE2Uz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPXERLAAoJEOnZkXI/YHqRigMP/2vc/fBMxJUo5gxdBjkKJzQa
+OJDYNdFehynnEl7FGvU7aH+oTfeMwuNmkKPnjbtwy42dpJ3WXnU0FiiJnQ6TkKGe
+ifGhdIYDKDSWrA4ayVvE57ZxNrsQVttXJGJIY14F8DdsS4959UKxNU7zM8/8t2tR
+x0gvlxVEC7Pi7VYbHpg6ay29xwYKgOUVBcdfBjkgj8T0v89wKeRkSX8X/oySUCtL
+IgfIx+eqVWfeWxwKfw/v8lJ+xgVrn2hImQK2B1fOMUN2gnU/l6h+XwaQmUfDaPOo
+9m2oKlKm/5nMm0dBAA3V+mQqaLyQp5CO23k0KzIPhQ2QyUGXrfVjQFRpY+Df1AYg
+gwkXSFXimhYDts5He9QqlVFyTBo4S/kJIkr0hM1HYsjbbZEN81j64CqVEzFJ915O
+ga2+QOphG0nHVVGtUFQTPHB3c+8LtaOXW98Jh2rmr2qG9a6IIK4utlXSmdiSjcHe
+9djdASkzypsap6ADs1axvAWRdzvsRJqfI0tNURtPr05FCrKVna7bWqbsYTj9OJZ5
+ZRAUa0RtBvm8P8XJvuqNHfDH1YbO9ct7BTzpgT+1gX86/iA81utyjAiw8yMN1exN
+wjrZpaM53enfjIw8OI1aq15e4skdcg8eLjqnP7mNbP8aXekMQ4En4H+IZ20maoIe
+maqvsJ9TyFFuiT6KN8Am
+=Ypc7
+-----END PGP SIGNATURE-----
+
+--0eh6TmSyL6TZE2Uz--

@@ -1,7 +1,7 @@
 From: Mariana Feijoo <feijoomar-/E1597aS9LQMlKAeRRkD2Q@public.gmane.org>
 Subject: [SPAM] Traducciones en Inglés, Portugués e Italiano
-Date: Mon, 12 Mar 2012 14:05:09 -0300
-Message-ID: <9fd6d22c41ca32dcf2502aa7f552677a@pvurl.org>
+Date: Mon, 12 Mar 2012 17:29:30 -0300
+Message-ID: <282cfb5704984d90cdb29b7d210b5764@pvurl.org>
 Reply-To: feijoomar-/E1597aS9LQMlKAeRRkD2Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -104,7 +104,7 @@ ns.dl.am">FUBARDESIGNS</a><br />Valid <a href=3D"">CSS</a> | <a href=3D"">X=
 HTML</a></div>
 
 <br /><br />Para remover su direccion de esta lista haga <a href=3D"http://=
-pvurl.org/unsuscribe.php?id=3Diirpsorsueqsp">click aqui</a></body>
+pvurl.org/unsuscribe.php?id=3Diirpsoesueqsp">click aqui</a></body>
 </html>
 
 

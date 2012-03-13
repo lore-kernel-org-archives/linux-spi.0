@@ -1,8 +1,9 @@
-From: Stop Cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Votre alarme remboursée
-Date: Tue, 13 Mar 2012 18:15:10 +0100
-Message-ID: <1331658910.4f5f809ead4cc@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Economisez 110 euros cette semaine avec notre vente
+	=?iso-8859-15?Q?priv?= =?iso-8859-15?Q?=E9e?=
+Date: Tue, 13 Mar 2012 22:27:59 +0100
+Message-ID: <1331674079.4f5fbbdfa772f@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTc3NDAmYz00ODM2MTImZD0yMDEy=
-LTAzLTEzIDA3OjEwOjAxJmU9MSZoPTc3MzkmZj03NzQwJmc9Nzc0MA=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTc4MDgmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTEzIDEzOjAwOjAxJmU9MSZoPTc4MDcmZj03ODA4Jmc9NzgwOA=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTc3NDAmYz0=
-0ODM2MTImZD0yMDEyLTAzLTEzIDA3OjEwOjAxJmU9MSZoPTc3MzkmZj03NzQwJmc9Nzc0MA=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTc4MDgmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTEzIDEzOjAwOjAxJmU9MSZoPTc4MDcmZj03ODA4Jmc9NzgwOA=3D=
 =3D
 
 

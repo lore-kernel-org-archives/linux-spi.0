@@ -1,7 +1,7 @@
 From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: [PATCH v3 2/6] regmap: Add support for device with 24 data bits.
-Date: Thu, 15 Mar 2012 07:43:06 +1100
-Message-ID: <1331757790-10583-3-git-send-email-marc@cpdesign.com.au>
+Subject: [PATCH v3 1/6] regmap: add support for 7_25 format
+Date: Thu, 15 Mar 2012 07:43:05 +1100
+Message-ID: <1331757790-10583-2-git-send-email-marc@cpdesign.com.au>
 References: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,61 +23,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for devices with 24 data bits.
+This adds support for devices with 7 address bits and 25 data bits.
+The initial intended user for this are the mc13xxx mfds in spi mode.
+(The 25th data bit is actually a dummy bit)
 
 Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 ---
- drivers/base/regmap/regmap.c |   23 +++++++++++++++++++++++
- 1 files changed, 23 insertions(+), 0 deletions(-)
+ drivers/base/regmap/regmap.c |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 62ef0df..880e3a0 100644
+index be10a4f..62ef0df 100644
 --- a/drivers/base/regmap/regmap.c
 +++ b/drivers/base/regmap/regmap.c
-@@ -122,6 +122,15 @@ static void regmap_format_16(void *buf, unsigned int val)
- 	b[0] = cpu_to_be16(val);
+@@ -100,6 +100,14 @@ static void regmap_format_10_14_write(struct regmap *map,
+ 	out[0] = reg >> 2;
  }
  
-+static void regmap_format_24(void *buf, unsigned int val)
++static void regmap_format_7_25_write(struct regmap *map,
++				    unsigned int reg, unsigned int val)
 +{
-+	u8 *b = buf;
++	__be32 *out = map->work_buf;
 +
-+	b[0] = val >> 16;
-+	b[1] = val >> 8;
-+	b[2] = val;
++	*out = (reg << 25) | val;
 +}
 +
- static unsigned int regmap_parse_8(void *buf)
+ static void regmap_format_8(void *buf, unsigned int val)
  {
  	u8 *b = buf;
-@@ -138,6 +147,16 @@ static unsigned int regmap_parse_16(void *buf)
- 	return b[0];
- }
- 
-+static unsigned int regmap_parse_24(void *buf)
-+{
-+	u8 *b = buf;
-+	unsigned int ret = b[2];
-+	ret |= ((unsigned int)b[1]) << 8;
-+	ret |= ((unsigned int)b[0]) << 16;
-+
-+	return ret;
-+}
-+
- /**
-  * regmap_init(): Initialise register map
-  *
-@@ -240,6 +259,10 @@ struct regmap *regmap_init(struct device *dev,
- 		map->format.format_val = regmap_format_16;
- 		map->format.parse_val = regmap_parse_16;
- 		break;
-+	case 24:
-+		map->format.format_val = regmap_format_24;
-+		map->format.parse_val = regmap_parse_24;
-+		break;
- 	}
- 
- 	if (!map->format.format_write &&
+@@ -193,6 +201,9 @@ struct regmap *regmap_init(struct device *dev,
+ 		case 9:
+ 			map->format.format_write = regmap_format_7_9_write;
+ 			break;
++		case 25:
++			map->format.format_write = regmap_format_7_25_write;
++			break;
+ 		default:
+ 			goto err_map;
+ 		}
 -- 
 1.7.3.4
 

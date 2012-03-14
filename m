@@ -1,99 +1,28 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: [PATCH/RFC] spi: bitbang: add PM QoS support
-Date: Wed, 14 Mar 2012 22:04:25 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Rafael J. Wysocki" <rjw-KKrjLPT3xs0@public.gmane.org>, Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Subject: mc13xxx: add I2C support (now with regmap), V3
+Date: Thu, 15 Mar 2012 07:43:04 +1100
+Message-ID: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds a PM QoS requirement to the spi-bitbang driver, preventing
-the underlying SPI hardware driver to suspend for too long a time, as long
-as there are transfers on the queue.
+Hi,
 
-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
----
+This series (against mfd-2.6/for-next) changes the mc13xxx driver to use 
+regmap and adds I2C support. It generally goes about this the same way as 
+the previous 2 versions, but now uses regmap.
 
-RFC, because a patch set has been developed recently, adding a PM QoS 
-sysfs attribute to all supporting devices per 
-dev_pm_qos_expose_latency_limit(). But I'm not sure, whether and how to 
-combine user-space supplied constraint with driver's own idea of which 
-code paths should be executed with amended latency requirements. Maybe 
-this should be discussed separately, though.
+I am unable to test SPI functionality, but the I2C stuff works. It would be
+great if someone could test the SPI side again.
 
- drivers/spi/spi-bitbang.c       |    6 ++++++
- include/linux/spi/spi_bitbang.h |    2 ++
- 2 files changed, 8 insertions(+), 0 deletions(-)
+The first 2 patches add required support to regmap for the mc13xxx register
+format(s), I've included them here for convenience.
+@Mark B: I also have some versions of these that apply against regmap/for-next.
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index aef59b1..497e725 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -24,6 +24,7 @@
- #include <linux/delay.h>
- #include <linux/errno.h>
- #include <linux/platform_device.h>
-+#include <linux/pm_qos.h>
- #include <linux/slab.h>
- 
- #include <linux/spi/spi.h>
-@@ -260,6 +261,8 @@ static void bitbang_work(struct work_struct *work)
- 	struct spi_bitbang	*bitbang =
- 		container_of(work, struct spi_bitbang, work);
- 	unsigned long		flags;
-+	int pmrq = dev_pm_qos_add_request(bitbang->master->dev.parent,
-+					  &bitbang->pm_qos, 100);
- 
- 	spin_lock_irqsave(&bitbang->lock, flags);
- 	bitbang->busy = 1;
-@@ -376,6 +379,9 @@ static void bitbang_work(struct work_struct *work)
- 	}
- 	bitbang->busy = 0;
- 	spin_unlock_irqrestore(&bitbang->lock, flags);
-+
-+	if (pmrq >= 0)
-+		dev_pm_qos_remove_request(&bitbang->pm_qos);
- }
- 
- /**
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index f987a2b..bed583f1 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -1,6 +1,7 @@
- #ifndef	__SPI_BITBANG_H
- #define	__SPI_BITBANG_H
- 
-+#include <linux/pm_qos.h>
- #include <linux/workqueue.h>
- 
- struct spi_bitbang {
-@@ -12,6 +13,7 @@ struct spi_bitbang {
- 	u8			busy;
- 	u8			use_dma;
- 	u8			flags;		/* extra spi->mode support */
-+	struct dev_pm_qos_request pm_qos;
- 
- 	struct spi_master	*master;
- 
--- 
-1.7.2.5
-
-
-------------------------------------------------------------------------------
-Virtualization & Cloud Management Using Capacity Planning
-Cloud computing makes use of virtualization - but cloud computing 
-also focuses on allowing computing to be delivered as a service.
-http://www.accelacomm.com/jaw/sfnl/114/51521223/
+Cheers,
+Marc

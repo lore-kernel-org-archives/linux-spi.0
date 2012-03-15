@@ -1,17 +1,17 @@
 From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: Re: [PATCH/RFC] spi: sh-msiof: per-transaction runtime PM
-Date: Thu, 15 Mar 2012 17:45:30 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.1203151740430.2988@axis700.grange>
-References: <Pine.LNX.4.64.1203141828230.30291@axis700.grange>
-	<CANqRtoQUm5PyVwe-PtQPP1DX+_tAh9ptbj9mSkx48+W4Yh9DiA@mail.gmail.com>
+Subject: Re: [PATCH/RFC] spi: bitbang: add PM QoS support
+Date: Thu, 15 Mar 2012 17:57:30 +0100 (CET)
+Message-ID: <Pine.LNX.4.64.1203151747480.2988@axis700.grange>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: "Rafael J. Wysocki" <rjw-KKrjLPT3xs0@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CANqRtoQUm5PyVwe-PtQPP1DX+_tAh9ptbj9mSkx48+W4Yh9DiA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20120315092923.951203E04FD@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,44 +22,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Magnus
+On Thu, 15 Mar 2012, Grant Likely wrote:
 
-On Thu, 15 Mar 2012, Magnus Damm wrote:
-
-> On Thu, Mar 15, 2012 at 2:35 AM, Guennadi Liakhovetski
-> <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
-> > Currently the spi-sh-msiof driver implements a runtime PM scheme, based on
-> > chipselect toggling. However, this is largely inefficient, since SPI
-> > client drivers are allowed to keep the chipselect active for long periods
-> > of time. This patch allows the driver to runtime-suspend the controller
-> > between SPI transfers. While moving runtime-PM hooks this patch also
-> > removes manual PM clock manipulation.
-> >
+> On Wed, 14 Mar 2012 22:04:25 +0100 (CET), Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> > This patch adds a PM QoS requirement to the spi-bitbang driver, preventing
+> > the underlying SPI hardware driver to suspend for too long a time, as long
+> > as there are transfers on the queue.
+> > 
 > > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-> > ---
-> >
-> > Marked as RFC, because I'm actually not sure, whether suspending after
-> > each transfer is actually allowed. This seems to bring problems with
-> > mmc-spi at least. Some commands return errors, but a retry recovers. More
-> > investigation is required. Any hints concerning why this is not perfectly
-> > functioning would be appreciated!
 > 
-> Hi Guennadi,
-> 
-> Thanks for your efforts. I believe that the error you are seeing with
-> this patch applied is because the code has been updated to change the
-> polarity of some shared SPI bus pins while CS is being asserted. This
-> will result in potential spikes on the shared SPI bus pins which is
-> far from perfect. =)
+> Shouldn't this be part of the core spi infrastructure?  Particularly since queuing
+> is moving into the core.
 
-You're probably right:-) I forgot to mention, that the problem goes away 
-if PM QoS is used, but we certainly cannot rely on it. As we further 
-discussed in a chat, the problem can be relatively easily solved by 
-postponing the CS activation until in the first transfer, but this only 
-helps as long as the runtime PM doesn't power the domain down. Whereas, as 
-discussed in my reply to Grant in this thread, if this happens, a 
-different problem occurs, which anyway makes this approach much more 
-problematic, that originally thought.
+Maybe, can you point me out to commit IDs / subject lines / archive 
+threads?
+
+Anyway, this patch has to be reworked and extended. OTOH, if we 
+universally agree, that no runtime-suspending of SPI controllers should 
+take place with active CSs, it might happen, that we don't need this PM 
+QoS at all - client drivers tend to hold CS lines for essentially longer 
+periods of time, than what the SPI subsystem can recognise as a 
+low-latency transfer sequence. The only example, that I can think of, 
+where PM QoS could be useful is, if we have to keep latency low while 
+communicating with different SPI devices on different chip-selects (like 
+multiple audio-codecs, where their adjustment has to happen as 
+synchronously as possible... No, I have no idea what I'm talking 
+about:-)).
 
 Thanks
 Guennadi

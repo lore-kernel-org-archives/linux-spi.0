@@ -1,22 +1,21 @@
 From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: Re: [PATCH v3 6/6] mfd: mc13xxx: Add i2c driver
-Date: Fri, 16 Mar 2012 07:59:20 +1100
-Message-ID: <201203160759.20837.marc@cpdesign.com.au>
+Subject: Re: [PATCH v3 1/6] regmap: add support for 7_25 format
+Date: Fri, 16 Mar 2012 09:51:28 +1100
+Message-ID: <201203160951.29058.marc@cpdesign.com.au>
 References: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
-	<1331757790-10583-7-git-send-email-marc@cpdesign.com.au>
-	<CAM=Q2cssNF2TSWHjcbG4wsABBXhquYoKq_scC6bDcq8kdoosyQ@mail.gmail.com>
+	<1331757790-10583-2-git-send-email-marc@cpdesign.com.au>
+	<20120315104443.GC3138@opensource.wolfsonmicro.com>
 Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAM=Q2cssNF2TSWHjcbG4wsABBXhquYoKq_scC6bDcq8kdoosyQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20120315104443.GC3138-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,44 +26,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-> <snip>
+On Thursday, March 15, 2012 09:44:44 PM Mark Brown wrote:
+> On Thu, Mar 15, 2012 at 07:43:05AM +1100, Marc Reilly wrote:
+> > This adds support for devices with 7 address bits and 25 data bits.
+> > The initial intended user for this are the mc13xxx mfds in spi mode.
+> > (The 25th data bit is actually a dummy bit)
+> > 
+> > Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 > 
-> > +static int mc13xxx_i2c_probe(struct i2c_client *client,
-> > +               const struct i2c_device_id *id)
-> > +{
-> > +       const struct of_device_id *of_id;
-> > +       struct i2c_driver *idrv = to_i2c_driver(client->dev.driver);
-> > +       struct mc13xxx *mc13xxx;
-> > +       struct mc13xxx_platform_data *pdata =
-> > dev_get_platdata(&client->dev); +       int ret;
-> > +
-> > +       of_id = of_match_device(mc13xxx_dt_ids, &client->dev);
-> > +       if (of_id)
-> > +               idrv->id_table =
-> > +                       &mc13xxx_i2c_device_id[(enum mc13xxx_id)
-> > of_id->data]; +
-> > +       mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
-> > +       if (!mc13xxx)
-> > +               return -ENOMEM;
-> > +
-> > +       dev_set_drvdata(&client->dev, mc13xxx);
-> > +
-> > +       mc13xxx->dev = &client->dev;
-> > +       mutex_init(&mc13xxx->lock);
-> > +
-> > +       mc13xxx->regmap = regmap_init_i2c(client,
-> > &mc13xxx_regmap_i2c_config); +       if (IS_ERR(mc13xxx->regmap)) {
-> > +               ret = PTR_ERR(mc13xxx->regmap);
-> > +               dev_err(mc13xxx->dev, "Failed to initialize register map:
-> > %d\n", +                               ret);
-> > +               dev_set_drvdata(&client->dev, NULL);
-> 
-> Are we  leaking mc13xxx here
-> May be you can consider using devm* functions ?
+> It looks like this should be using the pad_bits parameter, though
+> currently we only actually support pad bytes and integer sized register
+> values.  Ugh.  We also have some entertainment because this device
+> contains a touchscreen so I imagine you want readback but devices using
+> odd register sizes don't do readback right now.
 
-Good catch, this also applies the spi driver as well I think.
+Ah, so this way definetly won't work. We definitely need to read the device 
+registers.
+
+> 
+> What I think we want to do here is use pad_bits then internally to the
+> API notice that reg_bits + pad_bits is a byte and therefore set up for 8
+> bit registers and set a new value reg_shift in the map which shifts the
+> register address left, either teaching the register format functions
+> about it or just making a new one.  This should work better from a
+> framework point of view.
+
+Ok. 
 
 Cheers,
 Marc

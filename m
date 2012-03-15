@@ -1,33 +1,57 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 6/6] mfd: mc13xxx: Add i2c driver
-Date: Wed, 14 Mar 2012 19:15:01 -0300
-Message-ID: <CAOMZO5BVObpszMd4_dDr3NHw9-oXh9wY_T48UA2vMWozdUyukw@mail.gmail.com>
-References: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
-	<1331757790-10583-7-git-send-email-marc@cpdesign.com.au>
+From: "Integrative Medicine Conference" <paragon-MmCWoUt+JYqZuzBka8ofvg@public.gmane.org>
+Subject: [SPAM] Early registration deadline
+Date: 15 Mar 2012 04:10:07 +0200
+Message-ID: <E1S8074-0006Sx-54@sfs-ml-1.v29.ch3.sourceforge.com>
+Reply-To: Integrativemedicine1203-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org
-To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1331757790-10583-7-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Marc,
-
-On Wed, Mar 14, 2012 at 5:43 PM, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org> wro=
-te:
-
-> +
-> +static const struct i2c_device_id mc13xxx_i2c_device_id[] =3D {
-> + =C2=A0 =C2=A0 =C2=A0 {
-> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .name =3D "mc13783=
-",
-> + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .driver_data =3D M=
-C13XXX_ID_MC13783
-
-mc13783 does not have i2c interface.
+DQpJZiB5b3UgaGF2ZSB0cm91YmxlIHJlYWRpbmcgdGhpcyBuZXdzbGV0dGVyLCB2aWV3IHRoZSB3
+ZWIgdmVyc2lvbiBoZXJlDQoNCmh0dHA6Ly9pdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmls
+L3IuYXNoeD9oPWh0dHAlM2ElMmYlMmZpdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmlsJTJm
+c2VuZGluZyUyZndlYnBhZ2UuYXNweCUzZmQlM2QxMDI1NzA5MzU3OTk5NjczNDk4NzY0ODA2NTcz
+OTI3OTY0MjY1NSUyNnclM2QxJTI2YXIlM2QwJTI2aXNEZSUzZFRydWUlMjZyZmwlM2RGYWxzZSUy
+NnBsJTNkMSUyNmwlM2QxMjYzMjI0JTI2c2xsJTNkMiUyNm1sdCUzZFRydWUmbD0xMjYzMjI0JmQ9
+MTAyNTcwOTM1Nzk5OTY3MzQ5ODc2NDgwNjU3MzkyNzk2NDI2NTVJbnRlcm5hdGlvbmFsIENvbmZl
+cmVuY2Ugb24gSW50ZWdyYXRpdmUgTWVkaWNpbmUsIE1heSAxMy0xNSwgMjAxMiwgSmVydXNhbGVt
+wqBFYXJseSBSZWdpc3RyYXRpb24gRGVhZGxpbmUgRGF0ZTogTWFyY2ggMTUsIDIwMTINClJlZ2lz
+dGVyIE5vdyBmb3IgUmVkdWNlZCBGZWVUaGUgSW50ZXJuYXRpb25hbCBDb25mZXJlbmNlIG9uIElu
+dGVncmF0aXZlIE1lZGljaW5lIHRha2luZyBwbGFjZSBNYXkgMTMtMTUsIDIwMTIsIHdpbGwgZm9j
+dXMgb24gdGhlIGFsdGVybmF0aXZlIHRyZWF0bWVudHMgb2YgTmV1cm9sb2d5LCBOdXRyaXRpb24s
+IFByZXZlbnRpdmUgTWVkaWNpbmUsIE9uY29sb2d5LCBDYXJkaW9sb2d5IGFuZCBtb3JlLkludGVn
+cmF0aXZlIE1lZGljaW5lIGdyb3dzIGFuZCBkZXZlbG9wcyB1c2luZyBtZXRob2RzIGZyb20gd2hh
+dCB3YXMgZm9ybWVybHkga25vd24gYXMgQ29tcGxlbWVudGFyeSBNZWRpY2luZSBhbmQgQWx0ZXJu
+YXRpdmUgTWVkaWNpbmUsIGFuZCBpbnRlZ3JhdGVzIHRoZW0gaW50byB0aGUgY29udmVudGlvbmFs
+IG1lZGljYWwgdHJlYXRtZW50LlRoaXMgdW5pcXVlIG11bHRpZGlzY2lwbGluYXJ5IGNvbmZlcmVu
+Y2Ugd2lsbCBkZWFsIHdpdGggdmFyaW91cyBhc3BlY3RzIG9mIGludGVncmF0aXZlIG1lZGljaW5l
+IHN1Y2ggYXMgVHJhZGl0aW9uYWwgQ2hpbmVzZSBNZWRpY2luZSAoVENNKSwgSG9tZW9wYXRoeSwg
+TWVkaWNpbmFsIEhlcmJzLCBOYXR1cm9wYXRoeSwgUmVmbGV4b2xvZ3kgYW5kIG90aGVyIGZpZWxk
+c0NsaWNrIEhlcmUgdG8gUmVnaXN0ZXJWaWV3IHRoZSBQcmVsaW1pbmFyeSBTY2llbnRpZmljIFBy
+b2dyYW1WaXNpdCBvdXIgd2Vic2l0ZSBmb3IgbW9yZSBkZXRhaWxzOiB3d3cubWVkaWNvbnZlbnRp
+b24uY29tV2UgbG9vayBmb3J3YXJkIHRvIHdlbGNvbWluZyB5b3UgdG8gSmVydXNhbGVtLg0KUGxl
+YXNlIGZlZWwgZnJlZSB0byBjb250YWN0IHRoZSBDb25mZXJlbmNlIFNlY3JldGFyaWF0IGZvciBh
+bnkgcXVlcmllcy5Db25ncmVzcyBPcmdhbml6ZXI6wqAgUGFyYWdvbiBDb252ZW50aW9uczE4wqBB
+dmVudWUgTG91aXMgQ2FzYWksIDEyMDkgR2VuZXZhLCBTd2l0emVybGFuZFRlbDogKzQxIDIyIDUz
+MzAgOTQ4wqDCoCBGYXg6ICs0MSAyMiA1ODAyIDk1M8KgIA0KRS1tYWlsOiBJbnRlZ3JhdGl2ZW1l
+ZGljaW5lMTIwM0BnbWFpbC5jb20NCiANCklmIHlvdSBwcmVmZXIgbm90IHRvIHJlY2VpdmUgZnV0
+dXJlIGVtYWlsIGNvbW11bmljYXRpb25zIGZyb20gdXMsIHBsZWFzZSB1bnN1YnNjcmliZSBoZXJl
+VGhpcyBuZXdzbGV0dGVyIHdhcyBzZW50IHVzaW5nIElUbmV3c2xldHRlcgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KVGhpcyBTRiBlbWFpbCBpcyBzcG9uc29zcmVkIGJ5OgpUcnkgV2luZG93cyBBenVy
+ZSBmcmVlIGZvciA5MCBkYXlzIENsaWNrIEhlcmUgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2ZkMmQt
+bXNhenVyZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

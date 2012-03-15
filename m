@@ -1,9 +1,9 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi/fsl-espi: make the clock computation easier to
-	read
-Date: Thu, 15 Mar 2012 15:15:46 -0600
-Message-ID: <20120315211546.3AB2C3E04E5@localhost>
+Subject: Re: [PATCH 2/2] spi/fsl-espi: Make sure pm is within 2..32
+Date: Thu, 15 Mar 2012 15:15:59 -0600
+Message-ID: <20120315211559.9CED93E04E5@localhost>
 References: <1331833352-15058-1-git-send-email-bigeasy@linutronix.de>
+	<1331833352-15058-2-git-send-email-bigeasy@linutronix.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,7 +12,7 @@ Cc: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 To: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1331833352-15058-1-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
+In-Reply-To: <1331833352-15058-2-git-send-email-bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,10 +23,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 15 Mar 2012 18:42:31 +0100, Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org> wrote:
-> The -1 +1 thingy should probably do what DIV_ROUND_UP does. The 4 is 2
-> the  "platform_clock => sysclock" and 2 from the computation part. The 64
-> is the same 4 times 16.
+On Thu, 15 Mar 2012 18:42:32 +0100, Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org> wrote:
+> The reference manual says that pm has to stay within 2 and 32. So the
+> lowest frequency is 32 and DIV16 set, the highest is 2 and DIV16 unset.
 > 
 > Signed-off-by: Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>
 
@@ -35,31 +34,36 @@ Applied, thanks.
 g.
 
 > ---
->  drivers/spi/spi-fsl-espi.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/spi/spi-fsl-espi.c |   10 ++++++----
+>  1 files changed, 6 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-> index d770f03..43350f9 100644
+> index 43350f9..7523a24 100644
 > --- a/drivers/spi/spi-fsl-espi.c
 > +++ b/drivers/spi/spi-fsl-espi.c
-> @@ -180,7 +180,7 @@ static int fsl_espi_setup_transfer(struct spi_device *spi,
->  
->  	if ((mpc8xxx_spi->spibrg / hz) > 64) {
+> @@ -182,16 +182,18 @@ static int fsl_espi_setup_transfer(struct spi_device *spi,
 >  		cs->hw_mode |= CSMODE_DIV16;
-> -		pm = (mpc8xxx_spi->spibrg - 1) / (hz * 64) + 1;
-> +		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 16 * 4);
+>  		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 16 * 4);
 >  
->  		WARN_ONCE(pm > 16, "%s: Requested speed is too low: %d Hz. "
+> -		WARN_ONCE(pm > 16, "%s: Requested speed is too low: %d Hz. "
+> +		WARN_ONCE(pm > 33, "%s: Requested speed is too low: %d Hz. "
 >  			  "Will use %d Hz instead.\n", dev_name(&spi->dev),
-> @@ -188,7 +188,7 @@ static int fsl_espi_setup_transfer(struct spi_device *spi,
->  		if (pm > 16)
->  			pm = 16;
+> -			  hz, mpc8xxx_spi->spibrg / 1024);
+> -		if (pm > 16)
+> -			pm = 16;
+> +				hz, mpc8xxx_spi->spibrg / (4 * 16 * (32 + 1)));
+> +		if (pm > 33)
+> +			pm = 33;
 >  	} else {
-> -		pm = (mpc8xxx_spi->spibrg - 1) / (hz * 4) + 1;
-> +		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 4);
+>  		pm = DIV_ROUND_UP(mpc8xxx_spi->spibrg, hz * 4);
 >  	}
 >  	if (pm)
 >  		pm--;
+> +	if (pm < 2)
+> +		pm = 2;
+>  
+>  	cs->hw_mode |= CSMODE_PM(pm);
+>  
 > -- 
 > 1.7.9.1
 > 

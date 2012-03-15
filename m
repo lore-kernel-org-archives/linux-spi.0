@@ -1,12 +1,20 @@
-From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
-Subject: =?UTF-8?Q?S=C3=A9jour_Marrakech_/_Cours_d'anglais_/_Tablette_tactile?=
-Date: Thu, 15 Mar 2012 12:11:12 +0100
-Message-ID: <824939bee96c22e4be12f9bedb55a40d@www.lovingdeals.fr>
+From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 6/6] mfd: mc13xxx: Add i2c driver
+Date: Thu, 15 Mar 2012 19:10:42 +0530
+Message-ID: <CAM=Q2cssNF2TSWHjcbG4wsABBXhquYoKq_scC6bDcq8kdoosyQ@mail.gmail.com>
+References: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
+	<1331757790-10583-7-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1331757790-10583-7-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,115 +25,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2aXN1YWxpc2VyIGNvcnJlY3RlbWVudCBjZXR0ZSBwYWdlLCBjb25zdWx0ZXogbm90cmUg
-dmVyc2lvbiBlbiBsaWduZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvMzllZjAxZjNlYzBjMzc5Mi92aWV3L10KCgoKCltodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWVmMDFmM2VjMGMzNzkyL10KCgoK
-CkwnT0ZGUkUgRFUgSk9VUjogClPDiUpPVVIgUE9VUiAyIFBFUlNPTk5FUyDDgCBM4oCZQURBTSBQ
-QVJLIEhPVEVMIERFIE1BUlJBS0VDSCA6IEdvw7t0ZXogYXV4IHBldGl0cyBwbGFpc2lycyBvcmll
-bnRhdXggcG91ciAzNjDigqwgYXUgbGlldSBkZSAxNzc04oKsICEgCgoKCltodHRwOi8vd3d3Lmxv
-dmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWVmMDFmM2VjMGMzNzkyL2Rp
-c2NvdW50L2RldGFpbC8xNDg5LXNlam91ci1tYXJyYWtlY2gtbWFyb2MtcGFzLWNoZXItZGVhbF0K
-MzYw4oKsIFZhbGV1cjogMTc3NOKCrCDDiWNvbm9taXNlejogMTQxNOKCrCBEb25zOiAzLjc24oKs
-IAoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5
-ZWYwMWYzZWMwYzM3OTIvZGlzY291bnQvZGV0YWlsLzE0ODktc2Vqb3VyLW1hcnJha2VjaC1tYXJv
-Yy1wYXMtY2hlci1kZWFsXQoKCgoKCgo0IG51aXRzIMOgIE1hcnJha2VjaCBwb3VyIDIgcGVyc29u
-bmVzIFPDqWpvdXIgb2ZmZXJ0IMOgIHVuIGVuZmFudCBkZSBtb2lucyBkZSAxMiBhbnMgVW5lIGNo
-YW1icmUgZG91YmxlIGF2ZWMgcGV0aXQtZMOpamV1bmVyIGluY2x1cyBVbmUgc8OpYW5jZSBkZSBo
-YW1tYW0gb3Ugc2F1bmEgZGUgMzAgbWluIHBhciBzw6lqb3VyIGV0IHBhciBwZXJzb25uZSBM4oCZ
-YWNjw6hzIGdyYXR1aXQgYXUgV2lmaSwgw6AgbGEgc2FsbGUgZGUgZml0bmVzcyBldCBhdSBuaWdo
-dCBjbHViIGRlIGzigJlow7R0ZWwgTGEgbmF2ZXR0ZSBncmF0dWl0ZSB2ZXJzIGxlIGNlbnRyZSB2
-aWxsZSBVbiBzw6lqb3VyIGRlIHLDqnZlwqDDoCBhcHByw6ljaWVyIGF2ZWMgdm9zIHByb2NoZXPC
-oCEgCgpbaHR0cDovL3d3dy5mYWNlYm9vay5jb20vc2hhcmUucGhwP3U9aHR0cCUzQSUyRiUyRnd3
-dy5sb3ZpbmdkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGMTQ4OS1zZWpvdXItbWFycmFr
-ZWNoLW1hcm9jLXBhcy1jaGVyLWRlYWxdCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWlu
-L25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWVmMDFmM2VjMGMzNzkyL3BhZ2UvdHdpdHRlci8/dXJsPWh0
-dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUyRjE0ODkt
-c2Vqb3VyLW1hcnJha2VjaC1tYXJvYy1wYXMtY2hlci1kZWFsJmFtcDttZXNzYWdlPVPDiUpPVVIg
-UE9VUiAyIFBFUlNPTk5FUyDDgCBM4oCZQURBTSBQQVJLIEhPVEVMIERFIE1BUlJBS0VDSCA6IEdv
-w7t0ZXogYXV4IHBldGl0cyBwbGFpc2lycyBvcmllbnRhdXggcG91ciAzNjDigqwgYXUgbGlldSBk
-ZSAxNzc04oKsICFdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1
-cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291
-dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMg
-b2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRh
-Z2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFs
-cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzllZjAxZjNlYzBjMzc5Mi9kaXNjb3VudC9k
-ZXRhaWwvMTQ4OS1zZWpvdXItbWFycmFrZWNoLW1hcm9jLXBhcy1jaGVyLWRlYWxdCgoKCgrCoCBF
-bmNvcmUgcGx1cyBkJ29mZnJlcyAhIAoKCgpWYWxldXIgMTIwJmV1cm87IFJlbWlzZSA3NiUgw4lj
-b25vbWlzZXogOTEmZXVybzsgRG9ucyAwLjMwJmV1cm87IAoKQUJPTk5FTUVOVCBERSA0IE1PSVMg
-w4AgREVTIENPVVJTIETigJlBTkdMQUlTIEVOIExJR05FIDogQW3DqWxpb3JleiB2b3RyZSBuaXZl
-YXUgZOKAmWFuZ2xhaXMgZ3LDomNlIMOgIEVuZ2xpc2hBWi5mciwgMjnigqwgYXUgbGlldSBkZSAx
-MjDigqwgISBbcGxpbmsgLy9EaXNjb3VudDpkZXRhaWwsICdpZCcgPT4gJGRpc2NvdW50LT5pZH0t
-Y291cnMtZC1hbmdsYWlzLWVuLWxpZ25lLXBhcy1jaGVyXQpTZXVsZW1lbnQgMjnigqwgW2h0dHA6
-Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5ZWYwMWYzZWMw
-YzM3OTIvZGlzY291bnQvZGV0YWlsLzE0ODYtY291cnMtZC1hbmdsYWlzLWVuLWxpZ25lLXBhcy1j
-aGVyXQoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdh
-eS8zOWVmMDFmM2VjMGMzNzkyL2Rpc2NvdW50L2RldGFpbC8xNDg2LWNvdXJzLWQtYW5nbGFpcy1l
-bi1saWduZS1wYXMtY2hlcl0KCgoKClZhbGV1ciAyMjkmZXVybzsgUmVtaXNlIDY2JSDDiWNvbm9t
-aXNleiAxNTAmZXVybzsgRG9ucyAwLjc0JmV1cm87IAoKVEFCTEVUVEUgVEFDVElMRSBQT0NLRVQg
-RFJPSUQgNC4z4oCZ4oCZIEdPT0dMRSBBTkRST0lEIDIuMiA6IE9mZnJlei12b3VzIHVuIG9iamV0
-IG11bHRpbcOpZGlhIHV0aWxlIGV0IG1vZGVybmUgcG91ciA3OeKCrCBhdSBsaWV1IGRlIDIyOeKC
-rCAhIFtwbGluayAvL0Rpc2NvdW50OmRldGFpbCwgJ2lkJyA9PiAkZGlzY291bnQtPmlkfS10YWJs
-ZXR0ZS10YWN0aWxlLTQtcG91Y2VzLWdvb2dsZS1hbmRyb2lkLXBhcy1jaGVyXQpTZXVsZW1lbnQg
-NznigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
-LzM5ZWYwMWYzZWMwYzM3OTIvZGlzY291bnQvZGV0YWlsLzE0OTEtdGFibGV0dGUtdGFjdGlsZS00
-LXBvdWNlcy1nb29nbGUtYW5kcm9pZC1wYXMtY2hlcl0KCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
-cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMzllZjAxZjNlYzBjMzc5Mi9kaXNjb3VudC9k
-ZXRhaWwvMTQ5MS10YWJsZXR0ZS10YWN0aWxlLTQtcG91Y2VzLWdvb2dsZS1hbmRyb2lkLXBhcy1j
-aGVyXQoKCgoKCgoKClZhbGV1ciA0Ni42NSZldXJvOyBSZW1pc2UgNTclIMOJY29ub21pc2V6IDI2
-Ljc1JmV1cm87IERvbnMgMC4xOSZldXJvOyAKCkJST1NTRVMgw4AgREVOVFMgKyBERU5USUZSSUNF
-IEJPQiBM4oCZw4lQT05HRSA6IE9mZnJleiDDoCB2b3MgZW5mYW50cyBkZSBqb2xpZXMgZGVudHMg
-c29saWRlcyBldCBlbiBwbGVpbmUgZm9ybWUgcG91ciAxOSw5MOKCrCBhdSBsaWV1IGRlIDQ2LDY1
-4oKsICEgW3BsaW5rIC8vRGlzY291bnQ6ZGV0YWlsLCAnaWQnID0+ICRkaXNjb3VudC0+aWR9LWJy
-b3NzZS1hLWRlbnRzLWRlbnRpZnJpY2UtYm9iLWwtZXBvbmdlLWRrZG9dClNldWxlbWVudCAxOS45
-4oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8z
-OWVmMDFmM2VjMGMzNzkyL2Rpc2NvdW50L2RldGFpbC8xNDg4LWJyb3NzZS1hLWRlbnRzLWRlbnRp
-ZnJpY2UtYm9iLWwtZXBvbmdlLWRrZG9dCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
-aW4vbmV3c2xldHRlci9nYXRld2F5LzM5ZWYwMWYzZWMwYzM3OTIvZGlzY291bnQvZGV0YWlsLzE0
-ODgtYnJvc3NlLWEtZGVudHMtZGVudGlmcmljZS1ib2ItbC1lcG9uZ2UtZGtkb10KCgoKClZhbGV1
-ciA0My43JmV1cm87IFJlbWlzZSA1NCUgw4ljb25vbWlzZXogMjMuOCZldXJvOyBEb25zIDAuMTkm
-ZXVybzsgCgpCUk9TU0VTIMOAIERFTlRTLCBUUk9VU1NFLCBCQVVNRVMgw4AgTEVWUkVTIEVUIFBB
-TlNFTUVOVFMgSEVMTE8gS0lUVFkgOiBMYSBwYW5vcGxpZSBkdSBjw6lsw6hicmUgY2hhdG9uIHBv
-dXIgMTksOTDigqwgYXUgbGlldSBkZSA0Myw3MOKCrCAhIFtwbGluayAvL0Rpc2NvdW50OmRldGFp
-bCwgJ2lkJyA9PiAkZGlzY291bnQtPmlkfS1oZWxsby1raXR0eS1icm9zc2UtZGVudC10cm91c3Nl
-LWVuZmFudC1wYXMtY2hlcl0KU2V1bGVtZW50IDE5LjnigqwgW2h0dHA6Ly93d3cubG92aW5nZGVh
-bHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5ZWYwMWYzZWMwYzM3OTIvZGlzY291bnQv
-ZGV0YWlsLzE0OTMtaGVsbG8ta2l0dHktYnJvc3NlLWRlbnQtdHJvdXNzZS1lbmZhbnQtcGFzLWNo
-ZXJdCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5
-LzM5ZWYwMWYzZWMwYzM3OTIvZGlzY291bnQvZGV0YWlsLzE0OTMtaGVsbG8ta2l0dHktYnJvc3Nl
-LWRlbnQtdHJvdXNzZS1lbmZhbnQtcGFzLWNoZXJdCgoKCgoKCgoKVmFsZXVyIDE5LjgmZXVybzsg
-UmVtaXNlIDUwJSDDiWNvbm9taXNleiA5LjkmZXVybzsgRG9ucyAwLjI1JmV1cm87IAoKTEFNUEUg
-TEVEIFBPVVIgQ09MTElFUlMgROKAmUFOSU1BVVggOiBOZSBwZXJkZXogcGx1cyB2b3RyZSBhbmlt
-YWwgZGUgdnVlIGdyw6JjZSDDoCBs4oCZw6ljbGFpcmFnZSBkZSBzb24gY29sbGllciwgOSw5MOKC
-rCBhdSBsaWV1IGRlIDE5LDgw4oKsICEgW3BsaW5rIC8vRGlzY291bnQ6ZGV0YWlsLCAnaWQnID0+
-ICRkaXNjb3VudC0+aWR9LWNvbGxpZXItbHVtaW5ldXgtbGVkLWNoaWVuLWFuaW1hbC1wYXMtY2hl
-cl0KU2V1bGVtZW50IDkuOeKCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
-bGV0dGVyL2dhdGV3YXkvMzllZjAxZjNlYzBjMzc5Mi9kaXNjb3VudC9kZXRhaWwvMTQ5Mi1jb2xs
-aWVyLWx1bWluZXV4LWxlZC1jaGllbi1hbmltYWwtcGFzLWNoZXJdCgoKW2h0dHA6Ly93d3cubG92
-aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5ZWYwMWYzZWMwYzM3OTIvZGlz
-Y291bnQvZGV0YWlsLzE0OTItY29sbGllci1sdW1pbmV1eC1sZWQtY2hpZW4tYW5pbWFsLXBhcy1j
-aGVyXQoKCgoKVmFsZXVyIDM3JmV1cm87IFJlbWlzZSA2MiUgw4ljb25vbWlzZXogMjMmZXVybzsg
-RG9ucyAwLjE1JmV1cm87IAoKVk9ZQU5DRSBQQVIgVMOJTMOJUEhPTkUgOiBGYW1pbGxlLCBhbW91
-ciwgdHJhdmFpbOKApiBEw6ljb3V2cmV6IHZvdHJlIGF2ZW5pciBncsOiY2UgYXUgZG9uIGRlIEty
-aXN0YSBLYXN0ZWxsYSwgMTTigqwgYXUgbGlldSBkZSAzN+KCrCAhIFtwbGluayAvL0Rpc2NvdW50
-OmRldGFpbCwgJ2lkJyA9PiAkZGlzY291bnQtPmlkfS12b3lhbmNlLXRlbGVwaG9uZS1wcmV2aXNp
-b24ta3Jpc3RhLWthc3RlbGxhLXBhcy1jaGVyXQpTZXVsZW1lbnQgMTTigqwgW2h0dHA6Ly93d3cu
-bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzM5ZWYwMWYzZWMwYzM3OTIv
-ZGlzY291bnQvZGV0YWlsLzE0OTQtdm95YW5jZS10ZWxlcGhvbmUtcHJldmlzaW9uLWtyaXN0YS1r
-YXN0ZWxsYS1wYXMtY2hlcl0KCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdz
-bGV0dGVyL2dhdGV3YXkvMzllZjAxZjNlYzBjMzc5Mi9kaXNjb3VudC9kZXRhaWwvMTQ5NC12b3lh
-bmNlLXRlbGVwaG9uZS1wcmV2aXNpb24ta3Jpc3RhLWthc3RlbGxhLXBhcy1jaGVyXQoKCgoKCgoK
-CltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWVm
-MDFmM2VjMGMzNzkyL2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3Lmxvdmlu
-Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8zOWVmMDFmM2VjMGMzNzkyL2Fzc29j
-aWF0aW9ucy1jYXJpdGF0aXZlcy9dCgpMJ2FmYSBTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUg
-CgoKUG91ciDDqnRyZSByZXRpcsOpIGRlIG5vdHJlIGxpc3RlIGRlIGRpZmZ1c2lvbiwgZMOpc2Fi
-b25uZXotdm91cyBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dh
-dGV3YXkvMzllZjAxZjNlYzBjMzc5Mi91bnN1YnNjcmliZS8/bGFuZ3VhZ2U9ZW5dCgotLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0KVGhpcyBTRiBlbWFpbCBpcyBzcG9uc29zcmVkIGJ5OgpUcnkgV2luZG93
-cyBBenVyZSBmcmVlIGZvciA5MCBkYXlzIENsaWNrIEhlcmUgCmh0dHA6Ly9wLnNmLm5ldC9zZnUv
-c2ZkMmQtbXNhenVyZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
-c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hi Marc,
+
+On Thu, Mar 15, 2012 at 2:13 AM, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org> wrote:
+> Adds support for mc13xxx family ICs connected via i2c.
+>
+> Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+> ---
+<snip>
+
+> +static int mc13xxx_i2c_probe(struct i2c_client *client,
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 const struct i2c_device_id *id)
+> +{
+> + =A0 =A0 =A0 const struct of_device_id *of_id;
+> + =A0 =A0 =A0 struct i2c_driver *idrv =3D to_i2c_driver(client->dev.drive=
+r);
+> + =A0 =A0 =A0 struct mc13xxx *mc13xxx;
+> + =A0 =A0 =A0 struct mc13xxx_platform_data *pdata =3D dev_get_platdata(&c=
+lient->dev);
+> + =A0 =A0 =A0 int ret;
+> +
+> + =A0 =A0 =A0 of_id =3D of_match_device(mc13xxx_dt_ids, &client->dev);
+> + =A0 =A0 =A0 if (of_id)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 idrv->id_table =3D
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 &mc13xxx_i2c_device_id[(enu=
+m mc13xxx_id) of_id->data];
+> +
+> + =A0 =A0 =A0 mc13xxx =3D kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
+> + =A0 =A0 =A0 if (!mc13xxx)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return -ENOMEM;
+> +
+> + =A0 =A0 =A0 dev_set_drvdata(&client->dev, mc13xxx);
+> +
+> + =A0 =A0 =A0 mc13xxx->dev =3D &client->dev;
+> + =A0 =A0 =A0 mutex_init(&mc13xxx->lock);
+> +
+> + =A0 =A0 =A0 mc13xxx->regmap =3D regmap_init_i2c(client, &mc13xxx_regmap=
+_i2c_config);
+> + =A0 =A0 =A0 if (IS_ERR(mc13xxx->regmap)) {
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret =3D PTR_ERR(mc13xxx->regmap);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_err(mc13xxx->dev, "Failed to initialize=
+ register map: %d\n",
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 ret);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 dev_set_drvdata(&client->dev, NULL);
+Are we  leaking mc13xxx here
+May be you can consider using devm* functions ?
+
+>  + =A0 =A0 =A0 =A0 =A0 =A0 =A0 return ret;
+> + =A0 =A0 =A0 }
+> +
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

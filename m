@@ -1,7 +1,7 @@
-From: Dr Bola James <james.tay0984-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: JOB OFFER!!!!
+From: "Dr Bola James." <james.tay0984-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: JOB OFFER!!!!!
 Date: Thu, 15 Mar 2012 07:36:44 +0400
-Message-ID: <201203150336.q2F3aibw015052@globus.mtw.ru>
+Message-ID: <201203150336.q2F3aiQ5015053@globus.mtw.ru>
 Reply-To: james.tay0982-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -33,7 +33,7 @@ Awaits your response soon
 
 regards
 
-Dr James
+Dr Robert James
 
 
 

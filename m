@@ -1,44 +1,43 @@
-From: "Dr Bola James." <james.tay0984-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: JOB OFFER!!!!!
-Date: Thu, 15 Mar 2012 07:36:44 +0400
-Message-ID: <201203150336.q2F3aiQ5015053@globus.mtw.ru>
-Reply-To: james.tay0982-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: Re: [PATCH/RFC] spi: sh-msiof: per-transaction runtime PM
+Date: Thu, 15 Mar 2012 17:58:26 +0900
+Message-ID: <CANqRtoQUm5PyVwe-PtQPP1DX+_tAh9ptbj9mSkx48+W4Yh9DiA@mail.gmail.com>
+References: <Pine.LNX.4.64.1203141828230.30291@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net, linux-sh@vger.kernel.org
+To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <Pine.LNX.4.64.1203141828230.30291@axis700.grange>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Fast paced company is looking for a person to work in our order processing department. 
-Must be a quick learner and able to process work with accuracy. 
-Position includes opening and processing customer orders, documenting any issues or discrepancies and must be able to provide clerical support necessary including computer knowledge and use, 
-filing and photo copying.
+On Thu, Mar 15, 2012 at 2:35 AM, Guennadi Liakhovetski
+<g.liakhovetski@gmx.de> wrote:
+> Currently the spi-sh-msiof driver implements a runtime PM scheme, based on
+> chipselect toggling. However, this is largely inefficient, since SPI
+> client drivers are allowed to keep the chipselect active for long periods
+> of time. This patch allows the driver to runtime-suspend the controller
+> between SPI transfers. While moving runtime-PM hooks this patch also
+> removes manual PM clock manipulation.
+>
+> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+> ---
+>
+> Marked as RFC, because I'm actually not sure, whether suspending after
+> each transfer is actually allowed. This seems to bring problems with
+> mmc-spi at least. Some commands return errors, but a retry recovers. More
+> investigation is required. Any hints concerning why this is not perfectly
+> functioning would be appreciated!
 
-If you are interested, kindly forward the following information to our recruiting department
+Hi Guennadi,
 
-Fullname:
-Mailing Address
-Contact Telephone
+Thanks for your efforts. I believe that the error you are seeing with
+this patch applied is because the code has been updated to change the
+polarity of some shared SPI bus pins while CS is being asserted. This
+will result in potential spikes on the shared SPI bus pins which is
+far from perfect. =)
 
-Awaits your response soon
+Cheers,
 
-regards
-
-Dr Robert James
-
-
-
-
-------------------------------------------------------------------------------
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
-http://p.sf.net/sfu/sfd2d-msazure
+/ magnus

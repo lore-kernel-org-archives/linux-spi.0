@@ -1,16 +1,21 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: [PATCH 2/2] spi: bitbang: support the new SPI_BOARD_FLAG_RELEASE_CS
-	flag
-Date: Thu, 15 Mar 2012 22:32:14 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.1203152230190.2988@axis700.grange>
-References: <Pine.LNX.4.64.1203152228430.2988@axis700.grange>
+From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Subject: Re: [PATCH v3 2/6] regmap: Add support for device with 24 data bits.
+Date: Fri, 16 Mar 2012 07:55:38 +1100
+Message-ID: <201203160755.38750.marc@cpdesign.com.au>
+References: <1331757790-10583-1-git-send-email-marc@cpdesign.com.au>
+	<1331757790-10583-3-git-send-email-marc@cpdesign.com.au>
+	<20120315104617.GD3138@opensource.wolfsonmicro.com>
+Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.1203152228430.2988-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+In-Reply-To: <20120315104617.GD3138-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,58 +26,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-By supporting the new SPI_BOARD_FLAG_RELEASE_CS flag we let underlying
-hardware drivers implement more efficient runtime power-management.
+Hi Mark,
 
-Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
----
- drivers/spi/spi-bitbang.c |   22 ++++++++++------------
- 1 files changed, 10 insertions(+), 12 deletions(-)
+> > Add support for devices with 24 data bits.
+> 
+> Not sure what you generated this patch against but it doesn't apply to
+> my topic/core or against -next.  Please regenerate it against
+> topic/core, it looks good.
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index fe06e1b..c895d85 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -347,17 +347,14 @@ static void bitbang_work(struct work_struct *work)
- 			if (t->delay_usecs)
- 				udelay(t->delay_usecs);
- 
--			if (!cs_change)
--				continue;
--			if (t->transfer_list.next == &m->transfers)
--				break;
--
--			/* sometimes a short mid-message deselect of the chip
--			 * may be needed to terminate a mode or command
--			 */
--			ndelay(nsecs);
--			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
--			ndelay(nsecs);
-+			if (cs_change && !list_is_last(&t->transfer_list, &m->transfers)) {
-+				/* sometimes a short mid-message deselect of the chip
-+				 * may be needed to terminate a mode or command
-+				 */
-+				ndelay(nsecs);
-+				bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
-+				ndelay(nsecs);
-+			}
- 		}
- 
- 		m->status = status;
-@@ -367,7 +364,8 @@ static void bitbang_work(struct work_struct *work)
- 		 * cs_change has hinted that the next message will probably
- 		 * be for this chip too.
- 		 */
--		if (!(status == 0 && cs_change)) {
-+		if (!(status == 0 && cs_change) ||
-+		    spi->flags & SPI_BOARD_FLAG_RELEASE_CS) {
- 			ndelay(nsecs);
- 			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
- 			ndelay(nsecs);
--- 
-1.7.2.5
+The 2 regmap patches in this series (against mfd-2.6) were included for 
+testing convenience, (plus I wanted to see if they worked before submitting 
+them to you.)
+I put a note to you in the cover letter intending to point out that I have a 
+different version against regmap/for-next.
 
-
+Cheers
+Marc
 ------------------------------------------------------------------------------
 This SF email is sponsosred by:
 Try Windows Azure free for 90 days Click Here 

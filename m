@@ -1,11 +1,11 @@
-From: "Integrative Medicine Conference" <paragon-MmCWoUt+JYqZuzBka8ofvg@public.gmane.org>
-Subject: [SPAM] Early registration deadline
-Date: 15 Mar 2012 04:10:07 +0200
-Message-ID: <E1S8074-0006Sx-54@sfs-ml-1.v29.ch3.sourceforge.com>
-Reply-To: Integrativemedicine1203-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Cofinoga par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Simulez sans engagement votre offre de =?iso-8859-15?Q?pr=EAt?=
+Date: Thu, 15 Mar 2012 03:45:28 +0100
+Message-ID: <1331779528.4f6157c8ed583@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,40 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-DQpJZiB5b3UgaGF2ZSB0cm91YmxlIHJlYWRpbmcgdGhpcyBuZXdzbGV0dGVyLCB2aWV3IHRoZSB3
-ZWIgdmVyc2lvbiBoZXJlDQoNCmh0dHA6Ly9pdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmls
-L3IuYXNoeD9oPWh0dHAlM2ElMmYlMmZpdG5ld3NsZXR0ZXIuaXRuZXdzbGV0dGVyLmNvLmlsJTJm
-c2VuZGluZyUyZndlYnBhZ2UuYXNweCUzZmQlM2QxMDI1NzA5MzU3OTk5NjczNDk4NzY0ODA2NTcz
-OTI3OTY0MjY1NSUyNnclM2QxJTI2YXIlM2QwJTI2aXNEZSUzZFRydWUlMjZyZmwlM2RGYWxzZSUy
-NnBsJTNkMSUyNmwlM2QxMjYzMjI0JTI2c2xsJTNkMiUyNm1sdCUzZFRydWUmbD0xMjYzMjI0JmQ9
-MTAyNTcwOTM1Nzk5OTY3MzQ5ODc2NDgwNjU3MzkyNzk2NDI2NTVJbnRlcm5hdGlvbmFsIENvbmZl
-cmVuY2Ugb24gSW50ZWdyYXRpdmUgTWVkaWNpbmUsIE1heSAxMy0xNSwgMjAxMiwgSmVydXNhbGVt
-wqBFYXJseSBSZWdpc3RyYXRpb24gRGVhZGxpbmUgRGF0ZTogTWFyY2ggMTUsIDIwMTINClJlZ2lz
-dGVyIE5vdyBmb3IgUmVkdWNlZCBGZWVUaGUgSW50ZXJuYXRpb25hbCBDb25mZXJlbmNlIG9uIElu
-dGVncmF0aXZlIE1lZGljaW5lIHRha2luZyBwbGFjZSBNYXkgMTMtMTUsIDIwMTIsIHdpbGwgZm9j
-dXMgb24gdGhlIGFsdGVybmF0aXZlIHRyZWF0bWVudHMgb2YgTmV1cm9sb2d5LCBOdXRyaXRpb24s
-IFByZXZlbnRpdmUgTWVkaWNpbmUsIE9uY29sb2d5LCBDYXJkaW9sb2d5IGFuZCBtb3JlLkludGVn
-cmF0aXZlIE1lZGljaW5lIGdyb3dzIGFuZCBkZXZlbG9wcyB1c2luZyBtZXRob2RzIGZyb20gd2hh
-dCB3YXMgZm9ybWVybHkga25vd24gYXMgQ29tcGxlbWVudGFyeSBNZWRpY2luZSBhbmQgQWx0ZXJu
-YXRpdmUgTWVkaWNpbmUsIGFuZCBpbnRlZ3JhdGVzIHRoZW0gaW50byB0aGUgY29udmVudGlvbmFs
-IG1lZGljYWwgdHJlYXRtZW50LlRoaXMgdW5pcXVlIG11bHRpZGlzY2lwbGluYXJ5IGNvbmZlcmVu
-Y2Ugd2lsbCBkZWFsIHdpdGggdmFyaW91cyBhc3BlY3RzIG9mIGludGVncmF0aXZlIG1lZGljaW5l
-IHN1Y2ggYXMgVHJhZGl0aW9uYWwgQ2hpbmVzZSBNZWRpY2luZSAoVENNKSwgSG9tZW9wYXRoeSwg
-TWVkaWNpbmFsIEhlcmJzLCBOYXR1cm9wYXRoeSwgUmVmbGV4b2xvZ3kgYW5kIG90aGVyIGZpZWxk
-c0NsaWNrIEhlcmUgdG8gUmVnaXN0ZXJWaWV3IHRoZSBQcmVsaW1pbmFyeSBTY2llbnRpZmljIFBy
-b2dyYW1WaXNpdCBvdXIgd2Vic2l0ZSBmb3IgbW9yZSBkZXRhaWxzOiB3d3cubWVkaWNvbnZlbnRp
-b24uY29tV2UgbG9vayBmb3J3YXJkIHRvIHdlbGNvbWluZyB5b3UgdG8gSmVydXNhbGVtLg0KUGxl
-YXNlIGZlZWwgZnJlZSB0byBjb250YWN0IHRoZSBDb25mZXJlbmNlIFNlY3JldGFyaWF0IGZvciBh
-bnkgcXVlcmllcy5Db25ncmVzcyBPcmdhbml6ZXI6wqAgUGFyYWdvbiBDb252ZW50aW9uczE4wqBB
-dmVudWUgTG91aXMgQ2FzYWksIDEyMDkgR2VuZXZhLCBTd2l0emVybGFuZFRlbDogKzQxIDIyIDUz
-MzAgOTQ4wqDCoCBGYXg6ICs0MSAyMiA1ODAyIDk1M8KgIA0KRS1tYWlsOiBJbnRlZ3JhdGl2ZW1l
-ZGljaW5lMTIwM0BnbWFpbC5jb20NCiANCklmIHlvdSBwcmVmZXIgbm90IHRvIHJlY2VpdmUgZnV0
-dXJlIGVtYWlsIGNvbW11bmljYXRpb25zIGZyb20gdXMsIHBsZWFzZSB1bnN1YnNjcmliZSBoZXJl
-VGhpcyBuZXdzbGV0dGVyIHdhcyBzZW50IHVzaW5nIElUbmV3c2xldHRlcgotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KVGhpcyBTRiBlbWFpbCBpcyBzcG9uc29zcmVkIGJ5OgpUcnkgV2luZG93cyBBenVy
-ZSBmcmVlIGZvciA5MCBkYXlzIENsaWNrIEhlcmUgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2ZkMmQt
-bXNhenVyZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Nzk1MSZjPTE5NjE2NDEmZD0yMDEy=
+LTAzLTE1IDAzOjEwOjAyJmU9MSZoPTc5NTAmZj03OTUxJmc9Nzk1MQ=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Nzk1MSZjPTE=
+5NjE2NDEmZD0yMDEyLTAzLTE1IDAzOjEwOjAyJmU9MSZoPTc5NTAmZj03OTUxJmc9Nzk1MQ=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

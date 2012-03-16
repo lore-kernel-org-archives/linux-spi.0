@@ -1,16 +1,18 @@
-From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: Re: spi-bitbang inverted logic?
-Date: Fri, 16 Mar 2012 09:34:23 +0100 (CET)
-Message-ID: <Pine.LNX.4.64.1203160915380.13465@axis700.grange>
-References: <Pine.LNX.4.64.1203151201040.2988@axis700.grange>
-	<CABb+yY0KqpSYnGqcf95JU0PkjMen_ECwPMmNTFdnMRwrguGPnA@mail.gmail.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH/RFC] spi: bitbang: add PM QoS support
+Date: Fri, 16 Mar 2012 10:06:22 +0100
+Message-ID: <CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "Rafael J. Wysocki" <rjw-KKrjLPT3xs0@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CABb+yY0KqpSYnGqcf95JU0PkjMen_ECwPMmNTFdnMRwrguGPnA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20120315092923.951203E04FD@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,74 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCAxNiBNYXIgMjAxMiwgSmFzc2kgQnJhciB3cm90ZToKCj4gT24gVGh1LCBNYXIgMTUs
-IDIwMTIgYXQgNDozOSBQTSwgR3Vlbm5hZGkgTGlha2hvdmV0c2tpCj4gPGcubGlha2hvdmV0c2tp
-QGdteC5kZT4gd3JvdGU6Cj4gPiBIaSBhbGwKPiA+Cj4gPiBJIHN0dW1ibGVkIGFjcm9zcyB0aGlz
-IGNvZGUgaW4gc3BpLWJpdGJhbmcuYzoKPiA+Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGxp
-c3RfZm9yX2VhY2hfZW50cnkgKHQsICZtLT50cmFuc2ZlcnMsIHRyYW5zZmVyX2xpc3QpIHsKPiA+
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLi4uCj4gPiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoGNzX2NoYW5nZSA9IHQtPmNzX2NoYW5nZTsKPiA+IMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLi4uCj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoGlmICghY3NfY2hhbmdlKQo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBjb250aW51ZTsKPiA+IMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgLi4uCj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoC8qIHNvbWV0aW1lcyBhIHNob3J0IG1pZC1tZXNzYWdlIGRlc2VsZWN0IG9mIHRoZSBjaGlw
-Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAqIG1heSBiZSBuZWVkZWQg
-dG8gdGVybWluYXRlIGEgbW9kZSBvciBjb21tYW5kCj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCAqLwo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBu
-ZGVsYXkobnNlY3MpOwo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBiaXRi
-YW5nLT5jaGlwc2VsZWN0KHNwaSwgQklUQkFOR19DU19JTkFDVElWRSk7Cj4gPiDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoG5kZWxheShuc2Vjcyk7Cj4gPiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoH0KPiA+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLi4uCj4gPgo+ID4gwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAvKiBub3JtYWxseSBkZWFjdGl2YXRlIGNoaXBzZWxlY3QgLi4uIHVu
-bGVzcyBubyBlcnJvciBhbmQKPiA+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICogY3NfY2hhbmdl
-IGhhcyBoaW50ZWQgdGhhdCB0aGUgbmV4dCBtZXNzYWdlIHdpbGwgcHJvYmFibHkKPiA+IMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgICogYmUgZm9yIHRoaXMgY2hpcCB0b28uCj4gPiDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCAqLwo+ID4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBpZiAoIShzdGF0dXMg
-PT0gMCAmJiBjc19jaGFuZ2UpKSB7Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoG5kZWxheShuc2Vjcyk7Cj4gPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oGJpdGJhbmctPmNoaXBzZWxlY3Qoc3BpLCBCSVRCQU5HX0NTX0lOQUNUSVZFKTsKPiA+IMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbmRlbGF5KG5zZWNzKTsKPiA+IMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgfQo+ID4KPiA+IFNvLCBJSVVDLCBvbiB0aGUgZmlyc3Qgb2NjdXJyYW5j
-ZSBjc19jaGFuZ2UgaXMgaW50ZXJwcmV0ZWQgYXMgInRydWUgPT0KPiA+IGhhdmUgdG8gZGlzYWJs
-ZSBDRCwiIHdoZXJlYXMgdGhlIHNlY29uZCBvbmUgZG9lcyB0aGUgb3Bwb3NpdGUuIFNob3VsZG4n
-dAo+ID4gdGhlIGxhdHRlciBvbmUgYmUgaW52ZXJ0ZWQ/Cj4gPgo+IEFzIGRvY3VtZW50ZWQgaW4g
-aW5jbHVkZS9saW51eC9zcGkvc3BpLmggdGhlIGJlaGF2aW9yIG9mIGNzX2NoYW5nZSBjaGFuZ2Vz
-Cj4gZGVwZW5kaW5nIHVwb24gd2hldGhlciB0aGUgdHJhbnNmZXIgaXMgbGFzdCBvciBub3QgaW4g
-YSBtZXNzYWdlLgoKUmlnaHQsIEkgbG9va2VkIGF0IERvY3VtZW50YXRpb24vc3BpL3NwaS1zdW1t
-YXJ5LCB3aGljaCBpcyBub3QgcHJvdmlkaW5nIGEgCnZlcnkgZGV0YWlsZWQgZXhwbGFuYXRpb24u
-Cgo+IEkgcmVtZW1iZXIgdXNpbmcgdGhlIHNpZ25hbCBwYXR0ZXJuIG91dHB1dCBieSB0aGUgYml0
-YmFuZyBkcml2ZXIgYXMKPiB0aGUgcmVmZXJlbmNlLAo+IHdoaWxlIGRldmVsb3Bpbmcgb25lIGZv
-ciBzM2M2NHh4IGFuZCBJIGRpZG4ndCBzZWUgYW55IGJlaGF2aW9yIGFnYWluc3Qgd2hhdCBpcwo+
-IGRvY3VtZW50ZWQuCgpPaywgSSBhY3R1YWxseSBzdXNwZWN0ZWQgdGhhdCwganVzdCBkaWRuJ3Qg
-Y29tcGFyZSB0byBvdGhlciBkcml2ZXJzLiBBbmQgCnRoZSBjb21tZW50IGluIG1tY19zcGkuYzoK
-CiAqIC0gV2UgdGVsbCB0aGUgY29udHJvbGxlciB0byBrZWVwIHRoZSBjaGlwc2VsZWN0IGFjdGl2
-ZSBmcm9tIHRoZQogKiAgIGJlZ2lubmluZyBvZiBhbiBtbWNfaG9zdF9vcHMucmVxdWVzdCB1bnRp
-bCB0aGUgZW5kLiAgU28gYmV3YXJlCiAqICAgb2YgU1BJIGNvbnRyb2xsZXIgZHJpdmVycyB0aGF0
-IG1pcy1oYW5kbGUgdGhlIGNzX2NoYW5nZSBmbGFnIQoKaXMgYWxzbyBub3QgZXh0cmVtZWx5IG9w
-dGltaXN0aWMuLi4gQnV0IGFueXdheSwgbXkgeWVzdGVyZGF5J3MgCnBhdGNoLXNlcmllcwoKaHR0
-cDovL3NvdXJjZWZvcmdlLm5ldC9tYWlsYXJjaGl2ZS9mb3J1bS5waHA/dGhyZWFkX25hbWU9UGlu
-ZS5MTlguNC42NC4xMjAzMTUyMjMwMTkwLjI5ODglNDBheGlzNzAwLmdyYW5nZSZmb3J1bV9uYW1l
-PXNwaS1kZXZlbC1nZW5lcmFsCgpwcmVzZXJ2ZXMgdGhhdCBiZWhhdmlvdXIuIEJ1dCB3aGF0IEkg
-c3RpbGwgZG9uJ3QgdW5kZXJzdGFuZDoKCiAqIC4uLiAgT24gbXVsdGktZGV2aWNlIFNQSSBidXNz
-ZXMKICogd2l0aCBub3RoaW5nIGJsb2NraW5nIG1lc3NhZ2VzIGdvaW5nIHRvIG90aGVyIGRldmlj
-ZXMsIHRoaXMgaXMganVzdAogKiBhIHBlcmZvcm1hbmNlIGhpbnQ7IHN0YXJ0aW5nIGEgbWVzc2Fn
-ZSB0byBhbm90aGVyIGRldmljZSBkZXNlbGVjdHMKICogdGhpcyBvbmUuICBCdXQgaW4gb3RoZXIg
-Y2FzZXMsIHRoaXMgY2FuIGJlIHVzZWQgdG8gZW5zdXJlIGNvcnJlY3RuZXNzLgogKiBTb21lIGRl
-dmljZXMgbmVlZCBwcm90b2NvbCB0cmFuc2FjdGlvbnMgdG8gYmUgYnVpbHQgZnJvbSBhIHNlcmll
-cyBvZgogKiBzcGlfbWVzc2FnZSBzdWJtaXNzaW9ucywgd2hlcmUgdGhlIGNvbnRlbnQgb2Ygb25l
-IG1lc3NhZ2UgaXMgZGV0ZXJtaW5lZAogKiBieSB0aGUgcmVzdWx0cyBvZiBwcmV2aW91cyBtZXNz
-YWdlcyBhbmQgd2hlcmUgdGhlIHdob2xlIHRyYW5zYWN0aW9uCiAqIGVuZHMgd2hlbiB0aGUgY2hp
-cHNlbGVjdCBnb2VzIGludGFjdGl2ZS4KClNvLCBpcyB0aGlzIGp1c3QgYW4gb3B0aW9uYWwgImhp
-bnQiIG9yIHNvbWV0aGluZywgdGhhdCBtdXN0IGJlIG9iZXllZCB0byAKdG8gZ3VhcmFudGVlIGZ1
-bmN0aW9uYWxpdHk/IEF0IGxlYXN0LCBteSBhYm92ZSBwcm9wb3NhbCBvZmZlcnMgYSBtZXRob2Qg
-dG8gCmRpc3Rpbmd1aXNoIGJldHdlZW4gdGhvc2UgdHdvIGNhc2VzLgoKVGhhbmtzCkd1ZW5uYWRp
-Ci0tLQpHdWVubmFkaSBMaWFraG92ZXRza2ksIFBoLkQuCkZyZWVsYW5jZSBPcGVuLVNvdXJjZSBT
-b2Z0d2FyZSBEZXZlbG9wZXIKaHR0cDovL3d3dy5vcGVuLXRlY2hub2xvZ3kuZGUvCgotLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0KVGhpcyBTRiBlbWFpbCBpcyBzcG9uc29zcmVkIGJ5OgpUcnkgV2luZG93
-cyBBenVyZSBmcmVlIGZvciA5MCBkYXlzIENsaWNrIEhlcmUgCmh0dHA6Ly9wLnNmLm5ldC9zZnUv
-c2ZkMmQtbXNhenVyZQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
-c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Thu, Mar 15, 2012 at 10:29 AM, Grant Likely
+<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> On Wed, 14 Mar 2012 22:04:25 +0100 (CET), Guennadi Liakhovetski <g.liakho=
+vetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+>> This patch adds a PM QoS requirement to the spi-bitbang driver, preventi=
+ng
+>> the underlying SPI hardware driver to suspend for too long a time, as lo=
+ng
+>> as there are transfers on the queue.
+>>
+>> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+>
+> Shouldn't this be part of the core spi infrastructure? =A0Particularly si=
+nce queuing
+> is moving into the core.
+
+Hm, the spi-bitbang driver needs to be converted to use the central
+message queue, Guennadi can you look into that since you're using it?
+
+The spi-pl022.c and also Samsung spi-s3c64xx.c is converted showing
+examples on how go about with that.
+
+Yours,
+Linus Walleij
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

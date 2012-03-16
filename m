@@ -1,13 +1,15 @@
-From: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Subject: [SPAM] Dating Site. Register for free. You,
-	our man Needs http://maria012012.com.ua
-Date: Fri, 16 Mar 2012 05:03:14 +0000
-Message-ID: <E1S8PJq-0005MX-Cb@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: spi-bitbang inverted logic?
+Date: Fri, 16 Mar 2012 11:39:43 +0530
+Message-ID: <CABb+yY0KqpSYnGqcf95JU0PkjMen_ECwPMmNTFdnMRwrguGPnA@mail.gmail.com>
+References: <Pine.LNX.4.64.1203151201040.2988@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.1203151201040.2988-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,9 +20,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dating Site. Register for free. You, our man Needs http://maria012012.com.ua
-
-------------------------------------------------------------------------------
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
-http://p.sf.net/sfu/sfd2d-msazure
+T24gVGh1LCBNYXIgMTUsIDIwMTIgYXQgNDozOSBQTSwgR3Vlbm5hZGkgTGlha2hvdmV0c2tpCjxn
+LmxpYWtob3ZldHNraUBnbXguZGU+IHdyb3RlOgo+IEhpIGFsbAo+Cj4gSSBzdHVtYmxlZCBhY3Jv
+c3MgdGhpcyBjb2RlIGluIHNwaS1iaXRiYW5nLmM6Cj4KPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oGxpc3RfZm9yX2VhY2hfZW50cnkgKHQsICZtLT50cmFuc2ZlcnMsIHRyYW5zZmVyX2xpc3QpIHsK
+PiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoC4uLgo+IMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgY3NfY2hhbmdlID0gdC0+Y3NfY2hhbmdlOwo+IMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLi4uCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqBpZiAoIWNzX2NoYW5nZSkKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoGNvbnRpbnVlOwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgLi4uCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAvKiBzb21l
+dGltZXMgYSBzaG9ydCBtaWQtbWVzc2FnZSBkZXNlbGVjdCBvZiB0aGUgY2hpcAo+IMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICogbWF5IGJlIG5lZWRlZCB0byB0ZXJtaW5hdGUg
+YSBtb2RlIG9yIGNvbW1hbmQKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCAq
+Lwo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgbmRlbGF5KG5zZWNzKTsKPiDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoGJpdGJhbmctPmNoaXBzZWxlY3Qoc3Bp
+LCBCSVRCQU5HX0NTX0lOQUNUSVZFKTsKPiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoG5kZWxheShuc2Vjcyk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqB9Cj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAuLi4KPgo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgLyogbm9ybWFsbHkg
+ZGVhY3RpdmF0ZSBjaGlwc2VsZWN0IC4uLiB1bmxlc3Mgbm8gZXJyb3IgYW5kCj4gwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgKiBjc19jaGFuZ2UgaGFzIGhpbnRlZCB0aGF0IHRoZSBuZXh0IG1lc3Nh
+Z2Ugd2lsbCBwcm9iYWJseQo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgICogYmUgZm9yIHRoaXMg
+Y2hpcCB0b28uCj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgKi8KPiDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoGlmICghKHN0YXR1cyA9PSAwICYmIGNzX2NoYW5nZSkpIHsKPiDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoG5kZWxheShuc2Vjcyk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqBiaXRiYW5nLT5jaGlwc2VsZWN0KHNwaSwgQklUQkFOR19DU19JTkFD
+VElWRSk7Cj4gwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqBuZGVsYXkobnNlY3Mp
+Owo+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgfQo+Cj4gU28sIElJVUMsIG9uIHRoZSBmaXJzdCBv
+Y2N1cnJhbmNlIGNzX2NoYW5nZSBpcyBpbnRlcnByZXRlZCBhcyAidHJ1ZSA9PQo+IGhhdmUgdG8g
+ZGlzYWJsZSBDRCwiIHdoZXJlYXMgdGhlIHNlY29uZCBvbmUgZG9lcyB0aGUgb3Bwb3NpdGUuIFNo
+b3VsZG4ndAo+IHRoZSBsYXR0ZXIgb25lIGJlIGludmVydGVkPwo+CkFzIGRvY3VtZW50ZWQgaW4g
+aW5jbHVkZS9saW51eC9zcGkvc3BpLmggdGhlIGJlaGF2aW9yIG9mIGNzX2NoYW5nZSBjaGFuZ2Vz
+CmRlcGVuZGluZyB1cG9uIHdoZXRoZXIgdGhlIHRyYW5zZmVyIGlzIGxhc3Qgb3Igbm90IGluIGEg
+bWVzc2FnZS4KSSByZW1lbWJlciB1c2luZyB0aGUgc2lnbmFsIHBhdHRlcm4gb3V0cHV0IGJ5IHRo
+ZSBiaXRiYW5nIGRyaXZlciBhcwp0aGUgcmVmZXJlbmNlLAp3aGlsZSBkZXZlbG9waW5nIG9uZSBm
+b3IgczNjNjR4eCBhbmQgSSBkaWRuJ3Qgc2VlIGFueSBiZWhhdmlvciBhZ2FpbnN0IHdoYXQgaXMK
+ZG9jdW1lbnRlZC4KCi1qYXNzaQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRiBlbWFpbCBp
+cyBzcG9uc29zcmVkIGJ5OgpUcnkgV2luZG93cyBBenVyZSBmcmVlIGZvciA5MCBkYXlzIENsaWNr
+IEhlcmUgCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2ZkMmQtbXNhenVyZQpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

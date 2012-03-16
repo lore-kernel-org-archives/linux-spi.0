@@ -1,17 +1,13 @@
-From: Jassi Brar <jassisinghbrar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi-bitbang inverted logic?
-Date: Fri, 16 Mar 2012 15:30:42 +0530
-Message-ID: <CABb+yY1yasDE+JdA3M+ApMcwY5rdNDp0ZRpzHchfshx04OLnEw@mail.gmail.com>
-References: <Pine.LNX.4.64.1203151201040.2988@axis700.grange>
-	<CABb+yY0KqpSYnGqcf95JU0PkjMen_ECwPMmNTFdnMRwrguGPnA@mail.gmail.com>
-	<Pine.LNX.4.64.1203160915380.13465@axis700.grange>
+From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Fri, 16 Mar 2012 20:45:31 +0100
+Message-ID: <1331927131.4f63985bea770@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.1203160915380.13465-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,39 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCBNYXIgMTYsIDIwMTIgYXQgMjowNCBQTSwgR3Vlbm5hZGkgTGlha2hvdmV0c2tpCjxn
-LmxpYWtob3ZldHNraUBnbXguZGU+IHdyb3RlOgo+Cj4gwqAqIC0gV2UgdGVsbCB0aGUgY29udHJv
-bGxlciB0byBrZWVwIHRoZSBjaGlwc2VsZWN0IGFjdGl2ZSBmcm9tIHRoZQo+IMKgKiDCoCBiZWdp
-bm5pbmcgb2YgYW4gbW1jX2hvc3Rfb3BzLnJlcXVlc3QgdW50aWwgdGhlIGVuZC4gwqBTbyBiZXdh
-cmUKPiDCoCogwqAgb2YgU1BJIGNvbnRyb2xsZXIgZHJpdmVycyB0aGF0IG1pcy1oYW5kbGUgdGhl
-IGNzX2NoYW5nZSBmbGFnIQo+Cj4gaXMgYWxzbyBub3QgZXh0cmVtZWx5IG9wdGltaXN0aWMuLi4K
-PgpJIGhhZCBhY3R1YWxseSB0ZXN0ZWQgTU1DIG92ZXIgYml0YmFuZ2luZyBTUEkgdG8gY29tcGFy
-ZSB3b3JraW5nIG9mCnRoZSBzcGktczNjNjR4eC5jCgo+QnV0IGFueXdheSwgbXkgeWVzdGVyZGF5
-J3MgcGF0Y2gtc2VyaWVzCj4KPiBodHRwOi8vc291cmNlZm9yZ2UubmV0L21haWxhcmNoaXZlL2Zv
-cnVtLnBocD90aHJlYWRfbmFtZT1QaW5lLkxOWC40LjY0LjEyMDMxNTIyMzAxOTAuMjk4OCU0MGF4
-aXM3MDAuZ3JhbmdlJmZvcnVtX25hbWU9c3BpLWRldmVsLWdlbmVyYWwKPgo+IHByZXNlcnZlcyB0
-aGF0IGJlaGF2aW91ci4gQnV0IHdoYXQgSSBzdGlsbCBkb24ndCB1bmRlcnN0YW5kOgo+Cj4gwqAq
-IC4uLiDCoE9uIG11bHRpLWRldmljZSBTUEkgYnVzc2VzCj4gwqAqIHdpdGggbm90aGluZyBibG9j
-a2luZyBtZXNzYWdlcyBnb2luZyB0byBvdGhlciBkZXZpY2VzLCB0aGlzIGlzIGp1c3QKPiDCoCog
-YSBwZXJmb3JtYW5jZSBoaW50OyBzdGFydGluZyBhIG1lc3NhZ2UgdG8gYW5vdGhlciBkZXZpY2Ug
-ZGVzZWxlY3RzCj4gwqAqIHRoaXMgb25lLiDCoEJ1dCBpbiBvdGhlciBjYXNlcywgdGhpcyBjYW4g
-YmUgdXNlZCB0byBlbnN1cmUgY29ycmVjdG5lc3MuCj4gwqAqIFNvbWUgZGV2aWNlcyBuZWVkIHBy
-b3RvY29sIHRyYW5zYWN0aW9ucyB0byBiZSBidWlsdCBmcm9tIGEgc2VyaWVzIG9mCj4gwqAqIHNw
-aV9tZXNzYWdlIHN1Ym1pc3Npb25zLCB3aGVyZSB0aGUgY29udGVudCBvZiBvbmUgbWVzc2FnZSBp
-cyBkZXRlcm1pbmVkCj4gwqAqIGJ5IHRoZSByZXN1bHRzIG9mIHByZXZpb3VzIG1lc3NhZ2VzIGFu
-ZCB3aGVyZSB0aGUgd2hvbGUgdHJhbnNhY3Rpb24KPiDCoCogZW5kcyB3aGVuIHRoZSBjaGlwc2Vs
-ZWN0IGdvZXMgaW50YWN0aXZlLgo+Cj4gU28sIGlzIHRoaXMganVzdCBhbiBvcHRpb25hbCAiaGlu
-dCIgb3Igc29tZXRoaW5nLCB0aGF0IG11c3QgYmUgb2JleWVkIHRvCj4gdG8gZ3VhcmFudGVlIGZ1
-bmN0aW9uYWxpdHk/IEF0IGxlYXN0LCBteSBhYm92ZSBwcm9wb3NhbCBvZmZlcnMgYSBtZXRob2Qg
-dG8KPiBkaXN0aW5ndWlzaCBiZXR3ZWVuIHRob3NlIHR3byBjYXNlcy4KPgpNZXNzYWdlIHRvIGEg
-ZGlmZmVyZW50IGRldmljZSB1bmNvbmRpdGlvbmFsbHkgZGUtc2VsZWN0cyB0aGUgY3VycmVudApk
-ZXZpY2Uob2J2aW91c2x5KS4KT3RoZXIgdGhhbiBtbWNfc3BpLmMsIEkgbmV2ZXIgY2FtZSBhY3Jv
-c3MgYSBwcm90b2NvbCBkcml2ZXIgdXNpbmcgaXQuCkJ1dCBhcyBxdW90ZWQgYWJvdmUsIHNvbWUg
-ZGV2aWNlcyBhY3R1YWxseSBjb3VudCB1cG9uIGl0LgpTbyBpbXBsZW1lbnRpbmcgaXQgaXMgYWx3
-YXlzIGEgc2FmZSBiZXQuCgotamFzc2kKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGIGVt
-YWlsIGlzIHNwb25zb3NyZWQgYnk6ClRyeSBXaW5kb3dzIEF6dXJlIGZyZWUgZm9yIDkwIGRheXMg
-Q2xpY2sgSGVyZSAKaHR0cDovL3Auc2YubmV0L3NmdS9zZmQyZC1tc2F6dXJlCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTc4OTUmYz00ODM2MTImZD0yMDEy=
+LTAzLTE2IDE5OjIwOjAxJmU9MSZoPTc4OTQmZj03ODk1Jmc9Nzg5NQ=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTc4OTUmYz0=
+0ODM2MTImZD0yMDEyLTAzLTE2IDE5OjIwOjAxJmU9MSZoPTc4OTQmZj03ODk1Jmc9Nzg5NQ=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

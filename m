@@ -1,32 +1,239 @@
 From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: mc13xxx: add I2C support (now with regmap), V4
-Date: Mon, 19 Mar 2012 15:03:54 +1100
-Message-ID: <1332129838-7080-1-git-send-email-marc@cpdesign.com.au>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH v4 2/4] mfd: mc13xxx-core: use regmap for register access
+Date: Mon, 19 Mar 2012 15:03:56 +1100
+Message-ID: <1332129838-7080-3-git-send-email-marc@cpdesign.com.au>
+References: <1332129838-7080-1-git-send-email-marc@cpdesign.com.au>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org
 To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1332129838-7080-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+This change converts the mc13xxx core to use regmap rather than direct
+spi r/w.
+The spidev member of mc13xxx struct becomes redundant and is removed.
+Extra debugging aids are added to mc13xxx_reg_rmw.
+Mutex init is moved to before regmap init.
 
-This series (against mfd-2.6/for-next) changes the mc13xxx driver to use 
-regmap and adds I2C support.
-It has a compile dependency on regmap/for-next, as the spi driver uses the
-recently added pad_bits config field.
+Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+---
+ drivers/mfd/mc13xxx-core.c |  111 +++++++++++++-------------------------------
+ 1 files changed, 33 insertions(+), 78 deletions(-)
 
-Changes since V3:
-- spi driver uses padded register format (reads should actually work now!)
-- mc13873 removed from I2C driver
-- fix memory leak on probe error
+diff --git a/drivers/mfd/mc13xxx-core.c b/drivers/mfd/mc13xxx-core.c
+index 0753402..2c35d6d 100644
+--- a/drivers/mfd/mc13xxx-core.c
++++ b/drivers/mfd/mc13xxx-core.c
+@@ -21,6 +21,8 @@
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_gpio.h>
++#include <linux/regmap.h>
++#include <linux/err.h>
+ 
+ enum mc13xxx_id {
+ 	MC13XXX_ID_MC13783,
+@@ -29,7 +31,7 @@ enum mc13xxx_id {
+ };
+ 
+ struct mc13xxx {
+-	struct spi_device *spidev;
++	struct regmap *regmap;
+ 
+ 	struct device *dev;
+ 	enum mc13xxx_id ictype;
+@@ -172,67 +174,6 @@ void mc13xxx_unlock(struct mc13xxx *mc13xxx)
+ }
+ EXPORT_SYMBOL(mc13xxx_unlock);
+ 
+-#define MC13XXX_REGOFFSET_SHIFT 25
+-static int mc13xxx_spi_reg_read(struct mc13xxx *mc13xxx,
+-				unsigned int offset, u32 *val)
+-{
+-	struct spi_transfer t;
+-	struct spi_message m;
+-	int ret;
+-
+-	*val = offset << MC13XXX_REGOFFSET_SHIFT;
+-
+-	memset(&t, 0, sizeof(t));
+-
+-	t.tx_buf = val;
+-	t.rx_buf = val;
+-	t.len = sizeof(u32);
+-
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t, &m);
+-
+-	ret = spi_sync(mc13xxx->spidev, &m);
+-
+-	/* error in message.status implies error return from spi_sync */
+-	BUG_ON(!ret && m.status);
+-
+-	if (ret)
+-		return ret;
+-
+-	*val &= 0xffffff;
+-
+-	return 0;
+-}
+-
+-static int mc13xxx_spi_reg_write(struct mc13xxx *mc13xxx, unsigned int offset,
+-		u32 val)
+-{
+-	u32 buf;
+-	struct spi_transfer t;
+-	struct spi_message m;
+-	int ret;
+-
+-	buf = 1 << 31 | offset << MC13XXX_REGOFFSET_SHIFT | val;
+-
+-	memset(&t, 0, sizeof(t));
+-
+-	t.tx_buf = &buf;
+-	t.rx_buf = &buf;
+-	t.len = sizeof(u32);
+-
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t, &m);
+-
+-	ret = spi_sync(mc13xxx->spidev, &m);
+-
+-	BUG_ON(!ret && m.status);
+-
+-	if (ret)
+-		return ret;
+-
+-	return 0;
+-}
+-
+ int mc13xxx_reg_read(struct mc13xxx *mc13xxx, unsigned int offset, u32 *val)
+ {
+ 	int ret;
+@@ -242,7 +183,7 @@ int mc13xxx_reg_read(struct mc13xxx *mc13xxx, unsigned int offset, u32 *val)
+ 	if (offset > MC13XXX_NUMREGS)
+ 		return -EINVAL;
+ 
+-	ret = mc13xxx_spi_reg_read(mc13xxx, offset, val);
++	ret = regmap_read(mc13xxx->regmap, offset, val);
+ 	dev_vdbg(mc13xxx->dev, "[0x%02x] -> 0x%06x\n", offset, *val);
+ 
+ 	return ret;
+@@ -258,25 +199,19 @@ int mc13xxx_reg_write(struct mc13xxx *mc13xxx, unsigned int offset, u32 val)
+ 	if (offset > MC13XXX_NUMREGS || val > 0xffffff)
+ 		return -EINVAL;
+ 
+-	return mc13xxx_spi_reg_write(mc13xxx, offset, val);
++	return regmap_write(mc13xxx->regmap, offset, val);
+ }
+ EXPORT_SYMBOL(mc13xxx_reg_write);
+ 
+ int mc13xxx_reg_rmw(struct mc13xxx *mc13xxx, unsigned int offset,
+ 		u32 mask, u32 val)
+ {
+-	int ret;
+-	u32 valread;
+-
++	BUG_ON(!mutex_is_locked(&mc13xxx->lock));
+ 	BUG_ON(val & ~mask);
++	dev_vdbg(mc13xxx->dev, "[0x%02x] <- 0x%06x (mask: 0x%06x)\n",
++			offset, val, mask);
+ 
+-	ret = mc13xxx_reg_read(mc13xxx, offset, &valread);
+-	if (ret)
+-		return ret;
+-
+-	valread = (valread & ~mask) | val;
+-
+-	return mc13xxx_reg_write(mc13xxx, offset, valread);
++	return regmap_update_bits(mc13xxx->regmap, offset, mask, val);
+ }
+ EXPORT_SYMBOL(mc13xxx_reg_rmw);
+ 
+@@ -752,6 +687,16 @@ static const struct of_device_id mc13xxx_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mc13xxx_dt_ids);
+ 
++static struct regmap_config mc13xxx_regmap_spi_config = {
++	.reg_bits = 7,
++	.pad_bits = 1,
++	.val_bits = 24,
++
++	.max_register = MC13XXX_NUMREGS,
++
++	.cache_type = REGCACHE_NONE,
++};
++
+ static int mc13xxx_common_init(struct mc13xxx *mc13xxx,
+ 		struct mc13xxx_platform_data *pdata, int irq);
+ 
+@@ -776,10 +721,19 @@ static int mc13xxx_spi_probe(struct spi_device *spi)
+ 	dev_set_drvdata(&spi->dev, mc13xxx);
+ 	spi->mode = SPI_MODE_0 | SPI_CS_HIGH;
+ 	spi->bits_per_word = 32;
+-	spi_setup(spi);
+ 
+ 	mc13xxx->dev = &spi->dev;
+-	mc13xxx->spidev = spi;
++	mutex_init(&mc13xxx->lock);
++
++	mc13xxx->regmap = regmap_init_spi(spi, &mc13xxx_regmap_spi_config);
++	if (IS_ERR(mc13xxx->regmap)) {
++		ret = PTR_ERR(mc13xxx->regmap);
++		dev_err(mc13xxx->dev, "Failed to initialize register map: %d\n",
++				ret);
++		dev_set_drvdata(&spi->dev, NULL);
++		kfree(mc13xxx);
++		return ret;
++	}
+ 
+ 	ret = mc13xxx_common_init(mc13xxx, pdata, spi->irq);
+ 
+@@ -787,7 +741,7 @@ static int mc13xxx_spi_probe(struct spi_device *spi)
+ 		dev_set_drvdata(&spi->dev, NULL);
+ 	} else {
+ 		const struct spi_device_id *devid =
+-			spi_get_device_id(mc13xxx->spidev);
++			spi_get_device_id(spi);
+ 		if (!devid || devid->driver_data != mc13xxx->ictype)
+ 			dev_warn(mc13xxx->dev,
+ 				"device id doesn't match auto detection!\n");
+@@ -801,7 +755,6 @@ static int mc13xxx_common_init(struct mc13xxx *mc13xxx,
+ {
+ 	int ret;
+ 
+-	mutex_init(&mc13xxx->lock);
+ 	mc13xxx_lock(mc13xxx);
+ 
+ 	ret = mc13xxx_identify(mc13xxx);
+@@ -878,6 +831,8 @@ static void mc13xxx_common_cleanup(struct mc13xxx *mc13xxx)
+ 
+ 	mfd_remove_devices(mc13xxx->dev);
+ 
++	regmap_exit(mc13xxx->regmap);
++
+ 	kfree(mc13xxx);
+ }
+ 
+-- 
+1.7.3.4
 
-Cheers,
-Marc
 
-PS. Mark Brown added his "reviwed-by" (sic) for what is now 2/4. I've not 
-included it here because 1. it changed (albeit very slightly) so I don't 
-know if it's bad ettiquie to include it again, and 2. I'm ignorant of the
-correct process/way to include it.
+------------------------------------------------------------------------------
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here 
+http://p.sf.net/sfu/sfd2d-msazure

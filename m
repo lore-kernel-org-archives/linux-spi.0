@@ -1,12 +1,19 @@
-From: =?GB2312?B?x+vXqtDox/PIy9Sx?= <zt-eLjHMLwl/3sAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] 中坚力量6堂课
-Date: Tue, 20 Mar 2012 22:36:00 +0800
-Message-ID: <E1SA0AQ-0005SH-3B@sfs-ml-1.v29.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
+Date: Tue, 20 Mar 2012 14:40:54 +0000
+Message-ID: <20120320144054.930D03E2834@localhost>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
+	<CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
+	<Pine.LNX.4.64.1203170036590.20979@axis700.grange>
+	<CACRpkdZFobGAqO-8xe_JqA9stc=S6SHBCNEN4DSXy1AN5Ro8HQ@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="===============4724364876462048984=="
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdZFobGAqO-8xe_JqA9stc=S6SHBCNEN4DSXy1AN5Ro8HQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,124 +24,502 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-vNnI57DRxvPStbXEuN+y47ncwO3V37HI1/ehsMTUtPyhsaOsCsTHw7TW0LLjudzA7dXfvs3Kx6Gw
-0fyhsaOs0fyyu7rDo6zB7LW8vs3Nt7TzoaMKCtbQvOHBpsG/NszDv84KCjLM7Lultq/KvcXg0bUg
-ICAxNbj2vq215LC4wP0KvNnI57DR1LG5pLbTzumxyNf2x/K206Os1tCy47ncwO3V38/gtbHT2rb+
-tKvK1qOs0ru49rrDtcS2/rSrytajrMvAx/K/ybHks8m77sfyo7u2/rSrytayu7W9zrujrLrDx/LS
-stKqseSzybP0x/KhowoKyrG85LXYteOjujIwMTLE6jTUwjE5LTIwILGxvqkKyrG85LXYteOjujIw
-MTLE6jTUwjIxLTIyIMnu29oKyrG85LXYteOjujIwMTLE6jTUwjI3LTI4IMnPuqMKv86zzLfR08Oj
-ujM2MDDUqi/Iy6OosPzAqNfKwc+30aGizueyzbywyc/Pws7nsui147XIo6kKytq/zrbUz/Ojusbz
-0rW4sdfcoaK497K/w8W+rcDtoaLW97ncoaK497y21tCy47ncwO3Iy9SxoaLQwszhsM61xKGitNPX
-qNK1yMuyxdeq0M21vbncwO21xKGivfjSu7K9z+vM4bjfudzA7byo0Ke1xKGiCr36yf21vbjfsuO5
-3MDt0tS8sMbky/zUpLG4udzA7cjL1LEKCtfJ0a+157uwo7owMjAtODA1NjA2MzijuzAyMC04NTkx
-Nzk0NSDQu9ChveMKICAgICAgICAgIDA3NTUtNjEyODc1NTIgILPC0KG946OosrvQ6NKqtMvA4NDF
-vP7H67vYuLS159PK1sF0dWl4aW4yMDEyQDEyNi5jb23Ny9DFo6kKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0K0aay07rqCtb4w/u53MDtxeDRtdeovNIKx+W7qrTz0afX3LLD
-sODM2Ma4vbLKpgqxsb6pyrG0+rniu6q9ssqmzcXNxbOkICAK1tC5+taw0rW+rcDtyMvQrbvhwO3K
-wgrW0Ln61rDStb6twO3Iy8Xg0bXRp9S6v83X+b3MytoK1PjIzrGxvqnKsbT6ueK7qr2yyqbXytS0
-1tDQxNfcvq3A7QrP1sjOuuy2ubyvzcW53MDtucvOygrP1sjOva3L1b/G0NC8r83FudzA7bnLzsoK
-z9bIzr3wt73C1LncwO25y87Ku/q5ubatysKzpArF4NG1xvPStaO6zfK077yvzcWhosj90ru8r83F
-oaK438K2veChotbQvajO5b7WoaK7qrGx083M76Giuuy2ubyvzcWhorqj0MW8r83FoaLUtrarvK/N
-xaGiz8PDxc/z0+y8r83FoaLR79fTva3SqdK1oaIKu6rI87yvzcWhorGoz7LE8aGizKm2+8Ovo6jI
-1dfKo6mhosm9zve+rc6zt8S7+qGiyP21w8D7xqG+xqGix+C1usGqzaihornz1t25pMnM0vjQ0KGi
-1eO9rbrhteq8r83FoaK7tNL1vu3RzLOnoaKzyQq2vMP31um8r83FoaLO37r+08rV/r7WoaLEz7e9
-tefN+KGis6Szx8jzu6zTzaGiyP3Qx7Xn19Ohosm9tqvQ08HW0afUuqGiufDB1rmptee+1qGis6PW
-3dbQufrS+NDQoaLM7Mq/wabSqdK1oaLO3s79Cr27zajKtdK119y5q8u+oaLW0LXnvK/NxaGisLK7
-1b27zai8r83FoaK549bd1MbQx7e/tdiy+qGiva3L1bniw6K8r83FoaLW0Ln6tefBpr/G0afR0L6/
-1LqhraGtILXIoaMK1vjT0KG21tCy476twO3U9dH5tbGht6Oovq28w8jVsaiz9rDmyeejqaOsobbW
-0LLjseS476G3o6ixsb6ptPPRp7P2sObJ56OsueLFzKOpo6yhtta01cbNxbbTobejqL6tvMPI1bGo
-s/aw5snno6mhoyAgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCqG+zqrKssO00qrF4NG1NszDv86j
-v6G/CrWxvfHW0Ln6xvPStbXE1tCy47jJsr+jrLrctuDKx7Drwrez9rzSoaPUrc/IysfStc7xuce4
-yaGivLzK9cTcytajrLrzwLTKscrG1Oy7r7G7zca1vaGwudzA7aGx1eK49s671sOjrLTT0rXO8dK7
-sNG6w8rWo6y1vbPQyc/G9M/CoaK0+MHs0ruw78jLsNHSu8yv19PKwsfp1/a6w6Os1eK49r3HyavX
-qru7sqKyu8jd0tehowq21NGmstO66sDPyqajrM7Sus3O0rXE1tCy47jJsr+2vLK7xLDJ+qOszP3L
-+7XEv86zzLrDvLjE6sHLoaPL+8Xg0bW1xNfutPPM2LXjvs3Kx87xyrWho9GmstO66sDPyqayu77Q
-xODT2tbQsuO4ybK/y/nD5sHZtcShsMrCobGjrLj8tuDMuMHL1tCy47jJsr/L+cPmwdm1xKGwyMuh
-saOsyc/LvsrHyMujrM2swcXKx8jLo6zPwsr00rLKx8jLo6zW0LLjuMmyv9X7zOy+zcrHuPrIy7Ty
-vbu1wKO71/bKwsrHu/m0oaOszqrIy8rHuPmxvqOs1/bKwrXEsb7B7NTZx7+jrLWrzqrIy8qnsNyj
-rMrH1tCy47jJsr/X7rTztcTKp7DcoaMK0aay07rqwM/KprXEv86zzKOsvbLK9sHL0rvQqdaws6HH
-sbnm1PKho8exuebU8rK7yse5q8u+1sa2yMDvy/nE3NXStb21xKOs0rK++LfHtPPRp7/OzMPA772y
-ytq1xKOsw/7H5cexuebU8qOssqKwtMexuebU8tf2ysKhos6qyMujrLLF09C/ycTcyMPJz8u+yc3K
-tsTjo6zNrMHFxeS6z8Tjo6zPwsr01/DW2MTjo6zE47XE1rCzocn60cSyxcTcy7PA+7ei1bmjrLfx
-1PKjrLy0yrm4yb6is+XM7KOs0rLT0L/JxNzA783isrvM1rrDoaLLxMPms/646KGjCs7Sw8fQ6NKq
-1PXR+bXE1tCy47jJsr+jv9XiuPa/zrPMuPiz9sHLtPCwuKGjCiAgICAgICAgICAgICAgICAgICAg
-oaqhqtS2tqu8r83Ftq3KwrOkIL2vzv3F4CDOqqG21tCy476twO3U9dH5tbGhtwotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQq12tK7zMO/ziAgw/fIt9fUvLrU2sbz0rW1xLaozrsKMS7G89K1tcS6urGk
-veG5uaOouN+y49Kq09C+9rLfwaajrLv5suPSqtPQ0NC2r8Gmo6zW0LLj0OjSqta00NDBpqOpCjIu
-zqrKssO0u+HT0NbQsuOjqMqyw7S90Na00NDBpqO/yP249tfWo7rX9rW9zrujqQozLtbQsuO1xMj9
-tPPE0bnYo6jJz8u+yM+/yaGizazBxdans9ahos/CyvTNxrPno6kKNC7W0LLjtcTBvbTz1++5/aOo
-yLrW2sHs0OShotChufrWrr79o6kKNS7W0LLjtcTSu7TzyO3A36O6zcbQttTwyM6jqNSxuaS/ydLU
-zPiy26OswM+w5da7xNzM+MKlo6kKNi7W0LLjsrvNrL3Xts61xLaozrujqNf2vq3A7aGi1/i+rcDt
-oaLX976twO2jqQogICAgICAgILC4wP3M1sLbo7qixcHstbzU8MLuo6zPwsr0s7C37aOs1tCy46Gw
-vNCw5cb4obHKx9T1w7TU7LPJtcSjvwqixs7S1eK49sjLwabXytS0sr++rcDto6zU9cO0vs2z1MGm
-srvM1rrDo78Ktdq2/szDv84gIMjnus61w7W9wey1vMjPv8kgCjEuwey1vLa8yse21LXEo7q84b72
-1rTQ0KOo0+vB7LW8tcTS4rz7srvSu9bCyrGjrLXa0ru3/rTTo6y12rb+ubXNqKOpCjIusrvS6cLb
-wey1vMrHt8ejurPQyc/G9M/Co6i2+LK7vfa99snPtKvPwrTvo6y4/LK7xNzG28nPwvfPwqOpCjMu
-zqy7pMHstbzN/tDFo7rX1M7Szcu686Oos6TTw9XftuDF+sbAo6y2zNPD1d+24LHt0e+jqQo0LtPD
-yv3X1su1u7Cjur3hufvWwcnPo6i747GouaTX98y4veG5+6Osx+vKvrmk1/fLtbe9sLijqQo1Lsfr
-wey1vNf20aHU8czio7rH2tPay7y/vKOozsq08Mzi08DUtsH0uPjX1Ly6o6kKNi7Iw8HstbzX9rrD
-yMujutPC09q1o7Wxo6jDu9PQu7XIy77Nw7vT0LrDyMujrMO709C7tcjLvs3Du9PQ1rTQ0MGmo6kK
-ICCwuMD9zNbC26O6ose0prSm0KHQxKOsu7nKx8LFwsXK3LTso6zO0tK7uPa/1b210MK+rcDtyOe6
-zsrHusOjvwqiyNSxuaSw1bmko6zAz7Dlt6LFraOsztLSu7j21tCy47jJsr/U9cO0sOyjvwq12sj9
-zMO/ziAgyOe6zr340NC/57K/w8XQrdf3IAoxLs+n1LWjutLyzqq/tLeosrvNrKOsy/nS1LHY09Cz
-5c27o6jDu9PQs+XNu77Nw7vT0LjEycajqQoyLtfw1tijusPm19O12tK7o6y1wMDttdq2/qOow+bX
-0772tqi6w7jQo6y6w7jQvva2qLPJsNyjqQozLsTawbKjurjftffX9srCo6y1zbX31/bIy6Ooy+/O
-8r/Vyseyu8rHusO+rcDto7+jqQo0Lr/LvLqjusjD09rD+8D7o6zO3tP71PK41aOox9q33Nf2ysKj
-rLzytaXX9sjLo6kKNS7W+sjLo7rT6MjLw7W55aOsytbT0NPgz+OjqM3X0K2hosjMyMOhotL+stij
-rMrH08XQ49aw0rW+rcDtyMux2LK7v8nJ2bXEy9jR+KOpCrC4wP3M1sLbo7oKosnQrdf3srvBpqOs
-yOe6ztOmttS5q8u+xNqyv7XExcnPtdau1fmjvwqiytPQ1rDO3sioo6yx8LXEsr/DxbK7wvLO0rXE
-1cqjrNT1w7Sw7KO/CrXay8TMw7/OICAgyOe6zrX3tq/Pwsr0uaTX98jIx+kgIAoxLr3wx668pMD4
-o7q63NbY0qq1q7K7zqjSu6OosrvMuNC9y66jrMrH097D8dX+st+ju7nizLjQvcuuo6zKx7qmw/HV
-/rLfo6kKMi7P/tau0tTA+6O6xarH5bP+zqrLrbb4uaTX96Oo0+vG5LGn1LnQvcuuydmjrLK7yOe8
-7MzWuNrOu7zb1rW1zaOpCjMu0v22+LK7t6KjusjDy/vIy8u1s/bE47XEz+u3qKOosNHX1Ly6tcTS
-4rz7seSzycv7yMu1xNLivPujrAqw0cv7yMu1xNLivPux5LPJtPO80rXE0uK8+6OpCjQutuDNt7Ki
-vtmjurTTsru7qMeutcSx7dHvv6rKvKOoyMvIy9Do0qrQy7fco6yx7dHvvs3Kx9DLt9y8waOpCjUu
-t8DOorbFvaWjutK7x9C007mk1/e7/byr0NSz9reio6jTxdDjtcS53MDt1d+jrNOmuMPKx7ykwPi4
-38rWo6kKICAgICAgICAgsLjA/czWwtujuqLL1LG5pMnD19S4+r/Nu6ez1Le5o6zV4rHKx664w7K7
-uMOxqM/6o78Kosy7xr3wvL692sC0wcujrNSxuaTE1sfp0PejrM7SuMPU9cO0sOyjvwqizdTCuaTX
-yjgwMLXEtPPRp8n617LL+rmkxe/Kubmry77L8MqnM83yo6zI57rOtKbA7aO/CrXazuXMw7/OICAg
-yOe6zrncusOyv8PFvKjQpyAgIAoxLr3HyavXqru7o7rX9r3Mwbe2+LK71/a+r7Lso6i6w7XEudzA
-7dXfvs3Kx7rDvczBt6OpCjIuueDK5Mr919ajutDeobDCt6Gxtviyu8rH0N6hsMjLobGjqCDT68bk
-1PC51s/CyvTMq7G/o6yyu8jnt7TLvM6qyba9zLK7usOjqQozLr7bvbm8qNCno7q24My40NDOqqOs
-ydnPwr3hwtujqL7NysLC28rCo6yyu839vNO94cLbo6zKx7jEycbUsbmk0NDOqrXEt6jU8qOpCjQu
-16XXobnYvPyjutbYytPKssO0o6y+zbXDtb3KssO0o6izzNDyx+XO+qGiyv3X1sP3yLejrM/xwvO1
-scDN0rvR+b3M1LG5pKOpCjUuxL+x6rncwO2jur/Y1sa5/bPMssXE3L/Y1sa94bn7o6jEv7HqvKjQ
-p7ncwO3Kx9XV0f2+taOsysfMvdXVtcajqQo2LsbIyrm9+Luvo7rXt8fzv+zA1qOszNOx3M20v+Cj
-qM/CyvS1xMvY1sqy7qOssrvKx8TjtcS07aO7srvE3Mzhyf3Pwsr0tcTL2NbKo6zKx8TjtcS087Tt
-o6kKsLjA/czWwtujuqLOwdnV87u7vaujrMDDzK/X09T1w7S/7MvZs/a8qNCno78Kos/Usbmky73A
-zLrDtKajrMKptrTU9cO0tsKjvwqi0L+8usujrL+8s/bUsbmkvK/M5c6nuaW/vLrL1ve53CC4w9T1
-w7Sw7KO/CrXawfnMw7/OICAgyOe6zrT4s/bTxdDjzcW20yAgIAoxLs3FttPOqs31o7rX9tOi0Nu7
-ucrH1/bB7NDko7+jqLncwO2jrL7NysfUy9PDy/vIy7XExazBpsq1z9bEv7Hqo6kKMi69ssfluebU
-8qO6087Pt9KytcPPyMu1zea3qKOo087Pt7nm1PKjrMrHzqrBy73ivva5q8a9zsrM4qGi0KfCys7K
-zOKjqQozLs2s1tu5srzDo7rSu8bw06rU7LCyyKu40KGiuenK9LjQo6jUsbmk0MTMrLP2z9bOyszi
-o6zKx7ncwO3V37XE1PDIzqOpCjQuy6u53Mbrz8KjutK7ytbXpdbGtsijrNK7ytbXpc7Eu6+jqM3y
-tO/Kx778ICAgCrbTo6zN8rTvysfRp9Cjo6zN8rTvyse80s2lo7vN8rTvtcTG89K1zsS7r6OsIAqw
-0c7Sw8fP68u1tcS2vMu1wcujqQo1Lrv50rWzpMfgo7q6w9SxuaTKx8Xg0bWz9sC0tcSjqMXg0bXK
-x7Xatv7J+rL6waajqQqwuMD9zNbC26O6otHU9dH5w+a21KGwwM/Tzcz1z8LK9KGxo78KotLU9cO0
-06a21KGw09az9NPW07KhsbXEz8LK9KO/CqLTse3P1sG8usO1xNSxuaTJ7cnPItPQzra1wCKjrNT1
-w7S0psDtPwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQqhttbQvOHBpsG/NszDv86ht7Gow/u72Na0
-se2jqMfrtKvV5jAyMC02MjM1MTE1NqOpCgqyziC74SC1pSDOuyDD+yCzxqO6X19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwoKss4gvNMgtdggteOj
-uiC/2snPuqMgv9rJ7tvaCgrBqs+1yMujul9fX19fX19fX19fX19ftee7sDpfX19fX19fX19fX19f
-X19ftKvV5jpfX19fX19fX19fX19fX19fCgrTyrz+o7pfX19fX19fX19fX19fXyCyziC74SDIyyDK
-/TpfX19fX19fX1/IyyC30SDTwyCjpKO6X19fX19fX19f1KoKCrLOILvhIMjLo7pfX19fX19fX19f
-X8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC15yC7sKO6X19fX19fX19fX19fXwoKss4g
-u+EgyMujul9fX19fX19fX19fy/kgyM4g1rAgzvGjul9fX19fX19fX19fX9LGILavILXnILuwo7pf
-X19fX19fX19fX19fCgqyziC74SDIy6O6X19fX19fX19fX1/L+SDIziDWsCDO8aO6X19fX19fX19f
-X19f0sYgtq8gtecgu7Cjul9fX19fX19fX19fX18KCrLOILvhIMjLo7pfX19fX19fX19fX8v5IMjO
-INawIM7xo7pfX19fX19fX19fX1/SxiC2ryC15yC7sKO6X19fX19fX19fX19fXwoKuLa/7re9yr2j
-qMfr0aHU8bTyobChzKGxo6mjuiCh9TGhos/WvfAgofUyoaLXqtXKIKH1M6Gitee74wo9PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT0KsbjXojrH68T6sNGxqMP7u9jWtLvYtKvO0su+o6zOqsi3saPE
-+rGow/vO3s7zLMfrxPrU2bTOtee7sKOoMDIwLTgwNTYwNjM4o6nIt8jPIQoKLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tClRoaXMgU0YgZW1haWwgaXMgc3BvbnNvc3JlZCBieToKVHJ5IFdpbmRvd3MgQXp1
-cmUgZnJlZSBmb3IgOTAgZGF5cyBDbGljayBIZXJlIApodHRwOi8vcC5zZi5uZXQvc2Z1L3NmZDJk
-LW1zYXp1cmUKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+--===============4724364876462048984==
+
+On Mon, 19 Mar 2012 00:33:14 +0100, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Sat, Mar 17, 2012 at 12:39 AM, Guennadi Liakhovetski
+> <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> 
+> > The SPI subsystem core now manages message queues internally. Remove the
+> > local message queue implementation from the spi-bitbang driver and
+> > migrate to the common one.
+> >
+> > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> 
+> This is great stuff!
+> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> (Since I've never really used the bitbang driver I wouldn't trust me to
+> do any deeper review.)
+
+In hindsite; I should have asked you to make the pl driver use bitbang
+queueing since that was already used for generic queuing by a number
+of drivers; and then refactored that to perform better.  Doing that
+would have been refactoring better tested code, but oh well.
+
+I'm going to ignore this series for the moment; please remind me to
+look at it after the merge window has closed.
+
+g.
+
+> 
+> Quick thought:
+> 
+> > +static int spi_bitbang_dummy_prepare(struct spi_master *master)
+> > +{
+> > +       return 0;
+> (...)
+> > +       master->prepare_transfer_hardware = spi_bitbang_dummy_prepare;
+> > +       master->unprepare_transfer_hardware = spi_bitbang_dummy_prepare;
+> 
+> Maybe we should think about making these two hooks optional if this
+> pattern turns up a lot. I'll try to fix some refactoring further down the
+> road if nobody beats me to it.
+> 
+> Yours,
+> Linus Walleij
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
+To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.1203170036590.20979-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+References: <Pine.LNX.4.64.1203141837170.30291-0199iw4Nj15frtckUFj5Ag@public.gmane.org> <20120315092923.951203E04FD@localhost> <CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org> <Pine.LNX.4.64.1203170036590.20979-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+
+On Sat, 17 Mar 2012 00:39:44 +0100 (CET), Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> The SPI subsystem core now manages message queues internally. Remove the
+> local message queue implementation from the spi-bitbang driver and
+> migrate to the common one.
+> 
+> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> ---
+> 
+> On Fri, 16 Mar 2012, Linus Walleij wrote:
+> 
+> > On Thu, Mar 15, 2012 at 10:29 AM, Grant Likely
+> > <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> > > On Wed, 14 Mar 2012 22:04:25 +0100 (CET), Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> > >> This patch adds a PM QoS requirement to the spi-bitbang driver, preventing
+> > >> the underlying SPI hardware driver to suspend for too long a time, as long
+> > >> as there are transfers on the queue.
+> > >>
+> > >> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> > >
+> > > Shouldn't this be part of the core spi infrastructure?  Particularly since queuing
+> > > is moving into the core.
+> > 
+> > Hm, the spi-bitbang driver needs to be converted to use the central
+> > message queue, Guennadi can you look into that since you're using it?
+> > 
+> > The spi-pl022.c and also Samsung spi-s3c64xx.c is converted showing
+> > examples on how go about with that.
+> 
+> Something like this? Tested with spi-sh-msiof on SuperH and sh-mobile ARM 
+> and with spi-gpio.
+> 
+>  drivers/spi/spi-bitbang.c       |  280 +++++++++++++++------------------------
+>  include/linux/spi/spi_bitbang.h |    7 -
+>  2 files changed, 108 insertions(+), 179 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+> index 6c0ec81..5f163d9 100644
+> --- a/drivers/spi/spi-bitbang.c
+> +++ b/drivers/spi/spi-bitbang.c
+> @@ -244,162 +244,125 @@ static int spi_bitbang_bufs(struct spi_device *spi, struct spi_transfer *t)
+>  
+>  /*----------------------------------------------------------------------*/
+>  
+> -/*
+> - * SECOND PART ... simple transfer queue runner.
+> - *
+> - * This costs a task context per controller, running the queue by
+> - * performing each transfer in sequence.  Smarter hardware can queue
+> - * several DMA transfers at once, and process several controller queues
+> - * in parallel; this driver doesn't match such hardware very well.
+> - *
+> - * Drivers can provide word-at-a-time i/o primitives, or provide
+> - * transfer-at-a-time ones to leverage dma or fifo hardware.
+> - */
+> -static void bitbang_work(struct work_struct *work)
+> +static int spi_bitbang_transfer_one_message(struct spi_master *master,
+> +					    struct spi_message *msg)
+>  {
+> -	struct spi_bitbang	*bitbang =
+> -		container_of(work, struct spi_bitbang, work);
+> +	struct spi_bitbang	*bitbang = spi_master_get_devdata(master);
+> +	struct spi_device	*spi = msg->spi;
+> +	unsigned		nsecs;
+> +	struct spi_transfer	*t = NULL;
+>  	unsigned long		flags;
+> -	struct spi_message	*m, *_m;
+> +	unsigned		cs_change;
+> +	int			status;
+> +	int			do_setup = -1;
+>  
+> +	/* Protect against chip-select release in .setup() */
+>  	spin_lock_irqsave(&bitbang->lock, flags);
+>  	bitbang->busy = 1;
+> -	list_for_each_entry_safe(m, _m, &bitbang->queue, queue) {
+> -		struct spi_device	*spi;
+> -		unsigned		nsecs;
+> -		struct spi_transfer	*t = NULL;
+> -		unsigned		tmp;
+> -		unsigned		cs_change;
+> -		int			status;
+> -		int			do_setup = -1;
+> -
+> -		list_del(&m->queue);
+> -		spin_unlock_irqrestore(&bitbang->lock, flags);
+> -
+> -		/* FIXME this is made-up ... the correct value is known to
+> -		 * word-at-a-time bitbang code, and presumably chipselect()
+> -		 * should enforce these requirements too?
+> -		 */
+> -		nsecs = 100;
+> +	spin_unlock_irqrestore(&bitbang->lock, flags);
+>  
+> -		spi = m->spi;
+> -		tmp = 0;
+> -		cs_change = 1;
+> -		status = 0;
+> +	/* FIXME this is made-up ... the correct value is known to
+> +	 * word-at-a-time bitbang code, and presumably chipselect()
+> +	 * should enforce these requirements too?
+> +	 */
+> +	nsecs = 100;
+>  
+> -		list_for_each_entry (t, &m->transfers, transfer_list) {
+> -
+> -			/* override speed or wordsize? */
+> -			if (t->speed_hz || t->bits_per_word)
+> -				do_setup = 1;
+> -
+> -			/* init (-1) or override (1) transfer params */
+> -			if (do_setup != 0) {
+> -				status = bitbang->setup_transfer(spi, t);
+> -				if (status < 0)
+> -					break;
+> -				if (do_setup == -1)
+> -					do_setup = 0;
+> -			}
+> -
+> -			/* set up default clock polarity, and activate chip;
+> -			 * this implicitly updates clock and spi modes as
+> -			 * previously recorded for this device via setup().
+> -			 * (and also deselects any other chip that might be
+> -			 * selected ...)
+> -			 */
+> -			if (cs_change) {
+> -				bitbang->chipselect(spi, BITBANG_CS_ACTIVE);
+> -				ndelay(nsecs);
+> -			}
+> -			cs_change = t->cs_change;
+> -			if (!t->tx_buf && !t->rx_buf && t->len) {
+> -				status = -EINVAL;
+> -				break;
+> -			}
+> +	cs_change = 1;
+> +	status = 0;
+>  
+> -			/* transfer data.  the lower level code handles any
+> -			 * new dma mappings it needs. our caller always gave
+> -			 * us dma-safe buffers.
+> -			 */
+> -			if (t->len) {
+> -				/* REVISIT dma API still needs a designated
+> -				 * DMA_ADDR_INVALID; ~0 might be better.
+> -				 */
+> -				if (!m->is_dma_mapped)
+> -					t->rx_dma = t->tx_dma = 0;
+> -				status = bitbang->txrx_bufs(spi, t);
+> -			}
+> -			if (status > 0)
+> -				m->actual_length += status;
+> -			if (status != t->len) {
+> -				/* always report some kind of error */
+> -				if (status >= 0)
+> -					status = -EREMOTEIO;
+> +	list_for_each_entry (t, &msg->transfers, transfer_list) {
+> +
+> +		/* override speed or wordsize? */
+> +		if (t->speed_hz || t->bits_per_word)
+> +			do_setup = 1;
+> +
+> +		/* init (-1) or override (1) transfer params */
+> +		if (do_setup != 0) {
+> +			status = bitbang->setup_transfer(spi, t);
+> +			if (status < 0)
+>  				break;
+> -			}
+> -			status = 0;
+> -
+> -			/* protocol tweaks before next transfer */
+> -			if (t->delay_usecs)
+> -				udelay(t->delay_usecs);
+> -
+> -			if (cs_change && !list_is_last(&t->transfer_list, &m->transfers)) {
+> -				/* sometimes a short mid-message deselect of the chip
+> -				 * may be needed to terminate a mode or command
+> -				 */
+> -				ndelay(nsecs);
+> -				bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+> -				ndelay(nsecs);
+> -			}
+> +			if (do_setup == -1)
+> +				do_setup = 0;
+>  		}
+>  
+> -		m->status = status;
+> -		m->complete(m->context);
+> +		/* set up default clock polarity, and activate chip;
+> +		 * this implicitly updates clock and spi modes as
+> +		 * previously recorded for this device via setup().
+> +		 * (and also deselects any other chip that might be
+> +		 * selected ...)
+> +		 */
+> +		if (cs_change) {
+> +			bitbang->chipselect(spi, BITBANG_CS_ACTIVE);
+> +			ndelay(nsecs);
+> +		}
+> +		cs_change = t->cs_change;
+> +		if (!t->tx_buf && !t->rx_buf && t->len) {
+> +			status = -EINVAL;
+> +			break;
+> +		}
+>  
+> -		/* normally deactivate chipselect ... unless no error and
+> -		 * cs_change has hinted that the next message will probably
+> -		 * be for this chip too.
+> +		/* transfer data.  the lower level code handles any
+> +		 * new dma mappings it needs. our caller always gave
+> +		 * us dma-safe buffers.
+>  		 */
+> -		if (!(status == 0 && cs_change) ||
+> -		    spi->flags & SPI_BOARD_FLAG_RELEASE_CS) {
+> +		if (t->len) {
+> +			/* REVISIT dma API still needs a designated
+> +			 * DMA_ADDR_INVALID; ~0 might be better.
+> +			 */
+> +			if (!msg->is_dma_mapped)
+> +				t->rx_dma = t->tx_dma = 0;
+> +			status = bitbang->txrx_bufs(spi, t);
+> +		}
+> +		if (status > 0)
+> +			msg->actual_length += status;
+> +		if (status != t->len) {
+> +			/* always report some kind of error */
+> +			if (status >= 0)
+> +				status = -EREMOTEIO;
+> +			break;
+> +		}
+> +		status = 0;
+> +
+> +		/* protocol tweaks before next transfer */
+> +		if (t->delay_usecs)
+> +			udelay(t->delay_usecs);
+> +
+> +		if (cs_change && !list_is_last(&t->transfer_list, &msg->transfers)) {
+> +			/* sometimes a short mid-message deselect of the chip
+> +			 * may be needed to terminate a mode or command
+> +			 */
+>  			ndelay(nsecs);
+>  			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+>  			ndelay(nsecs);
+>  		}
+> -
+> -		spin_lock_irqsave(&bitbang->lock, flags);
+>  	}
+> -	bitbang->busy = 0;
+> -	spin_unlock_irqrestore(&bitbang->lock, flags);
+> -}
+>  
+> -/**
+> - * spi_bitbang_transfer - default submit to transfer queue
+> - */
+> -int spi_bitbang_transfer(struct spi_device *spi, struct spi_message *m)
+> -{
+> -	struct spi_bitbang	*bitbang;
+> -	unsigned long		flags;
+> -	int			status = 0;
+> -
+> -	m->actual_length = 0;
+> -	m->status = -EINPROGRESS;
+> +	msg->status = status;
+>  
+> -	bitbang = spi_master_get_devdata(spi->master);
+> +	/* normally deactivate chipselect ... unless no error and
+> +	 * cs_change has hinted that the next message will probably
+> +	 * be for this chip too.
+> +	 */
+> +	if (!(status == 0 && cs_change) ||
+> +	    spi->flags & SPI_BOARD_FLAG_RELEASE_CS) {
+> +		ndelay(nsecs);
+> +		bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
+> +		ndelay(nsecs);
+> +	}
+>  
+>  	spin_lock_irqsave(&bitbang->lock, flags);
+> -	if (!spi->max_speed_hz)
+> -		status = -ENETDOWN;
+> -	else {
+> -		list_add_tail(&m->queue, &bitbang->queue);
+> -		queue_work(bitbang->workqueue, &bitbang->work);
+> -	}
+> +	bitbang->busy = 0;
+>  	spin_unlock_irqrestore(&bitbang->lock, flags);
+>  
+> -	return status;
+> +	spi_finalize_current_message(master);
+> +
+> +	return 0;
+> +}
+> +
+> +static int spi_bitbang_dummy_prepare(struct spi_master *master)
+> +{
+> +	return 0;
+>  }
+> -EXPORT_SYMBOL_GPL(spi_bitbang_transfer);
+>  
+>  /*----------------------------------------------------------------------*/
+>  
+> @@ -408,9 +371,7 @@ EXPORT_SYMBOL_GPL(spi_bitbang_transfer);
+>   * @bitbang: driver handle
+>   *
+>   * Caller should have zero-initialized all parts of the structure, and then
+> - * provided callbacks for chip selection and I/O loops.  If the master has
+> - * a transfer method, its final step should call spi_bitbang_transfer; or,
+> - * that's the default if the transfer routine is not initialized.  It should
+> + * provided callbacks for chip selection and I/O loops.  It should
+>   * also set up the bus number and number of chipselects.
+>   *
+>   * For i/o loops, provide callbacks either per-word (for bitbanging, or for
+> @@ -428,58 +389,37 @@ EXPORT_SYMBOL_GPL(spi_bitbang_transfer);
+>   */
+>  int spi_bitbang_start(struct spi_bitbang *bitbang)
+>  {
+> -	int	status;
+> +	struct spi_master *master = bitbang->master;
+>  
+> -	if (!bitbang->master || !bitbang->chipselect)
+> +	if (!master || !bitbang->chipselect)
+>  		return -EINVAL;
+>  
+> -	INIT_WORK(&bitbang->work, bitbang_work);
+>  	spin_lock_init(&bitbang->lock);
+> -	INIT_LIST_HEAD(&bitbang->queue);
+>  
+> -	if (!bitbang->master->mode_bits)
+> -		bitbang->master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
+> +	if (!master->mode_bits)
+> +		master->mode_bits = SPI_CPOL | SPI_CPHA | bitbang->flags;
+> +
+> +	master->transfer_one_message = spi_bitbang_transfer_one_message;
+> +	master->prepare_transfer_hardware = spi_bitbang_dummy_prepare;
+> +	master->unprepare_transfer_hardware = spi_bitbang_dummy_prepare;
+>  
+> -	if (!bitbang->master->transfer)
+> -		bitbang->master->transfer = spi_bitbang_transfer;
+>  	if (!bitbang->txrx_bufs) {
+>  		bitbang->use_dma = 0;
+>  		bitbang->txrx_bufs = spi_bitbang_bufs;
+> -		if (!bitbang->master->setup) {
+> +		if (!master->setup) {
+>  			if (!bitbang->setup_transfer)
+>  				bitbang->setup_transfer =
+>  					 spi_bitbang_setup_transfer;
+> -			bitbang->master->setup = spi_bitbang_setup;
+> -			bitbang->master->cleanup = spi_bitbang_cleanup;
+> +			master->setup = spi_bitbang_setup;
+> +			master->cleanup = spi_bitbang_cleanup;
+>  		}
+> -	} else if (!bitbang->master->setup)
+> -		return -EINVAL;
+> -	if (bitbang->master->transfer == spi_bitbang_transfer &&
+> -			!bitbang->setup_transfer)
+> +	} else if (!master->setup)
+>  		return -EINVAL;
+>  
+> -	/* this task is the only thing to touch the SPI bits */
+> -	bitbang->busy = 0;
+> -	bitbang->workqueue = create_singlethread_workqueue(
+> -			dev_name(bitbang->master->dev.parent));
+> -	if (bitbang->workqueue == NULL) {
+> -		status = -EBUSY;
+> -		goto err1;
+> -	}
+> -
+>  	/* driver may get busy before register() returns, especially
+>  	 * if someone registered boardinfo for devices
+>  	 */
+> -	status = spi_register_master(bitbang->master);
+> -	if (status < 0)
+> -		goto err2;
+> -
+> -	return status;
+> -
+> -err2:
+> -	destroy_workqueue(bitbang->workqueue);
+> -err1:
+> -	return status;
+> +	return spi_register_master(master);
+>  }
+>  EXPORT_SYMBOL_GPL(spi_bitbang_start);
+>  
+> @@ -490,10 +430,6 @@ int spi_bitbang_stop(struct spi_bitbang *bitbang)
+>  {
+>  	spi_unregister_master(bitbang->master);
+>  
+> -	WARN_ON(!list_empty(&bitbang->queue));
+> -
+> -	destroy_workqueue(bitbang->workqueue);
+> -
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(spi_bitbang_stop);
+> diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
+> index f987a2b..f85a7b8 100644
+> --- a/include/linux/spi/spi_bitbang.h
+> +++ b/include/linux/spi/spi_bitbang.h
+> @@ -1,14 +1,8 @@
+>  #ifndef	__SPI_BITBANG_H
+>  #define	__SPI_BITBANG_H
+>  
+> -#include <linux/workqueue.h>
+> -
+>  struct spi_bitbang {
+> -	struct workqueue_struct	*workqueue;
+> -	struct work_struct	work;
+> -
+>  	spinlock_t		lock;
+> -	struct list_head	queue;
+>  	u8			busy;
+>  	u8			use_dma;
+>  	u8			flags;		/* extra spi->mode support */
+> @@ -41,7 +35,6 @@ struct spi_bitbang {
+>   */
+>  extern int spi_bitbang_setup(struct spi_device *spi);
+>  extern void spi_bitbang_cleanup(struct spi_device *spi);
+> -extern int spi_bitbang_transfer(struct spi_device *spi, struct spi_message *m);
+>  extern int spi_bitbang_setup_transfer(struct spi_device *spi,
+>  				      struct spi_transfer *t);
+>  
+> -- 
+> 1.7.2.5
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies,Ltd.
+
+
+--===============4724364876462048984==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here 
+http://p.sf.net/sfu/sfd2d-msazure
+--===============4724364876462048984==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============4724364876462048984==--

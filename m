@@ -1,36 +1,43 @@
-From: monabanq par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: 50euros offerts et 3.30 pour cent pendant 12 mois. Prolongation
-	exceptionnelle
-Date: Tue, 20 Mar 2012 17:38:09 +0100
-Message-ID: <1332261489.4f68b27143b0e@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH 0/3] SPI updates
+Date: Tue, 20 Mar 2012 22:12:46 +0530
+Message-ID: <4F68B386.9050307@ti.com>
+References: <1332239389-1897-1-git-send-email-shubhrajyoti@ti.com> <20120320162019.33AC83E2834@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	Shubhrajyoti@ponder.secretlab.ca, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20120320162019.33AC83E2834@localhost>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Tuesday 20 March 2012 09:50 PM, Grant Likely wrote:
+> On Tue, 20 Mar 2012 15:59:46 +0530, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
+>> The patch series does the following cleanups
+>> - Converts the spi to module_platform_driver
+>> - Use the devm functions so that the freeing need not 
+>>   be done in the driver.
+>>
+>> This is also available through
+>> git     : git://gitorious.org/linus-tree/linus-tree.git
+>> branch  : spi
+>>
+>>
+>> Felipe Balbi (2):
+>>   spi: omap2-mcspi: make it behave as a module
+>>   spi: omap2-mcspi: convert to module_platform_driver
+>>
+>> Shubhrajyoti D (1):
+>>   spi: omap2-mcspi: use devm_* functions
+>>
+>>  drivers/spi/spi-omap2-mcspi.c |   46 ++++++++---------------------------------
+>>  1 files changed, 9 insertions(+), 37 deletions(-)
+> Merged for v3.5 (it's too late for v3.4)
+>
+> g.
+Thanks Grant.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTgyNDgmYz0yMTkwMDMwMyZkPTIw=
-MTItMDMtMjAgMTY6MzA6MDEmZT0xJmg9ODI0NyZmPTgyNDgmZz04MjQ4
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTgyNDgmYz0=
-yMTkwMDMwMyZkPTIwMTItMDMtMjAgMTY6MzA6MDEmZT0xJmg9ODI0NyZmPTgyNDgmZz04MjQ4
-
-
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure

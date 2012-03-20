@@ -1,14 +1,20 @@
-From: "Rick" <sawaiiasnga11nnaas-uAjRD0nVeow@public.gmane.org>
-Subject: [SPAM] Digital Photo Editing Services - Photo Cutout Service
-Date: Tue, 20 Mar 2012 09:49:12 +0800
-Message-ID: <GREATWEB01TRqf69aZb00003162@GreatWEB01.great3.com.tw>
-Reply-To: imagingedit-Mj/0Miq2reM@public.gmane.org
+From: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Subject: RE: [PATCH v4] SPI: add CSR SiRFprimaII SPI controller driver
+Date: Tue, 20 Mar 2012 08:02:57 +0000
+Message-ID: <5EB3BFCD089AD643B9BB63439F5FD5E9CF46C749@SHAASIEXM01.ASIA.ROOT.PRI>
+References: <1329126338-23810-1-git-send-email-Barry.Song@csr.com>
+	<20120309215310.30D323E0880@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <Workgroup.Linux-kQvG35nSl+M@public.gmane.org>,
+	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <20120309215310.30D323E0880@localhost>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,60 +25,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-You are receiving this email because we wish you to use our digital photo editing services.
+Hi Grant,
 
-We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques.
+> -----Original Message-----
+> From: Grant Likely [mailto:glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org] On Behalf Of Grant Likely
+> Sent: Saturday, March 10, 2012 5:53 AM
+> To: Barry Song
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org; DL-SHA-WorkGroupLinux; Zhiwu
+> Song; Barry Song
+> Subject: Re: [PATCH v4] SPI: add CSR SiRFprimaII SPI controller driver
+> 
+> On Mon, 13 Feb 2012 17:45:38 +0800, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+> wrote:
+> > From: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
+> >
+> > CSR SiRFprimaII has two SPIs (SPI0 and SPI1). Features:
+> > * Master and slave modes
+> > * 8-/12-/16-/32-bit data unit
+> > * 256 bytes receive data FIFO and 256 bytes transmit data FIFO
+> > * Multi-unit frame
+> > * Configurable SPI_EN (chip select pin) active state
+> > * Configurable SPI_CLK polarity
+> > * Configurable SPI_CLK phase
+> > * Configurable MSB/LSB first
+> >
+> > Signed-off-by: Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>
+> > Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+> 
+> Applied, thanks.
+> 
+> However, the spi subsystem now implements core queuing.  I'd like you
+> to remove the queuing from this driver to use the code supplied by the
+> core and have a patch ready for v3.5
 
-Our mainly services are:
+Thanks. actually there are some changes in pinmux subsystem as well, I'll also take care that.
 
-1. Photo Cutout
-2. Photo Enhancement
-3. Photo Retouching
-4. Vector Conversion
-5. Pop Art
-6. Images Masking
-7. Clipping Path
-8. Photo Restoration
-9. Web Design
+> 
+> Thanks,
+> g.
 
-Looking forward to work for you!
-
-Best regards,
-Rick
-Rickkanuica Imaging Professionals
-Contact: contactrick-Mj/0Miq2reM@public.gmane.org
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-barry
 
 
-
-
-
-
-
-Send address to imremove-Mj/0Miq2reM@public.gmane.org for remove
-
-
-
-                                                                                                                                                                 
+Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
+More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
 ------------------------------------------------------------------------------
 This SF email is sponsosred by:
 Try Windows Azure free for 90 days Click Here 

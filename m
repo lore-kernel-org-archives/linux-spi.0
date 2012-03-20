@@ -1,38 +1,87 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/3] SPI updates
-Date: Tue, 20 Mar 2012 16:20:18 +0000
-Message-ID: <20120320162019.33AC83E2834@localhost>
-References: <1332239389-1897-1-git-send-email-shubhrajyoti@ti.com>
-Cc: Shubhrajyoti@ponder.secretlab.ca, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org, D <shubhrajyoti@ti.com>
-To: Shubhrajyoti D <shubhrajyoti@ti.com>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1332239389-1897-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH RFC] spi: spi-davinci: Fix DMA API usage in davinci
+Date: Tue, 20 Mar 2012 16:23:34 +0000
+Message-ID: <20120320162335.65ACD3E2834@localhost>
+References: <1332240009-2011-1-git-send-email-shubhrajyoti@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1332240009-2011-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 20 Mar 2012 15:59:46 +0530, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
-> The patch series does the following cleanups
-> - Converts the spi to module_platform_driver
-> - Use the devm functions so that the freeing need not 
->   be done in the driver.
+On Tue, 20 Mar 2012 16:10:09 +0530, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> wrote:
+> The driver uses NULL for dma_unmap_single instead of
+> the struct device that the API expects.
 > 
-> This is also available through
-> git     : git://gitorious.org/linus-tree/linus-tree.git
-> branch  : spi
-> 
-> 
-> Felipe Balbi (2):
->   spi: omap2-mcspi: make it behave as a module
->   spi: omap2-mcspi: convert to module_platform_driver
-> 
-> Shubhrajyoti D (1):
->   spi: omap2-mcspi: use devm_* functions
-> 
->  drivers/spi/spi-omap2-mcspi.c |   46 ++++++++---------------------------------
->  1 files changed, 9 insertions(+), 37 deletions(-)
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+> ---
+> I do not have the board ,untested.
 
-Merged for v3.5 (it's too late for v3.4)
+Can someone with this hardware please test?
 
 g.
+
+> 
+>  drivers/spi/spi-davinci.c |    6 +++---
+>  1 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index 31bfba8..9b2901f 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -653,7 +653,7 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+>  			dev_dbg(sdev, "Couldn't DMA map a %d bytes RX buffer\n",
+>  								rx_buf_count);
+>  			if (t->tx_buf)
+> -				dma_unmap_single(NULL, t->tx_dma, t->len,
+> +				dma_unmap_single(&spi->dev, t->tx_dma, t->len,
+>  								DMA_TO_DEVICE);
+>  			return -ENOMEM;
+>  		}
+> @@ -692,10 +692,10 @@ static int davinci_spi_bufs(struct spi_device *spi, struct spi_transfer *t)
+>  	if (spicfg->io_type == SPI_IO_TYPE_DMA) {
+>  
+>  		if (t->tx_buf)
+> -			dma_unmap_single(NULL, t->tx_dma, t->len,
+> +			dma_unmap_single(&spi->dev, t->tx_dma, t->len,
+>  								DMA_TO_DEVICE);
+>  
+> -		dma_unmap_single(NULL, t->rx_dma, rx_buf_count,
+> +		dma_unmap_single(&spi->dev, t->rx_dma, rx_buf_count,
+>  							DMA_FROM_DEVICE);
+>  
+>  		clear_io_bits(dspi->base + SPIINT, SPIINT_DMA_REQ_EN);
+> -- 
+> 1.7.1
+> 
+> 
+> ------------------------------------------------------------------------------
+> This SF email is sponsosred by:
+> Try Windows Azure free for 90 days Click Here 
+> http://p.sf.net/sfu/sfd2d-msazure
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies,Ltd.
+
+------------------------------------------------------------------------------
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here 
+http://p.sf.net/sfu/sfd2d-msazure

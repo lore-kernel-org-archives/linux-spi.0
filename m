@@ -1,15 +1,14 @@
-From: "=?gb2312?B?ZHVjazE1NTY1?=" <duck15565-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?tPrA7beio6hwaWFvo6nT0NDo0qrH68Gqz7VRUTE1MDU2OTQ3NjU=?=
-Date: Tue, 20 Mar 2012 08:56:10 +0800 (CST)
-Message-ID: <4F67D5AA.000101.06035@cnapp11>
+From: "Rick" <sawaiiasnga11nnaas-uAjRD0nVeow@public.gmane.org>
+Subject: [SPAM] Digital Photo Editing Services - Photo Cutout Service
+Date: Tue, 20 Mar 2012 09:49:12 +0800
+Message-ID: <GREATWEB01TRqf69aZb00003162@GreatWEB01.great3.com.tw>
+Reply-To: imagingedit-Mj/0Miq2reM@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spiderzy-OlFFNeSka43QT0dZR+AlfA@public.gmane.org, spie-1B/9EDi1aY0@public.gmane.org, spidi-sXJsrNKGaAyJEg79ku39Cmmf7q9y5QC9@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spidi-sXJsrNKGaAyJEg79ku39Ckn1X6ankA70@public.gmane.org, spidi-oqzwS2uSzc43TOWNJCPdyQ@public.gmane.org
-To: spiderzhu1982-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,15 +19,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-    
-   
- 
- 
- 
-  
- 
-    
+You are receiving this email because we wish you to use our digital photo editing services.
 
+We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques.
+
+Our mainly services are:
+
+1. Photo Cutout
+2. Photo Enhancement
+3. Photo Retouching
+4. Vector Conversion
+5. Pop Art
+6. Images Masking
+7. Clipping Path
+8. Photo Restoration
+9. Web Design
+
+Looking forward to work for you!
+
+Best regards,
+Rick
+Rickkanuica Imaging Professionals
+Contact: contactrick-Mj/0Miq2reM@public.gmane.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Send address to imremove-Mj/0Miq2reM@public.gmane.org for remove
+
+
+
+                                                                                                                                                                 
 ------------------------------------------------------------------------------
 This SF email is sponsosred by:
 Try Windows Azure free for 90 days Click Here 

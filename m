@@ -1,13 +1,13 @@
-From: Lookingo - Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?Lookingo.com_-_10_millions_d'eur0s_d?=
-	=?iso-8859-15?Q?e_bons_de_r=E9ductions_=E0_vous_partager?=
-Date: Tue, 20 Mar 2012 12:40:48 +0100 (CET)
-Message-ID: <3236305005.816034.1332243648880@p4enginex2.emv2.com>
-Reply-To: Lookingo - Affilibaz <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
+From: Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Cette semaine, vente =?iso-8859-15?Q?priv=E9e?= 50% de
+	=?iso-8859-15?Q?r=E9duction?= sur l'armoire Shanghai
+Date: Tue, 20 Mar 2012 13:19:51 +0100
+Message-ID: <1332245991.4f6875e76a22f@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-        Si vous ne visualisez pas correctement ce message, cliquez ici.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTgyMDAmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTIwIDEzOjAwOjAxJmU9MSZoPTgxOTkmZj04MjAwJmc9ODIwMA=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTgyMDAmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTIwIDEzOjAwOjAxJmU9MSZoPTgxOTkmZj04MjAwJmc9ODIwMA=3D=
+=3D
 
 
-   Lookingo.com                        [IMG]
-   10 000 000* de bons de r*ductions * A valoir sur les meilleures offres de
-   gagner !                            votre ville
-   [IMG]                               [IMG]
-   [IMG]                               [IMG]
-   Participez d*s maintenant !         [IMG]
-   Chaque jour un deal exceptionnel entre -50% et -90%.
-   Une escapade *     Un massage *     Un produit       Un restaurant * Paris
-   rome ?             Marseille ?      tendance ?       ?
-
-Pour ne plus recevoir de courriels de notre part, il vous suffit de vous rendre
-                                sur cette page.
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure

@@ -1,13 +1,14 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Mon, 19 Mar 2012 19:49:03 +0100
-Message-ID: <1332182943.4f677f9f4fac4@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "=?gb2312?B?ZHVjazE1NTY1?=" <duck15565-WVlzvzqoTvw@public.gmane.org>
+Subject: =?gb2312?B?tPrA7beio6hwaWFvo6nT0NDo0qrH68Gqz7VRUTE1MDU2OTQ3NjU=?=
+Date: Tue, 20 Mar 2012 08:56:10 +0800 (CST)
+Message-ID: <4F67D5AA.000101.06035@cnapp11>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spiderzy-OlFFNeSka43QT0dZR+AlfA@public.gmane.org, spie-1B/9EDi1aY0@public.gmane.org, spidi-sXJsrNKGaAyJEg79ku39Cmmf7q9y5QC9@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spidi-sXJsrNKGaAyJEg79ku39Ckn1X6ankA70@public.gmane.org, spidi-oqzwS2uSzc43TOWNJCPdyQ@public.gmane.org
+To: spiderzhu1982-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,19 +20,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+    
+   
+ 
+ 
+ 
+  
+ 
+    
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTgxNjMmYz00ODM2MTImZD0yMDEy=
-LTAzLTE5IDE5OjMwOjAyJmU9MSZoPTgxNjImZj04MTYzJmc9ODE2Mw=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTgxNjMmYz0=
-0ODM2MTImZD0yMDEyLTAzLTE5IDE5OjMwOjAyJmU9MSZoPTgxNjImZj04MTYzJmc9ODE2Mw=3D=
-=3D
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
+Try Windows Azure free for 90 days Click Here 
 http://p.sf.net/sfu/sfd2d-msazure

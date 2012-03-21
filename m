@@ -1,13 +1,11 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: omap2_mcspi: Make the runtime functions depend on
-	CONFIG_PM_RUNTIME
-Date: Wed, 21 Mar 2012 11:33:15 +0530
-Message-ID: <1332309795-5075-1-git-send-email-shubhrajyoti@ti.com>
+From: Jours Heureux par Affilibaz <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez_nos_produits_gourmands?=
+Date: Wed, 21 Mar 2012 07:12:18 +0100 (CET)
+Message-ID: <3236305005.824786.1332310338652@p4enginex2.emv2.com>
+Reply-To: Jours Heureux par Affilibaz <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,85 +18,63 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Makes the function omap_mcspi_runtime_resume depend on CONFIG_PM_RUNTIME.
 
-Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+
+Si vous ne visualisez pas correctement ce message, cliquez ici.
+
+
+                                   Offrez des cadeaux gourmands =E0 vos pro=
+ches
+   [IMG]               et profitez d'une offre de bienvenue exceptionnelle !
+
+                                            Saisissez votre Code Promo : 51=
+80
+   [IMG]  [IMG]  [IMG] [IMG]         [IMG]         [IMG]         [IMG]
+
+   [IMG]
+   [IMG]
+   [IMG]
+   [IMG]
+   [IMG]                              5180    [IMG]
+   [IMG]
+
+   [IMG]
+     Les Cr=EApes Dentelle   Les Financiers             Les Gaufrettes
+         de Bretagne       aux Amandes                Amusantes
+    [IMG]                  [IMG]                      [IMG]
+    Les P=E2tes de Fruits          L'Assortiment        Les Calissons
+    de Provence              de chocolats (350gr)     de Provence
+    [IMG]                  [IMG]                      [IMG]
+   [IMG]
+
+   [IMG]          [IMG]          [IMG]          [IMG]          [IMG]
+   Pour votre sant=E9, =E9viter de grignoter entre les repas www.manger-bou=
+ger.fr
+
+   *Offre valable sur le site www.joursheureux.fr jusqu'au 15/04/2012 et non
+                                   cumulable
+                     avec d'autres offres promotionnelles.
+
+     ** La gratuit=E9 comprend =E9galement la participation aux frais de po=
+rt.
+
+    Conform=E9ment =E0 l'article 39 et suivants de la loi 78-17 Informatiqu=
+e et
+      Libert=E9s du 06/01/1978, nous vous garantissons un droit d'acc=E8s, =
+de
+   modification ou de suppression des donn=E9es qui vous concernent sur la =
+page
+    "Mon compte".  Les donn=E9es personnelles collect=E9es sont n=E9cessair=
+es =E0 la
+          gestion de votre commande et de nos relations commerciales.
+
+Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
+ndre
+                                sur cette page.
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |   41 +++++++++++++++++++++++------------------
- 1 files changed, 23 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index cb2c0e3..f9d694d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -248,23 +248,6 @@ static void omap2_mcspi_set_master_mode(struct spi_master *master)
- 	omap2_mcspi_ctx[master->bus_num - 1].modulctrl = l;
- }
- 
--static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
--{
--	struct spi_master *spi_cntrl;
--	struct omap2_mcspi_cs *cs;
--	spi_cntrl = mcspi->master;
--
--	/* McSPI: context restore */
--	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
--			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
--
--	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
--			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
--
--	list_for_each_entry(cs, &omap2_mcspi_ctx[spi_cntrl->bus_num - 1].cs,
--			node)
--		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
--}
- static void omap2_mcspi_disable_clocks(struct omap2_mcspi *mcspi)
- {
- 	pm_runtime_put_sync(mcspi->dev);
-@@ -1066,6 +1049,26 @@ static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
- 	return 0;
- }
- 
-+#ifdef CONFIG_PM_RUNTIME
-+static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
-+{
-+	struct spi_master *spi_cntrl;
-+	struct omap2_mcspi_cs *cs;
-+
-+	spi_cntrl = mcspi->master;
-+
-+	/* McSPI: context restore */
-+	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
-+			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
-+
-+	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
-+			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
-+
-+	list_for_each_entry(cs, &omap2_mcspi_ctx[spi_cntrl->bus_num - 1].cs,
-+			node)
-+		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
-+}
-+
- static int omap_mcspi_runtime_resume(struct device *dev)
- {
- 	struct omap2_mcspi	*mcspi;
-@@ -1077,7 +1080,9 @@ static int omap_mcspi_runtime_resume(struct device *dev)
- 
- 	return 0;
- }
--
-+#else
-+#define	omap_mcspi_runtime_resume	NULL
-+#endif
- 
- static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- {
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure

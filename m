@@ -1,10 +1,13 @@
-From: "Seth Feinstein" <SethFeinstein833-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Re: Proposal
-Date: Tue, 20 Mar 2012 15:27:11 -0700
-Message-ID: <14d246ee7ff173b8c721ad1300101804@qmail.com>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2_mcspi: Make the runtime functions depend on
+	CONFIG_PM_RUNTIME
+Date: Wed, 21 Mar 2012 11:33:15 +0530
+Message-ID: <1332309795-5075-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,31 +20,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8sCgpUaGlzIGlzIFNldGggZnJvbSBWYWx1cGx1cy4KCkdvb2dsZSBoYXMgbGF1bmNoZWQg
-IlRoZSBHb29nbGUgV2FsbGV0IiwgYSBtb2JpbGUgcGhvbmUgYXBwIHRoYXQgdHVybnMgeW91ciBj
-dXN0b21lcidzIHBob25lIGludG8gdGhlaXIgd2FsbGV0LiBNZXJjaGFudHMgdXNlIGEgUGF5LVBh
-c3MgdGVybWluYWwgaW4gdGhlaXIgc3RvcmVzIHRvIGVuYWJsZSBjdXN0b21lcnMgdG8gbWFrZSBw
-dXJjaGFzZXMgdGhyb3VnaCB0aGUgdGFwIG9mIGEgc21hcnQgcGhvbmUuCgpZb3Ugbm93IGhhdmUg
-dGhlIG9wcG9ydHVuaXR5IHRvIGJlIHNldCB1cCB3aXRoIHRoaXMgbmV3IHN0YXRlIG9mIHRoZSBh
-cnQgdGVjaG5vbG9neSBSRU5UIEZSRUUhIFZhbHVwbHVzIHdpbGwgcHJvdmlkZSB5b3Ugd2l0aCBh
-IHplcm8tcmVudCBQYXktUGFzcyB0ZXJtaW5hbC4gVGhpcyB3aWxsIGdpdmUgeW91IHRoZSBhYmls
-aXR5IHRvIGFjY2VwdCBwYXltZW50cyB0aHJvdWdoIEdvb2dsZSBXYWxsZXQgYW5kIG90aGVyIGNv
-bnRhY3RsZXNzIHBheW1lbnQgcHJvZ3JhbXMuCgpZb3VyIGJ1c2luZXNzIHdpbGwgYmUgYWxzbyBi
-ZSBhZGRlZCB0byB0aGUgUGF5LVBhc3MgbG9jYXRvciBwdWJsaXNoZWQgb24gdGhlIEdvb2dsZSBX
-YWxsZXQgd2Vic2l0ZS4gU2VlIHdoYXQgbGFyZ2UgbWVyY2hhbnRzIGxpa2UgTWFjeeKAmXMsIFN1
-YndheSwgYW5kIFdhbC1HcmVlbnMgYXJlIHNheWluZyBhYm91dCBHb29nbGUgV2FsbGV0OgoKSSBh
-bSB3aWxsaW5nIHRvIGdvIG92ZXIgdGhpcyB3aG9sZSBwcm9ncmFtIHdpdGggeW91LCBlaXRoZXIg
-aW4gcGVyc29uIG9yIHZpYSB0ZWxlcGhvbmUsIGRlcGVuZGluZyBvbiB5b3VyIGxvY2F0aW9uIGFu
-ZC9vciBwcmVmZXJlbmNlLgoKUGxlYXNlIGNhbGwgMSAoODAwKSAzOTAtNzkxMiB0byBnZXQgbW9y
-ZSBpbmZvcm1hdGlvbiB0b2RheSEKClNpbmNlcmVseSwKClNldGggRmVpbnN0ZWluCk5hdGlvbmFs
-IEFjY291bnQgTWFuYWdlcgpWYWx1cGx1cyBNZXJjaGFudHMgQXNzb2NpYXRpb24gCjEgKDgwMCkg
-MzkwLTc5MTIKCgoKCgoKCgoKCgoKCgoKCgoKCgoKQ2xpY2sgVGhpcyBMaW5rIHRvIFN0b3AgRnV0
-dXJlIE1lc3NhZ2VzIDxtYWlsdG86bGlzdHNlcnZpY2VzQGdteC5jb20/c3ViamVjdD1VbnN1YnNj
-cmliZSUzQSUyMHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldD4KCgoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YgZW1haWwgaXMgc3BvbnNvc3JlZCBieToKVHJ5IFdp
-bmRvd3MgQXp1cmUgZnJlZSBmb3IgOTAgZGF5cyBDbGljayBIZXJlIApodHRwOi8vcC5zZi5uZXQv
-c2Z1L3NmZDJkLW1zYXp1cmUKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Makes the function omap_mcspi_runtime_resume depend on CONFIG_PM_RUNTIME.
+
+Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |   41 +++++++++++++++++++++++------------------
+ 1 files changed, 23 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index cb2c0e3..f9d694d 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -248,23 +248,6 @@ static void omap2_mcspi_set_master_mode(struct spi_master *master)
+ 	omap2_mcspi_ctx[master->bus_num - 1].modulctrl = l;
+ }
+ 
+-static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
+-{
+-	struct spi_master *spi_cntrl;
+-	struct omap2_mcspi_cs *cs;
+-	spi_cntrl = mcspi->master;
+-
+-	/* McSPI: context restore */
+-	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
+-			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
+-
+-	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
+-			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
+-
+-	list_for_each_entry(cs, &omap2_mcspi_ctx[spi_cntrl->bus_num - 1].cs,
+-			node)
+-		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+-}
+ static void omap2_mcspi_disable_clocks(struct omap2_mcspi *mcspi)
+ {
+ 	pm_runtime_put_sync(mcspi->dev);
+@@ -1066,6 +1049,26 @@ static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM_RUNTIME
++static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
++{
++	struct spi_master *spi_cntrl;
++	struct omap2_mcspi_cs *cs;
++
++	spi_cntrl = mcspi->master;
++
++	/* McSPI: context restore */
++	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_MODULCTRL,
++			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].modulctrl);
++
++	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE,
++			omap2_mcspi_ctx[spi_cntrl->bus_num - 1].wakeupenable);
++
++	list_for_each_entry(cs, &omap2_mcspi_ctx[spi_cntrl->bus_num - 1].cs,
++			node)
++		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++}
++
+ static int omap_mcspi_runtime_resume(struct device *dev)
+ {
+ 	struct omap2_mcspi	*mcspi;
+@@ -1077,7 +1080,9 @@ static int omap_mcspi_runtime_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-
++#else
++#define	omap_mcspi_runtime_resume	NULL
++#endif
+ 
+ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+ {
+-- 
+1.7.1
+
+
+------------------------------------------------------------------------------
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here 
+http://p.sf.net/sfu/sfd2d-msazure

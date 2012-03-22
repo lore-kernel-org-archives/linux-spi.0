@@ -1,7 +1,10 @@
-From: Stop Cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre alarme =?iso-8859-15?Q?rembours=E9e?=
-Date: Wed, 21 Mar 2012 12:48:02 +0100
-Message-ID: <1332330482.4f69bff22d86c@mc10.fr>
+From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
+Date: Thu, 22 Mar 2012 03:46:30 +0100
+Message-ID: <1332384390.4f6a9286de663@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +23,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTgxNjkmYz00ODM2MTImZD0yMDEy=
-LTAzLTIxIDEyOjEwOjAxJmU9MSZoPTgxNjgmZj04MTY5Jmc9ODE2OQ=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTgxODYmYz00ODM2MTImZD0yMDEy=
+LTAzLTIyIDAzOjIwOjAxJmU9MSZoPTgxODUmZj04MTg2Jmc9ODE4Ng=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTgxNjkmYz0=
-0ODM2MTImZD0yMDEyLTAzLTIxIDEyOjEwOjAxJmU9MSZoPTgxNjgmZj04MTY5Jmc9ODE2OQ=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTgxODYmYz0=
+0ODM2MTImZD0yMDEyLTAzLTIyIDAzOjIwOjAxJmU9MSZoPTgxODUmZj04MTg2Jmc9ODE4Ng=3D=
 =3D
 
 

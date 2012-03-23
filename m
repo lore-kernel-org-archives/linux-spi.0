@@ -1,12 +1,13 @@
-From: Ventes privees Bazar Chic <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: Bazar Chic - profitez de 10 eur0s offerts
-Date: Fri, 23 Mar 2012 07:28:51 +0100 (CET)
-Message-ID: <3236305005.825176.1332484131547@p4enginex1.emv2.com>
-Reply-To: Ventes privees Bazar Chic <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] SPI/Pl022: Include types.h to remove compilation warnings
+Date: Fri, 23 Mar 2012 13:05:48 +0530
+Message-ID: <2561efbfb6e8cf1c127dec7eca01bc69948bb94d.1332487932.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,24 +19,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAgICAgICBTaSB2b3VzIG5lIHZpc3VhbGlzZXogcGFzIGNvcnJlY3RlbWVudCBjZSBtZXNzYWdl
-LCBjbGlxdWV6IGljaS4KCgogICAgICAgICAgICAgICAgICBbSU1HXQogICAgICAgICAgICAgICAg
-ICBsZSBzaXRlIGRlcyB2ZW50ZXMgw6l2w6luZW1lbnRpZWxsZXMKICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBOJ2F0dGVuZGV6IHBsdXMsCiAgICAgICAgICAgICAgICAgIFtJ
-TUddICAgICAgICBpbnNjcml2ZXotdm91cyBkw6hzIG1haW50ZW5hbnQgIQogICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBKdXNxdSfDoCAtNzAlCiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1ciB2b3MgbWFycXVlcwogICBbSU1HXSAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHByw6lmw6lyw6llcwogICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRvdXRlIGw/YW5uw6llLi4uCgogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9mZmVydHMgZW4gYm9uIGQ/YWNoYXQsCiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIDEwIOKCrCAgICAgICBkw6hzIHZvdHJlIDHDqHJlIGNv
-bW1hbmRlICEKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgamUgbSdp
-bnNjcmlzCgoKICAgIFBvdXIgbmUgcGx1cyByZWNldm9pciBkZSBjb3VycmllbHMgZGUgbm90cmUg
-cGFydCwgaWwgdm91cyBzdWZmaXQgZGUgdm91cwogICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHJlbmRyZSBzdXIgY2V0dGUgcGFnZS4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YgZW1h
-aWwgaXMgc3BvbnNvc3JlZCBieToKVHJ5IFdpbmRvd3MgQXp1cmUgZnJlZSBmb3IgOTAgZGF5cyBD
-bGljayBIZXJlIApodHRwOi8vcC5zZi5uZXQvc2Z1L3NmZDJkLW1zYXp1cmUKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+linux/pl022.h uses definitions like, u8, u16, etc, which have dependency of
+types.h file, which isn't included in it. So, we get compilation warnings.
+
+This patch includes types.h there to fix these warnings.
+
+Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+---
+ include/linux/amba/pl022.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/include/linux/amba/pl022.h b/include/linux/amba/pl022.h
+index b8c5112..76dd1b1 100644
+--- a/include/linux/amba/pl022.h
++++ b/include/linux/amba/pl022.h
+@@ -25,6 +25,8 @@
+ #ifndef _SSP_PL022_H
+ #define _SSP_PL022_H
+ 
++#include <linux/types.h>
++
+ /**
+  * whether SSP is in loopback mode or not
+  */
+-- 
+1.7.8.110.g4cb5d
+
+
+------------------------------------------------------------------------------
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here 
+http://p.sf.net/sfu/sfd2d-msazure

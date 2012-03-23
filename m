@@ -1,23 +1,13 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH RFC] spi: spi-davinci: Fix DMA API usage in davinci
-Date: Thu, 22 Mar 2012 21:31:03 +0530
-Message-ID: <CAM=Q2cvfDe8U+iReAG0N3Rv3k99BMzUoMAJWJ+8PzstZY0hZYA@mail.gmail.com>
-References: <1332240009-2011-1-git-send-email-shubhrajyoti@ti.com>
-	<20120320162335.65ACD3E2834@localhost>
-	<DF0F476B391FA8409C78302C7BA518B631802D1C@DBDE01.ent.ti.com>
+From: Ventes privees Bazar Chic <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Bazar Chic - profitez de 10 eur0s offerts
+Date: Fri, 23 Mar 2012 07:28:51 +0100 (CET)
+Message-ID: <3236305005.825176.1332484131547@p4enginex1.emv2.com>
+Reply-To: Ventes privees Bazar Chic <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>, "Shankarmurthy,
-	Akshay" <akshay.s-l0cyMroinI0@public.gmane.org>,
-	Michael Williamson <michael.williamson-wZX4cNJlHJ2sVWG7oymsAA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Datta,
-	Shubhrajyoti" <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <DF0F476B391FA8409C78302C7BA518B631802D1C-Er742YJ7I/eIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,43 +18,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sekhar,
-
-On Thu, Mar 22, 2012 at 8:08 PM, Nori, Sekhar <nsekhar-l0cyMroinI0@public.gmane.org> wrote:
-> Hi Grant,
->
-> On Tue, Mar 20, 2012 at 21:53:34, Grant Likely wrote:
->> On Tue, 20 Mar 2012 16:10:09 +0530, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> wrote:
->> > The driver uses NULL for dma_unmap_single instead of
->> > the struct device that the API expects.
->> >
->> > Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
->> > ---
->> > I do not have the board ,untested.
->>
->> Can someone with this hardware please test?
->
-> Akshay from TI tested this on DA850 EVM. He doesn't have
-> this e-mail so posting the tested-by on his behalf:
->
-> Tested-by: Shankarmurthy, Akshay < akshay.s-l0cyMroinI0@public.gmane.org>
-
-Thanks Akshay,
-
->
-> Thanks,
-> Sekhar
->
-> ------------------------------------------------------------------------------
-> This SF email is sponsosred by:
-> Try Windows Azure free for 90 days Click Here
-> http://p.sf.net/sfu/sfd2d-msazure
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------------------------------------------------------------------------------
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
-http://p.sf.net/sfu/sfd2d-msazure
+ICAgICAgICBTaSB2b3VzIG5lIHZpc3VhbGlzZXogcGFzIGNvcnJlY3RlbWVudCBjZSBtZXNzYWdl
+LCBjbGlxdWV6IGljaS4KCgogICAgICAgICAgICAgICAgICBbSU1HXQogICAgICAgICAgICAgICAg
+ICBsZSBzaXRlIGRlcyB2ZW50ZXMgw6l2w6luZW1lbnRpZWxsZXMKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBOJ2F0dGVuZGV6IHBsdXMsCiAgICAgICAgICAgICAgICAgIFtJ
+TUddICAgICAgICBpbnNjcml2ZXotdm91cyBkw6hzIG1haW50ZW5hbnQgIQogICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBKdXNxdSfDoCAtNzAlCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN1ciB2b3MgbWFycXVlcwogICBbSU1HXSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHByw6lmw6lyw6llcwogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRvdXRlIGw/YW5uw6llLi4uCgogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9mZmVydHMgZW4gYm9uIGQ/YWNoYXQsCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIDEwIOKCrCAgICAgICBkw6hzIHZvdHJlIDHDqHJlIGNv
+bW1hbmRlICEKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgamUgbSdp
+bnNjcmlzCgoKICAgIFBvdXIgbmUgcGx1cyByZWNldm9pciBkZSBjb3VycmllbHMgZGUgbm90cmUg
+cGFydCwgaWwgdm91cyBzdWZmaXQgZGUgdm91cwogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHJlbmRyZSBzdXIgY2V0dGUgcGFnZS4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YgZW1h
+aWwgaXMgc3BvbnNvc3JlZCBieToKVHJ5IFdpbmRvd3MgQXp1cmUgZnJlZSBmb3IgOTAgZGF5cyBD
+bGljayBIZXJlIApodHRwOi8vcC5zZi5uZXQvc2Z1L3NmZDJkLW1zYXp1cmUKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
+bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
+L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

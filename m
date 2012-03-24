@@ -1,14 +1,17 @@
-From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?D=E9couvrez-vite?= notre mobilier pour enfants,
-	profitez de nos prix mini ce week end
-Date: Sat, 24 Mar 2012 17:35:59 +0100
-Message-ID: <1332606959.4f6df7ef6c25a@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] SPI/Pl022: Include types.h to remove compilation warnings
+Date: Sat, 24 Mar 2012 16:55:15 +0000
+Message-ID: <20120324165515.E6D943E09BC@localhost>
+References: <2561efbfb6e8cf1c127dec7eca01bc69948bb94d.1332487932.git.viresh.kumar@st.com>
+	<CACRpkdZV=NEbokQ4YGB=ueN0HkuqXZxqykodGC2MQ_KvBaaGKw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdZV=NEbokQ4YGB=ueN0HkuqXZxqykodGC2MQ_KvBaaGKw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,19 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Fri, 23 Mar 2012 10:48:57 +0100, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Mar 23, 2012 at 8:35 AM, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
+> 
+> > linux/pl022.h uses definitions like, u8, u16, etc, which have dependency of
+> > types.h file, which isn't included in it. So, we get compilation warnings.
+> >
+> > This patch includes types.h there to fix these warnings.
+> >
+> > Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+> 
+> Looks reasonable!
+> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTg1NDgmYz0yMzY0MzcmZD0yMDEy=
-LTAzLTIzIDE4OjEwOjAxJmU9MSZoPTg1NDcmZj04NTQ4Jmc9ODU0OA=3D=3D
+Applied, thanks.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTg1NDgmYz0=
-yMzY0MzcmZD0yMDEyLTAzLTIzIDE4OjEwOjAxJmU9MSZoPTg1NDcmZj04NTQ4Jmc9ODU0OA=3D=
-=3D
+g.
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
+Try Windows Azure free for 90 days Click Here 
 http://p.sf.net/sfu/sfd2d-msazure

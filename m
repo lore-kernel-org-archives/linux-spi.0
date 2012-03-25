@@ -1,60 +1,37 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH RFC] spi: spi-davinci: Fix DMA API usage in davinci
-Date: Sat, 24 Mar 2012 16:59:11 +0000
-Message-ID: <20120324165911.E850A3E09CC@localhost>
-References: <1332240009-2011-1-git-send-email-shubhrajyoti@ti.com>
-	<20120320162335.65ACD3E2834@localhost>
-	<DF0F476B391FA8409C78302C7BA518B631802D1C@DBDE01.ent.ti.com>
-	<CAM=Q2cvfDe8U+iReAG0N3Rv3k99BMzUoMAJWJ+8PzstZY0hZYA@mail.gmail.com>
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez-vite?= notre mobilier pour enfants,
+	profitez de nos prix mini ce week end
+Date: Sun, 25 Mar 2012 09:05:35 +0200
+Message-ID: <1332659135.4f6ec3bf1221e@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "Datta,  Shubhrajyoti"
-	<shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-        "Nori, Sekhar"
-	<nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <CAM=Q2cvfDe8U+iReAG0N3Rv3k99BMzUoMAJWJ+8PzstZY0hZYA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 22 Mar 2012 21:31:03 +0530, Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Sekhar,
-> 
-> On Thu, Mar 22, 2012 at 8:08 PM, Nori, Sekhar <nsekhar-l0cyMroinI0@public.gmane.org> wrote:
-> > Hi Grant,
-> >
-> > On Tue, Mar 20, 2012 at 21:53:34, Grant Likely wrote:
-> >> On Tue, 20 Mar 2012 16:10:09 +0530, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> wrote:
-> >> > The driver uses NULL for dma_unmap_single instead of
-> >> > the struct device that the API expects.
-> >> >
-> >> > Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> >> > ---
-> >> > I do not have the board ,untested.
-> >>
-> >> Can someone with this hardware please test?
-> >
-> > Akshay from TI tested this on DA850 EVM. He doesn't have
-> > this e-mail so posting the tested-by on his behalf:
-> >
-> > Tested-by: Shankarmurthy, Akshay < akshay.s-l0cyMroinI0@public.gmane.org>
-> 
-> Thanks Akshay,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Applied, thanks.
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTg1NTcmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTI1IDA4OjAwOjAxJmU9MSZoPTg1NTYmZj04NTU3Jmc9ODU1Nw=3D=3D
 
-g.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTg1NTcmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTI1IDA4OjAwOjAxJmU9MSZoPTg1NTYmZj04NTU3Jmc9ODU1Nw=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

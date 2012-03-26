@@ -1,11 +1,13 @@
-From: =?GB2312?B?x+vXqs/gudi4utTwyMs=?= <vaj-SvL381ph6Hc@public.gmane.org>
-Subject: [SPAM] ä¼ä¸šç™½é¢†æ ¸å¿ƒåŠå…¬æŠ€èƒ½
-Date: Mon, 26 Mar 2012 14:34:26 +0800
-Message-ID: <E1SC3Vc-0008Gl-4X@sfs-ml-3.v29.ch3.sourceforge.com>
+From: SNCF avec l'Officiel des vacances <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: =?iso-8859-15?Q?Billets_de_train_=E0_19_Eur0s_seulement,
+	_reservez_vite?=
+Date: Mon, 26 Mar 2012 10:46:38 +0200 (CEST)
+Message-ID: <3236305005.837706.1332751598220@p4enginex1.emv2.com>
+Reply-To: SNCF avec l'Officiel des vacances <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,43 +19,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
 
-ÆóÒµ°×ÁìºËĞÄ°ì¹«¼¼ÄÜ£¨PPT+Excel£©
+Si vous ne visualisez pas correctement ce message, cliquez ici.
 
-Ê±¼äµØµã£º2012Äê4ÔÂ19-20ÈÕÉÏº£
-Ê±¼äµØµã£º2012Äê4ÔÂ21-22ÈÕÉîÛÚ
-Ê±¼äµØµã£º2012Äê4ÔÂ27-28ÈÕ±±¾© 
 
-·Ñ    ÓÃ£º2600Ôª/ÈË£¨Ìá¹©½²Òå¡¢Îç²Í¡¢·¢Æ±¡¢²èµãµÈ£©
-ÊÚ¿Î¶ÔÏó£º×Ü¾­Àí£¬¸÷²¿ÃÅÖ÷¹Ü£¬²ÆÎñ²¿¡¢ÊĞ³¡²¿¡¢ÓªÏú²¿µÈÏà¹Ø²¿ÃÅ¹¤×÷ÈËÔ±
+   L'Officiel-des-vacances.com - La r*f*rence des bons plans vacances
+   [IMG]                            L'*t* commence maintenant
+                                    Envie de soleil ?
+                                    R=E9servez MAINTENANT vos billets
+                                    pour cet =E9t=E9 !
 
-×ÉÑ¯µç»°£º020-80560638£»020-85917945 Ğ»Ğ¡½ã£¨²»ĞèÒª´ËÀàĞÅ¼şÇë»Ø¸´µçÓÊÖÁtuixin2012-KN7UnAbNpbg@public.gmane.orgÍËĞÅ£©
-ÏêÇéÇë²Î¿¼¸½¼ş
+                                    Fa=EEtes-vite avant qu'il n'y en ait
+   A partir de 19* sur IDTGV.com    plus.                               [IM=
+G]
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+                                    En cliquant sur =AB OK =BB j'accepte de
+                                    recevoir
+                                    le TOP 20 des bons plans vacances
+                                    sur
+                                    spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+   R*servez plus de 30 destinations OK
+   pour cet *t* avec IDTGV.com
 
-------------------------------------------------------------------------------
+Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
+ndre
+                                sur cette page.
+
+---------------------------------------------------------------------------=
+---
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--

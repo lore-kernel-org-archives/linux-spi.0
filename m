@@ -1,16 +1,13 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2  2/5] spi: omap2-mcspi: make it behave as a module
-Date: Mon, 26 Mar 2012 19:14:37 +0530
-Message-ID: <1332769480-28069-3-git-send-email-shubhrajyoti@ti.com>
-References: <1332769480-28069-1-git-send-email-shubhrajyoti@ti.com>
+From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH] spi-imx: Remove duplicate spi_imx_data definition
+Date: Mon, 26 Mar 2012 15:13:52 -0300
+Message-ID: <1332785632-17799-1-git-send-email-fabio.estevam@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1332769480-28069-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,59 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
+Structure struct spi_imx_data is defined twice.
 
-move probe away from __init section and use
-platform_driver_register() instead of
-platform_driver_probe().
+Remove one of its definition.
 
-Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c |    9 +++++----
- 1 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi-imx.c |   20 +++++++++-----------
+ 1 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 7785091..26dd79f 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1098,7 +1098,7 @@ static const struct of_device_id omap_mcspi_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, omap_mcspi_of_match);
- 
--static int __init omap2_mcspi_probe(struct platform_device *pdev)
-+static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- {
- 	struct spi_master	*master;
- 	struct omap2_mcspi_platform_config *pdata;
-@@ -1245,7 +1245,7 @@ free_master:
- 	return status;
- }
- 
--static int __exit omap2_mcspi_remove(struct platform_device *pdev)
-+static int __devexit omap2_mcspi_remove(struct platform_device *pdev)
- {
- 	struct spi_master	*master;
- 	struct omap2_mcspi	*mcspi;
-@@ -1320,13 +1320,14 @@ static struct platform_driver omap2_mcspi_driver = {
- 		.pm =		&omap2_mcspi_pm_ops,
- 		.of_match_table = omap_mcspi_of_match,
- 	},
--	.remove =	__exit_p(omap2_mcspi_remove),
-+	.probe =	omap2_mcspi_probe,
-+	.remove =	__devexit_p(omap2_mcspi_remove),
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 31054e3..f1f6700 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -68,17 +68,6 @@ enum spi_imx_devtype {
+ 	IMX51_ECSPI,	/* ECSPI on i.mx51 and later */
  };
  
+-struct spi_imx_data;
+-
+-struct spi_imx_devtype_data {
+-	void (*intctrl)(struct spi_imx_data *, int);
+-	int (*config)(struct spi_imx_data *, struct spi_imx_config *);
+-	void (*trigger)(struct spi_imx_data *);
+-	int (*rx_available)(struct spi_imx_data *);
+-	void (*reset)(struct spi_imx_data *);
+-	enum spi_imx_devtype devtype;
+-};
+-
+ struct spi_imx_data {
+ 	struct spi_bitbang bitbang;
  
- static int __init omap2_mcspi_init(void)
+@@ -99,6 +88,15 @@ struct spi_imx_data {
+ 	int chipselect[0];
+ };
+ 
++struct spi_imx_devtype_data {
++	void (*intctrl)(struct spi_imx_data *, int);
++	int (*config)(struct spi_imx_data *, struct spi_imx_config *);
++	void (*trigger)(struct spi_imx_data *);
++	int (*rx_available)(struct spi_imx_data *);
++	void (*reset)(struct spi_imx_data *);
++	enum spi_imx_devtype devtype;
++};
++
+ static inline int is_imx27_cspi(struct spi_imx_data *d)
  {
--	return platform_driver_probe(&omap2_mcspi_driver, omap2_mcspi_probe);
-+	return platform_driver_register(&omap2_mcspi_driver);
- }
- subsys_initcall(omap2_mcspi_init);
- 
+ 	return d->devtype_data->devtype == IMX27_CSPI;
 -- 
 1.7.1
+
 
 
 ------------------------------------------------------------------------------

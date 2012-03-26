@@ -1,11 +1,10 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Offrez vous les caraibes
-Date: Mon, 26 Mar 2012 06:27:27 +0200
-Message-ID: <1332736047.4f6ff02fbc217@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: =?GB2312?B?x+vXqs/gudi4utTwyMs=?= <vaj-SvL381ph6Hc@public.gmane.org>
+Subject: [SPAM] ä¼ä¸šç™½é¢†æ ¸å¿ƒåŠå…¬æŠ€èƒ½
+Date: Mon, 26 Mar 2012 14:34:26 +0800
+Message-ID: <E1SC3Vc-0008Gl-4X@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed;
+	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +17,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg1NDUmYz00ODM2MTImZD0yMDEy=
-LTAzLTI2IDA2OjAwOjAxJmU9MSZoPTg1NDQmZj04NTQ1Jmc9ODU0NQ=3D=3D
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg1NDUmYz0=
-0ODM2MTImZD0yMDEyLTAzLTI2IDA2OjAwOjAxJmU9MSZoPTg1NDQmZj04NTQ1Jmc9ODU0NQ=3D=
-=3D
+ÆóÒµ°×ÁìºËĞÄ°ì¹«¼¼ÄÜ£¨PPT+Excel£©
 
+Ê±¼äµØµã£º2012Äê4ÔÂ19-20ÈÕÉÏº£
+Ê±¼äµØµã£º2012Äê4ÔÂ21-22ÈÕÉîÛÚ
+Ê±¼äµØµã£º2012Äê4ÔÂ27-28ÈÕ±±¾© 
 
----------------------------------------------------------------------------=
----
+·Ñ    ÓÃ£º2600Ôª/ÈË£¨Ìá¹©½²Òå¡¢Îç²Í¡¢·¢Æ±¡¢²èµãµÈ£©
+ÊÚ¿Î¶ÔÏó£º×Ü¾­Àí£¬¸÷²¿ÃÅÖ÷¹Ü£¬²ÆÎñ²¿¡¢ÊĞ³¡²¿¡¢ÓªÏú²¿µÈÏà¹Ø²¿ÃÅ¹¤×÷ÈËÔ±
+
+×ÉÑ¯µç»°£º020-80560638£»020-85917945 Ğ»Ğ¡½ã£¨²»ĞèÒª´ËÀàĞÅ¼şÇë»Ø¸´µçÓÊÖÁtuixin2012-KN7UnAbNpbg@public.gmane.orgÍËĞÅ£©
+ÏêÇéÇë²Î¿¼¸½¼ş
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
+Try Windows Azure free for 90 days Click Here 
 http://p.sf.net/sfu/sfd2d-msazure
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

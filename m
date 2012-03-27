@@ -1,37 +1,37 @@
-From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Mobilier de jardin, prix usine : profitez du soleil
-	=?iso-8859-15?Q?d=E8s?= maintenant!
-Date: Tue, 27 Mar 2012 13:19:23 +0200
-Message-ID: <1332847163.4f71a23b6456e@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 0/5] spi: omap2-mcspi: driver updates
+Date: Tue, 27 Mar 2012 15:58:38 -0600
+Message-ID: <20120327215838.AB7C33E13A0@localhost>
+References: <1332769480-28069-1-git-send-email-shubhrajyoti@ti.com>
+Cc: Shubhrajyoti@ponder.secretlab.ca, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, D <shubhrajyoti@ti.com>
+To: Shubhrajyoti D <shubhrajyoti@ti.com>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1332769480-28069-1-git-send-email-shubhrajyoti@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Mon, 26 Mar 2012 19:14:35 +0530, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
+> The patch series does the following cleanups
+> - Converts the spi to module_platform_driver
+> - Use the devm functions so that the freeing need not 
+>   be done in the driver.
+> - Makes the driver use autosuspend
+> - Folds Benoit's bus_num removal patch in the series
+> 
+> Changes from the previous version
+> - Makes the driver use autosuspend
+> - Folds Benoit's bus_num removal patch in the series
+> 
+> 
+> This is also available through
+> git     : git://gitorious.org/linus-tree/linus-tree.git
+> branch  : spi
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTg2MTEmYz0yMzY0MzcmZD0yMDEy=
-LTAzLTI3IDEzOjAwOjAxJmU9MSZoPTg2MTAmZj04NjExJmc9ODYxMQ=3D=3D
+Hi Shubhrajyoti,
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTg2MTEmYz0=
-yMzY0MzcmZD0yMDEyLTAzLTI3IDEzOjAwOjAxJmU9MSZoPTg2MTAmZj04NjExJmc9ODYxMQ=3D=
-=3D
+I'll queue these ones up for v3.5 unless you make the argument that
+they are bug fixes that must go into v3.4.
 
-
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure
+g.

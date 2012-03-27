@@ -1,36 +1,37 @@
-From: "Oskar Schirmer" <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v4 4/4] mfd: mc13xxx: Add i2c driver
-Date: 27 Mar 2012 08:24:19 +0000
-Message-ID: <20120327082419.GA5080@curry>
-References: <1332129838-7080-1-git-send-email-marc@cpdesign.com.au> <1332129838-7080-5-git-send-email-marc@cpdesign.com.au>
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Mobilier de jardin, prix usine : profitez du soleil
+	=?iso-8859-15?Q?d=E8s?= maintenant!
+Date: Tue, 27 Mar 2012 13:19:23 +0200
+Message-ID: <1332847163.4f71a23b6456e@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
-To: "Marc Reilly" <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1332129838-7080-5-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Test against Linux 3.3 fails as crucial patches in regmap core
-are not yet mainline. However, with commit cc374fbf5305 from
-git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git
-applied, this series works fine.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTg2MTEmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTI3IDEzOjAwOjAxJmU9MSZoPTg2MTAmZj04NjExJmc9ODYxMQ=3D=3D
 
-On Mon, Mar 19, 2012 at 15:03:58 +1100, Marc Reilly wrote:
-> Adds support for mc13xxx family ICs connected via i2c.
-> 
-> Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-> ---
->  drivers/mfd/Kconfig       |    8 +++-
->  drivers/mfd/Makefile      |    1 +
->  drivers/mfd/mc13xxx-i2c.c |  128 +++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 136 insertions(+), 1 deletions(-)
->  create mode 100644 drivers/mfd/mc13xxx-i2c.c
-[...]
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTg2MTEmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTI3IDEzOjAwOjAxJmU9MSZoPTg2MTAmZj04NjExJmc9ODYxMQ=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

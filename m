@@ -1,62 +1,36 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] spi-imx: Remove duplicate spi_imx_data definition
-Date: Tue, 27 Mar 2012 09:01:35 +0200
-Message-ID: <20120327070135.GN15647@pengutronix.de>
-References: <1332785632-17799-1-git-send-email-fabio.estevam@freescale.com>
-	<20120326205940.GM15647@pengutronix.de>
-	<4F7123BE.8090608@freescale.com>
+From: "Oskar Schirmer" <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v4 4/4] mfd: mc13xxx: Add i2c driver
+Date: 27 Mar 2012 08:24:19 +0000
+Message-ID: <20120327082419.GA5080@curry>
+References: <1332129838-7080-1-git-send-email-marc@cpdesign.com.au> <1332129838-7080-5-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: "Marc Reilly" <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <4F7123BE.8090608-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <1332129838-7080-5-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Fabio,
+Test against Linux 3.3 fails as crucial patches in regmap core
+are not yet mainline. However, with commit cc374fbf5305 from
+git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git
+applied, this series works fine.
 
-On Mon, Mar 26, 2012 at 11:19:42PM -0300, Fabio Estevam wrote:
-> On 3/26/2012 5:59 PM, Uwe Kleine-K=F6nig wrote:
-> =
+Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
 
-> > In my version of drivers/spi/spi-imx.c struct spi_imx_data is only
-> > defined once. I guess you wanted to say "forward declaration".
-> =
-
-> Yes, correct.
-> =
-
-> ...
-> =
-
-> > Does this really work? struct spi_imx_data has a member
-> =
-
-> Yes, tested it on a mx31pdk board.
-Strange, I can confirm it compiles without warnings. Even sparse doesn't
-complain about it. I don't understand it. *shrug*
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure
+On Mon, Mar 19, 2012 at 15:03:58 +1100, Marc Reilly wrote:
+> Adds support for mc13xxx family ICs connected via i2c.
+> 
+> Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+> ---
+>  drivers/mfd/Kconfig       |    8 +++-
+>  drivers/mfd/Makefile      |    1 +
+>  drivers/mfd/mc13xxx-i2c.c |  128 +++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 136 insertions(+), 1 deletions(-)
+>  create mode 100644 drivers/mfd/mc13xxx-i2c.c
+[...]

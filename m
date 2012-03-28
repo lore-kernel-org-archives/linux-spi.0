@@ -1,12 +1,10 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Wed, 28 Mar 2012 12:16:46 +0200
-Message-ID: <1332929806.4f72e50ed7f89@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: =?GBK?B?t6JWxq8=?= <fgcfjp619-+I6WMpcfFcY@public.gmane.org>
+Subject: 5297QQ912252163
+Date: Thu, 29 Mar 2012 03:33:26 +0800 (CST)
+Message-ID: <240f5313.a56c.1365acc6455.Coremail.fgcfjp619@188.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="gbk"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,19 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg1NDYmYz00ODM2MTImZD0yMDEy=
-LTAzLTI4IDEyOjAwOjAxJmU9MSZoPTg1NDUmZj04NTQ2Jmc9ODU0Ng=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg1NDYmYz0=
-0ODM2MTImZD0yMDEyLTAzLTI4IDEyOjAwOjAxJmU9MSZoPTg1NDUmZj04NTQ2Jmc9ODU0Ng=3D=
-=3D
-
-
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure
+oe6hvrT6ICCppSAg0emhv6Huoe6hvr+qICCppSAg1qShv6Huoe6hvreiICCppSAguLahv6Huoe6h
+vsaxICCppSAgv+6hv6HuqFioVKhUqFSoVKhUqFSoVKhUqFSoVKhUqFSoW7Xnu7CjujEzMi02NTA4
+LTI5OThRUaO6OTEyMjUyMTYzqF6oVKhUqFSoVKhUqFSoVKhUqFSoVKhUqFSoYcjry6/Kx8zwCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGIGVtYWlsIGlzIHNwb25zb3NyZWQgYnk6ClRyeSBX
+aW5kb3dzIEF6dXJlIGZyZWUgZm9yIDkwIGRheXMgQ2xpY2sgSGVyZSAKaHR0cDovL3Auc2YubmV0
+L3NmdS9zZmQyZC1tc2F6dXJlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,11 +1,12 @@
-From: =?GBK?B?t6JWxq8=?= <fgcfjp619-+I6WMpcfFcY@public.gmane.org>
-Subject: 5297QQ912252163
-Date: Thu, 29 Mar 2012 03:33:26 +0800 (CST)
-Message-ID: <240f5313.a56c.1365acc6455.Coremail.fgcfjp619@188.com>
+From: "Amoureux.com" <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Pourquoi payer pour rencontrer l'amour ?
+Date: Thu, 29 Mar 2012 08:09:26 +0200 (CEST)
+Message-ID: <3236305005.850113.1333001366270@p4enginex1.emv2.com>
+Reply-To: "Amoureux.com" <newsletters-/w5SdRl5FDXCXR85Y8Hu3Q@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,13 +18,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-oe6hvrT6ICCppSAg0emhv6Huoe6hvr+qICCppSAg1qShv6Huoe6hvreiICCppSAguLahv6Huoe6h
-vsaxICCppSAgv+6hv6HuqFioVKhUqFSoVKhUqFSoVKhUqFSoVKhUqFSoW7Xnu7CjujEzMi02NTA4
-LTI5OThRUaO6OTEyMjUyMTYzqF6oVKhUqFSoVKhUqFSoVKhUqFSoVKhUqFSoYcjry6/Kx8zwCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGIGVtYWlsIGlzIHNwb25zb3NyZWQgYnk6ClRyeSBX
-aW5kb3dzIEF6dXJlIGZyZWUgZm9yIDkwIGRheXMgQ2xpY2sgSGVyZSAKaHR0cDovL3Auc2YubmV0
-L3NmdS9zZmQyZC1tc2F6dXJlCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+        Si vous ne visualisez pas correctement ce message, cliquez ici.
+
+
+   amoureux.com                Rencontres Gratuites Depuis 1998
+                           ENFIN UNE BONNE NOUVELLE !
+
+                       Parce que l'amour n'a pas de prix,
+   amoureux.com est 100% GRATUIT !
+   Comme nous, profitez-en !
+   100% s=E9rieux, 100% gratuit
+   POUR TOUS                     J'en profite !
+   Acc=E9dez =E0 tous nos services (=E7a ne co=FBte rien)
+   24h/24 et 7j/7
+
+
+Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
+ndre
+                                sur cette page.
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

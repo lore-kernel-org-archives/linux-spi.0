@@ -1,13 +1,12 @@
-From: Nouvelles Antilles par Duano <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
-Subject: Voyage dans les Antilles =?iso-8859-15?Q?P=E2ques?= et Vacances
-	=?iso-8859-15?Q?=E9t=E9_jusqu=27=E0?= -35%
-Date: Thu, 29 Mar 2012 20:37:27 +0200
-Message-ID: <1333046247.4f74abe7e92cb@mc10.fr>
-Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi/imx: mark base member in spi_imx_data as __iomem
+Date: Thu, 29 Mar 2012 21:54:18 +0200
+Message-ID: <1333050858-26829-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,19 +18,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg4MTQmYz00ODM2MTImZD0yMDEy=
-LTAzLTI5IDE3OjMwOjAxJmU9MSZoPTg4MTMmZj04ODE0Jmc9ODgxNA=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg4MTQmYz0=
-0ODM2MTImZD0yMDEyLTAzLTI5IDE3OjMwOjAxJmU9MSZoPTg4MTMmZj04ODE0Jmc9ODgxNA=3D=
-=3D
-
-
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure
+VGhpcyBmaXhlcyAzNiBzcGFyc2Ugd2FybmluZ3MgbGlrZToKCglkcml2ZXJzL3NwaS9zcGktaW14
+LmM6MTQzOjE6IHdhcm5pbmc6IGluY29ycmVjdCB0eXBlIGluIGFyZ3VtZW50IDEgKGRpZmZlcmVu
+dCBhZGRyZXNzIHNwYWNlcykKCWRyaXZlcnMvc3BpL3NwaS1pbXguYzoxNDM6MTogICAgZXhwZWN0
+ZWQgdm9pZCBjb25zdCB2b2xhdGlsZSBbbm9kZXJlZl0gPGFzbjoyPio8bm9pZGVudD4KCWRyaXZl
+cnMvc3BpL3NwaS1pbXguYzoxNDM6MTogICAgZ290IHZvaWQgKgoKU2lnbmVkLW9mZi1ieTogVXdl
+IEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBkcml2
+ZXJzL3NwaS9zcGktaW14LmMgfCAgICAyICstCiAxIGZpbGVzIGNoYW5nZWQsIDEgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktaW14LmMg
+Yi9kcml2ZXJzL3NwaS9zcGktaW14LmMKaW5kZXggMzEwNTRlMy4uMzczZjRmZiAxMDA2NDQKLS0t
+IGEvZHJpdmVycy9zcGkvc3BpLWlteC5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYwpAQCAt
+ODMsNyArODMsNyBAQCBzdHJ1Y3Qgc3BpX2lteF9kYXRhIHsKIAlzdHJ1Y3Qgc3BpX2JpdGJhbmcg
+Yml0YmFuZzsKIAogCXN0cnVjdCBjb21wbGV0aW9uIHhmZXJfZG9uZTsKLQl2b2lkICpiYXNlOwor
+CXZvaWQgX19pb21lbSAqYmFzZTsKIAlpbnQgaXJxOwogCXN0cnVjdCBjbGsgKmNsazsKIAl1bnNp
+Z25lZCBsb25nIHNwaV9jbGs7Ci0tIAoxLjcuOS4xCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRo
+aXMgU0YgZW1haWwgaXMgc3BvbnNvc3JlZCBieToKVHJ5IFdpbmRvd3MgQXp1cmUgZnJlZSBmb3Ig
+OTAgZGF5cyBDbGljayBIZXJlIApodHRwOi8vcC5zZi5uZXQvc2Z1L3NmZDJkLW1zYXp1cmUKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

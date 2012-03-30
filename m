@@ -1,10 +1,13 @@
-From: =?GB2312?B?wfXQob3j?= <jjinqkuail-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: [SPAM] 鏈夊浣櫚l瞟向外代办费用0.9%左右额大更优
-Date: Sat, 31 Mar 2012 08:06:54 +0800
-Message-ID: <E1SDlqJ-0005Jm-6g@sfs-ml-4.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============0197175182581233777=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: mark base member in spi_imx_data as __iomem
+Date: Fri, 30 Mar 2012 16:39:12 -0600
+Message-ID: <20120330223912.19D1A3E079F@localhost>
+References: <1333050858-26829-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Content-Type: multipart/mixed; boundary="===============5414740321092567678=="
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Uwe Kleine-K枚nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1333050858-26829-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -15,26 +18,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0197175182581233777==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+--===============5414740321092567678==
 
-贵公司﹑企业﹑厂家经理财务您好！
-    本公司是一家大型企业集团公司，是缴定额税的。一直从事实业贸易行业；本公司一惯以互惠互利诚信为本，智慧创业的宗旨，赢得全国各大公司的支持，我公司注册经营范围广。
-    本公司现有多余的嘌据向外开，稅率按0.9%左右收去取(金额大可再优惠)，可经网查询取证或帐后再付款(各项目齐备)最新版，准确审核保证财务记帐实行规范管理及严格履行(保密)制度。
-    注意：请保留号码邮箱，以防有需!!!
-    联系人:刘嘉红  
-    电  话:13710889326 
-    邮  箱:jinshenggs-KN7UnAbNpbg@public.gmane.org
-    商祺!
-        望长期合作!!! 
-    欢迎来电咨询，如有打搅敬请谅解!!!
-                          
-                      锦盛实业有限公司
+On Thu, 29 Mar 2012 21:54:18 +0200, Uwe Kleine-K枚nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+> This fixes 36 sparse warnings like:
+> 
+> 	drivers/spi/spi-imx.c:143:1: warning: incorrect type in argument 1 (different address spaces)
+> 	drivers/spi/spi-imx.c:143:1:    expected void const volatile [noderef] <asn:2>*<noident>
+> 	drivers/spi/spi-imx.c:143:1:    got void *
+> 
+> Signed-off-by: Uwe Kleine-K枚nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+
+Applied, thanks
+
+g.
+
+> ---
+>  drivers/spi/spi-imx.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 31054e3..373f4ff 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -83,7 +83,7 @@ struct spi_imx_data {
+>  	struct spi_bitbang bitbang;
+>  
+>  	struct completion xfer_done;
+> -	void *base;
+> +	void __iomem *base;
+>  	int irq;
+>  	struct clk *clk;
+>  	unsigned long spi_clk;
+> -- 
+> 1.7.9.1
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies,Ltd.
 
 
---===============0197175182581233777==
+--===============5414740321092567678==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -44,7 +69,7 @@ Content-Disposition: inline
 This SF email is sponsosred by:
 Try Windows Azure free for 90 days Click Here 
 http://p.sf.net/sfu/sfd2d-msazure
---===============0197175182581233777==
+--===============5414740321092567678==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -55,4 +80,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============0197175182581233777==--
+--===============5414740321092567678==--

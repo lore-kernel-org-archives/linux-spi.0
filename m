@@ -1,10 +1,12 @@
-From: "Hetty Frey" <kevin.hall-Blyx8OZ5J+syzzc7d281ts/53G5R+iW0@public.gmane.org>
-Subject: [SPAM] It continues to go up
-Date: Fri, 30 Mar 2012 15:00:49 +0800
-Message-ID: <001e01cd0e42$e9065870$dc4cebb0@DsmsServerxd3gb>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCHv3 0/6] spi: omap2-mcspi: driver updates
+Date: Fri, 30 Mar 2012 15:50:02 +0530
+Message-ID: <1333102808-17127-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,20 +19,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Some of our subscribers already enjoyed the exposure! IKCC._OB is one step 
-closer to its target of .50!
+The patch series does the following cleanups
+- Converts the spi to module_platform_driver
+- Use the devm functions so that the freeing need not 
+  be done in the driver.
+- Makes the driver use autosuspend
+- Folds Benoit's bus_num removal patch in the series
 
-Date: Mar 30
-Ticker: IKCC._OB
+Changes from v1
+- Makes the driver use autosuspend
+- Folds Benoit's bus_num removal patch in the series
 
-Latest press release of March 29:
-Game FaceGaming Inc. announced today that its site, when launched shortly, 
-will offer a unique private table home-game experience on its online social 
-gaming network "Face-Up Gaming". "We have completed the design and will very 
-soon launch the best truly home game experience". This news release will 
-move IKCC._OB to .50 in the shortest period. Get in right now! Follow 
-IKCC._OB! Put it on your watchlist! Last 2 days gain exceeds 52+%! Explosion 
-is closer!
+Changes from v2
+- The tmp variable is used to write this can be optimised 
+ as it is not needed if the value is directly written.
+ Acknowledge  Tarun for the suggestion.
+
+This is also available through
+git     : git://gitorious.org/linus-tree/linus-tree.git
+branch  : spi
+
+This is targeted for v3.5. 
+
+Benoit Cousson (1):
+  spi/omap: Remove bus_num usage for instance index
+
+Felipe Balbi (2):
+  spi: omap2-mcspi: make it behave as a module
+  spi: omap2-mcspi: convert to module_platform_driver
+
+Shubhrajyoti D (3):
+  spi: omap2-mcspi: use devm_* functions
+  spi: omap2-mcspi: add support for pm_runtime autosuspend
+  spi: omap2-mcspi: Trivial optimisation
+
+ drivers/spi/spi-omap2-mcspi.c |  132 +++++++++++++++-------------------------
+ 1 files changed, 50 insertions(+), 82 deletions(-)
 
 
 ------------------------------------------------------------------------------

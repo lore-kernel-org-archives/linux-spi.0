@@ -1,31 +1,36 @@
-From: Joakim Tjernlund <joakim.tjernlund@transmode.se>
-Subject: Re: [PATCH] Bug fix in commit 178db7d3 triggered a bug in the SPI
- driver for MPC83XX (pdata is NULL).
-Date: Fri, 30 Mar 2012 17:16:04 +0200
-Message-ID: <OF31A01223.1122F8EE-ONC12579D1.0053C57F-C12579D1.0053DE76@transmode.se>
-References: <1333119930-21129-1-git-send-email-kenth.eriksson@transmode.com>
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Livraison gratuite sur tout le site jusqu'au 03/04, profitez-en !
+Date: Sat, 31 Mar 2012 01:37:09 +0200
+Message-ID: <1333150629.4f7643a5cf367@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org
-To: Kenth Eriksson <kenth.eriksson@transmode.com>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1333119930-21129-1-git-send-email-kenth.eriksson@transmode.com>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Sender: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Kenth Eriksson <kenth.eriksson@transmode.com> wrote on 2012/03/30 17:05:30:
->
-> After commit 178db7d3 devices are initialized as children of the bus master, not children of the bus masters parent device. The pdata pointer used in fsl_spi_chipselect must updated to reflect the changed initialization.
->
-> Signed-off-by: Kenth Eriksson <kenth.eriksson@transmode.com>
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Acked-by: Joakim Tjernlund <Joakim.Tjernlund@transmode.se>
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTg5MDgmYz0yMzY0MzcmZD0yMDEy=
+LTAzLTMxIDAxOjAwOjAxJmU9MSZoPTg5MDcmZj04OTA4Jmc9ODkwOA=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTg5MDgmYz0=
+yMzY0MzcmZD0yMDEyLTAzLTMxIDAxOjAwOjAxJmU9MSZoPTg5MDcmZj04OTA4Jmc9ODkwOA=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

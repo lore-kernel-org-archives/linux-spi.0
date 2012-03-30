@@ -1,16 +1,13 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCHv3 3/6] spi: omap2-mcspi: convert to module_platform_driver
-Date: Fri, 30 Mar 2012 15:50:19 +0530
-Message-ID: <1333102822-17171-4-git-send-email-shubhrajyoti@ti.com>
-References: <1333102822-17171-1-git-send-email-shubhrajyoti@ti.com>
+From: Charlotte <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+Subject: Votre suivi minceur gratuit
+Date: Fri, 30 Mar 2012 12:37:49 +0200 (CEST)
+Message-ID: <3236305005.857675.1333103869222@p4enginex1.emv2.com>
+Reply-To: Charlotte <newsletters-7lNnFWq+ovLCXR85Y8Hu3Q@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1333102822-17171-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,46 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
 
-this will delete a few lines of code, no functional
-changes.
 
-Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Si vous ne visualisez pas correctement ce message, cliquez ici.
+
+
+   Charlotte ma di=E9t=E9cienne, vous offre UN mois de suivi GRATUIT
+   Mon objectif minceur atteint gr=E2ce =E0 Equilibre au Naturel
+   Code 551 pour 1 mois de suivi suppl=E9mentaire
+   Mon poids id=E9al, ma priorit=E9
+   equilibre-au-naturel.com
+
+Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
+ndre
+                                sur cette page.
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |   15 +--------------
- 1 files changed, 1 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 26dd79f..66cbf22 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1324,18 +1324,5 @@ static struct platform_driver omap2_mcspi_driver = {
- 	.remove =	__devexit_p(omap2_mcspi_remove),
- };
- 
--
--static int __init omap2_mcspi_init(void)
--{
--	return platform_driver_register(&omap2_mcspi_driver);
--}
--subsys_initcall(omap2_mcspi_init);
--
--static void __exit omap2_mcspi_exit(void)
--{
--	platform_driver_unregister(&omap2_mcspi_driver);
--
--}
--module_exit(omap2_mcspi_exit);
--
-+module_platform_driver(omap2_mcspi_driver);
- MODULE_LICENSE("GPL");
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure

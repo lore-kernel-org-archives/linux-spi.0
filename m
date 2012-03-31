@@ -1,16 +1,13 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCHv3 3/3] spi: omap2-mcspi: Trivial optimisation
-Date: Sat, 31 Mar 2012 17:06:58 +0530
-Message-ID: <1333193818-3984-4-git-send-email-shubhrajyoti@ti.com>
-References: <1333193818-3984-1-git-send-email-shubhrajyoti@ti.com>
+From: 3Suisses par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes 3suisses -70% + -10% et livraison offerte avec code promo 44849
+Date: Sat, 31 Mar 2012 13:59:53 +0200
+Message-ID: <1333195193.4f76f1b9f3146@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1333193818-3984-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,44 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Trivial optimisation of tmp variable by directly writing the value
-to the register.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Cc :  Tarun Kanti DebBarma <tarun.kanti-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg5MTkmYz00ODM2MTImZD0yMDEy=
+LTAzLTMxIDEyOjAwOjAxJmU9MSZoPTg5MTgmZj04OTE5Jmc9ODkxOQ=3D=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg5MTkmYz0=
+0ODM2MTImZD0yMDEyLTAzLTMxIDEyOjAwOjAxJmU9MSZoPTg5MTgmZj04OTE5Jmc9ODkxOQ=3D=
+=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |    7 +++----
- 1 files changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 0b0da2f..f374eee 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1050,16 +1050,15 @@ static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
- {
- 	struct spi_master	*master = mcspi->master;
- 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
--	u32			tmp;
- 	int			ret = 0;
- 
- 	ret = omap2_mcspi_enable_clocks(mcspi);
- 	if (ret < 0)
- 		return ret;
- 
--	tmp = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
--	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE, tmp);
--	ctx->wakeupenable = tmp;
-+	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE,
-+				OMAP2_MCSPI_WAKEUPENABLE_WKEN);
-+	ctx->wakeupenable = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
- 
- 	omap2_mcspi_set_master_mode(master);
- 	omap2_mcspi_disable_clocks(mcspi);
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure

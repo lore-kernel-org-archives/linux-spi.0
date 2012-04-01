@@ -1,18 +1,18 @@
-From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: [PATCH v5 4/4] mfd: mc13xxx: Add i2c driver
-Date: Sun,  1 Apr 2012 16:41:39 +1000
-Message-ID: <1333262499-25871-5-git-send-email-marc@cpdesign.com.au>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support, V5
+Date: Sun, 1 Apr 2012 11:21:25 +0200
+Message-ID: <20120401092125.GX15647@pengutronix.de>
 References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>,
-	u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, alexg-uRCCPK1wpQlR0G4FFNCX/g@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org,
-	alexg-uRCCPK1wpQlR0G4FFNCX/g@public.gmane.org
-To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <1333262499-25871-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,194 +24,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Adds support for mc13xxx family ICs connected via i2c.
+Hi Marc,
 
-Signed-off-by: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+On Sun, Apr 01, 2012 at 04:41:35PM +1000, Marc Reilly wrote:
+> This series (against mfd-2.6/for-next) changes the mc13xxx driver to use =
+
+> regmap and adds I2C support.
+> It has a compile dependency on regmap/for-next, as the spi driver uses the
+> recently added pad_bits config field.
+> =
+
+> Patch 2/4 has:
+> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> Patch 4/4 has:
+> Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
+You didn't add these tags to the respective patches. (And I think
+Signed-off-by: Oskar is wrong. Maybe this should be an Ack?)
+ =
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+---------------------------------------------------------------------------=
 ---
- drivers/mfd/Kconfig       |    9 +++-
- drivers/mfd/Makefile      |    1 +
- drivers/mfd/mc13xxx-i2c.c |  128 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 137 insertions(+), 1 deletions(-)
- create mode 100644 drivers/mfd/mc13xxx-i2c.c
-
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index fe0a0ab..7f4d85a 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -573,7 +573,7 @@ config MFD_MC13783
- 
- config MFD_MC13XXX
- 	tristate "Support Freescale MC13783 and MC13892"
--	depends on SPI_MASTER
-+	depends on SPI_MASTER || I2C
- 	select MFD_CORE
- 	select MFD_MC13783
- 	help
-@@ -591,6 +591,13 @@ config MFD_MC13XXX_SPI
- 	help
- 	  Select this if your MC13xxx is connected via an SPI bus.
- 
-+config MFD_MC13XXX_I2C
-+	tristate "MC13xxx I2C interface" if I2C
-+	default I2C
-+	select REGMAP_I2C
-+	help
-+	  Select this if your MC13xxx is connected via an I2C bus.
-+
- endif
- 
- config ABX500_CORE
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 2dc66ed..6d4566f 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -54,6 +54,7 @@ obj-$(CONFIG_TWL6040_CORE)	+= twl6040-core.o twl6040-irq.o
- 
- obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx-core.o
- obj-$(CONFIG_MFD_MC13XXX_SPI)	+= mc13xxx-spi.o
-+obj-$(CONFIG_MFD_MC13XXX_I2C)	+= mc13xxx-i2c.o
- 
- obj-$(CONFIG_MFD_CORE)		+= mfd-core.o
- 
-diff --git a/drivers/mfd/mc13xxx-i2c.c b/drivers/mfd/mc13xxx-i2c.c
-new file mode 100644
-index 0000000..d22501d
---- /dev/null
-+++ b/drivers/mfd/mc13xxx-i2c.c
-@@ -0,0 +1,128 @@
-+/*
-+ * Copyright 2009-2010 Creative Product Design
-+ * Marc Reilly marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
-+ *
-+ * This program is free software; you can redistribute it and/or modify it under
-+ * the terms of the GNU General Public License version 2 as published by the
-+ * Free Software Foundation.
-+ */
-+
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/mutex.h>
-+#include <linux/mfd/core.h>
-+#include <linux/mfd/mc13xxx.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/of_gpio.h>
-+#include <linux/i2c.h>
-+#include <linux/err.h>
-+
-+#include "mc13xxx.h"
-+
-+static const struct i2c_device_id mc13xxx_i2c_device_id[] = {
-+	{
-+		.name = "mc13892",
-+		.driver_data = MC13XXX_ID_MC13892,
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+MODULE_DEVICE_TABLE(i2c, mc13xxx_i2c_device_id);
-+
-+static const struct of_device_id mc13xxx_dt_ids[] = {
-+	{
-+		.compatible = "fsl,mc13892",
-+		.data = (void *) &mc13xxx_i2c_device_id[0],
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+MODULE_DEVICE_TABLE(of, mc13xxx_dt_ids);
-+
-+static struct regmap_config mc13xxx_regmap_i2c_config = {
-+	.reg_bits = 8,
-+	.val_bits = 24,
-+
-+	.max_register = MC13XXX_NUMREGS,
-+
-+	.cache_type = REGCACHE_NONE,
-+};
-+
-+static int mc13xxx_i2c_probe(struct i2c_client *client,
-+		const struct i2c_device_id *id)
-+{
-+	const struct of_device_id *of_id;
-+	struct i2c_driver *idrv = to_i2c_driver(client->dev.driver);
-+	struct mc13xxx *mc13xxx;
-+	struct mc13xxx_platform_data *pdata = dev_get_platdata(&client->dev);
-+	int ret;
-+
-+	of_id = of_match_device(mc13xxx_dt_ids, &client->dev);
-+	if (of_id)
-+		idrv->id_table = (const struct i2c_device_id*) of_id->data;
-+
-+	mc13xxx = kzalloc(sizeof(*mc13xxx), GFP_KERNEL);
-+	if (!mc13xxx)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(&client->dev, mc13xxx);
-+
-+	mc13xxx->dev = &client->dev;
-+	mutex_init(&mc13xxx->lock);
-+
-+	mc13xxx->regmap = regmap_init_i2c(client, &mc13xxx_regmap_i2c_config);
-+	if (IS_ERR(mc13xxx->regmap)) {
-+		ret = PTR_ERR(mc13xxx->regmap);
-+		dev_err(mc13xxx->dev, "Failed to initialize register map: %d\n",
-+				ret);
-+		dev_set_drvdata(&client->dev, NULL);
-+		kfree(mc13xxx);
-+		return ret;
-+	}
-+
-+	ret = mc13xxx_common_init(mc13xxx, pdata, client->irq);
-+
-+	if (ret == 0 && (id->driver_data != mc13xxx->ictype))
-+		dev_warn(mc13xxx->dev,
-+				"device id doesn't match auto detection!\n");
-+
-+	return ret;
-+}
-+
-+static int __devexit mc13xxx_i2c_remove(struct i2c_client *client)
-+{
-+	struct mc13xxx *mc13xxx = dev_get_drvdata(&client->dev);
-+
-+	mc13xxx_common_cleanup(mc13xxx);
-+
-+	return 0;
-+}
-+
-+static struct i2c_driver mc13xxx_i2c_driver = {
-+	.id_table = mc13xxx_i2c_device_id,
-+	.driver = {
-+		.owner = THIS_MODULE,
-+		.name = "mc13xxx",
-+		.of_match_table = mc13xxx_dt_ids,
-+	},
-+	.probe = mc13xxx_i2c_probe,
-+	.remove = __devexit_p(mc13xxx_i2c_remove),
-+};
-+
-+static int __init mc13xxx_i2c_init(void)
-+{
-+	return i2c_add_driver(&mc13xxx_i2c_driver);
-+}
-+subsys_initcall(mc13xxx_i2c_init);
-+
-+static void __exit mc13xxx_i2c_exit(void)
-+{
-+	i2c_del_driver(&mc13xxx_i2c_driver);
-+}
-+module_exit(mc13xxx_i2c_exit);
-+
-+MODULE_DESCRIPTION("i2c driver for Freescale MC13XXX PMIC");
-+MODULE_AUTHOR("Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org");
-+MODULE_LICENSE("GPL v2");
--- 
-1.7.3.4
-
-
-------------------------------------------------------------------------------
 This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here 
+Try Windows Azure free for 90 days Click Here =
+
 http://p.sf.net/sfu/sfd2d-msazure

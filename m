@@ -1,37 +1,83 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Grosses Soldes de printemps chez Cdiscount : =?iso-8859-15?Q?jusq?=
-	=?iso-8859-15?Q?u=27=E0?= -95 %
-Date: Sun, 01 Apr 2012 22:26:11 +0200
-Message-ID: <1333311971.4f78b9e33c722@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
+Date: Sun, 1 Apr 2012 22:27:50 +0100
+Message-ID: <20120401212750.GE8971@opensource.wolfsonmicro.com>
+References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
+Cc: Russell King <linux@arm.linux.org.uk>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9ODgxNSZjPTE5NjE2NDEmZD0yMDEy=
-LTA0LTAxIDIyOjIwOjAxJmU9MSZoPTg4MTQmZj04ODE1Jmc9ODgxNQ=3D=3D
+--5xSkJheCpeK0RUEJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9ODgxNSZjPTE=
-5NjE2NDEmZD0yMDEyLTA0LTAxIDIyOjIwOjAxJmU9MSZoPTg4MTQmZj04ODE1Jmc9ODgxNQ=3D=
-=3D
+On Sun, Apr 01, 2012 at 09:22:50PM +0200, Linus Walleij wrote:
 
+> Combined with the PL022 patch this causes a power regression since
+> the PL022 is hereafter always on.
 
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
+I guess this code isn't in mainline, though?  In that case you can
+always add a revert of this commit to your out of tree patches if you
+need to.
 
-http://p.sf.net/sfu/sfd2d-msazure
+> But I guess if I fix a power domain patch to accomplish much the
+> same things then nothing is really lost...
+
+Let me know if you run into any trouble with that - I don't have any
+systems which could usefully use such support so I'm unlikely to work on
+it directly and from what you were saying you'll need to integrate with
+existing power domain code anyway.
+
+> And I do like the change, if for nothing else so for the fact that it
+> eventually pushes to power domains what belongs there, so:
+
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+
+Thanks.
+
+> But to the defence: power domain code was not in the kernel
+> when the AMBA "vcore" regulator was introduced so how else
+> could we do it... except for inventing power domains...
+
+Which might've happened sooner if we'd noticed :)  There were some other
+platforms doing similar things but they mostly used the clock API since
+it was always entirely platform code until 3.4 so they're less intrusive
+into the generic code.
+
+--5xSkJheCpeK0RUEJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPeMhQAAoJEBus8iNuMP3d4eQQAIXgUP1oSjA9sc7Sqv3ps+G3
+OC12Dy8t+DxjhqTjFZKgr/a4GSsEZUA3ZUZSt+bSoGhbUms93IXpAESq6VQySFLs
+tnEft6lcMt5+/ABkQGehj0QUjXqfmcXG7oxaeJQ3nBN0E//RwN/e5BR6lgQ+NDWp
+8Jg5toioqrXB1cR2aKUdx4iooPqAMs9TRbo6t2QlXqtnckD7DF/QSWkHi03zY1Zk
+K643LgibaCM7LCe9OJPMWr88NW2LBrioh4AXB6ym1kxg0sLc/ZQVwnQLu0aYKMHj
+sFtD+W3XscfWoItQTmqGVEBMkArboNChrogo3S8oNM0t3ciPZe5KoG3FrEFWnRZB
+XYH4yuzmj0WJKCdKNvZKmc9GtVlcKwkzJ+Dz3gKeKK4dJM951GdSr1WMG+BpLLRl
+9RrR/U8MTqcYBy9sRDhOWxnTdJ2uJ1jH9Soi4x1mfATWwk4v2idz/6vsU0wfkQYs
+ZeNNwrMLknj1lFJw2aZYCymIQShVfjgH0LXS4gHlB0454pAkocP/JsuzKIGyy3f9
+WFC4EU4gFZtF8Yjxf8qoJ+SBdJ5CVBKAPGJGnvb4kFH7PTtNAio/YdmCw4CCpEhp
+/FhBi2IKw2BEfuZI/j5Z5jsIQHS2rhsjhXR8SzpzwpGaSq5UoAUyCCkIR6mylPUL
+Td1EuX2iJ+pICIX49awJ
+=Q1pe
+-----END PGP SIGNATURE-----
+
+--5xSkJheCpeK0RUEJ--

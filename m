@@ -1,83 +1,63 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Sun, 1 Apr 2012 22:27:50 +0100
-Message-ID: <20120401212750.GE8971@opensource.wolfsonmicro.com>
+Date: Mon, 2 Apr 2012 00:33:20 +0200
+Message-ID: <CACRpkdbj_shuGWATGER+zxvA9MNDobGjWC3XHh+-5e0R6V4n4w@mail.gmail.com>
 References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
+	<CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
+	<20120401212750.GE8971@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5xSkJheCpeK0RUEJ"
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Russell King <linux@arm.linux.org.uk>,
 	Grant Likely <grant.likely@secretlab.ca>,
 	Samuel Ortiz <sameo@linux.intel.com>,
 	linux-arm-kernel@lists.infradead.org,
 	spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org
-To: Linus Walleij <linus.walleij@linaro.org>
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
+In-Reply-To: <20120401212750.GE8971@opensource.wolfsonmicro.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sun, Apr 1, 2012 at 11:27 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> On Sun, Apr 01, 2012 at 09:22:50PM +0200, Linus Walleij wrote:
+>
+>> Combined with the PL022 patch this causes a power regression since
+>> the PL022 is hereafter always on.
+>
+> I guess this code isn't in mainline, though? =A0In that case you can
+> always add a revert of this commit to your out of tree patches if you
+> need to.
 
---5xSkJheCpeK0RUEJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+No, we can sure live with it... Out-of-mainline we do use power domains
+so that's what we should do instead. It currently looks like this:
+http://www.igloocommunity.org/gitweb/?p=3Dkernel/igloo-kernel.git;a=3Db=
+lob;f=3Darch/arm/mach-ux500/pm/runtime.c;hb=3DHEAD
 
-On Sun, Apr 01, 2012 at 09:22:50PM +0200, Linus Walleij wrote:
+It's a really nice piece of code but uses some out-of-tree features,
+the most obvious one is "atomic regulators" (which are exactly
+that).
 
-> Combined with the PL022 patch this causes a power regression since
-> the PL022 is hereafter always on.
+>> But to the defence: power domain code was not in the kernel
+>> when the AMBA "vcore" regulator was introduced so how else
+>> could we do it... except for inventing power domains...
+>
+> Which might've happened sooner if we'd noticed :) =A0There were some =
+other
+> platforms doing similar things but they mostly used the clock API sin=
+ce
+> it was always entirely platform code until 3.4 so they're less intrus=
+ive
+> into the generic code.
 
-I guess this code isn't in mainline, though?  In that case you can
-always add a revert of this commit to your out of tree patches if you
-need to.
+Yeah ... but this sounds familiar, (searching searching) Yes! We did as=
+k on
+the lists if regulators were proper for modeling power domains in 2008:
+http://marc.info/?l=3Dlinux-arm-kernel&m=3D121580531500758&w=3D2
 
-> But I guess if I fix a power domain patch to accomplish much the
-> same things then nothing is really lost...
+But I should've pushed for a proper answer ...
 
-Let me know if you run into any trouble with that - I don't have any
-systems which could usefully use such support so I'm unlikely to work on
-it directly and from what you were saying you'll need to integrate with
-existing power domain code anyway.
-
-> And I do like the change, if for nothing else so for the fact that it
-> eventually pushes to power domains what belongs there, so:
-
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-
-Thanks.
-
-> But to the defence: power domain code was not in the kernel
-> when the AMBA "vcore" regulator was introduced so how else
-> could we do it... except for inventing power domains...
-
-Which might've happened sooner if we'd noticed :)  There were some other
-platforms doing similar things but they mostly used the clock API since
-it was always entirely platform code until 3.4 so they're less intrusive
-into the generic code.
-
---5xSkJheCpeK0RUEJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iQIcBAEBAgAGBQJPeMhQAAoJEBus8iNuMP3d4eQQAIXgUP1oSjA9sc7Sqv3ps+G3
-OC12Dy8t+DxjhqTjFZKgr/a4GSsEZUA3ZUZSt+bSoGhbUms93IXpAESq6VQySFLs
-tnEft6lcMt5+/ABkQGehj0QUjXqfmcXG7oxaeJQ3nBN0E//RwN/e5BR6lgQ+NDWp
-8Jg5toioqrXB1cR2aKUdx4iooPqAMs9TRbo6t2QlXqtnckD7DF/QSWkHi03zY1Zk
-K643LgibaCM7LCe9OJPMWr88NW2LBrioh4AXB6ym1kxg0sLc/ZQVwnQLu0aYKMHj
-sFtD+W3XscfWoItQTmqGVEBMkArboNChrogo3S8oNM0t3ciPZe5KoG3FrEFWnRZB
-XYH4yuzmj0WJKCdKNvZKmc9GtVlcKwkzJ+Dz3gKeKK4dJM951GdSr1WMG+BpLLRl
-9RrR/U8MTqcYBy9sRDhOWxnTdJ2uJ1jH9Soi4x1mfATWwk4v2idz/6vsU0wfkQYs
-ZeNNwrMLknj1lFJw2aZYCymIQShVfjgH0LXS4gHlB0454pAkocP/JsuzKIGyy3f9
-WFC4EU4gFZtF8Yjxf8qoJ+SBdJ5CVBKAPGJGnvb4kFH7PTtNAio/YdmCw4CCpEhp
-/FhBi2IKw2BEfuZI/j5Z5jsIQHS2rhsjhXR8SzpzwpGaSq5UoAUyCCkIR6mylPUL
-Td1EuX2iJ+pICIX49awJ
-=Q1pe
------END PGP SIGNATURE-----
-
---5xSkJheCpeK0RUEJ--
+Yours,
+Linus Walleij

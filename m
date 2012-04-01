@@ -1,63 +1,54 @@
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Mon, 2 Apr 2012 00:33:20 +0200
-Message-ID: <CACRpkdbj_shuGWATGER+zxvA9MNDobGjWC3XHh+-5e0R6V4n4w@mail.gmail.com>
+Date: Mon, 2 Apr 2012 00:39:11 +0200
+Message-ID: <CACRpkda2zh=zR+A9bwhRXYHtQdFeUpiqG4d5g1i82mPCs1mXaQ@mail.gmail.com>
 References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 	<CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
-	<20120401212750.GE8971@opensource.wolfsonmicro.com>
+	<CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20120401212750.GE8971@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Rabin Vincent <rabin-66gdRtMMWGc@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Apr 1, 2012 at 11:27 PM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> On Sun, Apr 01, 2012 at 09:22:50PM +0200, Linus Walleij wrote:
->
+On Sun, Apr 1, 2012 at 9:39 PM, Rabin Vincent <rabin-66gdRtMMWGc@public.gmane.org> wrote:
+> On Mon, Apr 2, 2012 at 00:52, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wr=
+ote:
 >> Combined with the PL022 patch this causes a power regression since
 >> the PL022 is hereafter always on.
 >
-> I guess this code isn't in mainline, though? =A0In that case you can
-> always add a revert of this commit to your out of tree patches if you
-> need to.
+> How can there be a "power regression" here? =A0This is the only user of
+> the vcore regulator, and, apart from the fact that its disable routine
+> only decrements an essentialy write-only variable, it is shared which
+> several devices which already never disable it.
 
-No, we can sure live with it... Out-of-mainline we do use power domains
-so that's what we should do instead. It currently looks like this:
-http://www.igloocommunity.org/gitweb/?p=3Dkernel/igloo-kernel.git;a=3Db=
-lob;f=3Darch/arm/mach-ux500/pm/runtime.c;hb=3DHEAD
+Yes true... Hm I hope something else in mainline will increase refcount
+to vape so it's not disabled at regulator_has_full_constraints()? Better
+test it, then I'll see.
 
-It's a really nice piece of code but uses some out-of-tree features,
-the most obvious one is "atomic regulators" (which are exactly
-that).
-
->> But to the defence: power domain code was not in the kernel
->> when the AMBA "vcore" regulator was introduced so how else
->> could we do it... except for inventing power domains...
->
-> Which might've happened sooner if we'd noticed :) =A0There were some =
-other
-> platforms doing similar things but they mostly used the clock API sin=
-ce
-> it was always entirely platform code until 3.4 so they're less intrus=
-ive
-> into the generic code.
-
-Yeah ... but this sounds familiar, (searching searching) Yes! We did as=
-k on
-the lists if regulators were proper for modeling power domains in 2008:
-http://marc.info/?l=3Dlinux-arm-kernel&m=3D121580531500758&w=3D2
-
-But I should've pushed for a proper answer ...
+Mark: as Rabin says the v1 patch is probably fine, are you pushing this
+to ARM SoC or into Russell's patch tracker?
 
 Yours,
 Linus Walleij
+
+---------------------------------------------------------------------------=
+---
+This SF email is sponsosred by:
+Try Windows Azure free for 90 days Click Here =
+
+http://p.sf.net/sfu/sfd2d-msazure

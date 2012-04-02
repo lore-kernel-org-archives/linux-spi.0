@@ -1,54 +1,68 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Mon, 2 Apr 2012 00:39:11 +0200
-Message-ID: <CACRpkda2zh=zR+A9bwhRXYHtQdFeUpiqG4d5g1i82mPCs1mXaQ@mail.gmail.com>
-References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
-	<CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw@mail.gmail.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support, V5
+Date: Mon, 2 Apr 2012 08:40:12 +0200
+Message-ID: <20120402064012.GY15647@pengutronix.de>
+References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
+ <20120401092125.GX15647@pengutronix.de>
+ <201204011939.49665.marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Rabin Vincent <rabin-66gdRtMMWGc@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alexg-uRCCPK1wpQlR0G4FFNCX/g@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201204011939.49665.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Apr 1, 2012 at 9:39 PM, Rabin Vincent <rabin-66gdRtMMWGc@public.gmane.org> wrote:
-> On Mon, Apr 2, 2012 at 00:52, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wr=
-ote:
->> Combined with the PL022 patch this causes a power regression since
->> the PL022 is hereafter always on.
->
-> How can there be a "power regression" here? =A0This is the only user of
-> the vcore regulator, and, apart from the fact that its disable routine
-> only decrements an essentialy write-only variable, it is shared which
-> several devices which already never disable it.
+Hello Marc,
 
-Yes true... Hm I hope something else in mainline will increase refcount
-to vape so it's not disabled at regulator_has_full_constraints()? Better
-test it, then I'll see.
+On Sun, Apr 01, 2012 at 07:39:49PM +1000, Marc Reilly wrote:
+> > On Sun, Apr 01, 2012 at 04:41:35PM +1000, Marc Reilly wrote:
+> > > This series (against mfd-2.6/for-next) changes the mc13xxx driver=
+ to use
+> > > regmap and adds I2C support.
+> > > It has a compile dependency on regmap/for-next, as the spi driver=
+ uses
+> > > the recently added pad_bits config field.
+> > >=20
+> > > Patch 2/4 has:
+> > > Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> > > Patch 4/4 has:
+> > > Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
+> >=20
+> > You didn't add these tags to the respective patches. (And I think
+> > Signed-off-by: Oskar is wrong. Maybe this should be an Ack?)
+>=20
+> Whats the best/proper way to do this? Do I need to rebase the series =
+and add=20
+> them with each relevant commit, or just add them manually to the patc=
+hes? Or=20
+> option C...
+Rebasing is ok, still more as you didn't publish your tree (at least I'=
+m
+not aware of it). The tags should definitly make it into the final
+history. When you submit the patches via email it doesn't matter if you
+add them to your git tree or only to the mail (as you tree doesn't
+matter for the final result).
 
-Mark: as Rabin says the v1 patch is probably fine, are you pushing this
-to ARM SoC or into Russell's patch tracker?
+> For Oskar's tag, I just copied it from an email from the previous thr=
+ead.=20
+Yeah, I saw it. That was already wrong. S-o-b is only for the author(s)
+of a patch and the people forwarding it for inclusion (either via mail
+or via a git tree). A S-o-b certifies that the patch's copyright is
+suitable for the kernel. It doesn't say anything about its technical
+impact.
 
-Yours,
-Linus Walleij
+Best regards
+Uwe
 
----------------------------------------------------------------------------=
----
-This SF email is sponsosred by:
-Try Windows Azure free for 90 days Click Here =
-
-http://p.sf.net/sfu/sfd2d-msazure
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
+    |
+Industrial Linux Solutions                 | http://www.pengutronix.de/=
+  |

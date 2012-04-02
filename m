@@ -1,68 +1,61 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: mc13xxx: add I2C support, V5
-Date: Mon, 2 Apr 2012 08:40:12 +0200
-Message-ID: <20120402064012.GY15647@pengutronix.de>
-References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
- <20120401092125.GX15647@pengutronix.de>
- <201204011939.49665.marc@cpdesign.com.au>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
+Date: Mon, 2 Apr 2012 11:14:28 +0100
+Message-ID: <20120402101427.GA3172@opensource.wolfsonmicro.com>
+References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
+ <CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw@mail.gmail.com>
+ <CACRpkda2zh=zR+A9bwhRXYHtQdFeUpiqG4d5g1i82mPCs1mXaQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alexg-uRCCPK1wpQlR0G4FFNCX/g@public.gmane.org
-To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="wac7ysb48OaltWcw"
+Cc: Rabin Vincent <rabin@rab.in>,
+	Russell King <linux@arm.linux.org.uk>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201204011939.49665.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <CACRpkda2zh=zR+A9bwhRXYHtQdFeUpiqG4d5g1i82mPCs1mXaQ@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Marc,
 
-On Sun, Apr 01, 2012 at 07:39:49PM +1000, Marc Reilly wrote:
-> > On Sun, Apr 01, 2012 at 04:41:35PM +1000, Marc Reilly wrote:
-> > > This series (against mfd-2.6/for-next) changes the mc13xxx driver=
- to use
-> > > regmap and adds I2C support.
-> > > It has a compile dependency on regmap/for-next, as the spi driver=
- uses
-> > > the recently added pad_bits config field.
-> > >=20
-> > > Patch 2/4 has:
-> > > Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> > > Patch 4/4 has:
-> > > Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
-> >=20
-> > You didn't add these tags to the respective patches. (And I think
-> > Signed-off-by: Oskar is wrong. Maybe this should be an Ack?)
->=20
-> Whats the best/proper way to do this? Do I need to rebase the series =
-and add=20
-> them with each relevant commit, or just add them manually to the patc=
-hes? Or=20
-> option C...
-Rebasing is ok, still more as you didn't publish your tree (at least I'=
-m
-not aware of it). The tags should definitly make it into the final
-history. When you submit the patches via email it doesn't matter if you
-add them to your git tree or only to the mail (as you tree doesn't
-matter for the final result).
+--wac7ysb48OaltWcw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> For Oskar's tag, I just copied it from an email from the previous thr=
-ead.=20
-Yeah, I saw it. That was already wrong. S-o-b is only for the author(s)
-of a patch and the people forwarding it for inclusion (either via mail
-or via a git tree). A S-o-b certifies that the patch's copyright is
-suitable for the kernel. It doesn't say anything about its technical
-impact.
+On Mon, Apr 02, 2012 at 12:39:11AM +0200, Linus Walleij wrote:
 
-Best regards
-Uwe
+> Mark: as Rabin says the v1 patch is probably fine, are you pushing this
+> to ARM SoC or into Russell's patch tracker?
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
-    |
-Industrial Linux Solutions                 | http://www.pengutronix.de/=
-  |
+I was waiting for some pronouncement from Russell - looking at the git
+logs it seems the patch tracker is the normal way to merge things.
+
+--wac7ysb48OaltWcw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPeXv9AAoJEBus8iNuMP3dkCAQAI3tbIQ54EOZZCb3+IrnOJp8
+36FXqbsmoPiwRgsJeLrgD6Bj3pbF0afQrdPk+7BTHB97s9Z5Letqxul/HC1DPl0K
+Jxv7ZIYrnJI19wYEnvctTf4svytP87yZj8u5G+cvM5gZZXW2EjwcsDAqAjVfQhIM
+fjw40v6g/rHopkLYOPGrqlCUiaNO/FnBmsYrtUYtu+SctIa0DKvl9X6bCZin095e
+1tEESIHrOJY5azHZCXM7qUIlmUFoKTvW/366cLpSwrwgDSoOs4lrsQSEcVchQcyO
+jtP+1zPsNGyAQv5W0WIbgLlUNJ+CqV7UUV9WdKssBvgL13axpLdtUHztFPyAoFJ/
+C9f5k5qqmCCmKzEuU09hahm9jqCCgwFCl/uplkHI8NqCBeopKUeP9t5AjX/4mSrJ
+NK0jhuwVjBUZQrph3we3gOSJqdM3ghvkNsedDI/vSShKrO7YqFxC9v9lYn7Rwcn+
+bIWhr57l/izVVbmrBmDKm8n0Ju0MscsJL+nNbOVPhDsC2xFX2qTEoserZH3XpLAo
+HLYW6KxTE/tBFjc9Ts9gh00ONA4Vpxh7XNjCx5vbNiFT1Xl5k2VGp/no7j0H8pEm
+ejAvD46rSdsPIdxujTKXO/INa9I5E3GL1z1mU+0drrTU9DZ2DBXK7qKcwb5Qi65x
+C+mcG0Si/kAn8OpdAJ7m
+=l0mE
+-----END PGP SIGNATURE-----
+
+--wac7ysb48OaltWcw--

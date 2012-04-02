@@ -1,75 +1,71 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Mon, 2 Apr 2012 18:19:16 +0100
-Message-ID: <20120402171916.GG15197@opensource.wolfsonmicro.com>
-References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CACRpkdYRStgKo_e-4kZKA-V-OoMiV21jRS3R4g1Cq+4c+4=iQA@mail.gmail.com>
- <CAH+eYFC+q4xFuSdRBkO9nb0XZWU4pQ_yCyinMy2X3ds9WQd1kw@mail.gmail.com>
- <CACRpkda2zh=zR+A9bwhRXYHtQdFeUpiqG4d5g1i82mPCs1mXaQ@mail.gmail.com>
- <20120402101427.GA3172@opensource.wolfsonmicro.com>
- <20120402104357.GB24211@n2100.arm.linux.org.uk>
- <20120402113413.GA7560@opensource.wolfsonmicro.com>
- <20120402165742.GD24211@n2100.arm.linux.org.uk>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="df+09Je9rNq3P+GE"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Rabin Vincent <rabin@rab.in>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120402165742.GD24211@n2100.arm.linux.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCHv3 0/3] spi: omap2-mcspi: driver updates
+Date: Mon, 02 Apr 2012 13:40:48 -0600
+Message-ID: <20120402194049.06B613E314E@localhost>
+References: <1333193818-3984-1-git-send-email-shubhrajyoti@ti.com>
+Cc: Shubhrajyoti@ponder.secretlab.ca, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org, D <shubhrajyoti@ti.com>
+To: Shubhrajyoti D <shubhrajyoti@ti.com>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1333193818-3984-1-git-send-email-shubhrajyoti@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sat, 31 Mar 2012 17:06:55 +0530, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
+> The patch series does the following cleanups
+> - Makes the driver use autosuspend
+> - Folds Benoit's bus_num removal patch in the series
+> - The tmp variable is used to write this can be optimised 
+>  as it is not needed if the value is directly written.
+>  Acknowledge  Tarun for the suggestion.
+> 
+> This is also available through
+> git     : git://gitorious.org/linus-tree/linus-tree.git
+> branch  : spi_next
+> 
+> Rebased to Grant's spi/next branch.
 
---df+09Je9rNq3P+GE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Merged, thanks.
 
-On Mon, Apr 02, 2012 at 05:57:42PM +0100, Russell King - ARM Linux wrote:
+BTW, it's easier to pull if you put the branch after the git URL (I
+can cut and paste all at once):
 
-> ARM PRIMECELL BUS SUPPORT
-> M:      Russell King <linux@arm.linux.org.uk>
-> S:      Maintained
-> F:      drivers/amba/
-> F:      include/linux/amba/bus.h
+	git://gitorious.org/linus-tree/linus-tree.git spi_next
 
-> not provide enough clues?  Should I delete all my entries in that file
-> because the only people who look in there are spammers when the file is
-> published on the web?
+"git request-pull" can be your friend here.
 
-I did look in there and also in the git history which shows the same
-information, hence my CCing you.  Linus introduced some doubt into my
-mind that this might be something that went through arm-soc now rather
-than via your tree even if you are still maintaining it as no specific
-git tree or anything is mentioned there.
+I've also respun the top commit (Trivial optimization...) because the
+Cc tag format was wrong in the commit text (whitespace errors).
+You'll need to be pendantic about stuff like that for trees that I
+might pull.
 
---df+09Je9rNq3P+GE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+g.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
 
-iQIcBAEBAgAGBQJPed+OAAoJEBus8iNuMP3dhNQP/07p8rgMV6qnSUbqMzqSoIR/
-qNwzI/pBMofele2Wrd1HFl89ybQ56N6JulRUiz6Lw5egHVECEiOq4atPiBr28FX+
-V4fvu8Gw6jrHwwPd4QsQWgYMiJlaV0055tVr/wYYtL4Byr+3o9J9+Il/BAbT/Dg1
-6RyUjs4jVUJTnYqGMMqrnOHkSzr11jZAG7J6E0TcK93HlBiUQVfo7/Mp//eDGxeh
-6GtLA+dSM83aRBMZJq9SwmGBQJqg5+f0n2qg3W4DhmKDPGEkjdCupGBMBcqIrnb+
-M3a3Lg0grmFNoXWyhy3c7geb8LcCrbdJOZw48STxaEFgQ/LEXcEGqF7OWZxrbz1N
-DWnBc+x47H02zsFuDJ6PpIK5dkonnlpEIcpGFTVsZjHNgukD6o5Qt0ipzPqaS6vA
-OfmvLM42HoQmg7bav0vq4rgo+p7yOZsNUxZcFdPSFt3rLN4SfHhOhZ+nv1nAgkeW
-Wi4Z3q6lI75TwGI0Na0gn9ScdrBotHO4c9faWs7RzOmbPkJmQvFSDDD2UyOoCuSn
-PFlHZTC55XfdBr1UjItx07EYrk2zYzfaqIy6hVFpdx+imDUCk9D2la3b50QNGofp
-aL0PEvHz502EvQNhuuDObS0R2U/DwnleknUBOVKSw6QS2+7vZisGBjis1U+NUQt4
-IHQRLx2vUfj6B9Tu8GJl
-=Fq4l
------END PGP SIGNATURE-----
+> 
+>  
+> 
+> Benoit Cousson (1):
+>   spi/omap: Remove bus_num usage for instance index
+> 
+> Shubhrajyoti D (2):
+>   spi: omap2-mcspi: add support for pm_runtime autosuspend
+>   spi: omap2-mcspi: Trivial optimisation
+> 
+>  drivers/spi/spi-omap2-mcspi.c |   86 +++++++++++++++++++---------------------
+>  1 files changed, 41 insertions(+), 45 deletions(-)
+> 
+> 
+> ------------------------------------------------------------------------------
+> This SF email is sponsosred by:
+> Try Windows Azure free for 90 days Click Here 
+> http://p.sf.net/sfu/sfd2d-msazure
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---df+09Je9rNq3P+GE--
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies,Ltd.

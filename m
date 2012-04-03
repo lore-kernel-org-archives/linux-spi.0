@@ -1,18 +1,14 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCHv3 0/3] spi: omap2-mcspi: driver updates
-Date: Tue, 3 Apr 2012 11:25:26 +0530
-Message-ID: <CAM=Q2cse5_mZtfNchE+uYpNPLd+_TSTFswxhfk0feaoMqmT7eA@mail.gmail.com>
-References: <1333193818-3984-1-git-send-email-shubhrajyoti@ti.com>
-	<20120402194049.06B613E314E@localhost>
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Cette semaine, vente =?iso-8859-15?Q?priv=E9e?= - ensemble de
+	jardin 89 euros!
+Date: Tue, 03 Apr 2012 13:16:24 +0200
+Message-ID: <1333451784.4f7adc0865f14@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti-e0URQFbLeQY2iJbIjFUEsiwD8/FfD2ys@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120402194049.06B613E314E@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,37 +19,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-On Tue, Apr 3, 2012 at 1:10 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wr=
-ote:
-> On Sat, 31 Mar 2012 17:06:55 +0530, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> =
-wrote:
->> The patch series does the following cleanups
->> - Makes the driver use autosuspend
->> - Folds Benoit's bus_num removal patch in the series
->> - The tmp variable is used to write this can be optimised
->> =A0as it is not needed if the value is directly written.
->> =A0Acknowledge =A0Tarun for the suggestion.
->>
->> This is also available through
->> git =A0 =A0 : git://gitorious.org/linus-tree/linus-tree.git
->> branch =A0: spi_next
->>
->> Rebased to Grant's spi/next branch.
->
-> Merged, thanks.
-Thanks ,
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTkwMzcmYz0yMzY0MzcmZD0yMDEy=
+LTA0LTAzIDEzOjAwOjAxJmU9MSZoPTkwMzYmZj05MDM3Jmc9OTAzNw=3D=3D
 
->
-> BTW, it's easier to pull if you put the branch after the git URL (I
-> can cut and paste all at once):
->
-> =A0 =A0 =A0 =A0git://gitorious.org/linus-tree/linus-tree.git spi_next
->
-> "git request-pull" can be your friend here.
->
-OK good idea will do that.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTkwMzcmYz0=
+yMzY0MzcmZD0yMDEyLTA0LTAzIDEzOjAwOjAxJmU9MSZoPTkwMzYmZj05MDM3Jmc9OTAzNw=3D=
+=3D
+
 
 ---------------------------------------------------------------------------=
 ---

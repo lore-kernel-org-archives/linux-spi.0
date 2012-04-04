@@ -1,74 +1,37 @@
-From: Axel Lin <axel.lin@gmail.com>
-Subject: [PATCH] spi: use module_pci_driver
-Date: Wed, 04 Apr 2012 22:29:32 +0800
-Message-ID: <1333549772.5856.3.camel@phoenix>
+From: Disneyland Paris par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
+Subject: Vite, les Ventes Flash =?iso-8859-15?Q?=E0?= Disneyland Paris sont
+	ouvertes
+Date: Wed, 04 Apr 2012 15:56:43 +0200
+Message-ID: <1333547803.4f7c531b56476@mc10.fr>
+Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Eric Miao <eric.y.miao@gmail.com>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	spi-devel-general@lists.sourceforge.net
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch converts the drivers in drivers/spi/* to use module_pci_driver()
-macro which makes the code smaller and a bit simpler.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Axel Lin <axel.lin@gmail.com>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTkwNDYmYz0yMTkwMDMwMyZkPTIw=
+MTItMDQtMDQgMTU6MDA6MDEmZT0xJmg9OTA0NSZmPTkwNDYmZz05MDQ2
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTkwNDYmYz0=
+yMTkwMDMwMyZkPTIwMTItMDQtMDQgMTU6MDA6MDEmZT0xJmg9OTA0NSZmPTkwNDYmZz05MDQ2
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-dw-pci.c     |   13 +------------
- drivers/spi/spi-pxa2xx-pci.c |   12 +-----------
- 2 files changed, 2 insertions(+), 23 deletions(-)
+Better than sec? Nothing is better than sec when it comes to
+monitoring Big Data applications. Try Boundary one-second =
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 14f7cc9..ff81abb 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -164,18 +164,7 @@ static struct pci_driver dw_spi_driver = {
- 	.resume	=	spi_resume,
- };
- 
--static int __init mrst_spi_init(void)
--{
--	return pci_register_driver(&dw_spi_driver);
--}
--
--static void __exit mrst_spi_exit(void)
--{
--	pci_unregister_driver(&dw_spi_driver);
--}
--
--module_init(mrst_spi_init);
--module_exit(mrst_spi_exit);
-+module_pci_driver(dw_spi_driver);
- 
- MODULE_AUTHOR("Feng Tang <feng.tang@intel.com>");
- MODULE_DESCRIPTION("PCI interface driver for DW SPI Core");
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 3fb44af..9f6ba34 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -164,17 +164,7 @@ static struct pci_driver ce4100_spi_driver = {
- 	.remove         = __devexit_p(ce4100_spi_remove),
- };
- 
--static int __init ce4100_spi_init(void)
--{
--	return pci_register_driver(&ce4100_spi_driver);
--}
--module_init(ce4100_spi_init);
--
--static void __exit ce4100_spi_exit(void)
--{
--	pci_unregister_driver(&ce4100_spi_driver);
--}
--module_exit(ce4100_spi_exit);
-+module_pci_driver(ce4100_spi_driver);
- 
- MODULE_DESCRIPTION("CE4100 PCI-SPI glue code for PXA's driver");
- MODULE_LICENSE("GPL v2");
--- 
-1.7.5.4
+resolution app monitoring today. Free.
+http://p.sf.net/sfu/Boundary-dev2dev

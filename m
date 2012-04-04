@@ -1,9 +1,9 @@
-From: Disneyland Paris par Planduweb <contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org>
-Subject: Vite, les Ventes Flash =?iso-8859-15?Q?=E0?= Disneyland Paris sont
-	ouvertes
-Date: Wed, 04 Apr 2012 15:56:43 +0200
-Message-ID: <1333547803.4f7c531b56476@mc10.fr>
-Reply-To: contact-ESPWHRk1JBIqPzAEMfFD0A@public.gmane.org
+From: Nouvelles Antilles par Duano <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
+Subject: Voyage dans les Antilles =?iso-8859-15?Q?P=E2ques?= et Vacances
+	=?iso-8859-15?Q?=E9t=E9_jusqu=27=E0?= -35%
+Date: Thu, 05 Apr 2012 00:17:39 +0200
+Message-ID: <1333577859.4f7cc883457ea@mc10.fr>
+Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,11 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTkwNDYmYz0yMTkwMDMwMyZkPTIw=
-MTItMDQtMDQgMTU6MDA6MDEmZT0xJmg9OTA0NSZmPTkwNDYmZz05MDQ2
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg5OTcmYz00ODM2MTImZD0yMDEy=
+LTA0LTA0IDIzOjMwOjAxJmU9MSZoPTg5OTYmZj04OTk3Jmc9ODk5Nw=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTkwNDYmYz0=
-yMTkwMDMwMyZkPTIwMTItMDQtMDQgMTU6MDA6MDEmZT0xJmg9OTA0NSZmPTkwNDYmZz05MDQ2
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg5OTcmYz0=
+0ODM2MTImZD0yMDEyLTA0LTA0IDIzOjMwOjAxJmU9MSZoPTg5OTYmZj04OTk3Jmc9ODk5Nw=3D=
+=3D
 
 
 ---------------------------------------------------------------------------=

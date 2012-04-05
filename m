@@ -1,8 +1,7 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Thu, 05 Apr 2012 03:56:40 +0200
-Message-ID: <1333591000.4f7cfbd89bcc3@mc10.fr>
+From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Thu, 05 Apr 2012 05:48:46 +0200
+Message-ID: <1333597726.4f7d161e5376e@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTg5OTYmYz00ODM2MTImZD0yMDEy=
-LTA0LTA0IDIzOjMwOjAxJmU9MSZoPTg5OTUmZj04OTk2Jmc9ODk5Ng=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTkwNjAmYz00ODM2MTImZD0yMDEy=
+LTA0LTA1IDA1OjQwOjAxJmU9MSZoPTkwNTkmZj05MDYwJmc9OTA2MA=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTg5OTYmYz0=
-0ODM2MTImZD0yMDEyLTA0LTA0IDIzOjMwOjAxJmU9MSZoPTg5OTUmZj04OTk2Jmc9ODk5Ng=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTkwNjAmYz0=
+0ODM2MTImZD0yMDEyLTA0LTA1IDA1OjQwOjAxJmU9MSZoPTkwNTkmZj05MDYwJmc9OTA2MA=3D=
 =3D
 
 

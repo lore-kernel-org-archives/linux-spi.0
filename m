@@ -1,55 +1,57 @@
-From: Voyage prive par Affilibaz <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: Reservez vos vacances et activez votre carte Voyage prive
-Date: Fri, 6 Apr 2012 07:15:03 +0200 (CEST)
-Message-ID: <3236305005.870442.1333689303923@p4enginex2.emv2.com>
-Reply-To: Voyage prive par Affilibaz <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Shawn Guo <shawn.guo@linaro.org>
+Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
+Date: Fri, 6 Apr 2012 15:49:45 +0800
+Message-ID: <20120406074942.GO7264@S2101-09.ap.freescale.net>
+References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Russell King <linux@arm.linux.org.uk>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sun, Apr 01, 2012 at 07:58:40PM +0100, Mark Brown wrote:
+> The AMBA bus regulator support is being used to model on/off switches
+> for power domains which isn't terribly idiomatic for modern kernels with
+> the generic power domain code and creates integration problems on platforms
+> which don't use regulators for their power domains as it's hard to tell
+> the difference between a regulator that is needed but failed to be provided
+> and one that isn't supposed to be there (though DT does make that easier).
+> 
+> Platforms that wish to use the regulator API to manage their power domains
+> can indirect via the power domain interface.
+> 
+> This feature is only used with the vape supply of the db8500 PRCMU
+> driver which supplies the UARTs and MMC controllers, none of which have
+> support for managing vcore at runtime in mainline (only pl022 SPI
+> controller does).  Update that supply to have an always_on constraint
+> until the power domain support for the system is updated so that it is
+> enabled for these users, this is likely to have no impact on practical
+> systems as probably at least one of these devices will be active and
+> cause AMBA to hold the supply on anyway.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
+Tested-by: Shawn Guo <shawn.guo@linaro.org>
 
-Si vous ne visualisez pas correctement ce message, cliquez ici.
+Russell,
 
+I believe this patch fixes the amba probe failure that impacts any
+AMBA platform build with CONFIG_REGULATOR enabled.  Could you consider
+to send the fix for -rc soon?
 
-   Voyage Priv*
+The patch "ARM: amba: adapt to regulator probe deferral change" from
+me could be ignored now.
 
-          Affilibaz vous a choisi parmi ses membres privil=E9gi=E9s pour
-   Voyage vous offrir votre Carte Membre au Club voyageprive.com, le 1er
-   Priv*  site de ventes priv=E9es de voyages haut de gamme.
-
-          Cette carte vous ouvre un acc=E8s gratuit et priv=E9 =E0 une
-          s=E9lection exclusive de s=E9jours et voyages partout dans le mon=
-de
-          jusqu'=E0 -70%.
-   Votre carte membre
-                                 Votre carte membre
-   Voyage Priv* Activez votre    Votre   spi-devel-general-5NWGOfrQmneRv+LV9MX5ug@public.gmane.org=
-e.net Votre
-                carte            carte                                Carte
-                                 Membre  Votre carte membre           Membre
-   Voyage Priv*
-   Votre carte membre est aussi sur Facebook
-
-Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
-ndre
-                                sur cette page.
-
-
----------------------------------------------------------------------------=
----
-For Developers, A Lot Can Happen In A Second.
-Boundary is the first to Know...and Tell You.
-Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
-http://p.sf.net/sfu/Boundary-d2dvs2
+-- 
+Regards,
+Shawn

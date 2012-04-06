@@ -1,18 +1,12 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Fri, 06 Apr 2012 13:12:27 -0500
-Message-ID: <4F7F320B.8080608@gmail.com>
-References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Loving Deals <no-reply-ojFj+4x2EBNJFj7GOVPPqg@public.gmane.org>
+Subject: DERNIERE CHANCE : Offres de la semaine
+Date: Sat, 7 Apr 2012 00:09:37 +0200
+Message-ID: <227733776bc5bdb86541e90f8353f3fb@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1333306720-28344-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,195 +17,136 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/01/2012 01:58 PM, Mark Brown wrote:
-> The AMBA bus regulator support is being used to model on/off switches
-> for power domains which isn't terribly idiomatic for modern kernels with
-> the generic power domain code and creates integration problems on platforms
-> which don't use regulators for their power domains as it's hard to tell
-> the difference between a regulator that is needed but failed to be provided
-> and one that isn't supposed to be there (though DT does make that easier).
-> 
-> Platforms that wish to use the regulator API to manage their power domains
-> can indirect via the power domain interface.
-> 
-> This feature is only used with the vape supply of the db8500 PRCMU
-> driver which supplies the UARTs and MMC controllers, none of which have
-> support for managing vcore at runtime in mainline (only pl022 SPI
-> controller does).  Update that supply to have an always_on constraint
-> until the power domain support for the system is updated so that it is
-> enabled for these users, this is likely to have no impact on practical
-> systems as probably at least one of these devices will be active and
-> cause AMBA to hold the supply on anyway.
-> 
-> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> ---
-
-This and pl011 fixes are needed to get highbank working with 3.4, so:
-
-Tested-by: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
-
-Rob
-
-> 
-> Updated to add the always_on constraint for db8500-prcmu as discussed in
-> the changelog.
-> 
->  drivers/amba/bus.c         |   42 +-----------------------------------------
->  drivers/mfd/db8500-prcmu.c |    1 +
->  drivers/spi/spi-pl022.c    |    2 --
->  include/linux/amba/bus.h   |    8 --------
->  4 files changed, 2 insertions(+), 51 deletions(-)
-> 
-> diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-> index 01c2cf4..cc27322 100644
-> --- a/drivers/amba/bus.c
-> +++ b/drivers/amba/bus.c
-> @@ -247,8 +247,7 @@ static int amba_pm_restore(struct device *dev)
->  /*
->   * Hooks to provide runtime PM of the pclk (bus clock).  It is safe to
->   * enable/disable the bus clock at runtime PM suspend/resume as this
-> - * does not result in loss of context.  However, disabling vcore power
-> - * would do, so we leave that to the driver.
-> + * does not result in loss of context.
->   */
->  static int amba_pm_runtime_suspend(struct device *dev)
->  {
-> @@ -354,39 +353,6 @@ static void amba_put_disable_pclk(struct amba_device *pcdev)
->  	clk_put(pclk);
->  }
->  
-> -static int amba_get_enable_vcore(struct amba_device *pcdev)
-> -{
-> -	struct regulator *vcore = regulator_get(&pcdev->dev, "vcore");
-> -	int ret;
-> -
-> -	pcdev->vcore = vcore;
-> -
-> -	if (IS_ERR(vcore)) {
-> -		/* It is OK not to supply a vcore regulator */
-> -		if (PTR_ERR(vcore) == -ENODEV)
-> -			return 0;
-> -		return PTR_ERR(vcore);
-> -	}
-> -
-> -	ret = regulator_enable(vcore);
-> -	if (ret) {
-> -		regulator_put(vcore);
-> -		pcdev->vcore = ERR_PTR(-ENODEV);
-> -	}
-> -
-> -	return ret;
-> -}
-> -
-> -static void amba_put_disable_vcore(struct amba_device *pcdev)
-> -{
-> -	struct regulator *vcore = pcdev->vcore;
-> -
-> -	if (!IS_ERR(vcore)) {
-> -		regulator_disable(vcore);
-> -		regulator_put(vcore);
-> -	}
-> -}
-> -
->  /*
->   * These are the device model conversion veneers; they convert the
->   * device model structures to our more specific structures.
-> @@ -399,10 +365,6 @@ static int amba_probe(struct device *dev)
->  	int ret;
->  
->  	do {
-> -		ret = amba_get_enable_vcore(pcdev);
-> -		if (ret)
-> -			break;
-> -
->  		ret = amba_get_enable_pclk(pcdev);
->  		if (ret)
->  			break;
-> @@ -420,7 +382,6 @@ static int amba_probe(struct device *dev)
->  		pm_runtime_put_noidle(dev);
->  
->  		amba_put_disable_pclk(pcdev);
-> -		amba_put_disable_vcore(pcdev);
->  	} while (0);
->  
->  	return ret;
-> @@ -442,7 +403,6 @@ static int amba_remove(struct device *dev)
->  	pm_runtime_put_noidle(dev);
->  
->  	amba_put_disable_pclk(pcdev);
-> -	amba_put_disable_vcore(pcdev);
->  
->  	return ret;
->  }
-> diff --git a/drivers/mfd/db8500-prcmu.c b/drivers/mfd/db8500-prcmu.c
-> index ebc1e86..5be3248 100644
-> --- a/drivers/mfd/db8500-prcmu.c
-> +++ b/drivers/mfd/db8500-prcmu.c
-> @@ -2788,6 +2788,7 @@ static struct regulator_init_data db8500_regulators[DB8500_NUM_REGULATORS] = {
->  		.constraints = {
->  			.name = "db8500-vape",
->  			.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-> +			.always_on = true,
->  		},
->  		.consumer_supplies = db8500_vape_consumers,
->  		.num_consumer_supplies = ARRAY_SIZE(db8500_vape_consumers),
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index 96f0da6..09c925a 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -2195,7 +2195,6 @@ static int pl022_runtime_suspend(struct device *dev)
->  	struct pl022 *pl022 = dev_get_drvdata(dev);
->  
->  	clk_disable(pl022->clk);
-> -	amba_vcore_disable(pl022->adev);
->  
->  	return 0;
->  }
-> @@ -2204,7 +2203,6 @@ static int pl022_runtime_resume(struct device *dev)
->  {
->  	struct pl022 *pl022 = dev_get_drvdata(dev);
->  
-> -	amba_vcore_enable(pl022->adev);
->  	clk_enable(pl022->clk);
->  
->  	return 0;
-> diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
-> index 7847e19..63a59ac 100644
-> --- a/include/linux/amba/bus.h
-> +++ b/include/linux/amba/bus.h
-> @@ -19,7 +19,6 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/err.h>
->  #include <linux/resource.h>
-> -#include <linux/regulator/consumer.h>
->  
->  #define AMBA_NR_IRQS	2
->  #define AMBA_CID	0xb105f00d
-> @@ -30,7 +29,6 @@ struct amba_device {
->  	struct device		dev;
->  	struct resource		res;
->  	struct clk		*pclk;
-> -	struct regulator	*vcore;
->  	u64			dma_mask;
->  	unsigned int		periphid;
->  	unsigned int		irq[AMBA_NR_IRQS];
-> @@ -75,12 +73,6 @@ void amba_release_regions(struct amba_device *);
->  #define amba_pclk_disable(d)	\
->  	do { if (!IS_ERR((d)->pclk)) clk_disable((d)->pclk); } while (0)
->  
-> -#define amba_vcore_enable(d)	\
-> -	(IS_ERR((d)->vcore) ? 0 : regulator_enable((d)->vcore))
-> -
-> -#define amba_vcore_disable(d)	\
-> -	do { if (!IS_ERR((d)->vcore)) regulator_disable((d)->vcore); } while (0)
-> -
->  /* Some drivers don't use the struct amba_device */
->  #define AMBA_CONFIG_BITS(a) (((a) >> 24) & 0xff)
->  #define AMBA_REV_BITS(a) (((a) >> 20) & 0x0f)
-
-
-------------------------------------------------------------------------------
-For Developers, A Lot Can Happen In A Second.
-Boundary is the first to Know...and Tell You.
-Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
-http://p.sf.net/sfu/Boundary-d2dvs2
+UG91ciB2aXN1YWxpc2VyIGNvcnJlY3RlbWVudCBjZXR0ZSBwYWdlLCBjb25zdWx0ZXogbm90cmUg
+dmVyc2lvbiBlbiBsaWduZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy92aWV3L10KCgoKCltodHRwOi8vd3d3Lmxvdmlu
+Z2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8yZDQ2MDFjYmVkODc2N2E3L10KCgoK
+CkwnT0ZGUkUgRFUgSk9VUjogCkNIQUlTRSBCQUxMT04gREVTSUdOIEVUIENPTE9Sw4lFIDogQXBw
+b3J0ZXogdW5lIHRvdWNoZSBk4oCZb3JpZ2luYWxpdMOpIMOgIHZvdHJlIGTDqWNvcmF0aW9uIGTi
+gJlpbnTDqXJpZXVyIHBvdXIgODjigqwgYXUgbGlldSBkZSAyMTYsMjDigqwgISAKCgoKW2h0dHA6
+Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4
+NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1OTMtY2hhaXNlLWNvdWxldXItZGVzaWduLWRlY29yYXRp
+b24taW50ZXJpZXVyLXBhcy1jaGVyXQo4OOKCrCBWYWxldXI6IDIxNi4y4oKsIMOJY29ub21pc2V6
+OiAxMjguMuKCrCBEb25zOiAwLjU44oKsIAoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
+aW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1
+OTMtY2hhaXNlLWNvdWxldXItZGVzaWduLWRlY29yYXRpb24taW50ZXJpZXVyLXBhcy1jaGVyXQoK
+CgoKCgpVbmUgY2hhaXNlIGJhbGxvbiBVbmUgYXNzaXNlIGNvbmZvcnRhYmxlIFVuIG1ldWJsZSBk
+ZXNpZ24gTGUgY2hvaXggcGFybWkgMTMgY29sb3JpcyBkaWZmw6lyZW50cyBVbmUgZMOpY28gbW9k
+ZXJuaXPDqWXCoGV0IGNvbG9yw6llIAoKW2h0dHA6Ly93d3cuZmFjZWJvb2suY29tL3NoYXJlLnBo
+cD91PWh0dHAlM0ElMkYlMkZ3d3cubG92aW5nZGVhbHMuZnIlMkZkaXNjb3VudCUyRmRldGFpbCUy
+RjE1OTMtY2hhaXNlLWNvdWxldXItZGVzaWduLWRlY29yYXRpb24taW50ZXJpZXVyLXBhcy1jaGVy
+XQpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0
+NjAxY2JlZDg3NjdhNy9wYWdlL3R3aXR0ZXIvP3VybD1odHRwJTNBJTJGJTJGd3d3LmxvdmluZ2Rl
+YWxzLmZyJTJGZGlzY291bnQlMkZkZXRhaWwlMkYxNTkzLWNoYWlzZS1jb3VsZXVyLWRlc2lnbi1k
+ZWNvcmF0aW9uLWludGVyaWV1ci1wYXMtY2hlciZhbXA7bWVzc2FnZT1DSEFJU0UgQkFMTE9OIERF
+U0lHTiBFVCBDT0xPUsOJRSA6IEFwcG9ydGV6IHVuZSB0b3VjaGUgZOKAmW9yaWdpbmFsaXTDqSDD
+oCB2b3RyZSBkw6ljb3JhdGlvbiBk4oCZaW50w6lyaWV1ciBwb3VyIDg44oKsIGF1IGxpZXUgZGUg
+MjE2LDIw4oKsICFdClttYWlsdG86P3N1YmplY3Q9SiYjMDM5O2FpIGTDqWNvdXZlcnQgbGUgcGx1
+cyBnw6luw6lyZXV4IGRlcyBzaXRlcyBkZSBkZWFscyZhbXA7Ym9keT1KJiMwMzk7YWkgZMOpY291
+dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVhbHMg
+b2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNlbnRh
+Z2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5sb3ZpbmdkZWFs
+cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy9kaXNjb3VudC9k
+ZXRhaWwvMTU5My1jaGFpc2UtY291bGV1ci1kZXNpZ24tZGVjb3JhdGlvbi1pbnRlcmlldXItcGFz
+LWNoZXJdCgoKCgrCoCBFbmNvcmUgcGx1cyBkJ29mZnJlcyAhIAoKCgpWYWxldXIgMzk5JmV1cm87
+IFJlbWlzZSA1MyUgw4ljb25vbWlzZXogMjEwJmV1cm87IERvbnMgMi4wNCZldXJvOyAKCjEgU1VS
+LU1BVEVMQVMgQSBNRU1PSVJFIERFIEZPUk1FIDE0MCB4IDE5MCB4IDYgQ00gOiBPZmZyZXotdm91
+cyB1biBzb21tZWlsIHBhcmZhaXQgYXZlYyBEb3Jzb3JlbGF4LCAxODnigqwgc2V1bGVtZW50IGF1
+IGxpZXUgZGUgMzk54oKsICEgW3BsaW5rIC8vRGlzY291bnQ6ZGV0YWlsLCAnaWQnID0+ICRkaXNj
+b3VudC0+aWR9LXN1ci1tYXRlbGFzLWRvcnNvcmVsYXgtcGFzLWNoZXJdClNldWxlbWVudCAxODni
+gqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJk
+NDYwMWNiZWQ4NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1ODUtc3VyLW1hdGVsYXMtZG9yc29yZWxh
+eC1wYXMtY2hlcl0KCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVy
+L2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU4NS1zdXItbWF0ZWxh
+cy1kb3Jzb3JlbGF4LXBhcy1jaGVyXQoKCgoKVmFsZXVyIDg5JmV1cm87IFJlbWlzZSA1MCUgw4lj
+b25vbWlzZXogNDQuNSZldXJvOyBEb25zIDAuMzAmZXVybzsgCgrDiVBJTEFURVVSIMOJTEVDVFJP
+TklRVUUgw4lQSUwgQk9EWSA6IETDrnRlcyBhZGlldSBhdXggcG9pbHMgZGlzZ3JhY2lldXggZXQg
+Ym9uam91ciDDoCB1bmUgcGVhdSBzYXRpbsOpZSwgNDQsNTDigqwgYXUgbGlldSBkZSA4OeKCrCAh
+IFtwbGluayAvL0Rpc2NvdW50OmRldGFpbCwgJ2lkJyA9PiAkZGlzY291bnQtPmlkfS1lcGlsYXRl
+dXItZWxlY3RyaXF1ZS1lcGlsLWJvZHktZ2h0LXBhcy1jaGVyXQpTZXVsZW1lbnQgNDQuNeKCrCBb
+aHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAx
+Y2JlZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU4Mi1lcGlsYXRldXItZWxlY3RyaXF1ZS1lcGls
+LWJvZHktZ2h0LXBhcy1jaGVyXQoKCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25l
+d3NsZXR0ZXIvZ2F0ZXdheS8yZDQ2MDFjYmVkODc2N2E3L2Rpc2NvdW50L2RldGFpbC8xNTgyLWVw
+aWxhdGV1ci1lbGVjdHJpcXVlLWVwaWwtYm9keS1naHQtcGFzLWNoZXJdCgoKCgoKCgoKVmFsZXVy
+IDQxOSZldXJvOyBSZW1pc2UgNTMlIMOJY29ub21pc2V6IDIyMCZldXJvOyBEb25zIDIuMTMmZXVy
+bzsgCgoxIFNVUi1NQVRFTEFTIEEgTUVNT0lSRSBERSBGT1JNRSAxNjAgeCAyMDAgeCA2IENNIDog
+T2ZmcmV6LXZvdXMgdW4gc29tbWVpbCBwYXJmYWl0IGF2ZWMgRG9yc29yZWxheCwgMTk54oKsIHNl
+dWxlbWVudCBhdSBsaWV1IGRlIDQxOeKCrCAhIFtwbGluayAvL0Rpc2NvdW50OmRldGFpbCwgJ2lk
+JyA9PiAkZGlzY291bnQtPmlkfS1zdXItbWF0ZWxhcy1kb3Jzb3JlbGF4LXBhcy1jaGVyXQpTZXVs
+ZW1lbnQgMTk54oKsIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
+Z2F0ZXdheS8yZDQ2MDFjYmVkODc2N2E3L2Rpc2NvdW50L2RldGFpbC8xNTg2LXN1ci1tYXRlbGFz
+LWRvcnNvcmVsYXgtcGFzLWNoZXJdCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4v
+bmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1ODYt
+c3VyLW1hdGVsYXMtZG9yc29yZWxheC1wYXMtY2hlcl0KCgoKClZhbGV1ciA1OSZldXJvOyBSZW1p
+c2UgNTQlIMOJY29ub21pc2V6IDMyJmV1cm87IERvbnMgMC4zNCZldXJvOyAKClNUQVRJT04gROKA
+mUFDQ1VFSUwgRU5DRUlOVEUgRVQgUsOJVkVJTCBpUE9ELCBpVE9VQ0ggRVQgaVBIT05FIDNHLzQv
+NFM6IFLDqXZlaWxsZXotdm91cyBhdmVjIHZvdHJlIG11c2lxdWUgcHLDqWbDqXLDqWUsIDI34oKs
+IGF1IGxpZXUgZGUgNTnigqwgISBbcGxpbmsgLy9EaXNjb3VudDpkZXRhaWwsICdpZCcgPT4gJGRp
+c2NvdW50LT5pZH0tc3RhdGlvbi1hY2N1ZWlsLXJldmVpbC1pcGhvbmUtb3BvZC1pdG91Y2gtcGFz
+LWNoZXJdClNldWxlbWVudCAyN+KCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9u
+ZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU5NS1z
+dGF0aW9uLWFjY3VlaWwtcmV2ZWlsLWlwaG9uZS1vcG9kLWl0b3VjaC1wYXMtY2hlcl0KCgpbaHR0
+cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAxY2Jl
+ZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU5NS1zdGF0aW9uLWFjY3VlaWwtcmV2ZWlsLWlwaG9u
+ZS1vcG9kLWl0b3VjaC1wYXMtY2hlcl0KCgoKCgoKCgpWYWxldXIgNTguMzcmZXVybzsgUmVtaXNl
+IDM3JSDDiWNvbm9taXNleiAyMS4zNyZldXJvOyBEb25zIDAuMzImZXVybzsgCgpNJmFtcDtN4oCZ
+UyBJTlRFTlNFLCBUT0JMRVJPTkUgRVQgTk9VR0FUIEFVWCBBTUFOREVTOiBVbiBsb3Qgc2F2b3Vy
+ZXV4IHF1aSBzYXVyYSByYXZpciBsZXMgZ291cm1hbmRzIHBvdXIgUMOicXVlcywgMzfigqwgYXUg
+bGlldSBkZSA1OCwzN+KCrCAhIFtwbGluayAvL0Rpc2NvdW50OmRldGFpbCwgJ2lkJyA9PiAkZGlz
+Y291bnQtPmlkfS1tbXMtdG9ibGVyb25lLW5vdWdhdC1jaG9jb2xhdC1wYXF1ZXMtcGFzLWNoZXJd
+ClNldWxlbWVudCAzN+KCrCBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
+dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU5Ny1tbXMtdG9i
+bGVyb25lLW5vdWdhdC1jaG9jb2xhdC1wYXF1ZXMtcGFzLWNoZXJdCgoKW2h0dHA6Ly93d3cubG92
+aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvZGlz
+Y291bnQvZGV0YWlsLzE1OTctbW1zLXRvYmxlcm9uZS1ub3VnYXQtY2hvY29sYXQtcGFxdWVzLXBh
+cy1jaGVyXQoKCgoKVmFsZXVyIDQ1LjM3JmV1cm87IFJlbWlzZSAyNSUgw4ljb25vbWlzZXogMTEu
+MzcmZXVybzsgRG9ucyAwLjI5JmV1cm87IAoKTUlMS0EgQ1JJU1BZIFNOQVgsIENIT0NPTEFUIFZJ
+TExBUlMgRVQgT1VSU09OUyDDgCBMQSBHVUlNQVVWRTogVW4gbG90IHF1aSBzYXVyYSByYXZpciBs
+ZXMgZ291cm1hbmRzIMOgIFDDonF1ZXMsIDM04oKsIGF1IGxpZXUgZGUgNDUsMzfigqwgISBbcGxp
+bmsgLy9EaXNjb3VudDpkZXRhaWwsICdpZCcgPT4gJGRpc2NvdW50LT5pZH0tbWlsa2EtY3Jpc3B5
+LXNuYXgtb3Vyc29uLWd1aW1hdXZlLWNob2NvbGF0LXBhcXVlc10KU2V1bGVtZW50IDM04oKsIFto
+dHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8yZDQ2MDFj
+YmVkODc2N2E3L2Rpc2NvdW50L2RldGFpbC8xNTk4LW1pbGthLWNyaXNweS1zbmF4LW91cnNvbi1n
+dWltYXV2ZS1jaG9jb2xhdC1wYXF1ZXNdCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
+aW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1
+OTgtbWlsa2EtY3Jpc3B5LXNuYXgtb3Vyc29uLWd1aW1hdXZlLWNob2NvbGF0LXBhcXVlc10KCgoK
+CgoKCgpWYWxldXIgODMuMzUmZXVybzsgUmVtaXNlIDQxJSDDiWNvbm9taXNleiAzNC4zNSZldXJv
+OyBEb25zIDAuNDImZXVybzsgCgpLSU5ERVIgQlVFTk8sIFRPQkxFUk9ORSBFVCBOT1VHQVQgQVVY
+IEFNQU5ERVMgOiBVbiBsb3QgZ291cm1hbmQgZXQgc2F2b3VyZXV4IHF1aSBmZXJhIGRlcyBoZXVy
+ZXV4IMOgIFDDonF1ZXMsIDQ54oKsIGF1IGxpZXUgZGUgODMsMzXigqwgW3BsaW5rIC8vRGlzY291
+bnQ6ZGV0YWlsLCAnaWQnID0+ICRkaXNjb3VudC0+aWR9LWtpbmRlci1idWVuby10b2JsZXJvbmUt
+bm91Z2F0LWNob2NvbGF0LXBhcXVlcy1wYXMtY2hlcl0KU2V1bGVtZW50IDQ54oKsIFtodHRwOi8v
+d3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS8yZDQ2MDFjYmVkODc2
+N2E3L2Rpc2NvdW50L2RldGFpbC8xNTk5LWtpbmRlci1idWVuby10b2JsZXJvbmUtbm91Z2F0LWNo
+b2NvbGF0LXBhcXVlcy1wYXMtY2hlcl0KCgpbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1p
+bi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy9kaXNjb3VudC9kZXRhaWwvMTU5
+OS1raW5kZXItYnVlbm8tdG9ibGVyb25lLW5vdWdhdC1jaG9jb2xhdC1wYXF1ZXMtcGFzLWNoZXJd
+CgoKCgpWYWxldXIgMCZldXJvOyBSZW1pc2UgMTAwJSDDiWNvbm9taXNleiAwJmV1cm87IERvbnMg
+MC4wMCZldXJvOyAKCkNPTkNPVVJTIMKrIFFVQU5EIE9OIEVTVCBMT1ZJTkcsIE9OIEVTVCBHT1VS
+TUFORCDCuyA6IFRlbnRleiBkZSByZW1wb3J0ZXIgZGUgZMOpbGljaWV1eCBiaWpvdXggZ291cm1h
+bmRzIHNpZ27DqXMgVHJvZ25vbiBFdCBQw6lwaW7CriAhIFtwbGluayAvL0Rpc2NvdW50OmRldGFp
+bCwgJ2lkJyA9PiAkZGlzY291bnQtPmlkfS1qZXUtY29uY291cnMtYmlqb3UtZ291cm1hbmQtdHJv
+Z25vbi1ldC1wZXBpbl0KU2V1bGVtZW50IDDigqwgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIv
+YWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvZGlzY291bnQvZGV0YWls
+LzE1OTYtamV1LWNvbmNvdXJzLWJpam91LWdvdXJtYW5kLXRyb2dub24tZXQtcGVwaW5dCgoKW2h0
+dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNi
+ZWQ4NzY3YTcvZGlzY291bnQvZGV0YWlsLzE1OTYtamV1LWNvbmNvdXJzLWJpam91LWdvdXJtYW5k
+LXRyb2dub24tZXQtcGVwaW5dCgoKCgoKCgoKW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRt
+aW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3YTcvYXNzb2NpYXRpb25zLWNhcml0
+YXRpdmVzL10KW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRl
+d2F5LzJkNDYwMWNiZWQ4NzY3YTcvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KW2h0dHA6Ly93
+d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5LzJkNDYwMWNiZWQ4NzY3
+YTcvYXNzb2NpYXRpb25zLWNhcml0YXRpdmVzL10KCkwnYWZhIFN1cmZyaWRlciBGb3VuZGF0aW9u
+IEV1cm9wZSBWaXNpb24gZHUgbW9uZGUgCgoKUG91ciDDqnRyZSByZXRpcsOpIGRlIG5vdHJlIGxp
+c3RlIGRlIGRpZmZ1c2lvbiwgZMOpc2Fib25uZXotdm91cyBbaHR0cDovL3d3dy5sb3ZpbmdkZWFs
+cy5mci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvMmQ0NjAxY2JlZDg3NjdhNy91bnN1YnNjcmli
+ZS8/bGFuZ3VhZ2U9ZW5dCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRm9yIERldmVsb3BlcnMsIEEg
+TG90IENhbiBIYXBwZW4gSW4gQSBTZWNvbmQuCkJvdW5kYXJ5IGlzIHRoZSBmaXJzdCB0byBLbm93
+Li4uYW5kIFRlbGwgWW91LgpNb25pdG9yIFlvdXIgQXBwbGljYXRpb25zIGluIFVsdHJhLUZpbmUg
+UmVzb2x1dGlvbi4gVHJ5IGl0IEZSRUUhCmh0dHA6Ly9wLnNmLm5ldC9zZnUvQm91bmRhcnktZDJk
+dnMyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

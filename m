@@ -1,12 +1,12 @@
-From: SecurDevis par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: France en 2011 : 19% de cambriolages en plus
-Date: Fri, 06 Apr 2012 01:55:57 +0200
-Message-ID: <1333670157.4f7e310d7fdc4@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Voyage prive par Affilibaz <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: Reservez vos vacances et activez votre carte Voyage prive
+Date: Fri, 6 Apr 2012 07:15:03 +0200 (CEST)
+Message-ID: <3236305005.870442.1333689303923@p4enginex2.emv2.com>
+Reply-To: Voyage prive par Affilibaz <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,14 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTkwODgmYz00ODM2MTImZD0yMDEy=
-LTA0LTA1IDIzOjMwOjAxJmU9MSZoPTkwODcmZj05MDg4Jmc9OTA4OA=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTkwODgmYz0=
-0ODM2MTImZD0yMDEyLTA0LTA1IDIzOjMwOjAxJmU9MSZoPTkwODcmZj05MDg4Jmc9OTA4OA=3D=
-=3D
+Si vous ne visualisez pas correctement ce message, cliquez ici.
+
+
+   Voyage Priv*
+
+          Affilibaz vous a choisi parmi ses membres privil=E9gi=E9s pour
+   Voyage vous offrir votre Carte Membre au Club voyageprive.com, le 1er
+   Priv*  site de ventes priv=E9es de voyages haut de gamme.
+
+          Cette carte vous ouvre un acc=E8s gratuit et priv=E9 =E0 une
+          s=E9lection exclusive de s=E9jours et voyages partout dans le mon=
+de
+          jusqu'=E0 -70%.
+   Votre carte membre
+                                 Votre carte membre
+   Voyage Priv* Activez votre    Votre   spi-devel-general-5NWGOfrQmneRv+LV9MX5ug@public.gmane.org=
+e.net Votre
+                carte            carte                                Carte
+                                 Membre  Votre carte membre           Membre
+   Voyage Priv*
+   Votre carte membre est aussi sur Facebook
+
+Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
+ndre
+                                sur cette page.
 
 
 ---------------------------------------------------------------------------=

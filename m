@@ -1,13 +1,13 @@
-From: Disneyland Paris par l officiel des vacances <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: Vente flash Disneyland Paris -50% jusqu a mardi 10 avril
-Date: Sat, 7 Apr 2012 08:07:48 +0200 (CEST)
-Message-ID: <3236305005.883922.1333778868776@p4enginex2.emv2.com>
-Reply-To: Disneyland Paris par l officiel des vacances
-	<news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Ce week end, essayez nos recettes =?iso-8859-15?Q?pr=E9f?=
+	=?iso-8859-15?Q?=E9r=E9es=2C?= bbq et plancha!
+Date: Sat, 07 Apr 2012 18:07:09 +0200
+Message-ID: <1333814829.4f80662d82e50@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,32 +19,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTk0MDEmYz0yMzY0MzcmZD0yMDEy=
+LTA0LTA3IDAwOjMwOjAxJmU9MSZoPTk0MDAmZj05NDAxJmc9OTQwMQ=3D=3D
 
-Si vous ne visualisez pas correctement ce message, cliquez ici.
-
-
-   L'Officiel-des-vacances.com - La r*f*rence des bons plans vacances
-   Jusqu'* -50% sur votre s*jour Les offres de g*nie
-   dans un H*tel Disney* !
-                                 Vente Flash DisneyLand
-
-                                 Vous avez jusqu'au
-                                 Mardi 10 avril 12h pour r=E9server  vente
-   vente flash Disneyland        !                                 flash
-                                                                   Disneyla=
-nd
-                                 En cliquant sur =AB OK =BB j'accepte
-                                 de recevoir
-                                 le TOP 20 des bons plans vacances
-                                 sur spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-   S*jour et train GRATUITS pour OK
-   les -7 ans !
-
-   vente flash Disneyland
-Pour ne plus recevoir de courriels de notre part, il vous suffit de vous re=
-ndre
-                                sur cette page.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTk0MDEmYz0=
+yMzY0MzcmZD0yMDEyLTA0LTA3IDAwOjMwOjAxJmU9MSZoPTk0MDAmZj05NDAxJmc9OTQwMQ=3D=
+=3D
 
 
 ---------------------------------------------------------------------------=

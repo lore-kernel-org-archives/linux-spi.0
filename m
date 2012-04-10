@@ -1,49 +1,67 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Tue, 10 Apr 2012 09:31:30 +0100
-Message-ID: <20120410083130.GK24211@n2100.arm.linux.org.uk>
+Date: Tue, 10 Apr 2012 09:35:43 +0100
+Message-ID: <20120410083543.GC3149@opensource.wolfsonmicro.com>
 References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<20120406074942.GO7264@S2101-09.ap.freescale.net>
+ <20120406074942.GO7264@S2101-09.ap.freescale.net>
+ <20120410083130.GK24211@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bKyqfOwhbdpXa4YI"
+Cc: Shawn Guo <shawn.guo@linaro.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20120406074942.GO7264-rvtDTF3kK1ictlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <20120410083130.GK24211@n2100.arm.linux.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Apr 06, 2012 at 03:49:45PM +0800, Shawn Guo wrote:
-> I believe this patch fixes the amba probe failure that impacts any
-> AMBA platform build with CONFIG_REGULATOR enabled.  Could you consider
-> to send the fix for -rc soon?
 
-No idea.  I don't have Mark's patch in the patch system.
+--bKyqfOwhbdpXa4YI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> The patch "ARM: amba: adapt to regulator probe deferral change" from
-> me could be ignored now.
+On Tue, Apr 10, 2012 at 09:31:30AM +0100, Russell King - ARM Linux wrote:
+> On Fri, Apr 06, 2012 at 03:49:45PM +0800, Shawn Guo wrote:
+> > I believe this patch fixes the amba probe failure that impacts any
+> > AMBA platform build with CONFIG_REGULATOR enabled.  Could you consider
+> > to send the fix for -rc soon?
 
-But I do have yours in there.  And what do I do with your other patch
-in there touching this same area as well?
+> No idea.  I don't have Mark's patch in the patch system.
 
-Please, sort it out between you and once the patch system is right, let
-me know.
+It's there as far as I can tell - it's 7366/1, which is visible in the
+web interface at:
 
-------------------------------------------------------------------------------
-Better than sec? Nothing is better than sec when it comes to
-monitoring Big Data applications. Try Boundary one-second 
-resolution app monitoring today. Free.
-http://p.sf.net/sfu/Boundary-dev2dev
+http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=7366/1
+
+Is there something else I need to do?
+
+--bKyqfOwhbdpXa4YI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPg/DYAAoJEBus8iNuMP3dCEAQAJjG3BtROC35/BAxtjp8usEl
+vAxPFg/TXDZ4X2JxwzN+GSXW6oWL29vDfaU77pMI8zITfeFzRj52UlWLw60WMttM
+BqKr89IQppiV/jm8099YKx1duFBsz7XRektApHPqsi3JM/lx+wlLTgYffIE187Vd
+pQDPGKmg6f50qMJQWShEqTOQDerVXf9ShNif1O8txPHZCc6OUzUXv/+2fUDoIh0m
+SkwJUKRBlDaZ60Tqx6GcH1ugNnMLXFHnFr6w5HY/K8nRlrl3PVUrhIdx0Invsjzx
+zK2ErfufDIXrSUq6nheY3H1A/euoVcvURL6wLsghkh862FSn7lm4MNh9NaqMgK/i
+8cDbe/f3OJzVSkSbvNyGhMk8c3eYQ1iQw0NVJZDz8vCU405ugLgvi0gbWwOGo4GN
+dj9HZHA6jdqTn8saKze8YBKjl14Qg41vj8a6GXtG0rNdDUpCW7pjXwq9P694ouY4
++q4e0C8XW956NfXVnepla8dEcBTvBVCv3SeixBcKPjWpgDTMsy02vUeVAfO4K15m
+sfwKw2uX4d01rpGMDqDrOyNUhJbzAob+zcP607o1uuklBvORCUO6y9+McZHRoosA
+sCI5qP3SsYjGXo9gB7T66qQDyirjfE8J5a8buFMTHsl9ijgfrm9SOruxqjxfXg4O
+/UBzT2gMov9IcxvHYbV/
+=Y25J
+-----END PGP SIGNATURE-----
+
+--bKyqfOwhbdpXa4YI--

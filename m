@@ -1,13 +1,15 @@
-From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Fri, 13 Apr 2012 07:46:06 +0200
-Message-ID: <1334295966.4f87bd9e30678@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Subject: Re: Device tree conversion of spi device vs. controller_data
+Date: Fri, 13 Apr 2012 09:10:15 +0200
+Message-ID: <4F87D157.2020700@antcom.de>
+References: <4F816772.5000607@antcom.de> <20120413032945.0C76B3E07AC@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120413032945.0C76B3E07AC@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,18 +20,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On 04/13/2012 05:29 AM, Grant Likely wrote:
+>> upon DT conversion of LPC32xx, I came across the at25 spi eeprom which
+>> needs .controller_data in struct spi_board_info for slave registration
+>> via spi_register_board_info() (non-DT-case).
+>>
+>> In the DT case, we need to eliminate this explicit registering call.
+>> Therefore, I need to somehow replace the .controller_data passing in the
+>> DT case to pass this data to the spi core. But I can't find such a
+>> mechanism (v3.4-rc2). Is there already a concept or API that I
+>> overlooked (please just point me to it) or what can I do to solve this?
+>> (Looks like a general issue for spi slave registration via DT).
+> 
+> Can you point me at specific code?
+> 
+> .controller_data is owned by the spi_master driver.  The eeprom driver
+> shouldn't be accessing it directly at all; but I'll need to look at
+> specific code to really understand what is going on.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTk1MjImYz00ODM2MTImZD0yMDEy=
-LTA0LTEzIDAwOjUwOjAxJmU9MSZoPTk1MjEmZj05NTIyJmc9OTUyMg=3D=3D
+Please have a look at arch/arm/mach-lpc32xx/phy3250.c :
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTk1MjImYz0=
-0ODM2MTImZD0yMDEyLTA0LTEzIDAwOjUwOjAxJmU9MSZoPTk1MjEmZj05NTIyJmc9OTUyMg=3D=
-=3D
+static struct pl022_config_chip spi0_chip_info = {
+        .com_mode               = INTERRUPT_TRANSFER,
+        .iface                  = SSP_INTERFACE_MOTOROLA_SPI,
+        .hierarchy              = SSP_MASTER,
+        .slave_tx_disable       = 0,
+        .rx_lev_trig            = SSP_RX_4_OR_MORE_ELEM,
+        .tx_lev_trig            = SSP_TX_4_OR_MORE_EMPTY_LOC,
+        .ctrl_len               = SSP_BITS_8,
+        .wait_state             = SSP_MWIRE_WAIT_ZERO,
+        .duplex                 = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
+        .cs_control             = phy3250_spi_cs_set,
+};
 
+...
 
----------------------------------------------------------------------------=
----
+        static struct spi_eeprom eeprom = {
+                .name = "at25256a",
+                .byte_len = 0x8000,
+                .page_size = 64,
+                .flags = EE_ADDR2,
+        };
+
+        static struct spi_board_info info[] = {
+                {
+                        .modalias = "at25",
+                        .max_speed_hz = 5000000,
+                        .bus_num = 0,
+                        .chip_select = 0,
+                        .mode = SPI_MODE_0,
+                        .platform_data = &eeprom,
+                        .controller_data = &spi0_chip_info,
+                },
+        };
+
+	spi_register_board_info(info, ARRAY_SIZE(info));
+
+Trying to replace .controller_data at this point with device tree
+settings passing, I struggled with missing resp. node properties.
+
+Any hint how this can be done?
+
+Thanks in advance,
+
+Roland
+
+------------------------------------------------------------------------------
 For Developers, A Lot Can Happen In A Second.
 Boundary is the first to Know...and Tell You.
 Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!

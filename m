@@ -1,23 +1,27 @@
-From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Fri, 13 Apr 2012 11:54:21 +0200
-Message-ID: <4F87F7CD.4000004@stericsson.com>
-References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<4F87EBFC.90000@stericsson.com>
-	<20120413091828.GJ3168@opensource.wolfsonmicro.com>
+From: =?gb2312?Q?=B3=AC=D6=B5=CD=C5=B9=BA?= <test-Yrg3Uy5VTdLRKEfHbNcCZA@public.gmane.org>
+Subject: [SPAM]
+	=?gb2312?Q?=BD=F649=2E8=D4=AA=A3=AC=B6=E0=C0=D6=CA=BF=CC=D74=BA=D0,
+	=CC=F8=CC=F8=B5=B0,
+	7=BC=FE=B3=C9=C8=CB=D3=C3=C6=B7=A3=AC1=BC=FE=C7=E9=C8=A4=C4=DA=D2=C2_?=
+Date: Fri, 13 Apr 2012 18:05:52 +0800
+Message-ID: <ca715243-a098-430d-abd5-ec32bb7330c9@mail.pvsb.com.vn>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "=?gb2312?Q?zbyunfa@zbyunfa=2Ecom?=" <zbyunfa-J0v1OgDz7AFBDgjK7y7TUQ@public.gmane.org>,
+	"=?gb2312?Q?xplayer@21cn=2Ecom?=" <xplayer-0GSiYjBpcig@public.gmane.org>,
+	"=?gb2312?Q?helena=2Edebacker@debacker-bastin=2Ecom?="
+	<helena.debacker-T6oKsZQhiGDi1iSZhJ2TnEEOCMrvLtNR@public.gmane.org>, "=?gb2312?Q?daweiaiyu@yahoo=2Ecn?="
+	<daweiaiyu-dbdLmdGazhY@public.gmane.org>,
+	"=?gb2312?Q?dawanport@126=2Ecom?=" <dawanport-KN7UnAbNpbg@public.gmane.org>,
+	"=?gb2312?Q?zhaojian820129@163=2Ecom?=" <zhaojian820129-9Onoh4P/yGk@public.gmane.org>,
+	"=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+	"=?gb2312?Q?essica-seahog@live=2Ecn?=" <essica-seahog-25CfU72zatU@public.gmane.org>,
+	"=?gb2312?Q?foralltherightreasons@gmail=2Ecom?="
+	<foralltherightreasons-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"=?gb2312?Q?john=2Eyoung85@gmail=2Ecom?=" <john.young85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120413091828.GJ3168-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,40 +32,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/13/2012 11:18 AM, Mark Brown wrote:
-> On Fri, Apr 13, 2012 at 11:03:56AM +0200, Ulf Hansson wrote:
->
->> But, how should those amba drivers that implements runtime PM
->> support be able to switch of the vcore regulator during normal
->> suspend? In normal suspend case we can not use
->
-> A generic AMBA driver should have no idea about the implementation of
-> the particular SoC that it's integrated on to.  This applies even more
-> to system suspend (where drivers can generally just assume that they
-> will loose all power normally) than it does to runtime suspend.
->
->> pm_runtime_put/pm_runtime_put_sync to trigger the power domain
->> runtime functions to switch of vcore. This is kind of more generic
->> problem when dealing with power domains, but as said this patch will
->> have consequences.
->
-> The power domain gets callbacks on the system suspend path too and can
-> do whatever is sensible there.
->
->> As far as I can see, the power domain must then implement a
->> suspend_noirq function to make sure same things is done as for the
->> runtime_suspend function. Do you agree with this as well or is there
->> another option?
->
-> Yes, the power domain should just be handling this transparently.
-
-Alright, thanks for your confirmation. Let's see how this works out then.
-
-Kind regards
-Ulf Hansson
-
-------------------------------------------------------------------------------
-For Developers, A Lot Can Happen In A Second.
-Boundary is the first to Know...and Tell You.
-Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
-http://p.sf.net/sfu/Boundary-d2dvs2
+CgrM1LGmvbvS16OsyLexo7CyyKuho8irufq/ydLUu/W1vbi2v+6ho8irufq/ydLUu/W1vbi2v+6h
+owq/zbf+UVE6IDE3MTYzODE2MzIgIL/Nt/5RUTogMTcxNjM4MTYzMiAKCszXss3Su6O6NDkuONSq
+ICAgICi24MDWyr80utA0Mta7K9Xwtq+7tyvH6cikxNrSwivM+Mz4tbAr06G2yMnx080pCjGjrLbg
+wNbKv7CyyKvM1zS60LmyNDLGrKOos6yxodK7utArz+O31dK7utAruKG149K7utArtuCyytew0ru6
+0KOpoaMgICAKMqOsuN+zsczXLbGrsqog0uzQzczXMda7o6y0zLykR7Xjo6zLsrzktb2437OxoaMg
+ICAgICAgICAgICAgICAgICAgICAgIAozo6zRxcjzx7/Arcu/yMvM5cjzu6y8wTHWp6OoMTNH17Cj
+qaOs1Pa808jzu6yjrNT2x7+/7LjQoaMKNKOsuvu1+9DN1fG2r7u3Mda7o6zR07OkvOHNprywyeS+
+q8qxvOShoyAgICAgICAgICAgICAgICAgICAgCjWjrNbQufrD+8XGOTnJ8dPNIDGw/KOsxa7Tw7Tf
+x+nQy7fc0M2jrNCnufu8q7zRoaMgICAgICAgICAgIAo2o6zQ1LjQzbjK0730ye3O6NLCx+nIpMTa
+0sKhowo3o6zH6cik08PGt8urzPi1sMnuy67VqLWvLcfhy8nIw8Wu0NTH6dP7uN/Vx6Osz+3K3NDU
+v+y40KGjICAgICAgICAgICAKOKOsx+nIpNPDxrfTobbIyfHTzcqqve3R08qx1vqyqiDSu7D8xNq6
+rDLGrKGjCs341rejuiBodHRwOi8vMXN1Lm5ldC9hTTUgKMjnufu08rK7v6qjrMfrteO797G408PN
++Na3KQqxuNPDzfjWtzogaHR0cDovL3p6dC5zby9xcWMxCiAKCszXss22/qO6NDkuONSqICAotsXA
+2cu5MrrQK8z4zPi1sCvTobbIyfHTzSkKMaOstsXA2cu5sLLIq8zXMrrQOrOssaHXsNK7utArsLLI
+q9ew0ru60KGjCjKjrLGrsqog0uzQzczXMda7o6y0zLykR7Xjo6zLsrzktb2437OxoaMgICAgICAg
+ICAgICAgICAgICAgICAgIAozo6zRxcjzx7/Arcu/yMvM5cjzu6y8wTHWp6OoMTNH17CjqaOs1Pa8
+08jzu6yjrNT2x7+/7LjQoaMKNKOs1tC5+sP7xcY5Ocnx080gMbD8o6zFrtPDtN/H6dDLt9zQzaOs
+0Ke5+7yrvNGhoyAgICAgICAgICAgCjWjrL3wudogtsXSwczYLbG2waaz1r7D0rot0dPKsdK60ruw
+/KOsz9TW+NHTs6TQ1LCuyrG85KGjICAgICAgICAgICAgICAgICAgICAKNqOsx+nIpNPDxrfLq8z4
+tbDJ7suu1ai1ry3H4cvJyMPFrtDUx+nT+7jf1cejrM/tytzQ1L/suNChoyAgW8e/wabNxrz2XSAg
+ICAgICAgIAo3o6zH6cik08PGt9OhtsjJ8dPNyqq97dHTyrHW+rKqINK7sPzE2rqsMsasoaMKzfjW
+t6O6IGh0dHA6Ly8xc3UubmV0L2FPNwqxuNPDzfjWtzogIGh0dHA6Ly96enQuc28vcXF2cwoKCta7
+16zQxdP+srvXrMeuo7rX7srcu7bTrbXEs8nIy9PDxrfM19ewoaPXpb30x8C5uqGjIFvI1c/6zfK8
+/qOsv+zAtMfAubpdCgrM1LGmvbvS16Osw9y34reiu/WjrMi3saPS/su9oaMKueO2q7/J0tS79bW9
+uLa/7qGjueO2q7/J0tS79bW9uLa/7qGjCgrH68Gqz7VRUTogMTcxNjM4MTYzMiAKx+vBqs+1UVE6
+IDE3MTYzODE2MzIgCsfrwarPtVFROiAxNzE2MzgxNjMyIArH68Gqz7VRUTogMTcxNjM4MTYzMiAK
+CgoKCgoK16jStUVtYWlsIMi6freit/7O8SDH68Gqz7VRUaO6MTcyMzc4MjE0NgrXqNK1RW1haWwg
+yLp+t6K3/s7xIMfrwarPtVFRo7oxNzIzNzgyMTQ2CgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkZv
+ciBEZXZlbG9wZXJzLCBBIExvdCBDYW4gSGFwcGVuIEluIEEgU2Vjb25kLgpCb3VuZGFyeSBpcyB0
+aGUgZmlyc3QgdG8gS25vdy4uLmFuZCBUZWxsIFlvdS4KTW9uaXRvciBZb3VyIEFwcGxpY2F0aW9u
+cyBpbiBVbHRyYS1GaW5lIFJlc29sdXRpb24uIFRyeSBpdCBGUkVFIQpodHRwOi8vcC5zZi5uZXQv
+c2Z1L0JvdW5kYXJ5LWQyZHZzMgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

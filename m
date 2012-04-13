@@ -1,8 +1,9 @@
-From: Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: C'est votre jour de chance, -13% sur tout le site!
-Date: Fri, 13 Apr 2012 15:06:24 +0200
-Message-ID: <1334322384.4f8824d09ed3a@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
+	avec Weight Watchers
+Date: Fri, 13 Apr 2012 16:08:46 +0200
+Message-ID: <1334326126.4f88336e5233e@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTk3NTEmYz0yMzY0MzcmZD0yMDEy=
-LTA0LTEzIDEzOjAwOjAxJmU9MSZoPTk3NTAmZj05NzUxJmc9OTc1MQ=3D=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTk1MjQmYz00ODM2MTImZD0yMDEy=
+LTA0LTEzIDE1OjMwOjAxJmU9MSZoPTk1MjMmZj05NTI0Jmc9OTUyNA=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTk3NTEmYz0=
-yMzY0MzcmZD0yMDEyLTA0LTEzIDEzOjAwOjAxJmU9MSZoPTk3NTAmZj05NzUxJmc9OTc1MQ=3D=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTk1MjQmYz0=
+0ODM2MTImZD0yMDEyLTA0LTEzIDE1OjMwOjAxJmU9MSZoPTk1MjMmZj05NTI0Jmc9OTUyNA=3D=
 =3D
 
 

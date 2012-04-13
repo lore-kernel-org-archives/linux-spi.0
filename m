@@ -1,15 +1,13 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Fri, 13 Apr 2012 17:45:55 +0200
-Message-ID: <1334331955.4f884a335cd13@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: [GIT PULL] SPI bug fixes needed on v3.4-rc2
+Date: Fri, 13 Apr 2012 12:16:26 -0600
+Message-ID: <CACxGe6t-YGz==WE3-0Kf3=6jjc6BSMN-8wepOBwJ2S0j5N0=xQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,15 +19,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hi Linus
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTk1MjUmYz00ODM2MTImZD0yMDEy=
-LTA0LTEzIDE2OjIwOjAxJmU9MSZoPTk1MjQmZj05NTI1Jmc9OTUyNQ=3D=3D
+Simple set of bug fixes.  Please pull
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTk1MjUmYz0=
-0ODM2MTImZD0yMDEyLTA0LTEzIDE2OjIwOjAxJmU9MSZoPTk1MjQmZj05NTI1Jmc9OTUyNQ=3D=
-=3D
+g.
 
+The following changes since commit f52b69f86e27903d6896ed5fa7cd280fec8de532:
+
+  Merge tag 'sh-for-linus' of git://github.com/pmundt/linux-sh
+(2012-03-30 00:09:17 -0700)
+
+are available in the git repository at:
+
+
+  git://git.secretlab.ca/git/linux-2.6 tags/spi-for-linus
+
+for you to fetch changes up to 39ec0d38141b198f94fd19c2bb10fd7c616510d2:
+
+  spi/imx: prevent NULL pointer dereference in spi_imx_probe()
+(2012-04-10 22:17:15 -0600)
+
+----------------------------------------------------------------
+SPI bug fixes on top of v3.4-rc2
+
+Miscellaneous driver bug fixes.  No major changes in this branch.
+
+----------------------------------------------------------------
+Kenth Eriksson (1):
+      spi/mpc83xx: fix NULL pdata dereference bug
+
+Lothar Wa=DFmann (1):
+      spi/imx: prevent NULL pointer dereference in spi_imx_probe()
+
+Shubhrajyoti D (1):
+      spi/davinci: Fix DMA API usage in davinci
+
+Uwe Kleine-K=F6nig (1):
+      spi/imx: mark base member in spi_imx_data as __iomem
+
+Viresh Kumar (1):
+      spi/pL022: include types.h to remove compilation warnings
+
+ drivers/spi/spi-davinci.c  |    6 +++---
+ drivers/spi/spi-fsl-spi.c  |    4 +++-
+ drivers/spi/spi-imx.c      |   12 ++++++++----
+ include/linux/amba/pl022.h |    2 ++
+ 4 files changed, 16 insertions(+), 8 deletions(-)
+
+
+-- =
+
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ---------------------------------------------------------------------------=
 ---

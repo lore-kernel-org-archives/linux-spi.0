@@ -1,79 +1,67 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Subject: Re: [PATCH/RFC v2] ARM: amba: Remove AMBA level regulator support
-Date: Fri, 13 Apr 2012 10:18:29 +0100
-Message-ID: <20120413091828.GJ3168@opensource.wolfsonmicro.com>
+Date: Fri, 13 Apr 2012 11:54:21 +0200
+Message-ID: <4F87F7CD.4000004@stericsson.com>
 References: <1333306720-28344-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <4F87EBFC.90000@stericsson.com>
+	<4F87EBFC.90000@stericsson.com>
+	<20120413091828.GJ3168@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bWEb1MG/o7IKOlQF"
-Cc: Russell King <linux@arm.linux.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Ulf Hansson <ulf.hansson@stericsson.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <4F87EBFC.90000@stericsson.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120413091828.GJ3168-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 04/13/2012 11:18 AM, Mark Brown wrote:
+> On Fri, Apr 13, 2012 at 11:03:56AM +0200, Ulf Hansson wrote:
+>
+>> But, how should those amba drivers that implements runtime PM
+>> support be able to switch of the vcore regulator during normal
+>> suspend? In normal suspend case we can not use
+>
+> A generic AMBA driver should have no idea about the implementation of
+> the particular SoC that it's integrated on to.  This applies even more
+> to system suspend (where drivers can generally just assume that they
+> will loose all power normally) than it does to runtime suspend.
+>
+>> pm_runtime_put/pm_runtime_put_sync to trigger the power domain
+>> runtime functions to switch of vcore. This is kind of more generic
+>> problem when dealing with power domains, but as said this patch will
+>> have consequences.
+>
+> The power domain gets callbacks on the system suspend path too and can
+> do whatever is sensible there.
+>
+>> As far as I can see, the power domain must then implement a
+>> suspend_noirq function to make sure same things is done as for the
+>> runtime_suspend function. Do you agree with this as well or is there
+>> another option?
+>
+> Yes, the power domain should just be handling this transparently.
 
---bWEb1MG/o7IKOlQF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Alright, thanks for your confirmation. Let's see how this works out then.
 
-On Fri, Apr 13, 2012 at 11:03:56AM +0200, Ulf Hansson wrote:
+Kind regards
+Ulf Hansson
 
-> But, how should those amba drivers that implements runtime PM
-> support be able to switch of the vcore regulator during normal
-> suspend? In normal suspend case we can not use
-
-A generic AMBA driver should have no idea about the implementation of
-the particular SoC that it's integrated on to.  This applies even more
-to system suspend (where drivers can generally just assume that they
-will loose all power normally) than it does to runtime suspend.
-
-> pm_runtime_put/pm_runtime_put_sync to trigger the power domain
-> runtime functions to switch of vcore. This is kind of more generic
-> problem when dealing with power domains, but as said this patch will
-> have consequences.
-
-The power domain gets callbacks on the system suspend path too and can
-do whatever is sensible there.
-
-> As far as I can see, the power domain must then implement a
-> suspend_noirq function to make sure same things is done as for the
-> runtime_suspend function. Do you agree with this as well or is there
-> another option?
-
-Yes, the power domain should just be handling this transparently.
-
---bWEb1MG/o7IKOlQF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
-
-iQIcBAEBAgAGBQJPh+8MAAoJEBus8iNuMP3dDZwP/1qxctpI2J+iKn/IWKj5ThYw
-XHThdzr9JOjRHW0LE/q+aoLMnMGvxDUKxivGl+Tv7CcrX8kR8SVydGPPYg8zhYRH
-yQjGsidz7Fi9bm3/2RBOCh10YJKjaeDCGDt+h0lg27Ix5M6CgfWFOtB7GxScJugY
-jvu/uwDUaTDWI8UQtDfoOnz6V2XHweLq1z2ziV9u3MD7LixaSvtu624stvm1+2D5
-4aTyTlyAxAcG1qyZe7n98hR/3AcW9ecQ77n1TwUtt2ApfcYC2FkWIDwpIoNel+Y8
-JhqJlzrbuW0yRzG1ueAuTmQIql6y4LO2mDQNzk2zWU2+bp95BJpJctvJB4Zt3vJM
-IBLP0Q8rEYm1LiXIt9Lx6FwmbH/cmA76a1ok7cY5YrGzly//0T3mvLcdHklkdFKv
-cUr3ss/UdBjaxxj9DR0x3FvY2vJ30svMRoniqghXhWuMot2UHCO1S6Vw56sgj5Z4
-OztgmppoUy4QopU8PmHZUqgcFzVR0SgX2qkeh7YFUZ3QJYbF9sc8K675WntlV2uv
-DgLDbB/nRa3VF5vkMw+QF5Y9ylveWLN9/deFdLhzOaJ3dqsMEmqJ5T5k8LSApVhd
-zBxNTwisZGWC2Qjgz+UBxPQJWh39p4O+Bropti606B5zL98ulwZ65lSGZuF4c2OF
-6sqco3Y5FLjAkqIq0IMn
-=jBrg
------END PGP SIGNATURE-----
-
---bWEb1MG/o7IKOlQF--
+------------------------------------------------------------------------------
+For Developers, A Lot Can Happen In A Second.
+Boundary is the first to Know...and Tell You.
+Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
+http://p.sf.net/sfu/Boundary-d2dvs2

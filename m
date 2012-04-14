@@ -1,7 +1,7 @@
 From: shzhshitsmmmyy7266-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
 Subject: [SPAM] 代/开--发/票
-Date: Sat, 14 Apr 2012 19:49:23 +0800
-Message-ID: <E1SJ1UJ-0007Dn-Ds@sfs-ml-2.v29.ch3.sourceforge.com>
+Date: Sun, 15 Apr 2012 03:29:08 +0800
+Message-ID: <E1SJ8fE-0004RT-Ne@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64

@@ -1,37 +1,61 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Vente Flash : =?iso-8859-15?Q?Quantit=E9s_limit=E9s?= dans tous les
-	magasins
-Date: Mon, 16 Apr 2012 22:35:10 +0200
-Message-ID: <1334608510.4f8c827ee716a@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support, V5
+Date: Tue, 17 Apr 2012 09:21:41 +1000
+Message-ID: <201204170921.42027.marc@cpdesign.com.au>
+References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
+Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1333262499-25871-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9OTk1NSZjPTE5NjE2NDEmZD0yMDEy=
-LTA0LTE2IDIwOjIwOjAxJmU9MSZoPTk5NTQmZj05OTU1Jmc9OTk1NQ=3D=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9OTk1NSZjPTE=
-5NjE2NDEmZD0yMDEyLTA0LTE2IDIwOjIwOjAxJmU9MSZoPTk5NTQmZj05OTU1Jmc9OTk1NQ=3D=
-=3D
+Hi Samuel,
 
 
----------------------------------------------------------------------------=
----
-For Developers, A Lot Can Happen In A Second.
-Boundary is the first to Know...and Tell You.
-Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
-http://p.sf.net/sfu/Boundary-d2dvs2
+On Sunday, April 01, 2012 04:41:35 PM Marc Reilly wrote:
+> This series (against mfd-2.6/for-next) changes the mc13xxx driver to use
+> regmap and adds I2C support.
+> It has a compile dependency on regmap/for-next, as the spi driver uses the
+> recently added pad_bits config field.
+
+(bump).
+
+Are these changes OK to go in?
+
+Cheers,
+Marc
+
+
+
+> 
+> Patch 2/4 has:
+> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> Patch 4/4 has:
+> Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
+> 
+> Changes since:
+> V4:
+> - Fix compile error when CONFIG_OF enabled
+> - Select REGMAP_I2C and REGMAP_SPI for appropriate drivers.
+> 
+> V3:
+> - spi driver uses padded register format (reads should actually work now!)
+> - mc13873 removed from I2C driver
+> - fix memory leak on probe error
+> 
+> Cheers,
+> Marc
+> 
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel

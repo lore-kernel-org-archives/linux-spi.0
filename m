@@ -1,61 +1,54 @@
-From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Subject: Re: mc13xxx: add I2C support, V5
-Date: Tue, 17 Apr 2012 09:21:41 +1000
-Message-ID: <201204170921.42027.marc@cpdesign.com.au>
-References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
-Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
+From: Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] spi/pl022: Fix error print while setting bits/word on pl022
+Date: Tue, 17 Apr 2012 11:28:45 +0530
+Message-ID: <1334642325-29159-1-git-send-email-vinit.shenoy@st.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1333262499-25871-1-git-send-email-marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Samuel,
+pl022 ssp controller supports word lengths from 4 to 16 bits.
+The kernel error message says:
+"a standard pl022 can only handle 1 <= n <= 16 bit words".
+
+Fixed above range to 4 <= n <= 16.
+
+Signed-off-by: Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 09c925a..905752f 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1848,7 +1848,7 @@ static int pl022_setup(struct spi_device *spi)
+ 				"illegal data size for this controller!\n");
+ 			dev_err(&spi->dev,
+ 				"a standard pl022 can only handle "
+-				"1 <= n <= 16 bit words\n");
++				"4 <= n <= 16 bit words\n");
+ 			status = -ENOTSUPP;
+ 			goto err_config_params;
+ 		}
+-- 
+1.7.3.4
 
 
-On Sunday, April 01, 2012 04:41:35 PM Marc Reilly wrote:
-> This series (against mfd-2.6/for-next) changes the mc13xxx driver to use
-> regmap and adds I2C support.
-> It has a compile dependency on regmap/for-next, as the spi driver uses the
-> recently added pad_bits config field.
-
-(bump).
-
-Are these changes OK to go in?
-
-Cheers,
-Marc
-
-
-
-> 
-> Patch 2/4 has:
-> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> Patch 4/4 has:
-> Signed-off-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org>
-> 
-> Changes since:
-> V4:
-> - Fix compile error when CONFIG_OF enabled
-> - Select REGMAP_I2C and REGMAP_SPI for appropriate drivers.
-> 
-> V3:
-> - spi driver uses padded register format (reads should actually work now!)
-> - mc13873 removed from I2C driver
-> - fix memory leak on probe error
-> 
-> Cheers,
-> Marc
-> 
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+------------------------------------------------------------------------------
+Better than sec? Nothing is better than sec when it comes to
+monitoring Big Data applications. Try Boundary one-second 
+resolution app monitoring today. Free.
+http://p.sf.net/sfu/Boundary-dev2dev

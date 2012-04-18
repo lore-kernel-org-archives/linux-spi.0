@@ -1,143 +1,75 @@
-From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: [PATCH] spi/spi-ep93xx.c: use dma_transfer_direction instead of dma_data_direction
-Date: Tue, 17 Apr 2012 18:46:36 -0700
-Message-ID: <201204171846.37245.hartleys@visionengravers.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
+Date: Wed, 18 Apr 2012 14:20:47 +0200
+Message-ID: <CACRpkdY8hexQnAao+jqRcFBD+ofwhKghOuBN2VE_GZi7bQ4jzA@mail.gmail.com>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
+	<CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
+	<Pine.LNX.4.64.1203170036590.20979@axis700.grange>
+	<CACRpkdZFobGAqO-8xe_JqA9stc=S6SHBCNEN4DSXy1AN5Ro8HQ@mail.gmail.com>
+	<20120320144054.930D03E2834@localhost>
+	<Pine.LNX.4.64.1204112254420.10361@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@secretlab.ca>, <vinod.koul@linux.intel.com>
-To: Linux Kernel <linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <Pine.LNX.4.64.1204112254420.10361-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-A new enum indicating the dma channel direction was introduced by:
+On Wed, Apr 11, 2012 at 10:56 PM, Guennadi Liakhovetski
+<g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> Hi Grant
+> On Tue, 20 Mar 2012, Grant Likely wrote:
+>
+>> On Mon, 19 Mar 2012 00:33:14 +0100, Linus Walleij <linus.walleij@linaro.=
+org> wrote:
+>> > On Sat, Mar 17, 2012 at 12:39 AM, Guennadi Liakhovetski
+>> > <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+>> >
+>> > > The SPI subsystem core now manages message queues internally. Remove=
+ the
+>> > > local message queue implementation from the spi-bitbang driver and
+>> > > migrate to the common one.
+>> > >
+>> > > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+>> >
+>> > This is great stuff!
+>> > Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>> >
+>> > (Since I've never really used the bitbang driver I wouldn't trust me to
+>> > do any deeper review.)
+>>
+>> In hindsite; I should have asked you to make the pl driver use bitbang
+>> queueing since that was already used for generic queuing by a number
+>> of drivers; and then refactored that to perform better. =A0Doing that
+>> would have been refactoring better tested code, but oh well.
+>>
+>> I'm going to ignore this series for the moment; please remind me to
+>> look at it after the merge window has closed.
+>
+> Seems to be time:-)
 
-commit 49920bc66984a512f4bcc7735a61642cd0e4d6f2
-    dmaengine: add new enum dma_transfer_direction
+Yeah lets ping Grant on this :)
 
-The following commit changed spi-ep93xx to use the new enum:
+Yours,
+Linus Walleij
 
-commit a485df4b4404379786c4bdd258bc528b2617449d
-    spi, serial: move to dma_transfer_direction
-
-In doing so a sparse warning was introduced: 
-
-warning: mixing different enum types
-   int enum dma_data_direction  versus
-   int enum dma_transfer_direction
-
-This is produced because the 'dir' passed in ep93xx_spi_dma_prepare
-is an enum dma_data_direction and is being used to set the
-dma_slave_config 'direction' which is now an enum dma_transfer_direction.
-
-Fix this by converting spi-ep93xx to use the new enum type in all
-places.
-
-Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Cc: Vinod Koul <vinod.koul@linux.intel.com>
-
+---------------------------------------------------------------------------=
 ---
+Better than sec? Nothing is better than sec when it comes to
+monitoring Big Data applications. Try Boundary one-second =
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 6db2887..e805507 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -545,13 +545,12 @@ static void ep93xx_spi_pio_transfer(struct ep93xx_spi *espi)
-  * in case of failure.
-  */
- static struct dma_async_tx_descriptor *
--ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_data_direction dir)
-+ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_transfer_direction dir)
- {
- 	struct spi_transfer *t = espi->current_msg->state;
- 	struct dma_async_tx_descriptor *txd;
- 	enum dma_slave_buswidth buswidth;
- 	struct dma_slave_config conf;
--	enum dma_transfer_direction slave_dirn;
- 	struct scatterlist *sg;
- 	struct sg_table *sgt;
- 	struct dma_chan *chan;
-@@ -567,14 +566,13 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_data_direction dir)
- 	memset(&conf, 0, sizeof(conf));
- 	conf.direction = dir;
- 
--	if (dir == DMA_FROM_DEVICE) {
-+	if (dir == DMA_DEV_TO_MEM) {
- 		chan = espi->dma_rx;
- 		buf = t->rx_buf;
- 		sgt = &espi->rx_sgt;
- 
- 		conf.src_addr = espi->sspdr_phys;
- 		conf.src_addr_width = buswidth;
--		slave_dirn = DMA_DEV_TO_MEM;
- 	} else {
- 		chan = espi->dma_tx;
- 		buf = t->tx_buf;
-@@ -582,7 +580,6 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_data_direction dir)
- 
- 		conf.dst_addr = espi->sspdr_phys;
- 		conf.dst_addr_width = buswidth;
--		slave_dirn = DMA_MEM_TO_DEV;
- 	}
- 
- 	ret = dmaengine_slave_config(chan, &conf);
-@@ -633,8 +630,7 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_data_direction dir)
- 	if (!nents)
- 		return ERR_PTR(-ENOMEM);
- 
--	txd = dmaengine_prep_slave_sg(chan, sgt->sgl, nents,
--					slave_dirn, DMA_CTRL_ACK);
-+	txd = dmaengine_prep_slave_sg(chan, sgt->sgl, nents, dir, DMA_CTRL_ACK);
- 	if (!txd) {
- 		dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
- 		return ERR_PTR(-ENOMEM);
-@@ -651,12 +647,12 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_data_direction dir)
-  * unmapped.
-  */
- static void ep93xx_spi_dma_finish(struct ep93xx_spi *espi,
--				  enum dma_data_direction dir)
-+				  enum dma_transfer_direction dir)
- {
- 	struct dma_chan *chan;
- 	struct sg_table *sgt;
- 
--	if (dir == DMA_FROM_DEVICE) {
-+	if (dir == DMA_DEV_TO_MEM) {
- 		chan = espi->dma_rx;
- 		sgt = &espi->rx_sgt;
- 	} else {
-@@ -677,16 +673,16 @@ static void ep93xx_spi_dma_transfer(struct ep93xx_spi *espi)
- 	struct spi_message *msg = espi->current_msg;
- 	struct dma_async_tx_descriptor *rxd, *txd;
- 
--	rxd = ep93xx_spi_dma_prepare(espi, DMA_FROM_DEVICE);
-+	rxd = ep93xx_spi_dma_prepare(espi, DMA_DEV_TO_MEM);
- 	if (IS_ERR(rxd)) {
- 		dev_err(&espi->pdev->dev, "DMA RX failed: %ld\n", PTR_ERR(rxd));
- 		msg->status = PTR_ERR(rxd);
- 		return;
- 	}
- 
--	txd = ep93xx_spi_dma_prepare(espi, DMA_TO_DEVICE);
-+	txd = ep93xx_spi_dma_prepare(espi, DMA_MEM_TO_DEV);
- 	if (IS_ERR(txd)) {
--		ep93xx_spi_dma_finish(espi, DMA_FROM_DEVICE);
-+		ep93xx_spi_dma_finish(espi, DMA_DEV_TO_MEM);
- 		dev_err(&espi->pdev->dev, "DMA TX failed: %ld\n", PTR_ERR(rxd));
- 		msg->status = PTR_ERR(txd);
- 		return;
-@@ -705,8 +701,8 @@ static void ep93xx_spi_dma_transfer(struct ep93xx_spi *espi)
- 
- 	wait_for_completion(&espi->wait);
- 
--	ep93xx_spi_dma_finish(espi, DMA_TO_DEVICE);
--	ep93xx_spi_dma_finish(espi, DMA_FROM_DEVICE);
-+	ep93xx_spi_dma_finish(espi, DMA_MEM_TO_DEV);
-+	ep93xx_spi_dma_finish(espi, DMA_DEV_TO_MEM);
- }
- 
- /**
+resolution app monitoring today. Free.
+http://p.sf.net/sfu/Boundary-dev2dev

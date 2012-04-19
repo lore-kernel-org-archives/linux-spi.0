@@ -1,13 +1,13 @@
-From: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
-Subject: [PATCH v2] spi/ep93xx: clean probe/remove routines
-Date: Thu, 19 Apr 2012 10:00:07 +0300
-Message-ID: <1334818807-4473-1-git-send-email-hannuxx@iki.fi>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] spi: pl022: Fix calculate_effective_freq()
+Date: Thu, 19 Apr 2012 14:44:21 +0530
+Message-ID: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: mika.westerberg-X3B1VOXEql0@public.gmane.org
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org, vinit.shenoy-qxv4g6HH51o@public.gmane.org
+To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,132 +19,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Use devm_* functions for managing devres resources.
+calculate_effective_freq() was still not optimized and there were cases when it
+returned without error and with values of cpsr and scr as zero.
 
-Also use local variable irq and remove irq variable from
-struct ep93xx_spi, as it is needed only in probe routine.
+Also, the variable named found is not used well.
 
-Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
-Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+This patch targets to optimize and correct this routine. Tested for SPEAr.
+
+Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Tested-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
 ---
- drivers/spi/spi-ep93xx.c |   37 ++++++++++---------------------------
- 1 file changed, 10 insertions(+), 27 deletions(-)
+ drivers/spi/spi-pl022.c |   23 +++++++++++++++++------
+ 1 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 6db2887..ea78625 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -76,7 +76,6 @@
-  * @clk: clock for the controller
-  * @regs_base: pointer to ioremap()'d registers
-  * @sspdr_phys: physical address of the SSPDR register
-- * @irq: IRQ number used by the driver
-  * @min_rate: minimum clock rate (in Hz) supported by the controller
-  * @max_rate: maximum clock rate (in Hz) supported by the controller
-  * @running: is the queue running
-@@ -114,7 +113,6 @@ struct ep93xx_spi {
- 	struct clk			*clk;
- 	void __iomem			*regs_base;
- 	unsigned long			sspdr_phys;
--	int				irq;
- 	unsigned long			min_rate;
- 	unsigned long			max_rate;
- 	bool				running;
-@@ -1035,6 +1033,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
- 	struct ep93xx_spi_info *info;
- 	struct ep93xx_spi *espi;
- 	struct resource *res;
-+	int irq;
- 	int error;
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 99d5f6d..490be03 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1687,26 +1687,37 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
+ 		while (scr <= SCR_MAX) {
+ 			tmp = spi_rate(rate, cpsdvsr, scr);
  
- 	info = pdev->dev.platform_data;
-@@ -1074,8 +1073,8 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
- 	espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
- 	espi->pdev = pdev;
- 
--	espi->irq = platform_get_irq(pdev, 0);
--	if (espi->irq < 0) {
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
- 		error = -EBUSY;
- 		dev_err(&pdev->dev, "failed to get irq resources\n");
- 		goto fail_put_clock;
-@@ -1088,26 +1087,20 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
- 		goto fail_put_clock;
- 	}
- 
--	res = request_mem_region(res->start, resource_size(res), pdev->name);
--	if (!res) {
--		dev_err(&pdev->dev, "unable to request iomem resources\n");
--		error = -EBUSY;
--		goto fail_put_clock;
--	}
--
- 	espi->sspdr_phys = res->start + SSPDR;
--	espi->regs_base = ioremap(res->start, resource_size(res));
+-			if (tmp > freq)
++			if (tmp > freq) {
++				/* we need lower freq */
+ 				scr++;
++				continue;
++			}
 +
-+	espi->regs_base = devm_request_and_ioremap(&pdev->dev, res);
- 	if (!espi->regs_base) {
- 		dev_err(&pdev->dev, "failed to map resources\n");
- 		error = -ENODEV;
--		goto fail_free_mem;
-+		goto fail_put_clock;
+ 			/*
+-			 * If found exact value, update and break.
+-			 * If found more closer value, update and continue.
++			 * If found exact value, mark found and break.
++			 * If found more closer value, update and break.
+ 			 */
+-			else if ((tmp == freq) || (tmp > best_freq)) {
++			if (tmp > best_freq) {
+ 				best_freq = tmp;
+ 				best_cpsdvsr = cpsdvsr;
+ 				best_scr = scr;
+ 
+ 				if (tmp == freq)
+-					break;
++					found = 1;
+ 			}
+-			scr++;
++			/*
++			 * increased scr will give lower rates, which are not
++			 * required
++			 */
++			break;
+ 		}
+ 		cpsdvsr += 2;
+ 		scr = SCR_MIN;
  	}
  
--	error = request_irq(espi->irq, ep93xx_spi_interrupt, 0,
--			    "ep93xx-spi", espi);
-+	error = devm_request_irq(&pdev->dev, irq, ep93xx_spi_interrupt,
-+				0, "ep93xx-spi", espi);
- 	if (error) {
- 		dev_err(&pdev->dev, "failed to request irq\n");
--		goto fail_unmap_regs;
-+		goto fail_put_clock;
- 	}
- 
- 	if (info->use_dma && ep93xx_spi_setup_dma(espi))
-@@ -1132,7 +1125,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
--		 (unsigned long)res->start, espi->irq);
-+		 (unsigned long)res->start, irq);
- 
- 	return 0;
- 
-@@ -1140,11 +1133,6 @@ fail_free_queue:
- 	destroy_workqueue(espi->wq);
- fail_free_dma:
- 	ep93xx_spi_release_dma(espi);
--	free_irq(espi->irq, espi);
--fail_unmap_regs:
--	iounmap(espi->regs_base);
--fail_free_mem:
--	release_mem_region(res->start, resource_size(res));
- fail_put_clock:
- 	clk_put(espi->clk);
- fail_release_master:
-@@ -1158,7 +1146,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
--	struct resource *res;
- 
- 	spin_lock_irq(&espi->lock);
- 	espi->running = false;
-@@ -1184,10 +1171,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
- 	spin_unlock_irq(&espi->lock);
- 
- 	ep93xx_spi_release_dma(espi);
--	free_irq(espi->irq, espi);
--	iounmap(espi->regs_base);
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	release_mem_region(res->start, resource_size(res));
- 	clk_put(espi->clk);
- 	platform_set_drvdata(pdev, NULL);
- 
++	WARN(!best_freq, "pl022: Matching cpsdvsr and scr not found for %d Hz rate \n",
++			freq);
++
+ 	clk_freq->cpsdvsr = (u8) (best_cpsdvsr & 0xFF);
+ 	clk_freq->scr = (u8) (best_scr & 0xFF);
+ 	dev_dbg(&pl022->adev->dev,
 -- 
-1.7.9.5
+1.7.9
 
 
 ------------------------------------------------------------------------------

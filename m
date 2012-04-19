@@ -1,13 +1,18 @@
-From: "Diane, Tarologue" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Diane_vous_a_envoy=E9_un_message_personnel?=
-Date: Thu, 19 Apr 2012 08:05:29 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.912635.3236305005@marketing.zabaloc.com>
-Reply-To: "Diane, Tarologue" <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+Subject: Re: [PATCH] spi/spi-ep93xx.c: use dma_transfer_direction instead of
+	dma_data_direction
+Date: Thu, 19 Apr 2012 09:10:21 +0300
+Message-ID: <20120419061020.GB18520@mwesterb-mobl.lan>
+References: <201204171846.37245.hartleys@visionengravers.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201204171846.37245.hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,77 +23,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Apr 17, 2012 at 06:46:36PM -0700, H Hartley Sweeten wrote:
+> A new enum indicating the dma channel direction was introduced by:
+> 
+> commit 49920bc66984a512f4bcc7735a61642cd0e4d6f2
+>     dmaengine: add new enum dma_transfer_direction
+> 
+> The following commit changed spi-ep93xx to use the new enum:
+> 
+> commit a485df4b4404379786c4bdd258bc528b2617449d
+>     spi, serial: move to dma_transfer_direction
+> 
+> In doing so a sparse warning was introduced: 
+> 
+> warning: mixing different enum types
+>    int enum dma_data_direction  versus
+>    int enum dma_transfer_direction
+> 
+> This is produced because the 'dir' passed in ep93xx_spi_dma_prepare
+> is an enum dma_data_direction and is being used to set the
+> dma_slave_config 'direction' which is now an enum dma_transfer_direction.
+> 
+> Fix this by converting spi-ep93xx to use the new enum type in all
+> places.
+> 
+> Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
+Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 
-Votre Avenir par les Tarots Si vous ne visualisez pas correctement ce =
-
-message, cliquez ici. : =
-
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wu_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VLU =
-
-
-=A0 La magie c=E9leste des Tarots peut faire des miracles pour vous !
- Ne manquez pas les =E9l=E9ments d=E9clencheurs de bonheur qui pourront vou=
-s =
-
-apparaitre gr=E2ce aux prodigieux pouvoirs des Astres.
-
- Tirez gracieusement trois cartes et d=E9couvrez comment votre vie peut =
-
-changer d un coup =E0 partir d'aujourd'hui. : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wo_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VLM =
-
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3woPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLN =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wofcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLS =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wpvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLT =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wp_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLQ =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wpPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLR =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wpfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VLW =
-
-Une voyance offerte, maintenant ! Peut aider =E0 faire que votre voeu le =
-
-plus cher se r=E9alise  Tirez 3 cartes ici.  : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wuvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VLX =
-
-
- Faites tout de suite un tirage tarot. Profitez des ondes c=E9lestes des =
-
-Astres et d=E9couvrez comment cette voyance peut vous apporter le bonheur.
-Pour ne plus recevoir de courriels de notre part, il vous suffit de =
-
-vous rendre sur cette page : =
-
- http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJCNwHnGHxKLY3wuPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VLV =
-
-. =
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 For Developers, A Lot Can Happen In A Second.
 Boundary is the first to Know...and Tell You.
 Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!

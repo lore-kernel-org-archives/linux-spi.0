@@ -1,14 +1,18 @@
-From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
-	=?iso-8859-15?Q?=27=E0?= 70%
-Date: Tue, 17 Apr 2012 22:56:54 +0200
-Message-ID: <1334696214.4f8dd916e09c3@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: RE: [PATCH v2] spi/ep93xx: clean probe/remove routines
+Date: Thu, 19 Apr 2012 11:03:34 -0500
+Message-ID: <ADE657CA350FB648AAC2C43247A983F00206987A4555@AUSP01VMBX24.collaborationhost.net>
+References: <1334818807-4473-1-git-send-email-hannuxx@iki.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "mika.westerberg-X3B1VOXEql0@public.gmane.org" <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+To: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>, "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1334818807-4473-1-git-send-email-hannuxx-X3B1VOXEql0@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,18 +23,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Thursday, April 19, 2012 12:00 AM, Hannu Heikkinen wrote:
+>
+> Use devm_* functions for managing devres resources.
+>
+> Also use local variable irq and remove irq variable from
+> struct ep93xx_spi, as it is needed only in probe routine.
+>
+> Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+> Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
+> Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTk1MjEmYz00ODM2MTImZD0yMDEy=
-LTA0LTE3IDIyOjUwOjAxJmU9MSZoPTk1MjAmZj05NTIxJmc9OTUyMQ=3D=3D
+Oops.. My bad. My sign off should be:
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTk1MjEmYz0=
-0ODM2MTImZD0yMDEyLTA0LTE3IDIyOjUwOjAxJmU9MSZoPTk1MjAmZj05NTIxJmc9OTUyMQ=3D=
-=3D
+Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 For Developers, A Lot Can Happen In A Second.
 Boundary is the first to Know...and Tell You.
 Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!

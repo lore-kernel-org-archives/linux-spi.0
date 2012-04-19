@@ -1,20 +1,15 @@
-From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH] spi/ep93xx: clean probe/remove routines
-Date: Thu, 19 Apr 2012 09:19:53 +0300
-Message-ID: <20120419061953.GD18520@mwesterb-mobl.lan>
-References: <1334752571-24627-1-git-send-email-hannuxx@iki.fi>
-	<ADE657CA350FB648AAC2C43247A983F00206987A41FD@AUSP01VMBX24.collaborationhost.net>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] spi: pl022: Allow request for higher frequency than maximum
+	possible
+Date: Thu, 19 Apr 2012 11:48:15 +0530
+Message-ID: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
+To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <ADE657CA350FB648AAC2C43247A983F00206987A41FD-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,20 +20,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 18, 2012 at 11:09:18AM -0500, H Hartley Sweeten wrote:
-> But, I really don't think we actually gain anything by displaying the
-> memory and irq. Maybe this would be more useful:
-> 
-> 	dev_info(&pdev->dev, "EP93xx SPI Controller using %s\n",
-> 		 espi->dma_tx ? "DMA" : "PIO");
-> 
-> That way the user knows at boot time if the spi controller is using DMA or PIO.
-> 
-> Mika, what do you think?
+Currently, if we request for frequency greater than maximum possible, spi driver
+returns error.
 
-I agree, having the driver to print whether DMA or PIO is used brings more
-value than it is currently doing. However, that is a subject of a separate
-patch not this one.
+For example, if the spi block src frequency is 333/4 MHz, i.e. 83.33.. MHz,
+maximum frequency programmable would be src/2. Which would come around 41.6...
+
+It is difficult to pass frequency in these figures. We normally try to program
+in round figures, like 42 MHz and it should get programmed to <=
+requested_frequency, i.e. 41.6...
+
+For this to happen, we must not return error even if requested freq is higher
+than max possible. But should program it to max possible.
+
+Reported-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 09c925a..99d5f6d 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1667,9 +1667,15 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
+ 	/* cpsdvsr = 254 & scr = 255 */
+ 	min_tclk = spi_rate(rate, CPSDVR_MAX, SCR_MAX);
+ 
+-	if (!((freq <= max_tclk) && (freq >= min_tclk))) {
++	if (freq > max_tclk)
++		dev_warn(&pl022->adev->dev,
++			"Max speed that can be programmed is %d Hz, you requested %d\n",
++			max_tclk, freq);
++
++	if (freq < min_tclk) {
+ 		dev_err(&pl022->adev->dev,
+-			"controller data is incorrect: out of range frequency");
++			"Requested frequency: %d Hz is less than minimum possible %d Hz\n",
++			freq, min_tclk);
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+1.7.9
+
 
 ------------------------------------------------------------------------------
 For Developers, A Lot Can Happen In A Second.

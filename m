@@ -1,15 +1,17 @@
-From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH] spi: pl022: Allow request for higher frequency than maximum
-	possible
-Date: Thu, 19 Apr 2012 11:48:15 +0530
-Message-ID: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar@st.com>
+From: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
+Subject: Re: [PATCH] spi/ep93xx: clean probe/remove routines
+Date: Thu, 19 Apr 2012 09:39:22 +0300
+Message-ID: <20120419063922.GA3437@beyadr.localdomain>
+References: <1334752571-24627-1-git-send-email-hannuxx@iki.fi>
+	<20120419061609.GC18520@mwesterb-mobl.lan>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
-To: <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120419061609.GC18520-p43JL9BdyTL/j2AmgGM1vP8+0UxHXcjY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,49 +22,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently, if we request for frequency greater than maximum possible, spi driver
-returns error.
+On 19/04/12 09:16 +0300, Mika Westerberg wrote:
+> On Wed, Apr 18, 2012 at 03:36:11PM +0300, Hannu Heikkinen wrote:
+> > Use devm_* functions for managing devres resources.
+> > 
+> > Also use local espi_irq and remove irq variable from
+> > struct ep93xx_spi.
+> > 
+> > Cc: mika.westerberg-X3B1VOXEql0@public.gmane.org
+> > Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+> > Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-ep93xx.c |   36 ++++++++++--------------------------
+> >  1 file changed, 10 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> > index 6db2887..2c5fb81 100644
+> > --- a/drivers/spi/spi-ep93xx.c
+> > +++ b/drivers/spi/spi-ep93xx.c
+> > @@ -114,7 +114,6 @@ struct ep93xx_spi {
+> >  	struct clk			*clk;
+> >  	void __iomem			*regs_base;
+> >  	unsigned long			sspdr_phys;
+> > -	int				irq;
+> >  	unsigned long			min_rate;
+> >  	unsigned long			max_rate;
+> >  	bool				running;
+> > @@ -1035,6 +1034,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+> >  	struct ep93xx_spi_info *info;
+> >  	struct ep93xx_spi *espi;
+> >  	struct resource *res;
+> > +	int espi_irq;
+> 
+> Since you are going to make a new version of the patch anyway, can you rename
+> 'espi_irq' to just plain 'irq'?
 
-For example, if the spi block src frequency is 333/4 MHz, i.e. 83.33.. MHz,
-maximum frequency programmable would be src/2. Which would come around 41.6...
+Will do.
 
-It is difficult to pass frequency in these figures. We normally try to program
-in round figures, like 42 MHz and it should get programmed to <=
-requested_frequency, i.e. 41.6...
+> After that you can add my
+> 
+> Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 
-For this to happen, we must not return error even if requested freq is higher
-than max possible. But should program it to max possible.
+I will do the changes needed addressed by you and Hartley.
 
-Reported-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
-Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
----
- drivers/spi/spi-pl022.c |   10 ++++++++--
- 1 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 09c925a..99d5f6d 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1667,9 +1667,15 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
- 	/* cpsdvsr = 254 & scr = 255 */
- 	min_tclk = spi_rate(rate, CPSDVR_MAX, SCR_MAX);
- 
--	if (!((freq <= max_tclk) && (freq >= min_tclk))) {
-+	if (freq > max_tclk)
-+		dev_warn(&pl022->adev->dev,
-+			"Max speed that can be programmed is %d Hz, you requested %d\n",
-+			max_tclk, freq);
-+
-+	if (freq < min_tclk) {
- 		dev_err(&pl022->adev->dev,
--			"controller data is incorrect: out of range frequency");
-+			"Requested frequency: %d Hz is less than minimum possible %d Hz\n",
-+			freq, min_tclk);
- 		return -EINVAL;
- 	}
- 
--- 
-1.7.9
+Thanks,
+Hannu
 
 
 ------------------------------------------------------------------------------

@@ -1,52 +1,50 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: Allow request for higher frequency than
-	maximum possible
-Date: Thu, 19 Apr 2012 19:29:03 +0200
-Message-ID: <CACRpkdab0pvkSC=bCuYmBfaqrsuYfymRHcH34ZASTu+g-DuZ5Q@mail.gmail.com>
-References: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar@st.com>
+From: Paul Mundt <lethal@linux-sh.org>
+Subject: Re: [PATCH] spi: spi-rspi: add dmaengine supporting
+Date: Fri, 20 Apr 2012 10:36:11 +0900
+Message-ID: <20120420013610.GE22189@linux-sh.org>
+References: <4F8FE77D.7020000@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
-To: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	SH-Linux <linux-sh@vger.kernel.org>
+To: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <4F8FE77D.7020000@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 19, 2012 at 8:18 AM, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
+On Thu, Apr 19, 2012 at 07:22:53PM +0900, Shimoda, Yoshihiro wrote:
+> +static struct dma_async_tx_descriptor *rspi_dma_prep_sg(struct scatterlist *sg,
+> +				void *buf, unsigned len, struct dma_chan *chan,
+> +				enum dma_transfer_direction dir)
+> +{
+> +	sg_init_table(sg, 1);
+> +	sg_set_buf(sg, buf, len);
+> +	sg_dma_len(sg) = len,
+> +	dma_map_sg(chan->device->dev, sg, 1, dir);
+> +	return dmaengine_prep_slave_sg(chan, sg, 1, dir,
+> +				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> +}
+> +
+..
 
-> Currently, if we request for frequency greater than maximum possible, spi driver
-> returns error.
->
-> For example, if the spi block src frequency is 333/4 MHz, i.e. 83.33.. MHz,
-> maximum frequency programmable would be src/2. Which would come around 41.6...
->
-> It is difficult to pass frequency in these figures. We normally try to program
-> in round figures, like 42 MHz and it should get programmed to <=
-> requested_frequency, i.e. 41.6...
->
-> For this to happen, we must not return error even if requested freq is higher
-> than max possible. But should program it to max possible.
->
-> Reported-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
-> Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
-
-Looks reasonable and mostly harmless :-)
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-
-Yours,
-Linus Walleij
-
-------------------------------------------------------------------------------
-For Developers, A Lot Can Happen In A Second.
-Boundary is the first to Know...and Tell You.
-Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
-http://p.sf.net/sfu/Boundary-d2dvs2
+> +	desc = rspi_dma_prep_sg(&sg, buf, len, rspi->chan_tx, DMA_TO_DEVICE);
+> +	if (!desc) {
+> +		ret = -EIO;
+> +		goto error;
+> +	}
+> +
+..
+> +error:
+> +	if (rspi->dma_width_16bit)
+> +		kfree(buf);
+> +
+> +	return ret;
+> +}
+> +
+The sg list handling is unbalanced. Specifically you always map the
+scatterlist with dma_map_sg() but you have no corresponding
+dma_unmap_sg() anywhere, either in the error path or your regular exit
+path.

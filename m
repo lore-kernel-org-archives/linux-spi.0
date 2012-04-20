@@ -1,7 +1,8 @@
 From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 0/4] spi: bcm63xx fixes
-Date: Fri, 20 Apr 2012 15:37:32 +0200
-Message-ID: <1334929056-1598-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH 3/4] spi: bcm63xx: set master driver mode_bits.
+Date: Fri, 20 Apr 2012 15:37:35 +0200
+Message-ID: <1334929056-1598-4-git-send-email-florian@openwrt.org>
+References: <1334929056-1598-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -9,6 +10,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1334929056-1598-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,22 +21,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+We were not properly advertising the MODE bits supported by this driver, fix
+that.
 
-This patch series aims at fixing the spi-bcm63xx driver which is currently
-sleeping in its transfer() function. This series is aimed at 3.4-rcX.
+Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-Thanks!
-
-Florian Fainelli (4):
-  spi: bcm63xx: convert to the pump message infrastructure
-  spi: bcm63xx: don't use the stopping state
-  spi: bcm63xx: set master driver mode_bits.
-  spi: bcm63xx: bump driver version to 0.1.3.
-
- drivers/spi/spi-bcm63xx.c |  165 +++++++++++++++++++++++++--------------------
- 1 files changed, 93 insertions(+), 72 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 80e5ed3..7491971 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -404,6 +404,7 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
+ 	master->prepare_transfer_hardware = bcm63xx_spi_prepare_transfer;
+ 	master->unprepare_transfer_hardware = bcm63xx_spi_unprepare_transfer;
+ 	master->transfer_one_message = bcm63xx_spi_transfer_one;
++	master->mode_bits = MODEBITS;
+ 	bs->speed_hz = pdata->speed_hz;
+ 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+ 	bs->rx_io = (const u8 *)(bs->regs + bcm63xx_spireg(SPI_RX_DATA));
 -- 
 1.7.5.4
 

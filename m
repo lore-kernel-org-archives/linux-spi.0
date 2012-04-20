@@ -1,8 +1,7 @@
 From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/4] spi: bcm63xx: convert to the pump message infrastructure
-Date: Fri, 20 Apr 2012 15:37:33 +0200
-Message-ID: <1334929056-1598-2-git-send-email-florian@openwrt.org>
-References: <1334929056-1598-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH 0/4] spi: bcm63xx fixes
+Date: Fri, 20 Apr 2012 15:37:32 +0200
+Message-ID: <1334929056-1598-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -10,7 +9,6 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1334929056-1598-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,291 +19,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch converts the bcm63xx SPI driver to use the SPI infrastructure
-pump message queue. Since we were previously sleeping in the SPI
-driver's transfer() function (which is not allowed) this is now fixed as well.
+Hi Grant,
 
-To complete that conversion a certain number of changes have been made:
-- the transfer len is split into multiple hardware transfers in case its
-  size is bigger than the hardware FIFO size
-- the FIFO refill is no longer done in the interrupt context, which was a
-  bad idea leading to quick interrupt handler re-entrancy
+This patch series aims at fixing the spi-bcm63xx driver which is currently
+sleeping in its transfer() function. This series is aimed at 3.4-rcX.
 
-Tested-by: Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c |  149 +++++++++++++++++++++++++++------------------
- 1 files changed, 89 insertions(+), 60 deletions(-)
+Thanks!
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index f01b264..63b0028 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -1,7 +1,7 @@
- /*
-  * Broadcom BCM63xx SPI controller support
-  *
-- * Copyright (C) 2009-2011 Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ * Copyright (C) 2009-2012 Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-  * Copyright (C) 2010 Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>
-  *
-  * This program is free software; you can redistribute it and/or
-@@ -30,6 +30,8 @@
- #include <linux/spi/spi.h>
- #include <linux/completion.h>
- #include <linux/err.h>
-+#include <linux/workqueue.h>
-+#include <linux/pm_runtime.h>
- 
- #include <bcm63xx_dev_spi.h>
- 
-@@ -96,17 +98,12 @@ static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
- 	{   391000, SPI_CLK_0_391MHZ }
- };
- 
--static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
--				      struct spi_transfer *t)
-+static int bcm63xx_spi_check_transfer(struct spi_device *spi,
-+					struct spi_transfer *t)
- {
--	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
- 	u8 bits_per_word;
--	u8 clk_cfg, reg;
--	u32 hz;
--	int i;
- 
- 	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
--	hz = (t) ? t->speed_hz : spi->max_speed_hz;
- 	if (bits_per_word != 8) {
- 		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
- 			__func__, bits_per_word);
-@@ -119,6 +116,19 @@ static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
- 		return -EINVAL;
- 	}
- 
-+	return 0;
-+}
-+
-+static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
-+				      struct spi_transfer *t)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
-+	u32 hz;
-+	u8 clk_cfg, reg;
-+	int i;
-+
-+	hz = (t) ? t->speed_hz : spi->max_speed_hz;
-+
- 	/* Find the closest clock configuration */
- 	for (i = 0; i < SPI_CLK_MASK; i++) {
- 		if (hz <= bcm63xx_spi_freq_table[i][0]) {
-@@ -139,8 +149,6 @@ static int bcm63xx_spi_setup_transfer(struct spi_device *spi,
- 	bcm_spi_writeb(bs, reg, SPI_CLK_CFG);
- 	dev_dbg(&spi->dev, "Setting clock register to %02x (hz %d)\n",
- 		clk_cfg, hz);
--
--	return 0;
- }
- 
- /* the spi->mode bits understood by this driver: */
-@@ -165,7 +173,7 @@ static int bcm63xx_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	ret = bcm63xx_spi_setup_transfer(spi, NULL);
-+	ret = bcm63xx_spi_check_transfer(spi, NULL);
- 	if (ret < 0) {
- 		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
- 			spi->mode & ~MODEBITS);
-@@ -190,28 +198,29 @@ static void bcm63xx_spi_fill_tx_fifo(struct bcm63xx_spi *bs)
- 	bs->remaining_bytes -= size;
- }
- 
--static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-+static unsigned int bcm63xx_txrx_bufs(struct spi_device *spi,
-+					struct spi_transfer *t)
- {
- 	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
- 	u16 msg_ctl;
- 	u16 cmd;
- 
-+	/* Disable the CMD_DONE interrupt */
-+	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-+
- 	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
- 		t->tx_buf, t->rx_buf, t->len);
- 
- 	/* Transmitter is inhibited */
- 	bs->tx_ptr = t->tx_buf;
- 	bs->rx_ptr = t->rx_buf;
--	init_completion(&bs->done);
- 
- 	if (t->tx_buf) {
- 		bs->remaining_bytes = t->len;
- 		bcm63xx_spi_fill_tx_fifo(bs);
- 	}
- 
--	/* Enable the command done interrupt which
--	 * we use to determine completion of a command */
--	bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
-+	init_completion(&bs->done);
- 
- 	/* Fill in the Message control register */
- 	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
-@@ -230,33 +239,76 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
- 	cmd |= (spi->chip_select << SPI_CMD_DEVICE_ID_SHIFT);
- 	bcm_spi_writew(bs, cmd, SPI_CMD);
--	wait_for_completion(&bs->done);
- 
--	/* Disable the CMD_DONE interrupt */
--	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-+	/* Enable the CMD_DONE interrupt */
-+	bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
- 
- 	return t->len - bs->remaining_bytes;
- }
- 
--static int bcm63xx_transfer(struct spi_device *spi, struct spi_message *m)
-+static int bcm63xx_spi_prepare_transfer(struct spi_master *master)
- {
--	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
--	struct spi_transfer *t;
--	int ret = 0;
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
- 
--	if (unlikely(list_empty(&m->transfers)))
--		return -EINVAL;
-+	pm_runtime_get_sync(&bs->pdev->dev);
- 
--	if (bs->stopping)
--		return -ESHUTDOWN;
-+	return 0;
-+}
-+
-+static int bcm63xx_spi_unprepare_transfer(struct spi_master *master)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+
-+	pm_runtime_put(&bs->pdev->dev);
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_spi_transfer_one(struct spi_master *master,
-+					struct spi_message *m)
-+{
-+	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-+	struct spi_transfer *t;
-+	struct spi_device *spi = m->spi;
-+	int status = 0;
-+	unsigned int timeout = 0;
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		ret += bcm63xx_txrx_bufs(spi, t);
--	}
-+		unsigned int len = t->len;
-+		u8 rx_tail;
- 
--	m->complete(m->context);
-+		status = bcm63xx_spi_check_transfer(spi, t);
-+		if (status < 0)
-+			goto exit;
- 
--	return ret;
-+		/* configure adapter for a new transfer */
-+		bcm63xx_spi_setup_transfer(spi, t);
-+
-+		while (len) {
-+			/* send the data */
-+			len -= bcm63xx_txrx_bufs(spi, t);
-+
-+			timeout = wait_for_completion_timeout(&bs->done, HZ);
-+			if (!timeout) {
-+				status = -ETIMEDOUT;
-+				goto exit;
-+			}
-+
-+			/* read out all data */
-+			rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
-+
-+			/* Read out all the data */
-+			if (rx_tail)
-+				memcpy_fromio(bs->rx_ptr, bs->rx_io, rx_tail);
-+		}
-+
-+		m->actual_length += t->len;
-+	}
-+exit:
-+	m->status = status;
-+	spi_finalize_current_message(master);
-+
-+	return 0;
- }
- 
- /* This driver supports single master mode only. Hence
-@@ -267,39 +319,15 @@ static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
- 	struct spi_master *master = (struct spi_master *)dev_id;
- 	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
- 	u8 intr;
--	u16 cmd;
- 
- 	/* Read interupts and clear them immediately */
- 	intr = bcm_spi_readb(bs, SPI_INT_STATUS);
- 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
- 	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
- 
--	/* A tansfer completed */
--	if (intr & SPI_INTR_CMD_DONE) {
--		u8 rx_tail;
--
--		rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
--
--		/* Read out all the data */
--		if (rx_tail)
--			memcpy_fromio(bs->rx_ptr, bs->rx_io, rx_tail);
--
--		/* See if there is more data to send */
--		if (bs->remaining_bytes > 0) {
--			bcm63xx_spi_fill_tx_fifo(bs);
--
--			/* Start the transfer */
--			bcm_spi_writew(bs, SPI_HD_W << SPI_MSG_TYPE_SHIFT,
--				       SPI_MSG_CTL);
--			cmd = bcm_spi_readw(bs, SPI_CMD);
--			cmd |= SPI_CMD_START_IMMEDIATE;
--			cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
--			bcm_spi_writeb(bs, SPI_INTR_CMD_DONE, SPI_INT_MASK);
--			bcm_spi_writew(bs, cmd, SPI_CMD);
--		} else {
--			complete(&bs->done);
--		}
--	}
-+	/* A transfer completed */
-+	if (intr & SPI_INTR_CMD_DONE)
-+		complete(&bs->done);
- 
- 	return IRQ_HANDLED;
- }
-@@ -345,7 +373,6 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	bs = spi_master_get_devdata(master);
--	init_completion(&bs->done);
- 
- 	platform_set_drvdata(pdev, master);
- 	bs->pdev = pdev;
-@@ -379,7 +406,9 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
- 	master->bus_num = pdata->bus_num;
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->setup = bcm63xx_spi_setup;
--	master->transfer = bcm63xx_transfer;
-+	master->prepare_transfer_hardware = bcm63xx_spi_prepare_transfer;
-+	master->unprepare_transfer_hardware = bcm63xx_spi_unprepare_transfer;
-+	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	bs->speed_hz = pdata->speed_hz;
- 	bs->stopping = 0;
- 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
+Florian Fainelli (4):
+  spi: bcm63xx: convert to the pump message infrastructure
+  spi: bcm63xx: don't use the stopping state
+  spi: bcm63xx: set master driver mode_bits.
+  spi: bcm63xx: bump driver version to 0.1.3.
+
+ drivers/spi/spi-bcm63xx.c |  165 +++++++++++++++++++++++++--------------------
+ 1 files changed, 93 insertions(+), 72 deletions(-)
+
 -- 
 1.7.5.4
 

@@ -1,8 +1,8 @@
-From: Tonyboy par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?jusqu=27=E0?= -50% sur l'ouverture de l'E-boutique.
-Date: Sat, 21 Apr 2012 15:42:41 +0200
-Message-ID: <1335015761.4f92b9516a5a7@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Pixmania par Galerie des Marques .fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: =?iso-8859-15?Q?50=80?= OFFERTS =?iso-8859-15?Q?d=E8s_100=80?= d'achat
+Date: Sat, 21 Apr 2012 23:12:41 +0200
+Message-ID: <1335042761.4f9322c9b37f6@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMjI5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yMSAxMjowMDowMSZlPTEmaD0xMDIyOCZmPTEwMjI5Jmc9MTAyMjk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9OTkxMSZjPTE5NjE2NDEmZD0yMDEy=
+LTA0LTIxIDIyOjIwOjAxJmU9MSZoPTk5MTAmZj05OTExJmc9OTkxMQ=3D=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMjI5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yMSAxMjowMDowMSZlPTEmaD0xMDIyOCZmPTEwMjI5Jmc9MTAyMj=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9OTkxMSZjPTE=
+5NjE2NDEmZD0yMDEyLTA0LTIxIDIyOjIwOjAxJmU9MSZoPTk5MTAmZj05OTExJmc9OTkxMQ=3D=
+=3D
 
 
 ---------------------------------------------------------------------------=

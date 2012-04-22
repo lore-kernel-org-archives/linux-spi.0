@@ -1,7 +1,8 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 3 Sacs gratuits + livraison offerte code avantages NOIR
-Date: Sun, 22 Apr 2012 14:31:51 +0200
-Message-ID: <1335097911.4f93fa37b6281@mc10.fr>
+From: Yves Rocher par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Offre =?iso-8859-15?Q?d=E9couverte?= : Evadez-vous au paradis avec
+	vos lunettes de soleil offerte
+Date: Sun, 22 Apr 2012 21:56:30 +0200
+Message-ID: <1335124590.4f94626e479b0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMTA3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yMiAxMjowMDowMSZlPTEmaD0xMDEwNiZmPTEwMTA3Jmc9MTAxMDc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMjQ0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yMCAxMjozMDowMSZlPTEmaD0xMDI0MyZmPTEwMjQ0Jmc9MTAyNDQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMTA3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yMiAxMjowMDowMSZlPTEmaD0xMDEwNiZmPTEwMTA3Jmc9MTAxMD=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMjQ0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yMCAxMjozMDowMSZlPTEmaD0xMDI0MyZmPTEwMjQ0Jmc9MTAyND=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

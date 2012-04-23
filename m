@@ -1,8 +1,7 @@
-From: Yves Rocher par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Offre =?iso-8859-15?Q?d=E9couverte?= : Evadez-vous au paradis avec
-	vos lunettes de soleil offerte
-Date: Sun, 22 Apr 2012 21:56:30 +0200
-Message-ID: <1335124590.4f94626e479b0@mc10.fr>
+From: Gagner des voyages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagner des voyages par Lea
+Date: Mon, 23 Apr 2012 02:08:19 +0200
+Message-ID: <1335139699.4f949d7372e0b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMjQ0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yMCAxMjozMDowMSZlPTEmaD0xMDI0MyZmPTEwMjQ0Jmc9MTAyNDQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMjMyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yMyAwMDowMDowMiZlPTEmaD0xMDIzMSZmPTEwMjMyJmc9MTAyMzI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMjQ0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yMCAxMjozMDowMSZlPTEmaD0xMDI0MyZmPTEwMjQ0Jmc9MTAyND=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMjMyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yMyAwMDowMDowMiZlPTEmaD0xMDIzMSZmPTEwMjMyJmc9MTAyMz=
+I=3D
 
 
 ---------------------------------------------------------------------------=

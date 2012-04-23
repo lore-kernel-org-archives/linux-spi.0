@@ -1,61 +1,75 @@
 From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/6] spi: rename config macro name for
-	bfin5xx spi controller driver
-Date: Mon, 23 Apr 2012 18:18:08 -0400
-Message-ID: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
+Subject: [PATCH 2/6] spi: spi-bfin-sport: move word length setup to transfer
+	handler
+Date: Mon, 23 Apr 2012 18:18:09 -0400
+Message-ID: <1335219493-24184-2-git-send-email-scott.jiang.linux@gmail.com>
+References: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Grant Likely
-	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        <uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1335219493-24184-1-git-send-email-scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This controller is only for blackfin 5xx soc, so rename it to BFIN5XX
+Each transfer may have its own bits per word.
 
 Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/Kconfig  |    2 +-
- drivers/spi/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bfin-sport.c |    7 +++----
+ 1 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 3f9a47e..7a07b02 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -74,7 +74,7 @@ config SPI_ATMEL
- 	  This selects a driver for the Atmel SPI Controller, present on
- 	  many AT32 (AVR32) and AT91 (ARM) chips.
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index 248a2cc..bfd9047 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -252,19 +252,15 @@ static void
+ bfin_sport_spi_restore_state(struct bfin_sport_spi_master_data *drv_data)
+ {
+ 	struct bfin_sport_spi_slave_data *chip = drv_data->cur_chip;
+-	unsigned int bits = (drv_data->ops == &bfin_sport_transfer_ops_u8 ? 7 : 15);
  
--config SPI_BFIN
-+config SPI_BFIN5XX
- 	tristate "SPI controller driver for ADI Blackfin5xx"
- 	depends on BLACKFIN
- 	help
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 61c3261..e391be8 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -14,7 +14,7 @@ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
- obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
- obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
--obj-$(CONFIG_SPI_BFIN)			+= spi-bfin5xx.o
-+obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
- obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
- obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
- obj-$(CONFIG_SPI_BUTTERFLY)		+= spi-butterfly.o
+ 	bfin_sport_spi_disable(drv_data);
+ 	dev_dbg(drv_data->dev, "restoring spi ctl state\n");
+ 
+ 	bfin_write(&drv_data->regs->tcr1, chip->ctl_reg);
+-	bfin_write(&drv_data->regs->tcr2, bits);
+ 	bfin_write(&drv_data->regs->tclkdiv, chip->baud);
+-	bfin_write(&drv_data->regs->tfsdiv, bits);
+ 	SSYNC();
+ 
+ 	bfin_write(&drv_data->regs->rcr1, chip->ctl_reg & ~(ITCLK | ITFS));
+-	bfin_write(&drv_data->regs->rcr2, bits);
+ 	SSYNC();
+ 
+ 	bfin_sport_spi_cs_active(chip);
+@@ -425,6 +421,9 @@ bfin_sport_spi_pump_transfers(unsigned long data)
+ 		drv_data->ops = &bfin_sport_transfer_ops_u8;
+ 	else
+ 		drv_data->ops = &bfin_sport_transfer_ops_u16;
++	bfin_write(&drv_data->regs->tcr2, bits_per_word - 1);
++	bfin_write(&drv_data->regs->tfsdiv, bits_per_word - 1);
++	bfin_write(&drv_data->regs->rcr2, bits_per_word - 1);
+ 
+ 	drv_data->state = RUNNING_STATE;
+ 
 -- 
 1.7.0.4
+
+
+
+------------------------------------------------------------------------------
+For Developers, A Lot Can Happen In A Second.
+Boundary is the first to Know...and Tell You.
+Monitor Your Applications in Ultra-Fine Resolution. Try it FREE!
+http://p.sf.net/sfu/Boundary-d2dvs2

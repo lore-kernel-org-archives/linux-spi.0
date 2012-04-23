@@ -1,14 +1,13 @@
-From: =?iso-8859-15?Q?Imp=F4ts_2012_par_Affilibaz?=
-	<infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: =?iso-8859-15?Q?Derni=E8re_ann=E9e_pour_effacer_vos_imp=F4ts?=
-Date: Mon, 23 Apr 2012 08:09:59 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.913324.3236305005@marketing.affilibaz.com>
-Reply-To: =?iso-8859-15?Q?Imp=F4ts_2012_par_Affilibaz?=
-	<infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+From: Mistergooddeal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le Candidat du Pouvoir d'achat =?iso-8859-15?Q?jusqu=27=E0?= 10%
+	sur tout le site
+Date: Mon, 23 Apr 2012 09:13:43 +0200
+Message-ID: <1335165223.4f950127394c5@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,63 +19,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwMjM5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yMyAwMDoyMDowMSZlPTEmaD0xMDIzOCZmPTEwMjM5Jmc9MTAyMzk=3D
 
-ReflexePatrimoine Immobilier Si vous ne visualisez pas correctement ce =
-
-message, cliquez ici. : =
-
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78kvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VKC =
-
-
-=A0 zero euro d impot pendant neuf a quinze ans
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78m_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VF7 =
-
-Derniere annee pour devenir proprietaire grace a vos impots
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78mPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VF4 =
-
-Nos programmes en exclusivit=E9s, Paris IDF, Rhones Alpes, Midi =
-
-Pyrennes, PACA Grand nordhttp://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCN=
-FbnGHxKLY78mfcStGb5lw8W0bBhOG5mpqVsje_HhdBQ4VF5 =
-
-Depechez-vous, fin de la loi scellier le trente et un decembre deux =
-
-mille douze. Loi Scellier BBC 2012. Plus de deux mille cinq cent euro d =
-
-impotshttp://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78nvcStGb5=
-lw8W0bBhOG5mpqVsje_HhdBQ4VF- =
-
-Vous payez plus de deux mille cinq cent euros d impots, obtenez une =
-
-etude personnaliseehttp://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnGHx=
-KLY78n_cStGb5lw8W0bBhOG5mpqVsje_HhdBQ4VF_ =
-
-Scellier sur neuf ans, douze ans ou quinze ans, treize dix sept et =
-
-vingt un pour cent en BBC, six dix et quatorze pourcent non BBChttp://p4tre=
-.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78nPcStGb5lw8W0bBhOG5mpqVsje=
-_HhdBQ4VF8 =
-
-Grace a l actuelle loi scellier, vous deduisez jusqu a 7333 euros de =
-
-vos impots par an pendant 9 ans. Batiment basse consommation et selon =
-
-les stocks disponiblehttp://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJCNFbnG=
-HxKLY78nfcStGb5lw8W0bBhOG5mpqVsje_HhdBQ4VF9 =
-
-Pour ne plus recevoir de courriels de notre part, il vous suffit de =
-
-vous rendre sur cette page : =
-
- http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJCNFbnGHxKLY78k_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VKD =
-
-. =
-
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwMjM5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yMyAwMDoyMDowMSZlPTEmaD0xMDIzOCZmPTEwMjM5Jmc9MTAyMz=
+k=3D
 
 
 ---------------------------------------------------------------------------=

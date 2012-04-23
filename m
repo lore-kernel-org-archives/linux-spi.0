@@ -1,13 +1,12 @@
 From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 4/6] spi/spi_bfin_sport: drop bits_per_word from client data
-Date: Mon, 23 Apr 2012 18:18:11 -0400
-Message-ID: <1335219493-24184-4-git-send-email-scott.jiang.linux@gmail.com>
+Subject: [PATCH 6/6] spi: spi-bfin5xx: flush spi after each transfer
+Date: Mon, 23 Apr 2012 18:18:13 -0400
+Message-ID: <1335219493-24184-6-git-send-email-scott.jiang.linux@gmail.com>
 References: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
+Cc: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, Grant Likely
 	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -22,51 +21,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Since the member was dropped from the common Blackfin header, we need
-to stop using it in the SPORT driver too.
+This can make sure last bit has been shifted out of register.
 
-Signed-off-by: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-bfin-sport.c |   14 ++++++++------
- 1 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bfin5xx.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index bfd9047..1fe5119 100644
---- a/drivers/spi/spi-bfin-sport.c
-+++ b/drivers/spi/spi-bfin-sport.c
-@@ -416,11 +416,12 @@ bfin_sport_spi_pump_transfers(unsigned long data)
- 	drv_data->cs_change = transfer->cs_change;
- 
- 	/* Bits per word setup */
--	bits_per_word = transfer->bits_per_word ? : message->spi->bits_per_word;
--	if (bits_per_word == 8)
--		drv_data->ops = &bfin_sport_transfer_ops_u8;
--	else
-+	bits_per_word = transfer->bits_per_word ? :
-+		message->spi->bits_per_word ? : 8;
-+	if (bits_per_word % 16 == 0)
- 		drv_data->ops = &bfin_sport_transfer_ops_u16;
-+	else
-+		drv_data->ops = &bfin_sport_transfer_ops_u8;
- 	bfin_write(&drv_data->regs->tcr2, bits_per_word - 1);
- 	bfin_write(&drv_data->regs->tfsdiv, bits_per_word - 1);
- 	bfin_write(&drv_data->regs->rcr2, bits_per_word - 1);
-@@ -597,11 +598,12 @@ bfin_sport_spi_setup(struct spi_device *spi)
- 			}
- 			chip->cs_chg_udelay = chip_info->cs_chg_udelay;
- 			chip->idle_tx_val = chip_info->idle_tx_val;
--			spi->bits_per_word = chip_info->bits_per_word;
- 		}
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index 432d019..9bb4d4a 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -587,6 +587,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	if (message->state == DONE_STATE) {
+ 		dev_dbg(&drv_data->pdev->dev, "transfer: all done!\n");
+ 		message->status = 0;
++		bfin_spi_flush(drv_data);
+ 		bfin_spi_giveback(drv_data);
+ 		return;
+ 	}
+@@ -870,8 +871,10 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 		message->actual_length += drv_data->len_in_bytes;
+ 		/* Move to next transfer of this msg */
+ 		message->state = bfin_spi_next_transfer(drv_data);
+-		if (drv_data->cs_change)
++		if (drv_data->cs_change && message->state != DONE_STATE) {
++			bfin_spi_flush(drv_data);
+ 			bfin_spi_cs_deactive(drv_data, chip);
++		}
  	}
  
--	if (spi->bits_per_word != 8 && spi->bits_per_word != 16) {
-+	if (spi->bits_per_word % 8) {
-+		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
-+				spi->bits_per_word);
- 		ret = -EINVAL;
- 		goto error;
- 	}
+ 	/* Schedule next transfer tasklet */
 -- 
 1.7.0.4
 

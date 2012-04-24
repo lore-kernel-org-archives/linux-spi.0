@@ -1,9 +1,8 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e=2C?= cette semaine collection beton
-	et metal !
-Date: Tue, 24 Apr 2012 16:50:38 +0200
-Message-ID: <1335279038.4f96bdbebb9e9@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: =?iso-8859-15?Q?P=E9age?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagnez votre pass d'autoroute gratuit pour 1 an
+Date: Tue, 24 Apr 2012 22:07:43 +0200
+Message-ID: <1335298063.4f97080fd2684@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEwMzcxJmM9MjM2NDM3JmQ9MjAx=
-Mi0wNC0yNCAxNjowMDowMSZlPTEmaD0xMDM3MCZmPTEwMzcxJmc9MTAzNzE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNDI2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yNCAxNzowMDowMSZlPTEmaD0xMDQyNSZmPTEwNDI2Jmc9MTA0MjY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEwMzcxJmM=
-9MjM2NDM3JmQ9MjAxMi0wNC0yNCAxNjowMDowMSZlPTEmaD0xMDM3MCZmPTEwMzcxJmc9MTAzNz=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNDI2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yNCAxNzowMDowMSZlPTEmaD0xMDQyNSZmPTEwNDI2Jmc9MTA0Mj=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

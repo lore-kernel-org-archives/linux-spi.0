@@ -1,18 +1,14 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi32766.1 when probing via dt
-Date: Wed, 25 Apr 2012 00:04:44 -0300
-Message-ID: <CAOMZO5AZ_OYicir1GmeaRtFQu8fiYi-0=2xgWjtO1_B_fFK-MA@mail.gmail.com>
-References: <CAOMZO5DH96X8i=UWL5fj4vwg8cskHK6arq3Nizz6fhnPkYGOzw@mail.gmail.com>
-	<CAOMZO5BgubdvTVu2tz6khgGbsVKJ0BAEB_91BiDE37M5aQf86w@mail.gmail.com>
-	<CAAQ0ZWQvA=a65_y-tNnzGbRq2M25-qD_xv0FepPgPFamrxbnVg@mail.gmail.com>
+From: Equilibre Au Naturel par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez 8 kilos en 2 mois avec un suivi =?iso-8859-15?Q?personna?=
+	=?iso-8859-15?Q?lis=E9?=
+Date: Wed, 25 Apr 2012 23:57:36 +0200
+Message-ID: <1335391056.4f987350a5e8f@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAAQ0ZWQvA=a65_y-tNnzGbRq2M25-qD_xv0FepPgPFamrxbnVg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,19 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBBcHIgMjQsIDIwMTIgYXQgMTE6MTQgUE0sIFNoYXduIEd1byA8c2hhd24uZ3VvQGxp
-bmFyby5vcmc+IHdyb3RlOgoKPiBJIHdvdWxkIHRoaW5rIHNvLiDCoE5vdCBzdXJlIGlmIHlvdSBh
-cmUgaW50ZXJlc3RlZCBpbiBzb2x2aW5nIHRoZSBGSVhNRQo+IGluIHRoZSBjb21tZW50IHJpZ2h0
-IGFib3ZlIHRoYXQuCgpJIGhhdmVuJ3QgcmVhbGx5IHVuZGVyc3Rvb2Qgd2hhdCAic3dpdGNoIHRv
-IGFuIElEUiBiYXNlZCBzY2hlbWUiIG1lYW5zLgoKUmVnYXJkcywKCkZhYmlvIEVzdGV2YW0KCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNs
-dXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5
-IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNh
-biByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBt
-b2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDov
-L3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
-cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
-aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
-bmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNTMzJmM9NDMyNTgxJmQ9MjAx=
+Mi0wNC0yNSAyMTo1MDowMSZlPTEmaD0xMDUzMiZmPTEwNTMzJmc9MTA1MzM=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNTMzJmM=
+9NDMyNTgxJmQ9MjAxMi0wNC0yNSAyMTo1MDowMSZlPTEmaD0xMDUzMiZmPTEwNTMzJmc9MTA1Mz=
+M=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

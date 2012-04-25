@@ -1,15 +1,17 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: spi32766.1 when probing via dt
-Date: Tue, 24 Apr 2012 22:52:36 -0300
-Message-ID: <CAOMZO5BgubdvTVu2tz6khgGbsVKJ0BAEB_91BiDE37M5aQf86w@mail.gmail.com>
+Date: Wed, 25 Apr 2012 10:14:58 +0800
+Message-ID: <CAAQ0ZWQvA=a65_y-tNnzGbRq2M25-qD_xv0FepPgPFamrxbnVg@mail.gmail.com>
 References: <CAOMZO5DH96X8i=UWL5fj4vwg8cskHK6arq3Nizz6fhnPkYGOzw@mail.gmail.com>
+	<CAOMZO5BgubdvTVu2tz6khgGbsVKJ0BAEB_91BiDE37M5aQf86w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOMZO5DH96X8i=UWL5fj4vwg8cskHK6arq3Nizz6fhnPkYGOzw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CAOMZO5BgubdvTVu2tz6khgGbsVKJ0BAEB_91BiDE37M5aQf86w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,37 +22,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBBcHIgMjQsIDIwMTIgYXQgOToxOCBQTSwgRmFiaW8gRXN0ZXZhbSA8ZmVzdGV2YW1A
-Z21haWwuY29tPiB3cm90ZToKPiBIaSwKPgo+IFdoZW4gYm9vdGluZyBhIG5vbi1EVCBrZXJuZWwg
-Zm9yIChpbXhfdjZfdjdfZGVmY29uZmlnKSDCoEkgZ2V0Ogo+Cj4gbXRkX2RhdGFmbGFzaCBzcGkw
-LjE6IGF0NDVkYjMyMWQgKDQwOTYgS0J5dGVzKSBwYWdlc2l6ZSA1MTIgYnl0ZXMgKE9UUCkKPgo+
-IEJvb3RpbmcgdGhlIHNhbWUga2VybmVsIHZpYSBEVDoKPgo+IG10ZF9kYXRhZmxhc2ggc3BpMzI3
-NjYuMTogYXQ0NWRiMzIxZCAoNDA5NiBLQnl0ZXMpIHBhZ2VzaXplIDUxMiBieXRlcyAoT1RQKQo+
-Cj4gV2hlcmUgZG9lcyB0aGUgJzMyNzY2JyBidXMgbnVtYmVyIGNvbWUgZnJvbT8gSXMgdGhpcyBh
-IGJ1Zz8KCk9rLCBpZiBJIHBhdGNoIGl0IGxpa2UgdGhpczoKCi0tLSBhL2RyaXZlcnMvc3BpL3Nw
-aS5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS5jCkBAIC05NjYsNyArOTY2LDYgQEAgRVhQT1JUX1NZ
-TUJPTF9HUEwoc3BpX2FsbG9jX21hc3Rlcik7CiAgKi8KIGludCBzcGlfcmVnaXN0ZXJfbWFzdGVy
-KHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpCiB7Ci0gICAgICAgc3RhdGljIGF0b21pY190ICAg
-ICAgICAgZHluX2J1c19pZCA9IEFUT01JQ19JTklUKCgxPDwxNSkgLSAxKTsKICAgICAgICBzdHJ1
-Y3QgZGV2aWNlICAgICAgICAgICAqZGV2ID0gbWFzdGVyLT5kZXYucGFyZW50OwogICAgICAgIHN0
-cnVjdCBib2FyZGluZm8gICAgICAgICpiaTsKICAgICAgICBpbnQgICAgICAgICAgICAgICAgICAg
-ICBzdGF0dXMgPSAtRU5PREVWOwpAQCAtOTg2LDcgKzk4NSw3IEBAIGludCBzcGlfcmVnaXN0ZXJf
-bWFzdGVyKHN0cnVjdCBzcGlfbWFzdGVyICptYXN0ZXIpCiAgICAgICAgICAgICAgICAvKiBGSVhN
-RSBzd2l0Y2ggdG8gYW4gSURSIGJhc2VkIHNjaGVtZSwgc29tZXRoaW5nIGxpa2UKICAgICAgICAg
-ICAgICAgICAqIEkyQyBub3cgdXNlcywgc28gd2UgY2FuJ3QgcnVuIG91dCBvZiAiZHluYW1pYyIg
-SURzCiAgICAgICAgICAgICAgICAgKi8KLSAgICAgICAgICAgICAgIG1hc3Rlci0+YnVzX251bSA9
-IGF0b21pY19kZWNfcmV0dXJuKCZkeW5fYnVzX2lkKTsKKyAgICAgICAgICAgICAgIG1hc3Rlci0+
-YnVzX251bSA9IGRldi0+aWQ7CiAgICAgICAgICAgICAgICBkeW5hbWljID0gMTsKICAgICAgICB9
-CgpUaGVuIHRoZSBzcGkgYnVzIG51bWJlciBiZWNvbWVzIHRoZSBzYW1lIGluIGR0IGFuZCBub24t
-ZHQgY2FzZXMuCgpTbyBtYXliZSB0aGUgY3VycmVudCBiZWhhdmlvciBpcyBleHBlY3RlZCBiZWNh
-dXNlIHRoZSB1c2FnZSBvZiAgZHluX2J1c19pZCA/CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2
-ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBj
-b3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUg
-aGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMg
-CndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUg
-bGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3
-L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
-Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On 25 April 2012 09:52, Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> =A0int spi_register_master(struct spi_master *master)
+> =A0{
+> - =A0 =A0 =A0 static atomic_t =A0 =A0 =A0 =A0 dyn_bus_id =3D ATOMIC_INIT(=
+(1<<15) - 1);
+> =A0 =A0 =A0 =A0struct device =A0 =A0 =A0 =A0 =A0 *dev =3D master->dev.par=
+ent;
+> =A0 =A0 =A0 =A0struct boardinfo =A0 =A0 =A0 =A0*bi;
+> =A0 =A0 =A0 =A0int =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 status =3D -EN=
+ODEV;
+> @@ -986,7 +985,7 @@ int spi_register_master(struct spi_master *master)
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0/* FIXME switch to an IDR based scheme, so=
+mething like
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 * I2C now uses, so we can't run out of "d=
+ynamic" IDs
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 */
+> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 master->bus_num =3D atomic_dec_return(&dyn_=
+bus_id);
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 master->bus_num =3D dev->id;
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0dynamic =3D 1;
+> =A0 =A0 =A0 =A0}
+>
+> Then the spi bus number becomes the same in dt and non-dt cases.
+>
+> So maybe the current behavior is expected because the usage of =A0dyn_bus=
+_id ?
+
+I would think so.  Not sure if you are interested in solving the FIXME
+in the comment right above that.
+
+Regards,
+Shawn
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

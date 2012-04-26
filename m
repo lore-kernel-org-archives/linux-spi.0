@@ -1,16 +1,15 @@
-From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi: pl022: Fix calculate_effective_freq()
-Date: Thu, 26 Apr 2012 11:57:44 +0530
-Message-ID: <4F98EAE0.9050509@st.com>
+Date: Thu, 26 Apr 2012 10:29:19 +0200
+Message-ID: <CACRpkdb7YuWAwXDzn+6TuZ_KDADi1KMy7_z-ngtVUx1B=e13mQ@mail.gmail.com>
 References: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	spear-devel <spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org>,
-	Vinit Kamalaksha SHENOY <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
-To: "linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: vinit.shenoy-qxv4g6HH51o@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -23,21 +22,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/19/2012 2:44 PM, Viresh KUMAR wrote:
+On Thu, Apr 19, 2012 at 11:14 AM, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
+
 > calculate_effective_freq() was still not optimized and there were cases when it
 > returned without error and with values of cpsr and scr as zero.
-> 
+>
 > Also, the variable named found is not used well.
-> 
+>
 > This patch targets to optimize and correct this routine. Tested for SPEAr.
-> 
+>
 > Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 > Tested-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
 
-You forgot to review this :)
+Looks good to me.
+Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
--- 
-viresh
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

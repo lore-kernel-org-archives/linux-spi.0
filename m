@@ -1,13 +1,18 @@
-From: IKKS <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?UTF-8?Q?10%_de_r=C3=A9duction_sur_le_site_IKKS_et_Livraison_offerte?=
-Date: Thu, 26 Apr 2012 08:04:36 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.931223.3236305005@marketing.zabaloc.com>
-Reply-To: IKKS <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022: Fix calculate_effective_freq()
+Date: Thu, 26 Apr 2012 11:57:44 +0530
+Message-ID: <4F98EAE0.9050509@st.com>
+References: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	spear-devel <spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org>,
+	Vinit Kamalaksha SHENOY <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+To: "linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,70 +23,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgpJS0tTIEVudHJleiBkYW5zIGwndW5pdmVycyBJS0tTIAoKIFNpIHZvdXMgbmUgcGFydmVuZXog
-cGFzIMOgIGxpcmUgY29ycmVjdGVtZW50IGNlIG1lc3NhZ2UsIHZvdXMgcG91dmV6IApsZSB2aXN1
-YWxpc2VyIGVuIHN1aXZhbnQgIGNlIGxpZW4uIAoKCklra3MKaHR0cDovL3A0dHJlLmVtdjMuY29t
-L0hQP2E9RU5YN0Nxbm1heW1DOFNBOU1LSkI3bTNuR0h4S0xZcHdEX2NTdEdiNWx3OFcwYkJoT0c1
-bXBxVnNqZV9IaGRCUTRWS1YgCgpodHRwOi8vcDR0cmUuZW12My5jb20vSFA/YT1FTlg3Q3FubWF5
-bUM4U0E5TUtKQjdtM25HSHhLTFlwd0RQY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZL
-YSAKCmh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdI
-eEtMWXB3RGZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktiIAoxMCUgOiAKIGh0dHA6
-Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtMWXB3QXZj
-U3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktZIApkZSByw6lkdWN0aW9uIHN1ciBsZSBz
-aXRlIElLS1MgOiAKIGh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhTQTlN
-S0pCN20zbkdIeEtMWXB3QV9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktaIAoKaHR0
-cDovL3A0dHJlLmVtdjMuY29tL0hQP2E9RU5YN0Nxbm1heW1DOFNBOU1LSkI3bTNuR0h4S0xZcHdB
-UGNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRCUTRWS2UgCkxJVlJBSVNPTiA6IAogaHR0cDov
-L3A0dHJlLmVtdjMuY29tL0hQP2E9RU5YN0Nxbm1heW1DOFNBOU1LSkI3bTNuR0h4S0xZcHdBZmNT
-dEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRCUTRWS2YgCgpPRkZFUlRFIDogCiBodHRwOi8vcDR0
-cmUuZW12My5jb20vSFA/YT1FTlg3Q3FubWF5bUM4U0E5TUtKQjdtM25HSHhLTFlwd0J2Y1N0R2I1
-bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZLYyAKCmh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9h
-PUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtMWXB3Ql9jU3RHYjVsdzhXMGJCaE9HNW1wcVZz
-amVfSGhkQlE0VktkIAphdmVjIGxlIGNvZGUgcHJvbW8gOiAKIGh0dHA6Ly9wNHRyZS5lbXYzLmNv
-bS9IUD9hPUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtMWXB3QlBjU3RHYjVsdzhXMGJCaE9H
-NW1wcVZzamVfSGhkQlE0VktpIApDT1NNTzEwIDogCiBodHRwOi8vcDR0cmUuZW12My5jb20vSFA/
-YT1FTlg3Q3FubWF5bUM4U0E5TUtKQjdtM25HSHhLTFlwd0JmY1N0R2I1bHc4VzBiQmhPRzVtcHFW
-c2plX0hoZEJRNFZLaiAKCmh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhT
-QTlNS0pCN20zbkdIeEtMWXB3R3ZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktnIApP
-RkZSRSBERSBCSUVOVkVOVUUgOiAKIGh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5t
-YXltQzhTQTlNS0pCN20zbkdIeEtMWXB3R19jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0
-VktoIApKJ2VuIHByb2ZpdGUKaHR0cDovL3A0dHJlLmVtdjMuY29tL0hQP2E9RU5YN0Nxbm1heW1D
-OFNBOU1LSkI3bTNuR0h4S0xZcHdHUGNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRCUTRWS20g
-CgpodHRwOi8vcDR0cmUuZW12My5jb20vSFA/YT1FTlg3Q3FubWF5bUM4U0E5TUtKQjdtM25HSHhL
-TFlwd0dmY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZLbiAKUE9VUiBQUk9GSVRFUiBE
-RSBWT1RSRSBPRkZSRSBERSBCSUVOVkVOVUUgOiA6IGh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9h
-PUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtMWXB3SHZjU3RHYjVsdzhXMGJCaE9HNW1wcVZz
-amVfSGhkQlE0VktrIAoxCmh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhT
-QTlNS0pCN20zbkdIeEtMWXB3SF9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktsIApB
-bGxlciBzdXIgd3d3Lmlra3MuY29tIDogCiBodHRwOi8vcDR0cmUuZW12My5jb20vSFA/YT1FTlg3
-Q3FubWF5bUM4U0E5TUtKQjdtM25HSHhLTFlwd0hQY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0ho
-ZEJRNFZLcSAKMgpodHRwOi8vcDR0cmUuZW12My5jb20vSFA/YT1FTlg3Q3FubWF5bUM4U0E5TUtK
-QjdtM25HSHhLTFlwd0hmY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZLciAKRmFpdGVz
-IHZvcyBhY2hhdHMgOiAKIGh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhT
-QTlNS0pCN20zbkdIeEtMWXB3RXZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktvIAoz
-Cmh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtM
-WXB3RV9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0VktwIApSZW50cmV6IHZvdHJlIGNv
-ZGUgcHJvbW8gOiAKIGh0dHA6Ly9wNHRyZS5lbXYzLmNvbS9IUD9hPUVOWDdDcW5tYXltQzhTQTlN
-S0pCN20zbkdIeEtMWXB3RVBjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0Vkt1IAoKQ09T
-TU8xMCA6IAogaHR0cDovL3A0dHJlLmVtdjMuY29tL0hQP2E9RU5YN0Nxbm1heW1DOFNBOU1LSkI3
-bTNuR0h4S0xZcHdFZmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRCUTRWS3YgCgpodHRwOi8v
-cDR0cmUuZW12My5jb20vSFA/YT1FTlg3Q3FubWF5bUM4U0E5TUtKQjdtM25HSHhLTFlwd0Z2Y1N0
-R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZLcyAKVm91cyBiw6luw6lmaWNpZXogZOKAmXVu
-IGRyb2l0IGTigJlhY2PDqHMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlmaWNhdGlvbiAKZXQg
-ZGUgc3VwcHJlc3Npb24gZGUgdm9zIGRvbm7DqWVzIHBlcnNvbm5lbGxlcwogKGFydC4gMzQgZGUg
-bGEgbG9pIGR1IDYgamFudmllciAxOTc4KS4gUG91ciBuZSBwbHVzIHJlY2V2b2lyIGRlIApjb3Vy
-cmllbHMgZGUgbm90cmUgcGFydCwgaWwgdm91cyBzdWZmaXQgZGUgdm91cyByZW5kcmUgc3VyIGNl
-dHRlIHBhZ2UuIAoKCiBodHRwOi8vcDR0cmUuZW12My5jb20vSE0/YT1FTlg3Q3FubWF5bUM4U0E5
-TUtKQjdtM25HSHhLTFlwd0ZfY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEJRNFZLdGh0dHA6
-Ly9wNHRyZS5lbXYzLmNvbS9IVT9hPUVOWDdDcW5tYXltQzhTQTlNS0pCN20zbkdIeEtMWXB3RlBj
-U3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQlE0Vkt5IAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdp
-bGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNj
-YXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Np
-b25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQg
-dGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29t
-L2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On 4/19/2012 2:44 PM, Viresh KUMAR wrote:
+> calculate_effective_freq() was still not optimized and there were cases when it
+> returned without error and with values of cpsr and scr as zero.
+> 
+> Also, the variable named found is not used well.
+> 
+> This patch targets to optimize and correct this routine. Tested for SPEAr.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+> Tested-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+
+You forgot to review this :)
+
+-- 
+viresh
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

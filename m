@@ -1,15 +1,18 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 0/4] spi: bcm63xx fixes
-Date: Fri, 27 Apr 2012 15:10:31 +0200
-Message-ID: <3699714.O3MZhDn1pX@flexo>
-References: <1334929056-1598-1-git-send-email-florian@openwrt.org>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022: Fix calculate_effective_freq()
+Date: Fri, 27 Apr 2012 10:48:23 -0600
+Message-ID: <20120427164823.AAA713E0B4D@localhost>
+References: <a90e4161f6d2fa30827bedcc2b001dbb50585b46.1334826569.git.viresh.kumar@st.com>
+	<CACRpkdb7YuWAwXDzn+6TuZ_KDADi1KMy7_z-ngtVUx1B=e13mQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	vinit.shenoy-qxv4g6HH51o@public.gmane.org, Chris Blair <chris.blair-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1334929056-1598-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <CACRpkdb7YuWAwXDzn+6TuZ_KDADi1KMy7_z-ngtVUx1B=e13mQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,30 +23,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+On Thu, 26 Apr 2012 10:29:19 +0200, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Apr 19, 2012 at 11:14 AM, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
+> 
+> > calculate_effective_freq() was still not optimized and there were cases when it
+> > returned without error and with values of cpsr and scr as zero.
+> >
+> > Also, the variable named found is not used well.
+> >
+> > This patch targets to optimize and correct this routine. Tested for SPEAr.
+> >
+> > Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+> > Tested-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+> 
+> Looks good to me.
+> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> Yours,
+> Linus Walleij
 
-On Friday 20 April 2012 15:37:32 Florian Fainelli wrote:
-> Hi Grant,
-> 
-> This patch series aims at fixing the spi-bcm63xx driver which is currently
-> sleeping in its transfer() function. This series is aimed at 3.4-rcX.
+Applied, thanks.
 
-Any update on these patches? Thanks!
+g.
 
-> 
-> Thanks!
-> 
-> Florian Fainelli (4):
->   spi: bcm63xx: convert to the pump message infrastructure
->   spi: bcm63xx: don't use the stopping state
->   spi: bcm63xx: set master driver mode_bits.
->   spi: bcm63xx: bump driver version to 0.1.3.
-> 
->  drivers/spi/spi-bcm63xx.c |  165
-> +++++++++++++++++++++++++-------------------- 1 files changed, 93
-> insertions(+), 72 deletions(-)
---
-Florian
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

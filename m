@@ -1,9 +1,9 @@
-From: Blancheporte par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -50% sur tout le site avec le code
-	PROMO 727601
-Date: Fri, 27 Apr 2012 02:56:52 +0200
-Message-ID: <1335488212.4f99eed4a0adc@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Virginie de Rendez Vous =?iso-8859-15?Q?D=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Grand destockage de mobilier design et =?iso-8859-15?Q?d=E9co?=
+	=?iso-8859-15?Q?=2C?= des prix renversants !
+Date: Fri, 27 Apr 2012 04:09:21 +0200
+Message-ID: <1335492561.4f99ffd199842@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNDU3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yNiAyMToyMDowMSZlPTEmaD0xMDQ1NiZmPTEwNDU3Jmc9MTA0NTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEwNjU2JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNC0yNyAwMzo0MDowMSZlPTEmaD0xMDY1NSZmPTEwNjU2Jmc9MTA2NTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNDU3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yNiAyMToyMDowMSZlPTEmaD0xMDQ1NiZmPTEwNDU3Jmc9MTA0NT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEwNjU2JmM=
+9MjM2NDM3JmQ9MjAxMi0wNC0yNyAwMzo0MDowMSZlPTEmaD0xMDY1NSZmPTEwNjU2Jmc9MTA2NT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

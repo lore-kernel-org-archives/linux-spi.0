@@ -1,8 +1,8 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Subject: Re: [PATCH 2/6] spi: spi-bfin-sport: move word length setup to
 	transfer handler
-Date: Fri, 27 Apr 2012 12:21:15 -0600
-Message-ID: <20120427182115.54C223E171B@localhost>
+Date: Fri, 27 Apr 2012 12:21:29 -0600
+Message-ID: <20120427182129.7E1EE3E171B@localhost>
 References: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
 	<1335219493-24184-2-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0

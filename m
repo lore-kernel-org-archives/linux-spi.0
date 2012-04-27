@@ -1,9 +1,10 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: bcm63xx: bump driver version to 0.1.3.
-Date: Fri, 27 Apr 2012 11:14:47 -0600
-Message-ID: <20120427171447.4CC183E0B4D@localhost>
+Subject: Re: [PATCH 1/4] spi: bcm63xx: convert to the pump message
+	infrastructure
+Date: Fri, 27 Apr 2012 11:16:03 -0600
+Message-ID: <20120427171603.80F823E0B4D@localhost>
 References: <1334929056-1598-1-git-send-email-florian@openwrt.org>
-	<1334929056-1598-5-git-send-email-florian@openwrt.org>
+	<1334929056-1598-2-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,7 +12,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1334929056-1598-5-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1334929056-1598-2-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,28 +23,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 20 Apr 2012 15:37:36 +0200, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
-> Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-> ---
->  drivers/spi/spi-bcm63xx.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+On Fri, 20 Apr 2012 15:37:33 +0200, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
+> This patch converts the bcm63xx SPI driver to use the SPI infrastructure
+> pump message queue. Since we were previously sleeping in the SPI
+> driver's transfer() function (which is not allowed) this is now fixed as well.
 > 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 7491971..f41964a 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -36,7 +36,7 @@
->  #include <bcm63xx_dev_spi.h>
->  
->  #define PFX		KBUILD_MODNAME
-> -#define DRV_VER		"0.1.2"
-> +#define DRV_VER		"0.1.3"
+> To complete that conversion a certain number of changes have been made:
+> - the transfer len is split into multiple hardware transfers in case its
+>   size is bigger than the hardware FIFO size
+> - the FIFO refill is no longer done in the interrupt context, which was a
+>   bad idea leading to quick interrupt handler re-entrancy
+> 
+> Tested-by: Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 
-Remove this DRV_VER nonsense.  It doesn't belong in mainlined
-drivers.
+Applied, thanks.
 
 g.
-
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

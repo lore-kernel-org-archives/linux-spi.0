@@ -1,16 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: Device tree conversion of spi device vs. controller_data
-Date: Fri, 27 Apr 2012 12:03:44 -0600
-Message-ID: <20120427180344.F023D3E171B@localhost>
-References: <4F816772.5000607@antcom.de> <20120413032945.0C76B3E07AC@localhost>
-	<4F87D157.2020700@antcom.de>
+Subject: Re: [PATCH] spi: pl022: Allow request for higher frequency than
+	maximum possible
+Date: Fri, 27 Apr 2012 12:08:02 -0600
+Message-ID: <20120427180802.DC1C83E171B@localhost>
+References: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
+To: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4F87D157.2020700-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,96 +22,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 13 Apr 2012 09:10:15 +0200, Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org> wrote:
-> On 04/13/2012 05:29 AM, Grant Likely wrote:
-> >> upon DT conversion of LPC32xx, I came across the at25 spi eeprom which
-> >> needs .controller_data in struct spi_board_info for slave registration
-> >> via spi_register_board_info() (non-DT-case).
-> >>
-> >> In the DT case, we need to eliminate this explicit registering call.
-> >> Therefore, I need to somehow replace the .controller_data passing in the
-> >> DT case to pass this data to the spi core. But I can't find such a
-> >> mechanism (v3.4-rc2). Is there already a concept or API that I
-> >> overlooked (please just point me to it) or what can I do to solve this?
-> >> (Looks like a general issue for spi slave registration via DT).
-> > 
-> > Can you point me at specific code?
-> > 
-> > .controller_data is owned by the spi_master driver.  The eeprom driver
-> > shouldn't be accessing it directly at all; but I'll need to look at
-> > specific code to really understand what is going on.
+On Thu, 19 Apr 2012 11:48:15 +0530, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
+> Currently, if we request for frequency greater than maximum possible, spi driver
+> returns error.
 > 
-> Please have a look at arch/arm/mach-lpc32xx/phy3250.c :
+> For example, if the spi block src frequency is 333/4 MHz, i.e. 83.33.. MHz,
+> maximum frequency programmable would be src/2. Which would come around 41.6...
 > 
-> static struct pl022_config_chip spi0_chip_info = {
->         .com_mode               = INTERRUPT_TRANSFER,
->         .iface                  = SSP_INTERFACE_MOTOROLA_SPI,
->         .hierarchy              = SSP_MASTER,
->         .slave_tx_disable       = 0,
->         .rx_lev_trig            = SSP_RX_4_OR_MORE_ELEM,
->         .tx_lev_trig            = SSP_TX_4_OR_MORE_EMPTY_LOC,
->         .ctrl_len               = SSP_BITS_8,
->         .wait_state             = SSP_MWIRE_WAIT_ZERO,
->         .duplex                 = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
->         .cs_control             = phy3250_spi_cs_set,
+> It is difficult to pass frequency in these figures. We normally try to program
+> in round figures, like 42 MHz and it should get programmed to <=
+> requested_frequency, i.e. 41.6...
+> 
+> For this to happen, we must not return error even if requested freq is higher
+> than max possible. But should program it to max possible.
+> 
+> Reported-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+> Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
 
-phy3250_spi_cs_set is only a wrapper around gpio_set_value().  GPIO CS
-manipulation should be handled by the core pl022 spi driver, so that
-gets rid of the hardest part of this conversion (callbacks in platform
-data).
+Applied, thanks.
 
-The pl022_config_chip structure is 100% owned by the spi controller
-(pl022).  If the bus driver depends on this structure, then it is the
-responsibility of the bus driver to allocate one and set the
-controller data pointer for each of the child devices.  You may need
-to add pl022-specific properties to each of the child nodes to
-populate this data correctly if it cannot be determined with other
-means.
+g.
 
-There is no existing API for this since it is entirely pl022 specific
-code.
-
-> };
+> ---
+>  drivers/spi/spi-pl022.c |   10 ++++++++--
+>  1 files changed, 8 insertions(+), 2 deletions(-)
 > 
-> ...
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> index 09c925a..99d5f6d 100644
+> --- a/drivers/spi/spi-pl022.c
+> +++ b/drivers/spi/spi-pl022.c
+> @@ -1667,9 +1667,15 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
+>  	/* cpsdvsr = 254 & scr = 255 */
+>  	min_tclk = spi_rate(rate, CPSDVR_MAX, SCR_MAX);
+>  
+> -	if (!((freq <= max_tclk) && (freq >= min_tclk))) {
+> +	if (freq > max_tclk)
+> +		dev_warn(&pl022->adev->dev,
+> +			"Max speed that can be programmed is %d Hz, you requested %d\n",
+> +			max_tclk, freq);
+> +
+> +	if (freq < min_tclk) {
+>  		dev_err(&pl022->adev->dev,
+> -			"controller data is incorrect: out of range frequency");
+> +			"Requested frequency: %d Hz is less than minimum possible %d Hz\n",
+> +			freq, min_tclk);
+>  		return -EINVAL;
+>  	}
+>  
+> -- 
+> 1.7.9
 > 
->         static struct spi_eeprom eeprom = {
->                 .name = "at25256a",
->                 .byte_len = 0x8000,
->                 .page_size = 64,
->                 .flags = EE_ADDR2,
-
-This data is easy and is 'owned' by the eeprom data.  It can be
-directly converted into device tree properties in the eeprom node.
-
->         };
-> 
->         static struct spi_board_info info[] = {
->                 {
->                         .modalias = "at25",
->                         .max_speed_hz = 5000000,
->                         .bus_num = 0,
->                         .chip_select = 0,
->                         .mode = SPI_MODE_0,
->                         .platform_data = &eeprom,
->                         .controller_data = &spi0_chip_info,
->                 },
->         };
-
-Everything in spi_board_info directly translates over to DT today.  You
-shouldn't have any problems here.
-
-> 
-> 	spi_register_board_info(info, ARRAY_SIZE(info));
-> 
-> Trying to replace .controller_data at this point with device tree
-> settings passing, I struggled with missing resp. node properties.
-> 
-> Any hint how this can be done?
-> 
-> Thanks in advance,
-> 
-> Roland
 
 -- 
 Grant Likely, B.Sc, P.Eng.

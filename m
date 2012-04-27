@@ -1,17 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: Allow request for higher frequency than
-	maximum possible
-Date: Fri, 27 Apr 2012 12:08:02 -0600
-Message-ID: <20120427180802.DC1C83E171B@localhost>
-References: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar@st.com>
+Subject: Re: [PATCH 1/6] spi: rename config macro name for bfin5xx spi
+	controller driver
+Date: Fri, 27 Apr 2012 12:20:58 -0600
+Message-ID: <20120427182059.094BC3E171B@localhost>
+References: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org
-To: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Cc: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <fef35098d2e7f03888b21356bd2a5f73936ab6d1.1334814714.git.viresh.kumar-qxv4g6HH51o@public.gmane.org>
+In-Reply-To: <1335219493-24184-1-git-send-email-scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,55 +23,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 19 Apr 2012 11:48:15 +0530, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org> wrote:
-> Currently, if we request for frequency greater than maximum possible, spi driver
-> returns error.
+On Mon, 23 Apr 2012 18:18:08 -0400, Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> This controller is only for blackfin 5xx soc, so rename it to BFIN5XX
 > 
-> For example, if the spi block src frequency is 333/4 MHz, i.e. 83.33.. MHz,
-> maximum frequency programmable would be src/2. Which would come around 41.6...
-> 
-> It is difficult to pass frequency in these figures. We normally try to program
-> in round figures, like 42 MHz and it should get programmed to <=
-> requested_frequency, i.e. 41.6...
-> 
-> For this to happen, we must not return error even if requested freq is higher
-> than max possible. But should program it to max possible.
-> 
-> Reported-by: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
-> Signed-off-by: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>
+> Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 Applied, thanks.
 
 g.
 
 > ---
->  drivers/spi/spi-pl022.c |   10 ++++++++--
->  1 files changed, 8 insertions(+), 2 deletions(-)
+>  drivers/spi/Kconfig  |    2 +-
+>  drivers/spi/Makefile |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index 09c925a..99d5f6d 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -1667,9 +1667,15 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
->  	/* cpsdvsr = 254 & scr = 255 */
->  	min_tclk = spi_rate(rate, CPSDVR_MAX, SCR_MAX);
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 3f9a47e..7a07b02 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -74,7 +74,7 @@ config SPI_ATMEL
+>  	  This selects a driver for the Atmel SPI Controller, present on
+>  	  many AT32 (AVR32) and AT91 (ARM) chips.
 >  
-> -	if (!((freq <= max_tclk) && (freq >= min_tclk))) {
-> +	if (freq > max_tclk)
-> +		dev_warn(&pl022->adev->dev,
-> +			"Max speed that can be programmed is %d Hz, you requested %d\n",
-> +			max_tclk, freq);
-> +
-> +	if (freq < min_tclk) {
->  		dev_err(&pl022->adev->dev,
-> -			"controller data is incorrect: out of range frequency");
-> +			"Requested frequency: %d Hz is less than minimum possible %d Hz\n",
-> +			freq, min_tclk);
->  		return -EINVAL;
->  	}
->  
+> -config SPI_BFIN
+> +config SPI_BFIN5XX
+>  	tristate "SPI controller driver for ADI Blackfin5xx"
+>  	depends on BLACKFIN
+>  	help
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 61c3261..e391be8 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -14,7 +14,7 @@ obj-$(CONFIG_SPI_ALTERA)		+= spi-altera.o
+>  obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
+>  obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
+>  obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
+> -obj-$(CONFIG_SPI_BFIN)			+= spi-bfin5xx.o
+> +obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
+>  obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
+>  obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
+>  obj-$(CONFIG_SPI_BUTTERFLY)		+= spi-butterfly.o
 > -- 
-> 1.7.9
+> 1.7.0.4
+> 
 > 
 
 -- 

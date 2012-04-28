@@ -1,120 +1,69 @@
-From: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 6/6] spi: spi-bfin5xx: flush spi
-	after each transfer
-Date: Sat, 28 Apr 2012 00:04:08 -0400
-Message-ID: <201204280004.10467.vapier@gentoo.org>
-References: <1335219493-24184-1-git-send-email-scott.jiang.linux@gmail.com>
-	<1335219493-24184-6-git-send-email-scott.jiang.linux@gmail.com>
-	<20120427183501.16C8E3E171B@localhost>
+From: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Subject: Re: Device tree conversion of spi device vs. controller_data
+Date: Sat, 28 Apr 2012 12:39:30 +0200
+Message-ID: <4F9BC8E2.20005@antcom.de>
+References: <4F816772.5000607@antcom.de> <20120413032945.0C76B3E07AC@localhost>
+	<4F87D157.2020700@antcom.de> <20120427180344.F023D3E171B@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2879078130461374140=="
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <20120427183501.16C8E3E171B@localhost>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120427180344.F023D3E171B@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============2879078130461374140==
-Content-Type: multipart/signed;
-  boundary="nextPart6834147.rozTOTtPU8";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
+On 27/04/12 20:03, Grant Likely wrote:
+>>> Can you point me at specific code?
+>>>
+>>> .controller_data is owned by the spi_master driver.  The eeprom driver
+>>> shouldn't be accessing it directly at all; but I'll need to look at
+>>> specific code to really understand what is going on.
+>>
+>> Please have a look at arch/arm/mach-lpc32xx/phy3250.c :
+>>
+>> static struct pl022_config_chip spi0_chip_info = {
+>>         .com_mode               = INTERRUPT_TRANSFER,
+>>         .iface                  = SSP_INTERFACE_MOTOROLA_SPI,
+>>         .hierarchy              = SSP_MASTER,
+>>         .slave_tx_disable       = 0,
+>>         .rx_lev_trig            = SSP_RX_4_OR_MORE_ELEM,
+>>         .tx_lev_trig            = SSP_TX_4_OR_MORE_EMPTY_LOC,
+>>         .ctrl_len               = SSP_BITS_8,
+>>         .wait_state             = SSP_MWIRE_WAIT_ZERO,
+>>         .duplex                 = SSP_MICROWIRE_CHANNEL_FULL_DUPLEX,
+>>         .cs_control             = phy3250_spi_cs_set,
+> 
+> phy3250_spi_cs_set is only a wrapper around gpio_set_value().  GPIO CS
+> manipulation should be handled by the core pl022 spi driver, so that
+> gets rid of the hardest part of this conversion (callbacks in platform
+> data).
+> 
+> The pl022_config_chip structure is 100% owned by the spi controller
+> (pl022).  If the bus driver depends on this structure, then it is the
+> responsibility of the bus driver to allocate one and set the
+> controller data pointer for each of the child devices.  You may need
+> to add pl022-specific properties to each of the child nodes to
+> populate this data correctly if it cannot be determined with other
+> means.
 
---nextPart6834147.rozTOTtPU8
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Yes, that's what I'll need to do.
 
-On Friday 27 April 2012 14:35:01 Grant Likely wrote:
-> On Mon, 23 Apr 2012 18:18:13 -0400, Scott Jiang=20
-<scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > This can make sure last bit has been shifted out of register.
-> >=20
-> > Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->=20
-> Okay, so I have a few issues about the way this series was
-> submitted, but I've gone ahead and applied them anyway to get them off
-> my plate since they look like bug fixes.
->=20
-> The problem is that the commit text is far from complete.
+Thanks!
 
-here's the original commit messages:
+Roland
 
-commit b489d522f6445de7261f4e57a52b6abe24717450
-Author: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Date:   Fri Aug 12 10:44:43 2011 +0800
-
-    bug[#6683] spi:spi_bfin5xx: SPI SSEL deasserted too early in soft irq m=
-ode.
-   =20
-    Should poll FIFO in last dummy pump_transfer.
-   =20
-    Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-
-commit 6201ee95d78b555b656cda6fadb91c031f90408c
-Author: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-Date:   Thu Aug 11 18:24:16 2011 +0800
-
-    bug[#6683] spi:spi_bfin5xx: SPI SSEL deasserted too early in soft irq m=
-ode.
-   =20
-    Poll the FIFO till it is empty before deassert SSEL in pump_transfers in
-    soft irq mode. No polling is necessary in interrupt mode and error=20
-handling.
-   =20
-    Signed-off-by: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-
-and here's the referenced bug:
-	https://blackfin.uclinux.org/gf/tracker/6683
-
-and here's a logic analyzer showing the problem :)
-	http://blackfin.uclinux.org/gf/forumthread/44481
-=2Dmike
-
---nextPart6834147.rozTOTtPU8
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.17 (GNU/Linux)
-
-iQIcBAABAgAGBQJPm2w6AAoJEEFjO5/oN/WBz1sP/0Qqrf21Db45T9HJaWowxmZG
-LYuFw/t7FhrZ5AHzYlkRzbglzunl1rRidNKOBawiqni1YcRlBC1Z+aFmmSSH+gAP
-MHXZ/kv8CYX87sm+a2fmM6DCZe0zVBV3mXA3HrigDXOhztameqWgRKulKIyEZLFn
-9VlLZAyLX071bk/Gom1nhjhGpD3JKNEI5RTkQF0MkcZBVfjude5y/U1pwgkqJgUa
-karfwQxblanghKE398ksLarbTbKyJP2u26mCjzQiPo51jGnwAgsUx+dc5nvjMQeX
-TB/1ugVji7cNkVBIUq8kotIk+2x73RxJ+UITzfl30MyB44mu544npKQrXoHn7hmZ
-gOFXJvzu03T7yEeg+9qC+aH0PUQ+vWqNHAFr/ySBx1XhMCG0wcMlWBsO9xLmoBAr
-IRno2gg5Y79ZJNyb/U+cFLu6muuTMHAxQQ467YH7QhWTfrY/3t2kIKHw+Czz7aUR
-xOiMHq5XqVim/KZDfSPbPLfFNneeZUhfM2zhlYYF7ilQOMGMM3bQcHbPn5VXrhha
-xAOr/oGe2jeeZsJjIjfFhNkVw/Qj/K/FHs1S53Pkg0t3fEwd89GtlZrI39GpWLnm
-8cdqK0aLt6zjGqkxUzxSvzYOVRTtgDaOAjcsaOoKCe40VUNjtWZP+Z6/7oCtb2fo
-2rp8q/v2YMD1P68TQtAB
-=JshK
------END PGP SIGNATURE-----
-
---nextPart6834147.rozTOTtPU8--
-
---===============2879078130461374140==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Uclinux-dist-devel mailing list
-Uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel
---===============2879078130461374140==--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

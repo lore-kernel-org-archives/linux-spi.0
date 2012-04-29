@@ -1,7 +1,7 @@
-From: Zacti Plus par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez 5 Kilos avec 5 comprimes
-Date: Sun, 29 Apr 2012 01:56:11 +0200
-Message-ID: <1335657371.4f9c839b20f45@mc10.fr>
+From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Sun, 29 Apr 2012 03:36:35 +0200
+Message-ID: <1335663395.4f9c9b234ef80@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNjE2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yOCAyMzozMDowMSZlPTEmaD0xMDYxNSZmPTEwNjE2Jmc9MTA2MTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNjEyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yOCAyMzo0MDowMSZlPTEmaD0xMDYxMSZmPTEwNjEyJmc9MTA2MTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNjE2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yOCAyMzozMDowMSZlPTEmaD0xMDYxNSZmPTEwNjE2Jmc9MTA2MT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNjEyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yOCAyMzo0MDowMSZlPTEmaD0xMDYxMSZmPTEwNjEyJmc9MTA2MT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

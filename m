@@ -1,98 +1,52 @@
-From: Hannu Heikkinen <hannuxx@iki.fi>
-Subject: [PATCH] spi/omap: cleanup probe/remove routines
-Date: Sun, 29 Apr 2012 17:00:21 +0300
-Message-ID: <1335708021-31113-1-git-send-email-hannuxx@iki.fi>
-Content-Type: text/plain; charset="us-ascii"
-Cc: grant.likely@secretlab.ca, tony@atomide.com
-To: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: spi_imx imx31-cspi.0: master is unqueued, this is deprecated
+Date: Sun, 29 Apr 2012 16:00:51 -0300
+Message-ID: <CAOMZO5ADvMkQkt6sYvLswKhv7wo-ag-hx5Aj_v2jE+EBKHjpdQ@mail.gmail.com>
+References: <CAOMZO5Az3jC6Tn+z5P8W4vudMS0EeqJMYcKMKySMrsQfJdbb2w@mail.gmail.com>
+	<CAKnu2MrUQxEMWZMhnLCeeJ=9nRyAoZVoZk6BQdJsN0roOEdhLg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAKnu2MrUQxEMWZMhnLCeeJ=9nRyAoZVoZk6BQdJsN0roOEdhLg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Cleanup probe and remove routines, use devm_* functions for
-managing resources.
-
-Also, in under free_master label, change use of kfree() into
-spi_master_put().
-
-CC: tony@atomide.com
-CC: grant.likely@secretlab.ca
-Signed-off-by: Hannu Heikkinen <hannuxx@iki.fi>
----
- drivers/spi/spi-omap2-mcspi.c |   27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index bb9274c..392efce 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1166,17 +1166,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 	r->start += regs_offset;
- 	r->end += regs_offset;
- 	mcspi->phys = r->start;
--	if (!request_mem_region(r->start, resource_size(r),
--				dev_name(&pdev->dev))) {
--		status = -EBUSY;
--		goto free_master;
--	}
- 
--	mcspi->base = ioremap(r->start, resource_size(r));
-+	mcspi->base = devm_request_and_ioremap(&pdev->dev, r);
- 	if (!mcspi->base) {
--		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
--		status = -ENOMEM;
--		goto release_region;
-+		dev_dbg(&pdev->dev, "can't request mem and ioremap MCSPI\n");
-+		status =  -ENOMEM;
-+		goto free_master;
- 	}
- 
- 	mcspi->dev = &pdev->dev;
-@@ -1191,7 +1186,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
- 			GFP_KERNEL);
- 
- 	if (mcspi->dma_channels == NULL)
--		goto unmap_io;
-+		goto free_master;
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		char dma_ch_name[14];
-@@ -1241,12 +1236,8 @@ disable_pm:
- 	pm_runtime_disable(&pdev->dev);
- dma_chnl_free:
- 	kfree(mcspi->dma_channels);
--unmap_io:
--	iounmap(mcspi->base);
--release_region:
--	release_mem_region(r->start, resource_size(r));
- free_master:
--	kfree(master);
-+	spi_master_put(master);
- 	platform_set_drvdata(pdev, NULL);
- 	return status;
- }
-@@ -1256,8 +1247,6 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
- 	struct spi_master	*master;
- 	struct omap2_mcspi	*mcspi;
- 	struct omap2_mcspi_dma	*dma_channels;
--	struct resource		*r;
--	void __iomem *base;
- 
- 	master = dev_get_drvdata(&pdev->dev);
- 	mcspi = spi_master_get_devdata(master);
-@@ -1265,12 +1254,8 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
- 
- 	omap2_mcspi_disable_clocks(mcspi);
- 	pm_runtime_disable(&pdev->dev);
--	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	release_mem_region(r->start, resource_size(r));
- 
--	base = mcspi->base;
- 	spi_unregister_master(master);
--	iounmap(base);
- 	kfree(dma_channels);
- 	destroy_workqueue(mcspi->wq);
- 	platform_set_drvdata(pdev, NULL);
--- 
-1.7.10
+TGludXMsCgpPbiBGcmksIEFwciAyNywgMjAxMiBhdCA5OjQ5IEFNLCBMaW51cyBXYWxsZWlqCjxs
+aW51cy5tbC53YWxsZWlqQGdtYWlsLmNvbT4gd3JvdGU6Cj4gMjAxMi8zLzI2IEZhYmlvIEVzdGV2
+YW0gPGZlc3RldmFtQGdtYWlsLmNvbT46Cj4KPj4gT24gYSBteDMxcGRrIGJvYXJkICh3aGljaCB1
+c2VzIHNwaS1pbXggZHJpdmVyKSBJIGdldCB0aGUgZm9sbG93aW5nCj4+IG1lc3NhZ2UgcnVubmlu
+ZyBsaW51eC1uZXh0Ogo+Pgo+PiBzcGlfaW14IGlteDMxLWNzcGkuMTogcHJvYmVkCj4+IHNwaV9p
+bXggaW14MzEtY3NwaS4wOiBtYXN0ZXIgaXMgdW5xdWV1ZWQsIHRoaXMgaXMgZGVwcmVjYXRlZAo+
+PiBsNGYwMDI0MnQwMyBzcGkwLjA6IEVwc29uIGw0ZjAwMjQydDAzIGxjZCBwcm9iZWQuCj4+IHNw
+aV9pbXggaW14MzEtY3NwaS4wOiBwcm9iZWQKPgo+IEl0J3MgZ3JlYXQgdGhhdCB0aGlzIG1lc3Nh
+Z2UgaGFzIHRoZSBpbnRlbmRlZCBlZmZlY3QgOi0pCj4KPj4gV2hhdCBpcyB0aGUgY29ycmVjdCB3
+YXkgdG8gcXVldWUgdGhlIG1hc3RlciBhbmQgYXZvaWQgc3VjaCB3YXJuaW5nPwo+Cj4gVGhlIG5l
+dyBjZW50cmFsbHkgcXVldWVkIGludGVyZmFjZSBpcyBkb2N1bWVudGVkIGluCj4gRG9jdW1lbnRh
+dGlvbi9zcGkvc3BpLXN1bW1hcnkKPiB1bmRlciB0aGUgaGVhZGluZyAiU1BJIE1BU1RFUiBNRVRI
+T0RTIgoKVGhhbmtzIGEgbG90IGZvciB5b3VyIGRldGFpbGVkIGV4cGxhbmF0aW9uLgoKPiBIb3dl
+dmVyIGl0IHNlZW1zIGxpa2UgdGhlIGkuTVggZHJpdmVyIGlzIHVzaW5nIGJpdGJhbmdpbmcsIHdo
+aWNoIG1lYW5zCj4geW91IGNvdWxkIHRlc3QgwqBHdWVubmFkaSBMaWFraG92ZXRza2kncyBwYXRj
+aCBjb252ZXJ0aW5nIHRoZSBiaXRiYW5nCj4gZHJpdmVyIHRvIHRoZSBjZW50cmFsIHF1ZXVlLgoK
+SSB3aWxsIHRlc3QgaXQgc29vbi4KClRoYW5rcyBhIGxvdCwKCkZhYmlvIEVzdGV2YW0KCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNp
+dmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFu
+ZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiBy
+ZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2Jp
+bGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3
+dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

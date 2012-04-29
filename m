@@ -1,7 +1,8 @@
-From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Sun, 29 Apr 2012 03:36:35 +0200
-Message-ID: <1335663395.4f9c9b234ef80@mc10.fr>
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Sun, 29 Apr 2012 05:08:44 +0200
+Message-ID: <1335668924.4f9cb0bc0e8d0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNjEyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yOCAyMzo0MDowMSZlPTEmaD0xMDYxMSZmPTEwNjEyJmc9MTA2MTI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNjY2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNC0yOSAwMzozMDowMSZlPTEmaD0xMDY2NSZmPTEwNjY2Jmc9MTA2NjY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNjEyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yOCAyMzo0MDowMSZlPTEmaD0xMDYxMSZmPTEwNjEyJmc9MTA2MT=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNjY2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNC0yOSAwMzozMDowMSZlPTEmaD0xMDY2NSZmPTEwNjY2Jmc9MTA2Nj=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

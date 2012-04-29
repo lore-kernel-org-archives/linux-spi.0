@@ -1,41 +1,98 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Stop les =?iso-8859-15?Q?r=E9gimes=2C_r=E9-apprenez_=E0?= manger
-	avec Weight Watchers
-Date: Sun, 29 Apr 2012 05:56:07 +0200
-Message-ID: <1335671767.4f9cbbd7f0f3f@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Hannu Heikkinen <hannuxx@iki.fi>
+Subject: [PATCH] spi/omap: cleanup probe/remove routines
+Date: Sun, 29 Apr 2012 17:00:21 +0300
+Message-ID: <1335708021-31113-1-git-send-email-hannuxx@iki.fi>
+Content-Type: text/plain; charset="us-ascii"
+Cc: grant.likely@secretlab.ca, tony@atomide.com
+To: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Cleanup probe and remove routines, use devm_* functions for
+managing resources.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNTk5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNC0yOCAyMjo1MDowMSZlPTEmaD0xMDU5OCZmPTEwNTk5Jmc9MTA1OTk=3D
+Also, in under free_master label, change use of kfree() into
+spi_master_put().
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNTk5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNC0yOCAyMjo1MDowMSZlPTEmaD0xMDU5OCZmPTEwNTk5Jmc9MTA1OT=
-k=3D
-
-
----------------------------------------------------------------------------=
+CC: tony@atomide.com
+CC: grant.likely@secretlab.ca
+Signed-off-by: Hannu Heikkinen <hannuxx@iki.fi>
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+ drivers/spi/spi-omap2-mcspi.c |   27 ++++++---------------------
+ 1 file changed, 6 insertions(+), 21 deletions(-)
 
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index bb9274c..392efce 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1166,17 +1166,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 	r->start += regs_offset;
+ 	r->end += regs_offset;
+ 	mcspi->phys = r->start;
+-	if (!request_mem_region(r->start, resource_size(r),
+-				dev_name(&pdev->dev))) {
+-		status = -EBUSY;
+-		goto free_master;
+-	}
+ 
+-	mcspi->base = ioremap(r->start, resource_size(r));
++	mcspi->base = devm_request_and_ioremap(&pdev->dev, r);
+ 	if (!mcspi->base) {
+-		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+-		status = -ENOMEM;
+-		goto release_region;
++		dev_dbg(&pdev->dev, "can't request mem and ioremap MCSPI\n");
++		status =  -ENOMEM;
++		goto free_master;
+ 	}
+ 
+ 	mcspi->dev = &pdev->dev;
+@@ -1191,7 +1186,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+ 			GFP_KERNEL);
+ 
+ 	if (mcspi->dma_channels == NULL)
+-		goto unmap_io;
++		goto free_master;
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		char dma_ch_name[14];
+@@ -1241,12 +1236,8 @@ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
+ dma_chnl_free:
+ 	kfree(mcspi->dma_channels);
+-unmap_io:
+-	iounmap(mcspi->base);
+-release_region:
+-	release_mem_region(r->start, resource_size(r));
+ free_master:
+-	kfree(master);
++	spi_master_put(master);
+ 	platform_set_drvdata(pdev, NULL);
+ 	return status;
+ }
+@@ -1256,8 +1247,6 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+ 	struct spi_master	*master;
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma	*dma_channels;
+-	struct resource		*r;
+-	void __iomem *base;
+ 
+ 	master = dev_get_drvdata(&pdev->dev);
+ 	mcspi = spi_master_get_devdata(master);
+@@ -1265,12 +1254,8 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+ 
+ 	omap2_mcspi_disable_clocks(mcspi);
+ 	pm_runtime_disable(&pdev->dev);
+-	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	release_mem_region(r->start, resource_size(r));
+ 
+-	base = mcspi->base;
+ 	spi_unregister_master(master);
+-	iounmap(base);
+ 	kfree(dma_channels);
+ 	destroy_workqueue(mcspi->wq);
+ 	platform_set_drvdata(pdev, NULL);
+-- 
+1.7.10

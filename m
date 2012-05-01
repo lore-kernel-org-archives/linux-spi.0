@@ -1,40 +1,43 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Vous avez toujours =?iso-8859-15?Q?r=EAv=E9?= d'ouvrir un troquet?
-Date: Tue, 01 May 2012 16:20:21 +0200
-Message-ID: <1335882021.4f9ff125bd68b@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support, V5
+Date: Wed, 2 May 2012 08:55:55 +1000
+Message-ID: <201205020855.55953.marc@cpdesign.com.au>
+References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au> <201204170921.42027.marc@cpdesign.com.au> <20120501103949.GC20224@sortiz-mobl>
+Reply-To: marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20120501103949.GC20224@sortiz-mobl>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hi Samuel,
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEwOTA1JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNS0wMSAxNjowMDowMSZlPTEmaD0xMDkwNCZmPTEwOTA1Jmc9MTA5MDU=3D
+> > On Sunday, April 01, 2012 04:41:35 PM Marc Reilly wrote:
+> > > This series (against mfd-2.6/for-next) changes the mc13xxx driver to
+> > > use regmap and adds I2C support.
+> > > It has a compile dependency on regmap/for-next, as the spi driver uses
+> > > the recently added pad_bits config field.
+> > 
+> > (bump).
+> > 
+> > Are these changes OK to go in?
+> 
+> All 4 patches applied to my for-next branch.
+> I had to manually apply patch #1, please verify that it's all good.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEwOTA1JmM=
-9MjM2NDM3JmQ9MjAxMi0wNS0wMSAxNjowMDowMSZlPTEmaD0xMDkwNCZmPTEwOTA1Jmc9MTA5MD=
-U=3D
+Looks good. I think I can see where it didn't apply, thanks for that. 
 
+> I added an Acked-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org> to patch #4. Please
+> make sure that you add the right tags to the corresponding patches in the
+> future.
+Apologies, will try.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Cheers,
+Marc

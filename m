@@ -1,52 +1,44 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi_imx imx31-cspi.0: master is unqueued, this is deprecated
-Date: Sun, 29 Apr 2012 16:00:51 -0300
-Message-ID: <CAOMZO5ADvMkQkt6sYvLswKhv7wo-ag-hx5Aj_v2jE+EBKHjpdQ@mail.gmail.com>
-References: <CAOMZO5Az3jC6Tn+z5P8W4vudMS0EeqJMYcKMKySMrsQfJdbb2w@mail.gmail.com>
-	<CAKnu2MrUQxEMWZMhnLCeeJ=9nRyAoZVoZk6BQdJsN0roOEdhLg@mail.gmail.com>
+From: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: mc13xxx: add I2C support, V5
+Date: Tue, 1 May 2012 12:39:49 +0200
+Message-ID: <20120501103949.GC20224@sortiz-mobl>
+References: <1333262499-25871-1-git-send-email-marc@cpdesign.com.au>
+ <201204170921.42027.marc@cpdesign.com.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Linus Walleij <linus.ml.walleij-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAKnu2MrUQxEMWZMhnLCeeJ=9nRyAoZVoZk6BQdJsN0roOEdhLg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marc Reilly <marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201204170921.42027.marc-DtE7ei5U7Kg0n/F98K4Iww@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-TGludXMsCgpPbiBGcmksIEFwciAyNywgMjAxMiBhdCA5OjQ5IEFNLCBMaW51cyBXYWxsZWlqCjxs
-aW51cy5tbC53YWxsZWlqQGdtYWlsLmNvbT4gd3JvdGU6Cj4gMjAxMi8zLzI2IEZhYmlvIEVzdGV2
-YW0gPGZlc3RldmFtQGdtYWlsLmNvbT46Cj4KPj4gT24gYSBteDMxcGRrIGJvYXJkICh3aGljaCB1
-c2VzIHNwaS1pbXggZHJpdmVyKSBJIGdldCB0aGUgZm9sbG93aW5nCj4+IG1lc3NhZ2UgcnVubmlu
-ZyBsaW51eC1uZXh0Ogo+Pgo+PiBzcGlfaW14IGlteDMxLWNzcGkuMTogcHJvYmVkCj4+IHNwaV9p
-bXggaW14MzEtY3NwaS4wOiBtYXN0ZXIgaXMgdW5xdWV1ZWQsIHRoaXMgaXMgZGVwcmVjYXRlZAo+
-PiBsNGYwMDI0MnQwMyBzcGkwLjA6IEVwc29uIGw0ZjAwMjQydDAzIGxjZCBwcm9iZWQuCj4+IHNw
-aV9pbXggaW14MzEtY3NwaS4wOiBwcm9iZWQKPgo+IEl0J3MgZ3JlYXQgdGhhdCB0aGlzIG1lc3Nh
-Z2UgaGFzIHRoZSBpbnRlbmRlZCBlZmZlY3QgOi0pCj4KPj4gV2hhdCBpcyB0aGUgY29ycmVjdCB3
-YXkgdG8gcXVldWUgdGhlIG1hc3RlciBhbmQgYXZvaWQgc3VjaCB3YXJuaW5nPwo+Cj4gVGhlIG5l
-dyBjZW50cmFsbHkgcXVldWVkIGludGVyZmFjZSBpcyBkb2N1bWVudGVkIGluCj4gRG9jdW1lbnRh
-dGlvbi9zcGkvc3BpLXN1bW1hcnkKPiB1bmRlciB0aGUgaGVhZGluZyAiU1BJIE1BU1RFUiBNRVRI
-T0RTIgoKVGhhbmtzIGEgbG90IGZvciB5b3VyIGRldGFpbGVkIGV4cGxhbmF0aW9uLgoKPiBIb3dl
-dmVyIGl0IHNlZW1zIGxpa2UgdGhlIGkuTVggZHJpdmVyIGlzIHVzaW5nIGJpdGJhbmdpbmcsIHdo
-aWNoIG1lYW5zCj4geW91IGNvdWxkIHRlc3QgwqBHdWVubmFkaSBMaWFraG92ZXRza2kncyBwYXRj
-aCBjb252ZXJ0aW5nIHRoZSBiaXRiYW5nCj4gZHJpdmVyIHRvIHRoZSBjZW50cmFsIHF1ZXVlLgoK
-SSB3aWxsIHRlc3QgaXQgc29vbi4KClRoYW5rcyBhIGxvdCwKCkZhYmlvIEVzdGV2YW0KCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNp
-dmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFu
-ZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiBy
-ZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2Jp
-bGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3
-dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+Hi Marc,
+
+On Tue, Apr 17, 2012 at 09:21:41AM +1000, Marc Reilly wrote:
+> Hi Samuel,
+> 
+> 
+> On Sunday, April 01, 2012 04:41:35 PM Marc Reilly wrote:
+> > This series (against mfd-2.6/for-next) changes the mc13xxx driver to use
+> > regmap and adds I2C support.
+> > It has a compile dependency on regmap/for-next, as the spi driver uses the
+> > recently added pad_bits config field.
+> 
+> (bump).
+> 
+> Are these changes OK to go in?
+All 4 patches applied to my for-next branch.
+I had to manually apply patch #1, please verify that it's all good.
+I added an Acked-by: Oskar Schirmer <oskar-fYPSZ7JpQqsAvxtiuMwx3w@public.gmane.org> to patch #4. Please make
+sure that you add the right tags to the corresponding patches in the future.
+
+Cheers,
+Samuel.
+
+-- 
+Intel Open Source Technology Centre
+http://oss.intel.com/

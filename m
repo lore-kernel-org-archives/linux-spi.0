@@ -1,8 +1,8 @@
-From: Yves Rocher par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Shopping =?iso-8859-15?Q?beaut=E9?= ! =?iso-8859-15?Q?D=E9couvrez?=
-	votre collection de cadeaux !
-Date: Thu, 03 May 2012 12:49:27 +0200
-Message-ID: <1336042167.4fa262b76b454@mc10.fr>
+From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
+	=?iso-8859-15?Q?=27=E0?= 70%
+Date: Thu, 03 May 2012 14:06:40 +0200
+Message-ID: <1336046800.4fa274d0c9a85@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwNjY0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wMyAxMjowMDowMiZlPTEmaD0xMDY2MyZmPTEwNjY0Jmc9MTA2NjQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwOTk5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wMyAxMzozMDowMSZlPTEmaD0xMDk5OCZmPTEwOTk5Jmc9MTA5OTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwNjY0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wMyAxMjowMDowMiZlPTEmaD0xMDY2MyZmPTEwNjY0Jmc9MTA2Nj=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwOTk5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wMyAxMzozMDowMSZlPTEmaD0xMDk5OCZmPTEwOTk5Jmc9MTA5OT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

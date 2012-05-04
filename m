@@ -1,13 +1,11 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Ce week end, votez aussi pour vos meubles =?iso-8859-15?Q?pr=E9f?=
-	=?iso-8859-15?Q?=E9r=E9s?= et gagnez 10%!
-Date: Fri, 04 May 2012 13:17:59 +0200
-Message-ID: <1336130279.4fa3bae7e45d7@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: r5yetrythyt-WFcV3NcshxwAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 报关/单证
+Date: Fri, 4 May 2012 20:50:48 +0800
+Message-ID: <E1SQI2E-0006J5-9s@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTExMDY3JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNS0wNCAxMzowMDowMSZlPTEmaD0xMTA2NiZmPTExMDY3Jmc9MTEwNjc=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTExMDY3JmM=
-9MjM2NDM3JmQ9MjAxMi0wNS0wNCAxMzowMDowMSZlPTEmaD0xMTA2NiZmPTExMDY3Jmc9MTEwNj=
-c=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+ICAKICDE+rrDISAgCiAgIAogICAgICCxvrmry77Kx9K7vNLTtdPQvfiz9r/asai52LXI0rvH0LP2
+v9q1pdaktPrA7bmry76jrNPQ18W34bi7tcQKCiAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
+IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAxLszhuam6y8/6taWjqLGoudi1paOpCgogIDIu
+Q0+y+rXY1qQuIMbVu93WpChGQSxGRSxGRizRx8yrLNbQsM2jrLTzyrm53ceptcgpIAoKICAzLsLy
+taWxqLnYo6zJzLzso6zNz7O1CgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKICDB
+qs+1yMujusDuz8jJ+iAgICAgwarPtbXnu7CjujEzNjkxOTYzNDU1CgogIFFRo7o3NTcwODI5OTYg
+INPKz+Sjujc1NzA4Mjk5NkBxcS5jb20KCiAgICAgICAgICAgICAgICAgICAgICCxvrnjuOazpMba
+09DQpwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJl
+bmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mg
+c2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFu
+YWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2Vj
+dXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRz
+LiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2
+My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
+dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
+cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
+ZGV2ZWwtZ2VuZXJhbAo=

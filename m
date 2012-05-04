@@ -1,7 +1,7 @@
-From: Aterno par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Alerte Pouvoir d'achat : demandez votre brochure
-Date: Fri, 04 May 2012 06:18:01 +0200
-Message-ID: <1336105081.4fa35879ec512@mc10.fr>
+From: ScratchMania par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Obtenez 7 EUR de bonus gratuit sans depot
+Date: Fri, 04 May 2012 06:45:17 +0200
+Message-ID: <1336106717.4fa35edd39744@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDQ4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNCAwNTo0MDowMSZlPTEmaD0xMTA0NyZmPTExMDQ4Jmc9MTEwNDg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDUyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNCAwNjoyMDowMSZlPTEmaD0xMTA1MSZmPTExMDUyJmc9MTEwNTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDQ4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNCAwNTo0MDowMSZlPTEmaD0xMTA0NyZmPTExMDQ4Jmc9MTEwND=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDUyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNCAwNjoyMDowMSZlPTEmaD0xMTA1MSZmPTExMDUyJmc9MTEwNT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

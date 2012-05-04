@@ -1,12 +1,13 @@
-From: Votre devis alarme est disponible <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
-Subject: Protection cambriolage par Affilibaz
-Date: Fri, 4 May 2012 07:10:02 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.937701.3236305005@marketing.affilibaz.com>
-Reply-To: Votre devis alarme est disponible <infos-aRCsrEPsanzp/bQmFP7Bageo65TcNPYl@public.gmane.org>
+From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Ce week end, votez aussi pour vos meubles =?iso-8859-15?Q?pr=E9f?=
+	=?iso-8859-15?Q?=E9r=E9s?= et gagnez 10%!
+Date: Fri, 04 May 2012 13:17:59 +0200
+Message-ID: <1336130279.4fa3bae7e45d7@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,82 +19,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTExMDY3JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNS0wNCAxMzowMDowMSZlPTEmaD0xMTA2NiZmPTExMDY3Jmc9MTEwNjc=3D
 
-
-devisflash Si vous ne visualisez pas correctement ce message, cliquez =
-
-ici. : =
-
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU5_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VFP =
-
-
-=A0 =
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU6_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFD =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU6PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFA =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU6fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFB =
-
-
-
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU7vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFG =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU7_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFH =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU7PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFE =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU7fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFF =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU4vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFK =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU4_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFL =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU4PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFI =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU4fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFJ =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU5vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VFO =
-
-
-
-
-Pour ne plus recevoir de courriels de notre part, il vous suffit de =
-
-vous rendre sur cette page : =
-
- http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJBlR_nGHxKLYeU5PcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VFM =
-
-. =
-
-
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTExMDY3JmM=
+9MjM2NDM3JmQ9MjAxMi0wNS0wNCAxMzowMDowMSZlPTEmaD0xMTA2NiZmPTExMDY3Jmc9MTEwNj=
+c=3D
 
 
 ---------------------------------------------------------------------------=

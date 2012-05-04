@@ -1,8 +1,7 @@
-From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
-	=?iso-8859-15?Q?=27=E0?= 70%
-Date: Thu, 03 May 2012 14:06:40 +0200
-Message-ID: <1336046800.4fa274d0c9a85@mc10.fr>
+From: Aterno par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Alerte Pouvoir d'achat : demandez votre brochure
+Date: Fri, 04 May 2012 06:18:01 +0200
+Message-ID: <1336105081.4fa35879ec512@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwOTk5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wMyAxMzozMDowMSZlPTEmaD0xMDk5OCZmPTEwOTk5Jmc9MTA5OTk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDQ4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNCAwNTo0MDowMSZlPTEmaD0xMTA0NyZmPTExMDQ4Jmc9MTEwNDg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwOTk5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wMyAxMzozMDowMSZlPTEmaD0xMDk5OCZmPTEwOTk5Jmc9MTA5OT=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDQ4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNCAwNTo0MDowMSZlPTEmaD0xMTA0NyZmPTExMDQ4Jmc9MTEwND=
+g=3D
 
 
 ---------------------------------------------------------------------------=

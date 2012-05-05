@@ -1,9 +1,8 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Vente Flash dans tout les magasins : =?iso-8859-15?Q?jusq?=
-	=?iso-8859-15?Q?u=27=E0?= 80% de remise
-Date: Fri, 04 May 2012 21:55:40 +0200
-Message-ID: <1336161340.4fa4343cd2ae9@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Gagner des voyages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagner des voyages par Lea
+Date: Sat, 05 May 2012 10:19:53 +0200
+Message-ID: <1336205993.4fa4e2a9619b9@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTExODEmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNS0wNCAxOTo1MDowMSZlPTEmaD0xMTE4MCZmPTExMTgxJmc9MTExODE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwOTk2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNSAwNjoxMDowMSZlPTEmaD0xMDk5NSZmPTEwOTk2Jmc9MTA5OTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTExODEmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNS0wNCAxOTo1MDowMSZlPTEmaD0xMTE4MCZmPTExMTgxJmc9MTExOD=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwOTk2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNSAwNjoxMDowMSZlPTEmaD0xMDk5NSZmPTEwOTk2Jmc9MTA5OT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,8 +1,7 @@
-From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?d=E9couvrez?= la nouvelle collection + frais de
-	livraisons offert
-Date: Sat, 05 May 2012 11:46:59 +0200
-Message-ID: <1336211219.4fa4f71310b0d@mc10.fr>
+From: =?iso-8859-15?Q?P=E9age?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagnez votre pass d'autoroute gratuit pour 1 an
+Date: Sat, 05 May 2012 18:46:55 +0200
+Message-ID: <1336236415.4fa5597f9c3c0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwOTkzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNSAwNjo0MDowMSZlPTEmaD0xMDk5MiZmPTEwOTkzJmc9MTA5OTM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEwOTk3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNSAxMjowMDowMSZlPTEmaD0xMDk5NiZmPTEwOTk3Jmc9MTA5OTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwOTkzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNSAwNjo0MDowMSZlPTEmaD0xMDk5MiZmPTEwOTkzJmc9MTA5OT=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEwOTk3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNSAxMjowMDowMSZlPTEmaD0xMDk5NiZmPTEwOTk3Jmc9MTA5OT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

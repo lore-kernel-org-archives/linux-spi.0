@@ -1,7 +1,8 @@
-From: Zacti Plus par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez 5 Kilos avec 5 comprimes
-Date: Sun, 06 May 2012 18:49:18 +0200
-Message-ID: <1336322958.4fa6ab8e4522e@mc10.fr>
+From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Shopping =?iso-8859-15?Q?beaut=E9?= ! =?iso-8859-15?Q?D=E9couvrez?=
+	votre collection de cadeaux !
+Date: Mon, 07 May 2012 00:16:36 +0200
+Message-ID: <1336342596.4fa6f8448ba93@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDAwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNiAxMzozMDowMSZlPTEmaD0xMDk5OSZmPTExMDAwJmc9MTEwMDA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDg3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNiAyMTozMDowMSZlPTEmaD0xMTA4NiZmPTExMDg3Jmc9MTEwODc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDAwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNiAxMzozMDowMSZlPTEmaD0xMDk5OSZmPTExMDAwJmc9MTEwMD=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDg3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNiAyMTozMDowMSZlPTEmaD0xMTA4NiZmPTExMDg3Jmc9MTEwOD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

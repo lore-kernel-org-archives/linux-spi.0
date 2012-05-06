@@ -1,10 +1,7 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Sat, 05 May 2012 20:51:00 +0200
-Message-ID: <1336243860.4fa57694a2ba1@mc10.fr>
+From: "1001Concours.fr par Planduweb" <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagnez le Dernier Appareil Photo Nikon
+Date: Sun, 06 May 2012 05:15:16 +0200
+Message-ID: <1336274116.4fa5ecc4d3a06@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDAzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNSAxNjoyMDowMSZlPTEmaD0xMTAwMiZmPTExMDAzJmc9MTEwMDM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDAxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNSAyMzoxMDowMSZlPTEmaD0xMTAwMCZmPTExMDAxJmc9MTEwMDE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDAzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNSAxNjoyMDowMSZlPTEmaD0xMTAwMiZmPTExMDAzJmc9MTEwMD=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDAxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNSAyMzoxMDowMSZlPTEmaD0xMTAwMCZmPTExMDAxJmc9MTEwMD=
+E=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,7 +1,7 @@
-From: "1001Concours.fr par Planduweb" <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Gagnez le Dernier Appareil Photo Nikon
-Date: Sun, 06 May 2012 05:15:16 +0200
-Message-ID: <1336274116.4fa5ecc4d3a06@mc10.fr>
+From: Zacti Plus par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez 5 Kilos avec 5 comprimes
+Date: Sun, 06 May 2012 18:49:18 +0200
+Message-ID: <1336322958.4fa6ab8e4522e@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDAxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNSAyMzoxMDowMSZlPTEmaD0xMTAwMCZmPTExMDAxJmc9MTEwMDE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDAwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNiAxMzozMDowMSZlPTEmaD0xMDk5OSZmPTExMDAwJmc9MTEwMDA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDAxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNSAyMzoxMDowMSZlPTEmaD0xMTAwMCZmPTExMDAxJmc9MTEwMD=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDAwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNiAxMzozMDowMSZlPTEmaD0xMDk5OSZmPTExMDAwJmc9MTEwMD=
+A=3D
 
 
 ---------------------------------------------------------------------------=

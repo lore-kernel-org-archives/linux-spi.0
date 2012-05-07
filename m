@@ -1,12 +1,13 @@
-From: "MAJOR WORLD USA" <sales-qj6awBEauOnd8Zgiw/MPxQ@public.gmane.org>
-Subject: American & Japanes used cars for sale
-Date: Mon, 7 May 2012 03:54:21 -0400
-Message-ID: <81316092.20120507035421@majorworld.com>
-Reply-To: MAJOR WORLD USA <major_world-/E1597aS9LToLY4ysWL1ZA@public.gmane.org>
+From: Madame Vacances par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= 50% sur votre
+	=?iso-8859-15?Q?s=E9jour?= dans un =?iso-8859-15?Q?h=F4tel?= Disney
+Date: Mon, 07 May 2012 12:16:06 +0200
+Message-ID: <1336385766.4fa7a0e6b9a42@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Sir/Madam
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-We are an american used car export company selling Japanese used cars and foreign cars. We export Japanese used cars to various countries in the world. We have extensive stocks of Japanese used cars and american cars which satisfy your needs. We guarantee Good condition, Good price, Quick service.
-Right now we are giving discount prices on Toyota Land cruisers, Prado and Double Cabin Toyota Hilux pick- up
-We have only 97 units in stocks and you could be lucky to get 1 unit for yourself
-We are giving discount prices because it is our marketing strategy to attract more customers in Africa and in the world at large.We want you to take an advantage of this opportunity. 
-Sincerely yours,
-Tom Bruce,
-Sales Team Manager
-Head office:Tel: 43-40 Northern Blvd
-Long island city queens Ny 11101 USA
-TEL:+1 212 359 16 16 FAX:1 647 7237352
-http://www.majorworld.com
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDQwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNiAyMzo1MDowMSZlPTEmaD0xMTAzOSZmPTExMDQwJmc9MTEwNDA=3D
 
-------------------------------------------------------------------------------
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDQwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNiAyMzo1MDowMSZlPTEmaD0xMTAzOSZmPTExMDQwJmc9MTEwND=
+A=3D
+
+
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

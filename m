@@ -1,17 +1,13 @@
-From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH RESEND 5/5] spi/imx: adopt pinctrl support
-Date: Mon,  7 May 2012 08:54:00 +0800
-Message-ID: <1336352040-28447-6-git-send-email-shawn.guo@linaro.org>
-References: <1336352040-28447-1-git-send-email-shawn.guo@linaro.org>
+From: "TBT" <tbt-flOmtmo8mOnCXR85Y8Hu3Q@public.gmane.org>
+Subject: [SPAM] From Hon.usman mustapha
+Date: Sun, 6 May 2012 20:41:00 -0700
+Message-ID: <54077339.20120506204100@tbtexeduz.com>
+Reply-To: TBT <usamanmustapah-/E1597aS9LToLY4ysWL1ZA@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Dong Aisheng <dong.aisheng-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1336352040-28447-1-git-send-email-shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,49 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-imx.c |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+Dear Sir/Madam,
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 570f220..69c9a66 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -37,6 +37,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_gpio.h>
-+#include <linux/pinctrl/consumer.h>
- 
- #include <mach/spi.h>
- 
-@@ -758,6 +759,7 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
-+	struct pinctrl *pinctrl;
- 	int i, ret, num_cs;
- 
- 	if (!np && !mxc_platform_info) {
-@@ -845,6 +847,12 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 		goto out_iounmap;
- 	}
- 
-+	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-+	if (IS_ERR(pinctrl)) {
-+		ret = PTR_ERR(pinctrl);
-+		goto out_free_irq;
-+	}
-+
- 	spi_imx->clk = clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi_imx->clk)) {
- 		dev_err(&pdev->dev, "unable to get clock\n");
--- 
-1.7.5.4
+Greetings and peace from Allah.
+I am Hon.usman mustapha, a former top government official in Nigeria.
+I have a serious issue that i want to share with you, and i will be needing your
+help. As a former top government official, a conspiracy was set against my political career, recently i have serious problems with Mr President because of an allegation of missing of public funds during my administration in the office as finance minister.
 
+My properties and bank accounts in Nigeria and outside Nigeria has been frozen by Mr. President and i have been Charged to court. I don't know if i will be jailed if found convicted, because in my country, the judiciary is very corrupt, so justice is perverted and as such one should expect the worst violation of human right and justice.
+ 
+But my lawyers are doing their best so that i don't get sentenced to Jail. Please i need your help to keep an amount of 35 million dollars that is presently in a financial institution in Europe which nobody knows about. If you accept to invest and keep this money, you can take 5 million dollars for yourself. This is better for me, rather than my president should find out to take all the money.
+I am happy because the money does not have any trace because all original documents was not found in my residence in Nigeria. This money will be released to you within 3 working days. Please confirm your telephone numbers and home/office address for discussion.
+
+Regards
+Hon.usman mustapha
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

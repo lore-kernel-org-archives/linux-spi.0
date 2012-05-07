@@ -1,41 +1,53 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Shopping =?iso-8859-15?Q?beaut=E9?= ! =?iso-8859-15?Q?D=E9couvrez?=
-	votre collection de cadeaux !
-Date: Mon, 07 May 2012 00:16:36 +0200
-Message-ID: <1336342596.4fa6f8448ba93@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Shawn Guo <shawn.guo@linaro.org>
+Subject: [PATCH RESEND 0/5] Adopt pinctrl support for a few outstanding imx drivers
+Date: Mon,  7 May 2012 08:53:55 +0800
+Message-ID: <1336352040-28447-1-git-send-email-shawn.guo@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Dong Aisheng <dong.aisheng@linaro.org>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-i2c@vger.kernel.org, Wolfram Sang <w.sang@pengutronix.de>,
+	linux-can@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
+	netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	linux-serial@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-serial-owner@vger.kernel.org>
+Sender: linux-serial-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+With patch 5b3aa5f (pinctrl: add pinctrl_provide_dummies interface for
+platforms to use) applied on pinctrl tree, and patch "ARM: imx: enable
+pinctrl dummy states" [1] being there, we are ready to adopt pinctrl
+API for imx drivers.  So let's start from a few outstanding ones.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDg3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNiAyMTozMDowMSZlPTEmaD0xMTA4NiZmPTExMDg3Jmc9MTEwODc=3D
+I would expect to ask Arnd and Olof to pull pinctrl tree into arm-soc
+as a dependency and then have series [1] and this patch set go through
+arm-soc tree to ease the merge process.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDg3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNiAyMTozMDowMSZlPTEmaD0xMTA4NiZmPTExMDg3Jmc9MTEwOD=
-c=3D
+Resend to have subsystem lists Cc-ed.
 
+Regards,
+Shawn
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+[1] http://thread.gmane.org/gmane.linux.kernel.mmc/14180
 
-threat landscape has changed and how IT managers can respond. Discussions =
+Shawn Guo (5):
+  tty: serial: imx: adopt pinctrl support
+  net: fec: adopt pinctrl support
+  can: flexcan: adopt pinctrl support
+  i2c: imx: adopt pinctrl support
+  spi/imx: adopt pinctrl support
 
-will include endpoint security, mobile security and the latest in malware =
+ drivers/i2c/busses/i2c-imx.c         |    8 ++++++++
+ drivers/net/can/flexcan.c            |    6 ++++++
+ drivers/net/ethernet/freescale/fec.c |    9 +++++++++
+ drivers/spi/spi-imx.c                |    8 ++++++++
+ drivers/tty/serial/imx.c             |    8 ++++++++
+ 5 files changed, 39 insertions(+), 0 deletions(-)
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+-- 
+1.7.5.4
+

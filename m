@@ -1,7 +1,8 @@
-From: Gagnez-Roland-Garros par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Gagnez 2 places pour Roland Garros 2012
-Date: Mon, 07 May 2012 06:05:52 +0200
-Message-ID: <1336363552.4fa74a20c0665@mc10.fr>
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Mon, 07 May 2012 06:36:28 +0200
+Message-ID: <1336365388.4fa7514c4c2b5@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMTg3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNyAwNDo0MDowMSZlPTEmaD0xMTE4NiZmPTExMTg3Jmc9MTExODc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMTA1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0wNiAyMjo0MDowMSZlPTEmaD0xMTEwNCZmPTExMTA1Jmc9MTExMDU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMTg3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNyAwNDo0MDowMSZlPTEmaD0xMTE4NiZmPTExMTg3Jmc9MTExOD=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMTA1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0wNiAyMjo0MDowMSZlPTEmaD0xMTEwNCZmPTExMTA1Jmc9MTExMD=
+U=3D
 
 
 ---------------------------------------------------------------------------=

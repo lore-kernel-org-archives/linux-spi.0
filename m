@@ -1,8 +1,8 @@
 From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: [PATCH 07/10] spi: s3c64xx: Remove the 'set_level' callback from
- controller data
-Date: Wed, 09 May 2012 03:34:51 +0530
-Message-ID: <1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
+Subject: [PATCH 08/10] ARM: Exynos4: Fix the incorrect hierarchy of spi
+ controller bus clock
+Date: Wed, 09 May 2012 03:34:52 +0530
+Message-ID: <1336514694-22393-9-git-send-email-thomas.abraham@linaro.org>
 References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
 Cc: linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
@@ -15,69 +15,109 @@ In-reply-to: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The set_level callback in the controller data, which is used to configure
-the slave select line, cannot be supported when migrating the driver to
-device tree based discovery. Since all the platforms currently use gpio
-as the slave select line, this callback can be removed from the
-controller data and replaced with call to gpio_set_value in the driver.
+The sclk_spi clock is derived currently from the first level divider
+(MMCx_RATIO) which is incorrect. The output of the first level clock
+is divided by a second level divider (MMCx_PRE_RATIO), the output of
+which is used as the spi bus clock (sclk_spi). Fix the clock hierarchy
+issues for the sclk_spi clock.
 
-Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
 Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
 ---
- arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |    2 --
- drivers/spi/spi-s3c64xx.c                        |    8 ++++----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ arch/arm/mach-exynos/clock-exynos4.c |   48 ++++++++++++++++++++++++++++-----
+ 1 files changed, 40 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-index a733ce9..48a6495 100644
---- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-+++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-@@ -18,7 +18,6 @@ struct platform_device;
-  * @fb_delay: Slave specific feedback delay.
-  *            Refer to FB_CLK_SEL register definition in SPI chapter.
-  * @line: Custom 'identity' of the CS line.
-- * @set_level: CS line control.
-  *
-  * This is per SPI-Slave Chipselect information.
-  * Allocate and initialize one in machine init code and make the
-@@ -27,7 +26,6 @@ struct platform_device;
- struct s3c64xx_spi_csinfo {
- 	u8 fb_delay;
- 	unsigned line;
--	void (*set_level)(unsigned line_id, int lvl);
+diff --git a/arch/arm/mach-exynos/clock-exynos4.c b/arch/arm/mach-exynos/clock-exynos4.c
+index 57b5464..331186e 100644
+--- a/arch/arm/mach-exynos/clock-exynos4.c
++++ b/arch/arm/mach-exynos/clock-exynos4.c
+@@ -1243,40 +1243,70 @@ static struct clksrc_clk exynos4_clk_sclk_mmc3 = {
+ 	.reg_div = { .reg = EXYNOS4_CLKDIV_FSYS2, .shift = 24, .size = 8 },
  };
  
- /**
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index f6bc0e3..d84ce7f 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -406,14 +406,14 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
- 		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
- 			/* Deselect the last toggled device */
- 			cs = sdd->tgl_spi->controller_data;
--			cs->set_level(cs->line,
--					spi->mode & SPI_CS_HIGH ? 0 : 1);
-+			gpio_set_value(cs->line,
-+				spi->mode & SPI_CS_HIGH ? 0 : 1);
- 		}
- 		sdd->tgl_spi = NULL;
- 	}
++static struct clksrc_clk exynos4_clk_mdout_spi0 = {
++	.clk	= {
++		.name		= "sclk_spi_mdout",
++		.devname	= "exynos4210-spi.0",
++	},
++	.sources = &exynos4_clkset_group,
++	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 16, .size = 4 },
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 0, .size = 4 },
++
++};
++
+ static struct clksrc_clk exynos4_clk_sclk_spi0 = {
+ 	.clk	= {
+ 		.name		= "sclk_spi",
+ 		.devname	= "exynos4210-spi.0",
++		.parent		= &exynos4_clk_mdout_spi0.clk,
+ 		.enable		= exynos4_clksrc_mask_peril1_ctrl,
+ 		.ctrlbit	= (1 << 16),
+ 	},
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 8, .size = 8 },
++};
++
++static struct clksrc_clk exynos4_clk_mdout_spi1 = {
++	.clk	= {
++		.name		= "sclk_spi_mdout",
++		.devname	= "exynos4210-spi.1",
++	},
+ 	.sources = &exynos4_clkset_group,
+-	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 16, .size = 4 },
+-	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 0, .size = 4 },
++	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 20, .size = 4 },
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 16, .size = 4 },
++
+ };
  
- 	cs = spi->controller_data;
--	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
-+	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
- }
+ static struct clksrc_clk exynos4_clk_sclk_spi1 = {
+ 	.clk	= {
+ 		.name		= "sclk_spi",
+ 		.devname	= "exynos4210-spi.1",
++		.parent		= &exynos4_clk_mdout_spi1.clk,
+ 		.enable		= exynos4_clksrc_mask_peril1_ctrl,
+ 		.ctrlbit	= (1 << 20),
+ 	},
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 24, .size = 8 },
++};
++
++static struct clksrc_clk exynos4_clk_mdout_spi2 = {
++	.clk	= {
++		.name		= "sclk_spi_mdout",
++		.devname	= "exynos4210-spi.2",
++	},
+ 	.sources = &exynos4_clkset_group,
+-	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 20, .size = 4 },
+-	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL1, .shift = 16, .size = 4 },
++	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 24, .size = 4 },
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL2, .shift = 0, .size = 4 },
++
+ };
  
- static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
-@@ -499,7 +499,7 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
- 	if (sdd->tgl_spi == spi)
- 		sdd->tgl_spi = NULL;
+ static struct clksrc_clk exynos4_clk_sclk_spi2 = {
+ 	.clk	= {
+ 		.name		= "sclk_spi",
+ 		.devname	= "exynos4210-spi.2",
++		.parent		= &exynos4_clk_mdout_spi2.clk,
+ 		.enable		= exynos4_clksrc_mask_peril1_ctrl,
+ 		.ctrlbit	= (1 << 24),
+ 	},
+-	.sources = &exynos4_clkset_group,
+-	.reg_src = { .reg = EXYNOS4_CLKSRC_PERIL1, .shift = 24, .size = 4 },
+-	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL2, .shift = 0, .size = 4 },
++	.reg_div = { .reg = EXYNOS4_CLKDIV_PERIL2, .shift = 8, .size = 8 },
+ };
  
--	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
-+	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
- }
+ /* Clock initialization code */
+@@ -1332,7 +1362,9 @@ static struct clksrc_clk *exynos4_clksrc_cdev[] = {
+ 	&exynos4_clk_sclk_spi0,
+ 	&exynos4_clk_sclk_spi1,
+ 	&exynos4_clk_sclk_spi2,
+-
++	&exynos4_clk_mdout_spi0,
++	&exynos4_clk_mdout_spi1,
++	&exynos4_clk_mdout_spi2,
+ };
  
- static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+ static struct clk_lookup exynos4_clk_lookup[] = {
 -- 
 1.6.6.rc2

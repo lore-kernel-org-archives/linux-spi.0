@@ -1,8 +1,8 @@
 From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: [PATCH 06/10] ARM: Samsung: Modify s3c64xx_spi{0|1|2}_set_platdata
- function
-Date: Wed, 09 May 2012 03:34:50 +0530
-Message-ID: <1336514694-22393-7-git-send-email-thomas.abraham@linaro.org>
+Subject: [PATCH 03/10] ARM: Samsung: Remove spi hardware controller information
+ from platform data
+Date: Wed, 09 May 2012 03:34:47 +0530
+Message-ID: <1336514694-22393-4-git-send-email-thomas.abraham@linaro.org>
 References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
 Cc: linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
@@ -15,153 +15,283 @@ In-reply-to: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-With the spi controller hardware configuration moved into the driver data, there
-are no more default hardware configuration data that is passed through platform
-data. Accordingly, the s3c64xx_spi{0|1|2}_set_platdata functions are adapted to
-these changes.
+With the spi hardware controller information moved to spi driver data,
+this information can be removed from the spi platform data.
 
 Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
 Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
 ---
- arch/arm/mach-s3c64xx/mach-crag6410.c            |    2 +-
- arch/arm/plat-samsung/devs.c                     |   50 ++++++++-------------
- arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |    6 +-
- 3 files changed, 23 insertions(+), 35 deletions(-)
+ arch/arm/mach-exynos/setup-spi.c                 |   25 ----------------------
+ arch/arm/mach-s3c24xx/setup-spi.c                |    8 -------
+ arch/arm/mach-s3c64xx/setup-spi.c                |   13 -----------
+ arch/arm/mach-s5p64x0/setup-spi.c                |   16 --------------
+ arch/arm/mach-s5pc100/setup-spi.c                |   22 -------------------
+ arch/arm/mach-s5pv210/setup-spi.c                |   15 -------------
+ arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |   15 -------------
+ 7 files changed, 0 insertions(+), 114 deletions(-)
 
-diff --git a/arch/arm/mach-s3c64xx/mach-crag6410.c b/arch/arm/mach-s3c64xx/mach-crag6410.c
-index e20bf58..0cea12f 100644
---- a/arch/arm/mach-s3c64xx/mach-crag6410.c
-+++ b/arch/arm/mach-s3c64xx/mach-crag6410.c
-@@ -793,7 +793,7 @@ static void __init crag6410_machine_init(void)
- 	i2c_register_board_info(1, i2c_devs1, ARRAY_SIZE(i2c_devs1));
+diff --git a/arch/arm/mach-exynos/setup-spi.c b/arch/arm/mach-exynos/setup-spi.c
+index 833ff40..a71ec4d 100644
+--- a/arch/arm/mach-exynos/setup-spi.c
++++ b/arch/arm/mach-exynos/setup-spi.c
+@@ -12,17 +12,8 @@
+ #include <linux/platform_device.h>
  
- 	samsung_keypad_set_platdata(&crag6410_keypad_data);
--	s3c64xx_spi0_set_platdata(&s3c64xx_spi0_pdata, 0, 1);
-+	s3c64xx_spi0_set_platdata("s3c6410-spi", NULL, 0, 1);
+ #include <plat/gpio-cfg.h>
+-#include <plat/s3c64xx-spi.h>
  
- 	platform_add_devices(crag6410_devices, ARRAY_SIZE(crag6410_devices));
- 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index 8b928f9..2deabda 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -1534,13 +1534,10 @@ struct platform_device s3c64xx_device_spi0 = {
- 	},
- };
- 
--void __init s3c64xx_spi0_set_platdata(struct s3c64xx_spi_info *pd,
-+void __init s3c64xx_spi0_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs)
- {
--	if (!pd) {
--		pr_err("%s:Need to pass platform data\n", __func__);
--		return;
--	}
-+	struct s3c64xx_spi_info pd;
- 
- 	/* Reject invalid configuration */
- 	if (!num_cs || src_clk_nr < 0) {
-@@ -1548,12 +1545,11 @@ void __init s3c64xx_spi0_set_platdata(struct s3c64xx_spi_info *pd,
- 		return;
- 	}
- 
--	pd->num_cs = num_cs;
--	pd->src_clk_nr = src_clk_nr;
--	if (!pd->cfg_gpio)
--		pd->cfg_gpio = s3c64xx_spi0_cfg_gpio;
-+	pd.src_clk_nr = src_clk_nr;
-+	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
-+	s3c64xx_device_spi0.name = dev_name;
- 
--	s3c_set_platdata(pd, sizeof(*pd), &s3c64xx_device_spi0);
-+	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi0);
- }
- #endif /* CONFIG_S3C64XX_DEV_SPI0 */
- 
-@@ -1576,26 +1572,21 @@ struct platform_device s3c64xx_device_spi1 = {
- 	},
- };
- 
--void __init s3c64xx_spi1_set_platdata(struct s3c64xx_spi_info *pd,
-+void __init s3c64xx_spi1_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs)
- {
--	if (!pd) {
--		pr_err("%s:Need to pass platform data\n", __func__);
--		return;
--	}
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x1ff,
+-	.rx_lvl_offset	= 15,
+-	.high_speed	= 1,
+-	.clk_from_cmu	= true,
+-	.tx_st_done	= 25,
+-};
 -
- 	/* Reject invalid configuration */
- 	if (!num_cs || src_clk_nr < 0) {
- 		pr_err("%s: Invalid SPI configuration\n", __func__);
- 		return;
- 	}
- 
--	pd->num_cs = num_cs;
--	pd->src_clk_nr = src_clk_nr;
--	if (!pd->cfg_gpio)
--		pd->cfg_gpio = s3c64xx_spi1_cfg_gpio;
-+	pd.num_cs = num_cs;
-+	pd.src_clk_nr = src_clk_nr;
-+	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
-+	s3c64xx_device_spi1.name = dev_name;
- 
--	s3c_set_platdata(pd, sizeof(*pd), &s3c64xx_device_spi1);
-+	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi1);
- }
- #endif /* CONFIG_S3C64XX_DEV_SPI1 */
- 
-@@ -1618,13 +1609,10 @@ struct platform_device s3c64xx_device_spi2 = {
- 	},
- };
- 
--void __init s3c64xx_spi2_set_platdata(struct s3c64xx_spi_info *pd,
-+void __init s3c64xx_spi2_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs)
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
  {
--	if (!pd) {
--		pr_err("%s:Need to pass platform data\n", __func__);
--		return;
--	}
-+	struct s3c64xx_spi_info pd;
+ 	s3c_gpio_cfgpin(EXYNOS4_GPB(0), S3C_GPIO_SFN(2));
+@@ -34,14 +25,6 @@ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ #endif
  
- 	/* Reject invalid configuration */
- 	if (!num_cs || src_clk_nr < 0) {
-@@ -1632,11 +1620,11 @@ void __init s3c64xx_spi2_set_platdata(struct s3c64xx_spi_info *pd,
- 		return;
- 	}
+ #ifdef CONFIG_S3C64XX_DEV_SPI1
+-struct s3c64xx_spi_info s3c64xx_spi1_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 15,
+-	.high_speed	= 1,
+-	.clk_from_cmu	= true,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgpin(EXYNOS4_GPB(4), S3C_GPIO_SFN(2));
+@@ -53,14 +36,6 @@ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ #endif
  
--	pd->num_cs = num_cs;
--	pd->src_clk_nr = src_clk_nr;
--	if (!pd->cfg_gpio)
--		pd->cfg_gpio = s3c64xx_spi2_cfg_gpio;
-+	pd.num_cs = num_cs;
-+	pd.src_clk_nr = src_clk_nr;
-+	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi2_cfg_gpio;
-+	s3c64xx_device_spi2.name = dev_name;
+ #ifdef CONFIG_S3C64XX_DEV_SPI2
+-struct s3c64xx_spi_info s3c64xx_spi2_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 15,
+-	.high_speed	= 1,
+-	.clk_from_cmu	= true,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi2_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgpin(EXYNOS4_GPC1(1), S3C_GPIO_SFN(5));
+diff --git a/arch/arm/mach-s3c24xx/setup-spi.c b/arch/arm/mach-s3c24xx/setup-spi.c
+index 5712c85..42abe15 100644
+--- a/arch/arm/mach-s3c24xx/setup-spi.c
++++ b/arch/arm/mach-s3c24xx/setup-spi.c
+@@ -13,19 +13,11 @@
+ #include <linux/platform_device.h>
  
--	s3c_set_platdata(pd, sizeof(*pd), &s3c64xx_device_spi2);
-+	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi2);
- }
- #endif /* CONFIG_S3C64XX_DEV_SPI2 */
+ #include <plat/gpio-cfg.h>
+-#include <plat/s3c64xx-spi.h>
+ 
+ #include <mach/hardware.h>
+ #include <mach/regs-gpio.h>
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.tx_st_done	= 21,
+-	.high_speed	= 1,
+-};
+-
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *pdev)
+ {
+ 	/* enable hsspi bit in misccr */
+diff --git a/arch/arm/mach-s3c64xx/setup-spi.c b/arch/arm/mach-s3c64xx/setup-spi.c
+index d9592ad..ff999d9 100644
+--- a/arch/arm/mach-s3c64xx/setup-spi.c
++++ b/arch/arm/mach-s3c64xx/setup-spi.c
+@@ -12,15 +12,8 @@
+ #include <linux/platform_device.h>
+ 
+ #include <plat/gpio-cfg.h>
+-#include <plat/s3c64xx-spi.h>
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.tx_st_done	= 21,
+-};
+-
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgall_range(S3C64XX_GPC(0), 3,
+@@ -30,12 +23,6 @@ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ #endif
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI1
+-struct s3c64xx_spi_info s3c64xx_spi1_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.tx_st_done	= 21,
+-};
+-
+ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgall_range(S3C64XX_GPC(4), 3,
+diff --git a/arch/arm/mach-s5p64x0/setup-spi.c b/arch/arm/mach-s5p64x0/setup-spi.c
+index e9b8412..1cf84b5 100644
+--- a/arch/arm/mach-s5p64x0/setup-spi.c
++++ b/arch/arm/mach-s5p64x0/setup-spi.c
+@@ -10,19 +10,9 @@
+ 
+ #include <linux/gpio.h>
+ #include <linux/platform_device.h>
+-#include <linux/io.h>
+-
+ #include <plat/gpio-cfg.h>
+-#include <plat/cpu.h>
+-#include <plat/s3c64xx-spi.h>
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x1ff,
+-	.rx_lvl_offset	= 15,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ {
+ 	if (soc_is_s5p6450())
+@@ -36,12 +26,6 @@ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ #endif
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI1
+-struct s3c64xx_spi_info s3c64xx_spi1_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 15,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ {
+ 	if (soc_is_s5p6450())
+diff --git a/arch/arm/mach-s5pc100/setup-spi.c b/arch/arm/mach-s5pc100/setup-spi.c
+index 431a6f7..4b42718 100644
+--- a/arch/arm/mach-s5pc100/setup-spi.c
++++ b/arch/arm/mach-s5pc100/setup-spi.c
+@@ -12,16 +12,8 @@
+ #include <linux/platform_device.h>
+ 
+ #include <plat/gpio-cfg.h>
+-#include <plat/s3c64xx-spi.h>
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.high_speed	= 1,
+-	.tx_st_done	= 21,
+-};
+-
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgall_range(S5PC100_GPB(0), 3,
+@@ -31,13 +23,6 @@ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ #endif
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI1
+-struct s3c64xx_spi_info s3c64xx_spi1_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.high_speed	= 1,
+-	.tx_st_done	= 21,
+-};
+-
+ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgall_range(S5PC100_GPB(4), 3,
+@@ -47,13 +32,6 @@ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ #endif
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI2
+-struct s3c64xx_spi_info s3c64xx_spi2_pdata __initdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 13,
+-	.high_speed	= 1,
+-	.tx_st_done	= 21,
+-};
+-
+ int s3c64xx_spi2_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgpin(S5PC100_GPG3(0), S3C_GPIO_SFN(3));
+diff --git a/arch/arm/mach-s5pv210/setup-spi.c b/arch/arm/mach-s5pv210/setup-spi.c
+index f43c504..2cd66a6 100644
+--- a/arch/arm/mach-s5pv210/setup-spi.c
++++ b/arch/arm/mach-s5pv210/setup-spi.c
+@@ -12,16 +12,8 @@
+ #include <linux/platform_device.h>
+ 
+ #include <plat/gpio-cfg.h>
+-#include <plat/s3c64xx-spi.h>
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI0
+-struct s3c64xx_spi_info s3c64xx_spi0_pdata = {
+-	.fifo_lvl_mask	= 0x1ff,
+-	.rx_lvl_offset	= 15,
+-	.high_speed	= 1,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgpin(S5PV210_GPB(0), S3C_GPIO_SFN(2));
+@@ -33,13 +25,6 @@ int s3c64xx_spi0_cfg_gpio(struct platform_device *dev)
+ #endif
+ 
+ #ifdef CONFIG_S3C64XX_DEV_SPI1
+-struct s3c64xx_spi_info s3c64xx_spi1_pdata = {
+-	.fifo_lvl_mask	= 0x7f,
+-	.rx_lvl_offset	= 15,
+-	.high_speed	= 1,
+-	.tx_st_done	= 25,
+-};
+-
+ int s3c64xx_spi1_cfg_gpio(struct platform_device *dev)
+ {
+ 	s3c_gpio_cfgpin(S5PV210_GPB(4), S3C_GPIO_SFN(2));
 diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-index 89dbaee..a733ce9 100644
+index fa95e9a..4e9b9c3 100644
 --- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
 +++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-@@ -52,11 +52,11 @@ struct s3c64xx_spi_info {
-  * Call this from machine init code for each SPI Controller that
-  * has some chips attached to it.
+@@ -33,28 +33,13 @@ struct s3c64xx_spi_csinfo {
+ /**
+  * struct s3c64xx_spi_info - SPI Controller defining structure
+  * @src_clk_nr: Clock source index for the CLK_CFG[SPI_CLKSEL] field.
+- * @clk_from_cmu: If the SPI clock/prescalar control block is present
+- *     by the platform's clock-management-unit and not in SPI controller.
+  * @num_cs: Number of CS this controller emulates.
+  * @cfg_gpio: Configure pins for this SPI controller.
+- * @fifo_lvl_mask: All tx fifo_lvl fields start at offset-6
+- * @rx_lvl_offset: Depends on tx fifo_lvl field and bus number
+- * @high_speed: If the controller supports HIGH_SPEED_EN bit
+- * @tx_st_done: Depends on tx fifo_lvl field
   */
--extern void s3c64xx_spi0_set_platdata(struct s3c64xx_spi_info *pd,
-+extern void s3c64xx_spi0_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs);
--extern void s3c64xx_spi1_set_platdata(struct s3c64xx_spi_info *pd,
-+extern void s3c64xx_spi1_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs);
--extern void s3c64xx_spi2_set_platdata(struct s3c64xx_spi_info *pd,
-+extern void s3c64xx_spi2_set_platdata(char *dev_name, int (*cfg_gpio)(void),
- 				      int src_clk_nr, int num_cs);
+ struct s3c64xx_spi_info {
+ 	int src_clk_nr;
+-	bool clk_from_cmu;
+-
+ 	int num_cs;
+-
+ 	int (*cfg_gpio)(struct platform_device *pdev);
+-
+-	/* Following two fields are for future compatibility */
+-	int fifo_lvl_mask;
+-	int rx_lvl_offset;
+-	int high_speed;
+-	int tx_st_done;
+ };
  
- /* defined by architecture to configure gpio */
+ /**
 -- 
 1.6.6.rc2

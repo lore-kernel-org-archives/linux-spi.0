@@ -1,12 +1,11 @@
-From: Madame Vacances par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= 50% sur votre
-	=?iso-8859-15?Q?s=E9jour?= dans un =?iso-8859-15?Q?h=F4tel?= Disney
-Date: Mon, 07 May 2012 12:16:06 +0200
-Message-ID: <1336385766.4fa7a0e6b9a42@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Jerry Burke" <jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: [SPAM] The Mobile Broadband Market Report 2012-2017
+Date: Tue, 8 May 2012 01:19:17 +0100
+Message-ID: <20120508011917.1806882843@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,23 +18,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExMDQwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0wNiAyMzo1MDowMSZlPTEmaD0xMTAzOSZmPTExMDQwJmc9MTEwNDA=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExMDQwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0wNiAyMzo1MDowMSZlPTEmaD0xMTAzOSZmPTExMDQwJmc9MTEwND=
-A=3D
-
-
----------------------------------------------------------------------------=
----
+The Mobile Broadband Market Report 2012-2017
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

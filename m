@@ -1,41 +1,63 @@
-From: Virginie Rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Offre =?iso-8859-15?Q?sp=E9ciale=2C?= lit double
-	=?iso-8859-15?Q?=E0_349=80?= pendant 7 jours !
-Date: Tue, 08 May 2012 15:09:58 +0200
-Message-ID: <1336482598.4fa91b26ddbfa@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Thomas Abraham <thomas.abraham@linaro.org>
+Subject: [PATCH 00/10] spi: s3c64xx: add support for device tree
+Date: Wed, 09 May 2012 03:34:44 +0530
+Message-ID: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This patch series adds device tree based discovery support for Samsung's
+s3c64xx compatible spi controller. This is mainly tested for Exynos4210
+and Exynos5250 with onboard spi nor flash device.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTExMzE1JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNS0wOCAxNTowMDowMSZlPTEmaD0xMTMxNCZmPTExMzE1Jmc9MTEzMTU=3D
+This patch series is based on Linux 3.4-rc5 with the following two
+patch series applied.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTExMzE1JmM=
-9MjM2NDM3JmQ9MjAxMi0wNS0wOCAxNTowMDowMSZlPTEmaD0xMTMxNCZmPTExMzE1Jmc9MTEzMT=
-U=3D
+[1] http://www.mail-archive.com/linux-samsung-soc@vger.kernel.org/msg10494.html
+    [PATCH 00/20] ARM: Samsung: Add support for Exynos5250 Rev1.0
 
+[2] http://www.mail-archive.com/linux-samsung-soc@vger.kernel.org/msg09640.html
+    [PATCH 0/6] S3C24XX: Add support for HSSPI on S3C2416/S3C2443
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+Thomas Abraham (10):
+  spi: s3c64xx: remove unused S3C64XX_SPI_ST_TRLCNTZ macro
+  spi: s3c64xx: move controller information into driver data
+  ARM: Samsung: Remove spi hardware controller information from platform data
+  ARM: Samsung: Remove pdev pointer paremeter from spi gpio setup functions
+  ARM: Samsung: Update the device names for spi clock lookup
+  ARM: Samsung: Modify s3c64xx_spi{0|1|2}_set_platdata function
+  spi: s3c64xx: Remove the 'set_level' callback from controller data
+  ARM: Exynos4: Fix the incorrect hierarchy of spi controller bus clock
+  ARM: Exynos5: Add spi clock support
+  spi: s3c64xx: add device tree support
 
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+.../devicetree/bindings/spi/spi-samsung.txt        |  113 +++++
+ arch/arm/mach-exynos/clock-exynos4.c               |   66 ++-
+ arch/arm/mach-exynos/clock-exynos5.c               |   98 ++++
+ arch/arm/mach-exynos/include/mach/regs-clock.h     |    4 +
+ arch/arm/mach-exynos/setup-spi.c                   |   33 +--
+ arch/arm/mach-s3c24xx/clock-s3c2416.c              |    2 +-
+ arch/arm/mach-s3c24xx/clock-s3c2443.c              |    2 +-
+ arch/arm/mach-s3c24xx/common-s3c2443.c             |    4 +-
+ arch/arm/mach-s3c24xx/setup-spi.c                  |   10 +-
+ arch/arm/mach-s3c64xx/clock.c                      |   20 +-
+ arch/arm/mach-s3c64xx/mach-crag6410.c              |    2 +-
+ arch/arm/mach-s3c64xx/setup-spi.c                  |   19 +-
+ arch/arm/mach-s5p64x0/clock-s5p6440.c              |   12 +-
+ arch/arm/mach-s5p64x0/clock-s5p6450.c              |   12 +-
+ arch/arm/mach-s5p64x0/setup-spi.c                  |   21 +-
+ arch/arm/mach-s5pc100/clock.c                      |   30 +-
+ arch/arm/mach-s5pc100/setup-spi.c                  |   30 +--
+ arch/arm/mach-s5pv210/clock.c                      |   14 +-
+ arch/arm/mach-s5pv210/setup-spi.c                  |   21 +-
+ arch/arm/plat-samsung/devs.c                       |   50 +--
+ arch/arm/plat-samsung/include/plat/s3c64xx-spi.h   |   31 +-
+ drivers/spi/spi-s3c64xx.c                          |  467 +++++++++++++++++---
+ 22 files changed, 753 insertions(+), 308 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-samsung.txt

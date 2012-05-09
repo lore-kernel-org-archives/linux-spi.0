@@ -1,60 +1,138 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: [PATCH 06/10] ARM: Samsung: Modify s3c64xx_spi{0|1|2}_set_platdata
- function
-Date: Wed, 9 May 2012 22:22:26 +0800
-Message-ID: <CAJuYYwSMant-44jvvyeefojmur7vCvKLeEPWEK52pqUTB4RZkg@mail.gmail.com>
-References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
-	<1336514694-22393-7-git-send-email-thomas.abraham@linaro.org>
-	<20120509085617.GB28702@sirena.org.uk>
-	<201205091110.15224.heiko@sntech.de>
-	<20120509105500.GG3955@opensource.wolfsonmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-	spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org, kgene.kim@samsung.com,
-	rob.herring@calxeda.com, grant.likely@secretlab.ca,
-	jaswinder.singh@linaro.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120509105500.GG3955@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Hannu Heikkinen <hannuxx@iki.fi>
+Subject: [PATCH v3 RESEND] spi/ep93xx: clean probe/remove routines
+Date: Wed,  9 May 2012 17:26:26 +0300
+Message-ID: <1336573586-9504-1-git-send-email-hannuxx@iki.fi>
+Content-Type: text/plain; charset="us-ascii"
+Cc: mika.westerberg@iki.fi, hsweeten@visionengravers.com
+To: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9 May 2012 18:55, Mark Brown <broonie@opensource.wolfsonmicro.com> w=
-rote:
-> On Wed, May 09, 2012 at 11:10:14AM +0200, Heiko St=FCbner wrote:
->
->> Similar to the adc and rtc driver, all Samsung platforms reuse a com=
-mon
->> platform-device definition for the s3c64xx-spi and simply will set t=
-he correct
->> name when the machine type is determined during boot.
->
-> Right, that doesn't mean this is a great way of doing things, though =
+Use devm_* functions for managing devres resources.
+
+Also use local variable irq and remove irq variable from
+struct ep93xx_spi, as it is needed only in probe routine.
+
+Acked-by: Mika Westerberg <mika.westerberg@iki.fi>
+Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+Signed-off-by: Hannu Heikkinen <hannuxx@iki.fi>
+---
+ drivers/spi/spi-ep93xx.c |   37 ++++++++++---------------------------
+ 1 file changed, 10 insertions(+), 27 deletions(-)
+
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index e805507..f97f1d2 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -76,7 +76,6 @@
+  * @clk: clock for the controller
+  * @regs_base: pointer to ioremap()'d registers
+  * @sspdr_phys: physical address of the SSPDR register
+- * @irq: IRQ number used by the driver
+  * @min_rate: minimum clock rate (in Hz) supported by the controller
+  * @max_rate: maximum clock rate (in Hz) supported by the controller
+  * @running: is the queue running
+@@ -114,7 +113,6 @@ struct ep93xx_spi {
+ 	struct clk			*clk;
+ 	void __iomem			*regs_base;
+ 	unsigned long			sspdr_phys;
+-	int				irq;
+ 	unsigned long			min_rate;
+ 	unsigned long			max_rate;
+ 	bool				running;
+@@ -1031,6 +1029,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+ 	struct ep93xx_spi_info *info;
+ 	struct ep93xx_spi *espi;
+ 	struct resource *res;
++	int irq;
+ 	int error;
+ 
+ 	info = pdev->dev.platform_data;
+@@ -1070,8 +1069,8 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+ 	espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
+ 	espi->pdev = pdev;
+ 
+-	espi->irq = platform_get_irq(pdev, 0);
+-	if (espi->irq < 0) {
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
+ 		error = -EBUSY;
+ 		dev_err(&pdev->dev, "failed to get irq resources\n");
+ 		goto fail_put_clock;
+@@ -1084,26 +1083,20 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+ 		goto fail_put_clock;
+ 	}
+ 
+-	res = request_mem_region(res->start, resource_size(res), pdev->name);
+-	if (!res) {
+-		dev_err(&pdev->dev, "unable to request iomem resources\n");
+-		error = -EBUSY;
+-		goto fail_put_clock;
+-	}
 -
-> it's been a frequent source of errors in the past and is painful to
-> debug as the data structures get rewritten during boot which is a bit=
- of
-> a surprise.
->
->> The alternative is creating a mulitude of platform devices for each =
-possible
->> machine type using this driver.
->
-> Yes, that's the normal way of handling this and is actually what the
-> code was originally doing - there's a bunch of ifdefed devices in
-> plat-samsung/devs.c. =A0You usually have to do this anyway as the IPs=
- move
-> about so the resources need changing.
-
-In addition to the setting the name, the platform data is also
-assigned at runtime. Adding multiple platform devices means that we
-add lot more code in setting up the platform data. And since we are
-moving towards adopting dt, these would anyway go away when we have
-all the platforms migrated to dt.
-
-Thanks,
-Thomas.
+ 	espi->sspdr_phys = res->start + SSPDR;
+-	espi->regs_base = ioremap(res->start, resource_size(res));
++
++	espi->regs_base = devm_request_and_ioremap(&pdev->dev, res);
+ 	if (!espi->regs_base) {
+ 		dev_err(&pdev->dev, "failed to map resources\n");
+ 		error = -ENODEV;
+-		goto fail_free_mem;
++		goto fail_put_clock;
+ 	}
+ 
+-	error = request_irq(espi->irq, ep93xx_spi_interrupt, 0,
+-			    "ep93xx-spi", espi);
++	error = devm_request_irq(&pdev->dev, irq, ep93xx_spi_interrupt,
++				0, "ep93xx-spi", espi);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to request irq\n");
+-		goto fail_unmap_regs;
++		goto fail_put_clock;
+ 	}
+ 
+ 	if (info->use_dma && ep93xx_spi_setup_dma(espi))
+@@ -1128,7 +1121,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
+-		 (unsigned long)res->start, espi->irq);
++		 (unsigned long)res->start, irq);
+ 
+ 	return 0;
+ 
+@@ -1136,11 +1129,6 @@ fail_free_queue:
+ 	destroy_workqueue(espi->wq);
+ fail_free_dma:
+ 	ep93xx_spi_release_dma(espi);
+-	free_irq(espi->irq, espi);
+-fail_unmap_regs:
+-	iounmap(espi->regs_base);
+-fail_free_mem:
+-	release_mem_region(res->start, resource_size(res));
+ fail_put_clock:
+ 	clk_put(espi->clk);
+ fail_release_master:
+@@ -1154,7 +1142,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+-	struct resource *res;
+ 
+ 	spin_lock_irq(&espi->lock);
+ 	espi->running = false;
+@@ -1180,10 +1167,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
+ 	spin_unlock_irq(&espi->lock);
+ 
+ 	ep93xx_spi_release_dma(espi);
+-	free_irq(espi->irq, espi);
+-	iounmap(espi->regs_base);
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	release_mem_region(res->start, resource_size(res));
+ 	clk_put(espi->clk);
+ 	platform_set_drvdata(pdev, NULL);
+ 
+-- 
+1.7.10

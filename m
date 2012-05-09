@@ -1,337 +1,105 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: [PATCH] SPI: Refactor spi-orion to use SPI framework queue.
-Date: Wed,  9 May 2012 11:17:46 +0200
-Message-ID: <1336555066-12991-1-git-send-email-andrew@lunn.ch>
+From: Heiko =?iso-8859-15?q?St=FCbner?= <heiko@sntech.de>
+Subject: Re: [PATCH 07/10] spi: s3c64xx: Remove the 'set_level' callback from controller data
+Date: Wed, 9 May 2012 11:20:41 +0200
+Message-ID: <201205091120.41978.heiko@sntech.de>
+References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org> <1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-Cc: olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	arnd.bergmann-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Replace the deprecated master->transfer with transfer_one_message()
-and allow the SPI subsystem handle all the queuing of messages.
+Am Mittwoch, 9. Mai 2012, 00:04:51 schrieb Thomas Abraham:
+> The set_level callback in the controller data, which is used to configure
+> the slave select line, cannot be supported when migrating the driver to
+> device tree based discovery. Since all the platforms currently use gpio
+> as the slave select line, this callback can be removed from the
+> controller data and replaced with call to gpio_set_value in the driver.
 
-Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
----
-
-Note: This patch depends on clk-next and clk-next-orion held by Mike
-Turquette and soon to be pushed upstream. So it may make sense for this
-patch to go in via arm-soc.
-
- drivers/spi/spi-orion.c |  209 +++++++++++++++--------------------------------
- 1 files changed, 67 insertions(+), 142 deletions(-)
-
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index dfd04e9..03a8878 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -35,12 +35,6 @@
- #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
- 
- struct orion_spi {
--	struct work_struct	work;
--
--	/* Lock access to transfer list.	*/
--	spinlock_t		lock;
--
--	struct list_head	msg_queue;
- 	struct spi_master	*master;
- 	void __iomem		*base;
- 	unsigned int		max_speed;
-@@ -49,8 +43,6 @@ struct orion_spi {
- 	struct clk              *clk;
- };
- 
--static struct workqueue_struct *orion_spi_wq;
--
- static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
- {
- 	return orion_spi->base + reg;
-@@ -277,73 +269,78 @@ out:
- }
- 
- 
--static void orion_spi_work(struct work_struct *work)
-+static int orion_spi_transfer_one_message(struct spi_master *master,
-+					   struct spi_message *m)
- {
--	struct orion_spi *orion_spi =
--		container_of(work, struct orion_spi, work);
--
--	spin_lock_irq(&orion_spi->lock);
--	while (!list_empty(&orion_spi->msg_queue)) {
--		struct spi_message *m;
--		struct spi_device *spi;
--		struct spi_transfer *t = NULL;
--		int par_override = 0;
--		int status = 0;
--		int cs_active = 0;
--
--		m = container_of(orion_spi->msg_queue.next, struct spi_message,
--				 queue);
-+	struct orion_spi *orion_spi = spi_master_get_devdata(master);
-+	struct spi_device *spi = m->spi;
-+	struct spi_transfer *t = NULL;
-+	int par_override = 0;
-+	int status = 0;
-+	int cs_active = 0;
- 
--		list_del_init(&m->queue);
--		spin_unlock_irq(&orion_spi->lock);
-+	/* Load defaults */
-+	status = orion_spi_setup_transfer(spi, NULL);
- 
--		spi = m->spi;
-+	if (status < 0)
-+		goto msg_done;
- 
--		/* Load defaults */
--		status = orion_spi_setup_transfer(spi, NULL);
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		/* make sure buffer length is even when working in 16
-+		 * bit mode*/
-+		if ((t->bits_per_word == 16) && (t->len & 1)) {
-+			dev_err(&spi->dev,
-+				"message rejected : "
-+				"odd data length %d while in 16 bit mode\n",
-+				t->len);
-+			status = -EIO;
-+			goto msg_done;
-+		}
- 
--		if (status < 0)
-+		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
-+			dev_err(&spi->dev,
-+				"message rejected : "
-+				"device min speed (%d Hz) exceeds "
-+				"required transfer speed (%d Hz)\n",
-+				orion_spi->min_speed, t->speed_hz);
-+			status = -EIO;
- 			goto msg_done;
-+		}
- 
--		list_for_each_entry(t, &m->transfers, transfer_list) {
--			if (par_override || t->speed_hz || t->bits_per_word) {
--				par_override = 1;
--				status = orion_spi_setup_transfer(spi, t);
--				if (status < 0)
--					break;
--				if (!t->speed_hz && !t->bits_per_word)
--					par_override = 0;
--			}
--
--			if (!cs_active) {
--				orion_spi_set_cs(orion_spi, 1);
--				cs_active = 1;
--			}
--
--			if (t->len)
--				m->actual_length +=
--					orion_spi_write_read(spi, t);
--
--			if (t->delay_usecs)
--				udelay(t->delay_usecs);
--
--			if (t->cs_change) {
--				orion_spi_set_cs(orion_spi, 0);
--				cs_active = 0;
--			}
-+		if (par_override || t->speed_hz || t->bits_per_word) {
-+			par_override = 1;
-+			status = orion_spi_setup_transfer(spi, t);
-+			if (status < 0)
-+				break;
-+			if (!t->speed_hz && !t->bits_per_word)
-+				par_override = 0;
- 		}
- 
--msg_done:
--		if (cs_active)
--			orion_spi_set_cs(orion_spi, 0);
-+		if (!cs_active) {
-+			orion_spi_set_cs(orion_spi, 1);
-+			cs_active = 1;
-+		}
-+
-+		if (t->len)
-+			m->actual_length += orion_spi_write_read(spi, t);
- 
--		m->status = status;
--		m->complete(m->context);
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
- 
--		spin_lock_irq(&orion_spi->lock);
-+		if (t->cs_change) {
-+			orion_spi_set_cs(orion_spi, 0);
-+			cs_active = 0;
-+		}
- 	}
- 
--	spin_unlock_irq(&orion_spi->lock);
-+msg_done:
-+	if (cs_active)
-+		orion_spi_set_cs(orion_spi, 0);
-+
-+	m->status = status;
-+	spi_finalize_current_message(master);
-+
-+	return 0;
- }
- 
- static int __init orion_spi_reset(struct orion_spi *orion_spi)
-@@ -376,73 +373,14 @@ static int orion_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
-+static int orion_spi_prepare_transfer(struct spi_master *spi)
- {
--	struct orion_spi *orion_spi;
--	struct spi_transfer *t = NULL;
--	unsigned long flags;
--
--	m->actual_length = 0;
--	m->status = 0;
--
--	/* reject invalid messages and transfers */
--	if (list_empty(&m->transfers) || !m->complete)
--		return -EINVAL;
--
--	orion_spi = spi_master_get_devdata(spi->master);
--
--	list_for_each_entry(t, &m->transfers, transfer_list) {
--		unsigned int bits_per_word = spi->bits_per_word;
--
--		if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"invalid transfer data buffers\n");
--			goto msg_rejected;
--		}
--
--		if (t->bits_per_word)
--			bits_per_word = t->bits_per_word;
--
--		if ((bits_per_word != 8) && (bits_per_word != 16)) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"invalid transfer bits_per_word (%d bits)\n",
--				bits_per_word);
--			goto msg_rejected;
--		}
--		/*make sure buffer length is even when working in 16 bit mode*/
--		if ((t->bits_per_word == 16) && (t->len & 1)) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"odd data length (%d) while in 16 bit mode\n",
--				t->len);
--			goto msg_rejected;
--		}
--
--		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"device min speed (%d Hz) exceeds "
--				"required transfer speed (%d Hz)\n",
--				orion_spi->min_speed, t->speed_hz);
--			goto msg_rejected;
--		}
--	}
--
--
--	spin_lock_irqsave(&orion_spi->lock, flags);
--	list_add_tail(&m->queue, &orion_spi->msg_queue);
--	queue_work(orion_spi_wq, &orion_spi->work);
--	spin_unlock_irqrestore(&orion_spi->lock, flags);
-+	return 0;
-+}
- 
-+static int orion_spi_unprepare_transfer(struct spi_master *spi)
-+{
- 	return 0;
--msg_rejected:
--	/* Message rejected and not queued */
--	m->status = -EINVAL;
--	if (m->complete)
--		m->complete(m->context);
--	return -EINVAL;
- }
- 
- static int __init orion_spi_probe(struct platform_device *pdev)
-@@ -469,7 +407,9 @@ static int __init orion_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = 0;
- 
- 	master->setup = orion_spi_setup;
--	master->transfer = orion_spi_transfer;
-+	master->transfer_one_message = orion_spi_transfer_one_message;
-+	master->prepare_transfer_hardware = orion_spi_prepare_transfer;
-+	master->unprepare_transfer_hardware = orion_spi_unprepare_transfer;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 
- 	dev_set_drvdata(&pdev->dev, master);
-@@ -503,11 +443,6 @@ static int __init orion_spi_probe(struct platform_device *pdev)
- 	}
- 	spi->base = ioremap(r->start, SZ_1K);
- 
--	INIT_WORK(&spi->work, orion_spi_work);
--
--	spin_lock_init(&spi->lock);
--	INIT_LIST_HEAD(&spi->msg_queue);
--
- 	if (orion_spi_reset(spi) < 0)
- 		goto out_rel_mem;
- 
-@@ -537,8 +472,6 @@ static int __exit orion_spi_remove(struct platform_device *pdev)
- 	master = dev_get_drvdata(&pdev->dev);
- 	spi = spi_master_get_devdata(master);
- 
--	cancel_work_sync(&spi->work);
--
- 	clk_disable_unprepare(spi->clk);
- 	clk_put(spi->clk);
- 
-@@ -562,21 +495,13 @@ static struct platform_driver orion_spi_driver = {
- 
- static int __init orion_spi_init(void)
- {
--	orion_spi_wq = create_singlethread_workqueue(
--				orion_spi_driver.driver.name);
--	if (orion_spi_wq == NULL)
--		return -ENOMEM;
--
- 	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
- }
- module_init(orion_spi_init);
- 
- static void __exit orion_spi_exit(void)
- {
--	flush_workqueue(orion_spi_wq);
- 	platform_driver_unregister(&orion_spi_driver);
--
--	destroy_workqueue(orion_spi_wq);
- }
- module_exit(orion_spi_exit);
- 
--- 
-1.7.2.5
+I was quite fond of the set_level callback. On one of the machines I'm working
+on there is some sort of multiplexer (TI-sn74cbtlv3257) sitting between the
+controller and spi devices to provide support for more than one device.
+So I was doing the switch to the correct device in the set_level callback,
+which worked quite well.
 
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+In the end, I'm still ok with this consolidation, as the device line has
+reached it's end of life and the second device (an epaper controller)
+provides another form of access to it through the display controller of the
+s3c2416.
+
+
+Heiko
+
+[1] https://github.com/mmind/linux-es600/blob/topic/es600-devel/arch/arm/mach-s3c24xx/common-es600.c#L1155
+
+> Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
+> Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
+> ---
+>  arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |    2 --
+>  drivers/spi/spi-s3c64xx.c                        |    8 ++++----
+>  2 files changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+> b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h index a733ce9..48a6495
+> 100644
+> --- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+> +++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+> @@ -18,7 +18,6 @@ struct platform_device;
+>   * @fb_delay: Slave specific feedback delay.
+>   *            Refer to FB_CLK_SEL register definition in SPI chapter.
+>   * @line: Custom 'identity' of the CS line.
+> - * @set_level: CS line control.
+>   *
+>   * This is per SPI-Slave Chipselect information.
+>   * Allocate and initialize one in machine init code and make the
+> @@ -27,7 +26,6 @@ struct platform_device;
+>  struct s3c64xx_spi_csinfo {
+>  	u8 fb_delay;
+>  	unsigned line;
+> -	void (*set_level)(unsigned line_id, int lvl);
+>  };
+> 
+>  /**
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index f6bc0e3..d84ce7f 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -406,14 +406,14 @@ static inline void enable_cs(struct
+> s3c64xx_spi_driver_data *sdd, if (sdd->tgl_spi != spi) { /* if last mssg
+> on diff device */
+>  			/* Deselect the last toggled device */
+>  			cs = sdd->tgl_spi->controller_data;
+> -			cs->set_level(cs->line,
+> -					spi->mode & SPI_CS_HIGH ? 0 : 1);
+> +			gpio_set_value(cs->line,
+> +				spi->mode & SPI_CS_HIGH ? 0 : 1);
+>  		}
+>  		sdd->tgl_spi = NULL;
+>  	}
+> 
+>  	cs = spi->controller_data;
+> -	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+> +	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+>  }
+> 
+>  static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
+> @@ -499,7 +499,7 @@ static inline void disable_cs(struct
+> s3c64xx_spi_driver_data *sdd, if (sdd->tgl_spi == spi)
+>  		sdd->tgl_spi = NULL;
+> 
+> -	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
+> +	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
+>  }
+> 
+>  static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)

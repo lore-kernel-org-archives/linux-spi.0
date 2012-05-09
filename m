@@ -1,20 +1,23 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 10/10] spi: s3c64xx: add device tree support
-Date: Wed, 9 May 2012 10:07:16 +0100
-Message-ID: <20120509090716.GC28702@sirena.org.uk>
+From: Heiko =?iso-8859-1?q?St=FCbner?= <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Subject: Re: [PATCH 06/10] ARM: Samsung: Modify
+	s3c64xx_spi{0|1|2}_set_platdata function
+Date: Wed, 9 May 2012 11:10:14 +0200
+Message-ID: <201205091110.15224.heiko@sntech.de>
 References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
-	<1336514694-22393-11-git-send-email-thomas.abraham@linaro.org>
+	<1336514694-22393-7-git-send-email-thomas.abraham@linaro.org>
+	<20120509085617.GB28702@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jaswinder.singh-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Thomas Abraham <thomas.abraham-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Thomas Abraham <thomas.abraham-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1336514694-22393-11-git-send-email-thomas.abraham-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20120509085617.GB28702-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,25 +28,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 09, 2012 at 03:34:54AM +0530, Thomas Abraham wrote:
+Am Mittwoch, 9. Mai 2012, 10:56:17 schrieb Mark Brown:
+> On Wed, May 09, 2012 at 03:34:50AM +0530, Thomas Abraham wrote:
+> > +	s3c64xx_spi0_set_platdata("s3c6410-spi", NULL, 0, 1);
+> 
+> Shouldn't we just set the name in the struct platform_device rather than
+> requiring the machine to pass it through by hand?
 
-> +- gpios: The gpio specifier for clock, mosi and miso interface lines (in no
-> +  particular order). The format of the gpio specifier depends on the gpio
-> +  controller.
+Similar to the adc and rtc driver, all Samsung platforms reuse a common 
+platform-device definition for the s3c64xx-spi and simply will set the correct 
+name when the machine type is determined during boot.
 
-This seems odd...  This isn't a bitbanging controller, and surely the
-driver will need to know which signal is which?  I suspect this is
-actually for pinmux rather than to identify the signals but that should
-at least be made clear and really should be being done using the pinmux
-API.
+I.e. I will also have to change my out-of-tree machine stuff to set the 
+s3c2443-spi name using this method.
 
-> +  - samsung,spi-cs-gpio: A gpio specifier that specifies the gpio line used as
-> +    the slave select line by the spi controller. The format of the gpio
-> +    specifier depends on the gpio controller.
+The alternative is creating a mulitude of platform devices for each possible 
+machine type using this driver.
 
-We should really have a binding for this at the SPI level (and ideally
-some code to manage setting the GPIO too) - it's pretty common to use a
-GPIO as /CS.
+
+Heiko
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

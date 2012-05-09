@@ -1,93 +1,69 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH 10/10] spi: s3c64xx: add device tree support
-Date: Thu, 10 May 2012 00:39:29 +0800
-Message-ID: <CAJuYYwT6SJth83tFSbvENa2h7-M182kGCoBidmw8DvECK0qUzA@mail.gmail.com>
+Date: Wed, 9 May 2012 17:47:07 +0100
+Message-ID: <20120509164706.GJ3955@opensource.wolfsonmicro.com>
 References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
-	<1336514694-22393-11-git-send-email-thomas.abraham@linaro.org>
-	<20120509090716.GC28702@sirena.org.uk>
-	<CAJuYYwQF9Hh3wJpPTfXm_5iirvHzgwDu6imuSgH-ggenj=Vc8Q@mail.gmail.com>
-	<20120509143159.GU3955@opensource.wolfsonmicro.com>
+ <1336514694-22393-11-git-send-email-thomas.abraham@linaro.org>
+ <20120509090716.GC28702@sirena.org.uk>
+ <CAJuYYwQF9Hh3wJpPTfXm_5iirvHzgwDu6imuSgH-ggenj=Vc8Q@mail.gmail.com>
+ <20120509143159.GU3955@opensource.wolfsonmicro.com>
+ <CAJuYYwT6SJth83tFSbvENa2h7-M182kGCoBidmw8DvECK0qUzA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6xTM0kUsJcaNctaW"
 Cc: spi-devel-general@lists.sourceforge.net,
 	devicetree-discuss@lists.ozlabs.org, kgene.kim@samsung.com,
 	rob.herring@calxeda.com, grant.likely@secretlab.ca,
 	jaswinder.singh@linaro.org, linux-samsung-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Thomas Abraham <thomas.abraham@linaro.org>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120509143159.GU3955@opensource.wolfsonmicro.com>
+Content-Disposition: inline
+In-Reply-To: <CAJuYYwT6SJth83tFSbvENa2h7-M182kGCoBidmw8DvECK0qUzA@mail.gmail.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9 May 2012 22:32, Mark Brown <broonie@opensource.wolfsonmicro.com> w=
-rote:
-> On Wed, May 09, 2012 at 10:13:28PM +0800, Thomas Abraham wrote:
->> On 9 May 2012 17:07, Mark Brown <broonie@opensource.wolfsonmicro.com=
-> wrote:
->> > On Wed, May 09, 2012 at 03:34:54AM +0530, Thomas Abraham wrote:
->
->> >> +- gpios: The gpio specifier for clock, mosi and miso interface l=
-ines (in no
->> >> + =A0particular order). The format of the gpio specifier depends =
-on the gpio
->> >> + =A0controller.
->
->> > This seems odd... =A0This isn't a bitbanging controller, and surel=
-y the
->> > driver will need to know which signal is which? =A0I suspect this =
-is
->> > actually for pinmux rather than to identify the signals but that s=
-hould
->> > at least be made clear and really should be being done using the p=
-inmux
->> > API.
->
->> The driver retrieves the list of gpio's that it is allowed to use. T=
-he
->> gpio numbers for miso, mosi and clk are mandatory but the order in
->> which they are specified is not important since the driver never nee=
-ds
->> to which gpio is which interface line. I agree the pinmux api should
->> be used here, but the call to pinmux api would be a incremental chan=
-ge
->> here, not changing the code this patch is adding.
->
-> I'd suggest just specifying the order - someone might want to use it
-> later for some reason and it's not really a hardship for someone to u=
-se
-> it. =A0Avoids any "how does that work?" questions like I had.
 
-Ok. I will add the order of the gpios as you have suggested.
+--6xTM0kUsJcaNctaW
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->> >> + =A0- samsung,spi-cs-gpio: A gpio specifier that specifies the g=
-pio line used as
->> >> + =A0 =A0the slave select line by the spi controller. The format =
-of the gpio
->> >> + =A0 =A0specifier depends on the gpio controller.
->
->> > We should really have a binding for this at the SPI level (and ide=
-ally
->> > some code to manage setting the GPIO too) - it's pretty common to =
-use a
->> > GPIO as /CS.
->
->> The existing implementations vary in the way the nCS gpio lines are
->> specified. For some controllers, the nCS gpio's are included in the
->> spi device node whereas in this implementation, the nCS gpio is list=
-ed
->> in the spi slave device node.
->
-> Yeah, I know. =A0I'm saying we should try to come up with a binding f=
-or
-> this that can be used by new SPI contollers going forward so things a=
-re
-> consistent.
+On Thu, May 10, 2012 at 12:39:29AM +0800, Thomas Abraham wrote:
+> On 9 May 2012 22:32, Mark Brown <broonie@opensource.wolfsonmicro.com> wro=
+te:
 
-Ok. For this patch series, I will continue with the samsung specific
-binding for the nCS line.
+> > Yeah, I know. =A0I'm saying we should try to come up with a binding for
+> > this that can be used by new SPI contollers going forward so things are
+> > consistent.
 
-Thanks,
-Thomas.
+> Ok. For this patch series, I will continue with the samsung specific
+> binding for the nCS line.
+
+How about just renaming your binding to a generic one and documenting it
+separately?  It looks like a sensible binding which other people should
+be able to use so may as well have something there already.
+
+--6xTM0kUsJcaNctaW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPqp9jAAoJEBus8iNuMP3dWiIP+wTHcaenIRSakRljnQC/HWfi
+pZ9jHBF4QpCj0xye/FVT1LWIOU3Nv3YDDpOCxfHSwqrYn63+LcDKjlnUSMBjRU4z
+LhlBYuXPZ+9GZT8I9Impvnhp5Pgw99jct2I46dTUnFUU3uqsih0PapBKwma6rHiI
+n8gXzY017eHfCfmM/YE6QvRZkVsWawKaL/mVmn7GFimq4IFX6Hf9CNRD2thn89Yq
+caSxLuqJ8O+h38hg/VWXsMHIqkASd21GW0r9PF3sO9PNczpeGVL23erkTe2hW3/N
+J+YSeX6NUrI1P8a5BTgv3ug0MQlTtMif2XRVV/Tb8LeDZ4WsJYsb+lnvHiQ9VEAc
+YqI/ogMeS4KCBS6wlDAfBhjk5sMOIf7FNyQQ0t+AK6OltxwQbIGnrSaCiiF9xSLO
+A+O1jsB120H3oFBqklOExJkRjLRrgSxiiqpCpeRe66cNJF9/4+M5l4ghKUxaSHlY
+U9A1KkxnTPq+XEYF4HPmjlt+P2bz2UoYiiYgIYuSRoyt4T/O6oJNNrh7B7K9YH1h
+FKjW7Der5AdSt9EYvftG0m06qjrgS0/vBlZSol3QTuDwhZmvD6MctQicoc6nyr5+
+C58nQlwGUUB9ZlOlmmNC9VLKXYOc1wXK9UDEHmfCO0r8937miUVNZv00PR9kcNj+
+FFYWB2FxmlZ71XCz+ape
+=jLvg
+-----END PGP SIGNATURE-----
+
+--6xTM0kUsJcaNctaW--

@@ -1,51 +1,55 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: [PATCH 10/10] spi: s3c64xx: add device tree support
-Date: Thu, 10 May 2012 01:19:31 +0800
-Message-ID: <CAJuYYwTdLbgbU_a_LqdwKJbhh_Nppk5s14kX5C=RExjM3eXNTQ@mail.gmail.com>
-References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
-	<1336514694-22393-11-git-send-email-thomas.abraham@linaro.org>
-	<20120509090716.GC28702@sirena.org.uk>
-	<CAJuYYwQF9Hh3wJpPTfXm_5iirvHzgwDu6imuSgH-ggenj=Vc8Q@mail.gmail.com>
-	<20120509143159.GU3955@opensource.wolfsonmicro.com>
-	<CAJuYYwT6SJth83tFSbvENa2h7-M182kGCoBidmw8DvECK0qUzA@mail.gmail.com>
-	<20120509164706.GJ3955@opensource.wolfsonmicro.com>
+From: mathieu.poirier-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Subject: [PATCH] spi/topcliff: use correct __devexit_p annotation
+Date: Wed,  9 May 2012 16:35:23 -0600
+Message-ID: <1336602923-5724-1-git-send-email-mathieu.poirier@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org, kgene.kim@samsung.com,
-	rob.herring@calxeda.com, grant.likely@secretlab.ca,
-	jaswinder.singh@linaro.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120509164706.GJ3955@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mathieu.poirier-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, arnd-r2nGTMty4D4@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10 May 2012 00:47, Mark Brown <broonie@opensource.wolfsonmicro.com> =
-wrote:
-> On Thu, May 10, 2012 at 12:39:29AM +0800, Thomas Abraham wrote:
->> On 9 May 2012 22:32, Mark Brown <broonie@opensource.wolfsonmicro.com=
-> wrote:
->
->> > Yeah, I know. =A0I'm saying we should try to come up with a bindin=
-g for
->> > this that can be used by new SPI contollers going forward so thing=
-s are
->> > consistent.
->
->> Ok. For this patch series, I will continue with the samsung specific
->> binding for the nCS line.
->
-> How about just renaming your binding to a generic one and documenting=
- it
-> separately? =A0It looks like a sensible binding which other people sh=
-ould
-> be able to use so may as well have something there already.
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 
-Ok. I will replace the samsung specific binding with a generic binding
-in the next version of this patch series.
+__devexit functions are discarded when CONFIG_HOTPLUG
+is not set, so the symbol needs to be referenced carefully.
 
-Thanks,
-Thomas.
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Signed-off-by: Mathieu Poirier <mathieu.poirier-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-topcliff-pch.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index ec47d3b..77c4562 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1779,7 +1779,7 @@ static struct pci_driver pch_spi_pcidev_driver = {
+ 	.name = "pch_spi",
+ 	.id_table = pch_spi_pcidev_id,
+ 	.probe = pch_spi_probe,
+-	.remove = pch_spi_remove,
++	.remove = __devexit_p(pch_spi_remove),
+ 	.suspend = pch_spi_suspend,
+ 	.resume = pch_spi_resume,
+ };
+-- 
+1.7.5.4
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,105 +1,50 @@
-From: Heiko =?iso-8859-15?q?St=FCbner?= <heiko@sntech.de>
-Subject: Re: [PATCH 07/10] spi: s3c64xx: Remove the 'set_level' callback from controller data
-Date: Wed, 9 May 2012 11:20:41 +0200
-Message-ID: <201205091120.41978.heiko@sntech.de>
-References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org> <1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
+From: Jassi Brar <jaswinder.singh@linaro.org>
+Subject: Re: [PATCH 07/10] spi: s3c64xx: Remove the 'set_level' callback from
+ controller data
+Date: Wed, 9 May 2012 16:01:15 +0530
+Message-ID: <CAJe_ZhczJhGxUTgdD57n_R7Nz8oD6a075LMzjcejO6QkrHTXTg@mail.gmail.com>
+References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
+	<1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
+	<201205091120.41978.heiko@sntech.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Thomas Abraham <thomas.abraham@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
 	devicetree-discuss@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, kgene.kim@samsung.com,
-	jaswinder.singh@linaro.org
-To: Thomas Abraham <thomas.abraham@linaro.org>
+	grant.likely@secretlab.ca, kgene.kim@samsung.com
+To: =?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1336514694-22393-8-git-send-email-thomas.abraham@linaro.org>
+In-Reply-To: <201205091120.41978.heiko@sntech.de>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Am Mittwoch, 9. Mai 2012, 00:04:51 schrieb Thomas Abraham:
-> The set_level callback in the controller data, which is used to configure
-> the slave select line, cannot be supported when migrating the driver to
-> device tree based discovery. Since all the platforms currently use gpio
-> as the slave select line, this callback can be removed from the
-> controller data and replaced with call to gpio_set_value in the driver.
+On 9 May 2012 14:50, Heiko St=FCbner <heiko@sntech.de> wrote:
+> Am Mittwoch, 9. Mai 2012, 00:04:51 schrieb Thomas Abraham:
+>> The set_level callback in the controller data, which is used to conf=
+igure
+>> the slave select line, cannot be supported when migrating the driver=
+ to
+>> device tree based discovery. Since all the platforms currently use g=
+pio
+>> as the slave select line, this callback can be removed from the
+>> controller data and replaced with call to gpio_set_value in the driv=
+er.
+>
+> I was quite fond of the set_level callback. On one of the machines I'=
+m working
+> on there is some sort of multiplexer (TI-sn74cbtlv3257) sitting betwe=
+en the
+> controller and spi devices to provide support for more than one devic=
+e.
+> So I was doing the switch to the correct device in the set_level call=
+back,
+> which worked quite well.
+>
+I suppose you should still be able to do that defining virtual gpios ba=
+cked
+by appropriate physical mux'ing of lines ?
 
-I was quite fond of the set_level callback. On one of the machines I'm working
-on there is some sort of multiplexer (TI-sn74cbtlv3257) sitting between the
-controller and spi devices to provide support for more than one device.
-So I was doing the switch to the correct device in the set_level callback,
-which worked quite well.
-
-
-In the end, I'm still ok with this consolidation, as the device line has
-reached it's end of life and the second device (an epaper controller)
-provides another form of access to it through the display controller of the
-s3c2416.
-
-
-Heiko
-
-[1] https://github.com/mmind/linux-es600/blob/topic/es600-devel/arch/arm/mach-s3c24xx/common-es600.c#L1155
-
-> Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
-> Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
-> ---
->  arch/arm/plat-samsung/include/plat/s3c64xx-spi.h |    2 --
->  drivers/spi/spi-s3c64xx.c                        |    8 ++++----
->  2 files changed, 4 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-> b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h index a733ce9..48a6495
-> 100644
-> --- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-> +++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-> @@ -18,7 +18,6 @@ struct platform_device;
->   * @fb_delay: Slave specific feedback delay.
->   *            Refer to FB_CLK_SEL register definition in SPI chapter.
->   * @line: Custom 'identity' of the CS line.
-> - * @set_level: CS line control.
->   *
->   * This is per SPI-Slave Chipselect information.
->   * Allocate and initialize one in machine init code and make the
-> @@ -27,7 +26,6 @@ struct platform_device;
->  struct s3c64xx_spi_csinfo {
->  	u8 fb_delay;
->  	unsigned line;
-> -	void (*set_level)(unsigned line_id, int lvl);
->  };
-> 
->  /**
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index f6bc0e3..d84ce7f 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -406,14 +406,14 @@ static inline void enable_cs(struct
-> s3c64xx_spi_driver_data *sdd, if (sdd->tgl_spi != spi) { /* if last mssg
-> on diff device */
->  			/* Deselect the last toggled device */
->  			cs = sdd->tgl_spi->controller_data;
-> -			cs->set_level(cs->line,
-> -					spi->mode & SPI_CS_HIGH ? 0 : 1);
-> +			gpio_set_value(cs->line,
-> +				spi->mode & SPI_CS_HIGH ? 0 : 1);
->  		}
->  		sdd->tgl_spi = NULL;
->  	}
-> 
->  	cs = spi->controller_data;
-> -	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
-> +	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
->  }
-> 
->  static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
-> @@ -499,7 +499,7 @@ static inline void disable_cs(struct
-> s3c64xx_spi_driver_data *sdd, if (sdd->tgl_spi == spi)
->  		sdd->tgl_spi = NULL;
-> 
-> -	cs->set_level(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
-> +	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
->  }
-> 
->  static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
+-jassi

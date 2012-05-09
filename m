@@ -1,13 +1,16 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi/omap2-mcspi: convert to the pump message infrastructure
-Date: Wed, 9 May 2012 16:46:39 +0530
-Message-ID: <1336562199-17599-1-git-send-email-shubhrajyoti@ti.com>
+From: Hannu Heikkinen <hannuxx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3] spi/ep93xx: clean probe/remove routines
+Date: Wed, 9 May 2012 15:08:48 +0300
+Message-ID: <CAHxAxTPTvfv-2eaLK-9dtDFjXP9ruUauJMD8wA=MDEUP4m86ug@mail.gmail.com>
+References: <1334851537-16386-1-git-send-email-hannuxx@iki.fi>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, mika.westerberg-X3B1VOXEql0@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1334851537-16386-1-git-send-email-hannuxx-X3B1VOXEql0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,402 +21,156 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch converts the OMAP SPI driver to use the SPI infrastructure
-pump message queue.Also fixes the below warning.
-master is unqueued, this is deprecated
+Hi,
 
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
-Applies on Grants spi next branch.
+any progress on this (patch in below)? Haven't received any comments after
+v2....
 
- drivers/spi/spi-omap2-mcspi.c |  244 +++++++++++++++++++----------------------
- 1 files changed, 114 insertions(+), 130 deletions(-)
+br,
+Hannu
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index f374eee..44f76df 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -120,10 +120,8 @@ struct omap2_mcspi_regs {
- };
- 
- struct omap2_mcspi {
--	struct work_struct	work;
- 	/* lock protects queue and registers */
- 	spinlock_t		lock;
--	struct list_head	msg_queue;
- 	struct spi_master	*master;
- 	/* Virtual base address of the controller */
- 	void __iomem		*base;
-@@ -131,7 +129,6 @@ struct omap2_mcspi {
- 	/* SPI1 has 4 channels, while SPI2 has 2 */
- 	struct omap2_mcspi_dma	*dma_channels;
- 	struct device		*dev;
--	struct workqueue_struct *wq;
- 	struct omap2_mcspi_regs ctx;
- };
- 
-@@ -275,6 +272,23 @@ static int omap2_mcspi_enable_clocks(struct omap2_mcspi *mcspi)
- 	return pm_runtime_get_sync(mcspi->dev);
- }
- 
-+static int omap2_prepare_transfer(struct spi_master *master)
-+{
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-+
-+	pm_runtime_get_sync(mcspi->dev);
-+	return 0;
-+}
-+
-+static int omap2_unprepare_transfer(struct spi_master *master)
-+{
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
-+
-+	pm_runtime_mark_last_busy(mcspi->dev);
-+	pm_runtime_put_autosuspend(mcspi->dev);
-+	return 0;
-+}
-+
- static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
- {
- 	unsigned long timeout;
-@@ -846,144 +860,126 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 	}
- }
- 
--static void omap2_mcspi_work(struct work_struct *work)
-+static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- {
--	struct omap2_mcspi	*mcspi;
--
--	mcspi = container_of(work, struct omap2_mcspi, work);
--
--	if (omap2_mcspi_enable_clocks(mcspi) < 0)
--		return;
--
--	spin_lock_irq(&mcspi->lock);
- 
- 	/* We only enable one channel at a time -- the one whose message is
--	 * at the head of the queue -- although this controller would gladly
-+	 * -- although this controller would gladly
- 	 * arbitrate among multiple channels.  This corresponds to "single
- 	 * channel" master mode.  As a side effect, we need to manage the
- 	 * chipselect with the FORCE bit ... CS != channel enable.
- 	 */
--	while (!list_empty(&mcspi->msg_queue)) {
--		struct spi_message		*m;
--		struct spi_device		*spi;
--		struct spi_transfer		*t = NULL;
--		int				cs_active = 0;
--		struct omap2_mcspi_cs		*cs;
--		struct omap2_mcspi_device_config *cd;
--		int				par_override = 0;
--		int				status = 0;
--		u32				chconf;
--
--		m = container_of(mcspi->msg_queue.next, struct spi_message,
--				 queue);
--
--		list_del_init(&m->queue);
--		spin_unlock_irq(&mcspi->lock);
--
--		spi = m->spi;
--		cs = spi->controller_state;
--		cd = spi->controller_data;
- 
--		omap2_mcspi_set_enable(spi, 1);
--		list_for_each_entry(t, &m->transfers, transfer_list) {
--			if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
--				status = -EINVAL;
--				break;
--			}
--			if (par_override || t->speed_hz || t->bits_per_word) {
--				par_override = 1;
--				status = omap2_mcspi_setup_transfer(spi, t);
--				if (status < 0)
--					break;
--				if (!t->speed_hz && !t->bits_per_word)
--					par_override = 0;
--			}
-+	struct spi_device		*spi;
-+	struct spi_transfer		*t = NULL;
-+	int				cs_active = 0;
-+	struct omap2_mcspi_cs		*cs;
-+	struct omap2_mcspi_device_config *cd;
-+	int				par_override = 0;
-+	int				status = 0;
-+	u32				chconf;
- 
--			if (!cs_active) {
--				omap2_mcspi_force_cs(spi, 1);
--				cs_active = 1;
--			}
-+	spin_lock_irq(&mcspi->lock);
-+	list_del_init(&m->queue);
-+	spin_unlock_irq(&mcspi->lock);
- 
--			chconf = mcspi_cached_chconf0(spi);
--			chconf &= ~OMAP2_MCSPI_CHCONF_TRM_MASK;
--			chconf &= ~OMAP2_MCSPI_CHCONF_TURBO;
-+	spi = m->spi;
-+	cs = spi->controller_state;
-+	cd = spi->controller_data;
- 
--			if (t->tx_buf == NULL)
--				chconf |= OMAP2_MCSPI_CHCONF_TRM_RX_ONLY;
--			else if (t->rx_buf == NULL)
--				chconf |= OMAP2_MCSPI_CHCONF_TRM_TX_ONLY;
--
--			if (cd && cd->turbo_mode && t->tx_buf == NULL) {
--				/* Turbo mode is for more than one word */
--				if (t->len > ((cs->word_len + 7) >> 3))
--					chconf |= OMAP2_MCSPI_CHCONF_TURBO;
--			}
-+	omap2_mcspi_set_enable(spi, 1);
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
-+			status = -EINVAL;
-+			break;
-+		}
-+		if (par_override || t->speed_hz || t->bits_per_word) {
-+			par_override = 1;
-+			status = omap2_mcspi_setup_transfer(spi, t);
-+			if (status < 0)
-+				break;
-+			if (!t->speed_hz && !t->bits_per_word)
-+				par_override = 0;
-+		}
- 
--			mcspi_write_chconf0(spi, chconf);
-+		if (!cs_active) {
-+			omap2_mcspi_force_cs(spi, 1);
-+			cs_active = 1;
-+		}
- 
--			if (t->len) {
--				unsigned	count;
-+		chconf = mcspi_cached_chconf0(spi);
-+		chconf &= ~OMAP2_MCSPI_CHCONF_TRM_MASK;
-+		chconf &= ~OMAP2_MCSPI_CHCONF_TURBO;
- 
--				/* RX_ONLY mode needs dummy data in TX reg */
--				if (t->tx_buf == NULL)
--					__raw_writel(0, cs->base
--							+ OMAP2_MCSPI_TX0);
-+		if (t->tx_buf == NULL)
-+			chconf |= OMAP2_MCSPI_CHCONF_TRM_RX_ONLY;
-+		else if (t->rx_buf == NULL)
-+			chconf |= OMAP2_MCSPI_CHCONF_TRM_TX_ONLY;
- 
--				if (m->is_dma_mapped || t->len >= DMA_MIN_BYTES)
--					count = omap2_mcspi_txrx_dma(spi, t);
--				else
--					count = omap2_mcspi_txrx_pio(spi, t);
--				m->actual_length += count;
-+		if (cd && cd->turbo_mode && t->tx_buf == NULL) {
-+			/* Turbo mode is for more than one word */
-+			if (t->len > ((cs->word_len + 7) >> 3))
-+				chconf |= OMAP2_MCSPI_CHCONF_TURBO;
-+		}
- 
--				if (count != t->len) {
--					status = -EIO;
--					break;
--				}
--			}
-+		mcspi_write_chconf0(spi, chconf);
-+
-+		if (t->len) {
-+			unsigned	count;
-+
-+			/* RX_ONLY mode needs dummy data in TX reg */
-+			if (t->tx_buf == NULL)
-+				__raw_writel(0, cs->base
-+						+ OMAP2_MCSPI_TX0);
- 
--			if (t->delay_usecs)
--				udelay(t->delay_usecs);
-+			if (m->is_dma_mapped || t->len >= DMA_MIN_BYTES)
-+				count = omap2_mcspi_txrx_dma(spi, t);
-+			else
-+				count = omap2_mcspi_txrx_pio(spi, t);
-+			m->actual_length += count;
- 
--			/* ignore the "leave it on after last xfer" hint */
--			if (t->cs_change) {
--				omap2_mcspi_force_cs(spi, 0);
--				cs_active = 0;
-+			if (count != t->len) {
-+				status = -EIO;
-+				break;
- 			}
- 		}
- 
--		/* Restore defaults if they were overriden */
--		if (par_override) {
--			par_override = 0;
--			status = omap2_mcspi_setup_transfer(spi, NULL);
--		}
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
- 
--		if (cs_active)
-+		/* ignore the "leave it on after last xfer" hint */
-+		if (t->cs_change) {
- 			omap2_mcspi_force_cs(spi, 0);
-+			cs_active = 0;
-+		}
-+	}
-+	/* Restore defaults if they were overriden */
-+	if (par_override) {
-+		par_override = 0;
-+		status = omap2_mcspi_setup_transfer(spi, NULL);
-+	}
- 
--		omap2_mcspi_set_enable(spi, 0);
--
--		m->status = status;
--		m->complete(m->context);
-+	if (cs_active)
-+		omap2_mcspi_force_cs(spi, 0);
- 
--		spin_lock_irq(&mcspi->lock);
--	}
-+	omap2_mcspi_set_enable(spi, 0);
- 
--	spin_unlock_irq(&mcspi->lock);
-+	m->status = status;
- 
--	omap2_mcspi_disable_clocks(mcspi);
- }
- 
--static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
-+static int omap2_mcspi_transfer_one_message(struct spi_master *master,
-+						struct spi_message *m)
- {
- 	struct omap2_mcspi	*mcspi;
--	unsigned long		flags;
- 	struct spi_transfer	*t;
- 
-+	mcspi = spi_master_get_devdata(master);
- 	m->actual_length = 0;
- 	m->status = 0;
- 
- 	/* reject invalid messages and transfers */
--	if (list_empty(&m->transfers) || !m->complete)
-+	if (list_empty(&m->transfers))
- 		return -EINVAL;
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
- 		const void	*tx_buf = t->tx_buf;
-@@ -995,7 +991,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
- 				|| (t->bits_per_word &&
- 					(  t->bits_per_word < 4
- 					|| t->bits_per_word > 32))) {
--			dev_dbg(&spi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
-+			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
- 					t->speed_hz,
- 					len,
- 					tx_buf ? "tx" : "",
-@@ -1004,7 +1000,7 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
- 			return -EINVAL;
- 		}
- 		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
--			dev_dbg(&spi->dev, "speed_hz %d below minimum %d Hz\n",
-+			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
- 				t->speed_hz,
- 				OMAP2_MCSPI_MAX_FREQ >> 15);
- 			return -EINVAL;
-@@ -1014,35 +1010,30 @@ static int omap2_mcspi_transfer(struct spi_device *spi, struct spi_message *m)
- 			continue;
- 
- 		if (tx_buf != NULL) {
--			t->tx_dma = dma_map_single(&spi->dev, (void *) tx_buf,
-+			t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
- 					len, DMA_TO_DEVICE);
--			if (dma_mapping_error(&spi->dev, t->tx_dma)) {
--				dev_dbg(&spi->dev, "dma %cX %d bytes error\n",
-+			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
-+				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
- 						'T', len);
- 				return -EINVAL;
- 			}
- 		}
- 		if (rx_buf != NULL) {
--			t->rx_dma = dma_map_single(&spi->dev, rx_buf, t->len,
-+			t->rx_dma = dma_map_single(mcspi->dev, rx_buf, t->len,
- 					DMA_FROM_DEVICE);
--			if (dma_mapping_error(&spi->dev, t->rx_dma)) {
--				dev_dbg(&spi->dev, "dma %cX %d bytes error\n",
-+			if (dma_mapping_error(mcspi->dev, t->rx_dma)) {
-+				dev_dbg(mcspi->dev, "dma %cX %d bytes error\n",
- 						'R', len);
- 				if (tx_buf != NULL)
--					dma_unmap_single(&spi->dev, t->tx_dma,
-+					dma_unmap_single(mcspi->dev, t->tx_dma,
- 							len, DMA_TO_DEVICE);
- 				return -EINVAL;
- 			}
- 		}
- 	}
- 
--	mcspi = spi_master_get_devdata(spi->master);
--
--	spin_lock_irqsave(&mcspi->lock, flags);
--	list_add_tail(&m->queue, &mcspi->msg_queue);
--	queue_work(mcspi->wq, &mcspi->work);
--	spin_unlock_irqrestore(&mcspi->lock, flags);
--
-+	omap2_mcspi_work(mcspi, m);
-+	spi_finalize_current_message(master);
- 	return 0;
- }
- 
-@@ -1120,7 +1111,9 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
- 	master->setup = omap2_mcspi_setup;
--	master->transfer = omap2_mcspi_transfer;
-+	master->prepare_transfer_hardware = omap2_prepare_transfer;
-+	master->unprepare_transfer_hardware = omap2_unprepare_transfer;
-+	master->transfer_one_message = omap2_mcspi_transfer_one_message;
- 	master->cleanup = omap2_mcspi_cleanup;
- 	master->dev.of_node = node;
- 
-@@ -1145,12 +1138,6 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 	mcspi = spi_master_get_devdata(master);
- 	mcspi->master = master;
- 
--	mcspi->wq = alloc_workqueue(dev_name(&pdev->dev), WQ_MEM_RECLAIM, 1);
--	if (mcspi->wq == NULL) {
--		status = -ENOMEM;
--		goto free_master;
--	}
--
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (r == NULL) {
- 		status = -ENODEV;
-@@ -1169,10 +1156,8 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 	}
- 
- 	mcspi->dev = &pdev->dev;
--	INIT_WORK(&mcspi->work, omap2_mcspi_work);
- 
- 	spin_lock_init(&mcspi->lock);
--	INIT_LIST_HEAD(&mcspi->msg_queue);
- 	INIT_LIST_HEAD(&mcspi->ctx.cs);
- 
- 	mcspi->dma_channels = kcalloc(master->num_chipselect,
-@@ -1253,7 +1238,6 @@ static int __devexit omap2_mcspi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_master(master);
- 	kfree(dma_channels);
--	destroy_workqueue(mcspi->wq);
- 	platform_set_drvdata(pdev, NULL);
- 
- 	return 0;
--- 
-1.7.5.4
+On Thu, Apr 19, 2012 at 7:05 PM, Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org> wrote:
 
-
+> Use devm_* functions for managing devres resources.
+>
+> Also use local variable irq and remove irq variable from
+> struct ep93xx_spi, as it is needed only in probe routine.
+>
+> Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+> Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+> Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
+> ---
+>  drivers/spi/spi-ep93xx.c |   37 ++++++++++---------------------------
+>  1 file changed, 10 insertions(+), 27 deletions(-)
+>
+> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> index 6db2887..ea78625 100644
+> --- a/drivers/spi/spi-ep93xx.c
+> +++ b/drivers/spi/spi-ep93xx.c
+> @@ -76,7 +76,6 @@
+>  * @clk: clock for the controller
+>  * @regs_base: pointer to ioremap()'d registers
+>  * @sspdr_phys: physical address of the SSPDR register
+> - * @irq: IRQ number used by the driver
+>  * @min_rate: minimum clock rate (in Hz) supported by the controller
+>  * @max_rate: maximum clock rate (in Hz) supported by the controller
+>  * @running: is the queue running
+> @@ -114,7 +113,6 @@ struct ep93xx_spi {
+>        struct clk                      *clk;
+>        void __iomem                    *regs_base;
+>        unsigned long                   sspdr_phys;
+> -       int                             irq;
+>        unsigned long                   min_rate;
+>        unsigned long                   max_rate;
+>        bool                            running;
+> @@ -1035,6 +1033,7 @@ static int __devinit ep93xx_spi_probe(struct
+> platform_device *pdev)
+>        struct ep93xx_spi_info *info;
+>        struct ep93xx_spi *espi;
+>        struct resource *res;
+> +       int irq;
+>        int error;
+>
+>        info = pdev->dev.platform_data;
+> @@ -1074,8 +1073,8 @@ static int __devinit ep93xx_spi_probe(struct
+> platform_device *pdev)
+>        espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
+>        espi->pdev = pdev;
+>
+> -       espi->irq = platform_get_irq(pdev, 0);
+> -       if (espi->irq < 0) {
+> +       irq = platform_get_irq(pdev, 0);
+> +       if (irq < 0) {
+>                error = -EBUSY;
+>                dev_err(&pdev->dev, "failed to get irq resources\n");
+>                goto fail_put_clock;
+> @@ -1088,26 +1087,20 @@ static int __devinit ep93xx_spi_probe(struct
+> platform_device *pdev)
+>                goto fail_put_clock;
+>        }
+>
+> -       res = request_mem_region(res->start, resource_size(res),
+> pdev->name);
+> -       if (!res) {
+> -               dev_err(&pdev->dev, "unable to request iomem resources\n");
+> -               error = -EBUSY;
+> -               goto fail_put_clock;
+> -       }
+> -
+>        espi->sspdr_phys = res->start + SSPDR;
+> -       espi->regs_base = ioremap(res->start, resource_size(res));
+> +
+> +       espi->regs_base = devm_request_and_ioremap(&pdev->dev, res);
+>        if (!espi->regs_base) {
+>                dev_err(&pdev->dev, "failed to map resources\n");
+>                error = -ENODEV;
+> -               goto fail_free_mem;
+> +               goto fail_put_clock;
+>        }
+>
+> -       error = request_irq(espi->irq, ep93xx_spi_interrupt, 0,
+> -                           "ep93xx-spi", espi);
+> +       error = devm_request_irq(&pdev->dev, irq, ep93xx_spi_interrupt,
+> +                               0, "ep93xx-spi", espi);
+>        if (error) {
+>                dev_err(&pdev->dev, "failed to request irq\n");
+> -               goto fail_unmap_regs;
+> +               goto fail_put_clock;
+>        }
+>
+>        if (info->use_dma && ep93xx_spi_setup_dma(espi))
+> @@ -1132,7 +1125,7 @@ static int __devinit ep93xx_spi_probe(struct
+> platform_device *pdev)
+>        }
+>
+>        dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
+> -                (unsigned long)res->start, espi->irq);
+> +                (unsigned long)res->start, irq);
+>
+>        return 0;
+>
+> @@ -1140,11 +1133,6 @@ fail_free_queue:
+>        destroy_workqueue(espi->wq);
+>  fail_free_dma:
+>        ep93xx_spi_release_dma(espi);
+> -       free_irq(espi->irq, espi);
+> -fail_unmap_regs:
+> -       iounmap(espi->regs_base);
+> -fail_free_mem:
+> -       release_mem_region(res->start, resource_size(res));
+>  fail_put_clock:
+>        clk_put(espi->clk);
+>  fail_release_master:
+> @@ -1158,7 +1146,6 @@ static int __devexit ep93xx_spi_remove(struct
+> platform_device *pdev)
+>  {
+>        struct spi_master *master = platform_get_drvdata(pdev);
+>        struct ep93xx_spi *espi = spi_master_get_devdata(master);
+> -       struct resource *res;
+>
+>        spin_lock_irq(&espi->lock);
+>        espi->running = false;
+> @@ -1184,10 +1171,6 @@ static int __devexit ep93xx_spi_remove(struct
+> platform_device *pdev)
+>        spin_unlock_irq(&espi->lock);
+>
+>        ep93xx_spi_release_dma(espi);
+> -       free_irq(espi->irq, espi);
+> -       iounmap(espi->regs_base);
+> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       release_mem_region(res->start, resource_size(res));
+>        clk_put(espi->clk);
+>        platform_set_drvdata(pdev, NULL);
+>
+> --
+> 1.7.9.5
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
+>
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

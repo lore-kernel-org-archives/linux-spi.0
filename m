@@ -1,330 +1,409 @@
-From: Guy Degrenne <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu'=E0_-30%_sur_tout_le_magasin?=
-Date: Thu, 10 May 2012 17:38:20 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.974792.3236305005@marketing.zabaloc.com>
-Reply-To: Guy Degrenne <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Steven King <sfking@fdwdc.com>
+Subject: [PATCH] spi: refactor spi-coldfire-qspi to use SPI
+	queue framework.
+Date: Thu, 10 May 2012 09:26:55 -0700
+Message-ID: <201205100926.55444.sfking@fdwdc.com>
+Reply-To: uClinux development list <uclinux-dev@uclinux.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+ uClinux development list <uclinux-dev@uclinux.org>, gerg@uclinux.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <uclinux-dev-bounces@uclinux.org>
+Content-Disposition: inline
+List-Unsubscribe: <http://mailman.uclinux.org/mailman/options/uclinux-dev>,
+ <mailto:uclinux-dev-request@uclinux.org?subject=unsubscribe>
+List-Archive: <http://mailman.uclinux.org/pipermail/uclinux-dev>
+List-Post: <mailto:uclinux-dev@uclinux.org>
+List-Help: <mailto:uclinux-dev-request@uclinux.org?subject=help>
+List-Subscribe: <http://mailman.uclinux.org/mailman/listinfo/uclinux-dev>,
+ <mailto:uclinux-dev-request@uclinux.org?subject=subscribe>
+Errors-To: uclinux-dev-bounces@uclinux.org
+Sender: uclinux-dev-bounces@uclinux.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-La newsletter Guy Degrenne Si vous ne visualisez pas correctement ce =
-
-message, cliquez ici. : =
-
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgErPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOX =
-
-
-=A0 Jusqu'=E0 -30% sur tout le magasin : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE5fcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJc =
-
-
-
-
-Guy Degrenne
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE-vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJd =
-
-Vaisselle de table
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE-_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJi =
-
-Couverts
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE-PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJj =
-
-Verrerie
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE-fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJg =
-
-Culinaire
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE_vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJh =
-
-Platerie
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE__cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJm =
-
-Enfants
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE_PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJn =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE_fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJk =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE8vcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJl =
-
-C'EST L'ANNIVERSAIRE
-de Guy Degrenne du 2 mai au 3 juin 2012 : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE8_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJq =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE8PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJr =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE8fcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJo =
-
-=A0-30% *
- : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE9vcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJp =
-
- d=E8s 160=A4 d'achats  : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE9_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJu =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE9PcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJv =
-
--25% * : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgE9fcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJs =
-
-
- d=E8s 120=A4 d'achats  : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEivcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJt =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEi_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJy =
-
-=A0-20% * : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEiPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJz =
-
-
- d=E8s 80=A4 d'achats : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEifcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJw =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEjvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJx =
-
-=A0-15% *
- : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEj_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJ2 =
-
- d=E8s 40=A4 d'achats : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEjPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJ3 =
-
-Vaisselles Guy Degrenne
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEjfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ0 =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEgvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ1 =
-
-LIVRAISON  : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEg_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJ6 =
-
-GRATUITE : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEgPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJ7 =
-
-
- sur l'eshop, d=E8s 80=A4 d'achats  : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEgfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VJ4 =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEhvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ5 =
-
- J'en profite
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEh_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ- =
-
-
-=A0 Avantages et garanties
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEhPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ_ =
-
-Shopping
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEhfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ8 =
-
-Guy Degrenne partout avec vous
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEmvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VJ9 =
-
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEm_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOC =
-
-Paiement s=E9curis=E9 : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEmPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOD =
-
-Satisfait ou rembours=E9 : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEmfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOA =
-
-Livraison en 48h-72h : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEnvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOB =
-
-Livraison gratuite d=E8s 80=A4 : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEn_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOG =
-
-Paquet cadeau : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEnPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOH =
-
-Eshop
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEnfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOE =
-
-E-shop : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEkvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOF =
-
-
- 300 points de vente en France. : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEk_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOK =
-
-
-Nouvelle boutique : Tours ! : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEkPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOL =
-
-Services consommateur
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEkfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOI =
-
-Service consommateurs : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgElvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOJ =
-
-Facebook
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEl_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOO =
-
-Rejoignez la page Facebook
- Guy Degrenne : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgElPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOP =
-
-Catalogue int=E9ractif
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgElfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOM =
-
-Catalogue int=E9ractif : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEqvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VON =
-
-Blog newCook
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEq_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOS =
-
-Blog newCook : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEqPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOT =
-
-Contact
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEqfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOQ =
-
-Pour toute demande, n'h=E9sitez pas =E0 nous contacter ici : http://p4tre.e=
-mv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgErvcStGb5lw8W0bBhOG5mpqVsje_H=
-hdBQ4VOR =
-
-
- * Offre valable du 2 mai 2012 au 3 juin 2012 inclus dans les =
-
-boutiques succursales et franchises, les concessions Printemps et Inno, =
-
-les grands magasins Galeries Lafayette et d=E9taillants Guy Degrenne =
-
-participants (hors Guy Degrenne Factory) et sur l?eshop =
-
-www.guydegrenne.fr/eshop. Offre valable sur tous les produits du =
-
-magasin, hors nouveaut=E9s signal=E9es. Taux de remise appliqu=E9 par =
-
-escompte de caisse ou au moment du paiement en ligne sur l?eshop, d=E8s =
-
-40=A4 d?achat (-15%), d=E8s 80 =A4 d?achat (-20%), d=E8s 120=A4 d?achat (-2=
-5%), =
-
-160=A4 d?achat (-30%). Offre non cumulable avec les autres offres en =
-
-cours et liste de mariage Guy Degrenne. Nos prix s?entendent TTC. : =
-
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgEr_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VOW =
-
-
-Pour ne plus recevoir de courriels de notre part, il vous suffit de =
-
-vous rendre sur cette page : =
-
- http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJBBDLnGHxKLbgErfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VOU =
-
-. =
-
-
----------------------------------------------------------------------------=
+Use the new SPI queue framework; remove use of workqueue, replace
+mcfqspi_transfer with mcfqspi_transfer_one_message, add
+mcfqspi_prepare_transfer_hw and mcfqspi_unprepare_transfer_hw, update power
+management routines.
+
+Signed-off-by: Steven King <sfking@fdwdc.com>
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+ drivers/spi/spi-coldfire-qspi.c |  255 +++++++++++++++++---------------------
+ 1 files changed, 114 insertions(+), 141 deletions(-)
 
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index 6eee64a..b2d4b9e 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -25,12 +25,12 @@
+ #include <linux/errno.h>
+ #include <linux/platform_device.h>
+ #include <linux/sched.h>
+-#include <linux/workqueue.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/spi/spi.h>
++#include <linux/pm_runtime.h>
+ 
+ #include <asm/coldfire.h>
+ #include <asm/mcfsim.h>
+@@ -78,10 +78,7 @@ struct mcfqspi {
+ 
+ 	wait_queue_head_t waitq;
+ 
+-	struct work_struct work;
+-	struct workqueue_struct *workq;
+-	spinlock_t lock;
+-	struct list_head msgq;
++	struct device *dev;
+ };
+ 
+ static void mcfqspi_wr_qmr(struct mcfqspi *mcfqspi, u16 val)
+@@ -303,120 +300,80 @@ static void mcfqspi_transfer_msg16(struct mcfqspi *mcfqspi, unsigned count,
+ 	}
+ }
+ 
+-static void mcfqspi_work(struct work_struct *work)
++static int mcfqspi_transfer_one_message(struct spi_master *master,
++					 struct spi_message *msg)
+ {
+-	struct mcfqspi *mcfqspi = container_of(work, struct mcfqspi, work);
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&mcfqspi->lock, flags);
+-	while (!list_empty(&mcfqspi->msgq)) {
+-		struct spi_message *msg;
+-		struct spi_device *spi;
+-		struct spi_transfer *xfer;
+-		int status = 0;
+-
+-		msg = container_of(mcfqspi->msgq.next, struct spi_message,
+-				   queue);
+-
+-		list_del_init(&msg->queue);
+-		spin_unlock_irqrestore(&mcfqspi->lock, flags);
+-
+-		spi = msg->spi;
+-
+-		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-			bool cs_high = spi->mode & SPI_CS_HIGH;
+-			u16 qmr = MCFQSPI_QMR_MSTR;
+-
+-			if (xfer->bits_per_word)
+-				qmr |= xfer->bits_per_word << 10;
+-			else
+-				qmr |= spi->bits_per_word << 10;
+-			if (spi->mode & SPI_CPHA)
+-				qmr |= MCFQSPI_QMR_CPHA;
+-			if (spi->mode & SPI_CPOL)
+-				qmr |= MCFQSPI_QMR_CPOL;
+-			if (xfer->speed_hz)
+-				qmr |= mcfqspi_qmr_baud(xfer->speed_hz);
+-			else
+-				qmr |= mcfqspi_qmr_baud(spi->max_speed_hz);
+-			mcfqspi_wr_qmr(mcfqspi, qmr);
+-
+-			mcfqspi_cs_select(mcfqspi, spi->chip_select, cs_high);
+-
+-			mcfqspi_wr_qir(mcfqspi, MCFQSPI_QIR_SPIFE);
+-			if ((xfer->bits_per_word ? xfer->bits_per_word :
+-						spi->bits_per_word) == 8)
+-				mcfqspi_transfer_msg8(mcfqspi, xfer->len,
+-						      xfer->tx_buf,
+-						      xfer->rx_buf);
+-			else
+-				mcfqspi_transfer_msg16(mcfqspi, xfer->len / 2,
+-						       xfer->tx_buf,
+-						       xfer->rx_buf);
+-			mcfqspi_wr_qir(mcfqspi, 0);
+-
+-			if (xfer->delay_usecs)
+-				udelay(xfer->delay_usecs);
+-			if (xfer->cs_change) {
+-				if (!list_is_last(&xfer->transfer_list,
+-						  &msg->transfers))
+-					mcfqspi_cs_deselect(mcfqspi,
+-							    spi->chip_select,
+-							    cs_high);
+-			} else {
+-				if (list_is_last(&xfer->transfer_list,
+-						 &msg->transfers))
+-					mcfqspi_cs_deselect(mcfqspi,
+-							    spi->chip_select,
+-							    cs_high);
+-			}
+-			msg->actual_length += xfer->len;
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++	struct spi_device *spi = msg->spi;
++	struct spi_transfer *t;
++	int status = 0;
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		bool cs_high = spi->mode & SPI_CS_HIGH;
++		u16 qmr = MCFQSPI_QMR_MSTR;
++
++		if (t->bits_per_word)
++			qmr |= t->bits_per_word << 10;
++		else
++			qmr |= spi->bits_per_word << 10;
++		if (spi->mode & SPI_CPHA)
++			qmr |= MCFQSPI_QMR_CPHA;
++		if (spi->mode & SPI_CPOL)
++			qmr |= MCFQSPI_QMR_CPOL;
++		if (t->speed_hz)
++			qmr |= mcfqspi_qmr_baud(t->speed_hz);
++		else
++			qmr |= mcfqspi_qmr_baud(spi->max_speed_hz);
++		mcfqspi_wr_qmr(mcfqspi, qmr);
++
++		mcfqspi_cs_select(mcfqspi, spi->chip_select, cs_high);
++
++		mcfqspi_wr_qir(mcfqspi, MCFQSPI_QIR_SPIFE);
++		if ((t->bits_per_word ? t->bits_per_word :
++					spi->bits_per_word) == 8)
++			mcfqspi_transfer_msg8(mcfqspi, t->len, t->tx_buf,
++					t->rx_buf);
++		else
++			mcfqspi_transfer_msg16(mcfqspi, t->len / 2, t->tx_buf,
++					t->rx_buf);
++		mcfqspi_wr_qir(mcfqspi, 0);
++
++		if (t->delay_usecs)
++			udelay(t->delay_usecs);
++		if (t->cs_change) {
++			if (!list_is_last(&t->transfer_list, &msg->transfers))
++				mcfqspi_cs_deselect(mcfqspi, spi->chip_select,
++						cs_high);
++		} else {
++			if (list_is_last(&t->transfer_list, &msg->transfers))
++				mcfqspi_cs_deselect(mcfqspi, spi->chip_select,
++						cs_high);
+ 		}
+-		msg->status = status;
+-		msg->complete(msg->context);
+-
+-		spin_lock_irqsave(&mcfqspi->lock, flags);
++		msg->actual_length += t->len;
+ 	}
+-	spin_unlock_irqrestore(&mcfqspi->lock, flags);
++	msg->status = status;
++	spi_finalize_current_message(master);
++
++	return status;
++
+ }
+ 
+-static int mcfqspi_transfer(struct spi_device *spi, struct spi_message *msg)
++static int mcfqspi_prepare_transfer_hw(struct spi_master *master)
+ {
+-	struct mcfqspi *mcfqspi;
+-	struct spi_transfer *xfer;
+-	unsigned long flags;
+-
+-	mcfqspi = spi_master_get_devdata(spi->master);
+-
+-	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-		if (xfer->bits_per_word && ((xfer->bits_per_word < 8)
+-					|| (xfer->bits_per_word > 16))) {
+-			dev_dbg(&spi->dev,
+-				"%d bits per word is not supported\n",
+-				xfer->bits_per_word);
+-			goto fail;
+-		}
+-		if (xfer->speed_hz) {
+-			u32 real_speed = MCFQSPI_BUSCLK /
+-				mcfqspi_qmr_baud(xfer->speed_hz);
+-			if (real_speed != xfer->speed_hz)
+-				dev_dbg(&spi->dev,
+-					"using speed %d instead of %d\n",
+-					real_speed, xfer->speed_hz);
+-		}
+-	}
+-	msg->status = -EINPROGRESS;
+-	msg->actual_length = 0;
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
+ 
+-	spin_lock_irqsave(&mcfqspi->lock, flags);
+-	list_add_tail(&msg->queue, &mcfqspi->msgq);
+-	queue_work(mcfqspi->workq, &mcfqspi->work);
+-	spin_unlock_irqrestore(&mcfqspi->lock, flags);
++	pm_runtime_get_sync(mcfqspi->dev);
++
++	return 0;
++}
++
++static int mcfqspi_unprepare_transfer_hw(struct spi_master *master)
++{
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++
++	pm_runtime_put_sync(mcfqspi->dev);
+ 
+ 	return 0;
+-fail:
+-	msg->status = -EINVAL;
+-	return -EINVAL;
+ }
+ 
+ static int mcfqspi_setup(struct spi_device *spi)
+@@ -502,21 +459,10 @@ static int __devinit mcfqspi_probe(struct platform_device *pdev)
+ 	}
+ 	clk_enable(mcfqspi->clk);
+ 
+-	mcfqspi->workq = create_singlethread_workqueue(dev_name(master->dev.parent));
+-	if (!mcfqspi->workq) {
+-		dev_dbg(&pdev->dev, "create_workqueue failed\n");
+-		status = -ENOMEM;
+-		goto fail4;
+-	}
+-	INIT_WORK(&mcfqspi->work, mcfqspi_work);
+-	spin_lock_init(&mcfqspi->lock);
+-	INIT_LIST_HEAD(&mcfqspi->msgq);
+-	init_waitqueue_head(&mcfqspi->waitq);
+-
+ 	pdata = pdev->dev.platform_data;
+ 	if (!pdata) {
+ 		dev_dbg(&pdev->dev, "platform data is missing\n");
+-		goto fail5;
++		goto fail4;
+ 	}
+ 	master->bus_num = pdata->bus_num;
+ 	master->num_chipselect = pdata->num_chipselect;
+@@ -525,28 +471,33 @@ static int __devinit mcfqspi_probe(struct platform_device *pdev)
+ 	status = mcfqspi_cs_setup(mcfqspi);
+ 	if (status) {
+ 		dev_dbg(&pdev->dev, "error initializing cs_control\n");
+-		goto fail5;
++		goto fail4;
+ 	}
+ 
++	init_waitqueue_head(&mcfqspi->waitq);
++	mcfqspi->dev = &pdev->dev;
++
+ 	master->mode_bits = SPI_CS_HIGH | SPI_CPOL | SPI_CPHA;
+ 	master->setup = mcfqspi_setup;
+-	master->transfer = mcfqspi_transfer;
++	master->transfer_one_message = mcfqspi_transfer_one_message;
++	master->prepare_transfer_hardware = mcfqspi_prepare_transfer_hw;
++	master->unprepare_transfer_hardware = mcfqspi_unprepare_transfer_hw;
+ 
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	status = spi_register_master(master);
+ 	if (status) {
+ 		dev_dbg(&pdev->dev, "spi_register_master failed\n");
+-		goto fail6;
++		goto fail5;
+ 	}
++	pm_runtime_enable(mcfqspi->dev);
++
+ 	dev_info(&pdev->dev, "Coldfire QSPI bus driver\n");
+ 
+ 	return 0;
+ 
+-fail6:
+-	mcfqspi_cs_teardown(mcfqspi);
+ fail5:
+-	destroy_workqueue(mcfqspi->workq);
++	mcfqspi_cs_teardown(mcfqspi);
+ fail4:
+ 	clk_disable(mcfqspi->clk);
+ 	clk_put(mcfqspi->clk);
+@@ -570,12 +521,12 @@ static int __devexit mcfqspi_remove(struct platform_device *pdev)
+ 	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
+ 	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 
++	pm_runtime_disable(mcfqspi->dev);
+ 	/* disable the hardware (set the baud rate to 0) */
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
+ 
+ 	platform_set_drvdata(pdev, NULL);
+ 	mcfqspi_cs_teardown(mcfqspi);
+-	destroy_workqueue(mcfqspi->workq);
+ 	clk_disable(mcfqspi->clk);
+ 	clk_put(mcfqspi->clk);
+ 	free_irq(mcfqspi->irq, mcfqspi);
+@@ -587,11 +538,13 @@ static int __devexit mcfqspi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_PM
+-
++#ifdef CONFIG_PM_SLEEP
+ static int mcfqspi_suspend(struct device *dev)
+ {
+-	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
++	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++
++	spi_master_suspend(master);
+ 
+ 	clk_disable(mcfqspi->clk);
+ 
+@@ -600,27 +553,47 @@ static int mcfqspi_suspend(struct device *dev)
+ 
+ static int mcfqspi_resume(struct device *dev)
+ {
+-	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
++	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
++	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++
++	spi_master_resume(master);
+ 
+ 	clk_enable(mcfqspi->clk);
+ 
+ 	return 0;
+ }
++#endif
+ 
+-static struct dev_pm_ops mcfqspi_dev_pm_ops = {
+-	.suspend	= mcfqspi_suspend,
+-	.resume		= mcfqspi_resume,
+-};
++#ifdef CONFIG_PM_RUNTIME
++static int mcfqspi_runtime_suspend(struct device *dev)
++{
++	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
+ 
+-#define	MCFQSPI_DEV_PM_OPS	(&mcfqspi_dev_pm_ops)
+-#else
+-#define	MCFQSPI_DEV_PM_OPS	NULL
++	clk_disable(mcfqspi->clk);
++
++	return 0;
++}
++
++static int mcfqspi_runtime_resume(struct device *dev)
++{
++	struct mcfqspi *mcfqspi = platform_get_drvdata(to_platform_device(dev));
++
++	clk_enable(mcfqspi->clk);
++
++	return 0;
++}
+ #endif
+ 
++static const struct dev_pm_ops mcfqspi_pm = {
++	SET_SYSTEM_SLEEP_PM_OPS(mcfqspi_suspend, mcfqspi_resume)
++	SET_RUNTIME_PM_OPS(mcfqspi_runtime_suspend, mcfqspi_runtime_resume,
++			NULL)
++};
++
+ static struct platform_driver mcfqspi_driver = {
+ 	.driver.name	= DRIVER_NAME,
+ 	.driver.owner	= THIS_MODULE,
+-	.driver.pm	= MCFQSPI_DEV_PM_OPS,
++	.driver.pm	= &mcfqspi_pm,
+ 	.probe		= mcfqspi_probe,
+ 	.remove		= __devexit_p(mcfqspi_remove),
+ };
+_______________________________________________
+uClinux-dev mailing list
+uClinux-dev@uclinux.org
+http://mailman.uclinux.org/mailman/listinfo/uclinux-dev
+This message was resent by uclinux-dev@uclinux.org
+To unsubscribe see:
+http://mailman.uclinux.org/mailman/options/uclinux-dev

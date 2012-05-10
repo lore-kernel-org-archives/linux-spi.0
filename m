@@ -1,17 +1,16 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/omap: cleanup probe/remove routines
-Date: Wed, 09 May 2012 18:37:20 -0600
-Message-ID: <20120510003720.2F90C3E08F4@localhost>
-References: <1336567438-6715-1-git-send-email-hannuxx@iki.fi>
+Subject: Re: [PATCH v3 RESEND] spi/ep93xx: clean probe/remove routines
+Date: Wed, 09 May 2012 18:38:20 -0600
+Message-ID: <20120510003820.72A573E08F4@localhost>
+References: <1336573586-9504-1-git-send-email-hannuxx@iki.fi>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org
-To: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kevin Hilman <khilman-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+Cc: hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, mika.westerberg-X3B1VOXEql0@public.gmane.org
+To: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1336567438-6715-1-git-send-email-hannuxx-X3B1VOXEql0@public.gmane.org>
+In-Reply-To: <1336573586-9504-1-git-send-email-hannuxx-X3B1VOXEql0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,105 +21,150 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed,  9 May 2012 15:43:58 +0300, Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org> wrote:
-> Cleanup probe and remove routines, use devm_* functions for
-> managing resources.
+On Wed,  9 May 2012 17:26:26 +0300, Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org> wrote:
+> Use devm_* functions for managing devres resources.
 > 
-> Also, in under free_master label, change use of kfree() into
-> spi_master_put().
+> Also use local variable irq and remove irq variable from
+> struct ep93xx_spi, as it is needed only in probe routine.
+> 
+> Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+> Acked-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+> Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
 
-Patch does not apply to my current spi/next branch[1].
-
-[1]git://git.secretlab.ca/git/linux-2.6 spi/next
-
-While I'm thinking about it; Kevin, how do you want me handling OMAP
-spi patches.  Do you want to pick them up, test them and send me a git
-branch to pull like with gpio?  Or can I just pick them up?
+Applied, thanks
 
 g.
 
-> 
-> CC: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-> CC: tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org
-> Signed-off-by: Hannu Heikkinen <hannuxx-X3B1VOXEql0@public.gmane.org>
 > ---
->  drivers/spi/spi-omap2-mcspi.c |   27 ++++++---------------------
->  1 file changed, 6 insertions(+), 21 deletions(-)
+>  drivers/spi/spi-ep93xx.c |   37 ++++++++++---------------------------
+>  1 file changed, 10 insertions(+), 27 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index bb9274c..392efce 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -1166,17 +1166,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  	r->start += regs_offset;
->  	r->end += regs_offset;
->  	mcspi->phys = r->start;
-> -	if (!request_mem_region(r->start, resource_size(r),
-> -				dev_name(&pdev->dev))) {
-> -		status = -EBUSY;
-> -		goto free_master;
-> -	}
+> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> index e805507..f97f1d2 100644
+> --- a/drivers/spi/spi-ep93xx.c
+> +++ b/drivers/spi/spi-ep93xx.c
+> @@ -76,7 +76,6 @@
+>   * @clk: clock for the controller
+>   * @regs_base: pointer to ioremap()'d registers
+>   * @sspdr_phys: physical address of the SSPDR register
+> - * @irq: IRQ number used by the driver
+>   * @min_rate: minimum clock rate (in Hz) supported by the controller
+>   * @max_rate: maximum clock rate (in Hz) supported by the controller
+>   * @running: is the queue running
+> @@ -114,7 +113,6 @@ struct ep93xx_spi {
+>  	struct clk			*clk;
+>  	void __iomem			*regs_base;
+>  	unsigned long			sspdr_phys;
+> -	int				irq;
+>  	unsigned long			min_rate;
+>  	unsigned long			max_rate;
+>  	bool				running;
+> @@ -1031,6 +1029,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+>  	struct ep93xx_spi_info *info;
+>  	struct ep93xx_spi *espi;
+>  	struct resource *res;
+> +	int irq;
+>  	int error;
 >  
-> -	mcspi->base = ioremap(r->start, resource_size(r));
-> +	mcspi->base = devm_request_and_ioremap(&pdev->dev, r);
->  	if (!mcspi->base) {
-> -		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
-> -		status = -ENOMEM;
-> -		goto release_region;
-> +		dev_dbg(&pdev->dev, "can't request mem and ioremap MCSPI\n");
-> +		status =  -ENOMEM;
-> +		goto free_master;
+>  	info = pdev->dev.platform_data;
+> @@ -1070,8 +1069,8 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+>  	espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
+>  	espi->pdev = pdev;
+>  
+> -	espi->irq = platform_get_irq(pdev, 0);
+> -	if (espi->irq < 0) {
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0) {
+>  		error = -EBUSY;
+>  		dev_err(&pdev->dev, "failed to get irq resources\n");
+>  		goto fail_put_clock;
+> @@ -1084,26 +1083,20 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+>  		goto fail_put_clock;
 >  	}
 >  
->  	mcspi->dev = &pdev->dev;
-> @@ -1191,7 +1186,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
->  			GFP_KERNEL);
+> -	res = request_mem_region(res->start, resource_size(res), pdev->name);
+> -	if (!res) {
+> -		dev_err(&pdev->dev, "unable to request iomem resources\n");
+> -		error = -EBUSY;
+> -		goto fail_put_clock;
+> -	}
+> -
+>  	espi->sspdr_phys = res->start + SSPDR;
+> -	espi->regs_base = ioremap(res->start, resource_size(res));
+> +
+> +	espi->regs_base = devm_request_and_ioremap(&pdev->dev, res);
+>  	if (!espi->regs_base) {
+>  		dev_err(&pdev->dev, "failed to map resources\n");
+>  		error = -ENODEV;
+> -		goto fail_free_mem;
+> +		goto fail_put_clock;
+>  	}
 >  
->  	if (mcspi->dma_channels == NULL)
-> -		goto unmap_io;
-> +		goto free_master;
+> -	error = request_irq(espi->irq, ep93xx_spi_interrupt, 0,
+> -			    "ep93xx-spi", espi);
+> +	error = devm_request_irq(&pdev->dev, irq, ep93xx_spi_interrupt,
+> +				0, "ep93xx-spi", espi);
+>  	if (error) {
+>  		dev_err(&pdev->dev, "failed to request irq\n");
+> -		goto fail_unmap_regs;
+> +		goto fail_put_clock;
+>  	}
 >  
->  	for (i = 0; i < master->num_chipselect; i++) {
->  		char dma_ch_name[14];
-> @@ -1241,12 +1236,8 @@ disable_pm:
->  	pm_runtime_disable(&pdev->dev);
->  dma_chnl_free:
->  	kfree(mcspi->dma_channels);
-> -unmap_io:
-> -	iounmap(mcspi->base);
-> -release_region:
-> -	release_mem_region(r->start, resource_size(r));
->  free_master:
-> -	kfree(master);
-> +	spi_master_put(master);
+>  	if (info->use_dma && ep93xx_spi_setup_dma(espi))
+> @@ -1128,7 +1121,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
+> -		 (unsigned long)res->start, espi->irq);
+> +		 (unsigned long)res->start, irq);
+>  
+>  	return 0;
+>  
+> @@ -1136,11 +1129,6 @@ fail_free_queue:
+>  	destroy_workqueue(espi->wq);
+>  fail_free_dma:
+>  	ep93xx_spi_release_dma(espi);
+> -	free_irq(espi->irq, espi);
+> -fail_unmap_regs:
+> -	iounmap(espi->regs_base);
+> -fail_free_mem:
+> -	release_mem_region(res->start, resource_size(res));
+>  fail_put_clock:
+>  	clk_put(espi->clk);
+>  fail_release_master:
+> @@ -1154,7 +1142,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
+>  {
+>  	struct spi_master *master = platform_get_drvdata(pdev);
+>  	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+> -	struct resource *res;
+>  
+>  	spin_lock_irq(&espi->lock);
+>  	espi->running = false;
+> @@ -1180,10 +1167,6 @@ static int __devexit ep93xx_spi_remove(struct platform_device *pdev)
+>  	spin_unlock_irq(&espi->lock);
+>  
+>  	ep93xx_spi_release_dma(espi);
+> -	free_irq(espi->irq, espi);
+> -	iounmap(espi->regs_base);
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	release_mem_region(res->start, resource_size(res));
+>  	clk_put(espi->clk);
 >  	platform_set_drvdata(pdev, NULL);
->  	return status;
->  }
-> @@ -1256,8 +1247,6 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->  	struct spi_master	*master;
->  	struct omap2_mcspi	*mcspi;
->  	struct omap2_mcspi_dma	*dma_channels;
-> -	struct resource		*r;
-> -	void __iomem *base;
 >  
->  	master = dev_get_drvdata(&pdev->dev);
->  	mcspi = spi_master_get_devdata(master);
-> @@ -1265,12 +1254,8 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
->  
->  	omap2_mcspi_disable_clocks(mcspi);
->  	pm_runtime_disable(&pdev->dev);
-> -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	release_mem_region(r->start, resource_size(r));
->  
-> -	base = mcspi->base;
->  	spi_unregister_master(master);
-> -	iounmap(base);
->  	kfree(dma_channels);
->  	destroy_workqueue(mcspi->wq);
->  	platform_set_drvdata(pdev, NULL);
 > -- 
 > 1.7.10
 > 
+> 
+> ------------------------------------------------------------------------------
+> Live Security Virtual Conference
+> Exclusive live event will cover all the ways today's security and 
+> threat landscape has changed and how IT managers can respond. Discussions 
+> will include endpoint security, mobile security and the latest in malware 
+> threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
 -- 
 Grant Likely, B.Sc, P.Eng.

@@ -1,59 +1,44 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: refactor spi-coldfire-qspi to use SPI queue
-	framework.
-Date: Fri, 11 May 2012 18:51:39 +0530
-Message-ID: <CAM=Q2cvy+LSS81kDqOQXe4dxiEbhfDTP=jDYVi-PQBs9ugbPpQ@mail.gmail.com>
-References: <201205100926.55444.sfking@fdwdc.com>
-	<CAM=Q2cuxbUcXUz6iQFoYfU8xmFXvNtiVxrBAjPE9u34wNnrAbw@mail.gmail.com>
-	<201205110333.22096.sfking@fdwdc.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	uClinux development list <uclinux-dev-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
-To: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201205110333.22096.sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: David Daney <ddaney.cavm@gmail.com>
+Subject: [PATCH 0/2] MIPS/spi: New driver for SPI master controller for OCTEON SOCs.
+Date: Fri, 11 May 2012 14:34:44 -0700
+Message-ID: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>
+To: devicetree-discuss@lists.ozlabs.org,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 11, 2012 at 4:03 PM, Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org> wrote:
-> On Friday 11 May 2012 1:33:25 am Shubhrajyoti Datta wrote:
->> Hi Steven,
->>
->> On Thu, May 10, 2012 at 9:56 PM, Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org> wrote:
->> > Use the new SPI queue framework; remove use of workqueue, replace
->> > mcfqspi_transfer with mcfqspi_transfer_one_message, add
->> > mcfqspi_prepare_transfer_hw and mcfqspi_unprepare_transfer_hw, update
->> > power management routines.
->>
->> By update are you attempting to convert to runtime framework also?
->
-> laying the ground work for it; right now its mostly just a big nop as
-> currently on Coldfire there isnt any PM support.
+From: David Daney <david.daney@cavium.com>
 
-OK , BTW my concern was partly clock apis and partly runtime.
-Anyways dont have any strong opinions.
+Several members of the OCTEON family have on-chips SPI master
+controller hardware, so here is a driver for it.
 
-> =A0I suppose it would have
-> been better to have that as a separate patch, i can resubmit with that br=
-oken
-> out if people would prefer.
+I split the register definitions out to a separate patch so that they
+live with all the other similar files for other OCTEON hardware blocks
+in arch/mips/include/asm/octeon.  This does leave the question of who
+should merge these.  I don't have a preference, could be Ralf's
+Linux/MIPS tree or via the SPI maintainers.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+Tested by driving an at25 eeprom.
 
-threat landscape has changed and how IT managers can respond. Discussions =
+David Daney (2):
+  MIPS: OCTEON: Add register definitions for SPI host hardware.
+  spi: Add SPI master controller for OCTEON SOCs.
 
-will include endpoint security, mobile security and the latest in malware =
+ .../devicetree/bindings/spi/spi-octeon.txt         |   33 ++
+ arch/mips/include/asm/octeon/cvmx-mpi-defs.h       |  328 +++++++++++++++++
+ drivers/spi/Kconfig                                |    7 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-octeon.c                           |  369 ++++++++++++++++++++
+ 5 files changed, 738 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-octeon.txt
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-mpi-defs.h
+ create mode 100644 drivers/spi/spi-octeon.c
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+-- 
+1.7.2.3
+

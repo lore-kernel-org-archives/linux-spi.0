@@ -1,13 +1,16 @@
 From: David Daney <ddaney.cavm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3] spi: Use consistent MODALIAS values.
-Date: Fri, 11 May 2012 15:05:22 -0700
-Message-ID: <1336773923-17866-3-git-send-email-ddaney.cavm@gmail.com>
+Subject: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
+Date: Fri, 11 May 2012 15:05:23 -0700
+Message-ID: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
 References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
@@ -26,108 +29,122 @@ List-Id: linux-spi.vger.kernel.org
 
 From: David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
 
-For SPI devices, the MODALIAS should start with "spi:" so that the
-modprobe can find the proper drivers.
+We can extract the "pagesize", "size" and "address-width" from the
+device tree so that SPI eeproms can be fully specified in the device
+tree.
 
-Be consistent, for devices added via spi_new_device(), make sure
-"spi:" is added if it is not already there.  In spi_match_device()
-handle matching when the "spi:" prefix is present.
+Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
 
 Signed-off-by: David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>
+Cc: Michael Hennerich <michael.hennerich-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Cc: Axel Lin <axel.lin-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi.c |   39 ++++++++++++++++++++++++++++++++++-----
- 1 files changed, 34 insertions(+), 5 deletions(-)
+ drivers/misc/eeprom/at25.c |   61 +++++++++++++++++++++++++++++++++++++++++---
+ 1 files changed, 57 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3d8f662..8c49964 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -59,6 +59,16 @@ static struct device_attribute spi_dev_attrs[] = {
- 	__ATTR_NULL,
- };
+diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+index 01ab3c9..609ee72 100644
+--- a/drivers/misc/eeprom/at25.c
++++ b/drivers/misc/eeprom/at25.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/sched.h>
++#include <linux/of.h>
  
-+/*
-+ * modalias will be of the form "spi:name" or "name", match on just
-+ * the name portion.
-+ */
-+static const char *spi_device_spidev2name(const struct spi_device *sdev)
-+{
-+	const char *p = strchr(sdev->modalias, ':');
-+	return p ? p + 1 : sdev->modalias;
-+}
-+
- /* modalias support makes "modprobe $MODALIAS" new-style hotplug work,
-  * and the sysfs version makes coldplug work too.
-  */
-@@ -66,8 +76,10 @@ static struct device_attribute spi_dev_attrs[] = {
- static const struct spi_device_id *spi_match_id(const struct spi_device_id *id,
- 						const struct spi_device *sdev)
+ #include <linux/spi/spi.h>
+ #include <linux/spi/eeprom.h>
+@@ -293,6 +294,9 @@ static int at25_probe(struct spi_device *spi)
  {
-+	const char *name = spi_device_spidev2name(sdev);
-+
- 	while (id->name[0]) {
--		if (!strcmp(sdev->modalias, id->name))
-+		if (!strcmp(name, id->name))
- 			return id;
- 		id++;
+ 	struct at25_data	*at25 = NULL;
+ 	const struct spi_eeprom *chip;
++#ifdef CONFIG_OF
++	struct spi_eeprom of_chip;
++#endif
+ 	int			err;
+ 	int			sr;
+ 	int			addrlen;
+@@ -300,9 +304,51 @@ static int at25_probe(struct spi_device *spi)
+ 	/* Chip description */
+ 	chip = spi->dev.platform_data;
+ 	if (!chip) {
+-		dev_dbg(&spi->dev, "no chip description\n");
+-		err = -ENODEV;
+-		goto fail;
++#ifdef CONFIG_OF
++		if (spi->dev.of_node) {
++			u32 val;
++			memset(&of_chip, 0, sizeof(of_chip));
++			if (of_property_read_u32(spi->dev.of_node, "pagesize", &val)) {
++				dev_dbg(&spi->dev, "no \"pagesize\" property\n");
++				err = -ENODEV;
++				goto fail;
++			}
++			of_chip.page_size = val;
++			if (of_property_read_u32(spi->dev.of_node, "size", &val)) {
++				dev_dbg(&spi->dev, "no \"size\" property\n");
++				err = -ENODEV;
++				goto fail;
++			}
++			of_chip.byte_len = val;
++			if (of_property_read_u32(spi->dev.of_node, "address-width", &val)) {
++				dev_dbg(&spi->dev, "no \"address-width\" property\n");
++				err = -ENODEV;
++				goto fail;
++			}
++			switch (val) {
++			case 8:
++				of_chip.flags |= EE_ADDR1;
++				break;
++			case 16:
++				of_chip.flags |= EE_ADDR2;
++				break;
++			case 24:
++				of_chip.flags |= EE_ADDR3;
++				break;
++			default:
++				dev_dbg(&spi->dev, "bad \"address-width\" property: %u\n", val);
++				err = -EINVAL;
++				goto fail;
++			}
++			strlcpy(of_chip.name, spi->dev.of_node->name, sizeof(of_chip.name));
++			chip = &of_chip;
++		} else
++#endif
++		{
++			dev_dbg(&spi->dev, "no chip description\n");
++			err = -ENODEV;
++			goto fail;
++		}
  	}
-@@ -94,14 +106,20 @@ static int spi_match_device(struct device *dev, struct device_driver *drv)
- 	if (sdrv->id_table)
- 		return !!spi_match_id(sdrv->id_table, spi);
  
--	return strcmp(spi->modalias, drv->name) == 0;
-+	return strcmp(spi_device_spidev2name(spi), drv->name) == 0;
- }
+ 	/* For now we only support 8/16/24 bit addressing */
+@@ -396,11 +442,19 @@ static int __devexit at25_remove(struct spi_device *spi)
  
- static int spi_uevent(struct device *dev, struct kobj_uevent_env *env)
- {
- 	const struct spi_device		*spi = to_spi_device(dev);
+ /*-------------------------------------------------------------------------*/
  
--	add_uevent_var(env, "MODALIAS=%s%s", SPI_MODULE_PREFIX, spi->modalias);
-+	if (strncmp(SPI_MODULE_PREFIX, spi->modalias,
-+		    strlen(SPI_MODULE_PREFIX)) == 0)
-+		add_uevent_var(env, "MODALIAS=%s", spi->modalias);
-+	else
-+		add_uevent_var(env, "MODALIAS=%s%s",
-+			       SPI_MODULE_PREFIX, spi->modalias);
++static const struct spi_device_id at25_id[] = {
++	{"at25", 0},
++	{"m95256", 0},
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, at25_id);
 +
- 	return 0;
- }
- 
-@@ -418,6 +436,7 @@ struct spi_device *spi_new_device(struct spi_master *master,
- {
- 	struct spi_device	*proxy;
- 	int			status;
-+	size_t			l;
- 
- 	/* NOTE:  caller did any chip->bus_num checks necessary.
- 	 *
-@@ -430,13 +449,23 @@ struct spi_device *spi_new_device(struct spi_master *master,
- 	if (!proxy)
- 		return NULL;
- 
--	WARN_ON(strlen(chip->modalias) >= sizeof(proxy->modalias));
-+	if (strncmp(SPI_MODULE_PREFIX, chip->modalias,
-+		    strlen(SPI_MODULE_PREFIX)) == 0) {
-+		proxy->modalias[0] = 0;
-+	} else {
-+		l = strlcpy(proxy->modalias, SPI_MODULE_PREFIX,
-+			    sizeof(proxy->modalias));
-+		WARN_ON(l >= sizeof(proxy->modalias));
-+	}
-+
-+	l = strlcat(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
-+
-+	WARN_ON(l >= sizeof(proxy->modalias));
- 
- 	proxy->chip_select = chip->chip_select;
- 	proxy->max_speed_hz = chip->max_speed_hz;
- 	proxy->mode = chip->mode;
- 	proxy->irq = chip->irq;
--	strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
- 	proxy->dev.platform_data = (void *) chip->platform_data;
- 	proxy->controller_data = chip->controller_data;
- 	proxy->controller_state = NULL;
+ static struct spi_driver at25_driver = {
+ 	.driver = {
+ 		.name		= "at25",
+ 		.owner		= THIS_MODULE,
+ 	},
++	.id_table	= at25_id,
+ 	.probe		= at25_probe,
+ 	.remove		= __devexit_p(at25_remove),
+ };
+@@ -410,4 +464,3 @@ module_spi_driver(at25_driver);
+ MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
+ MODULE_AUTHOR("David Brownell");
+ MODULE_LICENSE("GPL");
+-MODULE_ALIAS("spi:at25");
 -- 
 1.7.2.3
 

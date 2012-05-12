@@ -1,41 +1,140 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= 80%
-	=?iso-8859-15?Q?d=27=E9conomies_jusqu=27=E0?= minuit
-Date: Sat, 12 May 2012 12:06:31 +0200
-Message-ID: <1336817191.4fae3627e754d@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Hannu Heikkinen <hannuxx@iki.fi>
+Subject: Re: [PATCH] spi/omap: cleanup probe/remove routines
+Date: Sat, 12 May 2012 16:12:16 +0300
+Message-ID: <20120512131216.GA4664@beyadr.localdomain>
+References: <1336567438-6715-1-git-send-email-hannuxx@iki.fi>
+ <20120510003720.2F90C3E08F4@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Kevin Hilman <khilman@deeprootsystems.com>, tony@atomide.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20120510003720.2F90C3E08F4@localhost>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On 09/05/12 18:37 -0600, Grant Likely wrote:
+> On Wed,  9 May 2012 15:43:58 +0300, Hannu Heikkinen <hannuxx@iki.fi> wrote:
+> > Cleanup probe and remove routines, use devm_* functions for
+> > managing resources.
+> > 
+> > Also, in under free_master label, change use of kfree() into
+> > spi_master_put().
+> 
+> Patch does not apply to my current spi/next branch[1].
+> 
+> [1]git://git.secretlab.ca/git/linux-2.6 spi/next
+> 
+> While I'm thinking about it; Kevin, how do you want me handling OMAP
+> spi patches.  Do you want to pick them up, test them and send me a git
+> branch to pull like with gpio?  Or can I just pick them up?
+> 
+> g.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTE2NzUmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNS0xMiAwNDo1MDowMSZlPTEmaD0xMTY3NCZmPTExNjc1Jmc9MTE2NzU=3D
+hi, I forgot this spi/next brach. devm funcs already applied
+(commit 1a77b127ae147f5827043a9896d7f4cb248b402e - Shubhrajyoti).
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTE2NzUmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNS0xMiAwNDo1MDowMSZlPTEmaD0xMTY3NCZmPTExNjc1Jmc9MTE2Nz=
-U=3D
+Please ignore below patch, I'll check if there's something devm related
+to do left.
 
+br,
+Hannu
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+> 
+> > 
+> > CC: grant.likely@secretlab.ca
+> > CC: tony@atomide.com
+> > Signed-off-by: Hannu Heikkinen <hannuxx@iki.fi>
+> > ---
+> >  drivers/spi/spi-omap2-mcspi.c |   27 ++++++---------------------
+> >  1 file changed, 6 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> > index bb9274c..392efce 100644
+> > --- a/drivers/spi/spi-omap2-mcspi.c
+> > +++ b/drivers/spi/spi-omap2-mcspi.c
+> > @@ -1166,17 +1166,12 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+> >  	r->start += regs_offset;
+> >  	r->end += regs_offset;
+> >  	mcspi->phys = r->start;
+> > -	if (!request_mem_region(r->start, resource_size(r),
+> > -				dev_name(&pdev->dev))) {
+> > -		status = -EBUSY;
+> > -		goto free_master;
+> > -	}
+> >  
+> > -	mcspi->base = ioremap(r->start, resource_size(r));
+> > +	mcspi->base = devm_request_and_ioremap(&pdev->dev, r);
+> >  	if (!mcspi->base) {
+> > -		dev_dbg(&pdev->dev, "can't ioremap MCSPI\n");
+> > -		status = -ENOMEM;
+> > -		goto release_region;
+> > +		dev_dbg(&pdev->dev, "can't request mem and ioremap MCSPI\n");
+> > +		status =  -ENOMEM;
+> > +		goto free_master;
+> >  	}
+> >  
+> >  	mcspi->dev = &pdev->dev;
+> > @@ -1191,7 +1186,7 @@ static int __init omap2_mcspi_probe(struct platform_device *pdev)
+> >  			GFP_KERNEL);
+> >  
+> >  	if (mcspi->dma_channels == NULL)
+> > -		goto unmap_io;
+> > +		goto free_master;
+> >  
+> >  	for (i = 0; i < master->num_chipselect; i++) {
+> >  		char dma_ch_name[14];
+> > @@ -1241,12 +1236,8 @@ disable_pm:
+> >  	pm_runtime_disable(&pdev->dev);
+> >  dma_chnl_free:
+> >  	kfree(mcspi->dma_channels);
+> > -unmap_io:
+> > -	iounmap(mcspi->base);
+> > -release_region:
+> > -	release_mem_region(r->start, resource_size(r));
+> >  free_master:
+> > -	kfree(master);
+> > +	spi_master_put(master);
+> >  	platform_set_drvdata(pdev, NULL);
+> >  	return status;
+> >  }
+> > @@ -1256,8 +1247,6 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+> >  	struct spi_master	*master;
+> >  	struct omap2_mcspi	*mcspi;
+> >  	struct omap2_mcspi_dma	*dma_channels;
+> > -	struct resource		*r;
+> > -	void __iomem *base;
+> >  
+> >  	master = dev_get_drvdata(&pdev->dev);
+> >  	mcspi = spi_master_get_devdata(master);
+> > @@ -1265,12 +1254,8 @@ static int __exit omap2_mcspi_remove(struct platform_device *pdev)
+> >  
+> >  	omap2_mcspi_disable_clocks(mcspi);
+> >  	pm_runtime_disable(&pdev->dev);
+> > -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > -	release_mem_region(r->start, resource_size(r));
+> >  
+> > -	base = mcspi->base;
+> >  	spi_unregister_master(master);
+> > -	iounmap(base);
+> >  	kfree(dma_channels);
+> >  	destroy_workqueue(mcspi->wq);
+> >  	platform_set_drvdata(pdev, NULL);
+> > -- 
+> > 1.7.10
+> > 
+> 
+> -- 
+> Grant Likely, B.Sc, P.Eng.
+> Secret Lab Technologies, Ltd.
 
-threat landscape has changed and how IT managers can respond. Discussions =
+-- 
+-------------------------------------
+Hannu Heikkinen
+hannuxx@iki.fi
+PGP Key fingerprint FB04 2612 05B5 1CBD 9428  9E4D 2407 2F8C 52C0 A173
+-------------------------------------
 
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

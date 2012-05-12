@@ -1,7 +1,8 @@
-From: Stop Cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Haltes aux cambriolages et passez de bonnes vacances
-Date: Sat, 12 May 2012 05:17:47 +0200
-Message-ID: <1336792667.4fadd65be56e9@mc10.fr>
+From: Duano recommande Groupon <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Des deals chaque =?iso-8859-15?Q?jusqu=27=E0?= -70%
+	=?iso-8859-15?Q?pr=E8s?= de chez vous
+Date: Sat, 12 May 2012 09:26:31 +0200
+Message-ID: <1336807591.4fae10a78bb4e@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExNDAwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xMiAwMzozMDowMSZlPTEmaD0xMTM5OSZmPTExNDAwJmc9MTE0MDA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExNDQ2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0xMiAwNTo0MDowMSZlPTEmaD0xMTQ0NSZmPTExNDQ2Jmc9MTE0NDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExNDAwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xMiAwMzozMDowMSZlPTEmaD0xMTM5OSZmPTExNDAwJmc9MTE0MD=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExNDQ2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0xMiAwNTo0MDowMSZlPTEmaD0xMTQ0NSZmPTExNDQ2Jmc9MTE0ND=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

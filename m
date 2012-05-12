@@ -1,9 +1,9 @@
-From: Duano recommande Groupon <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Des deals chaque =?iso-8859-15?Q?jusqu=27=E0?= -70%
-	=?iso-8859-15?Q?pr=E8s?= de chez vous
-Date: Sat, 12 May 2012 09:26:31 +0200
-Message-ID: <1336807591.4fae10a78bb4e@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= 80%
+	=?iso-8859-15?Q?d=27=E9conomies_jusqu=27=E0?= minuit
+Date: Sat, 12 May 2012 12:06:31 +0200
+Message-ID: <1336817191.4fae3627e754d@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExNDQ2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xMiAwNTo0MDowMSZlPTEmaD0xMTQ0NSZmPTExNDQ2Jmc9MTE0NDY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTE2NzUmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wNS0xMiAwNDo1MDowMSZlPTEmaD0xMTY3NCZmPTExNjc1Jmc9MTE2NzU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExNDQ2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xMiAwNTo0MDowMSZlPTEmaD0xMTQ0NSZmPTExNDQ2Jmc9MTE0ND=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTE2NzUmYz0=
+xOTYxNjQxJmQ9MjAxMi0wNS0xMiAwNDo1MDowMSZlPTEmaD0xMTY3NCZmPTExNjc1Jmc9MTE2Nz=
+U=3D
 
 
 ---------------------------------------------------------------------------=

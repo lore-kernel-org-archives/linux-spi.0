@@ -1,61 +1,70 @@
-From: "Golf Tip of The Day" <gtip-noreply710423-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Evershed Shares His Knowledge
-Date: Sun, 13 May 2012 06:36:07 -0700
-Message-ID: <40aeca4f1e22566b77a7ee16001f7163@g2gm.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 05/10] ARM: Samsung: Update the device names for spi
+ clock lookup
+Date: Sun, 13 May 2012 15:51:35 +0100
+Message-ID: <20120513145134.GA6381@opensource.wolfsonmicro.com>
+References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
+ <1336514694-22393-6-git-send-email-thomas.abraham@linaro.org>
+ <20120509085249.GA28702@sirena.org.uk>
+ <CAJuYYwQ+Wn11puF7AdPD41Jntbuj7oZHqNfzQA2T8V=2cigQnw@mail.gmail.com>
+ <20120509142836.GT3955@opensource.wolfsonmicro.com>
+ <CAJuYYwSTJoNRuN87GoTZMgF-qahbu02kJ9SUd7omQ5WD0VjTww@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_891691812D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sm4nu43k4a2Rpi4c"
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org, kgene.kim@samsung.com,
+	rob.herring@calxeda.com, grant.likely@secretlab.ca,
+	jaswinder.singh@linaro.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAJuYYwSTJoNRuN87GoTZMgF-qahbu02kJ9SUd7omQ5WD0VjTww@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
 
-------=SPLITOR00A_001_891691812D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-Golfers Insider is pleased to offer this free instructional video from PGA =
-Teaching Professional Mark Evershed and other PGA Tour Pros all for free! =
-Enjoy!
-
-***View the attached form to see this technique in action***
-
-This video comes courtesy of Mark Evershed, PGA Teaching Professional. He =
-offers a more in depth instructional video about curing the slice. Just =
-view the attached form to learn more.
-
-
-------=SPLITOR00A_001_891691812D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+--sm4nu43k4a2Rpi4c
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_891691812D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Thu, May 10, 2012 at 01:17:32AM +0800, Thomas Abraham wrote:
+> On 9 May 2012 22:28, Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> > This means that bisection will be broken - anything with only one tree
+> > won't be able to load the SPI driver successfully until it's merged
+> > with the other which isn't ideal.
 
-------=SPLITOR00A_001_891691812D--
+> Yes, we would have that problem until the two trees are merged. But I
+> still prefer not to squash the two patches which already contain huge
+> diff.
+
+I'd not say the diff is *that* big (and most of what's there is simple
+and repetitive), and bisection is a very useful tool.  I know I
+frequently find it enormously painful trying to figure out breakage when
+large chunks of the history don't work usefully.
+
+--sm4nu43k4a2Rpi4c
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPr8o7AAoJEBus8iNuMP3dgagP/A7mKrizYW+adHb7Rn///vWv
+3Ob/XG/AgiioD+0zeHs5/tKECe4oHrFiXZUKwKuXHHH2KU/uYuEkGlW+O5VoHG/2
+msxyuaWFU8HjrMkrM7onjRJdQJNIocXLXgR8Ou4AKt3xgfVzajwtxfcIz6+jP6WQ
+PK6Dng9666yoHzKcwJoQkdmJJXy9O5i8VuyUclf12ifssPjDiF+Osl+zth5TcZ6T
+SN0SS8lS537huRXbbfbNvd1KZl4E98e1l2HGfiYdLmcWyN1QVK6I5dC0pU0OiGKG
+7oxi51BQ3T3HBcXTKHErIdvHRgVY92gXwoQOLgAzPCxaeT3n/mC2lHQmuq/8q5UH
+SdFHfKRiFMzjDJmgvSOeFFODwu5v1xNWsXxAjNybIpaA35alX8m7+GSVv3pCp3Pt
+MF0WRDkwnA9vjS9TK52IoOMytaDVn8tOnJSzl9EorLAhr62Hg2l/g42EQxsZFeh0
+V/+LPPsVITs5X497EW+Nx4dWfKYjWdAUpfC4Q4txkJ/xiUq4iagZTMwwrB3HGiwL
+D/vE+8AVhPsRdTTu4LNe8qmXKQwqfJ0uLwELRBMq8r0P9MLPS5N7kTIkKJKLKLYP
+MTEohI7940V6/gWBoqfwnvn+0WOnXdFaz94NWj6Fca7iVIzxyqpwFXp6lI7hcbSR
+RQ/WulHFOW9St3zQf+5T
+=M6co
+-----END PGP SIGNATURE-----
+
+--sm4nu43k4a2Rpi4c--

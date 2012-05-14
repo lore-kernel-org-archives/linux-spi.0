@@ -1,17 +1,17 @@
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
 Subject: Re: CSR SiRFSoC PRIMA2: SPI compilation broken in 3.4-rc7
-Date: Mon, 14 May 2012 14:27:15 +0200
-Message-ID: <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
+Date: Mon, 14 May 2012 14:38:29 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.1205141436150.4916@axis700.grange>
 References: <Pine.LNX.4.64.1205141311060.4916@axis700.grange>
+ <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
- linux-arm-kernel@lists.infradead.org
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
- Barry Song <baohua.song@csr.com>
+ linux-arm-kernel@lists.infradead.org, Barry Song <baohua.song@csr.com>
+To: Linus Walleij <linus.walleij@linaro.org>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <Pine.LNX.4.64.1205141311060.4916@axis700.grange>
+In-Reply-To: <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -23,35 +23,50 @@ Sender: linux-arm-kernel-bounces@lists.infradead.org
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, May 14, 2012 at 1:14 PM, Guennadi Liakhovetski
-<g.liakhovetski@gmx.de> wrote:
+On Mon, 14 May 2012, Linus Walleij wrote:
 
-> Might be good to try to fix for 3.4 release:
->
-> drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
-> drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
-> drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
-> drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
-> drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
-> drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
-> make[3]: *** [drivers/spi/spi-sirf.o] Error 1
+> On Mon, May 14, 2012 at 1:14 PM, Guennadi Liakhovetski
+> <g.liakhovetski@gmx.de> wrote:
+> 
+> > Might be good to try to fix for 3.4 release:
+> >
+> > drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
+> > drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
+> > drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
+> > drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
+> > drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
+> > drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
+> > make[3]: *** [drivers/spi/spi-sirf.o] Error 1
+> 
+> How are you producing this?
+> 
+> config SPI_SIRF
+>         tristate "CSR SiRFprimaII SPI controller"
+>         depends on ARCH_PRIMA2
+> 
+> So must be on ARCH_PRIMA2, but:
+> 
+> grep -r PRIMA2 arch/arm/configs/
+> 
+> So no defconfig can be used to compile this.
 
-How are you producing this?
+Yeah, just do "make ARCH=arm menuconfig" (or whatever *config you use) and 
+select PRIMA2, then this SPI driver - nothing super fancy:-) I've sent you 
+my .config off-list.
 
-config SPI_SIRF
-        tristate "CSR SiRFprimaII SPI controller"
-        depends on ARCH_PRIMA2
+Thanks
+Guennadi
 
-So must be on ARCH_PRIMA2, but:
+> If I could just reproduce it, I could fix it...
+> 
+> Barry pls submit a defconfig for the PRIMA2 so we can
+> compile it and test for regressions.
+> 
+> Yours,
+> Linus Walleij
+> 
 
-grep -r PRIMA2 arch/arm/configs/
-
-So no defconfig can be used to compile this.
-
-If I could just reproduce it, I could fix it...
-
-Barry pls submit a defconfig for the PRIMA2 so we can
-compile it and test for regressions.
-
-Yours,
-Linus Walleij
+---
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
+http://www.open-technology.de/

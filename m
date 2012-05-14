@@ -1,90 +1,48 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 1/2] MIPS: OCTEON: Add register definitions for SPI host hardware.
-Date: Mon, 14 May 2012 22:02:24 +0200
-Message-ID: <CACRpkdaXgcYTxb4qHPkzsrU+x6=zg8mQGVxmgCV59R1s2eqn+g@mail.gmail.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: Add SPI master controller for OCTEON SOCs.
+Date: Mon, 14 May 2012 22:07:05 +0200
+Message-ID: <CACRpkdaAeMV2yCNNP+e0BKaXEeZon2CKJs-TskVH5CVWXuqyiA@mail.gmail.com>
 References: <1336772086-17248-1-git-send-email-ddaney.cavm@gmail.com>
-	<1336772086-17248-2-git-send-email-ddaney.cavm@gmail.com>
+	<1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: devicetree-discuss@lists.ozlabs.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-	David Daney <david.daney@cavium.com>,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-To: David Daney <ddaney.cavm@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1336772086-17248-2-git-send-email-ddaney.cavm@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: David Daney <ddaney.cavm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1336772086-17248-3-git-send-email-ddaney.cavm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 11, 2012 at 11:34 PM, David Daney <ddaney.cavm@gmail.com> w=
-rote:
+On Fri, May 11, 2012 at 11:34 PM, David Daney <ddaney.cavm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 
-> From: David Daney <david.daney@cavium.com>
->
-> Needed by SPI driver.
+> + =A0 =A0 =A0 mpi_cfg.u64 =3D 0;
+> + =A0 =A0 =A0 mpi_cfg.u64 |=3D p->cs_enax;
+> + =A0 =A0 =A0 if (mpi_cfg.u64 !=3D p->last_cfg) {
 
-That's not very verbose, plese tell atleast tell which SPI driver it's =
-for.
-
-> +union cvmx_mpi_cfg {
-> + =A0 =A0 =A0 uint64_t u64;
-
-The kernel already has a type (in <linux/kernel.h>) used in many places=
- in the
-kernel, called "u64" so this gets very confusing.
-
-Can you call it something else?
-
-BTW: you could then s/uint64_t/u64 and use that u64.
-(Some don't like the three-letter types so no big deal.)
-
-> + =A0 =A0 =A0 struct cvmx_mpi_cfg_s {
-> +#ifdef __BIG_ENDIAN_BITFIELD
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t reserved_29_63:35;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t clkdiv:13;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena3:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena2:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena1:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena0:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t cslate:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t tritx:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t idleclks:2;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t cshi:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t int_ena:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t lsbfirst:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t wireor:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t clk_cont:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t idlelo:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t enable:1;
-> +#else
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t enable:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t idlelo:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t clk_cont:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t wireor:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t lsbfirst:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t int_ena:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t cshi:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t idleclks:2;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t tritx:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t cslate:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena0:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena1:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena2:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t csena3:1;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t clkdiv:13;
-> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 uint64_t reserved_29_63:35;
-> +#endif
-
-This boggles my mind, but I see there are many drivers doing this,
-but using uint64_t looks overly scary.
-
-Can't you break it apart using a set of u32's like in
-drivers/net/ethernet/micrel/ksz884x.c?
+But now I see why this 64bit is so clever. Forget the comment on 1/2!
+This has a certain elegance to it that I just learned to appreciate.
 
 Yours,
 Linus Walleij
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

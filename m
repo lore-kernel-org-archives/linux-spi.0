@@ -1,41 +1,40 @@
-From: Votre expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Un cambriolage toute les 3 mn. Etes-vous assez =?iso-8859-15?Q?prot?=
-	=?iso-8859-15?Q?=E9g=E9?=
-Date: Sun, 13 May 2012 23:37:10 +0200
-Message-ID: <1336945030.4fb029865a924@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+Subject: CSR SiRFSoC PRIMA2: SPI compilation broken in 3.4-rc7
+Date: Mon, 14 May 2012 13:14:23 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.1205141311060.4916@axis700.grange>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+ Linus Walleij <linus.walleij@linaro.org>, Barry Song <baohua.song@csr.com>
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hi
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExNTc3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xMyAyMzozMDowMSZlPTEmaD0xMTU3NiZmPTExNTc3Jmc9MTE1Nzc=3D
+Might be good to try to fix for 3.4 release:
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExNTc3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xMyAyMzozMDowMSZlPTEmaD0xMTU3NiZmPTExNTc3Jmc9MTE1Nz=
-c=3D
+drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
+drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
+drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
+drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
+drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
+drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
+make[3]: *** [drivers/spi/spi-sirf.o] Error 1
 
-
----------------------------------------------------------------------------=
+Thanks
+Guennadi
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
+http://www.open-technology.de/

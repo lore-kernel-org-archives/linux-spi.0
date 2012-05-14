@@ -1,72 +1,59 @@
-From: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: CSR SiRFSoC PRIMA2: SPI compilation broken in 3.4-rc7
-Date: Mon, 14 May 2012 14:38:29 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.1205141436150.4916@axis700.grange>
+Date: Mon, 14 May 2012 21:04:22 +0800
+Message-ID: <CAGsJ_4wupgPZbEdA0dXmbBikON6bFDYHn3U1KnYB_w1PbSE22Q@mail.gmail.com>
 References: <Pine.LNX.4.64.1205141311060.4916@axis700.grange>
- <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
+	<CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
- linux-arm-kernel@lists.infradead.org, Barry Song <baohua.song@csr.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdb17CAYazMO86KL1=EgKJ0zbE0RDb_fPnLZ5sKW70Vi2A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 14 May 2012, Linus Walleij wrote:
-
-> On Mon, May 14, 2012 at 1:14 PM, Guennadi Liakhovetski
-> <g.liakhovetski@gmx.de> wrote:
-> 
-> > Might be good to try to fix for 3.4 release:
-> >
-> > drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
-> > drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
-> > drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
-> > drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
-> > drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
-> > drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
-> > make[3]: *** [drivers/spi/spi-sirf.o] Error 1
-> 
-> How are you producing this?
-> 
-> config SPI_SIRF
->         tristate "CSR SiRFprimaII SPI controller"
->         depends on ARCH_PRIMA2
-> 
-> So must be on ARCH_PRIMA2, but:
-> 
-> grep -r PRIMA2 arch/arm/configs/
-> 
-> So no defconfig can be used to compile this.
-
-Yeah, just do "make ARCH=arm menuconfig" (or whatever *config you use) and 
-select PRIMA2, then this SPI driver - nothing super fancy:-) I've sent you 
-my .config off-list.
-
-Thanks
-Guennadi
-
-> If I could just reproduce it, I could fix it...
-> 
-> Barry pls submit a defconfig for the PRIMA2 so we can
-> compile it and test for regressions.
-> 
-> Yours,
-> Linus Walleij
-> 
-
----
-Guennadi Liakhovetski, Ph.D.
-Freelance Open-Source Software Developer
-http://www.open-technology.de/
+SGkgTGludXMvR3Vlbm5hZGksCgoyMDEyLzUvMTQgTGludXMgV2FsbGVpaiA8bGludXMud2FsbGVp
+akBsaW5hcm8ub3JnPjoKPiBPbiBNb24sIE1heSAxNCwgMjAxMiBhdCAxOjE0IFBNLCBHdWVubmFk
+aSBMaWFraG92ZXRza2kKPiA8Zy5saWFraG92ZXRza2lAZ214LmRlPiB3cm90ZToKPgo+PiBNaWdo
+dCBiZSBnb29kIHRvIHRyeSB0byBmaXggZm9yIDMuNCByZWxlYXNlOgo+Pgo+PiBkcml2ZXJzL3Nw
+aS9zcGktc2lyZi5jOiBJbiBmdW5jdGlvbiAnc3BpX3NpcmZzb2NfcHJvYmUnOgo+PiBkcml2ZXJz
+L3NwaS9zcGktc2lyZi5jOjU2MzogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0
+aW9uICdwaW5tdXhfZ2V0Jwo+PiBkcml2ZXJzL3NwaS9zcGktc2lyZi5jOjU2Mzogd2FybmluZzog
+YXNzaWdubWVudCBtYWtlcyBwb2ludGVyIGZyb20gaW50ZWdlciB3aXRob3V0IGEgY2FzdAo+PiBk
+cml2ZXJzL3NwaS9zcGktc2lyZi5jOjU2ODogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9m
+IGZ1bmN0aW9uICdwaW5tdXhfZW5hYmxlJwo+PiBkcml2ZXJzL3NwaS9zcGktc2lyZi5jOjYwMjog
+ZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uICdwaW5tdXhfZGlzYWJsZScK
+Pj4gZHJpdmVycy9zcGkvc3BpLXNpcmYuYzo2MDM6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlv
+biBvZiBmdW5jdGlvbiAncGlubXV4X3B1dCcKPj4gbWFrZVszXTogKioqIFtkcml2ZXJzL3NwaS9z
+cGktc2lyZi5vXSBFcnJvciAxCj4KPiBIb3cgYXJlIHlvdSBwcm9kdWNpbmcgdGhpcz8KPgo+IGNv
+bmZpZyBTUElfU0lSRgo+IMKgIMKgIMKgIMKgdHJpc3RhdGUgIkNTUiBTaVJGcHJpbWFJSSBTUEkg
+Y29udHJvbGxlciIKPiDCoCDCoCDCoCDCoGRlcGVuZHMgb24gQVJDSF9QUklNQTIKPgo+IFNvIG11
+c3QgYmUgb24gQVJDSF9QUklNQTIsIGJ1dDoKPgo+IGdyZXAgLXIgUFJJTUEyIGFyY2gvYXJtL2Nv
+bmZpZ3MvCj4KPiBTbyBubyBkZWZjb25maWcgY2FuIGJlIHVzZWQgdG8gY29tcGlsZSB0aGlzLgo+
+Cj4gSWYgSSBjb3VsZCBqdXN0IHJlcHJvZHVjZSBpdCwgSSBjb3VsZCBmaXggaXQuLi4KPgo+IEJh
+cnJ5IHBscyBzdWJtaXQgYSBkZWZjb25maWcgZm9yIHRoZSBQUklNQTIgc28gd2UgY2FuCj4gY29t
+cGlsZSBpdCBhbmQgdGVzdCBmb3IgcmVncmVzc2lvbnMuCgppIHdpbGwgc2VuZCB0d28gcGF0Y2hl
+cyB0byBmaXggdGhhdC4gb25lIGlzIGZvciBwaW5tdXggYXBpIGNoYW5nZXMsCnRoZSBvdGhlciBv
+bmUgaXMgZGVmY29uZmlnIG9mIHByaW1haWkuCgo+Cj4gWW91cnMsCj4gTGludXMgV2FsbGVpago+
+CgpUaGFua3MKYmFycnkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1
+YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5
+cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQg
+aG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVu
+ZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2Fy
+ZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8x
+MTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

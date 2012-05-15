@@ -1,56 +1,39 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] SPI: PRIMA2: use the newest APIs of PINCTRL to fix
-	compiling errors
-Date: Tue, 15 May 2012 10:02:01 +0200
-Message-ID: <CACRpkdYPQW4cTh_j1y4u0wFKkQmgP3oR8E2SJXNSn68jt9pq7g@mail.gmail.com>
-References: <1337048460-30329-1-git-send-email-Barry.Song@csr.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
+Date: Tue, 15 May 2012 08:47:17 -0700
+Message-ID: <20120515154717.GA15552@kroah.com>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
+ <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1337048460-30329-1-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: devicetree-discuss@lists.ozlabs.org,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Axel Lin <axel.lin@gmail.com>
+To: David Daney <ddaney.cavm@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 15, 2012 at 4:21 AM, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org> wrote:
+On Fri, May 11, 2012 at 03:05:23PM -0700, David Daney wrote:
+> From: David Daney <david.daney@cavium.com>
+> 
+> We can extract the "pagesize", "size" and "address-width" from the
+> device tree so that SPI eeproms can be fully specified in the device
+> tree.
+> 
+> Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Cc: Michael Hennerich <michael.hennerich@analog.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Axel Lin <axel.lin@gmail.com>
 
-> From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
->
-> Fix the compiling errors:
-> drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
-> drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
-> drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
-> drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
-> drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
-> drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
-> make[3]: *** [drivers/spi/spi-sirf.o] Error 1
->
-> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-> Cc: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-
-Counting on Grant to pick this up...
-
-Yours,
-Linus Walleij
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

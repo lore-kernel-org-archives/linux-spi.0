@@ -1,11 +1,12 @@
-From: "Jerry Burke" <jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
-Subject: Mobile Billing Evolution 2012-2017
-Date: Wed, 16 May 2012 09:13:32 +0100
-Message-ID: <20120516091332.-1768453906@vgtelecoms.com>
-Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Wed, 16 May 2012 15:18:37 +0200
+Message-ID: <1337174317.4fb3a92d19d73@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,10 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Mobile Billing Evolution 2012-2017
-------------------------------------------------------------------------------
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExNTcxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0xNiAxMjowMDowMSZlPTEmaD0xMTU3MCZmPTExNTcxJmc9MTE1NzE=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExNTcxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0xNiAxMjowMDowMSZlPTEmaD0xMTU3MCZmPTExNTcxJmc9MTE1Nz=
+E=3D
+
+
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

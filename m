@@ -1,20 +1,13 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
-Date: Wed, 16 May 2012 08:57:48 +0200
-Message-ID: <CACRpkdYFj6btOx75_myH45+tyqg3h21xnTL7PofydNeOVVQz_g@mail.gmail.com>
-References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
-	<20120315092923.951203E04FD@localhost>
-	<CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
-	<Pine.LNX.4.64.1203170036590.20979@axis700.grange>
+From: "Jerry Burke" <jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org>
+Subject: Mobile Billing Evolution 2012-2017
+Date: Wed, 16 May 2012 09:13:32 +0100
+Message-ID: <20120516091332.-1768453906@vgtelecoms.com>
+Reply-To: jerry.burke-oHkhjUNvqSkxoycv7ERPSQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <Pine.LNX.4.64.1203170036590.20979-0199iw4Nj15frtckUFj5Ag@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,21 +18,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Mar 17, 2012 at 12:39 AM, Guennadi Liakhovetski
-<g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
-
-> The SPI subsystem core now manages message queues internally. Remove the
-> local message queue implementation from the spi-bitbang driver and
-> migrate to the common one.
->
-> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-
-Grant have you picked this patch? It arrived pretty early so should be
-quite ripe by now...
-
-Yours,
-Linus Walleij
-
+Mobile Billing Evolution 2012-2017
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

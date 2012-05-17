@@ -1,10 +1,8 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Livraison offerte pour les 8 indispensables de
-	=?iso-8859-15?Q?l=27=E9t?=
-	=?iso-8859-15?Q?=E9_=E0?= 14,90 euros seulement
-Date: Thu, 17 May 2012 07:30:00 +0200
-Message-ID: <1337232600.4fb48cd8e4c62@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: =?iso-8859-15?Q?Journ=E9e?= prix coutant sur plus de 175 000 articles
+Date: Thu, 17 May 2012 16:23:12 +0200
+Message-ID: <1337264592.4fb509d050c8a@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -22,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExOTE5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xNyAwMDo0MDowMSZlPTEmaD0xMTkxOCZmPTExOTE5Jmc9MTE5MTk=3D
+Lien miroir : http://mail.mc10.fr/mc10_m/YT04JmI9MTE5OTImYz0xOTYxNjQxJmQ9Mj=
+AxMi0wNS0xNyAwNjo1MDowMSZlPTEmaD0xMTk5MSZmPTExOTkyJmc9MTE5OTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExOTE5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xNyAwMDo0MDowMSZlPTEmaD0xMTkxOCZmPTExOTE5Jmc9MTE5MT=
-k=3D
+Lien de d=E9sinscription : http://mail.mc10.fr/mc10_unsub/YT04JmI9MTE5OTImY=
+z0xOTYxNjQxJmQ9MjAxMi0wNS0xNyAwNjo1MDowMSZlPTEmaD0xMTk5MSZmPTExOTkyJmc9MTE5=
+OTI=3D
 
 
 ---------------------------------------------------------------------------=

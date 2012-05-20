@@ -1,7 +1,8 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vente Flash Caraibes
-Date: Sun, 20 May 2012 02:05:12 +0200
-Message-ID: <1337472312.4fb8353816146@mc10.fr>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Grand =?iso-8859-15?Q?m=E9nage?= sur les prix :
+	=?iso-8859-15?Q?jusqu=27=E0?= moins 75 pour cent
+Date: Sun, 20 May 2012 02:01:12 +0200
+Message-ID: <1337472072.4fb834482ed67@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExOTYwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTk1OSZmPTExOTYwJmc9MTE5NjA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExOTA4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTkwNyZmPTExOTA4Jmc9MTE5MDg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExOTYwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTk1OSZmPTExOTYwJmc9MTE5Nj=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExOTA4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTkwNyZmPTExOTA4Jmc9MTE5MD=
+g=3D
 
 
 ---------------------------------------------------------------------------=

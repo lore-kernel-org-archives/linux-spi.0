@@ -1,14 +1,21 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Grand =?iso-8859-15?Q?m=E9nage?= sur les prix :
-	=?iso-8859-15?Q?jusqu=27=E0?= moins 75 pour cent
-Date: Sun, 20 May 2012 02:01:12 +0200
-Message-ID: <1337472072.4fb834482ed67@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
+Date: Sat, 19 May 2012 21:02:29 -0600
+Message-ID: <20120520030229.C10943E046E@localhost>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
+	<CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
+	<Pine.LNX.4.64.1203170036590.20979@axis700.grange>
+	<CACRpkdYFj6btOx75_myH45+tyqg3h21xnTL7PofydNeOVVQz_g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdYFj6btOx75_myH45+tyqg3h21xnTL7PofydNeOVVQz_g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,23 +26,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Wed, 16 May 2012 08:57:48 +0200, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Sat, Mar 17, 2012 at 12:39 AM, Guennadi Liakhovetski
+> <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> 
+> > The SPI subsystem core now manages message queues internally. Remove the
+> > local message queue implementation from the spi-bitbang driver and
+> > migrate to the common one.
+> >
+> > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> 
+> Grant have you picked this patch? It arrived pretty early so should be
+> quite ripe by now...
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExOTA4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTkwNyZmPTExOTA4Jmc9MTE5MDg=3D
+Hmmm, two problems.  The patch is mailer damaged which I fixed
+manually, but I also cannot figure out what it is based on.  Guennadi,
+could you please respin this patch on top of current mainline and
+repost?
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExOTA4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTkwNyZmPTExOTA4Jmc9MTE5MD=
-g=3D
+Thanks,
+g.
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

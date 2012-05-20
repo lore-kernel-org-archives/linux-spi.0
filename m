@@ -1,150 +1,70 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
-Date: Sun, 20 May 2012 00:14:41 -0600
-Message-ID: <20120520061441.D5C9B3E03B8@localhost>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Axel Lin <axel.lin@gmail.com>
-To: David Daney <ddaney.cavm@gmail.com>,
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v2 4/6] ARM: Samsung: Modify
+ s3c64xx_spi{0|1|2}_set_platdata function
+Date: Sun, 20 May 2012 10:21:13 +0100
+Message-ID: <20120520092113.GA20652@opensource.wolfsonmicro.com>
+References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
+ <1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Dxnq1zWXvFF0Q93v"
+Cc: spi-devel-general@lists.sourceforge.net,
 	devicetree-discuss@lists.ozlabs.org,
-	Rob Herring <rob.herring@calxeda.com>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 11 May 2012 15:05:23 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
-> From: David Daney <david.daney@cavium.com>
-> 
-> We can extract the "pagesize", "size" and "address-width" from the
-> device tree so that SPI eeproms can be fully specified in the device
-> tree.
-> 
-> Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Axel Lin <axel.lin@gmail.com>
-> ---
->  drivers/misc/eeprom/at25.c |   61 +++++++++++++++++++++++++++++++++++++++++---
 
-Documentation on binding?  It needs to be there before merging.
+--Dxnq1zWXvFF0Q93v
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-g.
+On Fri, May 18, 2012 at 03:03:31PM +0530, Thomas Abraham wrote:
 
->  1 files changed, 57 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
-> index 01ab3c9..609ee72 100644
-> --- a/drivers/misc/eeprom/at25.c
-> +++ b/drivers/misc/eeprom/at25.c
-> @@ -16,6 +16,7 @@
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/sched.h>
-> +#include <linux/of.h>
->  
->  #include <linux/spi/spi.h>
->  #include <linux/spi/eeprom.h>
-> @@ -293,6 +294,9 @@ static int at25_probe(struct spi_device *spi)
->  {
->  	struct at25_data	*at25 = NULL;
->  	const struct spi_eeprom *chip;
-> +#ifdef CONFIG_OF
-> +	struct spi_eeprom of_chip;
-> +#endif
->  	int			err;
->  	int			sr;
->  	int			addrlen;
-> @@ -300,9 +304,51 @@ static int at25_probe(struct spi_device *spi)
->  	/* Chip description */
->  	chip = spi->dev.platform_data;
->  	if (!chip) {
-> -		dev_dbg(&spi->dev, "no chip description\n");
-> -		err = -ENODEV;
-> -		goto fail;
-> +#ifdef CONFIG_OF
-> +		if (spi->dev.of_node) {
-> +			u32 val;
-> +			memset(&of_chip, 0, sizeof(of_chip));
-> +			if (of_property_read_u32(spi->dev.of_node, "pagesize", &val)) {
-> +				dev_dbg(&spi->dev, "no \"pagesize\" property\n");
-> +				err = -ENODEV;
-> +				goto fail;
-> +			}
-> +			of_chip.page_size = val;
-> +			if (of_property_read_u32(spi->dev.of_node, "size", &val)) {
-> +				dev_dbg(&spi->dev, "no \"size\" property\n");
-> +				err = -ENODEV;
-> +				goto fail;
-> +			}
-> +			of_chip.byte_len = val;
-> +			if (of_property_read_u32(spi->dev.of_node, "address-width", &val)) {
-> +				dev_dbg(&spi->dev, "no \"address-width\" property\n");
-> +				err = -ENODEV;
-> +				goto fail;
-> +			}
-> +			switch (val) {
-> +			case 8:
-> +				of_chip.flags |= EE_ADDR1;
-> +				break;
-> +			case 16:
-> +				of_chip.flags |= EE_ADDR2;
-> +				break;
-> +			case 24:
-> +				of_chip.flags |= EE_ADDR3;
-> +				break;
-> +			default:
-> +				dev_dbg(&spi->dev, "bad \"address-width\" property: %u\n", val);
-> +				err = -EINVAL;
-> +				goto fail;
-> +			}
-> +			strlcpy(of_chip.name, spi->dev.of_node->name, sizeof(of_chip.name));
-> +			chip = &of_chip;
-> +		} else
-> +#endif
-> +		{
-> +			dev_dbg(&spi->dev, "no chip description\n");
-> +			err = -ENODEV;
-> +			goto fail;
-> +		}
->  	}
->  
->  	/* For now we only support 8/16/24 bit addressing */
-> @@ -396,11 +442,19 @@ static int __devexit at25_remove(struct spi_device *spi)
->  
->  /*-------------------------------------------------------------------------*/
->  
-> +static const struct spi_device_id at25_id[] = {
-> +	{"at25", 0},
-> +	{"m95256", 0},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, at25_id);
-> +
->  static struct spi_driver at25_driver = {
->  	.driver = {
->  		.name		= "at25",
->  		.owner		= THIS_MODULE,
->  	},
-> +	.id_table	= at25_id,
->  	.probe		= at25_probe,
->  	.remove		= __devexit_p(at25_remove),
->  };
-> @@ -410,4 +464,3 @@ module_spi_driver(at25_driver);
->  MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
->  MODULE_AUTHOR("David Brownell");
->  MODULE_LICENSE("GPL");
-> -MODULE_ALIAS("spi:at25");
-> -- 
-> 1.7.2.3
-> 
+> -	s3c64xx_spi0_set_platdata(&s3c64xx_spi0_pdata, 0, 1);
+> +	s3c64xx_spi0_set_platdata("s3c6410-spi", NULL, 0, 1);
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+...
+
+> +	pd.src_clk_nr = src_clk_nr;
+> +	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
+> +	s3c64xx_device_spi0.name = dev_name;
+
+This looks *really* strange.  Why do we need to pass in a name to set in
+s3c64xx_device_spi0's name, why would we want to use a different name?
+This dev_name also isn't equivalent to dev_name() which makes matters
+more confusing than they need to be.
+
+There was similar code for the I2C controllers which caused some really
+hard to debug brittleness.
+
+--Dxnq1zWXvFF0Q93v
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPuLd9AAoJEBus8iNuMP3dLqoQAIR6rqQ9pjM8FvqwohQzlWo+
+1jzGq53e1GzU9X3dEGxd9JKO+G7dH1zsltCbYlMpOAZC/RJVjsC+f6Ni8+ZOI7Em
+9ixnGTf+iQT475vW4XBi0FZoWzsdYtvU9f8RD0xVLkVjNPfF1ALubhfdBu/hJo8i
+eyYk+426Lc9QCI2YrMceCJcgLv7CwwZ6sFckDU5pSXvDReSQ9AJ+LtCR/e9MOds3
+otGDcT4x5+5BoFm+m01628qqJoN2VrNlrxprtMMg1rYW2s/jKOKN9KNujC6DmY7S
+i5pIF9EqNsa4+xrGRbDnqCo5mr/9yEAXFCSA1P0PnbAKUO0QL9U0iJu/20hZoAX3
+bOsvy+YinWi/I6t3bMcOND6uivjcDJDzaXcXCTCtfXeQAlzecQ/OfU7t7KwJuGb8
+yKD2Li02enYN9z/NFA0tOB6g75Nkuy+HFL0IpWi3zqz8Ap8qxjssukBMMuvtuu1N
+7mBr3WKhxTh/XnGLGT2zoCvTvc/p/wznajsM3fDB5Afygf3WP5cHU6t5BdO1jpaT
+e6uskxXD9fS3+PsXheAqggAMEBNnU2U+ca8MVzAq7t2Ncr5xgKJINaJhd7uQaTXp
+LzyITh8TCogXQKSQAxbv+edWKL1XEMKTGaHtITg6NYgMh9o0Phf7DREEXvSBZa2b
+dB7NFN04HgHCpyh1YajU
+=fwSS
+-----END PGP SIGNATURE-----
+
+--Dxnq1zWXvFF0Q93v--

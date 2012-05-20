@@ -1,76 +1,150 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] of: Add prefix parameter to
-	of_modalias_node().
-Date: Sun, 20 May 2012 00:08:01 -0600
-Message-ID: <20120520060802.03CE73E03B8@localhost>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
-	<1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
-	<20120520055436.13AF03E03B8@localhost>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	David Daney <david.daney@cavium.com>,
-	Takashi Iwai <tiwai@suse.de>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Liam Girdwood <lrg@ti.com>,
-	linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@freescale.com>
-To: David Daney <ddaney.cavm@gmail.com>, devicetree-discuss@lists.ozlabs.org,
+Subject: Re: [PATCH 3/3] eeprom/of: Add device tree bindings to at25.
+Date: Sun, 20 May 2012 00:14:41 -0600
+Message-ID: <20120520061441.D5C9B3E03B8@localhost>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Axel Lin <axel.lin@gmail.com>
+To: David Daney <ddaney.cavm@gmail.com>,
+	devicetree-discuss@lists.ozlabs.org,
 	Rob Herring <rob.herring@calxeda.com>,
 	spi-devel-general@lists.sourceforge.net
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <20120520055436.13AF03E03B8@localhost>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
-	<mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
-	<mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Sender: alsa-devel-bounces@alsa-project.org
-Errors-To: alsa-devel-bounces@alsa-project.org
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1336773923-17866-4-git-send-email-ddaney.cavm@gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 19 May 2012 23:54:36 -0600, Grant Likely <grant.likely@secretlab.ca> wrote:
-> On Fri, 11 May 2012 15:05:21 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
-> > From: David Daney <david.daney@cavium.com>
-> > 
-> > When generating MODALIASes, it is convenient to add things like "spi:"
-> > or "i2c:" to the front of the strings.  This allows the standard
-> > modprobe to find the right driver when automatically populating bus
-> > children from the device tree structure.
-> > 
-> > Add a prefix parameter, and adjust callers.  For
-> > of_register_spi_devices() use the "spi:" prefix.
-> > 
-> > Signed-off-by: David Daney <david.daney@cavium.com>
+On Fri, 11 May 2012 15:05:23 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
+> From: David Daney <david.daney@cavium.com>
 > 
-> Applied, thanks.  Some notes below...
+> We can extract the "pagesize", "size" and "address-width" from the
+> device tree so that SPI eeproms can be fully specified in the device
+> tree.
+> 
+> Also add a MODULE_DEVICE_TABLE so the drivers can be automatically bound.
+> 
+> Signed-off-by: David Daney <david.daney@cavium.com>
+> Cc: Michael Hennerich <michael.hennerich@analog.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Axel Lin <axel.lin@gmail.com>
+> ---
+>  drivers/misc/eeprom/at25.c |   61 +++++++++++++++++++++++++++++++++++++++++---
 
-Wait... why is this necessary?  The module type prefix isn't stored in
-the modalias value for any other bus type as far as I can see, and
-with this series it appears that the "spi:" prefix may or may not be
-present in the modalias.  That doesn't look right.
-
-Why isn't prefixing spi: at uevent time sufficient?  IIUC, modprobe
-depends on either UEVENT or the modalias attribute to know which
-driver to probe.  It does look like the attribute is missing the spi:
-prefix though.  Does the following change work instead of these two
-patches?
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 3d8f662..da8aac7 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -51,7 +51,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
- {
-        const struct spi_device *spi = to_spi_device(dev);
- 
--       return sprintf(buf, "%s\n", spi->modalias);
-+       return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
- }
-
-So, I've dropped this patch from my tree.  If the change above works
-for you then I'll push it out.
+Documentation on binding?  It needs to be there before merging.
 
 g.
+
+>  1 files changed, 57 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/misc/eeprom/at25.c b/drivers/misc/eeprom/at25.c
+> index 01ab3c9..609ee72 100644
+> --- a/drivers/misc/eeprom/at25.c
+> +++ b/drivers/misc/eeprom/at25.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/delay.h>
+>  #include <linux/device.h>
+>  #include <linux/sched.h>
+> +#include <linux/of.h>
+>  
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/eeprom.h>
+> @@ -293,6 +294,9 @@ static int at25_probe(struct spi_device *spi)
+>  {
+>  	struct at25_data	*at25 = NULL;
+>  	const struct spi_eeprom *chip;
+> +#ifdef CONFIG_OF
+> +	struct spi_eeprom of_chip;
+> +#endif
+>  	int			err;
+>  	int			sr;
+>  	int			addrlen;
+> @@ -300,9 +304,51 @@ static int at25_probe(struct spi_device *spi)
+>  	/* Chip description */
+>  	chip = spi->dev.platform_data;
+>  	if (!chip) {
+> -		dev_dbg(&spi->dev, "no chip description\n");
+> -		err = -ENODEV;
+> -		goto fail;
+> +#ifdef CONFIG_OF
+> +		if (spi->dev.of_node) {
+> +			u32 val;
+> +			memset(&of_chip, 0, sizeof(of_chip));
+> +			if (of_property_read_u32(spi->dev.of_node, "pagesize", &val)) {
+> +				dev_dbg(&spi->dev, "no \"pagesize\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			of_chip.page_size = val;
+> +			if (of_property_read_u32(spi->dev.of_node, "size", &val)) {
+> +				dev_dbg(&spi->dev, "no \"size\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			of_chip.byte_len = val;
+> +			if (of_property_read_u32(spi->dev.of_node, "address-width", &val)) {
+> +				dev_dbg(&spi->dev, "no \"address-width\" property\n");
+> +				err = -ENODEV;
+> +				goto fail;
+> +			}
+> +			switch (val) {
+> +			case 8:
+> +				of_chip.flags |= EE_ADDR1;
+> +				break;
+> +			case 16:
+> +				of_chip.flags |= EE_ADDR2;
+> +				break;
+> +			case 24:
+> +				of_chip.flags |= EE_ADDR3;
+> +				break;
+> +			default:
+> +				dev_dbg(&spi->dev, "bad \"address-width\" property: %u\n", val);
+> +				err = -EINVAL;
+> +				goto fail;
+> +			}
+> +			strlcpy(of_chip.name, spi->dev.of_node->name, sizeof(of_chip.name));
+> +			chip = &of_chip;
+> +		} else
+> +#endif
+> +		{
+> +			dev_dbg(&spi->dev, "no chip description\n");
+> +			err = -ENODEV;
+> +			goto fail;
+> +		}
+>  	}
+>  
+>  	/* For now we only support 8/16/24 bit addressing */
+> @@ -396,11 +442,19 @@ static int __devexit at25_remove(struct spi_device *spi)
+>  
+>  /*-------------------------------------------------------------------------*/
+>  
+> +static const struct spi_device_id at25_id[] = {
+> +	{"at25", 0},
+> +	{"m95256", 0},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, at25_id);
+> +
+>  static struct spi_driver at25_driver = {
+>  	.driver = {
+>  		.name		= "at25",
+>  		.owner		= THIS_MODULE,
+>  	},
+> +	.id_table	= at25_id,
+>  	.probe		= at25_probe,
+>  	.remove		= __devexit_p(at25_remove),
+>  };
+> @@ -410,4 +464,3 @@ module_spi_driver(at25_driver);
+>  MODULE_DESCRIPTION("Driver for most SPI EEPROMs");
+>  MODULE_AUTHOR("David Brownell");
+>  MODULE_LICENSE("GPL");
+> -MODULE_ALIAS("spi:at25");
+> -- 
+> 1.7.2.3
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

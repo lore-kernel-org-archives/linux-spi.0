@@ -1,82 +1,76 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
-Date: Sat, 19 May 2012 23:54:36 -0600
-Message-ID: <20120520055436.13AF03E03B8@localhost>
-References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-doc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-	Liam Girdwood <lrg@ti.com>, Timur Tabi <timur@freescale.com>,
+Subject: Re: [PATCH 1/3] of: Add prefix parameter to
+	of_modalias_node().
+Date: Sun, 20 May 2012 00:08:01 -0600
+Message-ID: <20120520060802.03CE73E03B8@localhost>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com>
+	<1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
+	<20120520055436.13AF03E03B8@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
 	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-	alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
-To: David Daney <ddaney.cavm@gmail.com>,
-	devicetree-discuss@lists.ozlabs.org,
+	David Daney <david.daney@cavium.com>,
+	Takashi Iwai <tiwai@suse.de>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Liam Girdwood <lrg@ti.com>,
+	linuxppc-dev@lists.ozlabs.org, Timur Tabi <timur@freescale.com>
+To: David Daney <ddaney.cavm@gmail.com>, devicetree-discuss@lists.ozlabs.org,
 	Rob Herring <rob.herring@calxeda.com>,
 	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <20120520055436.13AF03E03B8@localhost>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+	<mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+	<mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Sender: alsa-devel-bounces@alsa-project.org
+Errors-To: alsa-devel-bounces@alsa-project.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 11 May 2012 15:05:21 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
-> From: David Daney <david.daney@cavium.com>
+On Sat, 19 May 2012 23:54:36 -0600, Grant Likely <grant.likely@secretlab.ca> wrote:
+> On Fri, 11 May 2012 15:05:21 -0700, David Daney <ddaney.cavm@gmail.com> wrote:
+> > From: David Daney <david.daney@cavium.com>
+> > 
+> > When generating MODALIASes, it is convenient to add things like "spi:"
+> > or "i2c:" to the front of the strings.  This allows the standard
+> > modprobe to find the right driver when automatically populating bus
+> > children from the device tree structure.
+> > 
+> > Add a prefix parameter, and adjust callers.  For
+> > of_register_spi_devices() use the "spi:" prefix.
+> > 
+> > Signed-off-by: David Daney <david.daney@cavium.com>
 > 
-> When generating MODALIASes, it is convenient to add things like "spi:"
-> or "i2c:" to the front of the strings.  This allows the standard
-> modprobe to find the right driver when automatically populating bus
-> children from the device tree structure.
-> 
-> Add a prefix parameter, and adjust callers.  For
-> of_register_spi_devices() use the "spi:" prefix.
-> 
-> Signed-off-by: David Daney <david.daney@cavium.com>
+> Applied, thanks.  Some notes below...
 
-Applied, thanks.  Some notes below...
+Wait... why is this necessary?  The module type prefix isn't stored in
+the modalias value for any other bus type as far as I can see, and
+with this series it appears that the "spi:" prefix may or may not be
+present in the modalias.  That doesn't look right.
 
-> Cc: Liam Girdwood <lrg@ti.com>
-> Cc: Timur Tabi <timur@freescale.com>
-> Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> Cc: Jaroslav Kysela <perex@perex.cz>
-> Cc: Takashi Iwai <tiwai@suse.de>
-> Cc: alsa-devel@alsa-project.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> ---
->  drivers/of/base.c            |   22 ++++++++++++++++------
->  drivers/of/of_i2c.c          |    2 +-
->  drivers/of/of_spi.c          |    2 +-
->  include/linux/of.h           |    3 ++-
->  sound/soc/fsl/mpc8610_hpcd.c |    2 +-
->  sound/soc/fsl/p1022_ds.c     |    2 +-
->  6 files changed, 22 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 5806449..f05a520 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -575,26 +575,36 @@ EXPORT_SYMBOL(of_find_matching_node);
->  /**
->   * of_modalias_node - Lookup appropriate modalias for a device node
->   * @node:	pointer to a device tree node
-> + * @prefix:	prefix to be added to the compatible property, may be NULL
->   * @modalias:	Pointer to buffer that modalias value will be copied into
->   * @len:	Length of modalias value
->   *
-> - * Based on the value of the compatible property, this routine will attempt
-> - * to choose an appropriate modalias value for a particular device tree node.
-> - * It does this by stripping the manufacturer prefix (as delimited by a ',')
-> - * from the first entry in the compatible list property.
-> + * Based on the value of the compatible property, this routine will
-> + * attempt to choose an appropriate modalias value for a particular
-> + * device tree node.  It does this by stripping the manufacturer
-> + * prefix (as delimited by a ',') from the first entry in the
-> + * compatible list property, and appending it to the prefix.
+Why isn't prefixing spi: at uevent time sufficient?  IIUC, modprobe
+depends on either UEVENT or the modalias attribute to know which
+driver to probe.  It does look like the attribute is missing the spi:
+prefix though.  Does the following change work instead of these two
+patches?
 
-Not sure why this text block was reformatted.  I've formatted it back
-to the way it was so the diff shows specifically what has changed in
-the content.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 3d8f662..da8aac7 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -51,7 +51,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+ {
+        const struct spi_device *spi = to_spi_device(dev);
+ 
+-       return sprintf(buf, "%s\n", spi->modalias);
++       return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
+ }
 
-I don't want to discourage cleanups, but I need to be careful that
-cleanups don't obscure important changes when looking at the diff.
+So, I've dropped this patch from my tree.  If the change above works
+for you then I'll push it out.
 
 g.
-

@@ -1,17 +1,20 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH V3 16/17] SPI: MIPS: lantiq: add FALCON spi driver
-Date: Sat, 19 May 2012 23:16:51 -0600
-Message-ID: <20120520051651.388013E03B8@localhost>
-References: <1337025642-31194-1-git-send-email-blogic@openwrt.org>
+Subject: Re: [PATCH] SPI: PRIMA2: use the newest APIs of PINCTRL to fix
+	compiling errors
+Date: Sat, 19 May 2012 23:17:47 -0600
+Message-ID: <20120520051747.7744B3E03B8@localhost>
+References: <1337048460-30329-1-git-send-email-Barry.Song@csr.com>
+	<CACRpkdYPQW4cTh_j1y4u0wFKkQmgP3oR8E2SJXNSn68jt9pq7g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
+	workgroup.linux-kQvG35nSl+M@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1337025642-31194-1-git-send-email-blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <CACRpkdYPQW4cTh_j1y4u0wFKkQmgP3oR8E2SJXNSn68jt9pq7g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,63 +25,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 14 May 2012 22:00:42 +0200, John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
-> From: Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+On Tue, 15 May 2012 10:02:01 +0200, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, May 15, 2012 at 4:21 AM, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org> wrote:
 > 
-> The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
-> designed for serial flash access. This driver has only been tested with m25p80
-> type chips. The hardware has no support for other types of spi peripherals.
+> > From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+> >
+> > Fix the compiling errors:
+> > drivers/spi/spi-sirf.c: In function 'spi_sirfsoc_probe':
+> > drivers/spi/spi-sirf.c:563: error: implicit declaration of function 'pinmux_get'
+> > drivers/spi/spi-sirf.c:563: warning: assignment makes pointer from integer without a cast
+> > drivers/spi/spi-sirf.c:568: error: implicit declaration of function 'pinmux_enable'
+> > drivers/spi/spi-sirf.c:602: error: implicit declaration of function 'pinmux_disable'
+> > drivers/spi/spi-sirf.c:603: error: implicit declaration of function 'pinmux_put'
+> > make[3]: *** [drivers/spi/spi-sirf.o] Error 1
+> >
+> > Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+> > Cc: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> > Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > 
-> Signed-off-by: Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> ---
-> This patch was previously Acked in V2 by Grant
-> http://www.mail-archive.com/spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org/msg07874.html
+> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> Counting on Grant to pick this up...
 
-Which mostly stands except for (something I didn't notice before)....
-
-> +static int __devinit falcon_sflash_probe(struct platform_device *pdev)
-> +{
-> +	struct falcon_sflash *priv;
-> +	const __be32 *prop;
-> +	struct spi_master *master;
-> +	int ret, len;
-> +
-> +	if (ltq_boot_select() != BS_SPI) {
-> +		dev_err(&pdev->dev, "invalid bootstrap options\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
-> +	if (!master)
-> +		return -ENOMEM;
-> +
-> +	priv = spi_master_get_devdata(master);
-> +	priv->master = master;
-> +
-> +	master->mode_bits = SPI_MODE_3;
-> +	master->num_chipselect = 1;
-> +	master->bus_num = -1;
-> +	master->setup = falcon_sflash_setup;
-> +	master->prepare_transfer_hardware = falcon_sflash_prepare_xfer;
-> +	master->transfer_one_message = falcon_sflash_xfer_one;
-> +	master->unprepare_transfer_hardware = falcon_sflash_unprepare_xfer;
-> +	master->dev.of_node = pdev->dev.of_node;
-> +
-> +	prop = of_get_property(pdev->dev.of_node, "busnum", &len);
-> +	if (prop && (len == sizeof(*prop)))
-> +		master->bus_num = be32_to_cpup(prop);
-
-Drop this bit.  spi bus numbers are dynamically assigned for DT usage.
-Using a property to override the bus number should not be done.
-
-Userspace can determine the bus number for a given device from sysfs.
-
-If you still **really** need a bus to have a specific number, then the
-correct way of handling it is to use a property in the /aliases node,
-and there is some infrastructure in drivers/of/base.c.  Look for
-of_alias_get_id().
+Applied, thanks.
 
 g.
 

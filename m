@@ -1,20 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/omap2-mcspi: convert to the pump message
-	infrastructure
-Date: Sat, 19 May 2012 22:55:14 -0600
-Message-ID: <20120520045514.AD9BB3E03B8@localhost>
-References: <1336654665-693-1-git-send-email-shubhrajyoti@ti.com>
-	<CACRpkdbb0pRmnN-E_M7MLZoN5c_vYNj4AWsSvv-9ZDJzh3Pbjw@mail.gmail.com>
-	<CAM=Q2csCk3B=mQH+zifE8y0XfPW=qgjH=Ya9PunaWRHFo+dLfQ@mail.gmail.com>
+Subject: Re: [PATCH] spi: refactor spi-coldfire-qspi to use SPI queue
+	framework.
+Date: Sat, 19 May 2012 22:57:29 -0600
+Message-ID: <20120520045729.63B9A3E03B8@localhost>
+References: <201205100926.55444.sfking@fdwdc.com>
+	<4FACB1A9.3060800@snapgear.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	uClinux development list <uclinux-dev-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+To: Greg Ungerer <gerg-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org>, Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAM=Q2csCk3B=mQH+zifE8y0XfPW=qgjH=Ya9PunaWRHFo+dLfQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <4FACB1A9.3060800-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,24 +23,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 15 May 2012 12:04:15 +0530, Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Linus,
-> 
-> On Tue, May 15, 2012 at 1:42 AM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> > On Thu, May 10, 2012 at 2:57 PM, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> wrote:
+On Fri, 11 May 2012 16:28:57 +1000, Greg Ungerer <gerg-XXXsiaCtIV5Wk0Htik3J/w@public.gmane.org> wrote:
+> On 11/05/12 02:26, Steven King wrote:
+> > Use the new SPI queue framework; remove use of workqueue, replace
+> > mcfqspi_transfer with mcfqspi_transfer_one_message, add
+> > mcfqspi_prepare_transfer_hw and mcfqspi_unprepare_transfer_hw, update power
+> > management routines.
 > >
-> >> This patch converts the OMAP SPI driver to use the SPI infrastructure
-> >> pump message queue.Also fixes the below warning.
-> >> master is unqueued, this is deprecated
-> >>
-> >> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> >
-> > Final version of the patch?
-> Lest someone has comments.
+> > Signed-off-by: Steven King<sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
 > 
-> > Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> I can't add much value reviewing this one, style wise it looks good.
 
-Applied, thanks.
+I'll take that as an ack.
+
+> 
+> Grant: if you don't want to take this through one of your trees
+> I can add it to the m68knommu git tree.
+
+Merged, thanks.
 
 g.
 

@@ -1,63 +1,75 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH RFC] spi: Dont call prepare/unprepare transfer if not
-	populated
-Date: Sat, 19 May 2012 23:00:33 -0600
-Message-ID: <20120520050033.1D3DD3E03B8@localhost>
-References: <1336657841-2306-1-git-send-email-shubhrajyoti@ti.com>
-	<CACRpkdZmr+i6d+k8XU6Qxo425=mFZo5kzUe1wFk+grxDshaoVA@mail.gmail.com>
-	<20120511032455.6BB853E04A6@localhost>
-	<20120515195801.GE23254@lunn.ch>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, andrew-g2DYL2Zd6BY@public.gmane.org,
-	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120515195801.GE23254-g2DYL2Zd6BY@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v2 0/6] spi: s3c64xx: add support for device tree
+Date: Sat, 19 May 2012 23:02:49 -0600
+Message-ID: <20120520050249.2F5113E03B8@localhost>
+References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	kgene.kim@samsung.com, jaswinder.singh@linaro.org,
+	broonie@opensource.wolfsonmicro.com
+To: Thomas Abraham <thomas.abraham@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 15 May 2012 21:58:01 +0200, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org> wrote:
-> On Thu, May 10, 2012 at 09:24:55PM -0600, Grant Likely wrote:
-> > On Thu, 10 May 2012 16:01:27 +0200, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> > > On Thu, May 10, 2012 at 3:50 PM, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org> wrote:
-> > > 
-> > > > Currently the prepare/unprepare transfer are called unconditionally.
-> > > > The assumption is that every driver using the spi core queue infrastructure
-> > > > has to populate the prepare and unprepare functions. This encourages
-> > > > drivers to populate empty functions to prevent crashing.
-> > > > This patch prevents the call to prepare/unprepare if not populated.
-> > > >
-> > > > Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> > > > Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> > > 
-> > > Great!
-> > > Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> > 
-> > Applied, thanks (after fixing extra whitespace defect).
-> 
-> Hi Grant
-> 
-> Is this going to appear in linux-next soon? Can i depend on having
-> this patch for 3.5?
+On Fri, 18 May 2012 15:03:27 +0530, Thomas Abraham <thomas.abraham@linaro.org> wrote:
+> Changes since v1:
 
-It's pushed out now.
+Heh, I really should look further down my inbox before I start
+replying to old patches.  I'll recheck this version of the changes,
+but I'm still happy for this stuff to go via arm-soc or whatever
+branch makes the most sense.
 
 g.
 
+> - Incorporated changes suggested by Mark Brown
+>   - Merged 2nd, 3rd and 5th patch into one single patch.
+>   - Listed the order of gpios in the device tree support documentation.
+>   - Switched to generic property names for chip select gpio line and
+>     number of slave select lines.
+> - Moved the platform enablement patches for Exynos4 and Exynos5 into a
+>   different patch series.
+> - Included Ack from Jaswinder Singh <jaswinder.singh@linaro.org>.
+> 
+> This patch series adds device tree based discovery support for Samsung's
+> s3c64xx compatible spi controller. This is mainly tested for Exynos4210
+> and Exynos5250 with onboard spi nor flash device.
+> 
+> Thomas Abraham (6):
+>   spi: s3c64xx: remove unused S3C64XX_SPI_ST_TRLCNTZ macro
+>   spi: s3c64xx: move controller information into driver data
+>   ARM: Samsung: Remove pdev pointer paremeter from spi gpio setup functions
+>   ARM: Samsung: Modify s3c64xx_spi{0|1|2}_set_platdata function
+>   spi: s3c64xx: Remove the 'set_level' callback from controller data
+>   spi: s3c64xx: add device tree support
+> 
+>  .../devicetree/bindings/spi/spi-samsung.txt        |  113 +++++
+>  arch/arm/mach-exynos/clock-exynos4.c               |   18 +-
+>  arch/arm/mach-exynos/setup-spi.c                   |   33 +--
+>  arch/arm/mach-s3c24xx/clock-s3c2416.c              |    2 +-
+>  arch/arm/mach-s3c24xx/clock-s3c2443.c              |    2 +-
+>  arch/arm/mach-s3c24xx/common-s3c2443.c             |    4 +-
+>  arch/arm/mach-s3c24xx/setup-spi.c                  |   10 +-
+>  arch/arm/mach-s3c64xx/clock.c                      |   20 +-
+>  arch/arm/mach-s3c64xx/mach-crag6410.c              |    2 +-
+>  arch/arm/mach-s3c64xx/setup-spi.c                  |   19 +-
+>  arch/arm/mach-s5p64x0/clock-s5p6440.c              |   12 +-
+>  arch/arm/mach-s5p64x0/clock-s5p6450.c              |   12 +-
+>  arch/arm/mach-s5p64x0/setup-spi.c                  |   21 +-
+>  arch/arm/mach-s5pc100/clock.c                      |   30 +-
+>  arch/arm/mach-s5pc100/setup-spi.c                  |   30 +--
+>  arch/arm/mach-s5pv210/clock.c                      |   14 +-
+>  arch/arm/mach-s5pv210/setup-spi.c                  |   21 +-
+>  arch/arm/plat-samsung/devs.c                       |   50 +--
+>  arch/arm/plat-samsung/include/plat/s3c64xx-spi.h   |   31 +-
+>  drivers/spi/spi-s3c64xx.c                          |  467 +++++++++++++++++---
+>  20 files changed, 611 insertions(+), 300 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-samsung.txt
+> 
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

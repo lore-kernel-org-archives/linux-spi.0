@@ -1,11 +1,12 @@
-From: "Ernest Hamilton" <noreply8923642-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Are you taking on new clients?
-Date: Sat, 19 May 2012 05:08:51 -0700
-Message-ID: <e083170a7ef9dbe299c1c10900187d91@g2gm.com>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vente Flash Caraibes
+Date: Sun, 20 May 2012 02:05:12 +0200
+Message-ID: <1337472312.4fb8353816146@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,43 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello, 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-If you are taking on new clients, I would like you to contact me at 1 (800) 676-2011 to discuss the benefits of e-mail marketing. 
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTExOTYwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTk1OSZmPTExOTYwJmc9MTE5NjA=3D
 
-We can generate massive targeted traffic for your company. We will put your e-mail marketing on auto drive.
-
-100% No Risk Money Back Guarantee!
-
-Thank You,
-
-Ernest Hamilton
-Senior Prospect Specialist
-E-mail Marketing Services
-1 (800) 676-2011
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTExOTYwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0xOSAxMjo0MDowMSZlPTEmaD0xMTk1OSZmPTExOTYwJmc9MTE5Nj=
+A=3D
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-If you do not wish to receive this type of e-mail, please click <mailto:stopthisstuff-KK0ffGbhmjU@public.gmane.org?subject=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
-
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

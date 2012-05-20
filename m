@@ -1,70 +1,578 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v2 4/6] ARM: Samsung: Modify
- s3c64xx_spi{0|1|2}_set_platdata function
-Date: Sun, 20 May 2012 10:21:13 +0100
-Message-ID: <20120520092113.GA20652@opensource.wolfsonmicro.com>
-References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
- <1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
+From: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: [PATCH V4 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+Date: Sun, 20 May 2012 15:20:14 +0200
+Message-ID: <1337520014-28787-1-git-send-email-blogic@openwrt.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Dxnq1zWXvFF0Q93v"
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, kgene.kim@samsung.com,
-	jaswinder.singh@linaro.org
-To: Thomas Abraham <thomas.abraham@linaro.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+To: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
 
---Dxnq1zWXvFF0Q93v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The external bus unit (EBU) found on the FALCON SoC has spi emulation that is
+designed for serial flash access. This driver has only been tested with m25p80
+type chips. The hardware has no support for other types of spi peripherals.
 
-On Fri, May 18, 2012 at 03:03:31PM +0530, Thomas Abraham wrote:
+Signed-off-by: Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+Signed-off-by: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+---
+This patch is part of a series moving the mips/lantiq target to OF and clkdev
+support. The patch, once Acked, should go upstream via Ralf's MIPS tree.
 
-> -	s3c64xx_spi0_set_platdata(&s3c64xx_spi0_pdata, 0, 1);
-> +	s3c64xx_spi0_set_platdata("s3c6410-spi", NULL, 0, 1);
+Changes in V4
+* drop busnum property
 
-...
+Changes in V3
+* rephrase spi->SPI
+* fix rate detection
+* adds support for transfer_one & co
+* adds of support
 
-> +	pd.src_clk_nr = src_clk_nr;
-> +	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
-> +	s3c64xx_device_spi0.name = dev_name;
+Changes in V2
+* remove several superflous calls to dev_dbg
+* make use of module_platform_driver
+* remove falcon_spi_cleanup as it was an empty function
+* return real error codes instead of -1
+* fixes operator spacing errors
+* split arch and driver specific patches
+* squash some lines to make use of the full 80 available chars
+* Kconfig is now alphabetic again
+* replace BUG() with WARN_ON()
 
-This looks *really* strange.  Why do we need to pass in a name to set in
-s3c64xx_device_spi0's name, why would we want to use a different name?
-This dev_name also isn't equivalent to dev_name() which makes matters
-more confusing than they need to be.
+ drivers/spi/Kconfig      |    9 +
+ drivers/spi/Makefile     |    1 +
+ drivers/spi/spi-falcon.c |  470 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 480 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/spi/spi-falcon.c
 
-There was similar code for the I2C controllers which caused some really
-hard to debug brittleness.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 00c0240..62b2b5e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -144,6 +144,15 @@ config SPI_EP93XX
+ 	  This enables using the Cirrus EP93xx SPI controller in master
+ 	  mode.
+ 
++config SPI_FALCON
++	tristate "Falcon SPI controller support"
++	depends on SOC_FALCON
++	help
++	  The external bus unit (EBU) found on the FALC-ON SoC has SPI
++	  emulation that is designed for serial flash access. This driver
++	  has only been tested with m25p80 type chips. The hardware has no
++	  support for other types of SPI peripherals.
++
+ config SPI_GPIO
+ 	tristate "GPIO-based bitbanging SPI Master"
+ 	depends on GENERIC_GPIO
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9d75d21..b5cbab2 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -26,6 +26,7 @@ obj-$(CONFIG_SPI_DW_MMIO)		+= spi-dw-mmio.o
+ obj-$(CONFIG_SPI_DW_PCI)		+= spi-dw-midpci.o
+ spi-dw-midpci-objs			:= spi-dw-pci.o spi-dw-mid.o
+ obj-$(CONFIG_SPI_EP93XX)		+= spi-ep93xx.o
++obj-$(CONFIG_SPI_FALCON)		+= spi-falcon.o
+ obj-$(CONFIG_SPI_FSL_LIB)		+= spi-fsl-lib.o
+ obj-$(CONFIG_SPI_FSL_ESPI)		+= spi-fsl-espi.o
+ obj-$(CONFIG_SPI_FSL_SPI)		+= spi-fsl-spi.o
+diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+new file mode 100644
+index 0000000..b2cde58
+--- /dev/null
++++ b/drivers/spi/spi-falcon.c
+@@ -0,0 +1,470 @@
++/*
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License version 2 as published
++ *  by the Free Software Foundation.
++ *
++ *  Copyright (C) 2012 Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
++ */
++
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/platform_device.h>
++#include <linux/spi/spi.h>
++#include <linux/delay.h>
++#include <linux/workqueue.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++
++#include <lantiq_soc.h>
++
++#define DRV_NAME		"sflash-falcon"
++
++#define FALCON_SPI_XFER_BEGIN	(1 << 0)
++#define FALCON_SPI_XFER_END	(1 << 1)
++
++/* Bus Read Configuration Register0 */
++#define BUSRCON0		0x00000010
++/* Bus Write Configuration Register0 */
++#define BUSWCON0		0x00000018
++/* Serial Flash Configuration Register */
++#define SFCON			0x00000080
++/* Serial Flash Time Register */
++#define SFTIME			0x00000084
++/* Serial Flash Status Register */
++#define SFSTAT			0x00000088
++/* Serial Flash Command Register */
++#define SFCMD			0x0000008C
++/* Serial Flash Address Register */
++#define SFADDR			0x00000090
++/* Serial Flash Data Register */
++#define SFDATA			0x00000094
++/* Serial Flash I/O Control Register */
++#define SFIO			0x00000098
++/* EBU Clock Control Register */
++#define EBUCC			0x000000C4
++
++/* Dummy Phase Length */
++#define SFCMD_DUMLEN_OFFSET	16
++#define SFCMD_DUMLEN_MASK	0x000F0000
++/* Chip Select */
++#define SFCMD_CS_OFFSET		24
++#define SFCMD_CS_MASK		0x07000000
++/* field offset */
++#define SFCMD_ALEN_OFFSET	20
++#define SFCMD_ALEN_MASK		0x00700000
++/* SCK Rise-edge Position */
++#define SFTIME_SCKR_POS_OFFSET	8
++#define SFTIME_SCKR_POS_MASK	0x00000F00
++/* SCK Period */
++#define SFTIME_SCK_PER_OFFSET	0
++#define SFTIME_SCK_PER_MASK	0x0000000F
++/* SCK Fall-edge Position */
++#define SFTIME_SCKF_POS_OFFSET	12
++#define SFTIME_SCKF_POS_MASK	0x0000F000
++/* Device Size */
++#define SFCON_DEV_SIZE_A23_0	0x03000000
++#define SFCON_DEV_SIZE_MASK	0x0F000000
++/* Read Data Position */
++#define SFTIME_RD_POS_MASK	0x000F0000
++/* Data Output */
++#define SFIO_UNUSED_WD_MASK	0x0000000F
++/* Command Opcode mask */
++#define SFCMD_OPC_MASK		0x000000FF
++/* dlen bytes of data to write */
++#define SFCMD_DIR_WRITE		0x00000100
++/* Data Length offset */
++#define SFCMD_DLEN_OFFSET	9
++/* Command Error */
++#define SFSTAT_CMD_ERR		0x20000000
++/* Access Command Pending */
++#define SFSTAT_CMD_PEND		0x00400000
++/* Frequency set to 100MHz. */
++#define EBUCC_EBUDIV_SELF100	0x00000001
++/* Serial Flash */
++#define BUSRCON0_AGEN_SERIAL_FLASH	0xF0000000
++/* 8-bit multiplexed */
++#define BUSRCON0_PORTW_8_BIT_MUX	0x00000000
++/* Serial Flash */
++#define BUSWCON0_AGEN_SERIAL_FLASH	0xF0000000
++/* Chip Select after opcode */
++#define SFCMD_KEEP_CS_KEEP_SELECTED	0x00008000
++
++#define CLOCK_100M	100000000
++#define CLOCK_50M	50000000
++
++struct falcon_sflash {
++	u32 sfcmd; /* for caching of opcode, direction, ... */
++	struct spi_master *master;
++};
++
++int falcon_sflash_xfer(struct spi_device *spi, struct spi_transfer *t,
++		unsigned long flags)
++{
++	struct device *dev = &spi->dev;
++	struct falcon_sflash *priv = spi_master_get_devdata(spi->master);
++	const u8 *txp = t->tx_buf;
++	u8 *rxp = t->rx_buf;
++	unsigned int bytelen = ((8 * t->len + 7) / 8);
++	unsigned int len, alen, dumlen;
++	u32 val;
++	enum {
++		state_init,
++		state_command_prepare,
++		state_write,
++		state_read,
++		state_disable_cs,
++		state_end
++	} state = state_init;
++
++	do {
++		switch (state) {
++		case state_init: /* detect phase of upper layer sequence */
++		{
++			/* initial write ? */
++			if (flags & FALCON_SPI_XFER_BEGIN) {
++				if (!txp) {
++					dev_err(dev,
++						"BEGIN without tx data!\n");
++					return -ENODATA;
++				}
++				/*
++				 * Prepare the parts of the sfcmd register,
++				 * which should not change during a sequence!
++				 * Only exception are the length fields,
++				 * especially alen and dumlen.
++				 */
++
++				priv->sfcmd = ((spi->chip_select
++						<< SFCMD_CS_OFFSET)
++					       & SFCMD_CS_MASK);
++				priv->sfcmd |= SFCMD_KEEP_CS_KEEP_SELECTED;
++				priv->sfcmd |= *txp;
++				txp++;
++				bytelen--;
++				if (bytelen) {
++					/*
++					 * more data:
++					 * maybe address and/or dummy
++					 */
++					state = state_command_prepare;
++					break;
++				} else {
++					dev_dbg(dev, "write cmd %02X\n",
++						priv->sfcmd & SFCMD_OPC_MASK);
++				}
++			}
++			/* continued write ? */
++			if (txp && bytelen) {
++				state = state_write;
++				break;
++			}
++			/* read data? */
++			if (rxp && bytelen) {
++				state = state_read;
++				break;
++			}
++			/* end of sequence? */
++			if (flags & FALCON_SPI_XFER_END)
++				state = state_disable_cs;
++			else
++				state = state_end;
++			break;
++		}
++		/* collect tx data for address and dummy phase */
++		case state_command_prepare:
++		{
++			/* txp is valid, already checked */
++			val = 0;
++			alen = 0;
++			dumlen = 0;
++			while (bytelen > 0) {
++				if (alen < 3) {
++					val = (val << 8) | (*txp++);
++					alen++;
++				} else if ((dumlen < 15) && (*txp == 0)) {
++					/*
++					 * assume dummy bytes are set to 0
++					 * from upper layer
++					 */
++					dumlen++;
++					txp++;
++				} else {
++					break;
++				}
++				bytelen--;
++			}
++			priv->sfcmd &= ~(SFCMD_ALEN_MASK | SFCMD_DUMLEN_MASK);
++			priv->sfcmd |= (alen << SFCMD_ALEN_OFFSET) |
++					 (dumlen << SFCMD_DUMLEN_OFFSET);
++			if (alen > 0)
++				ltq_ebu_w32(val, SFADDR);
++
++			dev_dbg(dev, "wr %02X, alen=%d (addr=%06X) dlen=%d\n",
++				priv->sfcmd & SFCMD_OPC_MASK,
++				alen, val, dumlen);
++
++			if (bytelen > 0) {
++				/* continue with write */
++				state = state_write;
++			} else if (flags & FALCON_SPI_XFER_END) {
++				/* end of sequence? */
++				state = state_disable_cs;
++			} else {
++				/*
++				 * go to end and expect another
++				 * call (read or write)
++				 */
++				state = state_end;
++			}
++			break;
++		}
++		case state_write:
++		{
++			/* txp still valid */
++			priv->sfcmd |= SFCMD_DIR_WRITE;
++			len = 0;
++			val = 0;
++			do {
++				if (bytelen--)
++					val |= (*txp++) << (8 * len++);
++				if ((flags & FALCON_SPI_XFER_END)
++				    && (bytelen == 0)) {
++					priv->sfcmd &=
++						~SFCMD_KEEP_CS_KEEP_SELECTED;
++				}
++				if ((len == 4) || (bytelen == 0)) {
++					ltq_ebu_w32(val, SFDATA);
++					ltq_ebu_w32(priv->sfcmd
++						| (len<<SFCMD_DLEN_OFFSET),
++						SFCMD);
++					len = 0;
++					val = 0;
++					priv->sfcmd &= ~(SFCMD_ALEN_MASK
++							 | SFCMD_DUMLEN_MASK);
++				}
++			} while (bytelen);
++			state = state_end;
++			break;
++		}
++		case state_read:
++		{
++			/* read data */
++			priv->sfcmd &= ~SFCMD_DIR_WRITE;
++			do {
++				if ((flags & FALCON_SPI_XFER_END)
++				    && (bytelen <= 4)) {
++					priv->sfcmd &=
++						~SFCMD_KEEP_CS_KEEP_SELECTED;
++				}
++				len = (bytelen > 4) ? 4 : bytelen;
++				bytelen -= len;
++				ltq_ebu_w32(priv->sfcmd
++					| (len << SFCMD_DLEN_OFFSET), SFCMD);
++				priv->sfcmd &= ~(SFCMD_ALEN_MASK
++						 | SFCMD_DUMLEN_MASK);
++				do {
++					val = ltq_ebu_r32(SFSTAT);
++					if (val & SFSTAT_CMD_ERR) {
++						/* reset error status */
++						dev_err(dev, "SFSTAT: CMD_ERR");
++						dev_err(dev, " (%x)\n", val);
++						ltq_ebu_w32(SFSTAT_CMD_ERR,
++							SFSTAT);
++						return -EBADE;
++					}
++				} while (val & SFSTAT_CMD_PEND);
++				val = ltq_ebu_r32(SFDATA);
++				do {
++					*rxp = (val & 0xFF);
++					rxp++;
++					val >>= 8;
++					len--;
++				} while (len);
++			} while (bytelen);
++			state = state_end;
++			break;
++		}
++		case state_disable_cs:
++		{
++			priv->sfcmd &= ~SFCMD_KEEP_CS_KEEP_SELECTED;
++			ltq_ebu_w32(priv->sfcmd | (0 << SFCMD_DLEN_OFFSET),
++				SFCMD);
++			val = ltq_ebu_r32(SFSTAT);
++			if (val & SFSTAT_CMD_ERR) {
++				/* reset error status */
++				dev_err(dev, "SFSTAT: CMD_ERR (%x)\n", val);
++				ltq_ebu_w32(SFSTAT_CMD_ERR, SFSTAT);
++				return -EBADE;
++			}
++			state = state_end;
++			break;
++		}
++		case state_end:
++			break;
++		}
++	} while (state != state_end);
++
++	return 0;
++}
++
++static int falcon_sflash_setup(struct spi_device *spi)
++{
++	unsigned int i;
++	unsigned long flags;
++
++	if (spi->chip_select > 0)
++		return -ENODEV;
++
++	spin_lock_irqsave(&ebu_lock, flags);
++
++	if (spi->max_speed_hz >= CLOCK_100M) {
++		/* set EBU clock to 100 MHz */
++		ltq_sys1_w32_mask(0, EBUCC_EBUDIV_SELF100, EBUCC);
++		i = 1; /* divider */
++	} else {
++		/* set EBU clock to 50 MHz */
++		ltq_sys1_w32_mask(EBUCC_EBUDIV_SELF100, 0, EBUCC);
++
++		/* search for suitable divider */
++		for (i = 1; i < 7; i++) {
++			if (CLOCK_50M / i <= spi->max_speed_hz)
++				break;
++		}
++	}
++
++	/* setup period of serial clock */
++	ltq_ebu_w32_mask(SFTIME_SCKF_POS_MASK
++		     | SFTIME_SCKR_POS_MASK
++		     | SFTIME_SCK_PER_MASK,
++		     (i << SFTIME_SCKR_POS_OFFSET)
++		     | (i << (SFTIME_SCK_PER_OFFSET + 1)),
++		     SFTIME);
++
++	/*
++	 * set some bits of unused_wd, to not trigger HOLD/WP
++	 * signals on non QUAD flashes
++	 */
++	ltq_ebu_w32((SFIO_UNUSED_WD_MASK & (0x8 | 0x4)), SFIO);
++
++	ltq_ebu_w32(BUSRCON0_AGEN_SERIAL_FLASH | BUSRCON0_PORTW_8_BIT_MUX,
++			BUSRCON0);
++	ltq_ebu_w32(BUSWCON0_AGEN_SERIAL_FLASH, BUSWCON0);
++	/* set address wrap around to maximum for 24-bit addresses */
++	ltq_ebu_w32_mask(SFCON_DEV_SIZE_MASK, SFCON_DEV_SIZE_A23_0, SFCON);
++
++	spin_unlock_irqrestore(&ebu_lock, flags);
++
++	return 0;
++}
++
++static int falcon_sflash_prepare_xfer(struct spi_master *master)
++{
++	return 0;
++}
++
++static int falcon_sflash_unprepare_xfer(struct spi_master *master)
++{
++	return 0;
++}
++
++static int falcon_sflash_xfer_one(struct spi_master *master,
++					struct spi_message *m)
++{
++	struct falcon_sflash *priv = spi_master_get_devdata(master);
++	struct spi_transfer *t;
++	unsigned long spi_flags;
++	unsigned long flags;
++	int ret = 0;
++
++	priv->sfcmd = 0;
++	m->actual_length = 0;
++
++	spi_flags = FALCON_SPI_XFER_BEGIN;
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (list_is_last(&t->transfer_list, &m->transfers))
++			spi_flags |= FALCON_SPI_XFER_END;
++
++		spin_lock_irqsave(&ebu_lock, flags);
++		ret = falcon_sflash_xfer(m->spi, t, spi_flags);
++		spin_unlock_irqrestore(&ebu_lock, flags);
++
++		if (ret)
++			break;
++
++		m->actual_length += t->len;
++
++		WARN_ON(t->delay_usecs || t->cs_change);
++		spi_flags = 0;
++	}
++
++	m->status = ret;
++	m->complete(m->context);
++
++	return 0;
++}
++
++static int __devinit falcon_sflash_probe(struct platform_device *pdev)
++{
++	struct falcon_sflash *priv;
++	struct spi_master *master;
++	int ret, len;
++
++	if (ltq_boot_select() != BS_SPI) {
++		dev_err(&pdev->dev, "invalid bootstrap options\n");
++		return -ENODEV;
++	}
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*priv));
++	if (!master)
++		return -ENOMEM;
++
++	priv = spi_master_get_devdata(master);
++	priv->master = master;
++
++	master->mode_bits = SPI_MODE_3;
++	master->num_chipselect = 1;
++	master->bus_num = -1;
++	master->setup = falcon_sflash_setup;
++	master->prepare_transfer_hardware = falcon_sflash_prepare_xfer;
++	master->transfer_one_message = falcon_sflash_xfer_one;
++	master->unprepare_transfer_hardware = falcon_sflash_unprepare_xfer;
++	master->dev.of_node = pdev->dev.of_node;
++	master->bus_num = -1;
++
++	platform_set_drvdata(pdev, priv);
++
++	ret = spi_register_master(master);
++	if (ret)
++		spi_master_put(master);
++	return ret;
++}
++
++static int __devexit falcon_sflash_remove(struct platform_device *pdev)
++{
++	struct falcon_sflash *priv = platform_get_drvdata(pdev);
++
++	spi_unregister_master(priv->master);
++
++	return 0;
++}
++
++static const struct of_device_id falcon_sflash_match[] = {
++	{ .compatible = "lantiq,sflash-falcon" },
++	{},
++};
++MODULE_DEVICE_TABLE(of, falcon_sflash_match);
++
++static struct platform_driver falcon_sflash_driver = {
++	.probe	= falcon_sflash_probe,
++	.remove	= __devexit_p(falcon_sflash_remove),
++	.driver = {
++		.name	= DRV_NAME,
++		.owner	= THIS_MODULE,
++		.of_match_table = falcon_sflash_match,
++	}
++};
++
++module_platform_driver(falcon_sflash_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Lantiq Falcon SPI/SFLASH controller driver");
+-- 
+1.7.9.1
 
---Dxnq1zWXvFF0Q93v
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJPuLd9AAoJEBus8iNuMP3dLqoQAIR6rqQ9pjM8FvqwohQzlWo+
-1jzGq53e1GzU9X3dEGxd9JKO+G7dH1zsltCbYlMpOAZC/RJVjsC+f6Ni8+ZOI7Em
-9ixnGTf+iQT475vW4XBi0FZoWzsdYtvU9f8RD0xVLkVjNPfF1ALubhfdBu/hJo8i
-eyYk+426Lc9QCI2YrMceCJcgLv7CwwZ6sFckDU5pSXvDReSQ9AJ+LtCR/e9MOds3
-otGDcT4x5+5BoFm+m01628qqJoN2VrNlrxprtMMg1rYW2s/jKOKN9KNujC6DmY7S
-i5pIF9EqNsa4+xrGRbDnqCo5mr/9yEAXFCSA1P0PnbAKUO0QL9U0iJu/20hZoAX3
-bOsvy+YinWi/I6t3bMcOND6uivjcDJDzaXcXCTCtfXeQAlzecQ/OfU7t7KwJuGb8
-yKD2Li02enYN9z/NFA0tOB6g75Nkuy+HFL0IpWi3zqz8Ap8qxjssukBMMuvtuu1N
-7mBr3WKhxTh/XnGLGT2zoCvTvc/p/wznajsM3fDB5Afygf3WP5cHU6t5BdO1jpaT
-e6uskxXD9fS3+PsXheAqggAMEBNnU2U+ca8MVzAq7t2Ncr5xgKJINaJhd7uQaTXp
-LzyITh8TCogXQKSQAxbv+edWKL1XEMKTGaHtITg6NYgMh9o0Phf7DREEXvSBZa2b
-dB7NFN04HgHCpyh1YajU
-=fwSS
------END PGP SIGNATURE-----
-
---Dxnq1zWXvFF0Q93v--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

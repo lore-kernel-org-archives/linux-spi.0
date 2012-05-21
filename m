@@ -1,12 +1,22 @@
-From: heggwegergh-WFcV3NcshxwAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 核销单/产地证
-Date: Sat, 19 May 2012 23:45:21 +0800
-Message-ID: <E1SW8O9-00026X-Vw@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Subject: Re: [PATCH] spi: bitbang: convert to using core message queue
+Date: Mon, 21 May 2012 13:19:31 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.1205211306120.30522@axis700.grange>
+References: <Pine.LNX.4.64.1203141837170.30291@axis700.grange>
+	<20120315092923.951203E04FD@localhost>
+	<CACRpkdZNQZyx-HZjzyMctpUQJtNYMwq5KsdE6RTFwKcHuz_X+w@mail.gmail.com>
+	<Pine.LNX.4.64.1203170036590.20979@axis700.grange>
+	<CACRpkdYFj6btOx75_myH45+tyqg3h21xnTL7PofydNeOVVQz_g@mail.gmail.com>
+	<20120520030229.C10943E046E@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120520030229.C10943E046E@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,20 +27,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-IMT6usMhICAKICAguavLvtfUv6rStdLUwLSjrNK7ueG84bPWo6i3/s7xtdrSu7/Nu6fWwcnPo6nO
-yM3Xv+y93bXEvq3TqsDtxO6ho86quPfN4sOzuavLvqOouaSzp6OpzOG5qde8yLe/7L3do6y827jx
-08W73bXE08XWyrf+zvGhowogCiAxoaLM4bmptPPQobrLz/q1pQoKIDKhorDswO3Su7Dj1K2y+rXY
-1qQoQ08gRkEgRkUgRkYpvLCy+rXY1qQKCiAzLqOo0bDV0s3Ly7C1paOpCgogIMfrtObB9LG408Oj
-rLu2063E47XEwLS159fJ0a+jugoKICDBqs+1yMujutXF0KG94yAgICAgwarPtbXnu7CjujEzNTM0
-MjIxNzY4CgogIFFRo7o1MzU4NzM2NDkgINPKz+SjujUzNTg3MzY0OUBxcS5jb20KCiAgICAgICAg
-ICAgICAgICAgICAgICCxvrnjuOazpMba09DQpwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUg
-U2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292
-ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhh
-cyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3
-aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxh
-dGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9z
-ZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Sat, 19 May 2012, Grant Likely wrote:
+
+> On Wed, 16 May 2012 08:57:48 +0200, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> > On Sat, Mar 17, 2012 at 12:39 AM, Guennadi Liakhovetski
+> > <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org> wrote:
+> > 
+> > > The SPI subsystem core now manages message queues internally. Remove the
+> > > local message queue implementation from the spi-bitbang driver and
+> > > migrate to the common one.
+> > >
+> > > Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+> > 
+> > Grant have you picked this patch? It arrived pretty early so should be
+> > quite ripe by now...
+> 
+> Hmmm, two problems.  The patch is mailer damaged which I fixed
+> manually,
+
+Sorry, that's _extremely_ unlikely. I don't subscribe to spi-devel, so, I 
+cannot verify the patch as it appeared on the list, but I don't think I 
+used any special procedure, when sending that patch, just the same as what 
+I use to send (almost) all my patches, which is also confirmed by what it 
+looks like in my "sent" folder.
+
+> but I also cannot figure out what it is based on.
+
+Right, it was based on another spi-bitbang patch, that we dropped.
+
+> Guennadi, could you please respin this patch on top of current mainline 
+> and repost?
+
+Sure, I'll resend it and a couple of cosmetic improvements in a minute.
+
+> Thanks,
+> g.
+
+Thanks
+g. ;-)
+---
+Guennadi Liakhovetski, Ph.D.
+Freelance Open-Source Software Developer
+http://www.open-technology.de/
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

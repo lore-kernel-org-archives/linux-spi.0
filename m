@@ -1,7 +1,7 @@
 From: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
-Subject: [PATCH 1/3] spi: bitbang: avoid needless loop flow manipulations
-Date: Mon, 21 May 2012 13:25:13 +0200 (CEST)
-Message-ID: <Pine.LNX.4.64.1205211322570.30522@axis700.grange>
+Subject: [PATCH 2/3] spi: bitbang: (cosmetic) simplify list manipulation
+Date: Mon, 21 May 2012 13:25:17 +0200 (CEST)
+Message-ID: <Pine.LNX.4.64.1205211323460.30522@axis700.grange>
 References: <Pine.LNX.4.64.1205211319520.30522@axis700.grange>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,44 +22,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch makes a loop look cleaner by replacing a "break" and a "continue"
-in its body by a single "if".
+Use a proper list iterator instead of an open-coded loop and remove a
+superfluous list head initialisation.
 
 Signed-off-by: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
 ---
- drivers/spi/spi-bitbang.c |   19 ++++++++-----------
- 1 files changed, 8 insertions(+), 11 deletions(-)
+ drivers/spi/spi-bitbang.c |    8 +++-----
+ 1 files changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index aef59b1..f5ae6e9 100644
+index f5ae6e9..8b3d8ef 100644
 --- a/drivers/spi/spi-bitbang.c
 +++ b/drivers/spi/spi-bitbang.c
-@@ -346,17 +346,14 @@ static void bitbang_work(struct work_struct *work)
- 			if (t->delay_usecs)
- 				udelay(t->delay_usecs);
+@@ -260,11 +260,11 @@ static void bitbang_work(struct work_struct *work)
+ 	struct spi_bitbang	*bitbang =
+ 		container_of(work, struct spi_bitbang, work);
+ 	unsigned long		flags;
++	struct spi_message	*m, *_m;
  
--			if (!cs_change)
--				continue;
--			if (t->transfer_list.next == &m->transfers)
--				break;
--
--			/* sometimes a short mid-message deselect of the chip
--			 * may be needed to terminate a mode or command
--			 */
--			ndelay(nsecs);
--			bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
--			ndelay(nsecs);
-+			if (cs_change && !list_is_last(&t->transfer_list, &m->transfers)) {
-+				/* sometimes a short mid-message deselect of the chip
-+				 * may be needed to terminate a mode or command
-+				 */
-+				ndelay(nsecs);
-+				bitbang->chipselect(spi, BITBANG_CS_INACTIVE);
-+				ndelay(nsecs);
-+			}
- 		}
+ 	spin_lock_irqsave(&bitbang->lock, flags);
+ 	bitbang->busy = 1;
+-	while (!list_empty(&bitbang->queue)) {
+-		struct spi_message	*m;
++	list_for_each_entry_safe(m, _m, &bitbang->queue, queue) {
+ 		struct spi_device	*spi;
+ 		unsigned		nsecs;
+ 		struct spi_transfer	*t = NULL;
+@@ -273,9 +273,7 @@ static void bitbang_work(struct work_struct *work)
+ 		int			status;
+ 		int			do_setup = -1;
  
- 		m->status = status;
+-		m = container_of(bitbang->queue.next, struct spi_message,
+-				queue);
+-		list_del_init(&m->queue);
++		list_del(&m->queue);
+ 		spin_unlock_irqrestore(&bitbang->lock, flags);
+ 
+ 		/* FIXME this is made-up ... the correct value is known to
 -- 
 1.7.2.5
 

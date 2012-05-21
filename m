@@ -1,7 +1,8 @@
 From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 0/3] spi/bcm63xx: drivers cleanups and fix
-Date: Mon, 21 May 2012 19:05:57 +0200
-Message-ID: <1337619960-9672-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH 1/3] spi/bcm63xx: remove driver version
+Date: Mon, 21 May 2012 19:05:58 +0200
+Message-ID: <1337619960-9672-2-git-send-email-florian@openwrt.org>
+References: <1337619960-9672-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -9,6 +10,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1337619960-9672-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,20 +21,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+As Grant Likely reported, this does not make any sense in a mainline kernel
+remove that driver version string.
 
-These are 3 cleanups and fixes based on your spi/merge branch. I hope this
-is not too later for the 3.4-rc cycle.
+Reported-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Florian Fainelli (3):
-  spi/bcm63xx: remove driver version
-  spi/bcm63xx: add missing spi_master_{resume,suspend} calls to PM
-    callbacks
-  spi/bcm63xx: remove useless call to bcm63xx_spi_check_transfer()
-
- drivers/spi/spi-bcm63xx.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 7491971..478eddc 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -36,7 +36,6 @@
+ #include <bcm63xx_dev_spi.h>
+ 
+ #define PFX		KBUILD_MODNAME
+-#define DRV_VER		"0.1.2"
+ 
+ struct bcm63xx_spi {
+ 	struct completion	done;
+@@ -420,8 +419,8 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
+ 	}
+ 
+-	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
+-		 r->start, irq, bs->fifo_size, DRV_VER);
++	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
++		 r->start, irq, bs->fifo_size);
+ 
+ 	return 0;
+ 
 -- 
 1.7.9.5
 

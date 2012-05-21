@@ -1,16 +1,17 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/3] spi/bcm63xx: remove driver version
-Date: Mon, 21 May 2012 19:05:58 +0200
-Message-ID: <1337619960-9672-2-git-send-email-florian@openwrt.org>
-References: <1337619960-9672-1-git-send-email-florian@openwrt.org>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi/imx: make devtype_data member point to const data
+Date: Mon, 21 May 2012 21:49:35 +0200
+Message-ID: <1337629775-9166-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1335171381-24869-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1337619960-9672-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1335171381-24869-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,45 +22,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-As Grant Likely reported, this does not make any sense in a mainline kernel
-remove that driver version string.
-
-Reported-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 7491971..478eddc 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -36,7 +36,6 @@
- #include <bcm63xx_dev_spi.h>
- 
- #define PFX		KBUILD_MODNAME
--#define DRV_VER		"0.1.2"
- 
- struct bcm63xx_spi {
- 	struct completion	done;
-@@ -420,8 +419,8 @@ static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
- 		goto out_clk_disable;
- 	}
- 
--	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d) v%s\n",
--		 r->start, irq, bs->fifo_size, DRV_VER);
-+	dev_info(dev, "at 0x%08x (irq %d, FIFOs size %d)\n",
-+		 r->start, irq, bs->fifo_size);
- 
- 	return 0;
- 
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+VGhpcyBpcyBvbmx5IGNvc21ldGljIGZvciBub3cuIEluIGNhc2UgdGhhdAoKCWh0dHA6Ly9taWQu
+Z21hbmUub3JnLzEzMzUxNzEzODEtMjQ4NjktMS1naXQtc2VuZC1lbWFpbC11LmtsZWluZS1rb2Vu
+aWdAcGVuZ3V0cm9uaXguZGUKCndpbGwgYmUgYXBwbGllZCwgaXQgZml4ZXMgYSB3YXJuaW5nCgoJ
+ZHJpdmVycy9zcGkvc3BpLWlteC5jOiBJbiBmdW5jdGlvbiBzcGlfaW14X3Byb2JlOgoJZHJpdmVy
+cy9zcGkvc3BpLWlteC5jOjgxNDoyNDogd2FybmluZzogYXNzaWdubWVudCBkaXNjYXJkcyBjb25z
+dCBxdWFsaWZpZXIgZnJvbSBwb2ludGVyIHRhcmdldCB0eXBlIFtlbmFibGVkIGJ5IGRlZmF1bHRd
+Cgp0aG91Z2guCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29l
+bmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvc3BpL3NwaS1pbXguYyB8ICAgIDIgKy0K
+IDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYyBiL2RyaXZlcnMvc3BpL3NwaS1pbXguYwppbmRleCA1
+NzBmMjIwLi4zN2IzYTI2IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9zcGktaW14LmMKKysrIGIv
+ZHJpdmVycy9zcGkvc3BpLWlteC5jCkBAIC05NSw3ICs5NSw3IEBAIHN0cnVjdCBzcGlfaW14X2Rh
+dGEgewogCWNvbnN0IHZvaWQgKnR4X2J1ZjsKIAl1bnNpZ25lZCBpbnQgdHhmaWZvOyAvKiBudW1i
+ZXIgb2Ygd29yZHMgcHVzaGVkIGluIHR4IEZJRk8gKi8KIAotCXN0cnVjdCBzcGlfaW14X2RldnR5
+cGVfZGF0YSAqZGV2dHlwZV9kYXRhOworCWNvbnN0IHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0
+YSAqZGV2dHlwZV9kYXRhOwogCWludCBjaGlwc2VsZWN0WzBdOwogfTsKIAotLSAKMS43LjEwCgoK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4
+Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJp
+dHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMg
+Y2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHks
+IG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRw
+Oi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

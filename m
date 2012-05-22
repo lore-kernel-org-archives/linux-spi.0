@@ -1,41 +1,100 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e?= : 50% de
-	=?iso-8859-15?Q?r=E9duction?= cette semaine
-Date: Tue, 22 May 2012 15:19:44 +0200
-Message-ID: <1337692784.4fbb9270091a4@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: David Daney <ddaney.cavm@gmail.com>
+Subject: Re: [PATCH 1/3] of: Add prefix parameter to of_modalias_node().
+Date: Tue, 22 May 2012 12:45:06 -0700
+Message-ID: <4FBBECC2.10503@gmail.com>
+References: <1336773923-17866-1-git-send-email-ddaney.cavm@gmail.com> <1336773923-17866-2-git-send-email-ddaney.cavm@gmail.com> <20120520055436.13AF03E03B8@localhost> <20120520060802.03CE73E03B8@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: David Daney <ddaney.cavm@gmail.com>,
+	"devicetree-discuss@lists.ozlabs.org"
+	<devicetree-discuss@lists.ozlabs.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Liam Girdwood <lrg@ti.com>,
+	Tabi Timur-B04825 <B04825@freescale.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
+	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20120520060802.03CE73E03B8@localhost>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On 05/19/2012 11:08 PM, Grant Likely wrote:
+> On Sat, 19 May 2012 23:54:36 -0600, Grant Likely<grant.likely@secretlab.ca>  wrote:
+>> On Fri, 11 May 2012 15:05:21 -0700, David Daney<ddaney.cavm@gmail.com>  wrote:
+>>> From: David Daney<david.daney@cavium.com>
+>>>
+>>> When generating MODALIASes, it is convenient to add things like "spi:"
+>>> or "i2c:" to the front of the strings.  This allows the standard
+>>> modprobe to find the right driver when automatically populating bus
+>>> children from the device tree structure.
+>>>
+>>> Add a prefix parameter, and adjust callers.  For
+>>> of_register_spi_devices() use the "spi:" prefix.
+>>>
+>>> Signed-off-by: David Daney<david.daney@cavium.com>
+>>
+>> Applied, thanks.  Some notes below...
+>
+> Wait... why is this necessary?
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEyMTkzJmM9MjM2NDM3JmQ9MjAx=
-Mi0wNS0yMiAxNTowMDowMSZlPTEmaD0xMjE5MiZmPTEyMTkzJmc9MTIxOTM=3D
+Because in of_register_spi_devices() in of_spi.c, you do:
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEyMTkzJmM=
-9MjM2NDM3JmQ9MjAxMi0wNS0yMiAxNTowMDowMSZlPTEmaD0xMjE5MiZmPTEyMTkzJmc9MTIxOT=
-M=3D
+	request_module(spi->modalias);
+
+The string passed to request_module() must have the "spi:" prefix.
 
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+> The module type prefix isn't stored in
+> the modalias value for any other bus type as far as I can see,
 
-threat landscape has changed and how IT managers can respond. Discussions =
+It is only useful with the prefix, so I though I would add it to the 
+stored value.
 
-will include endpoint security, mobile security and the latest in malware =
+> and
+> with this series it appears that the "spi:" prefix may or may not be
+> present in the modalias.  That doesn't look right.
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Perhaps, but the with the combination of patches 1/3 and 2/3 I tried to 
+ensure that the prefix would always be present for SPI devices.
+
+>
+> Why isn't prefixing spi: at uevent time sufficient?
+
+Because udev may not be loading the driver.
+
+> IIUC, modprobe
+> depends on either UEVENT or the modalias attribute to know which
+> driver to probe.  It does look like the attribute is missing the spi:
+> prefix though.  Does the following change work instead of these two
+> patches?
+>
+
+No.
+
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 3d8f662..da8aac7 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -51,7 +51,7 @@ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+>   {
+>          const struct spi_device *spi = to_spi_device(dev);
+>
+> -       return sprintf(buf, "%s\n", spi->modalias);
+> +       return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
+>   }
+>
+> So, I've dropped this patch from my tree.  If the change above works
+> for you then I'll push it out.
+>
+> g.
+>
+

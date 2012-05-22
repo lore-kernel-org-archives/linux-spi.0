@@ -1,11 +1,13 @@
-From: zvbagsn4812-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Mon, 21 May 2012 09:39:33 +0800
-Message-ID: <E1SWe1U-0003hE-Kk@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Duano recommande Groupon <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Des deals chaque =?iso-8859-15?Q?jusqu=27=E0?= -70%
+	=?iso-8859-15?Q?pr=E8s?= de chez vous
+Date: Tue, 22 May 2012 04:16:24 +0200
+Message-ID: <1337652984.4fbaf6f85933f@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICAgztK5q8u+09DSu7K/t9a3oqGqoarGsS8gtPq/qqO7CrnzuavLvsjn09DQ6NKq
-o6y7ttOtxPq1xMC0tefT687SwarPtaO6CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgINXF
-z8jJ+qO6MTM0MzA1NDQ4MTIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZp
-cnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUg
-d2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBh
-bmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRl
-IGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFs
-d2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAx
-Mi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yMiAwNDoxMDowMSZlPTEmaD0xMjE0MyZmPTEyMTQ0Jmc9MTIxNDQ=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yMiAwNDoxMDowMSZlPTEmaD0xMjE0MyZmPTEyMTQ0Jmc9MTIxND=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,10 +1,8 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Tue, 22 May 2012 05:05:08 +0200
-Message-ID: <1337655908.4fbb026487862@mc10.fr>
+From: Equilibre Au Naturel par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez 8 kilos en 2 mois avec un suivi =?iso-8859-15?Q?personna?=
+	=?iso-8859-15?Q?lis=E9?=
+Date: Tue, 22 May 2012 05:46:42 +0200
+Message-ID: <1337658402.4fbb0c223633e@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTUxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0yMiAwNDo1MDowMSZlPTEmaD0xMjE1MCZmPTEyMTUxJmc9MTIxNTE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTU0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yMiAwNTozMDowMSZlPTEmaD0xMjE1MyZmPTEyMTU0Jmc9MTIxNTQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTUxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0yMiAwNDo1MDowMSZlPTEmaD0xMjE1MCZmPTEyMTUxJmc9MTIxNT=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTU0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yMiAwNTozMDowMSZlPTEmaD0xMjE1MyZmPTEyMTU0Jmc9MTIxNT=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

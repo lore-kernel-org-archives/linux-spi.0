@@ -1,163 +1,393 @@
-From: =?GB2312?B?x+vXqs/gudi4utTwyMs=?= <yhush-RbudlAfIXV4@public.gmane.org>
-Subject: [SPAM] 国际贸易离岸业务操作技巧
-Date: Thu, 24 May 2012 15:36:57 +0800
-Message-ID: <E1SXSbT-0002oO-F5@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Thomas Abraham <thomas.abraham@linaro.org>
+Subject: Re: [PATCH v2 2/6] spi: s3c64xx: move controller information into
+ driver data
+Date: Thu, 24 May 2012 14:13:36 +0530
+Message-ID: <CAJuYYwR9GYcKCTLG3JanzQ2UzvqO9UW0Tdnj6p4WoHXb4hG9SA@mail.gmail.com>
+References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
+	<1337333613-6216-3-git-send-email-thomas.abraham@linaro.org>
+	<005a01cd397d$77f39600$67dac200$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, jaswinder.singh@linaro.org,
+	broonie@opensource.wolfsonmicro.com,
+	Kyoungil Kim <ki0351.kim@samsung.com>
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <005a01cd397d$77f39600$67dac200$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ufq8ysOz0tfA67C20rXO8bLZ1/e8vMfJCi0tLfTfyebN4suwytWz77uuoaLIy8PxsdK748LKsqi2
-r7fnz9W55rHc0+vIy8PxsdLA67C2uNvStc7xstnX9woKyrG85LXYteOjujIwMTLE6jbUwjA5LTEw
-yNUgIMnPICC6owrKsbzktdi146O6MjAxMsTqNtTCMTYtMTfI1SAgye4gINvaCjI4MDDUqi/Iy6Oo
-sPzAqNfKwc+30aGizueyzbywyc/Pws7nsui147XIo6kKxeDRtbbUz/Ojurmry77Az9fcoaLN4sOz
-yMvUsaGiyebN4rLGwOuwtsOz0tey2df3oaK5+rzKsdzLsNPrsaPLsM7vwffO8cjL1LEsufq8yrv1
-1Mu0+sDtoaLLvdOquavLvsDPsOUsuPbIy83iw7NTT0hP0rvX5QoK18nRr7Xnu7CjujAyMC04MDU2
-MDYzOCAgIDAyMC04NTkxNzk0NSAg0LvQob3jo7sKICAgICAgICAgIDA3NTUtNjEyODc1NTIgILPC
-0KG946OosrvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sF0dWl4aW4yMDEyQDEyNi5jb23Ny9DFo6kK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCr/Os8yxs76wOr34s/a/2sbz0rXOqsqyw7TTprWx0aHU
-8bn6vMrDs9LXwOuwttK1zvGjv86qyrLDtMu1yKvH8sOz0te1xL74tPOyv7fWwLTX1NPawOsKsLay
-2df3tcTUy9OqveG5+6O/1eLG5NbQtb2119L+uqzXxcqyw7TR+bXEvvfHz6O/s/3By7K7ts+12L21
-tc3G89K1tcTUy9Oqus2yybm6s8kKsb7N4qOsu7nT0MO709DG5Mv7t723qL21tc3G89K1tcS5+rzK
-1MvTqrPJsb6jv7n6vMrG89K1zqrKssO00qqw0dfcsr/J6NTaufq8ysDrsLYKuNujvwrD5rbUyKvH
-8rXEy7DO8bv8sunS1Lyw1L3AtNS90c+48bn6xNrLsMrV0+u6o7nYvOC53KOsxPq1xMbz0rW7udPQ
-yrLDtLDst6jAtL21tc25+gq8ytTL06q1xMuwzvGzybG+o7++v76506bU9dH51MvTqsDrsLbLsMrV
-s++7rqO/yOe6zs2ouf2/57n6wOuwtrLZ1/fAtLnmsdzIq8fytcTLsArO8dPrzu/B97zgudyjvwrI
-y8PxsdLJ/da1ysezpMbax/fKxqOsyMvD8bHSufq8yruvysex2Mi7x/fKxqOsy+bXxcjLw/Gx0r/n
-vrPStc7xus3Iy8PxsdLA67C2uNvStQrO8bXE1vCyvbei1bmjrL34s/a/2sbz0rXT1rjDyOe6ztOm
-ttSjv8jnus7A+9PDyMvD8bHSv+e+s9K1zvG6zcjLw/Gx0sDrsLa429K1zvG9tQq1zbn6vMq94cvj
-1tC1xM3iu+O358/Vo7+yxs7xt+fP1aO/yOe6zsD708PIy8PxsdLA67C2uNvStc7xvbW1zcbz0rW5
-+rzK1MvTqrPJsb6jvwrLsM7xs8mxvqO/Cr7NxvPStbXEufq8ysOz0tfA67C20rXO8bb40dSjrNOm
-1NrG89K1xNqyv9Gh1PG6zdfpvajKssO00fm1xMDrsLbUy9OqzcW206O/zqrKssO0Crmry76437Lj
-oaK6o83i1MvTqtfcvOChorLGzvHX3Lzgus3O78H319y84MrHwOuwtrLZ1/e1xNaxvdPUy9Oq1d+j
-v9XixuTW0KOsuPfX1NPWCtOmsOfR3cqyw7TR+bXEvcfJq6O/Cj09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09Cr/Os8y087jZCtK7oaK5+rzKw7PS18DrsLbStc7x0+u6o83iwOuwtrmry761xNGh1PG8vMfJ
-CjEuufq8ysOz0tfA67C20rXO8cD7sde31s72vLCy2df3yrHTptei0uK1xNLJxNEKMi7U2sW31t7J
-6MGitcTA67C2uavLvrXEwPux17fWzva8sMrKus+1xMbz0rXT67n6vMrDs9LX0rXO8QozLtDCvNPG
-wqGiz+O426GisMTDxcDrsLbStc7xwPux17fWzva8sM/gudjG89K11MvTqgo0Ls2218rQ1MDrsLa5
-q8u+0aHU8bywysq6z7XExvPStQo1Lrn6vMrDs9LXwOuwtrjb0rXO8dPrz+DTprn6vMrDs9LXwOuw
-ttK1zvHUy9OqCjYuxbfDwMDrsLa5q8u+tcTA+7HXt9bO9rywysq6z7XExvPStQo3LsDrsLbDs9LX
-uavLvqGiwOuwtr/Yucm5q8u+0+vA67C2yNrXyrmry77Stc7xttS9+LP2v9rG89K1tcSyu82s07DP
-7Ao4LsDrsLa5q8u+18qxvtTL1/fCt8/fzbyjqL6tteSwuMD9t9bO9qOpCjkuyKvH8sDrsLbStc7x
-s8mxvrPJsb6xyL3PvLDStc7x08XKxrbUscgKCrb+oaK5+rzKwOuwtr3wyNrStc7x0+u9+LP2v9rG
-89K1ufq8yr3hy+O358/V06a21AoxLsnmzeLG89K106bI57rO06a21Ln6vMq3x8rQs6HS8svYtbzW
-wrXEs8mxvsnPyf0KMi7TprbUxvPStbPJsb61xMuwytXK1rbOoaLN4rvjyta2zrrNssbO8crWts4K
-My7D5sHZxNrN4rPJsb7RucGmo6yz9r/axvPStbXE1b3C1Nffz/IKNC65+rzKw7PS19bQvbW1zcbz
-0rW5+rzK1MvTqrPJsb61xMG9zPXLvMK3CjUuw+bB2bn6xNrN4rPJsb7RucGmo6yz9r/axvPStbXE
-1b3C1Nffz/IKNi7Iy8PxsdK1xNbQs6TG2sn91rW6zbbMxtq+3rf5sqi2r7j4xvPStbT4wLS1xLPJ
-sb7RucGmCjcuyMvD8bHSu+PCytPr07DP7NbQs6TG2sjLw/Gx0rvjwsq1xLn6xNrN4tLyy9gKOC7S
-+NDQtcTA67C2vfDI2tK1zvG8sLbUxvPStbLZ1/fA67C20rXO8bXE07DP7Ao5LsDrsLa98Mja0rXO
-8dbQtcTG89K118q98LvjttK6zc2218oKMTAuwOuwttK1zvHW0LXEvfDI2qGiy7DO8bzgudy6zbzg
-udy55rHcCjExLr3wyNrN4rvj1f6y37XEseS479TattTN4sOz0tfJz8rH1PXR+dPruqO52KGiufrL
-sNX+st/P4Lul0K2197XEo78KMTIuyOe6zsq508PA67C2vfDI2tK1zvGy2df3ueax3LvjwsqyqLav
-t+fP1aO/CjEzLsDrsLa98Mja1cu7p9PrwOuwtrGj1rXStc7xCjE0Ls3iu+Oxo9a10rXO8dPrsaPW
-tcz1v+7W0LXEwOuwtrLZ1/fK1reoo6jI58z5z9bT67ijt9HNotK1zvHI57rO0+vA67C2stnX98/g
-udzA7bTTtvjV5tX9yrXP1s3iu+PStc7xsaPWtaOpCgrI/aGiufq8ysOz0tfA67C2stnX99PryMvD
-8bHSv+e+s9K1zvEvyMvD8bHSwOuwtrjb0rXO8aOoyOe6zrnmsdzIy8PxsdK748LKvLG+57Kotq+3
-58/Vo6kKMS7Iy8PxsdK/576z0rXO8bXE1f6y38+4vdq8sMbz0rXTpsjnus7Iz9aqus294rbBo78K
-Mi7Iy8PxsdK/576zveHL49K1zvG21L34s/a/2sbz0rW1xLn6vMq94cvj09C6ztLmtKajv8bz0rXT
-psjnus7KtcqpstnX96O/zqrKssO0xL/HsLXE17S/9rKiw7vT0Lj4xvPStbT4wLS24LTz0ua0pj8K
-My7Iy8PxsdK/576zveHL49K1zvG21Mbz0rW1xMnmzeLLsMrVs++7rrrNs/a/2s3Ly7Cz77uu09C6
-ztOwz+yjv8bz0rXTpsjnus7A+9PDz+C52LXE08XKxqO/CjQu1eu21MS/x7C1xMjLw/Gx0r/nvrO9
-4cvj0rXO8aOsyebN4sbz0rXTpsjnus69+NDQz+DTprXEuqO52KGiy7DO8aGizeK746GiveHL47rN
-w7PS17CyxcWjvwo1LtXrttTEv8ewyMvD8bHSv+e+s73hy+PStc7xo6zJ5s3ixvPStdTataXWpMnP
-06bXotLi0KnKssO0o7+9+LP2v9rG89K1tcS1pdakudzA7dOm1/bU9dH5tcS199X7o78KNi66o83i
-wOuwtrmry77U2sjLw/Gx0r/nvrO94cvj0rXO8dbQxNzG8LW9yrLDtNH5tcTX99PDo7/P4LnYtcSy
-2df3st/C1MrH1PXR+bXEo7/Tpsjnus6x3MPixuTW0LT4wLS1xM/gudi7/LLpt+fP1aO/CjcuyMvD
-8bHSv+e+s73hy+PW0LXEwOuwtrLZ1/fT67qjzeLA67C2vfDI2tK1zvEKOC7KssO0ysfIy8PxsdLA
-67C2uNvStc7xo7/Iy8PxsdLA67C2uNvStc7xtcS3otW517S/9sjnus6jvwo5LsnmzeK9+LP2v9rG
-89K10+vN4tfKxvPStdOmyOe6zsD708PV4tbWveHL48zlz7Wjv9Taufq8ys2218rStc7x1tCjrMbz
-0rW1xNTL06qy2df31tDTpsjnus6/vMLH1eLW1tOwz+yjv9bQ18q9+LP2v9rG89K109bTpsjnus6/
-vMLH1eLW1tOwz+yjvwoxMC7Iy8PxsdLA67C2uNvStc7x0+u5+rzKw7PS18DrsLbStc7xvLDA67C2
-vfDI2tXLu6e1xLnYz7Wjv8bz0rXTpsjnus6z77uuz+C52LqjudihosuwzvGhos3iu+OwssXFo78K
-MTEuyMvD8bHSwOuwtrjb0rXO8dbQtcS1pdakstnX96O/CjEyLs/juNu1xMjLw/Gx0sDrsLa429K1
-zvG94rbBCjEzLrqjzeLA67C2uavLvtK1zvHT68DrsLa429K1zvEKMTQuyMvD8bHSwOuwtrjb0+vI
-y8PxsdLA67C2vfDI2tbQ0MQKCsvEoaLA67C2w7PS17XEstnX97y8x8kKMS65+rzKwOuwttK1zvGy
-2df31tC1xLrPzay52M+1yMu8sMjnus7S/sntsdzP1QoyLtPQudjA67C2w7PS17XE0rXO8bj3t73I
-57rO1Nq6z82s1tDM5c/Wo78KMy7A67C20rXO8cj9vcfBvbXYtKzO8bLZ1/e8sLSszvG52MGqCjQu
-wOuwtrnYzvGy2df3oaK52M7xytbQ+LrNsvq12Lnm1PKhorL6tdjWpAo1LsDrsLbStc7x1tC1xLWl
-1qS52M+1o6i1pdakudjPtdPrudjBqsbz0rWjqQo2LsDrsLbStc7xtaXWpNbG1/e6zdbGtaXW0NOm
-16LS4rXEzsrM4go3LsDrsLa94cvj0rXO8bLZ1/fKtdW9o6i6z8Dts++7rtOuwPu1xM671sOjqQo4
-LsDrsLbStc7x1tC1xLLZ1/e358/Vt9bO9rrNt+fP1bnmsdwKOS7A67C2uavLvtK1zvGy2df31tC1
-xLy4tPPWwsP8zsrM4rrN06a21LLfwtQKMTAuwOuwts3isPzStc7xstnX97y8x8nT67qjudi84Lnc
-t+fP1QoxMS65+rzKwOuwttK1zvHT67n6vMrDs9LXs621paGi16q1pdPrwvK1pbLZ1/cKCs7loaK5
-+rzKwOuwtsOz0tey2df30snE0bSmwO3037n6xNrN4tfKvfC1xL34s/a197bICjEuufrE2tT21rXL
-sLXEzcvLsLrNy7C30bXWv9sKMi6+s8TazeLN4rvju67VyqGizOHP1qGitfe2yNPrzeK747nc1sa1
-xLnmsdwKMy7A67C2yMvD8bHSvrPE2ruu1cq6zczhz9bI57rOx+HLycq1z9ajvwo0LtPrufrE2s3i
-w7O5q8u+tcTBqtOqy/m1vNbCtcTNy8uwzsrM4rrNtPrA7cD7yPPV28vjo6zI57rOyrnO0re9wPvS
-5tfutPO7r6O/CjUuwOuwtrmry761xLqjzeLIy8PxsdLVyrunus28r83FxNqyv73hy+MKNi7N4sOz
-uavLvsjnus7NqLn9wOuwtrmry7621Ln6xNq5pLOn1qe4trv1v+4KNy66o83iv827p7XE0MXTw9ak
-u/K79b/utcTK3NLmyMvTpsjnus7RodTxo7/T0LrOwPux16O/CjguufrE2rmry76y2df3us3A67C2
-uavLvrLZ1/e499fUtcTA+7HXo78KOS7I57rOuPm+3dK1zvHQ6NKq0aHU8bn6xNq5q8u+stnX97vy
-wOuwtrLZ1/cKMTAuxvPStbqjzeKx3Muwwre+ttGh1PG6o83i19yyv7u5ysfA67C21tDQxAoxMS5T
-T0hV0rvX5cjnus7HycPuwPvTw8DrsLbStc7xstnX9woxMi7A67C2stnX99bQtcS5+sTazeLXyr3w
-tfe2yLXETtbWt723qAoKwfmhorn6vMrA67C20rXO8dPrvfiz9r/axvPStcnmzeLLsMrVs++7rgox
-LryvzcXE2rK/obDXqtLGvNu48aGx0+vN4rK/obDI/b3Hus/X96Gxst/C1AoyLsDPyvOw4bzS0+u3
-58/Vt9bJoteq0sYKMy7I57rO09DQp8q1z9bU9ta1y7Chosv5tcPLsLXEueax3Ao0LrnYy7C1xLnm
-sdy8sL21tc28vMfJCjUusvq12Lnm1PK6zbzTuaTU9ta1z+DDrLbcyOe6zrSmwO2jvwo2LsD7yPPX
-qtLGus243734tc2z9qGiuN+z9rXN198KNy65+rzKyc+8sM7Sufq21MDrsLbG89K1tcTLsMrVueax
-3NPQus7P3tbGo6zI57rOueax3Ao4LtbQufrQobmry77I57rOwPvTw9eq0sa2qLzbyrXP1rrPwO2x
-3MuwCjkuwOuwtrLZ1/fT67n6vNK1xLP2v9rNy8uw1f6y37XEudjBqgoKxt+horqjudixo8uwzu/B
-97zgudzQwsf3ysbT68/g06a1xLn6vMrA67C2stnX97y8x8kKMS6xo8uwzu/B99PrsaPLsLjbCjIu
-saPLsLjbx/i1xNPFysbT68DrsLbLsLfRs++7rgozLrGjy7C428f4xvPStdTL1/fT68DrsLay2df3
-st/C1Ao0LsDrsLa5q8u+16Ky4bXYoaLA67C21cu7p7+qyei12NPysaPLsLjb0rXO8da00NC12Mj9
-1d/X27rP0rXO8bLZ1/fKtdW9veLO9goKsMuhorn6vMrA67C20MXN0NPruqPN4tfKsvrA67C2saO7
-pAoxLrn6vMrA67C20MXN0NPrwOuwtr3wyNrStc7xCjIuufq8ysDrsLbQxc3QwO2yxrnmu64KMy7A
-67C2uqPN4tDFzdDWrsio0ubT69fKsvrXqtLGCjQuuqPN4tDFzdDT68DrsLay2df3tcS94brPyrnT
-wwo1Lrn6xNrG89K1yOe6zsq508PQxc3Qu/G1w7qjzeLXyrL6tcS+s8Ta1MvTwwoKvsWhosnmzeLG
-89K1wOuwtrLZ1/fNxbbTvajJ6Lyw06bXotLitcTG89K1xNqyv7fnz9W55rHcCj09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09CrPCy7ajrMury7bKvyjDwLn6wu3A78C8tPPRp01CQaGixM+/qrTz0ae+rbzD
-0afLtsq/KaOsyqHN4r6tw7PM/MOz0te5y87Ko6zP47jbCrn6vMq+rbzDudzA7dGn1Lq/zdf5vczK
-2qOsz+O428Oz0te02b34u+G74dSxo6yhttTBuNvW0NChxvPStcOz0tfC28yzobfW972yyMvWrtK7
-o6wK1PjIzsrAveejtaOwo7DHv7XE1tC5+sG4083Ks8a3vfiz9r/avK/Nxbmry769+LP2v9rB+bK/
-sr+zpKOs1tDBuLyvzcXXpM/juNuhorzTxMMKtPPJzM7x1vew7KOsu922+8bVKMPAKcnPuqPT0M/e
-uavLvsTPx/i+rcDtus3Uy9Oq19y84KGiye7b2sSz1vjD+8nMzvHXydGv09DP3rmry74K19y+rcDt
-oaLP47jbSUJUufq8ysnMzvHXydGv09DP3rmry765+iC8ysOzINLXytfPr9fJ0a/KpqOstqu+qc3o
-0rvX27rPyczJ5873sbHH+MrQCrOh19y84KGi1um6o83+wurKr9PNyeixuL34s/a/2rmry77X3L6t
-wO2jrLbgxOrAtM/IuvPU2snPuqOhorGxvqmhosm9tquhotXjva2hor2ty9UKoaLLxLSotci12L7Z
-0NDBy6O2o7CjsLbgs6G5+rzKw7PS19eozOK9stf5o6zOqr38sNm80sbz0rXX9rn916jDxcTaING1
-u/K5yyDOyrf+zvGjrArK3LW9xvPStbrN0afUsbXEueO3urrDxsCjrLPCz8jJ+r7f09C8q8nuuvG1
-xMDtwtvWqsq2us3Ktbz5vq3R6aOsyse15NDNtcTKtdW9xcm9ssqmCqOso7KjsLbgxOq1xM3iw7PS
-tc7xudzA7b6t0emjrMzYsfDU2rSmwO3N4sOz0rXO8dLJxNHOyszit73D5tPQtsC1vbXEvPu94rrN
-vLzHyaOsvt8K09DmtcrstcTStc7xvLzE3LrNvKu80bXE0+/R1LHttO/E3MGmo6y21Ln6vMrDs9LX
-yvXT79PQvKu+q8i3tcTA7b3io6zNrMqxs8LPyMn6u7m9qwq0q8rauty24LS01OzQ1KGisd/UtdDU
-tcSy2df3yta3qNPr0MS1w82stPO80r27wfe6zbfWz+2jrMO/tM62vMHu0afUsdLi08zOtL6ho6zD
-qcj7CrbZv6qhoyAKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQqhtrn6vMrDs9LXwOuwttK1zvGy2df3
-vLzHyaG3sajD+7vY1rSx7aOox+u0q9XmMDIwLTYyMzUxMTU2o6kKCrLOu+G1pc67w/uzxqO6X19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwoKss68
-07XYteOjur/ayc+6oyC/2snu29oKCsGqz7XIy6O6X19fX19fX19fX19fX1+157uwOl9fX19fX19f
-X19fX19fX1+0q9XmOl9fX19fX19fX19fX19fX18KCtPKvP6jul9fX19fX19fX19fX19fss674cjL
-yv06X19fX19fX19fyMu30dPDo6Sjul9fX19fX19fX9SqCgqyzrvhyMujul9fX19fX19fX19fy/nI
-ztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19fX19fX19fX19fCgqyzrvhyMujul9fX19f
-X19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19fX19fX19fX19fCgqyzrvh
-yMujul9fX19fX19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pfX19fX19fX19f
-X19fCgqyzrvhyMujul9fX19fX19fX19fy/nIztawzvGjul9fX19fX19fX19fX9LGtq+157uwo7pf
-X19fX19fX19fX19fCgq4tr/ut73KvaOox+vRodTxtPKhsKHMobGjqaO6ofUxoaLP1r3wofUyoaLX
-qtXKofUzoaK157vjCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQqxuNeiOsfrxPqw0bGow/u7
-2Na0u9i0q87Sy76jrM6qyLexo8T6sajD+87ezvMsx+vE+tTZtM6157uwo6gwMjAtODA1NjA2Mzij
-qci3yM8hCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZl
-cmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkn
-cyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBt
-YW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBz
-ZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVh
-dHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIy
-MjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+On 24 May 2012 12:48, Kukjin Kim <kgene.kim@samsung.com> wrote:
+> Thomas Abraham wrote:
+>>
+>> Platform data is used to specify controller hardware specific inform=
+ation
+>> such as the tx/rx fifo level mask and bit offset of rx fifo level. S=
+uch
+>> information is not suitable to be supplied from device tree. Instead=
+,
+>> it can be moved into the driver data and removed from platform data.
+>>
+>> Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
+>> Acked-by: Jaswinder Singh <jaswinder.singh@linaro.org>
+>> ---
+>> =A0arch/arm/mach-exynos/clock-exynos4.c =A0 =A0 =A0 =A0 =A0 =A0 | =A0=
+ 18 +-
+>> =A0arch/arm/mach-exynos/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+| =A0 25 ---
+>> =A0arch/arm/mach-s3c24xx/clock-s3c2416.c =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ =A02 +-
+>> =A0arch/arm/mach-s3c24xx/clock-s3c2443.c =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ =A02 +-
+>> =A0arch/arm/mach-s3c24xx/common-s3c2443.c =A0 =A0 =A0 =A0 =A0 | =A0 =
+=A04 +-
+>> =A0arch/arm/mach-s3c24xx/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+| =A0 =A08 -
+>> =A0arch/arm/mach-s3c64xx/clock.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0| =A0 20 ++--
+>> =A0arch/arm/mach-s3c64xx/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+| =A0 13 --
+>> =A0arch/arm/mach-s5p64x0/clock-s5p6440.c =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ 12 +-
+>> =A0arch/arm/mach-s5p64x0/clock-s5p6450.c =A0 =A0 =A0 =A0 =A0 =A0| =A0=
+ 12 +-
+>> =A0arch/arm/mach-s5p64x0/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+| =A0 16 --
+>> =A0arch/arm/mach-s5pc100/clock.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0| =A0 30 ++--
+>> =A0arch/arm/mach-s5pc100/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+| =A0 22 ---
+>> =A0arch/arm/mach-s5pv210/clock.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0| =A0 14 +-
+>> =A0arch/arm/mach-s5pv210/setup-spi.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+| =A0 15 --
+>> =A0arch/arm/plat-samsung/include/plat/s3c64xx-spi.h | =A0 15 --
+>> =A0drivers/spi/spi-s3c64xx.c =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0| =A0180
+> ++++++++++++++++++----
+>> =A017 files changed, 210 insertions(+), 198 deletions(-)
+>>
+> Basically, looks ok to me and there are small comments.
+>
+>> diff --git a/arch/arm/mach-exynos/clock-exynos4.c b/arch/arm/mach-
+>> exynos/clock-exynos4.c
+>> index bcb7db4..10a46a9 100644
+>> --- a/arch/arm/mach-exynos/clock-exynos4.c
+>> +++ b/arch/arm/mach-exynos/clock-exynos4.c
+>> @@ -586,17 +586,17 @@ static struct clk exynos4_init_clocks_off[] =3D=
+ {
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 .ctrlbit =A0 =A0 =A0 =A0=3D (1 << 13),
+>> =A0 =A0 =A0 }, {
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "spi",
+>> - =A0 =A0 =A0 =A0 =A0 =A0 .devname =A0 =A0 =A0 =A0=3D "s3c64xx-spi.0=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .devname =A0 =A0 =A0 =A0=3D "exynos4210-sp=
+i.0",
+>
+> Please consider that this can be used only for exynos4210 or all of e=
+xynos4
+> Socs. We need to keep the consistency for the naming.
+
+It is always easier to assign a specific device name such as
+Exynos4210. Any other SoC in the Exynos4 family which has a exactly
+similar SPI controller(s) as that of Exynos4210 can claim
+compatibility to the Exynos4210 type by using Exynos4210 as the device
+name.
+
+Using generic name like Exynos4 as problems. If any one of the SoC's
+in the Exynos4 family (present or upcoming) uses different properties
+from that of Exynos4210 SPI controller (such as different tx/rx fifo
+size, different bit positions in a register or new functionality),
+then it can no more be classified as a Exynos4 compatible SPI
+controller.
+
+>
+> [...]
+>
+>> diff --git a/arch/arm/mach-s3c24xx/clock-s3c2416.c b/arch/arm/mach-
+>> s3c24xx/clock-s3c2416.c
+>> index 8702ecf..a582ba1 100644
+>> --- a/arch/arm/mach-s3c24xx/clock-s3c2416.c
+>> +++ b/arch/arm/mach-s3c24xx/clock-s3c2416.c
+>> @@ -144,7 +144,7 @@ static struct clk_lookup s3c2416_clk_lookup[] =3D=
+ {
+>> =A0 =A0 =A0 CLKDEV_INIT("s3c-sdhci.0", "mmc_busclk.0", &hsmmc0_clk),
+>> =A0 =A0 =A0 CLKDEV_INIT("s3c-sdhci.0", "mmc_busclk.2", &hsmmc_mux0.c=
+lk),
+>> =A0 =A0 =A0 CLKDEV_INIT("s3c-sdhci.1", "mmc_busclk.2", &hsmmc_mux1.c=
+lk),
+>> - =A0 =A0 CLKDEV_INIT("s3c64xx-spi.0", "spi_busclk2", &hsspi_mux.clk=
+),
+>> + =A0 =A0 CLKDEV_INIT("s3c2443-spi.0", "spi_busclk2", &hsspi_mux.clk=
+),
+>
+> I think, in this case, some comment helps to know that 's3c2443-spi' =
+can
+> support s3c2416/s3c2450 together.
+
+Ok.
+
+>
+> [...]
+>
+>> diff --git a/arch/arm/mach-s5p64x0/clock-s5p6440.c b/arch/arm/mach-
+>> s5p64x0/clock-s5p6440.c
+>> index ee1e8e7..55ea3ab 100644
+>> --- a/arch/arm/mach-s5p64x0/clock-s5p6440.c
+>> +++ b/arch/arm/mach-s5p64x0/clock-s5p6440.c
+>
+> [...]
+>
+>> @@ -519,8 +519,8 @@ static struct clk_lookup s5p6440_clk_lookup[] =3D=
+ {
+>> =A0 =A0 =A0 CLKDEV_INIT(NULL, "clk_uart_baud2", &clk_pclk_low.clk),
+>> =A0 =A0 =A0 CLKDEV_INIT(NULL, "clk_uart_baud3", &clk_sclk_uclk.clk),
+>> =A0 =A0 =A0 CLKDEV_INIT(NULL, "spi_busclk0", &clk_p),
+>> - =A0 =A0 CLKDEV_INIT("s3c64xx-spi.0", "spi_busclk1", &clk_sclk_spi0=
+=2Eclk),
+>> - =A0 =A0 CLKDEV_INIT("s3c64xx-spi.1", "spi_busclk1", &clk_sclk_spi1=
+=2Eclk),
+>> + =A0 =A0 CLKDEV_INIT("s5p64x0.0", "spi_busclk1", &clk_sclk_spi0.clk=
+),
+>> + =A0 =A0 CLKDEV_INIT("s5p64x0.1", "spi_busclk1", &clk_sclk_spi1.clk=
+),
+>
+> Should be s5p64x0-spi.0 and s5p64x0-spi.1 ?
+
+Yes, you are right. I will fix this.
+
+>
+> [...]
+>
+>> diff --git a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+>> b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+>> index fa95e9a..4e9b9c3 100644
+>> --- a/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+>> +++ b/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+>
+> [...]
+>
+>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> index 6a3d51a..f6bc0e3 100644
+>> --- a/drivers/spi/spi-s3c64xx.c
+>> +++ b/drivers/spi/spi-s3c64xx.c
+>> @@ -31,6 +31,8 @@
+>> =A0#include <mach/dma.h>
+>> =A0#include <plat/s3c64xx-spi.h>
+>>
+>> +#define MAX_SPI_PORTS =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A03
+>
+> As you know, if spi_isp is used, this can be 5 for latest SoCs later.=
+ Just
+> note.
+
+Ok.
+
+>
+> [...]
+>
+>> =A0/**
+>> + * struct s3c64xx_spi_info - SPI Controller hardware info
+>> + * @fifo_lvl_mask: Bit-mask for {TX|RX}_FIFO_LVL bits in SPI_STATUS
+>> register.
+>> + * @rx_lvl_offset: Bit offset of RX_FIFO_LVL bits in SPI_STATUS reg=
+iter.
+>> + * @tx_st_done: Bit offset of TX_DONE bit in SPI_STATUS regiter.
+>> + * @high_speed: True, if the controller supports HIGH_SPEED_EN bit.
+>> + * @clk_from_cmu: True, if the controller does not include a clock =
+mux
+>> and
+>> + * =A0 prescaler unit.
+>> + *
+>> + * The Samsung s3c64xx SPI controller are used on various Samsung S=
+oC's
+>> but
+>> + * differ in some aspects such as the size of the fifo and spi bus =
+clock
+>> + * setup. Such differences are specified to the driver using this
+>> structure
+>> + * which is provided as driver data to the driver.
+>> + */
+>> +struct s3c64xx_spi_port_config {
+>> + =A0 =A0 int =A0 =A0 fifo_lvl_mask[MAX_SPI_PORTS];
+>> + =A0 =A0 int =A0 =A0 rx_lvl_offset;
+>> + =A0 =A0 int =A0 =A0 tx_st_done;
+>> + =A0 =A0 bool =A0 =A0high_speed;
+>> + =A0 =A0 bool =A0 =A0clk_from_cmu;
+>> +};
+>
+> When I saw this, I thought this will be used for each SPI port. But I=
+ know,
+> above structure is used for each SoC not each SPI port. So I think, h=
+ow
+> about to change the structure name to avoid confusion?
+
+The name of the above structure is following the existing name
+conventions which the driver is using to name its structures.
+
+>
+> [...]
+>
+>> @@ -1000,6 +1029,7 @@ static int __init s3c64xx_spi_probe(struct
+>> platform_device *pdev)
+>> =A0 =A0 =A0 platform_set_drvdata(pdev, master);
+>>
+>> =A0 =A0 =A0 sdd =3D spi_master_get_devdata(master);
+>> + =A0 =A0 sdd->port_conf =3D s3c64xx_spi_get_port_config(pdev);
+>> =A0 =A0 =A0 sdd->master =3D master;
+>> =A0 =A0 =A0 sdd->cntrlr_info =3D sci;
+>> =A0 =A0 =A0 sdd->pdev =3D pdev;
+>> @@ -1008,10 +1038,11 @@ static int __init s3c64xx_spi_probe(struct
+>> platform_device *pdev)
+>> =A0 =A0 =A0 sdd->tx_dma.direction =3D DMA_MEM_TO_DEV;
+>> =A0 =A0 =A0 sdd->rx_dma.dmach =3D dmarx_res->start;
+>> =A0 =A0 =A0 sdd->rx_dma.direction =3D DMA_DEV_TO_MEM;
+>> + =A0 =A0 sdd->port_id =3D pdev->id;
+>>
+>> =A0 =A0 =A0 sdd->cur_bpw =3D 8;
+>>
+>> - =A0 =A0 master->bus_num =3D pdev->id;
+>> + =A0 =A0 master->bus_num =3D sdd->port_id;
+>
+> [...]
+>
+>> @@ -1071,7 +1102,7 @@ static int __init s3c64xx_spi_probe(struct
+>> platform_device *pdev)
+>> =A0 =A0 =A0 }
+>>
+>> =A0 =A0 =A0 /* Setup Deufult Mode */
+>> - =A0 =A0 s3c64xx_spi_hwinit(sdd, pdev->id);
+>> + =A0 =A0 s3c64xx_spi_hwinit(sdd, sdd->port_id);
+>
+> Do we need this change?
+
+Yes, this change is required. In dt mode, the port_id is obtained from
+the alias node (since pdev->id is not valid).
+
+>
+>>
+>> =A0 =A0 =A0 spin_lock_init(&sdd->lock);
+>> =A0 =A0 =A0 init_completion(&sdd->xfer_completion);
+>> @@ -1096,7 +1127,7 @@ static int __init s3c64xx_spi_probe(struct
+>> platform_device *pdev)
+>>
+>> =A0 =A0 =A0 dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for B=
+us SPI-%d "
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 "with %d Slaves attached\n",
+>> - =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 pdev->id, master->num_chipselect);
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 sdd->port_id,
+> master->num_chipselect);
+>
+> Same as above.
+
+Yes. This is required.
+
+>
+>> =A0 =A0 =A0 dev_dbg(&pdev->dev, "\tIOmem=3D[0x%x-0x%x]\tDMA=3D[Rx-%d=
+, Tx-%d]\n",
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 mem_res->end, mem_res->start,
+>> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0 =A0 sdd->rx_dma.dmach,
+> sdd->tx_dma.dmach);
+>> @@ -1189,7 +1220,7 @@ static int s3c64xx_spi_resume(struct device *d=
+ev)
+>> =A0 =A0 =A0 clk_enable(sdd->src_clk);
+>> =A0 =A0 =A0 clk_enable(sdd->clk);
+>>
+>> - =A0 =A0 s3c64xx_spi_hwinit(sdd, pdev->id);
+>> + =A0 =A0 s3c64xx_spi_hwinit(sdd, sdd->port_id);
+>
+> Same as above.
+
+Yes. This is required.
+
+>
+> [...]
+>
+>> +#ifdef CONFIG_ARCH_EXYNOS4
+>> +struct s3c64xx_spi_port_config exynos4_spi_port_config =3D {
+>
+> Is this available on exynos4212/exynos4412? If not, this should be
+> 'exynos4210_spi_port_config' and ifdef CONFIG_CPU_EXYNOS4210.
+>
+>> + =A0 =A0 .fifo_lvl_mask =A0=3D { 0x1ff, 0x7F, 0x7F },
+>> + =A0 =A0 .rx_lvl_offset =A0=3D 15,
+>> + =A0 =A0 .tx_st_done =A0 =A0 =3D 25,
+>> + =A0 =A0 .high_speed =A0 =A0 =3D 1,
+>> + =A0 =A0 .clk_from_cmu =A0 =3D true,
+>> +};
+>> +#define EXYNOS4_SPI_PORT_CONFIG
+> ((kernel_ulong_t)&exynos4_spi_port_config)
+>> +#else
+>> +#define EXYNOS4_SPI_PORT_CONFIG ((kernel_ulong_t)NULL)
+>> +#endif /* CONFIG_ARCH_EXYNOS4 */
+>
+> And let's think the name of ..._SPI_PORT_CONFIG again. How about just
+> ..._SPI_CONFIG?
+
+Ok. I will change it.
+
+>
+>> +
+>> +static struct platform_device_id s3c64xx_spi_driver_ids[] =3D {
+>> + =A0 =A0 {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "s3c2443-spi=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D S3C2443_SPI_PORT_C=
+ONFIG,
+>> + =A0 =A0 }, {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "s3c6410-spi=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D S3C6410_SPI_PORT_C=
+ONFIG,
+>> + =A0 =A0 }, {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "s5p64x0-spi=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D S5P64X0_SPI_PORT_C=
+ONFIG,
+>> + =A0 =A0 }, {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "s5pc100-spi=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D S5PC100_SPI_PORT_C=
+ONFIG,
+>> + =A0 =A0 }, {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "s5pv210-spi=
+",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D S5PV210_SPI_PORT_C=
+ONFIG,
+>> + =A0 =A0 }, {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =A0 =A0 =A0 =A0 =3D "exynos4210-=
+spi",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 .driver_data =A0 =A0=3D EXYNOS4_SPI_PORT_C=
+ONFIG,
+>
+> As I commented, if this is only for exynos4210, EXYNOS4210_SPI_CONFIG=
+ should
+> be used here not EXYNOS4_SPI_.
+
+Ok.
+
+>
+> [...]
+>
+> And I think, it's time to change the name of spi driver to spi-samsun=
+g.c and
+> samsung_spi as a prefix even though we have another s3c24xx spi drive=
+r now.
+
+Ok. It would be better to handle this change outside of this patch
+series. This patch series is mainly about adding device tree support.
+
+Thanks for your review and comments.
+
+Regards,
+Thomas.

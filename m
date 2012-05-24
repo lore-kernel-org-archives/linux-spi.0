@@ -1,40 +1,41 @@
-From: Kyoungil Kim <ki0351.kim@samsung.com>
-Subject: [PATCH] spi: Keep chipselect assertion during one message
-Date: Wed, 23 May 2012 21:34:06 +0900
-Message-ID: <00a001cd38e0$57efde60$07cf9b20$%kim@samsung.com>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Grand =?iso-8859-15?Q?m=E9nage?= sur les prix
+	=?iso-8859-15?Q?jusqu=27=E0?= -75% sur tout le site
+Date: Thu, 24 May 2012 02:29:15 +0200
+Message-ID: <1337819355.4fbd80db18724@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: 'Grant Likely' <grant.likely@secretlab.ca>,
-	'Kukjin Kim' <kgene.kim@samsung.com>,
-	'Kyoungil Kim' <ki0351.kim@samsung.com>
-To: spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-During all transfers in one message, the device will not be chagned.
-So we don't need to deassert chipselect during one message.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Kyoungil Kim <ki0351.kim@samsung.com>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMzMyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yNCAwMDoxMDowMSZlPTEmaD0xMjMzMSZmPTEyMzMyJmc9MTIzMzI=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMzMyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yNCAwMDoxMDowMSZlPTEmaD0xMjMzMSZmPTEyMzMyJmc9MTIzMz=
+I=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-s3c64xx.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 972a94c..0f79f5b 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -745,8 +745,6 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
- 			if (list_is_last(&xfer->transfer_list,
- 						&msg->transfers))
- 				cs_toggle = 1;
--			else
--				disable_cs(sdd, spi);
- 		}
- 
- 		msg->actual_length += xfer->len;
--- 
-1.7.1
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,7 +1,7 @@
-From: Accorhotels par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre =?iso-8859-15?Q?h=F4tel_jusqu=27=E0?= 60% de remise
-Date: Fri, 25 May 2012 07:15:17 +0200
-Message-ID: <1337922917.4fbf156590cad@mc10.fr>
+From: Isotoner par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Chaussons, Tongs et Accessoires 4 euros offerts
+Date: Fri, 25 May 2012 07:17:25 +0200
+Message-ID: <1337923045.4fbf15e5b7a5b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMjA1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0yNSAwMDoxMDowMSZlPTEmaD0xMjIwNCZmPTEyMjA1Jmc9MTIyMDU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTM5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yNSAwMDoyMDowMSZlPTEmaD0xMjEzOCZmPTEyMTM5Jmc9MTIxMzk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMjA1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0yNSAwMDoxMDowMSZlPTEmaD0xMjIwNCZmPTEyMjA1Jmc9MTIyMD=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTM5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yNSAwMDoyMDowMSZlPTEmaD0xMjEzOCZmPTEyMTM5Jmc9MTIxMz=
+k=3D
 
 
 ---------------------------------------------------------------------------=

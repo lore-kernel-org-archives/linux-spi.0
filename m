@@ -1,13 +1,12 @@
-From: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-Subject: [PATCH] spi/fsl-espi: Add missing cell-index OF property
-Date: Fri, 25 May 2012 15:49:29 +0200
-Message-ID: <1337953769-28244-1-git-send-email-Joakim.Tjernlund@transmode.se>
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Fais des rencontres sans sortir ta carte bancaire
+Date: Fri, 25 May 2012 20:06:24 +0200
+Message-ID: <1337969185.4fbfca21167d1@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kenth Eriksson <kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,37 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-espi does not look for a OF cell-index property which
-makes the bus numbering dynamic only. This add an
-optional cell-index.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMDc1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yNSAwNDoxMDowMSZlPTEmaD0xMjA3NCZmPTEyMDc1Jmc9MTIwNzU=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMDc1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yNSAwNDoxMDowMSZlPTEmaD0xMjA3NCZmPTEyMDc1Jmc9MTIwNz=
+U=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-fsl-espi.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index d770f03..c4bea1f 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -680,6 +680,10 @@ static int of_fsl_espi_get_chipselects(struct device *dev)
- 	}
- 
- 	pdata->max_chipselect = *prop;
-+	prop = of_get_property(np, "cell-index", &len);
-+	if (prop && len == sizeof(*prop))
-+		pdata->bus_num = *prop;
-+
- 	pdata->cs_control = NULL;
- 
- 	return 0;
--- 
-1.7.3.4
-
-
-------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

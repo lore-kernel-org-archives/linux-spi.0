@@ -1,18 +1,17 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi/bcm63xx: add missing spi_master_{resume,
-	suspend} calls to PM callbacks
-Date: Fri, 25 May 2012 17:00:05 -0600
-Message-ID: <20120525230005.5FFA43E0978@localhost>
-References: <1337619960-9672-1-git-send-email-florian@openwrt.org>
-	<1337619960-9672-3-git-send-email-florian@openwrt.org>
+Subject: Re: [PATCH] spi: Keep chipselect assertion during one message
+Date: Fri, 25 May 2012 16:56:11 -0600
+Message-ID: <20120525225611.719313E0908@localhost>
+References: <00a001cd38e0$57efde60$07cf9b20$%kim@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Cc: 'Kukjin Kim' <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	'Kyoungil Kim' <ki0351.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Kyoungil Kim <ki0351.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1337619960-9672-3-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <00a001cd38e0$57efde60$07cf9b20$%kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,44 +22,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 21 May 2012 19:05:59 +0200, Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
-> The PM callbacks implemented by the spi-bcm63xx driver don't call
-> spi_master_{resume,suspend}, fix that.
+On Wed, 23 May 2012 21:34:06 +0900, Kyoungil Kim <ki0351.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> During all transfers in one message, the device will not be chagned.
+> So we don't need to deassert chipselect during one message.
 > 
-> Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> Signed-off-by: Kyoungil Kim <ki0351.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
 Applied, thanks.
 
 g.
 
 > ---
->  drivers/spi/spi-bcm63xx.c |    4 ++++
->  1 file changed, 4 insertions(+)
+>  drivers/spi/spi-s3c64xx.c |    2 --
+>  1 files changed, 0 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 478eddc..85b0361 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -461,6 +461,8 @@ static int bcm63xx_spi_suspend(struct device *dev)
->  			platform_get_drvdata(to_platform_device(dev));
->  	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 972a94c..0f79f5b 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -745,8 +745,6 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
+>  			if (list_is_last(&xfer->transfer_list,
+>  						&msg->transfers))
+>  				cs_toggle = 1;
+> -			else
+> -				disable_cs(sdd, spi);
+>  		}
 >  
-> +	spi_master_suspend(master);
-> +
->  	clk_disable(bs->clk);
->  
->  	return 0;
-> @@ -474,6 +476,8 @@ static int bcm63xx_spi_resume(struct device *dev)
->  
->  	clk_enable(bs->clk);
->  
-> +	spi_master_resume(master);
-> +
->  	return 0;
->  }
->  
+>  		msg->actual_length += xfer->len;
 > -- 
-> 1.7.9.5
+> 1.7.1
+> 
 > 
 
 -- 

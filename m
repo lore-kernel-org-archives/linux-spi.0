@@ -1,17 +1,17 @@
-From: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
-Date: Sat, 26 May 2012 15:47:24 +0200
-Message-ID: <4FC0DEEC.8050204@openwrt.org>
-References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
-	<20120525233845.BD93C3E0BD2@localhost>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [PATCH] spi/fsl-espi: Add missing cell-index OF property
+Date: Sat, 26 May 2012 18:23:33 +0200
+Message-ID: <OFB53233C6.0724FA94-ONC1257A0A.00593F62-C1257A0A.005A0C24@transmode.se>
+References: <1337953769-28244-1-git-send-email-Joakim.Tjernlund@transmode.se>
+	<20120525185226.A88A43E061A@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kenth Eriksson <kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120525233845.BD93C3E0BD2@localhost>
+In-Reply-To: <20120525185226.A88A43E061A@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,45 +22,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-> What exactly does this mean?  How does it not support any other type
-> of SPI peripheral?  SPI is a really simple protocol, so what is it
-> about this hardware that prevents it being used with other SPI
-> hardware?
+Grant Likely <glikely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote on 2012/05/25 20:52:26:
 >
-> I see a big state machine that appears to interpret the messages and
-> pretend to be an SPI slave instead of telling linux about the real
-> device.  /me wonders if it should this instead be a block device
-> driver?
+> On Fri, 25 May 2012 15:49:29 +0200, Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org> wrote:
+> > espi does not look for a OF cell-index property which
+> > makes the bus numbering dynamic only. This add an
+> > optional cell-index.
+> >
+> > Signed-off-by: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
 >
+> Nack.  Use /aliases instead.
 
-Thomas will need to comment on this part
+hmm, tried that but that didn't work:
+      aliases {
+               spi0 = &spi0;
+      }
+Maybe we need some other alias then(what)?
 
->> +static int falcon_sflash_prepare_xfer(struct spi_master *master)
->> +{
->> +	return 0;
->> +}
->> +
->> +static int falcon_sflash_unprepare_xfer(struct spi_master *master)
->> +{
->> +	return 0;
->> +}
-> Don't use empty hooks.  Just leave them uninitialized.  The core will
-> do the right thing.
+Anyhow, what is wrong with adding cell-index? Isn't that the standard ?
+
+To be clear what we want to do is make spidev (in /dev) appear
+as spidev0 instead of spidev<some random number>
+
 >
-
-I was under the impression that the need for these 2 callbacks was
-removed in 3.5. As this patch flows via MIPS there would be a merge
-order problem making the kernel non bisectable
-
-I am a bit confused. You keep ack'ing this driver and then commenting on
-it a few weeks later.... obsoleting the ACK ...
-
-
-
-
-
-
+> g.
+>
+> > ---
+> >  drivers/spi/spi-fsl-espi.c |    4 ++++
+> >  1 files changed, 4 insertions(+), 0 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
+> > index d770f03..c4bea1f 100644
+> > --- a/drivers/spi/spi-fsl-espi.c
+> > +++ b/drivers/spi/spi-fsl-espi.c
+> > @@ -680,6 +680,10 @@ static int of_fsl_espi_get_chipselects(struct device *dev)
+> >     }
+> >
+> >     pdata->max_chipselect = *prop;
+> > +   prop = of_get_property(np, "cell-index", &len);
+> > +   if (prop && len == sizeof(*prop))
+> > +      pdata->bus_num = *prop;
+> > +
+> >     pdata->cs_control = NULL;
+> >
+> >     return 0;
+> > --
 
 
 ------------------------------------------------------------------------------

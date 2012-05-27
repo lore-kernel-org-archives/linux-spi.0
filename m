@@ -1,8 +1,8 @@
-From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Recevez des deals chaque jour sur les meilleurs restaurants
-	=?iso-8859-15?Q?jusq?= =?iso-8859-15?Q?u=27=E0?= -70%
-Date: Sun, 27 May 2012 06:36:59 +0200
-Message-ID: <1338093419.4fc1af6b36054@mc10.fr>
+From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
+	=?iso-8859-15?Q?=27=E0?= 70%
+Date: Sun, 27 May 2012 07:46:00 +0200
+Message-ID: <1338097560.4fc1bf98ac45c@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0yNyAwNDo1MDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxNDY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0yNyAwNDozMDowMSZlPTEmaD0xMjE0NCZmPTEyMTQ1Jmc9MTIxNDU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0yNyAwNDo1MDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxND=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0yNyAwNDozMDowMSZlPTEmaD0xMjE0NCZmPTEyMTQ1Jmc9MTIxND=
+U=3D
 
 
 ---------------------------------------------------------------------------=

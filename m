@@ -1,7 +1,7 @@
 From: "Dafiti" <owner-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org>
 Subject: [SPAM] Coleção Outono / Inverno Bottero na Dafiti
-Date: Sun, 27 May 2012 22:35:24 -0300
-Message-ID: <04de74781467fe2b9089e110c9e4829b@www.meupainel.info>
+Date: Mon, 28 May 2012 09:08:15 -0300
+Message-ID: <48df6f222cb69766c80d78c20ffb81e8@www.meupainel.info>
 Reply-To: volta-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -21,9 +21,9 @@ List-Id: linux-spi.vger.kernel.org
 U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
 dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3Lm1l
 dXBhaW5lbC5pbmZvL2Rpc3BsYXkucGhwP009MzE0OTcwNjMmQz02NzQ1YTlkM2U4NWVjN2YzMmYy
-YjhiMzFmMmMxOWM3OSZTPTI4NSZMPTU4Jk49MjQKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
+YjhiMzFmMmMxOWM3OSZTPTI5NSZMPTU4Jk49MjQKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
 c29zCkVtYWlsczpodHRwOi8vd3d3Lm1ldXBhaW5lbC5pbmZvL3Vuc3Vic2NyaWJlLnBocD9NPTMx
-NDk3MDYzJkM9Njc0NWE5ZDNlODVlYzdmMzJmMmI4YjMxZjJjMTljNzkmTD01OCZOPTI4NQpEaXZ1
+NDk3MDYzJkM9Njc0NWE5ZDNlODVlYzdmMzJmMmI4YjMxZjJjMTljNzkmTD01OCZOPTI5NQpEaXZ1
 bGd1ZSBzdWEgbWFyY2EgbmEgaW50ZXJuZXQ6IGF0ZW5kaW1lbnRvQGVtYWlsbWFpcy5jb20KLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1

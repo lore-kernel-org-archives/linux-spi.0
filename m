@@ -1,13 +1,11 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e=2C?= cette semaine mobilier
-	d'exterieur !
-Date: Tue, 29 May 2012 15:15:57 +0200
-Message-ID: <1338297357.4fc4cc0d7c163@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: jtyjhfvgvbci-0fyvH2m/uZM@public.gmane.org
+Subject: [SPAM] 出口报关业务
+Date: Wed, 30 May 2012 05:47:55 +0800
+Message-ID: <E1SZUGX-0001AC-NG@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEyNjY5JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNS0yOSAxNTowMDowMSZlPTEmaD0xMjY2OCZmPTEyNjY5Jmc9MTI2Njk=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEyNjY5JmM=
-9MjM2NDM3JmQ9MjAxMi0wNS0yOSAxNTowMDowMSZlPTEmaD0xMjY2OCZmPTEyNjY5Jmc9MTI2Nj=
-k=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+CiAgxPq6wyEgIAogICAKICAgICAgsb65q8u+ysfSu7zS07XT0L34s/a/2rGoudi1yNK7x9Cz9r/a
+taXWpLT6wO25q8u+o6zT0NfFt+G4u7XECgogILP2v9q+rdHpus3TxcrGtcS827jxo6y/ydLUICDO
+qrnzuavLvrT6wO3S1M/Cs/a/2tK1zvEKCiAgMS7M4bmpusvP+rWlo6ixqLnYtaWjqQoKICAyLkNP
+svq12NakLiDG1bvd1qQoRkEsRkUsRkYs0cfMqyzW0LDNo6y088q5ud3HqbXIKSAKCiAgMy7C8rWl
+sai52KOsycy87KOszc+ztaOoye7b2r/asLajqQoKICA0Lteo0rXK1cirufq497XYzcvLsLWlo6zJ
+7tvasai52KGjCgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKIAogIMGqz7XIy6O6
+wO7PyMn6ICAgICDBqs+1tee7sKO6MTM2OTE5NjM0NTUKCiAgUVGjujc1NzA4Mjk5NiAg08rP5KO6
+NzU3MDgyOTk2QHFxLmNvbQoKICAgICAgICAgICAgICAgICAgICAgILG+ueO45rOkxtrT0NCnCgot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhj
+bHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0
+eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBj
+YW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwg
+bW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6
+Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

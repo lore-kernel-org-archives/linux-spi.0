@@ -1,13 +1,20 @@
-From: "Dafiti" <owner-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org>
-Subject: [SPAM] Coleção Outono / Inverno Bottero na Dafiti
-Date: Mon, 28 May 2012 09:08:15 -0300
-Message-ID: <48df6f222cb69766c80d78c20ffb81e8@www.meupainel.info>
-Reply-To: volta-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org
+From: "Langer Thomas (LQDE CPE AE SW)" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+Date: Tue, 29 May 2012 13:05:18 +0000
+Message-ID: <593AEF6C47F46446852B067021A273D6049FCE@MUCSE039.lantiq.com>
+References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
+	<20120525233845.BD93C3E0BD2@localhost> <4FC0DEEC.8050204@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4FC0DEEC.8050204-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,21 +25,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3Lm1l
-dXBhaW5lbC5pbmZvL2Rpc3BsYXkucGhwP009MzE0OTcwNjMmQz02NzQ1YTlkM2U4NWVjN2YzMmYy
-YjhiMzFmMmMxOWM3OSZTPTI5NSZMPTU4Jk49MjQKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9z
-c29zCkVtYWlsczpodHRwOi8vd3d3Lm1ldXBhaW5lbC5pbmZvL3Vuc3Vic2NyaWJlLnBocD9NPTMx
-NDk3MDYzJkM9Njc0NWE5ZDNlODVlYzdmMzJmMmI4YjMxZjJjMTljNzkmTD01OCZOPTI5NQpEaXZ1
-bGd1ZSBzdWEgbWFyY2EgbmEgaW50ZXJuZXQ6IGF0ZW5kaW1lbnRvQGVtYWlsbWFpcy5jb20KLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1
-c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkg
-YW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2Fu
-IHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1v
-YmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8v
-d3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+Hello Grant, hello John,
+
+John Crispin wrote on=A02012-05-26:
+> =
+
+>> What exactly does this mean?  How does it not support any other type
+>> of SPI peripheral?  SPI is a really simple protocol, so what is it
+>> about this hardware that prevents it being used with other SPI
+>> hardware?
+>> =
+
+>> I see a big state machine that appears to interpret the messages and
+>> pretend to be an SPI slave instead of telling linux about the real
+>> device.  /me wonders if it should this instead be a block device
+>> driver?
+>> =
+
+> Thomas will need to comment on this part
+> =
+
+The hardware is an "EBU" (External Bus Unit) for different type of memories =
+
+and flashes (NOR, NAND and serial).
+One of the features of this EBU is the "execute in place" for serial flashe=
+s.
+This shows that there is some logic in the hardware for automatic reading,
+all other actions must be done using a specific cmd register.
+
+Even if there are some restrictions from the hardware state machine,
+the goal was to use the standard driver for serial flash devices (m25p80).
+Otherwise, with a dedicated block device driver, we would have to duplicate
+much of this code and had to maintain an own list of supported flash chips.
+
+I hope this reason is good enough for getting this driver accepted.
+
+Best Regards,
+Thomas
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

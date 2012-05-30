@@ -1,91 +1,142 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: RE: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
-Date: Wed, 30 May 2012 15:23:13 +0800
-Message-ID: <20120530072314.04A153E065C@localhost>
-References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
-	<20120525233845.BD93C3E0BD2@localhost>
-	<4FC0DEEC.8050204@openwrt.org>
-	<593AEF6C47F46446852B067021A273D6049FCE@MUCSE039.lantiq.com>
-Content-Type: multipart/mixed; boundary="===============4967801217209962364=="
-Cc: "linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org" <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: "Langer Thomas (LQDE CPE AE SW)" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <593AEF6C47F46446852B067021A273D6049FCE-6yu8tajIPx7U45ihrnOXy0EOCMrvLtNR@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Olof Johansson <olof@lixom.net>
+Subject: Re: [PATCH 02/10] spi: s3c64xx: move controller information into
+ driver data
+Date: Wed, 30 May 2012 00:23:49 -0700
+Message-ID: <CAOesGMjGfCH1T6WXPzMDLKsD=URdm15G1SDM=ac624KLmSS=4w@mail.gmail.com>
+References: <1336514694-22393-1-git-send-email-thomas.abraham@linaro.org>
+	<1336514694-22393-3-git-send-email-thomas.abraham@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1336514694-22393-3-git-send-email-thomas.abraham@linaro.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---===============4967801217209962364==
+Hi,
 
-On Tue, 29 May 2012 13:05:18 +0000, "Langer Thomas (LQDE CPE AE SW)" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org> wrote:
-> Hello Grant, hello John,
-> 
-> John Crispin wrote on 2012-05-26:
-> > 
-> >> What exactly does this mean?  How does it not support any other type
-> >> of SPI peripheral?  SPI is a really simple protocol, so what is it
-> >> about this hardware that prevents it being used with other SPI
-> >> hardware?
-> >> 
-> >> I see a big state machine that appears to interpret the messages and
-> >> pretend to be an SPI slave instead of telling linux about the real
-> >> device.  /me wonders if it should this instead be a block device
-> >> driver?
-> >> 
-> > Thomas will need to comment on this part
-> > 
-> The hardware is an "EBU" (External Bus Unit) for different type of memories 
-> and flashes (NOR, NAND and serial).
-> One of the features of this EBU is the "execute in place" for serial flashes.
-> This shows that there is some logic in the hardware for automatic reading,
-> all other actions must be done using a specific cmd register.
-> 
-> Even if there are some restrictions from the hardware state machine,
-> the goal was to use the standard driver for serial flash devices (m25p80).
-> Otherwise, with a dedicated block device driver, we would have to duplicate
-> much of this code and had to maintain an own list of supported flash chips.
-> 
-> I hope this reason is good enough for getting this driver accepted.
+Some comments below.
 
-To be clear, I'm not going to nack the driver over this issue; but it
-bothers me that I cannot understand what it is doing and I do wonder
-if there is a better approach.
+On Tue, May 8, 2012 at 3:04 PM, Thomas Abraham
+<thomas.abraham@linaro.org> wrote:
+> Platform data is used to specify controller hardware specific informa=
+tion
+> such as the tx/rx fifo level mask and bit offset of rx fifo level. Su=
+ch
+> information is not suitable to be supplied from device tree. Instead,
+> it can be moved into the driver data and removed from platform data.
+>
+> Cc: Jaswinder Singh <jaswinder.singh@linaro.org>
+> Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
+> ---
+> =A0drivers/spi/spi-s3c64xx.c | =A0180 +++++++++++++++++++++++++++++++=
++++++++-------
+> =A01 files changed, 153 insertions(+), 27 deletions(-)
+>
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 6a3d51a..f6bc0e3 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
 
-g.
+> @@ -171,6 +198,8 @@ struct s3c64xx_spi_driver_data {
+> =A0 =A0 =A0 =A0struct s3c64xx_spi_dma_data =A0 =A0 rx_dma;
+> =A0 =A0 =A0 =A0struct s3c64xx_spi_dma_data =A0 =A0 tx_dma;
+> =A0 =A0 =A0 =A0struct samsung_dma_ops =A0 =A0 =A0 =A0 =A0*ops;
+> + =A0 =A0 =A0 struct s3c64xx_spi_port_config =A0*port_conf;
+> + =A0 =A0 =A0 unsigned =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+port_id;
+
+unsigned int
 
 
+> @@ -942,6 +964,13 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_sp=
+i_driver_data *sdd, int channel)
+> =A0 =A0 =A0 =A0flush_fifo(sdd);
+> =A0}
+>
+> +static inline struct s3c64xx_spi_port_config *s3c64xx_spi_get_port_c=
+onfig(
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0=
+ =A0 =A0 =A0 =A0 =A0 =A0 struct platform_device *pdev)
+> +{
+> + =A0 =A0 =A0 return (struct s3c64xx_spi_port_config *)
+> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0platform_get_device_=
+id(pdev)->driver_data;
+> +}
+> +
+> =A0static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+> =A0{
+> =A0 =A0 =A0 =A0struct resource *mem_res, *dmatx_res, *dmarx_res;
+> @@ -1000,6 +1029,7 @@ static int __init s3c64xx_spi_probe(struct plat=
+form_device *pdev)
+> =A0 =A0 =A0 =A0platform_set_drvdata(pdev, master);
+>
+> =A0 =A0 =A0 =A0sdd =3D spi_master_get_devdata(master);
+> + =A0 =A0 =A0 sdd->port_conf =3D s3c64xx_spi_get_port_config(pdev);
+> =A0 =A0 =A0 =A0sdd->master =3D master;
+> =A0 =A0 =A0 =A0sdd->cntrlr_info =3D sci;
+> =A0 =A0 =A0 =A0sdd->pdev =3D pdev;
 
---===============4967801217209962364==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Single-use helper? Might as well open code it in this case.
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
---===============4967801217209962364==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> @@ -1227,6 +1258,100 @@ static const struct dev_pm_ops s3c64xx_spi_pm=
+ =3D {
+> =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 s3c64xx_spi_runti=
+me_resume, NULL)
+> =A0};
+>
+> +#if defined(CONFIG_CPU_S3C2416) || defined(CONFIG_CPU_S3C2443)
+> +struct s3c64xx_spi_port_config s3c2443_spi_port_config =3D {
+> + =A0 =A0 =A0 .fifo_lvl_mask =A0=3D { 0x7f },
+> + =A0 =A0 =A0 .rx_lvl_offset =A0=3D 13,
+> + =A0 =A0 =A0 .tx_st_done =A0 =A0 =3D 21,
+> + =A0 =A0 =A0 .high_speed =A0 =A0 =3D true,
+> +};
+> +#define S3C2443_SPI_PORT_CONFIG ((kernel_ulong_t)&s3c2443_spi_port_c=
+onfig)
+> +#else
+> +#define S3C2443_SPI_PORT_CONFIG ((kernel_ulong_t)NULL)
+> +#endif
 
---===============4967801217209962364==--
+Is it really worth it to do the ifdefs here for just 16 bytes of data
+per entry? The table itself below takes more space.
+
+
+[..]
+
+> +#ifdef CONFIG_ARCH_S5PV210
+> +struct s3c64xx_spi_port_config s5pv210_spi_port_config =3D {
+> + =A0 =A0 =A0 .fifo_lvl_mask =A0=3D { 0x1ff, 0x7F },
+> + =A0 =A0 =A0 .rx_lvl_offset =A0=3D 15,
+> + =A0 =A0 =A0 .tx_st_done =A0 =A0 =3D 25,
+> + =A0 =A0 =A0 .high_speed =A0 =A0 =3D 1,
+
+high_speed =3D true
+
+> +};
+> +#define S5PV210_SPI_PORT_CONFIG ((kernel_ulong_t)&s5pv210_spi_port_c=
+onfig)
+> +#else
+> +#define S5PV210_SPI_PORT_CONFIG ((kernel_ulong_t)NULL)
+> +#endif /* CONFIG_ARCH_S5PV210 */
+> +
+> +#ifdef CONFIG_ARCH_EXYNOS4
+> +struct s3c64xx_spi_port_config exynos4_spi_port_config =3D {
+> + =A0 =A0 =A0 .fifo_lvl_mask =A0=3D { 0x1ff, 0x7F, 0x7F },
+> + =A0 =A0 =A0 .rx_lvl_offset =A0=3D 15,
+> + =A0 =A0 =A0 .tx_st_done =A0 =A0 =3D 25,
+> + =A0 =A0 =A0 .high_speed =A0 =A0 =3D 1,
+
+high_speed =3D true
+
+
+
+-Olof

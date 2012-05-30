@@ -1,81 +1,78 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: [PATCH v2 4/6] ARM: Samsung: Modify s3c64xx_spi{0|1|2}_set_platdata
- function
-Date: Wed, 30 May 2012 18:05:31 +0800
-Message-ID: <CAJuYYwShLhKSrpGhaTyxX4dqaiKDAcjBtuWSMYAdsWcOMfP=qw@mail.gmail.com>
-References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
-	<1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
-	<20120520092113.GA20652@opensource.wolfsonmicro.com>
-	<CAOesGMhFcdv7QW=_1U8HHfaETD83mJt=Dgk-8z40yOrC3PB_fA@mail.gmail.com>
-	<20120530093421.GA9947@opensource.wolfsonmicro.com>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 0/9 v3] MIPS: BCM63XX: add support for SPI
+Date: Wed, 30 May 2012 12:04:14 +0200
+Message-ID: <3262201.kIFrIcTNNo@flexo>
+References: <1328019048-5892-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Olof Johansson <olof@lixom.net>,
-	spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, kgene.kim@samsung.com,
-	jaswinder.singh@linaro.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120530093421.GA9947@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1328019048-5892-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 30 May 2012 17:34, Mark Brown <broonie@opensource.wolfsonmicro.com> =
-wrote:
-> On Wed, May 30, 2012 at 12:28:55AM -0700, Olof Johansson wrote:
->> On Sun, May 20, 2012 at 2:21 AM, Mark Brown
->
->> > This dev_name also isn't equivalent to dev_name() which makes matt=
-ers
->> > more confusing than they need to be.
->
->> Looks like they use the name as the magic string to pick initializat=
-ion data.
->
-> Right, and there's no problem at all with using the name. =A0The thin=
-g is
-> that there's no need to set the name at runtime since the struct devi=
-ce
-> being configured is always going to end up with the same name and doi=
-ng
-> so is just causing confusion. =A0The device being registered is speci=
-fic
-> to the SoC already so setting the SoC name at runtime isn't needed.
+Ralf,
 
-I think I did not understand your point. There is only one instance of
-spi platform device statically defined for all Samsung platforms. The
-name of this device is set as "s3c64xx-spi". Now, to choose a
-particular driver data (for a platform) based on the device name, the
-device name has to be changed during boot to indicate the platform.
+On Tuesday 31 January 2012 15:10:39 Florian Fainelli wrote:
+> This patch set depend on the serie "MIPS: BCM63XX: misc cleanup" and
+> adds support for the SPI controller found in BCM63xx SoCs.
+> 
+> Grant, it probably makes sense to get this merged via the MIPS tree
+> since it mostly depends on it.
 
-If this not a good way, then the other way to choose driver data based
-on device name is to statically define platform device for each of the
-samsung platforms. This will add more lines of code into arch/arm and
-can be avoided. If all the Samsung platforms had device tree support
-enabled, this would not have been a problem.
+Grant merged the SPI driver a while ago during 3.4, and now we can't build 
+this driver because the platform-specific knobs have not been merged.
 
->
->> I wonder if it makes more sense to keep the platform_data still
->> around, and just fill it in with the table (from patch "spi: s3c64xx=
-:
->> move controller information into driver data") based on the OF
->> compatible field for the device-tree probe case, instead of trying t=
-o
->> overload and having to change the name in this way.
->
-> We could do that, though it does seem nice to have everything be
-> consistent.
+The only complains where from Maxime about the SPI driver itself, not the 
+other changes, can you merge this series without the latest patch?
 
-So, for now, I will not change the existing platform data. But add
-driver data (spi controller configuration) only for dt enabled
-platforms. And use the spi controller configuration found in the
-driver data instead of the platform data.
+Thanks!
 
-Thanks Mark for your comments.
+> 
+> Florian Fainelli (9):
+>   MIPS: BCM63XX: add IRQ_SPI and CPU specific SPI IRQ values
+>   MIPS: BCM63XX: define BCM6358 SPI base address
+>   MIPS: BCM63XX: add BCM6368 SPI clock mask
+>   MIPS: BCM63XX: define SPI register sizes.
+>   MIPS: BCM63XX: remove SPI2 register
+>   MIPS: BCM63XX: define internal registers offsets of the SPI
+>     controller
+>   MIPS: BCM63XX: add stub to register the SPI platform driver
+>   MIPS: BCM63XX: make board setup code register the spi platform device
+>   spi: add Broadcom BCM63xx SPI controller driver
+> 
+>  arch/mips/bcm63xx/Makefile                         |    3 +-
+>  arch/mips/bcm63xx/boards/board_bcm963xx.c          |    3 +
+>  arch/mips/bcm63xx/clk.c                            |    6 +-
+>  arch/mips/bcm63xx/dev-spi.c                        |  119 +++++
+>  arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |   23 +-
+>  .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 ++++
+>  arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |  119 +++++
+>  drivers/spi/Kconfig                                |    6 +
+>  drivers/spi/Makefile                               |    1 +
+>  drivers/spi/spi-bcm63xx.c                          |  486 
+++++++++++++++++++++
+>  10 files changed, 842 insertions(+), 13 deletions(-)
+>  create mode 100644 arch/mips/bcm63xx/dev-spi.c
+>  create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
+>  create mode 100644 drivers/spi/spi-bcm63xx.c
+> 
+> -- 
+> 1.7.5.4
+> 
 
-Regards,
-Thomas.
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,12 +1,18 @@
-From: jtyjhfvgvbci-0fyvH2m/uZM@public.gmane.org
-Subject: [SPAM] 出口报关业务
-Date: Wed, 30 May 2012 05:47:55 +0800
-Message-ID: <E1SZUGX-0001AC-NG@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH V5 16/17] SPI: MIPS: lantiq: add FALCON spi driver
+Date: Wed, 30 May 2012 15:20:32 +0800
+Message-ID: <20120530072032.247CF3E065C@localhost>
+References: <1337521579-1597-1-git-send-email-blogic@openwrt.org>
+	<20120525233845.BD93C3E0BD2@localhost>
+	<4FC0DEEC.8050204@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
+	Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <4FC0DEEC.8050204-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,22 +23,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CiAgxPq6wyEgIAogICAKICAgICAgsb65q8u+ysfSu7zS07XT0L34s/a/2rGoudi1yNK7x9Cz9r/a
-taXWpLT6wO25q8u+o6zT0NfFt+G4u7XECgogILP2v9q+rdHpus3TxcrGtcS827jxo6y/ydLUICDO
-qrnzuavLvrT6wO3S1M/Cs/a/2tK1zvEKCiAgMS7M4bmpusvP+rWlo6ixqLnYtaWjqQoKICAyLkNP
-svq12NakLiDG1bvd1qQoRkEsRkUsRkYs0cfMqyzW0LDNo6y088q5ud3HqbXIKSAKCiAgMy7C8rWl
-sai52KOsycy87KOszc+ztaOoye7b2r/asLajqQoKICA0Lteo0rXK1cirufq497XYzcvLsLWlo6zJ
-7tvasai52KGjCgogIMfrtObB9LG408OjrLu2063E47XEwLS159fJ0a+jugoKIAogIMGqz7XIy6O6
-wO7PyMn6ICAgICDBqs+1tee7sKO6MTM2OTE5NjM0NTUKCiAgUVGjujc1NzA4Mjk5NiAg08rP5KO6
-NzU3MDgyOTk2QHFxLmNvbQoKICAgICAgICAgICAgICAgICAgICAgILG+ueO45rOkxtrT0NCnCgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhj
-bHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0
-eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBj
-YW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwg
-bW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6
-Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+On Sat, 26 May 2012 15:47:24 +0200, John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
+> 
+> > What exactly does this mean?  How does it not support any other type
+> > of SPI peripheral?  SPI is a really simple protocol, so what is it
+> > about this hardware that prevents it being used with other SPI
+> > hardware?
+> >
+> > I see a big state machine that appears to interpret the messages and
+> > pretend to be an SPI slave instead of telling linux about the real
+> > device.  /me wonders if it should this instead be a block device
+> > driver?
+> >
+> 
+> Thomas will need to comment on this part
+> 
+> >> +static int falcon_sflash_prepare_xfer(struct spi_master *master)
+> >> +{
+> >> +	return 0;
+> >> +}
+> >> +
+> >> +static int falcon_sflash_unprepare_xfer(struct spi_master *master)
+> >> +{
+> >> +	return 0;
+> >> +}
+> > Don't use empty hooks.  Just leave them uninitialized.  The core will
+> > do the right thing.
+> >
+> 
+> I was under the impression that the need for these 2 callbacks was
+> removed in 3.5. As this patch flows via MIPS there would be a merge
+> order problem making the kernel non bisectable
+> 
+> I am a bit confused. You keep ack'ing this driver and then commenting on
+> it a few weeks later.... obsoleting the ACK ...
+
+Hahah.  I receive a *lot* of email.  I can't remember what I reviewed
+yesterday, let alone last week.  If I ack something, then add my ack
+when you repost.  Otherwise I don't have any clues as to what I've
+said in the past.
+
+Also, I reserve the right to review all new versions of patches; that
+doesn't invalidate the ack, but Ralf can decide whether to pick it up
+and ask for follow-up changes, or to ask for another respin.
+
+g.
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

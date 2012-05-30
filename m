@@ -1,78 +1,78 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 0/9 v3] MIPS: BCM63XX: add support for SPI
-Date: Wed, 30 May 2012 12:04:14 +0200
-Message-ID: <3262201.kIFrIcTNNo@flexo>
-References: <1328019048-5892-1-git-send-email-florian@openwrt.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v2 4/6] ARM: Samsung: Modify
+ s3c64xx_spi{0|1|2}_set_platdata function
+Date: Wed, 30 May 2012 11:13:26 +0100
+Message-ID: <20120530101326.GF9947@opensource.wolfsonmicro.com>
+References: <1337333613-6216-1-git-send-email-thomas.abraham@linaro.org>
+ <1337333613-6216-5-git-send-email-thomas.abraham@linaro.org>
+ <20120520092113.GA20652@opensource.wolfsonmicro.com>
+ <CAOesGMhFcdv7QW=_1U8HHfaETD83mJt=Dgk-8z40yOrC3PB_fA@mail.gmail.com>
+ <20120530093421.GA9947@opensource.wolfsonmicro.com>
+ <CAJuYYwShLhKSrpGhaTyxX4dqaiKDAcjBtuWSMYAdsWcOMfP=qw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1328019048-5892-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="VuQYccsttdhdIfIP"
+Cc: Olof Johansson <olof@lixom.net>,
+	spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAJuYYwShLhKSrpGhaTyxX4dqaiKDAcjBtuWSMYAdsWcOMfP=qw@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Ralf,
 
-On Tuesday 31 January 2012 15:10:39 Florian Fainelli wrote:
-> This patch set depend on the serie "MIPS: BCM63XX: misc cleanup" and
-> adds support for the SPI controller found in BCM63xx SoCs.
-> 
-> Grant, it probably makes sense to get this merged via the MIPS tree
-> since it mostly depends on it.
+--VuQYccsttdhdIfIP
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Grant merged the SPI driver a while ago during 3.4, and now we can't build 
-this driver because the platform-specific knobs have not been merged.
+On Wed, May 30, 2012 at 06:05:31PM +0800, Thomas Abraham wrote:
+> On 30 May 2012 17:34, Mark Brown <broonie@opensource.wolfsonmicro.com> wr=
+ote:
 
-The only complains where from Maxime about the SPI driver itself, not the 
-other changes, can you merge this series without the latest patch?
+> > Right, and there's no problem at all with using the name. =A0The thing =
+is
+> > that there's no need to set the name at runtime since the struct device
+> > being configured is always going to end up with the same name and doing
+> > so is just causing confusion. =A0The device being registered is specific
+> > to the SoC already so setting the SoC name at runtime isn't needed.
 
-Thanks!
+> I think I did not understand your point. There is only one instance of
+> spi platform device statically defined for all Samsung platforms. The
 
-> 
-> Florian Fainelli (9):
->   MIPS: BCM63XX: add IRQ_SPI and CPU specific SPI IRQ values
->   MIPS: BCM63XX: define BCM6358 SPI base address
->   MIPS: BCM63XX: add BCM6368 SPI clock mask
->   MIPS: BCM63XX: define SPI register sizes.
->   MIPS: BCM63XX: remove SPI2 register
->   MIPS: BCM63XX: define internal registers offsets of the SPI
->     controller
->   MIPS: BCM63XX: add stub to register the SPI platform driver
->   MIPS: BCM63XX: make board setup code register the spi platform device
->   spi: add Broadcom BCM63xx SPI controller driver
-> 
->  arch/mips/bcm63xx/Makefile                         |    3 +-
->  arch/mips/bcm63xx/boards/board_bcm963xx.c          |    3 +
->  arch/mips/bcm63xx/clk.c                            |    6 +-
->  arch/mips/bcm63xx/dev-spi.c                        |  119 +++++
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_cpu.h   |   23 +-
->  .../include/asm/mach-bcm63xx/bcm63xx_dev_spi.h     |   89 ++++
->  arch/mips/include/asm/mach-bcm63xx/bcm63xx_regs.h  |  119 +++++
->  drivers/spi/Kconfig                                |    6 +
->  drivers/spi/Makefile                               |    1 +
->  drivers/spi/spi-bcm63xx.c                          |  486 
-++++++++++++++++++++
->  10 files changed, 842 insertions(+), 13 deletions(-)
->  create mode 100644 arch/mips/bcm63xx/dev-spi.c
->  create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
->  create mode 100644 drivers/spi/spi-bcm63xx.c
-> 
-> -- 
-> 1.7.5.4
-> 
+No there isn't.  You've got things like s3c64xx_device_spi0 in
+arch/arm/plat-samsung/devs.c (which you'd expect since the resources
+that are passed in for memory mapping, DMA and interrupt vary with the
+SoC).  The bit of code I was querying just changes "s3c64xx-spi" to
+"s3c6410-spi" at runtime in that structure which seems like a waste of
+time.
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+--VuQYccsttdhdIfIP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJPxfK/AAoJEBus8iNuMP3dq5wP/jTlK1sThAap4v5QkMmHNDu/
+OQ970m7KCRF15PVCRQul2mLgpoQ9o7lBBbAQGY3/VL+kDqT7BuSiQfkkUTe0hKys
+0IiAb+cIv2WlMlH6pcCQyhfpEpLEQUPc263Q1ug0hgNdulnIC9lpx5m6k7gonmWV
+WTW366mV230ANamEeRd2UXaX50sR+Z3nvykZAre86sTRPfgguJkUjlhwuCBxzHDx
+QJYRYcRQg4NsBH8mSzwHwHT1jqe5W4jBYX+8YUQ85OlMZIjVUX7f+XSUJaedCpf3
+kyvnA37Jrewd6DhRlRvBQS2Wix1v6ckJpXMQj04WXKehdf4LdP/2lZLlB31LD+lA
+GK8txsf/eB8beKw/DOISTevKT4B2ZsU0eiM8wNA+Ah4j5Mjspoazjk2Zx2sKsn9s
+tcBlca7RyJw4ACiPpDsF5nwXr3jxT3fUPtSLjdZGpxzd9bwv0Ydh3wlGDjaBVZCg
+PI1IR1EaJoNaJqFJ0CZBTscLFEvIaxgo3bok/6nRXX1dNuvt11oEeYXblD8v7GEB
+QyXvCIfpalwYiBeadcsYh1MAslOLHwqrIQELIWz4d599EAsZwv5soLq2GZ2AqVJN
+u0tvDjTRzjZdwknSc8/klxO/wVL5YvpGsYTg1JC/0YgVb24gAF/G/mgCOJC/2pQW
+9Hej8/z2FWFzMeJc4Yy4
+=lR1x
+-----END PGP SIGNATURE-----
+
+--VuQYccsttdhdIfIP--

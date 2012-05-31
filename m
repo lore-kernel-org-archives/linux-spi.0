@@ -1,11 +1,11 @@
-From: Jhon Cole <colejhon1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: POSTING OFFER OF YOUR ADD.
-Date: Wed, 30 May 2012 18:59:00 -0400
-Message-ID: <a2525f8a23e08ccdfbe4d2b7afc82836@www.waqarzaka.com>
-Reply-To: colejhon1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Cindy de ReparMax par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Probl=E8me_m=E9canique?= ? Votre devis offert
+Date: Thu, 31 May 2012 20:38:36 +0200
+Message-ID: <1338489516.4fc7baac61b84@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,14 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
-Are you a good cleaner ( House cleaning) ,kindly reply if yes  cause i got an offer for you.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Regards
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyOTE4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNS0zMSAxNzoyMDowMSZlPTEmaD0xMjkxNyZmPTEyOTE4Jmc9MTI5MTg=3D
 
-------------------------------------------------------------------------------
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyOTE4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNS0zMSAxNzoyMDowMSZlPTEmaD0xMjkxNyZmPTEyOTE4Jmc9MTI5MT=
+g=3D
+
+
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

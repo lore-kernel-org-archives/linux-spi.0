@@ -1,7 +1,8 @@
-From: Cindy de ReparMax par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Probl=E8me_m=E9canique?= ? Votre devis offert
-Date: Thu, 31 May 2012 20:38:36 +0200
-Message-ID: <1338489516.4fc7baac61b84@mc10.fr>
+From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Recevez des deals chaque jour sur les meilleurs restaurants
+ jusqu'à -70%
+Date: Fri, 01 Jun 2012 00:36:54 +0200
+Message-ID: <1338503814.4fc7f2861656b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyOTE4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNS0zMSAxNzoyMDowMSZlPTEmaD0xMjkxNyZmPTEyOTE4Jmc9MTI5MTg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wMSAwMDozMDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxNDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyOTE4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNS0zMSAxNzoyMDowMSZlPTEmaD0xMjkxNyZmPTEyOTE4Jmc9MTI5MT=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDozMDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxND=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,8 +1,8 @@
-From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Recevez des deals chaque jour sur les meilleurs restaurants
- jusqu'à -70%
-Date: Fri, 01 Jun 2012 00:36:54 +0200
-Message-ID: <1338503814.4fc7f2861656b@mc10.fr>
+From: Duano recommande Groupon <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Des deals chaque jusqu'à -70%
+ près de chez vous
+Date: Fri, 01 Jun 2012 00:53:05 +0200
+Message-ID: <1338504785.4fc7f6516f045@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wMSAwMDozMDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxNDY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjE0MyZmPTEyMTQ0Jmc9MTIxNDQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDozMDowMSZlPTEmaD0xMjE0NSZmPTEyMTQ2Jmc9MTIxND=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjE0MyZmPTEyMTQ0Jmc9MTIxND=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

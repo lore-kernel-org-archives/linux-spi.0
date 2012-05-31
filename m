@@ -1,7 +1,10 @@
-From: Restaurants du Monde by Autogrill <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Un menu =?iso-8859-15?Q?achet=E9?= = un menu offert
-Date: Fri, 01 Jun 2012 01:21:19 +0200
-Message-ID: <1338506479.4fc7fcef6551e@mc10.fr>
+From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
+	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
+Date: Fri, 01 Jun 2012 01:56:51 +0200
+Message-ID: <1338508611.4fc80543653aa@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +23,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODczJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjg3MiZmPTEyODczJmc9MTI4NzM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTUxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wMSAwMTo1MDowMSZlPTEmaD0xMjE1MCZmPTEyMTUxJmc9MTIxNTE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODczJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjg3MiZmPTEyODczJmc9MTI4Nz=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTUxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMTo1MDowMSZlPTEmaD0xMjE1MCZmPTEyMTUxJmc9MTIxNT=
+E=3D
 
 
 ---------------------------------------------------------------------------=

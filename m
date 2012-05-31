@@ -1,7 +1,7 @@
-From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Profitez de votre ville et économisez jusqu'à 70%
-Date: Fri, 01 Jun 2012 01:18:45 +0200
-Message-ID: <1338506325.4fc7fc55bdab7@mc10.fr>
+From: Restaurants du Monde by Autogrill <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Un menu =?iso-8859-15?Q?achet=E9?= = un menu offert
+Date: Fri, 01 Jun 2012 01:21:19 +0200
+Message-ID: <1338506479.4fc7fcef6551e@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyMTQ1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wMSAwMDo0MDowMSZlPTEmaD0xMjE0NCZmPTEyMTQ1Jmc9MTIxNDU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODczJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjg3MiZmPTEyODczJmc9MTI4NzM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyMTQ1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDo0MDowMSZlPTEmaD0xMjE0NCZmPTEyMTQ1Jmc9MTIxND=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODczJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wMSAwMDo1MDowMSZlPTEmaD0xMjg3MiZmPTEyODczJmc9MTI4Nz=
+M=3D
 
 
 ---------------------------------------------------------------------------=

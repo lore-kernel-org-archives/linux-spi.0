@@ -1,7 +1,7 @@
 From: Jason Cooper <jason@lakedaemon.net>
 Subject: Re: [PATCH] spi-orion: remove uneeded spi_info
-Date: Sun, 3 Jun 2012 16:54:19 -0400
-Message-ID: <20120603205419.GK14756@titan.lakedaemon.net>
+Date: Sun, 3 Jun 2012 17:04:24 -0400
+Message-ID: <20120603210424.GM14756@titan.lakedaemon.net>
 References: <1338754215-16022-1-git-send-email-michael@walle.cc>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -19,9 +19,6 @@ On Sun, Jun 03, 2012 at 10:10:14PM +0200, Michael Walle wrote:
 > This was formerly used to store the tclk value. Remove it.
 > 
 > Signed-off-by: Michael Walle <michael@walle.cc>
-
-Acked-by: Jason Cooper <jason@lakedaemon.net>
-
 > ---
 >  drivers/spi/spi-orion.c |    5 -----
 >  1 files changed, 0 insertions(+), 5 deletions(-)
@@ -58,6 +55,15 @@ Acked-by: Jason Cooper <jason@lakedaemon.net>
 > -	spi->spi_info = spi_info;
 >  
 >  	spi->clk = clk_get(&pdev->dev, NULL);
+
+It's not relevant to this patch, but later in the patch series, you
+initialize this device via devicetree.  Did you add the clock node?  Is
+there a dependency for this series that I missed?
+
+thx,
+
+Jason.
+
 >  	if (IS_ERR(spi->clk)) {
 > -- 
 > 1.7.2.5

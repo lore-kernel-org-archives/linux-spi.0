@@ -1,7 +1,7 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Mon, 04 Jun 2012 19:07:32 +0200
-Message-ID: <1338829652.4fcceb54a6d49@mc10.fr>
+From: Isotoner par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Chaussons, Tongs et Accessoires 4 euros offerts
+Date: Mon, 04 Jun 2012 19:37:38 +0200
+Message-ID: <1338831459.4fccf2630a63b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODc1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wMyAwMToxMDowMSZlPTEmaD0xMjg3NCZmPTEyODc1Jmc9MTI4NzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODcyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wMyAwMDoyMDowMSZlPTEmaD0xMjg3MSZmPTEyODcyJmc9MTI4NzI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODc1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wMyAwMToxMDowMSZlPTEmaD0xMjg3NCZmPTEyODc1Jmc9MTI4Nz=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODcyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wMyAwMDoyMDowMSZlPTEmaD0xMjg3MSZmPTEyODcyJmc9MTI4Nz=
+I=3D
 
 
 ---------------------------------------------------------------------------=

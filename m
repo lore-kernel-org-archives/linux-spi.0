@@ -1,15 +1,18 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Offre =?iso-8859-15?Q?d=E9couverte?= :
-	=?iso-8859-15?Q?Jusqu=27=E0?= -50% sur les indispensables de
-	=?iso-8859-15?Q?l=27=E9t=E9?=
-Date: Tue, 05 Jun 2012 10:34:17 +0200
-Message-ID: <1338885257.4fcdc48936bf5@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: add spi controller master driver for Blackfin 6xx
+	processor
+Date: Tue, 5 Jun 2012 17:11:16 +0800
+Message-ID: <CAHG8p1ATE11GVJ+syQab3X3gucibf6utry-HP-cobdaEkLauZw@mail.gmail.com>
+References: <1338837689-19114-1-git-send-email-scott.jiang.linux@gmail.com>
+	<CAM=Q2ctr6+LeP9YQDVzeOeVQ_-X_S7NoWeZtuR6dARbqyUWW6w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAM=Q2ctr6+LeP9YQDVzeOeVQ_-X_S7NoWeZtuR6dARbqyUWW6w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,15 +23,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+> how about using spi core queuing?
+It seems this feature is not merged when I wrote this driver. I'll
+convert to use it.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODQ4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wNCAwMjozMDowMSZlPTEmaD0xMjg0NyZmPTEyODQ4Jmc9MTI4NDg=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODQ4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wNCAwMjozMDowMSZlPTEmaD0xMjg0NyZmPTEyODQ4Jmc9MTI4ND=
-g=3D
-
+>> +static struct platform_driver bfin_spi_driver =3D {
+>> + =A0 =A0 =A0 .driver =3D {
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .name =A0 =3D "bfin-spi",
+>> + =A0 =A0 =A0 =A0 =A0 =A0 =A0 .owner =A0=3D THIS_MODULE,
+>> + =A0 =A0 =A0 },
+>> + =A0 =A0 =A0 .suspend =A0 =A0 =A0 =A0=3D bfin_spi_suspend,
+>> + =A0 =A0 =A0 .resume =A0 =A0 =A0 =A0 =3D bfin_spi_resume,
+>
+> Can we move to dev pm ops instead?
+ok.
 
 ---------------------------------------------------------------------------=
 ---

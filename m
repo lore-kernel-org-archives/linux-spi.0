@@ -1,77 +1,42 @@
-From: Boojin Kim <boojin.kim@samsung.com>
-Subject: [PATCH 3/3] ASoC: follow the updated samsung DMA common operations
-Date: Tue, 05 Jun 2012 16:20:10 +0900
-Message-ID: <011701cd42eb$a4209940$ec61cbc0$%kim@samsung.com>
-Cc: 'Vinod Koul' <vinod.koul@intel.com>,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	'Russell King - ARM Linux' <linux@arm.linux.org.uk>,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>,
-	'Dan Williams' <dan.j.williams@intel.com>,
-	kgene.kim@samsung.com
-To: 'Boojin Kim' <boojin.kim@samsung.com>, alsa-devel@alsa-project.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-References: 
-In-reply-to: 
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Offre =?iso-8859-15?Q?d=E9couverte?= :
+	=?iso-8859-15?Q?Jusqu=27=E0?= -50% sur les indispensables de
+	=?iso-8859-15?Q?l=27=E9t=E9?=
+Date: Tue, 05 Jun 2012 10:34:17 +0200
+Message-ID: <1338885257.4fcdc48936bf5@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch uses config() function to configure DMA transmit options.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODQ4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wNCAwMjozMDowMSZlPTEmaD0xMjg0NyZmPTEyODQ4Jmc9MTI4NDg=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODQ4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wNCAwMjozMDowMSZlPTEmaD0xMjg0NyZmPTEyODQ4Jmc9MTI4ND=
+g=3D
+
+
+---------------------------------------------------------------------------=
 ---
- sound/soc/samsung/dma.c |   18 ++++++++++--------
- 1 files changed, 10 insertions(+), 8 deletions(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/sound/soc/samsung/dma.c b/sound/soc/samsung/dma.c
-index ddc6cde..f3ebc38 100644
---- a/sound/soc/samsung/dma.c
-+++ b/sound/soc/samsung/dma.c
-@@ -74,7 +74,7 @@ static void dma_enqueue(struct snd_pcm_substream *substream)
- 	struct runtime_data *prtd = substream->runtime->private_data;
- 	dma_addr_t pos = prtd->dma_pos;
- 	unsigned int limit;
--	struct samsung_dma_prep_info dma_info;
-+	struct samsung_dma_prep dma_info;
+threat landscape has changed and how IT managers can respond. Discussions =
 
- 	pr_debug("Entered %s\n", __func__);
+will include endpoint security, mobile security and the latest in malware =
 
-@@ -146,7 +146,8 @@ static int dma_hw_params(struct snd_pcm_substream *substream,
- 	unsigned long totbytes = params_buffer_bytes(params);
- 	struct s3c_dma_params *dma =
- 		snd_soc_dai_get_dma_data(rtd->cpu_dai, substream);
--	struct samsung_dma_info dma_info;
-+	struct samsung_dma_req req;
-+	struct samsung_dma_config config;
-
- 	pr_debug("Entered %s\n", __func__);
-
-@@ -166,16 +167,17 @@ static int dma_hw_params(struct snd_pcm_substream *substream,
-
- 		prtd->params->ops = samsung_dma_get_ops();
-
--		dma_info.cap = (samsung_dma_has_circular() ?
-+		req.cap = (samsung_dma_has_circular() ?
- 			DMA_CYCLIC : DMA_SLAVE);
--		dma_info.client = prtd->params->client;
--		dma_info.direction =
-+		req.client = prtd->params->client;
-+		config.direction =
- 			(substream->stream == SNDRV_PCM_STREAM_PLAYBACK
- 			? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM);
--		dma_info.width = prtd->params->dma_size;
--		dma_info.fifo = prtd->params->dma_addr;
-+		config.width = prtd->params->dma_size;
-+		config.fifo = prtd->params->dma_addr;
- 		prtd->params->ch = prtd->params->ops->request(
--				prtd->params->channel, &dma_info);
-+				prtd->params->channel, &req);
-+		prtd->params->ops->config(prtd->params->ch, &config);
- 	}
-
- 	snd_pcm_set_runtime_buffer(substream, &substream->dma_buffer);
---
-1.7.1
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

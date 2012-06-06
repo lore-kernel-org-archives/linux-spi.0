@@ -1,8 +1,8 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?Nouveaut=E9s_d=E9co?= pour votre chambre
-Date: Wed, 06 Jun 2012 09:18:25 +0200
-Message-ID: <1338967105.4fcf044144839@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Toner Service par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Remise de 10% sur vos cartouches d'imprimante
+Date: Wed, 06 Jun 2012 09:26:35 +0200
+Message-ID: <1338967595.4fcf062b542bd@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzMDU5JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNi0wNSAxNTowMDowMSZlPTEmaD0xMzA1OCZmPTEzMDU5Jmc9MTMwNTk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTMwODcmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wNi0wNSAxOToxMDowMSZlPTEmaD0xMzA4NiZmPTEzMDg3Jmc9MTMwODc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzMDU5JmM=
-9MjM2NDM3JmQ9MjAxMi0wNi0wNSAxNTowMDowMSZlPTEmaD0xMzA1OCZmPTEzMDU5Jmc9MTMwNT=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTMwODcmYz0=
+xOTYxNjQxJmQ9MjAxMi0wNi0wNSAxOToxMDowMSZlPTEmaD0xMzA4NiZmPTEzMDg3Jmc9MTMwOD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

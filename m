@@ -1,9 +1,8 @@
-From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
-	=?iso-8859-15?Q?jusqu=27=E0?= -70%
-Date: Tue, 05 Jun 2012 21:08:20 +0200
-Message-ID: <1338923300.4fce5924501fd@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?Nouveaut=E9s_d=E9co?= pour votre chambre
+Date: Wed, 06 Jun 2012 09:18:25 +0200
+Message-ID: <1338967105.4fcf044144839@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEyODc2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wNSAwMjowMDowMSZlPTEmaD0xMjg3NSZmPTEyODc2Jmc9MTI4NzY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzMDU5JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNi0wNSAxNTowMDowMSZlPTEmaD0xMzA1OCZmPTEzMDU5Jmc9MTMwNTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEyODc2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wNSAwMjowMDowMSZlPTEmaD0xMjg3NSZmPTEyODc2Jmc9MTI4Nz=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzMDU5JmM=
+9MjM2NDM3JmQ9MjAxMi0wNi0wNSAxNTowMDowMSZlPTEmaD0xMzA1OCZmPTEzMDU5Jmc9MTMwNT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

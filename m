@@ -1,7 +1,8 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Thu, 07 Jun 2012 10:45:14 +0200
-Message-ID: <1339058714.4fd06a1a11519@mc10.fr>
+From: Encre Discount par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos Cartouches d'Imprimantes =?iso-8859-15?Q?=E0?= prix
+	=?iso-8859-15?Q?cass=E9s?= sur
+Date: Thu, 07 Jun 2012 11:55:09 +0200
+Message-ID: <1339062909.4fd07a7d8fba9@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMDMwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wNyAwMDo1MDowMSZlPTEmaD0xMzAyOSZmPTEzMDMwJmc9MTMwMzA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMDI2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wNyAwNDoyMDowMSZlPTEmaD0xMzAyNSZmPTEzMDI2Jmc9MTMwMjY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMDMwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wNyAwMDo1MDowMSZlPTEmaD0xMzAyOSZmPTEzMDMwJmc9MTMwMz=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMDI2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wNyAwNDoyMDowMSZlPTEmaD0xMzAyNSZmPTEzMDI2Jmc9MTMwMj=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

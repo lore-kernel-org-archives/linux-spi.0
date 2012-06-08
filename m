@@ -1,33 +1,40 @@
-From: Jeffrey Eigner <jeigner-i6nAvj0qFg+B+jHODAdFcQ@public.gmane.org>
-Subject: Jeffrey Eigner/Corp/Celestica is out of the office.
-Date: Fri, 8 Jun 2012 04:01:05 -0400
-Message-ID: <OFC7E2383B.A5174175-ON85257A17.002C0B84-85257A17.002C0B84@celestica.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [CFT 07/11] spi: omap2-mcspi: add DMA engine support
+Date: Fri, 8 Jun 2012 10:50:40 +0200
+Message-ID: <CACRpkdaoOzUD4BV3Hh=ZAOr6ZSE_04NwfJXFoKnadSbmz43JFw@mail.gmail.com>
+References: <20120607110610.GB15973@n2100.arm.linux.org.uk>
+	<E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Russell King <rmk+kernel@arm.linux.org.uk>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, Jun 7, 2012 at 1:08 PM, Russell King
+<rmk+kernel@arm.linux.org.uk> wrote:
 
-I will be out of the office starting  06/07/2012 and will not return until
-07/02/2012.
+> Add DMA engine support to the OMAP SPI driver. =A0This supplements th=
+e
+> private DMA API implementation contained within this driver, and the
+> driver can be independently switched at build time between using DMA
+> engine and the private DMA API for the transmit and receive sides.
+>
+> Tested-by: Shubhrajyoti <shubhrajyoti@ti.com>
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
+> Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
- I am on vacation and will have limited access to emails. If your need is
-urgent please indicate that in the subject.
+This looks very good,
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-omap" i=
+n
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,8 +1,9 @@
-From: PMU par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: 1er match des bleus : jusque =?iso-8859-15?Q?150=80?= offerts !
-Date: Sat, 09 Jun 2012 05:56:07 +0200
-Message-ID: <1339214167.4fd2c957e6f92@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Exclu: 10% de =?iso-8859-15?Q?r=E9duction?= sur tout le site
+	=?iso-8859-15?Q?jusqu=27=E0?= lundi
+Date: Sat, 09 Jun 2012 06:59:13 +0200
+Message-ID: <1339217953.4fd2d8213c0ea@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTM0NDYmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNi0wOCAxOTo0MDowMSZlPTEmaD0xMzQ0NSZmPTEzNDQ2Jmc9MTM0NDY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzMzE3JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNi0wOCAwNjoxMDowMSZlPTEmaD0xMzMxNiZmPTEzMzE3Jmc9MTMzMTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTM0NDYmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNi0wOCAxOTo0MDowMSZlPTEmaD0xMzQ0NSZmPTEzNDQ2Jmc9MTM0ND=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzMzE3JmM=
+9MjM2NDM3JmQ9MjAxMi0wNi0wOCAwNjoxMDowMSZlPTEmaD0xMzMxNiZmPTEzMzE3Jmc9MTMzMT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

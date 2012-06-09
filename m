@@ -1,7 +1,7 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Ventes flash : 91 % =?iso-8859-15?Q?d=27=E9conomies?=
-Date: Sat, 09 Jun 2012 02:25:30 +0200
-Message-ID: <1339201530.4fd297fad7f05@mc10.fr>
+From: PMU par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: 1er match des bleus : jusque =?iso-8859-15?Q?150=80?= offerts !
+Date: Sat, 09 Jun 2012 05:56:07 +0200
+Message-ID: <1339214167.4fd2c957e6f92@mc10.fr>
 Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTM0MzUmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNi0wOCAxNzo1MDowMSZlPTEmaD0xMzQzNCZmPTEzNDM1Jmc9MTM0MzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTM0NDYmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wNi0wOCAxOTo0MDowMSZlPTEmaD0xMzQ0NSZmPTEzNDQ2Jmc9MTM0NDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTM0MzUmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNi0wOCAxNzo1MDowMSZlPTEmaD0xMzQzNCZmPTEzNDM1Jmc9MTM0Mz=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTM0NDYmYz0=
+xOTYxNjQxJmQ9MjAxMi0wNi0wOCAxOTo0MDowMSZlPTEmaD0xMzQ0NSZmPTEzNDQ2Jmc9MTM0ND=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,7 +1,7 @@
-From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
-Date: Sat, 09 Jun 2012 07:46:07 +0200
-Message-ID: <1339220767.4fd2e31f0120f@mc10.fr>
+From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre animal est t-il bien assure
+Date: Sat, 09 Jun 2012 13:19:30 +0200
+Message-ID: <1339240770.4fd3314299774@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMDk1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wOCAyMToyMDowMSZlPTEmaD0xMzA5NCZmPTEzMDk1Jmc9MTMwOTU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNDMxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzQzMCZmPTEzNDMxJmc9MTM0MzE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMDk1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wOCAyMToyMDowMSZlPTEmaD0xMzA5NCZmPTEzMDk1Jmc9MTMwOT=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNDMxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzQzMCZmPTEzNDMxJmc9MTM0Mz=
+E=3D
 
 
 ---------------------------------------------------------------------------=

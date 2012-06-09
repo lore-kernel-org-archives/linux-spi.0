@@ -1,7 +1,7 @@
-From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre animal est t-il bien assure
-Date: Sat, 09 Jun 2012 13:19:30 +0200
-Message-ID: <1339240770.4fd3314299774@mc10.fr>
+From: Quotatis par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 5 devis pour la =?iso-8859-15?Q?s=E9curit=E9?= de votre maison
+Date: Sat, 09 Jun 2012 13:19:59 +0200
+Message-ID: <1339240799.4fd3315f14e7b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNDMxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzQzMCZmPTEzNDMxJmc9MTM0MzE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMTc2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzE3NSZmPTEzMTc2Jmc9MTMxNzY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNDMxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzQzMCZmPTEzNDMxJmc9MTM0Mz=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMTc2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wOSAwMzo0MDowMSZlPTEmaD0xMzE3NSZmPTEzMTc2Jmc9MTMxNz=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

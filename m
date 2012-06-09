@@ -1,9 +1,8 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Exclu: 10% de =?iso-8859-15?Q?r=E9duction?= sur tout le site
-	=?iso-8859-15?Q?jusqu=27=E0?= lundi
-Date: Sat, 09 Jun 2012 06:59:13 +0200
-Message-ID: <1339217953.4fd2d8213c0ea@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: "RegimeDukan.com par Duano" <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Calculez votre Juste poids et recevez votre analyse personnelle
+Date: Sat, 09 Jun 2012 07:57:33 +0200
+Message-ID: <1339221453.4fd2e5cd87501@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzMzE3JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNi0wOCAwNjoxMDowMSZlPTEmaD0xMzMxNiZmPTEzMzE3Jmc9MTMzMTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMDk5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wOCAyMTozMDowMSZlPTEmaD0xMzA5OCZmPTEzMDk5Jmc9MTMwOTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzMzE3JmM=
-9MjM2NDM3JmQ9MjAxMi0wNi0wOCAwNjoxMDowMSZlPTEmaD0xMzMxNiZmPTEzMzE3Jmc9MTMzMT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMDk5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wOCAyMTozMDowMSZlPTEmaD0xMzA5OCZmPTEzMDk5Jmc9MTMwOT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

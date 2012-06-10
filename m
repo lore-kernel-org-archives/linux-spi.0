@@ -1,15 +1,14 @@
-From: "Offerta Indirizzi Email Aziendali" <clickandgotowebsite-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Indirizzi Email Aziendali da ITALIA - 99 EUR - id= 201261081840
-Date: Sun, 10 Jun 2012 08:18:40 -0300
-Message-ID: <B0CF23EDB5504F9A8B710E839E36EEA3@CAPTURADOR>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Nouvelle collection Plein =?iso-8859-15?Q?=E9t=E9?= : Economisez
+	=?iso-8859-15?Q?jusqu=27=E0?= 50 pourcent
+Date: Sun, 10 Jun 2012 13:32:10 +0200
+Message-ID: <1339327931.4fd485bb02322@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Location: file://C:\ISA E-Marketing\HTML Templates\BD IT
-	2010\b1_isashort_itit.htm
-Content-Class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,23 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Banche dati dell'Italia
-1,5 MILIONI DI EMAIL DELL'ITALIA
-EDIZIONE 2012 - AGGIORNATO
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMjAyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xMCAwMDoxMDowMSZlPTEmaD0xMzIwMSZmPTEzMjAyJmc9MTMyMDI=3D
 
-99 Euro
-SAPERE COME ACQUISTARE
-Accettiamo Paypal, MoneyGram, Western Union e Trasferimento Bancario
-<http://www.combosoftware.com.ar/isaemarketing_itit_bd_pedido.htm> 
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMjAyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xMCAwMDoxMDowMSZlPTEmaD0xMzIwMSZmPTEzMjAyJmc9MTMyMD=
+I=3D
 
 
-Rimuovere il tuo indirizzo e-mail
-<http://www.combosoftware.com.ar/isaemarketing_it_bd_remover.htm> 
-	
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

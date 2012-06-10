@@ -1,353 +1,212 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: [PATCH 9/9] Kirkwood: Add basic device tree support for QNAP TS219.
-Date: Sun, 10 Jun 2012 12:32:01 +0200
-Message-ID: <1339324322-29388-10-git-send-email-andrew@lunn.ch>
-Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-To: jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Andrew Lunn <andrew@lunn.ch>
+Subject: [PATCH 7/9] I2C: MV64XXX: Add Device Tree support
+Date: Sun, 10 Jun 2012 12:31:59 +0200
+Message-ID: <1339324322-29388-8-git-send-email-andrew@lunn.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Andrew Lunn <andrew@lunn.ch>, devicetree-discuss@lists.ozlabs.org,
+ rob.herring@calxeda.com, grant.likely@secretlab.ca, linux-i2c@vger.kernel.org,
+ spi-devel-general@lists.sourceforge.net, machael@walle.cc,
+ linux-arm-kernel@lists.infradead.org
+To: jason@lakedaemon.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-The two different variants of QNAP TS devices, varying by SoC, put the
-GPIO keys on different GPIO lines. Hence we need two different DT
-board descriptions, which share the same board-ts219.c file.
+Extends the driver to get properties from device tree. Also extend the
+kirkwood DT support to supply the needed properties.
 
-Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 ---
- arch/arm/boot/dts/kirkwood-ts219-6281.dts |   21 +++++++
- arch/arm/boot/dts/kirkwood-ts219-6282.dts |   21 +++++++
- arch/arm/boot/dts/kirkwood-ts219.dtsi     |   73 ++++++++++++++++++++++++
- arch/arm/mach-kirkwood/Kconfig            |   15 +++++
- arch/arm/mach-kirkwood/Makefile           |    1 +
- arch/arm/mach-kirkwood/Makefile.boot      |    1 +
- arch/arm/mach-kirkwood/board-dt.c         |    4 ++
- arch/arm/mach-kirkwood/board-ts219.c      |   86 +++++++++++++++++++++++++++++
- arch/arm/mach-kirkwood/common.h           |    5 ++
- 9 files changed, 227 insertions(+)
- create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6281.dts
- create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6282.dts
- create mode 100644 arch/arm/boot/dts/kirkwood-ts219.dtsi
- create mode 100644 arch/arm/mach-kirkwood/board-ts219.c
+ Documentation/devicetree/bindings/i2c/mrvl-i2c.txt |   35 +++++++++++++++++-
+ arch/arm/boot/dts/kirkwood.dtsi                    |   13 +++++++
+ arch/arm/mach-kirkwood/board-dt.c                  |    2 ++
+ drivers/i2c/busses/i2c-mv64xxx.c                   |   38 +++++++++++++++++---
+ 4 files changed, 82 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/kirkwood-ts219-6281.dts b/arch/arm/boot/dts/kirkwood-ts219-6281.dts
-new file mode 100644
-index 0000000..ccbf327
---- /dev/null
-+++ b/arch/arm/boot/dts/kirkwood-ts219-6281.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/include/ "kirkwood-ts219.dtsi"
-+
-+/ {
-+	gpio_keys {
-+		compatible = "gpio-keys";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		button@1 {
-+			label = "USB Copy";
-+			linux,code = <133>;
-+			gpios = <&gpio0 15 1>;
-+		};
-+		button@2 {
-+			label = "Reset";
-+			linux,code = <0x198>;
-+			gpios = <&gpio0 16 1>;
-+		};
-+	};
-+};
-\ No newline at end of file
-diff --git a/arch/arm/boot/dts/kirkwood-ts219-6282.dts b/arch/arm/boot/dts/kirkwood-ts219-6282.dts
-new file mode 100644
-index 0000000..fbe9932
---- /dev/null
-+++ b/arch/arm/boot/dts/kirkwood-ts219-6282.dts
-@@ -0,0 +1,21 @@
-+/dts-v1/;
-+
-+/include/ "kirkwood-ts219.dtsi"
-+
-+/ {
-+	gpio_keys {
-+		compatible = "gpio-keys";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		button@1 {
-+			label = "USB Copy";
-+			linux,code = <133>;
-+			gpios = <&gpio1 11 1>;
-+		};
-+		button@2 {
-+			label = "Reset";
-+			linux,code = <0x198>;
-+			gpios = <&gpio1 5 1>;
-+		};
-+	};
-+};
-\ No newline at end of file
-diff --git a/arch/arm/boot/dts/kirkwood-ts219.dtsi b/arch/arm/boot/dts/kirkwood-ts219.dtsi
-new file mode 100644
-index 0000000..e0520c3
---- /dev/null
-+++ b/arch/arm/boot/dts/kirkwood-ts219.dtsi
-@@ -0,0 +1,73 @@
-+/include/ "kirkwood.dtsi"
-+
-+/ {
-+	model = "QNAP TS219 family";
-+	compatible = "qnap,ts219", "mrvl,kirkwood";
-+
-+	memory {
-+		device_type = "memory";
-+		reg = <0x00000000 0x20000000>;
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttyS0,115200n8";
-+	};
-+
-+	ocp@f1000000 {
-+		i2c@11000 {
-+			status = "okay";
-+
-+			s35390a: s35390a@30 {
-+				compatible = "s35390a";
-+				reg = <0x30>;
-+			};
-+		};
-+		serial@12000 {
-+			clock-frequency = <200000000>;
-+			status = "okay";
-+		};
-+		serial@12100 {
-+			clock-frequency = <200000000>;
-+			status = "okay";
-+		};
-+		spi@10600 {
-+			status = "okay";
-+
-+			m25p128@0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				compatible = "m25p128";
-+				reg = <0>;
-+				spi-max-frequency = <20000000>;
-+				mode = <0>;
-+
-+				partition@0000000 {
-+					reg = <0x00000000 0x00080000>;
-+					label = "U-Boot";
-+				};
-+
-+				partition@00200000 {
-+					reg = <0x00200000 0x00200000>;
-+					label = "Kernel";
-+				};
-+
-+				partition@00400000 {
-+					reg = <0x00400000 0x00900000>;
-+					label = "RootFS1";
-+				};
-+				partition@00d00000 {
-+					reg = <0x00d00000 0x00300000>;
-+					label = "RootFS2";
-+				};
-+				partition@00040000 {
-+					reg = <0x00080000 0x00040000>;
-+					label = "U-Boot Config";
-+				};
-+				partition@000c0000 {
-+					reg = <0x000c0000 0x00140000>;
-+					label = "NAS Config";
-+				};
-+			};
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-kirkwood/Kconfig b/arch/arm/mach-kirkwood/Kconfig
-index 199764f..8c6a5cd 100644
---- a/arch/arm/mach-kirkwood/Kconfig
-+++ b/arch/arm/mach-kirkwood/Kconfig
-@@ -47,6 +47,7 @@ config MACH_GURUPLUG
- config ARCH_KIRKWOOD_DT
- 	bool "Marvell Kirkwood Flattened Device Tree"
- 	select USE_OF
-+	select SERIAL_OF_PLATFORM
- 	help
- 	  Say 'Y' here if you want your kernel to support the
- 	  Marvell Kirkwood using flattened device tree.
-@@ -80,6 +81,20 @@ config MACH_IB62X0_DT
- 	  RaidSonic IB-NAS6210 & IB-NAS6220 devices, using
- 	  Flattened Device Tree.
+diff --git a/Documentation/devicetree/bindings/i2c/mrvl-i2c.txt b/Documentation/devicetree/bindings/i2c/mrvl-i2c.txt
+index b891ee2..89ef899 100644
+--- a/Documentation/devicetree/bindings/i2c/mrvl-i2c.txt
++++ b/Documentation/devicetree/bindings/i2c/mrvl-i2c.txt
+@@ -1,4 +1,4 @@
+-* I2C
++* Marvell MMP I2C controller
  
-+config MACH_TS219_DT
-+	bool "Device Tree for QNAP TS-110, TS-119, TS-119P+, TS-210, TS-219, TS-219P and TS-219P+ Turbo NAS"
-+	select ARCH_KIRKWOOD_DT
-+	select ARM_APPENDED_DTB
-+	select ARM_ATAG_DTB_COMPAT
-+	help
-+	  Say 'Y' here if you want your kernel to support the QNAP
-+  	  TS-110, TS-119, TS-119P+, TS-210, TS-219, TS-219P and
-+  	  TS-219P+ Turbo NAS devices using Fattened Device Tree.
-+  	  There are two different Device Tree descriptions, depending
-+  	  on if the device is based on an if the board uses the MV6281
-+  	  or MV6282. If you have the wrong one, the buttons will not
-+  	  work.
+ Required properties :
+ 
+@@ -32,3 +32,36 @@ Examples:
+ 		interrupts = <58>;
+ 	};
+ 
++* Marvell MV64XXX I2C controller
 +
- config MACH_TS219
- 	bool "QNAP TS-110, TS-119, TS-119P+, TS-210, TS-219, TS-219P and TS-219P+ Turbo NAS"
- 	help
-diff --git a/arch/arm/mach-kirkwood/Makefile b/arch/arm/mach-kirkwood/Makefile
-index d2b0590..0468b23 100644
---- a/arch/arm/mach-kirkwood/Makefile
-+++ b/arch/arm/mach-kirkwood/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_MACH_DREAMPLUG_DT)		+= board-dreamplug.o
- obj-$(CONFIG_MACH_ICONNECT_DT)		+= board-iconnect.o
- obj-$(CONFIG_MACH_DLINK_KIRKWOOD_DT)	+= board-dnskw.o
- obj-$(CONFIG_MACH_IB62X0_DT)		+= board-ib62x0.o
-+obj-$(CONFIG_MACH_TS219_DT)		+= board-ts219.o
-diff --git a/arch/arm/mach-kirkwood/Makefile.boot b/arch/arm/mach-kirkwood/Makefile.boot
-index 02edbdf..4a1f66a 100644
---- a/arch/arm/mach-kirkwood/Makefile.boot
-+++ b/arch/arm/mach-kirkwood/Makefile.boot
-@@ -7,3 +7,4 @@ dtb-$(CONFIG_MACH_DLINK_KIRKWOOD_DT) += kirkwood-dns320.dtb
- dtb-$(CONFIG_MACH_DLINK_KIRKWOOD_DT) += kirkwood-dns325.dtb
- dtb-$(CONFIG_MACH_ICONNECT_DT) += kirkwood-iconnect.dtb
- dtb-$(CONFIG_MACH_IB62X0_DT) += kirkwood-ib62x0.dtb
-+dtb-$(CONFIG_MACH_TS219_DT)	+= kirkwood-qnap-ts219.dtb
++Required properties :
++
++ - reg         : Offset and length of the register set for the device
++ - compatible  : should be "marvell,mv64xxx-i2c"
++ - interrupts  : the interrupt number
++ - frequency-m : m factor in baud rate calculation
++
++Recommended properties :
++
++ - frequency-n : n factor in baud rate calculation
++ - timeout-ms  : How long to wait for a transaction to complete
++
++Baud Rate:
++
++The baud rate is calculated thus:
++
++Fscl =          Ftclk
++       ------------------------------------------
++                                (frequency-n + 1)
++       10 *(frequency-m + 1) * 2
++
++Examples:
++
++	i2c@11000 {
++		compatible = "marvell,mv64xxx-i2c";
++		reg = <0x11000 0x20>;
++		interrupts = <29>;
++		frequency-m = <4>;
++		frequency-n = <4>;
++		timeout-ms = <1000>;
++	};
+diff --git a/arch/arm/boot/dts/kirkwood.dtsi b/arch/arm/boot/dts/kirkwood.dtsi
+index 7d282ab..3091c01 100644
+--- a/arch/arm/boot/dts/kirkwood.dtsi
++++ b/arch/arm/boot/dts/kirkwood.dtsi
+@@ -63,5 +63,18 @@
+ 			/* set partition map and/or chip-delay in board dts */
+ 			status = "disabled";
+ 		};
++
++		i2c@11000 {
++			compatible = "marvell,mv64xxx-i2c";
++			reg = <0x11000 0x20>;
++			interrupt = <29>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			interrupts = <29>;
++			frequency-m = <8>;
++			frequency-n = <3>;
++			timeout-ms = <1000>;
++			status = "disable";
++		};
+ 	};
+ };
 diff --git a/arch/arm/mach-kirkwood/board-dt.c b/arch/arm/mach-kirkwood/board-dt.c
-index 5aa025d..5dfdfc3 100644
+index 0942139..5aa025d 100644
 --- a/arch/arm/mach-kirkwood/board-dt.c
 +++ b/arch/arm/mach-kirkwood/board-dt.c
-@@ -76,6 +76,9 @@ static void __init kirkwood_dt_init(void)
- 	if (of_machine_is_compatible("raidsonic,ib-nas62x0"))
- 		ib62x0_init();
+@@ -28,6 +28,8 @@ static struct of_device_id kirkwood_dt_match_table[] __initdata = {
  
-+	if (of_machine_is_compatible("qnap,ts219"))
-+		qnap_dt_ts219_init();
-+
- 	of_platform_populate(NULL, kirkwood_dt_match_table,
- 			     kirkwood_auxdata_lookup, NULL);
- }
-@@ -86,6 +89,7 @@ static const char *kirkwood_dt_board_compat[] = {
- 	"dlink,dns-325",
- 	"iom,iconnect",
- 	"raidsonic,ib-nas62x0",
-+	"qnap,ts219",
- 	NULL
+ struct of_dev_auxdata kirkwood_auxdata_lookup[] __initdata = {
+ 	OF_DEV_AUXDATA("marvell,orion-spi", 0xf1010600, "orion_spi.0", NULL),
++	OF_DEV_AUXDATA("marvell,mv64xxx-i2c", 0xf1011000, "mv64xxx_i2c.0",
++		       NULL),
+ 	{},
  };
  
-diff --git a/arch/arm/mach-kirkwood/board-ts219.c b/arch/arm/mach-kirkwood/board-ts219.c
-new file mode 100644
-index 0000000..0a70b77
---- /dev/null
-+++ b/arch/arm/mach-kirkwood/board-ts219.c
-@@ -0,0 +1,86 @@
-+/*
-+ *
-+ * QNAP TS-11x/TS-21x Turbo NAS Board Setup via DT
-+ *
-+ * Copyright (C) 2012 Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-+ *
-+ * Based on the board file ts219-setup.c:
-+ *
-+ * Copyright (C) 2009  Martin Michlmayr <tbm-R+vWnYXSFMfQT0dZR+AlfA@public.gmane.org>
-+ * Copyright (C) 2008  Byron Bradley <byron.bbradley-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the License, or (at your option) any later version.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <linux/mv643xx_eth.h>
-+#include <linux/ata_platform.h>
-+#include <linux/gpio_keys.h>
-+#include <linux/input.h>
-+#include <asm/mach-types.h>
-+#include <asm/mach/arch.h>
-+#include <mach/kirkwood.h>
-+#include "common.h"
-+#include "mpp.h"
-+#include "tsx1x-common.h"
-+
-+static struct mv643xx_eth_platform_data qnap_ts219_ge00_data = {
-+	.phy_addr	= MV643XX_ETH_PHY_ADDR(8),
-+};
-+
-+static struct mv_sata_platform_data qnap_ts219_sata_data = {
-+	.n_ports	= 2,
-+};
-+
-+static unsigned int qnap_ts219_mpp_config[] __initdata = {
-+	MPP0_SPI_SCn,
-+	MPP1_SPI_MOSI,
-+	MPP2_SPI_SCK,
-+	MPP3_SPI_MISO,
-+	MPP4_SATA1_ACTn,
-+	MPP5_SATA0_ACTn,
-+	MPP8_TW0_SDA,
-+	MPP9_TW0_SCK,
-+	MPP10_UART0_TXD,
-+	MPP11_UART0_RXD,
-+	MPP13_UART1_TXD,	/* PIC controller */
-+	MPP14_UART1_RXD,	/* PIC controller */
-+	MPP15_GPIO,		/* USB Copy button (on devices with 88F6281) */
-+	MPP16_GPIO,		/* Reset button (on devices with 88F6281) */
-+	MPP36_GPIO,		/* RAM: 0: 256 MB, 1: 512 MB */
-+	MPP37_GPIO,		/* Reset button (on devices with 88F6282) */
-+	MPP43_GPIO,		/* USB Copy button (on devices with 88F6282) */
-+	MPP44_GPIO,		/* Board ID: 0: TS-11x, 1: TS-21x */
-+	0
-+};
-+
-+void __init qnap_dt_ts219_init(void)
-+{
-+	u32 dev, rev;
-+
-+	kirkwood_mpp_conf(qnap_ts219_mpp_config);
-+
-+	kirkwood_pcie_id(&dev, &rev);
-+	if (dev == MV88F6282_DEV_ID)
-+		qnap_ts219_ge00_data.phy_addr = MV643XX_ETH_PHY_ADDR(0);
-+
-+	kirkwood_ge00_init(&qnap_ts219_ge00_data);
-+	kirkwood_sata_init(&qnap_ts219_sata_data);
-+	kirkwood_ehci_init();
-+
-+	pm_power_off = qnap_tsx1x_power_off;
-+}
-+
-+static int __init ts219_pci_init(void)
-+{
-+	if (machine_is_ts219())
-+		kirkwood_pcie_init(KW_PCIE0);
-+
-+	return 0;
-+}
-+subsys_initcall(ts219_pci_init);
-diff --git a/arch/arm/mach-kirkwood/common.h b/arch/arm/mach-kirkwood/common.h
-index 9248fa2..e0c2324 100644
---- a/arch/arm/mach-kirkwood/common.h
-+++ b/arch/arm/mach-kirkwood/common.h
-@@ -58,6 +58,11 @@ void dreamplug_init(void);
- #else
- static inline void dreamplug_init(void) {};
- #endif
-+#ifdef CONFIG_MACH_TS219_DT
-+void qnap_dt_ts219_init(void);
-+#else
-+static inline void qnap_dt_ts219_init(void) {};
-+#endif
+diff --git a/drivers/i2c/busses/i2c-mv64xxx.c b/drivers/i2c/busses/i2c-mv64xxx.c
+index 4f44a33..2146984 100644
+--- a/drivers/i2c/busses/i2c-mv64xxx.c
++++ b/drivers/i2c/busses/i2c-mv64xxx.c
+@@ -18,6 +18,9 @@
+ #include <linux/mv643xx_i2c.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
++#include <linux/of.h>
++#include <linux/of_irq.h>
++#include <linux/of_i2c.h>
  
- #ifdef CONFIG_MACH_DLINK_KIRKWOOD_DT
- void dnskw_init(void);
+ /* Register defines */
+ #define	MV64XXX_I2C_REG_SLAVE_ADDR			0x00
+@@ -528,7 +531,7 @@ mv64xxx_i2c_probe(struct platform_device *pd)
+ 	struct mv64xxx_i2c_pdata	*pdata = pd->dev.platform_data;
+ 	int	rc;
+ 
+-	if ((pd->id != 0) || !pdata)
++	if ((!pdata && !pd->dev.of_node) || (pdata && (pd->id != 0)))
+ 		return -ENODEV;
+ 
+ 	drv_data = kzalloc(sizeof(struct mv64xxx_i2c_data), GFP_KERNEL);
+@@ -546,19 +549,35 @@ mv64xxx_i2c_probe(struct platform_device *pd)
+ 	init_waitqueue_head(&drv_data->waitq);
+ 	spin_lock_init(&drv_data->lock);
+ 
+-	drv_data->freq_m = pdata->freq_m;
+-	drv_data->freq_n = pdata->freq_n;
+-	drv_data->irq = platform_get_irq(pd, 0);
++	if (pd->dev.of_node) {
++		of_property_read_u32(pd->dev.of_node, "frequency-m",
++				     &drv_data->freq_m);
++		of_property_read_u32(pd->dev.of_node, "frequency-n",
++				     &drv_data->freq_n);
++		drv_data->irq = irq_of_parse_and_map(pd->dev.of_node, 0);
++	} else {
++		drv_data->freq_m = pdata->freq_m;
++		drv_data->freq_n = pdata->freq_n;
++		drv_data->irq = platform_get_irq(pd, 0);
++	}
++
+ 	if (drv_data->irq < 0) {
+ 		rc = -ENXIO;
+ 		goto exit_unmap_regs;
+ 	}
++
+ 	drv_data->adapter.dev.parent = &pd->dev;
+ 	drv_data->adapter.algo = &mv64xxx_i2c_algo;
+ 	drv_data->adapter.owner = THIS_MODULE;
+ 	drv_data->adapter.class = I2C_CLASS_HWMON | I2C_CLASS_SPD;
+-	drv_data->adapter.timeout = msecs_to_jiffies(pdata->timeout);
++	if (pd->dev.of_node)
++		drv_data->adapter.timeout = msecs_to_jiffies(
++			of_property_read_u32(pd->dev.of_node, "timeout-ms",
++					     &drv_data->freq_n));
++	else
++		drv_data->adapter.timeout = msecs_to_jiffies(pdata->timeout);
+ 	drv_data->adapter.nr = pd->id;
++	drv_data->adapter.dev.of_node = pd->dev.of_node;
+ 	platform_set_drvdata(pd, drv_data);
+ 	i2c_set_adapdata(&drv_data->adapter, drv_data);
+ 
+@@ -577,6 +596,8 @@ mv64xxx_i2c_probe(struct platform_device *pd)
+ 		goto exit_free_irq;
+ 	}
+ 
++	of_i2c_register_devices(&drv_data->adapter);
++
+ 	return 0;
+ 
+ 	exit_free_irq:
+@@ -602,12 +623,19 @@ mv64xxx_i2c_remove(struct platform_device *dev)
+ 	return rc;
+ }
+ 
++static const struct of_device_id mv64xxx_i2c_of_match_table[] __devinitdata = {
++	{ .compatible = "marvell,mv64xxx-i2c", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, mv64xxx_i2c_of_match_table);
++
+ static struct platform_driver mv64xxx_i2c_driver = {
+ 	.probe	= mv64xxx_i2c_probe,
+ 	.remove	= __devexit_p(mv64xxx_i2c_remove),
+ 	.driver	= {
+ 		.owner	= THIS_MODULE,
+ 		.name	= MV64XXX_I2C_CTLR_NAME,
++		.of_match_table = of_match_ptr(mv64xxx_i2c_of_match_table),
+ 	},
+ };
+ 
 -- 
 1.7.10

@@ -1,30 +1,93 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/9] SPI: Refactor spi-orion to use SPI framework queue.
-Date: Sun, 10 Jun 2012 18:30:10 +0200
-Message-ID: <CACRpkdY+egHAMxwLVOfRPYykeB3=nS=hVmdMDK0Q_6U9PZYbZQ@mail.gmail.com>
-References: <1339324322-29388-3-git-send-email-andrew@lunn.ch>
+From: Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH 0/9] Kirkwood DT support For IRQ, SPI, I2C, GPIO
+Date: Sun, 10 Jun 2012 12:41:42 -0400
+Message-ID: <20120610164142.GT14756@titan.lakedaemon.net>
+References: <1339324322-29388-1-git-send-email-andrew@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1339324322-29388-3-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss@lists.ozlabs.org, rob.herring@calxeda.com,
+ grant.likely@secretlab.ca, linux-i2c@vger.kernel.org,
+ spi-devel-general@lists.sourceforge.net, machael@walle.cc,
+ linux-arm-kernel@lists.infradead.org
+To: Andrew Lunn <andrew@lunn.ch>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <1339324322-29388-1-git-send-email-andrew@lunn.ch>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jun 10, 2012 at 12:31 PM, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org> wrote:
+On Sun, Jun 10, 2012 at 12:31:52PM +0200, Andrew Lunn wrote:
+> This patch set adds Device Tree support for IRQ, SPI, I2C and GPIO on
+> Orion based drivers, and makes use of these for kirkwood devices.  It
+> also adds the ability to boot QNAP TS219 based systems using device
+> tree.
 
-> Replace the deprecated master->transfer with transfer_one_message()
-> and allow the SPI subsystem handle all the queuing of messages.
->
-> Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Andrew, thanks for the patch series.  At first glance, things look good.
+I'll let this sit on the mailinglist for a few days and try to test it
+early this week.
 
-Looks good to me:
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+thx,
 
-Yours,
-Linus Walleij
+Jason.
+
+> The SPI DT patches are from Michael Walle, and have been previously
+> posted. I've addressed the issues raised during the review.
+> 
+> The SPI refactor to use the SPI framework was submitted for merge into
+> 3.5, but due to dependency issues, which are now resolved, the patch
+> was not accepted. This patch has been modified to remove two NOP
+> functions, which the SPI framework no longer needs.
+> 
+> Andrew Lunn (5):
+>   ARM: Kirkwood: Add interrupt controller support for DT boards
+>   SPI: Refactor spi-orion to use SPI framework queue.
+>   I2C: MV64XXX: Add Device Tree support
+>   ARM: Kirkwood: Add DT support for GPIO controllers
+>   Kirkwood: Add basic device tree support for QNAP TS219.
+> 
+> Michael Walle (4):
+>   spi-orion: remove uneeded spi_info
+>   spi-orion: add device tree binding
+>   ARM: kirkwood: use devicetree for orion-spi
+>   ARM: kirkwood: use devicetree for SPI on dreamplug
+> 
+>  .../devicetree/bindings/arm/mrvl/intc.txt          |   20 ++
+>  .../devicetree/bindings/gpio/mrvl-gpio.txt         |   25 +++
+>  Documentation/devicetree/bindings/i2c/mrvl-i2c.txt |   35 ++-
+>  .../devicetree/bindings/spi/spi-orion.txt          |    5 +
+>  arch/arm/boot/dts/kirkwood-dreamplug.dts           |   29 +++
+>  arch/arm/boot/dts/kirkwood-ts219-6281.dts          |   21 ++
+>  arch/arm/boot/dts/kirkwood-ts219-6282.dts          |   21 ++
+>  arch/arm/boot/dts/kirkwood-ts219.dtsi              |   73 +++++++
+>  arch/arm/boot/dts/kirkwood.dtsi                    |   51 +++++
+>  arch/arm/mach-kirkwood/Kconfig                     |   15 ++
+>  arch/arm/mach-kirkwood/Makefile                    |    1 +
+>  arch/arm/mach-kirkwood/Makefile.boot               |    1 +
+>  arch/arm/mach-kirkwood/board-dreamplug.c           |   41 ----
+>  arch/arm/mach-kirkwood/board-dt.c                  |   36 +++-
+>  arch/arm/mach-kirkwood/board-ts219.c               |   86 ++++++++
+>  arch/arm/mach-kirkwood/common.h                    |    5 +
+>  arch/arm/mach-kirkwood/irq.c                       |   20 +-
+>  arch/arm/plat-orion/gpio.c                         |   68 +++++-
+>  arch/arm/plat-orion/include/plat/gpio.h            |    2 +
+>  drivers/i2c/busses/i2c-mv64xxx.c                   |   38 +++-
+>  drivers/spi/spi-orion.c                            |  223 ++++++--------------
+>  21 files changed, 605 insertions(+), 211 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-orion.txt
+>  create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6281.dts
+>  create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6282.dts
+>  create mode 100644 arch/arm/boot/dts/kirkwood-ts219.dtsi
+>  create mode 100644 arch/arm/mach-kirkwood/board-ts219.c
+> 
+> -- 
+> 1.7.10
+> 

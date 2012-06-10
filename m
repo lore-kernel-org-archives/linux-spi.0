@@ -1,7 +1,7 @@
 From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: [PATCH 2/9] SPI: Refactor spi-orion to use SPI framework queue.
-Date: Sun, 10 Jun 2012 12:31:54 +0200
-Message-ID: <1339324322-29388-3-git-send-email-andrew@lunn.ch>
+Subject: [PATCH 1/9] ARM: Kirkwood: Add interrupt controller support for DT boards
+Date: Sun, 10 Jun 2012 12:31:53 +0200
+Message-ID: <1339324322-29388-2-git-send-email-andrew@lunn.ch>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
 	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
@@ -12,308 +12,104 @@ Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Replace the deprecated master->transfer with transfer_one_message()
-and allow the SPI subsystem handle all the queuing of messages.
-
 Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-orion.c |  209 ++++++++++++++---------------------------------
- 1 file changed, 61 insertions(+), 148 deletions(-)
+ .../devicetree/bindings/arm/mrvl/intc.txt          |   20 ++++++++++++++++++
+ arch/arm/boot/dts/kirkwood.dtsi                    |    9 ++++++++
+ arch/arm/mach-kirkwood/board-dt.c                  |   22 +++++++++++++++++++-
+ 3 files changed, 50 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index dfd04e9..547d983 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -35,12 +35,6 @@
- #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
+diff --git a/Documentation/devicetree/bindings/arm/mrvl/intc.txt b/Documentation/devicetree/bindings/arm/mrvl/intc.txt
+index 80b9a94..612536e 100644
+--- a/Documentation/devicetree/bindings/arm/mrvl/intc.txt
++++ b/Documentation/devicetree/bindings/arm/mrvl/intc.txt
+@@ -38,3 +38,23 @@ Example:
+ 		reg-names = "mux status", "mux mask";
+ 		mrvl,intc-nr-irqs = <2>;
+ 	};
++
++* Marvell Orion Interrupt controller
++
++Required properties
++- compatible :  Should be "marvell,orion-intc"
++- #interrupt-cells: Specifies the number of cells needed to encode an
++  interrupt source. Supported value is <1>
++- interrupt-controller : So that its clear its an interrupt controller.
++Optional properties
++- reg : Not used yet, but will contain the interrupt mask address
++
++Example:
++
++	intc: interrupt-controller {
++        	compatible = "marvell,orion-intc", "marvell,intc";
++		interrupt-controller;
++		#interrupt-cells = <1>;
++                reg = <0xfed20204 0x04>,
++		      <0xfed20214 0x04>;
++        };
+diff --git a/arch/arm/boot/dts/kirkwood.dtsi b/arch/arm/boot/dts/kirkwood.dtsi
+index 926528b..8eab7c4 100644
+--- a/arch/arm/boot/dts/kirkwood.dtsi
++++ b/arch/arm/boot/dts/kirkwood.dtsi
+@@ -2,6 +2,15 @@
  
- struct orion_spi {
--	struct work_struct	work;
--
--	/* Lock access to transfer list.	*/
--	spinlock_t		lock;
--
--	struct list_head	msg_queue;
- 	struct spi_master	*master;
- 	void __iomem		*base;
- 	unsigned int		max_speed;
-@@ -49,8 +43,6 @@ struct orion_spi {
- 	struct clk              *clk;
+ / {
+ 	compatible = "mrvl,kirkwood";
++	interrupt-parent = <&intc>;
++
++	intc: interrupt-controller {
++        	compatible = "marvell,orion-intc", "marvell,intc";
++		interrupt-controller;
++		#interrupt-cells = <1>;
++                reg = <0xfed20204 0x04>,
++		      <0xfed20214 0x04>;
++        };
+ 
+ 	ocp@f1000000 {
+ 		compatible = "simple-bus";
+diff --git a/arch/arm/mach-kirkwood/board-dt.c b/arch/arm/mach-kirkwood/board-dt.c
+index edc3f8a..fa51586 100644
+--- a/arch/arm/mach-kirkwood/board-dt.c
++++ b/arch/arm/mach-kirkwood/board-dt.c
+@@ -14,6 +14,7 @@
+ #include <linux/init.h>
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
++#include <linux/of_irq.h>
+ #include <linux/kexec.h>
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+@@ -80,11 +81,30 @@ static const char *kirkwood_dt_board_compat[] = {
+ 	NULL
  };
  
--static struct workqueue_struct *orion_spi_wq;
--
- static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
- {
- 	return orion_spi->base + reg;
-@@ -277,73 +269,78 @@ out:
- }
- 
- 
--static void orion_spi_work(struct work_struct *work)
-+static int orion_spi_transfer_one_message(struct spi_master *master,
-+					   struct spi_message *m)
- {
--	struct orion_spi *orion_spi =
--		container_of(work, struct orion_spi, work);
--
--	spin_lock_irq(&orion_spi->lock);
--	while (!list_empty(&orion_spi->msg_queue)) {
--		struct spi_message *m;
--		struct spi_device *spi;
--		struct spi_transfer *t = NULL;
--		int par_override = 0;
--		int status = 0;
--		int cs_active = 0;
--
--		m = container_of(orion_spi->msg_queue.next, struct spi_message,
--				 queue);
-+	struct orion_spi *orion_spi = spi_master_get_devdata(master);
-+	struct spi_device *spi = m->spi;
-+	struct spi_transfer *t = NULL;
-+	int par_override = 0;
-+	int status = 0;
-+	int cs_active = 0;
- 
--		list_del_init(&m->queue);
--		spin_unlock_irq(&orion_spi->lock);
-+	/* Load defaults */
-+	status = orion_spi_setup_transfer(spi, NULL);
- 
--		spi = m->spi;
-+	if (status < 0)
-+		goto msg_done;
- 
--		/* Load defaults */
--		status = orion_spi_setup_transfer(spi, NULL);
-+	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		/* make sure buffer length is even when working in 16
-+		 * bit mode*/
-+		if ((t->bits_per_word == 16) && (t->len & 1)) {
-+			dev_err(&spi->dev,
-+				"message rejected : "
-+				"odd data length %d while in 16 bit mode\n",
-+				t->len);
-+			status = -EIO;
-+			goto msg_done;
-+		}
- 
--		if (status < 0)
-+		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
-+			dev_err(&spi->dev,
-+				"message rejected : "
-+				"device min speed (%d Hz) exceeds "
-+				"required transfer speed (%d Hz)\n",
-+				orion_spi->min_speed, t->speed_hz);
-+			status = -EIO;
- 			goto msg_done;
-+		}
- 
--		list_for_each_entry(t, &m->transfers, transfer_list) {
--			if (par_override || t->speed_hz || t->bits_per_word) {
--				par_override = 1;
--				status = orion_spi_setup_transfer(spi, t);
--				if (status < 0)
--					break;
--				if (!t->speed_hz && !t->bits_per_word)
--					par_override = 0;
--			}
--
--			if (!cs_active) {
--				orion_spi_set_cs(orion_spi, 1);
--				cs_active = 1;
--			}
--
--			if (t->len)
--				m->actual_length +=
--					orion_spi_write_read(spi, t);
--
--			if (t->delay_usecs)
--				udelay(t->delay_usecs);
--
--			if (t->cs_change) {
--				orion_spi_set_cs(orion_spi, 0);
--				cs_active = 0;
--			}
-+		if (par_override || t->speed_hz || t->bits_per_word) {
-+			par_override = 1;
-+			status = orion_spi_setup_transfer(spi, t);
-+			if (status < 0)
-+				break;
-+			if (!t->speed_hz && !t->bits_per_word)
-+				par_override = 0;
- 		}
- 
--msg_done:
--		if (cs_active)
--			orion_spi_set_cs(orion_spi, 0);
-+		if (!cs_active) {
-+			orion_spi_set_cs(orion_spi, 1);
-+			cs_active = 1;
-+		}
- 
--		m->status = status;
--		m->complete(m->context);
-+		if (t->len)
-+			m->actual_length += orion_spi_write_read(spi, t);
- 
--		spin_lock_irq(&orion_spi->lock);
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
-+
-+		if (t->cs_change) {
-+			orion_spi_set_cs(orion_spi, 0);
-+			cs_active = 0;
-+		}
- 	}
- 
--	spin_unlock_irq(&orion_spi->lock);
-+msg_done:
-+	if (cs_active)
-+		orion_spi_set_cs(orion_spi, 0);
-+
-+	m->status = status;
-+	spi_finalize_current_message(master);
-+
++static int __init kirkwood_add_irq_domain(struct device_node *np,
++					  struct device_node *interrupt_parent)
++{
++	kirkwood_init_irq();
++	irq_domain_add_legacy(np, 64, 0, 0, &irq_domain_simple_ops, NULL);
 +	return 0;
- }
- 
- static int __init orion_spi_reset(struct orion_spi *orion_spi)
-@@ -376,75 +373,6 @@ static int orion_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int orion_spi_transfer(struct spi_device *spi, struct spi_message *m)
--{
--	struct orion_spi *orion_spi;
--	struct spi_transfer *t = NULL;
--	unsigned long flags;
--
--	m->actual_length = 0;
--	m->status = 0;
--
--	/* reject invalid messages and transfers */
--	if (list_empty(&m->transfers) || !m->complete)
--		return -EINVAL;
--
--	orion_spi = spi_master_get_devdata(spi->master);
--
--	list_for_each_entry(t, &m->transfers, transfer_list) {
--		unsigned int bits_per_word = spi->bits_per_word;
--
--		if (t->tx_buf == NULL && t->rx_buf == NULL && t->len) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"invalid transfer data buffers\n");
--			goto msg_rejected;
--		}
--
--		if (t->bits_per_word)
--			bits_per_word = t->bits_per_word;
--
--		if ((bits_per_word != 8) && (bits_per_word != 16)) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"invalid transfer bits_per_word (%d bits)\n",
--				bits_per_word);
--			goto msg_rejected;
--		}
--		/*make sure buffer length is even when working in 16 bit mode*/
--		if ((t->bits_per_word == 16) && (t->len & 1)) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"odd data length (%d) while in 16 bit mode\n",
--				t->len);
--			goto msg_rejected;
--		}
--
--		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"device min speed (%d Hz) exceeds "
--				"required transfer speed (%d Hz)\n",
--				orion_spi->min_speed, t->speed_hz);
--			goto msg_rejected;
--		}
--	}
--
--
--	spin_lock_irqsave(&orion_spi->lock, flags);
--	list_add_tail(&m->queue, &orion_spi->msg_queue);
--	queue_work(orion_spi_wq, &orion_spi->work);
--	spin_unlock_irqrestore(&orion_spi->lock, flags);
--
--	return 0;
--msg_rejected:
--	/* Message rejected and not queued */
--	m->status = -EINVAL;
--	if (m->complete)
--		m->complete(m->context);
--	return -EINVAL;
--}
--
- static int __init orion_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -469,7 +397,7 @@ static int __init orion_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = 0;
- 
- 	master->setup = orion_spi_setup;
--	master->transfer = orion_spi_transfer;
-+	master->transfer_one_message = orion_spi_transfer_one_message;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 
- 	dev_set_drvdata(&pdev->dev, master);
-@@ -503,11 +431,6 @@ static int __init orion_spi_probe(struct platform_device *pdev)
- 	}
- 	spi->base = ioremap(r->start, SZ_1K);
- 
--	INIT_WORK(&spi->work, orion_spi_work);
--
--	spin_lock_init(&spi->lock);
--	INIT_LIST_HEAD(&spi->msg_queue);
--
- 	if (orion_spi_reset(spi) < 0)
- 		goto out_rel_mem;
- 
-@@ -531,14 +454,12 @@ out:
- static int __exit orion_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master;
--	struct orion_spi *spi;
- 	struct resource *r;
-+	struct orion_spi *spi;
- 
- 	master = dev_get_drvdata(&pdev->dev);
- 	spi = spi_master_get_devdata(master);
- 
--	cancel_work_sync(&spi->work);
--
- 	clk_disable_unprepare(spi->clk);
- 	clk_put(spi->clk);
- 
-@@ -562,21 +483,13 @@ static struct platform_driver orion_spi_driver = {
- 
- static int __init orion_spi_init(void)
- {
--	orion_spi_wq = create_singlethread_workqueue(
--				orion_spi_driver.driver.name);
--	if (orion_spi_wq == NULL)
--		return -ENOMEM;
--
- 	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
- }
- module_init(orion_spi_init);
- 
- static void __exit orion_spi_exit(void)
- {
--	flush_workqueue(orion_spi_wq);
- 	platform_driver_unregister(&orion_spi_driver);
--
--	destroy_workqueue(orion_spi_wq);
- }
- module_exit(orion_spi_exit);
- 
++}
++
++static const struct of_device_id kirkwood_irq_match[] = {
++	{ .compatible = "marvell,orion-intc",
++	  .data = kirkwood_add_irq_domain, },
++	{},
++};
++
++static void __init kirkwood_dt_init_irq(void)
++{
++	of_irq_init(kirkwood_irq_match);
++}
++
+ DT_MACHINE_START(KIRKWOOD_DT, "Marvell Kirkwood (Flattened Device Tree)")
+ 	/* Maintainer: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org> */
+ 	.map_io		= kirkwood_map_io,
+ 	.init_early	= kirkwood_init_early,
+-	.init_irq	= kirkwood_init_irq,
++	.init_irq	= kirkwood_dt_init_irq,
+ 	.timer		= &kirkwood_timer,
+ 	.init_machine	= kirkwood_dt_init,
+ 	.restart	= kirkwood_restart,
 -- 
 1.7.10

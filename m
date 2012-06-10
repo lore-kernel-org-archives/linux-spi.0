@@ -1,40 +1,70 @@
-From: Cindy de ReparMax par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Probl=E8me_m=E9canique?= ? Votre devis offert
-Date: Sat, 09 Jun 2012 21:45:25 +0200
-Message-ID: <1339271125.4fd3a7d543d96@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Subject: [PATCH 0/9] Kirkwood DT support For IRQ, SPI, I2C, GPIO
+Date: Sun, 10 Jun 2012 12:31:52 +0200
+Message-ID: <1339324322-29388-1-git-send-email-andrew@lunn.ch>
+Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+To: jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This patch set adds Device Tree support for IRQ, SPI, I2C and GPIO on
+Orion based drivers, and makes use of these for kirkwood devices.  It
+also adds the ability to boot QNAP TS219 based systems using device
+tree.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMTM3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0wOCAyMTo1MDowMSZlPTEmaD0xMzEzNiZmPTEzMTM3Jmc9MTMxMzc=3D
+The SPI DT patches are from Michael Walle, and have been previously
+posted. I've addressed the issues raised during the review.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMTM3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0wOCAyMTo1MDowMSZlPTEmaD0xMzEzNiZmPTEzMTM3Jmc9MTMxMz=
-c=3D
+The SPI refactor to use the SPI framework was submitted for merge into
+3.5, but due to dependency issues, which are now resolved, the patch
+was not accepted. This patch has been modified to remove two NOP
+functions, which the SPI framework no longer needs.
 
+Andrew Lunn (5):
+  ARM: Kirkwood: Add interrupt controller support for DT boards
+  SPI: Refactor spi-orion to use SPI framework queue.
+  I2C: MV64XXX: Add Device Tree support
+  ARM: Kirkwood: Add DT support for GPIO controllers
+  Kirkwood: Add basic device tree support for QNAP TS219.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+Michael Walle (4):
+  spi-orion: remove uneeded spi_info
+  spi-orion: add device tree binding
+  ARM: kirkwood: use devicetree for orion-spi
+  ARM: kirkwood: use devicetree for SPI on dreamplug
 
-threat landscape has changed and how IT managers can respond. Discussions =
+ .../devicetree/bindings/arm/mrvl/intc.txt          |   20 ++
+ .../devicetree/bindings/gpio/mrvl-gpio.txt         |   25 +++
+ Documentation/devicetree/bindings/i2c/mrvl-i2c.txt |   35 ++-
+ .../devicetree/bindings/spi/spi-orion.txt          |    5 +
+ arch/arm/boot/dts/kirkwood-dreamplug.dts           |   29 +++
+ arch/arm/boot/dts/kirkwood-ts219-6281.dts          |   21 ++
+ arch/arm/boot/dts/kirkwood-ts219-6282.dts          |   21 ++
+ arch/arm/boot/dts/kirkwood-ts219.dtsi              |   73 +++++++
+ arch/arm/boot/dts/kirkwood.dtsi                    |   51 +++++
+ arch/arm/mach-kirkwood/Kconfig                     |   15 ++
+ arch/arm/mach-kirkwood/Makefile                    |    1 +
+ arch/arm/mach-kirkwood/Makefile.boot               |    1 +
+ arch/arm/mach-kirkwood/board-dreamplug.c           |   41 ----
+ arch/arm/mach-kirkwood/board-dt.c                  |   36 +++-
+ arch/arm/mach-kirkwood/board-ts219.c               |   86 ++++++++
+ arch/arm/mach-kirkwood/common.h                    |    5 +
+ arch/arm/mach-kirkwood/irq.c                       |   20 +-
+ arch/arm/plat-orion/gpio.c                         |   68 +++++-
+ arch/arm/plat-orion/include/plat/gpio.h            |    2 +
+ drivers/i2c/busses/i2c-mv64xxx.c                   |   38 +++-
+ drivers/spi/spi-orion.c                            |  223 ++++++--------------
+ 21 files changed, 605 insertions(+), 211 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-orion.txt
+ create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6281.dts
+ create mode 100644 arch/arm/boot/dts/kirkwood-ts219-6282.dts
+ create mode 100644 arch/arm/boot/dts/kirkwood-ts219.dtsi
+ create mode 100644 arch/arm/mach-kirkwood/board-ts219.c
 
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+-- 
+1.7.10

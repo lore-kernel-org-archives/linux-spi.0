@@ -1,8 +1,8 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Nouvelle collection Plein =?iso-8859-15?Q?=E9t=E9?= : Economisez
-	=?iso-8859-15?Q?jusqu=27=E0?= 50 pourcent
-Date: Sun, 10 Jun 2012 13:32:10 +0200
-Message-ID: <1339327931.4fd485bb02322@mc10.fr>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de 50% de =?iso-8859-15?Q?r=E9duction*?= pour retrouver la
+	ligne avec Weight Watchers
+Date: Mon, 11 Jun 2012 02:50:42 +0200
+Message-ID: <1339375842.4fd540e28844d@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMjAyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xMCAwMDoxMDowMSZlPTEmaD0xMzIwMSZmPTEzMjAyJmc9MTMyMDI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzMjMyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0wOSAyMjozMDowMSZlPTEmaD0xMzIzMSZmPTEzMjMyJmc9MTMyMzI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMjAyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xMCAwMDoxMDowMSZlPTEmaD0xMzIwMSZmPTEzMjAyJmc9MTMyMD=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzMjMyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0wOSAyMjozMDowMSZlPTEmaD0xMzIzMSZmPTEzMjMyJmc9MTMyMz=
 I=3D
 
 

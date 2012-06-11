@@ -1,266 +1,130 @@
 From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 8/9] ARM: Kirkwood: Add DT support for GPIO controllers
-Date: Sun, 10 Jun 2012 17:48:11 -0500
-Message-ID: <4FD5242B.8060001@gmail.com>
-References: <1339324322-29388-9-git-send-email-andrew@lunn.ch>
+Subject: Re: [PATCH 1/9] ARM: Kirkwood: Add interrupt controller support for
+ DT boards
+Date: Mon, 11 Jun 2012 07:49:17 -0500
+Message-ID: <4FD5E94D.1010700@gmail.com>
+References: <1339324322-29388-2-git-send-email-andrew@lunn.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Cc: jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	machael-QKn5cuLxLXY@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1339324322-29388-9-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
+In-Reply-To: <1339324322-29388-2-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/10/2012 05:32 AM, Andrew Lunn wrote:
-> The GPIO controllers can now be described in DT. Origionally GPIO
-> controllers were instantiated during IRQ setup. The origional none-DT
-> code has been split out, and is only called if no DT GPIO controllers
-> are found.
-> 
+On 06/10/2012 05:31 AM, Andrew Lunn wrote:
 > Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
 > ---
->  .../devicetree/bindings/gpio/mrvl-gpio.txt         |   25 +++++++
->  arch/arm/boot/dts/kirkwood.dtsi                    |   20 ++++++
->  arch/arm/mach-kirkwood/irq.c                       |   20 ++++--
->  arch/arm/plat-orion/gpio.c                         |   68 +++++++++++++++++++-
->  arch/arm/plat-orion/include/plat/gpio.h            |    2 +
->  5 files changed, 126 insertions(+), 9 deletions(-)
+>  .../devicetree/bindings/arm/mrvl/intc.txt          |   20 ++++++++++++++++++
+>  arch/arm/boot/dts/kirkwood.dtsi                    |    9 ++++++++
+>  arch/arm/mach-kirkwood/board-dt.c                  |   22 +++++++++++++++++++-
+>  3 files changed, 50 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt b/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
-> index 05428f3..d94ebc1 100644
-> --- a/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
-> +++ b/Documentation/devicetree/bindings/gpio/mrvl-gpio.txt
-> @@ -27,3 +27,28 @@ Example:
->  		interrupt-controller;
->  		#interrupt-cells = <1>;
->        };
+> diff --git a/Documentation/devicetree/bindings/arm/mrvl/intc.txt b/Documentation/devicetree/bindings/arm/mrvl/intc.txt
+> index 80b9a94..612536e 100644
+> --- a/Documentation/devicetree/bindings/arm/mrvl/intc.txt
+> +++ b/Documentation/devicetree/bindings/arm/mrvl/intc.txt
+> @@ -38,3 +38,23 @@ Example:
+>  		reg-names = "mux status", "mux mask";
+>  		mrvl,intc-nr-irqs = <2>;
+>  	};
 > +
-> +* Marvell Orion GPIO Controller
+> +* Marvell Orion Interrupt controller
 > +
-> +Required properties:
-> +- compatible         : Should be "marvell,orion-gpio"
-> +- reg                : Address and length of the register set for controller.
-> +- gpio-controller    : So we know this is a gpio controller.
-> +- gpio-base          : Number of first gpio pin.
-> +- ngpio              : How many gpios this controller has.
-> +- secondary-irq-base : IRQ number base
-> +
-> +Optional properties:
-> +- mask-offset        : For SMP Orions, offset for Nth CPU
+> +Required properties
+> +- compatible :  Should be "marvell,orion-intc"
+> +- #interrupt-cells: Specifies the number of cells needed to encode an
+> +  interrupt source. Supported value is <1>
+> +- interrupt-controller : So that its clear its an interrupt controller.
+> +Optional properties
+> +- reg : Not used yet, but will contain the interrupt mask address
 > +
 > +Example:
 > +
-> +	gpio0: gpio@10100 {
-> +		compatible = "marvell,orion-gpio";
-> +		#gpio-cells = <2>;
-> +		gpio-controller;
-> +		reg = <0x10100 0x40>;
-> +		gpio-base = <0>;
-> +		ngpio = <32>;
-> +		secondary-irq-base = <64>;
+> +	intc: interrupt-controller {
+> +        	compatible = "marvell,orion-intc", "marvell,intc";
+> +		interrupt-controller;
+> +		#interrupt-cells = <1>;
+> +                reg = <0xfed20204 0x04>,
+> +		      <0xfed20214 0x04>;
+> +        };
+> diff --git a/arch/arm/boot/dts/kirkwood.dtsi b/arch/arm/boot/dts/kirkwood.dtsi
+> index 926528b..8eab7c4 100644
+> --- a/arch/arm/boot/dts/kirkwood.dtsi
+> +++ b/arch/arm/boot/dts/kirkwood.dtsi
+> @@ -2,6 +2,15 @@
+>  
+>  / {
+>  	compatible = "mrvl,kirkwood";
+> +	interrupt-parent = <&intc>;
+> +
+> +	intc: interrupt-controller {
+> +        	compatible = "marvell,orion-intc", "marvell,intc";
+> +		interrupt-controller;
+> +		#interrupt-cells = <1>;
+> +                reg = <0xfed20204 0x04>,
+> +		      <0xfed20214 0x04>;
+> +        };
+>  
+>  	ocp@f1000000 {
+>  		compatible = "simple-bus";
+> diff --git a/arch/arm/mach-kirkwood/board-dt.c b/arch/arm/mach-kirkwood/board-dt.c
+> index edc3f8a..fa51586 100644
+> --- a/arch/arm/mach-kirkwood/board-dt.c
+> +++ b/arch/arm/mach-kirkwood/board-dt.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/init.h>
+>  #include <linux/of.h>
+>  #include <linux/of_platform.h>
+> +#include <linux/of_irq.h>
+>  #include <linux/kexec.h>
+>  #include <asm/mach/arch.h>
+>  #include <asm/mach/map.h>
+> @@ -80,11 +81,30 @@ static const char *kirkwood_dt_board_compat[] = {
+>  	NULL
+>  };
+>  
+> +static int __init kirkwood_add_irq_domain(struct device_node *np,
+> +					  struct device_node *interrupt_parent)
+> +{
+> +	kirkwood_init_irq();
+> +	irq_domain_add_legacy(np, 64, 0, 0, &irq_domain_simple_ops, NULL);
 
-This and gpio-base are wrong. The DT should describe h/w and these are
-Linux gpio and irq numbers. You need to create an irqdomain for the gpio
-controller.
+The irqdomain should really be integrated into the interrupt controller
+itself rather than bolted on top and doesn't need to be DT only. In the
+process, use irq_data.hwirq rather than fixed Linux virq to hwirq
+conversion.
+
+Once all interrupts are bound using DT, a linear domain should be used.
+But that may take some time.
 
 Rob
 
-> +	};
-> diff --git a/arch/arm/boot/dts/kirkwood.dtsi b/arch/arm/boot/dts/kirkwood.dtsi
-> index 3091c01..6de66dc 100644
-> --- a/arch/arm/boot/dts/kirkwood.dtsi
-> +++ b/arch/arm/boot/dts/kirkwood.dtsi
-> @@ -18,6 +18,26 @@
->  		#address-cells = <1>;
->  		#size-cells = <1>;
->  
-> +		gpio0: gpio@10100 {
-> +			compatible = "marvell,orion-gpio";
-> +			#gpio-cells = <2>;
-> +			gpio-controller;
-> +			reg = <0x10100 0x40>;
-> +			gpio-base = <0>;
-> +			ngpio = <32>;
-> +			secondary-irq-base = <64>;
-> +		};
-> +
-> +		gpio1: gpio@10140 {
-> +			compatible = "marvell,orion-gpio";
-> +			#gpio-cells = <2>;
-> +			gpio-controller;
-> +			reg = <0x10140 0x40>;
-> +			gpio-base = <32>;
-> +			ngpio = <18>;
-> +			secondary-irq-base = <96>;
-> +		};
-> +
->  		serial@12000 {
->  			compatible = "ns16550a";
->  			reg = <0x12000 0x100>;
-> diff --git a/arch/arm/mach-kirkwood/irq.c b/arch/arm/mach-kirkwood/irq.c
-> index c4c68e5..81340c2 100644
-> --- a/arch/arm/mach-kirkwood/irq.c
-> +++ b/arch/arm/mach-kirkwood/irq.c
-> @@ -24,25 +24,33 @@ static void gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
->  	orion_gpio_irq_handler((irq - IRQ_KIRKWOOD_GPIO_LOW_0_7) << 3);
->  }
->  
-> -void __init kirkwood_init_irq(void)
-> +static void __init kirkwood_init_gpio(void)
->  {
-> -	orion_irq_init(0, (void __iomem *)(IRQ_VIRT_BASE + IRQ_MASK_LOW_OFF));
-> -	orion_irq_init(32, (void __iomem *)(IRQ_VIRT_BASE + IRQ_MASK_HIGH_OFF));
-> -
->  	/*
->  	 * Initialize gpiolib for GPIOs 0-49.
->  	 */
->  	orion_gpio_init(0, 32, GPIO_LOW_VIRT_BASE, 0,
->  			IRQ_KIRKWOOD_GPIO_START);
-> +	orion_gpio_init(32, 18, GPIO_HIGH_VIRT_BASE, 0,
-> +			IRQ_KIRKWOOD_GPIO_START + 32);
-> +}
-> +void __init kirkwood_init_irq(void)
-> +{
-> +	orion_irq_init(0, (void __iomem *)(IRQ_VIRT_BASE + IRQ_MASK_LOW_OFF));
-> +	orion_irq_init(32, (void __iomem *)(IRQ_VIRT_BASE + IRQ_MASK_HIGH_OFF));
-> +
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_LOW_0_7, gpio_irq_handler);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_LOW_8_15, gpio_irq_handler);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_LOW_16_23, gpio_irq_handler);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_LOW_24_31, gpio_irq_handler);
->  
-> -	orion_gpio_init(32, 18, GPIO_HIGH_VIRT_BASE, 0,
-> -			IRQ_KIRKWOOD_GPIO_START + 32);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_HIGH_0_7, gpio_irq_handler);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_HIGH_8_15, gpio_irq_handler);
->  	irq_set_chained_handler(IRQ_KIRKWOOD_GPIO_HIGH_16_23,
->  				gpio_irq_handler);
-> +
-> +	/* Try initializing the GPIO controllers via DT.  If zero
-> +	   controllers are found, fall back to hard coded values */
-> +	if (orion_gpio_init_dt() == 0)
-> +		kirkwood_init_gpio();
->  }
-> diff --git a/arch/arm/plat-orion/gpio.c b/arch/arm/plat-orion/gpio.c
-> index af95af2..cc29367 100644
-> --- a/arch/arm/plat-orion/gpio.c
-> +++ b/arch/arm/plat-orion/gpio.c
-> @@ -17,6 +17,9 @@
->  #include <linux/io.h>
->  #include <linux/gpio.h>
->  #include <linux/leds.h>
-> +#include <linux/of.h>
-> +#include <linux/of_address.h>
-> +#include <plat/gpio.h>
->  
->  /*
->   * GPIO unit register offsets.
-> @@ -401,8 +404,9 @@ static int gpio_irq_set_type(struct irq_data *d, u32 type)
->  	return 0;
->  }
->  
-> -void __init orion_gpio_init(int gpio_base, int ngpio,
-> -			    u32 base, int mask_offset, int secondary_irq_base)
-> +void __init _orion_gpio_init(int gpio_base, int ngpio,
-> +			    void __iomem *base, int mask_offset,
-> +			     int secondary_irq_base, struct device_node *np)
->  {
->  	struct orion_gpio_chip *ochip;
->  	struct irq_chip_generic *gc;
-> @@ -426,8 +430,11 @@ void __init orion_gpio_init(int gpio_base, int ngpio,
->  	ochip->chip.base = gpio_base;
->  	ochip->chip.ngpio = ngpio;
->  	ochip->chip.can_sleep = 0;
-> +#ifdef CONFIG_OF
-> +	ochip->chip.of_node = np;
-> +#endif
->  	spin_lock_init(&ochip->lock);
-> -	ochip->base = (void __iomem *)base;
-> +	ochip->base = base;
->  	ochip->valid_input = 0;
->  	ochip->valid_output = 0;
->  	ochip->mask_offset = mask_offset;
-> @@ -469,6 +476,15 @@ void __init orion_gpio_init(int gpio_base, int ngpio,
->  			       IRQ_NOREQUEST, IRQ_LEVEL | IRQ_NOPROBE);
->  }
->  
-> +/* None DT version */
-> +void __init orion_gpio_init(int gpio_base, int ngpio,
-> +			    u32 base, int mask_offset, int secondary_irq_base)
-> +
-> +{
-> +	_orion_gpio_init(gpio_base, ngpio, (void __iomem *)base,
-> +			 mask_offset, secondary_irq_base, NULL);
-> +}
-> +
->  void orion_gpio_irq_handler(int pinoff)
->  {
->  	struct orion_gpio_chip *ochip;
-> @@ -502,3 +518,49 @@ void orion_gpio_irq_handler(int pinoff)
->  		generic_handle_irq(irq);
->  	}
->  }
-> +
-> +/* Configure all the gpio chips we can find. Return the number
-> + * actually configured, so that we can fall back to the old way,
-> + * for none-DT platforms.*/
-> +#ifdef CONFIG_OF
-> +int __init orion_gpio_init_dt(void)
-> +{
-> +	int chips = 0;
-> +
-> +	struct device_node *np = NULL;
-> +	int gpio_base, ngpio, mask_offset, secondary_irq_base;
-> +	void __iomem *base;
-> +	int ret;
-> +
-> +	for_each_compatible_node(np, NULL, "marvell,orion-gpio") {
-> +		ret = of_property_read_u32(np, "gpio-base", &gpio_base);
-> +		if (ret)
-> +			continue;
-> +		ret = of_property_read_u32(np, "ngpio", &ngpio);
-> +		if (ret)
-> +			continue;
-> +		ret = of_property_read_u32(np, "mask-offset", &mask_offset);
-> +		if (ret == -EINVAL)
-> +			mask_offset = 0;
-> +		else
-> +			continue;
-> +		ret = of_property_read_u32(np, "secondary-irq-base",
-> +					   &secondary_irq_base);
-> +		if (ret)
-> +			continue;
-> +		base = of_iomap(np, 0);
-> +		if (!base)
-> +			continue;
-> +
-> +		_orion_gpio_init(gpio_base, ngpio, base, mask_offset,
-> +				 secondary_irq_base, np);
-> +		chips++;
-> +	}
-> +	return chips;
-> +}
-> +#else
-> +int __init orion_gpio_init_dt(void)
-> +{
 > +	return 0;
+> +}rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+> +
+> +static const struct of_device_id kirkwood_irq_match[] = {
+> +	{ .compatible = "marvell,orion-intc",
+> +	  .data = kirkwood_add_irq_domain, },
+> +	{},
+> +};
+> +
+> +static void __init kirkwood_dt_init_irq(void)
+> +{
+> +	of_irq_init(kirkwood_irq_match);
 > +}
-> +#endif
-> diff --git a/arch/arm/plat-orion/include/plat/gpio.h b/arch/arm/plat-orion/include/plat/gpio.h
-> index bec0c98..68039de 100644
-> --- a/arch/arm/plat-orion/include/plat/gpio.h
-> +++ b/arch/arm/plat-orion/include/plat/gpio.h
-> @@ -30,6 +30,8 @@ void orion_gpio_set_valid(unsigned pin, int mode);
->  void __init orion_gpio_init(int gpio_base, int ngpio,
->  			    u32 base, int mask_offset, int secondary_irq_base);
->  
-> +/* Initialize gpiolib using DT. */
-> +int __init orion_gpio_init_dt(void);
->  /*
->   * GPIO interrupt handling.
->   */
+> +
+>  DT_MACHINE_START(KIRKWOOD_DT, "Marvell Kirkwood (Flattened Device Tree)")
+>  	/* Maintainer: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org> */
+>  	.map_io		= kirkwood_map_io,
+>  	.init_early	= kirkwood_init_early,
+> -	.init_irq	= kirkwood_init_irq,
+> +	.init_irq	= kirkwood_dt_init_irq,
+>  	.timer		= &kirkwood_timer,
+>  	.init_machine	= kirkwood_dt_init,
+>  	.restart	= kirkwood_restart,

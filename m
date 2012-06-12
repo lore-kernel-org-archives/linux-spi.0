@@ -1,13 +1,13 @@
 From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 2/3] spi/pl022: delete DB5500 support
-Date: Tue, 12 Jun 2012 16:20:08 +0200
-Message-ID: <1339510808-13368-1-git-send-email-linus.walleij@stericsson.com>
+Subject: [PATCH 1/3] spi/pl022: disable port when unused
+Date: Tue, 12 Jun 2012 16:19:56 +0200
+Message-ID: <1339510796-13333-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+Cc: Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>, Viresh Kumar <viresh.kumar-qxv4g6HH51o@public.gmane.org>,
+	stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -21,49 +21,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
-This ASIC variant has been deleted from the ARM tree, no need
-to keep support around.
+Commit ffbbdd21329f3e15eeca6df2d4bc11c04d9d91c0
+"spi: create a message queueing infrastructure"
+Accidentally deleted the logic to disable the port
+when unused leading to higher power consumption.
+Fix this up.
 
+Cc: stable-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Cc: Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+Signed-off-by: Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/spi/spi-pl022.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 469eb28..5eab281 100644
+index 400ae21..469eb28 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -2256,15 +2256,6 @@ static struct vendor_data vendor_st_pl023 = {
- 	.loopback = false,
- };
+@@ -489,6 +489,11 @@ static void giveback(struct pl022 *pl022)
+ 	pl022->cur_transfer = NULL;
+ 	pl022->cur_chip = NULL;
+ 	spi_finalize_current_message(pl022->master);
++
++	/* disable the SPI/SSP operation */
++	writew((readw(SSP_CR1(pl022->virtbase)) &
++		(~SSP_CR1_MASK_SSE)), SSP_CR1(pl022->virtbase));
++
+ }
  
--static struct vendor_data vendor_db5500_pl023 = {
--	.fifodepth = 32,
--	.max_bpw = 32,
--	.unidir = false,
--	.extended_cr = true,
--	.pl023 = true,
--	.loopback = true,
--};
--
- static struct amba_id pl022_ids[] = {
- 	{
- 		/*
-@@ -2296,11 +2287,6 @@ static struct amba_id pl022_ids[] = {
- 		.mask	= 0xffffffff,
- 		.data	= &vendor_st_pl023,
- 	},
--	{
--		.id	= 0x10080023,
--		.mask	= 0xffffffff,
--		.data	= &vendor_db5500_pl023,
--	},
- 	{ 0, 0 },
- };
- 
+ /**
 -- 
 1.7.9.2
 

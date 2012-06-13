@@ -1,75 +1,41 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: [PATCH] SPI: OMAP: fix over-eager devm_xxx() conversion (was: Re:
-	[CFT 07/11] spi: omap2-mcspi: add DMA engine support)
-Date: Thu, 14 Jun 2012 15:07:12 +0100
-Message-ID: <20120614140712.GH31187@n2100.arm.linux.org.uk>
-References: <20120607110610.GB15973@n2100.arm.linux.org.uk> <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk> <20120614115335.GE31187@n2100.arm.linux.org.uk> <20120614120842.GF31187@n2100.arm.linux.org.uk> <20120614125012.GG31187@n2100.arm.linux.org.uk>
+From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
+	electronique
+Date: Thu, 14 Jun 2012 00:17:08 +0200
+Message-ID: <1339625828.4fd91164ca1b8@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net
-To: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120614125012.GG31187@n2100.arm.linux.org.uk>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Russell King <rmk+kernel@arm.linux.org.uk>
-Subject: [PATCH] SPI: OMAP: fix over-eager devm_xxx() conversion
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-1a77b127ae (OMAP : SPI : use devm_* functions) converted the SPI
-device controller state to use devm_kzalloc().  Unfortunately, this
-is used against an unbound struct device, which results in the
-following when the device is eventually bound to its driver:
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNTAzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNCAwMDowMDowMSZlPTEmaD0xMzUwMiZmPTEzNTAzJmc9MTM1MDM=3D
 
-------------[ cut here ]------------
-WARNING: at /home/rmk/git/linux-rmk/drivers/base/dd.c:257 driver_probe_device+0x78/0x21c()
-Modules linked in:
-Backtrace:
-[<c0017d0c>] (dump_backtrace+0x0/0x10c) from [<c033e208>] (dump_stack+0x18/0x1c) r7:00000000 r6:c01ff28c r5:c040050c r4:00000101
-[<c033e1f0>] (dump_stack+0x0/0x1c) from [<c00337ec>] (warn_slowpath_common+0x58/0x70)
-[<c0033794>] (warn_slowpath_common+0x0/0x70) from [<c0033828>] (warn_slowpath_null+0x24/0x2c)
-[<c0033804>] (warn_slowpath_null+0x0/0x2c) from [<c01ff28c>] (driver_probe_device+0x78/0x21c)
-[<c01ff214>] (driver_probe_device+0x0/0x21c) from [<c01ff49c>] (__driver_attach+0x6c/0x90)
-[<c01ff430>] (__driver_attach+0x0/0x90) from [<c01fda70>] (bus_for_each_dev+0x58/0x98)
-[<c01fda18>] (bus_for_each_dev+0x0/0x98) from [<c01ff0f4>] (driver_attach+0x20/0x28)
-[<c01ff0d4>] (driver_attach+0x0/0x28) from [<c01fe2f4>] (bus_add_driver+0xb4/0x230)
-[<c01fe240>] (bus_add_driver+0x0/0x230) from [<c01ffb24>] (driver_register+0xac/0x138)
-[<c01ffa78>] (driver_register+0x0/0x138) from [<c0215d4c>] (spi_register_driver+0x4c/0x60)
-[<c0215d00>] (spi_register_driver+0x0/0x60) from [<c045414c>] (ks8851_init+0x14/0x1c)
-[<c0454138>] (ks8851_init+0x0/0x1c) from [<c0008770>] (do_one_initcall+0x9c/0x164)
-[<c00086d4>] (do_one_initcall+0x0/0x164) from [<c0436410>] (kernel_init+0x128/0x210)
-[<c04362e8>] (kernel_init+0x0/0x210) from [<c0038754>] (do_exit+0x0/0x72c)
----[ end trace 4dcda79f5e89dd84 ]---
-ks8851 spi1.0: message enable is 0
-ks8851 spi1.0: eth0: revision 0, MAC 08:00:28:01:4d:c6, IRQ 194, has EEPROM
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNTAzJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNCAwMDowMDowMSZlPTEmaD0xMzUwMiZmPTEzNTAzJmc9MTM1MD=
+M=3D
 
-Fix this by partially reverting the original commit.
 
-Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 9d3409a..6263b0f 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -829,7 +829,7 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
- 
- 	if (!cs) {
--		cs = devm_kzalloc(&spi->dev , sizeof *cs, GFP_KERNEL);
-+		cs = kzalloc(sizeof *cs, GFP_KERNEL);
- 		if (!cs)
- 			return -ENOMEM;
- 		cs->base = mcspi->base + spi->chip_select * 0x14;
-@@ -869,6 +869,7 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
- 		cs = spi->controller_state;
- 		list_del(&cs->node);
- 
-+		kfree(cs);
- 	}
- 
- 	if (spi->chip_select < spi->master->num_chipselect) {
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

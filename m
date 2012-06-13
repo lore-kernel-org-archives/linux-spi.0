@@ -1,36 +1,40 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH 5/9] ARM: kirkwood: use devicetree for orion-spi
-Date: Wed, 13 Jun 2012 21:10:30 +0000
-Message-ID: <201206132110.31011.arnd@arndb.de>
-References: <1339324322-29388-6-git-send-email-andrew@lunn.ch>
+From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
+Date: Thu, 14 Jun 2012 00:18:54 +0200
+Message-ID: <1339625934.4fd911ce0bb8d@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	machael-QKn5cuLxLXY@public.gmane.org, Michael Walle <micheal-QKn5cuLxLXY@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1339324322-29388-6-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sunday 10 June 2012, Andrew Lunn wrote:
-> @@ -26,6 +26,11 @@ static struct of_device_id kirkwood_dt_match_table[] __initdata = {
->         { }
->  };
->  
-> +struct of_dev_auxdata kirkwood_auxdata_lookup[] __initdata = {
-> +       OF_DEV_AUXDATA("marvell,orion-spi", 0xf1010600, "orion_spi.0", NULL),
-> +       {},
-> +};
-> +
->  static void __init kirkwood_dt_init(void)
->  {
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-How about instead adding the clkdev for "f1010600.spi" so you don't need the auxdata?
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNTA0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNCAwMDoxMDowMSZlPTEmaD0xMzUwMyZmPTEzNTA0Jmc9MTM1MDQ=3D
 
-	Arnd
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNTA0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNCAwMDoxMDowMSZlPTEmaD0xMzUwMyZmPTEzNTA0Jmc9MTM1MD=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

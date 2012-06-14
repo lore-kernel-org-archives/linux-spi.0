@@ -1,13 +1,9 @@
-From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
-	electronique
-Date: Thu, 14 Jun 2012 00:17:08 +0200
-Message-ID: <1339625828.4fd91164ca1b8@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?1PjQob3j?= <hengxsy2-9Onoh4P/yGk@public.gmane.org>
+Subject: [SPAM] 浠ｉ噷發漂，稅率0.8%左右，验后付费
+Date: Fri, 15 Jun 2012 06:11:43 +0800
+Message-ID: <E1SfIIO-0004lr-OG@sfs-ml-1.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============5131345871723446732=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +15,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+--===============5131345871723446732==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNTAzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xNCAwMDowMDowMSZlPTEmaD0xMzUwMiZmPTEzNTAzJmc9MTM1MDM=3D
+您好！
+    恒兴实业有限公司是家从事国内外贸易实业行业实力雄厚的公司，我们拥有综合能力强和专业水平过硬的团队，丰富完善的公司经营运作和服务，用最经济的花费为您提供最有效、可行、优质的服务。我司以高效率，诚实守信立足于市场行业中，深得稅企双方的信赖与支持。
+    一、代理服务范围有：商品销售、广告业、建筑业、服务业、租赁业、培训、科技类、印刷、运输、医疗嘌…等。
+    二、本公司收取费用,按开嘌的总金额0.8%左右来收取“金额大可再优惠”。
+    三、郑重承诺：所有嘌据可上网查询或到相关部门验证和过帐后付款，并且严格履行为贵公司保密制度。
+    注：若贵公司(厂家)如有需要，欢迎来电洽谈!
+    联系人：曾慧悦   电话：13724865833
+           (如有打搅，敬请见谅!) 
+                                 
+                             恒兴实业有限公司
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNTAzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xNCAwMDowMDowMSZlPTEmaD0xMzUwMiZmPTEzNTAzJmc9MTM1MD=
-M=3D
 
+--===============5131345871723446732==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+--===============5131345871723446732==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============5131345871723446732==--

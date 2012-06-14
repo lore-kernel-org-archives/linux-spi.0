@@ -1,120 +1,337 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [CFT 07/11] spi: omap2-mcspi: add DMA engine support
-Date: Thu, 14 Jun 2012 13:50:13 +0100
-Message-ID: <20120614125012.GG31187@n2100.arm.linux.org.uk>
-References: <20120607110610.GB15973@n2100.arm.linux.org.uk> <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk> <20120614115335.GE31187@n2100.arm.linux.org.uk> <20120614120842.GF31187@n2100.arm.linux.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net
-To: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120614120842.GF31187@n2100.arm.linux.org.uk>
-Sender: linux-omap-owner@vger.kernel.org
+From: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Subject: [PATCH] spi/pl022: add devicetree support
+Date: Thu, 14 Jun 2012 10:07:11 -0300
+Message-ID: <1339679231-14576-1-git-send-email-aletes.xgr@gmail.com>
+Cc: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>,
+	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Roland Stigge <stigge@antcom.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 14, 2012 at 01:08:43PM +0100, Russell King - ARM Linux wrote:
-> On Thu, Jun 14, 2012 at 12:53:35PM +0100, Russell King - ARM Linux wrote:
-> > On Thu, Jun 07, 2012 at 12:08:35PM +0100, Russell King wrote:
-> > > Add DMA engine support to the OMAP SPI driver.  This supplements the
-> > > private DMA API implementation contained within this driver, and the
-> > > driver can be independently switched at build time between using DMA
-> > > engine and the private DMA API for the transmit and receive sides.
-> > > 
-> > > Tested-by: Shubhrajyoti <shubhrajyoti@ti.com>
-> > > Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> > > Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
-> > 
-> > Right, now that we have working OMAP in mainline again...
-> 
-> Another warning:
-> 
-> ------------[ cut here ]------------
-> WARNING: at /home/rmk/git/linux-rmk/drivers/base/dd.c:257 driver_probe_device+0x78/0x21c()
-> Modules linked in:
-> Backtrace:
-> [<c0017d0c>] (dump_backtrace+0x0/0x10c) from [<c033e208>] (dump_stack+0x18/0x1c) r7:00000000 r6:c01ff28c r5:c040050c r4:00000101
-> [<c033e1f0>] (dump_stack+0x0/0x1c) from [<c00337ec>] (warn_slowpath_common+0x58/0x70)
-> [<c0033794>] (warn_slowpath_common+0x0/0x70) from [<c0033828>] (warn_slowpath_null+0x24/0x2c)
->  r8:c04aa4d8 r7:c04aa63c r6:de70ce00 r5:de70ce34 r4:de70ce00
-> [<c0033804>] (warn_slowpath_null+0x0/0x2c) from [<c01ff28c>] (driver_probe_device+0x78/0x21c)
-> [<c01ff214>] (driver_probe_device+0x0/0x21c) from [<c01ff49c>] (__driver_attach+0x6c/0x90)
->  r7:de443ec8 r6:c04aa63c r5:de70ce34 r4:de70ce00
-> [<c01ff430>] (__driver_attach+0x0/0x90) from [<c01fda70>] (bus_for_each_dev+0x58/0x98)
->  r6:c04aa63c r5:c01ff430 r4:00000000
-> [<c01fda18>] (bus_for_each_dev+0x0/0x98) from [<c01ff0f4>] (driver_attach+0x20/0x28)
->  r7:de6c9e80 r6:c04aa63c r5:c04aa63c r4:c0465b80
-> [<c01ff0d4>] (driver_attach+0x0/0x28) from [<c01fe2f4>] (bus_add_driver+0xb4/0x230)
-> [<c01fe240>] (bus_add_driver+0x0/0x230) from [<c01ffb24>] (driver_register+0xac/0x138)
-> [<c01ffa78>] (driver_register+0x0/0x138) from [<c0215d4c>] (spi_register_driver+0x4c/0x60)
->  r8:0000005b r7:c045f848 r6:00000006 r5:00000018 r4:c0465b80
-> [<c0215d00>] (spi_register_driver+0x0/0x60) from [<c045414c>] (ks8851_init+0x14/0x1c)
-> [<c0454138>] (ks8851_init+0x0/0x1c) from [<c0008770>] (do_one_initcall+0x9c/0x164)
-> [<c00086d4>] (do_one_initcall+0x0/0x164) from [<c0436410>] (kernel_init+0x128/0x210)
-> [<c04362e8>] (kernel_init+0x0/0x210) from [<c0038754>] (do_exit+0x0/0x72c)
-> ---[ end trace 4dcda79f5e89dd84 ]---
-> ks8851 spi1.0: message enable is 0
-> ks8851 spi1.0: eth0: revision 0, MAC 08:00:28:01:4d:c6, IRQ 194, has EEPROM
-> 
-> The relevant line:
-> 
->         WARN_ON(!list_empty(&dev->devres_head));
-> 
-> Which suggests that someone is using devres against the struct device for
-> the KS8851 device before the driver is bound.  That's a bug, plain and
-> simple.  I've not yet been able to track down what it is or where it's
-> being done, but it is something that has been introduced during the last
-> merge window.
-> 
-> devm_* APIs should only be used by _drivers_ against the struct device
-> that they are driving - because the lifetime of these things is bounded
-> by the point at which the driver is bound to that struct device, to the
-> point that it is unbound from that struct device (and at that point,
-> all devm_* stuff against the struct device gets destroyed.)
+Add the chipselect array and cur_cs properties to pl022 main structure
 
-This commit introduced the bug:
+Add a wrapper function to decide if the cs should be controlled by the
+cs_control callback or the chipselect gpio
 
-commit 1a77b127ae147f5827043a9896d7f4cb248b402e
-Author: Shubhrajyoti D <shubhrajyoti@ti.com>
-Date:   Sat Mar 17 12:44:01 2012 +0530
+Populate chipselect property from cs-gpios
 
-    OMAP : SPI : use devm_* functions
+Populate master->dev.of_node, so the spi bus can find child spi
+devices and register them
 
-    The various devm_* functions allocate memory that is released when a driver
-    detaches. This patch uses devm_request_and_ioremap
-    to request memory in probe function. Since the freeing is not
-    needed the calls are deleted from remove function.Also use
-    use devm_kzalloc for the cs memory allocation.
+At pl022 setup, fill chip_data structure from dt nodes, if not provided
+by platform.
 
-    Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+Signed-off-by: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Tested-by: Roland Stigge <stigge@antcom.de>
+---
+ .../devicetree/bindings/spi/spi_pl022.txt          |   15 +++
+ drivers/spi/spi-pl022.c                            |  117 ++++++++++++++++----
+ 2 files changed, 112 insertions(+), 20 deletions(-)
 
-and sure enough, reverting this makes the warning go away.
+diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+index 306ec3f..b089ec7 100644
+--- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
++++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+@@ -6,7 +6,22 @@ Required properties:
+ - interrupts : Should contain SPI controller interrupt
+ 
+ Optional properties:
++- pl022,num-chipselects : total number of chipselects
+ - cs-gpios : should specify GPIOs used for chipselects.
+   The gpios will be referred to as reg = <index> in the SPI child nodes.
+   If unspecified, a single SPI device without a chip select can be used.
+ 
++SPI slave nodes must be children of the SPI master node and can
++contain the following properties.
++See include/linux/amba/pl022.h for more details
++
++- pl022,hierarchy : master or slave interface
++- pl022,interface : interface type
++- pl022,slave-tx-disable : disconnect tx line in slave mode
++- pl022,com-mode : polling, interrupt or dma
++- pl022,rx-level-trig : Rx FIFO watermark level
++- pl022,tx-level-trig : Tx FIFO watermark level
++- pl022,ctrl-len : Microwire interface: Control length
++- pl022,wait-state : Microwire interface: Wait state
++- pl022,duplex : Microwire interface: Full/Half duplex
++
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 400ae21..50d1644 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -40,6 +40,8 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/scatterlist.h>
+ #include <linux/pm_runtime.h>
++#include <linux/gpio.h>
++#include <linux/of_gpio.h>
+ 
+ /*
+  * This macro is used to define some register default values.
+@@ -389,6 +391,8 @@ struct pl022 {
+ 	char				*dummypage;
+ 	bool				dma_running;
+ #endif
++	int cur_cs;
++	int chipselect[0];
+ };
+ 
+ /**
+@@ -433,6 +437,14 @@ static void null_cs_control(u32 command)
+ 	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
+ }
+ 
++static void pl022_cs_control(struct pl022 *pl022, u32 command)
++{
++	if (gpio_is_valid(pl022->cur_cs))
++		gpio_set_value(pl022->cur_cs, command);
++	else
++		pl022->cur_chip->cs_control(command);
++}
++
+ /**
+  * giveback - current spi_message is over, schedule next message and call
+  * callback of this message. Assumes that caller already
+@@ -479,7 +491,7 @@ static void giveback(struct pl022 *pl022)
+ 		if (next_msg && next_msg->spi != pl022->cur_msg->spi)
+ 			next_msg = NULL;
+ 		if (!next_msg || pl022->cur_msg->state == STATE_ERROR)
+-			pl022->cur_chip->cs_control(SSP_CHIP_DESELECT);
++			pl022_cs_control(pl022, SSP_CHIP_DESELECT);
+ 		else
+ 			pl022->next_msg_cs_active = true;
+ 
+@@ -813,8 +825,7 @@ static void dma_callback(void *data)
+ 	/* Update total bytes transferred */
+ 	msg->actual_length += pl022->cur_transfer->len;
+ 	if (pl022->cur_transfer->cs_change)
+-		pl022->cur_chip->
+-			cs_control(SSP_CHIP_DESELECT);
++		pl022_cs_control(pl022, SSP_CHIP_DESELECT);
+ 
+ 	/* Move to next transfer */
+ 	msg->state = next_transfer(pl022);
+@@ -1247,8 +1258,7 @@ static irqreturn_t pl022_interrupt_handler(int irq, void *dev_id)
+ 		/* Update total bytes transferred */
+ 		msg->actual_length += pl022->cur_transfer->len;
+ 		if (pl022->cur_transfer->cs_change)
+-			pl022->cur_chip->
+-				cs_control(SSP_CHIP_DESELECT);
++			pl022_cs_control(pl022, SSP_CHIP_DESELECT);
+ 		/* Move to next transfer */
+ 		msg->state = next_transfer(pl022);
+ 		tasklet_schedule(&pl022->pump_transfers);
+@@ -1333,7 +1343,7 @@ static void pump_transfers(unsigned long data)
+ 
+ 		/* Reselect chip select only if cs_change was requested */
+ 		if (previous->cs_change)
+-			pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
++			pl022_cs_control(pl022, SSP_CHIP_SELECT);
+ 	} else {
+ 		/* STATE_START */
+ 		message->state = STATE_RUNNING;
+@@ -1372,7 +1382,7 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
+ 
+ 	/* Enable target chip, if not already active */
+ 	if (!pl022->next_msg_cs_active)
+-		pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
++		pl022_cs_control(pl022, SSP_CHIP_SELECT);
+ 
+ 	if (set_up_next_transfer(pl022, pl022->cur_transfer)) {
+ 		/* Error path */
+@@ -1424,12 +1434,12 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 			if (previous->delay_usecs)
+ 				udelay(previous->delay_usecs);
+ 			if (previous->cs_change)
+-				pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
++				pl022_cs_control(pl022, SSP_CHIP_SELECT);
+ 		} else {
+ 			/* STATE_START */
+ 			message->state = STATE_RUNNING;
+ 			if (!pl022->next_msg_cs_active)
+-				pl022->cur_chip->cs_control(SSP_CHIP_SELECT);
++				pl022_cs_control(pl022, SSP_CHIP_SELECT);
+ 		}
+ 
+ 		/* Configuration Changing Per Transfer */
+@@ -1461,7 +1471,7 @@ static void do_polling_transfer(struct pl022 *pl022)
+ 		/* Update total byte transferred */
+ 		message->actual_length += pl022->cur_transfer->len;
+ 		if (pl022->cur_transfer->cs_change)
+-			pl022->cur_chip->cs_control(SSP_CHIP_DESELECT);
++			pl022_cs_control(pl022, SSP_CHIP_DESELECT);
+ 		/* Move to next transfer */
+ 		message->state = next_transfer(pl022);
+ 	}
+@@ -1490,6 +1500,7 @@ static int pl022_transfer_one_message(struct spi_master *master,
+ 
+ 	/* Setup the SPI using the per chip configuration */
+ 	pl022->cur_chip = spi_get_ctldata(msg->spi);
++	pl022->cur_cs = pl022->chipselect[msg->spi->chip_select];
+ 
+ 	restore_state(pl022);
+ 	flush(pl022);
+@@ -1733,7 +1744,7 @@ static int calculate_effective_freq(struct pl022 *pl022, int freq, struct
+  * A piece of default chip info unless the platform
+  * supplies it.
+  */
+-static const struct pl022_config_chip pl022_default_chip_info = {
++static struct pl022_config_chip pl022_default_chip_info = {
+ 	.com_mode = POLLING_TRANSFER,
+ 	.iface = SSP_INTERFACE_MOTOROLA_SPI,
+ 	.hierarchy = SSP_SLAVE,
+@@ -1761,12 +1772,14 @@ static const struct pl022_config_chip pl022_default_chip_info = {
+ static int pl022_setup(struct spi_device *spi)
+ {
+ 	struct pl022_config_chip const *chip_info;
++	struct pl022_config_chip chip_info_dt;
+ 	struct chip_data *chip;
+ 	struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
+ 	int status = 0;
+ 	struct pl022 *pl022 = spi_master_get_devdata(spi->master);
+ 	unsigned int bits = spi->bits_per_word;
+ 	u32 tmp;
++	struct device_node *np = spi->dev.of_node;
+ 
+ 	if (!spi->max_speed_hz)
+ 		return -EINVAL;
+@@ -1789,10 +1802,36 @@ static int pl022_setup(struct spi_device *spi)
+ 	chip_info = spi->controller_data;
+ 
+ 	if (chip_info == NULL) {
+-		chip_info = &pl022_default_chip_info;
+-		/* spi_board_info.controller_data not is supplied */
+-		dev_dbg(&spi->dev,
+-			"using default controller_data settings\n");
++		if (np) {
++			chip_info_dt = pl022_default_chip_info;
++
++			of_property_read_u32(np, "pl022,hierarchy",
++				&chip_info_dt.hierarchy);
++			of_property_read_u32(np, "pl022,interface",
++				&chip_info_dt.iface);
++			chip_info_dt.slave_tx_disable =
++				of_property_read_bool(np,
++					"pl022,slave-tx-disable");
++			of_property_read_u32(np, "pl022,com-mode",
++				&chip_info_dt.com_mode);
++			of_property_read_u32(np, "pl022,rx-level-trig",
++				&chip_info_dt.rx_lev_trig);
++			of_property_read_u32(np, "pl022,tx-level-trig",
++				&chip_info_dt.tx_lev_trig);
++			of_property_read_u32(np, "pl022,ctrl-len",
++				&chip_info_dt.ctrl_len);
++			of_property_read_u32(np, "pl022,wait-state",
++				&chip_info_dt.wait_state);
++			of_property_read_u32(np, "pl022,duplex",
++				&chip_info_dt.duplex);
++
++			chip_info = &chip_info_dt;
++		} else {
++			chip_info = &pl022_default_chip_info;
++			/* spi_board_info.controller_data not is supplied */
++			dev_dbg(&spi->dev,
++				"using default controller_data settings\n");
++		}
+ 	} else
+ 		dev_dbg(&spi->dev,
+ 			"using user supplied controller_data settings\n");
+@@ -1835,8 +1874,9 @@ static int pl022_setup(struct spi_device *spi)
+ 	chip->xfer_type = chip_info->com_mode;
+ 	if (!chip_info->cs_control) {
+ 		chip->cs_control = null_cs_control;
+-		dev_warn(&spi->dev,
+-			 "chip select function is NULL for this chip\n");
++		if (!gpio_is_valid(pl022->chipselect[spi->chip_select]))
++			dev_warn(&spi->dev,
++				 "chip select function is NULL for this chip\n");
+ 	} else
+ 		chip->cs_control = chip_info->cs_control;
+ 
+@@ -1988,7 +2028,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	struct pl022_ssp_controller *platform_info = adev->dev.platform_data;
+ 	struct spi_master *master;
+ 	struct pl022 *pl022 = NULL;	/*Data for this driver */
+-	int status = 0;
++	struct device_node *np = adev->dev.of_node;
++	int status = 0, i, num_cs;
+ 
+ 	dev_info(&adev->dev,
+ 		 "ARM PL022 driver, device ID: 0x%08x\n", adev->periphid);
+@@ -1998,8 +2039,14 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		goto err_no_pdata;
+ 	}
+ 
++	num_cs = platform_info->num_chipselect;
++#ifdef CONFIG_OF
++	of_property_read_u32(np, "pl022,num-chipselects", &num_cs);
++#endif
++
+ 	/* Allocate master with space for data */
+-	master = spi_alloc_master(dev, sizeof(struct pl022));
++	master = spi_alloc_master(dev,
++		sizeof(struct pl022) + sizeof(int) * num_cs);
+ 	if (master == NULL) {
+ 		dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
+ 		status = -ENOMEM;
+@@ -2017,13 +2064,40 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	 * on this board
+ 	 */
+ 	master->bus_num = platform_info->bus_id;
+-	master->num_chipselect = platform_info->num_chipselect;
++	master->num_chipselect = num_cs;
+ 	master->cleanup = pl022_cleanup;
+ 	master->setup = pl022_setup;
+ 	master->prepare_transfer_hardware = pl022_prepare_transfer_hardware;
+ 	master->transfer_one_message = pl022_transfer_one_message;
+ 	master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
+ 	master->rt = platform_info->rt;
++	master->dev.of_node = dev->of_node;
++
++#ifdef CONFIG_OF
++	for (i = 0; i < num_cs; i++) {
++		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
++
++		if (cs_gpio == -ENODEV) {
++			status = -EPROBE_DEFER;
++			goto err_no_gpio;
++		}
++
++		pl022->chipselect[i] = cs_gpio;
++
++		if (gpio_is_valid(cs_gpio)) {
++			if (gpio_request(cs_gpio, "ssp-pl022"))
++				dev_err(&adev->dev,
++					"could not request %d gpio\n", cs_gpio);
++			else if (gpio_direction_output(cs_gpio, 1))
++				dev_err(&adev->dev,
++					"could set gpio %d as output\n",
++					cs_gpio);
++		}
++	}
++#else
++	for (i = 0; i < num_cs; i++)
++		pl022->chipselect[i] = -EINVAL;
++#endif
+ 
+ 	/*
+ 	 * Supports mode 0-3, loopback, and active low CS. Transfers are
+@@ -2130,6 +2204,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+  err_no_ioremap:
+ 	amba_release_regions(adev);
+  err_no_ioregion:
++ #ifdef CONFIG_OF
++ err_no_gpio:
++ #endif
+ 	spi_master_put(master);
+  err_no_master:
+  err_no_pdata:
+-- 
+1.7.10
 
-Specifically, it is this part which is the culpret:
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 7745f91..cb2c0e3 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -789,7 +789,7 @@ static int omap2_mcspi_setup(struct spi_device *spi)
-        mcspi_dma = &mcspi->dma_channels[spi->chip_select];
-
-        if (!cs) {
--               cs = kzalloc(sizeof *cs, GFP_KERNEL);
-+               cs = devm_kzalloc(&spi->dev , sizeof *cs, GFP_KERNEL);
-                if (!cs)
-                        return -ENOMEM;
-                cs->base = mcspi->base + spi->chip_select * 0x14;
-@@ -831,7 +831,6 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
-                cs = spi->controller_state;
-                list_del(&cs->node);
-
--               kfree(spi->controller_state);
-        }
-
-        if (spi->chip_select < spi->master->num_chipselect) {
-
-because, at the time when omap2_mcspi_setup() is called, spi->dev is
-not bound, and so is outside of the devres valid lifetime of that
-struct device.

@@ -1,71 +1,74 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [CFT 07/11] spi: omap2-mcspi: add DMA engine support
-Date: Thu, 14 Jun 2012 12:53:35 +0100
-Message-ID: <20120614115335.GE31187@n2100.arm.linux.org.uk>
-References: <20120607110610.GB15973@n2100.arm.linux.org.uk> <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH 1/9] ARM: Kirkwood: Add interrupt controller support for
+ DT boards
+Date: Thu, 14 Jun 2012 11:55:56 +0000
+Message-ID: <201206141155.56289.arnd@arndb.de>
+References: <1339324322-29388-2-git-send-email-andrew@lunn.ch>
+ <201206140812.34399.arnd@arndb.de> <20120614091858.GD4799@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net
-To: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+ rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <20120614091858.GD4799-g2DYL2Zd6BY@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jun 07, 2012 at 12:08:35PM +0100, Russell King wrote:
-> Add DMA engine support to the OMAP SPI driver.  This supplements the
-> private DMA API implementation contained within this driver, and the
-> driver can be independently switched at build time between using DMA
-> engine and the private DMA API for the transmit and receive sides.
+On Thursday 14 June 2012, Andrew Lunn wrote:
+> > I think if you compute the number of interrupts in the domain from the number of
+> > registers that are described in the device tree, call orion_irq_init()
+> > based on those registers, and use irq domains for the gpio stuff as Rob suggested,
+> > this init_irq function can become completely generic to all orion platforms.
 > 
-> Tested-by: Shubhrajyoti <shubhrajyoti@ti.com>
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
-> Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+> I'm reworking the GPIO stuff at the moment, moving it to use IRQ
+> domains for its interrupts. That code will be generic to all Orion
+> platforms. I'm modeling the code on the AT91 GPIO handler, since that
+> has a similar structure, one hardware interrupt for a number of GPIO
+> lines, which is in software demultiplexed and triggers secondary level
+> interrupts. The major difference is that AT91 has one hardware
+> interrupt for a GPIO chip with 32 lines, where as Orion has 4 hardware
+> interrupt lines, so maybe four interrupt domains, for one GPIO chip
+> with 32 lines.
 
-Right, now that we have working OMAP in mainline again...
+My guess is that you're still better off with a single interrupt domain
+for 32 lines, or even for all the gpio lines, but I'm sure you can
+find a solution that works best for you.
 
-------------[ cut here ]------------
-WARNING: at lib/dma-debug.c:865 check_unmap+0x1a0/0x6f8()
-ks8851 spi1.0: DMA-API: device driver tries to free DMA memory it has not allocated [device address=0x000000009f5c3002] [size=592 bytes]
-Modules linked in:
-Backtrace:
-[<c0017dd0>] (dump_backtrace+0x0/0x10c) from [<c0346870>] (dump_stack+0x18/0x1c)
- r7:df79fd78 r6:c01a2200 r5:c04036bd r4:00000361
-[<c0346858>] (dump_stack+0x0/0x1c) from [<c0033c48>] (warn_slowpath_common+0x58/0x70)
-[<c0033bf0>] (warn_slowpath_common+0x0/0x70) from [<c0033d04>] (warn_slowpath_fmt+0x38/0x40)
- r8:df79fdf8 r7:00000000 r6:00000250 r5:00000000 r4:9f5c3002
-[<c0033ccc>] (warn_slowpath_fmt+0x0/0x40) from [<c01a2200>] (check_unmap+0x1a0/0x6f8)
- r3:c040ea22 r2:c0403a0f
-[<c01a2060>] (check_unmap+0x0/0x6f8) from [<c01a2978>] (debug_dma_unmap_page+0x74/0x80)
-[<c01a2904>] (debug_dma_unmap_page+0x0/0x80) from [<c021bd64>] (omap2_mcspi_txrx_dma+0x33c/0x54c)
-[<c021ba28>] (omap2_mcspi_txrx_dma+0x0/0x54c) from [<c021c590>] (omap2_mcspi_work+0x1b8/0x2b8)
-[<c021c3d8>] (omap2_mcspi_work+0x0/0x2b8) from [<c021c974>] (omap2_mcspi_transfer_one_message+0x2e4/0x310)
-[<c021c690>] (omap2_mcspi_transfer_one_message+0x0/0x310) from [<c021a9f8>] (spi_pump_messages+0x130/0x154)
-[<c021a8c8>] (spi_pump_messages+0x0/0x154) from [<c00508dc>] (kthread_worker_fn+0x108/0x188)
- r7:df6a3d94 r6:df79e000 r5:df6a3d90 r4:df6a3da4
-[<c00507d4>] (kthread_worker_fn+0x0/0x188) from [<c0050a60>] (kthread+0x8c/0x98)
-[<c00509d4>] (kthread+0x0/0x98) from [<c0039134>] (do_exit+0x0/0x314)
- r7:00000013 r6:c0039134 r5:c00509d4 r4:df443d78
----[ end trace 1b75b31a2719ed1f ]---
+> Non-GPIO interrupts are more of a problem. Underneath it uses the
+> generic-chip interrupt code. The patchset to add _domain versions of
+> these calls is stalled. So i think for the moment, we need to stay
+> with the domain bolted on top, until generic-chip gets domain
+> support. I would also expect that generic-chip also gets a common DT
+> binding which any SoC can use.
 
-So, trying to figure this out... the result is not nice.
+I suggested that before, and the comments I got back then were that
+we should treat the generic irq chip more like a library and keep
+the device tree binding at a higher level. If I understood things right,
+that means we would just have one plat-orion (or mach-mvebu later)
+irq chip abstraction that handles the DT binding and the irq domains
+itself but uses the generic irq chip code to implement the actual
+irq handling.
 
-If the spi message has is_dma_mapped = false, then we potentially map the
-DMA buffers against mcspi->dev.  This struct device is the same as the
-master->dev.parent.
+> My aim at the moment is to get something which works well enough that
+> we can add DT support to other drivers. Without interrupts, we are not
+> going to get very far. We can later rip it out what i create now and
+> replace it once generic-chip becomes domain and DT aware, and there
+> should be no effect on other drivers.
 
-However, when we come to complete a transfer, we unmap them against the
-spi_device's struct device - in other words a different device.
+Right. I just want to ensure that we don't need to change the bindings
+in incompatible ways.
 
-That's the reason for the warning.  However, when using DMA engine, both
-of these struct device's are the wrong one to be using - the right one to
-use is the one assocated with the DMA engine.
-
-However, this presents a problem with transfers with is_dma_mapped = true.
-SPI device drivers appear to assume that the right struct device to use
-to map for DMA is master->dev.parent.  That's fine if your SPI master
-device is the struct device performing the DMA, but with DMA engine
-involved, this is not true.  Not sure at the moment what to do about
-that one.
+	Arnd

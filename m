@@ -1,30 +1,48 @@
-From: "=?iso-8859-1?B?Vm9zIGNoZW1pc2Vz?=" <contact-1b23QQVMgRVt1OO0OYaSVA@public.gmane.org>
-Subject: =?iso-8859-1?B?LTEwJSBzdXIgdm90cmUgY29t?=
-	=?iso-8859-1?B?bWFuZGUgcG91ciBsYSBmZXRlIGRlcyBw6HJlcyA6IGNoZW1pc2VzIGRl?=
-	=?iso-8859-1?B?IHF1YWxpdOkgcG91ciBob21tZXM=?=
-Date: Thu, 14 Jun 2012 07:45:39 +0200
-Message-ID: <20120614-07453924-56e83b55-0@TRT-74>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH 1/9] ARM: Kirkwood: Add interrupt controller support for DT boards
+Date: Thu, 14 Jun 2012 08:12:34 +0000
+Message-ID: <201206140812.34399.arnd@arndb.de>
+References: <1339324322-29388-2-git-send-email-andrew@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-RxF+wiB8/ZHQT0dZR+AlfA@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, machael-QKn5cuLxLXY@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1339324322-29388-2-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-http://stats.wew186.com/Msg.ashx?c=CZyPrMlBzxlyWbq4Oy9CIPZTH9S1ojU9
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+On Sunday 10 June 2012, Andrew Lunn wrote:
+> +static int __init kirkwood_add_irq_domain(struct device_node *np,
+> +                                         struct device_node *interrupt_parent)
+> +{
+> +       kirkwood_init_irq();
+> +       irq_domain_add_legacy(np, 64, 0, 0, &irq_domain_simple_ops, NULL);
+> +       return 0;
+> +}
+> +
+> +static const struct of_device_id kirkwood_irq_match[] = {
+> +       { .compatible = "marvell,orion-intc",
+> +         .data = kirkwood_add_irq_domain, },
+> +       {},
+> +};
+> +
+> +static void __init kirkwood_dt_init_irq(void)
+> +{
+> +       of_irq_init(kirkwood_irq_match);
+> +}
+> +
+
+I think if you compute the number of interrupts in the domain from the number of
+registers that are described in the device tree, call orion_irq_init()
+based on those registers, and use irq domains for the gpio stuff as Rob suggested,
+this init_irq function can become completely generic to all orion platforms.
+
+That is what I tried to do with an earlier patch, which was flawed for other reasons.
+
+	Arnd

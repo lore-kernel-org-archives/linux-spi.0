@@ -1,13 +1,11 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Offre exclusive : 10 Senteurs à petits prix
- pour un voyage des sens
-Date: Fri, 15 Jun 2012 02:45:53 +0200
-Message-ID: <1339721153.4fda85c16ad83@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Noah Morgan" <NMorgan1965-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] BC Proposal Attached
+Date: Fri, 15 Jun 2012 09:19:52 -0700
+Message-ID: <f9d202c9983cfad03cbd7016001f55f5@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_1420022298D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzODAxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xNSAwMjozMDowMSZlPTEmaD0xMzgwMCZmPTEzODAxJmc9MTM4MDE=3D
+------=SPLITOR00A_001_1420022298D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzODAxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xNSAwMjozMDowMSZlPTEmaD0xMzgwMCZmPTEzODAxJmc9MTM4MD=
-E=3D
+Attached is a brochure and video including pricing.=20
+
+I am contacting you regarding printing and managing your company's =
+business cards. We look forward to the opportunity to work with you. =
+Please reply through the attachment=2E
+=20
+Sincerely,
+
+Noah Morgan
+Online Business Management
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
+
+
+------=SPLITOR00A_001_1420022298D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_1420022298D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_1420022298D--

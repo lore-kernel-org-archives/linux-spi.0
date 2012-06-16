@@ -1,9 +1,9 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Nouvelles Ventes flash : =?iso-8859-15?Q?=E7a?= continue dans tout
-	les magasins
-Date: Sun, 17 Jun 2012 12:39:22 +0200
-Message-ID: <1339929562.4fddb3da0d54c@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: MyMutuelle par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Gagnez le remboursement de votre assurance =?iso-8859-15?Q?sant?=
+	=?iso-8859-15?Q?=E9?=
+Date: Sat, 16 Jun 2012 23:35:40 +0200
+Message-ID: <1339882540.4fdcfc2c13368@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTM3NTcmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNi0xNyAxMjoxMDowMSZlPTEmaD0xMzc1NiZmPTEzNzU3Jmc9MTM3NTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNzgyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNiAyMzoyMDowMSZlPTEmaD0xMzc4MSZmPTEzNzgyJmc9MTM3ODI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTM3NTcmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNi0xNyAxMjoxMDowMSZlPTEmaD0xMzc1NiZmPTEzNzU3Jmc9MTM3NT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNzgyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNiAyMzoyMDowMSZlPTEmaD0xMzc4MSZmPTEzNzgyJmc9MTM3OD=
+I=3D
 
 
 ---------------------------------------------------------------------------=

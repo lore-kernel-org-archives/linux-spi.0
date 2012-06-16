@@ -1,8 +1,8 @@
-From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
-	=?iso-8859-15?Q?jusqu=27=E0?= -70%
-Date: Sat, 16 Jun 2012 02:13:17 +0200
-Message-ID: <1339805597.4fdbcf9df2df0@mc10.fr>
+From: Domaines =?iso-8859-15?Q?R=E9serv=E9s?= par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 19.90 euros seulement les 6 bouteilles =?iso-8859-15?Q?C=F4tes?= de
+	Blaye
+Date: Sat, 16 Jun 2012 04:31:29 +0200
+Message-ID: <1339813889.4fdbf0010f285@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNTExJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xNiAwMjowMDowMSZlPTEmaD0xMzUxMCZmPTEzNTExJmc9MTM1MTE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNzE3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNiAwNDoyMDowMSZlPTEmaD0xMzcxNiZmPTEzNzE3Jmc9MTM3MTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNTExJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xNiAwMjowMDowMSZlPTEmaD0xMzUxMCZmPTEzNTExJmc9MTM1MT=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNzE3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNiAwNDoyMDowMSZlPTEmaD0xMzcxNiZmPTEzNzE3Jmc9MTM3MT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

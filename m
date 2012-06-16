@@ -1,9 +1,9 @@
-From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Nouveaux luminaires =?iso-8859-15?Q?d=E8s?= 15,90e et 5% de
-	=?iso-8859-15?Q?r=E9duction?= sur tout le site !
-Date: Sat, 16 Jun 2012 05:42:27 +0200
-Message-ID: <1339818147.4fdc00a3e4249@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Sat, 16 Jun 2012 02:13:17 +0200
+Message-ID: <1339805597.4fdbcf9df2df0@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzOTQyJmM9MjM2NDM3JmQ9MjAx=
-Mi0wNi0xNiAwNToyMDowMSZlPTEmaD0xMzk0MSZmPTEzOTQyJmc9MTM5NDI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNTExJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNiAwMjowMDowMSZlPTEmaD0xMzUxMCZmPTEzNTExJmc9MTM1MTE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzOTQyJmM=
-9MjM2NDM3JmQ9MjAxMi0wNi0xNiAwNToyMDowMSZlPTEmaD0xMzk0MSZmPTEzOTQyJmc9MTM5ND=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNTExJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNiAwMjowMDowMSZlPTEmaD0xMzUxMCZmPTEzNTExJmc9MTM1MT=
+E=3D
 
 
 ---------------------------------------------------------------------------=

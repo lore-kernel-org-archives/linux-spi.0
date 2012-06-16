@@ -1,11 +1,13 @@
-From: "Noah Morgan" <NMorgan1965-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] BC Proposal Attached
-Date: Fri, 15 Jun 2012 09:19:52 -0700
-Message-ID: <f9d202c9983cfad03cbd7016001f55f5@g2gm.com>
+From: Virginie Rendez vous =?iso-8859-15?Q?d=E9co?= <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: Nouveaux luminaires =?iso-8859-15?Q?d=E8s?= 15,90e et 5% de
+	=?iso-8859-15?Q?r=E9duction?= sur tout le site !
+Date: Sat, 16 Jun 2012 05:42:27 +0200
+Message-ID: <1339818147.4fdc00a3e4249@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_1420022298D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,70 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------=SPLITOR00A_001_1420022298D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTEzOTQyJmM9MjM2NDM3JmQ9MjAx=
+Mi0wNi0xNiAwNToyMDowMSZlPTEmaD0xMzk0MSZmPTEzOTQyJmc9MTM5NDI=3D
 
-Attached is a brochure and video including pricing.=20
-
-I am contacting you regarding printing and managing your company's =
-business cards. We look forward to the opportunity to work with you. =
-Please reply through the attachment=2E
-=20
-Sincerely,
-
-Noah Morgan
-Online Business Management
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTEzOTQyJmM=
+9MjM2NDM3JmQ9MjAxMi0wNi0xNiAwNToyMDowMSZlPTEmaD0xMzk0MSZmPTEzOTQyJmc9MTM5ND=
+I=3D
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_1420022298D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_1420022298D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_1420022298D--

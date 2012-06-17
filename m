@@ -1,8 +1,7 @@
-From: MyMutuelle par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Gagnez le remboursement de votre assurance =?iso-8859-15?Q?sant?=
-	=?iso-8859-15?Q?=E9?=
-Date: Sat, 16 Jun 2012 23:35:40 +0200
-Message-ID: <1339882540.4fdcfc2c13368@mc10.fr>
+From: Stop-cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Hausse de 20 pourcent des cambriolages
+Date: Sun, 17 Jun 2012 02:40:08 +0200
+Message-ID: <1339893608.4fdd276824081@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzNzgyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xNiAyMzoyMDowMSZlPTEmaD0xMzc4MSZmPTEzNzgyJmc9MTM3ODI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzODA3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0xNyAwMjozMDowMSZlPTEmaD0xMzgwNiZmPTEzODA3Jmc9MTM4MDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzNzgyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xNiAyMzoyMDowMSZlPTEmaD0xMzc4MSZmPTEzNzgyJmc9MTM3OD=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzODA3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0xNyAwMjozMDowMSZlPTEmaD0xMzgwNiZmPTEzODA3Jmc9MTM4MD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

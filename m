@@ -1,23 +1,42 @@
-From: Shubhrajyoti <shubhrajyoti@ti.com>
-Subject: Re: [CFT 07/11] spi: omap2-mcspi: add DMA engine support
-Date: Mon, 18 Jun 2012 12:11:50 +0530
-Message-ID: <4FDECDAE.8070700@ti.com>
-References: <20120607110610.GB15973@n2100.arm.linux.org.uk> <E1ScaZv-0003tz-6F@rmk-PC.arm.linux.org.uk> <20120614115335.GE31187@n2100.arm.linux.org.uk> <20120614120842.GF31187@n2100.arm.linux.org.uk> <20120614125012.GG31187@n2100.arm.linux.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
+From: Roland Stigge <stigge@antcom.de>
+Subject: [PATCH] spi: spi-pl022: Adjust probe() to of_get_named_gpio() returning -EPROBE_DEFER
+Date: Mon, 18 Jun 2012 11:20:19 +0200
+Message-ID: <1340011219-31657-1-git-send-email-stigge@antcom.de>
+Cc: Roland Stigge <stigge@antcom.de>
+To: cjb@laptop.org, grant.likely@secretlab.ca, rob.herring@calxeda.com,
+	rmk+kernel@arm.linux.org.uk, ulf.hansson@stericsson.com,
+	linus.walleij@linaro.org, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, aletes.xgr@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
 	spi-devel-general@lists.sourceforge.net
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20120614125012.GG31187@n2100.arm.linux.org.uk>
-Sender: linux-omap-owner@vger.kernel.org
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 14 June 2012 06:20 PM, Russell King - ARM Linux wrote:
-> because, at the time when omap2_mcspi_setup() is called, spi->dev is
-> not bound, and so is outside of the devres valid lifetime of that
-> struct device.
-Agree,
-Apologies for breaking in the initial commit.
+The patch to gpiolib-of.c providing -EPROBE_DEFER as a hint to defer
+of_get_named_gpio*() to a later probe() breaks spi-pl022.c.
+
+This patch adjusts to this change, using -EPROBE_DEFER as indication to defer.
+
+Signed-off-by: Roland Stigge <stigge@antcom.de>
+
+---
+Applies to 3.5-rc3
+
+Should this patch be joined with gpiolib-of's patch to of_get_named_gpio()? Or
+should they just be issued as a series?
+
+ drivers/spi/spi-pl022.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- linux-2.6.orig/drivers/spi/spi-pl022.c
++++ linux-2.6/drivers/spi/spi-pl022.c
+@@ -2075,7 +2075,7 @@ pl022_probe(struct amba_device *adev, co
+ 	for (i = 0; i < num_cs; i++) {
+ 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+ 
+-		if (cs_gpio == -ENODEV) {
++		if (cs_gpio == -EPROBE_DEFER) {
+ 			status = -EPROBE_DEFER;
+ 			goto err_no_gpio;
+ 		}

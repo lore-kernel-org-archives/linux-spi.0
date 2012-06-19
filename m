@@ -1,43 +1,35 @@
-From: Venkatraman S <svenkatr@ti.com>
-Subject: [PATCH] spi: omap2-mcspi: fix section mismatch regression in probe
-Date: Tue, 19 Jun 2012 15:27:48 +0530
-Message-ID: <1340099868-24290-1-git-send-email-svenkatr@ti.com>
+From: Kenth Eriksson <kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org>
+Subject: FSL eSPI driver: bits_per_word not used when calculating TRANLEN?
+Date: Tue, 19 Jun 2012 15:23:43 +0200
+Message-ID: <OFA96668A8.F50B263C-ONC1257A22.00482664-C1257A22.00499570@transmode.se>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	<linux-omap@vger.kernel.org>, <balbi@ti.com>,
-	Venkatraman S <svenkatr@ti.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Commit 7d6b6d83(make it behave as a module) annotated probe with
-__devinit, but a referenced function was not.
+Hi!
 
-This introduced a section mismatch warning:
-WARNING: vmlinux.o(.devinit.text+0x3eec): Section mismatch in reference
-from the function omap2_mcspi_probe() to the function
-.init.text:omap2_mcspi_master_setup()
+The eSPI drivers does not use the bits_per_word parameter when calculating 
+the transmission length (TRANLEN). Why? 
 
-Signed-off-by: Venkatraman S <svenkatr@ti.com>
----
- drivers/spi/spi-omap2-mcspi.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+TRANLEN in the eSPI controller is counted in characters and the len field 
+in spi_transfer is in bytes. I thought the relation between the two was 
+bits_per_word? 
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 46ef5fe..1618e89 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1031,7 +1031,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 	return 0;
- }
- 
--static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
-+static int __devinit omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
- {
- 	struct spi_master	*master = mcspi->master;
- 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
--- 
-1.7.0.4
-
+/k
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

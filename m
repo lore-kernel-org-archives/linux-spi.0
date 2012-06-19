@@ -1,38 +1,28 @@
-From: bsfbsbwvwwvgn-oM6HGM2AGYhBDgjK7y7TUQ@public.gmane.org
-Subject: [SPAM] 报关单证
-Date: Tue, 19 Jun 2012 11:12:46 +0800
-Message-ID: <E1Sgorx-00075T-7d@sfs-ml-1.v29.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Boojin Kim <boojin.kim@samsung.com>
+Subject: RE: [PATCH 3/3] ASoC: follow the updated samsung DMA common operations
+Date: Tue, 19 Jun 2012 15:30:00 +0900
+Message-ID: <011101cd4de4$f41f59f0$dc5e0dd0$%kim@samsung.com>
+References: <011701cd42eb$a4209940$ec61cbc0$%kim@samsung.com>
+ <20120607234540.GU14525@opensource.wolfsonmicro.com>
+Cc: alsa-devel@alsa-project.org, linux-samsung-soc@vger.kernel.org,
+	'Russell King - ARM Linux' <linux@arm.linux.org.uk>,
+	'Vinod Koul' <vinod.koul@intel.com>,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	kgene.kim@samsung.com, spi-devel-general@lists.sourceforge.net,
+	'Dan Williams' <dan.j.williams@intel.com>,
+	linux-arm-kernel@lists.infradead.org
+To: 'Mark Brown' <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <20120607234540.GU14525@opensource.wolfsonmicro.com>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ICAKICAgxPq6wyAKICAKICAgICAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/
-2rWl1qS0+sDtuavLvqOs09DXxbfhuLu1xAoKICAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
-IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAgMS7M4bmpusvP+rWlo6ixqLnYtaWjqQogIAog
-ICAyLkNPsvq12NakLiDG1bvd1qQoRkEsRkUsRkYs0cfMqyzW0LDNo6y088q5ud3HqbXIKQogCiAg
-IDMuwvK1pbGoudijrMnMvOyjrM3Ps7WjqMnu29q/2rC2o6kKCiAgIDQu0bDV0s3Ly7C1paOoye7b
-2rGoo6kKCiAgICAgICAgICDH67TmwfSxuNPDo6y7ttOtxOO1xMC0tefXydGvo7oKCiAgICAgICAg
-ICAgICAgwarPtcjLo7rA7s/IyfogICAgIMGqz7W157uwo7oxMzY5MTk2MzQ1NQoKICAgICAgICAg
-ICAgICAgICBRUaO6NzU3MDgyOTk2ICDTys/ko7o3NTcwODI5OTZAcXEuY29tCgogICAKCgogICAg
-ICAgICAgICAgICAgIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVh
-bCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlz
-IHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBo
-b3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5k
-cG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJl
-IAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzEx
-NC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Mark Brown wrote
+> > This patch uses config() function to configure DMA transmit options.
+>
+> Acked-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+>
+> It'd be good if we could get all the older Samsung platforms moved over to dmaengine...
+Thanks for your ack :)
+And, Our engineer's preparing to move the older Samsung dma driver into dmaengine.

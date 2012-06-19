@@ -1,45 +1,43 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH 3/3] ASoC: follow the updated samsung DMA common operations
-Date: Tue, 19 Jun 2012 17:49:46 +0900
-Message-ID: <019501cd4df8$7a56cef0$6f046cd0$%kim@samsung.com>
-References: <011701cd42eb$a4209940$ec61cbc0$%kim@samsung.com>
- <20120607234540.GU14525@opensource.wolfsonmicro.com>
- <011101cd4de4$f41f59f0$dc5e0dd0$%kim@samsung.com>
+From: Venkatraman S <svenkatr@ti.com>
+Subject: [PATCH] spi: omap2-mcspi: fix section mismatch regression in probe
+Date: Tue, 19 Jun 2012 15:27:48 +0530
+Message-ID: <1340099868-24290-1-git-send-email-svenkatr@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel@alsa-project.org, linux-samsung-soc@vger.kernel.org,
-	'Russell King - ARM Linux' <linux@arm.linux.org.uk>,
-	'Vinod Koul' <vinod.koul@intel.com>,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	'Dan Williams' <dan.j.williams@intel.com>,
-	linux-arm-kernel@lists.infradead.org
-To: 'Boojin Kim' <boojin.kim@samsung.com>,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <011101cd4de4$f41f59f0$dc5e0dd0$%kim@samsung.com>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: <spi-devel-general@lists.sourceforge.net>,
+	<linux-omap@vger.kernel.org>, <balbi@ti.com>,
+	Venkatraman S <svenkatr@ti.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Boojin Kim wrote:
-> 
-> Mark Brown wrote
-> > > This patch uses config() function to configure DMA transmit options.
-> >
-> > Acked-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> >
-Thanks for your ack and let me pick this up in Samsung tree.
+Commit 7d6b6d83(make it behave as a module) annotated probe with
+__devinit, but a referenced function was not.
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+This introduced a section mismatch warning:
+WARNING: vmlinux.o(.devinit.text+0x3eec): Section mismatch in reference
+from the function omap2_mcspi_probe() to the function
+.init.text:omap2_mcspi_master_setup()
 
-> > It'd be good if we could get all the older Samsung platforms moved over
-> to dmaengine...
-> Thanks for your ack :)
-> And, Our engineer's preparing to move the older Samsung dma driver into
-> dmaengine.
+Signed-off-by: Venkatraman S <svenkatr@ti.com>
+---
+ drivers/spi/spi-omap2-mcspi.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 46ef5fe..1618e89 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1031,7 +1031,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
++static int __devinit omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+ {
+ 	struct spi_master	*master = mcspi->master;
+ 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
+-- 
+1.7.0.4
+

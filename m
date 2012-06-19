@@ -1,12 +1,10 @@
-From: Des montres =?iso-8859-15?Q?=E0?= LED =?iso-8859-15?Q?=E9l=E9gantes?=
-	par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?D=E9couvrez?= les montres qui font fureur au japon
-Date: Mon, 18 Jun 2012 04:17:42 +0200
-Message-ID: <1339985862.4fde8fc62a2dc@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: bsfbsbwvwwvgn-oM6HGM2AGYhBDgjK7y7TUQ@public.gmane.org
+Subject: [SPAM] 报关单证
+Date: Tue, 19 Jun 2012 11:12:46 +0800
+Message-ID: <E1Sgorx-00075T-7d@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,23 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTEzOTE2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0xOCAwNDowMDowMSZlPTEmaD0xMzkxNSZmPTEzOTE2Jmc9MTM5MTY=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTEzOTE2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0xOCAwNDowMDowMSZlPTEmaD0xMzkxNSZmPTEzOTE2Jmc9MTM5MT=
-Y=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+ICAKICAgxPq6wyAKICAKICAgICAgILG+uavLvsrH0ru80tO109C9+LP2v9qxqLnYtcjSu8fQs/a/
+2rWl1qS0+sDtuavLvqOs09DXxbfhuLu1xAoKICAgs/a/2r6t0em6zdPFysa1xLzbuPGjrL/J0tQg
+IM6qufO5q8u+tPrA7dLUz8Kz9r/a0rXO8QoKICAgMS7M4bmpusvP+rWlo6ixqLnYtaWjqQogIAog
+ICAyLkNPsvq12NakLiDG1bvd1qQoRkEsRkUsRkYs0cfMqyzW0LDNo6y088q5ud3HqbXIKQogCiAg
+IDMuwvK1pbGoudijrMnMvOyjrM3Ps7WjqMnu29q/2rC2o6kKCiAgIDQu0bDV0s3Ly7C1paOoye7b
+2rGoo6kKCiAgICAgICAgICDH67TmwfSxuNPDo6y7ttOtxOO1xMC0tefXydGvo7oKCiAgICAgICAg
+ICAgICAgwarPtcjLo7rA7s/IyfogICAgIMGqz7W157uwo7oxMzY5MTk2MzQ1NQoKICAgICAgICAg
+ICAgICAgICBRUaO6NzU3MDgyOTk2ICDTys/ko7o3NTcwODI5OTZAcXEuY29tCgogICAKCgogICAg
+ICAgICAgICAgICAgIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVh
+bCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlz
+IHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBo
+b3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5k
+cG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJl
+IAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzEx
+NC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

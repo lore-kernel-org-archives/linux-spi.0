@@ -1,7 +1,8 @@
-From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
-Date: Fri, 22 Jun 2012 07:32:28 +0200
-Message-ID: <1340343148.4fe4036c81831@mc10.fr>
+From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Recevez des deals chaque jour sur les meilleurs restaurants
+ jusqu'à -70%
+Date: Fri, 22 Jun 2012 01:14:16 +0200
+Message-ID: <1340320456.4fe3aac842a89@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTUzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yMiAwNToxMDowMSZlPTEmaD0xNDE1MiZmPTE0MTUzJmc9MTQxNTM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTA3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yMiAwMDoyMDowMSZlPTEmaD0xNDEwNiZmPTE0MTA3Jmc9MTQxMDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTUzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yMiAwNToxMDowMSZlPTEmaD0xNDE1MiZmPTE0MTUzJmc9MTQxNT=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTA3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yMiAwMDoyMDowMSZlPTEmaD0xNDEwNiZmPTE0MTA3Jmc9MTQxMD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,11 +1,11 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Fri, 22 Jun 2012 05:27:31 +0200
-Message-ID: <1340335652.4fe3e62401270@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Richard Tan <info-MVPPZNpNPaQi5wvc6DhUiQ@public.gmane.org>
+Subject: HONG LEONG BANK (Malaysia)
+Date: Thu, 21 Jun 2012 06:17:26 -0500
+Message-ID: <E1ShfOA-00026D-QE@sl1.nvscg.com>
+Reply-To: richard.tan-NQqDYL4TTn4@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,23 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Dear Friend,
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTQ0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yMiAwNDozMDowMiZlPTEmaD0xNDE0MyZmPTE0MTQ0Jmc9MTQxNDQ=3D
+I contacted you to assist in distributing the money left behind by my late client,
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTQ0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yMiAwNDozMDowMiZlPTEmaD0xNDE0MyZmPTE0MTQ0Jmc9MTQxND=
-Q=3D
+Regards,
+Richard Tan
++601113209750
 
 
----------------------------------------------------------------------------=
----
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,7 +1,8 @@
-From: ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Comme tu peux le constater, c'est le moment
-Date: Fri, 22 Jun 2012 00:15:38 +0200
-Message-ID: <1340316938.4fe39d0a74386@mc10.fr>
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
+	sacs
+Date: Fri, 22 Jun 2012 00:06:26 +0200
+Message-ID: <1340316386.4fe39ae2707ed@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTE2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yMSAyMzo0MDowMSZlPTEmaD0xNDExNSZmPTE0MTE2Jmc9MTQxMTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MDk5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yMSAyMzoyMDowMSZlPTEmaD0xNDA5OCZmPTE0MDk5Jmc9MTQwOTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTE2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yMSAyMzo0MDowMSZlPTEmaD0xNDExNSZmPTE0MTE2Jmc9MTQxMT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MDk5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yMSAyMzoyMDowMSZlPTEmaD0xNDA5OCZmPTE0MDk5Jmc9MTQwOT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

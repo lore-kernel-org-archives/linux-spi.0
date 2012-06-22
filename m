@@ -1,11 +1,12 @@
-From: Richard Tan <info-MVPPZNpNPaQi5wvc6DhUiQ@public.gmane.org>
-Subject: HONG LEONG BANK (Malaysia)
-Date: Thu, 21 Jun 2012 06:17:26 -0500
-Message-ID: <E1ShfOA-00026D-QE@sl1.nvscg.com>
-Reply-To: richard.tan-NQqDYL4TTn4@public.gmane.org
+From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
+	electronique
+Date: Fri, 22 Jun 2012 05:34:42 +0200
+Message-ID: <1340336082.4fe3e7d212a9d@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Friend,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-I contacted you to assist in distributing the money left behind by my late client,
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTQ3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yMiAwNDo0MDowMSZlPTEmaD0xNDE0NiZmPTE0MTQ3Jmc9MTQxNDc=3D
 
-Regards,
-Richard Tan
-+601113209750
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTQ3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yMiAwNDo0MDowMSZlPTEmaD0xNDE0NiZmPTE0MTQ3Jmc9MTQxND=
+c=3D
 
 
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

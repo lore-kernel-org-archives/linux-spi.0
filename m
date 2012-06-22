@@ -1,55 +1,40 @@
-From: Bryan Freed <bfreed@chromium.org>
-Subject: [PATCH] spi: Unlock a spinlock before calling into the controller driver.
-Date: Fri, 22 Jun 2012 16:53:25 -0700
-Message-ID: <1340409205-23606-1-git-send-email-bfreed@chromium.org>
-Cc: grant.likely@secretlab.ca, linux-kernel@vger.kernel.org,
-	Bryan Freed <bfreed@chromium.org>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Securitas Direct par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Protéger votre Famille
+Date: Fri, 22 Jun 2012 23:18:16 +0200
+Message-ID: <1340399896.4fe4e118f2741@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi_pump_messages() calls into a controller driver with
-unprepare_transfer_hardware() which is documented as "This may sleep".
-As in the prepare_transfer_hardware() call below, we should release the
-queue_lock spinlock before making the call.
-Rework the logic a bit to hold queue_lock to protect the 'busy' flag,
-then release it to call unprepare_transfer_hardware().
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Bryan Freed <bfreed@chromium.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTc4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yMiAyMToyMDowMSZlPTEmaD0xNDE3NyZmPTE0MTc4Jmc9MTQxNzg=3D
 
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTc4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yMiAyMToyMDowMSZlPTEmaD0xNDE3NyZmPTE0MTc4Jmc9MTQxNz=
+g=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi.c |   15 +++++++--------
- 1 files changed, 7 insertions(+), 8 deletions(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index fc0da39..f7f9df9 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -532,17 +532,16 @@ static void spi_pump_messages(struct kthread_work *work)
- 	/* Lock queue and check for queue work */
- 	spin_lock_irqsave(&master->queue_lock, flags);
- 	if (list_empty(&master->queue) || !master->running) {
--		if (master->busy && master->unprepare_transfer_hardware) {
--			ret = master->unprepare_transfer_hardware(master);
--			if (ret) {
--				spin_unlock_irqrestore(&master->queue_lock, flags);
--				dev_err(&master->dev,
--					"failed to unprepare transfer hardware\n");
--				return;
--			}
-+		if (!master->busy) {
-+			spin_unlock_irqrestore(&master->queue_lock, flags);
-+			return;
- 		}
- 		master->busy = false;
- 		spin_unlock_irqrestore(&master->queue_lock, flags);
-+		if (master->unprepare_transfer_hardware &&
-+		    master->unprepare_transfer_hardware(master))
-+			dev_err(&master->dev,
-+				"failed to unprepare transfer hardware\n");
- 		return;
- 	}
- 
--- 
-1.7.7.3
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

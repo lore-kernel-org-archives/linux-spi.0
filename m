@@ -1,65 +1,55 @@
-From: Monteeuse Andaimes <alexandre-IwPNAGXfrcPELLbFHfFBGw@public.gmane.org>
-Subject: Andaimes para Trabalhos em Altura (NR18 / NR35)
-Date: Fri, 22 Jun 2012 17:06:44 -0300
-Message-ID: <20120622200644.13843.466270169.swift@emkt.centralserver.com.br>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Bryan Freed <bfreed@chromium.org>
+Subject: [PATCH] spi: Unlock a spinlock before calling into the controller driver.
+Date: Fri, 22 Jun 2012 16:53:25 -0700
+Message-ID: <1340409205-23606-1-git-send-email-bfreed@chromium.org>
+Cc: grant.likely@secretlab.ca, linux-kernel@vger.kernel.org,
+	Bryan Freed <bfreed@chromium.org>
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Qm9hIHRhcmRlLAoKwqDCoMKgwqAgU29saWNpdG8gbyBlbmNhbWluaGFtZW50byBkZXN0ZSBlLW1h
-aWwgYW9zIHJlc3BvbnPDoXZlaXMgcG9yCk1hbnV0ZW7Dp8OjbyBJbmR1c3RyaWFsIGUgU2VndXJh
-bsOnYSBkbyBUcmFiYWxoby4KCsKgwqDCoMKgIEEgTU9OVEVFVVNFIMKgZmFicmljYSB1bWEgbGlu
-aGEgY29tcGxldGEgQW5kYWltZXMgVHVidWxhcmVzLApxdWUgdGVtIGdyYW5kZSBkaWZlcmVuY2lh
-bCBkZSBxdWFsaWRhZGUsIGEgCgpjb21lw6dhciBwZWxhIGVzcGVzc3VyYSBkZSBzZXVzIHR1Ym9z
-LCBzb2xkYSBlIGFjYWJhbWVudG8uCkRpc3BvbmliaWxpemFtb3MgdG9kb3Mgb3MgaXRlbnMgcXVl
-IHBvZGVtIHNlciBhZGljaW9uYWRvcyAKCmFvcyBjb25qdW50b3MgcGFyYSB1bWEgbWFpb3Igc2Vn
-dXJhbsOnYSBlIGF0ZW5kZXIgw6BzIGV4aWfDqm5jaWFzIGRhCk5SMTggKGluY2x1c2l2ZSBhcyBh
-bHRlcmHDp8O1ZXMgZGUgMjAxMiksIGFsw6ltIGRhIG5vdmEKCk5SMzUsIGVzcGVjw61maWNhIHBh
-cmEgdHJhYmFsaG9zIGVtIGFsdHVyYS4gCgrCoMKgwqDCoMKgIE8gcHJvZHV0byB0b3AgZGUgbGlu
-aGEgZGEgZW1wcmVzYSDDqSBvIEFuZGFpbWUgUGxhdGFmb3JtYSwKcXVlIHRlbSB1bSBjb25jZWl0
-byBpbm92YWRvciBwYXJhIHRyYWJhbGhvIGVtCgphbHR1cmEgY29tIHNlZ3VyYW7Dp2EgZSBwcm9k
-dXRpdmlkYWRlIGJlbSBzdXBlcmlvcmVzIGFvcyB0dWJ1bGFyZXMuIMOJCnJlZ3Vsw6F2ZWwgYSBj
-YWRhIDI1IGNtLCBvIHF1ZSBsaGUgcHJvcGljaWEKCnVtYSBncmFuZGUgZmxleGliaWxpZGFkZS4g
-RXNzZSBhc3BlY3RvIGRhIHJlZ3VsYWdlbSBqdW50byBjb20gc3VhCmNhcGFjaWRhZGUgZGUgY2Fy
-Z2EgKDE1MDAga2cpIGUgZmlybWV6YSwgc8OjbwoKb3MgZ3JhbmRlcyBkaWZlcmVuY2lhaXMgcXVl
-IGZhemVtIGNvbSBxdWUgZXN0ZSBlcXVpcGFtZW50byBzZWphIHVtCnN1Y2Vzc28gZGUgdmVuZGFz
-LgoKwqDCoMKgwqDCoCBTZWd1aW5kbyBvcyBtZXNtb3MgcGFkcsO1ZXMgZGUgcXVhbGlkYWRlIGUg
-ZHVyYWJpbGlkYWRlLApmYWJyaWNhbW9zIHRhbWLDqW0gRXNjb3JhcyBNZXTDoWxpY2FzIHBhcmEg
-Y29uc3RydcOnw6NvCgpjaXZpbCBmZWl0YXMgZW0gdHVib3MgZGUgYcOnbyBjb20gZXNwZXNzdXJh
-cyBlbnRyZSAyLDI1bW0gZSAzbW0uCgrCoMKgwqAgwqAgVG9kbyBtYXRlcmlhbCBwb3NzdWkgQVJU
-IGRlIGZhYnJpY2HDp8OjbyBhc3NpbmFkbyBwZWxvCmVuZ2VuaGVpcm8gcmVzcG9uc8OhdmVsLgoK
-wqDCoMKgIMKgIEVtIGFuZXhvIHNlZ3VlbSBvcyBmb2xkZXJzIGluZm9ybWF0aXZvcyBkb3MgZXF1
-aXBhbWVudG9zIGRlCm5vc3NhIGxpbmhhIGRlIHByb2R1dG9zLiBUYW1iw6ltIGjDoSBiYXN0YW50
-ZQoKaW5mb3JtYcOnw6NvIGVtIG5vc3NvIHNpdGUgd3d3Lm1vbnRlZXVzZWFuZGFpbWVzLmNvbS5i
-cgooaHR0cDovL2Vta3QubW9udGVldXNlYW5kYWltZXMuY29tLmJyL2x0LnBocD9jPTkzNCZtPTg2
-MyZubD00Mzgmcz01NmUyZjk0ZmM0ZTYyYjhmNmFjMTE5YjQ1OTIzMzI5MiZsaWQ9MTE0NTkmbD0t
-aHR0cC0td3d3Lm1vbnRlZXVzZWFuZGFpbWVzLmNvbS5ici8pLCBpbmNsdXNpdmUgdsOtZGVvcyBl
-IGRldGFsaGVzCmNvbnN0cnV0aXZvcyBkb3MgbWVzbW9zLgoKwqDCoCDCoMKgIENvbSBhcyByZWNl
-bnRlcyBtb2RpZmljYcOnw7VlcyBuYSBOUjE4IGUgTlIzNSBlIGEgY3Jlc2NlbnRlCnByZW9jdXBh
-w6fDo28gZGFzIGVtcHJlc2FzIGNvbSBhIHNlZ3VyYW7Dp2EsIG5vc3NvcwoKcHJvZHV0b3Mgc8Oj
-byBjYWRhIHZleiBtYWlzIHJlcXVpc2l0YWRvcy4KCsKgIMKgIMKgIEVzdGFtb3MgYSBkaXNwb3Np
-w6fDo28gcGFyYSBsaGUgZm9ybmVjZXIgaW5mb3JtYcOnw7VlcyBxdWUKbmVjZXNzaXRlLgpDbGlj
-ayBoZXJlIHRvIHVuc3Vic2NyaWJlIGZyb20gZnV0dXJlIG1haWxpbmdzOiBodHRwOi8vZW1rdC5t
-b250ZWV1c2VhbmRhaW1lcy5jb20uYnIvYm94LnBocD9ubD00MzgmYz05MzQmbT04NjMmcz01NmUy
-Zjk0ZmM0ZTYyYjhmNmFjMTE5YjQ1OTIzMzI5MiZmdW5jbWw9dW5zdWIyCi0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBl
-dmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0
-IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBE
-aXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJp
-dHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFj
-b21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+spi_pump_messages() calls into a controller driver with
+unprepare_transfer_hardware() which is documented as "This may sleep".
+As in the prepare_transfer_hardware() call below, we should release the
+queue_lock spinlock before making the call.
+Rework the logic a bit to hold queue_lock to protect the 'busy' flag,
+then release it to call unprepare_transfer_hardware().
+
+Signed-off-by: Bryan Freed <bfreed@chromium.org>
+
+---
+ drivers/spi/spi.c |   15 +++++++--------
+ 1 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index fc0da39..f7f9df9 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -532,17 +532,16 @@ static void spi_pump_messages(struct kthread_work *work)
+ 	/* Lock queue and check for queue work */
+ 	spin_lock_irqsave(&master->queue_lock, flags);
+ 	if (list_empty(&master->queue) || !master->running) {
+-		if (master->busy && master->unprepare_transfer_hardware) {
+-			ret = master->unprepare_transfer_hardware(master);
+-			if (ret) {
+-				spin_unlock_irqrestore(&master->queue_lock, flags);
+-				dev_err(&master->dev,
+-					"failed to unprepare transfer hardware\n");
+-				return;
+-			}
++		if (!master->busy) {
++			spin_unlock_irqrestore(&master->queue_lock, flags);
++			return;
+ 		}
+ 		master->busy = false;
+ 		spin_unlock_irqrestore(&master->queue_lock, flags);
++		if (master->unprepare_transfer_hardware &&
++		    master->unprepare_transfer_hardware(master))
++			dev_err(&master->dev,
++				"failed to unprepare transfer hardware\n");
+ 		return;
+ 	}
+ 
+-- 
+1.7.7.3

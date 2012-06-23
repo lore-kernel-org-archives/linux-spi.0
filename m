@@ -1,7 +1,8 @@
-From: Securitas Direct par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Protéger votre Famille
-Date: Fri, 22 Jun 2012 23:18:16 +0200
-Message-ID: <1340399896.4fe4e118f2741@mc10.fr>
+From: Duano recommande Groupon <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Des deals chaque =?iso-8859-15?Q?jusqu=27=E0?= -70%
+	=?iso-8859-15?Q?pr=E8s?= de chez vous
+Date: Sat, 23 Jun 2012 02:49:14 +0200
+Message-ID: <1340412554.4fe5128a085ca@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTc4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yMiAyMToyMDowMSZlPTEmaD0xNDE3NyZmPTE0MTc4Jmc9MTQxNzg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MjU2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yMyAwMjozMDowMSZlPTEmaD0xNDI1NSZmPTE0MjU2Jmc9MTQyNTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTc4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yMiAyMToyMDowMSZlPTEmaD0xNDE3NyZmPTE0MTc4Jmc9MTQxNz=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MjU2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yMyAwMjozMDowMSZlPTEmaD0xNDI1NSZmPTE0MjU2Jmc9MTQyNT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

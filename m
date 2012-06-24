@@ -1,10 +1,8 @@
-From: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?d=E8s?= maintenant
-	=?iso-8859-15?Q?jusqu=27=E0?= 4 kilos par mois
-Date: Sat, 23 Jun 2012 09:46:24 +0200
-Message-ID: <1340437584.4fe574505107b@mc10.fr>
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Sun, 24 Jun 2012 08:07:43 +0200
+Message-ID: <1340518063.4fe6aeaf494d4@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NDg3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yMyAwNTo1MDowMSZlPTEmaD0xNDQ4NiZmPTE0NDg3Jmc9MTQ0ODc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MTQ2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNCAwNDozMDowMSZlPTEmaD0xNDE0NSZmPTE0MTQ2Jmc9MTQxNDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NDg3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yMyAwNTo1MDowMSZlPTEmaD0xNDQ4NiZmPTE0NDg3Jmc9MTQ0OD=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MTQ2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNCAwNDozMDowMSZlPTEmaD0xNDE0NSZmPTE0MTQ2Jmc9MTQxND=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

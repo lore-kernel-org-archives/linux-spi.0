@@ -1,14 +1,20 @@
-From: "=?gb2312?B?aHVhbmNoYW5nbG82NQ==?=" <huanchanglo65-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?tPpfv6pfLFFROjI1ODY4MDEyODI=?=
-Date: Tue, 26 Jun 2012 00:24:25 +0800 (CST)
-Message-ID: <4FE890B9.0001B1.19857@cnapp13>
+From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH] spi: Unlock a spinlock before calling into the controller
+	driver.
+Date: Mon, 25 Jun 2012 10:07:35 -0700
+Message-ID: <CAD=FV=UpBG8gmPjWDF0M9EMSvs4pg7icocMXJ1r3Lmi8frZsrg@mail.gmail.com>
+References: <1340409205-23606-1-git-send-email-bfreed@chromium.org>
+	<CAOesGMgq5HRz+pDFQtED5GPN0RUrON=_k_y4YHHzKrMkHnVk4A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: apqpy-OftBGz0mktEp1EmR5ObhjvARzQ9ELA5wR0qVkYYEHCI@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, political-VEzCoPjx9v+T9ig0jae3mg@public.gmane.org
-To: badboy7-AH218YzqOs3QT0dZR+AlfA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: LinusW <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Bryan Freed <bfreed-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAOesGMgq5HRz+pDFQtED5GPN0RUrON=_k_y4YHHzKrMkHnVk4A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,18 +25,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xOPDx7rDo6yxvrmry77P1tPQo6i9qNb+o6y547jmo6y3/s7xo6zUy8rko6zJzMa3z/rK26Os1+LB
-3qOptci3oi/GsbT6v6qho8jnufO5q8u+09DQ6NKqLLu2063AtLXn18nRr6Gjsb65q8u+y/nTw8ax
-vt2++c6quPe1pc671NrLsM7xvtbL+cnqweyjrL/Jyc/N+LLp0a+78rW9y7DO8b7Wtda/29Hp1qSh
-ozEzNTkwMjA4OTM2ICDVxdChsfgNCiAgICAgICAgICAgICAgICAgICAgICBRUaO6MjU4NjgwMTI4
-MiANCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJl
-bmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mg
-c2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFu
-YWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2Vj
-dXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRz
-LiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2
-My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+Olof,
+
+
+On Sun, Jun 24, 2012 at 4:54 PM, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org> wrote:
+
+> I'm not sure this is safe to do. The lock is dropped for the prepare
+> side, but in that case we can be sure that the above code can't come
+> in and unprepare at the same time since there is per definition a
+> request on the queue at that time.
+
+
+I spent a bunch of time staring at the code and I'm pretty sure that
+there's no race and that the code is safe (if not super obvious).
+
+Specifically there should be only one instance of spi_pump_messages()
+running at a time per master. =A0That's because it's a kthread work
+function. =A0...so we can't possibly get a prepare in the middle of the
+unprepare when prepare is called because the only caller to
+prepare/unprepare is spi_pump_messages().
+
+
+I can't comment on whether it's better to do something like add=A0a
+workqueue (which might be more obvious / less fragile) or just to add
+a comment. =A0I will let others comment on that. =A0:)
+
+-Doug
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

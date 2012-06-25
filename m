@@ -1,7 +1,7 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Voyage Maxi promo =?iso-8859-15?Q?=E9t=E9?=
-Date: Mon, 25 Jun 2012 06:47:28 +0200
-Message-ID: <1340599648.4fe7ed6012945@mc10.fr>
+From: Securitas Direct par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Prot=E9ger?= votre Famille
+Date: Mon, 25 Jun 2012 05:48:38 +0200
+Message-ID: <1340596118.4fe7df9673068@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MjM3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNCAyMzozMDowMSZlPTEmaD0xNDIzNiZmPTE0MjM3Jmc9MTQyMzc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NDg2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNSAwNToyMDowMSZlPTEmaD0xNDQ4NSZmPTE0NDg2Jmc9MTQ0ODY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MjM3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNCAyMzozMDowMSZlPTEmaD0xNDIzNiZmPTE0MjM3Jmc9MTQyMz=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NDg2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNSAwNToyMDowMSZlPTEmaD0xNDQ4NSZmPTE0NDg2Jmc9MTQ0OD=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,7 +1,7 @@
-From: ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Comme tu peux le constater, c'est le moment
-Date: Mon, 25 Jun 2012 06:26:52 +0200
-Message-ID: <1340598412.4fe7e88c3284f@mc10.fr>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Voyage Maxi promo =?iso-8859-15?Q?=E9t=E9?=
+Date: Mon, 25 Jun 2012 06:47:28 +0200
+Message-ID: <1340599648.4fe7ed6012945@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NDg0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNSAwNToyMDowMSZlPTEmaD0xNDQ4MyZmPTE0NDg0Jmc9MTQ0ODQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0MjM3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNCAyMzozMDowMSZlPTEmaD0xNDIzNiZmPTE0MjM3Jmc9MTQyMzc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NDg0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNSAwNToyMDowMSZlPTEmaD0xNDQ4MyZmPTE0NDg0Jmc9MTQ0OD=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0MjM3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNCAyMzozMDowMSZlPTEmaD0xNDIzNiZmPTE0MjM3Jmc9MTQyMz=
+c=3D
 
 
 ---------------------------------------------------------------------------=

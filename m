@@ -1,86 +1,140 @@
-From: "Gary Tipton" <g.tipton-z2zUxyb0RMdWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] Requested Proposal Attached
-Date: Mon, 25 Jun 2012 21:01:44 -0700
-Message-ID: <e21b8489dd2e03db9e594f820011b440@business.com>
+From: Thierry Reding <thierry.reding@avionic-design.de>
+Subject: Re: [PATCH v2] spi/pl022: add devicetree support
+Date: Tue, 26 Jun 2012 08:09:36 +0200
+Message-ID: <20120626060936.GA12229@avionic-0098.adnet.avionic-design.de>
+References: <1340658390-29569-1-git-send-email-aletes.xgr@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_613502906D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
+Cc: Roland Stigge <stigge@antcom.de>, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>,
+	spi-devel-general@lists.sourceforge.net
+To: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1340658390-29569-1-git-send-email-aletes.xgr@gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
 
-------=SPLITOR00A_001_613502906D
-Content-Type: text/plain;
-	charset="windows-1252"
+--oyUTqETQ0mS9luUI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Attached is the requested brochure and video including pricing.=20
+On Mon, Jun 25, 2012 at 06:06:28PM -0300, Alexandre Pereira da Silva wrote:
+[...]
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+[...]
+> @@ -1733,7 +1744,7 @@ static int calculate_effective_freq(struct pl022 *p=
+l022, int freq, struct
+>   * A piece of default chip info unless the platform
+>   * supplies it.
+>   */
+> -static const struct pl022_config_chip pl022_default_chip_info =3D {
+> +static struct pl022_config_chip pl022_default_chip_info =3D {
+>  	.com_mode =3D POLLING_TRANSFER,
+>  	.iface =3D SSP_INTERFACE_MOTOROLA_SPI,
+>  	.hierarchy =3D SSP_SLAVE,
 
-I am contacting you regarding printing and managing your company's =
-business cards. We look forward to the opportunity to work with you. =
-Please reply through the attachment=2E
-=20
-Sincerely,
+What's the reason for removing the const? You're only reading data from
+the structure.
 
-Gary Tipton
-Online Business Management
+[...]
+> @@ -1998,8 +2039,14 @@ pl022_probe(struct amba_device *adev, const struct=
+ amba_id *id)
+>  		goto err_no_pdata;
+>  	}
+> =20
+> +	num_cs =3D platform_info->num_chipselect;
+> +#ifdef CONFIG_OF
+> +	of_property_read_u32(np, "pl022,num-chipselects", &num_cs);
+> +#endif
 
+This...
 
+[...]
+> @@ -2017,13 +2064,40 @@ pl022_probe(struct amba_device *adev, const struc=
+t amba_id *id)
+>  	 * on this board
+>  	 */
+>  	master->bus_num =3D platform_info->bus_id;
+> -	master->num_chipselect =3D platform_info->num_chipselect;
+> +	master->num_chipselect =3D num_cs;
+>  	master->cleanup =3D pl022_cleanup;
+>  	master->setup =3D pl022_setup;
+>  	master->prepare_transfer_hardware =3D pl022_prepare_transfer_hardware;
+>  	master->transfer_one_message =3D pl022_transfer_one_message;
+>  	master->unprepare_transfer_hardware =3D pl022_unprepare_transfer_hardwa=
+re;
+>  	master->rt =3D platform_info->rt;
+> +	master->dev.of_node =3D dev->of_node;
+> +
+> +#ifdef CONFIG_OF
+> +	for (i =3D 0; i < num_cs; i++) {
+> +		int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
+> +
+> +		if (cs_gpio =3D=3D -EPROBE_DEFER) {
+> +			status =3D -EPROBE_DEFER;
+> +			goto err_no_gpio;
+> +		}
+> +
+> +		pl022->chipselect[i] =3D cs_gpio;
+> +
+> +		if (gpio_is_valid(cs_gpio)) {
+> +			if (gpio_request(cs_gpio, "ssp-pl022"))
+> +				dev_err(&adev->dev,
+> +					"could not request %d gpio\n", cs_gpio);
+> +			else if (gpio_direction_output(cs_gpio, 1))
+> +				dev_err(&adev->dev,
+> +					"could set gpio %d as output\n",
+> +					cs_gpio);
+> +		}
+> +	}
+> +#else
+> +	for (i =3D 0; i < num_cs; i++)
+> +		pl022->chipselect[i] =3D -EINVAL;
+> +#endif
 
+=2E.. and this would be good candidates for IS_ENABLED(CONFIG_OF).
 
+> =20
+>  	/*
+>  	 * Supports mode 0-3, loopback, and active low CS. Transfers are
+> @@ -2130,6 +2204,9 @@ pl022_probe(struct amba_device *adev, const struct =
+amba_id *id)
+>   err_no_ioremap:
+>  	amba_release_regions(adev);
+>   err_no_ioregion:
+> + #ifdef CONFIG_OF
+> + err_no_gpio:
+> + #endif
 
+If you use the IS_ENABLED() macro, then you no longer need these either.
 
+Thierry
 
+--oyUTqETQ0mS9luUI
+Content-Type: application/pgp-signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
 
+iQIbBAEBAgAGBQJP6VIgAAoJEN0jrNd/PrOh+hEP9jKvRys0+misWJJvA8OThxtU
+WGnVTSHA/NzrOsiSAX7C0ZoCzo7iWk7xqPGRvblLFlwE8OiZNyc/34oa/s31OVr3
+4zgIQgQlXwncZHMuxn2CDUDQKC3IDgekg5ytelNcE8zjl6ZucqA9uQWvYJM3FCt2
+fBdY5wpQGVdSiPECbn2HW244wVq7caIOmsSHPvCecKKK/uF4sOjgECMi/5AbGeyP
+TH8uwLU2L8J9j6Reji7pNTaiK2SCLsKjbSY7pUpC+A6bG/LT78smFupmEYwwaXvU
+wPyAffoGa7HnSBb24u2pz2Rc2SMKvXOL/jkTy4KMpyk86wVvOR25gZ7hYT0HwPn8
+7ivjhP3XQXHYaPYLEnVkBpyUaBlvZKeZijAZSAA7+GudBL72Mkx86/RUicrMkvvC
+4n6DRrN5MejqigBQIaUL6nGBN2J1G+1IAFs+zrxvM1y1eBD6smDsWx0USQ2b0qCQ
+uMiR+RSeI0/EbTxYyzRujAVp1TOnhCVbcTpNVUyjC7Q2WUavfc4/PlRZpQlTQi0S
+BMKeyW9VjnWpYPxty87kHKFdsdnIwOpqM4Mz7/INBuPuN9aJmmdQlwkesd/HkPxl
+9MOhotMxrWkLhSwj4ULdhqL+JYjaekDzTMj//1krI8GPOXtYY+ilqcetQzjfETbz
+32XQ/ICxFOegtyuVuDY=
+=oyZ0
+-----END PGP SIGNATURE-----
 
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_613502906D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_613502906D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_613502906D--
+--oyUTqETQ0mS9luUI--

@@ -1,13 +1,21 @@
-From: Sinequanone <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?Que_faites-vous_demain_=E0_8h_=3F?=
-Date: Tue, 26 Jun 2012 12:34:37 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.1111678.3236305005@marketing.zabaloc.com>
-Reply-To: Sinequanone <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 4/7] ARM: mxs: Add SPI clock into clk framwork
+Date: Tue, 26 Jun 2012 14:16:11 +0200
+Message-ID: <201206261416.11599.marex@denx.de>
+References: <1340477033-2761-1-git-send-email-marex@denx.de>
+	<1340477033-2761-4-git-send-email-marex@denx.de>
+	<20120626065428.GM2342@S2101-09.ap.freescale.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>,
+	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120626065428.GM2342-rvtDTF3kK1ictlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,85 +26,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Dear Shawn Guo,
 
+> On Sat, Jun 23, 2012 at 08:43:50PM +0200, Marek Vasut wrote:
+> > Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+> > Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+> > Cc: Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>
+> > CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> > Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+> > Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+> > CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> > Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+> > Cc: Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>
+> > ---
+> > 
+> >  drivers/clk/mxs/clk-imx28.c |    4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
+> > index 003b0f3..d22b926 100644
+> > --- a/drivers/clk/mxs/clk-imx28.c
+> > +++ b/drivers/clk/mxs/clk-imx28.c
+> > @@ -149,21 +149,25 @@ static struct clk_lookup xbus_lookups[] __initdata
+> > = {
+> > 
+> >  static struct clk_lookup ssp0_lookups[] __initdata = {
+> >  
+> >  	{ .dev_id = "imx28-mmc.0", },
+> > 
+> > +	{ .dev_id = "imx28-spi.0", },
+> > 
+> >  	{ .dev_id = "80010000.ssp", },
+> >  
+> >  };
+> >  
+> >  static struct clk_lookup ssp1_lookups[] __initdata = {
+> >  
+> >  	{ .dev_id = "imx28-mmc.1", },
+> > 
+> > +	{ .dev_id = "imx28-spi.1", },
+> > 
+> >  	{ .dev_id = "80012000.ssp", },
+> >  
+> >  };
+> >  
+> >  static struct clk_lookup ssp2_lookups[] __initdata = {
+> >  
+> >  	{ .dev_id = "imx28-mmc.2", },
+> > 
+> > +	{ .dev_id = "imx28-spi.2", },
+> > 
+> >  	{ .dev_id = "80014000.ssp", },
+> >  
+> >  };
+> >  
+> >  static struct clk_lookup ssp3_lookups[] __initdata = {
+> >  
+> >  	{ .dev_id = "imx28-mmc.3", },
+> > 
+> > +	{ .dev_id = "imx28-spi.3", },
+> > 
+> >  	{ .dev_id = "80016000.ssp", },
+> >  
+> >  };
+> 
+> These changes should not be needed, as the driver will only be probed
+> from device tree.
 
-Sinequanone - J-1 avant le RUSH Pour visualiser correctement ce =
+So why are those imx28-mmc there ? Shall these not be removed then ?
 
-message, suivez ce lien. : =
+Best regards,
+Marek Vasut
 
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfOfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VMZ =
-
-
-
-. J-1 avant le grand rush
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfJPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VMU =
-
-Sinequanone
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfJfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VMV =
-
-J-1 avant le grand rush
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfOvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VMa =
-
-www.sinequanone.com
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfO_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VMb =
-
-comment faire ? 1
-Cr=E9ez votre compte client
-devenir client : =
-
- http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfOPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VMY =
-
-2
-Ajoutez vos produits pr=E9f=E9r=E9s
-=E0 votre panier 3
-Rendez-vous demain d=E8s 8h
- pour d=E9couvrir vos promotions !  * L'offre est valable pour les =
-
-membres du club VIP Sin=E9quanone, sur l'ensemble de la collection =
-
-printemps-=E9t=E9, hors articles signal=E9s. Elle est non cumulable avec =
-
-toute autre op=E9ration en cours. Elle se d=E9roule du 20 au 25 juin 2012 =
-
-sur sinequanone.com et dans les boutiques Sin=E9quanone en France =
-
-m=E9tropolitaine (Zone nationale) sauf r=E9gion Provence-Alpes-C=F4te d'Azu=
-r =
-
-o=F9 elles auront lieu du 15 au 20 juin 2012, et corners Galeries =
-
-Lafayette du 20 au 26 juin.
-
-
-
- Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
-
-vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
-
-et de suppression aux donn=E9es vous concernant. Pour ne plus recevoir de =
-
-courriels de notre part, il vous suffit de vous rendre sur cette page : =
-
-http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJfLYTnGHxKLccfPvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VMe =
-
-. =
-
-
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,12 +1,21 @@
-From: "Patrick Thomas" <PThomas8392-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Business Inquiry
-Date: Tue, 26 Jun 2012 05:37:30 -0700
-Message-ID: <ea895d4701436c9b08a23edc0019df6c@g2gm.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 7/7] ARM: mxs: Add SPI driver for mx233/mx28
+Date: Tue, 26 Jun 2012 14:50:27 +0200
+Message-ID: <201206261450.27543.marex@denx.de>
+References: <1340477033-2761-1-git-send-email-marex@denx.de>
+	<201206261422.55005.marex@denx.de>
+	<20120626123141.GH8858@S2101-09.ap.freescale.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>,
+	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120626123141.GH8858-rvtDTF3kK1ictlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,48 +26,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Can you assist me in contacting the person that handles the promotions and marketing for your business?
+Dear Shawn Guo,
 
-Our company offers access to 200 Million Consumers and 45 Million Businesses through email marketing! 
-Email marketing is considered the most cost effective method to promote your products and services.
+> On Tue, Jun 26, 2012 at 02:22:54PM +0200, Marek Vasut wrote:
+> > > > +static int __devexit mxs_spi_remove(struct platform_device *pdev)
+> > > > +{
+> > > > +	struct spi_master *host;
+> > > > +	struct mxs_ssp *ssp;
+> > > > +
+> > > > +	host = platform_get_drvdata(pdev);
+> > > > +	if (host)
+> > > > +		return 0;
+> > > 
+> > > Hmm, why the check and return here?
+> > 
+> > If it's not set, things went _very_ wrong somewhere. Maybe BUG_ON() might
+> > be better?
+> 
+> So shouldn't it be "if (!host)"?
+> 
+> And I still do not understand how that could happen.  I think
+> mxs_spi_remove will only be called in case that mxs_spi_probe
+> succeeds, which means platform_set_drvdata must have been called
+> already?
 
-Our Offer:
+Ok, we can remove that altogether then.
 
-> Our Creative Department Will Create a Custom Email AD	
-> Choose Your Targeted Audience From Our Databases	
-> We Send Your Mail Through Our SMTP Servers	
-> Online Tracking is Available 24/7	
-
-Please give us a call today at 1 (800) 504-4880.
-
-All of our services are backed with a 100% Money Back Guarantee.
-
-We look forward to hearing from you.
-
-Patrick Thomas
-savviermarketing-KK0ffGbhmjU@public.gmane.org
-1-800-504-4880
-Email Marketing Experts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages <mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
+Best regards,
+Marek Vasut
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

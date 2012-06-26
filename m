@@ -1,140 +1,65 @@
-From: Thierry Reding <thierry.reding@avionic-design.de>
-Subject: Re: [PATCH v2] spi/pl022: add devicetree support
-Date: Tue, 26 Jun 2012 08:09:36 +0200
-Message-ID: <20120626060936.GA12229@avionic-0098.adnet.avionic-design.de>
-References: <1340658390-29569-1-git-send-email-aletes.xgr@gmail.com>
+From: Shawn Guo <shawn.guo@linaro.org>
+Subject: Re: [PATCH 1/7] ARM: mxs: Move SSP register definitions into
+ separate file
+Date: Tue, 26 Jun 2012 14:52:03 +0800
+Message-ID: <20120626065201.GL2342@S2101-09.ap.freescale.net>
+References: <1340477033-2761-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oyUTqETQ0mS9luUI"
-Cc: Roland Stigge <stigge@antcom.de>, linux-doc@vger.kernel.org,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>,
-	spi-devel-general@lists.sourceforge.net
-To: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, Wolfgang Denk <wd@denx.de>,
+ Detlev Zundel <dzu@denx.de>, Rob Herring <rob.herring@calxeda.com>,
+ Grant Likely <grant.likely@secretlab.ca>, Stefano Babic <sbabic@denx.de>,
+ spi-devel-general@lists.sourceforge.net, Chris Ball <cjb@laptop.org>,
+ Dong Aisheng <b29396@freescale.com>, linux-arm-kernel@lists.infradead.org
+To: Marek Vasut <marex@denx.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <1340658390-29569-1-git-send-email-aletes.xgr@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+In-Reply-To: <1340477033-2761-1-git-send-email-marex@denx.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+We should not use prefix "ARM: mxs: ..." for patches in the series,
+because it's not changing arch/arm/ part but mmc, spi and clk, and
+it's not going to go through arm-soc tree (we could do it, but I'm
+afraid that Grant and Chris would hardly agree).  So the best way to
+go is, giving a proper subsystem prefix on individual patch, collecting
+ACKs from Chris and Mike Turquette, and then asking Grant to have the
+whole series go via spi tree.
 
---oyUTqETQ0mS9luUI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Jun 23, 2012 at 08:43:47PM +0200, Marek Vasut wrote:
+> Move the definitions into separate file so separate SPI driver can be
+> implemented. The SSP controller in MXS can act both as a MMC host and
+> as a SPI host.
+> 
+> Based on previous attempt by:
+> Fabio Estevam <fabio.estevam@freescale.com>
+> 
+> Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> Cc: Chris Ball <cjb@laptop.org>
+> Cc: Detlev Zundel <dzu@denx.de>
+> CC: Dong Aisheng <b29396@freescale.com>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> Cc: Linux ARM kernel <linux-arm-kernel@lists.infradead.org>
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> CC: Shawn Guo <shawn.guo@linaro.org>
+> Cc: Stefano Babic <sbabic@denx.de>
+> Cc: Wolfgang Denk <wd@denx.de>
+> ---
+>  drivers/mmc/host/mxs-mmc.c  |   87 ++--------------------------------
+>  include/linux/spi/mxs-spi.h |  109 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 112 insertions(+), 84 deletions(-)
+>  create mode 100644 include/linux/spi/mxs-spi.h
 
-On Mon, Jun 25, 2012 at 06:06:28PM -0300, Alexandre Pereira da Silva wrote:
-[...]
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-[...]
-> @@ -1733,7 +1744,7 @@ static int calculate_effective_freq(struct pl022 *p=
-l022, int freq, struct
->   * A piece of default chip info unless the platform
->   * supplies it.
->   */
-> -static const struct pl022_config_chip pl022_default_chip_info =3D {
-> +static struct pl022_config_chip pl022_default_chip_info =3D {
->  	.com_mode =3D POLLING_TRANSFER,
->  	.iface =3D SSP_INTERFACE_MOTOROLA_SPI,
->  	.hierarchy =3D SSP_SLAVE,
-
-What's the reason for removing the const? You're only reading data from
-the structure.
-
-[...]
-> @@ -1998,8 +2039,14 @@ pl022_probe(struct amba_device *adev, const struct=
- amba_id *id)
->  		goto err_no_pdata;
->  	}
-> =20
-> +	num_cs =3D platform_info->num_chipselect;
-> +#ifdef CONFIG_OF
-> +	of_property_read_u32(np, "pl022,num-chipselects", &num_cs);
-> +#endif
-
-This...
-
-[...]
-> @@ -2017,13 +2064,40 @@ pl022_probe(struct amba_device *adev, const struc=
-t amba_id *id)
->  	 * on this board
->  	 */
->  	master->bus_num =3D platform_info->bus_id;
-> -	master->num_chipselect =3D platform_info->num_chipselect;
-> +	master->num_chipselect =3D num_cs;
->  	master->cleanup =3D pl022_cleanup;
->  	master->setup =3D pl022_setup;
->  	master->prepare_transfer_hardware =3D pl022_prepare_transfer_hardware;
->  	master->transfer_one_message =3D pl022_transfer_one_message;
->  	master->unprepare_transfer_hardware =3D pl022_unprepare_transfer_hardwa=
-re;
->  	master->rt =3D platform_info->rt;
-> +	master->dev.of_node =3D dev->of_node;
-> +
-> +#ifdef CONFIG_OF
-> +	for (i =3D 0; i < num_cs; i++) {
-> +		int cs_gpio =3D of_get_named_gpio(np, "cs-gpios", i);
-> +
-> +		if (cs_gpio =3D=3D -EPROBE_DEFER) {
-> +			status =3D -EPROBE_DEFER;
-> +			goto err_no_gpio;
-> +		}
-> +
-> +		pl022->chipselect[i] =3D cs_gpio;
-> +
-> +		if (gpio_is_valid(cs_gpio)) {
-> +			if (gpio_request(cs_gpio, "ssp-pl022"))
-> +				dev_err(&adev->dev,
-> +					"could not request %d gpio\n", cs_gpio);
-> +			else if (gpio_direction_output(cs_gpio, 1))
-> +				dev_err(&adev->dev,
-> +					"could set gpio %d as output\n",
-> +					cs_gpio);
-> +		}
-> +	}
-> +#else
-> +	for (i =3D 0; i < num_cs; i++)
-> +		pl022->chipselect[i] =3D -EINVAL;
-> +#endif
-
-=2E.. and this would be good candidates for IS_ENABLED(CONFIG_OF).
-
-> =20
->  	/*
->  	 * Supports mode 0-3, loopback, and active low CS. Transfers are
-> @@ -2130,6 +2204,9 @@ pl022_probe(struct amba_device *adev, const struct =
-amba_id *id)
->   err_no_ioremap:
->  	amba_release_regions(adev);
->   err_no_ioregion:
-> + #ifdef CONFIG_OF
-> + err_no_gpio:
-> + #endif
-
-If you use the IS_ENABLED() macro, then you no longer need these either.
-
-Thierry
-
---oyUTqETQ0mS9luUI
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIbBAEBAgAGBQJP6VIgAAoJEN0jrNd/PrOh+hEP9jKvRys0+misWJJvA8OThxtU
-WGnVTSHA/NzrOsiSAX7C0ZoCzo7iWk7xqPGRvblLFlwE8OiZNyc/34oa/s31OVr3
-4zgIQgQlXwncZHMuxn2CDUDQKC3IDgekg5ytelNcE8zjl6ZucqA9uQWvYJM3FCt2
-fBdY5wpQGVdSiPECbn2HW244wVq7caIOmsSHPvCecKKK/uF4sOjgECMi/5AbGeyP
-TH8uwLU2L8J9j6Reji7pNTaiK2SCLsKjbSY7pUpC+A6bG/LT78smFupmEYwwaXvU
-wPyAffoGa7HnSBb24u2pz2Rc2SMKvXOL/jkTy4KMpyk86wVvOR25gZ7hYT0HwPn8
-7ivjhP3XQXHYaPYLEnVkBpyUaBlvZKeZijAZSAA7+GudBL72Mkx86/RUicrMkvvC
-4n6DRrN5MejqigBQIaUL6nGBN2J1G+1IAFs+zrxvM1y1eBD6smDsWx0USQ2b0qCQ
-uMiR+RSeI0/EbTxYyzRujAVp1TOnhCVbcTpNVUyjC7Q2WUavfc4/PlRZpQlTQi0S
-BMKeyW9VjnWpYPxty87kHKFdsdnIwOpqM4Mz7/INBuPuN9aJmmdQlwkesd/HkPxl
-9MOhotMxrWkLhSwj4ULdhqL+JYjaekDzTMj//1krI8GPOXtYY+ilqcetQzjfETbz
-32XQ/ICxFOegtyuVuDY=
-=oyZ0
------END PGP SIGNATURE-----
-
---oyUTqETQ0mS9luUI--
+-- 
+Regards,
+Shawn

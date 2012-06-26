@@ -1,12 +1,11 @@
-From: Xu Jiucheng <B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the platform data
-Date: Tue, 26 Jun 2012 10:32:16 +0800
-Message-ID: <1340677936-6967-1-git-send-email-B37781@freescale.com>
+From: "Gary Tipton" <g.tipton-z2zUxyb0RMdWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] Requested Proposal Attached
+Date: Mon, 25 Jun 2012 21:01:44 -0700
+Message-ID: <e21b8489dd2e03db9e594f820011b440@business.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Xu Jiucheng <B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_613502906D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,43 +17,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-In the spi_alloc_device(), the parent pointer of spi deivce has
-been changed from master->dev.parent to &master->dev for device
-unregistration, so the pointer of getting the platform data as
-this 'spi->dev.parent->platform_data' is wrong.
+This is a multi-part message in MIME format.
 
-Signed-off-by: Xu Jiucheng <B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi_fsl_spi.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+------=SPLITOR00A_001_613502906D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi_fsl_spi.c b/drivers/spi/spi_fsl_spi.c
-index 7963c9b..7d164d3 100644
---- a/drivers/spi/spi_fsl_spi.c
-+++ b/drivers/spi/spi_fsl_spi.c
-@@ -139,7 +139,7 @@ static void fsl_spi_change_mode(struct spi_device *spi)
- static void fsl_spi_chipselect(struct spi_device *spi, int value)
- {
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
--	struct fsl_spi_platform_data *pdata = spi->dev.parent->platform_data;
-+	struct fsl_spi_platform_data *pdata = mpc8xxx_spi->dev->platform_data;
- 	bool pol = spi->mode & SPI_CS_HIGH;
- 	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
- 
-@@ -934,7 +934,8 @@ err:
- 
- static void fsl_spi_cs_control(struct spi_device *spi, bool on)
- {
--	struct device *dev = spi->dev.parent;
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	struct device *dev = mpc8xxx_spi->dev;
- 	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
- 	u16 cs = spi->chip_select;
- 	int gpio = pinfo->gpios[cs];
--- 
-1.6.4
+Attached is the requested brochure and video including pricing.=20
+
+I am contacting you regarding printing and managing your company's =
+business cards. We look forward to the opportunity to work with you. =
+Please reply through the attachment=2E
+=20
+Sincerely,
+
+Gary Tipton
+Online Business Management
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
+
+
+------=SPLITOR00A_001_613502906D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
@@ -62,3 +72,15 @@ Exclusive live event will cover all the ways today's security and
 threat landscape has changed and how IT managers can respond. Discussions 
 will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_613502906D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_613502906D--

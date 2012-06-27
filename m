@@ -1,8 +1,7 @@
-From: Chaussures Tendance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: SOLDES C'est parti pour les petits prix ! Et en plus la livraison est
-	gratuite
-Date: Thu, 28 Jun 2012 01:01:06 +0200
-Message-ID: <1340838066.4feb90b2a6682@mc10.fr>
+From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
+Date: Thu, 28 Jun 2012 01:05:55 +0200
+Message-ID: <1340838356.4feb91d42152b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NjE3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDYxNiZmPTE0NjE3Jmc9MTQ2MTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMzoxMDowMSZlPTEmaD0xNDUxNSZmPTE0NTE2Jmc9MTQ1MTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NjE3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDYxNiZmPTE0NjE3Jmc9MTQ2MT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMzoxMDowMSZlPTEmaD0xNDUxNSZmPTE0NTE2Jmc9MTQ1MT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

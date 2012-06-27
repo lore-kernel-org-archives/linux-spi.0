@@ -1,11 +1,15 @@
-From: fgw4gethtrn-9tj9iKw41k9Wk0Htik3J/w@public.gmane.org
-Subject: =?GB2312?B?saggudgtzcsgy7A=?=
-Date: Wed, 27 Jun 2012 09:16:07 +0800
-Message-ID: <E1SjgpQ-0002o3-22@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Chevignon <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?SOLDES_CHEVIGNON_:_jusqu'=E0_-40%?=
+	=?iso-8859-15?Q?_d=E8s_maintenant_sur_la_collectio?=
+	=?iso-8859-15?Q?n_Et=E9_:_Cuirs,_Blousons,_Pantalo?=
+	=?iso-8859-15?Q?ns,_T-shirts,_Polos,_Bermudas=3F_!?=
+Date: Wed, 27 Jun 2012 09:30:58 +0200 (CEST)
+Message-ID: <2.1.11.1101030461.634789.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,21 +21,189 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-IAogICDE+rrDIQogIAogICAgICAguavLvtfUv6rStdLUwLSjrNK7ueG84bPWo6i3/s7xtdrSu7/N
-u6fWwcnPo6nOyM3Xv+y93bXEvq3TqsDtxO6howoKICAgIM6quPfN4sOzuavLvqOouaSzp6OpzOG5
-qde8yLe/7L3do6y827jx08W73bXE08XWyrf+zvGhowogCiAgICAxoaLM4bmptPPQobrLz/q1pQoK
-ICAgIDKhorDswO3Su7Dj1K2y+rXY1qQoQ08gRkEgRkUgRkYpvLCy+rXY1qQKCiAgICAzLqOoytXI
-q7n6uPe12M3Ly7C1paOsye7b2rGoudijqQoKICAgICAgICAgICAgICAgICAgx+u05sH0sbjTw6Os
-u7bTrcTjtcTAtLXn18nRr6O6CgogICAgICAgwarPtcjLo7rVxSAgICDBqs+1tee7sKO6MTM2ODY4
-Njg1NDgKCiAgICAgICAgUVGjujUzNTg3MzY0OSAg08rP5KO6NTM1ODczNjQ5QHFxLmNvbQoKLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1
-c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkg
-YW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2Fu
-IHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1v
-YmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8v
-d3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+CHEVIGNON  Si vous ne pouvez pas visualiser ce message,  consulter =
+
+notre version en ligne. =
+
+SOLDES - Jusqu?=E0 -40% sur la collection Et=E9 : Cuirs, Blousons, =
+
+Pantalons, T-shirts, Polos, Bermudas? =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnG_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlID =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnGPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIA =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnGfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIB =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnHvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIG =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnH_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIH =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnHPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIE =
+
+SUIVI DE
+COMMANDE LIVRAISON
+GRATUITE ECHANGE
+EN MAGASIN SATISFAIT OU
+REMBOURSE PAIEMENT
+SECURISE Cuir : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnHfcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIF =
+
+ | Blousons : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnEvcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIK =
+
+ | Pulls : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnE_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIL =
+
+ | Polos : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnEPcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlII =
+
+ | T-shirts : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnEfcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIJ =
+
+ | Chemises : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnFvcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIO =
+
+ | Pantalons : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnF_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIP =
+
+ | Chaussures : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnFPcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIM =
+
+ | Accessoires : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnFfcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIN =
+
+ | Femme : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnKvcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIS =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnK_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIT =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnKPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIQ =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnKfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIR =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnLvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIW =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnL_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIX =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnLPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIU =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnLfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIV =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnIvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIa =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnI_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIb =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnIPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIY =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnIfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIZ =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnJvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIe =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnJ_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIf =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnJPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIc =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnJfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlId =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnOvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIi =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnO_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIj =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdF_nGHxKLFDnOPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIg =
+
+ *Offre valable sur la collection printemps =E9t=E9 2012 dans les =
+
+boutiques Chevignon et sur www.chevignon.com.
+ Liste des boutiques disponible sur www.chevignon.com. Offre non =
+
+cumulable (hors stands et magasins de destockage).  Conform=E9ment =E0 la =
+
+loi "Informatique et Libert=E9s" du 06 Janvier 1978, vous b=E9n=E9ficiez d'=
+un =
+
+droit d'acc=E8s, de rectification, de modification et de suppression aux =
+
+donn=E9es vous concernant.
+
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+
+mails par l'intermediaire de  ce raccourci. =
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

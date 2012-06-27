@@ -1,12 +1,12 @@
-From: KOOKAI <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
-Subject: Soldes Kookai : Jour J, c'est parti !
-Date: Wed, 27 Jun 2012 14:59:39 +0200 (CEST)
-Message-ID: <2.1.11.1101030461.634768.3016826189@news.localips.com>
-Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
+From: Securitas Direct par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Protéger votre Famille
+Date: Wed, 27 Jun 2012 23:44:20 +0200
+Message-ID: <1340833460.4feb7eb49501f@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,75 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SOLDES KOOKAI : c?est parti ! SOLDES KOOKAI : c?est parti ! =
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMjoyMDowMSZlPTEmaD0xNDUxNCZmPTE0NTE1Jmc9MTQ1MTU=3D
 
-Si ce message ne s=91affiche pas correctement, consultez notre version =
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjoyMDowMSZlPTEmaD0xNDUxNCZmPTE0NTE1Jmc9MTQ1MT=
+U=3D
 
-en ligne =
-
-
- Si vous ne souhaitez plus vos recevoir nos newsletters, vous pouvez =
-
-vous d=E9sinscrire =
-
-
-
-KOOKAI
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDXvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOI
-Eboutique
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDX_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOJ
-Nouveautes
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDXPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOO
-Exclu Web
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDXfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOP
-Look Book
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDUvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOM
-Du 27 juillet au 31 juillet vos KOOKAI-it pr=E9f=E9r=E9s =E0 prix sold=E9s =
-!!! =
-
-Faites-vite !
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDU_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlON
-En boutique
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDUPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOS
-E-boutique
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDUfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOT
-Paiement
-Livraison
-Nous Contacter
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDVvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOQ
-Nous Contacter
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDV_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOR
-Nous suivre sur Facebook
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDVPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOW
-Nous suivre sur Tumblr
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGdGrnGHxKLFEDVfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOX
-* Selon les dates autoris=E9es par arr=EAt=E9 pr=E9fectoral.
-
- =
 
 ---------------------------------------------------------------------------=
 ---

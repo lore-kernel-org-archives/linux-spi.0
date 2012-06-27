@@ -1,9 +1,9 @@
-From: "Michael Beale" <mlb-LbUOv0KWrifn99GjZGpDYw@public.gmane.org>
-Subject: Real estate (6/26/2012)
-Date: Tue, 26 Jun 2012 15:57:50 -0700
-Message-ID: <159149.44710.qm@smtp115.sbc.mail.ne1.yahoo.com>
+From: fgw4gethtrn-9tj9iKw41k9Wk0Htik3J/w@public.gmane.org
+Subject: =?GB2312?B?saggudgtzcsgy7A=?=
+Date: Wed, 27 Jun 2012 09:16:07 +0800
+Message-ID: <E1SjgpQ-0002o3-22@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -17,17 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8sCgpPdXIgY29tcGFueSByZXByZXNlbnRzIGEgbmV0d29yayBvZiBvdmVyIDM2LjYgbWls
-bGlvbiBwZW9wbGUsICAgICAgICAKbW9zdCBvZiB3aG9tIGFyZSBsb2NhdGVkIGluIHRoZSBVUyBh
-bmQgQ2FuYWRhLiBXaGF0IHdlIGRvIGFsbG93cwp1cyB0byBwcmVzZW50IG91ciBlbmQgdXNlcnMg
-d2l0aCBhIGZpcnN0IGNob2ljZSB3aGVuIHRoZXkgc2VhcmNoIGZvcgphbnl0aGluZyBvbiBhbnkg
-b2YgdGhlIG1ham9yIHNlYXJjaCBlbmdpbmVzLgoKV2Ugc2VlayBhIHByZWZlcnJlZCBzb3VyY2Ug
-dG8gc2VuZCBvdXIgdXNlcnMgb24gdGhlIG1ham9yIHNlYXJjaCBlbmdpbmVzCmZvciByZWFsIGVz
-dGF0ZSBpbiBQYW5hbWEgQ2l0eSBhbmQgc3Vycm91bmRpbmcgbWFya2V0cy4KClBsZWFzZSBmZWVs
-IGZyZWUgdG8gY29udGFjdCBtZSBhdCB5b3VyIGNvbnZlbmllbmNlLiBJ4oCZbSBpbiB0aGUgb2Zm
-aWNlCk1vbmRheS1GcmlkYXkgZnJvbSA5OjAwIEFNIHRvIDU6MDAgUE0gUGFjaWZpYyB0aW1lLgoK
-IApZb3VycyB0cnVseSwKCgoKTWljaGFlbCBCZWFsZSAgIApMZXZlbCBPbmUgSVAgQ29uc3VsdGFu
-dCwgU1BTIFNlYXJjaCAgICAgIApQaG9uZTogKDg3NykgODU0LTQ1NzEsIGV4dC4gMjAxMwoKLS0t
+IAogICDE+rrDIQogIAogICAgICAguavLvtfUv6rStdLUwLSjrNK7ueG84bPWo6i3/s7xtdrSu7/N
+u6fWwcnPo6nOyM3Xv+y93bXEvq3TqsDtxO6howoKICAgIM6quPfN4sOzuavLvqOouaSzp6OpzOG5
+qde8yLe/7L3do6y827jx08W73bXE08XWyrf+zvGhowogCiAgICAxoaLM4bmptPPQobrLz/q1pQoK
+ICAgIDKhorDswO3Su7Dj1K2y+rXY1qQoQ08gRkEgRkUgRkYpvLCy+rXY1qQKCiAgICAzLqOoytXI
+q7n6uPe12M3Ly7C1paOsye7b2rGoudijqQoKICAgICAgICAgICAgICAgICAgx+u05sH0sbjTw6Os
+u7bTrcTjtcTAtLXn18nRr6O6CgogICAgICAgwarPtcjLo7rVxSAgICDBqs+1tee7sKO6MTM2ODY4
+Njg1NDgKCiAgICAgICAgUVGjujUzNTg3MzY0OSAg08rP5KO6NTM1ODczNjQ5QHFxLmNvbQoKLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1
 c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkg

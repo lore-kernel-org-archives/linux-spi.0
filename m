@@ -1,7 +1,7 @@
-From: Securitas Direct par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Protéger votre Famille
-Date: Wed, 27 Jun 2012 23:44:20 +0200
-Message-ID: <1340833460.4feb7eb49501f@mc10.fr>
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Fais des rencontres sans sortir ta carte bancaire
+Date: Thu, 28 Jun 2012 00:18:43 +0200
+Message-ID: <1340835523.4feb86c37534b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMjoyMDowMSZlPTEmaD0xNDUxNCZmPTE0NTE1Jmc9MTQ1MTU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUxNiZmPTE0NTE3Jmc9MTQ1MTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjoyMDowMSZlPTEmaD0xNDUxNCZmPTE0NTE1Jmc9MTQ1MT=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUxNiZmPTE0NTE3Jmc9MTQ1MT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

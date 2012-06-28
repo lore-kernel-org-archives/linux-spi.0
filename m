@@ -1,11 +1,15 @@
-From: z13538033334-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Wed, 27 Jun 2012 11:59:36 +0800
-Message-ID: <E1Sk5sL-0005dZ-CQ@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Nutrishield par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Aider votre organisme =?iso-8859-15?Q?=E0_prot=E8ger?= votre
+	=?iso-8859-15?Q?sant=E9?= et votre =?iso-8859-15?Q?beaut=E9_=E0?= long
+	terme - NutriShield =?iso-8859-15?Q?=E0?= partir de
+	=?iso-8859-15?Q?39=2C95=80?= par mois
+Date: Thu, 28 Jun 2012 06:02:55 +0200
+Message-ID: <1340856175.4febd76f99d71@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +21,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
-1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
-tcihowq587mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAg
-ICAgICC4utTwyMujutXFz8jJ+igwKTEzNTM4MDMzMzM0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-TGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2ls
-bCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2Nh
-cGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lv
-bnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0
-aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20v
-amF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTcxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yOCAwMzo1MDowMSZlPTEmaD0xNDU3MCZmPTE0NTcxJmc9MTQ1NzE=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTcxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yOCAwMzo1MDowMSZlPTEmaD0xNDU3MCZmPTE0NTcxJmc9MTQ1Nz=
+E=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

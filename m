@@ -1,8 +1,8 @@
-From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
-	electronique
-Date: Thu, 28 Jun 2012 04:37:09 +0200
-Message-ID: <1340851029.4febc3550a816@mc10.fr>
+From: Chaussures Tendance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: SOLDES C'est parti pour les petits prix ! Et en plus la livraison est
+	gratuite
+Date: Thu, 28 Jun 2012 04:42:08 +0200
+Message-ID: <1340851328.4febc480a7758@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMjoxMDowMSZlPTEmaD0xNDUxMyZmPTE0NTE0Jmc9MTQ1MTQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0Nzg2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yOCAwMzoxMDowMiZlPTEmaD0xNDc4NSZmPTE0Nzg2Jmc9MTQ3ODY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjoxMDowMSZlPTEmaD0xNDUxMyZmPTE0NTE0Jmc9MTQ1MT=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0Nzg2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yOCAwMzoxMDowMiZlPTEmaD0xNDc4NSZmPTE0Nzg2Jmc9MTQ3OD=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,40 +1,80 @@
-From: ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Comme tu peux le constater, c'est le moment
-Date: Thu, 28 Jun 2012 14:35:59 +0200
-Message-ID: <1340886959.4fec4faf94720@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
+Date: Thu, 28 Jun 2012 14:23:30 +0100
+Message-ID: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Saves some error handling and a small amount of code.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTAyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yOCAwNTozMDowMSZlPTEmaD0xNDUwMSZmPTE0NTAyJmc9MTQ1MDI=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTAyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yOCAwNTozMDowMSZlPTEmaD0xNDUwMSZmPTE0NTAyJmc9MTQ1MD=
-I=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+ drivers/spi/spi-s3c64xx.c |   25 +------------------------
+ 1 file changed, 1 insertion(+), 24 deletions(-)
 
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index f4e2341..b7aeb5d 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1028,19 +1028,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 
+-	if (request_mem_region(mem_res->start,
+-			resource_size(mem_res), pdev->name) == NULL) {
+-		dev_err(&pdev->dev, "Req mem region failed\n");
+-		ret = -ENXIO;
+-		goto err0;
+-	}
+-
+-	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
+-	if (sdd->regs == NULL) {
+-		dev_err(&pdev->dev, "Unable to remap IO\n");
+-		ret = -ENXIO;
+-		goto err1;
+-	}
++	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
+ 
+ 	if (sci->cfg_gpio == NULL || sci->cfg_gpio(pdev)) {
+ 		dev_err(&pdev->dev, "Unable to config gpio\n");
+@@ -1124,10 +1112,6 @@ err4:
+ 	clk_put(sdd->clk);
+ err3:
+ err2:
+-	iounmap((void *) sdd->regs);
+-err1:
+-	release_mem_region(mem_res->start, resource_size(mem_res));
+-err0:
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
+@@ -1138,7 +1122,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+-	struct resource	*mem_res;
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -1154,12 +1137,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	clk_disable(sdd->clk);
+ 	clk_put(sdd->clk);
+ 
+-	iounmap((void *) sdd->regs);
+-
+-	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (mem_res != NULL)
+-		release_mem_region(mem_res->start, resource_size(mem_res));
+-
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
+-- 
+1.7.10

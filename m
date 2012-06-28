@@ -1,9 +1,10 @@
-From: energies nouvelles france <energiesnouvellesfrance-ePPrnh4iZ+gRlTq9MEkdKAC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] Des économies pour votre maison
-Date: Thu, 28 Jun 2012 14:33:55 +0200
-Message-ID: <3c6a07f5a227e0d239a5f5e6d053c0a0@localhost.localdomain>
+From: ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Comme tu peux le constater, c'est le moment
+Date: Thu, 28 Jun 2012 14:35:59 +0200
+Message-ID: <1340886959.4fec4faf94720@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -17,40 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Bonjour, d=E9couvrez comment =E9quiper votre maison en =E9nergie nouvelle p=
-our zero euro. =
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-  =
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTAyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yOCAwNTozMDowMSZlPTEmaD0xNDUwMSZmPTE0NTAyJmc9MTQ1MDI=3D
 
-  =
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTAyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yOCAwNTozMDowMSZlPTEmaD0xNDUwMSZmPTE0NTAyJmc9MTQ1MD=
+I=3D
 
-    =
-
-  =
-
-  =
-
-    Cliquez ici si vous ne voyez pas l'image
-  =
-
-  =
-
-  =
-
-    Sachez que plus de 200 organismes r=E9gionaux, nationaux et europ=E9ens=
- sont charg=E9s de financer et de promouvoir le d=E9veloppement des =E9nerg=
-ies propres. Ces organismes publiques ou priv=E9s ont des budgets d=E9stin=
-=E9s aux particuliers qui s'=E9quipent.
-
-
-Ainsi en =E9tant un peu malin, vous pouvez faire =E9quiper votre maison de =
-panneaux solaires, d'une =E9olienne, ou d'un syst=E8me permettant d'am=E9li=
-orer la performance =E9nerg=E9tique sans que cela ne vous co=FBte.
-  =
-
-  =
-
-     Vous desinscrire de la liste
 
 ---------------------------------------------------------------------------=
 ---

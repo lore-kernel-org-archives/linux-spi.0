@@ -1,13 +1,11 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez de 50% de =?iso-8859-15?Q?r=E9duction*?= pour retrouver la
-	ligne avec Weight Watchers
-Date: Thu, 28 Jun 2012 10:07:43 +0200
-Message-ID: <1340870863.4fec10cf02141@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Brandy Collins" <BrandyC-z2zUxyb0RMdWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] Proposal Attached
+Date: Thu, 28 Jun 2012 03:37:39 -0700
+Message-ID: <9479164ce5938244ae158ec5001292e7@business.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_144022718D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTI2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUyNSZmPTE0NTI2Jmc9MTQ1MjY=3D
+------=SPLITOR00A_001_144022718D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTI2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUyNSZmPTE0NTI2Jmc9MTQ1Mj=
-Y=3D
+Attached is the requested brochure and video including pricing.=20
+
+I am contacting you regarding printing and managing your company's =
+business cards. We look forward to the opportunity to work with you. =
+Please reply through the attachment=2E
+=20
+Sincerely,
+
+Brandy Collins
+Online Business Management
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
+
+
+------=SPLITOR00A_001_144022718D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_144022718D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_144022718D--

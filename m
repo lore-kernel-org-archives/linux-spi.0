@@ -1,8 +1,8 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Soldes : Toute la beauté jusqu'à moins 60
- pourcent
-Date: Thu, 28 Jun 2012 15:29:21 +0200
-Message-ID: <1340890161.4fec5c31b7679@mc10.fr>
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
+	sacs
+Date: Thu, 28 Jun 2012 19:59:05 +0200
+Message-ID: <1340906345.4fec9b693e5dc@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NjA0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yOCAxMzoyMDowMSZlPTEmaD0xNDYwMyZmPTE0NjA0Jmc9MTQ2MDQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTIzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMzoyMDowMSZlPTEmaD0xNDUyMiZmPTE0NTIzJmc9MTQ1MjM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NjA0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yOCAxMzoyMDowMSZlPTEmaD0xNDYwMyZmPTE0NjA0Jmc9MTQ2MD=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTIzJmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMzoyMDowMSZlPTEmaD0xNDUyMiZmPTE0NTIzJmc9MTQ1Mj=
+M=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,41 +1,32 @@
-From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
-	sacs
-Date: Thu, 28 Jun 2012 19:59:05 +0200
-Message-ID: <1340906345.4fec9b693e5dc@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
+Date: Thu, 28 Jun 2012 20:51:44 +0200
+Message-ID: <CACRpkdYwGoUwSRX2ASa5kJPpNFtmxbKPtgwUnFhQzZs9EUoHQQ@mail.gmail.com>
+References: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Thu, Jun 28, 2012 at 3:23 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTIzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMzoyMDowMSZlPTEmaD0xNDUyMiZmPTE0NTIzJmc9MTQ1MjM=3D
+> Saves some error handling and a small amount of code.
+>
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTIzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMzoyMDowMSZlPTEmaD0xNDUyMiZmPTE0NTIzJmc9MTQ1Mj=
-M=3D
+Elegant, monsieur.
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
+I'm starting to wonder if it would not be possible to mass-convert these
+using coccinelle.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Yours,
+Linus Walleij

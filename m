@@ -1,7 +1,8 @@
-From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
-Date: Thu, 28 Jun 2012 01:05:55 +0200
-Message-ID: <1340838356.4feb91d42152b@mc10.fr>
+From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
+	electronique
+Date: Thu, 28 Jun 2012 04:37:09 +0200
+Message-ID: <1340851029.4febc3550a816@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yNyAyMzoxMDowMSZlPTEmaD0xNDUxNSZmPTE0NTE2Jmc9MTQ1MTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTE0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMjoxMDowMSZlPTEmaD0xNDUxMyZmPTE0NTE0Jmc9MTQ1MTQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMzoxMDowMSZlPTEmaD0xNDUxNSZmPTE0NTE2Jmc9MTQ1MT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTE0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjoxMDowMSZlPTEmaD0xNDUxMyZmPTE0NTE0Jmc9MTQ1MT=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

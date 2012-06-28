@@ -1,10 +1,8 @@
-From: Nutrishield par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Aider votre organisme =?iso-8859-15?Q?=E0_prot=E8ger?= votre
-	=?iso-8859-15?Q?sant=E9?= et votre =?iso-8859-15?Q?beaut=E9_=E0?= long
-	terme - NutriShield =?iso-8859-15?Q?=E0?= partir de
-	=?iso-8859-15?Q?39=2C95=80?= par mois
-Date: Thu, 28 Jun 2012 06:02:55 +0200
-Message-ID: <1340856175.4febd76f99d71@mc10.fr>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de 50% de =?iso-8859-15?Q?r=E9duction*?= pour retrouver la
+	ligne avec Weight Watchers
+Date: Thu, 28 Jun 2012 10:07:43 +0200
+Message-ID: <1340870863.4fec10cf02141@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -23,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTcxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNi0yOCAwMzo1MDowMSZlPTEmaD0xNDU3MCZmPTE0NTcxJmc9MTQ1NzE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0NTI2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUyNSZmPTE0NTI2Jmc9MTQ1MjY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTcxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNi0yOCAwMzo1MDowMSZlPTEmaD0xNDU3MCZmPTE0NTcxJmc9MTQ1Nz=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0NTI2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNi0yNyAyMjozMDowMSZlPTEmaD0xNDUyNSZmPTE0NTI2Jmc9MTQ1Mj=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

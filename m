@@ -1,13 +1,12 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH] spi/bcm63xx: fix clock configuration selection
-Date: Fri, 29 Jun 2012 10:53:52 +0200
-Message-ID: <1340960032-24870-1-git-send-email-florian@openwrt.org>
+From: Lee Cooper par localips <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Les_soldes_Lee_Cooper_ouvrent_=E0_-50%_!?=
+Date: Fri, 29 Jun 2012 11:49:53 +0200 (CEST)
+Message-ID: <2.1.11.1101030461.645283.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,40 +18,87 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-We are currently using an inferior or equal operator for comparing
-the transfer frequency with the clock frequency table. Because of
-this, we always end up selecting 20Mhz as a frequency, due to the
-inequality transfer hz <= 20 Mhz being always true. Fix this by
-reversing the inequality, which is how the comparison should be done.
+LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !  Si vous =
 
-Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+ne pouvez pas visualiser ce message,  consulter notre version en ligne. =
+
+LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !
+
+LEECOOPER - Since 1908 - LOOK | HOMME | FEMME
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIj
+LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnA_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIg
+Jusqu'=E0 moins cinquante pourcents !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIh
+ sur tout LEE COOPER =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIm
+T-Shirt manches courtes Grishine
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIn
+Jean LC122BT
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnB_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIk
+J'en profite imm=E9diatement
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIl
+Jean BELLACA
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIq
+D=E9bardeur BETTYSE
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnGvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIr
+Livraison offerte =E0 partir de cent euros d'achat
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnG_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIo
+Partagez les offres LEECOOPER
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnGPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIp
+ Lee Cooper, la marque de l=E9gende du denim, =
+
+
+Nos engagements =
+
+
+La livraison  offerte en France m=E9tropolitaine =E0 partir de cent euros =
+
+d'achat.
+
+
+ Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
+
+vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
+
+et de suppression aux donn=E9es vous concernant.
+
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+
+mails par l'intermediaire de  ce raccourci. =
+
+
+
+---------------------------------------------------------------------------=
 ---
-Grant, this is 3.5 material, I would appreciate if you could get it
-in an upcoming 3.5-rc, thanks!
-
- drivers/spi/spi-bcm63xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 1307833..d00b5d4 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -128,7 +128,7 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
- 
- 	/* Find the closest clock configuration */
- 	for (i = 0; i < SPI_CLK_MASK; i++) {
--		if (hz <= bcm63xx_spi_freq_table[i][0]) {
-+		if (hz >= bcm63xx_spi_freq_table[i][0]) {
- 			clk_cfg = bcm63xx_spi_freq_table[i][1];
- 			break;
- 		}
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

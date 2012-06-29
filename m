@@ -1,12 +1,17 @@
-From: =?iso-8859-15?Q?Sin=E9quanone?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
-Subject: =?iso-8859-15?Q?SOLDES_Sin=E9quanone_jusqu'=E0_-50%_d=E8s_maintenant_!?=
-Date: Fri, 29 Jun 2012 08:15:16 +0200 (CEST)
-Message-ID: <2.1.8.1101008322.1122074.3236305005@marketing.zabaloc.com>
-Reply-To: =?iso-8859-15?Q?Sin=E9quanone?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH 1/8] mmc: spi: Move SSP register definitions into separate file
+Date: Fri, 29 Jun 2012 10:22:53 +0200
+Message-ID: <1340958180-2291-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>,
+	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,74 +23,260 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Move the definitions into separate file so separate SPI driver can be
+implemented. The SSP controller in MXS can act both as a MMC host and
+as a SPI host.
 
+Based on previous attempt by:
+Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
-Sinequanone - Jusqu'=E0 -50% du 27 juin au 31 juillet ! Pour visualiser =
-
-correctement ce message, suivez ce lien. : =
-
- http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdBQ4VEZ =
-
-
-
-Jusque -50 pourcents
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdq_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEU =
-
-Sinequanone
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdqPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEV =
-
-Soldes du 27 juin au 31 juillet
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdqfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEa =
-
-www.sinequanone.com
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEb =
-
-www.sinequanone.com
-http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdr_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEY =
-
- * Offre valable sur une s=E9lection d'articles de la collection =
-
-printemps-=E9t=E9 2012 identifi=E9s par un pictogramme sur le site, hors =
-
-articles signal=E9s. Offre non cumulable avec toute autre op=E9ration en =
-
-cours. Les soldes se d=E9roulent du 27 juin (8h) au 31 juillet 2012 sur =
-
-www.sinequanone.com et dans les boutiques Sinequanone en France =
-
-m=E9tropolitaine (Zone nationale) sauf exceptions. Les soldes auront lieu =
-
-du 4 juillet au 7 aout 2012 pour la r=E9gion Provence-Alpes-Cote-d'Azur =
-
-et du 11 juillet au 14 aout 2012 en Corse.
-
- Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
-
-vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
-
-et de suppression aux donn=E9es vous concernant. Pour ne plus recevoir de =
-
-courriels de notre part, il vous suffit de vous rendre sur cette page : =
-
-http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdBQ4VEe =
-
-. =
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>
+CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+Cc: Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>
 ---
+ drivers/mmc/host/mxs-mmc.c  |   87 ++--------------------------------
+ include/linux/spi/mxs-spi.h |  109 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 112 insertions(+), 84 deletions(-)
+ create mode 100644 include/linux/spi/mxs-spi.h
+
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index 9bfd08e..6a14e10 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -45,87 +45,10 @@
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/stmp_device.h>
+ #include <linux/mmc/mxs-mmc.h>
++#include <linux/spi/mxs-spi.h>
+ 
+ #define DRIVER_NAME	"mxs-mmc"
+ 
+-/* card detect polling timeout */
+-#define MXS_MMC_DETECT_TIMEOUT			(HZ/2)
+-
+-#define ssp_is_old(host)	((host)->devid == IMX23_MMC)
+-
+-/* SSP registers */
+-#define HW_SSP_CTRL0				0x000
+-#define  BM_SSP_CTRL0_RUN			(1 << 29)
+-#define  BM_SSP_CTRL0_SDIO_IRQ_CHECK		(1 << 28)
+-#define  BM_SSP_CTRL0_IGNORE_CRC		(1 << 26)
+-#define  BM_SSP_CTRL0_READ			(1 << 25)
+-#define  BM_SSP_CTRL0_DATA_XFER			(1 << 24)
+-#define  BP_SSP_CTRL0_BUS_WIDTH			(22)
+-#define  BM_SSP_CTRL0_BUS_WIDTH			(0x3 << 22)
+-#define  BM_SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
+-#define  BM_SSP_CTRL0_LONG_RESP			(1 << 19)
+-#define  BM_SSP_CTRL0_GET_RESP			(1 << 17)
+-#define  BM_SSP_CTRL0_ENABLE			(1 << 16)
+-#define  BP_SSP_CTRL0_XFER_COUNT		(0)
+-#define  BM_SSP_CTRL0_XFER_COUNT		(0xffff)
+-#define HW_SSP_CMD0				0x010
+-#define  BM_SSP_CMD0_DBL_DATA_RATE_EN		(1 << 25)
+-#define  BM_SSP_CMD0_SLOW_CLKING_EN		(1 << 22)
+-#define  BM_SSP_CMD0_CONT_CLKING_EN		(1 << 21)
+-#define  BM_SSP_CMD0_APPEND_8CYC		(1 << 20)
+-#define  BP_SSP_CMD0_BLOCK_SIZE			(16)
+-#define  BM_SSP_CMD0_BLOCK_SIZE			(0xf << 16)
+-#define  BP_SSP_CMD0_BLOCK_COUNT		(8)
+-#define  BM_SSP_CMD0_BLOCK_COUNT		(0xff << 8)
+-#define  BP_SSP_CMD0_CMD			(0)
+-#define  BM_SSP_CMD0_CMD			(0xff)
+-#define HW_SSP_CMD1				0x020
+-#define HW_SSP_XFER_SIZE			0x030
+-#define HW_SSP_BLOCK_SIZE			0x040
+-#define  BP_SSP_BLOCK_SIZE_BLOCK_COUNT		(4)
+-#define  BM_SSP_BLOCK_SIZE_BLOCK_COUNT		(0xffffff << 4)
+-#define  BP_SSP_BLOCK_SIZE_BLOCK_SIZE		(0)
+-#define  BM_SSP_BLOCK_SIZE_BLOCK_SIZE		(0xf)
+-#define HW_SSP_TIMING(h)			(ssp_is_old(h) ? 0x050 : 0x070)
+-#define  BP_SSP_TIMING_TIMEOUT			(16)
+-#define  BM_SSP_TIMING_TIMEOUT			(0xffff << 16)
+-#define  BP_SSP_TIMING_CLOCK_DIVIDE		(8)
+-#define  BM_SSP_TIMING_CLOCK_DIVIDE		(0xff << 8)
+-#define  BP_SSP_TIMING_CLOCK_RATE		(0)
+-#define  BM_SSP_TIMING_CLOCK_RATE		(0xff)
+-#define HW_SSP_CTRL1(h)				(ssp_is_old(h) ? 0x060 : 0x080)
+-#define  BM_SSP_CTRL1_SDIO_IRQ			(1 << 31)
+-#define  BM_SSP_CTRL1_SDIO_IRQ_EN		(1 << 30)
+-#define  BM_SSP_CTRL1_RESP_ERR_IRQ		(1 << 29)
+-#define  BM_SSP_CTRL1_RESP_ERR_IRQ_EN		(1 << 28)
+-#define  BM_SSP_CTRL1_RESP_TIMEOUT_IRQ		(1 << 27)
+-#define  BM_SSP_CTRL1_RESP_TIMEOUT_IRQ_EN	(1 << 26)
+-#define  BM_SSP_CTRL1_DATA_TIMEOUT_IRQ		(1 << 25)
+-#define  BM_SSP_CTRL1_DATA_TIMEOUT_IRQ_EN	(1 << 24)
+-#define  BM_SSP_CTRL1_DATA_CRC_IRQ		(1 << 23)
+-#define  BM_SSP_CTRL1_DATA_CRC_IRQ_EN		(1 << 22)
+-#define  BM_SSP_CTRL1_FIFO_UNDERRUN_IRQ		(1 << 21)
+-#define  BM_SSP_CTRL1_FIFO_UNDERRUN_IRQ_EN	(1 << 20)
+-#define  BM_SSP_CTRL1_RECV_TIMEOUT_IRQ		(1 << 17)
+-#define  BM_SSP_CTRL1_RECV_TIMEOUT_IRQ_EN	(1 << 16)
+-#define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ		(1 << 15)
+-#define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ_EN	(1 << 14)
+-#define  BM_SSP_CTRL1_DMA_ENABLE		(1 << 13)
+-#define  BM_SSP_CTRL1_POLARITY			(1 << 9)
+-#define  BP_SSP_CTRL1_WORD_LENGTH		(4)
+-#define  BM_SSP_CTRL1_WORD_LENGTH		(0xf << 4)
+-#define  BP_SSP_CTRL1_SSP_MODE			(0)
+-#define  BM_SSP_CTRL1_SSP_MODE			(0xf)
+-#define HW_SSP_SDRESP0(h)			(ssp_is_old(h) ? 0x080 : 0x0a0)
+-#define HW_SSP_SDRESP1(h)			(ssp_is_old(h) ? 0x090 : 0x0b0)
+-#define HW_SSP_SDRESP2(h)			(ssp_is_old(h) ? 0x0a0 : 0x0c0)
+-#define HW_SSP_SDRESP3(h)			(ssp_is_old(h) ? 0x0b0 : 0x0d0)
+-#define HW_SSP_STATUS(h)			(ssp_is_old(h) ? 0x0c0 : 0x100)
+-#define  BM_SSP_STATUS_CARD_DETECT		(1 << 28)
+-#define  BM_SSP_STATUS_SDIO_IRQ			(1 << 17)
+-
+-#define BF_SSP(value, field)	(((value) << BP_SSP_##field) & BM_SSP_##field)
+-
+ #define MXS_MMC_IRQ_BITS	(BM_SSP_CTRL1_SDIO_IRQ		| \
+ 				 BM_SSP_CTRL1_RESP_ERR_IRQ	| \
+ 				 BM_SSP_CTRL1_RESP_TIMEOUT_IRQ	| \
+@@ -135,12 +58,8 @@
+ 				 BM_SSP_CTRL1_RECV_TIMEOUT_IRQ  | \
+ 				 BM_SSP_CTRL1_FIFO_OVERRUN_IRQ)
+ 
+-#define SSP_PIO_NUM	3
+-
+-enum mxs_mmc_id {
+-	IMX23_MMC,
+-	IMX28_MMC,
+-};
++/* card detect polling timeout */
++#define MXS_MMC_DETECT_TIMEOUT			(HZ/2)
+ 
+ struct mxs_mmc_host {
+ 	struct mmc_host			*mmc;
+diff --git a/include/linux/spi/mxs-spi.h b/include/linux/spi/mxs-spi.h
+new file mode 100644
+index 0000000..b7ccd57
+--- /dev/null
++++ b/include/linux/spi/mxs-spi.h
+@@ -0,0 +1,109 @@
++/*
++ * include/linux/spi/mxs-spi.h
++ *
++ * Freescale i.MX233/i.MX28 SPI controller register definition
++ *
++ * Copyright 2008 Embedded Alley Solutions, Inc.
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, write to the Free Software Foundation, Inc.,
++ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#ifndef __LINUX_SPI_MXS_SPI_H__
++#define __LINUX_SPI_MXS_SPI_H__
++
++#define ssp_is_old(host)	((host)->devid == IMX23_MMC)
++
++/* SSP registers */
++#define HW_SSP_CTRL0				0x000
++#define  BM_SSP_CTRL0_RUN			(1 << 29)
++#define  BM_SSP_CTRL0_SDIO_IRQ_CHECK		(1 << 28)
++#define  BM_SSP_CTRL0_IGNORE_CRC		(1 << 26)
++#define  BM_SSP_CTRL0_READ			(1 << 25)
++#define  BM_SSP_CTRL0_DATA_XFER			(1 << 24)
++#define  BP_SSP_CTRL0_BUS_WIDTH			22
++#define  BM_SSP_CTRL0_BUS_WIDTH			(0x3 << 22)
++#define  BM_SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
++#define  BM_SSP_CTRL0_LONG_RESP			(1 << 19)
++#define  BM_SSP_CTRL0_GET_RESP			(1 << 17)
++#define  BM_SSP_CTRL0_ENABLE			(1 << 16)
++#define  BP_SSP_CTRL0_XFER_COUNT		0
++#define  BM_SSP_CTRL0_XFER_COUNT		0xffff
++#define HW_SSP_CMD0				0x010
++#define  BM_SSP_CMD0_DBL_DATA_RATE_EN		(1 << 25)
++#define  BM_SSP_CMD0_SLOW_CLKING_EN		(1 << 22)
++#define  BM_SSP_CMD0_CONT_CLKING_EN		(1 << 21)
++#define  BM_SSP_CMD0_APPEND_8CYC		(1 << 20)
++#define  BP_SSP_CMD0_BLOCK_SIZE			16
++#define  BM_SSP_CMD0_BLOCK_SIZE			(0xf << 16)
++#define  BP_SSP_CMD0_BLOCK_COUNT		8
++#define  BM_SSP_CMD0_BLOCK_COUNT		(0xff << 8)
++#define  BP_SSP_CMD0_CMD			0
++#define  BM_SSP_CMD0_CMD			0xff
++#define HW_SSP_CMD1				0x020
++#define HW_SSP_XFER_SIZE			0x030
++#define HW_SSP_BLOCK_SIZE			0x040
++#define  BP_SSP_BLOCK_SIZE_BLOCK_COUNT		4
++#define  BM_SSP_BLOCK_SIZE_BLOCK_COUNT		(0xffffff << 4)
++#define  BP_SSP_BLOCK_SIZE_BLOCK_SIZE		0
++#define  BM_SSP_BLOCK_SIZE_BLOCK_SIZE		0xf
++#define HW_SSP_TIMING(h)			(ssp_is_old(h) ? 0x050 : 0x070)
++#define  BP_SSP_TIMING_TIMEOUT			16
++#define  BM_SSP_TIMING_TIMEOUT			(0xffff << 16)
++#define  BP_SSP_TIMING_CLOCK_DIVIDE		8
++#define  BM_SSP_TIMING_CLOCK_DIVIDE		(0xff << 8)
++#define  BP_SSP_TIMING_CLOCK_RATE		0
++#define  BM_SSP_TIMING_CLOCK_RATE		0xff
++#define HW_SSP_CTRL1(h)				(ssp_is_old(h) ? 0x060 : 0x080)
++#define  BM_SSP_CTRL1_SDIO_IRQ			(1 << 31)
++#define  BM_SSP_CTRL1_SDIO_IRQ_EN		(1 << 30)
++#define  BM_SSP_CTRL1_RESP_ERR_IRQ		(1 << 29)
++#define  BM_SSP_CTRL1_RESP_ERR_IRQ_EN		(1 << 28)
++#define  BM_SSP_CTRL1_RESP_TIMEOUT_IRQ		(1 << 27)
++#define  BM_SSP_CTRL1_RESP_TIMEOUT_IRQ_EN	(1 << 26)
++#define  BM_SSP_CTRL1_DATA_TIMEOUT_IRQ		(1 << 25)
++#define  BM_SSP_CTRL1_DATA_TIMEOUT_IRQ_EN	(1 << 24)
++#define  BM_SSP_CTRL1_DATA_CRC_IRQ		(1 << 23)
++#define  BM_SSP_CTRL1_DATA_CRC_IRQ_EN		(1 << 22)
++#define  BM_SSP_CTRL1_FIFO_UNDERRUN_IRQ		(1 << 21)
++#define  BM_SSP_CTRL1_FIFO_UNDERRUN_IRQ_EN	(1 << 20)
++#define  BM_SSP_CTRL1_RECV_TIMEOUT_IRQ		(1 << 17)
++#define  BM_SSP_CTRL1_RECV_TIMEOUT_IRQ_EN	(1 << 16)
++#define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ		(1 << 15)
++#define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ_EN	(1 << 14)
++#define  BM_SSP_CTRL1_DMA_ENABLE		(1 << 13)
++#define  BM_SSP_CTRL1_POLARITY			(1 << 9)
++#define  BP_SSP_CTRL1_WORD_LENGTH		4
++#define  BM_SSP_CTRL1_WORD_LENGTH		(0xf << 4)
++#define  BP_SSP_CTRL1_SSP_MODE			0
++#define  BM_SSP_CTRL1_SSP_MODE			0xf
++#define HW_SSP_SDRESP0(h)			(ssp_is_old(h) ? 0x080 : 0x0a0)
++#define HW_SSP_SDRESP1(h)			(ssp_is_old(h) ? 0x090 : 0x0b0)
++#define HW_SSP_SDRESP2(h)			(ssp_is_old(h) ? 0x0a0 : 0x0c0)
++#define HW_SSP_SDRESP3(h)			(ssp_is_old(h) ? 0x0b0 : 0x0d0)
++#define HW_SSP_STATUS(h)			(ssp_is_old(h) ? 0x0c0 : 0x100)
++#define  BM_SSP_STATUS_CARD_DETECT		(1 << 28)
++#define  BM_SSP_STATUS_SDIO_IRQ			(1 << 17)
++
++#define BF_SSP(value, field)	(((value) << BP_SSP_##field) & BM_SSP_##field)
++
++#define SSP_PIO_NUM	3
++
++enum mxs_mmc_id {
++	IMX23_MMC,
++	IMX28_MMC,
++};
++
++#endif	/* __LINUX_SPI_MXS_SPI_H__ */
+-- 
+1.7.10
+
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

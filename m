@@ -1,62 +1,237 @@
-From: "Negomat93" <groupe-electrogene-1tsiiZ//OF9QFI55V6+gNQ@public.gmane.org>
-Subject: Service energie
-Date: Fri, 29 Jun 2012 12:13:48 +0200
-Message-ID: <20120629073931.2D900E46183C@christian-PC>
-Reply-To: groupe-electrogene-1tsiiZ//OF9QFI55V6+gNQ@public.gmane.org
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: tegra: use dmaengine based dma driver
+Date: Fri, 29 Jun 2012 17:01:20 +0530
+Message-ID: <1340969480-7702-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-wqAKCgoKTmVnb21hdDkzIGVzdCBzcMOpY2lhbGlzw6kgZGFucyBs4oCZYWNoYXQsIGxhIHZlbnRl
-LCBsYSByw6ljdXDDqXJhdGlvbiwgbGUgZMOpbW9udGFnZSBldCBsYSByw6lub3ZhdGlvbiBkZSBn
-cm91cGVzIMOpbGVjdHJvZ8OobmVzwqAgZXQgZGUgY2VudHJhbGVzIGRlIGNvZ8OpbsOpcmF0aW9u
-LAoKCgptb3RldXJzIG1hcmluZSBldCBtb3RldXJzIGluZHVzdHJpZWxlcyBkZSB0b3V0ZXMgcHVp
-c3NhbmNlcyBldCBkZSB0b3V0ZXMgbWFycXVlcyA6IFZvbHZvLCBNaXRzdWJpY2hpLCBDYXRlcnBp
-bGxhciwgQ3VtbWlucywgRGV1dHosIERldXR6IEdlbmVyYXRvciBUQkcgNjIwLCBUQkQgNjIwIFYx
-NiwgMzUxNiBDYXRlcnBpbGxhciwgQ3VtbWlucyBLVFRBIDUwRyDigKZ2b2lyIG5vdHJlIHNpdGUg
-OiB3d3cuem90b2ZmLmZyICggImh0dHA6Ly93d3cuem90b2ZmLmZyIiApLgoKCgoKCgoKCgoKCk5v
-dHJlIGVudHJlcHJpc2UgYWNow6h0ZSBldCB2ZW5kIGRlcyBtYWNoaW5lcyBpbmR1c3RyaWVsbGVz
-IHRvdXMgdHlwZXMgZXQgdG91dGVzIG1hcnF1ZXMuCgoKCi1tYWNoaW5lcyBvdXRpbHMgOiB0b3Vy
-cyzCoCBmcmFpc2V1c2UsIENOIGV0IGNvbnZlbnRpb25uZWwgKCBEdWZvdXIsIENhemVuZXV2ZeKA
-pi4pCgoKCi1tYWNoaW5lcyBwb3VyIGxhIHTDtGxlcmllIGV0IGNoYXVkcm9ubmVyaWUgOiBwbGll
-dXNlcyzCoCByb3VsZXVzZXMsIGNpc2FpbGxlcyAoUHJvbWVjYW0sIEFtYWRhLCBDb2xseeKApikg
-CgoKCi1tYWNoaW5lcyBsacOpZXMgw6AgbOKAmWluZHVzdHJpZSBkdSBiw6J0aW1lbnQgOiB0cmFj
-dG9wZWxsZXMsIG5hY2VsbGVzIMOpbMOpdmF0cmljZXMgKFBvcXVlbGluLCBDYXNl4oCmKQoKCgot
-bWFjaGluZXMgcG91ciBs4oCZaW5kdXN0cmllIHBoYXJtYWNldXRpcXVlIGV0IGNvc23DqXRpcXVl
-IDogbWFsYXhldXJzLCBtw6lsYW5nZXVycyAoQWxmYSBMYXZhbCwgT2xzYeKApikKCgoKLW1hY2hp
-bmVzIGTigJlpbXByaW1lcmllIChvZmZzZXQsIHBsYXRpbmUgVCwgbWFzc2ljb3RzLCBIZWlkZWxi
-ZXJnLCBDb21vaXLigKYpCgoKCkxlIGTDqW1vbnRhZ2UgZXQgbGEgcsOpY3Vww6lyYXRpb24gZHUg
-bWF0w6lyaWVsIGVzdCBuw6lnb2NpYWJsZSBlbiBmb25jdGlvbiBkZcKgIHZvcyBtYWNoaW5lcy4K
-CgoKwqAKCgoKCgoKCk5lZ29tYXQgOTMgcHJvcG9zZSBkZXMgZ3JvdXBlcyDDqWxlY3Ryb2fDqG5l
-cyzCoCBkZXMgY2VudHJhbGVzIGRlIGNvZ8OpbsOpcmF0aW9uIGTigJlvY2Nhc2lvbiA6IGRpZXNl
-bCwgZ2F6LCBkZXMgbWFjaGluZXMgaW5kdXN0cmllbGxlcy4KCgoKTm91cyBkaXNwb3NvbnMgZOKA
-mXVuIHN0b2NrIGRlIG1hdMOpcmllbCBwZXJtYW5lbnQuCgoKCk5vdXMgZ2FyYW50aXNzb25zIHVu
-ZSBtYWluIGTigJnFk3V2cmUgZGUgcXVhbGl0w6kgZXQgdW5lIGxpdnJhaXNvbiBkYW5zIGxlIG1v
-bmRlIGVudGllci7CoCBEZXZpcyBncmF0dWl0ZSB2b2lyIHNpdGUgOiB3d3cuem90b2ZmLmZyICgg
-Imh0dHA6Ly93d3cuem90b2ZmLmZyIiApLgoKCgoKCgoKUG91ciBwbHVzIGQnaW5mb3JtYXRpb25z
-LCBhcHBlbGVyIE1yIHpvdG9mZiBhdSArMzMuNi44OS43NC4xOC44MwoKCgpOZWdvbWF0IDkzIE1y
-IFpvdG9mZiBDaHJpc3RpYW4KMjcgcnVlIGxlb24gTG9pc2VhdSA5MzEwMCBNb250cmV1aWwgLSBG
-cmFuY2UKVCArMzMgMSA0OCA0MyA1MiAwMiAKRiArMzMgMSA0OCA0NSA0NyA3MApQICszMyA2IDg5
-IDc0IDE4IDgzIApFbWFpbDpuZWdvbWF0OTNAd2FuYWRvby5mcgpzaXRlIFdlYjogd3d3LnpvdG9m
-Zi5mciAoICJodHRwOi8vd3d3LnpvdG9mZi5mciIgKQoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpM
-aXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxs
-IGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2Fw
-ZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9u
-cyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRo
-ZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9q
-YXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Use the dmaengine based Tegra APB DMA driver for
+data transfer between SPI FIFO and memory in
+place of legacy Tegra APB DMA.
+
+The new driver is selected if legacy driver is not
+selected and new DMA driver is enabled through config
+file.
+
+Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/Kconfig     |    2 +-
+ drivers/spi/spi-tegra.c |   89 ++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 85 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8c8c680..b7b99e7 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -366,7 +366,7 @@ config SPI_STMP3XXX
+ 
+ config SPI_TEGRA
+ 	tristate "Nvidia Tegra SPI controller"
+-	depends on ARCH_TEGRA && TEGRA_SYSTEM_DMA
++	depends on ARCH_TEGRA && (TEGRA_SYSTEM_DMA || TEGRA20_APB_DMA)
+ 	help
+ 	  SPI driver for NVidia Tegra SoCs
+ 
+diff --git a/drivers/spi/spi-tegra.c b/drivers/spi/spi-tegra.c
+index 7f99ff3..ef52c1c 100644
+--- a/drivers/spi/spi-tegra.c
++++ b/drivers/spi/spi-tegra.c
+@@ -30,6 +30,7 @@
+ #include <linux/delay.h>
+ 
+ #include <linux/spi/spi.h>
++#include <linux/dmaengine.h>
+ 
+ #include <mach/dma.h>
+ 
+@@ -162,12 +163,23 @@ struct spi_tegra_data {
+ 	 * require transfers to be 4 byte aligned we need a bounce buffer
+ 	 * for the generic case.
+ 	 */
++	int			dma_req_len;
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+ 	struct tegra_dma_req	rx_dma_req;
+ 	struct tegra_dma_channel *rx_dma;
++#else
++	struct dma_chan		*rx_dma;
++	struct dma_slave_config	sconfig;
++	struct dma_async_tx_descriptor	*rx_dma_desc;
++	dma_cookie_t		rx_cookie;
++#endif
+ 	u32			*rx_bb;
+ 	dma_addr_t		rx_bb_phys;
+ };
+ 
++#if !defined(CONFIG_TEGRA_SYSTEM_DMA)
++static void tegra_spi_rx_dma_complete(void *args);
++#endif
+ 
+ static inline unsigned long spi_tegra_readl(struct spi_tegra_data *tspi,
+ 					    unsigned long reg)
+@@ -190,10 +202,24 @@ static void spi_tegra_go(struct spi_tegra_data *tspi)
+ 
+ 	val = spi_tegra_readl(tspi, SLINK_DMA_CTL);
+ 	val &= ~SLINK_DMA_BLOCK_SIZE(~0) & ~SLINK_DMA_EN;
+-	val |= SLINK_DMA_BLOCK_SIZE(tspi->rx_dma_req.size / 4 - 1);
++	val |= SLINK_DMA_BLOCK_SIZE(tspi->dma_req_len / 4 - 1);
+ 	spi_tegra_writel(tspi, val, SLINK_DMA_CTL);
+-
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
++	tspi->rx_dma_req.size = tspi->dma_req_len;
+ 	tegra_dma_enqueue_req(tspi->rx_dma, &tspi->rx_dma_req);
++#else
++	tspi->rx_dma_desc = dmaengine_prep_slave_single(tspi->rx_dma,
++				tspi->rx_bb_phys, tspi->dma_req_len,
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT);
++	if (!tspi->rx_dma_desc) {
++		dev_err(&tspi->pdev->dev, "dmaengine slave prep failed\n");
++		return;
++	}
++	tspi->rx_dma_desc->callback = tegra_spi_rx_dma_complete;
++	tspi->rx_dma_desc->callback_param = tspi;
++	tspi->rx_cookie = dmaengine_submit(tspi->rx_dma_desc);
++	dma_async_issue_pending(tspi->rx_dma);
++#endif
+ 
+ 	val |= SLINK_DMA_EN;
+ 	spi_tegra_writel(tspi, val, SLINK_DMA_CTL);
+@@ -221,7 +247,7 @@ static unsigned spi_tegra_fill_tx_fifo(struct spi_tegra_data *tspi,
+ 		spi_tegra_writel(tspi, val, SLINK_TX_FIFO);
+ 	}
+ 
+-	tspi->rx_dma_req.size = len / tspi->cur_bytes_per_word * 4;
++	tspi->dma_req_len = len / tspi->cur_bytes_per_word * 4;
+ 
+ 	return len;
+ }
+@@ -318,9 +344,8 @@ static void spi_tegra_start_message(struct spi_device *spi,
+ 	spi_tegra_start_transfer(spi, t);
+ }
+ 
+-static void tegra_spi_rx_dma_complete(struct tegra_dma_req *req)
++static void handle_spi_rx_dma_complete(struct spi_tegra_data *tspi)
+ {
+-	struct spi_tegra_data *tspi = req->dev;
+ 	unsigned long flags;
+ 	struct spi_message *m;
+ 	struct spi_device *spi;
+@@ -380,6 +405,19 @@ static void tegra_spi_rx_dma_complete(struct tegra_dma_req *req)
+ 
+ 	spin_unlock_irqrestore(&tspi->lock, flags);
+ }
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
++static void tegra_spi_rx_dma_complete(struct tegra_dma_req *req)
++{
++	struct spi_tegra_data *tspi = req->dev;
++	handle_spi_rx_dma_complete(tspi);
++}
++#else
++static void tegra_spi_rx_dma_complete(void *args)
++{
++	struct spi_tegra_data *tspi = args;
++	handle_spi_rx_dma_complete(tspi);
++}
++#endif
+ 
+ static int spi_tegra_setup(struct spi_device *spi)
+ {
+@@ -471,6 +509,9 @@ static int __devinit spi_tegra_probe(struct platform_device *pdev)
+ 	struct spi_tegra_data	*tspi;
+ 	struct resource		*r;
+ 	int ret;
++#if !defined(CONFIG_TEGRA_SYSTEM_DMA)
++	dma_cap_mask_t mask;
++#endif
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof *tspi);
+ 	if (master == NULL) {
+@@ -522,12 +563,24 @@ static int __devinit spi_tegra_probe(struct platform_device *pdev)
+ 
+ 	INIT_LIST_HEAD(&tspi->queue);
+ 
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+ 	tspi->rx_dma = tegra_dma_allocate_channel(TEGRA_DMA_MODE_ONESHOT);
+ 	if (!tspi->rx_dma) {
+ 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
+ 		ret = -ENODEV;
+ 		goto err3;
+ 	}
++#else
++	dma_cap_zero(mask);
++	dma_cap_set(DMA_SLAVE, mask);
++	tspi->rx_dma = dma_request_channel(mask, NULL, NULL);
++	if (!tspi->rx_dma) {
++		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
++		ret = -ENODEV;
++		goto err3;
++	}
++
++#endif
+ 
+ 	tspi->rx_bb = dma_alloc_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+ 					 &tspi->rx_bb_phys, GFP_KERNEL);
+@@ -537,6 +590,7 @@ static int __devinit spi_tegra_probe(struct platform_device *pdev)
+ 		goto err4;
+ 	}
+ 
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+ 	tspi->rx_dma_req.complete = tegra_spi_rx_dma_complete;
+ 	tspi->rx_dma_req.to_memory = 1;
+ 	tspi->rx_dma_req.dest_addr = tspi->rx_bb_phys;
+@@ -546,6 +600,23 @@ static int __devinit spi_tegra_probe(struct platform_device *pdev)
+ 	tspi->rx_dma_req.source_wrap = 4;
+ 	tspi->rx_dma_req.req_sel = spi_tegra_req_sels[pdev->id];
+ 	tspi->rx_dma_req.dev = tspi;
++#else
++	/* Dmaengine Dma slave config */
++	tspi->sconfig.src_addr = tspi->phys + SLINK_RX_FIFO;
++	tspi->sconfig.dst_addr = tspi->phys + SLINK_RX_FIFO;
++	tspi->sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
++	tspi->sconfig.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
++	tspi->sconfig.slave_id = spi_tegra_req_sels[pdev->id];
++	tspi->sconfig.src_maxburst = 1;
++	tspi->sconfig.dst_maxburst = 1;
++	ret = dmaengine_device_control(tspi->rx_dma,
++			DMA_SLAVE_CONFIG, (unsigned long) &tspi->sconfig);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "can not do slave configure for dma %d\n",
++			ret);
++		goto err4;
++	}
++#endif
+ 
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	ret = spi_register_master(master);
+@@ -559,7 +630,11 @@ err5:
+ 	dma_free_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+ 			  tspi->rx_bb, tspi->rx_bb_phys);
+ err4:
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+ 	tegra_dma_free_channel(tspi->rx_dma);
++#else
++	dma_release_channel(tspi->rx_dma);
++#endif
+ err3:
+ 	clk_put(tspi->clk);
+ err2:
+@@ -581,7 +656,11 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
+ 	tspi = spi_master_get_devdata(master);
+ 
+ 	spi_unregister_master(master);
++#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+ 	tegra_dma_free_channel(tspi->rx_dma);
++#else
++	dma_release_channel(tspi->rx_dma);
++#endif
+ 
+ 	dma_free_coherent(&pdev->dev, sizeof(u32) * BB_LEN,
+ 			  tspi->rx_bb, tspi->rx_bb_phys);
+-- 
+1.7.1.1

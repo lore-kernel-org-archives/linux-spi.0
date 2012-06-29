@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 6/8] mmc: spi: Add SPI driver for mx233/mx28
-Date: Fri, 29 Jun 2012 10:22:58 +0200
-Message-ID: <1340958180-2291-6-git-send-email-marex@denx.de>
+Subject: [PATCH 4/8] mmc: spi: Pull out parts shared between MMC and SPI
+Date: Fri, 29 Jun 2012 10:22:56 +0200
+Message-ID: <1340958180-2291-4-git-send-email-marex@denx.de>
 References: <1340958180-2291-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,18 +25,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is slightly reworked version of the SPI driver.
-Support for DT has been added and it's been converted
-to queued API.
+Abstract out the common part of private data shared between MMC
+and SPI. These shall later allow to use common clock configuration
+function.
 
-Based on previous attempt by:
-Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-
-Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
 Cc: Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>
 CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
@@ -44,474 +41,364 @@ CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
 Cc: Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>
 ---
- drivers/spi/Kconfig   |    6 +
- drivers/spi/Makefile  |    1 +
- drivers/spi/spi-mxs.c |  427 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 434 insertions(+)
- create mode 100644 drivers/spi/spi-mxs.c
+ drivers/mmc/host/mxs-mmc.c  |  107 ++++++++++++++++++++++++-------------------
+ include/linux/spi/mxs-spi.h |    8 ++++
+ 2 files changed, 67 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index cd2fe35..85ca6a7 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -355,6 +355,12 @@ config SPI_STMP3XXX
- 	help
- 	  SPI driver for Freescale STMP37xx/378x SoC SSP interface
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index 97d3df2..d5f2421 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -62,23 +62,20 @@
+ #define MXS_MMC_DETECT_TIMEOUT			(HZ/2)
  
-+config SPI_MXS
-+	tristate "Freescale MXS SPI controller"
-+	depends on ARCH_MXS
-+	help
-+	  SPI driver for Freescale MXS devices.
-+
- config SPI_TEGRA
- 	tristate "Nvidia Tegra SPI controller"
- 	depends on ARCH_TEGRA && TEGRA_SYSTEM_DMA
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 9d75d21..a684d1e 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_SPI_LM70_LLP)		+= spi-lm70llp.o
- obj-$(CONFIG_SPI_MPC512x_PSC)		+= spi-mpc512x-psc.o
- obj-$(CONFIG_SPI_MPC52xx_PSC)		+= spi-mpc52xx-psc.o
- obj-$(CONFIG_SPI_MPC52xx)		+= spi-mpc52xx.o
-+obj-$(CONFIG_SPI_MXS)			+= spi-mxs.o
- obj-$(CONFIG_SPI_NUC900)		+= spi-nuc900.o
- obj-$(CONFIG_SPI_OC_TINY)		+= spi-oc-tiny.o
- obj-$(CONFIG_SPI_OMAP_UWIRE)		+= spi-omap-uwire.o
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-new file mode 100644
-index 0000000..3c0b1ac
---- /dev/null
-+++ b/drivers/spi/spi-mxs.c
-@@ -0,0 +1,427 @@
-+/*
-+ * Freescale MXS SPI master driver
-+ *
-+ * Copyright 2012 DENX Software Engineering, GmbH.
-+ * Copyright 2012 Freescale Semiconductor, Inc.
-+ * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
-+ *
-+ * Rework and transition to new API by:
-+ * Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-+ *
-+ * Based on previous attempt by:
-+ * Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-+ *
-+ * Based on code from U-Boot bootloader by:
-+ * Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-+ *
-+ * Based on spi-stmp.c, which is:
-+ * Author: Dmitry Pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
-+#include <linux/of_gpio.h>
-+#include <linux/platform_device.h>
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/dmaengine.h>
-+#include <linux/highmem.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <linux/completion.h>
-+#include <linux/gpio.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/module.h>
-+#include <linux/fsl/mxs-dma.h>
-+#include <linux/pinctrl/consumer.h>
-+#include <linux/stmp_device.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/mxs-spi.h>
-+
-+#define DRIVER_NAME		"mxs-spi"
-+
-+#define SSP_TIMEOUT		1000	/* 1000 ms */
-+
-+struct mxs_spi {
-+	struct mxs_ssp		ssp;
-+};
-+
-+static int mxs_spi_setup_transfer(struct spi_device *dev,
-+				struct spi_transfer *t)
-+{
-+	struct mxs_spi *spi = spi_master_get_devdata(dev->master);
-+	struct mxs_ssp *ssp = &spi->ssp;
-+	uint8_t bits_per_word;
-+	uint32_t hz = 0;
-+
-+	bits_per_word = dev->bits_per_word;
-+	if (t && t->bits_per_word)
-+		bits_per_word = t->bits_per_word;
-+
-+	if (bits_per_word != 8) {
-+		dev_err(&dev->dev, "%s, unsupported bits_per_word=%d\n",
-+					__func__, bits_per_word);
-+		return -EINVAL;
-+	}
-+
-+	if (dev->max_speed_hz)
-+		hz = dev->max_speed_hz;
-+	if (t && t->speed_hz)
-+		hz = t->speed_hz;
-+	if (hz == 0) {
-+		dev_err(&dev->dev, "Cannot continue with zero clock\n");
-+		return -EINVAL;
-+	}
-+
-+	mxs_ssp_set_clk_rate(ssp, hz);
-+
-+	writel(BF_SSP_CTRL1_SSP_MODE(BV_SSP_CTRL1_SSP_MODE__SPI) |
-+		     BF_SSP_CTRL1_WORD_LENGTH
-+		     (BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
-+		     ((dev->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
-+		     ((dev->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0),
-+		     ssp->base + HW_SSP_CTRL1(ssp));
-+
-+	writel(0x0, ssp->base + HW_SSP_CMD0);
-+	writel(0x0, ssp->base + HW_SSP_CMD1);
-+
-+	return 0;
-+}
-+
-+static void mxs_spi_cleanup(struct spi_device *dev)
-+{
-+	return;
-+}
-+
-+static int mxs_spi_setup(struct spi_device *dev)
-+{
-+	int err = 0;
-+
-+	if (!dev->bits_per_word)
-+		dev->bits_per_word = 8;
-+
-+	if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
-+		return -EINVAL;
-+
-+	err = mxs_spi_setup_transfer(dev, NULL);
-+	if (err) {
-+		dev_err(&dev->dev,
-+			"Failed to setup transfer, error = %d\n", err);
-+	}
-+
-+	return err;
-+}
-+
-+static uint32_t mxs_spi_cs_to_reg(unsigned cs)
-+{
-+	uint32_t select = 0;
-+
-+	if (cs & 1)
-+		select |= BM_SSP_CTRL0_WAIT_FOR_CMD;
-+	if (cs & 2)
-+		select |= BM_SSP_CTRL0_WAIT_FOR_IRQ;
-+
-+	return select;
-+}
-+
-+static void mxs_spi_set_cs(struct mxs_spi *spi, unsigned cs)
-+{
-+	const uint32_t mask =
-+		BM_SSP_CTRL0_WAIT_FOR_CMD | BM_SSP_CTRL0_WAIT_FOR_IRQ;
-+	uint32_t select;
-+	struct mxs_ssp *ssp = &spi->ssp;
-+
-+	writel(mask, ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-+	select = mxs_spi_cs_to_reg(cs);
-+	writel(select, ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+}
-+
-+static inline void mxs_spi_enable(struct mxs_spi *spi)
-+{
-+	struct mxs_ssp *ssp = &spi->ssp;
-+
-+	writel(BM_SSP_CTRL0_LOCK_CS,
-+		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+	writel(BM_SSP_CTRL0_IGNORE_CRC,
-+		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-+}
-+
-+static inline void mxs_spi_disable(struct mxs_spi *spi)
-+{
-+	struct mxs_ssp *ssp = &spi->ssp;
-+
-+	writel(BM_SSP_CTRL0_LOCK_CS,
-+		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-+	writel(BM_SSP_CTRL0_IGNORE_CRC,
-+		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+}
-+
-+static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
-+{
-+	unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
-+	struct mxs_ssp *ssp = &spi->ssp;
-+	uint32_t reg;
-+
-+	while (1) {
-+		reg = readl_relaxed(ssp->base + offset);
-+
-+		if (set && ((reg & mask) == mask))
-+			break;
-+
-+		if (!set && ((~reg & mask) == mask))
-+			break;
-+
-+		udelay(1);
-+
-+		if (time_after(jiffies, timeout))
-+			return -ETIMEDOUT;
-+	}
-+	return 0;
-+}
-+
-+static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
-+			    unsigned char *buf, int len,
-+			    int *first, int *last, int write)
-+{
-+	struct mxs_ssp *ssp = &spi->ssp;
-+
-+	if (*first)
-+		mxs_spi_enable(spi);
-+
-+	mxs_spi_set_cs(spi, cs);
-+
-+	while (len--) {
-+		if (*last && len == 0)
-+			mxs_spi_disable(spi);
-+
-+		if (ssp->devid == IMX23_SSP) {
-+			writel(BM_SSP_CTRL0_XFER_COUNT,
-+				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-+			writel(1,
-+				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+		} else {
-+			writel(1, ssp->base + HW_SSP_XFER_SIZE);
-+		}
-+
-+		if (write)
-+			writel(BM_SSP_CTRL0_READ,
-+				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-+		else
-+			writel(BM_SSP_CTRL0_READ,
-+				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+
-+		writel(BM_SSP_CTRL0_RUN,
-+				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+
-+		if (mxs_ssp_wait(spi, HW_SSP_CTRL0, BM_SSP_CTRL0_RUN, 1))
-+			return -ETIMEDOUT;
-+
-+		if (write)
-+			writel(*buf, ssp->base + HW_SSP_DATA);
-+
-+		writel(BM_SSP_CTRL0_DATA_XFER,
-+			     ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-+
-+		if (!write) {
-+			if (mxs_ssp_wait(spi, HW_SSP_STATUS(ssp),
-+						BM_SSP_STATUS_FIFO_EMPTY, 0))
-+				return -ETIMEDOUT;
-+
-+			*buf = (readl(ssp->base + HW_SSP_DATA) & 0xff);
-+		}
-+
-+		if (mxs_ssp_wait(spi, HW_SSP_CTRL0, BM_SSP_CTRL0_RUN, 0))
-+			return -ETIMEDOUT;
-+
-+		buf++;
-+	}
-+
-+	if (len <= 0)
-+		return 0;
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static int mxs_spi_transfer_one(struct spi_master *host, struct spi_message *m)
-+{
-+	struct mxs_spi *spi = spi_master_get_devdata(host);
-+	struct mxs_ssp *ssp = &spi->ssp;
-+	int first, last;
-+	struct spi_transfer *t, *tmp_t;
-+	int status = 0;
-+	int cs;
-+
-+	first = last = 0;
-+
-+	cs = m->spi->chip_select;
-+
-+	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
-+
-+		mxs_spi_setup_transfer(m->spi, t);
-+
-+		if (&t->transfer_list == m->transfers.next)
-+			first = 1;
-+		if (&t->transfer_list == m->transfers.prev)
-+			last = 1;
-+		if (t->rx_buf && t->tx_buf) {
-+			dev_err(ssp->dev,
-+				"Cannot send and receive simultaneously\n");
-+			return -EINVAL;
-+		}
-+
-+		if (t->tx_buf)
-+			status = mxs_spi_txrx_pio(spi, cs, (void *)t->tx_buf,
-+					     t->len, &first, &last, 1);
-+		if (t->rx_buf)
-+			status = mxs_spi_txrx_pio(spi, cs, t->rx_buf,
-+					     t->len, &first, &last, 0);
-+
-+		m->actual_length += t->len;
-+		if (status)
-+			break;
-+
-+		first = last = 0;
-+	}
-+
-+	m->status = 0;
-+	spi_finalize_current_message(host);
-+
-+	return status;
-+}
-+
-+static const struct of_device_id mxs_spi_dt_ids[] = {
-+	{ .compatible = "fsl,imx23-spi", .data = (void *) IMX23_SSP, },
-+	{ .compatible = "fsl,imx28-spi", .data = (void *) IMX28_SSP, },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, mxs_spi_dt_ids);
-+
-+static int __devinit mxs_spi_probe(struct platform_device *pdev)
-+{
-+	const struct of_device_id *of_id =
-+			of_match_device(mxs_spi_dt_ids, &pdev->dev);
-+	struct device_node *np = pdev->dev.of_node;
-+	struct spi_master *host;
-+	struct mxs_spi *spi;
-+	struct mxs_ssp *ssp;
-+	struct resource *iores;
-+	struct pinctrl *pinctrl;
-+	struct clk *clk;
-+	void __iomem *base;
-+	int devid;
-+	int ret = 0;
-+
-+	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!iores)
-+		return -EINVAL;
-+
-+	base = devm_request_and_ioremap(&pdev->dev, iores);
-+	if (!base)
-+		return -EADDRNOTAVAIL;
-+
-+	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-+	if (IS_ERR(pinctrl))
-+		return PTR_ERR(pinctrl);
-+
-+	clk = devm_clk_get(&pdev->dev, NULL);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	if (np)
-+		devid = (enum mxs_ssp_id) of_id->data;
-+	else
-+		devid = pdev->id_entry->driver_data;
-+
-+	host = spi_alloc_master(&pdev->dev, sizeof(*spi));
-+	if (!host)
-+		return -ENOMEM;
-+
-+	host->transfer_one_message = mxs_spi_transfer_one;
-+	host->setup = mxs_spi_setup;
-+	host->cleanup = mxs_spi_cleanup;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA;
-+	host->num_chipselect = 3;
-+	host->dev.of_node = np;
-+	host->flags = SPI_MASTER_HALF_DUPLEX;
-+
-+	spi = spi_master_get_devdata(host);
-+	ssp = &spi->ssp;
-+	ssp->dev = &pdev->dev;
-+	ssp->clk = clk;
-+	ssp->base = base;
-+	ssp->devid = devid;
-+
-+	clk_prepare_enable(ssp->clk);
-+	ssp->clk_rate = clk_get_rate(ssp->clk) / 1000;
-+
+ struct mxs_mmc_host {
++	struct mxs_ssp			ssp;
++
+ 	struct mmc_host			*mmc;
+ 	struct mmc_request		*mrq;
+ 	struct mmc_command		*cmd;
+ 	struct mmc_data			*data;
+ 
+-	void __iomem			*base;
+ 	int				dma_channel;
+-	struct clk			*clk;
+-	unsigned int			clk_rate;
+-
+ 	struct dma_chan         	*dmach;
+ 	struct mxs_dma_data		dma_data;
+ 	unsigned int			dma_dir;
+ 	enum dma_transfer_direction	slave_dirn;
+ 	u32				ssp_pio_words[SSP_PIO_NUM];
+ 
+-	enum mxs_ssp_id			devid;
+ 	unsigned char			bus_width;
+ 	spinlock_t			lock;
+ 	int				sdio_irq_en;
+@@ -105,16 +102,18 @@ static int mxs_mmc_get_ro(struct mmc_host *mmc)
+ static int mxs_mmc_get_cd(struct mmc_host *mmc)
+ {
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
++	struct mxs_ssp *ssp = &host->ssp;
+ 
+-	return !(readl(host->base + HW_SSP_STATUS(host)) &
++	return !(readl(ssp->base + HW_SSP_STATUS(ssp)) &
+ 		 BM_SSP_STATUS_CARD_DETECT);
+ }
+ 
+ static void mxs_mmc_reset(struct mxs_mmc_host *host)
+ {
++	struct mxs_ssp *ssp = &host->ssp;
+ 	u32 ctrl0, ctrl1;
+ 
+-	stmp_reset_block(host->base);
 +	stmp_reset_block(ssp->base);
+ 
+ 	ctrl0 = BM_SSP_CTRL0_IGNORE_CRC;
+ 	ctrl1 = BF_SSP(0x3, CTRL1_SSP_MODE) |
+@@ -130,15 +129,15 @@ static void mxs_mmc_reset(struct mxs_mmc_host *host)
+ 	writel(BF_SSP(0xffff, TIMING_TIMEOUT) |
+ 	       BF_SSP(2, TIMING_CLOCK_DIVIDE) |
+ 	       BF_SSP(0, TIMING_CLOCK_RATE),
+-	       host->base + HW_SSP_TIMING(host));
++	       ssp->base + HW_SSP_TIMING(ssp));
+ 
+ 	if (host->sdio_irq_en) {
+ 		ctrl0 |= BM_SSP_CTRL0_SDIO_IRQ_CHECK;
+ 		ctrl1 |= BM_SSP_CTRL1_SDIO_IRQ_EN;
+ 	}
+ 
+-	writel(ctrl0, host->base + HW_SSP_CTRL0);
+-	writel(ctrl1, host->base + HW_SSP_CTRL1(host));
++	writel(ctrl0, ssp->base + HW_SSP_CTRL0);
++	writel(ctrl1, ssp->base + HW_SSP_CTRL1(ssp));
+ }
+ 
+ static void mxs_mmc_start_cmd(struct mxs_mmc_host *host,
+@@ -149,15 +148,16 @@ static void mxs_mmc_request_done(struct mxs_mmc_host *host)
+ 	struct mmc_command *cmd = host->cmd;
+ 	struct mmc_data *data = host->data;
+ 	struct mmc_request *mrq = host->mrq;
++	struct mxs_ssp *ssp = &host->ssp;
+ 
+ 	if (mmc_resp_type(cmd) & MMC_RSP_PRESENT) {
+ 		if (mmc_resp_type(cmd) & MMC_RSP_136) {
+-			cmd->resp[3] = readl(host->base + HW_SSP_SDRESP0(host));
+-			cmd->resp[2] = readl(host->base + HW_SSP_SDRESP1(host));
+-			cmd->resp[1] = readl(host->base + HW_SSP_SDRESP2(host));
+-			cmd->resp[0] = readl(host->base + HW_SSP_SDRESP3(host));
++			cmd->resp[3] = readl(ssp->base + HW_SSP_SDRESP0(ssp));
++			cmd->resp[2] = readl(ssp->base + HW_SSP_SDRESP1(ssp));
++			cmd->resp[1] = readl(ssp->base + HW_SSP_SDRESP2(ssp));
++			cmd->resp[0] = readl(ssp->base + HW_SSP_SDRESP3(ssp));
+ 		} else {
+-			cmd->resp[0] = readl(host->base + HW_SSP_SDRESP0(host));
++			cmd->resp[0] = readl(ssp->base + HW_SSP_SDRESP0(ssp));
+ 		}
+ 	}
+ 
+@@ -196,13 +196,14 @@ static irqreturn_t mxs_mmc_irq_handler(int irq, void *dev_id)
+ 	struct mxs_mmc_host *host = dev_id;
+ 	struct mmc_command *cmd = host->cmd;
+ 	struct mmc_data *data = host->data;
++	struct mxs_ssp *ssp = &host->ssp;
+ 	u32 stat;
+ 
+ 	spin_lock(&host->lock);
+ 
+-	stat = readl(host->base + HW_SSP_CTRL1(host));
++	stat = readl(ssp->base + HW_SSP_CTRL1(ssp));
+ 	writel(stat & MXS_MMC_IRQ_BITS,
+-	       host->base + HW_SSP_CTRL1(host) + STMP_OFFSET_REG_CLR);
++	       ssp->base + HW_SSP_CTRL1(ssp) + STMP_OFFSET_REG_CLR);
+ 
+ 	if ((stat & BM_SSP_CTRL1_SDIO_IRQ) && (stat & BM_SSP_CTRL1_SDIO_IRQ_EN))
+ 		mmc_signal_sdio_irq(host->mmc);
+@@ -366,6 +367,8 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
+ 	unsigned int data_size = 0, log2_blksz;
+ 	unsigned int blocks = data->blocks;
+ 
++	struct mxs_ssp *ssp = &host->ssp;
 +
-+	platform_set_drvdata(pdev, host);
-+
-+	ret = spi_register_master(host);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Cannot register SPI master, %d\n", ret);
-+		goto out_host_free;
-+	}
-+
-+	return 0;
-+
-+out_host_free:
-+	clk_disable_unprepare(ssp->clk);
-+	spi_master_put(host);
-+	kfree(host);
-+	return ret;
-+}
-+
-+static int __devexit mxs_spi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *host;
-+	struct mxs_spi *spi;
+ 	u32 ignore_crc, get_resp, long_resp, read;
+ 	u32 ctrl0, cmd0, cmd1, val;
+ 
+@@ -408,15 +411,15 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
+ 		blocks = 1;
+ 
+ 	/* xfer count, block size and count need to be set differently */
+-	if (ssp_is_old(host)) {
++	if (ssp_is_old(ssp)) {
+ 		ctrl0 |= BF_SSP(data_size, CTRL0_XFER_COUNT);
+ 		cmd0 |= BF_SSP(log2_blksz, CMD0_BLOCK_SIZE) |
+ 			BF_SSP(blocks - 1, CMD0_BLOCK_COUNT);
+ 	} else {
+-		writel(data_size, host->base + HW_SSP_XFER_SIZE);
++		writel(data_size, ssp->base + HW_SSP_XFER_SIZE);
+ 		writel(BF_SSP(log2_blksz, BLOCK_SIZE_BLOCK_SIZE) |
+ 		       BF_SSP(blocks - 1, BLOCK_SIZE_BLOCK_COUNT),
+-		       host->base + HW_SSP_BLOCK_SIZE);
++		       ssp->base + HW_SSP_BLOCK_SIZE);
+ 	}
+ 
+ 	if ((cmd->opcode == MMC_STOP_TRANSMISSION) ||
+@@ -431,11 +434,11 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
+ 	}
+ 
+ 	/* set the timeout count */
+-	timeout = mxs_ns_to_ssp_ticks(host->clk_rate, data->timeout_ns);
+-	val = readl(host->base + HW_SSP_TIMING(host));
++	timeout = mxs_ns_to_ssp_ticks(ssp->clk_rate, data->timeout_ns);
++	val = readl(ssp->base + HW_SSP_TIMING(ssp));
+ 	val &= ~(BM_SSP_TIMING_TIMEOUT);
+ 	val |= BF_SSP(timeout, TIMING_TIMEOUT);
+-	writel(val, host->base + HW_SSP_TIMING(host));
++	writel(val, ssp->base + HW_SSP_TIMING(ssp));
+ 
+ 	/* pio */
+ 	host->ssp_pio_words[0] = ctrl0;
+@@ -500,11 +503,12 @@ static void mxs_mmc_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 
+ static void mxs_mmc_set_clk_rate(struct mxs_mmc_host *host, unsigned int rate)
+ {
++	struct mxs_ssp *ssp = &host->ssp;
+ 	unsigned int ssp_clk, ssp_sck;
+ 	u32 clock_divide, clock_rate;
+ 	u32 val;
+ 
+-	ssp_clk = clk_get_rate(host->clk);
++	ssp_clk = clk_get_rate(ssp->clk);
+ 
+ 	for (clock_divide = 2; clock_divide <= 254; clock_divide += 2) {
+ 		clock_rate = DIV_ROUND_UP(ssp_clk, rate * clock_divide);
+@@ -521,13 +525,13 @@ static void mxs_mmc_set_clk_rate(struct mxs_mmc_host *host, unsigned int rate)
+ 
+ 	ssp_sck = ssp_clk / clock_divide / (1 + clock_rate);
+ 
+-	val = readl(host->base + HW_SSP_TIMING(host));
++	val = readl(ssp->base + HW_SSP_TIMING(ssp));
+ 	val &= ~(BM_SSP_TIMING_CLOCK_DIVIDE | BM_SSP_TIMING_CLOCK_RATE);
+ 	val |= BF_SSP(clock_divide, TIMING_CLOCK_DIVIDE);
+ 	val |= BF_SSP(clock_rate, TIMING_CLOCK_RATE);
+-	writel(val, host->base + HW_SSP_TIMING(host));
++	writel(val, ssp->base + HW_SSP_TIMING(ssp));
+ 
+-	host->clk_rate = ssp_sck;
++	ssp->clk_rate = ssp_sck;
+ 
+ 	dev_dbg(mmc_dev(host->mmc),
+ 		"%s: clock_divide %d, clock_rate %d, ssp_clk %d, rate_actual %d, rate_requested %d\n",
+@@ -552,6 +556,7 @@ static void mxs_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ static void mxs_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
+ {
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
++	struct mxs_ssp *ssp = &host->ssp;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
+@@ -560,19 +565,19 @@ static void mxs_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
+ 
+ 	if (enable) {
+ 		writel(BM_SSP_CTRL0_SDIO_IRQ_CHECK,
+-		       host->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
++		       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+ 		writel(BM_SSP_CTRL1_SDIO_IRQ_EN,
+-		       host->base + HW_SSP_CTRL1(host) + STMP_OFFSET_REG_SET);
++		       ssp->base + HW_SSP_CTRL1(ssp) + STMP_OFFSET_REG_SET);
+ 
+-		if (readl(host->base + HW_SSP_STATUS(host)) &
++		if (readl(ssp->base + HW_SSP_STATUS(ssp)) &
+ 				BM_SSP_STATUS_SDIO_IRQ)
+ 			mmc_signal_sdio_irq(host->mmc);
+ 
+ 	} else {
+ 		writel(BM_SSP_CTRL0_SDIO_IRQ_CHECK,
+-		       host->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
++		       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+ 		writel(BM_SSP_CTRL1_SDIO_IRQ_EN,
+-		       host->base + HW_SSP_CTRL1(host) + STMP_OFFSET_REG_CLR);
++		       ssp->base + HW_SSP_CTRL1(ssp) + STMP_OFFSET_REG_CLR);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&host->lock, flags);
+@@ -634,6 +639,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 	int ret = 0, irq_err, irq_dma;
+ 	dma_cap_mask_t mask;
+ 	enum of_gpio_flags flags;
 +	struct mxs_ssp *ssp;
-+
-+	host = platform_get_drvdata(pdev);
-+	spi = spi_master_get_devdata(host);
-+	ssp = &spi->ssp;
-+
-+	spi_unregister_master(host);
-+
-+	platform_set_drvdata(pdev, NULL);
-+
+ 
+ 	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	dmares = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+@@ -647,14 +653,16 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	host = mmc_priv(mmc);
+-	host->base = devm_request_and_ioremap(&pdev->dev, iores);
+-	if (!host->base) {
++	ssp = &host->ssp;
++	ssp->dev = &pdev->dev;
++	ssp->base = devm_request_and_ioremap(&pdev->dev, iores);
++	if (!ssp->base) {
+ 		ret = -EADDRNOTAVAIL;
+ 		goto out_mmc_free;
+ 	}
+ 
+ 	if (np) {
+-		host->devid = (enum mxs_ssp_id) of_id->data;
++		ssp->devid = (enum mxs_ssp_id) of_id->data;
+ 		/*
+ 		 * TODO: This is a temporary solution and should be changed
+ 		 * to use generic DMA binding later when the helpers get in.
+@@ -667,7 +675,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 			goto out_mmc_free;
+ 		}
+ 	} else {
+-		host->devid = pdev->id_entry->driver_data;
++		ssp->devid = pdev->id_entry->driver_data;
+ 		host->dma_channel = dmares->start;
+ 	}
+ 
+@@ -680,12 +688,12 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 		goto out_mmc_free;
+ 	}
+ 
+-	host->clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(host->clk)) {
+-		ret = PTR_ERR(host->clk);
++	ssp->clk = clk_get(&pdev->dev, NULL);
++	if (IS_ERR(ssp->clk)) {
++		ret = PTR_ERR(ssp->clk);
+ 		goto out_mmc_free;
+ 	}
+-	clk_prepare_enable(host->clk);
++	clk_prepare_enable(ssp->clk);
+ 
+ 	mxs_mmc_reset(host);
+ 
+@@ -730,8 +738,8 @@ static int mxs_mmc_probe(struct platform_device *pdev)
+ 
+ 	mmc->max_segs = 52;
+ 	mmc->max_blk_size = 1 << 0xf;
+-	mmc->max_blk_count = (ssp_is_old(host)) ? 0xff : 0xffffff;
+-	mmc->max_req_size = (ssp_is_old(host)) ? 0xffff : 0xffffffff;
++	mmc->max_blk_count = (ssp_is_old(ssp)) ? 0xff : 0xffffff;
++	mmc->max_req_size = (ssp_is_old(ssp)) ? 0xffff : 0xffffffff;
+ 	mmc->max_seg_size = dma_get_max_seg_size(host->dmach->device->dev);
+ 
+ 	platform_set_drvdata(pdev, mmc);
+@@ -755,8 +763,8 @@ out_free_dma:
+ 	if (host->dmach)
+ 		dma_release_channel(host->dmach);
+ out_clk_put:
+-	clk_disable_unprepare(host->clk);
+-	clk_put(host->clk);
 +	clk_disable_unprepare(ssp->clk);
-+
-+	spi_master_put(host);
-+	kfree(host);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver mxs_spi_driver = {
-+	.probe	= mxs_spi_probe,
-+	.remove	= __devexit_p(mxs_spi_remove),
-+	.driver	= {
-+		.name	= DRIVER_NAME,
-+		.owner	= THIS_MODULE,
-+		.of_match_table = mxs_spi_dt_ids,
-+	},
++	clk_put(ssp->clk);
+ out_mmc_free:
+ 	mmc_free_host(mmc);
+ 	return ret;
+@@ -766,6 +774,7 @@ static int mxs_mmc_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_host *mmc = platform_get_drvdata(pdev);
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
++	struct mxs_ssp *ssp = &host->ssp;
+ 
+ 	mmc_remove_host(mmc);
+ 
+@@ -774,8 +783,8 @@ static int mxs_mmc_remove(struct platform_device *pdev)
+ 	if (host->dmach)
+ 		dma_release_channel(host->dmach);
+ 
+-	clk_disable_unprepare(host->clk);
+-	clk_put(host->clk);
++	clk_disable_unprepare(ssp->clk);
++	clk_put(ssp->clk);
+ 
+ 	mmc_free_host(mmc);
+ 
+@@ -787,11 +796,12 @@ static int mxs_mmc_suspend(struct device *dev)
+ {
+ 	struct mmc_host *mmc = dev_get_drvdata(dev);
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
++	struct mxs_ssp *ssp = &host->ssp;
+ 	int ret = 0;
+ 
+ 	ret = mmc_suspend_host(mmc);
+ 
+-	clk_disable_unprepare(host->clk);
++	clk_disable_unprepare(ssp->clk);
+ 
+ 	return ret;
+ }
+@@ -800,9 +810,10 @@ static int mxs_mmc_resume(struct device *dev)
+ {
+ 	struct mmc_host *mmc = dev_get_drvdata(dev);
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
++	struct mxs_ssp *ssp = &host->ssp;
+ 	int ret = 0;
+ 
+-	clk_prepare_enable(host->clk);
++	clk_prepare_enable(ssp->clk);
+ 
+ 	ret = mmc_resume_host(mmc);
+ 
+diff --git a/include/linux/spi/mxs-spi.h b/include/linux/spi/mxs-spi.h
+index b0a0335..0cb2767 100644
+--- a/include/linux/spi/mxs-spi.h
++++ b/include/linux/spi/mxs-spi.h
+@@ -128,4 +128,12 @@ enum mxs_ssp_id {
+ 	IMX28_SSP,
+ };
+ 
++struct mxs_ssp {
++	struct device			*dev;
++	void __iomem			*base;
++	struct clk			*clk;
++	unsigned int			clk_rate;
++	enum mxs_ssp_id			devid;
 +};
 +
-+module_platform_driver(mxs_spi_driver);
-+
-+MODULE_AUTHOR("Dmitry Pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>");
-+MODULE_DESCRIPTION("MXS SPI master driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:mxs-spi");
+ #endif	/* __LINUX_SPI_MXS_SPI_H__ */
 -- 
 1.7.10
 

@@ -1,12 +1,12 @@
-From: Lee Cooper par localips <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?Les_soldes_Lee_Cooper_ouvrent_=E0_-50%_!?=
-Date: Fri, 29 Jun 2012 11:49:53 +0200 (CEST)
-Message-ID: <2.1.11.1101030461.645283.3016826189@news.localips.com>
-Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
+From: "Negomat93" <groupe-electrogene-1tsiiZ//OF9QFI55V6+gNQ@public.gmane.org>
+Subject: Service energie
+Date: Fri, 29 Jun 2012 12:13:48 +0200
+Message-ID: <20120629073931.2D900E46183C@christian-PC>
+Reply-To: groupe-electrogene-1tsiiZ//OF9QFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,87 +18,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !  Si vous =
-
-ne pouvez pas visualiser ce message,  consulter notre version en ligne. =
-
-LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !
-
-LEECOOPER - Since 1908 - LOOK | HOMME | FEMME
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIj
-LEE COOPER :: Soldes exceptionnels du 27 juin au 31 juillet !
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnA_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIg
-Jusqu'=E0 moins cinquante pourcents !
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIh
- sur tout LEE COOPER =
-
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnAfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIm
-T-Shirt manches courtes Grishine
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIn
-Jean LC122BT
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnB_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIk
-J'en profite imm=E9diatement
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIl
-Jean BELLACA
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnBfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIq
-D=E9bardeur BETTYSE
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnGvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIr
-Livraison offerte =E0 partir de cent euros d'achat
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnG_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIo
-Partagez les offres LEECOOPER
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA1nnGHxKLFLnGPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIp
- Lee Cooper, la marque de l=E9gende du denim, =
-
-
-Nos engagements =
-
-
-La livraison  offerte en France m=E9tropolitaine =E0 partir de cent euros =
-
-d'achat.
-
-
- Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
-
-vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
-
-et de suppression aux donn=E9es vous concernant.
-
- Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
-
-mails par l'intermediaire de  ce raccourci. =
-
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+wqAKCgoKTmVnb21hdDkzIGVzdCBzcMOpY2lhbGlzw6kgZGFucyBs4oCZYWNoYXQsIGxhIHZlbnRl
+LCBsYSByw6ljdXDDqXJhdGlvbiwgbGUgZMOpbW9udGFnZSBldCBsYSByw6lub3ZhdGlvbiBkZSBn
+cm91cGVzIMOpbGVjdHJvZ8OobmVzwqAgZXQgZGUgY2VudHJhbGVzIGRlIGNvZ8OpbsOpcmF0aW9u
+LAoKCgptb3RldXJzIG1hcmluZSBldCBtb3RldXJzIGluZHVzdHJpZWxlcyBkZSB0b3V0ZXMgcHVp
+c3NhbmNlcyBldCBkZSB0b3V0ZXMgbWFycXVlcyA6IFZvbHZvLCBNaXRzdWJpY2hpLCBDYXRlcnBp
+bGxhciwgQ3VtbWlucywgRGV1dHosIERldXR6IEdlbmVyYXRvciBUQkcgNjIwLCBUQkQgNjIwIFYx
+NiwgMzUxNiBDYXRlcnBpbGxhciwgQ3VtbWlucyBLVFRBIDUwRyDigKZ2b2lyIG5vdHJlIHNpdGUg
+OiB3d3cuem90b2ZmLmZyICggImh0dHA6Ly93d3cuem90b2ZmLmZyIiApLgoKCgoKCgoKCgoKCk5v
+dHJlIGVudHJlcHJpc2UgYWNow6h0ZSBldCB2ZW5kIGRlcyBtYWNoaW5lcyBpbmR1c3RyaWVsbGVz
+IHRvdXMgdHlwZXMgZXQgdG91dGVzIG1hcnF1ZXMuCgoKCi1tYWNoaW5lcyBvdXRpbHMgOiB0b3Vy
+cyzCoCBmcmFpc2V1c2UsIENOIGV0IGNvbnZlbnRpb25uZWwgKCBEdWZvdXIsIENhemVuZXV2ZeKA
+pi4pCgoKCi1tYWNoaW5lcyBwb3VyIGxhIHTDtGxlcmllIGV0IGNoYXVkcm9ubmVyaWUgOiBwbGll
+dXNlcyzCoCByb3VsZXVzZXMsIGNpc2FpbGxlcyAoUHJvbWVjYW0sIEFtYWRhLCBDb2xseeKApikg
+CgoKCi1tYWNoaW5lcyBsacOpZXMgw6AgbOKAmWluZHVzdHJpZSBkdSBiw6J0aW1lbnQgOiB0cmFj
+dG9wZWxsZXMsIG5hY2VsbGVzIMOpbMOpdmF0cmljZXMgKFBvcXVlbGluLCBDYXNl4oCmKQoKCgot
+bWFjaGluZXMgcG91ciBs4oCZaW5kdXN0cmllIHBoYXJtYWNldXRpcXVlIGV0IGNvc23DqXRpcXVl
+IDogbWFsYXhldXJzLCBtw6lsYW5nZXVycyAoQWxmYSBMYXZhbCwgT2xzYeKApikKCgoKLW1hY2hp
+bmVzIGTigJlpbXByaW1lcmllIChvZmZzZXQsIHBsYXRpbmUgVCwgbWFzc2ljb3RzLCBIZWlkZWxi
+ZXJnLCBDb21vaXLigKYpCgoKCkxlIGTDqW1vbnRhZ2UgZXQgbGEgcsOpY3Vww6lyYXRpb24gZHUg
+bWF0w6lyaWVsIGVzdCBuw6lnb2NpYWJsZSBlbiBmb25jdGlvbiBkZcKgIHZvcyBtYWNoaW5lcy4K
+CgoKwqAKCgoKCgoKCk5lZ29tYXQgOTMgcHJvcG9zZSBkZXMgZ3JvdXBlcyDDqWxlY3Ryb2fDqG5l
+cyzCoCBkZXMgY2VudHJhbGVzIGRlIGNvZ8OpbsOpcmF0aW9uIGTigJlvY2Nhc2lvbiA6IGRpZXNl
+bCwgZ2F6LCBkZXMgbWFjaGluZXMgaW5kdXN0cmllbGxlcy4KCgoKTm91cyBkaXNwb3NvbnMgZOKA
+mXVuIHN0b2NrIGRlIG1hdMOpcmllbCBwZXJtYW5lbnQuCgoKCk5vdXMgZ2FyYW50aXNzb25zIHVu
+ZSBtYWluIGTigJnFk3V2cmUgZGUgcXVhbGl0w6kgZXQgdW5lIGxpdnJhaXNvbiBkYW5zIGxlIG1v
+bmRlIGVudGllci7CoCBEZXZpcyBncmF0dWl0ZSB2b2lyIHNpdGUgOiB3d3cuem90b2ZmLmZyICgg
+Imh0dHA6Ly93d3cuem90b2ZmLmZyIiApLgoKCgoKCgoKUG91ciBwbHVzIGQnaW5mb3JtYXRpb25z
+LCBhcHBlbGVyIE1yIHpvdG9mZiBhdSArMzMuNi44OS43NC4xOC44MwoKCgpOZWdvbWF0IDkzIE1y
+IFpvdG9mZiBDaHJpc3RpYW4KMjcgcnVlIGxlb24gTG9pc2VhdSA5MzEwMCBNb250cmV1aWwgLSBG
+cmFuY2UKVCArMzMgMSA0OCA0MyA1MiAwMiAKRiArMzMgMSA0OCA0NSA0NyA3MApQICszMyA2IDg5
+IDc0IDE4IDgzIApFbWFpbDpuZWdvbWF0OTNAd2FuYWRvby5mcgpzaXRlIFdlYjogd3d3LnpvdG9m
+Zi5mciAoICJodHRwOi8vd3d3LnpvdG9mZi5mciIgKQoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpM
+aXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxs
+IGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2Fw
+ZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9u
+cyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRo
+ZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9q
+YXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

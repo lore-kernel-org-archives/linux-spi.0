@@ -1,58 +1,135 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
-Date: Fri, 29 Jun 2012 02:20:28 +0100
-Message-ID: <20120629012028.GK28922@opensource.wolfsonmicro.com>
-References: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CACRpkdYwGoUwSRX2ASa5kJPpNFtmxbKPtgwUnFhQzZs9EUoHQQ@mail.gmail.com>
+From: LuluCastagnette par localips <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: Profitez des Soldes Lulu !
+Date: Fri, 29 Jun 2012 08:07:45 +0200 (CEST)
+Message-ID: <2.1.11.1101030461.645248.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="huBJOJF9BsF479P6"
-Cc: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYwGoUwSRX2ASa5kJPpNFtmxbKPtgwUnFhQzZs9EUoHQQ@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+LuluCastagnette :C'est les SOLDES, jusqu'=E0 moins 60pourcents sur toute =
 
---huBJOJF9BsF479P6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+la mode d'=E9t=E9, femme, enfant, b=E9b=E9, et moins 80pourcent sur les bag=
+ages =
 
-On Thu, Jun 28, 2012 at 08:51:44PM +0200, Linus Walleij wrote:
+ Si vous ne pouvez pas visualiser ce message,  consulter notre version =
 
-> I'm starting to wonder if it would not be possible to mass-convert these
-> using coccinelle.
+en ligne. =
 
-Probably, yes.  I'm not actually going through these particularly,
-really what I'm doing is looking to find drivers I run on my systems
-that might be able to use regmap-mmio and fixing things I find as I
-look.
+LuluCastagnette :C'est les SOLDES, jusqu'=E0 moins 60pourcents sur toute =
 
---huBJOJF9BsF479P6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+la mode d'=E9t=E9, femme, enfant, b=E9b=E9, et moins 80pourcent sur les bag=
+ages =
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+ : =
 
-iQIcBAEBAgAGBQJP7QKqAAoJEBus8iNuMP3d13MP/A63AEGJv8P5oZkJCRqg2e5S
-JNIZpfIKVCBr7JsaAdswCRoPZOuEiIltavc68O25Ba8oo/U0fQaXt254VbGAtP3Q
-YVQliS+QEzbMczb9HphzoxEJFkGjmbiT1jepjo2RfzxLXGjoCR9x3zXL8JJE+/xB
-T3EIltYilGOJr2LfLlkEFy94sbG8gBKkUyo4lS9GZaCZcN36OlVKAeD3FOXvH8fs
-KglvIdy0ePtqyRGG8k4cjU3XBGASSkfqkiPRiEwVgDn6RfzaztZEgd0Op2vA6BSk
-yb2m50GyyuESN6aniuVX9wR5vnG2HLyUWD1QiVzV9YUw8p2UgZLg6zDZAB9nUU/O
-snSH0xr5CXLTQF5nYoqmE0SozUSmr7w4Yek129HWqqnTUtoaI6Ka6KS86dxnQS3s
-2trSkTMdW2+WBJr1NZFJEareEl0H2QXaM2BL51IQXIunPNqAuRKohnjwjE7Hz0Xs
-i7sSYDirwX9oMm5LVSk5TMl1KMONR0iG7zRTF6TSKKUQL839txYmjKxzBWREjQ1s
-WwOBo0kZZeGq5h/tC6OXENv1fBM6cG22nE+AWpaoivdn9bQ/mhBzvcL/jRwAo8fj
-CFyS/EUjs1oJ/BxyhbTMgQ/eCXrJyE81WF7A2VBH8nvmi6k5BpEFaHeaZVHnAzGQ
-oVjNHCscmQ8LfELDgfDH
-=+OEy
------END PGP SIGNATURE-----
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLla_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLb
+LuluCastagnette : Femme, enfant, bagage, les bonnes affaires
 
---huBJOJF9BsF479P6--
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlaPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLY
+LuluCastagnette :C'est les SOLDES
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlafcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLZ
+Jusqu'=E0 moins 60pourcents sur toute la mode d'=E9t=E9, femme, enfant, b=
+=E9b=E9
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLe
+LuluCastagnette : moins 80pourcent sur les bagages
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlb_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLf
+J'en profite maintenant
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLc
+Robe enfant
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLd
+Sac en toile beige
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLi
+D=E9bardeur Tute
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlY_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLj
+Jean JYN2
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLg
+Sac en toile beige
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLh
+D=E9bardeur Tute
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLm
+Jean JYN2
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZ_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLn
+Encore plus de soldes
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLk
+Tong Perilla
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLl
+Livraison 48H Offerte
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlevcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLq
+Avantages clients
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLle_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlLr
+L'univers LuluCastagnette est un savoureux m=E9lange de sensations aussi =
+
+bien d=E9licates que l=E9g=E8res, reflet d'un =E9tat d'esprit authentique
+Les collections proposent des pi=E8ces simples et f=E9minines au style =
+
+=E9pur=E9 furieusement contemporain.
+Des produits dans l'air du temps qui conviennent =E0 la femme moderne, =
+
+urbaine et naturelle qui veut se renouveler tous les jours.  =
+
+Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
+
+vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
+
+et de suppression aux donn=E9es vous concernant.
+
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+
+mails par l'intermediaire de  ce raccourci. =
+
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

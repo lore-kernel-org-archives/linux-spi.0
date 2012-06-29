@@ -1,8 +1,8 @@
-From: LuluCastagnette par localips <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
-Subject: Profitez des Soldes Lulu !
-Date: Fri, 29 Jun 2012 08:07:45 +0200 (CEST)
-Message-ID: <2.1.11.1101030461.645248.3016826189@news.localips.com>
-Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
+From: =?iso-8859-15?Q?Sin=E9quanone?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
+Subject: =?iso-8859-15?Q?SOLDES_Sin=E9quanone_jusqu'=E0_-50%_d=E8s_maintenant_!?=
+Date: Fri, 29 Jun 2012 08:15:16 +0200 (CEST)
+Message-ID: <2.1.8.1101008322.1122074.3236305005@marketing.zabaloc.com>
+Reply-To: =?iso-8859-15?Q?Sin=E9quanone?= <news-aRCsrEPsanzBKIuAv26FmXxStJ4P+DSV@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -18,109 +18,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-LuluCastagnette :C'est les SOLDES, jusqu'=E0 moins 60pourcents sur toute =
 
-la mode d'=E9t=E9, femme, enfant, b=E9b=E9, et moins 80pourcent sur les bag=
-ages =
 
- Si vous ne pouvez pas visualiser ce message,  consulter notre version =
+Sinequanone - Jusqu'=E0 -50% du 27 juin au 31 juillet ! Pour visualiser =
 
-en ligne. =
+correctement ce message, suivez ce lien. : =
 
-LuluCastagnette :C'est les SOLDES, jusqu'=E0 moins 60pourcents sur toute =
+ http://p4tre.emv3.com/HM?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrPcStGb5lw8W0=
+bBhOG5mpqVsje_HhdBQ4VEZ =
 
-la mode d'=E9t=E9, femme, enfant, b=E9b=E9, et moins 80pourcent sur les bag=
-ages =
 
- : =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLla_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLb
-LuluCastagnette : Femme, enfant, bagage, les bonnes affaires
+Jusque -50 pourcents
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdq_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEU =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlaPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLY
-LuluCastagnette :C'est les SOLDES
+Sinequanone
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdqPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEV =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlafcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLZ
-Jusqu'=E0 moins 60pourcents sur toute la mode d'=E9t=E9, femme, enfant, b=
-=E9b=E9
+Soldes du 27 juin au 31 juillet
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdqfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEa =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLe
-LuluCastagnette : moins 80pourcent sur les bagages
+www.sinequanone.com
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEb =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlb_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLf
-J'en profite maintenant
+www.sinequanone.com
+http://p4tre.emv3.com/HS?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdr_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEY =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLc
-Robe enfant
+ * Offre valable sur une s=E9lection d'articles de la collection =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlbfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLd
-Sac en toile beige
+printemps-=E9t=E9 2012 identifi=E9s par un pictogramme sur le site, hors =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLi
-D=E9bardeur Tute
+articles signal=E9s. Offre non cumulable avec toute autre op=E9ration en =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlY_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLj
-Jean JYN2
+cours. Les soldes se d=E9roulent du 27 juin (8h) au 31 juillet 2012 sur =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLg
-Sac en toile beige
+www.sinequanone.com et dans les boutiques Sinequanone en France =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlYfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLh
-D=E9bardeur Tute
+m=E9tropolitaine (Zone nationale) sauf exceptions. Les soldes auront lieu =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLm
-Jean JYN2
+du 4 juillet au 7 aout 2012 pour la r=E9gion Provence-Alpes-Cote-d'Azur =
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZ_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLn
-Encore plus de soldes
+et du 11 juillet au 14 aout 2012 en Corse.
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLk
-Tong Perilla
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlZfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLl
-Livraison 48H Offerte
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLlevcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLq
-Avantages clients
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJGA3rnGHxKLFLle_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlLr
-L'univers LuluCastagnette est un savoureux m=E9lange de sensations aussi =
-
-bien d=E9licates que l=E9g=E8res, reflet d'un =E9tat d'esprit authentique
-Les collections proposent des pi=E8ces simples et f=E9minines au style =
-
-=E9pur=E9 furieusement contemporain.
-Des produits dans l'air du temps qui conviennent =E0 la femme moderne, =
-
-urbaine et naturelle qui veut se renouveler tous les jours.  =
-
-Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
+ Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
 
 vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
 
-et de suppression aux donn=E9es vous concernant.
+et de suppression aux donn=E9es vous concernant. Pour ne plus recevoir de =
 
- Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+courriels de notre part, il vous suffit de vous rendre sur cette page : =
 
-mails par l'intermediaire de  ce raccourci. =
+http://p4tre.emv3.com/HU?a=3DENX7CqnmaymC8SA9MKJexODnGHxKLcJdrfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdBQ4VEe =
 
+. =
 
 
 ---------------------------------------------------------------------------=

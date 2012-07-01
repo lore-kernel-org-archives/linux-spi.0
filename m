@@ -1,8 +1,9 @@
-From: "Li Hao" <r.richter-901KwZ2PgullFXlwHl2ejYQuADTiUCJX@public.gmane.org>
-Subject: Proposition
-Date: Sun, 1 Jul 2012 06:51:35 -0400
-Message-ID: <00e65d38-41091-1fb8286393588@server>
-Reply-To: Li Hao <haoli62-B9n1sLibSko@public.gmane.org>
+From: Jerry Burke<jerry.burke-xF0//fUaU/CakBO8gow8eQ@public.gmane.org>
+Subject: The Mobile Roaming Market 2012-2017: Operator Strategies,
+	Opportunities & Challenges in the 3G and LTE Era (Report)
+Date: Sun, 1 Jul 2012 13:04:32 +0100
+Message-ID: <20120701130432.1725780156@vgreports.com>
+Reply-To: jerry.burke-xF0//fUaU/CakBO8gow8eQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,15 +19,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Greetings from Hong Kong,
-
-I have a discreet proposal for you in the tune of One Hundred & Five Million EUR. Kindly reply for specifics.
-
-Warmest,
-Mr. Li Hao
-
-
+The Mobile Roaming Market 2012-2017: Operator Strategies, Opportunities & Challenges in the 3G and LTE Era (Report)
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

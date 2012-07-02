@@ -1,86 +1,133 @@
-From: "Jeremy Campbell" <JCampbell323-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Proposal Attached
-Date: Sun, 1 Jul 2012 18:14:01 -0700
-Message-ID: <c92ff52e8683b4c2372961700015997d@qmail.com>
+From: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+Subject: Re: [PATCH v3] spi/pl022: add devicetree support
+Date: Mon, 2 Jul 2012 07:32:00 -0300
+Message-ID: <CAAAP30FzMhs+o+i3CF-+TNO-yBjg=aVSOWukseqD=HhLhS37cg@mail.gmail.com>
+References: <1340719537-627-1-git-send-email-aletes.xgr@gmail.com>
+	<20120701083923.GA29380@avionic-0098.mockup.avionic-design.de>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_455792390D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Roland Stigge <stigge@antcom.de>, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>,
+	spi-devel-general@lists.sourceforge.net
+To: Thierry Reding <thierry.reding@avionic-design.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20120701083923.GA29380@avionic-0098.mockup.avionic-design.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+On Sun, Jul 1, 2012 at 5:39 AM, Thierry Reding
+<thierry.reding@avionic-design.de> wrote:
+> On Tue, Jun 26, 2012 at 11:05:36AM -0300, Alexandre Pereira da Silva wrote:
+>> Add the chipselect array and cur_cs properties to pl022 main structure
+>>
+>> Add a wrapper function to decide if the cs should be controlled by the
+>> cs_control callback or the chipselect gpio
+>>
+>> Populate chipselect property from cs-gpios
+>>
+>> Populate master->dev.of_node, so the spi bus can find child spi
+>> devices and register them
+>>
+>> At pl022 setup, fill chip_data structure from dt nodes, if not provided
+>> by platform.
+>>
+>> Signed-off-by: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+>> Tested-by: Roland Stigge <stigge@antcom.de>
+>> ---
+>> Applies to v3.5-rc4
+>>
+>> Changes since v2:
+>> * Use IS_ENABLED instead of #ifdef
+>> * Remove bogus const change
+>>
+>> Changes since v1:
+>> * return EPROBE_DEFFER if gpios are not initialized yet
+>>
+>> Thanks Thierry Reding for reviewing and improvements suggestions
+>>
+>>  .../devicetree/bindings/spi/spi_pl022.txt          |   15 +++
+>>  drivers/spi/spi-pl022.c                            |  115 ++++++++++++++++----
+>>  2 files changed, 111 insertions(+), 19 deletions(-)
+>>
+> [...]
+>> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> [...]
+>> @@ -1998,8 +2039,14 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>>               goto err_no_pdata;
+>>       }
+>>
+>> +     num_cs = platform_info->num_chipselect;
+>> +#if IS_ENABLED(CONFIG_OF)
+>> +     of_property_read_u32(np, "pl022,num-chipselects", &num_cs);
+>> +#endif
+>> +
+>
+> Actually this has even more advantages if you use it as a condition in
+> an if expression:
+>
+>         if (IS_ENABLED(CONFIG_OF))
+>                 of_property_read_u32(...);
+>
+> The above will be compiled wether CONFIG_OF is enabled or not, but it
+> will not be included in the final output because of the compiler's DCE
+> (dead code elimination) seeing this as "if (0)". The result is that the
+> source code gets much better compile coverage and errors in the
+> conditional code can be caught earlier.
+>
+>> @@ -2017,13 +2064,40 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>>        * on this board
+>>        */
+>>       master->bus_num = platform_info->bus_id;
+>> -     master->num_chipselect = platform_info->num_chipselect;
+>> +     master->num_chipselect = num_cs;
+>>       master->cleanup = pl022_cleanup;
+>>       master->setup = pl022_setup;
+>>       master->prepare_transfer_hardware = pl022_prepare_transfer_hardware;
+>>       master->transfer_one_message = pl022_transfer_one_message;
+>>       master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
+>>       master->rt = platform_info->rt;
+>> +     master->dev.of_node = dev->of_node;
+>> +
+>> +#if IS_ENABLED(CONFIG_OF)
+>> +     for (i = 0; i < num_cs; i++) {
+>> +             int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+>> +
+>> +             if (cs_gpio == -EPROBE_DEFER) {
+>> +                     status = -EPROBE_DEFER;
+>> +                     goto err_no_gpio;
+>> +             }
+>> +
+>> +             pl022->chipselect[i] = cs_gpio;
+>> +
+>> +             if (gpio_is_valid(cs_gpio)) {
+>> +                     if (gpio_request(cs_gpio, "ssp-pl022"))
+>> +                             dev_err(&adev->dev,
+>> +                                     "could not request %d gpio\n", cs_gpio);
+>> +                     else if (gpio_direction_output(cs_gpio, 1))
+>> +                             dev_err(&adev->dev,
+>> +                                     "could set gpio %d as output\n",
+>> +                                     cs_gpio);
+>> +             }
+>> +     }
+>> +#else
+>> +     for (i = 0; i < num_cs; i++)
+>> +             pl022->chipselect[i] = -EINVAL;
+>> +#endif
+>
+> Same here.
+>
+>>       /*
+>>        * Supports mode 0-3, loopback, and active low CS. Transfers are
+>> @@ -2130,6 +2204,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+>>   err_no_ioremap:
+>>       amba_release_regions(adev);
+>>   err_no_ioregion:
+>> + #if IS_ENABLED(CONFIG_OF)
+>> + err_no_gpio:
+>> + #endif
+>
+> And here.
 
-------=SPLITOR00A_001_455792390D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-
-Attached is the requested brochure and video including pricing.=20
-
-I am contacting you regarding printing and managing your company's =
-business cards. We look forward to the opportunity to work with you. =
-Please reply through the attachment=2E
-=20
-Sincerely,
-
-Jeremy Campbell
-Online Business Management
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_455792390D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_455792390D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_455792390D--
+Thanks for the hint. I will update the patch and repost later.

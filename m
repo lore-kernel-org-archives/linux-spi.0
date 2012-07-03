@@ -1,8 +1,7 @@
-From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Jusqu'à moins 70 pourcent sur les bagages et
- sacs
-Date: Tue, 03 Jul 2012 12:31:07 +0200
-Message-ID: <1341311572.4ff2ca5450ac7@mc10.fr>
+From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
+Date: Tue, 03 Jul 2012 14:29:33 +0200
+Message-ID: <1341318573.4ff2e5adeb3ff@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTU2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wMSAyMzo0MDowMSZlPTEmaD0xNDk1NSZmPTE0OTU2Jmc9MTQ5NTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTU5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wMSAyMzo1MDowMSZlPTEmaD0xNDk1OCZmPTE0OTU5Jmc9MTQ5NTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTU2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMzo0MDowMSZlPTEmaD0xNDk1NSZmPTE0OTU2Jmc9MTQ5NT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTU5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMzo1MDowMSZlPTEmaD0xNDk1OCZmPTE0OTU5Jmc9MTQ5NT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

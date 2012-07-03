@@ -1,8 +1,7 @@
-From: Sony <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Profitez d'une offre de réduction sur le nouvel
- appareil photo Sony HX20
-Date: Tue, 03 Jul 2012 15:21:44 +0200
-Message-ID: <1341321704.4ff2f1e89ec8a@mc10.fr>
+From: Isotoner par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Chaussons, Tongs et Accessoires 4 euros offerts
+Date: Tue, 03 Jul 2012 15:38:31 +0200
+Message-ID: <1341322711.4ff2f5d739e58@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTExJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wMSAyMToyMDowMSZlPTEmaD0xNDkxMCZmPTE0OTExJmc9MTQ5MTE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTU4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wMiAwNDo0MDowMSZlPTEmaD0xNDk1NyZmPTE0OTU4Jmc9MTQ5NTg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTExJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMToyMDowMSZlPTEmaD0xNDkxMCZmPTE0OTExJmc9MTQ5MT=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTU4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wMiAwNDo0MDowMSZlPTEmaD0xNDk1NyZmPTE0OTU4Jmc9MTQ5NT=
+g=3D
 
 
 ---------------------------------------------------------------------------=

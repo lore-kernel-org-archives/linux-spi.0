@@ -1,7 +1,8 @@
-From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
-Date: Tue, 03 Jul 2012 14:29:33 +0200
-Message-ID: <1341318573.4ff2e5adeb3ff@mc10.fr>
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Réservez votre hotel de luxe et de charme
+ jusqu'à -70%
+Date: Tue, 03 Jul 2012 14:33:08 +0200
+Message-ID: <1341318899.4ff2e6f3b309f@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTU5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wMSAyMzo1MDowMSZlPTEmaD0xNDk1OCZmPTE0OTU5Jmc9MTQ5NTk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0ODI0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wMiAwNjoxMDowMSZlPTEmaD0xNDgyMyZmPTE0ODI0Jmc9MTQ4MjQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTU5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMzo1MDowMSZlPTEmaD0xNDk1OCZmPTE0OTU5Jmc9MTQ5NT=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0ODI0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wMiAwNjoxMDowMSZlPTEmaD0xNDgyMyZmPTE0ODI0Jmc9MTQ4Mj=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

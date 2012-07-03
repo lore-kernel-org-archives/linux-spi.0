@@ -1,8 +1,8 @@
-From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Réservez votre hotel de luxe et de charme
- jusqu'à -70%
-Date: Tue, 03 Jul 2012 14:33:08 +0200
-Message-ID: <1341318899.4ff2e6f3b309f@mc10.fr>
+From: Sony <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Profitez d'une offre de réduction sur le nouvel
+ appareil photo Sony HX20
+Date: Tue, 03 Jul 2012 15:21:44 +0200
+Message-ID: <1341321704.4ff2f1e89ec8a@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0ODI0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wMiAwNjoxMDowMSZlPTEmaD0xNDgyMyZmPTE0ODI0Jmc9MTQ4MjQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTExJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wMSAyMToyMDowMSZlPTEmaD0xNDkxMCZmPTE0OTExJmc9MTQ5MTE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0ODI0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wMiAwNjoxMDowMSZlPTEmaD0xNDgyMyZmPTE0ODI0Jmc9MTQ4Mj=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTExJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMToyMDowMSZlPTEmaD0xNDkxMCZmPTE0OTExJmc9MTQ5MT=
+E=3D
 
 
 ---------------------------------------------------------------------------=

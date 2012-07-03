@@ -1,7 +1,7 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Voyage Maxi promo =?iso-8859-15?Q?=E9t=E9?=
-Date: Tue, 03 Jul 2012 06:28:42 +0200
-Message-ID: <1341289722.4ff274fadae3b@mc10.fr>
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Fais des rencontres sans sortir ta carte bancaire
+Date: Tue, 03 Jul 2012 09:46:00 +0200
+Message-ID: <1341301560.4ff2a3388c29b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTU3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wMSAyMzo0MDowMSZlPTEmaD0xNDk1NiZmPTE0OTU3Jmc9MTQ5NTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTYyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wMiAwMDozMDowMiZlPTEmaD0xNDk2MSZmPTE0OTYyJmc9MTQ5NjI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTU3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wMSAyMzo0MDowMSZlPTEmaD0xNDk1NiZmPTE0OTU3Jmc9MTQ5NT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTYyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wMiAwMDozMDowMiZlPTEmaD0xNDk2MSZmPTE0OTYyJmc9MTQ5Nj=
+I=3D
 
 
 ---------------------------------------------------------------------------=

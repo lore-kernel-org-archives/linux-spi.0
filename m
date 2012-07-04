@@ -1,15 +1,14 @@
-From: Chevignon <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
-Subject: =?UTF-8?Q?2=C3=A8me_D=C3=A9marque_jusqu=E2=80=99=C3=A0?=
-	=?UTF-8?Q?_-50%_en_Boutique_et_s?=
-	=?UTF-8?Q?ur_l=E2=80=99E-shop_=E2=80=93_Livraiso?=
-	=?UTF-8?Q?n_Gratuite_=C3=A0_Domicile!?=
-Date: Wed, 4 Jul 2012 16:12:14 +0200 (CEST)
-Message-ID: <2.1.11.1101030461.671271.3016826189@news.galgalz.com>
-Reply-To: newsletters-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
+Date: Wed,  4 Jul 2012 17:11:55 +0100
+Message-ID: <1341418316-26190-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,113 +20,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q0hFVklHTk9OICBTaSB2b3VzIG5lIHBvdXZleiBwYXMgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCBj
-b25zdWx0ZXIgbm90cmUgCiB2ZXJzaW9uIGVuIGxpZ25lLiAKU09MREVTIOKAkyAyw6htZSBEw6lt
-YXJxdWUganVzcXXigJnDoCAtNTAlIGVuIEJvdXRpcXVlIGV0IHN1ciBs4oCZRS1zaG9wIOKAkyAK
-TGl2cmFpc29uIEdyYXR1aXRlIApodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhD
-eWk4U0E5TUtKRjVkM25HSHhLTEVvZ1FmY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxL
-VSAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdI
-eEtMRW9nUnZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEtWIAoKaHR0cDovL3A1dHJj
-LmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dSX2NTdEdiNWx3
-OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS2EgCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1F
-Tlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ1JQY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2pl
-X0hoZEE1SGxLYiAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlN
-S0pGNWQzbkdIeEtMRW9nUmZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEtZIAoKaHR0
-cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dX
-dmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS1ogClNVSVZJIERFCkNPTU1BTkRFIExJ
-VlJBSVNPTgpHUkFUVUlURSBFQ0hBTkdFCkVOIE1BR0FTSU4gU0FUSVNGQUlUIE9VClJFTUJPVVJT
-RSBQQUlFTUVOVApTRUNVUklTRSBDdWlyIDogCiBodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1F
-Tlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ1dfY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2pl
-X0hoZEE1SGxLZSAKIHwgQmxvdXNvbnMgOiAKIGh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVO
-WDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nV1BjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVf
-SGhkQTVIbEtmIAogfCBQdWxscyA6IAogaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0Nx
-bVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dXZmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRB
-NUhsS2MgCiB8IFBvbG9zIDogCiBodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhD
-eWk4U0E5TUtKRjVkM25HSHhLTEVvZ1h2Y1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxL
-ZCAKIHwgVC1zaGlydHMgOiAKIGh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5
-aThTQTlNS0pGNWQzbkdIeEtMRW9nWF9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEtp
-IAogfCBDaGVtaXNlcyA6IAogaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lp
-OFNBOU1LSkY1ZDNuR0h4S0xFb2dYUGNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS2og
-CiB8IFBhbnRhbG9ucyA6IAogaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lp
-OFNBOU1LSkY1ZDNuR0h4S0xFb2dYZmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS2cg
-CiB8IENoYXVzc3VyZXMgOiAKIGh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5
-aThTQTlNS0pGNWQzbkdIeEtMRW9nVXZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEto
-IAogfCBBY2Nlc3NvaXJlcyA6IAogaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZY
-Q3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dVX2NTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhs
-S20gCiB8IEZlbW1lIDogCiBodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4
-U0E5TUtKRjVkM25HSHhLTEVvZ1VQY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxLbiAK
-Cmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtM
-RW9nVWZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEtrIAoKaHR0cDovL3A1dHJjLmVt
-djIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dWdmNTdEdiNWx3OFcw
-YkJoT0c1bXBxVnNqZV9IaGRBNUhsS2wgCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3
-Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ1ZfY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0ho
-ZEE1SGxLcSAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pG
-NWQzbkdIeEtMRW9nVlBjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEtyIAoKaHR0cDov
-L3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dWZmNT
-dEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS28gCgpodHRwOi8vcDV0cmMuZW12Mi5jb20v
-SFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2F2Y1N0R2I1bHc4VzBiQmhPRzVt
-cHFWc2plX0hoZEE1SGxLcCAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5
-aThTQTlNS0pGNWQzbkdIeEtMRW9nYV9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEt1
-IAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4
-S0xFb2dhUGNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS3YgCgpodHRwOi8vcDV0cmMu
-ZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2FmY1N0R2I1bHc4
-VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxLcyAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVO
-WDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nYnZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVf
-SGhkQTVIbEt0IAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1L
-SkY1ZDNuR0h4S0xFb2diX2NTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsS3kgCgpodHRw
-Oi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2JQ
-Y1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxLeiAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNv
-bS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nYmZjU3RHYjVsdzhXMGJCaE9H
-NW1wcVZzamVfSGhkQTVIbEt3IAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZY
-Q3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dZdmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhs
-S3ggCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25H
-SHhLTEVvZ1lfY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxLMiAKCmh0dHA6Ly9wNXRy
-Yy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nWVBjU3RHYjVs
-dzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEszIAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9
-RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dZZmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNq
-ZV9IaGRBNUhsSzAgCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5
-TUtKRjVkM25HSHhLTEVvZ1p2Y1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxLMSAKCmh0
-dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9n
-Wl9jU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEs2IAoKaHR0cDovL3A1dHJjLmVtdjIu
-Y29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2daUGNTdEdiNWx3OFcwYkJo
-T0c1bXBxVnNqZV9IaGRBNUhsSzcgCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3Ft
-VlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ1pmY1N0R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1
-SGxLNCAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQz
-bkdIeEtMRW9nZXZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEs1IAoKaHR0cDovL3A1
-dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xFb2dlX2NTdEdi
-NWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsSy0gCgpodHRwOi8vcDV0cmMuZW12Mi5jb20vSFM/
-YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2VQY1N0R2I1bHc4VzBiQmhPRzVtcHFW
-c2plX0hoZEE1SGxLXyAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdDcW1WWEN5aThT
-QTlNS0pGNWQzbkdIeEtMRW9nZWZjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhkQTVIbEs4IAoK
-aHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1ZDNuR0h4S0xF
-b2dmdmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsSzkgCgpodHRwOi8vcDV0cmMuZW12
-Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2ZfY1N0R2I1bHc4VzBi
-QmhPRzVtcHFWc2plX0hoZEE1SGxMQyAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9IUz9hPUVOWDdD
-cW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nZlBjU3RHYjVsdzhXMGJCaE9HNW1wcVZzamVfSGhk
-QTVIbExEIAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lpOFNBOU1LSkY1
-ZDNuR0h4S0xFb2dmZmNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsTEEgCgpodHRwOi8v
-cDV0cmMuZW12Mi5jb20vSFM/YT1FTlg3Q3FtVlhDeWk4U0E5TUtKRjVkM25HSHhLTEVvZ2N2Y1N0
-R2I1bHc4VzBiQmhPRzVtcHFWc2plX0hoZEE1SGxMQiAKCmh0dHA6Ly9wNXRyYy5lbXYyLmNvbS9I
-Uz9hPUVOWDdDcW1WWEN5aThTQTlNS0pGNWQzbkdIeEtMRW9nY19jU3RHYjVsdzhXMGJCaE9HNW1w
-cVZzamVfSGhkQTVIbExHIAoKaHR0cDovL3A1dHJjLmVtdjIuY29tL0hTP2E9RU5YN0NxbVZYQ3lp
-OFNBOU1LSkY1ZDNuR0h4S0xFb2djUGNTdEdiNWx3OFcwYkJoT0c1bXBxVnNqZV9IaGRBNUhsTEgg
-CiAqT2ZmcmUgdmFsYWJsZSBzdXIgbGEgY29sbGVjdGlvbiBwcmludGVtcHMgw6l0w6kgMjAxMiBk
-YW5zIGxlcyAKYm91dGlxdWVzIENoZXZpZ25vbiBldCBzdXIgd3d3LmNoZXZpZ25vbi5jb20uCiBM
-aXN0ZSBkZXMgYm91dGlxdWVzIGRpc3BvbmlibGUgc3VyIHd3dy5jaGV2aWdub24uY29tLiBPZmZy
-ZSBub24gCmN1bXVsYWJsZSAoaG9ycyBzdGFuZHMgZXQgbWFnYXNpbnMgZGUgZGVzdG9ja2FnZSku
-ICBDb25mb3Jtw6ltZW50IMOgIGxhIApsb2kgIkluZm9ybWF0aXF1ZSBldCBMaWJlcnTDqXMiIGR1
-IDA2IEphbnZpZXIgMTk3OCwgdm91cyBiw6luw6lmaWNpZXogZCd1biAKZHJvaXQgZCdhY2PDqHMs
-IGRlIHJlY3RpZmljYXRpb24sIGRlIG1vZGlmaWNhdGlvbiBldCBkZSBzdXBwcmVzc2lvbiBhdXgg
-CmRvbm7DqWVzIHZvdXMgY29uY2VybmFudC4KCiBWb3VzIGF2ZXogbGEgcG9zc2liaWxpdMOpIGRl
-IHZvdXMgcmV0aXJlciBkZSBub3RyZSBsaXN0ZSBkJ2Vudm9pIGRlIAptYWlscyBwYXIgbCdpbnRl
-cm1lZGlhaXJlIGRlICBjZSByYWNjb3VyY2kuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBT
-ZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3Zl
-ciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFz
-IGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndp
-bGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0
-ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nm
-cm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Saves some error handling and a small amount of code.
+
+Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-s3c64xx.c |   25 +------------------------
+ 1 file changed, 1 insertion(+), 24 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index f4e2341..b7aeb5d 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1028,19 +1028,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 
+-	if (request_mem_region(mem_res->start,
+-			resource_size(mem_res), pdev->name) == NULL) {
+-		dev_err(&pdev->dev, "Req mem region failed\n");
+-		ret = -ENXIO;
+-		goto err0;
+-	}
+-
+-	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
+-	if (sdd->regs == NULL) {
+-		dev_err(&pdev->dev, "Unable to remap IO\n");
+-		ret = -ENXIO;
+-		goto err1;
+-	}
++	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
+ 
+ 	if (sci->cfg_gpio == NULL || sci->cfg_gpio(pdev)) {
+ 		dev_err(&pdev->dev, "Unable to config gpio\n");
+@@ -1124,10 +1112,6 @@ err4:
+ 	clk_put(sdd->clk);
+ err3:
+ err2:
+-	iounmap((void *) sdd->regs);
+-err1:
+-	release_mem_region(mem_res->start, resource_size(mem_res));
+-err0:
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
+@@ -1138,7 +1122,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+-	struct resource	*mem_res;
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -1154,12 +1137,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	clk_disable(sdd->clk);
+ 	clk_put(sdd->clk);
+ 
+-	iounmap((void *) sdd->regs);
+-
+-	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (mem_res != NULL)
+-		release_mem_region(mem_res->start, resource_size(mem_res));
+-
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
+-- 
+1.7.10
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

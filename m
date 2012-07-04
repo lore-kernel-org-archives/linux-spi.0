@@ -1,8 +1,9 @@
-From: Toner Service par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Vos cartouches d'encre chez vous au meilleur prix avec un cadeau
-Date: Wed, 04 Jul 2012 01:16:40 +0200
-Message-ID: <1341357402.4ff37d5ae127d@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Soldes, économisez jusqu'à 700 e cette
+ semaine !
+Date: Wed, 04 Jul 2012 07:47:06 +0200
+Message-ID: <1341380898.4ff3d922aa90c@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTUxODImYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNy0wMyAyMzoyMDowMSZlPTEmaD0xNTE4MSZmPTE1MTgyJmc9MTUxODI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE1MjI3JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNy0wNCAwNjozMDowMSZlPTEmaD0xNTIyNiZmPTE1MjI3Jmc9MTUyMjc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTUxODImYz0=
-xOTYxNjQxJmQ9MjAxMi0wNy0wMyAyMzoyMDowMSZlPTEmaD0xNTE4MSZmPTE1MTgyJmc9MTUxOD=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE1MjI3JmM=
+9MjM2NDM3JmQ9MjAxMi0wNy0wNCAwNjozMDowMSZlPTEmaD0xNTIyNiZmPTE1MjI3Jmc9MTUyMj=
+c=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,7 +1,8 @@
-From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre animal est t-il bien assure
-Date: Thu, 05 Jul 2012 05:25:21 +0200
-Message-ID: <1341458765.4ff5094dec84a@mc10.fr>
+From: Tendance Chaussures par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre =?iso-8859-15?Q?3=E8me?= paire de chaussures
+	=?iso-8859-15?Q?achet=E9es_=E0?= 1 euros
+Date: Wed, 04 Jul 2012 23:57:06 +0200
+Message-ID: <1341439230.4ff4bcfebd830@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDczJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNSAwMzoxMDowMiZlPTEmaD0xNTA3MiZmPTE1MDczJmc9MTUwNzM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDU3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNCAyMzo1MDowMSZlPTEmaD0xNTA1NiZmPTE1MDU3Jmc9MTUwNTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDczJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNSAwMzoxMDowMiZlPTEmaD0xNTA3MiZmPTE1MDczJmc9MTUwNz=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDU3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNCAyMzo1MDowMSZlPTEmaD0xNTA1NiZmPTE1MDU3Jmc9MTUwNT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

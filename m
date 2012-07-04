@@ -1,51 +1,37 @@
-From: Barry Song <Barry.Song@csr.com>
-Subject: [PATCH] SPI: SIRF: replace -EINVAL by PTR_ERR(clk) when clk_get fails
-Date: Wed, 4 Jul 2012 17:00:41 +0800
-Message-ID: <1341392441-619-1-git-send-email-Barry.Song@csr.com>
+From: "Soldes Atylia" <Atylia-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
+Subject: Deuxieme demarque,
+	jusqu a 70 moins pourcent sur nos collections meubles et decoration
+Date: Wed, 04 Jul 2012 06:02:36 +0000
+Message-ID: <e7a509cc196218835c3347722494725d@information.r2jcommunication.fr>
+Reply-To: Atylia-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, workgroup.linux@csr.com,
- linux-arm-kernel@lists.infradead.org, Barry Song <Baohua.Song@csr.com>
-To: <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Barry Song <Baohua.Song@csr.com>
-
-With this patch, the ret value will be more meaningful.
-
-Signed-off-by: Barry Song <Baohua.Song@csr.com>
----
- drivers/spi/spi-sirf.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index ecc3d97..0b10e4f 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -567,7 +567,7 @@ static int __devinit spi_sirfsoc_probe(struct platform_device *pdev)
- 
- 	sspi->clk = clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(sspi->clk)) {
--		ret = -EINVAL;
-+		ret = PTR_ERR(sspi->clk);
- 		goto free_pin;
- 	}
- 	clk_enable(sspi->clk);
--- 
-1.7.1
+Your email client cannot read this email.
+To view it online, please go here:
+http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=20&L=3&N=6
+Soldes Atylia :
+http://information.r2jcommunication.fr/link.php?M=2463975&N=20&L=79&F=T
 
 
 
-Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
-More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
+To stop receiving these
+emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=20
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

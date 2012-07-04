@@ -1,41 +1,51 @@
-From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Soldes, économisez jusqu'à 700 e cette
- semaine !
-Date: Wed, 04 Jul 2012 07:47:06 +0200
-Message-ID: <1341380898.4ff3d922aa90c@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Barry Song <Barry.Song@csr.com>
+Subject: [PATCH] SPI: SIRF: replace -EINVAL by PTR_ERR(clk) when clk_get fails
+Date: Wed, 4 Jul 2012 17:00:41 +0800
+Message-ID: <1341392441-619-1-git-send-email-Barry.Song@csr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net, workgroup.linux@csr.com,
+ linux-arm-kernel@lists.infradead.org, Barry Song <Baohua.Song@csr.com>
+To: <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+From: Barry Song <Baohua.Song@csr.com>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE1MjI3JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNy0wNCAwNjozMDowMSZlPTEmaD0xNTIyNiZmPTE1MjI3Jmc9MTUyMjc=3D
+With this patch, the ret value will be more meaningful.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE1MjI3JmM=
-9MjM2NDM3JmQ9MjAxMi0wNy0wNCAwNjozMDowMSZlPTEmaD0xNTIyNiZmPTE1MjI3Jmc9MTUyMj=
-c=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Barry Song <Baohua.Song@csr.com>
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+ drivers/spi/spi-sirf.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-threat landscape has changed and how IT managers can respond. Discussions =
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index ecc3d97..0b10e4f 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -567,7 +567,7 @@ static int __devinit spi_sirfsoc_probe(struct platform_device *pdev)
+ 
+ 	sspi->clk = clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(sspi->clk)) {
+-		ret = -EINVAL;
++		ret = PTR_ERR(sspi->clk);
+ 		goto free_pin;
+ 	}
+ 	clk_enable(sspi->clk);
+-- 
+1.7.1
 
-will include endpoint security, mobile security and the latest in malware =
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+
+Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
+More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog

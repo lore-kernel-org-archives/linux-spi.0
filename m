@@ -1,21 +1,14 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 6/8] mmc: spi: Add SPI driver for mx233/mx28
-Date: Thu, 5 Jul 2012 08:00:32 +0200
-Message-ID: <201207050800.32245.marex@denx.de>
-References: <1340958180-2291-1-git-send-email-marex@denx.de>
-	<201207050746.30818.marex@denx.de>
-	<CAAQ0ZWQ-eQaN=R4ZoEeAD3yk+tBb7QQHdUHpOd0YeeYmkyi1kA@mail.gmail.com>
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Jusqu'à moins 70 pourcent sur les bagages et
+ sacs
+Date: Wed, 04 Jul 2012 23:29:10 +0200
+Message-ID: <1341437560.4ff4b678c2203@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>,
-	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAAQ0ZWQ-eQaN=R4ZoEeAD3yk+tBb7QQHdUHpOd0YeeYmkyi1kA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,28 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Shawn Guo,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> On 5 July 2012 13:46, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> > Correct, this I fixed in my tree and will repost the series. I also fixed
-> > the documentation issue. But ... what about the rest of the series, are
-> > you OK with it as is ?
-> 
-> Yes, it looks okay to me.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDYxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNCAyMzoyMDowMSZlPTEmaD0xNTA2MCZmPTE1MDYxJmc9MTUwNjE=3D
 
-All right then, that's good. I'll roll out V2 after I get some sleep.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDYxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNCAyMzoyMDowMSZlPTEmaD0xNTA2MCZmPTE1MDYxJmc9MTUwNj=
+E=3D
 
-Thanks for the review!
 
-> Regards,
-> Shawn
-
-Best regards,
-Marek Vasut
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

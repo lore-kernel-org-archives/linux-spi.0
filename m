@@ -1,10 +1,11 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 8/8] mmc: spi: Add DMA support into SPI driver
-Date: Wed, 4 Jul 2012 23:40:55 +0200
-Message-ID: <201207042340.55301.marex@denx.de>
+Date: Wed, 4 Jul 2012 18:43:20 -0300
+Message-ID: <CAOMZO5APBLyvYFqKonkjOwXgHcDw7x6fNL9o775F4xCwvXCjOQ@mail.gmail.com>
 References: <1340958180-2291-1-git-send-email-marex@denx.de>
 	<1340958180-2291-8-git-send-email-marex@denx.de>
 	<CAOMZO5AN852f3Awv0UG+ApsgMC-x5ByQrLkUC5SkOnty5T0EMA@mail.gmail.com>
+	<201207042340.55301.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,9 +14,9 @@ Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris
 	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOMZO5AN852f3Awv0UG+ApsgMC-x5ByQrLkUC5SkOnty5T0EMA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <201207042340.55301.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,25 +27,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Fabio Estevam,
+On Wed, Jul 4, 2012 at 6:40 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
 
-> Hi Marek,
-> 
-> On 6/29/12, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> >  	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > 
-> > -	if (!iores)
-> > +	dmares = platform_get_resource(pdev, IORESOURCE_DMA, 0);
-> > +	irq_err = platform_get_irq(pdev, 0);
-> > +	irq_dma = platform_get_irq(pdev, 1);
-> > +	if (!iores || irq_err < 0 || irq_dma < 0)
-> 
-> Shouldn't you check for dmares < 0 here too?
+>> Shouldn't you check for dmares < 0 here too?
+>
+> Yes. What about the rest of the patches? Are they applicable?
 
-Yes. What about the rest of the patches? Are they applicable?
-
-Best regards,
-Marek Vasut
+They look fine for me. Let's see if we have more comments.
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

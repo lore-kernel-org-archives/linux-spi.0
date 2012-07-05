@@ -1,100 +1,63 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
-Date: Thu, 05 Jul 2012 10:41:04 +0200
-Message-ID: <4FF55320.4020107@samsung.com>
-References: <1341418316-26190-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
+	Controllers
+Date: Thu, 5 Jul 2012 11:02:51 +0200
+Message-ID: <20120705110251.596331e0@skate>
+References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
+	<1341325365-21393-2-git-send-email-andrew@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org,
-	Jassi Brar <jassisinghbrar@gmail.com>
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <1341418316-26190-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	Maen Suleiman <maen-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1341325365-21393-2-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/04/2012 06:11 PM, Mark Brown wrote:
-> Saves some error handling and a small amount of code.
-> 
-> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/spi/spi-s3c64xx.c |   25 +------------------------
->  1 file changed, 1 insertion(+), 24 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index f4e2341..b7aeb5d 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1028,19 +1028,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
->  	/* the spi->mode bits understood by this driver: */
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
->  
-> -	if (request_mem_region(mem_res->start,
-> -			resource_size(mem_res), pdev->name) == NULL) {
-> -		dev_err(&pdev->dev, "Req mem region failed\n");
-> -		ret = -ENXIO;
-> -		goto err0;
-> -	}
-> -
-> -	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
-> -	if (sdd->regs == NULL) {
-> -		dev_err(&pdev->dev, "Unable to remap IO\n");
-> -		ret = -ENXIO;
-> -		goto err1;
-> -	}
-> +	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
-
-It doesn't seem right. Why is is the check for valid sdd->regs removed ?
-This should have rather been:
-
-+	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
-+	if (sdd->regs == NULL) {
-+		dev_err(&pdev->dev, "Failed to request memory region\n");
-+		return -ENXIO;
-+	}
-
-Currently whne devm_request_and_ioremap() fails and returns NULL kernel oops
-would happen right on first writel() in s3c64xx_spi_hwninit().
-
-
-Thanks,
-Sylwester
-
->  	if (sci->cfg_gpio == NULL || sci->cfg_gpio(pdev)) {
->  		dev_err(&pdev->dev, "Unable to config gpio\n");
-> @@ -1124,10 +1112,6 @@ err4:
->  	clk_put(sdd->clk);
->  err3:
->  err2:
-> -	iounmap((void *) sdd->regs);
-> -err1:
-> -	release_mem_region(mem_res->start, resource_size(mem_res));
-> -err0:
->  	platform_set_drvdata(pdev, NULL);
->  	spi_master_put(master);
->  
-> @@ -1138,7 +1122,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
->  {
->  	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
->  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
-> -	struct resource	*mem_res;
->  
->  	pm_runtime_disable(&pdev->dev);
->  
-> @@ -1154,12 +1137,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
->  	clk_disable(sdd->clk);
->  	clk_put(sdd->clk);
->  
-> -	iounmap((void *) sdd->regs);
-> -
-> -	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (mem_res != NULL)
-> -		release_mem_region(mem_res->start, resource_size(mem_res));
-> -
->  	platform_set_drvdata(pdev, NULL);
->  	spi_master_put(master);
+SGVsbG8gQW5kcmV3LAoKTGUgVHVlLCAgMyBKdWwgMjAxMiAxNjoyMjozNCArMDIwMCwKQW5kcmV3
+IEx1bm4gPGFuZHJld0BsdW5uLmNoPiBhIMOpY3JpdCA6Cgo+IEJvdGggSVJRIGFuZCBHUElPIGNv
+bnRyb2xsZXJzIGNhbiBub3cgYmUgcmVwcmVzZW50ZWQgaW4gRFQuICBUaGUgSVJRCj4gY29udHJv
+bGxlcnMgYXJlIHNldHVwIGZpcnN0LCBhbmQgdGhlbiB0aGUgR1BJTyBjb250cm9sbGVycy4gSW50
+ZXJydXB0cwo+IGZvciBHUElPIGxpbmVzIGFyZSBwbGFjZWQgZGlyZWN0bHkgYWZ0ZXIgdGhlIG1h
+aW4gaW50ZXJydXB0cyBpbiB0aGUKPiBpbnRlcnJ1cHQgc3BhY2UuCj4gCj4gU2lnbmVkLW9mZi1i
+eTogQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPgoKSSBoYXZlIHN0YXJ0ZWQgd29ya2luZyBv
+biBhIHBpbmN0cmwgZHJpdmVyIGZvciBtdmVidSwgd2hpY2ggd291bGQKaGFuZGxlIHBpbiBtdXhp
+bmcgKE1QUCkgKyBncGlvICsgZ3BpbyBpbnRlcnJ1cHRzLgoKU28gZmFyLCB0aGUgcGluIG11eGlu
+ZyBwYXJ0IGlzIHdvcmtpbmcgKG5lZWRzIHNvbWUgcG9saXNoaW5nLCBidXQgdGhlCmZvdW5kYXRp
+b24gaXMgaGVyZSksIHdpdGggZGV2aWNlIHRyZWUgYmluZGluZ3MuIEkgdGhpbmsgdGhlIHBpbiBt
+dXhpbmcKY291bGQgYmUgdXNlZCBmb3IgT3Jpb24gYXMgd2VsbC4KCk5vdywgSSdtIHBsYW5uaW5n
+IHRvIHN0YXJ0IHdvcmtpbmcgb24gdGhlIGdwaW8gKyBncGlvIGludGVycnVwdHMgcGFydHMKb2Yg
+dGhlIGRyaXZlciwgYW5kIEknbSB3b25kZXJpbmcgaG93IHRvIGludGVyYWN0IHdpdGggeW91ciB3
+b3JrIG9uIHRoZQptYXR0ZXIuIE15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCB0aGUgbmV3IHdheSBv
+ZiBkb2luZyBhIHBpbm11eCtncGlvCmRyaXZlciBpcyB0byBpbXBsZW1lbnQgaXQgaW4gZHJpdmVy
+cy9waW5jdHJsLywgd2hpY2ggSSBoYXZlIHN0YXJ0ZWQKZG9pbmcuCgpTaG91bGQgSSBjb250aW51
+ZSB3b3JraW5nIG9uIGEgZHJpdmVycy9waW5jdHJsLyBkcml2ZXIgZm9yIG12ZWJ1IGZvcgpBcm1h
+ZGEgMzcwL1hQLCBhbmQgdGhlbiB3ZSBzZWUgdG9nZXRoZXIgaWYgaXQgbWFrZXMgc2Vuc2UgdG8g
+ZXh0ZW5kIHRvCk9yaW9uLCBhbmQgaWYgc28sIHdoYXQgY2hhbmdlcyBhcmUgbmVlZGVkPwoKVGhh
+bmtzLAoKVGhvbWFzCi0tIApUaG9tYXMgUGV0YXp6b25pLCBGcmVlIEVsZWN0cm9ucwpLZXJuZWws
+IGRyaXZlcnMsIHJlYWwtdGltZSBhbmQgZW1iZWRkZWQgTGludXgKZGV2ZWxvcG1lbnQsIGNvbnN1
+bHRpbmcsIHRyYWluaW5nIGFuZCBzdXBwb3J0LgpodHRwOi8vZnJlZS1lbGVjdHJvbnMuY29tCgot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhj
+bHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0
+eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBj
+YW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwg
+bW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6
+Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

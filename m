@@ -1,57 +1,41 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Shawn Guo <shawn.guo@linaro.org>
 Subject: Re: [PATCH 6/8] mmc: spi: Add SPI driver for mx233/mx28
-Date: Thu, 5 Jul 2012 07:39:49 +0200
-Message-ID: <201207050739.49912.marex@denx.de>
+Date: Thu, 5 Jul 2012 13:43:40 +0800
+Message-ID: <CAAQ0ZWQEoOy6etXhsy3uTPmiFqtVaqMf5VXUHFrp3O6R_jQ06g@mail.gmail.com>
 References: <1340958180-2291-1-git-send-email-marex@denx.de>
-	<1340958180-2291-6-git-send-email-marex@denx.de>
-	<20120705005143.GF2595@S2101-09.ap.freescale.net>
+ <1340958180-2291-6-git-send-email-marex@denx.de>
+ <20120705005143.GF2595@S2101-09.ap.freescale.net>
+ <201207050739.49912.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>,
-	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120705005143.GF2595-rvtDTF3kK1ictlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, Wolfgang Denk <wd@denx.de>,
+ Detlev Zundel <dzu@denx.de>, Rob Herring <rob.herring@calxeda.com>,
+ Grant Likely <grant.likely@secretlab.ca>, Stefano Babic <sbabic@denx.de>,
+ spi-devel-general@lists.sourceforge.net, Chris Ball <cjb@laptop.org>,
+ Dong Aisheng <b29396@freescale.com>, linux-arm-kernel@lists.infradead.org
+To: Marek Vasut <marex@denx.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <201207050739.49912.marex@denx.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Shawn Guo,
+On 5 July 2012 13:39, Marek Vasut <marex@denx.de> wrote:
+>> So SPI_MXS may need to select STMP_DEVICE.
+>
+> Ok, fixed in my tree. But, where's the meteor shower of nitpicks and such stuff?
 
-> On Fri, Jun 29, 2012 at 10:22:58AM +0200, Marek Vasut wrote:
-> > +config SPI_MXS
-> > +	tristate "Freescale MXS SPI controller"
-> > +	depends on ARCH_MXS
-> > +	help
-> > +	  SPI driver for Freescale MXS devices.
-> > +
-> 
-> ...
-> 
-> > +	stmp_reset_block(ssp->base);
-> > +
-> 
-> So SPI_MXS may need to select STMP_DEVICE.
+I do not take this as a nitpick at all.  Removing those drivers
+selecting STMP_DEVICE from mxs_defconfig, your driver does not
+compile.
 
-Ok, fixed in my tree. But, where's the meteor shower of nitpicks and such stuff? 
-Or is the driver so good you have nothing to pick on? ;-)
-
-Best regards,
-Marek Vasut
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Regards,
+Shawn

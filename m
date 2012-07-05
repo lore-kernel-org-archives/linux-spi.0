@@ -1,44 +1,100 @@
-From: "Shilimkar, Santosh" <santosh.shilimkar@ti.com>
-Subject: Re: [PATCH RFC] spi: omap2-mcspi: Fix the dma_unmap warning
-Date: Thu, 5 Jul 2012 14:58:20 +0530
-Message-ID: <CAMQu2gzJgkGk5VCkUc1o7oxRhzSY1=Qp0HNR5jt0YFKzwsB10w@mail.gmail.com>
-References: <1341480207-5651-1-git-send-email-shubhrajyoti@ti.com>
+From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
+ Controllers
+Date: Thu, 5 Jul 2012 11:48:24 +0200
+Message-ID: <20120705094824.GO17534@lunn.ch>
+References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
+ <1341325365-21393-2-git-send-email-andrew@lunn.ch>
+ <20120705110251.596331e0@skate>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1341480207-5651-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Maen Suleiman <maen-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120705110251.596331e0@skate>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 5, 2012 at 2:53 PM, Shubhrajyoti D <shubhrajyoti@ti.com> wrote:
-> The dma_map and dma_unmap should have same parameter
-> passed otherwise we get the below warn.
->
-> ks8851 spi1.0: DMA-API: device driver tries to free DMA memory it has not allocated [device address=0x000000009f22]
->
-> [    2.066925] Modules linked in:
-> [    2.070312]
-> [    2.071929] [<c001c250>] (unwind_backtrace+0x0/0x130) from [<c0043d84>] (warn_slowpath_common+0x4c/0x64)
-> [    2.081909] [<c0043d84>] (warn_slowpath_common+0x4c/0x64) from [<c0043e30>] (warn_slowpath_fmt+0x30/0x40)
-> [    2.091949] [<c0043e30>] (warn_slowpath_fmt+0x30/0x40) from [<c0293824>] (check_unmap+0x6d0/0x7b0)
-> [    2.101348] [<c0293824>] (check_unmap+0x6d0/0x7b0) from [<c02939cc>] (debug_dma_unmap_page+0x64/0x70)
-> [    2.111053] [<c02939cc>] (debug_dma_unmap_page+0x64/0x70) from [<c03519a4>] (omap2_mcspi_txrx_dma+0x2d8/0x4fc)
-> [    2.121582] [<c03519a4>] (omap2_mcspi_txrx_dma+0x2d8/0x4fc) from [<c03524d8>] (omap2_mcspi_work.clone.4+0xf0/0x290)
-> [    2.132537] [<c03524d8>] (omap2_mcspi_work.clone.4+0xf0/0x290) from [<c0352900>] (omap2_mcspi_transfer_one_message+0x288/0x438)
-> [    2.144592] [<c0352900>] (omap2_mcspi_transfer_one_message+0x288/0x438) from [<c03503bc>] (spi_pump_messages+0x100/0x160)
-> [    2.156127] [<c03503bc>] (spi_pump_messages+0x100/0x160) from [<c006635c>] (kthread_worker_fn+0xac/0x180)
-> [    2.166168] [<c006635c>] (kthread_worker_fn+0xac/0x180) from [<c0066578>] (kthread+0x90/0x9c)
-> [    2.175140] [<c0066578>] (kthread+0x90/0x9c) from [<c00157fc>] (kernel_thread_exit+0x0/0x8)
-> [    2.183898] ---[ end trace d1830ce6e44292f2 ]---
->
-> Fix the warn by changing the unmap parameter to the one used while doing
-> dma_map.
->
-> Reported-by: Russell King <linux@arm.linux.org.uk>
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
-> ---
-Looks fine to me.
-Acked-by: Santosh Shilimkar <santosh.shilimkar@ti.com>
+On Thu, Jul 05, 2012 at 11:02:51AM +0200, Thomas Petazzoni wrote:
+> Hello Andrew,
+> 
+> Le Tue,  3 Jul 2012 16:22:34 +0200,
+> Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org> a ??crit :
+> 
+> > Both IRQ and GPIO controllers can now be represented in DT.  The IRQ
+> > controllers are setup first, and then the GPIO controllers. Interrupts
+> > for GPIO lines are placed directly after the main interrupts in the
+> > interrupt space.
+> > 
+> > Signed-off-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+> 
+> I have started working on a pinctrl driver for mvebu, which would
+> handle pin muxing (MPP) + gpio + gpio interrupts.
+
+Hi Thomas
+
+You are not the only one working in this area. Arnaud Patard said he
+was look at this as well. 
+
+> So far, the pin muxing part is working (needs some polishing, but the
+> foundation is here), with device tree bindings. I think the pin muxing
+> could be used for Orion as well.
+
+Great. This is one of the big things which we are missing when moving
+a system over the DT. Being able to describe this in DT in a
+standardized way is very much welcome.
+
+> Now, I'm planning to start working on the gpio + gpio interrupts parts
+> of the driver, and I'm wondering how to interact with your work on the
+> matter.
+
+I've publicly said, what i have is enough to get it working, but i
+know its not the end solution. What i have is enough that gpio-key,
+gpio-led, as described in DT, works. Boards can start using these and
+as far as i can tell, the binding should not need to change. The GPIO
+controller binding should also be sufficiently generic that it should
+also not need changes when we replace the driver with pinctrl.
+
+The biggest problem i had, is the interaction between generic chip
+interrupts and irqdomain. There has been work to integrate the two,
+but its stalled. Either the work needs restarting and completing, or
+you need to throw away the use of generic interrupt so that you can
+use irqdomain linear. IMHO, throwing away generic interrupt is the
+wrong way.
+
+The other thing you need to keep in mind is the namespace issues
+between normal interrupts and GPIO interrupts. The way my patch works
+is that normal interrupts are setup first, counting how many have been
+created. Then GPIO interrupts are added, starting off where the normal
+interrupts ended. Since 370/XP uses different interrupt code, you need
+to think how to solve this issue.
+
+> My understanding is that the new way of doing a pinmux+gpio
+> driver is to implement it in drivers/pinctrl/, which I have started
+> doing.
+
+Great.
+ 
+> Should I continue working on a drivers/pinctrl/ driver for mvebu for
+> Armada 370/XP, and then we see together if it makes sense to extend to
+> Orion, and if so, what changes are needed?
+
+I know Marvell has contracted you to port to Armada 370/XP, not mvebu,
+aka all chips which might be able to share this code. This IMHO is
+wrong. So i personally would put the kirkwood and the Armada 370/XP
+data sheets next to each other, and from the beginning on write the
+driver so it supports them all. This assumes the ASIC engineers have
+not radically changed anything... Please also try to stick to the DT
+binding i've used.
+
+If however, you have to focus solely on Armada 370/XP, then the
+community can work on making your code generic at a late date.
+
+	  Andrew

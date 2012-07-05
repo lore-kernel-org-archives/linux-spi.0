@@ -1,8 +1,7 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Soldes : Toute la beauté jusqu'à moins 60
- pourcent
-Date: Thu, 05 Jul 2012 21:39:04 +0200
-Message-ID: <1341517164.4ff5ed6cf2488@mc10.fr>
+From: Ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Comme tu peux le constater, c'est le moment
+Date: Thu, 05 Jul 2012 22:16:11 +0200
+Message-ID: <1341519489.4ff5f681316e7@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MzQ0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNSAyMToyMDowMSZlPTEmaD0xNTM0MyZmPTE1MzQ0Jmc9MTUzNDQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MTM4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMzg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MzQ0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNSAyMToyMDowMSZlPTEmaD0xNTM0MyZmPTE1MzQ0Jmc9MTUzND=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MTM4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMz=
+g=3D
 
 
 ---------------------------------------------------------------------------=

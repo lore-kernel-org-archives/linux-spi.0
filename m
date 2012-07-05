@@ -1,7 +1,7 @@
-From: ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Comme tu peux le constater, c'est le moment
-Date: Thu, 05 Jul 2012 00:15:07 +0200
-Message-ID: <1341440221.4ff4c0ddbe1e4@mc10.fr>
+From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre animal est t-il bien assure
+Date: Thu, 05 Jul 2012 05:25:21 +0200
+Message-ID: <1341458765.4ff5094dec84a@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDI1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNCAyMzo0MDowMSZlPTEmaD0xNTAyNCZmPTE1MDI1Jmc9MTUwMjU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDczJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNSAwMzoxMDowMiZlPTEmaD0xNTA3MiZmPTE1MDczJmc9MTUwNzM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDI1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNCAyMzo0MDowMSZlPTEmaD0xNTAyNCZmPTE1MDI1Jmc9MTUwMj=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDczJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNSAwMzoxMDowMiZlPTEmaD0xNTA3MiZmPTE1MDczJmc9MTUwNz=
+M=3D
 
 
 ---------------------------------------------------------------------------=

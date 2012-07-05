@@ -1,7 +1,7 @@
-From: Ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Comme tu peux le constater, c'est le moment
-Date: Thu, 05 Jul 2012 22:16:11 +0200
-Message-ID: <1341519489.4ff5f681316e7@mc10.fr>
+From: Produit Minceur par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: [SPAM] Le secret qui fait maigrir les stars
+Date: Thu, 05 Jul 2012 22:15:12 +0200
+Message-ID: <1341519475.4ff5f673a7526@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MTM4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMzg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MTQ1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTE0NCZmPTE1MTQ1Jmc9MTUxNDU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MTM4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMz=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MTQ1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNSAyMjoxMDowMSZlPTEmaD0xNTE0NCZmPTE1MTQ1Jmc9MTUxND=
+U=3D
 
 
 ---------------------------------------------------------------------------=

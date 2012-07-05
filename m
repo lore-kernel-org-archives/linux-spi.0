@@ -1,22 +1,14 @@
-From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
-	Controllers
-Date: Thu, 5 Jul 2012 11:02:51 +0200
-Message-ID: <20120705110251.596331e0@skate>
-References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
-	<1341325365-21393-2-git-send-email-andrew@lunn.ch>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH RFC] spi: omap2-mcspi: Fix the dma_unmap warning
+Date: Thu, 5 Jul 2012 14:53:27 +0530
+Message-ID: <1341480207-5651-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	Maen Suleiman <maen-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1341325365-21393-2-git-send-email-andrew-g2DYL2Zd6BY@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,37 +19,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGVsbG8gQW5kcmV3LAoKTGUgVHVlLCAgMyBKdWwgMjAxMiAxNjoyMjozNCArMDIwMCwKQW5kcmV3
-IEx1bm4gPGFuZHJld0BsdW5uLmNoPiBhIMOpY3JpdCA6Cgo+IEJvdGggSVJRIGFuZCBHUElPIGNv
-bnRyb2xsZXJzIGNhbiBub3cgYmUgcmVwcmVzZW50ZWQgaW4gRFQuICBUaGUgSVJRCj4gY29udHJv
-bGxlcnMgYXJlIHNldHVwIGZpcnN0LCBhbmQgdGhlbiB0aGUgR1BJTyBjb250cm9sbGVycy4gSW50
-ZXJydXB0cwo+IGZvciBHUElPIGxpbmVzIGFyZSBwbGFjZWQgZGlyZWN0bHkgYWZ0ZXIgdGhlIG1h
-aW4gaW50ZXJydXB0cyBpbiB0aGUKPiBpbnRlcnJ1cHQgc3BhY2UuCj4gCj4gU2lnbmVkLW9mZi1i
-eTogQW5kcmV3IEx1bm4gPGFuZHJld0BsdW5uLmNoPgoKSSBoYXZlIHN0YXJ0ZWQgd29ya2luZyBv
-biBhIHBpbmN0cmwgZHJpdmVyIGZvciBtdmVidSwgd2hpY2ggd291bGQKaGFuZGxlIHBpbiBtdXhp
-bmcgKE1QUCkgKyBncGlvICsgZ3BpbyBpbnRlcnJ1cHRzLgoKU28gZmFyLCB0aGUgcGluIG11eGlu
-ZyBwYXJ0IGlzIHdvcmtpbmcgKG5lZWRzIHNvbWUgcG9saXNoaW5nLCBidXQgdGhlCmZvdW5kYXRp
-b24gaXMgaGVyZSksIHdpdGggZGV2aWNlIHRyZWUgYmluZGluZ3MuIEkgdGhpbmsgdGhlIHBpbiBt
-dXhpbmcKY291bGQgYmUgdXNlZCBmb3IgT3Jpb24gYXMgd2VsbC4KCk5vdywgSSdtIHBsYW5uaW5n
-IHRvIHN0YXJ0IHdvcmtpbmcgb24gdGhlIGdwaW8gKyBncGlvIGludGVycnVwdHMgcGFydHMKb2Yg
-dGhlIGRyaXZlciwgYW5kIEknbSB3b25kZXJpbmcgaG93IHRvIGludGVyYWN0IHdpdGggeW91ciB3
-b3JrIG9uIHRoZQptYXR0ZXIuIE15IHVuZGVyc3RhbmRpbmcgaXMgdGhhdCB0aGUgbmV3IHdheSBv
-ZiBkb2luZyBhIHBpbm11eCtncGlvCmRyaXZlciBpcyB0byBpbXBsZW1lbnQgaXQgaW4gZHJpdmVy
-cy9waW5jdHJsLywgd2hpY2ggSSBoYXZlIHN0YXJ0ZWQKZG9pbmcuCgpTaG91bGQgSSBjb250aW51
-ZSB3b3JraW5nIG9uIGEgZHJpdmVycy9waW5jdHJsLyBkcml2ZXIgZm9yIG12ZWJ1IGZvcgpBcm1h
-ZGEgMzcwL1hQLCBhbmQgdGhlbiB3ZSBzZWUgdG9nZXRoZXIgaWYgaXQgbWFrZXMgc2Vuc2UgdG8g
-ZXh0ZW5kIHRvCk9yaW9uLCBhbmQgaWYgc28sIHdoYXQgY2hhbmdlcyBhcmUgbmVlZGVkPwoKVGhh
-bmtzLAoKVGhvbWFzCi0tIApUaG9tYXMgUGV0YXp6b25pLCBGcmVlIEVsZWN0cm9ucwpLZXJuZWws
-IGRyaXZlcnMsIHJlYWwtdGltZSBhbmQgZW1iZWRkZWQgTGludXgKZGV2ZWxvcG1lbnQsIGNvbnN1
-bHRpbmcsIHRyYWluaW5nIGFuZCBzdXBwb3J0LgpodHRwOi8vZnJlZS1lbGVjdHJvbnMuY29tCgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhj
-bHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0
-eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBj
-YW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwg
-bW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6
-Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+The dma_map and dma_unmap should have same parameter
+passed otherwise we get the below warn.
+
+ks8851 spi1.0: DMA-API: device driver tries to free DMA memory it has not allocated [device address=0x000000009f22]
+
+[    2.066925] Modules linked in:
+[    2.070312]
+[    2.071929] [<c001c250>] (unwind_backtrace+0x0/0x130) from [<c0043d84>] (warn_slowpath_common+0x4c/0x64)
+[    2.081909] [<c0043d84>] (warn_slowpath_common+0x4c/0x64) from [<c0043e30>] (warn_slowpath_fmt+0x30/0x40)
+[    2.091949] [<c0043e30>] (warn_slowpath_fmt+0x30/0x40) from [<c0293824>] (check_unmap+0x6d0/0x7b0)
+[    2.101348] [<c0293824>] (check_unmap+0x6d0/0x7b0) from [<c02939cc>] (debug_dma_unmap_page+0x64/0x70)
+[    2.111053] [<c02939cc>] (debug_dma_unmap_page+0x64/0x70) from [<c03519a4>] (omap2_mcspi_txrx_dma+0x2d8/0x4fc)
+[    2.121582] [<c03519a4>] (omap2_mcspi_txrx_dma+0x2d8/0x4fc) from [<c03524d8>] (omap2_mcspi_work.clone.4+0xf0/0x290)
+[    2.132537] [<c03524d8>] (omap2_mcspi_work.clone.4+0xf0/0x290) from [<c0352900>] (omap2_mcspi_transfer_one_message+0x288/0x438)
+[    2.144592] [<c0352900>] (omap2_mcspi_transfer_one_message+0x288/0x438) from [<c03503bc>] (spi_pump_messages+0x100/0x160)
+[    2.156127] [<c03503bc>] (spi_pump_messages+0x100/0x160) from [<c006635c>] (kthread_worker_fn+0xac/0x180)
+[    2.166168] [<c006635c>] (kthread_worker_fn+0xac/0x180) from [<c0066578>] (kthread+0x90/0x9c)
+[    2.175140] [<c0066578>] (kthread+0x90/0x9c) from [<c00157fc>] (kernel_thread_exit+0x0/0x8)
+[    2.183898] ---[ end trace d1830ce6e44292f2 ]---
+
+Fix the warn by changing the unmap parameter to the one used while doing
+dma_map.
+
+Reported-by: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 0c73dd4..37ccdb7 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -388,7 +388,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (tx != NULL) {
+ 		wait_for_completion(&mcspi_dma->dma_tx_completion);
+-		dma_unmap_single(&spi->dev, xfer->tx_dma, count, DMA_TO_DEVICE);
++		dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
++				 DMA_TO_DEVICE);
+ 
+ 		/* for TX_ONLY mode, be sure all words have shifted out */
+ 		if (rx == NULL) {
+@@ -403,7 +404,8 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 
+ 	if (rx != NULL) {
+ 		wait_for_completion(&mcspi_dma->dma_rx_completion);
+-		dma_unmap_single(&spi->dev, xfer->rx_dma, count, DMA_FROM_DEVICE);
++		dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
++				 DMA_FROM_DEVICE);
+ 		omap2_mcspi_set_enable(spi, 0);
+ 
+ 		if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+-- 
+1.7.5.4
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,64 +1,81 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [GIT PULL] PL022 patches for v3.6
-Date: Thu, 5 Jul 2012 16:27:36 +0200
-Message-ID: <CACRpkdYRjtdtswX+y1yOjEwN9cA9K7M0k_=u=LhU0_0yf4VyeA@mail.gmail.com>
+From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
+ Controllers
+Date: Thu, 5 Jul 2012 16:43:11 +0200
+Message-ID: <20120705144311.GB17534@lunn.ch>
+References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
+ <1341325365-21393-2-git-send-email-andrew@lunn.ch>
+ <201207051225.55390.arnd@arndb.de> <20120705130819.GV17534@lunn.ch>
+ <4FF5A15A.8070309@googlemail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Alexandre Pereira <aletes.xgr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Virupax Sadashivpetimath <virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+ linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Sebastian Hesselbarth <sebastian.hesselbarth-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4FF5A15A.8070309-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
+On Thu, Jul 05, 2012 at 04:14:50PM +0200, Sebastian Hesselbarth wrote:
+> On 07/05/2012 03:08 PM, Andrew Lunn wrote:
+> >The issue is knowing what IRQ number to use for the secondary
+> >interrupts.
+> >
+> >Orion use generic chip interrupts, both for the main interrupts and
+> >the GPIO interrupts. This does not yet support irq domain, so i have
+> >to layer a legacy domain on top. The legacy domain needs to know the
+> >first IRQ and the number of IRQs. For the primary IRQs that is
+> >easy. However, GPIO IRQ is not so easy, it depends on how many primary
+> >IRQs there are. This is not fixed. Orion5x has 32, Dove 64, kirkwood,
+> >64, and mv78xx0 has 96. I need to know this number when adding the
+> >GPIO secondary IRQ legacy domain. By calling orion_gpio_of_init() in
+> >the orion_add_irq_domain() i have this number to hand. If i used to
+> >entries in the match table, i would have to put this number into some
+> >global variable, or somehow ask the IRQ subsystem what the next free
+> >IRQ number is.
+> 
+> Andrew,
+> 
+> is it possible to group all gpio banks into one DT description?
 
-since I guess you're gonna harvest SPI patches for the next merge window
-could you please pull this set of PL022 patches?
+Everything is possible. 
 
-The following changes since commit 6887a4131da3adaab011613776d865f4bcfb5678:
+I did think about having just one gpio controller, since as you said,
+it makes it easier to describe gpios = <&gpio 71 0>; instead of gpios
+= <&gpio3 7 0>; But most SoCs seem to have multiple GPIO controllers
+in the .dtsi files. Only picoxcell has banks inside a single gpio
+controller. So it would be a bit unusual.
+ 
+What you suggest also adds a lot of complexity to the code and
+probably means a lot less of the code can be shared with non-DT GPIO
+handling code.
 
-  Linux 3.5-rc5 (2012-06-30 16:08:57 -0700)
+The natural size of a GPIO controller is 32 lines, not 8. The current
+interrupt handling does not actually care which IRQ of a bank of 32
+lines fired, it looks at all lines. The handler_data in the IRQ points
+to the GPIO chip, not a subsection of the GPIO chip.
 
-are available in the git repository at:
+> 	bank5@e8400 {
+> 		reg = <0xe8400 0x20>;
+> 		ngpio = <8>;
+> 		marvell,orion-gpio-output-only;
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-stericsson.git
-pl022
+Some Orions mixed GPIOs GPOs and GPIs within one controller. So that
+is not generic enough. Probably the pinmux DT description needs to be
+able to specify per pin what a line can do.
 
-for you to fetch changes up to 5b063b87deba33ed1676db9d16c52ede662132d8:
-
-  spi/pl022: cleanup pl022 header documentation (2012-07-02 13:55:36 +0200)
-
-----------------------------------------------------------------
-Alexandre Pereira da Silva (1):
-      spi/pl022: cleanup pl022 header documentation
-
-Linus Walleij (2):
-      spi/pl022: delete DB5500 support
-      spi/pl022: enable runtime PM
-
-Virupax Sadashivpetimath (1):
-      spi/pl022: disable port when unused
-
- drivers/spi/spi-pl022.c    |   23 +++++++++--------------
- include/linux/amba/pl022.h |    9 +--------
- 2 files changed, 10 insertions(+), 22 deletions(-)
-
-Thanks,
-Linus Walleij
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+     Andrew

@@ -1,91 +1,100 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH RFC] spi/gpio: start with CS non-active
-Date: Thu, 5 Jul 2012 09:45:40 +0200
-Message-ID: <20120705074540.GF5398@pengutronix.de>
-References: <1328822505-7039-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH 1/2] spi/s3c64xx: Convert to devm_request_and_ioremap()
+Date: Thu, 05 Jul 2012 10:41:04 +0200
+Message-ID: <4FF55320.4020107@samsung.com>
+References: <1341418316-26190-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1328822505-7039-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	Jassi Brar <jassisinghbrar@gmail.com>
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <1341418316-26190-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 09, 2012 at 10:21:45PM +0100, Uwe Kleine-K=F6nig wrote:
-> The chip select line was configured as output with the initial value
-> being active explicitly. It was later deasserted during
-> spi_bitbang_setup() without any clock activity in between. So it makes
-> no sense to activate the device at all and the chip select line can
-> better start non-active.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+On 07/04/2012 06:11 PM, Mark Brown wrote:
+> Saves some error handling and a small amount of code.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
-> Hello,
-> =
+>  drivers/spi/spi-s3c64xx.c |   25 +------------------------
+>  1 file changed, 1 insertion(+), 24 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index f4e2341..b7aeb5d 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1028,19 +1028,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+>  	/* the spi->mode bits understood by this driver: */
+>  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+>  
+> -	if (request_mem_region(mem_res->start,
+> -			resource_size(mem_res), pdev->name) == NULL) {
+> -		dev_err(&pdev->dev, "Req mem region failed\n");
+> -		ret = -ENXIO;
+> -		goto err0;
+> -	}
+> -
+> -	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
+> -	if (sdd->regs == NULL) {
+> -		dev_err(&pdev->dev, "Unable to remap IO\n");
+> -		ret = -ENXIO;
+> -		goto err1;
+> -	}
+> +	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
 
-> I'm not sure if an active chip select line without any clock activity can
-> confuse a device. If so, this patch might qualify as fix. But with my
-> limited knowledge about spi it's also possible that I just miss why the
-> active chip select is important. For the devices I have it doesn't seem
-> to make a difference.
-ping
+It doesn't seem right. Why is is the check for valid sdd->regs removed ?
+This should have rather been:
 
-> =
++	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
++	if (sdd->regs == NULL) {
++		dev_err(&pdev->dev, "Failed to request memory region\n");
++		return -ENXIO;
++	}
 
-> Best regards
-> Uwe
-> =
-
->  drivers/spi/spi-gpio.c |    3 ++-
->  1 files changed, 2 insertions(+), 1 deletions(-)
-> =
-
-> diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-> index 0094c64..0b56cfc 100644
-> --- a/drivers/spi/spi-gpio.c
-> +++ b/drivers/spi/spi-gpio.c
-> @@ -235,7 +235,8 @@ static int spi_gpio_setup(struct spi_device *spi)
->  			status =3D gpio_request(cs, dev_name(&spi->dev));
->  			if (status)
->  				return status;
-> -			status =3D gpio_direction_output(cs, spi->mode & SPI_CS_HIGH);
-> +			status =3D gpio_direction_output(cs,
-> +					!(spi->mode & SPI_CS_HIGH));
->  		}
->  	}
->  	if (!status)
-> -- =
-
-> 1.7.9
-> =
-
-> =
+Currently whne devm_request_and_ioremap() fails and returns NULL kernel oops
+would happen right on first writel() in s3c64xx_spi_hwninit().
 
 
--- =
+Thanks,
+Sylwester
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+>  	if (sci->cfg_gpio == NULL || sci->cfg_gpio(pdev)) {
+>  		dev_err(&pdev->dev, "Unable to config gpio\n");
+> @@ -1124,10 +1112,6 @@ err4:
+>  	clk_put(sdd->clk);
+>  err3:
+>  err2:
+> -	iounmap((void *) sdd->regs);
+> -err1:
+> -	release_mem_region(mem_res->start, resource_size(mem_res));
+> -err0:
+>  	platform_set_drvdata(pdev, NULL);
+>  	spi_master_put(master);
+>  
+> @@ -1138,7 +1122,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+>  {
+>  	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+>  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+> -	struct resource	*mem_res;
+>  
+>  	pm_runtime_disable(&pdev->dev);
+>  
+> @@ -1154,12 +1137,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+>  	clk_disable(sdd->clk);
+>  	clk_put(sdd->clk);
+>  
+> -	iounmap((void *) sdd->regs);
+> -
+> -	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (mem_res != NULL)
+> -		release_mem_region(mem_res->start, resource_size(mem_res));
+> -
+>  	platform_set_drvdata(pdev, NULL);
+>  	spi_master_put(master);

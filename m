@@ -1,40 +1,117 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: [SPAM] Voyage Maxi promo été
-Date: Wed, 04 Jul 2012 23:48:11 +0200
-Message-ID: <1341438639.4ff4baafebb92@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Arnaud Patard (Rtp) <arnaud.patard@rtp-net.org>
+Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
+ Controllers
+Date: Thu, 05 Jul 2012 12:11:40 +0200
+Message-ID: <87sjd6ikkj.fsf@lebrac.rtp-net.org>
+References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
+ <1341325365-21393-2-git-send-email-andrew@lunn.ch>
+ <20120705110251.596331e0@skate> <20120705094824.GO17534@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lior Amsalem <alior@marvell.com>, Andrew Lunn <andrew@lunn.ch>,
+ Jason Cooper <jason@lakedaemon.net>, devicetree-discuss@lists.ozlabs.org,
+ rob.herring@calxeda.com, grant.likely@secretlab.ca,
+ Maen Suleiman <maen@marvell.com>, Michael Walle <michael@walle.cc>,
+ linux-i2c@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
+ linux-arm-kernel@lists.infradead.org
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20120705094824.GO17534@lunn.ch> (Andrew Lunn's message of "Thu,
+ 5 Jul 2012 11:48:24 +0200")
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Andrew Lunn <andrew@lunn.ch> writes:
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MDYzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNCAyMzo0MDowMSZlPTEmaD0xNTA2MiZmPTE1MDYzJmc9MTUwNjM=3D
+Hi,
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MDYzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNCAyMzo0MDowMSZlPTEmaD0xNTA2MiZmPTE1MDYzJmc9MTUwNj=
-M=3D
+> On Thu, Jul 05, 2012 at 11:02:51AM +0200, Thomas Petazzoni wrote:
+>> Hello Andrew,
+>> 
+>> Le Tue,  3 Jul 2012 16:22:34 +0200,
+>> Andrew Lunn <andrew@lunn.ch> a ??crit :
+>> 
+>> > Both IRQ and GPIO controllers can now be represented in DT.  The IRQ
+>> > controllers are setup first, and then the GPIO controllers. Interrupts
+>> > for GPIO lines are placed directly after the main interrupts in the
+>> > interrupt space.
+>> > 
+>> > Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+>> 
+>> I have started working on a pinctrl driver for mvebu, which would
+>> handle pin muxing (MPP) + gpio + gpio interrupts.
+>
+> Hi Thomas
+>
+> You are not the only one working in this area. Arnaud Patard said he
+> was look at this as well. 
 
+yeah, but tbh I've not made anything yet. If Thomas has already some
+code for it, we should try to make it "generic" so as to use it on
+armada xp and orion platforms.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+>
+>> So far, the pin muxing part is working (needs some polishing, but the
+>> foundation is here), with device tree bindings. I think the pin muxing
+>> could be used for Orion as well.
+>
+> Great. This is one of the big things which we are missing when moving
+> a system over the DT. Being able to describe this in DT in a
+> standardized way is very much welcome.
+>
+>> Now, I'm planning to start working on the gpio + gpio interrupts parts
+>> of the driver, and I'm wondering how to interact with your work on the
+>> matter.
+>
+> I've publicly said, what i have is enough to get it working, but i
+> know its not the end solution. What i have is enough that gpio-key,
+> gpio-led, as described in DT, works. Boards can start using these and
+> as far as i can tell, the binding should not need to change. The GPIO
+> controller binding should also be sufficiently generic that it should
+> also not need changes when we replace the driver with pinctrl.
+>
+> The biggest problem i had, is the interaction between generic chip
+> interrupts and irqdomain. There has been work to integrate the two,
+> but its stalled. Either the work needs restarting and completing, or
+> you need to throw away the use of generic interrupt so that you can
+> use irqdomain linear. IMHO, throwing away generic interrupt is the
+> wrong way.
+>
+> The other thing you need to keep in mind is the namespace issues
+> between normal interrupts and GPIO interrupts. The way my patch works
+> is that normal interrupts are setup first, counting how many have been
+> created. Then GPIO interrupts are added, starting off where the normal
+> interrupts ended. Since 370/XP uses different interrupt code, you need
+> to think how to solve this issue.
+>
+>> My understanding is that the new way of doing a pinmux+gpio
+>> driver is to implement it in drivers/pinctrl/, which I have started
+>> doing.
+>
+> Great.
+>  
+>> Should I continue working on a drivers/pinctrl/ driver for mvebu for
+>> Armada 370/XP, and then we see together if it makes sense to extend to
+>> Orion, and if so, what changes are needed?
+>
+> I know Marvell has contracted you to port to Armada 370/XP, not mvebu,
+> aka all chips which might be able to share this code. This IMHO is
+> wrong. So i personally would put the kirkwood and the Armada 370/XP
+> data sheets next to each other, and from the beginning on write the
+> driver so it supports them all. This assumes the ASIC engineers have
+> not radically changed anything... Please also try to stick to the DT
+> binding i've used.
 
-threat landscape has changed and how IT managers can respond. Discussions =
+agreed. it should be written with all platforms in mind, as long as
+they're compatible. It can only make things better imho.
 
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Arnaud

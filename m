@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 07/10 RESEND] mmc: spi: Pull out common DMA parts from MXS MMC
-Date: Fri,  6 Jul 2012 08:17:26 +0200
-Message-ID: <1341555449-17507-7-git-send-email-marex@denx.de>
+Subject: [PATCH 02/10 RESEND] mmc: spi: Rename IMX2[38]_MMC to IMX2[38]_SSP
+Date: Fri,  6 Jul 2012 08:17:21 +0200
+Message-ID: <1341555449-17507-2-git-send-email-marex@denx.de>
 References: <1341555449-17507-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,13 +25,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-These parts will be used by the MXS SPI driver too.
+Since the SSP controller can act as both SPI and MMC host,
+renaming the enum to properly reflect the naming seems
+appropriate.
 
+Based on previous attempt by:
+Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
 Cc: Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>
 CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
@@ -39,302 +44,96 @@ CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
 Cc: Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>
 ---
- drivers/mmc/host/mxs-mmc.c  |   88 +++++++++++++++++++++----------------------
- drivers/spi/spi-mxs.c       |    1 -
- include/linux/spi/mxs-spi.h |    9 +++++
- 3 files changed, 51 insertions(+), 47 deletions(-)
+ drivers/mmc/host/mxs-mmc.c  |   18 +++++++++---------
+ include/linux/spi/mxs-spi.h |    8 ++++----
+ 2 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
-index 3b1c99b..c4be207 100644
+index 584f982..f9509e8 100644
 --- a/drivers/mmc/host/mxs-mmc.c
 +++ b/drivers/mmc/host/mxs-mmc.c
-@@ -41,7 +41,6 @@
- #include <linux/gpio.h>
- #include <linux/regulator/consumer.h>
- #include <linux/module.h>
--#include <linux/fsl/mxs-dma.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/stmp_device.h>
- #include <linux/mmc/mxs-mmc.h>
-@@ -69,13 +68,6 @@ struct mxs_mmc_host {
- 	struct mmc_command		*cmd;
- 	struct mmc_data			*data;
+@@ -78,7 +78,7 @@ struct mxs_mmc_host {
+ 	enum dma_transfer_direction	slave_dirn;
+ 	u32				ssp_pio_words[SSP_PIO_NUM];
  
--	int				dma_channel;
--	struct dma_chan         	*dmach;
--	struct mxs_dma_data		dma_data;
--	unsigned int			dma_dir;
--	enum dma_transfer_direction	slave_dirn;
--	u32				ssp_pio_words[SSP_PIO_NUM];
--
+-	enum mxs_mmc_id			devid;
++	enum mxs_ssp_id			devid;
  	unsigned char			bus_width;
  	spinlock_t			lock;
  	int				sdio_irq_en;
-@@ -163,7 +155,7 @@ static void mxs_mmc_request_done(struct mxs_mmc_host *host)
- 
- 	if (data) {
- 		dma_unmap_sg(mmc_dev(host->mmc), data->sg,
--			     data->sg_len, host->dma_dir);
-+			     data->sg_len, ssp->dma_dir);
- 		/*
- 		 * If there was an error on any block, we mark all
- 		 * data blocks as being in error.
-@@ -232,6 +224,7 @@ static irqreturn_t mxs_mmc_irq_handler(int irq, void *dev_id)
- static struct dma_async_tx_descriptor *mxs_mmc_prep_dma(
- 	struct mxs_mmc_host *host, unsigned long flags)
- {
-+	struct mxs_ssp *ssp = &host->ssp;
- 	struct dma_async_tx_descriptor *desc;
- 	struct mmc_data *data = host->data;
- 	struct scatterlist * sgl;
-@@ -240,24 +233,24 @@ static struct dma_async_tx_descriptor *mxs_mmc_prep_dma(
- 	if (data) {
- 		/* data */
- 		dma_map_sg(mmc_dev(host->mmc), data->sg,
--			   data->sg_len, host->dma_dir);
-+			   data->sg_len, ssp->dma_dir);
- 		sgl = data->sg;
- 		sg_len = data->sg_len;
- 	} else {
- 		/* pio */
--		sgl = (struct scatterlist *) host->ssp_pio_words;
-+		sgl = (struct scatterlist *) ssp->ssp_pio_words;
- 		sg_len = SSP_PIO_NUM;
- 	}
- 
--	desc = dmaengine_prep_slave_sg(host->dmach,
--				sgl, sg_len, host->slave_dirn, flags);
-+	desc = dmaengine_prep_slave_sg(ssp->dmach,
-+				sgl, sg_len, ssp->slave_dirn, flags);
- 	if (desc) {
- 		desc->callback = mxs_mmc_dma_irq_callback;
- 		desc->callback_param = host;
- 	} else {
- 		if (data)
- 			dma_unmap_sg(mmc_dev(host->mmc), data->sg,
--				     data->sg_len, host->dma_dir);
-+				     data->sg_len, ssp->dma_dir);
- 	}
- 
- 	return desc;
-@@ -265,6 +258,7 @@ static struct dma_async_tx_descriptor *mxs_mmc_prep_dma(
- 
- static void mxs_mmc_bc(struct mxs_mmc_host *host)
- {
-+	struct mxs_ssp *ssp = &host->ssp;
- 	struct mmc_command *cmd = host->cmd;
- 	struct dma_async_tx_descriptor *desc;
- 	u32 ctrl0, cmd0, cmd1;
-@@ -278,17 +272,17 @@ static void mxs_mmc_bc(struct mxs_mmc_host *host)
- 		cmd0 |= BM_SSP_CMD0_CONT_CLKING_EN | BM_SSP_CMD0_SLOW_CLKING_EN;
- 	}
- 
--	host->ssp_pio_words[0] = ctrl0;
--	host->ssp_pio_words[1] = cmd0;
--	host->ssp_pio_words[2] = cmd1;
--	host->dma_dir = DMA_NONE;
--	host->slave_dirn = DMA_TRANS_NONE;
-+	ssp->ssp_pio_words[0] = ctrl0;
-+	ssp->ssp_pio_words[1] = cmd0;
-+	ssp->ssp_pio_words[2] = cmd1;
-+	ssp->dma_dir = DMA_NONE;
-+	ssp->slave_dirn = DMA_TRANS_NONE;
- 	desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
- 	if (!desc)
- 		goto out;
- 
- 	dmaengine_submit(desc);
--	dma_async_issue_pending(host->dmach);
-+	dma_async_issue_pending(ssp->dmach);
- 	return;
- 
- out:
-@@ -298,6 +292,7 @@ out:
- 
- static void mxs_mmc_ac(struct mxs_mmc_host *host)
- {
-+	struct mxs_ssp *ssp = &host->ssp;
- 	struct mmc_command *cmd = host->cmd;
- 	struct dma_async_tx_descriptor *desc;
- 	u32 ignore_crc, get_resp, long_resp;
-@@ -319,17 +314,17 @@ static void mxs_mmc_ac(struct mxs_mmc_host *host)
- 		cmd0 |= BM_SSP_CMD0_CONT_CLKING_EN | BM_SSP_CMD0_SLOW_CLKING_EN;
- 	}
- 
--	host->ssp_pio_words[0] = ctrl0;
--	host->ssp_pio_words[1] = cmd0;
--	host->ssp_pio_words[2] = cmd1;
--	host->dma_dir = DMA_NONE;
--	host->slave_dirn = DMA_TRANS_NONE;
-+	ssp->ssp_pio_words[0] = ctrl0;
-+	ssp->ssp_pio_words[1] = cmd0;
-+	ssp->ssp_pio_words[2] = cmd1;
-+	ssp->dma_dir = DMA_NONE;
-+	ssp->slave_dirn = DMA_TRANS_NONE;
- 	desc = mxs_mmc_prep_dma(host, DMA_CTRL_ACK);
- 	if (!desc)
- 		goto out;
- 
- 	dmaengine_submit(desc);
--	dma_async_issue_pending(host->dmach);
-+	dma_async_issue_pending(ssp->dmach);
- 	return;
- 
- out:
-@@ -441,11 +436,11 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
- 	writel(val, ssp->base + HW_SSP_TIMING(ssp));
- 
- 	/* pio */
--	host->ssp_pio_words[0] = ctrl0;
--	host->ssp_pio_words[1] = cmd0;
--	host->ssp_pio_words[2] = cmd1;
--	host->dma_dir = DMA_NONE;
--	host->slave_dirn = DMA_TRANS_NONE;
-+	ssp->ssp_pio_words[0] = ctrl0;
-+	ssp->ssp_pio_words[1] = cmd0;
-+	ssp->ssp_pio_words[2] = cmd1;
-+	ssp->dma_dir = DMA_NONE;
-+	ssp->slave_dirn = DMA_TRANS_NONE;
- 	desc = mxs_mmc_prep_dma(host, 0);
- 	if (!desc)
- 		goto out;
-@@ -453,14 +448,14 @@ static void mxs_mmc_adtc(struct mxs_mmc_host *host)
- 	/* append data sg */
- 	WARN_ON(host->data != NULL);
- 	host->data = data;
--	host->dma_dir = dma_data_dir;
--	host->slave_dirn = slave_dirn;
-+	ssp->dma_dir = dma_data_dir;
-+	ssp->slave_dirn = slave_dirn;
- 	desc = mxs_mmc_prep_dma(host, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc)
- 		goto out;
- 
- 	dmaengine_submit(desc);
--	dma_async_issue_pending(host->dmach);
-+	dma_async_issue_pending(ssp->dmach);
- 	return;
- out:
- 	dev_warn(mmc_dev(host->mmc),
-@@ -557,14 +552,15 @@ static const struct mmc_host_ops mxs_mmc_ops = {
- static bool mxs_mmc_dma_filter(struct dma_chan *chan, void *param)
- {
- 	struct mxs_mmc_host *host = param;
-+	struct mxs_ssp *ssp = &host->ssp;
- 
- 	if (!mxs_dma_is_apbh(chan))
- 		return false;
- 
--	if (chan->chan_id != host->dma_channel)
-+	if (chan->chan_id != ssp->dma_channel)
- 		return false;
- 
--	chan->private = &host->dma_data;
-+	chan->private = &ssp->dma_data;
- 
+@@ -601,22 +601,22 @@ static bool mxs_mmc_dma_filter(struct dma_chan *chan, void *param)
  	return true;
  }
-@@ -632,7 +628,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
- 		 * to use generic DMA binding later when the helpers get in.
- 		 */
- 		ret = of_property_read_u32(np, "fsl,ssp-dma-channel",
--					   &host->dma_channel);
-+					   &ssp->dma_channel);
- 		if (ret) {
- 			dev_err(mmc_dev(host->mmc),
- 				"failed to get dma channel\n");
-@@ -640,7 +636,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
- 		}
- 	} else {
- 		ssp->devid = pdev->id_entry->driver_data;
--		host->dma_channel = dmares->start;
-+		ssp->dma_channel = dmares->start;
+ 
+-static struct platform_device_id mxs_mmc_ids[] = {
++static struct platform_device_id mxs_ssp_ids[] = {
+ 	{
+ 		.name = "imx23-mmc",
+-		.driver_data = IMX23_MMC,
++		.driver_data = IMX23_SSP,
+ 	}, {
+ 		.name = "imx28-mmc",
+-		.driver_data = IMX28_MMC,
++		.driver_data = IMX28_SSP,
+ 	}, {
+ 		/* sentinel */
+ 	}
+ };
+-MODULE_DEVICE_TABLE(platform, mxs_mmc_ids);
++MODULE_DEVICE_TABLE(platform, mxs_ssp_ids);
+ 
+ static const struct of_device_id mxs_mmc_dt_ids[] = {
+-	{ .compatible = "fsl,imx23-mmc", .data = (void *) IMX23_MMC, },
+-	{ .compatible = "fsl,imx28-mmc", .data = (void *) IMX28_MMC, },
++	{ .compatible = "fsl,imx23-mmc", .data = (void *) IMX23_SSP, },
++	{ .compatible = "fsl,imx28-mmc", .data = (void *) IMX28_SSP, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, mxs_mmc_dt_ids);
+@@ -655,7 +655,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
  	}
  
- 	host->mmc = mmc;
-@@ -673,9 +669,9 @@ static int mxs_mmc_probe(struct platform_device *pdev)
- 
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
--	host->dma_data.chan_irq = irq_dma;
--	host->dmach = dma_request_channel(mask, mxs_mmc_dma_filter, host);
--	if (!host->dmach) {
-+	ssp->dma_data.chan_irq = irq_dma;
-+	ssp->dmach = dma_request_channel(mask, mxs_mmc_dma_filter, host);
-+	if (!ssp->dmach) {
- 		dev_err(mmc_dev(host->mmc),
- 			"%s: failed to request dma\n", __func__);
- 		goto out_clk_put;
-@@ -714,7 +710,7 @@ static int mxs_mmc_probe(struct platform_device *pdev)
- 	mmc->max_blk_size = 1 << 0xf;
- 	mmc->max_blk_count = (ssp_is_old(ssp)) ? 0xff : 0xffffff;
- 	mmc->max_req_size = (ssp_is_old(ssp)) ? 0xffff : 0xffffffff;
--	mmc->max_seg_size = dma_get_max_seg_size(host->dmach->device->dev);
-+	mmc->max_seg_size = dma_get_max_seg_size(ssp->dmach->device->dev);
- 
- 	platform_set_drvdata(pdev, mmc);
- 
-@@ -734,8 +730,8 @@ static int mxs_mmc_probe(struct platform_device *pdev)
- 	return 0;
- 
- out_free_dma:
--	if (host->dmach)
--		dma_release_channel(host->dmach);
-+	if (ssp->dmach)
-+		dma_release_channel(ssp->dmach);
- out_clk_put:
- 	clk_disable_unprepare(ssp->clk);
- 	clk_put(ssp->clk);
-@@ -754,8 +750,8 @@ static int mxs_mmc_remove(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, NULL);
- 
--	if (host->dmach)
--		dma_release_channel(host->dmach);
-+	if (ssp->dmach)
-+		dma_release_channel(ssp->dmach);
- 
- 	clk_disable_unprepare(ssp->clk);
- 	clk_put(ssp->clk);
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 3c0b1ac..a7d2ebc 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -46,7 +46,6 @@
- #include <linux/gpio.h>
- #include <linux/regulator/consumer.h>
- #include <linux/module.h>
--#include <linux/fsl/mxs-dma.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/stmp_device.h>
- #include <linux/spi/spi.h>
+ 	if (np) {
+-		host->devid = (enum mxs_mmc_id) of_id->data;
++		host->devid = (enum mxs_ssp_id) of_id->data;
+ 		/*
+ 		 * TODO: This is a temporary solution and should be changed
+ 		 * to use generic DMA binding later when the helpers get in.
+@@ -829,7 +829,7 @@ static const struct dev_pm_ops mxs_mmc_pm_ops = {
+ static struct platform_driver mxs_mmc_driver = {
+ 	.probe		= mxs_mmc_probe,
+ 	.remove		= mxs_mmc_remove,
+-	.id_table	= mxs_mmc_ids,
++	.id_table	= mxs_ssp_ids,
+ 	.driver		= {
+ 		.name	= DRIVER_NAME,
+ 		.owner	= THIS_MODULE,
 diff --git a/include/linux/spi/mxs-spi.h b/include/linux/spi/mxs-spi.h
-index 2bc8abb..dd79f82 100644
+index b7ccd57..c08aef5 100644
 --- a/include/linux/spi/mxs-spi.h
 +++ b/include/linux/spi/mxs-spi.h
-@@ -24,6 +24,8 @@
+@@ -24,7 +24,7 @@
  #ifndef __LINUX_SPI_MXS_SPI_H__
  #define __LINUX_SPI_MXS_SPI_H__
  
-+#include <linux/fsl/mxs-dma.h>
-+
- #define ssp_is_old(host)	((host)->devid == IMX23_SSP)
+-#define ssp_is_old(host)	((host)->devid == IMX23_MMC)
++#define ssp_is_old(host)	((host)->devid == IMX23_SSP)
  
  /* SSP registers */
-@@ -134,6 +136,13 @@ struct mxs_ssp {
- 	struct clk			*clk;
- 	unsigned int			clk_rate;
- 	enum mxs_ssp_id			devid;
-+
-+	int				dma_channel;
-+	struct dma_chan			*dmach;
-+	struct mxs_dma_data		dma_data;
-+	unsigned int			dma_dir;
-+	enum dma_transfer_direction	slave_dirn;
-+	u32				ssp_pio_words[SSP_PIO_NUM];
+ #define HW_SSP_CTRL0				0x000
+@@ -101,9 +101,9 @@
+ 
+ #define SSP_PIO_NUM	3
+ 
+-enum mxs_mmc_id {
+-	IMX23_MMC,
+-	IMX28_MMC,
++enum mxs_ssp_id {
++	IMX23_SSP,
++	IMX28_SSP,
  };
  
- void mxs_ssp_set_clk_rate(struct mxs_ssp *ssp, unsigned int rate);
+ #endif	/* __LINUX_SPI_MXS_SPI_H__ */
 -- 
 1.7.10
 

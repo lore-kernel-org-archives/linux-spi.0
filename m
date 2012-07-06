@@ -1,8 +1,7 @@
-From: Sarenza par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vos chaussures =?iso-8859-15?Q?pr=E9f=E9r=E9es?= -60%, chez vous
-	rapidement et gratuitement
-Date: Fri, 06 Jul 2012 23:37:07 +0200
-Message-ID: <1341610879.4ff75b7f1a0d0@mc10.fr>
+From: "PIXmania.com par Duano" <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80 pour cent
+Date: Sat, 07 Jul 2012 00:14:11 +0200
+Message-ID: <1341612983.4ff763b7edc96@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MjQwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNiAyMjoxMDowMSZlPTEmaD0xNTIzOSZmPTE1MjQwJmc9MTUyNDA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MjcxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNyAwMDowMDowMSZlPTEmaD0xNTI3MCZmPTE1MjcxJmc9MTUyNzE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MjQwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNiAyMjoxMDowMSZlPTEmaD0xNTIzOSZmPTE1MjQwJmc9MTUyND=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MjcxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwMDowMDowMSZlPTEmaD0xNTI3MCZmPTE1MjcxJmc9MTUyNz=
+E=3D
 
 
 ---------------------------------------------------------------------------=

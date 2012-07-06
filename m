@@ -1,36 +1,76 @@
-From: "=?gb2312?B?Y2hhbmRhaWxjMjc0?=" <chandailc274-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?tPpfv6pfLFFROjI1ODY4MDEyODI=?=
-Date: Sat, 7 Jul 2012 02:24:54 +0800 (CST)
-Message-ID: <4FF72D76.00011F.20561@cnapp12>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO Controllers
+Date: Fri, 6 Jul 2012 20:08:23 +0000
+Message-ID: <201207062008.23952.arnd@arndb.de>
+References: <1341325365-21393-1-git-send-email-andrew@lunn.ch> <201207051454.24475.arnd@arndb.de> <20120705161600.GA28860@lunn.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: apqpy-OftBGz0mktEp1EmR5ObhjvARzQ9ELA5wR0qVkYYEHCI@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: badboy7-AH218YzqOs3QT0dZR+AlfA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Sebastian Hesselbarth <sebastian.hesselbarth-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20120705161600.GA28860-g2DYL2Zd6BY@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xOPDx7rDo6yxvrmry77P1tPQo6i9qNb+o6y547jmo6y3/s7xo6zUy8rko6zJzMa3z/rK26Os1+LB
-3qOptci3oi/GsbT6v6qho8jnufO5q8u+09DQ6NKqLLu2063AtLXn18nRr6Gjsb65q8u+y/nTw8ax
-vt2++c6quPe1pc671NrLsM7xvtbL+cnqweyjrL/Jyc/N+LLp0a+78rW9y7DO8b7Wtda/29Hp1qSh
-ozEzNTkwMjA4OTM2ICDVxdChsfgNCiAgICAgICAgICAgICAgICAgICAgICBRUaO6MjU4NjgwMTI4
-MiANCg0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJl
-bmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mg
-c2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFu
-YWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2Vj
-dXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRz
-LiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2
-My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+On Thursday 05 July 2012, Andrew Lunn wrote:
+> > I think the latter one needs to be
+> > 
+> > +static int __initdata gpio1_irqs[4] = {
+> > +     IRQ_DOVE_HIGH_GPIO,
+> > +     IRQ_DOVE_HIGH_GPIO,
+> > +     IRQ_DOVE_HIGH_GPIO,
+> > +     IRQ_DOVE_HIGH_GPIO,
+> > +};
+> > 
+> > so we register all four parts to the same primary IRQ. The
+> > same is true for the devicetree representation.
+> 
+> Nope, does not work like that.
+> 
+> It does not matter which IRQ of a GPIO chip fires. It looks at the IRQ
+> cause bits for all lines and fires off the secondary ISR as needed for
+> the whole chip. So in effect, there is a mapping IRQ->GPIO chip, not
+> IRQ->1/4 of GPIO chip. With what you suggest above, you would end up
+> with four chained interrupt handlers, all being handled by the same
+> interrupt handler for one chio, and the last three in the chain would
+> never do anything since the first one does all the work.
+
+Does it really?
+
+The handler function I'm looking at is
+
+
+static void gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
+{
+        int irqoff;
+        BUG_ON(irq < IRQ_DOVE_GPIO_0_7 || irq > IRQ_DOVE_HIGH_GPIO);
+
+        irqoff = irq <= IRQ_DOVE_GPIO_16_23 ? irq - IRQ_DOVE_GPIO_0_7 :
+                3 + irq - IRQ_DOVE_GPIO_24_31;
+
+        orion_gpio_irq_handler(irqoff << 3);
+        if (irq == IRQ_DOVE_HIGH_GPIO) {
+                orion_gpio_irq_handler(40);
+                orion_gpio_irq_handler(48);
+                orion_gpio_irq_handler(56);
+        }
+}
+
+My reading of this is a manual hardwired implementation of a
+primary handler that triggers the secondary handler four times
+when it's called with a specific argument.
+
+If you want to keep that behavior, this handler cannot be
+generic across all mvebu socs, whereas registering four
+chained handlers for the same primary interrupt would have
+the same effect at a very small runtime overhead without the
+need for any special case.
+
+	Arnd

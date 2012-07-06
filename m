@@ -1,131 +1,41 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: Re: [PATCH v2 01/12] ARM: Orion: DT support for IRQ and GPIO
- Controllers
-Date: Fri, 6 Jul 2012 23:00:09 +0200
-Message-ID: <20120706210009.GC11470@lunn.ch>
-References: <1341325365-21393-1-git-send-email-andrew@lunn.ch>
- <201207051454.24475.arnd@arndb.de>
- <20120705161600.GA28860@lunn.ch>
- <201207062008.23952.arnd@arndb.de>
+From: Sarenza par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos chaussures =?iso-8859-15?Q?pr=E9f=E9r=E9es?= -60%, chez vous
+	rapidement et gratuitement
+Date: Fri, 06 Jul 2012 23:37:07 +0200
+Message-ID: <1341610879.4ff75b7f1a0d0@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, Michael Walle <michael-QKn5cuLxLXY@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201207062008.23952.arnd-r2nGTMty4D4@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 06, 2012 at 08:08:23PM +0000, Arnd Bergmann wrote:
-> On Thursday 05 July 2012, Andrew Lunn wrote:
-> > > I think the latter one needs to be
-> > > 
-> > > +static int __initdata gpio1_irqs[4] = {
-> > > +     IRQ_DOVE_HIGH_GPIO,
-> > > +     IRQ_DOVE_HIGH_GPIO,
-> > > +     IRQ_DOVE_HIGH_GPIO,
-> > > +     IRQ_DOVE_HIGH_GPIO,
-> > > +};
-> > > 
-> > > so we register all four parts to the same primary IRQ. The
-> > > same is true for the devicetree representation.
-> > 
-> > Nope, does not work like that.
-> > 
-> > It does not matter which IRQ of a GPIO chip fires. It looks at the IRQ
-> > cause bits for all lines and fires off the secondary ISR as needed for
-> > the whole chip. So in effect, there is a mapping IRQ->GPIO chip, not
-> > IRQ->1/4 of GPIO chip. With what you suggest above, you would end up
-> > with four chained interrupt handlers, all being handled by the same
-> > interrupt handler for one chio, and the last three in the chain would
-> > never do anything since the first one does all the work.
-> 
-> Does it really?
-> 
-> The handler function I'm looking at is
-> 
-> 
-> static void gpio_irq_handler(unsigned int irq, struct irq_desc *desc)
-> {
->         int irqoff;
->         BUG_ON(irq < IRQ_DOVE_GPIO_0_7 || irq > IRQ_DOVE_HIGH_GPIO);
-> 
->         irqoff = irq <= IRQ_DOVE_GPIO_16_23 ? irq - IRQ_DOVE_GPIO_0_7 :
->                 3 + irq - IRQ_DOVE_GPIO_24_31;
-> 
->         orion_gpio_irq_handler(irqoff << 3);
->         if (irq == IRQ_DOVE_HIGH_GPIO) {
->                 orion_gpio_irq_handler(40);
->                 orion_gpio_irq_handler(48);
->                 orion_gpio_irq_handler(56);
->         }
-> }
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-void orion_gpio_irq_handler(int pinoff)
-{
-        struct orion_gpio_chip *ochip;
-        u32 cause, type;
-        int i;
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MjQwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNiAyMjoxMDowMSZlPTEmaD0xNTIzOSZmPTE1MjQwJmc9MTUyNDA=3D
 
-        ochip = orion_gpio_chip_find(pinoff);
-        if (ochip == NULL)
-                return;
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MjQwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNiAyMjoxMDowMSZlPTEmaD0xNTIzOSZmPTE1MjQwJmc9MTUyND=
+A=3D
 
-        cause = readl(GPIO_DATA_IN(ochip)) & readl(GPIO_LEVEL_MASK(ochip));
-        cause |= readl(GPIO_EDGE_CAUSE(ochip)) & readl(GPIO_EDGE_MASK(ochip));
 
-        for (i = 0; i < ochip->chip.ngpio; i++) {
-                int irq;
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-                irq = ochip->secondary_irq_base + i;
+threat landscape has changed and how IT managers can respond. Discussions =
 
-                if (!(cause & (1 << i)))
-                        continue;
+will include endpoint security, mobile security and the latest in malware =
 
-                type = irqd_get_trigger_type(irq_get_irq_data(irq));
-                if ((type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
-                        /* Swap polarity (race with GPIO line) */
-                        u32 polarity;
-
-                        polarity = readl(GPIO_IN_POL(ochip));
-                        polarity ^= 1 << i;
-                        writel(polarity, GPIO_IN_POL(ochip));
-                }
-                generic_handle_irq(irq);
-        }
-}
-
-orion_gpio_chip_find(pinoff) when called with pinoff 32, 40, 48, or 56
-will return the same gpio chip. The loop:
-
-        for (i = 0; i < ochip->chip.ngpio; i++) {
-
-will iterate over all lines of the controller.
-
-> My reading of this is a manual hardwired implementation of a
-> primary handler that triggers the secondary handler four times
-> when it's called with a specific argument.
-
-Here is your mistake. It not a secondary handler. It is a function
-which might trigger a secondary handler, if the status bit requires
-that the secondary handler should be called..
-
-> If you want to keep that behavior, this handler cannot be
-> generic across all mvebu socs, whereas registering four
-> chained handlers for the same primary interrupt would have
-> the same effect at a very small runtime overhead without the
-> need for any special case.
-
-I would say the current code does redundant stuff.
-
-This code has also been tested on a Dove by Sebastian Hesselbarth and
-he did not notice anything strange happening on his system.
-
-   Andrew
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

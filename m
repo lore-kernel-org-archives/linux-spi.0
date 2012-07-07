@@ -1,11 +1,13 @@
-From: "Jeremy Campbell" <JCampbell10093-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Proposal Attached
-Date: Fri, 6 Jul 2012 19:37:57 -0700
-Message-ID: <635cb442be4388a755b4838f0013141f@qmail.com>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 17 =?iso-8859-15?Q?=EEles?= de
+	=?iso-8859-15?Q?r=EAve_=E0_d=E9couvrir?=
+Date: Sat, 07 Jul 2012 05:00:05 +0200
+Message-ID: <1341630156.4ff7a6cc74c2f@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_892828156D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,70 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------=SPLITOR00A_001_892828156D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NDQwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNyAwNDozMDowMSZlPTEmaD0xNTQzOSZmPTE1NDQwJmc9MTU0NDA=3D
 
-Attached is the requested brochure and video including pricing.=20
-
-I am contacting you regarding printing and managing your company's =
-business cards. We look forward to the opportunity to work with you. =
-Please reply through the attachment=2E
-=20
-Sincerely,
-
-Jeremy Campbell
-Online Business Management
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NDQwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwNDozMDowMSZlPTEmaD0xNTQzOSZmPTE1NDQwJmc9MTU0ND=
+A=3D
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_892828156D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_892828156D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_892828156D--

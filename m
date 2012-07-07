@@ -1,8 +1,7 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes 3Suisses =?iso-8859-15?Q?2=E8me_d=E9marques_jusqu=27=E0?=
-	-80 pourcent
-Date: Sat, 07 Jul 2012 07:30:09 +0200
-Message-ID: <1341639080.4ff7c9a897651@mc10.fr>
+From: Mistergooddeal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Les soldes version Mistergoodeal =?iso-8859-15?Q?jusqu=27=E0?= -80 %
+Date: Sat, 07 Jul 2012 06:08:04 +0200
+Message-ID: <1341634208.4ff7b6a0c8d2c@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NTUwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNyAwNTo0MDowMSZlPTEmaD0xNTU0OSZmPTE1NTUwJmc9MTU1NTA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTk3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNyAwNTo1MDowMSZlPTEmaD0xNDk5NiZmPTE0OTk3Jmc9MTQ5OTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NTUwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwNTo0MDowMSZlPTEmaD0xNTU0OSZmPTE1NTUwJmc9MTU1NT=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTk3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwNTo1MDowMSZlPTEmaD0xNDk5NiZmPTE0OTk3Jmc9MTQ5OT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

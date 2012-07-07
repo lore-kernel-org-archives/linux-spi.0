@@ -1,13 +1,11 @@
-From: Smokelec par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?d=E9couvrez?= notre large gamme de cigarette
-	electronique
-Date: Sat, 07 Jul 2012 03:01:11 +0200
-Message-ID: <1341622972.4ff78abcdab37@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Jeremy Campbell" <JCampbell10093-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Proposal Attached
+Date: Fri, 6 Jul 2012 19:37:57 -0700
+Message-ID: <635cb442be4388a755b4838f0013141f@qmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_892828156D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MjkyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNyAwMjozMDowMSZlPTEmaD0xNTI5MSZmPTE1MjkyJmc9MTUyOTI=3D
+------=SPLITOR00A_001_892828156D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MjkyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwMjozMDowMSZlPTEmaD0xNTI5MSZmPTE1MjkyJmc9MTUyOT=
-I=3D
+Attached is the requested brochure and video including pricing.=20
+
+I am contacting you regarding printing and managing your company's =
+business cards. We look forward to the opportunity to work with you. =
+Please reply through the attachment=2E
+=20
+Sincerely,
+
+Jeremy Campbell
+Online Business Management
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
+
+
+------=SPLITOR00A_001_892828156D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_892828156D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_892828156D--

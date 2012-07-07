@@ -1,11 +1,11 @@
-From: "Lee Cooper Par R2J" <lee-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
-Subject: [SPAM] Tout Lee Cooper en soldes jusqu a moins 50 pourcent
-Date: Sat, 07 Jul 2012 06:34:30 +0000
-Message-ID: <b37f42cb2e908746fd41b043ed57904d@information.r2jcommunication.fr>
-Reply-To: lee-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
+From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -60% sur tous nos poubelles- Soldes!
+Date: Sun, 08 Jul 2012 01:54:10 +0200
+Message-ID: <1341705331.4ff8cc73bc28d@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,16 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=31&L=3&N=13
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE1NTUxJmM9MjM2NDM3JmQ9MjAx=
+Mi0wNy0wOCAwMTowMDowMSZlPTEmaD0xNTU1MCZmPTE1NTUxJmc9MTU1NTE=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE1NTUxJmM=
+9MjM2NDM3JmQ9MjAxMi0wNy0wOCAwMTowMDowMSZlPTEmaD0xNTU1MCZmPTE1NTUxJmc9MTU1NT=
+E=3D
 
 
-To stop receiving these
-emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=31
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

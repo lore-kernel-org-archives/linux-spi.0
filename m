@@ -1,7 +1,7 @@
-From: Mistergooddeal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Les soldes version Mistergoodeal =?iso-8859-15?Q?jusqu=27=E0?= -80 %
-Date: Sat, 07 Jul 2012 06:08:04 +0200
-Message-ID: <1341634208.4ff7b6a0c8d2c@mc10.fr>
+From: Ventes privees Sport par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez le 1er site de Ventes Privees dedie au sport
+Date: Sat, 07 Jul 2012 05:00:04 +0200
+Message-ID: <1341630078.4ff7a67e372c6@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE0OTk3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wNyAwNTo1MDowMSZlPTEmaD0xNDk5NiZmPTE0OTk3Jmc9MTQ5OTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1Mjk1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wNyAwNDo1MDowMiZlPTEmaD0xNTI5NCZmPTE1Mjk1Jmc9MTUyOTU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE0OTk3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwNTo1MDowMSZlPTEmaD0xNDk5NiZmPTE0OTk3Jmc9MTQ5OT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1Mjk1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wNyAwNDo1MDowMiZlPTEmaD0xNTI5NCZmPTE1Mjk1Jmc9MTUyOT=
+U=3D
 
 
 ---------------------------------------------------------------------------=

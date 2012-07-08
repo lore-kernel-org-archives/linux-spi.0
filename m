@@ -1,9 +1,8 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: =?iso-8859-15?Q?2i=E8me_d=E9marque?= :
-	=?iso-8859-15?Q?jusqu=27=E0?= -95%
-Date: Mon, 09 Jul 2012 00:28:15 +0200
-Message-ID: <1341786628.4ffa0a0462b4a@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Produit Minceur par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le secret qui fait maigrir les stars
+Date: Sun, 08 Jul 2012 22:23:06 +0200
+Message-ID: <1341779130.4ff9ecbaaefe3@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTU0MzImYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNy0wOSAwMDoxMDowMSZlPTEmaD0xNTQzMSZmPTE1NDMyJmc9MTU0MzI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NDQyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wOCAyMjoxMDowMSZlPTEmaD0xNTQ0MSZmPTE1NDQyJmc9MTU0NDI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTU0MzImYz0=
-xOTYxNjQxJmQ9MjAxMi0wNy0wOSAwMDoxMDowMSZlPTEmaD0xNTQzMSZmPTE1NDMyJmc9MTU0Mz=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NDQyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wOCAyMjoxMDowMSZlPTEmaD0xNTQ0MSZmPTE1NDQyJmc9MTU0ND=
 I=3D
 
 

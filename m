@@ -1,8 +1,8 @@
-From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -60% sur tous nos poubelles- Soldes!
-Date: Sun, 08 Jul 2012 01:54:10 +0200
-Message-ID: <1341705331.4ff8cc73bc28d@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?2=E8me_d=E9marque?= encore plus de petit prix
+Date: Sun, 08 Jul 2012 06:25:04 +0200
+Message-ID: <1341721687.4ff90c578bfed@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE1NTUxJmM9MjM2NDM3JmQ9MjAx=
-Mi0wNy0wOCAwMTowMDowMSZlPTEmaD0xNTU1MCZmPTE1NTUxJmc9MTU1NTE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MjA3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wOCAwNToxMDowMSZlPTEmaD0xNTIwNiZmPTE1MjA3Jmc9MTUyMDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE1NTUxJmM=
-9MjM2NDM3JmQ9MjAxMi0wNy0wOCAwMTowMDowMSZlPTEmaD0xNTU1MCZmPTE1NTUxJmc9MTU1NT=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MjA3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wOCAwNToxMDowMSZlPTEmaD0xNTIwNiZmPTE1MjA3Jmc9MTUyMD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

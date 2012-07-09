@@ -1,11 +1,13 @@
-From: "Patrick Thomas" <PThomas82394-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Business Proposal
-Date: Mon, 9 Jul 2012 03:24:06 -0700
-Message-ID: <764f780fd4ad076c68d3e08b001fa245@g2gm.com>
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
+	sacs
+Date: Mon, 09 Jul 2012 09:07:12 +0200
+Message-ID: <1341817737.4ffa838902839@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,52 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Can you assist me in contacting the person that handles the promotions and marketing for your business?
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Our company offers access to 200 Million Consumers and 45 Million Businesses through email marketing! 
-Email marketing is considered the most cost effective method to promote your products and services.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NTQ2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wOSAwODoyMDowMSZlPTEmaD0xNTU0NSZmPTE1NTQ2Jmc9MTU1NDY=3D
 
-Our Offer:
-
-> Our Creative Department Will Create a Custom Email AD	
-> Choose Your Targeted Audience From Our Databases	
-> We Send Your Mail Through Our SMTP Servers	
-> Online Tracking is Available 24/7	
- 
-Please give us a call today at 1 (800) 504-4880.
-
-All of our services are backed with a 100% Money Back Guarantee.
-
-We look forward to hearing from you.
-
-Patrick Thomas	
-1-800-504-4880	
-savviermarketing-KK0ffGbhmjU@public.gmane.org	
-Email Marketing Experts	
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NTQ2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wOSAwODoyMDowMSZlPTEmaD0xNTU0NSZmPTE1NTQ2Jmc9MTU1ND=
+Y=3D
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages <mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

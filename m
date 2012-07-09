@@ -1,14 +1,18 @@
-From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
-	sacs
-Date: Mon, 09 Jul 2012 09:07:12 +0200
-Message-ID: <1341817737.4ffa838902839@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Subject: Re: [PATCH RFC] spi/gpio: start with CS non-active
+Date: Mon, 9 Jul 2012 13:08:06 +0100
+Message-ID: <20120709120806.GB28306@sirena.org.uk>
+References: <1328822505-7039-1-git-send-email-u.kleine-koenig@pengutronix.de>
+	<20120705074540.GF5398@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Uwe Kleine-K?nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120705074540.GF5398-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,23 +23,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Thu, Jul 05, 2012 at 09:45:40AM +0200, Uwe Kleine-K?nig wrote:
+> On Thu, Feb 09, 2012 at 10:21:45PM +0100, Uwe Kleine-K?nig wrote:
+> > The chip select line was configured as output with the initial value
+> > being active explicitly. It was later deasserted during
+> > spi_bitbang_setup() without any clock activity in between. So it makes
+> > no sense to activate the device at all and the chip select line can
+> > better start non-active.
+> > 
+> > Signed-off-by: Uwe Kleine-K?nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> > ---
+> > Hello,
+> > 
+> > I'm not sure if an active chip select line without any clock activity can
+> > confuse a device. If so, this patch might qualify as fix. But with my
+> > limited knowledge about spi it's also possible that I just miss why the
+> > active chip select is important. For the devices I have it doesn't seem
+> > to make a difference.
+> ping
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NTQ2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wOSAwODoyMDowMSZlPTEmaD0xNTU0NSZmPTE1NTQ2Jmc9MTU1NDY=3D
+You probably want to resend this with Linus W in the CCs.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NTQ2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wOSAwODoyMDowMSZlPTEmaD0xNTU0NSZmPTE1NTQ2Jmc9MTU1ND=
-Y=3D
+> 
+> > 
+> > Best regards
+> > Uwe
+> > 
+> >  drivers/spi/spi-gpio.c |    3 ++-
+> >  1 files changed, 2 insertions(+), 1 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+> > index 0094c64..0b56cfc 100644
+> > --- a/drivers/spi/spi-gpio.c
+> > +++ b/drivers/spi/spi-gpio.c
+> > @@ -235,7 +235,8 @@ static int spi_gpio_setup(struct spi_device *spi)
+> >  			status = gpio_request(cs, dev_name(&spi->dev));
+> >  			if (status)
+> >  				return status;
+> > -			status = gpio_direction_output(cs, spi->mode & SPI_CS_HIGH);
+> > +			status = gpio_direction_output(cs,
+> > +					!(spi->mode & SPI_CS_HIGH));
+> >  		}
+> >  	}
+> >  	if (!status)
+> > -- 
+> > 1.7.9
+> > 
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           | Uwe Kleine-K?nig            |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> 
+> ------------------------------------------------------------------------------
+> Live Security Virtual Conference
+> Exclusive live event will cover all the ways today's security and 
+> threat landscape has changed and how IT managers can respond. Discussions 
+> will include endpoint security, mobile security and the latest in malware 
+> threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> 
 
+-- 
+"You grabbed my hand and we fell into it, like a daydream - or a fever."
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

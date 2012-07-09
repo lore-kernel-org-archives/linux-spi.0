@@ -1,7 +1,7 @@
-From: Ethylostest par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Comme tu peux le constater, c'est le moment
-Date: Mon, 09 Jul 2012 05:33:14 +0200
-Message-ID: <1341804929.4ffa518128236@mc10.fr>
+From: Isotoner par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Chaussons, Tongs et Accessoires 4 euros offerts
+Date: Mon, 09 Jul 2012 05:46:08 +0200
+Message-ID: <1341805660.4ffa545c7b7e0@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1MTM4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0wOSAwNTozMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMzg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NTQ5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0wOSAwNTo0MDowMSZlPTEmaD0xNTU0OCZmPTE1NTQ5Jmc9MTU1NDk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1MTM4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0wOSAwNTozMDowMSZlPTEmaD0xNTEzNyZmPTE1MTM4Jmc9MTUxMz=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NTQ5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0wOSAwNTo0MDowMSZlPTEmaD0xNTU0OCZmPTE1NTQ5Jmc9MTU1ND=
+k=3D
 
 
 ---------------------------------------------------------------------------=

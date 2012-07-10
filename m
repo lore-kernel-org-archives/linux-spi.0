@@ -1,16 +1,20 @@
-From: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/2] spi/imx: use gpio_is_valid to determine if a gpio is
-Date: Tue, 10 Jul 2012 17:44:23 +0800
-Message-ID: <1341913463-10128-3-git-send-email-jason77.wang@gmail.com>
-References: <1341913463-10128-1-git-send-email-jason77.wang@gmail.com>
-	<1341913463-10128-2-git-send-email-jason77.wang@gmail.com>
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: tegra: use dmaengine based dma driver
+Date: Tue, 10 Jul 2012 18:04:31 +0530
+Message-ID: <4FFC2157.7090501@nvidia.com>
+References: <1340969480-7702-1-git-send-email-ldewangan@nvidia.com>
+	<4FEDD97A.7050702@wwwdotorg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Mark Brown
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1341913463-10128-2-git-send-email-jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <4FEDD97A.7050702-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,71 +25,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Use gpio_is_valid() to replace "gpio >= 0" or "gpio < 0".
+On Friday 29 June 2012 10:06 PM, Stephen Warren wrote:
+> On 06/29/2012 05:31 AM, Laxman Dewangan wrote:
+>> Use the dmaengine based Tegra APB DMA driver for
+>> data transfer between SPI FIFO and memory in
+>> place of legacy Tegra APB DMA.
+>>
+>> The new driver is selected if legacy driver is not
+>> selected and new DMA driver is enabled through config
+>> file.
+>>
+>> Signed-off-by: Laxman Dewangan<ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> Acked-by: Stephen Warren<swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+>
 
-Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-imx.c |   12 ++++++------
- 1 files changed, 6 insertions(+), 6 deletions(-)
+Hi Mark,
+Understand from Grant's mail's discussion that you are picking up the 
+spi change.
+Please let me know if I need to re-send this patch.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index c12052f..e834ff8 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -626,7 +626,7 @@ static void spi_imx_chipselect(struct spi_device *spi, int is_active)
- 	int active = is_active != BITBANG_CS_INACTIVE;
- 	int dev_is_lowactive = !(spi->mode & SPI_CS_HIGH);
- 
--	if (gpio < 0)
-+	if (!gpio_is_valid(gpio))
- 		return;
- 
- 	gpio_set_value(gpio, dev_is_lowactive ^ active);
-@@ -736,7 +736,7 @@ static int spi_imx_setup(struct spi_device *spi)
- 	dev_dbg(&spi->dev, "%s: mode %d, %u bpw, %d hz\n", __func__,
- 		 spi->mode, spi->bits_per_word, spi->max_speed_hz);
- 
--	if (gpio >= 0)
-+	if (gpio_is_valid(gpio))
- 		gpio_direction_output(gpio, spi->mode & SPI_CS_HIGH ? 0 : 1);
- 
- 	spi_imx_chipselect(spi, BITBANG_CS_INACTIVE);
-@@ -789,11 +789,11 @@ static int __devinit spi_imx_probe(struct platform_device *pdev)
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
--		if (cs_gpio < 0 && mxc_platform_info)
-+		if (!gpio_is_valid(cs_gpio) && mxc_platform_info)
- 			cs_gpio = mxc_platform_info->chipselect[i];
- 
- 		spi_imx->chipselect[i] = cs_gpio;
--		if (cs_gpio < 0)
-+		if (!gpio_is_valid(cs_gpio))
- 			continue;
- 
- 		ret = gpio_request(spi_imx->chipselect[i], DRIVER_NAME);
-@@ -895,7 +895,7 @@ out_release_mem:
- 	release_mem_region(res->start, resource_size(res));
- out_gpio_free:
- 	while (--i >= 0) {
--		if (spi_imx->chipselect[i] >= 0)
-+		if (gpio_is_valid(spi_imx->chipselect[i]))
- 			gpio_free(spi_imx->chipselect[i]);
- 	}
- 	spi_master_put(master);
-@@ -920,7 +920,7 @@ static int __devexit spi_imx_remove(struct platform_device *pdev)
- 	iounmap(spi_imx->base);
- 
- 	for (i = 0; i < master->num_chipselect; i++)
--		if (spi_imx->chipselect[i] >= 0)
-+		if (gpio_is_valid(spi_imx->chipselect[i]))
- 			gpio_free(spi_imx->chipselect[i]);
- 
- 	spi_master_put(master);
--- 
-1.7.6
+Thanks,
+Laxman
+
 
 
 ------------------------------------------------------------------------------

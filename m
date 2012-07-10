@@ -1,12 +1,15 @@
-From: "Online Ed" <counselor-8en1fftlCwOJG/aUMGpjotBPR1lH4CV8@public.gmane.org>
-Subject: [SPAM] What Is Stopping You From Earning Your Degree?
-Date: 10 Jul 2012 12:43:26 -0700
-Message-ID: <E1Sogl1-0001Lj-Oz@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Fwd: [GIT PULL] PL022 patches for v3.6
+Date: Tue, 10 Jul 2012 22:20:07 +0200
+Message-ID: <CACRpkdb7N-V8bgbRzbnOZZ4C3swfsxWiXpDrx12p3YO3k08XVg@mail.gmail.com>
+References: <CACRpkdYRjtdtswX+y1yOjEwN9cA9K7M0k_=u=LhU0_0yf4VyeA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
+Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdYRjtdtswX+y1yOjEwN9cA9K7M0k_=u=LhU0_0yf4VyeA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,71 +20,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
+
+Can you please pull in these PL022 patches to your spi-next tree?
+
+Yours,
+Linus Walleij
 
 
+---------- Forwarded message ----------
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Date: Thu, Jul 5, 2012 at 4:27 PM
+Subject: [GIT PULL] PL022 patches for v3.6
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: spi mailing list <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+Alexandre Pereira <aletes.xgr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Virupax Sadashivpetimath
+<virupax.sadashivpetimath-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 
 
-Pursue your dream of advanced education.
+Hi Wolfram,
 
+since I guess you're gonna harvest SPI patches for the next merge window
+could you please pull this set of PL022 patches?
 
+The following changes since commit 6887a4131da3adaab011613776d865f4bcfb5678:
 
+  Linux 3.5-rc5 (2012-06-30 16:08:57 -0700)
 
+are available in the git repository at:
 
-	
-Pursue your dream of advanced education. Learn more.
-View this email with images here.
+  git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-stericsson.git
+pl022
 
+for you to fetch changes up to 5b063b87deba33ed1676db9d16c52ede662132d8:
 
-  
-    
-  
-  
-    
-  
-  
-    
-    Are you considering going back to college but...
-    You don't think you can afford it?
-    
-    
-     Learn More
-    
-  
-  
-    &nbsp;
-  
-  
-    
-    Unfortunately, thousands of individuals don't pursue their dream of advanced education because they simply don't believe they can afford it or feel have the time to complete it.
-     STOP MAKING EXCUSES!
-Busy, hard working adults, just like you are starting and finishing their degrees every year because they took the time to find out how to get started!
-Mind Streams partners with top-rated online universities to offer over 300 different Associate, Bachelor's, Master's and Doctorate ONLINE degree programs. We also offer the following FREE services to help you understand your options and how to get started:
+  spi/pl022: cleanup pl022 header documentation (2012-07-02 13:55:36 +0200)
 
-We first find out what you are looking for and your concerns
-We show you how online courses can fit into your busy schedule
-We provide degree and tuition information to help match you with the right school
-We provide information on how financial aid can make school affordable 
-We walk you through the entire process of applying for and starting classes.
+----------------------------------------------------------------
+Alexandre Pereira da Silva (1):
+      spi/pl022: cleanup pl022 header documentation
 
+Linus Walleij (2):
+      spi/pl022: delete DB5500 support
+      spi/pl022: enable runtime PM
 
-If you are serious about education, let us help!
- Start Now
-    
-  
+Virupax Sadashivpetimath (1):
+      spi/pl022: disable port when unused
 
-This email was sent to 
+ drivers/spi/spi-pl022.c    |   23 +++++++++--------------
+ include/linux/amba/pl022.h |    9 +--------
+ 2 files changed, 10 insertions(+), 22 deletions(-)
 
-SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
-
-
-If you no longer wish to receive email from us, you may unsubscribe <a href="http://www.larkbridge.com/optout/index.php?email=
-
-SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
-
-">here.
-
-
-
+Thanks,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

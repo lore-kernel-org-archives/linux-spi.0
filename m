@@ -1,8 +1,8 @@
-From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Recevez des deals chaque jour sur les meilleurs restaurants
-	=?iso-8859-15?Q?jusq?= =?iso-8859-15?Q?u=27=E0?= -70%
-Date: Tue, 10 Jul 2012 23:40:07 +0200
-Message-ID: <1341956560.4ffca1d0e5c4a@mc10.fr>
+From: Meilleur Choix par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= le guide des radiateurs
+	=?iso-8859-15?Q?=E0?= inertie
+Date: Tue, 10 Jul 2012 23:59:07 +0200
+Message-ID: <1341957629.4ffca5fd87e28@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzEyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xMCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MTI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzE2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xMCAyMzo1MDowMSZlPTEmaD0xNTcxNSZmPTE1NzE2Jmc9MTU3MTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzEyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xMCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MT=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzE2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xMCAyMzo1MDowMSZlPTEmaD0xNTcxNSZmPTE1NzE2Jmc9MTU3MT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

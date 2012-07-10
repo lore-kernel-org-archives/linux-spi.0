@@ -1,10 +1,12 @@
-From: =?GB2312?B?x+vXqsXg0bWyv8PF?= <ybhh-4AGc6/YhPh8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] 楂樹环鍊肩爺鍙戦」鐩粡鐞嗙殑绠＄悊閿﹀泭
-Date: Wed, 11 Jul 2012 06:39:22 +0800
-Message-ID: <E1Soj5Y-0006vw-UP@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Recevez des deals chaque jour sur les meilleurs restaurants
+	=?iso-8859-15?Q?jusq?= =?iso-8859-15?Q?u=27=E0?= -70%
+Date: Tue, 10 Jul 2012 23:40:07 +0200
+Message-ID: <1341956560.4ffca1d0e5c4a@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,47 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzEyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xMCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MTI=3D
 
-高价值研发项目经理的管理锦囊
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzEyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xMCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MT=
+I=3D
 
-2012年7月23-24日深圳
-2012年7月26-27日北京
-2012年7月30-31日上海
 
-培训费用：4000元/两天  *买一赠一,不再打折” ,单独一人收费2600元。（含两天中餐、指定教材、证书、茶点）
-培训方式：案例分享、实务分析、互动讨论、项目模拟、培训游戏
-参加对象：公司总经理、研发总监、人力资源总监、产品线总监、研发部经理、项目经理、技术部门主管、研发骨干、人力资源管理专员
-
-咨询电话：020-80560638   020-85917945  谢小姐；
-          0755-61287552  陈小姐（不需要此类信件请回复电邮至tuixin2012-KN7UnAbNpbg@public.gmane.org退信）
-详情请参考附件
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--

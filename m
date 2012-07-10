@@ -1,15 +1,13 @@
 From: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] spi/imx: remove redundant config.speed_hz setting
-Date: Tue, 10 Jul 2012 17:44:22 +0800
-Message-ID: <1341913463-10128-2-git-send-email-jason77.wang@gmail.com>
-References: <1341913463-10128-1-git-send-email-jason77.wang@gmail.com>
+Subject: [PATCH 0/2] spi/imx: two spi-imx cleanup
+Date: Tue, 10 Jul 2012 17:44:21 +0800
+Message-ID: <1341913463-10128-1-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1341913463-10128-1-git-send-email-jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,30 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The config.speed_hz is just setted at the two lines ahead of it,
-obviously we don't need to copy the code to set the config.speed_hz
-again. Remove it for a cleanup.
+Two straight-forward cleanup
 
-Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-imx.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+Hui Wang (2):
+  spi/imx: remove redundant config.speed_hz setting
+  spi/imx: use gpio_is_valid to determine if a gpio is valid
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 47877d6..c12052f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -688,8 +688,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		config.speed_hz = spi->max_speed_hz;
- 	if (!config.bpw)
- 		config.bpw = spi->bits_per_word;
--	if (!config.speed_hz)
--		config.speed_hz = spi->max_speed_hz;
- 
- 	/* Initialize the functions for transfer */
- 	if (config.bpw <= 8) {
+ drivers/spi/spi-imx.c |   14 ++++++--------
+ 1 files changed, 6 insertions(+), 8 deletions(-)
+
 -- 
 1.7.6
 

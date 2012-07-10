@@ -1,65 +1,56 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v4 5/6] spi: s3c64xx: Remove the 'set_level' callback
- from controller data
-Date: Tue, 10 Jul 2012 17:57:17 +0100
-Message-ID: <20120710165716.GJ10022@opensource.wolfsonmicro.com>
-References: <1341930459-25223-1-git-send-email-thomas.abraham@linaro.org>
- <1341930459-25223-6-git-send-email-thomas.abraham@linaro.org>
- <20120710143844.GB11698@sirena.org.uk>
- <CAJuYYwQ4wio0CxPAVaNBoD7=vMgUS0CCZB45aSst-DW2zOTn1w@mail.gmail.com>
+From: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 0/2] spi/imx: two spi-imx cleanup
+Date: Tue, 10 Jul 2012 19:20:11 +0200
+Message-ID: <20120710172011.GC30009@pengutronix.de>
+References: <1341913463-10128-1-git-send-email-jason77.wang@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EdRE1UL8d3mMOE6m"
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, jaswinder.singh@linaro.org,
-	kgene.kim@samsung.com, linux-arm-kernel@lists.infradead.org
-To: Thomas Abraham <thomas.abraham@linaro.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAJuYYwQ4wio0CxPAVaNBoD7=vMgUS0CCZB45aSst-DW2zOTn1w@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+In-Reply-To: <1341913463-10128-1-git-send-email-jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Jul 10, 2012 at 05:44:21PM +0800, Hui Wang wrote:
+> Two straight-forward cleanup
+> 
+> Hui Wang (2):
+>   spi/imx: remove redundant config.speed_hz setting
+>   spi/imx: use gpio_is_valid to determine if a gpio is valid
 
---EdRE1UL8d3mMOE6m
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+both:
 
-On Tue, Jul 10, 2012 at 10:22:31PM +0530, Thomas Abraham wrote:
+Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-> In non-dt case, the platform code supplying the gpio number (slave
-> select line) is responsible for requesting the gpio during the
-> machine_init call. So the gpio request is not called in the driver for
-> that gpio. In dt case, the 6th patch adds dt support and that patch
-> includes a gpio request call. Hence, this looks okay to me. Please
-> suggest if you still feel that there are changes required.
 
-That's not really particularly sensible given that the changes remove
-the option to use anything except GPIOs, the GPIO request should be done
-unconditionally in the driver now.
+> 
+>  drivers/spi/spi-imx.c |   14 ++++++--------
+>  1 files changed, 6 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 1.7.6
+> 
+> 
 
---EdRE1UL8d3mMOE6m
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJP/F6jAAoJEBus8iNuMP3dQn8P/jBYPIlJEpTyMG5hgjaP3WMk
-owScmDXwLG4aCfg86WtaarzHWp/N3OiBJIfcGwTfzz/TWhdnHch4kS/Z6b/NqLxZ
-EFCpaSb8eMeBE6QBC+5+iQyYaZQA93p3KmHr8dmlqfCsRj7MMC85eSus+30bAlzA
-QZp4qj+hrfeAcazXdbuIIp26nW4HoOcSuFcVqaFbSLGSWjGXWnt/KfO+11EyYGz8
-u6MqXGiEt00taQyd0bqdFL/dLG54TCCzFb9p1AFNqYUFmX9GSivLvycl1DkEKIky
-eO0wjQDrON33CfJ1MJAqSy299kUbGOKigGdXg/dt0GwZc9iB9v40LnWY7PbCD8+Y
-T/0Y99s0MXutstpxPi40dWCCfu9I6NrTF1XsWL53oUDmNTaAsHe0OllhG7/sN3kG
-nvIvrDxESYlR5sKQFIlc0OxfGQHGD+9f1AI9VdTff84AsDGP5vkYp3frpnRF4FFX
-wPTdGpCfhhnX5hmtdPmTpbxQ4M5ctp1/+Wc68a+OIcJasOVVbRV8Fc1/7muDPvQp
-H+5SybPNnIbI1LcpRQjhoCtE3HiaFbkVNMLPZEql/Y3MMTx1ewX/ii7hEqfUwPjg
-yT/d6DKA+zOZJw9T6jlO5hJeaN9qXHDEfFcWTOElszV/ZvHxUm+r0wl/uCu2bLrz
-pJOeWDFKZP3pjYzqyJu6
-=f3cR
------END PGP SIGNATURE-----
-
---EdRE1UL8d3mMOE6m--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

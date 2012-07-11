@@ -1,35 +1,62 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: [PATCH v5 5/6] spi: s3c64xx: Remove the 'set_level' callback from
- controller data
-Date: Wed, 11 Jul 2012 20:59:48 +0530
-Message-ID: <CAJuYYwRL0X8TJj0EoGBdFFrRzGZuMmuF1zdhAxOtD1HUejjkUg@mail.gmail.com>
-References: <CAJuYYwSi-1nBM40SWt359W0Lr2n_yVX5tvWfOS77bmLQRt_9fw@mail.gmail.com>
-	<1342005359-748-1-git-send-email-thomas.abraham@linaro.org>
-	<20120711114716.GF3938@opensource.wolfsonmicro.com>
-	<CAJuYYwR8o76aLr_2J4jqF93hhz_4L3MJikJUtTpG5jWfPKDk+w@mail.gmail.com>
-	<20120711133142.GH3938@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v5 0/6] spi: s3c64xx: add support for device tree
+Date: Wed, 11 Jul 2012 18:49:08 +0100
+Message-ID: <20120711174908.GP3938@opensource.wolfsonmicro.com>
+References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Mh8CTEa8Ax54aLHp"
 Cc: spi-devel-general@lists.sourceforge.net,
 	devicetree-discuss@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
 	grant.likely@secretlab.ca, kgene.kim@samsung.com,
 	jaswinder.singh@linaro.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Thomas Abraham <thomas.abraham@linaro.org>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120711133142.GH3938@opensource.wolfsonmicro.com>
+Content-Disposition: inline
+In-Reply-To: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11 July 2012 19:01, Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
-> On Wed, Jul 11, 2012 at 05:51:13PM +0530, Thomas Abraham wrote:
->
->> Based on your comments to add the gpio request, only two patches 5/6
->> and 6/6 in this series have changed since. I have cc'ed you in the
->> other 4 patches as well. If you do not have those patches, please let
->> me know, I will repost the whole series again. Thanks.
->
-> Please resend the full series.
 
-The full series (6 patches) has been re-posted as v5 version.
+--Mh8CTEa8Ax54aLHp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jul 11, 2012 at 09:10:59PM +0530, Thomas Abraham wrote:
+> Changes since v4:
+> - Includes the missing gpio request for slave select line gpio as suggested
+>   by Mark Brown.
+
+These looked OK (and have had quite a bit of review already so we're
+probably at the stage where incremental fixes are better anyway) so I
+tried to apply them but git am was really unhappy.  I tried applying on
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git spi-next
+
+and -next.  Can you check what's going on here please?
+
+--Mh8CTEa8Ax54aLHp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJP/bxPAAoJEBus8iNuMP3dP44QAI9J1+Tt8gqbU7Atn2qKaCj5
+D45FKskEpqQfK3yjtDT5GGRiWXcQd60rAe4eza8HYe2Se2FP6OZvV+OWRzuaCmUK
+DNG5rHF7Qzvbs2UZlYumK9tl/8IcItOushKmn+QDGGXoxhWKfXnagvvQbICHzHsl
+tgxtCUa7QIBWRVK2X9LyBFSAhnvZtQOyWfPcJrYREtD2oGYwAfDQhj8i3/Xc+gNH
+sm8I57gTgwmrU5Q2tLMHq/kNz7PhIFylhfav/hSyT3eqERqKHOVk1pYHQxZtXQrQ
+RRQ3hOc99Mgh8Hbp4H0DBI5kzOPGWvVOd5Ni1x6wyBMUqu/y6rpjMfLhePAQzsz2
+AqnEtl8HOOduXc+jbluj52p3gg7MUjzjtdQ8Bk22Ozq8x0DWwq4meRyYjlEEqjCa
+InXsvmq6YdRupoqdLTJ7aLs8KmPVSmaLOUyhp7Yync71R2MCXhT/8eLNYmGwlYaL
+6JRrHH5ADDuVWpvY8TbEMg0oiIVrHtIeQmK/4fHprMzq5gqpAyyhbVTS4pTt+be8
+ofPrnrUVPLH8oMn+8ovYnnf2/xpxB9RzVjos1qzitszzaoJCrem1dOQqf9Vl9jao
+W8BYQ1c6rRdjxukKZm1fohvNwdbSGbGui9AGZ+ug46QtdNxugwtWu+6oC1O064DH
+AKJvmVKDAT6uoKD8CKy0
+=CRiw
+-----END PGP SIGNATURE-----
+
+--Mh8CTEa8Ax54aLHp--

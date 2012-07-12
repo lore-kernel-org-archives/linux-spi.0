@@ -1,17 +1,13 @@
-From: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Subject: Re: SPI: bcm63xx_dev_spi.h
-Date: Thu, 12 Jul 2012 23:31:15 +0200
-Message-ID: <1342128675.22584.38.camel@x61.thuisdomein>
-References: <1342126544.22584.36.camel@x61.thuisdomein>
-	<CAOiHx=nHf+rRGsw_pvSwxKn5VE9QYvCvy_p6j1ETf9HSHBgUNQ@mail.gmail.com>
+From: =?GB2312?B?1/C+tLXEycy80sXz09E=?= <123456-kBReAod5fl8@public.gmane.org>
+Subject: [SPAM] 项目陈生
+Date: Fri, 13 Jul 2012 05:38:26 +0800
+Message-ID: <E1SpR5c-0006oE-T2@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: 123456-kBReAod5fl8@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOiHx=nHf+rRGsw_pvSwxKn5VE9QYvCvy_p6j1ETf9HSHBgUNQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,22 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2012-07-12 at 23:26 +0200, Jonas Gorski wrote:
-> > 2) What's the current status of this header?
-> 
-> It currently sits in Ralf Baechle's queue and waits for the merge window:
-> 
-> http://git.linux-mips.org/?p=ralf/upstream-sfr.git;a=commit;h=435f920f35e90b4681e68002d2e2f6724b0c21b7
-
-Thanks!
-
-
-Paul Bolle
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+CgrO0rmry77P1tPQtuDT4LeixrG/ydLU08W73czhuam0+r+qo6y3ts6nsPzAqKO6CgrJzMa3z/rK
+28bky/u3/s7xo6y547jmo6y9qNb+sLLXsKOs1MvK5LXIoaO++AoKttTV/bnm09DQp6Osv8nS1Lz1
+ydm5q8u+1/bVyqOss+XVyqOssrnVyrXIy7AKCs7xuLq1o6OsyOfT0NDo0qq/ycC0tee7sNfJ0a+6
+z9f3o6EgCgrBqs+1yMujurPCz8jJ+goKwarPtbXnu7CjujEzNSAzNjUzIDk1MDgKCrG+0MWzpMba
+09DQp9ei0uKxo8H00KnQxc+io6EKCsjnyMXH67z7wcKjoQoKCgotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQg
+d2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5k
+c2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vz
+c2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFu
+ZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5j
+b20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,40 +1,41 @@
-From: Produit Minceur par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Le secret qui fait maigrir les stars
-Date: Thu, 12 Jul 2012 06:18:08 +0200
-Message-ID: <1342066769.4ffe505147cc7@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Thomas Abraham <thomas.abraham@linaro.org>
+Subject: Re: [PATCH v5 0/6] spi: s3c64xx: add support for device tree
+Date: Thu, 12 Jul 2012 14:17:27 +0530
+Message-ID: <CAJuYYwRfP76iuBb-Lo-PtrUxKW1odmTjhenz+5LY+=OfCXJmfw@mail.gmail.com>
+References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
+	<20120711174908.GP3938@opensource.wolfsonmicro.com>
+	<CAJuYYwQA_x112xqOnQmwZjzoXoR-DAvT8YdB90Wm=78CH72uOg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, kgene.kim@samsung.com,
+	jaswinder.singh@linaro.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <CAJuYYwQA_x112xqOnQmwZjzoXoR-DAvT8YdB90Wm=78CH72uOg@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On 11 July 2012 23:30, Thomas Abraham <thomas.abraham@linaro.org> wrote:
+> On 11 July 2012 23:19, Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+>> On Wed, Jul 11, 2012 at 09:10:59PM +0530, Thomas Abraham wrote:
+>>> Changes since v4:
+>>> - Includes the missing gpio request for slave select line gpio as suggested
+>>>   by Mark Brown.
+>>
+>> These looked OK (and have had quite a bit of review already so we're
+>> probably at the stage where incremental fixes are better anyway) so I
+>> tried to apply them but git am was really unhappy.  I tried applying on
+>>
+>>   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git spi-next
+>>
+>> and -next.  Can you check what's going on here please?
+>
+> These patches were based on Samsung maintainer's for-next branch with
+> Grant's spi/next branch merged. I will check with your spi-next
+> branch. Thanks.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NjMzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xMiAwNToxMDowMSZlPTEmaD0xNTYzMiZmPTE1NjMzJmc9MTU2MzM=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NjMzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xMiAwNToxMDowMSZlPTEmaD0xNTYzMiZmPTE1NjMzJmc9MTU2Mz=
-M=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+The 6th patch in this series has a dependency on Samsung maintainers

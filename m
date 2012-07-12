@@ -1,58 +1,67 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH v5 0/6] spi: s3c64xx: add support for device tree
-Date: Thu, 12 Jul 2012 18:11:05 +0900
-Message-ID: <0fae01cd600e$442ed160$cc8c7420$%kim@samsung.com>
-References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
- <20120711174908.GP3938@opensource.wolfsonmicro.com>
- <CAJuYYwQA_x112xqOnQmwZjzoXoR-DAvT8YdB90Wm=78CH72uOg@mail.gmail.com>
+From: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/2] spi/imx: two spi-imx cleanup
+Date: Thu, 12 Jul 2012 17:53:42 +0800
+Message-ID: <4FFE9EA6.5040708@gmail.com>
+References: <1341913463-10128-1-git-send-email-jason77.wang@gmail.com>
+	<20120710172011.GC30009@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, jaswinder.singh@linaro.org
-To: 'Thomas Abraham' <thomas.abraham@linaro.org>,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <CAJuYYwQA_x112xqOnQmwZjzoXoR-DAvT8YdB90Wm=78CH72uOg@mail.gmail.com>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120710172011.GC30009-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Thomas Abraham wrote:
-> 
-> On 11 July 2012 23:19, Mark Brown <broonie@opensource.wolfsonmicro.com>
-> wrote:
-> > On Wed, Jul 11, 2012 at 09:10:59PM +0530, Thomas Abraham wrote:
-> >> Changes since v4:
-> >> - Includes the missing gpio request for slave select line gpio as
-> suggested
-> >>   by Mark Brown.
-> >
-> > These looked OK (and have had quite a bit of review already so we're
-> > probably at the stage where incremental fixes are better anyway) so I
-> > tried to apply them but git am was really unhappy.  I tried applying on
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git spi-
-> next
-> >
-> > and -next.  Can you check what's going on here please?
-> 
-Firstly, this patches look ok to me.
+Hi Mark,
 
-And Mark, this touches various samsung stuff in arch/arm/ so if you're ok,
-I'd like to pick this up in samsung tree. We don't want to see conflicts...
+Understand from Grant's mail's discussion that you are picking up the spi change, Could you please queue these two patches in your tree?
 
-> These patches were based on Samsung maintainer's for-next branch with
-> Grant's spi/next branch merged. I will check with your spi-next
-> branch. Thanks.
+Regards,
+Hui.
 
-Thanks.
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+
+Sascha Hauer wrote:
+> On Tue, Jul 10, 2012 at 05:44:21PM +0800, Hui Wang wrote:
+>   
+>> Two straight-forward cleanup
+>>
+>> Hui Wang (2):
+>>   spi/imx: remove redundant config.speed_hz setting
+>>   spi/imx: use gpio_is_valid to determine if a gpio is valid
+>>     
+>
+> both:
+>
+> Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+>
+>
+>   
+>>  drivers/spi/spi-imx.c |   14 ++++++--------
+>>  1 files changed, 6 insertions(+), 8 deletions(-)
+>>
+>> -- 
+>> 1.7.6
+>>
+>>
+>>     
+>
+>   
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

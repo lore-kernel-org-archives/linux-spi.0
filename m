@@ -1,8 +1,7 @@
-From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 70 pourcent sur les bagages et
-	sacs
-Date: Thu, 12 Jul 2012 08:09:20 +0200
-Message-ID: <1342073449.4ffe6a69a538f@mc10.fr>
+From: Produit Minceur par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le secret qui fait maigrir les stars
+Date: Thu, 12 Jul 2012 06:18:08 +0200
+Message-ID: <1342066769.4ffe505147cc7@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NjM1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xMiAwNDoyMDowMSZlPTEmaD0xNTYzNCZmPTE1NjM1Jmc9MTU2MzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NjMzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xMiAwNToxMDowMSZlPTEmaD0xNTYzMiZmPTE1NjMzJmc9MTU2MzM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NjM1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xMiAwNDoyMDowMSZlPTEmaD0xNTYzNCZmPTE1NjM1Jmc9MTU2Mz=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NjMzJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xMiAwNToxMDowMSZlPTEmaD0xNTYzMiZmPTE1NjMzJmc9MTU2Mz=
+M=3D
 
 
 ---------------------------------------------------------------------------=

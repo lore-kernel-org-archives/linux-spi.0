@@ -1,60 +1,55 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: [PATCH v5 6/6] spi: s3c64xx: add device tree support
-Date: Fri, 13 Jul 2012 17:08:21 +0530
-Message-ID: <CAJuYYwRiR8M5m9rDE6dzMawuSLO03f7mydoks+zU2ByTmbtMrA@mail.gmail.com>
-References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
-	<1342021265-11212-7-git-send-email-thomas.abraham@linaro.org>
-	<4FFF51EE.4080609@samsung.com>
-	<CAJuYYwQBL6OGJM41e9kD2ATUj3g9NTs-OC+G_gMKMScn3ms=hw@mail.gmail.com>
-	<117c01cd60ea$90f76ac0$b2e64040$%kim@samsung.com>
+From: y@pengutronix.de
+Subject: [PATCH 01/11] spi/imx: make spi_imx_data.devtype_data member point to
+	const data
+Date: Fri, 13 Jul 2012 14:32:04 +0200
+Message-ID: <36085.5833431289$1342182794@news.gmane.org>
+References: <1342182734-321-1-git-send-email-y>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org,
-	broonie@opensource.wolfsonmicro.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
-	grant.likely@secretlab.ca, jaswinder.singh@linaro.org
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <117c01cd60ea$90f76ac0$b2e64040$%kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1342182734-321-1-git-send-email-y>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 13 July 2012 16:58, Kukjin Kim <kgene.kim@samsung.com> wrote:
-> Thomas Abraham wrote:
->>
->> On 13 July 2012 04:08, Kukjin Kim <kgene.kim@samsung.com> wrote:
->> > Thomas, the DMACH_DT_PROP is available only on pl330 now. So seems occur
->> > following build error with s3c6400_defconfig.
->> >
->> > drivers/spi/spi-s3c64xx.c: In function 's3c64xx_spi_get_dmares':
->> > drivers/spi/spi-s3c64xx.c:1098: error: 'DMACH_DT_PROP' undeclared (first
->> use
->> > in this function)
->> > drivers/spi/spi-s3c64xx.c:1098: error: (Each undeclared identifier is
->> > reported only once
->> > drivers/spi/spi-s3c64xx.c:1098: error: for each function it appears in.)
->> > make[3]: *** [drivers/spi/spi-s3c64xx.o] Error 1
->> > make[2]: *** [drivers/spi] Error 2
->> >
->>
->> Dear Mr. Kim,
->>
->> Thanks for considering these patches to be merged via your tree. For
->> the build break you mentioned above, there was a patch submitted some
->> time back to handle this. The link to that patch is:
->> http://lists.infradead.org/pipermail/linux-arm-kernel/2012-
->> June/102627.html.
->> Could you please apply this patch also to your tree.
->>
-> Sure, it looks good to me, will apply that then this series will be rebased
-> on top of that.
-
-There are six more patches that enable spi device tree support for
-Exynos4 and Exynos5 platforms. Could you consider to apply those
-patches as well. The link to those patches is:
-http://www.mail-archive.com/linux-samsung-soc@vger.kernel.org/msg10851.html.
-
-Thanks,
-Thomas.
+RnJvbTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5kZT4K
+ClRoaXMgcHJlcGFyZXMgb2ZfZGV2aWNlX2lkLmRhdGEgYmVjb21pbmcgY29uc3QuIFdpdGhvdXQg
+dGhpcyBjaGFuZ2UgdGhlCmZvbGxvd2luZyB3YXJuaW5nIHdvdWxkIG9jY3VyOgoKCWRyaXZlcnMv
+c3BpL3NwaS1pbXguYzogSW4gZnVuY3Rpb24gc3BpX2lteF9wcm9iZToKCWRyaXZlcnMvc3BpL3Nw
+aS1pbXguYzo4MTQ6MjQ6IHdhcm5pbmc6IGFzc2lnbm1lbnQgZGlzY2FyZHMgY29uc3QgcXVhbGlm
+aWVyIGZyb20gcG9pbnRlciB0YXJnZXQgdHlwZSBbZW5hYmxlZCBieSBkZWZhdWx0XQoKU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KQ2M6IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAotLS0KIGRyaXZl
+cnMvc3BpL3NwaS1pbXguYyB8ICAgIDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigr
+KSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3BpL3NwaS1pbXguYyBiL2Ry
+aXZlcnMvc3BpL3NwaS1pbXguYwppbmRleCA0Nzg3N2Q2Li5iMDlmYzc3IDEwMDY0NAotLS0gYS9k
+cml2ZXJzL3NwaS9zcGktaW14LmMKKysrIGIvZHJpdmVycy9zcGkvc3BpLWlteC5jCkBAIC05Nyw3
+ICs5Nyw3IEBAIHN0cnVjdCBzcGlfaW14X2RhdGEgewogCWNvbnN0IHZvaWQgKnR4X2J1ZjsKIAl1
+bnNpZ25lZCBpbnQgdHhmaWZvOyAvKiBudW1iZXIgb2Ygd29yZHMgcHVzaGVkIGluIHR4IEZJRk8g
+Ki8KIAotCXN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSAqZGV2dHlwZV9kYXRhOworCWNvbnN0
+IHN0cnVjdCBzcGlfaW14X2RldnR5cGVfZGF0YSAqZGV2dHlwZV9kYXRhOwogCWludCBjaGlwc2Vs
+ZWN0WzBdOwogfTsKIAotLSAKMS43LjEwLjQKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBT
+ZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3Zl
+ciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFz
+IGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndp
+bGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0
+ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nm
+cm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

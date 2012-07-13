@@ -1,56 +1,45 @@
-From: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/2] spi/imx: remove redundant config.speed_hz setting
-Date: Fri, 13 Jul 2012 10:51:28 +0800
-Message-ID: <1342147889-25043-2-git-send-email-jason77.wang@gmail.com>
-References: <1342147889-25043-1-git-send-email-jason77.wang@gmail.com>
+From: Thomas Abraham <thomas.abraham@linaro.org>
+Subject: Re: [PATCH v5 6/6] spi: s3c64xx: add device tree support
+Date: Fri, 13 Jul 2012 09:25:55 +0530
+Message-ID: <CAJuYYwQBL6OGJM41e9kD2ATUj3g9NTs-OC+G_gMKMScn3ms=hw@mail.gmail.com>
+References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
+	<1342021265-11212-7-git-send-email-thomas.abraham@linaro.org>
+	<4FFF51EE.4080609@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1342147889-25043-1-git-send-email-jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	broonie@opensource.wolfsonmicro.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, jaswinder.singh@linaro.org
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <4FFF51EE.4080609@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The config.speed_hz is just setted at the two lines ahead of it,
-obviously we don't need to copy the code to set the config.speed_hz
-again. Remove it for a cleanup.
+On 13 July 2012 04:08, Kukjin Kim <kgene.kim@samsung.com> wrote:
+> Thomas, the DMACH_DT_PROP is available only on pl330 now. So seems occur
+> following build error with s3c6400_defconfig.
+>
+> drivers/spi/spi-s3c64xx.c: In function 's3c64xx_spi_get_dmares':
+> drivers/spi/spi-s3c64xx.c:1098: error: 'DMACH_DT_PROP' undeclared (first use
+> in this function)
+> drivers/spi/spi-s3c64xx.c:1098: error: (Each undeclared identifier is
+> reported only once
+> drivers/spi/spi-s3c64xx.c:1098: error: for each function it appears in.)
+> make[3]: *** [drivers/spi/spi-s3c64xx.o] Error 1
+> make[2]: *** [drivers/spi] Error 2
+>
 
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Acked-by: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Signed-off-by: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-imx.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+Dear Mr. Kim,
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 47877d6..c12052f 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -688,8 +688,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 		config.speed_hz = spi->max_speed_hz;
- 	if (!config.bpw)
- 		config.bpw = spi->bits_per_word;
--	if (!config.speed_hz)
--		config.speed_hz = spi->max_speed_hz;
- 
- 	/* Initialize the functions for transfer */
- 	if (config.bpw <= 8) {
--- 
-1.7.6
+Thanks for considering these patches to be merged via your tree. For
+the build break you mentioned above, there was a patch submitted some
+time back to handle this. The link to that patch is:
+http://lists.infradead.org/pipermail/linux-arm-kernel/2012-June/102627.html.
+Could you please apply this patch also to your tree.
 
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks,
+Thomas.

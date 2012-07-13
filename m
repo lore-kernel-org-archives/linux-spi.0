@@ -1,11 +1,11 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Offre du jour : =?iso-8859-15?Q?jusqu=27=E0?= -96 pour cent
-Date: Fri, 13 Jul 2012 17:33:19 +0200
-Message-ID: <1342193687.5000401786dea@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: "=?UTF-8?B?Tm92aWRhZGVzIGEgdm9jw6o=?=" <mail6579-ION5TFBELVBWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] Sua nova Livraria
+Date: Fri, 13 Jul 2012 02:34:39 -0300
+Message-ID: <3fa7dff73e9ada1dee957ed919626bf6@apalones.com>
+Reply-To: abp4.consultoria-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,23 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTU3NTEmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wNy0xMyAxNzoxMDowMSZlPTEmaD0xNTc1MCZmPTE1NzUxJmc9MTU3NTE=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTU3NTEmYz0=
-xOTYxNjQxJmQ9MjAxMi0wNy0xMyAxNzoxMDowMSZlPTEmaD0xNTc1MCZmPTE1NzUxJmc9MTU3NT=
-E=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuDQpQYXJhIHZp
+c3VhbGl6w6EtbG8gb24tbGluZSwgcG9yIGZhdm9yLCBjbGlxdWUgYXF1aToKaHR0cDovL2FwYWxv
+bmVzLmNvbS9tYWlsMi9kaXNwbGF5LnBocD9NPTE1MDE2OTQ0JkM9ODAzZmQzNDBjOGNhYmFlNTA5
+MzM0ZTFmNGMzNDdjMTAmUz03NTcmTD0zMTYmTj0yMTMNCg0KDQpQYXJhIHBhcmFyIGRlIHJlY2Vi
+ZXIgbm9zc29zCkVtYWlsczpodHRwOi8vYXBhbG9uZXMuY29tL21haWwyL3Vuc3Vic2NyaWJlLnBo
+cD9NPTE1MDE2OTQ0JkM9ODAzZmQzNDBjOGNhYmFlNTA5MzM0ZTFmNGMzNDdjMTAmTD0zMTYmTj03
+NTcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNl
+CkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2Vj
+dXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdl
+cnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJp
+dHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBo
+dHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8K
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

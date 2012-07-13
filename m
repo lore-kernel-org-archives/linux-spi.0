@@ -1,7 +1,7 @@
-From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?2=E8me_d=E9marque_jusqu=27=E0?= -70%
-Date: Fri, 13 Jul 2012 22:10:06 +0200
-Message-ID: <1342210474.500081aa35174@mc10.fr>
+From: Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: -80% sur des bagages de grandes marques
+Date: Sat, 14 Jul 2012 00:06:06 +0200
+Message-ID: <1342217284.50009c445f2ea@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzMyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xMyAyMToyMDowMSZlPTEmaD0xNTczMSZmPTE1NzMyJmc9MTU3MzI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1ODM2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xMyAyMzo0MDowMSZlPTEmaD0xNTgzNSZmPTE1ODM2Jmc9MTU4MzY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzMyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xMyAyMToyMDowMSZlPTEmaD0xNTczMSZmPTE1NzMyJmc9MTU3Mz=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1ODM2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xMyAyMzo0MDowMSZlPTEmaD0xNTgzNSZmPTE1ODM2Jmc9MTU4Mz=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,8 +1,8 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 17 =?iso-8859-15?Q?=EEles?= de
-	=?iso-8859-15?Q?r=EAve_=E0_d=E9couvrir?=
-Date: Sat, 14 Jul 2012 05:52:04 +0200
-Message-ID: <1342238062.5000ed6e9a5b4@mc10.fr>
+From: Sarenza par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos chaussures =?iso-8859-15?Q?pr=E9f=E9r=E9es?= -60%, chez vous
+	rapidement et gratuitement
+Date: Sat, 14 Jul 2012 03:37:07 +0200
+Message-ID: <1342230028.5000ce0c77c62@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDQ2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNCAwNTozMDowMSZlPTEmaD0xNjA0NSZmPTE2MDQ2Jmc9MTYwNDY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1OTYxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNCAwMjo1MDowMSZlPTEmaD0xNTk2MCZmPTE1OTYxJmc9MTU5NjE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDQ2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNCAwNTozMDowMSZlPTEmaD0xNjA0NSZmPTE2MDQ2Jmc9MTYwND=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1OTYxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNCAwMjo1MDowMSZlPTEmaD0xNTk2MCZmPTE1OTYxJmc9MTU5Nj=
+E=3D
 
 
 ---------------------------------------------------------------------------=

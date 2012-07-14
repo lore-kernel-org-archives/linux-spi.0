@@ -1,8 +1,8 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Solde =?iso-8859-15?Q?3=E8me_d=E9marques_jusqu=27=E0?= -80% sur
-	tout le site
-Date: Sat, 14 Jul 2012 04:29:05 +0200
-Message-ID: <1342233123.5000da23c0c92@mc10.fr>
+From: Splendia par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?R=E9servez?= votre hotel de luxe et de charme
+	=?iso-8859-15?Q?jusqu=27=E0?= -70%
+Date: Sat, 14 Jul 2012 05:50:04 +0200
+Message-ID: <1342237903.5000eccf42ebf@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1ODgwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNCAwNDoxMDowMSZlPTEmaD0xNTg3OSZmPTE1ODgwJmc9MTU4ODA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDQyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNCAwNToyMDowMSZlPTEmaD0xNjA0MSZmPTE2MDQyJmc9MTYwNDI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1ODgwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNCAwNDoxMDowMSZlPTEmaD0xNTg3OSZmPTE1ODgwJmc9MTU4OD=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDQyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNCAwNToyMDowMSZlPTEmaD0xNjA0MSZmPTE2MDQyJmc9MTYwND=
+I=3D
 
 
 ---------------------------------------------------------------------------=

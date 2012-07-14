@@ -1,9 +1,9 @@
-From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Soldes sur les luminaires : =?iso-8859-15?Q?Jusqu=27=E0?= 70% de
-	=?iso-8859-15?Q?r=E9duction?= !
-Date: Sun, 15 Jul 2012 01:10:06 +0200
-Message-ID: <1342307536.5001fcd0e0443@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Recevez des deals chaque jour sur les meilleurs restaurants
+	=?iso-8859-15?Q?jusq?= =?iso-8859-15?Q?u=27=E0?= -70%
+Date: Sat, 14 Jul 2012 23:42:07 +0200
+Message-ID: <1342302225.5001e8110292b@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE2MDM5JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNy0xNSAwMTowMDowMSZlPTEmaD0xNjAzOCZmPTE2MDM5Jmc9MTYwMzk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzEyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE2MDM5JmM=
-9MjM2NDM3JmQ9MjAxMi0wNy0xNSAwMTowMDowMSZlPTEmaD0xNjAzOCZmPTE2MDM5Jmc9MTYwMz=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzEyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

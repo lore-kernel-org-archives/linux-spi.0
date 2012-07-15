@@ -1,54 +1,99 @@
-From: "=?gb2312?B?cGFycnk2NjQ1NDI=?=" <parry664542-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?MTUzNDJ3dUhJeQ==?=
-Date: Sun, 15 Jul 2012 07:02:43 +0800 (CST)
-Message-ID: <5001FA93.00009F.10671@cnapp13>
+From: Kukjin Kim <kgene.kim@samsung.com>
+Subject: RE: [PATCH v5 6/6] spi: s3c64xx: add device tree support
+Date: Sun, 15 Jul 2012 19:39:50 +0900
+Message-ID: <127d01cd6276$295b3a80$7c11af80$%kim@samsung.com>
+References: <1342021265-11212-1-git-send-email-thomas.abraham@linaro.org>
+ <1342021265-11212-7-git-send-email-thomas.abraham@linaro.org>
+ <4FFF51EE.4080609@samsung.com>
+ <CAJuYYwQBL6OGJM41e9kD2ATUj3g9NTs-OC+G_gMKMScn3ms=hw@mail.gmail.com>
+ <117c01cd60ea$90f76ac0$b2e64040$%kim@samsung.com>
+ <CAJuYYwRiR8M5m9rDE6dzMawuSLO03f7mydoks+zU2ByTmbtMrA@mail.gmail.com>
+ <118901cd60fd$66c26260$34472720$%kim@samsung.com>
+ <CAJuYYwQ9AyVPiZzV4-ncYF-Z1JqwHx-xKGHJXGhugc_w+KUHZQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1728467849498678165=="
-Cc: mxf2011-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org, xjhn-HPPaHYGdu2hBDgjK7y7TUQ@public.gmane.org, rj3sx-r0OxCsyij5n8BuUgBBvbGScNLX7Ozgzk@public.gmane.org,
-	service-bc8Vvkv48ocAvxtiuMwx3w@public.gmane.org, xuemin_1982-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org, snowdropxiang-6qRjFEY5wSzM1kAEIRd3EQ@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, 3gg-44n3OeaZcqc@public.gmane.org
-To: nbspliugc-BdxkkSBhFvjM1kAEIRd3EQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org,
+	broonie@opensource.wolfsonmicro.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, rob.herring@calxeda.com,
+	grant.likely@secretlab.ca, jaswinder.singh@linaro.org
+To: 'Thomas Abraham' <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <CAJuYYwQ9AyVPiZzV4-ncYF-Z1JqwHx-xKGHJXGhugc_w+KUHZQ@mail.gmail.com>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Thomas Abraham wrote:
+> 
+> On 13 July 2012 19:12, Kukjin Kim <kgene.kim@samsung.com> wrote:
+> > Thomas Abraham wrote:
+> >>
+> >> On 13 July 2012 16:58, Kukjin Kim <kgene.kim@samsung.com> wrote:
+> >> > Thomas Abraham wrote:
+> >> >>
+> >> >> On 13 July 2012 04:08, Kukjin Kim <kgene.kim@samsung.com> wrote:
+> >> >> > Thomas, the DMACH_DT_PROP is available only on pl330 now. So seems
+> >> occur
+> >> >> > following build error with s3c6400_defconfig.
+> >> >> >
+> >> >> > drivers/spi/spi-s3c64xx.c: In function 's3c64xx_spi_get_dmares':
+> >> >> > drivers/spi/spi-s3c64xx.c:1098: error: 'DMACH_DT_PROP' undeclared
+> >> (first
+> >> >> use
+> >> >> > in this function)
+> >> >> > drivers/spi/spi-s3c64xx.c:1098: error: (Each undeclared identifier
+> is
+> >> >> > reported only once
+> >> >> > drivers/spi/spi-s3c64xx.c:1098: error: for each function it
+> appears
+> >> in.)
+> >> >> > make[3]: *** [drivers/spi/spi-s3c64xx.o] Error 1
+> >> >> > make[2]: *** [drivers/spi] Error 2
+> >> >> >
+> >> >>
+> >> >> Dear Mr. Kim,
+> >> >>
+> >> >> Thanks for considering these patches to be merged via your tree. For
+> >> >> the build break you mentioned above, there was a patch submitted
+> some
+> >> >> time back to handle this. The link to that patch is:
+> >> >> http://lists.infradead.org/pipermail/linux-arm-kernel/2012-
+> >> >> June/102627.html.
+> >> >> Could you please apply this patch also to your tree.
+> >> >>
+> >> > Sure, it looks good to me, will apply that then this series will be
+> >> rebased
+> >> > on top of that.
+> >>
+> >> There are six more patches that enable spi device tree support for
+> >> Exynos4 and Exynos5 platforms. Could you consider to apply those
+> >> patches as well. The link to those patches is:
+> >> http://www.mail-archive.com/linux-samsung-
+> >> soc@vger.kernel.org/msg10851.html.
+> >>
+> > Yeah, I remember, but I think some patches is needed to re-work as per
+> > comments...?
+> 
+> I checked again for any pending comments on v2 version. There are no
+> pending comments for the v2 version of this patch series. Thanks.
 
---===============1728467849498678165==
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+OK, I checked v2 series you mentioned. Looks OK to me and applied into
+next/dt-samsung because it is related in supporting dt.
 
-xOO6w6O6DQogICAgg5673elfvt+497dO0NDStaO6xtXNqKOot6ItxrGjqaOsIMjn09DQ6NKq
-1YiB7euKx6LMuKO6DQoNCiAgICAgICAgICAgICAgICAgICAgICAgwarPtcjLo7rW3M/Iyfog
-ICAgICAgICAgICANCg0KICAgIMGqz7W159SSo7ogMTM4IDI2NTUgMDUxNSAgICAgICBRICAg
-ICBRICA6ICAxNjE0NTg1NTIzIA0KDQo=
---===============1728467849498678165==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Note, I applied all of them into same dt branch, the fist one 'fix the
+incorrect hierarchy of spi controller bus clock for exynos4' can be sent to
+upstream via fixes now though. And I changed the clock name for
+exynos4_clk_mdout_spix to 'mdout_spi' for consensus when I applied.
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
---===============1728467849498678165==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+If any problems, please let me know.
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+Thanks.
 
---===============1728467849498678165==--
+Best regards,
+Kgene.
+--
+Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+SW Solution Development Team, Samsung Electronics Co., Ltd.

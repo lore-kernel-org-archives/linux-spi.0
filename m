@@ -1,8 +1,7 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?2=E8me_d=E9marque?= : Toute la
-	=?iso-8859-15?Q?beaut=E9_jusqu=27=E0?= moins 70 pourcent
-Date: Sun, 15 Jul 2012 06:17:03 +0200
-Message-ID: <1342325896.50024488a3d4b@mc10.fr>
+From: Guigoz par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Parlons =?iso-8859-15?Q?b=E9b=E9?=
+Date: Sun, 15 Jul 2012 06:18:04 +0200
+Message-ID: <1342325996.500244ecc8d55@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1OTE4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNSAwNjoxMDowMSZlPTEmaD0xNTkxNyZmPTE1OTE4Jmc9MTU5MTg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1OTM2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNSAwNjoxMDowMSZlPTEmaD0xNTkzNSZmPTE1OTM2Jmc9MTU5MzY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1OTE4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNSAwNjoxMDowMSZlPTEmaD0xNTkxNyZmPTE1OTE4Jmc9MTU5MT=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1OTM2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNSAwNjoxMDowMSZlPTEmaD0xNTkzNSZmPTE1OTM2Jmc9MTU5Mz=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

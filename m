@@ -1,7 +1,8 @@
-From: Zacti Plus par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez 5 Kilos avec 5 comprimes
-Date: Mon, 16 Jul 2012 04:35:05 +0200
-Message-ID: <1342406106.50037ddaf2e33@mc10.fr>
+From: Meilleur Choix par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= le guide des radiateurs
+	=?iso-8859-15?Q?=E0?= inertie
+Date: Mon, 16 Jul 2012 23:56:05 +0200
+Message-ID: <1342475825.50048e319b843@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDI5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNiAwNDoyMDowMSZlPTEmaD0xNjAyOCZmPTE2MDI5Jmc9MTYwMjk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDk5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNiAyMzo1MDowMSZlPTEmaD0xNjA5OCZmPTE2MDk5Jmc9MTYwOTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDI5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwNDoyMDowMSZlPTEmaD0xNjAyOCZmPTE2MDI5Jmc9MTYwMj=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDk5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNiAyMzo1MDowMSZlPTEmaD0xNjA5OCZmPTE2MDk5Jmc9MTYwOT=
 k=3D
 
 

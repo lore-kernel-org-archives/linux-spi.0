@@ -1,7 +1,7 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Mon, 16 Jul 2012 06:39:03 +0200
-Message-ID: <1342413546.50039aea48bd9@mc10.fr>
+From: Zacti Plus par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Perdez 5 Kilos avec 5 comprimes
+Date: Mon, 16 Jul 2012 04:35:05 +0200
+Message-ID: <1342406106.50037ddaf2e33@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDQ1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNiAwNjozMDowMSZlPTEmaD0xNjA0NCZmPTE2MDQ1Jmc9MTYwNDU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDI5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNiAwNDoyMDowMSZlPTEmaD0xNjAyOCZmPTE2MDI5Jmc9MTYwMjk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDQ1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwNjozMDowMSZlPTEmaD0xNjA0NCZmPTE2MDQ1Jmc9MTYwND=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDI5JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwNDoyMDowMSZlPTEmaD0xNjAyOCZmPTE2MDI5Jmc9MTYwMj=
+k=3D
 
 
 ---------------------------------------------------------------------------=

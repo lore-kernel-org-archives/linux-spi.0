@@ -1,7 +1,7 @@
-From: Tonyboy par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes -70% sur la boutique en ligne
-Date: Mon, 16 Jul 2012 03:04:06 +0200
-Message-ID: <1342400735.500368df862a2@mc10.fr>
+From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre animal est t-il bien assure
+Date: Mon, 16 Jul 2012 06:23:06 +0200
+Message-ID: <1342412636.5003975c548ae@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDA1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNiAwMjo1MDowMSZlPTEmaD0xNjAwNCZmPTE2MDA1Jmc9MTYwMDU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDU2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNiAwNjoxMDowMSZlPTEmaD0xNjA1NSZmPTE2MDU2Jmc9MTYwNTY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDA1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwMjo1MDowMSZlPTEmaD0xNjAwNCZmPTE2MDA1Jmc9MTYwMD=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDU2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwNjoxMDowMSZlPTEmaD0xNjA1NSZmPTE2MDU2Jmc9MTYwNT=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

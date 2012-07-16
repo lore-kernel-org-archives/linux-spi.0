@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 03/10] mmc: spi: Add necessary bits into mxs-spi.h
-Date: Mon, 16 Jul 2012 14:09:50 +0200
-Message-ID: <1342440597-8395-4-git-send-email-marex@denx.de>
+Subject: [PATCH 05/10] mmc: spi: Pull out the SSP clock configuration function
+Date: Mon, 16 Jul 2012 14:09:52 +0200
+Message-ID: <1342440597-8395-6-git-send-email-marex@denx.de>
 References: <1342440597-8395-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -25,17 +25,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add missing register bits and registers into mxs-spi.h .
-These will be used by the SPI driver.
+Pull out the MMC clock configuration function and make it
+into SSP clock configuration function, so it can be used by
+the SPI driver too.
 
-Based on previous attempt by:
-Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-
-Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
 Cc: Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>
 CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
@@ -43,76 +41,161 @@ CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
 Cc: Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>
 ---
- include/linux/spi/mxs-spi.h |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/clk/mxs/Makefile    |    2 +-
+ drivers/clk/mxs/clk-ssp.c   |   61 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/mxs-mmc.c  |   39 +--------------------------
+ include/linux/spi/mxs-spi.h |    2 ++
+ 4 files changed, 65 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/clk/mxs/clk-ssp.c
 
+diff --git a/drivers/clk/mxs/Makefile b/drivers/clk/mxs/Makefile
+index 7bedeec..a6a2223 100644
+--- a/drivers/clk/mxs/Makefile
++++ b/drivers/clk/mxs/Makefile
+@@ -2,7 +2,7 @@
+ # Makefile for mxs specific clk
+ #
+ 
+-obj-y += clk.o clk-pll.o clk-ref.o clk-div.o clk-frac.o
++obj-y += clk.o clk-pll.o clk-ref.o clk-div.o clk-frac.o clk-ssp.o
+ 
+ obj-$(CONFIG_SOC_IMX23) += clk-imx23.o
+ obj-$(CONFIG_SOC_IMX28) += clk-imx28.o
+diff --git a/drivers/clk/mxs/clk-ssp.c b/drivers/clk/mxs/clk-ssp.c
+new file mode 100644
+index 0000000..b3c1e16
+--- /dev/null
++++ b/drivers/clk/mxs/clk-ssp.c
+@@ -0,0 +1,61 @@
++/*
++ * Copyright 2012 DENX Software Engineering, GmbH
++ *
++ * Pulled from code:
++ * Portions copyright (C) 2003 Russell King, PXA MMCI Driver
++ * Portions copyright (C) 2004-2005 Pierre Ossman, W83L51xD SD/MMC driver
++ *
++ * Copyright 2008 Embedded Alley Solutions, Inc.
++ * Copyright 2009-2011 Freescale Semiconductor, Inc.
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/clk.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/io.h>
++#include <linux/spi/mxs-spi.h>
++
++void mxs_ssp_set_clk_rate(struct mxs_ssp *ssp, unsigned int rate)
++{
++	unsigned int ssp_clk, ssp_sck;
++	u32 clock_divide, clock_rate;
++	u32 val;
++
++	ssp_clk = clk_get_rate(ssp->clk);
++
++	for (clock_divide = 2; clock_divide <= 254; clock_divide += 2) {
++		clock_rate = DIV_ROUND_UP(ssp_clk, rate * clock_divide);
++		clock_rate = (clock_rate > 0) ? clock_rate - 1 : 0;
++		if (clock_rate <= 255)
++			break;
++	}
++
++	if (clock_divide > 254) {
++		dev_err(ssp->dev,
++			"%s: cannot set clock to %d\n", __func__, rate);
++		return;
++	}
++
++	ssp_sck = ssp_clk / clock_divide / (1 + clock_rate);
++
++	val = readl(ssp->base + HW_SSP_TIMING(ssp));
++	val &= ~(BM_SSP_TIMING_CLOCK_DIVIDE | BM_SSP_TIMING_CLOCK_RATE);
++	val |= BF_SSP(clock_divide, TIMING_CLOCK_DIVIDE);
++	val |= BF_SSP(clock_rate, TIMING_CLOCK_RATE);
++	writel(val, ssp->base + HW_SSP_TIMING(ssp));
++
++	ssp->clk_rate = ssp_sck;
++
++	dev_dbg(ssp->dev,
++		"%s: clock_divide %d, clock_rate %d, ssp_clk %d, rate_actual %d, rate_requested %d\n",
++		__func__, clock_divide, clock_rate, ssp_clk, ssp_sck, rate);
++}
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index 1ea1cba..3b1c99b 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -501,43 +501,6 @@ static void mxs_mmc_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	mxs_mmc_start_cmd(host, mrq->cmd);
+ }
+ 
+-static void mxs_mmc_set_clk_rate(struct mxs_mmc_host *host, unsigned int rate)
+-{
+-	struct mxs_ssp *ssp = &host->ssp;
+-	unsigned int ssp_clk, ssp_sck;
+-	u32 clock_divide, clock_rate;
+-	u32 val;
+-
+-	ssp_clk = clk_get_rate(ssp->clk);
+-
+-	for (clock_divide = 2; clock_divide <= 254; clock_divide += 2) {
+-		clock_rate = DIV_ROUND_UP(ssp_clk, rate * clock_divide);
+-		clock_rate = (clock_rate > 0) ? clock_rate - 1 : 0;
+-		if (clock_rate <= 255)
+-			break;
+-	}
+-
+-	if (clock_divide > 254) {
+-		dev_err(mmc_dev(host->mmc),
+-			"%s: cannot set clock to %d\n", __func__, rate);
+-		return;
+-	}
+-
+-	ssp_sck = ssp_clk / clock_divide / (1 + clock_rate);
+-
+-	val = readl(ssp->base + HW_SSP_TIMING(ssp));
+-	val &= ~(BM_SSP_TIMING_CLOCK_DIVIDE | BM_SSP_TIMING_CLOCK_RATE);
+-	val |= BF_SSP(clock_divide, TIMING_CLOCK_DIVIDE);
+-	val |= BF_SSP(clock_rate, TIMING_CLOCK_RATE);
+-	writel(val, ssp->base + HW_SSP_TIMING(ssp));
+-
+-	ssp->clk_rate = ssp_sck;
+-
+-	dev_dbg(mmc_dev(host->mmc),
+-		"%s: clock_divide %d, clock_rate %d, ssp_clk %d, rate_actual %d, rate_requested %d\n",
+-		__func__, clock_divide, clock_rate, ssp_clk, ssp_sck, rate);
+-}
+-
+ static void mxs_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
+@@ -550,7 +513,7 @@ static void mxs_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		host->bus_width = 0;
+ 
+ 	if (ios->clock)
+-		mxs_mmc_set_clk_rate(host, ios->clock);
++		mxs_ssp_set_clk_rate(&host->ssp, ios->clock);
+ }
+ 
+ static void mxs_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
 diff --git a/include/linux/spi/mxs-spi.h b/include/linux/spi/mxs-spi.h
-index c08aef5..b0a0335 100644
+index 0cb2767..2bc8abb 100644
 --- a/include/linux/spi/mxs-spi.h
 +++ b/include/linux/spi/mxs-spi.h
-@@ -30,12 +30,14 @@
- #define HW_SSP_CTRL0				0x000
- #define  BM_SSP_CTRL0_RUN			(1 << 29)
- #define  BM_SSP_CTRL0_SDIO_IRQ_CHECK		(1 << 28)
-+#define  BM_SSP_CTRL0_LOCK_CS			(1 << 27)
- #define  BM_SSP_CTRL0_IGNORE_CRC		(1 << 26)
- #define  BM_SSP_CTRL0_READ			(1 << 25)
- #define  BM_SSP_CTRL0_DATA_XFER			(1 << 24)
- #define  BP_SSP_CTRL0_BUS_WIDTH			22
- #define  BM_SSP_CTRL0_BUS_WIDTH			(0x3 << 22)
- #define  BM_SSP_CTRL0_WAIT_FOR_IRQ		(1 << 21)
-+#define  BM_SSP_CTRL0_WAIT_FOR_CMD		(1 << 20)
- #define  BM_SSP_CTRL0_LONG_RESP			(1 << 19)
- #define  BM_SSP_CTRL0_GET_RESP			(1 << 17)
- #define  BM_SSP_CTRL0_ENABLE			(1 << 16)
-@@ -64,8 +66,12 @@
- #define  BM_SSP_TIMING_TIMEOUT			(0xffff << 16)
- #define  BP_SSP_TIMING_CLOCK_DIVIDE		8
- #define  BM_SSP_TIMING_CLOCK_DIVIDE		(0xff << 8)
-+#define  BF_SSP_TIMING_CLOCK_DIVIDE(v)		\
-+			(((v) << 8) & BM_SSP_TIMING_CLOCK_DIVIDE)
- #define  BP_SSP_TIMING_CLOCK_RATE		0
- #define  BM_SSP_TIMING_CLOCK_RATE		0xff
-+#define BF_SSP_TIMING_CLOCK_RATE(v)		\
-+			(((v) << 0) & BM_SSP_TIMING_CLOCK_RATE)
- #define HW_SSP_CTRL1(h)				(ssp_is_old(h) ? 0x060 : 0x080)
- #define  BM_SSP_CTRL1_SDIO_IRQ			(1 << 31)
- #define  BM_SSP_CTRL1_SDIO_IRQ_EN		(1 << 30)
-@@ -84,11 +90,26 @@
- #define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ		(1 << 15)
- #define  BM_SSP_CTRL1_FIFO_OVERRUN_IRQ_EN	(1 << 14)
- #define  BM_SSP_CTRL1_DMA_ENABLE		(1 << 13)
-+#define  BM_SSP_CTRL1_PHASE			(1 << 10)
- #define  BM_SSP_CTRL1_POLARITY			(1 << 9)
- #define  BP_SSP_CTRL1_WORD_LENGTH		4
- #define  BM_SSP_CTRL1_WORD_LENGTH		(0xf << 4)
-+#define  BF_SSP_CTRL1_WORD_LENGTH(v)		\
-+			(((v) << 4) & BM_SSP_CTRL1_WORD_LENGTH)
-+#define  BV_SSP_CTRL1_WORD_LENGTH__FOUR_BITS	0x3
-+#define  BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS	0x7
-+#define  BV_SSP_CTRL1_WORD_LENGTH__SIXTEEN_BITS	0xF
- #define  BP_SSP_CTRL1_SSP_MODE			0
- #define  BM_SSP_CTRL1_SSP_MODE			0xf
-+#define  BF_SSP_CTRL1_SSP_MODE(v)		\
-+			(((v) << 0) & BM_SSP_CTRL1_SSP_MODE)
-+#define  BV_SSP_CTRL1_SSP_MODE__SPI		0x0
-+#define  BV_SSP_CTRL1_SSP_MODE__SSI		0x1
-+#define  BV_SSP_CTRL1_SSP_MODE__SD_MMC		0x3
-+#define  BV_SSP_CTRL1_SSP_MODE__MS		0x4
-+
-+#define HW_SSP_DATA				0x090
-+
- #define HW_SSP_SDRESP0(h)			(ssp_is_old(h) ? 0x080 : 0x0a0)
- #define HW_SSP_SDRESP1(h)			(ssp_is_old(h) ? 0x090 : 0x0b0)
- #define HW_SSP_SDRESP2(h)			(ssp_is_old(h) ? 0x0a0 : 0x0c0)
-@@ -96,6 +117,7 @@
- #define HW_SSP_STATUS(h)			(ssp_is_old(h) ? 0x0c0 : 0x100)
- #define  BM_SSP_STATUS_CARD_DETECT		(1 << 28)
- #define  BM_SSP_STATUS_SDIO_IRQ			(1 << 17)
-+#define  BM_SSP_STATUS_FIFO_EMPTY		(1 << 5)
+@@ -136,4 +136,6 @@ struct mxs_ssp {
+ 	enum mxs_ssp_id			devid;
+ };
  
- #define BF_SSP(value, field)	(((value) << BP_SSP_##field) & BM_SSP_##field)
- 
++void mxs_ssp_set_clk_rate(struct mxs_ssp *ssp, unsigned int rate);
++
+ #endif	/* __LINUX_SPI_MXS_SPI_H__ */
 -- 
 1.7.10.4
 

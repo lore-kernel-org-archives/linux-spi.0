@@ -1,8 +1,7 @@
-From: Pierre & Vacances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Offrez-vous le soleil : =?iso-8859-15?Q?jusqu=27=E0?= -45% sur vos
-	vacances
-Date: Mon, 16 Jul 2012 02:57:04 +0200
-Message-ID: <1342400353.500367617cc13@mc10.fr>
+From: Daxon par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes 3eme =?iso-8859-15?Q?d=E9marque_jusqu=27=E0?= -75%
+Date: Mon, 16 Jul 2012 04:01:03 +0200
+Message-ID: <1342404173.5003764d5619a@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1OTQyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNiAwMjo1MDowMSZlPTEmaD0xNTk0MSZmPTE1OTQyJmc9MTU5NDI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDIzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNiAwMzo1MDowMSZlPTEmaD0xNjAyMiZmPTE2MDIzJmc9MTYwMjM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1OTQyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwMjo1MDowMSZlPTEmaD0xNTk0MSZmPTE1OTQyJmc9MTU5ND=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDIzJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNiAwMzo1MDowMSZlPTEmaD0xNjAyMiZmPTE2MDIzJmc9MTYwMj=
+M=3D
 
 
 ---------------------------------------------------------------------------=

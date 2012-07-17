@@ -1,59 +1,72 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 2/2] spi/s3c64xx: Expand S3C64XX_SPI_{DE,}ACT macros at
- call sites
-Date: Tue, 17 Jul 2012 08:44:29 +0100
-Message-ID: <20120717074428.GB12047@opensource.wolfsonmicro.com>
-References: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <1340889811-7524-2-git-send-email-broonie@opensource.wolfsonmicro.com>
- <CACRpkdaC3mXcgTib3JWOjuvaWU_NEcg1JCV-4QNS4EcAAZzCJQ@mail.gmail.com>
- <144001cd63ae$0a31af20$1e950d60$%kim@samsung.com>
+From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: Linux SPI slave support
+Date: Tue, 17 Jul 2012 13:42:33 +0530
+Message-ID: <CAM=Q2ctBCOtSkC-vK4+drsuAmEkk4e=Tk3ZQtZYfqqOejhS_xw@mail.gmail.com>
+References: <201206300515.41575.marex@denx.de>
+	<CAM=Q2cs8zGTMu+Du1E8aLkiLpyB6mVH=Omt7pJRe1iFBb+Zqaw@mail.gmail.com>
+	<201207160226.19409.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CdrF4e02JqNVZeln"
-Cc: 'Linus Walleij' <linus.walleij@linaro.org>,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <144001cd63ae$0a31af20$1e950d60$%kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <201207160226.19409.marex-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Jul 16, 2012 at 5:56 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> Dear Shubhrajyoti Datta,
+>
+>> Hello,
+>>
+>> On Sat, Jun 30, 2012 at 8:45 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> > Hello,
+>> >
+>> > is there currently any ongoing effort to support SPI slave mode in Linux?
+>> >
+>> > If there is none, could you please share any hints that might help me
+>> > better choose and go in the direction of implementing the SPI slave
+>> > support?
+>>
+>> May be you may want to check the archives.
+>> You may want to see below before designing.
+>>
+>> http://permalink.gmane.org/gmane.linux.kernel.spi.devel/7495
+> [...]
+>
+> So, idea V2:
+>
+> 1) Separate out common parts from struct spi_master
+> 2) Create struct spi_slave
+> 2a) Implement spi_slave_send_message for spi_slave
+> 2b) Implement <?> netlink interface to push and pull messages to/from userland ?
+>
+> The protocol won't be done in kernel, but completely in userland.
+>
+> Is this good approach to take? Or maybe 2b can be replaced by blocking read on
+> character device? I think netlink interface might actually be suited quite well
+> for this task.
 
---CdrF4e02JqNVZeln
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Jul 17, 2012 at 08:52:20AM +0900, Kukjin Kim wrote:
+The other option is to have something like a gpio  for synchronization.
 
-> So may I take then send this series via samsung tree? Because for samsung
-> spi dt, the file has been touched in samsung tree so it helps to avoid bad
-> conflicts.
 
-May as well, yes.
 
---CdrF4e02JqNVZeln
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>
+> Best regards,
+> Marek Vasut
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQBRfTAAoJEBus8iNuMP3dF68P/3xjlFD/ZwTdaM0dLD1D6KTD
-94jsh6YJ58UAWudQycerAwmInIhoWVbGtCKXNYgiC5orxPO+MHA0PAMWH8hrtSZ7
-EOHYELt0UsmR+mYfsGqBfUMiSU9nnkR9fPQSMh660byANM0FnyMBixmRumk/b0ra
-C00Nr/aKm05hlGaJCtXWvH7b0nWwofhxaNsBgI3btpe4F2Stus7Ms1nEHXggP+v8
-AjP/tIjbWlRCJka8NS9POWp6YNE+CjJ9d4gnFk70+bL/x6f4R9Vupt2FFA1FnRQT
-2eB5w6nZQYNNLqXgZcE4muYtF1aKdNjAhakw2o1flQOQfkJIFjcOcZE9sZj8EFDC
-BbDjyldDv5AyU78JhFDxrP5xvfVEO9DLMH13okHFlXPxULZiUTfEPnGPOM9tv73p
-hNHugqL4p5aVjBZARTNx0HGzkL9voNSo64/BlTPVdL1fU2kFC2JF0DTuZHfS2NNK
-yy9k+nGLdIKIWmy4w+PlaD2mHv9VuXeupV+gtJ3trYnWkspmpzue1rKsmD1g0wac
-kRLHLm3TTH4bT+P1hEseAYgb+Bu13TUSrz9NGk0DzmZPDakXVlXuKnxsJcJvdwkX
-ATgKSUrKVYhMrTQkU+8aPsn9FzG2QFM4bnjsPA25y2WvgqNiQ+zo2Q4OI1rDmSDN
-tUbc2yvKv3/jBp5ASWOB
-=snfq
------END PGP SIGNATURE-----
-
---CdrF4e02JqNVZeln--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

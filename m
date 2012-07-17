@@ -1,16 +1,12 @@
-From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Subject: Re: [PATCH 00/10] MXS SPI driver
-Date: Tue, 17 Jul 2012 16:31:10 +0100
-Message-ID: <20120717153110.GC3107@sirena.org.uk>
-References: <1342440597-8395-1-git-send-email-marex@denx.de>
+From: "Online Ed" <counselor-8en1fftlCwOJG/aUMGpjotBPR1lH4CV8@public.gmane.org>
+Subject: [SPAM] Advance Your Career with a Degree
+Date: 17 Jul 2012 11:48:53 -0700
+Message-ID: <E1SrCpf-0008N6-11@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1342440597-8395-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,13 +17,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 16, 2012 at 02:09:47PM +0200, Marek Vasut wrote:
-> This patchset adds SPI master support for Freescale i.MX233/i.MX28.
-> This is rebased on top of next-20120713. Please consider applying,
-> bugs shall now be squashed during the previous two review rounds.
 
-Always CC maintainers, and in this case me as well (I'm collecting SPI
-patches for this release since Grant's mostly offline).
+
+
+
+Psychology Leaders in High Demand
+
+
+ Learn How You Can Gain Comprehensive Knowledge with a PhD in General Psychology 
+
+View this email with images here.
+
+
+  
+  	&nbsp;
+    
+  
+  
+    
+  
+  
+
+
+  
+    
+  
+  
+    
+    Gain Comprehensive Knowledge with a PhD in General Psychology
+    Are you a licensed counselor looking to expand your job opportunities and leadership status with the help of a PhD? We can help! Learn how to conduct psychological research in a variety of settings, including higher education, business and government agencies. Advance your leadership, instruction and analysis skills by obtaining your PhD in General Psychology at an accredited online university. Our university partner's flexible degree program allows you to take courses that fit your schedule.
+
+    Learn More
+    
+  
+
+
+  
+  	&nbsp;
+    
+    
+  
+    
+    This is a marketing message from:
+
+7227 N 16th St. Suite #190 Phoenix, AZ 85020
+  
+
+This email was sent to SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
+If you no longer wish to receive email from us, you may unsubscribe here.
+
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

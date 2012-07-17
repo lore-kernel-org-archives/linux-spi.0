@@ -1,18 +1,13 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Linux SPI slave support
-Date: Tue, 17 Jul 2012 14:30:57 +0530
-Message-ID: <CAM=Q2csOFt5hnvS-Ah8ghrSympgkfv0zAYgb7sMu_GacWkLCBA@mail.gmail.com>
-References: <201206300515.41575.marex@denx.de>
-	<201207160226.19409.marex@denx.de>
-	<CAM=Q2ctBCOtSkC-vK4+drsuAmEkk4e=Tk3ZQtZYfqqOejhS_xw@mail.gmail.com>
-	<201207171052.49859.marex@denx.de>
+From: "Moby Dick" <contato-89DDYcS5cC3tpMNyk7GQzA@public.gmane.org>
+Subject: [SPAM] Bolsas Michael Kors e Gucci 179 | Relogio Rolex 269
+Date: Tue, 17 Jul 2012 09:31:23 -0300
+Message-ID: <36d5e783e70bae117fdceecf88f1f4e4@www.painelmobydick.info>
+Reply-To: contato-89DDYcS5cC3tpMNyk7GQzA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org;
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201207171052.49859.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,38 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 17, 2012 at 2:22 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> Dear Shubhrajyoti Datta,
->
->> On Mon, Jul 16, 2012 at 5:56 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> > Dear Shubhrajyoti Datta,
-[..]
->> The other option is to have something like a gpio  for synchronization.
->
-> Synchronisation of what exactly? With my hardware (that doesn't exist yet I
-> guess), the idea is to simply cross-connect the MISO/MOSI pins and connect the
-> CLK signal. Is that possible btw?
-
-IIUC , the clock is to be driven by master. The slave gets the clock.
-Master knows when to start and stop the transaction.
-
-However for the slave the options are to
-1) Keep listening always.
-2) Use something to syncronize( I may have used the word loosely)
-master and slave.
-So that it doesnt have to listen always.
-
-Btw it is just a suggestion. I am not opposed to any other implementation.
-
-Thanks and Regards,
-
->
-> Thanks!
->
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnBh
+aW5lbG1vYnlkaWNrLmluZm8vZGlzcGxheS5waHA/TT02NDA3OTcmQz1jMGIzM2NmNTBhZDg1NzRi
+MTkxN2YwMGQ5M2I2MTk4OSZTPTE3NSZMPTcmTj02CgoKUGFyYSBwYXJhciBkZSByZWNlYmVyIG5v
+c3NvcwpFbWFpbHM6aHR0cDovL3d3dy5wYWluZWxtb2J5ZGljay5pbmZvL3Vuc3Vic2NyaWJlLnBo
+cD9NPTY0MDc5NyZDPWMwYjMzY2Y1MGFkODU3NGIxOTE3ZjAwZDkzYjYxOTg5Jkw9NyZOPTE3NQot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhj
+bHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0
+eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBj
+YW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwg
+bW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6
+Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

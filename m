@@ -1,17 +1,18 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: Linux SPI slave support
-Date: Tue, 17 Jul 2012 10:52:49 +0200
-Message-ID: <201207171052.49859.marex@denx.de>
+Date: Tue, 17 Jul 2012 14:30:57 +0530
+Message-ID: <CAM=Q2csOFt5hnvS-Ah8ghrSympgkfv0zAYgb7sMu_GacWkLCBA@mail.gmail.com>
 References: <201206300515.41575.marex@denx.de>
 	<201207160226.19409.marex@denx.de>
 	<CAM=Q2ctBCOtSkC-vK4+drsuAmEkk4e=Tk3ZQtZYfqqOejhS_xw@mail.gmail.com>
+	<201207171052.49859.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAM=Q2ctBCOtSkC-vK4+drsuAmEkk4e=Tk3ZQtZYfqqOejhS_xw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <201207171052.49859.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,57 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Shubhrajyoti Datta,
+On Tue, Jul 17, 2012 at 2:22 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> Dear Shubhrajyoti Datta,
+>
+>> On Mon, Jul 16, 2012 at 5:56 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> > Dear Shubhrajyoti Datta,
+[..]
+>> The other option is to have something like a gpio  for synchronization.
+>
+> Synchronisation of what exactly? With my hardware (that doesn't exist yet I
+> guess), the idea is to simply cross-connect the MISO/MOSI pins and connect the
+> CLK signal. Is that possible btw?
 
-> On Mon, Jul 16, 2012 at 5:56 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> > Dear Shubhrajyoti Datta,
-> > 
-> >> Hello,
-> >> 
-> >> On Sat, Jun 30, 2012 at 8:45 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> >> > Hello,
-> >> > 
-> >> > is there currently any ongoing effort to support SPI slave mode in
-> >> > Linux?
-> >> > 
-> >> > If there is none, could you please share any hints that might help me
-> >> > better choose and go in the direction of implementing the SPI slave
-> >> > support?
-> >> 
-> >> May be you may want to check the archives.
-> >> You may want to see below before designing.
-> >> 
-> >> http://permalink.gmane.org/gmane.linux.kernel.spi.devel/7495
-> > 
-> > [...]
-> > 
-> > So, idea V2:
-> > 
-> > 1) Separate out common parts from struct spi_master
-> > 2) Create struct spi_slave
-> > 2a) Implement spi_slave_send_message for spi_slave
-> > 2b) Implement <?> netlink interface to push and pull messages to/from
-> > userland ?
-> > 
-> > The protocol won't be done in kernel, but completely in userland.
-> > 
-> > Is this good approach to take? Or maybe 2b can be replaced by blocking
-> > read on character device? I think netlink interface might actually be
-> > suited quite well for this task.
-> 
-> The other option is to have something like a gpio  for synchronization.
+IIUC , the clock is to be driven by master. The slave gets the clock.
+Master knows when to start and stop the transaction.
 
-Synchronisation of what exactly? With my hardware (that doesn't exist yet I 
-guess), the idea is to simply cross-connect the MISO/MOSI pins and connect the 
-CLK signal. Is that possible btw?
+However for the slave the options are to
+1) Keep listening always.
+2) Use something to syncronize( I may have used the word loosely)
+master and slave.
+So that it doesnt have to listen always.
 
-Thanks!
+Btw it is just a suggestion. I am not opposed to any other implementation.
 
-> > Best regards,
-> > Marek Vasut
+Thanks and Regards,
 
-Best regards,
-Marek Vasut
+>
+> Thanks!
+>
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

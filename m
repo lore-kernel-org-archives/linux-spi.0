@@ -1,40 +1,59 @@
-From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?2=E8me_d=E9marque_jusqu=27=E0?= -70%
-Date: Tue, 17 Jul 2012 02:22:03 +0200
-Message-ID: <1342484525.5004b02d594b0@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 2/2] spi/s3c64xx: Expand S3C64XX_SPI_{DE,}ACT macros at
+ call sites
+Date: Tue, 17 Jul 2012 08:44:29 +0100
+Message-ID: <20120717074428.GB12047@opensource.wolfsonmicro.com>
+References: <1340889811-7524-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <1340889811-7524-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <CACRpkdaC3mXcgTib3JWOjuvaWU_NEcg1JCV-4QNS4EcAAZzCJQ@mail.gmail.com>
+ <144001cd63ae$0a31af20$1e950d60$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CdrF4e02JqNVZeln"
+Cc: 'Linus Walleij' <linus.walleij@linaro.org>,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <144001cd63ae$0a31af20$1e950d60$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDA2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNyAwMjoyMDowMSZlPTEmaD0xNjAwNSZmPTE2MDA2Jmc9MTYwMDY=3D
+--CdrF4e02JqNVZeln
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDA2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNyAwMjoyMDowMSZlPTEmaD0xNjAwNSZmPTE2MDA2Jmc9MTYwMD=
-Y=3D
+On Tue, Jul 17, 2012 at 08:52:20AM +0900, Kukjin Kim wrote:
 
+> So may I take then send this series via samsung tree? Because for samsung
+> spi dt, the file has been touched in samsung tree so it helps to avoid bad
+> conflicts.
 
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+May as well, yes.
 
-threat landscape has changed and how IT managers can respond. Discussions =
+--CdrF4e02JqNVZeln
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-will include endpoint security, mobile security and the latest in malware =
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+iQIcBAEBAgAGBQJQBRfTAAoJEBus8iNuMP3dF68P/3xjlFD/ZwTdaM0dLD1D6KTD
+94jsh6YJ58UAWudQycerAwmInIhoWVbGtCKXNYgiC5orxPO+MHA0PAMWH8hrtSZ7
+EOHYELt0UsmR+mYfsGqBfUMiSU9nnkR9fPQSMh660byANM0FnyMBixmRumk/b0ra
+C00Nr/aKm05hlGaJCtXWvH7b0nWwofhxaNsBgI3btpe4F2Stus7Ms1nEHXggP+v8
+AjP/tIjbWlRCJka8NS9POWp6YNE+CjJ9d4gnFk70+bL/x6f4R9Vupt2FFA1FnRQT
+2eB5w6nZQYNNLqXgZcE4muYtF1aKdNjAhakw2o1flQOQfkJIFjcOcZE9sZj8EFDC
+BbDjyldDv5AyU78JhFDxrP5xvfVEO9DLMH13okHFlXPxULZiUTfEPnGPOM9tv73p
+hNHugqL4p5aVjBZARTNx0HGzkL9voNSo64/BlTPVdL1fU2kFC2JF0DTuZHfS2NNK
+yy9k+nGLdIKIWmy4w+PlaD2mHv9VuXeupV+gtJ3trYnWkspmpzue1rKsmD1g0wac
+kRLHLm3TTH4bT+P1hEseAYgb+Bu13TUSrz9NGk0DzmZPDakXVlXuKnxsJcJvdwkX
+ATgKSUrKVYhMrTQkU+8aPsn9FzG2QFM4bnjsPA25y2WvgqNiQ+zo2Q4OI1rDmSDN
+tUbc2yvKv3/jBp5ASWOB
+=snfq
+-----END PGP SIGNATURE-----
+
+--CdrF4e02JqNVZeln--

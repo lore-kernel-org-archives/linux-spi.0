@@ -1,17 +1,13 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Linux SPI slave support
-Date: Tue, 17 Jul 2012 13:42:33 +0530
-Message-ID: <CAM=Q2ctBCOtSkC-vK4+drsuAmEkk4e=Tk3ZQtZYfqqOejhS_xw@mail.gmail.com>
-References: <201206300515.41575.marex@denx.de>
-	<CAM=Q2cs8zGTMu+Du1E8aLkiLpyB6mVH=Omt7pJRe1iFBb+Zqaw@mail.gmail.com>
-	<201207160226.19409.marex@denx.de>
+From: "Major World" <advert-qj6awBEauOnd8Zgiw/MPxQ@public.gmane.org>
+Subject: [SPAM] Japanese used cars and foreign cars
+Date: Tue, 17 Jul 2012 01:20:38 -0700
+Message-ID: <26997646.20120717012038@majorworld.com>
+Reply-To: Major World <world.major-/E1597aS9LToLY4ysWL1ZA@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: "Spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201207160226.19409.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,47 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 16, 2012 at 5:56 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> Dear Shubhrajyoti Datta,
->
->> Hello,
->>
->> On Sat, Jun 30, 2012 at 8:45 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> > Hello,
->> >
->> > is there currently any ongoing effort to support SPI slave mode in Linux?
->> >
->> > If there is none, could you please share any hints that might help me
->> > better choose and go in the direction of implementing the SPI slave
->> > support?
->>
->> May be you may want to check the archives.
->> You may want to see below before designing.
->>
->> http://permalink.gmane.org/gmane.linux.kernel.spi.devel/7495
-> [...]
->
-> So, idea V2:
->
-> 1) Separate out common parts from struct spi_master
-> 2) Create struct spi_slave
-> 2a) Implement spi_slave_send_message for spi_slave
-> 2b) Implement <?> netlink interface to push and pull messages to/from userland ?
->
-> The protocol won't be done in kernel, but completely in userland.
->
-> Is this good approach to take? Or maybe 2b can be replaced by blocking read on
-> character device? I think netlink interface might actually be suited quite well
-> for this task.
+Dear Sir/Madam
 
+We are an american used car export company selling Japanese used cars and foreign cars. We export Japanese used cars to various countries in the world. We have extensive stocks of Japanese used cars and american cars which satisfy your needs. We guarantee Good condition, Good price, Quick service.
+Right now we are giving discount prices on Toyota Land cruisers, Prado and Double Cabin Toyota Hilux pick- up
 
-The other option is to have something like a gpio  for synchronization.
+We have only 97 units in stocks and you could be lucky to get 1 unit for yourself
+We are giving discount prices because it is our marketing strategy to attract more customers in Africa and in the world at large.We want you to take an advantage of this opportunity.
+Sincerely yours,
 
+Tom Bruce,
+Sales Team/General Manager
 
-
->
-> Best regards,
-> Marek Vasut
+Address: 43-40 Northern Blvd Long island city queens Ny 11101 USA
+TEL:+ 1 212 359 1616 FAX:1 647 7237352
+Email: mworld-+NbaIjSFD8nd8Zgiw/MPxQ@public.gmane.org
+Website: www.majorworld.com
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

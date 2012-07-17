@@ -1,16 +1,13 @@
-From: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the
-	platform data
-Date: Wed, 18 Jul 2012 11:44:00 +0800
-Message-ID: <1342583040.1688.94.camel@glenn-desktop>
-References: <1340677936-6967-1-git-send-email-B37781@freescale.com>
+From: Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: -80% sur des bagages de grandes marques
+Date: Tue, 17 Jul 2012 21:42:03 +0200
+Message-ID: <1342554180.5005c044cb6c8@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, spi-devel-general
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1340677936-6967-1-git-send-email-B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,56 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi all,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-	I'm sorry, this patch is invalid, please ignore it, I will resend a new
-patch base on the last tree. Thanks.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDIwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xNyAyMTo0MDowMSZlPTEmaD0xNjAxOSZmPTE2MDIwJmc9MTYwMjA=3D
 
--- 
-Best Regards,
-Jiucheng
-
-
-On Tue, 2012-06-26 at 10:32 +0800, Xu Jiucheng wrote:
-> In the spi_alloc_device(), the parent pointer of spi deivce has
-> been changed from master->dev.parent to &master->dev for device
-> unregistration, so the pointer of getting the platform data as
-> this 'spi->dev.parent->platform_data' is wrong.
-> 
-> Signed-off-by: Xu Jiucheng <B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> ---
->  drivers/spi/spi_fsl_spi.c |    5 +++--
->  1 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi_fsl_spi.c b/drivers/spi/spi_fsl_spi.c
-> index 7963c9b..7d164d3 100644
-> --- a/drivers/spi/spi_fsl_spi.c
-> +++ b/drivers/spi/spi_fsl_spi.c
-> @@ -139,7 +139,7 @@ static void fsl_spi_change_mode(struct spi_device *spi)
->  static void fsl_spi_chipselect(struct spi_device *spi, int value)
->  {
->  	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-> -	struct fsl_spi_platform_data *pdata = spi->dev.parent->platform_data;
-> +	struct fsl_spi_platform_data *pdata = mpc8xxx_spi->dev->platform_data;
->  	bool pol = spi->mode & SPI_CS_HIGH;
->  	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
->  
-> @@ -934,7 +934,8 @@ err:
->  
->  static void fsl_spi_cs_control(struct spi_device *spi, bool on)
->  {
-> -	struct device *dev = spi->dev.parent;
-> +	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-> +	struct device *dev = mpc8xxx_spi->dev;
->  	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
->  	u16 cs = spi->chip_select;
->  	int gpio = pinfo->gpios[cs];
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDIwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xNyAyMTo0MDowMSZlPTEmaD0xNjAxOSZmPTE2MDIwJmc9MTYwMj=
+A=3D
 
 
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

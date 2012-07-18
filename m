@@ -1,9 +1,8 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 3 produits =?iso-8859-15?Q?achet=E9s?= = le
-	=?iso-8859-15?Q?4=E8me?= offert. Livraison offerte
-	=?iso-8859-15?Q?d=E8s_39=80_d=92achat?=
-Date: Wed, 18 Jul 2012 23:22:05 +0200
-Message-ID: <1342646526.500728feb1159@mc10.fr>
+From: Sarenza par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos chaussures =?iso-8859-15?Q?pr=E9f=E9r=E9es?= -60%, chez vous
+	rapidement et gratuitement
+Date: Thu, 19 Jul 2012 00:06:05 +0200
+Message-ID: <1342649393.50073431e18dd@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -22,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDg2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xOCAyMzoyMDowMSZlPTEmaD0xNjA4NSZmPTE2MDg2Jmc9MTYwODY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDg3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xOSAwMDowMDowMSZlPTEmaD0xNjA4NiZmPTE2MDg3Jmc9MTYwODc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDg2JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xOCAyMzoyMDowMSZlPTEmaD0xNjA4NSZmPTE2MDg2Jmc9MTYwOD=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDg3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xOSAwMDowMDowMSZlPTEmaD0xNjA4NiZmPTE2MDg3Jmc9MTYwOD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

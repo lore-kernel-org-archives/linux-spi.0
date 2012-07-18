@@ -1,7 +1,7 @@
-From: Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: -80% sur des bagages de grandes marques
-Date: Tue, 17 Jul 2012 21:42:03 +0200
-Message-ID: <1342554180.5005c044cb6c8@mc10.fr>
+From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Wed, 18 Jul 2012 06:34:06 +0200
+Message-ID: <1342586096.50063cf007bb3@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDIwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xNyAyMTo0MDowMSZlPTEmaD0xNjAxOSZmPTE2MDIwJmc9MTYwMjA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDU0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xOCAwNjozMDowMSZlPTEmaD0xNjA1MyZmPTE2MDU0Jmc9MTYwNTQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDIwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xNyAyMTo0MDowMSZlPTEmaD0xNjAxOSZmPTE2MDIwJmc9MTYwMj=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDU0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xOCAwNjozMDowMSZlPTEmaD0xNjA1MyZmPTE2MDU0Jmc9MTYwNT=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,8 +1,9 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Solde =?iso-8859-15?Q?3=E8me_d=E9marques_jusqu=27=E0?= -80% sur
-	tout le site
-Date: Thu, 19 Jul 2012 00:22:09 +0200
-Message-ID: <1342650130.50073712a792c@mc10.fr>
+From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 3 produits =?iso-8859-15?Q?achet=E9s?= = le
+	=?iso-8859-15?Q?4=E8me?= offert. Livraison offerte
+	=?iso-8859-15?Q?d=E8s_39=80_d=92achat?=
+Date: Wed, 18 Jul 2012 23:22:05 +0200
+Message-ID: <1342646526.500728feb1159@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDg5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xOSAwMDoxMDowMSZlPTEmaD0xNjA4OCZmPTE2MDg5Jmc9MTYwODk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDg2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xOCAyMzoyMDowMSZlPTEmaD0xNjA4NSZmPTE2MDg2Jmc9MTYwODY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDg5JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xOSAwMDoxMDowMSZlPTEmaD0xNjA4OCZmPTE2MDg5Jmc9MTYwOD=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDg2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xOCAyMzoyMDowMSZlPTEmaD0xNjA4NSZmPTE2MDg2Jmc9MTYwOD=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,14 +1,11 @@
-From: Club des =?iso-8859-15?Q?cr=E9ateurs?= de =?iso-8859-15?Q?Beaut=E9?=
-	par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Derni=E8re_d=E9marques?= encore + de produits
-	=?iso-8859-15?Q?=E0?= -80%
-Date: Thu, 19 Jul 2012 00:45:04 +0200
-Message-ID: <1342651566.50073caea98bb@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Online Ed" <counselor-LNCSJx8NKz0CkDQntzu8uhGZ6WaZejjh@public.gmane.org>
+Subject: [SPAM] Improve Your Career with a Degree
+Date: 18 Jul 2012 16:13:06 -0700
+Message-ID: <E1SrdQz-0000NJ-Ui@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: SPI-DEVEL-GENERAL-jEwL0F8OQBPYuXo5jQzoGqHwyWdF0H6P@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,23 +17,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MTE0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xOSAwMDo0MDowMSZlPTEmaD0xNjExMyZmPTE2MTE0Jmc9MTYxMTQ=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MTE0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xOSAwMDo0MDowMSZlPTEmaD0xNjExMyZmPTE2MTE0Jmc9MTYxMT=
-Q=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+CgoKCkludGVyZXN0ZWQgaW4gRWFybmluZyBhIERlZ3JlZT8KCgoKCgogIAogICAgSW50ZXJlc3Rl
+ZCBpbiBFYXJuaW5nIGEgRGVncmVlPyBMZWFybiBtb3JlLiBIYXZpbmcgdHJvdWJsZSB2aWV3aW5n
+IHRoaXMgZW1haWw/IENsaWNrIEhlcmUKICAgIAogIAoKCiAgCiAgICAmbmJzcDsKICAKICAgCiAg
+ICAgCiAgCiAgCiAgICAKICAgIAogIAogICAgCiAgCQogIAogIAogICAgSW50ZXJlc3RlZCBpbiBF
+YXJuaW5nIGEgRGVncmVlPyAKICAgIApMaWZldGltZSBMZWFybmluZyBvZmZlcnMgc3R1ZGVudHMg
+b3ZlciAzMDAgZGlmZmVyZW50IEFzc29jaWF0ZeKAmXMsIEJhY2hlbG9y4oCZcywgTWFzdGVy4oCZ
+cyAgYW5kIERvY3RvcmF0ZSBvbmxpbmUgZGVncmVlIHByb2dyYW1zIGluIGFyZWFzIHN1Y2ggYXMg
+Q29tbXVuaWNhdGlvbnMsIEJ1c2luZXNzLCAgUHN5Y2hvbG9neSwgUG9saXRpY2FsIFNjaWVuY2Us
+IGFuZCBtYW55IG1vcmUhCkxpZmV0aW1lIExlYXJuaW5nIGlzIGEgZnJlZSBzZXJ2aWNlIGRlZGlj
+YXRlZCB0byBoZWxwaW5nIHlvdSByZWFjaCB5b3VyIGVkdWNhdGlvbmFsIGdvYWxzLiBMaWZldGlt
+ZSBMZWFybmluZyB3aWxsIGNvbm5lY3QgeW91IHdpdGggYW4gZWR1Y2F0aW9uIGFkdmlzb3Igd2hv
+IHdpbGw6CgpFeHBsYWluIGFsbCB0aGUgZmVlcywgYXBwbGljYXRpb24gYW5kIHJlZ2lzdHJhdGlv
+biByZXF1aXJlbWVudHMgCkdvIG92ZXIgZmluYW5jaWFsIGFpZCBvcHRpb25zCk9yZGVyIHRyYW5z
+Y3JpcHRzIChhdCBubyBleHBlbnNlIHRvIHlvdSkKSGVscCB3aXRoIHRoZSBhcHBsaWNhdGlvbiBw
+cm9jZXNzCgpMZWFybiBNb3JlCgkKICAKICAKICAgICZuYnNwOwogIAogIAogICAgVGhpcyBpcyBh
+IG1hcmtldGluZyBlbWFpbCBmcm9tOiA3MjI3IE5vcnRoIDE2dGggU3RyZWV0LCBTdWl0ZSAjMTkw
+IHwgUGhvZW5peCwgQXJpem9uYSA4NTAyMCB8IDg2Ni41NjQuMDI1NAogICAgIApUaGlzIGVtYWls
+IHdhcyBzZW50IHRvIFNQSS1ERVZFTC1HRU5FUkFMQExJU1RTLlNPVVJDRUZPUkdFLk5FVApJZiB5
+b3Ugbm8gbG9uZ2VyIHdpc2ggdG8gcmVjZWl2ZSBlbWFpbCBmcm9tIHVzLCB5b3UgbWF5IHVuc3Vi
+c2NyaWJlIGhlcmUuCiAgICAKICAKCiAgICAKICAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZl
+IFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNv
+dmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBo
+YXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAK
+d2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBs
+YXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcv
+c2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,43 +1,45 @@
-From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Subject: Re: [PATCH 00/10] MXS SPI driver
-Date: Wed, 18 Jul 2012 12:10:49 +0100
-Message-ID: <20120718111049.GA9923@sirena.org.uk>
-References: <1342440597-8395-1-git-send-email-marex@denx.de>
-	<20120717153110.GC3107@sirena.org.uk>
-	<201207180009.54189.marex@denx.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201207180009.54189.marex-ynQEQJNshbs@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 2/4] spi/s3c64xx: Put the /CS GPIO into output mode
+Date: Wed, 18 Jul 2012 12:28:39 +0100
+Message-ID: <1342610921-31986-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+References: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 18, 2012 at 12:09:54AM +0200, Marek Vasut wrote:
-> > On Mon, Jul 16, 2012 at 02:09:47PM +0200, Marek Vasut wrote:
+No call was being made by the GPIO driver to put the GPIO into output
+mode meaning that the calls to gpio_set_value() which were being done
+were not valid. A similar issue appears to exist with the DT GPIO
+requests but as they appear to be being used for pinmux it's less clear
+to me that we want to configure them.
 
-> > Always CC maintainers, and in this case me as well (I'm collecting SPI
-> > patches for this release since Grant's mostly offline).
+Without this fix Cragganmore systems can't talk to their SPI devices.
 
-> Ah, I wasn't aware you're the SPI maintainer now. Sorry about that. Will do if 
-> there's a rework requested.
+Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+---
+ drivers/spi/spi-s3c64xx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I'm not, I'm just looking after things for this release (until Grant's
-finished moving house and attending conferences).
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 7258b18..6ed3ba8 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -892,7 +892,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 	}
+ 
+ 	if (!spi_get_ctldata(spi)) {
+-		err = gpio_request(cs->line, dev_name(&spi->dev));
++		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
++				       dev_name(&spi->dev));
+ 		if (err) {
+ 			dev_err(&spi->dev,
+ 				"Failed to get /CS gpio [%d]: %d\n",
+-- 
+1.7.10.4

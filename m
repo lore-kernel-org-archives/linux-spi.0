@@ -1,16 +1,15 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 00/10] MXS SPI driver
-Date: Wed, 18 Jul 2012 00:09:54 +0200
-Message-ID: <201207180009.54189.marex@denx.de>
-References: <1342440597-8395-1-git-send-email-marex@denx.de>
-	<20120717153110.GC3107@sirena.org.uk>
+From: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the
+	platform data
+Date: Wed, 18 Jul 2012 11:21:27 +0800
+Message-ID: <1342581687.1688.88.camel@glenn-desktop>
+References: <1340677936-6967-1-git-send-email-B37781@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org
-To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120717153110.GC3107-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1340677936-6967-1-git-send-email-B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,21 +20,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Mark Brown,
+Hi All,
 
-> On Mon, Jul 16, 2012 at 02:09:47PM +0200, Marek Vasut wrote:
-> > This patchset adds SPI master support for Freescale i.MX233/i.MX28.
-> > This is rebased on top of next-20120713. Please consider applying,
-> > bugs shall now be squashed during the previous two review rounds.
+	I'm sorry, please ignore this patch.
+
+-- 
+Best Regards,
+Jiucheng
+
+
+On Tue, 2012-06-26 at 10:32 +0800, Xu Jiucheng wrote:
+> In the spi_alloc_device(), the parent pointer of spi deivce has
+> been changed from master->dev.parent to &master->dev for device
+> unregistration, so the pointer of getting the platform data as
+> this 'spi->dev.parent->platform_data' is wrong.
 > 
-> Always CC maintainers, and in this case me as well (I'm collecting SPI
-> patches for this release since Grant's mostly offline).
+> Signed-off-by: Xu Jiucheng <B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+>  drivers/spi/spi_fsl_spi.c |    5 +++--
+>  1 files changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi_fsl_spi.c b/drivers/spi/spi_fsl_spi.c
+> index 7963c9b..7d164d3 100644
+> --- a/drivers/spi/spi_fsl_spi.c
+> +++ b/drivers/spi/spi_fsl_spi.c
+> @@ -139,7 +139,7 @@ static void fsl_spi_change_mode(struct spi_device *spi)
+>  static void fsl_spi_chipselect(struct spi_device *spi, int value)
+>  {
+>  	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+> -	struct fsl_spi_platform_data *pdata = spi->dev.parent->platform_data;
+> +	struct fsl_spi_platform_data *pdata = mpc8xxx_spi->dev->platform_data;
+>  	bool pol = spi->mode & SPI_CS_HIGH;
+>  	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
+>  
+> @@ -934,7 +934,8 @@ err:
+>  
+>  static void fsl_spi_cs_control(struct spi_device *spi, bool on)
+>  {
+> -	struct device *dev = spi->dev.parent;
+> +	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
+> +	struct device *dev = mpc8xxx_spi->dev;
+>  	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
+>  	u16 cs = spi->chip_select;
+>  	int gpio = pinfo->gpios[cs];
 
-Ah, I wasn't aware you're the SPI maintainer now. Sorry about that. Will do if 
-there's a rework requested.
 
-Best regards,
-Marek Vasut
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

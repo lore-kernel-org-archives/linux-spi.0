@@ -1,7 +1,7 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 2/4] spi/s3c64xx: Put the /CS GPIO into output mode
-Date: Wed, 18 Jul 2012 12:28:39 +0100
-Message-ID: <1342610921-31986-2-git-send-email-broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 4/4] spi/s3c64xx: Expand S3C64XX_SPI_{DE,}ACT macros at call sites
+Date: Wed, 18 Jul 2012 12:28:41 +0100
+Message-ID: <1342610921-31986-4-git-send-email-broonie@opensource.wolfsonmicro.com>
 References: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Cc: linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org,
@@ -14,32 +14,58 @@ In-Reply-To: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-No call was being made by the GPIO driver to put the GPIO into output
-mode meaning that the calls to gpio_set_value() which were being done
-were not valid. A similar issue appears to exist with the DT GPIO
-requests but as they appear to be being used for pinmux it's less clear
-to me that we want to configure them.
-
-Without this fix Cragganmore systems can't talk to their SPI devices.
+They have very few users and they're both just doing a single register
+write so the advantage of having the macro is a bit limited. An inline
+function might make sense but it's as easy to just do the writes directly.
 
 Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-s3c64xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-s3c64xx.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 7258b18..6ed3ba8 100644
+index 1781365..d24ec80 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -892,7 +892,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	}
+@@ -79,11 +79,6 @@
+ #define S3C64XX_SPI_SLAVE_AUTO			(1<<1)
+ #define S3C64XX_SPI_SLAVE_SIG_INACT		(1<<0)
  
- 	if (!spi_get_ctldata(spi)) {
--		err = gpio_request(cs->line, dev_name(&spi->dev));
-+		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
-+				       dev_name(&spi->dev));
- 		if (err) {
- 			dev_err(&spi->dev,
- 				"Failed to get /CS gpio [%d]: %d\n",
+-#define S3C64XX_SPI_ACT(c) writel(0, (c)->regs + S3C64XX_SPI_SLAVE_SEL)
+-
+-#define S3C64XX_SPI_DEACT(c) writel(S3C64XX_SPI_SLAVE_SIG_INACT, \
+-					(c)->regs + S3C64XX_SPI_SLAVE_SEL)
+-
+ #define S3C64XX_SPI_INT_TRAILING_EN		(1<<6)
+ #define S3C64XX_SPI_INT_RX_OVERRUN_EN		(1<<5)
+ #define S3C64XX_SPI_INT_RX_UNDERRUN_EN		(1<<4)
+@@ -737,14 +732,15 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
+ 		enable_cs(sdd, spi);
+ 
+ 		/* Start the signals */
+-		S3C64XX_SPI_ACT(sdd);
++		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+ 
+ 		spin_unlock_irqrestore(&sdd->lock, flags);
+ 
+ 		status = wait_for_xfer(sdd, xfer, use_dma);
+ 
+ 		/* Quiese the signals */
+-		S3C64XX_SPI_DEACT(sdd);
++		writel(S3C64XX_SPI_SLAVE_SIG_INACT,
++		       sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+ 
+ 		if (status) {
+ 			dev_err(&spi->dev, "I/O Error: "
+@@ -1030,7 +1026,7 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+ 
+ 	sdd->cur_speed = 0;
+ 
+-	S3C64XX_SPI_DEACT(sdd);
++	writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+ 
+ 	/* Disable Interrupts - we use Polling if not DMA mode */
+ 	writel(0, regs + S3C64XX_SPI_INT_EN);
 -- 
 1.7.10.4

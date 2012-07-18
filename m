@@ -1,78 +1,55 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 3/4] spi/s3c64xx: Convert to devm_request_and_ioremap()
-Date: Wed, 18 Jul 2012 12:28:40 +0100
-Message-ID: <1342610921-31986-3-git-send-email-broonie@opensource.wolfsonmicro.com>
-References: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Grant Likely <grant.likely@secretlab.ca>,
-	Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 00/10] MXS SPI driver
+Date: Wed, 18 Jul 2012 15:37:52 +0200
+Message-ID: <201207181537.52610.marex@denx.de>
+References: <1342440597-8395-1-git-send-email-marex@denx.de>
+	<201207180009.54189.marex@denx.de>
+	<20120718111049.GA9923@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120718111049.GA9923-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Saves some error handling and a small amount of code.
+Dear Mark Brown,
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Reviewed-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/spi/spi-s3c64xx.c |   18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+> On Wed, Jul 18, 2012 at 12:09:54AM +0200, Marek Vasut wrote:
+> > > On Mon, Jul 16, 2012 at 02:09:47PM +0200, Marek Vasut wrote:
+> > > 
+> > > Always CC maintainers, and in this case me as well (I'm collecting SPI
+> > > patches for this release since Grant's mostly offline).
+> > 
+> > Ah, I wasn't aware you're the SPI maintainer now. Sorry about that. Will
+> > do if there's a rework requested.
+> 
+> I'm not, I'm just looking after things for this release (until Grant's
+> finished moving house and attending conferences).
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 6ed3ba8..1781365 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1278,14 +1278,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
--	if (request_mem_region(mem_res->start,
--			resource_size(mem_res), pdev->name) == NULL) {
--		dev_err(&pdev->dev, "Req mem region failed\n");
--		ret = -ENXIO;
--		goto err0;
--	}
--
--	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
-+	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
- 	if (sdd->regs == NULL) {
- 		dev_err(&pdev->dev, "Unable to remap IO\n");
- 		ret = -ENXIO;
-@@ -1379,9 +1372,7 @@ err3:
- 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
- 		s3c64xx_spi_dt_gpio_free(sdd);
- err2:
--	iounmap((void *) sdd->regs);
- err1:
--	release_mem_region(mem_res->start, resource_size(mem_res));
- err0:
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
-@@ -1393,7 +1384,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
--	struct resource	*mem_res;
- 
- 	pm_runtime_disable(&pdev->dev);
- 
-@@ -1412,12 +1402,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
- 		s3c64xx_spi_dt_gpio_free(sdd);
- 
--	iounmap((void *) sdd->regs);
--
--	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (mem_res != NULL)
--		release_mem_region(mem_res->start, resource_size(mem_res));
--
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 
--- 
-1.7.10.4
+Roger that, thanks for helping me.
+
+I'll add you the the CC when I'll roll out the updated series, fixing the issue 
+pointed out by Attila. I believe Shawn and Dong are CCed, which are the MXS 
+(imx23/imx28) maintainers. Who else should be CCed?
+
+Did you notice any other problems please?
+
+Best regards,
+Marek Vasut
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,13 +1,14 @@
 From: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Subject: Re: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the
 	platform data
-Date: Wed, 18 Jul 2012 11:21:27 +0800
-Message-ID: <1342581687.1688.88.camel@glenn-desktop>
+Date: Wed, 18 Jul 2012 11:44:00 +0800
+Message-ID: <1342583040.1688.94.camel@glenn-desktop>
 References: <1340677936-6967-1-git-send-email-B37781@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, spi-devel-general
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1340677936-6967-1-git-send-email-B37781-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,9 +21,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi All,
+Hi all,
 
-	I'm sorry, please ignore this patch.
+	I'm sorry, this patch is invalid, please ignore it, I will resend a new
+patch base on the last tree. Thanks.
 
 -- 
 Best Regards,

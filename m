@@ -1,7 +1,8 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH 1/4] spi/s3c64xx: Fix handling of errors in gpio_request()
-Date: Wed, 18 Jul 2012 12:28:38 +0100
-Message-ID: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH 3/4] spi/s3c64xx: Convert to devm_request_and_ioremap()
+Date: Wed, 18 Jul 2012 12:28:40 +0100
+Message-ID: <1342610921-31986-3-git-send-email-broonie@opensource.wolfsonmicro.com>
+References: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Cc: linux-arm-kernel@lists.infradead.org,
 	linux-samsung-soc@vger.kernel.org,
 	spi-devel-general@lists.sourceforge.net,
@@ -9,50 +10,69 @@ Cc: linux-arm-kernel@lists.infradead.org,
 To: Grant Likely <grant.likely@secretlab.ca>,
 	Kukjin Kim <kgene.kim@samsung.com>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1342610921-31986-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When gpio_request() fails the driver logged the failure but while it'd
-try to print an error code in the non-DT case it didn't pass the error
-code in so garbage would be logged and in the DT case the error wasn't
-logged.
-
-Further, in the non-DT case the error code was then overwritten with -EBUSY
-depriving the caller of information and breaking automatic probe deferral
-pushing back from the GPIO level.  Also reformat the non-DT log message
-so it's not word wrapped and we can grep for it.
+Saves some error handling and a small amount of code.
 
 Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Reviewed-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/spi/spi-s3c64xx.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi-s3c64xx.c |   18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 999154a0..7258b18 100644
+index 6ed3ba8..1781365 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -894,9 +894,9 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	if (!spi_get_ctldata(spi)) {
- 		err = gpio_request(cs->line, dev_name(&spi->dev));
- 		if (err) {
--			dev_err(&spi->dev, "request for slave select gpio "
--					"line [%d] failed\n", cs->line);
--			err = -EBUSY;
-+			dev_err(&spi->dev,
-+				"Failed to get /CS gpio [%d]: %d\n",
-+				cs->line, err);
- 			goto err_gpio_req;
- 		}
- 		spi_set_ctldata(spi, cs);
-@@ -1114,7 +1114,8 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
+@@ -1278,14 +1278,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
  
- 		ret = gpio_request(gpio, "spi-bus");
- 		if (ret) {
--			dev_err(dev, "gpio [%d] request failed\n", gpio);
-+			dev_err(dev, "gpio [%d] request failed: %d\n",
-+				gpio, ret);
- 			goto free_gpio;
- 		}
- 	}
+-	if (request_mem_region(mem_res->start,
+-			resource_size(mem_res), pdev->name) == NULL) {
+-		dev_err(&pdev->dev, "Req mem region failed\n");
+-		ret = -ENXIO;
+-		goto err0;
+-	}
+-
+-	sdd->regs = ioremap(mem_res->start, resource_size(mem_res));
++	sdd->regs = devm_request_and_ioremap(&pdev->dev, mem_res);
+ 	if (sdd->regs == NULL) {
+ 		dev_err(&pdev->dev, "Unable to remap IO\n");
+ 		ret = -ENXIO;
+@@ -1379,9 +1372,7 @@ err3:
+ 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
+ 		s3c64xx_spi_dt_gpio_free(sdd);
+ err2:
+-	iounmap((void *) sdd->regs);
+ err1:
+-	release_mem_region(mem_res->start, resource_size(mem_res));
+ err0:
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+@@ -1393,7 +1384,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
+-	struct resource	*mem_res;
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 
+@@ -1412,12 +1402,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
+ 		s3c64xx_spi_dt_gpio_free(sdd);
+ 
+-	iounmap((void *) sdd->regs);
+-
+-	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (mem_res != NULL)
+-		release_mem_region(mem_res->start, resource_size(mem_res));
+-
+ 	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
 -- 
 1.7.10.4

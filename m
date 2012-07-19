@@ -1,9 +1,9 @@
-From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
-Subject: Les bonnes affaires continuent: plus de 340 produits
-	=?iso-8859-15?Q?sold?= =?iso-8859-15?Q?=E9s_jusqu=27=E0?= 70%
-Date: Thu, 19 Jul 2012 04:41:09 +0200
-Message-ID: <1342665799.50077447b1949@mc10.fr>
-Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: "PIXmania.com par Duano" <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: grande braderie tout doit =?iso-8859-15?Q?dispara=EEtre_jusq?=
+	=?iso-8859-15?Q?u=27=E0?= -90%
+Date: Thu, 19 Jul 2012 06:00:08 +0200
+Message-ID: <1342670451.5007867333a05@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE2Mzk1JmM9MjM2NDM3JmQ9MjAx=
-Mi0wNy0xOSAwNDoyMDowMiZlPTEmaD0xNjM5NCZmPTE2Mzk1Jmc9MTYzOTU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NDA3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0xOSAwNTo1MDowMSZlPTEmaD0xNjQwNiZmPTE2NDA3Jmc9MTY0MDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE2Mzk1JmM=
-9MjM2NDM3JmQ9MjAxMi0wNy0xOSAwNDoyMDowMiZlPTEmaD0xNjM5NCZmPTE2Mzk1Jmc9MTYzOT=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NDA3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0xOSAwNTo1MDowMSZlPTEmaD0xNjQwNiZmPTE2NDA3Jmc9MTY0MD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

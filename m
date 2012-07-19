@@ -1,13 +1,13 @@
-From: Sarenza par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vos chaussures =?iso-8859-15?Q?pr=E9f=E9r=E9es?= -60%, chez vous
-	rapidement et gratuitement
-Date: Thu, 19 Jul 2012 00:06:05 +0200
-Message-ID: <1342649393.50073431e18dd@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: spi/omap2: mark omap2_mcspi_master_setup as __devinit
+Date: Thu, 19 Jul 2012 14:52:56 +0000
+Message-ID: <201207191452.56549.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +19,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This warning recently appeared with omap2plus_defconfig:
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDg3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0xOSAwMDowMDowMSZlPTEmaD0xNjA4NiZmPTE2MDg3Jmc9MTYwODc=3D
+WARNING: drivers/spi/built-in.o(.devinit.text+0x3c4): Section mismatch in reference from the function omap2_mcspi_probe() to the function .init.text:omap2_mcspi_master_setup()
+The function __devinit omap2_mcspi_probe() references
+a function __init omap2_mcspi_master_setup().
+If omap2_mcspi_master_setup is only used by omap2_mcspi_probe then
+annotate omap2_mcspi_master_setup with a matching annotation.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDg3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0xOSAwMDowMDowMSZlPTEmaD0xNjA4NiZmPTE2MDg3Jmc9MTYwOD=
-c=3D
+The fix is obviously to mark the omap2_mcspi_master_setup function as
+__devinit, rather than __init.
 
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 
----------------------------------------------------------------------------=
----
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 0c73dd4..dc02f2f 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1032,7 +1032,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int __init omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
++static int __devinit omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+ {
+ 	struct spi_master	*master = mcspi->master;
+ 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

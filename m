@@ -1,13 +1,15 @@
-From: "Lulu Castagnette Par R2J" <lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
-Subject: [SPAM] soldes exceptionnels jusqu a moins 70 pourcent
-Date: Sat, 21 Jul 2012 07:02:42 +0000
-Message-ID: <b03ef47c1e3c6964e088a64e958d0883@information.r2jcommunication.fr>
-Reply-To: lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
+From: "Rick" <luosia76aisgnas-uAjRD0nVeow@public.gmane.org>
+Subject: [SPAM] Digital Photo Editing Services - Photo Cutout - Photo
+	Retouching
+Date: Fri, 20 Jul 2012 23:58:29 +0800
+Message-ID: <BLOG120NETKkZDDA3TZ0000b75b@blog120.net>
+Reply-To: imagingedit-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,13 +20,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=67&L=3&N=26
-soldes exceptionnels jusqu a moins 70 pourcent
-http://information.r2jcommunication.fr/link.php?M=2463975&N=67&L=359&F=T
-To stop receiving these
-emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=67
+You are receiving this email because we wish you to use our digital photo editing services.
+
+We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques. 
+
+Our strength in providing Editing solutions for digital images like photo masking, photo re-touching, back ground cleaning & cloning, sharpening & restoration of color, all this derive from our vast experience. Our dedicated team of highly skilled and experienced professionals serves the photo Editing requirements of our clients. An in house quality checking mechanism assures value addition and delivers perfect job. Our team can deliver your job overnight or in time bounded fashion irrespective of job size. 
+
+Our mainly services are: 
+
+1. Photo Cutout
+2. Photo Enhancement
+3. Photo Retouching
+4. Vector Conversion
+5. Pop Art
+6. Images Masking
+7. Clipping Path
+8. Photo Restoration 
+9. Web Design
+
+Photo Editing Services:
+
+Our Photo Editing services includes advanced photo cutouts/clippings, balancing brightness / contrast in an image, repair of minor scratches, creases, minor dust, and spot removal to removal of major scratches, cracks, creases, and stains in all areas. We also repair seriously faded/damaged photographs and make it print ready.
+
+Best regards,
+Rick
+Raminingdan Imaging Professionals
+Contact: contactrick-Mj/0Miq2reM@public.gmane.org
+
+
+
+
+-------------------------------------------------
+
+This e-mail (and any attachments) is confidential and may contain
+personal views which are not the views of us. unless specifically stated. If you have received
+it in error, please delete it from your system, do not use, copy or
+disclose the information in any way nor act in reliance on it and
+notify the sender immediately.
+
+UNSUBSCRIBE INSTRUCTIONS
+If you do not wish to receive our newsletter, pls send address to imremove-Mj/0Miq2reM@public.gmane.org for remove.
+Before printing think about the Environment.
+
+
+                                                                                                                                                                 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

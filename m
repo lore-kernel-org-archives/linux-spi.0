@@ -1,51 +1,40 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Fix the below warning
-Date: Fri, 20 Jul 2012 11:10:00 +0100
-Message-ID: <20120720100959.GS4495@opensource.wolfsonmicro.com>
-References: <1342720012-3709-1-git-send-email-shubhrajyoti@ti.com>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?4=E8me_D=E9marque_jusqu=27=E0?= -80%
+Date: Fri, 20 Jul 2012 12:25:03 +0200
+Message-ID: <1342780062.5009329e9ef40@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="63aIh6YiuHX+oBFP"
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1342720012-3709-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
---63aIh6YiuHX+oBFP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2Mjk2JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yMCAxMjoxMDowMSZlPTEmaD0xNjI5NSZmPTE2Mjk2Jmc9MTYyOTY=3D
 
-On Thu, Jul 19, 2012 at 11:16:52PM +0530, Shubhrajyoti D wrote:
-> The dma_map and dma_unmap should have same parameter
-> passed otherwise we get the below warn.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2Mjk2JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yMCAxMjoxMDowMSZlPTEmaD0xNjI5NSZmPTE2Mjk2Jmc9MTYyOT=
+Y=3D
 
-Applied, thanks.
 
---63aIh6YiuHX+oBFP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+threat landscape has changed and how IT managers can respond. Discussions =
 
-iQIcBAEBAgAGBQJQCS44AAoJEBus8iNuMP3dgKkP+wdqtS2yCzPgOuoBIlgpHqjA
-/4NAv7apXnBADUZVdfB7UNU0iV18tlUVQJ6Wp1hlljQfRysMxH0f6l6yotTFFgjR
-NdBtz0nsDW5WnIfl5ha7ZbCatWw7nW8aRjazeQWn+5a1hriKTKIo+WUwrHjUOxUV
-b+RddhClREfp/rw8mKlVJyqRoII5HgiUlzPaO9k7tPDlOB0CS3H1gn/fk2m2W/67
-jryqhwB0fcdK1zcu706bh41A/8fBdamMPRvz8PNKJGgDOSot4uWRJdBkOQ0Qjv0G
-X2PAN8ySLMl35dxxeweGUTqcppHudKPg17/7nOoaks+zkBU8p2u2epDHpd40pqL3
-nw6RjcNcghmDcVkiGySqHHL90/fmfEIuUgmX2Hn7WN1Cp87bPYxVfY8kB7EeNshx
-w1DYfKh4l+1eswJzbI68Ky+QEuroThNu4ugr/EPeh+aG++xiXv5LNrJ36O7mSktQ
-v4Hby2rGMqivgogV7TMFLNH8J5jPtp3AxnXxMjN4UNcp5iNLqwjA2GY1M5TqD3iX
-VBeTjCk2HVDTOjxRwjXbDyJD+PtTnjKyOQQOTwQmvpumyQsT35MAB1Ru0vobyZTt
-tp54cWatfnraYqU+ncC5/pzgBODjqidR718CD8UPsimgktxwsePWbP5TnTjap3SZ
-gSqp1Xf3Mdzhn300P8X+
-=kgJk
------END PGP SIGNATURE-----
+will include endpoint security, mobile security and the latest in malware =
 
---63aIh6YiuHX+oBFP--
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

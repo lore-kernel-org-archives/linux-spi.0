@@ -1,8 +1,8 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 3 articles =?iso-8859-15?Q?achet=E9s?= le =?iso-8859-15?Q?4=E8me?=
-	gratuit avec le code PROMO 86703
-Date: Fri, 20 Jul 2012 13:13:03 +0200
-Message-ID: <1342782927.50093dcfc6fdd@mc10.fr>
+From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
+	=?iso-8859-15?Q?=27=E0?= 70%
+Date: Fri, 20 Jul 2012 23:39:23 +0200
+Message-ID: <1342820386.5009d0228cf27@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MjcwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yMCAxMzoxMDowMSZlPTEmaD0xNjI2OSZmPTE2MjcwJmc9MTYyNzA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDQ0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yMCAyMzozMDowMSZlPTEmaD0xNjA0MyZmPTE2MDQ0Jmc9MTYwNDQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MjcwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yMCAxMzoxMDowMSZlPTEmaD0xNjI2OSZmPTE2MjcwJmc9MTYyNz=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDQ0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yMCAyMzozMDowMSZlPTEmaD0xNjA0MyZmPTE2MDQ0Jmc9MTYwND=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

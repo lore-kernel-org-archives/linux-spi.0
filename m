@@ -1,7 +1,8 @@
-From: Disneyland Paris par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vite, la Vente Flash de Disneyland Paris est ouverte
-Date: Fri, 20 Jul 2012 00:03:03 +0200
-Message-ID: <1342735701.500885557bc20@mc10.fr>
+From: Pierre & Vacances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Offrez-vous le soleil : =?iso-8859-15?Q?jusqu=27=E0?= -45% sur vos
+	vacances
+Date: Fri, 20 Jul 2012 02:52:04 +0200
+Message-ID: <1342745606.5008ac06a7472@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MTU1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yMCAwMDowMDowMiZlPTEmaD0xNjE1NCZmPTE2MTU1Jmc9MTYxNTU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1OTQyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yMCAwMjo1MDowMSZlPTEmaD0xNTk0MSZmPTE1OTQyJmc9MTU5NDI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MTU1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yMCAwMDowMDowMiZlPTEmaD0xNjE1NCZmPTE2MTU1Jmc9MTYxNT=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1OTQyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yMCAwMjo1MDowMSZlPTEmaD0xNTk0MSZmPTE1OTQyJmc9MTU5ND=
+I=3D
 
 
 ---------------------------------------------------------------------------=

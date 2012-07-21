@@ -1,8 +1,9 @@
-From: Excedence par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80 pour cent
-Date: Sun, 22 Jul 2012 00:38:04 +0200
-Message-ID: <1342910326.500b2f76c2557@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Virginie de rendez vous deco <virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org>
+Subject: 3 =?iso-8859-15?Q?=E9me_d=E9marque=3A?= Promotion exceptionnelle
+	sur nos  produits jardin!
+Date: Sun, 22 Jul 2012 01:12:14 +0200
+Message-ID: <1342912416.500b37a08c7a9@mc10.fr>
+Reply-To: noreply-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NDA4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yMiAwMDozMDowMSZlPTEmaD0xNjQwNyZmPTE2NDA4Jmc9MTY0MDg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNyZiPTE2NTg3JmM9MjM2NDM3JmQ9MjAx=
+Mi0wNy0yMiAwMTowMDowMSZlPTEmaD0xNjU4NiZmPTE2NTg3Jmc9MTY1ODc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NDA4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yMiAwMDozMDowMSZlPTEmaD0xNjQwNyZmPTE2NDA4Jmc9MTY0MD=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNyZiPTE2NTg3JmM=
+9MjM2NDM3JmQ9MjAxMi0wNy0yMiAwMTowMDowMSZlPTEmaD0xNjU4NiZmPTE2NTg3Jmc9MTY1OD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

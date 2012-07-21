@@ -1,7 +1,7 @@
-From: Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: -80% sur des bagages de grandes marques
-Date: Sat, 21 Jul 2012 22:02:20 +0200
-Message-ID: <1342901004.500b0b0c90124@mc10.fr>
+From: Excedence par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80 pour cent
+Date: Sun, 22 Jul 2012 00:38:04 +0200
+Message-ID: <1342910326.500b2f76c2557@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2MDk1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yMSAyMTo1MDowMSZlPTEmaD0xNjA5NCZmPTE2MDk1Jmc9MTYwOTU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NDA4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yMiAwMDozMDowMSZlPTEmaD0xNjQwNyZmPTE2NDA4Jmc9MTY0MDg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2MDk1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yMSAyMTo1MDowMSZlPTEmaD0xNjA5NCZmPTE2MDk1Jmc9MTYwOT=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NDA4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yMiAwMDozMDowMSZlPTEmaD0xNjQwNyZmPTE2NDA4Jmc9MTY0MD=
+g=3D
 
 
 ---------------------------------------------------------------------------=

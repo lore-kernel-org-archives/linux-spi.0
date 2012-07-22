@@ -1,103 +1,119 @@
-From: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] kthread_worker: reimplement flush_kthread_work()
-	to allow freeing the work item being executed
-Date: Sun, 22 Jul 2012 09:49:53 -0700
-Message-ID: <20120722164953.GC5144@dhcp-172-17-108-109.mtv.corp.google.com>
+From: Tejun Heo <tj@kernel.org>
+Subject: [PATCH UPDATED 1/2] kthread_worker: reorganize to prepare for
+ flush_kthread_work() reimplementation
+Date: Sun, 22 Jul 2012 10:22:32 -0700
+Message-ID: <20120722172232.GD5144@dhcp-172-17-108-109.mtv.corp.google.com>
 References: <20120719211510.GA32763@google.com>
-	<20120719211629.GC32763@google.com>
-	<1342894814.2504.31.camel@palomino.walls.org>
+ <20120719211541.GB32763@google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: kvm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	ivtv-devel-jGorlIydJmRM656bX5wj8A@public.gmane.org, Avi Kivity <avi-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Walls <awalls-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Avi Kivity <avi@redhat.com>, kvm@vger.kernel.org,
+	Andy Walls <awalls@md.metrocast.net>,
+	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1342894814.2504.31.camel-xioobY1GIEhKttHedORAlB2eb7JE58TQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <20120719211541.GB32763@google.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+>From 9a2e03d8ed518a61154f18d83d6466628e519f94 Mon Sep 17 00:00:00 2001
+From: Tejun Heo <tj@kernel.org>
+Date: Thu, 19 Jul 2012 13:52:53 -0700
 
-On Sat, Jul 21, 2012 at 02:20:06PM -0400, Andy Walls wrote:
-> > +	worker->current_work = work;
-> >  	spin_unlock_irq(&worker->lock);
-> >  
-> >  	if (work) {
-> >  		__set_current_state(TASK_RUNNING);
-> >  		work->func(work);
-> 
-> If the call to 'work->func(work);' frees the memory pointed to by
-> 'work', 'worker->current_work' points to deallocated memory.
-> So 'worker->current_work' will only ever used as a unique 'work'
-> identifier to handle, correct?
+Make the following two non-functional changes.
 
-Yeah.  flush_kthread_work(@work) which can only be called if @work is
-known to be alive looks at the pointer to determine whether it's the
-current work item on the worker.
+* Separate out insert_kthread_work() from queue_kthread_work().
 
-> >  void flush_kthread_work(struct kthread_work *work)
-> >  {
-> > -	int seq = work->queue_seq;
-> > +	struct kthread_flush_work fwork = {
-> > +		KTHREAD_WORK_INIT(fwork.work, kthread_flush_work_fn),
-> > +		COMPLETION_INITIALIZER_ONSTACK(fwork.done),
-> > +	};
-> > +	struct kthread_worker *worker;
-> > +	bool noop = false;
-> > +
-> 
-> You might want a check for 'work == NULL' here, to gracefully handle
-> code like the following:
-> 
-> void driver_work_handler(struct kthread_work *work)
-> {
-> 	...
-> 	kfree(work);
-> }
-> 
-> struct kthread_work *driver_queue_batch(void)
-> {
-> 	struct kthread_work *work = NULL;
-> 	...
-> 	while (driver_more_stuff_todo()) {
-> 		work = kzalloc(sizeof(struct kthread work), GFP_WHATEVER);
-> 		...
-> 		queue_kthread_work(&driver_worker, work);
-> 	}
-> 	return work;
-> }
-> 
-> void driver_foobar(void)
-> {
-> 	...
-> 	flush_kthread_work(driver_queue_batch());
-> 	...
-> }
+* Relocate struct kthread_flush_work and kthread_flush_work_fn()
+  definitions above flush_kthread_work().
 
-workqueue's flush_work() doesn't allow %NULL pointer.  I don't want to
-make the behaviors deviate and don't see much point in changing
-workqueue's behavior at this point.
+v2: Added lockdep_assert_held() in insert_kthread_work() as suggested
+    by Andy Walls.
 
-Thanks.
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Acked-by: Andy Walls <awalls@md.metrocast.net>
+---
+ kernel/kthread.c |   42 ++++++++++++++++++++++++++----------------
+ 1 files changed, 26 insertions(+), 16 deletions(-)
 
+diff --git a/kernel/kthread.c b/kernel/kthread.c
+index 3d3de63..4bfbff3 100644
+--- a/kernel/kthread.c
++++ b/kernel/kthread.c
+@@ -378,6 +378,19 @@ repeat:
+ }
+ EXPORT_SYMBOL_GPL(kthread_worker_fn);
+ 
++/* insert @work before @pos in @worker */
++static void insert_kthread_work(struct kthread_worker *worker,
++			       struct kthread_work *work,
++			       struct list_head *pos)
++{
++	lockdep_assert_held(&worker->lock);
++
++	list_add_tail(&work->node, pos);
++	work->queue_seq++;
++	if (likely(worker->task))
++		wake_up_process(worker->task);
++}
++
+ /**
+  * queue_kthread_work - queue a kthread_work
+  * @worker: target kthread_worker
+@@ -395,10 +408,7 @@ bool queue_kthread_work(struct kthread_worker *worker,
+ 
+ 	spin_lock_irqsave(&worker->lock, flags);
+ 	if (list_empty(&work->node)) {
+-		list_add_tail(&work->node, &worker->work_list);
+-		work->queue_seq++;
+-		if (likely(worker->task))
+-			wake_up_process(worker->task);
++		insert_kthread_work(worker, work, &worker->work_list);
+ 		ret = true;
+ 	}
+ 	spin_unlock_irqrestore(&worker->lock, flags);
+@@ -406,6 +416,18 @@ bool queue_kthread_work(struct kthread_worker *worker,
+ }
+ EXPORT_SYMBOL_GPL(queue_kthread_work);
+ 
++struct kthread_flush_work {
++	struct kthread_work	work;
++	struct completion	done;
++};
++
++static void kthread_flush_work_fn(struct kthread_work *work)
++{
++	struct kthread_flush_work *fwork =
++		container_of(work, struct kthread_flush_work, work);
++	complete(&fwork->done);
++}
++
+ /**
+  * flush_kthread_work - flush a kthread_work
+  * @work: work to flush
+@@ -436,18 +458,6 @@ void flush_kthread_work(struct kthread_work *work)
+ }
+ EXPORT_SYMBOL_GPL(flush_kthread_work);
+ 
+-struct kthread_flush_work {
+-	struct kthread_work	work;
+-	struct completion	done;
+-};
+-
+-static void kthread_flush_work_fn(struct kthread_work *work)
+-{
+-	struct kthread_flush_work *fwork =
+-		container_of(work, struct kthread_flush_work, work);
+-	complete(&fwork->done);
+-}
+-
+ /**
+  * flush_kthread_worker - flush all current works on a kthread_worker
+  * @worker: worker to flush
 -- 
-tejun
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+1.7.7.3

@@ -1,119 +1,54 @@
-From: Tejun Heo <tj@kernel.org>
-Subject: [PATCH UPDATED 1/2] kthread_worker: reorganize to prepare for
- flush_kthread_work() reimplementation
-Date: Sun, 22 Jul 2012 10:22:32 -0700
-Message-ID: <20120722172232.GD5144@dhcp-172-17-108-109.mtv.corp.google.com>
-References: <20120719211510.GA32763@google.com>
- <20120719211541.GB32763@google.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi/omap2: mark omap2_mcspi_master_setup as __devinit
+Date: Sun, 22 Jul 2012 20:16:23 +0100
+Message-ID: <20120722191623.GF4557@opensource.wolfsonmicro.com>
+References: <1342780303-6596-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Avi Kivity <avi@redhat.com>, kvm@vger.kernel.org,
-	Andy Walls <awalls@md.metrocast.net>,
-	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Linus Torvalds <torvalds@linux-foundation.org>
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="B0nZA57HJSoPbsHY"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>
+To: Shubhrajyoti D <shubhrajyoti@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20120719211541.GB32763@google.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1342780303-6596-1-git-send-email-shubhrajyoti@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
->From 9a2e03d8ed518a61154f18d83d6466628e519f94 Mon Sep 17 00:00:00 2001
-From: Tejun Heo <tj@kernel.org>
-Date: Thu, 19 Jul 2012 13:52:53 -0700
 
-Make the following two non-functional changes.
+--B0nZA57HJSoPbsHY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-* Separate out insert_kthread_work() from queue_kthread_work().
+On Fri, Jul 20, 2012 at 04:01:43PM +0530, Shubhrajyoti D wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>=20
+> This warning recently appeared with omap2plus_defconfig:
 
-* Relocate struct kthread_flush_work and kthread_flush_work_fn()
-  definitions above flush_kthread_work().
+Applied, thanks.
 
-v2: Added lockdep_assert_held() in insert_kthread_work() as suggested
-    by Andy Walls.
+--B0nZA57HJSoPbsHY
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Acked-by: Andy Walls <awalls@md.metrocast.net>
----
- kernel/kthread.c |   42 ++++++++++++++++++++++++++----------------
- 1 files changed, 26 insertions(+), 16 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
 
-diff --git a/kernel/kthread.c b/kernel/kthread.c
-index 3d3de63..4bfbff3 100644
---- a/kernel/kthread.c
-+++ b/kernel/kthread.c
-@@ -378,6 +378,19 @@ repeat:
- }
- EXPORT_SYMBOL_GPL(kthread_worker_fn);
- 
-+/* insert @work before @pos in @worker */
-+static void insert_kthread_work(struct kthread_worker *worker,
-+			       struct kthread_work *work,
-+			       struct list_head *pos)
-+{
-+	lockdep_assert_held(&worker->lock);
-+
-+	list_add_tail(&work->node, pos);
-+	work->queue_seq++;
-+	if (likely(worker->task))
-+		wake_up_process(worker->task);
-+}
-+
- /**
-  * queue_kthread_work - queue a kthread_work
-  * @worker: target kthread_worker
-@@ -395,10 +408,7 @@ bool queue_kthread_work(struct kthread_worker *worker,
- 
- 	spin_lock_irqsave(&worker->lock, flags);
- 	if (list_empty(&work->node)) {
--		list_add_tail(&work->node, &worker->work_list);
--		work->queue_seq++;
--		if (likely(worker->task))
--			wake_up_process(worker->task);
-+		insert_kthread_work(worker, work, &worker->work_list);
- 		ret = true;
- 	}
- 	spin_unlock_irqrestore(&worker->lock, flags);
-@@ -406,6 +416,18 @@ bool queue_kthread_work(struct kthread_worker *worker,
- }
- EXPORT_SYMBOL_GPL(queue_kthread_work);
- 
-+struct kthread_flush_work {
-+	struct kthread_work	work;
-+	struct completion	done;
-+};
-+
-+static void kthread_flush_work_fn(struct kthread_work *work)
-+{
-+	struct kthread_flush_work *fwork =
-+		container_of(work, struct kthread_flush_work, work);
-+	complete(&fwork->done);
-+}
-+
- /**
-  * flush_kthread_work - flush a kthread_work
-  * @work: work to flush
-@@ -436,18 +458,6 @@ void flush_kthread_work(struct kthread_work *work)
- }
- EXPORT_SYMBOL_GPL(flush_kthread_work);
- 
--struct kthread_flush_work {
--	struct kthread_work	work;
--	struct completion	done;
--};
--
--static void kthread_flush_work_fn(struct kthread_work *work)
--{
--	struct kthread_flush_work *fwork =
--		container_of(work, struct kthread_flush_work, work);
--	complete(&fwork->done);
--}
--
- /**
-  * flush_kthread_worker - flush all current works on a kthread_worker
-  * @worker: worker to flush
--- 
-1.7.7.3
+iQIcBAEBAgAGBQJQDFGAAAoJEBus8iNuMP3dA+8P/1t4Ad01JvWJaxVl1dEV48lb
+RkV9D0I2G81K4sJK+cdRHlyR45NH01HVE6CxHg1X8x+dJfFtsX2WN+BbLqKyNr1t
+AeRdnmuDMKSYMbndXlB8tsLR9julpzMACGUTW5yLkqGv6Km0BlVDGKxyHZoNbyCO
+yIA8Xhbgew90AQqW0NsqJA8xb4txFgqeuEbaXJgG9UdcQexfHDBncOJgg5S1vgep
+IFAL9Bx5AqsI/GCzpoAIQCDeoE3mmr1sRvn1Gmyi9MhFzpDeVI1L3xLoeB+rglDc
+Dfy76HIHey4zOOwNsz3ovexqEvU8gYC2GsqgVEXBuvEMQOupHcexcfXbv7DmCa8V
+JWQ5jGF0dnBPsIBNkN3ZIRhUIlnRpLUf7JSu/C51mLgYpixbj1c7CWQX/4EeDYHI
+K6cF0RqUa6UqatRY7LvNrHqCnhteyeo7JwACRfro0BNgAKuWlyeo6kYFahed0k52
+je2Fuw4uujc47EF+OSh3tMAuMQRIASqY9ViGGjuPFSaDiZ4qNUaFc9PJWp9kuQJP
+8bjArjS05mdyu9nElSsBRN4a4FAFMoMtTJKrLGCSsPq5FA3iWRs9Kd2Tc5nYyo/T
+cPbDBVJJrxv7lVvT03V+F5d+B0Dy4xWv/Wmcl/PHxpO1cDVtNvlnlghwirFx7Z6O
+V9Uik2TeBr0/shdChzjY
+=5x4i
+-----END PGP SIGNATURE-----
+
+--B0nZA57HJSoPbsHY--

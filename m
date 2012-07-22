@@ -1,10 +1,12 @@
 From: Andy Walls <awalls-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>
-Subject: Re: [PATCH 2/2] kthread_worker: reimplement flush_kthread_work() to
-	allow freeing the work item being executed
-Date: Sun, 22 Jul 2012 16:39:26 -0400
-Message-ID: <1342989568.2487.14.camel@palomino.walls.org>
+Subject: Re: [PATCH 1/2] kthread_worker: reorganize to prepare for
+	flush_kthread_work() reimplementation
+Date: Sun, 22 Jul 2012 16:42:12 -0400
+Message-ID: <1342989735.2487.15.camel@palomino.walls.org>
 References: <20120719211510.GA32763@google.com>
-	<20120719211629.GC32763@google.com>
+	<20120719211541.GB32763@google.com>
+	<1342890808.2504.3.camel@palomino.walls.org>
+	<20120722164607.GB5144@dhcp-172-17-108-109.mtv.corp.google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,6 +17,7 @@ Cc: kvm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Torvalds <torvalds-de/tnXTf+JLs
 	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120722164607.GB5144-RcKxWJ4Cfj1J2suj2OqeGauc2jM2gXBXkQQo+JxHRPFibQn6LdNjmg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,125 +28,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Tejun,
-
-Thanks for responding to my previous questions.  I have one more.
-
-On Sat, 2012-07-21 at 14:20 -0400, Andy Walls wrote:
-> On Thu, 2012-07-19 at 14:16 -0700, Tejun Heo wrote:
-> > From 06f9a06f4aeecdb9d07014713ab41b548ae219b5 Mon Sep 17 00:00:00 2001
-> > From: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> > Date: Thu, 19 Jul 2012 13:52:53 -0700
+On Sun, 2012-07-22 at 09:46 -0700, Tejun Heo wrote:
+> Hello,
+> 
+> On Sat, Jul 21, 2012 at 01:13:27PM -0400, Andy Walls wrote:
+> > > +/* insert @work before @pos in @worker */
 > > 
-> > kthread_worker provides minimalistic workqueue-like interface for
-> > users which need a dedicated worker thread (e.g. for realtime
-> > priority).  It has basic queue, flush_work, flush_worker operations
-> > which mostly match the workqueue counterparts; however, due to the way
-> > flush_work() is implemented, it has a noticeable difference of not
-> > allowing work items to be freed while being executed. 
-
-[snip]
-
-> > @@ -434,25 +430,35 @@ static void kthread_flush_work_fn(struct kthread_work *work)
-> >   */
-> >  void flush_kthread_work(struct kthread_work *work)
-> >  {
-> > -	int seq = work->queue_seq;
-> > +	struct kthread_flush_work fwork = {
-> > +		KTHREAD_WORK_INIT(fwork.work, kthread_flush_work_fn),
-> > +		COMPLETION_INITIALIZER_ONSTACK(fwork.done),
-> > +	};
-> > +	struct kthread_worker *worker;
-> > +	bool noop = false;
-> > +
+> > Hi Tejun,
+> > 
+> > Would a comment that the caller should be holding worker->lock be useful
+> > here?  Anyway, comment or not:
+> > 
+> > Acked-by: Andy Walls <awall-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>
 > 
-> You might want a check for 'work == NULL' here, to gracefully handle
-> code like the following:
+> Will add lockdep_assert_held().  Thanks!
 > 
-> void driver_work_handler(struct kthread_work *work)
-> {
-> 	...
-> 	kfree(work);
-> }
-> 
-> struct kthread_work *driver_queue_batch(void)
-> {
-> 	struct kthread_work *work = NULL;
-> 	...
-> 	while (driver_more_stuff_todo()) {
-> 		work = kzalloc(sizeof(struct kthread work), GFP_WHATEVER);
-> 		...
-> 		queue_kthread_work(&driver_worker, work);
-> 	}
-> 	return work;
-> }
-> 
-> void driver_foobar(void)
-> {
-> 	...
-> 	flush_kthread_work(driver_queue_batch());
-> 	...
-> }
 
-[snip]
-
-> > +retry:
-> > +	worker = work->worker;
-> > +	if (!worker)
-> > +		return;
-> >  
-> > -	atomic_inc(&work->flushing);
-> > +	spin_lock_irq(&worker->lock);
-> > +	if (work->worker != worker) {
-> > +		spin_unlock_irq(&worker->lock);
-> > +		goto retry;
-> > +	}
-> >  
-> > -	/*
-> > -	 * mb flush-b0 paired with worker-b1, to make sure either
-> > -	 * worker sees the above increment or we see done_seq update.
-> > -	 */
-> > -	smp_mb__after_atomic_inc();
-> > +	if (!list_empty(&work->node))
-> > +		insert_kthread_work(worker, &fwork.work, work->node.next);
-> > +	else if (worker->current_work == work)
-> > +		insert_kthread_work(worker, &fwork.work, worker->work_list.next);
-> > +	else
-> > +		noop = true;
-
-The objective is "allowing work items to be freed while being executed",
-to me, it does not seem safe to me to allow flush_kthread_work() to
-actually dereference the passed in work pointer.
-
-flush_kthread_work() could theoretically be executed after the work
-function was executed by the worker kthread which frees the 'work'
-object, and that the memory 'work' points to could theoretically already
-be reallocated for something else.  (I admit the above likely has very
-low probability of occuring.)  
-
-Is there a way to avoid dereferencing 'work' here?
+Great!  Thank you.
 
 Regards,
-Andy
-
-> >  
-> > -	/* A - B <= 0 tests whether B is in front of A regardless of overflow */
-> > -	wait_event(work->done, seq - work->done_seq <= 0);
-> > -	atomic_dec(&work->flushing);
-> > +	spin_unlock_irq(&worker->lock);
-> >  
-> > -	/*
-> > -	 * rmb flush-b1 paired with worker-b0, to make sure our caller
-> > -	 * sees every change made by work->func().
-> > -	 */
-> > -	smp_mb__after_atomic_dec();
-> > +	if (!noop)
-> > +		wait_for_completion(&fwork.done);
-> >  }
-> >  EXPORT_SYMBOL_GPL(flush_kthread_work);
-> >  
-> 
-
+Andy 
 
 
 ------------------------------------------------------------------------------

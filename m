@@ -1,47 +1,50 @@
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 19/25] of: add const to struct *of_device_id.data
-Date: Mon, 23 Jul 2012 08:32:13 -0700
-Message-ID: <20120723153213.GC19571@kroah.com>
-References: <1343034810-3386-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1343034810-3386-20-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 2/2] kthread_worker: reimplement flush_kthread_work()
+ to allow freeing the work item being executed
+Date: Mon, 23 Jul 2012 10:12:15 -0700
+Message-ID: <20120723171215.GA5776@google.com>
+References: <20120719211510.GA32763@google.com>
+ <20120719211629.GC32763@google.com>
+ <1342894814.2504.31.camel@palomino.walls.org>
+ <20120722164953.GC5144@dhcp-172-17-108-109.mtv.corp.google.com>
+ <1342990015.2487.19.camel@palomino.walls.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Rob Herring <rob.herring@calxeda.com>, kernel@pengutronix.de,
-	linux-arm-kernel@lists.infradead.org,
-	Alan Cox <alan@linux.intel.com>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	cbe-oss-dev@lists.ozlabs.org, Chris Ball <cjb@laptop.org>,
-	Kevin Hilman <khilman@ti.com>,
-	Kumar Gala <galak@kernel.crashing.org>,
-	Linus Walleij <linus.walleij@stericsson.com>,
-	linux-mmc@vger.kernel.org, linux-omap@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Paul Mackerras <paulus@samba.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Samuel Ortiz <sameo@linux.intel.com>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Avi Kivity <avi@redhat.com>, kvm@vger.kernel.org,
+	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
+	Grant Likely <grant.likely@secretlab.ca>,
 	spi-devel-general@lists.sourceforge.net,
-	Timur Tabi <timur@freescale.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Wim Van Sebroeck <wim@iguana.be>,
-	Wolfram Sang <w.
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Return-path: <linux-mmc-owner@vger.kernel.org>
+	Linus Torvalds <torvalds@linux-foundation.org>
+To: Andy Walls <awalls@md.metrocast.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1343034810-3386-20-git-send-email-u.kleine-koenig@pengutronix.de>
-Sender: linux-mmc-owner@vger.kernel.org
+In-Reply-To: <1342990015.2487.19.camel@palomino.walls.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 23, 2012 at 11:13:24AM +0200, Uwe Kleine-K=F6nig wrote:
-> Drivers should never need to modify the data of a device id. So it ca=
-n
-> be const which in turn allows more consts in the driver.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Hello,
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+On Sun, Jul 22, 2012 at 04:46:54PM -0400, Andy Walls wrote:
+> Hmmm, I didn't know about the constraint about 'known to be alive' in
+> the other email I just sent.
+> 
+> That might make calling flush_kthread_work() hard for a user to use, if
+> the user lets the work get freed by another thread executing the work.
+
+Umm... flushing a freed work item doesn't make any sense at all.  The
+pointer itself loses the ability to identify anything.  What if it
+gets recycled to another work item which happens to depend on the
+flusher to make forward progress?  You now have a circular dependency
+through a recycled memory area.  Good luck hunting that down.
+
+For pretty much any API, allowing dangling pointers as argument is
+insane.  If you want to flush self-freeing work items, flush the
+kthread_worker.  That's how it is with workqueue and how it should be
+with kthread_worker too.
+
+Thanks.
+
+-- 
+tejun

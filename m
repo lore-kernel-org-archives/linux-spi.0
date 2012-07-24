@@ -1,72 +1,87 @@
-From: Sergei Shtylyov <sshtylyov@mvista.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH 09/10 RESEND] spi: Add SSP/SPI device tree documentation
-Date: Tue, 24 Jul 2012 22:15:39 +0400
-Message-ID: <500EE64B.8080103@mvista.com>
+Date: Tue, 24 Jul 2012 21:43:48 +0200
+Message-ID: <201207242143.49038.marex@denx.de>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
- <1343076052-27312-10-git-send-email-marex@denx.de>
+	<1343076052-27312-10-git-send-email-marex@denx.de>
+	<500EE64B.8080103@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, Chris Ball <cjb@laptop.org>,
- Mark Brown <broonie@opensource.wolfsonmicro.com>,
- Attila Kinali <attila@kinali.ch>, Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
- Dong Aisheng <b29396@freescale.com>,
- Linux ARM kernel <linux-arm-kernel@lists.infradead.org>
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1343076052-27312-10-git-send-email-marex@denx.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <500EE64B.8080103-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
+Dear Sergei Shtylyov,
 
-On 07/24/2012 12:40 AM, Marek Vasut wrote:
+> Hello.
+> 
+> On 07/24/2012 12:40 AM, Marek Vasut wrote:
+> > Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+> > Cc: Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>
+> > Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+> > CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> > Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+> > Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+> > CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> > ---
+> > 
+> >  Documentation/devicetree/bindings/spi/mxs-spi.txt |   18
+> >  ++++++++++++++++++ 1 file changed, 18 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.txt
+> > b/Documentation/devicetree/bindings/spi/mxs-spi.txt new file mode 100644
+> > index 0000000..f1263a9
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/mxs-spi.txt
+> > @@ -0,0 +1,18 @@
+> > +* Freescale MX233/MX28 SSP/SPI
+> > +
+> > +Required properties:
+> > +- compatible: Should be "fsl,<soc>-spi", where soc is "imx23" or "imx28"
+> > +- reg: Offset and length of the register set for the device
+> > +- interrupts: Should contain SSP interrupts (error irq first, dma irq
+> > second) +- fsl,ssp-dma-channel: APBX DMA channel for the SSP
+> > +
+> > +Example:
+> > +
+> > +ssp0: ssp@80010000 {
+> > +	#address-cells = <1>;
+> > +	#size-cells = <0>;
+> > +	compatible = "fsl,imx28-spi";
+> > +	reg = <0x80010000 2000>;
+> 
+>    Not 0x2000?
 
-> Signed-off-by: Marek Vasut <marex@denx.de>
-> Cc: Attila Kinali <attila@kinali.ch>
-> Cc: Chris Ball <cjb@laptop.org>
-> CC: Dong Aisheng <b29396@freescale.com>
-> Cc: Fabio Estevam <fabio.estevam@freescale.com>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
-> Cc: Linux ARM kernel <linux-arm-kernel@lists.infradead.org>
-> Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
-> CC: Shawn Guo <shawn.guo@linaro.org>
-> ---
->  Documentation/devicetree/bindings/spi/mxs-spi.txt |   18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.txt
+This is actually not the first place I was curious about in the imx28 DTS ... 
+yes, the size is 0x2000, but "2000" as is is used in multiple places across 
+imx28. Shawn?
 
-> diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.txt b/Documentation/devicetree/bindings/spi/mxs-spi.txt
-> new file mode 100644
-> index 0000000..f1263a9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/mxs-spi.txt
-> @@ -0,0 +1,18 @@
-> +* Freescale MX233/MX28 SSP/SPI
-> +
-> +Required properties:
-> +- compatible: Should be "fsl,<soc>-spi", where soc is "imx23" or "imx28"
-> +- reg: Offset and length of the register set for the device
-> +- interrupts: Should contain SSP interrupts (error irq first, dma irq second)
-> +- fsl,ssp-dma-channel: APBX DMA channel for the SSP
-> +
-> +Example:
-> +
-> +ssp0: ssp@80010000 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	compatible = "fsl,imx28-spi";
-> +	reg = <0x80010000 2000>;
+> WBR, Sergei
 
-   Not 0x2000?
+Best regards,
+Marek Vasut
 
-WBR, Sergei
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

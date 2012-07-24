@@ -1,20 +1,25 @@
-From: Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>
-Subject: Re: [PATCH 00/10 V2] MXS SPI driver
-Date: Tue, 24 Jul 2012 11:25:27 +0200
-Message-ID: <20120724112527.bc5bc292db09213098e04df7@kinali.ch>
-References: <1343076052-27312-1-git-send-email-marex@denx.de>
+From: Andy Walls <awalls-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>
+Subject: Re: [PATCH 2/2] kthread_worker: reimplement flush_kthread_work() to
+	allow freeing the work item being executed
+Date: Tue, 24 Jul 2012 07:17:45 -0400
+Message-ID: <1343128667.2488.6.camel@palomino.walls.org>
+References: <20120719211510.GA32763@google.com>
+	<20120719211629.GC32763@google.com>
+	<1342894814.2504.31.camel@palomino.walls.org>
+	<20120722164953.GC5144@dhcp-172-17-108-109.mtv.corp.google.com>
+	<1342990015.2487.19.camel@palomino.walls.org>
+	<20120723171215.GA5776@google.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: kvm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, ivtv-devel-jGorlIydJmRM656bX5wj8A@public.gmane.org,
+	Avi Kivity <avi-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, Linus,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1343076052-27312-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <20120723171215.GA5776-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,24 +30,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 23 Jul 2012 22:40:42 +0200
-Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+On Mon, 2012-07-23 at 10:12 -0700, Tejun Heo wrote:
+> Hello,
+> 
+> On Sun, Jul 22, 2012 at 04:46:54PM -0400, Andy Walls wrote:
+> > Hmmm, I didn't know about the constraint about 'known to be alive' in
+> > the other email I just sent.
+> > 
+> > That might make calling flush_kthread_work() hard for a user to use, if
+> > the user lets the work get freed by another thread executing the work.
+> 
+> Umm... flushing a freed work item doesn't make any sense at all.  The
+> pointer itself loses the ability to identify anything.  What if it
+> gets recycled to another work item which happens to depend on the
+> flusher to make forward progress?  You now have a circular dependency
+> through a recycled memory area.  Good luck hunting that down.
+> 
+> For pretty much any API, allowing dangling pointers as argument is
+> insane.  If you want to flush self-freeing work items, flush the
+> kthread_worker.  That's how it is with workqueue and how it should be
+> with kthread_worker too.
 
-> This patchset adds SPI master support for Freescale i.MX233/i.MX28.
-> This is rebased on top of next-20120713. Please consider applying,
-> bugs shall now be squashed during the previous two review rounds.
+Hi,
 
-The patchset is good and works as expectd
+Ah.  My problem was that I mentally assigned the wrong rationale for why
+you reworked flush_kthread_work().
 
-Tested-by: Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>
+Thank you for your patience and explanations.
+Sorry for the noise.
 
-			Attila Kinali
+For patch 2/2:
 
--- 
-The trouble with you, Shev, is you don't say anything until you've saved
-up a whole truckload of damned heavy brick arguments and then you dump
-them all out and never look at the bleeding body mangled beneath the heap
-		-- Tirin, The Dispossessed, U. Le Guin
+Reviewed-by: Andy Walls <awalls-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>
+
+Regards,
+Andy
+
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

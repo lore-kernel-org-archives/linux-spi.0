@@ -1,21 +1,14 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 09/10 RESEND] spi: Add SSP/SPI device tree documentation
-Date: Tue, 24 Jul 2012 21:43:48 +0200
-Message-ID: <201207242143.49038.marex@denx.de>
-References: <1343076052-27312-1-git-send-email-marex@denx.de>
-	<1343076052-27312-10-git-send-email-marex@denx.de>
-	<500EE64B.8080103@mvista.com>
+From: Groupon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Recevez des deals chaque jour sur les meilleurs restaurants
+	=?iso-8859-15?Q?jusq?= =?iso-8859-15?Q?u=27=E0?= -70%
+Date: Tue, 24 Jul 2012 23:32:53 +0200
+Message-ID: <1343165577.500f148980eb1@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <500EE64B.8080103-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,62 +19,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Sergei Shtylyov,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> Hello.
-> 
-> On 07/24/2012 12:40 AM, Marek Vasut wrote:
-> > Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-> > Cc: Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>
-> > Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
-> > CC: Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> > Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-> > Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> > CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> > ---
-> > 
-> >  Documentation/devicetree/bindings/spi/mxs-spi.txt |   18
-> >  ++++++++++++++++++ 1 file changed, 18 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.txt
-> > b/Documentation/devicetree/bindings/spi/mxs-spi.txt new file mode 100644
-> > index 0000000..f1263a9
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/mxs-spi.txt
-> > @@ -0,0 +1,18 @@
-> > +* Freescale MX233/MX28 SSP/SPI
-> > +
-> > +Required properties:
-> > +- compatible: Should be "fsl,<soc>-spi", where soc is "imx23" or "imx28"
-> > +- reg: Offset and length of the register set for the device
-> > +- interrupts: Should contain SSP interrupts (error irq first, dma irq
-> > second) +- fsl,ssp-dma-channel: APBX DMA channel for the SSP
-> > +
-> > +Example:
-> > +
-> > +ssp0: ssp@80010000 {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
-> > +	compatible = "fsl,imx28-spi";
-> > +	reg = <0x80010000 2000>;
-> 
->    Not 0x2000?
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE1NzEyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yNCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MTI=3D
 
-This is actually not the first place I was curious about in the imx28 DTS ... 
-yes, the size is 0x2000, but "2000" as is is used in multiple places across 
-imx28. Shawn?
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE1NzEyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yNCAyMzozMDowMSZlPTEmaD0xNTcxMSZmPTE1NzEyJmc9MTU3MT=
+I=3D
 
-> WBR, Sergei
 
-Best regards,
-Marek Vasut
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

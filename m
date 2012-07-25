@@ -1,139 +1,39 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [GIT PULL] spi updates for 3.6
-Date: Wed, 25 Jul 2012 13:55:41 +0100
-Message-ID: <20120725125541.GK3099@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Subject: Re: [PATCH 1/2] SPI: spi-gpio: store chipselect information in
+	private structure
+Date: Wed, 25 Jul 2012 20:33:59 +0100
+Message-ID: <20120725193359.GB9792@sirena.org.uk>
+References: <1343216652-1463-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="W2ydbIOJmkm74tJ2"
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant@secretlab.ca>,
-	Linus Walleij <linus.walleij@linaro.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1343216652-1463-1-git-send-email-zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jul 25, 2012 at 01:44:11PM +0200, Daniel Mack wrote:
+> The spi-gpio driver currently assumes the chipselect gpio number is
+> stored in ->controller_data of the device's static board information.
 
---W2ydbIOJmkm74tJ2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Always CC maintainers on things...  you've not CCed Grant or Linus W,
+and for now I'm handling SPI patches (though I'm not in MAINTAINERS so
+missing me is less surprising).
 
-The following changes since commit 6887a4131da3adaab011613776d865f4bcfb5678:
-
-  Linux 3.5-rc5 (2012-06-30 16:08:57 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git tags/spi-3=
-=2E6
-
-for you to fetch changes up to 8ceffa7c4a4c378d8e371fe2f444656e75390b34:
-
-  spi/orion: remove uneeded spi_info (2012-07-23 14:14:54 +0100)
-
-----------------------------------------------------------------
-spi: Updates for 3.6
-
-Since Grant is even more specacularly busy than usual for the time being
-I've been collecting SPI patches for him for this release - probably
-things will revert back to Grant before the next release.  There's
-nothing too exciting here, mostly it's simple driver specific stuff:
-
-- Add spi: to the modaliases of SPI devices to provide namespacing.
-- A driver for AD-FMCOMMS1-EBZ.
-- DT binding for Orion.
-- Fixes and cleanups for i.MX, PL0022, OMAP and bitbang drivers.
-
-There may be a few more fixes I've missed, people keep sending me new
-things.
-
-----------------------------------------------------------------
-Alexandre Pereira da Silva (1):
-      spi/pl022: cleanup pl022 header documentation
-
-Andrew Lunn (1):
-      spi/orion: add device tree binding
-
-Arnd Bergmann (1):
-      spi/omap2: mark omap2_mcspi_master_setup as __devinit
-
-Florian Fainelli (1):
-      spi/bcm63xx: fix clock configuration selection
-
-Grant Likely (1):
-      spi: Add "spi:" prefix to modalias attribute of spi devices
-
-Hui Wang (2):
-      spi/imx: remove redundant config.speed_hz setting
-      spi/imx: use gpio_is_valid to determine if a gpio is valid
-
-Lars-Peter Clausen (1):
-      spi: Add AD-FMCOMMS1-EBZ I2C-SPI bridge driver
-
-Laxman Dewangan (1):
-      spi: tegra: use dmaengine based dma driver
-
-Linus Walleij (2):
-      spi/pl022: delete DB5500 support
-      spi/pl022: enable runtime PM
-
-Mark Brown (1):
-      Merge branch 'pl022' of git://git.kernel.org/.../linusw/linux-sterics=
-son into spi-next
-
-Michael Walle (1):
-      spi/orion: remove uneeded spi_info
-
-Shubhrajyoti D (1):
-      spi: omap2-mcspi: Fix the below warning
-
-Uwe Kleine-K=F6nig (1):
-      spi/gpio: start with CS non-active
-
-Virupax Sadashivpetimath (1):
-      spi/pl022: disable port when unused
-
- .../devicetree/bindings/spi/spi-orion.txt          |   19 ++
- drivers/spi/Kconfig                                |    9 +-
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-bcm63xx.c                          |    2 +-
- drivers/spi/spi-gpio.c                             |    3 +-
- drivers/spi/spi-imx.c                              |   14 +-
- drivers/spi/spi-omap2-mcspi.c                      |    8 +-
- drivers/spi/spi-orion.c                            |   22 +-
- drivers/spi/spi-pl022.c                            |   23 +-
- drivers/spi/spi-tegra.c                            |   89 ++++++-
- drivers/spi/spi-xcomm.c                            |  276 ++++++++++++++++=
-++++
- drivers/spi/spi.c                                  |    2 +-
- include/linux/amba/pl022.h                         |    9 +-
- 13 files changed, 430 insertions(+), 47 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-orion.txt
- create mode 100644 drivers/spi/spi-xcomm.c
-
---W2ydbIOJmkm74tJ2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQD+yQAAoJEBus8iNuMP3dy2wP/0uRGdBZpfqjeYTQgY/2QTeA
-iOD18+fHTgFFU3vfOz0UVJoyNXAcRlnSM0z7u4HgQPGy8H7FoQaP9FZS3DjkX43d
-VtbxMpe6dpprEq/DxncynsGgPoq/p4vA+lHl1GMxGN4KiLh65TIseJBRnj43AFbP
-RG0pma87IMtZCkLsXb/E1hGa85CO/WkWXen2myCGz4nmBMUUamcRJFmYAB342kve
-s/zMHXymQBxMi4kbSILBExHbtvdg/OOooItvBnPmF0lf8wH5bOCsStzcxQlTm5jF
-c/lXwRKjxEa5wYbf/1uAv3c2kGQd94nPmF1dsBarRHKGuBklfTsuGtHaUApL+A2d
-n9olHBAHgaJ9HW57dX42fz0Kwv4qMsp0eGJmLu45ddWH9n6NFon/epH8ivbMXco+
-hYvw8bJMpPdMKmkbBOVf6qw3B2Cu32uJTrmbNgtAoZb7vM5uifsxYtxur83bsjCo
-TxgaXItD1uCOyYyDrDz8UrNlwK49lcZY3kBCAYSa7zHiBlNDLq1KkEe3oihmqyiU
-SVhWBozxVpI210WOoePcUZ/tKkm0jqz2p8f7DJfMEndmeWGa0OiENGa68KAZpjAo
-CpMqJiKx354h/dfxd9Ze73eJ1aMgfjjqJ+VdI3xfBxgDOxvRE4cTTSBDWoZZLK+u
-ju4QMeTkFR2MKOMWgRBX
-=jS+V
------END PGP SIGNATURE-----
-
---W2ydbIOJmkm74tJ2--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

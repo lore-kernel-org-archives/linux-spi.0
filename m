@@ -1,108 +1,40 @@
-From: Shubhrajyoti D <shubhrajyoti@ti.com>
-Subject: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to pio
-Date: Wed, 25 Jul 2012 11:50:29 +0530
-Message-ID: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com>
+From: "Accorhotels.com par Duano" <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Promo exceptionnelle : 50 pourcent de reduction pour ce week-end
+Date: Wed, 25 Jul 2012 09:17:06 +0200
+Message-ID: <1343200628.500f9d748127c@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	Shubhrajyoti D <shubhrajyoti@ti.com>
-To: <spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-In case there are dma errors currently the driver exits.
-Make the spi driver fall back to pio mode in case of dma errors.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-If the DMA engine is not selected the driver
-exits.This patch makes the spi fall back to pio in that case.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NzgyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yNSAwOToxMDowMSZlPTEmaD0xNjc4MSZmPTE2NzgyJmc9MTY3ODI=3D
 
-Also adds a field dma_unusable to struct omap2_mcspi.
- 
-Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NzgyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yNSAwOToxMDowMSZlPTEmaD0xNjc4MSZmPTE2NzgyJmc9MTY3OD=
+I=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |   21 +++++++++++++--------
- 1 files changed, 13 insertions(+), 8 deletions(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index bc47781..f243a39 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -129,6 +129,7 @@ struct omap2_mcspi {
- 	struct omap2_mcspi_dma	*dma_channels;
- 	struct device		*dev;
- 	struct omap2_mcspi_regs ctx;
-+	int dma_unusable;
- };
- 
- struct omap2_mcspi_cs {
-@@ -845,7 +846,7 @@ static int omap2_mcspi_setup(struct spi_device *spi)
- 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
- 		ret = omap2_mcspi_request_dma(spi);
- 		if (ret < 0)
--			return ret;
-+			mcspi->dma_unusable = 1;
- 	}
- 
- 	ret = omap2_mcspi_enable_clocks(mcspi);
-@@ -956,7 +957,8 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 				__raw_writel(0, cs->base
- 						+ OMAP2_MCSPI_TX0);
- 
--			if (m->is_dma_mapped || t->len >= DMA_MIN_BYTES)
-+			if (!mcspi->dma_unusable && (m->is_dma_mapped ||
-+						t->len >= DMA_MIN_BYTES))
- 				count = omap2_mcspi_txrx_dma(spi, t);
- 			else
- 				count = omap2_mcspi_txrx_pio(spi, t);
-@@ -1030,7 +1032,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 			return -EINVAL;
- 		}
- 
--		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
-+		if (mcspi->dma_unusable || m->is_dma_mapped ||
-+					len < DMA_MIN_BYTES)
- 			continue;
- 
- 		if (tx_buf != NULL) {
-@@ -1054,6 +1057,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 				return -EINVAL;
- 			}
- 		}
-+
- 	}
- 
- 	omap2_mcspi_work(mcspi, m);
-@@ -1216,9 +1220,12 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 		mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
- 	}
- 
--	if (status < 0)
--		goto dma_chnl_free;
--
-+	if (status < 0) {
-+		dev_err(&pdev->dev, "cannot get DMA channel switching to pio\n");
-+		mcspi->dma_unusable = 1;
-+		status = 0;
-+		kfree(mcspi->dma_channels);
-+	}
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_enable(&pdev->dev);
-@@ -1229,14 +1236,12 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 	status = spi_register_master(master);
- 	if (status < 0)
- 		goto err_spi_register;
--
- 	return status;
- 
- err_spi_register:
- 	spi_master_put(master);
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
--dma_chnl_free:
- 	kfree(mcspi->dma_channels);
- free_master:
- 	kfree(master);
--- 
-1.7.5.4
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

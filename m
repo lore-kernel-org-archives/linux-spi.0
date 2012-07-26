@@ -1,10 +1,8 @@
-From: sh13544100624-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] ä»£/å¼€--å‘/ç¥¨
-Date: Fri, 27 Jul 2012 06:59:29 +0800
-Message-ID: <E1SuX1p-0005Sm-PB@sfs-ml-1.v29.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+From: =?GB2312?B?wfXQob3j?= <jshyuww-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: =?GB2312?B?09C24NPgsGzuqc/yzeK0+rDst9HTwzAuOSXX89PStu6087j808U=?=
+Date: Fri, 27 Jul 2012 07:33:35 +0800
+Message-ID: <E1SuXYm-00058G-Kg@sfs-ml-4.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============3689239843108425273=="
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,16 +15,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qjuwq587mry77I59PQ0OjS
-qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkgMTM1NDQxMDA2MjQK
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
-eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
-aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
-IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
-LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
-cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+--===============3689239843108425273==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
+
+¹ó¹«Ë¾©pÆóÒµ©p³§¼Ò¾­Àí²ÆÎñÄúºÃ£¡
+    ±¾¹«Ë¾ÊÇÒ»¼Ò´óĞÍÆóÒµ¼¯ÍÅ¹«Ë¾£¬ÊÇ½É¶¨¶îË°µÄ¡£Ò»Ö±´ÓÊÂÊµÒµÃ³Ò×ĞĞÒµ£»±¾¹«Ë¾Ò»¹ßÒÔ»¥»İ»¥Àû³ÏĞÅÎª±¾£¬ÖÇ»Û´´ÒµµÄ×ÚÖ¼£¬Ó®µÃÈ«¹ú¸÷´ó¹«Ë¾µÄÖ§³Ö£¬ÎÒ¹«Ë¾×¢²á¾­Óª·¶Î§¹ã¡£
+    ±¾¹«Ë¾ÏÖÓĞ¶àÓàµÄàÑ¾İÏòÍâ¿ª£¬¶ÂÊ°´0.9%×óÓÒÊÕÈ¥È¡(½ğ¶î´ó¿ÉÔÙÓÅ»İ)£¬¿É¾­Íø²éÑ¯È¡Ö¤»òÕÊºóÔÙ¸¶¿î(¸÷ÏîÄ¿Æë±¸)×îĞÂ°æ£¬×¼È·ÉóºË±£Ö¤²ÆÎñ¼ÇÕÊÊµĞĞ¹æ·¶¹ÜÀí¼°ÑÏ¸ñÂÄĞĞ(±£ÃÜ)ÖÆ¶È¡£
+    ×¢Òâ£ºÇë±£ÁôºÅÂëÓÊÏä£¬ÒÔ·ÀÓĞĞè!!!
+    ÁªÏµÈË:Áõ¼Îºì  
+    µç  »°:13710889326 
+    ÓÊ  Ïä:jinshenggs-KN7UnAbNpbg@public.gmane.org
+    ÉÌì÷!
+        Íû³¤ÆÚºÏ×÷!!! 
+    »¶Ó­À´µç×ÉÑ¯£¬ÈçÓĞ´ò½Á¾´ÇëÁÂ½â!!!
+                          
+                      ½õÊ¢ÊµÒµÓĞÏŞ¹«Ë¾
+
+
+--===============3689239843108425273==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+--===============3689239843108425273==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============3689239843108425273==--

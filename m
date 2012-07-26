@@ -1,12 +1,11 @@
-From: "rkpbnfs6yb" <yangzhx-+VZ6eP/4JRgBD8ZT0mcQYg@public.gmane.org>
-Subject: =?utf-8?B?6ZmN5L2O6YeHcOi0reaIkGbmnKzlj4rkvpt45bqU5ZWG6LCIZOWIpOaKgGvlt6fvvIE=?=
-	=?utf-8?B?LXJrcGJuZnM2eWI=?=
-Date: Fri, 27 Jul 2012 03:17:49 +0800
-Message-ID: <A78AC9DDEF096CB478AB803D6DFA66BA@tfkwdldb>
+From: sh13544100624-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
+Subject: [SPAM] 代/开--发/票
+Date: Fri, 27 Jul 2012 06:59:29 +0800
+Message-ID: <E1SuX1p-0005Sm-PB@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_05D3_01774299.1707AFB0"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,41 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_05D3_01774299.1707AFB0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-
-6K+mIA0KKQ0K5oOFIA0Ka2F555yL552A5pa55bCR5LqR77yM5LiN55+l6YGT6K+05LuA5LmI5aW9
-5LqG44CC5YW25a6ea2F55b6I5oOz6K+077yMDQror7cgDQrigJzkvaDvvIzkvaDov5nkuKrmt7fo
-m4vvvIHmiJHku6XliY3lsLHnn6XpgZPkvaDkuI3mmK/lpb3kurrvvIznjrDlnKjnnIsNCuafpSAN
-Cu+/pQ0K6ZiFIA0K4oCd54u85Lq65oyH552A5bey54S25Y+v6KeB55qE5rKZ5ryg6L6555WM77yM
-5YaN55yL55yL56yU6K6w5pys55S16ISR5LiKDQrpmYQgDQrljJfkuqzkuInovrDljJblt6XmnInp
-mZDlhazlj7gNCuS7tiANCu+8gSA=
-
-------=_NextPart_000_05D3_01774299.1707AFB0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=_NextPart_000_05D3_01774299.1707AFB0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_000_05D3_01774299.1707AFB0--
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDt6ItLcaxL7T6v6qjuwq587mry77I59PQ0OjS
+qqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKuLrU8MjLo7rVxc/IyfooMCkgMTM1NDQxMDA2MjQK
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
+eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
+aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
+IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
+LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
+cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

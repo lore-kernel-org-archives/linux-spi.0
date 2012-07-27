@@ -1,8 +1,10 @@
-From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -60 pour cent sur la mode Femme
-Date: Fri, 27 Jul 2012 12:02:04 +0200
-Message-ID: <1343383345.5012673170ab9@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Hotels =?iso-8859-15?Q?Barri=E8re?= par Planduweb <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
+Subject: Vente =?iso-8859-15?Q?priv=E9e_sp=E9cial?= 100 ans. Votre
+	=?iso-8859-15?Q?s=E9jour?= de luxe =?iso-8859-15?Q?=E0?= partir de
+	165euros HT
+Date: Fri, 27 Jul 2012 21:42:04 +0200
+Message-ID: <1343418144.5012ef205edb0@mc10.fr>
+Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2Njk0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yNyAxMjowMDowMSZlPTEmaD0xNjY5MyZmPTE2Njk0Jmc9MTY2OTQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTUzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yNyAyMTo0MDowMSZlPTEmaD0xNzE1MiZmPTE3MTUzJmc9MTcxNTM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2Njk0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yNyAxMjowMDowMSZlPTEmaD0xNjY5MyZmPTE2Njk0Jmc9MTY2OT=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTUzJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yNyAyMTo0MDowMSZlPTEmaD0xNzE1MiZmPTE3MTUzJmc9MTcxNT=
+M=3D
 
 
 ---------------------------------------------------------------------------=

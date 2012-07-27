@@ -1,13 +1,12 @@
-From: "=?UTF-8?Q?Crossmediadv.com?=" <info-BshMPdA/lJeLwutG50LtGA@public.gmane.org>
-Subject: =?UTF-8?Q?Lancia_la_tua_campagna_e_prova_i_nostri_risultati?=
-Date: Fri, 27 Jul 2012 08:29:45 +0200
-Message-ID: <201207270829450859.13997.98.70.2468642@mailing.cominvest.name>
-Reply-To: info-BshMPdA/lJeLwutG50LtGA@public.gmane.org
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -60 pour cent sur la mode Femme
+Date: Fri, 27 Jul 2012 12:02:04 +0200
+Message-ID: <1343383345.5012673170ab9@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,40 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Q2kgc29ubyBwcm9ibGVtaSBkaSB2aXN1YWxpenphemlvbmUsIHByZWdvIGFwcmlyZSBsYSB2ZXJz
-aW9uZSB3ZWI6IGh0dHA6Ly9tYWlsaW5nLmNvbWludmVzdC5uYW1lL2Yvcm5sLmFzcHgvP2Zmaz13
-d3N3X3l1eCZ4PXB2JmJsaz1wczRmajc9djM0Ji0zYmU9amEmNjomZzdlNi01YS1rNzomeD1jYyYm
-eD1wdiZibGtkMmxobGM1LSZ4PXB2JmZjOS04ZTVnTkNMTQ0KDQpDcm9zc01lZGlhICZBZHZlcnRz
-DQptYXRlcmlhbGksIGlkZWUgZSBzb2x1emlvbmkgcGVyIGxhIHR1YSBjb211bmljYXppb25lDQoN
-CkxhbmNpYSBsYSB0dWEgY2FtcGFnbmEgZSBwcm92YSBpIG5vc3RyaSByaXN1bHRhdGkNCg0KTm9y
-bWFsbWVudGUgcGVyIGZhciBjb25vc2NlcmUgbGUgcHJvcHJpZSBvZmZlcnRlIGUgcHJvcG9zdGUs
-IHVubyBkZWkgc2Vydml6aSBkaSBjb211bmljYXppb25lIHBpw7kgZWZmaWNhY2Ugw6ggaWwgZGly
-ZWN0IG1hcmtldGluZywgaW52aWFuZG8gY2lvw6ggdW5hIGNvbXVuaWNhemlvbmUgdmlhIG1haWwg
-YWkgcHJvcHJpIGNvbnRhdHRpLg0KQ3Jvc3MgTWVkaWEgZGEgc2VtcHJlIGNlcmNhIGRpIG9mZnJp
-cmUgZGVsbGUgc29sdXppb25pIGFsdGVybmF0aXZlIGUgZGkgdmFudGFnZ2lvIHBlciBmYXIgYXZ2
-aWNpbmFyZSBzZW1wcmUgcGnDuSBhemllbmRlIGEgcXVlc3RhIGltcG9ydGFudGUgZm9ybWEgZGkg
-Y29tdW5pY2F6aW9uZSwgY2hlIGNvbnNlbnRlIHNwZXNzbyBkaSByZWN1cGVyYXJlIGFsbWVubyBw
-YXJ6aWFsbWVudGUgaWwgZ2FwIGNvbXBldGl0aXZvIGNvbiBpIGNvbmNvcnJlbnRpIHBpw7kgZ3Jh
-bmRpLg0KDQpQZXIgaWwgbWVzZSBkaSBhZ29zdG8gdmkgcHJvcG9uaWFtbyBs4oCZaW52aW8gbWFz
-c2l2byBhZCB1bmEgbm9zdHJhIG1haWxpbmcgbGlzdCBkaSBvbHRyZSAxMjAuMDAwIGNvbnRhdHRp
-LCBhbCBwcmV6em8gZGkgMzUwZXVybyBvcHB1cmUgMTgwLjAwMCBjb250YXR0aWFsIHByZXp6byBk
-aSA1MDBldXJvDQpJbCBwcmV6em8gZGkgZ3JhbiBsdW5nYSBwacO5IGJhc3NvIGRlbCBtZXJjYXRv
-IQ0KUmljZXZlcmV0ZSB1biByZXBvcnQgZGV0dGFnbGlhdG8gc2lhIGRlbGxlIG1haWwgZWZmZXR0
-aXZhbWVudGUgbGV0dGUgZSBkZWxsZSByZWxhdGl2ZSBhcGVydHVyZSBlIGNsaWNrLg0KTGUgbWFp
-bCBzYXJhbm5vIHNwZWRpdGUgc2VtcHJlIGNvbiB1biB0dW8gaW5kaXJpenpvIG1haWwsIGlsIGNo
-ZSB0aSBjb25zZW50aXLDoCBkaSBlc3NlcmUgZGlyZXR0YW1lbnRlIGNvbnRhdHRhdG8gZGFpIGRl
-c3RpbmF0YXJpLg0KDQogUmVnYWxhdGkgdW7igJlvcHBvcnR1bml0w6AgZGkgY3Jlc2NpdGEgZGVs
-bGEgdHVhIGF0dGl2aXTDoCBjb24gdW4gc2V0dGVtYnJlIHJpY2NvIA0KZGkgY29udGF0dGkgZGkg
-bnVvdmkgZSB2ZWNjaGkgY2xpZW50aSENCg0KQ09OVEFUVEFDSQ0KQ0FOQ0VMTEEgSVNDUklaSU9O
-RSAgICB8ICAgICBVTlNVQlNDUklCRWNhbXBhZ25hIHJlYWxpenphdGEgZGEgQ3Jvc3NNZWRpQWR2
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
-eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
-aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
-IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
-LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
-cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2Njk0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yNyAxMjowMDowMSZlPTEmaD0xNjY5MyZmPTE2Njk0Jmc9MTY2OTQ=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2Njk0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yNyAxMjowMDowMSZlPTEmaD0xNjY5MyZmPTE2Njk0Jmc9MTY2OT=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

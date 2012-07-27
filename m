@@ -1,15 +1,14 @@
-From: Rick <luasntoiangawu22wa-uAjRD0nVeow@public.gmane.org>
-Subject: [SPAM] Digital Photo Editing Services - Photo Cutout - Photo
-	Retouching
-Date: Fri, 27 Jul 2012 12:07:17 +0800
-Message-ID: <812d533e-e9b8-43c6-aca4-fe09d6c65d20@DCCN01.careersnetwork.local>
-Reply-To: imagingservice-9Onoh4P/yGk@public.gmane.org
+From: "=?UTF-8?Q?Crossmediadv.com?=" <info-BshMPdA/lJeLwutG50LtGA@public.gmane.org>
+Subject: =?UTF-8?Q?Lancia_la_tua_campagna_e_prova_i_nostri_risultati?=
+Date: Fri, 27 Jul 2012 08:29:45 +0200
+Message-ID: <201207270829450859.13997.98.70.2468642@mailing.cominvest.name>
+Reply-To: info-BshMPdA/lJeLwutG50LtGA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,51 +19,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-You are receiving this email because we wish you to use our digital photo editing services.
-
-We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques. 
-
-Our strength in providing Editing solutions for digital images like photo masking, photo re-touching, back ground cleaning & cloning, sharpening & restoration of color, all this derive from our vast experience. Our dedicated team of highly skilled and experienced professionals serves the photo Editing requirements of our clients. An in house quality checking mechanism assures value addition and delivers perfect job. Our team can deliver your job overnight or in time bounded fashion irrespective of job size. 
-
-Our mainly services are: 
-
-1. Photo Cutout
-2. Photo Enhancement
-3. Photo Retouching
-4. Vector Conversion
-5. Pop Art
-6. Images Masking
-7. Clipping Path
-8. Photo Restoration 
-9. Web Design
-
-Photo Editing Services:
-
-Our Photo Editing services includes advanced photo cutouts/clippings, balancing brightness / contrast in an image, repair of minor scratches, creases, minor dust, and spot removal to removal of major scratches, cracks, creases, and stains in all areas. We also repair seriously faded/damaged photographs and make it print ready.
-
-Best regards,
-Rick
-Toeaavami Imaging Professionals
-Contact: contactrick-Mj/0Miq2reM@public.gmane.org
-
-
-
--------------------------------------------------
-
-This e-mail (and any attachments) is confidential and may contain
-personal views which are not the views of us. unless specifically stated. If you have received
-it in error, please delete it from your system, do not use, copy or
-disclose the information in any way nor act in reliance on it and
-notify the sender immediately.
-
-UNSUBSCRIBE INSTRUCTIONS
-If you do not wish to receive our newsletter, pls send address to imremove-Mj/0Miq2reM@public.gmane.org for remove.
-Before printing think about the Environment.
-
-                                                                                                                                                                 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Q2kgc29ubyBwcm9ibGVtaSBkaSB2aXN1YWxpenphemlvbmUsIHByZWdvIGFwcmlyZSBsYSB2ZXJz
+aW9uZSB3ZWI6IGh0dHA6Ly9tYWlsaW5nLmNvbWludmVzdC5uYW1lL2Yvcm5sLmFzcHgvP2Zmaz13
+d3N3X3l1eCZ4PXB2JmJsaz1wczRmajc9djM0Ji0zYmU9amEmNjomZzdlNi01YS1rNzomeD1jYyYm
+eD1wdiZibGtkMmxobGM1LSZ4PXB2JmZjOS04ZTVnTkNMTQ0KDQpDcm9zc01lZGlhICZBZHZlcnRz
+DQptYXRlcmlhbGksIGlkZWUgZSBzb2x1emlvbmkgcGVyIGxhIHR1YSBjb211bmljYXppb25lDQoN
+CkxhbmNpYSBsYSB0dWEgY2FtcGFnbmEgZSBwcm92YSBpIG5vc3RyaSByaXN1bHRhdGkNCg0KTm9y
+bWFsbWVudGUgcGVyIGZhciBjb25vc2NlcmUgbGUgcHJvcHJpZSBvZmZlcnRlIGUgcHJvcG9zdGUs
+IHVubyBkZWkgc2Vydml6aSBkaSBjb211bmljYXppb25lIHBpw7kgZWZmaWNhY2Ugw6ggaWwgZGly
+ZWN0IG1hcmtldGluZywgaW52aWFuZG8gY2lvw6ggdW5hIGNvbXVuaWNhemlvbmUgdmlhIG1haWwg
+YWkgcHJvcHJpIGNvbnRhdHRpLg0KQ3Jvc3MgTWVkaWEgZGEgc2VtcHJlIGNlcmNhIGRpIG9mZnJp
+cmUgZGVsbGUgc29sdXppb25pIGFsdGVybmF0aXZlIGUgZGkgdmFudGFnZ2lvIHBlciBmYXIgYXZ2
+aWNpbmFyZSBzZW1wcmUgcGnDuSBhemllbmRlIGEgcXVlc3RhIGltcG9ydGFudGUgZm9ybWEgZGkg
+Y29tdW5pY2F6aW9uZSwgY2hlIGNvbnNlbnRlIHNwZXNzbyBkaSByZWN1cGVyYXJlIGFsbWVubyBw
+YXJ6aWFsbWVudGUgaWwgZ2FwIGNvbXBldGl0aXZvIGNvbiBpIGNvbmNvcnJlbnRpIHBpw7kgZ3Jh
+bmRpLg0KDQpQZXIgaWwgbWVzZSBkaSBhZ29zdG8gdmkgcHJvcG9uaWFtbyBs4oCZaW52aW8gbWFz
+c2l2byBhZCB1bmEgbm9zdHJhIG1haWxpbmcgbGlzdCBkaSBvbHRyZSAxMjAuMDAwIGNvbnRhdHRp
+LCBhbCBwcmV6em8gZGkgMzUwZXVybyBvcHB1cmUgMTgwLjAwMCBjb250YXR0aWFsIHByZXp6byBk
+aSA1MDBldXJvDQpJbCBwcmV6em8gZGkgZ3JhbiBsdW5nYSBwacO5IGJhc3NvIGRlbCBtZXJjYXRv
+IQ0KUmljZXZlcmV0ZSB1biByZXBvcnQgZGV0dGFnbGlhdG8gc2lhIGRlbGxlIG1haWwgZWZmZXR0
+aXZhbWVudGUgbGV0dGUgZSBkZWxsZSByZWxhdGl2ZSBhcGVydHVyZSBlIGNsaWNrLg0KTGUgbWFp
+bCBzYXJhbm5vIHNwZWRpdGUgc2VtcHJlIGNvbiB1biB0dW8gaW5kaXJpenpvIG1haWwsIGlsIGNo
+ZSB0aSBjb25zZW50aXLDoCBkaSBlc3NlcmUgZGlyZXR0YW1lbnRlIGNvbnRhdHRhdG8gZGFpIGRl
+c3RpbmF0YXJpLg0KDQogUmVnYWxhdGkgdW7igJlvcHBvcnR1bml0w6AgZGkgY3Jlc2NpdGEgZGVs
+bGEgdHVhIGF0dGl2aXTDoCBjb24gdW4gc2V0dGVtYnJlIHJpY2NvIA0KZGkgY29udGF0dGkgZGkg
+bnVvdmkgZSB2ZWNjaGkgY2xpZW50aSENCg0KQ09OVEFUVEFDSQ0KQ0FOQ0VMTEEgSVNDUklaSU9O
+RSAgICB8ICAgICBVTlNVQlNDUklCRWNhbXBhZ25hIHJlYWxpenphdGEgZGEgQ3Jvc3NNZWRpQWR2
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
+eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
+aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
+IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
+LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
+cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

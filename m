@@ -1,10 +1,9 @@
-From: Hotels =?iso-8859-15?Q?Barri=E8re?= par Planduweb <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e_sp=E9cial?= 100 ans. Votre
-	=?iso-8859-15?Q?s=E9jour?= de luxe =?iso-8859-15?Q?=E0?= partir de
-	165euros HT
-Date: Fri, 27 Jul 2012 21:42:04 +0200
-Message-ID: <1343418144.5012ef205edb0@mc10.fr>
-Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
+From: Meilleur Choix par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= le guide des radiateurs
+	=?iso-8859-15?Q?=E0?= inertie
+Date: Fri, 27 Jul 2012 21:53:04 +0200
+Message-ID: <1343418801.5012f1b10db01@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -22,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTUzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yNyAyMTo0MDowMSZlPTEmaD0xNzE1MiZmPTE3MTUzJmc9MTcxNTM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTU1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yNyAyMTo1MDowMSZlPTEmaD0xNzE1NCZmPTE3MTU1Jmc9MTcxNTU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTUzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yNyAyMTo0MDowMSZlPTEmaD0xNzE1MiZmPTE3MTUzJmc9MTcxNT=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTU1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yNyAyMTo1MDowMSZlPTEmaD0xNzE1NCZmPTE3MTU1Jmc9MTcxNT=
+U=3D
 
 
 ---------------------------------------------------------------------------=

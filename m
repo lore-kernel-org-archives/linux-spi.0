@@ -1,12 +1,10 @@
-From: Center Parcs par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -30 Pourcent sur votre
-	=?iso-8859-15?Q?s=E9jour?=
-Date: Sat, 28 Jul 2012 04:12:10 +0200
-Message-ID: <1343441551.50134a8fb054f@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Jeffrey Eigner <jeigner-i6nAvj0qFg+B+jHODAdFcQ@public.gmane.org>
+Subject: Jeffrey Eigner/Corp/Celestica is out of the office.
+Date: Fri, 27 Jul 2012 22:04:30 -0400
+Message-ID: <OF97757C49.CEC3026E-ON85257A49.000B661A-85257A49.000B661A@celestica.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,23 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NzkyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOCAwNDoxMDowMSZlPTEmaD0xNjc5MSZmPTE2NzkyJmc9MTY3OTI=3D
+I will be out of the office starting  07/27/2012 and will not return until
+08/14/2012.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NzkyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOCAwNDoxMDowMSZlPTEmaD0xNjc5MSZmPTE2NzkyJmc9MTY3OT=
-I=3D
-
-
----------------------------------------------------------------------------=
----
+I have no access to email. Please contact John Sandhu (jsandhu at celestica
+dot com) if you have any urgent business needs. Thanks
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

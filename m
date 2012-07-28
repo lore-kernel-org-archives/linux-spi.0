@@ -1,7 +1,8 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?4=E8me_D=E9marque_jusqu=27=E0?= -80%
-Date: Sat, 28 Jul 2012 03:12:03 +0200
-Message-ID: <1343438026.50133ccadb4df@mc10.fr>
+From: Center Parcs par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -30 Pourcent sur votre
+	=?iso-8859-15?Q?s=E9jour?=
+Date: Sat, 28 Jul 2012 04:12:10 +0200
+Message-ID: <1343441551.50134a8fb054f@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjIxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOCAwMzoxMDowMSZlPTEmaD0xNzIyMCZmPTE3MjIxJmc9MTcyMjE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NzkyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOCAwNDoxMDowMSZlPTEmaD0xNjc5MSZmPTE2NzkyJmc9MTY3OTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjIxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOCAwMzoxMDowMSZlPTEmaD0xNzIyMCZmPTE3MjIxJmc9MTcyMj=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NzkyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOCAwNDoxMDowMSZlPTEmaD0xNjc5MSZmPTE2NzkyJmc9MTY3OT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

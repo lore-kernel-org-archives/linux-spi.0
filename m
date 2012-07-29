@@ -1,7 +1,7 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Mieux que les soldes : le top des locations de vacances
-Date: Sun, 29 Jul 2012 22:02:05 +0200
-Message-ID: <1343592147.501596d3a84b5@mc10.fr>
+From: Mistergooddeal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Destockage Coup de balai -80%
+Date: Sun, 29 Jul 2012 23:22:05 +0200
+Message-ID: <1343596971.5015a9ab93543@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTU3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOSAyMjowMDowMSZlPTEmaD0xNzE1NiZmPTE3MTU3Jmc9MTcxNTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTI3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOSAyMzoyMDowMSZlPTEmaD0xNzEyNiZmPTE3MTI3Jmc9MTcxMjc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTU3JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMjowMDowMSZlPTEmaD0xNzE1NiZmPTE3MTU3Jmc9MTcxNT=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTI3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMzoyMDowMSZlPTEmaD0xNzEyNiZmPTE3MTI3Jmc9MTcxMj=
 c=3D
 
 

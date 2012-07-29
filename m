@@ -1,8 +1,7 @@
-From: Club des =?iso-8859-15?Q?cr=E9ateurs?= de =?iso-8859-15?Q?Beaut=E9?=
-	par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 3 produits pour 19,90 euros c'est maintenant
-Date: Sat, 28 Jul 2012 21:35:04 +0200
-Message-ID: <1343504128.50143f00eaac2@mc10.fr>
+From: SecurDevis par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: France en 2011  19% de cambriolages en plus
+Date: Sun, 29 Jul 2012 05:26:03 +0200
+Message-ID: <1343532381.5014ad5d3420b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2OTc1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOCAyMTozMDowMyZlPTEmaD0xNjk3NCZmPTE2OTc1Jmc9MTY5NzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MDM1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOSAwNToyMDowMSZlPTEmaD0xNzAzNCZmPTE3MDM1Jmc9MTcwMzU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2OTc1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOCAyMTozMDowMyZlPTEmaD0xNjk3NCZmPTE2OTc1Jmc9MTY5Nz=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MDM1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOSAwNToyMDowMSZlPTEmaD0xNzAzNCZmPTE3MDM1Jmc9MTcwMz=
 U=3D
 
 

@@ -1,7 +1,8 @@
-From: Excedence par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80 pour cent
-Date: Sun, 29 Jul 2012 21:45:04 +0200
-Message-ID: <1343591125.501592d5f0ad2@mc10.fr>
+From: Sony par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez d'une offre de =?iso-8859-15?Q?r=E9duction?= sur le nouvel
+	appareil photo Sony HX20
+Date: Sun, 29 Jul 2012 21:45:03 +0200
+Message-ID: <1343591129.501592d92741b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTUyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1MSZmPTE3MTUyJmc9MTcxNTI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTU4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1NyZmPTE3MTU4Jmc9MTcxNTg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTUyJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1MSZmPTE3MTUyJmc9MTcxNT=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTU4JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1NyZmPTE3MTU4Jmc9MTcxNT=
+g=3D
 
 
 ---------------------------------------------------------------------------=

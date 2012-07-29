@@ -1,12 +1,11 @@
-From: SecurDevis par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: France en 2011  19% de cambriolages en plus
-Date: Sun, 29 Jul 2012 05:26:03 +0200
-Message-ID: <1343532381.5014ad5d3420b@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Patrick Thomas" <noreplyPT917-aVLDbEdftb8@public.gmane.org>
+Subject: [SPAM] Proposal for Strategy
+Date: Sun, 29 Jul 2012 01:18:38 -0700
+Message-ID: <b57251e6c203ab789570658c001bfdaf@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,14 +17,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+How would you like to place your products and services in front millions of=
+ potential customers with creative non-conventional tactics?
+ =
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MDM1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOSAwNToyMDowMSZlPTEmaD0xNzAzNCZmPTE3MDM1Jmc9MTcwMzU=3D
+Our company has access to 200 Million Consumers and 45 Million Businesses. =
+Every business has a product of value and my team will work with you until =
+we find something that works. Because your success means our success.
+ =
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MDM1JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOSAwNToyMDowMSZlPTEmaD0xNzAzNCZmPTE3MDM1Jmc9MTcwMz=
-U=3D
+Call 1 (800) 381-1150 today and get 50% off your first order!
+
+Sincerely,
+ =
+
+Patrick Thomas
+Email Marketing Specialist
+Scottsdale, AZ USA
+bestemailsend-KK0ffGbhmjU@public.gmane.org
+1 (800) 381-115
+
+=93A man who stops advertising to save money is like a man who stops a cloc=
+k to save time.=94  =96 Henry Ford
+
+
 
 
 ---------------------------------------------------------------------------=

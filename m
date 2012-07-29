@@ -1,7 +1,8 @@
-From: Online voyance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Voyance 100% gratuite ! Obtenez des =?iso-8859-15?Q?r=E9ponses?=
-Date: Sun, 29 Jul 2012 23:53:05 +0200
-Message-ID: <1343598801.5015b0d135701@mc10.fr>
+From: Pierre & Vacances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Offrez-vous le soleil : =?iso-8859-15?Q?jusqu=27=E0?= -45% sur vos
+	vacances
+Date: Mon, 30 Jul 2012 00:52:03 +0200
+Message-ID: <1343602346.5015beaa9292b@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTcwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOSAyMzo1MDowMSZlPTEmaD0xNzE2OSZmPTE3MTcwJmc9MTcxNzA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE2NjM1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0zMCAwMDo1MDowMSZlPTEmaD0xNjYzNCZmPTE2NjM1Jmc9MTY2MzU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTcwJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMzo1MDowMSZlPTEmaD0xNzE2OSZmPTE3MTcwJmc9MTcxNz=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE2NjM1JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0zMCAwMDo1MDowMSZlPTEmaD0xNjYzNCZmPTE2NjM1Jmc9MTY2Mz=
+U=3D
 
 
 ---------------------------------------------------------------------------=

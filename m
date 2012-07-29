@@ -1,8 +1,7 @@
-From: Sony par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez d'une offre de =?iso-8859-15?Q?r=E9duction?= sur le nouvel
-	appareil photo Sony HX20
-Date: Sun, 29 Jul 2012 21:45:03 +0200
-Message-ID: <1343591129.501592d92741b@mc10.fr>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Mieux que les soldes : le top des locations de vacances
+Date: Sun, 29 Jul 2012 22:02:05 +0200
+Message-ID: <1343592147.501596d3a84b5@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTU4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1NyZmPTE3MTU4Jmc9MTcxNTg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTU3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOSAyMjowMDowMSZlPTEmaD0xNzE1NiZmPTE3MTU3Jmc9MTcxNTc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTU4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1NyZmPTE3MTU4Jmc9MTcxNT=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTU3JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMjowMDowMSZlPTEmaD0xNzE1NiZmPTE3MTU3Jmc9MTcxNT=
+c=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,11 +1,12 @@
-From: "Patrick Thomas" <noreplyPT917-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] Proposal for Strategy
-Date: Sun, 29 Jul 2012 01:18:38 -0700
-Message-ID: <b57251e6c203ab789570658c001bfdaf@g2gm.com>
+From: Excedence par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80 pour cent
+Date: Sun, 29 Jul 2012 21:45:04 +0200
+Message-ID: <1343591125.501592d5f0ad2@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,30 +18,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-How would you like to place your products and services in front millions of=
- potential customers with creative non-conventional tactics?
- =
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Our company has access to 200 Million Consumers and 45 Million Businesses. =
-Every business has a product of value and my team will work with you until =
-we find something that works. Because your success means our success.
- =
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTUyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1MSZmPTE3MTUyJmc9MTcxNTI=3D
 
-Call 1 (800) 381-1150 today and get 50% off your first order!
-
-Sincerely,
- =
-
-Patrick Thomas
-Email Marketing Specialist
-Scottsdale, AZ USA
-bestemailsend-KK0ffGbhmjU@public.gmane.org
-1 (800) 381-115
-
-=93A man who stops advertising to save money is like a man who stops a cloc=
-k to save time.=94  =96 Henry Ford
-
-
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTUyJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0yOSAyMTo0MDowMSZlPTEmaD0xNzE1MSZmPTE3MTUyJmc9MTcxNT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

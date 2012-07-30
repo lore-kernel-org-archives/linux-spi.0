@@ -1,8 +1,7 @@
-From: Meilleur Choix par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= le guide des radiateurs
-	=?iso-8859-15?Q?=E0?= inertie
-Date: Tue, 31 Jul 2012 00:13:09 +0200
-Message-ID: <1343686401.50170701341c4@mc10.fr>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?4=E8me_D=E9marque_jusqu=27=E0?= -80%
+Date: Tue, 31 Jul 2012 00:12:12 +0200
+Message-ID: <1343686427.5017071b4593a@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjYzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0zMSAwMDoxMDowMSZlPTEmaD0xNzI2MiZmPTE3MjYzJmc9MTcyNjM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjYwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0zMSAwMDoxMDowMSZlPTEmaD0xNzI1OSZmPTE3MjYwJmc9MTcyNjA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjYzJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0zMSAwMDoxMDowMSZlPTEmaD0xNzI2MiZmPTE3MjYzJmc9MTcyNj=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjYwJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0zMSAwMDoxMDowMSZlPTEmaD0xNzI1OSZmPTE3MjYwJmc9MTcyNj=
+A=3D
 
 
 ---------------------------------------------------------------------------=

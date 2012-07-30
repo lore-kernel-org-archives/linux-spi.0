@@ -1,14 +1,12 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -80% 10%
-	=?iso-8859-15?Q?suppl=E9mentaires?= + Livraison Offerte
-	=?iso-8859-15?Q?=28d=E8s?= 39euros d'achat) avec le code 78484
-Date: Mon, 30 Jul 2012 03:12:03 +0200
-Message-ID: <1343610767.5015df8f20b2b@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the platform data
+Date: Mon, 30 Jul 2012 17:10:42 +0800
+Message-ID: <1343639442-21028-1-git-send-email-Jiucheng.Xu@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,23 +18,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+In the spi_alloc_device(), the parent pointer of spi deivce has
+been changed from master->dev.parent to &master->dev for device
+unregistration, so the pointer of getting the platform data as
+this 'spi->dev.parent->platform_data' is wrong.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MTI0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0zMCAwMzoxMDowMSZlPTEmaD0xNzEyMyZmPTE3MTI0Jmc9MTcxMjQ=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MTI0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0zMCAwMzoxMDowMSZlPTEmaD0xNzEyMyZmPTE3MTI0Jmc9MTcxMj=
-Q=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
+ drivers/spi/spi-fsl-spi.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 6a62934..27059a6 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -143,7 +143,7 @@ static void fsl_spi_chipselect(struct spi_device *spi, int value)
+ 	bool pol = spi->mode & SPI_CS_HIGH;
+ 	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
+ 
+-	pdata = spi->dev.parent->parent->platform_data;
++	pdata = mpc8xxx_spi->dev->platform_data;
+ 
+ 	if (value == BITBANG_CS_INACTIVE) {
+ 		if (pdata->cs_control)
+@@ -933,7 +933,8 @@ err:
+ 
+ static void fsl_spi_cs_control(struct spi_device *spi, bool on)
+ {
+-	struct device *dev = spi->dev.parent->parent;
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	struct device *dev = mpc8xxx_spi->dev;
+ 	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
+ 	u16 cs = spi->chip_select;
+ 	int gpio = pinfo->gpios[cs];
+-- 
+1.6.4
+
+
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

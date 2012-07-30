@@ -1,64 +1,98 @@
-From: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi/mpc8xxx:Fix the wrong pointer of getting the platform data
-Date: Mon, 30 Jul 2012 17:10:42 +0800
-Message-ID: <1343639442-21028-1-git-send-email-Jiucheng.Xu@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Masanari Iida <standby24x7@gmail.com>
+Subject: [PATCH] [trivial] spi: Fix typo in spi
+Date: Mon, 30 Jul 2012 23:16:14 +0900
+Message-ID: <1343657774-26045-1-git-send-email-standby24x7@gmail.com>
+Cc: Masanari Iida <standby24x7@gmail.com>
+To: trivial@kernel.org, linux-kernel@vger.kernel.org,
+	grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-In the spi_alloc_device(), the parent pointer of spi deivce has
-been changed from master->dev.parent to &master->dev for device
-unregistration, so the pointer of getting the platform data as
-this 'spi->dev.parent->platform_data' is wrong.
+Correct spelling typo in drivers/spi
 
-Signed-off-by: Jiucheng Xu <Jiucheng.Xu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Masanari Iida <standby24x7@gmail.com>
 ---
- drivers/spi/spi-fsl-spi.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-au1550.c       | 2 +-
+ drivers/spi/spi-bfin-sport.c   | 2 +-
+ drivers/spi/spi-oc-tiny.c      | 2 +-
+ drivers/spi/spi-ppc4xx.c       | 4 ++--
+ drivers/spi/spi-topcliff-pch.c | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 6a62934..27059a6 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -143,7 +143,7 @@ static void fsl_spi_chipselect(struct spi_device *spi, int value)
- 	bool pol = spi->mode & SPI_CS_HIGH;
- 	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index 5784c87..4de66d1 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -475,7 +475,7 @@ static irqreturn_t au1550_spi_dma_irq_callback(struct au1550_spi *hw)
+ 		/*
+ 		 * due to an spi error we consider transfer as done,
+ 		 * so mask all events until before next transfer start
+-		 * and stop the possibly running dma immediatelly
++		 * and stop the possibly running dma immediately
+ 		 */
+ 		au1550_spi_mask_ack_all(hw);
+ 		au1xxx_dbdma_stop(hw->dma_rx_ch);
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index 1fe5119..6555ecd 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -467,7 +467,7 @@ bfin_sport_spi_pump_transfers(unsigned long data)
+ 		dev_dbg(drv_data->dev, "IO write error!\n");
+ 		drv_data->state = ERROR_STATE;
+ 	} else {
+-		/* Update total byte transfered */
++		/* Update total byte transferred */
+ 		message->actual_length += transfer->len;
+ 		/* Move to next transfer of this msg */
+ 		drv_data->state = bfin_sport_spi_next_transfer(drv_data);
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index 698018f..9d9071b 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -129,7 +129,7 @@ static int tiny_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	unsigned int i;
  
--	pdata = spi->dev.parent->parent->platform_data;
-+	pdata = mpc8xxx_spi->dev->platform_data;
+ 	if (hw->irq >= 0) {
+-		/* use intrrupt driven data transfer */
++		/* use interrupt driven data transfer */
+ 		hw->len = t->len;
+ 		hw->txp = t->tx_buf;
+ 		hw->rxp = t->rx_buf;
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 75ac9d4..7a85f22 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -101,7 +101,7 @@ struct spi_ppc4xx_regs {
+ 	u8 dummy;
+ 	/*
+ 	 * Clock divisor modulus register
+-	 * This uses the follwing formula:
++	 * This uses the following formula:
+ 	 *    SCPClkOut = OPBCLK/(4(CDM + 1))
+ 	 * or
+ 	 *    CDM = (OPBCLK/4*SCPClkOut) - 1
+@@ -201,7 +201,7 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 		return -EINVAL;
+ 	}
  
- 	if (value == BITBANG_CS_INACTIVE) {
- 		if (pdata->cs_control)
-@@ -933,7 +933,8 @@ err:
+-	/* Write new configration */
++	/* Write new configuration */
+ 	out_8(&hw->regs->mode, cs->mode);
  
- static void fsl_spi_cs_control(struct spi_device *spi, bool on)
- {
--	struct device *dev = spi->dev.parent->parent;
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
-+	struct device *dev = mpc8xxx_spi->dev;
- 	struct mpc8xxx_spi_probe_info *pinfo = to_of_pinfo(dev->platform_data);
- 	u16 cs = spi->chip_select;
- 	int gpio = pinfo->gpios[cs];
+ 	/* Set the clock */
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index cd56dcf..1284c9b 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -505,7 +505,7 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
+ 	}
+ 
+ 	if (unlikely(pspi->max_speed_hz == 0)) {
+-		dev_err(&pspi->dev, "%s pch_spi_tranfer maxspeed=%d\n",
++		dev_err(&pspi->dev, "%s pch_spi_transfer maxspeed=%d\n",
+ 			__func__, pspi->max_speed_hz);
+ 		retval = -EINVAL;
+ 		goto err_out;
 -- 
-1.6.4
-
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+1.7.12.rc0.22.gcdd159b

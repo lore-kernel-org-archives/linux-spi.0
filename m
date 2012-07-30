@@ -1,8 +1,10 @@
-From: Tendance Chaussure par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Soldes : - 20 pourcent EN PLUS pendant 4 jours
-Date: Tue, 31 Jul 2012 00:38:04 +0200
-Message-ID: <1343688010.50170d4a2306d@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Hotels =?iso-8859-15?Q?Barri=E8re?= par Planduweb <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
+Subject: Vente =?iso-8859-15?Q?priv=E9e_sp=E9cial?= 100 ans. Votre
+	=?iso-8859-15?Q?s=E9jour?= de luxe =?iso-8859-15?Q?=E0?= partir de
+	165euros HT
+Date: Tue, 31 Jul 2012 00:53:05 +0200
+Message-ID: <1343688802.50171062abfbe@mc10.fr>
+Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjU4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0zMSAwMDozMDowMSZlPTEmaD0xNzI1NyZmPTE3MjU4Jmc9MTcyNTg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjY0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0zMSAwMDo1MDowMSZlPTEmaD0xNzI2MyZmPTE3MjY0Jmc9MTcyNjQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjU4JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0zMSAwMDozMDowMSZlPTEmaD0xNzI1NyZmPTE3MjU4Jmc9MTcyNT=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjY0JmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0zMSAwMDo1MDowMSZlPTEmaD0xNzI2MyZmPTE3MjY0Jmc9MTcyNj=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

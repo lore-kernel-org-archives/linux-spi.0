@@ -1,10 +1,8 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Derniers jours: =?iso-8859-15?Q?jusqu=27=E0?= -80% + 10%
-	=?iso-8859-15?Q?suppl=E9mentaires?= livraisons offerte avec le code
-	78484
-Date: Tue, 31 Jul 2012 11:55:05 +0200
-Message-ID: <1343728839.5017acc77841e@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Les coups de folies =?iso-8859-15?Q?jusqu=27=E0?= -91%
+Date: Tue, 31 Jul 2012 17:16:27 +0200
+Message-ID: <1343748025.5017f7b905b5a@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -22,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MzMxJmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0zMSAxMTo1MDowMSZlPTEmaD0xNzMzMCZmPTE3MzMxJmc9MTczMzE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTcyNzcmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wNy0zMSAxNzoxMDowMSZlPTEmaD0xNzI3NiZmPTE3Mjc3Jmc9MTcyNzc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MzMxJmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0zMSAxMTo1MDowMSZlPTEmaD0xNzMzMCZmPTE3MzMxJmc9MTczMz=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTcyNzcmYz0=
+xOTYxNjQxJmQ9MjAxMi0wNy0zMSAxNzoxMDowMSZlPTEmaD0xNzI3NiZmPTE3Mjc3Jmc9MTcyNz=
+c=3D
 
 
 ---------------------------------------------------------------------------=

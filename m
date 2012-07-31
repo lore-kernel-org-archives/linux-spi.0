@@ -1,10 +1,10 @@
-From: Hotels =?iso-8859-15?Q?Barri=E8re?= par Planduweb <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e_sp=E9cial?= 100 ans. Votre
-	=?iso-8859-15?Q?s=E9jour?= de luxe =?iso-8859-15?Q?=E0?= partir de
-	165euros HT
-Date: Tue, 31 Jul 2012 00:53:05 +0200
-Message-ID: <1343688802.50171062abfbe@mc10.fr>
-Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
+From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Derniers jours: =?iso-8859-15?Q?jusqu=27=E0?= -80% + 10%
+	=?iso-8859-15?Q?suppl=E9mentaires?= livraisons offerte avec le code
+	78484
+Date: Tue, 31 Jul 2012 11:55:05 +0200
+Message-ID: <1343728839.5017acc77841e@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -22,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjY0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wNy0zMSAwMDo1MDowMSZlPTEmaD0xNzI2MyZmPTE3MjY0Jmc9MTcyNjQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MzMxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wNy0zMSAxMTo1MDowMSZlPTEmaD0xNzMzMCZmPTE3MzMxJmc9MTczMzE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjY0JmM=
-9NDgzNjEyJmQ9MjAxMi0wNy0zMSAwMDo1MDowMSZlPTEmaD0xNzI2MyZmPTE3MjY0Jmc9MTcyNj=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MzMxJmM=
+9NDgzNjEyJmQ9MjAxMi0wNy0zMSAxMTo1MDowMSZlPTEmaD0xNzMzMCZmPTE3MzMxJmc9MTczMz=
+E=3D
 
 
 ---------------------------------------------------------------------------=

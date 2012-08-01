@@ -1,14 +1,25 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
-Date: Wed, 1 Aug 2012 15:06:28 +0530
-Message-ID: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: Re: [06/10,V2] spi: Add SPI driver for mx233/mx28
+Date: Wed, 1 Aug 2012 07:58:37 -0700
+Message-ID: <20120801145837.GA15630@roeck-us.net>
+References: <1341555449-17507-6-git-send-email-marex@denx.de>
+	<201208010810.37652.marex@denx.de>
+	<20120801063936.GC2764@roeck-us.net>
+	<201208010845.19361.marex@denx.de>
+	<20120801065650.GA2928@roeck-us.net>
+	<20120801075010.GI1672@S2100-06.ap.freescale.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120801075010.GI1672-+NayF8gZjK2ctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,47 +30,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The kfree() is taken care of by the spi core (spi_master_release() function)
-that is called once the last reference to the underlying struct device has
-been released. So the driver need not call kfree.
+On Wed, Aug 01, 2012 at 03:50:12PM +0800, Shawn Guo wrote:
+> On Tue, Jul 31, 2012 at 11:56:50PM -0700, Guenter Roeck wrote:
+> > Guess we are in violent agreement. The sequence would then either be
+> > 	master = spi_alloc_device();
+> 
+> The discussion is around spi_alloc_master rather than spi_alloc_device,
+> isn't it?
+> 
+Yes, sorry. Too late at night, too tired :(.
 
-Also the put was missed in some of the error handling fix the same.
-There by fixing the missing device_put in some of the error paths.
+Guenter
 
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 7d46b15..b5035e2 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1203,18 +1203,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 
- 	status = spi_register_master(master);
- 	if (status < 0)
--		goto err_spi_register;
-+		goto disable_pm;
- 
- 	return status;
- 
--err_spi_register:
--	spi_master_put(master);
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
- dma_chnl_free:
- 	kfree(mcspi->dma_channels);
- free_master:
--	kfree(master);
-+	spi_master_put(master);
- 	platform_set_drvdata(pdev, NULL);
- 	return status;
- }
--- 
-1.7.5.4
-
+> Regards,
+> Shawn
+> 
+> > 	...
+> > 	spi_master_put(master);
+> > or
+> > 	master = spi_alloc_device();
+> > 	...
+> > 	kfree(master);
+> > 
+> > which makes sense to me. Question still is why most drivers neither call kfree()
+> > nor spi_master_put() in the remove function.
+> 
+> 
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

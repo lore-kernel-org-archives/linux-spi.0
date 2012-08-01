@@ -1,21 +1,20 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [06/10,V2] spi: Add SPI driver for mx233/mx28
-Date: Wed, 1 Aug 2012 08:10:37 +0200
-Message-ID: <201208010810.37652.marex@denx.de>
-References: <1341555449-17507-6-git-send-email-marex@denx.de>
-	<20120801054228.GA2645@roeck-us.net>
-	<20120801062838.GF1672@S2100-06.ap.freescale.net>
+Subject: Re: [PATCH 08/10 V2] spi: Add DMA support into SPI driver
+Date: Wed, 1 Aug 2012 08:29:19 +0200
+Message-ID: <201208010829.19404.marex@denx.de>
+References: <1341555449-17507-1-git-send-email-marex@denx.de>
+	<1341555449-17507-8-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>, Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>,
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120801062838.GF1672-+NayF8gZjK2ctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
+In-Reply-To: <1341555449-17507-8-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,28 +25,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Shawn Guo,
+Dear Marek Vasut,
 
-> On Tue, Jul 31, 2012 at 10:42:28PM -0700, Guenter Roeck wrote:
-> > On Wed, Aug 01, 2012 at 01:58:56PM +0800, Shawn Guo wrote:
-> > > On Tue, Jul 31, 2012 at 10:29:47PM -0700, Guenter Roeck wrote:
-> > > > Anyone up for writing some patches ? If not, I'll do it.
-> > > 
-> > > Go ahead.
-> > 
-> > Ok, will do. It isn't that simple, actually, since at least some of the
-> > drivers also call spi_master_get(), and thus need two calls to
-> > spi_master_put() (or a call to spi_master_put and a call to kfree).
-> 
-> Hmm, are you saying that there must be a spi_master_put call matching
-> spi_alloc_master?  I think we only need to have spi_master_get and
-> spi_master_put matched.
+[...]
 
-Naw, spi_master_get() does refcounting, spi_alloc_master() doesnt. You don't 
-need to match spi_alloc_master() with spi_master_put()
+> -out_host_free:
+> +out_free_dma:
+> +	dma_release_channel(ssp->dmach);
+>  	clk_disable_unprepare(ssp->clk);
+> +out_host_free:
+>  	spi_master_put(host);
+>  	kfree(host);
+> +
 
-> Regards,
-> Shawn
+Please remove this newline.
+
+>  	return ret;
+>  }
+
+Missing dma_release_channel() in .remove!
 
 Best regards,
 Marek Vasut

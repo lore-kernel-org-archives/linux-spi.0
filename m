@@ -1,7 +1,7 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Thu, 02 Aug 2012 00:25:04 +0200
-Message-ID: <1343859929.5019acd94af2d@mc10.fr>
+From: Lulu Castagnette par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Soldes =?iso-8859-15?Q?jusqu=27=E0?= -60 pour cent sur la mode Femme
+Date: Thu, 02 Aug 2012 00:32:05 +0200
+Message-ID: <1343860342.5019ae76ab4f5@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjYyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0wMiAwMDoyMDowMSZlPTEmaD0xNzI2MSZmPTE3MjYyJmc9MTcyNjI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjYxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0wMiAwMDozMDowMSZlPTEmaD0xNzI2MCZmPTE3MjYxJmc9MTcyNjE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjYyJmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0wMiAwMDoyMDowMSZlPTEmaD0xNzI2MSZmPTE3MjYyJmc9MTcyNj=
-I=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjYxJmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0wMiAwMDozMDowMSZlPTEmaD0xNzI2MCZmPTE3MjYxJmc9MTcyNj=
+E=3D
 
 
 ---------------------------------------------------------------------------=

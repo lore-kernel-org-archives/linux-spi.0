@@ -1,26 +1,14 @@
-From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [06/10,V2] spi: Add SPI driver for mx233/mx28
-Date: Wed, 1 Aug 2012 16:20:26 +0800
-Message-ID: <20120801082024.GJ1672@S2100-06.ap.freescale.net>
-References: <1341555449-17507-6-git-send-email-marex@denx.de>
-	<201208010810.37652.marex@denx.de>
-	<20120801063936.GC2764@roeck-us.net>
-	<201208010845.19361.marex@denx.de>
-	<20120801074051.GG1672@S2100-06.ap.freescale.net>
-	<20504.56543.699097.320114@ipc1.ka-ro>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
+Date: Wed, 1 Aug 2012 15:06:28 +0530
+Message-ID: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, Dong,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW-bxm8fMRDkQLDiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20504.56543.699097.320114-VjFSrY7JcPWvSplVBqRQBQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,39 +19,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 01, 2012 at 09:38:07AM +0200, Lothar Wa=DFmann wrote:
-> Shawn Guo writes:
-> > On Wed, Aug 01, 2012 at 08:45:19AM +0200, Marek Vasut wrote:
-> > > > I must be missing something.  Why do almost all spi drivers call it=
- in the
-> > > > error path, even if there is no call to spi_master_get ?
-> > > =
+The kfree() is taken care of by the spi core (spi_master_release() function)
+that is called once the last reference to the underlying struct device has
+been released. So the driver need not call kfree.
 
-> > > To push the refcounting to 0, to deallocate the device, I'd say ...
-> > > =
+Also the put was missed in some of the error handling fix the same.
+There by fixing the missing device_put in some of the error paths.
 
-> > It's not going to work if spi_master_put is called without
-> > spi_master_get being called before that.
-> > =
-
-> spi_alloc_master() calls device_initialize() which resuires a
-> device_put() (called from spi_master_put()) to free the device.
-> =
-
-Ah, indeed.  I missed that kref_init() will initialize the refcount
-to 1.
-
-Thanks,
-Shawn
-
-
----------------------------------------------------------------------------=
+Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
+ drivers/spi/spi-omap2-mcspi.c |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 7d46b15..b5035e2 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1203,18 +1203,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 	status = spi_register_master(master);
+ 	if (status < 0)
+-		goto err_spi_register;
++		goto disable_pm;
+ 
+ 	return status;
+ 
+-err_spi_register:
+-	spi_master_put(master);
+ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
+ dma_chnl_free:
+ 	kfree(mcspi->dma_channels);
+ free_master:
+-	kfree(master);
++	spi_master_put(master);
+ 	platform_set_drvdata(pdev, NULL);
+ 	return status;
+ }
+-- 
+1.7.5.4
+
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

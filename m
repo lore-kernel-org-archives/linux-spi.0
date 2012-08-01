@@ -1,22 +1,23 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Subject: Re: [06/10,V2] spi: Add SPI driver for mx233/mx28
-Date: Wed, 1 Aug 2012 07:00:54 +0200
-Message-ID: <201208010700.54829.marex@denx.de>
+Date: Tue, 31 Jul 2012 22:29:47 -0700
+Message-ID: <20120801052947.GA2400@roeck-us.net>
 References: <1341555449-17507-6-git-send-email-marex@denx.de>
 	<20120801033559.GB2323@roeck-us.net>
 	<20120801045010.GC1672@S2100-06.ap.freescale.net>
+	<201208010700.54829.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120801045010.GC1672-+NayF8gZjK2ctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201208010700.54829.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,22 +28,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Shawn Guo,
-
-> On Tue, Jul 31, 2012 at 08:35:59PM -0700, Guenter Roeck wrote:
-> > I think the call to spi_master_put() triggers the call to
-> > spi_master_release(). If so, kfree() would not be needed at all, and the
-> > documentation is wrong.
+On Wed, Aug 01, 2012 at 07:00:54AM +0200, Marek Vasut wrote:
+> Dear Shawn Guo,
 > 
-> Also those drivers calling kfree in probe.
+> > On Tue, Jul 31, 2012 at 08:35:59PM -0700, Guenter Roeck wrote:
+> > > I think the call to spi_master_put() triggers the call to
+> > > spi_master_release(). If so, kfree() would not be needed at all, and the
+> > > documentation is wrong.
+> > 
+> > Also those drivers calling kfree in probe.
+> 
+> Looks like that to me ...
+> 
+Doesn't seem to be far spread, fortunately. Only spi-davinci.c, spi-imx.c, and
+spi-omap2-mcspi.c as far as I can see, plus the misleading comment in spi.c.
 
-Looks like that to me ...
+Anyone up for writing some patches ? If not, I'll do it.
 
-> Regards,
-> Shawn
-
-Best regards,
-Marek Vasut
+Thanks,
+Guenter
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

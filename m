@@ -1,19 +1,22 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [06/10,V2] spi: Add SPI driver for mx233/mx28
-Date: Wed, 1 Aug 2012 04:31:04 +0200
-Message-ID: <201208010431.04399.marex@denx.de>
+Date: Wed, 1 Aug 2012 11:48:36 +0800
+Message-ID: <20120801034834.GA1672@S2100-06.ap.freescale.net>
 References: <1341555449-17507-6-git-send-email-marex@denx.de>
 	<20120731205300.GA25721@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>, Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Fabio,
+	Wolfgang Denk <wd-ynQEQJNshbs@public.gmane.org>, Zundel <dzu-ynQEQJNshbs@public.gmane.org>, Detlev,
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Stefano Babic <sbabic-ynQEQJNshbs@public.gmane.org>, Dong,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <20120731205300.GA25721-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -25,48 +28,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Guenter Roeck,
-
-[...]
-
-> > +static int __devexit mxs_spi_remove(struct platform_device *pdev)
-> > +{
-> > +	struct spi_master *host;
-> > +	struct mxs_spi *spi;
-> > +	struct mxs_ssp *ssp;
-> > +
-> > +	host = platform_get_drvdata(pdev);
-> > +	spi = spi_master_get_devdata(host);
-> > +	ssp = &spi->ssp;
-> > +
-> > +	spi_unregister_master(host);
-> > +
-> > +	platform_set_drvdata(pdev, NULL);
-> > +
-> > +	clk_disable_unprepare(ssp->clk);
-> > +
+On Tue, Jul 31, 2012 at 01:53:00PM -0700, Guenter Roeck wrote:
 > > +	spi_master_put(host);
 > > +	kfree(host);
 > > +
 > 
-> Is the kfree() here and in the probe function really necessary ?
+> Is the kfree() here and in the probe function really necessary ? 
+> 
+The following is how the kerneldoc of spi_alloc_master says.
 
-It certainly would seem that way.
+ * The caller is responsible for assigning the bus number and initializing
+ * the master's methods before calling spi_register_master(); and (after errors
+ * adding the device) calling spi_master_put() and kfree() to prevent a memory
+ * leak.
 
-> Couple of reasons for asking: No other SPI master driver calls it in the
-> remove function (unless I missed it), most drivers don't call it in the
-> probe function error path, and if I call it in the remove function in a
-> SPI master driver I am working on, and load/unload the module several
-> times in a row, I get a nasty kernel crash.
+> Couple of reasons for asking: No other SPI master driver calls it in the remove
+> function (unless I missed it), most drivers don't call it in the probe
+> function error path, and if I call it in the remove function in a SPI master
+> driver I am working on, and load/unload the module several times in a row, I get
+> a nasty kernel crash.
+> 
+So sounds like either code or the kerneldoc needs patching?
 
-It seems the spi_master class takes care of that kfree() in 
-spi.c:spi_master_release() . Good catch, thanks!
+Regards,
+Shawn
 
-> Thanks,
-> Guenter
-
-Best regards,
-Marek Vasut
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

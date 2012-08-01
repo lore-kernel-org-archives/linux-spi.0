@@ -1,13 +1,11 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez de 50% de =?iso-8859-15?Q?r=E9duction*?= pour retrouver la
-	ligne avec Weight Watchers
-Date: Thu, 02 Aug 2012 00:32:03 +0200
-Message-ID: <1343860365.5019ae8dcd782@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Network Solution" <noreply.NS910-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Important Notice Regarding Your Website
+Date: Wed, 1 Aug 2012 15:45:52 -0700
+Message-ID: <0899697b23fe7f16abb976cd001719d2@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,23 +17,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Upon reviewing your account, we noticed that your website is not listed first on Google, Yahoo, Bing or any other search engine.
+This may be costing you sales and website traffic, so we wanted to bring this to your attention.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjY1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0wMiAwMDozMDowMSZlPTEmaD0xNzI2NCZmPTE3MjY1Jmc9MTcyNjU=3D
+Please give me a call at 1 (800) 455-8040 to discuss how we can get you first on many keywords related to your business.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjY1JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0wMiAwMDozMDowMSZlPTEmaD0xNzI2NCZmPTE3MjY1Jmc9MTcyNj=
-U=3D
+Thank you for your prompt attention to this matter.
+
+Shane Epperson
+Network Traffic Coordinator
+Best Page Rankings
+1 (800) 455-8040
+bestpagerank-KK0ffGbhmjU@public.gmane.org
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages <mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

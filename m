@@ -1,87 +1,102 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
-Date: Thu, 2 Aug 2012 07:57:27 -0700
-Message-ID: <20120802145727.GA19676@roeck-us.net>
-References: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com>
- <20120801150713.GB15630@roeck-us.net>
- <501A5151.4040207@ti.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
+Date: Thu, 2 Aug 2012 16:58:38 +0200
+Message-ID: <201208021658.38237.marex@denx.de>
+References: <1343076052-27312-1-git-send-email-marex@denx.de>
+	<1343076052-27312-7-git-send-email-marex@denx.de>
+	<20120801203106.GW4483@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	broonie@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
-To: Shubhrajyoti <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <501A5151.4040207@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120801203106.GW4483-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 02, 2012 at 03:37:13PM +0530, Shubhrajyoti wrote:
-> On Wednesday 01 August 2012 08:37 PM, Guenter Roeck wrote:
-> > On Wed, Aug 01, 2012 at 03:06:28PM +0530, Shubhrajyoti D wrote:
-> >> The kfree() is taken care of by the spi core (spi_master_release() function)
-> >> that is called once the last reference to the underlying struct device has
-> >> been released. So the driver need not call kfree.
-> >>
-> >> Also the put was missed in some of the error handling fix the same.
-> >> There by fixing the missing device_put in some of the error paths.
-> >>
-> >> Cc: Guenter Roeck <linux@roeck-us.net>
-> > Reported-by: may be better here.
-> My bad. I should have done.
-> >
-> >> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
-> > Acked-by: Guenter Roeck <linux@roeck-us.net>
-> thanks.
-> > I suspect that "spi_master_put(master);" may also be missing in
-> > omap2_mcspi_remove(), but we'll need someone to confirm that.
-> Looks unlikely.
-> 
-> spi_master_put does a 
-> ...
->   if (master)
->                 put_device(&master->dev);
-> ...
-> 
-> In remove I call 
-> 
-> spi_unregister_master
-> ...
-> */
-> void spi_unregister_master(struct spi_master *master)
-> {
->         int dummy;
-> [...]
-> 
->         dummy = device_for_each_child(&master->dev, NULL, __unregister);
->         device_unregister(&master->dev);
-> }
-> 
-> and 
-> 
-> void device_unregister(struct device *dev)
-> {
->     [..]
->         device_del(dev);
->         put_device(dev);
-> }
-> 
-> Hope my understanding is correct.
-> 
-I think it is; I checked the refcount. spi_register_master increases
-refcount from 1 to 3, and spi_unregister_master decreases it from 3 to 0.
+Dear Mark Brown,
 
-Now, if _my_ understanding is correct, that means the data structure allocated
-with spi_alloc_master, and specifically the device private data structure
-(struct omap2_mcspi in your case), is freed with spi_unregister_master().
-If so, it must not be accessed after the call to spi_unregister_master().
-However, many drivers do access this data after the call to
-spi_unregister_master(). spi-tegra.c is a good example, but there are many
-others. Does that mean that those drivers access freed memory ?
+Thanks for the review!
 
-Also, some other drivers do call spi_master_put() after spi_unregister_master(),
-with no matching spi_master_get() (eg spi-topcliff-pch.c). Does that mean that
-those drivers call spi_master_put() on free memory ?
+> On Mon, Jul 23, 2012 at 10:40:48PM +0200, Marek Vasut wrote:
+> > This is slightly reworked version of the SPI driver.
+> > Support for DT has been added and it's been converted
+> > to queued API.
+> 
+> Looks reasonable overall.
+> 
+> > +	bits_per_word = dev->bits_per_word;
+> > +	if (t && t->bits_per_word)
+> > +		bits_per_word = t->bits_per_word;
+> > +
+> > +	if (bits_per_word != 8) {
+> > +		dev_err(&dev->dev, "%s, unsupported bits_per_word=%d\n",
+> > +					__func__, bits_per_word);
+> > +		return -EINVAL;
+> > +	}
+> > 
+> > +	if (dev->max_speed_hz)
+> > +		hz = dev->max_speed_hz;
+> > +	if (t && t->speed_hz)
+> > +		hz = t->speed_hz;
+> > +	if (hz == 0) {
+> > +		dev_err(&dev->dev, "Cannot continue with zero clock\n");
+> > +		return -EINVAL;
+> > +	}
+> 
+> These two blocks use a different style (the first does the first assign
+> unconditionally, the second uses initialisation with declaration).  I
+> prefer the first style but YMMV and it doesn't matter.
+> 
+> For the missing clock rate might it make sense to just use whatever the
+> clock happens to come out as?
 
-Thanks,
-Guenter
+Hm, the max_speed_hz should be the cap for the transfer speed. I will change the 
+function to this:
+
+hz = dev->max_speed_hz;
+if (t && t->speed_hz)
+        hz = min(hz, t->speed_hz);
+
+> > +static void mxs_spi_cleanup(struct spi_device *dev)
+> > +{
+> > +	return;
+> > +}
+> 
+> Empty functions are generally a warning sign...  why do we need this
+> one?
+
+Good catch, thanks!
+
+> > +static int __devexit mxs_spi_remove(struct platform_device *pdev)
+> > +{
+> > 
+> > +	clk_disable_unprepare(ssp->clk);
+> 
+> It'd be nice to only keep the clocks enabled while doing transfers but
+> again totally non-essential.
+
+Hm, this is spread across mxs. Shawn, is there any plan for PM implementation 
+for MXS ?
+
+Best regards,
+Marek Vasut
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

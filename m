@@ -1,122 +1,104 @@
-From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>
-Subject: [PATCH] spi: spi-rspi: fix build error for the latest shdma driver
-Date: Thu, 02 Aug 2012 17:17:33 +0900
-Message-ID: <501A379D.6060009@renesas.com>
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
+Date: Thu, 02 Aug 2012 15:37:13 +0530
+Message-ID: <501A5151.4040207@ti.com>
+References: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com> <20120801150713.GB15630@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general@lists.sourceforge.net,
-	SH-Linux <linux-sh@vger.kernel.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+	broonie@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
+To: Guenter Roeck <linux@roeck-us.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20120801150713.GB15630@roeck-us.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Because the latest shdma driver changed, it caused build error in
-the spi-rspi driver. This patch fixed the build error.
+On Wednesday 01 August 2012 08:37 PM, Guenter Roeck wrote:
+> On Wed, Aug 01, 2012 at 03:06:28PM +0530, Shubhrajyoti D wrote:
+>> The kfree() is taken care of by the spi core (spi_master_release() function)
+>> that is called once the last reference to the underlying struct device has
+>> been released. So the driver need not call kfree.
+>>
+>> Also the put was missed in some of the error handling fix the same.
+>> There by fixing the missing device_put in some of the error paths.
+>>
+>> Cc: Guenter Roeck <linux@roeck-us.net>
+> Reported-by: may be better here.
+My bad. I should have done.
+>
+>> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> Acked-by: Guenter Roeck <linux@roeck-us.net>
+thanks.
+> I suspect that "spi_master_put(master);" may also be missing in
+> omap2_mcspi_remove(), but we'll need someone to confirm that.
+Looks unlikely.
 
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
----
- drivers/spi/spi-rspi.c |   56 +++++++++++++++++++++++++++++------------------
- 1 files changed, 34 insertions(+), 22 deletions(-)
+spi_master_put does a 
+...
+  if (master)
+                put_device(&master->dev);
+...
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 4894bde..30faf6d 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -147,8 +147,6 @@ struct rspi_data {
- 	unsigned char spsr;
+In remove I call 
 
- 	/* for dmaengine */
--	struct sh_dmae_slave dma_tx;
--	struct sh_dmae_slave dma_rx;
- 	struct dma_chan *chan_tx;
- 	struct dma_chan *chan_rx;
- 	int irq;
-@@ -663,20 +661,16 @@ static irqreturn_t rspi_irq(int irq, void *_sr)
- 	return ret;
- }
+spi_unregister_master
+...
+*/
+void spi_unregister_master(struct spi_master *master)
+{
+        int dummy;
+[...]
 
--static bool rspi_filter(struct dma_chan *chan, void *filter_param)
--{
--	chan->private = filter_param;
--	return true;
--}
--
--static void __devinit rspi_request_dma(struct rspi_data *rspi,
--				       struct platform_device *pdev)
-+static int __devinit rspi_request_dma(struct rspi_data *rspi,
-+				      struct platform_device *pdev)
- {
- 	struct rspi_plat_data *rspi_pd = pdev->dev.platform_data;
- 	dma_cap_mask_t mask;
-+	struct dma_slave_config cfg;
-+	int ret;
+        dummy = device_for_each_child(&master->dev, NULL, __unregister);
+        device_unregister(&master->dev);
+}
 
- 	if (!rspi_pd)
--		return;
-+		return 0;	/* The driver assumes no error. */
+and 
 
- 	rspi->dma_width_16bit = rspi_pd->dma_width_16bit;
+void device_unregister(struct device *dev)
+{
+    [..]
+        device_del(dev);
+        put_device(dev);
+}
 
-@@ -684,21 +678,35 @@ static void __devinit rspi_request_dma(struct rspi_data *rspi,
- 	if (rspi_pd->dma_rx_id && rspi_pd->dma_tx_id) {
- 		dma_cap_zero(mask);
- 		dma_cap_set(DMA_SLAVE, mask);
--		rspi->dma_rx.slave_id = rspi_pd->dma_rx_id;
--		rspi->chan_rx = dma_request_channel(mask, rspi_filter,
--						    &rspi->dma_rx);
--		if (rspi->chan_rx)
--			dev_info(&pdev->dev, "Use DMA when rx.\n");
-+		rspi->chan_rx = dma_request_channel(mask, shdma_chan_filter,
-+						    (void *)rspi_pd->dma_rx_id);
-+		if (rspi->chan_rx) {
-+			cfg.slave_id = rspi_pd->dma_rx_id;
-+			cfg.direction = DMA_DEV_TO_MEM;
-+			ret = dmaengine_slave_config(rspi->chan_rx, &cfg);
-+			if (!ret)
-+				dev_info(&pdev->dev, "Use DMA when rx.\n");
-+			else
-+				return ret;
-+		}
- 	}
- 	if (rspi_pd->dma_tx_id) {
- 		dma_cap_zero(mask);
- 		dma_cap_set(DMA_SLAVE, mask);
--		rspi->dma_tx.slave_id = rspi_pd->dma_tx_id;
--		rspi->chan_tx = dma_request_channel(mask, rspi_filter,
--						    &rspi->dma_tx);
--		if (rspi->chan_tx)
--			dev_info(&pdev->dev, "Use DMA when tx\n");
-+		rspi->chan_tx = dma_request_channel(mask, shdma_chan_filter,
-+						    (void *)rspi_pd->dma_tx_id);
-+		if (rspi->chan_tx) {
-+			cfg.slave_id = rspi_pd->dma_tx_id;
-+			cfg.direction = DMA_MEM_TO_DEV;
-+			ret = dmaengine_slave_config(rspi->chan_tx, &cfg);
-+			if (!ret)
-+				dev_info(&pdev->dev, "Use DMA when tx\n");
-+			else
-+				return ret;
-+		}
- 	}
-+
-+	return 0;
- }
+Hope my understanding is correct.
 
- static void __devexit rspi_release_dma(struct rspi_data *rspi)
-@@ -788,7 +796,11 @@ static int __devinit rspi_probe(struct platform_device *pdev)
- 	}
 
- 	rspi->irq = irq;
--	rspi_request_dma(rspi, pdev);
-+	ret = rspi_request_dma(rspi, pdev);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "rspi_request_dma failed.\n");
-+		goto error4;
-+	}
-
- 	ret = spi_register_master(master);
- 	if (ret < 0) {
--- 
-1.7.1
+> Thanks,
+> Guenter
+>
+>> ---
+>>  drivers/spi/spi-omap2-mcspi.c |    6 ++----
+>>  1 files changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+>> index 7d46b15..b5035e2 100644
+>> --- a/drivers/spi/spi-omap2-mcspi.c
+>> +++ b/drivers/spi/spi-omap2-mcspi.c
+>> @@ -1203,18 +1203,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+>>  
+>>  	status = spi_register_master(master);
+>>  	if (status < 0)
+>> -		goto err_spi_register;
+>> +		goto disable_pm;
+>>  
+>>  	return status;
+>>  
+>> -err_spi_register:
+>> -	spi_master_put(master);
+>>  disable_pm:
+>>  	pm_runtime_disable(&pdev->dev);
+>>  dma_chnl_free:
+>>  	kfree(mcspi->dma_channels);
+>>  free_master:
+>> -	kfree(master);
+>> +	spi_master_put(master);
+>>  	platform_set_drvdata(pdev, NULL);
+>>  	return status;
+>>  }
+>> -- 
+>> 1.7.5.4
+>>
+>>

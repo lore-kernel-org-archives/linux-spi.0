@@ -1,52 +1,61 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
-Date: Thu, 2 Aug 2012 18:03:25 +0200
-Message-ID: <201208021803.25460.marex@denx.de>
-References: <1343076052-27312-1-git-send-email-marex@denx.de>
-	<201208021658.38237.marex@denx.de>
-	<20120802160016.GA4537@opensource.wolfsonmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120802160016.GA4537-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: [PATCH] Revert "spi: omap2-mcspi: convert to module_platform_driver"
+Date: Fri,  3 Aug 2012 02:08:37 +0300
+Message-ID: <1343948917-14760-1-git-send-email-aaro.koskinen@iki.fi>
+Cc: balbi@ti.com, tomi.valkeinen@ti.com
+To: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Mark Brown,
+This reverts commit 9fdca9dfe093c76fe1ac1a09888ba9679d46996a.
 
-> On Thu, Aug 02, 2012 at 04:58:38PM +0200, Marek Vasut wrote:
-> > > It'd be nice to only keep the clocks enabled while doing transfers but
-> > > again totally non-essential.
-> > 
-> > Hm, this is spread across mxs. Shawn, is there any plan for PM
-> > implementation for MXS ?
-> 
-> Take a look at s3c64xx - I did something with runtime PM for this, it's
-> something that can reasonably be implemented in drivers and as far as I
-> can tell most framework implementations end up using runtime PM anyway.
+Changing omap2_mcspi_init() from subsys_initcall to device_initcall broke
+the display initialization on N900 when all the drivers are compiled
+built-in. Display subsystem drivers need a certain initialization order
+and having all of them initialize with device_initcall seems to be too
+fragile. Without this revert the display init fails and the boot hangs
+with the following messages:
 
-We don't even support runtime pm on mxs yet IIRC
+[    1.260955] acx565akm spi1.2: invalid display ID
+[    1.265899] panel-acx565akm display0: acx_panel_probe panel detect error
+[    1.273071] omapdss CORE error: driver probe failed: -19
 
-Best regards,
-Marek Vasut
+[...]
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+[    1.902862] omapfb omapfb: no driver for display: lcd
+[    1.908264] omapfb omapfb: cannot find default display
+
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+---
+ drivers/spi/spi-omap2-mcspi.c |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 0c73dd4..8cec17c 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1289,5 +1289,18 @@ static struct platform_driver omap2_mcspi_driver = {
+ 	.remove =	__devexit_p(omap2_mcspi_remove),
+ };
+ 
+-module_platform_driver(omap2_mcspi_driver);
++
++static int __init omap2_mcspi_init(void)
++{
++	return platform_driver_register(&omap2_mcspi_driver);
++}
++subsys_initcall(omap2_mcspi_init);
++
++static void __exit omap2_mcspi_exit(void)
++{
++	platform_driver_unregister(&omap2_mcspi_driver);
++
++}
++module_exit(omap2_mcspi_exit);
++
+ MODULE_LICENSE("GPL");
+-- 
+1.7.2.5
+

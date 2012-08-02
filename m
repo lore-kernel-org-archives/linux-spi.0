@@ -1,11 +1,10 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
-Date: Thu, 2 Aug 2012 17:00:17 +0100
-Message-ID: <20120802160016.GA4537@opensource.wolfsonmicro.com>
+Date: Thu, 2 Aug 2012 18:03:25 +0200
+Message-ID: <201208021803.25460.marex@denx.de>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
-	<1343076052-27312-7-git-send-email-marex@denx.de>
-	<20120801203106.GW4483@opensource.wolfsonmicro.com>
 	<201208021658.38237.marex@denx.de>
+	<20120802160016.GA4537@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,10 +13,9 @@ Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201208021658.38237.marex-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <20120802160016.GA4537-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,17 +26,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 02, 2012 at 04:58:38PM +0200, Marek Vasut wrote:
+Dear Mark Brown,
 
-> > It'd be nice to only keep the clocks enabled while doing transfers but
-> > again totally non-essential.
+> On Thu, Aug 02, 2012 at 04:58:38PM +0200, Marek Vasut wrote:
+> > > It'd be nice to only keep the clocks enabled while doing transfers but
+> > > again totally non-essential.
+> > 
+> > Hm, this is spread across mxs. Shawn, is there any plan for PM
+> > implementation for MXS ?
+> 
+> Take a look at s3c64xx - I did something with runtime PM for this, it's
+> something that can reasonably be implemented in drivers and as far as I
+> can tell most framework implementations end up using runtime PM anyway.
 
-> Hm, this is spread across mxs. Shawn, is there any plan for PM implementation 
-> for MXS ?
+We don't even support runtime pm on mxs yet IIRC
 
-Take a look at s3c64xx - I did something with runtime PM for this, it's
-something that can reasonably be implemented in drivers and as far as I
-can tell most framework implementations end up using runtime PM anyway.
+Best regards,
+Marek Vasut
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

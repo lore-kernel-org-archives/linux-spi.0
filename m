@@ -1,104 +1,70 @@
-From: Shubhrajyoti <shubhrajyoti@ti.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
-Date: Thu, 02 Aug 2012 15:37:13 +0530
-Message-ID: <501A5151.4040207@ti.com>
-References: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com> <20120801150713.GB15630@roeck-us.net>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
+Date: Thu, 2 Aug 2012 16:41:25 +0530
+Message-ID: <1343905885-31549-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
-	broonie@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
-To: Guenter Roeck <linux@roeck-us.net>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20120801150713.GB15630@roeck-us.net>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 01 August 2012 08:37 PM, Guenter Roeck wrote:
-> On Wed, Aug 01, 2012 at 03:06:28PM +0530, Shubhrajyoti D wrote:
->> The kfree() is taken care of by the spi core (spi_master_release() function)
->> that is called once the last reference to the underlying struct device has
->> been released. So the driver need not call kfree.
->>
->> Also the put was missed in some of the error handling fix the same.
->> There by fixing the missing device_put in some of the error paths.
->>
->> Cc: Guenter Roeck <linux@roeck-us.net>
-> Reported-by: may be better here.
-My bad. I should have done.
->
->> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-thanks.
-> I suspect that "spi_master_put(master);" may also be missing in
-> omap2_mcspi_remove(), but we'll need someone to confirm that.
-Looks unlikely.
+The kfree() is taken care of by the spi core (spi_master_release() function)
+that is called once the last reference to the underlying struct device has
+been released. So the driver need not call kfree.
 
-spi_master_put does a 
-...
-  if (master)
-                put_device(&master->dev);
-...
+Also the put was missed in some of the error handling fix the same.
+There by fixing the missing device_put in some of the error paths.
 
-In remove I call 
+Acked-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Reported-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
 
-spi_unregister_master
-...
-*/
-void spi_unregister_master(struct spi_master *master)
-{
-        int dummy;
-[...]
-
-        dummy = device_for_each_child(&master->dev, NULL, __unregister);
-        device_unregister(&master->dev);
-}
-
-and 
-
-void device_unregister(struct device *dev)
-{
-    [..]
-        device_del(dev);
-        put_device(dev);
-}
-
-Hope my understanding is correct.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index bc47781..b2fb141 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1228,18 +1228,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 	status = spi_register_master(master);
+ 	if (status < 0)
+-		goto err_spi_register;
++		goto disable_pm;
+ 
+ 	return status;
+ 
+-err_spi_register:
+-	spi_master_put(master);
+ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
+ dma_chnl_free:
+ 	kfree(mcspi->dma_channels);
+ free_master:
+-	kfree(master);
++	spi_master_put(master);
+ 	platform_set_drvdata(pdev, NULL);
+ 	return status;
+ }
+-- 
+1.7.5.4
 
 
-> Thanks,
-> Guenter
->
->> ---
->>  drivers/spi/spi-omap2-mcspi.c |    6 ++----
->>  1 files changed, 2 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
->> index 7d46b15..b5035e2 100644
->> --- a/drivers/spi/spi-omap2-mcspi.c
->> +++ b/drivers/spi/spi-omap2-mcspi.c
->> @@ -1203,18 +1203,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
->>  
->>  	status = spi_register_master(master);
->>  	if (status < 0)
->> -		goto err_spi_register;
->> +		goto disable_pm;
->>  
->>  	return status;
->>  
->> -err_spi_register:
->> -	spi_master_put(master);
->>  disable_pm:
->>  	pm_runtime_disable(&pdev->dev);
->>  dma_chnl_free:
->>  	kfree(mcspi->dma_channels);
->>  free_master:
->> -	kfree(master);
->> +	spi_master_put(master);
->>  	platform_set_drvdata(pdev, NULL);
->>  	return status;
->>  }
->> -- 
->> 1.7.5.4
->>
->>
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

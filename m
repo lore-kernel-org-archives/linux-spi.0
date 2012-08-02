@@ -1,10 +1,11 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 08/10 RESEND] spi: Add DMA support into SPI driver
-Date: Thu, 2 Aug 2012 17:00:42 +0200
-Message-ID: <201208021700.43159.marex@denx.de>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
+Date: Thu, 2 Aug 2012 17:00:17 +0100
+Message-ID: <20120802160016.GA4537@opensource.wolfsonmicro.com>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
-	<1343076052-27312-9-git-send-email-marex@denx.de>
-	<20120801203448.GX4483@opensource.wolfsonmicro.com>
+	<1343076052-27312-7-git-send-email-marex@denx.de>
+	<20120801203106.GW4483@opensource.wolfsonmicro.com>
+	<201208021658.38237.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,9 +14,10 @@ Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120801203448.GX4483-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201208021658.38237.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,34 +28,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Mark Brown,
+On Thu, Aug 02, 2012 at 04:58:38PM +0200, Marek Vasut wrote:
 
-> On Mon, Jul 23, 2012 at 10:40:50PM +0200, Marek Vasut wrote:
-> > +		/*
-> > +		 * Small blocks can be transfered via PIO.
-> > +		 * Measured by empiric means:
-> > +		 *
-> > +		 * dd if=/dev/mtdblock0 of=/dev/null bs=1024k count=1
-> > +		 *
-> > +		 * DMA only: 2.164808 seconds, 473.0KB/s
-> > +		 * Combined: 1.676276 seconds, 610.9KB/s
-> > +		 */
-> 
-> I've seen other devices end up using the FIFO length as the decision
-> point here which makes intuitive sense to me unless the FIFO is
-> extremely deep.
+> > It'd be nice to only keep the clocks enabled while doing transfers but
+> > again totally non-essential.
 
-Yep, that's all good. This device has not too deep FIFO, but the reason I chose 
-not to go that way is because the DMA allocations have some overhead too and 
-this values seemed to be the best.
+> Hm, this is spread across mxs. Shawn, is there any plan for PM implementation 
+> for MXS ?
 
-> Not reviewed this properly yet but it looks OK from a first read
-> through.
-
-Thanks!
-
-Best regards,
-Marek Vasut
+Take a look at s3c64xx - I did something with runtime PM for this, it's
+something that can reasonably be implemented in drivers and as far as I
+can tell most framework implementations end up using runtime PM anyway.
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

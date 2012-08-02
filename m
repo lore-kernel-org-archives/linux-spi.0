@@ -1,70 +1,87 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
-Date: Thu, 2 Aug 2012 16:41:25 +0530
-Message-ID: <1343905885-31549-1-git-send-email-shubhrajyoti@ti.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
+Date: Thu, 2 Aug 2012 07:57:27 -0700
+Message-ID: <20120802145727.GA19676@roeck-us.net>
+References: <1343813788-19165-1-git-send-email-shubhrajyoti@ti.com>
+ <20120801150713.GB15630@roeck-us.net>
+ <501A5151.4040207@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	broonie@opensource.wolfsonmicro.com, linux-kernel@vger.kernel.org
+To: Shubhrajyoti <shubhrajyoti@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <501A5151.4040207@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The kfree() is taken care of by the spi core (spi_master_release() function)
-that is called once the last reference to the underlying struct device has
-been released. So the driver need not call kfree.
+On Thu, Aug 02, 2012 at 03:37:13PM +0530, Shubhrajyoti wrote:
+> On Wednesday 01 August 2012 08:37 PM, Guenter Roeck wrote:
+> > On Wed, Aug 01, 2012 at 03:06:28PM +0530, Shubhrajyoti D wrote:
+> >> The kfree() is taken care of by the spi core (spi_master_release() function)
+> >> that is called once the last reference to the underlying struct device has
+> >> been released. So the driver need not call kfree.
+> >>
+> >> Also the put was missed in some of the error handling fix the same.
+> >> There by fixing the missing device_put in some of the error paths.
+> >>
+> >> Cc: Guenter Roeck <linux@roeck-us.net>
+> > Reported-by: may be better here.
+> My bad. I should have done.
+> >
+> >> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> > Acked-by: Guenter Roeck <linux@roeck-us.net>
+> thanks.
+> > I suspect that "spi_master_put(master);" may also be missing in
+> > omap2_mcspi_remove(), but we'll need someone to confirm that.
+> Looks unlikely.
+> 
+> spi_master_put does a 
+> ...
+>   if (master)
+>                 put_device(&master->dev);
+> ...
+> 
+> In remove I call 
+> 
+> spi_unregister_master
+> ...
+> */
+> void spi_unregister_master(struct spi_master *master)
+> {
+>         int dummy;
+> [...]
+> 
+>         dummy = device_for_each_child(&master->dev, NULL, __unregister);
+>         device_unregister(&master->dev);
+> }
+> 
+> and 
+> 
+> void device_unregister(struct device *dev)
+> {
+>     [..]
+>         device_del(dev);
+>         put_device(dev);
+> }
+> 
+> Hope my understanding is correct.
+> 
+I think it is; I checked the refcount. spi_register_master increases
+refcount from 1 to 3, and spi_unregister_master decreases it from 3 to 0.
 
-Also the put was missed in some of the error handling fix the same.
-There by fixing the missing device_put in some of the error paths.
+Now, if _my_ understanding is correct, that means the data structure allocated
+with spi_alloc_master, and specifically the device private data structure
+(struct omap2_mcspi in your case), is freed with spi_unregister_master().
+If so, it must not be accessed after the call to spi_unregister_master().
+However, many drivers do access this data after the call to
+spi_unregister_master(). spi-tegra.c is a good example, but there are many
+others. Does that mean that those drivers access freed memory ?
 
-Acked-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Reported-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
+Also, some other drivers do call spi_master_put() after spi_unregister_master(),
+with no matching spi_master_get() (eg spi-topcliff-pch.c). Does that mean that
+those drivers call spi_master_put() on free memory ?
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index bc47781..b2fb141 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1228,18 +1228,16 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
- 
- 	status = spi_register_master(master);
- 	if (status < 0)
--		goto err_spi_register;
-+		goto disable_pm;
- 
- 	return status;
- 
--err_spi_register:
--	spi_master_put(master);
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
- dma_chnl_free:
- 	kfree(mcspi->dma_channels);
- free_master:
--	kfree(master);
-+	spi_master_put(master);
- 	platform_set_drvdata(pdev, NULL);
- 	return status;
- }
--- 
-1.7.5.4
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks,
+Guenter

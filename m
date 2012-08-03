@@ -1,50 +1,61 @@
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
-Subject: Re: [PATCH] Revert "spi: omap2-mcspi: convert to
- module_platform_driver"
-Date: Fri, 3 Aug 2012 15:46:56 +0300
-Message-ID: <20120803124656.GB731@harshnoise.musicnaut.iki.fi>
-References: <1343948917-14760-1-git-send-email-aaro.koskinen@iki.fi>
- <CACxGe6scCYLpsEDGGwaXw_ijAk027w6Mk7D7FSOTZZdC6VkKSg@mail.gmail.com>
- <1343981127.2744.28.camel@deskari>
- <20120803094553.GA731@harshnoise.musicnaut.iki.fi>
- <20120803095836.GE6073@arwen.pp.htv.fi>
- <501BBB18.5090201@ti.com>
+From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
+Date: Fri, 3 Aug 2012 15:38:15 +0200
+Message-ID: <20120803153815.758dc064@skate>
+References: <1343076052-27312-1-git-send-email-marex@denx.de>
+	<1343076052-27312-7-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: balbi@ti.com, Tomi Valkeinen <tomi.valkeinen@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Shubhrajyoti <shubhrajyoti@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <501BBB18.5090201@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>, Dong,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1343076052-27312-7-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Fri, Aug 03, 2012 at 05:20:48PM +0530, Shubhrajyoti wrote:
-> On Friday 03 August 2012 03:28 PM, Felipe Balbi wrote:
-> >> [    1.496124] spi spi1.0: setup mode 0, 8 bits/w, 6000000 Hz max --> 0
-> >> > [    1.503265] omap2_mcspi omap2_mcspi.1: registered child spi1.0
-> >> > 
-> >> > If I modify the board file so that child spi1.0 is registered before
-> >> > spi1.2, then it starts to work properly:
-> > that sounds quite odd... Shubhro, have you seen this before on any of
-> > our platforms ?
-> >
-> I havent seen this behaviour may be I didn't have this configuration.
-> Will try to see if I have any way of recreating and testing the multi cs
-> on one of our boards.
-> 
-> BTW I didnt understand why does that matter at all the cs order.
-> 
-> Aaro,
-> I am missing what is making the order matter.
-> What is it that I am missing?
-
-With multiple CS you need to configure all CHCONFx regs before any
-transfers work. This has been seen earlier with context save and restore
-for PM. See e.g. commit 89c05372d08f3982eeb94d1ea22a60a5eaa8cd6d.
-
-A.
+TWFyZWssCgpMZSBNb24sIDIzIEp1bCAyMDEyIDIyOjQwOjQ4ICswMjAwLApNYXJlayBWYXN1dCA8
+bWFyZXhAZGVueC5kZT4gYSDDqWNyaXQgOgoKPiArc3RhdGljIHVpbnQzMl90IG14c19zcGlfY3Nf
+dG9fcmVnKHVuc2lnbmVkIGNzKQo+ICt7Cj4gKwl1aW50MzJfdCBzZWxlY3QgPSAwOwo+ICsKPiAr
+CWlmIChjcyAmIDEpCj4gKwkJc2VsZWN0IHw9IEJNX1NTUF9DVFJMMF9XQUlUX0ZPUl9DTUQ7Cj4g
+KwlpZiAoY3MgJiAyKQo+ICsJCXNlbGVjdCB8PSBCTV9TU1BfQ1RSTDBfV0FJVF9GT1JfSVJROwo+
+ICsKPiArCXJldHVybiBzZWxlY3Q7Cj4gK30KCkl0IHNvdW5kcyByZWFsbHkgc3RyYW5nZSB0byBt
+YW5pcHVsYXRlIFdBSVRfRk9SX0NNRCBhbmQgV0FJVF9GT1JfSVJRCmJpdHMgdG8gYWRqdXN0IHRo
+ZSBjaGlwIHNlbGVjdCwgYW5kIHdoZW4gcmVhZGluZyB0aGUgZHJpdmVyLCBpdCBzZWVtZWQKc3Vz
+cGljaW91cyB0byBtZS4gQWZ0ZXIgZ29pbmcgdGhyb3VnaCB0aGUgZGF0YXNoZWV0LCBpbmRlZWQg
+dGhvc2UgYml0cwphcmUgdGhlIGFwcHJvcHJpYXRlIG9uZSB0byBzZWxlY3QgYmV0d2VlbiB0aGUg
+U1MwLCBTUzEgYW5kIFNTMiBjaGlwCnNlbGVjdHMsIGJ1dCBJIGZpbmQgdGhlIGNvZGUgbm90IHJl
+YWxseSBvYnZpb3VzLiBXb3VsZCBpdCBiZSBwb3NzaWJsZQp0byBtYWtlIGl0IG1vcmUgb2J2aW91
+cyBlaXRoZXIgYnkgYWRkaW5nIG9yIGNvbW1lbnQgb3IgZG9pbmcgc29tZXRoaW5nCmxpa2U6Cgov
+KiBTaG91bGQgYmUgcHV0IGluIHNvbWUgaGVhZGVyIGZpbGUgKi8KI2RlZmluZSBCTV9TU1BfQ1RS
+TDBfU1BJX0NTX0JJVFMgKDIwKQoKK3N0YXRpYyB2b2lkIG14c19zcGlfc2V0X2NzKHN0cnVjdCBt
+eHNfc3BpICpzcGksIHVuc2lnbmVkIGNzKQoreworCXN0cnVjdCBteHNfc3NwICpzc3AgPSAmc3Bp
+LT5zc3A7CisKKwl3cml0ZWwoMHgzIDw8IEJNX1NTUF9DVFJMMF9TUElfQ1NfQklUUywKKyAgICAg
+ICAgICAgICAgc3NwLT5iYXNlICsgSFdfU1NQX0NUUkwwICsgU1RNUF9PRkZTRVRfUkVHX0NMUik7
+CisJd3JpdGVsKGNzLAorICAgICAgICAgICAgICBzc3AtPmJhc2UgKyBIV19TU1BfQ1RSTDAgKyBT
+VE1QX09GRlNFVF9SRUdfU0VUKTsKK30KClJlZ2FyZHMsCgpUaG9tYXMKLS0gClRob21hcyBQZXRh
+enpvbmksIEZyZWUgRWxlY3Ryb25zCktlcm5lbCwgZHJpdmVycywgcmVhbC10aW1lIGFuZCBlbWJl
+ZGRlZCBMaW51eApkZXZlbG9wbWVudCwgY29uc3VsdGluZywgdHJhaW5pbmcgYW5kIHN1cHBvcnQu
+Cmh0dHA6Ly9mcmVlLWVsZWN0cm9ucy5jb20KCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNl
+Y3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVy
+IGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMg
+Y2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2ls
+bCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRl
+c3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2Zy
+bmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

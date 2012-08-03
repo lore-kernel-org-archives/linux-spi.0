@@ -1,11 +1,12 @@
-From: =?utf-8?B?5Y2i5pmv55Cb?= <marketing-C8JyBfaIqJlfyO9Q7EP/yw@public.gmane.org>
-Subject: [SPAM] 参加培w训r师培h训，首选STT！！-2:45:08
-Date: Sat, 4 Aug 2012 02:45:06 +0800
-Message-ID: <F2245F51125D4FB83396EC02CD2979F6@pdjfhd>
+From: Cofinoga par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Simulez votre projet sans engagement
+Date: Fri, 03 Aug 2012 20:15:44 +0200
+Message-ID: <1344017965.501c162d08212@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_061C_012E0303.1164CD40"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,38 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------=_NextPart_000_061C_012E0303.1164CD40
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTc1NzAmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOC0wMyAyMDoxMDowMSZlPTEmaD0xNzU2OSZmPTE3NTcwJmc9MTc1NzA=3D
 
-6K+mDQrQstGD0KrQvQ0K5oOFDQrrob/skrProakNCuivtw0K44KJ44Kv44Kw44GR44G544Kg44GK
-44Oh44K444GhDQrmn6UNCu+6ne+6q++6je+7se+7ne+7ie+6qe+6lQ0K6ZiFDQrnrqHnkIbogIXl
-upTlhbflpIfnmoTmioDog70NCumZhA0KeWZjZndtcQ0K5Lu2DQpnYnloc3pucw0K77yB
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTc1NzAmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOC0wMyAyMDoxMDowMSZlPTEmaD0xNzU2OSZmPTE3NTcwJmc9MTc1Nz=
+A=3D
 
-------=_NextPart_000_061C_012E0303.1164CD40
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=_NextPart_000_061C_012E0303.1164CD40
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_000_061C_012E0303.1164CD40--

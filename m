@@ -1,23 +1,19 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
-Date: Fri, 3 Aug 2012 16:00:43 +0200
-Message-ID: <201208031600.43816.marex@denx.de>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] SPI: MXS: Allow to pass the SPI master bus number from the
+	device tree
+Date: Fri,  3 Aug 2012 16:30:39 +0200
+Message-ID: <1344004239-22868-1-git-send-email-maxime.ripard@free-electrons.com>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
-	<20120803153815.758dc064@skate>
-	<CAOMZO5AQs1NzJBogcLPcKtY=QSaxpDmzUTvpfScY7P10FEoMJw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org, cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: marex-ynQEQJNshbs@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOMZO5AQs1NzJBogcLPcKtY=QSaxpDmzUTvpfScY7P10FEoMJw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1343076052-27312-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,59 +24,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Fabio Estevam,
+If you don't do it, the bus number will be a bogus value, possibly used
+for device file names in drivers like spidev.
 
-> On Fri, Aug 3, 2012 at 10:38 AM, Thomas Petazzoni
-> 
-> <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
-> > It sounds really strange to manipulate WAIT_FOR_CMD and WAIT_FOR_IRQ
-> > bits to adjust the chip select, and when reading the driver, it seemed
-> > suspicious to me. After going through the datasheet, indeed those bits
-> > are the appropriate one to select between the SS0, SS1 and SS2 chip
-> > selects, but I find the code not really obvious. Would it be possible
-> > to make it more obvious either by adding or comment or doing something
-> > like:
-> > 
-> > /* Should be put in some header file */
-> > #define BM_SSP_CTRL0_SPI_CS_BITS (20)
-> > 
-> > +static void mxs_spi_set_cs(struct mxs_spi *spi, unsigned cs)
-> > +{
-> > +       struct mxs_ssp *ssp = &spi->ssp;
-> > +
-> > +       writel(0x3 << BM_SSP_CTRL0_SPI_CS_BITS,
-> > +              ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
-> > +       writel(cs,
-> > +              ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
-> > +}
-> 
-> I agree with Thomas.
-> 
-> In U-boot I did the following in order to be able to select the
-> different chip selects:
-> http://git.denx.de/?p=u-boot.git;a=commitdiff;h=148ca64f327a89ef77e84756f5d
-> 351af33e59b64
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ drivers/spi/spi-mxs.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-I'll just add the following comment if it's ok with you:
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index d6a80a1..d6a73ef 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -527,6 +527,15 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
+ 	if (!master)
+ 		return -ENOMEM;
+ 
++	if (pdev->id != -1)
++		master->bus_num = pdev->id;
++	if (np) {
++		unsigned long prop;
++
++		of_property_read_u32(np, "cell-index", &prop);
++		master->bus_num = prop;
++	}
++
+ 	master->transfer_one_message = mxs_spi_transfer_one;
+ 	master->setup = mxs_spi_setup;
+ 	master->cleanup = mxs_spi_cleanup;
+-- 
+1.7.9.5
 
-/*
- * i.MX28 Datasheet: 17.10.1: HW_SSP_CTRL0
- *
- * The bits BM_SSP_CTRL0_WAIT_FOR_CMD and BM_SSP_CTRL0_WAIT_FOR_IRQ
- * in HW_SSP_CTRL0 register do have multiple usage, please refer to
- * the datasheet for further details. In SPI mode, they are used to
- * toggle the chip-select lines (nCS pins).
- */
-
-I hope it'll suffice. Recycling bits in registers is really crazy practice and 
-I'd like to avoid these getting out of scope of this flaw's location.
-
-> Thanks,
-> 
-> Fabio Estevam
-
-Best regards,
-Marek Vasut
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

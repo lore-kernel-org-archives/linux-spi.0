@@ -1,8 +1,9 @@
-From: Cofinoga par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Simulez votre projet sans engagement
-Date: Fri, 03 Aug 2012 20:15:44 +0200
-Message-ID: <1344017965.501c162d08212@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Center Parcs par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -30 Pourcent sur votre
+	=?iso-8859-15?Q?s=E9jour?=
+Date: Sat, 04 Aug 2012 00:22:14 +0200
+Message-ID: <1344032584.501c4f4853f50@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTc1NzAmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wOC0wMyAyMDoxMDowMSZlPTEmaD0xNzU2OSZmPTE3NTcwJmc9MTc1NzA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjU5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0wNCAwMDoyMDowMSZlPTEmaD0xNzI1OCZmPTE3MjU5Jmc9MTcyNTk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTc1NzAmYz0=
-xOTYxNjQxJmQ9MjAxMi0wOC0wMyAyMDoxMDowMSZlPTEmaD0xNzU2OSZmPTE3NTcwJmc9MTc1Nz=
-A=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjU5JmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0wNCAwMDoyMDowMSZlPTEmaD0xNzI1OCZmPTE3MjU5Jmc9MTcyNT=
+k=3D
 
 
 ---------------------------------------------------------------------------=

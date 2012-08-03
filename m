@@ -1,19 +1,21 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH] SPI: MXS: Allow to pass the SPI master bus number from the
-	device tree
-Date: Fri,  3 Aug 2012 16:30:39 +0200
-Message-ID: <1344004239-22868-1-git-send-email-maxime.ripard@free-electrons.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] SPI: MXS: Allow to pass the SPI master bus number from
+	the device tree
+Date: Fri, 3 Aug 2012 22:43:28 +0800
+Message-ID: <20120803144326.GE23791@S2101-09.ap.freescale.net>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
+	<1344004239-22868-1-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org, cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
+Cc: marex-ynQEQJNshbs@public.gmane.org, fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
 	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
 	b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: marex-ynQEQJNshbs@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1343076052-27312-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1344004239-22868-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,36 +26,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-If you don't do it, the bus number will be a bogus value, possibly used
-for device file names in drivers like spidev.
+On Fri, Aug 03, 2012 at 04:30:39PM +0200, Maxime Ripard wrote:
+> If you don't do it, the bus number will be a bogus value, possibly used
+> for device file names in drivers like spidev.
+> 
+Do you see any problem with that?  Here is the take from Grant.
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- drivers/spi/spi-mxs.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+http://thread.gmane.org/gmane.linux.kernel.spi.devel/9839/focus=9863
 
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index d6a80a1..d6a73ef 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -527,6 +527,15 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
- 
-+	if (pdev->id != -1)
-+		master->bus_num = pdev->id;
-+	if (np) {
-+		unsigned long prop;
-+
-+		of_property_read_u32(np, "cell-index", &prop);
-+		master->bus_num = prop;
-+	}
-+
- 	master->transfer_one_message = mxs_spi_transfer_one;
- 	master->setup = mxs_spi_setup;
- 	master->cleanup = mxs_spi_cleanup;
--- 
-1.7.9.5
+Regards,
+Shawn
 
 
 ------------------------------------------------------------------------------

@@ -1,35 +1,47 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] Revert "spi: omap2-mcspi: convert to module_platform_driver"
-Date: Thu, 2 Aug 2012 17:54:08 -0600
-Message-ID: <CACxGe6scCYLpsEDGGwaXw_ijAk027w6Mk7D7FSOTZZdC6VkKSg@mail.gmail.com>
-References: <1343948917-14760-1-git-send-email-aaro.koskinen@iki.fi>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
+Date: Fri, 3 Aug 2012 09:29:07 +0800
+Message-ID: <20120803012905.GA20537@S2101-09.ap.freescale.net>
+References: <1343076052-27312-1-git-send-email-marex@denx.de>
+	<1343076052-27312-7-git-send-email-marex@denx.de>
+	<20120801203106.GW4483@opensource.wolfsonmicro.com>
+	<201208021658.38237.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, balbi@ti.com, tomi.valkeinen@ti.com
-To: Aaro Koskinen <aaro.koskinen@iki.fi>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1343948917-14760-1-git-send-email-aaro.koskinen@iki.fi>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Attila Kinali <attila-HB9FjVmMKa7tRgLqZ5aouw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Dong Aisheng <b29396-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201208021658.38237.marex-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 2, 2012 at 5:08 PM, Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
-> This reverts commit 9fdca9dfe093c76fe1ac1a09888ba9679d46996a.
->
-> Changing omap2_mcspi_init() from subsys_initcall to device_initcall broke
-> the display initialization on N900 when all the drivers are compiled
-> built-in. Display subsystem drivers need a certain initialization order
-> and having all of them initialize with device_initcall seems to be too
-> fragile. Without this revert the display init fails and the boot hangs
-> with the following messages:
->
-> [    1.260955] acx565akm spi1.2: invalid display ID
-> [    1.265899] panel-acx565akm display0: acx_panel_probe panel detect error
-> [    1.273071] omapdss CORE error: driver probe failed: -19
+On Thu, Aug 02, 2012 at 04:58:38PM +0200, Marek Vasut wrote:
+> Hm, this is spread across mxs. Shawn, is there any plan for PM implementation 
+> for MXS ?
+> 
+Near term, no.  Long term, yes.
 
-The dependencies are all messed up. The reverted commit is part of
-fixing that and I don't really want to go backwards on it. How many
-drivers are failing? Can you try modifying the failure path of those
-drivers to return -EPROBE_DEFER and see if that helps?
+-- 
+Regards,
+Shawn
 
-g.
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

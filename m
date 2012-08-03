@@ -1,9 +1,13 @@
-From: =?GB2312?B?1dTFrsq/?= <smqyyewubuf-9Onoh4P/yGk@public.gmane.org>
-Subject: [SPAM] 妫寕鍏徃鏈夋紓鎹唬開，0.8%纳取，额大优惠
-Date: Fri, 3 Aug 2012 10:46:59 +0800
-Message-ID: <E1Sx7uo-0007eU-OL@sfs-ml-4.v29.ch3.sourceforge.com>
-Content-Type: multipart/mixed; boundary="===============0186009839495908274=="
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi/s3c64xx: Add missing static storage class specifiers
+Date: Fri,  3 Aug 2012 10:08:12 +0530
+Message-ID: <1343968692-13691-1-git-send-email-sachin.kamat@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -15,35 +19,79 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============0186009839495908274==
-Content-Type: text/plain;
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
+Silences the following sparse warnings:
+drivers/spi/spi-s3c64xx.c:1482:32: warning:
+symbol 's3c2443_spi_port_config' was not declared. Should it be static?
+drivers/spi/spi-s3c64xx.c:1489:32: warning:
+symbol 's3c6410_spi_port_config' was not declared. Should it be static?
+drivers/spi/spi-s3c64xx.c:1495:32: warning:
+symbol 's5p64x0_spi_port_config' was not declared. Should it be static?
+drivers/spi/spi-s3c64xx.c:1501:32: warning:
+symbol 's5pc100_spi_port_config' was not declared. Should it be static?
+drivers/spi/spi-s3c64xx.c:1508:32: warning:
+symbol 's5pv210_spi_port_config' was not declared. Should it be static?
+drivers/spi/spi-s3c64xx.c:1515:32: warning:
+symbol 'exynos4_spi_port_config' was not declared. Should it be static?
 
-各大企业公司您们好！
-    森茂实业公司成立于1996年，是一家集团公司。本集团共拥有十余家下属企业，遍及广东、江苏、上海、北京、山东等地区，我司在不断成长过程中注重人才的吸收和培养，拥有一批高素质的经营管理团队和专业技术人才，我司致力于创建高效和谐的企业环境，用专业、自信的合作精神为各大企业的发展与永续强劲的原动力。
-    如果贵企业（公司）若有以下情况请与我们联系！
-    1、公司为一般纳稅企业没有优惠政策而想减轻纳稅负担的。
-    2、对外销售商品或提供技术服务而贵司暂未申领發漂的。
-    3、外出采购或公干而服务商没有提供可以报销發漂的。
-    4、公司帐目进项与出项差额过大的，需补充差额的。
-    5、公司做帐或进销存方面如需用到的。
-    现有各种：商品销售、广告业、建筑业、服务业、租赁、培训、科技、印刷、运输、医疗、机械等漂据代理。[稅点按0.8%左右纳取，大面额可降底优惠]
-    提供的所有漂据可上网查询或到有关部门查验，可过帐后再付费用。
-    郑重承诺：我司已进一步完善我们管理制度，优化服务，并履行保密制度，希望能为您公司减轻纳税负担。
-        欢迎来电咨询，洽谈合作！
-        业务部联系人：赵丽芸女士   
-              电  话：13826496893
-        请保留联系号码，以备不时之需！
-                                 
-                                森茂实业有限公司
+Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-s3c64xx.c |   12 ++++++------
+ 1 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index d24ec80..9a86dfe 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1477,40 +1477,40 @@ static const struct dev_pm_ops s3c64xx_spi_pm = {
+ 			   s3c64xx_spi_runtime_resume, NULL)
+ };
+ 
+-struct s3c64xx_spi_port_config s3c2443_spi_port_config = {
++static struct s3c64xx_spi_port_config s3c2443_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x7f },
+ 	.rx_lvl_offset	= 13,
+ 	.tx_st_done	= 21,
+ 	.high_speed	= true,
+ };
+ 
+-struct s3c64xx_spi_port_config s3c6410_spi_port_config = {
++static struct s3c64xx_spi_port_config s3c6410_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x7f, 0x7F },
+ 	.rx_lvl_offset	= 13,
+ 	.tx_st_done	= 21,
+ };
+ 
+-struct s3c64xx_spi_port_config s5p64x0_spi_port_config = {
++static struct s3c64xx_spi_port_config s5p64x0_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x1ff, 0x7F },
+ 	.rx_lvl_offset	= 15,
+ 	.tx_st_done	= 25,
+ };
+ 
+-struct s3c64xx_spi_port_config s5pc100_spi_port_config = {
++static struct s3c64xx_spi_port_config s5pc100_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x7f, 0x7F },
+ 	.rx_lvl_offset	= 13,
+ 	.tx_st_done	= 21,
+ 	.high_speed	= true,
+ };
+ 
+-struct s3c64xx_spi_port_config s5pv210_spi_port_config = {
++static struct s3c64xx_spi_port_config s5pv210_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x1ff, 0x7F },
+ 	.rx_lvl_offset	= 15,
+ 	.tx_st_done	= 25,
+ 	.high_speed	= true,
+ };
+ 
+-struct s3c64xx_spi_port_config exynos4_spi_port_config = {
++static struct s3c64xx_spi_port_config exynos4_spi_port_config = {
+ 	.fifo_lvl_mask	= { 0x1ff, 0x7F, 0x7F },
+ 	.rx_lvl_offset	= 15,
+ 	.tx_st_done	= 25,
+-- 
+1.7.4.1
 
---===============0186009839495908274==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
@@ -51,15 +99,3 @@ Exclusive live event will cover all the ways today's security and
 threat landscape has changed and how IT managers can respond. Discussions 
 will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
---===============0186009839495908274==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============0186009839495908274==--

@@ -1,8 +1,7 @@
-From: Center Parcs par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -30 Pourcent sur votre
-	=?iso-8859-15?Q?s=E9jour?=
-Date: Sat, 04 Aug 2012 00:22:14 +0200
-Message-ID: <1344032584.501c4f4853f50@mc10.fr>
+From: Online voyance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Voyance 100% gratuite ! Obtenez des =?iso-8859-15?Q?r=E9ponses?=
+Date: Sat, 04 Aug 2012 00:32:07 +0200
+Message-ID: <1344033159.501c518748bac@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjU5JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0wNCAwMDoyMDowMSZlPTEmaD0xNzI1OCZmPTE3MjU5Jmc9MTcyNTk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MzkwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0wNCAwMDozMDowMSZlPTEmaD0xNzM4OSZmPTE3MzkwJmc9MTczOTA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjU5JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0wNCAwMDoyMDowMSZlPTEmaD0xNzI1OCZmPTE3MjU5Jmc9MTcyNT=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MzkwJmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0wNCAwMDozMDowMSZlPTEmaD0xNzM4OSZmPTE3MzkwJmc9MTczOT=
+A=3D
 
 
 ---------------------------------------------------------------------------=

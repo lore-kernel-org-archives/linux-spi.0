@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 09/10 V2] spi: Add SSP/SPI device tree documentation
-Date: Fri,  3 Aug 2012 17:26:14 +0200
-Message-ID: <1344007575-11448-10-git-send-email-marex@denx.de>
+Subject: [PATCH 10/10] ARM: mx28: Add SPI pinmux into imx28.dtsi
+Date: Fri,  3 Aug 2012 17:26:15 +0200
+Message-ID: <1344007575-11448-11-git-send-email-marex@denx.de>
 References: <1344007575-11448-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -34,36 +34,59 @@ Cc: Linux ARM kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.g
 Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 CC: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/mxs-spi.txt |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/mxs-spi.txt
+ arch/arm/boot/dts/imx28.dtsi |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-V2: Fix the address property length to 0x2000
-
-diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.txt b/Documentation/devicetree/bindings/spi/mxs-spi.txt
-new file mode 100644
-index 0000000..c36296f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/mxs-spi.txt
-@@ -0,0 +1,18 @@
-+* Freescale MX233/MX28 SSP/SPI
+diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
+index badc76a..4a0f12c 100644
+--- a/arch/arm/boot/dts/imx28.dtsi
++++ b/arch/arm/boot/dts/imx28.dtsi
+@@ -507,6 +507,45 @@
+ 					fsl,voltage = <1>;
+ 					fsl,pull-up = <0>;
+ 				};
 +
-+Required properties:
-+- compatible: Should be "fsl,<soc>-spi", where soc is "imx23" or "imx28"
-+- reg: Offset and length of the register set for the device
-+- interrupts: Should contain SSP interrupts (error irq first, dma irq second)
-+- fsl,ssp-dma-channel: APBX DMA channel for the SSP
++				spi0_pins_a: spi0@0 {
++					reg = <0>;
++					fsl,pinmux-ids =
++						<0x2000 0x2010 0x2020 0x2030
++						0x2040 0x2050 0x2060 0x2070
++						0x2080 0x2090 0x20a0>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
 +
-+Example:
++				spi1_pins_a: spi1@0 {
++					reg = <0>;
++					fsl,pinmux-ids =
++						<0x20c0 0x20d0 0x20e0 0x20f0>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
 +
-+ssp0: ssp@80010000 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	compatible = "fsl,imx28-spi";
-+	reg = <0x80010000 0x2000>;
-+	interrupts = <96 82>;
-+	fsl,ssp-dma-channel = <0>;
-+};
++				spi2_pins_a: spi2@0 {
++					reg = <0>;
++					fsl,pinmux-ids =
++						<0x2100 0x2110 0x2120
++						0x2130 0x2140 0x2150>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
++
++				spi3_pins_a: spi3@0 {
++					reg = <0>;
++					fsl,pinmux-ids =
++						<0x2180 0x2190 0x21a0 0x21b0>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
+ 			};
+ 
+ 			digctl@8001c000 {
 -- 
 1.7.10.4
 

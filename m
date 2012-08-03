@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH 06/10 V2] spi: Add SPI driver for mx233/mx28
-Date: Fri, 3 Aug 2012 15:49:16 +0200
-Message-ID: <201208031549.16475.marex@denx.de>
+Date: Fri, 3 Aug 2012 16:00:43 +0200
+Message-ID: <201208031600.43816.marex@denx.de>
 References: <1343076052-27312-1-git-send-email-marex@denx.de>
 	<20120803153815.758dc064@skate>
 	<CAOMZO5AQs1NzJBogcLPcKtY=QSaxpDmzUTvpfScY7P10FEoMJw@mail.gmail.com>
@@ -61,9 +61,19 @@ Dear Fabio Estevam,
 > http://git.denx.de/?p=u-boot.git;a=commitdiff;h=148ca64f327a89ef77e84756f5d
 > 351af33e59b64
 
-Good thing I waited with submission :)
+I'll just add the following comment if it's ok with you:
 
-I'll fix it in a bit and resubmit in the evening.
+/*
+ * i.MX28 Datasheet: 17.10.1: HW_SSP_CTRL0
+ *
+ * The bits BM_SSP_CTRL0_WAIT_FOR_CMD and BM_SSP_CTRL0_WAIT_FOR_IRQ
+ * in HW_SSP_CTRL0 register do have multiple usage, please refer to
+ * the datasheet for further details. In SPI mode, they are used to
+ * toggle the chip-select lines (nCS pins).
+ */
+
+I hope it'll suffice. Recycling bits in registers is really crazy practice and 
+I'd like to avoid these getting out of scope of this flaw's location.
 
 > Thanks,
 > 

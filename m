@@ -1,11 +1,12 @@
-From: =?utf-8?B?6LCt6JaH5aaZ?= <liujb-Kn1fR1XC4Z3M1kAEIRd3EQ@public.gmane.org>
-Subject: [SPAM] i5高.级.秘.书.强.化.训.练c0
-Date: Sun, 5 Aug 2012 03:35:10 +0800
-Message-ID: <C9371DFB2E7EFC6D6AB11DCA93277FFC@gyutxqw>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Mieux que les soldes : le top des locations de vacances
+Date: Sat, 04 Aug 2012 22:02:04 +0200
+Message-ID: <1344110574.501d7fee66d4c@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0354_01575E7F.177F1840"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,38 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------=_NextPart_000_0354_01575E7F.177F1840
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDE5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0wNCAyMjowMDowMSZlPTEmaD0xNzQxOCZmPTE3NDE5Jmc9MTc0MTk=3D
 
-6K+mDQrQm9Cu0J7QpdC30JkNCuaDhQ0K7JGO7ZiX7KOG7L2P64mL6riR67uv7Jy6DQror7cNCuOB
-m+OBgeOBoeOBkeOBsOODu+ODnw0K5p+lDQrvuqXvupXZgO+7he+6q++6tQ0K6ZiFDQrliLblrpro
-oYzliqjorqHliJLooagNCumZhA0KMHFnDQrku7YNCmVwaGN4d3FwanENCu+8gQ==
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDE5JmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0wNCAyMjowMDowMSZlPTEmaD0xNzQxOCZmPTE3NDE5Jmc9MTc0MT=
+k=3D
 
-------=_NextPart_000_0354_01575E7F.177F1840
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=_NextPart_000_0354_01575E7F.177F1840
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_NextPart_000_0354_01575E7F.177F1840--

@@ -1,17 +1,17 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi/s3c64xx: Add missing static storage class specifiers
-Date: Sat, 4 Aug 2012 12:07:09 +0100
-Message-ID: <20120804110708.GE10523@opensource.wolfsonmicro.com>
-References: <1343968692-13691-1-git-send-email-sachin.kamat@linaro.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix the error handling in probe
+Date: Sat, 4 Aug 2012 12:06:55 +0100
+Message-ID: <20120804110654.GD10523@opensource.wolfsonmicro.com>
+References: <1343905885-31549-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1343968692-13691-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1343905885-31549-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,9 +22,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Aug 03, 2012 at 10:08:12AM +0530, Sachin Kamat wrote:
-> Silences the following sparse warnings:
-> drivers/spi/spi-s3c64xx.c:1482:32: warning:
+On Thu, Aug 02, 2012 at 04:41:25PM +0530, Shubhrajyoti D wrote:
+> The kfree() is taken care of by the spi core (spi_master_release() function)
+> that is called once the last reference to the underlying struct device has
+> been released. So the driver need not call kfree.
 
 Applied, thanks.
 

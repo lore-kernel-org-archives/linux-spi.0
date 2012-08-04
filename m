@@ -1,12 +1,11 @@
-From: Online voyance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Voyance 100% gratuite ! Obtenez des =?iso-8859-15?Q?r=E9ponses?=
-Date: Sat, 04 Aug 2012 00:32:07 +0200
-Message-ID: <1344033159.501c518748bac@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Thomas Clemons" <noreply.TC2745-zbDL293UWMcAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Proposal Attached
+Date: Sat, 4 Aug 2012 01:29:39 -0700
+Message-ID: <908f83f668daa419b1655ecf00146102@qmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_784145140D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +17,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MzkwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0wNCAwMDozMDowMSZlPTEmaD0xNzM4OSZmPTE3MzkwJmc9MTczOTA=3D
+------=SPLITOR00A_001_784145140D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MzkwJmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0wNCAwMDozMDowMSZlPTEmaD0xNzM4OSZmPTE3MzkwJmc9MTczOT=
-A=3D
+Attached is the requested brochure and video including pricing.=20
+
+I am contacting you regarding printing and managing your company's =
+business cards. We look forward to the opportunity to work with you. =
+Please reply through the attachment=2E
+=20
+Sincerely,
+
+Thomas Clemons
+Online Business Management
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
+
+
+------=SPLITOR00A_001_784145140D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_784145140D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_784145140D--

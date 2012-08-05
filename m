@@ -1,7 +1,8 @@
-From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Mon, 06 Aug 2012 00:22:06 +0200
-Message-ID: <1344205341.501ef21dccea4@mc10.fr>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de 50% de =?iso-8859-15?Q?r=E9duction*?= pour retrouver la
+	ligne avec Weight Watchers
+Date: Mon, 06 Aug 2012 00:32:09 +0200
+Message-ID: <1344206037.501ef4d5b30a2@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3MjY2JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0wNiAwMDoyMDowMSZlPTEmaD0xNzI2NSZmPTE3MjY2Jmc9MTcyNjY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDIwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0wNiAwMDozMDowMSZlPTEmaD0xNzQxOSZmPTE3NDIwJmc9MTc0MjA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3MjY2JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0wNiAwMDoyMDowMSZlPTEmaD0xNzI2NSZmPTE3MjY2Jmc9MTcyNj=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDIwJmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0wNiAwMDozMDowMSZlPTEmaD0xNzQxOSZmPTE3NDIwJmc9MTc0Mj=
+A=3D
 
 
 ---------------------------------------------------------------------------=

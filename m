@@ -1,8 +1,8 @@
-From: Jack Mitchell <ml-YbFJW3Hi15w4V3TWAi07hPXRex20P6io@public.gmane.org>
-Subject: Turning off dev_dbg in spi_setup
-Date: Mon, 06 Aug 2012 10:45:03 +0100
-Message-ID: <501F921F.5060607@communistcode.co.uk>
-Reply-To: ml-YbFJW3Hi15w4V3TWAi07hPXRex20P6io@public.gmane.org
+From: "lulu Castagnette Par R2J" <lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
+Subject: Destockage Lulu Castagnette jusqu a moins 70 pourcent
+Date: Mon, 06 Aug 2012 13:09:04 +0000
+Message-ID: <3c7d356e2dc9f1cdbef6f268786567f7@information.r2jcommunication.fr>
+Reply-To: lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,38 +18,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I hope this appropriate on this mailing list, please let me know if it 
-isn't.
-
-I have developed an SPI driver which needs to toggle the SPI_MODE in 
-between reads and writes (I know, supporting legacy hardware right?). To 
-do this I do the following:
-
-    axonSPI_dev.spi_device->mode = SPI_MODE_0;
-    spi_setup(axonSPI_dev.spi_device);
-
-This works fine, however I cannot for the life in me stop the dev_dbg 
-function in spi_setup from printing to the kernel log at every call. So,
-
-1) Is this the best way to toggle the SPI_MODE on the fly?
-
-2) Does anyone have any suggestions to why dev_dbg refuses to stop 
-outputting every time I call spi_setup.
-
-This is a kernel module and the spi master is registered dynamically on 
-ismod.
-
-Kind Regards,
-
--- 
-
-   Jack Mitchell (jack-psbXN780rFT10XsdtD+oqA@public.gmane.org)
-   Embedded Systems Engineer
-   http://www.embed.me.uk
-
---
-
-
+Your email client cannot read this email.
+To view it online, please go here:
+http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=78&L=3&N=31
+Destockage Lulu Castagnette jusqu a moins 70 pourcent
+http://information.r2jcommunication.fr/link.php?M=2463975&N=78&L=422&F=T
+To stop receiving these
+emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=78
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

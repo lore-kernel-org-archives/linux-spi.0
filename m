@@ -1,12 +1,12 @@
-From: "lulu Castagnette Par R2J" <lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
-Subject: Destockage Lulu Castagnette jusqu a moins 70 pourcent
-Date: Mon, 06 Aug 2012 13:09:04 +0000
-Message-ID: <3c7d356e2dc9f1cdbef6f268786567f7@information.r2jcommunication.fr>
-Reply-To: lulu-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
+From: Thomas Meyer <thomas-VsYtu1Qij5c@public.gmane.org>
+Subject: [PATCH] spi: Use PTR_RET rather than if(IS_ERR(.. [1]
+Date: Mon, 06 Aug 2012 19:51:17 +0200
+Message-ID: <1344275477.14513.113.camel__20750.8161468015$1344277936$gmane$org@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: [grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org]
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,13 +18,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=78&L=3&N=31
-Destockage Lulu Castagnette jusqu a moins 70 pourcent
-http://information.r2jcommunication.fr/link.php?M=2463975&N=78&L=422&F=T
-To stop receiving these
-emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=78
+The semantic patch that makes this change is available
+in scripts/coccinelle/api/ptr_ret.cocci.
+
+More information about semantic patching is available at
+http://coccinelle.lip6.fr/
+
+Signed-off-by: Thomas Meyer <thomas-VsYtu1Qij5c@public.gmane.org>
+---
+
+diff -u -p a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -1134,9 +1134,7 @@ static int __devinit plat_mpc8xxx_spi_pr
+ 		return -EINVAL;
+ 
+ 	master = fsl_spi_probe(&pdev->dev, mem, irq);
+-	if (IS_ERR(master))
+-		return PTR_ERR(master);
+-	return 0;
++	return PTR_RET(master);
+ }
+ 
+ static int __devexit plat_mpc8xxx_spi_remove(struct platform_device *pdev)
+
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

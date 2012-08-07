@@ -1,33 +1,24 @@
-From: "Le Monde Du Bagage Par R2J" <lmdb-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
-Subject: moins 70 pourcent sur vos bagages pour une vente exclusive
-Date: Tue, 07 Aug 2012 06:18:56 +0000
-Message-ID: <8e04c1ffd37d03d2fd96fd8ba0b5249a@information.r2jcommunication.fr>
-Reply-To: lmdb-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to
+ pio
+Date: Tue, 07 Aug 2012 16:51:16 +0530
+Message-ID: <5020FA2C.2020707@ti.com>
+References: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com> <20120807074740.GR11011@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20120807074740.GR11011@atomide.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=79&L=3&N=29
+On Tuesday 07 August 2012 01:17 PM, Tony Lindgren wrote:
+>>  };
+> Don't you need to check separately for rx and tx dma? There's a slight
+> chance that you get a channel for one but not for the other..
+In that case I treat it as non usable and fall back to pio.
 
-
-To stop receiving these
-emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=79
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Are you suggesting that let one channel be dma and only the failed one pio?

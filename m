@@ -1,46 +1,33 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to
- pio
-Date: Tue, 7 Aug 2012 00:47:40 -0700
-Message-ID: <20120807074740.GR11011@atomide.com>
-References: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com>
+From: "Le Monde Du Bagage Par R2J" <lmdb-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org>
+Subject: moins 70 pourcent sur vos bagages pour une vente exclusive
+Date: Tue, 07 Aug 2012 06:18:56 +0000
+Message-ID: <8e04c1ffd37d03d2fd96fd8ba0b5249a@information.r2jcommunication.fr>
+Reply-To: lmdb-jNDFPZUTrfSnb7YYGeVgkbTzKHr1x449tXzthPrDRtc@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Shubhrajyoti D <shubhrajyoti@ti.com> [120724 23:26]:
-> In case there are dma errors currently the driver exits.
-> Make the spi driver fall back to pio mode in case of dma errors.
-> 
-> If the DMA engine is not selected the driver
-> exits.This patch makes the spi fall back to pio in that case.
-> 
-> Also adds a field dma_unusable to struct omap2_mcspi.
->  
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
-> ---
->  drivers/spi/spi-omap2-mcspi.c |   21 +++++++++++++--------
->  1 files changed, 13 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index bc47781..f243a39 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -129,6 +129,7 @@ struct omap2_mcspi {
->  	struct omap2_mcspi_dma	*dma_channels;
->  	struct device		*dev;
->  	struct omap2_mcspi_regs ctx;
-> +	int dma_unusable;
->  };
+Your email client cannot read this email.
+To view it online, please go here:
+http://information.r2jcommunication.fr/display.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&S=79&L=3&N=29
 
-Don't you need to check separately for rx and tx dma? There's a slight
-chance that you get a channel for one but not for the other..
 
-Tony
+To stop receiving these
+emails:http://information.r2jcommunication.fr/unsubscribe.php?M=2463975&C=f9ee1f5361dac685bab8cb0a0d4070ba&L=3&N=79
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

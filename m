@@ -1,75 +1,48 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to pio
-Date: Tue, 7 Aug 2012 15:21:26 +0300
-Message-ID: <20120807122125.GY8468@arwen.pp.htv.fi>
+From: "Philip, Avinash" <avinashphilip-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to pio
+Date: Wed, 8 Aug 2012 14:39:11 +0000
+Message-ID: <518397C60809E147AF5323E0420B992E3E987576@DBDE01.ent.ti.com>
 References: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com>
- <20120807074740.GR11011@atomide.com>
- <5020FA2C.2020707@ti.com>
- <20120807120227.GA11011@atomide.com>
-Reply-To: balbi@ti.com
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rmLdANEyqdgxlbgR"
-Cc: Shubhrajyoti <shubhrajyoti@ti.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Tony Lindgren <tony@atomide.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120807120227.GA11011@atomide.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: "Datta, Shubhrajyoti" <shubhrajyoti-l0cyMroinI0@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1343197229-15188-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jul 25, 2012 at 11:50:29, Datta, Shubhrajyoti wrote:
+> In case there are dma errors currently the driver exits.
+> Make the spi driver fall back to pio mode in case of dma errors.
+> 
+> If the DMA engine is not selected the driver
+> exits.This patch makes the spi fall back to pio in that case.
+> 
+> Also adds a field dma_unusable to struct omap2_mcspi.
+>  
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 
---rmLdANEyqdgxlbgR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have tested this patch for SPI PIO mode on AM335x EVM.
 
-Hi,
+Acked-by: Philip, Avinash <avinashphilip-l0cyMroinI0@public.gmane.org>
 
-On Tue, Aug 07, 2012 at 05:02:27AM -0700, Tony Lindgren wrote:
-> * Shubhrajyoti <shubhrajyoti@ti.com> [120807 04:21]:
-> > On Tuesday 07 August 2012 01:17 PM, Tony Lindgren wrote:
-> > >>  };
-> > > Don't you need to check separately for rx and tx dma? There's a slight
-> > > chance that you get a channel for one but not for the other..
-> > In that case I treat it as non usable and fall back to pio.
->=20
-> OK that should work too.
-> =20
-> > Are you suggesting that let one channel be dma and only the failed one =
-pio?
->=20
-> I guess both are doable. For reduced CPU load using DMA where possible
-> of course is the best way to go.
 
-indeed. if you can get DMA for TX but not for RX, then at least TX can
-go via DMA ;-)
-
---=20
-balbi
-
---rmLdANEyqdgxlbgR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQIQhFAAoJEIaOsuA1yqRE4zQP/2vYamY7tzdA8q5oSdbs2KZy
-GHXKOobLMBVB18EnKyL4oSJy69q5kDkdDPpldknLoFzoTh7+ihuyMzUmtU1CY5th
-ML7tYMgb1/PS4oxBctg3SGr3ZnsINp8q0Iv4p8QQuQPdqP5hp2WZJAiaaTwTFvAN
-aX1OSeKsd1cr7WSW37Jb4/c3vWa4zoiLzoTNpxePXKlc6ahQ1/JZqZf7WQK3WW10
-smh6bMR362P+BEV0LmNmEBDmrM3j7wSInwCieGlSn5mm7a0sADKVTWjhvKS2xlv1
-/6KlPaH1LgPNPNj10tMFJgsY2tyRjDyXUI76pQiUtz2kmvC3jAGn6ASaOZxSr6f9
-pDZJnSp1qC8HSzK0R5j3Hu9zuy9xIKeZnRE105r91kidpsmmjshzBwiAIpp+DOPS
-27hVw5/MzoNs2Y2k+AFwzncUi8eKjQCZsU6Bun30NP8q6PoHhHLZ8gVGTPtPi3pn
-z+aeWAttbQqIUlvBGvWvVDr/8PrGI6L0dSuqifpcoJxnSiWCQoMnZmj9Yr99xhJx
-cSX44rJiTXCNwpxsPkyiNnvv7L7JbQKkVdV+LvaW78lDAfz2SkIUnxlHrnHCEz1/
-+Ugl9AD0nVhbLkg2s9LeVp1p83PZ1uudCuvP1XvjLvLgqOz5MxAYlj6y0EMfEZ8i
-dAt0NOOXy/pigCP01w2J
-=TGT8
------END PGP SIGNATURE-----
-
---rmLdANEyqdgxlbgR--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,19 +1,18 @@
-From: "Philip, Avinash" <avinashphilip-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH] spi: omap2-mcspi: In case of dma errors fall back to pio
-Date: Wed, 8 Aug 2012 14:39:11 +0000
-Message-ID: <518397C60809E147AF5323E0420B992E3E987576@DBDE01.ent.ti.com>
-References: <1343197229-15188-1-git-send-email-shubhrajyoti@ti.com>
+From: =?koi8-r?B?6M/Cz9SjzsvP1yA=?= <jnmjngrn-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
+Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwNTgg0tXC?=
+Date: Thu, 9 Aug 2012 13:38:07 +0400
+Message-ID: <DF29BE02E2B8435E9EE31F977C646222@vacjc>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: "Datta, Shubhrajyoti" <shubhrajyoti-l0cyMroinI0@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
+	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
+	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
+	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
+	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
+	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1343197229-15188-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,25 +23,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 25, 2012 at 11:50:29, Datta, Shubhrajyoti wrote:
-> In case there are dma errors currently the driver exits.
-> Make the spi driver fall back to pio mode in case of dma errors.
-> 
-> If the DMA engine is not selected the driver
-> exits.This patch makes the spi fall back to pio in that case.
-> 
-> Also adds a field dma_unusable to struct omap2_mcspi.
->  
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-
-I have tested this patch for SPI PIO mode on AM335x EVM.
-
-Acked-by: Philip, Avinash <avinashphilip-l0cyMroinI0@public.gmane.org>
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTYzLjAwMCDBxNLF08/XIC0gMzgx
+MyDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjQ5MC4wMDAgwcTSxdPP1yAtIDY5MjQg0tXCCgrS
+z9PTydEgwNIuIMzJw8EgNC4yNzMuMDAwIMHE0sXTz9cgLSA2ODUwINLVwiAKCtLP09PJ0SDGydou
+IMzJw8EgMzQuNjUwLjAwMCDBxNLF08/XIC0gMTEyMTMg0tXCIAoK0sHT09nMy8Eg0M8gzMDCz8og
+1MXNwdTJy8UgKNPU0s/J1MXM2M7ZxSwgwNLJxMnexdPLycUgydTEIM/Sx8HOydrBw8nJKSAtIDMw
+MjAg0tXCIAoK1MXMICs3ICg0OTkpIDUwNC0xNi00MiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxp
+dmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwg
+Y292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBl
+IGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25z
+IAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhl
+IGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2ph
+dy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

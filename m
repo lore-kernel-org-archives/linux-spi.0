@@ -1,11 +1,11 @@
-From: "Siamar" <contatosiamar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Os 5 segredos da comunicação
-Date: Thu, 09 Aug 2012 11:15:44 -0300
-Message-ID: <bf538bbe47f6760ee7810480aa55bc9a@www.vixdroid.com>
-Reply-To: contatosiamar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Fais des rencontres sans sortir ta carte bancaire
+Date: Fri, 10 Aug 2012 05:52:05 +0200
+Message-ID: <1344570763.5024858b3feab@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnZp
-eGRyb2lkLmNvbS9kaXNwbGF5LnBocD9NPTM3MDUzMzYmQz0wYzgyNWZhNTczYzU5OWM0OGUwZWYy
-MDljNThlOTZkYyZTPTE1NSZMPTc5Jk49NDUKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9zc29z
-CkVtYWlsczpodHRwOi8vd3d3LnZpeGRyb2lkLmNvbS91bnN1YnNjcmliZS5waHA/TT0zNzA1MzM2
-JkM9MGM4MjVmYTU3M2M1OTljNDhlMGVmMjA5YzU4ZTk2ZGMmTD03OSZOPTE1NQotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxp
-dmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRo
-cmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9u
-ZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNl
-Y3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNj
-ZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDE4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOC0xMCAwNTo1MDowMSZlPTEmaD0xNzQxNyZmPTE3NDE4Jmc9MTc0MTg=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDE4JmM=
+9NDgzNjEyJmQ9MjAxMi0wOC0xMCAwNTo1MDowMSZlPTEmaD0xNzQxNyZmPTE3NDE4Jmc9MTc0MT=
+g=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

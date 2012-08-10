@@ -1,11 +1,13 @@
-From: "Emily Strickland" <noreply98234-aVLDbEdftb8@public.gmane.org>
-Subject: Are you taking on new clients?
-Date: Fri, 10 Aug 2012 01:01:29 -0700
-Message-ID: <12064a56100342a23c07f621001af962@g2gm.com>
+From: Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
+Subject: [PATCH] spi/pl022: Fix the dma map/unmap calls sequencing
+Date: Fri, 10 Aug 2012 13:37:59 +0530
+Message-ID: <1344586079-5238-1-git-send-email-deepak.sikri@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,39 +19,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello, 
+The current driver implementation for the DMA tranfers first invalidates
+the cache for Rx buffers and then cleans the cache for Tx buffers before
+starting the DMA transfers.
 
-If you are taking on new clients, I would like you to contact me at 1 (800) 676-2011 to discuss the benefits of e-mail marketing. 
+The SPIDEV framework assigns a single buffer for both reception and
+transmission of data.So the above sequence of invalidating the cache and
+then cleaning it does not work well when the same buffer is used for Rx
+& Tx.
 
-We can generate massive exposure resulting in sales for your company. We will put your e-mail marketing on auto drive.
+This patch alters the sequence, i.e first flushes the cache and then
+invalidate them to ensure data integrity.
 
-Call 1 (800) 676-2011 for a free consultation or email us at bestemailsend-A4upEjVCFCg@public.gmane.org
+Signed-off-by: Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
 
-Thank You,
-
-Emily Strickland
-Senior Prospect Specialist
-E-mail Marketing Services
-1 (800) 676-2011
-bestemailsend-KK0ffGbhmjU@public.gmane.org
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-If you do not wish to receive this type of e-mail, please click <mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1e33b83..2c231b7 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -755,10 +755,10 @@ static void *next_transfer(struct pl022 *pl022)
+ static void unmap_free_dma_scatter(struct pl022 *pl022)
+ {
+ 	/* Unmap and free the SG tables */
+-	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
+-		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
+ 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
++		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	sg_free_table(&pl022->sgt_rx);
+ 	sg_free_table(&pl022->sgt_tx);
+ }
+@@ -1009,16 +1009,16 @@ static int configure_dma(struct pl022 *pl022)
+ 			  pl022->cur_transfer->len, &pl022->sgt_tx);
+ 
+ 	/* Map DMA buffers */
+-	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+-			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+-	if (!rx_sglen)
+-		goto err_rx_sgmap;
+-
+ 	tx_sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+ 			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	if (!tx_sglen)
+ 		goto err_tx_sgmap;
+ 
++	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
++			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++	if (!rx_sglen)
++		goto err_rx_sgmap;
++
+ 	/* Send both scatterlists */
+ 	rxdesc = dmaengine_prep_slave_sg(rxchan,
+ 				      pl022->sgt_rx.sgl,
+@@ -1053,12 +1053,12 @@ err_txdesc:
+ 	dmaengine_terminate_all(txchan);
+ err_rxdesc:
+ 	dmaengine_terminate_all(rxchan);
+-	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
++	dma_unmap_sg(txchan->device->dev, pl022->sgt_rx.sgl,
++		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++err_rx_sgmap:
++	dma_unmap_sg(rxchan->device->dev, pl022->sgt_tx.sgl,
+ 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ err_tx_sgmap:
+-	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+-		     pl022->sgt_tx.nents, DMA_FROM_DEVICE);
+-err_rx_sgmap:
+ 	sg_free_table(&pl022->sgt_tx);
+ err_alloc_tx_sg:
+ 	sg_free_table(&pl022->sgt_rx);
+-- 
+1.7.2.2
 
 
 ------------------------------------------------------------------------------

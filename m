@@ -1,12 +1,11 @@
-From: Service rencontre par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Fais des rencontres sans sortir ta carte bancaire
-Date: Fri, 10 Aug 2012 05:52:05 +0200
-Message-ID: <1344570763.5024858b3feab@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Emily Strickland" <noreply98234-aVLDbEdftb8@public.gmane.org>
+Subject: Are you taking on new clients?
+Date: Fri, 10 Aug 2012 01:01:29 -0700
+Message-ID: <12064a56100342a23c07f621001af962@g2gm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +17,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hello, 
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDE4JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0xMCAwNTo1MDowMSZlPTEmaD0xNzQxNyZmPTE3NDE4Jmc9MTc0MTg=3D
+If you are taking on new clients, I would like you to contact me at 1 (800) 676-2011 to discuss the benefits of e-mail marketing. 
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDE4JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0xMCAwNTo1MDowMSZlPTEmaD0xNzQxNyZmPTE3NDE4Jmc9MTc0MT=
-g=3D
+We can generate massive exposure resulting in sales for your company. We will put your e-mail marketing on auto drive.
+
+Call 1 (800) 676-2011 for a free consultation or email us at bestemailsend-A4upEjVCFCg@public.gmane.org
+
+Thank You,
+
+Emily Strickland
+Senior Prospect Specialist
+E-mail Marketing Services
+1 (800) 676-2011
+bestemailsend-KK0ffGbhmjU@public.gmane.org
 
 
----------------------------------------------------------------------------=
----
+
+
+
+
+
+
+
+
+
+
+
+
+
+If you do not wish to receive this type of e-mail, please click <mailto:deletethisaddress-KK0ffGbhmjU@public.gmane.org?subject=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&body=Delete%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

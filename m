@@ -1,13 +1,15 @@
-From: Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
-Subject: [PATCH] spi/pl022: Fix the dma map/unmap calls sequencing
-Date: Fri, 10 Aug 2012 13:37:59 +0530
-Message-ID: <1344586079-5238-1-git-send-email-deepak.sikri@st.com>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: [RFC PATCH] spi/bcm63xx: Ensure that memory is freed only after it is
+	no longer used
+Date: Fri, 10 Aug 2012 13:56:27 -0700
+Message-ID: <1344632187-9603-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,81 +21,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The current driver implementation for the DMA tranfers first invalidates
-the cache for Rx buffers and then cleans the cache for Tx buffers before
-starting the DMA transfers.
+The call to spi_unregister_master() in the device remove function frees device
+memory, and with it any device local data. However, device local data is still
+accessed after the call to spi_unregister_master().
 
-The SPIDEV framework assigns a single buffer for both reception and
-transmission of data.So the above sequence of invalidating the cache and
-then cleaning it does not work well when the same buffer is used for Rx
-& Tx.
+Acquire a reference to the SPI device and release it after cleanup is complete
+to solve the problem.
 
-This patch alters the sequence, i.e first flushes the cache and then
-invalidate them to ensure data integrity.
-
-Signed-off-by: Deepak Sikri <deepak.sikri-qxv4g6HH51o@public.gmane.org>
+Cc: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |   22 +++++++++++-----------
- 1 files changed, 11 insertions(+), 11 deletions(-)
+Several drivers have this problem, and I am trying to find a common fix.
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 1e33b83..2c231b7 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -755,10 +755,10 @@ static void *next_transfer(struct pl022 *pl022)
- static void unmap_free_dma_scatter(struct pl022 *pl022)
+This solution is modeled after the approach used in spi-txx9spi:txx9spi_remove.
+The other possible fix would be to move spi_unregister_master() to the end of
+bcm63xx_spi_remove(), but I am not sure if it is a good idea to clean up
+before the call to spi_unregister_master().
+
+ drivers/spi/spi-bcm63xx.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 6e25ef1..ea0aaa3 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -438,7 +438,7 @@ out:
+ 
+ static int __devexit bcm63xx_spi_remove(struct platform_device *pdev)
  {
- 	/* Unmap and free the SG tables */
--	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
--		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
- 	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
- 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
-+	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
-+		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
- 	sg_free_table(&pl022->sgt_rx);
- 	sg_free_table(&pl022->sgt_tx);
- }
-@@ -1009,16 +1009,16 @@ static int configure_dma(struct pl022 *pl022)
- 			  pl022->cur_transfer->len, &pl022->sgt_tx);
+-	struct spi_master *master = platform_get_drvdata(pdev);
++	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
+ 	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
  
- 	/* Map DMA buffers */
--	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
--			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
--	if (!rx_sglen)
--		goto err_rx_sgmap;
--
- 	tx_sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
- 			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
- 	if (!tx_sglen)
- 		goto err_tx_sgmap;
+ 	spi_unregister_master(master);
+@@ -452,6 +452,8 @@ static int __devexit bcm63xx_spi_remove(struct platform_device *pdev)
  
-+	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
-+			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
-+	if (!rx_sglen)
-+		goto err_rx_sgmap;
+ 	platform_set_drvdata(pdev, 0);
+ 
++	spi_master_put(master);
 +
- 	/* Send both scatterlists */
- 	rxdesc = dmaengine_prep_slave_sg(rxchan,
- 				      pl022->sgt_rx.sgl,
-@@ -1053,12 +1053,12 @@ err_txdesc:
- 	dmaengine_terminate_all(txchan);
- err_rxdesc:
- 	dmaengine_terminate_all(rxchan);
--	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
-+	dma_unmap_sg(txchan->device->dev, pl022->sgt_rx.sgl,
-+		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
-+err_rx_sgmap:
-+	dma_unmap_sg(rxchan->device->dev, pl022->sgt_tx.sgl,
- 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
- err_tx_sgmap:
--	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
--		     pl022->sgt_tx.nents, DMA_FROM_DEVICE);
--err_rx_sgmap:
- 	sg_free_table(&pl022->sgt_tx);
- err_alloc_tx_sg:
- 	sg_free_table(&pl022->sgt_rx);
+ 	return 0;
+ }
+ 
 -- 
-1.7.2.2
+1.7.9.7
 
 
 ------------------------------------------------------------------------------

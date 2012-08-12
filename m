@@ -1,12 +1,11 @@
-From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Mon, 13 Aug 2012 00:22:04 +0200
-Message-ID: <1344810141.50282c9dc130a@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "=?utf-8?b?JeatoyXop4Ql5raaJeWJvSU=?=" <yanruerep-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: 40846
+Date: Sun, 12 Aug 2012 22:26:29 GMT
+Message-ID: <1344810389.f1f09c1a3d554bca963b80fa342ee232.yanruerep@sohu.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDI1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0xMyAwMDoyMDowMSZlPTEmaD0xNzQyNCZmPTE3NDI1Jmc9MTc0MjU=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDI1JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0xMyAwMDoyMDowMSZlPTEmaD0xNzQyNCZmPTE3NDI1Jmc9MTc0Mj=
-U=3D
-
-
----------------------------------------------------------------------------=
----
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+PFA+Jmx0O+eOsyDnjovph4wmZ3Q7Jm5ic3A7Jm5ic3A7ICZsdDvnpr7lhZEmbmJzcDsg5Ym9Jmd0
+OzEwOTc5NDkxNjUrcXENCjxIUj4NCuivt+eUte+8mjEzNyAxMTYwIDY1Njgg6ZmIPC9QPgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVz
+aXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBh
+bmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4g
+cmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9i
+aWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93
+d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

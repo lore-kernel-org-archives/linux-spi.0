@@ -1,12 +1,15 @@
-From: "=?utf-8?b?JeatoyXop4Ql5raaJeWJvSU=?=" <yanruerep-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: 40846
-Date: Sun, 12 Aug 2012 22:26:29 GMT
-Message-ID: <1344810389.f1f09c1a3d554bca963b80fa342ee232.yanruerep@sohu.com>
+From: "=?GB2312?B?z/rK2y3Qodbc?=" <ad001-kcGlWJa4AadWk0Htik3J/w@public.gmane.org>
+Subject: =?GB2312?B?zfjQo8Xg0bXGvcyoLL/OvP7Wxtf3yO28/i0yMDEyLTA4LTEzLA==?=
+	=?GB2312?B?MTc6MDg6MjEuNTU5MTE=?=
+Date: Mon, 13 Aug 2012 17:08:21 +0800
+Message-ID: <E1T0qe4-0005GL-2D@sfs-ml-4.v29.ch3.sourceforge.com>
+Reply-To: zs-hdeqKu79zs0@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,16 +20,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-PFA+Jmx0O+eOsyDnjovph4wmZ3Q7Jm5ic3A7Jm5ic3A7ICZsdDvnpr7lhZEmbmJzcDsg5Ym9Jmd0
-OzEwOTc5NDkxNjUrcXENCjxIUj4NCuivt+eUte+8mjEzNyAxMTYwIDY1Njgg6ZmIPC9QPgotLS0t
+1/C+tLXEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LMT6usOjoQ0KDQog
+ICAgztLKx7GxvqnI7c37yrG0+r/GvLzT0M/euavLvrXEz/rK27mks8zKpqOsztK90Nbc1se89qOs
+1NrN+MnPv7S1vbnzuavLvrXEzfjVvqOsvvW1w87Sw8e/ydLUsO/W+rnzuavLvsq1z9bTr8D7o6zO
+0sPHuavLvtb30qrX9tS2s8y9zNP9xr3MqKOozfjC58Xg0bXGvcyoo6mjrM/W1NrN+NCj1eK/6crQ
+s6G63LTzo6y21NPrxPq5q8u+tcS0q82zw+bK2srHuPayubPko6y/ydLUw+bP8sirufrV0Mn6vLDP
++srbzfjC57/Os8yhow0KztLDx7XE1LazzL3M0/3Gvcyoz7XNs7/J0tSw79b6xPrVub+qzfjQo9XQ
+yfrStc7xo6zAqbTzytCzoaOsytXS5rrcv8m527XEoaPNrMqxztLDx7mry767uc3Gs/a/zrz+ytPG
+tdbG1/e3/s7xvLDK08a1vNPD3LTysPzI7bz+o6zIw8T6tcS/zrz+18rBz7j8sLLIq6OhIMjnxPrT
+0NDLyKSjrL/J0tTAtLXnz+rRr6GjICANCiANCiAgICAgICAgILXnu7CjujAxMC01Mjc4ODYzMS8z
+Mi02MDIgDQogICAgICAgICDTys/ko7p6c0AwNS5jbiANCiAgICAguavLvs341rejund3dy4wNS5j
+biC78iB3d3cub25saW5lY24uY29tDQogDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICDXozrJ7czlvaG/taOsuaTX98uzwPsNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICDWwr60oaMNCi0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVz
-aXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBh
-bmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4g
-cmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9i
-aWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93
-d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
-bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
-dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
-cmFsCg==
+LS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBl
+dmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0
+IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBE
+aXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJp
+dHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFj
+b21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
+bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
+cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

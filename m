@@ -1,55 +1,39 @@
-From: Chris Ball <cjb@laptop.org>
-Subject: Re: [PATCH 00/10 V3] MXS SPI driver
-Date: Mon, 13 Aug 2012 11:23:38 -0400
-Message-ID: <87sjbqlssl.fsf@octavius.laptop.org>
-References: <1344007575-11448-1-git-send-email-marex@denx.de>
- <20120813125158.GE13446@opensource.wolfsonmicro.com>
- <20120813140803.GB6407@S2101-09.ap.freescale.net>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Unbalanced calls to spi_master_get in coldfire-qspi and s3c64xx SPI
+ master drivers
+Date: Mon, 13 Aug 2012 14:44:25 -0700
+Message-ID: <20120813214425.GA19547@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Marek Vasut <marex@denx.de>, Fabio Estevam <fabio.estevam@freescale.com>,
- Mark Brown <broonie@opensource.wolfsonmicro.com>,
- Attila Kinali <attila@kinali.ch>, Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, Dong Aisheng <b29396@freescale.com>,
- linux-arm-kernel@lists.infradead.org
-To: Shawn Guo <shawn.guo@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20120813140803.GB6407@S2101-09.ap.freescale.net> (Shawn Guo's
- message of "Mon, 13 Aug 2012 22:08:05 +0800")
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>
+To: spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Hi all,
 
-On Mon, Aug 13 2012, Shawn Guo wrote:
-> On Mon, Aug 13, 2012 at 01:51:58PM +0100, Mark Brown wrote:
->> Do we have any ETA for review from the MMC side?  I'd like to get these
->> patches out of my queue one way or another, it seems like for the simple
->> code motion bits at least we should be easy enough to get out of the
->> way.
->
-> For mxs-mmc part:
->
-> Reviewed-by: Shawn Guo <shawn.guo@linaro.org>
->
-> Chris,
->
-> Can you take a look at the series and give your ACK to bless it go via
-> SPI tree?
+looking through SPI master drivers, I noticed that the following drivers call
+spi_master_get() in their suspend and resume functions. Yet, there is no
+matching call to spi_master_put(), meaning the reference count will increase
+with each suspend/resume cycle.
+	spi-coldfire-qspi.c
+	spi-s3c64xx.c
+Other SPI master drivers also support suspend and resume, but do not call
+spi_master_get() in the suspend/resume functions. The spi-pl022 driver calls
+spi_master_suspend() and spi_master_resume() like the above, but does not
+call spi_master_get() either.
 
-Thanks, looks good.  For the SPI tree:
+This leads me to believe that the above drivers will hang on unload after a
+suspend/resume cycle due to the extra references.
 
-Acked-by: Chris Ball <cjb@laptop.org>
+Can someone please have a look and confirm if my understanding is correct ?
+If so I'll send a set of patches to fix the problems.
 
--- 
-Chris Ball   <cjb@laptop.org>   <http://printf.net/>
-One Laptop Per Child
+Thanks,
+Guenter

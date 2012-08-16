@@ -1,36 +1,53 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-bcm63xx: Pass NULL to platform_set_drvdata
-Date: Thu, 16 Aug 2012 11:45:37 +0100
-Message-ID: <20120816104536.GH15365@opensource.wolfsonmicro.com>
-References: <1345113878-9626-1-git-send-email-tklauser@distanz.ch>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: Unbalanced calls to spi_master_get in coldfire-qspi and s3c64xx
+ SPI master drivers
+Date: Thu, 16 Aug 2012 06:48:15 -0700
+Message-ID: <20120816134815.GA15977@roeck-us.net>
+References: <20120813214425.GA19547@roeck-us.net>
+ <CAJuYYwRKVOh91xmeD=FpShzJskwv5LhioUG88F=9vMysOBq4Kw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>
+To: Thomas Abraham <thomas.abraham@linaro.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1345113878-9626-1-git-send-email-tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <CAJuYYwRKVOh91xmeD=FpShzJskwv5LhioUG88F=9vMysOBq4Kw@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 16, 2012 at 12:44:38PM +0200, Tobias Klauser wrote:
-> platform_set_drvdata expects a void *, so pass NULL instead of 0.
+On Thu, Aug 16, 2012 at 02:27:49PM +0530, Thomas Abraham wrote:
+> On 14 August 2012 03:14, Guenter Roeck <linux@roeck-us.net> wrote:
+> > Hi all,
+> >
+> > looking through SPI master drivers, I noticed that the following drivers call
+> > spi_master_get() in their suspend and resume functions. Yet, there is no
+> > matching call to spi_master_put(), meaning the reference count will increase
+> > with each suspend/resume cycle.
+> >         spi-coldfire-qspi.c
+> >         spi-s3c64xx.c
+> > Other SPI master drivers also support suspend and resume, but do not call
+> > spi_master_get() in the suspend/resume functions. The spi-pl022 driver calls
+> > spi_master_suspend() and spi_master_resume() like the above, but does not
+> > call spi_master_get() either.
+> >
+> > This leads me to believe that the above drivers will hang on unload after a
+> > suspend/resume cycle due to the extra references.
+> >
+> > Can someone please have a look and confirm if my understanding is correct ?
+> > If so I'll send a set of patches to fix the problems.
 > 
-> Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+> For spi-s3c64xx.c, yes it does seem that the spi_master_get() and
+> spi_master_put() calls are not balanced.  The probable change could be
+> 
+> -  struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> + struct spi_master *master = dev_get_drvdata(dev);
+> 
+Yes, that is what I thought.
 
-Better yet, remove these calls - they're completely redundant.
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks,
+Guenter

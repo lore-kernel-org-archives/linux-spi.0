@@ -1,7 +1,7 @@
 From: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
-Subject: [PATCH] spi: spi-xilinx: Pass NULL to platform_set_drvdata
-Date: Thu, 16 Aug 2012 12:44:45 +0200
-Message-ID: <1345113885-9682-1-git-send-email-tklauser@distanz.ch>
+Subject: [PATCH] spi: spi-bcm63xx: Pass NULL to platform_set_drvdata
+Date: Thu, 16 Aug 2012 12:44:38 +0200
+Message-ID: <1345113878-9626-1-git-send-email-tklauser@distanz.ch>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -23,22 +23,22 @@ platform_set_drvdata expects a void *, so pass NULL instead of 0.
 
 Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
 ---
- drivers/spi/spi-xilinx.c |    2 +-
+ drivers/spi/spi-bcm63xx.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 4c5a663..2501700 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -521,7 +521,7 @@ static int __devinit xilinx_spi_probe(struct platform_device *dev)
- static int __devexit xilinx_spi_remove(struct platform_device *dev)
- {
- 	xilinx_spi_deinit(platform_get_drvdata(dev));
--	platform_set_drvdata(dev, 0);
-+	platform_set_drvdata(dev, NULL);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 6d97047..fc357e2 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -463,7 +463,7 @@ static int __devexit bcm63xx_spi_remove(struct platform_device *pdev)
+ 	clk_disable(bs->clk);
+ 	clk_put(bs->clk);
  
- 	return 0;
- }
+-	platform_set_drvdata(pdev, 0);
++	platform_set_drvdata(pdev, NULL);
+ 
+ 	spi_master_put(master);
+ 
 -- 
 1.7.5.4
 

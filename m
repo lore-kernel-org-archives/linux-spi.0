@@ -1,48 +1,51 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: Re: Unbalanced calls to spi_master_get in coldfire-qspi and s3c64xx
- SPI master drivers
-Date: Thu, 16 Aug 2012 14:27:49 +0530
-Message-ID: <CAJuYYwRKVOh91xmeD=FpShzJskwv5LhioUG88F=9vMysOBq4Kw@mail.gmail.com>
-References: <20120813214425.GA19547@roeck-us.net>
+From: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+Subject: [PATCH] spi: spi-xilinx: Pass NULL to platform_set_drvdata
+Date: Thu, 16 Aug 2012 12:44:45 +0200
+Message-ID: <1345113885-9682-1-git-send-email-tklauser@distanz.ch>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-samsung-soc@vger.kernel.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20120813214425.GA19547@roeck-us.net>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 14 August 2012 03:14, Guenter Roeck <linux@roeck-us.net> wrote:
-> Hi all,
->
-> looking through SPI master drivers, I noticed that the following drivers call
-> spi_master_get() in their suspend and resume functions. Yet, there is no
-> matching call to spi_master_put(), meaning the reference count will increase
-> with each suspend/resume cycle.
->         spi-coldfire-qspi.c
->         spi-s3c64xx.c
-> Other SPI master drivers also support suspend and resume, but do not call
-> spi_master_get() in the suspend/resume functions. The spi-pl022 driver calls
-> spi_master_suspend() and spi_master_resume() like the above, but does not
-> call spi_master_get() either.
->
-> This leads me to believe that the above drivers will hang on unload after a
-> suspend/resume cycle due to the extra references.
->
-> Can someone please have a look and confirm if my understanding is correct ?
-> If so I'll send a set of patches to fix the problems.
+platform_set_drvdata expects a void *, so pass NULL instead of 0.
 
-For spi-s3c64xx.c, yes it does seem that the spi_master_get() and
-spi_master_put() calls are not balanced.  The probable change could be
+Signed-off-by: Tobias Klauser <tklauser-93Khv+1bN0NyDzI6CaY1VQ@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
--  struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-+ struct spi_master *master = dev_get_drvdata(dev);
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 4c5a663..2501700 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -521,7 +521,7 @@ static int __devinit xilinx_spi_probe(struct platform_device *dev)
+ static int __devexit xilinx_spi_remove(struct platform_device *dev)
+ {
+ 	xilinx_spi_deinit(platform_get_drvdata(dev));
+-	platform_set_drvdata(dev, 0);
++	platform_set_drvdata(dev, NULL);
+ 
+ 	return 0;
+ }
+-- 
+1.7.5.4
 
-Thanks,
-Thomas.
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

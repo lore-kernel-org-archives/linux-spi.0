@@ -1,86 +1,78 @@
-From: "Cole Simmerson" <CS.NoReply23459-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
-Subject: Proposal Attached
-Date: Thu, 16 Aug 2012 11:10:35 -0700
-Message-ID: <f61b2bb3ad050b1dac9c70f40016fb98@address.com>
-Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_811883984D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Matt Porter <mporter@ti.com>
+Subject: [PATCH 0/3] DaVinci DMA engine conversion
+Date: Thu, 16 Aug 2012 17:44:28 -0400
+Message-ID: <1345153471-22757-1-git-send-email-mporter@ti.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Sekhar Nori <nsekhar@ti.com>
+To: vinod.koul@intel.com, dan.j.williams@intel.com, cjb@laptop.org,
+	grant.likely@secretlab.ca
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+This series begins the conversion of the DaVinci private
+EDMA API implementation to a DMA engine driver and
+converts two of the three in-kernel users of the private
+EDMA API to DMA engine.
 
-------=SPLITOR00A_001_811883984D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+The approach taken is similar to the recent OMAP DMA
+Engine conversion. The EDMA DMA Engine driver is a
+wrapper around the existing private EDMA implementation
+and registers the platform device within the driver.
+This allows the conversion series to stand alone with
+just the drivers and no changes to platform code. It
+also allows peripheral drivers to continue to use the
+private EDMA implementation until they are converted.
 
-Attached is the requested brochure and video including pricing.=20
+The EDMA DMA Engine driver supports slave transfers only
+at this time. It is planned to add cyclic transfers in
+support of audio peripherals.
 
-I am contacting you regarding printing and managing your company's =
-business cards. We look forward to the opportunity to work with you.=20
-Please reply through the attachment=2E
-=20
-Sincerely,
+There are three users of the private EDMA API in the
+kernel now: davinci_mmc, spi-davinci, and davinci-mcasp.
+This series provides DMA Engine conversions for the
+davinci_mmc and spi-davinci drivers which use the
+supported slave transfers.
 
-Cole Simmerson
-Online Business Management
+This series has been tested on an AM18x EVM and
+performance is comparable with the private EDMA
+API implementations. I do not have a Wifi module
+for the AM18x EVM to test the MMC1 instance which
+has DMA channels on the second EDMA channel controller
+instance. Testing is needed on all DaVinci platforms
+including DM355/365, DM644x/6x, DA830/OMAP-L137/AM17x,
+and DA850/OMAP-L138/AM18x.
 
+After this series, the current plan is to complete
+the mcasp driver conversion which includes adding
+cyclic dma support. This will then enable the
+removal and refactoring of the private EDMA API
+functionality into the EDMA DMA Engine driver.
+Since EDMA is also used on the AM33xx family of
+parts in mach-omap2/, the plan is to enable this
+driver on that platform as well.
 
+Matt Porter (3):
+  dmaengine: add TI EDMA DMA engine driver
+  mmc: davinci_mmc: convert to DMA engine API
+  spi: spi-davinci: convert to DMA engine API
 
+ drivers/dma/Kconfig            |    9 +
+ drivers/dma/Makefile           |    1 +
+ drivers/dma/edma.c             |  729 ++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/davinci_mmc.c |  271 +++++----------
+ drivers/spi/spi-davinci.c      |  292 +++++++---------
+ include/linux/edma.h           |   29 ++
+ 6 files changed, 980 insertions(+), 351 deletions(-)
+ create mode 100644 drivers/dma/edma.c
+ create mode 100644 include/linux/edma.h
 
+-- 
+1.7.9.5
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_811883984D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=SPLITOR00A_001_811883984D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_811883984D--

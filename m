@@ -1,61 +1,38 @@
-From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 1/5] ARM: tegra: config: enable dmaengine based APB DMA
- driver
-Date: Fri, 17 Aug 2012 23:30:33 +0530
-Message-ID: <502E86C1.4000800@nvidia.com>
-References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com> <1345126397-28864-2-git-send-email-ldewangan@nvidia.com> <502D33B6.7070103@wwwdotorg.org> <502DE6FE.8040200@nvidia.com> <502E60A3.1020405@wwwdotorg.org> <502E80BA.5020409@wwwdotorg.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-coldfire-qspi: Drop extra spi_master_put in
+	device remove function
+Date: Fri, 17 Aug 2012 22:46:52 +0100
+Message-ID: <20120817214651.GB18871@opensource.wolfsonmicro.com>
+References: <1345173960-6138-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org" <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	"grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	"lrg-l0cyMroinI0@public.gmane.org" <lrg-l0cyMroinI0@public.gmane.org>,
-	"broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	"vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org" <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <502E80BA.5020409-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1345173960-6138-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 17 August 2012 11:04 PM, Stephen Warren wrote:
-> On 08/17/2012 09:17 AM, Stephen Warren wrote:
->> On 08/17/2012 12:38 AM, Laxman Dewangan wrote:
->>> On Thursday 16 August 2012 11:23 PM, Stephen Warren wrote:
->>>> On 08/16/2012 08:13 AM, Laxman Dewangan wrote:
->>>>> Enable config for dmaengine based Tegra APB DMA driver and
->>>>> disable the legacy APB DMA driver (SYSTEM_DMA).
->>>> Laxman, if I apply this series to next-20120816 (plus a few patches in
->>>> my local work branch plus the CPU hotplug patches from Joseph, although
->>>> I suspect none of that matters), then audio playback on Tegra20 is
->>>> broken; the pitch is far too high. Audio playback on Tegra30 works as
->>>> expected.
->>> I run the test again on ventana and did not see any issue.
->>> I play one song and saw similar behavior with/without this series.
->> OK, I'll test some other boards. I tested Whistler, although all the
->> clocking logic is identical between all Tegra20 boards.
-> I tested both 3.6-rc2 and next-20120816, and they both work fine on Ventana.
->
-> I then applied this patch series to both (plus your "dma: tegra:
-> enable/disable dma clock" for 3.6-rc2) and it causes (or at least
-> exposes) the problem.
->
-> All testing was with a full git clean, using tegra_defconfig, and with
-> no other patches applied.
->
-> If you're not seeing this problem, are you sure you're executing the
-> kernel you think you are, and that it got correctly switched to the new
-> dmaengine driver, and rebuilt after applying your patches?
+On Thu, Aug 16, 2012 at 08:25:59PM -0700, Guenter Roeck wrote:
+> The call sequence spi_alloc_master/spi_register_master/spi_unregister_master is
+> complete; it reduces the device reference count to zero, which and results in
+> device memory being freed. The subsequent call to spi_master_put is unnecessary
+> and results in an access to free memory. Drop it.
 
-I generally clean, remove .config and then generate .config , build and 
-test whenever any branch change or want to remove any change. I tested 
-in next-20120816.
-Let me take help from other team member for test it if I am missing 
-anything here.
+Applied both, thanks.
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

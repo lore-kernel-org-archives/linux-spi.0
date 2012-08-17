@@ -1,50 +1,85 @@
-From: "=?gb2312?Q?=BB=F5=B5=BD=B8=B6=BF=EE?=" <admin-/h/p48sOv+LrhBy7cqgyXA@public.gmane.org>
-Subject: [SPAM]
-	=?gb2312?Q?=C8=D5=B1=BE=C5=AE=D3=C5=B3=E4=C6=F8=CD=DE=CD=DE=A3=AC=B7=B6=CB=AE=B1=F9+45=B8=F6=C0=F1=C6=B7=A3=AC298=D4=AA=A3=AC=C8=AB=B9=FA=BB=F5=B5=BD=B8=B6=BF=EE=A1=A3?=
-Date: Fri, 17 Aug 2012 05:06:29 +0000 (UTC)
-Message-ID: <20120817041203.79FF9B2A9E8B@mail.coxfamfive.net>
-Reply-To: 1148743306-9uewiaClKEY@public.gmane.org
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 1/5] ARM: tegra: config: enable dmaengine based APB DMA
+ driver
+Date: Fri, 17 Aug 2012 12:08:54 +0530
+Message-ID: <502DE6FE.8040200@nvidia.com>
+References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com> <1345126397-28864-2-git-send-email-ldewangan@nvidia.com> <502D33B6.7070103@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?fujiajn@126=2Ecom?=" <fujiajn-KN7UnAbNpbg@public.gmane.org>,
-	"=?gb2312?Q?zbyunfa@zbyunfa=2Ecom?=" <zbyunfa-J0v1OgDz7AFBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?xplayer@21cn=2Ecom?=" <xplayer-0GSiYjBpcig@public.gmane.org>,
-	"=?gb2312?Q?helena=2Edebacker@debacker-bastin=2Ecom?="
-	<helena.debacker-T6oKsZQhiGDi1iSZhJ2TnEEOCMrvLtNR@public.gmane.org>,
-	"=?gb2312?Q?daweiaiyu@yahoo=2Ecn?=" <daweiaiyu-dbdLmdGazhY@public.gmane.org>,
-	"=?gb2312?Q?dawanport@126=2Ecom?=" <dawanport-KN7UnAbNpbg@public.gmane.org>,
-	"=?gb2312?Q?zhaojian820129@163=2Ecom?=" <zhaojian820129-9Onoh4P/yGk@public.gmane.org>,
-	"=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org" <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	"grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	"lrg-l0cyMroinI0@public.gmane.org" <lrg-l0cyMroinI0@public.gmane.org>,
+	"broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	"vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"=?gb2312?Q?essica-seahog@live=2Ecn?=" <essica-seahog-25CfU72zatU@public.gmane.org>,
-	"=?gb2312?Q?foralltherightreasons@gmail=2Ecom?="
-	<foralltherightreasons-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Sat, 6 Aug 2022 09:02:54 +0800
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+	"alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org" <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <502D33B6.7070103-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CsjVsb7U7LjfvLbV5sjLyrXM5bPkxvjN3s3eKzQ1uPbA8ca3K7e20KGx+dDNPTI5ONSqoaMgIArI
-1bG+1Oy437y21ebIy8q1zOWz5Mb4zd7N3ivQ2LK/16LLrrmmxNwru7nLzb/aIL27xvcrNDW49sDx
-xrcrt7bQobH50M09Mzk41KqhoyAKCsirufq79bW9uLa/7qGjCsirufq79bW9uLa/7qGjCgrH68Gq
-z7VRUTogMTMwOTUwOTcxNgrH68Gqz7VRUTogMTMwOTUwOTcxNgoKz+rPuM28xqzH67+0o7ogCs34
-1rejumh0dHA6Ly96enQuc28vcXEzNiAgIArN+Na3o7podHRwOi8venp0LnNvL3FxMzYgICAKzfjW
-t6O6aHR0cDovL3p6dC5zby9xcTM2ICAgCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
-dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
-YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
-aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
-IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
-dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
-bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Thursday 16 August 2012 11:23 PM, Stephen Warren wrote:
+> On 08/16/2012 08:13 AM, Laxman Dewangan wrote:
+>> Enable config for dmaengine based Tegra APB DMA driver and
+>> disable the legacy APB DMA driver (SYSTEM_DMA).
+> Laxman, if I apply this series to next-20120816 (plus a few patches in
+> my local work branch plus the CPU hotplug patches from Joseph, although
+> I suspect none of that matters), then audio playback on Tegra20 is
+> broken; the pitch is far too high. Audio playback on Tegra30 works as
+> expected.
+I run the test again on ventana and did not see any issue.
+I play one song and saw similar behavior with/without this series.
+
+With this series:
+--------------------
+
+ubuntu@tegra-ubuntu:/home$ aplay "1-04 Hungry Like The Wolf.wav"
+Playing WAVE '1-04 Hungry Like The Wolf.wav' : Signed 16 bit Little 
+Endian, Rate
+  44100 Hz, Stereo
+underrun!!! (at least 5039.388 ms long)
+underrun!!! (at least 60.601 ms long)
+underrun!!! (at least 3027.668 ms long)
+underrun!!! (at least 2063.667 ms long)
+underrun!!! (at least 1062.503 ms long)
+underrun!!! (at least 5073.551 ms long)
+underrun!!! (at least 6.461 ms long)
+underrun!!! (at least 4075.519 ms long)
+underrun!!! (at least 78.731 ms long)
+underrun!!! (at least 4042.804 ms long)
+underrun!!! (at least 28.395 ms long)
+underrun!!! (at least 5076.706 ms long)
+underrun!!! (at least 6043.105 ms long)
+underrun!!! (at least 24.857 ms long)
+underrun!!! (at least 5023.783 ms long)
+ubuntu@tegra-ubuntu:/home$
+
+And on tot:
+--------------
+ubuntu@tegra-ubuntu:/home$ aplay "1-04 Hungry Like The Wolf.wav"
+Playing WAVE '1-04 Hungry Like The Wolf.wav' : Signed 16 bit Little 
+Endian, Rate
+  44100 Hz, Stereo
+underrun!!! (at least 17098.259 ms long)
+underrun!!! (at least 5042.101 ms long)
+underrun!!! (at least 87.446 ms long)
+underrun!!! (at least 4084.481 ms long)
+underrun!!! (at least 4035.531 ms long)
+underrun!!! (at least 1026.132 ms long)
+underrun!!! (at least 3096.078 ms long)
+underrun!!! (at least 1007.028 ms long)
+underrun!!! (at least 1034.265 ms long)
+underrun!!! (at least 2092.453 ms long)
+underrun!!! (at least 1029.957 ms long)
+underrun!!! (at least 3076.209 ms long)
+underrun!!! (at least 52.042 ms long)
+underrun!!! (at least 1001.812 ms long)
+underrun!!! (at least 3083.294 ms long)
+ubuntu@tegra-ubuntu:/home$

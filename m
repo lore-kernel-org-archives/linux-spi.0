@@ -1,7 +1,8 @@
 From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH 2/4] spi/mpc52xx: Fix device remove function
-Date: Sat, 18 Aug 2012 09:29:22 -0700
-Message-ID: <1345307364-4914-2-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 4/4] spi/mpc512x-psc: Avoid access to freed memory in device
+	remove function
+Date: Sat, 18 Aug 2012 09:29:24 -0700
+Message-ID: <1345307364-4914-4-git-send-email-linux@roeck-us.net>
 References: <1345307364-4914-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -21,41 +22,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The call sequence spi_alloc_master/spi_register_master/spi_unregister_master is
-complete; it reduces the device reference count to zero, which results in
-device memory being freed. An extra call to spi_master_put is unnecessary
-and results in an access to free memory.
+The call to spi_unregister_master() in the device remove function frees device
+memory, and with it any device local data. However, device local data is still
+accessed after the call to spi_unregister_master().
 
-At the same time, since the call to spi_unregister_master results in device
-memory being freed, it must no longer be accessed afterwards.
-
-To fix both problems, call spi_master_get to get an extra reference to the
-device, and call spi_master_put only after the last access to device data.
+Acquire a reference to the SPI master device and release it after cleanup is
+complete to solve the problem.
 
 Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 ---
- drivers/spi/spi-mpc52xx.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc512x-psc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index a749589..0454106 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -529,7 +529,7 @@ static int __devinit mpc52xx_spi_probe(struct platform_device *op)
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 4c63f77..0a1e39e 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -494,7 +494,7 @@ free_master:
  
- static int __devexit mpc52xx_spi_remove(struct platform_device *op)
+ static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
  {
--	struct spi_master *master = dev_get_drvdata(&op->dev);
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(&op->dev));
- 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
- 	int i;
+-	struct spi_master *master = dev_get_drvdata(dev);
++	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+ 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
  
-@@ -541,8 +541,8 @@ static int __devexit mpc52xx_spi_remove(struct platform_device *op)
- 
- 	kfree(ms->gpio_cs);
- 	spi_unregister_master(master);
--	spi_master_put(master);
- 	iounmap(ms->regs);
+ 	flush_workqueue(mps->workqueue);
+@@ -503,6 +503,7 @@ static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
+ 	free_irq(mps->irq, mps);
+ 	if (mps->psc)
+ 		iounmap(mps->psc);
 +	spi_master_put(master);
  
  	return 0;

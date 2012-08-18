@@ -1,17 +1,17 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH 4/4] spi/mpc512x-psc: Avoid access to freed memory in device
-	remove function
-Date: Sat, 18 Aug 2012 09:29:24 -0700
-Message-ID: <1345307364-4914-4-git-send-email-linux@roeck-us.net>
-References: <1345307364-4914-1-git-send-email-linux@roeck-us.net>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Fill master->dev.of_node to get spi devices
+	registered via DT
+Date: Sun, 19 Aug 2012 00:26:14 +0200
+Message-ID: <CACRpkdYhQM+=2jYhY2LW8FP-31Me5+p=0ghpjFR22eqskijB9A@mail.gmail.com>
+References: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar@linaro.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1345307364-4914-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+In-Reply-To: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,42 +22,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The call to spi_unregister_master() in the device remove function frees device
-memory, and with it any device local data. However, device local data is still
-accessed after the call to spi_unregister_master().
+On Sat, Aug 18, 2012 at 4:25 AM, Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
 
-Acquire a reference to the SPI master device and release it after cleanup is
-complete to solve the problem.
+> spi_register_master() calls of_register_spi_devices() to register spi devices.
+> This routine expects master->dev.of_node to be a valid pointer. This is
+> responsibility of master driver to fill this field, which wasn't done for pl022.
+> Fix it to get devices added to pl022.
 
-Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
----
- drivers/spi/spi-mpc512x-psc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+OK...
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 4c63f77..0a1e39e 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -494,7 +494,7 @@ free_master:
- 
- static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
- {
--	struct spi_master *master = dev_get_drvdata(dev);
-+	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
- 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
- 
- 	flush_workqueue(mps->workqueue);
-@@ -503,6 +503,7 @@ static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
- 	free_irq(mps->irq, mps);
- 	if (mps->psc)
- 		iounmap(mps->psc);
-+	spi_master_put(master);
- 
- 	return 0;
- }
--- 
-1.7.9.7
+>         master->rt = platform_info->rt;
+> +       master->dev.of_node = dev->of_node;
 
+Isn't this one of those things that *have* to be #ifdef CONFIG_OF?
+
+Next iteration, remember to add Mark Brown on To: because je's taking
+care of SPI patches for the moment.
+
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

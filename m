@@ -1,7 +1,9 @@
 From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH 1/4] spi/mpc52xx: Fix error handling in probe function
-Date: Sat, 18 Aug 2012 09:29:21 -0700
-Message-ID: <1345307364-4914-1-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 3/4] spi/mpc52xx-psc: Avoid access to freed memory in device
+	remove function
+Date: Sat, 18 Aug 2012 09:29:23 -0700
+Message-ID: <1345307364-4914-3-git-send-email-linux@roeck-us.net>
+References: <1345307364-4914-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -9,6 +11,7 @@ Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane
 	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1345307364-4914-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,43 +22,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The call to spi_master_put() is needed to free device memory. It must be called
-after spi_alloc_master, and must only be called after the device memory is no
-longer used.
+The call to spi_unregister_master() in the device remove function frees device
+memory, and with it any device local data. However, device local data is still
+accessed after the call to spi_unregister_master().
+
+Acquire a reference to the SPI master device and release it after cleanup is
+complete to solve the problem.
 
 Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 ---
- drivers/spi/spi-mpc52xx.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc52xx-psc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index cb3a383..a749589 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -454,7 +454,7 @@ static int __devinit mpc52xx_spi_probe(struct platform_device *op)
- 				GFP_KERNEL);
- 		if (!ms->gpio_cs) {
- 			rc = -ENOMEM;
--			goto err_alloc;
-+			goto err_alloc_gpio;
- 		}
+diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
+index 6604715..bd47d26 100644
+--- a/drivers/spi/spi-mpc52xx-psc.c
++++ b/drivers/spi/spi-mpc52xx-psc.c
+@@ -481,7 +481,7 @@ static int __devinit mpc52xx_psc_spi_of_probe(struct platform_device *op)
  
- 		for (i = 0; i < ms->gpio_cs_count; i++) {
-@@ -514,12 +514,13 @@ static int __devinit mpc52xx_spi_probe(struct platform_device *op)
+ static int __devexit mpc52xx_psc_spi_of_remove(struct platform_device *op)
+ {
+-	struct spi_master *master = dev_get_drvdata(&op->dev);
++	struct spi_master *master = spi_master_get(dev_get_drvdata(&op->dev));
+ 	struct mpc52xx_psc_spi *mps = spi_master_get_devdata(master);
  
-  err_register:
- 	dev_err(&ms->master->dev, "initialization failed\n");
--	spi_master_put(master);
-  err_gpio:
- 	while (i-- > 0)
- 		gpio_free(ms->gpio_cs[i]);
- 
- 	kfree(ms->gpio_cs);
-+ err_alloc_gpio:
+ 	flush_workqueue(mps->workqueue);
+@@ -490,6 +490,7 @@ static int __devexit mpc52xx_psc_spi_of_remove(struct platform_device *op)
+ 	free_irq(mps->irq, mps);
+ 	if (mps->psc)
+ 		iounmap(mps->psc);
 +	spi_master_put(master);
-  err_alloc:
-  err_init:
- 	iounmap(regs);
+ 
+ 	return 0;
+ }
 -- 
 1.7.9.7
 

@@ -1,11 +1,12 @@
-From: "Siamar" <contatosiamar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Os 5 segredos da comunicação
-Date: Sun, 19 Aug 2012 13:02:09 -0300
-Message-ID: <cef2bb020eb07aec5ddf2a48933273b5@vixdroid.com>
-Reply-To: contatosiamar-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: [PATCH] spi/pl022: Fix device remove function
+Date: Sun, 19 Aug 2012 10:44:17 -0700
+Message-ID: <1345398258-4153-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +19,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdml4ZHJv
-aWQuY29tL2Rpc3BsYXkucGhwP009MzcwNTMzNiZDPTBjODI1ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1
-OGU5NmRjJlM9MjcxJkw9NzkmTj00NQoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBub3Nzb3MKRW1h
-aWxzOmh0dHA6Ly92aXhkcm9pZC5jb20vdW5zdWJzY3JpYmUucGhwP009MzcwNTMzNiZDPTBjODI1
-ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1OGU5NmRjJkw9NzkmTj0yNzEKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50
-IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFu
-ZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1
-c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBh
-bmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0u
-Y29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
-dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+The call sequence spi_alloc_master/spi_register_master/spi_unregister_master
+is complete; it reduces the device reference count to zero, which results in
+device memory being freed. An extra call to spi_master_put is unnecessary
+and results in an access to free memory. Drop it.
+
+Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index aab518e..47c6753 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2171,7 +2171,6 @@ pl022_remove(struct amba_device *adev)
+ 	amba_release_regions(adev);
+ 	tasklet_disable(&pl022->pump_transfers);
+ 	spi_unregister_master(pl022->master);
+-	spi_master_put(pl022->master);
+ 	amba_set_drvdata(adev, NULL);
+ 	return 0;
+ }
+-- 
+1.7.9.7
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

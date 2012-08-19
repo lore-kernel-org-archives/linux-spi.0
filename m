@@ -1,17 +1,16 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Fill master->dev.of_node to get spi devices
-	registered via DT
-Date: Sun, 19 Aug 2012 00:26:14 +0200
-Message-ID: <CACRpkdYhQM+=2jYhY2LW8FP-31Me5+p=0ghpjFR22eqskijB9A@mail.gmail.com>
-References: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar@linaro.org>
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Subject: [PATCH 11/14] drivers/spi/spi-orion.c: fix error return code
+Date: Sun, 19 Aug 2012 10:44:26 +0200
+Message-ID: <1345365870-29831-11-git-send-email-Julia.Lawall@lip6.fr>
+References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1345365870-29831-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,25 +21,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Aug 18, 2012 at 4:25 AM, Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 
-> spi_register_master() calls of_register_spi_devices() to register spi devices.
-> This routine expects master->dev.of_node to be a valid pointer. This is
-> responsibility of master driver to fill this field, which wasn't done for pl022.
-> Fix it to get devices added to pl022.
+Initialize return variable before exiting on an error path.
 
-OK...
+A simplified version of the semantic match that finds this problem is as
+follows: (http://coccinelle.lip6.fr/)
 
->         master->rt = platform_info->rt;
-> +       master->dev.of_node = dev->of_node;
+// <smpl>
+(
+if@p1 (\(ret < 0\|ret != 0\))
+ { ... return ret; }
+|
+ret@p1 = 0
+)
+... when != ret = e1
+    when != &ret
+*if(...)
+{
+  ... when != ret = e2
+      when forall
+ return ret;
+}
 
-Isn't this one of those things that *have* to be #ifdef CONFIG_OF?
+// </smpl>
 
-Next iteration, remember to add Mark Brown on To: because je's taking
-care of SPI patches for the moment.
+Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 
-Yours,
-Linus Walleij
+---
+Actually, orion_spi_reset currently always returns 0, so the test is
+never true.  Perhaps this should be taken into account in some other way.
+
+ drivers/spi/spi-orion.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index b17c09c..cc12803 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -435,7 +435,8 @@ static int __init orion_spi_probe(struct platform_device *pdev)
+ 	}
+ 	spi->base = ioremap(r->start, SZ_1K);
+ 
+-	if (orion_spi_reset(spi) < 0)
++	status = orion_spi_reset(spi);
++	if (status < 0)
+ 		goto out_rel_mem;
+ 
+ 	master->dev.of_node = pdev->dev.of_node;
+
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

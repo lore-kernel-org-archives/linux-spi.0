@@ -1,7 +1,7 @@
 From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 11/14] drivers/spi/spi-orion.c: fix error return code
-Date: Sun, 19 Aug 2012 10:44:26 +0200
-Message-ID: <1345365870-29831-11-git-send-email-Julia.Lawall@lip6.fr>
+Subject: [PATCH 10/14] drivers/spi/spi-ep93xx.c: fix error return code
+Date: Sun, 19 Aug 2012 10:44:27 +0200
+Message-ID: <1345365870-29831-12-git-send-email-Julia.Lawall@lip6.fr>
 References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -49,26 +49,21 @@ ret@p1 = 0
 Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 
 ---
-Actually, orion_spi_reset currently always returns 0, so the test is
-never true.  Perhaps this should be taken into account in some other way.
+ drivers/spi/spi-ep93xx.c |    1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/spi/spi-orion.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index b17c09c..cc12803 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -435,7 +435,8 @@ static int __init orion_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index f97f1d2..9e7fdfd 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -1105,6 +1105,7 @@ static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
+ 	espi->wq = create_singlethread_workqueue("ep93xx_spid");
+ 	if (!espi->wq) {
+ 		dev_err(&pdev->dev, "unable to create workqueue\n");
++		error = -ENOMEM;
+ 		goto fail_free_dma;
  	}
- 	spi->base = ioremap(r->start, SZ_1K);
- 
--	if (orion_spi_reset(spi) < 0)
-+	status = orion_spi_reset(spi);
-+	if (status < 0)
- 		goto out_rel_mem;
- 
- 	master->dev.of_node = pdev->dev.of_node;
+ 	INIT_WORK(&espi->msg_work, ep93xx_spi_work);
 
 
 ------------------------------------------------------------------------------

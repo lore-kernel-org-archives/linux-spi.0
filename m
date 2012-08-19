@@ -1,7 +1,7 @@
 From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: [PATCH 12/14] drivers/spi/spi-coldfire-qspi.c: fix error return code
-Date: Sun, 19 Aug 2012 10:44:25 +0200
-Message-ID: <1345365870-29831-10-git-send-email-Julia.Lawall@lip6.fr>
+Subject: [PATCH 9/14] drivers/spi/spi-omap-100k.c: fix error return code
+Date: Sun, 19 Aug 2012 10:44:28 +0200
+Message-ID: <1345365870-29831-13-git-send-email-Julia.Lawall@lip6.fr>
 References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -49,21 +49,26 @@ ret@p1 = 0
 Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 
 ---
- drivers/spi/spi-coldfire-qspi.c |    1 +
- 1 file changed, 1 insertion(+)
+Actually, omap1_spi100k_reset currently always returns 0, so the test is
+never true.  Perhaps this should be taken into account in some other way.
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index b2d4b9e..7889796 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -462,6 +462,7 @@ static int __devinit mcfqspi_probe(struct platform_device *pdev)
- 	pdata = pdev->dev.platform_data;
- 	if (!pdata) {
- 		dev_dbg(&pdev->dev, "platform data is missing\n");
-+		status = -EINVAL;
- 		goto fail4;
+ drivers/spi/spi-omap-100k.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 9bd1c92..b581107 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -542,7 +542,8 @@ static int __devinit omap1_spi100k_probe(struct platform_device *pdev)
+ 		goto err2;
  	}
- 	master->bus_num = pdata->bus_num;
+ 
+-	if (omap1_spi100k_reset(spi100k) < 0)
++	status = omap1_spi100k_reset(spi100k);
++	if (status < 0)
+ 		goto err3;
+ 
+ 	status = spi_register_master(master);
 
 
 ------------------------------------------------------------------------------

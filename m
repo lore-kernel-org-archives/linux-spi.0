@@ -1,54 +1,32 @@
-From: Rob Herring <robherring2@gmail.com>
-Subject: Re: [PATCH RESEND v4] spi/pl022: add devicetree support
-Date: Mon, 20 Aug 2012 10:53:35 -0500
-Message-ID: <50325D7F.5050003@gmail.com>
-References: <1345462769-17386-1-git-send-email-aletes.xgr@gmail.com> <50324835.6030806@gmail.com> <503258CE.9030106@antcom.de>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Mon, 20 Aug 2012 09:20:52 +0800
+Message-ID: <E1T3d5R-0007Lc-RN@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: Alexandre Pereira da Silva <aletes.xgr@gmail.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Landley <rob@landley.net>,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	"Mark Brown (broonie@opensource.wolfsonmicro.com)"
-	<broonie@opensource.wolfsonmicro.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-To: Roland Stigge <stigge@antcom.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <503258CE.9030106@antcom.de>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/20/2012 10:33 AM, Roland Stigge wrote:
-> On 08/20/2012 04:22 PM, Rob Herring wrote:
->>>  .../devicetree/bindings/spi/spi_pl022.txt          |   15 +++
->>>  drivers/spi/spi-pl022.c                            |  114 ++++++++++++++++----
->>>  2 files changed, 110 insertions(+), 19 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
->>> index 306ec3f..b089ec7 100644
->>> --- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
->>> +++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
->>> @@ -6,7 +6,22 @@ Required properties:
->>>  - interrupts : Should contain SPI controller interrupt
->>>  
->>>  Optional properties:
->>> +- pl022,num-chipselects : total number of chipselects
->>
->> We have this for other spi controllers too. Define a generic property.
-> 
-> Currently, we have:
-> 
-> num-cs
-> ti,spi-num-cs
-> fsl,spi-num-chipselects
-> fsl,espi-num-chipselects
-> (pl022,num-chipselects)
-> 
-> Would "num-cs" be the right one to use?
-
-Well, it is either that or invent something new, so I think num-cs is fine.
-
-Rob
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0
+eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwg
+dGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5n
+ZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5j
+bHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGlu
+IG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQy
+NDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,25 +1,19 @@
-From: "=?gb2312?Q?=C8=AB=B9=FA=BB=F5=B5=BD=B8=B6=BF=EE?="
-	<user-m/KrZA8nRw0qPjBMRxHRqw@public.gmane.org>
-Subject: [SPAM]
-	=?gb2312?Q?=D6=D0=D2=A9=CE=B0=B8=E7=A3=BA=D1=F4=F0=F4=D4=E7=D0=B9=BF=CB=D0=C7=A3=AC=B3=B9=B5=D7=B8=E6=B1=F0=D1=F4=F0=F4=D4=E7=D0=B9=A3=BB2012=D7=EE=BA=C3=CE=B0=B8=E7=B2=FA=C6=B7=A1=A3?=
-Date: Tue, 21 Aug 2012 18:25:04 +0000 (UTC)
-Message-ID: <E1T3t8J-0001cs-W7@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v2 0/3] DaVinci DMA engine conversion
+Date: Tue, 21 Aug 2012 14:43:06 -0400
+Message-ID: <1345574589-24757-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"=?gb2312?Q?spidevine@comcast=2Enet?=" <spidevine-Wuw85uim5zDR7s880joybQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=2E92@rediffmail=2Ecom?=" <spidey.92-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>,
-	"=?gb2312?Q?spidey@126=2Ecom?=" <spidey-KN7UnAbNpbg@public.gmane.org>,
-	"=?gb2312?Q?spidey@eyou=2Ecom?=" <spidey-OLhLAXdVt80@public.gmane.org>,
-	"=?gb2312?Q?spidey=5F616@hotmail=2Ecom?=" <spidey_616-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=5F79@yahoo=2Ecom?=" <spidey_79-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>,
-	"=?gb2312?Q?spidey=5Fboey@hotmail=2Ecom?=" <spidey_boey-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=5Ftanghf@hotmail=2Ecom?=" <spidey_tanghf-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey007@mchsi=2Ecom?=" <spidey007-+MseY0pMZYIAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Sat, 22 Aug 2020 02:22:37 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,24 +24,81 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CtbQ0qnOsLjnOiDXs9H0LNb6sqos1PbTsizU9rTzLNHTyrEst8DU59C5o6GzubXXuOax8NH08PQs
-1OfQuSEKCjGjrLbUsqrG8LyrxuTT0NCnoaPSu7TOs9QywaOjrMLtyc/G8NCnoaMgCjKjrLbU1OfQ
-ucTc0dOzpDIwLTQwt9bW06GjCgq0v9bQ0qnW0NKpzOHIoaGjzt7SwMC10NSjrM7eyM66zrix1/fT
-w6Os0MTU4LKhILjf0arRudKyxNyz1KGjCgrV/ca31rHP+i7Qp7n7MTAwJaGjIMzUsaa9u9LXo6zO
-3tCnzcu/7qGjyKu5+rv1tb24tr/uoaMKCsfrwarPtVFROiAxNTg5Mzc0ODcyIArH68Gqz7VRUTog
-MTU4OTM3NDg3MiAKx+vBqs+1UVE6IDE1ODkzNzQ4NzIKx+vBqs+1UVE6IDE1ODkzNzQ4NzIKCgrN
-+Na3o7ogaHR0cDovL3p6dC5zby9xcTM0Cs341rejuiBodHRwOi8venp0LnNvL3FxMzQKzfjWt6O6
-IGh0dHA6Ly96enQuc28vcXEzNArN+Na3o7ogaHR0cDovL3p6dC5zby9xcTM0CgoKCgoK16jStczh
-uam/zbun08q8/si6t6K94r72t72wuKO7s6TG2sfzubrTyrz+tdjWt6Gjx+vBqs+1UVEgOTM2OTA1
-MDg3Cteo0rXM4bmpv827p9PKvP7IureiveK+9re9sLiju7OkxtrH87m608q8/rXY1reho8frwarP
-tVFRIDkzNjkwNTA4NwoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmly
-dHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3
-YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFu
-ZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUg
-ZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3
-YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEy
-LzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Changes since v1:
+	- Add virt-dma support. Better error checks
+	  and simplified descriptor handling.
+	- Fix support for multiple EDMA controllers
+	  Tested on AM18x EVM with WL12xx on MMC1
+
+This series begins the conversion of the DaVinci private
+EDMA API implementation to a DMA engine driver and
+converts two of the three in-kernel users of the private
+EDMA API to DMA engine.
+
+The approach taken is similar to the recent OMAP DMA
+Engine conversion. The EDMA DMA Engine driver is a
+wrapper around the existing private EDMA implementation
+and registers the platform device within the driver.
+This allows the conversion series to stand alone with
+just the drivers and no changes to platform code. It
+also allows peripheral drivers to continue to use the
+private EDMA implementation until they are converted.
+
+The EDMA DMA Engine driver supports slave transfers only
+at this time. It is planned to add cyclic transfers in
+support of audio peripherals.
+
+There are three users of the private EDMA API in the
+kernel now: davinci_mmc, spi-davinci, and davinci-mcasp.
+This series provides DMA Engine conversions for the
+davinci_mmc and spi-davinci drivers which use the
+supported slave transfers.
+
+This series has been tested on an AM18x EVM and
+performance is comparable with the private EDMA
+API implementations. Both MMC0 and MMC1 are tested
+which handles the DA850/OMAP-L138/AM18x specific
+case where MMC1 has DMA channels on a second EDMA
+channel controller. Testing is needed on all DaVinci
+platforms including DM355/365, DM644x/6x,
+DA830/OMAP-L137/AM17x, and DA850/OMAP-L138/AM18x.
+
+In order to ease the testing burden, I've pushed a
+branch for each series release to my github tree
+at https://github.com/ohporter/linux. The current
+branch is edma-dmaengine-v2.
+
+After this series, the current plan is to complete
+the mcasp driver conversion which includes adding
+cyclic dma support. This will then enable the
+removal and refactoring of the private EDMA API
+functionality into the EDMA DMA Engine driver.
+Since EDMA is also used on the AM33xx family of
+parts in mach-omap2/, the plan is to enable this
+driver on that platform as well.
+
+Matt Porter (3):
+  dmaengine: add TI EDMA DMA engine driver
+  mmc: davinci_mmc: convert to DMA engine API
+  spi: spi-davinci: convert to DMA engine API
+
+ drivers/dma/Kconfig            |   10 +
+ drivers/dma/Makefile           |    1 +
+ drivers/dma/edma.c             |  684 ++++++++++++++++++++++++++++++++++++++++
+ drivers/mmc/host/davinci_mmc.c |  271 +++++-----------
+ drivers/spi/spi-davinci.c      |  292 ++++++++---------
+ include/linux/edma.h           |   29 ++
+ 6 files changed, 936 insertions(+), 351 deletions(-)
+ create mode 100644 drivers/dma/edma.c
+ create mode 100644 include/linux/edma.h
+
+-- 
+1.7.9.5
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

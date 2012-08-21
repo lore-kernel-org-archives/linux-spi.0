@@ -1,15 +1,16 @@
-From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi-topcliff-pch: fix to use list_for_each_entry_safe() when
-	delete items
-Date: Tue, 21 Aug 2012 12:16:16 +0800
-Message-ID: <CAPgLHd8fm6BysDeifRnaG8PPRKynEuAWp1ZXHkcoiF_NJPQkzQ@mail.gmail.com>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 2/3] spi: omap2-mcspi: Remove the macro MOD_REG_BIT
+Date: Tue, 21 Aug 2012 11:47:43 +0530
+Message-ID: <1345529864-7937-3-git-send-email-shubhrajyoti@ti.com>
+References: <1345529864-7937-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1345529864-7937-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,77 +21,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Remove the macro MOD_REG_BIT instead make the bit field modifications
+directly. This deletes a branch operation in cases where the the set
+is predecided.While at it optimise two sequential bit clear in one step.
 
-Since we will be removing items off the list using list_del() we need
-to use a safer version of the list_for_each_entry() macro aptly named
-list_for_each_entry_safe(). We should use the safe macro if the loop
-involves deletions of items.
-
-Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |   28 ++++++++++++++--------------
+ 1 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index cd56dcf..309b717 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -615,7 +615,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 	int size;
- 	u32 n_writes;
- 	int j;
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	const u8 *tx_buf;
- 	const u16 *tx_sbuf;
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index dd887eb..5642111 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -140,13 +140,6 @@ struct omap2_mcspi_cs {
+ 	u32			chconf0;
+ };
  
-@@ -656,7 +656,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 	if (!data->pkt_rx_buff) {
- 		/* flush queue and set status of all transfers to -ENOMEM */
- 		dev_err(&data->master->dev, "%s :kzalloc failed\n", __func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -ENOMEM;
- 
- 			if (pmsg->complete != 0)
-@@ -703,7 +703,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 
- static void pch_spi_nomore_transfer(struct pch_spi_data *data)
+-#define MOD_REG_BIT(val, mask, set) do { \
+-	if (set) \
+-		val |= mask; \
+-	else \
+-		val &= ~mask; \
+-} while (0)
+-
+ static inline void mcspi_write_reg(struct spi_master *master,
+ 		int idx, u32 val)
  {
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	dev_dbg(&data->master->dev, "%s called\n", __func__);
- 	/* Invoke complete callback
- 	 * [To the spi core..indicating end of transfer] */
-@@ -740,7 +740,7 @@ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
- 		dev_dbg(&data->master->dev,
- 			"%s suspend/remove initiated, flushing queue\n",
- 			__func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -EIO;
+@@ -205,7 +198,11 @@ static void omap2_mcspi_set_dma_req(const struct spi_device *spi,
+ 	else
+ 		rw = OMAP2_MCSPI_CHCONF_DMAW;
  
- 			if (pmsg->complete)
-@@ -1187,7 +1187,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+-	MOD_REG_BIT(l, rw, enable);
++	if (enable)
++		l |= rw;
++	else
++		l &= ~rw;
++
+ 	mcspi_write_chconf0(spi, l);
+ }
  
- static void pch_spi_process_messages(struct work_struct *pwork)
- {
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	struct pch_spi_data *data;
- 	int bpw;
+@@ -224,7 +221,11 @@ static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
+ 	u32 l;
  
-@@ -1199,7 +1199,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 	if (data->board_dat->suspend_sts || (data->status == STATUS_EXITING)) {
- 		dev_dbg(&data->master->dev, "%s suspend/remove initiated,"
- 			"flushing queue\n", __func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -EIO;
+ 	l = mcspi_cached_chconf0(spi);
+-	MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
++	if (cs_active)
++		l |= OMAP2_MCSPI_CHCONF_FORCE;
++	else
++		l &= ~OMAP2_MCSPI_CHCONF_FORCE;
++
+ 	mcspi_write_chconf0(spi, l);
+ }
  
- 			if (pmsg->complete != 0) {
-
+@@ -239,9 +240,8 @@ static void omap2_mcspi_set_master_mode(struct spi_master *master)
+ 	 * to single-channel master mode
+ 	 */
+ 	l = mcspi_read_reg(master, OMAP2_MCSPI_MODULCTRL);
+-	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_STEST, 0);
+-	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_MS, 0);
+-	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_SINGLE, 1);
++	l &= ~(OMAP2_MCSPI_MODULCTRL_STEST | OMAP2_MCSPI_MODULCTRL_MS);
++	l |= OMAP2_MCSPI_MODULCTRL_SINGLE;
+ 	mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, l);
+ 
+ 	ctx->modulctrl = l;
+@@ -1276,9 +1276,9 @@ static int omap2_mcspi_resume(struct device *dev)
+ 			 * We need to toggle CS state for OMAP take this
+ 			 * change in account.
+ 			 */
+-			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
++			cs->chconf0 |= OMAP2_MCSPI_CHCONF_FORCE;
+ 			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+-			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
++			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
+ 			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+ 		}
+ 	}
+-- 
+1.7.5.4
 
 
 ------------------------------------------------------------------------------

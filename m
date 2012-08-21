@@ -1,206 +1,40 @@
-From: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
-Subject: Re: [PATCH v5 2/2] spi/pl022: Add devicetree support
-Date: Tue, 21 Aug 2012 13:12:54 -0300
-Message-ID: <CAAAP30FxjUzwuifRJW_NP5Y=o9DXHD5TcX_AOd_BSt25_TxV6g@mail.gmail.com>
-References: <1345564885-11970-1-git-send-email-stigge@antcom.de>
+From: Matt Porter <mporter@ti.com>
+Subject: Re: [PATCH 1/3] dmaengine: add TI EDMA DMA engine driver
+Date: Tue, 21 Aug 2012 14:20:04 -0400
+Message-ID: <20120821182004.GA32420@beef>
+References: <1345153471-22757-1-git-send-email-mporter@ti.com>
+ <1345153471-22757-2-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: linus.walleij@linaro.org, broonie@opensource.wolfsonmicro.com,
-	grant.likely@secretlab.ca, rob.herring@calxeda.com,
-	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	gabriel.fernandez@stericsson.com, lee.jones@linaro.org,
-	viresh.kumar@linaro.org, sachin.verma@st.co
-To: Roland Stigge <stigge@antcom.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1345564885-11970-1-git-send-email-stigge@antcom.de>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Sekhar Nori <nsekhar@ti.com>
+To: vinod.koul@intel.com, dan.j.williams@intel.com, cjb@laptop.org,
+	grant.likely@secretlab.ca
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1345153471-22757-2-git-send-email-mporter@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 21, 2012 at 1:01 PM, Roland Stigge <stigge@antcom.de> wrote:
-> This patch adds device tree support to the spi-pl022 driver.
->
-> Based on the initial patch by Alexandre Pereira da Silva <aletes.xgr@gmail.com>
->
-> Signed-off-by: Roland Stigge <stigge@antcom.de>
+On Thu, Aug 16, 2012 at 05:44:29PM -0400, Matt Porter wrote:
+> Add a DMA engine driver for the TI EDMA controller. This driver
+> is implemented as a wrapper around the existing DaVinci private
+> DMA implementation. This approach allows for incremental conversion
+> of each peripheral driver to the DMA engine API. The EDMA driver
+> supports slave transfers but does not yet support cyclic transfers.
 
-Acked-By: Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+I got my hands on a AM18x WL12xx module so I could test MMC1 and this
+exposed some bugs in the driver's handling of the second EDMA controller
+case. DA850/OMAP-L138/AM1x have this second EDMA controller. I've
+addressed this in v2 which will be posted shortly.
 
-> ---
->
->  Documentation/devicetree/bindings/spi/spi_pl022.txt |   15 +++
->  drivers/spi/spi-pl022.c                             |   79 +++++++++++++++++---
->  2 files changed, 85 insertions(+), 9 deletions(-)
->
-> --- linux-2.6.orig/Documentation/devicetree/bindings/spi/spi_pl022.txt
-> +++ linux-2.6/Documentation/devicetree/bindings/spi/spi_pl022.txt
-> @@ -6,7 +6,22 @@ Required properties:
->  - interrupts : Should contain SPI controller interrupt
->
->  Optional properties:
-> +- num-cs : total number of chipselects
->  - cs-gpios : should specify GPIOs used for chipselects.
->    The gpios will be referred to as reg = <index> in the SPI child nodes.
->    If unspecified, a single SPI device without a chip select can be used.
->
-> +SPI slave nodes must be children of the SPI master node and can
-> +contain the following properties.
-> +
-> +- pl022,interface : interface type:
-> +       0: SPI
-> +       1: Texas Instruments Synchronous Serial Frame Format
-> +       2: Microwire (Half Duplex)
-> +- pl022,com-mode : polling, interrupt or dma
-> +- pl022,rx-level-trig : Rx FIFO watermark level
-> +- pl022,tx-level-trig : Tx FIFO watermark level
-> +- pl022,ctrl-len : Microwire interface: Control length
-> +- pl022,wait-state : Microwire interface: Wait state
-> +- pl022,duplex : Microwire interface: Full/Half duplex
-> +
-> --- linux-2.6.orig/drivers/spi/spi-pl022.c
-> +++ linux-2.6/drivers/spi/spi-pl022.c
-> @@ -41,6 +41,7 @@
->  #include <linux/scatterlist.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/gpio.h>
-> +#include <linux/of_gpio.h>
->
->  /*
->   * This macro is used to define some register default values.
-> @@ -1778,12 +1779,14 @@ static const struct pl022_config_chip pl
->  static int pl022_setup(struct spi_device *spi)
->  {
->         struct pl022_config_chip const *chip_info;
-> +       struct pl022_config_chip chip_info_dt;
->         struct chip_data *chip;
->         struct ssp_clock_params clk_freq = { .cpsdvsr = 0, .scr = 0};
->         int status = 0;
->         struct pl022 *pl022 = spi_master_get_devdata(spi->master);
->         unsigned int bits = spi->bits_per_word;
->         u32 tmp;
-> +       struct device_node *np = spi->dev.of_node;
->
->         if (!spi->max_speed_hz)
->                 return -EINVAL;
-> @@ -1806,10 +1809,32 @@ static int pl022_setup(struct spi_device
->         chip_info = spi->controller_data;
->
->         if (chip_info == NULL) {
-> -               chip_info = &pl022_default_chip_info;
-> -               /* spi_board_info.controller_data not is supplied */
-> -               dev_dbg(&spi->dev,
-> -                       "using default controller_data settings\n");
-> +               if (np) {
-> +                       chip_info_dt = pl022_default_chip_info;
-> +
-> +                       chip_info_dt.hierarchy = SSP_MASTER;
-> +                       of_property_read_u32(np, "pl022,interface",
-> +                               &chip_info_dt.iface);
-> +                       of_property_read_u32(np, "pl022,com-mode",
-> +                               &chip_info_dt.com_mode);
-> +                       of_property_read_u32(np, "pl022,rx-level-trig",
-> +                               &chip_info_dt.rx_lev_trig);
-> +                       of_property_read_u32(np, "pl022,tx-level-trig",
-> +                               &chip_info_dt.tx_lev_trig);
-> +                       of_property_read_u32(np, "pl022,ctrl-len",
-> +                               &chip_info_dt.ctrl_len);
-> +                       of_property_read_u32(np, "pl022,wait-state",
-> +                               &chip_info_dt.wait_state);
-> +                       of_property_read_u32(np, "pl022,duplex",
-> +                               &chip_info_dt.duplex);
-> +
-> +                       chip_info = &chip_info_dt;
-> +               } else {
-> +                       chip_info = &pl022_default_chip_info;
-> +                       /* spi_board_info.controller_data not is supplied */
-> +                       dev_dbg(&spi->dev,
-> +                               "using default controller_data settings\n");
-> +               }
->         } else
->                 dev_dbg(&spi->dev,
->                         "using user supplied controller_data settings\n");
-> @@ -2006,7 +2031,8 @@ pl022_probe(struct amba_device *adev, co
->         struct pl022_ssp_controller *platform_info = adev->dev.platform_data;
->         struct spi_master *master;
->         struct pl022 *pl022 = NULL;     /*Data for this driver */
-> -       int status = 0, i;
-> +       struct device_node *np = adev->dev.of_node;
-> +       int status = 0, i, num_cs;
->
->         dev_info(&adev->dev,
->                  "ARM PL022 driver, device ID: 0x%08x\n", adev->periphid);
-> @@ -2016,9 +2042,19 @@ pl022_probe(struct amba_device *adev, co
->                 goto err_no_pdata;
->         }
->
-> +       if (platform_info->num_chipselect) {
-> +               num_cs = platform_info->num_chipselect;
-> +       } else if (IS_ENABLED(CONFIG_OF)) {
-> +               of_property_read_u32(np, "num-cs", &num_cs);
-> +       } else {
-> +               dev_err(&adev->dev, "probe: no chip select defined\n");
-> +               status = -ENODEV;
-> +               goto err_no_pdata;
-> +       }
-> +
->         /* Allocate master with space for data */
->         master = spi_alloc_master(dev, sizeof(struct pl022) + sizeof(int) *
-> -                                 platform_info->num_chipselect);
-> +                                 num_cs);
->         if (master == NULL) {
->                 dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
->                 status = -ENOMEM;
-> @@ -2037,17 +2073,41 @@ pl022_probe(struct amba_device *adev, co
->          * on this board
->          */
->         master->bus_num = platform_info->bus_id;
-> -       master->num_chipselect = platform_info->num_chipselect;
-> +       master->num_chipselect = num_cs;
->         master->cleanup = pl022_cleanup;
->         master->setup = pl022_setup;
->         master->prepare_transfer_hardware = pl022_prepare_transfer_hardware;
->         master->transfer_one_message = pl022_transfer_one_message;
->         master->unprepare_transfer_hardware = pl022_unprepare_transfer_hardware;
->         master->rt = platform_info->rt;
-> +       master->dev.of_node = dev->of_node;
->
-> -       if (platform_info->num_chipselect && platform_info->chipselects)
-> -               for (i = 0; i < platform_info->num_chipselect; i++)
-> +       if (platform_info->num_chipselect && platform_info->chipselects) {
-> +               for (i = 0; i < num_cs; i++)
->                         pl022->chipselect[i] = platform_info->chipselects[i];
-> +       } else if (IS_ENABLED(CONFIG_OF)) {
-> +               for (i = 0; i < num_cs; i++) {
-> +                       int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-> +
-> +                       if (cs_gpio == -EPROBE_DEFER) {
-> +                               status = -EPROBE_DEFER;
-> +                               goto err_no_gpio;
-> +                       }
-> +
-> +                       pl022->chipselect[i] = cs_gpio;
-> +
-> +                       if (gpio_is_valid(cs_gpio)) {
-> +                               if (gpio_request(cs_gpio, "ssp-pl022"))
-> +                                       dev_err(&adev->dev,
-> +                                               "could not request %d gpio\n",
-> +                                               cs_gpio);
-> +                               else if (gpio_direction_output(cs_gpio, 1))
-> +                                       dev_err(&adev->dev,
-> +                                               "could set gpio %d as output\n",
-> +                                               cs_gpio);
-> +                       }
-> +               }
-> +       }
->
->         /*
->          * Supports mode 0-3, loopback, and active low CS. Transfers are
-> @@ -2157,6 +2217,7 @@ pl022_probe(struct amba_device *adev, co
->   err_no_ioremap:
->         amba_release_regions(adev);
->   err_no_ioregion:
-> + err_no_gpio:
->         spi_master_put(master);
->   err_no_master:
->   err_no_pdata:
+I'm expecting to receive a DM646x EVM RSN so I can cover testing that
+part as well.
+
+-Matt

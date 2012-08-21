@@ -1,72 +1,39 @@
-From: David Daney <ddaney@caviumnetworks.com>
-Subject: Re: [2/2] spi: Add SPI master controller for OCTEON SOCs.
-Date: Tue, 21 Aug 2012 13:38:02 -0700
-Message-ID: <5033F1AA.4080308@caviumnetworks.com>
-References: <1336772086-17248-3-git-send-email-ddaney.cavm@gmail.com> <20120821194936.GA7145@roeck-us.net>
+From: "Mike Beale   " <mikeb-sue07Fb37EDk1uMJSBkQmQ@public.gmane.org>
+Subject: Real estate (8/21/2012)
+Date: Tue, 21 Aug 2012 16:33:09 -0700
+Message-ID: <812884.30016.qm@smtp109.sbc.mail.mud.yahoo.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: David Daney <ddaney.cavm@gmail.com>,
-	<devicetree-discuss@lists.ozlabs.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>, <linux-mips@linux-mips.org>,
-	<linux-doc@vger.kernel.org>, David Daney <david.daney@cavium.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20120821194936.GA7145@roeck-us.net>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/21/2012 12:49 PM, Guenter Roeck wrote:
-> On Fri, May 11, 2012 at 08:34:46PM -0000, David Daney wrote:
->> From: David Daney <david.daney@cavium.com>
->>
->> Add the driver, link it into the kbuild system and provide device tree
->> binding documentation.
->>
->> Signed-off-by: David Daney <david.daney@cavium.com>
->> Acked-by: Grant Likely <grant.likely@secretlab.ca>
->>
-> [ ... ]
->
->> +
->> +static int __devexit octeon_spi_remove(struct platform_device *pdev)
->> +{
->> +	struct octeon_spi *p = platform_get_drvdata(pdev);
->> +	struct spi_master *master = p->my_master;
->> +
->> +	spi_unregister_master(master);
->> +
->
-> I know it is a bit late, but ...
-
-In this case, just in time.  I am now finally getting back to fixing the 
-issues with this driver, and looking to merging it in the near future.
-
-David Daney
-
->
-> The call to spi_unregister_master() frees the memory associated with master,
-> ie 'p', and the spi_master_put() below without matching spi_master_get() is
-> unnecessary/wrong. One possible fix would be to use
->
-> 	struct spi_master *master = spi_master_get(p->my_master);
->
-> above. That protects master and p while it is still being used, and makes use
-> of the call to spi_master_put() below. Another option might be to move
-> cvmx_write_csr() ahead of the call to spi_unregister_master() and drop the
-> call to spi_master_put().
->
-> Guenter
->
->> +	/* Clear the CSENA* and put everything in a known state. */
->> +	cvmx_write_csr(p->register_base + OCTEON_SPI_CFG, 0);
->> +	spi_master_put(master);
->> +	return 0;
->> +}
->> +
->
-
-
+T3VyIGNvbXBhbnkgaXMgcGFydCBvZiBhIHBsYXRmb3JtIG9mIG5lYXJseSAzNyBtaWxsaW9uIHBl
+b3BsZSwgICAgCm1vc3RseSBVbml0ZWQgU3RhdGVzIGFuZCBDYW5hZGlhbiBiYXNlZC4gV2hhdCB3
+ZSBkbyBnaXZlcwp1cyB0aGUgYWJpbGl0eSB0byBwcmVzZW50IG91ciBlbmQgdXNlcnMgd2l0aCBh
+IGZpcnN0IGNob2ljZSB3aGVuCnRoZXkgbG9vayBmb3IgYW55dGhpbmcgb24gYW55IG9mIHRoZSBt
+YWpvciBzZWFyY2ggZW5naW5lcy4KCldlJ3JlIGxvb2tpbmcgZm9yIGEgcHJlZmVycmVkIHNvdXJj
+ZSB0byBzZW5kIG91ciB1c2VycyBzZWFyY2hpbmcKZm9yIHJlYWwgZXN0YXRlIGluIFBhbmFtYSBD
+aXR5IGFuZCBzdXJyb3VuZGluZyBtYXJrZXRzLgoKSeKAmW0gaW4gdGhlIG9mZmljZSB3ZWVrZGF5
+cyBmcm9tIDk6MDAgQU0gdG8gNTowMCBQTSBQYWNpZmljIHRpbWUuCgogCllvdXJzIHRydWx5LAoK
+CgpNaWtlIEJlYWxlICAgICAgCk5ldHdvcmsgQW5hbHlzdCwgU1BTIFNlYXJjaCAgICAgIApQaG9u
+ZTogKDg3NykgNzA5LTY5NzEsIGV4dC4gMTE5NAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUg
+U2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292
+ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhh
+cyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3
+aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxh
+dGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9z
+ZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

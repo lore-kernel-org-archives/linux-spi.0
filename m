@@ -1,69 +1,54 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v6 3/3] DT bindings documentation: "num-cs" property for
- SPI controllers
-Date: Wed, 22 Aug 2012 20:03:17 +0100
-Message-ID: <20120822190317.GE7995@opensource.wolfsonmicro.com>
-References: <1345643359-16584-1-git-send-email-stigge@antcom.de>
- <1345643359-16584-3-git-send-email-stigge@antcom.de>
- <CACRpkdaYqNYCy5=mS=VvsD1zJU+NnZ5BU1-kjDLAnYsRSZvFGg@mail.gmail.com>
+From: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH] SPI: MIPS: lantiq: adds spi-xway
+Date: Wed, 22 Aug 2012 21:04:56 +0200
+Message-ID: <50352D58.6040201@openwrt.org>
+References: <1345103821-12543-1-git-send-email-blogic@openwrt.org>
+	<20120822185944.GD7995@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FyU5fTJCTr/6Eq8v"
-Cc: Roland Stigge <stigge@antcom.de>, aletes.xgr@gmail.com,
-	grant.likely@secretlab.ca, rob.herring@calxeda.com,
-	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	gabriel.fernandez@stericsson.com, lee.jones@linaro.org,
-	viresh.kumar@linaro.org, sachin.verma@st.co
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdaYqNYCy5=mS=VvsD1zJU+NnZ5BU1-kjDLAnYsRSZvFGg@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Daniel Schwierzeck <daniel.schwierzeck-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
+	linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120822185944.GD7995-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 22/08/12 20:59, Mark Brown wrote:
+>> +       if (of_machine_is_compatible("lantiq,ase"))
+>> > +               master->num_chipselect = 3;
+>> > +       else
+>> > +               master->num_chipselect = 6;
+> This is very suspicious - why is this being done based on the machine
+> rather than based on the IP?  Surely there can be machines with this SoC
+> on which aren't compatible with whatever (reference?) board this is
+> matching on.  I'd expect that the driver would have multiple compatible
+> strings which it uses to distinguish the capabilities of the IP.
+>
+> Though actually the driver never reads this value so perhaps the code
+> can just be deleted and we rely on the fact that if the /CS isn't
+> physically present nobody's going to hook it up on a board so just
+> always set it to 6?
+>
+Thanks for the review i will rework the driver, add a binding doc and
+resend ...
 
---FyU5fTJCTr/6Eq8v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+is there a equivalent of of_machine_is_compatible for IP ?
 
-On Wed, Aug 22, 2012 at 08:39:06PM +0200, Linus Walleij wrote:
-> On Wed, Aug 22, 2012 at 3:49 PM, Roland Stigge <stigge@antcom.de> wrote:
->=20
-> > Several SPI controller drivers have defined differently named propertie=
-s for
-> > the number of chip selects.  Now adding "num-cs" as a reference name fo=
-r new
-> > bindings.
+John
 
-> > Signed-off-by: Roland Stigge <stigge@antcom.de>
-
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Applied all, thanks.
-
---FyU5fTJCTr/6Eq8v
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQNSyaAAoJEFJkBDiqVpZ4WPAQALDZ+GYflLM9hkYiGFQNBpAR
-p/amoxt/1DlDvIKUGfCMm9/sGhQBLL3qix+SCqJFjB9gwT2fJcjLEVgBfeGUUlAp
-Y6FkvD2PGgJG6iR5gQmGr98gxPjBk2fA7mkYbl44dLYJG65hIY/WybxB65/p8sL/
-KSPPJ6ZLVeJujBxqcQ0ceeI5GWkxsKLQ8NitiV/mh5ysDtxbwiJmnUMF0qEj0V7w
-ffwAMFqTBsuqmb3Jn9mxeFc3XF6vqkyEMSIBF7Sxi3MUaCaCCiewwX3yKIt9IA+i
-uTHHVnvOWQElb/kCK1blGq7Ldv/DqaiwUSqZkYVd+C5QIlpCBRjl+A3UXeKPqXmm
-7AYrcs2Xmf7oY7em6H2+VpEY5/Pje4FCcHGyNXi78ZjJnbNKf/9dHb+BVp107piB
-Mls3XiAJpkW/a2a/pgG4LlsUqZ+WkN04DaXD9Sa1OUiTDmiKYWLLymIqgQjKBJ3d
-T6GRa/2cvSfl65He92h67u4C/Un88FnP7n1OGG9468sozw9XQqpC2gbCu63h3pWt
-1X0JCfNvA/jqJuAEGusZEQGeOoiUqExiLcAJ9AT6jzgY16l3vhUesLE1fz3xBk60
-oRTkgS+pDz8ZP2aPZLUpyU1azStxtUHKgnf52nEm+gByUA3KRGXi6N4/Ch/dNUs9
-TCitKY/rVJQKQS1MTLc7
-=UhSl
------END PGP SIGNATURE-----
-
---FyU5fTJCTr/6Eq8v--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

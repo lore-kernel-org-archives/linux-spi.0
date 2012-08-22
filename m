@@ -1,71 +1,115 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: Master driver for NXP SC18IS602/603
-Date: Wed, 22 Aug 2012 20:24:34 +0100
-Message-ID: <20120822192434.GR7995@opensource.wolfsonmicro.com>
-References: <1345305987-1954-1-git-send-email-linux@roeck-us.net>
- <20120822183230.GC7995@opensource.wolfsonmicro.com>
- <20120822191959.GA12403@roeck-us.net>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi/mxs: Make the SPI block clock speed configurable via DT
+Date: Wed, 22 Aug 2012 22:38:35 +0200
+Message-ID: <1345667915-26189-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="GvDmwISikgK05D7L"
-Cc: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, linux-doc@vger.kernel.org,
-	devicetree-discuss@lists.ozlabs.org
-To: Guenter Roeck <linux@roeck-us.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120822191959.GA12403@roeck-us.net>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Add "clock-frequency" property, which allows configuring the SPI block's
+base speed.
 
---GvDmwISikgK05D7L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+---
+ Documentation/devicetree/bindings/spi/mxs-spi.txt |    4 ++++
+ drivers/spi/spi-mxs.c                             |   21 +++++++++++++++------
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-On Wed, Aug 22, 2012 at 12:19:59PM -0700, Guenter Roeck wrote:
-> On Wed, Aug 22, 2012 at 07:32:30PM +0100, Mark Brown wrote:
+diff --git a/Documentation/devicetree/bindings/spi/mxs-spi.txt b/Documentation/devicetree/bindings/spi/mxs-spi.txt
+index c36296f..e2e1395 100644
+--- a/Documentation/devicetree/bindings/spi/mxs-spi.txt
++++ b/Documentation/devicetree/bindings/spi/mxs-spi.txt
+@@ -6,6 +6,10 @@ Required properties:
+ - interrupts: Should contain SSP interrupts (error irq first, dma irq second)
+ - fsl,ssp-dma-channel: APBX DMA channel for the SSP
+ 
++Optional properties:
++- clock-frequency : Input clock frequency to the SPI block in Hz.
++		    Default is 160000000 Hz.
++
+ Example:
+ 
+ ssp0: ssp@80010000 {
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 130a436..331f600 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -485,10 +485,17 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
+ 	struct pinctrl *pinctrl;
+ 	struct clk *clk;
+ 	void __iomem *base;
+-	int devid, dma_channel;
++	int devid, dma_channel, clk_freq;
+ 	int ret = 0, irq_err, irq_dma;
+ 	dma_cap_mask_t mask;
+ 
++	/*
++	 * Default clock speed for the SPI core. 160MHz seems to
++	 * work reasonably well with most SPI flashes, so use this
++	 * as a default. Override with "clock-frequency" DT prop.
++	 */
++	const int clk_freq_default = 160000000;
++
+ 	iores = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	irq_err = platform_get_irq(pdev, 0);
+ 	irq_dma = platform_get_irq(pdev, 1);
+@@ -520,12 +527,18 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
+ 				"Failed to get DMA channel\n");
+ 			return -EINVAL;
+ 		}
++
++		ret = of_property_read_u32(np, "clock-frequency",
++					   &clk_freq);
++		if (ret)
++			clk_freq = clk_freq_default;
+ 	} else {
+ 		dmares = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+ 		if (!dmares)
+ 			return -EINVAL;
+ 		devid = pdev->id_entry->driver_data;
+ 		dma_channel = dmares->start;
++		clk_freq = clk_freq_default;
+ 	}
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spi));
+@@ -561,12 +574,8 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
+ 		goto out_master_free;
+ 	}
+ 
+-	/*
+-	 * Crank up the clock to 120MHz, this will be further divided onto a
+-	 * proper speed.
+-	 */
+ 	clk_prepare_enable(ssp->clk);
+-	clk_set_rate(ssp->clk, 120 * 1000 * 1000);
++	clk_set_rate(ssp->clk, clk_freq);
+ 	ssp->clk_rate = clk_get_rate(ssp->clk) / 1000;
+ 
+ 	stmp_reset_block(ssp->base);
+-- 
+1.7.10.4
 
-> > This feels like the wrong thing to do here: given that the user needs to
-> > explicitly ask for the device to be instantiated we really ought to be
-> > one the right bus so this should be more of an error.  Not sure what I
-> > can constructively sugget except for an error message and perhaps
-> > returning -EINVAL though.
 
-> Makes sense. Changing the return value to -EINVAL results in the following
-> warning message from the driver subsystem.
-
-> sc18is602: probe of 7-0010 failed with error -22
-
-> I think this should be good enough, as there are other possible reasons for the
-> call to fail which result in similar messages. Do you want to make that change,
-> or should I change it and resubmit ?
-
-The above looks good, we don't need to go overboard - so long as it's
-not a silent fail I think we're OK.  Please send an incremental change.
-
---GvDmwISikgK05D7L
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQNTG+AAoJEFJkBDiqVpZ4XEYQAJYGKKZXUmg5obZkCl3b6auQ
-qBncWjF61V7AEdqGdvWIgXDnMzExizKG8gjbm153WKJrVh/LjoxCadWOl3z5qUsk
-jQ2GTxTqTso0MAyQpIe3kEDnLQxw6la1e8rJ1F4giMvufvo4BCFWMqT+u+tEjT4o
-OFcaQPHXepbAs6fbsTo92nwO2oJ8VZYIXccaH/79IB8TRmONZ+FRmDNJyncr8LRK
-VnhDBWySV6Pul0cQek27Qi7z7MK5Bbq8WcfWC50vb3+SyNGcnWvYUpqyt3qe36iV
-cAIARyO7R67pjL6/zrK9c/kpSUu3HKQzfPxqd6J/+WJ+NoGQP+a9zYuLPYlsrfX1
-PIzXHV9tIZB31EtlBTl3xrknj1h8/S6t+UoUOjuzl6skJurLY7ij0ZFb1tgAAOvk
-pkJI6Cg8csDOgSFpXarVx3n2sOSYipD5H/YPCJW/7Xk03ExFsD8bBmkJecL4Vouo
-He4jcBFzlW0c3gDZMMmFGbiJ0hgoDI3arIxAadRuSb0efEHH8FgLQqH0VXH3iS2n
-++jHKEkLS60+Fx/4QTJsSP+SRsSW+n+LiOw7j+mP8YQA0i0V/ss23c9fvSI0En8q
-mGw5mXVAPpEP0pNM7Tl5ddVQVnYcih08vAe66T98zkBcDkeA/Jmak9icSo5+xXnO
-bG2tncIPG6PD12Jr5CqF
-=Zynn
------END PGP SIGNATURE-----
-
---GvDmwISikgK05D7L--
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,14 +1,18 @@
-From: =?UTF-8?B?0J7QntCeINCR0JzQmiDQotGA0LXQudC00LjQvdCz?=
-	<info-pKJTtXkQ4DFynpSAKIaXOtBPR1lH4CV8@public.gmane.org>
-Subject: =?UTF-8?B?0J/QvtC30LTRgNCw0LLQu9GP0LXQvCDQktCw0YjRgyDQutC+0LzQv9Cw0L0=?=
-	=?UTF-8?B?0LjRjg==?=
-Date: Wed, 22 Aug 2012 06:57:17 +0000
-Message-ID: <5d36eb5cc50825d07d0abda8c4b038f3@viptime-people.com>
+From: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Fill master->dev.of_node to get spi devices
+	registered via DT
+Date: Wed, 22 Aug 2012 14:46:11 +0530
+Message-ID: <CAKohpo=KA0=LtqTRMSTbii01Thg5RnLKVUF0EYOyYhDPW5CAgA@mail.gmail.com>
+References: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar@linaro.org>
+	<CACRpkdYhQM+=2jYhY2LW8FP-31Me5+p=0ghpjFR22eqskijB9A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdYhQM+=2jYhY2LW8FP-31Me5+p=0ghpjFR22eqskijB9A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,32 +23,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-0J/QvtC00LDRgNC+0Log0YjQtdGE0YMsINC60L7Qu9C70LXQs9Cw0LwsINC4INC60L7QvdC10YfQ
-vdC+INC20LUsINCS0LDQvCEKCtCh0L/QtdGI0LjQvCDQv9C+0LfQtNGA0LDQstC40YLRjCDQstCw
-0YEg0YHQutC+0YDQtdC5LgrQoyDQktCw0YjQtdC5INGE0LjRgNC80Ysg4oCTINC60LvQsNGB0YHQ
-vdGL0Lkg0LTQtdC90YwhCtCT0L7QtNCwINGC0YDRg9C00LjQu9C40YHRjCDQvdC1INC90LDQv9GA
-0LDRgdC90L4sCtCU0LXQu9CwINC40LTRg9GCINGDINCS0LDRgSDQv9GA0LXQutGA0LDRgdC90L4s
-CtCh0YLQvtC40YLQtSDQv9GA0L7Rh9C90L4g0L3QsCDQvdC+0LPQsNGFLArQmCDQsiDQv9C10YDR
-gdC/0LXQutGC0LjQstC1INC10YHRgtGMINGA0LDQt9C80LDRhS4K0KPQttC1INC4INC80LXQvdC1
-0LTQttC80LXQvdGCINC90LDQu9Cw0LbQtdC9LArQmCDQutC+0L3QutGD0YDQtdC90YIg0L3QtSDR
-gtCw0Log0YPQtiDRgdGC0YDQsNGI0LXQvSwK0JvQuNGI0Ywg0YHRgtC40LzRg9C7INC6INGA0L7R
-gdGC0YMg0L/RgNC40LTQsNC10YIK0Jgg0YPRgdC60L7RgNGP0LXRgiDQvNGL0YHQu9C4INGF0L7Q
-tC4K0JfQsCDQktCw0YEg0LzRiyDRgNCw0LTRiyDQstGB0LXQuSDQtNGD0YjQvtC5IQrQltC10LvQ
-sNC10Lwg0LLQsNC8INC00L7RhdC+0LQg0LHQvtC70YzRiNC+0LksCtCW0LXQu9Cw0LXQvCDQktCw
-0Lwg0YDQsNGB0YLQuCDQuCDQtNCw0LvRjNGI0LUsCtCf0LDRgNGC0L3QtdGA0L7QsiDQvNC90L7Q
-s9C+INC+0LHRgNC10YHRgtC4LArQmtC70LjQtdC90YLQvtCyINC90L7QstGL0YUg0L/RgNC40LLQ
-tdGB0YLQuCEK0J3QsNGI0LvQuCDRh9GC0L7QsSDQvdC+0LLRi9C1INGN0YTRhNC10LrRgtGLLArQ
-ktC30Y/Qu9C40YHRjCDQt9CwINGB0LLQtdC20LjQtSDQv9GA0L7QtdC60YLRiwrQmCwg0YDQsNGB
-0YbQstC10YLQsNGPINCz0L7QtCDQvtGCINCz0L7QtNCwLArQodC90LjRgdC60LDQu9C4INCS0Ysg
-0LvRjtCx0L7QstGMINC/0LDRgNGC0L3QtdGA0L7QsiEK0J/QvtGB0LzQvtGC0YDQtdGC0Ywg0L/Q
-vtC00LDRgNC60LgKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwg
-Q29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0
-b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93
-IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBv
-aW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAK
-dGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQv
-NTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 19 August 2012 03:56, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+
+> On Sat, Aug 18, 2012 at 4:25 AM, Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> wrote:
+>
+> > spi_register_master() calls of_register_spi_devices() to register spi
+> devices.
+> > This routine expects master->dev.of_node to be a valid pointer. This is
+> > responsibility of master driver to fill this field, which wasn't done
+> for pl022.
+> > Fix it to get devices added to pl022.
+>
+> Isn't this one of those things that *have* to be #ifdef CONFIG_OF?
+>
+> Next iteration, remember to add Mark Brown on To: because je's taking
+> care of SPI patches for the moment.
+>
+
+Ahh!! Forgot to reply :(
+
+Dropping this patch as it is already fixed in Roland's patches
+
+viresh
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

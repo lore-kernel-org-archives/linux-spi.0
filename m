@@ -1,56 +1,110 @@
-From: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v2 3/3] spi: spi-davinci: convert to DMA engine API
-Date: Wed, 22 Aug 2012 09:15:22 +0530
-Message-ID: <1345607122.1895.44.camel@vkoul-udesk3>
-References: <1345574589-24757-1-git-send-email-mporter@ti.com>
-	<1345574589-24757-4-git-send-email-mporter@ti.com>
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH 2/3] spi: omap2-mcspi: Remove the macro MOD_REG_BIT
+Date: Wed, 22 Aug 2012 11:22:41 +0530
+Message-ID: <503473A9.4060805@ti.com>
+References: <1345529864-7937-1-git-send-email-shubhrajyoti@ti.com> <1345529864-7937-3-git-send-email-shubhrajyoti@ti.com> <20120821090508.GC10347@arwen.pp.htv.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1345574589-24757-4-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+To: balbi@ti.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20120821090508.GC10347@arwen.pp.htv.fi>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2012-08-21 at 14:43 -0400, Matt Porter wrote:
-> Removes use of the DaVinci EDMA private DMA API and replaces
-> it with use of the DMA engine API.
-> 
-> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> ---
+Hi Felipe,
+Thanks for the review
 
-> +		struct dma_slave_config dma_rx_conf = {
-> +			.direction = DMA_DEV_TO_MEM,
-> +			.src_addr = (unsigned long)dspi->pbase + SPIBUF,
-> +			.src_addr_width = data_type,
-> +			.src_maxburst = 1,
-what does 1 mean in this context? We define as number of units that
-needs to be transfered, so are you sure that you want only one unit to
-be dma'ed in a single burst. that seems like killing your dmac,
-shouldn't you be using larger bursts for a better dma performance?
-
-
--- 
-~Vinod
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+On Tuesday 21 August 2012 02:35 PM, Felipe Balbi wrote:
+> On Tue, Aug 21, 2012 at 11:47:43AM +0530, Shubhrajyoti D wrote:
+>> Remove the macro MOD_REG_BIT instead make the bit field modifications
+>> directly. This deletes a branch operation in cases where the the set
+>> is predecided.While at it optimise two sequential bit clear in one step.
+>                ^^
+> 	       you need a space here, besides you can add the ack below
+Will fix that and resend.
+>> Signed-off-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+> Acked-by: Felipe Balbi <balbi@ti.com>
+>
+>> ---
+>>  drivers/spi/spi-omap2-mcspi.c |   28 ++++++++++++++--------------
+>>  1 files changed, 14 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+>> index dd887eb..5642111 100644
+>> --- a/drivers/spi/spi-omap2-mcspi.c
+>> +++ b/drivers/spi/spi-omap2-mcspi.c
+>> @@ -140,13 +140,6 @@ struct omap2_mcspi_cs {
+>>  	u32			chconf0;
+>>  };
+>>  
+>> -#define MOD_REG_BIT(val, mask, set) do { \
+>> -	if (set) \
+>> -		val |= mask; \
+>> -	else \
+>> -		val &= ~mask; \
+>> -} while (0)
+>> -
+>>  static inline void mcspi_write_reg(struct spi_master *master,
+>>  		int idx, u32 val)
+>>  {
+>> @@ -205,7 +198,11 @@ static void omap2_mcspi_set_dma_req(const struct spi_device *spi,
+>>  	else
+>>  		rw = OMAP2_MCSPI_CHCONF_DMAW;
+>>  
+>> -	MOD_REG_BIT(l, rw, enable);
+>> +	if (enable)
+>> +		l |= rw;
+>> +	else
+>> +		l &= ~rw;
+>> +
+>>  	mcspi_write_chconf0(spi, l);
+>>  }
+>>  
+>> @@ -224,7 +221,11 @@ static void omap2_mcspi_force_cs(struct spi_device *spi, int cs_active)
+>>  	u32 l;
+>>  
+>>  	l = mcspi_cached_chconf0(spi);
+>> -	MOD_REG_BIT(l, OMAP2_MCSPI_CHCONF_FORCE, cs_active);
+>> +	if (cs_active)
+>> +		l |= OMAP2_MCSPI_CHCONF_FORCE;
+>> +	else
+>> +		l &= ~OMAP2_MCSPI_CHCONF_FORCE;
+>> +
+>>  	mcspi_write_chconf0(spi, l);
+>>  }
+>>  
+>> @@ -239,9 +240,8 @@ static void omap2_mcspi_set_master_mode(struct spi_master *master)
+>>  	 * to single-channel master mode
+>>  	 */
+>>  	l = mcspi_read_reg(master, OMAP2_MCSPI_MODULCTRL);
+>> -	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_STEST, 0);
+>> -	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_MS, 0);
+>> -	MOD_REG_BIT(l, OMAP2_MCSPI_MODULCTRL_SINGLE, 1);
+>> +	l &= ~(OMAP2_MCSPI_MODULCTRL_STEST | OMAP2_MCSPI_MODULCTRL_MS);
+>> +	l |= OMAP2_MCSPI_MODULCTRL_SINGLE;
+>>  	mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, l);
+>>  
+>>  	ctx->modulctrl = l;
+>> @@ -1276,9 +1276,9 @@ static int omap2_mcspi_resume(struct device *dev)
+>>  			 * We need to toggle CS state for OMAP take this
+>>  			 * change in account.
+>>  			 */
+>> -			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 1);
+>> +			cs->chconf0 |= OMAP2_MCSPI_CHCONF_FORCE;
+>>  			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+>> -			MOD_REG_BIT(cs->chconf0, OMAP2_MCSPI_CHCONF_FORCE, 0);
+>> +			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
+>>  			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+>>  		}
+>>  	}
+>> -- 
+>> 1.7.5.4
+>>
+>> --
+>> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+>> the body of a message to majordomo@vger.kernel.org
+>> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>> Please read the FAQ at  http://www.tux.org/lkml/

@@ -1,51 +1,87 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Fill master->dev.of_node to get spi devices
-	registered via DT
-Date: Wed, 22 Aug 2012 11:24:01 +0200
-Message-ID: <CACRpkdZfJF29EP=S0p1FxxXQf549ZbOik0fbf==BqY_+3Saz=Q@mail.gmail.com>
-References: <b76734a7fe072120c174bc76d287cff361a2492a.1345255737.git.viresh.kumar@linaro.org>
-	<CACRpkdYhQM+=2jYhY2LW8FP-31Me5+p=0ghpjFR22eqskijB9A@mail.gmail.com>
-	<CAKohpo=KA0=LtqTRMSTbii01Thg5RnLKVUF0EYOyYhDPW5CAgA@mail.gmail.com>
+From: Kukjin Kim <kgene.kim@samsung.com>
+Subject: RE: [PATCH 14/14] drivers/spi/spi-s3c24xx.c: fix error return code
+Date: Wed, 22 Aug 2012 18:38:36 +0900
+Message-ID: <1b3201cd8049$e753f720$b5fbe560$%kim@samsung.com>
+References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
+ <1345365870-29831-15-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>,
-	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAKohpo=KA0=LtqTRMSTbii01Thg5RnLKVUF0EYOyYhDPW5CAgA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: kernel-janitors@vger.kernel.org,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
+To: 'Julia Lawall' <Julia.Lawall@lip6.fr>,
+	'Ben Dooks' <ben-linux@fluff.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <1345365870-29831-15-git-send-email-Julia.Lawall@lip6.fr>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 22, 2012 at 11:16 AM, Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> On 19 August 2012 03:56, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
->> On Sat, Aug 18, 2012 at 4:25 AM, Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->> Isn't this one of those things that *have* to be #ifdef CONFIG_OF?
->>
->> Next iteration, remember to add Mark Brown on To: because je's taking
->> care of SPI patches for the moment.
->
-> Ahh!! Forgot to reply :(
->
-> Dropping this patch as it is already fixed in Roland's patches
+Julia Lawall wrote:
+> 
+> From: Julia Lawall <Julia.Lawall@lip6.fr>
+> 
+> Initialize return variable before exiting on an error path.
+> 
+> A simplified version of the semantic match that finds this problem is as
+> follows: (http://coccinelle.lip6.fr/)
+> 
+> // <smpl>
+> (
+> if@p1 (\(ret < 0\|ret != 0\))
+>  { ... return ret; }
+> |
+> ret@p1 = 0
+> )
+> ... when != ret = e1
+>     when != &ret
+> *if(...)
+> {
+>   ... when != ret = e2
+>       when forall
+>  return ret;
+> }
+> 
+> // </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+> 
+Acked-by: Kukjin Kim <kgene.kim@samsung.com>
 
-No problem, I was probably wrong anyway. It appears that
-part of the device struct is no longer ifdef:ed, so it will compile
-nicely.
+(Cc'ed Mark Brown who is handling spi for a moment)
 
-Yours,
-Linus Walleij
+> ---
+> Perhaps -EINVAL is not the right value in this case.
+> 
+Well, if (pin_cs < 0) is true, it is really invalid value. So I think, it
+makes sense :-)
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks.
+
+Best regards,
+Kgene.
+--
+Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+SW Solution Development Team, Samsung Electronics Co., Ltd.
+
+>  drivers/spi/spi-s3c24xx.c |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+> index 8ee7d79..a2a080b 100644
+> --- a/drivers/spi/spi-s3c24xx.c
+> +++ b/drivers/spi/spi-s3c24xx.c
+> @@ -611,6 +611,7 @@ static int __devinit s3c24xx_spi_probe(struct
+> platform_device *pdev)
+>  	if (!pdata->set_cs) {
+>  		if (pdata->pin_cs < 0) {
+>  			dev_err(&pdev->dev, "No chipselect pin\n");
+> +			err = -EINVAL;
+>  			goto err_register;
+>  		}
+> 

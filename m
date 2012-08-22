@@ -1,17 +1,14 @@
-From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: [PATCHv2 3/3] spi: omap2-mcspi: At remove dont use the
-	runtime_autosuspend calls
-Date: Wed, 22 Aug 2012 11:35:14 +0530
-Message-ID: <1345615515-26745-4-git-send-email-shubhrajyoti@ti.com>
-References: <1345615515-26745-1-git-send-email-shubhrajyoti@ti.com>
+From: =?UTF-8?B?0J7QntCeINCR0JzQmiDQotGA0LXQudC00LjQvdCz?=
+	<info-pKJTtXkQ4DFynpSAKIaXOtBPR1lH4CV8@public.gmane.org>
+Subject: =?UTF-8?B?0J/QvtC30LTRgNCw0LLQu9GP0LXQvCDQktCw0YjRgyDQutC+0LzQv9Cw0L0=?=
+	=?UTF-8?B?0LjRjg==?=
+Date: Wed, 22 Aug 2012 06:57:17 +0000
+Message-ID: <5d36eb5cc50825d07d0abda8c4b038f3@viptime-people.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1345615515-26745-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,36 +19,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-At remove we shouldnt be using the autosuspend timeout as we are
-calling pm_runtime_disable immediately after.
-
-Acked-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c |    3 +--
- 1 files changed, 1 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 8a5e2c0..1c1dd34 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1244,8 +1244,7 @@ static int __devexit omap2_mcspi_remove(struct platform_device *pdev)
- 	mcspi = spi_master_get_devdata(master);
- 	dma_channels = mcspi->dma_channels;
- 
--	pm_runtime_mark_last_busy(mcspi->dev);
--	pm_runtime_put_autosuspend(mcspi->dev);
-+	pm_runtime_put_sync(mcspi->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	spi_unregister_master(master);
--- 
-1.7.5.4
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+0J/QvtC00LDRgNC+0Log0YjQtdGE0YMsINC60L7Qu9C70LXQs9Cw0LwsINC4INC60L7QvdC10YfQ
+vdC+INC20LUsINCS0LDQvCEKCtCh0L/QtdGI0LjQvCDQv9C+0LfQtNGA0LDQstC40YLRjCDQstCw
+0YEg0YHQutC+0YDQtdC5LgrQoyDQktCw0YjQtdC5INGE0LjRgNC80Ysg4oCTINC60LvQsNGB0YHQ
+vdGL0Lkg0LTQtdC90YwhCtCT0L7QtNCwINGC0YDRg9C00LjQu9C40YHRjCDQvdC1INC90LDQv9GA
+0LDRgdC90L4sCtCU0LXQu9CwINC40LTRg9GCINGDINCS0LDRgSDQv9GA0LXQutGA0LDRgdC90L4s
+CtCh0YLQvtC40YLQtSDQv9GA0L7Rh9C90L4g0L3QsCDQvdC+0LPQsNGFLArQmCDQsiDQv9C10YDR
+gdC/0LXQutGC0LjQstC1INC10YHRgtGMINGA0LDQt9C80LDRhS4K0KPQttC1INC4INC80LXQvdC1
+0LTQttC80LXQvdGCINC90LDQu9Cw0LbQtdC9LArQmCDQutC+0L3QutGD0YDQtdC90YIg0L3QtSDR
+gtCw0Log0YPQtiDRgdGC0YDQsNGI0LXQvSwK0JvQuNGI0Ywg0YHRgtC40LzRg9C7INC6INGA0L7R
+gdGC0YMg0L/RgNC40LTQsNC10YIK0Jgg0YPRgdC60L7RgNGP0LXRgiDQvNGL0YHQu9C4INGF0L7Q
+tC4K0JfQsCDQktCw0YEg0LzRiyDRgNCw0LTRiyDQstGB0LXQuSDQtNGD0YjQvtC5IQrQltC10LvQ
+sNC10Lwg0LLQsNC8INC00L7RhdC+0LQg0LHQvtC70YzRiNC+0LksCtCW0LXQu9Cw0LXQvCDQktCw
+0Lwg0YDQsNGB0YLQuCDQuCDQtNCw0LvRjNGI0LUsCtCf0LDRgNGC0L3QtdGA0L7QsiDQvNC90L7Q
+s9C+INC+0LHRgNC10YHRgtC4LArQmtC70LjQtdC90YLQvtCyINC90L7QstGL0YUg0L/RgNC40LLQ
+tdGB0YLQuCEK0J3QsNGI0LvQuCDRh9GC0L7QsSDQvdC+0LLRi9C1INGN0YTRhNC10LrRgtGLLArQ
+ktC30Y/Qu9C40YHRjCDQt9CwINGB0LLQtdC20LjQtSDQv9GA0L7QtdC60YLRiwrQmCwg0YDQsNGB
+0YbQstC10YLQsNGPINCz0L7QtCDQvtGCINCz0L7QtNCwLArQodC90LjRgdC60LDQu9C4INCS0Ysg
+0LvRjtCx0L7QstGMINC/0LDRgNGC0L3QtdGA0L7QsiEK0J/QvtGB0LzQvtGC0YDQtdGC0Ywg0L/Q
+vtC00LDRgNC60LgKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwg
+Q29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0
+b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93
+IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBv
+aW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAK
+dGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQv
+NTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

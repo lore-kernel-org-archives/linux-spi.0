@@ -1,61 +1,61 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] SPI: MIPS: lantiq: adds spi-xway
-Date: Wed, 22 Aug 2012 20:09:04 +0100
-Message-ID: <20120822190904.GG7995@opensource.wolfsonmicro.com>
-References: <1345103821-12543-1-git-send-email-blogic@openwrt.org>
- <20120822185944.GD7995@opensource.wolfsonmicro.com>
- <50352D58.6040201@openwrt.org>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] spi: Master driver for NXP SC18IS602/603
+Date: Wed, 22 Aug 2012 12:19:59 -0700
+Message-ID: <20120822191959.GA12403@roeck-us.net>
+References: <1345305987-1954-1-git-send-email-linux@roeck-us.net>
+ <20120822183230.GC7995@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="GySBzmld1qhwdVCc"
-Cc: spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
-To: John Crispin <blogic@openwrt.org>
-Return-path: <linux-mips-bounce@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <50352D58.6040201@openwrt.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+In-Reply-To: <20120822183230.GC7995@opensource.wolfsonmicro.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Aug 22, 2012 at 07:32:30PM +0100, Mark Brown wrote:
+> On Sat, Aug 18, 2012 at 09:06:27AM -0700, Guenter Roeck wrote:
+> > This driver adds support for NXP SC18IS602/603 I2C to SPI bus bridge.
+> > 
+> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> 
+> Applied, thanks.  One small thing:
+> 
+> > +static int sc18is602_probe(struct i2c_client *client,
+> > +			   const struct i2c_device_id *id)
+> > +{
+> > +	struct device *dev = &client->dev;
+> > +	struct device_node *np = dev->of_node;
+> > +	struct sc18is602_platform_data *pdata = dev_get_platdata(dev);
+> > +	struct sc18is602 *hw;
+> > +	struct spi_master *master;
+> > +	int error;
+> > +
+> > +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
+> > +				     I2C_FUNC_SMBUS_WRITE_BYTE_DATA))
+> > +		return -ENODEV;
+> 
+> This feels like the wrong thing to do here: given that the user needs to
+> explicitly ask for the device to be instantiated we really ought to be
+> one the right bus so this should be more of an error.  Not sure what I
+> can constructively sugget except for an error message and perhaps
+> returning -EINVAL though.
 
---GySBzmld1qhwdVCc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Mark,
 
-On Wed, Aug 22, 2012 at 09:04:56PM +0200, John Crispin wrote:
+Makes sense. Changing the return value to -EINVAL results in the following
+warning message from the driver subsystem.
 
-> is there a equivalent of of_machine_is_compatible for IP ?
+sc18is602: probe of 7-0010 failed with error -22
 
-I think you're looking for of_device_is_compatible().
+I think this should be good enough, as there are other possible reasons for the
+call to fail which result in similar messages. Do you want to make that change,
+or should I change it and resubmit ?
 
---GySBzmld1qhwdVCc
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQNS4mAAoJEFJkBDiqVpZ4imAQAJj4xtRA4Wic0iHQ6Mz7hbye
-jk1sCiA4ckuJkGkdqptnlP2vu9QqKUZGSvxNSsL5ibMvSsrAXDtj389YG/LhQuY5
-MdnQZNTRhZ9Vd/mgNhjFDeIINslKlNjS+qI1soGZQ2r/136Ce7y7DGOEc45kwMBm
-4pjfyEzlBtwPDoeUFLlharY1SLiAilDY4AWs26Fpzd1PDSt0KU5b2No8vF1phznQ
-Cj3dXMafzYs05SCaRRPCe5HyQ1mVdPWA5TXJJCJ7Lianetw0BR7GR9+0XZgp9e5v
-Y9938ruq5KSesQfPs9TeJApWLVaPX4Ln30pMBvg8mxhkKWwB/CR0+IXI/7oCb9fA
-dsT6CPZER61fcJZVxJZyqLAb/fbR1wp8X2sKzoPSgyZI0aIkDQlpnGxjbQ7XqvYn
-6U4SCObj2gIzs7GJlSlqmgqbgYplwrft1wPeZC/RHowgBTRj64AEI7JRuL6Zw5Uk
-cb179JCBA6A6xM1RPhWjJvHjXGB7VznT/dP+JNO8QKmxsMElBbgl70Z5zfs+boAj
-FwonYcTZ9cST2cT4e0RP5iTRqaG6Evv1JQiTP/d/KUEW8x6gFGfOm80MfSmcSn+S
-YdL1A+/QVC7AADyi8PI73vpth8EoDSgGFtMWgziLCE8fykibd0G+/HtRRSoJoQcR
-uNa+SfVFZtVbrlZg9oQ+
-=wAp8
------END PGP SIGNATURE-----
-
---GySBzmld1qhwdVCc--
+Thanks,
+Guenter

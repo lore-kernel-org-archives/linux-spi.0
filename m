@@ -1,60 +1,76 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCHv2 0/3] spi: omap2-mcspi: spi cleanups
-Date: Wed, 22 Aug 2012 18:13:58 +0100
-Message-ID: <20120822171358.GW7995@opensource.wolfsonmicro.com>
-References: <1345615515-26745-1-git-send-email-shubhrajyoti@ti.com>
- <20120822165933.GU7995@opensource.wolfsonmicro.com>
- <CAM=Q2cvEyas6r8pb-edQ7UUJOE1YSxns9j5hA8Cz5pJnd4mPYA@mail.gmail.com>
+Subject: Re: [PATCH] spi: Master driver for NXP SC18IS602/603
+Date: Wed, 22 Aug 2012 19:32:30 +0100
+Message-ID: <20120822183230.GC7995@opensource.wolfsonmicro.com>
+References: <1345305987-1954-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="adlATi0AGRzVk0TM"
-Cc: Shubhrajyoti D <shubhrajyoti@ti.com>,
-	spi-devel-general@lists.sourceforge.net, grant.likely@secretlab.ca,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="obRs6g3QSNdgmoVb"
+Cc: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org
+To: Guenter Roeck <linux@roeck-us.net>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAM=Q2cvEyas6r8pb-edQ7UUJOE1YSxns9j5hA8Cz5pJnd4mPYA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1345305987-1954-1-git-send-email-linux@roeck-us.net>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---adlATi0AGRzVk0TM
+--obRs6g3QSNdgmoVb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 22, 2012 at 10:33:55PM +0530, Shubhrajyoti Datta wrote:
+On Sat, Aug 18, 2012 at 09:06:27AM -0700, Guenter Roeck wrote:
+> This driver adds support for NXP SC18IS602/603 I2C to SPI bus bridge.
+>=20
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
-> Actually there was a patch in your tree that I sent which is not yet
-> in linus tree so I rebased
-> it to linux-next to avoid any merge conflicts.
+Applied, thanks.  One small thing:
 
-> Henceforth I will rebase it to your tree.
+> +static int sc18is602_probe(struct i2c_client *client,
+> +			   const struct i2c_device_id *id)
+> +{
+> +	struct device *dev =3D &client->dev;
+> +	struct device_node *np =3D dev->of_node;
+> +	struct sc18is602_platform_data *pdata =3D dev_get_platdata(dev);
+> +	struct sc18is602 *hw;
+> +	struct spi_master *master;
+> +	int error;
+> +
+> +	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C |
+> +				     I2C_FUNC_SMBUS_WRITE_BYTE_DATA))
+> +		return -ENODEV;
 
-That's also a good option, though for simple conflcits it's OK if the
-person applying the patch has to resolve them especially if you give
-some warning.
+This feels like the wrong thing to do here: given that the user needs to
+explicitly ask for the device to be instantiated we really ought to be
+one the right bus so this should be more of an error.  Not sure what I
+can constructively sugget except for an error message and perhaps
+returning -EINVAL though.
 
---adlATi0AGRzVk0TM
+--obRs6g3QSNdgmoVb
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQNRNEAAoJEFJkBDiqVpZ4Zo8P/iYF5yuA9YIHUrnZesP9vmx7
-yLloUIacKuQLON0N5YdSdXQsjRh0gfPJjAemcATjRracq19iV3XnFJA5qV9Jn3HW
-h7XmV92O/HaRifcqQ65EMIT1PDAxU7seGinKsh4dFH4dS9u6fQBc20rL6O4DLZ6Z
-RpKTgM75aoPgTGx4lzqQqKcPykNQJhs4ajzeiXMqssM+zDpcqX9Kj4RlrnKDO2zt
-FSZgmXkZCB/MTzEvIg9bxBUqkEzRBb9CS8Kp2YIsRdLmyUorPHI8JGIKGRAaTjAa
-uQiPzttiu+Kn0PD+CurDMwdtvNwu5W+PG1huB/mV6ugm7uhlJcdC/j/NwkrIFa3l
-r3hni/VoMc68MUAA4cNQEFzqhdWwgeARCLTxF8NBuMJvog2Q0ESl76PDzelok2cr
-WoOexHXBjuU/ndWsgTW1wdQIAuu9Y/w4nr/v6gYtjrE1XWmEp091gcQsHR5a6DtJ
-y7/SRkSsOgfxR9OvDjsSdNqjTNFhObakj0zeJTLjs0UeIrPMHA8UuBugbu0twxqX
-Xt4ALmyP3yLDKUVOXqVep7iqMZBhFFr7uoHjT38PEw//sIzGTgzMp5xH2UOXMJbR
-G2ncwBjZBLoT1VNNmmM+K8pFVvDLw2i/QVDHpk/7i7JvIUcd5vutSzU4NZa/JtVG
-zISatgFkDiYso04xSz17
-=62sG
+iQIcBAEBAgAGBQJQNSW3AAoJEFJkBDiqVpZ4Og0P/Ag8woq/d92e8QevY6iMfOF/
+U47IywXwijTehU1zHxSbaaJm5dKRAnOHJNRLQntDOoUfmze5ldVpHgjrxMLzfJYE
+o/5DM6E4Xs3s11wLtetI7gaI2Q9mO9ZJJN72ybShZkfaUS5g2sm+yM3ziH34zrFV
+5CMJilND0QOsctEk3Z0Td9Fc1nSFe4xY0IZuEuxgvMgrSO2GXqSieQS8olW9dBiV
+sPasQ2NwJWq1/eDcVcHnbPGe7iQkIxLjprHcluuBzldxC5R/Sx2VsijjD/uzyi9b
+DlTaP+++M23/eakYS+AUBZWRnjywg35eLzhn/GgSyUOUVshm90yN38+Q0dISXYEs
+331UKf6qtL0VvLweC3WqjM6qKPBg5Mn3aaKjlI3uMLhCixEKTTi7xBbAV/V3Pdfj
+MgQzXzTyMTqc1jqXouVc3kV42RtFM689snUbWnNLtPbi5yBEq/ajfDl3as2V4ods
+gkUlUB5l70hxwxSfb2AkwVOBtl5p7y16lLMEKQHYa1kABt5rKawJqhDt60hKKoKE
+sBjAJVRppv7W5hkadh1FJ88VxIhPsxEqOxbBt+QKffK7O4e6f4lWniiOmed8Pzvo
+di8uArbtPLOxndU2AInaXPFPMDIYQ+PLvKcGQiXRpssNfD4SBbJWEypuvApFDTy3
+Gvm9OERYIcWoNE2dDPX/
+=xu15
 -----END PGP SIGNATURE-----
 
---adlATi0AGRzVk0TM--
+--obRs6g3QSNdgmoVb--

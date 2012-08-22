@@ -1,87 +1,81 @@
-From: Kukjin Kim <kgene.kim@samsung.com>
-Subject: RE: [PATCH 14/14] drivers/spi/spi-s3c24xx.c: fix error return code
-Date: Wed, 22 Aug 2012 18:38:36 +0900
-Message-ID: <1b3201cd8049$e753f720$b5fbe560$%kim@samsung.com>
-References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
- <1345365870-29831-15-git-send-email-Julia.Lawall@lip6.fr>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v5 1/2] spi/pl022: Add chip select handling via GPIO
+Date: Wed, 22 Aug 2012 13:09:27 +0200
+Message-ID: <CACRpkdZcO0er7+7FjiyV9xtLgcybguoy3SAM_gh8c8u6UotDfQ@mail.gmail.com>
+References: <1345564813-11895-1-git-send-email-stigge@antcom.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: kernel-janitors@vger.kernel.org,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: aletes.xgr@gmail.com, broonie@opensource.wolfsonmicro.com,
+	grant.likely@secretlab.ca, rob.herring@calxeda.com,
+	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
 	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
-To: 'Julia Lawall' <Julia.Lawall@lip6.fr>,
-	'Ben Dooks' <ben-linux@fluff.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <1345365870-29831-15-git-send-email-Julia.Lawall@lip6.fr>
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+	gabriel.fernandez@stericsson.com, lee.jones@linaro.org,
+	viresh.kumar@linaro.org, sachin.verma@st.co
+To: Roland Stigge <stigge@antcom.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1345564813-11895-1-git-send-email-stigge@antcom.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Julia Lawall wrote:
-> 
-> From: Julia Lawall <Julia.Lawall@lip6.fr>
-> 
-> Initialize return variable before exiting on an error path.
-> 
-> A simplified version of the semantic match that finds this problem is as
-> follows: (http://coccinelle.lip6.fr/)
-> 
-> // <smpl>
-> (
-> if@p1 (\(ret < 0\|ret != 0\))
->  { ... return ret; }
-> |
-> ret@p1 = 0
-> )
-> ... when != ret = e1
->     when != &ret
-> *if(...)
-> {
->   ... when != ret = e2
->       when forall
->  return ret;
-> }
-> 
-> // </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
-> 
-Acked-by: Kukjin Kim <kgene.kim@samsung.com>
+On Tue, Aug 21, 2012 at 6:00 PM, Roland Stigge <stigge@antcom.de> wrote:
 
-(Cc'ed Mark Brown who is handling spi for a moment)
+> This patch adds the ability for the driver to control the chip select directly.
+> This enables independence from cs_control callbacks.  Configurable via
+> platform_data, to be extended as DT in the following patch.
+>
+> Based on the initial patch by Alexandre Pereira da Silva <aletes.xgr@gmail.com>
+>
+> Signed-off-by: Roland Stigge <stigge@antcom.de>
 
-> ---
-> Perhaps -EINVAL is not the right value in this case.
-> 
-Well, if (pin_cs < 0) is true, it is really invalid value. So I think, it
-makes sense :-)
+(...)
+>  /*
+>   * This macro is used to define some register default values.
+> @@ -356,6 +357,8 @@ struct vendor_data {
+>   * @sgt_rx: scattertable for the RX transfer
+>   * @sgt_tx: scattertable for the TX transfer
+>   * @dummypage: a dummy page used for driving data on the bus with DMA
+> + * @cur_cs: current chip select (gpio)
+> + * @chipselect: list of chipselects (gpios)
+>   */
+>  struct pl022 {
+>         struct amba_device              *adev;
+> @@ -389,6 +392,8 @@ struct pl022 {
+>         char                            *dummypage;
+>         bool                            dma_running;
+>  #endif
+> +       int cur_cs;
+> +       int *chipselect;
 
-Thanks.
+Since this is an array, it should be named "chipselects" (plural).
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+(...)
+> @@ -1840,8 +1852,9 @@ static int pl022_setup(struct spi_device
+>         chip->xfer_type = chip_info->com_mode;
+>         if (!chip_info->cs_control) {
+>                 chip->cs_control = null_cs_control;
+> -               dev_warn(&spi->dev,
+> -                        "chip select function is NULL for this chip\n");
+> +               if (!gpio_is_valid(pl022->chipselect[spi->chip_select]))
+> +                       dev_warn(&spi->dev,
+> +                                "chip select function is NULL for this chip\n");
 
->  drivers/spi/spi-s3c24xx.c |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-> index 8ee7d79..a2a080b 100644
-> --- a/drivers/spi/spi-s3c24xx.c
-> +++ b/drivers/spi/spi-s3c24xx.c
-> @@ -611,6 +611,7 @@ static int __devinit s3c24xx_spi_probe(struct
-> platform_device *pdev)
->  	if (!pdata->set_cs) {
->  		if (pdata->pin_cs < 0) {
->  			dev_err(&pdev->dev, "No chipselect pin\n");
-> +			err = -EINVAL;
->  			goto err_register;
->  		}
-> 
+This dev_warn() is wrong. Alter to a proper warning message.
+
+> @@ -2016,6 +2030,7 @@ pl022_probe(struct amba_device *adev, co
+>         pl022->master_info = platform_info;
+>         pl022->adev = adev;
+>         pl022->vendor = id->data;
+> +       pl022->chipselect = (int *)&master[1];
+
+That last thing looks pretty awkward, atleast a comment
+explaining what is going on is necessary. I would have done
+it like this:
+
+/* Point chipselects to allocated memory beyond the main struct */
+pl022->chipselects = (int *) pl022 + sizeof(struct pl022);
+
+Maybe it's simpler to just devm_kzalloc() this array.
+
+Thanks,
+Linus Walleij

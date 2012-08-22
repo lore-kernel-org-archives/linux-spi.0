@@ -1,54 +1,61 @@
-From: John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH] SPI: MIPS: lantiq: adds spi-xway
-Date: Wed, 22 Aug 2012 21:04:56 +0200
-Message-ID: <50352D58.6040201@openwrt.org>
+Date: Wed, 22 Aug 2012 20:09:04 +0100
+Message-ID: <20120822190904.GG7995@opensource.wolfsonmicro.com>
 References: <1345103821-12543-1-git-send-email-blogic@openwrt.org>
-	<20120822185944.GD7995@opensource.wolfsonmicro.com>
+ <20120822185944.GD7995@opensource.wolfsonmicro.com>
+ <50352D58.6040201@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Daniel Schwierzeck <daniel.schwierzeck-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>,
-	linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120822185944.GD7995-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="GySBzmld1qhwdVCc"
+Cc: spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
+        Daniel Schwierzeck <daniel.schwierzeck@googlemail.com>
+To: John Crispin <blogic@openwrt.org>
+Return-path: <linux-mips-bounce@linux-mips.org>
+Content-Disposition: inline
+In-Reply-To: <50352D58.6040201@openwrt.org>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
-On 22/08/12 20:59, Mark Brown wrote:
->> +       if (of_machine_is_compatible("lantiq,ase"))
->> > +               master->num_chipselect = 3;
->> > +       else
->> > +               master->num_chipselect = 6;
-> This is very suspicious - why is this being done based on the machine
-> rather than based on the IP?  Surely there can be machines with this SoC
-> on which aren't compatible with whatever (reference?) board this is
-> matching on.  I'd expect that the driver would have multiple compatible
-> strings which it uses to distinguish the capabilities of the IP.
->
-> Though actually the driver never reads this value so perhaps the code
-> can just be deleted and we rely on the fact that if the /CS isn't
-> physically present nobody's going to hook it up on a board so just
-> always set it to 6?
->
-Thanks for the review i will rework the driver, add a binding doc and
-resend ...
 
-is there a equivalent of of_machine_is_compatible for IP ?
+--GySBzmld1qhwdVCc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-John
+On Wed, Aug 22, 2012 at 09:04:56PM +0200, John Crispin wrote:
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+> is there a equivalent of of_machine_is_compatible for IP ?
+
+I think you're looking for of_device_is_compatible().
+
+--GySBzmld1qhwdVCc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQNS4mAAoJEFJkBDiqVpZ4imAQAJj4xtRA4Wic0iHQ6Mz7hbye
+jk1sCiA4ckuJkGkdqptnlP2vu9QqKUZGSvxNSsL5ibMvSsrAXDtj389YG/LhQuY5
+MdnQZNTRhZ9Vd/mgNhjFDeIINslKlNjS+qI1soGZQ2r/136Ce7y7DGOEc45kwMBm
+4pjfyEzlBtwPDoeUFLlharY1SLiAilDY4AWs26Fpzd1PDSt0KU5b2No8vF1phznQ
+Cj3dXMafzYs05SCaRRPCe5HyQ1mVdPWA5TXJJCJ7Lianetw0BR7GR9+0XZgp9e5v
+Y9938ruq5KSesQfPs9TeJApWLVaPX4Ln30pMBvg8mxhkKWwB/CR0+IXI/7oCb9fA
+dsT6CPZER61fcJZVxJZyqLAb/fbR1wp8X2sKzoPSgyZI0aIkDQlpnGxjbQ7XqvYn
+6U4SCObj2gIzs7GJlSlqmgqbgYplwrft1wPeZC/RHowgBTRj64AEI7JRuL6Zw5Uk
+cb179JCBA6A6xM1RPhWjJvHjXGB7VznT/dP+JNO8QKmxsMElBbgl70Z5zfs+boAj
+FwonYcTZ9cST2cT4e0RP5iTRqaG6Evv1JQiTP/d/KUEW8x6gFGfOm80MfSmcSn+S
+YdL1A+/QVC7AADyi8PI73vpth8EoDSgGFtMWgziLCE8fykibd0G+/HtRRSoJoQcR
+uNa+SfVFZtVbrlZg9oQ+
+=wAp8
+-----END PGP SIGNATURE-----
+
+--GySBzmld1qhwdVCc--

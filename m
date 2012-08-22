@@ -1,65 +1,63 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCHv2 0/3] spi: omap2-mcspi: spi cleanups
-Date: Wed, 22 Aug 2012 17:59:33 +0100
-Message-ID: <20120822165933.GU7995@opensource.wolfsonmicro.com>
-References: <1345615515-26745-1-git-send-email-shubhrajyoti@ti.com>
+Subject: Re: [PATCH 14/14] drivers/spi/spi-s3c24xx.c: fix error return code
+Date: Wed, 22 Aug 2012 18:00:25 +0100
+Message-ID: <20120822170025.GV7995@opensource.wolfsonmicro.com>
+References: <1345365870-29831-1-git-send-email-Julia.Lawall@lip6.fr>
+ <1345365870-29831-15-git-send-email-Julia.Lawall@lip6.fr>
+ <1b3201cd8049$e753f720$b5fbe560$%kim@samsung.com>
+ <20120822114015.GI7995@opensource.wolfsonmicro.com>
+ <alpine.DEB.2.02.1208221342240.1991@hadrien>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="B9I4cJCE9PLEoxgz"
-Cc: spi-devel-general@lists.sourceforge.net, grant.likely@secretlab.ca,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="L46vHWpLfEKD8KlK"
+Cc: Kukjin Kim <kgene.kim@samsung.com>,
+	'Ben Dooks' <ben-linux@fluff.org>,
+	kernel-janitors@vger.kernel.org,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Julia Lawall <julia.lawall@lip6.fr>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1345615515-26745-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <alpine.DEB.2.02.1208221342240.1991@hadrien>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---B9I4cJCE9PLEoxgz
+--L46vHWpLfEKD8KlK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 22, 2012 at 11:35:11AM +0530, Shubhrajyoti D wrote:
-> This patch does the following
+On Wed, Aug 22, 2012 at 01:42:47PM +0200, Julia Lawall wrote:
+> From: Julia Lawall <Julia.Lawall@lip6.fr>
 >=20
-> Calls the pm_runtime_* functions directly.
-> Remove the MOD_REG_BIT macro usage thereby removiing un-needed branch.
-> At remove dont use the autosuspend runtime calls.
+> Initialize return variable before exiting on an error path.
 
-Applied all, thanks.
+Applied, thanks.
 
-> The following changes since commit 23dcfa61bac244e1200ff9ad19c6e9144dcb6b=
-b5:
->=20
->   Merge branch 'akpm' (Andrew's patch-bomb) (2012-08-21 17:22:22 -0700)
-
-When sending pull requests please always base them off a tag of some
-kind, normally one of Linus' is a good option if you've no special
-needs.  This one looks like it's based off -next so can't be pulled into
-any other tree, -next is rebased daily.
-
---B9I4cJCE9PLEoxgz
+--L46vHWpLfEKD8KlK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQNQ/pAAoJEFJkBDiqVpZ4bl0P/3edWnyJpaN6LXP4W/6w2XZR
-CqxH9YHjPCzLq8QGaltIofp2AItL478YENaEWGCc9nCCFdeY+qMdFwX0ypy1+faT
-rkY15ttIOrxHKsCRumnLVtO3q61oRDEDpKNnDUAilNL+T32FctfxIsU+gr3tfblm
-3FgbxBEUIBi5fRh5oP/UHW+dhRQREe1rylj1NmmxNm6lLdSPW3fuW5LdQcWD8BmO
-UxgxTOCE90ESaNOud6aT8zQVWqMuly/OJvYidmrHXi27VCW6D3ajpVVQMOPZH95+
-DpLeRTlTvvYnpyQY5fK6isZ/xKJ7FeUI9c9FGn7LhPOdv/0N2/0wYyVIb7o2ZszE
-u01VV8aBUFT+gwAU68NAB6SvYNIiLtdXLbP7/DBCNjR1qurIeDS2lt25guBmF+lm
-bKFBMuq1+olK+ao/KN+cRTlC22I3epAo6Eh5oYw/lv3bblXtcGNrjLkVeJ+iBm81
-NpyqSILb8AyHrkLTpTWMgPLG7MXxsTs1TNG20TQlR+XpPy045GcxnZwgnZotc3i6
-XduMxEjENBU0xFNxd1r61pv8O+udbxuDZdmtkLk8A6Bn18j0pP/wA4EmWkxW9b0e
-3kr225X+7C5bc5S04t6rPudMgCsY29Cznv6kjvc+KREbO4ocEeSj8RntwOHSUKJC
-829vlRehXAXxrPFbfRiv
-=rc9U
+iQIcBAEBAgAGBQJQNRAKAAoJEFJkBDiqVpZ44swP/37K/DW4+jPwNyYfKgYsDNHQ
+u4Q6uJfTi8whnArR9vMhWxWtoWq1uEjt6pyVuawX6krXIJ5Tr576jwsXrS0GSO58
+B/kWCTYqV/lThDPejrQNi7hzVjZZnDqchINDGkqo+wuc71EZ2Qc6kndS64Qn1iOu
+YQ8AQZwBNSvwU8iWBMbFVubxtHGlC1L4dUYS7Js04FqSbYyqoWNdlzajIdQmK/NY
+EtkdUtY37g4yD80R4fjK3soGHNOzv7ofNAtJnby9fRfxed2wC09bC9V0MIaq+7Nu
+ttuD0sJIokbZnMsXDtKqT4k2QOMk7OxxVAYiuRdaEG/YGh7HmHwwVvYryh/rc8Nb
+DD0+QoSXdiMj9kPAkWO35mEvFa0VPivaxNwk3KsAzhO7eje+83SHGwt+LgX00WNT
+cZEoR73h9dyoIZaGO3g5AXTMeYiBC+mmE1RExYWHupH75bchOxvxGmrlVSU37kKH
+4JoPRUN16Jgn3Z+Fx986dU0MzzJhsmL52/+GAIQaH9iip7iH/Dw17KsYmCg8iEM1
+yIgR+ZAO5LscF4o7sx5yGoRWiHaCzUa2kd9ruUp3bXLIwv0T+QFkkUwbM0VX+Ty7
+3XyppW6oRJ7LYISaitHITJw3KANVYr/dMoOcre3DxrBsOzkUwajQVqFOyqWAbI4C
+2AeKAd+K/2hA8atJ5l4A
+=qOlD
 -----END PGP SIGNATURE-----
 
---B9I4cJCE9PLEoxgz--
+--L46vHWpLfEKD8KlK--

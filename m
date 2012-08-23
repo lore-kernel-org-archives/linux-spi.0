@@ -1,112 +1,81 @@
-From: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: RE: [PATCH] spi/s3c64xx: Drop extra calls to spi_master_get in
-	suspend/remove functions
-Date: Thu, 23 Aug 2012 14:40:45 +0900
-Message-ID: <1d0b01cd80f1$d77eaf90$867c0eb0$%kim@samsung.com>
-References: <1345173265-1721-1-git-send-email-linux@roeck-us.net>
+From: Tom Rini <trini@ti.com>
+Subject: Re: [PATCH v3 0/3] DaVinci DMA engine conversion
+Date: Wed, 22 Aug 2012 23:01:23 -0700
+Message-ID: <20120823060123.GA12312@bill-the-cat>
+References: <1345684176-21472-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Mark Brown' <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	'Thomas Abraham' <thomas.abraham-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	'Ben Dooks' <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: 'Guenter Roeck' <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <1345173265-1721-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Content-language: ko
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="AhhlLboLdkugWU4S"
+Cc: vinod.koul@intel.com, cjb@laptop.org, grant.likely@secretlab.ca,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Sekhar Nori <nsekhar@ti.com>
+To: Matt Porter <mporter@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1345684176-21472-1-git-send-email-mporter@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Guenter Roeck wrote:
-> 
-> Suspend and resume functions call spi_master_get() without matching
-> spi_master_put(). The extra references are unnecessary and cause
-> subsequent
-> module unload attempts to fail. Drop the calls.
-> 
-> Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 
-Acked-by: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+--AhhlLboLdkugWU4S
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-(Cc'ed Mark Brown who is handling spi now)
+On Wed, Aug 22, 2012 at 09:09:33PM -0400, Matt Porter wrote:
 
-Guenter, maybe you need to re-send this patch to Mark so that he can apply
-;-)
+[snip]
+> Matt Porter (3):
+>   dmaengine: add TI EDMA DMA engine driver
+>   mmc: davinci_mmc: convert to DMA engine API
+>   spi: spi-davinci: convert to DMA engine API
+>=20
+>  drivers/dma/Kconfig            |   10 +
+>  drivers/dma/Makefile           |    1 +
+>  drivers/dma/edma.c             |  671 ++++++++++++++++++++++++++++++++++=
+++++++
+>  drivers/mmc/host/davinci_mmc.c |  271 +++++-----------
+>  drivers/spi/spi-davinci.c      |  292 ++++++++---------
+>  include/linux/edma.h           |   29 ++
+>  6 files changed, 923 insertions(+), 351 deletions(-)
+>  create mode 100644 drivers/dma/edma.c
+>  create mode 100644 include/linux/edma.h
 
-Thanks.
+On the Logic PD AM1808 EVM:
+mmc0 rootfs: http://pastebin.com/HKVdmA0G
+jffs2 on the SPI flash rootfs: http://pastebin.com/cpAHgdug
 
-Best regards,
-Kgene.
---
-Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Senior Engineer,
-SW Solution Development Team, Samsung Electronics Co., Ltd.
+Tested-by: Tom Rini <trini@ti.com>
 
-> ---
->  drivers/spi/spi-s3c64xx.c |    8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 646a765..d7a87df 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1409,7 +1409,7 @@ static int s3c64xx_spi_remove(struct platform_device
-> *pdev)
->  #ifdef CONFIG_PM
->  static int s3c64xx_spi_suspend(struct device *dev)
->  {
-> -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> +	struct spi_master *master = dev_get_drvdata(dev);
->  	struct s3c64xx_spi_driver_data *sdd =
-> spi_master_get_devdata(master);
-> 
->  	spi_master_suspend(master);
-> @@ -1428,7 +1428,7 @@ static int s3c64xx_spi_suspend(struct device *dev)
-> 
->  static int s3c64xx_spi_resume(struct device *dev)
->  {
-> -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> +	struct spi_master *master = dev_get_drvdata(dev);
->  	struct s3c64xx_spi_driver_data *sdd =
-> spi_master_get_devdata(master);
->  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-> 
-> @@ -1452,7 +1452,7 @@ static int s3c64xx_spi_resume(struct device *dev)
->  #ifdef CONFIG_PM_RUNTIME
->  static int s3c64xx_spi_runtime_suspend(struct device *dev)
->  {
-> -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> +	struct spi_master *master = dev_get_drvdata(dev);
->  	struct s3c64xx_spi_driver_data *sdd =
-> spi_master_get_devdata(master);
-> 
->  	clk_disable(sdd->clk);
-> @@ -1463,7 +1463,7 @@ static int s3c64xx_spi_runtime_suspend(struct device
-> *dev)
-> 
->  static int s3c64xx_spi_runtime_resume(struct device *dev)
->  {
-> -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> +	struct spi_master *master = dev_get_drvdata(dev);
->  	struct s3c64xx_spi_driver_data *sdd =
-> spi_master_get_devdata(master);
-> 
->  	clk_enable(sdd->src_clk);
-> --
-> 1.7.9.7
+--=20
+Tom
 
+--AhhlLboLdkugWU4S
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQNcczAAoJENk4IS6UOR1WbKoP/27KgPYRsTGlN4Rlg3nu0M2v
+9lUG+/eG8IvOBRWILROIsS4StIeK9NjswsrGT9WJLzJvZCsRBkOYXqanMDYr9VES
+4S56uwMsa7r/oYbi1OHEJSKfMqovHUB8PTw8BnDAGHgsB00kOefcuTYHtK6NROJI
+4lhNar82jHSdRPZ+hb6+pcxrHAOu0RqZHuJJ0vyH4NE5jv2iUhI7VmPyivlU3SOe
+J0LagMFEEl8Bnk0DsuZbjQh1aajjK3toKrapannnP6RUCcYzKx/6i2mdICINgl2t
+v+uWcsoRvVahNB0TSLhyBJydqn/LqEehdEe4EYzFOBBLUi2aVSU/+oaov8rfQzBx
+Iv821ti9P6FvKBWoFG4kPX5ITzVJ9cpaOcW/Zi8B4gF5MuzDz5zjjVSv10stRjSK
+ySAv5YzRBXrykYb+DQvdz1FLqQdfF6/5QWU+kRSucgetjN7kXJlkE2aOy4JvTAVt
+s+XQL+wxwOKz8SfU1JPpUFo7xOJvfbAVRCBDVC1MRrcJ9H8fjI/wYeVgoVVqMOk2
+nxTaqz2j5pNfJaXuijHzofNfqh5QpHVIAfQgw239/BqzXUnXD2EvLnURfJjRf2aR
+iZ4vBABR5U9gFCg5OcLKeEfmEOnyZ7VW6ameCZwJB6yFWTJikWvxU+wCyPdgSrGP
+e2Av2e1OEnvmVGKs5AME
+=YRVJ
+-----END PGP SIGNATURE-----
+
+--AhhlLboLdkugWU4S--

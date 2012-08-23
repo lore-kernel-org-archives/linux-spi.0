@@ -1,81 +1,73 @@
-From: Tom Rini <trini@ti.com>
-Subject: Re: [PATCH v3 0/3] DaVinci DMA engine conversion
-Date: Wed, 22 Aug 2012 23:01:23 -0700
-Message-ID: <20120823060123.GA12312@bill-the-cat>
-References: <1345684176-21472-1-git-send-email-mporter@ti.com>
+From: "TGI - PGA Golf Pros" <pganoreply6516-NK5TWJtsX0nQT0dZR+AlfA@public.gmane.org>
+Subject: August 2012 Newsletter
+Date: Thu, 23 Aug 2012 04:17:00 -0700
+Message-ID: <34267aa27aecb393480ecc5d00131be5@qimail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="AhhlLboLdkugWU4S"
-Cc: vinod.koul@intel.com, cjb@laptop.org, grant.likely@secretlab.ca,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Sekhar Nori <nsekhar@ti.com>
-To: Matt Porter <mporter@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1345684176-21472-1-git-send-email-mporter@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_141178518D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a multi-part message in MIME format.
 
---AhhlLboLdkugWU4S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+------=SPLITOR00A_001_141178518D
+Content-Type: text/plain;
+	charset="windows-1252"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 22, 2012 at 09:09:33PM -0400, Matt Porter wrote:
+If you haven't visited the brand new website, then you are missing out on =
+FREE golf instructional videos from top PGA teaching professionals like =
+Martin Chuck, Mark Evershed, Eddie Merrins and Roger Fredericks.=20
 
-[snip]
-> Matt Porter (3):
->   dmaengine: add TI EDMA DMA engine driver
->   mmc: davinci_mmc: convert to DMA engine API
->   spi: spi-davinci: convert to DMA engine API
->=20
->  drivers/dma/Kconfig            |   10 +
->  drivers/dma/Makefile           |    1 +
->  drivers/dma/edma.c             |  671 ++++++++++++++++++++++++++++++++++=
-++++++
->  drivers/mmc/host/davinci_mmc.c |  271 +++++-----------
->  drivers/spi/spi-davinci.c      |  292 ++++++++---------
->  include/linux/edma.h           |   29 ++
->  6 files changed, 923 insertions(+), 351 deletions(-)
->  create mode 100644 drivers/dma/edma.c
->  create mode 100644 include/linux/edma.h
+***View Attached Form*** and find out how you can subscribe to Golfers =
+Insider for free - and start improving your golf game right away!
 
-On the Logic PD AM1808 EVM:
-mmc0 rootfs: http://pastebin.com/HKVdmA0G
-jffs2 on the SPI flash rootfs: http://pastebin.com/cpAHgdug
+Don't forget about the Ask Mark and Ask Martin pages, where you can ask =
+these PGA Teaching Pros any golf question you may have and receive =
+personalized feedback from them for FREE.=20
 
-Tested-by: Tom Rini <trini@ti.com>
+We also have all the latest news from top golf magazines, and a weekly =
+list of tournaments happening around the world so you don't have to look =
+anywhere else for your golf fix. There are also featured products that are =
+available at great deals, but only to our subscribers.=20
 
---=20
-Tom
+***View Attached Form*** now to find out more about GolfersInsider.=20
 
---AhhlLboLdkugWU4S
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+- Keep Hitting 'em Straight.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.11 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQNcczAAoJENk4IS6UOR1WbKoP/27KgPYRsTGlN4Rlg3nu0M2v
-9lUG+/eG8IvOBRWILROIsS4StIeK9NjswsrGT9WJLzJvZCsRBkOYXqanMDYr9VES
-4S56uwMsa7r/oYbi1OHEJSKfMqovHUB8PTw8BnDAGHgsB00kOefcuTYHtK6NROJI
-4lhNar82jHSdRPZ+hb6+pcxrHAOu0RqZHuJJ0vyH4NE5jv2iUhI7VmPyivlU3SOe
-J0LagMFEEl8Bnk0DsuZbjQh1aajjK3toKrapannnP6RUCcYzKx/6i2mdICINgl2t
-v+uWcsoRvVahNB0TSLhyBJydqn/LqEehdEe4EYzFOBBLUi2aVSU/+oaov8rfQzBx
-Iv821ti9P6FvKBWoFG4kPX5ITzVJ9cpaOcW/Zi8B4gF5MuzDz5zjjVSv10stRjSK
-ySAv5YzRBXrykYb+DQvdz1FLqQdfF6/5QWU+kRSucgetjN7kXJlkE2aOy4JvTAVt
-s+XQL+wxwOKz8SfU1JPpUFo7xOJvfbAVRCBDVC1MRrcJ9H8fjI/wYeVgoVVqMOk2
-nxTaqz2j5pNfJaXuijHzofNfqh5QpHVIAfQgw239/BqzXUnXD2EvLnURfJjRf2aR
-iZ4vBABR5U9gFCg5OcLKeEfmEOnyZ7VW6ameCZwJB6yFWTJikWvxU+wCyPdgSrGP
-e2Av2e1OEnvmVGKs5AME
-=YRVJ
------END PGP SIGNATURE-----
 
---AhhlLboLdkugWU4S--
+
+------=SPLITOR00A_001_141178518D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=SPLITOR00A_001_141178518D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=SPLITOR00A_001_141178518D--

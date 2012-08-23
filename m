@@ -1,41 +1,108 @@
-From: "tellas.gr" <qojcyyiyjlv-PWAZ9TzliBZQFI55V6+gNQ@public.gmane.org>
-Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwNjIg0tXC?=
-Date: Thu, 23 Aug 2012 15:41:04 +0400
-Message-ID: <ECCF6D6F0D8145FDB40CE3F81F611A4E@olvjvc>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] spi/s3c64xx: Drop extra calls to spi_master_get in
+ suspend/remove functions
+Date: Thu, 23 Aug 2012 06:39:31 -0700
+Message-ID: <20120823133931.GB24319@roeck-us.net>
+References: <1345173265-1721-1-git-send-email-linux@roeck-us.net>
+ <1d0b01cd80f1$d77eaf90$867c0eb0$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
-	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
-	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
-	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
-	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
-	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	'Ben Dooks' <ben-linux@fluff.org>,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	'Thomas Abraham' <thomas.abraham@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1d0b01cd80f1$d77eaf90$867c0eb0$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTY1LjAwMCDBxNLF08/XIC0gMzg4
-NiDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjU4MC4wMDAgwcTSxdPP1yAtIDY5NjAg0tXCCgrS
-z9PTydEgwNIuIMzJw8EgNC4yNzIuMDAwIMHE0sXTz9cgLSA2ODMxINLVwiAKCtLP09PJ0SDGydou
-IMzJw8EgMzQuNDcwLjAwMCDBxNLF08/XIC0gMTEyNTkg0tXCIAoK0sHT09nMy8Eg0M8gzMDCz8og
-1MXNwdTJy8UgKNPU0s/J1MXM2M7ZxSwgwNLJxMnexdPLycUgydTEIM/Sx8HOydrBw8nJKSAtIDMw
-MjYg0tXCIAoK1MXMICs3ICg0OTkpIDUwNC0xNi00MiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxp
-dmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwg
-Y292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBl
-IGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25z
-IAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhl
-IGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2ph
-dy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Thu, Aug 23, 2012 at 02:40:45PM +0900, Kukjin Kim wrote:
+> Guenter Roeck wrote:
+> > 
+> > Suspend and resume functions call spi_master_get() without matching
+> > spi_master_put(). The extra references are unnecessary and cause
+> > subsequent
+> > module unload attempts to fail. Drop the calls.
+> > 
+> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> 
+> Acked-by: Kukjin Kim <kgene.kim@samsung.com>
+> 
+> (Cc'ed Mark Brown who is handling spi now)
+> 
+> Guenter, maybe you need to re-send this patch to Mark so that he can apply
+> ;-)
+> 
+Guess you are right - and I did copy Mark on my later patches. Mark, I just
+bounced the patch to you, so you should have it now.
+
+Thanks,
+Guenter
+
+> Thanks.
+> 
+> Best regards,
+> Kgene.
+> --
+> Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+> SW Solution Development Team, Samsung Electronics Co., Ltd.
+> 
+> > ---
+> >  drivers/spi/spi-s3c64xx.c |    8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> > index 646a765..d7a87df 100644
+> > --- a/drivers/spi/spi-s3c64xx.c
+> > +++ b/drivers/spi/spi-s3c64xx.c
+> > @@ -1409,7 +1409,7 @@ static int s3c64xx_spi_remove(struct platform_device
+> > *pdev)
+> >  #ifdef CONFIG_PM
+> >  static int s3c64xx_spi_suspend(struct device *dev)
+> >  {
+> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> >  	struct s3c64xx_spi_driver_data *sdd =
+> > spi_master_get_devdata(master);
+> > 
+> >  	spi_master_suspend(master);
+> > @@ -1428,7 +1428,7 @@ static int s3c64xx_spi_suspend(struct device *dev)
+> > 
+> >  static int s3c64xx_spi_resume(struct device *dev)
+> >  {
+> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> >  	struct s3c64xx_spi_driver_data *sdd =
+> > spi_master_get_devdata(master);
+> >  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
+> > 
+> > @@ -1452,7 +1452,7 @@ static int s3c64xx_spi_resume(struct device *dev)
+> >  #ifdef CONFIG_PM_RUNTIME
+> >  static int s3c64xx_spi_runtime_suspend(struct device *dev)
+> >  {
+> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> >  	struct s3c64xx_spi_driver_data *sdd =
+> > spi_master_get_devdata(master);
+> > 
+> >  	clk_disable(sdd->clk);
+> > @@ -1463,7 +1463,7 @@ static int s3c64xx_spi_runtime_suspend(struct device
+> > *dev)
+> > 
+> >  static int s3c64xx_spi_runtime_resume(struct device *dev)
+> >  {
+> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> >  	struct s3c64xx_spi_driver_data *sdd =
+> > spi_master_get_devdata(master);
+> > 
+> >  	clk_enable(sdd->src_clk);
+> > --
+> > 1.7.9.7
+> 
+> 

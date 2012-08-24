@@ -1,7 +1,7 @@
 From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH 3/3] spi/topcliff-pch: Fix device remove function
-Date: Thu, 23 Aug 2012 20:08:49 -0700
-Message-ID: <1345777729-19342-3-git-send-email-linux@roeck-us.net>
+Subject: [PATCH 2/3] spi/tegra: Fix device remove function
+Date: Thu, 23 Aug 2012 20:08:48 -0700
+Message-ID: <1345777729-19342-2-git-send-email-linux@roeck-us.net>
 References: <1345777729-19342-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -21,32 +21,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The call sequence spi_alloc_master/spi_register_master/spi_unregister_master
-is complete; it reduces the device reference count to zero, which results in
-device memory being freed. An extra call to spi_master_put is unnecessary
-and results in an access to free memory. Drop it.
+The call to spi_unregister_master() in the device remove function frees device
+memory, and with it any device local data. However, device local data is still
+accessed after the call to spi_unregister_master().
 
-Also, the device subsystem resets device driver data to NULL after the call to
-the remove function returns, so there is no need to do it here.
+Acquire a reference to the SPI master device and release it after cleanup is
+complete to solve the problem.
 
 Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-tegra.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index cd56dcf..159dafd 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1536,8 +1536,6 @@ static int __devexit pch_spi_pd_remove(struct platform_device *plat_dev)
+diff --git a/drivers/spi/spi-tegra.c b/drivers/spi/spi-tegra.c
+index ef52c1c..e28445d 100644
+--- a/drivers/spi/spi-tegra.c
++++ b/drivers/spi/spi-tegra.c
+@@ -652,7 +652,7 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
+ 	struct spi_tegra_data	*tspi;
+ 	struct resource		*r;
  
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
- 	spi_unregister_master(data->master);
--	spi_master_put(data->master);
--	platform_set_drvdata(plat_dev, NULL);
+-	master = dev_get_drvdata(&pdev->dev);
++	master = spi_master_get(dev_get_drvdata(&pdev->dev));
+ 	tspi = spi_master_get_devdata(master);
  
- 	return 0;
- }
+ 	spi_unregister_master(master);
+@@ -668,6 +668,8 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
+ 	clk_put(tspi->clk);
+ 	iounmap(tspi->base);
+ 
++	spi_master_put(master);
++
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	release_mem_region(r->start, resource_size(r));
+ 
 -- 
 1.7.9.7
 

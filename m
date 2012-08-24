@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH V2] mxs/spi: Fix misuse of init_completion
-Date: Fri, 24 Aug 2012 04:33:44 +0200
-Message-ID: <1345775624-9696-1-git-send-email-marex@denx.de>
+Subject: [PATCH] mxs/spi: Restart the block after unsuccessful transfer
+Date: Fri, 24 Aug 2012 04:34:18 +0200
+Message-ID: <1345775658-9739-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -21,19 +21,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The init_completion() call does reinit not only the variable carrying
-the flag that the completion finished, but also initialized the
-waitqueue associated with the completion. On the contrary, the
-INIT_WAITQUEUE() call only reinits the flag.
-
-In case there was anything still stuck in the waitqueue, subsequent call
-to init_completion() would be able to create possible race condition. This
-patch uses the proper function and moves init_completion() into .probe() call
-of the driver, to be issued only once.
-
-Note that such scenario is impossible, since two threads can never enter the
-mxs_spi_txrx_dma(), since whole this section is protected by mutex in SPI core.
-This by no means allows this issue to exit though.
+Restart the SSP block in case the SSP transfer failed in any way.
+The block hung in some cases otherwise.
 
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
@@ -44,31 +33,22 @@ Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
  drivers/spi/spi-mxs.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-V2: Update the patch description and snap a whip over myself for being lazy to
-    write one in the first place!
-
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 331f600..c965cc6 100644
+index 746359e..8075683 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -230,7 +230,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
- 		return -EINVAL;
+@@ -445,8 +445,10 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 		}
+ 
+ 		m->actual_length += t->len;
+-		if (status)
++		if (status) {
++			stmp_reset_block(ssp->base);
+ 			break;
++		}
+ 
+ 		first = last = 0;
  	}
- 
--	init_completion(&spi->c);
-+	INIT_COMPLETION(spi->c);
- 
- 	if (*first)
- 		pio |= BM_SSP_CTRL0_LOCK_CS;
-@@ -560,6 +560,8 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
- 	ssp->devid = devid;
- 	ssp->dma_channel = dma_channel;
- 
-+	init_completion(&spi->c);
-+
- 	ret = devm_request_irq(&pdev->dev, irq_err, mxs_ssp_irq_handler, 0,
- 			       DRIVER_NAME, ssp);
- 	if (ret)
 -- 
 1.7.10.4
 

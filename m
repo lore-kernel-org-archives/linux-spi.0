@@ -1,108 +1,81 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] spi/s3c64xx: Drop extra calls to spi_master_get in
- suspend/remove functions
-Date: Thu, 23 Aug 2012 06:39:31 -0700
-Message-ID: <20120823133931.GB24319@roeck-us.net>
-References: <1345173265-1721-1-git-send-email-linux@roeck-us.net>
- <1d0b01cd80f1$d77eaf90$867c0eb0$%kim@samsung.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH V2] mxs/spi: Fix misuse of init_completion
+Date: Fri, 24 Aug 2012 04:33:44 +0200
+Message-ID: <1345775624-9696-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	'Ben Dooks' <ben-linux@fluff.org>,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	'Thomas Abraham' <thomas.abraham@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>
-To: Kukjin Kim <kgene.kim@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1d0b01cd80f1$d77eaf90$867c0eb0$%kim@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 23, 2012 at 02:40:45PM +0900, Kukjin Kim wrote:
-> Guenter Roeck wrote:
-> > 
-> > Suspend and resume functions call spi_master_get() without matching
-> > spi_master_put(). The extra references are unnecessary and cause
-> > subsequent
-> > module unload attempts to fail. Drop the calls.
-> > 
-> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> 
-> Acked-by: Kukjin Kim <kgene.kim@samsung.com>
-> 
-> (Cc'ed Mark Brown who is handling spi now)
-> 
-> Guenter, maybe you need to re-send this patch to Mark so that he can apply
-> ;-)
-> 
-Guess you are right - and I did copy Mark on my later patches. Mark, I just
-bounced the patch to you, so you should have it now.
+The init_completion() call does reinit not only the variable carrying
+the flag that the completion finished, but also initialized the
+waitqueue associated with the completion. On the contrary, the
+INIT_WAITQUEUE() call only reinits the flag.
 
-Thanks,
-Guenter
+In case there was anything still stuck in the waitqueue, subsequent call
+to init_completion() would be able to create possible race condition. This
+patch uses the proper function and moves init_completion() into .probe() call
+of the driver, to be issued only once.
 
-> Thanks.
-> 
-> Best regards,
-> Kgene.
-> --
-> Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
-> SW Solution Development Team, Samsung Electronics Co., Ltd.
-> 
-> > ---
-> >  drivers/spi/spi-s3c64xx.c |    8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> > index 646a765..d7a87df 100644
-> > --- a/drivers/spi/spi-s3c64xx.c
-> > +++ b/drivers/spi/spi-s3c64xx.c
-> > @@ -1409,7 +1409,7 @@ static int s3c64xx_spi_remove(struct platform_device
-> > *pdev)
-> >  #ifdef CONFIG_PM
-> >  static int s3c64xx_spi_suspend(struct device *dev)
-> >  {
-> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> > +	struct spi_master *master = dev_get_drvdata(dev);
-> >  	struct s3c64xx_spi_driver_data *sdd =
-> > spi_master_get_devdata(master);
-> > 
-> >  	spi_master_suspend(master);
-> > @@ -1428,7 +1428,7 @@ static int s3c64xx_spi_suspend(struct device *dev)
-> > 
-> >  static int s3c64xx_spi_resume(struct device *dev)
-> >  {
-> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> > +	struct spi_master *master = dev_get_drvdata(dev);
-> >  	struct s3c64xx_spi_driver_data *sdd =
-> > spi_master_get_devdata(master);
-> >  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-> > 
-> > @@ -1452,7 +1452,7 @@ static int s3c64xx_spi_resume(struct device *dev)
-> >  #ifdef CONFIG_PM_RUNTIME
-> >  static int s3c64xx_spi_runtime_suspend(struct device *dev)
-> >  {
-> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> > +	struct spi_master *master = dev_get_drvdata(dev);
-> >  	struct s3c64xx_spi_driver_data *sdd =
-> > spi_master_get_devdata(master);
-> > 
-> >  	clk_disable(sdd->clk);
-> > @@ -1463,7 +1463,7 @@ static int s3c64xx_spi_runtime_suspend(struct device
-> > *dev)
-> > 
-> >  static int s3c64xx_spi_runtime_resume(struct device *dev)
-> >  {
-> > -	struct spi_master *master = spi_master_get(dev_get_drvdata(dev));
-> > +	struct spi_master *master = dev_get_drvdata(dev);
-> >  	struct s3c64xx_spi_driver_data *sdd =
-> > spi_master_get_devdata(master);
-> > 
-> >  	clk_enable(sdd->src_clk);
-> > --
-> > 1.7.9.7
-> 
-> 
+Note that such scenario is impossible, since two threads can never enter the
+mxs_spi_txrx_dma(), since whole this section is protected by mutex in SPI core.
+This by no means allows this issue to exit though.
+
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi-mxs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+V2: Update the patch description and snap a whip over myself for being lazy to
+    write one in the first place!
+
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 331f600..c965cc6 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -230,7 +230,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 		return -EINVAL;
+ 	}
+ 
+-	init_completion(&spi->c);
++	INIT_COMPLETION(spi->c);
+ 
+ 	if (*first)
+ 		pio |= BM_SSP_CTRL0_LOCK_CS;
+@@ -560,6 +560,8 @@ static int __devinit mxs_spi_probe(struct platform_device *pdev)
+ 	ssp->devid = devid;
+ 	ssp->dma_channel = dma_channel;
+ 
++	init_completion(&spi->c);
++
+ 	ret = devm_request_irq(&pdev->dev, irq_err, mxs_ssp_irq_handler, 0,
+ 			       DRIVER_NAME, ssp);
+ 	if (ret)
+-- 
+1.7.10.4
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

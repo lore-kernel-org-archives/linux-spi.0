@@ -1,51 +1,91 @@
-From: Magic Glance <info-LR+Lv5/NAcHCENZMoErytg@public.gmane.org>
-Subject: =?UTF-8?B?0JLQsNGI0LAg0LrRgNCw0YHQvtGC0LAg0L7RgdC70LXQv9C40YIg0LzRg9C2?=
-	=?UTF-8?B?0YfQuNC9IQ==?=
-Date: Fri, 24 Aug 2012 09:12:30 +0000
-Message-ID: <f30e25d46609dc3ef776f86bbfc7231b@lidershark.com>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: SLAVE Side SPI kernel driver development
+Date: Fri, 24 Aug 2012 17:38:45 +0200
+Message-ID: <201208241738.45601.marex@denx.de>
+References: <1345820228.87750.YahooMailNeo@web29604.mail.ird.yahoo.com>
+ <CAOMZO5Ds6NKsTCptQXDGZDJasb119hYWqXMzX8nG5WFArysL7A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general@lists.sourceforge.net,
+ "Bastelli Carlo \(yahoo\)" <carlo_bastelli@yahoo.it>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Fabio Estevam <festevam@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CAOMZO5Ds6NKsTCptQXDGZDJasb119hYWqXMzX8nG5WFArysL7A@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-0KTRgNCw0L3RhtGD0LfRgdC60L7QtSDRgdGA0LXQtNGB0YLQstC+INC00LvRjyDRgNC+0YHRgtCw
-INGA0LXRgdC90LjRhgoKIE1hZ2ljIEdsYW5jZSBJbnRlbnNpdmUgLSDRjdGC0L4g0LjQvdC90L7Q
-stCw0YbQuNC+0L3QvdC+0LUg0YHRgNC10LTRgdGC0LLQviDQtNC70Y8g0YDQvtGB0YLQsCDRgNC1
-0YHQvdC40YYuICAK0KTRgNCw0L3RhtGD0LfRgdC60L7QtSDQutCw0YfQtdGB0YLQstC+INC4INC9
-0LDRgtGD0YDQsNC70YzQvdGL0LUg0LrQvtC80L/QvtC90LXQvdGC0Ysg0YPQstC10LvQuNGH0LjQ
-stCw0Y7RgiDQvtCx0YrQtdC8INGA0LXRgdC90LjRhiDQvdCwIDIwMCUuCtCj0LTQvtCx0L3QsNGP
-INC00L7RgdGC0LDQstC60LAg0Lgg0L7Qv9C70LDRgtCwINC00LXQu9Cw0Y7RgiDQv9C+0LrRg9C/
-0LrRgyDQv9GA0L7RgdGC0L7QuSDQuCDQu9C10LPQutC+0LkuCk1hZ2ljIEdsYW5jZSBJbnRlbnNp
-dmUg4oCTINGN0YLQviDQvdC+0LLQsNGPINGA0LXQstC+0LvRjtGG0LjQvtC90L3QsNGPINC60L7R
-gdC80LXRgtC40YfQtdGB0LrQsNGPINGE0L7RgNC80YPQu9CwLCDQutC+0YLQvtGA0LDRjyDQstC+
-0YHRgdGC0LDQvdCw0LLQu9C40LLQsNC10YIg0LfQtNC+0YDQvtCy0YzQtSDQuCDRgdC40LvRiyDQ
-ktCw0YjQuNGFINGA0LXRgdC90LjRhi4K0JLRgdGPINC/0YDQvtC00YPQutGG0LjRjyDQutC+0YHQ
-vNC10YLQuNGH0LXRgdC60L7QuSDQu9C40L3QuNC4IE1hZ2ljIEdsYW5jZToKLSDQvdC1INC40LzQ
-tdC10YIg0LLQvtC30YDQsNGB0YLQvdGL0YUg0L7Qs9GA0LDQvdC40YfQtdC90LjQuTsKLSDQvdC1
-INCy0YvQt9GL0LLQsNC10YIg0LDQu9C70LXRgNCz0LjRh9C10YHQutC40YUg0YDQtdCw0LrRhtC4
-0Lk7Ci0g0L3QtSDRgdC+0LTQtdGA0LbQuNGCINCz0L7RgNC80L7QvdC+0LIg0Lgg0LDQvdGC0LjQ
-sdC40L7RgtC40LrQvtCyOwrQoNC10LfRg9C70YzRgtCw0YIg0L3QtSDQt9Cw0YHRgtCw0LLQuNGC
-INGB0LXQsdGPINC00L7Qu9Cz0L4g0LbQtNCw0YLRjC4gCtCa0L7Qu9C70LXQs9C4LCDQtNGA0YPQ
-t9GM0Y8sINCx0LvQuNC30LrQuNC1IC0g0LLRgdC1INC+0YbQtdC90Y/RgiDQutGA0LDRgdC+0YLR
-gyDQktCw0YjQuNGFINCz0LvQsNC3IQrQn9C+0YHQvNC+0YLRgNC10YLRjCDQsiDQvNCw0LPQsNC3
-0LjQvdC1CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0eSBWaXJ0dWFsIENvbmZl
-cmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwgdGhlIHdheXMgdG9kYXkn
-cyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5nZWQgYW5kIGhvdyBJVCBt
-YW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5jbHVkZSBlbmRwb2ludCBz
-ZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGluIG1hbHdhcmUgCnRocmVh
-dHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQyNDIwMTIvMTE0LzUwMTIy
-MjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+Dear Fabio Estevam,
+
+> On Fri, Aug 24, 2012 at 11:57 AM, Bastelli Carlo (yahoo)
+
+CCing SPI list
+
+> <carlo_bastelli@yahoo.it> wrote:
+> > Hello, I'm Carlo, I have a difficult task at work, my boss asked me to
+> > develop
+> > 
+> >  a driver SPI slave side on embedded ARM processor running Linux.
+> > 
+> > Precisely linux occur on the SPI bus as a slave, not master as required
+> > by the hierarchical structure of the current kernel. The new driver
+> > will
+> > 
+> >  receive via interrupt and respond when selected by its chip select.
+
+So a soft-spi ? It's gonna be slow as hell and unstable too.
+
+> >  Can
+> >  anyone suggest the best way to develop this driver?
+
+Get a CPU which has SPI-slave capable IP, start from there. If you were to 
+implement soft-spi this way, you'd have to use FIQ on ARM, to be able to handle 
+stuff with reasonable latency ... check how the ps/2-gpio driver is done in 
+Linux ... I tried it, it barely worked, you don't want to go down that road.
+
+> >  Personally, I
+> > 
+> > have identified two main roads, the first if possible to exploit the
+> > structure SPI master driver
+
+Not happening. You'd have to split the parts from the struct spi_master into 
+common and master-only parts. That's for starters.
+
+> > with a few tricks that now I can not
+> > define. The second most radical, write a driver for a UART like, but
+> > managing the SPI device.
+> > Thank you for any suggestions or examples.
+
+First of all, the SPI slave mode is COMPLETELY different from the master mode. 
+You need to react on incoming CS-low ASAP, which might turn out to be a problem 
+on it's own. Then, even if you do, you do not know how long the transfer is 
+going to be, so you need to allocate enough buffers as the transfer progresses 
+onwards.
+
+In case of your soft-spi, how do you plan to sample the CLK line to sync clock?
+
+> Marek got spi slave running on a mx28. See his patch:
+> http://www.spinics.net/lists/arm-kernel/msg190860.html
+
+This was tested (and developed) on this board:
+http://www.denx-cs.de/?q=M28
+
+The userland code is really easy too, simply pump it into spidev or read from 
+it. But all that is only possible because of the SPI IP in the mx28 is nice.
+
+> Regards,
+> 
+> Fabio Estevam
+
+Best regards,
+Marek Vasut

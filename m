@@ -1,16 +1,16 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: [PATCH 2/3] spi/tegra: Fix device remove function
-Date: Thu, 23 Aug 2012 20:08:48 -0700
-Message-ID: <1345777729-19342-2-git-send-email-linux@roeck-us.net>
-References: <1345777729-19342-1-git-send-email-linux@roeck-us.net>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH 1/2] ARM: mx28: Add SPI pinmux into imx28.dtsi
+Date: Fri, 24 Aug 2012 05:25:41 +0200
+Message-ID: <1345778742-20994-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1345777729-19342-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,42 +21,96 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The call to spi_unregister_master() in the device remove function frees device
-memory, and with it any device local data. However, device local data is still
-accessed after the call to spi_unregister_master().
+Add this SSP pin multiplexing configuration into the imx28.dtsi file.
+This covers pinmux for all four SSP ports available on the i.MX28.
 
-Acquire a reference to the SPI master device and release it after cleanup is
-complete to solve the problem.
-
-Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-tegra.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/imx28.dtsi |   61 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra.c b/drivers/spi/spi-tegra.c
-index ef52c1c..e28445d 100644
---- a/drivers/spi/spi-tegra.c
-+++ b/drivers/spi/spi-tegra.c
-@@ -652,7 +652,7 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
- 	struct spi_tegra_data	*tspi;
- 	struct resource		*r;
- 
--	master = dev_get_drvdata(&pdev->dev);
-+	master = spi_master_get(dev_get_drvdata(&pdev->dev));
- 	tspi = spi_master_get_devdata(master);
- 
- 	spi_unregister_master(master);
-@@ -668,6 +668,8 @@ static int __devexit spi_tegra_remove(struct platform_device *pdev)
- 	clk_put(tspi->clk);
- 	iounmap(tspi->base);
- 
-+	spi_master_put(master);
+NOTE: Shawn, I'd like to add this altogether. I have a board scheduled in my
+      queue that uses other SSP ports, so I consider it pointless to split this.
+      Fabio, what does MX28EVK use?
+
+diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
+index 91b43e9..327a33f 100644
+--- a/arch/arm/boot/dts/imx28.dtsi
++++ b/arch/arm/boot/dts/imx28.dtsi
+@@ -507,6 +507,67 @@
+ 					fsl,voltage = <1>;
+ 					fsl,pull-up = <0>;
+ 				};
 +
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	release_mem_region(r->start, resource_size(r));
++				spi0_pins_a: spi0@0 {
++					reg = <0>;
++					fsl,pinmux-ids = <
++						0x2000 /* MX28_PAD_SSP0_DATA0__SSP0_D0 */
++						0x2010 /* MX28_PAD_SSP0_DATA1__SSP0_D1 */
++						0x2020 /* MX28_PAD_SSP0_DATA2__SSP0_D2 */
++						0x2030 /* MX28_PAD_SSP0_DATA3__SSP0_D3 */
++						0x2040 /* MX28_PAD_SSP0_DATA4__SSP0_D4 */
++						0x2050 /* MX28_PAD_SSP0_DATA5__SSP0_D5 */
++						0x2060 /* MX28_PAD_SSP0_DATA6__SSP0_D6 */
++						0x2070 /* MX28_PAD_SSP0_DATA7__SSP0_D7 */
++						0x2080 /* MX28_PAD_SSP0_CMD__SSP0_CMD */
++						0x2090 /* MX28_PAD_SSP0_DETECT__SSP0_CARD_DETECT */
++						0x20a0 /* MX28_PAD_SSP0_SCK__SSP0_SCK */
++					>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
++
++				spi1_pins_a: spi1@0 {
++					reg = <0>;
++					fsl,pinmux-ids = <
++						0x20c0 /* MX28_PAD_SSP1_SCK__SSP1_SCK */
++						0x20d0 /* MX28_PAD_SSP1_CMD__SSP1_CMD */
++						0x20e0 /* MX28_PAD_SSP1_DATA0__SSP1_D0 */
++						0x20f0 /* MX28_PAD_SSP1_DATA3__SSP1_D3 */
++					>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
++
++				spi2_pins_a: spi2@0 {
++					reg = <0>;
++					fsl,pinmux-ids = <
++						0x2100 /* MX28_PAD_SSP2_SCK__SSP2_SCK */
++						0x2110 /* MX28_PAD_SSP2_MOSI__SSP2_CMD */
++						0x2120 /* MX28_PAD_SSP2_MISO__SSP2_D0 */
++						0x2130 /* MX28_PAD_SSP2_SS0__SSP2_D3 */
++						0x2140 /* MX28_PAD_SSP2_SS1__SSP2_D4 */
++						0x2150 /* MX28_PAD_SSP2_SS2__SSP2_D5 */
++					>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
++
++				spi3_pins_a: spi3@0 {
++					reg = <0>;
++					fsl,pinmux-ids = <
++						0x2180 /* MX28_PAD_SSP3_SCK__SSP3_SCK */
++						0x2190 /* MX28_PAD_SSP3_MOSI__SSP3_CMD */
++						0x21a0 /* MX28_PAD_SSP3_MISO__SSP3_D0 */
++						0x21b0 /* MX28_PAD_SSP3_SS0__SSP3_D3 */
++					>;
++					fsl,drive-strength = <1>;
++					fsl,voltage = <1>;
++					fsl,pull-up = <1>;
++				};
+ 			};
  
+ 			digctl@8001c000 {
 -- 
-1.7.9.7
+1.7.10.4
 
 
 ------------------------------------------------------------------------------

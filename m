@@ -1,18 +1,20 @@
-From: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Subject: Re: [PATCH] spi/mxs: Fix device remove function
-Date: Sat, 25 Aug 2012 00:07:37 +0200
-Message-ID: <201208250007.38141.marek.vasut@gmail.com>
+Date: Fri, 24 Aug 2012 16:18:15 -0700
+Message-ID: <20120824231815.GA7833@roeck-us.net>
 References: <1345831382-7290-1-git-send-email-linux@roeck-us.net>
 	<201208242210.12924.marex@denx.de>
 	<20120824203739.GA7592@roeck-us.net>
+	<201208250007.38141.marek.vasut@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+To: Marek Vasut <marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120824203739.GA7592-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201208250007.38141.marek.vasut-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,92 +25,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Guenter Roeck,
+On Sat, Aug 25, 2012 at 12:07:37AM +0200, Marek Vasut wrote:
+[ ... ]
 
-> On Fri, Aug 24, 2012 at 10:10:12PM +0200, Marek Vasut wrote:
-> > Dear Guenter Roeck,
-> > 
-> > > The call sequence
-> > > spi_alloc_master/spi_register_master/spi_unregister_master is complete;
-> > > it reduces the device reference count to zero, which results in device
-> > > memory being freed. The remove function accesses the freed memory
-> > > after the call to spi_unregister_master(), _and_ it calls
-> > > spi_master_put on the freed memory.
-> > > 
-> > > Acquire a reference to the SPI master device and release it after
-> > > cleanup is complete (with the existing spi_master_put) to solve the
-> > > problem.
-> > > 
-> > > Also, the device subsystem ensures that the remove function is only
-> > > called once, and resets device driver data to NULL. Remove the
-> > > unnecessaary calls to platform_set_drvdata().
-> > > 
-> > > Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-> > > Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-> > 
-> > Damn, I thought this was fixed, apparently not. Thanks!
 > 
-> For some reason most spi drivers have similar problems.
-
-That's their problem, but I think the problem here is in the submitter, aka. me, 
-being a lazy flunk.
-
-> I learned it the
-> hard way when I tested my own driver, and decided to fix as many drivers
-> as I can. Which is why you see all those patches from me lately.
-
-I'm very grateful for these. This yet again proves how important it is to push 
-code mainline.
-
-> On a side note, at least some of the spi bitbang drivers have a similar
-> problem. Unfortunately, I can not fix it right now because I have no means
-> to test it, and have no idea what exactly is _supposed_ to happen.
-
-Which ones?
-
-> > Reviewed-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-> > 
-> > > ---
-> > > Applies to -next (as of 8/24/12).
-> > > 
-> > >  drivers/spi/spi-mxs.c |    5 +----
-> > >  1 file changed, 1 insertion(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-> > > index 130a436..cb189b7 100644
-> > > --- a/drivers/spi/spi-mxs.c
-> > > +++ b/drivers/spi/spi-mxs.c
-> > > @@ -582,7 +582,6 @@ static int __devinit mxs_spi_probe(struct
-> > > platform_device *pdev) return 0;
-> > > 
-> > >  out_free_dma:
-> > > -	platform_set_drvdata(pdev, NULL);
-> > > 
-> > >  	dma_release_channel(ssp->dmach);
-> > >  	clk_disable_unprepare(ssp->clk);
-> > >  
-> > >  out_master_free:
-> > > @@ -596,14 +595,12 @@ static int __devexit mxs_spi_remove(struct
-> > > platform_device *pdev) struct mxs_spi *spi;
-> > > 
-> > >  	struct mxs_ssp *ssp;
-> > > 
-> > > -	master = platform_get_drvdata(pdev);
-> > > +	master = spi_master_get(platform_get_drvdata(pdev));
-> > 
-> > What happens if platform_get_drvdata() returns NULL ? (is it possible?)
+> > On a side note, at least some of the spi bitbang drivers have a similar
+> > problem. Unfortunately, I can not fix it right now because I have no means
+> > to test it, and have no idea what exactly is _supposed_ to happen.
 > 
-> The driver subsystem locks the device during remove, clears drvdata,
-> and only releases the lock after it is done. The code ensures that the
-> remove function is not called again. See
-> drivers/base/dd.c:__device_release_driver(). The same happens during
-> probe; see drivers/base/dd.c:really_probe().
+> Which ones?
 > 
-> Thanks,
-> Guenter
+Looking into spi-xilinx.c:
 
-Best regards,
-Marek Vasut
+	master = spi_alloc_master(dev, sizeof(struct xilinx_spi));
+	...
+	xspi->bitbang.master = spi_master_get(master);
+	...
+	return master;
+
+put_master:
+        spi_master_put(master);
+	return NULL;
+
+The call to spi_master_put() releases the reference obtained with
+spi_alloc_master, but not the second reference obtained with spi_master_get,
+even though there are several jumps to the error exit label. That doesn't
+look right. The remove/deinit function calls spi_master_put, which seems to
+match the extra spi_master_get in the init function (assuming that
+spi_bitbang_stop releases the resource allocated with spi_alloc_master).
+
+In spi-sirf.c, it is even more obvious that there is a problem since "goto
+free_master;" is executed before _and_ after the call to spi_master_get.
+
+Then there is spi-ppc4xx.c. Similar to the drivers above, there is an extra
+spi_master_get in the probe function, and the error path misses it.
+However, in this case, the call to spi_master_put is _missing_ in the remove
+function. So this is inconsistent. Either the remove function in spi-ppc4xx.c is
+wrong, or the remove functions in the other drivers are wrong.
+
+Those are just examples - actually the first three bitbang drivers I picked at
+random.
+
+What I don't know is how the call sequence spi_alloc_master / spi_bitbang_start
+/ spi_bitbang_stop() is 'complete', or, in other words, if the call to
+spi_bitbang_stop releases the resource allocated with spi_alloc_master.
+Presumably it should be equivalent to spi_alloc_master / spi_register_master
+/ spi_unregister_master, meaning spi_bitbang_stop should release the resource
+obtained with spi_alloc_master. However, this is something I would want to
+verify with actual hardware and code execution before I start to submit
+any patches.
+
+Hope this isn't too complicated ...
+
+Thanks,
+Guenter
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

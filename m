@@ -1,17 +1,17 @@
-From: =?gb2312?B?wO7Az8qm?= <znagroup-Vmoc19UYMk1fyO9Q7EP/yw@public.gmane.org>
-Subject: =?gb2312?B?KGFkKXN5ZHPI5yC6ziC+0yC80iC/7CDA1iA=?=
-	=?gb2312?B?16wgx64xODo1MTozNQ==?=
-Date: Wed, 22 Aug 2012 18:51:35 +0800
-Message-ID: <7B0350E409C1506D223A27A6B9018E94@nydupucl>
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+Subject: [PATCH 2/13] drivers/spi/spi-{orion,
+	pl022}.c: use clk_prepare_enable and clk_disable_unprepare
+Date: Sun, 26 Aug 2012 18:00:54 +0200
+Message-ID: <1345996865-32082-3-git-send-email-Julia.Lawall@lip6.fr>
+References: <1345996865-32082-1-git-send-email-Julia.Lawall@lip6.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: <syds-wtxS31y76FDM1kAEIRd3EQ@public.gmane.org>, <heinz_joan_m-hG+hP7PK2UgAvxtiuMwx3w@public.gmane.org>, <_fbi.gov-EMRzualFZlQ@public.gmane.org>,
-	<f0hpkb-W5LB3TszQh9BGD+qzCI6Bw@public.gmane.org>, <ak3hq21-21/KHtKcwWb6iaiw16MpJ8SvUyTICDgcWIvTT8StVU4@public.gmane.org>,
-	<barbaramorris-aLGsBEdPkIlBDgjK7y7TUQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<david.barlsham-EMRzualFZlQ@public.gmane.org>, <j.england-EMRzualFZlQ@public.gmane.org>, <zhu2010-oI3sLMkKMwY@public.gmane.org>,
-	<qhmiao-ox1xX7+emRI3TOWNJCPdyQ@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1345996865-32082-1-git-send-email-Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,20 +22,103 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-DQq+tMb01d+jrMT6usOjoQ0KDQrE+iC7uSDU2iDTwyDX1CC8uiC1xCDQwSDH2iDFrCDBpqOss8kg
-vs0g18UgwM8gsOUgtcQgw84gz+sgwvCjvw0KDQq+0yC80iC0tCDStaOss8kgvs0g19QgvLogtcQg
-w84gz+ujrMTjINe8ILG4ILrDIMHLIMLwo78NCg0K0aEg1PEgtPMg09ogxawgwaajoaOho6ENCg0K
-ztIgw8cg1LggzqogxPogzOEguakg0rsguPYgvOYg1rChorKiIM2oILn9IM34IMLnILS0INK1ILXE
-IMa9IMyooaPV4iDKxyDSuyC49iC++CC80SC1xCANCg0KysIg0rUgu/ogu+GjoQ0KDQrP6iDH6SDH
-6yC1xyDCvCB3d3cuam95d29ya2luZy5uZXQgKMfruLTWxsG0vdO1veSvwMDG97nbv7SjqQ0KLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1
-c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkg
-YW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2Fu
-IHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1v
-YmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8v
-d3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+From: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+
+Clk_prepare_enable and clk_disable_unprepare combine clk_prepare and
+clk_enable, and clk_disable and clk_unprepare.  They make the code more
+concise, and ensure that clk_unprepare is called when clk_enable fails.
+
+A simplified version of the semantic patch that introduces calls to these
+functions is as follows: (http://coccinelle.lip6.fr/)
+
+// <smpl>
+@@
+expression e;
+@@
+
+- clk_prepare(e);
+- clk_enable(e);
++ clk_prepare_enable(e);
+
+@@
+expression e;
+@@
+
+- clk_disable(e);
+- clk_unprepare(e);
++ clk_disable_unprepare(e);
+// </smpl>
+
+Signed-off-by: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>
+
+---
+ drivers/spi/spi-orion.c |    3 +--
+ drivers/spi/spi-pl022.c |   17 ++++-------------
+ 2 files changed, 5 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index b17c09c..b2a7199 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -416,8 +416,7 @@ static int __init orion_spi_probe(struct platform_device *pdev)
+ 		goto out;
+ 	}
+ 
+-	clk_prepare(spi->clk);
+-	clk_enable(spi->clk);
++	clk_prepare_enable(spi->clk);
+ 	tclk_hz = clk_get_rate(spi->clk);
+ 	spi->max_speed = DIV_ROUND_UP(tclk_hz, 4);
+ 	spi->min_speed = DIV_ROUND_UP(tclk_hz, 30);
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index b0fec03..0d235d4 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2142,16 +2142,10 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		goto err_no_clk;
+ 	}
+ 
+-	status = clk_prepare(pl022->clk);
+-	if (status) {
+-		dev_err(&adev->dev, "could not prepare SSP/SPI bus clock\n");
+-		goto  err_clk_prep;
+-	}
+-
+-	status = clk_enable(pl022->clk);
++	status = clk_prepare_enable(pl022->clk);
+ 	if (status) {
+ 		dev_err(&adev->dev, "could not enable SSP/SPI bus clock\n");
+-		goto err_no_clk_en;
++		goto err_clk_prep;
+ 	}
+ 
+ 	/* Initialize transfer pump */
+@@ -2207,9 +2201,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ 	free_irq(adev->irq[0], pl022);
+  err_no_irq:
+-	clk_disable(pl022->clk);
+- err_no_clk_en:
+-	clk_unprepare(pl022->clk);
++	clk_disable_unprepare(pl022->clk);
+  err_clk_prep:
+ 	clk_put(pl022->clk);
+  err_no_clk:
+@@ -2243,8 +2235,7 @@ pl022_remove(struct amba_device *adev)
+ 		pl022_dma_remove(pl022);
+ 
+ 	free_irq(adev->irq[0], pl022);
+-	clk_disable(pl022->clk);
+-	clk_unprepare(pl022->clk);
++	clk_disable_unprepare(pl022->clk);
+ 	clk_put(pl022->clk);
+ 	pm_runtime_disable(&adev->dev);
+ 	iounmap(pl022->virtbase);
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

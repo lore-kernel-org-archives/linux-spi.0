@@ -1,44 +1,72 @@
-From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-rspi: fix build error for the latest shdma driver
-Date: Mon, 27 Aug 2012 17:56:39 +0900
-Message-ID: <503B3647.2060807@renesas.com>
-References: <501A379D.6060009@renesas.com>
-	<20120827082801.GB29274@verge.net.au>
+From: Daniel Mack <zonque@gmail.com>
+Subject: Re: [PATCH v3 0/3] DaVinci DMA engine conversion
+Date: Mon, 27 Aug 2012 17:33:19 +0200
+Message-ID: <503B933F.2030803@gmail.com>
+References: <1345684176-21472-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	SH-Linux <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <20120827082801.GB29274-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: vinod.koul@intel.com, cjb@laptop.org, grant.likely@secretlab.ca,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Sekhar Nori <nsekhar@ti.com>
+To: Matt Porter <mporter@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <1345684176-21472-1-git-send-email-mporter@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-2012/08/27 17:28, Simon Horman wrote:
+Hi Matt,
+
+On 23.08.2012 03:09, Matt Porter wrote:
+> This series begins the conversion of the DaVinci private EDMA API
+> implementation to a DMA engine driver and converts two of the three
+> in-kernel users of the private EDMA API to DMA engine.
 > 
-> could you let me know what the merge-status of this patch is?
+> The approach taken is similar to the recent OMAP DMA Engine
+> conversion. The EDMA DMA Engine driver is a wrapper around the existing
+> private EDMA implementation and registers the platform device within
+> the driver.  This allows the conversion series to stand alone with just
+> the drivers and no changes to platform code. It also allows peripheral
+> drivers to continue to use the private EDMA implementation until they
+> are converted.
 > 
+> The EDMA DMA Engine driver supports slave transfers only at this time. It
+> is planned to add cyclic transfers in support of audio peripherals.
+> 
+> There are three users of the private EDMA API in the kernel now:
+> davinci_mmc, spi-davinci, and davinci-mcasp.  This series provides DMA
+> Engine conversions for the davinci_mmc and spi-davinci drivers which
+> use the supported slave transfers.
+> 
+> This series has been tested on an AM18x EVM and Hawkboard with
+> driver performance comparable to that of the private EDMA API
+> implementations. Both MMC0 and MMC1 are tested which handles the
+> DA850/OMAP-L138/AM18x specific case where MMC1 uses DMA channels on
+> a second EDMA channel controller.  All other platforms have a simpler
+> design with just a single EDMA channel controller.
+> 
+> For those wanting to easily test this series, I've pushed a branch for
+> each version to my github tree at https://github.com/ohporter/linux. The
+> current branch is edma-dmaengine-v3.
+> 
+> After this series, the current plan is to complete the mcasp driver
+> conversion which includes adding cyclic dma support. This will then
+> enable the removal and refactoring of the private EDMA API functionality
+> into the EDMA DMA Engine driver.  Since EDMA is also used on the AM33xx
+> family of parts in mach-omap2/, the plan is to enable this driver on
+> that platform as well.
 
-Hi Simon-san,
-
-The patch needs Grant's review. So, the patch is not merged to
-his repository yet.
-
-Best regards,
-Yoshihiro Shimoda
+Once you have a patch for the McASP driver conversion, I can happily
+test this on a AM33xx board, together with Gururaja's latest McASP
+refactoring series. Let me know how I can help you here.
 
 
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+Thanks,
+Daniel
+

@@ -1,12 +1,15 @@
-From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre devis alarme est disponible
-Date: Mon, 27 Aug 2012 00:23:26 +0200
-Message-ID: <1346019821.503aa1ed9dd73@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "=?gb2312?B?emhpeHV0czYyMQ==?=" <zhixuts621-WVlzvzqoTvw@public.gmane.org>
+Subject: =?gb2312?B?W7zbuPG089W9XS/T0MO709C118/fMLzbuPG089W9L9PQw7vT0LXXz98=?=
+	=?gb2312?B?W0FEXQ==?=
+Date: Mon, 27 Aug 2012 11:35:59 +0800 (CST)
+Message-ID: <503AEB1F.00009B.20942@cnapp63>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spidi-oqzwS2uSzc43TOWNJCPdyQ@public.gmane.org, spideyman93-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org
+To: spiderzxp-Xb2Y1Dfb9CI@public.gmane.org, spider-zyc-9Onoh4P/yGk@public.gmane.org, spiderzzl-9Onoh4P/yGk@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spidey-9Onoh4P/yGk@public.gmane.org,
+	spideycomic-PcizaXMEbr5BDgjK7y7TUQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +21,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE3NDI3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOC0yNyAwMDoyMDowMSZlPTEmaD0xNzQyNiZmPTE3NDI3Jmc9MTc0Mjc=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE3NDI3JmM=
-9NDgzNjEyJmQ9MjAxMi0wOC0yNyAwMDoyMDowMSZlPTEmaD0xNzQyNiZmPTE3NDI3Jmc9MTc0Mj=
-c=3D
 
 
----------------------------------------------------------------------------=
----
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

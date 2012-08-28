@@ -1,18 +1,12 @@
-From: =?koi8-r?B?6M/E2dKj1w==?= <qojcyyiyjlv-PWAZ9TzliBZQFI55V6+gNQ@public.gmane.org>
-Subject: =?koi8-r?B?xMXMwcXNINLB09PZzMvJINDPINzMxcvU0s/Ozs/KINDP?=
-	=?koi8-r?B?3tTF?=
-Date: Tue, 28 Aug 2012 10:09:39 +0400
-Message-ID: <4C21A9F37FEC4CF881D5830EA8CF49C9@qadnkz>
+From: MobileTarget <info-LR+Lv5/NAcHCENZMoErytg@public.gmane.org>
+Subject: =?UTF-8?B?0KHQsNC80YvQtSDRgdGC0LjQu9GM0L3Ri9C1INC80L7QsdC40LvRjNC90Ys=?=
+	=?UTF-8?B?0LUg0YLQtdC70LXRhNC+0L3RiyAyMDEyINCz0L7QtNCw?=
+Date: Tue, 28 Aug 2012 06:04:52 +0000
+Message-ID: <7221210be4906e1334bf75c0fcd03fc7@lidershark.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
-	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
-	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
-	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
-	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
-	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -24,15 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xMXMwcXNINLB09PZzMvJINDPINzMxcvU0s/Ozs/KINDP3tTFCgrCz8zFxSDQz8TSz8LOwdEgyc7G
-z9LNwcPJ0SDQzyDUxczFxs/O1SArNyg5MjYpNjAzLTc0MjMKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdp
-bGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNj
-YXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Np
-b25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQg
-dGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29t
-L2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+0JLRgdC1INGB0YLQuNC70YzQvdC+0LUgLSDQv9GA0L7RgdGC0L4KCgrQn9GA0L7RgdGC0L4g0YHR
+gtC+0LjRgiDQv9C+0YHQvNC+0YLRgNC10YLRjAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUg
+U2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292
+ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhh
+cyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3
+aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxh
+dGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9z
+ZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
+Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

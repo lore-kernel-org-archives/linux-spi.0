@@ -1,12 +1,13 @@
-From: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 1/2] omap2-mcspi: use the same struct device for map and unmap
-Date: Thu, 30 Aug 2012 17:02:50 +0200
-Message-ID: <1346338971-9106-1-git-send-email-jlu@pengutronix.de>
+From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi:clk: preparation for switch to common clock framework
+Date: Thu, 30 Aug 2012 14:25:21 -0400
+Message-ID: <1346351121-27710-1-git-send-email-m-karicheri2@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+To: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,38 +19,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The device mcspi->dev is used when calling dma_map_single, so use it
-for dma_unmap_single, too.
+As a first step towards migrating davinci platforms to use common clock
+framework, replace all instances of clk_enable() with clk_prepare_enable()
+and clk_disable() with clk_disable_unprepare(). Until the platform is
+switched to use the CONFIG_HAVE_CLK_PREPARE Kconfig variable, this just
+adds a might_sleep() call and would work without any issues.
 
-Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+This will make it easy later to switch to common clk based implementation
+of clk driver from DaVinci specific driver.
+
+Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-davinci.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 0c73dd4..ceb27fc 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -388,7 +388,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 9b2901f..71a6423 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -873,7 +873,7 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+ 		ret = -ENODEV;
+ 		goto put_master;
+ 	}
+-	clk_enable(dspi->clk);
++	clk_prepare_enable(dspi->clk);
  
- 	if (tx != NULL) {
- 		wait_for_completion(&mcspi_dma->dma_tx_completion);
--		dma_unmap_single(&spi->dev, xfer->tx_dma, count, DMA_TO_DEVICE);
-+		dma_unmap_single(mcspi->dev, xfer->tx_dma, count, DMA_TO_DEVICE);
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = pdata->num_chipselect;
+@@ -959,7 +959,7 @@ free_dma:
+ 	edma_free_channel(dspi->dma.rx_channel);
+ 	edma_free_slot(dspi->dma.dummy_param_slot);
+ free_clk:
+-	clk_disable(dspi->clk);
++	clk_disable_unprepare(dspi->clk);
+ 	clk_put(dspi->clk);
+ put_master:
+ 	spi_master_put(master);
+@@ -995,7 +995,7 @@ static int __devexit davinci_spi_remove(struct platform_device *pdev)
  
- 		/* for TX_ONLY mode, be sure all words have shifted out */
- 		if (rx == NULL) {
-@@ -403,7 +403,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 	spi_bitbang_stop(&dspi->bitbang);
  
- 	if (rx != NULL) {
- 		wait_for_completion(&mcspi_dma->dma_rx_completion);
--		dma_unmap_single(&spi->dev, xfer->rx_dma, count, DMA_FROM_DEVICE);
-+		dma_unmap_single(mcspi->dev, xfer->rx_dma, count, DMA_FROM_DEVICE);
- 		omap2_mcspi_set_enable(spi, 0);
- 
- 		if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+-	clk_disable(dspi->clk);
++	clk_disable_unprepare(dspi->clk);
+ 	clk_put(dspi->clk);
+ 	spi_master_put(master);
+ 	free_irq(dspi->irq, dspi);
 -- 
-1.7.10.4
+1.7.9.5
 
 
 ------------------------------------------------------------------------------

@@ -1,47 +1,68 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v3 3/3] spi: spi-davinci: convert to DMA engine API
-Date: Thu, 30 Aug 2012 10:43:07 -0400
-Message-ID: <20120830144307.GA26737@beef>
-References: <1345684176-21472-1-git-send-email-mporter@ti.com>
- <1345684176-21472-4-git-send-email-mporter@ti.com>
- <503F75C0.1050507@ti.com>
+From: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH 2/2] omap2-mcspi: fall back to PIO when the buffer is in high
+	mem
+Date: Thu, 30 Aug 2012 17:02:51 +0200
+Message-ID: <1346338971-9106-2-git-send-email-jlu@pengutronix.de>
+References: <1346338971-9106-1-git-send-email-jlu@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	vinod.koul@intel.com, Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	grant.likely@secretlab.ca,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>, cjb@laptop.org,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Sekhar Nori <nsekhar@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <503F75C0.1050507@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1346338971-9106-1-git-send-email-jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Aug 30, 2012 at 07:46:32PM +0530, Sekhar Nori wrote:
-> Hi Matt,
-> 
-> On 8/23/2012 6:39 AM, Matt Porter wrote:
-> > Removes use of the DaVinci EDMA private DMA API and replaces
-> > it with use of the DMA engine API.
-> > 
-> > Signed-off-by: Matt Porter <mporter@ti.com>
-> 
-> I tried testing this patch on my OMAP-L138 EVM, but SPI fails to 
-> initialize after applying the patch.
-> 
-> root@arago:~# dmesg | grep -i spi                                               
-> spi_davinci spi_davinci.1: request RX DMA channel failed                        
+UBI uses vmalloc'ed buffers in some cases which are not valid for
+DMA, so use PIO instead.
 
-Hi Sekhar,
+Signed-off-by: Jan Luebbe <jlu-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Most likely CONFIG_TI_EDMA is off as it defaults to off in the v3
-series. Try enabling this and if it's the problem then this error
-path can be fixed to properly fallback to PIO only or fail to
-initialize as needed.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index ceb27fc..6f361a1 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -927,7 +927,9 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ 				__raw_writel(0, cs->base
+ 						+ OMAP2_MCSPI_TX0);
+ 
+-			if (m->is_dma_mapped || t->len >= DMA_MIN_BYTES)
++			if (m->is_dma_mapped || (t->len >= DMA_MIN_BYTES
++				&& t->tx_buf < high_memory
++				&& t->rx_buf < high_memory))
+ 				count = omap2_mcspi_txrx_dma(spi, t);
+ 			else
+ 				count = omap2_mcspi_txrx_pio(spi, t);
+@@ -1004,6 +1006,11 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
+ 			continue;
+ 
++		if (tx_buf >= high_memory || rx_buf >= high_memory) {
++			WARN_ONCE(1, "high memory is invalid for DMA, falling back to PIO\n");
++			continue;
++		}
++
+ 		if (tx_buf != NULL) {
+ 			t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
+ 					len, DMA_TO_DEVICE);
+-- 
+1.7.10.4
 
--Matt
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,122 +1,54 @@
-From: =?GB2312?B?x+vXqs/gudi4utTwyMs=?= <rn-6qr1agbn5QU@public.gmane.org>
-Subject: [SPAM] 如何打造世界级销售团队
-Date: Fri, 31 Aug 2012 05:18:59 +0800
-Message-ID: <E1T7C8k-00085a-N3@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Vinod Koul <vkoul@infradead.org>
+Subject: Re: [PATCH v3 3/3] spi: spi-davinci: convert to DMA engine API
+Date: Fri, 31 Aug 2012 06:25:54 +0530
+Message-ID: <1346374554.15463.6.camel@vkoul-mobl4>
+References: <1345684176-21472-1-git-send-email-mporter@ti.com>
+	 <1345684176-21472-4-git-send-email-mporter@ti.com>
+	 <503F75C0.1050507@ti.com> <20120830144307.GA26737@beef>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: vinod.koul@intel.com, Sekhar Nori <nsekhar@ti.com>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	grant.likely@secretlab.ca,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>, cjb@laptop.org,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: Matt Porter <mporter@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20120830144307.GA26737@beef>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-tPLU7NK71qfKwL3nvLbP+srbzcW20zQwuPbU9cO01/ajvwoKyrG85LXYteOjujIwMTLE6jnUwjEy
-LTEzyNXJz7qjCsqxvOS12LXjo7oyMDEyxOo51MIxOS0yMMjVye7b2gq/zrPMt9HTw6O6NDgwMNSq
-L8G9zOyjrMLy0rvLzdK7o6yyu9TZtPLV26OstaW2wNK7yMvK1bfRMzYwMNSqoaOjqLD8wKjXysHP
-t9Ghos7nss28sMnPz8LO57LoteO1yKOpCgrXydGvtee7sKO6MDIwLTgwNTYwNjM4ICAgMDIwLTg1
-OTE3OTQ1ICAg0LvQob3jCiAgICAgICAgICAwNzU1LTYxMjg3NTUyICAwMjEtNTE2MDI4NTYgIKOo
-srvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sF0dWl4aW4yMDEyQDEyNi5jb23Ny9DFo6kKLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCrK7wtvDwLn609C24MO0x7+087XEv9XW0M7kwaajrNTa1b2zocnP
-o6zL/MjUyLvQ6NKqtdjD5rK/ttPU2r/xuuTAxNWo1q6687TTtdjD5s2mvfiju8/6ytvNxbbTo6wK
-vs3Kx8bz0rW1xLXYw+ayv7bToaOyu8LbxPq1xMa3xca24Me/o6yyu8LbxPq1xLL6xrfWysG/tuC6
-w6OsxPrI1Mi70OjSqtK71qfTxdDjtcTP+srbzcW206OsssUKxNy9q8bz0rXD5rbUytCzob661fm1
-xNPFysbX7rTzu6+joSAKxPrE3LvYtPDPwsHQv86zzLTzuNnA77XEw7/Su7j2zsrM4sLwo7/I57n7
-srvE3KOsxPrT1sjnus7T0NCntcS+rdOqudzA7bnzuavLvrXEz/rK283FttOjvwo9PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09CtXQsfjC8sLto7rG89K11NrV0senwO/C7aO/xMejrLKuwNbU2sTEwO+jvwoxo6nP+srb
-zcW207XEuea7ri3TprjD0qq24LTzo78KyrLDtL3QQ2FsbCBGcmVxdWVuY3kK0ru49sjLxNy0+Ly4
-uPbIy6O/Ctfp1q+y47y2Cs/6ytuyv8PF06a4w7D8uqzExNCpuabE3KO/CtKqsrvSqtXQxrjP+srb
-xNrH2qO/1vrA7aO/CjKjqcjL1LHV0Ma4CsutyKWyzrzTyMuyxdXQxri74aO/CsT609DDu9PQuNC+
-9b+0ufm+p76nzPjLrtT1w7TM+La8usO/tKO/LS0gy/vU+L6t1Nq087mry760/bn9o6y74bT4wLS6
-w7XEudvE7qO/CrrOzr2hsLLfwtTQ1MjLwabXytS0udzA7aGxo78KudzA7bLjyMvUsdXQxrgty63T
-prjDss6806O/CtDUz/Ky4tHpCjOjqcjLssW1xLeivvKjusXz09G96cncobDIy7LFobGjrNT1w7Sw
-7KO/CjSjqdT1w7S74cLytb3L4enZ19Ojvy0txvPStdT1w7S74dXQxrjBy7K7us+48bXE1LG5pKO/
-CgrIy7LF0fizydPrxeDRtQo1o6nQwr38yMvUsbXExeDRtQrKssO0ysfX7tbY0qq1xNDCyMvF4NG1
-o78Ky63TprjDzqrQwsjLxeDRtaO/Cs+0xNSjv86qyrLDtKO/Csbz0rXX7sjd0te69sLUxMTQqcXg
-0bWjvwrLrdDo0qrKssO0xeDRtaO/CrK70qrD1NDFxeDRtaOsw/ew18Lwo78KyrLDtMrHxvPStbbU
-1LG5pNfu09DS4tLltcTF4NG1o78KtPLU7NK71qe94r72zsrM4rXEz/rK283FttMKNqOpuavLvrXE
-trDBui0tILOsvLbP+srb1LGjrNPQy/u+zbjjtqijvwo3o6nIy7LFtcTR+LPJLS0g1PXDtMzhsM7P
-wsr0ssXE3Mq5tPO80ra8t/7G+KO/CjijqbDZxOrG89K1o6zI57rOxeDRtdSxuaSjvy0tIMXg0bXS
-u7ao0qq7qLrctuDHrsLwo78KCqGw16jStaGxtcTP+srbzcW20wo5o6nP+srbzcW207XEy8S087mk
-1/fB7NPyCjEwo6m/2rLFtcTF4NG1o7q+v765z/rK28jL1LHQ6NKqyrLDtL/assWjvwoxMaOpudi8
-/M/6ytu8vMfJCtXStb3Q6MfzCs/IsNHX1Ly6wvS19KGqzsrM4srHo6zU9cO0wvSjvwrL47P2wLS/
-zbunv8nS1LXDtb21xMD70uYKzLjF0KO/zLiyu7/JxNy1xAoxMqOpobDI57rO09DQp86su6S/zbun
-udjPtaGxtcS5pL7foaogvNnI58DPzfW1xM/6ytu8vMfJutzA97qmo6zQocHWtry/7LG7zNTMrcHL
-o7uyu82stcTP+srbyMvUscTcwabC5LLuuty086OsxPrU9cO0sOyjvwoxM6OpudzA7bXEzuW089Kq
-y9i6zcr919a53MDtCtHPuPG1xMqxvOS53MDtttTSu9anz/rK283FttO1xNLi0uUK08PK/dfWy7W7
-sAqw0cr919axs8/CwLQKMTSjqc/6ytvIy9Sxscu0y7XEus/X99PrubXNqAoxNaOpz/rK283FttO5
-tc2otcTLwL3H1NrExMDvo78KMTajqdOu1Nq809a1z/rK2wrWsb3Tz/rK28jL1LHT67zkvdPP+srb
-yMvUsQrWsb3Tz/rK27av1/fT67zkvdPP+srbtq/X9wrWsb3Tv827p9PrvOS907/Nu6cKMTejqbnL
-v83C+tLitsgKMTijqbzGu67BpqO6z/rK28jL1LG53MDtxNzBptfuyPW1xNK7u7cKMTmjqc/6ytvN
-xbbTt9HTw7ncv9i7+tbGtcTJ6LzGCgq53MDt1sa2yNPrzsS7r6O61eLKx8/6ytvNxbbT1rTQ0MGm
-tcS4+bG+CjIwo6nP+srbzcW207XE1rTQ0MGmo6zU9cO0wLSjvwoyMaOpxL+x6rncwO21xM7KzOKz
-9tTaxMTA76O/CsHstbzX1Ly6tqm1xMS/seo/CszWvNu7ubzbLLHks8nK/dfW087PtwrEv7Hqw7vT
-0M+4u6+1vcO/0ru49tSxuaQKw7vT0L7fzOW1xMnNt6PQ0LavLLD8wKjQvdfKLL2xvfAs0+vWsM67
-yf3HqDvSsr7NysfOtNPryMvBptfK1LSy38LUvfTD3LnSubMKsrvD97DXuf2zzNPrveG5+7XEudjP
-tQpTTUFSVNSt1PIK1/bP+srbo6zSqtPQs6TUtrXE0du54qO7xMezpMbaus22zMbaxL+x6sTEuPbW
-2NKqo78KMjKjqcS/seq53MDt0+u8qNCnxsC5wArEqc67zNTMrdbGo6y6w7K7usOjvwoyM6OpxvPS
-tcqyw7TKsbryuPjUsbmktffV+7mk18qjvwoyNKOptcDCt828CjI1o6nIy9SxvfrJ/bXEw9TLvKO6
-y63X7tPF0OOjvwoyNqOpsu7Cw7ncwO2jujcwJbXEs/ay7sqxvOS/ycTcsbvAy7fRtfTBy6O/CjI3
-o6nSu7TO09DQp8LKtcTP+srbu+HS6dT1w7S/qqO/CjI4o6nRts+isai45s+1zbMKse248bXEyei8
-xrHY0Ou+37G4xMTQqbmmxNyjvwq087zStryyu8+yu7bQtLGose2jrM6qyrLDtKO/1PXDtLDso78K
-Mjmjqb3MtPO80ra8sdjQ69Xiw7TLtbuwCkdldCB0aGluZ3MgZG9uZS6hqs3ivbu52dPrz/rK28jL
-1LG1xLmk1/fIy7jx0bXBtwq98NfWy/7QtNf3t6ihqsjnus7Iw8/6ytvIy9SxvbK7sLK7u+Gx3NbY
-vs3H4aOsyMbIpsimo6zDu9bYteOjvwoKz/rK283FttO1xMHpu+qjusHstbzE3MGmCjMwo6m587mr
-y761xM/6ytu4sdfco6y+rcDt09DDu9PQobC4xLHkobG1xMTcwaajvwozMaOp1PDIzqO/LS0gyOe6
-zsjDtPO80ra8zqrX1Ly6tcS5pNf3uLrU8MjOo78KMzKjqcHstby6zc/CyvTSu8bws9S3ucutuLbH
-rqO/LS0gxPq1xLmry77V5rXE1eLDtNf2wvCjvwozM6Opwey1vNXf0qrT0MfXus3BpqOsu7nSqtPQ
-zf7Rz6O/yOe6zrDRztWjvwozNKOpRVGjutH0ueLQxMyso7/MrLbIvva2qNK7x9CjvwozNaOpz/rK
-283FttPB7LW8tcTX1M7Ss8mzpKGqtb2119PQtuDDtNbY0qqjv7u5yse077PJ1rix6r7NusOjrLHw
-tcSyu9KqudyjvwoKyOe6ztPQ0Ke1xLykwPjP+srbyMvUsbXEyr/G+D8KMzajqc/6ytvIy9Sx0L3X
-ytbGtsi1xMnovMajusO709C7+bG+uaTXytfuusOjrNLyzqrRucGm1+6086O/y/nT0LXEz/rK28jL
-1LHOqsHL16zHrta7usPGtMP8z/LHsKO/CjM3o6m8pMD4t73KvdPQvLjW1qO/CjM4o6nP+srbyMvU
-sdfuz7K7trXEvKTA+Le9yr3Kx8qyw7SjvwozOaOpyr/OqtaqvLrV38vALS0gvNnI58v71LjS4s6q
-xPrC9MP8uMm77rb5o6zOysziysejrMT6ysfL+7XEobDWqry6obHC8KO/CjQwo6nKssO0yse21M/6
-ytvIy9Sx1+6hsNPQ0KehsS0tILPJsb7X7rXNo6zKsbzks9bQ+Nfus6SjrNCnufvT1rD0tcS8pMD4
-t723qKO/CsfryN3Q7c7S1NnH673MxPrSu7TOo7oKxPrE3LvYtPDS1MnPv86zzLTzuNnA77XEw7/S
-u7j2zsrM4sLwo78KyOe5+7K7xNyjrMT609bI57rO09DQp7XEvq3TqrncwO2587mry761xM/6ytvN
-xbbTo78KPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PQrR7iDMqCDQ+aOs0vLOqsv7wLTX1MrAvec1MDDHv7XExvPS
-taOsy/nS1Mv7ssXE3Ljmy9/O0sPHysC957y2tcTP+srbzcW206Gw1PXDtNf2obG53MDto7sKzLi2
-r9f3o6HMuLe9t6ijocy4vLzHyaOhtviyu8rHt7q3urb4zLi1xL/VtrS528Tuo6Gjocv7uObL38T6
-y/u1xNf31b2+rdHpo6y2+LK7ysexs8rpo6wKvbLA7cLbuPjE+sz9o6GjoQqyu8Lb0afA+rXEuN+1
-zaOs0vLOqsv71Pi+rbTTz/rK27mk1/e1xNfuu/my49f2xvCjrMv50tTL+8TcubvA7b3iz/rK283F
-ttPU2sq11b25pNf3tbHW0MO/0ru49ru3vdq1xLHXsqGjoaOhCgq9zNP9sbO+sKO606K5+iBFeGV0
-ZXIgtPPRp8bz0rW53MDty7bKv6GizKjN5bioyMq089GnxvPStbncwO3Rp8+1sc/StQq5pNf318rA
-+qO6CtOiyczMqM3ltcK8x9Hz0NBUYWl0IE1hcmtldGluZyAmIERpc3RyaWJ1dGlvbtK1zvHUsaOs
-svrGt76twO2jrMrC0rWyv8PF1ve53ArIq8fytdq2/rTzyOnWxsa3uavLviC3qLn6U29kaW1hIMjp
-0rW5q8u+z/rK27yw0NDP+r6twO0KysC95zUwx78gw8C5+se/yfpKb2huc29uICYgSm9obnNvbrmr
-y77W0Ln6x/jP+srb19y84AotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQqhtrTy1OzSu9anysC957y2
-z/rK283FttM0MLj21PXDtNf2obexqMP7u9jWtLHto6jH67Sr1eYwMjAtNjIzNTExNTajqQoKss67
-4bWlzrvD+7PGo7pfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCgqyzrzTtdi146O6v9rJz7qjIL/aye7b2goKwarPtcjLo7pfX19fX19fX19fX19f
-X7Xnu7A6X19fX19fX19fX19fX19fX7Sr1eY6X19fX19fX19fX19fX19fXwoK08q8/qO6X19fX19f
-X19fX19fX1+yzrvhyMvK/TpfX19fX19fX1/Iy7fR08OjpKO6X19fX19fX19f1KoKCrLOu+HIy6O6
-X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19fX19fX19fX18K
-CrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xnu7Cjul9fX19f
-X19fX19fX18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19fX19f0sa2r7Xn
-u7Cjul9fX19fX19fX19fX18KCrLOu+HIy6O6X19fX19fX19fX1/L+cjO1rDO8aO6X19fX19fX19f
-X19f0sa2r7Xnu7Cjul9fX19fX19fX19fX18KCri2v+63vcq9o6jH69Gh1PG08qGwocyhsaOpo7qh
-9TGhos/WvfCh9TKhoteq1cqh9TOhorXnu+MKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CrG4
-16I6x+vE+rDRsajD+7vY1rS72LSrztLLvqOszqrIt7GjxPqxqMP7zt7O8yzH68T61Nm0zrXnu7Cj
-qDAyMC04MDU2MDYzOKOpyLfIzyEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5
-IFZpcnR1YWwgQ29uZmVyZW5jZQpFeGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0
-aGUgd2F5cyB0b2RheSdzIHNlY3VyaXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdl
-ZCBhbmQgaG93IElUIG1hbmFnZXJzIGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNs
-dWRlIGVuZHBvaW50IHNlY3VyaXR5LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4g
-bWFsd2FyZSAKdGhyZWF0cy4gaHR0cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0
-MjAxMi8xMTQvNTAxMjIyNjMvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Thu, 2012-08-30 at 10:43 -0400, Matt Porter wrote:
+> On Thu, Aug 30, 2012 at 07:46:32PM +0530, Sekhar Nori wrote:
+> > Hi Matt,
+> > 
+> > On 8/23/2012 6:39 AM, Matt Porter wrote:
+> > > Removes use of the DaVinci EDMA private DMA API and replaces
+> > > it with use of the DMA engine API.
+> > > 
+> > > Signed-off-by: Matt Porter <mporter@ti.com>
+> > 
+> > I tried testing this patch on my OMAP-L138 EVM, but SPI fails to 
+> > initialize after applying the patch.
+> > 
+> > root@arago:~# dmesg | grep -i spi                                               
+> > spi_davinci spi_davinci.1: request RX DMA channel failed                        
+> 
+> Hi Sekhar,
+> 
+> Most likely CONFIG_TI_EDMA is off as it defaults to off in the v3
+> series. Try enabling this and if it's the problem then this error
+> path can be fixed to properly fallback to PIO only or fail to
+> initialize as needed.
+I didnt see any update on this one, is it okay, if so care to send a
+tested-by?
+
+-- 
+~Vinod Koul
+Intel Corp.
+

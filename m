@@ -1,77 +1,100 @@
-From: Vinod Koul <vkoul@infradead.org>
-Subject: Re: [PATCH v3 3/3] spi: spi-davinci: convert to DMA engine API
-Date: Sat, 01 Sep 2012 06:32:29 +0530
-Message-ID: <1346461349.2806.4.camel@vkoul-mobl4>
-References: <1345684176-21472-1-git-send-email-mporter@ti.com>
-	 <1345684176-21472-4-git-send-email-mporter@ti.com>
-	 <503F75C0.1050507@ti.com> <20120830144307.GA26737@beef>
-	 <5040E00A.3080600@ti.com> <1346430709.15463.15.camel@vkoul-mobl4>
-	 <5040E6C7.6030106@ti.com> <1346432577.15463.16.camel@vkoul-mobl4>
+From: "Stock100" <marketing-/0rwUHiUgYDVe7td6HMt/l6hYfS7NtTn@public.gmane.org>
+Subject: 2012 STOCK MARKET REVIEW & FORECAST
+Date: Fri, 31 Aug 2012 19:34:23 -0700
+Message-ID: <02884F6BB56E40809D2A4A02E8A0366A@u16379804>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: vinod.koul@intel.com, Matt Porter <mporter@ti.com>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	grant.likely@secretlab.ca,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>, cjb@laptop.org,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Sekhar Nori <nsekhar@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <1346432577.15463.16.camel@vkoul-mobl4>
-Sender: linux-mmc-owner@vger.kernel.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Class: urn:content-classes:message
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 2012-08-31 at 22:32 +0530, Vinod Koul wrote:
-> On Fri, 2012-08-31 at 22:01 +0530, Sekhar Nori wrote:
-> > >> Yes, this was the problem. Since the SPI driver now depends on
-> > >> CONFIG_TI_EDMA for basic operation may be select CONFIG_TI_EDMA in
-> > >> Kconfig if SPI is enabled? That should do until the fallback to PIO
-> > is
-> > >> implemented.
-> > > Then this should be enabled for SPI. Care to send a patch
-> > 
-> > By 'this' you mean the Kconfig select? Then there should be no need of
-> > a
-> > new patch for this. It can be part of this patch itself, no? 
-> Either way is okay for me.
-And am in good mood :)
-
-Applied all with this as well
-
->From b5f14330590118e6a0659255476c0f24ab681e05 Mon Sep 17 00:00:00 2001
-From: Vinod Koul <vinod.koul@linux.intel.com>
-Date: Sat, 1 Sep 2012 06:29:22 +0530
-Subject: [PATCH] spi: davici - make davinci select edma
-
-Reported-by: Sekhar Nori <nsekhar@ti.com>
-Signed-off-by: Vinod Koul <vinod.koul@linux.intel.com>
----
- drivers/spi/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 5f84b55..b9fb9a1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -134,6 +134,7 @@ config SPI_DAVINCI
- 	tristate "Texas Instruments DaVinci/DA8x/OMAP-L/AM1x SoC SPI
-controller"
- 	depends on ARCH_DAVINCI
- 	select SPI_BITBANG
-+	select TI_EDMA
- 	help
- 	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
+spi-devel-general
  
--- 
-1.7.9.5
-
-
-
--- 
-~Vinod Koul
-Intel Corp.
-
+???? <http://stock100.com/> 
+ 
+Since the start of 2012, the market has seen large volatility with no
+measurable gains. Most investors got hurt in the process. Event the long
+term investors are getting nervous.
+ 
+It takes skills to be making money in this market. The tools used by the
+pros are usually kept away from you. Now, there is a global market site
+that offers tools historically reserved for the pros: WWW.STOCK100.COM
+<http://www.stock100.com/>   .
+The site is now free for all to use. Still relatively unknown to the
+investors, be the early birds to see it and use it!
+ 
+Do you know the following 5 stocks have completely opposite movements
+with Dow Jones Industrial Index?
+ 
+Symbol
+Name
+8/16/2012
+Match%
+EFZ <http://stock100.com/symbol_submit_EFZ.html> 
+ProShares ...
+46.25
+-91%
+EFU <http://stock100.com/symbol_submit_EFU.html> 
+ProShares ...
+20.53
+-91%
+DPK <http://stock100.com/symbol_submit_DPK.html> 
+Direxion D...
+23.57
+-91%
+EDZ <http://stock100.com/symbol_submit_EDZ.html> 
+Direxion D...
+12.64
+-91%
+EEV <http://stock100.com/symbol_submit_EEV.html> 
+ProShares ...
+26.3
+-90%
+ 
+Do you know the following 5 stocks have been selected by the computer
+algorithm?
+ 
+Name
+8/16/2012
+Forecast%
+Dawson Geop... <http://stock100.com/symbol_submit_DWSN.aspx> 
+22.71
+21.57%
+Virtusa Cor... <http://stock100.com/symbol_submit_VRTU.aspx> 
+16.9
+14.70%
+Terra Nova ... <http://stock100.com/symbol_submit_TTT.aspx> 
+18.64
+17.14%
+Kemet Corpo... <http://stock100.com/symbol_submit_KEM.aspx> 
+4.62
+19.72%
+Liquidity S... <http://stock100.com/symbol_submit_LQDT.aspx> 
+45.74
+20.13%
+ 
+Don't miss it!
+ 
+???? <http://stock100.com/>  
+ 
+ 
+Please email: remove-oQouceREq8lWk0Htik3J/w@public.gmane.org   to be removed from receiving future
+marketing materials.
+ 
+ 
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

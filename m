@@ -1,13 +1,20 @@
-From: "Stock100" <marketing-/0rwUHiUgYDVe7td6HMt/l6hYfS7NtTn@public.gmane.org>
-Subject: 2012 STOCK MARKET REVIEW & FORECAST
-Date: Fri, 31 Aug 2012 19:34:23 -0700
-Message-ID: <02884F6BB56E40809D2A4A02E8A0366A@u16379804>
+From: shiraz hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v6 1/3] spi/pl022: Add chip select handling via GPIO
+Date: Sat, 1 Sep 2012 16:44:29 +0530
+Message-ID: <CAPub14-Oot_wJsRTv2AGu3SAAf40+3_wK43=0Swxj+5XjPaDew@mail.gmail.com>
+References: <1345643359-16584-1-git-send-email-stigge@antcom.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, gabriel.fernandez-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org,
+	linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	sachin.verma-lpHj6iFQ3dU@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, aletes.xgr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Class: urn:content-classes:message
+In-Reply-To: <1345643359-16584-1-git-send-email-stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,80 +25,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-spi-devel-general
- 
-???? <http://stock100.com/> 
- 
-Since the start of 2012, the market has seen large volatility with no
-measurable gains. Most investors got hurt in the process. Event the long
-term investors are getting nervous.
- 
-It takes skills to be making money in this market. The tools used by the
-pros are usually kept away from you. Now, there is a global market site
-that offers tools historically reserved for the pros: WWW.STOCK100.COM
-<http://www.stock100.com/>   .
-The site is now free for all to use. Still relatively unknown to the
-investors, be the early birds to see it and use it!
- 
-Do you know the following 5 stocks have completely opposite movements
-with Dow Jones Industrial Index?
- 
-Symbol
-Name
-8/16/2012
-Match%
-EFZ <http://stock100.com/symbol_submit_EFZ.html> 
-ProShares ...
-46.25
--91%
-EFU <http://stock100.com/symbol_submit_EFU.html> 
-ProShares ...
-20.53
--91%
-DPK <http://stock100.com/symbol_submit_DPK.html> 
-Direxion D...
-23.57
--91%
-EDZ <http://stock100.com/symbol_submit_EDZ.html> 
-Direxion D...
-12.64
--91%
-EEV <http://stock100.com/symbol_submit_EEV.html> 
-ProShares ...
-26.3
--90%
- 
-Do you know the following 5 stocks have been selected by the computer
-algorithm?
- 
-Name
-8/16/2012
-Forecast%
-Dawson Geop... <http://stock100.com/symbol_submit_DWSN.aspx> 
-22.71
-21.57%
-Virtusa Cor... <http://stock100.com/symbol_submit_VRTU.aspx> 
-16.9
-14.70%
-Terra Nova ... <http://stock100.com/symbol_submit_TTT.aspx> 
-18.64
-17.14%
-Kemet Corpo... <http://stock100.com/symbol_submit_KEM.aspx> 
-4.62
-19.72%
-Liquidity S... <http://stock100.com/symbol_submit_LQDT.aspx> 
-45.74
-20.13%
- 
-Don't miss it!
- 
-???? <http://stock100.com/>  
- 
- 
-Please email: remove-oQouceREq8lWk0Htik3J/w@public.gmane.org   to be removed from receiving future
-marketing materials.
- 
- 
+Hi Roland,
+
+On Wed, Aug 22, 2012 at 7:19 PM, Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org> wrote:
+> @@ -2016,6 +2030,8 @@ pl022_probe(struct amba_device *adev, co
+>         pl022->master_info = platform_info;
+>         pl022->adev = adev;
+>         pl022->vendor = id->data;
+> +       /* Point chipselects to allocated memory beyond the main struct */
+> +       pl022->chipselects = (int *) pl022 + sizeof(struct pl022);
+
+This is going beyond memory allocated for chipselects
+as it adds 4 * sizeof(struct pl022) bytes to pl022.
+
+pl022->chipselects = (int *) &pl022[1];
+can be musch safer.
+
+-- 
+regards
+Shiraz Hashim
+
 ------------------------------------------------------------------------------
 Live Security Virtual Conference
 Exclusive live event will cover all the ways today's security and 

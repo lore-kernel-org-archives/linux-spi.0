@@ -1,20 +1,27 @@
-From: shiraz hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 1/3] spi/pl022: Add chip select handling via GPIO
-Date: Sat, 1 Sep 2012 16:44:29 +0530
-Message-ID: <CAPub14-Oot_wJsRTv2AGu3SAAf40+3_wK43=0Swxj+5XjPaDew@mail.gmail.com>
-References: <1345643359-16584-1-git-send-email-stigge@antcom.de>
+From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v3 3/3] spi: spi-davinci: convert to DMA engine API
+Date: Sat, 1 Sep 2012 09:14:42 -0400
+Message-ID: <20120901131442.GE27758@beef>
+References: <1345684176-21472-1-git-send-email-mporter@ti.com>
+	<1345684176-21472-4-git-send-email-mporter@ti.com>
+	<503F75C0.1050507@ti.com> <20120830144307.GA26737@beef>
+	<5040E00A.3080600@ti.com> <1346430709.15463.15.camel@vkoul-mobl4>
+	<5040E6C7.6030106@ti.com> <1346432577.15463.16.camel@vkoul-mobl4>
+	<1346461349.2806.4.camel@vkoul-mobl4>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, gabriel.fernandez-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org,
-	linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	sachin.verma-lpHj6iFQ3dU@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, aletes.xgr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org,
+	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Vinod Koul <vkoul-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1345643359-16584-1-git-send-email-stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1346461349.2806.4.camel@vkoul-mobl4>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,25 +32,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Roland,
+On Sat, Sep 01, 2012 at 06:32:29AM +0530, Vinod Koul wrote:
+> On Fri, 2012-08-31 at 22:32 +0530, Vinod Koul wrote:
+> > On Fri, 2012-08-31 at 22:01 +0530, Sekhar Nori wrote:
+> > > >> Yes, this was the problem. Since the SPI driver now depends on
+> > > >> CONFIG_TI_EDMA for basic operation may be select CONFIG_TI_EDMA in
+> > > >> Kconfig if SPI is enabled? That should do until the fallback to PIO
+> > > is
+> > > >> implemented.
+> > > > Then this should be enabled for SPI. Care to send a patch
+> > > 
+> > > By 'this' you mean the Kconfig select? Then there should be no need of
+> > > a
+> > > new patch for this. It can be part of this patch itself, no? 
+> > Either way is okay for me.
+> And am in good mood :)
 
-On Wed, Aug 22, 2012 at 7:19 PM, Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org> wrote:
-> @@ -2016,6 +2030,8 @@ pl022_probe(struct amba_device *adev, co
->         pl022->master_info = platform_info;
->         pl022->adev = adev;
->         pl022->vendor = id->data;
-> +       /* Point chipselects to allocated memory beyond the main struct */
-> +       pl022->chipselects = (int *) pl022 + sizeof(struct pl022);
+I am as well...thanks for taking care of the patch to address the Kconfig
+issue and applying. It's nice to return from holiday and not have to do
+anything with this series. :)
 
-This is going beyond memory allocated for chipselects
-as it adds 4 * sizeof(struct pl022) bytes to pl022.
+-Matt
 
-pl022->chipselects = (int *) &pl022[1];
-can be musch safer.
-
--- 
-regards
-Shiraz Hashim
+> Applied all with this as well
+> 
+> >From b5f14330590118e6a0659255476c0f24ab681e05 Mon Sep 17 00:00:00 2001
+> From: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Date: Sat, 1 Sep 2012 06:29:22 +0530
+> Subject: [PATCH] spi: davici - make davinci select edma
+> 
+> Reported-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+> Signed-off-by: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> ---
+>  drivers/spi/Kconfig |    1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 5f84b55..b9fb9a1 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -134,6 +134,7 @@ config SPI_DAVINCI
+>  	tristate "Texas Instruments DaVinci/DA8x/OMAP-L/AM1x SoC SPI
+> controller"
+>  	depends on ARCH_DAVINCI
+>  	select SPI_BITBANG
+> +	select TI_EDMA
+>  	help
+>  	  SPI master controller for DaVinci/DA8x/OMAP-L/AM1x SPI modules.
+>  
+> -- 
+> 1.7.9.5
+> 
+> 
+> 
+> -- 
+> ~Vinod Koul
+> Intel Corp.
+> 
+> _______________________________________________
+> Davinci-linux-open-source mailing list
+> Davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

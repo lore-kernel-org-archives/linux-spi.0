@@ -1,49 +1,52 @@
-From: Roland Stigge <stigge@antcom.de>
-Subject: Re: [PATCH v6 1/3] spi/pl022: Add chip select handling via GPIO
-Date: Sun, 02 Sep 2012 22:04:14 +0200
-Message-ID: <5043BBBE.30409@antcom.de>
-References: <1345643359-16584-1-git-send-email-stigge@antcom.de> <CAPub14-Oot_wJsRTv2AGu3SAAf40+3_wK43=0Swxj+5XjPaDew@mail.gmail.com>
+From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH resend 2/2] SPI: spi-gpio: Add DT bindings
+Date: Sun, 02 Sep 2012 22:17:06 +0200
+Message-ID: <5043BEC2.2090705@gmail.com>
+References: <1343854638-32563-1-git-send-email-zonque@gmail.com>
+	<1343854638-32563-2-git-send-email-zonque@gmail.com>
+	<CACRpkdYY9oFAJ5qdhY-hD+YAnhO3DxxhY_VQGS4sKuimLxWaHw@mail.gmail.com>
+	<501E5FA9.9050905@gmail.com>
+	<CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linus.walleij@linaro.org, aletes.xgr@gmail.com,
-	broonie@opensource.wolfsonmicro.com, grant.likely@secretlab.ca,
-	rob.herring@calxeda.com, rob@landley.net,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	gabriel.fernandez@stericsson.com, lee.jones@linaro.org,
-	viresh.kumar@linaro.org, sachin.verma@st.co
-To: shiraz hashim <shiraz.linux.kernel@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <CAPub14-Oot_wJsRTv2AGu3SAAf40+3_wK43=0Swxj+5XjPaDew@mail.gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Shiraz,
-
-On 01/09/12 13:14, shiraz hashim wrote:
-> On Wed, Aug 22, 2012 at 7:19 PM, Roland Stigge <stigge@antcom.de> wrote:
->> @@ -2016,6 +2030,8 @@ pl022_probe(struct amba_device *adev, co
->>         pl022->master_info = platform_info;
->>         pl022->adev = adev;
->>         pl022->vendor = id->data;
->> +       /* Point chipselects to allocated memory beyond the main struct */
->> +       pl022->chipselects = (int *) pl022 + sizeof(struct pl022);
+On 05.08.2012 21:12, Linus Walleij wrote:
+> On Sun, Aug 5, 2012 at 1:57 PM, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 > 
-> This is going beyond memory allocated for chipselects
-> as it adds 4 * sizeof(struct pl022) bytes to pl022.
+>>> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>>
+>> Ok, thanks. Mark, did the patches reach you this time? I think they
+>> should go thru the SPI tree.
 > 
-> pl022->chipselects = (int *) &pl022[1];
+> Yeah no problem, Mark is always faster than me ...
 
-Correct. Thanks for the heads up!
+Hmm, I don't know whether anyone took those patches yet? Mark?
 
-Funnily, my previous proposal way actually like you just proposed, but
-we took the other one since it looked "better". ;-)
 
-I'll provide an incremental bugfix patch since Mark already has the
-commit in his misc.git tree.
+Thanks,
+Daniel
 
-Thanks again,
 
-Roland
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

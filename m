@@ -1,173 +1,370 @@
-From: Jan Luebbe <jlu@pengutronix.de>
-Subject: [PATCH] spidev_test.c: extend the spidev_test tool to read a command file
-Date: Mon,  3 Sep 2012 15:01:47 +0200
-Message-ID: <1346677307-17141-1-git-send-email-jlu@pengutronix.de>
-Cc: spi-devel-general@lists.sourceforge.net, linux-doc@vger.kernel.org,
-	Jan Luebbe <jlu@pengutronix.de>
-To: Grant Likely <grant.likely@secretlab.ca>,
-	Rob Landley <rob@landley.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Sender: linux-doc-owner@vger.kernel.org
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
+Date: Mon, 3 Sep 2012 19:32:21 +0530
+Message-ID: <1346680941-7931-1-git-send-email-shubhrajyoti@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Shubhrajyoti, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently, spidev_test.c always sends hardcoded data to the device.
-By fetching this data from a file given as a parameter, one can test
-real devices.
+Currently in omap2_mcspi_txrx_dma has the rx and the rx support
+interleaved. Make the rx related code in omap2_mcspi_rx_dma
+and the tx related code omap2_mcspi_tx_dma and call functions.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+While at it also remove the braces in the if statements which has only
+one line.
+Also fix ["foo * bar" to "foo *bar"] warn for the rx and tx variables.
+
+Only a cleanup no functional change.
+
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- Documentation/spi/spidev_test.c |   73 +++++++++++++++++++++++++++++++--------
- 1 file changed, 58 insertions(+), 15 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |  256 +++++++++++++++++++++++------------------
+ 1 files changed, 144 insertions(+), 112 deletions(-)
 
-diff --git a/Documentation/spi/spidev_test.c b/Documentation/spi/spidev_test.c
-index 16feda9..bbb0090 100644
---- a/Documentation/spi/spidev_test.c
-+++ b/Documentation/spi/spidev_test.c
-@@ -15,6 +15,7 @@
- #include <unistd.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include <string.h>
- #include <getopt.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
-@@ -30,38 +31,73 @@ static void pabort(const char *s)
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 1c1dd34..dd8fc88 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -315,49 +315,27 @@ static void omap2_mcspi_tx_callback(void *data)
+ 	omap2_mcspi_set_dma_req(spi, 0, 0);
  }
  
- static const char *device = "/dev/spidev1.1";
-+static const char *command = NULL;
- static uint8_t mode;
- static uint8_t bits = 8;
- static uint32_t speed = 500000;
- static uint16_t delay;
+-static unsigned
+-omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
++static void omap2_mcspi_tx_dma(struct spi_device *spi,
++				struct spi_transfer *xfer,
++				struct dma_slave_config cfg)
+ {
+ 	struct omap2_mcspi	*mcspi;
+-	struct omap2_mcspi_cs	*cs = spi->controller_state;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
+ 	unsigned int		count;
+-	int			word_len, element_count;
+-	int			elements = 0;
+-	u32			l;
+ 	u8			* rx;
+ 	const u8		* tx;
+ 	void __iomem		*chstat_reg;
+-	struct dma_slave_config	cfg;
+-	enum dma_slave_buswidth width;
+-	unsigned es;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
  
-+uint8_t dummy[] = {
-+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-+	0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
-+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-+	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-+	0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
-+	0xF0, 0x0D,
-+};
-+uint8_t *tx, *rx;
-+int len = ARRAY_SIZE(dummy);
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+-	l = mcspi_cached_chconf0(spi);
++	count = xfer->len;
+ 
++	rx = xfer->rx_buf;
++	tx = xfer->tx_buf;
+ 	chstat_reg = cs->base + OMAP2_MCSPI_CHSTAT0;
+ 
+-	if (cs->word_len <= 8) {
+-		width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-		es = 1;
+-	} else if (cs->word_len <= 16) {
+-		width = DMA_SLAVE_BUSWIDTH_2_BYTES;
+-		es = 2;
+-	} else {
+-		width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-		es = 4;
+-	}
+-
+-	memset(&cfg, 0, sizeof(cfg));
+-	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
+-	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
+-	cfg.src_addr_width = width;
+-	cfg.dst_addr_width = width;
+-	cfg.src_maxburst = 1;
+-	cfg.dst_maxburst = 1;
+-
+-	if (xfer->tx_buf && mcspi_dma->dma_tx) {
++	if (mcspi_dma->dma_tx) {
+ 		struct dma_async_tx_descriptor *tx;
+ 		struct scatterlist sg;
+ 
+@@ -368,7 +346,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 		sg_dma_len(&sg) = xfer->len;
+ 
+ 		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
+-			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_tx_callback;
+ 			tx->callback_param = spi;
+@@ -377,8 +355,50 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 			/* FIXME: fall back to PIO? */
+ 		}
+ 	}
++	dma_async_issue_pending(mcspi_dma->dma_tx);
++	omap2_mcspi_set_dma_req(spi, 0, 1);
+ 
+-	if (xfer->rx_buf && mcspi_dma->dma_rx) {
++	wait_for_completion(&mcspi_dma->dma_tx_completion);
++	dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
++			 DMA_TO_DEVICE);
 +
-+static void prepare()
-+{
-+	int fd;
-+	tx = malloc(len);
-+	if (!tx)
-+		pabort("can't allocate tx buffer");
-+	rx = malloc(len);
-+	if (!rx)
-+		pabort("can't allocate rx buffer");
-+	memset(tx, 0xff, len);
-+	memset(rx, 0xff, len);
-+	if (!command) {
-+		memcpy(tx, dummy, len);
-+		return;
++	/* for TX_ONLY mode, be sure all words have shifted out */
++	if (rx == NULL) {
++		if (mcspi_wait_for_reg_bit(chstat_reg,
++					OMAP2_MCSPI_CHSTAT_TXS) < 0)
++			dev_err(&spi->dev, "TXS timed out\n");
++		else if (mcspi_wait_for_reg_bit(chstat_reg,
++					OMAP2_MCSPI_CHSTAT_EOT) < 0)
++			dev_err(&spi->dev, "EOT timed out\n");
 +	}
-+	fd = open(command, O_RDONLY);
-+	if (fd < 0)
-+		pabort("can't open command file");
-+	len = read(fd, tx, len);
-+	if (len < 0)
-+		pabort("can't read command file");
 +}
 +
- static void transfer(int fd)
- {
- 	int ret;
--	uint8_t tx[] = {
--		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
--		0x40, 0x00, 0x00, 0x00, 0x00, 0x95,
--		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
--		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
--		0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
--		0xDE, 0xAD, 0xBE, 0xEF, 0xBA, 0xAD,
--		0xF0, 0x0D,
--	};
--	uint8_t rx[ARRAY_SIZE(tx)] = {0, };
- 	struct spi_ioc_transfer tr = {
- 		.tx_buf = (unsigned long)tx,
- 		.rx_buf = (unsigned long)rx,
--		.len = ARRAY_SIZE(tx),
-+		.len = len,
- 		.delay_usecs = delay,
- 		.speed_hz = speed,
- 		.bits_per_word = bits,
- 	};
++static unsigned
++omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
++				struct dma_slave_config cfg,
++				unsigned es)
++{
++	struct omap2_mcspi	*mcspi;
++	struct omap2_mcspi_dma  *mcspi_dma;
++	unsigned int		count;
++	u32			l;
++	int			elements = 0;
++	int			word_len, element_count;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	mcspi = spi_master_get_devdata(spi->master);
++	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
++	count = xfer->len;
++	word_len = cs->word_len;
++	l = mcspi_cached_chconf0(spi);
++
++	if (word_len <= 8)
++		element_count = count;
++	else if (word_len <= 16)
++		element_count = count >> 1;
++	else /* word_len <= 32 */
++		element_count = count >> 2;
++
++	if (mcspi_dma->dma_rx) {
+ 		struct dma_async_tx_descriptor *tx;
+ 		struct scatterlist sg;
+ 		size_t len = xfer->len - es;
+@@ -393,108 +413,120 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 		sg_dma_len(&sg) = len;
  
-+	printf("sending:\n");
-+	for (ret = 0; ret < len; ret++) {
-+		if (!(ret % 6))
-+			puts("");
-+		printf("%.2X ", tx[ret]);
+ 		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, &sg, 1,
+-			DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
++				DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_rx_callback;
+ 			tx->callback_param = spi;
+ 			dmaengine_submit(tx);
+ 		} else {
+-			/* FIXME: fall back to PIO? */
+-		}
+-	}
+-
+-	count = xfer->len;
+-	word_len = cs->word_len;
+-
+-	rx = xfer->rx_buf;
+-	tx = xfer->tx_buf;
+-
+-	if (word_len <= 8) {
+-		element_count = count;
+-	} else if (word_len <= 16) {
+-		element_count = count >> 1;
+-	} else /* word_len <= 32 */ {
+-		element_count = count >> 2;
+-	}
+-
+-	if (tx != NULL) {
+-		dma_async_issue_pending(mcspi_dma->dma_tx);
+-		omap2_mcspi_set_dma_req(spi, 0, 1);
+-	}
+-
+-	if (rx != NULL) {
+-		dma_async_issue_pending(mcspi_dma->dma_rx);
+-		omap2_mcspi_set_dma_req(spi, 1, 1);
+-	}
+-
+-	if (tx != NULL) {
+-		wait_for_completion(&mcspi_dma->dma_tx_completion);
+-		dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
+-				 DMA_TO_DEVICE);
+-
+-		/* for TX_ONLY mode, be sure all words have shifted out */
+-		if (rx == NULL) {
+-			if (mcspi_wait_for_reg_bit(chstat_reg,
+-						OMAP2_MCSPI_CHSTAT_TXS) < 0)
+-				dev_err(&spi->dev, "TXS timed out\n");
+-			else if (mcspi_wait_for_reg_bit(chstat_reg,
+-						OMAP2_MCSPI_CHSTAT_EOT) < 0)
+-				dev_err(&spi->dev, "EOT timed out\n");
++				/* FIXME: fall back to PIO? */
+ 		}
+ 	}
+ 
+-	if (rx != NULL) {
+-		wait_for_completion(&mcspi_dma->dma_rx_completion);
+-		dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
+-				 DMA_FROM_DEVICE);
+-		omap2_mcspi_set_enable(spi, 0);
++	dma_async_issue_pending(mcspi_dma->dma_rx);
++	omap2_mcspi_set_dma_req(spi, 1, 1);
+ 
+-		elements = element_count - 1;
++	wait_for_completion(&mcspi_dma->dma_rx_completion);
++	dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
++			 DMA_FROM_DEVICE);
++	omap2_mcspi_set_enable(spi, 0);
+ 
+-		if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+-			elements--;
++	elements = element_count - 1;
+ 
+-			if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				   & OMAP2_MCSPI_CHSTAT_RXS)) {
+-				u32 w;
+-
+-				w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+-				if (word_len <= 8)
+-					((u8 *)xfer->rx_buf)[elements++] = w;
+-				else if (word_len <= 16)
+-					((u16 *)xfer->rx_buf)[elements++] = w;
+-				else /* word_len <= 32 */
+-					((u32 *)xfer->rx_buf)[elements++] = w;
+-			} else {
+-				dev_err(&spi->dev,
+-					"DMA RX penultimate word empty");
+-				count -= (word_len <= 8)  ? 2 :
+-					(word_len <= 16) ? 4 :
+-					/* word_len <= 32 */ 8;
+-				omap2_mcspi_set_enable(spi, 1);
+-				return count;
+-			}
+-		}
++	if (l & OMAP2_MCSPI_CHCONF_TURBO) {
++		elements--;
+ 
+ 		if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				& OMAP2_MCSPI_CHSTAT_RXS)) {
++				   & OMAP2_MCSPI_CHSTAT_RXS)) {
+ 			u32 w;
+ 
+ 			w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+ 			if (word_len <= 8)
+-				((u8 *)xfer->rx_buf)[elements] = w;
++				((u8 *)xfer->rx_buf)[elements++] = w;
+ 			else if (word_len <= 16)
+-				((u16 *)xfer->rx_buf)[elements] = w;
++				((u16 *)xfer->rx_buf)[elements++] = w;
+ 			else /* word_len <= 32 */
+-				((u32 *)xfer->rx_buf)[elements] = w;
++				((u32 *)xfer->rx_buf)[elements++] = w;
+ 		} else {
+-			dev_err(&spi->dev, "DMA RX last word empty");
+-			count -= (word_len <= 8)  ? 1 :
+-				 (word_len <= 16) ? 2 :
+-			       /* word_len <= 32 */ 4;
++			dev_err(&spi->dev, "DMA RX penultimate word empty");
++			count -= (word_len <= 8)  ? 2 :
++				(word_len <= 16) ? 4 :
++				/* word_len <= 32 */ 8;
++			omap2_mcspi_set_enable(spi, 1);
++			return count;
+ 		}
+-		omap2_mcspi_set_enable(spi, 1);
+ 	}
++	if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
++				& OMAP2_MCSPI_CHSTAT_RXS)) {
++		u32 w;
++
++		w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
++		if (word_len <= 8)
++			((u8 *)xfer->rx_buf)[elements] = w;
++		else if (word_len <= 16)
++			((u16 *)xfer->rx_buf)[elements] = w;
++		else /* word_len <= 32 */
++			((u32 *)xfer->rx_buf)[elements] = w;
++	} else {
++		dev_err(&spi->dev, "DMA RX last word empty");
++		count -= (word_len <= 8)  ? 1 :
++			 (word_len <= 16) ? 2 :
++		       /* word_len <= 32 */ 4;
 +	}
-+	puts("");
++	omap2_mcspi_set_enable(spi, 1);
++	return count;
++}
 +
- 	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
- 	if (ret < 1)
- 		pabort("can't send spi message");
- 
--	for (ret = 0; ret < ARRAY_SIZE(tx); ret++) {
-+	printf("received:\n");
-+	for (ret = 0; ret < len; ret++) {
- 		if (!(ret % 6))
- 			puts("");
- 		printf("%.2X ", rx[ret]);
-@@ -71,11 +107,12 @@ static void transfer(int fd)
- 
- static void print_usage(const char *prog)
- {
--	printf("Usage: %s [-DsbdlHOLC3]\n", prog);
-+	printf("Usage: %s [-DcsbdlHOLC3]\n", prog);
- 	puts("  -D --device   device to use (default /dev/spidev1.1)\n"
-+	     "  -c --command  command file\n"
- 	     "  -s --speed    max speed (Hz)\n"
- 	     "  -d --delay    delay (usec)\n"
--	     "  -b --bpw      bits per word \n"
-+	     "  -b --bpw      bits per word\n"
- 	     "  -l --loop     loopback\n"
- 	     "  -H --cpha     clock phase\n"
- 	     "  -O --cpol     clock polarity\n"
-@@ -90,6 +127,7 @@ static void parse_opts(int argc, char *argv[])
- 	while (1) {
- 		static const struct option lopts[] = {
- 			{ "device",  1, 0, 'D' },
-+			{ "command", 1, 0, 'c' },
- 			{ "speed",   1, 0, 's' },
- 			{ "delay",   1, 0, 'd' },
- 			{ "bpw",     1, 0, 'b' },
-@@ -105,7 +143,7 @@ static void parse_opts(int argc, char *argv[])
- 		};
- 		int c;
- 
--		c = getopt_long(argc, argv, "D:s:d:b:lHOLC3NR", lopts, NULL);
-+		c = getopt_long(argc, argv, "D:c:s:d:b:lHOLC3NR", lopts, NULL);
- 
- 		if (c == -1)
- 			break;
-@@ -114,6 +152,9 @@ static void parse_opts(int argc, char *argv[])
- 		case 'D':
- 			device = optarg;
- 			break;
-+		case 'c':
-+			command = optarg;
-+			break;
- 		case 's':
- 			speed = atoi(optarg);
- 			break;
-@@ -161,6 +202,8 @@ int main(int argc, char *argv[])
- 
- 	parse_opts(argc, argv);
- 
-+	prepare();
++static unsigned
++omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
++{
++	struct omap2_mcspi	*mcspi;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	struct omap2_mcspi_dma  *mcspi_dma;
++	unsigned int		count;
++	u32			l;
++	u8			*rx;
++	const u8		*tx;
++	struct dma_slave_config	cfg;
++	enum dma_slave_buswidth width;
++	unsigned es;
 +
- 	fd = open(device, O_RDWR);
- 	if (fd < 0)
- 		pabort("can't open device");
++	mcspi = spi_master_get_devdata(spi->master);
++	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
++	l = mcspi_cached_chconf0(spi);
++
++
++	if (cs->word_len <= 8) {
++		width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++		es = 1;
++	} else if (cs->word_len <= 16) {
++		width = DMA_SLAVE_BUSWIDTH_2_BYTES;
++		es = 2;
++	} else {
++		width = DMA_SLAVE_BUSWIDTH_4_BYTES;
++		es = 4;
++	}
++
++	memset(&cfg, 0, sizeof(cfg));
++	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
++	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
++	cfg.src_addr_width = width;
++	cfg.dst_addr_width = width;
++	cfg.src_maxburst = 1;
++	cfg.dst_maxburst = 1;
++
++	rx = xfer->rx_buf;
++	tx = xfer->tx_buf;
++
++	count = xfer->len;
++
++	if (tx != NULL)
++		omap2_mcspi_tx_dma(spi, xfer, cfg);
++
++	if (rx != NULL)
++		return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
++
+ 	return count;
+ }
+ 
 -- 
-1.7.10.4
+1.7.5.4
 
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,46 +1,54 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi/pl022: Fix chipselects pointer computation
-Date: Mon, 3 Sep 2012 11:11:14 +0200
-Message-ID: <CACRpkdZ75s-yh5vzevbUPzhGbOj+mBNfJ+i68f5tH67oS4X__A@mail.gmail.com>
-References: <1346660069-16049-1-git-send-email-stigge@antcom.de>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH resend 2/2] SPI: spi-gpio: Add DT bindings
+Date: Mon, 3 Sep 2012 13:50:34 +0200
+Message-ID: <CACRpkdZfBd99r2CnObZz5iK=72DTf-9J9p6k32JM_6De29JtXg@mail.gmail.com>
+References: <1343854638-32563-1-git-send-email-zonque@gmail.com>
+	<1343854638-32563-2-git-send-email-zonque@gmail.com>
+	<CACRpkdYY9oFAJ5qdhY-hD+YAnhO3DxxhY_VQGS4sKuimLxWaHw@mail.gmail.com>
+	<501E5FA9.9050905@gmail.com>
+	<CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA@mail.gmail.com>
+	<5043BEC2.2090705@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: shiraz.linux.kernel@gmail.com, aletes.xgr@gmail.com,
-	grant.likely@secretlab.ca, rob.herring@calxeda.com,
-	rob@landley.net, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	gabriel.fernandez@stericsson.com, lee.jones@linaro.org,
-	viresh.kumar@linaro.org, sachin.verma@st.co
-To: Roland Stigge <stigge@antcom.de>,
-	broonie@opensource.wolfsonmicro.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1346660069-16049-1-git-send-email-stigge@antcom.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <5043BEC2.2090705-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 3, 2012 at 10:14 AM, Roland Stigge <stigge@antcom.de> wrote:
-
-> The new chip select handling via GPIO introduced a pointer computation bug:
+On Sun, Sep 2, 2012 at 10:17 PM, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On 05.08.2012 21:12, Linus Walleij wrote:
+>> On Sun, Aug 5, 2012 at 1:57 PM, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>
+>>>> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>>>
+>>> Ok, thanks. Mark, did the patches reach you this time? I think they
+>>> should go thru the SPI tree.
+>>
+>> Yeah no problem, Mark is always faster than me ...
 >
->         (int *) pl022 + sizeof(struct pl022)
->
-> doesn't point to the data immediately after the actual struct pl022 (as was
-> intended) but to a multiple of bytes after it because of the (int *) type.
->
-> Replacing the kludgy pointer arithmetic with managed memory allocation for the
-> chip selects.
->
-> Signed-off-by: Roland Stigge <stigge@antcom.de>
+> Hmm, I don't know whether anyone took those patches yet? Mark?
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Thanks for fixing this! And thanks to Shiraz for spotting the problem,
-Mark you could add a:
-
-Reported-by: Shiraz Hashim <shiraz.linux.kernel@gmail.com>
-
-when applying this.
+Mark better take them, ping on Mark.
 
 Yours,
 Linus Walleij
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

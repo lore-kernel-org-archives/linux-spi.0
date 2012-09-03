@@ -1,22 +1,19 @@
-From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH resend 2/2] SPI: spi-gpio: Add DT bindings
-Date: Sun, 02 Sep 2012 22:17:06 +0200
-Message-ID: <5043BEC2.2090705@gmail.com>
-References: <1343854638-32563-1-git-send-email-zonque@gmail.com>
-	<1343854638-32563-2-git-send-email-zonque@gmail.com>
-	<CACRpkdYY9oFAJ5qdhY-hD+YAnhO3DxxhY_VQGS4sKuimLxWaHw@mail.gmail.com>
-	<501E5FA9.9050905@gmail.com>
-	<CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA@mail.gmail.com>
+From: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi/pl022: Fix chipselects pointer computation
+Date: Mon,  3 Sep 2012 10:14:29 +0200
+Message-ID: <1346660069-16049-1-git-send-email-stigge@antcom.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+To: linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	aletes.xgr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	gabriel.fernandez-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, sachin.verma-lpHj6iFQ3dU@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,22 +24,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05.08.2012 21:12, Linus Walleij wrote:
-> On Sun, Aug 5, 2012 at 1:57 PM, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 
->>> Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->>
->> Ok, thanks. Mark, did the patches reach you this time? I think they
->> should go thru the SPI tree.
-> 
-> Yeah no problem, Mark is always faster than me ...
+The new chip select handling via GPIO introduced a pointer computation bug:
 
-Hmm, I don't know whether anyone took those patches yet? Mark?
+	(int *) pl022 + sizeof(struct pl022)
 
+doesn't point to the data immediately after the actual struct pl022 (as was
+intended) but to a multiple of bytes after it because of the (int *) type.
 
-Thanks,
-Daniel
+Replacing the kludgy pointer arithmetic with managed memory allocation for the
+chip selects.
 
+Signed-off-by: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+
+---
+ drivers/spi/spi-pl022.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+--- linux-2.6.orig/drivers/spi/spi-pl022.c
++++ linux-2.6/drivers/spi/spi-pl022.c
+@@ -2053,8 +2053,7 @@ pl022_probe(struct amba_device *adev, co
+ 	}
+ 
+ 	/* Allocate master with space for data */
+-	master = spi_alloc_master(dev, sizeof(struct pl022) + sizeof(int) *
+-				  num_cs);
++	master = spi_alloc_master(dev, sizeof(struct pl022));
+ 	if (master == NULL) {
+ 		dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
+ 		status = -ENOMEM;
+@@ -2066,8 +2065,8 @@ pl022_probe(struct amba_device *adev, co
+ 	pl022->master_info = platform_info;
+ 	pl022->adev = adev;
+ 	pl022->vendor = id->data;
+-	/* Point chipselects to allocated memory beyond the main struct */
+-	pl022->chipselects = (int *) pl022 + sizeof(struct pl022);
++	pl022->chipselects = devm_kzalloc(dev, num_cs * sizeof(int),
++					  GFP_KERNEL);
+ 
+ 	/*
+ 	 * Bus Number Which has been Assigned to this SSP controller
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

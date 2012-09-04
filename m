@@ -1,44 +1,91 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH] Revert "spi/doc: spi_master_put must be followed up by kfree"
-Date: Mon,  3 Sep 2012 13:26:26 -0700
-Message-ID: <1346703986-7849-1-git-send-email-linux@roeck-us.net>
-Cc: linux-kernel@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH 4/4] mxs/spi: Rework the mxs_ssp_timeout to be more readable
+Date: Tue,  4 Sep 2012 04:40:18 +0200
+Message-ID: <1346726418-2856-5-git-send-email-marex@denx.de>
+References: <1346726418-2856-1-git-send-email-marex@denx.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1346726418-2856-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Actually, spi_master_put() after spi_alloc_master() must _not_ be followed
-by kfree(). The memory is already freed with the call to spi_master_put()
-through spi_master_class, which registers a release function. Calling both
-spi_master_put() and kfree() results in often nasty (and delayed) crashes
-elsewhere in the kernel, often in the networking stack.
+Rework the mxs_ssp_timeout() function to make it a bit more readable
+and hopefully less error prone. Also, have only one successful exit
+from the function and one failing exit instead of two.
 
-This reverts commit eb4af0f5349235df2e4a5057a72fc8962d00308a.
+Finally, discard the udelay() from this function altogether, as this
+tightloop is quick enough it's pointless.
 
-Cc: Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-mxs.c |   20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2d9b5bb..6470750 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1082,8 +1082,7 @@ static struct class spi_master_class = {
-  *
-  * The caller is responsible for assigning the bus number and initializing
-  * the master's methods before calling spi_register_master(); and (after errors
-- * adding the device) calling spi_master_put() and kfree() to prevent a memory
-- * leak.
-+ * adding the device) calling spi_master_put() to prevent a memory leak.
-  */
- struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 6650ded..2c3665a 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -177,25 +177,23 @@ static inline void mxs_spi_disable(struct mxs_spi *spi)
+ 
+ static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
  {
+-	unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
++	const unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
+ 	struct mxs_ssp *ssp = &spi->ssp;
+ 	uint32_t reg;
+ 
+-	while (1) {
++	do {
+ 		reg = readl_relaxed(ssp->base + offset);
+ 
+-		if (set && ((reg & mask) == mask))
+-			break;
++		if (!set)
++			reg = ~reg;
+ 
+-		if (!set && ((~reg & mask) == mask))
+-			break;
++		reg &= mask;
+ 
+-		udelay(1);
++		if (reg == mask)
++			return 0;
++	} while (time_before(jiffies, timeout));
+ 
+-		if (time_after(jiffies, timeout))
+-			return -ETIMEDOUT;
+-	}
+-	return 0;
++	return -ETIMEDOUT;
+ }
+ 
+ static void mxs_ssp_dma_irq_callback(void *param)
 -- 
-1.7.9.7
+1.7.10.4
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,7 +1,8 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 3/4] mxs/spi: Decrement the DMA/PIO border
-Date: Tue,  4 Sep 2012 04:40:17 +0200
-Message-ID: <1346726418-2856-4-git-send-email-marex@denx.de>
+Subject: [PATCH 2/4] mxs/spi: Increment the transfer length only if transfer
+	succeeded
+Date: Tue,  4 Sep 2012 04:40:16 +0200
+Message-ID: <1346726418-2856-3-git-send-email-marex@denx.de>
 References: <1346726418-2856-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,13 +24,9 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This driver checks the length of transfer to be made and based
-on this information, either chooses to transfer data via DMA or
-PIO. Decrement this border further to gain better performace eg.
-during SPI flash writes.
-
-Empiric measurement shows that this gives extra 3kB/s write speed
-with a M25P80 flash clocked at 40MHz.
+The transfer function incremented (struct spi_message)->actual_length
+unconditionally, even if the transfer failed. Rectify this by incrementing
+this only if transfer succeeded.
 
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
@@ -42,18 +39,23 @@ Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 282bdd7..6650ded 100644
+index 3add52e..282bdd7 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -445,7 +445,7 @@ static int mxs_spi_transfer_one(struct spi_master *master,
- 		 * DMA only: 2.164808 seconds, 473.0KB/s
- 		 * Combined: 1.676276 seconds, 610.9KB/s
- 		 */
--		if (t->len <= 256) {
-+		if (t->len < 32) {
- 			writel(BM_SSP_CTRL1_DMA_ENABLE,
- 				ssp->base + HW_SSP_CTRL1(ssp) +
- 				STMP_OFFSET_REG_CLR);
+@@ -473,12 +473,12 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 						&first, &last, 0);
+ 		}
+ 
+-		m->actual_length += t->len;
+ 		if (status) {
+ 			stmp_reset_block(ssp->base);
+ 			break;
+ 		}
+ 
++		m->actual_length += t->len;
+ 		first = last = 0;
+ 	}
+ 
 -- 
 1.7.10.4
 

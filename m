@@ -1,7 +1,7 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH 4/4] mxs/spi: Rework the mxs_ssp_timeout to be more readable
-Date: Tue,  4 Sep 2012 04:40:18 +0200
-Message-ID: <1346726418-2856-5-git-send-email-marex@denx.de>
+Subject: [PATCH 1/4] mxs/spi: Fix issues when doing long continuous transfer
+Date: Tue,  4 Sep 2012 04:40:15 +0200
+Message-ID: <1346726418-2856-2-git-send-email-marex@denx.de>
 References: <1346726418-2856-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,12 +23,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Rework the mxs_ssp_timeout() function to make it a bit more readable
-and hopefully less error prone. Also, have only one successful exit
-from the function and one failing exit instead of two.
+When doing long continuous transfer, eg. from SPI flash via /dev/mtd,
+the driver dies. This is caused by a bug in the DMA chaining. Rework
+the DMA transfer code so that this issue does not happen any longer.
 
-Finally, discard the udelay() from this function altogether, as this
-tightloop is quick enough it's pointless.
+This involves proper allocation of correct amount of sg-list members.
+Also, this means proper creation of DMA descriptors. There is actually an
+important catch to this, the data transfer descriptors must be interleaved
+with PIO register write descriptor, otherwise the transfer stalls. This
+can be done in one descriptor, but due to the limitation of the DMA API,
+it's not possible.
+
+It turns out that in order for the SPI DMA to properly support
+continuous transfers longer than 65280 bytes, there are some very
+important parts that were left out from the documentation about about
+the PIO transfer that is used.
+
+Firstly, the XFER_SIZE register is not written with the whole length
+of a transfer, but is written by each and every chained descriptor
+with the length of the descriptors data buffer.
+
+Next, unlike the demo code supplied by FSL, which only writes one PIO
+word per descriptor, this does not apply if the descriptors are chained,
+since the XFER_SIZE register must be written. Therefore, it is essential
+to use four PIO words, CTRL0, CMD0, CMD1, XFER_SIZE. CMD0 and CMD1 are
+written with zero, since they don't apply. The DMA programs the PIO words
+in an incrementing order, so four PIO words.
+
+Finally, unlike the demo code supplied by FSL, the SSP_CTRL0_IGNORE_CRC
+must not be set during the whole transfer, but it must be set only on the
+last descriptor in the chain.
+
+Lastly, this code lends code from drivers/mtd/nand/omap2.c, which solves
+trouble when the buffer supplied to the DMA transfer was vmalloc()'d. So
+with this patch, it's safe to use /dev/mtdblockX interface again.
 
 Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
@@ -37,48 +65,195 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |   20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/spi/spi-mxs.c |  141 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 88 insertions(+), 53 deletions(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 6650ded..2c3665a 100644
+index d49634a..3add52e 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -177,25 +177,23 @@ static inline void mxs_spi_disable(struct mxs_spi *spi)
+@@ -53,9 +53,9 @@
  
- static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
+ #define DRIVER_NAME		"mxs-spi"
+ 
+-#define SSP_TIMEOUT		1000	/* 1000 ms */
++/* Use 10S timeout for very long transfers, it should suffice. */
++#define SSP_TIMEOUT		10000
+ 
+-#define SG_NUM			4
+ #define SG_MAXLEN		0xff00
+ 
+ struct mxs_spi {
+@@ -219,61 +219,94 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 			    int *first, int *last, int write)
  {
--	unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
-+	const unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
  	struct mxs_ssp *ssp = &spi->ssp;
- 	uint32_t reg;
- 
--	while (1) {
-+	do {
- 		reg = readl_relaxed(ssp->base + offset);
- 
--		if (set && ((reg & mask) == mask))
--			break;
-+		if (!set)
-+			reg = ~reg;
- 
--		if (!set && ((~reg & mask) == mask))
--			break;
-+		reg &= mask;
- 
--		udelay(1);
-+		if (reg == mask)
-+			return 0;
-+	} while (time_before(jiffies, timeout));
- 
--		if (time_after(jiffies, timeout))
--			return -ETIMEDOUT;
+-	struct dma_async_tx_descriptor *desc;
+-	struct scatterlist sg[SG_NUM];
++	struct dma_async_tx_descriptor *desc = NULL;
++	const bool vmalloced_buf = is_vmalloc_addr(buf);
++	const int desc_len = vmalloced_buf ? PAGE_SIZE : SG_MAXLEN;
++	const int sgs = DIV_ROUND_UP(len, desc_len);
+ 	int sg_count;
+-	uint32_t pio = BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+-	int ret;
+-
+-	if (len > SG_NUM * SG_MAXLEN) {
+-		dev_err(ssp->dev, "Data chunk too big for DMA\n");
++	int min, ret;
++	uint32_t ctrl0;
++	struct page *vm_page;
++	void *sg_buf;
++	struct {
++		uint32_t		pio[4];
++		struct scatterlist	sg;
++	} *dma_xfer;
++
++	if (!len)
+ 		return -EINVAL;
 -	}
--	return 0;
-+	return -ETIMEDOUT;
++
++	dma_xfer = kzalloc(sizeof(*dma_xfer) * sgs, GFP_KERNEL);
++	if (!dma_xfer)
++		return -ENOMEM;
+ 
+ 	INIT_COMPLETION(spi->c);
+ 
++	ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
++	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
++
+ 	if (*first)
+-		pio |= BM_SSP_CTRL0_LOCK_CS;
+-	if (*last)
+-		pio |= BM_SSP_CTRL0_IGNORE_CRC;
++		ctrl0 |= BM_SSP_CTRL0_LOCK_CS;
+ 	if (!write)
+-		pio |= BM_SSP_CTRL0_READ;
+-
+-	if (ssp->devid == IMX23_SSP)
+-		pio |= len;
+-	else
+-		writel(len, ssp->base + HW_SSP_XFER_SIZE);
+-
+-	/* Queue the PIO register write transfer. */
+-	desc = dmaengine_prep_slave_sg(ssp->dmach,
+-			(struct scatterlist *)&pio,
+-			1, DMA_TRANS_NONE, 0);
+-	if (!desc) {
+-		dev_err(ssp->dev,
+-			"Failed to get PIO reg. write descriptor.\n");
+-		return -EINVAL;
+-	}
++		ctrl0 |= BM_SSP_CTRL0_READ;
+ 
+ 	/* Queue the DMA data transfer. */
+-	sg_init_table(sg, (len / SG_MAXLEN) + 1);
+-	sg_count = 0;
+-	while (len) {
+-		sg_set_buf(&sg[sg_count++], buf, min(len, SG_MAXLEN));
+-		len -= min(len, SG_MAXLEN);
+-		buf += min(len, SG_MAXLEN);
+-	}
+-	dma_map_sg(ssp->dev, sg, sg_count,
+-		write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
+-
+-	desc = dmaengine_prep_slave_sg(ssp->dmach, sg, sg_count,
+-			write ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
+-			DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-
+-	if (!desc) {
+-		dev_err(ssp->dev,
+-			"Failed to get DMA data write descriptor.\n");
+-		ret = -EINVAL;
+-		goto err;
++	for (sg_count = 0; sg_count < sgs; sg_count++) {
++		min = min(len, desc_len);
++
++		/* Prepare the transfer descriptor. */
++		if ((sg_count + 1 == sgs) && *last)
++			ctrl0 |= BM_SSP_CTRL0_IGNORE_CRC;
++
++		if (ssp->devid == IMX23_SSP)
++			ctrl0 |= min;
++
++		dma_xfer[sg_count].pio[0] = ctrl0;
++		dma_xfer[sg_count].pio[3] = min;
++
++		if (vmalloced_buf) {
++			vm_page = vmalloc_to_page(buf);
++			if (!vm_page) {
++				ret = -ENOMEM;
++				goto err_vmalloc;
++			}
++			sg_buf = page_address(vm_page) +
++				((size_t)buf & ~PAGE_MASK);
++		} else {
++			sg_buf = buf;
++		}
++
++		sg_init_one(&dma_xfer[sg_count].sg, sg_buf, min);
++		ret = dma_map_sg(ssp->dev, &dma_xfer[sg_count].sg, 1,
++			write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++
++		len -= min;
++		buf += min;
++
++		/* Queue the PIO register write transfer. */
++		desc = dmaengine_prep_slave_sg(ssp->dmach,
++				(struct scatterlist *)dma_xfer[sg_count].pio,
++				(ssp->devid == IMX23_SSP) ? 1 : 4,
++				DMA_TRANS_NONE,
++				sg_count ? DMA_PREP_INTERRUPT : 0);
++		if (!desc) {
++			dev_err(ssp->dev,
++				"Failed to get PIO reg. write descriptor.\n");
++			ret = -EINVAL;
++			goto err_mapped;
++		}
++
++		desc = dmaengine_prep_slave_sg(ssp->dmach,
++				&dma_xfer[sg_count].sg, 1,
++				write ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
++				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++
++		if (!desc) {
++			dev_err(ssp->dev,
++				"Failed to get DMA data write descriptor.\n");
++			ret = -EINVAL;
++			goto err_mapped;
++		}
+ 	}
+ 
+ 	/*
+@@ -289,21 +322,23 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 
+ 	ret = wait_for_completion_timeout(&spi->c,
+ 				msecs_to_jiffies(SSP_TIMEOUT));
+-
+ 	if (!ret) {
+ 		dev_err(ssp->dev, "DMA transfer timeout\n");
+ 		ret = -ETIMEDOUT;
+-		goto err;
++		goto err_vmalloc;
+ 	}
+ 
+ 	ret = 0;
+ 
+-err:
+-	for (--sg_count; sg_count >= 0; sg_count--) {
+-		dma_unmap_sg(ssp->dev, &sg[sg_count], 1,
++err_vmalloc:
++	while (--sg_count >= 0) {
++err_mapped:
++		dma_unmap_sg(ssp->dev, &dma_xfer[sg_count].sg, 1,
+ 			write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
+ 	}
+ 
++	kfree(dma_xfer);
++
+ 	return ret;
  }
  
- static void mxs_ssp_dma_irq_callback(void *param)
 -- 
 1.7.10.4
 

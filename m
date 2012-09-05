@@ -1,55 +1,32 @@
-From: Loving Deals <lovingdeals-iceC+ci26w5SN8l6bydGY2/KedPJEj8Q@public.gmane.org>
-Subject: =?UTF-8?Q?Loving_Deals_pr=C3=A9sente_meplusbeauxdeals.fr?=
-Date: Wed, 5 Sep 2012 12:05:01 +0200
-Message-ID: <a6e9436223730bc38b777d58941a8b60@www.lovingdeals.fr>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH RESEND-2 1/2] SPI: spi-gpio: store chipselect information
+ in private structure
+Date: Thu, 6 Sep 2012 07:40:55 +0800
+Message-ID: <20120905234054.GF10580@opensource.wolfsonmicro.com>
+References: <1346835876-14401-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1346835876-14401-1-git-send-email-zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2aXN1YWxpc2VyIGNvcnJlY3RlbWVudCBjZXR0ZSBwYWdlLCBjb25zdWx0ZXogbm90cmUg
-dmVyc2lvbiBlbiBsaWduZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvYzIzNzAxZDg2MzFiMjdiNC92aWV3L10KCgoKCnRkIHsJZm9udC1mYW1pbHk6
-IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IH0gYm9keSB0YWJsZSB0ciB0ZCBwIHsJZm9u
-dC1mYW1pbHk6IEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7IH0gcCB7CWZvbnQtZmFtaWx5
-OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyB9IC5hcmlpaWlpaWlhbCB7CWZvbnQtZmFt
-aWx5OiBBcmlhbCwgSGVsdmV0aWNhLCBzYW5zLXNlcmlmOyB9IFtodHRwOi8vd3d3LmxvdmluZ2Rl
-YWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9jMjM3MDFkODYzMWIyN2I0L10KCgpMT1ZJ
-TkcgREVBTFMgw4lWT0xVRSAhIApMb3ZpbmcgRGVhbHMsIGxlIHBsdXMgZ8OpbsOpcmV1eCBkZXMg
-c2l0ZXMgZGUgZGVhbHMsIMOpdm9sdWUgIQrDgCBwYXJ0aXIgZGUgbWFpbnRlbmFudCB2b3RyZSBj
-b21wdGUgZXQgdm9zIGNvdXBvbnMgc29udCAKZGlzcG9uaWJsZXMgc3VyIGNldHRlIG5vdXZlbGxl
-IGFkcmVzc2UgOiAKd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyIFtodHRwOi8vd3d3Lm1lc3BsdXNi
-ZWF1eGRlYWxzLmZyL10KClBvdXIgY29uc3VsdGVyIHZvcyBjb3Vwb25zIGFjaGV0w6lzIGlsIHZv
-dXMgc3VmZml0IGRlIHZvdXMgaWRlbnRpZmllci4gTG92aW5nIGRlYWxzIHZvdXMgcmVtZXJjaWUg
-cG91ciB2b3RyZSBmaWTDqWxpdMOpIGV0IHZvdHJlIHNvdXRpZW4gZW52ZXJzIG5vcyBhc3NvY2lh
-dGlvbnMgcGFydGVuYWlyZXMuCgrDgCB0csOocyBiaWVudMO0dCwKTGEgTG92aW5nIFRlYW0KCgpb
-aHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9dCgoKCltodHRwOi8vd3d3LmxvdmluZ2Rl
-YWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9jMjM3MDFkODYzMWIyN2I0L2Fzc29jaWF0
-aW9ucy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
-ZXR0ZXIvZ2F0ZXdheS9jMjM3MDFkODYzMWIyN2I0L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9d
-CltodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIvZ2F0ZXdheS9jMjM3
-MDFkODYzMWIyN2I0L2Fzc29jaWF0aW9ucy1jYXJpdGF0aXZlcy9dCgpMJ2FmYSBTdXJmcmlkZXIg
-Rm91bmRhdGlvbiBFdXJvcGUgVmlzaW9uIGR1IG1vbmRlIAoKClBvdXIgw6p0cmUgcmV0aXLDqSBk
-ZSBub3RyZSBsaXN0ZSBkZSBkaWZmdXNpb24sIGTDqXNhYm9ubmV6LXZvdXMgW2h0dHA6Ly93d3cu
-bG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2MyMzcwMWQ4NjMxYjI3YjQv
-dW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVuXQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
-dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
-YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
-aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
-IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
-dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
-bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Wed, Sep 05, 2012 at 11:04:35AM +0200, Daniel Mack wrote:
+> The spi-gpio driver currently assumes the chipselect gpio number is
+> stored in ->controller_data of the device's static board information.
+
+Applied both, thanks.

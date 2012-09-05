@@ -1,25 +1,16 @@
 From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH resend 2/2] SPI: spi-gpio: Add DT bindings
-Date: Wed, 05 Sep 2012 11:04:22 +0200
-Message-ID: <50471596.3030500@gmail.com>
-References: <1343854638-32563-1-git-send-email-zonque@gmail.com>
-	<1343854638-32563-2-git-send-email-zonque@gmail.com>
-	<CACRpkdYY9oFAJ5qdhY-hD+YAnhO3DxxhY_VQGS4sKuimLxWaHw@mail.gmail.com>
-	<501E5FA9.9050905@gmail.com>
-	<CACRpkdaanCLHjuG-+mPUN-FQbE+MJ=4_RRN85jAaL_FccgNCuA@mail.gmail.com>
-	<5043BEC2.2090705@gmail.com>
-	<CACRpkdZfBd99r2CnObZz5iK=72DTf-9J9p6k32JM_6De29JtXg@mail.gmail.com>
-	<20120905032402.GA5076@opensource.wolfsonmicro.com>
+Subject: [PATCH RESEND-2 1/2] SPI: spi-gpio: store chipselect information in
+	private structure
+Date: Wed,  5 Sep 2012 11:04:35 +0200
+Message-ID: <1346835876-14401-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120905032402.GA5076-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,23 +21,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05.09.2012 05:24, Mark Brown wrote:
-> On Mon, Sep 03, 2012 at 01:50:34PM +0200, Linus Walleij wrote:
->> On Sun, Sep 2, 2012 at 10:17 PM, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 
->>> Hmm, I don't know whether anyone took those patches yet? Mark?
-> 
->> Mark better take them, ping on Mark.
-> 
-> IIRC I did reply saying that the patches didn't apply for me, in any
-> case I don't have them any more - can you please check that they apply
-> against my -next branch and resend?
+The spi-gpio driver currently assumes the chipselect gpio number is
+stored in ->controller_data of the device's static board information.
 
-Sure, will do. They applied cleanly on top of the spi-next branch
-though. Nevermind :)
+In devicetree environments, this information is unavailable and has to
+be derived from the DT node.
 
+This patch moves the gpio storage to the controller's private data so
+the DT bindings can easily build upon the driver.
 
-Daniel
+Signed-off-by: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-gpio.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 0b56cfc..ff7263c 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -46,6 +46,7 @@ struct spi_gpio {
+ 	struct spi_bitbang		bitbang;
+ 	struct spi_gpio_platform_data	pdata;
+ 	struct platform_device		*pdev;
++	int				cs_gpios[0];
+ };
+ 
+ /*----------------------------------------------------------------------*/
+@@ -89,15 +90,21 @@ struct spi_gpio {
+ 
+ /*----------------------------------------------------------------------*/
+ 
+-static inline const struct spi_gpio_platform_data * __pure
+-spi_to_pdata(const struct spi_device *spi)
++static inline struct spi_gpio * __pure
++spi_to_spi_gpio(const struct spi_device *spi)
+ {
+ 	const struct spi_bitbang	*bang;
+-	const struct spi_gpio		*spi_gpio;
++	struct spi_gpio			*spi_gpio;
+ 
+ 	bang = spi_master_get_devdata(spi->master);
+ 	spi_gpio = container_of(bang, struct spi_gpio, bitbang);
+-	return &spi_gpio->pdata;
++	return spi_gpio;
++}
++
++static inline struct spi_gpio_platform_data * __pure
++spi_to_pdata(const struct spi_device *spi)
++{
++	return &spi_to_spi_gpio(spi)->pdata;
+ }
+ 
+ /* this is #defined to avoid unused-variable warnings when inlining */
+@@ -210,7 +217,8 @@ static u32 spi_gpio_spec_txrx_word_mode3(struct spi_device *spi,
+ 
+ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
+ {
+-	unsigned long cs = (unsigned long) spi->controller_data;
++	struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
++	unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
+ 
+ 	/* set initial clock polarity */
+ 	if (is_active)
+@@ -224,8 +232,9 @@ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
+ 
+ static int spi_gpio_setup(struct spi_device *spi)
+ {
+-	unsigned long	cs = (unsigned long) spi->controller_data;
+-	int		status = 0;
++	unsigned int		cs = (unsigned int) spi->controller_data;
++	int			status = 0;
++	struct spi_gpio		*spi_gpio = spi_to_spi_gpio(spi);
+ 
+ 	if (spi->bits_per_word > 32)
+ 		return -EINVAL;
+@@ -239,8 +248,11 @@ static int spi_gpio_setup(struct spi_device *spi)
+ 					!(spi->mode & SPI_CS_HIGH));
+ 		}
+ 	}
+-	if (!status)
++	if (!status) {
+ 		status = spi_bitbang_setup(spi);
++		spi_gpio->cs_gpios[spi->chip_select] = cs;
++	}
++
+ 	if (status) {
+ 		if (!spi->controller_state && cs != SPI_GPIO_NO_CHIPSELECT)
+ 			gpio_free(cs);
+@@ -250,7 +262,8 @@ static int spi_gpio_setup(struct spi_device *spi)
+ 
+ static void spi_gpio_cleanup(struct spi_device *spi)
+ {
+-	unsigned long	cs = (unsigned long) spi->controller_data;
++	struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
++	unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
+ 
+ 	if (cs != SPI_GPIO_NO_CHIPSELECT)
+ 		gpio_free(cs);
+@@ -331,7 +344,8 @@ static int __devinit spi_gpio_probe(struct platform_device *pdev)
+ 	if (status < 0)
+ 		return status;
+ 
+-	master = spi_alloc_master(&pdev->dev, sizeof *spi_gpio);
++	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio) +
++					(sizeof(int) * SPI_N_CHIPSEL));
+ 	if (!master) {
+ 		status = -ENOMEM;
+ 		goto gpio_free;
+-- 
+1.7.11.4
+
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

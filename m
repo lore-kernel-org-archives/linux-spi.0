@@ -1,13 +1,17 @@
-From: "=?gb2312?B?ZGFud2FuZ3N6NTQxOA==?=" <danwangsz5418-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?x+uy6crVo6GjoaOh?=
-Date: Wed, 5 Sep 2012 17:55:08 +0800 (CST)
-Message-ID: <5047217C.0001F5.12229@cnapp12>
+From: "forthnet.gr" <ojcyyiyjlv-1qjEjX/Lvz1Mo1R+fwTmgw@public.gmane.org>
+Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwMzUg0tXC?=
+Date: Wed, 5 Sep 2012 14:19:51 +0400
+Message-ID: <599D0A97E02D4195903832B24E69AA6D@slkmeq>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3670873398935323639=="
-Cc: speleonics-XbBxUvOt3X2fqge4AArJ5qxOck334EZe@public.gmane.org, spi-announce-owner-dgTNMgSYHsS0vQ6hRAQFwdi2O/JbrIOy@public.gmane.org,
-	spi-board-dgTNMgSYHsS0vQ6hRAQFwdi2O/JbrIOy@public.gmane.org, spi-general-dgTNMgSYHsS0vQ6hRAQFwdi2O/JbrIOy@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: speech-unsubscribe-FfzAktRlpg6qhKK6M5eAVQ@public.gmane.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
+	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
+	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
+	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
+	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
+	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,40 +23,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============3670873398935323639==
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-
-ICAgICAgICAgxPq6w6Ohsb65q8u+tPq/qrT6wO3Iq7n6uPe12Lj30NDStcuwvt2ho7e2zqfI
-58/Co7ogDQrJzMa3z/rK26Gi1PbWtcuwxtXNqKGiufrLsM2o08O7+rTyo7u12MuwzajTw7v6
-tPKjutfJ0a+hog0KueO45qGiyei8xqGi0MXPoqGixeDRtaGiu+HS6aGiu+HO8aGiwM3O8aGi
-16HL3rfRoaLUy8rkoaINCtfiwd6hor2o1v6wstewoaK3/s7xoaK+xrXqoaKyzdL7oaK5+rzK
-u/XUy7XItci498Dgy7C+3aGjICAgDQogICAgIMGqz7W157uwo7oxMzY5MTc3MjAyMiAgo7rB
-9b2bwO0NCiAgICAgICAgICBRUSAgIDk1MzUxMTc0NSAgDQrWo9bYs9DFtaO6sb65q8u+ttTT
-2surt726z9f3udjPtb74ttSxo8PcLL750tS/7LXdDQq8xLP2ytW1vci3yM/O3s7zuvO4tr/u
-o6zE+s7e0Oiz0LWjyM66zr6tvMPJz7XEt+fP1aGjICAgDQoNCg==
---===============3670873398935323639==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
---===============3670873398935323639==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3670873398935323639==--
+ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTAyLjAwMCDBxNLF08/XIC0gMzgy
+MCDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjE4MC4wMDAgwcTSxdPP1yAtIDY5NDIg0tXCCgrS
+z9PTydEgwNIuIMzJw8EgNC4yOTEuMDAwIMHE0sXTz9cgLSA2ODM4INLVwiAKCtLP09PJ0SDGydou
+IMzJw8EgMzQuODAwLjAwMCDBxNLF08/XIC0gMTEyNDIg0tXCIAoK0sHT09nMy8Eg0M8gzMDCz8og
+1MXNwdTJy8UgKNPU0s/J1MXM2M7ZxSwgwNLJxMnexdPLycUgydTEIM/Sx8HOydrBw8nJKSAtIDMw
+MTMg0tXCIAoK1MXMICs3ICg0OTkpIDUwNC0xNi00MiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxp
+dmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwg
+Y292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBl
+IGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25z
+IAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhl
+IGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2ph
+dy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

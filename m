@@ -1,9 +1,8 @@
-From: "Le Club des Createurs de Beaute par Galeriedesmarques.fr"
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Exclusif : vos 6 avantages Rentree
-Date: Thu, 06 Sep 2012 19:25:21 +0200
-Message-ID: <1346952498.5048dd3234e64@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Lee Cooper par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Bonnes affaires =?iso-8859-15?Q?jusqu=27=E0?= -50% de remise
+Date: Fri, 07 Sep 2012 01:07:04 +0200
+Message-ID: <1346972841.50492ca9e3fd8@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTk0MzImYz0xOTYxNjQxJmQ9MjAx=
-Mi0wOS0wNiAxOToyMDowMiZlPTEmaD0xOTQzMSZmPTE5NDMyJmc9MTk0MzI=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5NTAyJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0wNyAwMDo0MDowMSZlPTEmaD0xOTUwMSZmPTE5NTAyJmc9MTk1MDI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTk0MzImYz0=
-xOTYxNjQxJmQ9MjAxMi0wOS0wNiAxOToyMDowMiZlPTEmaD0xOTQzMSZmPTE5NDMyJmc9MTk0Mz=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5NTAyJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0wNyAwMDo0MDowMSZlPTEmaD0xOTUwMSZmPTE5NTAyJmc9MTk1MD=
 I=3D
 
 

@@ -1,78 +1,44 @@
-From: Daniel Mack <zonque@gmail.com>
-Subject: Re: [PATCH v3 0/3] DaVinci DMA engine conversion
-Date: Thu, 06 Sep 2012 15:25:21 +0200
-Message-ID: <5048A441.3010109@gmail.com>
-References: <1345684176-21472-1-git-send-email-mporter@ti.com> <503B933F.2030803@gmail.com>
+From: UNITED NATIONS <enfca-IfGnIyWWBo8O+tSmA9Qy2A@public.gmane.org>
+Subject: [SPAM] Making the world a better place.
+Date: Thu, 06 Sep 2012 11:48:03 -0400
+Message-ID: <WEB7oG8Zy4VOgYDi4me00042a58@ssl7.secure-svr.com>
+Reply-To: nsdoffice929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: vinod.koul@intel.com, cjb@laptop.org, grant.likely@secretlab.ca,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Sekhar Nori <nsekhar@ti.com>
-To: Matt Porter <mporter@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <503B933F.2030803@gmail.com>
-Sender: linux-mmc-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Matt,
-
-On 27.08.2012 17:33, Daniel Mack wrote:
-> On 23.08.2012 03:09, Matt Porter wrote:
->> This series begins the conversion of the DaVinci private EDMA API
->> implementation to a DMA engine driver and converts two of the three
->> in-kernel users of the private EDMA API to DMA engine.
->>
->> The approach taken is similar to the recent OMAP DMA Engine
->> conversion. The EDMA DMA Engine driver is a wrapper around the existing
->> private EDMA implementation and registers the platform device within
->> the driver.  This allows the conversion series to stand alone with just
->> the drivers and no changes to platform code. It also allows peripheral
->> drivers to continue to use the private EDMA implementation until they
->> are converted.
->>
->> The EDMA DMA Engine driver supports slave transfers only at this time. It
->> is planned to add cyclic transfers in support of audio peripherals.
->>
->> There are three users of the private EDMA API in the kernel now:
->> davinci_mmc, spi-davinci, and davinci-mcasp.  This series provides DMA
->> Engine conversions for the davinci_mmc and spi-davinci drivers which
->> use the supported slave transfers.
->>
->> This series has been tested on an AM18x EVM and Hawkboard with
->> driver performance comparable to that of the private EDMA API
->> implementations. Both MMC0 and MMC1 are tested which handles the
->> DA850/OMAP-L138/AM18x specific case where MMC1 uses DMA channels on
->> a second EDMA channel controller.  All other platforms have a simpler
->> design with just a single EDMA channel controller.
->>
->> For those wanting to easily test this series, I've pushed a branch for
->> each version to my github tree at https://github.com/ohporter/linux. The
->> current branch is edma-dmaengine-v3.
->>
->> After this series, the current plan is to complete the mcasp driver
->> conversion which includes adding cyclic dma support. This will then
->> enable the removal and refactoring of the private EDMA API functionality
->> into the EDMA DMA Engine driver.  Since EDMA is also used on the AM33xx
->> family of parts in mach-omap2/, the plan is to enable this driver on
->> that platform as well.
-> 
-> Once you have a patch for the McASP driver conversion, I can happily
-> test this on a AM33xx board, together with Gururaja's latest McASP
-> refactoring series. Let me know how I can help you here.
-
-Did you find some time yet to continue on this side? I don't want to
-appear pushy, but as I need to finish some DT transition on a
-AM33xx-based board, I would much like to help out here, in case I can do
-anything to help speed things along.
+How are you today? Hope all is well with you and family? You may not understand why this mail came to you.
+We have been having meetings for the past 2 months with the ten secretaries to the UNITED NATIONS.
+This email is sent to all the people that have been scammed in every part of  the world, the UNITED NATIONS agreed upon to compensate them with the sum of US$ 4,200,000. This includes every foreign contractors that may have not received their contract sum, and people that have had an unfinished transaction or international businesses that failed due to Government problems and impersonators etc.
+We found your name in our list and that is why we are contacting you, this has been agreed upon and has been signed.
+You are advised to contact Mrs.Violet  Okeke of Nigeria Security Department, as she is our representative in Nigeria  contact her immediately for your Cheque/ATM CARD of USD$4,200,000
+These funds are in International Bank Draft/ATM CARD for security purpose ok? So she will send it to you and you can clear it in any bank of your choice.
+Therefore, you should send her your full Name and telephone number/your correct mailing address where you want her to send the Draft/ATM to you.
+Contact Mrs.Violet  Okeke immediately for your Bank Draft/ATM CARD
+Email: nsdoffice929-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Telephone: +234-705-504-4987
+Thanks and God bless you and your family. Hoping to hear from you as soon as you cash your Bank Draft.
+Making the world a better place.
+Regards,
+Ban ki- Moon
+UN Secretary (UNITED NATIONS)
 
 
-Many thanks for your work!
 
-Daniel
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

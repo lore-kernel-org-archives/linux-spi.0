@@ -1,8 +1,10 @@
-From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Nouvelle collection en mode libre =?iso-8859-15?Q?jusqu=27=E0?= -40%
-Date: Fri, 07 Sep 2012 12:13:05 +0200
-Message-ID: <1347012882.5049c9126f46a@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Ventes Flash =?iso-8859-15?Q?Rentr=E9e?= :
+	=?iso-8859-15?Q?jusqu=27=E0?= 92% =?iso-8859-15?Q?d=27=E9conomie?= sur
+	le site
+Date: Fri, 07 Sep 2012 18:24:18 +0200
+Message-ID: <1347035138.504a200286d52@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5MjE3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0wNyAxMjowMDowMiZlPTEmaD0xOTIxNiZmPTE5MjE3Jmc9MTkyMTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTkzMTMmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0wNyAxODoyMDowMSZlPTEmaD0xOTMxMiZmPTE5MzEzJmc9MTkzMTM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5MjE3JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0wNyAxMjowMDowMiZlPTEmaD0xOTIxNiZmPTE5MjE3Jmc9MTkyMT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTkzMTMmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0wNyAxODoyMDowMSZlPTEmaD0xOTMxMiZmPTE5MzEzJmc9MTkzMT=
+M=3D
 
 
 ---------------------------------------------------------------------------=

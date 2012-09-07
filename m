@@ -1,7 +1,8 @@
-From: Stop Cambriolage <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre maison est-elle suffisamment =?iso-8859-15?Q?prot=E9g=E9e?=
-Date: Fri, 07 Sep 2012 04:36:04 +0200
-Message-ID: <1346985404.50495dbcc7c24@mc10.fr>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez les offres =?iso-8859-15?Q?=E0?= -50% sur Weight Watchers
+	Online
+Date: Fri, 07 Sep 2012 06:13:06 +0200
+Message-ID: <1346991227.5049747bb8cf1@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5NTQwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0wNyAwNDoyMDowMSZlPTEmaD0xOTUzOSZmPTE5NTQwJmc9MTk1NDA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5NTYwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0wNyAwNTo1MDowMSZlPTEmaD0xOTU1OSZmPTE5NTYwJmc9MTk1NjA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5NTQwJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0wNyAwNDoyMDowMSZlPTEmaD0xOTUzOSZmPTE5NTQwJmc9MTk1ND=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5NTYwJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0wNyAwNTo1MDowMSZlPTEmaD0xOTU1OSZmPTE5NTYwJmc9MTk1Nj=
 A=3D
 
 

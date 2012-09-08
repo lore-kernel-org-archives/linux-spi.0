@@ -1,69 +1,40 @@
-From: Mike Turquette <mturquette@linaro.org>
-Subject: Re: [PATCH] spi:clk: preparation for switch to common clock framework
-Date: Fri, 07 Sep 2012 14:28:13 -0700
-Message-ID: <20120907212813.20289.53844@nucleus>
-References: <1346351121-27710-1-git-send-email-m-karicheri2@ti.com>
+From: Disneyland Paris par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Devinez qui a une terrible envie de vous dire hello
+Date: Sat, 08 Sep 2012 06:37:26 +0200
+Message-ID: <1347079124.504acbd4a4524@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: Murali Karicheri <m-karicheri2@ti.com>
-To: Murali Karicheri <m-karicheri2@ti.com>,
-	<linux-kernel@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1346351121-27710-1-git-send-email-m-karicheri2@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Quoting Murali Karicheri (2012-08-30 11:25:21)
-> As a first step towards migrating davinci platforms to use common clock
-> framework, replace all instances of clk_enable() with clk_prepare_enable()
-> and clk_disable() with clk_disable_unprepare(). Until the platform is
-> switched to use the CONFIG_HAVE_CLK_PREPARE Kconfig variable, this just
-> adds a might_sleep() call and would work without any issues.
-> 
-> This will make it easy later to switch to common clk based implementation
-> of clk driver from DaVinci specific driver.
-> 
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Acked-by: Mike Turquette <mturquette@linaro.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5MzM0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0wOCAwNjozMDowMSZlPTEmaD0xOTMzMyZmPTE5MzM0Jmc9MTkzMzQ=3D
 
-> ---
->  drivers/spi/spi-davinci.c |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-> index 9b2901f..71a6423 100644
-> --- a/drivers/spi/spi-davinci.c
-> +++ b/drivers/spi/spi-davinci.c
-> @@ -873,7 +873,7 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
->                 ret = -ENODEV;
->                 goto put_master;
->         }
-> -       clk_enable(dspi->clk);
-> +       clk_prepare_enable(dspi->clk);
->  
->         master->bus_num = pdev->id;
->         master->num_chipselect = pdata->num_chipselect;
-> @@ -959,7 +959,7 @@ free_dma:
->         edma_free_channel(dspi->dma.rx_channel);
->         edma_free_slot(dspi->dma.dummy_param_slot);
->  free_clk:
-> -       clk_disable(dspi->clk);
-> +       clk_disable_unprepare(dspi->clk);
->         clk_put(dspi->clk);
->  put_master:
->         spi_master_put(master);
-> @@ -995,7 +995,7 @@ static int __devexit davinci_spi_remove(struct platform_device *pdev)
->  
->         spi_bitbang_stop(&dspi->bitbang);
->  
-> -       clk_disable(dspi->clk);
-> +       clk_disable_unprepare(dspi->clk);
->         clk_put(dspi->clk);
->         spi_master_put(master);
->         free_irq(dspi->irq, dspi);
-> -- 
-> 1.7.9.5
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5MzM0JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0wOCAwNjozMDowMSZlPTEmaD0xOTMzMyZmPTE5MzM0Jmc9MTkzMz=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

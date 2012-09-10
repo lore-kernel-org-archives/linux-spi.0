@@ -1,9 +1,10 @@
-From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Ventes Flash : =?iso-8859-15?Q?jusqu=27=E0?= 80%
-	=?iso-8859-15?Q?d=27=E9conomie?=
-Date: Mon, 10 Sep 2012 19:49:09 +0200
-Message-ID: <1347299453.504e287d8b4bd@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Club des =?iso-8859-15?Q?cr=E9ateurs?= de =?iso-8859-15?Q?Beaut=E9?=
+	par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Livraison offerte =?iso-8859-15?Q?d=E8s?= 40 euros et des prix
+	ronds =?iso-8859-15?Q?=E0?= partir de 3 euros
+Date: Mon, 10 Sep 2012 21:51:07 +0200
+Message-ID: <1347306696.504e44c87c630@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://email-mach10.com/mc10_m/YT04JmI9MTk2NTQmYz0xOTYxNjQxJm=
-Q9MjAxMi0wOS0xMCAxOTozMDowMSZlPTEmaD0xOTY1MyZmPTE5NjU0Jmc9MTk2NTQ=3D
+Lien miroir : http://email-mach10.com/mc10_m/YT0xMyZiPTE5NDY2JmM9NDgzNjEyJm=
+Q9MjAxMi0wOS0xMCAyMTozMDowMSZlPTEmaD0xOTQ2NSZmPTE5NDY2Jmc9MTk0NjY=3D
 
-Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT04JmI9MTk2N=
-TQmYz0xOTYxNjQxJmQ9MjAxMi0wOS0xMCAxOTozMDowMSZlPTEmaD0xOTY1MyZmPTE5NjU0Jmc9=
-MTk2NTQ=3D
+Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT0xMyZiPTE5N=
+DY2JmM9NDgzNjEyJmQ9MjAxMi0wOS0xMCAyMTozMDowMSZlPTEmaD0xOTQ2NSZmPTE5NDY2Jmc9=
+MTk0NjY=3D
 
 
 ---------------------------------------------------------------------------=

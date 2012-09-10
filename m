@@ -1,75 +1,139 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: [PATCH] spi: s3c64xx: Don't free controller_data on non-dt platforms
-Date: Thu, 13 Sep 2012 16:31:30 +0200
-Message-ID: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
-Cc: thomas.abraham@linaro.org, spi-devel-general@lists.sourceforge.net,
-	kgene.kim@samsung.com, linux-samsung-soc@vger.kernel.org,
-	sw0312.kim@samsung.com,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>
-To: broonie@opensource.wolfsonmicro.com
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: "Stock100" <marketing-/0rwUHiUgYCTWx0vyT08L+TW4wlIGRCZ@public.gmane.org>
+Subject: spi-devel-general, STOCK100 MARKET FORECAST
+Date: Mon, 10 Sep 2012 02:52:20 -0700
+Message-ID: <D2FBBE89F3EC4217BF54F5B59A636BF3@u16379804>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Class: urn:content-classes:message
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-When s3c64xx-spi is instantiated from device tree an instance of
-struct s3c64xx_spi_csinfo is dynamically allocated in the driver.
-For non-dt platform it is passed from board code through
-spi_register_board_info(). On error path in s3c64xx_spi_setup()
-function there is an attempt to free this data struct
-s3c64xx_spi_csinfo object as it would have been allocated in the
-driver for both, dt and non-dt based platforms. This leads to
-following bug when gpio request fails:
+spi-devel-general
+ =
 
-spi spi1.0: Failed to get /CS gpio [21]: -16
-kernel BUG at mm/slub.c:3478!
-Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
-Modules linked in:
-CPU: 0    Not tainted  (3.6.0-rc5-00092-g9b0b493-dirty #6111)
-PC is at kfree+0x148/0x158
-LR is at s3c64xx_spi_setup+0xac/0x290
-pc : [<c00a513c>]    lr : [<c0227014>]    psr: 40000013
-sp : ee043e10  ip : c032883c  fp : c0481f7c
-r10: ee0abd80  r9 : 00000063  r8 : 00000000
-r7 : ee129e78  r6 : ee104a00  r5 : fffffff0  r4 : c047bc64
-r3 : 40000400  r2 : c047bc64  r1 : c04def60  r0 : 0004047b
-Flags: nZcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment kernel
-Control: 10c5387d  Table: 4000404a  DAC: 00000015
-Process swapper/0 (pid: 1, stack limit = 0xee0422f0)
-Stack: (0xee043e10 to 0xee044000)
-...
-[<c00a513c>] (kfree+0x148/0x158) from [<c0227014>] (s3c64xx_spi_setup+0xac/0x290)
-[<c0227014>] (s3c64xx_spi_setup+0xac/0x290) from [<c02251a4>] (spi_setup+0x34/0x4c)
-[<c02251a4>] (spi_setup+0x34/0x4c) from [<c02258d0>] (spi_add_device+0x98/0x128)
-[<c02258d0>] (spi_add_device+0x98/0x128) from [<c02259d4>] (spi_new_device+0x74/0xa8)
-[<c02259d4>] (spi_new_device+0x74/0xa8) from [<c0225a2c>] (spi_match_master_to_boardinfo+0x24/0x44)
-[<c0225a2c>] (spi_match_master_to_boardinfo+0x24/0x44) from [<c0225b40>] (spi_register_master+0xf4/0x2a8)
-[<c0225b40>] (spi_register_master+0xf4/0x2a8) from [<c043fe0c>] (s3c64xx_spi_probe+0x34c/0x42c)
-[<c043fe0c>] (s3c64xx_spi_probe+0x34c/0x42c) from [<c01fc198>] (platform_drv_probe+0x18/0x1c)
+Subject: 2012 STOCK MARKET REVIEW & FORECAST
+ =
 
-There should be no attempt to kfree controller_data when it was
-externally provided through the board code. Fix this by freeing
-controller_data only when dev->of_node is not null.
+ <http://stock100.com/> =
 
-Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+Words from the analyst=A3=AC
+ =
+
+Since the start of 2012, the market has seen large volatility with no
+measurable gains. Most investors got hurt in the process. Even the long
+term investors are getting nervous.
+ =
+
+It takes skills to be making money in this market. The tools used by the
+pros are usually kept away from you. Now, there is a global market site
+that offers tools historically reserved for the pros: WWW.STOCK100.COM
+<http://www.stock100.com/>   .
+The site is now free for all to use. Still relatively unknown to the
+investors, be the early birds to see it and use it!
+ =
+
+Do you know the following 5 stocks have completely opposite movements
+with Dow Jones Industrial Index?
+ =
+
+Symbol
+Name
+8/16/2012
+Match%
+EFZ <http://stock100.com/symbol_submit_EFZ.html> =
+
+ProShares ...
+46.25
+-91%
+EFU <http://stock100.com/symbol_submit_EFU.html> =
+
+ProShares ...
+20.53
+-91%
+DPK <http://stock100.com/symbol_submit_DPK.html> =
+
+Direxion D...
+23.57
+-91%
+EDZ <http://stock100.com/symbol_submit_EDZ.html> =
+
+Direxion D...
+12.64
+-91%
+EEV <http://stock100.com/symbol_submit_EEV.html> =
+
+ProShares ...
+26.3
+-90%
+ =
+
+Do you know the following 5 stocks have been selected by the computer
+algorithm?
+ =
+
+Name
+8/16/2012
+Forecast%
+Dawson Geop... <http://stock100.com/symbol_submit_DWSN.aspx> =
+
+22.71
+21.57%
+Virtusa Cor... <http://stock100.com/symbol_submit_VRTU.aspx> =
+
+16.9
+14.70%
+Terra Nova ... <http://stock100.com/symbol_submit_TTT.aspx> =
+
+18.64
+17.14%
+Kemet Corpo... <http://stock100.com/symbol_submit_KEM.aspx> =
+
+4.62
+19.72%
+Liquidity S... <http://stock100.com/symbol_submit_LQDT.aspx> =
+
+45.74
+20.13%
+ =
+
+Don=A1=AFt miss it!
+ =
+
+=C9=CF=BA=A3=B9=C9=CA=D0 <http://stock100.com/>  =
+
+ =
+
+ =
+
+Please email: remove-oQouceREq8lWk0Htik3J/w@public.gmane.org   to be removed from receiving future
+marketing materials.
+ =
+
+
+this is a promotion message from forecastation limited
+
+unit 1303, 13/f, beverly house, 93-107 lockhart road, wanchai, hong kong
+
+
+ =
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-s3c64xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index d1c8441f..7f75d4e 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -976,7 +976,8 @@ err_msgq:
- 	spi_set_ctldata(spi, NULL);
+threat landscape has changed and how IT managers can respond. Discussions =
 
- err_gpio_req:
--	kfree(cs);
-+	if (spi->dev.of_node)
-+		kfree(cs);
+will include endpoint security, mobile security and the latest in malware =
 
- 	return err;
- }
---
-1.7.11.3
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

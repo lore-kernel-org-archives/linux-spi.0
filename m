@@ -1,11 +1,11 @@
-From: "Vitrine Juju" <newsvitrinejuju-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Ray Ban, o seu próximo estilo
-Date: Sun, 09 Sep 2012 14:00:21 -0300
-Message-ID: <9fbbd5a22ad47616ca4de324818e3795@vixdroid.com>
-Reply-To: newsvitrinejuju-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: "Mistergooddeal par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Offre Rentree : jusqu'a 72% pour vous equiper
+Date: Mon, 10 Sep 2012 08:15:20 +0200
+Message-ID: <1347257787.504d85bbbfa1e@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vdml4ZHJv
-aWQuY29tL2Rpc3BsYXkucGhwP009MzcwNTMzNiZDPTBjODI1ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1
-OGU5NmRjJlM9NDEzJkw9NzkmTj04MwoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBub3Nzb3MKRW1h
-aWxzOmh0dHA6Ly92aXhkcm9pZC5jb20vdW5zdWJzY3JpYmUucGhwP009MzcwNTMzNiZDPTBjODI1
-ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1OGU5NmRjJkw9NzkmTj00MTMKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkxpdmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50
-IHdpbGwgY292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFu
-ZHNjYXBlIGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1
-c3Npb25zIAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBh
-bmQgdGhlIGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0u
-Y29tL2phdy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
-dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTk0NzYmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0xMCAwODowMDowMSZlPTEmaD0xOTQ3NSZmPTE5NDc2Jmc9MTk0NzY=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTk0NzYmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0xMCAwODowMDowMSZlPTEmaD0xOTQ3NSZmPTE5NDc2Jmc9MTk0Nz=
+Y=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

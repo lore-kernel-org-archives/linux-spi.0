@@ -1,141 +1,370 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 17/17] ARM: OMAP1: Move SoC specific headers from plat to
- mach for omap1
-Date: Mon, 10 Sep 2012 22:31:24 -0700
-Message-ID: <20120911053124.29637.99172.stgit@muffinssi.local>
-References: <20120911052934.29637.9190.stgit@muffinssi.local>
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
+Date: Tue, 11 Sep 2012 12:13:20 +0530
+Message-ID: <1347345800-4116-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Afzal Mohammed <afzal@ti.com>, linux-omap@vger.kernel.org
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20120911052934.29637.9190.stgit@muffinssi.local>
-Sender: linux-omap-owner@vger.kernel.org
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-There's no need to have these in plat-omap any longer. Note that these
-could eventually be made local to mach-omap1 instead of being in mach.
+Currently in omap2_mcspi_txrx_dma the tx and the rx support is
+interleaved. Make the rx related code in omap2_mcspi_rx_dma
+and the tx related code omap2_mcspi_tx_dma and call the functions.
 
-But to do that, at least various driver access using omap7xxx.h registers
-needs to be fixed first.
+While at it remove the braces in the if statements which has only
+one line.
+Also fix ["foo * bar" to "foo *bar"] warn for the rx and tx variables.
 
-Cc: spi-devel-general@lists.sourceforge.net
-Cc: Grant Likely <grant.likely@secretlab.ca>
-Acked-by: Afzal Mohammed <afzal@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Only a cleanup no functional change.
+
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/mach-omap1/board-htcherald.c       |    2 +-
- arch/arm/mach-omap1/devices.c               |    2 +-
- arch/arm/mach-omap1/include/mach/hardware.h |    6 +++---
- arch/arm/mach-omap1/include/mach/omap1510.h |    3 +--
- arch/arm/mach-omap1/include/mach/omap16xx.h |    3 +--
- arch/arm/mach-omap1/include/mach/omap7xx.h  |    3 +--
- drivers/spi/spi-omap-uwire.c                |    3 ++-
- 7 files changed, 10 insertions(+), 12 deletions(-)
- rename arch/arm/{plat-omap/include/plat/omap1510.h => mach-omap1/include/mach/omap1510.h} (97%)
- rename arch/arm/{plat-omap/include/plat/omap16xx.h => mach-omap1/include/mach/omap16xx.h} (99%)
- rename arch/arm/{plat-omap/include/plat/omap7xx.h => mach-omap1/include/mach/omap7xx.h} (98%)
+ drivers/spi/spi-omap2-mcspi.c |  256 +++++++++++++++++++++++------------------
+ 1 files changed, 144 insertions(+), 112 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-htcherald.c b/arch/arm/mach-omap1/board-htcherald.c
-index b9771b5..a5ac352 100644
---- a/arch/arm/mach-omap1/board-htcherald.c
-+++ b/arch/arm/mach-omap1/board-htcherald.c
-@@ -41,7 +41,7 @@
- #include <asm/mach-types.h>
- #include <asm/mach/arch.h>
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 1c1dd34..dd8fc88 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -315,49 +315,27 @@ static void omap2_mcspi_tx_callback(void *data)
+ 	omap2_mcspi_set_dma_req(spi, 0, 0);
+ }
  
--#include <plat/omap7xx.h>
-+#include <mach/omap7xx.h>
- #include <plat/keypad.h>
- #include <plat/mmc.h>
+-static unsigned
+-omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
++static void omap2_mcspi_tx_dma(struct spi_device *spi,
++				struct spi_transfer *xfer,
++				struct dma_slave_config cfg)
+ {
+ 	struct omap2_mcspi	*mcspi;
+-	struct omap2_mcspi_cs	*cs = spi->controller_state;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
+ 	unsigned int		count;
+-	int			word_len, element_count;
+-	int			elements = 0;
+-	u32			l;
+ 	u8			* rx;
+ 	const u8		* tx;
+ 	void __iomem		*chstat_reg;
+-	struct dma_slave_config	cfg;
+-	enum dma_slave_buswidth width;
+-	unsigned es;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
  
-diff --git a/arch/arm/mach-omap1/devices.c b/arch/arm/mach-omap1/devices.c
-index 1feca35..05fdbd9 100644
---- a/arch/arm/mach-omap1/devices.c
-+++ b/arch/arm/mach-omap1/devices.c
-@@ -23,8 +23,8 @@
- #include <plat/mux.h>
- #include <plat/dma.h>
- #include <plat/mmc.h>
--#include <plat/omap7xx.h>
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+-	l = mcspi_cached_chconf0(spi);
++	count = xfer->len;
  
-+#include <mach/omap7xx.h>
- #include <mach/camera.h>
- #include <mach/hardware.h>
++	rx = xfer->rx_buf;
++	tx = xfer->tx_buf;
+ 	chstat_reg = cs->base + OMAP2_MCSPI_CHSTAT0;
  
-diff --git a/arch/arm/mach-omap1/include/mach/hardware.h b/arch/arm/mach-omap1/include/mach/hardware.h
-index bd3b95e..84248d2 100644
---- a/arch/arm/mach-omap1/include/mach/hardware.h
-+++ b/arch/arm/mach-omap1/include/mach/hardware.h
-@@ -311,8 +311,8 @@ static inline u32 omap_cs3_phys(void)
-  * ---------------------------------------------------------------------------
-  */
+-	if (cs->word_len <= 8) {
+-		width = DMA_SLAVE_BUSWIDTH_1_BYTE;
+-		es = 1;
+-	} else if (cs->word_len <= 16) {
+-		width = DMA_SLAVE_BUSWIDTH_2_BYTES;
+-		es = 2;
+-	} else {
+-		width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+-		es = 4;
+-	}
+-
+-	memset(&cfg, 0, sizeof(cfg));
+-	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
+-	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
+-	cfg.src_addr_width = width;
+-	cfg.dst_addr_width = width;
+-	cfg.src_maxburst = 1;
+-	cfg.dst_maxburst = 1;
+-
+-	if (xfer->tx_buf && mcspi_dma->dma_tx) {
++	if (mcspi_dma->dma_tx) {
+ 		struct dma_async_tx_descriptor *tx;
+ 		struct scatterlist sg;
  
--#include <plat/omap7xx.h>
--#include <plat/omap1510.h>
--#include <plat/omap16xx.h>
-+#include "omap7xx.h"
-+#include "omap1510.h"
-+#include "omap16xx.h"
+@@ -368,7 +346,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 		sg_dma_len(&sg) = xfer->len;
  
- #endif	/* __ASM_ARCH_OMAP_HARDWARE_H */
-diff --git a/arch/arm/plat-omap/include/plat/omap1510.h b/arch/arm/mach-omap1/include/mach/omap1510.h
-similarity index 97%
-rename from arch/arm/plat-omap/include/plat/omap1510.h
-rename to arch/arm/mach-omap1/include/mach/omap1510.h
-index d240046..8fe05d6 100644
---- a/arch/arm/plat-omap/include/plat/omap1510.h
-+++ b/arch/arm/mach-omap1/include/mach/omap1510.h
-@@ -1,5 +1,4 @@
--/* arch/arm/plat-omap/include/mach/omap1510.h
-- *
-+/*
-  * Hardware definitions for TI OMAP1510 processor.
-  *
-  * Cleanup for Linux-2.6 by Dirk Behme <dirk.behme@de.bosch.com>
-diff --git a/arch/arm/plat-omap/include/plat/omap16xx.h b/arch/arm/mach-omap1/include/mach/omap16xx.h
-similarity index 99%
-rename from arch/arm/plat-omap/include/plat/omap16xx.h
-rename to arch/arm/mach-omap1/include/mach/omap16xx.h
-index e69e1d8..cd1c724 100644
---- a/arch/arm/plat-omap/include/plat/omap16xx.h
-+++ b/arch/arm/mach-omap1/include/mach/omap16xx.h
-@@ -1,5 +1,4 @@
--/* arch/arm/plat-omap/include/mach/omap16xx.h
-- *
-+/*
-  * Hardware definitions for TI OMAP1610/5912/1710 processors.
-  *
-  * Cleanup for Linux-2.6 by Dirk Behme <dirk.behme@de.bosch.com>
-diff --git a/arch/arm/plat-omap/include/plat/omap7xx.h b/arch/arm/mach-omap1/include/mach/omap7xx.h
-similarity index 98%
-rename from arch/arm/plat-omap/include/plat/omap7xx.h
-rename to arch/arm/mach-omap1/include/mach/omap7xx.h
-index 48e4757..63da994 100644
---- a/arch/arm/plat-omap/include/plat/omap7xx.h
-+++ b/arch/arm/mach-omap1/include/mach/omap7xx.h
-@@ -1,5 +1,4 @@
--/* arch/arm/plat-omap/include/mach/omap7xx.h
-- *
-+/*
-  * Hardware definitions for TI OMAP7XX processor.
-  *
-  * Cleanup for Linux-2.6 by Dirk Behme <dirk.behme@de.bosch.com>
-diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-index 9b0d716..a3996a1 100644
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -53,7 +53,8 @@
- #include <asm/mach-types.h>
+ 		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
+-			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_tx_callback;
+ 			tx->callback_param = spi;
+@@ -377,8 +355,50 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 			/* FIXME: fall back to PIO? */
+ 		}
+ 	}
++	dma_async_issue_pending(mcspi_dma->dma_tx);
++	omap2_mcspi_set_dma_req(spi, 0, 1);
  
- #include <plat/mux.h>
--#include <plat/omap7xx.h>	/* OMAP7XX_IO_CONF registers */
+-	if (xfer->rx_buf && mcspi_dma->dma_rx) {
++	wait_for_completion(&mcspi_dma->dma_tx_completion);
++	dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
++			 DMA_TO_DEVICE);
 +
-+#include <mach/omap7xx.h>	/* OMAP7XX_IO_CONF registers */
++	/* for TX_ONLY mode, be sure all words have shifted out */
++	if (rx == NULL) {
++		if (mcspi_wait_for_reg_bit(chstat_reg,
++					OMAP2_MCSPI_CHSTAT_TXS) < 0)
++			dev_err(&spi->dev, "TXS timed out\n");
++		else if (mcspi_wait_for_reg_bit(chstat_reg,
++					OMAP2_MCSPI_CHSTAT_EOT) < 0)
++			dev_err(&spi->dev, "EOT timed out\n");
++	}
++}
++
++static unsigned
++omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
++				struct dma_slave_config cfg,
++				unsigned es)
++{
++	struct omap2_mcspi	*mcspi;
++	struct omap2_mcspi_dma  *mcspi_dma;
++	unsigned int		count;
++	u32			l;
++	int			elements = 0;
++	int			word_len, element_count;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	mcspi = spi_master_get_devdata(spi->master);
++	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
++	count = xfer->len;
++	word_len = cs->word_len;
++	l = mcspi_cached_chconf0(spi);
++
++	if (word_len <= 8)
++		element_count = count;
++	else if (word_len <= 16)
++		element_count = count >> 1;
++	else /* word_len <= 32 */
++		element_count = count >> 2;
++
++	if (mcspi_dma->dma_rx) {
+ 		struct dma_async_tx_descriptor *tx;
+ 		struct scatterlist sg;
+ 		size_t len = xfer->len - es;
+@@ -393,108 +413,120 @@ omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
+ 		sg_dma_len(&sg) = len;
  
+ 		tx = dmaengine_prep_slave_sg(mcspi_dma->dma_rx, &sg, 1,
+-			DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++				DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
++				DMA_CTRL_ACK);
+ 		if (tx) {
+ 			tx->callback = omap2_mcspi_rx_callback;
+ 			tx->callback_param = spi;
+ 			dmaengine_submit(tx);
+ 		} else {
+-			/* FIXME: fall back to PIO? */
+-		}
+-	}
+-
+-	count = xfer->len;
+-	word_len = cs->word_len;
+-
+-	rx = xfer->rx_buf;
+-	tx = xfer->tx_buf;
+-
+-	if (word_len <= 8) {
+-		element_count = count;
+-	} else if (word_len <= 16) {
+-		element_count = count >> 1;
+-	} else /* word_len <= 32 */ {
+-		element_count = count >> 2;
+-	}
+-
+-	if (tx != NULL) {
+-		dma_async_issue_pending(mcspi_dma->dma_tx);
+-		omap2_mcspi_set_dma_req(spi, 0, 1);
+-	}
+-
+-	if (rx != NULL) {
+-		dma_async_issue_pending(mcspi_dma->dma_rx);
+-		omap2_mcspi_set_dma_req(spi, 1, 1);
+-	}
+-
+-	if (tx != NULL) {
+-		wait_for_completion(&mcspi_dma->dma_tx_completion);
+-		dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
+-				 DMA_TO_DEVICE);
+-
+-		/* for TX_ONLY mode, be sure all words have shifted out */
+-		if (rx == NULL) {
+-			if (mcspi_wait_for_reg_bit(chstat_reg,
+-						OMAP2_MCSPI_CHSTAT_TXS) < 0)
+-				dev_err(&spi->dev, "TXS timed out\n");
+-			else if (mcspi_wait_for_reg_bit(chstat_reg,
+-						OMAP2_MCSPI_CHSTAT_EOT) < 0)
+-				dev_err(&spi->dev, "EOT timed out\n");
++				/* FIXME: fall back to PIO? */
+ 		}
+ 	}
  
- /* FIXME address is now a platform device resource,
+-	if (rx != NULL) {
+-		wait_for_completion(&mcspi_dma->dma_rx_completion);
+-		dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
+-				 DMA_FROM_DEVICE);
+-		omap2_mcspi_set_enable(spi, 0);
++	dma_async_issue_pending(mcspi_dma->dma_rx);
++	omap2_mcspi_set_dma_req(spi, 1, 1);
+ 
+-		elements = element_count - 1;
++	wait_for_completion(&mcspi_dma->dma_rx_completion);
++	dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
++			 DMA_FROM_DEVICE);
++	omap2_mcspi_set_enable(spi, 0);
+ 
+-		if (l & OMAP2_MCSPI_CHCONF_TURBO) {
+-			elements--;
++	elements = element_count - 1;
+ 
+-			if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				   & OMAP2_MCSPI_CHSTAT_RXS)) {
+-				u32 w;
+-
+-				w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+-				if (word_len <= 8)
+-					((u8 *)xfer->rx_buf)[elements++] = w;
+-				else if (word_len <= 16)
+-					((u16 *)xfer->rx_buf)[elements++] = w;
+-				else /* word_len <= 32 */
+-					((u32 *)xfer->rx_buf)[elements++] = w;
+-			} else {
+-				dev_err(&spi->dev,
+-					"DMA RX penultimate word empty");
+-				count -= (word_len <= 8)  ? 2 :
+-					(word_len <= 16) ? 4 :
+-					/* word_len <= 32 */ 8;
+-				omap2_mcspi_set_enable(spi, 1);
+-				return count;
+-			}
+-		}
++	if (l & OMAP2_MCSPI_CHCONF_TURBO) {
++		elements--;
+ 
+ 		if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
+-				& OMAP2_MCSPI_CHSTAT_RXS)) {
++				   & OMAP2_MCSPI_CHSTAT_RXS)) {
+ 			u32 w;
+ 
+ 			w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
+ 			if (word_len <= 8)
+-				((u8 *)xfer->rx_buf)[elements] = w;
++				((u8 *)xfer->rx_buf)[elements++] = w;
+ 			else if (word_len <= 16)
+-				((u16 *)xfer->rx_buf)[elements] = w;
++				((u16 *)xfer->rx_buf)[elements++] = w;
+ 			else /* word_len <= 32 */
+-				((u32 *)xfer->rx_buf)[elements] = w;
++				((u32 *)xfer->rx_buf)[elements++] = w;
+ 		} else {
+-			dev_err(&spi->dev, "DMA RX last word empty");
+-			count -= (word_len <= 8)  ? 1 :
+-				 (word_len <= 16) ? 2 :
+-			       /* word_len <= 32 */ 4;
++			dev_err(&spi->dev, "DMA RX penultimate word empty");
++			count -= (word_len <= 8)  ? 2 :
++				(word_len <= 16) ? 4 :
++				/* word_len <= 32 */ 8;
++			omap2_mcspi_set_enable(spi, 1);
++			return count;
+ 		}
+-		omap2_mcspi_set_enable(spi, 1);
+ 	}
++	if (likely(mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHSTAT0)
++				& OMAP2_MCSPI_CHSTAT_RXS)) {
++		u32 w;
++
++		w = mcspi_read_cs_reg(spi, OMAP2_MCSPI_RX0);
++		if (word_len <= 8)
++			((u8 *)xfer->rx_buf)[elements] = w;
++		else if (word_len <= 16)
++			((u16 *)xfer->rx_buf)[elements] = w;
++		else /* word_len <= 32 */
++			((u32 *)xfer->rx_buf)[elements] = w;
++	} else {
++		dev_err(&spi->dev, "DMA RX last word empty");
++		count -= (word_len <= 8)  ? 1 :
++			 (word_len <= 16) ? 2 :
++		       /* word_len <= 32 */ 4;
++	}
++	omap2_mcspi_set_enable(spi, 1);
++	return count;
++}
++
++static unsigned
++omap2_mcspi_txrx_dma(struct spi_device *spi, struct spi_transfer *xfer)
++{
++	struct omap2_mcspi	*mcspi;
++	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	struct omap2_mcspi_dma  *mcspi_dma;
++	unsigned int		count;
++	u32			l;
++	u8			*rx;
++	const u8		*tx;
++	struct dma_slave_config	cfg;
++	enum dma_slave_buswidth width;
++	unsigned es;
++
++	mcspi = spi_master_get_devdata(spi->master);
++	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
++	l = mcspi_cached_chconf0(spi);
++
++
++	if (cs->word_len <= 8) {
++		width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++		es = 1;
++	} else if (cs->word_len <= 16) {
++		width = DMA_SLAVE_BUSWIDTH_2_BYTES;
++		es = 2;
++	} else {
++		width = DMA_SLAVE_BUSWIDTH_4_BYTES;
++		es = 4;
++	}
++
++	memset(&cfg, 0, sizeof(cfg));
++	cfg.src_addr = cs->phys + OMAP2_MCSPI_RX0;
++	cfg.dst_addr = cs->phys + OMAP2_MCSPI_TX0;
++	cfg.src_addr_width = width;
++	cfg.dst_addr_width = width;
++	cfg.src_maxburst = 1;
++	cfg.dst_maxburst = 1;
++
++	rx = xfer->rx_buf;
++	tx = xfer->tx_buf;
++
++	count = xfer->len;
++
++	if (tx != NULL)
++		omap2_mcspi_tx_dma(spi, xfer, cfg);
++
++	if (rx != NULL)
++		return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
++
+ 	return count;
+ }
+ 
+-- 
+1.7.5.4
 
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

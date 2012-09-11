@@ -1,12 +1,16 @@
-From: "NRJ Mobile par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: 10,99 euros /mois - 3h et SMS ILLIMITES
-Date: Tue, 11 Sep 2012 17:25:07 +0200
-Message-ID: <1347377201.504f58315cf75@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/2] Add pinctrl support to omap2-mcspi
+Date: Tue, 11 Sep 2012 13:46:37 -0400
+Message-ID: <1347385599-27558-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: AnilKumar <anilkumar-l0cyMroinI0@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +22,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This series enables pinctrl support for McSPI. Platforms that boot only
+from DT and rely on pinctrl to set pinmuxes appropriately require this
+for omap2-mcspi operation.
 
-Lien miroir : http://email-mach10.com/mc10_m/YT04JmI9MTk2MzQmYz0xOTYxNjQxJm=
-Q9MjAxMi0wOS0xMSAxNzowMDowMSZlPTEmaD0xOTYzMyZmPTE5NjM0Jmc9MTk2MzQ=3D
+It has been tested on AM335x BeagleBone with an Adafruit SPI LCD attached
+and regression tested on Beagleboard xM booting in the !DT case, using
+board-omap3evm.c. There is a dependency on the patch to enable PINCTRL
+support (https://patchwork.kernel.org/patch/1376331/) for
+ARCH_OMAP2PLUS_TYPICAL.
 
-Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT04JmI9MTk2M=
-zQmYz0xOTYxNjQxJmQ9MjAxMi0wOS0xMSAxNzowMDowMSZlPTEmaD0xOTYzMyZmPTE5NjM0Jmc9=
-MTk2MzQ=3D
+Matt Porter (2):
+  spi: omap2-mcspi: add pinctrl support
+  ARM: OMAP2+: Enable pinctrl dummy states
+
+ arch/arm/mach-omap2/devices.c |    4 ++++
+ drivers/spi/spi-omap2-mcspi.c |    9 +++++++++
+ 2 files changed, 13 insertions(+)
+
+-- 
+1.7.9.5
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

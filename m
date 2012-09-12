@@ -1,18 +1,15 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma
-	function
-Date: Wed, 12 Sep 2012 21:52:41 +0800
-Message-ID: <20120912135239.GE19055@opensource.wolfsonmicro.com>
-References: <1347345800-4116-1-git-send-email-shubhrajyoti@ti.com>
+From: "Karicheri, Muralidharan" <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Subject: (unknown)
+Date: Wed, 12 Sep 2012 20:09:54 +0000
+Message-ID: <3E54258959B69E4282D79E01AB1F32B7041BB639@DFLE12.ent.ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1347345800-4116-1-git-send-email-shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: 
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,12 +20,10 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 11, 2012 at 12:13:20PM +0530, Shubhrajyoti D wrote:
-> Currently in omap2_mcspi_txrx_dma the tx and the rx support is
-> interleaved. Make the rx related code in omap2_mcspi_rx_dma
-> and the tx related code omap2_mcspi_tx_dma and call the functions.
+subscribe spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 
-Applied, thanks.
+Murali Karicheri
+Software Design Engineer
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

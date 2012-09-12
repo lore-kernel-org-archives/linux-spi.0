@@ -1,28 +1,40 @@
-From: Shubhrajyoti <shubhrajyoti@ti.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
-Date: Wed, 12 Sep 2012 11:40:06 +0530
-Message-ID: <5050273E.3080407@ti.com>
-References: <1347345800-4116-1-git-send-email-shubhrajyoti@ti.com> <20120912032135.GJ9162@opensource.wolfsonmicro.com>
+From: "Mistergooddeal par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Offre Rentree : jusqu'a 72% pour vous equiper
+Date: Wed, 12 Sep 2012 08:20:10 +0200
+Message-ID: <1347430873.505029d9ad58b@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, grant.likely@secretlab.ca,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20120912032135.GJ9162@opensource.wolfsonmicro.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 12 September 2012 08:51 AM, Mark Brown wrote:
-> On Tue, Sep 11, 2012 at 12:13:20PM +0530, Shubhrajyoti D wrote:
->> > Currently in omap2_mcspi_txrx_dma the tx and the rx support is
->> > interleaved. Make the rx related code in omap2_mcspi_rx_dma
->> > and the tx related code omap2_mcspi_tx_dma and call the functions.
-> I'd ideally like some testing from the OMAP side before applying this -
-> is there someone who can give a Tested-by?
-I have tested this patch with nfs boot with ethernet being on spi on
-omap4sdp and spidev.
-On omap3 sdp tested the touchscreen.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-However can wait for some tested-bys :-)
+Lien miroir : http://email-mach10.com/mc10_m/YT04JmI9MTk1MzcmYz0xOTYxNjQxJm=
+Q9MjAxMi0wOS0xMiAwODowMDowMSZlPTEmaD0xOTUzNiZmPTE5NTM3Jmc9MTk1Mzc=3D
+
+Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT04JmI9MTk1M=
+zcmYz0xOTYxNjQxJmQ9MjAxMi0wOS0xMiAwODowMDowMSZlPTEmaD0xOTUzNiZmPTE5NTM3Jmc9=
+MTk1Mzc=3D
+
+
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

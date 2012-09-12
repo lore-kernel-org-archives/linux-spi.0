@@ -1,24 +1,57 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma
- function
-Date: Wed, 12 Sep 2012 11:21:37 +0800
-Message-ID: <20120912032135.GJ9162@opensource.wolfsonmicro.com>
-References: <1347345800-4116-1-git-send-email-shubhrajyoti@ti.com>
+From: Shubhrajyoti <shubhrajyoti@ti.com>
+Subject: Re: [PATCH] SPI: OMAP: remove unnecessary includes of plat/clock.h
+Date: Wed, 12 Sep 2012 10:58:04 +0530
+Message-ID: <50501D64.3030707@ti.com>
+References: <alpine.DEB.2.00.1209112330290.9444@utopia.booyaka.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net, grant.likely@secretlab.ca,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Shubhrajyoti D <shubhrajyoti@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1347345800-4116-1-git-send-email-shubhrajyoti@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Paul Walmsley <paul@pwsan.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <alpine.DEB.2.00.1209112330290.9444@utopia.booyaka.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 11, 2012 at 12:13:20PM +0530, Shubhrajyoti D wrote:
-> Currently in omap2_mcspi_txrx_dma the tx and the rx support is
-> interleaved. Make the rx related code in omap2_mcspi_rx_dma
-> and the tx related code omap2_mcspi_tx_dma and call the functions.
+On Wednesday 12 September 2012 05:01 AM, Paul Walmsley wrote:
+> Remove unnecessary includes of plat/clock.h from the OMAP SPI
+> controller drivers.  These need to be removed to build multi-subarch
+> ARM kernels which include these drivers.
+Looks good to me
+Acked-by: Shubhrajyoti D <shubhrajyoti@ti.com>
+>
+> Signed-off-by: Paul Walmsley <paul@pwsan.com>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> ---
+>  drivers/spi/spi-omap-100k.c   |    2 --
+>  drivers/spi/spi-omap2-mcspi.c |    1 -
+>  2 files changed, 3 deletions(-)
+>
+> diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+> index 9bd1c92..dfb4b7f 100644
+> --- a/drivers/spi/spi-omap-100k.c
+> +++ b/drivers/spi/spi-omap-100k.c
+> @@ -37,8 +37,6 @@
+>  
+>  #include <linux/spi/spi.h>
+>  
+> -#include <plat/clock.h>
+> -
+>  #define OMAP1_SPI100K_MAX_FREQ          48000000
+>  
+>  #define ICR_SPITAS      (OMAP7XX_ICR_BASE + 0x12)
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index b2fb141..b5d6994 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -41,7 +41,6 @@
+>  
+>  #include <linux/spi/spi.h>
+>  
+> -#include <plat/clock.h>
+>  #include <plat/mcspi.h>
+>  
+>  #define OMAP2_MCSPI_MAX_FREQ		48000000
 
-I'd ideally like some testing from the OMAP side before applying this -
-is there someone who can give a Tested-by?

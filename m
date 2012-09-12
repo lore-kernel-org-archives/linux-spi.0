@@ -1,8 +1,8 @@
-From: "Mistergooddeal par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Offre Rentree : jusqu'a 72% pour vous equiper
-Date: Wed, 12 Sep 2012 08:20:10 +0200
-Message-ID: <1347430873.505029d9ad58b@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Le Monde Du bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Des bagages -80% pour la =?iso-8859-15?Q?rentr=E9e?=
+Date: Wed, 12 Sep 2012 13:20:04 +0200
+Message-ID: <1347448883.50507033b3219@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://email-mach10.com/mc10_m/YT04JmI9MTk1MzcmYz0xOTYxNjQxJm=
-Q9MjAxMi0wOS0xMiAwODowMDowMSZlPTEmaD0xOTUzNiZmPTE5NTM3Jmc9MTk1Mzc=3D
+Lien miroir : http://email-mach10.com/mc10_m/YT0xMyZiPTE5NTQzJmM9NDgzNjEyJm=
+Q9MjAxMi0wOS0xMiAxMzowMDowMSZlPTEmaD0xOTU0MiZmPTE5NTQzJmc9MTk1NDM=3D
 
-Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT04JmI9MTk1M=
-zcmYz0xOTYxNjQxJmQ9MjAxMi0wOS0xMiAwODowMDowMSZlPTEmaD0xOTUzNiZmPTE5NTM3Jmc9=
-MTk1Mzc=3D
+Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT0xMyZiPTE5N=
+TQzJmM9NDgzNjEyJmQ9MjAxMi0wOS0xMiAxMzowMDowMSZlPTEmaD0xOTU0MiZmPTE5NTQzJmc9=
+MTk1NDM=3D
 
 
 ---------------------------------------------------------------------------=

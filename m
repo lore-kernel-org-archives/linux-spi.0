@@ -1,9 +1,9 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 0/5] ARM: tegra: move all APB DMA client to dmaengine
- based driver
-Date: Thu, 13 Sep 2012 17:35:20 -0600
-Message-ID: <50526DB8.3090808@wwwdotorg.org>
-References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com>
+Subject: Re: [PATCH 4/5] spi: tegra: remove support of legacy DMA driver based
+ access
+Date: Thu, 13 Sep 2012 17:36:10 -0600
+Message-ID: <50526DEA.3060502@wwwdotorg.org>
+References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com> <1345126397-28864-5-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
@@ -15,26 +15,17 @@ Cc: olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8
 	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org
 To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1345126397-28864-1-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1345126397-28864-5-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 On 08/16/2012 08:13 AM, Laxman Dewangan wrote:
-> This patch series enable the dmaengine based Tegra APB DMA driver
-> and remove the support code for the legacy dma driver from different
-> APB DMA clients.
-> Patch 1 enable the dmaengine based dma drie and disable the legacy dma driver
->         in config file.
-> Patch 2 remove the legacy dma driver.
-> Patch 3,4, 5 remove the support code from different APB DMA clients to support
->         legacy dma driver.
+> Remove the support code which uses the legacy APB DMA driver
+> for accessing the SPI FIFO.
+> The driver will use the dmaengine based APB DMA driver for
+> accessing reqding/writing to SPI FIFO.
 > 
-> Please note that this series will depends on patch
-> dma: tegra: enable/disable dma clock
-> which is not in 3.6-rc1 but will be available in next RC (rc2) of 3.6 as
-> part of fixes.
+> Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-I have applied this series to Tegra's for-3.7/dmaengine branch. Right
-now, that branch is based directly on Mark Brown's ASoC for-3.6 branch
-in order to pick up the fix it depends on. However, I'll rebase on the
-3.6 pull request tag he sends for that branch as soon as it's available.
+Please note that I've applied this to Tegra's for-3.7/dmaengine branch,
+even though it hasn't been ack'd by an SPI maintainer.

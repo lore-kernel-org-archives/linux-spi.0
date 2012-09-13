@@ -1,40 +1,75 @@
-From: Stop Cambriolage <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre maison est-elle suffisamment =?iso-8859-15?Q?prot=E9g=E9e?=
-Date: Thu, 13 Sep 2012 08:05:14 +0200
-Message-ID: <1347516406.505177f6cb4db@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH] spi: s3c64xx: Don't free controller_data on non-dt platforms
+Date: Thu, 13 Sep 2012 16:31:30 +0200
+Message-ID: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
+Cc: thomas.abraham@linaro.org, spi-devel-general@lists.sourceforge.net,
+	kgene.kim@samsung.com, linux-samsung-soc@vger.kernel.org,
+	sw0312.kim@samsung.com,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>
+To: broonie@opensource.wolfsonmicro.com
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+When s3c64xx-spi is instantiated from device tree an instance of
+struct s3c64xx_spi_csinfo is dynamically allocated in the driver.
+For non-dt platform it is passed from board code through
+spi_register_board_info(). On error path in s3c64xx_spi_setup()
+function there is an attempt to free this data struct
+s3c64xx_spi_csinfo object as it would have been allocated in the
+driver for both, dt and non-dt based platforms. This leads to
+following bug when gpio request fails:
 
-Lien miroir : http://email-mach10.com/mc10_m/YT0xMyZiPTE5OTc4JmM9NDgzNjEyJm=
-Q9MjAxMi0wOS0xMyAwNDo1MDowMSZlPTEmaD0xOTk3NyZmPTE5OTc4Jmc9MTk5Nzg=3D
+spi spi1.0: Failed to get /CS gpio [21]: -16
+kernel BUG at mm/slub.c:3478!
+Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+Modules linked in:
+CPU: 0    Not tainted  (3.6.0-rc5-00092-g9b0b493-dirty #6111)
+PC is at kfree+0x148/0x158
+LR is at s3c64xx_spi_setup+0xac/0x290
+pc : [<c00a513c>]    lr : [<c0227014>]    psr: 40000013
+sp : ee043e10  ip : c032883c  fp : c0481f7c
+r10: ee0abd80  r9 : 00000063  r8 : 00000000
+r7 : ee129e78  r6 : ee104a00  r5 : fffffff0  r4 : c047bc64
+r3 : 40000400  r2 : c047bc64  r1 : c04def60  r0 : 0004047b
+Flags: nZcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment kernel
+Control: 10c5387d  Table: 4000404a  DAC: 00000015
+Process swapper/0 (pid: 1, stack limit = 0xee0422f0)
+Stack: (0xee043e10 to 0xee044000)
+...
+[<c00a513c>] (kfree+0x148/0x158) from [<c0227014>] (s3c64xx_spi_setup+0xac/0x290)
+[<c0227014>] (s3c64xx_spi_setup+0xac/0x290) from [<c02251a4>] (spi_setup+0x34/0x4c)
+[<c02251a4>] (spi_setup+0x34/0x4c) from [<c02258d0>] (spi_add_device+0x98/0x128)
+[<c02258d0>] (spi_add_device+0x98/0x128) from [<c02259d4>] (spi_new_device+0x74/0xa8)
+[<c02259d4>] (spi_new_device+0x74/0xa8) from [<c0225a2c>] (spi_match_master_to_boardinfo+0x24/0x44)
+[<c0225a2c>] (spi_match_master_to_boardinfo+0x24/0x44) from [<c0225b40>] (spi_register_master+0xf4/0x2a8)
+[<c0225b40>] (spi_register_master+0xf4/0x2a8) from [<c043fe0c>] (s3c64xx_spi_probe+0x34c/0x42c)
+[<c043fe0c>] (s3c64xx_spi_probe+0x34c/0x42c) from [<c01fc198>] (platform_drv_probe+0x18/0x1c)
 
-Lien de d=E9sinscription : http://email-mach10.com/mc10_unsub/YT0xMyZiPTE5O=
-Tc4JmM9NDgzNjEyJmQ9MjAxMi0wOS0xMyAwNDo1MDowMSZlPTEmaD0xOTk3NyZmPTE5OTc4Jmc9=
-MTk5Nzg=3D
+There should be no attempt to kfree controller_data when it was
+externally provided through the board code. Fix this by freeing
+controller_data only when dev->of_node is not null.
 
-
----------------------------------------------------------------------------=
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
 ---
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
+ drivers/spi/spi-s3c64xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-threat landscape has changed and how IT managers can respond. Discussions =
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index d1c8441f..7f75d4e 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -976,7 +976,8 @@ err_msgq:
+ 	spi_set_ctldata(spi, NULL);
 
-will include endpoint security, mobile security and the latest in malware =
+ err_gpio_req:
+-	kfree(cs);
++	if (spi->dev.of_node)
++		kfree(cs);
 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+ 	return err;
+ }
+--
+1.7.11.3

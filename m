@@ -1,38 +1,83 @@
-From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
-	=?iso-8859-15?Q?=27=E0?= 70%
-Date: Fri, 14 Sep 2012 04:07:16 +0200
-Message-ID: <1347588461.5052916de94d9@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Kukjin Kim <kgene.kim@samsung.com>
+Subject: RE: [PATCH] spi: s3c64xx: Don't free controller_data on non-dt
+ platforms
+Date: Fri, 14 Sep 2012 13:27:40 +0900
+Message-ID: <01a801cd9231$471c9240$d555b6c0$%kim@samsung.com>
+References: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: thomas.abraham@linaro.org, spi-devel-general@lists.sourceforge.net,
+	linux-samsung-soc@vger.kernel.org, sw0312.kim@samsung.com,
+	'Kyungmin Park' <kyungmin.park@samsung.com>
+To: 'Sylwester Nawrocki' <s.nawrocki@samsung.com>,
+	broonie@opensource.wolfsonmicro.com
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Sylwester Nawrocki wrote:
+> 
+> When s3c64xx-spi is instantiated from device tree an instance of
+> struct s3c64xx_spi_csinfo is dynamically allocated in the driver.
+> For non-dt platform it is passed from board code through
+> spi_register_board_info(). On error path in s3c64xx_spi_setup()
+> function there is an attempt to free this data struct
+> s3c64xx_spi_csinfo object as it would have been allocated in the
+> driver for both, dt and non-dt based platforms. This leads to
+> following bug when gpio request fails:
+> 
+> spi spi1.0: Failed to get /CS gpio [21]: -16
+> kernel BUG at mm/slub.c:3478!
+> Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+> Modules linked in:
+> CPU: 0    Not tainted  (3.6.0-rc5-00092-g9b0b493-dirty #6111)
+> PC is at kfree+0x148/0x158
+> LR is at s3c64xx_spi_setup+0xac/0x290
+> pc : [<c00a513c>]    lr : [<c0227014>]    psr: 40000013
+> sp : ee043e10  ip : c032883c  fp : c0481f7c
+> r10: ee0abd80  r9 : 00000063  r8 : 00000000
+> r7 : ee129e78  r6 : ee104a00  r5 : fffffff0  r4 : c047bc64
+> r3 : 40000400  r2 : c047bc64  r1 : c04def60  r0 : 0004047b
+> Flags: nZcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment kernel
+> Control: 10c5387d  Table: 4000404a  DAC: 00000015
+> Process swapper/0 (pid: 1, stack limit = 0xee0422f0)
+> Stack: (0xee043e10 to 0xee044000)
+> ...
+> [<c00a513c>] (kfree+0x148/0x158) from [<c0227014>]
+> (s3c64xx_spi_setup+0xac/0x290)
+> [<c0227014>] (s3c64xx_spi_setup+0xac/0x290) from [<c02251a4>]
+> (spi_setup+0x34/0x4c)
+> [<c02251a4>] (spi_setup+0x34/0x4c) from [<c02258d0>]
+> (spi_add_device+0x98/0x128)
+> [<c02258d0>] (spi_add_device+0x98/0x128) from [<c02259d4>]
+> (spi_new_device+0x74/0xa8)
+> [<c02259d4>] (spi_new_device+0x74/0xa8) from [<c0225a2c>]
+> (spi_match_master_to_boardinfo+0x24/0x44)
+> [<c0225a2c>] (spi_match_master_to_boardinfo+0x24/0x44) from [<c0225b40>]
+> (spi_register_master+0xf4/0x2a8)
+> [<c0225b40>] (spi_register_master+0xf4/0x2a8) from [<c043fe0c>]
+> (s3c64xx_spi_probe+0x34c/0x42c)
+> [<c043fe0c>] (s3c64xx_spi_probe+0x34c/0x42c) from [<c01fc198>]
+> (platform_drv_probe+0x18/0x1c)
+> 
+> There should be no attempt to kfree controller_data when it was
+> externally provided through the board code. Fix this by freeing
+> controller_data only when dev->of_node is not null.
+> 
+> Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMDAzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0xNCAwMDoyMDowMSZlPTEmaD0yMDAwMiZmPTIwMDAzJmc9MjAwMDM=3D
+Yes, correct. Need to check it.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMDAzJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0xNCAwMDoyMDowMSZlPTEmaD0yMDAwMiZmPTIwMDAzJmc9MjAwMD=
-M=3D
+Acked-by: Kukjin Kim <kgene.kim@samsung.com>
 
+Thanks.
 
----------------------------------------------------------------------------=
----
-Got visibility?
-Most devs has no idea what their production app looks like.
-Find out how fast your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219671;13503038;y?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+Best regards,
+Kgene.
+--
+Kukjin Kim <kgene.kim@samsung.com>, Senior Engineer,
+SW Solution Development Team, Samsung Electronics Co., Ltd.

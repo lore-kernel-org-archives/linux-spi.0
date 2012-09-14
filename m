@@ -1,23 +1,13 @@
-From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [REPOST PATCH v2 1/2] spi: omap2-mcspi: add pinctrl support
-Date: Tue, 18 Sep 2012 09:55:57 -0700
-Message-ID: <20120918165557.GQ11762@atomide.com>
-References: <1347969685-15571-1-git-send-email-mporter@ti.com>
-	<50586424.9040601@ti.com>
+From: "Carrefour" <news-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org>
+Subject: Especial Eletrolux com descontos especiais
+Date: Thu, 13 Sep 2012 23:35:12 -0300
+Message-ID: <5366065ee335ce05e7ab32c9601e0d5a@emailmais.com>
+Reply-To: atendimento-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	AnilKumar <anilkumar-l0cyMroinI0@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <50586424.9040601-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,19 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-* Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org> [120918 05:09]:
-> On Tuesday 18 September 2012 05:31 PM, Matt Porter wrote:
-> > Adds pinctrl support to support OMAP platforms that boot from DT
-> > and rely on pinctrl support to set pinmuxes.
-> looks good
-> 
-> Acked-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-
-Acked-by: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vZW1haWxt
+YWlzLmNvbS9ta3QvZGlzcGxheS5waHA/TT0xMTI0NDUxJkM9MGI3Y2NjMTdlMjQwZGYyMGQzMzgx
+MmExYTczNGU0MDAmUz02Jkw9NCZOPTIKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9zc29zCkVt
+YWlsczpodHRwOi8vZW1haWxtYWlzLmNvbS9ta3QvdW5zdWJzY3JpYmUucGhwP009MTEyNDQ1MSZD
+PTBiN2NjYzE3ZTI0MGRmMjBkMzM4MTJhMWE3MzRlNDAwJkw9NCZOPTYKRW1haWwgTWFya2V0aW5n
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
+eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
+aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
+IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
+LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
+cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

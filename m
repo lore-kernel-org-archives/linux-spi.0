@@ -1,53 +1,39 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 5/5] ASoC: tegra: remove support of legacy
- DMA driver based access
-Date: Fri, 14 Sep 2012 17:33:40 +0100
-Message-ID: <20120914163340.GF4684@opensource.wolfsonmicro.com>
-References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com>
- <1345126397-28864-6-git-send-email-ldewangan@nvidia.com>
- <50526DFE.5030709@wwwdotorg.org>
- <20120914155335.GB4684@opensource.wolfsonmicro.com>
- <505354A7.3090502@wwwdotorg.org>
+From: "Galerieslafayette.com par Galeriedesmarques.fr"
+	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Vente Flash : Jusqu'a -90% sur tous les Sacs de saison sur
+	Galerieslafayette.com
+Date: Fri, 14 Sep 2012 19:46:07 +0200
+Message-ID: <1347644979.50536e3375708@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: vinod.koul@linux.intel.com, linux@arm.linux.org.uk,
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
- grant.likely@secretlab.ca, linux-tegra@vger.kernel.org,
- Laxman Dewangan <ldewangan@nvidia.com>, olof@lixom.net,
- spi-devel-general@lists.sourceforge.net, lrg@ti.com
-To: Stephen Warren <swarren@wwwdotorg.org>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-Content-Disposition: inline
-In-Reply-To: <505354A7.3090502@wwwdotorg.org>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 14, 2012 at 10:00:39AM -0600, Stephen Warren wrote:
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> But do note that I pinged 8 days ago for an ack, and received no
-> objections, and you were well aware that the bug was fixed since you
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTk4MzEmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0xNCAxMzozMDowMSZlPTEmaD0xOTgzMCZmPTE5ODMxJmc9MTk4MzE=3D
 
-I didn't read these mails enough to notice that they were asking for an
-ack, they were followups to already discarded patches (the were
-discarded due to the testing problems).  One of the things I do to deal
-with mail overload is to drop followups to patches that I don't remember
-reviewing (as in this case where the negative test reports arrived
-before I saw the patches) or where I remember I was already happy.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTk4MzEmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0xNCAxMzozMDowMSZlPTEmaD0xOTgzMCZmPTE5ODMxJmc9MTk4Mz=
+E=3D
 
-> applied the fix to the Tegra ASoC PCM driver yourself, and we had
-> discussed this being a dependency for the dmaengine patches, and you'd
-> told me to just base the Tegra branch on top of your tree until a signed
-> tag was available for me to base upon.
 
-I knew it was a dependency, I didn't know that there were no further
-changes required to the series - your note when you posted the patch
-didn't mention anything.
+---------------------------------------------------------------------------=
+---
+Got visibility?
+Most devs has no idea what their production app looks like.
+Find out how fast your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219671;13503038;y?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

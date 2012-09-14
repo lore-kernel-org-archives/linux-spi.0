@@ -1,36 +1,67 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 5/5] ASoC: tegra: remove support of legacy DMA driver
- based access
-Date: Fri, 14 Sep 2012 17:08:52 +0100
-Message-ID: <20120914160852.GE4684@opensource.wolfsonmicro.com>
-References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com>
- <1345126397-28864-6-git-send-email-ldewangan@nvidia.com>
- <504936D3.8030203@wwwdotorg.org>
- <505353EF.7040904@wwwdotorg.org>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: [PATCH RESEND 1/5] ARM: tegra: config: enable
+	dmaengine based APB DMA driver
+Date: Fri, 14 Sep 2012 10:11:25 -0600
+Message-ID: <1347639089-2520-1-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, lrg-l0cyMroinI0@public.gmane.org, vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <505353EF.7040904-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: alsa-devel@alsa-project.org, Stephen Warren <swarren@nvidia.com>,
+ Laxman Dewangan <ldewangan@nvidia.com>, linux-tegra@vger.kernel.org,
+ spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
+To: Stephen Warren <swarren@wwwdotorg.org>,
+ Mark Brown <broonie@opensource.wolfsonmicro.com>,
+ Liam Girdwood <lrg@ti.com>, Grant Likely <grant.likely@secretlab.ca>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 14, 2012 at 09:57:35AM -0600, Stephen Warren wrote:
-> On 09/06/2012 05:50 PM, Stephen Warren wrote:
+From: Laxman Dewangan <ldewangan@nvidia.com>
 
-> > I'd like to take this patch through the Tegra tree, since it relies on
-> > the previous Tegra patches to convert to dmaengine. Could I please get
-> > an ack if that's OK? Thanks.
+Enable config for dmaengine based Tegra APB DMA driver and
+disable the legacy APB DMA driver (SYSTEM_DMA).
 
-> I'm still looking for an ack.
+Signed-off-by: Laxman Dewangan <ldewangan@nvidia.com>
+Signed-off-by: Stephen Warren <swarren@nvidia.com>
+---
+I'm looking for Ack's on patches 4 and 5 from the SPI and ASoC maintainers
+respectively, so that I can take this series through the Tegra tree for 3.7.
 
-As with all the others here I need to see this so it can get reviewed,
-the previous review was that the patch didn't work.  In general
-contentless pings like this aren't terribly helpful...
+When this series was first posted, there was a bug in the Tegra ASoC PCM
+driver which prevented it from working. A fix for this has since been
+applied to ASoC's for-3.6 branch and hence should show up in 3.6.
+
+ arch/arm/configs/tegra_defconfig |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/configs/tegra_defconfig b/arch/arm/configs/tegra_defconfig
+index adcf3c2..2990396 100644
+--- a/arch/arm/configs/tegra_defconfig
++++ b/arch/arm/configs/tegra_defconfig
+@@ -29,6 +29,7 @@ CONFIG_ARCH_TEGRA_2x_SOC=y
+ CONFIG_ARCH_TEGRA_3x_SOC=y
+ CONFIG_TEGRA_PCI=y
+ CONFIG_TEGRA_DEBUG_UART_AUTO_ODMDATA=y
++# CONFIG_TEGRA_SYSTEM_DMA is not set
+ CONFIG_TEGRA_EMC_SCALING_ENABLE=y
+ CONFIG_SMP=y
+ CONFIG_PREEMPT=y
+@@ -175,6 +176,8 @@ CONFIG_RTC_DRV_MAX8907=y
+ CONFIG_RTC_DRV_TPS65910=y
+ CONFIG_RTC_DRV_EM3027=y
+ CONFIG_RTC_DRV_TEGRA=y
++CONFIG_DMADEVICES=y
++CONFIG_TEGRA20_APB_DMA=y
+ CONFIG_STAGING=y
+ CONFIG_SENSORS_ISL29018=y
+ CONFIG_SENSORS_ISL29028=y
+-- 
+1.7.0.4

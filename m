@@ -1,16 +1,16 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 4/5] spi: tegra: remove support of legacy DMA driver
+Subject: Re: [PATCH 5/5] ASoC: tegra: remove support of legacy DMA driver
  based access
-Date: Fri, 14 Sep 2012 17:02:27 +0100
-Message-ID: <20120914160227.GD4684@opensource.wolfsonmicro.com>
+Date: Fri, 14 Sep 2012 17:08:52 +0100
+Message-ID: <20120914160852.GE4684@opensource.wolfsonmicro.com>
 References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com>
- <1345126397-28864-5-git-send-email-ldewangan@nvidia.com>
- <504936AF.8010701@wwwdotorg.org>
- <505353FC.20505@wwwdotorg.org>
+ <1345126397-28864-6-git-send-email-ldewangan@nvidia.com>
+ <504936D3.8030203@wwwdotorg.org>
+ <505353EF.7040904@wwwdotorg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, lrg-l0cyMroinI0@public.gmane.org, vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, lrg-l0cyMroinI0@public.gmane.org, vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
 	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
@@ -18,11 +18,11 @@ Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, grant.l
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <505353FC.20505-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <505353EF.7040904-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 14, 2012 at 09:57:48AM -0600, Stephen Warren wrote:
+On Fri, Sep 14, 2012 at 09:57:35AM -0600, Stephen Warren wrote:
 > On 09/06/2012 05:50 PM, Stephen Warren wrote:
 
 > > I'd like to take this patch through the Tegra tree, since it relies on
@@ -31,4 +31,6 @@ On Fri, Sep 14, 2012 at 09:57:48AM -0600, Stephen Warren wrote:
 
 > I'm still looking for an ack.
 
-Again, I don't have this patch.
+As with all the others here I need to see this so it can get reviewed,
+the previous review was that the patch didn't work.  In general
+contentless pings like this aren't terribly helpful...

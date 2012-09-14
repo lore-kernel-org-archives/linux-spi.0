@@ -1,194 +1,323 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: [PATCH RESEND 3/5] ARM: tegra: apbio: remove support of legacy DMA
-	driver based access
-Date: Fri, 14 Sep 2012 10:11:27 -0600
-Message-ID: <1347639089-2520-3-git-send-email-swarren@wwwdotorg.org>
+Subject: [PATCH RESEND 5/5] ASoC: tegra: remove support of legacy DMA driver based access
+Date: Fri, 14 Sep 2012 10:11:29 -0600
+Message-ID: <1347639089-2520-5-git-send-email-swarren@wwwdotorg.org>
 References: <1347639089-2520-1-git-send-email-swarren@wwwdotorg.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Liam Girdwood <lrg-l0cyMroinI0@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+	Liam Girdwood <lrg-l0cyMroinI0@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1347639089-2520-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
 Remove the support code which uses the legacy APB DMA driver
-for accessing the apbio register.
+for accessing the I2S FIFO.
 The driver will use the dmaengine based APB DMA driver for
-accessing apbio register.
+accessing reqding/writing to I2S FIFO.
 
 Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 ---
- arch/arm/mach-tegra/apbio.c |  118 +------------------------------------------
- 1 files changed, 1 insertions(+), 117 deletions(-)
+ sound/soc/tegra/Kconfig     |    2 +-
+ sound/soc/tegra/tegra_pcm.c |  232 -------------------------------------------
+ sound/soc/tegra/tegra_pcm.h |   14 ---
+ 3 files changed, 1 insertions(+), 247 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/apbio.c b/arch/arm/mach-tegra/apbio.c
-index 643a378..b5015d0 100644
---- a/arch/arm/mach-tegra/apbio.c
-+++ b/arch/arm/mach-tegra/apbio.c
-@@ -28,7 +28,7 @@
- 
- #include "apbio.h"
- 
--#if defined(CONFIG_TEGRA_SYSTEM_DMA) || defined(CONFIG_TEGRA20_APB_DMA)
-+#if defined(CONFIG_TEGRA20_APB_DMA)
- static DEFINE_MUTEX(tegra_apb_dma_lock);
- static u32 *tegra_apb_bb;
- static dma_addr_t tegra_apb_bb_phys;
-@@ -37,121 +37,6 @@ static DECLARE_COMPLETION(tegra_apb_wait);
- static u32 tegra_apb_readl_direct(unsigned long offset);
- static void tegra_apb_writel_direct(u32 value, unsigned long offset);
+diff --git a/sound/soc/tegra/Kconfig b/sound/soc/tegra/Kconfig
+index 02bcd30..19e5fe7 100644
+--- a/sound/soc/tegra/Kconfig
++++ b/sound/soc/tegra/Kconfig
+@@ -1,6 +1,6 @@
+ config SND_SOC_TEGRA
+ 	tristate "SoC Audio for the Tegra System-on-Chip"
+-	depends on ARCH_TEGRA && (TEGRA_SYSTEM_DMA || TEGRA20_APB_DMA)
++	depends on ARCH_TEGRA && TEGRA20_APB_DMA
+ 	select REGMAP_MMIO
+ 	select SND_SOC_DMAENGINE_PCM if TEGRA20_APB_DMA
+ 	help
+diff --git a/sound/soc/tegra/tegra_pcm.c b/sound/soc/tegra/tegra_pcm.c
+index 8d6900c..e187339 100644
+--- a/sound/soc/tegra/tegra_pcm.c
++++ b/sound/soc/tegra/tegra_pcm.c
+@@ -57,237 +57,6 @@ static const struct snd_pcm_hardware tegra_pcm_hardware = {
+ 	.fifo_size		= 4,
+ };
  
 -#if defined(CONFIG_TEGRA_SYSTEM_DMA)
--static struct tegra_dma_channel *tegra_apb_dma;
--
--bool tegra_apb_init(void)
+-static void tegra_pcm_queue_dma(struct tegra_runtime_data *prtd)
 -{
--	struct tegra_dma_channel *ch;
+-	struct snd_pcm_substream *substream = prtd->substream;
+-	struct snd_dma_buffer *buf = &substream->dma_buffer;
+-	struct tegra_dma_req *dma_req;
+-	unsigned long addr;
 -
--	mutex_lock(&tegra_apb_dma_lock);
+-	dma_req = &prtd->dma_req[prtd->dma_req_idx];
+-	prtd->dma_req_idx = 1 - prtd->dma_req_idx;
 -
--	/* Check to see if we raced to setup */
--	if (tegra_apb_dma)
--		goto out;
+-	addr = buf->addr + prtd->dma_pos;
+-	prtd->dma_pos += dma_req->size;
+-	if (prtd->dma_pos >= prtd->dma_pos_end)
+-		prtd->dma_pos = 0;
 -
--	ch = tegra_dma_allocate_channel(TEGRA_DMA_MODE_ONESHOT |
--		TEGRA_DMA_SHARED);
+-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+-		dma_req->source_addr = addr;
+-	else
+-		dma_req->dest_addr = addr;
 -
--	if (!ch)
--		goto out_fail;
--
--	tegra_apb_bb = dma_alloc_coherent(NULL, sizeof(u32),
--		&tegra_apb_bb_phys, GFP_KERNEL);
--	if (!tegra_apb_bb) {
--		pr_err("%s: can not allocate bounce buffer\n", __func__);
--		tegra_dma_free_channel(ch);
--		goto out_fail;
--	}
--
--	tegra_apb_dma = ch;
--out:
--	mutex_unlock(&tegra_apb_dma_lock);
--	return true;
--
--out_fail:
--	mutex_unlock(&tegra_apb_dma_lock);
--	return false;
+-	tegra_dma_enqueue_req(prtd->dma_chan, dma_req);
 -}
 -
--static void apb_dma_complete(struct tegra_dma_req *req)
+-static void dma_complete_callback(struct tegra_dma_req *req)
 -{
--	complete(&tegra_apb_wait);
--}
+-	struct tegra_runtime_data *prtd = (struct tegra_runtime_data *)req->dev;
+-	struct snd_pcm_substream *substream = prtd->substream;
+-	struct snd_pcm_runtime *runtime = substream->runtime;
 -
--static u32 tegra_apb_readl_using_dma(unsigned long offset)
--{
--	struct tegra_dma_req req;
--	int ret;
+-	spin_lock(&prtd->lock);
 -
--	if (!tegra_apb_dma && !tegra_apb_init())
--		return tegra_apb_readl_direct(offset);
--
--	mutex_lock(&tegra_apb_dma_lock);
--	req.complete = apb_dma_complete;
--	req.to_memory = 1;
--	req.dest_addr = tegra_apb_bb_phys;
--	req.dest_bus_width = 32;
--	req.dest_wrap = 1;
--	req.source_addr = offset;
--	req.source_bus_width = 32;
--	req.source_wrap = 4;
--	req.req_sel = TEGRA_DMA_REQ_SEL_CNTR;
--	req.size = 4;
--
--	INIT_COMPLETION(tegra_apb_wait);
--
--	tegra_dma_enqueue_req(tegra_apb_dma, &req);
--
--	ret = wait_for_completion_timeout(&tegra_apb_wait,
--		msecs_to_jiffies(50));
--
--	if (WARN(ret == 0, "apb read dma timed out")) {
--		tegra_dma_dequeue_req(tegra_apb_dma, &req);
--		*(u32 *)tegra_apb_bb = 0;
--	}
--
--	mutex_unlock(&tegra_apb_dma_lock);
--	return *((u32 *)tegra_apb_bb);
--}
--
--static void tegra_apb_writel_using_dma(u32 value, unsigned long offset)
--{
--	struct tegra_dma_req req;
--	int ret;
--
--	if (!tegra_apb_dma && !tegra_apb_init()) {
--		tegra_apb_writel_direct(value, offset);
+-	if (!prtd->running) {
+-		spin_unlock(&prtd->lock);
 -		return;
 -	}
 -
--	mutex_lock(&tegra_apb_dma_lock);
--	*((u32 *)tegra_apb_bb) = value;
--	req.complete = apb_dma_complete;
--	req.to_memory = 0;
--	req.dest_addr = offset;
--	req.dest_wrap = 4;
--	req.dest_bus_width = 32;
--	req.source_addr = tegra_apb_bb_phys;
--	req.source_bus_width = 32;
--	req.source_wrap = 1;
--	req.req_sel = TEGRA_DMA_REQ_SEL_CNTR;
--	req.size = 4;
+-	if (++prtd->period_index >= runtime->periods)
+-		prtd->period_index = 0;
 -
--	INIT_COMPLETION(tegra_apb_wait);
+-	tegra_pcm_queue_dma(prtd);
 -
--	tegra_dma_enqueue_req(tegra_apb_dma, &req);
+-	spin_unlock(&prtd->lock);
 -
--	ret = wait_for_completion_timeout(&tegra_apb_wait,
--		msecs_to_jiffies(50));
--
--	if (WARN(ret == 0, "apb write dma timed out"))
--		tegra_dma_dequeue_req(tegra_apb_dma, &req);
--
--	mutex_unlock(&tegra_apb_dma_lock);
+-	snd_pcm_period_elapsed(substream);
 -}
 -
+-static void setup_dma_tx_request(struct tegra_dma_req *req,
+-					struct tegra_pcm_dma_params * dmap)
+-{
+-	req->complete = dma_complete_callback;
+-	req->to_memory = false;
+-	req->dest_addr = dmap->addr;
+-	req->dest_wrap = dmap->wrap;
+-	req->source_bus_width = 32;
+-	req->source_wrap = 0;
+-	req->dest_bus_width = dmap->width;
+-	req->req_sel = dmap->req_sel;
+-}
+-
+-static void setup_dma_rx_request(struct tegra_dma_req *req,
+-					struct tegra_pcm_dma_params * dmap)
+-{
+-	req->complete = dma_complete_callback;
+-	req->to_memory = true;
+-	req->source_addr = dmap->addr;
+-	req->dest_wrap = 0;
+-	req->source_bus_width = dmap->width;
+-	req->source_wrap = dmap->wrap;
+-	req->dest_bus_width = 32;
+-	req->req_sel = dmap->req_sel;
+-}
+-
+-static int tegra_pcm_open(struct snd_pcm_substream *substream)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct tegra_runtime_data *prtd;
+-	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+-	struct tegra_pcm_dma_params * dmap;
+-	int ret = 0;
+-
+-	prtd = kzalloc(sizeof(struct tegra_runtime_data), GFP_KERNEL);
+-	if (prtd == NULL)
+-		return -ENOMEM;
+-
+-	runtime->private_data = prtd;
+-	prtd->substream = substream;
+-
+-	spin_lock_init(&prtd->lock);
+-
+-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+-		dmap = snd_soc_dai_get_dma_data(rtd->cpu_dai, substream);
+-		setup_dma_tx_request(&prtd->dma_req[0], dmap);
+-		setup_dma_tx_request(&prtd->dma_req[1], dmap);
+-	} else {
+-		dmap = snd_soc_dai_get_dma_data(rtd->cpu_dai, substream);
+-		setup_dma_rx_request(&prtd->dma_req[0], dmap);
+-		setup_dma_rx_request(&prtd->dma_req[1], dmap);
+-	}
+-
+-	prtd->dma_req[0].dev = prtd;
+-	prtd->dma_req[1].dev = prtd;
+-
+-	prtd->dma_chan = tegra_dma_allocate_channel(TEGRA_DMA_MODE_ONESHOT);
+-	if (prtd->dma_chan == NULL) {
+-		ret = -ENOMEM;
+-		goto err;
+-	}
+-
+-	/* Set HW params now that initialization is complete */
+-	snd_soc_set_runtime_hwparams(substream, &tegra_pcm_hardware);
+-
+-	/* Ensure that buffer size is a multiple of period size */
+-	ret = snd_pcm_hw_constraint_integer(runtime,
+-						SNDRV_PCM_HW_PARAM_PERIODS);
+-	if (ret < 0)
+-		goto err;
+-
+-	return 0;
+-
+-err:
+-	if (prtd->dma_chan) {
+-		tegra_dma_free_channel(prtd->dma_chan);
+-	}
+-
+-	kfree(prtd);
+-
+-	return ret;
+-}
+-
+-static int tegra_pcm_close(struct snd_pcm_substream *substream)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct tegra_runtime_data *prtd = runtime->private_data;
+-
+-	tegra_dma_free_channel(prtd->dma_chan);
+-
+-	kfree(prtd);
+-
+-	return 0;
+-}
+-
+-static int tegra_pcm_hw_params(struct snd_pcm_substream *substream,
+-				struct snd_pcm_hw_params *params)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct tegra_runtime_data *prtd = runtime->private_data;
+-
+-	snd_pcm_set_runtime_buffer(substream, &substream->dma_buffer);
+-
+-	prtd->dma_req[0].size = params_period_bytes(params);
+-	prtd->dma_req[1].size = prtd->dma_req[0].size;
+-
+-	return 0;
+-}
+-
+-static int tegra_pcm_hw_free(struct snd_pcm_substream *substream)
+-{
+-	snd_pcm_set_runtime_buffer(substream, NULL);
+-
+-	return 0;
+-}
+-
+-static int tegra_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct tegra_runtime_data *prtd = runtime->private_data;
+-	unsigned long flags;
+-
+-	switch (cmd) {
+-	case SNDRV_PCM_TRIGGER_START:
+-		prtd->dma_pos = 0;
+-		prtd->dma_pos_end = frames_to_bytes(runtime, runtime->periods * runtime->period_size);
+-		prtd->period_index = 0;
+-		prtd->dma_req_idx = 0;
+-		/* Fall-through */
+-	case SNDRV_PCM_TRIGGER_RESUME:
+-	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+-		spin_lock_irqsave(&prtd->lock, flags);
+-		prtd->running = 1;
+-		spin_unlock_irqrestore(&prtd->lock, flags);
+-		tegra_pcm_queue_dma(prtd);
+-		tegra_pcm_queue_dma(prtd);
+-		break;
+-	case SNDRV_PCM_TRIGGER_STOP:
+-	case SNDRV_PCM_TRIGGER_SUSPEND:
+-	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
+-		spin_lock_irqsave(&prtd->lock, flags);
+-		prtd->running = 0;
+-		spin_unlock_irqrestore(&prtd->lock, flags);
+-		tegra_dma_dequeue_req(prtd->dma_chan, &prtd->dma_req[0]);
+-		tegra_dma_dequeue_req(prtd->dma_chan, &prtd->dma_req[1]);
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+-	return 0;
+-}
+-
+-static snd_pcm_uframes_t tegra_pcm_pointer(struct snd_pcm_substream *substream)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct tegra_runtime_data *prtd = runtime->private_data;
+-
+-	return prtd->period_index * runtime->period_size;
+-}
+-
+-
+-static int tegra_pcm_mmap(struct snd_pcm_substream *substream,
+-				struct vm_area_struct *vma)
+-{
+-	struct snd_pcm_runtime *runtime = substream->runtime;
+-
+-	return dma_mmap_writecombine(substream->pcm->card->dev, vma,
+-					runtime->dma_area,
+-					runtime->dma_addr,
+-					runtime->dma_bytes);
+-}
+-
+-static struct snd_pcm_ops tegra_pcm_ops = {
+-	.open		= tegra_pcm_open,
+-	.close		= tegra_pcm_close,
+-	.ioctl		= snd_pcm_lib_ioctl,
+-	.hw_params	= tegra_pcm_hw_params,
+-	.hw_free	= tegra_pcm_hw_free,
+-	.trigger	= tegra_pcm_trigger,
+-	.pointer	= tegra_pcm_pointer,
+-	.mmap		= tegra_pcm_mmap,
+-};
 -#else
- static struct dma_chan *tegra_apb_dma_chan;
- static struct dma_slave_config dma_sconfig;
- 
-@@ -279,7 +164,6 @@ static void tegra_apb_writel_using_dma(u32 value, unsigned long offset)
- 		pr_err("error in writing offset 0x%08lx using dma\n", offset);
- 	mutex_unlock(&tegra_apb_dma_lock);
- }
+ static int tegra_pcm_open(struct snd_pcm_substream *substream)
+ {
+ 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+@@ -399,7 +168,6 @@ static struct snd_pcm_ops tegra_pcm_ops = {
+ 	.pointer	= snd_dmaengine_pcm_pointer,
+ 	.mmap		= tegra_pcm_mmap,
+ };
 -#endif
- #else
- #define tegra_apb_readl_using_dma tegra_apb_readl_direct
- #define tegra_apb_writel_using_dma tegra_apb_writel_direct
+ 
+ static int tegra_pcm_preallocate_dma_buffer(struct snd_pcm *pcm, int stream)
+ {
+diff --git a/sound/soc/tegra/tegra_pcm.h b/sound/soc/tegra/tegra_pcm.h
+index a3a4503..b40279b 100644
+--- a/sound/soc/tegra/tegra_pcm.h
++++ b/sound/soc/tegra/tegra_pcm.h
+@@ -40,20 +40,6 @@ struct tegra_pcm_dma_params {
+ 	unsigned long req_sel;
+ };
+ 
+-#if defined(CONFIG_TEGRA_SYSTEM_DMA)
+-struct tegra_runtime_data {
+-	struct snd_pcm_substream *substream;
+-	spinlock_t lock;
+-	int running;
+-	int dma_pos;
+-	int dma_pos_end;
+-	int period_index;
+-	int dma_req_idx;
+-	struct tegra_dma_req dma_req[2];
+-	struct tegra_dma_channel *dma_chan;
+-};
+-#endif
+-
+ int tegra_pcm_platform_register(struct device *dev);
+ void tegra_pcm_platform_unregister(struct device *dev);
+ 
 -- 
 1.7.0.4
-
-
-------------------------------------------------------------------------------
-Got visibility?
-Most devs has no idea what their production app looks like.
-Find out how fast your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219671;13503038;y?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html

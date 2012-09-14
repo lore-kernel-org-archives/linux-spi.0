@@ -1,11 +1,13 @@
-From: "Andy North" <AN8148-Wuw85uim5zDR7s880joybQ@public.gmane.org>
-Subject: [SPAM] Is Your Wedge Obsolete?
-Date: Fri, 14 Sep 2012 06:50:24 -0700
-Message-ID: <ee829c7b29bec031a215a0b8001c47af@comcast.net>
+From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Nouveaut=E9s?= & BEST OF
+	=?iso-8859-15?Q?jusqu=27=E0?= -40%
+Date: Fri, 14 Sep 2012 17:07:07 +0200
+Message-ID: <1347635450.505348faf34d2@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=SPLITOR00A_001_152379656D"
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,78 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------=SPLITOR00A_001_152379656D
-Content-Type: text/plain;
-	charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5OTk4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xNCAxMjowMDowMSZlPTEmaD0xOTk5NyZmPTE5OTk4Jmc9MTk5OTg=3D
 
-Do you want to play golf better? Is your wedge obsolete?=20
-We are so convinced that our F2 Wedge will allow you to play the best golf =
-ever, that we guarantee it=2E
-
-**View the attached brochure to get more info on this radical wedge**
-
-I am convinced you can not shank this F2 wedge. This wedge will make the =
-rest obsolete=2E
-
-It wont hurt to check it out=2E
-
-Andy North
-2-Time US Open Champion
-** View the attachment **
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5OTk4JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xNCAxMjowMDowMSZlPTEmaD0xOTk5NyZmPTE5OTk4Jmc9MTk5OT=
+g=3D
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages =
-<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
-ists.sourceforge.net>
-
-
-------=SPLITOR00A_001_152379656D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Got visibility?
 Most devs has no idea what their production app looks like.
 Find out how fast your code is with AppDynamics Lite.
 http://ad.doubleclick.net/clk;262219671;13503038;y?
 http://info.appdynamics.com/FreeJavaPerformanceDownload.html
-------=SPLITOR00A_001_152379656D
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=SPLITOR00A_001_152379656D--

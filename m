@@ -1,8 +1,8 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?D=E9couvrez?= 6 maxi bains douche aux senteurs
-	gourmandes et =?iso-8859-15?Q?fruit=E9es?=
-Date: Fri, 14 Sep 2012 03:23:12 +0200
-Message-ID: <1347585841.505287315c4b6@mc10.fr>
+From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
+	=?iso-8859-15?Q?=27=E0?= 70%
+Date: Fri, 14 Sep 2012 04:07:16 +0200
+Message-ID: <1347588461.5052916de94d9@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5OTM0JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0xNCAwMDoxMDowMSZlPTEmaD0xOTkzMyZmPTE5OTM0Jmc9MTk5MzQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMDAzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xNCAwMDoyMDowMSZlPTEmaD0yMDAwMiZmPTIwMDAzJmc9MjAwMDM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5OTM0JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0xNCAwMDoxMDowMSZlPTEmaD0xOTkzMyZmPTE5OTM0Jmc9MTk5Mz=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMDAzJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xNCAwMDoyMDowMSZlPTEmaD0yMDAwMiZmPTIwMDAzJmc9MjAwMD=
+M=3D
 
 
 ---------------------------------------------------------------------------=

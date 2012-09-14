@@ -1,31 +1,38 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 5/5] ASoC: tegra: remove support of legacy DMA driver
- based access
-Date: Thu, 13 Sep 2012 17:36:30 -0600
-Message-ID: <50526DFE.5030709@wwwdotorg.org>
-References: <1345126397-28864-1-git-send-email-ldewangan@nvidia.com> <1345126397-28864-6-git-send-email-ldewangan@nvidia.com>
+From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez?= 6 maxi bains douche aux senteurs
+	gourmandes et =?iso-8859-15?Q?fruit=E9es?=
+Date: Fri, 14 Sep 2012 03:23:12 +0200
+Message-ID: <1347585841.505287315c4b6@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, lrg-l0cyMroinI0@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1345126397-28864-6-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 08/16/2012 08:13 AM, Laxman Dewangan wrote:
-> Remove the support code which uses the legacy APB DMA driver
-> for accessing the I2S FIFO.
-> The driver will use the dmaengine based APB DMA driver for
-> accessing reqding/writing to I2S FIFO.
-> 
-> Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Please note that I've applied this to Tegra's for-3.7/dmaengine branch,
-even though it hasn't been ack'd by an ASoC maintainer.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5OTM0JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xNCAwMDoxMDowMSZlPTEmaD0xOTkzMyZmPTE5OTM0Jmc9MTk5MzQ=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5OTM0JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xNCAwMDoxMDowMSZlPTEmaD0xOTkzMyZmPTE5OTM0Jmc9MTk5Mz=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Got visibility?
+Most devs has no idea what their production app looks like.
+Find out how fast your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219671;13503038;y?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

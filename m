@@ -1,86 +1,37 @@
-From: Colin Cross <ccross@google.com>
-Subject: Re: [PATCHSET] kthread_worker: reimplement flush_kthread_work() to
- allow freeing during execution
-Date: Fri, 14 Sep 2012 15:50:40 -0700
-Message-ID: <CAMbhsRQs+2MCXq0M-eTeezwPR=KMnBKtJny1rjiUJL-wNYctMQ@mail.gmail.com>
-References: <20120719211510.GA32763@google.com>
+From: Helene Voyance par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Voyance gratuite
+Date: Sat, 15 Sep 2012 13:19:03 +0200
+Message-ID: <1347707950.5054642ec409d@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Avi Kivity <avi@redhat.com>, kvm@vger.kernel.org,
-	Andy Walls <awalls@md.metrocast.net>,
-	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@vger.kernel.org
-To: Tejun Heo <tj@kernel.org>
-Return-path: <kvm-owner@vger.kernel.org>
-In-Reply-To: <20120719211510.GA32763@google.com>
-Sender: kvm-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 19, 2012 at 2:15 PM, Tejun Heo <tj@kernel.org> wrote:
-> Hello,
->
-> kthread_worker was introduced together with concurrency managed
-> workqueue to serve workqueue users which need a special dedicated
-> worker - e.g. RT scheduling.  This is minimal queue / flush / flush
-> all iterface on top of kthread and each provided interface matches the
-> workqueue counterpart so that switching isn't difficult.
->
-> However, one noticeable difference was that kthread_worker doesn't
-> allow a work item to be freed while being executed.  The intention was
-> to keep the code simpler but it didn't really and the restriction is
-> subtle and does prevent some valid use cases.
->
-> This two-patch series reimplements flush_kthread_work() so that it
-> uses an extra work item for flushing.  While this takes a bit more
-> lines, this is easier to understand and removes the annoying
-> difference.
->
-> This patchset contains the following two patches.
->
->  0001-kthread_worker-reorganize-to-prepare-for-flush_kthre.patch
->  0002-kthread_worker-reimplement-flush_kthread_work-to-all.patch
->
-> The first one is a prep patch which makes no functional changes.  The
-> second reimplements flush_kthread_work().
->
-> All current kthread_worker users are cc'd.  If no one objects, I'll
-> push it through the workqueue branch.  This patchset is also available
-> in the following git branch.
->
->  git://git.kernel.org/pub/scm/linux/kernel/git/tj/wq.git review-kthread_worker-flush
->
-> diffstat follows.  Thanks.
->
->  include/linux/kthread.h |    8 +---
->  kernel/kthread.c        |   86 +++++++++++++++++++++++++++---------------------
->  2 files changed, 52 insertions(+), 42 deletions(-)
->
-> --
-> tejun
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-This patch set fixes a reproducible crash I'm seeing on a 3.4.10
-kernel.  flush_kthread_worker (which is different from
-flush_kthread_work) is initializing a kthread_work and a completion on
-the stack, then queuing it and calling wait_for_completion.  Once the
-completion is signaled, flush_kthread_worker exits and the stack
-region used by the kthread_work may be immediately reused by another
-object on the stack, but kthread_worker_fn continues accessing its
-work pointer:
-                work->func(work);         <- calls complete,
-effectively frees work
-                smp_wmb();      /* wmb worker-b0 paired with flush-b1 */
-                work->done_seq = work->queue_seq;   <- overwrites a
-new stack object
-                smp_mb();       /* mb worker-b1 paired with flush-b0 */
-                if (atomic_read(&work->flushing))
-                        wake_up_all(&work->done);  <- or crashes here
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5Njg1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xNSAwMzoxMDowMSZlPTEmaD0xOTY4NCZmPTE5Njg1Jmc9MTk2ODU=3D
 
-These patches fix the problem by not accessing work after work->func
-is called, and should be backported to stable.  They apply cleanly to
-3.4.10.  Upstream commits are 9a2e03d8ed518a61154f18d83d6466628e519f94
-and 46f3d976213452350f9d10b0c2780c2681f7075b.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5Njg1JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xNSAwMzoxMDowMSZlPTEmaD0xOTY4NCZmPTE5Njg1Jmc9MTk2OD=
+U=3D
+
+
+---------------------------------------------------------------------------=
+---
+How fast is your code?
+3 out of 4 devs don\\\'t know how their code performs in production.
+Find out how slow your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219672;13503038;z?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

@@ -1,8 +1,8 @@
-From: Helene Voyance par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Voyance gratuite
-Date: Sat, 15 Sep 2012 13:19:03 +0200
-Message-ID: <1347707950.5054642ec409d@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Des prix incroyables - Livraison Gratuite
+Date: Sat, 15 Sep 2012 20:21:07 +0200
+Message-ID: <1347733443.5054c7c321b31@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5Njg1JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0xNSAwMzoxMDowMSZlPTEmaD0xOTY4NCZmPTE5Njg1Jmc9MTk2ODU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjAxODgmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0xNSAxMTowMDowMSZlPTEmaD0yMDE4NyZmPTIwMTg4Jmc9MjAxODg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5Njg1JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0xNSAwMzoxMDowMSZlPTEmaD0xOTY4NCZmPTE5Njg1Jmc9MTk2OD=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjAxODgmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0xNSAxMTowMDowMSZlPTEmaD0yMDE4NyZmPTIwMTg4Jmc9MjAxOD=
+g=3D
 
 
 ---------------------------------------------------------------------------=

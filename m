@@ -1,7 +1,7 @@
-From: "LeLynx.fr par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Trouvez la meilleure mutuelle sante
-Date: Sun, 16 Sep 2012 05:33:08 +0200
-Message-ID: <1347766754.505549e29db09@mc10.fr>
+From: "Promovacances par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Les bons plans du mois : croisieres et circuits a prix imbattables
+Date: Sun, 16 Sep 2012 11:04:07 +0200
+Message-ID: <1347786490.505596fa7a847@mc10.fr>
 Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTk4MzYmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wOS0xNSAxNTowMDowMSZlPTEmaD0xOTgzNSZmPTE5ODM2Jmc9MTk4MzY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MTk1NDQmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0xNSAyMTowMDowMSZlPTEmaD0xOTU0MyZmPTE5NTQ0Jmc9MTk1NDQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTk4MzYmYz0=
-xOTYxNjQxJmQ9MjAxMi0wOS0xNSAxNTowMDowMSZlPTEmaD0xOTgzNSZmPTE5ODM2Jmc9MTk4Mz=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MTk1NDQmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0xNSAyMTowMDowMSZlPTEmaD0xOTU0MyZmPTE5NTQ0Jmc9MTk1ND=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

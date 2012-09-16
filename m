@@ -1,75 +1,89 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH V4] MXS: Implement DMA support into mxs-i2c
-Date: Sun, 16 Sep 2012 13:14:20 +0200
-Message-ID: <201209161314.21049.marex@denx.de>
-References: <1345779871-7677-1-git-send-email-marex@denx.de> <201209161251.41895.marex@denx.de> <20120916111223.GD933@pengutronix.de>
+From: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Subject: Re: [PATCH 1/4] hwmon: (lm70) Simplify show_name function
+Date: Sun, 16 Sep 2012 15:09:01 +0200
+Message-ID: <20120916150901.6df27a85@endymion.delvare>
+References: <1347396773-32108-1-git-send-email-linux@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20120916111223.GD933-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	lm-sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1347396773-32108-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Wolfram Sang,
+Hi Guenter,
 
-> > > Unsurprisingly, I also couldn't get the mode switching between DMA and
-> > > PIOQUEUE to work :(
-> > 
-> > I'd say more work should be invested into this.
+On Tue, 11 Sep 2012 13:52:50 -0700, Guenter Roeck wrote:
+> Instead of using a switch statement to determine the device name, use
+> to_spi_device(dev)->modalias to simplify the code and reduce module size.
 > 
-> I ran out of ideas. Next thing I'd do is to ask FSL if this is possible
-> at all. Yet, I'd like to have some solution for 3.7.
+> Signed-off-by: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+> ---
+>  drivers/hwmon/lm70.c |   21 +--------------------
+>  1 file changed, 1 insertion(+), 20 deletions(-)
+> 
+> diff --git a/drivers/hwmon/lm70.c b/drivers/hwmon/lm70.c
+> index 789753d..2d1777a 100644
+> --- a/drivers/hwmon/lm70.c
+> +++ b/drivers/hwmon/lm70.c
+> @@ -124,26 +124,7 @@ static DEVICE_ATTR(temp1_input, S_IRUGO, lm70_sense_temp, NULL);
+>  static ssize_t lm70_show_name(struct device *dev, struct device_attribute
+>  			      *devattr, char *buf)
+>  {
+> -	struct lm70 *p_lm70 = dev_get_drvdata(dev);
+> -	int ret;
+> -
+> -	switch (p_lm70->chip) {
+> -	case LM70_CHIP_LM70:
+> -		ret = sprintf(buf, "lm70\n");
+> -		break;
+> -	case LM70_CHIP_TMP121:
+> -		ret = sprintf(buf, "tmp121\n");
+> -		break;
+> -	case LM70_CHIP_LM71:
+> -		ret = sprintf(buf, "lm71\n");
+> -		break;
+> -	case LM70_CHIP_LM74:
+> -		ret = sprintf(buf, "lm74\n");
+> -		break;
+> -	default:
+> -		ret = -EINVAL;
+> -	}
+> -	return ret;
+> +	return sprintf(buf, "%s\n", to_spi_device(dev)->modalias);
+>  }
 
-Why? You now have the module option solution.
+That's a very nice cleanup, but it makes me wonder...
 
-> > Besides, what about rather > trying PIO + DMA instead of PIOQ + DMA?
-> 
-> That could also be a solution.
-> 
-> > > However, I did come up with an idea how to select DMA or PIOQUEUE per
-> > > bus via devicetree. If we change the view from "I want PIOQUEUE" to "I
-> > > don't want DMA", we could simply override the default DMA configuration
-> > > 
-> > > in the devicetree with, e.g.:
-> > > 			i2c0: i2c@80058000 {
-> > > 			
-> > > 				...
-> > > 				fsl,i2c-dma-channel = <>;
-> > > 			
-> > > 			};
-> > > 
-> > > So, no DMA channel set up will fall back to PIOQUEUE. This is more
-> > > generic than a custom binding, because if one doesn't want DMA, don't
-> > > configure it. That should also work with other devices which can fall
-> > > back to something. I think this is worth trying, another advantage is
-> > > that it doesn't expose something new to the user. So, there is no
-> > > legacy support needed in case there will be a better way of
-> > > configuration.
-> > 
-> > Ewww ... that's such an ad-hoc hack.
-> 
-> Please give reasons.
+Wouldn't it make sense to create the "name" attribute of spi devices at
+the spi core level, as we do for i2c devices? All spi-based hwmon
+drivers create the hwmon attributes as the spi device level, as is done
+for i2c devices, so that would make no difference from a user-space
+perspective. And this would avoid code redundancy.
 
-It's abuse of proper configuration of hardware property.
+If we don't want to do that, then let's offer drivers a nicer function
+to retrieve the spi device name, e.g. spi_dev_name(). That way, the
+internal implementation can change in the future without having to
+update all drivers.
 
-> > Besides, someone might simply forget to add the binding, you'd need to
-> > print a warning.
-> 
-> ? It is "on" by default because of the entry in the dtsi. And the status
-> of DMA will be printed.
-> 
-> > > +	dev_info(dev, "registered. DMA: %s\n", i2c->dma_mode ? "on" : "off");
-> > 
-> > dev_debug() ?
-> 
-> Yup.
+Grant, what do you think?
 
-Best regards,
-Marek Vasut
+-- 
+Jean Delvare
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://ad.doubleclick.net/clk;258768047;13503038;j?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

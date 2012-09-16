@@ -1,33 +1,37 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V4] MXS: Implement DMA support into mxs-i2c
-Date: Sun, 16 Sep 2012 11:44:25 -0300
-Message-ID: <CAOMZO5AFHHOH7qwEfuxKfKCNdc4jwPk3Z8m8PxLKrwSKs=4tKw@mail.gmail.com>
-References: <1345779871-7677-1-git-send-email-marex@denx.de>
-	<CAOMZO5CSvP3nXNq4VLYALh+U9OZRnjtgXqTr7zsKdeHpUdJ4cQ@mail.gmail.com>
-	<20120916104436.GC933@pengutronix.de>
+From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Sun, 16 Sep 2012 17:29:08 +0200
+Message-ID: <1347809353.5055f04986a62@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20120916104436.GC933-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Wolfram,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-On Sun, Sep 16, 2012 at 7:44 AM, Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org> wrote:
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTE5ODYxJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xNiAwNDozMDowMSZlPTEmaD0xOTg2MCZmPTE5ODYxJmc9MTk4NjE=3D
 
->> Tested-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->
-> Thanks, may I ask what your tests were?
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTE5ODYxJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xNiAwNDozMDowMSZlPTEmaD0xOTg2MCZmPTE5ODYxJmc9MTk4Nj=
+E=3D
 
-I used i2c-tools to read/write to an i2c at24 eeprom connected to my mx28evk.
 
-Regards,
-
-Fabio Estevam
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://ad.doubleclick.net/clk;258768047;13503038;j?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

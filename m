@@ -1,10 +1,11 @@
-From: "61.139.2.69" <zxcvbnm-mnbvgcxz-plmoknijb-Mj/0Miq2reM@public.gmane.org>
-Subject: [SPAM] Êùé ÁªèÁêÜ21:51:47
-Date: Sun, 16 Sep 2012 21:51:49 +0800
-Message-ID: <E1TDFGa-0000QD-LJ@sfs-ml-3.v29.ch3.sourceforge.com>
-Reply-To: si135600-0GSiYjBpcig@public.gmane.org
-Content-Type: multipart/mixed; boundary="===============1386284582411464457=="
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: "Gary McCord" <GM669-Wuw85uim5zDR7s880joybQ@public.gmane.org>
+Subject: [SPAM] Hit Better Shots
+Date: Sun, 16 Sep 2012 07:15:15 -0700
+Message-ID: <7adc9dfa51b11d1df278074300145be8@comcast.net>
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=SPLITOR00A_001_326671093D"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,23 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============1386284582411464457==
-Content-Type: text/plain;charset="GB2312"
-Content-Transfer-Encoding: 8bit
+This is a multi-part message in MIME format.
 
-2268137            61.139.2.69        21:51:47
-  πÛ∆Û“µ(π´Àæ):Œ“Àæ≥§∆⁄∞Ï¿Ì∏˜––“µ’˝πÊ£®π˙°¢µÿ£©
-À∞<∞l/\∆±>°£ª∂”≠–¬¿œøÕªß¿¥µÁ◊…—Ø∫œ◊˜!–ª–ª£°
-¡™œµ»À£∫¿Ó“ª∑≤
- ÷  ª˙£∫13620201141
-Q    Q£∫1410703481
+------=SPLITOR00A_001_326671093D
+Content-Type: text/plain;
+	charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 
-£®æ¥«Î±£¡Ù£¨“‘±∏∫Û”√£¨–ª–ª£°£©
+Attached you will find how you can hit down on the golf ball and have the =
+impact position of a Tour Player, allowing you to hit it longer and become =
+a better and more consistent ball striker=2E
 
+Sincerely,
 
-
-
-
+Gary McCord
+**View the Attachment for Details**
 
 
 
@@ -54,31 +53,12 @@ Q    Q£∫1410703481
 
 
 
+Click This Link to Stop Future Messages =
+<mailto:listservices-KK0ffGbhmjU@public.gmane.org?subject=3DUnsubscribe%3A%20spi-devel-general@l=
+ists.sourceforge.net>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-spi-devel-generalspi-devel-generalspi-devel-general-5NWGOfrQmneRv+LV9MX5urvPKr0c0aQqk3vY45ozXmswv/7vip+YAB5Ac1YWwr4NG14QJfnV3PSHqBKbz5YlbHm+OaIZwjARkh3DMyZrQpE=@public.gmane.org@yeah.net2012-09-1621:51:472268137
-
-
---===============1386284582411464457==
+------=SPLITOR00A_001_326671093D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -90,7 +70,7 @@ Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:
 http://ad.doubleclick.net/clk;258768047;13503038;j?
 http://info.appdynamics.com/FreeJavaPerformanceDownload.html
---===============1386284582411464457==
+------=SPLITOR00A_001_326671093D
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -101,4 +81,4 @@ spi-devel-general mailing list
 spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
---===============1386284582411464457==--
+------=SPLITOR00A_001_326671093D--

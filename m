@@ -1,12 +1,17 @@
-From: France Cosmetics <info-LR+Lv5/NAcHCENZMoErytg@public.gmane.org>
-Subject: =?UTF-8?B?0JLQsNGI0LAg0LrRgNCw0YHQvtGC0LAg0L7RgdC70LXQv9C40YIg0LzRg9C2?=
-	=?UTF-8?B?0YfQuNC9IQ==?=
-Date: Mon, 17 Sep 2012 01:33:15 +0000
-Message-ID: <b87ab1766c9347a5da27d194ce6fa077@lidershark.com>
+From: =?koi8-r?B?7cnOxMHMo9cg?= <qojcyyiyjlv-PWAZ9TzliBZQFI55V6+gNQ@public.gmane.org>
+Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwNTUg0tXC?=
+Date: Mon, 17 Sep 2012 10:01:34 +0400
+Message-ID: <F55177AABF144A83BC3F7230DC9D11FB@ygqjp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="koi8-r"
 Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
+	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
+	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
+	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
+	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
+	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,25 +23,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-TWFnaWMgR2xhbmNlIEludGVuc2l2ZSDRg9Cy0LXQu9C40YfQuNCy0LDQtdGCINC+0LHRitC10Lwg
-0YDQtdGB0L3QuNGGINC90LAgMjAwJSAKCtCk0YDQsNC90YbRg9C30YHQutC+0LUg0LjQvdC90L7Q
-stCw0YbQuNC+0L3QvdC+0LUg0YHRgNC10LTRgdGC0LLQviDQtNC70Y8g0YDQvtGB0YLQsCDRgNC1
-0YHQvdC40YYK0JLQvtGB0YHRgtCw0L3QsNCy0LvQuNCy0LDQtdGCINC30LTQvtGA0L7QstGM0LUg
-0Lgg0YHQuNC70Ysg0YDQtdGB0L3QuNGGCtCf0YDQtdC00L3QsNC30L3QsNGH0LXQvSDQtNC70Y8g
-0LLRgdC10YUg0LTQtdCy0YPRiNC10Log0Lgg0LbQtdC90YnQuNC9CtCh0L7RgdGC0L7QuNGCINC4
-0Lcg0L3QsNGC0YPRgNCw0LvRjNC90YvRhSDQutC+0LzQv9C+0L3QtdC90YLQvtCyCtCj0LTQvtCx
-0L3QsNGPINC00L7RgdGC0LDQstC60LAg0Lgg0L7Qv9C70LDRgtCwINC/0L4g0KDQvtGB0YHQuNC4
-CtCg0LXQt9GD0LvRjNGC0LDRgiDQvdC1INC30LDRgdGC0LDQstC40YIg0YHQtdCx0Y8g0LTQvtC7
-0LPQviDQttC00LDRgtGMCtCa0L7Qu9C70LXQs9C4LCDQtNGA0YPQt9GM0Y8sINCx0LvQuNC30LrQ
-uNC1IC0g0LLRgdC1INC+0YbQtdC90Y/RgiDQutGA0LDRgdC+0YLRgyDQktCw0YjQuNGFINCz0LvQ
-sNC3IQrQn9C+0YHQvNC+0YLRgNC10YLRjAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
-dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
-YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
-aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
-IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
-dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
-bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTg3LjAwMCDBxNLF08/XIC0gMzg1
+MyDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjI1MC4wMDAgwcTSxdPP1yAtIDY5MTEg0tXCCgrS
+z9PTydEgwNIuIMzJw8EgNC4yODIuMDAwIMHE0sXTz9cgLSA2ODg2INLVwiAKCtLP09PJ0SDGydou
+IMzJw8EgMzQuNjYwLjAwMCDBxNLF08/XIC0gMTEyNzAg0tXCIAoK0sHT09nMy8Eg0M8gzMDCz8og
+1MXNwdTJy8UgKNPU0s/J1MXM2M7ZxSwgwNLJxMnexdPLycUgydTEIM/Sx8HOydrBw8nJKSAtIDMw
+MzAg0tXCIAoK1MXMICs3ICg0OTkpIDUwNC0xNi00MiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxp
+dmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwg
+Y292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBl
+IGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25z
+IAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhl
+IGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2ph
+dy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

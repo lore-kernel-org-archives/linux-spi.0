@@ -1,21 +1,13 @@
-From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Subject: Re: [PATCH 1/4] hwmon: (lm70) Simplify show_name function
-Date: Sun, 16 Sep 2012 11:56:34 -0700
-Message-ID: <20120916185634.GB25960@roeck-us.net>
-References: <1347396773-32108-1-git-send-email-linux@roeck-us.net>
-	<20120916150901.6df27a85@endymion.delvare>
-	<20120916161934.GB24858@roeck-us.net>
-	<20120916204456.16a94b98@endymion.delvare>
+From: France Cosmetics <info-LR+Lv5/NAcHCENZMoErytg@public.gmane.org>
+Subject: =?UTF-8?B?0JLQsNGI0LAg0LrRgNCw0YHQvtGC0LAg0L7RgdC70LXQv9C40YIg0LzRg9C2?=
+	=?UTF-8?B?0YfQuNC9IQ==?=
+Date: Mon, 17 Sep 2012 01:33:15 +0000
+Message-ID: <b87ab1766c9347a5da27d194ce6fa077@lidershark.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	lm-sensors <lm-sensors-GZX6beZjE8VD60Wz+7aTrA@public.gmane.org>
-To: Jean Delvare <khali-PUYAD+kWke1g9hUCZPvPmw@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20120916204456.16a94b98-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,47 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Sep 16, 2012 at 08:44:56PM +0200, Jean Delvare wrote:
-> On Sun, 16 Sep 2012 09:19:34 -0700, Guenter Roeck wrote:
-> > On Sun, Sep 16, 2012 at 03:09:01PM +0200, Jean Delvare wrote:
-> > > On Tue, 11 Sep 2012 13:52:50 -0700, Guenter Roeck wrote:
-> > > That's a very nice cleanup, but it makes me wonder...
-> > > 
-> > > Wouldn't it make sense to create the "name" attribute of spi devices at
-> > > the spi core level, as we do for i2c devices? All spi-based hwmon
-> > > drivers create the hwmon attributes as the spi device level, as is done
-> > > for i2c devices, so that would make no difference from a user-space
-> > > perspective. And this would avoid code redundancy.
-> > > 
-> > > If we don't want to do that, then let's offer drivers a nicer function
-> > > to retrieve the spi device name, e.g. spi_dev_name(). That way, the
-> > > internal implementation can change in the future without having to
-> > > update all drivers.
-> >
-> > Adding a "name" attribute would be great, but it is not used outside hwmon,
-> > and I am not sure if we want to impose that on other users.
-> 
-> That's correct, but OTOH we do exactly that for i2c devices and I am
-> not aware of anybody complaining about that so far.
-> 
-> > I am obviously fine with spi_dev_name().
-> > 
-> > Having said that, modalias is used heavily in SPI drivers, so my patches
-> > don't really do anything special.
-> 
-> OK, good to know. This certainly speaks in favor of at least
-> spi_dev_name(), but we can take your patches as is for the time being,
-> pending Grant's decision.
-> 
-That is what I would suggest we should do.
-
-Also copying Mark Brown; he is handling much of the SPI changes nowadays.
-
-Guenter
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://ad.doubleclick.net/clk;258768047;13503038;j?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+TWFnaWMgR2xhbmNlIEludGVuc2l2ZSDRg9Cy0LXQu9C40YfQuNCy0LDQtdGCINC+0LHRitC10Lwg
+0YDQtdGB0L3QuNGGINC90LAgMjAwJSAKCtCk0YDQsNC90YbRg9C30YHQutC+0LUg0LjQvdC90L7Q
+stCw0YbQuNC+0L3QvdC+0LUg0YHRgNC10LTRgdGC0LLQviDQtNC70Y8g0YDQvtGB0YLQsCDRgNC1
+0YHQvdC40YYK0JLQvtGB0YHRgtCw0L3QsNCy0LvQuNCy0LDQtdGCINC30LTQvtGA0L7QstGM0LUg
+0Lgg0YHQuNC70Ysg0YDQtdGB0L3QuNGGCtCf0YDQtdC00L3QsNC30L3QsNGH0LXQvSDQtNC70Y8g
+0LLRgdC10YUg0LTQtdCy0YPRiNC10Log0Lgg0LbQtdC90YnQuNC9CtCh0L7RgdGC0L7QuNGCINC4
+0Lcg0L3QsNGC0YPRgNCw0LvRjNC90YvRhSDQutC+0LzQv9C+0L3QtdC90YLQvtCyCtCj0LTQvtCx
+0L3QsNGPINC00L7RgdGC0LDQstC60LAg0Lgg0L7Qv9C70LDRgtCwINC/0L4g0KDQvtGB0YHQuNC4
+CtCg0LXQt9GD0LvRjNGC0LDRgiDQvdC1INC30LDRgdGC0LDQstC40YIg0YHQtdCx0Y8g0LTQvtC7
+0LPQviDQttC00LDRgtGMCtCa0L7Qu9C70LXQs9C4LCDQtNGA0YPQt9GM0Y8sINCx0LvQuNC30LrQ
+uNC1IC0g0LLRgdC1INC+0YbQtdC90Y/RgiDQutGA0LDRgdC+0YLRgyDQktCw0YjQuNGFINCz0LvQ
+sNC3IQrQn9C+0YHQvNC+0YLRgNC10YLRjAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
+dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
+YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
+aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
+IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
+dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
+bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

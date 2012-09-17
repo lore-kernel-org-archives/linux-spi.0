@@ -1,41 +1,39 @@
-From: =?koi8-r?B?7cnOxMHMo9cg?= <qojcyyiyjlv-PWAZ9TzliBZQFI55V6+gNQ@public.gmane.org>
-Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwNTUg0tXC?=
-Date: Mon, 17 Sep 2012 10:01:34 +0400
-Message-ID: <F55177AABF144A83BC3F7230DC9D11FB@ygqjp>
+From: Chris Ball <cjb@laptop.org>
+Subject: Re: [PATCH v2 2/3] mmc: davinci_mmc: convert to DMA engine API
+Date: Mon, 17 Sep 2012 03:52:52 -0400
+Message-ID: <m3ipbdytkb.fsf@pullcord.laptop.org>
+References: <1345574589-24757-1-git-send-email-mporter@ti.com>
+	<1345574589-24757-3-git-send-email-mporter@ti.com>
+	<k139rl$gbm$2@ger.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-To: <avir1-JGs/UdohzUI@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>,
-	<alumboats-JGs/UdohzUI@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>,
-	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>,
-	<diktor-SYPjacQAEmk@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>, <transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>,
-	<gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
-	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: linux-mmc@vger.kernel.org, spi-devel-general@lists.sourceforge.net,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Koen Kooi <koen@dominion.thruhere.net>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <k139rl$gbm$2@ger.gmane.org> (Koen Kooi's message of "Wed, 22 Aug
+	2012 20:53:43 +0200")
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTg3LjAwMCDBxNLF08/XIC0gMzg1
-MyDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjI1MC4wMDAgwcTSxdPP1yAtIDY5MTEg0tXCCgrS
-z9PTydEgwNIuIMzJw8EgNC4yODIuMDAwIMHE0sXTz9cgLSA2ODg2INLVwiAKCtLP09PJ0SDGydou
-IMzJw8EgMzQuNjYwLjAwMCDBxNLF08/XIC0gMTEyNzAg0tXCIAoK0sHT09nMy8Eg0M8gzMDCz8og
-1MXNwdTJy8UgKNPU0s/J1MXM2M7ZxSwgwNLJxMnexdPLycUgydTEIM/Sx8HOydrBw8nJKSAtIDMw
-MzAg0tXCIAoK1MXMICs3ICg0OTkpIDUwNC0xNi00MiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxp
-dmUgU2VjdXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwg
-Y292ZXIgYWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBl
-IGhhcyBjaGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25z
-IAp3aWxsIGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhl
-IGxhdGVzdCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2ph
-dy9zZnJubDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi,
+
+On Wed, Aug 22 2012, Koen Kooi wrote:
+> Op 21-08-12 20:43, Matt Porter schreef:
+>> Removes use of the DaVinci EDMA private DMA API and replaces it with use
+>> of the DMA engine API.
+>> 
+>> Signed-off-by: Matt Porter <mporter@ti.com>
+>
+> Runtime tested on hawkboard with 3.6.0-rc2 with rootfs on SD and running
+> bonnie++ on it.
+>
+> Tested-by: Koen Kooi <koen@dominion.thruhere.net>
+
+Thanks, pushed to mmc-next for 3.7.
+
+- Chris.
+-- 
+Chris Ball   <cjb@laptop.org>   <http://printf.net/>
+One Laptop Per Child

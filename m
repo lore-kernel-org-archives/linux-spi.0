@@ -1,67 +1,55 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH v2 2/2] ARM: OMAP2+: Enable pinctrl dummy states
-Date: Mon, 17 Sep 2012 10:28:49 -0700
-Message-ID: <20120917172849.GQ4521@atomide.com>
-References: <1347902538-21208-1-git-send-email-mporter@ti.com>
- <1347902538-21208-3-git-send-email-mporter@ti.com>
+From: Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCHSET] kthread_worker: reimplement flush_kthread_work() to
+ allow freeing during execution
+Date: Mon, 17 Sep 2012 12:40:16 -0700
+Message-ID: <20120917194016.GI18677@google.com>
+References: <20120719211510.GA32763@google.com>
+ <CAMbhsRQs+2MCXq0M-eTeezwPR=KMnBKtJny1rjiUJL-wNYctMQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Avi Kivity <avi@redhat.com>, kvm@vger.kernel.org,
+	Andy Walls <awalls@md.metrocast.net>,
+	ivtv-devel@ivtvdriver.org, linux-media@vger.kernel.org,
 	Grant Likely <grant.likely@secretlab.ca>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	AnilKumar <anilkumar@ti.com>
-To: Matt Porter <mporter@ti.com>
+	spi-devel-general@lists.sourceforge.net,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	stable@vger.kernel.org
+To: Colin Cross <ccross@google.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1347902538-21208-3-git-send-email-mporter@ti.com>
+In-Reply-To: <CAMbhsRQs+2MCXq0M-eTeezwPR=KMnBKtJny1rjiUJL-wNYctMQ@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Matt Porter <mporter@ti.com> [120917 10:21]:
-> Enable pinctrl dummy states for all OMAP platforms that don't
-> populate DT. This allows drivers to be converted to pinctrl
-> and not generate new warnings on platforms that do not provide
-> pinctrl data. These platforms already have pinmuxes configured
-> before the drivers probe.
-
-Thanks this should do the trick until we've converted to use DT.
-I'll queue this for the upcoming merge window.
-
-Regards,
-
-Tony
- 
-> Signed-off-by: Matt Porter <mporter@ti.com>
-> ---
->  arch/arm/mach-omap2/devices.c |    5 +++++
->  1 file changed, 5 insertions(+)
+On Fri, Sep 14, 2012 at 03:50:40PM -0700, Colin Cross wrote:
+> This patch set fixes a reproducible crash I'm seeing on a 3.4.10
+> kernel.  flush_kthread_worker (which is different from
+> flush_kthread_work) is initializing a kthread_work and a completion on
+> the stack, then queuing it and calling wait_for_completion.  Once the
+> completion is signaled, flush_kthread_worker exits and the stack
+> region used by the kthread_work may be immediately reused by another
+> object on the stack, but kthread_worker_fn continues accessing its
+> work pointer:
+>                 work->func(work);         <- calls complete,
+> effectively frees work
+>                 smp_wmb();      /* wmb worker-b0 paired with flush-b1 */
+>                 work->done_seq = work->queue_seq;   <- overwrites a
+> new stack object
+>                 smp_mb();       /* mb worker-b1 paired with flush-b0 */
+>                 if (atomic_read(&work->flushing))
+>                         wake_up_all(&work->done);  <- or crashes here
 > 
-> diff --git a/arch/arm/mach-omap2/devices.c b/arch/arm/mach-omap2/devices.c
-> index 1efa984..6ef4010 100644
-> --- a/arch/arm/mach-omap2/devices.c
-> +++ b/arch/arm/mach-omap2/devices.c
-> @@ -17,6 +17,7 @@
->  #include <linux/err.h>
->  #include <linux/slab.h>
->  #include <linux/of.h>
-> +#include <linux/pinctrl/machine.h>
->  #include <linux/platform_data/omap4-keypad.h>
->  
->  #include <asm/mach-types.h>
-> @@ -628,6 +629,10 @@ static inline void omap_init_vout(void) {}
->  
->  static int __init omap2_init_devices(void)
->  {
-> +	/* Enable dummy states for those platforms without pinctrl support */
-> +	if (!of_have_populated_dt())
-> +		pinctrl_provide_dummies();
-> +
->  	/*
->  	 * please keep these calls, and their implementations above,
->  	 * in alphabetical order so they're easier to sort through.
-> -- 
-> 1.7.9.5
-> 
+> These patches fix the problem by not accessing work after work->func
+> is called, and should be backported to stable.  They apply cleanly to
+> 3.4.10.  Upstream commits are 9a2e03d8ed518a61154f18d83d6466628e519f94
+> and 46f3d976213452350f9d10b0c2780c2681f7075b.
+
+Yeah, you're right.  I wonder why this didn't come up before.  Greg,
+can you please pick up these two commits?
+
+Thanks.
+
+-- 
+tejun

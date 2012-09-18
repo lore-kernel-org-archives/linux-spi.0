@@ -1,12 +1,11 @@
-From: ".Mutigwe Martine" <mutigwemartne-Qt13gs6zZMY@public.gmane.org>
-Subject: [SPAM] Invitation: VERY URGENT
-Date: Tue, 18 Sep 2012 23:52:41 +0000 (GMT)
-Message-ID: <635757150.7423.1348012361237.JavaMail.zimbra@store165.c107.cal.gq1.yahoo.com>
-Reply-To: ".Mutigwe Martine" <mutigwemartne-Qt13gs6zZMY@public.gmane.org>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 18 Sep 2012 09:51:36 +0800
+Message-ID: <E1TE9Ok-0001H2-6e@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_Part_7420_1384358803.1348012361101"
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,67 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-------=_Part_7420_1384358803.1348012361101
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-YAHOO! AGENDA - VOUS =C3=8ATES INVIT=C3=89(E)=C2=A0!
-
-mutigwemartne-Qt13gs6zZMY@public.gmane.org a envoy=C3=A9 une invitation=C2=A0:
-
-VERY URGENT
-
-Date=C2=A0:
-mardi 18 septembre 2012 12h00 - 13h00 (GMT+00:00)
-
-Attention beneficiary,
-
-we have concluded to effect your payment via western union $5000. Daily unt=
-il the total of $800,000.00USD
-is completely send. The Western union Agent: is Mr.JohnYisa Jr. TEL: +229-9=
-9172768
-E-mail:(western.u02-maKroNwg2MA@public.gmane.org ) so contact Mr.John Yisa Jr. and tell him to g=
-ive you
-the MTCN and sender name to pick the $5000 send to him the above informatio=
-n ASAP.
-
-1.YOUR FULL NAME-----------------
-
-2.YOUR HOME ADDRESS------------------
-
-3YOUR CURRENT HOME TELEPHONE NUMBER--------------
-
-
-Thanks
-Mr Mutigwe Martine
-*~*~*~*~*~*~*~*~*~*
-R=C3=A9pondez sans tarder !
-http://calendar.yahoo.com/mutigwemartne/rsvp?e=3Dspi-devel-general-5NWGOfrQmnc@public.gmane.org=
-urceforge.net&uid=3Dc5fa980d-ed9f-423b-999a-6431630fcb17&tk=3Dex_uBQB3i4UnK=
-jkE3Ulh48rgd6c-&hh=3D2ubDmyjUiF92Tl6fCmzr9.92IfE-
-
-
-------=_Part_7420_1384358803.1348012361101
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
-------=_Part_7420_1384358803.1348012361101
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
-------=_Part_7420_1384358803.1348012361101--
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0
+eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwg
+dGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5n
+ZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5j
+bHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGlu
+IG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQy
+NDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
+c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

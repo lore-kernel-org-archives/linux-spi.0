@@ -1,11 +1,11 @@
-From: "Carrefour" <news-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org>
-Subject: Especial Eletrolux com descontos especiais
-Date: Thu, 13 Sep 2012 23:35:12 -0300
-Message-ID: <5366065ee335ce05e7ab32c9601e0d5a@emailmais.com>
-Reply-To: atendimento-ooKq0i4D8QSakBO8gow8eQ@public.gmane.org
+From: ".Mutigwe Martine" <mutigwemartne-Qt13gs6zZMY@public.gmane.org>
+Subject: [SPAM] Invitation: VERY URGENT
+Date: Tue, 18 Sep 2012 23:52:41 +0000 (GMT)
+Message-ID: <635757150.7423.1348012361237.JavaMail.zimbra@store165.c107.cal.gq1.yahoo.com>
+Reply-To: ".Mutigwe Martine" <mutigwemartne-Qt13gs6zZMY@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed;
+	boundary="----=_Part_7420_1384358803.1348012361101"
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,20 +18,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vZW1haWxt
-YWlzLmNvbS9ta3QvZGlzcGxheS5waHA/TT0xMTI0NDUxJkM9MGI3Y2NjMTdlMjQwZGYyMGQzMzgx
-MmExYTczNGU0MDAmUz02Jkw9NCZOPTIKCgpQYXJhIHBhcmFyIGRlIHJlY2ViZXIgbm9zc29zCkVt
-YWlsczpodHRwOi8vZW1haWxtYWlzLmNvbS9ta3QvdW5zdWJzY3JpYmUucGhwP009MTEyNDQ1MSZD
-PTBiN2NjYzE3ZTI0MGRmMjBkMzM4MTJhMWE3MzRlNDAwJkw9NCZOPTYKRW1haWwgTWFya2V0aW5n
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
-eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
-aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
-IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
-LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
-cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+------=_Part_7420_1384358803.1348012361101
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+YAHOO! AGENDA - VOUS =C3=8ATES INVIT=C3=89(E)=C2=A0!
+
+mutigwemartne-Qt13gs6zZMY@public.gmane.org a envoy=C3=A9 une invitation=C2=A0:
+
+VERY URGENT
+
+Date=C2=A0:
+mardi 18 septembre 2012 12h00 - 13h00 (GMT+00:00)
+
+Attention beneficiary,
+
+we have concluded to effect your payment via western union $5000. Daily unt=
+il the total of $800,000.00USD
+is completely send. The Western union Agent: is Mr.JohnYisa Jr. TEL: +229-9=
+9172768
+E-mail:(western.u02-maKroNwg2MA@public.gmane.org ) so contact Mr.John Yisa Jr. and tell him to g=
+ive you
+the MTCN and sender name to pick the $5000 send to him the above informatio=
+n ASAP.
+
+1.YOUR FULL NAME-----------------
+
+2.YOUR HOME ADDRESS------------------
+
+3YOUR CURRENT HOME TELEPHONE NUMBER--------------
+
+
+Thanks
+Mr Mutigwe Martine
+*~*~*~*~*~*~*~*~*~*
+R=C3=A9pondez sans tarder !
+http://calendar.yahoo.com/mutigwemartne/rsvp?e=3Dspi-devel-general-5NWGOfrQmnc@public.gmane.org=
+urceforge.net&uid=3Dc5fa980d-ed9f-423b-999a-6431630fcb17&tk=3Dex_uBQB3i4UnK=
+jkE3Ulh48rgd6c-&hh=3D2ubDmyjUiF92Tl6fCmzr9.92IfE-
+
+
+------=_Part_7420_1384358803.1348012361101
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/
+------=_Part_7420_1384358803.1348012361101
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_Part_7420_1384358803.1348012361101--

@@ -1,21 +1,13 @@
-From: Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: omap2-mcspi: add pinctrl support
-Date: Tue, 18 Sep 2012 10:57:26 +0530
-Message-ID: <5058063E.40509@ti.com>
-References: <1347902538-21208-1-git-send-email-mporter@ti.com>
-	<1347902538-21208-2-git-send-email-mporter@ti.com>
+From: "Cdiscount par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Ventes Flash : premiers arrives premiers servis
+Date: Tue, 18 Sep 2012 03:51:05 +0200
+Message-ID: <1347933067.5057d38b896be@mc10.fr>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	AnilKumar <anilkumar-l0cyMroinI0@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1347902538-21208-2-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,57 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 17 September 2012 10:52 PM, Matt Porter wrote:
-> Adds pinctrl support to support OMAP platforms that boot from DT
-> and rely on pinctrl support to set pinmuxes.
->
-> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> ---
-looks good to me.
-you may want to repost with Mark in cc to review.
-Acked-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
->  drivers/spi/spi-omap2-mcspi.c |    8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index b2fb141..9502566 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -38,6 +38,8 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
-> +#include <linux/pinctrl/consumer.h>
-> +#include <linux/err.h>
->  
->  #include <linux/spi/spi.h>
->  
-> @@ -1124,6 +1126,7 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
->  	static int		bus_num = 1;
->  	struct device_node	*node = pdev->dev.of_node;
->  	const struct of_device_id *match;
-> +	struct pinctrl *pinctrl;
->  
->  	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
->  	if (master == NULL) {
-> @@ -1219,6 +1222,11 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
->  	if (status < 0)
->  		goto dma_chnl_free;
->  
-> +	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-> +	if (IS_ERR(pinctrl))
-> +		dev_warn(&pdev->dev,
-> +			"pins are not configured from the driver\n");
-> +
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
->  	pm_runtime_enable(&pdev->dev);
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjAyNjkmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0xNyAxOTozMDowMSZlPTEmaD0yMDI2OCZmPTIwMjY5Jmc9MjAyNjk=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjAyNjkmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0xNyAxOTozMDowMSZlPTEmaD0yMDI2OCZmPTIwMjY5Jmc9MjAyNj=
+k=3D
 
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
+Exclusive live event will cover all the ways today's security and =
+
+threat landscape has changed and how IT managers can respond. Discussions =
+
+will include endpoint security, mobile security and the latest in malware =
+
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

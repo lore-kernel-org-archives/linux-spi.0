@@ -1,18 +1,21 @@
-From: viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: Add clk_{un}prepare() support in runtime PM
-Date: Tue, 18 Sep 2012 09:39:09 +0530
-Message-ID: <CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
-References: <1f784b72399e0e96414f00866b209e2e218065af.1347877746.git.vipulkumar.samar@st.com>
-	<CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w@mail.gmail.com>
+From: Shubhrajyoti <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] spi: omap2-mcspi: add pinctrl support
+Date: Tue, 18 Sep 2012 10:57:26 +0530
+Message-ID: <5058063E.40509@ti.com>
+References: <1347902538-21208-1-git-send-email-mporter@ti.com>
+	<1347902538-21208-2-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	AnilKumar <anilkumar-l0cyMroinI0@public.gmane.org>,
+	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1347902538-21208-2-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,28 +26,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 17, 2012 at 7:09 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> This driver does clk_prepare/unprepare at probe
-> and removed, so I guess what you're trying to say is that
-> on your platform the clk_unprepare() process context call
-> is needed to save power?
+On Monday 17 September 2012 10:52 PM, Matt Porter wrote:
+> Adds pinctrl support to support OMAP platforms that boot from DT
+> and rely on pinctrl support to set pinmuxes.
 >
-> Please elaborate...
+> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+> ---
+looks good to me.
+you may want to repost with Mark in cc to review.
+Acked-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 
-Hi Linus,
+>  drivers/spi/spi-omap2-mcspi.c |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index b2fb141..9502566 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -38,6 +38,8 @@
+>  #include <linux/pm_runtime.h>
+>  #include <linux/of.h>
+>  #include <linux/of_device.h>
+> +#include <linux/pinctrl/consumer.h>
+> +#include <linux/err.h>
+>  
+>  #include <linux/spi/spi.h>
+>  
+> @@ -1124,6 +1126,7 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+>  	static int		bus_num = 1;
+>  	struct device_node	*node = pdev->dev.of_node;
+>  	const struct of_device_id *match;
+> +	struct pinctrl *pinctrl;
+>  
+>  	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+>  	if (master == NULL) {
+> @@ -1219,6 +1222,11 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+>  	if (status < 0)
+>  		goto dma_chnl_free;
+>  
+> +	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+> +	if (IS_ERR(pinctrl))
+> +		dev_warn(&pdev->dev,
+> +			"pins are not configured from the driver\n");
+> +
+>  	pm_runtime_use_autosuspend(&pdev->dev);
+>  	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+>  	pm_runtime_enable(&pdev->dev);
 
-Yes, we don't need to call prepare() again atleast for SPEAr. You are correct.
-I saw the driver after a long time :)
-Can you please elaborate, why can't i see any clk_disable/enable calls anywhere
-else from probe. If i remember correctly, earlier we used to enable/disable
-clk after transfers and also during suspend/resume.
-
-The amba layer is taking care of interface clock only and not
-functional clock. So
-i believe that's not the magic code. :)
-
---
-viresh
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

@@ -1,45 +1,41 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: pl022: Add clk_{un}prepare() support in runtime PM
-Date: Tue, 18 Sep 2012 13:50:56 +0200
-Message-ID: <CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
-References: <1f784b72399e0e96414f00866b209e2e218065af.1347877746.git.vipulkumar.samar@st.com>
-	<CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w@mail.gmail.com>
-	<CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
+From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Decouvrez les offres =?iso-8859-15?Q?=E0?= -50% sur Weight Watchers
+	Online
+Date: Tue, 18 Sep 2012 13:53:23 +0200
+Message-ID: <1347969254.505860e6c30f5@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Vipul Kumar Samar <vipulkumar.samar@st.com>,
-	grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org, spear-devel@list.st.com,
-	linux-kernel@vger.kernel.org
-To: viresh kumar <viresh.kumar@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 18, 2012 at 6:09 AM, viresh kumar <viresh.kumar@linaro.org> wrote:
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-> Yes, we don't need to call prepare() again atleast for SPEAr. You are correct.
-> I saw the driver after a long time :)
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMzA5JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0xOCAwNzo1MDowMSZlPTEmaD0yMDMwOCZmPTIwMzA5Jmc9MjAzMDk=3D
 
-I'm asking because it's actually OK to do this, I was more asking whether it
-was really needed by any platforms...
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMzA5JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0xOCAwNzo1MDowMSZlPTEmaD0yMDMwOCZmPTIwMzA5Jmc9MjAzMD=
+k=3D
 
-> Can you please elaborate, why can't i see any clk_disable/enable calls anywhere
-> else from probe. If i remember correctly, earlier we used to enable/disable
-> clk after transfers and also during suspend/resume.
 
-We clk_disable() at runtime_suspend() and clk_enable() at runtime resume,
-and the driver gives hints to the runtime PM layer to autosuspend the
-driver whenever it's unused. Check the pm_runtime_* calls.
+---------------------------------------------------------------------------=
+---
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and =
 
-> The amba layer is taking care of interface clock only and not
-> functional clock. So
-> i believe that's not the magic code. :)
+threat landscape has changed and how IT managers can respond. Discussions =
 
-This clock is the one for the external bus. In some designs these two
-clocks are one and the same, and these won't currently get into any clock
-disabled states, sadly. (We need to fix that some day.)
+will include endpoint security, mobile security and the latest in malware =
 
-Yours,
-Linus Walleij
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

@@ -1,25 +1,20 @@
-From: "=?gb2312?Q?=B9=E3=BD=BB=BB=E1?=" <root-ZXaRKZqRMis@public.gmane.org>
-Subject: [SPAM]
-	=?gb2312?Q?=B3=F6=CA=DB112=BD=EC=C7=EF=BC=BE=B9=E3=BD=BB=BB=E1=D5=B9=CE=BB=A3=AC=CC=E1=B9=A9=D7=B0=D0=DE=A1=A2=BD=F8=B9=DD=D6=A4=BC=FE=B0=EC=C0=ED=B5=C8=D2=B5=CE=F1=A1=A3?=
-Date: Wed, 19 Sep 2012 09:11:19 +0000 (UTC)
-Message-ID: <201209191637327.SM03112@ccv-87f7e2a1081>
-Reply-To: 1539662246-9uewiaClKEY@public.gmane.org
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH] spi/pl022: adopt pinctrl support
+Date: Wed, 19 Sep 2012 14:23:46 +0200
+Message-ID: <1348057426-24898-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"=?gb2312?Q?spidevine@comcast=2Enet?=" <spidevine-Wuw85uim5zDR7s880joybQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=2E92@rediffmail=2Ecom?=" <spidey.92-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>,
-	"=?gb2312?Q?spidey@126=2Ecom?=" <spidey-KN7UnAbNpbg@public.gmane.org>,
-	"=?gb2312?Q?spidey@eyou=2Ecom?=" <spidey-OLhLAXdVt80@public.gmane.org>,
-	"=?gb2312?Q?spidey=5F616@hotmail=2Ecom?=" <spidey_616-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=5F79@yahoo=2Ecom?=" <spidey_79-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>,
-	"=?gb2312?Q?spidey=5Fboey@hotmail=2Ecom?=" <spidey_boey-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey=5Ftanghf@hotmail=2Ecom?=" <spidey_tanghf-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
-	"=?gb2312?Q?spidey007@mchsi=2Ecom?=" <spidey007-+MseY0pMZYIAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>,
+	Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Viresh Kumar <viresh.kumar-5wv7dgnIgG8@public.gmane.org>,
+	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Shiraz Hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Date: Mon, 19 Sep 2022 16:37:56 +0800
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,20 +25,174 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CszhuakxMTK97MfvvL654727u+HVuc67tffF5KGi16rIw6Gi17DQ3qGivfi53dakvP6w7MDttcjS
-tc7xo6zT0NDo0qrH68Gqz7WjobG+0MXPorOkxtrT0NCno6zH67GjwfSjoQq549bdytDQoc7i1bnA
-wArBqs+1yMujus7ivai+/M/IyfoKytYgILv6o7oxMzc5NDM2MzgyNgq15yAgu7CjujAyMC04OTIz
-ODExOQrTyiAgz+Sjund1dGlhbjgzQDE2My5jb20KUSBRo7o2NDg2OTY2MjAKCgoKCgoyMDEytLq8
-vjExMb3sueO9u7vhwvK80qOsQjJC0a/FzMLyvNKhonRob21hc25ldCCyybm6ycwsuqO52Mr9vt0s
-yLq3osjtvP6jrNW5u+HC8rzSIL32MzAw1KohCgrSqrXE16W99MGqz7VRUTogNDYwMTIyNjQxIArS
-qrXE16W99MGqz7VRUTogNDYwMTIyNjQxCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
-dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
-YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
-aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
-IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
-dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
-bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+
+Amend the PL022 pin controller to optionally take a pin control
+handle and set the state of the pins to "default" on boot and
+runtime resume, and to "sleep" at runtime suspend. This way we
+will dynamically save power on the SPI busses, for example some
+electronic designs may be able to ground the pins when unused
+instead of pull-up. Some pin controllers may want to set the
+pins as wake-up sources when sleeping.
+
+Effect on platforms using the PL022 driver:
+
+- If the platform does not use pin control - no semantic effect,
+  the pinctrl stubs will kick in and resolve the situation.
+
+- Platforms using this driver and have pin control but no
+  function defined for the PL022 need to either supply a
+  "default" function in their map or enable pinctrl dummies
+  so the driver is satisfied.
+
+- Platforms using this driver with hogs for setting up the PL022
+  pin control - stop using hogs to take the pl022 pin control
+  handle, let the driver handle this.
+
+I'be looked at some platforms that may be affected:
+
+- SPEAr: appears to define the proper functions in their device
+  trees and not hogging them, so things should be smooth, the
+  driver will simply start to take its pins.
+
+- Ux500: the proper function is defined and will be taken properly
+  by the driver. New sleep states introduced by a separate patch to
+  ux500 but no regression, since the default state is sufficient.
+
+- U300: old hog deleted as part of this patch.
+
+- LPC32xx: does not appear to be using pinctrl.
+
+- ARM Integrator IMPD1, RealView & Versatile: does not use pinctrl.
+
+Cc: Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>
+Cc: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Cc: Shiraz Hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
+Cc: Viresh Kumar <viresh.kumar-5wv7dgnIgG8@public.gmane.org>
+Signed-off-by: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ arch/arm/mach-u300/core.c |  3 ---
+ drivers/spi/spi-pl022.c   | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-u300/core.c b/arch/arm/mach-u300/core.c
+index 03acf18..281292e 100644
+--- a/arch/arm/mach-u300/core.c
++++ b/arch/arm/mach-u300/core.c
+@@ -1605,9 +1605,6 @@ static struct u300_mux_hog u300_mux_hogs[] = {
+ 		.dev = &uart0_device.dev,
+ 	},
+ 	{
+-		.dev = &pl022_device.dev,
+-	},
+-	{
+ 		.dev = &mmcsd_device.dev,
+ 	},
+ };
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index e43b610..423513c 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -42,6 +42,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/gpio.h>
+ #include <linux/of_gpio.h>
++#include <linux/pinctrl/consumer.h>
+ 
+ /*
+  * This macro is used to define some register default values.
+@@ -367,6 +368,10 @@ struct pl022 {
+ 	resource_size_t			phybase;
+ 	void __iomem			*virtbase;
+ 	struct clk			*clk;
++	/* Two optional pin states - default & sleep */
++	struct pinctrl			*pinctrl;
++	struct pinctrl_state		*pins_default;
++	struct pinctrl_state		*pins_sleep;
+ 	struct spi_master		*master;
+ 	struct pl022_ssp_controller	*master_info;
+ 	/* Message per-transfer pump */
+@@ -2068,6 +2073,28 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	pl022->chipselects = devm_kzalloc(dev, num_cs * sizeof(int),
+ 					  GFP_KERNEL);
+ 
++	pl022->pinctrl = devm_pinctrl_get(dev);
++	if (IS_ERR(pl022->pinctrl)) {
++		status = PTR_ERR(pl022->pinctrl);
++		goto err_no_pinctrl;
++	}
++
++	pl022->pins_default = pinctrl_lookup_state(pl022->pinctrl,
++						 PINCTRL_STATE_DEFAULT);
++	/* enable pins to be muxed in and configured */
++	if (!IS_ERR(pl022->pins_default)) {
++		status = pinctrl_select_state(pl022->pinctrl,
++				pl022->pins_default);
++		if (status)
++			dev_err(dev, "could not set default pins\n");
++	} else
++		dev_err(dev, "could not get default pinstate\n");
++
++	pl022->pins_sleep = pinctrl_lookup_state(pl022->pinctrl,
++					       PINCTRL_STATE_SLEEP);
++	if (IS_ERR(pl022->pins_sleep))
++		dev_dbg(dev, "could not get sleep pinstate\n");
++
+ 	/*
+ 	 * Bus Number Which has been Assigned to this SSP controller
+ 	 * on this board
+@@ -2217,6 +2244,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	amba_release_regions(adev);
+  err_no_ioregion:
+  err_no_gpio:
++ err_no_pinctrl:
+ 	spi_master_put(master);
+  err_no_master:
+  err_no_pdata:
+@@ -2290,15 +2318,33 @@ static int pl022_resume(struct device *dev)
+ static int pl022_runtime_suspend(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
++	int status = 0;
+ 
+ 	clk_disable(pl022->clk);
+ 
++	/* Optionally let pins go into sleep states */
++	if (!IS_ERR(pl022->pins_sleep)) {
++		status = pinctrl_select_state(pl022->pinctrl,
++				pl022->pins_sleep);
++		if (status)
++			dev_err(dev, "could not set pins to sleep state\n");
++	}
++
+ 	return 0;
+ }
+ 
+ static int pl022_runtime_resume(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
++	int status = 0;
++
++	/* Optionaly enable pins to be muxed in and configured */
++	if (!IS_ERR(pl022->pins_default)) {
++		status = pinctrl_select_state(pl022->pinctrl,
++				pl022->pins_default);
++		if (status)
++			dev_err(dev, "could not set default pins\n");
++	}
+ 
+ 	clk_enable(pl022->clk);
+ 
+-- 
+1.7.11.3
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

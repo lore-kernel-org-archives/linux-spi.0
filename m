@@ -1,205 +1,685 @@
-From: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: adopt pinctrl support
-Date: Wed, 19 Sep 2012 15:33:47 +0200
-Message-ID: <5059C9BB.9010603@antcom.de>
-References: <1348057426-24898-1-git-send-email-linus.walleij@stericsson.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 03/29] ARM: OMAP1: Make plat/mux.h omap1 only
+Date: Wed, 19 Sep 2012 14:05:39 -0700
+Message-ID: <20120919210539.28074.33302.stgit@muffinssi>
+References: <20120919205732.28074.43697.stgit@muffinssi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Cc: Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Viresh Kumar <viresh.kumar-5wv7dgnIgG8@public.gmane.org>,
-	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shiraz Hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1348057426-24898-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: linux-pcmcia@lists.infradead.org,
+	Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, Felipe Balbi <balbi@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Tomi Valkeinen <tomi.valkeinen@ti.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	spi-devel-general@lists.sourceforge.net,
+	Richard Purdie <rpurdie@rpsys.net>, linux-omap@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20120919205732.28074.43697.stgit@muffinssi>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 09/19/2012 02:23 PM, Linus Walleij wrote:
-> From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> 
-> Amend the PL022 pin controller to optionally take a pin control
-> handle and set the state of the pins to "default" on boot and
-> runtime resume, and to "sleep" at runtime suspend. This way we
-> will dynamically save power on the SPI busses, for example some
-> electronic designs may be able to ground the pins when unused
-> instead of pull-up. Some pin controllers may want to set the
-> pins as wake-up sources when sleeping.
-> 
-> Effect on platforms using the PL022 driver:
-> 
-> - If the platform does not use pin control - no semantic effect,
->   the pinctrl stubs will kick in and resolve the situation.
-> 
-> - Platforms using this driver and have pin control but no
->   function defined for the PL022 need to either supply a
->   "default" function in their map or enable pinctrl dummies
->   so the driver is satisfied.
-> 
-> - Platforms using this driver with hogs for setting up the PL022
->   pin control - stop using hogs to take the pl022 pin control
->   handle, let the driver handle this.
-> 
-> I'be looked at some platforms that may be affected:
-> 
-> - SPEAr: appears to define the proper functions in their device
->   trees and not hogging them, so things should be smooth, the
->   driver will simply start to take its pins.
-> 
-> - Ux500: the proper function is defined and will be taken properly
->   by the driver. New sleep states introduced by a separate patch to
->   ux500 but no regression, since the default state is sufficient.
-> 
-> - U300: old hog deleted as part of this patch.
-> 
-> - LPC32xx: does not appear to be using pinctrl.
+We are moving omap2+ to use the device tree based pinctrl-single.c
+and will be removing the old mux framework. This will remove the
+omap1 specific parts from plat-omap.
 
-FWIW: Tested-by: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
+Cc: Felipe Balbi <balbi@ti.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Richard Purdie <rpurdie@rpsys.net>
+Cc: Florian Tobias Schandinat <FlorianSchandinat@gmx.de>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: linux-usb@vger.kernel.org
+Cc: linux-pcmcia@lists.infradead.org
+Cc: spi-devel-general@lists.sourceforge.net
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/mach-omap1/board-ams-delta.c         |    2 -
+ arch/arm/mach-omap1/board-fsample.c           |    2 -
+ arch/arm/mach-omap1/board-generic.c           |    2 -
+ arch/arm/mach-omap1/board-h2.c                |    2 -
+ arch/arm/mach-omap1/board-h3.c                |    2 -
+ arch/arm/mach-omap1/board-innovator.c         |    2 -
+ arch/arm/mach-omap1/board-nokia770.c          |    2 -
+ arch/arm/mach-omap1/board-osk.c               |    2 -
+ arch/arm/mach-omap1/board-palmte.c            |    2 -
+ arch/arm/mach-omap1/board-palmtt.c            |    2 -
+ arch/arm/mach-omap1/board-palmz71.c           |    2 -
+ arch/arm/mach-omap1/board-perseus2.c          |    2 -
+ arch/arm/mach-omap1/board-sx1.c               |    2 -
+ arch/arm/mach-omap1/board-voiceblue.c         |    2 -
+ arch/arm/mach-omap1/devices.c                 |    2 -
+ arch/arm/mach-omap1/i2c.c                     |    2 -
+ arch/arm/mach-omap1/include/mach/mux.h        |    0 
+ arch/arm/mach-omap1/io.c                      |    2 -
+ arch/arm/mach-omap1/mcbsp.c                   |    2 -
+ arch/arm/mach-omap1/mux.c                     |   58 ++++++++++++++++
+ arch/arm/mach-omap1/pm.c                      |    2 -
+ arch/arm/mach-omap1/serial.c                  |    2 -
+ arch/arm/mach-omap1/usb.c                     |    2 -
+ arch/arm/mach-omap2/common.c                  |    1 
+ arch/arm/mach-omap2/hsmmc.c                   |    1 
+ arch/arm/plat-omap/Makefile                   |    2 -
+ arch/arm/plat-omap/i2c.c                      |    1 
+ arch/arm/plat-omap/include/plat/omap-serial.h |    2 -
+ arch/arm/plat-omap/mux.c                      |   90 -------------------------
+ drivers/pcmcia/omap_cf.c                      |    2 -
+ drivers/spi/spi-omap-uwire.c                  |    2 -
+ drivers/usb/host/ohci-omap.c                  |    2 -
+ drivers/usb/musb/tusb6010_omap.c              |    1 
+ drivers/usb/otg/isp1301_omap.c                |    2 -
+ drivers/video/backlight/omap1_bl.c            |    2 -
+ drivers/video/omap/lcd_osk.c                  |    2 -
+ 36 files changed, 84 insertions(+), 126 deletions(-)
+ rename arch/arm/{plat-omap/include/plat/mux.h => mach-omap1/include/mach/mux.h} (100%)
+ delete mode 100644 arch/arm/plat-omap/mux.c
 
-On LPC32xx which shouldn't be affected, though. But anyway... PL022
-still works. :-)
+diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
+index ab1e51f..05af063 100644
+--- a/arch/arm/mach-omap1/board-ams-delta.c
++++ b/arch/arm/mach-omap1/board-ams-delta.c
+@@ -37,7 +37,7 @@
+ 
+ #include <plat/board-ams-delta.h>
+ #include <plat/keypad.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #include <mach/hardware.h>
+ #include <mach/ams-delta-fiq.h>
+diff --git a/arch/arm/mach-omap1/board-fsample.c b/arch/arm/mach-omap1/board-fsample.c
+index 6d98552..4b784f2 100644
+--- a/arch/arm/mach-omap1/board-fsample.c
++++ b/arch/arm/mach-omap1/board-fsample.c
+@@ -28,7 +28,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/tc.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/flash.h>
+ #include <plat/fpga.h>
+ #include <plat/keypad.h>
+diff --git a/arch/arm/mach-omap1/board-generic.c b/arch/arm/mach-omap1/board-generic.c
+index 04b5fda..4ec579f 100644
+--- a/arch/arm/mach-omap1/board-generic.c
++++ b/arch/arm/mach-omap1/board-generic.c
+@@ -22,7 +22,7 @@
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #include <mach/usb.h>
+ 
+diff --git a/arch/arm/mach-omap1/board-h2.c b/arch/arm/mach-omap1/board-h2.c
+index 5560a40..124db5c 100644
+--- a/arch/arm/mach-omap1/board-h2.c
++++ b/arch/arm/mach-omap1/board-h2.c
+@@ -38,7 +38,7 @@
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/tc.h>
+ #include <plat/irda.h>
+diff --git a/arch/arm/mach-omap1/board-h3.c b/arch/arm/mach-omap1/board-h3.c
+index edc2487..a6f28a6 100644
+--- a/arch/arm/mach-omap1/board-h3.c
++++ b/arch/arm/mach-omap1/board-h3.c
+@@ -40,7 +40,7 @@
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ #include <plat/keypad.h>
+ #include <plat/dma.h>
+diff --git a/arch/arm/mach-omap1/board-innovator.c b/arch/arm/mach-omap1/board-innovator.c
+index f21c296..0eb9881 100644
+--- a/arch/arm/mach-omap1/board-innovator.c
++++ b/arch/arm/mach-omap1/board-innovator.c
+@@ -31,7 +31,7 @@
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/flash.h>
+ #include <plat/fpga.h>
+ #include <plat/tc.h>
+diff --git a/arch/arm/mach-omap1/board-nokia770.c b/arch/arm/mach-omap1/board-nokia770.c
+index ec01f03..fb3a6e9 100644
+--- a/arch/arm/mach-omap1/board-nokia770.c
++++ b/arch/arm/mach-omap1/board-nokia770.c
+@@ -25,7 +25,7 @@
+ #include <asm/mach/arch.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/keypad.h>
+ #include <plat/lcd_mipid.h>
+ #include <plat/mmc.h>
+diff --git a/arch/arm/mach-omap1/board-osk.c b/arch/arm/mach-omap1/board-osk.c
+index 2b1db05..eb108d5 100644
+--- a/arch/arm/mach-omap1/board-osk.c
++++ b/arch/arm/mach-omap1/board-osk.c
+@@ -47,7 +47,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ 
+ #include <mach/hardware.h>
+diff --git a/arch/arm/mach-omap1/board-palmte.c b/arch/arm/mach-omap1/board-palmte.c
+index 49f8d74..bd27646 100644
+--- a/arch/arm/mach-omap1/board-palmte.c
++++ b/arch/arm/mach-omap1/board-palmte.c
+@@ -35,7 +35,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ #include <plat/dma.h>
+ #include <plat/irda.h>
+diff --git a/arch/arm/mach-omap1/board-palmtt.c b/arch/arm/mach-omap1/board-palmtt.c
+index 01523cd..8128eab 100644
+--- a/arch/arm/mach-omap1/board-palmtt.c
++++ b/arch/arm/mach-omap1/board-palmtt.c
+@@ -35,7 +35,7 @@
+ 
+ #include <plat/led.h>
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/tc.h>
+ #include <plat/irda.h>
+diff --git a/arch/arm/mach-omap1/board-palmz71.c b/arch/arm/mach-omap1/board-palmz71.c
+index a7abce6..2367c0d 100644
+--- a/arch/arm/mach-omap1/board-palmz71.c
++++ b/arch/arm/mach-omap1/board-palmz71.c
+@@ -37,7 +37,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/tc.h>
+ #include <plat/irda.h>
+diff --git a/arch/arm/mach-omap1/board-perseus2.c b/arch/arm/mach-omap1/board-perseus2.c
+index 277e0bc..0d9b836 100644
+--- a/arch/arm/mach-omap1/board-perseus2.c
++++ b/arch/arm/mach-omap1/board-perseus2.c
+@@ -28,7 +28,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/tc.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/fpga.h>
+ #include <plat/flash.h>
+ #include <plat/keypad.h>
+diff --git a/arch/arm/mach-omap1/board-sx1.c b/arch/arm/mach-omap1/board-sx1.c
+index 2e1fff2..1f43fe9 100644
+--- a/arch/arm/mach-omap1/board-sx1.c
++++ b/arch/arm/mach-omap1/board-sx1.c
+@@ -34,7 +34,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/irda.h>
+ #include <plat/tc.h>
+diff --git a/arch/arm/mach-omap1/board-voiceblue.c b/arch/arm/mach-omap1/board-voiceblue.c
+index 1668af3..bd7b3fc 100644
+--- a/arch/arm/mach-omap1/board-voiceblue.c
++++ b/arch/arm/mach-omap1/board-voiceblue.c
+@@ -33,7 +33,7 @@
+ 
+ #include <plat/board-voiceblue.h>
+ #include <plat/flash.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ 
+ #include <mach/hardware.h>
+diff --git a/arch/arm/mach-omap1/devices.c b/arch/arm/mach-omap1/devices.c
+index 05fdbd9..0cc54dd 100644
+--- a/arch/arm/mach-omap1/devices.c
++++ b/arch/arm/mach-omap1/devices.c
+@@ -20,7 +20,7 @@
+ #include <asm/mach/map.h>
+ 
+ #include <plat/tc.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/mmc.h>
+ 
+diff --git a/arch/arm/mach-omap1/i2c.c b/arch/arm/mach-omap1/i2c.c
+index 5446c99..a0551a6 100644
+--- a/arch/arm/mach-omap1/i2c.c
++++ b/arch/arm/mach-omap1/i2c.c
+@@ -20,7 +20,7 @@
+  */
+ 
+ #include <plat/i2c.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/cpu.h>
+ 
+ void __init omap1_i2c_mux_pins(int bus_id)
+diff --git a/arch/arm/plat-omap/include/plat/mux.h b/arch/arm/mach-omap1/include/mach/mux.h
+similarity index 100%
+rename from arch/arm/plat-omap/include/plat/mux.h
+rename to arch/arm/mach-omap1/include/mach/mux.h
+diff --git a/arch/arm/mach-omap1/io.c b/arch/arm/mach-omap1/io.c
+index 6c95a59..6a5baab 100644
+--- a/arch/arm/mach-omap1/io.c
++++ b/arch/arm/mach-omap1/io.c
+@@ -16,7 +16,7 @@
+ #include <asm/tlb.h>
+ #include <asm/mach/map.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ #include <plat/dma.h>
+ 
+diff --git a/arch/arm/mach-omap1/mcbsp.c b/arch/arm/mach-omap1/mcbsp.c
+index adf0097..cd77423 100644
+--- a/arch/arm/mach-omap1/mcbsp.c
++++ b/arch/arm/mach-omap1/mcbsp.c
+@@ -20,7 +20,7 @@
+ #include <linux/slab.h>
+ 
+ #include <plat/dma.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/cpu.h>
+ #include <plat/mcbsp.h>
+ 
+diff --git a/arch/arm/mach-omap1/mux.c b/arch/arm/mach-omap1/mux.c
+index e9cc52d..667ce50 100644
+--- a/arch/arm/mach-omap1/mux.c
++++ b/arch/arm/mach-omap1/mux.c
+@@ -29,7 +29,7 @@
+ 
+ #include <mach/hardware.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #ifdef CONFIG_OMAP_MUX
+ 
+@@ -451,6 +451,56 @@ static int __init_or_module omap1_cfg_reg(const struct pin_config *cfg)
+ #endif
+ }
+ 
++static struct omap_mux_cfg *mux_cfg;
++
++int __init omap_mux_register(struct omap_mux_cfg *arch_mux_cfg)
++{
++	if (!arch_mux_cfg || !arch_mux_cfg->pins || arch_mux_cfg->size == 0
++			|| !arch_mux_cfg->cfg_reg) {
++		printk(KERN_ERR "Invalid pin table\n");
++		return -EINVAL;
++	}
++
++	mux_cfg = arch_mux_cfg;
++
++	return 0;
++}
++
++/*
++ * Sets the Omap MUX and PULL_DWN registers based on the table
++ */
++int __init_or_module omap_cfg_reg(const unsigned long index)
++{
++	struct pin_config *reg;
++
++	if (!cpu_class_is_omap1()) {
++		printk(KERN_ERR "mux: Broken omap_cfg_reg(%lu) entry\n",
++				index);
++		WARN_ON(1);
++		return -EINVAL;
++	}
++
++	if (mux_cfg == NULL) {
++		printk(KERN_ERR "Pin mux table not initialized\n");
++		return -ENODEV;
++	}
++
++	if (index >= mux_cfg->size) {
++		printk(KERN_ERR "Invalid pin mux index: %lu (%lu)\n",
++		       index, mux_cfg->size);
++		dump_stack();
++		return -ENODEV;
++	}
++
++	reg = &mux_cfg->pins[index];
++
++	if (!mux_cfg->cfg_reg)
++		return -ENODEV;
++
++	return mux_cfg->cfg_reg(reg);
++}
++EXPORT_SYMBOL(omap_cfg_reg);
++
+ int __init omap1_mux_init(void)
+ {
+ 	if (cpu_is_omap7xx()) {
+@@ -468,4 +518,8 @@ int __init omap1_mux_init(void)
+ 	return omap_mux_register(&arch_mux_cfg);
+ }
+ 
+-#endif
++#else
++#define omap_mux_init() do {} while(0)
++#define omap_cfg_reg(x)	do {} while(0)
++#endif	/* CONFIG_OMAP_MUX */
++
+diff --git a/arch/arm/mach-omap1/pm.c b/arch/arm/mach-omap1/pm.c
+index b2560d3..47ec161 100644
+--- a/arch/arm/mach-omap1/pm.c
++++ b/arch/arm/mach-omap1/pm.c
+@@ -53,7 +53,7 @@
+ #include <plat/clock.h>
+ #include <plat/sram.h>
+ #include <plat/tc.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/dma.h>
+ #include <plat/dmtimer.h>
+ 
+diff --git a/arch/arm/mach-omap1/serial.c b/arch/arm/mach-omap1/serial.c
+index 0d1709b..b9d6834 100644
+--- a/arch/arm/mach-omap1/serial.c
++++ b/arch/arm/mach-omap1/serial.c
+@@ -22,7 +22,7 @@
+ 
+ #include <asm/mach-types.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/fpga.h>
+ 
+ #include "pm.h"
+diff --git a/arch/arm/mach-omap1/usb.c b/arch/arm/mach-omap1/usb.c
+index 65f8817..84267ed 100644
+--- a/arch/arm/mach-omap1/usb.c
++++ b/arch/arm/mach-omap1/usb.c
+@@ -26,7 +26,7 @@
+ 
+ #include <asm/irq.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #include <mach/usb.h>
+ 
+diff --git a/arch/arm/mach-omap2/common.c b/arch/arm/mach-omap2/common.c
+index 8e43c4d8..17950c6 100644
+--- a/arch/arm/mach-omap2/common.c
++++ b/arch/arm/mach-omap2/common.c
+@@ -17,7 +17,6 @@
+ #include <linux/clk.h>
+ #include <linux/io.h>
+ 
+-#include <plat/mux.h>
+ #include <plat/clock.h>
+ 
+ #include "soc.h"
+diff --git a/arch/arm/mach-omap2/hsmmc.c b/arch/arm/mach-omap2/hsmmc.c
+index 80399d7..03ebf47 100644
+--- a/arch/arm/mach-omap2/hsmmc.c
++++ b/arch/arm/mach-omap2/hsmmc.c
+@@ -19,7 +19,6 @@
+ 
+ #include <plat/mmc.h>
+ #include <plat/omap-pm.h>
+-#include <plat/mux.h>
+ #include <plat/omap_device.h>
+ 
+ #include "mux.h"
+diff --git a/arch/arm/plat-omap/Makefile b/arch/arm/plat-omap/Makefile
+index a017e99..dacaee0 100644
+--- a/arch/arm/plat-omap/Makefile
++++ b/arch/arm/plat-omap/Makefile
+@@ -3,7 +3,7 @@
+ #
+ 
+ # Common support
+-obj-y := common.o sram.o clock.o dma.o mux.o fb.o counter_32k.o
++obj-y := common.o sram.o clock.o dma.o fb.o counter_32k.o
+ obj-m :=
+ obj-n :=
+ obj-  :=
+diff --git a/arch/arm/plat-omap/i2c.c b/arch/arm/plat-omap/i2c.c
+index 40bc06a..6013831 100644
+--- a/arch/arm/plat-omap/i2c.c
++++ b/arch/arm/plat-omap/i2c.c
+@@ -32,7 +32,6 @@
+ #include <linux/clk.h>
+ 
+ #include <mach/irqs.h>
+-#include <plat/mux.h>
+ #include <plat/i2c.h>
+ #include <plat/omap-pm.h>
+ #include <plat/omap_device.h>
+diff --git a/arch/arm/plat-omap/include/plat/omap-serial.h b/arch/arm/plat-omap/include/plat/omap-serial.h
+index a5311498..b2eac60 100644
+--- a/arch/arm/plat-omap/include/plat/omap-serial.h
++++ b/arch/arm/plat-omap/include/plat/omap-serial.h
+@@ -21,8 +21,6 @@
+ #include <linux/device.h>
+ #include <linux/pm_qos.h>
+ 
+-#include <plat/mux.h>
+-
+ #define DRIVER_NAME	"omap_uart"
+ 
+ /*
+diff --git a/arch/arm/plat-omap/mux.c b/arch/arm/plat-omap/mux.c
+deleted file mode 100644
+index fd0d3aa..0000000
+--- a/arch/arm/plat-omap/mux.c
++++ /dev/null
+@@ -1,90 +0,0 @@
+-/*
+- * linux/arch/arm/plat-omap/mux.c
+- *
+- * Utility to set the Omap MUX and PULL_DWN registers from a table in mux.h
+- *
+- * Copyright (C) 2003 - 2008 Nokia Corporation
+- *
+- * Written by Tony Lindgren
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+- *
+- */
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/kernel.h>
+-#include <linux/io.h>
+-#include <linux/spinlock.h>
+-
+-#include <asm/system.h>
+-
+-#include <plat/cpu.h>
+-#include <plat/mux.h>
+-
+-#ifdef CONFIG_OMAP_MUX
+-
+-static struct omap_mux_cfg *mux_cfg;
+-
+-int __init omap_mux_register(struct omap_mux_cfg *arch_mux_cfg)
+-{
+-	if (!arch_mux_cfg || !arch_mux_cfg->pins || arch_mux_cfg->size == 0
+-			|| !arch_mux_cfg->cfg_reg) {
+-		printk(KERN_ERR "Invalid pin table\n");
+-		return -EINVAL;
+-	}
+-
+-	mux_cfg = arch_mux_cfg;
+-
+-	return 0;
+-}
+-
+-/*
+- * Sets the Omap MUX and PULL_DWN registers based on the table
+- */
+-int __init_or_module omap_cfg_reg(const unsigned long index)
+-{
+-	struct pin_config *reg;
+-
+-	if (!cpu_class_is_omap1()) {
+-		printk(KERN_ERR "mux: Broken omap_cfg_reg(%lu) entry\n",
+-				index);
+-		WARN_ON(1);
+-		return -EINVAL;
+-	}
+-
+-	if (mux_cfg == NULL) {
+-		printk(KERN_ERR "Pin mux table not initialized\n");
+-		return -ENODEV;
+-	}
+-
+-	if (index >= mux_cfg->size) {
+-		printk(KERN_ERR "Invalid pin mux index: %lu (%lu)\n",
+-		       index, mux_cfg->size);
+-		dump_stack();
+-		return -ENODEV;
+-	}
+-
+-	reg = &mux_cfg->pins[index];
+-
+-	if (!mux_cfg->cfg_reg)
+-		return -ENODEV;
+-
+-	return mux_cfg->cfg_reg(reg);
+-}
+-EXPORT_SYMBOL(omap_cfg_reg);
+-#else
+-#define omap_mux_init() do {} while(0)
+-#define omap_cfg_reg(x)	do {} while(0)
+-#endif	/* CONFIG_OMAP_MUX */
+diff --git a/drivers/pcmcia/omap_cf.c b/drivers/pcmcia/omap_cf.c
+index 0ad06a3..fa74efe 100644
+--- a/drivers/pcmcia/omap_cf.c
++++ b/drivers/pcmcia/omap_cf.c
+@@ -24,7 +24,7 @@
+ #include <asm/io.h>
+ #include <asm/sizes.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/tc.h>
+ 
+ 
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index a3996a1..0a94d9d 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -52,7 +52,7 @@
+ #include <asm/io.h>
+ #include <asm/mach-types.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #include <mach/omap7xx.h>	/* OMAP7XX_IO_CONF registers */
+ 
+diff --git a/drivers/usb/host/ohci-omap.c b/drivers/usb/host/ohci-omap.c
+index f8b2d91..4531d03 100644
+--- a/drivers/usb/host/ohci-omap.c
++++ b/drivers/usb/host/ohci-omap.c
+@@ -24,7 +24,7 @@
+ #include <asm/io.h>
+ #include <asm/mach-types.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include <plat/fpga.h>
+ 
+ #include <mach/hardware.h>
+diff --git a/drivers/usb/musb/tusb6010_omap.c b/drivers/usb/musb/tusb6010_omap.c
+index 53e2596..7a62b95 100644
+--- a/drivers/usb/musb/tusb6010_omap.c
++++ b/drivers/usb/musb/tusb6010_omap.c
+@@ -17,7 +17,6 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/slab.h>
+ #include <plat/dma.h>
+-#include <plat/mux.h>
+ 
+ #include "musb_core.h"
+ #include "tusb6010.h"
+diff --git a/drivers/usb/otg/isp1301_omap.c b/drivers/usb/otg/isp1301_omap.c
+index 720df35..ceee211 100644
+--- a/drivers/usb/otg/isp1301_omap.c
++++ b/drivers/usb/otg/isp1301_omap.c
+@@ -36,7 +36,7 @@
+ #include <asm/irq.h>
+ #include <asm/mach-types.h>
+ 
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #include <mach/usb.h>
+ 
+diff --git a/drivers/video/backlight/omap1_bl.c b/drivers/video/backlight/omap1_bl.c
+index 92257ef..9a046a4 100644
+--- a/drivers/video/backlight/omap1_bl.c
++++ b/drivers/video/backlight/omap1_bl.c
+@@ -30,7 +30,7 @@
+ #include <linux/platform_data/omap1_bl.h>
+ 
+ #include <mach/hardware.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ 
+ #define OMAPBL_MAX_INTENSITY		0xff
+ 
+diff --git a/drivers/video/omap/lcd_osk.c b/drivers/video/omap/lcd_osk.c
+index 5914220..3aa62da 100644
+--- a/drivers/video/omap/lcd_osk.c
++++ b/drivers/video/omap/lcd_osk.c
+@@ -24,7 +24,7 @@
+ #include <linux/platform_device.h>
+ 
+ #include <asm/gpio.h>
+-#include <plat/mux.h>
++#include <mach/mux.h>
+ #include "omapfb.h"
+ 
+ static int osk_panel_init(struct lcd_panel *panel, struct omapfb_device *fbdev)
 
-> 
-> - ARM Integrator IMPD1, RealView & Versatile: does not use pinctrl.
-> 
-> Cc: Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>
-> Cc: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>
-> Cc: Shiraz Hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> Cc: Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>
-> Cc: Viresh Kumar <viresh.kumar-5wv7dgnIgG8@public.gmane.org>
-> Signed-off-by: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  arch/arm/mach-u300/core.c |  3 ---
->  drivers/spi/spi-pl022.c   | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 46 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-u300/core.c b/arch/arm/mach-u300/core.c
-> index 03acf18..281292e 100644
-> --- a/arch/arm/mach-u300/core.c
-> +++ b/arch/arm/mach-u300/core.c
-> @@ -1605,9 +1605,6 @@ static struct u300_mux_hog u300_mux_hogs[] = {
->  		.dev = &uart0_device.dev,
->  	},
->  	{
-> -		.dev = &pl022_device.dev,
-> -	},
-> -	{
->  		.dev = &mmcsd_device.dev,
->  	},
->  };
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index e43b610..423513c 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -42,6 +42,7 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/gpio.h>
->  #include <linux/of_gpio.h>
-> +#include <linux/pinctrl/consumer.h>
->  
->  /*
->   * This macro is used to define some register default values.
-> @@ -367,6 +368,10 @@ struct pl022 {
->  	resource_size_t			phybase;
->  	void __iomem			*virtbase;
->  	struct clk			*clk;
-> +	/* Two optional pin states - default & sleep */
-> +	struct pinctrl			*pinctrl;
-> +	struct pinctrl_state		*pins_default;
-> +	struct pinctrl_state		*pins_sleep;
->  	struct spi_master		*master;
->  	struct pl022_ssp_controller	*master_info;
->  	/* Message per-transfer pump */
-> @@ -2068,6 +2073,28 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->  	pl022->chipselects = devm_kzalloc(dev, num_cs * sizeof(int),
->  					  GFP_KERNEL);
->  
-> +	pl022->pinctrl = devm_pinctrl_get(dev);
-> +	if (IS_ERR(pl022->pinctrl)) {
-> +		status = PTR_ERR(pl022->pinctrl);
-> +		goto err_no_pinctrl;
-> +	}
-> +
-> +	pl022->pins_default = pinctrl_lookup_state(pl022->pinctrl,
-> +						 PINCTRL_STATE_DEFAULT);
-> +	/* enable pins to be muxed in and configured */
-> +	if (!IS_ERR(pl022->pins_default)) {
-> +		status = pinctrl_select_state(pl022->pinctrl,
-> +				pl022->pins_default);
-> +		if (status)
-> +			dev_err(dev, "could not set default pins\n");
-> +	} else
-> +		dev_err(dev, "could not get default pinstate\n");
-> +
-> +	pl022->pins_sleep = pinctrl_lookup_state(pl022->pinctrl,
-> +					       PINCTRL_STATE_SLEEP);
-> +	if (IS_ERR(pl022->pins_sleep))
-> +		dev_dbg(dev, "could not get sleep pinstate\n");
-> +
->  	/*
->  	 * Bus Number Which has been Assigned to this SSP controller
->  	 * on this board
-> @@ -2217,6 +2244,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->  	amba_release_regions(adev);
->   err_no_ioregion:
->   err_no_gpio:
-> + err_no_pinctrl:
->  	spi_master_put(master);
->   err_no_master:
->   err_no_pdata:
-> @@ -2290,15 +2318,33 @@ static int pl022_resume(struct device *dev)
->  static int pl022_runtime_suspend(struct device *dev)
->  {
->  	struct pl022 *pl022 = dev_get_drvdata(dev);
-> +	int status = 0;
->  
->  	clk_disable(pl022->clk);
->  
-> +	/* Optionally let pins go into sleep states */
-> +	if (!IS_ERR(pl022->pins_sleep)) {
-> +		status = pinctrl_select_state(pl022->pinctrl,
-> +				pl022->pins_sleep);
-> +		if (status)
-> +			dev_err(dev, "could not set pins to sleep state\n");
-> +	}
-> +
->  	return 0;
->  }
->  
->  static int pl022_runtime_resume(struct device *dev)
->  {
->  	struct pl022 *pl022 = dev_get_drvdata(dev);
-> +	int status = 0;
-> +
-> +	/* Optionaly enable pins to be muxed in and configured */
-> +	if (!IS_ERR(pl022->pins_default)) {
-> +		status = pinctrl_select_state(pl022->pinctrl,
-> +				pl022->pins_default);
-> +		if (status)
-> +			dev_err(dev, "could not set default pins\n");
-> +	}
->  
->  	clk_enable(pl022->clk);
->  
-
-
-------------------------------------------------------------------------------
-Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and 
-threat landscape has changed and how IT managers can respond. Discussions 
-will include endpoint security, mobile security and the latest in malware 
-threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

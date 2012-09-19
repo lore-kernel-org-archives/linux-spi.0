@@ -1,32 +1,92 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 18 Sep 2012 09:51:36 +0800
-Message-ID: <E1TE9Ok-0001H2-6e@sfs-ml-1.v29.ch3.sourceforge.com>
+From: viresh kumar <viresh.kumar@linaro.org>
+Subject: Re: [PATCH] spi: pl022: Add clk_{un}prepare() support in runtime PM
+Date: Wed, 19 Sep 2012 09:01:04 +0530
+Message-ID: <CAOh2x=kH2pmF0oh+Rfna+0JmM+X433vB_TyhPJUhQg9B5r1evA@mail.gmail.com>
+References: <1f784b72399e0e96414f00866b209e2e218065af.1347877746.git.vipulkumar.samar@st.com>
+	<CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w@mail.gmail.com>
+	<CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
+	<CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spear-devel@list.st.com, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org
+To: Vipul Kumar Samar <vipulkumar.samar@st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vinit Shenoy <vinit.shenoy@st.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGl2ZSBTZWN1cml0
-eSBWaXJ0dWFsIENvbmZlcmVuY2UKRXhjbHVzaXZlIGxpdmUgZXZlbnQgd2lsbCBjb3ZlciBhbGwg
-dGhlIHdheXMgdG9kYXkncyBzZWN1cml0eSBhbmQgCnRocmVhdCBsYW5kc2NhcGUgaGFzIGNoYW5n
-ZWQgYW5kIGhvdyBJVCBtYW5hZ2VycyBjYW4gcmVzcG9uZC4gRGlzY3Vzc2lvbnMgCndpbGwgaW5j
-bHVkZSBlbmRwb2ludCBzZWN1cml0eSwgbW9iaWxlIHNlY3VyaXR5IGFuZCB0aGUgbGF0ZXN0IGlu
-IG1hbHdhcmUgCnRocmVhdHMuIGh0dHA6Ly93d3cuYWNjZWxhY29tbS5jb20vamF3L3Nmcm5sMDQy
-NDIwMTIvMTE0LzUwMTIyMjYzLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Tue, Sep 18, 2012 at 5:20 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
+> On Tue, Sep 18, 2012 at 6:09 AM, viresh kumar <viresh.kumar@linaro.org> wrote:
+>
+>> Yes, we don't need to call prepare() again atleast for SPEAr. You are correct.
+>> I saw the driver after a long time :)
+>
+> I'm asking because it's actually OK to do this, I was more asking whether it
+> was really needed by any platforms...
+
+Yes, I got that. Patch from Vipul is correct and should be there for
+any platforms
+which do anything in prepare/unprepare. But Atleast for SPEAr we don't need it.
+But i would still insist in keeping it for completeness. :)
+
+> We clk_disable() at runtime_suspend() and clk_enable() at runtime resume,
+> and the driver gives hints to the runtime PM layer to autosuspend the
+> driver whenever it's unused. Check the pm_runtime_* calls.
+
+Ahh.. How could i miss it.
+
+>> The amba layer is taking care of interface clock only and not
+>> functional clock. So
+>> i believe that's not the magic code. :)
+>
+> This clock is the one for the external bus. In some designs these two
+> clocks are one and the same, and these won't currently get into any clock
+> disabled states, sadly. (We need to fix that some day.)
+
+I went through the code and found following in amba/bus.c:
+
+
+static int amba_pm_runtime_suspend(struct device *dev)
+{
+	struct amba_device *pcdev = to_amba_device(dev);
+	int ret = pm_generic_runtime_suspend(dev);
+
+	if (ret == 0 && dev->driver)
+		clk_disable(pcdev->pclk);
+
+	return ret;
+}
+
+static int amba_pm_runtime_resume(struct device *dev)
+{
+	struct amba_device *pcdev = to_amba_device(dev);
+	int ret;
+
+	if (dev->driver) {
+		ret = clk_enable(pcdev->pclk);
+		/* Failure is probably fatal to the system, but... */
+		if (ret)
+			return ret;
+	}
+
+	return pm_generic_runtime_resume(dev);
+}
+
+If i am not wrong, these routines also get called with runtiime suspend/resume
+of pl022? If that is the case, the even the interface clock of pl022 is getting
+disabled when not in used.
+
+And so for Architectures like SPEAr (where functional and interface
+clock are controlled
+by a single bit), we don't need anything else for power saving, with
+respect to clocks.
+Isn't it so?
+
+@Vipul/Vinit: Can you please confirm this behavior?
+
+--
+viresh

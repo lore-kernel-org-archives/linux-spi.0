@@ -1,92 +1,49 @@
-From: viresh kumar <viresh.kumar@linaro.org>
-Subject: Re: [PATCH] spi: pl022: Add clk_{un}prepare() support in runtime PM
-Date: Wed, 19 Sep 2012 09:01:04 +0530
-Message-ID: <CAOh2x=kH2pmF0oh+Rfna+0JmM+X433vB_TyhPJUhQg9B5r1evA@mail.gmail.com>
-References: <1f784b72399e0e96414f00866b209e2e218065af.1347877746.git.vipulkumar.samar@st.com>
-	<CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w@mail.gmail.com>
-	<CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
-	<CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
+From: "=?gb2312?Q?=B9=E3=BD=BB=BB=E1?=" <root-ZXaRKZqRMis@public.gmane.org>
+Subject: [SPAM]
+	=?gb2312?Q?=B3=F6=CA=DB112=BD=EC=C7=EF=BC=BE=B9=E3=BD=BB=BB=E1=D5=B9=CE=BB=A3=AC=CC=E1=B9=A9=D7=B0=D0=DE=A1=A2=BD=F8=B9=DD=D6=A4=BC=FE=B0=EC=C0=ED=B5=C8=D2=B5=CE=F1=A1=A3?=
+Date: Wed, 19 Sep 2012 09:11:19 +0000 (UTC)
+Message-ID: <201209191637327.SM03112@ccv-87f7e2a1081>
+Reply-To: 1539662246-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spear-devel@list.st.com, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org
-To: Vipul Kumar Samar <vipulkumar.samar@st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vinit Shenoy <vinit.shenoy@st.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"=?gb2312?Q?spidevine@comcast=2Enet?=" <spidevine-Wuw85uim5zDR7s880joybQ@public.gmane.org>,
+	"=?gb2312?Q?spidey=2E92@rediffmail=2Ecom?=" <spidey.92-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>,
+	"=?gb2312?Q?spidey@126=2Ecom?=" <spidey-KN7UnAbNpbg@public.gmane.org>,
+	"=?gb2312?Q?spidey@eyou=2Ecom?=" <spidey-OLhLAXdVt80@public.gmane.org>,
+	"=?gb2312?Q?spidey=5F616@hotmail=2Ecom?=" <spidey_616-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	"=?gb2312?Q?spidey=5F79@yahoo=2Ecom?=" <spidey_79-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>,
+	"=?gb2312?Q?spidey=5Fboey@hotmail=2Ecom?=" <spidey_boey-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	"=?gb2312?Q?spidey=5Ftanghf@hotmail=2Ecom?=" <spidey_tanghf-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	"=?gb2312?Q?spidey007@mchsi=2Ecom?=" <spidey007-+MseY0pMZYIAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Mon, 19 Sep 2022 16:37:56 +0800
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Sep 18, 2012 at 5:20 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Tue, Sep 18, 2012 at 6:09 AM, viresh kumar <viresh.kumar@linaro.org> wrote:
->
->> Yes, we don't need to call prepare() again atleast for SPEAr. You are correct.
->> I saw the driver after a long time :)
->
-> I'm asking because it's actually OK to do this, I was more asking whether it
-> was really needed by any platforms...
-
-Yes, I got that. Patch from Vipul is correct and should be there for
-any platforms
-which do anything in prepare/unprepare. But Atleast for SPEAr we don't need it.
-But i would still insist in keeping it for completeness. :)
-
-> We clk_disable() at runtime_suspend() and clk_enable() at runtime resume,
-> and the driver gives hints to the runtime PM layer to autosuspend the
-> driver whenever it's unused. Check the pm_runtime_* calls.
-
-Ahh.. How could i miss it.
-
->> The amba layer is taking care of interface clock only and not
->> functional clock. So
->> i believe that's not the magic code. :)
->
-> This clock is the one for the external bus. In some designs these two
-> clocks are one and the same, and these won't currently get into any clock
-> disabled states, sadly. (We need to fix that some day.)
-
-I went through the code and found following in amba/bus.c:
-
-
-static int amba_pm_runtime_suspend(struct device *dev)
-{
-	struct amba_device *pcdev = to_amba_device(dev);
-	int ret = pm_generic_runtime_suspend(dev);
-
-	if (ret == 0 && dev->driver)
-		clk_disable(pcdev->pclk);
-
-	return ret;
-}
-
-static int amba_pm_runtime_resume(struct device *dev)
-{
-	struct amba_device *pcdev = to_amba_device(dev);
-	int ret;
-
-	if (dev->driver) {
-		ret = clk_enable(pcdev->pclk);
-		/* Failure is probably fatal to the system, but... */
-		if (ret)
-			return ret;
-	}
-
-	return pm_generic_runtime_resume(dev);
-}
-
-If i am not wrong, these routines also get called with runtiime suspend/resume
-of pl022? If that is the case, the even the interface clock of pl022 is getting
-disabled when not in used.
-
-And so for Architectures like SPEAr (where functional and interface
-clock are controlled
-by a single bit), we don't need anything else for power saving, with
-respect to clocks.
-Isn't it so?
-
-@Vipul/Vinit: Can you please confirm this behavior?
-
---
-viresh
+CszhuakxMTK97MfvvL654727u+HVuc67tffF5KGi16rIw6Gi17DQ3qGivfi53dakvP6w7MDttcjS
+tc7xo6zT0NDo0qrH68Gqz7WjobG+0MXPorOkxtrT0NCno6zH67GjwfSjoQq549bdytDQoc7i1bnA
+wArBqs+1yMujus7ivai+/M/IyfoKytYgILv6o7oxMzc5NDM2MzgyNgq15yAgu7CjujAyMC04OTIz
+ODExOQrTyiAgz+Sjund1dGlhbjgzQDE2My5jb20KUSBRo7o2NDg2OTY2MjAKCgoKCgoyMDEytLq8
+vjExMb3sueO9u7vhwvK80qOsQjJC0a/FzMLyvNKhonRob21hc25ldCCyybm6ycwsuqO52Mr9vt0s
+yLq3osjtvP6jrNW5u+HC8rzSIL32MzAw1KohCgrSqrXE16W99MGqz7VRUTogNDYwMTIyNjQxIArS
+qrXE16W99MGqz7VRUTogNDYwMTIyNjQxCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxpdmUgU2Vj
+dXJpdHkgVmlydHVhbCBDb25mZXJlbmNlCkV4Y2x1c2l2ZSBsaXZlIGV2ZW50IHdpbGwgY292ZXIg
+YWxsIHRoZSB3YXlzIHRvZGF5J3Mgc2VjdXJpdHkgYW5kIAp0aHJlYXQgbGFuZHNjYXBlIGhhcyBj
+aGFuZ2VkIGFuZCBob3cgSVQgbWFuYWdlcnMgY2FuIHJlc3BvbmQuIERpc2N1c3Npb25zIAp3aWxs
+IGluY2x1ZGUgZW5kcG9pbnQgc2VjdXJpdHksIG1vYmlsZSBzZWN1cml0eSBhbmQgdGhlIGxhdGVz
+dCBpbiBtYWx3YXJlIAp0aHJlYXRzLiBodHRwOi8vd3d3LmFjY2VsYWNvbW0uY29tL2phdy9zZnJu
+bDA0MjQyMDEyLzExNC81MDEyMjI2My8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

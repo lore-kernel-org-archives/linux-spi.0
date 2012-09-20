@@ -1,9 +1,9 @@
-From: "Le Club des Createurs de Beaute par Galeriedesmarques.fr"
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: -50 % sur vos 4 produits =?iso-8859-15?Q?pr=E9f=E9r=E9s?=
-Date: Thu, 20 Sep 2012 15:48:46 +0200
-Message-ID: <1348148948.505b1ed4a5cf4@mc10.fr>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Leader mondial du deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Profitez de votre ville et =?iso-8859-15?Q?=E9conomisez_jusqu?=
+	=?iso-8859-15?Q?=27=E0?= 70%
+Date: Thu, 20 Sep 2012 16:19:07 +0200
+Message-ID: <1348150783.505b25ff6356d@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjAzNTYmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wOS0yMCAwNzoyMDowMSZlPTEmaD0yMDM1NSZmPTIwMzU2Jmc9MjAzNTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNTA1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yMCAwNDo1MDowMSZlPTEmaD0yMDUwNCZmPTIwNTA1Jmc9MjA1MDU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjAzNTYmYz0=
-xOTYxNjQxJmQ9MjAxMi0wOS0yMCAwNzoyMDowMSZlPTEmaD0yMDM1NSZmPTIwMzU2Jmc9MjAzNT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNTA1JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yMCAwNDo1MDowMSZlPTEmaD0yMDUwNCZmPTIwNTA1Jmc9MjA1MD=
+U=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,8 +1,7 @@
 From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Subject: [RFC PATCH 02/13] ARM: edma: remove unused transfer controller
-	handlers
-Date: Thu, 20 Sep 2012 10:43:35 -0400
-Message-ID: <1348152226-13588-3-git-send-email-mporter@ti.com>
+Subject: [RFC PATCH 08/13] mmc: omap_hsmmc: limit max_segs with the EDMA DMAC
+Date: Thu, 20 Sep 2012 10:43:41 -0400
+Message-ID: <1348152226-13588-9-git-send-email-mporter@ti.com>
 References: <1348152226-13588-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -35,70 +34,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix build on OMAP, the irqs are undefined on AM33xx.
-These error interrupt handlers were hardcoded as disabled
-so since they are unused code, simply remove them.
+The EDMA DMAC has a hardware limitation that prevents supporting
+scatter gather lists with any number of segments. Since the EDMA
+DMA Engine driver sets the maximum segments to 16, we do the
+same.
+
+Note: this can be removed once the DMA Engine API supports an
+API to query the DMAC's segment limitations.
 
 Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/common/edma.c |   37 -------------------------------------
- 1 file changed, 37 deletions(-)
+ drivers/mmc/host/omap_hsmmc.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
-index cecc50e..001d268 100644
---- a/arch/arm/common/edma.c
-+++ b/arch/arm/common/edma.c
-@@ -494,26 +494,6 @@ static irqreturn_t dma_ccerr_handler(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
+index c82d0ab..61b54ee 100644
+--- a/drivers/mmc/host/omap_hsmmc.c
++++ b/drivers/mmc/host/omap_hsmmc.c
+@@ -1885,6 +1885,16 @@ static int __devinit omap_hsmmc_probe(struct platform_device *pdev)
+ 	 * as we want. */
+ 	mmc->max_segs = 1024;
  
--/******************************************************************************
-- *
-- * Transfer controller error interrupt handlers
-- *
-- *****************************************************************************/
--
--#define tc_errs_handled	false	/* disabled as long as they're NOPs */
--
--static irqreturn_t dma_tc0err_handler(int irq, void *data)
--{
--	dev_dbg(data, "dma_tc0err_handler\n");
--	return IRQ_HANDLED;
--}
--
--static irqreturn_t dma_tc1err_handler(int irq, void *data)
--{
--	dev_dbg(data, "dma_tc1err_handler\n");
--	return IRQ_HANDLED;
--}
--
- static int reserve_contiguous_slots(int ctlr, unsigned int id,
- 				     unsigned int num_slots,
- 				     unsigned int start_slot)
-@@ -1538,23 +1518,6 @@ static int __init edma_probe(struct platform_device *pdev)
- 		arch_num_cc++;
- 	}
- 
--	if (tc_errs_handled) {
--		status = request_irq(IRQ_TCERRINT0, dma_tc0err_handler, 0,
--					"edma_tc0", &pdev->dev);
--		if (status < 0) {
--			dev_dbg(&pdev->dev, "request_irq %d failed --> %d\n",
--				IRQ_TCERRINT0, status);
--			return status;
--		}
--		status = request_irq(IRQ_TCERRINT, dma_tc1err_handler, 0,
--					"edma_tc1", &pdev->dev);
--		if (status < 0) {
--			dev_dbg(&pdev->dev, "request_irq %d --> %d\n",
--				IRQ_TCERRINT, status);
--			return status;
--		}
--	}
--
- 	return 0;
- 
- fail:
++	/* Eventually we should get our max_segs limitation for EDMA by
++	 * querying the dmaengine API */
++	if (pdev->dev.of_node) {
++		struct device_node *parent = pdev->dev.of_node->parent;
++		struct device_node *node;
++		node = of_find_node_by_name(parent, "edma");
++		if (node)
++			mmc->max_segs = 16;
++	}
++
+ 	mmc->max_blk_size = 512;       /* Block Length at max can be 1024 */
+ 	mmc->max_blk_count = 0xFFFF;    /* No. of Blocks is 16 bits */
+ 	mmc->max_req_size = mmc->max_blk_size * mmc->max_blk_count;
 -- 
 1.7.9.5
 

@@ -1,22 +1,22 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: Add clk_{un}prepare() support in runtime PM
-Date: Thu, 20 Sep 2012 08:43:46 +0200
-Message-ID: <CACRpkdYREZs6ydw0mKN5c3ePVLzaLmnbKWcYEi=uYDE=OOUAHg@mail.gmail.com>
-References: <1f784b72399e0e96414f00866b209e2e218065af.1347877746.git.vipulkumar.samar@st.com>
-	<CACRpkdbHegZAw+9XXzOb5UPPqJvzoNfPJ5aPDhuwWWhWunuv8w@mail.gmail.com>
-	<CAOh2x==GY6xvyWmLJtpR68x1kiFWO8F85RwS6VfHjJA8YdhgvA@mail.gmail.com>
-	<CACRpkdYnW=VbR1ieF1oicdPF79jV2raX9xkccE_ndrxQQjkUqw@mail.gmail.com>
-	<CAOh2x=kH2pmF0oh+Rfna+0JmM+X433vB_TyhPJUhQg9B5r1evA@mail.gmail.com>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: adopt pinctrl support
+Date: Thu, 20 Sep 2012 09:02:41 -0400
+Message-ID: <20120920130240.GR17666@opensource.wolfsonmicro.com>
+References: <1348057426-24898-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
-	Vinit Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>, spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Roland Stigge <stigge-uj/7R2tJ6VmzQB+pC5nmwQ@public.gmane.org>, Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Vinit Kamalaksha Shenoy <vinit.shenoy-qxv4g6HH51o@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-5wv7dgnIgG8@public.gmane.org>,
+	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Shiraz Hashim <shiraz.linux.kernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOh2x=kH2pmF0oh+Rfna+0JmM+X433vB_TyhPJUhQg9B5r1evA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1348057426-24898-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,94 +27,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 19, 2012 at 5:31 AM, viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Sep 18, 2012 at 5:20 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
->> On Tue, Sep 18, 2012 at 6:09 AM, viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
->
->>> The amba layer is taking care of interface clock only and not
->>> functional clock. So
->>> i believe that's not the magic code. :)
->>
->> This clock is the one for the external bus. In some designs these two
->> clocks are one and the same, and these won't currently get into any clock
->> disabled states, sadly. (We need to fix that some day.)
->
-> I went through the code and found following in amba/bus.c:
->
->
-> static int amba_pm_runtime_suspend(struct device *dev)
-> {
->         struct amba_device *pcdev = to_amba_device(dev);
->         int ret = pm_generic_runtime_suspend(dev);
->
->         if (ret == 0 && dev->driver)
->                 clk_disable(pcdev->pclk);
->
->         return ret;
-> }
->
-> static int amba_pm_runtime_resume(struct device *dev)
-> {
->         struct amba_device *pcdev = to_amba_device(dev);
->         int ret;
->
->         if (dev->driver) {
->                 ret = clk_enable(pcdev->pclk);
->                 /* Failure is probably fatal to the system, but... */
->                 if (ret)
->                         return ret;
->         }
->
->         return pm_generic_runtime_resume(dev);
-> }
->
-> If i am not wrong, these routines also get called with runtiime suspend/resume
-> of pl022?
+On Wed, Sep 19, 2012 at 02:23:46PM +0200, Linus Walleij wrote:
+> From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+> 
+> Amend the PL022 pin controller to optionally take a pin control
+> handle and set the state of the pins to "default" on boot and
+> runtime resume, and to "sleep" at runtime suspend. This way we
+> will dynamically save power on the SPI busses, for example some
+> electronic designs may be able to ground the pins when unused
+> instead of pull-up. Some pin controllers may want to set the
+> pins as wake-up sources when sleeping.
 
-Maybe. And that is part of the problem. Check this in
-drivers/base/power/runtime.c, rpm_suspend():
-
-        if (dev->pm_domain)
-                callback = dev->pm_domain->ops.runtime_suspend;
-        else if (dev->type && dev->type->pm)
-                callback = dev->type->pm->runtime_suspend;
-        else if (dev->class && dev->class->pm)
-                callback = dev->class->pm->runtime_suspend;
-        else if (dev->bus && dev->bus->pm)
-                callback = dev->bus->pm->runtime_suspend;
-        else
-                callback = NULL;
-
-So as you see the AMBA bus-level runtime PM callbacks will be
-called UNLESS there is a class and UNLESS there is a type
-and UNLESS there is a voltage domain for this device.
-
-In Ux500 we solved this by calling the AMBA bus-level code
-from the voltage domain so it's not completely overridden,
-but the semantics are complex here. :-/
-
-(And then we have yet to bring common suspend/resume
-into the picture ... which makes is ever more complex.)
-
-If the SPEAr is not using any voltage domains for example,
-it'll be unaffected and work fine.
-
-> If that is the case, the even the interface clock of pl022 is getting
-> disabled when not in used.
-
-Yes, hopefully...
-
-> And so for Architectures like SPEAr (where functional and interface
-> clock are controlled
-> by a single bit), we don't need anything else for power saving, with
-> respect to clocks.
-> Isn't it so?
-
-If you have no power domains I hope the ref goes down to
-zero and gates off the clock, so yes!
-
-Yours,
-Linus Walleij
+Applied, thanks.
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

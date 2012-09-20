@@ -1,8 +1,8 @@
 From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Subject: [RFC PATCH 11/13] spi: omap2-mcspi: add generic DMA request support
-	to the DT binding
-Date: Thu, 20 Sep 2012 10:43:44 -0400
-Message-ID: <1348152226-13588-12-git-send-email-mporter@ti.com>
+Subject: [RFC PATCH 13/13] Documentation: add schedule for removing private
+	EDMA API
+Date: Thu, 20 Sep 2012 10:43:46 -0400
+Message-ID: <1348152226-13588-14-git-send-email-mporter@ti.com>
 References: <1348152226-13588-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -35,56 +35,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The binding definition is based on the generic DMA request binding.
+The davinci-pcm driver is the last in-kernel user of the private
+EDMA API. Once it has been converted to DMA Engine API the
+private EDMA API functionality can be folded into the EDMA DMA
+Engine driver and removed.
 
 Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/omap-spi.txt |   27 +++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ Documentation/feature-removal-schedule.txt |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/omap-spi.txt b/Documentation/devicetree/bindings/spi/omap-spi.txt
-index 81df374..11aff04 100644
---- a/Documentation/devicetree/bindings/spi/omap-spi.txt
-+++ b/Documentation/devicetree/bindings/spi/omap-spi.txt
-@@ -7,8 +7,18 @@ Required properties:
- - ti,spi-num-cs : Number of chipselect supported  by the instance.
- - ti,hwmods: Name of the hwmod associated to the McSPI
+diff --git a/Documentation/feature-removal-schedule.txt b/Documentation/feature-removal-schedule.txt
+index f4d8c71..64109e6 100644
+--- a/Documentation/feature-removal-schedule.txt
++++ b/Documentation/feature-removal-schedule.txt
+@@ -637,3 +637,13 @@ Who:	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ 	Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>
  
-+Optional properties:
-+- dmas: List of DMA controller phandle and DMA request ordered
-+	pairs. One tx and one rx pair is required for each chip
-+	select.
-+- dma-names: List of DMA request names. These strings correspond
-+	1:1 with the ordered pairs in dmas. The string naming is
-+	to be "rxN" and "txN" for RX and TX requests,
-+	respectively, where N equals the chip select number.
- 
--Example:
-+Examples:
+ ----------------------------
 +
-+[hwmod populated DMA resources]
- 
- mcspi1: mcspi@1 {
-     #address-cells = <1>;
-@@ -18,3 +28,18 @@ mcspi1: mcspi@1 {
-     ti,spi-num-cs = <4>;
- };
- 
-+[generic DMA request binding]
++What:	EDMA private DMA implementation
++When:	2013
++Why:	We have a DMA engine implementation; all users should be updated
++	to use this rather than persisting with the old APIs.  The old APIs
++	block merging the old DMA engine implementation into the DMA
++	engine driver.
++Who:	Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
 +
-+mcspi1: mcspi@1 {
-+    #address-cells = <1>;
-+    #size-cells = <0>;
-+    compatible = "ti,omap4-mcspi";
-+    ti,hwmods = "mcspi1";
-+    ti,spi-num-cs = <2>;
-+    dmas = <&edma 42
-+	    &edma 43
-+	    &edma 44
-+	    &edma 45>;
-+    dma-names = "tx0", "rx0", "tx1", "rx1";
-+};
-+
++----------------------------
 -- 
 1.7.9.5
 

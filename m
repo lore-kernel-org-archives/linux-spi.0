@@ -1,59 +1,85 @@
-From: Bastian Hecht <hechtb-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org>
-Subject: [PATCH 4/4] devicetree: Add Renesas SH Mobile MSIOF spi controller
-	binding doc
-Date: Fri, 21 Sep 2012 13:00:49 +0200
-Message-ID: <1348225249-1294-4-git-send-email-hechtb@gmail.com>
-References: <1348225249-1294-1-git-send-email-hechtb@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [RFC PATCH 10/13] spi: omap2-mcspi:
+ dma_request_slave_channel() support for DT platforms
+Date: Fri, 21 Sep 2012 08:42:47 -0700
+Message-ID: <20120921154247.GZ28835@atomide.com>
+References: <1348152226-13588-1-git-send-email-mporter@ti.com>
+ <1348152226-13588-11-git-send-email-mporter@ti.com>
+ <20120920220931.GJ28835@atomide.com>
+ <201209210816.01473.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1348225249-1294-1-git-send-email-hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Matt Porter <mporter@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Dan Williams <djbw@fb.com>,
+	Rob Herring <rob.herring@calxeda.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201209210816.01473.arnd@arndb.de>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add binding documentation for Renesas' MSIOF SPI controller.
+* Arnd Bergmann <arnd@arndb.de> [120921 02:19]:
+> On Thursday 20 September 2012, Tony Lindgren wrote:
+> > >  /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
+> > > @@ -798,14 +801,26 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
+> > >       dma_cap_zero(mask);
+> > >       dma_cap_set(DMA_SLAVE, mask);
+> > >       sig = mcspi_dma->dma_rx_sync_dev;
+> > > -     mcspi_dma->dma_rx = dma_request_channel(mask, omap_dma_filter_fn, &sig);
+> > > +     if (spi->dev.of_node)
+> > > +             mcspi_dma->dma_rx =
+> > > +                     dma_request_slave_channel(&master->dev,
+> > > +                                               mcspi_dma->dma_rx_ch_name);
+> > > +     else
+> > > +             mcspi_dma->dma_rx =
+> > > +                     dma_request_channel(mask, omap_dma_filter_fn, &sig);
+> > >       if (!mcspi_dma->dma_rx) {
+> > >               dev_err(&spi->dev, "no RX DMA engine channel for McSPI\n");
+> > >               return -EAGAIN;
+> > >       }
+> > >  
+> > 
+> > Hmm this does not look nice.. We should be able to somehow not to care about
+> > the configuration at the mcspi driver level.
+> 
+> I agree, but as far as I understand Vinod's plans, we would actually move
+> all drivers over to dma_request_slave_channel() when we have an interface
+> to register the lookup tables from platform code.
+> 
+> I think the above is ok for a transitional phase and we can remove the
+> fallback path when we have converted all platforms using this driver
+> to either use DT or move to the new style way of passing the channel
+> configuration.
 
-Signed-off-by: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/sh-msiof.txt |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/sh-msiof.txt
+Can't we come up with a version of dma_request_slave_channel that works
+both ways for now:
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-new file mode 100644
-index 0000000..0d60e04
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -0,0 +1,12 @@
-+Renesas MSIOF spi controller
-+
-+Required properties:
-+- compatible : 	"renesas,sh-msiof" for SuperH or
-+		"renesas,sh-mobile-msiof" for SH Mobile series
-+- reg : Offset and length of the register set for the device
-+- interrupts : interrupt line used by MSIOF
-+
-+Optional properties:
-+- chip_select  : Chip select, needed if not 0
-+- tx_fifo_size : Overrides the default tx fifo size given in words
-+- rx_fifo_size : Overrides the default rx fifo size given in words
--- 
-1.7.5.4
+	mcspi_dma->dma_rx =
+		dma_request_slave_channel_compat(mask, omap_dma_filter_fn, &sig,
+					&master->dev, mcspi_dma->dma_rx_ch_name);
+	...			
 
+Then it's just question of patching away two lines later on rather than
+having to add all this if else to all the drivers first, then patching
+it away again.
 
-------------------------------------------------------------------------------
-Got visibility?
-Most devs has no idea what their production app looks like.
-Find out how fast your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219671;13503038;y?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+Regards,
+
+Tony

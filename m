@@ -1,12 +1,11 @@
-From: Methode Chocolat par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Maigrissez sans vous priver
-Date: Sat, 22 Sep 2012 00:30:04 +0200
-Message-ID: <1348266627.505cea83754b2@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "David Zabawa" <DZ.Noreply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Re: Question
+Date: Fri, 21 Sep 2012 16:18:07 -0700
+Message-ID: <edc7520ed562bdcafe3e9c61001460ed@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,14 +17,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Get Approved for $50K - $200K Unsecured Business Credit	=
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNjEyJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yMSAyMToyMDowMSZlPTEmaD0yMDYxMSZmPTIwNjEyJmc9MjA2MTI=3D
+No personal credit check - No personal guarantee =96 Guaranteed!	=
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNjEyJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yMSAyMToyMDowMSZlPTEmaD0yMDYxMSZmPTIwNjEyJmc9MjA2MT=
-I=3D
+
+To get info call (888) 386-9221	=
+
+
+> PLUS 5 VENDOR CREDIT LINES & 3 BUSINESS CREDIT CARDS	=
+
+> PEACE OF MIND SEPARATING PERSONAL FROM BUSINESS CREDIT	=
+
+> PERSONAL FUNDING/CREDIT BUILDER COACH GUIDES YOU ENTIRE WAY 	=
+
+> INCREASE VALUE OF YOUR BUSINESS WITH A CREDIT RATING ASSET	=
+
+> PERSONAL CREDIT NOT SO GOOD?  WE=92LL REPAIR THAT TOO	=
+
+> CREATIVE FUNDING FOR ANY KIND OF BUSINESS	=
+
+
+Utilizing our unique and exclusive private money corporate credit program, =
+ANYONE	=
+
+CAN PARTICIPATE.  Regardless of your credit!	=
+
+
+* Become a referral affiliate and start earning commissions for referring y=
+our clients!	=
+
+Call 1 (888) 386 9221 today!	=
+
+  =
+
+BUSINESS ASSISTANCE FOUNDATION, INC	=
+
+1 (888) 386 9221	=
+
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages <mailto:listservices-KK0ffGbhmjU@public.gmane.org?subjec=
+t=3DUnsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
 
 
 ---------------------------------------------------------------------------=

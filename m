@@ -1,32 +1,12 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [RFC PATCH 03/13] ARM: edma: add DT and runtime PM support for
-	AM335x
-Date: Fri, 21 Sep 2012 08:53:06 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EA8A860@DBDE01.ent.ti.com>
-References: <1348152226-13588-1-git-send-email-mporter@ti.com>
-	<1348152226-13588-4-git-send-email-mporter@ti.com>
+From: Loving Deals <lovingdeals-iceC+ci26w5SN8l6bydGY2/KedPJEj8Q@public.gmane.org>
+Subject: Vacances en Thailande / Cafe amincissant / Lunette de soleil rose
+Date: Fri, 21 Sep 2012 11:06:48 +0200
+Message-ID: <7c92703b7f2022ac9189e63388ff60b0@www.lovingdeals.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Dan,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Porter, Matt" <mporter-l0cyMroinI0@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, "Nori,
-	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Mark
-	Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, "Cousson, Benoit"
-	<b-cousson-l0cyMroinI0@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Vinod Koul
-	<vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Chris Ball
-	<cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1348152226-13588-4-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -37,400 +17,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 20, 2012 at 20:13:36, Porter, Matt wrote:
-> Adds support for parsing the TI EDMA DT data into the required
-> EDMA private API platform data.
-> 
-> Calls runtime PM API only in the DT case in order to unidle the
-> associated hwmods on AM335x.
-> 
-> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> ---
->  arch/arm/common/edma.c           |  252 ++++++++++++++++++++++++++++++++++++--
->  arch/arm/include/asm/mach/edma.h |    8 +-
->  2 files changed, 244 insertions(+), 16 deletions(-)
-
-The binding documentation should be updated along with the driver
-change that does introduce the binding. You could just merged patch #4
-and #5.
-
-> 
-> diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
-> index 001d268..f337f81 100644
-> --- a/arch/arm/common/edma.c
-> +++ b/arch/arm/common/edma.c
-> @@ -24,6 +24,13 @@
->  #include <linux/platform_device.h>
->  #include <linux/io.h>
->  #include <linux/slab.h>
-> +#include <linux/edma.h>
-> +#include <linux/err.h>
-> +#include <linux/of_address.h>
-> +#include <linux/of_device.h>
-> +#include <linux/of_dma.h>
-> +#include <linux/of_irq.h>
-> +#include <linux/pm_runtime.h>
->  
->  #include <asm/mach/edma.h>
->  
-> @@ -1366,30 +1373,236 @@ void edma_clear_event(unsigned channel)
->  EXPORT_SYMBOL(edma_clear_event);
->  
->  /*-----------------------------------------------------------------------*/
-> +static int edma_of_read_u32_to_s8_array(const struct device_node *np,
-> +					 const char *propname, s8 *out_values,
-> +					 size_t sz)
-> +{
-> +	struct property *prop = of_find_property(np, propname, NULL);
-> +	const __be32 *val;
-> +
-> +	if (!prop)
-> +		return -EINVAL;
-> +	if (!prop->value)
-> +		return -ENODATA;
-> +	if ((sz * sizeof(u32)) > prop->length)
-> +		return -EOVERFLOW;
-> +
-> +	val = prop->value;
-> +
-> +	while (sz--)
-> +		*out_values++ = (s8)(be32_to_cpup(val++) & 0xff);
-> +
-> +	/* Terminate it */
-> +	*out_values++ = -1;
-> +	*out_values++ = -1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int edma_of_read_u32_to_s16_array(const struct device_node *np,
-> +					 const char *propname, s16 *out_values,
-> +					 size_t sz)
-> +{
-> +	struct property *prop = of_find_property(np, propname, NULL);
-> +	const __be32 *val;
-> +
-> +	if (!prop)
-> +		return -EINVAL;
-> +	if (!prop->value)
-> +		return -ENODATA;
-> +	if ((sz * sizeof(u32)) > prop->length)
-> +		return -EOVERFLOW;
-> +
-> +	val = prop->value;
-> +
-> +	while (sz--)
-> +		*out_values++ = (s16)(be32_to_cpup(val++) & 0xffff);
-> +
-> +	/* Terminate it */
-> +	*out_values++ = -1;
-> +	*out_values++ = -1;
-> +
-> +	return 0;
-> +}
-> +
-> +static int edma_of_parse_dt(struct device *dev,
-> +			    struct device_node *node,
-> +			    struct edma_soc_info *pdata)
-> +{
-> +	int ret = 0;
-> +	u32 value;
-> +	struct property *prop;
-> +	size_t sz;
-> +	struct edma_rsv_info *rsv_info;
-> +	s16 (*rsv_chans)[2], (*rsv_slots)[2];
-> +	s8 (*queue_tc_map)[2], (*queue_priority_map)[2];
-> +
-> +	ret = of_property_read_u32(node, "dma-channels", &value);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->n_channel = value;
-> +
-> +	ret = of_property_read_u32(node, "ti,edma-regions", &value);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->n_region = value;
-> +
-> +	ret = of_property_read_u32(node, "ti,edma-slots", &value);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->n_slot = value;
-> +
-> +	pdata->n_cc = 1;
-> +	/* This is unused */
-> +	pdata->n_tc = 3;
-> +
-> +	rsv_info =
-> +		devm_kzalloc(dev, sizeof(struct edma_rsv_info), GFP_KERNEL);
-> +	if (!rsv_info)
-> +		return -ENOMEM;
-> +	pdata->rsv = rsv_info;
-> +
-> +	/* Build the reserved channel/slots arrays */
-> +	prop = of_find_property(node, "ti,edma-reserved-channels", &sz);
-> +	if (!prop)
-> +		return -EINVAL;
-> +
-> +	rsv_chans =
-> +		devm_kzalloc(dev, sz/sizeof(s16) + 2*sizeof(s16), GFP_KERNEL);
-> +	if (!rsv_chans)
-> +		return -ENOMEM;
-> +	pdata->rsv->rsv_chans = rsv_chans;
-> +
-> +	ret = edma_of_read_u32_to_s16_array(node, "ti,edma-reserved-channels",
-> +					    (s16 *)rsv_chans, sz/sizeof(u32));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	prop = of_find_property(node, "ti,edma-reserved-slots", &sz);
-> +	if (!prop)
-> +		return -EINVAL;
-> +
-
-Binding Documentation mentions edma-reserved-[channels/slots] as optional. 
-But here the code returns as error if they are not found. Kindly reconfirm
-
->From patch-set 5/13
-
-+Optional properties:
-+- ti,edma-reserved-channels: List of reserved channel regions
-+- ti,edma-reserved-slots: List of reserved slot regions
-
-> +	rsv_slots = devm_kzalloc(dev,
-> +				 sz/sizeof(s16) + 2*sizeof(s16),
-> +				 GFP_KERNEL);
-> +	if (!rsv_slots)
-> +		return -ENOMEM;
-> +	pdata->rsv->rsv_slots = rsv_slots;
-> +
-> +	ret = edma_of_read_u32_to_s16_array(node,
-> +					    "ti,edma-reserved-slots",
-> +					    (s16 *)rsv_slots,
-> +					    sz/sizeof(u32));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	prop = of_find_property(node, "ti,edma-queue-tc-map", &sz);
-> +	if (!prop)
-> +		return -EINVAL;
-> +
-> +	queue_tc_map = devm_kzalloc(dev,
-> +				    sz/sizeof(s8) + 2*sizeof(s8),
-> +				    GFP_KERNEL);
-> +	if (!rsv_slots)
-> +		return -ENOMEM;
-> +	pdata->queue_tc_mapping = queue_tc_map;
-> +
-> +	ret = edma_of_read_u32_to_s8_array(node,
-> +					   "ti,edma-queue-tc-map",
-> +					   (s8 *)queue_tc_map,
-> +					   sz/sizeof(u32));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	prop = of_find_property(node, "ti,edma-queue-priority-map", &sz);
-> +	if (!prop)
-> +		return -EINVAL;
-> +
-> +	queue_priority_map = devm_kzalloc(dev,
-> +					  sz/sizeof(s8) + 2*sizeof(s8),
-> +					  GFP_KERNEL);
-> +	if (!rsv_slots)
-> +		return -ENOMEM;
-> +	pdata->queue_priority_mapping = queue_priority_map;
-> +
-> +	ret = edma_of_read_u32_to_s8_array(node,
-> +					   "ti,edma-queue-tc-map",
-> +					   (s8 *)queue_priority_map,
-> +					   sz/sizeof(u32));
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = of_property_read_u32(node, "ti,edma-default-queue", &value);
-> +	if (ret < 0)
-> +		return ret;
-> +	pdata->default_queue = value;
-> +
-> +	return ret;
-> +}
-> +
-> +static struct of_dma_filter_info edma_filter_info = {
-> +	.filter_fn = edma_filter_fn,
-> +};
->  
->  static int __init edma_probe(struct platform_device *pdev)
->  {
->  	struct edma_soc_info	**info = pdev->dev.platform_data;
-> -	const s8		(*queue_priority_mapping)[2];
-> -	const s8		(*queue_tc_mapping)[2];
-> +	s8			(*queue_priority_mapping)[2];
-> +	s8			(*queue_tc_mapping)[2];
->  	int			i, j, off, ln, found = 0;
->  	int			status = -1;
-> -	const s16		(*rsv_chans)[2];
-> -	const s16		(*rsv_slots)[2];
-> +	s16			(*rsv_chans)[2];
-> +	s16			(*rsv_slots)[2];
-
-What is the significance of the number "2" in all above members?
-
->  	int			irq[EDMA_MAX_CC] = {0, 0};
->  	int			err_irq[EDMA_MAX_CC] = {0, 0};
->  	struct resource		*r[EDMA_MAX_CC] = {NULL};
-> +	struct resource		res[EDMA_MAX_CC];
->  	resource_size_t		len[EDMA_MAX_CC];
->  	char			res_name[10];
->  	char			irq_name[10];
-> +	struct device_node	*node = pdev->dev.of_node;
-> +	struct device		*dev = &pdev->dev;
-> +	struct edma_soc_info	*pdata;
-> +
-> +	if (node) {
-> +		int ret;
-> +		pdata = devm_kzalloc(dev,
-> +				     sizeof(struct edma_soc_info),
-> +				     GFP_KERNEL);
-> +		edma_of_parse_dt(dev, node, pdata);
-> +		info = &pdata;
-> +		dma_cap_set(DMA_SLAVE, edma_filter_info.dma_cap);
-> +		of_dma_controller_register(dev->of_node,
-> +					   of_dma_simple_xlate,
-> +					   &edma_filter_info);
-> +		pm_runtime_enable(dev);
-> +		ret = pm_runtime_get_sync(dev);
-> +		if (IS_ERR_VALUE(ret)) {
-> +			dev_err(dev, "pm_runtime_get_sync() failed\n");
-> +			return ret;
-> +		}
-> +	}
->  
->  	if (!info)
->  		return -ENODEV;
->  
->  	for (j = 0; j < EDMA_MAX_CC; j++) {
-> -		sprintf(res_name, "edma_cc%d", j);
-> -		r[j] = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-> +		if (node) {
-> +			int err;
-> +			err = of_address_to_resource(node, 0, &res[j]);
-> +			if (err) {
-> +				dev_err(dev,
-> +					"unable to find 'reg' property\n");
-> +				return -EIO;
-> +			}
-> +			r[j] = &res[j];
-> +
-> +		} else {
-> +			sprintf(res_name, "edma_cc%d", j);
-> +			r[j] = platform_get_resource_byname(pdev,
-> +						IORESOURCE_MEM,
->  						res_name);
-> +		}
->  		if (!r[j] || !info[j]) {
->  			if (found)
->  				break;
-> @@ -1465,8 +1678,12 @@ static int __init edma_probe(struct platform_device *pdev)
->  			}
->  		}
->  
-> -		sprintf(irq_name, "edma%d", j);
-> -		irq[j] = platform_get_irq_byname(pdev, irq_name);
-> +		if (node)
-> +			irq[j] = irq_of_parse_and_map(node, 0);
-> +		else {
-> +			sprintf(irq_name, "edma%d", j);
-> +			irq[j] = platform_get_irq_byname(pdev, irq_name);
-> +		}
->  		edma_cc[j]->irq_res_start = irq[j];
->  		status = request_irq(irq[j], dma_irq_handler, 0, "edma",
->  					&pdev->dev);
-> @@ -1476,8 +1693,12 @@ static int __init edma_probe(struct platform_device *pdev)
->  			goto fail;
->  		}
->  
-> -		sprintf(irq_name, "edma%d_err", j);
-> -		err_irq[j] = platform_get_irq_byname(pdev, irq_name);
-> +		if (node)
-> +			err_irq[j] = irq_of_parse_and_map(node, 2);
-> +		else {
-> +			sprintf(irq_name, "edma%d_err", j);
-> +			err_irq[j] = platform_get_irq_byname(pdev, irq_name);
-> +		}
->  		edma_cc[j]->irq_res_end = err_irq[j];
->  		status = request_irq(err_irq[j], dma_ccerr_handler, 0,
->  					"edma_error", &pdev->dev);
-> @@ -1538,9 +1759,17 @@ fail1:
->  	return status;
->  }
->  
-> +static const struct of_device_id edma_of_ids[] = {
-> +	{ .compatible = "ti,edma3", },
-> +	{}
-> +};
->  
->  static struct platform_driver edma_driver = {
-> -	.driver.name	= "edma",
-> +	.driver = {
-> +		.name	= "edma",
-> +		.of_match_table = edma_of_ids,
-
-Won't this fail/warn when CONFIG_OF not selected/enabled?
-
-> +	},
-> +	.probe = edma_probe,
->  };
->  
->  static int __init edma_init(void)
-> @@ -1548,4 +1777,3 @@ static int __init edma_init(void)
->  	return platform_driver_probe(&edma_driver, edma_probe);
->  }
->  arch_initcall(edma_init);
-> -
-
-Stray change I believe.
-
-> diff --git a/arch/arm/include/asm/mach/edma.h b/arch/arm/include/asm/mach/edma.h
-> index 7e84c90..ce5f6f8 100644
-> --- a/arch/arm/include/asm/mach/edma.h
-> +++ b/arch/arm/include/asm/mach/edma.h
-> @@ -237,8 +237,8 @@ void edma_resume(unsigned channel);
->  
->  struct edma_rsv_info {
->  
-> -	const s16	(*rsv_chans)[2];
-> -	const s16	(*rsv_slots)[2];
-> +	s16		(*rsv_chans)[2];
-> +	s16		(*rsv_slots)[2];
->  };
->  
->  /* platform_data for EDMA driver */
-> @@ -260,8 +260,8 @@ struct edma_soc_info {
->  	/* Resource reservation for other cores */
->  	struct edma_rsv_info	*rsv;
->  
-> -	const s8	(*queue_tc_mapping)[2];
-> -	const s8	(*queue_priority_mapping)[2];
-> +	s8	(*queue_tc_mapping)[2];
-> +	s8	(*queue_priority_mapping)[2];
->  };
->  
->  #endif
-> -- 
-> 1.7.9.5
-> 
-> _______________________________________________
-> Davinci-linux-open-source mailing list
-> Davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
-> 
-
-
-Regards, 
-Gururaja
-
-------------------------------------------------------------------------------
-Got visibility?
-Most devs has no idea what their production app looks like.
-Find out how fast your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219671;13503038;y?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+wqAKY29uc3VsdGV6IG5vdHJlIHZlcnNpb24gZW4gbGlnbmUgWyNdCgoKW2h0dHA6Ly93d3cubWVz
+cGx1c2JlYXV4ZGVhbHMuZnIvXQoKCgoKTCdPRkZSRSBERSBMQSBTRU1BSU5FOiAKVmFjYW5jZXMg
+ZW4gVGhhaWxhbmRlISBQYXNzZXogdm9zIHZhY2FuY2VzIGRhbnMgdW4gY2FkcmUgZG9yw6ksIGRl
+IHLDqnZlIGV0IGTigJlleG90aXNtZSAhIE9mZnJlei12b3VzIDcgbnVpdHMgZGFucyBsZSBsdXh1
+ZXV4IEFic29sdXRlIE5ha2FsYXkgQmVhY2ggSG90ZWwgYXUgY8WTdXIgZGUgbGEgVGhhaWxhbmRl
+IHBvdXIgMjk54oKsIHNldWxlbWVudC4gCgoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxz
+LmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ1LXRoYWlsYW5kZS1waHVrZXQtdmFjYW5jZXMtcGFzLWNo
+ZXJdCjI5OeKCrCAKVmFsZXVyOiAxNjYw4oKsIMOJY29ub21pc2V6OiAxMzYx4oKsIERvbnM6IDIu
+NzDigqwgCgpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9kaXNjb3VudC9kZXRhaWwv
+MTc0NS10aGFpbGFuZGUtcGh1a2V0LXZhY2FuY2VzLXBhcy1jaGVyXQoKCgoKCgo3IG51aXRzIGlk
+eWxsaXF1ZXMgw6AgQWJzb2x1dGUgTmFrYWxheSBCZWFjaCBIb3RlbCBQaHVrZXQgVW5lIGNoYW1i
+cmUgZOKAmWjDtHRlbCBk4oCZdW5lIHZhbGV1ciBkZSAxNjYw4oKsIHBvdXIgMjk54oKsIHNldWxl
+bWVudCBQYXJmYWl0IHBvdXIgdW4gY291cGxlIGF2ZWMgb3Ugc2FucyBlbmZhbnRzIChncmF0dWl0
+IHBvdXIgMiBlbmZhbnRzIGRlIG1vaW5zIGRlIDEyYW5zIDsgOTnigqwgZGUgZnJhaXMgc3VwcGzD
+qW1lbnRhaXJlcyBwb3VyIDIgZW5mYW50cyBkZSBwbHVzIGRlIDEyYW5zKSBVbiBzYXZvdXJldXgg
+cGV0aXQgZMOpamV1bmVyIHBvdXIgMiBwZXJzb25uZXMgb2ZmZXJ0IGR1cmFudCBsYSB0b3RhbGl0
+w6kgZGUgdm90cmUgc8Opam91ciAxIGhldXJlIGRlIG1hc3NhZ2UgcG91ciAxIHBlcnNvbm5lIENv
+bXBvc2l0aW9uIGRlIGxlIGNoYW1icmUgOiB1biBiYWxjb24sIHVuIG1pbmkgYmFyIGV0IHVuIHLD
+qWZyaWfDqXJhdGV1ciwgdW5lIGN1aXNpbmUgdG91dGUgw6lxdWlww6llIFVuZSBsaWduZSB0w6ls
+w6lwaG9uaXF1ZSBwb3VyIGFwcGVsZXIgw6AgbOKAmWludGVybmF0aW9uYWwsIFdJRkkgZXQgdW4g
+Y8OiYmxlIHTDqWzDqXZpc2lvbiBhdmVjIGxlY3RldXIgRFZEIFBlaWdub2lycyBldCBjaGF1c3Nv
+bnMgb2ZmZXJ0cyBBIHZvdHJlIGRpc3Bvc2l0aW9uIMOgIGzigJlow7R0ZWwgOiBTYWxsZSBkZSBn
+eW0sIHVuIGVzcGFjZSBicm9uemFnZSwgdW5lIHBpc2NpbmUsIHVuIHBhcmtpbmcgY291dmVydCwg
+Q0NUViBDb25jaWVyZ2UgcHLDqXNlbnQgMjRoLzI0aCBldCB2aWTDqW8gc3VydmVpbGxhbmNlIE5h
+dmV0dGUgw6Agdm90cmUgYXJyaXbDqWUgw6AgbOKAmWHDqXJvcG9ydCBUYXhlcyBldCBmcmFpcyBk
+ZXMgc2VydmljZXMgZGUgbOKAmWjDtHRlbCBpbmNsdXMgTmF2ZXR0ZXMgcsOpZ3VsacOocmVzIHBv
+dXIgUGF0b25nIEJlYWNoIGV0IFBodWtldCBjaXR5IAoKW2h0dHA6Ly93d3cuZmFjZWJvb2suY29t
+L3NoYXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubWVzcGx1c2JlYXV4ZGVhbHMuZnIlMkZkaXNj
+b3VudCUyRmRldGFpbCUyRjE3NDUtdGhhaWxhbmRlLXBodWtldC12YWNhbmNlcy1wYXMtY2hlcl0K
+W2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4ZGVhbHMuZnIvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUz
+QSUyRiUyRnd3dy5tZXNwbHVzYmVhdXhkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGMTc0
+NS10aGFpbGFuZGUtcGh1a2V0LXZhY2FuY2VzLXBhcy1jaGVyJmFtcDttZXNzYWdlPVZhY2FuY2Vz
+IGVuIFRoYWlsYW5kZSEgUGFzc2V6IHZvcyB2YWNhbmNlcyBkYW5zIHVuIGNhZHJlIGRvcsOpLCBk
+ZSByw6p2ZSBldCBk4oCZZXhvdGlzbWUgISBPZmZyZXotdm91cyA3IG51aXRzIGRhbnMgbGUgbHV4
+dWV1eCBBYnNvbHV0ZSBOYWthbGF5IEJlYWNoIEhvdGVsIGF1IGPFk3VyIGRlIGxhIFRoYWlsYW5k
+ZSBwb3VyIDI5OeKCrCBzZXVsZW1lbnQuXQpbbWFpbHRvOj9zdWJqZWN0PUonYWkgZMOpY291dmVy
+dCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzJmFtcDtib2R5PUonYWkgZMOp
+Y291dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVh
+bHMgb2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNl
+bnRhZ2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5tZXNwbHVz
+YmVhdXhkZWFscy5mci9kaXNjb3VudC9kZXRhaWwvMTc0NS10aGFpbGFuZGUtcGh1a2V0LXZhY2Fu
+Y2VzLXBhcy1jaGVyXQoKCgoKRW5jb3JlIHBsdXMgZCdvZmZyZXMgISAKCgoKVmFsZXVyIDM14oKs
+IFJlbWlzZSA1NyUgw4ljb25vbWlzZXogMjDigqwgRG9ucyAxLjAw4oKsIAoKTHVuZXR0ZXMgZGUg
+U29sZWlsIFJvc2UhIFBsaWFibGVzIGV0IGluY2Fzc2FibGVzLCBjZSBub3V2ZWwgYWNjZXNzb2ly
+ZSB2b3VzIGFjY29tcGFnbmVyYSBkYW5zIHRvdXRlcyB2b3Mgdmlyw6llcyBib3JkIGRlIG1lciBl
+dCB2b3Mgc29pcsOpZXMgZMOpZ3Vpc8OpZXMgIeKApiBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
+ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYTExMTAxYTBjNTkxMGNiZi9wbGluayAvRGlzY291
+bnQ6ZGV0YWlsLCAnaWQnID0mZ3Q7ICRkaXNjb3VudC0mZ3Q7aWR9LWx1bmV0dGVzLXNvbGVpbC1w
+bGlhYmxlcy1pbmNhc3NhYmxlcy1yb3NlXQpTZXVsZW1lbnQgMTXigqwgW2h0dHA6Ly93d3cubWVz
+cGx1c2JlYXV4ZGVhbHMuZnIvZGlzY291bnQvZGV0YWlsLzE3NDQtbHVuZXR0ZXMtc29sZWlsLXBs
+aWFibGVzLWluY2Fzc2FibGVzLXJvc2VdCgoKW2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4ZGVhbHMu
+ZnIvZGlzY291bnQvZGV0YWlsLzE3NDQtbHVuZXR0ZXMtc29sZWlsLXBsaWFibGVzLWluY2Fzc2Fi
+bGVzLXJvc2VdCgoKCgpWYWxldXIgODXigqwgUmVtaXNlIDY2JSDDiWNvbm9taXNleiA1NuKCrCBE
+b25zIDAuMjXigqwgCgpDYWbDqSBBbWluY2lzc2FudCEgRXQgc2kgdm90cmUgY2Fmw6kgZHUgbWF0
+aW4sIGRlIGzigJlhcHLDqHMtbWlkaSBldCBkdSBzb2lyIHZvdXMgYWlkYWl0IMOgIHBlcmRyZSBk
+dSBwb2lkcyA/IEJvdXNjdWxleiB2b3RyZSByb3V0aW5lIGV0IHJlY2V2ZXogdm90cmUgY2Fmw6ni
+gKYgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2Ex
+MTEwMWEwYzU5MTBjYmYvcGxpbmsgL0Rpc2NvdW50OmRldGFpbCwgJ2lkJyA9Jmd0OyAkZGlzY291
+bnQtJmd0O2lkfS1jYWZlLWFtaW5jaXNzYW50LWxvdmluZy1kZWFsc10KU2V1bGVtZW50IDI54oKs
+IFtodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ2LWNh
+ZmUtYW1pbmNpc3NhbnQtbG92aW5nLWRlYWxzXQoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRl
+YWxzLmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ2LWNhZmUtYW1pbmNpc3NhbnQtbG92aW5nLWRlYWxz
+XQoKCgoKCgoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0aW9ucy1j
+YXJpdGF0aXZlcy9dCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0aW9u
+cy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0
+aW9ucy1jYXJpdGF0aXZlcy9dCgpMJ2FmYSBTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUgVmlz
+aW9uIGR1IG1vbmRlIAoKUG91ciDDqnRyZSByZXRpcsOpIGRlIG5vdHJlIGxpc3RlIGRlIGRpZmZ1
+c2lvbiwgZMOpc2Fib25uZXotdm91cyBbI10KCgoKCgoKCgpQb3VyIHZpc3VhbGlzZXIgY29ycmVj
+dGVtZW50IGNldCBlbWFpbCwgY2xpcXVleiBpY2kgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
+ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYTExMTAxYTBjNTkxMGNiZi92aWV3L10KfCBTZSBk
+w6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9n
+YXRld2F5L2ExMTEwMWEwYzU5MTBjYmYvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVuXQoKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tCkdvdCB2aXNpYmlsaXR5PwpNb3N0IGRldnMgaGFzIG5vIGlkZWEgd2hh
+dCB0aGVpciBwcm9kdWN0aW9uIGFwcCBsb29rcyBsaWtlLgpGaW5kIG91dCBob3cgZmFzdCB5b3Vy
+IGNvZGUgaXMgd2l0aCBBcHBEeW5hbWljcyBMaXRlLgpodHRwOi8vYWQuZG91YmxlY2xpY2submV0
+L2NsazsyNjIyMTk2NzE7MTM1MDMwMzg7eT8KaHR0cDovL2luZm8uYXBwZHluYW1pY3MuY29tL0Zy
+ZWVKYXZhUGVyZm9ybWFuY2VEb3dubG9hZC5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

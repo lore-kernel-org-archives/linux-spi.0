@@ -1,88 +1,47 @@
-From: Tony Lindgren <tony@atomide.com>
-Subject: Re: [RFC PATCH 07/13] mmc: omap_hsmmc: dma_request_slave_channel()
- support for DT platforms
-Date: Thu, 20 Sep 2012 15:16:31 -0700
-Message-ID: <20120920221630.GL28835@atomide.com>
-References: <1348152226-13588-1-git-send-email-mporter@ti.com>
- <1348152226-13588-8-git-send-email-mporter@ti.com>
+From: Jarkko Nikula <jarkko.nikula@bitmer.com>
+Subject: Re: [PATCH] Revert
+ "spi: omap2-mcspi: convert to module_platform_driver"
+Date: Fri, 21 Sep 2012 09:28:24 +0300
+Message-ID: <20120921092824.5898787137c388ba54afe2a5@bitmer.com>
+References: <1343948917-14760-1-git-send-email-aaro.koskinen@iki.fi>
+	<CACxGe6scCYLpsEDGGwaXw_ijAk027w6Mk7D7FSOTZZdC6VkKSg@mail.gmail.com>
+	<1343981127.2744.28.camel@deskari>
+	<20120803094553.GA731@harshnoise.musicnaut.iki.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Sekhar Nori <nsekhar@ti.com>,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>,
 	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Arnd Bergmann <arnd@arndb.de>, Dan Williams <djbw@fb.com>,
-	Rob Herring <rob.herring@calxeda.com>
-To: Matt Porter <mporter@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1348152226-13588-8-git-send-email-mporter@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, balbi@ti.com
+To: Aaro Koskinen <aaro.koskinen@iki.fi>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20120803094553.GA731@harshnoise.musicnaut.iki.fi>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Matt Porter <mporter@ti.com> [120920 07:43]:
-> For platforms with DT populated, use dma_request_slave_channel()
-> to acquire the DMA channel. For !DT platforms, we fall back to
-> explicitly passing the omap_dma_filter_fn() to dma_request_channel().
-> Once all platforms boot from DT, the dma_request_channel() path can
-> be dropped.
-> 
-> Signed-off-by: Matt Porter <mporter@ti.com>
-> ---
->  drivers/mmc/host/omap_hsmmc.c |   16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/omap_hsmmc.c b/drivers/mmc/host/omap_hsmmc.c
-> index 3a09f93..c82d0ab 100644
-> --- a/drivers/mmc/host/omap_hsmmc.c
-> +++ b/drivers/mmc/host/omap_hsmmc.c
-> @@ -1923,14 +1923,26 @@ static int __devinit omap_hsmmc_probe(struct platform_device *pdev)
->  	dma_cap_zero(mask);
->  	dma_cap_set(DMA_SLAVE, mask);
->  
-> -	host->rx_chan = dma_request_channel(mask, omap_dma_filter_fn, &rx_req);
-> +	if (pdev->dev.of_node)
-> +		host->rx_chan =
-> +			dma_request_slave_channel(&pdev->dev, "rx");
-> +	else
-> +		host->rx_chan = dma_request_channel(mask,
-> +						    omap_dma_filter_fn,
-> +						    &rx_req);
->  	if (!host->rx_chan) {
->  		dev_err(mmc_dev(host->mmc), "unable to obtain RX DMA engine channel %u\n", rx_req);
->  		ret = -ENXIO;
->  		goto err_irq;
->  	}
->  
-> -	host->tx_chan = dma_request_channel(mask, omap_dma_filter_fn, &tx_req);
-> +	if (pdev->dev.of_node)
-> +		host->tx_chan =
-> +			dma_request_slave_channel(&pdev->dev, "tx");
-> +	else
-> +		host->tx_chan = dma_request_channel(mask,
-> +						    omap_dma_filter_fn,
-> +						    &tx_req);
->  	if (!host->tx_chan) {
->  		dev_err(mmc_dev(host->mmc), "unable to obtain TX DMA engine channel %u\n", tx_req);
->  		ret = -ENXIO;
-> 
+On Fri, 3 Aug 2012 12:45:53 +0300
+Aaro Koskinen <aaro.koskinen@iki.fi> wrote:
 
-Here to the omap_hsmmc.c driver should not need to care about which
-way to request the dma channels.
+> So an altenative hack to fix this is to modify the board file
+> (board-rx51-peripherals.c):
+> 
+> 	 /* list all spi devices here */
+> 	 enum {
+> 	 	RX51_SPI_WL1251,
+> 	-	RX51_SPI_MIPID,		/* LCD panel */
+> 	 	RX51_SPI_TSC2005,	/* Touch Controller */
+> 	+	RX51_SPI_MIPID,		/* LCD panel */
+> 	 };
+> 
+> I guess the proper fix would be to modify SPI core so that it first does
+> spi_setup for all the children/chip selects, before calling any of the
+> probe functions of SPI devices? (Initializing the controller driver at
+> subsys_initcall is one way to accomplish this.)
+> 
+As the N900 framebuffer still appears to be broken would it make sense to queue above change as a workaround for 3.5 and 3.6?
 
-Regards,
+Aaro: For above change you could add my 'Tested-by: Jarkko Nikula <jarkko.nikula@bitmer.com>'
 
-Tony
+-- 
+Jarkko

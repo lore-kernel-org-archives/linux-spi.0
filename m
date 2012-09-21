@@ -1,100 +1,68 @@
-From: Loving Deals <lovingdeals-iceC+ci26w5SN8l6bydGY2/KedPJEj8Q@public.gmane.org>
-Subject: Vacances en Thailande / Cafe amincissant / Lunette de soleil rose
-Date: Fri, 21 Sep 2012 11:06:48 +0200
-Message-ID: <7c92703b7f2022ac9189e63388ff60b0@www.lovingdeals.fr>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [RFC PATCH 10/13] spi: omap2-mcspi: dma_request_slave_channel() support for DT platforms
+Date: Fri, 21 Sep 2012 08:16:00 +0000
+Message-ID: <201209210816.01473.arnd@arndb.de>
+References: <1348152226-13588-1-git-send-email-mporter@ti.com> <1348152226-13588-11-git-send-email-mporter@ti.com> <20120920220931.GJ28835@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Matt Porter <mporter@ti.com>, Sekhar Nori <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Dan Williams <djbw@fb.com>,
+	Rob Herring <rob.herring@calxeda.com>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20120920220931.GJ28835@atomide.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-wqAKY29uc3VsdGV6IG5vdHJlIHZlcnNpb24gZW4gbGlnbmUgWyNdCgoKW2h0dHA6Ly93d3cubWVz
-cGx1c2JlYXV4ZGVhbHMuZnIvXQoKCgoKTCdPRkZSRSBERSBMQSBTRU1BSU5FOiAKVmFjYW5jZXMg
-ZW4gVGhhaWxhbmRlISBQYXNzZXogdm9zIHZhY2FuY2VzIGRhbnMgdW4gY2FkcmUgZG9yw6ksIGRl
-IHLDqnZlIGV0IGTigJlleG90aXNtZSAhIE9mZnJlei12b3VzIDcgbnVpdHMgZGFucyBsZSBsdXh1
-ZXV4IEFic29sdXRlIE5ha2FsYXkgQmVhY2ggSG90ZWwgYXUgY8WTdXIgZGUgbGEgVGhhaWxhbmRl
-IHBvdXIgMjk54oKsIHNldWxlbWVudC4gCgoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxz
-LmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ1LXRoYWlsYW5kZS1waHVrZXQtdmFjYW5jZXMtcGFzLWNo
-ZXJdCjI5OeKCrCAKVmFsZXVyOiAxNjYw4oKsIMOJY29ub21pc2V6OiAxMzYx4oKsIERvbnM6IDIu
-NzDigqwgCgpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9kaXNjb3VudC9kZXRhaWwv
-MTc0NS10aGFpbGFuZGUtcGh1a2V0LXZhY2FuY2VzLXBhcy1jaGVyXQoKCgoKCgo3IG51aXRzIGlk
-eWxsaXF1ZXMgw6AgQWJzb2x1dGUgTmFrYWxheSBCZWFjaCBIb3RlbCBQaHVrZXQgVW5lIGNoYW1i
-cmUgZOKAmWjDtHRlbCBk4oCZdW5lIHZhbGV1ciBkZSAxNjYw4oKsIHBvdXIgMjk54oKsIHNldWxl
-bWVudCBQYXJmYWl0IHBvdXIgdW4gY291cGxlIGF2ZWMgb3Ugc2FucyBlbmZhbnRzIChncmF0dWl0
-IHBvdXIgMiBlbmZhbnRzIGRlIG1vaW5zIGRlIDEyYW5zIDsgOTnigqwgZGUgZnJhaXMgc3VwcGzD
-qW1lbnRhaXJlcyBwb3VyIDIgZW5mYW50cyBkZSBwbHVzIGRlIDEyYW5zKSBVbiBzYXZvdXJldXgg
-cGV0aXQgZMOpamV1bmVyIHBvdXIgMiBwZXJzb25uZXMgb2ZmZXJ0IGR1cmFudCBsYSB0b3RhbGl0
-w6kgZGUgdm90cmUgc8Opam91ciAxIGhldXJlIGRlIG1hc3NhZ2UgcG91ciAxIHBlcnNvbm5lIENv
-bXBvc2l0aW9uIGRlIGxlIGNoYW1icmUgOiB1biBiYWxjb24sIHVuIG1pbmkgYmFyIGV0IHVuIHLD
-qWZyaWfDqXJhdGV1ciwgdW5lIGN1aXNpbmUgdG91dGUgw6lxdWlww6llIFVuZSBsaWduZSB0w6ls
-w6lwaG9uaXF1ZSBwb3VyIGFwcGVsZXIgw6AgbOKAmWludGVybmF0aW9uYWwsIFdJRkkgZXQgdW4g
-Y8OiYmxlIHTDqWzDqXZpc2lvbiBhdmVjIGxlY3RldXIgRFZEIFBlaWdub2lycyBldCBjaGF1c3Nv
-bnMgb2ZmZXJ0cyBBIHZvdHJlIGRpc3Bvc2l0aW9uIMOgIGzigJlow7R0ZWwgOiBTYWxsZSBkZSBn
-eW0sIHVuIGVzcGFjZSBicm9uemFnZSwgdW5lIHBpc2NpbmUsIHVuIHBhcmtpbmcgY291dmVydCwg
-Q0NUViBDb25jaWVyZ2UgcHLDqXNlbnQgMjRoLzI0aCBldCB2aWTDqW8gc3VydmVpbGxhbmNlIE5h
-dmV0dGUgw6Agdm90cmUgYXJyaXbDqWUgw6AgbOKAmWHDqXJvcG9ydCBUYXhlcyBldCBmcmFpcyBk
-ZXMgc2VydmljZXMgZGUgbOKAmWjDtHRlbCBpbmNsdXMgTmF2ZXR0ZXMgcsOpZ3VsacOocmVzIHBv
-dXIgUGF0b25nIEJlYWNoIGV0IFBodWtldCBjaXR5IAoKW2h0dHA6Ly93d3cuZmFjZWJvb2suY29t
-L3NoYXJlLnBocD91PWh0dHAlM0ElMkYlMkZ3d3cubWVzcGx1c2JlYXV4ZGVhbHMuZnIlMkZkaXNj
-b3VudCUyRmRldGFpbCUyRjE3NDUtdGhhaWxhbmRlLXBodWtldC12YWNhbmNlcy1wYXMtY2hlcl0K
-W2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4ZGVhbHMuZnIvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUz
-QSUyRiUyRnd3dy5tZXNwbHVzYmVhdXhkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGMTc0
-NS10aGFpbGFuZGUtcGh1a2V0LXZhY2FuY2VzLXBhcy1jaGVyJmFtcDttZXNzYWdlPVZhY2FuY2Vz
-IGVuIFRoYWlsYW5kZSEgUGFzc2V6IHZvcyB2YWNhbmNlcyBkYW5zIHVuIGNhZHJlIGRvcsOpLCBk
-ZSByw6p2ZSBldCBk4oCZZXhvdGlzbWUgISBPZmZyZXotdm91cyA3IG51aXRzIGRhbnMgbGUgbHV4
-dWV1eCBBYnNvbHV0ZSBOYWthbGF5IEJlYWNoIEhvdGVsIGF1IGPFk3VyIGRlIGxhIFRoYWlsYW5k
-ZSBwb3VyIDI5OeKCrCBzZXVsZW1lbnQuXQpbbWFpbHRvOj9zdWJqZWN0PUonYWkgZMOpY291dmVy
-dCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzJmFtcDtib2R5PUonYWkgZMOp
-Y291dmVydCBsZSBwbHVzIGfDqW7DqXJldXggZGVzIHNpdGVzIGRlIGRlYWxzISBMb3ZpbmcgRGVh
-bHMgb2ZmcmUgZGVzIHLDqWR1Y3Rpb25zIGluY3JveWFibGVzIGV0IHJldmVyc2UgdW4gcG91cmNl
-bnRhZ2Ugw6AgZGVzIGFzc29jaWF0aW9ucyBjYXJpdGF0aXZlcy4gaHR0cDovL3d3dy5tZXNwbHVz
-YmVhdXhkZWFscy5mci9kaXNjb3VudC9kZXRhaWwvMTc0NS10aGFpbGFuZGUtcGh1a2V0LXZhY2Fu
-Y2VzLXBhcy1jaGVyXQoKCgoKRW5jb3JlIHBsdXMgZCdvZmZyZXMgISAKCgoKVmFsZXVyIDM14oKs
-IFJlbWlzZSA1NyUgw4ljb25vbWlzZXogMjDigqwgRG9ucyAxLjAw4oKsIAoKTHVuZXR0ZXMgZGUg
-U29sZWlsIFJvc2UhIFBsaWFibGVzIGV0IGluY2Fzc2FibGVzLCBjZSBub3V2ZWwgYWNjZXNzb2ly
-ZSB2b3VzIGFjY29tcGFnbmVyYSBkYW5zIHRvdXRlcyB2b3Mgdmlyw6llcyBib3JkIGRlIG1lciBl
-dCB2b3Mgc29pcsOpZXMgZMOpZ3Vpc8OpZXMgIeKApiBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
-ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYTExMTAxYTBjNTkxMGNiZi9wbGluayAvRGlzY291
-bnQ6ZGV0YWlsLCAnaWQnID0mZ3Q7ICRkaXNjb3VudC0mZ3Q7aWR9LWx1bmV0dGVzLXNvbGVpbC1w
-bGlhYmxlcy1pbmNhc3NhYmxlcy1yb3NlXQpTZXVsZW1lbnQgMTXigqwgW2h0dHA6Ly93d3cubWVz
-cGx1c2JlYXV4ZGVhbHMuZnIvZGlzY291bnQvZGV0YWlsLzE3NDQtbHVuZXR0ZXMtc29sZWlsLXBs
-aWFibGVzLWluY2Fzc2FibGVzLXJvc2VdCgoKW2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4ZGVhbHMu
-ZnIvZGlzY291bnQvZGV0YWlsLzE3NDQtbHVuZXR0ZXMtc29sZWlsLXBsaWFibGVzLWluY2Fzc2Fi
-bGVzLXJvc2VdCgoKCgpWYWxldXIgODXigqwgUmVtaXNlIDY2JSDDiWNvbm9taXNleiA1NuKCrCBE
-b25zIDAuMjXigqwgCgpDYWbDqSBBbWluY2lzc2FudCEgRXQgc2kgdm90cmUgY2Fmw6kgZHUgbWF0
-aW4sIGRlIGzigJlhcHLDqHMtbWlkaSBldCBkdSBzb2lyIHZvdXMgYWlkYWl0IMOgIHBlcmRyZSBk
-dSBwb2lkcyA/IEJvdXNjdWxleiB2b3RyZSByb3V0aW5lIGV0IHJlY2V2ZXogdm90cmUgY2Fmw6ni
-gKYgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9nYXRld2F5L2Ex
-MTEwMWEwYzU5MTBjYmYvcGxpbmsgL0Rpc2NvdW50OmRldGFpbCwgJ2lkJyA9Jmd0OyAkZGlzY291
-bnQtJmd0O2lkfS1jYWZlLWFtaW5jaXNzYW50LWxvdmluZy1kZWFsc10KU2V1bGVtZW50IDI54oKs
-IFtodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ2LWNh
-ZmUtYW1pbmNpc3NhbnQtbG92aW5nLWRlYWxzXQoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRl
-YWxzLmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ2LWNhZmUtYW1pbmNpc3NhbnQtbG92aW5nLWRlYWxz
-XQoKCgoKCgoKCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0aW9ucy1j
-YXJpdGF0aXZlcy9dCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0aW9u
-cy1jYXJpdGF0aXZlcy9dCltodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Fzc29jaWF0
-aW9ucy1jYXJpdGF0aXZlcy9dCgpMJ2FmYSBTdXJmcmlkZXIgRm91bmRhdGlvbiBFdXJvcGUgVmlz
-aW9uIGR1IG1vbmRlIAoKUG91ciDDqnRyZSByZXRpcsOpIGRlIG5vdHJlIGxpc3RlIGRlIGRpZmZ1
-c2lvbiwgZMOpc2Fib25uZXotdm91cyBbI10KCgoKCgoKCgpQb3VyIHZpc3VhbGlzZXIgY29ycmVj
-dGVtZW50IGNldCBlbWFpbCwgY2xpcXVleiBpY2kgISBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5m
-ci9hZG1pbi9uZXdzbGV0dGVyL2dhdGV3YXkvYTExMTAxYTBjNTkxMGNiZi92aWV3L10KfCBTZSBk
-w6lzaW5zY3JpcmUgW2h0dHA6Ly93d3cubG92aW5nZGVhbHMuZnIvYWRtaW4vbmV3c2xldHRlci9n
-YXRld2F5L2ExMTEwMWEwYzU5MTBjYmYvdW5zdWJzY3JpYmUvP2xhbmd1YWdlPWVuXQoKLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCkdvdCB2aXNpYmlsaXR5PwpNb3N0IGRldnMgaGFzIG5vIGlkZWEgd2hh
-dCB0aGVpciBwcm9kdWN0aW9uIGFwcCBsb29rcyBsaWtlLgpGaW5kIG91dCBob3cgZmFzdCB5b3Vy
-IGNvZGUgaXMgd2l0aCBBcHBEeW5hbWljcyBMaXRlLgpodHRwOi8vYWQuZG91YmxlY2xpY2submV0
-L2NsazsyNjIyMTk2NzE7MTM1MDMwMzg7eT8KaHR0cDovL2luZm8uYXBwZHluYW1pY3MuY29tL0Zy
-ZWVKYXZhUGVyZm9ybWFuY2VEb3dubG9hZC5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Thursday 20 September 2012, Tony Lindgren wrote:
+> >  /* use PIO for small transfers, avoiding DMA setup/teardown overhead and
+> > @@ -798,14 +801,26 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
+> >       dma_cap_zero(mask);
+> >       dma_cap_set(DMA_SLAVE, mask);
+> >       sig = mcspi_dma->dma_rx_sync_dev;
+> > -     mcspi_dma->dma_rx = dma_request_channel(mask, omap_dma_filter_fn, &sig);
+> > +     if (spi->dev.of_node)
+> > +             mcspi_dma->dma_rx =
+> > +                     dma_request_slave_channel(&master->dev,
+> > +                                               mcspi_dma->dma_rx_ch_name);
+> > +     else
+> > +             mcspi_dma->dma_rx =
+> > +                     dma_request_channel(mask, omap_dma_filter_fn, &sig);
+> >       if (!mcspi_dma->dma_rx) {
+> >               dev_err(&spi->dev, "no RX DMA engine channel for McSPI\n");
+> >               return -EAGAIN;
+> >       }
+> >  
+> 
+> Hmm this does not look nice.. We should be able to somehow not to care about
+> the configuration at the mcspi driver level.
+
+I agree, but as far as I understand Vinod's plans, we would actually move
+all drivers over to dma_request_slave_channel() when we have an interface
+to register the lookup tables from platform code.
+
+I think the above is ok for a transitional phase and we can remove the
+fallback path when we have converted all platforms using this driver
+to either use DT or move to the new style way of passing the channel
+configuration.
+
+	Arnd
+

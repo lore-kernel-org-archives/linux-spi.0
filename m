@@ -1,41 +1,102 @@
-From: Wei Yongjun <weiyj.lk@gmail.com>
-Subject: [PATCH] spi: sh-hspi: fix return value check in hspi_probe()
-Date: Fri, 21 Sep 2012 15:16:55 +0800
-Message-ID: <CAPgLHd9i5kYKk+eTcC2ddu3k_F+PwdnVi91k4vEoj_wWkgBXDw@mail.gmail.com>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: set the inactive state of the clock according
+	to the clock polarity
+Date: Fri, 21 Sep 2012 09:36:51 +0200
+Message-ID: <505C1913.1090004@de.bosch.com>
+References: <1346403311-25080-1-git-send-email-dirk.behme@de.bosch.com>
+	<20120831023518.GE7726@r65073-Latitude-D630>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: yongjun_wei@trendmicro.com.cn,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: grant.likely@secretlab.ca
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"Wohlrab Knut \(CM-AI/PJ-CF31\)" <Knut.Wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, =?ISO-8859-1?Q?Uwe_Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120831023518.GE7726@r65073-Latitude-D630>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+On 31.08.2012 04:35, Shawn Guo wrote:
+> Copy Uwe ...
 
-In case of error, the function clk_get() returns ERR_PTR()
-and never returns NULL pointer. The NULL test in the error
-handling should be replaced with IS_ERR().
+Ping ;)
 
-dpatch engine is used to auto generated this patch.
-(https://github.com/weiyj/dpatch)
+Any opinions on this?
 
-Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
----
- drivers/spi/spi-sh-hspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 934138c..ecb99f3 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -251,7 +251,7 @@ static int __devinit hspi_probe(struct platform_device *pdev)
- 	}
- 
- 	clk = clk_get(NULL, "shyway_clk");
--	if (!clk) {
-+	if (IS_ERR(clk)) {
- 		dev_err(&pdev->dev, "shyway_clk is required\n");
- 		ret = -EINVAL;
- 		goto error0;
+Dirk
+
+> On Fri, Aug 31, 2012 at 10:55:11AM +0200, Dirk Behme wrote:
+>> From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+>>
+>> There are SPI devices which need a SPI clock with active low polarity and
+>> high inactive state.
+>>
+>> Add the setting of the inactive state ECSPIx_CONFIGREG:SCLK CTL
+>> according to the clock polarity ECSPIx_CONFIGREG:SCLK POL:
+>>
+>> DT without "spi-cpol" = 0 = clock active high polarity = inactive state low
+>> DT with    "spi-cpol" = 1 = clock active low  polarity = inactive state high
+>>
+>> Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+>> ---
+>>
+>> Question: Are there real world examples for a need of an individual setting of
+>> clock polarity/inactive state?
+> 
+> I'm less concerned about that.  We can always patch the driver when
+> the real world example occurs?
+> 
+> Regards,
+> Shawn
+> 
+>>  drivers/spi/spi-imx.c |    6 ++++--
+>>  1 files changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+>> index e834ff8..d64655b 100644
+>> --- a/drivers/spi/spi-imx.c
+>> +++ b/drivers/spi/spi-imx.c
+>> @@ -197,6 +197,7 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+>>  #define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+>>  #define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+>>  #define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
+>> +#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
+>>  
+>>  #define MX51_ECSPI_INT		0x10
+>>  #define MX51_ECSPI_INT_TEEN		(1 <<  0)
+>> @@ -287,9 +288,10 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+>>  	if (config->mode & SPI_CPHA)
+>>  		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
+>>  
+>> -	if (config->mode & SPI_CPOL)
+>> +	if (config->mode & SPI_CPOL) {
+>>  		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+>> -
+>> +		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
+>> +	}
+>>  	if (config->mode & SPI_CS_HIGH)
+>>  		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+>>  
+>> -- 
+>> 1.7.0.4
+
+------------------------------------------------------------------------------
+Got visibility?
+Most devs has no idea what their production app looks like.
+Find out how fast your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219671;13503038;y?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

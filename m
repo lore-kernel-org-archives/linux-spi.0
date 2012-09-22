@@ -1,7 +1,7 @@
-From: Voyage Prive par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Selection d'offres =?iso-8859-15?Q?jusqu=27=E0?= -70%
-Date: Sat, 22 Sep 2012 08:43:09 +0200
-Message-ID: <1348296254.505d5e3e93142@mc10.fr>
+From: Helene Voyance par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Voyance gratuite
+Date: Sat, 22 Sep 2012 11:53:04 +0200
+Message-ID: <1348307607.505d8a97ebeea@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMzEwJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yMiAwNzowMDowMSZlPTEmaD0yMDMwOSZmPTIwMzEwJmc9MjAzMTA=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMzIwJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yMiAxMToxMDowMiZlPTEmaD0yMDMxOSZmPTIwMzIwJmc9MjAzMjA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMzEwJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yMiAwNzowMDowMSZlPTEmaD0yMDMwOSZmPTIwMzEwJmc9MjAzMT=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMzIwJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yMiAxMToxMDowMiZlPTEmaD0yMDMxOSZmPTIwMzIwJmc9MjAzMj=
 A=3D
 
 

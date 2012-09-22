@@ -1,11 +1,13 @@
-From: "David Zabawa" <DZ.Noreply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Re: Question
-Date: Fri, 21 Sep 2012 16:18:07 -0700
-Message-ID: <edc7520ed562bdcafe3e9c61001460ed@ymail.com>
+From: 3Suisses par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Les bonnes affaires de septembre =?iso-8859-15?Q?jusqu=27=E0?= -40
+	pourcent
+Date: Sat, 22 Sep 2012 02:38:13 +0200
+Message-ID: <1348274470.505d0926f3a57@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,62 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Get Approved for $50K - $200K Unsecured Business Credit	=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-No personal credit check - No personal guarantee =96 Guaranteed!	=
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwMjc3JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yMSAyMzo1MDowMSZlPTEmaD0yMDI3NiZmPTIwMjc3Jmc9MjAyNzc=3D
 
-
-To get info call (888) 386-9221	=
-
-
-> PLUS 5 VENDOR CREDIT LINES & 3 BUSINESS CREDIT CARDS	=
-
-> PEACE OF MIND SEPARATING PERSONAL FROM BUSINESS CREDIT	=
-
-> PERSONAL FUNDING/CREDIT BUILDER COACH GUIDES YOU ENTIRE WAY 	=
-
-> INCREASE VALUE OF YOUR BUSINESS WITH A CREDIT RATING ASSET	=
-
-> PERSONAL CREDIT NOT SO GOOD?  WE=92LL REPAIR THAT TOO	=
-
-> CREATIVE FUNDING FOR ANY KIND OF BUSINESS	=
-
-
-Utilizing our unique and exclusive private money corporate credit program, =
-ANYONE	=
-
-CAN PARTICIPATE.  Regardless of your credit!	=
-
-
-* Become a referral affiliate and start earning commissions for referring y=
-our clients!	=
-
-Call 1 (888) 386 9221 today!	=
-
-  =
-
-BUSINESS ASSISTANCE FOUNDATION, INC	=
-
-1 (888) 386 9221	=
-
-
-
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages <mailto:listservices-KK0ffGbhmjU@public.gmane.org?subjec=
-t=3DUnsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwMjc3JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yMSAyMzo1MDowMSZlPTEmaD0yMDI3NiZmPTIwMjc3Jmc9MjAyNz=
+c=3D
 
 
 ---------------------------------------------------------------------------=
 ---
-Got visibility?
-Most devs has no idea what their production app looks like.
-Find out how fast your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219671;13503038;y?
+How fast is your code?
+3 out of 4 devs don\\\'t know how their code performs in production.
+Find out how slow your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219672;13503038;z?
 http://info.appdynamics.com/FreeJavaPerformanceDownload.html

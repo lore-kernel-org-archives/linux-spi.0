@@ -1,39 +1,23 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH resend] spi core: Provide means to instantiate devices
-	through sysfs
-Date: Sat, 22 Sep 2012 12:11:33 -0400
-Message-ID: <20120922161133.GU4495@opensource.wolfsonmicro.com>
-References: <1347925880-13076-1-git-send-email-linux@roeck-us.net>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi: s3c64xx: Don't free controller_data on non-dt
+ platforms
+Date: Sat, 22 Sep 2012 12:12:10 -0400
+Message-ID: <20120922161209.GV4495@opensource.wolfsonmicro.com>
+References: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: thomas.abraham@linaro.org, spi-devel-general@lists.sourceforge.net,
+	kgene.kim@samsung.com, linux-samsung-soc@vger.kernel.org,
+	sw0312.kim@samsung.com, Kyungmin Park <kyungmin.park@samsung.com>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1347925880-13076-1-git-send-email-linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 17, 2012 at 04:51:20PM -0700, Guenter Roeck wrote:
-> The I2C core provides a means to instantiate devices from userspace
-> using sysfs attributes. Provide the same mechanism for SPI devices.
+On Thu, Sep 13, 2012 at 04:31:30PM +0200, Sylwester Nawrocki wrote:
+> When s3c64xx-spi is instantiated from device tree an instance of
+> struct s3c64xx_spi_csinfo is dynamically allocated in the driver.
 
-So, unlike I2C this is only going to work for a subset of controllers -
-anything that relies on GPIOs for chip select will need more data to add
-the chip selects for example.  This means I'm having a hard time getting
-enthused about the idea, it seems like it might be a support burden.
-
-------------------------------------------------------------------------------
-How fast is your code?
-3 out of 4 devs don\\\'t know how their code performs in production.
-Find out how slow your code is with AppDynamics Lite.
-http://ad.doubleclick.net/clk;262219672;13503038;z?
-http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+Applied, thanks.

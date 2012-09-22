@@ -1,23 +1,37 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: s3c64xx: Don't free controller_data on non-dt
- platforms
-Date: Sat, 22 Sep 2012 12:12:10 -0400
-Message-ID: <20120922161209.GV4495@opensource.wolfsonmicro.com>
-References: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH resend] spi core: Provide means to instantiate devices
+ through sysfs
+Date: Sat, 22 Sep 2012 11:56:25 -0700
+Message-ID: <20120922185625.GA19323@roeck-us.net>
+References: <1347925880-13076-1-git-send-email-linux@roeck-us.net>
+ <20120922161133.GU4495@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: thomas.abraham@linaro.org, spi-devel-general@lists.sourceforge.net,
-	kgene.kim@samsung.com, linux-samsung-soc@vger.kernel.org,
-	sw0312.kim@samsung.com, Kyungmin Park <kyungmin.park@samsung.com>
-To: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Grant Likely <grant.likely@secretlab.ca>
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1347546690-21848-1-git-send-email-s.nawrocki@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+In-Reply-To: <20120922161133.GU4495@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 13, 2012 at 04:31:30PM +0200, Sylwester Nawrocki wrote:
-> When s3c64xx-spi is instantiated from device tree an instance of
-> struct s3c64xx_spi_csinfo is dynamically allocated in the driver.
+On Sat, Sep 22, 2012 at 12:11:33PM -0400, Mark Brown wrote:
+> On Mon, Sep 17, 2012 at 04:51:20PM -0700, Guenter Roeck wrote:
+> > The I2C core provides a means to instantiate devices from userspace
+> > using sysfs attributes. Provide the same mechanism for SPI devices.
+> 
+> So, unlike I2C this is only going to work for a subset of controllers -
+> anything that relies on GPIOs for chip select will need more data to add
+> the chip selects for example.  This means I'm having a hard time getting
+> enthused about the idea, it seems like it might be a support burden.
+> 
+Yes, obviously that model can not be used if SPI chip select is handled outside
+the SPI master driver.
 
-Applied, thanks.
+Anyway, no problem. That the code is useful for me doesn't mean it has to be
+useful for others. I'll make it available as branch on my linux tree on github.
+
+Thanks,
+Guenter

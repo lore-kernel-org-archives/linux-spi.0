@@ -1,7 +1,8 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 20 jours =?iso-8859-15?Q?=E0?= -50 pourcent sur la Maison
-Date: Sat, 22 Sep 2012 20:56:09 +0200
-Message-ID: <1348340267.505e0a2bb8a52@mc10.fr>
+From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?D=E9couvrez?= 6 maxi bains douche aux senteurs
+	gourmandes et =?iso-8859-15?Q?fruit=E9es?=
+Date: Sat, 22 Sep 2012 23:07:27 +0200
+Message-ID: <1348348145.505e28f1c25ee@mc10.fr>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNTEzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yMiAyMDo1MDowMiZlPTEmaD0yMDUxMiZmPTIwNTEzJmc9MjA1MTM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNTM4JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yMiAyMjo1MDowMiZlPTEmaD0yMDUzNyZmPTIwNTM4Jmc9MjA1Mzg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNTEzJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yMiAyMDo1MDowMiZlPTEmaD0yMDUxMiZmPTIwNTEzJmc9MjA1MT=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNTM4JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yMiAyMjo1MDowMiZlPTEmaD0yMDUzNyZmPTIwNTM4Jmc9MjA1Mz=
+g=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,37 +1,37 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH resend] spi core: Provide means to instantiate devices
- through sysfs
-Date: Sat, 22 Sep 2012 11:56:25 -0700
-Message-ID: <20120922185625.GA19323@roeck-us.net>
-References: <1347925880-13076-1-git-send-email-linux@roeck-us.net>
- <20120922161133.GU4495@opensource.wolfsonmicro.com>
+From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 20 jours =?iso-8859-15?Q?=E0?= -50 pourcent sur la Maison
+Date: Sat, 22 Sep 2012 20:56:09 +0200
+Message-ID: <1348340267.505e0a2bb8a52@mc10.fr>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20120922161133.GU4495@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Sep 22, 2012 at 12:11:33PM -0400, Mark Brown wrote:
-> On Mon, Sep 17, 2012 at 04:51:20PM -0700, Guenter Roeck wrote:
-> > The I2C core provides a means to instantiate devices from userspace
-> > using sysfs attributes. Provide the same mechanism for SPI devices.
-> 
-> So, unlike I2C this is only going to work for a subset of controllers -
-> anything that relies on GPIOs for chip select will need more data to add
-> the chip selects for example.  This means I'm having a hard time getting
-> enthused about the idea, it seems like it might be a support burden.
-> 
-Yes, obviously that model can not be used if SPI chip select is handled outside
-the SPI master driver.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Anyway, no problem. That the code is useful for me doesn't mean it has to be
-useful for others. I'll make it available as branch on my linux tree on github.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNTEzJmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yMiAyMDo1MDowMiZlPTEmaD0yMDUxMiZmPTIwNTEzJmc9MjA1MTM=3D
 
-Thanks,
-Guenter
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNTEzJmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yMiAyMDo1MDowMiZlPTEmaD0yMDUxMiZmPTIwNTEzJmc9MjA1MT=
+M=3D
+
+
+---------------------------------------------------------------------------=
+---
+How fast is your code?
+3 out of 4 devs don\\\'t know how their code performs in production.
+Find out how slow your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219672;13503038;z?
+http://info.appdynamics.com/FreeJavaPerformanceDownload.html

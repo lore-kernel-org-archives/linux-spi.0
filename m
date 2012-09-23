@@ -1,12 +1,9 @@
-From: Toner Services par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Vos cartouches d'encre chez vous au meilleur prix avec un cadeau
-Date: Thu, 27 Sep 2012 07:15:32 +0200
-Message-ID: <1348723006.thing5063e13edcc0e@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: =?GB2312?B?wdbQob3j?= <gycdhui-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: [SPAM] æˆ‘å¸æœ‰ä½™é¢æ¼‚æ®å¼€å‡º,æŒ‰1%å·¦å³çº³å–,éªŒåä»˜æ¬¾
+Date: Mon, 24 Sep 2012 03:00:25 +0800
+Message-ID: <E1TH7EL-0007fJ-36@sfs-ml-2.v29.ch3.sourceforge.com>
+Content-Type: multipart/mixed; boundary="===============0915874647788920605=="
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,20 +15,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+--===============0915874647788920605==
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjEwNDkmYz0xOTYxNjQxJmQ9MjAx=
-Mi0wOS0yNyAwNzowMDowMiZlPTEmaD0yMTA0OCZmPTIxMDQ5Jmc9MjEwNDk=3D
+ÖÂ£º¸÷¹«Ë¾¡¢ÆóÒµ¾­ÀíÃÇºÃ£¡
+    °²´ïÊµÒµÓĞÏŞ¹«Ë¾ÊÇ¼Ò¶àÔª»¯ÊµÒµ¹«Ë¾£¬ÊÇÆ¾×ÅÊµÁ¦ĞÛºñ²»¶Ï·¢Õ¹Óë¹úÄÚ¶à¼ÒÆóÒµ½¨Á¢ÁËÃÜÇĞÁªÃËºÏ×÷¹ØÏµ£¬±¾¹«Ë¾±¾×Å¿Æ¼¼´´Òµ¡¢Æ·ÖÊÁ¢Òµ¡¢·şÎñÊØÒµµÄÔ­ÔòÉîÊÜÖÚ¶à¿Í»§¹«Ë¾µÄĞÅÀµ¡£
+    ¹ó¹«Ë¾Ïë¼õÇáÄÉ¶¸ºµ£Âğ£¿ÎÒË¾ÏÖÓĞ¸÷ĞĞÒµÆ¯ÏòÍâÊÛÀí£¬µãÊı°´1%×óÓÒÄÉÈ¡£¬¿ÉÍøÉÏ²éÑ¯»ò¹ıÕÊºó¸¶¿î£»½ğ¶î´ó¿ÉÔÙÓÅ»İ.
+    ×¢£º±¾Ë¾ÒÔ×îÓÅÖÊ¿ì½İµÄ·şÎñ£¬×îÓÅ»İµÄ¼Û¸ñÓë¸÷´ó¹«Ë¾ºÏ×÷£»¾´Çë±£ÁôºÅÂë¼°ÓÊÏäÒÔ±ãÓĞĞè£¡
+    É÷ÖØÉùÃ÷£º¹ó¹«Ë¾¿ªµÄ×ÊÁÏÒ»ÂÉ¸øÓÚ±£ÃÜ£¡
+    ÁªÏµÈË£ºÁÖÈğ£¨ÒµÎñ¾­Àí£©
+    µç»°£º13710728911 
+    ÓÊÏä£ºgdandags-9Onoh4P/yGk@public.gmane.org               
+     Ë³ËÌ
+        ÉÌì÷£¡
+                  »¶Ó­¹ã´ó¹«Ë¾»İ¹Ë£¡ÈçÓĞ´ò½Á¾´ÇëÁÂ½â£¡
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjEwNDkmYz0=
-xOTYxNjQxJmQ9MjAxMi0wOS0yNyAwNzowMDowMiZlPTEmaD0yMTA0OCZmPTIxMDQ5Jmc9MjEwND=
-k=3D
+                         °²´ïÊµÒµÓĞÏŞ¹«Ë¾
 
 
----------------------------------------------------------------------------=
----
+--===============0915874647788920605==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:
 http://ad.doubleclick.net/clk;258768047;13503038;j?
 http://info.appdynamics.com/FreeJavaPerformanceDownload.html
+--===============0915874647788920605==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============0915874647788920605==--

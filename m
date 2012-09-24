@@ -1,82 +1,49 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Subject: RE: [RFC PATCH 01/13] ARM: davinci: move private EDMA API to
- arm/common
-Date: Mon, 24 Sep 2012 02:44:35 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EA8D0DF@DBDE01.ent.ti.com>
-References: <1348152226-13588-1-git-send-email-mporter@ti.com>
- <1348152226-13588-2-git-send-email-mporter@ti.com>
+From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: set the inactive state of the clock according
+	to the clock polarity
+Date: Mon, 24 Sep 2012 13:06:58 +0800
+Message-ID: <20120924050655.GA27291@S2101-09.ap.freescale.net>
+References: <1346403311-25080-1-git-send-email-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: "Porter, Matt" <mporter@ti.com>, Tony Lindgren <tony@atomide.com>,
-	"Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1348152226-13588-2-git-send-email-mporter@ti.com>
-Content-Language: en-US
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1346403311-25080-1-git-send-email-dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 20, 2012 at 20:13:34, Porter, Matt wrote:
-> Move mach-davinci/dma.c to common/edma.c so it can be used
-> by OMAP (specifically AM33xx atm) as well. This just moves
-> the private EDMA API but does not support OMAP.
+On Fri, Aug 31, 2012 at 10:55:11AM +0200, Dirk Behme wrote:
+> From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 > 
-> Signed-off-by: Matt Porter <mporter@ti.com>
-> ---
->  arch/arm/Kconfig                           |    1 +
->  arch/arm/common/Kconfig                    |    3 +
->  arch/arm/common/Makefile                   |    1 +
->  arch/arm/common/edma.c                     | 1588 ++++++++++++++++++++++++++++
->  arch/arm/include/asm/mach/edma.h           |  267 +++++
->  arch/arm/mach-davinci/Makefile             |    2 +-
->  arch/arm/mach-davinci/devices.c            |    3 +-
->  arch/arm/mach-davinci/dm355.c              |    2 +-
->  arch/arm/mach-davinci/dm365.c              |    2 +-
->  arch/arm/mach-davinci/dm644x.c             |    2 +-
->  arch/arm/mach-davinci/dm646x.c             |    2 +-
->  arch/arm/mach-davinci/dma.c                | 1588 ----------------------------
-
-
->  arch/arm/mach-davinci/include/mach/asp.h   |    2 +-
-
-This will clash with patch "ASoC/ARM: Davinci: McASP: split asp header
-into platform and audio specific" queued in ASoC tree by Mark Brown 
-tree (Auio - ASoC Tree)
-
-I forgot to mention this last time.  Sorry
-
->  arch/arm/mach-davinci/include/mach/da8xx.h |    3 +-
->  arch/arm/mach-davinci/include/mach/edma.h  |  267 -----
->  arch/arm/mach-davinci/include/mach/spi.h   |    2 +-
->  arch/arm/plat-omap/Kconfig                 |    1 +
->  17 files changed, 1872 insertions(+), 1864 deletions(-)
->  create mode 100644 arch/arm/common/edma.c
->  create mode 100644 arch/arm/include/asm/mach/edma.h
->  delete mode 100644 arch/arm/mach-davinci/dma.c
->  delete mode 100644 arch/arm/mach-davinci/include/mach/edma.h
+> There are SPI devices which need a SPI clock with active low polarity and
+> high inactive state.
 > 
-...snip...
-...snip...
+> Add the setting of the inactive state ECSPIx_CONFIGREG:SCLK CTL
+> according to the clock polarity ECSPIx_CONFIGREG:SCLK POL:
+> 
+> DT without "spi-cpol" = 0 = clock active high polarity = inactive state low
+> DT with    "spi-cpol" = 1 = clock active low  polarity = inactive state high
+> 
+> Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 
+Acked-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Regards, 
-Gururaja
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

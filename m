@@ -1,160 +1,66 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Subject: RE: [RFC PATCH 00/13] DMA Engine support for AM33xx
-Date: Mon, 24 Sep 2012 11:26:55 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EA8E07D@DBDE01.ent.ti.com>
-References: <1348152226-13588-1-git-send-email-mporter@ti.com>
- <1BAFE6F6C881BF42822005164F1491C33EA8A79D@DBDE01.ent.ti.com>
- <20120921182211.GE16522@beef>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: set the inactive state of the clock according
+	to the clock polarity
+Date: Mon, 24 Sep 2012 13:31:22 +0200
+Message-ID: <5060448A.9060506@de.bosch.com>
+References: <1346403311-25080-1-git-send-email-dirk.behme@de.bosch.com>
+	<20120924050655.GA27291@S2101-09.ap.freescale.net>
+	<505FFEF3.3000605@de.bosch.com>
+	<20120924100226.GA21375@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Tony Lindgren <tony@atomide.com>, "Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.
-To: "Porter, Matt" <mporter@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20120921182211.GE16522@beef>
-Content-Language: en-US
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"Wohlrab Knut \(CM-AI/PJ-CF31\)" <Knut.Wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20120924100226.GA21375-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gRnJpLCBTZXAgMjEsIDIwMTIgYXQgMjM6NTI6MTEsIFBvcnRlciwgTWF0dCB3cm90ZToNCj4g
-T24gRnJpLCBTZXAgMjEsIDIwMTIgYXQgMDg6Mjc6MDdBTSArMDAwMCwgSGViYmFyLCBHdXJ1cmFq
-YSB3cm90ZToNCj4gPiBPbiBUaHUsIFNlcCAyMCwgMjAxMiBhdCAyMDoxMzozMywgUG9ydGVyLCBN
-YXR0IHdyb3RlOg0KPiA+ID4gVGhpcyBzZXJpZXMgYWRkcyBETUEgRW5naW5lIHN1cHBvcnQgZm9y
-IEFNMzN4eCwgd2hpY2ggdXNlcw0KPiA+ID4gYW4gRURNQSBETUFDLiBUaGUgRURNQSBETUFDIGhh
-cyBiZWVuIHByZXZpb3VzbHkgc3VwcG9ydGVkIGJ5IG9ubHkNCj4gPiA+IGEgcHJpdmF0ZSBBUEkg
-aW1wbGVtZW50YXRpb24gKG11Y2ggbGlrZSB0aGUgc2l0dWF0aW9uIHdpdGggT01BUA0KPiA+ID4g
-RE1BKSBmb3VuZCBvbiB0aGUgRGFWaW5jaSBmYW1pbHkgb2YgU29Dcy4NCj4gPiA+IA0KPiA+ID4g
-VGhlcmUgYXJlIGEgbWluZC1ib2dnbGluZyBudW1iZXIgb2YgZGVwZW5kZW5jaWVzIGZvciB0aGlz
-IHNlcmllczoNCj4gPiA+IA0KPiA+ID4gCS0gSm9uIEh1bnRlcidzIE9GIERNQSBoZWxwZXJzIHNl
-cmllcw0KPiA+ID4gCSAgaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xNDYxMDYx
-Lw0KPiA+ID4gCSAgaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xNDYxMDUxLw0K
-PiA+ID4gCS0gUGF0Y2ggdG8gYWRkcmVzcyBPRiBETUEgaGVscGVycyBuYW1pbmcgaXNzdWVzOg0K
-PiA+ID4gCSAgaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xNDc3OTIxLw0KPiA+
-ID4gCS0gRURNQSBETUEgRW5naW5lIHdyYXBwZXIgZHJpdmVyIGluIGxpbnV4LW5leHQNCj4gPiA+
-IAkgIGMyZGRlNWY4ZjIwOTVkN2M2MjNmZjM1NjVjMTQ2MmUxOTAyNzIyNzMNCj4gPiA+IAktIEVE
-TUEgRE1BIEVuZ2luZSB3cmFwcGVyIGRyaXZlciBidWcgZml4Og0KPiA+ID4gCSAgaHR0cHM6Ly9w
-YXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xNDc0NDExLyAgDQo+ID4gPiAJLSBBIGh1Z2UgbnVt
-YmVyIG9mIHBhdGNoZXMgaW4gbGludXgtbmV4dCBmb3IgQU0zM3h4IGJvb3QNCj4gPiA+IAkgICh0
-b28gbnVtZXJvdXMgdG8gbGlzdCkNCj4gPiA+IA0KPiA+ID4gVGhlIGFwcHJvYWNoIHRha2VuIGlz
-IHNpbWlsYXIgdG8gaG93IE9NQVAgRE1BIGlzIGJlaW5nIGNvbnZlcnRlZCB0bw0KPiA+ID4gRE1B
-IEVuZ2luZSBzdXBwb3J0LiBXaXRoIHRoZSBmdW5jdGlvbmFsIEVETUEgcHJpdmF0ZSBBUEkgYWxy
-ZWFkeQ0KPiA+ID4gZXhpc3RpbmcgaW4gbWFjaC1kYXZpbmNpL2RtYS5jLCB3ZSBmaXJzdCBtb3Zl
-IHRoYXQgdG8gYW4gQVJNIGNvbW1vbg0KPiA+ID4gYXJlYSBzbyBpdCBjYW4gYmUgc2hhcmVkLiBB
-ZGRpbmcgRFQgYW5kIHJ1bnRpbWUgUE0gc3VwcG9ydCB0byB0aGUNCj4gPiA+IHByaXZhdGUgRURN
-QSBBUEkgaW1wbGVtZW50YXRpb24gYWxsb3dzIGl0IHRvIHJ1biBvbiBBTTMzeHguIEFNMzN4eA0K
-PiA+ID4gKm9ubHkqIGJvb3RzIHVzaW5nIERUIHNvIHdlIGxldmVyYWdlIEpvbidzIGdlbmVyaWMg
-RFQgRE1BIGhlbHBlcnMgdG8NCj4gPiA+IHJlZ2lzdGVyIEVETUEgRE1BQyB3aXRoIHRoZSBvZl9k
-bWEgZnJhbWV3b3JrIGFuZCB0aGVuIGFkZCBzdXBwb3J0DQo+ID4gPiBmb3IgY2FsbGluZyB0aGUg
-ZG1hX3JlcXVlc3Rfc2xhdmVfY2hhbm5lbCgpIEFQSSB0byBib3RoIHRoZSBtbWMNCj4gPiA+IGFu
-ZCBzcGkgZHJpdmVycy4NCj4gPiA+IA0KPiA+ID4gV2hhdCB3b3Jrcz8gV2VsbCwgd2l0aCB0aGlz
-IHNlcmllcyB3ZSBub3cgaGF2ZSBNTUMgYW5kIFNQSSBzdXBwb3J0DQo+ID4gPiBvbiBBTTMzeHgu
-IFRoZSBvbmx5IGNhdmVhdCBmb3IgTU1DIGlzIHRoYXQgdGhlIG1tYzMgY29udHJvbGxlciBoYXMN
-Cj4gPiA+IGl0cyBldmVudHMgb24gdGhlIGNyb3NzYmFyIGFuZCBpcyBub3QgdXNhYmxlIHJpZ2h0
-IG5vdy4NCj4gPiA+IA0KPiA+ID4gVGhpcyBpcyB0ZXN0ZWQgb24gQmVhZ2xlQm9uZSB3aXRoIGEg
-U1BJIGZyYW1lYnVmZmVyIGRyaXZlciBhbmQgU0QNCj4gPiA+IGNhcmQuDQo+ID4gPiANCj4gPiA+
-IEFmdGVyIHRoaXMgc2VyaWVzLCB0aGUgcGxhbiBpcyB0byBjb252ZXJ0IHRoZSBsYXN0IGluLXRy
-ZWUgdXNlcg0KPiA+ID4gb2YgdGhlIHByaXZhdGUgRURNQSBBUEkgKGRhdmluY2ktcGNtL21jYXNw
-KSBhbmQgdGhlbiBlbGltaW5hdGUNCj4gPiA+IHRoZSBwcml2YXRlIEVETUEgQVBJIGJ5IGZvbGRp
-bmcgaXRzIGZ1bmN0aW9uYWxpdHkgaW50bw0KPiA+ID4gZHJpdmVycy9kbWEvZWRtYS5jLg0KPiA+
-ID4gDQo+ID4gPiBUT0RPOg0KPiA+ID4gCWFkZCBBTTMzeHggY3Jvc3NiYXIgc3VwcG9ydCB0byB0
-aGUgcHJpdmF0ZSBFRE1BIEFQSQ0KPiA+ID4gCShhbnkgRURNQSBldmVudHMgb24gdGhlIGNyb3Nz
-YmFyIGFyZSBub3Qgc3VwcG9ydGVkKQ0KPiA+ID4gDQo+ID4gDQo+ID4gDQo+ID4gQ2FuIHlvdSBw
-bGVhc2UgbWVudGlvbiB0aGUgYmFzZSByZXBvIHlvdSBoYXZlIHRha2VuIGFzIHN0YXJ0aW5nIHBv
-aW50Lg0KPiA+IChyZXBvICsgZXh0cmEgcGF0Y2hlcyAuLi4pLg0KPiANCj4gSXQncyBtYWlubGlu
-ZSAzLjYtcmM2IGFuZCB5b3UgY2FuIHNlZSB0aGUgY29tcGxldGUgc2V0IG9mIHBhdGNoZXMNCj4g
-YXQgaHR0cHM6Ly9naXRodWIuY29tL29ocG9ydGVyL2xpbnV4L3RyZWUvZWRtYS1kbWFlbmdpbmUt
-YW0zM3h4LXJmYy12MQ0KPiBhZnRlciBjb21taXQgNTY5OGJkNzU3ZDU1YjFiYjg3ZWRkMWE5NzQ0
-YWIwOWMxNDJhYmZjMg0KDQoNClRoYW5rcyBmb3IgdGhlIGxpbmsuIEhvd2V2ZXIsIEkgd2FzIGxv
-b2tpbmcgZm9yIHRoZSBtYWlubGluZSBrZXJuZWwgcmVwby9icmFuY2gNClRoYXQgeW91IGZpcnN0
-IHVzZWQgYXMgYmFzZWxpbmUuIA0KDQo+IA0KPiA+IFRoaXMgd2lsbCBoZWxwIHVzIHRvIHRlc3Qg
-dGhlIGNvZGUuDQo+ID4gDQo+ID4gVGhpcyBpcyBiZWNhdXNlIEkgbG9va2VkIGF0IHRoZSBwYXRj
-aCAxMi8xMyBhbmQgSSBzZWUgdGhhdCBtbWMNCj4gPiBkZXZpY2Utbm9kZSBpcyBtb2RpZmllZC4g
-QnV0IGluIG1haW5saW5lIEkgZG9u4oCZdCBzZWUgZGV2aWNlIA0KPiA+IG5vZGUgZm9yIG1tYyAo
-eWV0KS4NCj4gDQo+IE9vcHMuIFlvdSdsbCBuZWVkIGU2MmEzMzMzYWU0NTBiY2RlZmJlMjIyMjlk
-N2JjMjc3YWUwZWY2NDUgYW5kDQo+IGZlOTczMDQ1NTdkMmM2ZjdkMGFhZjFlYTAyOGVhNDhmZmNh
-MzY2YTkgd2hpY2ggSSBmb3Jnb3QgdG8gaW5jbHVkZQ0KPiBpbiB0aGlzIHNlcmllcy4gSSdsbCBo
-YXZlIHRoZW0gaW4gZm9yIHYyLg0KPiANCj4gLU1hdHQNCj4gDQo+ID4gPiBNYXR0IFBvcnRlciAo
-MTMpOg0KPiA+ID4gICBBUk06IGRhdmluY2k6IG1vdmUgcHJpdmF0ZSBFRE1BIEFQSSB0byBhcm0v
-Y29tbW9uDQo+ID4gPiAgIEFSTTogZWRtYTogcmVtb3ZlIHVudXNlZCB0cmFuc2ZlciBjb250cm9s
-bGVyIGhhbmRsZXJzDQo+ID4gPiAgIEFSTTogZWRtYTogYWRkIERUIGFuZCBydW50aW1lIFBNIHN1
-cHBvcnQgZm9yIEFNMzM1eA0KPiA+ID4gICBkbWFlbmdpbmU6IGVkbWE6IGVuYWJsZSBidWlsZCBm
-b3IgQU0zMzV4DQo+ID4gPiAgIGRtYTogQWRkIFRJIEVETUEgZGV2aWNlIHRyZWUgYmluZGluZw0K
-PiA+ID4gICBBUk06IG9tYXA6IGFkZCBoc21tYyBhbTMzeHggc3BlY2lmaWMgaW5pdA0KPiA+ID4g
-ICBtbWM6IG9tYXBfaHNtbWM6IGRtYV9yZXF1ZXN0X3NsYXZlX2NoYW5uZWwoKSBzdXBwb3J0IGZv
-ciBEVCBwbGF0Zm9ybXMNCj4gPiA+ICAgbW1jOiBvbWFwX2hzbW1jOiBsaW1pdCBtYXhfc2VncyB3
-aXRoIHRoZSBFRE1BIERNQUMNCj4gPiA+ICAgbW1jOiBvbWFwX2hzbW1jOiBhZGQgZ2VuZXJpYyBE
-TUEgcmVxdWVzdCBzdXBwb3J0IHRvIHRoZSBEVCBiaW5kaW5nDQo+ID4gPiAgIHNwaTogb21hcDIt
-bWNzcGk6IGRtYV9yZXF1ZXN0X3NsYXZlX2NoYW5uZWwoKSBzdXBwb3J0IGZvciBEVA0KPiA+ID4g
-ICAgIHBsYXRmb3Jtcw0KPiA+ID4gICBzcGk6IG9tYXAyLW1jc3BpOiBhZGQgZ2VuZXJpYyBETUEg
-cmVxdWVzdCBzdXBwb3J0IHRvIHRoZSBEVCBiaW5kaW5nDQo+ID4gPiAgIEFSTTogZHRzOiBhZGQg
-YW0zM3h4IEVETUEgc3VwcG9ydA0KPiA+ID4gICBEb2N1bWVudGF0aW9uOiBhZGQgc2NoZWR1bGUg
-Zm9yIHJlbW92aW5nIHByaXZhdGUgRURNQSBBUEkNCj4gPiA+IA0KPiA+ID4gIERvY3VtZW50YXRp
-b24vZGV2aWNldHJlZS9iaW5kaW5ncy9kbWEvdGktZWRtYS50eHQgIHwgICA0OSArDQo+ID4gPiAg
-Li4uL2RldmljZXRyZWUvYmluZGluZ3MvbW1jL3RpLW9tYXAtaHNtbWMudHh0ICAgICAgfCAgIDI1
-ICstDQo+ID4gPiAgRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9vbWFwLXNw
-aS50eHQgfCAgIDI3ICstDQo+ID4gPiAgRG9jdW1lbnRhdGlvbi9mZWF0dXJlLXJlbW92YWwtc2No
-ZWR1bGUudHh0ICAgICAgICAgfCAgIDEwICsNCj4gPiA+ICBhcmNoL2FybS9LY29uZmlnICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDEgKw0KPiA+ID4gIGFyY2gvYXJtL2Jv
-b3QvZHRzL2FtMzN4eC5kdHNpICAgICAgICAgICAgICAgICAgICAgIHwgICA0NiArDQo+ID4gPiAg
-YXJjaC9hcm0vY29tbW9uL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAz
-ICsNCj4gPiA+ICBhcmNoL2FybS9jb21tb24vTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgIDEgKw0KPiA+ID4gIGFyY2gvYXJtL2NvbW1vbi9lZG1hLmMgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgMTc3OSArKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gIGFyY2gv
-YXJtL2luY2x1ZGUvYXNtL21hY2gvZWRtYS5oICAgICAgICAgICAgICAgICAgIHwgIDI2NyArKysN
-Cj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAg
-ICB8ICAgIDIgKy0NCj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvZGV2aWNlcy5jICAgICAg
-ICAgICAgICAgICAgICB8ICAgIDMgKy0NCj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvZG0z
-NTUuYyAgICAgICAgICAgICAgICAgICAgICB8ICAgIDIgKy0NCj4gPiA+ICBhcmNoL2FybS9tYWNo
-LWRhdmluY2kvZG0zNjUuYyAgICAgICAgICAgICAgICAgICAgICB8ICAgIDIgKy0NCj4gPiA+ICBh
-cmNoL2FybS9tYWNoLWRhdmluY2kvZG02NDR4LmMgICAgICAgICAgICAgICAgICAgICB8ICAgIDIg
-Ky0NCj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvZG02NDZ4LmMgICAgICAgICAgICAgICAg
-ICAgICB8ICAgIDIgKy0NCj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvZG1hLmMgICAgICAg
-ICAgICAgICAgICAgICAgICB8IDE1ODggLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiA+ICBhcmNoL2Fy
-bS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL2FzcC5oICAgICAgICAgICB8ICAgIDIgKy0NCj4g
-PiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL2RhOHh4LmggICAgICAgICB8
-ICAgIDMgKy0NCj4gPiA+ICBhcmNoL2FybS9tYWNoLWRhdmluY2kvaW5jbHVkZS9tYWNoL2VkbWEu
-aCAgICAgICAgICB8ICAyNjcgLS0tDQo+ID4gPiAgYXJjaC9hcm0vbWFjaC1kYXZpbmNpL2luY2x1
-ZGUvbWFjaC9zcGkuaCAgICAgICAgICAgfCAgICAyICstDQo+ID4gPiAgYXJjaC9hcm0vbWFjaC1v
-bWFwMi9oc21tYy5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgICA3ICstDQo+ID4gPiAgYXJj
-aC9hcm0vcGxhdC1vbWFwL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxICsN
-Cj4gPiA+ICBkcml2ZXJzL2RtYS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgIDIgKy0NCj4gPiA+ICBkcml2ZXJzL2RtYS9lZG1hLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgIDIgKy0NCj4gPiA+ICBkcml2ZXJzL21tYy9ob3N0L29tYXBfaHNt
-bWMuYyAgICAgICAgICAgICAgICAgICAgICB8ICAgMjYgKy0NCj4gPiA+ICBkcml2ZXJzL3NwaS9z
-cGktb21hcDItbWNzcGkuYyAgICAgICAgICAgICAgICAgICAgICB8ICAgNjggKy0NCj4gPiA+ICAy
-NyBmaWxlcyBjaGFuZ2VkLCAyMjk2IGluc2VydGlvbnMoKyksIDE4OTMgZGVsZXRpb25zKC0pDQo+
-ID4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5n
-cy9kbWEvdGktZWRtYS50eHQNCj4gPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vY29t
-bW9uL2VkbWEuYw0KPiA+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9pbmNsdWRlL2Fz
-bS9tYWNoL2VkbWEuaA0KPiA+ID4gIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNoLWRh
-dmluY2kvZG1hLmMNCj4gPiA+ICBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1kYXZp
-bmNpL2luY2x1ZGUvbWFjaC9lZG1hLmgNCj4gPiA+IA0KPiA+ID4gLS0gDQo+ID4gPiAxLjcuOS41
-DQo+ID4gPiANCj4gPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fDQo+ID4gPiBEYXZpbmNpLWxpbnV4LW9wZW4tc291cmNlIG1haWxpbmcgbGlzdA0KPiA+
-ID4gRGF2aW5jaS1saW51eC1vcGVuLXNvdXJjZUBsaW51eC5kYXZpbmNpZHNwLmNvbQ0KPiA+ID4g
-aHR0cDovL2xpbnV4LmRhdmluY2lkc3AuY29tL21haWxtYW4vbGlzdGluZm8vZGF2aW5jaS1saW51
-eC1vcGVuLXNvdXJjZQ0KPiA+ID4gDQo+ID4gDQo+ID4gDQo+ID4gUmVnYXJkcywgDQo+ID4gR3Vy
-dXJhamENCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-Xw0KPiA+IERhdmluY2ktbGludXgtb3Blbi1zb3VyY2UgbWFpbGluZyBsaXN0DQo+ID4gRGF2aW5j
-aS1saW51eC1vcGVuLXNvdXJjZUBsaW51eC5kYXZpbmNpZHNwLmNvbQ0KPiA+IGh0dHA6Ly9saW51
-eC5kYXZpbmNpZHNwLmNvbS9tYWlsbWFuL2xpc3RpbmZvL2RhdmluY2ktbGludXgtb3Blbi1zb3Vy
-Y2UNCj4gDQoNCg0KUmVnYXJkcywgDQpHdXJ1cmFqYQ0K
+On 24.09.2012 12:02, Mark Brown wrote:
+> On Mon, Sep 24, 2012 at 08:34:27AM +0200, Dirk Behme wrote:
+> 
+>> Being not so familiar with the flow of SPI patches, I was told that you  
+>> are taking care of spi patches recently?
+> 
+>> Do you like to have a look to this patch?
+> 
+> Well, nobody appears to have sent me a copy of it...
+
+We are talking about
+
+http://lists.infradead.org/pipermail/linux-arm-kernel/2012-August/116783.html
+
+which should be at spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org and 
+linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org .
+
+I just learned that you might take care of spi patches recently, so 
+sorry for not adding you to the CC, initially.
+
+Let me know if you can find above thread on one of the both mailing 
+lists. If not, I would be happy to resend it again.
+
+Many thanks for your help!
+
+Dirk
+
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

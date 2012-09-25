@@ -1,13 +1,26 @@
-From: Stop Cambriolage <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre maison est-elle suffisamment =?iso-8859-15?Q?prot=E9g=E9e?=
-Date: Tue, 25 Sep 2012 01:53:26 +0200
-Message-ID: <1348530830.5060f28ed5791@mc10.fr>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH] spi/imx: set the inactive state of the clock according
+	to the clock polarity
+Date: Tue, 25 Sep 2012 07:08:32 -0400
+Message-ID: <20120925110831.GB4428@opensource.wolfsonmicro.com>
+References: <1346403311-25080-1-git-send-email-dirk.behme@de.bosch.com>
+	<20120924050655.GA27291@S2101-09.ap.freescale.net>
+	<505FFEF3.3000605@de.bosch.com>
+	<20120924100226.GA21375@opensource.wolfsonmicro.com>
+	<5060448A.9060506@de.bosch.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"Wohlrab Knut \(CM-AI/PJ-CF31\)" <Knut.Wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5060448A.9060506-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,23 +31,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Mon, Sep 24, 2012 at 01:31:22PM +0200, Dirk Behme wrote:
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNzI3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yNSAwMTo1MDowMSZlPTEmaD0yMDcyNiZmPTIwNzI3Jmc9MjA3Mjc=3D
+> Let me know if you can find above thread on one of the both mailing
+> lists. If not, I would be happy to resend it again.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNzI3JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yNSAwMTo1MDowMSZlPTEmaD0yMDcyNiZmPTIwNzI3Jmc9MjA3Mj=
-c=3D
+Yes, of course - it's hard to apply patches from web archives.
 
-
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Live Security Virtual Conference
-Exclusive live event will cover all the ways today's security and =
-
-threat landscape has changed and how IT managers can respond. Discussions =
-
-will include endpoint security, mobile security and the latest in malware =
-
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
 threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

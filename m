@@ -1,26 +1,20 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi/imx: set the inactive state of the clock according
-	to the clock polarity
-Date: Tue, 25 Sep 2012 07:08:32 -0400
-Message-ID: <20120925110831.GB4428@opensource.wolfsonmicro.com>
-References: <1346403311-25080-1-git-send-email-dirk.behme@de.bosch.com>
-	<20120924050655.GA27291@S2101-09.ap.freescale.net>
-	<505FFEF3.3000605@de.bosch.com>
-	<20120924100226.GA21375@opensource.wolfsonmicro.com>
-	<5060448A.9060506@de.bosch.com>
+From: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v2] spi/imx: set the inactive state of the clock according to
+	the clock polarity
+Date: Tue, 25 Sep 2012 13:21:57 +0200
+Message-ID: <1348572117-24607-1-git-send-email-dirk.behme@de.bosch.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	"Wohlrab Knut \(CM-AI/PJ-CF31\)" <Knut.Wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Cc: Hui Wang <jason77.wang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5060448A.9060506-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,12 +25,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Sep 24, 2012 at 01:31:22PM +0200, Dirk Behme wrote:
+From: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
 
-> Let me know if you can find above thread on one of the both mailing
-> lists. If not, I would be happy to resend it again.
+There are SPI devices which need a SPI clock with active low polarity and
+high inactive state.
 
-Yes, of course - it's hard to apply patches from web archives.
+Add the setting of the inactive state ECSPIx_CONFIGREG:SCLK CTL
+according to the clock polarity ECSPIx_CONFIGREG:SCLK POL:
+
+DT without "spi-cpol" = 0 = clock active high polarity = inactive state low
+DT with    "spi-cpol" = 1 = clock active low  polarity = inactive state high
+
+Signed-off-by: Knut Wohlrab <knut.wohlrab-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Dirk Behme <dirk.behme-V5te9oGctAVWk0Htik3J/w@public.gmane.org>
+Acked-by: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+CC: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+---
+Changes in v2:
+No functional changes on the patch itself. Add Acked-by and Sob tags,
+CC to Mark Brown.
+
+ drivers/spi/spi-imx.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index e834ff8..d64655b 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -197,6 +197,7 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+ #define MX51_ECSPI_CONFIG_SCLKPOL(cs)	(1 << ((cs) +  4))
+ #define MX51_ECSPI_CONFIG_SBBCTRL(cs)	(1 << ((cs) +  8))
+ #define MX51_ECSPI_CONFIG_SSBPOL(cs)	(1 << ((cs) + 12))
++#define MX51_ECSPI_CONFIG_SCLKCTL(cs)	(1 << ((cs) + 20))
+ 
+ #define MX51_ECSPI_INT		0x10
+ #define MX51_ECSPI_INT_TEEN		(1 <<  0)
+@@ -287,9 +288,10 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	if (config->mode & SPI_CPHA)
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPHA(config->cs);
+ 
+-	if (config->mode & SPI_CPOL)
++	if (config->mode & SPI_CPOL) {
+ 		cfg |= MX51_ECSPI_CONFIG_SCLKPOL(config->cs);
+-
++		cfg |= MX51_ECSPI_CONFIG_SCLKCTL(config->cs);
++	}
+ 	if (config->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(config->cs);
+ 
+-- 
+1.7.0.4
+
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

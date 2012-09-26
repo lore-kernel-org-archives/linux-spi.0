@@ -1,25 +1,16 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi:pl022: Disable/Enable functional clock from
-	suspend/resume
-Date: Wed, 26 Sep 2012 16:13:56 +0200
-Message-ID: <CACRpkdZccTHjQ=jwZ=hhCgzv0LyNDyGBpfGzPg9Zk2wqzmZqCQ@mail.gmail.com>
-References: <1348658647-25975-1-git-send-email-vipulkumar.samar@st.com>
-	<1348658647-25975-2-git-send-email-vipulkumar.samar@st.com>
-	<CACRpkdampxUw0=NO6cs679C-r0_AnPEaTYVc+GppRkKGn32p-w@mail.gmail.com>
-	<20120926121946.GO4428@opensource.wolfsonmicro.com>
-	<CAOh2x==aZbqYpPHvWyY7ReVi90TJAHbMLbk17o8wAOh+swbxzw@mail.gmail.com>
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH] spi/pl022: use more managed resources
+Date: Wed, 26 Sep 2012 16:48:36 +0200
+Message-ID: <1348670916-26267-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
+Cc: Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	spear-devel-nkJGhpqTU55BDgjK7y7TUQ@public.gmane.org, "Rafael J. Wysocki" <rjw-KKrjLPT3xs0@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOh2x==aZbqYpPHvWyY7ReVi90TJAHbMLbk17o8wAOh+swbxzw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,45 +21,136 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 26, 2012 at 4:08 PM, viresh kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Sep 26, 2012 at 5:49 PM, Mark Brown
-> <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->> On Wed, Sep 26, 2012 at 02:17:36PM +0200, Linus Walleij wrote:
->>> On Wed, Sep 26, 2012 at 1:24 PM, Vipul Kumar Samar
->>
->>> > SPI functional clock must be disalble/enable in non RTPM suspend/resume
->>> > hooks. Currently it is only done for RTPM cases.
->>
->>> > This patch add support to disable/enbale clock for conventional
->>> > suspend/resume calls.
->>
->>> Cross dependency between runtime suspend/resume and
->>> common suspend/resume. Oh the horror ...
->>
->> This should be fine, we runtime resume before we suspend.
->
-> I believe Vipul sent this patch for the cases where RTPM in not
-> enabled in the configs.
+This switches the PL022 SPI driver to use devm_* managed resources
+for IRQ, clocks, ioremap and GPIO. Prior to this, the GPIOs would
+even leak.
 
-OK so we need to handle the cases where either, both or
-just one of them is enabled...
+Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c | 31 ++++++++++---------------------
+ 1 file changed, 10 insertions(+), 21 deletions(-)
 
-Mark says the defined semantics is that runtime PM is
-resumed across suspend/resume but I'd just like to
-understand the overall mechanism that makes sure
-this happens and I'm go...
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index f8568b4..15737bc 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1,7 +1,7 @@
+ /*
+  * A driver for the ARM PL022 PrimeCell SSP/SPI bus master.
+  *
+- * Copyright (C) 2008-2009 ST-Ericsson AB
++ * Copyright (C) 2008-2012 ST-Ericsson AB
+  * Copyright (C) 2006 STMicroelectronics Pvt. Ltd.
+  *
+  * Author: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+@@ -2074,24 +2074,21 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ 	if (!platform_info) {
+ 		dev_err(dev, "probe: no platform data defined\n");
+-		status = -ENODEV;
+-		goto err_no_pdata;
++		return -ENODEV;
+ 	}
+ 
+ 	if (platform_info->num_chipselect) {
+ 		num_cs = platform_info->num_chipselect;
+ 	} else {
+ 		dev_err(dev, "probe: no chip select defined\n");
+-		status = -ENODEV;
+-		goto err_no_pdata;
++		return -ENODEV;
+ 	}
+ 
+ 	/* Allocate master with space for data */
+ 	master = spi_alloc_master(dev, sizeof(struct pl022));
+ 	if (master == NULL) {
+ 		dev_err(&adev->dev, "probe - cannot alloc SPI master\n");
+-		status = -ENOMEM;
+-		goto err_no_master;
++		return -ENOMEM;
+ 	}
+ 
+ 	pl022 = spi_master_get_devdata(master);
+@@ -2153,7 +2150,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 			pl022->chipselects[i] = cs_gpio;
+ 
+ 			if (gpio_is_valid(cs_gpio)) {
+-				if (gpio_request(cs_gpio, "ssp-pl022"))
++				if (devm_gpio_request(dev, cs_gpio, "ssp-pl022"))
+ 					dev_err(&adev->dev,
+ 						"could not request %d gpio\n",
+ 						cs_gpio);
+@@ -2180,7 +2177,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		goto err_no_ioregion;
+ 
+ 	pl022->phybase = adev->res.start;
+-	pl022->virtbase = ioremap(adev->res.start, resource_size(&adev->res));
++	pl022->virtbase = devm_ioremap(dev, adev->res.start,
++				       resource_size(&adev->res));
+ 	if (pl022->virtbase == NULL) {
+ 		status = -ENOMEM;
+ 		goto err_no_ioremap;
+@@ -2190,7 +2188,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 
+ 	pm_runtime_resume(dev);
+ 
+-	pl022->clk = clk_get(&adev->dev, NULL);
++	pl022->clk = devm_clk_get(&adev->dev, NULL);
+ 	if (IS_ERR(pl022->clk)) {
+ 		status = PTR_ERR(pl022->clk);
+ 		dev_err(&adev->dev, "could not retrieve SSP/SPI bus clock\n");
+@@ -2218,8 +2216,8 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	       SSP_CR1(pl022->virtbase));
+ 	load_ssp_default_config(pl022);
+ 
+-	status = request_irq(adev->irq[0], pl022_interrupt_handler, 0, "pl022",
+-			     pl022);
++	status = devm_request_irq(dev, adev->irq[0], pl022_interrupt_handler,
++				  0, "pl022", pl022);
+ 	if (status < 0) {
+ 		dev_err(&adev->dev, "probe - cannot get IRQ (%d)\n", status);
+ 		goto err_no_irq;
+@@ -2259,24 +2257,18 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+  err_spi_register:
+ 	if (platform_info->enable_dma)
+ 		pl022_dma_remove(pl022);
+-
+-	free_irq(adev->irq[0], pl022);
+  err_no_irq:
+ 	clk_disable(pl022->clk);
+  err_no_clk_en:
+ 	clk_unprepare(pl022->clk);
+  err_clk_prep:
+-	clk_put(pl022->clk);
+  err_no_clk:
+-	iounmap(pl022->virtbase);
+  err_no_ioremap:
+ 	amba_release_regions(adev);
+  err_no_ioregion:
+  err_no_gpio:
+  err_no_pinctrl:
+ 	spi_master_put(master);
+- err_no_master:
+- err_no_pdata:
+ 	return status;
+ }
+ 
+@@ -2298,12 +2290,9 @@ pl022_remove(struct amba_device *adev)
+ 	if (pl022->master_info->enable_dma)
+ 		pl022_dma_remove(pl022);
+ 
+-	free_irq(adev->irq[0], pl022);
+ 	clk_disable(pl022->clk);
+ 	clk_unprepare(pl022->clk);
+-	clk_put(pl022->clk);
+ 	pm_runtime_disable(&adev->dev);
+-	iounmap(pl022->virtbase);
+ 	amba_release_regions(adev);
+ 	tasklet_disable(&pl022->pump_transfers);
+ 	spi_unregister_master(pl022->master);
+-- 
+1.7.11.3
 
-However there is another problem with the patch,
-because in -next there is also pin control handling
-in the runtime hooks, so we need to duplicate
-not only clocks but also that in each of the functions.
-
-Maybe we can first make a patch that breaks out
-resource handling so we can call that from each
-of the suspend/resume calls? (I'll try.)
-
-Yours,
-Linus Walleij
 
 ------------------------------------------------------------------------------
 Live Security Virtual Conference

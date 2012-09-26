@@ -1,17 +1,22 @@
-From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi/pl022: Simplify use of runtime pm
-Date: Wed, 26 Sep 2012 17:33:00 +0200
-Message-ID: <1348673580-17265-1-git-send-email-ulf.hansson@stericsson.com>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: get/put resources on suspend/resume
+Date: Wed, 26 Sep 2012 17:35:22 +0200
+Message-ID: <CAPDyKFrftX6OzfurNZjw7AVFn8o7sAg9q7FB+n=GVytA8sBymg@mail.gmail.com>
+References: <1348672133-5837-1-git-send-email-linus.walleij@stericsson.com>
+	<CAPDyKFpdNX1h2-h_nwi5kvDb+JrbrTCKYyNEQd_ACHE-GTW1eQ@mail.gmail.com>
+	<CACRpkdZuix+CqEBxUFdL+F3g2AqGWeGq7jaDqzr6x-2o9bPAKQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
-	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACRpkdZuix+CqEBxUFdL+F3g2AqGWeGq7jaDqzr6x-2o9bPAKQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,50 +27,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On 26 September 2012 17:27, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Sep 26, 2012 at 5:23 PM, Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+>
+>> You will have compile warnings when not having CONFIG_SUSPEND and
+>> CONFIG_RUNTIME_PM, due to unused code/functions.
+>
+> Argh the evil #fidefs... I'll put in even more of them then.
 
-Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pl022.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Unless you duplicate some minor pieces of code, which I think would be
+ok in this case. :-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index f8568b4..e51a026 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2188,8 +2188,6 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	printk(KERN_INFO "pl022: mapped registers from 0x%08x to %p\n",
- 	       adev->res.start, pl022->virtbase);
- 
--	pm_runtime_resume(dev);
--
- 	pl022->clk = clk_get(&adev->dev, NULL);
- 	if (IS_ERR(pl022->clk)) {
- 		status = PTR_ERR(pl022->clk);
-@@ -2250,10 +2248,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 		pm_runtime_set_autosuspend_delay(dev,
- 			platform_info->autosuspend_delay);
- 		pm_runtime_use_autosuspend(dev);
--		pm_runtime_put_autosuspend(dev);
--	} else {
--		pm_runtime_put(dev);
- 	}
-+	pm_runtime_put(dev);
-+
- 	return 0;
- 
-  err_spi_register:
-@@ -2302,7 +2299,6 @@ pl022_remove(struct amba_device *adev)
- 	clk_disable(pl022->clk);
- 	clk_unprepare(pl022->clk);
- 	clk_put(pl022->clk);
--	pm_runtime_disable(&adev->dev);
- 	iounmap(pl022->virtbase);
- 	amba_release_regions(adev);
- 	tasklet_disable(&pl022->pump_transfers);
--- 
-1.7.10
+>
+>> Otherwise you have my ack.
+>
+> Thanks!
+>
+> Yours,
+> Linus Walleij
 
+Kind regards
+Ulf Hansson
 
 ------------------------------------------------------------------------------
 How fast is your code?

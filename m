@@ -1,12 +1,18 @@
-From: Loving Deals <lovingdeals-iceC+ci26w5SN8l6bydGY2/KedPJEj8Q@public.gmane.org>
-Subject: =?UTF-8?Q?Caf=C3=A9_amincissant, _boite_de_18_sachets,
-	_29_euros_seulement!?=  =?UTF-8?Q?_(frais_de_livraison_inclus)?=
-Date: Wed, 26 Sep 2012 17:06:43 +0200
-Message-ID: <ed3362b26edab77b626d7d3887d04e70@www.lovingdeals.fr>
+From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH] spi/pl022: get/put resources on suspend/resume
+Date: Wed, 26 Sep 2012 17:08:53 +0200
+Message-ID: <1348672133-5837-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,73 +24,143 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2aXN1YWxpc2VyIGNvcnJlY3RlbWVudCBjZXR0ZSBwYWdlLCBjb25zdWx0ZXogbm90cmUg
-dmVyc2lvbiBlbiBsaWduZSBbaHR0cDovL3d3dy5sb3ZpbmdkZWFscy5mci9hZG1pbi9uZXdzbGV0
-dGVyL2dhdGV3YXkvZWRjNDAxYWIzNDQzYTMxYy92aWV3L10KCgoKCltodHRwOi8vd3d3Lm1lc3Bs
-dXNiZWF1eGRlYWxzLmZyL10KCgoKCkwnT0ZGUkUgREUgTEEgU0VNQUlORSA6IApDYWbDqSBBbWlu
-Y2lzc2FudCEgRXQgc2kgdm90cmUgY2Fmw6kgZHUgbWF0aW4sIGRlIGzigJlhcHLDqHMtbWlkaSBl
-dCBkdSBzb2lyIHZvdXMgYWlkYWl0IMOgIHBlcmRyZSBkdSBwb2lkcyA/IEJvdXNjdWxleiB2b3Ry
-ZSByb3V0aW5lIGV0IHJlY2V2ZXogdm90cmUgY2Fmw6kgYW1pbmNpc3NhbnQgcG91ciAyOeKCrCBz
-ZXVsZW1lbnQgISAKCgoKW2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4ZGVhbHMuZnIvZGlzY291bnQv
-ZGV0YWlsLzE3NDYtY2FmZS1hbWluY2lzc2FudC1sb3ZpbmctZGVhbHNdCjI54oKsIFZhbGV1cjog
-ODXigqwgw4ljb25vbWlzZXo6IDU24oKsIERvbnM6IDAuMjXigqwgCgpbaHR0cDovL3d3dy5tZXNw
-bHVzYmVhdXhkZWFscy5mci9kaXNjb3VudC9kZXRhaWwvMTc0Ni1jYWZlLWFtaW5jaXNzYW50LWxv
-dmluZy1kZWFsc10KCgoKCgoKMSBib8OudGUgZGUgY2Fmw6kgYW1pbmNpc3NhbnQsIDE4IHNhY2hl
-dHMgQ29udGllbnQgbGUgY29tcG9zYW50IFN2ZXRvbCBwb3VyIGFtw6lsaW9yZXIgbGEgcGVydGUg
-ZGUgcG9pZHMgUsOpZHVpdCBs4oCZYXBww6l0aXQgZXQgbOKAmWVudmllIGRlIGdyaWdub3RlciBB
-bcOpbGlvcmUgbGUgbcOpdGFib2xpc21lIGV0IGJyw7tsZSBsZXMgY2Fsb3JpZXMgTWFpbnRpZW50
-IHVuIGhhdXQgbml2ZWF1IGTigJnDqW5lcmdpZSBSaWNoZSBlbiBhbnRpb3h5ZGFudHMgTGl2cmFp
-c29uIG9mZmVydGUgCgpbaHR0cDovL3d3dy5mYWNlYm9vay5jb20vc2hhcmUucGhwP3U9aHR0cCUz
-QSUyRiUyRnd3dy5tZXNwbHVzYmVhdXhkZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGMTc0
-Ni1jYWZlLWFtaW5jaXNzYW50LWxvdmluZy1kZWFsc10KW2h0dHA6Ly93d3cubWVzcGx1c2JlYXV4
-ZGVhbHMuZnIvcGFnZS90d2l0dGVyLz91cmw9aHR0cCUzQSUyRiUyRnd3dy5tZXNwbHVzYmVhdXhk
-ZWFscy5mciUyRmRpc2NvdW50JTJGZGV0YWlsJTJGMTc0Ni1jYWZlLWFtaW5jaXNzYW50LWxvdmlu
-Zy1kZWFscyZhbXA7bWVzc2FnZT1DYWbDqSBBbWluY2lzc2FudCEgRXQgc2kgdm90cmUgY2Fmw6kg
-ZHUgbWF0aW4sIGRlIGzigJlhcHLDqHMtbWlkaSBldCBkdSBzb2lyIHZvdXMgYWlkYWl0IMOgIHBl
-cmRyZSBkdSBwb2lkcyA/IEJvdXNjdWxleiB2b3RyZSByb3V0aW5lIGV0IHJlY2V2ZXogdm90cmUg
-Y2Fmw6kgYW1pbmNpc3NhbnQgcG91ciAyOeKCrCBzZXVsZW1lbnQgISAoTGl2cmFpc29uIGluY2x1
-ZSldClttYWlsdG86P3N1YmplY3Q9SidhaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOpcmV1eCBk
-ZXMgc2l0ZXMgZGUgZGVhbHMmYW1wO2JvZHk9SidhaSBkw6ljb3V2ZXJ0IGxlIHBsdXMgZ8OpbsOp
-cmV1eCBkZXMgc2l0ZXMgZGUgZGVhbHMhIExvdmluZyBEZWFscyBvZmZyZSBkZXMgcsOpZHVjdGlv
-bnMgaW5jcm95YWJsZXMgZXQgcmV2ZXJzZSB1biBwb3VyY2VudGFnZSDDoCBkZXMgYXNzb2NpYXRp
-b25zIGNhcml0YXRpdmVzLiBodHRwOi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Rpc2NvdW50
-L2RldGFpbC8xNzQ2LWNhZmUtYW1pbmNpc3NhbnQtbG92aW5nLWRlYWxzXQoKCgoKRW5jb3JlIHBs
-dXMgZCdvZmZyZXMgISAKCgoKVmFsZXVyIDE2NjDigqwgUmVtaXNlIDgyJSDDiWNvbm9taXNleiAx
-MzYx4oKsIERvbnMgMi43MOKCrCAKClZhY2FuY2VzIGVuIFRoYWlsYW5kZSEgUGFzc2V6IHZvcyB2
-YWNhbmNlcyBkYW5zIHVuIGNhZHJlIGRvcsOpLCBkZSByw6p2ZSBldCBk4oCZZXhvdGlzbWUgISBP
-ZmZyZXotdm91cyA3IG51aXRzIGRhbnMgbGUgbHV4dWV1eCBBYnNvbHV0ZSBOYWthbGF5IEJlYWNo
-IEhvdGVsIGF14oCmIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3NsZXR0ZXIv
-Z2F0ZXdheS9lZGM0MDFhYjM0NDNhMzFjL3BsaW5rIC9EaXNjb3VudDpkZXRhaWwsICdpZCcgPSZn
-dDsgJGRpc2NvdW50LSZndDtpZH0tdGhhaWxhbmRlLXBodWtldC12YWNhbmNlcy1wYXMtY2hlcl0K
-U2V1bGVtZW50IDI5OeKCrCBbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9kaXNjb3Vu
-dC9kZXRhaWwvMTc0NS10aGFpbGFuZGUtcGh1a2V0LXZhY2FuY2VzLXBhcy1jaGVyXQoKCltodHRw
-Oi8vd3d3Lm1lc3BsdXNiZWF1eGRlYWxzLmZyL2Rpc2NvdW50L2RldGFpbC8xNzQ1LXRoYWlsYW5k
-ZS1waHVrZXQtdmFjYW5jZXMtcGFzLWNoZXJdCgoKCgpWYWxldXIgMzXigqwgUmVtaXNlIDU3JSDD
-iWNvbm9taXNleiAyMOKCrCBEb25zIDEuMDDigqwgCgpMdW5ldHRlcyBkZSBTb2xlaWwgUm9zZSEg
-UGxpYWJsZXMgZXQgaW5jYXNzYWJsZXMsIGNlIG5vdXZlbCBhY2Nlc3NvaXJlIHZvdXMgYWNjb21w
-YWduZXJhIGRhbnMgdG91dGVzIHZvcyB2aXLDqWVzIGJvcmQgZGUgbWVyIGV0IHZvcyBzb2lyw6ll
-cyBkw6lndWlzw6llcyAh4oCmIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
-ZXR0ZXIvZ2F0ZXdheS9lZGM0MDFhYjM0NDNhMzFjL3BsaW5rIC9EaXNjb3VudDpkZXRhaWwsICdp
-ZCcgPSZndDsgJGRpc2NvdW50LSZndDtpZH0tbHVuZXR0ZXMtc29sZWlsLXBsaWFibGVzLWluY2Fz
-c2FibGVzLXJvc2VdClNldWxlbWVudCAxNeKCrCBbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFs
-cy5mci9kaXNjb3VudC9kZXRhaWwvMTc0NC1sdW5ldHRlcy1zb2xlaWwtcGxpYWJsZXMtaW5jYXNz
-YWJsZXMtcm9zZV0KCgpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9kaXNjb3VudC9k
-ZXRhaWwvMTc0NC1sdW5ldHRlcy1zb2xlaWwtcGxpYWJsZXMtaW5jYXNzYWJsZXMtcm9zZV0KCgoK
-CgoKCgpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9hc3NvY2lhdGlvbnMtY2FyaXRh
-dGl2ZXMvXQpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9hc3NvY2lhdGlvbnMtY2Fy
-aXRhdGl2ZXMvXQpbaHR0cDovL3d3dy5tZXNwbHVzYmVhdXhkZWFscy5mci9hc3NvY2lhdGlvbnMt
-Y2FyaXRhdGl2ZXMvXQoKTCdhZmEgU3VyZnJpZGVyIEZvdW5kYXRpb24gRXVyb3BlIFZpc2lvbiBk
-dSBtb25kZSAKCgpQb3VyIMOqdHJlIHJldGlyw6kgZGUgbm90cmUgbGlzdGUgZGUgZGlmZnVzaW9u
-LCBkw6lzYWJvbm5lei12b3VzIFtodHRwOi8vd3d3LmxvdmluZ2RlYWxzLmZyL2FkbWluL25ld3Ns
-ZXR0ZXIvZ2F0ZXdheS9lZGM0MDFhYjM0NDNhMzFjL3Vuc3Vic2NyaWJlLz9sYW5ndWFnZT1lbl0K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMaXZlIFNlY3VyaXR5IFZpcnR1YWwgQ29uZmVyZW5jZQpF
-eGNsdXNpdmUgbGl2ZSBldmVudCB3aWxsIGNvdmVyIGFsbCB0aGUgd2F5cyB0b2RheSdzIHNlY3Vy
-aXR5IGFuZCAKdGhyZWF0IGxhbmRzY2FwZSBoYXMgY2hhbmdlZCBhbmQgaG93IElUIG1hbmFnZXJz
-IGNhbiByZXNwb25kLiBEaXNjdXNzaW9ucyAKd2lsbCBpbmNsdWRlIGVuZHBvaW50IHNlY3VyaXR5
-LCBtb2JpbGUgc2VjdXJpdHkgYW5kIHRoZSBsYXRlc3QgaW4gbWFsd2FyZSAKdGhyZWF0cy4gaHR0
-cDovL3d3dy5hY2NlbGFjb21tLmNvbS9qYXcvc2ZybmwwNDI0MjAxMi8xMTQvNTAxMjIyNjMvCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+This factors out the resource handling in runtime
+suspend/resume and also calls it from the ordinary suspend
+and resume hooks.
+
+The semantics require that ordinary PM op suspend is called
+with runtime PM in resumed mode, so that ordinary suspend
+can assume that it will e.g. decrease the clock reference
+counter to 0, runtime resume having previously increased it
+to 1.
+
+Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>
+Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+---
+Vipin: can you confirm that this approach works for your
+case with only suspend/resume but no runtime PM?
+
+Question: can I be sure that the above semantics is taken
+care of by runtime PM, or will I have to add kludges to
+the ordinary suspend/resume hooks to make sure that the
+device is out of runtime suspend before suspending?
+---
+ drivers/spi/spi-pl022.c | 64 ++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 42 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 15737bc..63cd7c6 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2300,6 +2300,43 @@ pl022_remove(struct amba_device *adev)
+ 	return 0;
+ }
+ 
++/*
++ * These two functions are used from both suspend/resume and
++ * the runtime counterparts to handle external resources like
++ * clocks, pins and regulators when going to sleep.
++ */
++static void pl022_suspend_resources(struct pl022 *pl022)
++{
++	int ret;
++
++	clk_disable(pl022->clk);
++
++	/* Optionally let pins go into sleep states */
++	if (!IS_ERR(pl022->pins_sleep)) {
++		ret = pinctrl_select_state(pl022->pinctrl,
++					   pl022->pins_sleep);
++		if (ret)
++			dev_err(&pl022->adev->dev,
++				"could not set pins to sleep state\n");
++	}
++}
++
++static void pl022_resume_resources(struct pl022 *pl022)
++{
++	int ret;
++
++	/* Optionaly enable pins to be muxed in and configured */
++	if (!IS_ERR(pl022->pins_default)) {
++		ret = pinctrl_select_state(pl022->pinctrl,
++					   pl022->pins_default);
++		if (ret)
++			dev_err(&pl022->adev->dev,
++				"could not set default pins\n");
++	}
++
++	clk_enable(pl022->clk);
++}
++
+ #ifdef CONFIG_SUSPEND
+ static int pl022_suspend(struct device *dev)
+ {
+@@ -2311,6 +2348,7 @@ static int pl022_suspend(struct device *dev)
+ 		dev_warn(dev, "cannot suspend master\n");
+ 		return ret;
+ 	}
++	pl022_suspend_resources(pl022);
+ 
+ 	dev_dbg(dev, "suspended\n");
+ 	return 0;
+@@ -2321,6 +2359,8 @@ static int pl022_resume(struct device *dev)
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+ 	int ret;
+ 
++	pl022_resume_resources(pl022);
++
+ 	/* Start the queue running */
+ 	ret = spi_master_resume(pl022->master);
+ 	if (ret)
+@@ -2336,36 +2376,16 @@ static int pl022_resume(struct device *dev)
+ static int pl022_runtime_suspend(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+-	int status = 0;
+-
+-	clk_disable(pl022->clk);
+-
+-	/* Optionally let pins go into sleep states */
+-	if (!IS_ERR(pl022->pins_sleep)) {
+-		status = pinctrl_select_state(pl022->pinctrl,
+-				pl022->pins_sleep);
+-		if (status)
+-			dev_err(dev, "could not set pins to sleep state\n");
+-	}
+ 
++	pl022_suspend_resources(pl022);
+ 	return 0;
+ }
+ 
+ static int pl022_runtime_resume(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+-	int status = 0;
+-
+-	/* Optionaly enable pins to be muxed in and configured */
+-	if (!IS_ERR(pl022->pins_default)) {
+-		status = pinctrl_select_state(pl022->pinctrl,
+-				pl022->pins_default);
+-		if (status)
+-			dev_err(dev, "could not set default pins\n");
+-	}
+-
+-	clk_enable(pl022->clk);
+ 
++	pl022_resume_resources(pl022);
+ 	return 0;
+ }
+ #endif
+-- 
+1.7.11.3
+
+
+------------------------------------------------------------------------------
+Live Security Virtual Conference
+Exclusive live event will cover all the ways today's security and 
+threat landscape has changed and how IT managers can respond. Discussions 
+will include endpoint security, mobile security and the latest in malware 
+threats. http://www.accelacomm.com/jaw/sfrnl04242012/114/50122263/

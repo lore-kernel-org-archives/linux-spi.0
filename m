@@ -1,9 +1,8 @@
-From: Yves Rocher par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Des petits prix =?iso-8859-15?Q?=E0?= tomber. Des
-	=?iso-8859-15?Q?s=E9lections_beaut=E9_=E0?= partir de 2 euros.
-Date: Thu, 27 Sep 2012 07:10:14 +0200
-Message-ID: <1348722639.thing5063dfcf5adab@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Toner Services par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Vos cartouches d'encre chez vous au meilleur prix avec un cadeau
+Date: Thu, 27 Sep 2012 07:15:32 +0200
+Message-ID: <1348723006.thing5063e13edcc0e@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxMDQzJmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yNyAwNjo1MDowMSZlPTEmaD0yMTA0MiZmPTIxMDQzJmc9MjEwNDM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjEwNDkmYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0yNyAwNzowMDowMiZlPTEmaD0yMTA0OCZmPTIxMDQ5Jmc9MjEwNDk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxMDQzJmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yNyAwNjo1MDowMSZlPTEmaD0yMTA0MiZmPTIxMDQzJmc9MjEwND=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjEwNDkmYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0yNyAwNzowMDowMiZlPTEmaD0yMTA0OCZmPTIxMDQ5Jmc9MjEwND=
+k=3D
 
 
 ---------------------------------------------------------------------------=

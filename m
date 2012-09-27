@@ -1,12 +1,10 @@
-From: Tendance Chaussure par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vente =?iso-8859-15?Q?priv=E9e_G=E9ox?= : =?iso-8859-15?Q?=E0?=
-	partir de 30 euros. Plus de 130 =?iso-8859-15?Q?mod=E8les?= disponibles
-Date: Thu, 27 Sep 2012 20:48:07 +0200
-Message-ID: <1348772104.thing5064a108f3760@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Nuutti Kotivuori <naked-X3B1VOXEql0@public.gmane.org>
+Subject: Continuous streaming SPI transfer
+Date: Fri, 28 Sep 2012 01:09:25 +0300
+Message-ID: <87zk4bazje.fsf@kiiro.xen-host.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,18 +17,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hello,
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwODQ3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yNyAxOToxMDowMSZlPTEmaD0yMDg0NiZmPTIwODQ3Jmc9MjA4NDc=3D
+I would like to use SPI in a streaming fashion, with a transfer being
+active all the time. This seems very difficult with the current kernel
+drivers. I am mainly looking at the Raspberry Pi BCM2708 SPI driver, but
+I have also tried to find similar features from other drivers.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwODQ3JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yNyAxOToxMDowMSZlPTEmaD0yMDg0NiZmPTIwODQ3Jmc9MjA4ND=
-c=3D
+There seems to be no way to prevent the deactivation and reactivation of
+the clock and everything between separate transfers - and a single
+transfer is bounded in size and no progress is reported for it. Even
+within a single transfer, it would seem that an earlier transfer is
+waited to receive a DONE signal (tx fifo empty, rx fifo has everything)
+before starting a new transfer, so there's always a small gap between
+transfers. (The RPi hardware stops sending SCLK if there ever is a
+condition where there is no byte ready in the FIFO to be sent, so if a
+DONE signal is receved that means that SCLK has already been stopped.)
 
+Keeping a transfer active constantly would need some buffering on writes
+and reads to keep the TX FIFO always filled and RX FIFO not
+full. Otherwise I don't see any direct problems with it, atleast on the
+hardware level.
 
----------------------------------------------------------------------------=
----
+So, my questions are:
+
+ 1) Is there a fundamental problem in keeping an SPI transfer active for
+    extended periods of time (several hours)?
+ 2) Is this possible with the kernel API somehow?
+ 3) Is this possible from userland somehow?
+ 4) If it is not possible, what would be a good API for such a case?
+ 5) Would patches for such functionality be accepted?
+
+Thank you in advance,
+-- Naked
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

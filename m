@@ -1,20 +1,13 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH V4] MXS: Implement DMA support into mxs-i2c
-Date: Thu, 27 Sep 2012 02:03:43 +0200
-Message-ID: <201209270203.43818.marex@denx.de>
-References: <1345779871-7677-1-git-send-email-marex@denx.de>
-	<201209161251.41895.marex@denx.de>
-	<20120916111223.GD933@pengutronix.de>
+From: PosterXXL par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre cadeau =?iso-8859-15?Q?d=E9co?= pour moins de 10 euros
+Date: Thu, 27 Sep 2012 02:12:23 +0200
+Message-ID: <1348704805.thing50639a25e3e13@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20120916111223.GD933-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,20 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Wolfram Sang,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-[...]
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNzA1JmM9NDgzNjEyJmQ9MjAx=
+Mi0wOS0yNyAwMjoxMDowMSZlPTEmaD0yMDcwNCZmPTIwNzA1Jmc9MjA3MDU=3D
 
-Didn't you claim you're adding this DMA patch into next some time ago finally? 
-;-)
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNzA1JmM=
+9NDgzNjEyJmQ9MjAxMi0wOS0yNyAwMjoxMDowMSZlPTEmaD0yMDcwNCZmPTIwNzA1Jmc9MjA3MD=
+U=3D
 
-Subject: Re: I2C_FUNC_SMBUS_QUICK on i2c-mxs
-Message-ID: <20120830135612.GJ27306-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-Best regards,
-Marek Vasut
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

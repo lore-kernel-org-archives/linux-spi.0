@@ -1,7 +1,7 @@
 From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 2/3] Revert "spi/pl022: enable runtime PM"
-Date: Fri, 28 Sep 2012 13:21:05 +0200
-Message-ID: <1348831266-16721-3-git-send-email-ulf.hansson@stericsson.com>
+Subject: [PATCH 3/3] spi: spi-pl022: Minor simplification for runtime pm
+Date: Fri, 28 Sep 2012 13:21:06 +0200
+Message-ID: <1348831266-16721-4-git-send-email-ulf.hansson@stericsson.com>
 References: <1348831266-16721-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -28,35 +28,32 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-This reverts commit 2fb30d1147c599f5657e8c62c862f9a0f58d9d99.
+In probe pm_runtime_put_autosuspend has the same effect as doing
+pm_runtime_put. This due to upper layer in driver core is preventing
+the device from being runtime suspended by a pm_runtime_get*.
 
 Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-pl022.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 3f2f36c..05cfb61e 100644
+index 05cfb61e..e51a026 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -2188,9 +2188,6 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	printk(KERN_INFO "pl022: mapped registers from 0x%08x to %p\n",
- 	       adev->res.start, pl022->virtbase);
+@@ -2248,10 +2248,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		pm_runtime_set_autosuspend_delay(dev,
+ 			platform_info->autosuspend_delay);
+ 		pm_runtime_use_autosuspend(dev);
+-		pm_runtime_put_autosuspend(dev);
+-	} else {
+-		pm_runtime_put(dev);
+ 	}
++	pm_runtime_put(dev);
++
+ 	return 0;
  
--	pm_runtime_enable(dev);
--	pm_runtime_resume(dev);
--
- 	pl022->clk = clk_get(&adev->dev, NULL);
- 	if (IS_ERR(pl022->clk)) {
- 		status = PTR_ERR(pl022->clk);
-@@ -2303,7 +2300,6 @@ pl022_remove(struct amba_device *adev)
- 	clk_disable(pl022->clk);
- 	clk_unprepare(pl022->clk);
- 	clk_put(pl022->clk);
--	pm_runtime_disable(&adev->dev);
- 	iounmap(pl022->virtbase);
- 	amba_release_regions(adev);
- 	tasklet_disable(&pl022->pump_transfers);
+  err_spi_register:
 -- 
 1.7.10
 

@@ -1,12 +1,25 @@
-From: Nuutti Kotivuori <naked-X3B1VOXEql0@public.gmane.org>
-Subject: Continuous streaming SPI transfer
-Date: Fri, 28 Sep 2012 01:09:25 +0300
-Message-ID: <87zk4bazje.fsf@kiiro.xen-host.de>
+From: Greg KH <greg-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCHSET] kthread_worker: reimplement flush_kthread_work() to
+	allow freeing during execution
+Date: Thu, 27 Sep 2012 17:19:11 -0700
+Message-ID: <20120928001911.GL29949@kroah.com>
+References: <20120719211510.GA32763@google.com>
+	<CAMbhsRQs+2MCXq0M-eTeezwPR=KMnBKtJny1rjiUJL-wNYctMQ@mail.gmail.com>
+	<20120917194016.GI18677@google.com>
+	<20120917202850.GA18910@kroah.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Andy Walls <awalls-Xoej9cPu4Z+RGvkDC/A1pg@public.gmane.org>, kvm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Colin Cross <ccross-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>, ivtv-devel-jGorlIydJmRM656bX5wj8A@public.gmane.org,
+	Avi Kivity <avi-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Tejun Heo <tj-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20120917202850.GA18910-U8xfFu+wG4EAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,43 +30,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+On Mon, Sep 17, 2012 at 01:28:50PM -0700, Greg KH wrote:
+> On Mon, Sep 17, 2012 at 12:40:16PM -0700, Tejun Heo wrote:
+> > On Fri, Sep 14, 2012 at 03:50:40PM -0700, Colin Cross wrote:
+> > > This patch set fixes a reproducible crash I'm seeing on a 3.4.10
+> > > kernel.  flush_kthread_worker (which is different from
+> > > flush_kthread_work) is initializing a kthread_work and a completion on
+> > > the stack, then queuing it and calling wait_for_completion.  Once the
+> > > completion is signaled, flush_kthread_worker exits and the stack
+> > > region used by the kthread_work may be immediately reused by another
+> > > object on the stack, but kthread_worker_fn continues accessing its
+> > > work pointer:
+> > >                 work->func(work);         <- calls complete,
+> > > effectively frees work
+> > >                 smp_wmb();      /* wmb worker-b0 paired with flush-b1 */
+> > >                 work->done_seq = work->queue_seq;   <- overwrites a
+> > > new stack object
+> > >                 smp_mb();       /* mb worker-b1 paired with flush-b0 */
+> > >                 if (atomic_read(&work->flushing))
+> > >                         wake_up_all(&work->done);  <- or crashes here
+> > > 
+> > > These patches fix the problem by not accessing work after work->func
+> > > is called, and should be backported to stable.  They apply cleanly to
+> > > 3.4.10.  Upstream commits are 9a2e03d8ed518a61154f18d83d6466628e519f94
+> > > and 46f3d976213452350f9d10b0c2780c2681f7075b.
+> > 
+> > Yeah, you're right.  I wonder why this didn't come up before.  Greg,
+> > can you please pick up these two commits?
+> 
+> Ok, will do, thanks for letting me know.
 
-I would like to use SPI in a streaming fashion, with a transfer being
-active all the time. This seems very difficult with the current kernel
-drivers. I am mainly looking at the Raspberry Pi BCM2708 SPI driver, but
-I have also tried to find similar features from other drivers.
+Now applied, thanks.
 
-There seems to be no way to prevent the deactivation and reactivation of
-the clock and everything between separate transfers - and a single
-transfer is bounded in size and no progress is reported for it. Even
-within a single transfer, it would seem that an earlier transfer is
-waited to receive a DONE signal (tx fifo empty, rx fifo has everything)
-before starting a new transfer, so there's always a small gap between
-transfers. (The RPi hardware stops sending SCLK if there ever is a
-condition where there is no byte ready in the FIFO to be sent, so if a
-DONE signal is receved that means that SCLK has already been stopped.)
-
-Keeping a transfer active constantly would need some buffering on writes
-and reads to keep the TX FIFO always filled and RX FIFO not
-full. Otherwise I don't see any direct problems with it, atleast on the
-hardware level.
-
-So, my questions are:
-
- 1) Is there a fundamental problem in keeping an SPI transfer active for
-    extended periods of time (several hours)?
- 2) Is this possible with the kernel API somehow?
- 3) Is this possible from userland somehow?
- 4) If it is not possible, what would be a good API for such a case?
- 5) Would patches for such functionality be accepted?
-
-Thank you in advance,
--- Naked
+greg k-h
 
 ------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://ad.doubleclick.net/clk;258768047;13503038;j?
+Got visibility?
+Most devs has no idea what their production app looks like.
+Find out how fast your code is with AppDynamics Lite.
+http://ad.doubleclick.net/clk;262219671;13503038;y?
 http://info.appdynamics.com/FreeJavaPerformanceDownload.html

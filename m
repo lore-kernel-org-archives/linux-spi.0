@@ -1,10 +1,8 @@
-From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
-	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
-Date: Sat, 29 Sep 2012 06:23:07 +0200
-Message-ID: <1348892621.thing506677cd8b3f5@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Mistergooddeal par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Soldes Island : jusqu'a - 75 % de reductions
+Date: Sat, 29 Sep 2012 06:43:08 +0200
+Message-ID: <1348894077.thing50667d7d7c2c3@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -22,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIwNzU3JmM9NDgzNjEyJmQ9MjAx=
-Mi0wOS0yOSAwNToyMDowMiZlPTEmaD0yMDc1NiZmPTIwNzU3Jmc9MjA3NTc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjA3NjImYz0xOTYxNjQxJmQ9MjAx=
+Mi0wOS0yOSAwNjowMDowMSZlPTEmaD0yMDc2MSZmPTIwNzYyJmc9MjA3NjI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIwNzU3JmM=
-9NDgzNjEyJmQ9MjAxMi0wOS0yOSAwNToyMDowMiZlPTEmaD0yMDc1NiZmPTIwNzU3Jmc9MjA3NT=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjA3NjImYz0=
+xOTYxNjQxJmQ9MjAxMi0wOS0yOSAwNjowMDowMSZlPTEmaD0yMDc2MSZmPTIwNzYyJmc9MjA3Nj=
+I=3D
 
 
 ---------------------------------------------------------------------------=

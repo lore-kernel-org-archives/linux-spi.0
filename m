@@ -1,9 +1,9 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/3] Revert "spi/pl022: enable runtime PM"
-Date: Sun, 30 Sep 2012 23:46:55 +0200
-Message-ID: <CACRpkdbuTnx4vDutbtNBmehPwVzRAKWAVOisM==jHVGnDZoACQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] spi: spi-pl022: Minor simplification for runtime pm
+Date: Sun, 30 Sep 2012 23:47:26 +0200
+Message-ID: <CACRpkdZLWdGZKazF6su2NFMa_NK2+L1y+C-CpBwWW6LA9Lqfbw@mail.gmail.com>
 References: <1348831266-16721-1-git-send-email-ulf.hansson@stericsson.com>
-	<1348831266-16721-3-git-send-email-ulf.hansson@stericsson.com>
+	<1348831266-16721-4-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,7 +15,7 @@ Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1348831266-16721-3-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <1348831266-16721-4-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,13 +30,15 @@ On Fri, Sep 28, 2012 at 1:21 PM, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw
 
 > From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 >
-> This reverts commit 2fb30d1147c599f5657e8c62c862f9a0f58d9d99.
+> In probe pm_runtime_put_autosuspend has the same effect as doing
+> pm_runtime_put. This due to upper layer in driver core is preventing
+> the device from being runtime suspended by a pm_runtime_get*.
 >
 > Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Thanks for fixing my stupid mistakes ...
+Yours,
 Linus Walleij
 
 ------------------------------------------------------------------------------

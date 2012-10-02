@@ -1,70 +1,44 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [RFC PATCH 08/13] mmc: omap_hsmmc: limit max_segs with the EDMA
- DMAC
-Date: Mon, 1 Oct 2012 12:39:55 -0400
-Message-ID: <20121001163955.GO5641@beef>
-References: <1348152226-13588-1-git-send-email-mporter@ti.com>
- <1348152226-13588-9-git-send-email-mporter@ti.com>
- <CANfBPZ81anOy8fWgKM1PgCtB4V2pEp2x1Qi4x1uPsq7QieMN5g@mail.gmail.com>
- <20120921184721.GD31374@n2100.arm.linux.org.uk>
- <1348738868.1648.13.camel@vkoul-udesk3>
+From: =?koi8-r?B?69XIwdKjzs/LIA==?= <framyozyr-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
+Subject: =?koi8-r?B?0sHaz9vMxc0g18HbxSDLz83NxdLexdPLz8Ug0NLFxMzP?=
+	=?koi8-r?B?1sXOycUg0M8g3MzFy9TSz87Oz8og0M/e1MU=?=
+Date: Tue, 2 Oct 2012 11:28:45 +0400
+Message-ID: <6279177F88114EF1A3479311A1881D7F@zxslryp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"S, Venkatraman" <svenkatr@ti.com>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Sekhar Nori <nsekhar@ti.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Chris Ball <cjb@laptop.org>,
-	Linux ARM Kernel List <linux-arm-kerne
-To: Vinod Koul <vinod.koul@linux.intel.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1348738868.1648.13.camel@vkoul-udesk3>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+To: <gostnorm-5URONGGNgjI@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <valeev-SYPjacQAEmk@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <serials2008-O5WfVfzUwx8@public.gmane.org>,
+	<agent-hG/GI7HPmrgjmsMGrRdz4w@public.gmane.org>, <info-b1XahM3lw3rKYuJfRGeAzQ@public.gmane.org>, <7747779-JGs/UdohzUI@public.gmane.org>,
+	<89055093999-JGs/UdohzUI@public.gmane.org>, <lodkovoz-IaAfd3hLFpMox3rIn2DAYQ@public.gmane.org>, <alisa2486-JGs/UdohzUI@public.gmane.org>,
+	<lecco-hotel-JGs/UdohzUI@public.gmane.org>, <udn-spb-JGs/UdohzUI@public.gmane.org>, <info-Tm49hsrZh4v3TczEEosXqA@public.gmane.org>,
+	<5142123-JGs/UdohzUI@public.gmane.org>, <nerb-BwwndFrTJxY@public.gmane.org>, <info-OejFqLg9tbM@public.gmane.org>, <info-kqudynq0HSmynevOq8xE7odd74u8MsAO@public.gmane.org>,
+	<a.bazanov-K+A9OnrkkpEvJsYlp49lxw@public.gmane.org>, <oneimperator-den-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 27, 2012 at 03:11:08PM +0530, Vinod Koul wrote:
-> On Fri, 2012-09-21 at 19:47 +0100, Russell King - ARM Linux wrote:
-> > On Fri, Sep 21, 2012 at 10:45:29PM +0530, S, Venkatraman wrote:
-> > > On Thu, Sep 20, 2012 at 8:13 PM, Matt Porter <mporter@ti.com> wrote:
-> > > > The EDMA DMAC has a hardware limitation that prevents supporting
-> > > > scatter gather lists with any number of segments. Since the EDMA
-> > > > DMA Engine driver sets the maximum segments to 16, we do the
-> > > > same.
-> > > >
-> > > > Note: this can be removed once the DMA Engine API supports an
-> > > > API to query the DMAC's segment limitations.
-> > > >
-> > > 
-> > > I wouldn't want to bind the properties of EDMA to omap_hsmmc as this patch
-> > > suggests. Why don't we have a max_segs property, which when explicitly specified
-> > > in DT, will override the default ?
-> > 
-> > Why not have a generic way that DMA engine can export these kinds of
-> > properties?
-> We discussed this at KS. I was of opinion that  DMA engine should export
-> controller and channel capabilities as part of the channel it returns.
-> 
-> Some folks had an opinion that they already know how to use controller
-> so may not be very helpful, but if it is going to help (which I think),
-> i have a patch for this :)
-
-Anything you can show at this point? ;) I'd be happy to drop the half-hack
-for a real API. If not, I'm going to carry that to v2 atm.
-
--Matt
+4sHawSDEwc7O2cggICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICDrz8wt188gwcTSxdPP1yAgICDz1M/Jzc/T1NggKNLVwi4pCu/Sx8HOydrBw8nJIMkg0NLF
+xNDSydHUydEgxy4g7c/Ty9fZICAgICAgICAgICAgMSAxNjcgMDAwICAgICAgICAgICAgIDMgNTAw
+Cu/Sx8HOydrBw8nJIMkg0NLFxNDSydHUydEg8s/T08nJICAgICAgICAgICAgICAgIDIgMjk4IDAw
+MCAgICAgICAgICAgICA2IDAwMAr+wdPUztnFIMzJw8Egxy4g7c/Ty9fZICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIDggNTI5IDAwMCAgICAgICAgICAgICA3IDUwMAr+wdPUztnFIMzJ
+w8Eg8s/T08nJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDE2IDE0MCAwMDAg
+ICAgICAgICAgIDE0IDAwMAoK+tfPzsnUxSArNyAoNDk1KSAyMjUtNTcwOQogCi0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQpEb24ndCBsZXQgc2xvdyBzaXRlIHBlcmZvcm1hbmNlIHJ1aW4geW91ciBidXNp
+bmVzcy4gRGVwbG95IE5ldyBSZWxpYyBBUE0KRGVwbG95IE5ldyBSZWxpYyBhcHAgcGVyZm9ybWFu
+Y2UgbWFuYWdlbWVudCBhbmQga25vdyBleGFjdGx5CndoYXQgaXMgaGFwcGVuaW5nIGluc2lkZSB5
+b3VyIFJ1YnksIFB5dGhvbiwgUEhQLCBKYXZhLCBhbmQgLk5FVCBhcHAKVHJ5IE5ldyBSZWxpYyBh
+dCBubyBjb3N0IHRvZGF5IGFuZCBnZXQgb3VyIHN3ZWV0IERhdGEgTmVyZCBzaGlydCB0b28hCmh0
+dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWMtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

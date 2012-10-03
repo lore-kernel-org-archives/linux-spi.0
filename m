@@ -1,132 +1,37 @@
-From: Thomas Abraham <thomas.abraham@linaro.org>
-Subject: [PATCH] spi: s3c64xx: use clk_prepare_enable and clk_disable_unprepare
-Date: Wed,  3 Oct 2012 08:30:12 +0900
-Message-ID: <1349220612-2464-1-git-send-email-thomas.abraham@linaro.org>
-Cc: grant.likely@secretlab.ca, broonie@opensource.wolfsonmicro.com,
-	kgene.kim@samsung.com, linux-samsung-soc@vger.kernel.org
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: PosterXXL par Vitoule <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
+Subject: Votre photo sur toile
+Date: Wed, 03 Oct 2012 05:54:04 +0200
+Message-ID: <1349236567.thing506bb7579bde9@mach10.generated>
+Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert clk_enable/clk_disable to clk_prepare_enable/clk_disable_unprepare
-calls as required by common clock framework.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNDU2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0wMyAwNTo1MDowMSZlPTEmaD0yMTQ1NSZmPTIxNDU2Jmc9MjE0NTY=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNDU2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0wMyAwNTo1MDowMSZlPTEmaD0yMTQ1NSZmPTIxNDU2Jmc9MjE0NT=
+Y=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-s3c64xx.c |   32 ++++++++++++++++----------------
- 1 files changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 9e55c44..9ad7109 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -516,7 +516,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- 
- 	/* Disable Clock */
- 	if (sdd->port_conf->clk_from_cmu) {
--		clk_disable(sdd->src_clk);
-+		clk_disable_unprepare(sdd->src_clk);
- 	} else {
- 		val = readl(regs + S3C64XX_SPI_CLK_CFG);
- 		val &= ~S3C64XX_SPI_ENCLK_ENABLE;
-@@ -564,7 +564,7 @@ static void s3c64xx_spi_config(struct s3c64xx_spi_driver_data *sdd)
- 		/* There is half-multiplier before the SPI */
- 		clk_set_rate(sdd->src_clk, sdd->cur_speed * 2);
- 		/* Enable Clock */
--		clk_enable(sdd->src_clk);
-+		clk_prepare_enable(sdd->src_clk);
- 	} else {
- 		/* Configure Clock */
- 		val = readl(regs + S3C64XX_SPI_CLK_CFG);
-@@ -1299,7 +1299,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err3;
- 	}
- 
--	if (clk_enable(sdd->clk)) {
-+	if (clk_prepare_enable(sdd->clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
- 		ret = -EBUSY;
- 		goto err4;
-@@ -1314,7 +1314,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err5;
- 	}
- 
--	if (clk_enable(sdd->src_clk)) {
-+	if (clk_prepare_enable(sdd->src_clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
- 		ret = -EBUSY;
- 		goto err6;
-@@ -1358,11 +1358,11 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- err8:
- 	free_irq(irq, sdd);
- err7:
--	clk_disable(sdd->src_clk);
-+	clk_disable_unprepare(sdd->src_clk);
- err6:
- 	clk_put(sdd->src_clk);
- err5:
--	clk_disable(sdd->clk);
-+	clk_disable_unprepare(sdd->clk);
- err4:
- 	clk_put(sdd->clk);
- err3:
-@@ -1390,10 +1390,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	free_irq(platform_get_irq(pdev, 0), sdd);
- 
--	clk_disable(sdd->src_clk);
-+	clk_disable_unprepare(sdd->src_clk);
- 	clk_put(sdd->src_clk);
- 
--	clk_disable(sdd->clk);
-+	clk_disable_unprepare(sdd->clk);
- 	clk_put(sdd->clk);
- 
- 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
-@@ -1414,8 +1414,8 @@ static int s3c64xx_spi_suspend(struct device *dev)
- 	spi_master_suspend(master);
- 
- 	/* Disable the clock */
--	clk_disable(sdd->src_clk);
--	clk_disable(sdd->clk);
-+	clk_disable_unprepare(sdd->src_clk);
-+	clk_disable_unprepare(sdd->clk);
- 
- 	if (!sdd->cntrlr_info->cfg_gpio && dev->of_node)
- 		s3c64xx_spi_dt_gpio_free(sdd);
-@@ -1437,8 +1437,8 @@ static int s3c64xx_spi_resume(struct device *dev)
- 		sci->cfg_gpio();
- 
- 	/* Enable the clock */
--	clk_enable(sdd->src_clk);
--	clk_enable(sdd->clk);
-+	clk_prepare_enable(sdd->src_clk);
-+	clk_prepare_enable(sdd->clk);
- 
- 	s3c64xx_spi_hwinit(sdd, sdd->port_id);
- 
-@@ -1454,8 +1454,8 @@ static int s3c64xx_spi_runtime_suspend(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 
--	clk_disable(sdd->clk);
--	clk_disable(sdd->src_clk);
-+	clk_disable_unprepare(sdd->clk);
-+	clk_disable_unprepare(sdd->src_clk);
- 
- 	return 0;
- }
-@@ -1465,8 +1465,8 @@ static int s3c64xx_spi_runtime_resume(struct device *dev)
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 
--	clk_enable(sdd->src_clk);
--	clk_enable(sdd->clk);
-+	clk_prepare_enable(sdd->src_clk);
-+	clk_prepare_enable(sdd->clk);
- 
- 	return 0;
- }
--- 
-1.7.4.1
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

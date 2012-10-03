@@ -1,11 +1,12 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Subject: Re: [PATCH 1/3] Revert "spi/pl022: fix spi-pl022 pm enable at probe"
-Date: Wed, 3 Oct 2012 16:28:34 +0200
-Message-ID: <CAPDyKFrQ9UhEc_jEKdR=J8T-NUxsYQHB-yMh2vTyxJ+y+R38Og@mail.gmail.com>
+Date: Wed, 3 Oct 2012 15:29:14 +0100
+Message-ID: <20121003142913.GF4360@opensource.wolfsonmicro.com>
 References: <1348831266-16721-1-git-send-email-ulf.hansson@stericsson.com>
 	<1348831266-16721-2-git-send-email-ulf.hansson@stericsson.com>
 	<CAPDyKFo5-UeUe7PkxCBMnRziWh+eSC_ZjJ0pKhcBkHUkFdSH+w@mail.gmail.com>
 	<20121003135556.GE4360@opensource.wolfsonmicro.com>
+	<CAPDyKFrQ9UhEc_jEKdR=J8T-NUxsYQHB-yMh2vTyxJ+y+R38Og@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -15,9 +16,10 @@ Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
 	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121003135556.GE4360-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFrQ9UhEc_jEKdR=J8T-NUxsYQHB-yMh2vTyxJ+y+R38Og-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,27 +30,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On Wed, Oct 03, 2012 at 04:28:34PM +0200, Ulf Hansson wrote:
 
-I will do a resend and include some explanation for the reverts in the
-"cover-letter".
+> I will do a resend and include some explanation for the reverts in the
+> "cover-letter".
 
-Kind regards
-Ulf Hansson
-
-On 3 October 2012 15:55, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Wed, Oct 03, 2012 at 03:43:16PM +0200, Ulf Hansson wrote:
->
->> Heard from Linus Walleij that you Mark has been helping out merging
->> spi patches, did not know that when sending out this series. Anyway,
->> do you guys see any issues merging this?
->
->> [PATCH 1/3] Revert "spi/pl022: fix spi-pl022 pm enable at probe"
->> [PATCH 2/3] Revert "spi/pl022: enable runtime PM"
->> [PATCH 3/3] spi: spi-pl022: Minor simplification for runtime pm
->
-> If someone could send the patches I'll take a look...  some explanation
-> as to why we're reverting things would be helpful.
+It'd be good if the explanation could be in the commit logs so that
+people reading history can understand things.
 
 ------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM

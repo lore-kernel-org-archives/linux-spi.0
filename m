@@ -1,7 +1,9 @@
 From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 0/3] spi/bcm63xx: misc cleanups and fixes
-Date: Wed,  3 Oct 2012 11:56:52 +0200
-Message-ID: <1349258215-27949-1-git-send-email-florian@openwrt.org>
+Subject: [PATCH 2/3] spi/bcm63xx: add missing spi_master_{resume,
+	suspend} calls to PM callbacks
+Date: Wed,  3 Oct 2012 11:56:54 +0200
+Message-ID: <1349258215-27949-3-git-send-email-florian@openwrt.org>
+References: <1349258215-27949-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -9,6 +11,7 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 To: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1349258215-27949-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,23 +22,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark, Grant,
+The PM callbacks implemented by the spi-bcm63xx driver don't call
+spi_master_{resume,suspend}, fix that.
 
-This small series contains cleanups and fixes that had already been previously
-merged by Grant in his tree, but not pushed upstream. I am resending them
-rebased on Mark's spi-next branch.
+Signed-off-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-bcm63xx.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks!
-
-Florian Fainelli (3):
-  spi/bcm63xx: remove driver version
-  spi/bcm63xx: add missing spi_master_{resume,suspend} calls to PM
-    callbacks
-  spi/bcm63xx: remove useless call to bcm63xx_spi_check_transfer()
-
- drivers/spi/spi-bcm63xx.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index af191f5..c7b5695 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -484,6 +484,8 @@ static int bcm63xx_spi_suspend(struct device *dev)
+ 			platform_get_drvdata(to_platform_device(dev));
+ 	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+ 
++	spi_master_suspend(master);
++
+ 	clk_disable(bs->clk);
+ 
+ 	return 0;
+@@ -497,6 +499,8 @@ static int bcm63xx_spi_resume(struct device *dev)
+ 
+ 	clk_enable(bs->clk);
+ 
++	spi_master_resume(master);
++
+ 	return 0;
+ }
+ 
 -- 
 1.7.9.5
 

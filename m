@@ -1,25 +1,15 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 1/3] Revert "spi/pl022: fix spi-pl022 pm enable at probe"
-Date: Wed, 3 Oct 2012 15:29:14 +0100
-Message-ID: <20121003142913.GF4360@opensource.wolfsonmicro.com>
-References: <1348831266-16721-1-git-send-email-ulf.hansson@stericsson.com>
-	<1348831266-16721-2-git-send-email-ulf.hansson@stericsson.com>
-	<CAPDyKFo5-UeUe7PkxCBMnRziWh+eSC_ZjJ0pKhcBkHUkFdSH+w@mail.gmail.com>
-	<20121003135556.GE4360@opensource.wolfsonmicro.com>
-	<CAPDyKFrQ9UhEc_jEKdR=J8T-NUxsYQHB-yMh2vTyxJ+y+R38Og@mail.gmail.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: re: spi-gpio: allow operation without CS signal
+Date: Wed, 3 Oct 2012 17:42:41 +0300
+Message-ID: <20121003144241.GA18056@elgon.mountain>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+To: mb-fseUSCV1ubazQB+pC5nmwQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAPDyKFrQ9UhEc_jEKdR=J8T-NUxsYQHB-yMh2vTyxJ+y+R38Og-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,13 +20,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 03, 2012 at 04:28:34PM +0200, Ulf Hansson wrote:
+Hello Michael Buesch,
 
-> I will do a resend and include some explanation for the reverts in the
-> "cover-letter".
+The patch bfb9bcdbda9a: "spi-gpio: allow operation without CS signal"
+from Apr 2, 2009, leads to the following Clang warning:
+drivers/spi/spi-gpio.c:229:9: warning: comparison of constant
+18446744073709551615 with expression of type 'unsigned int' is always
+true [-Wtautological-constant-out-of-range-compare]
 
-It'd be good if the explanation could be in the commit logs so that
-people reading history can understand things.
+
+#define SPI_GPIO_NO_CHIPSELECT          ((unsigned long)-1l)
+                                         ^^^^^^^^^^^^^^^^^^
+
+drivers/spi/spi-gpio.c
+   223          unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
+   224  
+   225          /* set initial clock polarity */
+   226          if (is_active)
+   227                  setsck(spi, spi->mode & SPI_CPOL);
+   228  
+   229          if (cs != SPI_GPIO_NO_CHIPSELECT) {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is always true.  SPI_GPIO_NO_CHIPSELECT is used like this through
+out.  The comments say that it's supposed to be used as a void pointer
+but that doesn't make a lot of sense either.
+
+   230                  /* SPI is normally active-low */
+   231                  gpio_set_value(cs, (spi->mode & SPI_CS_HIGH) ? is_active : !is_active);
+   232          }
+
+regards,
+dan carpenter
+
 
 ------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM

@@ -1,12 +1,13 @@
-From: Lee Cooper par Duano <contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= moins 50 pourcent sur tout le site
-Date: Wed, 03 Oct 2012 05:43:08 +0200
-Message-ID: <1349235870.thing506bb49eb496c@mach10.generated>
-Reply-To: contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: [PATCH 0/3] spi/bcm63xx: misc cleanups and fixes
+Date: Wed,  3 Oct 2012 11:56:52 +0200
+Message-ID: <1349258215-27949-1-git-send-email-florian@openwrt.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +19,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Hi Mark, Grant,
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNDYwJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0wMyAwNTo0MDowMSZlPTEmaD0yMTQ1OSZmPTIxNDYwJmc9MjE0NjA=3D
+This small series contains cleanups and fixes that had already been previously
+merged by Grant in his tree, but not pushed upstream. I am resending them
+rebased on Mark's spi-next branch.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNDYwJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0wMyAwNTo0MDowMSZlPTEmaD0yMTQ1OSZmPTIxNDYwJmc9MjE0Nj=
-A=3D
+Thanks!
+
+Florian Fainelli (3):
+  spi/bcm63xx: remove driver version
+  spi/bcm63xx: add missing spi_master_{resume,suspend} calls to PM
+    callbacks
+  spi/bcm63xx: remove useless call to bcm63xx_spi_check_transfer()
+
+ drivers/spi/spi-bcm63xx.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+-- 
+1.7.9.5
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM
 Deploy New Relic app performance management and know exactly
 what is happening inside your Ruby, Python, PHP, Java, and .NET app

@@ -1,15 +1,22 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: re: spi-gpio: allow operation without CS signal
-Date: Wed, 3 Oct 2012 17:42:41 +0300
-Message-ID: <20121003144241.GA18056@elgon.mountain>
+From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH V2 2/3] Revert "spi/pl022: enable runtime PM"
+Date: Thu, 4 Oct 2012 10:04:40 +0200
+Message-ID: <1349337881-15917-3-git-send-email-ulf.hansson@stericsson.com>
+References: <1349337881-15917-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: mb-fseUSCV1ubazQB+pC5nmwQ@public.gmane.org
+Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1349337881-15917-1-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,37 +27,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Michael Buesch,
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-The patch bfb9bcdbda9a: "spi-gpio: allow operation without CS signal"
-from Apr 2, 2009, leads to the following Clang warning:
-drivers/spi/spi-gpio.c:229:9: warning: comparison of constant
-18446744073709551615 with expression of type 'unsigned int' is always
-true [-Wtautological-constant-out-of-range-compare]
+This reverts commit 2fb30d1147c599f5657e8c62c862f9a0f58d9d99.
 
+This patch is reverted due to wrong runtime PM code.
 
-#define SPI_GPIO_NO_CHIPSELECT          ((unsigned long)-1l)
-                                         ^^^^^^^^^^^^^^^^^^
+Conflicts:
 
-drivers/spi/spi-gpio.c
-   223          unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
-   224  
-   225          /* set initial clock polarity */
-   226          if (is_active)
-   227                  setsck(spi, spi->mode & SPI_CPOL);
-   228  
-   229          if (cs != SPI_GPIO_NO_CHIPSELECT) {
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is always true.  SPI_GPIO_NO_CHIPSELECT is used like this through
-out.  The comments say that it's supposed to be used as a void pointer
-but that doesn't make a lot of sense either.
+	drivers/spi/spi-pl022.c
 
-   230                  /* SPI is normally active-low */
-   231                  gpio_set_value(cs, (spi->mode & SPI_CS_HIGH) ? is_active : !is_active);
-   232          }
+Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 5cf0643..a1db91a 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2186,9 +2186,6 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	printk(KERN_INFO "pl022: mapped registers from 0x%08x to %p\n",
+ 	       adev->res.start, pl022->virtbase);
+ 
+-	pm_runtime_enable(dev);
+-	pm_runtime_resume(dev);
+-
+ 	pl022->clk = devm_clk_get(&adev->dev, NULL);
+ 	if (IS_ERR(pl022->clk)) {
+ 		status = PTR_ERR(pl022->clk);
+@@ -2293,7 +2290,6 @@ pl022_remove(struct amba_device *adev)
+ 
+ 	clk_disable(pl022->clk);
+ 	clk_unprepare(pl022->clk);
+-	pm_runtime_disable(&adev->dev);
+ 	amba_release_regions(adev);
+ 	tasklet_disable(&pl022->pump_transfers);
+ 	spi_unregister_master(pl022->master);
+-- 
+1.7.10
 
 
 ------------------------------------------------------------------------------

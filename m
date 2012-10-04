@@ -1,16 +1,22 @@
-From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Subject: Re: Continuous streaming SPI transfer
-Date: Thu, 4 Oct 2012 22:13:03 +0100
-Message-ID: <20121004211302.GC26755@sirena.org.uk>
-References: <87zk4bazje.fsf@kiiro.xen-host.de>
+From: Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Subject: [PATCH V2 1/3] Revert "spi/pl022: fix spi-pl022 pm enable at probe"
+Date: Thu, 4 Oct 2012 10:04:39 +0200
+Message-ID: <1349337881-15917-2-git-send-email-ulf.hansson@stericsson.com>
+References: <1349337881-15917-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Nuutti Kotivuori <naked-X3B1VOXEql0@public.gmane.org>
+Cc: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <87zk4bazje.fsf-Nc554NfcwGrUGg1qMAD/drNAH6kLmebB@public.gmane.org>
+In-Reply-To: <1349337881-15917-1-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,16 +27,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Sep 28, 2012 at 01:09:25AM +0300, Nuutti Kotivuori wrote:
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-> There seems to be no way to prevent the deactivation and reactivation of
-> the clock and everything between separate transfers - and a single
-> transfer is bounded in size and no progress is reported for it. Even
-> within a single transfer, it would seem that an earlier transfer is
+This reverts commit 6887237cd7da904184dab2750504040c68f3a080.
 
-This sounds more like you've got an IIO application (or audio) than a
-SPI one - the hardware is the same but you're thinking about it in a
-completely different way and so a separate subsystem makes sense.
+This reverts is done due to earlier wrong commit, which is
+also reverted. "Revert "spi/pl022: enable runtime PM""
+
+Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 9194641..5cf0643 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2186,6 +2186,7 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	printk(KERN_INFO "pl022: mapped registers from 0x%08x to %p\n",
+ 	       adev->res.start, pl022->virtbase);
+ 
++	pm_runtime_enable(dev);
+ 	pm_runtime_resume(dev);
+ 
+ 	pl022->clk = devm_clk_get(&adev->dev, NULL);
+-- 
+1.7.10
+
 
 ------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM

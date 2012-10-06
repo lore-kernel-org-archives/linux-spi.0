@@ -1,7 +1,8 @@
-From: Cardif =?iso-8859-15?Q?Sant=E9?= par Planduweb <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Offre Promo 2 mois offerts
-Date: Sat, 06 Oct 2012 05:14:30 +0200
-Message-ID: <1349493281.thing506fa221330a8@mach10.generated>
+From: Mistergooddeal par Duano <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
+Subject: Mois anniversaire : tous les jours des offres de folie jusqu'a moins
+	72 pourcent
+Date: Sat, 06 Oct 2012 05:19:37 +0200
+Message-ID: <1349493642.thing506fa38ae517a@mach10.generated>
 Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNjk2JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTY5NSZmPTIxNjk2Jmc9MjE2OTY=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNzMzJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTczMiZmPTIxNzMzJmc9MjE3MzM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNjk2JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTY5NSZmPTIxNjk2Jmc9MjE2OT=
-Y=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNzMzJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTczMiZmPTIxNzMzJmc9MjE3Mz=
+M=3D
 
 
 ---------------------------------------------------------------------------=

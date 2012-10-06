@@ -1,9 +1,8 @@
-From: Mistergooddeal par Duano <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Mois anniversaire : tous les jours des offres de folie jusqu'a moins
-	72 pourcent
-Date: Sat, 06 Oct 2012 05:19:37 +0200
-Message-ID: <1349493642.thing506fa38ae517a@mach10.generated>
-Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+From: Stop Cambriolage <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre maison est-elle suffisamment =?iso-8859-15?Q?prot=E9g=E9e?=
+Date: Sat, 06 Oct 2012 05:22:06 +0200
+Message-ID: <1349493751.thing506fa3f73bd5a@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNzMzJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTczMiZmPTIxNzMzJmc9MjE3MzM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNzUyJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTc1MSZmPTIxNzUyJmc9MjE3NTI=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNzMzJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTczMiZmPTIxNzMzJmc9MjE3Mz=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNzUyJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0wNiAwNToxMDowMSZlPTEmaD0yMTc1MSZmPTIxNzUyJmc9MjE3NT=
+I=3D
 
 
 ---------------------------------------------------------------------------=

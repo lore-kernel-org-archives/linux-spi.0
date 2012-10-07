@@ -1,7 +1,7 @@
 From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] SPI: McSPI: allow configuration of pin directions
-Date: Sun,  7 Oct 2012 18:00:11 +0200
-Message-ID: <1349625611-20891-1-git-send-email-zonque@gmail.com>
+Subject: [PATCH v2] SPI: McSPI: allow configuration of pin directions
+Date: Sun,  7 Oct 2012 18:02:37 +0200
+Message-ID: <1349625757-21083-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -35,6 +35,8 @@ Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Cc: Juha Yrjola <juha.yrjola-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>
 ---
+changes from v1: forgot to stage one hunk.
+
  Documentation/devicetree/bindings/spi/omap-spi.txt |  3 +++
  arch/arm/plat-omap/include/plat/mcspi.h            |  4 ++++
  drivers/spi/spi-omap2-mcspi.c                      | 25 ++++++++++++++++------
@@ -73,7 +75,7 @@ index a357eb2..ce70f7b 100644
  
  struct omap2_mcspi_dev_attr {
 diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 1cf1072..d4588ef 100644
+index 1cf1072..c2834d6 100644
 --- a/drivers/spi/spi-omap2-mcspi.c
 +++ b/drivers/spi/spi-omap2-mcspi.c
 @@ -134,6 +134,7 @@ struct omap2_mcspi {
@@ -90,7 +92,7 @@ index 1cf1072..d4588ef 100644
  	 */
 -	l &= ~(OMAP2_MCSPI_CHCONF_IS|OMAP2_MCSPI_CHCONF_DPE1);
 -	l |= OMAP2_MCSPI_CHCONF_DPE0;
-+	if (mcspi->pin_dir == MCSPI_PINDIR_D1_IN_D0_OUT) {
++	if (mcspi->pin_dir == MCSPI_PINDIR_D0_OUT_D1_IN) {
 +		l &= ~OMAP2_MCSPI_CHCONF_IS;
 +		l &= ~OMAP2_MCSPI_CHCONF_DPE1;
 +		l |= OMAP2_MCSPI_CHCONF_DPE0;

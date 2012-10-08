@@ -1,18 +1,21 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH V4] MXS: Implement DMA support into mxs-i2c
-Date: Mon, 8 Oct 2012 15:15:32 +0200
-Message-ID: <201210081515.32863.marex@denx.de>
-References: <1345779871-7677-1-git-send-email-marex@denx.de>
-	<20121008092530.GA22051@pengutronix.de>
+From: Stan Hu <stanhu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 1/1] spi: omap2-mcspi: add option to configure output line for
+	McSPI driver
+Date: Mon,  8 Oct 2012 16:39:40 -0600
+Message-ID: <1349735980-17015-1-git-send-email-stanhu@gmail.com>
+References: <y>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: Stan Hu <stanhu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Jarkko Nikula <jarkko.nikula-FVTvWyuFUl3QT0dZR+AlfA@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Nicolas Pitre <nico-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121008092530.GA22051-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <y>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,32 +26,61 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Wolfram Sang,
+McSPI driver previously assumed that D0 was input (MISO) and D1 was output (MOSI).
+This forces the hardware designer to wire all SPI peripherals in this way when
+it should be a software configuration option.
 
-> On Fri, Aug 24, 2012 at 05:44:31AM +0200, Marek Vasut wrote:
-> > This patch implements DMA support into mxs-i2c. DMA transfers are now
-> > enabled via DT. The DMA operation is enabled by default.
-> > 
-> > Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-> 
-> Thanks, applied to -next.
-> 
-> I am meanwhile thinking the driver needs massive changes
+Signed-off-by: Stan Hu <stanhu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c                 |   11 +++++++++--
+ include/linux/platform_data/spi-omap2-mcspi.h |    2 ++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-+1 it does.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3542fdc..d7c7e13 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -740,6 +740,7 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 		struct spi_transfer *t)
+ {
+ 	struct omap2_mcspi_cs *cs = spi->controller_state;
++	struct omap2_mcspi_device_config *cd = spi->controller_data;
+ 	struct omap2_mcspi *mcspi;
+ 	struct spi_master *spi_cntrl;
+ 	u32 l = 0, div = 0;
+@@ -765,8 +766,14 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 	/* standard 4-wire master mode:  SCK, MOSI/out, MISO/in, nCS
+ 	 * REVISIT: this controller could support SPI_3WIRE mode.
+ 	 */
+-	l &= ~(OMAP2_MCSPI_CHCONF_IS|OMAP2_MCSPI_CHCONF_DPE1);
+-	l |= OMAP2_MCSPI_CHCONF_DPE0;
++	l &= ~(OMAP2_MCSPI_CHCONF_IS|
++		OMAP2_MCSPI_CHCONF_DPE0|OMAP2_MCSPI_CHCONF_DPE1);
++
++	/* set input selection for D0 and D1 */
++	if (cd->d0_is_output)
++		l |= OMAP2_MCSPI_CHCONF_IS|OMAP2_MCSPI_CHCONF_DPE1;
++	else
++		l |= OMAP2_MCSPI_CHCONF_DPE0;
+ 
+ 	/* wordlength */
+ 	l &= ~OMAP2_MCSPI_CHCONF_WL_MASK;
+diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
+index a357eb2..419d08a 100644
+--- a/include/linux/platform_data/spi-omap2-mcspi.h
++++ b/include/linux/platform_data/spi-omap2-mcspi.h
+@@ -18,6 +18,8 @@ struct omap2_mcspi_dev_attr {
+ 
+ struct omap2_mcspi_device_config {
+ 	unsigned turbo_mode:1;
++	/* 0 -> [D0 = MISO, D1 = MOSI], 1 -> [D0 = MOSI, D1 = MISO] */
++	unsigned d0_is_output:1;
+ };
+ 
+ #endif
+-- 
+1.7.9.5
 
-> probably dropping PIOQUEUE entirely
-
-Yes, in favor of PIO which can do switching with DMA.
-
-> This is probably best done via incremental
-> patches to this one. I have sketches which were sadly not ready for this
-> merge-window :(
-
-Cc me when submitting, I'd like to see those.
-
-Best regards,
-Marek Vasut
 
 ------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM

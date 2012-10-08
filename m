@@ -1,82 +1,38 @@
-From: "Rafael J. Wysocki" <rjw@sisk.pl>
-Subject: Re: [PATCH V2 3/3] spi: spi-pl022: Minor simplification for runtime pm
-Date: Sun, 07 Oct 2012 23:35:45 +0200
-Message-ID: <2601524.77SEIkPWcO@vostro.rjw.lan>
-References: <1349337881-15917-1-git-send-email-ulf.hansson@stericsson.com>
- <CAPDyKFqZXKtpJ8vSFKfZuD8FGayQUhmYKtZKzkZ15jKRA5nu6Q@mail.gmail.com>
- <CACRpkdb9mLy1640Y9xuN_EgUd2xCwjpc1ErZaBmLOcJT4ffaxw@mail.gmail.com>
+From: Blancheporte par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Des =?iso-8859-15?Q?r=E9ductions?= qui collent
+	=?iso-8859-15?Q?=E0?= vos envies
+Date: Mon, 08 Oct 2012 03:35:09 +0200
+Message-ID: <1349660164.thing50722e04086a1@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Vipul Kumar Samar <vipulkumar.samar@st.com>,
- Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
- Mark Brown <broonie@opensource.wolfsonmicro.com>,
- Grant Likely <grant.likely@secretlab.ca>, Magnus Damm <damm@opensource.se>,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CACRpkdb9mLy1640Y9xuN_EgUd2xCwjpc1ErZaBmLOcJT4ffaxw@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 05 of October 2012 14:19:57 Linus Walleij wrote:
-> On Thu, Oct 4, 2012 at 11:07 AM, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> 
-> > Mark, I am not sure this particular patch is actually wanted. Realized
-> > that when reading up on the driver/base/* patches for PM changes this
-> > summer. Especially how device probe/suspend/shutdown etc. has been
-> > changed for runtime PM point of view.
-> 
-> Mark will get you for top-posting ;-)
-> 
-> >> From: Ulf Hansson <ulf.hansson@linaro.org>
-> >>
-> >> In probe pm_runtime_put_autosuspend has the same effect as doing
-> >> pm_runtime_put. This due to upper layer in driver core is preventing
-> >> the device from being runtime suspended by a pm_runtime_get*.
-> >>
-> >> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> >> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >> ---
-> >>  drivers/spi/spi-pl022.c |    5 ++---
-> >>  1 file changed, 2 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> >> index a1db91a..51b7a95 100644
-> >> --- a/drivers/spi/spi-pl022.c
-> >> +++ b/drivers/spi/spi-pl022.c
-> >> @@ -2246,10 +2246,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
-> >>                 pm_runtime_set_autosuspend_delay(dev,
-> >>                         platform_info->autosuspend_delay);
-> >>                 pm_runtime_use_autosuspend(dev);
-> >> -               pm_runtime_put_autosuspend(dev);
-> >> -       } else {
-> >> -               pm_runtime_put(dev);
-> >>         }
-> >> +       pm_runtime_put(dev);
-> >> +
-> >>         return 0;
-> 
-> I'm paging Rafael and Magnus for their comments so we don't
-> overload Mark with runtime PM semantics...
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-The change looks OK.  The functional difference is that the .idle() callback
-will be run earlier in the "use autosuspend" case, but that shouldn't be a big
-deal.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNjk1JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0wOCAwMzozMDowMSZlPTEmaD0yMTY5NCZmPTIxNjk1Jmc9MjE2OTU=3D
 
-Thanks,
-Rafael
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNjk1JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0wOCAwMzozMDowMSZlPTEmaD0yMTY5NCZmPTIxNjk1Jmc9MjE2OT=
+U=3D
 
 
--- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
+---------------------------------------------------------------------------=
+---
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

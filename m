@@ -1,19 +1,14 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi:clk: preparation for switch to common clock
-	framework
-Date: Tue, 9 Oct 2012 17:07:17 +0530
-Message-ID: <50740C6D.7070906@ti.com>
-References: <1347900122-25101-1-git-send-email-m-karicheri2@ti.com>
-	<1347900122-25101-2-git-send-email-m-karicheri2@ti.com>
+From: David Howells <dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Subject: [GIT PULL] Disintegrate UAPI for spi
+Date: Tue, 09 Oct 2012 14:30:45 +0100
+Message-ID: <30758.1349789445@warthog.procyon.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Cc: dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1347900122-25101-2-git-send-email-m-karicheri2-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,30 +19,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9/17/2012 10:12 PM, Murali Karicheri wrote:
-> As a first step towards migrating davinci platforms to use common clock
-> framework, replace all instances of clk_enable() with clk_prepare_enable()
-> and clk_disable() with clk_disable_unprepare(). Until the platform is
-> switched to use the CONFIG_HAVE_CLK_PREPARE Kconfig variable, this just
-> adds a might_sleep() call and would work without any issues.
-> 
-> This will make it easy later to switch to common clk based implementation
-> of clk driver from DaVinci specific driver.
-> 
-> Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
-> Reviewed-by: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Can you merge the following branch into the spi tree please.
 
-This patch had to be applied manually and with some fuzz when I applied
-it to latest linus/master. There were no conflicts though and once I
-applied it, I was able to test SPI flash on DA850 EVM successfully using it.
+This is to complete part of the Userspace API (UAPI) disintegration for which
+the preparatory patches were pulled recently.  After these patches, userspace
+headers will be segregated into:
 
-Acked-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+	include/uapi/linux/.../foo.h
 
-I am hoping this patch can still go in v3.7. I realize we are in the
-middle of the merge window though.
+for the userspace interface stuff, and:
 
-Thanks,
-Sekhar
+	include/linux/.../foo.h
+
+for the strictly kernel internal stuff.
+
+---
+The following changes since commit 9e2d8656f5e8aa214e66b462680cf86b210b74a8:
+
+  Merge branch 'akpm' (Andrew's patch-bomb) (2012-10-09 16:23:15 +0900)
+
+are available in the git repository at:
+
+
+  git://git.infradead.org/users/dhowells/linux-headers.git tags/disintegrate-spi-20121009
+
+for you to fetch changes up to 7939d3c2a677b06cf111a1304710dd97892f3695:
+
+  UAPI: (Scripted) Disintegrate include/linux/spi (2012-10-09 09:49:03 +0100)
+
+----------------------------------------------------------------
+UAPI Disintegration 2012-10-09
+
+----------------------------------------------------------------
+David Howells (1):
+      UAPI: (Scripted) Disintegrate include/linux/spi
+
+ include/linux/spi/Kbuild              | 1 -
+ include/uapi/linux/spi/Kbuild         | 1 +
+ include/{ => uapi}/linux/spi/spidev.h | 0
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename include/{ => uapi}/linux/spi/spidev.h (100%)
+.
 
 ------------------------------------------------------------------------------
 Don't let slow site performance ruin your business. Deploy New Relic APM

@@ -1,17 +1,13 @@
-From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 02/16] of_spi: add generic binding support to specify cs gpio
-Date: Wed, 10 Oct 2012 14:27:20 +0800
-Message-ID: <1349850454-21127-3-git-send-email-wenyou.yang@atmel.com>
-References: <1349850454-21127-1-git-send-email-wenyou.yang@atmel.com>
+From: "Embu Park Hotel" <newsembuparkhotel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Festa de Confraternização Embu Park Hotel
+Date: Wed, 10 Oct 2012 11:31:33 -0300
+Message-ID: <3dfd5fb8dd1b6860edb2905f23489509@www.vixdroid.com>
+Reply-To: newsembuparkhotel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-To: wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1349850454-21127-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,196 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-
-This will allow to use gpio for chip select with no modification in the
-driver binding
-
-When use the cs-gpios, the gpio number will be passed via the cs_gpio field
-and the number of chip select will automatically increased.
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-This patch based on the original patch from Jean-Christophe, 
- 	0002-of_spi-add-generic-binding-support-to-specify-cs-gpi.patch,
-and merged the patch from Richard Genoud,
-	0016-BUG-SPI-array-out-of-bound-no-CS.patch.
-which fix the BUG of spi array out of bound 
-
- Documentation/devicetree/bindings/spi/spi-bus.txt |    6 +++
- drivers/spi/spi.c                                 |   55 +++++++++++++++++++--
- include/linux/spi/spi.h                           |    3 ++
- 3 files changed, 61 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index e782add..c253379 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -12,6 +12,7 @@ The SPI master node requires the following properties:
- - #size-cells     - should be zero.
- - compatible      - name of SPI bus controller following generic names
-     		recommended practice.
-+- cs-gpios	  - (optional) gpios chip select.
- No other properties are required in the SPI bus node.  It is assumed
- that a driver for an SPI bus device will understand that it is an SPI bus.
- However, the binding does not attempt to define the specific method for
-@@ -21,6 +22,8 @@ assumption that board specific platform code will be used to manage
- chip selects.  Individual drivers can define additional properties to
- support describing the chip select layout.
- 
-+If cs-gpios is used the number of chip select will automatically increased.
-+
- SPI slave nodes must be children of the SPI master node and can
- contain the following properties.
- - reg             - (required) chip select address of device.
-@@ -34,6 +37,9 @@ contain the following properties.
- - spi-cs-high     - (optional) Empty property indicating device requires
-     		chip select active high
- 
-+If a gpio chipselect is used for the SPI slave the gpio number will be passed
-+via the controller_data
-+
- SPI example for an MPC5200 SPI bus:
- 	spi@f00 {
- 		#address-cells = <1>;
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 84c2861..74e6577 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -30,6 +30,7 @@
- #include <linux/slab.h>
- #include <linux/mod_devicetable.h>
- #include <linux/spi/spi.h>
-+#include <linux/of_gpio.h>
- #include <linux/pm_runtime.h>
- #include <linux/export.h>
- #include <linux/sched.h>
-@@ -327,6 +328,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- 	spi->dev.parent = &master->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
-+	spi->cs_gpio = -EINVAL;
- 	device_initialize(&spi->dev);
- 	return spi;
- }
-@@ -344,15 +346,16 @@ EXPORT_SYMBOL_GPL(spi_alloc_device);
- int spi_add_device(struct spi_device *spi)
- {
- 	static DEFINE_MUTEX(spi_add_lock);
--	struct device *dev = spi->master->dev.parent;
-+	struct spi_master *master = spi->master;
-+	struct device *dev = master->dev.parent;
- 	struct device *d;
- 	int status;
- 
- 	/* Chipselects are numbered 0..max; validate. */
--	if (spi->chip_select >= spi->master->num_chipselect) {
-+	if (spi->chip_select >= master->num_chipselect) {
- 		dev_err(dev, "cs%d >= max %d\n",
- 			spi->chip_select,
--			spi->master->num_chipselect);
-+			master->num_chipselect);
- 		return -EINVAL;
- 	}
- 
-@@ -376,6 +379,9 @@ int spi_add_device(struct spi_device *spi)
- 		goto done;
- 	}
- 
-+	if (master->cs_gpios)
-+		spi->cs_gpio = master->cs_gpios[spi->chip_select];
-+
- 	/* Drivers may modify this initial i/o setup, but will
- 	 * normally rely on the device being setup.  Devices
- 	 * using SPI_CS_HIGH can't coexist well otherwise...
-@@ -946,6 +952,45 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
- }
- EXPORT_SYMBOL_GPL(spi_alloc_master);
- 
-+#ifdef CONFIG_OF
-+static int of_spi_register_master(struct spi_master *master)
-+{
-+	int nb, i;
-+	int *cs;
-+	struct device_node *np = master->dev.of_node;
-+
-+	if (!np)
-+		return 0;
-+
-+	nb = of_gpio_named_count(np, "cs-gpios");
-+
-+	if (nb < 1)
-+		return 0;
-+
-+	cs = devm_kzalloc(&master->dev,
-+			  sizeof(int) * (master->num_chipselect + nb),
-+			  GFP_KERNEL);
-+	master->cs_gpios = cs;
-+
-+	if (!master->cs_gpios)
-+		return -ENOMEM;
-+
-+	memset(cs, -EINVAL, master->num_chipselect);
-+	cs += master->num_chipselect;
-+	master->num_chipselect += nb;
-+
-+	for (i = 0; i < nb; i++)
-+		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+
-+	return 0;
-+}
-+#else
-+static int of_spi_register_master(struct spi_master *master)
-+{
-+	return 0;
-+}
-+#endif
-+
- /**
-  * spi_register_master - register SPI master controller
-  * @master: initialized master, originally from spi_alloc_master()
-@@ -977,6 +1022,10 @@ int spi_register_master(struct spi_master *master)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	status = of_spi_register_master(master);
-+	if (status)
-+		return status;
-+
- 	/* even if it's just one always-selected device, there must
- 	 * be at least one chipselect
- 	 */
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index fa702ae..f629189 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -90,6 +90,7 @@ struct spi_device {
- 	void			*controller_state;
- 	void			*controller_data;
- 	char			modalias[SPI_NAME_SIZE];
-+	int			cs_gpio;	/* chip select gpio */
- 
- 	/*
- 	 * likely need more hooks for more protocol options affecting how
-@@ -362,6 +363,8 @@ struct spi_master {
- 	int (*transfer_one_message)(struct spi_master *master,
- 				    struct spi_message *mesg);
- 	int (*unprepare_transfer_hardware)(struct spi_master *master);
-+	/* gpio chip select */
-+	int			*cs_gpios;
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
-Don't let slow site performance ruin your business. Deploy New Relic APM
-Deploy New Relic app performance management and know exactly
-what is happening inside your Ruby, Python, PHP, Java, and .NET app
-Try New Relic at no cost today and get our sweet Data Nerd shirt too!
-http://p.sf.net/sfu/newrelic-dev2dev
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnZp
+eGRyb2lkLmNvbS9kaXNwbGF5LnBocD9NPTM3MDUzMzYmQz0wYzgyNWZhNTczYzU5OWM0OGUwZWYy
+MDljNThlOTZkYyZTPTY4MCZMPTc5Jk49MTYyCgoKUGFyYSBwYXJhciBkZSByZWNlYmVyIG5vc3Nv
+cwpFbWFpbHM6aHR0cDovL3d3dy52aXhkcm9pZC5jb20vdW5zdWJzY3JpYmUucGhwP009MzcwNTMz
+NiZDPTBjODI1ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1OGU5NmRjJkw9NzkmTj02ODAKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCkRvbid0IGxldCBzbG93IHNpdGUgcGVyZm9ybWFuY2UgcnVpbiB5b3VyIGJ1
+c2luZXNzLiBEZXBsb3kgTmV3IFJlbGljIEFQTQpEZXBsb3kgTmV3IFJlbGljIGFwcCBwZXJmb3Jt
+YW5jZSBtYW5hZ2VtZW50IGFuZCBrbm93IGV4YWN0bHkKd2hhdCBpcyBoYXBwZW5pbmcgaW5zaWRl
+IHlvdXIgUnVieSwgUHl0aG9uLCBQSFAsIEphdmEsIGFuZCAuTkVUIGFwcApUcnkgTmV3IFJlbGlj
+IGF0IG5vIGNvc3QgdG9kYXkgYW5kIGdldCBvdXIgc3dlZXQgRGF0YSBOZXJkIHNoaXJ0IHRvbyEK
+aHR0cDovL3Auc2YubmV0L3NmdS9uZXdyZWxpYy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,9 +1,7 @@
-From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
-	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
-Date: Wed, 10 Oct 2012 05:55:12 +0200
-Message-ID: <1349841315.thing5074f1a30cd7b@mach10.generated>
+From: Le Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Moins80 pourcent sur les bagages de grandes marques
+Date: Wed, 10 Oct 2012 06:13:04 +0200
+Message-ID: <1349842425.thing5074f5f9d8e7e@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -22,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxNzYzJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xMCAwNTo1MDowMSZlPTEmaD0yMTc2MiZmPTIxNzYzJmc9MjE3NjM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxOTMxJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xMCAwNjoxMDowMSZlPTEmaD0yMTkzMCZmPTIxOTMxJmc9MjE5MzE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxNzYzJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xMCAwNTo1MDowMSZlPTEmaD0yMTc2MiZmPTIxNzYzJmc9MjE3Nj=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxOTMxJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xMCAwNjoxMDowMSZlPTEmaD0yMTkzMCZmPTIxOTMxJmc9MjE5Mz=
+E=3D
 
 
 ---------------------------------------------------------------------------=

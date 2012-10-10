@@ -1,12 +1,12 @@
-From: Tendance Chaussure par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Changez de Converse Vente =?iso-8859-15?Q?priv=E9e_jusqu=27=E0?=
-	moins55 pourcent
-Date: Thu, 11 Oct 2012 12:11:04 +0200
-Message-ID: <1349950634.thing50769caa4c0eb@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Mayra Pardossi" <mayra.pardossi-3QmB0uqXZs3eseHxfuXUl18n826c+h2f@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?UkVTSURFTkNJQUwgVkVOSVQgU0FOVE8gQU5EUsOJIC0gTEFOw4dBTUVOVE8gLSBVTklEQURFUyBBIFBBUlRJUiBERSBSJCAxNzAuMDAwLDAw?=
+Date: Wed, 10 Oct 2012 18:36:11 -0300
+Message-ID: <eaa40c3f1714ce784ee0916020ff2c39@avancesmtp.com>
+Reply-To: mayra.pardossi-3QmB0uqXZs3eseHxfuXUl18n826c+h2f@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,20 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxOTU2JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xMSAxMjowMDowMSZlPTEmaD0yMTk1NSZmPTIxOTU2Jmc9MjE5NTY=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxOTU2JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xMSAxMjowMDowMSZlPTEmaD0yMTk1NSZmPTIxOTU2Jmc9MjE5NT=
-Y=3D
-
-
----------------------------------------------------------------------------=
----
-Don't let slow site performance ruin your business. Deploy New Relic APM
-Deploy New Relic app performance management and know exactly
-what is happening inside your Ruby, Python, PHP, Java, and .NET app
-Try New Relic at no cost today and get our sweet Data Nerd shirt too!
-http://p.sf.net/sfu/newrelic-dev2dev
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vYXZhbmNl
+c210cC5jb20vc2lzdGVtYWRlZW1haWxzL2Rpc3BsYXkucGhwP009Mjc5MDIwMCZDPTM4MmVkOGJm
+OWEyN2RhNTVjODBiOTY1ZDFiNjY3OTZlJlM9MzAmTD0zMyZOPTIyCgoKUGFyYSBwYXJhciBkZSBy
+ZWNlYmVyIG5vc3NvcwplLW1haWxzOmh0dHA6Ly9hdmFuY2VzbXRwLmNvbS9zaXN0ZW1hZGVlbWFp
+bHMvdW5zdWJzY3JpYmUucGhwP009Mjc5MDIwMCZDPTM4MmVkOGJmOWEyN2RhNTVjODBiOTY1ZDFi
+NjY3OTZlJkw9MzMmTj0zMAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRG9uJ3QgbGV0IHNsb3cgc2l0
+ZSBwZXJmb3JtYW5jZSBydWluIHlvdXIgYnVzaW5lc3MuIERlcGxveSBOZXcgUmVsaWMgQVBNCkRl
+cGxveSBOZXcgUmVsaWMgYXBwIHBlcmZvcm1hbmNlIG1hbmFnZW1lbnQgYW5kIGtub3cgZXhhY3Rs
+eQp3aGF0IGlzIGhhcHBlbmluZyBpbnNpZGUgeW91ciBSdWJ5LCBQeXRob24sIFBIUCwgSmF2YSwg
+YW5kIC5ORVQgYXBwClRyeSBOZXcgUmVsaWMgYXQgbm8gY29zdCB0b2RheSBhbmQgZ2V0IG91ciBz
+d2VldCBEYXRhIE5lcmQgc2hpcnQgdG9vIQpodHRwOi8vcC5zZi5uZXQvc2Z1L25ld3JlbGljLWRl
+djJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
+LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
+ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
+cGktZGV2ZWwtZ2VuZXJhbAo=

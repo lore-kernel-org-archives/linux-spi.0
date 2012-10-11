@@ -1,15 +1,12 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 0/3] spi/bcm63xx: misc cleanups and fixes
-Date: Thu, 11 Oct 2012 14:24:03 +0200
-Message-ID: <2794231.eOV4YkTSdf@flexo>
-References: <1349258215-27949-1-git-send-email-florian@openwrt.org>
+From: "David Zabawa" <DZNoReply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Re: Question
+Date: Thu, 11 Oct 2012 06:02:53 -0700
+Message-ID: <70f9c8bfd595da7b59d7e983001088e6@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1349258215-27949-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,36 +17,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Get Approved for $50K - $200K Unsecured Business Credit	=
 
-On Wednesday 03 October 2012 11:56:52 Florian Fainelli wrote:
-> Hi Mark, Grant,
-> 
-> This small series contains cleanups and fixes that had already been previously
-> merged by Grant in his tree, but not pushed upstream. I am resending them
-> rebased on Mark's spi-next branch.
+No personal credit check - No personal guarantee =96 Guaranteed!	=
 
-I did not get any feedback from you on this, is it ok from your perspective?
+	=
 
-Thanks!
+To get info call (888) 386-9221	=
 
-> 
-> Thanks!
-> 
-> Florian Fainelli (3):
->   spi/bcm63xx: remove driver version
->   spi/bcm63xx: add missing spi_master_{resume,suspend} calls to PM
->     callbacks
->   spi/bcm63xx: remove useless call to bcm63xx_spi_check_transfer()
-> 
->  drivers/spi/spi-bcm63xx.c |   16 ++++++----------
->  1 file changed, 6 insertions(+), 10 deletions(-)
-> 
-> -- 
-> 1.7.9.5
-> 
+	=
 
-------------------------------------------------------------------------------
+> PLUS 5 VENDOR CREDIT LINES & 3 BUSINESS CREDIT CARDS	=
+
+> PEACE OF MIND SEPARATING PERSONAL FROM BUSINESS CREDIT	=
+
+> PERSONAL FUNDING/CREDIT BUILDER COACH GUIDES YOU ENTIRE WAY 	=
+
+> INCREASE VALUE OF YOUR BUSINESS WITH A CREDIT RATING ASSET	=
+
+> PERSONAL CREDIT NOT SO GOOD?  WE=92LL REPAIR THAT TOO	=
+
+> CREATIVE FUNDING FOR ANY KIND OF BUSINESS	=
+
+	=
+
+Utilizing our unique and exclusive private money corporate credit program, =
+ANYONE
+CAN PARTICIPATE.  Regardless of your credit!	=
+
+
+* Become a referral affiliate and start earning commissions for referring y=
+our clients!	=
+
+Call today!	=
+
+  =
+
+BUSINESS ASSISTANCE FOUNDATION, INC.	=
+
+1 (888) 386 9221	=
+
+	=
+
+	=
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages <mailto:removemyemail-KK0ffGbhmjU@public.gmane.org?subje=
+ct=3DUnsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+
+---------------------------------------------------------------------------=
+---
 Don't let slow site performance ruin your business. Deploy New Relic APM
 Deploy New Relic app performance management and know exactly
 what is happening inside your Ruby, Python, PHP, Java, and .NET app

@@ -1,16 +1,17 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH] spi/pl022: add IDLE state pin management
-Date: Thu, 11 Oct 2012 14:03:51 +0200
-Message-ID: <1349957031-23867-1-git-send-email-linus.walleij@stericsson.com>
+From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH RESEND] SPI: McSPI: allow configuration of pin directions
+Date: Thu, 11 Oct 2012 14:18:25 +0200
+Message-ID: <1349957905-12173-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Juha Yrjola <juha.yrjola-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Matus Ujhelyi <matus.ujhelyi-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>,
+	Vaibhav Hiremath <hvaibhav-l0cyMroinI0@public.gmane.org>, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -22,141 +23,128 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Allow D0 to be an input and D1 to be an output, configurable via
+platform data and a new DT property.
 
-This commit allow to put pins in IDLE state in
-runtime_suspend and in SLEEP state in suspend, corresponding
-to defined semantics in <linux/pinctrl/pinctrl-state.h>.
+Based on a patch from  Matus Ujhelyi <matus.ujhelyi-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
 
-To do this, just add a boolean parameter runtime
-to pl022_resume_resources/pl022_suspend_resources which
-indicates if it's called from PM_RUNTIME callbacks or not.
-
-Signed-off-by: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Matus Ujhelyi <matus.ujhelyi-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Juha Yrjola <juha.yrjola-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>
+Cc: Vaibhav Hiremath <hvaibhav-l0cyMroinI0@public.gmane.org>
+Cc: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-pl022.c | 44 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+Resending with more people in cc
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 51329b2..1361868 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -371,6 +371,7 @@ struct pl022 {
- 	/* Two optional pin states - default & sleep */
- 	struct pinctrl			*pinctrl;
- 	struct pinctrl_state		*pins_default;
-+	struct pinctrl_state		*pins_idle;
- 	struct pinctrl_state		*pins_sleep;
- 	struct spi_master		*master;
- 	struct pl022_ssp_controller	*master_info;
-@@ -2116,6 +2117,11 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	} else
- 		dev_err(dev, "could not get default pinstate\n");
+ Documentation/devicetree/bindings/spi/omap-spi.txt |  4 +++-
+ drivers/spi/spi-omap2-mcspi.c                      | 25 ++++++++++++++++------
+ include/linux/platform_data/spi-omap2-mcspi.h      |  4 ++++
+ 3 files changed, 25 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/omap-spi.txt b/Documentation/devicetree/bindings/spi/omap-spi.txt
+index 81df374..2ef0a6b 100644
+--- a/Documentation/devicetree/bindings/spi/omap-spi.txt
++++ b/Documentation/devicetree/bindings/spi/omap-spi.txt
+@@ -6,7 +6,9 @@ Required properties:
+   - "ti,omap4-spi" for OMAP4+.
+ - ti,spi-num-cs : Number of chipselect supported  by the instance.
+ - ti,hwmods: Name of the hwmod associated to the McSPI
+-
++- ti,pindir-d0-in-d1-out: Select the D0 pin as input and D1 as
++			  output. The default is D0 as output and
++			  D1 as input.
  
-+	pl022->pins_idle = pinctrl_lookup_state(pl022->pinctrl,
-+					      PINCTRL_STATE_IDLE);
-+	if (IS_ERR(pl022->pins_idle))
-+		dev_dbg(dev, "could not get idle pinstate\n");
-+
- 	pl022->pins_sleep = pinctrl_lookup_state(pl022->pinctrl,
- 					       PINCTRL_STATE_SLEEP);
- 	if (IS_ERR(pl022->pins_sleep))
-@@ -2302,35 +2308,47 @@ pl022_remove(struct amba_device *adev)
-  * the runtime counterparts to handle external resources like
-  * clocks, pins and regulators when going to sleep.
-  */
--static void pl022_suspend_resources(struct pl022 *pl022)
-+static void pl022_suspend_resources(struct pl022 *pl022, bool runtime)
- {
- 	int ret;
-+	struct pinctrl_state *pins_state;
+ Example:
  
- 	clk_disable(pl022->clk);
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 3542fdc..5104633 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -130,6 +130,7 @@ struct omap2_mcspi {
+ 	struct omap2_mcspi_dma	*dma_channels;
+ 	struct device		*dev;
+ 	struct omap2_mcspi_regs ctx;
++	unsigned int		pin_dir:1;
+ };
  
-+	pins_state = runtime ? pl022->pins_idle : pl022->pins_sleep;
- 	/* Optionally let pins go into sleep states */
--	if (!IS_ERR(pl022->pins_sleep)) {
--		ret = pinctrl_select_state(pl022->pinctrl,
--					   pl022->pins_sleep);
-+	if (!IS_ERR(pins_state)) {
-+		ret = pinctrl_select_state(pl022->pinctrl, pins_state);
- 		if (ret)
--			dev_err(&pl022->adev->dev,
--				"could not set pins to sleep state\n");
-+			dev_err(&pl022->adev->dev, "could not set %s pins\n",
-+				runtime ? "idle" : "sleep");
- 	}
- }
- 
--static void pl022_resume_resources(struct pl022 *pl022)
-+static void pl022_resume_resources(struct pl022 *pl022, bool runtime)
- {
- 	int ret;
- 
- 	/* Optionaly enable pins to be muxed in and configured */
-+	/* First go to the default state */
- 	if (!IS_ERR(pl022->pins_default)) {
--		ret = pinctrl_select_state(pl022->pinctrl,
--					   pl022->pins_default);
-+		ret = pinctrl_select_state(pl022->pinctrl, pl022->pins_default);
- 		if (ret)
- 			dev_err(&pl022->adev->dev,
- 				"could not set default pins\n");
- 	}
- 
-+	if (!runtime) {
-+		/* Then let's idle the pins until the next transfer happens */
-+		if (!IS_ERR(pl022->pins_idle)) {
-+			ret = pinctrl_select_state(pl022->pinctrl,
-+					pl022->pins_idle);
-+		if (ret)
-+			dev_err(&pl022->adev->dev,
-+				"could not set idle pins\n");
-+		}
+ struct omap2_mcspi_cs {
+@@ -765,8 +766,15 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 	/* standard 4-wire master mode:  SCK, MOSI/out, MISO/in, nCS
+ 	 * REVISIT: this controller could support SPI_3WIRE mode.
+ 	 */
+-	l &= ~(OMAP2_MCSPI_CHCONF_IS|OMAP2_MCSPI_CHCONF_DPE1);
+-	l |= OMAP2_MCSPI_CHCONF_DPE0;
++	if (mcspi->pin_dir == MCSPI_PINDIR_D0_OUT_D1_IN) {
++		l &= ~OMAP2_MCSPI_CHCONF_IS;
++		l &= ~OMAP2_MCSPI_CHCONF_DPE1;
++		l |= OMAP2_MCSPI_CHCONF_DPE0;
++	} else {
++		l |= OMAP2_MCSPI_CHCONF_IS;
++		l |= OMAP2_MCSPI_CHCONF_DPE1;
++		l &= ~OMAP2_MCSPI_CHCONF_DPE0;
 +	}
+ 
+ 	/* wordlength */
+ 	l &= ~OMAP2_MCSPI_CHCONF_WL_MASK;
+@@ -1167,6 +1175,11 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+ 	master->cleanup = omap2_mcspi_cleanup;
+ 	master->dev.of_node = node;
+ 
++	dev_set_drvdata(&pdev->dev, master);
 +
- 	clk_enable(pl022->clk);
- }
- #endif
-@@ -2348,7 +2366,7 @@ static int pl022_suspend(struct device *dev)
++	mcspi = spi_master_get_devdata(master);
++	mcspi->master = master;
++
+ 	match = of_match_device(omap_mcspi_of_match, &pdev->dev);
+ 	if (match) {
+ 		u32 num_cs = 1; /* default number of chipselect */
+@@ -1175,19 +1188,17 @@ static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
+ 		of_property_read_u32(node, "ti,spi-num-cs", &num_cs);
+ 		master->num_chipselect = num_cs;
+ 		master->bus_num = bus_num++;
++		if (of_get_property(node, "ti,pindir-d0-in-d1-out", NULL))
++			mcspi->pin_dir = MCSPI_PINDIR_D0_IN_D1_OUT;
+ 	} else {
+ 		pdata = pdev->dev.platform_data;
+ 		master->num_chipselect = pdata->num_cs;
+ 		if (pdev->id != -1)
+ 			master->bus_num = pdev->id;
++		mcspi->pin_dir = pdata->pin_dir;
  	}
+ 	regs_offset = pdata->regs_offset;
  
- 	pm_runtime_get_sync(dev);
--	pl022_suspend_resources(pl022);
-+	pl022_suspend_resources(pl022, false);
+-	dev_set_drvdata(&pdev->dev, master);
+-
+-	mcspi = spi_master_get_devdata(master);
+-	mcspi->master = master;
+-
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (r == NULL) {
+ 		status = -ENODEV;
+diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
+index a357eb2..ce70f7b 100644
+--- a/include/linux/platform_data/spi-omap2-mcspi.h
++++ b/include/linux/platform_data/spi-omap2-mcspi.h
+@@ -7,9 +7,13 @@
  
- 	dev_dbg(dev, "suspended\n");
- 	return 0;
-@@ -2359,7 +2377,7 @@ static int pl022_resume(struct device *dev)
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
- 	int ret;
+ #define OMAP4_MCSPI_REG_OFFSET 0x100
  
--	pl022_resume_resources(pl022);
-+	pl022_resume_resources(pl022, false);
- 	pm_runtime_put(dev);
++#define MCSPI_PINDIR_D0_OUT_D1_IN	0
++#define MCSPI_PINDIR_D0_IN_D1_OUT	1
++
+ struct omap2_mcspi_platform_config {
+ 	unsigned short	num_cs;
+ 	unsigned int regs_offset;
++	unsigned int pin_dir:1;
+ };
  
- 	/* Start the queue running */
-@@ -2378,7 +2396,7 @@ static int pl022_runtime_suspend(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
- 
--	pl022_suspend_resources(pl022);
-+	pl022_suspend_resources(pl022, true);
- 	return 0;
- }
- 
-@@ -2386,7 +2404,7 @@ static int pl022_runtime_resume(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
- 
--	pl022_resume_resources(pl022);
-+	pl022_resume_resources(pl022, true);
- 	return 0;
- }
- #endif
+ struct omap2_mcspi_dev_attr {
 -- 
-1.7.11.3
+1.7.11.4
 
 
 ------------------------------------------------------------------------------

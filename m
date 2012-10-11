@@ -1,11 +1,12 @@
-From: "Embu Park Hotel" <newsembuparkhotel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Festa de Confraternização Embu Park Hotel
-Date: Wed, 10 Oct 2012 11:31:33 -0300
-Message-ID: <3dfd5fb8dd1b6860edb2905f23489509@www.vixdroid.com>
-Reply-To: newsembuparkhotel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: Tendance Chaussure par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Changez de Converse Vente =?iso-8859-15?Q?priv=E9e_jusqu=27=E0?=
+	moins55 pourcent
+Date: Thu, 11 Oct 2012 12:11:04 +0200
+Message-ID: <1349950634.thing50769caa4c0eb@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vd3d3LnZp
-eGRyb2lkLmNvbS9kaXNwbGF5LnBocD9NPTM3MDUzMzYmQz0wYzgyNWZhNTczYzU5OWM0OGUwZWYy
-MDljNThlOTZkYyZTPTY4MCZMPTc5Jk49MTYyCgoKUGFyYSBwYXJhciBkZSByZWNlYmVyIG5vc3Nv
-cwpFbWFpbHM6aHR0cDovL3d3dy52aXhkcm9pZC5jb20vdW5zdWJzY3JpYmUucGhwP009MzcwNTMz
-NiZDPTBjODI1ZmE1NzNjNTk5YzQ4ZTBlZjIwOWM1OGU5NmRjJkw9NzkmTj02ODAKLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCkRvbid0IGxldCBzbG93IHNpdGUgcGVyZm9ybWFuY2UgcnVpbiB5b3VyIGJ1
-c2luZXNzLiBEZXBsb3kgTmV3IFJlbGljIEFQTQpEZXBsb3kgTmV3IFJlbGljIGFwcCBwZXJmb3Jt
-YW5jZSBtYW5hZ2VtZW50IGFuZCBrbm93IGV4YWN0bHkKd2hhdCBpcyBoYXBwZW5pbmcgaW5zaWRl
-IHlvdXIgUnVieSwgUHl0aG9uLCBQSFAsIEphdmEsIGFuZCAuTkVUIGFwcApUcnkgTmV3IFJlbGlj
-IGF0IG5vIGNvc3QgdG9kYXkgYW5kIGdldCBvdXIgc3dlZXQgRGF0YSBOZXJkIHNoaXJ0IHRvbyEK
-aHR0cDovL3Auc2YubmV0L3NmdS9uZXdyZWxpYy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxOTU2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xMSAxMjowMDowMSZlPTEmaD0yMTk1NSZmPTIxOTU2Jmc9MjE5NTY=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxOTU2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xMSAxMjowMDowMSZlPTEmaD0yMTk1NSZmPTIxOTU2Jmc9MjE5NT=
+Y=3D
+
+
+---------------------------------------------------------------------------=
+---
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

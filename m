@@ -1,38 +1,70 @@
-From: Huawei par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Offre =?iso-8859-15?Q?r=E9serv=E9e?= aux premiers inscrits. Testez
-	gratuitement depuis chez vous ce nouveau smartphone Huawei dernier cri.
-Date: Fri, 12 Oct 2012 21:23:03 +0200
-Message-ID: <1350069798.thing50786e26ecb33@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [GIT PULL] Disintegrate UAPI for spi
+Date: Fri, 12 Oct 2012 23:40:44 +0100
+Message-ID: <CACxGe6u51-er_U=FBaHzhAE2orZuq_B-MSwVVnCvoqZnEeHu7w@mail.gmail.com>
+References: <30758.1349789445@warthog.procyon.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: David Howells <dhowells@redhat.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <30758.1349789445@warthog.procyon.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Tue, Oct 9, 2012 at 2:30 PM, David Howells <dhowells@redhat.com> wrote:
+> Can you merge the following branch into the spi tree please.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMTA0JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xMiAyMToxMDowMSZlPTEmaD0yMjEwMiZmPTIyMTA0Jmc9MjIxMDQ=3D
+Do you want this merged into 3.7? If so, go ahead and push it directly
+to Linus. I've not been able to do any maintainership stuff for the
+last merge window or this one. Mark Brown has covered for me on SPI.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMTA0JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xMiAyMToxMDowMSZlPTEmaD0yMjEwMiZmPTIyMTA0Jmc9MjIxMD=
-Q=3D
+g.
+
+> This is to complete part of the Userspace API (UAPI) disintegration for which
+> the preparatory patches were pulled recently.  After these patches, userspace
+> headers will be segregated into:
+>
+>         include/uapi/linux/.../foo.h
+>
+> for the userspace interface stuff, and:
+>
+>         include/linux/.../foo.h
+>
+> for the strictly kernel internal stuff.
+>
+> ---
+> The following changes since commit 9e2d8656f5e8aa214e66b462680cf86b210b74a8:
+>
+>   Merge branch 'akpm' (Andrew's patch-bomb) (2012-10-09 16:23:15 +0900)
+>
+> are available in the git repository at:
+>
+>
+>   git://git.infradead.org/users/dhowells/linux-headers.git tags/disintegrate-spi-20121009
+>
+> for you to fetch changes up to 7939d3c2a677b06cf111a1304710dd97892f3695:
+>
+>   UAPI: (Scripted) Disintegrate include/linux/spi (2012-10-09 09:49:03 +0100)
+>
+> ----------------------------------------------------------------
+> UAPI Disintegration 2012-10-09
+>
+> ----------------------------------------------------------------
+> David Howells (1):
+>       UAPI: (Scripted) Disintegrate include/linux/spi
+>
+>  include/linux/spi/Kbuild              | 1 -
+>  include/uapi/linux/spi/Kbuild         | 1 +
+>  include/{ => uapi}/linux/spi/spidev.h | 0
+>  3 files changed, 1 insertion(+), 1 deletion(-)
+>  rename include/{ => uapi}/linux/spi/spidev.h (100%)
+> .
 
 
----------------------------------------------------------------------------=
----
-Don't let slow site performance ruin your business. Deploy New Relic APM
-Deploy New Relic app performance management and know exactly
-what is happening inside your Ruby, Python, PHP, Java, and .NET app
-Try New Relic at no cost today and get our sweet Data Nerd shirt too!
-http://p.sf.net/sfu/newrelic-dev2dev
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.

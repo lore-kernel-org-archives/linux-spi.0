@@ -1,56 +1,37 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [RFC PATCH v2 00/16] DMA Engine support for AM33xx
-Date: Thu, 11 Oct 2012 17:49:30 -0400
-Message-ID: <20121011214930.GF13724@beef>
-References: <1349982281-10785-1-git-send-email-mporter@ti.com>
- <CACxGe6vL2ieaYN_YhZn9=e7=prwdfwZtgPr4Ei3VMNnViib6XA@mail.gmail.com>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 0/3] spi/bcm63xx: misc cleanups and fixes
+Date: Fri, 12 Oct 2012 14:17:48 +0900
+Message-ID: <20121012051746.GL11726@opensource.wolfsonmicro.com>
+References: <1349258215-27949-1-git-send-email-florian@openwrt.org>
+	<2794231.eOV4YkTSdf@flexo>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Robert Herring <rob.herring@calxeda.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	spi-devel-general@lists.sourceforge.net,
-	Chris Ball <cjb@laptop.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CACxGe6vL2ieaYN_YhZn9=e7=prwdfwZtgPr4Ei3VMNnViib6XA@mail.gmail.com>
-Sender: linux-mmc-owner@vger.kernel.org
+In-Reply-To: <2794231.eOV4YkTSdf@flexo>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 11, 2012 at 10:31:58PM +0100, Grant Likely wrote:
-> Hey Matt,
-> 
-> Do you know now similar are the EDMA engines on the am33xx and am389x? I've
-> been working on am389x upstreaming and I'll try these patches out if it is
-> the same engine.
+On Thu, Oct 11, 2012 at 02:24:03PM +0200, Florian Fainelli wrote:
 
-Hi Grant,
+> I did not get any feedback from you on this, is it ok from your perspective?
 
-It's the same one. am389x/ti816x and am387x/ti814x are part of the same
-architectural family as am33xx. They've just never had a lot of upstream
-support from TI. I heard rumors that you might be working with am389x
-and I'm glad you're confirming that for me! ;)
+My perspective is that you sent this in the merge window so there's no
+rush to look at it until after the merge window.
 
-The only differences between am33xx's implementation and the others is
-going to be the number PaRAM slots, number of TCs, the channel mapping,
-and then the crossbar mapping. As you can see from the TODO list, I
-don't yet support the crossbar, but it'll be in the next version of this
-series. The other items are already covered in the DT binding so it
-should be straightforward to hook this up for am389x assuming your hwmod
-and clock data is good for that part.
-
--Matt
+------------------------------------------------------------------------------
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

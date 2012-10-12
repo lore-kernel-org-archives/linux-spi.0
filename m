@@ -1,70 +1,43 @@
-From: Grant Likely <grant.likely@secretlab.ca>
+From: David Howells <dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [GIT PULL] Disintegrate UAPI for spi
-Date: Fri, 12 Oct 2012 23:40:44 +0100
-Message-ID: <CACxGe6u51-er_U=FBaHzhAE2orZuq_B-MSwVVnCvoqZnEeHu7w@mail.gmail.com>
-References: <30758.1349789445@warthog.procyon.org.uk>
+Date: Sat, 13 Oct 2012 00:06:43 +0100
+Message-ID: <15243.1350083203@warthog.procyon.org.uk>
+References: <CACxGe6u51-er_U=FBaHzhAE2orZuq_B-MSwVVnCvoqZnEeHu7w@mail.gmail.com>
+	<30758.1349789445@warthog.procyon.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: David Howells <dhowells@redhat.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <30758.1349789445@warthog.procyon.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CACxGe6u51-er_U=FBaHzhAE2orZuq_B-MSwVVnCvoqZnEeHu7w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 9, 2012 at 2:30 PM, David Howells <dhowells@redhat.com> wrote:
-> Can you merge the following branch into the spi tree please.
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
 
-Do you want this merged into 3.7? If so, go ahead and push it directly
-to Linus. I've not been able to do any maintainership stuff for the
-last merge window or this one. Mark Brown has covered for me on SPI.
+> > Can you merge the following branch into the spi tree please.
+> 
+> Do you want this merged into 3.7? If so, go ahead and push it directly
+> to Linus. I've not been able to do any maintainership stuff for the
+> last merge window or this one. Mark Brown has covered for me on SPI.
 
-g.
+Could I get an Ack for it?
 
-> This is to complete part of the Userspace API (UAPI) disintegration for which
-> the preparatory patches were pulled recently.  After these patches, userspace
-> headers will be segregated into:
->
->         include/uapi/linux/.../foo.h
->
-> for the userspace interface stuff, and:
->
->         include/linux/.../foo.h
->
-> for the strictly kernel internal stuff.
->
-> ---
-> The following changes since commit 9e2d8656f5e8aa214e66b462680cf86b210b74a8:
->
->   Merge branch 'akpm' (Andrew's patch-bomb) (2012-10-09 16:23:15 +0900)
->
-> are available in the git repository at:
->
->
->   git://git.infradead.org/users/dhowells/linux-headers.git tags/disintegrate-spi-20121009
->
-> for you to fetch changes up to 7939d3c2a677b06cf111a1304710dd97892f3695:
->
->   UAPI: (Scripted) Disintegrate include/linux/spi (2012-10-09 09:49:03 +0100)
->
-> ----------------------------------------------------------------
-> UAPI Disintegration 2012-10-09
->
-> ----------------------------------------------------------------
-> David Howells (1):
->       UAPI: (Scripted) Disintegrate include/linux/spi
->
->  include/linux/spi/Kbuild              | 1 -
->  include/uapi/linux/spi/Kbuild         | 1 +
->  include/{ => uapi}/linux/spi/spidev.h | 0
->  3 files changed, 1 insertion(+), 1 deletion(-)
->  rename include/{ => uapi}/linux/spi/spidev.h (100%)
-> .
+David
 
-
-
--- 
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+------------------------------------------------------------------------------
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

@@ -1,50 +1,79 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [RFC PATCH v2 08/16] ARM: omap: add hsmmc am33xx specific init
-Date: Fri, 12 Oct 2012 07:54:37 -0400
-Message-ID: <20121012115437.GG13724@beef>
-References: <1349982281-10785-1-git-send-email-mporter@ti.com>
- <1349982281-10785-9-git-send-email-mporter@ti.com>
- <1BAFE6F6C881BF42822005164F1491C33EAA6374@DBDE01.ent.ti.com>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Activate resourses before deactivate them in
+	suspend
+Date: Fri, 12 Oct 2012 16:42:53 +0200
+Message-ID: <CAPDyKFpa8XoEy-kq3nq0dbRtM=a1wJ7cx=OzCOqMY1PmXrXJYw@mail.gmail.com>
+References: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Tony Lindgren <tony@atomide.com>, "Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.
-To: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1BAFE6F6C881BF42822005164F1491C33EAA6374@DBDE01.ent.ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1349423012-18048-1-git-send-email-ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 12, 2012 at 09:17:53AM +0000, Hebbar, Gururaja wrote:
-> Matt
-> 
-> On Fri, Oct 12, 2012 at 00:34:33, Porter, Matt wrote:
-> > AM33xx requires special handling in hsmmc initialization
-> > platform glue.
-> 
-> Since AM335x boots mainly through DT, do we still need this patch.
-> This function will be called in case of initializing hsmmc with
-> Platform data. 
+Hi Mark,
 
-Yes, thanks, will drop in v3.
+Just a kind remember on this. Do you see any problem merging this?
 
--Matt
+Kind regards
+Ulf Hansson
+
+On 5 October 2012 09:43, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
+> From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>
+> To be able to deactivate resourses in suspend, the resourses must
+> first be surely active. This is done with a pm_runtime_get_sync.
+> Once the resourses are restored to active state again in resume,
+> the runtime pm usage count can be decreased with a pm_runtime_put.
+>
+> Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> ---
+>  drivers/spi/spi-pl022.c |    3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+> index 9194641..c3590e0 100644
+> --- a/drivers/spi/spi-pl022.c
+> +++ b/drivers/spi/spi-pl022.c
+> @@ -2350,6 +2350,8 @@ static int pl022_suspend(struct device *dev)
+>                 dev_warn(dev, "cannot suspend master\n");
+>                 return ret;
+>         }
+> +
+> +       pm_runtime_get_sync(dev);
+>         pl022_suspend_resources(pl022);
+>
+>         dev_dbg(dev, "suspended\n");
+> @@ -2362,6 +2364,7 @@ static int pl022_resume(struct device *dev)
+>         int ret;
+>
+>         pl022_resume_resources(pl022);
+> +       pm_runtime_put(dev);
+>
+>         /* Start the queue running */
+>         ret = spi_master_resume(pl022->master);
+> --
+> 1.7.10
+>
+
+------------------------------------------------------------------------------
+Don't let slow site performance ruin your business. Deploy New Relic APM
+Deploy New Relic app performance management and know exactly
+what is happening inside your Ruby, Python, PHP, Java, and .NET app
+Try New Relic at no cost today and get our sweet Data Nerd shirt too!
+http://p.sf.net/sfu/newrelic-dev2dev

@@ -1,19 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [GIT PULL] Disintegrate UAPI for spi
-Date: Sat, 13 Oct 2012 00:31:25 +0100
-Message-ID: <CACxGe6t21=JgEYduAgcGoyz_zAbG-4RNMwouO-NzaMeez+Rc_w@mail.gmail.com>
-References: <30758.1349789445@warthog.procyon.org.uk>
-	<CACxGe6u51-er_U=FBaHzhAE2orZuq_B-MSwVVnCvoqZnEeHu7w@mail.gmail.com>
-	<15243.1350083203@warthog.procyon.org.uk>
+From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 3 mois cadeaux pour les soins de votre animal
+Date: Sat, 13 Oct 2012 04:28:07 +0200
+Message-ID: <1350095317.thing5078d1d536a89@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Howells <dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <15243.1350083203-S6HVgzuS8uM4Awkfq6JHfwNdhmdF6hFW@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,20 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Oct 13, 2012 at 12:06 AM, David Howells <dhowells-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org> wrote:
-> Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->
->> > Can you merge the following branch into the spi tree please.
->>
->> Do you want this merged into 3.7? If so, go ahead and push it directly
->> to Linus. I've not been able to do any maintainership stuff for the
->> last merge window or this one. Mark Brown has covered for me on SPI.
->
-> Could I get an Ack for it?
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMTc4JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xMyAwNDoxMDowMSZlPTEmaD0yMjE3NiZmPTIyMTc4Jmc9MjIxNzg=3D
 
-------------------------------------------------------------------------------
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMTc4JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xMyAwNDoxMDowMSZlPTEmaD0yMjE3NiZmPTIyMTc4Jmc9MjIxNz=
+g=3D
+
+
+---------------------------------------------------------------------------=
+---
 Don't let slow site performance ruin your business. Deploy New Relic APM
 Deploy New Relic app performance management and know exactly
 what is happening inside your Ruby, Python, PHP, Java, and .NET app

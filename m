@@ -1,8 +1,8 @@
-From: Assurance Animaux par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 3 mois cadeaux pour les soins de votre animal
-Date: Sat, 13 Oct 2012 04:28:07 +0200
-Message-ID: <1350095317.thing5078d1d536a89@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Toner Services par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Vos cartouches a prix discount + 1 Cle USB Offerte pour toute commande
+Date: Sat, 13 Oct 2012 06:03:05 +0200
+Message-ID: <1350101004.thing5078e80cb5f81@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMTc4JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xMyAwNDoxMDowMSZlPTEmaD0yMjE3NiZmPTIyMTc4Jmc9MjIxNzg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjE2MDcmYz0xOTYxNjQxJmQ9MjAx=
+Mi0xMC0xMyAwNjowMDowMSZlPTEmaD0yMTYwNiZmPTIxNjA3Jmc9MjE2MDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMTc4JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xMyAwNDoxMDowMSZlPTEmaD0yMjE3NiZmPTIyMTc4Jmc9MjIxNz=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjE2MDcmYz0=
+xOTYxNjQxJmQ9MjAxMi0xMC0xMyAwNjowMDowMSZlPTEmaD0yMTYwNiZmPTIxNjA3Jmc9MjE2MD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,17 +1,11 @@
-From: =?koi8-r?B?/sXHxdKj1yA=?= <jzptxgfa-pvs+CRRe+RBQFI55V6+gNQ@public.gmane.org>
-Subject: =?koi8-r?B?ZS1tYWlsINLB09PZzMvJIM/UIDMwNDUg0tXC?=
-Date: Mon, 15 Oct 2012 10:35:34 +0400
-Message-ID: <C07481DEC0E54668852FF9E4E8523F6A@wrslq>
+From: 13544101049-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 税/票――代/开
+Date: Sun, 14 Oct 2012 22:14:26 +0800
+Message-ID: <E1TNlOx-00019i-2q@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
+Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
-To: <serials2008-O5WfVfzUwx8@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<valeev-SYPjacQAEmk@public.gmane.org>, <ternedvig-JGs/UdohzUI@public.gmane.org>, <gostnorm-5URONGGNgjI@public.gmane.org>,
-	<transerfermsk-o+MxOtu4lMCHXe+LvDLADg@public.gmane.org>, <info-WLE3QRhScb2HXe+LvDLADg@public.gmane.org>, <info-G2tT1RKrIAQ@public.gmane.org>,
-	<diktor-SYPjacQAEmk@public.gmane.org>, <congress3-wUdYQqulHFfT9K10yU4tPQ@public.gmane.org>, <fedor-mnO0GIe32D0@public.gmane.org>,
-	<info-UmS5sI0m33mNFIUCPA7XsQ@public.gmane.org>, <info-uXBeYm+3ZDASGGvckKMTYi8mxiWnj2XH@public.gmane.org>, <egor-zcKXXFso94Q@public.gmane.org>,
-	<alumboats-JGs/UdohzUI@public.gmane.org>, <info-YVH644z3943ILq5++fvS8w@public.gmane.org>, <sewing-QiqzwQerX7TnhmqeL8I64Ydd74u8MsAO@public.gmane.org>,
-	<eskart-JGs/UdohzUI@public.gmane.org>, <avir1-JGs/UdohzUI@public.gmane.org>, <info-ru-ar0VGQHHcwtEgLnXhegG/Q@public.gmane.org>
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -23,19 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ZS1tYWlsINLB09PZzMvJIAoKzc/Ty9fBIMDSLiDMycPBIDEuOTg2LjAwMCDBxNLF08/XIC0gMzg1
-NCDS1cIgCgrNz9PL18EgxsnaLiDMycPBIDExLjYzMC4wMDAgwcTSxdPP1yAtIDY5NzEg0tXCIAoK
-0s/T08nRIMDSLiDMycPBIDQuMjYwLjAwMCDBxNLF08/XIC0gNjgyNiDS1cIgCgrSz9PTydEgxsna
-LiDMycPBIDM0LjQ1MC4wMDAgwcTSxdPP1yAtIDExMjMyINLVwiAKCtLB09PZzMvBINDPIMzAws/K
-INTFzcHUycvFICjT1NLPydTFzNjO2cUsIMDSycTJ3sXTy8nFIMnUxCDP0sfBzsnawcPJySkgLSAz
-MDc3INLVwiAKCtTFzCArNyAoNDk5KSA1MDQtMTYtNDIgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpE
-b24ndCBsZXQgc2xvdyBzaXRlIHBlcmZvcm1hbmNlIHJ1aW4geW91ciBidXNpbmVzcy4gRGVwbG95
-IE5ldyBSZWxpYyBBUE0KRGVwbG95IE5ldyBSZWxpYyBhcHAgcGVyZm9ybWFuY2UgbWFuYWdlbWVu
-dCBhbmQga25vdyBleGFjdGx5CndoYXQgaXMgaGFwcGVuaW5nIGluc2lkZSB5b3VyIFJ1YnksIFB5
-dGhvbiwgUEhQLCBKYXZhLCBhbmQgLk5FVCBhcHAKVHJ5IE5ldyBSZWxpYyBhdCBubyBjb3N0IHRv
-ZGF5IGFuZCBnZXQgb3VyIHN3ZWV0IERhdGEgTmVyZCBzaGlydCB0b28hCmh0dHA6Ly9wLnNmLm5l
-dC9zZnUvbmV3cmVsaWMtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
+0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NDQxMDEw
+NDkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpEb24ndCBsZXQgc2xvdyBzaXRlIHBlcmZvcm1hbmNl
+IHJ1aW4geW91ciBidXNpbmVzcy4gRGVwbG95IE5ldyBSZWxpYyBBUE0KRGVwbG95IE5ldyBSZWxp
+YyBhcHAgcGVyZm9ybWFuY2UgbWFuYWdlbWVudCBhbmQga25vdyBleGFjdGx5CndoYXQgaXMgaGFw
+cGVuaW5nIGluc2lkZSB5b3VyIFJ1YnksIFB5dGhvbiwgUEhQLCBKYXZhLCBhbmQgLk5FVCBhcHAK
+VHJ5IE5ldyBSZWxpYyBhdCBubyBjb3N0IHRvZGF5IGFuZCBnZXQgb3VyIHN3ZWV0IERhdGEgTmVy
+ZCBzaGlydCB0b28hCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWMtZGV2MmRldgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

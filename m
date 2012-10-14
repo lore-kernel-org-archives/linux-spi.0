@@ -1,23 +1,14 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Activate resourses before deactivate them in
-	suspend
-Date: Sun, 14 Oct 2012 14:27:07 +0900
-Message-ID: <20121014052705.GA22172@opensource.wolfsonmicro.com>
-References: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
-	<CAPDyKFpa8XoEy-kq3nq0dbRtM=a1wJ7cx=OzCOqMY1PmXrXJYw@mail.gmail.com>
+From: Bitdefender en =?iso-8859-15?Q?T=E9l=E9chargement?= par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= Gratuitement Bitdefender
+Date: Sun, 14 Oct 2012 22:42:03 +0200
+Message-ID: <1350247328.thing507b23a0b58b3@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vipul Kumar Samar <vipulkumar.samar-qxv4g6HH51o@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpa8XoEy-kq3nq0dbRtM=a1wJ7cx=OzCOqMY1PmXrXJYw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,21 +19,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 12, 2012 at 04:42:53PM +0200, Ulf Hansson wrote:
-> Hi Mark,
-> 
-> Just a kind remember on this. Do you see any problem merging this?
-> 
-> Kind regards
-> Ulf Hansson
-> 
-> On 5 October 2012 09:43, Ulf Hansson <ulf.hansson-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Don't top post and don't send contentless nags less than a week after
-your original mail, especially not in the merge window when only urgent
-bug fixes should be applied.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxOTgxJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xNCAyMjo0MDowMSZlPTEmaD0yMTk4MCZmPTIxOTgxJmc9MjE5ODE=3D
 
-------------------------------------------------------------------------------
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxOTgxJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xNCAyMjo0MDowMSZlPTEmaD0yMTk4MCZmPTIxOTgxJmc9MjE5OD=
+E=3D
+
+
+---------------------------------------------------------------------------=
+---
 Don't let slow site performance ruin your business. Deploy New Relic APM
 Deploy New Relic app performance management and know exactly
 what is happening inside your Ruby, Python, PHP, Java, and .NET app

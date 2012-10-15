@@ -1,8 +1,8 @@
-From: Bitdefender en =?iso-8859-15?Q?T=E9l=E9chargement?= par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= Gratuitement Bitdefender
-Date: Sun, 14 Oct 2012 22:42:03 +0200
-Message-ID: <1350247328.thing507b23a0b58b3@mach10.generated>
+From: MisterAssur par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre facture =?iso-8859-15?Q?v=E9t=E9rinaire?= enfin
+	=?iso-8859-15?Q?rembours=E9e?=
+Date: Mon, 15 Oct 2012 06:10:09 +0200
+Message-ID: <1350274223.thing507b8caf13f36@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +21,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIxOTgxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xNCAyMjo0MDowMSZlPTEmaD0yMTk4MCZmPTIxOTgxJmc9MjE5ODE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMDMxJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xNSAwNjowMDowMSZlPTEmaD0yMjAzMCZmPTIyMDMxJmc9MjIwMzE=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIxOTgxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xNCAyMjo0MDowMSZlPTEmaD0yMTk4MCZmPTIxOTgxJmc9MjE5OD=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMDMxJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xNSAwNjowMDowMSZlPTEmaD0yMjAzMCZmPTIyMDMxJmc9MjIwMz=
 E=3D
 
 

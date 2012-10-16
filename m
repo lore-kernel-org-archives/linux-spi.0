@@ -1,8 +1,7 @@
-From: Weight Watchers par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Decouvrez les offres =?iso-8859-15?Q?=E0?= -50% sur Weight Watchers
-	Online
-Date: Wed, 17 Oct 2012 00:24:04 +0200
-Message-ID: <1350426259.thing507dde934492f@mach10.generated>
+From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Exprimez vos envies de Vacances
+Date: Wed, 17 Oct 2012 00:36:03 +0200
+Message-ID: <1350426996.thing507de174158fd@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMzM1JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xNyAwMDoyMDowMSZlPTEmaD0yMjMzMyZmPTIyMzM1Jmc9MjIzMzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMzM5JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0xNyAwMDozMDowMSZlPTEmaD0yMjMzNyZmPTIyMzM5Jmc9MjIzMzk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMzM1JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xNyAwMDoyMDowMSZlPTEmaD0yMjMzMyZmPTIyMzM1Jmc9MjIzMz=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMzM5JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0xNyAwMDozMDowMSZlPTEmaD0yMjMzNyZmPTIyMzM5Jmc9MjIzMz=
+k=3D
 
 
 ---------------------------------------------------------------------------=

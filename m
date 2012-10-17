@@ -1,67 +1,102 @@
-From: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-Subject: [PATCH 3/4] spi/pl022: Activate resourses before deactivate them in
-	suspend
-Date: Wed, 17 Oct 2012 14:27:16 +0200
-Message-ID: <1350476836-13128-1-git-send-email-linus.walleij@stericsson.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v2 v2 v2 8/8] spi/s3c64xx: use correct dma_transfer_direction type
+Date: Wed, 17 Oct 2012 13:27:22 +0000
+Message-ID: <201210171327.23182.arnd@arndb.de>
+References: <1349813638-4617-1-git-send-email-arnd@arndb.de> <1349813638-4617-9-git-send-email-arnd@arndb.de> <003a01cdac3f$08fe40d0$1afac270$%kim@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: arm@kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, "'Ben Dooks'" <ben-linux@fluff.org>,
+	"'Grant Likely'" <grant.likely@secretlab.ca>,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Kukjin Kim <kgene.kim@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <003a01cdac3f$08fe40d0$1afac270$%kim@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On Wednesday 17 October 2012, Kukjin Kim wrote:
+> BTW, don't we need following accordingly?
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 1a81c90..a0bb55e 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1067,11 +1067,11 @@ static int __devinit s3c64xx_spi_get_dmares(
+> 
+>         if (tx) {
+>                 dma_data = &sdd->tx_dma;
+> -               dma_data->direction = DMA_TO_DEVICE;
+> +               dma_data->direction = DMA_MEM_TO_DEV;
+>                 chan_str = "tx";
+>         } else {
+>                 dma_data = &sdd->rx_dma;
+> -               dma_data->direction = DMA_FROM_DEVICE;
+> +               dma_data->direction = DMA_DEV_TO_MEM;
+>                 chan_str = "rx";
+>         }
+> 
 
-To be able to deactivate resourses in suspend, the resourses must
-first be surely active. This is done with a pm_runtime_get_sync.
-Once the resourses are restored to active state again in resume,
-the runtime pm usage count can be decreased with a pm_runtime_put.
+Yes, you are absolutely right, sorry for not seeing that earlier.
+New version below.
 
-Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-pl022.c | 3 +++
- 1 file changed, 3 insertions(+)
+	Arnd
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 51b7a95..51329b2 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2346,6 +2346,8 @@ static int pl022_suspend(struct device *dev)
- 		dev_warn(dev, "cannot suspend master\n");
- 		return ret;
+>From c10356b9846b13651a8a24c3a31e029ffe6eafd9 Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 30 Apr 2012 16:31:27 +0000
+Subject: [PATCH] spi/s3c64xx: use correct dma_transfer_direction type
+
+There is a subtle difference between dma_transfer_direction and
+dma_data_direction: the former is used by the dmaengine framework,
+while the latter is used by the dma-mapping API. Although the
+purpose is comparable, the actual values are different and must
+not be mixed. In this case, the driver just wants to use
+dma_transfer_direction.
+
+Without this patch, building s3c6400_defconfig results in:
+
+drivers/spi/spi-s3c64xx.c: In function 's3c64xx_spi_dmacb':
+drivers/spi/spi-s3c64xx.c:239:21: warning: comparison between
+	'enum dma_data_direction' and 'enum dma_transfer_direction' [-Wenum-compare]
+
+As pointed out by Kukjin Kim, this also changes the use of constants
+from DMA_FROM_DEVICE/DMA_TO_DEVICE to DMA_DEV_TO_MEM/DMA_MEM_TO_DEV.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Kukjin Kim <kgene.kim@samsung.com>
+Cc: Ben Dooks <ben-linux@fluff.org>
+Cc: Grant Likely <grant.likely@secretlab.ca>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: spi-devel-general@lists.sourceforge.net
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index d1c8441f..cd43b4b 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -132,7 +132,7 @@
+ 
+ struct s3c64xx_spi_dma_data {
+ 	unsigned		ch;
+-	enum dma_data_direction direction;
++	enum dma_transfer_direction direction;
+ 	enum dma_ch	dmach;
+ 	struct property		*dma_prop;
+ };
+@@ -1065,11 +1065,11 @@ static int __devinit s3c64xx_spi_get_dmares(
+ 
+ 	if (tx) {
+ 		dma_data = &sdd->tx_dma;
+-		dma_data->direction = DMA_TO_DEVICE;
++		dma_data->direction = DMA_MEM_TO_DEV;
+ 		chan_str = "tx";
+ 	} else {
+ 		dma_data = &sdd->rx_dma;
+-		dma_data->direction = DMA_FROM_DEVICE;
++		dma_data->direction = DMA_DEV_TO_MEM;
+ 		chan_str = "rx";
  	}
-+
-+	pm_runtime_get_sync(dev);
- 	pl022_suspend_resources(pl022);
  
- 	dev_dbg(dev, "suspended\n");
-@@ -2358,6 +2360,7 @@ static int pl022_resume(struct device *dev)
- 	int ret;
- 
- 	pl022_resume_resources(pl022);
-+	pm_runtime_put(dev);
- 
- 	/* Start the queue running */
- 	ret = spi_master_resume(pl022->master);
--- 
-1.7.11.3
-
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_sfd2d_oct

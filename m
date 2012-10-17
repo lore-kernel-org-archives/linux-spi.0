@@ -1,19 +1,19 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: add IDLE state pin management
-Date: Wed, 17 Oct 2012 16:24:04 +0900
-Message-ID: <20121017072402.GE14199@opensource.wolfsonmicro.com>
-References: <1349957031-23867-1-git-send-email-linus.walleij@stericsson.com>
+Subject: Re: [PATCH v3] SPI: McSPI: allow configuration of pin directions
+Date: Wed, 17 Oct 2012 16:27:15 +0900
+Message-ID: <20121017072714.GF14199@opensource.wolfsonmicro.com>
+References: <1349626784-22035-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+Cc: Juha Yrjola <juha.yrjola-EmnPodGKVbzby3iVrkZq2A@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, Matus Ujhelyi <matus.ujhelyi-6oiIBCxl0MMjD8S081q9vkEOCMrvLtNR@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1349957031-23867-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <1349626784-22035-1-git-send-email-zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,14 +24,11 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 11, 2012 at 02:03:51PM +0200, Linus Walleij wrote:
-> From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
-> 
-> This commit allow to put pins in IDLE state in
-> runtime_suspend and in SLEEP state in suspend, corresponding
-> to defined semantics in <linux/pinctrl/pinctrl-state.h>.
+On Sun, Oct 07, 2012 at 06:19:44PM +0200, Daniel Mack wrote:
+> Allow D0 to be an input and D1 to be an output, configurable via
+> platform data and a new DT property.
 
-Not sure what tree this is against but it doesn't apply to v3.7-rc1.
+Applied, thanks.
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

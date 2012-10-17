@@ -1,18 +1,19 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/4] spi: spi-pl022: Minor simplification for runtime pm
-Date: Wed, 17 Oct 2012 16:39:17 +0200
-Message-ID: <CAPDyKFoAj=sUiMrY+YeJk2jQECrzspy1ndv5RAnYobDJSGf9Mg@mail.gmail.com>
+Date: Wed, 17 Oct 2012 19:25:32 +0200
+Message-ID: <CACRpkdZpNKTG_Pu8oudqbqQT-K=6kfoUYm552JTjKQz6-Wpx5A@mail.gmail.com>
 References: <1350476828-13091-1-git-send-email-linus.walleij@stericsson.com>
+	<CAPDyKFoAj=sUiMrY+YeJk2jQECrzspy1ndv5RAnYobDJSGf9Mg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+	Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1350476828-13091-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+In-Reply-To: <CAPDyKFoAj=sUiMrY+YeJk2jQECrzspy1ndv5RAnYobDJSGf9Mg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,50 +24,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On Wed, Oct 17, 2012 at 4:39 PM, Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
 
-We have discussed this patch previously. I think we shall use it, but
-we should change the commit msg since it does not reflect the truth.
-It is no more true that "upper layer in driver core is preventing the
-device from being runtime suspended by a pm_runtime_get*". This was
-the case earlier.
+> We have discussed this patch previously. I think we shall use it, but
+> we should change the commit msg since it does not reflect the truth.
+> It is no more true that "upper layer in driver core is preventing the
+> device from being runtime suspended by a pm_runtime_get*". This was
+> the case earlier.
 
-Kind regards
-Ulf Hansson
+OK I'll update the commit message and respin this one *only*
+as [PATCH 2/4 v2] hold on...
 
-On 17 October 2012 14:27, Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org> wrote:
-> From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
-> In probe pm_runtime_put_autosuspend has the same effect as doing
-> pm_runtime_put. This due to upper layer in driver core is preventing
-> the device from being runtime suspended by a pm_runtime_get*.
->
-> Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> Signed-off-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi-pl022.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-> index a1db91a..51b7a95 100644
-> --- a/drivers/spi/spi-pl022.c
-> +++ b/drivers/spi/spi-pl022.c
-> @@ -2246,10 +2246,9 @@ pl022_probe(struct amba_device *adev, const struct amba_id *id)
->                 pm_runtime_set_autosuspend_delay(dev,
->                         platform_info->autosuspend_delay);
->                 pm_runtime_use_autosuspend(dev);
-> -               pm_runtime_put_autosuspend(dev);
-> -       } else {
-> -               pm_runtime_put(dev);
->         }
-> +       pm_runtime_put(dev);
-> +
->         return 0;
->
->   err_spi_register:
-> --
-> 1.7.11.3
->
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

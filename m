@@ -1,16 +1,19 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 0/3] spi/bcm63xx: misc cleanups and fixes
-Date: Wed, 17 Oct 2012 16:13:35 +0900
-Message-ID: <20121017071334.GD14199@opensource.wolfsonmicro.com>
-References: <1349258215-27949-1-git-send-email-florian@openwrt.org>
+Subject: Re: [PATCH] spi/pl022: add IDLE state pin management
+Date: Wed, 17 Oct 2012 16:24:04 +0900
+Message-ID: <20121017072402.GE14199@opensource.wolfsonmicro.com>
+References: <1349957031-23867-1-git-send-email-linus.walleij@stericsson.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Anmar Oueja <anmar.oueja-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
+To: Linus Walleij <linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1349258215-27949-1-git-send-email-florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1349957031-23867-1-git-send-email-linus.walleij-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,14 +24,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 03, 2012 at 11:56:52AM +0200, Florian Fainelli wrote:
-> Hi Mark, Grant,
+On Thu, Oct 11, 2012 at 02:03:51PM +0200, Linus Walleij wrote:
+> From: Patrice Chotard <patrice.chotard-0IS4wlFg1OjSUeElwK9/Pw@public.gmane.org>
 > 
-> This small series contains cleanups and fixes that had already been previously
-> merged by Grant in his tree, but not pushed upstream. I am resending them
-> rebased on Mark's spi-next branch.
+> This commit allow to put pins in IDLE state in
+> runtime_suspend and in SLEEP state in suspend, corresponding
+> to defined semantics in <linux/pinctrl/pinctrl-state.h>.
 
-Applied all, thanks.
+Not sure what tree this is against but it doesn't apply to v3.7-rc1.
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

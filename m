@@ -1,29 +1,17 @@
-From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Subject: [RFC PATCH v3 16/16] ARM: dts: add AM33XX SPI support
-Date: Thu, 18 Oct 2012 09:26:55 -0400
-Message-ID: <1350566815-409-17-git-send-email-mporter@ti.com>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH 2/2] ARM: dts: cfa10049: Add spidev to drive the DAC on SSP3
+Date: Thu, 18 Oct 2012 15:59:28 +0200
+Message-ID: <1350568768-4374-3-git-send-email-maxime.ripard@free-electrons.com>
+References: <1350568768-4374-1-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, brian-ZKiFAVwZFM2FeswfMrDH8w@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
+	shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1350566815-409-1-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1350568768-4374-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,125 +22,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Adds AM33XX SPI support for am335x-bone and am335x-evm.
-
-Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
- arch/arm/boot/dts/am335x-bone.dts |   17 +++++++++++++++
- arch/arm/boot/dts/am335x-evm.dts  |    9 ++++++++
- arch/arm/boot/dts/am33xx.dtsi     |   43 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
+ arch/arm/boot/dts/imx28-cfa10049.dts |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/boot/dts/am335x-bone.dts b/arch/arm/boot/dts/am335x-bone.dts
-index 5510979..23edfd8 100644
---- a/arch/arm/boot/dts/am335x-bone.dts
-+++ b/arch/arm/boot/dts/am335x-bone.dts
-@@ -18,6 +18,17 @@
- 		reg = <0x80000000 0x10000000>; /* 256 MB */
- 	};
+diff --git a/arch/arm/boot/dts/imx28-cfa10049.dts b/arch/arm/boot/dts/imx28-cfa10049.dts
+index 05c892e..d91d16c 100644
+--- a/arch/arm/boot/dts/imx28-cfa10049.dts
++++ b/arch/arm/boot/dts/imx28-cfa10049.dts
+@@ -29,6 +29,7 @@
+ 						0x01c1 /* MX28_PAD_GPMI_RESETN__SSP3_CMD */
+ 						0x0111 /* MX28_PAD_GPMI_CE1N__SSP3_D3 */
+ 						0x01a2 /* MX28_PAD_GPMI_ALE__SSP3_D4 */
++						0x01b2 /* MX28_PAD_GPMI_CLE__SSP3_D5 */
+ 					>;
+ 					fsl,drive-strength = <1>;
+ 					fsl,voltage = <1>;
+@@ -60,6 +61,11 @@
+ 					spi-max-frequency = <100000>;
+ 				};
  
-+	am3358_pinmux: pinmux@44e10800 {
-+		spi1_pins: pinmux_spi1_pins {
-+			pinctrl-single,pins = <
-+				0x190 0x13	/* mcasp0_aclkx.spi1_sclk, OUTPUT_PULLUP | MODE3 */
-+				0x194 0x33	/* mcasp0_fsx.spi1_d0, INPUT_PULLUP | MODE3 */
-+				0x198 0x13	/* mcasp0_axr0.spi1_d1, OUTPUT_PULLUP | MODE3 */
-+				0x19c 0x13	/* mcasp0_ahclkr.spi1_cs0, OUTPUT_PULLUP | MODE3 */
-+			>;
-+		};
-+	};
-+
- 	ocp {
- 		uart1: serial@44e09000 {
- 			status = "okay";
-@@ -84,3 +95,9 @@
- &mmc1 {
- 	vmmc-supply = <&ldo3_reg>;
- };
-+
-+&spi1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins>;
-+};
-diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-index d63fce8..8d5f660 100644
---- a/arch/arm/boot/dts/am335x-evm.dts
-+++ b/arch/arm/boot/dts/am335x-evm.dts
-@@ -124,3 +124,12 @@
- &mmc1 {
- 	vmmc-supply = <&vmmc_reg>;
- };
-+
-+&spi0 {
-+	status = "okay";
-+	spi-flash@0 {
-+		compatible = "spansion,s25fl064k", "m25p80";
-+		spi-max-frequency = <24000000>;
-+		reg = <0>;
-+	};
-+};
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index 26a6af7..063ecea 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -40,6 +40,15 @@
- 		};
- 	};
- 
-+	am3358_pinmux: pinmux@44e10800 {
-+		compatible = "pinctrl-single";
-+		reg = <0x44e10800 0x0238>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		pinctrl-single,register-width = <32>;
-+		pinctrl-single,function-mask = <0x7f>;
-+	};
-+
- 	/*
- 	 * XXX: Use a flat representation of the AM33XX interconnect.
- 	 * The real AM33XX interconnect network is quite complex.Since
-@@ -261,6 +270,40 @@
- 			status = "disabled";
++				spidev: spidev@2 {
++					compatible = "linux,spidev";
++					reg = <2>;
++					spi-max-frequency = <100000>;
++				};
+ 			};
  		};
  
-+		spi0: spi@48030000 {
-+			compatible = "ti,omap4-mcspi";
-+			ti,hwmods = "spi0";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x48030000 0x400>;
-+			interrupt-parent = <&intc>;
-+			interrupt = <65>;
-+			dmas = <&edma 16
-+				&edma 17
-+				&edma 18
-+				&edma 19>;
-+			dma-names = "tx0", "rx0", "tx1", "rx1";
-+			ti,spi-num-cs = <2>;
-+			status = "disabled";
-+		};
-+
-+		spi1: spi@481a0000 {
-+			compatible = "ti,omap4-mcspi";
-+			ti,hwmods = "spi1";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0x481a0000 0x400>;
-+			interrupt-parent = <&intc>;
-+			interrupt = <125>;
-+			dmas = <&edma 42
-+				&edma 43
-+				&edma 44
-+				&edma 45>;
-+			dma-names = "tx0", "rx0", "tx1", "rx1";
-+			ti,spi-num-cs = <2>;
-+			status = "disabled";
-+		};
-+
- 		wdt2: wdt@44e35000 {
- 			compatible = "ti,omap3-wdt";
- 			ti,hwmods = "wd_timer2";
 -- 
 1.7.9.5
 

@@ -1,13 +1,11 @@
-From: Blancheporte par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?derni=E8re?= semaine un article sur deux
-	=?iso-8859-15?Q?=E0?= 50pourcent
-Date: Fri, 19 Oct 2012 21:13:04 +0200
-Message-ID: <1350674085.thing5081a6a51353e@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Emily Guerra" <virlan_danusia-rY0U0ajzRnKItuTB8Jqodg@public.gmane.org>
+Subject: [SPAM] New Pick Coming Soon!
+Date: Fri, 19 Oct 2012 18:55:15 -0500
+Message-ID: <003101cdae55$6193c5e0$896b1ec9@USUARIOPC423>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,18 +17,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Good Afternoon Subscribers!
+T_L_PC is making ripples! Number 1 Searched Stock On Board Central 
+Today. Get Your Orders In Soon!!!
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyNTEyJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0xOSAyMToxMDowMSZlPTEmaD0yMjUxMCZmPTIyNTEyJmc9MjI1MTI=3D
+Trade: Monday, Oct 22
+OTCBB: Telpac Industries
+Tick: T_L_PC
+Currently: $0.32
+Long Term Target: 5
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyNTEyJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0xOSAyMToxMDowMSZlPTEmaD0yMjUxMCZmPTIyNTEyJmc9MjI1MT=
-I=3D
+T_L_PC has selected established mobile app developers Revolution Games 
+Inc. to develop two quality games that will feature graphics intense, 
+co-op gaming. Instead of charging consumers a flat cost to buy the game, 
+T_L_PC will use the micro payment system employed by heavyweights like 
+Zynga. Micro Payments spur players to buy in-game items to secure an 
+edge over fellow gamers. Both videogames will be released in Q4 for the 
+millions of consumers on the Android Market and Apple App Store.
 
 
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

@@ -1,7 +1,9 @@
-From: Gagnant du sejour par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Envolez vous pour Rome
-Date: Sat, 20 Oct 2012 02:22:06 +0200
-Message-ID: <1350692537.thing5081eeb95790e@mach10.generated>
+From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
+	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
+Date: Sat, 20 Oct 2012 02:45:06 +0200
+Message-ID: <1350693911.thing5081f4173fcba@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMjIxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0yMCAwMjoyMDowMSZlPTEmaD0yMjIxOSZmPTIyMjIxJmc9MjIyMjE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyMjA2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0yMCAwMjo0MDowMSZlPTEmaD0yMjIwNCZmPTIyMjA2Jmc9MjIyMDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMjIxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0yMCAwMjoyMDowMSZlPTEmaD0yMjIxOSZmPTIyMjIxJmc9MjIyMj=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyMjA2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0yMCAwMjo0MDowMSZlPTEmaD0yMjIwNCZmPTIyMjA2Jmc9MjIyMD=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

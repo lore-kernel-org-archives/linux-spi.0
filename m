@@ -1,11 +1,13 @@
-From: "Marta" <noreply_fineuropa14-IWqWACnzNjyonA0d6jMUrA@public.gmane.org>
-Subject: SERVIZIO CONTENZIOSO BANCARIO
-Date: Sun, 21 Oct 2012 16:55:33 +0200
-Message-ID: <E1TPwwH-0000ti-Be@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Mistergooddeal  par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Notre =?iso-8859-15?Q?s=E9lection?= top promo de la semaine
+	=?iso-8859-15?Q?jusqu=27=E0?= moins72 pourcent.
+Date: Mon, 22 Oct 2012 00:24:05 +0200
+Message-ID: <1350858300.thing5084763cc245f@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,18 +19,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Un collaudato staff a disposizione di imprese, commercialisti e studi legali
- per assistervi nelle fasi delle varie procedure
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Troverari questo prodotto e  tante altre agevolazioni inserendo su google "=
-fineuropa-italia-contributi"
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyNTEwJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0yMiAwMDoyMDowMSZlPTEmaD0yMjUwOCZmPTIyNTEwJmc9MjI1MTA=3D
 
-Fineuropa-italia-contributi offre servizi per aziende in difficolta, serviz=
-i per nuovi investimenti, assistenza alle aziende in fase di start-up, serv=
-izi finanziari per le imprese agricole e tante altre opportunut=E0.
-Spero che possa essere utile.
-Ciao
-
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyNTEwJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0yMiAwMDoyMDowMSZlPTEmaD0yMjUwOCZmPTIyNTEwJmc9MjI1MT=
+A=3D
 
 
 ---------------------------------------------------------------------------=

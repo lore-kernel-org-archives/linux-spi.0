@@ -1,15 +1,14 @@
-From: "Rick" <kikixiaosuaasisni353-LWAfsSFWpa4@public.gmane.org>
-Subject: [SPAM] Digital Photo Editing Services - Photo Cutout - Photo
-	Retouching
-Date: Sun, 21 Oct 2012 01:43:46 +0800
-Message-ID: <TRADEBOOK6WY9IuXZ2y000127b6@tradebook>
-Reply-To: imagingedit-9Onoh4P/yGk@public.gmane.org
+From: "=?UTF-8?B?QmlvcXVhbGl0eSBDb2xjaMO1ZXM=?=" <midiabqc-JoZahT3V9PQ39yzSjRtAkw@public.gmane.org>
+Subject: [SPAM]
+	=?UTF-8?B?NTAlIENPTENIw4NPIENJRU5Uw41GSUNPIFAgU0HDmkRFIChEaXJldG8gZGEgRsOhYnJpY2EpIC0gR2FyYW50aWEgMTVBbm9z?=
+Date: Sun, 21 Oct 2012 07:45:15 -0200
+Message-ID: <fe4933b0141d1f904668fff474690e29@sistemabqc.com.br>
+Reply-To: midiabqc-JoZahT3V9PQ39yzSjRtAkw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,54 +19,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-You are receiving this email because we wish you to use our digital photo editing services.
-
-We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques. 
-
-Our strength in providing Editing solutions for digital images like photo masking, photo re-touching, back ground cleaning & cloning, sharpening & restoration of color, all this derive from our vast experience. Our dedicated team of highly skilled and experienced professionals serves the photo Editing requirements of our clients. An in house quality checking mechanism assures value addition and delivers perfect job. Our team can deliver your job overnight or in time bounded fashion irrespective of job size. 
-
-Our mainly services are: 
-
-1. Photo Cutout
-2. Photo Enhancement
-3. Photo Retouching
-4. Vector Conversion
-5. Pop Art
-6. Images Masking
-7. Clipping Path
-8. Photo Restoration 
-9. Web Design
-
-Photo Editing Services:
-
-Our Photo Editing services includes advanced photo cutouts/clippings, balancing brightness / contrast in an image, repair of minor scratches, creases, minor dust, and spot removal to removal of major scratches, cracks, creases, and stains in all areas. We also repair seriously faded/damaged photographs and make it print ready.
-
-Best regards,
-Rick
-Rickkanuican Imaging Professionals
-Contact: contactrick-KN7UnAbNpbg@public.gmane.org
-
-
-
-
--------------------------------------------------
-
-This e-mail (and any attachments) is confidential and may contain
-personal views which are not the views of us. unless specifically stated. If you have received
-it in error, please delete it from your system, do not use, copy or
-disclose the information in any way nor act in reliance on it and
-notify the sender immediately.
-
-UNSUBSCRIBE INSTRUCTIONS
-If you do not wish to receive our newsletter, pls send address to imremove-Mj/0Miq2reM@public.gmane.org for remove.
-Before printing think about the Environment.
-
-
-
-
-                                                                                                                                                                 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_sfd2d_oct
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vc2lzdGVt
+YWJxYy5jb20uYnIvZGlzcGxheS5waHA/TT0zMDcxMjM3JkM9ZjFiOGY5NGUyZmFlYTc0MTc4NWI5
+OTFhMzNkZGY5MGMmUz0zOCZMPTM5Jk49MQoKClBhcmEgcGFyYXIgZGUgcmVjZWJlciBub3Nzb3MK
+RW1haWxzOmh0dHA6Ly9zaXN0ZW1hYnFjLmNvbS5ici91bnN1YnNjcmliZS5waHA/TT0zMDcxMjM3
+JkM9ZjFiOGY5NGUyZmFlYTc0MTc4NWI5OTFhMzNkZGY5MGMmTD0zOSZOPTM4Ci0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdlYnNpdGVzLiBTbyBkbyB3ZS4KTWFrZSB5
+b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFtaWNzCkRvd25sb2FkIEFwcER5bmFtaWNz
+IExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwZHluX3NmZDJkX29j
+dApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

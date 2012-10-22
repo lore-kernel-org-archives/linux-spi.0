@@ -1,154 +1,140 @@
-From: "Bedia, Vaibhav" <vaibhav.bedia-l0cyMroinI0@public.gmane.org>
-Subject: RE: [RFC PATCH v3 00/16] DMA Engine support for AM33XX
-Date: Mon, 22 Oct 2012 05:53:32 +0000
-Message-ID: <B5906170F1614E41A8A28DE3B8D121433EBD580F@DBDE01.ent.ti.com>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
-	<B5906170F1614E41A8A28DE3B8D121433EBD29FC@DBDE01.ent.ti.com>
-	<20121019111558.GD25164@beef>
-	<B5906170F1614E41A8A28DE3B8D121433EBD2CE1@DBDE01.ent.ti.com>
-	<20121019164615.GH25164@beef>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH] spi: tegra: add spi driver for SLINK controller
+Date: Mon, 22 Oct 2012 13:28:26 +0100
+Message-ID: <20121022122825.GD4477@opensource.wolfsonmicro.com>
+References: <1350557233-31234-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Grant,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>, Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>, "Cousson,
-	Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>, Rob,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree, Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Linux,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: "Porter, Matt" <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121019164615.GH25164@beef>
-Content-Language: en-US
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="k4f25fnPtRuIRUb3"
+Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1350557233-31234-1-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 19, 2012 at 22:16:15, Porter, Matt wrote:
-> On Fri, Oct 19, 2012 at 12:02:42PM +0000, Bedia, Vaibhav wrote:
-> > On Fri, Oct 19, 2012 at 16:45:58, Porter, Matt wrote:
-> > > On Fri, Oct 19, 2012 at 10:26:20AM +0000, Bedia, Vaibhav wrote:
-> > [...]
-> > > > 
-> > > > I didn't see all the patches that you posted on edma-dmaengine-v3
-> > > > but I do seem them on edma-dmaengine-am33xx-v3 branch.
-> > > 
-> > > I see I referenced the wrong branch in the cover letter. Thanks for
-> > > testing and noticing this. Sorry to make you hunt for the correct
-> > > branch in that repo. ;) 
-> > > 
-> > 
-> > No problem.
-> > 
-> > > https://github.com/ohporter/linux/tree/edma-dmaengine-am33xx-v3
-> > > is indeed the correct branch for those wanting to pull this in or
-> > > grab some of the not-to-be-merged drivers I used for testing.
-> > > 
-> > > > I added a couple of patches to enable earlyprintk and build the DTB
-> > > > appended kernel image uImage-dtb.am335x-evm
-> > > > 
-> > > > Here's what i see
-> > > > 
-> > > > [...]
-> > > 
-> > > <snip>
-> > > 
-> > > > [    0.175354] edma: probe of 49000000.edma failed with error -16
-> > > 
-> > > I missed an uninitialized pdata case in the bug fixes mentioned in
-> > > the changelog and the folks previously failing the same way didn't
-> > > hit the case I suspect you are hitting. Can you try this and let me
-> > > know how it works?
-> > > 
-> > 
-> > That doesn't help :(
-> 
-> Ok, so I dumped my Linaro toolchain which was masking this issue that
-> you got unlucky with on EVM, whereas I was lucky. Switching toolchains I
-> was able to reproduce the problem. Pantelis Antoniou suggested some
-> changes and the following fixes this issue for me...verified on both
-> BeagleBone and EVM. Let me know if that works on your end and I'll
-> incorporate some version of it in the next update.
 
-Heh I would not have suspected the toolchain so early ;)
+--k4f25fnPtRuIRUb3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
-> index b761b7a..6ed394f 100644
-> --- a/arch/arm/common/edma.c
-> +++ b/arch/arm/common/edma.c
-> @@ -1598,6 +1598,8 @@ static struct of_dma_filter_info edma_filter_info = {
->  static int __init edma_probe(struct platform_device *pdev)
->  {
->  	struct edma_soc_info	**info = pdev->dev.platform_data;
-> +	struct edma_soc_info	*ninfo[EDMA_MAX_CC] = {NULL, NULL};
-> +	struct edma_soc_info	tmpinfo;
->  	s8			(*queue_priority_mapping)[2];
->  	s8			(*queue_tc_mapping)[2];
->  	int			i, j, off, ln, found = 0;
-> @@ -1614,15 +1616,13 @@ static int __init edma_probe(struct platform_device *pdev)
->  	char			irq_name[10];
->  	struct device_node	*node = pdev->dev.of_node;
->  	struct device		*dev = &pdev->dev;
-> -	struct edma_soc_info	*pdata;
->  	int			ret;
->  
->  	if (node) {
-> -		pdata = devm_kzalloc(dev,
-> -				     sizeof(struct edma_soc_info),
-> -				     GFP_KERNEL);
-> -		edma_of_parse_dt(dev, node, pdata);
-> -		info = &pdata;
-> +		info = ninfo;
-> +		edma_of_parse_dt(dev, node, &tmpinfo);
-> +		info[0] = &tmpinfo;
+On Thu, Oct 18, 2012 at 04:17:13PM +0530, Laxman Dewangan wrote:
+
+> +		udelay(1);
+> +		wmb();
+> +	}
+> +	tspi->dma_control_reg = val;
+> +	val |= SLINK_DMA_EN;
+> +	tegra_slink_writel(tspi, val, SLINK_DMA_CTL);
+> +	return 0;
+> +}
+> +static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+> +			bool dma_to_memory)
+> +{
+
+Blank line between functions.
+
+> +	tegra_slink_clk_disable(tspi);
+> +	pm_runtime_put_sync(tspi->dev);
+> +	return 0;
+
+Throughout the code you're using pm_runtime_put_sync() - why does this
+need to be _sync()?  Can't we just use a regular put()?  If we can't we
+should document why.
+
+> +static int tegra_slink_prepare_transfer(struct spi_master *master)
+> +{
+> +	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
 > +
->  		dma_cap_set(DMA_SLAVE, edma_filter_info.dma_cap);
->  		of_dma_controller_register(dev->of_node,
->  					   of_dma_simple_xlate,
-> 
+> +	pm_runtime_get_sync(tspi->dev);
+> +	return 0;
 
-With the above diff, the kernel boots fine on the EVM.
+Should really check the error code of the pm_runtime call here.
 
-> > Looking at the original crash log, I suspect something is not correct
-> > with the irq portion, probably in the DT or the driver. 
-> > 
-> > "genirq: Flags mismatch irq 28. 00000000 (edma) vs. 00000000 (edma)"
-> > 
-> > The warning below that is coming due to fail case in edma_probe not tracking
-> > the request_irq status properly and but IMO that's a separate issue.
-> 
-> It is a separate issue, indeed. My ideal goal was to avoid changing
-> anything in this existing davinci dma implementation, that's why the
-> error paths were unmodified. Since I'm having to rework a few more things
-> I'll look at those and generate an improved version.
-> 
-> Russ Dill also made some good simplification/cleanup suggestions for the
-> of parsing on irc which I'll incorporate in the next version.
+> +static struct tegra_spi_platform_data *tegra_slink_parese_dt(
+> +		struct platform_device *pdev)
+> +{
 
-Ok, sounds good.
+There doens't seem to be any binding documentation; binding
+documentation is mandatory.
 
-Regards,
-Vaibhav
+> +	prop = of_get_property(pdev->dev.of_node, "spi_max_frequency", NULL);
+> +	if (prop)
+> +		pdata->spi_max_frequency = be32_to_cpup(prop);
+> +	else
+> +		pdata->spi_max_frequency = 25000000; /* 25MHz */
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_sfd2d_oct
+Why is the default not being picked in the general non-OF case?
+
+> +const struct tegra_slink_chip_data tegra30_spi_cdata = {
+> +	.cs_hold_time = true,
+> +};
+> +
+> +#ifdef CONFIG_OF
+> +const struct tegra_slink_chip_data tegra20_spi_cdata = {
+> +	.cs_hold_time = false,
+> +};
+> +
+> +static struct of_device_id tegra_slink_of_match[] __devinitconst = {
+> +	{ .compatible = "nvidia,tegra20-slink", .data = &tegra20_spi_cdata, },
+> +	{ .compatible = "nvidia,tegra30-slink", .data = &tegra30_spi_cdata, },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, tegra_slink_of_match);
+> +#endif
+
+The ifdefs here look misplaced?
+
+> +	spi_irq = platform_get_irq(pdev, 0);
+> +	if (unlikely(spi_irq < 0)) {
+
+Putting optimisation hints like unlikely() here is pointless.
+
+> +	ret = devm_request_threaded_irq(&pdev->dev, tspi->irq,
+> +			tegra_slink_isr, tegra_slink_isr_thread, IRQF_ONESHOT,
+> +			dev_name(&pdev->dev), tspi);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
+> +					tspi->irq);
+> +		goto exit_free_master;
+> +	}
+
+Any use of devm_ IRQ functions is suspicous... why is this safe against
+an interrupt firing after the SPI device has started to deallocate?
+
+> +#ifdef CONFIG_PM_SLEEP
+> +static int tegra_slink_suspend(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +
+> +	spi_master_suspend(master);
+> +	return 0;
+
+Should use the return code of spi_master_suspend().
+
+--k4f25fnPtRuIRUb3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQhTvgAAoJELSic+t+oim9cn8P/0hs3pvN4lEMf3rBfn1ToOQz
+T0cBXeR0YZgzfVio9JPZX0PqA/D52PLTB3ltasCAhaYJmK0HqwB56O4IUwqXkqsO
+yztJSWHSjqfR+yvlquvtZpKqqFRq/Rc3yp56ZLI6H9UBVnJRTWk/DzkUQSuUUfd6
+HLQn1TQtMnnvBnHVcRS6+NL+OqSHQGNi3TKIeDt+tt87KOPaReJScPhYoKyRbwav
+m98NtCaWNbSpP2GEJ5uI4pNszmEFyhfFVdO2WBPxXvHGtS3rpYQdEf2k87kcZejD
+4wAE3r2F6+DXvS8ROxfl0Afyzm+NBWuF1uM+h3SSprXLmzU/BFLvYvlHCsyYadme
+d4np/SFbQBTU99FmkZsLTKfUgvxQEtYbDWFJuPD0fr/8qc9cbUfotRoAbzoyzJUj
+laiJgXHQAcuD9Ps+va4t4D9cQDTEx7OB1oA3STbtcXI6iYpdXwhmlzPNFw1D6F4M
+Ujhc8JOBsLpW1EJi/JQa5b3ufrUpHrUgMj6V3BNYzis+KzHwtVXSdqUhCESA3MuG
+Egt6Ek9/Fq0HTveZPMvkEMjYuPhrxg3Ju8AHeiWLNc4CnX6blNbjJj5fBK8AoUlN
+g3agSTPczeLINn/6dxXBmjAUZemwv1YAKWQ5wALy2PAk+H+7WB1V/0ha7NkGdtkO
+SYYSk0b4gqwMa1wysByz
+=vk8V
+-----END PGP SIGNATURE-----
+
+--k4f25fnPtRuIRUb3--

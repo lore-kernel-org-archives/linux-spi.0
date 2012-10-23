@@ -1,13 +1,12 @@
-From: Stop-cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: L'ouverture de ce mail est =?iso-8859-15?Q?conseill=E9e?= pour
-	votre =?iso-8859-15?Q?s=E9curit=E9?=
-Date: Tue, 23 Oct 2012 05:16:26 +0200
-Message-ID: <1350962205.thing50860c1dab9f5@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Service des Autoroutes de France <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: Gagnez votre PASS PEAGE !
+Date: Tue, 23 Oct 2012 08:45:21 +0200 (CEST)
+Message-ID: <2.1.11.1101030461.1359973.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,15 +18,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Gagnez votre pass d'autoroute  Si vous ne pouvez pas visualiser ce =
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyNTE1JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0yMyAwNDo1MDowMSZlPTEmaD0yMjUxMyZmPTIyNTE1Jmc9MjI1MTU=3D
+message,  consulter notre version en ligne. =
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyNTE1JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0yMyAwNDo1MDowMSZlPTEmaD0yMjUxMyZmPTIyNTE1Jmc9MjI1MT=
-U=3D
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
 
+mails par l'intermediaire de  ce raccourci. =
+
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zUPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKL
+Gagnez votre pass d'autoroute : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zUfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKI
+
+gratuit pour 1 an!* : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zVvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKJ
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zV_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKO
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zVPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKP
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zVfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKM
+Participez : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbG5_nGHxKLR6zavcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKN
+
+ *r=E9compense pay=E9e jusqu'=E0 =A4500 =
 
 ---------------------------------------------------------------------------=
 ---

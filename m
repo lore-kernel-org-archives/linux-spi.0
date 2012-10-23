@@ -1,86 +1,73 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] Revert "spi/pl022: enable runtime PM"
-Date: Tue, 23 Oct 2012 14:08:59 +0100
-Message-ID: <20121023130858.GA4477@opensource.wolfsonmicro.com>
-References: <1350994116-9127-1-git-send-email-ulf.hansson@stericsson.com>
+From: "Rick" <schawasagasnainnasing80-uAjRD0nVeow@public.gmane.org>
+Subject: [SPAM] Digital Photo Editing Services - Photo Cutout - Photo
+	Retouching
+Date: Wed, 24 Oct 2012 07:13:56 +0800
+Message-ID: <CHAOYIGVwPGxgelXDeq00003e87@mail.true-e.com.cn>
+Reply-To: imagingedit-9Onoh4P/yGk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3076519072638968058=="
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Vipul Kumar Samar <vipulkumar.samar@st.com>,
- Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Ulf Hansson <ulf.hansson@stericsson.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1350994116-9127-1-git-send-email-ulf.hansson@stericsson.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+You are receiving this email because we wish you to use our digital photo editing services.
 
---===============3076519072638968058==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="W18qbkTAGYos9/y6"
-Content-Disposition: inline
+We are a China based Imaging Professionals. We offer basic and advanced digital photo Editing services and solutions like photo Cutout, morphological photo Editing, photoshop photo Editing, satellite photo Editing, color photo Editing and vector photo Editing using latest techniques. 
 
+Our strength in providing Editing solutions for digital images like photo masking, photo re-touching, back ground cleaning & cloning, sharpening & restoration of color, all this derive from our vast experience. Our dedicated team of highly skilled and experienced professionals serves the photo Editing requirements of our clients. An in house quality checking mechanism assures value addition and delivers perfect job. Our team can deliver your job overnight or in time bounded fashion irrespective of job size. 
 
---W18qbkTAGYos9/y6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Our mainly services are: 
 
-On Tue, Oct 23, 2012 at 02:08:36PM +0200, Ulf Hansson wrote:
-> From: Ulf Hansson <ulf.hansson@linaro.org>
->=20
-> This reverts commit 2fb30d1147c599f5657e8c62c862f9a0f58d9d99.
->=20
-> This patch introduced runtime PM issues and is not needed at all.
-> Thus we should revert it.
+1. Photo Cutout
+2. Photo Enhancement
+3. Photo Retouching
+4. Vector Conversion
+5. Pop Art
+6. Images Masking
+7. Clipping Path
+8. Photo Restoration 
+9. Web Design
 
-As covered elsewhere I applied a revert myself.
+Photo Editing Services:
 
---W18qbkTAGYos9/y6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Our Photo Editing services includes advanced photo cutouts/clippings, balancing brightness / contrast in an image, repair of minor scratches, creases, minor dust, and spot removal to removal of major scratches, cracks, creases, and stains in all areas. We also repair seriously faded/damaged photographs and make it print ready.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQhpbeAAoJELSic+t+oim9kPcP/12KSnbHejZaRz+CIpmfwJ59
-D1fpfAxXd00kUaEd2vxYqSGLxhGtlcgjXQ7d6JYMES2LiK6yuYxf+JUwGIDkFPOB
-RJjMOZs5AuhpD4v0pCKZtFYY6dFSt7gqdinvL9XFuxRYb31u1y1lKijUgnIneRmo
-E2Zik1YLm7igPCWQBCC9xIsTlKaPNj7JGWWalWh1cyMUZxseZSsX4VkNvlHyxLsf
-2D5KvtENaXWbOil3syQ4l3SuxvHxZd/b8jpItYBik+/uDagFfAyhEOg4w2uql6y5
-MMP5imjNKqLV/AaPkCcQ3v4/tk+o+Q/5Q3owkmXT2FyT+4srZ1gg/FBcqwvSis0A
-8YyF1Fy9GsgxQ6TYAfNDHYjt5tdxfbGause+8pWkCHFYXcuR3E2NltVHlz++Iq9h
-7B+fySx+FrPiUc2BsYrEj1Rs/kpwo42bF1Y6zvDumyBlZnp1D8JF2eWput4qJ3u6
-5TuZWSJCgi8BXcp2QGTgEzqCeJIoZvRjgAv4GOkMd2mcUl+XHwsPWmGyHMTJu7bR
-DWTNBqNCy726NRi6YRT8sK3Bu97+EYke7uY95Dmmz+QkYrSu0w5LQiGdvGIliRA7
-SvTwnWkVNeyhI1knwGKTnQ7SmxhUhbFRJGcnuAFFI/gMMget/zBdMa4+WmFzeyDP
-CvUOp6fQjywLNZggUHJk
-=RsSx
------END PGP SIGNATURE-----
-
---W18qbkTAGYos9/y6--
+Best regards,
+Rick
+Rickkanuican Imaging Professionals
+Contact: contactrick-KN7UnAbNpbg@public.gmane.org
 
 
---===============3076519072638968058==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============3076519072638968058==--
+-------------------------------------------------
+
+This e-mail (and any attachments) is confidential and may contain
+personal views which are not the views of us. unless specifically stated. If you have received
+it in error, please delete it from your system, do not use, copy or
+disclose the information in any way nor act in reliance on it and
+notify the sender immediately.
+
+UNSUBSCRIBE INSTRUCTIONS
+If you do not wish to receive our newsletter, pls send address to imremove-Mj/0Miq2reM@public.gmane.org for remove.
+Before printing think about the Environment.
+
+
+
+
+                                                                                                                                                                 
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_sfd2d_oct

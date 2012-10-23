@@ -1,26 +1,19 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 2/2] Revert "spi/pl022: enable runtime PM"
-Date: Tue, 23 Oct 2012 14:01:07 +0100
-Message-ID: <20121023130106.GZ4477@opensource.wolfsonmicro.com>
-References: <1349452272-4002-1-git-send-email-ulf.hansson@stericsson.com>
- <1349452272-4002-2-git-send-email-ulf.hansson@stericsson.com>
- <CAPDyKFqfE0u2CPzFKeHBE1LMtuetWabR94KuASPNhw4StDCfjw@mail.gmail.com>
- <20121023111019.GV4477@opensource.wolfsonmicro.com>
- <20121023111656.GT21164@n2100.arm.linux.org.uk>
- <20121023114130.GW4477@opensource.wolfsonmicro.com>
- <20121023114723.GU21164@n2100.arm.linux.org.uk>
- <20121023114842.GA4293@n2100.arm.linux.org.uk>
+Subject: Re: [PATCH] Revert "spi/pl022: enable runtime PM"
+Date: Tue, 23 Oct 2012 14:08:59 +0100
+Message-ID: <20121023130858.GA4477@opensource.wolfsonmicro.com>
+References: <1350994116-9127-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0258657318749821608=="
+Content-Type: multipart/mixed; boundary="===============3076519072638968058=="
 Cc: Ulf Hansson <ulf.hansson@linaro.org>,
  Vipul Kumar Samar <vipulkumar.samar@st.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
+ Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
  Linus Walleij <linus.walleij@linaro.org>,
  Grant Likely <grant.likely@secretlab.ca>,
  spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Russell King - ARM Linux <linux@arm.linux.org.uk>
+To: Ulf Hansson <ulf.hansson@stericsson.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20121023114842.GA4293@n2100.arm.linux.org.uk>
+In-Reply-To: <1350994116-9127-1-git-send-email-ulf.hansson@stericsson.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -33,54 +26,53 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============0258657318749821608==
+--===============3076519072638968058==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Wn0J+vu9+NMIXK57"
+	protocol="application/pgp-signature"; boundary="W18qbkTAGYos9/y6"
 Content-Disposition: inline
 
 
---Wn0J+vu9+NMIXK57
+--W18qbkTAGYos9/y6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 23, 2012 at 12:48:42PM +0100, Russell King - ARM Linux wrote:
+On Tue, Oct 23, 2012 at 02:08:36PM +0200, Ulf Hansson wrote:
+> From: Ulf Hansson <ulf.hansson@linaro.org>
+>=20
+> This reverts commit 2fb30d1147c599f5657e8c62c862f9a0f58d9d99.
+>=20
+> This patch introduced runtime PM issues and is not needed at all.
+> Thus we should revert it.
 
-> Oh, and if you're unwilling to do that, then I'm taking both of Ulf's
-> patches, committing them to my fixes branch, and sending them off to
-> Linus tonight - because they are _NEEDED_ for the -rc series to fix
-> this driver.
+As covered elsewhere I applied a revert myself.
 
-As I said in my previous e-mail I've now done the revert myself; I'll
-send the fixes to Linus.  If you wish to check the other patches that
-are queued they're in -next like I said; I'd appreciate someone who's
-actively using the driver taking a look at them.
-
---Wn0J+vu9+NMIXK57
+--W18qbkTAGYos9/y6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQhpUMAAoJELSic+t+oim9AO4QAIBm1gZf1UdFn56uO/X2M7qr
-wTYVTMNCeeaYgt/TL6NzMHBBg+kfEDENPVcvdnUum4dA9UqKtvMKN+8SHYTWn5+h
-v0IfPxUNJ4wFW4iMarzuPhmAzf8cHu3+zBxkP1yWJqSZUvovQzpcRiOVsmCW4nbU
-dTq2TJZ6iSCpdoJbc0sp9b6+pfKcuupa1cP4AXBaDTLFSg6HFU6V1mQa1CvYP6lL
-kbJl+jsKBKy3KIfgaB/mqTMMBxouOGjslRIwFw/Q4KVEA6V4gsm/LeOYiACEEZ1u
-xtGscqYJ9mIam2nZD0xSLeepqop2eZaLPiQj/hpDMV2CBm/MUjr9jeYyZvCirRVn
-JDODuuEgOm7MVM8vy0fUuvcyXIeFcynYXSkL/4uWD71IQI3Cu82tjSo5UENwht7A
-oIzGsaMmthDJibCiv2RuJRmPyU03rd7nlI3PtPJnE9+4kwTgvxWZfNovGT8ds/0l
-5s0zJNnuASDxpLAj4ELxWKwzhOhZopfXl5AffBP5zkkivgjZ5as3xTHMEqTs4wSh
-E3cqgtuNTO/5GHlmqtbXrxFNtTrPgnSU16GNjMt8BnseXCJLiovSBm7DM3jlazhF
-fg6DVI/ZR6WHUzFMcegoWtL60pN5Smh9393de58Ep3Px2LCACmDHRhfaFcdkja+c
-LgNCMd2YEgrxr2TKSE3a
-=4WD0
+iQIcBAEBAgAGBQJQhpbeAAoJELSic+t+oim9kPcP/12KSnbHejZaRz+CIpmfwJ59
+D1fpfAxXd00kUaEd2vxYqSGLxhGtlcgjXQ7d6JYMES2LiK6yuYxf+JUwGIDkFPOB
+RJjMOZs5AuhpD4v0pCKZtFYY6dFSt7gqdinvL9XFuxRYb31u1y1lKijUgnIneRmo
+E2Zik1YLm7igPCWQBCC9xIsTlKaPNj7JGWWalWh1cyMUZxseZSsX4VkNvlHyxLsf
+2D5KvtENaXWbOil3syQ4l3SuxvHxZd/b8jpItYBik+/uDagFfAyhEOg4w2uql6y5
+MMP5imjNKqLV/AaPkCcQ3v4/tk+o+Q/5Q3owkmXT2FyT+4srZ1gg/FBcqwvSis0A
+8YyF1Fy9GsgxQ6TYAfNDHYjt5tdxfbGause+8pWkCHFYXcuR3E2NltVHlz++Iq9h
+7B+fySx+FrPiUc2BsYrEj1Rs/kpwo42bF1Y6zvDumyBlZnp1D8JF2eWput4qJ3u6
+5TuZWSJCgi8BXcp2QGTgEzqCeJIoZvRjgAv4GOkMd2mcUl+XHwsPWmGyHMTJu7bR
+DWTNBqNCy726NRi6YRT8sK3Bu97+EYke7uY95Dmmz+QkYrSu0w5LQiGdvGIliRA7
+SvTwnWkVNeyhI1knwGKTnQ7SmxhUhbFRJGcnuAFFI/gMMget/zBdMa4+WmFzeyDP
+CvUOp6fQjywLNZggUHJk
+=RsSx
 -----END PGP SIGNATURE-----
 
---Wn0J+vu9+NMIXK57--
+--W18qbkTAGYos9/y6--
 
 
---===============0258657318749821608==
+--===============3076519072638968058==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -91,4 +83,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============0258657318749821608==--
+--===============3076519072638968058==--

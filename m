@@ -1,11 +1,11 @@
-From: Bon plan par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Achetez votre prochain =?iso-8859-15?Q?d=E9jeuner_=E0_moiti=E9?= prix
-Date: Wed, 24 Oct 2012 05:25:13 +0200
-Message-ID: <1351049128.thing50875fa8a0ba0@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH] spi: sh-hspi: Fix MODULE_ALIAS from sh_spi to sh_hspi
+Date: Wed, 24 Oct 2012 14:53:10 +0900
+Message-ID: <1351057990-4962-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,18 +18,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+sh_spi is already using in spi-sh.c.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyNzMxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0yNCAwNToyMDowMSZlPTEmaD0yMjcyOSZmPTIyNzMxJmc9MjI3MzE=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyNzMxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0yNCAwNToyMDowMSZlPTEmaD0yMjcyOSZmPTIyNzMxJmc9MjI3Mz=
-E=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 ---
+ drivers/spi/spi-sh-hspi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index 796c077..9f60087 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -325,4 +325,4 @@ module_platform_driver(hspi_driver);
+ MODULE_DESCRIPTION("SuperH HSPI bus driver");
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>");
+-MODULE_ALIAS("platform:sh_spi");
++MODULE_ALIAS("platform:sh_hspi");
+-- 
+1.7.10.4
+
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

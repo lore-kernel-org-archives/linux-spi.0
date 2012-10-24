@@ -1,29 +1,79 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 23 Oct 2012 16:59:17 +0800
-Message-ID: <E1TQwmR-0003Wv-Rs@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [GIT PULL] SPI updates for v3.7
+Date: Wed, 24 Oct 2012 13:56:50 +0100
+Message-ID: <20121024125649.GG18814@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1giRMj6yz/+FOIRq"
+Cc: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant@secretlab.ca>,
+	Russell King <linux@arm.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0
-ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0
-aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5Ogpo
-dHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9zZmQyZF9vY3QKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNv
-dXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+--1giRMj6yz/+FOIRq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+The following changes since commit ddffeb8c4d0331609ef2581d84de4d763607bd37:
+
+  Linux 3.7-rc1 (2012-10-14 14:41:04 -0700)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git tags/spi-linus
+
+for you to fetch changes up to 213d27a42ce1646989966011d2af8563feac5635:
+
+  spi/pl022: Revert recent runtime PM changes (2012-10-23 13:27:30 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v3.7
+
+A bunch of fixes here, mostly minor except for the pl022 which has just
+been a bit of a shambles all round, the recent runtime PM changes have
+as far as I can tell never worked so they're just getting thrown out.
+
+----------------------------------------------------------------
+Aaro Koskinen (1):
+      spi: tsc2005: delete soon-obsolete e-mail address
+
+Shimoda, Yoshihiro (1):
+      spi: spi-rspi: fix build error for the latest shdma driver
+
+Ulf Hansson (1):
+      spi/pl022: Revert recent runtime PM changes
+
+ drivers/spi/spi-pl022.c     |    3 ---
+ drivers/spi/spi-rspi.c      |   56 ++++++++++++++++++++++++++-----------------
+ include/linux/spi/tsc2005.h |    2 --
+ 3 files changed, 34 insertions(+), 27 deletions(-)
+
+--1giRMj6yz/+FOIRq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQh+WLAAoJELSic+t+oim9+qUP/1HHXuMfmCznXwwQt93rocwW
+cc4VMKuUF7Y/Z9qE2VmklCw/nkAM3NJmJndkx9SdSH0oz46CmVOrf4431P+55crG
+Htb1PNhQbdk4aAUo7LtlT/YAtSj8OvH+KFmXwVStxmTUbRwCDHz9vibTtQSX8LMz
+DiUt5kanHHa5RS60Ntv2IGOSaRPry8ZTH3Yo7Q72KPeReYmJzNJ/OXB2TvdOCZ62
+mt89mKZNTQRFHakgOWChlKTbPErFlWFg0rPI0sYvI2aXfyfLH88htgBBIhvlegjo
+LjkGEA3fyzpJJzOSGQw6IYIxD/yAd7oWUK5vJ/YdV0KX5oWB5kovgTaqGu5PoL16
+SHcvxJtoqUsFAgSEPfRAeL3ryEsznSiIUBUFU/atN9G36hUkNxBr8vPTy4b7YZo2
+Xw8fqagJ7wlYR3TW2nGtfo0iyZMwQOPfjtV5srwBvRlPjy0/2mBXfvojXHMqCP3w
+FYdDplNq0Eqhcdwc8kfzQUA1giJ0LHeEeQfDrUqdBftCCFSRP6itJQy6f9SG/lBk
+YkMIeyqFtofJZPmgWthDV0DYm/Wclp8rx4ox3p33BTxuwYX5G89YPmY443R3KODZ
+Z/ijefM8oWxuUO8NBKdCGbM1L6YKsNqTHtOW+MIFaCHsW+wQMf9zvnRzAoN718KF
+BJjWnBoukQT/9a/Uxhhi
+=AylG
+-----END PGP SIGNATURE-----
+
+--1giRMj6yz/+FOIRq--

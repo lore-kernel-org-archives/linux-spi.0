@@ -1,12 +1,12 @@
-From: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi: sh-hspi: Fix MODULE_ALIAS from sh_spi to sh_hspi
-Date: Wed, 24 Oct 2012 14:53:10 +0900
-Message-ID: <1351057990-4962-1-git-send-email-nobuhiro.iwamatsu.yj@renesas.com>
+From: =?iso-8859-15?Q?Votre_enseigne_Su=E9doise?= <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?IKEA_-_Gagnez_500=A4_de_bon_d'achat_chez_IKEA?=
+Date: Wed, 24 Oct 2012 08:41:25 +0200 (CEST)
+Message-ID: <2.1.11.1101030461.1368004.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,28 +18,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-sh_spi is already using in spi-sh.c.
+JeJoueJeGagne.com - Ikea  Si vous ne pouvez pas visualiser ce message,  =
 
-Signed-off-by: Nobuhiro Iwamatsu <nobuhiro.iwamatsu.yj-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+consulter notre version en ligne. =
+
+
+
+ Vous avez la possibilit=E9 de retirer votre adresse, de notre liste =
+
+d'envoi de mails, par l'intermediaire de ce raccourci. =
+
+
+
+JeJoueJeGagne.com
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3svcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIp
+
+ Demandez notre bon d?achat et d=E9pensez 500=A4
+ dans le magasin IKEA de votre choix!  : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3s_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIu
+
+
+
+ R=E9clamez!  : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3sPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIv
+
+
+Gagnez 500=A4 chez Ikea
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3sfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIs
+
+
+Bon 100% gratuit
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3tvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIt
+
+
+500=A4
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJbBD7nGHxKLRh3t_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIy
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-sh-hspi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 796c077..9f60087 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -325,4 +325,4 @@ module_platform_driver(hspi_driver);
- MODULE_DESCRIPTION("SuperH HSPI bus driver");
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>");
--MODULE_ALIAS("platform:sh_spi");
-+MODULE_ALIAS("platform:sh_hspi");
--- 
-1.7.10.4
-
-
-------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

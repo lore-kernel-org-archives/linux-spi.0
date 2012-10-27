@@ -1,20 +1,16 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi/pl022: Activate resourses before deactivate them in
- suspend
-Date: Sat, 27 Oct 2012 22:46:44 +0100
-Message-ID: <20121027214642.GH4564@opensource.wolfsonmicro.com>
-References: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
+Subject: Re: [PATCH 1/2] spi: spidev: Add device tree bindings
+Date: Sat, 27 Oct 2012 23:19:55 +0100
+Message-ID: <20121027221955.GO4564@opensource.wolfsonmicro.com>
+References: <1351238873-25230-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1351238873-25230-2-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1342027443259481569=="
-Cc: Ulf Hansson <ulf.hansson@linaro.org>,
- Vipul Kumar Samar <vipulkumar.samar@st.com>,
- Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Ulf Hansson <ulf.hansson@stericsson.com>
+Content-Type: multipart/mixed; boundary="===============3011836264867569386=="
+Cc: spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
+ linux-arm-kernel@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
+In-Reply-To: <1351238873-25230-2-git-send-email-maxime.ripard@free-electrons.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -27,52 +23,55 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============1342027443259481569==
+--===============3011836264867569386==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IbVRjBtIbJdbeK1C"
+	protocol="application/pgp-signature"; boundary="2uzDqHpccQJpqF2n"
 Content-Disposition: inline
 
 
---IbVRjBtIbJdbeK1C
+--2uzDqHpccQJpqF2n
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Oct 05, 2012 at 09:43:32AM +0200, Ulf Hansson wrote:
+On Fri, Oct 26, 2012 at 10:07:52AM +0200, Maxime Ripard wrote:
+> This will allow to probe spidev from device tree
 
-> To be able to deactivate resourses in suspend, the resourses must
-> first be surely active. This is done with a pm_runtime_get_sync.
-> Once the resourses are restored to active state again in resume,
-> the runtime pm usage count can be decreased with a pm_runtime_put.
+So, this isn't really something we should have in DT in this format -
+the fact that we happen to control some device from userspace isn't a
+generic property of the board really, we may end up changing our minds
+on Linux too.  The most obvious thing for this seems to be to add the
+specific devices to spidev as the OF bindings rather than just register
+as some non-specific "spidev" so we can change our minds later about how
+to handle the devices.  Not sure that's urgently tasteful but it does
+mean we move the "we handle this in userspace" bit out of the .dts into
+the kernel which seems better.
 
-The PM core will ensure devices are runtime resumed before we enter
-suspend precisely due to this sort of issue.
-
---IbVRjBtIbJdbeK1C
+--2uzDqHpccQJpqF2n
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQjFYrAAoJELSic+t+oim9XMUP/34H750VnIiZqCNf1m6VofHg
-NlMAWgmzBpgVH2XVAFptYjOsafgmhGNWakbRbJlzmWkuEvtikSKkQMbem6pNN/Gh
-N2wjWgxTai775PIvAEtoZz26MoGWaAM8VBvM1620Glg2QTgk7/lT1qOGBGl8/vd/
-Vsf/DZg76pld3NdWtj1KJ/yJuVavcCCBi6V+FPSXZbqgNH4G2MABimw3ad4g1Vek
-nYpMoDpz4qKkmUe6EHvBYOXqaF+x811voW914hFYiXXJmhOxaeKzlmImXuMm6CLc
-IZCLchJS1X7TCVgf7CyvAHMAtl5Xw0WGsAPH5FGOGKk3C7I+FgVlMqYdSeiCJ5Om
-oNpVaI79r/LWozIMEI1F4eLkz1dGoASqh5b3EDJd8tX9vtaIVjBUEjgOYM0oz3r9
-BwJCWO++qlruaaa+vFvVzU7rPNJdORQFSQapYaQhbPsIHErD53o/DDgCemL+Aha+
-e9NVIFjREnJERMSINghqoqo7ByLY6SERyCnlE4oJHQiWBgSq0Q8Qz3+ABjo3cVfm
-Iu81Qw5KGZIl6njJmfQHuckvsoQVrxcoi4sCdEtTF4RqkEqgP07UDhM+5q5UFhfv
-IqD+GKFNAp3e4zTi1v8rUACUW5JYt+8bXHRKtvTDH6z3UxXh41jimO8+h8wigpaG
-A7VoTVPwstYijO1JZFQ9
-=FQNt
+iQIcBAEBAgAGBQJQjF4DAAoJELSic+t+oim9yREP/icNTZWyw52UUCQfkMn9492m
+DxAwtufJADPdNWxqDufMRlto37Ajajn3TQXJ/pZSyFH/1sy8qnnQRVKDzynUN18T
+Yb+Gn9/+XPOxfKWKkdEjn7iaWZVhOqirqRvKwWKjAC7ph3Ul9DhN+3N0ODaTluZ6
+k7L6HOhtcwFAdez5TJ9zAGnz0k1UMLUUkqLYOYjEigIHA5vrMlF8VkSyHoNtaLXf
+O/vc9RXEjMniHe39ueKdhne40XR+EBZZoSvGh6Fm0muIMIwfc1RhWKGjkAPpj+hV
+u7P5FUJ4LQxfvDQ6QErv6R6rzwGfR9b9zVX3d5VU4o58gNqceWRRU1i+NfjExc7a
+FUFM3ZXASPzTF7EZaLAoVp4I1/dVEVnHO3NiqQUTyHZQajjQ5Q9S692eW2dCxYpN
+IDR/Ui0SCsNsxTjZ+0wFjbJKHPVpBnFogplNsf9+fCHB6DPkjm2rCuxL1sQHSUN8
+ydWwfzM0XHT/ZVO983GRSq0GmvPCJEuKVFhYlYlzCYeSKuoF+CxO1+D7lOtI5UcA
+nRFW7WRLYCt0VeXP9F67mF4APnflAak0iD25sN0E/DdUORhQ7YCXDWv8iKlQt+Jw
++Ln34DRhbGFdWXXpKOiUaTxETDfE7ZU8kFajSxlyN0k2teSb7UIilvvnP0Z451Ly
+9hA+93u7mHzmdeu2LIx9
+=5xKO
 -----END PGP SIGNATURE-----
 
---IbVRjBtIbJdbeK1C--
+--2uzDqHpccQJpqF2n--
 
 
---===============1342027443259481569==
+--===============3011836264867569386==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -83,4 +82,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============1342027443259481569==--
+--===============3011836264867569386==--

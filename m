@@ -1,39 +1,69 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: ente Flash : Les =?iso-8859-15?Q?=EEles_=E0?= prix mini
-	=?iso-8859-15?Q?=E0?= partir de 679 euros, soyez les premiers
-Date: Fri, 26 Oct 2012 22:20:23 +0200
-Message-ID: <1351282884.thing508af0c42f5b6@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [GIT PULL] MXS SPI fixes for v3.7
+Date: Sat, 27 Oct 2012 22:21:30 +0100
+Message-ID: <20121027212125.GC4564@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UPT3ojh+0CqEDtpF"
+Cc: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant@secretlab.ca>, Marek Vasut <marex@denx.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyODg3JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0yNiAyMjoxMDowMSZlPTEmaD0yMjg4NSZmPTIyODg3Jmc9MjI4ODc=3D
+--UPT3ojh+0CqEDtpF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyODg3JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0yNiAyMjoxMDowMSZlPTEmaD0yMjg4NSZmPTIyODg3Jmc9MjI4OD=
-c=3D
+The following changes since commit ddffeb8c4d0331609ef2581d84de4d763607bd37:
 
+  Linux 3.7-rc1 (2012-10-14 14:41:04 -0700)
 
----------------------------------------------------------------------------=
----
-WINDOWS 8 is here. =
+are available in the git repository at:
 
-Millions of people.  Your app in 30 days.
-Visit The Windows 8 Center at Sourceforge for all your go to resources.
-http://windows8center.sourceforge.net/
-join-generation-app-and-make-money-coding-fast/
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git tags/spi-mxs
+
+for you to fetch changes up to 44968466cfb969f960dbe422bbc785117f497729:
+
+  spi: mxs: Terminate DMA in case of DMA timeout (2012-10-17 16:11:09 +0900)
+
+----------------------------------------------------------------
+spi: Some minor MXS fixes
+
+These fixes are both pretty minor ones and are driver local.
+
+----------------------------------------------------------------
+Marek Vasut (2):
+      spi: mxs: Assign message status after transfer finished
+      spi: mxs: Terminate DMA in case of DMA timeout
+
+ drivers/spi/spi-mxs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--UPT3ojh+0CqEDtpF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQjFBLAAoJELSic+t+oim9lhkP/1gCoVKv9G8egWei0/Dmo0dV
+n/bd3mE4aKNn3qw75eywOuGwFiH75/OKC3ca3RnSFjMdaqWklYwFJRbRDy9mEApN
+UoTgaODwrMOG68wwaGvvj0fdqY36A32ynQ1gvPn5VbfQLewkOuU5ZhefiXlm4Ny4
+4RfyKGbjImU32ceAKSaJ89unGCG/0B25tHbpgxzb8ujHvl5GCua1FrFdULiVmOAO
+EPFw5h9opINZ52fUbC/7VgeWkU7Q9xmxC2DPQjZpVbjWtYcKImpsfSCIcC0sN+bk
+mMvrnuxKx5Nj7SedkaP2IK6VIFRiNvMMduB8kxoKUlo57EkJ6oue3H0loYK/BNYN
+AI8Y02GL4EdxBttPGCBOejWFl4TGD3OQ6MPk9y5NKUJ+mdaA91VIK3v1zNxEBKqb
+WhfID5mO7E+IvCTpJ7Ihsz0X2OU5WVXOqcZnUngYB/hh12Xf3Hkk03f6/XtKsmrN
+q8y7Y4jW43zL1ADehhtXlRTyRSnuZxyHIJKdn35ogmTHNiX6LDXHJI2/Qj3NFlHL
+GdNExfPvuUdJCNJPFa39hgLxJnRyXZNiCVNaELFAlgsfQcTFdmY24wNHXgKCyWyF
+N4ribfmeDXv/jd3LFdxETobDBIfpH9TQlGejhwnvl+v01YM/D/gnxW7nGiz+/Xfd
+hCMDWkB6gD6J575DQcbt
+=AwjM
+-----END PGP SIGNATURE-----
+
+--UPT3ojh+0CqEDtpF--

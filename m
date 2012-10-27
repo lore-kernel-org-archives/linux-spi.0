@@ -1,69 +1,86 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [GIT PULL] MXS SPI fixes for v3.7
-Date: Sat, 27 Oct 2012 22:21:30 +0100
-Message-ID: <20121027212125.GC4564@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi/pl022: Activate resourses before deactivate them in
+ suspend
+Date: Sat, 27 Oct 2012 22:46:44 +0100
+Message-ID: <20121027214642.GH4564@opensource.wolfsonmicro.com>
+References: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UPT3ojh+0CqEDtpF"
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant@secretlab.ca>, Marek Vasut <marex@denx.de>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============1342027443259481569=="
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+ Vipul Kumar Samar <vipulkumar.samar@st.com>,
+ Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Grant Likely <grant.likely@secretlab.ca>,
+ spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
+To: Ulf Hansson <ulf.hansson@stericsson.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 
---UPT3ojh+0CqEDtpF
+--===============1342027443259481569==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="IbVRjBtIbJdbeK1C"
+Content-Disposition: inline
+
+
+--IbVRjBtIbJdbeK1C
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-The following changes since commit ddffeb8c4d0331609ef2581d84de4d763607bd37:
+On Fri, Oct 05, 2012 at 09:43:32AM +0200, Ulf Hansson wrote:
 
-  Linux 3.7-rc1 (2012-10-14 14:41:04 -0700)
+> To be able to deactivate resourses in suspend, the resourses must
+> first be surely active. This is done with a pm_runtime_get_sync.
+> Once the resourses are restored to active state again in resume,
+> the runtime pm usage count can be decreased with a pm_runtime_put.
 
-are available in the git repository at:
+The PM core will ensure devices are runtime resumed before we enter
+suspend precisely due to this sort of issue.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git tags/spi-mxs
-
-for you to fetch changes up to 44968466cfb969f960dbe422bbc785117f497729:
-
-  spi: mxs: Terminate DMA in case of DMA timeout (2012-10-17 16:11:09 +0900)
-
-----------------------------------------------------------------
-spi: Some minor MXS fixes
-
-These fixes are both pretty minor ones and are driver local.
-
-----------------------------------------------------------------
-Marek Vasut (2):
-      spi: mxs: Assign message status after transfer finished
-      spi: mxs: Terminate DMA in case of DMA timeout
-
- drivers/spi/spi-mxs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---UPT3ojh+0CqEDtpF
+--IbVRjBtIbJdbeK1C
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQjFBLAAoJELSic+t+oim9lhkP/1gCoVKv9G8egWei0/Dmo0dV
-n/bd3mE4aKNn3qw75eywOuGwFiH75/OKC3ca3RnSFjMdaqWklYwFJRbRDy9mEApN
-UoTgaODwrMOG68wwaGvvj0fdqY36A32ynQ1gvPn5VbfQLewkOuU5ZhefiXlm4Ny4
-4RfyKGbjImU32ceAKSaJ89unGCG/0B25tHbpgxzb8ujHvl5GCua1FrFdULiVmOAO
-EPFw5h9opINZ52fUbC/7VgeWkU7Q9xmxC2DPQjZpVbjWtYcKImpsfSCIcC0sN+bk
-mMvrnuxKx5Nj7SedkaP2IK6VIFRiNvMMduB8kxoKUlo57EkJ6oue3H0loYK/BNYN
-AI8Y02GL4EdxBttPGCBOejWFl4TGD3OQ6MPk9y5NKUJ+mdaA91VIK3v1zNxEBKqb
-WhfID5mO7E+IvCTpJ7Ihsz0X2OU5WVXOqcZnUngYB/hh12Xf3Hkk03f6/XtKsmrN
-q8y7Y4jW43zL1ADehhtXlRTyRSnuZxyHIJKdn35ogmTHNiX6LDXHJI2/Qj3NFlHL
-GdNExfPvuUdJCNJPFa39hgLxJnRyXZNiCVNaELFAlgsfQcTFdmY24wNHXgKCyWyF
-N4ribfmeDXv/jd3LFdxETobDBIfpH9TQlGejhwnvl+v01YM/D/gnxW7nGiz+/Xfd
-hCMDWkB6gD6J575DQcbt
-=AwjM
+iQIcBAEBAgAGBQJQjFYrAAoJELSic+t+oim9XMUP/34H750VnIiZqCNf1m6VofHg
+NlMAWgmzBpgVH2XVAFptYjOsafgmhGNWakbRbJlzmWkuEvtikSKkQMbem6pNN/Gh
+N2wjWgxTai775PIvAEtoZz26MoGWaAM8VBvM1620Glg2QTgk7/lT1qOGBGl8/vd/
+Vsf/DZg76pld3NdWtj1KJ/yJuVavcCCBi6V+FPSXZbqgNH4G2MABimw3ad4g1Vek
+nYpMoDpz4qKkmUe6EHvBYOXqaF+x811voW914hFYiXXJmhOxaeKzlmImXuMm6CLc
+IZCLchJS1X7TCVgf7CyvAHMAtl5Xw0WGsAPH5FGOGKk3C7I+FgVlMqYdSeiCJ5Om
+oNpVaI79r/LWozIMEI1F4eLkz1dGoASqh5b3EDJd8tX9vtaIVjBUEjgOYM0oz3r9
+BwJCWO++qlruaaa+vFvVzU7rPNJdORQFSQapYaQhbPsIHErD53o/DDgCemL+Aha+
+e9NVIFjREnJERMSINghqoqo7ByLY6SERyCnlE4oJHQiWBgSq0Q8Qz3+ABjo3cVfm
+Iu81Qw5KGZIl6njJmfQHuckvsoQVrxcoi4sCdEtTF4RqkEqgP07UDhM+5q5UFhfv
+IqD+GKFNAp3e4zTi1v8rUACUW5JYt+8bXHRKtvTDH6z3UxXh41jimO8+h8wigpaG
+A7VoTVPwstYijO1JZFQ9
+=FQNt
 -----END PGP SIGNATURE-----
 
---UPT3ojh+0CqEDtpF--
+--IbVRjBtIbJdbeK1C--
+
+
+--===============1342027443259481569==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============1342027443259481569==--

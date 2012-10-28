@@ -1,128 +1,165 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RFC PATCH v3 02/16] ARM: davinci: move private EDMA API to
- arm/common
-Date: Sun, 28 Oct 2012 13:47:09 +0530
-Message-ID: <508CEA05.8060200@ti.com>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
- <1350566815-409-3-git-send-email-mporter@ti.com>
+From: "Toysrus.fr par mpm" <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?2=E8me_Anniversaire_:_Promos_?=
+	=?iso-8859-15?Q?=E0_tout_casser_+_25=A4_offerts?=
+Date: Sun, 28 Oct 2012 09:07:31 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1389771.3016826189@news.galgalz.com>
+Reply-To: newsletters-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <1350566815-409-3-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/18/2012 6:56 PM, Matt Porter wrote:
-> Move mach-davinci/dma.c to common/edma.c so it can be used
-> by OMAP (specifically AM33xx) as well. This just moves the
-> private EDMA API but does not support OMAP.
-> 
-> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> ---
+toysRus  Si vous ne pouvez pas visualiser ce message,  consulter notre =
 
-> diff --git a/arch/arm/mach-davinci/devices.c b/arch/arm/mach-davinci/devices.c
-> index 4c48a36..f45d591 100644
-> --- a/arch/arm/mach-davinci/devices.c
-> +++ b/arch/arm/mach-davinci/devices.c
-> @@ -19,9 +19,10 @@
->  #include <mach/irqs.h>
->  #include <mach/cputype.h>
->  #include <mach/mux.h>
-> -#include <mach/edma.h>
->  #include <linux/platform_data/mmc-davinci.h>
->  #include <mach/time.h>
-> +#include <linux/platform_data/edma.h>
+version en ligne. =
 
-Can you please introduce a patch to clean this mixture of linux/ and
-mach/ includes?
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
 
-> +
->  
->  #include "davinci.h"
->  #include "clock.h"
-> @@ -141,10 +142,10 @@ static struct resource mmcsd0_resources[] = {
->  	},
->  	/* DMA channels: RX, then TX */
->  	{
-> -		.start = EDMA_CTLR_CHAN(0, DAVINCI_DMA_MMCRXEVT),
-> +		.start = EDMA_CTLR_CHAN(0, 26),
+mails par l'intermediaire de  ce raccourci. =
 
-Instead of just replacing the event #defines with plain numbers, can you
-introduce a mach-davinci local edma.h which can then be included in the
-davinci platform files which refer to edma channel numbers?
 
-> diff --git a/arch/arm/plat-omap/Kconfig b/arch/arm/plat-omap/Kconfig
-> index 7cd56ed..153fab8 100644
-> --- a/arch/arm/plat-omap/Kconfig
-> +++ b/arch/arm/plat-omap/Kconfig
-> @@ -28,6 +28,7 @@ config ARCH_OMAP2PLUS
->  	select OMAP_DM_TIMER
->  	select PROC_DEVICETREE if PROC_FS
->  	select SPARSE_IRQ
-> +	select TI_PRIV_EDMA
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHObfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlF1spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOYvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlF6
 
-This hunk does not seem to belong to subject of this patch.
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOY_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlF7spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOYPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlF4
+A ne pas rater ! : =
 
->  	select USE_OF
->  	help
->  	  "Systems based on OMAP2, OMAP3, OMAP4 or OMAP5"
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOYfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlF5spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOZvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlF-
 
-> diff --git a/include/linux/platform_data/edma.h b/include/linux/platform_data/edma.h
-> new file mode 100644
-> index 0000000..7396f0b3
-> --- /dev/null
-> +++ b/include/linux/platform_data/edma.h
-> @@ -0,0 +1,198 @@
-> +/*
-> + *  TI DAVINCI dma definitions
-> + *
-> + *  Copyright (C) 2006-2009 Texas Instruments.
-> + *
-> + *  This program is free software; you can redistribute  it and/or modify it
-> + *  under  the terms of  the GNU General  Public License as published by the
-> + *  Free Software Foundation;  either version 2 of the  License, or (at your
-> + *  option) any later version.
-> + *
-> + *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-> + *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-> + *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-> + *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-> + *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-> + *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-> + *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-> + *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-> + *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-> + *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+C'est l'Anniversaire de Toysrus.fr et Babiesrus.fr ! 2 ans d=E9j=E0 !
+ A cette occasion, nous vous avons r=E9serv=E9 des offres exceptionnelles  =
 
-> + *  You should have received a copy of the  GNU General Public License along
-> + *  with this program; if not, write  to the Free Software Foundation, Inc.,
-> + *  675 Mass Ave, Cambridge, MA 02139, USA.
+du 20 au 28 Octobre 2012. : =
 
-This part can be dropped, I suppose ;-)
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOZ_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlF_spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOZPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlF8
 
-Thanks,
-Sekhar
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOZfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlF9spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOevcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKC
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOe_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKDspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOePcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKA
+sur une s=E9lection d'articles de pu=E9riculture
+ et de jouets de Grandes Marques : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOefcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKBspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOfvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKG
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOf_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKHspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOfPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKE
+en bon d'achat d=E8s 100=A4 d'achats (2) : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOffcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKFspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOcvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKK
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOc_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKLspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOcPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKI
+Pour profiter de cette offre, : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOcfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKJspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOdvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKO
+
+confirmez votre adresse email : : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOd_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKPspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOdPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKM
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOdfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKNspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOCvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKS
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOC_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKTspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOCPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKQ
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOCfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKRspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHODvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKW
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOD_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKXspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHODPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKU
+Je valide
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHODfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKVspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOAvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKa
+En validant, j'accepte de recevoir par email les offres =
+
+promotionnelles de ToysRus : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOA_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKbspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOAPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKY
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOAfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKZspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOBvcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKe
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOB_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlKfspi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org&url=3Dhttp://=
+p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJa7zHnGHxKLRHOBPcStGb5lw8W0bBhOG5mp=
+qVsje_HhdA5HlKc
+(1) Livraison offerte en Relais Kiala ou Colissimo. Offre pouvant =EAtre =
+
+limit=E9e en quantit=E9 sur certains produits, consultez les mentions =
+
+figurant sur chaque fiche produit. Offre non valable en magasin. (2) =
+
+Voir modalit=E9s d'obtentions et d'utilisations des codes promotionnels =
+
+et bons d'achat sur le site. =
+
+
+---------------------------------------------------------------------------=
+---
+WINDOWS 8 is here. =
+
+Millions of people.  Your app in 30 days.
+Visit The Windows 8 Center at Sourceforge for all your go to resources.
+http://windows8center.sourceforge.net/
+join-generation-app-and-make-money-coding-fast/

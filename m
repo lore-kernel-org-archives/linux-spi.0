@@ -1,51 +1,63 @@
-From: "=?gb2312?B?Y2FyZTc0MjY3?=" <care74267-WVlzvzqoTvw@public.gmane.org>
-Subject: [SPAM] .................0000000           856买 ...............................63
-Date: Mon, 29 Oct 2012 00:47:37 +0800 (CST)
-Message-ID: <508D61A9.000196.24877@bjapp12>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] spi/pl022: Activate resourses before deactivate them in
+ suspend
+Date: Sun, 28 Oct 2012 20:52:47 +0100
+Message-ID: <CACRpkdbCfxnSSLR6GoSbAxtfnwOivxCCrLtwnR=9tpwpfACqTQ@mail.gmail.com>
+References: <1349423012-18048-1-git-send-email-ulf.hansson@stericsson.com>
+ <20121027214642.GH4564@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8446908260513204797=="
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, spi-general-dgTNMgSYHsS0vQ6hRAQFwdi2O/JbrIOy@public.gmane.org,
-	spi-gra-LnJD9ufHasawVdhIp5U87A@public.gmane.org
-To: spi-board-dgTNMgSYHsS0vQ6hRAQFwdi2O/JbrIOy@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Vipul Kumar Samar <vipulkumar.samar@st.com>,
+ Russell King <linux@arm.linux.org.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Grant Likely <grant.likely@secretlab.ca>,
+ spi-devel-general@lists.sourceforge.net,
+ Ulf Hansson <ulf.hansson@stericsson.com>, linux-arm-kernel@lists.infradead.org
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+ "Rafael J. Wysocki" <rjw@sisk.pl>,
+ Alan Stern <stern@rowland.harvard.edu>, Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20121027214642.GH4564@opensource.wolfsonmicro.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sat, Oct 27, 2012 at 11:46 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> On Fri, Oct 05, 2012 at 09:43:32AM +0200, Ulf Hansson wrote:
+>
+>> To be able to deactivate resourses in suspend, the resourses must
+>> first be surely active. This is done with a pm_runtime_get_sync.
+>> Once the resourses are restored to active state again in resume,
+>> the runtime pm usage count can be decreased with a pm_runtime_put.
+>
+> The PM core will ensure devices are runtime resumed before we enter
+> suspend precisely due to this sort of issue.
 
---===============8446908260513204797==
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+I asked the very same question to Ulf (in speech, sorry
+so you couldn't see it...)
 
-DQoNCrnTOYm6Mb7KN8KaNcPBMbDSOci4OLXJM83aNbrAINLRUb+3UdfIxNhCsb5Syc8+trUg
-DQoNCg==
---===============8446908260513204797==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+So I guess we are talking about drivers/base/main.c
 
-------------------------------------------------------------------------------
-WINDOWS 8 is here. 
-Millions of people.  Your app in 30 days.
-Visit The Windows 8 Center at Sourceforge for all your go to resources.
-http://windows8center.sourceforge.net/
-join-generation-app-and-make-money-coding-fast/
---===============8446908260513204797==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+in device_prepare()
+pm_runtime_get_noresume() is called
+and in device_complete()
+pm_runtime_put_sync() is called.
 
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+Both put into current for in
+commit 88d26136a256576e444db312179e17af6dd0ea87
+on sep 19th.
 
---===============8446908260513204797==--
+Yes it seems like it will do the job.
+
+Ulf can you comment on this...
+
+Yours,
+Linus Walleij

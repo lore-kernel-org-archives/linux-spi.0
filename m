@@ -1,102 +1,57 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/2] spi: spidev: Add device tree bindings
-Date: Mon, 29 Oct 2012 16:10:24 +0000
-Message-ID: <20121029161023.GC4511@opensource.wolfsonmicro.com>
-References: <1351238873-25230-1-git-send-email-maxime.ripard@free-electrons.com>
- <1351238873-25230-2-git-send-email-maxime.ripard@free-electrons.com>
- <20121027221955.GO4564@opensource.wolfsonmicro.com>
- <508EA013.7050907@free-electrons.com>
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: tegra: add spi driver for SLINK controller
+Date: Mon, 29 Oct 2012 21:48:41 +0530
+Message-ID: <508EAC61.4020400@nvidia.com>
+References: <1350557233-31234-1-git-send-email-ldewangan@nvidia.com> <5085A667.2000100@wwwdotorg.org> <508ADB1C.6040602@nvidia.com> <508E9E22.6030201@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2514278290556396675=="
-Cc: spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
- linux-arm-kernel@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <508EA013.7050907@free-electrons.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	"grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <508E9E22.6030201-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Monday 29 October 2012 08:47 PM, Stephen Warren wrote:
+> On 10/26/2012 12:49 PM, Laxman Dewangan wrote:
+>>>
+>>> Why not just always set SLINK_FIFO_ERROR; does it have to be set in the
+>>> write only if the status was previously asserted? If that is true, how
+>>> do you avoid a race condition where the bit gets set in SLINK_STATUS
+>>> after you read it but before you write to clear it?
+>> Status gets updated together. There is no steps of updating status.
+> Sorry, I don't understand this answer.
 
---===============2514278290556396675==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6zdv2QT/q3FMhpsV"
-Content-Disposition: inline
+The status should be updated once by HW and so there is no race condition.
+HW behavior is that if the tx or Rx error occurs, it updates the status, 
+generates interrupt and still continue transfer and later on, it 
+generates the ready.
+In first isr, we read status, error status found and so in isr thread, 
+we reset controller to stop the transfer.
 
-
---6zdv2QT/q3FMhpsV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Oct 29, 2012 at 04:26:11PM +0100, Maxime Ripard wrote:
-
-> Ok, so I guess that leaves us with 2 choices here:
-
->   * Declare the device in the dt as you would have with any other
->     driver, with its own compatible string, and we add this compatible
->     string to the spidev dt ids array. It allows to use the existing
->     code and thus doesn't require any effort at all, but it will
->     generate a lot of noise for the spidev driver, since all of us will
->     need to add its compatible string to spidev.
-
->   * Rework the spidev code so that it behaves mostly like i2c-dev, that
->     is you have an instance of it for every device enumerated in the dt,
->     regardless of wether it has a driver loaded or not. If the
->     userspace opens the device file corresponding to a device already
->     attached to a driver, you return EBUSY, and that's it. I guess it
->     would be the cleaner solution, since you only select spidev in
->     configuration, but it definitely requires way more development than
->     the first one.
-
-> What's your views on this?
-> Did you have in mind another solution?
-
-I think either solution is good, obviously Grant's more the expert here.
-Adding the IDs is obviously simpler and doesn't preclude later doing the
-i2c-dev style thing so short term I'd probably add the IDs to get things
-going and punt on the difficult stuff for the time being but YMMV.
-
---6zdv2QT/q3FMhpsV
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQjqppAAoJELSic+t+oim9BjwQAJI2eOZhIiMmlMU9qCV7Tj9H
-7fcbxECfwvyyj0ThAMfd9vDT31+NSsPrqOKrS5J4NiY04WCf9YTDGyRYL4/FveXU
-6qZg+lL4g7uHAq71g/ZzB/D3JZGVQGTAEAI4uSxi2yEl1uYPDfdUuLr3+7AIs5C6
-2OFcVqkrkN+JfzTUz9pOHNUiqQ1pwY+O2UX5jrReEJ4seVyrIoDKC0JCc4FgFSSt
-ZwlFmR3bkOmEKdvKA1F0873HhVIcvWglLBYb6jXuFEcw8x7GBDxRvqXMl6k2Zz1D
-Xvt4vCTmeQabTb0jrjEAj2F0uBuY3B3gClHVH+wuXrVLGN2Ihu8L0yxlj6+8Sty9
-Rak+nN0YR2d6TNqfLIMo3JjDLrF1P131/idiR8kJdujRp3VOU9necw8Nouwh8txO
-Oq3TYaL0rD+aeg1mzFjZcdqwkhsyJxF3glPsjOzXgmivmSpG4mquJRDXNrob76+q
-ozkBKEg6PvMfSztmIilTHHEH9yyVpegb9OvAe0jnm3jCFYh/K8XtOlUC1JXkE8hA
-1Ea3KGk2jAgQLmE/tKkLE2PKfXENxwjP8x/ytVdJr2jTgoZc0KR8pBgbbZIgkcoA
-QYAAeGqBIXUgWvMqniVFl+wVyh6n3W/Is9CRPJQSuqHrAqvZSLb/wlj/LhNfI5Au
-cDJAbD4McMgFmtIZ/YBH
-=QcBr
------END PGP SIGNATURE-----
-
---6zdv2QT/q3FMhpsV--
+So in good state, only ready bit will be set and hence writing 1 to 
+clear it.
+In error state, clearing error first in ISR and in isr thread resetting 
+the controller to stop the controller engine.
 
 
---===============2514278290556396675==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>>
+>> Is there a way to support the reset of controller. We will need this
+>> functionality.
+> Why do we need to reset the controller at all; can't we simply program
+> all the (few) configuration registers? Are there HW bugs that hang the
+> controller and require a reset or something?
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============2514278290556396675==--
+HW generates error,  then interrupt and still continue transfer and 
+later point of time it generates the transfer done.
+We want to stop the transfer once error get detected. For this we need 
+to reset controller.
+I did disabling rx and tx but still controller shows as busy.

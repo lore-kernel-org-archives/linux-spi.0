@@ -1,31 +1,22 @@
-From: "Philip, Avinash" <avinashphilip-l0cyMroinI0@public.gmane.org>
-Subject: RE: [RFC PATCH v3 16/16] ARM: dts: add AM33XX SPI support
-Date: Mon, 29 Oct 2012 09:11:34 +0000
-Message-ID: <518397C60809E147AF5323E0420B992E3E9D526E@DBDE01.ent.ti.com>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
-	<1350566815-409-17-git-send-email-mporter@ti.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] spi: tegra: add spi driver for SLINK controller
+Date: Mon, 29 Oct 2012 09:17:54 -0600
+Message-ID: <508E9E22.6030201@wwwdotorg.org>
+References: <1350557233-31234-1-git-send-email-ldewangan@nvidia.com>
+	<5085A667.2000100@wwwdotorg.org> <508ADB1C.6040602@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Dan,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Porter, Matt" <mporter-l0cyMroinI0@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, "Nori,
-	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Mark
-	Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, "Cousson, Benoit"
-	<b-cousson-l0cyMroinI0@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Vinod Koul
-	<vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Chris Ball
-	<cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1350566815-409-17-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
+In-Reply-To: <508ADB1C.6040602-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -36,151 +27,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 18, 2012 at 18:56:55, Porter, Matt wrote:
-> Adds AM33XX SPI support for am335x-bone and am335x-evm.
+On 10/26/2012 12:49 PM, Laxman Dewangan wrote:
+> Thanks Stephen for review.
+> I have taken care of almost all feedback. Some of having my below comments.
 > 
-> Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> ---
->  arch/arm/boot/dts/am335x-bone.dts |   17 +++++++++++++++
->  arch/arm/boot/dts/am335x-evm.dts  |    9 ++++++++
->  arch/arm/boot/dts/am33xx.dtsi     |   43 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 69 insertions(+)
+> On Tuesday 23 October 2012 01:32 AM, Stephen Warren wrote:
+>> On 10/18/2012 04:47 AM, Laxman Dewangan wrote:
+>>> Tegra20/Tegra30 supports the spi interface through its SLINK
+>>> controller. Add spi driver for SLINK controller.
+
+>>> +     val_write = SLINK_RDY;
+>>> +     val_write |= (val&  SLINK_FIFO_ERROR);
+>> Why not just always set SLINK_FIFO_ERROR; does it have to be set in the
+>> write only if the status was previously asserted? If that is true, how
+>> do you avoid a race condition where the bit gets set in SLINK_STATUS
+>> after you read it but before you write to clear it?
+>
+> Status gets updated together. There is no steps of updating status.
+
+Sorry, I don't understand this answer.
+
+>>> +     spin_lock_irqsave(&tspi->lock, flags);
+>>> +     if (err) {
+>>> +             dev_err(tspi->dev,
+>>> +                     "DmaXfer: ERROR bit set 0x%x\n",
+>>> tspi->status_reg);
+>>> +             dev_err(tspi->dev,
+>>> +                     "DmaXfer 0x%08x:0x%08x:0x%08x\n",
+>>> tspi->command_reg,
+>>> +                             tspi->command2_reg,
+>>> tspi->dma_control_reg);
+>>> +             tegra_periph_reset_assert(tspi->clk);
+>>> +             udelay(2);
+>>> +             tegra_periph_reset_deassert(tspi->clk);
+>> Do we /have/ to reset the SPI block; can't we just disable it in the
+>> control register, clear all status, and re-program it from scratch?
+>>
+>> If at all possible, I would like to avoid introducing any new use of
+>> tegra_periph_reset_{,de}assert, since that API has no standard subsystem
+>> equivalent (or if it does, isn't hooked into the standard subsystem
+>> yet), and hence means this driver relies on a header file currently in
+>> arch/arm/mach-tegra/include/mach, and we need to move or delete all such
+>> headers in order to support single zImage.
 > 
-> diff --git a/arch/arm/boot/dts/am335x-bone.dts b/arch/arm/boot/dts/am335x-bone.dts
-> index 5510979..23edfd8 100644
-> --- a/arch/arm/boot/dts/am335x-bone.dts
-> +++ b/arch/arm/boot/dts/am335x-bone.dts
-> @@ -18,6 +18,17 @@
->  		reg = <0x80000000 0x10000000>; /* 256 MB */
->  	};
->  
-> +	am3358_pinmux: pinmux@44e10800 {
-> +		spi1_pins: pinmux_spi1_pins {
-> +			pinctrl-single,pins = <
-> +				0x190 0x13	/* mcasp0_aclkx.spi1_sclk, OUTPUT_PULLUP | MODE3 */
-> +				0x194 0x33	/* mcasp0_fsx.spi1_d0, INPUT_PULLUP | MODE3 */
-> +				0x198 0x13	/* mcasp0_axr0.spi1_d1, OUTPUT_PULLUP | MODE3 */
-> +				0x19c 0x13	/* mcasp0_ahclkr.spi1_cs0, OUTPUT_PULLUP | MODE3 */
-> +			>;
-> +		};
-> +	};
-> +
+> Is there a way to support the reset of controller. We will need this
+> functionality.
 
-Change to am33xx_pinmux.
-
->  	ocp {
->  		uart1: serial@44e09000 {
->  			status = "okay";
-> @@ -84,3 +95,9 @@
->  &mmc1 {
->  	vmmc-supply = <&ldo3_reg>;
->  };
-> +
-> +&spi1 {
-> +	status = "okay";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&spi1_pins>;
-> +};
-> diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-> index d63fce8..8d5f660 100644
-> --- a/arch/arm/boot/dts/am335x-evm.dts
-> +++ b/arch/arm/boot/dts/am335x-evm.dts
-> @@ -124,3 +124,12 @@
->  &mmc1 {
->  	vmmc-supply = <&vmmc_reg>;
->  };
-> +
-> +&spi0 {
-> +	status = "okay";
-> +	spi-flash@0 {
-> +		compatible = "spansion,s25fl064k", "m25p80";
-> +		spi-max-frequency = <24000000>;
-> +		reg = <0>;
-> +	};
-> +};
-
-In AM335x-evm, SPI flash available in profile #2 (am335x evm specific profiles).
-So can you drop this changes as if I understood correctly, am335x-evm.dts will be
-populated for devices present only on profile #0.
-
-> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-> index 26a6af7..063ecea 100644
-> --- a/arch/arm/boot/dts/am33xx.dtsi
-> +++ b/arch/arm/boot/dts/am33xx.dtsi
-> @@ -40,6 +40,15 @@
->  		};
->  	};
->  
-> +	am3358_pinmux: pinmux@44e10800 {
-> +		compatible = "pinctrl-single";
-> +		reg = <0x44e10800 0x0238>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		pinctrl-single,register-width = <32>;
-> +		pinctrl-single,function-mask = <0x7f>;
-> +	};
-> +
-
-Pin ctrl support already submitted
-http://git.kernel.org/?p=linux/kernel/git/bcousson/linux-omap-dt.git;a=commitdiff;h=3e0603e905d9ba662e8c1885ecb1d28bc454e448
-
-Thanks
-Avinash
-
->  	/*
->  	 * XXX: Use a flat representation of the AM33XX interconnect.
->  	 * The real AM33XX interconnect network is quite complex.Since
-> @@ -261,6 +270,40 @@
->  			status = "disabled";
->  		};
->  
-> +		spi0: spi@48030000 {
-> +			compatible = "ti,omap4-mcspi";
-> +			ti,hwmods = "spi0";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0x48030000 0x400>;
-> +			interrupt-parent = <&intc>;
-> +			interrupt = <65>;
-> +			dmas = <&edma 16
-> +				&edma 17
-> +				&edma 18
-> +				&edma 19>;
-> +			dma-names = "tx0", "rx0", "tx1", "rx1";
-> +			ti,spi-num-cs = <2>;
-> +			status = "disabled";
-> +		};
-> +
-> +		spi1: spi@481a0000 {
-> +			compatible = "ti,omap4-mcspi";
-> +			ti,hwmods = "spi1";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0x481a0000 0x400>;
-> +			interrupt-parent = <&intc>;
-> +			interrupt = <125>;
-> +			dmas = <&edma 42
-> +				&edma 43
-> +				&edma 44
-> +				&edma 45>;
-> +			dma-names = "tx0", "rx0", "tx1", "rx1";
-> +			ti,spi-num-cs = <2>;
-> +			status = "disabled";
-> +		};
-> +
->  		wdt2: wdt@44e35000 {
->  			compatible = "ti,omap3-wdt";
->  			ti,hwmods = "wd_timer2";
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
-
+Why do we need to reset the controller at all; can't we simply program
+all the (few) configuration registers? Are there HW bugs that hang the
+controller and require a reset or something?
 
 ------------------------------------------------------------------------------
 The Windows 8 Center - In partnership with Sourceforge

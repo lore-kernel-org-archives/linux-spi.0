@@ -1,64 +1,99 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
-Subject: Re: [PATCH] spi: tegra: add spi driver for SLINK controller
-Date: Mon, 29 Oct 2012 12:55:29 -0600
-Message-ID: <508ED121.1050702@wwwdotorg.org>
-References: <1350557233-31234-1-git-send-email-ldewangan@nvidia.com> <5085A667.2000100@wwwdotorg.org> <508ADB1C.6040602@nvidia.com> <508E9E22.6030201@wwwdotorg.org> <508EAC61.4020400@nvidia.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH V2] spi: tegra: add spi driver for SLINK controller
+Date: Mon, 29 Oct 2012 13:14:45 -0600
+Message-ID: <508ED5A5.3000703@wwwdotorg.org>
+References: <1351531104-1604-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: "broonie@opensource.wolfsonmicro.com"
-	<broonie@opensource.wolfsonmicro.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-To: Laxman Dewangan <ldewangan@nvidia.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <508EAC61.4020400@nvidia.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1351531104-1604-1-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 10/29/2012 10:18 AM, Laxman Dewangan wrote:
-> On Monday 29 October 2012 08:47 PM, Stephen Warren wrote:
->> On 10/26/2012 12:49 PM, Laxman Dewangan wrote:
->>>>
->>>> Why not just always set SLINK_FIFO_ERROR; does it have to be set in the
->>>> write only if the status was previously asserted? If that is true, how
->>>> do you avoid a race condition where the bit gets set in SLINK_STATUS
->>>> after you read it but before you write to clear it?
->>> Status gets updated together. There is no steps of updating status.
->> Sorry, I don't understand this answer.
-> 
-> The status should be updated once by HW and so there is no race condition.
-> HW behavior is that if the tx or Rx error occurs, it updates the status,
-> generates interrupt and still continue transfer and later on, it
-> generates the ready.
-> In first isr, we read status, error status found and so in isr thread,
-> we reset controller to stop the transfer.
-> 
-> So in good state, only ready bit will be set and hence writing 1 to
-> clear it.
-> In error state, clearing error first in ISR and in isr thread resetting
-> the controller to stop the controller engine.
+On 10/29/2012 11:18 AM, Laxman Dewangan wrote:
+> Tegra20/Tegra30 supports the spi interface through its SLINK
+> controller. Add spi driver for SLINK controller.
 
-OK, I see why there's no race. It still seems simply to me if
-tegra_slink_clear_status() just always writes all the status bits, but I
-suppose it isn't a correctness issue.
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
 
->>> Is there a way to support the reset of controller. We will need this
->>> functionality.
->>
->> Why do we need to reset the controller at all; can't we simply program
->> all the (few) configuration registers? Are there HW bugs that hang the
->> controller and require a reset or something?
-> 
-> HW generates error,  then interrupt and still continue transfer and
-> later point of time it generates the transfer done.
-> We want to stop the transfer once error get detected. For this we need
-> to reset controller.
-> I did disabling rx and tx but still controller shows as busy.
+> +config SPI_TEGRA20_SLINK
+> +	tristate "Nvidia Tegra20/Tegra30 SLINK Controller"
+> +	depends on ARCH_TEGRA && TEGRA20_APB_DMA
 
-Oh dear. Well, I guess it'll have to be OK then; we'll just have to find
-a way of decoupling this API from the mach-tegra directory later:-(
+I think it depends on DMAENGINE, not the specific driver now, doesn't it?
+
+> +static unsigned tegra_slink_fill_tx_fifo_from_client_txbuf(
+> +	struct tegra_slink_data *tspi, struct spi_transfer *t)
+
+> +	if (tspi->is_packed) {
+> +		fifo_words_left = tx_empty_count * tspi->words_per_32bit;
+> +		written_words = min(fifo_words_left, tspi->curr_dma_words);
+> +		nbytes = written_words * tspi->bytes_per_word;
+> +		max_n_32bit = DIV_ROUND_UP(nbytes, 4);
+> +		for (count = 0; count < max_n_32bit; count++) {
+> +			x = 0;
+> +			for (i = 0; (i < 4) && nbytes; i++, nbytes--)
+> +				x |= (*tx_buf++) << (i*8);
+> +			tegra_slink_writel(tspi, x, SLINK_TX_FIFO);
+> +		}
+> +	} else {
+> +		max_n_32bit = min(tspi->curr_dma_words,  tx_empty_count);
+> +		written_words = max_n_32bit;
+> +		nbytes = written_words * tspi->bytes_per_word;
+> +		for (count = 0; count < max_n_32bit; count++) {
+> +			x = 0;
+> +			for (i = 0; nbytes && (i < tspi->bytes_per_word);
+> +							i++, nbytes--)
+> +				x |= ((*tx_buf++) << i*8);
+> +			tegra_slink_writel(tspi, x, SLINK_TX_FIFO);
+> +		}
+> +	}
+
+The if and the else there are basically identical now. Can't the else
+branch simply be replaced by the if branch? At most I think the
+difference comes down to max_n_32bit v.s. fifo_words_left calculations
+being slight different; everything else is the same.
+
+I suppose this isn't a big deal though; we could clean it up later if
+necessary.
+
+> +static int tegra_slink_start_cpu_based_transfer(
+> +		struct tegra_slink_data *tspi, struct spi_transfer *t)
+
+> +	tspi->is_curr_dma_xfer = false;
+> +	if (tspi->is_packed) {
+> +		val |= SLINK_PACKED;
+> +		tegra_slink_writel(tspi, val, SLINK_DMA_CTL);
+> +		udelay(1);
+> +		wmb();
+
+Why the udelay() and wmb()?
+
+> +static int tegra_slink_runtime_suspend(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
+> +
+> +	tegra_slink_clk_unprepare(tspi);
+> +	return 0;
+> +}
+> +
+> +static int tegra_slink_runtime_resume(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
+> +
+> +	return tegra_slink_clk_prepare(tspi);
+> +}
+
+Why not move the body of tegra_slink_clk_{un,prepare} inside those
+functions, since they're only called from those functions?
+
+> +MODULE_ALIAS("platform:tegra_slink-slink");
+
+I think that's a typo.

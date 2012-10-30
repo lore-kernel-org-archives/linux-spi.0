@@ -1,13 +1,11 @@
-From: =?utf-8?Q?Virginie_Rendez_vous_d=C3=A9co?=
-	<virginie-QqWwXOTawBtaJIz1C1VOMuYssDEuZoRD@public.gmane.org>
-Subject: =?utf-8?Q?Des_prix_=C3=A0_s=27en_friser_les_moustaches_!?=
-Date: Tue, 30 Oct 2012 13:09:53 +0000
-Message-ID: <1351602593-567845345AB@email.rendezvousdeco.com>
-Reply-To: virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
+From: "Frank Numbers" <loree-sesseroy-uFHuoskmkxm8rjiVs5Nzzw@public.gmane.org>
+Subject: [SPAM] Attack your woman firmer
+Date: Tue, 30 Oct 2012 21:15:29 +0800
+Message-ID: <001c01cdb6a1$f02ca520$af1edda2@LB201209120148a7ast>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,38 +17,12 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VW4gcHJvYmzDqG1lIHBvdXIgbGlyZSBjZXQgZW1haWwgPyBDbGlxdWV6IHN1ciBjZSBsaWVuIDog
-aHR0cDovL3JlZC5lbWFpbC5yZW5kZXp2b3VzZGVjby5jb20vTWlycm9yLnBocD9lbWFpbD1zcGkt
-ZGV2ZWwtZ2VuZXJhbCU0MGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZtaWQ9ODUyMAoKVmVudGUgcHJp
-dsOpZSBUYWJsZWF1eCBNb3VzdGFjaGUgNTVldXJvcyA6IGh0dHA6Ly93d3cucmVuZGV6dm91c2Rl
-Y28uY29tL3RhYmxlYXV4LWRlc2lnbi5odG1sP3V0bV9zb3VyY2U9bmV3c2xldHRlcl92Ml81JnV0
-bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPW5ld3NsZXR0ZXJfZHVfMzBfMTBfMjAxMgpUYWJs
-ZSBSb25kZSBlbiBWZXJyZSBOb2lyZSAxOTlldXJvcyBhdSBsaWV1IGRlIDM4OWV1cm9zOiBodHRw
-Oi8vd3d3LnJlbmRlenZvdXNkZWNvLmNvbS90YWJsZXMtZGVzaWduL3RhYmxlLXJlcGFzLXJvbmRl
-LWVuLXZlcnJlLmh0bWw/dXRtX3NvdXJjZT1uZXdzbGV0dGVyX3YyXzUmdXRtX21lZGl1bT1lbWFp
-bCZ1dG1fY2FtcGFpZ249bmV3c2xldHRlcl9kdV8zMF8xMF8yMDEyCkNhbmFww6kgQ29sb2duZSAz
-IHBsYWNlcyA1NjlldXJvcyBhdSBsaWV1IGRlIDk5OWV1cm9zIDogaHR0cDovL3d3dy5yZW5kZXp2
-b3VzZGVjby5jb20vY2FuYXBlcy1kZXNpZ24vY2FuYXBlLWNvbG9nbmUtYmxhbmMtMy1wbGFjZXMu
-aHRtbD91dG1fc291cmNlPW5ld3NsZXR0ZXJfdjJfNSZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1w
-YWlnbj1uZXdzbGV0dGVyX2R1XzMwXzEwXzIwMTIKQ3ViZSBlbiBCw6l0b24gTm9pciA5OWV1cm9z
-IGF1IGxpZXUgZGUgMTcwZXVyb3MgOmh0dHA6Ly93d3cucmVuZGV6dm91c2RlY28uY29tL3Jhbmdl
-bWVudHMtZGVzaWduL2N1YmUtZW4tYmV0b24tbm9pci5odG1sP3V0bV9zb3VyY2U9bmV3c2xldHRl
-cl92Ml81JnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPW5ld3NsZXR0ZXJfZHVfMzBfMTBf
-MjAxMgoKRMOpY291dnJleiBub3RyZSBjb2xsZWN0aW9uIGRlIHBvdWJlbGxlcyBPdmV0dG8gOiBo
-dHRwOi8vd3d3LnJlbmRlenZvdXNkZWNvLmNvbS9wb3ViZWxsZXMtZGVzaWduLmh0bWw/dXRtX3Nv
-dXJjZT1uZXdzbGV0dGVyX3YyXzUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bmV3c2xl
-dHRlcl9kdV8zMF8xMF8yMDEyCkTDqWNvdXZyZXogbm90cmUgY29sbGVjdGlvbiBkZSBjaGFpc2Vz
-IFBsZXhpIDogaHR0cDovL3d3dy5yZW5kZXp2b3VzZGVjby5jb20vY29sbGVjdGlvbnMtbW9iaWxp
-ZXItZGVzaWduLWRlY29yYXRpb24vY29sbGVjdGlvbi1jaGFpc2VzLXBsZXhpZ2xhc3MuaHRtbD91
-dG1fc291cmNlPW5ld3NsZXR0ZXJfdjJfNSZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1u
-ZXdzbGV0dGVyX2R1XzMwXzEwXzIwMTIKClZvdXMgcG91dmV6IMOgIHRvdXQgbW9tZW50IHZvdXMg
-ZMOpc2Fib25uZXIgZW4gY2xpcXVhbnQgaWNpIDogaHR0cDovL3JlZC5lbWFpbC5yZW5kZXp2b3Vz
-ZGVjby5jb20vVW5zdWJzY3JpYmUucGhwP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsJTQwbGlzdHMu
-c291cmNlZm9yZ2UubmV0Jm1pZD04NTIwCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBo
-YXRlcyBzbG93IHdlYnNpdGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3
-aXRoIEFwcER5bmFtaWNzCkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6
-Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwZHluX3NmZDJkX29jdApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Do you want to amaze your babe tonight? 
+http://ilsa.spiritagebusiness.com/Alaska.html
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_sfd2d_oct

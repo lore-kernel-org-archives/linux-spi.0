@@ -1,8 +1,9 @@
-From: Stop-cambriolages par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: L'ouverture de ce mail est =?iso-8859-15?Q?conseill=E9e?= pour
-	votre =?iso-8859-15?Q?s=E9curit=E9?=
-Date: Tue, 30 Oct 2012 23:45:24 +0100
-Message-ID: <1351637146.thing5090589a2da4e@mach10.generated>
+From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
+	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
+Date: Tue, 30 Oct 2012 23:47:03 +0100
+Message-ID: <1351637229.thing509058edca3ae@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyOTU4JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMC0zMCAyMzo0MDowMSZlPTEmaD0yMjk1NiZmPTIyOTU4Jmc9MjI5NTg=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIyOTUzJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMC0zMCAyMzo0MDowMSZlPTEmaD0yMjk1MSZmPTIyOTUzJmc9MjI5NTM=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyOTU4JmM=
-9NDgzNjEyJmQ9MjAxMi0xMC0zMCAyMzo0MDowMSZlPTEmaD0yMjk1NiZmPTIyOTU4Jmc9MjI5NT=
-g=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIyOTUzJmM=
+9NDgzNjEyJmQ9MjAxMi0xMC0zMCAyMzo0MDowMSZlPTEmaD0yMjk1MSZmPTIyOTUzJmc9MjI5NT=
+M=3D
 
 
 ---------------------------------------------------------------------------=

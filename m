@@ -1,11 +1,12 @@
-From: Dragos Carp <dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi-mpc52xx-psc: support slower spi clock for MPC5200B
-Date: Wed, 31 Oct 2012 16:31:34 +0100
-Message-ID: <50914456.2020600@toptica.com>
+From: Les bons plans trivago <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?S=E9journez_en_h=F4tel_4*_=E0_partir_de_36=A4?=
+Date: Wed, 31 Oct 2012 20:12:43 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1418904.3016826189@news.localips.com>
+Reply-To: newsletter-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------040500060809000707050505"
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,39 +18,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---------------040500060809000707050505
-Content-Type: text/plain;
-	charset="US-ASCII";
-	format="flowed"
+fr_newsletter  Si vous ne pouvez pas visualiser ce message,  consulter =
 
-MPC5200B: allow spi clock values bellow 78kbps down to ca. 300bps
+notre version en ligne. : =
 
-Signed-off-by: Dragos Carp<dragos.carp-+ybMorV4k0dBDgjK7y7TUQ@public.gmane.org>
+ http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSevcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIp =
+
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+
+mails par l'intermediaire de  ce raccourci.  : =
+
+ http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSe_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIu =
+
+
+
+
+
+Rome
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSePcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIv =
+
+Barcelone
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSefcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIs =
+
+Paris
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSfvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIt =
+
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSf_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIy =
+
+
+Marrakech
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSfPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIz =
+
+Lisbonne
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSffcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIw =
+
+Toulouse
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlScvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIx =
+
+
+trivago.fr : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSc_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlI2 =
+
+ permet aux voyageurs de trouver l?h=F4tel id=E9al au meilleur tarif, =
+
+parmi plus de 100 portails de r=E9servation recensant
+600 000 h=F4tels dans le monde.
+Tous les prix ci-dessus ne sont fournis qu'=E0 titre indicatif et sous =
+
+r=E9serve de disponibilit=E9 chez les partenaires.
+Si vous souhaitez vous d=E9sinscrire de la newsletter, cliquez ici.
+
+trivago.fr : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlScPcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlI3 =
+
+
+ 26-28 rue de Londres
+ 75009 Paris
+ FRANCE
+
+=A9=A02004 - 2012 =A0Tous droits r=E9serv=E9s
+
+---------------------------------------------------------------------------=
 ---
-  spi-mpc52xx-psc.c |   63 ++++++++++++++++++++++++++++++++++++++++++------------
-  1 file changed, 50 insertions(+), 13 deletions(-)
-
-
---------------040500060809000707050505
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:
 http://p.sf.net/sfu/appdyn_sfd2d_oct
---------------040500060809000707050505
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---------------040500060809000707050505--

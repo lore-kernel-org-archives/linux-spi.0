@@ -1,9 +1,10 @@
 From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [REGRESSION] d7b4394e breaks bi-directional DMA transfers on
 	omap2-mcspi
-Date: Wed, 31 Oct 2012 19:27:21 +0530
-Message-ID: <CAM=Q2ctN8nGvmbzO8K-hMeUKsp9kVbPxvO=OidkJZcLBfqOTLQ@mail.gmail.com>
+Date: Wed, 31 Oct 2012 20:59:23 +0530
+Message-ID: <CAM=Q2ctLtGneTfuALDQBk68mEnOxHseZ1fkvcoTks-0j+VyTxQ@mail.gmail.com>
 References: <651D981E4B29F74ABD63CE74C2E4788E08A612E22A@SLOMAILPRD01.polycom.com>
+	<CAM=Q2ctN8nGvmbzO8K-hMeUKsp9kVbPxvO=OidkJZcLBfqOTLQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -14,7 +15,7 @@ Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	"shubhrajyoti-l0cyMroinI0@public.gmane.org" <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 To: =?ISO-8859-1?Q?S=F8rensen=2C_Stefan?= <Stefan.Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <651D981E4B29F74ABD63CE74C2E4788E08A612E22A-0RQ7Y7+ypPw+GfFnqM0nuOk151cHUomP@public.gmane.org>
+In-Reply-To: <CAM=Q2ctN8nGvmbzO8K-hMeUKsp9kVbPxvO=OidkJZcLBfqOTLQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,59 +26,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 31, 2012 at 5:46 PM, S=F8rensen, Stefan
-<Stefan.Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org> wrote:
-> Bi-directional SPI transfers using DMA no longer works on omap2-mcspi aft=
-er
-> this commit:
-My bad.
+On Wed, Oct 31, 2012 at 7:27 PM, Shubhrajyoti Datta
+<omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Wed, Oct 31, 2012 at 5:46 PM, S=F8rensen, Stefan
+[...]
+>
+> Will test and get back with a proper patch.
 
->
-> commit d7b4394e780b02511c8a7a499380cdd56316c770
-> Author: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> Date:   Tue Sep 11 12:13:20 2012 +0530
->
->     spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
->
->     Currently in omap2_mcspi_txrx_dma the tx and the rx support is
->     interleaved. Make the rx related code in omap2_mcspi_rx_dma
->     and the tx related code omap2_mcspi_tx_dma and call the functions.
->
->     While at it remove the braces in the if statements which has only
->     one line.
->     Also fix ["foo * bar" to "foo *bar"] warn for the rx and tx variables.
->
->     Only a cleanup no functional change.
->
->     Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
->     Tested-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
->     Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
->
->
-> Basically the patch changes the pattern
->         start_tx();
->         start_rx();
->         wait_for_completion(tx);
->         wait_for_completion(tx);
-> into
->         start_tx();
->         wait_for_completion(tx);
->         start_rx();
->         wait_for_completion(tx);
-> which will stall the transfer since the rx channel is not serviced.
+Let me know if this solves.
 
-So moving the tx completion.
+>From 07a59cb82955c37eff6fe06ba25958dc1b5c5f56 Mon Sep 17 00:00:00 2001
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Date: Wed, 31 Oct 2012 19:15:25 +0530
+Subject: [PATCH] spi: omap2-mcspi: Reorder the wait_for_completion for tx
 
-Apologies for breaking in the original commit.
+The commit  d7b4394e[Cleanup the omap2_mcspi_txrx_dma function]
+changed the wait_for_completion order. Move the wait so that the
+rx doesnot wait for the tx to complete.
 
-
-Will test and get back with a proper patch.
+Reported-by: S=F8rensen, Stefan <Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c |   34 ++++++++++++++++------------------
- 1 files changed, 16 insertions(+), 18 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++------------------=
+--
+ 1 files changed, 19 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 3542fdc..e8e5bbc 100644
+index bcfd062..251f6d0 100644
 --- a/drivers/spi/spi-omap2-mcspi.c
 +++ b/drivers/spi/spi-omap2-mcspi.c
 @@ -323,18 +323,13 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
@@ -128,26 +103,31 @@ struct spi_transfer *xfer)
 
  	mcspi =3D spi_master_get_devdata(spi->master);
  	mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
-@@ -528,6 +511,21 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
+@@ -526,8 +509,24 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
 struct spi_transfer *xfer)
- 	if (rx !=3D NULL)
- 		return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
+ 		omap2_mcspi_tx_dma(spi, xfer, cfg);
 
-+	chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
-+	wait_for_completion(&mcspi_dma->dma_tx_completion);
-+	dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
-+			 DMA_TO_DEVICE);
+ 	if (rx !=3D NULL)
+-		return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
+-
++		count =3D omap2_mcspi_rx_dma(spi, xfer, cfg, es);
 +
-+	/* for TX_ONLY mode, be sure all words have shifted out */
-+	if (rx =3D=3D NULL) {
-+		if (mcspi_wait_for_reg_bit(chstat_reg,
-+					OMAP2_MCSPI_CHSTAT_TXS) < 0)
-+			dev_err(&spi->dev, "TXS timed out\n");
-+		else if (mcspi_wait_for_reg_bit(chstat_reg,
-+					OMAP2_MCSPI_CHSTAT_EOT) < 0)
-+			dev_err(&spi->dev, "EOT timed out\n");
++	if (tx !=3D NULL) {
++		chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
++		wait_for_completion(&mcspi_dma->dma_tx_completion);
++		dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
++				 DMA_TO_DEVICE);
++
++		/* for TX_ONLY mode, be sure all words have shifted out */
++		if (rx =3D=3D NULL) {
++			if (mcspi_wait_for_reg_bit(chstat_reg,
++						OMAP2_MCSPI_CHSTAT_TXS) < 0)
++				dev_err(&spi->dev, "TXS timed out\n");
++			else if (mcspi_wait_for_reg_bit(chstat_reg,
++						OMAP2_MCSPI_CHSTAT_EOT) < 0)
++				dev_err(&spi->dev, "EOT timed out\n");
++		}
 +	}
-+
  	return count;
  }
 

@@ -1,78 +1,36 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 2/3] spi: spidev: Add Rohm DH2228FV DAC compatible string
-Date: Thu, 1 Nov 2012 14:56:06 +0000
-Message-ID: <20121101145606.GS4413@opensource.wolfsonmicro.com>
-References: <1351679410-11026-1-git-send-email-maxime.ripard@free-electrons.com>
- <1351679410-11026-3-git-send-email-maxime.ripard@free-electrons.com>
+From: Thelem Assurances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre assurance sante jusqu'a 50 pourcent remboursee
+Date: Thu, 01 Nov 2012 15:57:05 +0100
+Message-ID: <1351781868.thing50928decb780f@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2406148391784084150=="
-Cc: Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
- linux-arm-kernel@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1351679410-11026-3-git-send-email-maxime.ripard@free-electrons.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
---===============2406148391784084150==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mvzZjokS1nTZS3h1"
-Content-Disposition: inline
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMzc1JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wMSAxNTo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNzU=3D
 
-
---mvzZjokS1nTZS3h1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Oct 31, 2012 at 11:30:09AM +0100, Maxime Ripard wrote:
-> Since we don't have a driver for it yet, use spidev instead.
-
-Applied, thanks.
-
---mvzZjokS1nTZS3h1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQko2AAAoJELSic+t+oim9ZgEQAIPmV8DjOKxC2xZ47EjAVxJR
-Xi0SYmwqyN/gcn1gmlhdLu3ksonBotCbNizUrSWXdm0uvasCQUfTZ2Hjo6btsylQ
-TEKbB1zWtiBB6tuHq+dFG93qmJvuvI/RQTX3WMO257zefjn5t84AtUZM2duRkjSk
-TXD6K+d5AXse5CdJ0hVQIkRNvQmzQ+xnSEeHEjzepr8TB2N2WPRn+CuzxsCSosD+
-0oUVb8+HphICrlU7Mk6H2fFvHUePq6uK+d0RsRBh2YSCvw0FMuYcfMZLNQvfhquJ
-IydiKis+76q/gXjRD/DeGyWyLCdPcEK7MhWZ/OPO/zywTVVtqwtnlNlTbHERlPqv
-8MxZiz4CR+4CB4QEji6RHU7ygF0XQ2DJ3g2lI53/phS7yb3U3gE5o5qcnlqCMUm+
-COl57jWGklXuO2UWl0mYyzD4iY3xhxnBb3MXO5kZ3JHNn4Ry6cWUwj9aVvlwrI0S
-MZAGsDmxzoROUVGK8LtZm50U7Z3IzveXLIeOpRHzmLypimiXcaqQzJ3UnnIjgLpn
-ovJsgG/ynCnMrcjD0WDdt/8T7+zJ/244NYfkV5YNdjUd3KbdoFihyijUjscSh6O9
-pDY5imrNTdW2Nd7k8A5x+7uu0ly7HYVqDpafRjhGB3PKkGPy5ewEIncl3oWgq/kz
-bNjSS77MEsx3/8VFdfIA
-=QoJh
------END PGP SIGNATURE-----
-
---mvzZjokS1nTZS3h1--
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMzc1JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wMSAxNTo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNz=
+U=3D
 
 
---===============2406148391784084150==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============2406148391784084150==--
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_sfd2d_oct

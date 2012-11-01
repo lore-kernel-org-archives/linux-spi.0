@@ -1,36 +1,54 @@
-From: Thelem Assurances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre assurance sante jusqu'a 50 pourcent remboursee
-Date: Thu, 01 Nov 2012 15:57:05 +0100
-Message-ID: <1351781868.thing50928decb780f@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Subject: [PATCH] spi: erase pointer to drvdata on removal
+Date: Thu,  1 Nov 2012 14:05:36 -0400
+Message-ID: <1351793136-14126-1-git-send-email-vivien.didelot@savoirfairelinux.com>
+Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-kernel@vger.kernel.org
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+As for i2c-core, let the SPI core handle the removal of the device's
+drvdata, after a remove() or a probe() failure.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMzc1JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wMSAxNTo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNzU=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMzc1JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wMSAxNTo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNz=
-U=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 ---
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_sfd2d_oct
+ drivers/spi/spi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 84c2861..fe636fe 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -233,15 +233,25 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
+ static int spi_drv_probe(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
++	struct spi_device		*sdev = to_spi_device(dev);
++	int				status;
+ 
+-	return sdrv->probe(to_spi_device(dev));
++	status = sdrv->probe(sdev);
++	if (status)
++		spi_set_drvdata(sdev, NULL);
++	return status;
+ }
+ 
+ static int spi_drv_remove(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
++	struct spi_device		*sdev = to_spi_device(dev);
++	int				status;
+ 
+-	return sdrv->remove(to_spi_device(dev));
++	status = sdrv->remove(sdev);
++	if (status == 0)
++		spi_set_drvdata(sdev, NULL);
++	return status;
+ }
+ 
+ static void spi_drv_shutdown(struct device *dev)
+-- 
+1.7.11.7

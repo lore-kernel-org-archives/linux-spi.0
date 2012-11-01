@@ -1,12 +1,13 @@
-From: Les bons plans trivago <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?S=E9journez_en_h=F4tel_4*_=E0_partir_de_36=A4?=
-Date: Wed, 31 Oct 2012 20:12:43 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1418904.3016826189@news.localips.com>
-Reply-To: newsletter-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
+From: Votre =?iso-8859-15?Q?v=E9hicule?= vendu rapidement sur Carseurop.com
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: carseurop par Duano
+Date: Thu, 01 Nov 2012 06:18:05 +0100
+Message-ID: <1351747087.thing5092060f943e4@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,80 +19,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-fr_newsletter  Si vous ne pouvez pas visualiser ce message,  consulter =
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-notre version en ligne. : =
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNDc2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wMSAwNjoxMDowMSZlPTEmaD0yMzQ3NCZmPTIzNDc2Jmc9MjM0NzY=3D
 
- http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSevcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlIp =
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNDc2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wMSAwNjoxMDowMSZlPTEmaD0yMzQ3NCZmPTIzNDc2Jmc9MjM0Nz=
+Y=3D
 
- Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
-
-mails par l'intermediaire de  ce raccourci.  : =
-
- http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSe_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlIu =
-
-
-
-
-
-Rome
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSePcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIv =
-
-Barcelone
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSefcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIs =
-
-Paris
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSfvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIt =
-
-
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSf_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIy =
-
-
-Marrakech
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSfPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIz =
-
-Lisbonne
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSffcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIw =
-
-Toulouse
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlScvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIx =
-
-
-trivago.fr : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlSc_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlI2 =
-
- permet aux voyageurs de trouver l?h=F4tel id=E9al au meilleur tarif, =
-
-parmi plus de 100 portails de r=E9servation recensant
-600 000 h=F4tels dans le monde.
-Tous les prix ci-dessus ne sont fournis qu'=E0 titre indicatif et sous =
-
-r=E9serve de disponibilit=E9 chez les partenaires.
-Si vous souhaitez vous d=E9sinscrire de la newsletter, cliquez ici.
-
-trivago.fr : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJafWLnGHxKLQlScPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlI3 =
-
-
- 26-28 rue de Londres
- 75009 Paris
- FRANCE
-
-=A9=A02004 - 2012 =A0Tous droits r=E9serv=E9s
 
 ---------------------------------------------------------------------------=
 ---

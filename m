@@ -1,11 +1,12 @@
-From: Bon plan par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Achetez votre prochain =?iso-8859-15?Q?d=E9jeuner_=E0_moiti=E9?= prix
-Date: Thu, 01 Nov 2012 06:30:03 +0100
-Message-ID: <1351747808.thing509208e0a186c@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Virginie Rendez Vous Deco" <virginie-QqWwXOTawBtaJIz1C1VOMuYssDEuZoRD@public.gmane.org>
+Subject: =?utf-8?Q?Anniversaire_Rendez_Vous_Deco_=3A_Jusqu=27=C3=A0_200?=
+	=?utf-8?Q?=E2=82=AC_offerts_!?=
+Date: Thu, 01 Nov 2012 08:43:59 +0000
+Message-ID: <1351759439-567845345AB@email.rendezvousdeco.com>
+Reply-To: virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNDcxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wMSAwNjoyMDowMSZlPTEmaD0yMzQ2OSZmPTIzNDcxJmc9MjM0NzE=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNDcxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wMSAwNjoyMDowMSZlPTEmaD0yMzQ2OSZmPTIzNDcxJmc9MjM0Nz=
-E=3D
-
-
----------------------------------------------------------------------------=
----
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_sfd2d_oct
+VW4gcHJvYmzDqG1lIHBvdXIgbGlyZSBjZXQgZW1haWwgPyBDbGlxdWV6IHN1ciBjZSBsaWVuIDog
+aHR0cDovL3JlZC5lbWFpbC5yZW5kZXp2b3VzZGVjby5jb20vTWlycm9yLnBocD9lbWFpbD1zcGkt
+ZGV2ZWwtZ2VuZXJhbCU0MGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZtaWQ9ODY5MwoKUG91ciBzb24g
+YW5uaXZlcnNhaXJlLCBSZW5kZXogVm91cyBEw6ljbyB2b3VzIGZhaXQgcGxlaW4gZGUgY2FkZWF1
+eCAhIDogaHR0cDovL3d3dy5yZW5kZXp2b3VzZGVjby5jb20vP3V0bV9zb3VyY2U9bmV3c2xldHRl
+cl92Ml81JnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPW5ld3NsZXR0ZXJfZHVfMzFfMTBf
+MjAxMgoKVm91cyBwb3V2ZXogw6AgdG91dCBtb21lbnQgdm91cyBkw6lzYWJvbm5lciBlbiBjbGlx
+dWFudCBpY2kgOiBodHRwOi8vcmVkLmVtYWlsLnJlbmRlenZvdXNkZWNvLmNvbS9VbnN1YnNjcmli
+ZS5waHA/ZW1haWw9c3BpLWRldmVsLWdlbmVyYWwlNDBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmbWlk
+PTg2OTMKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMu
+IFNvIGRvIHdlLgpNYWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93
+bmxvYWQgQXBwRHluYW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3Nm
+dS9hcHBkeW5fc2ZkMmRfb2N0Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

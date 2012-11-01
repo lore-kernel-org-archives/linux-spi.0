@@ -1,17 +1,17 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/3] spi: spidev: Add device tree bindings
-Date: Thu, 1 Nov 2012 14:55:27 +0000
-Message-ID: <20121101145527.GR4413@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 2/3] spi: spidev: Add Rohm DH2228FV DAC compatible string
+Date: Thu, 1 Nov 2012 14:56:06 +0000
+Message-ID: <20121101145606.GS4413@opensource.wolfsonmicro.com>
 References: <1351679410-11026-1-git-send-email-maxime.ripard@free-electrons.com>
- <1351679410-11026-2-git-send-email-maxime.ripard@free-electrons.com>
+ <1351679410-11026-3-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6895757118380046096=="
+Content-Type: multipart/mixed; boundary="===============2406148391784084150=="
 Cc: Grant Likely <grant.likely@secretlab.ca>,
  spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
  linux-arm-kernel@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
 To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1351679410-11026-2-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1351679410-11026-3-git-send-email-maxime.ripard@free-electrons.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -24,48 +24,47 @@ Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead
 List-Id: linux-spi.vger.kernel.org
 
 
---===============6895757118380046096==
+--===============2406148391784084150==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+bDoS+V4AJZnUgoC"
+	protocol="application/pgp-signature"; boundary="mvzZjokS1nTZS3h1"
 Content-Disposition: inline
 
 
---+bDoS+V4AJZnUgoC
+--mvzZjokS1nTZS3h1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Oct 31, 2012 at 11:30:08AM +0100, Maxime Ripard wrote:
-> This will allow to probe spidev from device tree by adding the
-> compatible string of each device to this array.
+On Wed, Oct 31, 2012 at 11:30:09AM +0100, Maxime Ripard wrote:
+> Since we don't have a driver for it yet, use spidev instead.
 
 Applied, thanks.
 
---+bDoS+V4AJZnUgoC
+--mvzZjokS1nTZS3h1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQko1AAAoJELSic+t+oim94WoP/2ujBImJ5GjvP2QAygdvlgCu
-8iezHVkEk7khRVimfaPEvN0eJsCvCHLwnRSA6DIU1SbagpNyP2NF1q7yql9LWgge
-0hvB0fRrrcBk7/2yv+4ofonilqL6vV5YX0WKJwnSSG2AzkzpWseL8BtDLISgNoOx
-yTdN7k+lH0Dh80bfCxpVboce/6ARn4656DfZDNMsGp2pjTqtDGCe6+o0qgru00oz
-1eArTVF8PzmdDDUGT3YcMeeNeghOWDbfSt7IMh+m7AWIu8ONQnHHZivWNga5Svf6
-6+Ob9esypv+eX8oVvm3UUnZklCy6r4dqwmppsKxMFptT+puwxTN4hF3tn1/M5a6n
-HwxgsFQogDazdQpW+itsLlLee2LNwHXNbbIP+QVisfHnelA+5mlCxr+i/x/BTSX5
-FAuw/m0BiuIMQY5rme3QmhyVolNAvGihiuiatBfYXJZmqGRFLYmUOEOS2kSuX7Nj
-jfAun6Bv9FHUfQQ6/a7su2EabDWGvTfD9z9SzY2AFHEWNX7wkRgO6h/CDx62MiB+
-olWWmaYzacqmSyXelIMOzmYvty2mQkdzXl6+UXUI0gnlUGwuS0hYYzpF8MtZxCs1
-HNyIO7UtMGFjz30IGRzF4KQOBmsR/nOOUotpLAepKEaV9FwShGjypDuz/KYMDp/2
-qUR4iEUfLK0X5aRGbHTR
-=Dmuz
+iQIcBAEBAgAGBQJQko2AAAoJELSic+t+oim9ZgEQAIPmV8DjOKxC2xZ47EjAVxJR
+Xi0SYmwqyN/gcn1gmlhdLu3ksonBotCbNizUrSWXdm0uvasCQUfTZ2Hjo6btsylQ
+TEKbB1zWtiBB6tuHq+dFG93qmJvuvI/RQTX3WMO257zefjn5t84AtUZM2duRkjSk
+TXD6K+d5AXse5CdJ0hVQIkRNvQmzQ+xnSEeHEjzepr8TB2N2WPRn+CuzxsCSosD+
+0oUVb8+HphICrlU7Mk6H2fFvHUePq6uK+d0RsRBh2YSCvw0FMuYcfMZLNQvfhquJ
+IydiKis+76q/gXjRD/DeGyWyLCdPcEK7MhWZ/OPO/zywTVVtqwtnlNlTbHERlPqv
+8MxZiz4CR+4CB4QEji6RHU7ygF0XQ2DJ3g2lI53/phS7yb3U3gE5o5qcnlqCMUm+
+COl57jWGklXuO2UWl0mYyzD4iY3xhxnBb3MXO5kZ3JHNn4Ry6cWUwj9aVvlwrI0S
+MZAGsDmxzoROUVGK8LtZm50U7Z3IzveXLIeOpRHzmLypimiXcaqQzJ3UnnIjgLpn
+ovJsgG/ynCnMrcjD0WDdt/8T7+zJ/244NYfkV5YNdjUd3KbdoFihyijUjscSh6O9
+pDY5imrNTdW2Nd7k8A5x+7uu0ly7HYVqDpafRjhGB3PKkGPy5ewEIncl3oWgq/kz
+bNjSS77MEsx3/8VFdfIA
+=QoJh
 -----END PGP SIGNATURE-----
 
---+bDoS+V4AJZnUgoC--
+--mvzZjokS1nTZS3h1--
 
 
---===============6895757118380046096==
+--===============2406148391784084150==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -76,4 +75,4 @@ linux-arm-kernel mailing list
 linux-arm-kernel@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
---===============6895757118380046096==--
+--===============2406148391784084150==--

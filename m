@@ -1,11 +1,12 @@
-From: "Phil Greer" <PGNoReply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: [SPAM] Re: New Clients
-Date: Fri, 2 Nov 2012 12:52:59 -0700
-Message-ID: <2461d9c07310e825f2d74d09001d3fc3@ymail.com>
+From: Expert protection par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre devis alarme est disponible
+Date: Sat, 03 Nov 2012 05:12:07 +0100
+Message-ID: <1351915933.thing5094999d298f1@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,21 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Are you the person in charge of finding new clients? Our company has databases for telemarketing, direct mail, email marketing, and fax broadcasting. And I'd like to talk about how we can tailor our lists of leads to your specific audience.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMDk1JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wMyAwNToxMDowMSZlPTEmaD0yMzA5MyZmPTIzMDk1Jmc9MjMwOTU=3D
 
-Our databases are fresh, and we can provide them for less than any other list-vendor out there. Please, let me know what kind of leads you need. I promise you'll get you a great list at a great price!
-
-Give me a call at 1-800-918-1660.
-
-Phil Greer
-Database Specialist
-1-800-918-1660
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMDk1JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wMyAwNToxMDowMSZlPTEmaD0yMzA5MyZmPTIzMDk1Jmc9MjMwOT=
+U=3D
 
 
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 LogMeIn Central: Instant, anywhere, Remote PC access and management.
 Stay in control, update software, and manage PCs from one command center
 Diagnose problems and improve visibility into emerging IT issues

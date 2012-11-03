@@ -1,7 +1,7 @@
-From: Votre demande n3162 via Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Votre Auto est-elle bien assuree
-Date: Sat, 03 Nov 2012 06:15:08 +0100
-Message-ID: <1351919714.thing5094a86231936@mach10.generated>
+From: Le Monde du Bagage par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Moins80 pourcent sur les bagages de grandes marques
+Date: Sat, 03 Nov 2012 23:54:04 +0100
+Message-ID: <1351983273.thing5095a0a998282@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMTM1JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wMyAwNjoxMDowMSZlPTEmaD0yMzEzMyZmPTIzMTM1Jmc9MjMxMzU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMjM3JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wMyAyMzo1MDowMSZlPTEmaD0yMzIzNSZmPTIzMjM3Jmc9MjMyMzc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMTM1JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wMyAwNjoxMDowMSZlPTEmaD0yMzEzMyZmPTIzMTM1Jmc9MjMxMz=
-U=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMjM3JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wMyAyMzo1MDowMSZlPTEmaD0yMzIzNSZmPTIzMjM3Jmc9MjMyMz=
+c=3D
 
 
 ---------------------------------------------------------------------------=

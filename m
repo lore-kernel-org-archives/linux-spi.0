@@ -1,22 +1,12 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [REGRESSION] d7b4394e breaks bi-directional DMA transfers on
-	omap2-mcspi
-Date: Mon, 5 Nov 2012 20:50:57 +0530
-Message-ID: <CAM=Q2cs9sUUi+NfQuWVTjWKBieLnA5dmjFP5J7XUJ=sanA+dsQ@mail.gmail.com>
-References: <651D981E4B29F74ABD63CE74C2E4788E08A612E22A@SLOMAILPRD01.polycom.com>
-	<CAM=Q2ctN8nGvmbzO8K-hMeUKsp9kVbPxvO=OidkJZcLBfqOTLQ@mail.gmail.com>
-	<CAM=Q2ctLtGneTfuALDQBk68mEnOxHseZ1fkvcoTks-0j+VyTxQ@mail.gmail.com>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Sun, 4 Nov 2012 23:28:20 +0800
+Message-ID: <E1TVOa7-0000te-Lr@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"shubhrajyoti-l0cyMroinI0@public.gmane.org" <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-To: "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	=?ISO-8859-1?Q?S=F8rensen=2C_Stefan?= <Stefan.Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAM=Q2ctLtGneTfuALDQBk68mEnOxHseZ1fkvcoTks-0j+VyTxQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,122 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Oct 31, 2012 at 8:59 PM, Shubhrajyoti Datta
-<omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-[...]
-
-Mark,
-
-let me know if you want me to resubmit it as a patch.
-
->
-> From 07a59cb82955c37eff6fe06ba25958dc1b5c5f56 Mon Sep 17 00:00:00 2001
-> From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> Date: Wed, 31 Oct 2012 19:15:25 +0530
-> Subject: [PATCH] spi: omap2-mcspi: Reorder the wait_for_completion for tx
->
-> The commit  d7b4394e[Cleanup the omap2_mcspi_txrx_dma function]
-> changed the wait_for_completion order. Move the wait so that the
-> rx doesnot wait for the tx to complete.
->
-> Reported-by: S=F8rensen, Stefan <Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
-> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
-> ---
->  drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++----------------=
-----
->  1 files changed, 19 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index bcfd062..251f6d0 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -323,18 +323,13 @@ static void omap2_mcspi_tx_dma(struct spi_device *s=
-pi,
->         struct omap2_mcspi      *mcspi;
->         struct omap2_mcspi_dma  *mcspi_dma;
->         unsigned int            count;
-> -       u8                      * rx;
->         const u8                * tx;
-> -       void __iomem            *chstat_reg;
-> -       struct omap2_mcspi_cs   *cs =3D spi->controller_state;
->
->         mcspi =3D spi_master_get_devdata(spi->master);
->         mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
->         count =3D xfer->len;
->
-> -       rx =3D xfer->rx_buf;
->         tx =3D xfer->tx_buf;
-> -       chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
->
->         if (mcspi_dma->dma_tx) {
->                 struct dma_async_tx_descriptor *tx;
-> @@ -359,19 +354,6 @@ static void omap2_mcspi_tx_dma(struct spi_device *sp=
-i,
->         dma_async_issue_pending(mcspi_dma->dma_tx);
->         omap2_mcspi_set_dma_req(spi, 0, 1);
->
-> -       wait_for_completion(&mcspi_dma->dma_tx_completion);
-> -       dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
-> -                        DMA_TO_DEVICE);
-> -
-> -       /* for TX_ONLY mode, be sure all words have shifted out */
-> -       if (rx =3D=3D NULL) {
-> -               if (mcspi_wait_for_reg_bit(chstat_reg,
-> -                                       OMAP2_MCSPI_CHSTAT_TXS) < 0)
-> -                       dev_err(&spi->dev, "TXS timed out\n");
-> -               else if (mcspi_wait_for_reg_bit(chstat_reg,
-> -                                       OMAP2_MCSPI_CHSTAT_EOT) < 0)
-> -                       dev_err(&spi->dev, "EOT timed out\n");
-> -       }
->  }
->
->  static unsigned
-> @@ -492,6 +474,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
-> struct spi_transfer *xfer)
->         struct dma_slave_config cfg;
->         enum dma_slave_buswidth width;
->         unsigned es;
-> +       void __iomem            *chstat_reg;
->
->         mcspi =3D spi_master_get_devdata(spi->master);
->         mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
-> @@ -526,8 +509,24 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
-> struct spi_transfer *xfer)
->                 omap2_mcspi_tx_dma(spi, xfer, cfg);
->
->         if (rx !=3D NULL)
-> -               return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
-> -
-> +               count =3D omap2_mcspi_rx_dma(spi, xfer, cfg, es);
-> +
-> +       if (tx !=3D NULL) {
-> +               chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
-> +               wait_for_completion(&mcspi_dma->dma_tx_completion);
-> +               dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
-> +                                DMA_TO_DEVICE);
-> +
-> +               /* for TX_ONLY mode, be sure all words have shifted out */
-> +               if (rx =3D=3D NULL) {
-> +                       if (mcspi_wait_for_reg_bit(chstat_reg,
-> +                                               OMAP2_MCSPI_CHSTAT_TXS) <=
- 0)
-> +                               dev_err(&spi->dev, "TXS timed out\n");
-> +                       else if (mcspi_wait_for_reg_bit(chstat_reg,
-> +                                               OMAP2_MCSPI_CHSTAT_EOT) <=
- 0)
-> +                               dev_err(&spi->dev, "EOT timed out\n");
-> +               }
-> +       }
->         return count;
->  }
->
-> --
-> 1.7.5.4
-
----------------------------------------------------------------------------=
----
-LogMeIn Central: Instant, anywhere, Remote PC access and management.
-Stay in control, update software, and manage PCs from one command center
-Diagnose problems and improve visibility into emerging IT issues
-Automate, monitor and manage. Do more in less time with Central
-http://p.sf.net/sfu/logmein12331_d2d
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTG9nTWVJbiBDZW50
+cmFsOiBJbnN0YW50LCBhbnl3aGVyZSwgUmVtb3RlIFBDIGFjY2VzcyBhbmQgbWFuYWdlbWVudC4K
+U3RheSBpbiBjb250cm9sLCB1cGRhdGUgc29mdHdhcmUsIGFuZCBtYW5hZ2UgUENzIGZyb20gb25l
+IGNvbW1hbmQgY2VudGVyCkRpYWdub3NlIHByb2JsZW1zIGFuZCBpbXByb3ZlIHZpc2liaWxpdHkg
+aW50byBlbWVyZ2luZyBJVCBpc3N1ZXMKQXV0b21hdGUsIG1vbml0b3IgYW5kIG1hbmFnZS4gRG8g
+bW9yZSBpbiBsZXNzIHRpbWUgd2l0aCBDZW50cmFsCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbG9nbWVp
+bjEyMzMxX2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
+bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

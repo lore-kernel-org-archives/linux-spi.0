@@ -1,121 +1,148 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Subject: RE: [RFC PATCH v3 00/16] DMA Engine support for AM33XX
-Date: Mon, 5 Nov 2012 07:19:33 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EAC0633@DBDE01.ent.ti.com>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
+From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [REGRESSION] d7b4394e breaks bi-directional DMA transfers on
+	omap2-mcspi
+Date: Mon, 5 Nov 2012 20:50:57 +0530
+Message-ID: <CAM=Q2cs9sUUi+NfQuWVTjWKBieLnA5dmjFP5J7XUJ=sanA+dsQ@mail.gmail.com>
+References: <651D981E4B29F74ABD63CE74C2E4788E08A612E22A@SLOMAILPRD01.polycom.com>
+	<CAM=Q2ctN8nGvmbzO8K-hMeUKsp9kVbPxvO=OidkJZcLBfqOTLQ@mail.gmail.com>
+	<CAM=Q2ctLtGneTfuALDQBk68mEnOxHseZ1fkvcoTks-0j+VyTxQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source@linux.davincidsp.com>,
- Chris Ball <cjb@laptop.org>, Russell King <linux@arm.linux.org.uk>, "Cousson,
- Benoit" <b-cousson@ti.com>, Arnd Bergmann <arnd@arndb.de>,
- Linux Documentation List <linux-doc@vger.kernel.org>,
- Tony Lindgren <tony@atomide.com>, "Nori, Sekhar" <nsekhar@ti.com>,
- Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
- Mark Brown <broonie@opensource.wolfsonmicro.com>,
- Linux MMC List <linux-mmc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rob Herring <rob.herring@calxeda.com>,
- Grant Likely <grant.likely@secretlab.ca>, Vinod Koul <vinod.koul@intel.com>,
- Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
- Linux SPI Devel List <spi-devel-general@lists.sourceforge.net>,
- Linux OMAP List <linux-omap@vger.kernel.org>,
- Linux ARM Kernel List <linux-arm-kernel@lists.infrade
-To: "Porter, Matt" <mporter@ti.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1350566815-409-1-git-send-email-mporter@ti.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"shubhrajyoti-l0cyMroinI0@public.gmane.org" <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: "broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	=?ISO-8859-1?Q?S=F8rensen=2C_Stefan?= <Stefan.Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAM=Q2ctLtGneTfuALDQBk68mEnOxHseZ1fkvcoTks-0j+VyTxQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 18, 2012 at 18:56:39, Porter, Matt wrote:
+On Wed, Oct 31, 2012 at 8:59 PM, Shubhrajyoti Datta
+<omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+[...]
 
-...snip...
-...snip...
-...snip...
+Mark,
 
-> 
-> This series adds DMA Engine support for AM33xx, which uses
-> an EDMA DMAC. The EDMA DMAC has been previously supported by only
-> a private API implementation (much like the situation with OMAP
-> DMA) found on the DaVinci family of SoCs.
-> 
-> The series applies on top of 3.7-rc1 and the following patches:
-> 
-> 	- GPMC fails to reserve memory fix:
-> 	  http://www.spinics.net/lists/linux-omap/msg79675.html
-> 	- TPS65910 regulator fix:
-> 	  https://patchwork.kernel.org/patch/1593651/
-> 	- dmaengine DT support from Vinod's dmaengine_dt branch in
-> 	  git://git.infradead.org/users/vkoul/slave-dma.git since
-> 	  027478851791df751176398be02a3b1c5f6aa824
-> 
-> The approach taken is similar to how OMAP DMA is being converted to
-> DMA Engine support. With the functional EDMA private API already
-> existing in mach-davinci/dma.c, we first move that to an ARM common
-> area so it can be shared. Adding DT and runtime PM support to the
-> private EDMA API implementation allows it to run on AM33xx. AM33xx
-> *only* boots using DT so we leverage Jon's generic DT DMA helpers to
-> register EDMA DMAC with the of_dma framework and then add support
-> for calling the dma_request_slave_channel() API to both the mmc
-> and spi drivers.
-> 
-> With this series both BeagleBone and the AM335x EVM have working
-> MMC and SPI support.
-> 
-> This is tested on BeagleBone with a SPI framebuffer driver and MMC
-> rootfs. A trivial gpio DMA event misc driver was used to test the
-> crossbar DMA event support. It is also tested on the AM335x EVM
-> with the onboard SPI flash and MMC rootfs. The branch at
-> https://github.com/ohporter/linux/tree/edma-dmaengine-v3 has the
-> complete series, dependencies, and some test drivers/defconfigs.
-> 
-> Regression testing was done on AM180x-EVM (which also makes use
-> of the EDMA dmaengine driver and the EDMA private API) using SD,
-> SPI flash, and the onboard audio supported by the ASoC Davinci
-> driver.
+let me know if you want me to resubmit it as a patch.
 
-Since you have tested MMC, and probably will be adding Audio support
-for AM335x as well, I believe you will also be adding Pin-mux support
-for both the modules.
+>
+> From 07a59cb82955c37eff6fe06ba25958dc1b5c5f56 Mon Sep 17 00:00:00 2001
+> From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+> Date: Wed, 31 Oct 2012 19:15:25 +0530
+> Subject: [PATCH] spi: omap2-mcspi: Reorder the wait_for_completion for tx
+>
+> The commit  d7b4394e[Cleanup the omap2_mcspi_txrx_dma function]
+> changed the wait_for_completion order. Move the wait so that the
+> rx doesnot wait for the tx to complete.
+>
+> Reported-by: S=F8rensen, Stefan <Sorensen-I0ystx/e7NpBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+> ---
+>  drivers/spi/spi-omap2-mcspi.c |   39 +++++++++++++++++++----------------=
+----
+>  1 files changed, 19 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index bcfd062..251f6d0 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -323,18 +323,13 @@ static void omap2_mcspi_tx_dma(struct spi_device *s=
+pi,
+>         struct omap2_mcspi      *mcspi;
+>         struct omap2_mcspi_dma  *mcspi_dma;
+>         unsigned int            count;
+> -       u8                      * rx;
+>         const u8                * tx;
+> -       void __iomem            *chstat_reg;
+> -       struct omap2_mcspi_cs   *cs =3D spi->controller_state;
+>
+>         mcspi =3D spi_master_get_devdata(spi->master);
+>         mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
+>         count =3D xfer->len;
+>
+> -       rx =3D xfer->rx_buf;
+>         tx =3D xfer->tx_buf;
+> -       chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
+>
+>         if (mcspi_dma->dma_tx) {
+>                 struct dma_async_tx_descriptor *tx;
+> @@ -359,19 +354,6 @@ static void omap2_mcspi_tx_dma(struct spi_device *sp=
+i,
+>         dma_async_issue_pending(mcspi_dma->dma_tx);
+>         omap2_mcspi_set_dma_req(spi, 0, 1);
+>
+> -       wait_for_completion(&mcspi_dma->dma_tx_completion);
+> -       dma_unmap_single(mcspi->dev, xfer->tx_dma, count,
+> -                        DMA_TO_DEVICE);
+> -
+> -       /* for TX_ONLY mode, be sure all words have shifted out */
+> -       if (rx =3D=3D NULL) {
+> -               if (mcspi_wait_for_reg_bit(chstat_reg,
+> -                                       OMAP2_MCSPI_CHSTAT_TXS) < 0)
+> -                       dev_err(&spi->dev, "TXS timed out\n");
+> -               else if (mcspi_wait_for_reg_bit(chstat_reg,
+> -                                       OMAP2_MCSPI_CHSTAT_EOT) < 0)
+> -                       dev_err(&spi->dev, "EOT timed out\n");
+> -       }
+>  }
+>
+>  static unsigned
+> @@ -492,6 +474,7 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
+> struct spi_transfer *xfer)
+>         struct dma_slave_config cfg;
+>         enum dma_slave_buswidth width;
+>         unsigned es;
+> +       void __iomem            *chstat_reg;
+>
+>         mcspi =3D spi_master_get_devdata(spi->master);
+>         mcspi_dma =3D &mcspi->dma_channels[spi->chip_select];
+> @@ -526,8 +509,24 @@ omap2_mcspi_txrx_dma(struct spi_device *spi,
+> struct spi_transfer *xfer)
+>                 omap2_mcspi_tx_dma(spi, xfer, cfg);
+>
+>         if (rx !=3D NULL)
+> -               return omap2_mcspi_rx_dma(spi, xfer, cfg, es);
+> -
+> +               count =3D omap2_mcspi_rx_dma(spi, xfer, cfg, es);
+> +
+> +       if (tx !=3D NULL) {
+> +               chstat_reg =3D cs->base + OMAP2_MCSPI_CHSTAT0;
+> +               wait_for_completion(&mcspi_dma->dma_tx_completion);
+> +               dma_unmap_single(mcspi->dev, xfer->tx_dma, xfer->len,
+> +                                DMA_TO_DEVICE);
+> +
+> +               /* for TX_ONLY mode, be sure all words have shifted out */
+> +               if (rx =3D=3D NULL) {
+> +                       if (mcspi_wait_for_reg_bit(chstat_reg,
+> +                                               OMAP2_MCSPI_CHSTAT_TXS) <=
+ 0)
+> +                               dev_err(&spi->dev, "TXS timed out\n");
+> +                       else if (mcspi_wait_for_reg_bit(chstat_reg,
+> +                                               OMAP2_MCSPI_CHSTAT_EOT) <=
+ 0)
+> +                               dev_err(&spi->dev, "EOT timed out\n");
+> +               }
+> +       }
+>         return count;
+>  }
+>
+> --
+> 1.7.5.4
 
-Can you share your plan to release the next version? 
-I have few patches pending for AM335x Audio (DT related). 
-
-Thanks in advance
-
-Regards
-Gururaja
-
-> 
-> After this series, the plan is to convert the last in-tree user
-> of the private EDMA API (davinci-pcm/mcasp) and then eliminate
-> the private EDMA API by folding its functionality into
-> drivers/dma/edma.c.
-> 
-> Matt Porter (16):
->   dmaengine: edma: fix slave config dependency on direction
->   ARM: davinci: move private EDMA API to arm/common
->   ARM: edma: remove unused transfer controller handlers
->   ARM: edma: add DT and runtime PM support for AM33XX
->   ARM: edma: add AM33XX crossbar event support
->   dmaengine: edma: enable build for AM33XX
->   dmaengine: edma: Add TI EDMA device tree binding
->   ARM: dts: add AM33XX EDMA support
->   dmaengine: add dma_request_slave_channel_compat()
->   mmc: omap_hsmmc: convert to dma_request_slave_channel_compat()
->   mmc: omap_hsmmc: limit max_segs with the EDMA DMAC
->   mmc: omap_hsmmc: add generic DMA request support to the DT binding
->   ARM: dts: add AM33XX MMC support
->   spi: omap2-mcspi: convert to dma_request_slave_channel_compat()
->   spi: omap2-mcspi: add generic DMA request support to the DT binding
->   ARM: dts: add AM33XX SPI support
-> 
+---------------------------------------------------------------------------=
+---
+LogMeIn Central: Instant, anywhere, Remote PC access and management.
+Stay in control, update software, and manage PCs from one command center
+Diagnose problems and improve visibility into emerging IT issues
+Automate, monitor and manage. Do more in less time with Central
+http://p.sf.net/sfu/logmein12331_d2d

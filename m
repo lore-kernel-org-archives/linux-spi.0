@@ -1,11 +1,11 @@
-From: "Divulgue no FIM do ANO" <contato-NUEuGkakxqgGxjV9j7Yz55qQE7yCjDx5@public.gmane.org>
-Subject: [SPAM] SMTP ILIMITADO + As Melhores LISTAS de EMAILS ... fale conosco!
-Date: Wed, 31 Oct 2012 09:01:29 -0200
-Message-ID: <af8bd9fbd756ba714054dc31ee78d4bd@server-prempresas.com>
-Reply-To: contato-NUEuGkakxqgGxjV9j7Yz55qQE7yCjDx5@public.gmane.org
+From: Shopping Deal par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 4 places de =?iso-8859-15?Q?cin=E9ma_=E0?= 1 euros
+Date: Mon, 05 Nov 2012 05:44:03 +0100
+Message-ID: <1352090670.thing5097442eed799@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,20 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgRW1haWwgbsOjbyBwb2RlIGxlciBlc3RlIEVtYWlsLgpQYXJhIHZpc3Vh
-bGl6w6EtbG8gb24tbGluZSwgcG9yIGZhdm9yLCBjbGlxdWUgYXF1aToKaHR0cDovL3NlcnZlci1w
-cmVtcHJlc2FzLmNvbS9zaXN0ZW1hZGVlbnZpby9kaXNwbGF5LnBocD9NPTI0MTkzMSZDPTUyYWMx
-YzQzYTk1NDNjYTA0MmZmZTUzYzc5YThmNTEyJlM9MyZMPTImTj0xCgoKUGFyYSBwYXJhciBkZSBy
-ZWNlYmVyIG5vc3NvcwpFbWFpbHM6aHR0cDovL3NlcnZlci1wcmVtcHJlc2FzLmNvbS9zaXN0ZW1h
-ZGVlbnZpby91bnN1YnNjcmliZS5waHA/TT0yNDE5MzEmQz01MmFjMWM0M2E5NTQzY2EwNDJmZmU1
-M2M3OWE4ZjUxMiZMPTImTj0zCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMb2dNZUluIENlbnRyYWw6
-IEluc3RhbnQsIGFueXdoZXJlLCBSZW1vdGUgUEMgYWNjZXNzIGFuZCBtYW5hZ2VtZW50LgpTdGF5
-IGluIGNvbnRyb2wsIHVwZGF0ZSBzb2Z0d2FyZSwgYW5kIG1hbmFnZSBQQ3MgZnJvbSBvbmUgY29t
-bWFuZCBjZW50ZXIKRGlhZ25vc2UgcHJvYmxlbXMgYW5kIGltcHJvdmUgdmlzaWJpbGl0eSBpbnRv
-IGVtZXJnaW5nIElUIGlzc3VlcwpBdXRvbWF0ZSwgbW9uaXRvciBhbmQgbWFuYWdlLiBEbyBtb3Jl
-IGluIGxlc3MgdGltZSB3aXRoIENlbnRyYWwKaHR0cDovL3Auc2YubmV0L3NmdS9sb2dtZWluMTIz
-MzFfZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
-aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
-c3BpLWRldmVsLWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNDczJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wNSAwNTo0MDowMSZlPTEmaD0yMzQ3MSZmPTIzNDczJmc9MjM0NzM=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNDczJmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wNSAwNTo0MDowMSZlPTEmaD0yMzQ3MSZmPTIzNDczJmc9MjM0Nz=
+M=3D
+
+
+---------------------------------------------------------------------------=
+---
+LogMeIn Central: Instant, anywhere, Remote PC access and management.
+Stay in control, update software, and manage PCs from one command center
+Diagnose problems and improve visibility into emerging IT issues
+Automate, monitor and manage. Do more in less time with Central
+http://p.sf.net/sfu/logmein12331_d2d

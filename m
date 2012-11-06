@@ -1,12 +1,11 @@
-From: Bitdefender en =?iso-8859-15?Q?T=E9l=E9chargement?= par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?T=E9l=E9chargez?= Gratuitement Bitdefender
-Date: Tue, 06 Nov 2012 06:28:12 +0100
-Message-ID: <1352179705.thing50989ff9db22e@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Virginie Rendez Vous Deco" <virginie-QqWwXOTawBtaJIz1C1VOMuYssDEuZoRD@public.gmane.org>
+Subject: Une table basse originale pour votre salon !
+Date: Tue, 06 Nov 2012 08:50:20 +0000
+Message-ID: <1352191820-567845345AB@email.rendezvousdeco.com>
+Reply-To: virginie-VH1TQ0j2OjRBDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,20 +18,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNjk3JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wNiAwNjoyMDowMiZlPTEmaD0yMzY5NSZmPTIzNjk3Jmc9MjM2OTc=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNjk3JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wNiAwNjoyMDowMiZlPTEmaD0yMzY5NSZmPTIzNjk3Jmc9MjM2OT=
-c=3D
-
-
----------------------------------------------------------------------------=
----
-LogMeIn Central: Instant, anywhere, Remote PC access and management.
-Stay in control, update software, and manage PCs from one command center
-Diagnose problems and improve visibility into emerging IT issues
-Automate, monitor and manage. Do more in less time with Central
-http://p.sf.net/sfu/logmein12331_d2d
+VW4gcHJvYmzDqG1lIHBvdXIgbGlyZSBjZXQgZW1haWwgPyBDbGlxdWV6IHN1ciBjZSBsaWVuIDog
+aHR0cDovL3JlZC5lbWFpbC5yZW5kZXp2b3VzZGVjby5jb20vTWlycm9yLnBocD9lbWFpbD1zcGkt
+ZGV2ZWwtZ2VuZXJhbCU0MGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZtaWQ9ODgwNgoKVmVudGUgcHJp
+dsOpZSBUYWJsZSBCYXNzZSBUZXJyYSArIDQgUG91ZnMgMjQ5IGV1cm9zcyA6IGh0dHA6Ly93d3cu
+cmVuZGV6dm91c2RlY28uY29tL3RhYmxlcy1iYXNzZXMtZGVzaWduL3RhYmxlLWJhc3NlLTQtcG91
+ZnMtdGVycmEuaHRtbD91dG1fc291cmNlPW5ld3NsZXR0ZXJfdjImdXRtX21lZGl1bT1lbWFpbCZ1
+dG1fY2FtcGFpZ249bmV3c2xldHRlcl9kdV8wNl8xMV8yMDEyClRhcGlzIEdlb3JnZXMgQmxhbmMg
+MTIweDE3MGNtIDY5IGV1cm9zIGF1IGxpZXUgZGUgODkgZXVyb3M6IGh0dHA6Ly93d3cucmVuZGV6
+dm91c2RlY28uY29tL3RhcGlzLWRlc2lnbi5odG1sP3V0bV9zb3VyY2U9bmV3c2xldHRlcl92MiZ1
+dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1uZXdzbGV0dGVyX2R1XzA2XzExXzIwMTIKRmF1
+dGV1aWwgQ2x1YiBDdWlyIE5vaXIgMzQ5IGV1cm9zIGF1IGxpZXUgZGUgNjk5IGV1cm9zIDogaHR0
+cDovL3d3dy5yZW5kZXp2b3VzZGVjby5jb20vZmF1dGV1aWxzLWRlc2lnbi9mYXV0ZXVpbC1jbHVi
+LWN1aXItbm9pci5odG1sP3V0bV9zb3VyY2U9bmV3c2xldHRlcl92MiZ1dG1fbWVkaXVtPWVtYWls
+JnV0bV9jYW1wYWlnbj1uZXdzbGV0dGVyX2R1XzA2XzExXzIwMTIKTGFtcGFkYWlyZSBQcm9qZWN0
+ZXVyIE5vaXIgNDkgZXVyb3MgYXUgbGlldSBkZSA3OSw5MCBldXJvcyA6aHR0cDovL3d3dy5yZW5k
+ZXp2b3VzZGVjby5jb20vbHVtaW5haXJlcy1kZXNpZ24vbGFtcGFkYWlyZS1wcm9qZWN0ZXVyLW5v
+aXIuaHRtbD91dG1fc291cmNlPW5ld3NsZXR0ZXJfdjImdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2Ft
+cGFpZ249bmV3c2xldHRlcl9kdV8wNl8xMV8yMDEyCgpEw6ljb3V2cmV6IG5vdHJlIGNvbGxlY3Rp
+b24gZGUgdGFibGVzIGRlIGJhciA6IGh0dHA6Ly93d3cucmVuZGV6dm91c2RlY28uY29tL3RhYmxl
+LWRlLWJhci1kZXNpZ24uaHRtbD91dG1fc291cmNlPW5ld3NsZXR0ZXJfdjImdXRtX21lZGl1bT1l
+bWFpbCZ1dG1fY2FtcGFpZ249bmV3c2xldHRlcl9kdV8wNl8xMV8yMDEyCkTDqWNvdXZyZXogbm90
+cmUgY29sbGVjdGlvbiBkZSB0YWJvdXJldHMgZGUgYmFyIDogaHR0cDovL3d3dy5yZW5kZXp2b3Vz
+ZGVjby5jb20vdGFib3VyZXRzLWRlLWJhci1kZXNpZ24uaHRtbD91dG1fc291cmNlPW5ld3NsZXR0
+ZXJfdjImdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bmV3c2xldHRlcl9kdV8wNl8xMV8y
+MDEyCgpWb3VzIHBvdXZleiDDoCB0b3V0IG1vbWVudCB2b3VzIGTDqXNhYm9ubmVyIGVuIGNsaXF1
+YW50IGljaSA6IGh0dHA6Ly9yZWQuZW1haWwucmVuZGV6dm91c2RlY28uY29tL1Vuc3Vic2NyaWJl
+LnBocD9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbCU0MGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZtaWQ9
+ODgwNgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTG9nTWVJbiBDZW50cmFsOiBJbnN0YW50LCBhbnl3
+aGVyZSwgUmVtb3RlIFBDIGFjY2VzcyBhbmQgbWFuYWdlbWVudC4KU3RheSBpbiBjb250cm9sLCB1
+cGRhdGUgc29mdHdhcmUsIGFuZCBtYW5hZ2UgUENzIGZyb20gb25lIGNvbW1hbmQgY2VudGVyCkRp
+YWdub3NlIHByb2JsZW1zIGFuZCBpbXByb3ZlIHZpc2liaWxpdHkgaW50byBlbWVyZ2luZyBJVCBp
+c3N1ZXMKQXV0b21hdGUsIG1vbml0b3IgYW5kIG1hbmFnZS4gRG8gbW9yZSBpbiBsZXNzIHRpbWUg
+d2l0aCBDZW50cmFsCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbG9nbWVpbjEyMzMxX2QyZApfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

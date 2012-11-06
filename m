@@ -1,11 +1,13 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Sun, 4 Nov 2012 23:28:20 +0800
-Message-ID: <E1TVOa7-0000te-Lr@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Florence Escaravage par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 2 =?iso-8859-15?Q?cl=E9s?= pour une belle histoire d'amour dans les
+	mois qui viennent
+Date: Tue, 06 Nov 2012 04:52:05 +0100
+Message-ID: <1352173946.thing5098897a8ce25@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTG9nTWVJbiBDZW50
-cmFsOiBJbnN0YW50LCBhbnl3aGVyZSwgUmVtb3RlIFBDIGFjY2VzcyBhbmQgbWFuYWdlbWVudC4K
-U3RheSBpbiBjb250cm9sLCB1cGRhdGUgc29mdHdhcmUsIGFuZCBtYW5hZ2UgUENzIGZyb20gb25l
-IGNvbW1hbmQgY2VudGVyCkRpYWdub3NlIHByb2JsZW1zIGFuZCBpbXByb3ZlIHZpc2liaWxpdHkg
-aW50byBlbWVyZ2luZyBJVCBpc3N1ZXMKQXV0b21hdGUsIG1vbml0b3IgYW5kIG1hbmFnZS4gRG8g
-bW9yZSBpbiBsZXNzIHRpbWUgd2l0aCBDZW50cmFsCmh0dHA6Ly9wLnNmLm5ldC9zZnUvbG9nbWVp
-bjEyMzMxX2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
-bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNjY1JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wNiAwNDo0MDowMSZlPTEmaD0yMzY2MyZmPTIzNjY1Jmc9MjM2NjU=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNjY1JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wNiAwNDo0MDowMSZlPTEmaD0yMzY2MyZmPTIzNjY1Jmc9MjM2Nj=
+U=3D
+
+
+---------------------------------------------------------------------------=
+---
+LogMeIn Central: Instant, anywhere, Remote PC access and management.
+Stay in control, update software, and manage PCs from one command center
+Diagnose problems and improve visibility into emerging IT issues
+Automate, monitor and manage. Do more in less time with Central
+http://p.sf.net/sfu/logmein12331_d2d

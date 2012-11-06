@@ -1,8 +1,7 @@
-From: Florence Escaravage par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 2 =?iso-8859-15?Q?cl=E9s?= pour une belle histoire d'amour dans les
-	mois qui viennent
-Date: Tue, 06 Nov 2012 04:52:05 +0100
-Message-ID: <1352173946.thing5098897a8ce25@mach10.generated>
+From: Thelem Assurances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre assurance sante jusqu'a 50 pourcent remboursee
+Date: Tue, 06 Nov 2012 05:02:13 +0100
+Message-ID: <1352174539.thing50988bcbefb60@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,11 +20,11 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNjY1JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wNiAwNDo0MDowMSZlPTEmaD0yMzY2MyZmPTIzNjY1Jmc9MjM2NjU=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzMzc1JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wNiAwNDo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNzU=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNjY1JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wNiAwNDo0MDowMSZlPTEmaD0yMzY2MyZmPTIzNjY1Jmc9MjM2Nj=
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzMzc1JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wNiAwNDo1MDowMSZlPTEmaD0yMzM3MyZmPTIzMzc1Jmc9MjMzNz=
 U=3D
 
 

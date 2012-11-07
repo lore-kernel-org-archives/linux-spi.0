@@ -1,31 +1,50 @@
-From: Shubhrajyoti Datta <omaplinuxkernel@gmail.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Reorder the wait_for_completion for tx
-Date: Tue, 6 Nov 2012 15:39:50 +0530
-Message-ID: <CAM=Q2csWBNbEDPevQ0Wy6CJjL928PN9HwvEZV=FkM5TBux05xQ@mail.gmail.com>
-References: <1352193447-23335-1-git-send-email-shubhrajyoti@ti.com>
-	<20121106092224.GL5044@opensource.wolfsonmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Shubhrajyoti D <shubhrajyoti@ti.com>,
-	spi-devel-general@lists.sourceforge.net, grant.likely@secretlab.ca,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20121106092224.GL5044@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+Subject: [PATCH] spi: s3c64xx: Add fix for crash in spi suspend/resume
+Date: Wed, 07 Nov 2012 11:40:12 +0530
+Message-ID: <1352268612-9671-1-git-send-email-ch.naveen@samsung.com>
+Cc: naveenkrishna.ch@gmail.com, broonie@opensource.wolfsonmicro.com,
+	grant.likely@secretlab.ca, jaswinder.singh@linaro.org,
+	linux-samsung-soc@vger.kernel.org
+To: linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Nov 6, 2012 at 2:52 PM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> On Tue, Nov 06, 2012 at 02:47:27PM +0530, Shubhrajyoti D wrote:
->> The commit  d7b4394e[Cleanup the omap2_mcspi_txrx_dma function]
->> changed the wait_for_completion order. Move the wait so that the
->> rx doesnot wait for the tx to complete.
->
-> Is this a resend of the patch I just applied, or is it something
-> different?
+From: Abhilash Kesavan <a.kesavan@samsung.com>
 
-No please ignore this one.
+The SPI driver makes a gpio_request during initialization. The requested
+gpios need to be populated as part of the s3c64xx_spi_driver_data so that
+they can be released during suspend and requested again during resume.
 
-Something wrong at my end it got sent twice.
-Please ignore.
+Add the missing code to save the requested gpios as part of the driver
+data. This fixes a SPI driver suspend crash.
+
+Signed-off-by: Abhilash Kesavan <a.kesavan@samsung.com>
+Signed-off-by: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+---
+
+This was tested on spi-next branch
+http://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git
+
+With S2R patches submitted on mailing list.
+http://www.spinics.net/lists/arm-kernel/msg205244.html
+
+ drivers/spi/spi-s3c64xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 01b2f56..57900a8 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1112,7 +1112,7 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
+ 			dev_err(dev, "invalid gpio[%d]: %d\n", idx, gpio);
+ 			goto free_gpio;
+ 		}
+-
++		sdd->gpios[idx] = gpio;
+ 		ret = gpio_request(gpio, "spi-bus");
+ 		if (ret) {
+ 			dev_err(dev, "gpio [%d] request failed: %d\n",
+-- 
+1.7.9.5

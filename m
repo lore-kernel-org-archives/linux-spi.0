@@ -1,7 +1,8 @@
-From: Daxon par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Un hiver en =?iso-8859-15?Q?f=EAte?=
-Date: Thu, 08 Nov 2012 06:05:03 +0100
-Message-ID: <1352351156.thing509b3db41273f@mach10.generated>
+From: Mistergooddeal  par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: =?iso-8859-15?Q?Op=E9ration_d=E9stockage?= avec des offres
+	=?iso-8859-15?Q?jusqu=27=E0?= 75% de =?iso-8859-15?Q?r=E9duction?=
+Date: Thu, 08 Nov 2012 16:05:05 +0100
+Message-ID: <1352387153.thing509bca511907b@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzOTM3JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wOCAwNjowMDowMSZlPTEmaD0yMzkzNSZmPTIzOTM3Jmc9MjM5Mzc=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNzY0JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wOCAxNjowMDowMSZlPTEmaD0yMzc2MiZmPTIzNzY0Jmc9MjM3NjQ=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzOTM3JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wOCAwNjowMDowMSZlPTEmaD0yMzkzNSZmPTIzOTM3Jmc9MjM5Mz=
-c=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNzY0JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wOCAxNjowMDowMSZlPTEmaD0yMzc2MiZmPTIzNzY0Jmc9MjM3Nj=
+Q=3D
 
 
 ---------------------------------------------------------------------------=

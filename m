@@ -1,53 +1,37 @@
-From: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH 1/6] spi: imx: specify spi base for device tree probe
-Date: Fri, 9 Nov 2012 20:00:15 +0100
-Message-ID: <20121109190015.GB3660@pengutronix.de>
-References: <1352469625-32024-1-git-send-email-s.trumtrar@pengutronix.de>
- <1352469625-32024-2-git-send-email-s.trumtrar@pengutronix.de>
- <20121109163830.GP23807@opensource.wolfsonmicro.com>
+From: Encre et pile Discount <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos Cartouches d'Imprimantes et piles =?iso-8859-15?Q?=E0?= prix
+	=?iso-8859-15?Q?cass=E9s?= sur
+Date: Fri, 09 Nov 2012 22:33:04 +0100
+Message-ID: <1352496805.thing509d76a5b2f30@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Liam Girdwood <lrg-l0cyMroinI0@public.gmane.org>,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20121109163830.GP23807-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 09, 2012 at 04:38:30PM +0000, Mark Brown wrote:
-> On Fri, Nov 09, 2012 at 03:00:20PM +0100, Steffen Trumtrar wrote:
-> 
-> > * This breaks compatibility with user space applications between non-DT and DT.
-> 
-> > * On platforms that are in between DT and non-DT, it breaks registration of
-> >   devices via spi_board_info.
-> 
-> > Use the same method as 7e6086d9e54a159a6257c02bb7fc5805c614aad2 does for gpios:
-> > Use alias to identify the spi port, and then specify the base via the port id.
-> > If alias is not defined in DT, allocate the base dynamically.
-> 
-> This sounds like a fix userspace and/or complete your DT conversion
-> problem...
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Well, it may lead to problems in userspace and does lead to problems with an
-incomplete DT support, but there are only so many hours in a day...
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0MDYxJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0wOSAyMjozMDowMSZlPTEmaD0yNDA1OSZmPTI0MDYxJmc9MjQwNjE=3D
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0MDYxJmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0wOSAyMjozMDowMSZlPTEmaD0yNDA1OSZmPTI0MDYxJmc9MjQwNj=
+E=3D
+
+
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_nov

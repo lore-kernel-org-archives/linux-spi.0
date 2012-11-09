@@ -1,85 +1,58 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/6] spi: imx: specify spi base for device
-	tree probe
-Date: Fri, 9 Nov 2012 16:38:30 +0000
-Message-ID: <20121109163830.GP23807@opensource.wolfsonmicro.com>
-References: <1352469625-32024-1-git-send-email-s.trumtrar@pengutronix.de>
- <1352469625-32024-2-git-send-email-s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] spi: make sure all transfer has bits_per_word set
+Date: Fri, 9 Nov 2012 16:42:45 +0000
+Message-ID: <20121109164245.GR23807@opensource.wolfsonmicro.com>
+References: <1352452005-13789-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8329117520095674208=="
-Cc: alsa-devel@alsa-project.org, Sascha Hauer <kernel@pengutronix.de>,
- devicetree-discuss@lists.ozlabs.org, patches@opensource.wolfsonmicro.com,
- Grant Likely <grant.likely@secretlab.ca>, Rob Herring <robherring2@gmail.com>,
- Rob Landley <rob@landley.net>, spi-devel-general@lists.sourceforge.net,
- Liam Girdwood <lrg@ti.com>, linux-arm-kernel@lists.infradead.org
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Return-path: <alsa-devel-bounces@alsa-project.org>
-In-Reply-To: <1352469625-32024-2-git-send-email-s.trumtrar@pengutronix.de>
-List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
-List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
-List-Post: <mailto:alsa-devel@alsa-project.org>
-List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
-List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
- <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
-Errors-To: alsa-devel-bounces@alsa-project.org
-Sender: alsa-devel-bounces@alsa-project.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="7UIJfHqpdi+oBJdT"
+Cc: grant.likely@secretlab.ca, swarren@nvidia.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Stephen Warren <swarren@wwwdotorg.org>
+To: Laxman Dewangan <ldewangan@nvidia.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1352452005-13789-1-git-send-email-ldewangan@nvidia.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8329117520095674208==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="h9WqFG8zn/Mwlkpe"
-Content-Disposition: inline
-
-
---h9WqFG8zn/Mwlkpe
+--7UIJfHqpdi+oBJdT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 09, 2012 at 03:00:20PM +0100, Steffen Trumtrar wrote:
+On Fri, Nov 09, 2012 at 02:36:45PM +0530, Laxman Dewangan wrote:
+> When spi client does the spi transfer and does not sets
+> the bits_per_word for each transfer then set it as default
+> of spi device in spi core before calling low level transfer.
+>=20
+> Removing the similar code from spi-tegra20-slink driver as
+> it is not required.
 
-> * This breaks compatibility with user space applications between non-DT and DT.
+Applied, thanks.
 
-> * On platforms that are in between DT and non-DT, it breaks registration of
->   devices via spi_board_info.
-
-> Use the same method as 7e6086d9e54a159a6257c02bb7fc5805c614aad2 does for gpios:
-> Use alias to identify the spi port, and then specify the base via the port id.
-> If alias is not defined in DT, allocate the base dynamically.
-
-This sounds like a fix userspace and/or complete your DT conversion
-problem...
-
---h9WqFG8zn/Mwlkpe
+--7UIJfHqpdi+oBJdT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJQnTGAAAoJELSic+t+oim9hl4P/11g0Vg66oKTEMRSMxQ0O80Y
-a34oXWqks6huwmiRiu4vLU6CzDHiwSaJoj7uPS+RVOPlMtDpb9nzXDXvTkfCfIHo
-bBsQQlLuVNMJLXDt0l3HTdngEUkTdMoM9K7LsItQZnuJrm2O61m8bH2pt/80JAZZ
-Sv/2uQdF+Ww8sY9D7yyPhAe2QF4cR877W2oI48aep4pVxl+eSYNOEf6VOMXv4DBk
-BkDXNXsOxy5CQ4dZuk6MsOsyGPw5YQR++SQBdJdk+PsOWcytq2bOW6kWC8gSbql3
-Oauco9h2o3EdTIvTNm5h86gfdql+byMQpRxy4dvzFTZ/qHDY6NICq/nt1fZDVmWT
-XheNyPW3gM5ddDQLYFG8KI5tq0G1DuHOqXo99dLsiQ/1UzlJUnOw0om3Eb6DEiln
-6fph4UyPdprELK7bvGMwQlgfvsTOx2Ka2zeXiJ6RQGI9XdKmAMUhul3kM4WxYDz+
-xGYdASQhXImTVLBpn1TqQS9bQg0J8S2DPIXrSOQ9c0uhSL10rSZnw4fzHoa2Mz3H
-Ghwn9QHBZ2gMN4/ZmVgMZ+xrTCOCoR4AA3ckN4dB7122XnkNCjPpvqZF+M9NN9bi
-hrIoSfsBOEvEcnXHSqIwQUOSRro3wNtD54M5OAX8uZYfHD9Pdp3cZEwXnWqpJeyL
-NEmab4NkbvTDbjD2jX6M
-=5+vC
+iQIcBAEBAgAGBQJQnTJ3AAoJELSic+t+oim9IwwP/3usqsl6LKvu5vDSQeCgZwcu
+dPZ0/u5geVA+yypNAXGS6v0RPVX40JvxSx18DseRYfFCgH3JRN6rm1PMG8Z7VCfv
+m180ZdzkYO1iXiFbEQILn4OhwWvEQAMWw51EF2qpD2qPjvo/Sq0S5U6bF7JLWIft
+OOyA3cd7zJM4CDDKCuhrIUAYvOWpgrpVy3L7OCpD51cBWm9SPalTOE77kro2fp4/
+lVK+wcAmCoXGfalpRUBY95tPzQ0FtaRo6N6XKV3apBmNL/24HzmO9FwgX1vcTMyp
+wO4fqW/qV913cTbJ/c2Xwi1gJPxNbkR4HTiikNhYkcO1A0UYE6oB75+1389RGoKN
+2Cin+LvNReNv/ec0rraA/1l415P697iM0yj788EI9EORYf/MItzXFjQBKQ2Z5D3/
+2JYFGBh9lnoDiu1JnXiD9FHbc/V4zA6nlArkl67z8W0iskrxYWEds3YrSG22NyY/
+9j5m4/0tsGhW1D3Anyfoeye8FcyzdIB5oRht2m5vxe1WnyY3dadPfmaa24vouMle
+LDfaxhk2v8D5IhC5/WeNcraBSPKEGkNu3SUdlDy5N95OnL9OZBo5IdEQJip3B9AI
+DElmAGApjg/Tuz4u9gzCu84n1JX/j8zfAhsR/onyztu3xrzsjKB1QqHPHpA/a1D5
+5IhijB7wZfcgQWGtJMv9
+=rBYB
 -----END PGP SIGNATURE-----
 
---h9WqFG8zn/Mwlkpe--
-
---===============8329117520095674208==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-
---===============8329117520095674208==--
+--7UIJfHqpdi+oBJdT--

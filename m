@@ -1,11 +1,11 @@
 From: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 4/6] ASoC: wm8974: add SPI as a possible bus master
-Date: Fri,  9 Nov 2012 15:00:23 +0100
-Message-ID: <1352469625-32024-5-git-send-email-s.trumtrar@pengutronix.de>
+Subject: [PATCH 6/6] ASoC: fsl: add imx-wm8974 machine driver
+Date: Fri,  9 Nov 2012 15:00:25 +0100
+Message-ID: <1352469625-32024-7-git-send-email-s.trumtrar@pengutronix.de>
 References: <1352469625-32024-1-git-send-email-s.trumtrar@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
 	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
@@ -26,83 +26,360 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VGhlIHdtODk3NCBjYW4gYmUgY29udHJvbGxlZCB2aWEgaTJjIG9yIHNwaS4gVGhlIGN1cnJlbnQg
-ZHJpdmVyIG9ubHkgc3VwcG9ydHMKaTJjLiBBZGQgU1BJIGFzIHBvc3NpYmxlIGJ1cy4KCkFzIHRo
-ZSBkcml2ZXIgaGFzIHRvIGRpc3Rpbmd1aXNoIHRoZSBidXMgdHlwZSwgcGFzcyB0aGlzIGluZm8g
-dmlhIHRoZSB3bTg5NzRfcHJpdi4KVGhpcyByZXZlcnRzIGMyNTYyYThlM2I1Zjg3MWFkMGI3M2Nh
-Zjk4YmI3NTQxZTg3MjRlZmMsIGJlY2F1c2UgdGhlIGRyaXZlciBub3cKbmVlZHMgaXQgYmFjay4K
-ClRoaXMgaXMgYmFzZWQgb24gZWFybGllciB3b3JrIGJ5IFV3ZSBLbGVpbmUtS8O2bmlnLgoKU2ln
-bmVkLW9mZi1ieTogU3RlZmZlbiBUcnVtdHJhciA8cy50cnVtdHJhckBwZW5ndXRyb25peC5kZT4K
-LS0tCiBzb3VuZC9zb2MvY29kZWNzL0tjb25maWcgIHwgICAgMiArLQogc291bmQvc29jL2NvZGVj
-cy93bTg5NzQuYyB8ICAgNjIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKy0tCiAyIGZpbGVzIGNoYW5nZWQsIDYxIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvc291bmQvc29jL2NvZGVjcy9LY29uZmlnIGIvc291bmQvc29jL2NvZGVj
-cy9LY29uZmlnCmluZGV4IGI5Mjc1OWEuLmNjNjA2OWQgMTAwNjQ0Ci0tLSBhL3NvdW5kL3NvYy9j
-b2RlY3MvS2NvbmZpZworKysgYi9zb3VuZC9zb2MvY29kZWNzL0tjb25maWcKQEAgLTEwNCw3ICsx
-MDQsNyBAQCBjb25maWcgU05EX1NPQ19BTExfQ09ERUNTCiAJc2VsZWN0IFNORF9TT0NfV004OTYx
-IGlmIEkyQwogCXNlbGVjdCBTTkRfU09DX1dNODk2MiBpZiBJMkMKIAlzZWxlY3QgU05EX1NPQ19X
-TTg5NzEgaWYgSTJDCi0Jc2VsZWN0IFNORF9TT0NfV004OTc0IGlmIEkyQworCXNlbGVjdCBTTkRf
-U09DX1dNODk3NCBpZiBTTkRfU09DX0kyQ19BTkRfU1BJCiAJc2VsZWN0IFNORF9TT0NfV004OTc4
-IGlmIEkyQwogCXNlbGVjdCBTTkRfU09DX1dNODk4MyBpZiBTTkRfU09DX0kyQ19BTkRfU1BJCiAJ
-c2VsZWN0IFNORF9TT0NfV004OTg1IGlmIFNORF9TT0NfSTJDX0FORF9TUEkKZGlmZiAtLWdpdCBh
-L3NvdW5kL3NvYy9jb2RlY3Mvd204OTc0LmMgYi9zb3VuZC9zb2MvY29kZWNzL3dtODk3NC5jCmlu
-ZGV4IGIwMTJlNGQuLjhhZjU1M2MgMTAwNjQ0Ci0tLSBhL3NvdW5kL3NvYy9jb2RlY3Mvd204OTc0
-LmMKKysrIGIvc291bmQvc29jL2NvZGVjcy93bTg5NzQuYwpAQCAtMTcsNiArMTcsNyBAQAogI2lu
-Y2x1ZGUgPGxpbnV4L2RlbGF5Lmg+CiAjaW5jbHVkZSA8bGludXgvcG0uaD4KICNpbmNsdWRlIDxs
-aW51eC9pMmMuaD4KKyNpbmNsdWRlIDxsaW51eC9zcGkvc3BpLmg+CiAjaW5jbHVkZSA8bGludXgv
-c2xhYi5oPgogI2luY2x1ZGUgPHNvdW5kL2NvcmUuaD4KICNpbmNsdWRlIDxzb3VuZC9wY20uaD4K
-QEAgLTQ4LDYgKzQ5LDEwIEBAIHN0YXRpYyBjb25zdCB1MTYgd204OTc0X3JlZ1tXTTg5NzRfQ0FD
-SEVSRUdOVU1dID0gewogI2RlZmluZSBXTTg5NzRfUE9XRVIxX0JJQVNFTiAgMHgwOAogI2RlZmlu
-ZSBXTTg5NzRfUE9XRVIxX0JVRklPRU4gMHgwNAogCitzdHJ1Y3Qgd204OTc0X3ByaXYgeworCWVu
-dW0gc25kX3NvY19jb250cm9sX3R5cGUgY29udHJvbF90eXBlOworfTsKKwogI2RlZmluZSB3bTg5
-NzRfcmVzZXQoYykJc25kX3NvY193cml0ZShjLCBXTTg5NzRfUkVTRVQsIDApCiAKIHN0YXRpYyBj
-b25zdCBjaGFyICp3bTg5NzRfY29tcGFuZGluZ1tdID0geyJPZmYiLCAiTkMiLCAidS1sYXciLCAi
-QS1sYXciIH07CkBAIC02MTcsOCArNjIyLDkgQEAgc3RhdGljIGludCB3bTg5NzRfcmVzdW1lKHN0
-cnVjdCBzbmRfc29jX2NvZGVjICpjb2RlYykKIHN0YXRpYyBpbnQgd204OTc0X3Byb2JlKHN0cnVj
-dCBzbmRfc29jX2NvZGVjICpjb2RlYykKIHsKIAlpbnQgcmV0ID0gMDsKKwlzdHJ1Y3Qgd204OTc0
-X3ByaXYgKndtODk3NCA9IHNuZF9zb2NfY29kZWNfZ2V0X2RydmRhdGEoY29kZWMpOwogCi0JcmV0
-ID0gc25kX3NvY19jb2RlY19zZXRfY2FjaGVfaW8oY29kZWMsIDcsIDksIFNORF9TT0NfSTJDKTsK
-KwlyZXQgPSBzbmRfc29jX2NvZGVjX3NldF9jYWNoZV9pbyhjb2RlYywgNywgOSwgd204OTc0LT5j
-b250cm9sX3R5cGUpOwogCWlmIChyZXQgPCAwKSB7CiAJCWRldl9lcnIoY29kZWMtPmRldiwgIkZh
-aWxlZCB0byBzZXQgY2FjaGUgSS9POiAlZFxuIiwgcmV0KTsKIAkJcmV0dXJuIHJldDsKQEAgLTY2
-MCwxMyArNjY2LDY0IEBAIHN0YXRpYyBzdHJ1Y3Qgc25kX3NvY19jb2RlY19kcml2ZXIgc29jX2Nv
-ZGVjX2Rldl93bTg5NzQgPSB7CiAJLm51bV9kYXBtX3JvdXRlcyA9IEFSUkFZX1NJWkUod204OTc0
-X2RhcG1fcm91dGVzKSwKIH07CiAKKyNpZiBkZWZpbmVkKENPTkZJR19TUElfTUFTVEVSKQorc3Rh
-dGljIGludCBfX2RldmluaXQgd204OTc0X3NwaV9wcm9iZShzdHJ1Y3Qgc3BpX2RldmljZSAqc3Bp
-KQoreworCXN0cnVjdCB3bTg5NzRfcHJpdiAqd204OTc0OworCWludCByZXQ7CisKKwl3bTg5NzQg
-PSBremFsbG9jKHNpemVvZigqd204OTc0KSwgR0ZQX0tFUk5FTCk7CisJaWYgKCF3bTg5NzQpCisJ
-CXJldHVybiAtRU5PTUVNOworCisJd204OTc0LT5jb250cm9sX3R5cGUgPSBTTkRfU09DX1NQSTsK
-KwlzcGlfc2V0X2RydmRhdGEoc3BpLCB3bTg5NzQpOworCisJcmV0ID0gc25kX3NvY19yZWdpc3Rl
-cl9jb2RlYygmc3BpLT5kZXYsCisJCQkmc29jX2NvZGVjX2Rldl93bTg5NzQsICZ3bTg5NzRfZGFp
-LCAxKTsKKwlpZiAocmV0KQorCQlrZnJlZSh3bTg5NzQpOworCisJcmV0dXJuIHJldDsKK30KKwor
-c3RhdGljIGludCBfX2RldmV4aXQgd204OTc0X3NwaV9yZW1vdmUoc3RydWN0IHNwaV9kZXZpY2Ug
-KnNwaSkKK3sKKwlzbmRfc29jX3VucmVnaXN0ZXJfY29kZWMoJnNwaS0+ZGV2KTsKKwlrZnJlZShz
-cGlfZ2V0X2RydmRhdGEoc3BpKSk7CisJcmV0dXJuIDA7Cit9CisKK3N0YXRpYyBzdHJ1Y3Qgc3Bp
-X2RyaXZlciB3bTg5NzRfc3BpX2RyaXZlciA9IHsKKwkuZHJpdmVyID0geworCQkubmFtZSA9ICJ3
-bTg5NzQiLAorCQkub3duZXIgPSBUSElTX01PRFVMRSwKKwl9LAorCS5wcm9iZSA9IHdtODk3NF9z
-cGlfcHJvYmUsCisJLnJlbW92ZSA9IF9fZGV2ZXhpdF9wKHdtODk3NF9zcGlfcmVtb3ZlKSwKK307
-CisKK21vZHVsZV9zcGlfZHJpdmVyKHdtODk3NF9zcGlfZHJpdmVyKTsKKyNlbmRpZgorCisjaWYg
-SVNfRU5BQkxFRChDT05GSUdfSTJDKQogc3RhdGljIF9fZGV2aW5pdCBpbnQgd204OTc0X2kyY19w
-cm9iZShzdHJ1Y3QgaTJjX2NsaWVudCAqaTJjLAogCQkJCSAgICAgIGNvbnN0IHN0cnVjdCBpMmNf
-ZGV2aWNlX2lkICppZCkKIHsKKwlzdHJ1Y3Qgd204OTc0X3ByaXYgKndtODk3NDsKIAlpbnQgcmV0
-OwogCisJd204OTc0ID0ga3phbGxvYyhzaXplb2YoKndtODk3NCksIEdGUF9LRVJORUwpOworCWlm
-ICghd204OTc0KQorCQlyZXR1cm4gLUVOT01FTTsKKworCXdtODk3NC0+Y29udHJvbF90eXBlID0g
-U05EX1NPQ19JMkM7CisJaTJjX3NldF9jbGllbnRkYXRhKGkyYywgd204OTc0KTsKKwogCXJldCA9
-IHNuZF9zb2NfcmVnaXN0ZXJfY29kZWMoJmkyYy0+ZGV2LAogCQkJJnNvY19jb2RlY19kZXZfd204
-OTc0LCAmd204OTc0X2RhaSwgMSk7CisJaWYgKHJldCkKKwkJa2ZyZWUod204OTc0KTsKIAogCXJl
-dHVybiByZXQ7CiB9CkBAIC02NzQsNyArNzMxLDcgQEAgc3RhdGljIF9fZGV2aW5pdCBpbnQgd204
-OTc0X2kyY19wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudCAqaTJjLAogc3RhdGljIF9fZGV2ZXhpdCBp
-bnQgd204OTc0X2kyY19yZW1vdmUoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCkKIHsKIAlzbmRf
-c29jX3VucmVnaXN0ZXJfY29kZWMoJmNsaWVudC0+ZGV2KTsKLQorCWtmcmVlKGkyY19nZXRfY2xp
-ZW50ZGF0YShjbGllbnQpKTsKIAlyZXR1cm4gMDsKIH0KIApAQCAtNjk1LDYgKzc1Miw3IEBAIHN0
-YXRpYyBzdHJ1Y3QgaTJjX2RyaXZlciB3bTg5NzRfaTJjX2RyaXZlciA9IHsKIH07CiAKIG1vZHVs
-ZV9pMmNfZHJpdmVyKHdtODk3NF9pMmNfZHJpdmVyKTsKKyNlbmRpZgogCiBNT0RVTEVfREVTQ1JJ
-UFRJT04oIkFTb0MgV004OTc0IGRyaXZlciIpOwogTU9EVUxFX0FVVEhPUigiTGlhbSBHaXJkd29v
-ZCIpOwotLSAKMS43LjEwLjQKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMg
-c2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBB
-cHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfbm92Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+This is the initial support for a wm8974 sound codec connected to an imx ssi.
+It follows along the lines of the imx-sgtl5000 driver.
+
+	* only the playback dai link is implemented.
+	* DT only driver, working with the fsl_ssi driver and imx21 compatible
+	  audmux
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ .../devicetree/bindings/sound/imx-audio-wm8974.txt |   48 ++++
+ sound/soc/fsl/Kconfig                              |   12 +
+ sound/soc/fsl/Makefile                             |    2 +
+ sound/soc/fsl/imx-wm8974.c                         |  233 ++++++++++++++++++++
+ 4 files changed, 295 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/sound/imx-audio-wm8974.txt
+ create mode 100644 sound/soc/fsl/imx-wm8974.c
+
+diff --git a/Documentation/devicetree/bindings/sound/imx-audio-wm8974.txt b/Documentation/devicetree/bindings/sound/imx-audio-wm8974.txt
+new file mode 100644
+index 0000000..7e661e0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/sound/imx-audio-wm8974.txt
+@@ -0,0 +1,48 @@
++Freescale i.MX audio complex with WM8974 codec
++
++Required properties:
++- compatible : "fsl,imx-audio-wm8974"
++- model : The user-visible name of this sound complex
++- ssi-controller : The phandle of the i.MX SSI controller (imx21 compatible)
++- audio-codec : The phandle of the WM8974 audio codec
++- audio-routing : A list of the connections between audio components.
++  Each entry is a pair of strings, the first being the connection's sink,
++  the second being the connection's source. Valid names could be power
++  supplies, WM8974 pins, and the jacks on the board:
++
++  Power supplies:
++   * Mic Bias
++
++  WM8974 pins:
++   * MICN
++   * MICP
++   * AUX
++   * MONOOUT
++   * SPKOUTP
++   * SPKOUTN
++
++  Board connectors:
++   * Mic Jack
++   * Line In Jack
++   * Headphone Jack
++   * Line Out Jack
++   * Ext Spk
++
++- mux-int-port : The internal port of the i.MX audio muxer (AUDMUX)
++- mux-ext-port : The external port of the i.MX audio muxer
++
++Note: The AUDMUX port numbering should start at 1, which is consistent with
++hardware manual.
++
++Example:
++
++sound {
++	compatible = "fsl,imx-audio-wm8974";
++	model = "wm8974";
++	ssi-controller = <&ssi1>;
++	audio-codec = <&wm8974>;
++	audio-routing =
++		"Mic Jack", "Mic Bias",
++	mux-int-port = <1>;
++	mux-ext-port = <4>;
++};
+diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+index 4563b28..19d9b31 100644
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -179,4 +179,16 @@ config SND_SOC_IMX_MC13783
+ 	select SND_SOC_MC13783
+ 	select SND_SOC_IMX_PCM_DMA
+ 
++config SND_SOC_IMX_WM8974
++	tristate "SoC Audio support for i.MX boards with WM8974"
++	depends on OF && SPI
++	select SND_SOC_IMX_AUDMUX
++	select SND_SOC_IMX_PCM_DMA
++	select SND_SOC_FSL_SSI
++	select SND_SOC_FSL_UTILS
++	select SND_SOC_WM8974
++	help
++	  Say Y here if you want to add support for SoC audio on an i.MX board with
++	  a wm8974 codec.
++
+ endif # SND_IMX_SOC
+diff --git a/sound/soc/fsl/Makefile b/sound/soc/fsl/Makefile
+index 5f3cf3f..1a8ac3d 100644
+--- a/sound/soc/fsl/Makefile
++++ b/sound/soc/fsl/Makefile
+@@ -42,6 +42,7 @@ snd-soc-mx27vis-aic32x4-objs := mx27vis-aic32x4.o
+ snd-soc-wm1133-ev1-objs := wm1133-ev1.o
+ snd-soc-imx-sgtl5000-objs := imx-sgtl5000.o
+ snd-soc-imx-mc13783-objs := imx-mc13783.o
++snd-soc-imx-wm8974-objs := imx-wm8974.o
+ 
+ obj-$(CONFIG_SND_SOC_EUKREA_TLV320) += snd-soc-eukrea-tlv320.o
+ obj-$(CONFIG_SND_SOC_PHYCORE_AC97) += snd-soc-phycore-ac97.o
+@@ -49,3 +50,4 @@ obj-$(CONFIG_SND_SOC_MX27VIS_AIC32X4) += snd-soc-mx27vis-aic32x4.o
+ obj-$(CONFIG_SND_MXC_SOC_WM1133_EV1) += snd-soc-wm1133-ev1.o
+ obj-$(CONFIG_SND_SOC_IMX_SGTL5000) += snd-soc-imx-sgtl5000.o
+ obj-$(CONFIG_SND_SOC_IMX_MC13783) += snd-soc-imx-mc13783.o
++obj-$(CONFIG_SND_SOC_IMX_WM8974) += snd-soc-imx-wm8974.o
+diff --git a/sound/soc/fsl/imx-wm8974.c b/sound/soc/fsl/imx-wm8974.c
+new file mode 100644
+index 0000000..02b239d
+--- /dev/null
++++ b/sound/soc/fsl/imx-wm8974.c
+@@ -0,0 +1,233 @@
++/*
++ * Copyright (C) 2012 Pengutronix
++ * Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
++ * Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
++ * This program is free software; you can redistribute it and/or modify it under
++ * the terms of the GNU General Public License version 2 as published by the
++ * Free Software Foundation.
++ */
++#include <linux/module.h>
++#include <sound/soc.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/spi/spi.h>
++#include <linux/clk.h>
++
++#include "imx-audmux.h"
++#include "../codecs/wm8974.h"
++
++#define DRIVER_NAME "imx-wm8974"
++
++#define DAI_NAME_SIZE	32
++
++struct imx_wm8974_data {
++	struct snd_soc_dai_link dai;
++	struct snd_soc_card card;
++	char codec_dai_name[DAI_NAME_SIZE];
++	char platform_name[DAI_NAME_SIZE];
++	struct clk *codec_clk;
++	unsigned int clk_frequency;
++};
++
++static int imx_wm8974_dai_init(struct snd_soc_pcm_runtime *rtd)
++{
++	struct imx_wm8974_data *data = container_of(rtd->card,
++					struct imx_wm8974_data, card);
++	struct device *dev = rtd->card->dev;
++	int ret;
++
++	/* the pll stability peaks at N=8 and around 90MHz.
++	 * This values are best reached with a 12.288MHz or
++	 * 11.289MHz clock. As the first is closer to N=8 in
++	 * more situations, chose 12.288MHz as the target clock
++	 * (ref: datasheet section "Master Clock and Phase Locked Loop")*/
++	ret = snd_soc_dai_set_pll(rtd->codec_dai, 0, 0, data->clk_frequency,
++		12288000);
++	if (ret) {
++		dev_err(dev, "couldn't set pll: %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static const struct snd_soc_dapm_widget imx_wm8974_dapm_widgets[] = {
++	SND_SOC_DAPM_MIC("Mic Jack", NULL),
++	SND_SOC_DAPM_SPK("Ext Spk", NULL),
++};
++
++static int __devinit imx_wm8974_probe(struct platform_device *pdev)
++{
++	struct device_node *np = pdev->dev.of_node;
++	struct device_node *ssi_np, *codec_np;
++	struct device_node *audmux_np;
++	struct platform_device *ssi_pdev;
++	struct spi_device *codec_pdev;
++	struct imx_wm8974_data *data;
++	int int_port, ext_port;
++	int ret;
++
++	ret = of_property_read_u32(np, "mux-int-port", &int_port);
++	if (ret) {
++		dev_err(&pdev->dev, "mux-int-port missing or invalid\n");
++		return ret;
++	}
++	ret = of_property_read_u32(np, "mux-ext-port", &ext_port);
++	if (ret) {
++		dev_err(&pdev->dev, "mux-ext-port missing or invalid\n");
++		return ret;
++	}
++
++	/*
++	 * The port numbering in the hardware manual starts at 1, while
++	 * the audmux API expects it starts at 0.
++	 */
++	int_port--;
++	ext_port--;
++
++	audmux_np = of_find_node_by_name(NULL, "audmux");
++	if (!audmux_np) {
++		dev_err(&pdev->dev, "audmux missing or invalid\n");
++		return ret;
++	}
++
++	if (of_device_is_compatible(audmux_np, "fsl,imx21-audmux")) {
++		ret = imx_audmux_v1_configure_port(int_port,
++					IMX_AUDMUX_V1_PCR_TFSDIR |
++					IMX_AUDMUX_V1_PCR_TCLKDIR |
++					IMX_AUDMUX_V1_PCR_TFCSEL(ext_port) |
++					IMX_AUDMUX_V1_PCR_RXDSEL(ext_port) |
++					IMX_AUDMUX_V1_PCR_SYN);
++		if (ret) {
++			dev_err(&pdev->dev, "audmux internal port setup failed\n");
++			return ret;
++		}
++		ret = imx_audmux_v1_configure_port(ext_port,
++					IMX_AUDMUX_V1_PCR_RXDSEL(int_port) |
++					IMX_AUDMUX_V1_PCR_SYN);
++		if (ret) {
++			dev_err(&pdev->dev, "audmux external port setup failed\n");
++			return ret;
++		}
++	} else {
++		dev_err(&pdev->dev, "audmux not compatible\n");
++	}
++	of_node_put(audmux_np);
++
++	ssi_np = of_parse_phandle(np, "ssi-controller", 0);
++	codec_np = of_parse_phandle(np, "audio-codec", 0);
++	if (!ssi_np || !codec_np) {
++		dev_err(&pdev->dev, "phandle missing or invalid\n");
++		ret = -EINVAL;
++		goto fail;
++	}
++
++	ssi_pdev = of_find_device_by_node(ssi_np);
++	if (!ssi_pdev) {
++		dev_err(&pdev->dev, "failed to find SSI platform device\n");
++		ret = -EINVAL;
++		goto fail;
++	}
++
++	codec_pdev = of_find_spi_device_by_node(codec_np);
++	if (!codec_pdev) {
++		dev_err(&pdev->dev, "failed to find codec platform device\n");
++		ret = -EINVAL;
++		goto fail;
++	}
++
++	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
++	if (!data) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	data->codec_clk = clk_get(&codec_pdev->dev, NULL);
++	if (IS_ERR(data->codec_clk)) {
++		data->codec_clk = NULL;
++		ret = of_property_read_u32(codec_np, "clock-frequency",
++					&data->clk_frequency);
++		if (ret) {
++			dev_err(&codec_pdev->dev,
++				"clock-frequency missing or invalid\n");
++			goto fail;
++		}
++	} else {
++		data->clk_frequency = clk_get_rate(data->codec_clk);
++		clk_prepare_enable(data->codec_clk);
++	}
++
++	data->dai.name = "HiFi";
++	data->dai.stream_name = "HiFi";
++	data->dai.codec_dai_name = "wm8974-hifi";
++	data->dai.codec_of_node = codec_np;
++	data->dai.cpu_dai_name = dev_name(&ssi_pdev->dev);
++	data->dai.platform_name = "imx-pcm-audio";
++	data->dai.init = &imx_wm8974_dai_init;
++	data->dai.dai_fmt = SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
++			    SND_SOC_DAIFMT_CBM_CFM;
++
++	data->card.dev = &pdev->dev;
++	ret = snd_soc_of_parse_card_name(&data->card, "model");
++	if (ret)
++		goto clk_fail;
++	ret = snd_soc_of_parse_audio_routing(&data->card, "audio-routing");
++	if (ret)
++		goto clk_fail;
++
++	data->card.name = "wm8974-hifi";
++	data->card.num_links = 1;
++	data->card.dai_link = &data->dai;
++	data->card.dapm_widgets = imx_wm8974_dapm_widgets;
++	data->card.num_dapm_widgets = ARRAY_SIZE(imx_wm8974_dapm_widgets);
++
++	ret = snd_soc_register_card(&data->card);
++	if (ret) {
++		dev_err(&pdev->dev, "snd_soc_register_card failed (%d)\n", ret);
++		goto clk_fail;
++	}
++
++	platform_set_drvdata(pdev, data);
++
++clk_fail:
++	clk_put(data->codec_clk);
++fail:
++	if (ssi_np)
++		of_node_put(ssi_np);
++	if (codec_np)
++		of_node_put(codec_np);
++	if (codec_pdev)
++		spi_dev_put(codec_pdev);
++	return ret;
++}
++
++static int __devexit imx_wm8974_remove(struct platform_device *pdev)
++{
++	struct snd_soc_card *card = platform_get_drvdata(pdev);
++
++	snd_soc_unregister_card(card);
++
++	return 0;
++}
++
++static const struct of_device_id imx_wm8974_of_match[] __devinitconst = {
++	{ .compatible = "fsl,imx-audio-wm8974", },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, imx_wm8974_of_match);
++
++static struct platform_driver imx_wm8974_driver = {
++	.driver = {
++		.name = DRIVER_NAME,
++		.owner = THIS_MODULE,
++		.of_match_table = imx_wm8974_of_match,
++	},
++	.probe = imx_wm8974_probe,
++	.remove = __devexit_p(imx_wm8974_remove),
++};
++module_platform_driver(imx_wm8974_driver);
++
++MODULE_AUTHOR("Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>");
++MODULE_AUTHOR("Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>");
++MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:" DRIVER_NAME);
+-- 
+1.7.10.4
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_nov

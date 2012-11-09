@@ -1,53 +1,33 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+From: Stephen Warren <swarren@wwwdotorg.org>
 Subject: Re: [PATCH] spi: tegra: sequence compatible strings as per preference
-Date: Fri, 9 Nov 2012 16:43:20 +0000
-Message-ID: <20121109164320.GS23807@opensource.wolfsonmicro.com>
+Date: Fri, 09 Nov 2012 10:04:56 -0700
+Message-ID: <509D37B8.8020606@wwwdotorg.org>
 References: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jo46wx5DSA4a/gWG"
-Cc: grant.likely@secretlab.ca, swarren@nvidia.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"broonie@opensource.wolfsonmicro.com"
+	<broonie@opensource.wolfsonmicro.com>,
+	Stephen Warren <swarren@nvidia.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 To: Laxman Dewangan <ldewangan@nvidia.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
 In-Reply-To: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-
---jo46wx5DSA4a/gWG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Nov 09, 2012 at 02:37:32PM +0530, Laxman Dewangan wrote:
+On 11/09/2012 02:07 AM, Laxman Dewangan wrote:
 > Sequence compatible list for tegra20-slink driver to first
 > look for Tegra30 and then Tegra20. Tegra30 have additional
 > feature in HW which need to be utilize if it is provided from DT.
 
-Applied, thanks.
+I don't object to this patch.
 
---jo46wx5DSA4a/gWG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQnTKgAAoJELSic+t+oim9t4wP+gMBIewHNrOvAVrYGq9Ozzvj
-G5GYSPOfAsMQW5IaOpJ1w9oih7cUSsCsxZjn7lS9lDnTaNSZ9RKWT1VD7Bopzwtp
-KU1PRUFLM0VE6ujF/p3bkZrJl6I3iXz38kWE490MXtWC1NuUgxdtt7miLHFL0wBr
-cRG6EcJzvfinbLcac8uZm/e3EzqW3jatAOtqJXNxykiV5VBOZcjzv6rkg0a3yPZX
-mV3eIPYQMNkLYfxDBuCuUbWKb1tgi/d75qE/vp0w2iUN6T26Hs1japqFNErN6id+
-56B/1HzFZ2cBjAPL6xXFH70Y/DLYb9CZnMN3rBw5jYDxbW85ocZic1FgdRh8vc9/
-MH5inlcmIE23JTfzX6JFK3lR4JtGHqO6fC1fh2AMtRM6G0O+LuG3SbTkWezrODTk
-E2u+CmziX4Ti5BJmtkt+QoE+kW/LIqCeSyk/020cXg+BlCg2pd0cqfUe2TjSooq7
-EZRjBdJJeBkmlDjEs2wHwH2IjYZG85+asce+UciB/PsVIgSY6iLdi9g0xMyGvnCw
-YU69bFKxLX0XSHKH8ZSlOmB+6aa3+xB7ov2noIxID4SbZ79x/AsOP8x66YcwX2ne
-zKS4OuRJBFvI0qc/8MZlHJE7GyzFxeaWrIPPaC22BNJRP7J50KiN0OSmDGECVxoX
-nVTzK+H5SQCco3rkidXB
-=oZMd
------END PGP SIGNATURE-----
-
---jo46wx5DSA4a/gWG--
+However just FYI, it should not be necessary for correctness; The DT
+matching order is supposed to be driven purely by the order of the
+compatible values in the DT now, and not affected by the order of values
+in the table. (This wasn't always the case, but was a bug that was fixed
+IIRC by Thierry Reding).

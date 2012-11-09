@@ -1,103 +1,101 @@
-From: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH 2/6] spi/devicetree: find spi_device via device_node
-Date: Fri,  9 Nov 2012 15:00:21 +0100
-Message-ID: <1352469625-32024-3-git-send-email-s.trumtrar@pengutronix.de>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 4/6] ASoC: wm8974: add SPI as a possible bus master
+Date: Fri, 9 Nov 2012 14:38:42 +0000
+Message-ID: <20121109143841.GG23807@opensource.wolfsonmicro.com>
 References: <1352469625-32024-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1352469625-32024-5-git-send-email-s.trumtrar@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>, patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Liam Girdwood <lrg-l0cyMroinI0@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1352469625-32024-1-git-send-email-s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6419780030256719707=="
+Cc: alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Liam Girdwood <lrg-l0cyMroinI0@public.gmane.org>,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1352469625-32024-5-git-send-email-s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-Add a function to find a spi_device via DT device_node.
-The patch is based on the way i2c does it.
 
-This is intended for devices that depend on multiple subsystems and are therefore
-not a child of the spi-master node (e.g. sound devices that are controlled via spi
-and get their data via another bus). The driver instead can find the desired device
-via scanning the spi bus.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
- drivers/spi/spi.c       |   20 ++++++++++++++++++++
- include/linux/spi/spi.h |    3 +++
- 2 files changed, 23 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 84c2861..e25487f 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -801,6 +801,26 @@ err_init_queue:
- /*-------------------------------------------------------------------------*/
- 
- #if defined(CONFIG_OF) && !defined(CONFIG_SPARC)
-+
-+static int of_dev_node_match(struct device *dev, void *data)
-+{
-+	return dev->of_node == data;
-+}
-+
-+/* must call spi_dev_put() when done with returned spi_device device */
-+struct spi_device *of_find_spi_device_by_node(struct device_node *node)
-+{
-+	struct device *dev;
-+
-+	dev = bus_find_device(&spi_bus_type, NULL, node, of_dev_node_match);
-+
-+	if (!dev)
-+		return NULL;
-+
-+	return to_spi_device(dev);
-+}
-+EXPORT_SYMBOL_GPL(of_find_spi_device_by_node);
-+
- /**
-  * of_register_spi_devices() - Register child devices onto the SPI bus
-  * @master:	Pointer to spi_master device
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index fa702ae..db3a630 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -23,6 +23,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/slab.h>
- #include <linux/kthread.h>
-+#include <linux/of.h>
- 
- /*
-  * INTERFACES between SPI master-side drivers and SPI infrastructure.
-@@ -387,6 +388,8 @@ static inline void spi_master_put(struct spi_master *master)
- 		put_device(&master->dev);
- }
- 
-+extern struct spi_device *of_find_spi_device_by_node(struct device_node *node);
-+
- /* PM calls that need to be issued by the driver */
- extern int spi_master_suspend(struct spi_master *master);
- extern int spi_master_resume(struct spi_master *master);
--- 
-1.7.10.4
+--===============6419780030256719707==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="RMedoP2+Pr6Rq0N2"
+Content-Disposition: inline
 
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_nov
+--RMedoP2+Pr6Rq0N2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Nov 09, 2012 at 03:00:23PM +0100, Steffen Trumtrar wrote:
+
+> The wm8974 can be controlled via i2c or spi. The current driver only supp=
+orts
+> i2c. Add SPI as possible bus.
+>=20
+> As the driver has to distinguish the bus type, pass this info via the wm8=
+974_priv.
+> This reverts c2562a8e3b5f871ad0b73caf98bb7541e8724efc, because the driver=
+ now
+> needs it back.
+
+Don't just quote raw commit IDs, *especially* not full ones, as they're
+completely illegible to humans.  Someone reading the changelog needs to
+be able to understand what this commit is and why the driver needs it
+back.
+
+> -	ret =3D snd_soc_codec_set_cache_io(codec, 7, 9, SND_SOC_I2C);
+> +	ret =3D snd_soc_codec_set_cache_io(codec, 7, 9, wm8974->control_type);
+
+We should be converting things to regmap if we're going to do this -
+we're trying to phase out the ASoC-specific I/O and this makes the code
+simpler anyway as the core will just be able to get the regmap from the
+struct device without bouncing information around through the private
+data and so on.
+
+--RMedoP2+Pr6Rq0N2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQnRT6AAoJELSic+t+oim9VnwP/0Rm4as9QoXb3GOYVwLWpWQp
+E46DtazWxy5GtG53aUv9ty4UXVvpTi8/meVaIiuC+6ATO3jZY7XRA5KIl0CQZ1DM
+fxLukmMLFbsJolBrr0Q69ifp5/zkKt9cOx/tIHxOXUgjWel66TylOCORKUtcdNUI
+VZWGnriCcEZtrSF35BACydaUpxbPCv+euCPHYEOgFJ8vWDTIW9P8xPx7+YpIsU9E
+NYulXihdDNuo+E/u0j4pqx4gYkyuREeWqBsiLv3jHk6eO+cmhLGjQ0Qjj0aQdLUB
+ckv8koiMAjzNCO+lMTM0PwemLjR3AON90xEZzxME+yeJVZFhpFJKQQoPjhgD3nU8
+1RmWCtsNdtpApPs4nPfebigHDTrfxoz9kVBg98kE1bGb7wYco5lTaq8GPXaSjVwv
+xPjaWZgJUt9ePKgoF4MgS4I1nrTkwnXRm28S/G+fp8pMgbGzUfNTURciAUtjBBv/
+NZ0qwztz8SgutBEyG7sDLlL/XNzAMKI8EgnUfLynBA9Z+WKcqlqSnG4zDTv3k5Vr
+9RlC5PDwBLsmoFJdBe4RNXnHDN0X+dRU+rR31s+uBePR81XDwBwo67Trs8OwR2Pi
+aHlRwDBMbTfb3+YHjN2h/Ss3nIxvNdp7kosCr00epoDYnfVZPxmgBnNsTw5BHZPF
+Jt/EwFyqqrPL9/YK9YL7
+=ZHCS
+-----END PGP SIGNATURE-----
+
+--RMedoP2+Pr6Rq0N2--
+
+--===============6419780030256719707==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devicetree-discuss mailing list
+devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+https://lists.ozlabs.org/listinfo/devicetree-discuss
+
+--===============6419780030256719707==--

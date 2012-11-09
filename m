@@ -1,33 +1,61 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH] spi: tegra: sequence compatible strings as per preference
-Date: Fri, 09 Nov 2012 10:04:56 -0700
-Message-ID: <509D37B8.8020606@wwwdotorg.org>
+Date: Fri, 9 Nov 2012 17:10:08 +0000
+Message-ID: <20121109171008.GX23807@opensource.wolfsonmicro.com>
 References: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
+ <509D37B8.8020606@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"broonie@opensource.wolfsonmicro.com"
-	<broonie@opensource.wolfsonmicro.com>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CRrRoVXEpX/Dc4YP"
+Cc: Laxman Dewangan <ldewangan@nvidia.com>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
 	Stephen Warren <swarren@nvidia.com>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Laxman Dewangan <ldewangan@nvidia.com>
+To: Stephen Warren <swarren@wwwdotorg.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
+Content-Disposition: inline
+In-Reply-To: <509D37B8.8020606@wwwdotorg.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/09/2012 02:07 AM, Laxman Dewangan wrote:
-> Sequence compatible list for tegra20-slink driver to first
-> look for Tegra30 and then Tegra20. Tegra30 have additional
-> feature in HW which need to be utilize if it is provided from DT.
 
-I don't object to this patch.
+--CRrRoVXEpX/Dc4YP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-However just FYI, it should not be necessary for correctness; The DT
-matching order is supposed to be driven purely by the order of the
-compatible values in the DT now, and not affected by the order of values
-in the table. (This wasn't always the case, but was a bug that was fixed
-IIRC by Thierry Reding).
+On Fri, Nov 09, 2012 at 10:04:56AM -0700, Stephen Warren wrote:
+
+> However just FYI, it should not be necessary for correctness; The DT
+> matching order is supposed to be driven purely by the order of the
+> compatible values in the DT now, and not affected by the order of values
+> in the table. (This wasn't always the case, but was a bug that was fixed
+> IIRC by Thierry Reding).
+
+I guess the driver is being used backported in older kernels which don't
+have that fix?
+
+--CRrRoVXEpX/Dc4YP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQnTjpAAoJELSic+t+oim9eRAP/2C4WUVsyEEvfHlf1mVAC4GN
+VXxJ38fLwPX+SJghZ2ReHlicEe65SN14UZ3zYM/JVts/bbqY0DZ4Hbm2Xz2qNGJZ
+e0DZx/h93xzTXRBC3JnuBZmd6kVAtyq8bD55jMF6JxFIu+EBZQnpzC1hjzsZWGaY
+sff/n6P5SpUGznJ/oeA60MmPWGq+gTw7wGTVura7dMQdOQScqZdPy+q/jLVKX1G8
+FNN65h7rKzbRcLSckE7JpLLinxPPSr+Awk7R+wzavi94BWG2ivBgLGnVFNy7XA0+
+MxpCJyKr2CFcvU+yXkre012wZgGzhICZVmg/ygBcQy3MI6LLO1XCHnoMRr7wXy1D
+jX/wlQ3Kj4CENHB4r7kQ7P6TnKHyEJH6TXa1bVDXbtfrlaKhZuK7nEpwA2FXaDRh
++MhNxDqr3LQLUdEfFwVVDm/jpclal7Bm2qjRucESycT5TR/oJGg1NJQe4bPWIWjb
+nAGdwf00LV/IMNd4teVPTtP0Olx68/HW+266wP+waXdfQjUZz1KHU2Hh8s0+J/o+
+h+9RSsTQF92y+OGPI4c7QnEacRQCUNpRZj52WRXi6BseEGbR8upqw1LowQi2XlCa
+n1TKqTZigamzHBq1idF16TVHRfLxN1et0SEVMy4cXVzWycAb50KEP8d+t2PZA1iN
+4j0g1ORuGVdHMuqxZrgn
+=erz+
+-----END PGP SIGNATURE-----
+
+--CRrRoVXEpX/Dc4YP--

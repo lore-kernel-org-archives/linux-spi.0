@@ -1,8 +1,9 @@
-From: Encre et pile Discount <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vos Cartouches d'Imprimantes et piles =?iso-8859-15?Q?=E0?= prix
-	=?iso-8859-15?Q?cass=E9s?= sur
-Date: Fri, 09 Nov 2012 22:33:04 +0100
-Message-ID: <1352496805.thing509d76a5b2f30@mach10.generated>
+From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
+	<contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
+	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
+Date: Sat, 10 Nov 2012 04:24:04 +0100
+Message-ID: <1352517848.thing509dc8d833084@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +22,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0MDYxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0wOSAyMjozMDowMSZlPTEmaD0yNDA1OSZmPTI0MDYxJmc9MjQwNjE=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNjU4JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0xMCAwNDoyMDowMSZlPTEmaD0yMzY1NiZmPTIzNjU4Jmc9MjM2NTg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0MDYxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0wOSAyMjozMDowMSZlPTEmaD0yNDA1OSZmPTI0MDYxJmc9MjQwNj=
-E=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNjU4JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0xMCAwNDoyMDowMSZlPTEmaD0yMzY1NiZmPTIzNjU4Jmc9MjM2NT=
+g=3D
 
 
 ---------------------------------------------------------------------------=

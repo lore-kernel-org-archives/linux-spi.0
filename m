@@ -1,14 +1,11 @@
-From: Guide des radiateurs =?iso-8859-15?Q?=E0?= inertie par Duano
-	<contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 16 pages de conseils pour =?iso-8859-15?Q?r=E9duire?= de 20
-	=?iso-8859-15?Q?=E0?= 60 % sa facture de chauffage
-Date: Sat, 10 Nov 2012 04:24:04 +0100
-Message-ID: <1352517848.thing509dc8d833084@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "MARINETTA" <fineuropa-06ZeP6ie+xM@public.gmane.org>
+Subject: Finalmente. In "allegato msg importante"
+Date: Sat, 10 Nov 2012 08:54:15 +0100
+Message-ID: <E1TX68P-0005C7-Go@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,18 +17,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTIzNjU4JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xMCAwNDoyMDowMSZlPTEmaD0yMzY1NiZmPTIzNjU4Jmc9MjM2NTg=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTIzNjU4JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xMCAwNDoyMDowMSZlPTEmaD0yMzY1NiZmPTIzNjU4Jmc9MjM2NT=
-g=3D
+Come d'accordo ti invio la novita sul microcredito
+Trovi tutto le agevolazioni inserendo su google "  agevolazioni_italia_contributi "
+Spero che possa essere utile.
+Ciao
 
 
----------------------------------------------------------------------------=
----
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

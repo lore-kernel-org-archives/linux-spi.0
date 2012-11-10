@@ -1,99 +1,79 @@
-From: Joachim Eastwood <manabian@gmail.com>
-Subject: Re: [PATCH 02/10] arm: at91: move platfarm_data to include/linux/platform_data/atmel.h
-Date: Sat, 10 Nov 2012 11:54:27 +0100
-Message-ID: <CAGhQ9VxgbCGzOPVtQq-LYsEPuyyGjRDfB3jHPtvbHr1xLgntXA@mail.gmail.com>
-References: <20121107111235.GH20063@game.jcrosoft.org>
-	<1352287374-25176-1-git-send-email-plagnioj@jcrosoft.com>
-	<1352287374-25176-2-git-send-email-plagnioj@jcrosoft.com>
+From: Thierry Reding <thierry.reding@avionic-design.de>
+Subject: Re: [PATCH] spi: tegra: sequence compatible strings as per preference
+Date: Sat, 10 Nov 2012 18:07:42 +0100
+Message-ID: <20121110170741.GA17689@avionic-0098.mockup.avionic-design.de>
+References: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
+ <509D37B8.8020606@wwwdotorg.org>
+ <20121109171008.GX23807@opensource.wolfsonmicro.com>
+ <509D3D46.7060102@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-usb@vger.kernel.org, rtc-linux@googlegroups.com,
-	linux-mmc@vger.kernel.org, linux-pcmcia@lists.infradead.org,
-	Nicolas Ferre <nicolas.ferre@atmel.com>,
-	linux-can@vger.kernel.org, linux-ide@vger.kernel.org,
-	netdev@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Return-path: <linux-can-owner@vger.kernel.org>
-In-Reply-To: <1352287374-25176-2-git-send-email-plagnioj@jcrosoft.com>
-Sender: linux-can-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="J/dobhs11T7y2rNN"
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Stephen Warren <swarren@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <509D3D46.7060102@wwwdotorg.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Jean-Christophe,
 
-On 7 November 2012 12:22, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-> Cc: linux-ide@vger.kernel.org
-> Cc: linux-input@vger.kernel.org
-> Cc: linux-mmc@vger.kernel.org
-> Cc: linux-can@vger.kernel.org
-> Cc: netdev@vger.kernel.org
-> Cc: linux-pcmcia@lists.infradead.org
-> Cc: rtc-linux@googlegroups.com
-> Cc: spi-devel-general@lists.sourceforge.net
-> Cc: linux-serial@vger.kernel.org
-> Cc: linux-usb@vger.kernel.org
-> Cc: linux-fbdev@vger.kernel.org
-> ---
-> HI all,
->
->         If it's ok with everyone this will go via at91
->         with the patch serie than clean up the include/mach
->
->         For preparation to switch to arm multiarch kernel
->
-> Best Regards,
-> J.
->  arch/arm/mach-at91/include/mach/board.h     |   55 ----------------------
->  arch/avr32/mach-at32ap/include/mach/board.h |    7 ---
->  drivers/ata/pata_at91.c                     |    2 +-
->  drivers/input/touchscreen/atmel_tsadcc.c    |    2 +-
->  drivers/mmc/host/atmel-mci.c                |    2 +-
->  drivers/net/can/at91_can.c                  |    3 +-
->  drivers/net/ethernet/cadence/at91_ether.c   |    2 +-
->  drivers/pcmcia/at91_cf.c                    |    2 +-
->  drivers/rtc/rtc-at91sam9.c                  |    2 +-
->  drivers/spi/spi-atmel.c                     |    2 +-
->  drivers/tty/serial/atmel_serial.c           |    2 +-
->  drivers/usb/gadget/at91_udc.c               |    2 +-
->  drivers/usb/gadget/atmel_usba_udc.c         |    2 +-
->  drivers/usb/host/ohci-at91.c                |    2 +-
->  drivers/video/atmel_lcdfb.c                 |    2 +-
->  include/linux/platform_data/atmel.h         |   67 +++++++++++++++++++++++++++
->  16 files changed, 80 insertions(+), 76 deletions(-)
+--J/dobhs11T7y2rNN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-<snip>
+On Fri, Nov 09, 2012 at 10:28:38AM -0700, Stephen Warren wrote:
+> On 11/09/2012 10:10 AM, Mark Brown wrote:
+> > On Fri, Nov 09, 2012 at 10:04:56AM -0700, Stephen Warren wrote:
+> >=20
+> >> However just FYI, it should not be necessary for correctness; The
+> >> DT matching order is supposed to be driven purely by the order of
+> >> the compatible values in the DT now, and not affected by the
+> >> order of values in the table. (This wasn't always the case, but
+> >> was a bug that was fixed IIRC by Thierry Reding).
+> >=20
+> > I guess the driver is being used backported in older kernels which
+> > don't have that fix?
+>=20
+> That sounds likely. Laxman, it'd be a good idea to track down the fix
+> to the DT matching code and backport it, so that hard-to debug issues
+> aren't caused by the lack of that patch!
 
-> diff --git a/drivers/net/ethernet/cadence/at91_ether.c b/drivers/net/ethernet/cadence/at91_ether.c
-> index 4e980a7..35fc6edb 100644
-> --- a/drivers/net/ethernet/cadence/at91_ether.c
-> +++ b/drivers/net/ethernet/cadence/at91_ether.c
-> @@ -31,6 +31,7 @@
->  #include <linux/clk.h>
->  #include <linux/gfp.h>
->  #include <linux/phy.h>
-> +#include <linux/platform_data/atmel.h>
->
->  #include <asm/io.h>
->  #include <asm/uaccess.h>
-> @@ -38,7 +39,6 @@
->
->  #include <mach/at91rm9200_emac.h>
->  #include <asm/gpio.h>
-> -#include <mach/board.h>
->
->  #include "at91_ether.h"
+Unfortunately the patch that was supposed to fixed this caused a
+regression and was therefore reverted. Rob (Cc'ed) said there was a
+patch to fix it properly and was supposed to go into 3.6 but it seems
+that never happened. Rob, what's the status on this?
 
-The at91_ether driver in net-next does not need to be change since it
-all mach includes has already been removed by other patches and it
-includes linux/platform_data/macb.h directly.
+The revert is here: bc51b0c22cebf5c311a6f1895fcca9f78efd0478
 
-What tree was these patches based on?
-The at91_ether driver changes has been in linux-next for a long while now.
+Thierry
 
-regards
-Joachim Eastwood
+--J/dobhs11T7y2rNN
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQnondAAoJEN0jrNd/PrOhYJUP/20RMyzx47zR8nbEljYVYX46
+w/oQO0iK4IUhaxUJ+ApC+2biU2gNXxsPmR+Qo/C9aJ7U5xLnYNsywaM8reHQ/lJf
++/aTRhd/XASmJUFeGquLEs6TbDgVkHaDP+6sGdBFLh8rQ1mT86pNOmQqvjcPXRrH
+RNmtmpQ9oAgqtYALK77swK2wtiLuoIB+Lgxcamw7PrIfx/yT0THL1zimbKlOZtw1
+fdIrLrJDBPsME+pkTMJXp7rQEdkwhmcP0SVG56K8Q9j9x2KMfhTKUZYsSokteI4k
++uGXO2+mHyF3XAtPM2NJcrqOKcj/xaQKdlqeHv8ZOhnIpZxefEvEgma3R2cR6Vkd
+2SXYJoB7sDeCP0s64CFRkHwVULsyJLersiUnwp7FqQllrufTySKacajglOU7Kx4u
+3v7zAkrfM6eJm09PuLXoawD6rT9Relg4Tf4rg+snZ9GxSYquKY3DVXWsxUTkFkrS
+mtLMitFFrmtjGZqsYSr9xtSuwBcjh6QaHNssPf9+1OXSIVDRhzCkL+GWfqgLBNA8
+f9k5KuNuH9XTQJHihNSJeUREf0N0PgomQ2BtYVS6S7N2Q8d7NKFYXFUlrYj5Izd3
+u8gTi8z0Lullv9qPLEqa1GN+U/y8Rqbc4vBrWOoMGyrjj1XQh6CcvGhRvV7XUkko
+wThIvYpKIuZscj5A/ZxC
+=/WkF
+-----END PGP SIGNATURE-----
+
+--J/dobhs11T7y2rNN--

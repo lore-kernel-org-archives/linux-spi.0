@@ -1,14 +1,14 @@
 From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 10/17] spi/atmel_spi: correct 16 bits transfer with DMA
-Date: Mon, 12 Nov 2012 16:52:30 +0800
-Message-ID: <1352710357-3265-11-git-send-email-wenyou.yang@atmel.com>
+Subject: [PATCH 06/17] spi/atmel_spi: add flag to controller data for lock
+	operations
+Date: Mon, 12 Nov 2012 16:52:26 +0800
+Message-ID: <1352710357-3265-7-git-send-email-wenyou.yang@atmel.com>
 References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1352710357-3265-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
@@ -22,108 +22,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Will allow to drop the lock during DMA operations.
+
+Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
- drivers/spi/spi-atmel.c |   53 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 35 insertions(+), 18 deletions(-)
+ drivers/spi/spi-atmel.c |   31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 0007a53..7a3613d 100644
+index 76a1baf..37f54c3 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -249,6 +249,8 @@ struct atmel_spi_device {
- #define BUFFER_SIZE		PAGE_SIZE
- #define INVALID_DMA_ADDRESS	0xffffffff
+@@ -187,6 +187,7 @@
+  */
+ struct atmel_spi {
+ 	spinlock_t		lock;
++	unsigned long		flags;
  
-+static struct dma_slave_config slave_config;
-+
- /*
-  * Version 2 of the SPI controller has
-  *  - CR.LASTXFER
-@@ -406,17 +408,41 @@ static bool filter(struct dma_chan *chan, void *slave)
- 	}
+ 	resource_size_t		phybase;
+ 	void __iomem		*regs;
+@@ -323,6 +324,16 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 		gpio_set_value(asd->npcs_pin, !active);
  }
  
-+static int atmel_spi_set_dma_xfer_width(struct atmel_spi *as, u8 bits_per_word)
++static void atmel_spi_lock(struct atmel_spi *as)
 +{
-+	int err = 0;
-+
-+	if (bits_per_word > 8) {
-+		slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+	} else {
-+		slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	}
-+
-+	slave_config.direction = DMA_TO_DEVICE;
-+	if (dmaengine_slave_config(as->dma.chan_tx, &slave_config)) {
-+		dev_err(&as->pdev->dev,
-+			"failed to configure tx dma channel\n");
-+		err = -EINVAL;
-+	}
-+
-+	slave_config.direction = DMA_FROM_DEVICE;
-+	if (dmaengine_slave_config(as->dma.chan_rx, &slave_config)) {
-+		dev_err(&as->pdev->dev,
-+			"failed to configure rx dma channel\n");
-+		err = -EINVAL;
-+	}
-+	return err;
++		spin_lock_irqsave(&as->lock, as->flags);
 +}
 +
- static int __devinit atmel_spi_configure_dma(struct atmel_spi *as)
- {
- 	struct at_dma_slave *sdata = (struct at_dma_slave *)&as->data.dma_slave;
--	struct dma_slave_config	slave_config;
- 	int err;
- 
--	memset(&slave_config, 0, sizeof(slave_config));
- 	slave_config.dst_addr = (dma_addr_t)as->phybase + SPI_TDR;
- 	slave_config.src_addr = (dma_addr_t)as->phybase + SPI_RDR;
--	slave_config.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	slave_config.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
- 	slave_config.src_maxburst = 1;
- 	slave_config.dst_maxburst = 1;
- 	slave_config.device_fc = false;
-@@ -439,21 +465,9 @@ static int __devinit atmel_spi_configure_dma(struct atmel_spi *as)
- 		goto error;
- 	}
- 
--	slave_config.direction = DMA_TO_DEVICE;
--	if (dmaengine_slave_config(as->dma.chan_tx, &slave_config)) {
--		dev_err(&as->pdev->dev,
--			"failed to configure tx dma channel\n");
--		err = -EINVAL;
-+	err = atmel_spi_set_dma_xfer_width(as, 8);
-+	if (err)
- 		goto error;
--	}
--
--	slave_config.direction = DMA_FROM_DEVICE;
--	if (dmaengine_slave_config(as->dma.chan_rx, &slave_config)) {
--		dev_err(&as->pdev->dev,
--			"failed to configure rx dma channel\n");
--		err = -EINVAL;
--		goto error;
--	}
- 
- 	dev_info(&as->pdev->dev, "Using %s (tx) and " \
- 				" %s (rx) for DMA transfers\n",
-@@ -575,6 +589,9 @@ static int atmel_spi_next_xfer_dma(struct spi_master *master,
- 		memset(as->buffer, 0, xfer->len);
- 	}
- 
-+	if (atmel_spi_set_dma_xfer_width(as, xfer->bits_per_word))
-+		goto err_dma;
++static void atmel_spi_unlock(struct atmel_spi *as)
++{
++		spin_unlock_irqrestore(&as->lock, as->flags);
++}
 +
- 	/* Send both scatterlists */
- 	rxdesc = rxchan->device->device_prep_slave_sg(rxchan,
- 					&as->dma.sgrx,
+ static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
+ 					struct spi_transfer *xfer)
+ {
+@@ -559,9 +570,9 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
+ 		"xfer complete: %u bytes transferred\n",
+ 		msg->actual_length);
+ 
+-	spin_unlock(&as->lock);
++	atmel_spi_unlock(as);
+ 	msg->complete(msg->context);
+-	spin_lock(&as->lock);
++	atmel_spi_lock(as);
+ 
+ 	as->current_transfer = NULL;
+ 	as->next_transfer = NULL;
+@@ -788,13 +799,11 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		spi->controller_state = asd;
+ 		gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
+ 	} else {
+-		unsigned long		flags;
+-
+-		spin_lock_irqsave(&as->lock, flags);
++		atmel_spi_lock(as);
+ 		if (as->stay == spi)
+ 			as->stay = NULL;
+ 		cs_deactivate(as, spi);
+-		spin_unlock_irqrestore(&as->lock, flags);
++		atmel_spi_unlock(as);
+ 	}
+ 
+ 	asd->csr = csr;
+@@ -813,7 +822,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ {
+ 	struct atmel_spi	*as;
+ 	struct spi_transfer	*xfer;
+-	unsigned long		flags;
+ 	struct device		*controller = spi->master->dev.parent;
+ 	u8			bits;
+ 	struct atmel_spi_device	*asd;
+@@ -878,11 +886,11 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 	msg->status = -EINPROGRESS;
+ 	msg->actual_length = 0;
+ 
+-	spin_lock_irqsave(&as->lock, flags);
++	atmel_spi_lock(as);
+ 	list_add_tail(&msg->queue, &as->queue);
+ 	if (!as->current_transfer)
+ 		atmel_spi_next_message(spi->master);
+-	spin_unlock_irqrestore(&as->lock, flags);
++	atmel_spi_unlock(as);
+ 
+ 	return 0;
+ }
+@@ -892,17 +900,16 @@ static void atmel_spi_cleanup(struct spi_device *spi)
+ 	struct atmel_spi	*as = spi_master_get_devdata(spi->master);
+ 	struct atmel_spi_device	*asd = spi->controller_state;
+ 	unsigned		gpio = (unsigned) spi->controller_data;
+-	unsigned long		flags;
+ 
+ 	if (!asd)
+ 		return;
+ 
+-	spin_lock_irqsave(&as->lock, flags);
++	atmel_spi_lock(as);
+ 	if (as->stay == spi) {
+ 		as->stay = NULL;
+ 		cs_deactivate(as, spi);
+ 	}
+-	spin_unlock_irqrestore(&as->lock, flags);
++	atmel_spi_unlock(as);
+ 
+ 	spi->controller_state = NULL;
+ 	gpio_free(gpio);
 -- 
 1.7.9.5
 

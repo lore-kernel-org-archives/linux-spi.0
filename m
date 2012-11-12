@@ -1,8 +1,7 @@
 From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 05/17] spi/atmel_spi: status information passed through
-	controller data
-Date: Mon, 12 Nov 2012 16:52:25 +0800
-Message-ID: <1352710357-3265-6-git-send-email-wenyou.yang@atmel.com>
+Subject: [PATCH 03/17] spi/atmel_spi: add physical base address
+Date: Mon, 12 Nov 2012 16:52:23 +0800
+Message-ID: <1352710357-3265-4-git-send-email-wenyou.yang@atmel.com>
 References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,75 +23,35 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-The status of transfer is stored in controller data structure
-so that it can be used not only by atmel_spi_msg_done() function.
-This will be useful for upcoming dmaengine enabled driver.
+Needed for future use with dmaengine enabled driver.
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
- drivers/spi/spi-atmel.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/spi/spi-atmel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index fc1222a..76a1baf 100644
+index 16d6a83..2e040be 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -201,6 +201,7 @@ struct atmel_spi {
- 	unsigned long		current_remaining_bytes;
- 	struct spi_transfer	*next_transfer;
- 	unsigned long		next_remaining_bytes;
-+	int			done_status;
+@@ -188,6 +188,7 @@
+ struct atmel_spi {
+ 	spinlock_t		lock;
  
- 	void			*buffer;
- 	dma_addr_t		buffer_dma;
-@@ -544,15 +545,15 @@ static void atmel_spi_dma_unmap_xfer(struct spi_master *master,
++	resource_size_t		phybase;
+ 	void __iomem		*regs;
+ 	int			irq;
+ 	struct clk		*clk;
+@@ -961,6 +962,7 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
+ 	as->regs = ioremap(regs->start, resource_size(regs));
+ 	if (!as->regs)
+ 		goto out_free_buffer;
++	as->phybase = regs->start;
+ 	as->irq = irq;
+ 	as->clk = clk;
  
- static void
- atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
--		struct spi_message *msg, int status, int stay)
-+		struct spi_message *msg, int stay)
- {
--	if (!stay || status < 0)
-+	if (!stay || as->done_status < 0)
- 		cs_deactivate(as, msg->spi);
- 	else
- 		as->stay = msg->spi;
- 
- 	list_del(&msg->queue);
--	msg->status = status;
-+	msg->status = as->done_status;
- 
- 	dev_dbg(master->dev.parent,
- 		"xfer complete: %u bytes transferred\n",
-@@ -564,6 +565,7 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
- 
- 	as->current_transfer = NULL;
- 	as->next_transfer = NULL;
-+	as->done_status = 0;
- 
- 	/* continue if needed */
- 	if (list_empty(&as->queue) || as->stopping)
-@@ -641,7 +643,8 @@ atmel_spi_interrupt(int irq, void *dev_id)
- 		/* Clear any overrun happening while cleaning up */
- 		spi_readl(as, SR);
- 
--		atmel_spi_msg_done(master, as, msg, -EIO, 0);
-+		as->done_status = -EIO;
-+		atmel_spi_msg_done(master, as, msg, 0);
- 	} else if (pending & (SPI_BIT(RXBUFF) | SPI_BIT(ENDRX))) {
- 		ret = IRQ_HANDLED;
- 
-@@ -659,7 +662,7 @@ atmel_spi_interrupt(int irq, void *dev_id)
- 
- 			if (atmel_spi_xfer_is_last(msg, xfer)) {
- 				/* report completed message */
--				atmel_spi_msg_done(master, as, msg, 0,
-+				atmel_spi_msg_done(master, as, msg,
- 						xfer->cs_change);
- 			} else {
- 				if (xfer->cs_change) {
 -- 
 1.7.9.5
 

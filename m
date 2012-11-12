@@ -1,14 +1,13 @@
 From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 09/17] spi/atmel_spi: correct 16 bits transfers using PIO
-Date: Mon, 12 Nov 2012 16:52:29 +0800
-Message-ID: <1352710357-3265-10-git-send-email-wenyou.yang@atmel.com>
+Subject: [PATCH 12/17] spi/atmel_spi: add version propety as the spi data
+Date: Mon, 12 Nov 2012 16:52:32 +0800
+Message-ID: <1352710357-3265-13-git-send-email-wenyou.yang@atmel.com>
 References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
 To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1352710357-3265-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
@@ -22,99 +21,96 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To remove the function atmel_spi_is_v2() which depends on the SOC,
+for future using DTS section to decide the IP version of SOC.
 
-Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
- drivers/spi/spi-atmel.c |   46 +++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 9 deletions(-)
+ drivers/spi/spi-atmel.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 00e729b..0007a53 100644
+index 0cc347c..568df5b 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -518,13 +518,17 @@ static void atmel_spi_next_xfer_pio(struct spi_master *master,
- 	}
+@@ -187,6 +187,7 @@
+  */
+ struct atmel_spi_data {
+ 	u8			dma_type;
++	u8			version;
+ 	struct at_dma_slave	dma_slave;
+ };
  
- 	if (xfer->tx_buf)
--		spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
-+		if (xfer->bits_per_word > 8)
-+			spi_writel(as, TDR, *(u16 *)(xfer->tx_buf));
-+		else
-+			spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
- 	else
- 		spi_writel(as, TDR, 0);
- 
- 	dev_dbg(master->dev.parent,
--		"  start pio xfer %p: len %u tx %p rx %p\n",
--		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf);
-+		"  start pio xfer %p: len %u tx %p rx %p bitpw %d\n",
-+		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf,
-+		xfer->bits_per_word);
- 
- 	/* Enable relevant interrupts */
- 	spi_writel(as, IER, SPI_BIT(RDRF) | SPI_BIT(OVRES));
-@@ -918,21 +922,39 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
+@@ -264,9 +265,20 @@ static struct dma_slave_config slave_config;
+  * register, but I haven't checked that it exists on all chips, and
+  * this is cheaper anyway.
+  */
+-static bool atmel_spi_is_v2(void)
++static bool atmel_spi_is_v1(struct atmel_spi *as)
  {
- 	u8		*txp;
- 	u8		*rxp;
-+	u16		*txp16;
-+	u16		*rxp16;
- 	unsigned long	xfer_pos = xfer->len - as->current_remaining_bytes;
+-	return !cpu_is_at91rm9200();
++	if (as->data.version == 1)
++		return true;
++	else
++		return false;
++}
++
++static bool atmel_spi_is_v2(struct atmel_spi *as)
++{
++	if (as->data.version == 2)
++		return true;
++	else
++		return false;
+ }
  
- 	if (xfer->rx_buf) {
--		rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
--		*rxp = spi_readl(as, RDR);
-+		if (xfer->bits_per_word > 8) {
-+			rxp16 = (u16 *)(((u8 *)xfer->rx_buf) + xfer_pos);
-+			*rxp16 = spi_readl(as, RDR);
-+		} else {
-+			rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
-+			*rxp = spi_readl(as, RDR);
-+		}
- 	} else {
- 		spi_readl(as, RDR);
+ /*
+@@ -300,7 +312,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 	unsigned active = spi->mode & SPI_CS_HIGH;
+ 	u32 mr;
+ 
+-	if (atmel_spi_is_v2()) {
++	if (atmel_spi_is_v2(as)) {
+ 		/*
+ 		 * Always use CSR0. This ensures that the clock
+ 		 * switches to the correct idle polarity before we
+@@ -355,7 +367,7 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 			asd->npcs_pin, active ? " (low)" : "",
+ 			mr);
+ 
+-	if (atmel_spi_is_v2() || spi->chip_select != 0)
++	if (atmel_spi_is_v2(as) || spi->chip_select != 0)
+ 		gpio_set_value(asd->npcs_pin, !active);
+ }
+ 
+@@ -1266,7 +1278,7 @@ static int atmel_spi_setup(struct spi_device *spi)
  	}
--
--	as->current_remaining_bytes--;
-+	if (xfer->bits_per_word > 8) {
-+		as->current_remaining_bytes -= 2;
-+		if (as->current_remaining_bytes < 0)
-+			as->current_remaining_bytes = 0;
-+	} else {
-+		as->current_remaining_bytes--;
-+	}
  
- 	if (as->current_remaining_bytes) {
- 		if (xfer->tx_buf) {
--			txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
--			spi_writel(as, TDR, *txp);
-+			if (xfer->bits_per_word > 8) {
-+				txp16 = (u16 *)(((u8 *)xfer->tx_buf)
-+							+ xfer_pos + 2);
-+				spi_writel(as, TDR, *txp16);
-+			} else {
-+				txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
-+				spi_writel(as, TDR, *txp);
-+			}
- 		} else {
- 			spi_writel(as, TDR, 0);
- 		}
-@@ -1345,6 +1367,12 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 				return -ENOPROTOOPT;
- 			}
- 		}
-+		if (xfer->bits_per_word > 8) {
-+			if (xfer->len % 2) {
-+				dev_dbg(&spi->dev, "buffer len should be 16 bits aligned\n");
-+				return -EINVAL;
-+			}
-+		}
+ 	/* see notes above re chipselect */
+-	if (!atmel_spi_is_v2()
++	if (atmel_spi_is_v1(as)
+ 			&& spi->chip_select == 0
+ 			&& (spi->mode & SPI_CS_HIGH)) {
+ 		dev_dbg(&spi->dev, "setup: can't be active-high\n");
+@@ -1275,7 +1287,7 @@ static int atmel_spi_setup(struct spi_device *spi)
  
- 		/* FIXME implement these protocol options!! */
- 		if (xfer->speed_hz) {
+ 	/* v1 chips start out at half the peripheral bus speed. */
+ 	bus_hz = clk_get_rate(as->clk);
+-	if (!atmel_spi_is_v2())
++	if (atmel_spi_is_v1(as))
+ 		bus_hz /= 2;
+ 
+ 	if (spi->max_speed_hz) {
+@@ -1347,7 +1359,7 @@ static int atmel_spi_setup(struct spi_device *spi)
+ 		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
+ 		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
+ 
+-	if (!atmel_spi_is_v2())
++	if (atmel_spi_is_v1(as))
+ 		spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
+ 
+ 	return 0;
 -- 
 1.7.9.5
 

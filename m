@@ -1,14 +1,16 @@
-From: Blancheporte par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu=27=E0?= -50 % sur tout le site
-	=?iso-8859-15?Q?d=E8s?= votre premier article
-Date: Mon, 12 Nov 2012 03:07:09 +0100
-Message-ID: <1352686133.thing50a05a358fbac@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 04/17] spi/atmel_spi: call unmapping on transfers buffers
+Date: Mon, 12 Nov 2012 16:52:24 +0800
+Message-ID: <1352710357-3265-5-git-send-email-wenyou.yang@atmel.com>
+References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1352710357-3265-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,18 +21,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0MTM0JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xMiAwMzowMDowMSZlPTEmaD0yNDEzMiZmPTI0MTM0Jmc9MjQxMzQ=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0MTM0JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xMiAwMzowMDowMSZlPTEmaD0yNDEzMiZmPTI0MTM0Jmc9MjQxMz=
-Q=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
+ drivers/spi/spi-atmel.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 2e040be..fc1222a 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1010,6 +1010,7 @@ static int __devexit atmel_spi_remove(struct platform_device *pdev)
+ 	struct spi_master	*master = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_master_get_devdata(master);
+ 	struct spi_message	*msg;
++	struct spi_transfer	*xfer;
+ 
+ 	/* reset the hardware and block queue progress */
+ 	spin_lock_irq(&as->lock);
+@@ -1021,9 +1022,10 @@ static int __devexit atmel_spi_remove(struct platform_device *pdev)
+ 
+ 	/* Terminate remaining queued transfers */
+ 	list_for_each_entry(msg, &as->queue, queue) {
+-		/* REVISIT unmapping the dma is a NOP on ARM and AVR32
+-		 * but we shouldn't depend on that...
+-		 */
++		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++			if (!msg->is_dma_mapped)
++				atmel_spi_dma_unmap_xfer(master, xfer);
++		}
+ 		msg->status = -ESHUTDOWN;
+ 		msg->complete(msg->context);
+ 	}
+-- 
+1.7.9.5
+
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

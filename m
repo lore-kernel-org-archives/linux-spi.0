@@ -1,105 +1,226 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Subject: Re: [PATCH 02/10] arm: at91: move platfarm_data to
- include/linux/platform_data/atmel.h
-Date: Mon, 12 Nov 2012 15:06:46 +0100
-Message-ID: <20121112140646.GK4576@game.jcrosoft.org>
-References: <20121107111235.GH20063@game.jcrosoft.org>
- <1352287374-25176-1-git-send-email-plagnioj@jcrosoft.com>
- <1352287374-25176-2-git-send-email-plagnioj@jcrosoft.com>
- <CAGhQ9VxgbCGzOPVtQq-LYsEPuyyGjRDfB3jHPtvbHr1xLgntXA@mail.gmail.com>
+From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: davinci: add OF support for the spi controller
+Date: Mon, 12 Nov 2012 16:28:22 -0500
+Message-ID: <1352755702-21488-1-git-send-email-m-karicheri2@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel@lists.infradead.org, linux-fbdev@vger.kernel.org,
-	linux-usb@vger.kernel.org, rtc-linux@googlegroups.com,
-	linux-mmc@vger.kernel.org, linux-pcmcia@lists.infradead.org,
-	Nicolas Ferre <nicolas.ferre@atmel.com>,
-	linux-can@vger.kernel.org, linux-ide@vger.kernel.org,
-	netdev@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Joachim Eastwood <manabian@gmail.com>
-Return-path: <netdev-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAGhQ9VxgbCGzOPVtQq-LYsEPuyyGjRDfB3jHPtvbHr1xLgntXA@mail.gmail.com>
-Sender: netdev-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+ <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+ <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ <linux-keystone-uAqBSO/uNfhBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 11:54 Sat 10 Nov     , Joachim Eastwood wrote:
-> Hi Jean-Christophe,
-> 
-> On 7 November 2012 12:22, Jean-Christophe PLAGNIOL-VILLARD
-> <plagnioj@jcrosoft.com> wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
-> > Cc: linux-ide@vger.kernel.org
-> > Cc: linux-input@vger.kernel.org
-> > Cc: linux-mmc@vger.kernel.org
-> > Cc: linux-can@vger.kernel.org
-> > Cc: netdev@vger.kernel.org
-> > Cc: linux-pcmcia@lists.infradead.org
-> > Cc: rtc-linux@googlegroups.com
-> > Cc: spi-devel-general@lists.sourceforge.net
-> > Cc: linux-serial@vger.kernel.org
-> > Cc: linux-usb@vger.kernel.org
-> > Cc: linux-fbdev@vger.kernel.org
-> > ---
-> > HI all,
-> >
-> >         If it's ok with everyone this will go via at91
-> >         with the patch serie than clean up the include/mach
-> >
-> >         For preparation to switch to arm multiarch kernel
-> >
-> > Best Regards,
-> > J.
-> >  arch/arm/mach-at91/include/mach/board.h     |   55 ----------------------
-> >  arch/avr32/mach-at32ap/include/mach/board.h |    7 ---
-> >  drivers/ata/pata_at91.c                     |    2 +-
-> >  drivers/input/touchscreen/atmel_tsadcc.c    |    2 +-
-> >  drivers/mmc/host/atmel-mci.c                |    2 +-
-> >  drivers/net/can/at91_can.c                  |    3 +-
-> >  drivers/net/ethernet/cadence/at91_ether.c   |    2 +-
-> >  drivers/pcmcia/at91_cf.c                    |    2 +-
-> >  drivers/rtc/rtc-at91sam9.c                  |    2 +-
-> >  drivers/spi/spi-atmel.c                     |    2 +-
-> >  drivers/tty/serial/atmel_serial.c           |    2 +-
-> >  drivers/usb/gadget/at91_udc.c               |    2 +-
-> >  drivers/usb/gadget/atmel_usba_udc.c         |    2 +-
-> >  drivers/usb/host/ohci-at91.c                |    2 +-
-> >  drivers/video/atmel_lcdfb.c                 |    2 +-
-> >  include/linux/platform_data/atmel.h         |   67 +++++++++++++++++++++++++++
-> >  16 files changed, 80 insertions(+), 76 deletions(-)
-> 
-> <snip>
-> 
-> > diff --git a/drivers/net/ethernet/cadence/at91_ether.c b/drivers/net/ethernet/cadence/at91_ether.c
-> > index 4e980a7..35fc6edb 100644
-> > --- a/drivers/net/ethernet/cadence/at91_ether.c
-> > +++ b/drivers/net/ethernet/cadence/at91_ether.c
-> > @@ -31,6 +31,7 @@
-> >  #include <linux/clk.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/phy.h>
-> > +#include <linux/platform_data/atmel.h>
-> >
-> >  #include <asm/io.h>
-> >  #include <asm/uaccess.h>
-> > @@ -38,7 +39,6 @@
-> >
-> >  #include <mach/at91rm9200_emac.h>
-> >  #include <asm/gpio.h>
-> > -#include <mach/board.h>
-> >
-> >  #include "at91_ether.h"
-> 
-> The at91_ether driver in net-next does not need to be change since it
-> all mach includes has already been removed by other patches and it
-> includes linux/platform_data/macb.h directly.
-> 
-> What tree was these patches based on?
-> The at91_ether driver changes has been in linux-next for a long while now.
-the conflict is minor easy to handle and the cleanup need to go first on arm soc so this is
-based on rc3
+This adds OF support to DaVinci SPI controller to configure platform
+data through device bindings.
 
-Best Regards,
-J.
+Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+---
+ .../devicetree/bindings/spi/spi-davinci.txt        |   50 ++++++++++++
+ drivers/spi/spi-davinci.c                          |   80 +++++++++++++++++++-
+ 2 files changed, 126 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+new file mode 100644
+index 0000000..0369369
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+@@ -0,0 +1,50 @@
++Davinci SPI controller device bindings
++
++Required properties:
++- #address-cells: number of cells required to define a chip select
++	address on the SPI bus.
++- #size-cells: should be zero.
++- compatible:
++	- "ti,davinci-spi"
++- reg: Offset and length of SPI controller register space
++- ti,davinci-spi-version: SPI version :- "1.0" or "2.0"
++- ti,davinci-spi-num-cs: Number of chip selects
++- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
++	IP to the ARM interrupt controller withn the SoC. Possible values
++	are 0 and 1.
++- interrupts: interrupt number offset at the irq parent
++- clocks: spi clk phandle
++
++Example of a NOR flash slave device (n25q032) connected to DaVinci
++SPI controller device over the SPI bus.
++
++spi:spi0@20BF0000 {
++	#address-cells			= <1>;
++	#size-cells			= <0>;
++	compatible			= "ti,davinci-spi";
++	reg				= <0x20BF0000 0x1000>;
++	ti,davinci-spi-version		= "1.0";
++	ti,davinci-spi-num-cs		= <4>;
++	ti,davinci-spi-intr-line	= <0>;
++	interrupts			= <338>;
++	clocks				= <&clkspi>;
++
++	flash: n25q032@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "st,m25p32";
++		spi-max-frequency = <25000000>;
++		reg = <0>;
++
++		partition@0 {
++			label = "u-boot-spl";
++			reg = <0x0 0x80000>;
++			read-only;
++		};
++
++		partition@1 {
++			label = "test";
++			reg = <0x80000 0x380000>;
++		};
++	};
++};
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 71a6423..0f50319 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -26,6 +26,9 @@
+ #include <linux/err.h>
+ #include <linux/clk.h>
+ #include <linux/dma-mapping.h>
++#include <linux/of.h>
++#include <linux/of_device.h>
++#include <linux/of_irq.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi_bitbang.h>
+ #include <linux/slab.h>
+@@ -788,6 +791,69 @@ rx_dma_failed:
+ 	return r;
+ }
+ 
++#if defined(CONFIG_OF)
++static const struct of_device_id davinci_spi_of_match[] = {
++	{
++		.compatible = "ti,davinci-spi",
++	},
++	{ },
++};
++MODULE_DEVICE_TABLE(of, davini_spi_of_match);
++
++/**
++ * spi_davinci_get_pdata - Get platform_data from DTS binding
++ * @pdev: ptr to platform data
++ *
++ * Parses and populate platform_data from device tree bindings.
++ *
++ * NOTE: Not all platform_data params are supported currently.
++ */
++static struct davinci_spi_platform_data
++	*spi_davinci_get_pdata(struct platform_device *pdev)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct davinci_spi_platform_data *pdata;
++	unsigned int num_cs, intr_line = 0;
++	const char *version;
++
++	if (pdev->dev.platform_data)
++		return pdev->dev.platform_data;
++
++	if (!pdev->dev.of_node)
++		return NULL;
++
++	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
++	pdev->dev.platform_data = pdata;
++	if (!pdata)
++		return NULL;
++
++	/* default version is 1.0 */
++	pdata->version = SPI_VERSION_1;
++	of_property_read_string(node, "ti,davinci-spi-version", &version);
++	if (!strcmp(version, "2.0"))
++		pdata->version = SPI_VERSION_2;
++
++	/*
++	 * default num_cs is 1 and all chipsel are internal to the chip
++	 * indicated by chip_sel being NULL. GPIO based CS is not
++	 * supported yet in DT bindings.
++	 */
++	num_cs = 1;
++	of_property_read_u32(node, "ti,davinci-spi-num-cs", &num_cs);
++	pdata->num_chipselect = num_cs;
++	of_property_read_u32(node, "ti,davinci-spi-intr-line", &intr_line);
++	pdata->intr_line = intr_line;
++	return pdev->dev.platform_data;
++}
++#else
++#define davinci_spi_of_match NULL
++static struct davinci_spi_platform_data
++	*spi_davinci_get_pdata(struct platform_device *pdev)
++{
++	return pdev->dev.platform_data;
++}
++#endif
++
+ /**
+  * davinci_spi_probe - probe function for SPI Master Controller
+  * @pdev: platform_device structure which contains plateform specific data
+@@ -801,16 +867,16 @@ rx_dma_failed:
+  */
+ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+ {
++	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
++	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
++	struct davinci_spi_platform_data *pdata;
+ 	struct spi_master *master;
+ 	struct davinci_spi *dspi;
+-	struct davinci_spi_platform_data *pdata;
+ 	struct resource *r, *mem;
+-	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+-	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+ 	int i = 0, ret = 0;
+ 	u32 spipc0;
+ 
+-	pdata = pdev->dev.platform_data;
++	pdata = spi_davinci_get_pdata(pdev);
+ 	if (pdata == NULL) {
+ 		ret = -ENODEV;
+ 		goto err;
+@@ -851,7 +917,11 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+ 		goto release_region;
+ 	}
+ 
++	/* first get irq through resource table, else try of irq method */
+ 	dspi->irq = platform_get_irq(pdev, 0);
++	if (dspi->irq <= 0)
++		dspi->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
++
+ 	if (dspi->irq <= 0) {
+ 		ret = -EINVAL;
+ 		goto unmap_io;
+@@ -875,6 +945,7 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+ 	}
+ 	clk_prepare_enable(dspi->clk);
+ 
++	master->dev.of_node = pdev->dev.of_node;
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = pdata->num_chipselect;
+ 	master->setup = davinci_spi_setup;
+@@ -1010,6 +1081,7 @@ static struct platform_driver davinci_spi_driver = {
+ 	.driver = {
+ 		.name = "spi_davinci",
+ 		.owner = THIS_MODULE,
++		.of_match_table = davinci_spi_of_match,
+ 	},
+ 	.probe = davinci_spi_probe,
+ 	.remove = __devexit_p(davinci_spi_remove),
+-- 
+1.7.9.5

@@ -1,53 +1,38 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: omap2-mcspi: remove duplicated include from spi-omap2-mcspi.c
-Date: Wed, 14 Nov 2012 15:54:27 +0000
-Message-ID: <20121114155427.957923E0B1A@localhost>
-References: <CAPgLHd_rNn_bJ8BJOwcq8EmEi-BQcoakHmQpHG+NdOdDgPSMpQ@mail.gmail.com>
-Cc: yongjun_wei@trendmicro.com.cn,
-	spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
-To: Wei Yongjun <weiyj.lk@gmail.com>, rob.herring@calxeda.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAPgLHd_rNn_bJ8BJOwcq8EmEi-BQcoakHmQpHG+NdOdDgPSMpQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "Mistergooddeal par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Noel c'est parti : =?iso-8859-15?Q?jusqu=27=E0?= -75 pourcent
+	=?iso-8859-15?Q?d=27=E9conomie?=
+Date: Wed, 14 Nov 2012 19:39:31 +0100
+Message-ID: <1352918493.thing50a3e5ddc56cc@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 7 Oct 2012 21:29:21 +0800, Wei Yongjun <weiyj.lk@gmail.com> wrote:
-> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
-> 
-> Remove duplicated include.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Applied, thanks.
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjQ2MzcmYz0xOTYxNjQxJmQ9MjAx=
+Mi0xMS0xNCAxOTozMDowMiZlPTEmaD0yNDYzNSZmPTI0NjM3Jmc9MjQ2Mzc=3D
 
-> dpatch engine is used to auto generate this patch.
-> (https://github.com/weiyj/dpatch)
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjQ2MzcmYz0=
+xOTYxNjQxJmQ9MjAxMi0xMS0xNCAxOTozMDowMiZlPTEmaD0yNDYzNSZmPTI0NjM3Jmc9MjQ2Mz=
+c=3D
 
-Since I have to manually remove the above cruft from commit logs, can
-you please omit it from the commit text when posting patches?
 
-Thanks,
-g.
-
-> 
-> Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
-> ---
->  drivers/spi/spi-omap2-mcspi.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 474e217..b8b2f03 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -39,7 +39,6 @@
->  #include <linux/of.h>
->  #include <linux/of_device.h>
->  #include <linux/pinctrl/consumer.h>
-> -#include <linux/err.h>
->  
->  #include <linux/spi/spi.h>
->  
-> 
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+---------------------------------------------------------------------------=
+---
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

@@ -1,13 +1,17 @@
-From: Cigway par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: La fin du tabagisme passif
-Date: Wed, 14 Nov 2012 07:58:08 +0100
-Message-ID: <1352876307.thing50a34113015fe@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+Subject: Re: [PATCH resend] SPI: McSPI: fix D0/D1 direction confusion
+Date: Wed, 14 Nov 2012 08:17:05 +0100
+Message-ID: <87lie48xhq.fsf@dell.be.48ers.dk>
+References: <1352862866-3794-1-git-send-email-zonque@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1352862866-3794-1-git-send-email-zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> (Daniel
+	Mack's message of "Wed, 14 Nov 2012 11:14:26 +0800")
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,18 +22,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+>>>>> "Daniel" == Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> writes:
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NDgwJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xNCAwNzo1MDowMSZlPTEmaD0yNDQ3OCZmPTI0NDgwJmc9MjQ0ODA=3D
+ Daniel> 0384e90b8 ("spi/mcspi: allow configuration of pin directions") did what
+ Daniel> it claimed to do the wrong way around. D0/D1 is configured as output by
+ Daniel> *clearing* the bits in the conf registers, hence also breaking the
+ Daniel> former default behaviour.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NDgwJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xNCAwNzo1MDowMSZlPTEmaD0yNDQ3OCZmPTI0NDgwJmc9MjQ0OD=
-A=3D
+ Daniel> Fix this before that change is merged to mainline.
 
+ Daniel> Signed-off-by: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
----------------------------------------------------------------------------=
----
+Acked-by: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>
+
+-- 
+Bye, Peter Korsgaard
+
+------------------------------------------------------------------------------
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

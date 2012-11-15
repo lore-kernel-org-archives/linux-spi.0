@@ -1,159 +1,259 @@
-From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 06/17] spi/atmel_spi: add flag to controller data for lock
-	operations
-Date: Thu, 15 Nov 2012 15:06:17 +0530
-Message-ID: <CAM=Q2cvACiM2ynFz_HjRQ9pXg9o7amsP+u8icn7x7pB387VYaA@mail.gmail.com>
-References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
-	<1352710357-3265-7-git-send-email-wenyou.yang@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1352710357-3265-7-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [linux-keystone] [PATCH] spi: davinci: add OF support for the spi controller
+Date: Thu, 15 Nov 2012 16:20:42 +0000
+Message-ID: <20121115162042.A24F13E194B@localhost>
+References: <1352755702-21488-1-git-send-email-m-karicheri2@ti.com>
+Cc: Murali Karicheri <m-karicheri2@ti.com>
+To: Murali Karicheri <m-karicheri2@ti.com>, rob.herring@calxeda.com,
+	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-keystone@list.ti.com
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1352755702-21488-1-git-send-email-m-karicheri2@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 12, 2012 at 2:22 PM, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
-> From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
->
-> Will allow to drop the lock during DMA operations.
->
-> Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+On Mon, 12 Nov 2012 16:28:22 -0500, Murali Karicheri <m-karicheri2@ti.com> wrote:
+> This adds OF support to DaVinci SPI controller to configure platform
+> data through device bindings.
+> 
+> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+
+Hi Murali,
+
+Comments below...
+
 > ---
->  drivers/spi/spi-atmel.c |   31 +++++++++++++++++++------------
->  1 file changed, 19 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 76a1baf..37f54c3 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -187,6 +187,7 @@
+>  .../devicetree/bindings/spi/spi-davinci.txt        |   50 ++++++++++++
+>  drivers/spi/spi-davinci.c                          |   80 +++++++++++++++++++-
+>  2 files changed, 126 insertions(+), 4 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> new file mode 100644
+> index 0000000..0369369
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> @@ -0,0 +1,50 @@
+> +Davinci SPI controller device bindings
+> +
+> +Required properties:
+> +- #address-cells: number of cells required to define a chip select
+> +	address on the SPI bus.
+
+Will this *ever* be something other than '1'?
+
+> +- #size-cells: should be zero.
+> +- compatible:
+> +	- "ti,davinci-spi"
+
+Please use the actual model of the chip here. Don't try to be generic
+with the compatible string. A driver can bind against more than one
+compatible value and new devices can claim compatiblity with old by
+including the old compatible string in this list.
+
+> +- reg: Offset and length of SPI controller register space
+> +- ti,davinci-spi-version: SPI version :- "1.0" or "2.0"
+
+Usually this is determined from the compatible value directly (which is
+why compatible strings shouldn't be generic). Don't use a separate
+property for it.
+
+> +- ti,davinci-spi-num-cs: Number of chip selects
+> +- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
+> +	IP to the ARM interrupt controller withn the SoC. Possible values
+> +	are 0 and 1.
+
+? Isn't that what the interrupts property is for? I don't understand why
+this is needed from the description.
+
+> +- interrupts: interrupt number offset at the irq parent
+> +- clocks: spi clk phandle
+> +
+> +Example of a NOR flash slave device (n25q032) connected to DaVinci
+> +SPI controller device over the SPI bus.
+> +
+> +spi:spi0@20BF0000 {
+
+spi@20BF0000  (use 'spi' not 'spi0')
+
+> +	#address-cells			= <1>;
+> +	#size-cells			= <0>;
+> +	compatible			= "ti,davinci-spi";
+> +	reg				= <0x20BF0000 0x1000>;
+> +	ti,davinci-spi-version		= "1.0";
+> +	ti,davinci-spi-num-cs		= <4>;
+> +	ti,davinci-spi-intr-line	= <0>;
+> +	interrupts			= <338>;
+> +	clocks				= <&clkspi>;
+> +
+> +	flash: n25q032@0 {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "st,m25p32";
+> +		spi-max-frequency = <25000000>;
+> +		reg = <0>;
+> +
+> +		partition@0 {
+> +			label = "u-boot-spl";
+> +			reg = <0x0 0x80000>;
+> +			read-only;
+> +		};
+> +
+> +		partition@1 {
+> +			label = "test";
+> +			reg = <0x80000 0x380000>;
+> +		};
+> +	};
+> +};
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index 71a6423..0f50319 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -26,6 +26,9 @@
+>  #include <linux/err.h>
+>  #include <linux/clk.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/of_irq.h>
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/spi_bitbang.h>
+>  #include <linux/slab.h>
+> @@ -788,6 +791,69 @@ rx_dma_failed:
+>  	return r;
+>  }
+>  
+> +#if defined(CONFIG_OF)
+> +static const struct of_device_id davinci_spi_of_match[] = {
+> +	{
+> +		.compatible = "ti,davinci-spi",
+> +	},
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(of, davini_spi_of_match);
+> +
+> +/**
+> + * spi_davinci_get_pdata - Get platform_data from DTS binding
+> + * @pdev: ptr to platform data
+> + *
+> + * Parses and populate platform_data from device tree bindings.
+> + *
+> + * NOTE: Not all platform_data params are supported currently.
+> + */
+> +static struct davinci_spi_platform_data
+> +	*spi_davinci_get_pdata(struct platform_device *pdev)
+> +{
+> +	struct device_node *node = pdev->dev.of_node;
+> +	struct davinci_spi_platform_data *pdata;
+> +	unsigned int num_cs, intr_line = 0;
+> +	const char *version;
+> +
+> +	if (pdev->dev.platform_data)
+> +		return pdev->dev.platform_data;
+> +
+> +	if (!pdev->dev.of_node)
+> +		return NULL;
+> +
+> +	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+> +	pdev->dev.platform_data = pdata;
+> +	if (!pdata)
+> +		return NULL;
+
+Since pdata must always be present, roll it directly into struct
+spi_davinci and get rid of the kzmalloc here. It is less expensive and
+is simpler code.
+
+> +
+> +	/* default version is 1.0 */
+> +	pdata->version = SPI_VERSION_1;
+> +	of_property_read_string(node, "ti,davinci-spi-version", &version);
+> +	if (!strcmp(version, "2.0"))
+> +		pdata->version = SPI_VERSION_2;
+> +
+> +	/*
+> +	 * default num_cs is 1 and all chipsel are internal to the chip
+> +	 * indicated by chip_sel being NULL. GPIO based CS is not
+> +	 * supported yet in DT bindings.
+> +	 */
+> +	num_cs = 1;
+> +	of_property_read_u32(node, "ti,davinci-spi-num-cs", &num_cs);
+> +	pdata->num_chipselect = num_cs;
+> +	of_property_read_u32(node, "ti,davinci-spi-intr-line", &intr_line);
+> +	pdata->intr_line = intr_line;
+> +	return pdev->dev.platform_data;
+> +}
+> +#else
+> +#define davinci_spi_of_match NULL
+> +static struct davinci_spi_platform_data
+> +	*spi_davinci_get_pdata(struct platform_device *pdev)
+> +{
+> +	return pdev->dev.platform_data;
+> +}
+> +#endif
+> +
+>  /**
+>   * davinci_spi_probe - probe function for SPI Master Controller
+>   * @pdev: platform_device structure which contains plateform specific data
+> @@ -801,16 +867,16 @@ rx_dma_failed:
 >   */
->  struct atmel_spi {
->         spinlock_t              lock;
-> +       unsigned long           flags;
->
->         resource_size_t         phybase;
->         void __iomem            *regs;
-> @@ -323,6 +324,16 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
->                 gpio_set_value(asd->npcs_pin, !active);
->  }
->
-> +static void atmel_spi_lock(struct atmel_spi *as)
-> +{
-> +               spin_lock_irqsave(&as->lock, as->flags);
-> +}
-> +
-> +static void atmel_spi_unlock(struct atmel_spi *as)
-> +{
-> +               spin_unlock_irqrestore(&as->lock, as->flags);
-> +}
-
-May be this can be called directly.
-
-> +
->  static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
->                                         struct spi_transfer *xfer)
+>  static int __devinit davinci_spi_probe(struct platform_device *pdev)
 >  {
-> @@ -559,9 +570,9 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
->                 "xfer complete: %u bytes transferred\n",
->                 msg->actual_length);
->
-> -       spin_unlock(&as->lock);
-> +       atmel_spi_unlock(as);
->         msg->complete(msg->context);
-> -       spin_lock(&as->lock);
-> +       atmel_spi_lock(as);
->
->         as->current_transfer = NULL;
->         as->next_transfer = NULL;
-> @@ -788,13 +799,11 @@ static int atmel_spi_setup(struct spi_device *spi)
->                 spi->controller_state = asd;
->                 gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
->         } else {
-> -               unsigned long           flags;
-> -
-> -               spin_lock_irqsave(&as->lock, flags);
-> +               atmel_spi_lock(as);
->                 if (as->stay == spi)
->                         as->stay = NULL;
->                 cs_deactivate(as, spi);
-> -               spin_unlock_irqrestore(&as->lock, flags);
-> +               atmel_spi_unlock(as);
->         }
->
->         asd->csr = csr;
-> @@ -813,7 +822,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->  {
->         struct atmel_spi        *as;
->         struct spi_transfer     *xfer;
-> -       unsigned long           flags;
->         struct device           *controller = spi->master->dev.parent;
->         u8                      bits;
->         struct atmel_spi_device *asd;
-> @@ -878,11 +886,11 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->         msg->status = -EINPROGRESS;
->         msg->actual_length = 0;
->
-> -       spin_lock_irqsave(&as->lock, flags);
-> +       atmel_spi_lock(as);
->         list_add_tail(&msg->queue, &as->queue);
->         if (!as->current_transfer)
->                 atmel_spi_next_message(spi->master);
-> -       spin_unlock_irqrestore(&as->lock, flags);
-> +       atmel_spi_unlock(as);
->
->         return 0;
->  }
-> @@ -892,17 +900,16 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->         struct atmel_spi        *as = spi_master_get_devdata(spi->master);
->         struct atmel_spi_device *asd = spi->controller_state;
->         unsigned                gpio = (unsigned) spi->controller_data;
-> -       unsigned long           flags;
->
->         if (!asd)
->                 return;
->
-> -       spin_lock_irqsave(&as->lock, flags);
-> +       atmel_spi_lock(as);
->         if (as->stay == spi) {
->                 as->stay = NULL;
->                 cs_deactivate(as, spi);
->         }
-> -       spin_unlock_irqrestore(&as->lock, flags);
-> +       atmel_spi_unlock(as);
->
->         spi->controller_state = NULL;
->         gpio_free(gpio);
-> --
+> +	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+> +	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+> +	struct davinci_spi_platform_data *pdata;
+>  	struct spi_master *master;
+>  	struct davinci_spi *dspi;
+> -	struct davinci_spi_platform_data *pdata;
+>  	struct resource *r, *mem;
+> -	resource_size_t dma_rx_chan = SPI_NO_RESOURCE;
+> -	resource_size_t	dma_tx_chan = SPI_NO_RESOURCE;
+>  	int i = 0, ret = 0;
+>  	u32 spipc0;
+>  
+> -	pdata = pdev->dev.platform_data;
+> +	pdata = spi_davinci_get_pdata(pdev);
+>  	if (pdata == NULL) {
+>  		ret = -ENODEV;
+>  		goto err;
+> @@ -851,7 +917,11 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+>  		goto release_region;
+>  	}
+>  
+> +	/* first get irq through resource table, else try of irq method */
+>  	dspi->irq = platform_get_irq(pdev, 0);
+> +	if (dspi->irq <= 0)
+> +		dspi->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
+> +
+
+This should never be needed. The irq should already be populated in the
+platform_device.
+
+>  	if (dspi->irq <= 0) {
+>  		ret = -EINVAL;
+>  		goto unmap_io;
+> @@ -875,6 +945,7 @@ static int __devinit davinci_spi_probe(struct platform_device *pdev)
+>  	}
+>  	clk_prepare_enable(dspi->clk);
+>  
+> +	master->dev.of_node = pdev->dev.of_node;
+>  	master->bus_num = pdev->id;
+>  	master->num_chipselect = pdata->num_chipselect;
+>  	master->setup = davinci_spi_setup;
+> @@ -1010,6 +1081,7 @@ static struct platform_driver davinci_spi_driver = {
+>  	.driver = {
+>  		.name = "spi_davinci",
+>  		.owner = THIS_MODULE,
+> +		.of_match_table = davinci_spi_of_match,
+>  	},
+>  	.probe = davinci_spi_probe,
+>  	.remove = __devexit_p(davinci_spi_remove),
+> -- 
 > 1.7.9.5
->
->
-> ------------------------------------------------------------------------------
-> Everyone hates slow websites. So do we.
-> Make your web apps faster with AppDynamics
-> Download AppDynamics Lite for free today:
-> http://p.sf.net/sfu/appdyn_d2d_nov
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> 
 
-------------------------------------------------------------------------------
-Monitor your physical, virtual and cloud infrastructure from a single
-web console. Get in-depth insight into apps, servers, databases, vmware,
-SAP, cloud infrastructure, etc. Download 30-day Free Trial.
-Pricing starts from $795 for 25 servers or applications!
-http://p.sf.net/sfu/zoho_dev2dev_nov
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

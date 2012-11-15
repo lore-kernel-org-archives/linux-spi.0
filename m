@@ -1,12 +1,18 @@
-From: =?GB2312?B?x+vXqsjLysI=?= <vc-7MJe0ykk+E8@public.gmane.org>
-Subject: =?GB2312?B?ubm9qLHq17y7r7XEwM22r7aotu653MDt?=
-Date: Thu, 15 Nov 2012 09:41:14 +0800
-Message-ID: <E1TYoSD-00018u-SC@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 06/17] spi/atmel_spi: add flag to controller data for lock
+	operations
+Date: Thu, 15 Nov 2012 15:06:17 +0530
+Message-ID: <CAM=Q2cvACiM2ynFz_HjRQ9pXg9o7amsP+u8icn7x7pB387VYaA@mail.gmail.com>
+References: <1352710357-3265-1-git-send-email-wenyou.yang@atmel.com>
+	<1352710357-3265-7-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1352710357-3265-7-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,99 +23,137 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-yOe6zrm5vaix6te8u6+1xMDNtq+2qLbuudzA7c+1zbMKCsqxvOS12LXjo7oyMDEyxOoxMtTCMDEt
-MDLI1cnPuqMKyrG85LXYteOjujIwMTLE6jEy1MIwOC0wOcjVye7b2grF4NG1ttTP86O6xvPStcDN
-tq+2qLbuudzA7cjL1LEuyMvBptfK1LS53MDtyMvUsS7J+rL6udzA7cjL1LEKxeDRtbfR08OjujI4
-MDDUqi/Iyyiw/MCoytq/zrfRoaLXysHPt9GhorvhzvG30aGi1qTK6aGizueyzbXIKQoK18nRr7Xn
-u7CjujAyMC04MDU2MDYzOCAgIDA3NTUtNjEyODc1NTIgIDAyMS01MTYwMjg1NiAgo6iyu9Do0qq0
-y8Dg0MW8/sfru9i4tLXn08rWwXR1aXhpbjIwMTJAMTI2LmNvbc3L0MWjqQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0Kv86zzLGz
-vrCjusDNtq+2qLbuo6zX986q1sbU7Mbz0rXSu9bW1+7OqrOj08O1xLncwO23vbeoo6y9/MTqwLTI
-tNTayrW8ytOm08O5/bPM1tDB7s7eyv3G89K10/a1vcHLCsewy/nOtNPQtcS/4MTVoaPK0LOhseS7
-r7T4wLS1xMn6svq3vcq9seS476Givq28w8nnu+G3otW5ttTUsbmkuPbQ1LXE07DP7KGit6jWxrK7
-ts+9ocir18zJ+rXEudzA7QrDrLbcoaK5+rzKvfDI2s6ju/q21Mq1zOW+rbzDtcSz5bv3tci24Le9
-w+a1xLHkucqjrMq5tKvNs7XEwM22r7aotu653MDtt723qMPmwdnXxdbutuDQws7KzOK1xMz01b2h
-oyAK1b7U2sbz0rW1xL3HtsijrMPmttTOosD70+uyu7bPxcrJ/bXEwM22r7PJsb6jrM7ewtuyycih
-vMbKsbmk18q7ucrHvMa8/rmk18qjrMvGuvW2vL71tcPKrrfW09Cx2NKqCr340NDAzbavtqi27rnc
-wO2ho7/JysLT69S4zqW1xMrHo7q63LbgxvPStc6qwcvKtc/WwM22r7aotu64trP2wcu+3rTztcS5
-3MDts8mxvrrzLMi0xNHS1MrVtb3TptPQtcQK0Ke5+6GjtvjUsbmkxNijvyDU2sDNtq+2qLbuudzA
-7bXEt723qMPmx7CjrLXa0rvKsbzksqK3x8ilxazBprXYyrXP1rvys6zUvaOstvjKx7avsru2r77N
-sNGhsLK7uavGvaGxCsj9uPbX1rnS1NrX7LHfoaMgyOe5+7K7xNyzubXXtdjA7b3ius294r721LG5
-pNHb1tC1xKGxsru5q8a9obEs1+66877Nu+Gx5LPJxOO2qLbuy/vItMO7y/nOvaGjCrSrzbO1xLao
-tu653MDtt723qL2rus7IpbrOtNOjv7W9tdfU9dH5ssXE3Mq5xuS7wLeis/bQwrXEu+7BpqO/yOe6
-zrLFxNzKudSxuaS40L71uavGvT+3vbeo1rvT0NK7uPYKLS221LSrzbO1xMDNtq+2qLbuudzA7b34
-0NDPtc2ztdi4/NDCo6EKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0Kv86zzMS/seqjus2ouf2/qtW5uaTX99HQvr8sz/uz
-/c7e0KfAzbavLL21tc3Iy7mks8mxviwgzOG438DNtq/Qp8LKLMzhuN/Azbavtqi27rncwO3Lrsa9
-LLTZvfjAzbavCraotu653MDttcS8vMr1tLTQwrrNudzA7bS00MIszqrJ+rL6udzA7c+1zbO8sM/g
-udi53MDtsr/Dxczhuam8vMr11qez1qGjCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQq/zrPMtPO42Qq12tK7vbKjurbU
-wM22r7aotu653MDttcTPtc2zyM/Wqj8gICAgICAgICAKyrLDtMrHwM22r7aotu4KwM22r7aotu61
-xMG91tbW99KqwODQzQrKtc/WwM22r7aotu653MDttcTB+bj2xL+1xArAzbavtqi27rncwO3Ptc2z
-tcTO5bTz1+mzyczlz7UKzsrM4qO61+67+bG+tcTAzbavtqi27re9t6jKx8TE0rvW1qO/CrTzxfrB
-v7rN0KHF+sG/tcTWxtTsxvPStbfWsfDKytPDxMTW1raotu653MDto78KCrXatv69sqO6ttSx6te8
-uaTKsdHQvr+1xM+1zbPIz9aqCrHq17y5pMqxtcS2qNLl0+vKsbzktcTBvbTzzNi14wqx6te8uaTK
-sci3waK1xMH5uPbUrdTyCrK7yvTT2rHq17y5pMqxt7bOp7XEzuW49re9w+YKserXvLmkyrHX6bPJ
-tcTBvbj2sr+33Qqx6te8uaTKsb/t1KPCyrXEyP249tfps8myv7fdICAgICAgICAgIArOyszio7rK
-ssO0ysex6te8u6/X99K1o78KyrLDtMrHserXvLuv1/fStbXEyP2088Tauq2jvwoKtdrI/b2yo7rA
-zbavtqi27rncwO21xLe9z/LT67e9t6gKwM22r7aotu653MDt0dC+v7XEwb2088Hs0/IKwM22r7ao
-tu653MDtyMvUsbXEuaTX99Tw1rAKwM22r7aotu653MDtyMvUsbHYsbi1xMbftPPM9bz+Cr6rz7i7
-r7aotu653MDttcSzo9PDtaXOuwrAzbavtqi27rXEyP3W1tbGtqi3vbeoCsDNtq+2qLbuudzA7bXE
-0N7V/bvyseS4/MH3s8wovLSx6te8u68pCsjnus7It7aotu62yLXEseS4/NbcxtoKzsrM4qO6yOe6
-zr/Lt/7Azbavtqi27rT4uPjG89K1tcS4usPm07DP7KO/Csjnus68xsvjyfqy+s/fxr264tCnwsrT
-68vwtcTQp8LKo78KICAgICAgICAgIAq12svEvbKjusDNtq+2qLbuudzA7bj3z+7WuLHq0+u8xsvj
-t723qArKssO0ysexo9PQtqi27rmkyrEKyrLDtMrH09DQp7mkyrHT687e0Ke5pMqxCtT10fm8xsvj
-yrG85LXE09DQp8D708PCygrKssO0ysex6te8svqz9rmkyrEK1PXR+bzGy+O2qLbuyfqy+tCnwsoK
-1PXR+bzGy+O5pLOntcTX27rPxNzCygrI57rOvMbL47mks6e1xNfbus/J+rL60NQK08PKssO01/fO
-qsDNtqi27rXE1+67+bG+taXOuwrI57rOyLe2qMDNtq+2qLbutcS499bWsvrGt7WlvNsKzsrM4qO6
-1PXR+bfWzvbJ+rL6s8mxvrXNvPW1xLe9z/KjvwrI57rOyLe2qMn6svrQp8LKzOHJ/bXEt73P8qO/
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KvbLK
-pr3pydyjurPC1r67qsDPyqYguaTJzLncwO3Ltsq/ILn6xNrWxtTsudzA7deovNIg1PjU2sirx/LX
-7rTztcTP38im1sbU7MnMyqTDwLTvKFNVTUlEQSmhosjVsb6/qM73xbe159fTKENBU0lPKQrIztaw
-tO8xM8Tqo6zA+sjOyfqy+tb3udyhosa31srW97nco6zJ+rL6vq3A7aGi1sbU7Nfcvq3A7bXIo7vU
-+MqmtNPQobSo0rvSsqOoyNWxvsTcwsrQrbvhudzA7dbQ0MTXqLzSo6wgyNWxvldGJklFCtHQvr+1
-2tK7yMujrMjVsb7WxtTs0rXR0L6/tcS5+rGmvLbIy87vo6nXqMPF0dDPsLHq17y5pMqx0+u2r9f3
-0dC+v9T4z8i687bgtM6xu8XJzfnI1bG+us3QwrzTxsK9+NDevLDF4NG1o6i34czvSklUCsn6svq3
-vcq9o6y21E5QU9PQz7XNs7ywye7I69HQvr+6zcq1vPmjqaOsILPCwM/KptPIxuTJw7Okz9azodK7
-zOW7r7ncwO0ovMa7riyzybG+LMTJxtos1srBvyy8vMr1o6zIy9SxKaGj1ve9sr/Os8wK09A6oba5
-udb+uN++q7bIserXvLmkyrFTVLncwO3Ptc2zobehoqG2tuC8vMTc1LG5pMXg0fjM5c+1obehoqG2
-tuDF+snZwb/J+rL6t73Kvcq1zvGht6GiobbOosD7yrG0+rXEvqvPuLuvz9azobncwO2ht6GiCqG2
-yKvE3LDg1+mzpNG1wbeht7XIo6zW99Kqs/aw5s7voba3tMqh1tC5+sq9uaSzp7ncwO2ht6GiobbM
-9NW9ODC687ncwO2ht7XIoaMgCrPCwM/KptT4zqrBqs/roaLLyc/Cv9W196GiuPHBprXnxvehos2o
-08O158b4oaKwrMSsyfqhoruqzqq8vMr1oaK3ycD7xtHSvcHGz7XNs6Giu/TE4c6ktvuhokFCQqGi
-v8LE4b+ow8DE3LTvoaKwwsHWCrDNy7mhori7yr8tyqnA1qGi09G077niteehorart73NqNDFoaLU
-o9Sq1sbU7LyvzcWhosDuvfW8x6GiwvzQ48DXttihor/GwNW94L7foaKyvbK9uN+hos73sLLR7smt
-oaLRx8LXufq8yryvzcWhotK7Csb7t+HM76Gitqu358b7s7WhorijzO/G+7O1oaK9rcHlxvuztaGi
-0dO35s6wysDNqKGix9jJvbrLteehorS0zqyhotHFwu25/qGivfW6/sLWzKWhornjtqvS57TvoaLV
-8sypzea+37XIvfzHp7zSv827pwrM4bmpuf3F4NG1u/LXydGvt/7O8aOs1sG98dPQvfzN8tLUyc/I
-y7TOvdPK3Mbk16jStb/Os8zRtcG3oaMKyq68uMTq1qrD+8jVsb7G89K1tcTWxtTsudzA7cq11b2+
-rdHpLL6rsdm1xLC4wP29sr3ivLDJ7r/MtcS527XjsvvKzaOsyMOzwsDPyqa9sszDyc/TzsjQ09DI
-56Gj0vLG5Mrav87E2sjdtcTKtdPD0NQKuN+jrLG70afUscPH0/7Oqsv5vPu5/bXE1+7KtdTaoaLX
-7sfQus/KtbzKtcTF4NG1yqajoSAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQqhtsjnus65ub2oserXvLuvtcTAzbavtqi27rncwO3Ptc2zobexqMP7
-u9jWtLHto6jH67Sr1eYwMjAtNjIzNTExNTajqQoKss4gu+EgtaUgzrsgw/sgs8ajul9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KCrLOILzTILXY
-ILXjo7ogv9rJz7qjICC/2snu29oKCsGqz7XIy6O6X19fX19fX19fX19fX1+157uwOl9fX19fX19f
-X19fX19fX1+0q9XmOl9fX19fX19fX19fX19fX18KCtPKvP6jul9fX19fX19fX19fX19fILLOILvh
-IMjLIMr9Ol9fX19fX19fX8jLILfRINPDIKOko7pfX19fX19fX1/UqiAKCrLOILvhIMjLo7pfX19f
-X19fX19fX8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC15yC7sKO6X19fX19fX19fX19f
-XyAKCrLOILvhIMjLo7pfX19fX19fX19fX8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC1
-5yC7sKO6X19fX19fX19fX19fXyAKCrLOILvhIMjLo7pfX19fX19fX19fX8v5IMjOINawIM7xo7pf
-X19fX19fX19fX1/SxiC2ryC15yC7sKO6X19fX19fX19fX19fXyAKCrLOILvhIMjLo7pfX19fX19f
-X19fX8v5IMjOINawIM7xo7pfX19fX19fX19fX1/SxiC2ryC15yC7sKO6X19fX19fX19fX19fXyAK
-Cri2v+63vcq9o6jH69Gh1PG08qGwocyhsaOpo7ogofUxoaLP1r3wIKH1MqGi16rVyiCh9TOhorXn
-u+MgCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQqxuNeiOsfrxPqw0bGow/u72Na0u9i0q87S
-y76jrM6qyLexo8T6sajD+87ezvMsx+vE+tTZtM6157uwo6gwMjAtODA1NjA2Mzijqci3yM8hCgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KTW9uaXRvciB5b3VyIHBoeXNpY2FsLCB2aXJ0dWFsIGFuZCBj
-bG91ZCBpbmZyYXN0cnVjdHVyZSBmcm9tIGEgc2luZ2xlCndlYiBjb25zb2xlLiBHZXQgaW4tZGVw
-dGggaW5zaWdodCBpbnRvIGFwcHMsIHNlcnZlcnMsIGRhdGFiYXNlcywgdm13YXJlLApTQVAsIGNs
-b3VkIGluZnJhc3RydWN0dXJlLCBldGMuIERvd25sb2FkIDMwLWRheSBGcmVlIFRyaWFsLgpQcmlj
-aW5nIHN0YXJ0cyBmcm9tICQ3OTUgZm9yIDI1IHNlcnZlcnMgb3IgYXBwbGljYXRpb25zIQpodHRw
-Oi8vcC5zZi5uZXQvc2Z1L3pvaG9fZGV2MmRldl9ub3YKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Mon, Nov 12, 2012 at 2:22 PM, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+> From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+>
+> Will allow to drop the lock during DMA operations.
+>
+> Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> ---
+>  drivers/spi/spi-atmel.c |   31 +++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 76a1baf..37f54c3 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -187,6 +187,7 @@
+>   */
+>  struct atmel_spi {
+>         spinlock_t              lock;
+> +       unsigned long           flags;
+>
+>         resource_size_t         phybase;
+>         void __iomem            *regs;
+> @@ -323,6 +324,16 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+>                 gpio_set_value(asd->npcs_pin, !active);
+>  }
+>
+> +static void atmel_spi_lock(struct atmel_spi *as)
+> +{
+> +               spin_lock_irqsave(&as->lock, as->flags);
+> +}
+> +
+> +static void atmel_spi_unlock(struct atmel_spi *as)
+> +{
+> +               spin_unlock_irqrestore(&as->lock, as->flags);
+> +}
+
+May be this can be called directly.
+
+> +
+>  static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
+>                                         struct spi_transfer *xfer)
+>  {
+> @@ -559,9 +570,9 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
+>                 "xfer complete: %u bytes transferred\n",
+>                 msg->actual_length);
+>
+> -       spin_unlock(&as->lock);
+> +       atmel_spi_unlock(as);
+>         msg->complete(msg->context);
+> -       spin_lock(&as->lock);
+> +       atmel_spi_lock(as);
+>
+>         as->current_transfer = NULL;
+>         as->next_transfer = NULL;
+> @@ -788,13 +799,11 @@ static int atmel_spi_setup(struct spi_device *spi)
+>                 spi->controller_state = asd;
+>                 gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
+>         } else {
+> -               unsigned long           flags;
+> -
+> -               spin_lock_irqsave(&as->lock, flags);
+> +               atmel_spi_lock(as);
+>                 if (as->stay == spi)
+>                         as->stay = NULL;
+>                 cs_deactivate(as, spi);
+> -               spin_unlock_irqrestore(&as->lock, flags);
+> +               atmel_spi_unlock(as);
+>         }
+>
+>         asd->csr = csr;
+> @@ -813,7 +822,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+>  {
+>         struct atmel_spi        *as;
+>         struct spi_transfer     *xfer;
+> -       unsigned long           flags;
+>         struct device           *controller = spi->master->dev.parent;
+>         u8                      bits;
+>         struct atmel_spi_device *asd;
+> @@ -878,11 +886,11 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+>         msg->status = -EINPROGRESS;
+>         msg->actual_length = 0;
+>
+> -       spin_lock_irqsave(&as->lock, flags);
+> +       atmel_spi_lock(as);
+>         list_add_tail(&msg->queue, &as->queue);
+>         if (!as->current_transfer)
+>                 atmel_spi_next_message(spi->master);
+> -       spin_unlock_irqrestore(&as->lock, flags);
+> +       atmel_spi_unlock(as);
+>
+>         return 0;
+>  }
+> @@ -892,17 +900,16 @@ static void atmel_spi_cleanup(struct spi_device *spi)
+>         struct atmel_spi        *as = spi_master_get_devdata(spi->master);
+>         struct atmel_spi_device *asd = spi->controller_state;
+>         unsigned                gpio = (unsigned) spi->controller_data;
+> -       unsigned long           flags;
+>
+>         if (!asd)
+>                 return;
+>
+> -       spin_lock_irqsave(&as->lock, flags);
+> +       atmel_spi_lock(as);
+>         if (as->stay == spi) {
+>                 as->stay = NULL;
+>                 cs_deactivate(as, spi);
+>         }
+> -       spin_unlock_irqrestore(&as->lock, flags);
+> +       atmel_spi_unlock(as);
+>
+>         spi->controller_state = NULL;
+>         gpio_free(gpio);
+> --
+> 1.7.9.5
+>
+>
+> ------------------------------------------------------------------------------
+> Everyone hates slow websites. So do we.
+> Make your web apps faster with AppDynamics
+> Download AppDynamics Lite for free today:
+> http://p.sf.net/sfu/appdyn_d2d_nov
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------------------------------------------------------------------------------
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

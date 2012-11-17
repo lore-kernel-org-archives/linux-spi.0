@@ -1,8 +1,7 @@
-From: SlimPatch par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Perdez =?iso-8859-15?Q?jusqu=27=E0?= 3 kilos par semaine
-	=?iso-8859-15?Q?o=F9?= vous le souhaitez
-Date: Fri, 16 Nov 2012 23:25:07 +0100
-Message-ID: <1353104723.thing50a6bd5378620@mach10.generated>
+From: Methode Chocolat par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Maigrissez sans vous priver
+Date: Sat, 17 Nov 2012 06:04:05 +0100
+Message-ID: <1353128658.thing50a71ad27b6d0@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NzgzJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xNiAyMzoyMDowMSZlPTEmaD0yNDc4MSZmPTI0NzgzJmc9MjQ3ODM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0OTcwJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0xNyAwNjowMDowMiZlPTEmaD0yNDk2OCZmPTI0OTcwJmc9MjQ5NzA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NzgzJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xNiAyMzoyMDowMSZlPTEmaD0yNDc4MSZmPTI0NzgzJmc9MjQ3OD=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0OTcwJmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0xNyAwNjowMDowMiZlPTEmaD0yNDk2OCZmPTI0OTcwJmc9MjQ5Nz=
+A=3D
 
 
 ---------------------------------------------------------------------------=

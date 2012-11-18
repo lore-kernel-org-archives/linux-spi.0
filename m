@@ -1,7 +1,7 @@
-From: Radiateur en ligne par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Prolongation exceptionnelle de l'offre jusqu'au 30 Novembre 2012
-Date: Sun, 18 Nov 2012 07:16:07 +0100
-Message-ID: <1353219380.thing50a87d341eba8@mach10.generated>
+From: Detente croisiere par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Retrouvez des couleurs avec nos croisieres au soleil
+Date: Sun, 18 Nov 2012 07:33:04 +0100
+Message-ID: <1353220402.thing50a88132c108b@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NDkzJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xOCAwNzoxMDowMSZlPTEmaD0yNDQ5MSZmPTI0NDkzJmc9MjQ0OTM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NTA3JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0xOCAwNzozMDowMSZlPTEmaD0yNDUwNSZmPTI0NTA3Jmc9MjQ1MDc=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NDkzJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xOCAwNzoxMDowMSZlPTEmaD0yNDQ5MSZmPTI0NDkzJmc9MjQ0OT=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NTA3JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0xOCAwNzozMDowMSZlPTEmaD0yNDUwNSZmPTI0NTA3Jmc9MjQ1MD=
+c=3D
 
 
 ---------------------------------------------------------------------------=

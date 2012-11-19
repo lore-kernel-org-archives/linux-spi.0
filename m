@@ -1,8 +1,8 @@
-From: SMACL Assurance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: 1 mois d'assurance auto offert
-Date: Mon, 19 Nov 2012 05:16:07 +0100
-Message-ID: <1353298591.thing50a9b29f8b929@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Promovacances par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Destinations Soleil : =?iso-8859-15?Q?=E0?= partir de 179 euros
+Date: Mon, 19 Nov 2012 06:14:18 +0100
+Message-ID: <1353302138.thing50a9c07ada897@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NjE5JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0xOSAwNToxMDowMSZlPTEmaD0yNDYxNyZmPTI0NjE5Jmc9MjQ2MTk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjQ3NDAmYz0xOTYxNjQxJmQ9MjAx=
+Mi0xMS0xOSAwNjowMDowMiZlPTEmaD0yNDczOCZmPTI0NzQwJmc9MjQ3NDA=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NjE5JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0xOSAwNToxMDowMSZlPTEmaD0yNDYxNyZmPTI0NjE5Jmc9MjQ2MT=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjQ3NDAmYz0=
+xOTYxNjQxJmQ9MjAxMi0xMS0xOSAwNjowMDowMiZlPTEmaD0yNDczOCZmPTI0NzQwJmc9MjQ3ND=
+A=3D
 
 
 ---------------------------------------------------------------------------=

@@ -1,13 +1,12 @@
-From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/1] spi: omap2-mcspi: remove duplicate inclusion of
-	linux/err.h
-Date: Mon, 19 Nov 2012 17:07:52 +0530
-Message-ID: <1353325072-15795-1-git-send-email-sachin.kamat@linaro.org>
+From: Rendez vous =?iso-8859-15?Q?d=E9co?= par Galeriedesmarques.fr
+	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Jusqu =?iso-8859-15?Q?=E0?= -60% - Livraison avant Noel
+Date: Mon, 19 Nov 2012 13:19:25 +0100
+Message-ID: <1353327582.thing50aa23dea5b5d@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -20,30 +19,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-linux/err.h was included twice.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjQ5OTAmYz0xOTYxNjQxJmQ9MjAx=
+Mi0xMS0xOSAxMzoxMDowMSZlPTEmaD0yNDk4OCZmPTI0OTkwJmc9MjQ5OTA=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjQ5OTAmYz0=
+xOTYxNjQxJmQ9MjAxMi0xMS0xOSAxMzoxMDowMSZlPTEmaD0yNDk4OCZmPTI0OTkwJmc9MjQ5OT=
+A=3D
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-omap2-mcspi.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index cc4f2dd..a2cfde6 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -39,7 +39,6 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/pinctrl/consumer.h>
--#include <linux/err.h>
- 
- #include <linux/spi/spi.h>
- 
--- 
-1.7.4.1
-
-
-------------------------------------------------------------------------------
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

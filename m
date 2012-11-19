@@ -1,12 +1,12 @@
-From: Frank White <frankwhitecode-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Please kindly send me your latest catalog
-Date: Sun, 18 Nov 2012 21:09:52 GMT
-Message-ID: <1118219.NOAAWHKR@gmail.com>
-Reply-To: frankwhitecode-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+From: SMACL Assurance par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: 1 mois d'assurance auto offert
+Date: Mon, 19 Nov 2012 05:16:07 +0100
+Message-ID: <1353298591.thing50a9b29f8b929@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,26 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Sir,
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-We are interested in purchasing your products and we sincerely hope to establish a long-term  business relation with your esteemed company.
-Please kindly send me your latest catalog. Also, inform me about the Minimum Order Quantity,  Delivery time or FOB, and payment terms warranty.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI0NjE5JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0xOSAwNToxMDowMSZlPTEmaD0yNDYxNyZmPTI0NjE5Jmc9MjQ2MTk=3D
 
-Please contact us via: frankwhitecode-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-
-Your early reply is highly appreciated.
-Thank You !
-
-Best Regards,
-
-F.W. Quarters
-( Sr.Purchasing Manager)
-Star Mega Trade   S.p.A. Via Vittorio Veneto,
-63 - 36035 Marano Vicentino (Vicenza) Italia
-Tel:  +39.0445.5951111
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI0NjE5JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0xOSAwNToxMDowMSZlPTEmaD0yNDYxNyZmPTI0NjE5Jmc9MjQ2MT=
+k=3D
 
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

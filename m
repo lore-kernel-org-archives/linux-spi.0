@@ -1,7 +1,7 @@
 From: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
-Subject: [PATCH 369/493] spi: remove use of __devinitconst
-Date: Mon, 19 Nov 2012 13:25:18 -0500
-Message-ID: <1353349642-3677-369-git-send-email-wfp5p@virginia.edu>
+Subject: [PATCH 386/493] spi: remove use of __devinitconst
+Date: Mon, 19 Nov 2012 13:25:35 -0500
+Message-ID: <1353349642-3677-386-git-send-email-wfp5p@virginia.edu>
 References: <1353349642-3677-1-git-send-email-wfp5p@virginia.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -27,36 +27,22 @@ Signed-off-by: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> 
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org 
 ---
- drivers/spi/spi-mpc52xx.c       | 2 +-
- drivers/spi/spi-tegra20-slink.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra20-sflash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 8b3c7da..18c8865 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -547,7 +547,7 @@ static int __devexit mpc52xx_spi_remove(struct platform_device *op)
- 	return 0;
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index ae4b7c2..30995bf 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -451,7 +451,7 @@ static struct tegra_spi_platform_data *tegra_sflash_parse_dt(
+ 	return pdata;
  }
  
--static const struct of_device_id mpc52xx_spi_match[] __devinitconst = {
-+static const struct of_device_id mpc52xx_spi_match[] = {
- 	{ .compatible = "fsl,mpc5200-spi", },
+-static struct of_device_id tegra_sflash_of_match[] __devinitconst = {
++static struct of_device_id tegra_sflash_of_match[] = {
+ 	{ .compatible = "nvidia,tegra20-sflash", },
  	{}
  };
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index c0450e0..cab1926 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1108,7 +1108,7 @@ const struct tegra_slink_chip_data tegra20_spi_cdata = {
- 	.cs_hold_time = false,
- };
- 
--static struct of_device_id tegra_slink_of_match[] __devinitconst = {
-+static struct of_device_id tegra_slink_of_match[] = {
- 	{ .compatible = "nvidia,tegra30-slink", .data = &tegra30_spi_cdata, },
- 	{ .compatible = "nvidia,tegra20-slink", .data = &tegra20_spi_cdata, },
- 	{}
 -- 
 1.8.0
 

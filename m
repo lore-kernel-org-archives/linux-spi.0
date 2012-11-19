@@ -1,13 +1,12 @@
 From: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
-Subject: [PATCH 322/493] spi: remove use of __devinitdata
-Date: Mon, 19 Nov 2012 13:24:31 -0500
-Message-ID: <1353349642-3677-322-git-send-email-wfp5p@virginia.edu>
+Subject: [PATCH 369/493] spi: remove use of __devinitconst
+Date: Mon, 19 Nov 2012 13:25:18 -0500
+Message-ID: <1353349642-3677-369-git-send-email-wfp5p@virginia.edu>
 References: <1353349642-3677-1-git-send-email-wfp5p@virginia.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <1353349642-3677-1-git-send-email-wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
@@ -21,31 +20,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CONFIG_HOTPLUG is going away as an option so __devinitdata is no
+CONFIG_HOTPLUG is going away as an option so __devinitconst is no
 longer needed.
 
 Signed-off-by: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> 
-Cc: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org> 
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org 
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org 
 ---
- drivers/spi/spi-orion.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-mpc52xx.c       | 2 +-
+ drivers/spi/spi-tegra20-slink.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index b17c09c..e5a6d75 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -478,7 +478,7 @@ static int __exit orion_spi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index 8b3c7da..18c8865 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -547,7 +547,7 @@ static int __devexit mpc52xx_spi_remove(struct platform_device *op)
+ 	return 0;
+ }
  
- MODULE_ALIAS("platform:" DRIVER_NAME);
- 
--static const struct of_device_id orion_spi_of_match_table[] __devinitdata = {
-+static const struct of_device_id orion_spi_of_match_table[] = {
- 	{ .compatible = "marvell,orion-spi", },
+-static const struct of_device_id mpc52xx_spi_match[] __devinitconst = {
++static const struct of_device_id mpc52xx_spi_match[] = {
+ 	{ .compatible = "fsl,mpc5200-spi", },
  	{}
  };
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index c0450e0..cab1926 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1108,7 +1108,7 @@ const struct tegra_slink_chip_data tegra20_spi_cdata = {
+ 	.cs_hold_time = false,
+ };
+ 
+-static struct of_device_id tegra_slink_of_match[] __devinitconst = {
++static struct of_device_id tegra_slink_of_match[] = {
+ 	{ .compatible = "nvidia,tegra30-slink", .data = &tegra30_spi_cdata, },
+ 	{ .compatible = "nvidia,tegra20-slink", .data = &tegra20_spi_cdata, },
+ 	{}
 -- 
 1.8.0
 

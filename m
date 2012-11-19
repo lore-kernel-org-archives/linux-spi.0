@@ -1,12 +1,13 @@
-From: "Promovacances par Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Destinations Soleil : =?iso-8859-15?Q?=E0?= partir de 179 euros
-Date: Mon, 19 Nov 2012 06:14:18 +0100
-Message-ID: <1353302138.thing50a9c07ada897@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Fix the redifine warning
+Date: Mon, 19 Nov 2012 12:12:29 +0530
+Message-ID: <1353307349-4611-1-git-send-email-shubhrajyoti@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +19,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Fix the below warning
+drivers/spi/spi-omap2-mcspi.c:336:34: warning: symbol 'tx' shadows an earlier one
+drivers/spi/spi-omap2-mcspi.c:327:12: originally declared here
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjQ3NDAmYz0xOTYxNjQxJmQ9MjAx=
-Mi0xMS0xOSAwNjowMDowMiZlPTEmaD0yNDczOCZmPTI0NzQwJmc9MjQ3NDA=3D
+So delete the u8 tx as it is assigned and not used(resigned afterwards).
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjQ3NDAmYz0=
-xOTYxNjQxJmQ9MjAxMi0xMS0xOSAwNjowMDowMiZlPTEmaD0yNDczOCZmPTI0NzQwJmc9MjQ3ND=
-A=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Shubhrajyoti D <shubhrajyoti-l0cyMroinI0@public.gmane.org>
 ---
+ drivers/spi/spi-omap2-mcspi.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 251f6d0..c3dcfb3 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -323,14 +323,11 @@ static void omap2_mcspi_tx_dma(struct spi_device *spi,
+ 	struct omap2_mcspi	*mcspi;
+ 	struct omap2_mcspi_dma  *mcspi_dma;
+ 	unsigned int		count;
+-	const u8		* tx;
+ 
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 	mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 	count = xfer->len;
+ 
+-	tx = xfer->tx_buf;
+-
+ 	if (mcspi_dma->dma_tx) {
+ 		struct dma_async_tx_descriptor *tx;
+ 		struct scatterlist sg;
+-- 
+1.7.5.4
+
+
+------------------------------------------------------------------------------
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

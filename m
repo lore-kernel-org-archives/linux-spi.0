@@ -1,7 +1,7 @@
 From: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
-Subject: [PATCH 141/493] spi: remove use of __devexit_p
-Date: Mon, 19 Nov 2012 13:21:30 -0500
-Message-ID: <1353349642-3677-141-git-send-email-wfp5p@virginia.edu>
+Subject: [PATCH 190/493] spi: remove use of __devinit
+Date: Mon, 19 Nov 2012 13:22:19 -0500
+Message-ID: <1353349642-3677-190-git-send-email-wfp5p@virginia.edu>
 References: <1353349642-3677-1-git-send-email-wfp5p@virginia.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,7 +24,7 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CONFIG_HOTPLUG is going away as an option so __devexit_p is no longer
+CONFIG_HOTPLUG is going away as an option so __devinit is no longer
 needed.
 
 Signed-off-by: Bill Pemberton <wfp5p-4Ng6DfrEGID2fBVCVOL8/A@public.gmane.org>
@@ -42,31 +42,36 @@ Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
  drivers/spi/spi-altera.c         | 2 +-
  drivers/spi/spi-ath79.c          | 2 +-
+ drivers/spi/spi-atmel.c          | 2 +-
  drivers/spi/spi-bcm63xx.c        | 2 +-
  drivers/spi/spi-bfin-sport.c     | 2 +-
- drivers/spi/spi-bfin5xx.c        | 2 +-
  drivers/spi/spi-coldfire-qspi.c  | 2 +-
  drivers/spi/spi-davinci.c        | 2 +-
  drivers/spi/spi-dw-mmio.c        | 2 +-
  drivers/spi/spi-dw-pci.c         | 2 +-
+ drivers/spi/spi-dw.c             | 4 ++--
  drivers/spi/spi-ep93xx.c         | 2 +-
  drivers/spi/spi-falcon.c         | 2 +-
- drivers/spi/spi-fsl-espi.c       | 2 +-
- drivers/spi/spi-fsl-spi.c        | 4 ++--
- drivers/spi/spi-gpio.c           | 2 +-
+ drivers/spi/spi-fsl-espi.c       | 4 ++--
+ drivers/spi/spi-fsl-lib.c        | 2 +-
+ drivers/spi/spi-fsl-spi.c        | 6 +++---
+ drivers/spi/spi-gpio.c           | 6 +++---
  drivers/spi/spi-imx.c            | 2 +-
- drivers/spi/spi-mpc512x-psc.c    | 2 +-
- drivers/spi/spi-mpc52xx-psc.c    | 2 +-
+ drivers/spi/spi-mpc512x-psc.c    | 4 ++--
+ drivers/spi/spi-mpc52xx-psc.c    | 4 ++--
  drivers/spi/spi-mpc52xx.c        | 2 +-
  drivers/spi/spi-mxs.c            | 2 +-
  drivers/spi/spi-nuc900.c         | 2 +-
- drivers/spi/spi-oc-tiny.c        | 2 +-
+ drivers/spi/spi-oc-tiny.c        | 6 +++---
  drivers/spi/spi-octeon.c         | 2 +-
- drivers/spi/spi-omap2-mcspi.c    | 2 +-
- drivers/spi/spi-pl022.c          | 2 +-
+ drivers/spi/spi-omap-100k.c      | 2 +-
+ drivers/spi/spi-omap2-mcspi.c    | 4 ++--
+ drivers/spi/spi-pl022.c          | 4 ++--
  drivers/spi/spi-pxa2xx-pci.c     | 2 +-
- drivers/spi/spi-rspi.c           | 2 +-
+ drivers/spi/spi-pxa2xx.c         | 4 ++--
+ drivers/spi/spi-rspi.c           | 4 ++--
  drivers/spi/spi-s3c24xx.c        | 2 +-
+ drivers/spi/spi-s3c64xx.c        | 4 ++--
  drivers/spi/spi-sh-hspi.c        | 2 +-
  drivers/spi/spi-sh.c             | 2 +-
  drivers/spi/spi-sirf.c           | 2 +-
@@ -78,533 +83,737 @@ Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
  drivers/spi/spi-topcliff-pch.c   | 4 ++--
  drivers/spi/spi-xcomm.c          | 2 +-
  drivers/spi/spi-xilinx.c         | 2 +-
+ drivers/spi/spi.c                | 2 +-
  drivers/spi/spidev.c             | 2 +-
- 39 files changed, 41 insertions(+), 41 deletions(-)
+ 45 files changed, 61 insertions(+), 61 deletions(-)
 
 diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index f1fec2a..7c63e71 100644
+index 7c63e71..a369d44 100644
 --- a/drivers/spi/spi-altera.c
 +++ b/drivers/spi/spi-altera.c
-@@ -311,7 +311,7 @@ MODULE_DEVICE_TABLE(of, altera_spi_match);
+@@ -215,7 +215,7 @@ static irqreturn_t altera_spi_irq(int irq, void *dev)
+ 	return IRQ_HANDLED;
+ }
  
- static struct platform_driver altera_spi_driver = {
- 	.probe = altera_spi_probe,
--	.remove = __devexit_p(altera_spi_remove),
-+	.remove = altera_spi_remove,
- 	.driver = {
- 		.name = DRV_NAME,
- 		.owner = THIS_MODULE,
+-static int __devinit altera_spi_probe(struct platform_device *pdev)
++static int altera_spi_probe(struct platform_device *pdev)
+ {
+ 	struct altera_spi_platform_data *platp = pdev->dev.platform_data;
+ 	struct altera_spi *hw;
 diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 249077e..403b2d0 100644
+index 403b2d0..13e6866 100644
 --- a/drivers/spi/spi-ath79.c
 +++ b/drivers/spi/spi-ath79.c
-@@ -265,7 +265,7 @@ static __devexit int ath79_spi_remove(struct platform_device *pdev)
+@@ -192,7 +192,7 @@ static u32 ath79_spi_txrx_mode0(struct spi_device *spi, unsigned nsecs,
+ 	return ath79_spi_rr(sp, AR71XX_SPI_REG_RDS);
+ }
  
- static struct platform_driver ath79_spi_driver = {
- 	.probe		= ath79_spi_probe,
--	.remove		= __devexit_p(ath79_spi_remove),
-+	.remove		= ath79_spi_remove,
- 	.driver		= {
- 		.name	= DRV_NAME,
- 		.owner	= THIS_MODULE,
+-static __devinit int ath79_spi_probe(struct platform_device *pdev)
++static int ath79_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct ath79_spi *sp;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 61fb0ec..6b19cca 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -907,7 +907,7 @@ static void atmel_spi_cleanup(struct spi_device *spi)
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+-static int __devinit atmel_spi_probe(struct platform_device *pdev)
++static int atmel_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource		*regs;
+ 	int			irq;
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 6d97047..5f45c08 100644
+index 5f45c08..73385be 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -514,7 +514,7 @@ static struct platform_driver bcm63xx_spi_driver = {
- 		.pm	= BCM63XX_SPI_PM_OPS,
- 	},
- 	.probe		= bcm63xx_spi_probe,
--	.remove		= __devexit_p(bcm63xx_spi_remove),
-+	.remove		= bcm63xx_spi_remove,
- };
+@@ -329,7 +329,7 @@ static irqreturn_t bcm63xx_spi_interrupt(int irq, void *dev_id)
+ }
  
- module_platform_driver(bcm63xx_spi_driver);
+ 
+-static int __devinit bcm63xx_spi_probe(struct platform_device *pdev)
++static int bcm63xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource *r;
+ 	struct device *dev = &pdev->dev;
 diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index 6555ecd..dbd244c 100644
+index dbd244c..9b62c28 100644
 --- a/drivers/spi/spi-bfin-sport.c
 +++ b/drivers/spi/spi-bfin-sport.c
-@@ -935,7 +935,7 @@ static struct platform_driver bfin_sport_spi_driver = {
- 		.owner = THIS_MODULE,
- 	},
- 	.probe   = bfin_sport_spi_probe,
--	.remove  = __devexit_p(bfin_sport_spi_remove),
-+	.remove  = bfin_sport_spi_remove,
- 	.suspend = bfin_sport_spi_suspend,
- 	.resume  = bfin_sport_spi_resume,
- };
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index 9bb4d4a..5c35826 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -1477,7 +1477,7 @@ static struct platform_driver bfin_spi_driver = {
- 	},
- 	.suspend	= bfin_spi_suspend,
- 	.resume		= bfin_spi_resume,
--	.remove		= __devexit_p(bfin_spi_remove),
-+	.remove		= bfin_spi_remove,
- };
+@@ -755,7 +755,7 @@ bfin_sport_spi_destroy_queue(struct bfin_sport_spi_master_data *drv_data)
+ 	return 0;
+ }
  
- static int __init bfin_spi_init(void)
+-static int __devinit
++static int
+ bfin_sport_spi_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
 diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index 764bfee..f94820b 100644
+index f94820b..f586b3b 100644
 --- a/drivers/spi/spi-coldfire-qspi.c
 +++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -594,7 +594,7 @@ static struct platform_driver mcfqspi_driver = {
- 	.driver.owner	= THIS_MODULE,
- 	.driver.pm	= &mcfqspi_pm,
- 	.probe		= mcfqspi_probe,
--	.remove		= __devexit_p(mcfqspi_remove),
-+	.remove		= mcfqspi_remove,
- };
- module_platform_driver(mcfqspi_driver);
+@@ -401,7 +401,7 @@ static int mcfqspi_setup(struct spi_device *spi)
+ 	return 0;
+ }
  
+-static int __devinit mcfqspi_probe(struct platform_device *pdev)
++static int mcfqspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct mcfqspi *mcfqspi;
 diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 147dfa8..d02f95c 100644
+index d02f95c..c10be9f 100644
 --- a/drivers/spi/spi-davinci.c
 +++ b/drivers/spi/spi-davinci.c
-@@ -980,7 +980,7 @@ static struct platform_driver davinci_spi_driver = {
- 		.owner = THIS_MODULE,
- 	},
- 	.probe = davinci_spi_probe,
--	.remove = __devexit_p(davinci_spi_remove),
-+	.remove = davinci_spi_remove,
- };
- module_platform_driver(davinci_spi_driver);
- 
+@@ -769,7 +769,7 @@ rx_dma_failed:
+  * It will invoke spi_bitbang_start to create work queue so that client driver
+  * can register transfer method to work queue.
+  */
+-static int __devinit davinci_spi_probe(struct platform_device *pdev)
++static int davinci_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct davinci_spi *dspi;
 diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index db2f1ba..86161e2 100644
+index 86161e2..9470c59 100644
 --- a/drivers/spi/spi-dw-mmio.c
 +++ b/drivers/spi/spi-dw-mmio.c
-@@ -129,7 +129,7 @@ static int __devexit dw_spi_mmio_remove(struct platform_device *pdev)
+@@ -26,7 +26,7 @@ struct dw_spi_mmio {
+ 	struct clk     *clk;
+ };
  
- static struct platform_driver dw_spi_mmio_driver = {
- 	.probe		= dw_spi_mmio_probe,
--	.remove		= __devexit_p(dw_spi_mmio_remove),
-+	.remove		= dw_spi_mmio_remove,
- 	.driver		= {
- 		.name	= DRIVER_NAME,
- 		.owner	= THIS_MODULE,
+-static int __devinit dw_spi_mmio_probe(struct platform_device *pdev)
++static int dw_spi_mmio_probe(struct platform_device *pdev)
+ {
+ 	struct dw_spi_mmio *dwsmmio;
+ 	struct dw_spi *dws;
 diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index ff81abb..371cf72 100644
+index 371cf72..d61d430 100644
 --- a/drivers/spi/spi-dw-pci.c
 +++ b/drivers/spi/spi-dw-pci.c
-@@ -159,7 +159,7 @@ static struct pci_driver dw_spi_driver = {
- 	.name =		DRIVER_NAME,
- 	.id_table =	pci_ids,
- 	.probe =	spi_pci_probe,
--	.remove =	__devexit_p(spi_pci_remove),
-+	.remove =	spi_pci_remove,
- 	.suspend =	spi_suspend,
- 	.resume	=	spi_resume,
+@@ -32,7 +32,7 @@ struct dw_spi_pci {
+ 	struct dw_spi	dws;
  };
+ 
+-static int __devinit spi_pci_probe(struct pci_dev *pdev,
++static int spi_pci_probe(struct pci_dev *pdev,
+ 	const struct pci_device_id *ent)
+ {
+ 	struct dw_spi_pci *dwpci;
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index d1a495f..172b8b5 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -696,7 +696,7 @@ static void dw_spi_cleanup(struct spi_device *spi)
+ 	kfree(chip);
+ }
+ 
+-static int __devinit init_queue(struct dw_spi *dws)
++static int init_queue(struct dw_spi *dws)
+ {
+ 	INIT_LIST_HEAD(&dws->queue);
+ 	spin_lock_init(&dws->lock);
+@@ -795,7 +795,7 @@ static void spi_hw_init(struct dw_spi *dws)
+ 	}
+ }
+ 
+-int __devinit dw_spi_add_host(struct dw_spi *dws)
++int dw_spi_add_host(struct dw_spi *dws)
+ {
+ 	struct spi_master *master;
+ 	int ret;
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 3a21959..8a4fd41 100644
+index 8a4fd41..bb0eaf6 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
-@@ -1180,7 +1180,7 @@ static struct platform_driver ep93xx_spi_driver = {
- 		.owner	= THIS_MODULE,
- 	},
- 	.probe		= ep93xx_spi_probe,
--	.remove		= __devexit_p(ep93xx_spi_remove),
-+	.remove		= ep93xx_spi_remove,
- };
- module_platform_driver(ep93xx_spi_driver);
+@@ -1023,7 +1023,7 @@ static void ep93xx_spi_release_dma(struct ep93xx_spi *espi)
+ 		free_page((unsigned long)espi->zeropage);
+ }
  
+-static int __devinit ep93xx_spi_probe(struct platform_device *pdev)
++static int ep93xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct ep93xx_spi_info *info;
 diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-index 8f6aa73..a9ca966 100644
+index a9ca966..891e91c 100644
 --- a/drivers/spi/spi-falcon.c
 +++ b/drivers/spi/spi-falcon.c
-@@ -455,7 +455,7 @@ MODULE_DEVICE_TABLE(of, falcon_sflash_match);
+@@ -403,7 +403,7 @@ static int falcon_sflash_xfer_one(struct spi_master *master,
+ 	return 0;
+ }
  
- static struct platform_driver falcon_sflash_driver = {
- 	.probe	= falcon_sflash_probe,
--	.remove	= __devexit_p(falcon_sflash_remove),
-+	.remove	= falcon_sflash_remove,
- 	.driver = {
- 		.name	= DRV_NAME,
- 		.owner	= THIS_MODULE,
+-static int __devinit falcon_sflash_probe(struct platform_device *pdev)
++static int falcon_sflash_probe(struct platform_device *pdev)
+ {
+ 	struct falcon_sflash *priv;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 27bdc47..f1c98b896 100644
+index f1c98b896..498fff2 100644
 --- a/drivers/spi/spi-fsl-espi.c
 +++ b/drivers/spi/spi-fsl-espi.c
-@@ -743,7 +743,7 @@ static struct platform_driver fsl_espi_driver = {
- 		.of_match_table = of_fsl_espi_match,
- 	},
- 	.probe		= of_fsl_espi_probe,
--	.remove		= __devexit_p(of_fsl_espi_remove),
-+	.remove		= of_fsl_espi_remove,
- };
- module_platform_driver(fsl_espi_driver);
+@@ -587,7 +587,7 @@ static void fsl_espi_remove(struct mpc8xxx_spi *mspi)
+ 	iounmap(mspi->reg_base);
+ }
  
+-static struct spi_master * __devinit fsl_espi_probe(struct device *dev,
++static struct spi_master *fsl_espi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+ {
+ 	struct fsl_spi_platform_data *pdata = dev->platform_data;
+@@ -686,7 +686,7 @@ static int of_fsl_espi_get_chipselects(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __devinit of_fsl_espi_probe(struct platform_device *ofdev)
++static int of_fsl_espi_probe(struct platform_device *ofdev)
+ {
+ 	struct device *dev = &ofdev->dev;
+ 	struct device_node *np = ofdev->dev.of_node;
+diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
+index 1503574..abf2a20 100644
+--- a/drivers/spi/spi-fsl-lib.c
++++ b/drivers/spi/spi-fsl-lib.c
+@@ -189,7 +189,7 @@ int __devexit mpc8xxx_spi_remove(struct device *dev)
+ 	return 0;
+ }
+ 
+-int __devinit of_mpc8xxx_spi_probe(struct platform_device *ofdev)
++int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
+ {
+ 	struct device *dev = &ofdev->dev;
+ 	struct device_node *np = ofdev->dev.of_node;
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 6a62934..e026ee0a 100644
+index e026ee0a..a1e11f0 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -1105,7 +1105,7 @@ static struct platform_driver of_fsl_spi_driver = {
- 		.of_match_table = of_fsl_spi_match,
- 	},
- 	.probe		= of_fsl_spi_probe,
--	.remove		= __devexit_p(of_fsl_spi_remove),
-+	.remove		= of_fsl_spi_remove,
- };
+@@ -843,7 +843,7 @@ static void fsl_spi_remove(struct mpc8xxx_spi *mspi)
+ 	fsl_spi_cpm_free(mspi);
+ }
  
- #ifdef CONFIG_MPC832x_RDB
-@@ -1147,7 +1147,7 @@ static int __devexit plat_mpc8xxx_spi_remove(struct platform_device *pdev)
- MODULE_ALIAS("platform:mpc8xxx_spi");
- static struct platform_driver mpc8xxx_spi_driver = {
- 	.probe = plat_mpc8xxx_spi_probe,
--	.remove = __devexit_p(plat_mpc8xxx_spi_remove),
-+	.remove = plat_mpc8xxx_spi_remove,
- 	.driver = {
- 		.name = "mpc8xxx_spi",
- 		.owner = THIS_MODULE,
+-static struct spi_master * __devinit fsl_spi_probe(struct device *dev,
++static struct spi_master *fsl_spi_probe(struct device *dev,
+ 		struct resource *mem, unsigned int irq)
+ {
+ 	struct fsl_spi_platform_data *pdata = dev->platform_data;
+@@ -1041,7 +1041,7 @@ static int of_fsl_spi_free_chipselects(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __devinit of_fsl_spi_probe(struct platform_device *ofdev)
++static int of_fsl_spi_probe(struct platform_device *ofdev)
+ {
+ 	struct device *dev = &ofdev->dev;
+ 	struct device_node *np = ofdev->dev.of_node;
+@@ -1116,7 +1116,7 @@ static struct platform_driver of_fsl_spi_driver = {
+  * tree can work with OpenFirmware driver. But for now we support old trees
+  * as well.
+  */
+-static int __devinit plat_mpc8xxx_spi_probe(struct platform_device *pdev)
++static int plat_mpc8xxx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct resource *mem;
+ 	int irq;
 diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index a2b50c5..3c66647 100644
+index 3c66647..f4251df 100644
 --- a/drivers/spi/spi-gpio.c
 +++ b/drivers/spi/spi-gpio.c
-@@ -518,7 +518,7 @@ static struct platform_driver spi_gpio_driver = {
- 		.of_match_table = of_match_ptr(spi_gpio_dt_ids),
- 	},
- 	.probe		= spi_gpio_probe,
--	.remove		= __devexit_p(spi_gpio_remove),
-+	.remove		= spi_gpio_remove,
- };
- module_platform_driver(spi_gpio_driver);
+@@ -287,7 +287,7 @@ static void spi_gpio_cleanup(struct spi_device *spi)
+ 	spi_bitbang_cleanup(spi);
+ }
  
+-static int __devinit spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
++static int spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
+ {
+ 	int value;
+ 
+@@ -301,7 +301,7 @@ static int __devinit spi_gpio_alloc(unsigned pin, const char *label, bool is_in)
+ 	return value;
+ }
+ 
+-static int __devinit
++static int
+ spi_gpio_request(struct spi_gpio_platform_data *pdata, const char *label,
+ 	u16 *res_flags)
+ {
+@@ -392,7 +392,7 @@ static inline int spi_gpio_probe_dt(struct platform_device *pdev)
+ }
+ #endif
+ 
+-static int __devinit spi_gpio_probe(struct platform_device *pdev)
++static int spi_gpio_probe(struct platform_device *pdev)
+ {
+ 	int				status;
+ 	struct spi_master		*master;
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index c9a0d84..5316213 100644
+index 5316213..dc0f99a 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -942,7 +942,7 @@ static struct platform_driver spi_imx_driver = {
- 		   },
- 	.id_table = spi_imx_devtype,
- 	.probe = spi_imx_probe,
--	.remove = __devexit_p(spi_imx_remove),
-+	.remove = spi_imx_remove,
- };
- module_platform_driver(spi_imx_driver);
+@@ -750,7 +750,7 @@ static void spi_imx_cleanup(struct spi_device *spi)
+ {
+ }
  
+-static int __devinit spi_imx_probe(struct platform_device *pdev)
++static int spi_imx_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+ 	const struct of_device_id *of_id =
 diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 0a1e39e..b1e8183 100644
+index b1e8183..599f0e5 100644
 --- a/drivers/spi/spi-mpc512x-psc.c
 +++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -553,7 +553,7 @@ MODULE_DEVICE_TABLE(of, mpc512x_psc_spi_of_match);
+@@ -406,7 +406,7 @@ static irqreturn_t mpc512x_psc_spi_isr(int irq, void *dev_id)
+ }
  
- static struct platform_driver mpc512x_psc_spi_of_driver = {
- 	.probe = mpc512x_psc_spi_of_probe,
--	.remove = __devexit_p(mpc512x_psc_spi_of_remove),
-+	.remove = mpc512x_psc_spi_of_remove,
- 	.driver = {
- 		.name = "mpc512x-psc-spi",
- 		.owner = THIS_MODULE,
+ /* bus_num is used only for the case dev->platform_data == NULL */
+-static int __devinit mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
++static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 					      u32 size, unsigned int irq,
+ 					      s16 bus_num)
+ {
+@@ -508,7 +508,7 @@ static int __devexit mpc512x_psc_spi_do_remove(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __devinit mpc512x_psc_spi_of_probe(struct platform_device *op)
++static int mpc512x_psc_spi_of_probe(struct platform_device *op)
+ {
+ 	const u32 *regaddr_p;
+ 	u64 regaddr64, size64;
 diff --git a/drivers/spi/spi-mpc52xx-psc.c b/drivers/spi/spi-mpc52xx-psc.c
-index bd47d26..5c67eb2 100644
+index 5c67eb2..43c2d27 100644
 --- a/drivers/spi/spi-mpc52xx-psc.c
 +++ b/drivers/spi/spi-mpc52xx-psc.c
-@@ -505,7 +505,7 @@ MODULE_DEVICE_TABLE(of, mpc52xx_psc_spi_of_match);
+@@ -363,7 +363,7 @@ static irqreturn_t mpc52xx_psc_spi_isr(int irq, void *dev_id)
+ }
  
- static struct platform_driver mpc52xx_psc_spi_of_driver = {
- 	.probe = mpc52xx_psc_spi_of_probe,
--	.remove = __devexit_p(mpc52xx_psc_spi_of_remove),
-+	.remove = mpc52xx_psc_spi_of_remove,
- 	.driver = {
- 		.name = "mpc52xx-psc-spi",
- 		.owner = THIS_MODULE,
+ /* bus_num is used only for the case dev->platform_data == NULL */
+-static int __devinit mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
++static int mpc52xx_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 				u32 size, unsigned int irq, s16 bus_num)
+ {
+ 	struct fsl_spi_platform_data *pdata = dev->platform_data;
+@@ -450,7 +450,7 @@ free_master:
+ 	return ret;
+ }
+ 
+-static int __devinit mpc52xx_psc_spi_of_probe(struct platform_device *op)
++static int mpc52xx_psc_spi_of_probe(struct platform_device *op)
+ {
+ 	const u32 *regaddr_p;
+ 	u64 regaddr64, size64;
 diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 0454106..c4baba5 100644
+index c4baba5..8b3c7da 100644
 --- a/drivers/spi/spi-mpc52xx.c
 +++ b/drivers/spi/spi-mpc52xx.c
-@@ -560,6 +560,6 @@ static struct platform_driver mpc52xx_spi_of_driver = {
- 		.of_match_table = mpc52xx_spi_match,
- 	},
- 	.probe = mpc52xx_spi_probe,
--	.remove = __devexit_p(mpc52xx_spi_remove),
-+	.remove = mpc52xx_spi_remove,
- };
- module_platform_driver(mpc52xx_spi_of_driver);
+@@ -390,7 +390,7 @@ static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ /*
+  * OF Platform Bus Binding
+  */
+-static int __devinit mpc52xx_spi_probe(struct platform_device *op)
++static int mpc52xx_spi_probe(struct platform_device *op)
+ {
+ 	struct spi_master *master;
+ 	struct mpc52xx_spi *ms;
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 86dd04d..476a855 100644
+index 476a855..82b4424 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -659,7 +659,7 @@ static int __devexit mxs_spi_remove(struct platform_device *pdev)
+@@ -509,7 +509,7 @@ static const struct of_device_id mxs_spi_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mxs_spi_dt_ids);
  
- static struct platform_driver mxs_spi_driver = {
- 	.probe	= mxs_spi_probe,
--	.remove	= __devexit_p(mxs_spi_remove),
-+	.remove	= mxs_spi_remove,
- 	.driver	= {
- 		.name	= DRIVER_NAME,
- 		.owner	= THIS_MODULE,
+-static int __devinit mxs_spi_probe(struct platform_device *pdev)
++static int mxs_spi_probe(struct platform_device *pdev)
+ {
+ 	const struct of_device_id *of_id =
+ 			of_match_device(mxs_spi_dt_ids, &pdev->dev);
 diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
-index a6eca6f..8220291 100644
+index 8220291..b477317 100644
 --- a/drivers/spi/spi-nuc900.c
 +++ b/drivers/spi/spi-nuc900.c
-@@ -477,7 +477,7 @@ static int __devexit nuc900_spi_remove(struct platform_device *dev)
+@@ -346,7 +346,7 @@ static void nuc900_init_spi(struct nuc900_spi *hw)
+ 	nuc900_enable_int(hw);
+ }
  
- static struct platform_driver nuc900_spi_driver = {
- 	.probe		= nuc900_spi_probe,
--	.remove		= __devexit_p(nuc900_spi_remove),
-+	.remove		= nuc900_spi_remove,
- 	.driver		= {
- 		.name	= "nuc900-spi",
- 		.owner	= THIS_MODULE,
+-static int __devinit nuc900_spi_probe(struct platform_device *pdev)
++static int nuc900_spi_probe(struct platform_device *pdev)
+ {
+ 	struct nuc900_spi *hw;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index 9d9071b..b468362 100644
+index b468362..a10e2af 100644
 --- a/drivers/spi/spi-oc-tiny.c
 +++ b/drivers/spi/spi-oc-tiny.c
-@@ -399,7 +399,7 @@ MODULE_DEVICE_TABLE(of, tiny_spi_match);
+@@ -243,7 +243,7 @@ static irqreturn_t tiny_spi_irq(int irq, void *dev)
+ #ifdef CONFIG_OF
+ #include <linux/of_gpio.h>
  
- static struct platform_driver tiny_spi_driver = {
- 	.probe = tiny_spi_probe,
--	.remove = __devexit_p(tiny_spi_remove),
-+	.remove = tiny_spi_remove,
- 	.driver = {
- 		.name = DRV_NAME,
- 		.owner = THIS_MODULE,
+-static int __devinit tiny_spi_of_probe(struct platform_device *pdev)
++static int tiny_spi_of_probe(struct platform_device *pdev)
+ {
+ 	struct tiny_spi *hw = platform_get_drvdata(pdev);
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -277,13 +277,13 @@ static int __devinit tiny_spi_of_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ #else /* !CONFIG_OF */
+-static int __devinit tiny_spi_of_probe(struct platform_device *pdev)
++static int tiny_spi_of_probe(struct platform_device *pdev)
+ {
+ 	return 0;
+ }
+ #endif /* CONFIG_OF */
+ 
+-static int __devinit tiny_spi_probe(struct platform_device *pdev)
++static int tiny_spi_probe(struct platform_device *pdev)
+ {
+ 	struct tiny_spi_platform_data *platp = pdev->dev.platform_data;
+ 	struct tiny_spi *hw;
 diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
-index ea8fb2e..95ef28d 100644
+index 95ef28d..44847c8 100644
 --- a/drivers/spi/spi-octeon.c
 +++ b/drivers/spi/spi-octeon.c
-@@ -352,7 +352,7 @@ static struct platform_driver octeon_spi_driver = {
- 		.of_match_table = octeon_spi_match,
- 	},
- 	.probe		= octeon_spi_probe,
--	.remove		= __devexit_p(octeon_spi_remove),
-+	.remove		= octeon_spi_remove,
- };
+@@ -266,7 +266,7 @@ static int octeon_spi_nop_transfer_hardware(struct spi_master *master)
+ 	return 0;
+ }
  
- module_platform_driver(octeon_spi_driver);
+-static int __devinit octeon_spi_probe(struct platform_device *pdev)
++static int octeon_spi_probe(struct platform_device *pdev)
+ {
+ 
+ 	struct resource *res_mem;
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index dfb4b7f..3aef7fa 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -486,7 +486,7 @@ static int __init omap1_spi100k_reset(struct omap1_spi100k *spi100k)
+ 	return 0;
+ }
+ 
+-static int __devinit omap1_spi100k_probe(struct platform_device *pdev)
++static int omap1_spi100k_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master       *master;
+ 	struct omap1_spi100k    *spi100k;
 diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index cc4f2dd..130128c 100644
+index 130128c..e00c902 100644
 --- a/drivers/spi/spi-omap2-mcspi.c
 +++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1351,7 +1351,7 @@ static struct platform_driver omap2_mcspi_driver = {
- 		.of_match_table = omap_mcspi_of_match,
- 	},
- 	.probe =	omap2_mcspi_probe,
--	.remove =	__devexit_p(omap2_mcspi_remove),
-+	.remove =	omap2_mcspi_remove,
- };
+@@ -1092,7 +1092,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 	return 0;
+ }
  
- module_platform_driver(omap2_mcspi_driver);
+-static int __devinit omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
++static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+ {
+ 	struct spi_master	*master = mcspi->master;
+ 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
+@@ -1145,7 +1145,7 @@ static const struct of_device_id omap_mcspi_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, omap_mcspi_of_match);
+ 
+-static int __devinit omap2_mcspi_probe(struct platform_device *pdev)
++static int omap2_mcspi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master	*master;
+ 	const struct omap2_mcspi_platform_config *pdata;
 diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 1361868..0c25209 100644
+index 0c25209..a797a1a 100644
 --- a/drivers/spi/spi-pl022.c
 +++ b/drivers/spi/spi-pl022.c
-@@ -2484,7 +2484,7 @@ static struct amba_driver pl022_driver = {
- 	},
- 	.id_table	= pl022_ids,
- 	.probe		= pl022_probe,
--	.remove		= __devexit_p(pl022_remove),
-+	.remove		= pl022_remove,
- };
+@@ -1089,7 +1089,7 @@ err_alloc_rx_sg:
+ 	return -ENOMEM;
+ }
  
- static int __init pl022_init(void)
+-static int __devinit pl022_dma_probe(struct pl022 *pl022)
++static int pl022_dma_probe(struct pl022 *pl022)
+ {
+ 	dma_cap_mask_t mask;
+ 
+@@ -2058,7 +2058,7 @@ pl022_platform_data_dt_get(struct device *dev)
+ 	return pd;
+ }
+ 
+-static int __devinit
++static int
+ pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ {
+ 	struct device *dev = &adev->dev;
 diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 9f6ba34..bd30ca0 100644
+index bd30ca0..8e64f10 100644
 --- a/drivers/spi/spi-pxa2xx-pci.c
 +++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -161,7 +161,7 @@ static struct pci_driver ce4100_spi_driver = {
- 	.name           = "ce4100_spi",
- 	.id_table       = ce4100_spi_devices,
- 	.probe          = ce4100_spi_probe,
--	.remove         = __devexit_p(ce4100_spi_remove),
-+	.remove         = ce4100_spi_remove,
- };
+@@ -51,7 +51,7 @@ void pxa_ssp_free(struct ssp_device *ssp)
+ }
+ EXPORT_SYMBOL_GPL(pxa_ssp_free);
  
- module_pci_driver(ce4100_spi_driver);
+-static int __devinit ce4100_spi_probe(struct pci_dev *dev,
++static int ce4100_spi_probe(struct pci_dev *dev,
+ 		const struct pci_device_id *ent)
+ {
+ 	int ret;
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index dc25bee..5c8c4f5 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1438,7 +1438,7 @@ static void cleanup(struct spi_device *spi)
+ 	kfree(chip);
+ }
+ 
+-static int __devinit init_queue(struct driver_data *drv_data)
++static int init_queue(struct driver_data *drv_data)
+ {
+ 	INIT_LIST_HEAD(&drv_data->queue);
+ 	spin_lock_init(&drv_data->lock);
+@@ -1526,7 +1526,7 @@ static int destroy_queue(struct driver_data *drv_data)
+ 	return 0;
+ }
+ 
+-static int __devinit pxa2xx_spi_probe(struct platform_device *pdev)
++static int pxa2xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct pxa2xx_spi_master *platform_info;
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 30faf6d..e9e95fe 100644
+index e9e95fe..6cdd25e 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -827,7 +827,7 @@ error1:
+@@ -661,7 +661,7 @@ static irqreturn_t rspi_irq(int irq, void *_sr)
+ 	return ret;
+ }
  
- static struct platform_driver rspi_driver = {
- 	.probe =	rspi_probe,
--	.remove =	__devexit_p(rspi_remove),
-+	.remove =	rspi_remove,
- 	.driver		= {
- 		.name = "rspi",
- 		.owner	= THIS_MODULE,
+-static int __devinit rspi_request_dma(struct rspi_data *rspi,
++static int rspi_request_dma(struct rspi_data *rspi,
+ 				      struct platform_device *pdev)
+ {
+ 	struct rspi_plat_data *rspi_pd = pdev->dev.platform_data;
+@@ -731,7 +731,7 @@ static int __devexit rspi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int __devinit rspi_probe(struct platform_device *pdev)
++static int rspi_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index a2a080b..50f5d93 100644
+index 50f5d93..5a9da14 100644
 --- a/drivers/spi/spi-s3c24xx.c
 +++ b/drivers/spi/spi-s3c24xx.c
-@@ -722,7 +722,7 @@ static const struct dev_pm_ops s3c24xx_spi_pmops = {
- MODULE_ALIAS("platform:s3c2410-spi");
- static struct platform_driver s3c24xx_spi_driver = {
- 	.probe		= s3c24xx_spi_probe,
--	.remove		= __devexit_p(s3c24xx_spi_remove),
-+	.remove		= s3c24xx_spi_remove,
- 	.driver		= {
- 		.name	= "s3c2410-spi",
- 		.owner	= THIS_MODULE,
+@@ -506,7 +506,7 @@ static void s3c24xx_spi_initialsetup(struct s3c24xx_spi *hw)
+ 	}
+ }
+ 
+-static int __devinit s3c24xx_spi_probe(struct platform_device *pdev)
++static int s3c24xx_spi_probe(struct platform_device *pdev)
+ {
+ 	struct s3c2410_spi_info *pdata;
+ 	struct s3c24xx_spi *hw;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index ae8b978..ad93231 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1054,7 +1054,7 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+ 	flush_fifo(sdd);
+ }
+ 
+-static int __devinit s3c64xx_spi_get_dmares(
++static int s3c64xx_spi_get_dmares(
+ 			struct s3c64xx_spi_driver_data *sdd, bool tx)
+ {
+ 	struct platform_device *pdev = sdd->pdev;
+@@ -1133,7 +1133,7 @@ static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
+ 		gpio_free(sdd->gpios[idx]);
+ }
+ 
+-static struct __devinit s3c64xx_spi_info * s3c64xx_spi_parse_dt(
++static struct s3c64xx_spi_info * s3c64xx_spi_parse_dt(
+ 						struct device *dev)
+ {
+ 	struct s3c64xx_spi_info *sci;
 diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 796c077..96963d7 100644
+index 96963d7..f536c48 100644
 --- a/drivers/spi/spi-sh-hspi.c
 +++ b/drivers/spi/spi-sh-hspi.c
-@@ -314,7 +314,7 @@ static int __devexit hspi_remove(struct platform_device *pdev)
+@@ -229,7 +229,7 @@ static void hspi_cleanup(struct spi_device *spi)
+ 	dev_dbg(dev, "%s cleanup\n", spi->modalias);
+ }
  
- static struct platform_driver hspi_driver = {
- 	.probe = hspi_probe,
--	.remove = __devexit_p(hspi_remove),
-+	.remove = hspi_remove,
- 	.driver = {
- 		.name = "sh-hspi",
- 		.owner = THIS_MODULE,
+-static int __devinit hspi_probe(struct platform_device *pdev)
++static int hspi_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index 79442c3..6d779e2 100644
+index 6d779e2..3a22b1f 100644
 --- a/drivers/spi/spi-sh.c
 +++ b/drivers/spi/spi-sh.c
-@@ -539,7 +539,7 @@ static int __devinit spi_sh_probe(struct platform_device *pdev)
+@@ -444,7 +444,7 @@ static int __devexit spi_sh_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
- static struct platform_driver spi_sh_driver = {
- 	.probe = spi_sh_probe,
--	.remove = __devexit_p(spi_sh_remove),
-+	.remove = spi_sh_remove,
- 	.driver = {
- 		.name = "sh_spi",
- 		.owner = THIS_MODULE,
+-static int __devinit spi_sh_probe(struct platform_device *pdev)
++static int spi_sh_probe(struct platform_device *pdev)
+ {
+ 	struct resource *res;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index ecc3d97..2818b05 100644
+index 2818b05..3b8e1d1 100644
 --- a/drivers/spi/spi-sirf.c
 +++ b/drivers/spi/spi-sirf.c
-@@ -673,7 +673,7 @@ static struct platform_driver spi_sirfsoc_driver = {
- 		.of_match_table = spi_sirfsoc_of_match,
- 	},
- 	.probe = spi_sirfsoc_probe,
--	.remove = __devexit_p(spi_sirfsoc_remove),
-+	.remove = spi_sirfsoc_remove,
- };
- module_platform_driver(spi_sirfsoc_driver);
+@@ -479,7 +479,7 @@ static int spi_sirfsoc_setup(struct spi_device *spi)
+ 	return spi_sirfsoc_setup_transfer(spi, NULL);
+ }
  
+-static int __devinit spi_sirfsoc_probe(struct platform_device *pdev)
++static int spi_sirfsoc_probe(struct platform_device *pdev)
+ {
+ 	struct sirfsoc_spi *sspi;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-stmp.c b/drivers/spi/spi-stmp.c
-index 911e904..3bd4f85 100644
+index 3bd4f85..976d236 100644
 --- a/drivers/spi/spi-stmp.c
 +++ b/drivers/spi/spi-stmp.c
-@@ -647,7 +647,7 @@ static int stmp_spi_resume(struct platform_device *pdev)
+@@ -450,7 +450,7 @@ static irqreturn_t stmp_spi_irq_err(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
  
- static struct platform_driver stmp_spi_driver = {
- 	.probe	= stmp_spi_probe,
--	.remove	= __devexit_p(stmp_spi_remove),
-+	.remove	= stmp_spi_remove,
- 	.driver = {
- 		.name = "stmp3xxx_ssp",
- 		.owner = THIS_MODULE,
+-static int __devinit stmp_spi_probe(struct platform_device *dev)
++static int stmp_spi_probe(struct platform_device *dev)
+ {
+ 	int err = 0;
+ 	struct spi_master *master;
 diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 54eb948..60c2eaf 100644
+index 60c2eaf..ae4b7c2 100644
 --- a/drivers/spi/spi-tegra20-sflash.c
 +++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -655,7 +655,7 @@ static struct platform_driver tegra_sflash_driver = {
- 		.of_match_table	= of_match_ptr(tegra_sflash_of_match),
- 	},
- 	.probe =	tegra_sflash_probe,
--	.remove =	__devexit_p(tegra_sflash_remove),
-+	.remove =	tegra_sflash_remove,
+@@ -457,7 +457,7 @@ static struct of_device_id tegra_sflash_of_match[] __devinitconst = {
  };
- module_platform_driver(tegra_sflash_driver);
+ MODULE_DEVICE_TABLE(of, tegra_sflash_of_match);
  
+-static int __devinit tegra_sflash_probe(struct platform_device *pdev)
++static int tegra_sflash_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master	*master;
+ 	struct tegra_sflash_data	*tsd;
 diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 7882b50..d581d7d 100644
+index d581d7d..c0450e0 100644
 --- a/drivers/spi/spi-tegra20-slink.c
 +++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1348,7 +1348,7 @@ static struct platform_driver tegra_slink_driver = {
- 		.of_match_table	= of_match_ptr(tegra_slink_of_match),
- 	},
- 	.probe =	tegra_slink_probe,
--	.remove =	__devexit_p(tegra_slink_remove),
-+	.remove =	tegra_slink_remove,
+@@ -1115,7 +1115,7 @@ static struct of_device_id tegra_slink_of_match[] __devinitconst = {
  };
- module_platform_driver(tegra_slink_driver);
+ MODULE_DEVICE_TABLE(of, tegra_slink_of_match);
  
+-static int __devinit tegra_slink_probe(struct platform_device *pdev)
++static int tegra_slink_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master	*master;
+ 	struct tegra_slink_data	*tspi;
 diff --git a/drivers/spi/spi-ti-ssp.c b/drivers/spi/spi-ti-ssp.c
-index 3f6f6e8..d9fa150 100644
+index d9fa150..295bc8f 100644
 --- a/drivers/spi/spi-ti-ssp.c
 +++ b/drivers/spi/spi-ti-ssp.c
-@@ -378,7 +378,7 @@ static int __devexit ti_ssp_spi_remove(struct platform_device *pdev)
+@@ -289,7 +289,7 @@ error_unlock:
+ 	return error;
+ }
  
- static struct platform_driver ti_ssp_spi_driver = {
- 	.probe		= ti_ssp_spi_probe,
--	.remove		= __devexit_p(ti_ssp_spi_remove),
-+	.remove		= ti_ssp_spi_remove,
- 	.driver		= {
- 		.name	= "ti-ssp-spi",
- 		.owner	= THIS_MODULE,
+-static int __devinit ti_ssp_spi_probe(struct platform_device *pdev)
++static int ti_ssp_spi_probe(struct platform_device *pdev)
+ {
+ 	const struct ti_ssp_spi_data *pdata;
+ 	struct ti_ssp_spi *hw;
 diff --git a/drivers/spi/spi-tle62x0.c b/drivers/spi/spi-tle62x0.c
-index 2442102..a68cef9 100644
+index a68cef9..22f5ed8 100644
 --- a/drivers/spi/spi-tle62x0.c
 +++ b/drivers/spi/spi-tle62x0.c
-@@ -313,7 +313,7 @@ static struct spi_driver tle62x0_driver = {
- 		.owner	= THIS_MODULE,
- 	},
- 	.probe		= tle62x0_probe,
--	.remove		= __devexit_p(tle62x0_remove),
-+	.remove		= tle62x0_remove,
- };
+@@ -240,7 +240,7 @@ static int to_gpio_num(struct device_attribute *attr)
+ 	return -1;
+ }
  
- module_spi_driver(tle62x0_driver);
+-static int __devinit tle62x0_probe(struct spi_device *spi)
++static int tle62x0_probe(struct spi_device *spi)
+ {
+ 	struct tle62x0_state *st;
+ 	struct tle62x0_pdata *pdata;
 diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 135f740..6dd9f12 100644
+index 6dd9f12..12b3977 100644
 --- a/drivers/spi/spi-topcliff-pch.c
 +++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1619,7 +1619,7 @@ static struct platform_driver pch_spi_pd_driver = {
- 		.owner = THIS_MODULE,
- 	},
- 	.probe = pch_spi_pd_probe,
--	.remove = __devexit_p(pch_spi_pd_remove),
-+	.remove = pch_spi_pd_remove,
- 	.suspend = pch_spi_pd_suspend,
+@@ -1401,7 +1401,7 @@ static void pch_alloc_dma_buf(struct pch_spi_board_data *board_dat,
+ 				PCH_BUF_SIZE, &dma->rx_buf_dma, GFP_KERNEL);
+ }
+ 
+-static int __devinit pch_spi_pd_probe(struct platform_device *plat_dev)
++static int pch_spi_pd_probe(struct platform_device *plat_dev)
+ {
+ 	int ret;
+ 	struct spi_master *master;
+@@ -1624,7 +1624,7 @@ static struct platform_driver pch_spi_pd_driver = {
  	.resume = pch_spi_pd_resume
  };
-@@ -1776,7 +1776,7 @@ static struct pci_driver pch_spi_pcidev_driver = {
- 	.name = "pch_spi",
- 	.id_table = pch_spi_pcidev_id,
- 	.probe = pch_spi_probe,
--	.remove = __devexit_p(pch_spi_remove),
-+	.remove = pch_spi_remove,
- 	.suspend = pch_spi_suspend,
- 	.resume = pch_spi_resume,
- };
+ 
+-static int __devinit pch_spi_probe(struct pci_dev *pdev,
++static int pch_spi_probe(struct pci_dev *pdev,
+ 				   const struct pci_device_id *id)
+ {
+ 	struct pch_spi_board_data *board_dat;
 diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
-index 266a847..b413ee3 100644
+index b413ee3..d17e04d 100644
 --- a/drivers/spi/spi-xcomm.c
 +++ b/drivers/spi/spi-xcomm.c
-@@ -267,7 +267,7 @@ static struct i2c_driver spi_xcomm_driver = {
- 	},
- 	.id_table	= spi_xcomm_ids,
- 	.probe		= spi_xcomm_probe,
--	.remove		= __devexit_p(spi_xcomm_remove),
-+	.remove		= spi_xcomm_remove,
- };
- module_i2c_driver(spi_xcomm_driver);
+@@ -217,7 +217,7 @@ static int spi_xcomm_setup(struct spi_device *spi)
+ 	return 0;
+ }
  
+-static int __devinit spi_xcomm_probe(struct i2c_client *i2c,
++static int spi_xcomm_probe(struct i2c_client *i2c,
+ 	const struct i2c_device_id *id)
+ {
+ 	struct spi_xcomm *spi_xcomm;
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 4c5a663..da5018e 100644
+index da5018e..7b6ff06 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -531,7 +531,7 @@ MODULE_ALIAS("platform:" XILINX_SPI_NAME);
+@@ -462,7 +462,7 @@ void xilinx_spi_deinit(struct spi_master *master)
+ }
+ EXPORT_SYMBOL(xilinx_spi_deinit);
  
- static struct platform_driver xilinx_spi_driver = {
- 	.probe = xilinx_spi_probe,
--	.remove = __devexit_p(xilinx_spi_remove),
-+	.remove = xilinx_spi_remove,
- 	.driver = {
- 		.name = XILINX_SPI_NAME,
- 		.owner = THIS_MODULE,
+-static int __devinit xilinx_spi_probe(struct platform_device *dev)
++static int xilinx_spi_probe(struct platform_device *dev)
+ {
+ 	struct xspi_platform_data *pdata;
+ 	struct resource *r;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 37a8a2f..fdaf679 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -486,7 +486,7 @@ static void spi_match_master_to_boardinfo(struct spi_master *master,
+  * The board info passed can safely be __initdata ... but be careful of
+  * any embedded pointers (platform_data, etc), they're copied as-is.
+  */
+-int __devinit
++int
+ spi_register_board_info(struct spi_board_info const *info, unsigned n)
+ {
+ 	struct boardinfo *bi;
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index e44abc9..253b2c7 100644
+index 253b2c7..e5e0214 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -658,7 +658,7 @@ static struct spi_driver spidev_spi_driver = {
- 		.of_match_table = of_match_ptr(spidev_dt_ids),
- 	},
- 	.probe =	spidev_probe,
--	.remove =	__devexit_p(spidev_remove),
-+	.remove =	spidev_remove,
+@@ -573,7 +573,7 @@ static struct class *spidev_class;
  
- 	/* NOTE:  suspend/resume methods are not necessary here.
- 	 * We don't do anything except pass the requests to/from
+ /*-------------------------------------------------------------------------*/
+ 
+-static int __devinit spidev_probe(struct spi_device *spi)
++static int spidev_probe(struct spi_device *spi)
+ {
+ 	struct spidev_data	*spidev;
+ 	int			status;
 -- 
 1.8.0
 

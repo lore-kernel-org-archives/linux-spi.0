@@ -1,8 +1,7 @@
-From: Encre et pile Discount <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vos Cartouches d'Imprimantes et piles =?iso-8859-15?Q?=E0?= prix
-	=?iso-8859-15?Q?cass=E9s?= sur
-Date: Tue, 20 Nov 2012 03:20:14 +0100
-Message-ID: <1353378036.thing50aae8f436146@mach10.generated>
+From: Thelem Assurances par Planduweb <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Votre assurance sante jusqu'a 50 pourcent remboursee
+Date: Tue, 20 Nov 2012 03:34:10 +0100
+Message-ID: <1353378881.thing50aaec414133e@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +20,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDM5JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0yMCAwMzoxMDowMSZlPTEmaD0yNTAzNyZmPTI1MDM5Jmc9MjUwMzk=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDQ2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0yMCAwMzozMDowMSZlPTEmaD0yNTA0NCZmPTI1MDQ2Jmc9MjUwNDY=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDM5JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0yMCAwMzoxMDowMSZlPTEmaD0yNTAzNyZmPTI1MDM5Jmc9MjUwMz=
-k=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDQ2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0yMCAwMzozMDowMSZlPTEmaD0yNTA0NCZmPTI1MDQ2Jmc9MjUwND=
+Y=3D
 
 
 ---------------------------------------------------------------------------=

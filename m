@@ -1,11 +1,12 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 20 Nov 2012 03:38:45 +0800
-Message-ID: <E1TaXBt-0007s8-Mb@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Cigway par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: La fin du tabagisme passif
+Date: Tue, 20 Nov 2012 02:26:05 +0100
+Message-ID: <1353374781.thing50aadc3d4bfb3@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTW9uaXRvciB5b3Vy
-IHBoeXNpY2FsLCB2aXJ0dWFsIGFuZCBjbG91ZCBpbmZyYXN0cnVjdHVyZSBmcm9tIGEgc2luZ2xl
-CndlYiBjb25zb2xlLiBHZXQgaW4tZGVwdGggaW5zaWdodCBpbnRvIGFwcHMsIHNlcnZlcnMsIGRh
-dGFiYXNlcywgdm13YXJlLApTQVAsIGNsb3VkIGluZnJhc3RydWN0dXJlLCBldGMuIERvd25sb2Fk
-IDMwLWRheSBGcmVlIFRyaWFsLgpQcmljaW5nIHN0YXJ0cyBmcm9tICQ3OTUgZm9yIDI1IHNlcnZl
-cnMgb3IgYXBwbGljYXRpb25zIQpodHRwOi8vcC5zZi5uZXQvc2Z1L3pvaG9fZGV2MmRldl9ub3YK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDIyJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0yMCAwMjoyMDowMSZlPTEmaD0yNTAyMCZmPTI1MDIyJmc9MjUwMjI=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDIyJmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0yMCAwMjoyMDowMSZlPTEmaD0yNTAyMCZmPTI1MDIyJmc9MjUwMj=
+I=3D
+
+
+---------------------------------------------------------------------------=
+---
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

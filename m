@@ -1,8 +1,8 @@
-From: Nouvelles Antilles par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Vente Flash : Les =?iso-8859-15?Q?=EEles_=E0?= prix mini
-	=?iso-8859-15?Q?=E0?= partir de 679 euros, soyez les premiers
-Date: Tue, 20 Nov 2012 02:52:03 +0100
-Message-ID: <1353376371.thing50aae273757b4@mach10.generated>
+From: Encre et pile Discount <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Vos Cartouches d'Imprimantes et piles =?iso-8859-15?Q?=E0?= prix
+	=?iso-8859-15?Q?cass=E9s?= sur
+Date: Tue, 20 Nov 2012 03:20:14 +0100
+Message-ID: <1353378036.thing50aae8f436146@mach10.generated>
 Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -21,12 +21,12 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDMzJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0yMCAwMjo0MDowMSZlPTEmaD0yNTAzMSZmPTI1MDMzJmc9MjUwMzM=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDM5JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0yMCAwMzoxMDowMSZlPTEmaD0yNTAzNyZmPTI1MDM5Jmc9MjUwMzk=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDMzJmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0yMCAwMjo0MDowMSZlPTEmaD0yNTAzMSZmPTI1MDMzJmc9MjUwMz=
-M=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDM5JmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0yMCAwMzoxMDowMSZlPTEmaD0yNTAzNyZmPTI1MDM5Jmc9MjUwMz=
+k=3D
 
 
 ---------------------------------------------------------------------------=

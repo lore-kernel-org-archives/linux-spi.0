@@ -1,14 +1,12 @@
-From: Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [GIT PULL][for 3.8] pull request from arch-pxa tree on spi/pxa branch
-Date: Wed, 21 Nov 2012 13:47:22 +0800
-Message-ID: <CAN1soZxKoCLTQRtKhV=TgAXBSQyTf59cnEy7j4BzfGYPx3mx=A@mail.gmail.com>
+From: <mondialenergy1-1tsiiZ//OF9QFI55V6+gNQ@public.gmane.org>
+Subject: =?utf-8?B?R3JvdXBlIGVsZWN0cm9nZW5lIGFsdGVybmF0ZXVyIGV0IGFjY2Vzc2==?=
+	=?utf-8?B?b2lyZSBkJ29jY2FzaW9uIG==?=
+Date: Wed, 21 Nov 2012 11:21:29 +0100
+Message-ID: <2766d91e6b2065856fecd2a41acf995c@orange.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Paul Parsons <lost.distance-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,36 +18,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant & Mark,
-
-Please help to merge spi/pxa branch from arch-pxa git tree. Here's one
-patch for clean up.
-
-Regards
-Haojian
-
-The following changes since commit f4a75d2eb7b1e2206094b901be09adb31ba63681:
-
-  Linux 3.7-rc6 (2012-11-16 17:42:40 -0800)
-
-are available in the git repository at:
-
-  git://github.com/hzhuang1/linux.git spi/pxa
-
-for you to fetch changes up to 1adb58b7243edbbcd049b5e6e8017e0cf0660e09:
-
-  spi: pxa: Remove EXPERIMENTAL dependency (2012-11-21 13:43:36 +0800)
-
-----------------------------------------------------------------
-Paul Parsons (1):
-      spi: pxa: Remove EXPERIMENTAL dependency
-
- drivers/spi/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-------------------------------------------------------------------------------
-Monitor your physical, virtual and cloud infrastructure from a single
-web console. Get in-depth insight into apps, servers, databases, vmware,
-SAP, cloud infrastructure, etc. Download 30-day Free Trial.
-Pricing starts from $795 for 25 servers or applications!
-http://p.sf.net/sfu/zoho_dev2dev_nov
+CgpNT05ESUFMIEVORVJHWSBGUkFOQ0UKCkFudGVubmUgRnJhbmNlIDogOTQgYXZlbnVlIGR1IEfD
+qW7DqXJhbCBkZSBHYXVsbGUgLSA5MzExMCBST1NOWSBTT1VTIEJPSVMKVGVsIDogMDEuNDUuMjgu
+MjAuNDEtIEZheCA6IDAxIDU4IDY2IDAyIDY4IC0gR3NtIDogMDYgNzQgMTAgNjUgOTIKLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpDb250YWN0IEZyYW5jZSA6Ck1sZSBTYW5k
+cmEgTEVST1kgOiAwMSA0NSAyOCAyMCA0MSAtIEZheCA6IDAxIDQ1IDI4IDIwIDQxCgpNYWlsIDog
+bW9uZGlhbGVuZXJneTFAb3JhbmdlLmZyIAoKCiAgCgogCiAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBBIGwnYXR0ZW50aW9uIGR1IHJlc3BvbnNhYmxlIGRlIG1haW50ZW5hbmNlIG91IGR1
+IHNlcnZpY2UgdGVjaG5pcXVlCiAKTWFkYW1lLCBNb25zaWV1ciwKIApOb3VzIHZvdXMgcHJvcG9z
+b25zIGxhIHJlcHJpc2UgZGUgdm9zIG1hY2hpbmVzIGluZHVzdHJpZWxsZXMgZCdvY2Nhc2lvbnMg
+cG91ciBsJ2V4cG9ydC4gCgoKTGUgZMOpbW9udGFnZSwgbGEgcsOpY3Vww6lyYXRpb24gZXQgw6Ag
+bm90cmUgY2hhcmdlLCBub3VzIHJlcHJlbm9ucyB2b3MgbWFjaGluZXMgZGFucyBsJ8OpdGF0IGV0
+IHNhbnMgZ2FyYW50aWUuCiAKIApOb3RyZSBtb2RlIGRlIGZvbmN0aW9ubmVtZW50IDoKUHJpc2Ug
+ZW4gY2hhcmdlIGR1IGxldmFnZSwgZHUgdHJhbnNwb3J0IGV0IGRlIGxhIG1hbnV0ZW50aW9uLgpQ
+YWllbWVudCDDoCByw6ljZXB0aW9uIGRlIGZhY3R1cmUgZXQgYXZhbnQgZW5sw6h2ZW1lbnQuCiAK
+Vm9pY2kgcXVlbHF1ZXMgZXhlbXBsZXMgZGUgbWFjaGluZXMgOiAKCgpHcm91cGUgw6lsZWN0cm9n
+w6huZSA7Ck1hY2hpbmVzIEJUUCA7Ck1hY2hpbmVzIGFncm9hbGltZW50YWlyZSA7Ck1hY2hpbmVz
+IGRlIHTDtGxlcmllIDsKTWFjaGluZSBkZSBjaGF1ZHJvbm5lcmllIDsKRGl2ZXJzLgogCk7igJlo
+w6lzaXRleiBwYXMgw6Agbm91cyBmYWlyZSB0b3V0ZXMgcHJvcG9zaXRpb25zLCBub3VzIHZvdXMg
+csOpcG9uZHJvbnMgZMOpcyByw6ljZXB0aW9uLgogClBvdXIgbm91cyByw6lwb25kcmUgOiBtb25k
+aWFsZW5lcmd5MUBvcmFuZ2UuZnIgb3UgcGFyIGZheCBhdSAwMSA1OCA2NiAwMiA2OAogCkdyb3Vw
+ZSDDqWxlY3Ryb2fDqG5lIAogCk1hcnF1ZSBNb3RldXIgX19fX19fX19fX19fX19fX19NYXJxdWUg
+IGfDqW7DqXJhdHJpY2VfX19fX19fX19fX19fX19fX1RZUEVfX19fX19fX19fX19fX19fX19fX18K
+IApQdWlzc2FuY2UgIEtWQV9fX19fX19fX19fX19fX19Bbm7DqWVfX19fX19fX19fX19fX19fX19O
+YiBk4oCZaGV1cmVzX19fX19fX19fX19fX19fX19fX19fX19fX19fXwogCkF1dHJlcyA6IAogClR5
+cGUvTWFycXVlIF9fX19fX19fX19fX19fX19fX19fX19fYW5uw6llX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwoKIAogClBvdXIgdm91cyBjb250YWN0ZXIgOgogCiAK
+ClNvY2nDqXTDqS9Ob20gOiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCiAKVGVsX19fX19fX19fX19f
+X19fX19fX19fRmF4X19fX19fX19fX19fX19fX19NYWlsX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KIApBZHJlc3NlX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX0NvbnRhY3RfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwogCk7igJlow6lzaXRleiBwYXMgw6Agbm91cyBjb250YWN0ZXIgcG91ciB0b3V0ZXMgb2ZmcmVz
+IG91IHRvdXRlcyBpbmZvcm1hdGlvbnMsIG5vdXMgc29tbWVzIMOgIHZvdHJlIGRpc3Bvc2l0aW9u
+IGF1IDAxIDQ1ICAyOCAyMCA0MSBkZW1hbmRleiBNbGUgTEVST1kgCkNvcmRpYWxlbWVudCAKCiAK
+VGVsIDogMDEgNDUgMjggMjAgNDEg4oCTIEZheCA6IDAxIDU4IDY2IDAyIDY4IC0gIG1haWw6IG1v
+bmRpYWxlbmVyZ3kxQG9yYW5nZS5mcgogClNpIHZvdXMgbmUgc291aGFpdGV6IHBsdXMgcmVjZXZv
+aXIgZGUgbWFpbHMgZW52b3llciAic3RvcCIgw6AgbW9uZGlhbGVuZXJneTFAb3JhbmdlLmZyCi0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQpNb25pdG9yIHlvdXIgcGh5c2ljYWwsIHZpcnR1YWwgYW5kIGNs
+b3VkIGluZnJhc3RydWN0dXJlIGZyb20gYSBzaW5nbGUKd2ViIGNvbnNvbGUuIEdldCBpbi1kZXB0
+aCBpbnNpZ2h0IGludG8gYXBwcywgc2VydmVycywgZGF0YWJhc2VzLCB2bXdhcmUsClNBUCwgY2xv
+dWQgaW5mcmFzdHJ1Y3R1cmUsIGV0Yy4gRG93bmxvYWQgMzAtZGF5IEZyZWUgVHJpYWwuClByaWNp
+bmcgc3RhcnRzIGZyb20gJDc5NSBmb3IgMjUgc2VydmVycyBvciBhcHBsaWNhdGlvbnMhCmh0dHA6
+Ly9wLnNmLm5ldC9zZnUvem9ob19kZXYyZGV2X25vdgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

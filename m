@@ -1,108 +1,64 @@
-From: Jason Cooper <jason@lakedaemon.net>
+From: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
 Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
- spi-orion
-Date: Wed, 21 Nov 2012 14:35:52 -0500
-Message-ID: <20121121193552.GE15800@titan.lakedaemon.net>
+	spi-orion
+Date: Wed, 21 Nov 2012 13:29:56 -0700
+Message-ID: <20121121202956.GA15020@obsidianresearch.com>
 References: <20121121192335.GA14868@obsidianresearch.com>
+	<20121121193552.GE15800@titan.lakedaemon.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Jason Gunthorpe <jgunthorpe@obsidianresearch.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20121121192335.GA14868@obsidianresearch.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <20121121193552.GE15800-u4khhh1J0LxI1Ri9qeTfzeTW4wlIGRCZ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Nov 21, 2012 at 12:23:35PM -0700, Jason Gunthorpe wrote:
-> Support these transfer modes from the SPI layer by setting
-> the appropriate register bits before doing the transfer.
-> 
-> This was tested on the Marvell kirkwood SOC that uses this driver.
-> 
-> Reviewed-by: Jason Gunthorpe <jgunthorpe@obsidianresearch.com>
-> Signed-off-by: Rolf Manderscheid <rvm@obsidianresearch.com>
-> ---
->  drivers/spi/spi-orion.c |   25 ++++++++++++++++++++++++-
->  1 files changed, 24 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-> index b17c09c..011186d 100644
-> --- a/drivers/spi/spi-orion.c
-> +++ b/drivers/spi/spi-orion.c
-> @@ -32,8 +32,12 @@
->  #define ORION_SPI_DATA_IN_REG		0x0c
->  #define ORION_SPI_INT_CAUSE_REG		0x10
->  
-> +#define ORION_SPI_MODE_CPOL		(1 << 11)
-> +#define ORION_SPI_MODE_CPHA		(1 << 12)
->  #define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
->  #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
-> +#define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
-> +					 ORION_SPI_MODE_CPHA)
->  
->  struct orion_spi {
->  	struct spi_master	*master;
-> @@ -123,6 +127,23 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
->  	return 0;
->  }
->  
-> +static void
-> +orion_spi_mode_set(struct spi_device *spi)
-> +{
-> +	u32 reg;
-> +	struct orion_spi *orion_spi;
-> +
-> +	orion_spi = spi_master_get_devdata(spi->master);
-> +
-> +	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> +	reg &= ~ORION_SPI_MODE_MASK;
-> +	if (spi->mode & SPI_CPOL)
-> +		reg |= ORION_SPI_MODE_CPOL;
-> +	if (spi->mode & SPI_CPHA)
-> +		reg |= ORION_SPI_MODE_CPHA;
-> +	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> +}
-> +
->  /*
->   * called only when no transfer is active on the bus
->   */
-> @@ -142,6 +163,8 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
->  	if ((t != NULL) && t->bits_per_word)
->  		bits_per_word = t->bits_per_word;
->  
-> +	orion_spi_mode_set(spi);
-> +
->  	rc = orion_spi_baudrate_set(spi, speed);
->  	if (rc)
->  		return rc;
-> @@ -399,7 +422,7 @@ static int __init orion_spi_probe(struct platform_device *pdev)
->  	}
->  
->  	/* we support only mode 0, and no options */
-> -	master->mode_bits = 0;
-> +	master->mode_bits = SPI_CPHA | SPI_CPOL;
+On Wed, Nov 21, 2012 at 02:35:52PM -0500, Jason Cooper wrote:
 
-The comment no longer seems valid.  ;-)  Also, you are unconditionally
-enabling these modes.  Do all users of this driver support this?
-
-thx,
-
-Jason.
-
->  
->  	master->setup = orion_spi_setup;
->  	master->transfer_one_message = orion_spi_transfer_one_message;
-> -- 
-> 1.7.5.4
+> >  	/* we support only mode 0, and no options */
+> > -	master->mode_bits = 0;
+> > +	master->mode_bits = SPI_CPHA | SPI_CPOL;
 > 
+> The comment no longer seems valid.  ;-)  Also, you are unconditionally
+> enabling these modes.  Do all users of this driver support this?
+
+Right on the comment.. Not sure about your second query?
+
+ * @mode_bits: flags understood by this controller driver
+
+The mode_bits need to be set so the mid layer will allow consumers to
+pass them down through spi->mode when it calls into
+orion_spi_setup_transfer. So that looks correct..
+
+Now, it seems a fair question what mode the driver will run in by
+default now.. Previously, the driver didn't change the CPOL and CPHA
+bits, so whatever the boot firmware left them at will be the mode it
+uses.
+
+If SPI consumers are not properly requesting the proper CPOL/CPHA
+operation and instead relying on the boot firmware to leave the proper
+bit settings then things will break for those users (they will need to
+update their board's DT file, or otherwise) - but I don't see any way
+to address that and implement proper programmable support?
+
+This could affect at least dove, dreamplug, ts219 and lsxl.
+
+Jason
+
+------------------------------------------------------------------------------
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

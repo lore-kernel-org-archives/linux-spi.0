@@ -1,19 +1,14 @@
-From: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH] SPI: SSP SPI Controller driver
-Date: Thu, 22 Nov 2012 11:04:19 +0000
-Message-ID: <20121122110419.5e08f6cf@bob.linux.org.uk>
-References: <1353464203.20353.6.camel@bichao>
-	<CAM=Q2cu6ReS-6sJxdacnw=FYGdoFed9bM1gA6yFEtmVjs8KQTA@mail.gmail.com>
-	<20121121122630.13fc2087@bob.linux.org.uk>
-	<CAM=Q2cuCZni2DyzDux-E5H4-djgNrUURTYJ+f=_oMBeJE7eGMw@mail.gmail.com>
+From: Tendance Chaussure par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Ouverture de la vente =?iso-8859-15?Q?priv=E9e?= Kickers :
+	=?iso-8859-15?Q?jusqu=92=E0?= moins 50pourcent
+Date: Thu, 22 Nov 2012 12:08:07 +0100
+Message-ID: <1353582665.thing50ae084982d5a@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAM=Q2cuCZni2DyzDux-E5H4-djgNrUURTYJ+f=_oMBeJE7eGMw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,22 +19,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> Thats what I was trying to understand.
-> 
-> If I am not wrong the latency is time related.
-> Why only some platforms / modes need it also the value is not speed
-> dependent.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Because the problem was fixed in the later devices.
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1NDkwJmM9NDgzNjEyJmQ9MjAx=
+Mi0xMS0yMiAxMjowMDowMSZlPTEmaD0yNTQ4OCZmPTI1NDkwJmc9MjU0OTA=3D
 
-> Also the spi core today doesnt have slave mode support thats a
-> different discussion altogether may be we can leave it for now.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1NDkwJmM=
+9NDgzNjEyJmQ9MjAxMi0xMS0yMiAxMjowMDowMSZlPTEmaD0yNTQ4OCZmPTI1NDkwJmc9MjU0OT=
+A=3D
 
-I'd rather we kept the support in the driver ready for that.
 
-Alan
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

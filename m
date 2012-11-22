@@ -1,17 +1,13 @@
-From: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/2] spi: sh-hspi: add CS manual control support
-Date: Thu, 22 Nov 2012 14:37:27 +0000
-Message-ID: <1353595047-14558-2-git-send-email-phil.edworthy@renesas.com>
-References: <1353595047-14558-1-git-send-email-phil.edworthy@renesas.com>
+From: Surina Binti Abdul Majid <surinabinti474-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
+Subject: ASSALAMUALAIKUM
+Date: Fri, 23 Nov 2012 05:29:17 +0530
+Message-ID: <201211222359.qAMNxHxM025390@decipherindia.com>
+Reply-To: surinabinti474-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-reply-to: <1353595047-14558-1-git-send-email-phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,109 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The current HSPI driver used automatic CS control, leading to CS
-active for each byte transmitted. This patch changes the driver
-to manual CS control, and ensures CS is active thoughout a whole
-message. Additionally, it uses the cs_change field to determine
-if CS is disabled between transfers in the message.
+Salam,
 
-Signed-off-by: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-sh-hspi.c |   43 +++++++++++++++++++++++++++++++++++++++++--
- 1 files changed, 41 insertions(+), 2 deletions(-)
+Saya Surina Binti Abdul Majid dan sekarang bekerja di London sebagai Pegawai Pemasaran (Marketing Officer) di sebuah syarikat pemprosesan batu permata di London.Untuk pengetahuan anda terdapat peluang perniagaan yang hendak saya perkenalkan dan keuntungannya akan diperolehi daripada kerjasama dan bantuan segera yang saya perlukan daripada anda.
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 0ca18c8..592e236 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -68,6 +68,16 @@ static u32 hspi_read(struct hspi_priv *hspi, int reg)
- 	return ioread32(hspi->addr + reg);
- }
- 
-+static void hspi_bit_set(struct hspi_priv *hspi, int reg, u32 mask, u32 set)
-+{
-+	u32 val = hspi_read(hspi, reg);
-+
-+	val &= ~mask;
-+	val |= set & mask;
-+
-+	hspi_write(hspi, reg, val);
-+}
-+
- /*
-  *		transfer function
-  */
-@@ -105,6 +115,13 @@ static int hspi_unprepare_transfer(struct spi_master *master)
- 	return 0;
- }
- 
-+#define hspi_hw_cs_enable(hspi)		hspi_hw_cs_ctrl(hspi, 0)
-+#define hspi_hw_cs_disable(hspi)	hspi_hw_cs_ctrl(hspi, 1)
-+static void hspi_hw_cs_ctrl(struct hspi_priv *hspi, int hi)
-+{
-+	hspi_bit_set(hspi, SPSCR, (1 << 6), (hi) << 6);
-+}
-+
- static void hspi_hw_setup(struct hspi_priv *hspi,
- 			  struct spi_message *msg,
- 			  struct spi_transfer *t)
-@@ -155,7 +172,7 @@ static void hspi_hw_setup(struct hspi_priv *hspi,
- 
- 	hspi_write(hspi, SPCR, spcr);
- 	hspi_write(hspi, SPSR, 0x0);
--	hspi_write(hspi, SPSCR, 0x1);	/* master mode */
-+	hspi_write(hspi, SPSCR, 0x21);	/* master mode / CS control */
- }
- 
- static int hspi_transfer_one_message(struct spi_master *master,
-@@ -166,12 +183,21 @@ static int hspi_transfer_one_message(struct spi_master *master,
- 	u32 tx;
- 	u32 rx;
- 	int ret, i;
-+	unsigned int cs_change;
-+	const int nsecs = 50;
- 
- 	dev_dbg(hspi->dev, "%s\n", __func__);
- 
-+	cs_change = 1;
- 	ret = 0;
- 	list_for_each_entry(t, &msg->transfers, transfer_list) {
--		hspi_hw_setup(hspi, msg, t);
-+
-+		if (cs_change) {
-+			hspi_hw_setup(hspi, msg, t);
-+			hspi_hw_cs_enable(hspi);
-+			ndelay(nsecs);
-+		}
-+		cs_change = t->cs_change;
- 
- 		for (i = 0; i < t->len; i++) {
- 
-@@ -198,9 +224,22 @@ static int hspi_transfer_one_message(struct spi_master *master,
- 		}
- 
- 		msg->actual_length += t->len;
-+
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
-+
-+		if (cs_change) {
-+			ndelay(nsecs);
-+			hspi_hw_cs_disable(hspi);
-+			ndelay(nsecs);
-+		}
- 	}
- 
- 	msg->status = ret;
-+	if (!cs_change) {
-+		ndelay(nsecs);
-+		hspi_hw_cs_disable(hspi);
-+	}
- 	spi_finalize_current_message(master);
- 
- 	return ret;
--- 
-1.7.5.4
+Saya menghubungi anda kerana saya tidak mahu lepaskan peluang yang ada di dalam syarikat kami buat masa ini dan juga pada masa hadapan. Saya perlukan anda sebagai pembekal (supplier/agent) kepada syarikat kami supaya kita boleh sama-sama merebut peluang perniagaan yang terbuka sekarang ini.
+
+Syarikat kami memerlukan produk bernama (TATALITE SUPPLE). Produk Tatalite Supple ini merupakan bahan cecair kimia saintifik yang baru dan merupakan pelincir yang digunakan di dalam makmal permata (gemological laboratory) untuk rawatan penulenan berlian (purification of diamonds clarity treatment). Pelincir yang digunakan semasa rawatan tersebut akan menembusi jauh ke dalam berlian dan semua kotoran hitam kecil di dalam berlian dan batu permata akan meruap keluar.
+
+Pembekal utama produk ini berada di Malaysia tetapi pembekal produk terus kepada syarikat kami telah mengalami kemalangan dan meninggal dunia di UK, beliau merupakan Pengurus Pemasaran (Marketing Manager) dan semenjak kemalangan tersebut, monopoli perniagaan telah terputus.
+
+Sesiapapun boleh membekalkan produk dan bergabung untuk membuat perkongsian dengan syarikat kami dan ini adalah sebabnya saya menulis email kepada anda untuk meminta bantuan, di mana saya memerlukan anda untuk bertindak sebagai ejen perantara yang akan mengisi kekosongan di antara pembekal utama dan pembeli iaitu syarikat kami.
+
+Ini adalah perniagaan yang besar dan akan memberikan dividen yang baik kepada kita berdua. Saya hanya memerlukan kerjasama anda untuk menjadikan perniagaan ini berjaya. Maklumat lanjut akan saya berikan sekiranya anda sanggup menjadi ejen yang membekalkan produk ini kepada syarikat kami. Pertama, saya akan mendapatkan satu perjanjian bekalan kontrak untuk anda sebagai pembekal kepada syarikat di mana saya bekerja. Berdasarkan peratusan, harga belian produk daripada syarikat adalah 4,000.00 USD per karton, manakala di Malaysia harga jualan produk adalah 2,100 USD. Jumlah yang diperlukan oleh syarikat adalah tidak kurang daripada 200 karton.
+
+Tujuan mengapa saya mahu anda untuk menjadi ejen kami adalah untuk menjadi pautan yang menghubungkan penjual tempatan di Malaysia secara langsung kepada syarikat yang membeli. Maka margin keuntungan akan dikongsi oleh kita berdua 60% untuk anda manakala 40% untuk saya.
+
+Bantuan utama yang diperlukan daripada anda adalah supaya anda memberitahu kepada pengurus saya bahawa anda boleh membekalkan produk ini kepada syarikat kami dan juga untuk mendalami butiran tentang harga dan cara bayaran. Kemudian, kami akan ambil langkah selanjutnya daripada situ.
+
+Hubungi saya setelah terima emel ini supaya saya boleh berikan nama dan butiran pembekal utama di Malaysia. Setelah menerima butiran pembekal utama ini, anda perlu menghubungi pembekal tersebut untuk bertanya samada, sekarang ada stok atau tidak untuk bekalan segera kepada kamu, sebelum saya maklumkan kepada Pengarah Syarikat (Company Director) kami tentang anda. Seterusnya Pengarah Syarikat akan hubungi anda dan membuat persediaan kepada Pengurus Pembelian (Purchasing Manager) terbang ke Malaysia. Purchasing Manager ini akan membeli produk daripada anda dan bayaran adalah secara tunai melalui bank di Malaysia.
+
+Harap boleh balas dengan segera.
+
+Sekian
+Surina
+
+
 
 
 ------------------------------------------------------------------------------

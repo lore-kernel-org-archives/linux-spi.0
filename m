@@ -1,22 +1,18 @@
 From: Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] SPI: SSP SPI Controller driver
-Date: Thu, 22 Nov 2012 12:24:09 +0530
-Message-ID: <CAM=Q2cszn_OoTyYiUVSj3NvpxJq+wSUnMJVcwWOdV2EzDviLVw@mail.gmail.com>
+Date: Thu, 22 Nov 2012 12:31:38 +0530
+Message-ID: <CAM=Q2cuCZni2DyzDux-E5H4-djgNrUURTYJ+f=_oMBeJE7eGMw@mail.gmail.com>
 References: <1353464203.20353.6.camel@bichao>
-	<CAM=Q2cvoEMScnCmfrhoAueZ8bfPCX90TxZmsSigfeRbGeXbzMA@mail.gmail.com>
-	<253F3AA5ECB4EC43A2CA0147545F67F2102B5D40@SHSMSX102.ccr.corp.intel.com>
+	<CAM=Q2cu6ReS-6sJxdacnw=FYGdoFed9bM1gA6yFEtmVjs8KQTA@mail.gmail.com>
+	<20121121122630.13fc2087@bob.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
-Cc: "Chen, Jun D" <jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "Mills,
-	Ken K" <ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "Centelles,
-	Sylvain" <sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "Bi, Chao" <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <253F3AA5ECB4EC43A2CA0147545F67F2102B5D40-0J0gbvR4kTiiAffOGbnezLfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <20121121122630.13fc2087-Z/y2cZnRghHXmaaqVzeoHQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,33 +23,50 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 22, 2012 at 8:56 AM, Bi, Chao <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+On Wed, Nov 21, 2012 at 5:56 PM, Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org> wrote:
 
->               if (chip_info->enable_loopback)
-> +                       chip->cr1 |=3D SSCR1_LBM;****
+> On Wed, 21 Nov 2012 17:44:21 +0530
+> Shubhrajyoti Datta <omaplinuxkernel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
 >
-> Who sets the enable_loopback?****
+> > On Wed, Nov 21, 2012 at 7:46 AM, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> >
+> > > +       /* Create the PM_QOS request */
+> > > +       if (drv_context->quirks & QUIRKS_USE_PM_QOS)
+> > > +               pm_qos_add_request(&drv_context->pm_qos_req,
+> > > +               PM_QOS_CPU_DMA_LATENCY,
+> > > +               PM_QOS_DEFAULT_VALUE);
+> > >
+> >
+> > What happens if the flag is not set if it is absolutely necessary for
+> > the driver it should not be a
+> > configurable option
 >
-> ** **
->
-> [Chao] =91enable_loopback=92 could be configured by SPI Protocol driver b=
-efore
-> it setup SPI controller. Generally it is not set by default because it=92s
-> used for test and validation.
+> If you read through the code it's set only when the device is
+> Moorestown/Oaktrail based and only in slave mode. It is not necessary
+> in other configurations.
 >
 
-Should it not then depend on  (spi mode ) SPI_LOOP ?
+Thats what I was trying to understand.
 
-Or am I missing something.
+If I am not wrong the latency is time related.
+Why only some platforms / modes need it also the value is not speed
+dependent.
 
-> ****
+
+My doubt is that the time taken for the dma will be more in lower speed so
+the
+latency constraint could be relaxed.
+
+Also the spi core today doesnt have slave mode support thats a different
+discussion altogether may be we can leave it for now.
+
+
+
+
 >
-> ** **
+> Alan
 >
-> Thanks
->
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Monitor your physical, virtual and cloud infrastructure from a single
 web console. Get in-depth insight into apps, servers, databases, vmware,
 SAP, cloud infrastructure, etc. Download 30-day Free Trial.

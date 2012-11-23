@@ -1,54 +1,48 @@
-From: Surina Binti Abdul Majid <surinabinti474-/E1597aS9LQAvxtiuMwx3w@public.gmane.org>
-Subject: ASSALAMUALAIKUM
-Date: Fri, 23 Nov 2012 05:29:17 +0530
-Message-ID: <201211222359.qAMNxHxM025390@decipherindia.com>
-Reply-To: surinabinti474-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: tegra: slink: do not prepare dma transfer with DMA_CTRL_ACK flag
+Date: Fri, 23 Nov 2012 14:52:39 +0530
+Message-ID: <1353662559-26515-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Salam,
+Spi starts transfer using dma with DMA_CTRL_ACK which is not require
+becasue spi driver does not use completed dma_desc after transfer
+done and so it does not ack the dma descriptor. Removing the
+DMA_CTRL_ACK flag to avoid memory leak in dma driver.
 
-Saya Surina Binti Abdul Majid dan sekarang bekerja di London sebagai Pegawai Pemasaran (Marketing Officer) di sebuah syarikat pemprosesan batu permata di London.Untuk pengetahuan anda terdapat peluang perniagaan yang hendak saya perkenalkan dan keuntungannya akan diperolehi daripada kerjasama dan bantuan segera yang saya perlukan daripada anda.
+Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-tegra20-slink.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-Saya menghubungi anda kerana saya tidak mahu lepaskan peluang yang ada di dalam syarikat kami buat masa ini dan juga pada masa hadapan. Saya perlukan anda sebagai pembekal (supplier/agent) kepada syarikat kami supaya kita boleh sama-sama merebut peluang perniagaan yang terbuka sekarang ini.
-
-Syarikat kami memerlukan produk bernama (TATALITE SUPPLE). Produk Tatalite Supple ini merupakan bahan cecair kimia saintifik yang baru dan merupakan pelincir yang digunakan di dalam makmal permata (gemological laboratory) untuk rawatan penulenan berlian (purification of diamonds clarity treatment). Pelincir yang digunakan semasa rawatan tersebut akan menembusi jauh ke dalam berlian dan semua kotoran hitam kecil di dalam berlian dan batu permata akan meruap keluar.
-
-Pembekal utama produk ini berada di Malaysia tetapi pembekal produk terus kepada syarikat kami telah mengalami kemalangan dan meninggal dunia di UK, beliau merupakan Pengurus Pemasaran (Marketing Manager) dan semenjak kemalangan tersebut, monopoli perniagaan telah terputus.
-
-Sesiapapun boleh membekalkan produk dan bergabung untuk membuat perkongsian dengan syarikat kami dan ini adalah sebabnya saya menulis email kepada anda untuk meminta bantuan, di mana saya memerlukan anda untuk bertindak sebagai ejen perantara yang akan mengisi kekosongan di antara pembekal utama dan pembeli iaitu syarikat kami.
-
-Ini adalah perniagaan yang besar dan akan memberikan dividen yang baik kepada kita berdua. Saya hanya memerlukan kerjasama anda untuk menjadikan perniagaan ini berjaya. Maklumat lanjut akan saya berikan sekiranya anda sanggup menjadi ejen yang membekalkan produk ini kepada syarikat kami. Pertama, saya akan mendapatkan satu perjanjian bekalan kontrak untuk anda sebagai pembekal kepada syarikat di mana saya bekerja. Berdasarkan peratusan, harga belian produk daripada syarikat adalah 4,000.00 USD per karton, manakala di Malaysia harga jualan produk adalah 2,100 USD. Jumlah yang diperlukan oleh syarikat adalah tidak kurang daripada 200 karton.
-
-Tujuan mengapa saya mahu anda untuk menjadi ejen kami adalah untuk menjadi pautan yang menghubungkan penjual tempatan di Malaysia secara langsung kepada syarikat yang membeli. Maka margin keuntungan akan dikongsi oleh kita berdua 60% untuk anda manakala 40% untuk saya.
-
-Bantuan utama yang diperlukan daripada anda adalah supaya anda memberitahu kepada pengurus saya bahawa anda boleh membekalkan produk ini kepada syarikat kami dan juga untuk mendalami butiran tentang harga dan cara bayaran. Kemudian, kami akan ambil langkah selanjutnya daripada situ.
-
-Hubungi saya setelah terima emel ini supaya saya boleh berikan nama dan butiran pembekal utama di Malaysia. Setelah menerima butiran pembekal utama ini, anda perlu menghubungi pembekal tersebut untuk bertanya samada, sekarang ada stok atau tidak untuk bekalan segera kepada kamu, sebelum saya maklumkan kepada Pengarah Syarikat (Company Director) kami tentang anda. Seterusnya Pengarah Syarikat akan hubungi anda dan membuat persediaan kepada Pengurus Pembelian (Purchasing Manager) terbang ke Malaysia. Purchasing Manager ini akan membeli produk daripada anda dan bayaran adalah secara tunai melalui bank di Malaysia.
-
-Harap boleh balas dengan segera.
-
-Sekian
-Surina
-
-
-
-
-------------------------------------------------------------------------------
-Monitor your physical, virtual and cloud infrastructure from a single
-web console. Get in-depth insight into apps, servers, databases, vmware,
-SAP, cloud infrastructure, etc. Download 30-day Free Trial.
-Pricing starts from $795 for 25 servers or applications!
-http://p.sf.net/sfu/zoho_dev2dev_nov
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 7882b50..5b4c8c8 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -473,7 +473,7 @@ static int tegra_slink_start_tx_dma(struct tegra_slink_data *tspi, int len)
+ 	INIT_COMPLETION(tspi->tx_dma_complete);
+ 	tspi->tx_dma_desc = dmaengine_prep_slave_single(tspi->tx_dma_chan,
+ 				tspi->tx_dma_phys, len, DMA_MEM_TO_DEV,
+-				DMA_PREP_INTERRUPT |  DMA_CTRL_ACK);
++				DMA_PREP_INTERRUPT);
+ 	if (!tspi->tx_dma_desc) {
+ 		dev_err(tspi->dev, "Not able to get desc for Tx\n");
+ 		return -EIO;
+@@ -492,7 +492,7 @@ static int tegra_slink_start_rx_dma(struct tegra_slink_data *tspi, int len)
+ 	INIT_COMPLETION(tspi->rx_dma_complete);
+ 	tspi->rx_dma_desc = dmaengine_prep_slave_single(tspi->rx_dma_chan,
+ 				tspi->rx_dma_phys, len, DMA_DEV_TO_MEM,
+-				DMA_PREP_INTERRUPT |  DMA_CTRL_ACK);
++				DMA_PREP_INTERRUPT);
+ 	if (!tspi->rx_dma_desc) {
+ 		dev_err(tspi->dev, "Not able to get desc for Rx\n");
+ 		return -EIO;
+-- 
+1.7.1.1

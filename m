@@ -1,17 +1,17 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi/atmel: add DT support
-Date: Fri, 23 Nov 2012 14:37:29 +0100
-Message-ID: <50AF7C19.8000306@atmel.com>
-References: <20121121151713.1F8873E0A47@localhost>
-	<1353674679-13158-1-git-send-email-plagnioj@jcrosoft.com>
+From: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH v2] spi: sh-hspi: Improve performance
+Date: Fri, 23 Nov 2012 14:46:24 +0000
+Message-ID: <1353681984-15850-1-git-send-email-phil.edworthy@renesas.com>
+References: <20121123095137.7DBB03E07BE@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Cc: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1353674679-13158-1-git-send-email-plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+In-reply-to: <20121123095137.7DBB03E07BE@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,123 +22,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/23/2012 01:44 PM, Jean-Christophe PLAGNIOL-VILLARD :
-> the atmel_spi use only gpio for chip select
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+The driver attempts to read the received data immediately after
+writing to the transmit buffer. If no data is available, the driver
+currently waits 20ms until trying again. Since the hardware needs
+to shift out the transmitted data, the first poll always fails,
+leading to 20ms delay between bytes.
 
-Seems simple and nice:
+This patch waits for the time it takes to transmit a byte before
+reading the received data.
 
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+---
+v2:
+ Instead of replacing msleep(20) with udelay(1), this version now
+ calculates the time it takes to shift out a byte, and uses udelay or
+ ndelay for this time. After this it falls back to polling every 20ms
+ using msleep. The delay has an empirical element based on testing at
+ different speeds.
 
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> ---
-> Hi Grant,
-> 
-> 	can we have this for 3.8
-> 	This patch is presetnt on the ML sing Feb 2012 and was depinding on
-> 	the cs-gpio dt that you just apply
-> 
-> Best Regards,
-> J.
->  .../devicetree/bindings/spi/spi_atmel.txt          |   26 ++++++++++++++++++++
->  drivers/spi/spi-atmel.c                            |   17 ++++++++++++-
->  2 files changed, 42 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi_atmel.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-> new file mode 100644
-> index 0000000..07e04cd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-> @@ -0,0 +1,26 @@
-> +Atmel SPI device
-> +
-> +Required properties:
-> +- compatible : should be "atmel,at91rm9200-spi".
-> +- reg: Address and length of the register set for the device
-> +- interrupts: Should contain spi interrupt
-> +- cs-gpios: chipselects
-> +
-> +Example:
-> +
-> +spi1: spi@fffcc000 {
-> +	compatible = "atmel,at91rm9200-spi";
-> +	reg = <0xfffcc000 0x4000>;
-> +	interrupts = <13 4 5>;
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	cs-gpios = <&pioB 3 0>;
-> +	status = "okay";
-> +
-> +	mmc-slot@0 {
-> +		compatible = "mmc-spi-slot";
-> +		reg = <0>;
-> +		gpios = <&pioC 4 0>;	/* CD */
-> +		spi-max-frequency = <25000000>;
-> +	};
-> +};
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 61fb0ec..1615222 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -20,6 +20,7 @@
->  #include <linux/spi/spi.h>
->  #include <linux/slab.h>
->  #include <linux/platform_data/atmel.h>
-> +#include <linux/of.h>
->  
->  #include <asm/io.h>
->  #include <asm/gpio.h>
-> @@ -768,6 +769,10 @@ static int atmel_spi_setup(struct spi_device *spi)
->  
->  	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
->  	npcs_pin = (unsigned int)spi->controller_data;
-> +
-> +	if (gpio_is_valid(spi->cs_gpio))
-> +		npcs_pin = spi->cs_gpio;
-> +
->  	asd = spi->controller_state;
->  	if (!asd) {
->  		asd = kzalloc(sizeof(struct atmel_spi_device), GFP_KERNEL);
-> @@ -937,8 +942,9 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
->  	/* the spi->mode bits understood by this driver: */
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
->  
-> +	master->dev.of_node = pdev->dev.of_node;
->  	master->bus_num = pdev->id;
-> -	master->num_chipselect = 4;
-> +	master->num_chipselect = master->dev.of_node ? 0 : 4;
->  	master->setup = atmel_spi_setup;
->  	master->transfer = atmel_spi_transfer;
->  	master->cleanup = atmel_spi_cleanup;
-> @@ -1064,11 +1070,20 @@ static int atmel_spi_resume(struct platform_device *pdev)
->  #define	atmel_spi_resume	NULL
->  #endif
->  
-> +#if defined(CONFIG_OF)
-> +static const struct of_device_id atmel_spi_dt_ids[] = {
-> +	{ .compatible = "atmel,at91rm9200-spi" },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, atmel_spi_dt_ids);
-> +#endif
->  
->  static struct platform_driver atmel_spi_driver = {
->  	.driver		= {
->  		.name	= "atmel_spi",
->  		.owner	= THIS_MODULE,
-> +		.of_match_table	= of_match_ptr(atmel_spi_dt_ids),
->  	},
->  	.suspend	= atmel_spi_suspend,
->  	.resume		= atmel_spi_resume,
-> 
+ drivers/spi/spi-sh-hspi.c |   25 +++++++++++++++++++++++++
+ 1 files changed, 25 insertions(+), 0 deletions(-)
 
-
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index bc25419..407eac0 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -53,6 +53,7 @@ struct hspi_priv {
+ 	struct spi_master *master;
+ 	struct device *dev;
+ 	struct clk *clk;
++	u32 actual_speed;
+ };
+ 
+ /*
+@@ -168,6 +169,7 @@ static void hspi_hw_setup(struct hspi_priv *hspi,
+ 	if (spi->mode & SPI_CPOL)
+ 		spcr |= 1 << 6;
+ 
++	hspi->actual_speed = best_rate;
+ 	dev_dbg(dev, "speed %d/%d\n", target_rate, best_rate);
+ 
+ 	hspi_write(hspi, SPCR, spcr);
+@@ -185,6 +187,8 @@ static int hspi_transfer_one_message(struct spi_master *master,
+ 	int ret, i;
+ 	unsigned int cs_change;
+ 	const int nsecs = 50;
++	u32 tx_us = 0;
++	u32 tx_ns = 0;
+ 
+ 	dev_dbg(hspi->dev, "%s\n", __func__);
+ 
+@@ -194,6 +198,23 @@ static int hspi_transfer_one_message(struct spi_master *master,
+ 
+ 		if (cs_change) {
+ 			hspi_hw_setup(hspi, msg, t);
++
++			/* Calculate time to shift out 8 bits & get rx data.
++			 * The values of 8x, 9x & 11x are empirically derived,
++			 * using a scope to check that we haven't dropped in
++			 * a 20ms delay between bytes.
++			 * If delay is >1ms, poll using msleep so we don't
++			 * block.
++			 */
++			tx_us = 0;
++			tx_ns = 0;
++			if (hspi->actual_speed > 1000000)
++				tx_ns = 8*1000000/(hspi->actual_speed/1000);
++			else if (hspi->actual_speed > 100000)
++				tx_ns = 9*1000000/(hspi->actual_speed/1000);
++			else if (hspi->actual_speed > 1000)
++				tx_us = 11*1000000/hspi->actual_speed;
++
+ 			hspi_hw_cs_enable(hspi);
+ 			ndelay(nsecs);
+ 		}
+@@ -212,6 +233,10 @@ static int hspi_transfer_one_message(struct spi_master *master,
+ 
+ 			hspi_write(hspi, SPTBR, tx);
+ 
++			/* Wait to get recieved data */
++			udelay(tx_us);
++			ndelay(tx_ns);
++
+ 			/* wait recive */
+ 			ret = hspi_status_check_timeout(hspi, 0x4, 0x4);
+ 			if (ret < 0)
 -- 
-Nicolas Ferre
+1.7.5.4
+
 
 ------------------------------------------------------------------------------
 Monitor your physical, virtual and cloud infrastructure from a single

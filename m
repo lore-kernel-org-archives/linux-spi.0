@@ -1,48 +1,72 @@
-From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: tegra: slink: do not prepare dma transfer with DMA_CTRL_ACK flag
-Date: Fri, 23 Nov 2012 14:52:39 +0530
-Message-ID: <1353662559-26515-1-git-send-email-ldewangan@nvidia.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sh-hspi: Improve performance
+Date: Fri, 23 Nov 2012 09:51:37 +0000
+Message-ID: <20121123095137.7DBB03E07BE@localhost>
+References: <1353595047-14558-1-git-send-email-phil.edworthy@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+To: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1353595047-14558-1-git-send-email-phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Spi starts transfer using dma with DMA_CTRL_ACK which is not require
-becasue spi driver does not use completed dma_desc after transfer
-done and so it does not ack the dma descriptor. Removing the
-DMA_CTRL_ACK flag to avoid memory leak in dma driver.
+On Thu, 22 Nov 2012 14:37:26 +0000, Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
+> The driver attempts to read the recieved data immediately after
+> writing to the transmit buffer. If no data is available, the driver
+> currently waits 20ms until trying again. Since the hardware needs
+> to shift out the transmitted data, the first poll always fails,
+> leading to 20ms delay between bytes.
+> 
+> This patch reduces the polling interval to 1us, and also reduces
+> the timeout to 10ms.
+> 
+> Signed-off-by: Phil Edworthy <phil.edworthy-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-sh-hspi.c |    4 ++--
+>  1 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+> index 934138c..0ca18c8 100644
+> --- a/drivers/spi/spi-sh-hspi.c
+> +++ b/drivers/spi/spi-sh-hspi.c
+> @@ -73,13 +73,13 @@ static u32 hspi_read(struct hspi_priv *hspi, int reg)
+>   */
+>  static int hspi_status_check_timeout(struct hspi_priv *hspi, u32 mask, u32 val)
+>  {
+> -	int t = 256;
+> +	int t = 10000; /* 10ms max timeout */
+>  
+>  	while (t--) {
+>  		if ((mask & hspi_read(hspi, SPSR)) == val)
+>  			return 0;
+>  
+> -		msleep(20);
+> +		udelay(1);
+>  	}
 
-Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-tegra20-slink.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+This does have the side effect that the cpu is now spinning instead of
+scheduling something else when the device is busy. Is that what you
+want? (the answer depends on how big the fifo is and how fast the SPI
+bus runs).
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 7882b50..5b4c8c8 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -473,7 +473,7 @@ static int tegra_slink_start_tx_dma(struct tegra_slink_data *tspi, int len)
- 	INIT_COMPLETION(tspi->tx_dma_complete);
- 	tspi->tx_dma_desc = dmaengine_prep_slave_single(tspi->tx_dma_chan,
- 				tspi->tx_dma_phys, len, DMA_MEM_TO_DEV,
--				DMA_PREP_INTERRUPT |  DMA_CTRL_ACK);
-+				DMA_PREP_INTERRUPT);
- 	if (!tspi->tx_dma_desc) {
- 		dev_err(tspi->dev, "Not able to get desc for Tx\n");
- 		return -EIO;
-@@ -492,7 +492,7 @@ static int tegra_slink_start_rx_dma(struct tegra_slink_data *tspi, int len)
- 	INIT_COMPLETION(tspi->rx_dma_complete);
- 	tspi->rx_dma_desc = dmaengine_prep_slave_single(tspi->rx_dma_chan,
- 				tspi->rx_dma_phys, len, DMA_DEV_TO_MEM,
--				DMA_PREP_INTERRUPT |  DMA_CTRL_ACK);
-+				DMA_PREP_INTERRUPT);
- 	if (!tspi->rx_dma_desc) {
- 		dev_err(tspi->dev, "Not able to get desc for Rx\n");
- 		return -EIO;
--- 
-1.7.1.1
+g.
+
+
+------------------------------------------------------------------------------
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

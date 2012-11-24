@@ -1,12 +1,12 @@
-From: Photo Cite par Duano <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Revivez vos meilleurs souvenirs avec un livre photo
-Date: Sat, 24 Nov 2012 04:04:35 +0100
-Message-ID: <1353726327.thing50b039775ad73@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: Dodo <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: Jusqu'a -50% de reduction !
+Date: Sat, 24 Nov 2012 09:08:45 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1553228.3016826189@news.galgalz.com>
+Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,14 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+Document sans nom  Si vous ne pouvez pas visualiser ce message,  =
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI1MDU5JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMS0yNCAwNDowMDowMSZlPTEmaD0yNTA1NyZmPTI1MDU5Jmc9MjUwNTk=3D
+consulter notre version en ligne. =
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI1MDU5JmM=
-9NDgzNjEyJmQ9MjAxMi0xMS0yNCAwNDowMDowMSZlPTEmaD0yNTA1NyZmPTI1MDU5Jmc9MjUwNT=
-k=3D
+ Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+
+mails par l'intermediaire de  ce raccourci. =
+
+No=EAl avec DODO
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJYaLbnGHxKLSE4ePcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlJA
+Univers b=E9b=E9
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJYaLbnGHxKLSE4efcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlJB
 
 
 ---------------------------------------------------------------------------=

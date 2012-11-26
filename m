@@ -1,48 +1,64 @@
-From: Florian Fainelli <florian@openwrt.org>
-Subject: Re: [PATCH 3.7] spi/bcm63xx: fix transfer bits_per_words check
-Date: Mon, 26 Nov 2012 14:11:20 +0100
-Message-ID: <2175243.jGVtISFVra@flexo>
-References: <1353764690-5961-1-git-send-email-jonas.gorski@gmail.com> <20121124180151.GJ4719@opensource.wolfsonmicro.com> <CAOiHx=nXRgF6YCLJ+U77boeuuWb6TOdT9dg=cie=Gruz6eS6xQ@mail.gmail.com>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH] spi/bcm63xx: fix multi transfer messages
+Date: Mon, 26 Nov 2012 14:20:56 +0100
+Message-ID: <4813771.TBFJ14qpIF@flexo>
+References: <1352931747-19893-1-git-send-email-jonas.gorski@gmail.com>
+	<CAOiHx==CdCrb5++dsy5GBYpwXLmx3iG2bmpYiqiOuop_JAn9NQ@mail.gmail.com>
+	<20121115011504.GA7599@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Maxime Bizon <mbizon@freebox.fr>,
-	Kevin Cernekee <cernekee@gmail.com>, stable@vger.kernel.org
-To: Jonas Gorski <jonas.gorski@gmail.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <CAOiHx=nXRgF6YCLJ+U77boeuuWb6TOdT9dg=cie=Gruz6eS6xQ@mail.gmail.com>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
+	Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121115011504.GA7599-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Saturday 24 November 2012 19:19:34 Jonas Gorski wrote:
-> On 24 November 2012 19:01, Mark Brown
-> <broonie@opensource.wolfsonmicro.com> wrote:
-> > On Sat, Nov 24, 2012 at 06:53:10PM +0100, Jonas Gorski wrote:
-> >> On 24 November 2012 18:28, Mark Brown
-> >
-> >> > This is now done by the SPI core, there's no need for individual drivers
-> >> > to do this.
-> >
-> >> So that will go to stable kernels, too?
-> >
-> > No, I hadn't sent it there.  I'd really expect that anyone using a
-> > release kernel would've noticed this if there were a problem, it's
-> > pretty obvious when it goes wrong, and I tend to be extremely
-> > conservative with changes to stable kernels especially framework ones.
+On Thursday 15 November 2012 10:15:08 Mark Brown wrote:
+> On Thu, Nov 15, 2012 at 12:33:31AM +0100, Jonas Gorski wrote:
+> > On 15 November 2012 00:17, Mark Brown
 > 
-> Well, I noticed this particular problem on a 3.6 kernel (3.6.7 to be
-> exact), so by that definition at least one noticed, unless I don't
-> count as anyone ;-). So, how can I make this driver less broken for
-> release kernels? I somewhat doubt the framework change will be picked
-> up by release kernel maintainers.
+> > > This is only going to work around a relatively small subset of cases so
+> > > it doesn't seem worth rushing in.  The normal fix for such issues is to
+> > > control /CS as a GPIO.
+> 
+> > Well, one of the "small" subsets is SPI attached flash, those need
+> > write then read or write then write with CS asserted for most
+> > operations, too. And I'm not sure if controlling CS as a GPIO is an
+> 
+> This is the case for essentially all devices with registers too.  If it
+> were always fixing the issue (eg, by allocating a buffer if the one
+> supplied isn't suitable) that'd be fine but instead it's going to work
+> some but not all of the time which seems non-ideal
 
-Considering it is a simple one-liner in spi-bcm63xx and that you don't want to
-propagate a framework-level change back to -stable (which makes sense), don't
-you want to pick that one?
+Devices that we care about on bcm63xx, which are connected to these built-in
+chip-selects are:
+- SPI flashes
+- SPI Ethernet switches (register based)
+- SPI SLIC/SLAC (register based as well)
 
-At least two other users told me about this bug in private conversations.
+I assume any hardware design which needs specific CS treatment would wire it
+to a spare GPIO to fully control its assertion.
+
+Would you accept this patch provided that Jonas updates his commit log with
+this description of devices we support?
 --
 Florian
+
+
+------------------------------------------------------------------------------
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

@@ -1,70 +1,95 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 3.7] spi/bcm63xx: fix transfer bits_per_words check
-Date: Mon, 26 Nov 2012 13:23:17 +0000
-Message-ID: <20121126132316.GH9411@opensource.wolfsonmicro.com>
-References: <1353764690-5961-1-git-send-email-jonas.gorski@gmail.com>
- <20121124180151.GJ4719@opensource.wolfsonmicro.com>
- <CAOiHx=nXRgF6YCLJ+U77boeuuWb6TOdT9dg=cie=Gruz6eS6xQ@mail.gmail.com>
- <2175243.jGVtISFVra@flexo>
+From: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/bcm63xx: fix multi transfer messages
+Date: Mon, 26 Nov 2012 15:48:55 +0100
+Message-ID: <CAOiHx==ASqkCbJhBQD9JmGn8Z3zE_4Cs+Kjq-5G2VSnP9u2imA@mail.gmail.com>
+References: <1352931747-19893-1-git-send-email-jonas.gorski@gmail.com>
+	<CAOiHx==CdCrb5++dsy5GBYpwXLmx3iG2bmpYiqiOuop_JAn9NQ@mail.gmail.com>
+	<20121115011504.GA7599@opensource.wolfsonmicro.com>
+	<4813771.TBFJ14qpIF@flexo>
+	<20121126141005.GJ9411@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2oox5VnwalALFvA7"
-Cc: Jonas Gorski <jonas.gorski@gmail.com>,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Maxime Bizon <mbizon@freebox.fr>,
-	Kevin Cernekee <cernekee@gmail.com>, stable@vger.kernel.org
-To: Florian Fainelli <florian@openwrt.org>
-Return-path: <stable-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <2175243.jGVtISFVra@flexo>
-Sender: stable-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121126141005.GJ9411-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 26 November 2012 15:10, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Mon, Nov 26, 2012 at 02:20:56PM +0100, Florian Fainelli wrote:
+>
+>> I assume any hardware design which needs specific CS treatment would wire it
+>> to a spare GPIO to fully control its assertion.
+>
+> We're talking about very standard stuff here, not odd corner use cases.
 
---2oox5VnwalALFvA7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Blame Broadcom engineers. And to top it, they did it again with their
+"high speed" SPI controller for their newer chips; I have a driver
+ready that will give you a deja vu.
 
-On Mon, Nov 26, 2012 at 02:11:20PM +0100, Florian Fainelli wrote:
-> On Saturday 24 November 2012 19:19:34 Jonas Gorski wrote:
+>> Would you accept this patch provided that Jonas updates his commit log with
+>> this description of devices we support?
+>
+> To be honest I'd rather see this as a preformance optimisation on top of
+> a generic fix based on something like allocating buffers to linearise.
 
-> > Well, I noticed this particular problem on a 3.6 kernel (3.6.7 to be
-> > exact), so by that definition at least one noticed, unless I don't
-> > count as anyone ;-). So, how can I make this driver less broken for
-> > release kernels? I somewhat doubt the framework change will be picked
-> > up by release kernel maintainers.
+Just curious, where do you see a performance optimisation? At least I
+did not intend to do any.
 
-> Considering it is a simple one-liner in spi-bcm63xx and that you don't want to
-> propagate a framework-level change back to -stable (which makes sense), don't
-> you want to pick that one?
+The buffers are hardware registers with a fixed length, there is no
+allocation at all. If it were possible to expand/allocate them I'd
+gladly do it. So this patch is the attempt to accept as many transfer
+combinations as possible under these constraints.
 
-> At least two other users told me about this bug in private conversations.
+> Otherwise we're into things like devices mostly working but then falling
+> over for large transfers which is going to be annoying to debug.
 
-Feel free to submit it for stable but it doesn't seem sensible to apply
-it to development kernels, we want to remove this code from individual
-drivers not add new copies.
+Unfortunately this is a hardware limitation for which Broadcom does
+not offer any workarounds (except this combination logic). And there
+are millions of devices out there; you can't just tell the users
+"please resolder the CS line so it can be controlled through GPIO. At
+least not most of them ;-)
 
---2oox5VnwalALFvA7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> As it stands as well as the commit log it'd definitely need some
+> comments in the code explaining the cuteness and the FIFO size
+> limitations (possibly even log messages if we hit them) - it's not the
+> coalescing that's the issue for me, it's the very specific and not
+> terribly obvious subset of cases it's worked around for.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Unfortunately it's (as Florian said) 99% of use cases for the SPI controller:
 
-iQIcBAEBAgAGBQJQs2y2AAoJELSic+t+oim9t9MQAJMJrxx9oOIV/QYH3V895ewW
-m5h1ZYmA2o9Bzy1EeQJB0HzbeoJNp9bjWnMND2kbcUR6214hxy9tvhTS0yXv4CZV
-npPKqLtI1PCqcVtI5gq974h7t7/rfTCtqETjKMrnO74YzuU71DD34Phg99tDLd6j
-dQb9phCef5J5sP5uUcig7y+9QiKuMznMxH/FSz895l5MXfM/Ib8AbTv5gSlgk5/a
-ATemruprQGj8TC+NPD3xqewjpZUm0neATzbrbeQw61uvoDPtBsvxk0cn3PzA/kF2
-tjjzgxlsvEYhHiu4O9oHfRMGhdkDKSVT1ZOZZybZRoWla+j67spRNEGpSwVm0WxE
-tKFZTRXVTNJtS6QdBseiKmn2J0Et+YmAOnark7T0yjBGxGAV8ohUBsGCzf2LAnTw
-s/BsRs7lnK+McTiVTRrySXsFVB4MkwMwVSPRcuAGXNeMJesQ/rVK64x5MELSofvr
-KAXnfbvgwLw7l0NzH1ty20G10/0MFC9H5mxzd7PMdzFPeJAdlERjRhvDkvKRycHv
-lCJ0yw57+wfkXCjKEf8emCeKs+0u1GymH2cs9wzG8NXnQv6SeBTIlesvGlC2OVgg
-8U247jxAfhVy3kPZH5DRsSERYvfUQBTGJwRfOvCLMkoMB9rgD6WQAMB6EDskuXJe
-wjl8zpV+QGviIu8i4QNv
-=kjkr
------END PGP SIGNATURE-----
+- Register accesses to managed switches (write-then-read, with small
+messages (write 2 bytes then read up to 8 for reading, write up to 10
+for writing registers).
+- Flash access using m25p80 (these also need write-then-read access
+for reading from the flash, or combining the two write transfers so
+writes actually succeed).
+- SLIC/SLAC accesses (usually write-then-read/write-write, too)
+- anything that uses spi_write_then_read().
 
---2oox5VnwalALFvA7--
+All these fail when not using the prepend bytes method or merging the
+two transfers into one full duplex transfer.
+
+But sure, I can add logging when transfers get rejected.
+
+
+Jonas
+
+------------------------------------------------------------------------------
+Monitor your physical, virtual and cloud infrastructure from a single
+web console. Get in-depth insight into apps, servers, databases, vmware,
+SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+Pricing starts from $795 for 25 servers or applications!
+http://p.sf.net/sfu/zoho_dev2dev_nov

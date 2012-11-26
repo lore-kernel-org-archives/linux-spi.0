@@ -1,42 +1,48 @@
-From: Ming Lei <ming.lei-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Subject: Re: [PATCH v2] spi: Add Lattice ECP3 FPGA configuration via SPI
-Date: Mon, 26 Nov 2012 20:58:42 +0800
-Message-ID: <CACVXFVPimS4msSmwHg5BHYFG2QbjE_MJ_n4q64ZM75KdXSbmgg@mail.gmail.com>
-References: <1353926520-4017-1-git-send-email-sr@denx.de>
+From: Florian Fainelli <florian@openwrt.org>
+Subject: Re: [PATCH 3.7] spi/bcm63xx: fix transfer bits_per_words check
+Date: Mon, 26 Nov 2012 14:11:20 +0100
+Message-ID: <2175243.jGVtISFVra@flexo>
+References: <1353764690-5961-1-git-send-email-jonas.gorski@gmail.com> <20121124180151.GJ4719@opensource.wolfsonmicro.com> <CAOiHx=nXRgF6YCLJ+U77boeuuWb6TOdT9dg=cie=Gruz6eS6xQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1353926520-4017-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Maxime Bizon <mbizon@freebox.fr>,
+	Kevin Cernekee <cernekee@gmail.com>, stable@vger.kernel.org
+To: Jonas Gorski <jonas.gorski@gmail.com>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <CAOiHx=nXRgF6YCLJ+U77boeuuWb6TOdT9dg=cie=Gruz6eS6xQ@mail.gmail.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 26, 2012 at 6:42 PM, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org> wrote:
-> +
-> +static int __devexit lattice_ecp3_remove(struct spi_device *spi)
-> +{
-> +       return 0;
-> +}
+On Saturday 24 November 2012 19:19:34 Jonas Gorski wrote:
+> On 24 November 2012 19:01, Mark Brown
+> <broonie@opensource.wolfsonmicro.com> wrote:
+> > On Sat, Nov 24, 2012 at 06:53:10PM +0100, Jonas Gorski wrote:
+> >> On 24 November 2012 18:28, Mark Brown
+> >
+> >> > This is now done by the SPI core, there's no need for individual drivers
+> >> > to do this.
+> >
+> >> So that will go to stable kernels, too?
+> >
+> > No, I hadn't sent it there.  I'd really expect that anyone using a
+> > release kernel would've noticed this if there were a problem, it's
+> > pretty obvious when it goes wrong, and I tend to be extremely
+> > conservative with changes to stable kernels especially framework ones.
+> 
+> Well, I noticed this particular problem on a 3.6 kernel (3.6.7 to be
+> exact), so by that definition at least one noticed, unless I don't
+> count as anyone ;-). So, how can I make this driver less broken for
+> release kernels? I somewhat doubt the framework change will be picked
+> up by release kernel maintainers.
 
-Since you call request_firmware_nowait() inside probe(), it is better to
-wait for its completion inside remove().
+Considering it is a simple one-liner in spi-bcm63xx and that you don't want to
+propagate a framework-level change back to -stable (which makes sense), don't
+you want to pick that one?
 
-Thanks,
+At least two other users told me about this bug in private conversations.
 --
-Ming Lei
-
-------------------------------------------------------------------------------
-Monitor your physical, virtual and cloud infrastructure from a single
-web console. Get in-depth insight into apps, servers, databases, vmware,
-SAP, cloud infrastructure, etc. Download 30-day Free Trial.
-Pricing starts from $795 for 25 servers or applications!
-http://p.sf.net/sfu/zoho_dev2dev_nov
+Florian

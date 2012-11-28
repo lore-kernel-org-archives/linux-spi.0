@@ -1,19 +1,13 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH] spi/bcm63xx: fix multi transfer messages
-Date: Wed, 28 Nov 2012 10:29:38 +0100
-Message-ID: <6119518.sNippsemXK@flexo>
-References: <1352931747-19893-1-git-send-email-jonas.gorski@gmail.com>
-	<201211272141.43354.florian@openwrt.org>
-	<20121128092628.GI32691@opensource.wolfsonmicro.com>
+From: MissCoquines <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?Soldes_de_folie_jusqu'=E0_-70%?=
+Date: Wed, 28 Nov 2012 12:53:24 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1577481.3016826189@news.galgalz.com>
+Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121128092628.GI32691-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,55 +18,122 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gV2VkbmVzZGF5IDI4IE5vdmVtYmVyIDIwMTIgMDk6MjY6MjggTWFyayBCcm93biB3cm90ZToK
-PiBPbiBUdWUsIE5vdiAyNywgMjAxMiBhdCAwOTo0MTo0M1BNICswMTAwLCBGbG9yaWFuIEZhaW5l
-bGxpIHdyb3RlOgo+ID4gTGUgbHVuZGkgMjYgbm92ZW1icmUgMjAxMiAxNjozMzoyMSwgTWFyayBC
-cm93biBhIMOpY3JpdCA6Cj4gPiA+IE9uIE1vbiwgTm92IDI2LCAyMDEyIGF0IDA0OjIzOjE4UE0g
-KzAxMDAsIEpvbmFzIEdvcnNraSB3cm90ZToKPiAKPiA+ID4gPiBoYXZpbmcgcmVhZC93cml0dGVu
-IHRoYXQgYW1vdW50IENTIHdpbGwgYmUgZGVhc3NlcnRlZC4gVGhlcmUgaXMgbm8KPiA+ID4gPiBw
-b3NzaWJsaXR5IG9mIHJlZmlsbGluZyB0aGUgYnVmZmVycyBiZWZvcmUgaXQgZGVhc3NlcnRzIENT
-LiBBbmQgdGhpcwo+ID4gPiA+IHVzdWFsbHkgbGVhZHMgdG8gYW4gYWJvcnRlZCBjb21tYW5kIGlm
-IHRoZSBkZXZpY2UgZXhwZWN0ZWQgbW9yZSBkYXRhLgo+IAo+ID4gPiBXaGF0LCB3YWl0IGEgbWlu
-dXRlLiAgQXJlIHlvdSBzYXlpbmcgdGhhdCB0aGlzIGhhcmR3YXJlIGNhbid0IGRvCj4gPiA+IHRy
-YW5zZmVycyBvZiBtb3JlIHRoYW4gYSBzaW5nbGUgRklGTyBhdCBhbGw/ICBUaGF0J3MgYXBwYXVs
-aW5nbHkgY3JhcCwKPiA+ID4gd2UgbmVlZCBzb21lIHdheSBmb3IgY2xpZW50IGRyaXZlcnMgdG8g
-dGVsbCB0aGV5J3JlIGRlYWxpbmcgd2l0aCBzdWNoCj4gPiA+IGNvbnRyb2xsZXJzLiAgVGhpbmdz
-IGxpa2UgcmVnbWFwIHJlYWxseSBuZWVkIHRvIGtub3cgc28gdGhleSBjYW4gcHJvdmlkZQo+ID4g
-PiBmYWxsYmFja3MuCj4gCj4gPiBObywgdGhlIGhhcmR3YXJlIGNhbm5vdCBkbyB0cmFuc2ZlcnMg
-d2hpY2ggYXJlIHdpZGVyIHRoYW4gYSBGSUZPIHNpemUsIHdlIAo+ID4gY291bGQgb2J2aW91c2x5
-IHdvcmthcm91bmQgdGhhdCBieSBhbGxvY2F0aW5nIGEgYm91bmNlIGJ1ZmZlciBhbmQgcmUtZmls
-bCB0aGUgCj4gPiBGSUZPIHdoZW4gdGhlIHRyYW5zZmVyIGlzIHdpZGVyLiBZb3UgY2FuIGNhbGwg
-dGhhdCBjcmFwLCBidXQgdGhhdCBpcyBqdXN0IAo+ID4gaGFyZHdhcmUgb3V0IHRoZXJlIG5vdywg
-c28gd2UgbmVlZCB0byBjb3BlIHdpdGggdGhhdC4KPiAKPiBTb3JyeSwgSSdtIGNvbmZ1c2VkIG5v
-dy4gIFlvdXIgZmlyc3QgY29tbWVudCBhYm92ZSBzb3VuZGVkIGxpa2UKPiByZWZpbGxpbmcgdGhl
-IEZJRk8gd2Fzbid0IGFuIG9wdGlvbj8KCkkgcmVhbGl6ZWQgdGhpcyByaWdodCBhZnRlciB3cml0
-aW5nIGl0LCB0aGlzIHdvdWxkIGJlIGEgd29ya2Fyb3VuZCwgbm90IGEgcmVhbApzb2x1dGlvbiwg
-YmVjYXVzZSBvbiB0aGUgd2lyZSwgdGhpcyB3b3VsZCBzdGlsbCBhcHBlYXIgYXMgYSBkaWZmZXJl
-bnQgU1BJCnRyYW5zZmVyLiBXaGVuZXZlciB5b3VyIHRyYW5zZmVyIHNwYW5zIGFjY3Jvc3MgYSBo
-YXJkd2FyZSBGSUZPIHNpemUsIHlvdSBoYXZlCnRvIGdlbmVyYXRlIGFzIG1hbnkgZGlzdGluY3Qg
-ImhhcmR3YXJlIiBTUEkgdHJhbnNmZXJzIGF0IHRoZSBjb250cm9sbGVyIGxldmVsLgoKPiAKPiA+
-IElmIHlvdSBtZWFudCBzb21ldGhpbmcgbGlrZSBhbGxvY2F0aW5nIGEga2VybmVsIGJ1ZmZlciBh
-bmQgbGluZWFyaXplIHRoZSAKPiA+IHRyYW5zZmVyIGxpc3QgYnVmZmVycyB0aGVyZSwgSSBzZWUg
-bm8gcG9pbnQgaW4gZG9pbmcgdGhpcyBjb25zaWRlcmluZyB0aGUgCj4gPiBsaW1pdGF0aW9ucyBt
-ZW50aW9ubmVkIGJlZm9yZSwgd2Ugd291bGQgZW5kIHVwIHdpdGggY29weWluZyB0aGUgZW50aXJl
-IGtlcm5lbCAKPiA+IGJ1ZmZlciBiYWNrIHRvIHRoZSBGSUZPIGhhcmR3YXJlIGJ1ZmZlci4gVGhl
-IG9ubHkgYWR2YW50YWdlIGJlaW5nIHRoYXQgd2UgZG8gbm90IAo+ID4gaGF2ZSB0aGUgRklGTyBz
-aXplIGxpbWl0YXRpb24uCj4gCj4gVGhhdCBzZWVtcyBsaWtlIGEgcHJldHR5IGJpZyBhZHZhbnRh
-Z2UgdG8gYmUgaG9uZXN0IC0gbGlrZSBJIHNheSwgaXQncwo+IHZlcnkgZGlmZmljdWx0IHRvIHJ1
-biBnZW5lcmljIGNvZGUgb24gdG9wIG9mIFNQSSBjb250cm9sbGVycyB3aXRoIHJhbmRvbQo+IHBy
-b3BlcnRpZXMgZXNwZWNpYWxseSBzaW5jZSB0aGV5J3JlIG5vbi1kaXNjb3ZlcmFibGUuCj4gCj4g
-PiBUaGVyZSBhcmUgcXVpdGUgc29tZSBxdWlya3kgU1BJIGNvbnRyb2xsZXJzIHN1cHBvcnRlZCwg
-eWV0IHRoYXQgb25lIGlzIHN0aWxsIAo+ID4gcHJldHR5IHN0cmFpZ2h0IGZvcndhcmQgdG8gYmUg
-d29ya2VkIGFyb3VuZC4KPiAKPiBXZWxsLCB3aGF0IHlvdSdyZSBzYXlpbmcgaXMgdGhhdCBpdCdz
-IGp1c3Qgbm90IHBvc3NpYmxlIHRvIHdvcmsgYXJvdW5kCj4gaXQgYXQgYWxsLgoKQ29ycmVjdCwg
-dGhlIGJlc3Qgd2UgY2FuIGRvIGlzIGFkZCBzb21lIGtpbmQgb2YgZmxhZyBhbmQgdGVsbCB0aGUg
-U1BJIHN1YnN5c3RlbQp3ZSBkb24ndCBzdXBwb3J0IHBoeXNpY2FsIHRyYW5zZmVycyBtb3JlIHRo
-YW4gTiBzaXplZC4KLS0KRmxvcmlhbgoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpLZWVwIHlvdXJz
-ZWxmIGNvbm5lY3RlZCB0byBHbyBQYXJhbGxlbDogCklOU0lHSFRTIFdoYXQncyBuZXh0IGZvciBw
-YXJhbGxlbCBoYXJkd2FyZSwgcHJvZ3JhbW1pbmcgYW5kIHJlbGF0ZWQgYXJlYXM/CkludGVydmll
-d3MgYW5kIGJsb2dzIGJ5IHRob3VnaHQgbGVhZGVycyBrZWVwIHlvdSBhaGVhZCBvZiB0aGUgY3Vy
-dmUuCmh0dHA6Ly9nb3BhcmFsbGVsLnNvdXJjZWZvcmdlLm5ldApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+SOLDES MISS COQUINES Jusqu?=E0 -70% de r=E9duction ! : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63i_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBs
+Si ce message ne s'affiche pas correctement, visualisez la version en =
+
+ligne. =
+
+Miss Coquines
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63iPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBt
+Femme : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63ifcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBy
+=A0=A0=A0=A0 Homme : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63jvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBz
+=A0=A0=A0=A0 Chaussures : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63j_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBw
+=A0=A0=A0=A0 Enfant : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63jPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlBx
+=A0=A0=A0=A0 Accessoires : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63jfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB2
+=A0=A0=A0=A0 Maroquinerie : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63gvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB3
+Jusqu?=E0 -70% de r=E9duction !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63g_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB0
+jusqu?=E0 -70%  de r=E9duction sur notre s=E9lection
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63gPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB1
+INSCRIVEZ-VOUS =C0 NOTRE NEWSLETTER POUR RECEVOIR NOS OFFRES =
+
+PROMOTIONNELLES : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63gfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB6
+J?en profite
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63hvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB7
+
+Robe Taupe
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63h_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB4
+Robe violette =E0 franges
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63hPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB5
+Robe trendy =E0 volants carr=E9s
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63hfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB-
+
+Gants
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63mvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB_
+Sac =E0 main tendance
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63m_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB8
+
+
+
+Livraison gratuite
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63mPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB9
+Livraison gratuite
+ d=E8s 35=A4 d' achat : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63mfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlGC
+48H
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63nvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlGD
+Recevez votre commande
+en 48H : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63n_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlGA
+Smiley
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63nPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlGB
+Satisfait ou Rembours=E9
+ 15 jours pour changer d'avis : =
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXyfPnGHxKLV63nfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlGG
+Pour ne plus recevoir de courriels de notre part, il vous suffit de =
+
+vous rendre sur cette page =
+
+.
+
+---------------------------------------------------------------------------=
+---
+Keep yourself connected to Go Parallel: =
+
+INSIGHTS What's next for parallel hardware, programming and related areas?
+Interviews and blogs by thought leaders keep you ahead of the curve.
+http://goparallel.sourceforge.net

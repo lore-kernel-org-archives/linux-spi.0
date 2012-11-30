@@ -1,18 +1,14 @@
-From: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] of/spi: Honour "status=disabled" property of device
-Date: Thu, 29 Nov 2012 11:11:26 -0600
-Message-ID: <50B7973E.20607@gmail.com>
-References: <50B715E1.3010501@sysgo.com>
+From: IKKS <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?Offre_Exceptionnelle_:_-30%_?=
+	=?iso-8859-15?Q?pour_vous_jusqu'=E0_dimanche_!?=
+Date: Fri, 30 Nov 2012 08:58:32 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1589769.3016826189@news.galgalz.com>
+Reply-To: newsletters-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	alexander sverdlin <alexander.sverdlin.ext-OYasijW0DpE@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Barry.Song-kQvG35nSl+M@public.gmane.org
-To: Alexander Sverdlin <asv-uSbOeAmDUekAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <50B715E1.3010501-uSbOeAmDUekAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,50 +19,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/29/2012 01:59 AM, Alexander Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin-uSbOeAmDUekAvxtiuMwx3w@public.gmane.org>
-> 
-> of/spi: Honour "status=disabled" property of device
-> 
-> Currently of_register_spi_devices() function registers all SPI devices,
-> independetly from their status property in device tree. According to
-> "ePAPR 1.1" spec, device should only be registered if there is no
-> "status" property, or it has "ok" (or "okay") value (see
-> of_device_is_available()). In case of "platform devices",
-> of_platform_device_create_pdata() checks for "status" and ensures
-> that disabled devices are not pupulated. But such check for SPI buses
-> was missing until now. Fix it.
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin-uSbOeAmDUekAvxtiuMwx3w@public.gmane.org>
-> ---
+IKKS Offre exceptionnelle IKKS
+Si ce message ne s'affiche pas correctement, visualisez la version en =
 
-This is under spi, but I've applied with the rest of the series (mdio
-and i2c). It all goes to Grant anyway.
+ligne. : =
 
-BTW, there's a problem that the subject line is duplicated in your
-patches. I've fixed that up.
+ http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy3fcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlG0 =
 
-Rob
+IKKS
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy0_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG6 =
 
-> --- linux.orig/drivers/spi/spi.c
-> +++ linux/drivers/spi/spi.c
-> @@ -819,7 +819,7 @@ static void of_register_spi_devices(stru
->  	if (!master->dev.of_node)
->  		return;
->  
-> -	for_each_child_of_node(master->dev.of_node, nc) {
-> +	for_each_available_child_of_node(master->dev.of_node, nc) {
->  		/* Alloc an spi_device */
->  		spi = spi_alloc_device(master);
->  		if (!spi) {
-> _______________________________________________
-> devicetree-discuss mailing list
-> devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> https://lists.ozlabs.org/listinfo/devicetree-discuss
-> 
+Femme - Homme - Fille - Gar=E7on - B=E9b=E9
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy0PcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG7 =
 
 
-------------------------------------------------------------------------------
-Keep yourself connected to Go Parallel: 
-VERIFY Test and improve your parallel project with help from experts 
-and peers. http://goparallel.sourceforge.net
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy0fcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG4 =
+
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org ,
+
+ IKKS vous a r=E9serv=E9 une offre exceptionnelle valable pendant quelques =
+
+jours seulement : : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy1vcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlG5 =
+
+-30% sur www.ikks.com/eshop
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy1_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG- =
+
+Pour profiter de cette offre merci de valider votre adresse :
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy1PcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG_ =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy1fcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlG8 =
+
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org : =
+
+ http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy6vcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlG9 =
+
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy6_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHC =
+
+Valider - En validant, j'accepte de recevoir par e-mail les offres =
+
+promotionnelles, avant-premi=E8res et actualit=E9s de IKKShttp://p5trc.emv2=
+.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy6PcStGb5lw8W0bBhOG5mpqVsje_HhdA=
+5HlHD =
+
+Satisfait ou rembours=E9 - Livraison rapide - Paiement 100% s=E9curis=E9 - =
+
+Livraison offerte d=E8s 200=A4http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9=
+MKJXmfPnGHxKLVVy6fcStGb5lw8W0bBhOG5mpqVsje_HhdA5HlHA =
+
+* Du 28 novembre au 02 d=E9cembre 2012. Offre r=E9serv=E9e pour un premier =
+
+achat sur www.ikks.com/eshop, non cumulable avec toute autre offre =
+
+promotionnelle en cours. Offre valable sur tout le site =E0 l?exception =
+
+des rubriques =AB Nouveaut=E9s =BB et =AB IT E-Shop =BB : http://p5trc.emv2=
+.com/HS?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy7vcStGb5lw8W0bBhOG5mpqVsje_HhdA=
+5HlHB =
+
+Pour ne plus recevoir de courriels de notre part, il vous suffit de =
+
+vous rendre sur cette page. : =
+
+ http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJXmfPnGHxKLVVy0vcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlG1 =
+
+
+
+
+---------------------------------------------------------------------------=
+---
+Keep yourself connected to Go Parallel: =
+
+TUNE You got it built. Now make it sing. Tune shows you how.
+http://goparallel.sourceforge.net

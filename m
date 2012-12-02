@@ -1,72 +1,52 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH] spi: Remove SPI_BUFSIZ restriction on spi_write_then_read()
-Date: Sun,  2 Dec 2012 12:54:25 +0900
-Message-ID: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "yjvpzn" <wxbykme-7FzBaTSTDS9BDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?B?56eR56CU6aG555uu55Sz5oql5oyH5a+85Lya6K6u6YCa55+l5paH5Lu277yIMTLmnIgxMw==?=
+	=?utf-8?B?5pel5p2t5bee77yJ?=
+Date: Sun, 2 Dec 2012 19:16:45 +0800
+Message-ID: <E80DA408A4A18A1D6F739962B77DA721@wggsphrba>
+Reply-To: huiwuzu333-KN7UnAbNpbg@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_084E_01A95723.13C11230"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-In order to avoid constantly allocating and deallocating there is a fixed
-buffer which spi_write_then_read() uses for transfers, with an early error
-check to ensure that the transfer fits within the buffer. This limits the
-size of transfers to this size, currently max(32, SMP_CACHE_BYTES).
+This is a multi-part message in MIME format.
 
-Since we can dynamically allocate and in fact already have a fallback
-to do so when there is contention for the fixed buffer remove this
-restriction and instead dynamically allocate a suitably sized buffer if
-the transfer won't fit.
+------=_NextPart_000_084E_01A95723.13C11230
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
----
- drivers/spi/spi.c |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+DQoNCg0KDQoNCg0KMTk6MTY6NTQ=
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c4f7d71..224b7bc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1646,12 +1646,18 @@ int spi_write_then_read(struct spi_device *spi,
- 	struct spi_transfer	x[2];
- 	u8			*local_buf;
- 
--	/* Use preallocated DMA-safe buffer.  We can't avoid copying here,
--	 * (as a pure convenience thing), but we can keep heap costs
--	 * out of the hot path ...
-+	/* Use preallocated DMA-safe buffer if we can.  We can't avoid
-+	 * copying here, (as a pure convenience thing), but we can
-+	 * keep heap costs out of the hot path unless someone else is
-+	 * using the pre-allocated buffer or the transfer is too large.
- 	 */
--	if ((n_tx + n_rx) > SPI_BUFSIZ)
--		return -EINVAL;
-+	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
-+		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
-+		if (!local_buf)
-+			return -ENOMEM;
-+	} else {
-+		local_buf = buf;
-+	}
- 
- 	spi_message_init(&message);
- 	memset(x, 0, sizeof x);
-@@ -1664,14 +1670,6 @@ int spi_write_then_read(struct spi_device *spi,
- 		spi_message_add_tail(&x[1], &message);
- 	}
- 
--	/* ... unless someone else is using the pre-allocated buffer */
--	if (!mutex_trylock(&lock)) {
--		local_buf = kmalloc(SPI_BUFSIZ, GFP_KERNEL);
--		if (!local_buf)
--			return -ENOMEM;
--	} else
--		local_buf = buf;
--
- 	memcpy(local_buf, txbuf, n_tx);
- 	x[0].tx_buf = local_buf;
- 	x[1].rx_buf = local_buf + n_tx;
--- 
-1.7.10.4
+------=_NextPart_000_084E_01A95723.13C11230
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Keep yourself connected to Go Parallel: 
+DESIGN Expert tips on starting your parallel project right.
+http://goparallel.sourceforge.net/
+------=_NextPart_000_084E_01A95723.13C11230
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_084E_01A95723.13C11230--

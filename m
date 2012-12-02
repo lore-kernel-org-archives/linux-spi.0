@@ -1,38 +1,72 @@
-From: Lunettes Presbyte <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Le TOP des lunettes loupe =?iso-8859-15?Q?=E0?= partir de 59 euros
-	livraison offerte
-Date: Sun, 02 Dec 2012 00:04:03 +0100
-Message-ID: <1354403088.thing50ba8d107f3c1@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH] spi: Remove SPI_BUFSIZ restriction on spi_write_then_read()
+Date: Sun,  2 Dec 2012 12:54:25 +0900
+Message-ID: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+In order to avoid constantly allocating and deallocating there is a fixed
+buffer which spi_write_then_read() uses for transfers, with an early error
+check to ensure that the transfer fits within the buffer. This limits the
+size of transfers to this size, currently max(32, SMP_CACHE_BYTES).
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI2MzM0JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMi0wMiAwMDowMDowMSZlPTEmaD0yNjMzMiZmPTI2MzM0Jmc9MjYzMzQ=3D
+Since we can dynamically allocate and in fact already have a fallback
+to do so when there is contention for the fixed buffer remove this
+restriction and instead dynamically allocate a suitably sized buffer if
+the transfer won't fit.
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI2MzM0JmM=
-9NDgzNjEyJmQ9MjAxMi0xMi0wMiAwMDowMDowMSZlPTEmaD0yNjMzMiZmPTI2MzM0Jmc9MjYzMz=
-Q=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 ---
-Keep yourself connected to Go Parallel: =
+ drivers/spi/spi.c |   24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-INSIGHTS What's next for parallel hardware, programming and related areas?
-Interviews and blogs by thought leaders keep you ahead of the curve.
-http://goparallel.sourceforge.net
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index c4f7d71..224b7bc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1646,12 +1646,18 @@ int spi_write_then_read(struct spi_device *spi,
+ 	struct spi_transfer	x[2];
+ 	u8			*local_buf;
+ 
+-	/* Use preallocated DMA-safe buffer.  We can't avoid copying here,
+-	 * (as a pure convenience thing), but we can keep heap costs
+-	 * out of the hot path ...
++	/* Use preallocated DMA-safe buffer if we can.  We can't avoid
++	 * copying here, (as a pure convenience thing), but we can
++	 * keep heap costs out of the hot path unless someone else is
++	 * using the pre-allocated buffer or the transfer is too large.
+ 	 */
+-	if ((n_tx + n_rx) > SPI_BUFSIZ)
+-		return -EINVAL;
++	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
++		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
++		if (!local_buf)
++			return -ENOMEM;
++	} else {
++		local_buf = buf;
++	}
+ 
+ 	spi_message_init(&message);
+ 	memset(x, 0, sizeof x);
+@@ -1664,14 +1670,6 @@ int spi_write_then_read(struct spi_device *spi,
+ 		spi_message_add_tail(&x[1], &message);
+ 	}
+ 
+-	/* ... unless someone else is using the pre-allocated buffer */
+-	if (!mutex_trylock(&lock)) {
+-		local_buf = kmalloc(SPI_BUFSIZ, GFP_KERNEL);
+-		if (!local_buf)
+-			return -ENOMEM;
+-	} else
+-		local_buf = buf;
+-
+ 	memcpy(local_buf, txbuf, n_tx);
+ 	x[0].tx_buf = local_buf;
+ 	x[1].rx_buf = local_buf + n_tx;
+-- 
+1.7.10.4

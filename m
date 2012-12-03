@@ -1,17 +1,13 @@
-From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v1 0/1] spi: davinci: add OF support for the spi controller
-Date: Mon, 3 Dec 2012 13:38:37 -0500
-Message-ID: <1354559918-15105-1-git-send-email-m-karicheri2@ti.com>
+From: "Isabela Maria" <contato-ZIiXBKy9GVDAMZVyrMWeIQh0onu2mTI+@public.gmane.org>
+Subject: Aumente Seus Contatos e Ganhe Mais com o Seu MMN!
+Date: Mon, 3 Dec 2012 17:49:58 -0200
+Message-ID: <E1Tfc1t-0007BR-It@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	<linux-keystone-uAqBSO/uNfhBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,29 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This adds OF support for DaVinci SPI driver. Following are changes from initial
-version based on mostly review comments.
- - removed attribute for spi version. instead, compatibility string is
-   modified to include version info.
- - pdata ptr in davinci_spi_platform_data is replaced with struct itself.
-   spi_davinci_get_pdata() now populates the pdata in the above structure
-   with parsed values from DT bindings.
- - rebased to v3.7 rc7 of linux-next
- - replaces clk_* APIs with their prepare/unprepare versions
+Ol=E1,
+Quero convidar voc=EA que =E9 empreendedor a conhecer uma ferramenta que va=
+i colocar o seu MMN em outro n=EDvel e voc=EA vai faturar Muito Mais. =
 
-Murali Karicheri (1):
-  spi: davinci: add OF support for the spi controller
+Uma Ferramenta para voc=EA que trabalha com uma das empresas abaixo:
+FR Promotora, Polishop, amway, atm, Balsamo Perfumes, Akmos, Belcorp, Forev=
+er, herbalife, Inspira=E7=E3o Perfumes, LGN International, Monavie, My Trav=
+el and Cash, oak, Organo Gold, Recarga plus, Telexfree, UP! Ess=EAncia, Omn=
+ilife, Multiclick Brasil, SGDA, Kit Ganhar Dinheiro, Clube Ca=E7adores de F=
+ortuna, Clube Ganhar Dinheiro.
+Acesse: http://ldmarketing.com.br e Conhe=E7a a Ferramenta que pode fazer v=
+oc=EA aumentar seus contatos e Ganhar Muito Mais com seu MMN.
 
- .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++
- drivers/spi/spi-davinci.c                          |  102 +++++++++++++++++---
- 2 files changed, 139 insertions(+), 14 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
-
--- 
-1.7.9.5
+Atee.
+Isabela Maria =
 
 
-------------------------------------------------------------------------------
-Keep yourself connected to Go Parallel: 
-BUILD Helping you discover the best ways to construct your parallel projects.
+---------------------------------------------------------------------------=
+---
+Keep yourself connected to Go Parallel: =
+
+BUILD Helping you discover the best ways to construct your parallel project=
+s.
 http://goparallel.sourceforge.net

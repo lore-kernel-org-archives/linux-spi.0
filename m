@@ -1,44 +1,62 @@
-From: "Isabela Maria" <contato-ZIiXBKy9GVDAMZVyrMWeIQh0onu2mTI+@public.gmane.org>
-Subject: Aumente Seus Contatos e Ganhe Mais com o Seu MMN!
-Date: Mon, 3 Dec 2012 17:49:58 -0200
-Message-ID: <E1Tfc1t-0007BR-It@sfs-ml-2.v29.ch3.sourceforge.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+Subject: [PATCH RESEND] spi: erase pointer to drvdata on removal
+Date: Mon,  3 Dec 2012 15:28:24 -0500
+Message-ID: <1354566504-17657-1-git-send-email-vivien.didelot@savoirfairelinux.com>
+Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: spi-devel-general@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Ol=E1,
-Quero convidar voc=EA que =E9 empreendedor a conhecer uma ferramenta que va=
-i colocar o seu MMN em outro n=EDvel e voc=EA vai faturar Muito Mais. =
+Without this patch, a SPI device may keep its drvdata whereas it was unbound
+from its driver. This may result in accessing an invalid pointer.
 
-Uma Ferramenta para voc=EA que trabalha com uma das empresas abaixo:
-FR Promotora, Polishop, amway, atm, Balsamo Perfumes, Akmos, Belcorp, Forev=
-er, herbalife, Inspira=E7=E3o Perfumes, LGN International, Monavie, My Trav=
-el and Cash, oak, Organo Gold, Recarga plus, Telexfree, UP! Ess=EAncia, Omn=
-ilife, Multiclick Brasil, SGDA, Kit Ganhar Dinheiro, Clube Ca=E7adores de F=
-ortuna, Clube Ganhar Dinheiro.
-Acesse: http://ldmarketing.com.br e Conhe=E7a a Ferramenta que pode fazer v=
-oc=EA aumentar seus contatos e Ganhar Muito Mais com seu MMN.
+As for i2c-core, let the SPI core handle the removal of the device's drvdata,
+after a remove(), or a probe() failure.
 
-Atee.
-Isabela Maria =
+This is a resent of the previous patch https://lkml.org/lkml/2012/11/1/314
 
-
----------------------------------------------------------------------------=
+Signed-off-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
 ---
-Keep yourself connected to Go Parallel: =
+ drivers/spi/spi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-BUILD Helping you discover the best ways to construct your parallel project=
-s.
-http://goparallel.sourceforge.net
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 84c2861..fe636fe 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -233,15 +233,25 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
+ static int spi_drv_probe(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
++	struct spi_device		*sdev = to_spi_device(dev);
++	int				status;
+ 
+-	return sdrv->probe(to_spi_device(dev));
++	status = sdrv->probe(sdev);
++	if (status)
++		spi_set_drvdata(sdev, NULL);
++	return status;
+ }
+ 
+ static int spi_drv_remove(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
++	struct spi_device		*sdev = to_spi_device(dev);
++	int				status;
+ 
+-	return sdrv->remove(to_spi_device(dev));
++	status = sdrv->remove(sdev);
++	if (status == 0)
++		spi_set_drvdata(sdev, NULL);
++	return status;
+ }
+ 
+ static void spi_drv_shutdown(struct device *dev)
+-- 
+1.7.11.7

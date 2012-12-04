@@ -1,36 +1,33 @@
-From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 1/2] of_i2c: sparc: Allow OF_I2C for sparc
-Date: Tue,  4 Dec 2012 15:09:37 +0100
-Message-ID: <1354630178-25387-2-git-send-email-andreas@gaisler.com>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 0/2] sparc: Enable OF functionality for sparc for i2c and spi
+Date: Tue, 4 Dec 2012 14:44:57 +0000
+Message-ID: <CACxGe6sw0zU0NcXw1gjMZka4WyTZgT4heF3r4k0QPHbfcPzbiw@mail.gmail.com>
 References: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
-Cc: grant.likely@secretlab.ca, w.sang@pengutronix.de, sam@ravnborg.org,
-	sparclinux@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net, linux-i2c@vger.kernel.org,
-	software@gaisler.com
-To: davem@davemloft.net
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: David Miller <davem@davemloft.net>,
+	Wolfram Sang <w.sang@pengutronix.de>,
+	Sam Ravnborg <sam@ravnborg.org>, sparclinux@vger.kernel.org,
+	devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Linux I2C <linux-i2c@vger.kernel.org>, software@gaisler.com
+To: Andreas Larsson <andreas@gaisler.com>
 Return-path: <sparclinux-owner@vger.kernel.org>
 In-Reply-To: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
 Sender: sparclinux-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
----
- drivers/of/Kconfig |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+On Tue, Dec 4, 2012 at 2:09 PM, Andreas Larsson <andreas@gaisler.com> wrote:
+> This series removes the dependency on !SPARC for OF_I2C and removes the
+> depencency of !defined(CONFIG_SPARC) for the function
+> of_register_spi_devices. I find no reason for these to be unavailable
+> for sparc.
+>
+> I am not sure if these should go through the sparc tree or the
+> corresponding subsystem trees.
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index dfba3e6..d37bfcf 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -53,7 +53,7 @@ config OF_DEVICE
- 
- config OF_I2C
- 	def_tristate I2C
--	depends on I2C && !SPARC
-+	depends on I2C
- 	help
- 	  OpenFirmware I2C accessors
- 
--- 
-1.7.0.4
+They should go through the subsystem trees.
 
+What build testing have you done on these patches?
+
+g.

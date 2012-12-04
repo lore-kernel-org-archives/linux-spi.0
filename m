@@ -1,7 +1,7 @@
 From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 2/2] spi: sparc: Allow of_register_spi_devices for sparc
-Date: Tue,  4 Dec 2012 15:09:38 +0100
-Message-ID: <1354630178-25387-3-git-send-email-andreas@gaisler.com>
+Subject: [PATCH 1/2] of_i2c: sparc: Allow OF_I2C for sparc
+Date: Tue,  4 Dec 2012 15:09:37 +0100
+Message-ID: <1354630178-25387-2-git-send-email-andreas@gaisler.com>
 References: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
 Cc: grant.likely@secretlab.ca, w.sang@pengutronix.de, sam@ravnborg.org,
 	sparclinux@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
@@ -15,22 +15,22 @@ List-Id: linux-spi.vger.kernel.org
 
 Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 ---
- drivers/spi/spi.c |    2 +-
+ drivers/of/Kconfig |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c4f7d71..d8339fe 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -812,7 +812,7 @@ err_init_queue:
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index dfba3e6..d37bfcf 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -53,7 +53,7 @@ config OF_DEVICE
  
- /*-------------------------------------------------------------------------*/
+ config OF_I2C
+ 	def_tristate I2C
+-	depends on I2C && !SPARC
++	depends on I2C
+ 	help
+ 	  OpenFirmware I2C accessors
  
--#if defined(CONFIG_OF) && !defined(CONFIG_SPARC)
-+#if defined(CONFIG_OF)
- /**
-  * of_register_spi_devices() - Register child devices onto the SPI bus
-  * @master:	Pointer to spi_master device
 -- 
 1.7.0.4
 

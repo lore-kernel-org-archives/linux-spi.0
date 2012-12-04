@@ -1,13 +1,16 @@
-From: =?iso-8859-15?Q?No=EBl_chez_Coolcadeau=2Efr?= <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
-Subject: =?iso-8859-15?Q?10=A4_offerts_=E0_chaque_commande?=
-Date: Tue, 4 Dec 2012 06:25:16 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1609906.3016826189@news.localips.com>
-Reply-To: newsletters-J7WvDeFZg7BWj0EZb7rXcA@public.gmane.org
+From: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH RESEND] spi: stmp: remove obsolete driver
+Date: Tue,  4 Dec 2012 06:42:28 +0100
+Message-ID: <1354599748-24398-1-git-send-email-w.sang@pengutronix.de>
+References: <20121204013835.GA17729@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121204013835.GA17729-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,259 +21,724 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Coolcadeau.fr: Eh oui c?est bient=F4t No=EBl =
+This driver is obsolete and can't even be built anymore since the
+platform it depends has been removed.
 
+The STMP series is completely covered by the MXS platform these days, so
+spi-mxs can be used instead.
 
-Pour visualiser la version en images, rendez-vous sur cette page =
-
-
-
-=A0 Coolcadeau.fr - Une filiale du groupe Smart&co.
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTWPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIP
-=A0 Plus de 3 000 id=E9es cadeaux =E0 la carte ou en coffret, partout en =
-
-France =A0 =A0 =A0 =A0 =A0 =
-
-=A0 Coffret Cadeau : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTWfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIM
-Pilotage : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTXvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIN
-Bapt=EAme de l'air : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTX_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIS
-Week-end : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTXPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIT
-Bien-=EAtre : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTXfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIQ
-Aventure : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTUvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIR
-Gourmet : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTU_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIW
-Cadeaux No=EBl : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTUPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIX
-=A0 Juqu'=E0 50% de r=E9duction
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTUfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIU
-=A0 =A0 =
-
- Eh oui c?est bient=F4t No=EBl ! Il n?y a pas de cadeaux de No=EBl mieux =
-
-r=E9ussis qu?avec Coolcadeau.fr, voil=E0 pourquoi on vous a s=E9lectionn=E9 =
-
-avec amour des offres aussi vari=E9es qu'all=E9chantes. Et parce que vous =
-
-le valez bien, 10=A4 vous seront offerts =E0 chaque commande. Bons achats =
-=E0 =
-
-tous !
-=A0 =A0 =A0 =A0 =A0 =
-
-
-Coolcadeau.fr: Coffret cadeau pilotage Porsche
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTVvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIV
-
-Coffret Pilotage Porsche =
-
-13 lieux au choix
-139=A4 79,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTV_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIa
-
-=A0 =
-
-
-Coolcadeau.fr: Coffret Cadeau Bien-=CAtre Pour 2
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTVPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIb
-
-Coffret Cadeau Bien-=CAtre Pour 2 =
-
- 30 activit=E9s au choix =
-
- 119,90=A4 59,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTVfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIY
-
-=A0 =
-
-
-Coolcadeau.fr: Coffret cadeau Montgolfi=E8re pour deux
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTavcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIZ
-
-Coffret cadeau Montgolfi=E8re pour deux =
-
- 32 sites au choix 399=A4 359=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTa_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIe
-
-
-
-Coolcadeau.fr: Coffret cadeau sejour Decouverte - 2x1
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTaPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIf
-
-Coffret Sejour Decouverte - 2 nuits pour le prix d'1 =
-
-40 lieux au choix
-199,90=A4 99,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTafcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIc
-
-=A0 =
-
-
-Coolcadeau.fr: coffret cadeau Massage
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTbvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlId
-
-Coffret cadeau massage  28 activit=E9s au choix
-
- 90=A4 49,90=A4voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTb_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIi
-
-=A0 =
-
-
-Coolcadeau.fr: Coffret Cadeau Saut en Parachute
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTbPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIj
-
-Coffret Cadeau Saut en Parachute =
-
- 31 lieux au choix =A0  259,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTbfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIg
-
-
-
-Fish pedicure : Paris 11=E8me
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTYvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIh
-
-Coffret cadeau Week-end =BCnologique =
-
-27 s=E9jours au choix
-202=A4 119,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTY_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIm
-
-=A0 =
-
-
-Coolcadeau.fr: coffret pilotage Ferrari ou Lamborghini =
-
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTYPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIn
-
-Coffret pilotage Ferrari ou Lamborghini =
-
- 18 lieux au choix
- 199=A4 139=A4voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTYfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIk
-
-=A0 =
-
-
-Coolcadeau.fr: Coffret Cadeau Restaurants du Monde
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTZvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIl
-
-Coffret Cadeau Restaurants du Monde =
-
-17 activit=E9s 99,90=A4  59,90=A4 voir
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTZ_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIq
-
-=A0 =A0 =
-
-Coolcadeau.fr: Expedition sous 24h, Paiement 100% securise, +3000 =
-
-idees cadeaux, 95% qualite de service client, Exchange gratuit =A0 =A0 =
-
- * Voir conditions sur site =A0 =
-
-Pour =EAtre retir=E9 de nos listes de diffusion, rendez-vous sur cette page
-
-
-
- Coolcadeau.fr offre une large gamme de superbes cadeaux d'activit=E9s =
-
-de loisir, du plus simple =E0 l'exceptionnel. Ces cadeaux feront vivre =
-
-des moments uniques =E0 leur destinataire, qu'ils soient =E0 la recherche =
-
-d'=E9motions fortes ou d'un moment de d=E9tente. Coolcadeau.fr propose =
-
-=E9galement pour ceux qui le souhaitent, des cadeaux plus traditionnels. =
-
-Nos partenaires en France ont =E9t=E9 rigoureusement s=E9lectionn=E9s pour =
-leur =
-
-grande exp=E9rience dans leur domaine d'activit=E9 ainsi que pour la =
-
-qualit=E9 de leur service. Nous nous effor=E7ons de vendre nos activit=E9s =
-
-aux m=EAmes prix que ceux pratiqu=E9s par le prestataire.
-
-Coolcadeau.fr fait partie du groupe Smart&Co qui commercialise =
-
-=E9galement les marques Smartbox, La Fourchette, Gault Millau, Lookingo, =
-
-Balinea...
-
-Notre service clients est =E0 votre disposition pour r=E9pondre =E0 toutes =
-
-vos questions. Contactez-nous par t=E9l=E9phone au 0820 230 037 =
-
-(0,12=A4/min). ou au serviceclients-v9PYfLCM+amf/KwRrrZUxg@public.gmane.org : =
-
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJXS0jnGHxKLVOTZPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIr
- . Nous sommes =E0 votre =E9coute !
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 ---
+ drivers/spi/Kconfig    |    6 -
+ drivers/spi/Makefile   |    1 -
+ drivers/spi/spi-stmp.c |  664 ------------------------------------------------
+ 3 files changed, 671 deletions(-)
+ delete mode 100644 drivers/spi/spi-stmp.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 1acae35..3d73762 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -372,12 +372,6 @@ config SPI_SIRF
+ 	help
+ 	  SPI driver for CSR SiRFprimaII SoCs
+ 
+-config SPI_STMP3XXX
+-	tristate "Freescale STMP37xx/378x SPI/SSP controller"
+-	depends on ARCH_STMP3XXX
+-	help
+-	  SPI driver for Freescale STMP37xx/378x SoC SSP interface
+-
+ config SPI_MXS
+ 	tristate "Freescale MXS SPI controller"
+ 	depends on ARCH_MXS
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index c48df47..8627da4 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -59,7 +59,6 @@ obj-$(CONFIG_SPI_SH_HSPI)		+= spi-sh-hspi.o
+ obj-$(CONFIG_SPI_SH_MSIOF)		+= spi-sh-msiof.o
+ obj-$(CONFIG_SPI_SH_SCI)		+= spi-sh-sci.o
+ obj-$(CONFIG_SPI_SIRF)		+= spi-sirf.o
+-obj-$(CONFIG_SPI_STMP3XXX)		+= spi-stmp.o
+ obj-$(CONFIG_SPI_TI_SSP)		+= spi-ti-ssp.o
+ obj-$(CONFIG_SPI_TLE62X0)		+= spi-tle62x0.o
+ obj-$(CONFIG_SPI_TOPCLIFF_PCH)		+= spi-topcliff-pch.o
+diff --git a/drivers/spi/spi-stmp.c b/drivers/spi/spi-stmp.c
+deleted file mode 100644
+index 911e904..0000000
+--- a/drivers/spi/spi-stmp.c
++++ /dev/null
+@@ -1,664 +0,0 @@
+-/*
+- * Freescale STMP378X SPI master driver
+- *
+- * Author: dmitry pervushin <dimka-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>
+- *
+- * Copyright 2008 Freescale Semiconductor, Inc. All Rights Reserved.
+- * Copyright 2008 Embedded Alley Solutions, Inc All Rights Reserved.
+- */
+-
+-/*
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
+- */
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/platform_device.h>
+-#include <linux/spi/spi.h>
+-#include <linux/err.h>
+-#include <linux/clk.h>
+-#include <linux/io.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/delay.h>
+-
+-#include <mach/platform.h>
+-#include <mach/stmp3xxx.h>
+-#include <mach/dma.h>
+-#include <mach/regs-ssp.h>
+-#include <mach/regs-apbh.h>
+-
+-
+-/* 0 means DMA mode(recommended, default), !0 - PIO mode */
+-static int pio;
+-static int clock;
+-
+-/* default timeout for busy waits is 2 seconds */
+-#define STMP_SPI_TIMEOUT	(2 * HZ)
+-
+-struct stmp_spi {
+-	int		id;
+-
+-	void *  __iomem regs;	/* vaddr of the control registers */
+-
+-	int		irq, err_irq;
+-	u32		dma;
+-	struct stmp3xxx_dma_descriptor d;
+-
+-	u32		speed_khz;
+-	u32		saved_timings;
+-	u32		divider;
+-
+-	struct clk	*clk;
+-	struct device	*master_dev;
+-
+-	struct work_struct work;
+-	struct workqueue_struct *workqueue;
+-
+-	/* lock protects queue access */
+-	spinlock_t lock;
+-	struct list_head queue;
+-
+-	struct completion done;
+-};
+-
+-#define busy_wait(cond)							\
+-	({								\
+-	unsigned long end_jiffies = jiffies + STMP_SPI_TIMEOUT;		\
+-	bool succeeded = false;						\
+-	do {								\
+-		if (cond) {						\
+-			succeeded = true;				\
+-			break;						\
+-		}							\
+-		cpu_relax();						\
+-	} while (time_before(jiffies, end_jiffies));			\
+-	succeeded;							\
+-	})
+-
+-/**
+- * stmp_spi_init_hw
+- * Initialize the SSP port
+- */
+-static int stmp_spi_init_hw(struct stmp_spi *ss)
+-{
+-	int err = 0;
+-	void *pins = ss->master_dev->platform_data;
+-
+-	err = stmp3xxx_request_pin_group(pins, dev_name(ss->master_dev));
+-	if (err)
+-		goto out;
+-
+-	ss->clk = clk_get(NULL, "ssp");
+-	if (IS_ERR(ss->clk)) {
+-		err = PTR_ERR(ss->clk);
+-		goto out_free_pins;
+-	}
+-	clk_enable(ss->clk);
+-
+-	stmp3xxx_reset_block(ss->regs, false);
+-	stmp3xxx_dma_reset_channel(ss->dma);
+-
+-	return 0;
+-
+-out_free_pins:
+-	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
+-out:
+-	return err;
+-}
+-
+-static void stmp_spi_release_hw(struct stmp_spi *ss)
+-{
+-	void *pins = ss->master_dev->platform_data;
+-
+-	if (ss->clk && !IS_ERR(ss->clk)) {
+-		clk_disable(ss->clk);
+-		clk_put(ss->clk);
+-	}
+-	stmp3xxx_release_pin_group(pins, dev_name(ss->master_dev));
+-}
+-
+-static int stmp_spi_setup_transfer(struct spi_device *spi,
+-		struct spi_transfer *t)
+-{
+-	u8 bits_per_word;
+-	u32 hz;
+-	struct stmp_spi *ss = spi_master_get_devdata(spi->master);
+-	u16 rate;
+-
+-	bits_per_word = spi->bits_per_word;
+-	if (t && t->bits_per_word)
+-		bits_per_word = t->bits_per_word;
+-
+-	/*
+-	 * Calculate speed:
+-	 *	- by default, use maximum speed from ssp clk
+-	 *	- if device overrides it, use it
+-	 *	- if transfer specifies other speed, use transfer's one
+-	 */
+-	hz = 1000 * ss->speed_khz / ss->divider;
+-	if (spi->max_speed_hz)
+-		hz = min(hz, spi->max_speed_hz);
+-	if (t && t->speed_hz)
+-		hz = min(hz, t->speed_hz);
+-
+-	if (hz == 0) {
+-		dev_err(&spi->dev, "Cannot continue with zero clock\n");
+-		return -EINVAL;
+-	}
+-
+-	if (bits_per_word != 8) {
+-		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
+-			__func__, bits_per_word);
+-		return -EINVAL;
+-	}
+-
+-	dev_dbg(&spi->dev, "Requested clk rate = %uHz, max = %uHz/%d = %uHz\n",
+-		hz, ss->speed_khz, ss->divider,
+-		ss->speed_khz * 1000 / ss->divider);
+-
+-	if (ss->speed_khz * 1000 / ss->divider < hz) {
+-		dev_err(&spi->dev, "%s, unsupported clock rate %uHz\n",
+-			__func__, hz);
+-		return -EINVAL;
+-	}
+-
+-	rate = 1000 * ss->speed_khz/ss->divider/hz;
+-
+-	writel(BF(ss->divider, SSP_TIMING_CLOCK_DIVIDE)		|
+-	       BF(rate - 1, SSP_TIMING_CLOCK_RATE),
+-	       HW_SSP_TIMING + ss->regs);
+-
+-	writel(BF(1 /* mode SPI */, SSP_CTRL1_SSP_MODE)		|
+-	       BF(4 /* 8 bits   */, SSP_CTRL1_WORD_LENGTH)	|
+-	       ((spi->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
+-	       ((spi->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0) |
+-	       (pio ? 0 : BM_SSP_CTRL1_DMA_ENABLE),
+-	       ss->regs + HW_SSP_CTRL1);
+-
+-	return 0;
+-}
+-
+-static int stmp_spi_setup(struct spi_device *spi)
+-{
+-	/* spi_setup() does basic checks,
+-	 * stmp_spi_setup_transfer() does more later
+-	 */
+-	if (spi->bits_per_word != 8) {
+-		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
+-			__func__, spi->bits_per_word);
+-		return -EINVAL;
+-	}
+-	return 0;
+-}
+-
+-static inline u32 stmp_spi_cs(unsigned cs)
+-{
+-	return  ((cs & 1) ? BM_SSP_CTRL0_WAIT_FOR_CMD : 0) |
+-		((cs & 2) ? BM_SSP_CTRL0_WAIT_FOR_IRQ : 0);
+-}
+-
+-static int stmp_spi_txrx_dma(struct stmp_spi *ss, int cs,
+-		unsigned char *buf, dma_addr_t dma_buf, int len,
+-		int first, int last, bool write)
+-{
+-	u32 c0 = 0;
+-	dma_addr_t spi_buf_dma = dma_buf;
+-	int status = 0;
+-	enum dma_data_direction dir = write ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
+-
+-	c0 |= (first ? BM_SSP_CTRL0_LOCK_CS : 0);
+-	c0 |= (last ? BM_SSP_CTRL0_IGNORE_CRC : 0);
+-	c0 |= (write ? 0 : BM_SSP_CTRL0_READ);
+-	c0 |= BM_SSP_CTRL0_DATA_XFER;
+-
+-	c0 |= stmp_spi_cs(cs);
+-
+-	c0 |= BF(len, SSP_CTRL0_XFER_COUNT);
+-
+-	if (!dma_buf)
+-		spi_buf_dma = dma_map_single(ss->master_dev, buf, len, dir);
+-
+-	ss->d.command->cmd =
+-		BF(len, APBH_CHn_CMD_XFER_COUNT)	|
+-		BF(1, APBH_CHn_CMD_CMDWORDS)		|
+-		BM_APBH_CHn_CMD_WAIT4ENDCMD		|
+-		BM_APBH_CHn_CMD_IRQONCMPLT		|
+-		BF(write ? BV_APBH_CHn_CMD_COMMAND__DMA_READ :
+-			   BV_APBH_CHn_CMD_COMMAND__DMA_WRITE,
+-		   APBH_CHn_CMD_COMMAND);
+-	ss->d.command->pio_words[0] = c0;
+-	ss->d.command->buf_ptr = spi_buf_dma;
+-
+-	stmp3xxx_dma_reset_channel(ss->dma);
+-	stmp3xxx_dma_clear_interrupt(ss->dma);
+-	stmp3xxx_dma_enable_interrupt(ss->dma);
+-	init_completion(&ss->done);
+-	stmp3xxx_dma_go(ss->dma, &ss->d, 1);
+-	wait_for_completion(&ss->done);
+-
+-	if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) & BM_SSP_CTRL0_RUN))
+-		status = -ETIMEDOUT;
+-
+-	if (!dma_buf)
+-		dma_unmap_single(ss->master_dev, spi_buf_dma, len, dir);
+-
+-	return status;
+-}
+-
+-static inline void stmp_spi_enable(struct stmp_spi *ss)
+-{
+-	stmp3xxx_setl(BM_SSP_CTRL0_LOCK_CS, ss->regs + HW_SSP_CTRL0);
+-	stmp3xxx_clearl(BM_SSP_CTRL0_IGNORE_CRC, ss->regs + HW_SSP_CTRL0);
+-}
+-
+-static inline void stmp_spi_disable(struct stmp_spi *ss)
+-{
+-	stmp3xxx_clearl(BM_SSP_CTRL0_LOCK_CS, ss->regs + HW_SSP_CTRL0);
+-	stmp3xxx_setl(BM_SSP_CTRL0_IGNORE_CRC, ss->regs + HW_SSP_CTRL0);
+-}
+-
+-static int stmp_spi_txrx_pio(struct stmp_spi *ss, int cs,
+-		unsigned char *buf, int len,
+-		bool first, bool last, bool write)
+-{
+-	if (first)
+-		stmp_spi_enable(ss);
+-
+-	stmp3xxx_setl(stmp_spi_cs(cs), ss->regs + HW_SSP_CTRL0);
+-
+-	while (len--) {
+-		if (last && len <= 0)
+-			stmp_spi_disable(ss);
+-
+-		stmp3xxx_clearl(BM_SSP_CTRL0_XFER_COUNT,
+-				ss->regs + HW_SSP_CTRL0);
+-		stmp3xxx_setl(1, ss->regs + HW_SSP_CTRL0);
+-
+-		if (write)
+-			stmp3xxx_clearl(BM_SSP_CTRL0_READ,
+-					ss->regs + HW_SSP_CTRL0);
+-		else
+-			stmp3xxx_setl(BM_SSP_CTRL0_READ,
+-					ss->regs + HW_SSP_CTRL0);
+-
+-		/* Run! */
+-		stmp3xxx_setl(BM_SSP_CTRL0_RUN, ss->regs + HW_SSP_CTRL0);
+-
+-		if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) &
+-				BM_SSP_CTRL0_RUN))
+-			break;
+-
+-		if (write)
+-			writel(*buf, ss->regs + HW_SSP_DATA);
+-
+-		/* Set TRANSFER */
+-		stmp3xxx_setl(BM_SSP_CTRL0_DATA_XFER, ss->regs + HW_SSP_CTRL0);
+-
+-		if (!write) {
+-			if (busy_wait((readl(ss->regs + HW_SSP_STATUS) &
+-					BM_SSP_STATUS_FIFO_EMPTY)))
+-				break;
+-			*buf = readl(ss->regs + HW_SSP_DATA) & 0xFF;
+-		}
+-
+-		if (!busy_wait(readl(ss->regs + HW_SSP_CTRL0) &
+-					BM_SSP_CTRL0_RUN))
+-			break;
+-
+-		/* advance to the next byte */
+-		buf++;
+-	}
+-
+-	return len < 0 ? 0 : -ETIMEDOUT;
+-}
+-
+-static int stmp_spi_handle_message(struct stmp_spi *ss, struct spi_message *m)
+-{
+-	bool first, last;
+-	struct spi_transfer *t, *tmp_t;
+-	int status = 0;
+-	int cs;
+-
+-	cs = m->spi->chip_select;
+-
+-	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
+-
+-		first = (&t->transfer_list == m->transfers.next);
+-		last = (&t->transfer_list == m->transfers.prev);
+-
+-		if (first || t->speed_hz || t->bits_per_word)
+-			stmp_spi_setup_transfer(m->spi, t);
+-
+-		/* reject "not last" transfers which request to change cs */
+-		if (t->cs_change && !last) {
+-			dev_err(&m->spi->dev,
+-				"Message with t->cs_change has been skipped\n");
+-			continue;
+-		}
+-
+-		if (t->tx_buf) {
+-			status = pio ?
+-			   stmp_spi_txrx_pio(ss, cs, (void *)t->tx_buf,
+-				   t->len, first, last, true) :
+-			   stmp_spi_txrx_dma(ss, cs, (void *)t->tx_buf,
+-				   t->tx_dma, t->len, first, last, true);
+-#ifdef DEBUG
+-			if (t->len < 0x10)
+-				print_hex_dump_bytes("Tx ",
+-					DUMP_PREFIX_OFFSET,
+-					t->tx_buf, t->len);
+-			else
+-				pr_debug("Tx: %d bytes\n", t->len);
+-#endif
+-		}
+-		if (t->rx_buf) {
+-			status = pio ?
+-			   stmp_spi_txrx_pio(ss, cs, t->rx_buf,
+-				   t->len, first, last, false) :
+-			   stmp_spi_txrx_dma(ss, cs, t->rx_buf,
+-				   t->rx_dma, t->len, first, last, false);
+-#ifdef DEBUG
+-			if (t->len < 0x10)
+-				print_hex_dump_bytes("Rx ",
+-					DUMP_PREFIX_OFFSET,
+-					t->rx_buf, t->len);
+-			else
+-				pr_debug("Rx: %d bytes\n", t->len);
+-#endif
+-		}
+-
+-		if (t->delay_usecs)
+-			udelay(t->delay_usecs);
+-
+-		if (status)
+-			break;
+-
+-	}
+-	return status;
+-}
+-
+-/**
+- * stmp_spi_handle - handle messages from the queue
+- */
+-static void stmp_spi_handle(struct work_struct *w)
+-{
+-	struct stmp_spi *ss = container_of(w, struct stmp_spi, work);
+-	unsigned long flags;
+-	struct spi_message *m;
+-
+-	spin_lock_irqsave(&ss->lock, flags);
+-	while (!list_empty(&ss->queue)) {
+-		m = list_entry(ss->queue.next, struct spi_message, queue);
+-		list_del_init(&m->queue);
+-		spin_unlock_irqrestore(&ss->lock, flags);
+-
+-		m->status = stmp_spi_handle_message(ss, m);
+-		m->complete(m->context);
+-
+-		spin_lock_irqsave(&ss->lock, flags);
+-	}
+-	spin_unlock_irqrestore(&ss->lock, flags);
+-
+-	return;
+-}
+-
+-/**
+- * stmp_spi_transfer - perform message transfer.
+- * Called indirectly from spi_async, queues all the messages to
+- * spi_handle_message.
+- * @spi: spi device
+- * @m: message to be queued
+- */
+-static int stmp_spi_transfer(struct spi_device *spi, struct spi_message *m)
+-{
+-	struct stmp_spi *ss = spi_master_get_devdata(spi->master);
+-	unsigned long flags;
+-
+-	m->status = -EINPROGRESS;
+-	spin_lock_irqsave(&ss->lock, flags);
+-	list_add_tail(&m->queue, &ss->queue);
+-	queue_work(ss->workqueue, &ss->work);
+-	spin_unlock_irqrestore(&ss->lock, flags);
+-	return 0;
+-}
+-
+-static irqreturn_t stmp_spi_irq(int irq, void *dev_id)
+-{
+-	struct stmp_spi *ss = dev_id;
+-
+-	stmp3xxx_dma_clear_interrupt(ss->dma);
+-	complete(&ss->done);
+-	return IRQ_HANDLED;
+-}
+-
+-static irqreturn_t stmp_spi_irq_err(int irq, void *dev_id)
+-{
+-	struct stmp_spi *ss = dev_id;
+-	u32 c1, st;
+-
+-	c1 = readl(ss->regs + HW_SSP_CTRL1);
+-	st = readl(ss->regs + HW_SSP_STATUS);
+-	dev_err(ss->master_dev, "%s: status = 0x%08X, c1 = 0x%08X\n",
+-		__func__, st, c1);
+-	stmp3xxx_clearl(c1 & 0xCCCC0000, ss->regs + HW_SSP_CTRL1);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-static int __devinit stmp_spi_probe(struct platform_device *dev)
+-{
+-	int err = 0;
+-	struct spi_master *master;
+-	struct stmp_spi *ss;
+-	struct resource *r;
+-
+-	master = spi_alloc_master(&dev->dev, sizeof(struct stmp_spi));
+-	if (master == NULL) {
+-		err = -ENOMEM;
+-		goto out0;
+-	}
+-	master->flags = SPI_MASTER_HALF_DUPLEX;
+-
+-	ss = spi_master_get_devdata(master);
+-	platform_set_drvdata(dev, master);
+-
+-	/* Get resources(memory, IRQ) associated with the device */
+-	r = platform_get_resource(dev, IORESOURCE_MEM, 0);
+-	if (r == NULL) {
+-		err = -ENODEV;
+-		goto out_put_master;
+-	}
+-	ss->regs = ioremap(r->start, resource_size(r));
+-	if (!ss->regs) {
+-		err = -EINVAL;
+-		goto out_put_master;
+-	}
+-
+-	ss->master_dev = &dev->dev;
+-	ss->id = dev->id;
+-
+-	INIT_WORK(&ss->work, stmp_spi_handle);
+-	INIT_LIST_HEAD(&ss->queue);
+-	spin_lock_init(&ss->lock);
+-
+-	ss->workqueue = create_singlethread_workqueue(dev_name(&dev->dev));
+-	if (!ss->workqueue) {
+-		err = -ENXIO;
+-		goto out_put_master;
+-	}
+-	master->transfer = stmp_spi_transfer;
+-	master->setup = stmp_spi_setup;
+-
+-	/* the spi->mode bits understood by this driver: */
+-	master->mode_bits = SPI_CPOL | SPI_CPHA;
+-
+-	ss->irq = platform_get_irq(dev, 0);
+-	if (ss->irq < 0) {
+-		err = ss->irq;
+-		goto out_put_master;
+-	}
+-	ss->err_irq = platform_get_irq(dev, 1);
+-	if (ss->err_irq < 0) {
+-		err = ss->err_irq;
+-		goto out_put_master;
+-	}
+-
+-	r = platform_get_resource(dev, IORESOURCE_DMA, 0);
+-	if (r == NULL) {
+-		err = -ENODEV;
+-		goto out_put_master;
+-	}
+-
+-	ss->dma = r->start;
+-	err = stmp3xxx_dma_request(ss->dma, &dev->dev, dev_name(&dev->dev));
+-	if (err)
+-		goto out_put_master;
+-
+-	err = stmp3xxx_dma_allocate_command(ss->dma, &ss->d);
+-	if (err)
+-		goto out_free_dma;
+-
+-	master->bus_num = dev->id;
+-	master->num_chipselect = 1;
+-
+-	/* SPI controller initializations */
+-	err = stmp_spi_init_hw(ss);
+-	if (err) {
+-		dev_dbg(&dev->dev, "cannot initialize hardware\n");
+-		goto out_free_dma_desc;
+-	}
+-
+-	if (clock) {
+-		dev_info(&dev->dev, "clock rate forced to %d\n", clock);
+-		clk_set_rate(ss->clk, clock);
+-	}
+-	ss->speed_khz = clk_get_rate(ss->clk);
+-	ss->divider = 2;
+-	dev_info(&dev->dev, "max possible speed %d = %ld/%d kHz\n",
+-		ss->speed_khz, clk_get_rate(ss->clk), ss->divider);
+-
+-	/* Register for SPI interrupt */
+-	err = request_irq(ss->irq, stmp_spi_irq, 0,
+-			  dev_name(&dev->dev), ss);
+-	if (err) {
+-		dev_dbg(&dev->dev, "request_irq failed, %d\n", err);
+-		goto out_release_hw;
+-	}
+-
+-	/* ..and shared interrupt for all SSP controllers */
+-	err = request_irq(ss->err_irq, stmp_spi_irq_err, IRQF_SHARED,
+-			  dev_name(&dev->dev), ss);
+-	if (err) {
+-		dev_dbg(&dev->dev, "request_irq(error) failed, %d\n", err);
+-		goto out_free_irq;
+-	}
+-
+-	err = spi_register_master(master);
+-	if (err) {
+-		dev_dbg(&dev->dev, "cannot register spi master, %d\n", err);
+-		goto out_free_irq_2;
+-	}
+-	dev_info(&dev->dev, "at (mapped) 0x%08X, irq=%d, bus %d, %s mode\n",
+-			(u32)ss->regs, ss->irq, master->bus_num,
+-			pio ? "PIO" : "DMA");
+-	return 0;
+-
+-out_free_irq_2:
+-	free_irq(ss->err_irq, ss);
+-out_free_irq:
+-	free_irq(ss->irq, ss);
+-out_free_dma_desc:
+-	stmp3xxx_dma_free_command(ss->dma, &ss->d);
+-out_free_dma:
+-	stmp3xxx_dma_release(ss->dma);
+-out_release_hw:
+-	stmp_spi_release_hw(ss);
+-out_put_master:
+-	if (ss->workqueue)
+-		destroy_workqueue(ss->workqueue);
+-	if (ss->regs)
+-		iounmap(ss->regs);
+-	platform_set_drvdata(dev, NULL);
+-	spi_master_put(master);
+-out0:
+-	return err;
+-}
+-
+-static int __devexit stmp_spi_remove(struct platform_device *dev)
+-{
+-	struct stmp_spi *ss;
+-	struct spi_master *master;
+-
+-	master = spi_master_get(platform_get_drvdata(dev));
+-	ss = spi_master_get_devdata(master);
+-
+-	spi_unregister_master(master);
+-
+-	free_irq(ss->err_irq, ss);
+-	free_irq(ss->irq, ss);
+-	stmp3xxx_dma_free_command(ss->dma, &ss->d);
+-	stmp3xxx_dma_release(ss->dma);
+-	stmp_spi_release_hw(ss);
+-	destroy_workqueue(ss->workqueue);
+-	iounmap(ss->regs);
+-	spi_master_put(master);
+-	return 0;
+-}
+-
+-#ifdef CONFIG_PM
+-static int stmp_spi_suspend(struct platform_device *pdev, pm_message_t pmsg)
+-{
+-	struct stmp_spi *ss;
+-	struct spi_master *master;
+-
+-	master = platform_get_drvdata(pdev);
+-	ss = spi_master_get_devdata(master);
+-
+-	ss->saved_timings = readl(HW_SSP_TIMING + ss->regs);
+-	clk_disable(ss->clk);
+-
+-	return 0;
+-}
+-
+-static int stmp_spi_resume(struct platform_device *pdev)
+-{
+-	struct stmp_spi *ss;
+-	struct spi_master *master;
+-
+-	master = platform_get_drvdata(pdev);
+-	ss = spi_master_get_devdata(master);
+-
+-	clk_enable(ss->clk);
+-	stmp3xxx_reset_block(ss->regs, false);
+-	writel(ss->saved_timings, ss->regs + HW_SSP_TIMING);
+-
+-	return 0;
+-}
+-
+-#else
+-#define stmp_spi_suspend NULL
+-#define stmp_spi_resume  NULL
+-#endif
+-
+-static struct platform_driver stmp_spi_driver = {
+-	.probe	= stmp_spi_probe,
+-	.remove	= __devexit_p(stmp_spi_remove),
+-	.driver = {
+-		.name = "stmp3xxx_ssp",
+-		.owner = THIS_MODULE,
+-	},
+-	.suspend = stmp_spi_suspend,
+-	.resume  = stmp_spi_resume,
+-};
+-module_platform_driver(stmp_spi_driver);
+-
+-module_param(pio, int, S_IRUGO);
+-module_param(clock, int, S_IRUGO);
+-MODULE_AUTHOR("dmitry pervushin <dpervushin-L1vi/lXTdtvkgf6YlCu6wwC/G2K4zDHf@public.gmane.org>");
+-MODULE_DESCRIPTION("STMP3xxx SPI/SSP driver");
+-MODULE_LICENSE("GPL");
+-- 
+1.7.10.4
+
+
+------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
 Remotely access PCs and mobile devices and provide instant support
 Improve your efficiency, and focus on delivering more value-add services

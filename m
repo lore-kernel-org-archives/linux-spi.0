@@ -1,15 +1,19 @@
-From: Ming Lei <ming.lei-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-Subject: Re: [PATCH v4] spi: Add Lattice ECP3 FPGA configuration via SPI
-Date: Tue, 4 Dec 2012 16:26:04 +0800
-Message-ID: <CACVXFVOEWM-sEot+8-HGa61c2K1B_wTr6z40Ze9ckKHknyLTmQ@mail.gmail.com>
-References: <1354287532-6798-1-git-send-email-sr@denx.de>
+From: Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+Subject: Re: [RFC] spi: spi-fsl-spi: Making spi-fsl-spi partly
+	platform-agnostic and adding a new mode for a new core
+Date: Tue, 4 Dec 2012 10:11:34 +0100
+Message-ID: <OF994A4519.622141B3-ONC1257ACA.00321A60-C1257ACA.00327F5A@transmode.se>
+References: <1353576375-8560-1-git-send-email-andreas@gaisler.com>
+	<50BDAD3A.3080505@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Cc: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1354287532-6798-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <50BDAD3A.3080505-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,344 +24,393 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Nov 30, 2012 at 10:58 PM, Stefan Roese <sr-ynQEQJNshbs@public.gmane.org> wrote:
-> This patch adds support for bitstream configuration (programming /
-> loading) of the Lattice ECP3 FPGA's via the SPI bus.
->
-> Here an example on my custom MPC5200 based board:
->
-> $ echo 1 > /sys/class/firmware/spi0.0/loading
-> $ cat fpga_a4m2k.bit > /sys/class/firmware/spi0.0/data
-> $ echo 0 > /sys/class/firmware/spi0.0/loading
->
-> leads to these messages:
->
-> lattice-ecp3 spi0.0: FPGA Lattice ECP3-35 detected
-> lattice-ecp3 spi0.0: Configuring the FPGA...
-> lattice-ecp3 spi0.0: FPGA succesfully configured!
->
-> Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-> Cc: Ming Lei <ming.lei-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
-> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote on 2012/12/04 08:58:50:
+> 
+> On 2012-11-22 10:26, Andreas Larsson wrote:
+> > I am looking into writing a driver for a core running on sparc that is 
+mostly
+> > but not entirely compatible with the cpu mode of spi-fsl-spi. I am 
+thinking of
+> > what could be the best approach for realizing this. Any comments on a 
+preferred
+> > approach in this situation?
+> 
+> Any comments on this? A fair amount of rearranging and ifdefing would be 
+needed 
+> to make the spi-fsl-spi driver workable outside an fsl and powerpc 
+environment 
+> so I rather get some input before before trying to perfect a solution 
+that could 
+> not be acceptable into mainline.
 
-For the firmware download part,
+I am far from kernel devlopment ATM but I do have one comment, how to
+ensure this new combined driver doesn't break on existing powerpc
+systems?
 
-Acked-by: Ming Lei <ming.lei-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>
+ Jocke
 
-Also, one suggestion, it is better to define 'ecp3_dev' as
-driver_data of 'spi_device_id', and you can find many
-examples of this usage.
+> 
+> Cheers,
+> Andreas
+> 
+> > These are two different approaches I see to solve the situation 
+without too much
+> > code duplication:
+> >
+> > Appproach A: Extend spi-fsl-spi and spi-fsl-lib to work outside of a 
+FSL SOC
+> > environtment and outside powerpc. This would require ifdefs for the 
+driver to be
+> > able to compile and work on sparc (or other platforms) - see patch 
+draft at the
+> > end. Everything that has to do with cpm and sysdev/fsl_soc.h needs to 
+be within
+> > ifdefs. Then the core in question could be added as another "mode" in 
+the
+> > spi-fsl-spi driver with core specific code embedded inside 
+spi-fsl-spi.c just as
+> > for the other existing modes.
+> >
+> > Approach B: Put the general and cpu mode specific functions from 
+spi-fsl-spi in
+> > spi-fsl-lib or in a new separate c file and use these from both 
+spi-fsl-spi and
+> > a new driver for the core in question. Some ifdefs would still be 
+needed, but
+> > most things should be able to be handled with function pointers in 
+such a
+> > solution. The question is where to move the general and cpu mode 
+functions (but
+> > not the cpm related ones that could not compile)
+> >
+> > Of course something in between A and B could be done as well, where 
+all
+> > functions stay in spi-fsl-spi.c but is exported so that they can be 
+used with a
+> > new driver. Then most ifdefs in fsl-spi-fsl would need to be in place 
+for
+> > compileability though.
+> >
+> > Of course a third option that leaves spi-fsl-* alone but results in a 
+lot of
+> > code duplication is:
+> >
+> > Approach C: Submit a totally separate driver for this core (with heavy 
+copying
+> > and pasting from spi-fsl-* as most of the functionality is the same as 
+the cpu
+> > mode parts of spi-fsl-spi). A lot of ugly code duplication. The only 
+upside
+> > compared to approach B is that there are mode register bits for this 
+core that
+> > conflicts with mode register bits in other mpc8xxx cores that are not 
+currently
+> > in use by the driver. If those would be used in the future in 
+spi-fsl-spi, a
+> > separate driver would not break for this core.
+> >
+> > Core specific things that is needed in any approach (but can be mostly 
+isolated
+> > from spi-fsl-* in approach B):
+> > - Add entries to the register struct for additional registers
+> > - Adding core-specific chipselect discovery/handling code as there 
+might be
+> >    built in chip select capabilities in the core.
+> > - Add core-specific code to handle driver matching, bus numbering, 
+getting clock
+> >    frequency, tx/rx_shifting, and dealing with possible word-length 
+limitations.
+> >
+> >
+> > Below follows a draft patch on how spi-fsl-spi with friends could be 
+made
+> > functioning in cpu mode outside of a FSL SOC environment. Approach A 
+pointed out
+> > above would add the new mode on top of this for the needed core 
+specific
+> > things. Note the ugly define on in/out_be16/32 that would need to be 
+done in a
+> > proper way in a real patch. I didn't want to clutter the patch below 
+with that
+> > now instead showing the ifdefs clearly.
+> >
+> > Cheers,
+> > Andreas Larsson
+> >
+> > ---
+> >   drivers/spi/Kconfig       |    4 ++--
+> >   drivers/spi/spi-fsl-lib.c |   10 ++++++++++
+> >   drivers/spi/spi-fsl-lib.h |    8 ++++++++
+> >   drivers/spi/spi-fsl-spi.c |   32 ++++++++++++++++++++++++++++----
+> >   4 files changed, 48 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> > index 5b017af..8fbd698 100644
+> > --- a/drivers/spi/Kconfig
+> > +++ b/drivers/spi/Kconfig
+> > @@ -218,11 +218,11 @@ config SPI_MPC512x_PSC
+> >
+> >   config SPI_FSL_LIB
+> >      tristate
+> > -   depends on FSL_SOC
+> > +   depends on OF
+> >
+> >   config SPI_FSL_SPI
+> >      bool "Freescale SPI controller"
+> > -   depends on FSL_SOC
+> > +   depends on OF
+> >      select SPI_FSL_LIB
+> >      help
+> >        This enables using the Freescale SPI controllers in master 
+mode.
+> > diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
+> > index 1503574..0c9021d 100644
+> > --- a/drivers/spi/spi-fsl-lib.c
+> > +++ b/drivers/spi/spi-fsl-lib.c
+> > @@ -23,7 +23,9 @@
+> >   #include <linux/mm.h>
+> >   #include <linux/of_platform.h>
+> >   #include <linux/spi/spi.h>
+> > +#ifdef CONFIG_FSL_SOC
+> >   #include <sysdev/fsl_soc.h>
+> > +#endif
+> >
+> >   #include "spi-fsl-lib.h"
+> >
+> > @@ -208,6 +210,7 @@ int __devinit of_mpc8xxx_spi_probe(struct 
+platform_device *ofdev)
+> >      /* Allocate bus num dynamically. */
+> >      pdata->bus_num = -1;
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >      /* SPI controller is either clocked from QE or SoC clock. */
+> >      pdata->sysclk = get_brgfreq();
+> >      if (pdata->sysclk == -1) {
+> > @@ -217,16 +220,23 @@ int __devinit of_mpc8xxx_spi_probe(struct 
+> platform_device *ofdev)
+> >            goto err;
+> >         }
+> >      }
+> > +#else
+> > +   ret = of_property_read_u32(np, "clock-frequency", &pdata->sysclk);
+> > +   if (ret)
+> > +      goto err;
+> > +#endif
+> >
+> >      prop = of_get_property(np, "mode", NULL);
+> >      if (prop && !strcmp(prop, "cpu-qe"))
+> >         pdata->flags = SPI_QE_CPU_MODE;
+> > +#ifdef CONFIG_FSL_SOC
+> >      else if (prop && !strcmp(prop, "qe"))
+> >         pdata->flags = SPI_CPM_MODE | SPI_QE;
+> >      else if (of_device_is_compatible(np, "fsl,cpm2-spi"))
+> >         pdata->flags = SPI_CPM_MODE | SPI_CPM2;
+> >      else if (of_device_is_compatible(np, "fsl,cpm1-spi"))
+> >         pdata->flags = SPI_CPM_MODE | SPI_CPM1;
+> > +#endif
+> >
+> >      return 0;
+> >
+> > diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+> > index cbe881b..cd85170 100644
+> > --- a/drivers/spi/spi-fsl-lib.h
+> > +++ b/drivers/spi/spi-fsl-lib.h
+> > @@ -20,6 +20,12 @@
+> >
+> >   #include <asm/io.h>
+> >
+> > +/* Inline replacement or something like that in a real patch */
+> > +#define out_be32(reg, val) iowrite32be((val), (reg))
+> > +#define out_be16(reg, val) iowrite16be((val), (reg))
+> > +#define in_be32(reg) ioread32be((reg))
+> > +#define in_be16(reg) ioread16be((reg))
+> > +
+> >   /* SPI/eSPI Controller driver's private data. */
+> >   struct mpc8xxx_spi {
+> >      struct device *dev;
+> > @@ -34,8 +40,10 @@ struct mpc8xxx_spi {
+> >
+> >      int subblock;
+> >      struct spi_pram __iomem *pram;
+> > +#ifdef CONFIG_FSL_SOC
+> >      struct cpm_buf_desc __iomem *tx_bd;
+> >      struct cpm_buf_desc __iomem *rx_bd;
+> > +#endif
+> >
+> >      struct spi_transfer *xfer_in_progress;
+> >
+> > diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+> > index 6a62934..f459416 100644
+> > --- a/drivers/spi/spi-fsl-spi.c
+> > +++ b/drivers/spi/spi-fsl-spi.c
+> > @@ -30,15 +30,20 @@
+> >   #include <linux/mutex.h>
+> >   #include <linux/of.h>
+> >   #include <linux/of_platform.h>
+> > +#include <linux/of_address.h>
+> > +#include <linux/of_irq.h>
+> >   #include <linux/gpio.h>
+> >   #include <linux/of_gpio.h>
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   #include <sysdev/fsl_soc.h>
+> >   #include <asm/cpm.h>
+> >   #include <asm/qe.h>
+> > +#endif
+> >
+> >   #include "spi-fsl-lib.h"
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   /* CPM1 and CPM2 are mutually exclusive. */
+> >   #ifdef CONFIG_CPM1
+> >   #include <asm/cpm1.h>
+> > @@ -47,6 +52,7 @@
+> >   #include <asm/cpm2.h>
+> >   #define CPM_SPI_CMD mk_cr_cmd(CPM_CR_SPI_PAGE, CPM_CR_SPI_SBLOCK, 0, 
+0)
+> >   #endif
+> > +#endif
+> >
+> >   /* SPI Controller registers */
+> >   struct fsl_spi_reg {
+> > @@ -96,9 +102,11 @@ struct fsl_spi_reg {
+> >   #define   SPI_PRAM_SIZE   0x100
+> >   #define   SPI_MRBLR   ((unsigned int)PAGE_SIZE)
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   static void *fsl_dummy_rx;
+> >   static DEFINE_MUTEX(fsl_dummy_rx_lock);
+> >   static int fsl_dummy_rx_refcnt;
+> > +#endif
+> >
+> >   static void fsl_spi_change_mode(struct spi_device *spi)
+> >   {
+> > @@ -117,6 +125,7 @@ static void fsl_spi_change_mode(struct spi_device 
+*spi)
+> >      /* Turn off SPI unit prior changing mode */
+> >      mpc8xxx_spi_write_reg(mode, cs->hw_mode & ~SPMODE_ENABLE);
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >      /* When in CPM mode, we need to reinit tx and rx. */
+> >      if (mspi->flags & SPI_CPM_MODE) {
+> >         if (mspi->flags & SPI_QE) {
+> > @@ -132,6 +141,7 @@ static void fsl_spi_change_mode(struct spi_device 
+*spi)
+> >            }
+> >         }
+> >      }
+> > +#endif
+> >      mpc8xxx_spi_write_reg(mode, cs->hw_mode);
+> >      local_irq_restore(flags);
+> >   }
+> > @@ -295,6 +305,7 @@ static int fsl_spi_setup_transfer(struct 
+spi_device *spi,
+> >      return 0;
+> >   }
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   static void fsl_spi_cpm_bufs_start(struct mpc8xxx_spi *mspi)
+> >   {
+> >      struct cpm_buf_desc __iomem *tx_bd = mspi->tx_bd;
+> > @@ -323,6 +334,9 @@ static void fsl_spi_cpm_bufs_start(struct 
+mpc8xxx_spi *mspi)
+> >      /* start transfer */
+> >      mpc8xxx_spi_write_reg(&reg_base->command, SPCOM_STR);
+> >   }
+> > +#else
+> > +static void fsl_spi_cpm_bufs_start(struct mpc8xxx_spi *mspi) { }
+> > +#endif
+> >
+> >   static int fsl_spi_cpm_bufs(struct mpc8xxx_spi *mspi,
+> >               struct spi_transfer *t, bool is_dma_mapped)
+> > @@ -568,6 +582,7 @@ static int fsl_spi_setup(struct spi_device *spi)
+> >      return 0;
+> >   }
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   static void fsl_spi_cpm_irq(struct mpc8xxx_spi *mspi, u32 events)
+> >   {
+> >      u16 len;
+> > @@ -591,6 +606,9 @@ static void fsl_spi_cpm_irq(struct mpc8xxx_spi 
+*mspi, u32 events)
+> >      else
+> >         complete(&mspi->done);
+> >   }
+> > +#else
+> > +static void fsl_spi_cpm_irq(struct mpc8xxx_spi *mspi, u32 events) { }
+> > +#endif
+> >
+> >   static void fsl_spi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+> >   {
+> > @@ -646,6 +664,7 @@ static irqreturn_t fsl_spi_irq(s32 irq, void 
+*context_data)
+> >      return ret;
+> >   }
+> >
+> > +#ifdef CONFIG_FSL_SOC
+> >   static void *fsl_spi_alloc_dummy_rx(void)
+> >   {
+> >      mutex_lock(&fsl_dummy_rx_lock);
+> > @@ -836,6 +855,10 @@ static void fsl_spi_cpm_free(struct mpc8xxx_spi 
+*mspi)
+> >      cpm_muram_free(cpm_muram_offset(mspi->pram));
+> >      fsl_spi_free_dummy_rx();
+> >   }
+> > +#else
+> > +static int fsl_spi_cpm_init(struct mpc8xxx_spi *mspi) { return 
+-EINVAL; }
+> > +static void fsl_spi_cpm_free(struct mpc8xxx_spi *mspi) { }
+> > +#endif
+> >
+> >   static void fsl_spi_remove(struct mpc8xxx_spi *mspi)
+> >   {
+> > @@ -1047,7 +1070,7 @@ static int __devinit of_fsl_spi_probe(struct 
+> platform_device *ofdev)
+> >      struct device_node *np = ofdev->dev.of_node;
+> >      struct spi_master *master;
+> >      struct resource mem;
+> > -   struct resource irq;
+> > +   int irq;
+> >      int ret = -ENOMEM;
+> >
+> >      ret = of_mpc8xxx_spi_probe(ofdev);
+> > @@ -1062,13 +1085,14 @@ static int __devinit of_fsl_spi_probe(struct 
+> platform_device *ofdev)
+> >      if (ret)
+> >         goto err;
+> >
+> > -   ret = of_irq_to_resource(np, 0, &irq);
+> > -   if (!ret) {
+> > +   irq = irq_of_parse_and_map(np, 0);
+> > +   if (!irq) {
+> > +      dev_err(&ofdev->dev, "Could not get irq\n");
+> >         ret = -EINVAL;
+> >         goto err;
+> >      }
+> >
+> > -   master = fsl_spi_probe(dev, &mem, irq.start);
+> > +   master = fsl_spi_probe(dev, &mem, irq);
+> >      if (IS_ERR(master)) {
+> >         ret = PTR_ERR(master);
+> >         goto err;
+> > --
+> > 1.7.0.4
+> >
+> > 
+------------------------------------------------------------------------------
+> > Monitor your physical, virtual and cloud infrastructure from a single
+> > web console. Get in-depth insight into apps, servers, databases, 
+vmware,
+> > SAP, cloud infrastructure, etc. Download 30-day Free Trial.
+> > Pricing starts from $795 for 25 servers or applications!
+> > http://p.sf.net/sfu/zoho_dev2dev_nov
+> > _______________________________________________
+> > spi-devel-general mailing list
+> > spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> > https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> >
+> 
 
-> ---
-> v4:
-> - Allocate per-device struct to store the completion
->   variable unique per device
->
-> v3:
-> - Removed unnecessary goto (return instead)
-> - Added waiting for completion in remove
->
-> v2:
-> - Moved from drivers/firmware to drivers/spi as suggested by
->   Ming Lei
-> - Removed pseudo device
-> - Removed static buffer pointer usage
->
->  drivers/spi/Kconfig                   |  11 ++
->  drivers/spi/Makefile                  |   1 +
->  drivers/spi/spi-lattice-ecp3-config.c | 246 ++++++++++++++++++++++++++++++++++
->  3 files changed, 258 insertions(+)
->  create mode 100644 drivers/spi/spi-lattice-ecp3-config.c
->
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 1acae35..e7b108773 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -461,6 +461,17 @@ config SPI_DW_MMIO
->  #
->  comment "SPI Protocol Masters"
->
-> +config SPI_LATTICE_ECP3_CONFIG
-> +       tristate "Lattice ECP3 FPGA bitstream configuration via SPI"
-> +       depends on SYSFS
-> +       select FW_LOADER
-> +       default n
-> +       help
-> +         This option enables support for bitstream configuration (programming
-> +         or loading) of the Lattice ECP3 FPGA family via SPI.
-> +
-> +         If unsure, say N.
-> +
->  config SPI_SPIDEV
->         tristate "User mode SPI device driver support"
->         depends on EXPERIMENTAL
-> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-> index c48df47..9a532c0 100644
-> --- a/drivers/spi/Makefile
-> +++ b/drivers/spi/Makefile
-> @@ -32,6 +32,7 @@ obj-$(CONFIG_SPI_FSL_ESPI)            += spi-fsl-espi.o
->  obj-$(CONFIG_SPI_FSL_SPI)              += spi-fsl-spi.o
->  obj-$(CONFIG_SPI_GPIO)                 += spi-gpio.o
->  obj-$(CONFIG_SPI_IMX)                  += spi-imx.o
-> +obj-$(CONFIG_SPI_LATTICE_ECP3_CONFIG)  += spi-lattice-ecp3-config.o
->  obj-$(CONFIG_SPI_LM70_LLP)             += spi-lm70llp.o
->  obj-$(CONFIG_SPI_MPC512x_PSC)          += spi-mpc512x-psc.o
->  obj-$(CONFIG_SPI_MPC52xx_PSC)          += spi-mpc52xx-psc.o
-> diff --git a/drivers/spi/spi-lattice-ecp3-config.c b/drivers/spi/spi-lattice-ecp3-config.c
-> new file mode 100644
-> index 0000000..d34b2a6
-> --- /dev/null
-> +++ b/drivers/spi/spi-lattice-ecp3-config.c
-> @@ -0,0 +1,246 @@
-> +/*
-> + * Copyright (C) 2012 Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/firmware.h>
-> +#include <linux/module.h>
-> +#include <linux/errno.h>
-> +#include <linux/kernel.h>
-> +#include <linux/init.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/delay.h>
-> +
-> +#define DRIVER_NAME    "lattice-ecp3"
-> +#define DRIVER_VER     "1.0"
-> +#define FIRMWARE_NAME  "lattice-ecp3.bit"
-> +
-> +/*
-> + * The JTAG ID's of the supported FPGA's. The ID is 32bit wide
-> + * reversed as noted in the manual.
-> + */
-> +#define ID_ECP3_17     0xc2088080
-> +#define ID_ECP3_35     0xc2048080
-> +
-> +/* FPGA commands */
-> +#define FPGA_CMD_READ_ID       0x07    /* plus 24 bits */
-> +#define FPGA_CMD_READ_STATUS   0x09    /* plus 24 bits */
-> +#define FPGA_CMD_CLEAR         0x70
-> +#define FPGA_CMD_REFRESH       0x71
-> +#define FPGA_CMD_WRITE_EN      0x4a    /* plus 2 bits */
-> +#define FPGA_CMD_WRITE_DIS     0x4f    /* plus 8 bits */
-> +#define FPGA_CMD_WRITE_INC     0x41    /* plus 0 bits */
-> +
-> +/*
-> + * The status register is 32bit revered, DONE is bit 17 from the TN1222.pdf
-> + * (LatticeECP3 Slave SPI Port User's Guide)
-> + */
-> +#define FPGA_STATUS_DONE       0x00004000
-> +#define FPGA_STATUS_CLEARED    0x00010000
-> +
-> +#define FPGA_CLEAR_TIMEOUT     5000    /* max. 5000ms for FPGA clear */
-> +#define FPGA_CLEAR_MSLEEP      10
-> +#define FPGA_CLEAR_LOOP_COUNT  (FPGA_CLEAR_TIMEOUT / FPGA_CLEAR_MSLEEP)
-> +
-> +struct fpga_data {
-> +       struct completion fw_loaded;
-> +};
-> +
-> +struct ecp3_dev {
-> +       u32 jedec_id;
-> +       char *name;
-> +};
-> +
-> +static const struct ecp3_dev ecp3_dev[] = {
-> +       {
-> +               .jedec_id = ID_ECP3_17,
-> +               .name = "Lattice ECP3-17",
-> +       },
-> +       {
-> +               .jedec_id = ID_ECP3_35,
-> +               .name = "Lattice ECP3-35",
-> +       },
-> +};
-> +
-> +static void firmware_load(const struct firmware *fw, void *context)
-> +{
-> +       struct spi_device *spi = (struct spi_device *)context;
-> +       struct fpga_data *data = dev_get_drvdata(&spi->dev);
-> +       u8 *buffer;
-> +       int ret;
-> +       u8 txbuf[8];
-> +       u8 rxbuf[8];
-> +       int rx_len = 8;
-> +       int i;
-> +       u32 jedec_id;
-> +       u32 status;
-> +
-> +       if (fw->size == 0) {
-> +               dev_err(&spi->dev, "Error: Firmware size is 0!\n");
-> +               return;
-> +       }
-> +
-> +       /* Fill dummy data (24 stuffing bits for commands) */
-> +       txbuf[1] = 0x00;
-> +       txbuf[2] = 0x00;
-> +       txbuf[3] = 0x00;
-> +
-> +       /* Trying to speak with the FPGA via SPI... */
-> +       txbuf[0] = FPGA_CMD_READ_ID;
-> +       ret = spi_write_then_read(spi, txbuf, 8, rxbuf, rx_len);
-> +       dev_dbg(&spi->dev, "FPGA JTAG ID=%08x\n", *(u32 *)&rxbuf[4]);
-> +       jedec_id = *(u32 *)&rxbuf[4];
-> +
-> +       for (i = 0; i < ARRAY_SIZE(ecp3_dev); i++) {
-> +               if (jedec_id == ecp3_dev[i].jedec_id)
-> +                       break;
-> +       }
-> +       if (i == ARRAY_SIZE(ecp3_dev)) {
-> +               dev_err(&spi->dev,
-> +                       "Error: No supported FPGA detected (JEDEC_ID=%08x)!\n",
-> +                       jedec_id);
-> +               return;
-> +       }
-> +
-> +       dev_info(&spi->dev, "FPGA %s detected\n", ecp3_dev[i].name);
-> +
-> +       txbuf[0] = FPGA_CMD_READ_STATUS;
-> +       ret = spi_write_then_read(spi, txbuf, 8, rxbuf, rx_len);
-> +       dev_dbg(&spi->dev, "FPGA Status=%08x\n", *(u32 *)&rxbuf[4]);
-> +
-> +       buffer = kzalloc(fw->size + 8, GFP_KERNEL);
-> +       if (!buffer) {
-> +               dev_err(&spi->dev, "Error: Can't allocate memory!\n");
-> +               return;
-> +       }
-> +
-> +       /*
-> +        * Insert WRITE_INC command into stream (one SPI frame)
-> +        */
-> +       buffer[0] = FPGA_CMD_WRITE_INC;
-> +       buffer[1] = 0xff;
-> +       buffer[2] = 0xff;
-> +       buffer[3] = 0xff;
-> +       memcpy(buffer + 4, fw->data, fw->size);
-> +
-> +       txbuf[0] = FPGA_CMD_REFRESH;
-> +       ret = spi_write(spi, txbuf, 4);
-> +
-> +       txbuf[0] = FPGA_CMD_WRITE_EN;
-> +       ret = spi_write(spi, txbuf, 4);
-> +
-> +       txbuf[0] = FPGA_CMD_CLEAR;
-> +       ret = spi_write(spi, txbuf, 4);
-> +
-> +       /*
-> +        * Wait for FPGA memory to become cleared
-> +        */
-> +       for (i = 0; i < FPGA_CLEAR_LOOP_COUNT; i++) {
-> +               txbuf[0] = FPGA_CMD_READ_STATUS;
-> +               ret = spi_write_then_read(spi, txbuf, 8, rxbuf, rx_len);
-> +               status = *(u32 *)&rxbuf[4];
-> +               if (status == FPGA_STATUS_CLEARED)
-> +                       break;
-> +
-> +               msleep(FPGA_CLEAR_MSLEEP);
-> +       }
-> +
-> +       if (i == FPGA_CLEAR_LOOP_COUNT) {
-> +               dev_err(&spi->dev,
-> +                       "Error: Timeout waiting for FPGA to clear (status=%08x)!\n",
-> +                       status);
-> +               kfree(buffer);
-> +               return;
-> +       }
-> +
-> +       dev_info(&spi->dev, "Configuring the FPGA...\n");
-> +       ret = spi_write(spi, buffer, fw->size + 8);
-> +
-> +       txbuf[0] = FPGA_CMD_WRITE_DIS;
-> +       ret = spi_write(spi, txbuf, 4);
-> +
-> +       txbuf[0] = FPGA_CMD_READ_STATUS;
-> +       ret = spi_write_then_read(spi, txbuf, 8, rxbuf, rx_len);
-> +       dev_dbg(&spi->dev, "FPGA Status=%08x\n", *(u32 *)&rxbuf[4]);
-> +       status = *(u32 *)&rxbuf[4];
-> +
-> +       /* Check result */
-> +       if (status & FPGA_STATUS_DONE)
-> +               dev_info(&spi->dev, "FPGA succesfully configured!\n");
-> +       else
-> +               dev_info(&spi->dev, "FPGA not configured (DONE not set)\n");
-> +
-> +       /*
-> +        * Don't forget to release the firmware again
-> +        */
-> +       release_firmware(fw);
-> +
-> +       kfree(buffer);
-> +
-> +       complete(&data->fw_loaded);
-> +}
-> +
-> +static int __devinit lattice_ecp3_probe(struct spi_device *spi)
-> +{
-> +       struct fpga_data *data;
-> +       int err;
-> +
-> +       data = devm_kzalloc(&spi->dev, sizeof(*data), GFP_KERNEL);
-> +       if (!data) {
-> +               dev_err(&spi->dev, "Memory allocation for fpga_data failed\n");
-> +               return -ENOMEM;
-> +       }
-> +       spi_set_drvdata(spi, data);
-> +
-> +       init_completion(&data->fw_loaded);
-> +       err = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOHOTPLUG,
-> +                                     FIRMWARE_NAME, &spi->dev,
-> +                                     GFP_KERNEL, spi, firmware_load);
-> +       if (err) {
-> +               dev_err(&spi->dev, "Firmware loading failed with %d!\n", err);
-> +               return err;
-> +       }
-> +
-> +       dev_info(&spi->dev, "FPGA bitstream configuration driver registered (ver %s)\n",
-> +               DRIVER_VER);
-> +
-> +       return 0;
-> +}
-> +
-> +static int __devexit lattice_ecp3_remove(struct spi_device *spi)
-> +{
-> +       struct fpga_data *data = spi_get_drvdata(spi);
-> +
-> +       wait_for_completion(&data->fw_loaded);
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct spi_device_id lattice_ecp3_id[] __devinitdata = {
-> +       { "ecp3-17", 0 },
-> +       { "ecp3-35", 0 },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(spi, lattice_ecp3_id);
-> +
-> +static struct spi_driver lattice_ecp3_driver = {
-> +       .driver = {
-> +               .name = "lattice-ecp3",
-> +               .owner = THIS_MODULE,
-> +       },
-> +       .probe = lattice_ecp3_probe,
-> +       .remove = __devexit_p(lattice_ecp3_remove),
-> +       .id_table = lattice_ecp3_id,
-> +};
-> +
-> +module_spi_driver(lattice_ecp3_driver);
-> +
-> +MODULE_AUTHOR("Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>");
-> +MODULE_DESCRIPTION("Lattice ECP3 FPGA configuration via SPI");
-> +MODULE_LICENSE("GPL");
-> --
-> 1.8.0.1
->
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

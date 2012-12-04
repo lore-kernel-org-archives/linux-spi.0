@@ -1,62 +1,44 @@
-From: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
-Subject: [PATCH RESEND] spi: erase pointer to drvdata on removal
-Date: Mon,  3 Dec 2012 15:28:24 -0500
-Message-ID: <1354566504-17657-1-git-send-email-vivien.didelot@savoirfairelinux.com>
-Cc: Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH] spi: stmp: remove obsolete driver
+Date: Tue, 4 Dec 2012 10:38:36 +0900
+Message-ID: <20121204013835.GA17729@opensource.wolfsonmicro.com>
+References: <1353870663-8024-1-git-send-email-w.sang@pengutronix.de>
+	<20121203215818.GA30299@pengutronix.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20121203215818.GA30299-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Without this patch, a SPI device may keep its drvdata whereas it was unbound
-from its driver. This may result in accessing an invalid pointer.
+On Mon, Dec 03, 2012 at 10:58:18PM +0100, Wolfram Sang wrote:
+> On Sun, Nov 25, 2012 at 08:11:03PM +0100, Wolfram Sang wrote:
+> > This driver is obsolete and can't even be built anymore since the
+> > platform it depends has been removed.
+> > 
+> > The STMP series is completely covered by the MXS platform these days, so
+> > spi-mxs can be used instead.
+> > 
+> > Signed-off-by: Wolfram Sang <w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+> 
+> Adding Grant to cc...
 
-As for i2c-core, let the SPI core handle the removal of the device's drvdata,
-after a remove(), or a probe() failure.
+If someone can send me the patch I can apply it.
 
-This is a resent of the previous patch https://lkml.org/lkml/2012/11/1/314
-
-Signed-off-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
----
- drivers/spi/spi.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 84c2861..fe636fe 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -233,15 +233,25 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
- static int spi_drv_probe(struct device *dev)
- {
- 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
-+	struct spi_device		*sdev = to_spi_device(dev);
-+	int				status;
- 
--	return sdrv->probe(to_spi_device(dev));
-+	status = sdrv->probe(sdev);
-+	if (status)
-+		spi_set_drvdata(sdev, NULL);
-+	return status;
- }
- 
- static int spi_drv_remove(struct device *dev)
- {
- 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
-+	struct spi_device		*sdev = to_spi_device(dev);
-+	int				status;
- 
--	return sdrv->remove(to_spi_device(dev));
-+	status = sdrv->remove(sdev);
-+	if (status == 0)
-+		spi_set_drvdata(sdev, NULL);
-+	return status;
- }
- 
- static void spi_drv_shutdown(struct device *dev)
--- 
-1.7.11.7
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

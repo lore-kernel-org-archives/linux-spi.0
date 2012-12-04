@@ -1,49 +1,35 @@
-From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: Re: [PATCH RESEND] ARM/SPI: New driver for SPI master controller
-	for CLPS711X-target
-Date: Wed, 5 Dec 2012 00:33:31 +0400
-Message-ID: <20121205003331.9dd3d8f4eee2dfe84e7c08fa@mail.ru>
-References: <1352309429-21482-1-git-send-email-shc_work@mail.ru>
-	<201211122143.34537.arnd@arndb.de>
+From: David Miller <davem@davemloft.net>
+Subject: Re: [PATCH 0/2] sparc: Enable OF functionality for sparc for i2c
+ and spi
+Date: Tue, 04 Dec 2012 16:10:01 -0500 (EST)
+Message-ID: <20121204.161001.1397661306369063374.davem@davemloft.net>
+References: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
+	<CACxGe6sw0zU0NcXw1gjMZka4WyTZgT4heF3r4k0QPHbfcPzbiw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Olof,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201211122143.34537.arnd-r2nGTMty4D4@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: andreas@gaisler.com, w.sang@pengutronix.de, sam@ravnborg.org,
+	sparclinux@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net, linux-i2c@vger.kernel.org,
+	software@gaisler.com
+To: grant.likely@secretlab.ca
+Return-path: <sparclinux-owner@vger.kernel.org>
+In-Reply-To: <CACxGe6sw0zU0NcXw1gjMZka4WyTZgT4heF3r4k0QPHbfcPzbiw@mail.gmail.com>
+Sender: sparclinux-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 12 Nov 2012 21:43:34 +0000
-Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
+From: Grant Likely <grant.likely@secretlab.ca>
+Date: Tue, 4 Dec 2012 14:44:57 +0000
 
-> On Wednesday 07 November 2012, Alexander Shiyan wrote:
-> > This patch add new driver for CLPS711X SPI master controller.
-> > Due to platform limitations driver supports only 8 bit transfer mode.
-> > Chip select control is handled via GPIO.
-> > 
-> > Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+> On Tue, Dec 4, 2012 at 2:09 PM, Andreas Larsson <andreas@gaisler.com> wrote:
+>> This series removes the dependency on !SPARC for OF_I2C and removes the
+>> depencency of !defined(CONFIG_SPARC) for the function
+>> of_register_spi_devices. I find no reason for these to be unavailable
+>> for sparc.
+>>
+>> I am not sure if these should go through the sparc tree or the
+>> corresponding subsystem trees.
 > 
-> Acked-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-> 
+> They should go through the subsystem trees.
 
-Please apply this patch in the SPI tree.
-
--- 
-Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+I'll take this into the sparc tree after some build testing, thanks.

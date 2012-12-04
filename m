@@ -1,7 +1,7 @@
 From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [v2 PATCH 03/14] spi/atmel_spi: add physical base address
-Date: Tue,  4 Dec 2012 15:53:49 +0800
-Message-ID: <1354607640-13229-4-git-send-email-wenyou.yang@atmel.com>
+Subject: [v2 PATCH 04/14] spi/atmel_spi: call unmapping on transfers buffers
+Date: Tue,  4 Dec 2012 15:53:50 +0800
+Message-ID: <1354607640-13229-5-git-send-email-wenyou.yang@atmel.com>
 References: <1354607640-13229-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,35 +24,39 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
-Needed for future use with dmaengine enabled driver.
-
 Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
- drivers/spi/spi-atmel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-atmel.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 16d6a83..2e040be 100644
+index 2e040be..fc1222a 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -188,6 +188,7 @@
- struct atmel_spi {
- 	spinlock_t		lock;
+@@ -1010,6 +1010,7 @@ static int __devexit atmel_spi_remove(struct platform_device *pdev)
+ 	struct spi_master	*master = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_master_get_devdata(master);
+ 	struct spi_message	*msg;
++	struct spi_transfer	*xfer;
  
-+	resource_size_t		phybase;
- 	void __iomem		*regs;
- 	int			irq;
- 	struct clk		*clk;
-@@ -961,6 +962,7 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
- 	as->regs = ioremap(regs->start, resource_size(regs));
- 	if (!as->regs)
- 		goto out_free_buffer;
-+	as->phybase = regs->start;
- 	as->irq = irq;
- 	as->clk = clk;
+ 	/* reset the hardware and block queue progress */
+ 	spin_lock_irq(&as->lock);
+@@ -1021,9 +1022,10 @@ static int __devexit atmel_spi_remove(struct platform_device *pdev)
  
+ 	/* Terminate remaining queued transfers */
+ 	list_for_each_entry(msg, &as->queue, queue) {
+-		/* REVISIT unmapping the dma is a NOP on ARM and AVR32
+-		 * but we shouldn't depend on that...
+-		 */
++		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++			if (!msg->is_dma_mapped)
++				atmel_spi_dma_unmap_xfer(master, xfer);
++		}
+ 		msg->status = -ESHUTDOWN;
+ 		msg->complete(msg->context);
+ 	}
 -- 
 1.7.9.5
 

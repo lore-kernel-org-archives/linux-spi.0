@@ -1,59 +1,60 @@
-From: Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH RFT] spi: spi-xcomm: Fix wrong setting for SPI_XCOMM_SETTINGS_CPHA
-Date: Wed, 05 Dec 2012 18:39:04 +0100
-Message-ID: <50BF86B8.4020805@metafoo.de>
-References: <1354602461.3286.1.camel@phoenix>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH RESEND] ARM/SPI: New driver for SPI master controller for
+	CLPS711X-target
+Date: Wed, 05 Dec 2012 23:15:01 +0000
+Message-ID: <20121205231501.D40863E0E22@localhost>
+References: <1352309429-21482-1-git-send-email-shc_work@mail.ru>
+	<201211122143.34537.arnd@arndb.de>
+	<20121205003331.9dd3d8f4eee2dfe84e7c08fa@mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Axel Lin <axel.lin@ingics.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1354602461.3286.1.camel@phoenix>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121205003331.9dd3d8f4eee2dfe84e7c08fa-JGs/UdohzUI@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 12/04/2012 07:27 AM, Axel Lin wrote:
-> The logic of setting SPI_XCOMM_SETTINGS_CPHA bit is reversed.
+On Wed, 5 Dec 2012 00:33:31 +0400, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
+> On Mon, 12 Nov 2012 21:43:34 +0000
+> Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
 > 
-> Signed-off-by: Axel Lin <axel.lin@ingics.com>
-> ---
-> Hi Lars,
-> The logic of setting SPI_XCOMM_SETTINGS_CPHA bit looks wrong to me.
-> Can you check if this patch works?
+> > On Wednesday 07 November 2012, Alexander Shiyan wrote:
+> > > This patch add new driver for CLPS711X SPI master controller.
+> > > Due to platform limitations driver supports only 8 bit transfer mode.
+> > > Chip select control is handled via GPIO.
+> > > 
+> > > Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+> > 
+> > Acked-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+> > 
 > 
-> Thanks,
-> Axel
+> Please apply this patch in the SPI tree.
 
-Hi Axel,
+Applied, thanks.
 
-Thanks for the patch. But the code is correct as it is. The CPHA definition
-of the chip is inverted to that of Linux.
-
-Thanks,
-- Lars
-
+g.
 
 > 
->  drivers/spi/spi-xcomm.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
-> index 266a847..c2a3e8f 100644
-> --- a/drivers/spi/spi-xcomm.c
-> +++ b/drivers/spi/spi-xcomm.c
-> @@ -99,9 +99,9 @@ static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
->  		*settings &= ~SPI_XCOMM_SETTINGS_CPOL;
->  
->  	if (spi->mode & SPI_CPHA)
-> -		*settings &= ~SPI_XCOMM_SETTINGS_CPHA;
-> -	else
->  		*settings |= SPI_XCOMM_SETTINGS_CPHA;
-> +	else
-> +		*settings &= ~SPI_XCOMM_SETTINGS_CPHA;
->  
->  	if (spi->mode & SPI_3WIRE)
->  		*settings |= SPI_XCOMM_SETTINGS_3WIRE;
+> -- 
+> Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

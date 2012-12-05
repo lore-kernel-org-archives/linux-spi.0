@@ -1,19 +1,21 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH RESEND] ARM/SPI: New driver for SPI master controller for
-	CLPS711X-target
-Date: Wed, 05 Dec 2012 23:15:01 +0000
-Message-ID: <20121205231501.D40863E0E22@localhost>
-References: <1352309429-21482-1-git-send-email-shc_work@mail.ru>
-	<201211122143.34537.arnd@arndb.de>
-	<20121205003331.9dd3d8f4eee2dfe84e7c08fa@mail.ru>
+Subject: Re: [v2 PATCH 02/14] of_spi: add generic binding support to specify
+	cs gpio
+Date: Wed, 05 Dec 2012 23:28:02 +0000
+Message-ID: <20121205232802.ECD2D3E0E22@localhost>
+References: <1354607640-13229-1-git-send-email-wenyou.yang@atmel.com>
+	<1354607640-13229-3-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121205003331.9dd3d8f4eee2dfe84e7c08fa-JGs/UdohzUI@public.gmane.org>
+In-Reply-To: <1354607640-13229-3-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,33 +26,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 5 Dec 2012 00:33:31 +0400, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
-> On Mon, 12 Nov 2012 21:43:34 +0000
-> Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
+On Tue,  4 Dec 2012 15:53:48 +0800, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+> From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
 > 
-> > On Wednesday 07 November 2012, Alexander Shiyan wrote:
-> > > This patch add new driver for CLPS711X SPI master controller.
-> > > Due to platform limitations driver supports only 8 bit transfer mode.
-> > > Chip select control is handled via GPIO.
-> > > 
-> > > Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-> > 
-> > Acked-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-> > 
+> This will allow to use gpio for chip select with no modification in the
+> driver binding
 > 
-> Please apply this patch in the SPI tree.
+> When use the cs-gpios, the gpio number will be passed via the cs_gpio field
+> and the number of chip select will automatically increased.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+> Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
+> Cc: rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+> Cc: rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org
+> Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+> ---
+> Hi, Richard,
+> 
+> This patch based on the original patch from Jean-Christophe, 
+>  	[PATCH] of_spi: add generic binding support to specify cs gpio
+> and merge the patch from Richard Genoud,
+> 	[PATCH] [BUG] SPI: array out of bound => no CS
+> 
+> Could you sign your signature in this patch?
+> 
+> Best Regards,
+> Wenyou Yang
 
-Applied, thanks.
+I've already merged a version of this patch. Please check against the
+version that is in linux-next.
 
 g.
 
-> 
-> -- 
-> Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

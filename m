@@ -1,46 +1,38 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 0/2] sparc: Enable OF functionality for sparc for i2c and spi
-Date: Tue, 4 Dec 2012 21:49:26 +0000
-Message-ID: <CACxGe6t4YcSuh04UjoYqFp355iLa6ECc5G+Y1TP3kxsL48c6jQ@mail.gmail.com>
-References: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
- <CACxGe6sw0zU0NcXw1gjMZka4WyTZgT4heF3r4k0QPHbfcPzbiw@mail.gmail.com> <20121204.161001.1397661306369063374.davem@davemloft.net>
+From: Newsletter Voyageez <news-1O8M/uA0ZchWk0Htik3J/w@public.gmane.org>
+Subject: Voyageez : Gagnez un =?iso-8859-15?Q?s=E9jour?= pour 2 au
+	=?iso-8859-15?Q?Br=E9sil?= !
+Date: Wed, 05 Dec 2012 06:36:11 +0100
+Message-ID: <1354685789.thing50bedd5d47500@mach10.generated>
+Reply-To: news-1O8M/uA0ZchWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Andreas Larsson <andreas@gaisler.com>,
-	Wolfram Sang <w.sang@pengutronix.de>,
-	Sam Ravnborg <sam@ravnborg.org>, sparclinux@vger.kernel.org,
-	devicetree-discuss <devicetree-discuss@lists.ozlabs.org>,
-	spi-devel-general@lists.sourceforge.net,
-	Linux I2C <linux-i2c@vger.kernel.org>,
-	software <software@gaisler.com>
-To: David Miller <davem@davemloft.net>
-Return-path: <sparclinux-owner@vger.kernel.org>
-In-Reply-To: <20121204.161001.1397661306369063374.davem@davemloft.net>
-Sender: sparclinux-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 4, 2012 at 9:10 PM, David Miller <davem@davemloft.net> wrote:
-> From: Grant Likely <grant.likely@secretlab.ca>
-> Date: Tue, 4 Dec 2012 14:44:57 +0000
->
->> On Tue, Dec 4, 2012 at 2:09 PM, Andreas Larsson <andreas@gaisler.com> wrote:
->>> This series removes the dependency on !SPARC for OF_I2C and removes the
->>> depencency of !defined(CONFIG_SPARC) for the function
->>> of_register_spi_devices. I find no reason for these to be unavailable
->>> for sparc.
->>>
->>> I am not sure if these should go through the sparc tree or the
->>> corresponding subsystem trees.
->>
->> They should go through the subsystem trees.
->
-> I'll take this into the sparc tree after some build testing, thanks.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-I'd prefer to take the SPI one through my tree, but I won't get my
-knickers in a knot if you insist.
+Lien miroir : http://m10-fr.com/mc10_m/YT0yNiZiPTI2NDUzJmM9NDg5Nzg4JmQ9MjAx=
+Mi0xMi0wNSAwNjozMDowMSZlPTEmaD0yNjQ1MSZmPTI2NDUzJmc9MjY0NTM=3D
 
-g.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0yNiZiPTI2NDUzJmM=
+9NDg5Nzg4JmQ9MjAxMi0xMi0wNSAwNjozMDowMSZlPTEmaD0yNjQ1MSZmPTI2NDUzJmc9MjY0NT=
+M=3D
 
---
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+
+---------------------------------------------------------------------------=
+---
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

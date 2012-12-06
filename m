@@ -1,19 +1,18 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: make sure all transfer has bits_per_word set
-Date: Thu, 06 Dec 2012 14:15:07 +0000
-Message-ID: <20121206141507.86DCF3E0948@localhost>
-References: <1352452005-13789-1-git-send-email-ldewangan@nvidia.com>
-	<CAOiHx=nEmd9dQ297Oho=gmZTYfYgJ3o_+J2OFK=sRuRYNqzPxg@mail.gmail.com>
+From: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH] SPI: SSP SPI Controller driver
+Date: Thu, 6 Dec 2012 14:19:38 +0000
+Message-ID: <20121206141938.0100f06f@bob.linux.org.uk>
+References: <1353464203.20353.6.camel@bichao>
+	<20121206123856.002683E0AE3@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAOiHx=nEmd9dQ297Oho=gmZTYfYgJ3o_+J2OFK=sRuRYNqzPxg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20121206123856.002683E0AE3@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,31 +23,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 12 Nov 2012 11:03:56 +0100, Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi,
-> 
-> On 9 November 2012 10:06, Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org> wrote:
-> > When spi client does the spi transfer and does not sets
-> > the bits_per_word for each transfer then set it as default
-> > of spi device in spi core before calling low level transfer.
-> 
-> I like that (not that it counts ... )!
-> 
-> > Removing the similar code from spi-tegra20-slink driver as
-> > it is not required.
-> 
-> Not sure if this should be part of *this* patch.
-> Also spi-tegra20-slink isn't the only one fixing up the bits_per_word
-> for transfers, so it would be nice if you could remove it from the
-> other drivers, too.
-> 
-> In a future patch, maybe even do the same with speed_hz?
+> I think I've asked this question before, but I can't remember if I've
+> gotten an answer. How is this different from the designware spi
+> controller that is already in the tree for medfield and moorestown MID
+> platforms? (drivers/spi/spi-dw-mid.c).
 
-That sounds reasonable. Could you craft one up and see how it looks?
+Different devices.
 
-Thanks,
-g.
 
+> ... Okay, so I just went looking for the read_SSSR() function because
+> I wanted to know how it was defined. I just discovered that this
+> driver is the same as drivers/spi/spi-pxa2xx.c with a PCI front end
+> bolted on.
+
+Quite possible - I wans't aware of that but they may well come from
+the same origin.
+ 
+> > +late_initcall(intel_mid_ssp_spi_init);
+> 
+> Why late_initcall()? module_init() should be sufficient. Or better yet
+> replace the init and exit functions with module_pci_driver()
+
+Thats a legacy of the old SPI code not handling bus and device
+registration in random orders. So it's no longer needed I believe.
+
+Alan
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

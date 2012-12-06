@@ -1,14 +1,21 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: [PATCH] spi: Fix comparison of different integer types
-Date: Thu,  6 Dec 2012 23:35:47 +0000
-Message-ID: <1354836947-31078-1-git-send-email-grant.likely@secretlab.ca>
+From: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
+Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
+	spi-orion
+Date: Thu, 6 Dec 2012 16:49:17 -0700
+Message-ID: <20121206234917.GF25069@obsidianresearch.com>
+References: <20121121192335.GA14868@obsidianresearch.com>
+	<20121206142521.4185A3E0948@localhost>
+	<20121206172504.GB9676@obsidianresearch.com>
+	<20121206232305.719E23E0B24@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20121206232305.719E23E0B24@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,37 +26,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Fix problem discovered with sparse:
-+ drivers/spi/spi.c:1554:37: sparse: incompatible types in comparison expression (different signedness)
-drivers/spi/spi.c: In function 'spi_write_then_read':
-drivers/spi/spi.c:1554:23: warning: comparison of distinct pointer types lacks a cast [enabled by default]
+On Thu, Dec 06, 2012 at 11:23:05PM +0000, Grant Likely wrote:
 
-The change to SPI_BUFSIZ was introduced in commit b3a223ee2, "spi:
-Remove SPI_BUFSIZ restriction on spi_write_then_read()"
+> > This will likely switch all current users from using 'whatever the
+> > firmware left behind' to 'whatever the kernel default is' - which will
+> > surely break something here and there??
+> 
+> Hmmm. Hard to say. Just the fact that existing users are depending on
+> little more than dumb luck that firmware touched the SPI is worrysome.
 
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Reported-by: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
----
- drivers/spi/spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It isn't entirely dumb luck, all the DT files I looked at were using
+SPI to connect to FLASH, so the boot firmware will have to set the SPI
+bus properly since it is executing out of the SPI boot flash.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 22c71e2..b370d292 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1551,7 +1551,7 @@ int spi_write_then_read(struct spi_device *spi,
- 	 * using the pre-allocated buffer or the transfer is too large.
- 	 */
- 	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
--		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
-+		local_buf = kmalloc(max((unsigned)SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
- 		if (!local_buf)
- 			return -ENOMEM;
- 	} else {
--- 
-1.7.10.4
+At the very least, if it breaks it will be of the very obvious 'boot
+from flash is completely broken' sort.
 
+> For platform_data configuration, you might want to enable it with a
+> flag. Whatever you decide send me a fixup patch against linux-next.
+
+Okay, I think instead of the #ifdef a test for 'dev->ofdev == NULL'
+would do the trick for now, then at least people can test the DT vs
+the platform boot.
+
+I am hoping to have time to revise patches on Friday, I will see.
+
+Jason: Do you have any of these possibly affected boards with a SPI
+flash to test linux-next? dove, dreamplug, ts219 and lsxl
+
+Thanks,
+Jason
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

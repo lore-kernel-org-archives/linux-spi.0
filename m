@@ -1,11 +1,10 @@
-From: Lunettes Presbyte <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Le TOP des lunettes loupe =?iso-8859-15?Q?=E0?= partir de 59 euros
-	livraison offerte
-Date: Thu, 06 Dec 2012 05:09:12 +0100
-Message-ID: <1354766987.thing50c01a8b41aee@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "Venkat Raju Sana" <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
+Subject: Venkat Raju Sana has added you on SkillPages
+Date: Thu, 06 Dec 2012 05:28:02 +0000
+Message-ID: <42995FEC480517461F33002A54379377E9F17AF9@USPRODSVCEML002>
+Reply-To: Venkat Raju Sana <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -19,15 +18,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+<http://www.skillpages.com/s/r7iJlT9lEeKQVaCAyi/tKYQ2>
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI2NTk0JmM9NDgzNjEyJmQ9MjAx=
-Mi0xMi0wNiAwNDozMDowMSZlPTEmaD0yNjU5MiZmPTI2NTk0Jmc9MjY1OTQ=3D
+Hi,
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI2NTk0JmM=
-9NDgzNjEyJmQ9MjAxMi0xMi0wNiAwNDozMDowMSZlPTEmaD0yNjU5MiZmPTI2NTk0Jmc9MjY1OT=
-Q=3D
+Become a part of your friend's network.
 
+<http://www.skillpages.com/s/r7iJjT9lEeKQ/VaCAyitKYQ2>
+
+Venkat Raju Sana <http://www.skillpages.com/s/r7iJgD9lEe/KQVaCAyitKYQ2>
+
+Invite sent: 6 December, 2012
+
+Continue <http://www.skillpages.com/s/r7iJ/sT9lEeKQVaCAyitKYQ2>
+
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org was invited to join SkillPages by V=
+enkat
+Raju Sana. To stop receiving emails from SkillPages click here
+<http://www.skillpages.com/s/r7iKaj/9lEeKQVaCAyitKYQ2> .
+
+=A9 2012 SkillPages, Blackrock Business Park, Dublin, Ireland and 228 Hamil=
+ton
+Avenue, 3rd Floor, Palo Alto, CA 94301.
 
 ---------------------------------------------------------------------------=
 ---

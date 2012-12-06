@@ -1,19 +1,14 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
-	spi-orion
-Date: Thu, 06 Dec 2012 23:23:05 +0000
-Message-ID: <20121206232305.719E23E0B24@localhost>
-References: <20121121192335.GA14868@obsidianresearch.com>
-	<20121206142521.4185A3E0948@localhost>
-	<20121206172504.GB9676@obsidianresearch.com>
+Subject: [PATCH] spi: Fix comparison of different integer types
+Date: Thu,  6 Dec 2012 23:35:47 +0000
+Message-ID: <1354836947-31078-1-git-send-email-grant.likely@secretlab.ca>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121206172504.GB9676-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,54 +19,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 6 Dec 2012 10:25:04 -0700, Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org> wrote:
-> On Thu, Dec 06, 2012 at 02:25:21PM +0000, Grant Likely wrote:
-> > On Wed, 21 Nov 2012 12:23:35 -0700, Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org> wrote:
-> > > Support these transfer modes from the SPI layer by setting
-> > > the appropriate register bits before doing the transfer.
-> > > 
-> > > This was tested on the Marvell kirkwood SOC that uses this driver.
-> > 
-> > Woo! a note about how it was tested. I can't (and often don't) see
-> > enough of these.  :-)
-> 
-> Thanks for looking at this Grant,
-> 
-> But I think that Jason's comment (see
-> https://patchwork.kernel.org/patch/1782061/) is valid.
-> 
-> This will likely switch all current users from using 'whatever the
-> firmware left behind' to 'whatever the kernel default is' - which will
-> surely break something here and there??
+Fix problem discovered with sparse:
++ drivers/spi/spi.c:1554:37: sparse: incompatible types in comparison expression (different signedness)
+drivers/spi/spi.c: In function 'spi_write_then_read':
+drivers/spi/spi.c:1554:23: warning: comparison of distinct pointer types lacks a cast [enabled by default]
 
-Hmmm. Hard to say. Just the fact that existing users are depending on
-little more than dumb luck that firmware touched the SPI is worrysome.
+The change to SPI_BUFSIZ was introduced in commit b3a223ee2, "spi:
+Remove SPI_BUFSIZ restriction on spi_write_then_read()"
 
-> I was thinking of a transitory patch that did:
-> 
-> reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> nreg = reg & ~ORION_SPI_MODE_MASK;
-> if (spi->mode & SPI_CPOL)
-> 	nreg |= ORION_SPI_MODE_CPOL;
-> if (spi->mode & SPI_CPHA)
-> 	nreg |= ORION_SPI_MODE_CPHA;
-> #ifdef TRANSITION
->  if (nreg != reg)
->         dev_error(..,"Not allowing a SPI mode change away from firmware
->  defaults. Board support needs to be updated!");
-> #else
->  writel(nreg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> #endif
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Reported-by: kbuild test robot <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+---
+ drivers/spi/spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Don't make this a #ifdef. Instead, you could add a property to the
-device tree to enable the new behaviour... although DT support is brand
-new, so you don't need to worry about the legacy scenario for DT users.
-Just turn it on.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 22c71e2..b370d292 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1551,7 +1551,7 @@ int spi_write_then_read(struct spi_device *spi,
+ 	 * using the pre-allocated buffer or the transfer is too large.
+ 	 */
+ 	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
+-		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
++		local_buf = kmalloc(max((unsigned)SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
+ 		if (!local_buf)
+ 			return -ENOMEM;
+ 	} else {
+-- 
+1.7.10.4
 
-For platform_data configuration, you might want to enable it with a
-flag. Whatever you decide send me a fixup patch against linux-next.
-
-g.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

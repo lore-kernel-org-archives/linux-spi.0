@@ -1,65 +1,85 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [linux-keystone] [PATCH v1 1/1] spi: davinci: add OF support for the spi controller
-Date: Wed, 05 Dec 2012 23:49:46 +0000
-Message-ID: <20121205234947.0EB3D3E0E22@localhost>
-References: <1354559918-15105-1-git-send-email-m-karicheri2@ti.com> <1354559918-15105-2-git-send-email-m-karicheri2@ti.com>
-Cc: Murali Karicheri <m-karicheri2@ti.com>
-To: Murali Karicheri <m-karicheri2@ti.com>, rob.herring@calxeda.com,
-	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	davinci-linux-open-source@linux.davincidsp.com,
-	linux-keystone@list.ti.com
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1354559918-15105-2-git-send-email-m-karicheri2@ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Subject: Re: [PATCH] spi: Remove SPI_BUFSIZ restriction on spi_write_then_read()
+Date: Thu, 06 Dec 2012 00:00:26 +0000
+Message-ID: <20121206000026.A620D3E0E22@localhost>
+References: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 3 Dec 2012 13:38:38 -0500, Murali Karicheri <m-karicheri2@ti.com> wrote:
-> This adds OF support to DaVinci SPI controller to configure platform
-> data through device bindings. Also replaces clk_enable() with
-> of clk_prepare_enable() as well as clk_disable() with
-> clk_disable_unprepare().
+On Sun,  2 Dec 2012 12:54:25 +0900, Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+> In order to avoid constantly allocating and deallocating there is a fixed
+> buffer which spi_write_then_read() uses for transfers, with an early error
+> check to ensure that the transfer fits within the buffer. This limits the
+> size of transfers to this size, currently max(32, SMP_CACHE_BYTES).
 > 
+> Since we can dynamically allocate and in fact already have a fallback
+> to do so when there is contention for the fixed buffer remove this
+> restriction and instead dynamically allocate a suitably sized buffer if
+> the transfer won't fit.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
-Hi Murali.
+Looks good to me. Probably 3.9 material though.
 
-Thanks for the patch. Comments below...
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
-> Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
-> Reviewed-by : Grant Likely <grant.likely@secretlab.ca>
 > ---
->  .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++
->  drivers/spi/spi-davinci.c                          |  102 +++++++++++++++++---
->  2 files changed, 139 insertions(+), 14 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+>  drivers/spi/spi.c |   24 +++++++++++-------------
+>  1 file changed, 11 insertions(+), 13 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-> new file mode 100644
-> index 0000000..a2746c5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-> @@ -0,0 +1,51 @@
-> +Davinci SPI controller device bindings
-> +
-> +Required properties:
-> +- #address-cells: number of cells required to define a chip select
-> +	address on the SPI bus. Should be set to 1.
-> +- #size-cells: should be zero.
-> +- compatible:
-> +	- "ti,davinci-spi-v1" for SPI version 1.0
-> +	- "ti,davinci-spi-v2" for SPI version 2.0
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index c4f7d71..224b7bc 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1646,12 +1646,18 @@ int spi_write_then_read(struct spi_device *spi,
+>  	struct spi_transfer	x[2];
+>  	u8			*local_buf;
+>  
+> -	/* Use preallocated DMA-safe buffer.  We can't avoid copying here,
+> -	 * (as a pure convenience thing), but we can keep heap costs
+> -	 * out of the hot path ...
+> +	/* Use preallocated DMA-safe buffer if we can.  We can't avoid
+> +	 * copying here, (as a pure convenience thing), but we can
+> +	 * keep heap costs out of the hot path unless someone else is
+> +	 * using the pre-allocated buffer or the transfer is too large.
+>  	 */
+> -	if ((n_tx + n_rx) > SPI_BUFSIZ)
+> -		return -EINVAL;
+> +	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
+> +		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
+> +		if (!local_buf)
+> +			return -ENOMEM;
+> +	} else {
+> +		local_buf = buf;
+> +	}
+>  
+>  	spi_message_init(&message);
+>  	memset(x, 0, sizeof x);
+> @@ -1664,14 +1670,6 @@ int spi_write_then_read(struct spi_device *spi,
+>  		spi_message_add_tail(&x[1], &message);
+>  	}
+>  
+> -	/* ... unless someone else is using the pre-allocated buffer */
+> -	if (!mutex_trylock(&lock)) {
+> -		local_buf = kmalloc(SPI_BUFSIZ, GFP_KERNEL);
+> -		if (!local_buf)
+> -			return -ENOMEM;
+> -	} else
+> -		local_buf = buf;
+> -
+>  	memcpy(local_buf, txbuf, n_tx);
+>  	x[0].tx_buf = local_buf;
+>  	x[1].rx_buf = local_buf + n_tx;
+> -- 
+> 1.7.10.4
+> 
 
-It's better to use a specific chip name than some anonymous "v1" or "v2"
-(unless you can point me at some hardware documentation that actually
-uses those names).
-
-> +- reg: Offset and length of SPI controller register space
-> +- ti,davinci-spi-num-cs: Number of chip selects
-
-Simply "num-cs" is sufficient here. There is now a common binding for
-the number of chip select lines.
-
-Otherwise the patch and the binding look fine to me.
-
-g.
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

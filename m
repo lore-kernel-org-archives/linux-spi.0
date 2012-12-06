@@ -1,50 +1,27 @@
-From: "Venkat Raju Sana" <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
-Subject: Venkat Raju Sana has added you on SkillPages
-Date: Thu, 06 Dec 2012 05:28:02 +0000
-Message-ID: <42995FEC480517461F33002A54379377E9F17AF9@USPRODSVCEML002>
-Reply-To: Venkat Raju Sana <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi: Remove SPI_BUFSIZ restriction on
+ spi_write_then_read()
+Date: Thu, 6 Dec 2012 14:37:33 +0900
+Message-ID: <20121206053732.GD10867@opensource.wolfsonmicro.com>
+References: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <20121206000026.A620D3E0E22@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20121206000026.A620D3E0E22@localhost>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-<http://www.skillpages.com/s/r7iJlT9lEeKQVaCAyi/tKYQ2>
+On Thu, Dec 06, 2012 at 12:00:26AM +0000, Grant Likely wrote:
 
-Hi,
+> Looks good to me. Probably 3.9 material though.
 
-Become a part of your friend's network.
+> Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
-<http://www.skillpages.com/s/r7iJjT9lEeKQ/VaCAyitKYQ2>
-
-Venkat Raju Sana <http://www.skillpages.com/s/r7iJgD9lEe/KQVaCAyitKYQ2>
-
-Invite sent: 6 December, 2012
-
-Continue <http://www.skillpages.com/s/r7iJ/sT9lEeKQVaCAyitKYQ2>
-
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org was invited to join SkillPages by V=
-enkat
-Raju Sana. To stop receiving emails from SkillPages click here
-<http://www.skillpages.com/s/r7iKaj/9lEeKQVaCAyitKYQ2> .
-
-=A9 2012 SkillPages, Blackrock Business Park, Dublin, Ireland and 228 Hamil=
-ton
-Avenue, 3rd Floor, Palo Alto, CA 94301.
-
----------------------------------------------------------------------------=
----
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+Hrm, I'd be inclined to apply it now - it's isolated enough that it can
+be reverted if it explodes and we have the -rc cycle to notice any
+problems.

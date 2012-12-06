@@ -1,51 +1,78 @@
-From: Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH resend] spi: Add support for specifying 3-wire mode via device tree
-Date: Thu,  6 Dec 2012 16:55:33 +0100
-Message-ID: <1354809333-18364-1-git-send-email-lars@metafoo.de>
-Cc: Rob Herring <rob.herring@calxeda.com>,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
+Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
+	spi-orion
+Date: Thu, 6 Dec 2012 10:25:04 -0700
+Message-ID: <20121206172504.GB9676@obsidianresearch.com>
+References: <20121121192335.GA14868@obsidianresearch.com>
+	<20121206142521.4185A3E0948@localhost>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20121206142521.4185A3E0948@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch allows to specify that a SPI device is connected in 3-wire mode via
-device tree.
+On Thu, Dec 06, 2012 at 02:25:21PM +0000, Grant Likely wrote:
+> On Wed, 21 Nov 2012 12:23:35 -0700, Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org> wrote:
+> > Support these transfer modes from the SPI layer by setting
+> > the appropriate register bits before doing the transfer.
+> > 
+> > This was tested on the Marvell kirkwood SOC that uses this driver.
+> 
+> Woo! a note about how it was tested. I can't (and often don't) see
+> enough of these.  :-)
 
-Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Acked-by: Rob Herring <rob.herring@calxeda.com>
----
- Documentation/devicetree/bindings/spi/spi-bus.txt | 2 ++
- drivers/spi/spi.c                                 | 2 ++
- 2 files changed, 4 insertions(+)
+Thanks for looking at this Grant,
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 77a8b0d..296015e 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -53,6 +53,8 @@ contain the following properties.
-     		shifted clock phase (CPHA) mode
- - spi-cs-high     - (optional) Empty property indicating device requires
-     		chip select active high
-+- spi-3wire       - (optional) Empty property indicating device requires
-+    		    3-wire mode.
- 
- If a gpio chipselect is used for the SPI slave the gpio number will be passed
- via the cs_gpio
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 22c71e2..cb61ada 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -861,6 +861,8 @@ static void of_register_spi_devices(struct spi_master *master)
- 			spi->mode |= SPI_CPOL;
- 		if (of_find_property(nc, "spi-cs-high", NULL))
- 			spi->mode |= SPI_CS_HIGH;
-+		if (of_find_property(nc, "spi-3wire", NULL))
-+			spi->mode |= SPI_3WIRE;
- 
- 		/* Device speed */
- 		prop = of_get_property(nc, "spi-max-frequency", &len);
--- 
-1.8.0
+But I think that Jason's comment (see
+https://patchwork.kernel.org/patch/1782061/) is valid.
+
+This will likely switch all current users from using 'whatever the
+firmware left behind' to 'whatever the kernel default is' - which will
+surely break something here and there??
+
+I was thinking of a transitory patch that did:
+
+reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+nreg = reg & ~ORION_SPI_MODE_MASK;
+if (spi->mode & SPI_CPOL)
+	nreg |= ORION_SPI_MODE_CPOL;
+if (spi->mode & SPI_CPHA)
+	nreg |= ORION_SPI_MODE_CPHA;
+#ifdef TRANSITION
+ if (nreg != reg)
+        dev_error(..,"Not allowing a SPI mode change away from firmware
+ defaults. Board support needs to be updated!");
+#else
+ writel(nreg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+#endif
+
+At least that way there is a warning and the DTSs can be fixed up.
+
+I haven't had a moment to look into that though..
+
+But I'm not sure that is in line with kernel philosophy WRT to DT..
+
+What do you think?
+
+Regards,
+Jason
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

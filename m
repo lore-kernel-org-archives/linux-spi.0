@@ -1,19 +1,13 @@
-From: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
-	spi-orion
-Date: Thu, 6 Dec 2012 10:25:04 -0700
-Message-ID: <20121206172504.GB9676@obsidianresearch.com>
-References: <20121121192335.GA14868@obsidianresearch.com>
-	<20121206142521.4185A3E0948@localhost>
+From: "Isabela Maria" <contato-ZIiXBKy9GVDAMZVyrMWeIQh0onu2mTI+@public.gmane.org>
+Subject: Aumente seus lucros no final de ano!
+Date: Thu, 6 Dec 2012 15:25:54 -0200
+Message-ID: <E1TgfDh-0000B4-N1@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20121206142521.4185A3E0948@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,53 +18,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 06, 2012 at 02:25:21PM +0000, Grant Likely wrote:
-> On Wed, 21 Nov 2012 12:23:35 -0700, Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org> wrote:
-> > Support these transfer modes from the SPI layer by setting
-> > the appropriate register bits before doing the transfer.
-> > 
-> > This was tested on the Marvell kirkwood SOC that uses this driver.
-> 
-> Woo! a note about how it was tested. I can't (and often don't) see
-> enough of these.  :-)
+Ol=E1 recebemos a sua visita em nosso site e constamos que n=E3o validou o =
+seu cadastro para ter acesso as nossas ferramentas.
+Gostaria de saber se ficou alguma d=FAvida a repeito do funcionamento do Cl=
+ube.
+Estou disposta a te ajudar para que voc=EA possa entrar para o Clube Ca=E7a=
+dores de Fortuna.
+Ainda tem d=FAvida sobre os resultados das Ferramentas?
+Veja nos links abaixo o que est=E3o falando do Clube Ca=E7adores de Fortuna:
+"Posso dizer que foi um dos melhores investimentos que fiz esse ano..."
+"Entrando para o clube voc=EA ter=E1 treinamentos em v=EDdeos de como desen=
+volver um neg=F3cio rent=E1vel na internet..."
+"=C9 algo que ralmente =E9 diferente de tudo que voc=EA j=E1 viu at=E9 agor=
+a..."
+"Agora voc=EA n=E3o vai ganhar mais comiss=F5es de 30%, 50%, 80% e sim 100%=
+ de lucro sendo o dono do seu pr=F3prio neg=F3cio..."
+Veja outros depoimentos na p=E1gina principal do Clube em http://cacadoresd=
+efortuna.com
+Ainda tem d=FAvidas sobre essa plataforma sensacional?
+Quero muito te ajudar a entrar para o Clube Ca=E7adores de Fortuna. Por iss=
+o se voc=EA ainda n=E3o entrou por falta de dinheiro, tenho algo especial p=
+ra voc=EA.
+Vou te dar 40% de desconto para voc=EA validar seu cadastro hoje!
+=C9 ISSO MESMO! 40% DE DESCONTO HOJE!
+Fa=E7a seu cadastro se ainda n=E3o fez e acesse nossa p=E1gina de pagamento=
+ com desconto clicando aqui.
+Aguardo voc=EA no Clube Ca=E7adores de Fortuna.
+Atenciosamente.
+Isabela Maria
 
-Thanks for looking at this Grant,
-
-But I think that Jason's comment (see
-https://patchwork.kernel.org/patch/1782061/) is valid.
-
-This will likely switch all current users from using 'whatever the
-firmware left behind' to 'whatever the kernel default is' - which will
-surely break something here and there??
-
-I was thinking of a transitory patch that did:
-
-reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-nreg = reg & ~ORION_SPI_MODE_MASK;
-if (spi->mode & SPI_CPOL)
-	nreg |= ORION_SPI_MODE_CPOL;
-if (spi->mode & SPI_CPHA)
-	nreg |= ORION_SPI_MODE_CPHA;
-#ifdef TRANSITION
- if (nreg != reg)
-        dev_error(..,"Not allowing a SPI mode change away from firmware
- defaults. Board support needs to be updated!");
-#else
- writel(nreg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-#endif
-
-At least that way there is a warning and the DTSs can be fixed up.
-
-I haven't had a moment to look into that though..
-
-But I'm not sure that is in line with kernel philosophy WRT to DT..
-
-What do you think?
-
-Regards,
-Jason
-
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
 Remotely access PCs and mobile devices and provide instant support
 Improve your efficiency, and focus on delivering more value-add services

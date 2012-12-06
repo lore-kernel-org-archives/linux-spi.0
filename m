@@ -1,18 +1,19 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
-	spi-orion
-Date: Thu, 06 Dec 2012 14:25:21 +0000
-Message-ID: <20121206142521.4185A3E0948@localhost>
-References: <20121121192335.GA14868@obsidianresearch.com>
+Subject: Re: [RFC] spi: spi-fsl-spi: Making spi-fsl-spi partly
+	platform-agnostic and adding a new mode for a new core
+Date: Thu, 06 Dec 2012 14:27:41 +0000
+Message-ID: <20121206142741.778273E0948@localhost>
+References: <1353576375-8560-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
-To: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Cc: Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>
+To: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121121192335.GA14868-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1353576375-8560-1-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,97 +24,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 21 Nov 2012 12:23:35 -0700, Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org> wrote:
-> Support these transfer modes from the SPI layer by setting
-> the appropriate register bits before doing the transfer.
+On Thu, 22 Nov 2012 10:26:15 +0100, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
+> I am looking into writing a driver for a core running on sparc that is mostly
+> but not entirely compatible with the cpu mode of spi-fsl-spi. I am thinking of
+> what could be the best approach for realizing this. Any comments on a preferred
+> approach in this situation?
 > 
-> This was tested on the Marvell kirkwood SOC that uses this driver.
+> These are two different approaches I see to solve the situation without too much
+> code duplication:
+> 
+> Appproach A: Extend spi-fsl-spi and spi-fsl-lib to work outside of a FSL SOC
+> environtment and outside powerpc. This would require ifdefs for the driver to be
+> able to compile and work on sparc (or other platforms) - see patch draft at the
+> end. Everything that has to do with cpm and sysdev/fsl_soc.h needs to be within
+> ifdefs. Then the core in question could be added as another "mode" in the
+> spi-fsl-spi driver with core specific code embedded inside spi-fsl-spi.c just as
+> for the other existing modes.
 
-Woo! a note about how it was tested. I can't (and often don't) see
-enough of these.  :-)
-
-Applied, thanks.
+>From what you've shown, I would support this approach.  The proof is in
+what the final patch looks like though.
 
 g.
 
-> 
-> Reviewed-by: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-> Signed-off-by: Rolf Manderscheid <rvm-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-> ---
->  drivers/spi/spi-orion.c |   25 ++++++++++++++++++++++++-
->  1 files changed, 24 insertions(+), 1 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-> index b17c09c..011186d 100644
-> --- a/drivers/spi/spi-orion.c
-> +++ b/drivers/spi/spi-orion.c
-> @@ -32,8 +32,12 @@
->  #define ORION_SPI_DATA_IN_REG		0x0c
->  #define ORION_SPI_INT_CAUSE_REG		0x10
->  
-> +#define ORION_SPI_MODE_CPOL		(1 << 11)
-> +#define ORION_SPI_MODE_CPHA		(1 << 12)
->  #define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
->  #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
-> +#define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
-> +					 ORION_SPI_MODE_CPHA)
->  
->  struct orion_spi {
->  	struct spi_master	*master;
-> @@ -123,6 +127,23 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
->  	return 0;
->  }
->  
-> +static void
-> +orion_spi_mode_set(struct spi_device *spi)
-> +{
-> +	u32 reg;
-> +	struct orion_spi *orion_spi;
-> +
-> +	orion_spi = spi_master_get_devdata(spi->master);
-> +
-> +	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> +	reg &= ~ORION_SPI_MODE_MASK;
-> +	if (spi->mode & SPI_CPOL)
-> +		reg |= ORION_SPI_MODE_CPOL;
-> +	if (spi->mode & SPI_CPHA)
-> +		reg |= ORION_SPI_MODE_CPHA;
-> +	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
-> +}
-> +
->  /*
->   * called only when no transfer is active on the bus
->   */
-> @@ -142,6 +163,8 @@ orion_spi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
->  	if ((t != NULL) && t->bits_per_word)
->  		bits_per_word = t->bits_per_word;
->  
-> +	orion_spi_mode_set(spi);
-> +
->  	rc = orion_spi_baudrate_set(spi, speed);
->  	if (rc)
->  		return rc;
-> @@ -399,7 +422,7 @@ static int __init orion_spi_probe(struct platform_device *pdev)
->  	}
->  
->  	/* we support only mode 0, and no options */
-> -	master->mode_bits = 0;
-> +	master->mode_bits = SPI_CPHA | SPI_CPOL;
->  
->  	master->setup = orion_spi_setup;
->  	master->transfer_one_message = orion_spi_transfer_one_message;
-> -- 
-> 1.7.5.4
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

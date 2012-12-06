@@ -1,52 +1,71 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Remove SPI_BUFSIZ restriction on
-	spi_write_then_read()
-Date: Thu, 06 Dec 2012 14:04:27 +0000
-Message-ID: <20121206140427.8E5673E089D@localhost>
-References: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-	<20121206000026.A620D3E0E22@localhost>
-	<20121206053732.GD10867@opensource.wolfsonmicro.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121206053732.GD10867-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 1/4] spi: sh-msiof: Remove unneeded clock name
+Date: Thu, 06 Dec 2012 14:05:15 +0000
+Message-ID: <20121206140515.75E6B3E089D@localhost>
+References: <1352288407-20594-1-git-send-email-hechtb@gmail.com> <1352288407-20594-2-git-send-email-hechtb@gmail.com>
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org
+To: Bastian Hecht <hechtb@gmail.com>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1352288407-20594-2-git-send-email-hechtb@gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 6 Dec 2012 14:37:33 +0900, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Thu, Dec 06, 2012 at 12:00:26AM +0000, Grant Likely wrote:
+On Wed,  7 Nov 2012 12:40:04 +0100, Bastian Hecht <hechtb@gmail.com> wrote:
+> clk_get() no longer needs a character string for associating the right
+> clock as this is done via the device struct now.
 > 
-> > Looks good to me. Probably 3.9 material though.
-> 
-> > Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> 
-> Hrm, I'd be inclined to apply it now - it's isolated enough that it can
-> be reverted if it explodes and we have the -rc cycle to notice any
-> problems.
+> Signed-off-by: Bastian Hecht <hechtb@gmail.com>
 
-Alright, applied. I've also merged in your spi-next tree. Let me know if
-that causes problems because it needs to be rebased.
+Applied, thanks.
 
 g.
 
+> ---
+>  drivers/spi/spi-sh-msiof.c |    6 ++----
+>  1 files changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index 1f466bc..96358d0 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -597,7 +597,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+>  	struct resource	*r;
+>  	struct spi_master *master;
+>  	struct sh_msiof_spi_priv *p;
+> -	char clk_name[16];
+>  	int i;
+>  	int ret;
+>  
+> @@ -614,10 +613,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+>  	p->info = pdev->dev.platform_data;
+>  	init_completion(&p->done);
+>  
+> -	snprintf(clk_name, sizeof(clk_name), "msiof%d", pdev->id);
+> -	p->clk = clk_get(&pdev->dev, clk_name);
+> +	p->clk = clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(p->clk)) {
+> -		dev_err(&pdev->dev, "cannot get clock \"%s\"\n", clk_name);
+> +		dev_err(&pdev->dev, "cannot get clock\n");
+>  		ret = PTR_ERR(p->clk);
+>  		goto err1;
+>  	}
+> -- 
+> 1.7.5.4
+> 
+> 
+> ------------------------------------------------------------------------------
+> LogMeIn Central: Instant, anywhere, Remote PC access and management.
+> Stay in control, update software, and manage PCs from one command center
+> Diagnose problems and improve visibility into emerging IT issues
+> Automate, monitor and manage. Do more in less time with Central
+> http://p.sf.net/sfu/logmein12331_d2d
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
 
 -- 
 Grant Likely, B.Sc, P.Eng.
 Secret Lab Technologies, Ltd.
-
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d

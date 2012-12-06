@@ -1,71 +1,52 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 1/4] spi: sh-msiof: Remove unneeded clock name
-Date: Thu, 06 Dec 2012 14:05:15 +0000
-Message-ID: <20121206140515.75E6B3E089D@localhost>
-References: <1352288407-20594-1-git-send-email-hechtb@gmail.com> <1352288407-20594-2-git-send-email-hechtb@gmail.com>
+Subject: Re: [PATCH 4/4] devicetree: Add Renesas SH Mobile MSIOF spi controller binding doc
+Date: Thu, 06 Dec 2012 14:08:49 +0000
+Message-ID: <20121206140849.280243E089D@localhost>
+References: <1352288407-20594-1-git-send-email-hechtb@gmail.com> <1352288407-20594-5-git-send-email-hechtb@gmail.com>
 Cc: Magnus Damm <magnus.damm@gmail.com>,
 	linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org
 To: Bastian Hecht <hechtb@gmail.com>,
 	spi-devel-general@lists.sourceforge.net
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1352288407-20594-2-git-send-email-hechtb@gmail.com>
+In-Reply-To: <1352288407-20594-5-git-send-email-hechtb@gmail.com>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed,  7 Nov 2012 12:40:04 +0100, Bastian Hecht <hechtb@gmail.com> wrote:
-> clk_get() no longer needs a character string for associating the right
-> clock as this is done via the device struct now.
+On Wed,  7 Nov 2012 12:40:07 +0100, Bastian Hecht <hechtb@gmail.com> wrote:
+> Add binding documentation for Renesas' MSIOF SPI controller.
 > 
 > Signed-off-by: Bastian Hecht <hechtb@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/sh-msiof.txt |   12 ++++++++++++
+>  1 files changed, 12 insertions(+), 0 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/sh-msiof.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+> new file mode 100644
+> index 0000000..b62312e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+> @@ -0,0 +1,12 @@
+> +Renesas MSIOF spi controller
+> +
+> +Required properties:
+> +- compatible : 	"renesas,sh-msiof" for SuperH or
+> +		"renesas,sh-mobile-msiof" for SH Mobile series
+> +- reg : Offset and length of the register set for the device
+> +- interrupts : interrupt line used by MSIOF
+> +
+> +Optional properties:
+> +- chip_select  : Chip select, defaults to 0
 
-Applied, thanks.
+This doesn't make a lot of sense to me. What is this property for? Is
+there more than one CS? And if there is, shouldn't the SPI driver be
+able to manipulate more than one?
+
+> +- tx_fifo_size : Overrides the default tx fifo size given in words
+> +- rx_fifo_size : Overrides the default rx fifo size given in words
+
+Nit: property names should use '-' instead of '_' (by convention) and
+custom properties should be prefixed with the manufacturer prefix to
+avoid namespace collisions. ie. "renesas,tx-fifo-size.
 
 g.
-
-> ---
->  drivers/spi/spi-sh-msiof.c |    6 ++----
->  1 files changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 1f466bc..96358d0 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -597,7 +597,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
->  	struct resource	*r;
->  	struct spi_master *master;
->  	struct sh_msiof_spi_priv *p;
-> -	char clk_name[16];
->  	int i;
->  	int ret;
->  
-> @@ -614,10 +613,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
->  	p->info = pdev->dev.platform_data;
->  	init_completion(&p->done);
->  
-> -	snprintf(clk_name, sizeof(clk_name), "msiof%d", pdev->id);
-> -	p->clk = clk_get(&pdev->dev, clk_name);
-> +	p->clk = clk_get(&pdev->dev, NULL);
->  	if (IS_ERR(p->clk)) {
-> -		dev_err(&pdev->dev, "cannot get clock \"%s\"\n", clk_name);
-> +		dev_err(&pdev->dev, "cannot get clock\n");
->  		ret = PTR_ERR(p->clk);
->  		goto err1;
->  	}
-> -- 
-> 1.7.5.4
-> 
-> 
-> ------------------------------------------------------------------------------
-> LogMeIn Central: Instant, anywhere, Remote PC access and management.
-> Stay in control, update software, and manage PCs from one command center
-> Diagnose problems and improve visibility into emerging IT issues
-> Automate, monitor and manage. Do more in less time with Central
-> http://p.sf.net/sfu/logmein12331_d2d
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.

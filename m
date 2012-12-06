@@ -1,7 +1,7 @@
 From: "Isabela Maria" <contato-ZIiXBKy9GVDAMZVyrMWeIQh0onu2mTI+@public.gmane.org>
 Subject: Aumente seus lucros no final de ano!
-Date: Thu, 6 Dec 2012 15:25:54 -0200
-Message-ID: <E1TgfDh-0000B4-N1@sfs-ml-2.v29.ch3.sourceforge.com>
+Date: Thu, 6 Dec 2012 16:11:49 -0200
+Message-ID: <E1Tgfvh-0002bt-AT@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable

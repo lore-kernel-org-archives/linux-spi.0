@@ -1,19 +1,18 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Subject: Re: [v2 PATCH 07/14] spi/atmel_spi: add DT support
-Date: Fri, 7 Dec 2012 07:58:13 +0100
-Message-ID: <20121207065813.GH4398@game.jcrosoft.org>
-References: <1354607640-13229-1-git-send-email-wenyou.yang@atmel.com>
- <1354607640-13229-8-git-send-email-wenyou.yang@atmel.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH resend] spi: Add support for specifying 3-wire mode via
+ device tree
+Date: Fri, 07 Dec 2012 13:14:05 +0000
+Message-ID: <20121207131405.EBFDE3E0B87@localhost>
+References: <1354809333-18364-1-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1354607640-13229-8-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1354809333-18364-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
  <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
@@ -26,309 +25,52 @@ Sender: "devicetree-discuss"
  <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 15:53 Tue 04 Dec     , Wenyou Yang wrote:
-> From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+On Thu,  6 Dec 2012 16:55:33 +0100, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
+> This patch allows to specify that a SPI device is connected in 3-wire mode via
+> device tree.
 > 
-> The atmel_spi use only gpio for chip select.
-no this patch need go on the TOP of mine
+> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+> Acked-by: Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
 
-that is plan for 3.8
+Applied, thanks.
 
-Best Regards,
-J.
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-> [wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org: Add driver data and compatible "atmel,at91sam9260-spi", "atmel,at91sam9x5-spi"]
-> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-> Cc: rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
-> Cc: rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org
-> Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+g.
+
 > ---
-> Hi, Richard,
+>  Documentation/devicetree/bindings/spi/spi-bus.txt | 2 ++
+>  drivers/spi/spi.c                                 | 2 ++
+>  2 files changed, 4 insertions(+)
 > 
-> This patches is based on the original patch from Jean-Christophe
-> 	[PATCH] spi/atmel: add DT support
-> and merge the patch from Richard Genoud
-> 	[PATCH] spi-atmel OF: complete documentation
-> ane wenyou yang add more compatible "atmel,at91sam9260-spi", "atmel,at91sam9x5-spi", 
-> 	add driver data to get IP version and dma support.
-> 
-> Could you sign your signature in this patch?
-> 
-> Best Regards,
-> Wenyou Yang
-> 
->  .../devicetree/bindings/spi/spi_atmel.txt          |   23 +++++
->  drivers/spi/spi-atmel.c                            |  102 +++++++++++++++++---
->  2 files changed, 113 insertions(+), 12 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi_atmel.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-> new file mode 100644
-> index 0000000..20cdc91
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
-> @@ -0,0 +1,23 @@
-> +Atmel SPI device
-> +
-> +Required properties:
-> +- compatible : should be "atmel,at91rm9200-spi".
-> +- reg: Address and length of the register set for the device
-> +- interrupts: Should contain macb interrupt
-> +- cs-gpio: Should contain the GPIOs used for chipselect.
-> +- dma-mask: device coherent dma mask.
-> +
-> +spi0: spi@f0000000 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	compatible = "atmel,at91rm9200-spi";
-> +	reg = <0xf0000000 0x100>;
-> +	interrupts = <13 4>;
-> +	cs-gpios = <&pioA 14 0
-> +		    &pioA 7 0 /* conflicts with TXD2 */
-> +		    &pioA 1 0 /* conflicts with RXD0 */
-> +		    &pioB 3 0 /* conflicts with ERXDV */
-> +		   >;
-> +	dma-mask = <0xffffffff>;
-> +	status = "disabled";
-> +};
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 37f54c3..e032e3d 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -19,6 +19,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/spi/spi.h>
->  #include <linux/slab.h>
-> +#include <linux/of.h>
+> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> index 77a8b0d..296015e 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> @@ -53,6 +53,8 @@ contain the following properties.
+>      		shifted clock phase (CPHA) mode
+>  - spi-cs-high     - (optional) Empty property indicating device requires
+>      		chip select active high
+> +- spi-3wire       - (optional) Empty property indicating device requires
+> +    		    3-wire mode.
 >  
->  #include <asm/io.h>
->  #include <mach/board.h>
-> @@ -185,6 +186,10 @@
->   * DMA transfers; transfer queue progress is driven by IRQs.  The clock
->   * framework provides the base clock, subdivided for each spi_device.
->   */
-> +struct atmel_spi_pdata {
-> +	u8			version;
-> +};
-> +
->  struct atmel_spi {
->  	spinlock_t		lock;
->  	unsigned long		flags;
-> @@ -203,6 +208,7 @@ struct atmel_spi {
->  	struct spi_transfer	*next_transfer;
->  	unsigned long		next_remaining_bytes;
->  	int			done_status;
-> +	struct atmel_spi_pdata	*pdata;
+>  If a gpio chipselect is used for the SPI slave the gpio number will be passed
+>  via the cs_gpio
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 22c71e2..cb61ada 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -861,6 +861,8 @@ static void of_register_spi_devices(struct spi_master *master)
+>  			spi->mode |= SPI_CPOL;
+>  		if (of_find_property(nc, "spi-cs-high", NULL))
+>  			spi->mode |= SPI_CS_HIGH;
+> +		if (of_find_property(nc, "spi-3wire", NULL))
+> +			spi->mode |= SPI_3WIRE;
 >  
->  	void			*buffer;
->  	dma_addr_t		buffer_dma;
-> @@ -217,6 +223,51 @@ struct atmel_spi_device {
->  #define BUFFER_SIZE		PAGE_SIZE
->  #define INVALID_DMA_ADDRESS	0xffffffff
->  
-> +static struct atmel_spi_pdata at91rm9200_config = {
-> +	.version = 1,
-> +};
-> +
-> +static struct atmel_spi_pdata at91sam9260_config = {
-> +	.version = 2,
-> +};
-> +
-> +static struct atmel_spi_pdata at91sam9x5_config = {
-> +	.version = 2,
-> +};
-> +
-> +static const struct platform_device_id atmel_spi_devtypes[] = {
-> +	{
-> +		.name = "spi-at91rm9200",
-> +		.driver_data = (unsigned long) &at91rm9200_config,
-> +	}, {
-> +		.name = "spi-at91sam9260",
-> +		.driver_data = (unsigned long) &at91sam9260_config,
-> +	}, {
-> +		.name = "spi-at91sam9x5",
-> +		.driver_data = (unsigned long) &at91sam9x5_config,
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
-> +
-> +#if defined(CONFIG_OF)
-> +static const struct of_device_id atmel_spi_dt_ids[] = {
-> +	{
-> +		.compatible = "atmel,at91rm9200-spi",
-> +		.data = &at91rm9200_config,
-> +	} , {
-> +		.compatible = "atmel,at91sam9260-spi",
-> +		.data = &at91sam9260_config,
-> +	} , {
-> +		.compatible = "atmel,at91sam9x5-spi",
-> +		.data = &at91sam9x5_config,
-> +	}, {
-> +		/* sentinel */
-> +	}
-> +};
-> +MODULE_DEVICE_TABLE(of, atmel_spi_dt_ids);
-> +#endif
-> +
->  /*
->   * Version 2 of the SPI controller has
->   *  - CR.LASTXFER
-> @@ -229,11 +280,15 @@ struct atmel_spi_device {
->   * register, but I haven't checked that it exists on all chips, and
->   * this is cheaper anyway.
->   */
-> -static bool atmel_spi_is_v2(void)
-> +static bool atmel_spi_is_v2(struct atmel_spi *as)
->  {
-> -	return !cpu_is_at91rm9200();
-> +	if (as->pdata->version == 2)
-> +		return true;
-> +	else
-> +		return false;
->  }
->  
-> +
->  /*
->   * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
->   * they assume that spi slave device state will not change on deselect, so
-> @@ -265,7 +320,7 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
->  	unsigned active = spi->mode & SPI_CS_HIGH;
->  	u32 mr;
->  
-> -	if (atmel_spi_is_v2()) {
-> +	if (atmel_spi_is_v2(as)) {
->  		/*
->  		 * Always use CSR0. This ensures that the clock
->  		 * switches to the correct idle polarity before we
-> @@ -320,7 +375,7 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
->  			asd->npcs_pin, active ? " (low)" : "",
->  			mr);
->  
-> -	if (atmel_spi_is_v2() || spi->chip_select != 0)
-> +	if (atmel_spi_is_v2(as) || spi->chip_select != 0)
->  		gpio_set_value(asd->npcs_pin, !active);
->  }
->  
-> @@ -710,7 +765,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  	u32			scbr, csr;
->  	unsigned int		bits = spi->bits_per_word;
->  	unsigned long		bus_hz;
-> -	unsigned int		npcs_pin;
-> +	int			npcs_pin;
->  	int			ret;
->  
->  	as = spi_master_get_devdata(spi->master);
-> @@ -733,7 +788,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  	}
->  
->  	/* see notes above re chipselect */
-> -	if (!atmel_spi_is_v2()
-> +	if (!atmel_spi_is_v2(as)
->  			&& spi->chip_select == 0
->  			&& (spi->mode & SPI_CS_HIGH)) {
->  		dev_dbg(&spi->dev, "setup: can't be active-high\n");
-> @@ -742,7 +797,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  
->  	/* v1 chips start out at half the peripheral bus speed. */
->  	bus_hz = clk_get_rate(as->clk);
-> -	if (!atmel_spi_is_v2())
-> +	if (!atmel_spi_is_v2(as))
->  		bus_hz /= 2;
->  
->  	if (spi->max_speed_hz) {
-> @@ -782,7 +837,9 @@ static int atmel_spi_setup(struct spi_device *spi)
->  	csr |= SPI_BF(DLYBCT, 0);
->  
->  	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
-> -	npcs_pin = (unsigned int)spi->controller_data;
-> +	if (!gpio_is_valid(spi->cs_gpio))
-> +		spi->cs_gpio = (int)spi->controller_data;
-> +	npcs_pin = spi->cs_gpio;
->  	asd = spi->controller_state;
->  	if (!asd) {
->  		asd = kzalloc(sizeof(struct atmel_spi_device), GFP_KERNEL);
-> @@ -812,7 +869,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
->  		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
->  
-> -	if (!atmel_spi_is_v2())
-> +	if (!atmel_spi_is_v2(as))
->  		spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
->  
->  	return 0;
-> @@ -899,7 +956,7 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->  {
->  	struct atmel_spi	*as = spi_master_get_devdata(spi->master);
->  	struct atmel_spi_device	*asd = spi->controller_state;
-> -	unsigned		gpio = (unsigned) spi->controller_data;
-> +	unsigned		gpio = spi->cs_gpio;
->  
->  	if (!asd)
->  		return;
-> @@ -916,6 +973,21 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->  	kfree(asd);
->  }
->  
-> +static struct atmel_spi_pdata * __devinit atmel_spi_get_driver_data(
-> +					struct platform_device *pdev)
-> +{
-> +	if (pdev->dev.of_node) {
-> +		const struct of_device_id *match;
-> +		match = of_match_node(atmel_spi_dt_ids, pdev->dev.of_node);
-> +		if (!match)
-> +			return NULL;
-> +		return (struct atmel_spi_pdata *) match->data;
-> +	}
-> +
-> +	return (struct atmel_spi_pdata *)
-> +			platform_get_device_id(pdev)->driver_data;
-> +}
-> +
->  /*-------------------------------------------------------------------------*/
->  
->  static int __devinit atmel_spi_probe(struct platform_device *pdev)
-> @@ -949,7 +1021,8 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
->  
->  	master->bus_num = pdev->id;
-> -	master->num_chipselect = 4;
-> +	master->dev.of_node = pdev->dev.of_node;
-> +	master->num_chipselect = master->dev.of_node ? 0 : 4;
->  	master->setup = atmel_spi_setup;
->  	master->transfer = atmel_spi_transfer;
->  	master->cleanup = atmel_spi_cleanup;
-> @@ -981,6 +1054,10 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
->  	if (ret)
->  		goto out_unmap_regs;
->  
-> +	as->pdata = atmel_spi_get_driver_data(pdev);
-> +	if (!as->pdata)
-> +		goto out_unmap_regs;
-> +
->  	/* Initialize the hardware */
->  	clk_enable(clk);
->  	spi_writel(as, CR, SPI_BIT(SWRST));
-> @@ -1078,12 +1155,13 @@ static int atmel_spi_resume(struct platform_device *pdev)
->  #define	atmel_spi_resume	NULL
->  #endif
->  
-> -
->  static struct platform_driver atmel_spi_driver = {
->  	.driver		= {
->  		.name	= "atmel_spi",
->  		.owner	= THIS_MODULE,
-> +		.of_match_table	= of_match_ptr(atmel_spi_dt_ids),
->  	},
-> +	.id_table	= atmel_spi_devtypes,
->  	.suspend	= atmel_spi_suspend,
->  	.resume		= atmel_spi_resume,
->  	.probe		= atmel_spi_probe,
+>  		/* Device speed */
+>  		prop = of_get_property(nc, "spi-max-frequency", &len);
 > -- 
-> 1.7.9.5
+> 1.8.0
 > 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

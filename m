@@ -1,59 +1,27 @@
-From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
-Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
-	spi-orion
-Date: Thu, 6 Dec 2012 19:49:33 -0500
-Message-ID: <20121207004933.GC21694@titan.lakedaemon.net>
-References: <20121121192335.GA14868@obsidianresearch.com>
-	<20121206142521.4185A3E0948@localhost>
-	<20121206172504.GB9676@obsidianresearch.com>
-	<20121206232305.719E23E0B24@localhost>
-	<20121206234917.GF25069@obsidianresearch.com>
-	<20121206235311.GB21694@titan.lakedaemon.net>
-	<20121207001433.GG25069@obsidianresearch.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi: Remove SPI_BUFSIZ restriction on
+ spi_write_then_read()
+Date: Fri, 7 Dec 2012 12:41:41 +0900
+Message-ID: <20121207034140.GB26070@opensource.wolfsonmicro.com>
+References: <1354420465-29315-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <20121206000026.A620D3E0E22@localhost>
+ <20121206053732.GD10867@opensource.wolfsonmicro.com>
+ <20121206140427.8E5673E089D@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20121207001433.GG25069-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <20121206140427.8E5673E089D@localhost>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Dec 06, 2012 at 05:14:33PM -0700, Jason Gunthorpe wrote:
-> On Thu, Dec 06, 2012 at 06:53:11PM -0500, Jason Cooper wrote:
-> > On Thu, Dec 06, 2012 at 04:49:17PM -0700, Jason Gunthorpe wrote:
-> > > Jason: Do you have any of these possibly affected boards with a SPI
-> > > flash to test linux-next? dove, dreamplug, ts219 and lsxl
-> > 
-> > Yep, dreamplug ought to do.
-> 
-> Hmm, I just reviewed all the FLASH P/Ns datasheets in the affected DT
-> files, and they are all mode 0/mode 3 compatible - that is the linux
-> default mode so I expect everything to work OK.
-> 
-> If your dreamplug is fine lets just leave it?
+On Thu, Dec 06, 2012 at 02:04:27PM +0000, Grant Likely wrote:
 
-Unfortunately, I'm unable to test until next week.  If Grant is
-comfortable with it as is, I have no objection.  If he isn't, I'll try
-to test it next week when I return home.
+> Alright, applied. I've also merged in your spi-next tree. Let me know if
+> that causes problems because it needs to be rebased.
 
-thx,
-
-Jason.
-
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+No problem - do you just want to take over the SPI tree again or should
+I carry on applying things?

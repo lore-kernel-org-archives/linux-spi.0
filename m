@@ -1,38 +1,25 @@
-From: Galerie des Marques vous =?iso-8859-15?Q?pr=E9sente?= LET'S PIK
-	<info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: -15% sur les photos d'art - Livraison avant =?iso-8859-15?Q?No=EBl?=
-Date: Fri, 07 Dec 2012 16:03:41 +0100
-Message-ID: <1354892627.thing50c205534ce46@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: David Miller <davem@davemloft.net>
+Subject: Re: [PATCH 1/2] of_i2c: sparc: Allow OF_I2C for sparc
+Date: Fri, 07 Dec 2012 12:30:45 -0500 (EST)
+Message-ID: <20121207.123045.82278297729205471.davem@davemloft.net>
+References: <1354630178-25387-1-git-send-email-andreas@gaisler.com>
+	<1354630178-25387-2-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: grant.likely@secretlab.ca, w.sang@pengutronix.de, sam@ravnborg.org,
+	sparclinux@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net, linux-i2c@vger.kernel.org,
+	software@gaisler.com
+To: andreas@gaisler.com
+Return-path: <sparclinux-owner@vger.kernel.org>
+In-Reply-To: <1354630178-25387-2-git-send-email-andreas@gaisler.com>
+Sender: sparclinux-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+From: Andreas Larsson <andreas@gaisler.com>
+Date: Tue,  4 Dec 2012 15:09:37 +0100
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjcwOTkmYz0xOTYxNjQxJmQ9MjAx=
-Mi0xMi0wNyAxNjowMDowMSZlPTEmaD0yNzA5NyZmPTI3MDk5Jmc9MjcwOTk=3D
+> Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjcwOTkmYz0=
-xOTYxNjQxJmQ9MjAxMi0xMi0wNyAxNjowMDowMSZlPTEmaD0yNzA5NyZmPTI3MDk5Jmc9MjcwOT=
-k=3D
-
-
----------------------------------------------------------------------------=
----
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+Applied.

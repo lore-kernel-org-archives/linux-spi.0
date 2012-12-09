@@ -1,13 +1,16 @@
-From: "Isabela Maria" <contato-ZIiXBKy9GVDAMZVyrMWeIQh0onu2mTI+@public.gmane.org>
-Subject: Aumente os contatos e os lucros no seu MMN!
-Date: Sat, 8 Dec 2012 04:06:26 -0200
-Message-ID: <E1ThDYk-0006AC-QD@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "=?gb2312?B?bGFuamlhbmdyZDg3MQ==?=" <lanjiangrd871-WVlzvzqoTvw@public.gmane.org>
+Subject: =?gb2312?B?ob5BRKG/QLWr1LjIy7OkvsPHp8DvubLmv77qo6E=?=
+Date: Mon, 10 Dec 2012 07:43:48 +0800 (CST)
+Message-ID: <50C52234.000053.24658@cnapp12>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: spielberg-WVlzvzqoTvw@public.gmane.org, spielchong-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
+To: spiderxiano01-9Onoh4P/yGk@public.gmane.org, spideryang-9Onoh4P/yGk@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	spidi-sXJsrNKGaAyJEg79ku39Ckn1X6ankA70@public.gmane.org, spidi-oqzwS2uSzc43TOWNJCPdyQ@public.gmane.org,
+	spiegel_online-nS6rMZ4tlSeELgA04lAiVw@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,36 +21,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ol=E1, meu nome =E9 Isabela Maria e quero lhe apresentar uma ferramenta sen=
-sacional que vai aumentar seus contatos e seus ganhos consideravelmente!
-Uma Ferramenta espetacular que captura os dados para contatos de pessoas in=
-teressadas em sua empresa de MMN (Marketing MultiN=EDvel).
-Se voc=EA trabalha com uma das empresas abaixo:
- =
-
-Belcorp, Amway, FR Promotora, My Travel and Cash, Herbalife, Forever, Organ=
-o Gold, Oak Cosmetics, Inspira=E7=E3o Perfumes, ATM Global Cash, Mona-vie,
-Recarga Plus, OmniLife, TelexFree, Up! Ess=EAncia, Polishop, Balsamo Perfum=
-es, Multi Click Brasil, SGDA, Kit Ganhar Dinheiro OnLine, Clube Ca=E7adores=
- de Fortuna, Akmos, Clube Ganhar Dinheiro. =
-
-A LD Marketing =E9 a ferramenta ideal para voc=EA! =
-
-Na plataforma LD Marketing tem as ferramentas necess=E1rias para que voc=EA=
- possa aumentar em mais de 100% seus contatos e com isso recrutar mais pess=
-oas para seu neg=F3cio! E ainda pode ganhar dinheiro com indica=E7=F5es a f=
-erramentas. =
-
-Visite o site clicando aqui e conhe=E7a mais essa fant=E1stica ferramenta q=
-ue esta em fase de ATIVA=C7=C3O DE CADASTROS. =
-
-Atenciosamente: Isabela Maria. =
-
-
----------------------------------------------------------------------------=
----
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+w/fUwry4yrHT0KO/sNG+xs7Kx+DM7KGjsrvWqszsyc+5rOPao6y98c+myse6zsTqoaPO0tP7s8u3
+57npyKWjrNPWv9bH7cKl0/HT7qOsuN+0prK7yqS6rqGjxvDO6MWqx+XTsKOsus7LxtTayMu85KO/
+INeq1uy486Ostc3nsruno6zV1c7ew9+ho7K706bT0Lreo6y6zsrCs6TP8rHwyrHUsqO/yMvT0LGv
+u7bA67rPo6zUwtPQ0vXH59SyyLGjrLTLysK5xcTRyKuho7Wr1LjIy7OkvsOjrMenwO+5sua/vuqh
+o6G+sb65q8u+z/LIq7n6uPe12LT6v6q499bWuPfA4KG/y7DGscjnob612Muwob+hvrn6y7Chv9eo
+08OhvtT21rXLsKG/yOfT0NDo0qrH68C0tefJzMy4o6y157uwOjEzNzYwNjIwNjI4LFFROjEzMzc5
+MDg1NjYuIMH1vq3A7aOsILj0x6fA79Kyu7m/ydLUzai5/cbV1dXKwL3ntcTD99TCsNHBvbXYwarP
+tcbwwLSjrLDRscu0y7XE0MS5tc2o1NrSu8bwoaOhsLWr1LjIy7OkvsOhsaOsysfSqs27xsbKsbzk
+tcS+1s/eo7uhsMenwO+5sua/vuqhsaOsysfSqrTyzai/1bzktcTX6Lj0oaPIw7bU09rD99TCtcS5
+ss2stcSwrrDRscu0y7fWwOu1xMjLveG6z9Ta0rvG8KGjucXIy9PQobDJ8b27obG1xMu1t6ijrNKq
+usO1xMXz09HM7Lj30ru3vaOssrvE3Lz7w+ajrMi0xNzS1L6ryfHP4M2ooaOhsMenwO+5sua/vuqh
+sdKyv8nS1Mu1ysfSu9bWyfG9u8HLo6HN9bKq09DBvb7kyqujuqGwuqPE2rTm1qq8uqOszOzRxMj0
+scjB2qGjobHS4s62ye6zpKOstKvOqrzRvuSho87Sv7SjrKGwx6fA77my5r++6qGx09DS7Mf6zay5
+pNauw+6ho8HtzeKjrNXFvsXB5LXEobbN+9TCu7PUtqG3y7WjuqGwuqPJz8n6w/fUwqOszOzRxLmy
+tMvKsaGjobHQ7bvrtcShtsfv9qu8xNS2obfLtaO6obDOqNOmtP3D99TCo6zHp8Dv0+u+/c2soaOh
+sba8v8nS1Lulz+Cyzr+0oaPV/cjntMrHsNCh0PLL+cu1o6zV4srXtMqx7bTvwcu21LXctdzL1dXe
+o6jX1tfT08mjqbXEu7PE7taux+mjrLWrsqKyu8/e09q0y6Gjv8nS1Mu11eLK17TKysfL1en41NrW
+0Mfv1q7SuaOsttTSu8fQvq3K3NfFwOux8Nauv+C1xMjLse3KvrXEw8C6w9ej1LihoyANCg0KLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCkxvZ01lSW4gUmVzY3VlOiBBbnl3aGVyZSwgQW55dGltZSBSZW1v
+dGUgc3VwcG9ydCBmb3IgSVQuIEZyZWUgVHJpYWwKUmVtb3RlbHkgYWNjZXNzIFBDcyBhbmQgbW9i
+aWxlIGRldmljZXMgYW5kIHByb3ZpZGUgaW5zdGFudCBzdXBwb3J0CkltcHJvdmUgeW91ciBlZmZp
+Y2llbmN5LCBhbmQgZm9jdXMgb24gZGVsaXZlcmluZyBtb3JlIHZhbHVlLWFkZCBzZXJ2aWNlcwpE
+aXNjb3ZlciB3aGF0IElUIFByb2Zlc3Npb25hbHMgS25vdy4gUmVzY3VlIGRlbGl2ZXJzCmh0dHA6
+Ly9wLnNmLm5ldC9zZnUvbG9nbWVpbl8xMjMyOWQyZApfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

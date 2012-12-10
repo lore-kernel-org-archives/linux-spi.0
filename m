@@ -1,44 +1,51 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] ARM: Kirkwood: Add SPI_CHPA and SPI_CPOL support to
-	spi-orion
-Date: Mon, 10 Dec 2012 22:06:02 +0000
-Message-ID: <20121210220602.2EB3D3E0D80@localhost>
-References: <20121210133800.GA20001@lunn.ch>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, rant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Gunthorpe <jgunthorpe-ePGOBjL8dl3ta4EC/59zMFaTQe2KTcn/@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121210133800.GA20001-g2DYL2Zd6BY@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Subject: Re: [PATCH 0/2] sparc: Enable OF functionality for sparc for i2c and spi
+Date: Mon, 10 Dec 2012 22:32:14 +0000
+Message-ID: <20121210223214.870433E0768@localhost>
+References: <CACxGe6sw0zU0NcXw1gjMZka4WyTZgT4heF3r4k0QPHbfcPzbiw@mail.gmail.com> <20121204.161001.1397661306369063374.davem@davemloft.net> <CACxGe6t4YcSuh04UjoYqFp355iLa6ECc5G+Y1TP3kxsL48c6jQ@mail.gmail.com> <20121207.123057.2230821059287428618.davem@davemloft.net>
+Cc: andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org, w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, sam-uyr5N9Q2VtJg9hUCZPvPmw@public.gmane.org,
+	sparclinux-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org
+To: David Miller <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20121207.123057.2230821059287428618.davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 10 Dec 2012 14:38:00 +0100, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org> wrote:
-> Hi Jason
+On Fri, 07 Dec 2012 12:30:57 -0500 (EST), David Miller <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org> wrote:
+> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Date: Tue, 4 Dec 2012 21:49:26 +0000
 > 
-> I tested your patch to add SPI_CHPA and SPI_CPOL on a QNAP box which
-> has SPI NAND. No problems seen.
+> > On Tue, Dec 4, 2012 at 9:10 PM, David Miller <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org> wrote:
+> >> From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> >> Date: Tue, 4 Dec 2012 14:44:57 +0000
+> >>
+> >>> On Tue, Dec 4, 2012 at 2:09 PM, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
+> >>>> This series removes the dependency on !SPARC for OF_I2C and removes the
+> >>>> depencency of !defined(CONFIG_SPARC) for the function
+> >>>> of_register_spi_devices. I find no reason for these to be unavailable
+> >>>> for sparc.
+> >>>>
+> >>>> I am not sure if these should go through the sparc tree or the
+> >>>> corresponding subsystem trees.
+> >>>
+> >>> They should go through the subsystem trees.
+> >>
+> >> I'll take this into the sparc tree after some build testing, thanks.
+> > 
+> > I'd prefer to take the SPI one through my tree, but I won't get my
+> > knickers in a knot if you insist.
 > 
-> Tested-by: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+> That's fine:
 > 
+> Acked-by: David S. Miller <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>
 
-Thanks Andrew.
+Applied, thanks.
 
 g.
 
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

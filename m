@@ -1,15 +1,14 @@
-From: "=?gb2312?B?bGFuamlhbmdyZDg3MQ==?=" <lanjiangrd871-WVlzvzqoTvw@public.gmane.org>
-Subject: =?gb2312?B?ob5BRKG/QLWr1LjIy7OkvsPHp8DvubLmv77qo6E=?=
-Date: Mon, 10 Dec 2012 07:43:48 +0800 (CST)
-Message-ID: <50C52234.000053.24658@cnapp12>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi.c: Provide cast to avoid warning
+Date: Mon, 10 Dec 2012 00:32:18 -0200
+Message-ID: <1355106738-14191-1-git-send-email-festevam@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: spielberg-WVlzvzqoTvw@public.gmane.org, spielchong-/E1597aS9LRv1O+Z8WTAqQ@public.gmane.org
-To: spiderxiano01-9Onoh4P/yGk@public.gmane.org, spideryang-9Onoh4P/yGk@public.gmane.org,
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	spidi-sXJsrNKGaAyJEg79ku39Ckn1X6ankA70@public.gmane.org, spidi-oqzwS2uSzc43TOWNJCPdyQ@public.gmane.org,
-	spiegel_online-nS6rMZ4tlSeELgA04lAiVw@public.gmane.org
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,31 +20,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-w/fUwry4yrHT0KO/sNG+xs7Kx+DM7KGjsrvWqszsyc+5rOPao6y98c+myse6zsTqoaPO0tP7s8u3
-57npyKWjrNPWv9bH7cKl0/HT7qOsuN+0prK7yqS6rqGjxvDO6MWqx+XTsKOsus7LxtTayMu85KO/
-INeq1uy486Ostc3nsruno6zV1c7ew9+ho7K706bT0Lreo6y6zsrCs6TP8rHwyrHUsqO/yMvT0LGv
-u7bA67rPo6zUwtPQ0vXH59SyyLGjrLTLysK5xcTRyKuho7Wr1LjIy7OkvsOjrMenwO+5sua/vuqh
-o6G+sb65q8u+z/LIq7n6uPe12LT6v6q499bWuPfA4KG/y7DGscjnob612Muwob+hvrn6y7Chv9eo
-08OhvtT21rXLsKG/yOfT0NDo0qrH68C0tefJzMy4o6y157uwOjEzNzYwNjIwNjI4LFFROjEzMzc5
-MDg1NjYuIMH1vq3A7aOsILj0x6fA79Kyu7m/ydLUzai5/cbV1dXKwL3ntcTD99TCsNHBvbXYwarP
-tcbwwLSjrLDRscu0y7XE0MS5tc2o1NrSu8bwoaOhsLWr1LjIy7OkvsOhsaOsysfSqs27xsbKsbzk
-tcS+1s/eo7uhsMenwO+5sua/vuqhsaOsysfSqrTyzai/1bzktcTX6Lj0oaPIw7bU09rD99TCtcS5
-ss2stcSwrrDRscu0y7fWwOu1xMjLveG6z9Ta0rvG8KGjucXIy9PQobDJ8b27obG1xMu1t6ijrNKq
-usO1xMXz09HM7Lj30ru3vaOssrvE3Lz7w+ajrMi0xNzS1L6ryfHP4M2ooaOhsMenwO+5sua/vuqh
-sdKyv8nS1Mu1ysfSu9bWyfG9u8HLo6HN9bKq09DBvb7kyqujuqGwuqPE2rTm1qq8uqOszOzRxMj0
-scjB2qGjobHS4s62ye6zpKOstKvOqrzRvuSho87Sv7SjrKGwx6fA77my5r++6qGx09DS7Mf6zay5
-pNauw+6ho8HtzeKjrNXFvsXB5LXEobbN+9TCu7PUtqG3y7WjuqGwuqPJz8n6w/fUwqOszOzRxLmy
-tMvKsaGjobHQ7bvrtcShtsfv9qu8xNS2obfLtaO6obDOqNOmtP3D99TCo6zHp8Dv0+u+/c2soaOh
-sba8v8nS1Lulz+Cyzr+0oaPV/cjntMrHsNCh0PLL+cu1o6zV4srXtMqx7bTvwcu21LXctdzL1dXe
-o6jX1tfT08mjqbXEu7PE7taux+mjrLWrsqKyu8/e09q0y6Gjv8nS1Mu11eLK17TKysfL1en41NrW
-0Mfv1q7SuaOsttTSu8fQvq3K3NfFwOux8Nauv+C1xMjLse3KvrXEw8C6w9ej1LihoyANCg0KLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCkxvZ01lSW4gUmVzY3VlOiBBbnl3aGVyZSwgQW55dGltZSBSZW1v
-dGUgc3VwcG9ydCBmb3IgSVQuIEZyZWUgVHJpYWwKUmVtb3RlbHkgYWNjZXNzIFBDcyBhbmQgbW9i
-aWxlIGRldmljZXMgYW5kIHByb3ZpZGUgaW5zdGFudCBzdXBwb3J0CkltcHJvdmUgeW91ciBlZmZp
-Y2llbmN5LCBhbmQgZm9jdXMgb24gZGVsaXZlcmluZyBtb3JlIHZhbHVlLWFkZCBzZXJ2aWNlcwpE
-aXNjb3ZlciB3aGF0IElUIFByb2Zlc3Npb25hbHMgS25vdy4gUmVzY3VlIGRlbGl2ZXJzCmh0dHA6
-Ly9wLnNmLm5ldC9zZnUvbG9nbWVpbl8xMjMyOWQyZApfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+
+commit b3a223ee2d (spi: Remove SPI_BUFSIZ restriction on spi_write_then_read())
+introduced the following build warning:
+
+drivers/spi/spi.c:1655:355: warning: comparison of distinct pointer types lacks a cast [enabled by default]
+
+Provide the cast to avoid the warning.
+
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 224b7bc..78fcff0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1652,7 +1652,8 @@ int spi_write_then_read(struct spi_device *spi,
+ 	 * using the pre-allocated buffer or the transfer is too large.
+ 	 */
+ 	if ((n_tx + n_rx) > SPI_BUFSIZ || !mutex_trylock(&lock)) {
+-		local_buf = kmalloc(max(SPI_BUFSIZ, n_tx + n_rx), GFP_KERNEL);
++		local_buf = kmalloc(max((unsigned)SPI_BUFSIZ, n_tx + n_rx),
++								GFP_KERNEL);
+ 		if (!local_buf)
+ 			return -ENOMEM;
+ 	} else {
+-- 
+1.7.9.5
+
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

@@ -1,17 +1,18 @@
-From: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Jun Chen <jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] SPI: SSP SPI Controller driver
-Date: Tue, 11 Dec 2012 16:58:31 +0800
-Message-ID: <1355216311.30354.166.camel@bichao>
+Date: Tue, 11 Dec 2012 09:30:47 -0500
+Message-ID: <1355236247.1435.12.camel@chenjun-workstation>
 References: <1353464203.20353.6.camel@bichao>
 	<20121206123856.002683E0AE3@localhost>
+	<20121206141938.0100f06f@bob.linux.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+To: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121206123856.002683E0AE3@localhost>
+In-Reply-To: <20121206141938.0100f06f-Z/y2cZnRghHXmaaqVzeoHQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,44 +23,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 2012-12-06 at 12:38 +0000, Grant Likely wrote:
-> On Wed, 21 Nov 2012 10:16:43 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+On Thu, 2012-12-06 at 14:19 +0000, Alan Cox wrote:
 
-> > +	master->mode_bits = SPI_CPOL | SPI_CPHA;
-> > +	master->bus_num = SSP_CFG_GET_SPI_BUS_NB(ssp_cfg);
-> > +	master->num_chipselect = 1;
-> > +	master->cleanup = cleanup;
-> > +	master->setup = setup;
-> > +	master->transfer = transfer;
-> > +	drv_context->dma_wq = create_workqueue("intel_mid_ssp_spi");
-> > +	INIT_WORK(&drv_context->complete_work, int_transfer_complete_work);
+> > > +late_initcall(intel_mid_ssp_spi_init);
+> > 
+> > Why late_initcall()? module_init() should be sufficient. Or better yet
+> > replace the init and exit functions with module_pci_driver()
 > 
-> Workqueue management is integrated into the core spi infrastructure now.
-> SPI drivers should no longer be creating their own workqueues.
+> Thats a legacy of the old SPI code not handling bus and device
+> registration in random orders. So it's no longer needed I believe.
 > 
-> Instead, replace the ->transfer hook with prepare_transfer_hardware(),
-> unprepare_transfer_hardware() and transfer_one_message(). See
-> Documentation/spi/spi-summary for details.
+> Alan
 
-Hi Grant,
-I'd like to talk about my understanding here, please correct me if I was wrong:
-
-1. I understand the workqueue in spi core is for driving message
-transfer, so SPI driver should not create new workqueue for this usage.
-However, the workqueue created here is not for this usage it's to call
-back to SPI protocol driver (ifx6x60.c) when DMA data transfer is
-finished, so it seems not conflict with spi core. Am I right?
-
-2. Currently our Medfield Platform SW is based on linux-3.0, transfer_one_message() 
-is not implemented, so in SPI driver, we're still use ->transfer(), this 
-is with long-term validation. If we change to ->transfer_one_message() now, 
-it's hardly to do thorough validation on our platform, so shall we complete 
-this part by 2 steps, firstly we implement with ->transfer() hoot which can be 
-validation on our hardware platform, next step, when our internal SW version 
-is upgraded to latest Linux version, then we raise a patch to adapt new spi core.
-what's your opinion?
-
-chao
+We use the late_initcall because we want init the spi driver after
+finished the dma driver with fs_initcall. Now we can not test the 
+module_pci_driver replace the late_initcall because our kernel version
+is not brach 3.7. So maybe we can use old the late_initcall and update
+this code in the further, Do you agree?
 
 
 ------------------------------------------------------------------------------

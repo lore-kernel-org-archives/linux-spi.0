@@ -1,37 +1,69 @@
-From: "Nocibe - Galeriedesmarques.fr" <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Pour Noel profitez de -25% sur votre produit prefere !
-Date: Wed, 12 Dec 2012 05:14:14 +0100
-Message-ID: <1355285656.thing50c80498f4203@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 1/2] spi: omap2: disable DMA requests before complete()
+Date: Wed, 12 Dec 2012 10:45:59 +0200
+Message-ID: <1355301960-21523-1-git-send-email-balbi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+ Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>,
+ Linux OMAP Mailing List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+ <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+No actual errors have been found for completing
+before disabling DMA request lines, but it just
+looks more semantically correct that on our DMA
+callback we quiesce the whole thing before stating
+transfer is finished.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MjczODcmYz0xOTYxNjQxJmQ9MjAx=
-Mi0xMi0xMiAwNTowMDowMSZlPTEmaD0yNzM4NSZmPTI3Mzg3Jmc9MjczODc=3D
-
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MjczODcmYz0=
-xOTYxNjQxJmQ9MjAxMi0xMi0xMiAwNTowMDowMSZlPTEmaD0yNzM4NSZmPTI3Mzg3Jmc9MjczOD=
-c=3D
-
-
----------------------------------------------------------------------------=
+Signed-off-by: Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>
 ---
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+ drivers/spi/spi-omap2-mcspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index b610f52..68446db 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -298,10 +298,10 @@ static void omap2_mcspi_rx_callback(void *data)
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(spi->master);
+ 	struct omap2_mcspi_dma *mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 
+-	complete(&mcspi_dma->dma_rx_completion);
+-
+ 	/* We must disable the DMA RX request */
+ 	omap2_mcspi_set_dma_req(spi, 1, 0);
++
++	complete(&mcspi_dma->dma_rx_completion);
+ }
+ 
+ static void omap2_mcspi_tx_callback(void *data)
+@@ -310,10 +310,10 @@ static void omap2_mcspi_tx_callback(void *data)
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(spi->master);
+ 	struct omap2_mcspi_dma *mcspi_dma = &mcspi->dma_channels[spi->chip_select];
+ 
+-	complete(&mcspi_dma->dma_tx_completion);
+-
+ 	/* We must disable the DMA TX request */
+ 	omap2_mcspi_set_dma_req(spi, 0, 0);
++
++	complete(&mcspi_dma->dma_tx_completion);
+ }
+ 
+ static void omap2_mcspi_tx_dma(struct spi_device *spi,
+-- 
+1.8.1.rc1.5.g7e0651a

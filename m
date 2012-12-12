@@ -1,128 +1,150 @@
-From: Bastian Hecht <hechtb@gmail.com>
-Subject: [PATCH 3/4 v2] spi: sh-msiof: Add device tree parsing to driver
-Date: Wed, 12 Dec 2012 12:54:48 +0100
-Message-ID: <1355313289-29769-3-git-send-email-hechtb+renesas@gmail.com>
-References: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-sh@vger.kernel.org,
-	Magnus Damm <magnus.damm@gmail.com>
-To: spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/1] spi/atmel: add DT support
+Date: Wed, 12 Dec 2012 16:13:08 +0100
+Message-ID: <20121212151308.GK4398@game.jcrosoft.org>
+References: <20121121151713.1F8873E0A47@localhost>
+ <1353674679-13158-1-git-send-email-plagnioj@jcrosoft.com>
+ <50AF7C19.8000306@atmel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+ spi-devel-general@lists.sourceforge.net, devicetree-discuss@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
+To: Nicolas Ferre <nicolas.ferre@atmel.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <50AF7C19.8000306@atmel.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Bastian Hecht <hechtb@gmail.com>
+On 14:37 Fri 23 Nov     , Nicolas Ferre wrote:
+> On 11/23/2012 01:44 PM, Jean-Christophe PLAGNIOL-VILLARD :
+> > the atmel_spi use only gpio for chip select
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 
+> Seems simple and nice:
+> 
+> Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+grant is ok to have this for 3.8?
 
-This adds the capability to retrieve setup data from the device tree
-node. The usage of platform data is still available.
-
-Signed-off-by: Bastian Hecht <hechtb+renesas@gmail.com>
----
-v2:
-        - renamed property "chip_select" to "num-cs"
-        - renamed property "tx_fifo_size" to "renesas,tx-fifo-size"
-        - renamed property "rx_fifo_size" to "renesas,rx-fifo-size"
-
- drivers/spi/spi-sh-msiof.c |   56 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 96358d0..8b40d08 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -20,6 +20,7 @@
- #include <linux/io.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- 
-@@ -592,6 +593,37 @@ static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
- 	return 0;
- }
- 
-+#ifdef CONFIG_OF
-+static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
-+{
-+	struct sh_msiof_spi_info *info;
-+	struct device_node *np = dev->of_node;
-+	u32 num_cs = 0;
-+
-+	info = devm_kzalloc(dev, sizeof(struct sh_msiof_spi_info), GFP_KERNEL);
-+	if (!info) {
-+		dev_err(dev, "failed to allocate setup data\n");
-+		return NULL;
-+	}
-+
-+	/* Parse the MSIOF properties */
-+	of_property_read_u32(np, "num-cs", &num_cs);
-+	of_property_read_u32(np, "renesas,tx-fifo-size",
-+					&info->tx_fifo_override);
-+	of_property_read_u32(np, "renesas,rx-fifo-size",
-+					&info->rx_fifo_override);
-+
-+	info->num_chipselect = num_cs;
-+
-+	return info;
-+}
-+#else
-+static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
-+{
-+	return NULL;
-+}
-+#endif
-+
- static int sh_msiof_spi_probe(struct platform_device *pdev)
- {
- 	struct resource	*r;
-@@ -610,7 +642,17 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	p = spi_master_get_devdata(master);
- 
- 	platform_set_drvdata(pdev, p);
--	p->info = pdev->dev.platform_data;
-+	if (pdev->dev.of_node)
-+		p->info = sh_msiof_spi_parse_dt(&pdev->dev);
-+	else
-+		p->info = pdev->dev.platform_data;
-+
-+	if (!p->info) {
-+		dev_err(&pdev->dev, "failed to obtain device info\n");
-+		ret = -ENXIO;
-+		goto err1;
-+	}
-+
- 	init_completion(&p->done);
- 
- 	p->clk = clk_get(&pdev->dev, NULL);
-@@ -715,6 +757,17 @@ static int sh_msiof_spi_runtime_nop(struct device *dev)
- 	return 0;
- }
- 
-+#ifdef CONFIG_OF
-+static const struct of_device_id sh_msiof_match[] = {
-+	{ .compatible = "renesas,sh-msiof", },
-+	{ .compatible = "renesas,sh-mobile-msiof", },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, sh_msiof_match);
-+#else
-+#define sh_msiof_match NULL
-+#endif
-+
- static struct dev_pm_ops sh_msiof_spi_dev_pm_ops = {
- 	.runtime_suspend = sh_msiof_spi_runtime_nop,
- 	.runtime_resume = sh_msiof_spi_runtime_nop,
-@@ -727,6 +780,7 @@ static struct platform_driver sh_msiof_spi_drv = {
- 		.name		= "spi_sh_msiof",
- 		.owner		= THIS_MODULE,
- 		.pm		= &sh_msiof_spi_dev_pm_ops,
-+		.of_match_table = sh_msiof_match,
- 	},
- };
- module_platform_driver(sh_msiof_spi_drv);
--- 
-1.7.9.5
-
+Best Regards,
+J.
+> 
+> > Cc: spi-devel-general@lists.sourceforge.net
+> > Cc: Grant Likely <grant.likely@secretlab.ca>
+> > ---
+> > Hi Grant,
+> > 
+> > 	can we have this for 3.8
+> > 	This patch is presetnt on the ML sing Feb 2012 and was depinding on
+> > 	the cs-gpio dt that you just apply
+> > 
+> > Best Regards,
+> > J.
+> >  .../devicetree/bindings/spi/spi_atmel.txt          |   26 ++++++++++++++++++++
+> >  drivers/spi/spi-atmel.c                            |   17 ++++++++++++-
+> >  2 files changed, 42 insertions(+), 1 deletion(-)
+> >  create mode 100644 Documentation/devicetree/bindings/spi/spi_atmel.txt
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/spi_atmel.txt b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+> > new file mode 100644
+> > index 0000000..07e04cd
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/spi_atmel.txt
+> > @@ -0,0 +1,26 @@
+> > +Atmel SPI device
+> > +
+> > +Required properties:
+> > +- compatible : should be "atmel,at91rm9200-spi".
+> > +- reg: Address and length of the register set for the device
+> > +- interrupts: Should contain spi interrupt
+> > +- cs-gpios: chipselects
+> > +
+> > +Example:
+> > +
+> > +spi1: spi@fffcc000 {
+> > +	compatible = "atmel,at91rm9200-spi";
+> > +	reg = <0xfffcc000 0x4000>;
+> > +	interrupts = <13 4 5>;
+> > +	#address-cells = <1>;
+> > +	#size-cells = <0>;
+> > +	cs-gpios = <&pioB 3 0>;
+> > +	status = "okay";
+> > +
+> > +	mmc-slot@0 {
+> > +		compatible = "mmc-spi-slot";
+> > +		reg = <0>;
+> > +		gpios = <&pioC 4 0>;	/* CD */
+> > +		spi-max-frequency = <25000000>;
+> > +	};
+> > +};
+> > diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> > index 61fb0ec..1615222 100644
+> > --- a/drivers/spi/spi-atmel.c
+> > +++ b/drivers/spi/spi-atmel.c
+> > @@ -20,6 +20,7 @@
+> >  #include <linux/spi/spi.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/platform_data/atmel.h>
+> > +#include <linux/of.h>
+> >  
+> >  #include <asm/io.h>
+> >  #include <asm/gpio.h>
+> > @@ -768,6 +769,10 @@ static int atmel_spi_setup(struct spi_device *spi)
+> >  
+> >  	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
+> >  	npcs_pin = (unsigned int)spi->controller_data;
+> > +
+> > +	if (gpio_is_valid(spi->cs_gpio))
+> > +		npcs_pin = spi->cs_gpio;
+> > +
+> >  	asd = spi->controller_state;
+> >  	if (!asd) {
+> >  		asd = kzalloc(sizeof(struct atmel_spi_device), GFP_KERNEL);
+> > @@ -937,8 +942,9 @@ static int __devinit atmel_spi_probe(struct platform_device *pdev)
+> >  	/* the spi->mode bits understood by this driver: */
+> >  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> >  
+> > +	master->dev.of_node = pdev->dev.of_node;
+> >  	master->bus_num = pdev->id;
+> > -	master->num_chipselect = 4;
+> > +	master->num_chipselect = master->dev.of_node ? 0 : 4;
+> >  	master->setup = atmel_spi_setup;
+> >  	master->transfer = atmel_spi_transfer;
+> >  	master->cleanup = atmel_spi_cleanup;
+> > @@ -1064,11 +1070,20 @@ static int atmel_spi_resume(struct platform_device *pdev)
+> >  #define	atmel_spi_resume	NULL
+> >  #endif
+> >  
+> > +#if defined(CONFIG_OF)
+> > +static const struct of_device_id atmel_spi_dt_ids[] = {
+> > +	{ .compatible = "atmel,at91rm9200-spi" },
+> > +	{ /* sentinel */ }
+> > +};
+> > +
+> > +MODULE_DEVICE_TABLE(of, atmel_spi_dt_ids);
+> > +#endif
+> >  
+> >  static struct platform_driver atmel_spi_driver = {
+> >  	.driver		= {
+> >  		.name	= "atmel_spi",
+> >  		.owner	= THIS_MODULE,
+> > +		.of_match_table	= of_match_ptr(atmel_spi_dt_ids),
+> >  	},
+> >  	.suspend	= atmel_spi_suspend,
+> >  	.resume		= atmel_spi_resume,
+> > 
+> 
+> 
+> -- 
+> Nicolas Ferre

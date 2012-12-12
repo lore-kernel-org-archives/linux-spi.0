@@ -1,7 +1,7 @@
 From: Bastian Hecht <hechtb@gmail.com>
-Subject: [PATCH 2/4 v2] spi: Add SH Mobile series as dependency to MSIOF controller
-Date: Wed, 12 Dec 2012 12:54:47 +0100
-Message-ID: <1355313289-29769-2-git-send-email-hechtb+renesas@gmail.com>
+Subject: [PATCH 4/4 v2] devicetree: Add Renesas SH Mobile MSIOF spi controller binding doc
+Date: Wed, 12 Dec 2012 12:54:49 +0100
+Message-ID: <1355313289-29769-4-git-send-email-hechtb+renesas@gmail.com>
 References: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
 Cc: "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, linux-sh@vger.kernel.org,
@@ -15,33 +15,37 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Bastian Hecht <hechtb@gmail.com>
 
-The MSIOF hardware block is used in the SH Mobile series as well, so we
-add it here.
+Add binding documentation for Renesas' MSIOF SPI controller.
 
 Signed-off-by: Bastian Hecht <hechtb+renesas@gmail.com>
 ---
-v2: no changes
+v2:
+        - renamed property "chip_select" to "num-cs"
+        - renamed property "tx_fifo_size" to "renesas,tx-fifo-size"
+        - renamed property "rx_fifo_size" to "renesas,rx-fifo-size"
 
- drivers/spi/Kconfig |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/sh-msiof.txt
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1acae35..d0c0ae6 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -341,10 +341,10 @@ config SPI_SC18IS602
- 
- config SPI_SH_MSIOF
- 	tristate "SuperH MSIOF SPI controller"
--	depends on SUPERH && HAVE_CLK
-+	depends on (SUPERH || ARCH_SHMOBILE) && HAVE_CLK
- 	select SPI_BITBANG
- 	help
--	  SPI driver for SuperH MSIOF blocks.
-+	  SPI driver for SuperH and SH Mobile MSIOF blocks.
- 
- config SPI_SH
- 	tristate "SuperH SPI controller"
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+new file mode 100644
+index 0000000..e622210
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -0,0 +1,12 @@
++Renesas MSIOF spi controller
++
++Required properties:
++- compatible : 	"renesas,sh-msiof" for SuperH or
++		"renesas,sh-mobile-msiof" for SH Mobile series
++- reg : Offset and length of the register set for the device
++- interrupts : interrupt line used by MSIOF
++
++Optional properties:
++- num-cs		: total number of chip-selects
++- renesas,tx-fifo-size	: Overrides the default tx fifo size given in words
++- renesas,rx-fifo-size	: Overrides the default rx fifo size given in words
 -- 
 1.7.9.5
 

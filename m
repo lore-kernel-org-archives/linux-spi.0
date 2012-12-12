@@ -1,69 +1,53 @@
 From: Bastian Hecht <hechtb@gmail.com>
-Subject: Re: [PATCH 4/4] devicetree: Add Renesas SH Mobile MSIOF spi
- controller binding doc
-Date: Wed, 12 Dec 2012 12:26:37 +0100
-Message-ID: <CABYn4swzDE30K6URR+cuWJsd5f0t5wrAsqc34LcnszX=jTo0Aw@mail.gmail.com>
-References: <1352288407-20594-1-git-send-email-hechtb@gmail.com>
-	<1352288407-20594-5-git-send-email-hechtb@gmail.com>
-	<20121206140849.280243E089D@localhost>
-	<CACxGe6s+1Debq2HoVKWPmZ-75JMGmeJ+qxdxqzVWpsKxoyUowQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	Magnus Damm <magnus.damm@gmail.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
-To: Grant Likely <grant.likely@secretlab.ca>
+Subject: [PATCH 1/4 v2] spi: sh-msiof: Remove unneeded clock name
+Date: Wed, 12 Dec 2012 12:54:46 +0100
+Message-ID: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, linux-sh@vger.kernel.org,
+	Magnus Damm <magnus.damm@gmail.com>
+To: spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CACxGe6s+1Debq2HoVKWPmZ-75JMGmeJ+qxdxqzVWpsKxoyUowQ@mail.gmail.com>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Grant,
+From: Bastian Hecht <hechtb@gmail.com>
 
->>> +Renesas MSIOF spi controller
->>> +
->>> +Required properties:
->>> +- compatible :       "renesas,sh-msiof" for SuperH or
->>> +             "renesas,sh-mobile-msiof" for SH Mobile series
->>> +- reg : Offset and length of the register set for the device
->>> +- interrupts : interrupt line used by MSIOF
->>> +
->>> +Optional properties:
->>> +- chip_select  : Chip select, defaults to 0
->>
->> This doesn't make a lot of sense to me. What is this property for? Is
->> there more than one CS? And if there is, shouldn't the SPI driver be
->> able to manipulate more than one?
->
-> Oh, wait, from reading the code, is this the number of chip select
-> lines? If so, then there is a common property for this. This property
-> should be named "num-cs".
+clk_get() no longer needs a character string for associating the right
+clock as this is done via the device struct now.
 
-Yes, this value is nowhere used in the driver but just forwarded to
-the SPI subsystem as the number of chip selects.
+Signed-off-by: Bastian Hecht <hechtb+renesas@gmail.com>
+---
+v2: no changes
 
->>
->>> +- tx_fifo_size : Overrides the default tx fifo size given in words
->>> +- rx_fifo_size : Overrides the default rx fifo size given in words
->>
->> Nit: property names should use '-' instead of '_' (by convention) and
->> custom properties should be prefixed with the manufacturer prefix to
->> avoid namespace collisions. ie. "renesas,tx-fifo-size.
+ drivers/spi/spi-sh-msiof.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Ok sure! Thanks for pointing it out.
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 1f466bc..96358d0 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -597,7 +597,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	struct resource	*r;
+ 	struct spi_master *master;
+ 	struct sh_msiof_spi_priv *p;
+-	char clk_name[16];
+ 	int i;
+ 	int ret;
+ 
+@@ -614,10 +613,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	p->info = pdev->dev.platform_data;
+ 	init_completion(&p->done);
+ 
+-	snprintf(clk_name, sizeof(clk_name), "msiof%d", pdev->id);
+-	p->clk = clk_get(&pdev->dev, clk_name);
++	p->clk = clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(p->clk)) {
+-		dev_err(&pdev->dev, "cannot get clock \"%s\"\n", clk_name);
++		dev_err(&pdev->dev, "cannot get clock\n");
+ 		ret = PTR_ERR(p->clk);
+ 		goto err1;
+ 	}
+-- 
+1.7.9.5
 
-I'll post v2 in a second.
-
-Thanks,
-
- Bastian
-
->> g.
->
->
->
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.

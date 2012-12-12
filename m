@@ -1,45 +1,69 @@
-From: Dodo <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
-Subject: Jusqu'a -50% de reduction !
-Date: Wed, 12 Dec 2012 11:47:10 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1664983.3016826189@news.galgalz.com>
-Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
+From: Bastian Hecht <hechtb@gmail.com>
+Subject: Re: [PATCH 4/4] devicetree: Add Renesas SH Mobile MSIOF spi
+ controller binding doc
+Date: Wed, 12 Dec 2012 12:26:37 +0100
+Message-ID: <CABYn4swzDE30K6URR+cuWJsd5f0t5wrAsqc34LcnszX=jTo0Aw@mail.gmail.com>
+References: <1352288407-20594-1-git-send-email-hechtb@gmail.com>
+	<1352288407-20594-5-git-send-email-hechtb@gmail.com>
+	<20121206140849.280243E089D@localhost>
+	<CACxGe6s+1Debq2HoVKWPmZ-75JMGmeJ+qxdxqzVWpsKxoyUowQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net,
+	Magnus Damm <magnus.damm@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CACxGe6s+1Debq2HoVKWPmZ-75JMGmeJ+qxdxqzVWpsKxoyUowQ@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Document sans nom  Si vous ne pouvez pas visualiser ce message,  =
+Hello Grant,
 
-consulter notre version en ligne. =
+>>> +Renesas MSIOF spi controller
+>>> +
+>>> +Required properties:
+>>> +- compatible :       "renesas,sh-msiof" for SuperH or
+>>> +             "renesas,sh-mobile-msiof" for SH Mobile series
+>>> +- reg : Offset and length of the register set for the device
+>>> +- interrupts : interrupt line used by MSIOF
+>>> +
+>>> +Optional properties:
+>>> +- chip_select  : Chip select, defaults to 0
+>>
+>> This doesn't make a lot of sense to me. What is this property for? Is
+>> there more than one CS? And if there is, shouldn't the SPI driver be
+>> able to manipulate more than one?
+>
+> Oh, wait, from reading the code, is this the number of chip select
+> lines? If so, then there is a common property for this. This property
+> should be named "num-cs".
 
- Vous avez la possibilit=E9 de vous retirer de notre liste d'envoi de =
+Yes, this value is nowhere used in the driver but just forwarded to
+the SPI subsystem as the number of chip selects.
 
-mails par l'intermediaire de  ce raccourci. =
+>>
+>>> +- tx_fifo_size : Overrides the default tx fifo size given in words
+>>> +- rx_fifo_size : Overrides the default rx fifo size given in words
+>>
+>> Nit: property names should use '-' instead of '_' (by convention) and
+>> custom properties should be prefixed with the manufacturer prefix to
+>> avoid namespace collisions. ie. "renesas,tx-fifo-size.
 
-No=EAl avec DODO
+Ok sure! Thanks for pointing it out.
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJWvC3nGHxKLUIRQ_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOW
-Univers b=E9b=E9
+I'll post v2 in a second.
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJWvC3nGHxKLUIRQPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlOX
+Thanks,
 
+ Bastian
 
----------------------------------------------------------------------------=
----
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+>> g.
+>
+>
+>
+> --
+> Grant Likely, B.Sc., P.Eng.
+> Secret Lab Technologies Ltd.

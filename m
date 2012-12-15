@@ -1,20 +1,14 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi/atmel: add DT support
-Date: Sat, 15 Dec 2012 01:03:17 +0000
-Message-ID: <20121215010317.C9C933E0BEC@localhost>
-References: <20121121151713.1F8873E0A47@localhost>
-	<1353674679-13158-1-git-send-email-plagnioj@jcrosoft.com>
-	<50AF7C19.8000306@atmel.com>
-	<20121212151308.GK4398@game.jcrosoft.org>
+From: Lunettes Presbyte <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le TOP des lunettes loupe =?iso-8859-15?Q?=E0?= partir de 59 euros
+	livraison offerte
+Date: Sat, 15 Dec 2012 06:48:07 +0100
+Message-ID: <1355550502.thing50cc0f263cfef@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121212151308.GK4398-RQcB7r2h9QmfDR2tN2SG5Ni2O/JbrIOy@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,31 +19,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 12 Dec 2012 16:13:08 +0100, Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org> wrote:
-> On 14:37 Fri 23 Nov     , Nicolas Ferre wrote:
-> > On 11/23/2012 01:44 PM, Jean-Christophe PLAGNIOL-VILLARD :
-> > > the atmel_spi use only gpio for chip select
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-> > 
-> > Seems simple and nice:
-> > 
-> > Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> grant is ok to have this for 3.8?
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Not sure how I missed this one. It's pretty straight forward and not
-risky, so no problem. However;
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI3ODE0JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMi0xNSAwNjozMDowMSZlPTEmaD0yNzgxMiZmPTI3ODE0Jmc9Mjc4MTQ=3D
 
-> > > the atmel_spi use only gpio for chip select
-
-I know you know how to write a proper commit message. I'll need
-something better than the above before I commit it. I won't make you
-resubmit the patch, but do send me a better description.
-
-g.
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI3ODE0JmM=
+9NDgzNjEyJmQ9MjAxMi0xMi0xNSAwNjozMDowMSZlPTEmaD0yNzgxMiZmPTI3ODE0Jmc9Mjc4MT=
+Q=3D
 
 
-------------------------------------------------------------------------------
+---------------------------------------------------------------------------=
+---
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
 Remotely access PCs and mobile devices and provide instant support
 Improve your efficiency, and focus on delivering more value-add services

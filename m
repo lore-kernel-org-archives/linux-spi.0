@@ -1,74 +1,57 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 2/2] spi: devicetree: add support for loopback mode
-Date: Sat, 15 Dec 2012 00:32:24 +0000
-Message-ID: <20121215003224.CBFD93E0BEC@localhost>
-References: <1355301960-21523-1-git-send-email-balbi@ti.com> <1355301960-21523-2-git-send-email-balbi@ti.com>
-Cc: devicetree-discuss@lists.ozlabs.org,
-	Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>, Felipe Balbi <balbi@ti.com>
-To: Felipe Balbi <balbi@ti.com>,
-	spi-devel-general@lists.sourceforge.net, rob@landley.net,
-	rob.herring@calxeda.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1355301960-21523-2-git-send-email-balbi@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi/atmel: add DT support
+Date: Sat, 15 Dec 2012 01:03:17 +0000
+Message-ID: <20121215010317.C9C933E0BEC@localhost>
+References: <20121121151713.1F8873E0A47@localhost>
+	<1353674679-13158-1-git-send-email-plagnioj@jcrosoft.com>
+	<50AF7C19.8000306@atmel.com>
+	<20121212151308.GK4398@game.jcrosoft.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121212151308.GK4398-RQcB7r2h9QmfDR2tN2SG5Ni2O/JbrIOy@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 12 Dec 2012 10:46:00 +0200, Felipe Balbi <balbi@ti.com> wrote:
-> there are a few spi master drivers which make
-> use of that flag but there is no way to pass it
-> through devicetree.
-> 
-> This patch just creates a way to pass SPI_LOOP
-> via devicetree.
+On Wed, 12 Dec 2012 16:13:08 +0100, Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org> wrote:
+> On 14:37 Fri 23 Nov     , Nicolas Ferre wrote:
+> > On 11/23/2012 01:44 PM, Jean-Christophe PLAGNIOL-VILLARD :
+> > > the atmel_spi use only gpio for chip select
+> > > 
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+> > 
+> > Seems simple and nice:
+> > 
+> > Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> grant is ok to have this for 3.8?
 
-I don't understand how this would be useful since loopback mode is
-really just a test feature. Is there any reason to do loopback for
-something other than test?
+Not sure how I missed this one. It's pretty straight forward and not
+risky, so no problem. However;
 
-I think it would be better to add a sysfs or debugfs property to
-manipulate the SPI_LOOP flag from userspace. What do you think?
+> > > the atmel_spi use only gpio for chip select
+
+I know you know how to write a proper commit message. I'll need
+something better than the above before I commit it. I won't make you
+resubmit the patch, but do send me a better description.
 
 g.
 
-> 
-> Signed-off-by: Felipe Balbi <balbi@ti.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-bus.txt | 2 ++
->  drivers/spi/spi.c                                 | 2 ++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> index 296015e..1949586 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> @@ -55,6 +55,8 @@ contain the following properties.
->      		chip select active high
->  - spi-3wire       - (optional) Empty property indicating device requires
->      		    3-wire mode.
-> +- spi-loopback    - (optional) Empty property indicating device requires
-> +    		    loopback mode.
->  
->  If a gpio chipselect is used for the SPI slave the gpio number will be passed
->  via the cs_gpio
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 3f1b9ee..6bcdc03 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -868,6 +868,8 @@ static void of_register_spi_devices(struct spi_master *master)
->  			spi->mode |= SPI_CS_HIGH;
->  		if (of_find_property(nc, "spi-3wire", NULL))
->  			spi->mode |= SPI_3WIRE;
-> +		if (of_find_property(nc, "spi-loopback", NULL))
-> +			spi->mode |= SPI_LOOP;
->  
->  		/* Device speed */
->  		prop = of_get_property(nc, "spi-max-frequency", &len);
-> -- 
-> 1.8.1.rc1.5.g7e0651a
-> 
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

@@ -1,22 +1,18 @@
-From: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] SPI: SSP SPI Controller driver
-Date: Mon, 17 Dec 2012 16:24:51 +0800
-Message-ID: <1355732691.3876.222.camel@bichao>
+Date: Mon, 17 Dec 2012 09:58:24 +0100
+Message-ID: <CACRpkdYRs=331-a0UoXNNdi__3Rd=wTPi09XL=uVm75nq+mj=w@mail.gmail.com>
 References: <1353464203.20353.6.camel@bichao>
 	<20121206123856.002683E0AE3@localhost>
 	<1355216311.30354.166.camel@bichao>
-	<20121211164658.4DBAD3E0C3E@localhost>
-	<1355389774.3876.67.camel@bichao>
-	<20121216213237.069B63E0BDD@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Linus, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121216213237.069B63E0BDD@localhost>
+In-Reply-To: <1355216311.30354.166.camel@bichao>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,72 +23,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 2012-12-16 at 21:32 +0000, Grant Likely wrote:
-> On Thu, 13 Dec 2012 17:09:34 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> > On Tue, 2012-12-11 at 16:46 +0000, Grant Likely wrote:
-> > > On Tue, 11 Dec 2012 16:58:31 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> > > > On Thu, 2012-12-06 at 12:38 +0000, Grant Likely wrote:
-> > > > > On Wed, 21 Nov 2012 10:16:43 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
-> > > > 
-> > > > > > +	master->mode_bits = SPI_CPOL | SPI_CPHA;
-> > > > > > +	master->bus_num = SSP_CFG_GET_SPI_BUS_NB(ssp_cfg);
-> > > > > > +	master->num_chipselect = 1;
-> > > > > > +	master->cleanup = cleanup;
-> > > > > > +	master->setup = setup;
-> > > > > > +	master->transfer = transfer;
-> > > > > > +	drv_context->dma_wq = create_workqueue("intel_mid_ssp_spi");
-> > > > > > +	INIT_WORK(&drv_context->complete_work, int_transfer_complete_work);
-> > > > > 
-> > > > > Workqueue management is integrated into the core spi infrastructure now.
-> > > > > SPI drivers should no longer be creating their own workqueues.
-> > > > > 
-> > > > > Instead, replace the ->transfer hook with prepare_transfer_hardware(),
-> > > > > unprepare_transfer_hardware() and transfer_one_message(). See
-> > > > > Documentation/spi/spi-summary for details.
-> > > > 
-> > > > Hi Grant,
-> > > > I'd like to talk about my understanding here, please correct me if I was wrong:
-> > > > 
-> > > > 1. I understand the workqueue in spi core is for driving message
-> > > > transfer, so SPI driver should not create new workqueue for this usage.
-> > > > However, the workqueue created here is not for this usage it's to call
-> > > > back to SPI protocol driver (ifx6x60.c) when DMA data transfer is
-> > > > finished, so it seems not conflict with spi core. Am I right?
-> > > 
-> > > It appears to me like all the stuff in int_transfer_complete() can be
-> > > performed at interrupt context, or gets removed in moving to the new
-> > > system. Am I mistaken here?
-> > > 
-> > 
-> > Yes, we can make use of new SPI core interface to callback to protocol driver
-> > (through spi_finalize_current_message()), but looks like it's better to call
-> > spi_finalize_current_message() inside workqueue than DMA interrupt context, 
-> > because the callback function for protocol driver would cost much time, it's 
-> > better to move this part out of interrupt context. Therefore, I prefer to keep 
-> > the workqueue here if you agree, what's your opinion? 
-> 
-> It would be better to work within the context of the kthread that is
-> already managing transfers. Otherwise you've got multiple contexts that
-> could be competing. Plus the kthread may be running in realtime context,
-> but that would be useless since the workqueue would never have the same
-> priority.
+On Tue, Dec 11, 2012 at 9:58 AM, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
 
-Yes, it's done as you comments, please check the patch we re-submit today 
-in another mail.
+> 1. I understand the workqueue in spi core is for driving message
+> transfer, so SPI driver should not create new workqueue for this usage.
+> However, the workqueue created here is not for this usage it's to call
+> back to SPI protocol driver (ifx6x60.c) when DMA data transfer is
+> finished, so it seems not conflict with spi core. Am I right?
 
-> It currently isn't documented whether or not protocol drivers can sleep
-> in the complete callback. I think it is assumed that it cannot, but that
-> should be verified. If it is a problem for the complete callback to
-> requre atomicity, then maybe we should have a separate .complete_atomic
-> hook for those that can handle it, and call .complete() in the kthread
-> context.
-> 
-> Linusw, you did a bunch of work on this. What do you think?
-> 
-> g.
-> 
+So a single message can contain several transfers, and if this
+is some per-transfer DMA thing, it could be valid. I need to go
+in and look closer at the patch.
 
+I've considered trying to also generalize parts of the transfer
+handling but ran out of energy.
 
+Yours,
+Linus Walleij
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

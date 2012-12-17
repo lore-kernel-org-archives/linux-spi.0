@@ -1,13 +1,22 @@
-From: "Exterior wall materials & Decoration materials" <chinabeigao1-9uewiaClKEY@public.gmane.org>
-Subject: =?GB2312?B?RXh0ZXJpb3Igd2FsbCBtYXRlcmlhbHMgJiBEZWNvcmF0aW9uIG1hdGVyaWFsc9PrxPo=?=
-	=?GB2312?B?ubLP7cHL1dXGrA==?=
-Date: Mon, 17 Dec 2012 04:09:56 +0000
-Message-ID: <0016e68fcf7fcfbd9104d1048d93@google.com>
-Reply-To: Exterior wall materials & Decoration materials <chinabeigao1-9uewiaClKEY@public.gmane.org>
+From: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] SPI: SSP SPI Controller driver
+Date: Mon, 17 Dec 2012 16:24:51 +0800
+Message-ID: <1355732691.3876.222.camel@bichao>
+References: <1353464203.20353.6.camel@bichao>
+	<20121206123856.002683E0AE3@localhost>
+	<1355216311.30354.166.camel@bichao>
+	<20121211164658.4DBAD3E0C3E@localhost>
+	<1355389774.3876.67.camel@bichao>
+	<20121216213237.069B63E0BDD@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary=0016e68fcf7fd2762604d1048df0
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Linus, alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121216213237.069B63E0BDD@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,50 +27,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---0016e68fcf7fd2762604d1048df0
-Content-Type: text/plain; charset=windows-1252; format=flowed; delsp=yes
-Content-Transfer-Encoding: base64
+On Sun, 2012-12-16 at 21:32 +0000, Grant Likely wrote:
+> On Thu, 13 Dec 2012 17:09:34 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> > On Tue, 2012-12-11 at 16:46 +0000, Grant Likely wrote:
+> > > On Tue, 11 Dec 2012 16:58:31 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> > > > On Thu, 2012-12-06 at 12:38 +0000, Grant Likely wrote:
+> > > > > On Wed, 21 Nov 2012 10:16:43 +0800, chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> > > > 
+> > > > > > +	master->mode_bits = SPI_CPOL | SPI_CPHA;
+> > > > > > +	master->bus_num = SSP_CFG_GET_SPI_BUS_NB(ssp_cfg);
+> > > > > > +	master->num_chipselect = 1;
+> > > > > > +	master->cleanup = cleanup;
+> > > > > > +	master->setup = setup;
+> > > > > > +	master->transfer = transfer;
+> > > > > > +	drv_context->dma_wq = create_workqueue("intel_mid_ssp_spi");
+> > > > > > +	INIT_WORK(&drv_context->complete_work, int_transfer_complete_work);
+> > > > > 
+> > > > > Workqueue management is integrated into the core spi infrastructure now.
+> > > > > SPI drivers should no longer be creating their own workqueues.
+> > > > > 
+> > > > > Instead, replace the ->transfer hook with prepare_transfer_hardware(),
+> > > > > unprepare_transfer_hardware() and transfer_one_message(). See
+> > > > > Documentation/spi/spi-summary for details.
+> > > > 
+> > > > Hi Grant,
+> > > > I'd like to talk about my understanding here, please correct me if I was wrong:
+> > > > 
+> > > > 1. I understand the workqueue in spi core is for driving message
+> > > > transfer, so SPI driver should not create new workqueue for this usage.
+> > > > However, the workqueue created here is not for this usage it's to call
+> > > > back to SPI protocol driver (ifx6x60.c) when DMA data transfer is
+> > > > finished, so it seems not conflict with spi core. Am I right?
+> > > 
+> > > It appears to me like all the stuff in int_transfer_complete() can be
+> > > performed at interrupt context, or gets removed in moving to the new
+> > > system. Am I mistaken here?
+> > > 
+> > 
+> > Yes, we can make use of new SPI core interface to callback to protocol driver
+> > (through spi_finalize_current_message()), but looks like it's better to call
+> > spi_finalize_current_message() inside workqueue than DMA interrupt context, 
+> > because the callback function for protocol driver would cost much time, it's 
+> > better to move this part out of interrupt context. Therefore, I prefer to keep 
+> > the workqueue here if you agree, what's your opinion? 
+> 
+> It would be better to work within the context of the kthread that is
+> already managing transfers. Otherwise you've got multiple contexts that
+> could be competing. Plus the kthread may be running in realtime context,
+> but that would be useless since the workqueue would never have the same
+> priority.
 
-RGVhcg0KDQpIb3cgYXJlIHlvdSA/DQoNClRoaXMgaXMgQW5naWUgRmFuIGZyb20gQ2hpbmEgLiB3
-aG8gaXMgaW4gY2hhcmdlIG9mIHRoZSBleHBvcnQgd29yayBoZXJlIGZvciAgDQpleHRlcmlvciB3
-YWxsIG1hdGVyaWFscyBhbmQgaW50ZXJpb3IgZGVjb3JhdGlvbiBtYXRlcmlhbHMuDQoNClRvZGF5
-ICxJIHdhbnQgdG8gaW50cm9kdWNlIG9uZSBuZXcgcGF0ZW50IG1hdGVyaWFscyBmb3IgeW91ICwg
-aXQgaXMgVVYgIA0KYm9hcmQgLg0KDQpVViBib2FyZCBhcyBraXRjaGVuICwgZG9vciAsZnVybml0
-dXJlIG1hdGVyaWFscyBhbHJlYWR5IGlzIHVzZWQgaW4gbWFya2V0ICANCm1vcmUgdGhhbiA1IHll
-YXJzLCBidXQgaXQgIGp1c3Qgc3RhcnRzIGFzIGV4dGVyaW9yIHdhbGwgbWF0ZXJpYWxzIC4NCg0K
-V2UgYXJlIHRoZSBvbmUgb2YgdGhlIGZpcnN0IGZhY3RvcmllcyBmb3IgdGhpcyBtYXRlcmlhbCAs
-IHRoZSBiYXNpYyAgDQptYXRlcmlhbCB1bmRlciBVViBwYWludCBpcyAgZmliZXIgY2VtZW50IGJv
-YXJkLCAgY2FsY2l1bSBzaWxpY29uIGJvYXJkLCBvciAgIA0KTUdPLg0KDQpUaGlzIGlzIG9uZSBi
-aWcgaW52ZW50aW9uIGluIHRoZSBjbGFkZGluZyBhcmVhLCB0aGUgVVYgcGFpbnQgYW5kIHRoZSAg
-DQptYWNoaW5lIHN1cHBsaWVyIHRvZ2V0aGVyIGRldmVsb3BlZCB0aGlzIGdvb2QgbWF0ZXJpYWwg
-YW5kIG5vdyBvdXIgZ3JvdXAgIA0KYXJlIHRoZQ0KZXhjbHVzaXZlIGFnZW50IGluIFNoYW5naGFp
-IGFuZCBCZWlqaW5nIC4NCg0KVGhpcyBuZXcgY2xhZGRpbmcgbWF0ZXJpYWwgbWF5IGJyaW5nIHRo
-ZSBiaWcgY2hhbmNlIGFuZCBjaGFuZ2UgZm9yIHRoZSAgDQpvdXRzaWRlIHdhbGwgZGVjb3JhdGlv
-biB0b28gLmJlY2F1c2UgdGhpcyBwcm9kdWN0IGhhcyBmb2xsb3dpbmcgYWR2YW50YWdlczoNCjEu
-QmFzZSBtYXRlcmlhbCBoYXMgZ29vZCBzdHJlbmd0aCBieSB0cmVhdGluZyB3aXRoIGhpZ2ggdGVt
-cGVyYXR1cmUgYW5kICANCmhpZ2ggcHJlc3N1cmUuDQoyLlBlcmZvcm1hbmNlIG9mIGZpcmUtcHJv
-b2YgaXMgZ29vZCAsIGNhbiByZWFjaCBHcmFkZSBBLg0KMy5Hb29kIGFwcGVhcmFuY2UgYW5kIGFi
-dW5kYW50IHBhdHRlcm5zLiBUaGUgY29sb3VyIGFuZCBwYXR0ZXJuIGNhbiBiZSBtYWRlICANCmFz
-IGN1c3RvbWVyknMgcmVxdWlyZW1lbnQuIFRoZXJlIGFyZSBtYXR0ZSBhbmQgaGlnaCBsaWdodCBm
-b3IgY2hvb3NlLiAgDQpUaGVyZSAgYXJlICBwbGFpbiAgLHdvb2QsICBzdG9uZSAgaW4gIGNvbG91
-ci4NCjQuQWZ0ZXIgc3BlY2lhbCB0cmVhdG1lbnQgZm9yIHN1cmZhY2UsIHdlYXRoZXIgcmVzaXN0
-YW5jZSBpcyB2ZXJ5IHN0cm9uZy4NCjUuVVYgRmx1b3JpbmUgY2FyYm9uIGNvbG9yIGRlY29yYXRp
-dmUgYm9hcmRzIGdyZWF0bHkgcmVkdWNlcyB0aGUgYnVpbGRpbmcgIA0KbG9hZCBhbmQgaW5zdGFs
-bGF0aW9uIGFjY2Vzc29yaWVzIGRpcmVjdGx5IHByZXNlbnRpbmcgaXRzIGVjb25vbWljIHZhbHVl
-Lg0KNi5TZWxmLWNsZWFuIGZ1bmN0aW9uIGlzIHZlcnkgZ29vZC4NCiAgIDcuIFRoZSBwcm9wZXJ0
-eSBvZiB0aGUgc3RhYmxlIHBlcmZvcm1hbmNlIGlzIGhhbmRsZWQgYnkgZmFjdG9yeSAgDQptZWNo
-YW5pY2FsIHByb2Nlc3NpbmcNCiAgIDguS2VlcGluZyBoZWF0IGluc3VsYXRpb24gYW5kIGRlY29y
-YXRpb24gaW4gYSB3aG9sZSwgcHJvY2Vzc2luZyBpcyBzaW1wbGUuDQoNCkluIHRvdGFsICwgd2Ug
-YXJlIHN1cHBseWluZyBBbHVtaW51bSBjb21wb3NpdGUgcGFuZWwgYW5kIFVWIGludGVyaW9yICBh
-bmQgIA0KZXh0ZXJpb3Igd2FsbCBtYXRlcmlhbHMgYm9hcmQgYW5kICBpZiB5b3UgYXJlIGludGVy
-ZXN0ZWQgaW4gdGhlbSBqdXN0ICANCmNvbnRhY3QgbWUgd2l0aG91dCBhbnkgaGVzaXRhdGlvbg0K
-DQpUaGFua3MgYW5kIGJlc3QgcmVnYXJkcw0KDQpBbmdpZSBGYW4NCg0KQkVJR0FPIERFQ09SQVRJ
-T04gTUFURVJJQUxTIChTSEFOR0hBSSlDTy4sTFREDQo=
---0016e68fcf7fd2762604d1048df0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Yes, it's done as you comments, please check the patch we re-submit today 
+in another mail.
+
+> It currently isn't documented whether or not protocol drivers can sleep
+> in the complete callback. I think it is assumed that it cannot, but that
+> should be verified. If it is a problem for the complete callback to
+> requre atomicity, then maybe we should have a separate .complete_atomic
+> hook for those that can handle it, and call .complete() in the kthread
+> context.
+> 
+> Linusw, you did a bunch of work on this. What do you think?
+> 
+> g.
+> 
+
+
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
@@ -69,15 +100,3 @@ Remotely access PCs and mobile devices and provide instant support
 Improve your efficiency, and focus on delivering more value-add services
 Discover what IT Professionals Know. Rescue delivers
 http://p.sf.net/sfu/logmein_12329d2d
---0016e68fcf7fd2762604d1048df0
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---0016e68fcf7fd2762604d1048df0--

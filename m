@@ -1,11 +1,13 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Tue, 18 Dec 2012 05:59:18 +0800
-Message-ID: <E1Tkiim-0007Gl-JI@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Venkat Raju Sana" <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
+Subject: Your invitation from Venkat Raju Sana is about to expire
+Date: Tue, 18 Dec 2012 04:06:58 GMT
+Message-ID: <AU2298412121804065817845561152@USPRODSVC001D>
+Reply-To: Venkat Raju Sana <no-reply-MITrUMjNZL8LKKi84lMo7NBPR1lH4CV8@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +19,167 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTG9nTWVJbiBSZXNj
-dWU6IEFueXdoZXJlLCBBbnl0aW1lIFJlbW90ZSBzdXBwb3J0IGZvciBJVC4gRnJlZSBUcmlhbApS
-ZW1vdGVseSBhY2Nlc3MgUENzIGFuZCBtb2JpbGUgZGV2aWNlcyBhbmQgcHJvdmlkZSBpbnN0YW50
-IHN1cHBvcnQKSW1wcm92ZSB5b3VyIGVmZmljaWVuY3ksIGFuZCBmb2N1cyBvbiBkZWxpdmVyaW5n
-IG1vcmUgdmFsdWUtYWRkIHNlcnZpY2VzCkRpc2NvdmVyIHdoYXQgSVQgUHJvZmVzc2lvbmFscyBL
-bm93LiBSZXNjdWUgZGVsaXZlcnMKaHR0cDovL3Auc2YubmV0L3NmdS9sb2dtZWluXzEyMzI5ZDJk
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
-bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
-dmVsLWdlbmVyYWwK
+
+
+
+
+	
+		Your invitation from Venkat Raju Sana is about to expire
+		
+        
+            /*Only use these styles if the screen dimensions are 480px or less*/
+            @media only screen and (max-device-width: 480px)
+            {
+            	body[yahoo] .pageContainer
+            	{
+            		padding-left: 10px !important;
+            		padding-right: 10px !important;
+            	}
+                body[yahoo] .bodyContainer
+                {
+                    width:300px !important;
+                }
+                body[yahoo] .footerContainer
+                {
+                    padding-left:10px !important;
+                    padding-right:10px !important;
+                }
+                body[yahoo] .inviteDetails
+                {
+                	width:100% !important;
+                	display: block;
+                }
+		    }
+        
+	
+	
+        
+            
+                
+                    
+			            
+				            
+					            
+                                    
+                                        
+                                            
+                                                
+                                                    
+                                                        
+                                                            
+			                                            
+                                                    
+                                                
+                                                
+													
+														
+															
+																
+															
+															
+																
+															
+															
+																
+																	
+
+
+	
+		
+			Hi,
+		
+    
+	
+		
+			Unlock new opportunities for you and your contacts.
+		
+	
+	
+		
+			
+				
+					
+						
+								
+						
+					
+				
+				
+					
+						
+							Venkat Raju Sana
+						
+					
+				
+				
+					
+						
+							Invite sent: 6 December, 2012
+						
+					
+				
+			
+		
+	
+	
+		
+            Join me on SkillPages
+        
+	
+
+																 
+															
+															
+																
+															
+															
+																
+															
+														
+													
+									            
+                                            
+                                        
+                                    
+						            
+							            
+								            
+
+
+	
+        
+            
+	            
+		            
+			            
+							spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org was invited to join SkillPages by Venkat Raju Sana. 
+							To stop receiving emails from SkillPages click here.
+                        
+		            
+	            
+                
+		            
+                        &copy; 2012 SkillPages, Blackrock Business Park, Dublin, Ireland and 228 Hamilton Avenue, 3rd Floor, Palo Alto, CA 94301.
+                    
+                
+            
+        
+    
+
+							            
+						            
+					            
+				            
+			            
+		            
+                
+            
+        
+	
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

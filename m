@@ -1,82 +1,60 @@
-From: Jun Chen <jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH] spi: Add the flag indicate to registe new device as
-	children of master or not.
-Date: Wed, 19 Dec 2012 04:44:03 -0500
-Message-ID: <1355910243.1435.39.camel@chenjun-workstation>
+ children of master or not.
+Date: Wed, 19 Dec 2012 09:04:16 +0000
+Message-ID: <20121219090416.GK4985@opensource.wolfsonmicro.com>
 References: <1355848174.1435.25.camel@chenjun-workstation>
-	<20121218152623.GA26077@sirena.org.uk>
+ <20121218152623.GA26077@sirena.org.uk>
+ <1355910243.1435.39.camel@chenjun-workstation>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Bi Chao <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121218152623.GA26077-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="apbmkPN6Hu/1dI3g"
+Cc: grant.likely@secretlab.ca, linux-kernel@vger.kernel.org,
+	Bi Chao <chao.bi@intel.com>,
+	spi-devel-general@lists.sourceforge.net
+To: Jun Chen <jun.d.chen@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1355910243.1435.39.camel@chenjun-workstation>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2012-12-18 at 15:26 +0000, Mark Brown wrote:
-> On Tue, Dec 18, 2012 at 11:29:34AM -0500, Jun Chen wrote:
-> 
-> >   * @master: Controller to which device is connected
-> > + * device_was_children_of_master is flag which the device is registed
-> > + * as the children of the bus
-> 
-> This isn't a kerneldoc style comment (it needs the @XXX: format).  The
-> name is also extremely long, can't we think of something more concise?
-> 
-Thank for your suggestion, I will correct this comment and use concise
-flag.
 
-> > -	spi->dev.parent = &master->dev;
-> > +	if (device_was_children_of_master == true)
-> > +		spi->dev.parent = &master->dev;
-> > +	else
-> > +		spi->dev.parent = dev;
-> 
-> Can you provide an example of where this is useful?  Your changelog
-> didn't make it clear and the code doesn't make it obvious either.
+--apbmkPN6Hu/1dI3g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This spi_alloc_device function will be called in the spi_new_device
-function to alloc new device as the master. But other way, it is called
-by the of_register_spi_devices function to register new device as the
-children of the master. I will update changlog to add it. 
+On Wed, Dec 19, 2012 at 04:44:03AM -0500, Jun Chen wrote:
 
-@@ -434,7 +440,7 @@ struct spi_device *spi_new_device(struct spi_master
-*master,
-         * suggests syslogged diagnostics are best here (ugh).
-         */
- 
--       proxy = spi_alloc_device(master);
-+       proxy = spi_alloc_device(master, false);
-        if (!proxy)
-                return NULL;
- 
-@@ -827,7 +833,7 @@ static void of_register_spi_devices(struct
-spi_master *master)
- 
-        for_each_available_child_of_node(master->dev.of_node, nc) {
-                /* Alloc an spi_device */
--               spi = spi_alloc_device(master);
-+               spi = spi_alloc_device(master, true);
+> This spi_alloc_device function will be called in the spi_new_device
+> function to alloc new device as the master. But other way, it is called
+> by the of_register_spi_devices function to register new device as the
+> children of the master. I will update changlog to add it.=20
 
+But why is this a bad thing?  You've said what's happening but not why
+it's a problem.
 
-If I have mistake, pls correct me, thanks!
+--apbmkPN6Hu/1dI3g
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
 
+iQIcBAEBAgAGBQJQ0YMIAAoJELSic+t+oim9Ht8P/37jJepygeTI8PpDeDauIf23
+dqnVNhqstdFjS6ANsI1aV2/LjpR8E9qYK4nzMajrd1ImpBflWYj3/rx3sWrEfUWe
+dDoniTdBFFFH1dfsmlA8e2pvfjJO4VERL0DzWYrPG/Y5ik4aeqwALcIDKJQX0fr8
+po3gQGYoGb/UVX6WDhc65k1EeG1wxlX9qfWauzyLMQrsv5l58RU0NkJYBKGRaDqD
+p/b36dJgjRqCE0JK9hibvib45s1tIBNVkU8rCBH7ss56wP9das7QvjftSdPMtTc/
+ONBLjKQ9QzTlwXWYzY/ltC4qLrxCkg3PF5mpma2VfLR9bv9QcYA3LjoT4ZifUG8n
+e3qcJ2EjC6EWl7qWOFkEh6PoWfqhwBFkMNpXGYMUY2bzmAO/9Ydgs+ta4d+3CwzC
+SdxjNBTh7NEL+OYNjIzkhMm02KZfRrzflHo+PZV/5EEmUE0GS0Vxre5r4Q6ymLQp
+9bLT77a+tYFAXuTwsVlsxdMuQW7ry1BMz+XZDAK78lDJ9BsUP4MnpCs3uLAVqfKW
+AEc97YHU/fwULF+7zT+rrBkpQFTsMoJVryR4iBn2y+nrraGhj+n6m93QZpeRFunC
+50/lPbnXkarKaEfMRDXFFwlTGtaFE1niYzw5OTl2ZZkFKfBYh7iuKOtNL7M8aTDP
+ok6JqVqh/+t2yhch5LbJ
+=d/KR
+-----END PGP SIGNATURE-----
 
-
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+--apbmkPN6Hu/1dI3g--

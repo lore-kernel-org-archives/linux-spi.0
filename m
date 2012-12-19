@@ -1,20 +1,21 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/4 v2] spi: sh-msiof: Add device tree parsing to driver
-Date: Wed, 19 Dec 2012 16:41:15 +0000
-Message-ID: <20121219164115.62A403E0C18@localhost>
-References: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
-	<1355313289-29769-3-git-send-email-hechtb+renesas@gmail.com>
-	<CABMQnV+CSEKwq=4kQYUDXOuARLA_WgvnkJEME_VeYmAv3PLXBg@mail.gmail.com>
-	<CABYn4sybRf4vxxGccCDSCEMcza4DZdaZgTD6kZ7+v9CDspzCBg@mail.gmail.com>
+Subject: Re: [PATCH] spi: Add the flag indicate to registe new device as
+	children of master or not.
+Date: Wed, 19 Dec 2012 16:21:42 +0000
+Message-ID: <20121219162142.9E1123E0B72@localhost>
+References: <1355848174.1435.25.camel@chenjun-workstation>
+	<20121218152623.GA26077@sirena.org.uk>
+	<1355910243.1435.39.camel@chenjun-workstation>
+	<20121219090416.GK4985@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Nobuhiro Iwamatsu <iwamatsu-+mkmVskJBflAfugRpC6u6w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Bi Chao <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Jun Chen <jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CABYn4sybRf4vxxGccCDSCEMcza4DZdaZgTD6kZ7+v9CDspzCBg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20121219090416.GK4985-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,34 +26,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 17 Dec 2012 12:25:26 +0100, Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Hi Nobuhiro,
+On Wed, 19 Dec 2012 09:04:16 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Wed, Dec 19, 2012 at 04:44:03AM -0500, Jun Chen wrote:
 > 
-> 2012/12/17 Nobuhiro Iwamatsu <iwamatsu-+mkmVskJBflAfugRpC6u6w@public.gmane.org>:
-> > Hi, Bastian.
-> >
-> > On Wed, Dec 12, 2012 at 8:54 PM, Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> >> From: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> >>
-> >> This adds the capability to retrieve setup data from the device tree
-> >> node. The usage of platform data is still available.
-> >>
-> >> Signed-off-by: Bastian Hecht <hechtb+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> >> ---
-
-Applied, thanks.
-
-> >> +               .of_match_table = sh_msiof_match,
-> >
-> > You can use of_match_ptr(sh_msiof_match).
-> >
+> > This spi_alloc_device function will be called in the spi_new_device
+> > function to alloc new device as the master. But other way, it is called
+> > by the of_register_spi_devices function to register new device as the
+> > children of the master. I will update changlog to add it. 
 > 
-> Ok very nice, will do so.
+> But why is this a bad thing?  You've said what's happening but not why
+> it's a problem.
 
-Please send a fixup patch for this change.
+spi_devices should always be children of the spi_master. If that is not
+the case then it is a bug to be fixed.
 
 g.
 
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

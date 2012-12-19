@@ -1,21 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Add the flag indicate to registe new device as
-	children of master or not.
-Date: Wed, 19 Dec 2012 16:21:42 +0000
-Message-ID: <20121219162142.9E1123E0B72@localhost>
-References: <1355848174.1435.25.camel@chenjun-workstation>
-	<20121218152623.GA26077@sirena.org.uk>
-	<1355910243.1435.39.camel@chenjun-workstation>
-	<20121219090416.GK4985@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 2/4 v2] spi: Add SH Mobile series as dependency to MSIOF
+	controller
+Date: Wed, 19 Dec 2012 16:39:08 +0000
+Message-ID: <20121219163908.A58F23E0C0F@localhost>
+References: <1355313289-29769-1-git-send-email-hechtb+renesas@gmail.com>
+	<1355313289-29769-2-git-send-email-hechtb+renesas@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Bi Chao <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Jun Chen <jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121219090416.GK4985-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <1355313289-29769-2-git-send-email-hechtb+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,25 +23,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 19 Dec 2012 09:04:16 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Wed, Dec 19, 2012 at 04:44:03AM -0500, Jun Chen wrote:
+On Wed, 12 Dec 2012 12:54:47 +0100, Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> From: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > 
-> > This spi_alloc_device function will be called in the spi_new_device
-> > function to alloc new device as the master. But other way, it is called
-> > by the of_register_spi_devices function to register new device as the
-> > children of the master. I will update changlog to add it. 
+> The MSIOF hardware block is used in the SH Mobile series as well, so we
+> add it here.
 > 
-> But why is this a bad thing?  You've said what's happening but not why
-> it's a problem.
+> Signed-off-by: Bastian Hecht <hechtb+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
 
-spi_devices should always be children of the spi_master. If that is not
-the case then it is a bug to be fixed.
+Also already applied.
 
 g.
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

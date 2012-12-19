@@ -1,40 +1,48 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH RFC] spidev.c: add sysfs attributes for SPI configuration
-Date: Wed, 19 Dec 2012 15:09:25 +0000
-Message-ID: <20121219150925.8262E3E0AD7@localhost>
-References: <1353777608-24934-1-git-send-email-federico.vaga@gmail.com>
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Federico Vaga <federico.vaga@gmail.com>
-To: Federico Vaga <federico.vaga@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1353777608-24934-1-git-send-email-federico.vaga@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 5/5] spi: fix return value check in hspi_probe().
+Date: Wed, 19 Dec 2012 15:11:54 +0000
+Message-ID: <20121219151154.937EC3E0AD7@localhost>
+References: <1355271894-5284-1-git-send-email-tipecaml@gmail.com>
+	<1355271894-5284-6-git-send-email-tipecaml@gmail.com>
+	<87txrsqf7f.wl%kuninori.morimoto.gx@renesas.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <87txrsqf7f.wl%kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 24 Nov 2012 18:20:08 +0100, Federico Vaga <federico.vaga@gmail.com> wrote:
-> This patch introduce the use of the sysfs attribute for the spidev
-> configuration. This avoid the user to have a specific program which does
-> ioctl() on spidev. The user can easily does cat (to read) and echo (to
-> write) on the sysfs file and configure SPI.
+On Tue, 11 Dec 2012 16:36:27 -0800 (PST), Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
 > 
-> The patch exports the following attributes: bits-per-word, lsb-first,
-> mode and speed-hz.
+> Hi
 > 
-> Example:
->     # cat /sys/bus/spi/devices/spi1.0/speed-hz
->     500000
->     # echo 450000 > /sys/bus/spi/devices/spi1.0/speed-hz
->     # dmesg | tail -n 4
->     spidev spi1.0: DEactivate 60, mr 000f0011
->     spidev spi1.0: setup: 449447 Hz bpw 8 mode 0x0 -> csr0 0000dd02
->     spidev spi1.0: setup mode 0, 8 bits/w, 450000 Hz max --> 0
->     spidev spi1.0: 450000 Hz (max)
+> > According to its documentation, clk_get() returns a "valid IS_ERR() condition
+> > containing errno", so we should call IS_ERR() rather than a NULL check.
+> > 
+> > Signed-off-by: Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > 
-> Signed-off-by: Federico Vaga <federico.vaga@gmail.com>
+> Acked-by: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 
-Not a good idea. sysfs is not a good place for operational interfaces.
-Please use the spi character devices for direct manipulation of the SPI
-configuration.
+Applied, thanks.
 
 g.
+
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

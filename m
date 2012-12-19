@@ -1,60 +1,46 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: Add the flag indicate to registe new device as
- children of master or not.
-Date: Wed, 19 Dec 2012 09:04:16 +0000
-Message-ID: <20121219090416.GK4985@opensource.wolfsonmicro.com>
-References: <1355848174.1435.25.camel@chenjun-workstation>
- <20121218152623.GA26077@sirena.org.uk>
- <1355910243.1435.39.camel@chenjun-workstation>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="apbmkPN6Hu/1dI3g"
-Cc: grant.likely@secretlab.ca, linux-kernel@vger.kernel.org,
-	Bi Chao <chao.bi@intel.com>,
-	spi-devel-general@lists.sourceforge.net
-To: Jun Chen <jun.d.chen@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1355910243.1435.39.camel@chenjun-workstation>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH - v2] spi: davinci: add OF support for the spi controller
+Date: Wed, 19 Dec 2012 13:18:50 +0000
+Message-ID: <20121219131850.E421B3E0AD7@localhost>
+References: <1355260839-29865-1-git-send-email-m-karicheri2@ti.com> <20121215002758.14D223E0BEC@localhost>
+Cc: Murali Karicheri <m-karicheri2@ti.com>
+To: Murali Karicheri <m-karicheri2@ti.com>, rob.herring@calxeda.com,
+	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-keystone@list.ti.com
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20121215002758.14D223E0BEC@localhost>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sat, 15 Dec 2012 00:27:58 +0000, Grant Likely <grant.likely@secretlab.ca> wrote:
+> On Tue, 11 Dec 2012 16:20:39 -0500, Murali Karicheri <m-karicheri2@ti.com> wrote:
+> > This adds OF support to DaVinci SPI controller to configure platform
+> > data through device bindings. Also replaces clk_enable() with
+> > of clk_prepare_enable() as well as clk_disable() with
+> > clk_disable_unprepare().
+> > 
+> > Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+> > Reviewed-by : Grant Likely <grant.likely@secretlab.ca>
+> 
+> Applied, thanks.
+> 
+> I did remove the OF_ALIAS_N property though. I know the COMPATIBLE one
+> uses it, but it is actually kind of redundant since it can also be
+> determined by counting the number of OF_ALIAS_* entries, and having the
+> _N one in there means extra work needs to be done to filter it out.
+> 
+> Also, I had to add a #ifndef _LINUX_OF_PRIVATE_H wrapper around the
+> whole header file. This is needed for all header files to protect
+> against multiple includes.
 
---apbmkPN6Hu/1dI3g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ummm.... oops. I replied to the wrong email when applying another patch.
+Sorry for the noise.
 
-On Wed, Dec 19, 2012 at 04:44:03AM -0500, Jun Chen wrote:
+But I have applied your patch now. It will appear in linux-next after
+the merge window closes.
 
-> This spi_alloc_device function will be called in the spi_new_device
-> function to alloc new device as the master. But other way, it is called
-> by the of_register_spi_devices function to register new device as the
-> children of the master. I will update changlog to add it.=20
+g.
 
-But why is this a bad thing?  You've said what's happening but not why
-it's a problem.
-
---apbmkPN6Hu/1dI3g
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJQ0YMIAAoJELSic+t+oim9Ht8P/37jJepygeTI8PpDeDauIf23
-dqnVNhqstdFjS6ANsI1aV2/LjpR8E9qYK4nzMajrd1ImpBflWYj3/rx3sWrEfUWe
-dDoniTdBFFFH1dfsmlA8e2pvfjJO4VERL0DzWYrPG/Y5ik4aeqwALcIDKJQX0fr8
-po3gQGYoGb/UVX6WDhc65k1EeG1wxlX9qfWauzyLMQrsv5l58RU0NkJYBKGRaDqD
-p/b36dJgjRqCE0JK9hibvib45s1tIBNVkU8rCBH7ss56wP9das7QvjftSdPMtTc/
-ONBLjKQ9QzTlwXWYzY/ltC4qLrxCkg3PF5mpma2VfLR9bv9QcYA3LjoT4ZifUG8n
-e3qcJ2EjC6EWl7qWOFkEh6PoWfqhwBFkMNpXGYMUY2bzmAO/9Ydgs+ta4d+3CwzC
-SdxjNBTh7NEL+OYNjIzkhMm02KZfRrzflHo+PZV/5EEmUE0GS0Vxre5r4Q6ymLQp
-9bLT77a+tYFAXuTwsVlsxdMuQW7ry1BMz+XZDAK78lDJ9BsUP4MnpCs3uLAVqfKW
-AEc97YHU/fwULF+7zT+rrBkpQFTsMoJVryR4iBn2y+nrraGhj+n6m93QZpeRFunC
-50/lPbnXkarKaEfMRDXFFwlTGtaFE1niYzw5OTl2ZZkFKfBYh7iuKOtNL7M8aTDP
-ok6JqVqh/+t2yhch5LbJ
-=d/KR
------END PGP SIGNATURE-----
-
---apbmkPN6Hu/1dI3g--

@@ -1,65 +1,46 @@
-From: Laxman Dewangan <ldewangan@nvidia.com>
-Subject: Re: [PATCH V2] spi: remove check for bits_per_word on transfer from
- low level driver
-Date: Thu, 20 Dec 2012 11:33:47 +0530
-Message-ID: <50D2AA43.8050106@nvidia.com>
-References: <1355820943-25228-1-git-send-email-ldewangan@nvidia.com> <20121219162433.1E1E43E0BCF@localhost>
+From: Federico Vaga <federico.vaga-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH RFC] spidev.c: add sysfs attributes for SPI configuration
+Date: Thu, 20 Dec 2012 16:30:36 +0100
+Message-ID: <1440955.3UsNh3CGzX@number-5>
+References: <1353777608-24934-1-git-send-email-federico.vaga@gmail.com>
+	<20121219150925.8262E3E0AD7@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "broonie@opensource.wolfsonmicro.com"
-	<broonie@opensource.wolfsonmicro.com>,
-	"ben-linux@fluff.org" <ben-linux@fluff.org>,
-	"kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-	"baohua.song@csr.com" <baohua.song@csr.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"jonas.gorski@gmail.com" <jonas.gorski@gmail.com>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20121219162433.1E1E43E0BCF@localhost>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121219150925.8262E3E0AD7@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 19 December 2012 09:54 PM, Grant Likely wrote:
-> On Tue, 18 Dec 2012 14:25:43 +0530, Laxman Dewangan<ldewangan@nvidia.com>  wrote:
->> The spi core make sure that each transfer structure have the proper
->> setting for bits_per_word before calling low level transfer APIs.
->>
->> Hence it is no more require to check again in low level driver for
->> this field whether this is set correct or not. Removing such code
->> from low level driver.
->>
->> Signed-off-by: Laxman Dewangan<ldewangan@nvidia.com>
-> [...]
->> */
->>
->>   		if (prev_speed_hz != speed_hz
->> @@ -316,9 +315,8 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
->>   	/* check each transfer's parameters */
->>   	list_for_each_entry (t,&m->transfers, transfer_list) {
->>   		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
->> -		u8 bits_per_word = t->bits_per_word ? : spi->bits_per_word;
->> +		u8 bits_per_word = t->bits_per_word;
->>
->> -		bits_per_word = bits_per_word ? : 8;
-> Have you verified here that bits_per_word can never be '0' here? What is
-> the path that ensures spi->bits_per_word (and hence t->bits_per_word) is
-> set to 8 here?
->
-> Otherwise the patch looks good. Thanks for doing this work.
+On Wednesday 19 December 2012 15:09:25 Grant Likely wrote:
+> Not a good idea. sysfs is not a good place for operational
+> interfaces. Please use the spi character devices for direct
+> manipulation of the SPI configuration.
+
+Hello,
+
+Can you explain why it is not a good idea? I do not understand; what 
+is the advantage of ioctl through char device? Or what it the issue 
+with sysfs?
+
+Thank you very much
 
 
-When we do the spi_add_device(), the spi_setup() get called.
-In spi_setup, it make  sure that spi->bits_per_word is not zero.
+-- 
+Federico Vaga
 
-in spi_setup(spi.c)
-
-if (!spi->bits_per_word)
-                 spi->bits_per_word = 8;
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

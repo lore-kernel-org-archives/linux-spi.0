@@ -1,108 +1,65 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [GIT PULL] SPI bug fixes for v3.8 merge window
-Date: Thu, 20 Dec 2012 00:52:07 +0000
-Message-ID: <CACxGe6sb3exTgYeryOt4RBGPEBnRzWa=PpiHuKBf296bq1HS9w@mail.gmail.com>
-References: <CACxGe6vziasGs8cuatkniPVSJ4sst-EcPBEAaKeHDoKfqk4mbQ@mail.gmail.com>
+From: Laxman Dewangan <ldewangan@nvidia.com>
+Subject: Re: [PATCH V2] spi: remove check for bits_per_word on transfer from
+ low level driver
+Date: Thu, 20 Dec 2012 11:33:47 +0530
+Message-ID: <50D2AA43.8050106@nvidia.com>
+References: <1355820943-25228-1-git-send-email-ldewangan@nvidia.com> <20121219162433.1E1E43E0BCF@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACxGe6vziasGs8cuatkniPVSJ4sst-EcPBEAaKeHDoKfqk4mbQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "broonie@opensource.wolfsonmicro.com"
+	<broonie@opensource.wolfsonmicro.com>,
+	"ben-linux@fluff.org" <ben-linux@fluff.org>,
+	"kgene.kim@samsung.com" <kgene.kim@samsung.com>,
+	"baohua.song@csr.com" <baohua.song@csr.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-samsung-soc@vger.kernel.org"
+	<linux-samsung-soc@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"jonas.gorski@gmail.com" <jonas.gorski@gmail.com>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <20121219162433.1E1E43E0BCF@localhost>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-[Forgot to cc: lkml]
-
-On Thu, Dec 20, 2012 at 12:46 AM, Grant Likely
-<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> Hi Linus,
+On Wednesday 19 December 2012 09:54 PM, Grant Likely wrote:
+> On Tue, 18 Dec 2012 14:25:43 +0530, Laxman Dewangan<ldewangan@nvidia.com>  wrote:
+>> The spi core make sure that each transfer structure have the proper
+>> setting for bits_per_word before calling low level transfer APIs.
+>>
+>> Hence it is no more require to check again in low level driver for
+>> this field whether this is set correct or not. Removing such code
+>> from low level driver.
+>>
+>> Signed-off-by: Laxman Dewangan<ldewangan@nvidia.com>
+> [...]
+>> */
+>>
+>>   		if (prev_speed_hz != speed_hz
+>> @@ -316,9 +315,8 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
+>>   	/* check each transfer's parameters */
+>>   	list_for_each_entry (t,&m->transfers, transfer_list) {
+>>   		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
+>> -		u8 bits_per_word = t->bits_per_word ? : spi->bits_per_word;
+>> +		u8 bits_per_word = t->bits_per_word;
+>>
+>> -		bits_per_word = bits_per_word ? : 8;
+> Have you verified here that bits_per_word can never be '0' here? What is
+> the path that ensures spi->bits_per_word (and hence t->bits_per_word) is
+> set to 8 here?
 >
-> And finally, here are the bug fixes I've queued up for SPI. Very
-> little in the way of excitement other than a device driver feature
-> that should have been in my first pull req, but I missed it. It should
-> be low risk, but if it bothers you then I can respin without it.
->
-> And now I'm off to bed.
->
-> g.
->
-> The following changes since commit 4939e27d46fee2609f2112f85f7f7cbd952075dc:
->
->   Merge tag 'devicetree-for-linus' of
-> git://git.secretlab.ca/git/linux-2.6 (2012-12-14 15:37:46 -0800)
->
-> are available in the git repository at:
->
->
->   git://git.secretlab.ca/git/linux-2.6 tags/spi-for-linus
->
-> for you to fetch changes up to d3601e56cf64a3f2df6f6380cccb3644274406e2:
->
->   spi/sh-hspi: fix return value check in hspi_probe(). (2012-12-19
-> 15:11:41 +0000)
->
-> ----------------------------------------------------------------
-> SPI device driver bug fixes branch for the v3.8 merge window. Most of
-> this is bug fixes to the core code and the sh-hspi and s3c64xx device
-> drivers.
->
-> There is also a patch here to add DT support to the Atmel driver. This
-> one should have been in the first round, but I missed it. It's a low
-> risk change contained within a single driver and the Atmel maintainer
-> has requested it.
->
-> ----------------------------------------------------------------
-> Allen Martin (1):
->       spi: fix tegra SPI binding examples
->
-> Cyril Roelandt (1):
->       spi/sh-hspi: fix return value check in hspi_probe().
->
-> David Daney (1):
->       of/spi: Fix SPI module loading by using proper "spi:" modalias prefixes.
->
-> Jean-Christophe PLAGNIOL-VILLARD (1):
->       spi/atmel: add DT support
->
-> Kyoungil Kim (2):
->       spi: Keep chipselect assertion during one message
->       spi: Change FIFO flush operation and spi channel off
->
->  .../bindings/spi/nvidia,tegra20-sflash.txt         |    2 +-
->  .../bindings/spi/nvidia,tegra20-slink.txt          |    2 +-
->  .../devicetree/bindings/spi/spi_atmel.txt          |   26 ++++++++++++++++++++
->  drivers/spi/spi-atmel.c                            |   17 ++++++++++++-
->  drivers/spi/spi-s3c64xx.c                          |   10 +++-----
->  drivers/spi/spi-sh-hspi.c                          |    2 +-
->  drivers/spi/spi.c                                  |    5 +++-
->  7 files changed, 53 insertions(+), 11 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi_atmel.txt
->
->
-> --
-> Grant Likely, B.Sc., P.Eng.
-> Secret Lab Technologies Ltd.
+> Otherwise the patch looks good. Thanks for doing this work.
 
 
+When we do the spi_add_device(), the spi_setup() get called.
+In spi_setup, it make  sure that spi->bits_per_word is not zero.
 
---
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+in spi_setup(spi.c)
 
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+if (!spi->bits_per_word)
+                 spi->bits_per_word = 8;

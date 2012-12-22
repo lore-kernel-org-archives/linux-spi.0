@@ -1,22 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: fix return value check in hspi_probe().
-Date: Sat, 22 Dec 2012 09:56:20 +0000
-Message-ID: <20121222095620.83E243E07FA@localhost>
-References: <1355271894-5284-1-git-send-email-tipecaml@gmail.com>
-	<1355271894-5284-6-git-send-email-tipecaml@gmail.com>
-	<87txrsqf7f.wl%kuninori.morimoto.gx@renesas.com>
-	<20121219151154.937EC3E0AD7@localhost>
-	<20121219163914.GN5032@mwanda>
+Subject: Re: [PATCH] spi: davinci: use request_threaded_irq() to fix deadlock
+Date: Sat, 22 Dec 2012 10:08:03 +0000
+Message-ID: <20121222100803.88FCE3E0AD0@localhost>
+References: <1356120806-27964-1-git-send-email-m-karicheri2@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Cc: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+To: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	Thomas Gleixner <tglx-ypw0egVD2fIeQtMskbmMgg@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20121219163914.GN5032@mwanda>
+In-Reply-To: <1356120806-27964-1-git-send-email-m-karicheri2-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,31 +23,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 19 Dec 2012 19:39:14 +0300, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
-> On Wed, Dec 19, 2012 at 03:11:54PM +0000, Grant Likely wrote:
-> > On Tue, 11 Dec 2012 16:36:27 -0800 (PST), Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
-> > > 
-> > > Hi
-> > > 
-> > > > According to its documentation, clk_get() returns a "valid IS_ERR() condition
-> > > > containing errno", so we should call IS_ERR() rather than a NULL check.
-> > > > 
-> > > > Signed-off-by: Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > > 
-> > > Acked-by: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> > 
-> > Applied, thanks.
+On Fri, 21 Dec 2012 15:13:26 -0500, Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org> wrote:
+> With RT pre-empt patch applied to Linux kernel, the irq handler will be
+> force converted to an irq thread. spi driver can get back to back messages
+> from the slave device. In such cases, IRQ thread doesn't get a chance to
+> run to read the slave data. Hence the irq handler must be run in hard irq
+> context to read/write data from slave device. Otherwise, the kernel goes
+> into a deadlock. This patch fixes this issue when PREEMPT_RT_FULL is
+> enabled in the kernel. A dummy thread function is provided to satisfy the
+> request_threaded_irq() API. Passing a NULL for function also causes the
+> irq handler to be executed in the thread context.
 > 
-> In another thread, we were just talking about who clk_get() can
-> return a NULL if !CONFIG_HAVE_CLK.  That might change to match the
-> documentation later...  Not sure.
+> Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 
-So what is the solution here? Will the dummy clk_get() be changed, or is
-there more work needed on the drivers?
+Thomas, would you mind taking a look at this for me. My gut feel is that
+this is the wrong way to solve the problem that Murali is having and
+that it really just hacks something that works.
 
-/me stifles a rant about the PTR_ERR pattern
+It seems to me that what the driver should do is disable the irq
+in the handler, and then perform the regular work in the thread. After
+all the pending data is processed, then it should reenable the interrupts.
+
+Passing in a dummy thread function just looks wrong.
 
 g.
+
+> ---
+>  drivers/spi/spi-davinci.c |   17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index 50bd2cd..8234d22 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -702,6 +702,19 @@ err_alloc_dummy_buf:
+>  }
+>  
+>  /**
+> + * dummy_thread_fn - dummy thread function
+> + * @irq: IRQ number for this SPI Master
+> + * @context_data: structure for SPI Master controller davinci_spi
+> + *
+> + * This is to satisfy the request_threaded_irq() API so that the irq
+> + * handler is called in interrupt context.
+> + */
+> +static irqreturn_t dummy_thread_fn(s32 irq, void *data)
+> +{
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +/**
+>   * davinci_spi_irq - Interrupt handler for SPI Master Controller
+>   * @irq: IRQ number for this SPI Master
+>   * @context_data: structure for SPI Master controller davinci_spi
+> @@ -899,8 +912,8 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>  		goto unmap_io;
+>  	}
+>  
+> -	ret = request_irq(dspi->irq, davinci_spi_irq, 0, dev_name(&pdev->dev),
+> -									dspi);
+> +	ret = request_threaded_irq(dspi->irq, davinci_spi_irq, dummy_thread_fn,
+> +				 0, dev_name(&pdev->dev), dspi);
+>  	if (ret)
+>  		goto unmap_io;
+>  
+> -- 
+> 1.7.9.5
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial

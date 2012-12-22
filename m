@@ -1,66 +1,61 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH V2] spi: remove check for bits_per_word on transfer from low level driver
-Date: Sat, 22 Dec 2012 09:54:04 +0000
-Message-ID: <20121222095404.420FC3E08BE@localhost>
-References: <1355820943-25228-1-git-send-email-ldewangan@nvidia.com> <20121219162433.1E1E43E0BCF@localhost> <50D2AA43.8050106@nvidia.com>
-Cc: "broonie@opensource.wolfsonmicro.com"
-	<broonie@opensource.wolfsonmicro.com>,
-	"ben-linux@fluff.org" <ben-linux@fluff.org>,
-	"kgene.kim@samsung.com" <kgene.kim@samsung.com>,
-	"baohua.song@csr.com" <baohua.song@csr.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-samsung-soc@vger.kernel.org"
-	<linux-samsung-soc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"jonas.gorski@gmail.com" <jonas.gorski@gmail.com>,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-To: Laxman Dewangan <ldewangan@nvidia.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <50D2AA43.8050106@nvidia.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 5/5] spi: fix return value check in hspi_probe().
+Date: Sat, 22 Dec 2012 09:56:20 +0000
+Message-ID: <20121222095620.83E243E07FA@localhost>
+References: <1355271894-5284-1-git-send-email-tipecaml@gmail.com>
+	<1355271894-5284-6-git-send-email-tipecaml@gmail.com>
+	<87txrsqf7f.wl%kuninori.morimoto.gx@renesas.com>
+	<20121219151154.937EC3E0AD7@localhost>
+	<20121219163914.GN5032@mwanda>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121219163914.GN5032@mwanda>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 20 Dec 2012 11:33:47 +0530, Laxman Dewangan <ldewangan@nvidia.com> wrote:
-> On Wednesday 19 December 2012 09:54 PM, Grant Likely wrote:
-> > On Tue, 18 Dec 2012 14:25:43 +0530, Laxman Dewangan<ldewangan@nvidia.com>  wrote:
-> >> The spi core make sure that each transfer structure have the proper
-> >> setting for bits_per_word before calling low level transfer APIs.
-> >>
-> >> Hence it is no more require to check again in low level driver for
-> >> this field whether this is set correct or not. Removing such code
-> >> from low level driver.
-> >>
-> >> Signed-off-by: Laxman Dewangan<ldewangan@nvidia.com>
-> > [...]
-> >> */
-> >>
-> >>   		if (prev_speed_hz != speed_hz
-> >> @@ -316,9 +315,8 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
-> >>   	/* check each transfer's parameters */
-> >>   	list_for_each_entry (t,&m->transfers, transfer_list) {
-> >>   		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
-> >> -		u8 bits_per_word = t->bits_per_word ? : spi->bits_per_word;
-> >> +		u8 bits_per_word = t->bits_per_word;
-> >>
-> >> -		bits_per_word = bits_per_word ? : 8;
-> > Have you verified here that bits_per_word can never be '0' here? What is
-> > the path that ensures spi->bits_per_word (and hence t->bits_per_word) is
-> > set to 8 here?
-> >
-> > Otherwise the patch looks good. Thanks for doing this work.
+On Wed, 19 Dec 2012 19:39:14 +0300, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
+> On Wed, Dec 19, 2012 at 03:11:54PM +0000, Grant Likely wrote:
+> > On Tue, 11 Dec 2012 16:36:27 -0800 (PST), Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
+> > > 
+> > > Hi
+> > > 
+> > > > According to its documentation, clk_get() returns a "valid IS_ERR() condition
+> > > > containing errno", so we should call IS_ERR() rather than a NULL check.
+> > > > 
+> > > > Signed-off-by: Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > > 
+> > > Acked-by: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+> > 
+> > Applied, thanks.
 > 
-> 
-> When we do the spi_add_device(), the spi_setup() get called.
-> In spi_setup, it make  sure that spi->bits_per_word is not zero.
-> 
-> in spi_setup(spi.c)
-> 
-> if (!spi->bits_per_word)
->                  spi->bits_per_word = 8;
+> In another thread, we were just talking about who clk_get() can
+> return a NULL if !CONFIG_HAVE_CLK.  That might change to match the
+> documentation later...  Not sure.
 
-Applied, thanks.
+So what is the solution here? Will the dummy clk_get() be changed, or is
+there more work needed on the drivers?
+
+/me stifles a rant about the PTR_ERR pattern
 
 g.
+
+------------------------------------------------------------------------------
+LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
+Remotely access PCs and mobile devices and provide instant support
+Improve your efficiency, and focus on delivering more value-add services
+Discover what IT Professionals Know. Rescue delivers
+http://p.sf.net/sfu/logmein_12329d2d

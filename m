@@ -1,79 +1,40 @@
-From: Juha Lumme <juha.lumme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2] mxs: spi: clear XFER_COUNT in ctrl0 field in DMA descriptor
-Date: Wed, 26 Dec 2012 14:48:51 +0900
-Message-ID: <1356500931-31861-1-git-send-email-juha.lumme@gmail.com>
+From: Sergei Shtylyov <sshtylyov@mvista.com>
+Subject: Re: [PATCH 2/2] spi: sirf: add support for new SiRFmarco SMP SoC
+Date: Wed, 26 Dec 2012 15:40:09 +0400
+Message-ID: <50DAE219.10806@mvista.com>
+References: <1356490114-18022-1-git-send-email-Barry.Song@csr.com>
+ <1356490114-18022-2-git-send-email-Barry.Song@csr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Juha Lumme <juha.lumme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+ linux-arm-kernel@lists.infradead.org, workgroup.linux@csr.com,
+ Barry Song <Baohua.Song@csr.com>
+To: Barry Song <Barry.Song@csr.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1356490114-18022-2-git-send-email-Barry.Song@csr.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: linux-arm-kernel-bounces@lists.infradead.org
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On MX23 the XFER_COUNT part in ctrl0 field in DMA descriptor was improperly
-OR'd during the construction of DMA descriptor chain, instead of being
-freshly set.
-Because of that too many bytes were being expected from SPI during the last
-DMA cycle.
-This caused a timeout (SSP_TIMEOUT) to happen in the processing of the last
-DMA descriptor, and thus reads and writes were failing.
-This is a fix for the problem, by clearing XFER_COUNT bytes in ctrl0 before
-setting the new XFER_COUNT for DMA descriptor.
+Hello.
 
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On 26-12-2012 6:48, Barry Song wrote:
 
-Signed-off-by: Juha Lumme <juha.lumme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
----
- drivers/spi/spi-mxs.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> From: Barry Song <Baohua.Song@csr.com>
 
- Changelog, v2:
- changed the description of the patch, to better describe the patch
+> the driver is also compatible with SiRFmarco except SiRFprimaII,
+> so simply add "sirf,marco-spi" to OF match table.
 
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 86dd04d..265c33f 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -241,6 +241,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
- 	INIT_COMPLETION(spi->c);
- 
- 	ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
-+	ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
- 	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
- 
- 	if (*first)
-@@ -256,8 +257,10 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
- 		if ((sg_count + 1 == sgs) && *last)
- 			ctrl0 |= BM_SSP_CTRL0_IGNORE_CRC;
- 
--		if (ssp->devid == IMX23_SSP)
-+		if (ssp->devid == IMX23_SSP) {
-+			ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
- 			ctrl0 |= min;
-+		}
- 
- 		dma_xfer[sg_count].pio[0] = ctrl0;
- 		dma_xfer[sg_count].pio[3] = min;
--- 
-1.7.10.4
+> Signed-off-by: Barry Song <Baohua.Song@csr.com>
 
+    You've just posted this patch as a part of another 2-patch series.
 
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+WBR, Sergei

@@ -1,7 +1,8 @@
 From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 4/6] of_spi: Document cs_gpios and cs_gpio in kernel-doc
-Date: Thu, 27 Dec 2012 13:10:45 +0100
-Message-ID: <1356610247-11491-5-git-send-email-andreas@gaisler.com>
+Subject: [PATCH 1/6] of: Return -EEXIST from of_parse_phandle_with_args for
+	holes in phandle list
+Date: Thu, 27 Dec 2012 13:10:42 +0100
+Message-ID: <1356610247-11491-2-git-send-email-andreas@gaisler.com>
 References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,34 +24,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This adds missing kernel-doc entries for cs_gpios in struct spi_master and
-cs_gpio in struct spi_device.
+Return value for an empty phandle was -EEXIST before commit 15c9a0ac, that
+changed the return value in this case to -ENOENT. However, of_gpio_named_count
+relies upon the return value to be -EEXIST and relies upon being able to
+distinguish this case from the case of no list at all which also returns
+-ENOENT.
+
+Also change the of selftest to expect -EEXIST in this case.
 
 Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 ---
- include/linux/spi/spi.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f629189..88a669c 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -57,6 +57,7 @@ extern struct bus_type spi_bus_type;
-  * @modalias: Name of the driver to use with this device, or an alias
-  *	for that name.  This appears in the sysfs "modalias" attribute
-  *	for driver coldplugging, and in uevents used for hotplugging
-+ * @cs_gpio: Negative or gpio for chip select.
-  *
-  * A @spi_device is used to interchange data between an SPI slave
-  * (usually a discrete chip) and CPU memory.
-@@ -258,6 +259,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @unprepare_transfer_hardware: there are currently no more messages on the
-  *	queue so the subsystem notifies the driver that it may relax the
-  *	hardware by issuing this call
-+ * @cs_gpios: possible array of negative values or gpios for chip selects
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+I have not run-tested the selftest, not having appropriate hardware around for that.
+
+ drivers/of/base.c     |    4 ++--
+ drivers/of/selftest.c |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 2390ddb..986afd7 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1083,11 +1083,11 @@ int of_parse_phandle_with_args(const struct device_node *np, const char *list_na
+ 		 * All of the error cases above bail out of the loop, so at
+ 		 * this point, the parsing is successful. If the requested
+ 		 * index matches, then fill the out_args structure and return,
+-		 * or return -ENOENT for an empty entry.
++		 * or return -EEXIST for an empty entry.
+ 		 */
+ 		if (cur_index == index) {
+ 			if (!phandle)
+-				return -ENOENT;
++				return -EEXIST;
+ 
+ 			if (out_args) {
+ 				int i;
+diff --git a/drivers/of/selftest.c b/drivers/of/selftest.c
+index f24ffd7..b1c2ae9 100644
+--- a/drivers/of/selftest.c
++++ b/drivers/of/selftest.c
+@@ -54,7 +54,7 @@ static void __init of_selftest_parse_phandle_with_args(void)
+ 			passed &= (args.args[1] == 0);
+ 			break;
+ 		case 2:
+-			passed &= (rc == -ENOENT);
++			passed &= (rc == -EEXIST);
+ 			break;
+ 		case 3:
+ 			passed &= !rc;
 -- 
 1.7.0.4
 

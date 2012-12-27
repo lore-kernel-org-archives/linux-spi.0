@@ -1,77 +1,48 @@
-From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH 6/6] of_spi: Initialize cs_gpios and cs_gpio with -EEXIST
-Date: Thu, 27 Dec 2012 13:10:47 +0100
-Message-ID: <1356610247-11491-7-git-send-email-andreas@gaisler.com>
-References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
-Cc: Rob Herring <rob.herring@calxeda.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, software@gaisler.com
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: "calibag" <contact-VmEJbPLDSEZBDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?Q?Jusqu'au_6_janvier_-10%__sur_votre_valise_personnalis=c3=a9e?=
+Date: Thu, 27 Dec 2012 14:53:55 +0100
+Message-ID: <82524b68.aXU.aPJ.20.26aBjZ@mailjet.com>
+Reply-To: "contact-VmEJbPLDSEZBDgjK7y7TUQ@public.gmane.org" <contact-VmEJbPLDSEZBDgjK7y7TUQ@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Holes in the cs-gpios DT phandle list is supposed to mark that native
-chipselects is to be used. The value returned from of_get_named_gpio_flags in
-this case is -EEXIST. By initializing cs_gpios and cs_gpio with -EEXIST, this
-and only this errno will indicate to a spi controller driver that a native
-chipselect is to be used.
-
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
----
- drivers/spi/spi.c       |    4 ++--
- include/linux/spi/spi.h |    7 +++++--
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 6f1b717..7494bad 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -334,7 +334,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- 	spi->dev.parent = &master->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
--	spi->cs_gpio = -EINVAL;
-+	spi->cs_gpio = -EEXIST;
- 	device_initialize(&spi->dev);
- 	return spi;
- }
-@@ -1097,7 +1097,7 @@ static int of_spi_register_master(struct spi_master *master)
- 	}
- 
- 	for (i = 0; i < master->num_chipselect; i++)
--		cs[i] = -EINVAL;
-+		cs[i] = -EEXIST;
- 
- 	for (i = 0; i < nb; i++)
- 		cs[i] = of_get_named_gpio_flags(np, "cs-gpios", i, &flags[i]);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 96b1055..0701882 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -58,7 +58,8 @@ extern struct bus_type spi_bus_type;
-  * @modalias: Name of the driver to use with this device, or an alias
-  *	for that name.  This appears in the sysfs "modalias" attribute
-  *	for driver coldplugging, and in uevents used for hotplugging
-- * @cs_gpio: Negative or gpio for chip select.
-+ * @cs_gpio: Negative or gpio for chip select.  Set to -EEXIST when chipselect
-+ *	should be handled natively by the controller driver
-  * @cs_gpio_flags: of_gpio_flags corresponding to cs_gpio
-  *
-  * A @spi_device is used to interchange data between an SPI slave
-@@ -262,7 +263,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  * @unprepare_transfer_hardware: there are currently no more messages on the
-  *	queue so the subsystem notifies the driver that it may relax the
-  *	hardware by issuing this call
-- * @cs_gpios: possible array of negative values or gpios for chip selects
-+ * @cs_gpios: possible array of negative values or gpios for chip selects.  A
-+ *	chipselect that should be handled natively by the controller driver is
-+ *	set to -EEXIST.
-  * @cs_gpio_flags: possible array of of_gpio_flags corresponding to cs_gpios
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
--- 
-1.7.0.4
+Vm9pciBsYSB2ZXJzaW9uIGVuIGxpZ25lCiAKIAoKIAogCiAKCiAKIAogCgogCiAxw6hyZSDDqXRh
+cGU6IHZvdXMgc8OpbGVjdGlvbm5leiBsYSB0YWlsbGUgZGUgdm90cmUgdmFsaXNlIHNlbG9uIHRy
+b2lzCm1vZMOobGVzOgoKQ2FsaS1TIHZhbGlzZSBjYWJpbmUgZGUgNDUgbGl0cmVzCkNhbGktTSBi
+YWdhZ2UgZW4gc291dGUgZGUgNzUgbGl0cmVzCkNhbGktTCBiYWdhZ2UgZW4gc291dGUgZGUgMTE1
+IGxpdHJlcwoKMsOobWUgw6l0YXBlOiBwZXJzb25uYWxpc2V6IGNoYXF1ZSDDqWzDqW1lbnQgZGUg
+dm90cmUgdmFsaXNlCkNvbW1lbmNleiBwYXIgY2hvaXJzaXIgbGEgY291bGV1ciBkZSBsYSBjb3F1
+ZSBwYXJtaSBsZXMgdHJvaXMgY29sb3Jpcwpwcm9wb3PDqXM6IGJsYW5jLCBhbnRocmFjaXRlIG91
+IG5vaXIuClZpZW50IGVuc3VpdGUgbGUgdG91ciBkZXMgcm91ZXMsIGRlcyBwb2lnbsOpZXMgZXQg
+ZGVzIHBhdGlucy4gNSBjb2xvcmlzIGF1CmNob2l4IHF1aSB2b3VzIHBlcm1ldHRyb25zIGRlIGNy
+w6llciBsZXMgdmFsaXNlcyBsZXMgcGx1cyBkZXNpZ24sCmh1bW9yaXN0aXF1ZXMgb3UgZXh0cmF2
+YWdhbnRlcyBxdWkgc29pZW50LgpQb3VyIGZpbmlyIHZvdXMgYXZleiBsYSBwb3NzaWJpbGl0w6kg
+ZCdham91dGVyIHVuIHN0aWNrZXIsIHRleHRlIG91IGltYWdlLApzdXIgbGEgYmFuZGUgY2VudHJh
+bGUgZGUgdm90cmUgY3LDqWF0aW9uIG91IHByb3Bvc8OpIHBhciBsZXMgZGVzaWduZXJzIGRlCmNh
+bGliYWcuCjPDqG1lIMOpdGFwZTogUGFydGV6IGVuIHZveWFnZSBhdmVjIHZvdHJlIGNyw6lhdGlv
+bgoKLTEwJSB2YWxhYmxlIGp1c3F1J2F1IDYgamFudmllciAyMDEzIGF2ZWMgbGUgY29kZSBwcm9t
+byBDQUxJLU1KMTAKIAogCiAKCiAKCiAKCiAKwqAKCiAKCkNldCBlbWFpbCBhIMOpdMOpIGVudm95
+w6kgw6Agc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0LCBjbGlxdWV6IGlj
+aSBwb3VyIHZvdXMKZMOpc2Fib25uZXIuCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFzdGVy
+IFZpc3VhbCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCwgQVNQLk5FVCwgQyMgMjAxMiwgSFRNTDUs
+IENTUywKTVZDLCBXaW5kb3dzIDggQXBwcywgSmF2YVNjcmlwdCBhbmQgbXVjaCBtb3JlLiBLZWVw
+IHlvdXIgc2tpbGxzIGN1cnJlbnQKd2l0aCBMZWFybkRldk5vdyAtIDMsMjAwIHN0ZXAtYnktc3Rl
+cCB2aWRlbyB0dXRvcmlhbHMgYnkgTWljcm9zb2Z0Ck1WUHMgYW5kIGV4cGVydHMuIE9OIFNBTEUg
+dGhpcyBtb250aCBvbmx5IC0tIGxlYXJuIG1vcmUgYXQ6Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvbGVh
+cm5tb3JlXzEyMjcxMgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
+c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,7 +1,8 @@
 From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 4/6] spi/ath79: use gpio_request_one
-Date: Thu, 27 Dec 2012 10:42:27 +0100
-Message-ID: <1356601349-23617-5-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 5/6] spi/ath79: avoid multiple initialization of the SPI
+	controller
+Date: Thu, 27 Dec 2012 10:42:28 +0100
+Message-ID: <1356601349-23617-6-git-send-email-juhosg@openwrt.org>
 References: <1356601349-23617-1-git-send-email-juhosg@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,58 +21,111 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Use gpio_request_one() instead of multiple gpiolib calls.
+Currently we are initializing the SPI controller in
+the chip select line function, and that function is
+called once for each SPI device on the bus. If a
+board has multiple SPI devices, the controller will
+be initialized multiple times.
+
+Introduce ath79_spi_{en,dis}able helper functions,
+and call those from probe/response in order to avoid
+the mutliple initialization of the controller.
 
 Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-ath79.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/spi/spi-ath79.c |   41 ++++++++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index a725e62..19d539e 100644
+index 19d539e..842acd8 100644
 --- a/drivers/spi/spi-ath79.c
 +++ b/drivers/spi/spi-ath79.c
-@@ -100,6 +100,7 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- {
- 	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
- 	struct ath79_spi_controller_data *cdata;
-+	int status;
+@@ -96,16 +96,8 @@ static void ath79_spi_chipselect(struct spi_device *spi, int is_active)
  
- 	cdata = spi->controller_data;
- 	if (spi->chip_select && !cdata)
-@@ -115,22 +116,21 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
- 	/* TODO: setup speed? */
- 	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
- 
-+	status = 0;
- 	if (spi->chip_select) {
--		int status = 0;
-+		unsigned long flags;
- 
--		status = gpio_request(cdata->gpio, dev_name(&spi->dev));
--		if (status)
--			return status;
-+		flags = GPIOF_DIR_OUT;
-+		if (spi->mode & SPI_CS_HIGH)
-+			flags |= GPIOF_INIT_HIGH;
-+		else
-+			flags |= GPIOF_INIT_LOW;
- 
--		status = gpio_direction_output(cdata->gpio,
--					       spi->mode & SPI_CS_HIGH);
--		if (status) {
--			gpio_free(cdata->gpio);
--			return status;
--		}
-+		status = gpio_request_one(cdata->gpio, flags,
-+					  dev_name(&spi->dev));
- 	}
- 
--	return 0;
-+	return status;
  }
  
+-static int ath79_spi_setup_cs(struct spi_device *spi)
++static void ath79_spi_enable(struct ath79_spi *sp)
+ {
+-	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
+-	struct ath79_spi_controller_data *cdata;
+-	int status;
+-
+-	cdata = spi->controller_data;
+-	if (spi->chip_select && !cdata)
+-		return -EINVAL;
+-
+ 	/* enable GPIO mode */
+ 	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, AR71XX_SPI_FS_GPIO);
+ 
+@@ -115,6 +107,24 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
+ 
+ 	/* TODO: setup speed? */
+ 	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
++}
++
++static void ath79_spi_disable(struct ath79_spi *sp)
++{
++	/* restore CTRL register */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, sp->reg_ctrl);
++	/* disable GPIO mode */
++	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, 0);
++}
++
++static int ath79_spi_setup_cs(struct spi_device *spi)
++{
++	struct ath79_spi_controller_data *cdata;
++	int status;
++
++	cdata = spi->controller_data;
++	if (spi->chip_select && !cdata)
++		return -EINVAL;
+ 
+ 	status = 0;
+ 	if (spi->chip_select) {
+@@ -135,17 +145,10 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
+ 
  static void ath79_spi_cleanup_cs(struct spi_device *spi)
+ {
+-	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
+-
+ 	if (spi->chip_select) {
+ 		struct ath79_spi_controller_data *cdata = spi->controller_data;
+ 		gpio_free(cdata->gpio);
+ 	}
+-
+-	/* restore CTRL register */
+-	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, sp->reg_ctrl);
+-	/* disable GPIO mode */
+-	ath79_spi_wr(sp, AR71XX_SPI_REG_FS, 0);
+ }
+ 
+ static int ath79_spi_setup(struct spi_device *spi)
+@@ -268,12 +271,15 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	dev_dbg(&pdev->dev, "register read/write delay is %u nsecs\n",
+ 		sp->rrw_delay);
+ 
++	ath79_spi_enable(sp);
+ 	ret = spi_bitbang_start(&sp->bitbang);
+ 	if (ret)
+-		goto err_clk_disable;
++		goto err_disable;
+ 
+ 	return 0;
+ 
++err_disable:
++	ath79_spi_disable(sp);
+ err_clk_disable:
+ 	clk_disable(sp->clk);
+ err_clk_put:
+@@ -292,6 +298,7 @@ static int ath79_spi_remove(struct platform_device *pdev)
+ 	struct ath79_spi *sp = platform_get_drvdata(pdev);
+ 
+ 	spi_bitbang_stop(&sp->bitbang);
++	ath79_spi_disable(sp);
+ 	clk_disable(sp->clk);
+ 	clk_put(sp->clk);
+ 	iounmap(sp->base);
 -- 
 1.7.10
 

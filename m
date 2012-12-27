@@ -1,20 +1,13 @@
-From: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: sirf: add support for new SiRFmarco SMP SoC
-Date: Wed, 26 Dec 2012 20:09:05 +0300
-Message-ID: <50DB2F31.1000300@mvista.com>
-References: <1356490114-18022-1-git-send-email-Barry.Song@csr.com>
-	<1356490114-18022-2-git-send-email-Barry.Song@csr.com>
-	<50DAE219.10806@mvista.com>
-	<CAGsJ_4wp1KvfotmDHzTCU9bmEP5BKDAU=Z0qjvOXw6FoFYNNKQ@mail.gmail.com>
+From: Sky Lingerie <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le style Skys =?iso-8859-15?Q?=E0?= prix discount
+Date: Thu, 27 Dec 2012 04:40:04 +0100
+Message-ID: <1356579610.thing50dbc31aa8649@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAGsJ_4wp1KvfotmDHzTCU9bmEP5BKDAU=Z0qjvOXw6FoFYNNKQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,31 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-On 12/26/2012 03:32 PM, Barry Song wrote:
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI4ODc2JmM9NDgzNjEyJmQ9MjAx=
+Mi0xMi0yNyAwNDozMDowMSZlPTEmaD0yODg3NCZmPTI4ODc2Jmc9Mjg4NzY=3D
 
->>> From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-
->>> the driver is also compatible with SiRFmarco except SiRFprimaII,
->>> so simply add "sirf,marco-spi" to OF match table.
-
->>> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-
->>     You've just posted this patch as a part of another 2-patch series.
-
-> no, this one is spi, the other one is i2c.
-
-   Sorry for the noise -- I was being blind (and goggles didn't help :-).
-
-> -barry
-
-WBR, Sergei
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI4ODc2JmM=
+9NDgzNjEyJmQ9MjAxMi0xMi0yNyAwNDozMDowMSZlPTEmaD0yODg3NCZmPTI4ODc2Jmc9Mjg4Nz=
+Y=3D
 
 
-------------------------------------------------------------------------------
-LogMeIn Rescue: Anywhere, Anytime Remote support for IT. Free Trial
-Remotely access PCs and mobile devices and provide instant support
-Improve your efficiency, and focus on delivering more value-add services
-Discover what IT Professionals Know. Rescue delivers
-http://p.sf.net/sfu/logmein_12329d2d
+---------------------------------------------------------------------------=
+---
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122712

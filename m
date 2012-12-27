@@ -1,84 +1,142 @@
-From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 1/6] of: Return -EEXIST from of_parse_phandle_with_args for
-	holes in phandle list
-Date: Thu, 27 Dec 2012 13:10:42 +0100
-Message-ID: <1356610247-11491-2-git-send-email-andreas@gaisler.com>
+From: Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 5/6] of_spi: Add fetching of of_gpio flags to of_spi_register_master
+Date: Thu, 27 Dec 2012 13:10:46 +0100
+Message-ID: <1356610247-11491-6-git-send-email-andreas@gaisler.com>
 References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1356610247-11491-1-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Rob Herring <rob.herring@calxeda.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	devicetree-discuss@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, software@gaisler.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Return value for an empty phandle was -EEXIST before commit 15c9a0ac, that
-changed the return value in this case to -ENOENT. However, of_gpio_named_count
-relies upon the return value to be -EEXIST and relies upon being able to
-distinguish this case from the case of no list at all which also returns
--ENOENT.
+When using a gpio chip select with a OF_GPIO_ACTIVE_LOW flag, this needs to be
+known to the controller driver.
 
-Also change the of selftest to expect -EEXIST in this case.
-
-Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 ---
+ Documentation/devicetree/bindings/spi/spi-bus.txt |    3 +-
+ drivers/spi/spi.c                                 |   24 ++++++++++++++++++--
+ include/linux/spi/spi.h                           |    5 ++++
+ 3 files changed, 28 insertions(+), 4 deletions(-)
 
-I have not run-tested the selftest, not having appropriate hardware around for that.
-
- drivers/of/base.c     |    4 ++--
- drivers/of/selftest.c |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 2390ddb..986afd7 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1083,11 +1083,11 @@ int of_parse_phandle_with_args(const struct device_node *np, const char *list_na
- 		 * All of the error cases above bail out of the loop, so at
- 		 * this point, the parsing is successful. If the requested
- 		 * index matches, then fill the out_args structure and return,
--		 * or return -ENOENT for an empty entry.
-+		 * or return -EEXIST for an empty entry.
- 		 */
- 		if (cur_index == index) {
- 			if (!phandle)
--				return -ENOENT;
-+				return -EEXIST;
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 296015e..a4950a6 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -57,7 +57,8 @@ contain the following properties.
+     		    3-wire mode.
  
- 			if (out_args) {
- 				int i;
-diff --git a/drivers/of/selftest.c b/drivers/of/selftest.c
-index f24ffd7..b1c2ae9 100644
---- a/drivers/of/selftest.c
-+++ b/drivers/of/selftest.c
-@@ -54,7 +54,7 @@ static void __init of_selftest_parse_phandle_with_args(void)
- 			passed &= (args.args[1] == 0);
- 			break;
- 		case 2:
--			passed &= (rc == -ENOENT);
-+			passed &= (rc == -EEXIST);
- 			break;
- 		case 3:
- 			passed &= !rc;
+ If a gpio chipselect is used for the SPI slave the gpio number will be passed
+-via the cs_gpio
++via the cs_gpio and the corresponding of_gpio_flags will be passed via
++cs_gpio_flags.
+ 
+ SPI example for an MPC5200 SPI bus:
+ 	spi@f00 {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index a4baa0a..6f1b717 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -385,8 +385,10 @@ int spi_add_device(struct spi_device *spi)
+ 		goto done;
+ 	}
+ 
+-	if (master->cs_gpios)
++	if (master->cs_gpios) {
+ 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
++		spi->cs_gpio_flags = master->cs_gpio_flags[spi->chip_select];
++	}
+ 
+ 	/* Drivers may modify this initial i/o setup, but will
+ 	 * normally rely on the device being setup.  Devices
+@@ -1060,7 +1062,8 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
+ static int of_spi_register_master(struct spi_master *master)
+ {
+ 	int nb;
+-	int i, *cs;
++	int ret, i, *cs;
++	enum of_gpio_flags *flags;
+ 	struct device_node *np = master->dev.of_node;
+ 
+ 	if (!np)
+@@ -1083,13 +1086,28 @@ static int of_spi_register_master(struct spi_master *master)
+ 	if (!master->cs_gpios)
+ 		return -ENOMEM;
+ 
++	flags = devm_kzalloc(&master->dev,
++			     sizeof(*flags) * master->num_chipselect,
++			     GFP_KERNEL);
++	master->cs_gpio_flags = flags;
++
++	if (!master->cs_gpio_flags) {
++		ret = -ENOMEM;
++		goto err_alloc_flags;
++	}
++
+ 	for (i = 0; i < master->num_chipselect; i++)
+ 		cs[i] = -EINVAL;
+ 
+ 	for (i = 0; i < nb; i++)
+-		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
++		cs[i] = of_get_named_gpio_flags(np, "cs-gpios", i, &flags[i]);
+ 
+ 	return 0;
++
++err_alloc_flags:
++	devm_kfree(&master->dev, master->cs_gpios);
++	master->cs_gpios = NULL;
++	return ret;
+ }
+ #else
+ static int of_spi_register_master(struct spi_master *master)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 88a669c..96b1055 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -23,6 +23,7 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
++#include <linux/of_gpio.h>
+ 
+ /*
+  * INTERFACES between SPI master-side drivers and SPI infrastructure.
+@@ -58,6 +59,7 @@ extern struct bus_type spi_bus_type;
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
+  * @cs_gpio: Negative or gpio for chip select.
++ * @cs_gpio_flags: of_gpio_flags corresponding to cs_gpio
+  *
+  * A @spi_device is used to interchange data between an SPI slave
+  * (usually a discrete chip) and CPU memory.
+@@ -92,6 +94,7 @@ struct spi_device {
+ 	void			*controller_data;
+ 	char			modalias[SPI_NAME_SIZE];
+ 	int			cs_gpio;	/* chip select gpio */
++	enum of_gpio_flags	cs_gpio_flags;	/* chip select of_gpio_flags */
+ 
+ 	/*
+ 	 * likely need more hooks for more protocol options affecting how
+@@ -260,6 +263,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
+  * @cs_gpios: possible array of negative values or gpios for chip selects
++ * @cs_gpio_flags: possible array of of_gpio_flags corresponding to cs_gpios
+  *
+  * Each SPI master controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
+@@ -367,6 +371,7 @@ struct spi_master {
+ 	int (*unprepare_transfer_hardware)(struct spi_master *master);
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
++	enum of_gpio_flags	*cs_gpio_flags;
+ };
+ 
+ static inline void *spi_master_get_devdata(struct spi_master *master)
 -- 
 1.7.0.4
-
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122712

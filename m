@@ -1,7 +1,7 @@
 From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 6/6] spi/ath79: add shutdown handler
-Date: Thu, 27 Dec 2012 10:42:29 +0100
-Message-ID: <1356601349-23617-7-git-send-email-juhosg@openwrt.org>
+Subject: [PATCH 4/6] spi/ath79: use gpio_request_one
+Date: Thu, 27 Dec 2012 10:42:27 +0100
+Message-ID: <1356601349-23617-5-git-send-email-juhosg@openwrt.org>
 References: <1356601349-23617-1-git-send-email-juhosg@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -20,71 +20,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI controller of the AR7xxx/AR9xxx SoCs
-have a special mode which allows the SoC to
-directly read data from SPI flash chips. In
-this mode, the content of the SPI flash chip
-can be accessed via a memory mapped region.
-
-During early init time, the kernel expects
-that the flash chip is accessible through
-that memory region because it reads board
-specific values (e.g. MAC address, WiFi
-calibration data) from the flash on various
-boards.
-
-This is working if the kernel is loaded
-directly by the bootloader because that
-leaves the SPI controller in the special
-mode. However it is not working in a kexec'd
-kernel because the SPI driver does not restore
-the special mode during shutdown.
-
-The patch adds a shutdown handler to fix this
-issue.
+Use gpio_request_one() instead of multiple gpiolib calls.
 
 Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-ath79.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi-ath79.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 842acd8..73e491e 100644
+index a725e62..19d539e 100644
 --- a/drivers/spi/spi-ath79.c
 +++ b/drivers/spi/spi-ath79.c
-@@ -293,7 +293,7 @@ err_put_master:
- 	return ret;
- }
- 
--static int ath79_spi_remove(struct platform_device *pdev)
-+static void __ath79_spi_remove(struct platform_device *pdev)
+@@ -100,6 +100,7 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
  {
- 	struct ath79_spi *sp = platform_get_drvdata(pdev);
+ 	struct ath79_spi *sp = ath79_spidev_to_sp(spi);
+ 	struct ath79_spi_controller_data *cdata;
++	int status;
  
-@@ -304,13 +304,23 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 	iounmap(sp->base);
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(sp->bitbang.master);
-+}
+ 	cdata = spi->controller_data;
+ 	if (spi->chip_select && !cdata)
+@@ -115,22 +116,21 @@ static int ath79_spi_setup_cs(struct spi_device *spi)
+ 	/* TODO: setup speed? */
+ 	ath79_spi_wr(sp, AR71XX_SPI_REG_CTRL, 0x43);
  
-+static int ath79_spi_remove(struct platform_device *pdev)
-+{
-+	__ath79_spi_remove(pdev);
- 	return 0;
++	status = 0;
+ 	if (spi->chip_select) {
+-		int status = 0;
++		unsigned long flags;
+ 
+-		status = gpio_request(cdata->gpio, dev_name(&spi->dev));
+-		if (status)
+-			return status;
++		flags = GPIOF_DIR_OUT;
++		if (spi->mode & SPI_CS_HIGH)
++			flags |= GPIOF_INIT_HIGH;
++		else
++			flags |= GPIOF_INIT_LOW;
+ 
+-		status = gpio_direction_output(cdata->gpio,
+-					       spi->mode & SPI_CS_HIGH);
+-		if (status) {
+-			gpio_free(cdata->gpio);
+-			return status;
+-		}
++		status = gpio_request_one(cdata->gpio, flags,
++					  dev_name(&spi->dev));
+ 	}
+ 
+-	return 0;
++	return status;
  }
  
-+static void ath79_spi_shutdown(struct platform_device *pdev)
-+{
-+	__ath79_spi_remove(pdev);
-+}
-+
- static struct platform_driver ath79_spi_driver = {
- 	.probe		= ath79_spi_probe,
- 	.remove		= ath79_spi_remove,
-+	.shutdown	= ath79_spi_shutdown,
- 	.driver		= {
- 		.name	= DRV_NAME,
- 		.owner	= THIS_MODULE,
+ static void ath79_spi_cleanup_cs(struct spi_device *spi)
 -- 
 1.7.10
 

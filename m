@@ -1,43 +1,39 @@
-From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 0/6] spi/ath79: various fixes
-Date: Thu, 27 Dec 2012 10:42:23 +0100
-Message-ID: <1356601349-23617-1-git-send-email-juhosg@openwrt.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH 3/6] of_spi: Initialize cs_gpios properly
+Date: Thu, 27 Dec 2012 13:10:44 +0100
+Message-ID: <1356610247-11491-4-git-send-email-andreas@gaisler.com>
+References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
+Cc: Rob Herring <rob.herring@calxeda.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	devicetree-discuss@lists.ozlabs.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, software@gaisler.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch set contain various fixes for the spi-ath79 driver.
+Using memset does not set an array of integers properly
 
-Gabor Juhos (6):
-  spi/ath79: add delay between SCK changes
-  spi/ath79: add missing HIGH->LOW SCK transition
-  spi/ath79: remove superfluous chip select code
-  spi/ath79: use gpio_request_one
-  spi/ath79: avoid multiple initialization of the SPI controller
-  spi/ath79: add shutdown handler
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+---
+ drivers/spi/spi.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
- drivers/spi/spi-ath79.c |  121 ++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 88 insertions(+), 33 deletions(-)
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9c2acf1..a4baa0a 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1083,7 +1083,8 @@ static int of_spi_register_master(struct spi_master *master)
+ 	if (!master->cs_gpios)
+ 		return -ENOMEM;
+ 
+-	memset(cs, -EINVAL, master->num_chipselect);
++	for (i = 0; i < master->num_chipselect; i++)
++		cs[i] = -EINVAL;
+ 
+ 	for (i = 0; i < nb; i++)
+ 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
 -- 
-1.7.10
-
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122712
+1.7.0.4

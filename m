@@ -1,8 +1,7 @@
 From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/6] of: Return -ENXIO from of_parse_phandle_with_args for too
-	large index and return errors from of_gpio_named_count
-Date: Thu, 27 Dec 2012 13:10:43 +0100
-Message-ID: <1356610247-11491-3-git-send-email-andreas@gaisler.com>
+Subject: [PATCH 4/6] of_spi: Document cs_gpios and cs_gpio in kernel-doc
+Date: Thu, 27 Dec 2012 13:10:45 +0100
+Message-ID: <1356610247-11491-5-git-send-email-andreas@gaisler.com>
 References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,115 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This lets of_gpio_named_count return an errno on errors by being able to
-distinguish between reaching the end of the phandle list and getting some other
-error from of_parse_phandle_with_args.
-
-Return error from of_spi_register_master when there is an "cs-gpios" list for
-which gp_gpio_named_count fails.
-
-Adjust drivers/hwmon/gpio-fan.c to cope with error return.
+This adds missing kernel-doc entries for cs_gpios in struct spi_master and
+cs_gpio in struct spi_device.
 
 Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 ---
+ include/linux/spi/spi.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-Uses -ENXIO modelled after uses such as in platform_get_irq, but maybe some
-other errno than ENXIO is more appropriate for this case.
-
- drivers/gpio/gpiolib-of.c |    8 +++++---
- drivers/hwmon/gpio-fan.c  |    2 +-
- drivers/of/base.c         |    5 ++++-
- drivers/spi/spi.c         |   11 +++++++----
- 4 files changed, 17 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index d542a14..28f24a6 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -107,11 +107,10 @@ EXPORT_SYMBOL(of_get_named_gpio_flags);
-  */
- unsigned int of_gpio_named_count(struct device_node *np, const char* propname)
- {
-+	int ret;
- 	unsigned int cnt = 0;
- 
- 	do {
--		int ret;
--
- 		ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
- 						 cnt, NULL);
- 		/* A hole in the gpios = <> counts anyway. */
-@@ -119,7 +118,10 @@ unsigned int of_gpio_named_count(struct device_node *np, const char* propname)
- 			break;
- 	} while (++cnt);
- 
--	return cnt;
-+	if (ret == -ENXIO)
-+		return cnt;
-+	else
-+		return ret;
- }
- EXPORT_SYMBOL(of_gpio_named_count);
- 
-diff --git a/drivers/hwmon/gpio-fan.c b/drivers/hwmon/gpio-fan.c
-index 4e04c12..9ccd92f 100644
---- a/drivers/hwmon/gpio-fan.c
-+++ b/drivers/hwmon/gpio-fan.c
-@@ -477,7 +477,7 @@ static int gpio_fan_get_of_pdata(struct device *dev,
- 	pdata->speed = speed;
- 
- 	/* Alarm GPIO if one exists */
--	if (of_gpio_named_count(node, "alarm-gpios")) {
-+	if (of_gpio_named_count(node, "alarm-gpios") > 0) {
- 		struct gpio_fan_alarm *alarm;
- 		int val;
- 		enum of_gpio_flags flags;
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 986afd7..1f16629 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1110,7 +1110,10 @@ int of_parse_phandle_with_args(const struct device_node *np, const char *list_na
- 	/* Loop exited without finding a valid entry; return an error */
- 	if (node)
- 		of_node_put(node);
--	return -EINVAL;
-+	if (list == list_end)
-+		return -ENXIO; /* Index beyond end of list */
-+	else
-+		return -EINVAL;
- }
- EXPORT_SYMBOL(of_parse_phandle_with_args);
- 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 19ee901..9c2acf1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1059,7 +1059,7 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
- #ifdef CONFIG_OF
- static int of_spi_register_master(struct spi_master *master)
- {
--	u16 nb;
-+	int nb;
- 	int i, *cs;
- 	struct device_node *np = master->dev.of_node;
- 
-@@ -1067,10 +1067,13 @@ static int of_spi_register_master(struct spi_master *master)
- 		return 0;
- 
- 	nb = of_gpio_named_count(np, "cs-gpios");
--	master->num_chipselect = max(nb, master->num_chipselect);
--
--	if (nb < 1)
-+	if (nb == 0 || nb == -ENOENT) /* No error if cs-gpios does not exist */
- 		return 0;
-+	else if (nb < 0)
-+		return nb;
-+
-+	if (nb > master->num_chipselect)
-+		master->num_chipselect = (u16)nb;
- 
- 	cs = devm_kzalloc(&master->dev,
- 			  sizeof(int) * master->num_chipselect,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f629189..88a669c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -57,6 +57,7 @@ extern struct bus_type spi_bus_type;
+  * @modalias: Name of the driver to use with this device, or an alias
+  *	for that name.  This appears in the sysfs "modalias" attribute
+  *	for driver coldplugging, and in uevents used for hotplugging
++ * @cs_gpio: Negative or gpio for chip select.
+  *
+  * A @spi_device is used to interchange data between an SPI slave
+  * (usually a discrete chip) and CPU memory.
+@@ -258,6 +259,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @unprepare_transfer_hardware: there are currently no more messages on the
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
++ * @cs_gpios: possible array of negative values or gpios for chip selects
+  *
+  * Each SPI master controller can communicate with one or more @spi_device
+  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
 -- 
 1.7.0.4
 

@@ -1,71 +1,53 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: [PATCH 1/2] spi: spi-gpio: Add checks for the dt properties
-Date: Thu, 27 Dec 2012 22:54:47 +0100
-Message-ID: <1356645288-10110-2-git-send-email-maxime.ripard@free-electrons.com>
-References: <1356645288-10110-1-git-send-email-maxime.ripard@free-electrons.com>
+From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/6] of: Return -ENXIO from of_parse_phandle_with_args
+	for too large index and return errors from of_gpio_named_count
+Date: Fri, 28 Dec 2012 12:02:54 +0100
+Message-ID: <50DD7C5E.4080007@gaisler.com>
+References: <1356610247-11491-1-git-send-email-andreas@gaisler.com>
+	<1356610247-11491-3-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net, Brian Lilly <brian@crystalfontz.com>
-To: linux-arm-kernel@lists.infradead.org,
-	Shawn Guo <shawn.guo@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1356645288-10110-1-git-send-email-maxime.ripard@free-electrons.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: linux-arm-kernel-bounces@lists.infradead.org
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1356610247-11491-3-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The bindings assumed that the gpios properties were always there, which
-made the NO_TX and NO_RX mode not usable from device tree. Add extra
-checks to make sure that the driver can work if either MOSI or MISO is
-not used.
+On 2012-12-27 13:10, Andreas Larsson wrote:
+> This lets of_gpio_named_count return an errno on errors by being able to
+> distinguish between reaching the end of the phandle list and getting some other
+> error from of_parse_phandle_with_args.
+>
+> Return error from of_spi_register_master when there is an "cs-gpios" list for
+> which gp_gpio_named_count fails.
+>
+> Adjust drivers/hwmon/gpio-fan.c to cope with error return.
+>
+> Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 
-Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
----
- drivers/spi/spi-gpio.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+The callers of of_gpio_count of course also needs to handle errno 
+returns. I'll take care of that in V2 of the patch-set. But I'll wait 
+for more comments on the patch set before sending V2 unless someone insists.
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index c7cf0b7..9ddef55 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -365,9 +365,26 @@ static int spi_gpio_probe_dt(struct platform_device *pdev)
- 	if (!pdata)
- 		return -ENOMEM;
- 
--	pdata->sck = of_get_named_gpio(np, "gpio-sck", 0);
--	pdata->miso = of_get_named_gpio(np, "gpio-miso", 0);
--	pdata->mosi = of_get_named_gpio(np, "gpio-mosi", 0);
-+	ret = of_get_named_gpio(np, "gpio-sck", 0);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "gpio-sck property not found\n");
-+		goto error_free;
-+	}
-+	pdata->sck = ret;
-+
-+	ret = of_get_named_gpio(np, "gpio-miso", 0);
-+	if (ret < 0) {
-+		dev_info(&pdev->dev, "gpio-miso property not found, switching to no-rx mode\n");
-+		pdata->miso = SPI_GPIO_NO_MISO;
-+	} else
-+		pdata->miso = ret;
-+
-+	ret = of_get_named_gpio(np, "gpio-mosi", 0);
-+	if (ret < 0) {
-+		dev_info(&pdev->dev, "gpio-mosi property not found, switching to no-tx mode\n");
-+		pdata->mosi = SPI_GPIO_NO_MOSI;
-+	} else
-+		pdata->mosi = ret;
- 
- 	ret = of_property_read_u32(np, "num-chipselects", &tmp);
- 	if (ret < 0) {
--- 
-1.7.9.5
+Cheers,
+Andreas
+
+
+------------------------------------------------------------------------------
+Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
+much more. Get web development skills now with LearnDevNow -
+350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
+SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122812

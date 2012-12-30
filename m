@@ -1,13 +1,13 @@
-From: Lunettes Presbyte <contact-Q4NLnoQxMXk@public.gmane.org>
-Subject: Le TOP des lunettes loupe =?iso-8859-15?Q?=E0?= partir de 59 euros
-	livraison offerte
-Date: Fri, 28 Dec 2012 22:45:04 +0100
-Message-ID: <1356731148.thing50de130c146f6@mach10.generated>
-Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
+From: "gsoemp" <luwpdzi-TXxf4AH6lGNBDgjK7y7TUQ@public.gmane.org>
+Subject: =?utf-8?B?56eR5oqA6aG555uu55Sz5oql5oyH5a+85Lya6K6u6YCa55+l5paH5Lu277yIMeaciDE35pel?=
+	=?utf-8?B?5YyX5Lqs77yJ?=
+Date: Sun, 30 Dec 2012 10:54:44 +0800
+Message-ID: <6813A3D397F5DDF7C8DD09F24A941534@vkiun>
+Reply-To: huiwuzu333-KN7UnAbNpbg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_000A_01C595D7.17EE7070"
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,20 +19,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+This is a multi-part message in MIME format.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI4ODgxJmM9NDgzNjEyJmQ9MjAx=
-Mi0xMi0yOCAyMjo0MDowMSZlPTEmaD0yODg3OSZmPTI4ODgxJmc9Mjg4ODE=3D
+------=_NextPart_000_000A_01C595D7.17EE7070
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI4ODgxJmM=
-9NDgzNjEyJmQ9MjAxMi0xMi0yOCAyMjo0MDowMSZlPTEmaD0yODg3OSZmPTI4ODgxJmc9Mjg4OD=
-E=3D
+DQoNCg0KDQoNCg0KMTA6NTQ6NTA=
 
+------=_NextPart_000_000A_01C595D7.17EE7070
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
----------------------------------------------------------------------------=
----
-Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
-much more. Get web development skills now with LearnDevNow -
-350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
-SALE $99.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122812
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_123012
+------=_NextPart_000_000A_01C595D7.17EE7070
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+------=_NextPart_000_000A_01C595D7.17EE7070--

@@ -1,155 +1,119 @@
-From: Juha Lumme <juha.lumme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Trying to use spidev to send an spi message, result from spidev_test.c
-	"Illegal argument" . (i.mx23, kernel 3.7)
-Date: Sun, 30 Dec 2012 18:14:55 +0900
-Message-ID: <50E0060F.8060604@gmail.com>
+From: Murali Karicheri <m-karicheri2@ti.com>
+Subject: Re: [PATCH] spi: davinci: use request_threaded_irq() to fix deadlock
+Date: Wed, 2 Jan 2013 10:19:08 -0500
+Message-ID: <50E44FEC.3080009@ti.com>
+References: <1356120806-27964-1-git-send-email-m-karicheri2@ti.com> <20121222100803.88FCE3E0AD0@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: <spi-devel-general@lists.sourceforge.net>,
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Thomas Gleixner <tglx@linuronix.de>,
+	<linux-kernel@vger.kernel.org>
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20121222100803.88FCE3E0AD0@localhost>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+On 12/22/2012 05:08 AM, Grant Likely wrote:
+> On Fri, 21 Dec 2012 15:13:26 -0500, Murali Karicheri<m-karicheri2@ti.com>  wrote:
+>> With RT pre-empt patch applied to Linux kernel, the irq handler will be
+>> force converted to an irq thread. spi driver can get back to back messages
+>> from the slave device. In such cases, IRQ thread doesn't get a chance to
+>> run to read the slave data. Hence the irq handler must be run in hard irq
+>> context to read/write data from slave device. Otherwise, the kernel goes
+>> into a deadlock. This patch fixes this issue when PREEMPT_RT_FULL is
+>> enabled in the kernel. A dummy thread function is provided to satisfy the
+>> request_threaded_irq() API. Passing a NULL for function also causes the
+>> irq handler to be executed in the thread context.
+>>
+>> Signed-off-by: Murali Karicheri<m-karicheri2@ti.com>
+> Thomas, would you mind taking a look at this for me. My gut feel is that
+> this is the wrong way to solve the problem that Murali is having and
+> that it really just hacks something that works.
+Grant,
 
-I am having issues communicating with a micro controller connected to 
-SPI bus, using spidev.
-I would like to send messages to my MSP430 from user land, but so far no 
-luck.
+Thanks for reviewing this. As per the RT patch, all of the IRQ handlers 
+will be converted to thread by brute force. This breaks the SPI driver 
+since the data is overwritten with back to back irq as thread is not 
+getting a chance to read the word before next irq happens.  What my 
+patch does is to keep the functionality as before by using a new irq 
+API. So though this is not the best solution, this solves the problem 
+and give an opportunity for improvement by splitting this into two part 
+to handle the irq. But I am not convinced if this is really needed.
 
-At least I know that my SPI bus should be ok, since in the same bus I 
-have a SPI flash chip that works.
-In my DTS I have added my 2 SPI devices as such:
+As you might know, there are 3 ways to process the SPI data transfer. 
+Polling, IRQ and DMA. As part of the IRQ handling, basically, driver 
+needs to write a register in the SPI controller chip to send a word of 
+data, if available to send or receive a word. That means the amount of 
+processing at irq handling is time taken for two register accesses and 
+checks to see if we have completed the transaction. But if we are 
+reading data from a NOR flash connected to the SPI bus, then mostly so 
+many interrupts happens right after a write of a command to the SPI 
+slave device and causes several interrupts and CPU usage for IRQ 
+handling and may results in latency for other interrupts. We might be 
+able to read the word and add it to a list as part of IRQ and handle it 
+in a thread. Similarly if a write is required, handle it as part of the 
+thread. But even then one SPI register read has to happen in the IRQ 
+handler for the incoming word .
+So in terms of CPU usage, we would save one register write, but will 
+have to add additional code to add the word to a list. Does this warrant 
+change in the code? If CPU usage is an issue, driver could be configured 
+to do DMA. May be I am missing something that you or Thomas know.
 
-ssp1: ssp@80034000 {
-                 #address-cells = <1>;
-                 #size-cells = <0>;
-                 compatible = "fsl,imx23-spi";
-                 pinctrl-names = "default";
-                 pinctrl-0 = <&spi2_pins_a &spi2_pin_cs1>;
-                 status = "okay";
+I will wait for a response from Thomas.
 
-                 flash: m25p80@0 {
-                     #address-cells = <1>;
-                     #size-cells = <1>;
-                     compatible = "sst,sst25vf064b";
-                     spi-max-frequency = <10000000>;
-                     reg = <0>;
+Thanks.
 
-                 };
-                 ucontroller: spidev@1 {
-                     compatible = "linux,spidev";
-                     spi-max-frequency = <1000000>;
-                     reg = <1>;
-                 };
+Murali
+> It seems to me that what the driver should do is disable the irq
+> in the handler, and then perform the regular work in the thread. After
+> all the pending data is processed, then it should reenable the interrupts.
+>
+> Passing in a dummy thread function just looks wrong.
+>
+> g.
 
-My pin configuration is like this:
-spi2_pins_a: spi2@0 {
-                     reg = <0>;
-                     fsl,pinmux-ids = <
-                         0x0182 /* MX23_PAD_GPMI_WRN__SSP2_SCK */
-                         0x0142 /* MX23_PAD_GPMI_RDY1__SSP2_CMD */
-                         0x0002 /* MX23_PAD_GPMI_D00__SSP2_DATA0 */
-                         0x0032 /* MX23_PAD_GPMI_D03__SSP2_DATA3 */
-                     >;
-                     fsl,drive-strength = <1>;
-                     fsl,voltage = <1>;
-                     fsl,pull-up = <1>;
-                 };
-
-                 //Added for chip select in SPI2
-                 spi2_pin_cs1: spi2@1 {
-                     reg = <0>;
-                     fsl,pinmux-ids = <
-                         0x0042 /* MX23_PAD_GPMI_D03__SSP2_DATA4 */
-                     >;
-                     fsl,drive-strength = <1>;
-                     fsl,voltage = <1>;
-                     fsl,pull-up = <1>;
-                 };
-
-Now, after boot when I mount devtmpfs, spidev is shown under /dev.
-The whole system has this SPI stuff:
-# find / -name "spi*"
-/sys/bus/spi
-/sys/bus/spi/devices/spi32766.0
-/sys/bus/spi/devices/spi32766.1
-/sys/bus/spi/drivers/spidev
-/sys/bus/spi/drivers/spidev/spi32766.1
-/sys/bus/platform/drivers/spi_gpio
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master/spi32766
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master/spi32766/spi32766.0
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master/spi32766/spi32766.1
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master/spi32766/spi32766.1/spidev
-/sys/devices/80000000.apb/80000000.apbh/80034000.ssp/spi_master/spi32766/spi32766.1/spidev/spidev32766.1
-/sys/class/spi_master
-/sys/class/spi_master/spi32766
-/sys/class/spidev
-/sys/class/spidev/spidev32766.1
-/sys/module/spidev
-/home/default/spitest
-/dev/spidev32766.1
-
-The error: I compiled the spidev_test.c application under 
-Documentation/spi, but I keep getting "Invalid argument", when I try to 
-send a message to my MSP430:
-
-#./spidev
-spi mode: 0
-bits per word: 8
-max speed: 500000 Hz (500 KHz)
-can't send spi message: Invalid argument
-Aborted
-#
-In dmesg, I have added some traces to spidev and mxs-spi to see that 
-something seems to be happening in both:
-[  986.590000] spidev/spidev_open >>
-[  986.590000] spidev/spidev_ioctl >>
-[  986.600000] spi-mxs/mxs_spi_setup >> bpw: (8)
-[  986.610000] spi-mxs/mxs_spi_setup_transfer >>
-[  986.610000] spi-mxs/mxs_spi_setup_transfer <<
-[  986.620000] spidev spi32766.1: setup mode 0, 8 bits/w, 500000 Hz max 
---> 0
-[  986.620000] spidev spi32766.1: spi mode 00
-[  986.620000] spidev/spidev_ioctl >>
-[  986.630000] spidev/spidev_ioctl >>
-[  986.630000] spi-mxs/mxs_spi_setup >> bpw: (8)
-[  986.640000] spi-mxs/mxs_spi_setup_transfer >>
-[  986.650000] spi-mxs/mxs_spi_setup_transfer <<
-[  986.650000] spidev spi32766.1: setup mode 0, 8 bits/w, 500000 Hz max 
---> 0
-[  986.650000] spidev spi32766.1: 8 bits per word
-[  986.650000] spidev/spidev_ioctl >>
-[  986.650000] spidev/spidev_ioctl >>
-[  986.670000] spi-mxs/mxs_spi_setup >> bpw: (8)
-[  986.670000] spi-mxs/mxs_spi_setup_transfer >>
-[  986.670000] spi-mxs/mxs_spi_setup_transfer <<
-[  986.680000] spidev spi32766.1: setup mode 0, 8 bits/w, 500000 Hz max 
---> 0
-[  986.680000] spidev spi32766.1: 500000 Hz (max)
-[  986.690000] spidev/spidev_ioctl >>
-[  986.690000] spidev/spidev_ioctl >>
-[  986.690000] spidev/spidev_message >>
-[  986.710000] spidev spi32766.1:   xfer len 12 rx tx 8bits 0 usec 500000Hz
-[  986.710000] spidev/spidev_sync >>
-[  986.710000] spidev/spidev_message/ sync status was: (-22)
-[  986.720000] spidev/spidev_release >>
-
-Any ideas why I get the illegal argument ?
-
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_123012
+>> ---
+>>   drivers/spi/spi-davinci.c |   17 +++++++++++++++--
+>>   1 file changed, 15 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+>> index 50bd2cd..8234d22 100644
+>> --- a/drivers/spi/spi-davinci.c
+>> +++ b/drivers/spi/spi-davinci.c
+>> @@ -702,6 +702,19 @@ err_alloc_dummy_buf:
+>>   }
+>>
+>>   /**
+>> + * dummy_thread_fn - dummy thread function
+>> + * @irq: IRQ number for this SPI Master
+>> + * @context_data: structure for SPI Master controller davinci_spi
+>> + *
+>> + * This is to satisfy the request_threaded_irq() API so that the irq
+>> + * handler is called in interrupt context.
+>> + */
+>> +static irqreturn_t dummy_thread_fn(s32 irq, void *data)
+>> +{
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>> +/**
+>>    * davinci_spi_irq - Interrupt handler for SPI Master Controller
+>>    * @irq: IRQ number for this SPI Master
+>>    * @context_data: structure for SPI Master controller davinci_spi
+>> @@ -899,8 +912,8 @@ static int davinci_spi_probe(struct platform_device *pdev)
+>>   		goto unmap_io;
+>>   	}
+>>
+>> -	ret = request_irq(dspi->irq, davinci_spi_irq, 0, dev_name(&pdev->dev),
+>> -									dspi);
+>> +	ret = request_threaded_irq(dspi->irq, davinci_spi_irq, dummy_thread_fn,
+>> +				 0, dev_name(&pdev->dev), dspi);
+>>   	if (ret)
+>>   		goto unmap_io;
+>>
+>> -- 
+>> 1.7.9.5
+>>

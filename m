@@ -1,14 +1,12 @@
-From: "Kerr" <ilse-2Ja3m+CeEWCaY4Hby9QU5UrZUxFPeGWgZkel5v8DVj8@public.gmane.org>
-Subject: [SPAM] Buy- LUXURY WATCHES,JEWELRY and ACCESSORIES
-Date: Fri, 4 Jan 2013 01:45:05 +0400
-Message-ID: <F035CF4743104491A59ABD3C5CA346C5@vogscq>
+From: Sky Lingerie <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le style Skys =?iso-8859-15?Q?=E0?= prix discount
+Date: Fri, 04 Jan 2013 05:35:05 +0100
+Message-ID: <1357274110.thing50e65bfebf53a@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <donley-FThVmimkCp9BDgjK7y7TUQ@public.gmane.org>, <vancouver-SD6yLIF3bf4sWoa6sH7eEQ@public.gmane.org>, <dsbrody-Wuw85uim5zDR7s880joybQ@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <mosharraf-ooYful9XseA@public.gmane.org>,
-	<randy.rutter-sAMfwy7lY4dBDgjK7y7TUQ@public.gmane.org>, <info-QJ9WLOsHDrbrWSRUWe3oT1aTQe2KTcn/@public.gmane.org>,
-	<hodder-EJUvVMVD1ghBDgjK7y7TUQ@public.gmane.org>, <info-Vso1TQ0StnxGyKhy+UYuEA@public.gmane.org>, <guyh-lKV4vA2CKcp/wAU3VFAK6AC/G2K4zDHf@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,13 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-! Happy Ney Year!
-Buy WATCHES JEWELRY and ACCESSORIES in our shop!
-All you wish+ discount.
-http://bit.ly/URWiV4
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122712
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI5MzA5JmM9NDgzNjEyJmQ9MjAx=
+My0wMS0wNCAwNTozMDowMSZlPTEmaD0yOTMwNyZmPTI5MzA5Jmc9MjkzMDk=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI5MzA5JmM=
+9NDgzNjEyJmQ9MjAxMy0wMS0wNCAwNTozMDowMSZlPTEmaD0yOTMwNyZmPTI5MzA5Jmc9MjkzMD=
+k=3D
+
+
+---------------------------------------------------------------------------=
+---
+Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
+much more. Get web development skills now with LearnDevNow -
+350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
+SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122812

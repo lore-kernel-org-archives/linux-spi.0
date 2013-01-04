@@ -1,33 +1,37 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH] spi/s3c64xx: Complain if we fail to set a transfer speed
-Date: Fri,  4 Jan 2013 21:33:09 +0000
-Message-ID: <1357335189-17398-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Kredity par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Diminuez vos =?iso-8859-15?Q?Mensualit=E9s?= - Etude GRATUITE
+Date: Sat, 05 Jan 2013 00:58:43 +0100
+Message-ID: <1357343975.thing50e76ce7852d3@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
----
- drivers/spi/spi-s3c64xx.c |    2 ++
- 1 file changed, 2 insertions(+)
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index ad93231..6495352 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -957,6 +957,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 		if (spi->max_speed_hz >= speed) {
- 			spi->max_speed_hz = speed;
- 		} else {
-+			dev_err(&spi->dev, "Can't set %dHz transfer speed\n",
-+				spi->max_speed_hz);
- 			err = -EINVAL;
- 			goto setup_exit;
- 		}
--- 
-1.7.10.4
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Mjg5NTQmYz0xOTYxNjQxJmQ9MjAx=
+My0wMS0wNSAwMDo1MDowMSZlPTEmaD0yODk1MiZmPTI4OTU0Jmc9Mjg5NTQ=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Mjg5NTQmYz0=
+xOTYxNjQxJmQ9MjAxMy0wMS0wNSAwMDo1MDowMSZlPTEmaD0yODk1MiZmPTI4OTU0Jmc9Mjg5NT=
+Q=3D
+
+
+---------------------------------------------------------------------------=
+---
+Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
+much more. Get web development skills now with LearnDevNow -
+350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
+SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122812

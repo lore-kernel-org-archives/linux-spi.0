@@ -1,8 +1,9 @@
-From: Kredity par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Diminuez vos =?iso-8859-15?Q?Mensualit=E9s?= - Etude GRATUITE
-Date: Sat, 05 Jan 2013 00:58:43 +0100
-Message-ID: <1357343975.thing50e76ce7852d3@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Lunettes Presbyte <contact-Q4NLnoQxMXk@public.gmane.org>
+Subject: Le TOP des lunettes loupe =?iso-8859-15?Q?=E0?= partir de 59 euros
+	livraison offerte
+Date: Sun, 06 Jan 2013 05:42:04 +0100
+Message-ID: <1357447378.thing50e900d2084ef@mach10.generated>
+Reply-To: contact-Q4NLnoQxMXk@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -20,18 +21,18 @@ List-Id: linux-spi.vger.kernel.org
 
 Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Mjg5NTQmYz0xOTYxNjQxJmQ9MjAx=
-My0wMS0wNSAwMDo1MDowMSZlPTEmaD0yODk1MiZmPTI4OTU0Jmc9Mjg5NTQ=3D
+Lien miroir : http://m10-fr.com/mc10_m/YT0xMyZiPTI5MzA4JmM9NDgzNjEyJmQ9MjAx=
+My0wMS0wNiAwNTo0MDowMiZlPTEmaD0yOTMwNiZmPTI5MzA4Jmc9MjkzMDg=3D
 
-Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Mjg5NTQmYz0=
-xOTYxNjQxJmQ9MjAxMy0wMS0wNSAwMDo1MDowMSZlPTEmaD0yODk1MiZmPTI4OTU0Jmc9Mjg5NT=
-Q=3D
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT0xMyZiPTI5MzA4JmM=
+9NDgzNjEyJmQ9MjAxMy0wMS0wNiAwNTo0MDowMiZlPTEmaD0yOTMwNiZmPTI5MzA4Jmc9MjkzMD=
+g=3D
 
 
 ---------------------------------------------------------------------------=
 ---
-Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
-much more. Get web development skills now with LearnDevNow -
-350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
-SALE $99.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122812
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_123012

@@ -1,11 +1,13 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Mon, 7 Jan 2013 22:21:46 +0800
-Message-ID: <E1TsDaI-0002xQ-W5@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-imx: Add MODULE_ALIAS()
+Date: Mon,  7 Jan 2013 20:42:55 -0200
+Message-ID: <1357598575-24233-1-git-send-email-festevam@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +19,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFzdGVyIFZpc3Vh
-bCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCwgQVNQLk5FVCwgQyMgMjAxMiwgSFRNTDUsIENTUywK
-TVZDLCBXaW5kb3dzIDggQXBwcywgSmF2YVNjcmlwdCBhbmQgbXVjaCBtb3JlLiBLZWVwIHlvdXIg
-c2tpbGxzIGN1cnJlbnQKd2l0aCBMZWFybkRldk5vdyAtIDMsMjAwIHN0ZXAtYnktc3RlcCB2aWRl
-byB0dXRvcmlhbHMgYnkgTWljcm9zb2Z0Ck1WUHMgYW5kIGV4cGVydHMuIFNBTEUgJDk5Ljk5IHRo
-aXMgbW9udGggb25seSAtLSBsZWFybiBtb3JlIGF0OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2xlYXJu
-bW9yZV8xMjI0MTIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+
+Add an entry for MODULE_ALIAS().
+
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi-imx.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 9049132..0befeeb 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -949,3 +949,4 @@ module_platform_driver(spi_imx_driver);
+ MODULE_DESCRIPTION("SPI Master Controller driver");
+ MODULE_AUTHOR("Sascha Hauer, Pengutronix");
+ MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:" DRIVER_NAME);
+-- 
+1.7.9.5
+
+
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122412

@@ -1,48 +1,90 @@
-From: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
-Subject: RE: [v3 PATCH 06/12] spi/atmel_spi: add dmaengine support
-Date: Tue, 8 Jan 2013 01:02:38 +0000
-Message-ID: <B256D81BAE5131468A838E5D7A2436413A057056@penmbx02>
-References: <1357523413-27209-1-git-send-email-wenyou.yang@atmel.com>
-	 <1357523413-27209-7-git-send-email-wenyou.yang@atmel.com>
- <1357524615.4940.19.camel@joe-AO722>
+From: Thierry Reding <thierry.reding@avionic-design.de>
+Subject: Re: [PATCH] spi: tegra: sequence compatible strings as per preference
+Date: Tue, 8 Jan 2013 08:12:34 +0100
+Message-ID: <20130108071234.GB2171@avionic-0098.adnet.avionic-design.de>
+References: <1352452052-13823-1-git-send-email-ldewangan@nvidia.com>
+ <509D37B8.8020606@wwwdotorg.org>
+ <20121109171008.GX23807@opensource.wolfsonmicro.com>
+ <509D3D46.7060102@wwwdotorg.org>
+ <20121110170741.GA17689@avionic-0098.mockup.avionic-design.de>
+ <20121219170009.54EE83E0C34@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Ferre, Nicolas" <Nicolas.FERRE@atmel.com>,
-	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
-	"richard.genoud@gmail.com" <richard.genoud@gmail.com>,
-	"Lin, JM" <JM.Lin@atmel.com>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gj572EiMnwbLXET9"
+Cc: Stephen Warren <swarren@wwwdotorg.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
 	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>
-To: Joe Perches <joe@perches.com>
+	<spi-devel-general@lists.sourceforge.net>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Stephen Warren <swarren@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>
+To: Grant Likely <grant.likely@secretlab.ca>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1357524615.4940.19.camel@joe-AO722>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20121219170009.54EE83E0C34@localhost>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9lIFBlcmNoZXMgW21h
-aWx0bzpqb2VAcGVyY2hlcy5jb21dDQo+IFNlbnQ6IDIwMTPE6jHUwjfI1SAxMDoxMA0KPiBUbzog
-WWFuZywgV2VueW91DQo+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7
-IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEZlcnJlLA0KPiBOaWNvbGFzOyBwbGFnbmlv
-akBqY3Jvc29mdC5jb207IHJpY2hhcmQuZ2Vub3VkQGdtYWlsLmNvbTsgTGluLCBKTTsNCj4gZ3Jh
-bnQubGlrZWx5QHNlY3JldGxhYi5jYTsgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0DQo+IFN1YmplY3Q6IFJlOiBbdjMgUEFUQ0ggMDYvMTJdIHNwaS9hdG1lbF9zcGk6IGFk
-ZCBkbWFlbmdpbmUgc3VwcG9ydA0KPiANCj4gT24gTW9uLCAyMDEzLTAxLTA3IGF0IDA5OjUwICsw
-ODAwLCBXZW55b3UgWWFuZyB3cm90ZToNCj4gPiBGcm9tOiBOaWNvbGFzIEZlcnJlIDxuaWNvbGFz
-LmZlcnJlQGF0bWVsLmNvbT4NCj4gW10NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3Bp
-LWF0bWVsLmMgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYw0KPiBbXQ0KPiA+ICtzdGF0aWMgaW5s
-aW5lIGJvb2wgYXRtZWxfc3BpX3VzZV9kbWEoc3RydWN0IGF0bWVsX3NwaSAqYXMsDQo+ID4gKwkJ
-CQlzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVyKQ0KPiA+ICt7DQo+ID4gKwlpZiAoKGFzLT51c2Vf
-ZG1hKSAmJiAoeGZlci0+bGVuID49IERNQV9NSU5fQllURVMpKQ0KPiA+ICsJCXJldHVybiB0cnVl
-Ow0KPiA+ICsJZWxzZQ0KPiA+ICsJCXJldHVybiBmYWxzZTsNCj4gPiArfQ0KPiANCj4gU2FtZSB1
-bm5lY2Vzc2FyeSBmb3JtLg0KPiANCj4gCXJldHVybiBhcy0+dXNlX2RtYSAmJiB4ZmVyLT5sZW4g
-Pj0gRE1BX01JTl9CWVRFUzsNCj4gDQo+ID4gK3N0YXRpYyBpbmxpbmUgYm9vbCBhdG1lbF9zcGlf
-dXNlX3BkYyhzdHJ1Y3QgYXRtZWxfc3BpICphcykNCj4gPiArew0KPiA+ICsJaWYgKGFzLT51c2Vf
-cGRjKQ0KPiA+ICsJCXJldHVybiB0cnVlOw0KPiA+ICsJZWxzZQ0KPiA+ICsJCXJldHVybiBmYWxz
-ZTsNCj4gPiArfQ0KPiANCj4gRG9lcyB0aGlzIGZ1bmN0aW9uIHJlYWxseSBuZWVkIHRvIGV4aXN0
-IGF0IGFsbD8NCj4gDQpUaGFua3MgYSBsb3QgZm9yIHlvdXIgYWR2aWNlLg0KDQo=
+
+--gj572EiMnwbLXET9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Dec 19, 2012 at 05:00:09PM +0000, Grant Likely wrote:
+> On Sat, 10 Nov 2012 18:07:42 +0100, Thierry Reding <thierry.reding@avioni=
+c-design.de> wrote:
+> > On Fri, Nov 09, 2012 at 10:28:38AM -0700, Stephen Warren wrote:
+> > > On 11/09/2012 10:10 AM, Mark Brown wrote:
+> > > > On Fri, Nov 09, 2012 at 10:04:56AM -0700, Stephen Warren wrote:
+> > > >=20
+> > > >> However just FYI, it should not be necessary for correctness; The
+> > > >> DT matching order is supposed to be driven purely by the order of
+> > > >> the compatible values in the DT now, and not affected by the
+> > > >> order of values in the table. (This wasn't always the case, but
+> > > >> was a bug that was fixed IIRC by Thierry Reding).
+> > > >=20
+> > > > I guess the driver is being used backported in older kernels which
+> > > > don't have that fix?
+> > >=20
+> > > That sounds likely. Laxman, it'd be a good idea to track down the fix
+> > > to the DT matching code and backport it, so that hard-to debug issues
+> > > aren't caused by the lack of that patch!
+> >=20
+> > Unfortunately the patch that was supposed to fixed this caused a
+> > regression and was therefore reverted. Rob (Cc'ed) said there was a
+> > patch to fix it properly and was supposed to go into 3.6 but it seems
+> > that never happened. Rob, what's the status on this?
+> >=20
+> > The revert is here: bc51b0c22cebf5c311a6f1895fcca9f78efd0478
+>=20
+> Rob, ping on this. I think we talked about it on IRC, but I cannot
+> remember what was said.... I must be getting old.
+
+Any news on this one?
+
+Thierry
+
+--gj572EiMnwbLXET9
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJQ68biAAoJEN0jrNd/PrOh6OYQALnxIcAYee7gi6zXv867rfCT
+EYC1p6J8ZQGghHBSyYo0dsemfcwrddUMvkvmtmSl3eSgMEPQgPd8TOvDMF9HuMOU
+I1KoP0l6tLSEn/+k9Mrlh2gOBa8lp73oF7jStyahZVaJcIfBsABVvFDHfU5zGBO+
+y2vAHlAQnQ60ZX60DBRakYai5sxpTU32yRa7pvyLUz+Tz1MYsayxCbUIiHaZ8Rjo
+SxsU8JhCiXEmbC6X9zJzggfbUGImKeWXCCIe87FH2lnj0iegHvRMEyzp3qddlXZ7
+XXYyJGc2p8Gpftqw3TojoIPSEkS0v7PqJ4hdIXryv1IOie2MgyIP0CSldN/9LuZe
+Us1AJiYx8YJX3nq0QfoVpa9a5sL4sNgd44l3QbKHCNL0IT+mP7x+fmjr2sF/43rQ
+6KOrW4gkpDT6Mf5JNF+KbM0FA4LClQZEySN0zFnSwzL1XAGDII28JGWZQaw4zb82
+6cWkMzevvsv9UPuRhIXvTl2gkS5BHEs7MzgU4kPznJ0d1zThAlcD+ar1YtS3PV4z
+mzvXZfvMuheQigDVqT/vjBRJZkiuSROzPgbwsWpHK1jefA3VdOY1EIVLk0+UM5Oy
+d6MymrE04SW2hBOcNy7sy7GhcQRaOOBsjT9KU63o2lH++LsigwLdwplKu6mbtk1Q
+ptodw/yyZ3kDx3KePDzw
+=0k4e
+-----END PGP SIGNATURE-----
+
+--gj572EiMnwbLXET9--

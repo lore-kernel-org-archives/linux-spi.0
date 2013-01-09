@@ -1,100 +1,115 @@
-From: Lars-Peter Clausen <lars@metafoo.de>
+From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Wed, 09 Jan 2013 21:56:10 +0100
-Message-ID: <50EDD96A.5080900@metafoo.de>
-References: <1357752671-30222-1-git-send-email-lars@metafoo.de> <50EDC309.5010104@kernel.org>
+Date: Wed, 09 Jan 2013 21:36:58 +0000
+Message-ID: <50EDE2FA.3060308@kernel.org>
+References: <1357752671-30222-1-git-send-email-lars@metafoo.de>
+	<50EDC309.5010104@kernel.org> <50EDD96A.5080900@metafoo.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Julia Lawall <Julia.Lawall@lip6.fr>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@cam.ac.uk>,
-	linux-iio@vger.kernel.org
-To: Jonathan Cameron <jic23@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <50EDC309.5010104@kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <50EDD96A.5080900-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/09/2013 08:20 PM, Jonathan Cameron wrote:
-> On 01/09/2013 05:31 PM, Lars-Peter Clausen wrote:
->> Quite often the pattern used for setting up and transferring a synchronous SPI
->> transaction looks very much like the following:
+On 01/09/2013 08:56 PM, Lars-Peter Clausen wrote:
+> On 01/09/2013 08:20 PM, Jonathan Cameron wrote:
+>> On 01/09/2013 05:31 PM, Lars-Peter Clausen wrote:
+>>> Quite often the pattern used for setting up and transferring a synchronous SPI
+>>> transaction looks very much like the following:
+>>>
+>>> 	struct spi_message msg;
+>>> 	struct spi_transfer xfers[] = {
+>>> 		...
+>>> 	};
+>>>
+>>> 	spi_message_init(&msg);
+>>> 	spi_message_add_tail(&xfers[0], &msg);
+>>> 	...
+>>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
+>>>
+>>> 	ret = spi_sync(&msg);
+>>>
+>>> This patch adds two new helper functions for handling this case. The first
+>>> helper function spi_message_init_with_transfers() takes a spi_message and an
+>>> array of spi_transfers. It will initialize the message and then call
+>>> spi_message_add_tail() for each transfer in the array. E.g. the following
+>>>
+>>> 	spi_message_init(&msg);
+>>> 	spi_message_add_tail(&xfers[0], &msg);
+>>> 	...
+>>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
+>>>
+>>> can be rewritten as
+>>>
+>>> 	spi_message_init_with_transfers(&msg, xfers, ARRAY_SIZE(xfers));
+>>>
+>>> The second function spi_sync_transfer() takes a SPI device and an array of
+>>> spi_transfers. It will allocate a new spi_message (on the stack) and add all
+>>> transfers in the array to the message. Finally it will call spi_sync() on the
+>>> message.
+>>>
+>>> E.g. the follwing
+>>>
+>>> 	struct spi_message msg;
+>>> 	struct spi_transfer xfers[] = {
+>>> 		...
+>>> 	};
+>>>
+>>> 	spi_message_init(&msg);
+>>> 	spi_message_add_tail(&xfers[0], &msg);
+>>> 	...
+>>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
+>>>
+>>> 	ret = spi_sync(spi, &msg);
+>>>
+>>> can be rewritten as
+>>>
+>>> 	struct spi_transfer xfers[] = {
+>>> 		...
+>>> 	};
+>>>
+>>> 	ret = spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
+>>>
+>>> The patch also adds a new cocci script which can detect such sequences as
+>>> described above and transform them automatically to use the new helper
+>>> functions.
+>>>
+>>> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+>>>
+>> Principle looks good to me and some nice little duplication removal
+>> savings.
 >>
->> 	struct spi_message msg;
->> 	struct spi_transfer xfers[] = {
->> 		...
->> 	};
+>> My coccinelle isn't really up to checking that, but for the functions
+>> Acked-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 >>
->> 	spi_message_init(&msg);
->> 	spi_message_add_tail(&xfers[0], &msg);
->> 	...
->> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
+>> When all comments are in on the code we'll have to think about how to
+>> merge this.  If you have much else planned that will hit those iio drivers
+>> then things will get uggly unless it goes through that tree.
 >>
->> 	ret = spi_sync(&msg);
->>
->> This patch adds two new helper functions for handling this case. The first
->> helper function spi_message_init_with_transfers() takes a spi_message and an
->> array of spi_transfers. It will initialize the message and then call
->> spi_message_add_tail() for each transfer in the array. E.g. the following
->>
->> 	spi_message_init(&msg);
->> 	spi_message_add_tail(&xfers[0], &msg);
->> 	...
->> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
->>
->> can be rewritten as
->>
->> 	spi_message_init_with_transfers(&msg, xfers, ARRAY_SIZE(xfers));
->>
->> The second function spi_sync_transfer() takes a SPI device and an array of
->> spi_transfers. It will allocate a new spi_message (on the stack) and add all
->> transfers in the array to the message. Finally it will call spi_sync() on the
->> message.
->>
->> E.g. the follwing
->>
->> 	struct spi_message msg;
->> 	struct spi_transfer xfers[] = {
->> 		...
->> 	};
->>
->> 	spi_message_init(&msg);
->> 	spi_message_add_tail(&xfers[0], &msg);
->> 	...
->> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
->>
->> 	ret = spi_sync(spi, &msg);
->>
->> can be rewritten as
->>
->> 	struct spi_transfer xfers[] = {
->> 		...
->> 	};
->>
->> 	ret = spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
->>
->> The patch also adds a new cocci script which can detect such sequences as
->> described above and transform them automatically to use the new helper
->> functions.
->>
->> Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
->>
-> Principle looks good to me and some nice little duplication removal
-> savings.
+>> Guess it all depends on whether others like the patch though ;)
 > 
-> My coccinelle isn't really up to checking that, but for the functions
-> Acked-by: Jonathan Cameron <jic23@kernel.org>
+> The IIO patches can easily wait another release until the spi has made it's way
+> up into mainline. I just didn't want to send out the helper functions without
+> any realworld examples on how they can be used.
 > 
-> When all comments are in on the code we'll have to think about how to
-> merge this.  If you have much else planned that will hit those iio drivers
-> then things will get uggly unless it goes through that tree.
-> 
-> Guess it all depends on whether others like the patch though ;)
+Good point, though obviously send them again after this patch has merged
+given the fine nature of my memory ;)
 
-The IIO patches can easily wait another release until the spi has made it's way
-up into mainline. I just didn't want to send out the helper functions without
-any realworld examples on how they can be used.
-
-- Lars
+------------------------------------------------------------------------------
+Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery
+and much more. Keep your Java skills current with LearnJavaNow -
+200+ hours of step-by-step video tutorials by Java experts.
+SALE $49.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122612 

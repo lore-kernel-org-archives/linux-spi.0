@@ -1,20 +1,18 @@
-From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: SSP SPI Controller driver
-Date: Tue, 8 Jan 2013 20:25:35 -0800
-Message-ID: <20130109042535.GL19691@intel.com>
-References: <1353464203.20353.6.camel@bichao>
-	<CACRpkdad3fHxWRpRqD-eP8-sKKexN+s-JZCT6XLggv92Q=5kMA@mail.gmail.com>
-	<1355809660.11831.284.camel@bichao>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-gpio: Add checks for the dt properties
+Date: Wed, 09 Jan 2013 09:37:01 +0100
+Message-ID: <50ED2C2D.7030608@free-electrons.com>
+References: <1356645288-10110-1-git-send-email-maxime.ripard@free-electrons.com>
+	<1356645288-10110-2-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, alan-b5Z7lJ3WibVrdx17CPfAsdBPR1lH4CV8@public.gmane.org
-To: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Brian Lilly <brian-ZKiFAVwZFM2FeswfMrDH8w@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1355809660.11831.284.camel@bichao>
+In-Reply-To: <1356645288-10110-2-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,37 +23,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 18, 2012 at 01:47:40PM +0800, chao bi wrote:
-> Dear Linus,
-> Thanks for your kind comments. Seems you were viewing the 1st version, I've
-> submitted 2nd version and to deliver the 3rd version soon, will include you
-> for review.
-Was the third version posted?
+Hi Grant,
 
-Also I have some questions on this approach. Is this driver for SSP ip or SPI
-ip, looks like latter. In both the cases there are some existing drivers in
-kernel and adding one more IMHO doesnt make sense. What we really need a
-common core for dw IP and SSP IP (i think pxa uses same stuff). That way lot of
-code will get reduced from driver
-> > 
-> > > +#define SRAM_BASE_ADDR 0xfffdc000
-> > 
-> > Should be passed as resource, se above reasoning for the
-> > "I2C" base address. What happens on next ASIC spin when
-> > the engineer move this base offset etc, don't you have any
-> > system discovery?
-> This is fix value for Moorestown & Medfield platforms as what is
-> declared in the file header. If any hardware change, the address should
-> be changed accordantly.
-Why do you wnat to change this latter, pls add it as a resouce or since this is
-a PCI device you can use PCI table driver data. 
+On 27/12/2012 22:54, Maxime Ripard wrote:
+> The bindings assumed that the gpios properties were always there, which
+> made the NO_TX and NO_RX mode not usable from device tree. Add extra
+> checks to make sure that the driver can work if either MOSI or MISO is
+> not used.
 
-Also why would SSP care about SRAM, I am not sure I follow it??
-Lastly if you have dedicated SRAM for your use, it should be in PCI BAR and not
-hard coded like this!!
+Can you give me your Acked-by on this, or do you have any comments on this?
 
---
-~Vinod
+Thanks,
+Maxime
+
+-- 
+Maxime Ripard, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 ------------------------------------------------------------------------------
 Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery

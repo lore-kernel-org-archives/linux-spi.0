@@ -1,18 +1,13 @@
-From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Wed, 09 Jan 2013 21:36:58 +0000
-Message-ID: <50EDE2FA.3060308@kernel.org>
-References: <1357752671-30222-1-git-send-email-lars@metafoo.de>
-	<50EDC309.5010104@kernel.org> <50EDD96A.5080900@metafoo.de>
+From: Toner Services par Galerie Des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Vos cartouches a prix discount + livraison GRATUITE
+Date: Thu, 10 Jan 2013 00:59:22 +0100
+Message-ID: <1357775963.thing50ee045bd5ea8@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <50EDD96A.5080900-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,93 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/09/2013 08:56 PM, Lars-Peter Clausen wrote:
-> On 01/09/2013 08:20 PM, Jonathan Cameron wrote:
->> On 01/09/2013 05:31 PM, Lars-Peter Clausen wrote:
->>> Quite often the pattern used for setting up and transferring a synchronous SPI
->>> transaction looks very much like the following:
->>>
->>> 	struct spi_message msg;
->>> 	struct spi_transfer xfers[] = {
->>> 		...
->>> 	};
->>>
->>> 	spi_message_init(&msg);
->>> 	spi_message_add_tail(&xfers[0], &msg);
->>> 	...
->>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
->>>
->>> 	ret = spi_sync(&msg);
->>>
->>> This patch adds two new helper functions for handling this case. The first
->>> helper function spi_message_init_with_transfers() takes a spi_message and an
->>> array of spi_transfers. It will initialize the message and then call
->>> spi_message_add_tail() for each transfer in the array. E.g. the following
->>>
->>> 	spi_message_init(&msg);
->>> 	spi_message_add_tail(&xfers[0], &msg);
->>> 	...
->>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
->>>
->>> can be rewritten as
->>>
->>> 	spi_message_init_with_transfers(&msg, xfers, ARRAY_SIZE(xfers));
->>>
->>> The second function spi_sync_transfer() takes a SPI device and an array of
->>> spi_transfers. It will allocate a new spi_message (on the stack) and add all
->>> transfers in the array to the message. Finally it will call spi_sync() on the
->>> message.
->>>
->>> E.g. the follwing
->>>
->>> 	struct spi_message msg;
->>> 	struct spi_transfer xfers[] = {
->>> 		...
->>> 	};
->>>
->>> 	spi_message_init(&msg);
->>> 	spi_message_add_tail(&xfers[0], &msg);
->>> 	...
->>> 	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
->>>
->>> 	ret = spi_sync(spi, &msg);
->>>
->>> can be rewritten as
->>>
->>> 	struct spi_transfer xfers[] = {
->>> 		...
->>> 	};
->>>
->>> 	ret = spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
->>>
->>> The patch also adds a new cocci script which can detect such sequences as
->>> described above and transform them automatically to use the new helper
->>> functions.
->>>
->>> Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
->>>
->> Principle looks good to me and some nice little duplication removal
->> savings.
->>
->> My coccinelle isn't really up to checking that, but for the functions
->> Acked-by: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->>
->> When all comments are in on the code we'll have to think about how to
->> merge this.  If you have much else planned that will hit those iio drivers
->> then things will get uggly unless it goes through that tree.
->>
->> Guess it all depends on whether others like the patch though ;)
-> 
-> The IIO patches can easily wait another release until the spi has made it's way
-> up into mainline. I just didn't want to send out the helper functions without
-> any realworld examples on how they can be used.
-> 
-Good point, though obviously send them again after this patch has merged
-given the fine nature of my memory ;)
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-------------------------------------------------------------------------------
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9Mjg5NjUmYz0xOTYxNjQxJmQ9MjAx=
+My0wMS0xMCAwMDo1MDowMSZlPTEmaD0yODk2MyZmPTI4OTY1Jmc9Mjg5NjU=3D
+
+Lien de d=E9sinscription : http://m10-fr.com/mc10_unsub/YT04JmI9Mjg5NjUmYz0=
+xOTYxNjQxJmQ9MjAxMy0wMS0xMCAwMDo1MDowMSZlPTEmaD0yODk2MyZmPTI4OTY1Jmc9Mjg5Nj=
+U=3D
+
+
+---------------------------------------------------------------------------=
+---
 Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery
 and much more. Keep your Java skills current with LearnJavaNow -
 200+ hours of step-by-step video tutorials by Java experts.
 SALE $49.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122612 
+http://p.sf.net/sfu/learnmore_122612 =

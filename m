@@ -1,14 +1,20 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi: s3c64xx: Use devm_clk_get() and devm_request_irq()
-Date: Wed, 09 Jan 2013 09:50:04 +0900
-Message-ID: <002801cdee03$432149a0$c963dce0$%han@samsung.com>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] SPI: SSP SPI Controller driver
+Date: Tue, 8 Jan 2013 20:25:35 -0800
+Message-ID: <20130109042535.GL19691@intel.com>
+References: <1353464203.20353.6.camel@bichao>
+	<CACRpkdad3fHxWRpRqD-eP8-sKKexN+s-JZCT6XLggv92Q=5kMA@mail.gmail.com>
+	<1355809660.11831.284.camel@bichao>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Grant Likely' <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: jun.d.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, ken.k.mills-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, sylvain.centelles-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, alan-b5Z7lJ3WibVrdx17CPfAsdBPR1lH4CV8@public.gmane.org
+To: chao bi <chao.bi-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-language: ko
+Content-Disposition: inline
+In-Reply-To: <1355809660.11831.284.camel@bichao>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,139 +25,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The devm_ functions allocate memory that is released when a driver
-detaches. This patch uses devm_clk_get() and devm_request_irq()
-for these functions. These make the code smaller and a bit simpler.
+On Tue, Dec 18, 2012 at 01:47:40PM +0800, chao bi wrote:
+> Dear Linus,
+> Thanks for your kind comments. Seems you were viewing the 1st version, I've
+> submitted 2nd version and to deliver the 3rd version soon, will include you
+> for review.
+Was the third version posted?
 
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++--------------------------
- 1 files changed, 15 insertions(+), 26 deletions(-)
+Also I have some questions on this approach. Is this driver for SSP ip or SPI
+ip, looks like latter. In both the cases there are some existing drivers in
+kernel and adding one more IMHO doesnt make sense. What we really need a
+common core for dw IP and SSP IP (i think pxa uses same stuff). That way lot of
+code will get reduced from driver
+> > 
+> > > +#define SRAM_BASE_ADDR 0xfffdc000
+> > 
+> > Should be passed as resource, se above reasoning for the
+> > "I2C" base address. What happens on next ASIC spin when
+> > the engineer move this base offset etc, don't you have any
+> > system discovery?
+> This is fix value for Moorestown & Medfield platforms as what is
+> declared in the file header. If any hardware change, the address should
+> be changed accordantly.
+Why do you wnat to change this latter, pls add it as a resouce or since this is
+a PCI device you can use PCI table driver data. 
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index ad93231..a81679a 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1280,7 +1280,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (sdd->regs == NULL) {
- 		dev_err(&pdev->dev, "Unable to remap IO\n");
- 		ret = -ENXIO;
--		goto err1;
-+		goto err0;
- 	}
- 
- 	if (!sci->cfg_gpio && pdev->dev.of_node) {
-@@ -1289,36 +1289,36 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	} else if (sci->cfg_gpio == NULL || sci->cfg_gpio()) {
- 		dev_err(&pdev->dev, "Unable to config gpio\n");
- 		ret = -EBUSY;
--		goto err2;
-+		goto err0;
- 	}
- 
- 	/* Setup clocks */
--	sdd->clk = clk_get(&pdev->dev, "spi");
-+	sdd->clk = devm_clk_get(&pdev->dev, "spi");
- 	if (IS_ERR(sdd->clk)) {
- 		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
- 		ret = PTR_ERR(sdd->clk);
--		goto err3;
-+		goto err1;
- 	}
- 
- 	if (clk_prepare_enable(sdd->clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
- 		ret = -EBUSY;
--		goto err4;
-+		goto err1;
- 	}
- 
- 	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
--	sdd->src_clk = clk_get(&pdev->dev, clk_name);
-+	sdd->src_clk = devm_clk_get(&pdev->dev, clk_name);
- 	if (IS_ERR(sdd->src_clk)) {
- 		dev_err(&pdev->dev,
- 			"Unable to acquire clock '%s'\n", clk_name);
- 		ret = PTR_ERR(sdd->src_clk);
--		goto err5;
-+		goto err2;
- 	}
- 
- 	if (clk_prepare_enable(sdd->src_clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock '%s'\n", clk_name);
- 		ret = -EBUSY;
--		goto err6;
-+		goto err2;
- 	}
- 
- 	/* Setup Deufult Mode */
-@@ -1328,11 +1328,12 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	init_completion(&sdd->xfer_completion);
- 	INIT_LIST_HEAD(&sdd->queue);
- 
--	ret = request_irq(irq, s3c64xx_spi_irq, 0, "spi-s3c64xx", sdd);
-+	ret = devm_request_irq(&pdev->dev, irq, s3c64xx_spi_irq, 0,
-+				"spi-s3c64xx", sdd);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "Failed to request IRQ %d: %d\n",
- 			irq, ret);
--		goto err7;
-+		goto err3;
- 	}
- 
- 	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
-@@ -1342,7 +1343,7 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (spi_register_master(master)) {
- 		dev_err(&pdev->dev, "cannot register SPI master\n");
- 		ret = -EBUSY;
--		goto err8;
-+		goto err3;
- 	}
- 
- 	dev_dbg(&pdev->dev, "Samsung SoC SPI Driver loaded for Bus SPI-%d "
-@@ -1356,21 +1357,13 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--err8:
--	free_irq(irq, sdd);
--err7:
-+err3:
- 	clk_disable_unprepare(sdd->src_clk);
--err6:
--	clk_put(sdd->src_clk);
--err5:
-+err2:
- 	clk_disable_unprepare(sdd->clk);
--err4:
--	clk_put(sdd->clk);
--err3:
-+err1:
- 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
- 		s3c64xx_spi_dt_gpio_free(sdd);
--err2:
--err1:
- err0:
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
-@@ -1389,13 +1382,9 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
- 
--	free_irq(platform_get_irq(pdev, 0), sdd);
--
- 	clk_disable_unprepare(sdd->src_clk);
--	clk_put(sdd->src_clk);
- 
- 	clk_disable_unprepare(sdd->clk);
--	clk_put(sdd->clk);
- 
- 	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
- 		s3c64xx_spi_dt_gpio_free(sdd);
--- 
-1.7.2.5
+Also why would SSP care about SRAM, I am not sure I follow it??
+Lastly if you have dedicated SRAM for your use, it should be in PCI BAR and not
+hard coded like this!!
 
-
+--
+~Vinod
 
 ------------------------------------------------------------------------------
 Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery

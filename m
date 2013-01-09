@@ -1,295 +1,288 @@
 From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Wed,  9 Jan 2013 18:31:09 +0100
-Message-ID: <1357752671-30222-1-git-send-email-lars@metafoo.de>
-Cc: Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: [PATCH 2/3] iio: Use spi_sync_transfer()
+Date: Wed,  9 Jan 2013 18:31:10 +0100
+Message-ID: <1357752671-30222-2-git-send-email-lars@metafoo.de>
+References: <1357752671-30222-1-git-send-email-lars@metafoo.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>, linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>,
+	Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1357752671-30222-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Quite often the pattern used for setting up and transferring a synchronous SPI
-transaction looks very much like the following:
-
-	struct spi_message msg;
-	struct spi_transfer xfers[] = {
-		...
-	};
-
-	spi_message_init(&msg);
-	spi_message_add_tail(&xfers[0], &msg);
-	...
-	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
-
-	ret = spi_sync(&msg);
-
-This patch adds two new helper functions for handling this case. The first
-helper function spi_message_init_with_transfers() takes a spi_message and an
-array of spi_transfers. It will initialize the message and then call
-spi_message_add_tail() for each transfer in the array. E.g. the following
-
-	spi_message_init(&msg);
-	spi_message_add_tail(&xfers[0], &msg);
-	...
-	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
-
-can be rewritten as
-
-	spi_message_init_with_transfers(&msg, xfers, ARRAY_SIZE(xfers));
-
-The second function spi_sync_transfer() takes a SPI device and an array of
-spi_transfers. It will allocate a new spi_message (on the stack) and add all
-transfers in the array to the message. Finally it will call spi_sync() on the
-message.
-
-E.g. the follwing
-
-	struct spi_message msg;
-	struct spi_transfer xfers[] = {
-		...
-	};
-
-	spi_message_init(&msg);
-	spi_message_add_tail(&xfers[0], &msg);
-	...
-	spi_message_add_tail(&xfers[ARRAY_SIZE(xfers) - 1], &msg);
-
-	ret = spi_sync(spi, &msg);
-
-can be rewritten as
-
-	struct spi_transfer xfers[] = {
-		...
-	};
-
-	ret = spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
-
-The patch also adds a new cocci script which can detect such sequences as
-described above and transform them automatically to use the new helper
-functions.
+Use the new spi_sync_transfer() helper function instead of open-coding it.
 
 Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-
 ---
-I'm not entirely happy with names of the two new functions and I'm open for
-better suggestions.
----
- include/linux/spi/spi.h                        |  44 ++++++++
- scripts/coccinelle/api/spi_sync_transfer.cocci | 141 +++++++++++++++++++++++++
- 2 files changed, 185 insertions(+)
- create mode 100644 scripts/coccinelle/api/spi_sync_transfer.cocci
+ drivers/iio/dac/ad5360.c       |  7 +------
+ drivers/iio/dac/ad5421.c       |  7 +------
+ drivers/iio/dac/ad5504.c       |  6 +-----
+ drivers/iio/dac/ad5686.c       |  7 +------
+ drivers/iio/dac/ad5755.c       |  7 +------
+ drivers/iio/dac/ad5764.c       |  7 +------
+ drivers/iio/dac/ad5791.c       |  6 +-----
+ drivers/iio/frequency/ad9523.c | 14 ++------------
+ 8 files changed, 9 insertions(+), 52 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f629189..7dbe586 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -591,6 +591,26 @@ spi_transfer_del(struct spi_transfer *t)
- 	list_del(&t->transfer_list);
- }
+diff --git a/drivers/iio/dac/ad5360.c b/drivers/iio/dac/ad5360.c
+index 8fce84f..8ae07a5 100644
+--- a/drivers/iio/dac/ad5360.c
++++ b/drivers/iio/dac/ad5360.c
+@@ -213,7 +213,6 @@ static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
+ 	unsigned int addr)
+ {
+ 	struct ad5360_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 	struct spi_transfer t[] = {
+ 		{
+@@ -226,10 +225,6 @@ static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
+ 		},
+ 	};
  
-+/**
-+ * spi_message_init_with_transfers - Initialize spi_message and append transfers
-+ * @m: spi_message to be initialized
-+ * @xfers: An array of spi transfers
-+ * @num_xfers: Number of items in the xfer array
-+ *
-+ * This function initializes the given spi_message and adds each spi_transfer in
-+ * the given array to the message.
-+ */
-+static inline void
-+spi_message_init_with_transfers(struct spi_message *m,
-+struct spi_transfer *xfers, unsigned int num_xfers)
-+{
-+	unsigned int i;
-+
-+	spi_message_init(m);
-+	for (i = 0; i < num_xfers; ++i)
-+		spi_message_add_tail(&xfers[i], m);
-+}
-+
- /* It's fine to embed message and transaction structures in other data
-  * structures so long as you don't free them while they're in use.
-  */
-@@ -683,6 +703,30 @@ spi_read(struct spi_device *spi, void *buf, size_t len)
- 	return spi_sync(spi, &m);
- }
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	mutex_lock(&indio_dev->mlock);
  
-+/**
-+ * spi_sync_transfer - synchronous SPI data transfer
-+ * @spi: device with which data will be exchanged
-+ * @xfers: An array of spi_transfers
-+ * @num_xfers: Number of items in the xfer array
-+ * Context: can sleep
-+ *
-+ * Does a synchronous SPI data transfer of the given spi_transfer array.
-+ *
-+ * For more specific semantics see spi_sync().
-+ *
-+ * It returns zero on success, else a negative error code.
-+ */
-+static inline int
-+spi_sync_transfer(struct spi_device *spi, struct spi_transfer *xfers,
-+	unsigned int num_xfers)
-+{
-+	struct spi_message msg;
-+
-+	spi_message_init_with_transfers(&msg, xfers, num_xfers);
-+
-+	return spi_sync(spi, &msg);
-+}
-+
- /* this copies txbuf and rxbuf data; for small transfers only! */
- extern int spi_write_then_read(struct spi_device *spi,
- 		const void *txbuf, unsigned n_tx,
-diff --git a/scripts/coccinelle/api/spi_sync_transfer.cocci b/scripts/coccinelle/api/spi_sync_transfer.cocci
-new file mode 100644
-index 0000000..1e2efe3
---- /dev/null
-+++ b/scripts/coccinelle/api/spi_sync_transfer.cocci
-@@ -0,0 +1,141 @@
-+///
-+/// Use spi_sync_transfer instead of open-coding it
-+///
-+// Confidence: High
-+// Options: --no-includes
-+//
-+// Keywords: spi_sync, spi_sync_transfer
-+// Version min: 3.9
-+//
-+
-+virtual context
-+virtual patch
-+virtual org
-+virtual report
-+
-+@r1@
-+identifier fn;
-+identifier xfers;
-+@@
-+fn(...)
-+{
-+	...
-+(
-+	struct spi_transfer xfers[...];
-+|
-+	struct spi_transfer xfers[];
-+)
-+	...
-+}
-+
-+@depends on patch@
-+identifier msg;
-+expression spi;
-+identifier r1.fn;
-+identifier r1.xfers;
-+@@
-+fn(...)
-+{
-+...
-+-struct spi_message msg;
-+...
-+-spi_message_init(&msg);
-+<...
-+-spi_message_add_tail(&xfers[...], &msg);
-+...>
-+
-+-spi_sync(spi, &msg)
-++spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers))
-+...
-+}
-+
-+@r3 depends on context || org || report@
-+identifier msg;
-+expression spi;
-+identifier r1.xfers;
-+identifier r1.fn;
-+position p;
-+@@
-+fn(...)
-+{
-+...
-+*struct spi_message msg;
-+...
-+*spi_message_init(&msg);
-+<...
-+*spi_message_add_tail(&xfers[...], &msg);
-+...>
-+*spi_sync@p(spi, &msg)
-+...
-+}
-+
-+@r2@
-+identifier fn;
-+identifier xfer;
-+@@
-+fn(...)
-+{
-+	...
-+	struct spi_transfer xfer;
-+	...
-+}
-+
-+@depends on patch@
-+identifier msg;
-+expression spi;
-+identifier r2.xfer;
-+identifier r2.fn;
-+@@
-+fn(...)
-+{
-+...
-+-struct spi_message msg;
-+...
-+-spi_message_init(&msg);
-+...
-+-spi_message_add_tail(&xfer, &msg);
-+...
-+-spi_sync(spi, &msg)
-++spi_sync_transfer(spi, &xfer, 1)
-+...
-+}
-+
-+@r4 depends on context || org || report@
-+identifier msg;
-+expression spi;
-+identifier r2.xfer;
-+identifier r2.fn;
-+position p;
-+@@
-+fn(...)
-+{
-+...
-+*struct spi_message msg;
-+...
-+*spi_message_init(&msg);
-+...
-+*spi_message_add_tail(&xfer, &msg);
-+...
-+*spi_sync@p(spi, &msg)
-+...
-+}
-+
-+@script:python depends on report@
-+p << r3.p;
-+@@
-+coccilib.report.print_report(p[0], "Consider using spi_sync_transfer instead of open-conding it.")
-+
-+@script:python depends on report@
-+p << r4.p;
-+@@
-+coccilib.report.print_report(p[0], "Consider using spi_sync_transfer instead of open-conding it.")
-+
-+@script:python depends on org@
-+p << r3.p;
-+@@
-+coccilib.org.print_todo(p[0], "Consider using spi_sync_transfer instead of open-conding it.")
-+
-+@script:python depends on org@
-+p << r4.p;
-+@@
-+coccilib.org.print_todo(p[0], "Consider using spi_sync_transfer instead of open-conding it.")
+ 	st->data[0].d32 = cpu_to_be32(AD5360_CMD(AD5360_CMD_SPECIAL_FUNCTION) |
+@@ -237,7 +232,7 @@ static int ad5360_read(struct iio_dev *indio_dev, unsigned int type,
+ 		AD5360_READBACK_TYPE(type) |
+ 		AD5360_READBACK_ADDR(addr));
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret >= 0)
+ 		ret = be32_to_cpu(st->data[1].d32) & 0xffff;
+ 
+diff --git a/drivers/iio/dac/ad5421.c b/drivers/iio/dac/ad5421.c
+index cdbc5bf..e8f752f 100644
+--- a/drivers/iio/dac/ad5421.c
++++ b/drivers/iio/dac/ad5421.c
+@@ -127,7 +127,6 @@ static int ad5421_write(struct iio_dev *indio_dev, unsigned int reg,
+ static int ad5421_read(struct iio_dev *indio_dev, unsigned int reg)
+ {
+ 	struct ad5421_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 	struct spi_transfer t[] = {
+ 		{
+@@ -140,15 +139,11 @@ static int ad5421_read(struct iio_dev *indio_dev, unsigned int reg)
+ 		},
+ 	};
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	mutex_lock(&indio_dev->mlock);
+ 
+ 	st->data[0].d32 = cpu_to_be32((1 << 23) | (reg << 16));
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret >= 0)
+ 		ret = be32_to_cpu(st->data[1].d32) & 0xffff;
+ 
+diff --git a/drivers/iio/dac/ad5504.c b/drivers/iio/dac/ad5504.c
+index 242bdc7..428a549 100644
+--- a/drivers/iio/dac/ad5504.c
++++ b/drivers/iio/dac/ad5504.c
+@@ -85,11 +85,7 @@ static int ad5504_spi_read(struct spi_device *spi, u8 addr)
+ 			.rx_buf		= &val,
+ 			.len		= 2,
+ 		};
+-	struct spi_message	m;
+-
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t, &m);
+-	ret = spi_sync(spi, &m);
++	ret = spi_sync_transfer(spi, &t, 1);
+ 
+ 	if (ret < 0)
+ 		return ret;
+diff --git a/drivers/iio/dac/ad5686.c b/drivers/iio/dac/ad5686.c
+index 6948d75..1bf32d8 100644
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -117,18 +117,13 @@ static int ad5686_spi_read(struct ad5686_state *st, u8 addr)
+ 			.len = 3,
+ 		},
+ 	};
+-	struct spi_message m;
+ 	int ret;
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	st->data[0].d32 = cpu_to_be32(AD5686_CMD(AD5686_CMD_READBACK_ENABLE) |
+ 			      AD5686_ADDR(addr));
+ 	st->data[1].d32 = cpu_to_be32(AD5686_CMD(AD5686_CMD_NOOP));
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index 5db3506..906b022 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -153,7 +153,6 @@ static int ad5755_write_ctrl(struct iio_dev *indio_dev, unsigned int channel,
+ static int ad5755_read(struct iio_dev *indio_dev, unsigned int addr)
+ {
+ 	struct ad5755_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 	struct spi_transfer t[] = {
+ 		{
+@@ -167,16 +166,12 @@ static int ad5755_read(struct iio_dev *indio_dev, unsigned int addr)
+ 		},
+ 	};
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	mutex_lock(&indio_dev->mlock);
+ 
+ 	st->data[0].d32 = cpu_to_be32(AD5755_READ_FLAG | (addr << 16));
+ 	st->data[1].d32 = cpu_to_be32(AD5755_NOOP);
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret >= 0)
+ 		ret = be32_to_cpu(st->data[1].d32) & 0xffff;
+ 
+diff --git a/drivers/iio/dac/ad5764.c b/drivers/iio/dac/ad5764.c
+index ffce304..d3d334b 100644
+--- a/drivers/iio/dac/ad5764.c
++++ b/drivers/iio/dac/ad5764.c
+@@ -135,7 +135,6 @@ static int ad5764_read(struct iio_dev *indio_dev, unsigned int reg,
+ 	unsigned int *val)
+ {
+ 	struct ad5764_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 	struct spi_transfer t[] = {
+ 		{
+@@ -148,15 +147,11 @@ static int ad5764_read(struct iio_dev *indio_dev, unsigned int reg,
+ 		},
+ 	};
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	mutex_lock(&indio_dev->mlock);
+ 
+ 	st->data[0].d32 = cpu_to_be32((1 << 23) | (reg << 16));
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret >= 0)
+ 		*val = be32_to_cpu(st->data[1].d32) & 0xffff;
+ 
+diff --git a/drivers/iio/dac/ad5791.c b/drivers/iio/dac/ad5791.c
+index 2bd2e37..2cc0a8e 100644
+--- a/drivers/iio/dac/ad5791.c
++++ b/drivers/iio/dac/ad5791.c
+@@ -125,7 +125,6 @@ static int ad5791_spi_read(struct spi_device *spi, u8 addr, u32 *val)
+ 		u8 d8[4];
+ 	} data[3];
+ 	int ret;
+-	struct spi_message msg;
+ 	struct spi_transfer xfers[] = {
+ 		{
+ 			.tx_buf = &data[0].d8[1],
+@@ -144,10 +143,7 @@ static int ad5791_spi_read(struct spi_device *spi, u8 addr, u32 *val)
+ 			      AD5791_ADDR(addr));
+ 	data[1].d32 = cpu_to_be32(AD5791_ADDR(AD5791_ADDR_NOOP));
+ 
+-	spi_message_init(&msg);
+-	spi_message_add_tail(&xfers[0], &msg);
+-	spi_message_add_tail(&xfers[1], &msg);
+-	ret = spi_sync(spi, &msg);
++	ret = spi_sync_transfer(spi, xfers, ARRAY_SIZE(xfers));
+ 
+ 	*val = be32_to_cpu(data[2].d32);
+ 
+diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
+index b737c64..2a18405 100644
+--- a/drivers/iio/frequency/ad9523.c
++++ b/drivers/iio/frequency/ad9523.c
+@@ -287,7 +287,6 @@ struct ad9523_state {
+ static int ad9523_read(struct iio_dev *indio_dev, unsigned addr)
+ {
+ 	struct ad9523_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 
+ 	/* We encode the register size 1..3 bytes into the register address.
+@@ -305,15 +304,11 @@ static int ad9523_read(struct iio_dev *indio_dev, unsigned addr)
+ 		},
+ 	};
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	st->data[0].d32 = cpu_to_be32(AD9523_READ |
+ 				      AD9523_CNT(AD9523_TRANSF_LEN(addr)) |
+ 				      AD9523_ADDR(addr));
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 	if (ret < 0)
+ 		dev_err(&indio_dev->dev, "read failed (%d)", ret);
+ 	else
+@@ -326,7 +321,6 @@ static int ad9523_read(struct iio_dev *indio_dev, unsigned addr)
+ static int ad9523_write(struct iio_dev *indio_dev, unsigned addr, unsigned val)
+ {
+ 	struct ad9523_state *st = iio_priv(indio_dev);
+-	struct spi_message m;
+ 	int ret;
+ 	struct spi_transfer t[] = {
+ 		{
+@@ -338,16 +332,12 @@ static int ad9523_write(struct iio_dev *indio_dev, unsigned addr, unsigned val)
+ 		},
+ 	};
+ 
+-	spi_message_init(&m);
+-	spi_message_add_tail(&t[0], &m);
+-	spi_message_add_tail(&t[1], &m);
+-
+ 	st->data[0].d32 = cpu_to_be32(AD9523_WRITE |
+ 				      AD9523_CNT(AD9523_TRANSF_LEN(addr)) |
+ 				      AD9523_ADDR(addr));
+ 	st->data[1].d32 = cpu_to_be32(val);
+ 
+-	ret = spi_sync(st->spi, &m);
++	ret = spi_sync_transfer(st->spi, t, ARRAY_SIZE(t));
+ 
+ 	if (ret < 0)
+ 		dev_err(&indio_dev->dev, "write failed (%d)", ret);
 -- 
 1.8.0
+
+
+------------------------------------------------------------------------------
+Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery
+and much more. Keep your Java skills current with LearnJavaNow -
+200+ hours of step-by-step video tutorials by Java experts.
+SALE $49.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122612 

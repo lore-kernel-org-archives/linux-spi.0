@@ -1,16 +1,12 @@
 From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-mpc512x-psc: don't use obsolet cell-index
-	property
-Date: Fri, 11 Jan 2013 00:12:12 +0100
-Message-ID: <20130111001212.3dd2c79a@crub>
-References: <1356100981-18685-1-git-send-email-agust@denx.de>
-	<CACxGe6sT_fsdcGN1OCRBVMXzAiDbbf=SnKp2F8eYL+F5Qoyu=g@mail.gmail.com>
-	<20121221192914.77D523E03CE@localhost>
+Subject: [PATCH v2] spi: spi-mpc512x-psc: don't use obsolet cell-index property
+Date: Fri, 11 Jan 2013 00:26:57 +0100
+Message-ID: <1357860417-11953-1-git-send-email-agust@denx.de>
+References: <20121221192914.77D523E03CE@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 In-Reply-To: <20121221192914.77D523E03CE@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -23,39 +19,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+Remove deprecated cell-index property and use spi alias to
+obtain the SPI PSC number used for SPI bus id.
 
-On Fri, 21 Dec 2012 19:29:14 +0000
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+---
+v2:
+ - use of_alias_get_id() to get spi bus number
 
-> On Fri, 21 Dec 2012 14:48:38 +0000, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> > On Fri, Dec 21, 2012 at 2:43 PM, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
-> > > Use unique PSCx register base offset to obtain the
-> > > SPI PSC number used for SPI bus id.
-> > >
-> > > Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-> > 
-> > Don't do this. If you really want to assign a specific bus number,
-> > then use a property in /aliases. cell-index has been deprecated a very
-> > long time ago now.
-> 
-> Ummm.. I really should read patches before I reply to them. I see you're
-> removing cell-index, not adding it back in. It is fine.
-> 
-> Aliases would be a more generic solution though. Would this following
-> change work for you? Try it out and let me know.
+ drivers/spi/spi-mpc512x-psc.c |   16 +++++-----------
+ 1 files changed, 5 insertions(+), 11 deletions(-)
 
-Sorry for delay. I've tried it now, it doesn't work. The mpc5121
-psc spi driver also needs to get/enable psc clock of the used psc
-controller. It uses psc bus number to generate psc clock name
-string and to get and enable this clock, so I need to set
-the bus number in the driver. I'll use of_alias_get_id() in the
-the psc spi driver.
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index cb3a310..88e5441 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -522,17 +522,11 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *op)
+ 	regaddr64 = of_translate_address(op->dev.of_node, regaddr_p);
+ 
+ 	/* get PSC id (0..11, used by port_config) */
+-	if (op->dev.platform_data == NULL) {
+-		const u32 *psc_nump;
+-
+-		psc_nump = of_get_property(op->dev.of_node, "cell-index", NULL);
+-		if (!psc_nump || *psc_nump > 11) {
+-			dev_err(&op->dev, "mpc512x_psc_spi: Device node %s "
+-				"has invalid cell-index property\n",
+-				op->dev.of_node->full_name);
+-			return -EINVAL;
+-		}
+-		id = *psc_nump;
++	id = of_alias_get_id(op->dev.of_node, "spi");
++	if (id < 0) {
++		dev_err(&op->dev, "no alias id for %s\n",
++			op->dev.of_node->full_name);
++		return id;
+ 	}
+ 
+ 	return mpc512x_psc_spi_do_probe(&op->dev, (u32) regaddr64, (u32) size64,
+-- 
+1.7.5.4
 
-
-Thanks,
-
-Anatolij
 
 ------------------------------------------------------------------------------
 Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,

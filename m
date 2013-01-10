@@ -1,68 +1,43 @@
-From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Thu, 10 Jan 2013 11:28:32 +0100 (CET)
-Message-ID: <alpine.DEB.2.02.1301101125520.2063@localhost6.localdomain6>
-References: <1357752671-30222-1-git-send-email-lars@metafoo.de> <alpine.DEB.2.02.1301100951060.2063@localhost6.localdomain6> <50EE8FFD.2000000@metafoo.de>
+From: =?iso-8859-15?Q?Soldes_Dessous_Ch=E9ri?= <news-HtS1wjtTMKHRput9eeYPBq0bRtRcJeJQ@public.gmane.org>
+Subject: 4 euros l'ensemble, liquidation totale
+Date: Thu, 10 Jan 2013 11:32:11 +0100 (CET)
+Message-ID: <2.1.2.1101003161.407059.6886493295@news.dessouscheri.com>
+Reply-To: Clara <clara-hg/+U7oqXuzmoOuP/ntudA@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <50EE8FFD.2000000-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 10 Jan 2013, Lars-Peter Clausen wrote:
 
-> On 01/10/2013 09:53 AM, Julia Lawall wrote:
-> >> +@r1@
-> >> +identifier fn;
-> >> +identifier xfers;
-> >> +@@
-> >> +fn(...)
-> >> +{
-> >> +	...
-> >> +(
-> >> +	struct spi_transfer xfers[...];
-> >> +|
-> >> +	struct spi_transfer xfers[];
-> >> +)
-> >> +	...
-> >> +}
-> > 
-> > Can it happen that there would be more than one spi_transfer or spi_message
-> > variable per function?  This semantic patch will only treat the case where
-> > there is only one, because the ... before an after the variable declaration
-> > won't match another declaration of the same form.
-> > 
-> > julia
-> 
-> I guess it could happen, but I would consider it to be very rare. There are
-> a few examples of multiple transfers in the kernel. But most of them look like
-> 
-> struct spi_message msg;
-> struct spi_transfer xfer_foo;
-> struct spi_transfer xfer_bar;
-> 
-> ...
-> spi_message_add_tail(&xfer_foo, &msg);
-> spi_message_add_tail(&xfer_bar, &msg);
-> 
-> So the transformation can't be applied here anyway.
-> 
-> Do you have an idea how to change the rule to work with multiple
-> transfers/messages per function? If it would make the cocci file more
-> complex I wouldn't bother to take care of it, since it basically has no
-> practical use.
+Merci d'ajouter notre adresse =E0 votre carnet d'adresses pour =EAtre s=FBr=
+ que nos messages arrivent bien dans votre bo=EEte de r=E9ception. Visualis=
+er ce message en ligne http://news.dessouscheri.com/HM?a=3DENX7Cqi8-r2A8SA9=
+MKJJ7ennGHxKLCbYLvcStGb5lw8W0bBhOG5mpqVsje_Hhe-kulIY
 
-Probably the simplest thing is to put when any on all of the ...s
-It might get slower, though.
+4 euros l'ensemble, liquidation totale
+http://news.dessouscheri.com/HS?a=3DENX7Cqi8-r2A8SA9MKJJ7ennGHxKLCbYC_cStGb=
+5lw8W0bBhOG5mpqVsje_Hhe-kulL1
 
-Alternatively you could have a rule at the end that prints a warning for 
-any cases that are not transformed.
+Votre adresse email figure dans notre base de donn=E9es parce que vous y av=
+ez adh=E9rer.Il ne s'agit donc pas d'un spam. Si vous souhaitez cependant v=
+ous desabonner, veuillez aller =E0 cette adresse http://news.dessouscheri.c=
+om/HD?a=3DENX7Cqi8-r2A8SA9MKJJ7ennGHxKLCbYL_cStGb5lw8W0bBhOG5mpqVsje_Hhe-ku=
+lIZ
 
-julia
+---------------------------------------------------------------------------=
+---
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122712

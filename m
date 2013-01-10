@@ -1,88 +1,203 @@
-From: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>
-Subject: Re: [RFC PATCH v3 16/16] ARM: dts: add AM33XX SPI support
-Date: Thu, 10 Jan 2013 13:46:53 -0600
-Message-ID: <20130110194653.GA32519@kahuna>
+From: Matt Porter <mporter@ti.com>
+Subject: Re: [RFC PATCH v3 13/16] ARM: dts: add AM33XX MMC support
+Date: Thu, 10 Jan 2013 15:26:31 -0500
+Message-ID: <20130110202631.GR14660@beef>
 References: <1350566815-409-1-git-send-email-mporter@ti.com>
- <1350566815-409-17-git-send-email-mporter@ti.com>
- <508D1791.1040806@ti.com> <20130110193547.GQ14660@beef>
+ <1350566815-409-14-git-send-email-mporter@ti.com>
+ <331ABD5ECB02734CA317220B2BBEABC13EA5AE57@DBDE01.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Tony Lindgren <tony@atomide.com>, "Nori, Sekhar" <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Dan Williams <djbw@fb.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: "AnilKumar, Chimata" <anilkumar@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20130110193547.GQ14660@beef>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <331ABD5ECB02734CA317220B2BBEABC13EA5AE57@DBDE01.ent.ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 14:35-20130110, Matt Porter wrote:
-> On Sun, Oct 28, 2012 at 05:01:29PM +0530, Sekhar Nori wrote:
-> > On 10/18/2012 6:56 PM, Matt Porter wrote:
-> > > Adds AM33XX SPI support for am335x-bone and am335x-evm.
-> > > 
-> > > Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> > > ---
-> > >  arch/arm/boot/dts/am335x-bone.dts |   17 +++++++++++++++
-> > >  arch/arm/boot/dts/am335x-evm.dts  |    9 ++++++++
-> > >  arch/arm/boot/dts/am33xx.dtsi     |   43 +++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 69 insertions(+)
-> > > 
-> > > diff --git a/arch/arm/boot/dts/am335x-bone.dts b/arch/arm/boot/dts/am335x-bone.dts
-> > > index 5510979..23edfd8 100644
-> > > --- a/arch/arm/boot/dts/am335x-bone.dts
-> > > +++ b/arch/arm/boot/dts/am335x-bone.dts
-> > > @@ -18,6 +18,17 @@
-> > >  		reg = <0x80000000 0x10000000>; /* 256 MB */
-> > >  	};
-> > >  
-> > > +	am3358_pinmux: pinmux@44e10800 {
-> > > +		spi1_pins: pinmux_spi1_pins {
-> > > +			pinctrl-single,pins = <
-> > > +				0x190 0x13	/* mcasp0_aclkx.spi1_sclk, OUTPUT_PULLUP | MODE3 */
-> > > +				0x194 0x33	/* mcasp0_fsx.spi1_d0, INPUT_PULLUP | MODE3 */
-> > > +				0x198 0x13	/* mcasp0_axr0.spi1_d1, OUTPUT_PULLUP | MODE3 */
-minor comment:
-doing as a 0x33 is better for both d1, d0 as D0,D1 can be switched between SDI and SDO
-as needed with ti,pindir-d0-out-d1-in
-> > > +				0x19c 0x13	/* mcasp0_ahclkr.spi1_cs0, OUTPUT_PULLUP | MODE3 */
-> > > +			>;
+On Tue, Oct 30, 2012 at 05:33:40AM +0000, AnilKumar wrote:
+> On Thu, Oct 18, 2012 at 18:56:52, Porter, Matt wrote:
+> > Adds AM33XX MMC support for am335x-bone and am335x-evm.
 > > 
-> > Is there a single pinmux setting that provides SPI functionality on the
-> > bone headers? Or this is specific to a cape you tested with?
+> > Signed-off-by: Matt Porter <mporter@ti.com>
+> > ---
+> >  arch/arm/boot/dts/am335x-bone.dts |    6 ++++++
+> >  arch/arm/boot/dts/am335x-evm.dts  |    6 ++++++
+> >  arch/arm/boot/dts/am33xx.dtsi     |   27 +++++++++++++++++++++++++++
+> >  3 files changed, 39 insertions(+)
+> > 
+> > diff --git a/arch/arm/boot/dts/am335x-bone.dts b/arch/arm/boot/dts/am335x-bone.dts
+> > index c634f87..5510979 100644
+> > --- a/arch/arm/boot/dts/am335x-bone.dts
+> > +++ b/arch/arm/boot/dts/am335x-bone.dts
+> > @@ -70,6 +70,8 @@
+> >  		};
+> >  
+> >  		ldo3_reg: regulator@5 {
+> > +			regulator-min-microvolt = <1800000>;
+> > +			regulator-max-microvolt = <3300000>;
 > 
-> No, there are two usable settings for spi1 and one setting for spi0.
-> I'm dropping this from the series since it's specific to how I wired up
-> the homebrew cape I use for spi testing on the Bone. I publish the
-> branch where all these extra "test-specific" patches (that aren't intended
-> to be merged) are at in the cover letter.  Anybody that needs context of
-> how/what worked and was tested can grab them there.
-Possibly dumb question:
-Cant we have pre-usable spi configurations?  Like spi1_configuration1_pins,
-spi2_configuration1_pins, spi0_configuration1_pins? If documented with
-P9 pin names in the bone dts, it saves a bit of effort in looking up
-pad offset when dealing with capes.
--- 
-Regards,
-Nishanth Menon
+> I think these min & max limits are regulator limits. Are these fields
+> required? Add details of these additions. AFAIK fine-tuned (board
+> specific) min/max limits should be add here(like mpu and core
+> regulator nodes)
+
+This is required as the mmc driver builds the ocr mask from the
+regulator range..and won't run without it. However, with the additional
+updates since 3.7-rc1 to the am33xx release dts support, this is already
+there so you won't see this hunk in v4.
+
+> >  			regulator-always-on;
+> >  		};
+> >  
+> > @@ -78,3 +80,7 @@
+> >  		};
+> >  	};
+> >  };
+> > +
+> > +&mmc1 {
+> > +	vmmc-supply = <&ldo3_reg>;
+> > +};
+> > diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+> > index 185d632..d63fce8 100644
+> > --- a/arch/arm/boot/dts/am335x-evm.dts
+> > +++ b/arch/arm/boot/dts/am335x-evm.dts
+> > @@ -114,7 +114,13 @@
+> >  		};
+> >  
+> >  		vmmc_reg: regulator@12 {
+> > +			regulator-min-microvolt = <1800000>;
+> > +			regulator-max-microvolt = <3300000>;
+> 
+> =same=
+
+as above.
+
+> 
+> >  			regulator-always-on;
+> >  		};
+> >  	};
+> >  };
+> > +
+> > +&mmc1 {
+> > +	vmmc-supply = <&vmmc_reg>;
+> > +};
+> > diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> > index ab9c78f..26a6af7 100644
+> > --- a/arch/arm/boot/dts/am33xx.dtsi
+> > +++ b/arch/arm/boot/dts/am33xx.dtsi
+> > @@ -234,6 +234,33 @@
+> >  			status = "disabled";
+> >  		};
+> >  
+> > +		mmc1: mmc@48060000 {
+> > +			compatible = "ti,omap3-hsmmc";
+> > +			ti,hwmods = "mmc1";
+> > +			ti,dual-volt;
+> > +			ti,needs-special-reset;
+> > +			dmas = <&edma 24
+> > +				&edma 25>;
+> > +			dma-names = "tx", "rx";
+> 
+> Add status = "disabled" here and "okay" in corresponding
+> .dts file
+
+yeah, I originally decided to avoid fixing non-dma related items, but
+I'll fix this up in v4 while I'm there...to match the other mmc nodes.
+
+> > +		};
+> > +
+> > +		mmc2: mmc@481d8000 {
+> > +			compatible = "ti,omap3-hsmmc";
+> > +			ti,hwmods = "mmc2";
+> > +			ti,needs-special-reset;
+> > +			dmas = <&edma 2
+> > +				&edma 3>;
+> > +			dma-names = "tx", "rx";
+> > +			status = "disabled";
+> > +		};
+> > +
+> > +		mmc3: mmc@47810000 {
+> > +			compatible = "ti,omap3-hsmmc";
+> > +			ti,hwmods = "mmc3";
+> > +			ti,needs-special-reset;
+> 
+> What about DMA resources for mmc3?
+ 
+DMA resources for mmc3 are "special" in that mmc3 (actually MMC2 due
+to the hwmod fortran style numbering) is on the crossbar. Since
+dmaengine has no concept of a mux in front of dmac channels, we handle
+our mux with h/w specific properties. What this means is that we can't
+hardcode DMA resources for mmc3 (MMC2) or any other peripheral that sits
+on the crossbar as they aren't a fixed EDMA channel.
+
+Since the only peripheral sitting on mmc3 (or any crossbar based DMA
+event) on one of the am33xx boards in wl12xx, I can't provide an example
+of how this is done within this series...as wl12xx has no DT support and
+can't be used.
+
+However, for testing, I did a simple gpio event driver using a GPIO
+instance on the crossbar. This purely an out-of-tree testing thing wired
+op on the BeagleBone but it looks like this:
+
+	&edma {
+        	ti,edma-xbar-event-map = <32 12>;
+	};
+
+	gpevt {
+		compatible = "gpevt";
+		dmas = <&edma 12>;
+		dma-names = "gpioevt";
+		gpio-evt = <&gpio3 2 0>;
+	};
+
+The first node adds a crossbar event mapping (application-specific)
+which maps GPIOEVT2 to EDMA channel 12 (an open channel with no fixed
+peripheral use.
+
+The gpevt device node then configures the board specific dma resources.
+
+I don't see any reason to configure board specific dma resources for a
+driver that can't use them until the driver is converted to DT...at that
+time it makes sense to add mmc3 dma support for the evm and evmsk dts
+files.
+
+-Matt
+
+> > +			status = "disabled";
+> > +		};
+> > +
+> >  		wdt2: wdt@44e35000 {
+> >  			compatible = "ti,omap3-wdt";
+> >  			ti,hwmods = "wd_timer2";
+> > -- 
+> > 1.7.9.5
+> > 
+> > _______________________________________________
+> > devicetree-discuss mailing list
+> > devicetree-discuss@lists.ozlabs.org
+> > https://lists.ozlabs.org/listinfo/devicetree-discuss
+> > 
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

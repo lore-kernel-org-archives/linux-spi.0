@@ -1,141 +1,65 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [RFC PATCH v3 05/16] ARM: edma: add AM33XX crossbar event support
-Date: Thu, 10 Jan 2013 17:54:34 -0500
-Message-ID: <20130110225434.GT14660@beef>
-References: <1350566815-409-1-git-send-email-mporter@ti.com>
- <1350566815-409-6-git-send-email-mporter@ti.com>
- <508D12DC.8010400@ti.com>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-mpc512x-psc: don't use obsolet cell-index
+	property
+Date: Fri, 11 Jan 2013 00:12:12 +0100
+Message-ID: <20130111001212.3dd2c79a@crub>
+References: <1356100981-18685-1-git-send-email-agust@denx.de>
+	<CACxGe6sT_fsdcGN1OCRBVMXzAiDbbf=SnKp2F8eYL+F5Qoyu=g@mail.gmail.com>
+	<20121221192914.77D523E03CE@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Chris Ball <cjb@laptop.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Sekhar Nori <nsekhar@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <508D12DC.8010400@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20121221192914.77D523E03CE@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Oct 28, 2012 at 04:41:24PM +0530, Sekhar Nori wrote:
-> On 10/18/2012 6:56 PM, Matt Porter wrote:
-> > Adds support for the per-EDMA channel event mux. This is required
-> > for any peripherals using DMA crossbar mapped events.
+Hi Grant,
+
+On Fri, 21 Dec 2012 19:29:14 +0000
+Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+
+> On Fri, 21 Dec 2012 14:48:38 +0000, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> > On Fri, Dec 21, 2012 at 2:43 PM, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
+> > > Use unique PSCx register base offset to obtain the
+> > > SPI PSC number used for SPI bus id.
+> > >
+> > > Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 > > 
-> > Signed-off-by: Matt Porter <mporter@ti.com>
-> > ---
-> >  arch/arm/common/edma.c             |   63 +++++++++++++++++++++++++++++++++++-
-> >  include/linux/platform_data/edma.h |    1 +
-> >  2 files changed, 63 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
-> > index 6d2a590..b761b7a 100644
-> > --- a/arch/arm/common/edma.c
-> > +++ b/arch/arm/common/edma.c
-> > @@ -1425,6 +1425,53 @@ static int edma_of_read_u32_to_s16_array(const struct device_node *np,
-> >  	return 0;
-> >  }
-> >  
-> > +static int edma_xbar_event_map(struct device *dev,
-> > +			       struct device_node *node,
-> > +			       struct edma_soc_info *pdata, int len)
-> > +{
-> > +	int ret = 0;
-> > +	int i;
-> > +	struct resource res;
-> > +	void *xbar;
-> > +	s16 (*xbar_chans)[2];
-> > +	u32 shift, offset, mux;
-> > +
-> > +	xbar_chans = devm_kzalloc(dev,
-> > +				  len/sizeof(s16) + 2*sizeof(s16),
-> > +				  GFP_KERNEL);
-> > +	if (!xbar_chans)
-> > +		return -ENOMEM;
-> > +
-> > +	ret = of_address_to_resource(node, 1, &res);
-> > +	if (IS_ERR_VALUE(ret))
-> > +		return -EIO;
-> > +
-> > +	xbar = devm_ioremap(dev, res.start, resource_size(&res));
-> > +	if (!xbar)
-> > +		return -EIO;
+> > Don't do this. If you really want to assign a specific bus number,
+> > then use a property in /aliases. cell-index has been deprecated a very
+> > long time ago now.
 > 
-> -ENOMEM is more appropiate for ioremap failures.
-
-Fixed in v4.
-
+> Ummm.. I really should read patches before I reply to them. I see you're
+> removing cell-index, not adding it back in. It is fine.
 > 
-> > +
-> > +	ret = edma_of_read_u32_to_s16_array(node,
-> > +					    "ti,edma-xbar-event-map",
-> > +					    (s16 *)xbar_chans,
-> > +					    len/sizeof(u32));
-> > +	if (IS_ERR_VALUE(ret))
-> > +		return -EIO;
-> > +
-> > +	for (i = 0; xbar_chans[i][0] != -1; i++) {
-> > +		shift = (xbar_chans[i][1] % 4) * 8;
-> > +		offset = xbar_chans[i][1] >> 2;
-> > +		offset <<= 2;
-> > +		mux = __raw_readl((void *)((u32)xbar + offset));
-> 
-> Dont use __raw* variants of io accessors. There will be ordering issues
-> on ARMv7.
+> Aliases would be a more generic solution though. Would this following
+> change work for you? Try it out and let me know.
 
-Fixed in v4.
+Sorry for delay. I've tried it now, it doesn't work. The mpc5121
+psc spi driver also needs to get/enable psc clock of the used psc
+controller. It uses psc bus number to generate psc clock name
+string and to get and enable this clock, so I need to set
+the bus number in the driver. I'll use of_alias_get_id() in the
+the psc spi driver.
 
-> 
-> > +		mux &= (~(0xff << shift));
-> > +		mux |= (xbar_chans[i][0] << shift);
-> 
-> Unnecessary parens above.
 
-Fixed in v4.
+Thanks,
 
-> 
-> > +		__raw_writel(mux, (void *)((u32)xbar + offset));
-> > +	}
-> > +
-> > +	pdata->xbar_chans = xbar_chans;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int edma_of_parse_dt(struct device *dev,
-> >  			    struct device_node *node,
-> >  			    struct edma_soc_info *pdata)
-> > @@ -1453,7 +1500,6 @@ static int edma_of_parse_dt(struct device *dev,
-> >  	pdata->n_slot = value;
-> >  
-> >  	pdata->n_cc = 1;
-> > -	/* This is unused */
-> 
-> The comment should have not been part of 4/16?
+Anatolij
 
-Correct. I moved the change to the correct patch in v4.
-
-> 
-> Thanks,
-> Sekhar
-> _______________________________________________
-> Davinci-linux-open-source mailing list
-> Davinci-linux-open-source@linux.davincidsp.com
-> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122712

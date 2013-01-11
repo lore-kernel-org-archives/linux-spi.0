@@ -1,126 +1,53 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v4 05/14] dmaengine: edma: Add TI EDMA device tree binding
-Date: Fri, 11 Jan 2013 09:30:07 -0500
-Message-ID: <20130111143007.GX14660@beef>
-References: <1357883330-5364-1-git-send-email-mporter@ti.com>
- <1357883330-5364-6-git-send-email-mporter@ti.com>
- <06e6ba0bd8984e1797c84d2926584909@DFLE72.ent.ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Tony Lindgren <tony@atomide.com>,
-	"Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Chris Ball <
-To: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <06e6ba0bd8984e1797c84d2926584909@DFLE72.ent.ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: Add the flag indicate to registe new device as children of master or not.
+Date: Fri, 11 Jan 2013 14:57:54 +0000
+Message-ID: <20130111145754.76BB53E08C3@localhost>
+References: <1355848174.1435.25.camel@chenjun-workstation> <20121218152623.GA26077@sirena.org.uk> <1355910243.1435.39.camel@chenjun-workstation> <20121219090416.GK4985@opensource.wolfsonmicro.com> <20121219162142.9E1123E0B72@localhost> <1356111592.731.4.camel@chenjun-workstation> <20121221190618.6D6D03E0C98@localhost> <1356365812.6818.24.camel@chenjun-workstation>
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	linux-kernel@vger.kernel.org, Bi Chao <chao.bi@intel.com>,
+	spi-devel-general@lists.sourceforge.net, jun.zhang@intel.com
+To: Jun Chen <jun.d.chen@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1356365812.6818.24.camel@chenjun-workstation>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 11, 2013 at 07:54:05AM +0000, Hebbar, Gururaja wrote:
-> On Fri, Jan 11, 2013 at 11:18:41, Porter, Matt wrote:
-> > The binding definition is based on the generic DMA controller
-> > binding.
+On Mon, 24 Dec 2012 11:16:52 -0500, Jun Chen <jun.d.chen@intel.com> wrote:
+> On Fri, 2012-12-21 at 19:06 +0000, Grant Likely wrote:
+> > The problem is that I don't understand why this change is necessary.
+> > spi_devices should always be children of an spi_master, not siblings.
+> > What is the problem you're trying to solve with this change?
 > > 
-> > Signed-off-by: Matt Porter <mporter@ti.com>
-> > ---
-> >  Documentation/devicetree/bindings/dma/ti-edma.txt |   51 +++++++++++++++++++++
-> >  1 file changed, 51 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/dma/ti-edma.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > new file mode 100644
-> > index 0000000..3344345
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > @@ -0,0 +1,51 @@
-> > +TI EDMA
-> > +
-> > +Required properties:
-> > +- compatible : "ti,edma3"
-> > +- ti,hwmods: Name of the hwmods associated to the EDMA
-> > +- ti,edma-regions: Number of regions
-> > +- ti,edma-slots: Number of slots
-> > +- ti,edma-queue-tc-map: List of transfer control to queue mappings
-> > +- ti,edma-queue-priority-map: List of queue priority mappings
-> > +- ti,edma-default-queue: Default queue value
-> > +
-> > +Optional properties:
-> > +- ti,edma-reserved-channels: List of reserved channel regions
-> > +- ti,edma-reserved-slots: List of reserved slot regions
-> > +- ti,edma-xbar-event-map: Crossbar event to channel map
-> > +
-> > +Example:
-> > +
-> > +edma: edma@49000000 {
-> > +	#address-cells = <1>;
-> > +	#size-cells = <0>;
+> When spi drivers try to use the core function(spi_register_master),it
+> will trigger error,because they use the function
+> spi_match_master_to_boardinfo  to create new spi device as the children
+> of the master.
+> In the old version of spi core, the new devices are registered as
+> siblings of the spi_master. My spi driver based on the old version runs
+> normal.
 > 
-> address-cells & size-cells are only required when current node is a parent 
-> node & it has sibling/child nodes (that too if the child node uses "reg" 
-> property).
+> But after applying for this patch:
+> {
+>     spi: Fix device unregistration when unregistering the bus master
+>     
+>     Device are added as children of the bus master's parent device, but
+>     spi_unregister_master() looks for devices to unregister in the bus
+>     master's children. This results in the child devices not being
+>     unregistered.
+>     
+>     Fix this by registering devices as direct children of the bus
+> master.
+> 
+> 
+> -	spi->dev.parent = dev;
+> +	spi->dev.parent = &master->dev;
+> }
+> 
+> Then my driver will be crash.
+> Maybe I have mistake on this issue, thank for your more explanation and
+> detail replay. 
 
-Yes, agreed. I addressed this in the actual dts but failed to update the
-binding itself. Will update.
+Sounds like you've got a driver bug. Make sure it isn't trying to use
+the spi_client parent pointer to find the device instance.
 
-> 
-> > +	reg = <0x49000000 0x10000>;
-> > +	interrupt-parent = <&intc>;
-> > +	interrupts = <12 13 14>;
-> > +	compatible = "ti,edma3";
-> > +	ti,hwmods = "tpcc", "tptc0", "tptc1", "tptc2";
-> > +	#dma-cells = <1>;
-> > +	dma-channels = <64>;
-> > +	ti,edma-regions = <4>;
-> > +	ti,edma-slots = <256>;
-> > +	ti,edma-reserved-channels = <0  2
-> > +				     14 2
-> > +				     26 6
-> > +				     48 4
-> > +				     56 8>;
-> > +	ti,edma-reserved-slots = <0  2
-> > +				  14 2
-> > +				  26 6
-> > +				  48 4
-> > +				  56 8
-> > +				  64 127>;
-> > +	ti,edma-queue-tc-map = <0 0
-> > +				1 1
-> > +				2 2>;
-> > +	ti,edma-queue-priority-map = <0 0
-> > +				      1 1
-> > +				      2 2>;
-> > +	ti,edma-default-queue = <0>;
-> > +	ti,edma-xbar-event-map = <1 12
-> > +				  2 13>;
-> > +};
-> > -- 
-> > 1.7.9.5
-> > 
-> > _______________________________________________
-> > Davinci-linux-open-source mailing list
-> > Davinci-linux-open-source@linux.davincidsp.com
-> > http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
-> > 
-> 
-> 
-> Regards, 
-> Gururaja
+g.

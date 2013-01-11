@@ -1,76 +1,81 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: fix return value check in hspi_probe().
-Date: Fri, 11 Jan 2013 15:02:02 +0000
-Message-ID: <20130111150202.C25583E08C3@localhost>
-References: <1355271894-5284-1-git-send-email-tipecaml@gmail.com>
-	<1355271894-5284-6-git-send-email-tipecaml@gmail.com>
-	<87txrsqf7f.wl%kuninori.morimoto.gx@renesas.com>
-	<20121219151154.937EC3E0AD7@localhost>
-	<20121219163914.GN5032@mwanda>
-	<20121222095620.83E243E07FA@localhost>
-	<20130103160455.GO7247@mwanda>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v4 07/14] dmaengine: add
+ dma_request_slave_channel_compat()
+Date: Fri, 11 Jan 2013 09:52:23 -0800
+Message-ID: <20130111175223.GF14149@atomide.com>
+References: <1357883330-5364-1-git-send-email-mporter@ti.com>
+ <1357883330-5364-8-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130103160455.GO7247@mwanda>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Sekhar Nori <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Arnd Bergmann <arnd@arndb.de>, Dan Williams <djbw@fb.com>,
+	Rob Herring <rob.herring@calxeda.com>
+To: Matt Porter <mporter@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1357883330-5364-8-git-send-email-mporter@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 3 Jan 2013 19:04:55 +0300, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
-> On Sat, Dec 22, 2012 at 09:56:20AM +0000, Grant Likely wrote:
-> > On Wed, 19 Dec 2012 19:39:14 +0300, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
-> > > On Wed, Dec 19, 2012 at 03:11:54PM +0000, Grant Likely wrote:
-> > > > On Tue, 11 Dec 2012 16:36:27 -0800 (PST), Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org> wrote:
-> > > > > 
-> > > > > Hi
-> > > > > 
-> > > > > > According to its documentation, clk_get() returns a "valid IS_ERR() condition
-> > > > > > containing errno", so we should call IS_ERR() rather than a NULL check.
-> > > > > > 
-> > > > > > Signed-off-by: Cyril Roelandt <tipecaml-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > > > > 
-> > > > > Acked-by: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-> > > > 
-> > > > Applied, thanks.
-> > > 
-> > > In another thread, we were just talking about who clk_get() can
-> > > return a NULL if !CONFIG_HAVE_CLK.  That might change to match the
-> > > documentation later...  Not sure.
-> > 
-> > So what is the solution here? Will the dummy clk_get() be changed, or is
-> > there more work needed on the drivers?
-> > 
+* Matt Porter <mporter@ti.com> [130110 21:47]:
+> Adds a dma_request_slave_channel_compat() wrapper which accepts
+> both the arguments from dma_request_channel() and
+> dma_request_slave_channel(). Based on whether the driver is
+> instantiated via DT, the appropriate channel request call will be
+> made.
 > 
-> This driver can't function without a clk.  It should select that at
-> build time instead of testing for it at probe.  Just checking for
-> IS_ERR() will NOT cause a NULL dereference so the patch is ok in
-> that respect.  I'm not sure if this can be build without
-> CONFIG_HAVE_CLK.
+> This allows for a much cleaner migration of drivers to the
+> dmaengine DT API as platforms continue to be mixed between those
+> that boot using DT and those that do not.
 
-Your suggestion is to make this driver depend on CONFIG_HAVE_CLK? I'm
-fine with that, but it doesn't sort out the core infrastructure question
-about whether it is valid for the empty clk_get() to return NULL. Nor is
-it a particularly sustainable solution (ie. if a large number of drivers
-want to do the same thing).
+Cool, looks like the driver changes are quite minimal after this:
 
-g.
+Acked-by: Tony Lindgren <tony@atomide.com>
 
-------------------------------------------------------------------------------
-Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
-much more. Get web development skills now with LearnDevNow -
-350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
-SALE $99.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122812
+> 
+> Suggested-by: Tony Lindgren <tony@atomide.com>
+> Signed-off-by: Matt Porter <mporter@ti.com>
+> ---
+>  include/linux/dmaengine.h |   10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index 9fd0c5b..64f9f69 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -1047,6 +1047,16 @@ void dma_run_dependencies(struct dma_async_tx_descriptor *tx);
+>  struct dma_chan *dma_find_channel(enum dma_transaction_type tx_type);
+>  struct dma_chan *net_dma_find_channel(void);
+>  #define dma_request_channel(mask, x, y) __dma_request_channel(&(mask), x, y)
+> +static inline struct dma_chan
+> +*dma_request_slave_channel_compat(dma_cap_mask_t mask, dma_filter_fn fn,
+> +				  void *fn_param, struct device *dev,
+> +				  char *name)
+> +{
+> +	if (dev->of_node)
+> +		return dma_request_slave_channel(dev, name);
+> +	else
+> +		return dma_request_channel(mask, fn, fn_param);
+> +}
+>  
+>  /* --- Helper iov-locking functions --- */
+>  
+> -- 
+> 1.7.9.5
+> 

@@ -1,12 +1,15 @@
-From: =?iso-8859-15?Q?Soldes_Dessous_Ch=E9ri?= <news-HtS1wjtTMKHRput9eeYPBq0bRtRcJeJQ@public.gmane.org>
-Subject: Soldes massives, moins 90 pourcent sur tous les rayons
-Date: Fri, 11 Jan 2013 11:18:11 +0100 (CET)
-Message-ID: <2.1.2.1101003161.407797.6886493295@news.dessouscheri.com>
-Reply-To: Clara <clara-hg/+U7oqXuzmoOuP/ntudA@public.gmane.org>
+From: "Wilmot" <webmaster-gYg2iLwbw8ZBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] We offer casino, poker. Also sports betting and binary options.
+Date: Fri, 11 Jan 2013 15:05:08 +0400
+Message-ID: <2659FBFC9238423496B27A34769FB56D@xfkp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <janderson-6UZZFLQ7aLUdnm+yROfE0A@public.gmane.org>,
+	<kif-ow8GeQco6TWJd9ydfpdESNBPR1lH4CV8@public.gmane.org>, <polkajock-LjRBWs/Th6RBDgjK7y7TUQ@public.gmane.org>,
+	<support-uMe//3963wJ1PuvKE72qayWTkRzJkiQl@public.gmane.org>, <pwalker-aihBOO89d3JP91t7zGSM6Q@public.gmane.org>,
+	<enhancinglife-Lh2ygAtTN0NSV923RJcDwA@public.gmane.org>, <support-ytEFv4+x/n5AyLCluGKeIQC/G2K4zDHf@public.gmane.org>,
+	<info-j+Jq+BIf7MwwahIq6g9d7wC/G2K4zDHf@public.gmane.org>, <irvinhart-DVq+YeWbj7cAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,24 +21,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello! Happy New Year!
 
-Merci d'ajouter notre adresse =E0 votre carnet d'adresses pour =EAtre s=FBr=
- que nos messages arrivent bien dans votre bo=EEte de r=E9ception. Visualis=
-er ce message en ligne http://news.dessouscheri.com/HM?a=3DENX7Cqi8-r2A8SA9=
-MKJJ4w_nGHxKLCaG0fcStGb5lw8W0bBhOG5mpqVsje_Hhe-kulJ9
+  We offer you fun!
+  On our website you can select the game of your choice:
+* Casino- Slot machines, Roulette, Video poker, Table games.
+* Live-casino- Casino Hold'em, Roulette, Blackjack, Baccarat, 777-LiveSlot
+* Poker and thousands of players online tournaments will take you to the world level of poker!
+* Sports Betting on Football, Hockey, Tennis and many more.
+* Trading (bet on Binary Options) - up to 85% of the investment every 2 minutes!
 
-Soldes massives, moins 90 pourcent sur tous les rayons
-http://news.dessouscheri.com/HS?a=3DENX7Cqi8-r2A8SA9MKJJ4w_nGHxKLCaHMvcStGb=
-5lw8W0bBhOG5mpqVsje_Hhe-kulNZ
-
-Votre adresse email figure dans notre base de donn=E9es parce que vous y av=
-ez adh=E9rer.Il ne s'agit donc pas d'un spam. Si vous souhaitez cependant v=
-ous desabonner, veuillez aller =E0 cette adresse http://news.dessouscheri.c=
-om/HD?a=3DENX7Cqi8-r2A8SA9MKJJ4w_nGHxKLCaG1vcStGb5lw8W0bBhOG5mpqVsje_Hhe-ku=
-lOC
-
----------------------------------------------------------------------------=
----
+ Our website-    http://bit.ly/W2dXYT
+------------------------------------------------------------------------------
 Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
 much more. Get web development skills now with LearnDevNow -
 350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.

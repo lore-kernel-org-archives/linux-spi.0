@@ -1,52 +1,66 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v4 00/14] DMA Engine support for AM33XX
-Date: Fri, 11 Jan 2013 20:12:45 +0000
-Message-ID: <201301112012.45981.arnd@arndb.de>
-References: <1357883330-5364-1-git-send-email-mporter@ti.com>
- <201301111140.41584.arnd@arndb.de> <20130111183349.GA14660@beef>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH v2 01/10] spi: tegra: Do not use clock name to get clock
+Date: Fri, 11 Jan 2013 13:58:28 -0700
+Message-ID: <50F07CF4.2090502@wwwdotorg.org>
+References: <1357891289-23500-1-git-send-email-pgaikwad@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20130111183349.GA14660@beef>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Cc: Prashant Gaikwad <pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1357891289-23500-1-git-send-email-pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 11 January 2013, Matt Porter wrote:
-> We have tightly coupled the link-time dependency for
-> omap_dma_filter_fn by going down the path of using
-> dma_request_slave_channel_compat() as Tony suggested to avoid extra
-> ifdefry.
-> 
-> That dependency will go away naturally if all the "legacy" OMAP platforms
-> were required to only boot from DT...just as a newly added SoCs are.
-> 
-> Are you suggesting unwinding the _compat() approach?
+On 01/11/2013 01:01 AM, Prashant Gaikwad wrote:
+> Since Tegra spi devices do not have multiple clocks, no need to use
+> clock name to get the clock.
 
-No, I was thinking we could define omap_dma_filter_fn to NULL
-for the DT-only case.
+Cc'ing in the SPI maintainers as an FYI and for Acks; this patch needs
+to go through the Tegra tree due to dependencies.
 
-	Arnd
+> Signed-off-by: Prashant Gaikwad <pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> ---
+> This series depends on v4 of Tegra's ccf-rework patch series.
+> Tested on Ventana (Tegra20) and Cardhu (Tegra30).
+> Rebased on Tegra's for-3.9/soc and for-3.9/cleanup.
+> 
+> Changes from V1:
+> - Fixed clock lookup for SPI and nvec drivers.
+> - Add clock information for nvec in device tree.
+> ---
+>  drivers/spi/spi-tegra20-sflash.c |    2 +-
+>  drivers/spi/spi-tegra20-slink.c  |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+> index 02feaa5..e5dce91 100644
+> --- a/drivers/spi/spi-tegra20-sflash.c
+> +++ b/drivers/spi/spi-tegra20-sflash.c
+> @@ -525,7 +525,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+>  		goto exit_free_master;
+>  	}
+>  
+> -	tsd->clk = devm_clk_get(&pdev->dev, "spi");
+> +	tsd->clk = devm_clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(tsd->clk)) {
+>  		dev_err(&pdev->dev, "can not get clock\n");
+>  		ret = PTR_ERR(tsd->clk);
+> diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+> index fa208a5..e255e7a 100644
+> --- a/drivers/spi/spi-tegra20-slink.c
+> +++ b/drivers/spi/spi-tegra20-slink.c
+> @@ -1191,7 +1191,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
+>  		goto exit_free_master;
+>  	}
+>  
+> -	tspi->clk = devm_clk_get(&pdev->dev, "slink");
+> +	tspi->clk = devm_clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(tspi->clk)) {
+>  		dev_err(&pdev->dev, "can not get clock\n");
+>  		ret = PTR_ERR(tspi->clk);
+> 

@@ -1,17 +1,12 @@
-From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [v4 PATCH 09/12] spi/atmel_spi: correct 16 bits transfer with DMA
-Date: Mon, 14 Jan 2013 15:34:34 +0800
-Message-ID: <1358148877-18679-10-git-send-email-wenyou.yang@atmel.com>
-References: <1358148877-18679-1-git-send-email-wenyou.yang@atmel.com>
+From: "Mike Bernhard" <MB2013.NoReply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: Re: Can I send you some new customers?
+Date: Sun, 13 Jan 2013 20:53:05 -0700
+Message-ID: <102c8a75a2cb47c0dd1bfcfa00107685@ymail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1358148877-18679-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,64 +17,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Hello, 
 
-Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
----
- drivers/spi/spi-atmel.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+Can I direct some targeted customers to your website or telephone? Our company has access to 200 million consumers and 45 million businesses. Please contact me today at 1 (800) 676-2011 Ext 230, so I can explain how we can use our databases to increase sales for your company immediately.
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index a20cd03..8984563 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -452,12 +452,18 @@ static inline int atmel_spi_xfer_can_be_chained(struct spi_transfer *xfer)
- }
- 
- static int atmel_spi_dma_slave_config(struct atmel_spi *as,
--				struct dma_slave_config *slave_config)
-+				struct dma_slave_config *slave_config,
-+				u8 bits_per_word)
- {
- 	int err = 0;
- 
--	slave_config->dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
--	slave_config->src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	if (bits_per_word > 8) {
-+		slave_config->dst_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+		slave_config->src_addr_width = DMA_SLAVE_BUSWIDTH_2_BYTES;
-+	} else {
-+		slave_config->dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+		slave_config->src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	}
- 
- 	slave_config->dst_addr = (dma_addr_t)as->phybase + SPI_TDR;
- 	slave_config->src_addr = (dma_addr_t)as->phybase + SPI_RDR;
-@@ -519,7 +525,7 @@ static int __devinit atmel_spi_configure_dma(struct atmel_spi *as)
- 		goto error;
- 	}
- 
--	err = atmel_spi_dma_slave_config(as, &slave_config);
-+	err = atmel_spi_dma_slave_config(as, &slave_config, 8);
- 	if (err)
- 		goto error;
- 
-@@ -653,10 +659,9 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
- 
- 	*plen = len;
- 
--	if (atmel_spi_dma_slave_config(as, &slave_config))
-+	if (atmel_spi_dma_slave_config(as, &slave_config, 8))
- 		goto err_exit;
- 
--
- 	/* Send both scatterlists */
- 	rxdesc = rxchan->device->device_prep_slave_sg(rxchan,
- 					&as->dma.sgrx,
--- 
-1.7.9.5
+We look forward to working with your company! 
+
+Sincerely, 
+
+Mike Bernhard 
+Senior Prospect Specialist 
+E-mail Marketing Services 
+1 (800) 676-2011 Ext 230 
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages <mailto:eddie.roberts-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
 
 
 ------------------------------------------------------------------------------

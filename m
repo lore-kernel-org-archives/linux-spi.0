@@ -1,7 +1,8 @@
 From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [v4 PATCH 02/12] spi/atmel_spi: call unmapping on transfers buffers
-Date: Mon, 14 Jan 2013 15:34:27 +0800
-Message-ID: <1358148877-18679-3-git-send-email-wenyou.yang@atmel.com>
+Subject: [v4 PATCH 03/12] spi/atmel_spi: status information passed through
+	controller data
+Date: Mon, 14 Jan 2013 15:34:28 +0800
+Message-ID: <1358148877-18679-4-git-send-email-wenyou.yang@atmel.com>
 References: <1358148877-18679-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -24,39 +25,75 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 
+The status of transfer is stored in controller data structure
+so that it can be used not only by atmel_spi_msg_done() function.
+This will be useful for upcoming dmaengine enabled driver.
+
 Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 ---
- drivers/spi/spi-atmel.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/spi/spi-atmel.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 4516839..9782206 100644
+index 9782206..687075e 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -1016,6 +1016,7 @@ static int atmel_spi_remove(struct platform_device *pdev)
- 	struct spi_master	*master = platform_get_drvdata(pdev);
- 	struct atmel_spi	*as = spi_master_get_devdata(master);
- 	struct spi_message	*msg;
-+	struct spi_transfer	*xfer;
+@@ -202,6 +202,7 @@ struct atmel_spi {
+ 	unsigned long		current_remaining_bytes;
+ 	struct spi_transfer	*next_transfer;
+ 	unsigned long		next_remaining_bytes;
++	int			done_status;
  
- 	/* reset the hardware and block queue progress */
- 	spin_lock_irq(&as->lock);
-@@ -1027,9 +1028,10 @@ static int atmel_spi_remove(struct platform_device *pdev)
+ 	void			*buffer;
+ 	dma_addr_t		buffer_dma;
+@@ -545,15 +546,15 @@ static void atmel_spi_dma_unmap_xfer(struct spi_master *master,
  
- 	/* Terminate remaining queued transfers */
- 	list_for_each_entry(msg, &as->queue, queue) {
--		/* REVISIT unmapping the dma is a NOP on ARM and AVR32
--		 * but we shouldn't depend on that...
--		 */
-+		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+			if (!msg->is_dma_mapped)
-+				atmel_spi_dma_unmap_xfer(master, xfer);
-+		}
- 		msg->status = -ESHUTDOWN;
- 		msg->complete(msg->context);
- 	}
+ static void
+ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
+-		struct spi_message *msg, int status, int stay)
++		struct spi_message *msg, int stay)
+ {
+-	if (!stay || status < 0)
++	if (!stay || as->done_status < 0)
+ 		cs_deactivate(as, msg->spi);
+ 	else
+ 		as->stay = msg->spi;
+ 
+ 	list_del(&msg->queue);
+-	msg->status = status;
++	msg->status = as->done_status;
+ 
+ 	dev_dbg(master->dev.parent,
+ 		"xfer complete: %u bytes transferred\n",
+@@ -565,6 +566,7 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
+ 
+ 	as->current_transfer = NULL;
+ 	as->next_transfer = NULL;
++	as->done_status = 0;
+ 
+ 	/* continue if needed */
+ 	if (list_empty(&as->queue) || as->stopping)
+@@ -642,7 +644,8 @@ atmel_spi_interrupt(int irq, void *dev_id)
+ 		/* Clear any overrun happening while cleaning up */
+ 		spi_readl(as, SR);
+ 
+-		atmel_spi_msg_done(master, as, msg, -EIO, 0);
++		as->done_status = -EIO;
++		atmel_spi_msg_done(master, as, msg, 0);
+ 	} else if (pending & (SPI_BIT(RXBUFF) | SPI_BIT(ENDRX))) {
+ 		ret = IRQ_HANDLED;
+ 
+@@ -660,7 +663,7 @@ atmel_spi_interrupt(int irq, void *dev_id)
+ 
+ 			if (atmel_spi_xfer_is_last(msg, xfer)) {
+ 				/* report completed message */
+-				atmel_spi_msg_done(master, as, msg, 0,
++				atmel_spi_msg_done(master, as, msg,
+ 						xfer->cs_change);
+ 			} else {
+ 				if (xfer->cs_change) {
 -- 
 1.7.9.5
 

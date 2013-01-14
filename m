@@ -1,15 +1,12 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] MAINTAINERS: Add myself as a backup maintainer for SPI
-Date: Mon, 14 Jan 2013 12:28:52 +0000
-Message-ID: <CACxGe6s4i=ZaZCy2yKG+Fxp0Bd7swG33tOYRXew=x5Xu1pzQtQ@mail.gmail.com>
-References: <1358130722-21522-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: 15989349144-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 15 Jan 2013 03:54:00 +0800
+Message-ID: <E1Tuq6i-0000xM-Jt@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1358130722-21522-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -20,45 +17,16 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 14, 2013 at 2:32 AM, Mark Brown
-<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> Grant said he would find it helpful for me to continue handling some of
-> the legwork for SPI so add myself to MAINTAINERS so I get CCed on
-> patches.
->
-> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-
-> ---
->  MAINTAINERS |    1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ae9f8b8..6332eff 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7391,6 +7391,7 @@ F:        drivers/clk/spear/
->
->  SPI SUBSYSTEM
->  M:     Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> +M:     Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
->  L:     spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
->  Q:     http://patchwork.kernel.org/project/spi-devel-general/list/
->  T:     git git://git.secretlab.ca/git/linux-2.6.git
-> --
-> 1.7.10.4
->
-
-
-
---
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. SALE $99.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122412
+xPq6w6O6CiAgICDP1rG+uavLvtPQ0ruyv7fW16jTw8uwoaqhqsaxtPq/qqO7CrnzuavLvsjn09DQ
+6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6ICAKICAKICAgILi61PDIy6O61cXPyMn6KDApMTU5
+ODkzNDkxNDQKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNYXN0ZXIgVmlzdWFsIFN0dWRpbywgU2hh
+cmVQb2ludCwgU1FMLCBBU1AuTkVULCBDIyAyMDEyLCBIVE1MNSwgQ1NTLApNVkMsIFdpbmRvd3Mg
+OCBBcHBzLCBKYXZhU2NyaXB0IGFuZCBtdWNoIG1vcmUuIEtlZXAgeW91ciBza2lsbHMgY3VycmVu
+dAp3aXRoIExlYXJuRGV2Tm93IC0gMywyMDAgc3RlcC1ieS1zdGVwIHZpZGVvIHR1dG9yaWFscyBi
+eSBNaWNyb3NvZnQKTVZQcyBhbmQgZXhwZXJ0cy4gU0FMRSAkOTkuOTkgdGhpcyBtb250aCBvbmx5
+IC0tIGxlYXJuIG1vcmUgYXQ6Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvbGVhcm5tb3JlXzEyMjQxMgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

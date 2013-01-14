@@ -1,28 +1,51 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH v2 01/10] spi: tegra: Do not use clock name to get clock
-Date: Mon, 14 Jan 2013 20:17:26 +0000
-Message-ID: <20130114201726.C11F73E249D@localhost>
-References: <1357891289-23500-1-git-send-email-pgaikwad@nvidia.com> <50F07CF4.2090502@wwwdotorg.org>
-Cc: Prashant Gaikwad <pgaikwad-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <50F07CF4.2090502-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH 1/2] spi: spi-mpc512x-psc: init mode bits supported by the
+	driver
+Date: Mon, 14 Jan 2013 21:27:00 +0100
+Message-ID: <1358195221-18488-1-git-send-email-agust@denx.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, 11 Jan 2013 13:58:28 -0700, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
-> On 01/11/2013 01:01 AM, Prashant Gaikwad wrote:
-> > Since Tegra spi devices do not have multiple clocks, no need to use
-> > clock name to get the clock.
-> 
-> Cc'ing in the SPI maintainers as an FYI and for Acks; this patch needs
-> to go through the Tegra tree due to dependencies.
+The driver should setup mode bits it supports, otherwise
+adding an SPI device might fail even if the driver supports
+the requested SPI mode.
 
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+---
+ drivers/spi/spi-mpc512x-psc.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-No problem merging it via the Tegra tree.
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 88e5441..89480b2 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -438,6 +438,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 		master->num_chipselect = pdata->max_chipselect;
+ 	}
+ 
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
+ 	master->setup = mpc512x_psc_spi_setup;
+ 	master->transfer = mpc512x_psc_spi_transfer;
+ 	master->cleanup = mpc512x_psc_spi_cleanup;
+-- 
+1.7.5.4
 
-g.
+
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122412

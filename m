@@ -1,16 +1,14 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: erase pointer to drvdata on removal
-Date: Mon, 14 Jan 2013 02:51:45 +0000
-Message-ID: <20130114025145.GC4928@sirena.org.uk>
-References: <1351793136-14126-1-git-send-email-vivien.didelot@savoirfairelinux.com>
+Subject: [PATCH] MAINTAINERS: Add myself as a backup maintainer for SPI
+Date: Mon, 14 Jan 2013 11:32:02 +0900
+Message-ID: <1358130722-21522-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Vivien Didelot <vivien.didelot-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1351793136-14126-1-git-send-email-vivien.didelot-4ysUXcep3aM1wj+D4I0NRVaTQe2KTcn/@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,14 +19,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Nov 01, 2012 at 02:05:36PM -0400, Vivien Didelot wrote:
-> As for i2c-core, let the SPI core handle the removal of the device's
-> drvdata, after a remove() or a probe() failure.
+Grant said he would find it helpful for me to continue handling some of
+the legwork for SPI so add myself to MAINTAINERS so I get CCed on
+patches.
 
-Any driver that notices this change is buggy, the driver shouldn't
-use a drvdata value that it didn't set.  I had thought this stuff had
-all been removed from I2C and either dropped or factored out into the
-driver core...
+Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+---
+ MAINTAINERS |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ae9f8b8..6332eff 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7391,6 +7391,7 @@ F:	drivers/clk/spear/
+ 
+ SPI SUBSYSTEM
+ M:	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
++M:	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+ L:	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+ Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
+ T:	git git://git.secretlab.ca/git/linux-2.6.git
+-- 
+1.7.10.4
+
 
 ------------------------------------------------------------------------------
 Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,

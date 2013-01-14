@@ -1,12 +1,15 @@
-From: "Mike Bernhard" <MB2013.NoReply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
-Subject: Re: Can I send you some new customers?
-Date: Sun, 13 Jan 2013 20:53:05 -0700
-Message-ID: <102c8a75a2cb47c0dd1bfcfa00107685@ymail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] MAINTAINERS: Add myself as a backup maintainer for SPI
+Date: Mon, 14 Jan 2013 12:28:52 +0000
+Message-ID: <CACxGe6s4i=ZaZCy2yKG+Fxp0Bd7swG33tOYRXew=x5Xu1pzQtQ@mail.gmail.com>
+References: <1358130722-21522-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1358130722-21522-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,30 +20,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello, 
+On Mon, Jan 14, 2013 at 2:32 AM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> Grant said he would find it helpful for me to continue handling some of
+> the legwork for SPI so add myself to MAINTAINERS so I get CCed on
+> patches.
+>
+> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
-Can I direct some targeted customers to your website or telephone? Our company has access to 200 million consumers and 45 million businesses. Please contact me today at 1 (800) 676-2011 Ext 230, so I can explain how we can use our databases to increase sales for your company immediately.
+Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 
-We look forward to working with your company! 
+> ---
+>  MAINTAINERS |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ae9f8b8..6332eff 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7391,6 +7391,7 @@ F:        drivers/clk/spear/
+>
+>  SPI SUBSYSTEM
+>  M:     Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> +M:     Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+>  L:     spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+>  Q:     http://patchwork.kernel.org/project/spi-devel-general/list/
+>  T:     git git://git.secretlab.ca/git/linux-2.6.git
+> --
+> 1.7.10.4
+>
 
-Sincerely, 
-
-Mike Bernhard 
-Senior Prospect Specialist 
-E-mail Marketing Services 
-1 (800) 676-2011 Ext 230 
 
 
-
-
-
-
-
-
-
-Click This Link to Stop Future Messages <mailto:eddie.roberts-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-
-
+--
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ------------------------------------------------------------------------------
 Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,

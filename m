@@ -1,8 +1,9 @@
-From: LMDV <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?2e_demarque_:_Soldes_stocks_limites_jusqu'=E0_-70%?=
-Date: Wed, 16 Jan 2013 09:30:13 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1854231.3016826189@news.galgalz.com>
-Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
+From: Daxon <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu'=E0_-75%_et_frais_de_por?=
+	=?iso-8859-15?Q?t_gratuit_=E0_partir_de_39_=A4_!?=
+Date: Thu, 17 Jan 2013 17:33:54 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1866415.3016826189@news.localips.com>
+Reply-To: newsletter-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
@@ -18,176 +19,182 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Document sans nom Pour visualiser la version en images, rendez-vous sur =
+DAXON Pour visualiser la version en images, rendez-vous sur cette page =
 
-cette page : =
-
- http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-EfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlBw =
-
-=A0 la maison de Val=E9rie
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-F_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlB2 =
-
-2=E8me D=C9MARQUE !
- : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-FPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB3 =
+http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMhfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHh =
 
 
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-FfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlB0 =
-
-=A0Meubles=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-KvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB1 =
-
-=A0Canap=E9s=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-K_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB6 =
-
-=A0Literie=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-KPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB7 =
-
-=A0Linge
- =A0de maison=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-KfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB4 =
-
-D=E9coration=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-LvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB5 =
-
-=A0Petit
- =A0=E9lectrom=E9nager=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-L_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB- =
-
-=A0Gros
- =A0=E9lectrom=E9nager=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-LPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB_ =
-
-Image, son
- & multim=E9dia : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-LfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB8 =
-
-=A0Jardin
- =A0& loisirs=A0 : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-IvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlB9 =
+Daxon.fr
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMm_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHn =
 
 
-SOLDES
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-I_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGC =
+Femme
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMmPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHk =
 
-jusqu au 12 f=E9vrier 2013
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-IPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGD =
+Lingerie
 
-stocks limit=E9s
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-IfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGA =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMmfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHl
+Chaussures
 
--40% -50% -60% -70%
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-JvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGB =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMnvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHq
+Homme
 
-=A0?Acc=E8s direct aux produits sold=E9s : =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMn_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHr
+Linge de maison
 
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-J_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGG =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMnPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHo
+
+SOLDES Destockage massif
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMnfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHp
+Jusqu'&agrave; -75%
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMkvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHu
+2&egrave;me d&eacute;marque, encore plus de r&eacute;ductions !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMk_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHv
+Femme
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMkPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHs =
+
+En plus pour vous !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMkfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHt
+Lingerie
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMlvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHy
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMl_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHz =
+
+Chaussures
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMlPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHw
+0=80
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMlfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHx =
+
+Homme
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMqvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH2
+LIVRAISON OFFERTE
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMq_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH3
+Linge de maison
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMqPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH0
+D&egrave;s 39=80 d'achats
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMqfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH1
+J'en profite gr&acirc;ce au code privil&egrave;ge 7752
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMrvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH6
+Femme
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMr_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH7 =
+
+Homme
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMrPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH4
+Lingerie
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMrfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH5
+Chaussures
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMovcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH-
+Collection Pr&ecirc;t-&agrave;-porter Femme
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMo_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH_
+Collection Pr&ecirc;t-&agrave;-porter Homme
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMoPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH8
+Collection Lingerie
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMofcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlH9
+Collection Chaussures
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMpvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEC
+Livraison en 48h pr&egrave;s de chez vous !
+
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMp_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlED
+Colissimo en 2 &agrave; 4 jours chez vous =
 
 
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMpPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEA
+30 jours pour changer d'avis
 
-garantie paiement
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-JPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGH =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMpfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEB
+R&eacute;glez par ch&egrave;que
 
-garanties
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-JfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGE =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMuvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEG
+R&eacute;glez par Carte Kangourou
 
-livraison
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-OvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGF =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMu_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEH
+Paiement 100% s&eacute;curis&eacute;
 
-service-apres-vente
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-O_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGK =
-
-3000 Relais-Colis
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-OPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGL =
-
-facilit=E9s de paiement
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-OfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlGI =
-
-paiement d=E9bit=E9
- apr=E8s exp=E9dition : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-PvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGJ =
-
-Garanties 1 an minimum : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-P_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGO =
-
-Petits et gros colis chez vous : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-PPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGP =
-
-Intervention partout
-en France : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-PfcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGM =
-
-3000 Relais-Colis pr=E8s de chez vous : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-MvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGN =
-
-facilit=E9s de paiement : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-M_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlGS =
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJToVXnGHxKLoHMuPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlEE
 
 
-Conform=E9ment =E0 la loi Informatique et Libert=E9 du 06 Janvier 1978, vou=
-s =
+ Le Code Privil&egrave;ge 7752 vous permet de b&eacute;n&eacute;ficier de :=
+ Du 09 janvier =
 
-disposez d'un droit d'acc=E8s, de rectification et d'opposition aux =
+2013 au 19 f&eacute;vrier 2013, profitez de r&eacute;ductions allant jusqu'=
+&agrave; - 75% =
 
-donn=E9es vous concernant. Pour =EAtre retir=E9 de nos listes de diffusion, =
+ainsi que la livraison offerte d&egrave;s 39 &euro; d'achats avec le code a=
+vantage =
 
-rendez-vous sur cette page : =
+7752.
+ Les prix indiqu&eacute;s tiennent d&eacute;j&agrave; compte de la r&eacute=
+;duction. Ces offres ne =
 
- http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJTkO3nGHxKLoX-FvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlBx =
+sont pas cumulables avec d'autres offres en cours.
+Conform&eacute;ment &agrave; la loi Informatique et Libert&eacute; du 06 Ja=
+nvier 1978, vous =
+
+disposez d'un droit d'acc&egrave;s, de rectification et d'opposition aux =
+
+donn&eacute;es vous concernant. Pour &ecirc;tre retir&eacute; de nos listes=
+ de diffusion, =
+
+rendez-vous sur cette page =
 
 
 
 ---------------------------------------------------------------------------=
 ---
-Master Java SE, Java EE, Eclipse, Spring, Hibernate, JavaScript, jQuery
-and much more. Keep your Java skills current with LearnJavaNow -
-200+ hours of step-by-step video tutorials by Java experts.
-SALE $49.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122612 =
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122712

@@ -1,12 +1,12 @@
-From: Thomas De Schampheleire <patrickdepinguin+spidevel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Fixing eSPI controller driver: some queries
-Date: Fri, 18 Jan 2013 10:03:28 +0100
-Message-ID: <CAAXf6LUeAUYOUT70fbYWoG-zcr15Q495MB0f1YLd6su1CLqLEA@mail.gmail.com>
+From: IKKS <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?2=E8me_D=E9marque_et_-15%_suppl=E9mentaires_!?=
+Date: Fri, 18 Jan 2013 16:14:07 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1866598.3016826189@news.galgalz.com>
+Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Ronny Meeus <Ronny.Meeus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,62 +18,99 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+SOLDES IKKS : DEUXI=C8ME D=C9MARQUE Pour visualiser la version en images, =
 
-The Freescale eSPI controller driver is broken in several ways. I already
-attempted to fix this with a patch many months back. The patch works for
-me, but never got feedback from the original author.
-(see https://patchwork.kernel.org/patch/988802/)
+rendez-vous sur cette page : =
 
-The same problems are still present on the current 3.x version of the
-driver. I will now re-investigate the problem, and submit a revised patch
-later.
+ http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXP_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlFq =
 
-I have some queries though:
-- When reading from memory devices, the first bytes received may not yet be
-the real contents of memory, but rather to-be-ignored bytes caused by the
-full-duplex nature of the transaction while sending the command and address
-bytes.
-Am I correct in understanding that these to-be-ignored bytes are to be
-transparently passed through to the requester of the transaction (i.e. a
-protocol driver or a userspace application through spidev) and that it's
-the requestor's responsability to know that these bytes are to be ignored?
+IKKS
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXPfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFo =
 
-- While investigating the various problems of the driver, I am adding print
-statements throughout the code, displaying certain variables and buffer
-contents. What should I do with these when the problems are fixed? Remove
-all such statements, or rather, use a mechanism like dev_dbg (or similar)
-and thus keep them in the code? What is your preference?
-
-- One of the aspects that seems to be broken in the driver is accesses that
-do not have either 8-bits-per-word or 16-bits-per-word, e.g. 7 bpw or 12
-bpw. The hardware defaults to sending least-significant-bits first, and the
-setting to change this is only allowed for 8 or 16 bpw:
-
--------- (datasheet)
-Reverse data mode. Determines the receive and transmit character bit order.
-0 lsb of the character sent and received first
-1 msb of the character sent and received first-for 8/16 bits data character
-only
--------
-
-However, the driver sets this bit (CSMODE_REV) by default, except when the
-mode SPI_LSB_FIRST is explicitly set. This means that a protocol driver
-that requests a 12bpw transaction, will inadvertently cause an illegal mode
-setting in the hardware. It doesn't and shouldn't know of this hardware
-restriction. Is this analysis correct?
-
-What is the correct way of handling this? Clear the bit in case of a sub-8
-or sub-16 bpw transaction, and do the bit swapping in software if
-SPI_LSB_FIRST is not explicitly set?
-Or force SPI_LSB_FIRST in these cases, leaving the bit swapping to the
-protocol driver?
-Or disable support for sub-8 and sub-16 bpw transactions?
+Boutique en ligne
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXMvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFp =
 
 
-Thanks,
-Thomas
-------------------------------------------------------------------------------
+D=E9couvrez les collections IKKS Femme, Enfant & Homme
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXM_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFu =
+
+S O L D E S
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXMPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFv =
+
+DEUXI=C8ME D=C9MARQUE
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXMfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFs =
+
+-30% -40% -50% *
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXNvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFt =
+
+R=E9ductions faites sur les articles signal=E9s par le code coloris =
+
+ci-dessus. -15% SUPPL=C9MENTAIRES ** =E0 partir de 3 articles achet=E9s
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXN_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFy =
+
+DANS L'UNIVERS ADULTE OU DANS L'UNIVERS JUNIOR
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXNPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFz =
+
+facebook
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXNfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlFw =
+
+twitter
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWyvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB2 =
+
+video
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWy_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB3 =
+
+pinterest
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWyPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB0 =
+
+Conditions de l'offre :
+* Offre valable =E0 partir du 16/01/2013 sur IKKS E-Shop.
+R=E9ductions faites sur les articles des collections HIVER 2012 signal=E9s =
+
+par le code coloris (hors collections ETE 2013 & parfums)
+
+** Offre valable =E0 partir du 16/01/2013 sur IKKS E-Shop.
+D=E8s 3 articles achet=E9s dans l'univers ADULTE ou dans l'univers JUNIOR, =
+
+valable sur familles signal=E9es par un bandeau noir (hors accessoires). =
+
+Conform=E9ment =E0 la loi Informatique et Libert=E9 du 06 Janvier 1978, vou=
+s =
+
+disposez d'un droit d'acc=E8s, de rectification et d'opposition aux =
+
+donn=E9es vous concernant. Pour =EAtre retir=E9 de nos listes de diffusion, =
+
+rendez-vous sur cette page : =
+
+ http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOXPPcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlFr =
+
+
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWyfcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB1
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWzvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB6
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWz_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB7
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJToJznGHxKLoOWzPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlB4 =
+
+---------------------------------------------------------------------------=
+---
 Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
 much more. Get web development skills now with LearnDevNow -
 350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.

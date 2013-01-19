@@ -1,8 +1,8 @@
-From: Sinequanone <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?Jusqu'=E0_-60%_et_-10%_suppl=E9men?=
-	=?iso-8859-15?Q?taire_=E0_partir_de_deux_articles?=
-Date: Fri, 18 Jan 2013 18:20:58 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1873490.3016826189@news.galgalz.com>
+From: NafNaf <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
+Subject: =?iso-8859-15?Q?Jusqu'=E0_-60%_et_10=A4_OFFERTS_d=E8s_1?=
+	=?iso-8859-15?Q?20=A4_d'achat_avec_le_code_:_SALES10?=
+Date: Sat, 19 Jan 2013 09:21:45 +0100 (CET)
+Message-ID: <2.1.11.1101030461.1873499.3016826189@news.galgalz.com>
 Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-15"
@@ -19,48 +19,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Sinequanone - Soldes Deuxi=E8me d=E9marque  2eme D=E9marque SINEQUANONE / =
+NL_soldes_D2_affi_inte  2eme D=E9marque NafNaf / Jusqu'=E0 -60% et 10=A4 =
 
-Jusqu'=E0 -60% et -10% SUPPLEMENTAIRES =E0 partir de 2 Articles !!
-
-
-
-SHOP NOW ! : =
-
- http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTTajnGHxKLoOUZPcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlEp =
+OFFERTS d=E8s 120=A4 d'achat avec le code : SALES10 =
 
 
 
 
 Pour visualiser la version en images, rendez-vous sur cette page : =
 
-http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJTTajnGHxKLoOUZvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlEr =
+http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJTTaHnGHxKLoOH9_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHS =
 
-Sinequanone | Soldes Deuxi=E8me d=E9marque
-http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTTajnGHxKLoOUZfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlEu =
+NAF NAF
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTTaHnGHxKLoOH9fcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlHQ =
 
- * Offre valable sur les articles de la collection automne-hiver 2012 =
+10=A4 OFFERTS d=E8s 120=A4 d'achat avec le code SALES10 NAF NAF |=A0Soldes =
 
-identifi=E9s par un pictogramme sur le site, hors articles signal=E9s. =
+deuxi=E8me d=E9marquehttp://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJTTaHnG=
+HxKLoOHivcStGb5lw8W0bBhOG5mpqVsje_HhdA5HlHR =
 
-Offre non cumulable avec toute autre op=E9ration en cours. Les soldes se =
 
-d=E9roulent du 9 janvier (8h) au 12 f=E9vrier 2013 sur www.sinequanone.com
-et dans les boutiques Sinequanone en France m=E9tropolitaine (Zone =
+ *Sur une s=E9lection d'articles de la collection automne-hiver 2012 =
 
-nationale) sauf exceptions. Les 10% suppl=E9mentaires s'appliquent =
+(articles commen=E7ant par la lettre S et TNR51,
+ TNR138AD, TNR75, TNC34, TNC76AD) identifi=E9s par un taux (-20%, -30%, =
 
-automatiquement sur le panier =E0 partir de deux articles achet=E9s. Cette =
+-40%, -50%). Non cumulable avec toute autre op=E9ration.
 
-offre est non cumulable avec les 10% suppl=E9mentaires sur les tailleurs =
+ **Les SOLDES se d=E9roulent du 9 janvier au 12 f=E9vrier 2013 dans les =
 
-et manteaux valables avec le code 10SUPP.
+boutiques NAF NAF en France m=E9tropolitaine (hors stands et magasin de =
 
-. =
+d=E9stockage)
+ et sur www.nafnaf.com. Du 2 janvier au 5 f=E9vrier 2013 sur les =
 
+boutiques des d=E9partements 54/55/57/88. Et du 2 janvier au 15 f=E9vrier =
+
+2013 =E0 Monaco (98000)
 
  Conform=E9ment =E0 la loi "Informatique et Libert=E9s" du 06 Janvier 1978, =
 
@@ -69,15 +66,14 @@ vous b=E9n=E9ficiez d'un droit d'acc=E8s, de rectification, de modification =
 et de suppression aux donn=E9es vous concernant. Pour =EAtre retir=E9 de no=
 s =
 
-listes de diffusion, rendez-vous sur cette page : =
+listes de diffusion, rendez-vous sur cette page : http://p5trc.emv2.com/HU?=
+a=3DENX7CqmVXCyi8SA9MKJTTaHnGHxKLoOH9PcStGb5lw8W0bBhOG5mpqVsje_HhdA5HlHT
 
-http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJTTajnGHxKLoOfDfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlFL
 
 ---------------------------------------------------------------------------=
 ---
-Master HTML5, CSS3, ASP.NET, MVC, AJAX, Knockout.js, Web API and
-much more. Get web development skills now with LearnDevNow -
-350+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
-SALE $99.99 this month only -- learn more at:
-http://p.sf.net/sfu/learnmore_122812
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. SALE $99.99 this month only -- learn more at:
+http://p.sf.net/sfu/learnmore_122912

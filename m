@@ -1,29 +1,13 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v5 00/14] DMA Engine support for AM33XX
-Date: Tue, 22 Jan 2013 21:26:34 +0530
-Message-ID: <50FEB6B2.5020303@ti.com>
-References: <1358281974-8411-1-git-send-email-mporter@ti.com>
+From: =?utf-8?B?5Lu76IqK6ZyT?= <lotous-oKC6ZggSJHvWF1p7bDn8Kw@public.gmane.org>
+Subject: [SPAM]
+Date: Wed, 23 Jan 2013 02:14:15 +0800
+Message-ID: <20130123021427713474@kfta.or.kr>
+Reply-To: 2269346161-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1358281974-8411-1-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,25 +18,108 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Tony,
-
-On 1/16/2013 2:02 AM, Matt Porter wrote:
-
-> This series adds DMA Engine support for AM33xx, which uses
-> an EDMA DMAC. The EDMA DMAC has been previously supported by only
-> a private API implementation (much like the situation with OMAP
-> DMA) found on the DaVinci family of SoCs.
-
-Will you take this series through the OMAP tree? Only 1/14 touches
-mach-davinci and I am mostly okay with it except some changes I just
-requested Matt to make in another thread.
-
-Thanks,
-Sekhar
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnnow-d2d
+56ys5LiA77yM5a2m5Lya566h55CG5pe26Ze077yMMjEzODU3NeimgeacieKAnOahg+iKseePjeaY
+peWmguePjeWRve+8jOW/l+iAheaDnOaXtuiLpeaDnOmHkeKAneeahOaXtumXtOinguW/teWSjOe0
+p+i/q+aEn+OAguWTiOS9m+Wkp+WtpuWbvuS5pummhuWGhemVjOWIu+edgOS4gOWPpeivne+8muKA
+nOS9oOiNkuW6n+eahOS7iuaXpe+8jOato+aYr+aYqOaXpeauiei6q+S5i+S6uueliOaxgueahOaY
+juaXpeOAguKAneWImuWImue7j+WOhumrmOiAg++8jOaIkeeQhuino+S9oOS7rOaDs+imgeihpeWB
+v+S5i+WJjeaJgOWkseWOu+eahO+8jOeLguedoe+8jOedoeWIsOiHqueEtumGku+8jOWPr+aYr+et
+ieS9oOS7rOafkOS4gOS4quWknOaZmuWcqOiLjeepueS4remGkuadpeKAlOKAlOS9oOS7rOacieWP
+r+iDveS8muWPkeeOsOWGheW/g+aYr+mCo+S5iOepuuiZmu+8jOeUn+WRveaYr+mCo+S5iOWvoea3
+oea4hei0q+OAguWkp+WtpuWbm+W5tOmZpOWOu+iKguWBh+aXpe+8jOWPquaciWNsb3VkcyBlbnZl
+bG9wZWQgdGhlIGhlYXZpZXIgc3Vic3RhbmNlLiBUaGUgZWFydGggYmVpbmcgaGVhdmVkIHVwIGJ5
+IOS4g+eZvuWkmuWkqe+8jOWGjemZpOWOu+WQg+mlreOAgeedoeinieWSjOWoseS5kO+8jOecn+at
+o+eahOWtpuS5oOaXtumXtOebuOS/oeS4jei2s+S4gOW5tOOAguW9k+S9oOaEj+ivhuWIsOi/meS4
+gOWIh+aDs+imgeihjOWKqOaXtu+8jOWNtOWPkeeOsOiHquW3seWNs+S9v+eUqOeZvuexs+WGsuWI
+uueahOmAn+W6puS5n+aXoOazlei/vei1tuWIq+S6uuW3sue7j+S4iOmHj+eahOeUn+WRvemVv+W6
+puOAguaJgOS7pe+8jOaIkeW4jOacm+aIkeS7rOWxsei0ouWkp+eahOavj+S4gOS4quaWsOeUn+mD
+veiDveeJoueJoumTreiusO+8muKAnOmAneiAheWmguaWr+Wkq++8jOS4jeiIjeaYvOWknOOAguKA
+neePjeaDnOWIhuenku+8jOS4jeaeieW6puaYpeWNju+8jOecn+ato0hvbGTkvY/ov5nlm5vlubTn
+moTlpKflrabml7blhYnjgILnrKzkuozvvIzlrabkvJrlkIPoi6bvvIzopoHmnInigJzojqvlq4zm
+tbfop5LlpKnmtq/ov5zvvIzkvYbogq/mkYfpnq3mnInliLDml7bigJ3nmoTlnZrpn6fmhI/lv5fj
+gILnu4/mtY7pq5jpgJ/lj5HlsZXjgIHotKLnu4/nsbvkurrmiY3kvpvkuI3lupTmsYLvvIzov5nn
+p43mg4XlvaLpgJrluLjkvJrlkJHlubTovbvkurrmmK3npLrnnYDogYzkuJrov5zlpKflkozlhYnm
+mI7nmoTliY3mma/vvIzkvYbmmK/moqbmg7PlkoznjrDlrp7kuYvpl7TmmK/msLjov5zpmpTnnYDk
+uIDlnZfnjrvnkoPnmoTvvIznnIvnnYDlhYnkuq7ljbTmsqHmnInliY3pgJTlj6/oqIDjgILmr4/k
+uIDlubTmva7msLToiKznmoTotKLnu4/pmaLmoKHmr5XkuJrnlJ/vvIzmgIDmj6PnnYDlkI3niYzl
+pKflrabnmoTlrablo6vjgIHlsbHpmLTmoqjnoZXlo6vnlJroh7PljZrlo6vmloflh63vvIzluIzm
+nJvmiZPmi7zlh7rkuIDniYfoh6rlt7HnmoTlpKnlnLDvvIzkvYbmnIDlkI7lpb3lpJrpg73lnKjn
+jrDlrp7pnaLliY3mipjnv7zjgILmiYDku6XmiJHor7TvvIzpgInmi6nkuIDkuKrlpb3lrabmoKHl
+kozlpb3kuJPkuJrpgqPmmK/kvJjpm4XnmoTovazouqvvvIzpo57nop/nk5zorqTor4bmrovphbfn
+moTlsLHkuJrnjrDlrp7miY3mmK/ljY7kuL3nmoTmkp7lopnjgILlrabkuaDku47mnaXkuI3mmK/k
+uIDoubTogIzlsLHnmoTvvIzpnIDopoHlkIzlrabku6zlgZrlh7rigJzku47mraTpnZnnqpfpl7vn
+u4bpn7XvvIznkLTlo7Dplb/kvLTor7vkuabkurrigJ3nmoToibDoi6bljZPnu53nmoTliqrlipvv
+vJvlrabkuaDmmK/msqHmnInovrnnlYznmoTvvIzlnKjkuJPkuJrln7rnoYDkuIrlr7vmsYLmm7Tl
+ub/ms5vjgIHmm7Tmt7HlsYLmrKHnmoTpgJror4bmlZnogrLmnLrkvJrmiY3og73mlLbojrfkuLDm
+lLbnmoTllpzmgqbjgILigJzooaPluKbmuJDlrr3nu4jkuI3mgpTvvIzkuLrkvIrmtojlvpfkurrm
+hpTmgrTigJ3vvIznu4/ljobov4fpq5jogIPnmoTkvaDku6znm7jkv6HmnIDog73kvZPkvJrkuKrk
+uK3mu4vlkbPvvIzkvYbmmK/nnJ/mraPnmoTlr5Lnqpfov5jmnKrlvIDlp4vvvIzlubbkuJTmsLjo
+v5zkuZ/kuI3lupTnu5PmnZ/jgILlj6ropoHkvaDku6zor7vkuIfljbfkuabnmoTlhrPlv4PkuI3m
+rbvvvIzooYzkuIfph4zot6/nmoTohJrmraXkuI3lgZzvvIzlgqznlJ/nmoTlv4XlsIbkvJrmmK/n
+nJ/mraPnmoTluIzmnJvjgIINCg0KDQrkuIrlhYPpo57puYXlsq3kuIAgDQrkvanliZHmr5TotZvl
+pJwgDQrpo57nop/nk5zmg4UgDQrlsL3lnKggd3d3LjkycmliLmNvbQ0KDQoNCg0K56ys5LiJ77yM
+5a2m5Lya5q2j56Gu55qE54ix77yM6KaB5Lul4oCc5rOw5bGx5LiN5byD5oqU5Zyf44CB5rKz5rW3
+5LiN5oup57uG5rWB4oCd55qE5YyF5a656IO45oCA5Y6754ix44CC5oiR5ZKM5LuK5bm05q+V5Lia
+55qE5L2g5Lus55qE5a2m5ZOl5ZKM5a2m5aeQ5Lus5pu+6K+077ya5LuW5Lus5YWI6KaB4oCc5YWL
+5piO5bO75b634oCd77yM6ICM5ZCO5omN6IO94oCc5qC854mp6Ie055+l4oCd77yM5oiR5Lmf5ZKM
+5LuW5Lus6K+06KaB5Lul5aSv5a6e5rex5Y6a55qE55+l44CB55yf6K+a5oKy5oKv55qE5oOF44CB
+5b+g6K+a5Y+L54ix55qE5oSP5ZKM5pyJ5p2h5LiN57SK55qE6KGM5p2l5a6M5ZaE6Ieq5bex55qE
+5Lq65qC844CC5oiR5Lmf5oOz5ZKM5L2g5Lus6K+077ya6L+Z5LiA5YiH6K6p5Lq65b+D5ZCR5b6A
+5LmL55qE576O5aW95ZOB5b635ZKM5Lq65qC86YO95pyJ5LiA5Liq5rip5pqW55qE5Z+656GA4oCU
+4oCU6YKj5bCx5piv54ix44CC4oCc5L2N5Y2R5pyq5pWi5b+Y5b+n5Zu94oCd5piv54ix77yM4oCc
+5ZOA5rCR55Sf5LmL5aSa6Imw4oCd5piv54ix77yM5LiK5YWD6aOe6bmF5bKt5rW35YaF5oOc55+l
+5bex5piv54ix77yM4oCc6LCB6KiA5a+46I2J5b+D77yM5oql5b6X5LiJ5pil5pmW4oCd6L+Y5piv
+54ix77yM5aSn54ix5peg55aG5oSf5Yqo5aSp77yM5bCP54ix5peg6KiA5oSP57u157u144CC55yf
+5q2j55qE54ix5piv5LiA56eN5pm65oWn5ZKM5bKa5pyI5aKD55WM77ya5aaC5p6c5L2g54ix5L2g
+55qE56WW5Zu977yM6K+35YWI5rex54ix5L2g55qE5ZCM6IOe77yM5LiN6KaB6KKr5Liq5Yir55qE
+5aOw6Z+z5Zuw5omw77yb5aaC5p6c5L2g54ix5L2g55qE55Sf5rS777yM6K+35YWI5rex54ix5oiR
+5Lus55Sf5a2Y55qE5Zyw55CD77yM5ZOq5oCV5Y+q5piv6ISa5LiL55qE5LiA5qCq5bCP6I2J77yb
+5aaC5p6c5L2g5om+5Yiw5bm254ix5LiK5LqG5L2g55qE54ix5Lq677yM6K+35YWI57uP6L+H5oiQ
+54af55qE5oCd6ICD77yM5Y+v6IO95o2i5LiA5Liq6KeS5bqm5bCx5Lya5Y+R546w6aOO5oyC6L2m
+5p+U5pel6JaE5pil54q55pep77yM6Iqx55WZ5p6d5aS05pu05aaW5aiG44CC6L+Z5bCx5piv54ix
+77yM5pei6ZyA6KaB5aSq6Ziz5LiA5qC36ICA55y85rip5pqW55qE5Yqb6YeP77yM5Lmf6ZyA6KaB
+5pyI5Lqu5LiA5qC35reh54S255CG5oCn55qE5YWJ6IqS44CCDQogICAg56ys5Zub77yM5a2m5Lya
+56eJ5oyB5qKm5oOz5ZKM5L+h5L2p5YmR5q+U6LWb5Luw77yM6KaB5pyJ4oCc6ZW/6aOO56C05rWq
+5Lya5pyJ5pe277yM55u05oyC5LqR5biG5rWO5rKn5rW34oCd55qE6LGq5oOF5aOu5b+X44CC6buR
+5Lq66aKG6KKW6ams5LiB6Lev5b636YeR5pu+6L+Z5qC36K+077ya4oCc5oiR5qKm5oOz5pyJ5LiA
+5aSp77yM5rex6LC35byl5ZCI77yM6auY5bGx5aS35bmz77yM5q2n6Lev5YyW5Z2m6YCU77yM5puy
+5b6E5oiQ6YCa6KGi77yM5pyJ5LqG6L+Z5Liq5L+h5b+177yM5oiR5Lus57uI5pyJ5LiA5aSp5Lya
+6I635b6X6Ieq55Sx44CC4oCd6L+Z5YW25Lit5YyF5ZCr5LqG5LiA56eN6K6p5Lq66aG256S86Iac
+5ouc55qE57K+56We5bCx5Y+r5YGa5qKm5oOz5ZKM5L+h5Luw44CC5Zyo5bqn55qE5ZCE5L2N5ZCM
+5a2m5aSn6YO95pivOTDlkI7lh7rnlJ/nmoQs546w5Zyo56S+5Lya5LiK5a+5OTDlkI7mnInkuIDk
+upvlgY/op4HvvIzkvYbmmK/kvZzkuLrkuIDkuKrmlZnogrLlt6XkvZzogIXmiJHlp4vnu4jkuZDo
+p4LlnLDlsbHpmLTmoqjnm7jkv6HpgqPkupvlvq7kuI3otrPpgZPnmoTotJ/pnaLlvaLosaHku6Po
+oajkuI3kuobmnJ3msJTok6zli4PnmoQ5MOWQjui/meS7o+S6uuOAguaIkea3seS/oeS9oOS7rOiZ
+veeEtuWPo+WPo+WjsOWjsOivtOaIkuaOieS6hueQhuaDs++8jOS9huaYr+W/g+mHjOS4gOWumuaY
+jueZvemAg+i1sOeahOaYr+iHquW3se+8jOiAjOS7juadpeS4jeaYr+aipuaDs+OAguS9oOS7rOea
+hOS4quaAp+etvuWQjeaVheS9nOayp+ahkeWSjOe7neacm++8jOWPr+aYr+iDjOWcsOmHjOS9oOS7
+rOS7jeeEtuS8muS4uuS6huS4gOWPpeKAnOiwgeefpemBk+aIkeS7rOivpeaipuW9kuS9leWkhO+8
+jOiwgeefpemBk+WwiuS4peW3suaypuS4uuS9leeJqeKAneeahOWPsOivjeaEn+WKqOeahOS4gOWh
+jOeziua2guOAguaIkeebuOS/oeS9oOS7rOWGheW/g+a3seWkhOW8uueDiOeahOa4tOacm+S4gOen
+jeS4nOilv++8jOWwseWPq+WBmuaipuaDs+OAguaIkeiht+W/g+WcsOW4jOacm+S7juS7iuWkqei1
+t++8jOaIkeS7rOS4gOi1t+WKquWKm++8jOWKquWKm+WwhuS9oOS7rOe+juWlveeahOeQhuaDs+Wk
+luWMluaIkOWFt+S9k+eahOaLvOaQj+WQkeS4iuOAgeWPi+eIseS6kuW4ruOAgeWLh+S6juaLheW9
+k+WSjOW6hOWuh+aenOaVouWdmuW8uuOAguS4gOWPtuaJjeWtpu+8jOaWkemps+S6humdkuefs+Ww
+j+i3r+OAguS4tOmjjuaciOS4i++8jOafk+e6ouS6huS4gOWcsOeQhuaDs+OAgui/meWwseaYr+aI
+keS7rOWNs+WwhuaPj+e7mOeahOWxsei0ouWkp+acgOe+juWlveeahOmjjuWFieOAgg0KICAgIOWQ
+jOWtpuS7rO+8geS9oOS7rOaWsOeahOS6uueUn+W8gOWni+S6hu+8geS9nOS4uuS9oOS7rOeahOag
+oemVv++8jOaIkeacgOWQjuaDs+WSjOWkp+WutuivtO+8muaXoOiuuuS9oOi6q+WcqOS9leaWue+8
+jOWPquimgeS9oOmBh+WIsOWbsOmavu+8jOW8uuWkp+eahOWxsei0ouWkp+S8muaIkOS4uuS9oOWd
+muW8uueahOWQjuebvu+8jOWPquimgeS9oOaDs+imgemjnue/lO+8jOW8uuWkp+eahOWxsei0ouWk
+p+S8muS4uuS9oOaPkuS4iuiFvumjnueahOe/heiGgOOAguivt+avj+S4gOS4quWxsei0ouWkp+S6
+uumTreiusO+8muWPquacieS4gOadoei3r+S4jeiDvemAieaLqeKAlOKAlOmCo+WwseaYr+Wymuac
+iOaUvuW8g+eahOi3rzvlj6rmnInkuIDmnaHot6/kuI3luoTlrofog73mi5Lnu53igJTigJTpgqPl
+sLHmmK/miJDplb/nmoTot6/jgILniLHkuIrlsbHotKLlpKfvvIzkvaDmiJDplb/jgIHmiJDmiY3n
+moTlrrbvvIENCiAgICDmnIDlkI7vvIzpooTnpZ3lkITkvY3lkIzlrablnKjlsbHotKLlpKfnmoTl
+m5vlubTph4zvvJoNCiAgICDlv5flr4TpsrLpuY/kuI7ml7bkv7Hov5vlho3lj5HlsZXvvIzmsJTl
+grLkub7lnaToh6rlvLrkuI3mga/osLHmlrDnr4fvvIEKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1h
+c3RlciBWaXN1YWwgU3R1ZGlvLCBTaGFyZVBvaW50LCBTUUwsIEFTUC5ORVQsIEMjIDIwMTIsIEhU
+TUw1LCBDU1MsCk1WQywgV2luZG93cyA4IEFwcHMsIEphdmFTY3JpcHQgYW5kIG11Y2ggbW9yZS4g
+S2VlcCB5b3VyIHNraWxscyBjdXJyZW50CndpdGggTGVhcm5EZXZOb3cgLSAzLDIwMCBzdGVwLWJ5
+LXN0ZXAgdmlkZW8gdHV0b3JpYWxzIGJ5IE1pY3Jvc29mdApNVlBzIGFuZCBleHBlcnRzLiBPTiBT
+QUxFIHRoaXMgbW9udGggb25seSAtLSBsZWFybiBtb3JlIGF0OgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L2xlYXJubm93LWQyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
+c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

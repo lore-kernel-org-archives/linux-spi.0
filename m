@@ -1,11 +1,11 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 22 Jan 2013 03:52:32 +0800
-Message-ID: <E1TxNQ7-0006L1-3E@sfs-ml-1.v29.ch3.sourceforge.com>
+From: "Mike Bernhard" <MB2013.NoReply-DaQTI0RpDDMAvxtiuMwx3w@public.gmane.org>
+Subject: [SPAM] Re: Can I send you some new customers?
+Date: Mon, 21 Jan 2013 19:43:12 -0700
+Message-ID: <2ea8e4d601424f951d6ac5040019188d@ymail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +17,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWFzdGVyIFZpc3Vh
-bCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCwgQVNQLk5FVCwgQyMgMjAxMiwgSFRNTDUsIENTUywK
-TVZDLCBXaW5kb3dzIDggQXBwcywgSmF2YVNjcmlwdCBhbmQgbXVjaCBtb3JlLiBLZWVwIHlvdXIg
-c2tpbGxzIGN1cnJlbnQKd2l0aCBMZWFybkRldk5vdyAtIDMsMjAwIHN0ZXAtYnktc3RlcCB2aWRl
-byB0dXRvcmlhbHMgYnkgTWljcm9zb2Z0Ck1WUHMgYW5kIGV4cGVydHMuIFNBTEUgJDk5Ljk5IHRo
-aXMgbW9udGggb25seSAtLSBsZWFybiBtb3JlIGF0OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2xlYXJu
-bW9yZV8xMjI0MTIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hello, 
+
+Can I direct some targeted customers to your website or telephone? Our company has access to 200 million consumers and 45 million businesses. Please contact me today at 1 (800) 676-2011 Ext 230, so I can explain how we can use our databases to increase sales for your company immediately.
+
+We look forward to working with your company! 
+
+Sincerely, 
+
+Mike Bernhard 
+Senior Prospect Specialist 
+E-mail Marketing Services 
+1 (800) 676-2011 Ext 230 
+
+
+
+
+
+
+
+
+
+Click This Link to Stop Future Messages <mailto:eddie.roberts-KK0ffGbhmjU@public.gmane.org?subject=Unsubscribe%3A%20spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+
+
+
+------------------------------------------------------------------------------
+Master SQL Server Development, Administration, T-SQL, SSAS, SSIS, SSRS
+and more. Get SQL Server skills now (including 2012) with LearnDevNow -
+200+ hours of step-by-step video tutorials by Microsoft MVPs and experts.
+SALE $99.99 this month only - learn more at:
+http://p.sf.net/sfu/learnmore_122512

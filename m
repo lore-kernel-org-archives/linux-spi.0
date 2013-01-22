@@ -1,12 +1,12 @@
-From: IKKS <info-4xJvqzSvqM6Gu/6eRH8ToQ@public.gmane.org>
-Subject: =?iso-8859-15?Q?2=E8me_D=E9marque_et_-15%_suppl=E9mentaires_!?=
-Date: Tue, 22 Jan 2013 07:38:41 +0100 (CET)
-Message-ID: <2.1.11.1101030461.1888352.3016826189@news.galgalz.com>
-Reply-To: newsletter-ID3l/BJapx9BDgjK7y7TUQ@public.gmane.org
+From: =?UTF-8?Q?laurent_thenaud_-_alta=C3=A9a?= <info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org>
+Subject: Un site web qui s adapte automatiquement aux smartphones et tablettes
+Date: Tue, 22 Jan 2013 12:34:02 +0000
+Message-ID: <7f2402dff793ec18827686c292207972@altaea.com>
+Reply-To: info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,101 +18,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SOLDES IKKS : DEUXI=C8ME D=C9MARQUE Pour visualiser la version en images, =
-
-rendez-vous sur cette page : =
-
- http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vfvcStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlLw =
-
-IKKS
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vfPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL2 =
-
-Boutique en ligne
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vffcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL3 =
-
-
-D=E9couvrez les collections IKKS Femme, Enfant & Homme
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vcvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL0 =
-
-S O L D E S
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vc_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL1 =
-
-DEUXI=C8ME D=C9MARQUE
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vcPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL6 =
-
--30% -40% -50% *
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vcfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL7 =
-
-R=E9ductions faites sur les articles signal=E9s par le code coloris =
-
-ci-dessus. -15% SUPPL=C9MENTAIRES ** =E0 partir de 3 articles achet=E9s
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vdvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL4 =
-
-DANS L'UNIVERS ADULTE OU DANS L'UNIVERS JUNIOR
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vd_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL5 =
-
-facebook
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vdPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL- =
-
-twitter
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vdfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL_ =
-
-video
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vCvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL8 =
-
-pinterest
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vC_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlL9 =
-
-Conditions de l'offre :
-* Offre valable =E0 partir du 16/01/2013 sur IKKS E-Shop.
-R=E9ductions faites sur les articles des collections HIVER 2012 signal=E9s =
-
-par le code coloris (hors collections ETE 2013 & parfums)
-
-** Offre valable =E0 partir du 16/01/2013 sur IKKS E-Shop.
-D=E8s 3 articles achet=E9s dans l'univers ADULTE ou dans l'univers JUNIOR, =
-
-valable sur familles signal=E9es par un bandeau noir (hors accessoires). =
-
-Conform=E9ment =E0 la loi Informatique et Libert=E9 du 06 Janvier 1978, vou=
-s =
-
-disposez d'un droit d'acc=E8s, de rectification et d'opposition aux =
-
-donn=E9es vous concernant. Pour =EAtre retir=E9 de nos listes de diffusion, =
-
-rendez-vous sur cette page : =
-
- http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vf_cStGb5lw8W0=
-bBhOG5mpqVsje_HhdA5HlLx =
-
-
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vCPcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIC
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vCfcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlID
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vDvcStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIA
-http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJTC5rnGHxKLr8vD_cStGb5lw8W0b=
-BhOG5mpqVsje_HhdA5HlIB =
-
----------------------------------------------------------------------------=
----
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnnow-d2d
+VW4gc2l0ZSB3ZWIgcXVpIHMgYWRhcHRlIGF1dG9tYXRpcXVlbWVudCBhdXggc21hcnRwaG9uZXMg
+ZXQgdGFibGV0dGVzCgpMZSBmdXR1ciBwb3VyIHZvdHJlIHNpdGUgd2ViICEKClVuIHNpdGUgd2Vi
+IHF1aSBzJ2FkYXB0ZSBhdXRvbWF0aXF1ZW1lbnQgYXV4IHNtYXJ0cGhvbmVzIGV0IHRhYmxldHRl
+cwoKVm91cyBuZSB2aXN1YWxpc2V6IHBhcyBjb3JyZWN0ZW1lbnQgY2UgbWFpbD8gdmVyc2lvbiB3
+ZWIgKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zNTQ1MDQmaz0xNzdlNjA1MTRhZjdk
+YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
+ZXR0ZXIlMkZ1bi1zaXRlLXdlYi1xdWktcy1hZGFwdGUtYXV0b21hdGlxdWVtZW50LWF1eC1zbWFy
+dHBob25lcy1ldC10YWJsZXR0ZXMtMiUyRiZjPTAgKSAKCmh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/
+bXltYWlsPTM1NDUwNCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUz
+QSUyRiUyRnd3dy5hbHRhZWEuY29tJTJGbGF2ZW5pci1kdS13ZWItbGUtcmVzcG9uc2l2ZS13ZWIt
+ZGVzaWduJTJGJmM9MAoKVm91cyBhdmV6IHJlw6d1IGNldCBlbWFpbCBwYXJjZSBxdWUgdm91cyB2
+b3VzIMOqdGVzIGluc2NyaXQgw6AgYWdlbmNlIGRlIGNvbW11bmljYXRpb24gUGFyaXMgTGEgRMOp
+ZmVuc2UgKDkyKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM1NDUwNCZrPTE3N2U2
+MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRnd3dy5hbHRhZWEuY29t
+JmM9MCApIHZpYSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgKCBtYWls
+dG86c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0ICldLiBTaSB2b3VzIG5l
+IHZvdWxleiBwbHVzIHJlY2V2b2lyIGQnZW1haWwgbWVyY2kgZGUgdm91cyBkw6lzaW5zY3JpcHRp
+b24gKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zNTQ1MDQmaz0xNzdlNjA1MTRhZjdk
+YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
+ZXR0ZXItMiUyRiUzRnVuc3Vic2NyaWJlJTNEYzU5NjQ2ZTFkZGUwY2FiNzdkNGRlMjg5YzIyOWJi
+NjgmYz0wICkKwqkgMjAxMyBhZ2VuY2UgZGUgY29tbXVuaWNhdGlvbiBQYXJpcyBMYSBEw6lmZW5z
+ZSAoOTIpLCBUb3VzIGRyb2l0cyByw6lzZXJ2w6lzCgpodHRwOi8vd3d3LmFsdGFlYS5jb20vP215
+bWFpbD0zNTQ1MDQmaz0xNzdlNjA1MTRhZjdkYWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHBzJTNB
+JTJGJTJGdHdpdHRlci5jb20mYz0wCmh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM1NDUw
+NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cHMlM0ElMkYlMkZmYWNl
+Ym9vay5jb20mYz0wCmh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM1NDUwNCZrPTE3N2U2
+MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRndpbmRvd3MuY29tJmM9
+MApodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zNTQ1MDQmaz0xNzdlNjA1MTRhZjdkYWM1
+Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZhcHBsZS5jb20mYz0wCgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KTWFzdGVyIFZpc3VhbCBTdHVkaW8sIFNoYXJlUG9pbnQsIFNRTCwgQVNQLk5F
+VCwgQyMgMjAxMiwgSFRNTDUsIENTUywKTVZDLCBXaW5kb3dzIDggQXBwcywgSmF2YVNjcmlwdCBh
+bmQgbXVjaCBtb3JlLiBLZWVwIHlvdXIgc2tpbGxzIGN1cnJlbnQKd2l0aCBMZWFybkRldk5vdyAt
+IDMsMjAwIHN0ZXAtYnktc3RlcCB2aWRlbyB0dXRvcmlhbHMgYnkgTWljcm9zb2Z0Ck1WUHMgYW5k
+IGV4cGVydHMuIE9OIFNBTEUgdGhpcyBtb250aCBvbmx5IC0tIGxlYXJuIG1vcmUgYXQ6Cmh0dHA6
+Ly9wLnNmLm5ldC9zZnUvbGVhcm5ub3ctZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

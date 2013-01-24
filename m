@@ -1,97 +1,73 @@
-From: Matthias Brugger <matthias.bgg@gmail.com>
-Subject: [PATCH v2] spi: spi-omap2-mcspi.c: Toggle CS after each word
-Date: Thu, 24 Jan 2013 13:40:41 +0100
-Message-ID: <1359031241-3234-1-git-send-email-matthias.bgg@gmail.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-To: Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+From: Matt Porter <mporter@ti.com>
+Subject: Re: [PATCH v5 00/14] DMA Engine support for AM33XX
+Date: Thu, 24 Jan 2013 15:42:03 -0500
+Message-ID: <20130124204203.GD5256@beef>
+References: <1358281974-8411-1-git-send-email-mporter@ti.com>
+ <50FEB6B2.5020303@ti.com>
+ <20130123022133.GA5727@opensource.wolfsonmicro.com>
+ <20130123213736.GC5256@beef>
+ <d07dbfd50690423b903803720152c0dc@DLEE74.ent.ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
 	Tony Lindgren <tony@atomide.com>,
-	Daniel Mack <zonque@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
-	ezequiel.garcia@free-electrons.com,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Chris Ball <cjb@laptop.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: "Nori, Sekhar" <nsekhar@ti.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <d07dbfd50690423b903803720152c0dc@DLEE74.ent.ti.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch allows the board code to define SPI devices which needs to
-toggle the chip select after every word send. This is needed to get a
-better resolution reading e.g. an ADC data stream.
-Apart from that, as in the normal code CS is controlled by software,
-a transfer is done much faster.
+On Thu, Jan 24, 2013 at 05:14:13AM +0000, Sekhar Nori wrote:
+> Matt,
+> 
+> On 1/24/2013 3:07 AM, Matt Porter wrote:
+> > On Wed, Jan 23, 2013 at 10:21:42AM +0800, Mark Brown wrote:
+> >> On Tue, Jan 22, 2013 at 09:26:34PM +0530, Sekhar Nori wrote:
+> >>> On 1/16/2013 2:02 AM, Matt Porter wrote:
+> >>
+> >>>> This series adds DMA Engine support for AM33xx, which uses
+> >>>> an EDMA DMAC. The EDMA DMAC has been previously supported by only
+> >>>> a private API implementation (much like the situation with OMAP
+> >>>> DMA) found on the DaVinci family of SoCs.
+> >>
+> >>> Will you take this series through the OMAP tree? Only 1/14 touches
+> >>> mach-davinci and I am mostly okay with it except some changes I just
+> >>> requested Matt to make in another thread.
+> >>
+> >> Is this series somewhere near actually getting merged then? It seemed
+> >> like there was lots of stuff going on.
+> > 
+> > The issues raised by Sekhar and Santosh were reasonably minor and will
+> > be addressed. My major concern is that the dependency on some api to
+> > fetch dmaengine driver SG limitations is not resolved. That's being
+> > discussed in https://lkml.org/lkml/2013/1/10/432
+> 
+> It might be worth posting the patches which don't have dependencies and
+> are ready for acceptance as a separate series. That way at least some of
+> these patches have a good chance of getting into v3.9 if not the entire
+> series.
 
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
----
- drivers/spi/spi-omap2-mcspi.c                 | 18 ++++++++++++++++++
- include/linux/platform_data/spi-omap2-mcspi.h |  3 +++
- 2 files changed, 21 insertions(+)
+Yes a good idea and seems to be the best option. I've dropped the mmc
+support from the series for the next version. I'll repost the separately
+when we have an api to support it.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 31f6e84..12789fc 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -927,6 +927,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 
- 	struct spi_device		*spi;
- 	struct spi_transfer		*t = NULL;
-+	struct spi_master		*master;
- 	int				cs_active = 0;
- 	struct omap2_mcspi_cs		*cs;
- 	struct omap2_mcspi_device_config *cd;
-@@ -935,6 +936,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 	u32				chconf;
- 
- 	spi = m->spi;
-+	master = spi->master;
- 	cs = spi->controller_state;
- 	cd = spi->controller_data;
- 
-@@ -952,6 +954,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 			if (!t->speed_hz && !t->bits_per_word)
- 				par_override = 0;
- 		}
-+		if (cd && cd->cs_per_word) {
-+			chconf = mcspi->ctx.modulctrl;
-+			chconf &= ~OMAP2_MCSPI_MODULCTRL_SINGLE;
-+			mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
-+			mcspi->ctx.modulctrl =
-+				mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
-+		}
-+
- 
- 		if (!cs_active) {
- 			omap2_mcspi_force_cs(spi, 1);
-@@ -1013,6 +1023,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
- 	if (cs_active)
- 		omap2_mcspi_force_cs(spi, 0);
- 
-+	if (cd && cd->cs_per_word) {
-+		chconf = mcspi->ctx.modulctrl;
-+		chconf |= OMAP2_MCSPI_MODULCTRL_SINGLE;
-+		mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
-+		mcspi->ctx.modulctrl =
-+			mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
-+	}
-+
- 	omap2_mcspi_set_enable(spi, 0);
- 
- 	m->status = status;
-diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
-index a65572d..c100456 100644
---- a/include/linux/platform_data/spi-omap2-mcspi.h
-+++ b/include/linux/platform_data/spi-omap2-mcspi.h
-@@ -22,6 +22,9 @@ struct omap2_mcspi_dev_attr {
- 
- struct omap2_mcspi_device_config {
- 	unsigned turbo_mode:1;
-+
-+	/* toggle chip select after every word */
-+	unsigned cs_per_word:1;
- };
- 
- #endif
--- 
-1.7.11.7
-
+-Matt

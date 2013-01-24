@@ -1,133 +1,168 @@
 From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v5 00/14] DMA Engine support for AM33XX
-Date: Thu, 24 Jan 2013 15:49:43 -0500
-Message-ID: <20130124204943.GE5256@beef>
-References: <1358281974-8411-1-git-send-email-mporter@ti.com>
- <50FFC48B.80902@ti.com>
- <20130123204917.GA5256@beef>
- <8ea1d227d84648f68e670c56f27c481e@DFLE72.ent.ti.com>
+Subject: Re: [PATCH 3/3] spi: spi-omap2-mcspi.c: Toggle CS after each word
+Date: Thu, 24 Jan 2013 17:19:29 -0500
+Message-ID: <20130124221929.GF5256@beef>
+References: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+Cc: Grant Likely <grant.likely@secretlab.ca>,
 	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Chris Ball <cjb@laptop.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: "Shilimkar, Santosh" <santosh.shilimkar@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+	Tony Lindgren <tony@atomide.com>,
+	Daniel Mack <zonque@gmail.com>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
+	ezequiel.garcia@free-electrons.com,
+	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <8ea1d227d84648f68e670c56f27c481e@DFLE72.ent.ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+In-Reply-To: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jan 24, 2013 at 05:12:05AM +0000, Shilimkar, Santosh wrote:
-> On Thursday 24 January 2013 02:19 AM, Matt Porter wrote:
-> > On Wed, Jan 23, 2013 at 04:37:55PM +0530, Santosh Shilimkar wrote:
-> >> Matt,
-> >>
-> >> On Wednesday 16 January 2013 02:02 AM, Matt Porter wrote:
-> >>
-> >> [..]
-> >>
-> >>> This series adds DMA Engine support for AM33xx, which uses
-> >>> an EDMA DMAC. The EDMA DMAC has been previously supported by only
-> >>> a private API implementation (much like the situation with OMAP
-> >>> DMA) found on the DaVinci family of SoCs.
-> >>>
-> >>> The series applies on top of 3.8-rc3 and the following patches:
-> >>>
-> >>> 	- TPS65910 REGMAP_IRQ build fix:
-> >>> 	  https://patchwork.kernel.org/patch/1857701/
-> >>> 	- dmaengine DT support from Vinod's dmaengine_dt branch in
-> >>> 	  git://git.infradead.org/users/vkoul/slave-dma.git since
-> >>> 	  027478851791df751176398be02a3b1c5f6aa824
-> >>> 	- edma dmaengine driver fix:
-> >>> 	  https://patchwork.kernel.org/patch/1961521/
-> >>> 	- dmaengine dma_get_channel_caps v2:
-> >>> 	  https://patchwork.kernel.org/patch/1961601/
-> >>> 	- dmaengine edma driver channel caps support v2:
-> >>> 	  https://patchwork.kernel.org/patch/1961591/
-> >>>
-> >>> The approach taken is similar to how OMAP DMA is being converted to
-> >>> DMA Engine support. With the functional EDMA private API already
-> >>> existing in mach-davinci/dma.c, we first move that to an ARM common
-> >>> area so it can be shared. Adding DT and runtime PM support to the
-> >>> private EDMA API implementation allows it to run on AM33xx. AM33xx
-> >>> *only* boots using DT so we leverage Jon's generic DT DMA helpers to
-> >>> register EDMA DMAC with the of_dma framework and then add support
-> >>> for calling the dma_request_slave_channel() API to both the mmc
-> >>> and spi drivers.
-> >>>
-> >>> With this series both BeagleBone and the AM335x EVM have working
-> >>> MMC and SPI support.
-> >>>
-> >>> This is tested on BeagleBone with a SPI framebuffer driver and MMC
-> >>> rootfs. A trivial gpio DMA event misc driver was used to test the
-> >>> crossbar DMA event support. It is also tested on the AM335x EVM
-> >>> with the onboard SPI flash and MMC rootfs. The branch at
-> >>> https://github.com/ohporter/linux/tree/edma-dmaengine-am33xx-v4
-> >>> has the complete series, dependencies, and some test
-> >>> drivers/defconfigs.
-> >>>
-> >>> Regression testing was done on AM180x-EVM (which also makes use
-> >>> of the EDMA dmaengine driver and the EDMA private API) using SD,
-> >>> SPI flash, and the onboard audio supported by the ASoC Davinci
-> >>> driver. Regression testing was also done on a BeagleBoard xM
-> >>> booting from the legacy board file using MMC rootfs.
-> >>>
-> >>> Matt Porter (14):
-> >>>    ARM: davinci: move private EDMA API to arm/common
-> >>>    ARM: edma: remove unused transfer controller handlers
-> >>>    ARM: edma: add AM33XX support to the private EDMA API
-> >>>    dmaengine: edma: enable build for AM33XX
-> >>>    dmaengine: edma: Add TI EDMA device tree binding
-> >>>    ARM: dts: add AM33XX EDMA support
-> >>>    dmaengine: add dma_request_slave_channel_compat()
-> >>>    mmc: omap_hsmmc: convert to dma_request_slave_channel_compat()
-> >>>    mmc: omap_hsmmc: set max_segs based on dma engine limitations
-> >>>    mmc: omap_hsmmc: add generic DMA request support to the DT binding
-> >>>    ARM: dts: add AM33XX MMC support
-> >>>    spi: omap2-mcspi: convert to dma_request_slave_channel_compat()
-> >>>    spi: omap2-mcspi: add generic DMA request support to the DT binding
-> >>>    ARM: dts: add AM33XX SPI DMA support
-> >>>
-> >> While going through the series and testing it out, I observed an issue
-> >> with MMC driver. You need patch in the end of the email to avoid the
-> >> issue. Same is attached in case mailer damages it. Can you please
-> >> add it with your series if you agree ?
-> >
-> > Yes, by inspection this makes sense. As you noticed, we've been relying
-> > on the fact that DMA resources still don't come from DT, we only use our
-> > DT data in conjunction with the DMA OF helpers to do channel filtering.
-> > I was figuring we would address that separately later, but I see how
-> > even omap4 has this issue with DMA resources named with "tx1", for
-> > example. A good followup once this series is taken will be to only
-> > use hwmod resources on a !populated-dt platform like we do for other
-> > resources now. Baby steps. :)
-> >
-> We are already on it :-)
+On Wed, Jan 23, 2013 at 07:08:49PM +0100, Matthias Brugger wrote:
+> This patch allows the board code to define SPI devices which needs to
+> toggle the chip select after every word send. This is needed to get a
+> better resolution reading e.g. an ADC data stream.
+> Apart from that, as in the normal code CS is controlled by software,
+> a transfer is done much faster.
+> 
+> Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+> ---
+>  drivers/spi/spi-omap2-mcspi.c                 | 34 ++++++++++++++++++++-------
+>  include/linux/platform_data/spi-omap2-mcspi.h |  3 +++
+>  2 files changed, 29 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+> index b610f52..12789fc 100644
+> --- a/drivers/spi/spi-omap2-mcspi.c
+> +++ b/drivers/spi/spi-omap2-mcspi.c
+> @@ -927,6 +927,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+>  
+>  	struct spi_device		*spi;
+>  	struct spi_transfer		*t = NULL;
+> +	struct spi_master		*master;
+>  	int				cs_active = 0;
+>  	struct omap2_mcspi_cs		*cs;
+>  	struct omap2_mcspi_device_config *cd;
+> @@ -935,6 +936,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+>  	u32				chconf;
+>  
+>  	spi = m->spi;
+> +	master = spi->master;
+>  	cs = spi->controller_state;
+>  	cd = spi->controller_data;
+>  
+> @@ -952,6 +954,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+>  			if (!t->speed_hz && !t->bits_per_word)
+>  				par_override = 0;
+>  		}
+> +		if (cd && cd->cs_per_word) {
+> +			chconf = mcspi->ctx.modulctrl;
+> +			chconf &= ~OMAP2_MCSPI_MODULCTRL_SINGLE;
+> +			mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
+> +			mcspi->ctx.modulctrl =
+> +				mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
+> +		}
+> +
+>  
+>  		if (!cs_active) {
+>  			omap2_mcspi_force_cs(spi, 1);
+> @@ -1013,6 +1023,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+>  	if (cs_active)
+>  		omap2_mcspi_force_cs(spi, 0);
+>  
+> +	if (cd && cd->cs_per_word) {
+> +		chconf = mcspi->ctx.modulctrl;
+> +		chconf |= OMAP2_MCSPI_MODULCTRL_SINGLE;
+> +		mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
+> +		mcspi->ctx.modulctrl =
+> +			mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
+> +	}
+> +
+>  	omap2_mcspi_set_enable(spi, 0);
+>  
+>  	m->status = status;
+> @@ -1020,7 +1038,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+>  }
+>  
+>  static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+> -						struct spi_message *m)
+> +		struct spi_message *m)
+>  {
+>  	struct omap2_mcspi	*mcspi;
+>  	struct spi_transfer	*t;
+> @@ -1041,7 +1059,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+>  				|| (len && !(rx_buf || tx_buf))
+>  				|| (t->bits_per_word &&
+>  					(  t->bits_per_word < 4
+> -					|| t->bits_per_word > 32))) {
+> +					   || t->bits_per_word > 32))) {
+>  			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
+>  					t->speed_hz,
+>  					len,
+> @@ -1052,8 +1070,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+>  		}
+>  		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
+>  			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
+> -				t->speed_hz,
+> -				OMAP2_MCSPI_MAX_FREQ >> 15);
+> +					t->speed_hz,
+> +					OMAP2_MCSPI_MAX_FREQ >> 15);
+>  			return -EINVAL;
+>  		}
+>  
+> @@ -1099,7 +1117,7 @@ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+>  		return ret;
+>  
+>  	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE,
+> -				OMAP2_MCSPI_WAKEUPENABLE_WKEN);
+> +			OMAP2_MCSPI_WAKEUPENABLE_WKEN);
+>  	ctx->wakeupenable = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
+>  
+>  	omap2_mcspi_set_master_mode(master);
+> @@ -1228,7 +1246,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+>  
+>  		sprintf(dma_ch_name, "rx%d", i);
+>  		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
+> -							dma_ch_name);
+> +				dma_ch_name);
+>  		if (!dma_res) {
+>  			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
+>  			status = -ENODEV;
+> @@ -1238,7 +1256,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+>  		mcspi->dma_channels[i].dma_rx_sync_dev = dma_res->start;
+>  		sprintf(dma_ch_name, "tx%d", i);
+>  		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
+> -							dma_ch_name);
+> +				dma_ch_name);
+>  		if (!dma_res) {
+>  			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
+>  			status = -ENODEV;
+> @@ -1254,7 +1272,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+>  	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+>  	if (IS_ERR(pinctrl))
+>  		dev_warn(&pdev->dev,
+> -			"pins are not configured from the driver\n");
+> +				"pins are not configured from the driver\n");
+>  
+>  	pm_runtime_use_autosuspend(&pdev->dev);
+>  	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+> diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
+> index a65572d..c100456 100644
+> --- a/include/linux/platform_data/spi-omap2-mcspi.h
+> +++ b/include/linux/platform_data/spi-omap2-mcspi.h
+> @@ -22,6 +22,9 @@ struct omap2_mcspi_dev_attr {
+>  
+>  struct omap2_mcspi_device_config {
+>  	unsigned turbo_mode:1;
+> +
+> +	/* toggle chip select after every word */
+> +	unsigned cs_per_word:1;
 
-Great!
-
-> > Thanks for the catch, I'll add this in with your tested line as well for
-> > the series.
-
-BTW, since I'm dropping mmc support from this series, I'll move your
-patch into a separate series with only the mmc pieces.
+Looks good. It would be also be nice to have an accompanying update to
+the DT bindings and parser when adding another attribute like this. Many
+platforms using this driver can only boot from DT.
 
 -Matt

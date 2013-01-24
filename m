@@ -1,50 +1,61 @@
-From: Jarkko Nikula <jarkko.nikula@bitmer.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH 3/3] spi: spi-omap2-mcspi.c: Toggle CS after each word
-Date: Thu, 24 Jan 2013 09:38:32 +0200
-Message-ID: <20130124093832.3eef9bda0195a405c8eb3d96@bitmer.com>
+Date: Thu, 24 Jan 2013 19:06:52 +0800
+Message-ID: <20130124110648.GM4955@opensource.wolfsonmicro.com>
 References: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Kc9HNjpzOXVc7FFU"
 Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
 	Tony Lindgren <tony@atomide.com>,
 	Daniel Mack <zonque@gmail.com>,
+	Jarkko Nikula <jarkko.nikula@bitmer.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
 	ezequiel.garcia@free-electrons.com,
 	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
 To: Matthias Brugger <matthias.bgg@gmail.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi
 
-On Wed, 23 Jan 2013 19:08:49 +0100
-Matthias Brugger <matthias.bgg@gmail.com> wrote:
+--Kc9HNjpzOXVc7FFU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> @@ -1020,7 +1038,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  }
->  
->  static int omap2_mcspi_transfer_one_message(struct spi_master *master,
-> -						struct spi_message *m)
-> +		struct spi_message *m)
->  {
->  	struct omap2_mcspi	*mcspi;
->  	struct spi_transfer	*t;
-> @@ -1041,7 +1059,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
->  				|| (len && !(rx_buf || tx_buf))
->  				|| (t->bits_per_word &&
->  					(  t->bits_per_word < 4
-> -					|| t->bits_per_word > 32))) {
-> +					   || t->bits_per_word > 32))) {
->  			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
->  					t->speed_hz,
->  					len,
+On Wed, Jan 23, 2013 at 07:08:49PM +0100, Matthias Brugger wrote:
+> This patch allows the board code to define SPI devices which needs to
+> toggle the chip select after every word send. This is needed to get a
+> better resolution reading e.g. an ADC data stream.
+> Apart from that, as in the normal code CS is controlled by software,
+> a transfer is done much faster.
 
-Just a sidenote but these indentation changes should go to another patch as they count about half of the lines.
+As Jarkko says the feature itself seems fine and the coding style fix
+seems fine but they should really be separate changes.
 
--- 
-Jarkko
+--Kc9HNjpzOXVc7FFU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRARXCAAoJELSic+t+oim9mQMP/3TNpoX1+mwsN04TS00xepv/
+AmEi8KYsDV2JgqUymmN52SHH5xhagkYu0Sym3c8kzxwrujRaIVm18i2lWGKyJ3OK
+LQ/XvYiyNmRh/GTzkAlUH1jBnFa9tcHMwAEWRoEvx7wV6BD2P6wi9xAdnQAcY77C
+GagThr1EQ/YHcUD6NApGKGzPQx42+U6Pq/OD+XNa/AskU07xSeOCuoQbcUn2nLWU
+muHUr3PSjkV7utUqY5ZVnFVTqu1kOiAbC/S836OMrSaLhLBJQKZZuDTzVB/BqUl2
+qQ4dcVLCB/sAldSj8pQIQmWF2sotjOjMJwUCPG6H+NBSvkR15TN4i0J85hXnloYE
+06hhPVY9uiAtkxMiof9TYGK+DDWGYkuLToUQexMoFznYlTvjRk7LUG+M2giFCTVV
+EubNzGZb6CTaXkeKDig4T2/HLgCuTTTtcPjGZBlDdyepuDAmOSmOvQnYqX2VrRPa
+K/j4j8HyvvEKcVLnVcddJ1gGciLHo420FES6lTbXekfz9RkhCCzREK2ELf1Oyf6h
+iUJewqyEhrQlnHZyweDk29tnOEQwjlgJZmYVYALzWGZGejW899N7OlbX3/cku63B
+ZBIPJmgsVrF7Jx28YUKMNo7SsjXC9UZ3hEa+RDe/axiVmCskNARUFIUFxHWLg+0O
+fBv2LFxc6e0SNeRPJwLA
+=xmMK
+-----END PGP SIGNATURE-----
+
+--Kc9HNjpzOXVc7FFU--

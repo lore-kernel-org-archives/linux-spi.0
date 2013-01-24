@@ -1,61 +1,93 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 3/3] spi: spi-omap2-mcspi.c: Toggle CS after each word
-Date: Thu, 24 Jan 2013 19:06:52 +0800
-Message-ID: <20130124110648.GM4955@opensource.wolfsonmicro.com>
-References: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Kc9HNjpzOXVc7FFU"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Tony Lindgren <tony@atomide.com>,
-	Daniel Mack <zonque@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
-	ezequiel.garcia@free-electrons.com,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Matthias Brugger <matthias.bgg@gmail.com>
+From: Matthias Brugger <matthias.bgg@gmail.com>
+Subject: [PATCH] spi: spi-omap2-mcspi.c: fix coding style
+Date: Thu, 24 Jan 2013 13:28:58 +0100
+Message-ID: <1359030538-2866-1-git-send-email-matthias.bgg@gmail.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+To: grant.likely@secretlab.ca, tony@atomide.com,
+	broonie@opensource.wolfsonmicro.com, jarkko.nikula@bitmer.com,
+	zonque@gmail.com, gregkh@linuxfoundation.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, trivial@kernel.org
 Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This patch fixes some indentation errors.
 
---Kc9HNjpzOXVc7FFU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+---
+ drivers/spi/spi-omap2-mcspi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-On Wed, Jan 23, 2013 at 07:08:49PM +0100, Matthias Brugger wrote:
-> This patch allows the board code to define SPI devices which needs to
-> toggle the chip select after every word send. This is needed to get a
-> better resolution reading e.g. an ADC data stream.
-> Apart from that, as in the normal code CS is controlled by software,
-> a transfer is done much faster.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index b610f52..31f6e84 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1020,7 +1020,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ }
+ 
+ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+-						struct spi_message *m)
++		struct spi_message *m)
+ {
+ 	struct omap2_mcspi	*mcspi;
+ 	struct spi_transfer	*t;
+@@ -1041,7 +1041,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 				|| (len && !(rx_buf || tx_buf))
+ 				|| (t->bits_per_word &&
+ 					(  t->bits_per_word < 4
+-					|| t->bits_per_word > 32))) {
++					   || t->bits_per_word > 32))) {
+ 			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
+ 					t->speed_hz,
+ 					len,
+@@ -1052,8 +1052,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 		}
+ 		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
+ 			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
+-				t->speed_hz,
+-				OMAP2_MCSPI_MAX_FREQ >> 15);
++					t->speed_hz,
++					OMAP2_MCSPI_MAX_FREQ >> 15);
+ 			return -EINVAL;
+ 		}
+ 
+@@ -1099,7 +1099,7 @@ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
+ 		return ret;
+ 
+ 	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE,
+-				OMAP2_MCSPI_WAKEUPENABLE_WKEN);
++			OMAP2_MCSPI_WAKEUPENABLE_WKEN);
+ 	ctx->wakeupenable = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
+ 
+ 	omap2_mcspi_set_master_mode(master);
+@@ -1228,7 +1228,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 		sprintf(dma_ch_name, "rx%d", i);
+ 		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
+-							dma_ch_name);
++				dma_ch_name);
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
+ 			status = -ENODEV;
+@@ -1238,7 +1238,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 		mcspi->dma_channels[i].dma_rx_sync_dev = dma_res->start;
+ 		sprintf(dma_ch_name, "tx%d", i);
+ 		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
+-							dma_ch_name);
++				dma_ch_name);
+ 		if (!dma_res) {
+ 			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
+ 			status = -ENODEV;
+@@ -1254,7 +1254,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+ 	if (IS_ERR(pinctrl))
+ 		dev_warn(&pdev->dev,
+-			"pins are not configured from the driver\n");
++				"pins are not configured from the driver\n");
+ 
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+-- 
+1.7.11.7
 
-As Jarkko says the feature itself seems fine and the coding style fix
-seems fine but they should really be separate changes.
-
---Kc9HNjpzOXVc7FFU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRARXCAAoJELSic+t+oim9mQMP/3TNpoX1+mwsN04TS00xepv/
-AmEi8KYsDV2JgqUymmN52SHH5xhagkYu0Sym3c8kzxwrujRaIVm18i2lWGKyJ3OK
-LQ/XvYiyNmRh/GTzkAlUH1jBnFa9tcHMwAEWRoEvx7wV6BD2P6wi9xAdnQAcY77C
-GagThr1EQ/YHcUD6NApGKGzPQx42+U6Pq/OD+XNa/AskU07xSeOCuoQbcUn2nLWU
-muHUr3PSjkV7utUqY5ZVnFVTqu1kOiAbC/S836OMrSaLhLBJQKZZuDTzVB/BqUl2
-qQ4dcVLCB/sAldSj8pQIQmWF2sotjOjMJwUCPG6H+NBSvkR15TN4i0J85hXnloYE
-06hhPVY9uiAtkxMiof9TYGK+DDWGYkuLToUQexMoFznYlTvjRk7LUG+M2giFCTVV
-EubNzGZb6CTaXkeKDig4T2/HLgCuTTTtcPjGZBlDdyepuDAmOSmOvQnYqX2VrRPa
-K/j4j8HyvvEKcVLnVcddJ1gGciLHo420FES6lTbXekfz9RkhCCzREK2ELf1Oyf6h
-iUJewqyEhrQlnHZyweDk29tnOEQwjlgJZmYVYALzWGZGejW899N7OlbX3/cku63B
-ZBIPJmgsVrF7Jx28YUKMNo7SsjXC9UZ3hEa+RDe/axiVmCskNARUFIUFxHWLg+0O
-fBv2LFxc6e0SNeRPJwLA
-=xmMK
------END PGP SIGNATURE-----
-
---Kc9HNjpzOXVc7FFU--

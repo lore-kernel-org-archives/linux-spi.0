@@ -1,168 +1,56 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH 3/3] spi: spi-omap2-mcspi.c: Toggle CS after each word
-Date: Thu, 24 Jan 2013 17:19:29 -0500
-Message-ID: <20130124221929.GF5256@beef>
-References: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
+From: Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v5 00/14] DMA Engine support for AM33XX
+Date: Fri, 25 Jan 2013 12:32:28 +0530
+Message-ID: <51022E04.6040204@ti.com>
+References: <1358281974-8411-1-git-send-email-mporter@ti.com>
+ <50FFC48B.80902@ti.com> <20130123204917.GA5256@beef>
+ <8ea1d227d84648f68e670c56f27c481e@DFLE72.ent.ti.com>
+ <20130124204943.GE5256@beef>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Daniel Mack <zonque@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
-	ezequiel.garcia@free-electrons.com,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1358964529-4905-1-git-send-email-matthias.bgg@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+ Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
+ Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+ Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <20130124204943.GE5256@beef>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 23, 2013 at 07:08:49PM +0100, Matthias Brugger wrote:
-> This patch allows the board code to define SPI devices which needs to
-> toggle the chip select after every word send. This is needed to get a
-> better resolution reading e.g. an ADC data stream.
-> Apart from that, as in the normal code CS is controlled by software,
-> a transfer is done much faster.
-> 
-> Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
-> ---
->  drivers/spi/spi-omap2-mcspi.c                 | 34 ++++++++++++++++++++-------
->  include/linux/platform_data/spi-omap2-mcspi.h |  3 +++
->  2 files changed, 29 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index b610f52..12789fc 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -927,6 +927,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  
->  	struct spi_device		*spi;
->  	struct spi_transfer		*t = NULL;
-> +	struct spi_master		*master;
->  	int				cs_active = 0;
->  	struct omap2_mcspi_cs		*cs;
->  	struct omap2_mcspi_device_config *cd;
-> @@ -935,6 +936,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  	u32				chconf;
->  
->  	spi = m->spi;
-> +	master = spi->master;
->  	cs = spi->controller_state;
->  	cd = spi->controller_data;
->  
-> @@ -952,6 +954,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  			if (!t->speed_hz && !t->bits_per_word)
->  				par_override = 0;
->  		}
-> +		if (cd && cd->cs_per_word) {
-> +			chconf = mcspi->ctx.modulctrl;
-> +			chconf &= ~OMAP2_MCSPI_MODULCTRL_SINGLE;
-> +			mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
-> +			mcspi->ctx.modulctrl =
-> +				mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
-> +		}
-> +
->  
->  		if (!cs_active) {
->  			omap2_mcspi_force_cs(spi, 1);
-> @@ -1013,6 +1023,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  	if (cs_active)
->  		omap2_mcspi_force_cs(spi, 0);
->  
-> +	if (cd && cd->cs_per_word) {
-> +		chconf = mcspi->ctx.modulctrl;
-> +		chconf |= OMAP2_MCSPI_MODULCTRL_SINGLE;
-> +		mcspi_write_reg(master, OMAP2_MCSPI_MODULCTRL, chconf);
-> +		mcspi->ctx.modulctrl =
-> +			mcspi_read_cs_reg(spi, OMAP2_MCSPI_MODULCTRL);
-> +	}
-> +
->  	omap2_mcspi_set_enable(spi, 0);
->  
->  	m->status = status;
-> @@ -1020,7 +1038,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
->  }
->  
->  static int omap2_mcspi_transfer_one_message(struct spi_master *master,
-> -						struct spi_message *m)
-> +		struct spi_message *m)
->  {
->  	struct omap2_mcspi	*mcspi;
->  	struct spi_transfer	*t;
-> @@ -1041,7 +1059,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
->  				|| (len && !(rx_buf || tx_buf))
->  				|| (t->bits_per_word &&
->  					(  t->bits_per_word < 4
-> -					|| t->bits_per_word > 32))) {
-> +					   || t->bits_per_word > 32))) {
->  			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
->  					t->speed_hz,
->  					len,
-> @@ -1052,8 +1070,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
->  		}
->  		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
->  			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
-> -				t->speed_hz,
-> -				OMAP2_MCSPI_MAX_FREQ >> 15);
-> +					t->speed_hz,
-> +					OMAP2_MCSPI_MAX_FREQ >> 15);
->  			return -EINVAL;
->  		}
->  
-> @@ -1099,7 +1117,7 @@ static int omap2_mcspi_master_setup(struct omap2_mcspi *mcspi)
->  		return ret;
->  
->  	mcspi_write_reg(master, OMAP2_MCSPI_WAKEUPENABLE,
-> -				OMAP2_MCSPI_WAKEUPENABLE_WKEN);
-> +			OMAP2_MCSPI_WAKEUPENABLE_WKEN);
->  	ctx->wakeupenable = OMAP2_MCSPI_WAKEUPENABLE_WKEN;
->  
->  	omap2_mcspi_set_master_mode(master);
-> @@ -1228,7 +1246,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->  
->  		sprintf(dma_ch_name, "rx%d", i);
->  		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
-> -							dma_ch_name);
-> +				dma_ch_name);
->  		if (!dma_res) {
->  			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
->  			status = -ENODEV;
-> @@ -1238,7 +1256,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->  		mcspi->dma_channels[i].dma_rx_sync_dev = dma_res->start;
->  		sprintf(dma_ch_name, "tx%d", i);
->  		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
-> -							dma_ch_name);
-> +				dma_ch_name);
->  		if (!dma_res) {
->  			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
->  			status = -ENODEV;
-> @@ -1254,7 +1272,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->  	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
->  	if (IS_ERR(pinctrl))
->  		dev_warn(&pdev->dev,
-> -			"pins are not configured from the driver\n");
-> +				"pins are not configured from the driver\n");
->  
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-> diff --git a/include/linux/platform_data/spi-omap2-mcspi.h b/include/linux/platform_data/spi-omap2-mcspi.h
-> index a65572d..c100456 100644
-> --- a/include/linux/platform_data/spi-omap2-mcspi.h
-> +++ b/include/linux/platform_data/spi-omap2-mcspi.h
-> @@ -22,6 +22,9 @@ struct omap2_mcspi_dev_attr {
->  
->  struct omap2_mcspi_device_config {
->  	unsigned turbo_mode:1;
-> +
-> +	/* toggle chip select after every word */
-> +	unsigned cs_per_word:1;
+On Friday 25 January 2013 02:19 AM, Matt Porter wrote:
+> On Thu, Jan 24, 2013 at 05:12:05AM +0000, Shilimkar, Santosh wrote:
+>> On Thursday 24 January 2013 02:19 AM, Matt Porter wrote:
+>>> On Wed, Jan 23, 2013 at 04:37:55PM +0530, Santosh Shilimkar wrote:
+>>>> Matt,
+>>>>
+>>>> On Wednesday 16 January 2013 02:02 AM, Matt Porter wrote:
+>>>>
 
-Looks good. It would be also be nice to have an accompanying update to
-the DT bindings and parser when adding another attribute like this. Many
-platforms using this driver can only boot from DT.
-
--Matt
+[...]
+>
+>>> Thanks for the catch, I'll add this in with your tested line as well for
+>>> the series.
+>
+> BTW, since I'm dropping mmc support from this series, I'll move your
+> patch into a separate series with only the mmc pieces.
+>
+Fine by me

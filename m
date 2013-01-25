@@ -1,13 +1,18 @@
-From: "Douglas Sanchez" <aneayrbe-KK0ffGbhmjU@public.gmane.org>
-Subject: RE: We offer you herbal
-Date: Fri, 25 Jan 2013 19:45:22 +0100
-Message-ID: <20130125184523.66010@gmx.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH 14/19] spi/atmel: remove incorrect __exit_p()
+Date: Fri, 25 Jan 2013 22:44:13 +0000
+Message-ID: <1359153858-31992-15-git-send-email-arnd@arndb.de>
+References: <1359123276-15833-1-git-send-email-arnd@arndb.de>
+	<1359153858-31992-1-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: 7@scrippscollege.edu, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	catbehavior-j9pdmedNgrk@public.gmane.org, support-s7Gv3ipD5plWk0Htik3J/w@public.gmane.org, elizabeth.castillo-eRTiUhlhrAo@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1359153858-31992-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,11 +23,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ow rqlic fuljls udipcg ckqwlppk
-xhhfvqMake
-aziifHAPPYhdzyourjzfwoman-wnbuywpnfviagra/mxlowucialisxmi-order here- http://bit.ly/SrLiQL ymgbetfne jpprkzq beqp to h
-f i vgldbr bpzs p
-f maku r xiudntuc ttenhgwd
+Since we no longer allow building without hotplug, the
+atmel_spi_remove function is always present and we should
+not use __exit_p() to refer to it.
+
+Without this patch, building at91_dt_defconfig results in:
+
+drivers/spi/spi-atmel.c:1006:12: warning: 'atmel_spi_remove' defined but not used [-Wunused-function]
+
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+---
+ drivers/spi/spi-atmel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index ab34497..656d137 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1088,7 +1088,7 @@ static struct platform_driver atmel_spi_driver = {
+ 	.suspend	= atmel_spi_suspend,
+ 	.resume		= atmel_spi_resume,
+ 	.probe		= atmel_spi_probe,
+-	.remove		= __exit_p(atmel_spi_remove),
++	.remove		= atmel_spi_remove,
+ };
+ module_platform_driver(atmel_spi_driver);
+ 
+-- 
+1.8.0
+
+
 ------------------------------------------------------------------------------
 Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
 MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current

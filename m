@@ -1,56 +1,53 @@
-From: Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v5 00/14] DMA Engine support for AM33XX
-Date: Fri, 25 Jan 2013 12:32:28 +0530
-Message-ID: <51022E04.6040204@ti.com>
-References: <1358281974-8411-1-git-send-email-mporter@ti.com>
- <50FFC48B.80902@ti.com> <20130123204917.GA5256@beef>
- <8ea1d227d84648f68e670c56f27c481e@DFLE72.ent.ti.com>
- <20130124204943.GE5256@beef>
+From: Jarkko Nikula <jarkko.nikula@bitmer.com>
+Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: fix coding style
+Date: Fri, 25 Jan 2013 09:58:58 +0200
+Message-ID: <20130125095858.32e70b983abb349f6c1c4340@bitmer.com>
+References: <1359030538-2866-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20130124204943.GE5256@beef>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Cc: grant.likely@secretlab.ca, tony@atomide.com,
+	broonie@opensource.wolfsonmicro.com, zonque@gmail.com,
+	gregkh@linuxfoundation.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, trivial@kernel.org
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1359030538-2866-1-git-send-email-matthias.bgg@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 25 January 2013 02:19 AM, Matt Porter wrote:
-> On Thu, Jan 24, 2013 at 05:12:05AM +0000, Shilimkar, Santosh wrote:
->> On Thursday 24 January 2013 02:19 AM, Matt Porter wrote:
->>> On Wed, Jan 23, 2013 at 04:37:55PM +0530, Santosh Shilimkar wrote:
->>>> Matt,
->>>>
->>>> On Wednesday 16 January 2013 02:02 AM, Matt Porter wrote:
->>>>
+Hi
 
-[...]
->
->>> Thanks for the catch, I'll add this in with your tested line as well for
->>> the series.
->
-> BTW, since I'm dropping mmc support from this series, I'll move your
-> patch into a separate series with only the mmc pieces.
->
-Fine by me
+On Thu, 24 Jan 2013 13:28:58 +0100
+Matthias Brugger <matthias.bgg@gmail.com> wrote:
+
+> This patch fixes some indentation errors.
+> 
+> Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+> ---
+>  drivers/spi/spi-omap2-mcspi.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+...
+> @@ -1052,8 +1052,8 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+>  		}
+>  		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
+>  			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
+> -				t->speed_hz,
+> -				OMAP2_MCSPI_MAX_FREQ >> 15);
+> +					t->speed_hz,
+> +					OMAP2_MCSPI_MAX_FREQ >> 15);
+
+I have some mixed feelings from these changes and looking at the driver currently. Above change makes the readability a step backward but the driver has already these so in that sense your change makes the style more consistent.
+
+I can see three options with this patch: take your patch as it, do nothing or do larger style 'spring cleanup'.
+
+I'm personally somewhere take as it or do nothing. If style is not terribly wrong I personally favor smaller style fixes when those lines are changing anyway.
+
+In case maintainer takes this you could add:
+
+Reviewed-by: Jarkko Nikula <jarkko.nikula@bitmer.com>
+
+-- 
+Jarkko

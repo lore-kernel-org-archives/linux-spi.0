@@ -1,58 +1,53 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH 1/2] spi: spi-gpio: Add checks for the dt properties
-Date: Sat, 26 Jan 2013 15:36:14 +0800
-Message-ID: <20130126073612.GP10580@opensource.wolfsonmicro.com>
-References: <1359103175-26304-1-git-send-email-maxime.ripard@free-electrons.com>
- <1359103175-26304-2-git-send-email-maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: fix coding style
+Date: Sat, 26 Jan 2013 16:59:28 +0800
+Message-ID: <20130126085927.GE30594@opensource.wolfsonmicro.com>
+References: <1359030538-2866-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vEfizQhTV1P/vojJ"
-Cc: Shawn Guo <shawn.guo@linaro.org>,
-	Brian Lilly <brian@crystalfontz.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Grant Likely <grant.likely@secretlab.ca>,
+	protocol="application/pgp-signature"; boundary="+SfteS7bOf3dGlBC"
+Cc: grant.likely@secretlab.ca, tony@atomide.com,
+	jarkko.nikula@bitmer.com, zonque@gmail.com,
+	gregkh@linuxfoundation.org,
 	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	linux-omap@vger.kernel.org, trivial@kernel.org
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1359103175-26304-2-git-send-email-maxime.ripard@free-electrons.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1359030538-2866-1-git-send-email-matthias.bgg@gmail.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---vEfizQhTV1P/vojJ
+--+SfteS7bOf3dGlBC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jan 25, 2013 at 09:39:34AM +0100, Maxime Ripard wrote:
-> The bindings assumed that the gpios properties were always there, which
-> made the NO_TX and NO_RX mode not usable from device tree. Add extra
-> checks to make sure that the driver can work if either MOSI or MISO is
-> not used.
+On Thu, Jan 24, 2013 at 01:28:58PM +0100, Matthias Brugger wrote:
+> This patch fixes some indentation errors.
 
 Applied, thanks.
 
---vEfizQhTV1P/vojJ
+--+SfteS7bOf3dGlBC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRA4deAAoJELSic+t+oim9aLwQAJWewq7M1O/o/7otLNU/pkbu
-P6sIMzGMG5FHYnV7tFHgs4rTRfy/cEJeqzaG2+IVivZm9RS6rI0r9i40Wto575yL
-7adroT0qCQFNOhLXo2ajtA0mjoDTi3xOTPgBSStHY4rURvCReTh2bzuFloyhDRSJ
-tSCrC/FvNUjD447cYrWBQBJ9W6nYZ6Cr76D2tEczOyxgiLbA6UOWsOMidMJ9tuub
-BPZm5sOtsNifugduiOX7WuwvyF2dAN3hxNndrz+kSEzW6w39z+mBDpcB22jh4WrA
-/PYymQWXKeHGWHDX6HD/6E9dzP5tw5/rmNJaQj261MRtdbYeGGsFRvpmzkofAkh8
-N/LvqPNvbcWgZA3oHGsP3kGx8jhOrK4RTQlzrTmLgmOEZPa4gW5rn+OLS60e0DQr
-+96QRJlnxVRCj3V7/kVsPr+s88/MFHX8Qx+ei4m+mvGAsqASi2OR93kS0soDStxo
-G8rfebtX78Y5JHMTHpT7GJ+2K5fbGPGPb6/xTPWpazaP5YLS6IRV2gZ/b3ervoAP
-Sxc6s1V9VEb3izdcoqBKl6eV3dMYT4RGKTml5lhxLyq93uQmj7EeOJT1yi6BJM1p
-rJk2jCZDGrETpIMcWVn8UZF4ayhzFURl0umcoqLIxR/rPiASAfMmhQFREu5ncAmT
-ZcgESGZwDkH6rEoPBziW
-=xxKH
+iQIcBAEBAgAGBQJRA5rmAAoJELSic+t+oim9dxgP/1dTKhYqERjwZmq3YA3bLHZ5
+UlmmEzBeXA9hN/ChonsgGMwK/ISeuHHQSHjvFOlkt1CohTmrEKfvd6oF0eDVrBbl
+l4lcUYVOy328GTugAitf25GgJEX9vglSapEIbfxRXEMliJEluiDRcgQSYFMwIwAK
+Lw6AaD35HrKX2u7GcadlH/IwaGSR/fXgjejeAEdinKPdyLI4714QeQcuUPahajx3
+V5ZWEaBisaK7dozKuEuLkhy3oB+iYW8lZ9aDe0N5ZbOx8GNKufdN1ixlMTSvxhJ5
+mnNBCREcO2bHZeRi8MThm47ZGmJ4tcW3qtxCklq8jm6r3AQCCL4IXeTcq1xwUXRU
+0AIjYCrmPP2O2J9yL5ttbSEBagWM2pAK5ZM6Dnd/eZNOzMceG+iajgb35Ga4eYBw
+kYG4w0OMEXPFWXj8CndQrFSnEZkk0Wy5HTVGPrmagxCi1quBnK+yz6PM0OV1QE5h
+m5eVgeVnQyhmD5Jdj4+aet5rr6Ros1MUfUVr9K/J2n3g2UaAFqxJrygEbZT4K/yl
+Ne6AQQ+4ss0rZbYMRl+WqIqFTXkkESdDc4s+b/cvQOpihR28hSbNKRGz81ZwbZwB
+mwtuLCYrrt2kD+/nTinrdxYmewr52e1YoULOuCvbLxwG7InZxNp79v8rSvotyklk
+22+5X3dSV9wkY4K07VWK
+=+rlO
 -----END PGP SIGNATURE-----
 
---vEfizQhTV1P/vojJ--
+--+SfteS7bOf3dGlBC--

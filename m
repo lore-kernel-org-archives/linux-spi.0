@@ -1,60 +1,43 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v2] spi: spi-omap2-mcspi.c: Toggle CS after each word
-Date: Sat, 26 Jan 2013 17:00:35 +0800
-Message-ID: <20130126090033.GF30594@opensource.wolfsonmicro.com>
-References: <1359031241-3234-1-git-send-email-matthias.bgg@gmail.com>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
+Date: Sun, 27 Jan 2013 03:33:59 +0000
+Message-ID: <20130127033358.GA20672@sirena.org.uk>
+References: <1357752671-30222-1-git-send-email-lars@metafoo.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Bqc0IY4JZZt50bUr"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Tony Lindgren <tony@atomide.com>,
-	Daniel Mack <zonque@gmail.com>,
-	Jarkko Nikula <jarkko.nikula@bitmer.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	eballetbo@gmail.com, javier.martinez@collabora.co.uk,
-	ezequiel.garcia@free-electrons.com,
-	spi-devel-general@lists.sourceforge.net, linux-omap@vger.kernel.org
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1359031241-3234-1-git-send-email-matthias.bgg@gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+In-Reply-To: <1357752671-30222-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jan 09, 2013 at 06:31:09PM +0100, Lars-Peter Clausen wrote:
 
---Bqc0IY4JZZt50bUr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> The second function spi_sync_transfer() takes a SPI device and an array of
+> spi_transfers. It will allocate a new spi_message (on the stack) and add all
+> transfers in the array to the message. Finally it will call spi_sync() on the
+> message.
 
-On Thu, Jan 24, 2013 at 01:40:41PM +0100, Matthias Brugger wrote:
-> This patch allows the board code to define SPI devices which needs to
-> toggle the chip select after every word send. This is needed to get a
-> better resolution reading e.g. an ADC data stream.
-> Apart from that, as in the normal code CS is controlled by software,
-> a transfer is done much faster.
+Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
-Applied, thanks.
+for the helpers, we should try to get them merged separately to the
+coccinelle rules if there's issue with those.
 
---Bqc0IY4JZZt50bUr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRA5smAAoJELSic+t+oim9A2gQAJA/TfJCWmz7+Xh4jsBiHp1S
-WGVKtAPSHoqf63wVSWOGKncJ0siw7G6sS06yVRyIbAbed5PFV7nQwozHtSkPjdkC
-xmIqoBcXwv47/68O+AJ3EUJtqrmUpk1uGbPFmJQhEadWrJ1WMsoJk2L8i3vt/nat
-6DIqCKkTFrkl8W2XBhtIrwrLirtvPvf0hyDimBJW4kp9zh+xw8QwCj0y8sQN4Zpj
-fUoxkOwQtFfw1Cby4sInDkFCNjh4MZfbBh5dAPavs17wNMxJjbFhkGndi85EWP43
-1DEZ6pO7fnhyn4AFMRVMa+6KTbXzCa00/qeKxhJTb7b4TahyQIwbU0PfsaCni5R4
-wxfQB+V/Qkc7Gft96i22pUA5SCp1gNfC+gQqkH2LsjRBeQRTF2l95s5ZXcgCsngn
-Gs7RuZvMEc0oudDfQ59QISR64nM968pWJwGamFSi8Ub/n15Yio8jHDNOTWot13i1
-5up/pzcOOjvlb/7QJGzEYjIqttsr5xUIxrk4eCK085lP+QmPFRfwSf7DvCMWImEb
-2AVgiIxAGCLGBBul4Eg8D75ugzjdcaglc0TV+v32IJwpRaVpNIoxa5JQJfrPkcOu
-xuj2j1tF9f22JgwY1UclIbSVwjeBluESGi/fCXwLFBYFL+O86h7Pb9CAVXbfumrn
-8KJYmcVgKOgl3PZ/LeYO
-=a+ak
------END PGP SIGNATURE-----
-
---Bqc0IY4JZZt50bUr--
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnnow-d2d

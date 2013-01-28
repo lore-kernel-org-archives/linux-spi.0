@@ -1,195 +1,459 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH 3/5] serial: pl011: use generic DMA slave configuration if
-	possible
-Date: Mon, 28 Jan 2013 17:57:35 +0000
-Message-ID: <1359395857-1235-4-git-send-email-arnd@arndb.de>
-References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v5 03/14] ARM: edma: add AM33XX support to the private
+ EDMA API
+Date: Mon, 28 Jan 2013 21:27:24 +0200
+Message-ID: <CAHp75VeFZ19CCL-4huLNWbsXT-8sGrcvtxN=Dm0s+ojNA3w-3g@mail.gmail.com>
+References: <1358281974-8411-1-git-send-email-mporter@ti.com>
+	<1358281974-8411-4-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359395857-1235-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Chris Ball <cjb@laptop.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Arnd Bergmann <arnd@arndb.de>, Dan Williams <djbw@fb.com>,
+	Rob Herring <rob.herring@calxe
+To: Matt Porter <mporter@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <1358281974-8411-4-git-send-email-mporter@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-With the new OF DMA binding, it is possible to completely avoid the
-need for platform_data for configuring a DMA channel. In cases where the
-platform has already been converted, calling dma_request_slave_channel
-should get all the necessary information from the device tree.
+On Tue, Jan 15, 2013 at 10:32 PM, Matt Porter <mporter@ti.com> wrote:
+> Adds support for parsing the TI EDMA DT data into the required
+> EDMA private API platform data. Enables runtime PM support to
+> initialize the EDMA hwmod. Adds AM33XX EMDA crossbar event mux
+> support.
+>
+> Signed-off-by: Matt Porter <mporter@ti.com>
+> ---
+>  arch/arm/common/edma.c             |  314 ++++++++++++++++++++++++++++++++++--
+>  include/linux/platform_data/edma.h |    1 +
+>  2 files changed, 306 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
+> index 2dce245..beeb1d2 100644
+> --- a/arch/arm/common/edma.c
+> +++ b/arch/arm/common/edma.c
+> @@ -24,6 +24,13 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/io.h>
+>  #include <linux/slab.h>
+> +#include <linux/edma.h>
+> +#include <linux/err.h>
+> +#include <linux/of_address.h>
+> +#include <linux/of_device.h>
+> +#include <linux/of_dma.h>
+> +#include <linux/of_irq.h>
+> +#include <linux/pm_runtime.h>
+>
+>  #include <linux/platform_data/edma.h>
+>
+> @@ -723,6 +730,9 @@ EXPORT_SYMBOL(edma_free_channel);
+>   */
+>  int edma_alloc_slot(unsigned ctlr, int slot)
+>  {
+> +       if (!edma_cc[ctlr])
+> +               return -EINVAL;
+> +
+>         if (slot >= 0)
+>                 slot = EDMA_CHAN_SLOT(slot);
+>
+> @@ -1366,31 +1376,291 @@ void edma_clear_event(unsigned channel)
+>  EXPORT_SYMBOL(edma_clear_event);
+>
+>  /*-----------------------------------------------------------------------*/
+> +static int edma_of_read_u32_to_s8_array(const struct device_node *np,
+> +                                        const char *propname, s8 *out_values,
+> +                                        size_t sz)
 
-Like the patch that converts the dw_dma controller, this is completely
-untested and is looking for someone to try it out.
+I'm sorry I didn't get why you couldn't use of_property_read_u8_array() ?
+The similar comment to u16 and so on.
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Cc: Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Cc: linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
----
- drivers/tty/serial/amba-pl011.c | 62 ++++++++++++++++++++++++-----------------
- 1 file changed, 37 insertions(+), 25 deletions(-)
+> +{
+> +       struct property *prop = of_find_property(np, propname, NULL);
+> +       const __be32 *val;
+> +
+> +       if (!prop)
+> +               return -EINVAL;
+> +       if (!prop->value)
+> +               return -ENODATA;
+> +       if ((sz * sizeof(u32)) > prop->length)
+> +               return -EOVERFLOW;
+> +
+> +       val = prop->value;
+> +
+> +       while (sz--)
+> +               *out_values++ = (s8)(be32_to_cpup(val++) & 0xff);
+> +
+> +       /* Terminate it */
+> +       *out_values++ = -1;
+> +       *out_values++ = -1;
+> +
+> +       return 0;
+> +}
+> +
+> +static int edma_of_read_u32_to_s16_array(const struct device_node *np,
+> +                                        const char *propname, s16 *out_values,
+> +                                        size_t sz)
+> +{
+> +       struct property *prop = of_find_property(np, propname, NULL);
+> +       const __be32 *val;
+> +
+> +       if (!prop)
+> +               return -EINVAL;
+> +       if (!prop->value)
+> +               return -ENODATA;
+> +       if ((sz * sizeof(u32)) > prop->length)
+> +               return -EOVERFLOW;
+> +
+> +       val = prop->value;
+> +
+> +       while (sz--)
+> +               *out_values++ = (s16)(be32_to_cpup(val++) & 0xffff);
+> +
+> +       /* Terminate it */
+> +       *out_values++ = -1;
+> +       *out_values++ = -1;
+> +
+> +       return 0;
+> +}
+> +
+> +static int edma_xbar_event_map(struct device *dev,
+> +                              struct device_node *node,
+> +                              struct edma_soc_info *pdata, int len)
+> +{
+> +       int ret = 0;
+> +       int i;
+> +       struct resource res;
+> +       void *xbar;
+> +       const s16 (*xbar_chans)[2];
+> +       u32 shift, offset, mux;
+> +
+> +       xbar_chans = devm_kzalloc(dev,
+> +                                 len/sizeof(s16) + 2*sizeof(s16),
+> +                                 GFP_KERNEL);
+> +       if (!xbar_chans)
+> +               return -ENOMEM;
+> +
+> +       ret = of_address_to_resource(node, 1, &res);
+> +       if (IS_ERR_VALUE(ret))
+> +               return -EIO;
+> +
+> +       xbar = devm_ioremap(dev, res.start, resource_size(&res));
+> +       if (!xbar)
+> +               return -ENOMEM;
+> +
+> +       ret = edma_of_read_u32_to_s16_array(node,
+> +                                           "ti,edma-xbar-event-map",
+> +                                           (s16 *)xbar_chans,
+> +                                           len/sizeof(u32));
+> +       if (IS_ERR_VALUE(ret))
+> +               return -EIO;
+> +
+> +       for (i = 0; xbar_chans[i][0] != -1; i++) {
+> +               shift = (xbar_chans[i][1] % 4) * 8;
+> +               offset = xbar_chans[i][1] >> 2;
+> +               offset <<= 2;
+> +               mux = readl((void *)((u32)xbar + offset));
+> +               mux &= ~(0xff << shift);
+> +               mux |= xbar_chans[i][0] << shift;
+> +               writel(mux, (void *)((u32)xbar + offset));
+> +       }
+> +
+> +       pdata->xbar_chans = xbar_chans;
+> +
+> +       return 0;
+> +}
+> +
+> +static int edma_of_parse_dt(struct device *dev,
+> +                           struct device_node *node,
+> +                           struct edma_soc_info *pdata)
+> +{
+> +       int ret = 0;
+> +       u32 value;
+> +       struct property *prop;
+> +       size_t sz;
+> +       struct edma_rsv_info *rsv_info;
+> +       const s16 (*rsv_chans)[2], (*rsv_slots)[2];
+> +       const s8 (*queue_tc_map)[2], (*queue_priority_map)[2];
+> +
+> +       memset(pdata, 0, sizeof(struct edma_soc_info));
+> +
+> +       ret = of_property_read_u32(node, "dma-channels", &value);
+> +       if (ret < 0)
+> +               return ret;
+> +       pdata->n_channel = value;
+> +
+> +       ret = of_property_read_u32(node, "ti,edma-regions", &value);
+> +       if (ret < 0)
+> +               return ret;
+> +       pdata->n_region = value;
+> +
+> +       ret = of_property_read_u32(node, "ti,edma-slots", &value);
+> +       if (ret < 0)
+> +               return ret;
+> +       pdata->n_slot = value;
+> +
+> +       pdata->n_cc = 1;
+> +       pdata->n_tc = 3;
+> +
+> +       rsv_info =
+> +               devm_kzalloc(dev, sizeof(struct edma_rsv_info), GFP_KERNEL);
+> +       if (!rsv_info)
+> +               return -ENOMEM;
+> +       pdata->rsv = rsv_info;
+> +
+> +       /* Build the reserved channel/slots arrays */
+> +       prop = of_find_property(node, "ti,edma-reserved-channels", &sz);
+> +       if (prop) {
+> +               rsv_chans = devm_kzalloc(dev,
+> +                                        sz/sizeof(s16) + 2*sizeof(s16),
+> +                                        GFP_KERNEL);
+> +               if (!rsv_chans)
+> +                       return -ENOMEM;
+> +               pdata->rsv->rsv_chans = rsv_chans;
+> +
+> +               ret = edma_of_read_u32_to_s16_array(node,
+> +                                                   "ti,edma-reserved-channels",
+> +                                                   (s16 *)rsv_chans,
+> +                                                   sz/sizeof(u32));
+> +               if (ret < 0)
+> +                       return ret;
+> +       }
+> +
+> +       prop = of_find_property(node, "ti,edma-reserved-slots", &sz);
+> +       if (prop) {
+> +               rsv_slots = devm_kzalloc(dev,
+> +                                        sz/sizeof(s16) + 2*sizeof(s16),
+> +                                        GFP_KERNEL);
+> +               if (!rsv_slots)
+> +                       return -ENOMEM;
+> +               pdata->rsv->rsv_slots = rsv_slots;
+> +
+> +               ret = edma_of_read_u32_to_s16_array(node,
+> +                                                   "ti,edma-reserved-slots",
+> +                                                   (s16 *)rsv_slots,
+> +                                                   sz/sizeof(u32));
+> +               if (ret < 0)
+> +                       return ret;
+> +       }
+> +
+> +       prop = of_find_property(node, "ti,edma-queue-tc-map", &sz);
+> +       if (!prop)
+> +               return -EINVAL;
+> +
+> +       queue_tc_map = devm_kzalloc(dev,
+> +                                   sz/sizeof(s8) + 2*sizeof(s8),
+> +                                   GFP_KERNEL);
+> +       if (!queue_tc_map)
+> +               return -ENOMEM;
+> +       pdata->queue_tc_mapping = queue_tc_map;
+> +
+> +       ret = edma_of_read_u32_to_s8_array(node,
+> +                                          "ti,edma-queue-tc-map",
+> +                                          (s8 *)queue_tc_map,
+> +                                          sz/sizeof(u32));
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       prop = of_find_property(node, "ti,edma-queue-priority-map", &sz);
+> +       if (!prop)
+> +               return -EINVAL;
+> +
+> +       queue_priority_map = devm_kzalloc(dev,
+> +                                         sz/sizeof(s8) + 2*sizeof(s8),
+> +                                         GFP_KERNEL);
+> +       if (!queue_priority_map)
+> +               return -ENOMEM;
+> +       pdata->queue_priority_mapping = queue_priority_map;
+> +
+> +       ret = edma_of_read_u32_to_s8_array(node,
+> +                                          "ti,edma-queue-tc-map",
+> +                                          (s8 *)queue_priority_map,
+> +                                          sz/sizeof(u32));
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       ret = of_property_read_u32(node, "ti,edma-default-queue", &value);
+> +       if (ret < 0)
+> +               return ret;
+> +       pdata->default_queue = value;
+> +
+> +       prop = of_find_property(node, "ti,edma-xbar-event-map", &sz);
+> +       if (prop)
+> +               ret = edma_xbar_event_map(dev, node, pdata, sz);
+> +
+> +       return ret;
+> +}
+> +
+> +static struct of_dma_filter_info edma_filter_info = {
+> +       .filter_fn = edma_filter_fn,
+> +};
+>
+>  static int edma_probe(struct platform_device *pdev)
+>  {
+>         struct edma_soc_info    **info = pdev->dev.platform_data;
+> +       struct edma_soc_info    *ninfo[EDMA_MAX_CC] = {NULL, NULL};
+> +       struct edma_soc_info    tmpinfo;
+>         const s8                (*queue_priority_mapping)[2];
+>         const s8                (*queue_tc_mapping)[2];
+>         int                     i, j, off, ln, found = 0;
+>         int                     status = -1;
+>         const s16               (*rsv_chans)[2];
+>         const s16               (*rsv_slots)[2];
+> +       const s16               (*xbar_chans)[2];
+>         int                     irq[EDMA_MAX_CC] = {0, 0};
+>         int                     err_irq[EDMA_MAX_CC] = {0, 0};
+> -       struct resource         *r[EDMA_MAX_CC] = {NULL};
+> +       struct resource         *r[EDMA_MAX_CC] = {NULL, NULL};
+> +       struct resource         res[EDMA_MAX_CC];
+>         resource_size_t         len[EDMA_MAX_CC];
+>         char                    res_name[10];
+>         char                    irq_name[10];
+> +       struct device_node      *node = pdev->dev.of_node;
+> +       struct device           *dev = &pdev->dev;
+> +       int                     ret;
+> +
+> +       if (node) {
+> +               info = ninfo;
+> +               edma_of_parse_dt(dev, node, &tmpinfo);
+> +               info[0] = &tmpinfo;
+> +
+> +               dma_cap_set(DMA_SLAVE, edma_filter_info.dma_cap);
+> +               of_dma_controller_register(dev->of_node,
+> +                                          of_dma_simple_xlate,
+> +                                          &edma_filter_info);
+> +       }
+>
+>         if (!info)
+>                 return -ENODEV;
+>
+> +       pm_runtime_enable(dev);
+> +       ret = pm_runtime_get_sync(dev);
+> +       if (IS_ERR_VALUE(ret)) {
+> +               dev_err(dev, "pm_runtime_get_sync() failed\n");
+> +               return ret;
+> +       }
+> +
+>         for (j = 0; j < EDMA_MAX_CC; j++) {
+> -               sprintf(res_name, "edma_cc%d", j);
+> -               r[j] = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+> +               if (!info[j]) {
+> +                       if (!found)
+> +                               return -ENODEV;
+> +                       break;
+> +               }
+> +               if (node) {
+> +                       ret = of_address_to_resource(node, j, &res[j]);
+> +                       if (!IS_ERR_VALUE(ret))
+> +                               r[j] = &res[j];
+> +               } else {
+> +                       sprintf(res_name, "edma_cc%d", j);
+> +                       r[j] = platform_get_resource_byname(pdev,
+> +                                               IORESOURCE_MEM,
+>                                                 res_name);
+> -               if (!r[j] || !info[j]) {
+> +               }
+> +               if (!r[j]) {
+>                         if (found)
+>                                 break;
+>                         else
+> @@ -1465,8 +1735,22 @@ static int edma_probe(struct platform_device *pdev)
+>                         }
+>                 }
+>
+> -               sprintf(irq_name, "edma%d", j);
+> -               irq[j] = platform_get_irq_byname(pdev, irq_name);
+> +               /* Clear the xbar mapped channels in unused list */
+> +               xbar_chans = info[j]->xbar_chans;
+> +               if (xbar_chans) {
+> +                       for (i = 0; xbar_chans[i][1] != -1; i++) {
+> +                               off = xbar_chans[i][1];
+> +                               clear_bits(off, 1,
+> +                                       edma_cc[j]->edma_unused);
+> +                       }
+> +               }
+> +
+> +               if (node)
+> +                       irq[j] = irq_of_parse_and_map(node, 0);
+> +               else {
+> +                       sprintf(irq_name, "edma%d", j);
+> +                       irq[j] = platform_get_irq_byname(pdev, irq_name);
+> +               }
+>                 edma_cc[j]->irq_res_start = irq[j];
+>                 status = request_irq(irq[j], dma_irq_handler, 0, "edma",
+>                                         &pdev->dev);
+> @@ -1476,8 +1760,12 @@ static int edma_probe(struct platform_device *pdev)
+>                         goto fail;
+>                 }
+>
+> -               sprintf(irq_name, "edma%d_err", j);
+> -               err_irq[j] = platform_get_irq_byname(pdev, irq_name);
+> +               if (node)
+> +                       err_irq[j] = irq_of_parse_and_map(node, 2);
+> +               else {
+> +                       sprintf(irq_name, "edma%d_err", j);
+> +                       err_irq[j] = platform_get_irq_byname(pdev, irq_name);
+> +               }
+>                 edma_cc[j]->irq_res_end = err_irq[j];
+>                 status = request_irq(err_irq[j], dma_ccerr_handler, 0,
+>                                         "edma_error", &pdev->dev);
+> @@ -1538,9 +1826,17 @@ fail1:
+>         return status;
+>  }
+>
+> +static const struct of_device_id edma_of_ids[] = {
+> +       { .compatible = "ti,edma3", },
+> +       {}
+> +};
+>
+>  static struct platform_driver edma_driver = {
+> -       .driver.name    = "edma",
+> +       .driver = {
+> +               .name   = "edma",
+> +               .of_match_table = edma_of_ids,
+> +       },
+> +       .probe = edma_probe,
+>  };
+>
+>  static int __init edma_init(void)
+> diff --git a/include/linux/platform_data/edma.h b/include/linux/platform_data/edma.h
+> index 2344ea2..ffc1fb2 100644
+> --- a/include/linux/platform_data/edma.h
+> +++ b/include/linux/platform_data/edma.h
+> @@ -177,6 +177,7 @@ struct edma_soc_info {
+>
+>         const s8        (*queue_tc_mapping)[2];
+>         const s8        (*queue_priority_mapping)[2];
+> +       const s16       (*xbar_chans)[2];
+>  };
+>
+>  #endif
+> --
+> 1.7.9.5
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
 
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 3ea5408..c25b00e 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -245,7 +245,7 @@ static void pl011_sgbuf_free(struct dma_chan *chan, struct pl011_sgbuf *sg,
- 	}
- }
- 
--static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
-+static void pl011_dma_probe_initcall(struct device *dev, struct uart_amba_port *uap)
- {
- 	/* DMA is the sole user of the platform data right now */
- 	struct amba_pl011_data *plat = uap->port.dev->platform_data;
-@@ -259,20 +259,25 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 	struct dma_chan *chan;
- 	dma_cap_mask_t mask;
- 
--	/* We need platform data */
--	if (!plat || !plat->dma_filter) {
--		dev_info(uap->port.dev, "no DMA platform data\n");
--		return;
--	}
-+	chan = dma_request_slave_channel(dev, "tx");
- 
--	/* Try to acquire a generic DMA engine slave TX channel */
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
--
--	chan = dma_request_channel(mask, plat->dma_filter, plat->dma_tx_param);
- 	if (!chan) {
--		dev_err(uap->port.dev, "no TX DMA channel!\n");
--		return;
-+		/* We need platform data */
-+		if (!plat || !plat->dma_filter) {
-+			dev_info(uap->port.dev, "no DMA platform data\n");
-+			return;
-+		}
-+
-+		/* Try to acquire a generic DMA engine slave TX channel */
-+		dma_cap_zero(mask);
-+		dma_cap_set(DMA_SLAVE, mask);
-+
-+		chan = dma_request_channel(mask, plat->dma_filter,
-+						plat->dma_tx_param);
-+		if (!chan) {
-+			dev_err(uap->port.dev, "no TX DMA channel!\n");
-+			return;
-+		}
- 	}
- 
- 	dmaengine_slave_config(chan, &tx_conf);
-@@ -282,7 +287,18 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 		 dma_chan_name(uap->dmatx.chan));
- 
- 	/* Optionally make use of an RX channel as well */
--	if (plat->dma_rx_param) {
-+	chan = dma_request_slave_channel(dev, "rx");
-+	
-+	if (!chan && plat->dma_rx_param) {
-+		chan = dma_request_channel(mask, plat->dma_filter, plat->dma_rx_param);
-+
-+		if (!chan) {
-+			dev_err(uap->port.dev, "no RX DMA channel!\n");
-+			return;
-+		}
-+	}
-+
-+	if (chan) {
- 		struct dma_slave_config rx_conf = {
- 			.src_addr = uap->port.mapbase + UART01x_DR,
- 			.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE,
-@@ -291,12 +307,6 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 			.device_fc = false,
- 		};
- 
--		chan = dma_request_channel(mask, plat->dma_filter, plat->dma_rx_param);
--		if (!chan) {
--			dev_err(uap->port.dev, "no RX DMA channel!\n");
--			return;
--		}
--
- 		dmaengine_slave_config(chan, &rx_conf);
- 		uap->dmarx.chan = chan;
- 
-@@ -315,6 +325,7 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- struct dma_uap {
- 	struct list_head node;
- 	struct uart_amba_port *uap;
-+	struct device *dev;
- };
- 
- static LIST_HEAD(pl011_dma_uarts);
-@@ -325,7 +336,7 @@ static int __init pl011_dma_initcall(void)
- 
- 	list_for_each_safe(node, tmp, &pl011_dma_uarts) {
- 		struct dma_uap *dmau = list_entry(node, struct dma_uap, node);
--		pl011_dma_probe_initcall(dmau->uap);
-+		pl011_dma_probe_initcall(dmau->dev, dmau->uap);
- 		list_del(node);
- 		kfree(dmau);
- 	}
-@@ -334,18 +345,19 @@ static int __init pl011_dma_initcall(void)
- 
- device_initcall(pl011_dma_initcall);
- 
--static void pl011_dma_probe(struct uart_amba_port *uap)
-+static void pl011_dma_probe(struct device *dev, struct uart_amba_port *uap)
- {
- 	struct dma_uap *dmau = kzalloc(sizeof(struct dma_uap), GFP_KERNEL);
- 	if (dmau) {
- 		dmau->uap = uap;
-+		dmau->dev = dev;
- 		list_add_tail(&dmau->node, &pl011_dma_uarts);
- 	}
- }
- #else
--static void pl011_dma_probe(struct uart_amba_port *uap)
-+static void pl011_dma_probe(struct device *dev, struct uart_amba_port *uap)
- {
--	pl011_dma_probe_initcall(uap);
-+	pl011_dma_probe_initcall(dev, uap);
- }
- #endif
- 
-@@ -2020,7 +2032,7 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
- 	uap->port.ops = &amba_pl011_pops;
- 	uap->port.flags = UPF_BOOT_AUTOCONF;
- 	uap->port.line = i;
--	pl011_dma_probe(uap);
-+	pl011_dma_probe(&dev->dev, uap);
- 
- 	/* Ensure interrupts from this UART are masked and cleared */
- 	writew(0, uap->port.membase + UART011_IMSC);
+
+
 -- 
-1.8.0
-
-
-------------------------------------------------------------------------------
-Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
-MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
-with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
-MVPs and experts. ON SALE this month only -- learn more at:
-http://p.sf.net/sfu/learnnow-d2d
+With Best Regards,
+Andy Shevchenko

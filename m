@@ -1,18 +1,21 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 14/19] spi/atmel: remove incorrect __exit_p()
-Date: Mon, 28 Jan 2013 09:33:14 +0100
-Message-ID: <510637CA.7010305@atmel.com>
-References: <1359123276-15833-1-git-send-email-arnd@arndb.de>
-	<1359153858-31992-1-git-send-email-arnd@arndb.de>
-	<1359153858-31992-15-git-send-email-arnd@arndb.de>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH 2/5] spi: pl022: use generic DMA slave configuration if
+	possible
+Date: Mon, 28 Jan 2013 17:57:34 +0000
+Message-ID: <1359395857-1235-3-git-send-email-arnd@arndb.de>
+References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359153858-31992-15-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <1359395857-1235-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,44 +26,98 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 01/25/2013 11:44 PM, Arnd Bergmann :
-> Since we no longer allow building without hotplug, the
-> atmel_spi_remove function is always present and we should
-> not use __exit_p() to refer to it.
-> 
-> Without this patch, building at91_dt_defconfig results in:
-> 
-> drivers/spi/spi-atmel.c:1006:12: warning: 'atmel_spi_remove' defined but not used [-Wunused-function]
-> 
-> Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-> Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+With the new OF DMA binding, it is possible to completely avoid the
+need for platform_data for configuring a DMA channel. In cases where the
+platform has already been converted, calling dma_request_slave_channel
+should get all the necessary information from the device tree.
 
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Like the patch that converts the dw_dma controller, this is completely
+untested and is looking for someone to try it out.
 
-> Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> ---
->  drivers/spi/spi-atmel.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index ab34497..656d137 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1088,7 +1088,7 @@ static struct platform_driver atmel_spi_driver = {
->  	.suspend	= atmel_spi_suspend,
->  	.resume		= atmel_spi_resume,
->  	.probe		= atmel_spi_probe,
-> -	.remove		= __exit_p(atmel_spi_remove),
-> +	.remove		= atmel_spi_remove,
->  };
->  module_platform_driver(atmel_spi_driver);
->  
-> 
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Cc: linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+---
+ drivers/spi/spi-pl022.c | 43 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 41 insertions(+), 2 deletions(-)
 
-
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index b0fe393..371cc66f 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1139,6 +1139,35 @@ err_no_rxchan:
+ 	return -ENODEV;
+ }
+ 
++static int pl022_dma_autoprobe(struct pl022 *pl022)
++{
++	struct device *dev = &pl022->adev->dev;
++
++	/* automatically configure DMA channels from platform, normally using DT */
++	pl022->dma_rx_channel = dma_request_slave_channel(dev, "rx");
++	if (!pl022->dma_rx_channel)
++		goto err_no_rxchan;
++
++	pl022->dma_tx_channel = dma_request_slave_channel(dev, "tx");
++	if (!pl022->dma_tx_channel)
++		goto err_no_txchan;
++
++	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!pl022->dummypage)
++		goto err_no_dummypage;
++
++	return 0;
++
++err_no_dummypage:
++	dma_release_channel(pl022->dma_tx_channel);
++	pl022->dma_tx_channel = NULL;
++err_no_txchan:
++	dma_release_channel(pl022->dma_rx_channel);
++	pl022->dma_rx_channel = NULL;
++err_no_rxchan:
++	return -ENODEV;
++}
++		
+ static void terminate_dma(struct pl022 *pl022)
+ {
+ 	struct dma_chan *rxchan = pl022->dma_rx_channel;
+@@ -1167,6 +1196,11 @@ static inline int configure_dma(struct pl022 *pl022)
+ 	return -ENODEV;
+ }
+ 
++static inline int pl022_dma_autoprobe(struct pl022 *pl022)
++{
++	return 0;
++}
++
+ static inline int pl022_dma_probe(struct pl022 *pl022)
+ {
+ 	return 0;
+@@ -2226,8 +2260,13 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		goto err_no_irq;
+ 	}
+ 
+-	/* Get DMA channels */
+-	if (platform_info->enable_dma) {
++	/* Get DMA channels, try autoconfiguration first */
++	status = pl022_dma_autoprobe(pl022);
++
++	/* If that failed, use channels from platform_info */
++	if (status == 0)
++		platform_info->enable_dma = 1;
++	else if (platform_info->enable_dma) {
+ 		status = pl022_dma_probe(pl022);
+ 		if (status != 0)
+ 			platform_info->enable_dma = 0;
 -- 
-Nicolas Ferre
+1.8.0
+
 
 ------------------------------------------------------------------------------
 Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,

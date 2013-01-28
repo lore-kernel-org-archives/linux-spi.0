@@ -1,63 +1,102 @@
 From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH v5 07/14] dmaengine: add dma_request_slave_channel_compat()
-Date: Mon, 28 Jan 2013 19:57:47 +0000
-Message-ID: <201301281957.47604.arnd@arndb.de>
-References: <1358281974-8411-1-git-send-email-mporter@ti.com>
- <1358281974-8411-8-git-send-email-mporter@ti.com>
- <CAHp75VeqikcTuOd14utb9E0P3b9t1mr=JsmkAbz5=3FJwU2kFA@mail.gmail.com>
+Subject: [PATCH v2 0/5] dmaengine: convert dw_dmac/spear13xx to generic binding
+Date: Mon, 28 Jan 2013 21:58:15 +0000
+Message-ID: <1359410300-26113-1-git-send-email-arnd@arndb.de>
+References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>,
- Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <CAHp75VeqikcTuOd14utb9E0P3b9t1mr=JsmkAbz5=3FJwU2kFA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Jon Hunter <jon-hunter-l0cyMroinI0@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>, Jeff Garzik <jgarzik-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1359395857-1235-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 28 January 2013, Andy Shevchenko wrote:
-> On Tue, Jan 15, 2013 at 10:32 PM, Matt Porter <mporter-l0cyMroinI0@public.gmane.org> wrote:
-> > Adds a dma_request_slave_channel_compat() wrapper which accepts
-> > both the arguments from dma_request_channel() and
-> > dma_request_slave_channel(). Based on whether the driver is
-> > instantiated via DT, the appropriate channel request call will be
-> > made.
-> >
-> > This allows for a much cleaner migration of drivers to the
-> > dmaengine DT API as platforms continue to be mixed between those
-> > that boot using DT and those that do not.
-> 
-> Does it mean the introduced function is kinda temporary?
+Hi everyone,
 
-Some drivers can very likely get converted to use only
-dma_request_slave_channel() in the long run, when all
-the platforms using those drivers have been converted to
-provide the channels using device tree.
+I'm rather embarrassed to have sent yet another patch series
+to the wrong mailing list address, this now goes to the
+correct linux-arm-kernel list, so please comment here,
+not on the first version. I have also made some smaller
+changes and updated the DT bindings where I extended
+the drivers. I also uploaded the git branch to the
+spear/dma branch of
+git://git.kernel.org/pub/scm/linux/kernel/git/arm/arm-soc.git
 
-However, for drivers that are used on legacy platforms
-without DT support, we may still need something like
-this function in the long run.
+This is my attempt to convert the spear platform and the dw_dmac to
+the generic device tree binding for DMA, so that we don't get
+a release with the broken version. I'm pretty sure that this
+has bugs, but it's as good as I could do without access to
+hardware or specs.
+
+Please review and comment,
 
 	Arnd
+
+Arnd Bergmann (5):
+  dmaengine: dw_dmac: move to generic DMA binding
+  spi: pl022: use generic DMA slave configuration if possible
+  serial: pl011: use generic DMA slave configuration if possible
+  ata: arasan: remove the need for platform_data
+  ARM: SPEAr13xx: Pass generic DW DMAC platform data from DT
+
+ .../devicetree/bindings/ata/pata-arasan.txt        |  22 ++++
+ Documentation/devicetree/bindings/dma/snps-dma.txt |  70 +++++------
+ arch/arm/boot/dts/spear1340.dtsi                   |   2 +
+ arch/arm/boot/dts/spear13xx.dtsi                   |  25 +++-
+ arch/arm/mach-spear/generic.h                      |   6 -
+ arch/arm/mach-spear/include/mach/spear.h           |   2 -
+ arch/arm/mach-spear/spear1310.c                    |  30 +----
+ arch/arm/mach-spear/spear1340.c                    |  32 +----
+ arch/arm/mach-spear/spear13xx-dma.h                | 128 --------------------
+ arch/arm/mach-spear/spear13xx.c                    |  58 ---------
+ drivers/ata/pata_arasan_cf.c                       |  31 +++--
+ drivers/dma/dw_dmac.c                              | 130 ++++++++++-----------
+ drivers/dma/dw_dmac_regs.h                         |   4 -
+ drivers/spi/spi-pl022.c                            |  43 ++++++-
+ drivers/tty/serial/amba-pl011.c                    |  62 ++++++----
+ include/linux/dw_dmac.h                            |   5 -
+ include/linux/pata_arasan_cf_data.h                |   2 -
+ 17 files changed, 243 insertions(+), 409 deletions(-)
+ delete mode 100644 arch/arm/mach-spear/spear13xx-dma.h
+
+-- 
+1.8.0
+
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Cc: Jeff Garzik <jgarzik-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+Cc: Jon Hunter <jon-hunter-l0cyMroinI0@public.gmane.org>
+Cc: Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+
+------------------------------------------------------------------------------
+Master Visual Studio, SharePoint, SQL, ASP.NET, C# 2012, HTML5, CSS,
+MVC, Windows 8 Apps, JavaScript and much more. Keep your skills current
+with LearnDevNow - 3,200 step-by-step video tutorials by Microsoft
+MVPs and experts. ON SALE this month only -- learn more at:
+http://p.sf.net/sfu/learnnow-d2d

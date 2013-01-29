@@ -1,22 +1,21 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH 3/5] serial: pl011: use generic DMA slave configuration if
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH 2/5] spi: pl022: use generic DMA slave configuration if
  possible
-Date: Mon, 28 Jan 2013 21:58:18 +0000
-Message-ID: <1359410300-26113-4-git-send-email-arnd@arndb.de>
+Date: Tue, 29 Jan 2013 10:41:15 +0800
+Message-ID: <20130129024111.GF4748@opensource.wolfsonmicro.com>
 References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
  <1359410300-26113-1-git-send-email-arnd@arndb.de>
+ <1359410300-26113-3-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============4709867372452733740=="
 Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
  Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
- Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
  spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
  Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
- Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <1359410300-26113-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <1359410300-26113-3-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
  <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
@@ -29,228 +28,64 @@ Sender: "devicetree-discuss"
  <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-With the new OF DMA binding, it is possible to completely avoid the
-need for platform_data for configuring a DMA channel. In cases where the
-platform has already been converted, calling dma_request_slave_channel
-should get all the necessary information from the device tree.
 
-This also adds a binding document specific to the pl011 controller,
-and extends the generic primecell binding to mention "dmas" and other
-common properties.
+--===============4709867372452733740==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="7cm2iqirTL37Ot+N"
+Content-Disposition: inline
 
-Like the patch that converts the dw_dma controller, this is completely
-untested and is looking for someone to try it out.
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Cc: Jiri Slaby <jslaby-AlSwsSmVLrQ@public.gmane.org>
-Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Cc: Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
----
- .../devicetree/bindings/arm/primecell.txt          | 19 ++++++-
- Documentation/devicetree/bindings/serial/pl011.txt | 17 ++++++
- drivers/tty/serial/amba-pl011.c                    | 62 +++++++++++++---------
- 3 files changed, 72 insertions(+), 26 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/serial/pl011.txt
+--7cm2iqirTL37Ot+N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/arm/primecell.txt b/Documentation/devicetree/bindings/arm/primecell.txt
-index 64fc82b..0df6aca 100644
---- a/Documentation/devicetree/bindings/arm/primecell.txt
-+++ b/Documentation/devicetree/bindings/arm/primecell.txt
-@@ -16,14 +16,31 @@ Optional properties:
- - clocks : From common clock binding. First clock is phandle to clock for apb
- 	pclk. Additional clocks are optional and specific to those peripherals.
- - clock-names : From common clock binding. Shall be "apb_pclk" for first clock.
-+- dmas : From common DMA binding. If present, refers to one or more dma channels.
-+- dma-names : From common DMA binding, needs to match the 'dmas' property.
-+              Devices with exactly one receive and transmit channel shall name
-+              these "rx" and "tx", respectively.
-+- pinctrl-<n> : Pinctrl states as described in bindings/pinctrl/pinctrl-bindings.txt
-+- pinctrl-names : Names corresponding to the numbered pinctrl states
-+- interrupts : one or more interrupt specifiers
-+- interrupt-names : names corresponding to the interrupts properties
- 
- Example:
- 
- serial@fff36000 {
- 	compatible = "arm,pl011", "arm,primecell";
- 	arm,primecell-periphid = <0x00341011>;
-+
- 	clocks = <&pclk>;
- 	clock-names = "apb_pclk";
--	
-+
-+	dmas = <&dma-controller 4>, <&dma-controller 5>;
-+	dma-names = "rx", "tx";	
-+
-+	pinctrl-0 = <&uart0_default_mux>, <&uart0_default_mode>;
-+	pinctrl-1 = <&uart0_sleep_mode>;
-+	pinctrl-names = "default","sleep";
-+
-+	interrupts = <0 11 0x4>;
- };
- 
-diff --git a/Documentation/devicetree/bindings/serial/pl011.txt b/Documentation/devicetree/bindings/serial/pl011.txt
-new file mode 100644
-index 0000000..5d2e840
---- /dev/null
-+++ b/Documentation/devicetree/bindings/serial/pl011.txt
-@@ -0,0 +1,17 @@
-+* ARM AMBA Primecell PL011 serial UART
-+
-+Required properties:
-+- compatible: must be "arm,primecell", "arm,pl011"
-+- reg: exactly one register range with length 0x1000
-+- interrupts: exactly one interrupt specifier
-+
-+Optional properties:
-+- pinctrl: When present, must have one state named "sleep"
-+	   and one state named "default"
-+- clocks:  When present, must refer to exactly one clock named
-+	   "apb_pclk"
-+- dmas:	   When present, may have one or two dma channels.
-+	   The first one must be named "rx", the second one
-+	   must be named "tx".
-+
-+See also bindings/arm/primecell.txt
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 7fca402..f9af04d 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -245,7 +245,7 @@ static void pl011_sgbuf_free(struct dma_chan *chan, struct pl011_sgbuf *sg,
- 	}
- }
- 
--static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
-+static void pl011_dma_probe_initcall(struct device *dev, struct uart_amba_port *uap)
- {
- 	/* DMA is the sole user of the platform data right now */
- 	struct amba_pl011_data *plat = uap->port.dev->platform_data;
-@@ -259,20 +259,25 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 	struct dma_chan *chan;
- 	dma_cap_mask_t mask;
- 
--	/* We need platform data */
--	if (!plat || !plat->dma_filter) {
--		dev_info(uap->port.dev, "no DMA platform data\n");
--		return;
--	}
-+	chan = dma_request_slave_channel(dev, "tx");
- 
--	/* Try to acquire a generic DMA engine slave TX channel */
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
--
--	chan = dma_request_channel(mask, plat->dma_filter, plat->dma_tx_param);
- 	if (!chan) {
--		dev_err(uap->port.dev, "no TX DMA channel!\n");
--		return;
-+		/* We need platform data */
-+		if (!plat || !plat->dma_filter) {
-+			dev_info(uap->port.dev, "no DMA platform data\n");
-+			return;
-+		}
-+
-+		/* Try to acquire a generic DMA engine slave TX channel */
-+		dma_cap_zero(mask);
-+		dma_cap_set(DMA_SLAVE, mask);
-+
-+		chan = dma_request_channel(mask, plat->dma_filter,
-+						plat->dma_tx_param);
-+		if (!chan) {
-+			dev_err(uap->port.dev, "no TX DMA channel!\n");
-+			return;
-+		}
- 	}
- 
- 	dmaengine_slave_config(chan, &tx_conf);
-@@ -282,7 +287,18 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 		 dma_chan_name(uap->dmatx.chan));
- 
- 	/* Optionally make use of an RX channel as well */
--	if (plat->dma_rx_param) {
-+	chan = dma_request_slave_channel(dev, "rx");
-+	
-+	if (!chan && plat->dma_rx_param) {
-+		chan = dma_request_channel(mask, plat->dma_filter, plat->dma_rx_param);
-+
-+		if (!chan) {
-+			dev_err(uap->port.dev, "no RX DMA channel!\n");
-+			return;
-+		}
-+	}
-+
-+	if (chan) {
- 		struct dma_slave_config rx_conf = {
- 			.src_addr = uap->port.mapbase + UART01x_DR,
- 			.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE,
-@@ -291,12 +307,6 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- 			.device_fc = false,
- 		};
- 
--		chan = dma_request_channel(mask, plat->dma_filter, plat->dma_rx_param);
--		if (!chan) {
--			dev_err(uap->port.dev, "no RX DMA channel!\n");
--			return;
--		}
--
- 		dmaengine_slave_config(chan, &rx_conf);
- 		uap->dmarx.chan = chan;
- 
-@@ -315,6 +325,7 @@ static void pl011_dma_probe_initcall(struct uart_amba_port *uap)
- struct dma_uap {
- 	struct list_head node;
- 	struct uart_amba_port *uap;
-+	struct device *dev;
- };
- 
- static LIST_HEAD(pl011_dma_uarts);
-@@ -325,7 +336,7 @@ static int __init pl011_dma_initcall(void)
- 
- 	list_for_each_safe(node, tmp, &pl011_dma_uarts) {
- 		struct dma_uap *dmau = list_entry(node, struct dma_uap, node);
--		pl011_dma_probe_initcall(dmau->uap);
-+		pl011_dma_probe_initcall(dmau->dev, dmau->uap);
- 		list_del(node);
- 		kfree(dmau);
- 	}
-@@ -334,18 +345,19 @@ static int __init pl011_dma_initcall(void)
- 
- device_initcall(pl011_dma_initcall);
- 
--static void pl011_dma_probe(struct uart_amba_port *uap)
-+static void pl011_dma_probe(struct device *dev, struct uart_amba_port *uap)
- {
- 	struct dma_uap *dmau = kzalloc(sizeof(struct dma_uap), GFP_KERNEL);
- 	if (dmau) {
- 		dmau->uap = uap;
-+		dmau->dev = dev;
- 		list_add_tail(&dmau->node, &pl011_dma_uarts);
- 	}
- }
- #else
--static void pl011_dma_probe(struct uart_amba_port *uap)
-+static void pl011_dma_probe(struct device *dev, struct uart_amba_port *uap)
- {
--	pl011_dma_probe_initcall(uap);
-+	pl011_dma_probe_initcall(dev, uap);
- }
- #endif
- 
-@@ -2023,7 +2035,7 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
- 	uap->port.ops = &amba_pl011_pops;
- 	uap->port.flags = UPF_BOOT_AUTOCONF;
- 	uap->port.line = i;
--	pl011_dma_probe(uap);
-+	pl011_dma_probe(&dev->dev, uap);
- 
- 	/* Ensure interrupts from this UART are masked and cleared */
- 	writew(0, uap->port.membase + UART011_IMSC);
--- 
-1.8.0
+On Mon, Jan 28, 2013 at 09:58:17PM +0000, Arnd Bergmann wrote:
+> With the new OF DMA binding, it is possible to completely avoid the
+> need for platform_data for configuring a DMA channel. In cases where the
+> platform has already been converted, calling dma_request_slave_channel
+> should get all the necessary information from the device tree.
+>=20
+> Like the patch that converts the dw_dma controller, this is completely
+> untested and is looking for someone to try it out.
+
+Acked-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+
+I've no ability to test this but it looks good from a code point of view.
+
+--7cm2iqirTL37Ot+N
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRBza0AAoJELSic+t+oim9BOAP/2Ie5gEDao+LZi7KmPWr6Mgz
+5X8l+O5ymljUGOVACCYboQvDjBxAAu2egAxHL+vHEgvrX6NC1m515a6LjLabASCu
+/0I/oJpToRQvhYIbWaW76E/w4NG8Fj2Pfx/y7fUfe9QvKOX0nGzo29aqjPthDuGC
+9JJlEZMENp1CNxhcJLi8RXjSp3qvB3z9nCeoapwE/Xmp6iIXaRxPpY3u7NC0gG9l
+2/GYYRhBoaiNpiRIWsEFCdbXjSe6eTmkaiNAWRLvo44aVUFdAD8Nm/UZUpBABgRS
+Kiwcgm3qqlYg4mPsoh7VFS8jtAyO2uJFCAy+uuLGVjeo0jeuju09Dlr2OAIGYrSI
+L1iUn14JTNjwZlhpCjDXe6BSiKploY6FAgqCcv3ode2yTrcfoYkZeEe9bmoRdOxS
+THN/7sFozAXGPhFg0EL+Dzv8P+gcDQNXpGDIhXpLiAf5fe9v4INxr9p7KazSMXuJ
+KDzf/6txL54iYjBULDErqaz1huyxHMSRFklMc0wgotNp+WfcpxTri/FLsavBtUSj
+NHqdswDeP1ct/xiIRRdU6OvwWQHtJIvrjDmLPvlThpnLJUB0SSZFLOK8H6f1uYUV
+PbjgjhzQz4ufqwtFv5bBgMIBGLyq9H2XSPZjNRzLUsSB5Mi/hA9iW832TaykVN9d
+2iFCfweXP2DvCDyGatD6
+=0in+
+-----END PGP SIGNATURE-----
+
+--7cm2iqirTL37Ot+N--
+
+--===============4709867372452733740==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devicetree-discuss mailing list
+devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+https://lists.ozlabs.org/listinfo/devicetree-discuss
+
+--===============4709867372452733740==--

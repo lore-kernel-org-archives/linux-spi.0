@@ -1,61 +1,61 @@
-From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Subject: Re: [PATCH] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu mode
-	outside of FSL SOC environments and add a grlib variant normally
-	running on sparc
-Date: Wed, 30 Jan 2013 12:04:38 +0100
-Message-ID: <5108FE46.1030102@gaisler.com>
+ outside of FSL SOC environments and add a grlib variant normally running on
+ sparc
+Date: Wed, 30 Jan 2013 19:54:03 +0800
+Message-ID: <20130130115402.GE6229@opensource.wolfsonmicro.com>
 References: <1356711368-10437-1-git-send-email-andreas@gaisler.com>
-	<5108F031.1010005@gaisler.com>
-	<20130130103645.GB6229@opensource.wolfsonmicro.com>
+ <5108F031.1010005@gaisler.com>
+ <20130130103645.GB6229@opensource.wolfsonmicro.com>
+ <5108FE46.1030102@gaisler.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>, Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130130103645.GB6229-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZARJHfwaSJQLOEUz"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
+	linux-kernel@vger.kernel.org, Peter Korsgaard <jacmet@sunsite.dk>,
+	spi-devel-general@lists.sourceforge.net,
+	Mingkai Hu <Mingkai.hu@freescale.com>,
+	Anton Vorontsov <avorontsov@ru.mvista.com>,
+	software@gaisler.com
+To: Andreas Larsson <andreas@gaisler.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <5108FE46.1030102@gaisler.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2013-01-30 11:36, Mark Brown wrote:
-> On Wed, Jan 30, 2013 at 11:04:33AM +0100, Andreas Larsson wrote:
->> On 2012-12-28 17:16, Andreas Larsson wrote:
->
->>> This makes the cpu mode of the driver available outside of an FSL SOC
->>> and even powerpc environment. This is accomplished by putting things
->>> regarding fsl specific code and to cpm specific code within ifdefs.
->
->> Any comments anyone?
->
->> This patch takes "Approach A" discussed and supported in
->> http://sourceforge.net/mailarchive/message.php?msg_id=30131080
->
-> I don't seem to have been CCed on the patch...
 
-No, but I thought it might be useful to get you in the loop given the 
-recent maintainerhood status change proposal.
+--ZARJHfwaSJQLOEUz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-You can find the patch at https://lkml.org/lkml/2012/12/28/83 or 
-http://sourceforge.net/mailarchive/message.php?msg_id=30280254
+On Wed, Jan 30, 2013 at 12:04:38PM +0100, Andreas Larsson wrote:
 
-If you would like I'll resend the patch adding you to the CC list.
+> If you would like I'll resend the patch adding you to the CC list.
 
-Cheers,
-Andreas Larsson
+Yes, please.
 
+--ZARJHfwaSJQLOEUz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_jan
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRCQnCAAoJELSic+t+oim9OfkP/2nire4ry/vnlYL+M9IK7dHA
+URIo2aqnKohX1El33Fnl7sj6NeYSK1jyWG+12mbcCKPhJGFugQtcCEBPuoHmIXZy
+7CVBLXyn3yAC+jgP7E/YREd7D4MbD5IkadD0u3hMj5GcyqDIMYiTk1ZBzz7Sjxke
+XYU1aX+lyD74CWnhXvm/obkiPljWTaoBdxprylD+fBdqySOkpzmKWlHvVnyBc+xN
+uYwiVcLOW23QX3G5N8G0S7cVq2mLpOlaZRLNeKXaaSNaYYe9ocxVbLQ/EQzLl1mc
+t+UKmsj5ego46eBMoySnv8D+6Zpz8YONiM879whzri4IyKIc7UN+rUek7tn1zyo8
+/IV6cxMK2hpOCchAvek61TLIdDE0QvsNq6Ijzp8AAxa7kr2eldyH8QYfPr5+KY64
+ui7T9Mf0s+QKMOI9SykqHLOi89K1N7N+9AghCpGKCmFYQfZruNWaJu23hkvWfkoB
+taodH2rOFb9y1Z5PU04Y3HFNILRui38IKJScpseGFk+/roEkNBf988rVxgCjJP1y
+NfP0IyoaKfWcrE10VHBKAC+7o6CXtAzXOMbW84PRL33hzbvlNy4biahHZ3f8FBQc
+TQIRRZNHheJd9fxyCEaBOf2Z8Y/QRLJRyDNXs+FDu9LAqn3J8rslnjiHSGbqAWYP
+RFIGvqrP5UchwI5fU33u
+=SIe8
+-----END PGP SIGNATURE-----
+
+--ZARJHfwaSJQLOEUz--

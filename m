@@ -1,142 +1,120 @@
-From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH v2 5/6] of_spi: Add fetching of of_gpio flags to of_spi_register_master
-Date: Tue, 29 Jan 2013 15:53:42 +0100
-Message-ID: <1359471223-4794-6-git-send-email-andreas@gaisler.com>
-References: <1359471223-4794-1-git-send-email-andreas@gaisler.com>
-Cc: Rob Herring <rob.herring@calxeda.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, software@gaisler.com
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1359471223-4794-1-git-send-email-andreas@gaisler.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Matt Porter <mporter@ti.com>
+Subject: Re: [PATCH v5 07/14] dmaengine: add
+ dma_request_slave_channel_compat()
+Date: Wed, 30 Jan 2013 01:36:11 -0500
+Message-ID: <20130130063611.GM5256@beef>
+References: <1358281974-8411-1-git-send-email-mporter@ti.com>
+ <1358281974-8411-8-git-send-email-mporter@ti.com>
+ <201301232228.46716.arnd@arndb.de>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Chris Ball <cjb@laptop.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201301232228.46716.arnd@arndb.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-When using a gpio chip select with a OF_GPIO_ACTIVE_LOW flag, this needs to be
-known to the controller driver.
+On Wed, Jan 23, 2013 at 10:28:46PM +0000, Arnd Bergmann wrote:
+> On Tuesday 15 January 2013, Matt Porter wrote:
+> > Adds a dma_request_slave_channel_compat() wrapper which accepts
+> > both the arguments from dma_request_channel() and
+> > dma_request_slave_channel(). Based on whether the driver is
+> > instantiated via DT, the appropriate channel request call will be
+> > made.
+> > 
+> > This allows for a much cleaner migration of drivers to the
+> > dmaengine DT API as platforms continue to be mixed between those
+> > that boot using DT and those that do not.
+> 
+> I noticed today some drivers in linux-next that rely on this patch,
+> but the patch itself still missing from -next.
+> 
+> > --- a/include/linux/dmaengine.h
+> > +++ b/include/linux/dmaengine.h
+> > @@ -1047,6 +1047,16 @@ void dma_run_dependencies(struct dma_async_tx_descriptor *tx);
+> >  struct dma_chan *dma_find_channel(enum dma_transaction_type tx_type);
+> >  struct dma_chan *net_dma_find_channel(void);
+> >  #define dma_request_channel(mask, x, y) __dma_request_channel(&(mask), x, y)
+> > +static inline struct dma_chan
+> > +*dma_request_slave_channel_compat(dma_cap_mask_t mask, dma_filter_fn fn,
+> > +                                 void *fn_param, struct device *dev,
+> > +                                 char *name)
+> > +{
+> > +       if (dev->of_node)
+> > +               return dma_request_slave_channel(dev, name);
+> > +       else
+> > +               return dma_request_channel(mask, fn, fn_param);
+> > +}
+> 
+> Hmm, dma_request_channel is actually a macro that passes mask by reference,
+> presumably because it can get modified by the filter function. Also, there
+> may be cases where we do have an of_node but don't use the dma binding
+> yet, or where dma_request_slave_channel doesn't actually use DT information
+> but rather one of the other methods that Vinod was talking about adding.
+> 
+> I think what it should look like instead is the below.
 
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
----
- Documentation/devicetree/bindings/spi/spi-bus.txt |    3 +-
- drivers/spi/spi.c                                 |   24 ++++++++++++++++++--
- include/linux/spi/spi.h                           |    5 ++++
- 3 files changed, 28 insertions(+), 4 deletions(-)
+Yes, looks correct now, thanks. I've incorporated it into v6.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 296015e..a4950a6 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -57,7 +57,8 @@ contain the following properties.
-     		    3-wire mode.
- 
- If a gpio chipselect is used for the SPI slave the gpio number will be passed
--via the cs_gpio
-+via the cs_gpio and the corresponding of_gpio_flags will be passed via
-+cs_gpio_flags.
- 
- SPI example for an MPC5200 SPI bus:
- 	spi@f00 {
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a4baa0a..6f1b717 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -385,8 +385,10 @@ int spi_add_device(struct spi_device *spi)
- 		goto done;
- 	}
- 
--	if (master->cs_gpios)
-+	if (master->cs_gpios) {
- 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
-+		spi->cs_gpio_flags = master->cs_gpio_flags[spi->chip_select];
-+	}
- 
- 	/* Drivers may modify this initial i/o setup, but will
- 	 * normally rely on the device being setup.  Devices
-@@ -1060,7 +1062,8 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
- static int of_spi_register_master(struct spi_master *master)
- {
- 	int nb;
--	int i, *cs;
-+	int ret, i, *cs;
-+	enum of_gpio_flags *flags;
- 	struct device_node *np = master->dev.of_node;
- 
- 	if (!np)
-@@ -1083,13 +1086,28 @@ static int of_spi_register_master(struct spi_master *master)
- 	if (!master->cs_gpios)
- 		return -ENOMEM;
- 
-+	flags = devm_kzalloc(&master->dev,
-+			     sizeof(*flags) * master->num_chipselect,
-+			     GFP_KERNEL);
-+	master->cs_gpio_flags = flags;
-+
-+	if (!master->cs_gpio_flags) {
-+		ret = -ENOMEM;
-+		goto err_alloc_flags;
-+	}
-+
- 	for (i = 0; i < master->num_chipselect; i++)
- 		cs[i] = -EINVAL;
- 
- 	for (i = 0; i < nb; i++)
--		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+		cs[i] = of_get_named_gpio_flags(np, "cs-gpios", i, &flags[i]);
- 
- 	return 0;
-+
-+err_alloc_flags:
-+	devm_kfree(&master->dev, master->cs_gpios);
-+	master->cs_gpios = NULL;
-+	return ret;
- }
- #else
- static int of_spi_register_master(struct spi_master *master)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 88a669c..96b1055 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -23,6 +23,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/slab.h>
- #include <linux/kthread.h>
-+#include <linux/of_gpio.h>
- 
- /*
-  * INTERFACES between SPI master-side drivers and SPI infrastructure.
-@@ -58,6 +59,7 @@ extern struct bus_type spi_bus_type;
-  *	for that name.  This appears in the sysfs "modalias" attribute
-  *	for driver coldplugging, and in uevents used for hotplugging
-  * @cs_gpio: Negative or gpio for chip select.
-+ * @cs_gpio_flags: of_gpio_flags corresponding to cs_gpio
-  *
-  * A @spi_device is used to interchange data between an SPI slave
-  * (usually a discrete chip) and CPU memory.
-@@ -92,6 +94,7 @@ struct spi_device {
- 	void			*controller_data;
- 	char			modalias[SPI_NAME_SIZE];
- 	int			cs_gpio;	/* chip select gpio */
-+	enum of_gpio_flags	cs_gpio_flags;	/* chip select of_gpio_flags */
- 
- 	/*
- 	 * likely need more hooks for more protocol options affecting how
-@@ -260,6 +263,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *	queue so the subsystem notifies the driver that it may relax the
-  *	hardware by issuing this call
-  * @cs_gpios: possible array of negative values or gpios for chip selects
-+ * @cs_gpio_flags: possible array of of_gpio_flags corresponding to cs_gpios
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -367,6 +371,7 @@ struct spi_master {
- 	int (*unprepare_transfer_hardware)(struct spi_master *master);
- 	/* gpio chip select */
- 	int			*cs_gpios;
-+	enum of_gpio_flags	*cs_gpio_flags;
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
--- 
-1.7.0.4
+-Matt
+
+> 
+> 	Arnd
+> 
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index bfcdecb..b6ffd7d 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -993,6 +993,19 @@ static inline void dma_release_channel(struct dma_chan *chan)
+>  }
+>  #endif
+>  
+> +static inline struct dma_chan *__dma_request_slave_channel_compat(dma_cap_mask_t *mask,
+> +				dma_filter_fn fn, void *fn_param, struct device *dev,
+> +				 char *name)
+> +{
+> +	struct dma_chan *chan;
+> +
+> +	chan = dma_request_slave_channel(dev, name);
+> +	if (chan)
+> +		return chan;
+> +
+> +	return __dma_request_channel(mask, fn, fn_param);
+> +}
+> +
+>  /* --- DMA device --- */
+>  
+>  int dma_async_device_register(struct dma_device *device);
+> @@ -1001,6 +1014,8 @@ void dma_run_dependencies(struct dma_async_tx_descriptor *tx);
+>  struct dma_chan *dma_find_channel(enum dma_transaction_type tx_type);
+>  struct dma_chan *net_dma_find_channel(void);
+>  #define dma_request_channel(mask, x, y) __dma_request_channel(&(mask), x, y)
+> +#define dma_request_slave_channel_compat(mask, x, y, dev, name) \
+> +	 __dma_request_slave_channel_compat(&(mask), x, y, dev, name)
+>  
+>  /* --- Helper iov-locking functions --- */
+>  
+> _______________________________________________
+> Davinci-linux-open-source mailing list
+> Davinci-linux-open-source@linux.davincidsp.com
+> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source

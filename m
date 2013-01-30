@@ -1,48 +1,67 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH v6 08/10] spi: omap2-mcspi: convert to
- dma_request_slave_channel_compat()
-Date: Wed, 30 Jan 2013 18:35:34 +0800
-Message-ID: <20130130103530.GA6229@opensource.wolfsonmicro.com>
-References: <1359529229-22207-1-git-send-email-mporter@ti.com>
- <1359529229-22207-9-git-send-email-mporter@ti.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu mode
+ outside of FSL SOC environments and add a grlib variant normally running on
+ sparc
+Date: Wed, 30 Jan 2013 18:36:47 +0800
+Message-ID: <20130130103645.GB6229@opensource.wolfsonmicro.com>
+References: <1356711368-10437-1-git-send-email-andreas@gaisler.com>
+ <5108F031.1010005@gaisler.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="M9NhX3UHpAaciwkO"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
+	linux-kernel@vger.kernel.org, Peter Korsgaard <jacmet@sunsite.dk>,
+	spi-devel-general@lists.sourceforge.net,
+	Mingkai Hu <Mingkai.hu@freescale.com>,
+	Anton Vorontsov <avorontsov@ru.mvista.com>,
+	software@gaisler.com
+To: Andreas Larsson <andreas@gaisler.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1359529229-22207-9-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <5108F031.1010005@gaisler.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 30, 2013 at 02:00:27AM -0500, Matt Porter wrote:
-> Convert dmaengine channel requests to use
-> dma_request_slave_channel_compat(). This supports the DT case of
-> platforms requiring channel selection from either the OMAP DMA or
-> the EDMA engine. AM33xx only boots from DT and is the only user
-> implementing EDMA so in the !DT case we can default to the OMAP DMA
-> filter.
 
-Acked-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+--M9NhX3UHpAaciwkO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jan 30, 2013 at 11:04:33AM +0100, Andreas Larsson wrote:
+> On 2012-12-28 17:16, Andreas Larsson wrote:
+
+> >This makes the cpu mode of the driver available outside of an FSL SOC
+> >and even powerpc environment. This is accomplished by putting things
+> >regarding fsl specific code and to cpm specific code within ifdefs.
+
+> Any comments anyone?
+
+> This patch takes "Approach A" discussed and supported in
+> http://sourceforge.net/mailarchive/message.php?msg_id=30131080
+
+I don't seem to have been CCed on the patch...
+
+--M9NhX3UHpAaciwkO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRCPe2AAoJELSic+t+oim901oP/jMbbOG1fdi05cf6t4TBgMlf
+/vuo+2o08Vp3w1SSzQMYlF3jbdynjBVqf7aAyp5PcYqPbzfUeOAkj47Ue6nlEH8V
+ZVoAUmCCLg2yWr2cmpvQo080/YLJlDWjLkA7s2QPpSHhahAGWVxQWY27KCnzyFhS
+QbM7XpwL6aXT062OjDuZEW8FWozj9ZravfE1rder4I3jgXQyelnX8VyCean24iOa
+uHjiOWeBQdsNLsUBgTinUoMlfWdrLlvNiYQ+7KXT7aP+//LYAOA5G80Ql+y9HCXS
+j40bgJjHHrdXwMkqLLh/OS/LOufvOur+QPF3WXfVyQUlldZIVH8nk8OJWub0igg7
+OHZQMPUtIbFEdlC2cOvtKn5CDF5m20IzCcQAKcm4/tmSasDo8nCje0QLg9jsnoYD
+NvZc+a5nPbQ+X53DPDbFxgF3J+CDBUgKV51NrJdZvPYfT+gIqHdCXIFyJ/SFDAhn
+InjEXaVbFPI+z3e3GC9Bv1h+LDXyaWEBRmsAtvTTG6Dn5wNc5pC6p4mDQQMOfMrH
+lCx0XHsd14YxvF9WcUR37HB7mP5lvkufUnQI4EMKVK8CoqzSPwiudwfYHfLp0Spu
+I6HJtdm23TXdT8f9mqwe+pE6SvZkS/B6y/02f4Yis3Mi6gx8/9sMhhObGvtBV5NH
+HQqF2omuveJLkbby+rL9
+=v5UY
+-----END PGP SIGNATURE-----
+
+--M9NhX3UHpAaciwkO--

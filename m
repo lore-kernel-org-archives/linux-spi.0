@@ -1,240 +1,61 @@
-From: Lars Poeschel <larsi-myOXECIRRCL4ajHJ1XSv27NAH6kLmebB@public.gmane.org>
-Subject: [PATCH RFC 1/1] gpio: mcp23s08: convert driver to DT
-Date: Thu, 31 Jan 2013 16:58:23 +0100
-Message-ID: <1359647903-15801-2-git-send-email-larsi@wh2.tu-dresden.de>
-References: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de>
+From: Matt Porter <mporter@ti.com>
+Subject: Re: [PATCH v6 03/10] ARM: edma: add AM33XX support to the private
+ EDMA API
+Date: Thu, 31 Jan 2013 13:32:55 -0500
+Message-ID: <20130131183255.GI2244@beef>
+References: <1359529229-22207-1-git-send-email-mporter@ti.com>
+ <1359529229-22207-4-git-send-email-mporter@ti.com>
+ <201301300932.58732.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359647903-15801-1-git-send-email-larsi-myOXECIRRCL4ajHJ1XSv27NAH6kLmebB@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Padma Venkat <padma.kvr@gmail.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Chris Ball <cjb@laptop.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201301300932.58732.arnd@arndb.de>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
+On Wed, Jan 30, 2013 at 09:32:58AM +0000, Arnd Bergmann wrote:
+> On Wednesday 30 January 2013, Matt Porter wrote:
+> > +               dma_cap_set(DMA_SLAVE, edma_filter_info.dma_cap);
+> > +               of_dma_controller_register(dev->of_node,
+> > +                                          of_dma_simple_xlate,
+> > +                                          &edma_filter_info);
+> > +       }
+> 
+> How do you actually deal with the problem mentioned by Padma, that
+> the filter function does not know which edma instance it is looking
+> at? If you assume that there can only be a single edma instance in
+> the system, that is probably a limitation that should be documented
+> somewhere, and ideally the probe() function should check for that.
 
-This converts the mcp23s08 driver to be able to be used with device
-tree.
-There are two properties taken, that correspond to the members of
-the struct mcp23s08_platform_data, that is the base member and the
-chip array member.
+I make an assumption of one edma instance in the system in the case of
+DT being populated. This is always true right now as the only SoC with
+two EDMA controllers in existence is Davinci DA850. Until recently,
+Davinci had no DT support. Given the steady work being done today on DT
+support for DA850, it'll probably be something needed in 3.10.
 
-Signed-off-by: Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
----
- .../devicetree/bindings/gpio/gpio-mcp23s08.txt     |   27 ++++++
- drivers/gpio/gpio-mcp23s08.c                       |   93 +++++++++++++++++++-
- include/linux/spi/mcp23s08.h                       |    1 +
- 3 files changed, 117 insertions(+), 4 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
+I will add a comment and check in probe() to capture this assumption
+and then plan to update separately to support DA850 booting from DT.
 
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-new file mode 100644
-index 0000000..572bc87
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-@@ -0,0 +1,27 @@
-+Microchip MCP2308/MCP23S08/MCP23017/MCP23S17 driver for
-+8-/16-bit I/O expander with serial interface (I2C/SPI)
-+
-+Required properties:
-+- compatible : Should be "mcp,mcp23s08-gpio", "mcp,mcp23s17-gpio",
-+			"mcp,mcp23008-gpio" or "mcp,mcp23017-gpio"
-+- base : The first gpio number that should be assigned by this chip.
-+
-+Optional properties:
-+- chips : This is a table with 2 columns and up to 8 entries. The first column
-+	is a is_present flag, that makes only sense for SPI chips. Multiple
-+	chips can share the same chipselect. This flag can be 0 or 1 depending
-+	if there is a chip at this address or not.
-+	The second column is written to the GPPU register, selecting a 100k
-+	pullup resistor or not. Setting a 1 is activating the pullup.
-+	For I2C chips only the first line in this table is used. Further chips
-+	are registered at different addresses at the I2C bus.
-+
-+Example:
-+&mcp0 {
-+	compatible = "mcp,mcp23017";
-+	base = <128>;
-+	chips = <
-+	/* is_present  pullups */
-+		1	0x07	/* chip addr 0 */
-+	>;
-+};
-diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
-index 3cea0ea..7f90d11 100644
---- a/drivers/gpio/gpio-mcp23s08.c
-+++ b/drivers/gpio/gpio-mcp23s08.c
-@@ -12,6 +12,8 @@
- #include <linux/spi/mcp23s08.h>
- #include <linux/slab.h>
- #include <asm/byteorder.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
- 
- /**
-  * MCP types supported by driver
-@@ -473,16 +475,89 @@ fail:
- 
- /*----------------------------------------------------------------------*/
- 
-+#ifdef CONFIG_OF
-+static struct of_device_id mcp23s08_of_match[] = {
-+#ifdef CONFIG_SPI_MASTER
-+	{
-+		.compatible = "mcp,mcp23s08-gpio",
-+	},
-+	{
-+		.compatible = "mcp,mcp23s17-gpio",
-+	},
-+#endif
-+#if IS_ENABLED(CONFIG_I2C)
-+	{
-+		.compatible = "mcp,mcp23008-gpio",
-+	},
-+	{
-+		.compatible = "mcp,mcp23017-gpio",
-+	},
-+#endif
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, mcp23s08_of_match);
-+
-+static struct mcp23s08_platform_data *
-+		of_get_mcp23s08_pdata(struct device *dev)
-+{
-+	struct mcp23s08_platform_data *pdata;
-+	struct device_node *np = dev->of_node;
-+	u32 gpio_base;
-+	u32 chips[sizeof(pdata->chip)];
-+	int ret, i, j;
-+
-+	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
-+	if (!pdata)
-+		return NULL;
-+
-+	ret = of_property_read_u32(np, "base", &gpio_base);
-+	if (!ret)
-+		pdata->base = gpio_base;
-+
-+	for (i = ARRAY_SIZE(pdata->chip) * MCP23S08_CHIP_INFO_MEMBERS;
-+				i > 0; i -= MCP23S08_CHIP_INFO_MEMBERS) {
-+		ret = of_property_read_u32_array(np, "chips", chips, i);
-+		if (ret == -EOVERFLOW)
-+			continue;
-+		break;
-+	}
-+	if (!ret) {
-+		for (j = 0; j < i / MCP23S08_CHIP_INFO_MEMBERS ; j++) {
-+			pdata->chip[j].is_present =
-+				chips[j * MCP23S08_CHIP_INFO_MEMBERS];
-+			pdata->chip[j].pullups =
-+				chips[j * MCP23S08_CHIP_INFO_MEMBERS + 1];
-+		}
-+	}
-+
-+	return pdata;
-+}
-+#else
-+static struct mcp23s08_platform_data *
-+		of_get_mcp23s08_pdata(struct i2c_client *client, int *chip_id)
-+{
-+	return NULL;
-+}
-+#endif /* CONFIG_OF */
-+
- #if IS_ENABLED(CONFIG_I2C)
- 
- static int mcp230xx_probe(struct i2c_client *client,
- 				    const struct i2c_device_id *id)
- {
--	struct mcp23s08_platform_data *pdata;
-+	struct mcp23s08_platform_data *pdata = NULL;
- 	struct mcp23s08 *mcp;
- 	int status;
-+	const struct of_device_id *match;
-+
-+	match = of_match_device(of_match_ptr(mcp23s08_of_match), &client->dev);
-+	if (match)
-+		pdata = of_get_mcp23s08_pdata(&client->dev);
-+
-+	/* if there was no pdata in DT, take it the legacy way */
-+	if (!pdata)
-+		pdata = client->dev.platform_data;
- 
--	pdata = client->dev.platform_data;
- 	if (!pdata || !gpio_is_valid(pdata->base)) {
- 		dev_dbg(&client->dev, "invalid or missing platform data\n");
- 		return -EINVAL;
-@@ -531,6 +606,7 @@ static struct i2c_driver mcp230xx_driver = {
- 	.driver = {
- 		.name	= "mcp230xx",
- 		.owner	= THIS_MODULE,
-+		.of_match_table = mcp23s08_of_match,
- 	},
- 	.probe		= mcp230xx_probe,
- 	.remove		= mcp230xx_remove,
-@@ -560,16 +636,24 @@ static void mcp23s08_i2c_exit(void) { }
- 
- static int mcp23s08_probe(struct spi_device *spi)
- {
--	struct mcp23s08_platform_data	*pdata;
-+	struct mcp23s08_platform_data	*pdata = NULL;
- 	unsigned			addr;
- 	unsigned			chips = 0;
- 	struct mcp23s08_driver_data	*data;
- 	int				status, type;
- 	unsigned			base;
-+	const struct			of_device_id *match;
- 
- 	type = spi_get_device_id(spi)->driver_data;
- 
--	pdata = spi->dev.platform_data;
-+	match = of_match_device(of_match_ptr(mcp23s08_of_match), &spi->dev);
-+	if (match)
-+		pdata = of_get_mcp23s08_pdata(&spi->dev);
-+
-+	/* if there was no pdata in DT, take it the legacy way */
-+	if (!pdata)
-+		pdata = spi->dev.platform_data;
-+
- 	if (!pdata || !gpio_is_valid(pdata->base)) {
- 		dev_dbg(&spi->dev, "invalid or missing platform data\n");
- 		return -EINVAL;
-@@ -668,6 +752,7 @@ static struct spi_driver mcp23s08_driver = {
- 	.driver = {
- 		.name	= "mcp23s08",
- 		.owner	= THIS_MODULE,
-+		.of_match_table = mcp23s08_of_match,
- 	},
- };
- 
-diff --git a/include/linux/spi/mcp23s08.h b/include/linux/spi/mcp23s08.h
-index 2d676d5..3969e12 100644
---- a/include/linux/spi/mcp23s08.h
-+++ b/include/linux/spi/mcp23s08.h
-@@ -1,3 +1,4 @@
-+#define MCP23S08_CHIP_INFO_MEMBERS	2
- 
- /* FIXME driver should be able to handle IRQs...  */
- 
--- 
-1.7.10.4
-
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_jan
+-Matt

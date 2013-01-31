@@ -1,54 +1,53 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: spi-gpio: fix compilation warning on 64 bits systems
-Date: Thu, 31 Jan 2013 18:26:29 +0800
-Message-ID: <20130131102626.GC11078@opensource.wolfsonmicro.com>
-References: <1359627176-22706-1-git-send-email-maxime.ripard@free-electrons.com>
+From: Lars Poeschel <larsi-myOXECIRRCL4ajHJ1XSv27NAH6kLmebB@public.gmane.org>
+Subject: [PATCH RFC 0/1] Convert mcp23s08 to DT usage
+Date: Thu, 31 Jan 2013 16:58:22 +0100
+Message-ID: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="kVXhAStRUZ/+rrGn"
-Cc: Brian Lilly <brian@crystalfontz.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1359627176-22706-1-git-send-email-maxime.ripard@free-electrons.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+From: Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
 
---kVXhAStRUZ/+rrGn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I wanted to use mcp23s08 driver with a device that boots using device tree.
+Therefore I had to modify the driver to be able to take it's platform_data
+from the device tree.
+I am using a mcp23017 (I2C) device successfully with the patch booted over
+device tree. I am not sure if I did this right and I am not able to test the
+SPI part of the driver, so I am requesting for comments.
 
-On Thu, Jan 31, 2013 at 11:12:56AM +0100, Maxime Ripard wrote:
-> SPI_GPIO_NO_MOSI and SPI_GPIO_NO_MISO flags are type casted to unsigned
-> long, yet, they are to be stored in an unsigned int field in the
-> spi_gpio_platform_data structure.
+Thank you,
+Lars
 
-Applied, thanks.
+Lars Poeschel (1):
+  gpio: mcp23s08: convert driver to DT
 
---kVXhAStRUZ/+rrGn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ .../devicetree/bindings/gpio/gpio-mcp23s08.txt     |   27 ++++++
+ drivers/gpio/gpio-mcp23s08.c                       |   93 +++++++++++++++++++-
+ include/linux/spi/mcp23s08.h                       |    1 +
+ 3 files changed, 117 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+-- 
+1.7.10.4
 
-iQIcBAEBAgAGBQJRCkbLAAoJELSic+t+oim94joP/A7CJ99nrjA7PLqE8WfXIbLG
-cp0Iu9nXfGZ79WrG661hJWA6WBhdWwd3gcmJLOC8Zi2HlcdxSX3fewwWqWCXkaDU
-tGgFLrbk4mU7YJD28HJuJSRB+Shc8n+b93ler08YFLUI9e4b3OAQT8fgi1kkrkyI
-T2cOjLhIsS2YzfVxKIY/kBfXTHOy+D5o2TgxwSVsfWbHfhFobMgd5rGhqNgtCMQK
-zdvPWKlR6g0tezUhOWcb4Hz1JFWjeMKnpZ28egaSjE0uclO3lrImfouRYAXP71Wi
-efs/Df+fROflu3Eqa+4OZs+702memFr6icx940In9JMCun1q4Xv5LQUDAibOewmZ
-C66GXi71uO44JwyVkVBtXH0Cen6KOiVG8V/638p614Vo/0zxGhsNRl0r/kKDCri/
-K7eVBlx3ZYELYI6/vL1ZFgOCMBah9jy34q42L5/opsLMH+GYED11pungxIoKSGUj
-zUeqRb0CvPxxRmhiydZ+Ch0Dj3E49hmkqahi55lXY43uAdp9F8FRS3URh3qWbrcP
-y5upCKyBoP5/PQSQgfjGsbrwfyQNJpcvvEWHFumCKl3i/mZlBTGvQei6+kWGf9Oc
-8rSzZXAcS66cJHfq0GRvwgKvlDHV1jHDvd95wXu0ZUGu+9iBawMbWnVI9QfR0QJ0
-CSrI/wrNpkV474zJ4Ygn
-=lQsy
------END PGP SIGNATURE-----
 
---kVXhAStRUZ/+rrGn--
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_jan

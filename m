@@ -1,89 +1,31 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v6 03/10] ARM: edma: add AM33XX support to the private
- EDMA API
-Date: Fri, 1 Feb 2013 06:57:39 -0500
-Message-ID: <20130201115738.GL2244@beef>
-References: <1359529229-22207-1-git-send-email-mporter@ti.com>
- <201301300932.58732.arnd@arndb.de>
- <20130131183255.GI2244@beef>
- <6932828d68394f71ba6df8e6bf608635@DFLE72.ent.ti.com>
- <20130131214241.GJ2244@beef>
- <1359698501.14894.74.camel@cumari.coelho.fi>
+From: "Whitney Cain" <WhitneyCainpyc-KK0ffGbhmjU@public.gmane.org>
+Subject: SALE!! luxury watches,    -Online
+Date: Fri, 01 Feb 2013 15:57:47 +0100
+Message-ID: <20130201145748.292310@gmx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Chris Ball <cjb@laptop.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Padma Venkat <padma.kvr@gmail.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@li
-To: Luciano Coelho <coelho@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1359698501.14894.74.camel@cumari.coelho.fi>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: mail-aIssxskWLzLB1svD4rJA/tBPR1lH4CV8@public.gmane.org, 7@scrippscollege.edu,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, catbehavior-j9pdmedNgrk@public.gmane.org,
+	support-s7Gv3ipD5plWk0Htik3J/w@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 01, 2013 at 08:01:41AM +0200, Luciano Coelho wrote:
-> On Thu, 2013-01-31 at 16:42 -0500, Matt Porter wrote:
-> > On Thu, Jan 31, 2013 at 08:58:39PM +0000, Arnd Bergmann wrote:
-> > > On Thursday 31 January 2013, Matt Porter wrote:
-> > > > On Wed, Jan 30, 2013 at 09:32:58AM +0000, Arnd Bergmann wrote:
-> > > > > On Wednesday 30 January 2013, Matt Porter wrote:
-> > > > > > +               dma_cap_set(DMA_SLAVE, edma_filter_info.dma_cap);
-> > > > > > +               of_dma_controller_register(dev->of_node,
-> > > > > > +                                          of_dma_simple_xlate,
-> > > > > > +                                          &edma_filter_info);
-> > > > > > +       }
-> > > > > 
-> > > > > How do you actually deal with the problem mentioned by Padma, that
-> > > > > the filter function does not know which edma instance it is looking
-> > > > > at? If you assume that there can only be a single edma instance in
-> > > > > the system, that is probably a limitation that should be documented
-> > > > > somewhere, and ideally the probe() function should check for that.
-> > > > 
-> > > > I make an assumption of one edma instance in the system in the case of
-> > > > DT being populated. This is always true right now as the only SoC with
-> > > > two EDMA controllers in existence is Davinci DA850. Until recently,
-> > > > Davinci had no DT support. Given the steady work being done today on DT
-> > > > support for DA850, it'll probably be something needed in 3.10.
-> > > > 
-> > > > I will add a comment and check in probe() to capture this assumption
-> > > > and then plan to update separately to support DA850 booting from DT.
-> > > 
-> > > Ok, sounds good. Hopefully by then we will already have a nicer
-> > > way to write an xlate function that does not rely on a filter
-> > > function.
-> > 
-> > Yes, it would be nice to avoid what Padma had to do. I should have
-> > mentioned also that the second EDMA on DA850 has no DMA events of
-> > immediate use on it anyway. All the in-kernel users use events on the
-> > first controller, except for the second MMC instance. That's only used
-> > for a wl12xx module on the EVM and that driver has no DT support so it
-> > doesn't matter yet in the DT case. Because of this, DA850 can actually
-> > add EDMA DT support immediately (on top of this series) and add DMA
-> > support to the DT support already posted for the Davinci SPI and MMC
-> > client drivers.
-> 
-> I haven't followed this whole discussion in details, but please notice
-> that I'm aiming to get DT support for the WiLink modules (wlcore,
-> wl12xx...) for 3.10. ;)
-
-Great, looks like we'll all be synced then. ;)
-
--Matt
+ikvemu dqnc etkfdyo hnz ydxo
+sqwHI,
+iuweooffercdonpyouywonderfulmmrwatchesb-Access to the website- http://bit.ly/V8mvfP bacv zzdqx fbref f xbmarab
+mnxjypl ad x oqbeh rimckouf
+uh zsfcuao g g uoeznjq
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_jan

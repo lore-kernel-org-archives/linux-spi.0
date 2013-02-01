@@ -1,65 +1,52 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
- arm/common
-Date: Fri, 1 Feb 2013 13:59:59 -0500
-Message-ID: <20130201185959.GQ2244@beef>
-References: <1359742975-10421-1-git-send-email-mporter@ti.com>
- <1359742975-10421-2-git-send-email-mporter@ti.com>
- <5022f635a527470dbd0be932063e9cd2@DFLE72.ent.ti.com>
- <20130201184915.GP2244@beef>
- <2077c13e12314dc3adc8e5b653855da0@DFLE72.ent.ti.com>
+From: "=?gb2312?Q?=CC=D4=B1=A6=BD=BB=D2=D7=A3=AC=BB=F5=B5=BD=B8=B6=BF=EE?="
+	<test-gZTOestBkp0JcrdUD6z1vpDzcMD3kl1W@public.gmane.org>
+Subject: [SPAM]
+	=?gb2312?Q?=D6=D0=D2=A9=CE=B0=B8=E7_=BD=F6118=D4=AA=D2=BB=B4=F3=BA=D0=A3=AC=C2=F2=B6=FE=CB=CD=D2=BB=A1=A3?=
+Date: Fri, 1 Feb 2013 19:33:05 +0000 (UTC)
+Message-ID: <E1U1MM9-00034b-CS@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Tony Lindgren <tony@atomide.com>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Russell King <linux@arm.linux.org.uk>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Chris Ball <cjb@laptop.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Sergei Shtylyov <sshtylyov@mvista.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <2077c13e12314dc3adc8e5b653855da0@DFLE72.ent.ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "=?gb2312?Q?inoklove@hotmail=2Ecom?=" <inoklove-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>,
+	"=?gb2312?Q?yanliang342@qq=2Ecom?=" <yanliang342-9uewiaClKEY@public.gmane.org>,
+	"=?gb2312?Q?370541433@qq=2Ecom?=" <370541433-9uewiaClKEY@public.gmane.org>,
+	"=?gb2312?Q?abkandali@rediffmail=2Ecom?=" <abkandali-QOiod4cnrWAN+BqQ9rBEUg@public.gmane.org>,
+	"=?gb2312?Q?xiaoxiaopeach@tianya=2Ecn?=" <xiaoxiaopeach-nk8fZiKg53z/PtFMR13I2A@public.gmane.org>,
+	"=?gb2312?Q?fenglian1213@163=2Ecom?=" <fenglian1213-9Onoh4P/yGk@public.gmane.org>,
+	"=?gb2312?Q?spi-devel-general@lists=2Esourceforge=2Enet?="
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"=?gb2312?Q?xiandianho51@sohu=2Ecom?=" <xiandianho51-Xb2Y1Dfb9CI@public.gmane.org>,
+	"=?gb2312?Q?1137481289@qq=2Ecom?=" <1137481289-9uewiaClKEY@public.gmane.org>,
+	"=?gb2312?Q?spiral3@163=2Ecom?=" <spiral3-9Onoh4P/yGk@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Date: Wed, 2 Feb 2022 03:23:03 +0800
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Feb 01, 2013 at 07:52:46PM +0000, Sergei Shtylyov wrote:
-> Hello.
-> 
-> On 02/01/2013 09:49 PM, Matt Porter wrote:
-> 
-> >>> Move mach-davinci/dma.c to common/edma.c so it can be used
-> >>> by OMAP (specifically AM33xx) as well.
-> 
-> >> I think this should rather go to drivers/dma/?
-> 
-> > No, this is the private EDMA API. It's the analogous thing to
-> > the private OMAP dma API that is in plat-omap/dma.c. The actual
-> > dmaengine driver is in drivers/dma/edma.c as a wrapper around
-> > this...same way OMAP DMA engine conversion is being done.
-> 
->   Keeps me wondering why we couldn't have the same with CPPI 4.1 when I proposed
-> that, instead of waiting indefinitely for TI to convert it to drivers/dma/
-> directly. We could have working MUSB DMA on OMAP-L1x/Sitara all this time... Sigh.
-
-That is a shame. Yeah, I've pointed out that I was doing this exactly
-the same way as was acceptable for the OMAP DMA conversion since it was
-in RFC. The reasons are sound since in both cases, we have many drivers
-to convert that need to continue using the private DMA APIs.
-
--Matt
-> 
+CtbQ0qnOsLjno7rLubDNtO8t0vnR8t69ybO8rL26xNKjrNez0fS3wNTn0Lk6ILO5tdfUtsDr0fTw
+9NTn0LmjoQoKMTE41KrSu7TzutCjrDMywaOho8Lytv7LzdK7oaMKCjGjrLbUsqrG8LyrxuTT0NCn
+o6yz1MnPMzC31tbTo6zC7cnPxvDQp6GjCjKjrLbU1OfQucTc0dOzpDQwLTYwt9bW06GjCjOjrLS/
+1tDSqdbQ0qnM4cihoaPO3tLAwLXQ1KOszt7IzrrOuLHX99PDo6zQxNTgsqEguN/RqtG50rLE3LPU
+oaMKCszUsaa9u9LXo6zWp7PWyLexo7v1tb24tr/uoaMKCs341rejumh0dHA6Ly91cmw3Lm1lL1lN
+YWwKzfjWt6O6aHR0cDovL3VybDcubWUvWU1hbArN+Na3o7podHRwOi8vdXJsNy5tZS9ZTWFsCgqx
+vsa308XKxqO6CjGjrNX9uebGt8XGLLn6vNLAtsOxOiAxMDAltL/M7Mi7s8m31qOszt7IzrrOuLHX
+99PDoaMKMqOss7m119S2wOvR9PD01OfQuaGjy9nQp7KqxvCjrLbU1OfQudHTs6Q0MLfW1tOhowoz
+o6y02b340vW+pbb+tM63otP9o6zU9rTz1Pa01qOsyeS+q9PQwaahowo0o6zOwrK5s6TQp6Oss6TG
+2rf+08O/ydLUyrnJ7czlxOrH4cysoaMKCgpRUTogMzk1NDI3NjIxClFROiAzOTU0Mjc2MjEKUVE6
+IDM5NTQyNzYyMQpRUTogMzk1NDI3NjIxCgoKCszYsfDNxrz2o7oK06G2yMnx083F57zBo6y99iAx
+NC441KqhowpodHRwOi8vdXJsNy5tZS9rU0hpCmh0dHA6Ly91cmw3Lm1lL2tTSGkKaHR0cDovL3Vy
+bDcubWUva1NIaQoKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdl
+YnNpdGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFt
+aWNzCkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNm
+Lm5ldC9zZnUvYXBwZHluX2QyZF9qYW4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
+dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

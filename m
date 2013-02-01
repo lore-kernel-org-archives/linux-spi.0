@@ -1,13 +1,12 @@
-From: "Whitney Cain" <WhitneyCainpyc-KK0ffGbhmjU@public.gmane.org>
-Subject: SALE!! luxury watches,    -Online
-Date: Fri, 01 Feb 2013 15:57:47 +0100
-Message-ID: <20130201145748.292310@gmx.com>
+From: Terino <client-nda2NwTpBQkiuapPhxDISg@public.gmane.org>
+Subject: %member_site_name%  vous reserve ses offres exclusives
+Date: Fri, 01 Feb 2013 15:40:17 +0000
+Message-ID: <4+paav3tkrb3bcaeafyabtkebjvgcl2tft2zlueaqlmhi6r3pvxmlzq4lrloe3iz7tyqn4kjaiayl2fetvvlk7mgqhzy3bfldaciwq6vxmo4pzn6pn3dy6tbmfm5xeevbzs5ucwvbzmve2nmsobr53isxe7qlih55lbp3bn7xb2x6qdyi2f5qq====+102310@messaging-master.com>
+Reply-To: bounce-nda2NwTpBQkiuapPhxDISg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: mail-aIssxskWLzLB1svD4rJA/tBPR1lH4CV8@public.gmane.org, 7@scrippscollege.edu,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, catbehavior-j9pdmedNgrk@public.gmane.org,
-	support-s7Gv3ipD5plWk0Htik3J/w@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,13 +18,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ikvemu dqnc etkfdyo hnz ydxo
-sqwHI,
-iuweooffercdonpyouywonderfulmmrwatchesb-Access to the website- http://bit.ly/V8mvfP bacv zzdqx fbref f xbmarab
-mnxjypl ad x oqbeh rimckouf
-uh zsfcuao g g uoeznjq
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_jan
+Qm9uam91ciwKClRlcmlubyBmYWl0IMOpdm9sdWVyIHNhIE5ld3NMZXR0ZXIgw6AgbGFxdWVsbGUg
+dm91cyBwYXJ0aWNpcGV6IGVuIGFqb3V0YW50IHVuIHNlcnZpY2UgZGUgIlJlbGFuY2UgcGFuaWVy
+Ii4KCkNlIHNlcnZpY2UgY29uc2lzdGUgw6Agdm91cyBmYWlyZSBwcm9maXRlciBkJ2luZm9ybWF0
+aW9ucyBzdXBwbMOpbWVudGFpcmVzLCBkZSBwcm9tb3Rpb25zIGV4Y2VwdGlvbm5lbGxlcywgZGUg
+cmVtaXNlcywgZXQgZGUgY2FkZWF1eCAuLi4gcG91ciBkZXMgcHJvZHVpdHMgZGUgbm9zIHNpdGVz
+IHBhcnRlbmFpcmVzIHN1ciBsZXNxdWVscyB2b3VzIGF2ZXogZXhwcmltw6kgdW4gaW50w6lyw6p0
+IGNlcnRhaW4uCgpMZSBmb25jdGlvbm5lbWVudCBlc3Qgc2ltcGxlIGV0IGF1dG9tYXRpcXVlLiBE
+w6hzIGxvcnMgcXVlIHZvdXMgdm91cyByZW5kZXogc3VyIGwndW4gZGUgbm9zIHNpdGVzIHBhcnRl
+bmFpcmVzIHBvdXIgY29uc3VsdGVyIGRlcyBmaWNoZXMgcHJvZHVpdHMsIGNvbW1lbmNlciB1biBw
+YW5pZXIgZCdhY2hhdCwgb3Ugw6l0YWJsaXIgdW5lIGxpc3RlIGQnYWNoYXQgZXQgcXVlIHZvdXMg
+bmUgZmluYWxpc2V6IHBhcyB2b3RyZSBhY3Rpb24sIG5vdHJlIHBhcnRlbmFpcmUgYXVyYSBsYSBw
+b3NzaWJpbGl0w6kgZGUgdm91cyB0cmFuc21ldHRyZSB1biBtZXNzYWdlIMOpbGVjdHJvbmlxdWUu
+CgpDZSBtZXNzYWdlIGEgcG91ciBidXQgZGUgdm91cyBhcHBvcnRlciB1biBjb21wbMOpbWVudCBk
+J2luZm9ybWF0aW9uIHN1ciBsZXMgcHJvZHVpdHMgY29uc3VsdMOpcywgZXQgdm91cyBwcm9wb3Nl
+ciBkZXMgcmVtaXNlcyBzdXBwbMOpbWVudGFpcmVzLCBkZXMgZnJhaXMgZGUgbGl2cmFpc29ucyBv
+ZmZlcnRzIGV0IGJpZW4gZCdhdXRyZXMgYXZhbnRhZ2VzLgoKTm91cyB2b3VzIGluZm9ybW9ucywg
+cXUnZW4gYXVjdW4gY2FzIGxhIG1vaW5kcmUgaW5mb3JtYXRpb24gcGVyc29ubmVsbGUsIHkgY29t
+cHJpcyB2b3RyZSBhZHJlc3NlIMOpbGVjdHJvbmlxdWUgbmUgc2VyYSBmb3VybmllIGF1eCBzaXRl
+cyBwYXJ0ZW5haXJlcyBvdSDDoCBkJ2F1dHJlcyB0aWVycy4KCkwnaW5zY3JpcHRpb24gw6AgY2Ug
+c2VydmljZSB2b3VzIGVzdCBvZmZlcnRlIGdyw6JjZSDDoCB2b3RyZSBwYXJ0aWNpcGF0aW9uIMOg
+IG5vdHJlIG5ld3NsZXR0ZXIuIEF1c3NpLCB2b3VzIHJlY2V2cmV6IGRhbnMgbGVzIHByb2NoYWlu
+cyBqb3VycyB1biBlbWFpbCB2b3VzIGNvbmZpcm1hbnQgdm90cmUgaW5zY3JpcHRpb24gw6AgY2Ug
+bm91dmVhdSBzZXJ2aWNlLiBCaWVuIMOpdmlkZW1tZW50LCBpbCB2b3VzIGVzdCBkw6hzIMOgIHBy
+w6lzZW50IHBvc3NpYmxlIGRlIHJlZnVzZXIgY2Ugc2VydmljZSwgY2VsYSBlbiBzdWl2YW50IGNl
+IGxpZW4gOmh0dHA6Ly9tZW1iZXIuZW1haWwtbWF0Y2guZnIvNjM3L3Vuc3Vic2NyaWJlL2VOb0JS
+VndBdXY5ek9qWXhPbHdpd0RCWlR5VWM4UjU0VlUyS0RzR3BmcHczZ256dWI2aFpLNXFXUlRPdnlO
+bFlQSmE0N3AzSGxsd0FJNGh0SzBOa25JdUxZazlWS2FzM21vV0dSaUZjSWp2dDdSMGwuCgoKQ29y
+ZGlhbGVtZW50LApMJ8OpcXVpcGUgVGVyaW5vCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9u
+ZSBoYXRlcyBzbG93IHdlYnNpdGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3Rl
+ciB3aXRoIEFwcER5bmFtaWNzCkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9k
+YXk6Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwZHluX2QyZF9qYW4KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

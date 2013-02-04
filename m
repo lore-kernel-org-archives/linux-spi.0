@@ -1,98 +1,121 @@
-From: Ezequiel Garcia <elezegarcia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in Armada
-	370/XP
-Date: Mon, 4 Feb 2013 17:01:45 -0300
-Message-ID: <CALF0-+XPDLeSYBFO6sQ2M24F1f5pgz8tSNMm0VX8BEeda3ym+g@mail.gmail.com>
-References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130204165119.GA2440@localhost>
-	<20130204183733.GM14746@titan.lakedaemon.net>
-	<20130204192914.GA2456@localhost>
-	<20130204194714.GN14746@titan.lakedaemon.net>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
+Date: Mon, 4 Feb 2013 21:29:46 +0100
+Message-ID: <CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com>
+References: <20130201184915.GP2244@beef>
+	<510C1D0E.6030401@mvista.com>
+	<20130201185820.GE29898@arwen.pp.htv.fi>
+	<510C2A47.1090607@mvista.com>
+	<20130201205600.GA31762@arwen.pp.htv.fi>
+	<20130201213003.GW2637@n2100.arm.linux.org.uk>
+	<20130204154153.GA18237@arwen.pp.htv.fi>
+	<510FF1A6.403@mvista.com>
+	<20130204164712.GB4269@arwen.pp.htv.fi>
+	<510FF5C9.3030600@mvista.com>
+	<20130204170216.GC4269@arwen.pp.htv.fi>
+	<51100A72.6030909@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130204194714.GN14746-u4khhh1J0LxI1Ri9qeTfzeTW4wlIGRCZ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: balbi@ti.com, Sergei Shtylyov <sshtylyov@mvista.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Lindgren <tony@atomide.com>,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
+	Matt Porter <mporter@ti.com>, Arnd Bergmann <arnd@arndb.de>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SP
+To: Cyril Chemparathy <cyril@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <51100A72.6030909@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Jason,
+On Mon, Feb 4, 2013 at 8:22 PM, Cyril Chemparathy <cyril@ti.com> wrote:
 
-On Mon, Feb 4, 2013 at 4:47 PM, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org> wrote:
-> Ezequiel,
+> Based on our experience with fitting multiple subsystems on top of this
+> DMA-Engine driver, I must say that the DMA-Engine interface has proven
+> to be a less than ideal fit for the network driver use case.
 >
-> On Mon, Feb 04, 2013 at 04:29:15PM -0300, Ezequiel Garcia wrote:
->> On Mon, Feb 04, 2013 at 01:37:33PM -0500, Jason Cooper wrote:
->> > On Mon, Feb 04, 2013 at 01:51:20PM -0300, Ezequiel Garcia wrote:
->> > > The patches are based in Jason Cooper's mvebu/dt branch.
->> >
->> > It probably doesn't matter for this series (I haven't tried to apply it
->> > yet), but please base future work off of a mainline tag (eg v3.8-rc6).
->> > It makes merge conflicts easier to resolve.
->> >
->> > Feel free to test-merge against the mvebu/ branches and let me know of
->> > any conflicts.
->> >
->>
->> Ah, I see.
->>
->> I was mistakenly assuming you wanted against that branch;
->> I'll base the patches on mainline in the future.
->
-> Nope, the branches are organized that way to sanely merge in with all
-> the other arm-soc code.  While I make every effort to keep them stable
-> (ie, not rebased), they may change at anytime if I need to fix things.
->
-> tags are stable, and if all patches are based on tags, then merge
-> conflicts follow a predictable pattern.  Anything else devolves into
-> chaos.
->
+> The first problem is that the DMA-Engine interface expects to "push"
+> completed traffic up into the upper layer as a part of its callback.
+> This doesn't fit cleanly with NAPI, which expects to "pull" completed
+> traffic from below in the NAPI poll.  We've somehow kludged together a
+> solution around this, but it isn't very elegant.
 
-Ah=E1... this explains why I was seeing your branches rebased! ;-)
+I cannot understand the actual technical problem from the above
+paragraphs though. dmaengine doesn't have a concept of pushing
+nor polling, it basically copies streams of words from A to B, where
+A/B can be a device or a buffer, nothing else.
 
->> > Also, your patch series appears to be out of order, did you use git
->> > send-email once per file?
->>
->> I always send the cover letter manually. This time I did it after the pa=
-tches.
->> I'm in the process of automating this in my workflow,
->> but feel free to make a suggestion.
->
-> if format-patch is called properly (I know from experience how to call
-> it improperly ;-) ), you can just do
->
-> $ git send-email ... /path/to/patches/*.patch
->
-> and it'll get the order correct.  It will also ask for confirmation
-> before sending each email.
->
-> Dry-run sending a series just to yourself lets you see how it will
-> appear once it goes out to the list.
->
+The thing you're looking for sounds more like an adapter on top
+of dmaengine, which can surely be constructed, some
+drivers/dma/dmaengine-napi.c or whatever.
 
-Okey, great. Thanks for the advices!
+> The second problem is one of binding fixed DMA resources to fixed users.
+>   AFAICT, the stock DMA-Engine mechanism works best when one DMA
+> resource is as good as any other.
 
--- =
+The filter function picks a channel for whatever reason. That reason
+can be, well whatever. Some engines have a clever mechanism to
+select resources on the other end.
 
-    Ezequiel
+Then for tying devices to channels we have the dmaengine
+DT branch:
+http://git.infradead.org/users/vkoul/slave-dma.git/shortlog/refs/heads/topic/dmaengine_dt
 
----------------------------------------------------------------------------=
----
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_jan
+This stuff didn't go into v3.8 but you can *sure* expect it
+to be in v3.9.
+
+Or are you referring to a multi-engine scenario? Say if there is engine
+A and B and depending on circumstances A or B may be preferred
+in some order (and permutations of this problem). That is currently
+identified as a shortcoming that we need help to address.
+
+> To get over this problem, we've added
+> support for named channels, and drivers specifically request for a DMA
+> resource by name.  Again, this is less than ideal.
+
+Jon Hunter has been working on a mechanism to look up DMA channels
+from struct device *, dev_name() or a device tree node for example.
+Just like we do with clocks or regulators.
+
+Look at this patch from the dmaengine_dt branch:
+http://git.infradead.org/users/vkoul/slave-dma.git/commitdiff/528499a7037ebec0636d928f88cd783c618df3c5
+
+Looks up an optionally named channel for a certain
+device.
+
+It currently only supports device tree, but you are free to
+patch in whatever mechanism you need there. Static tables
+in platform data works too. Just nobody did it.
+
+So go ahead and hack on dma_request_slave_channel().
+(I would just branch of the DT branch.)
+
+> We found that virtio devices offer a more elegant solution to this
+> problem.  First, the virtqueue interface is a much better fit into NAPI
+> (callback --> napi schedule, napi poll --> get_buf), and this eliminates
+> the need for aforementioned kludges in the code.  Second, the virtio
+> device infrastructure nicely uses the device model to solve the problem
+> of binding DMA users to specific DMA resources.
+
+Not that I understand the polling issue, but it sounds to me like
+what Jon is doing is similar.
+
+Surely the way to look up resources cannot be paramount in this
+discussion, I think the real problem must be your specific networking
+usecase, so we need to drill into that.
+
+Yours,
+Linus Walleij

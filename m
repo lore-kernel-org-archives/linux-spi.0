@@ -1,95 +1,62 @@
-From: Sergei Shtylyov <sshtylyov@mvista.com>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
-Date: Mon, 04 Feb 2013 21:22:42 +0300
-Message-ID: <510FFC72.2050706@mvista.com>
-References: <20130201184915.GP2244@beef> <510C1D0E.6030401@mvista.com> <20130201185820.GE29898@arwen.pp.htv.fi> <510C2A47.1090607@mvista.com> <20130201205600.GA31762@arwen.pp.htv.fi> <20130201213003.GW2637@n2100.arm.linux.org.uk> <20130204154153.GA18237@arwen.pp.htv.fi> <510FF1A6.403@mvista.com> <20130204164712.GB4269@arwen.pp.htv.fi> <510FF5C9.3030600@mvista.com> <20130204170216.GC4269@arwen.pp.htv.fi>
+From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Subject: Re: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in
+	Armada 370/XP
+Date: Mon, 4 Feb 2013 13:37:33 -0500
+Message-ID: <20130204183733.GM14746@titan.lakedaemon.net>
+References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
+	<20130204165119.GA2440@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Matt Porter <mporter@ti.com>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Chris Ball <cjb@laptop.org>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-ker
-To: balbi@ti.com
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20130204170216.GC4269@arwen.pp.htv.fi>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20130204165119.GA2440@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
+Ezequiel,
 
-On 02/04/2013 08:02 PM, Felipe Balbi wrote:
+This series looks good.  just a few comments:
 
->>> On Mon, Feb 04, 2013 at 08:36:38PM +0300, Sergei Shtylyov wrote:
->>>>> opted out of it. From the top of my head we have CPPI 3.x, CPPI 4.1,
->>>>> Inventra DMA, OMAP sDMA and ux500 DMA engines supported by the driver.
+On Mon, Feb 04, 2013 at 01:51:20PM -0300, Ezequiel Garcia wrote:
+> Hi,
+> 
+> This patchset adds support for the SPI controller
+> available in Armada 370 and Armada XP SoC.
+> 
+> The patches are based in Jason Cooper's mvebu/dt branch.
 
->>>>> Granted, CPPI 4.1 makes some assumptions about the fact that it's
->>>>> handling USB tranfers,
+It probably doesn't matter for this series (I haven't tried to apply it
+yet), but please base future work off of a mainline tag (eg v3.8-rc6).
+It makes merge conflicts easier to resolve.
 
->>>>    What CPPI 4.1 code makes this assumptions? MUSB DMA driver? Then it's just
+Feel free to test-merge against the mvebu/ branches and let me know of
+any conflicts.
 
->>> HW makes the asumptions
+Also, your patch series appears to be out of order, did you use git
+send-email once per file?
 
->>    Not true at all. There is a separate set of registers (at offset 0) which
->> copes with USB specifics, but CPPI 4.1 itself doesn't know about USB anything.
+thx,
 
-> CPPI 4.1 was made for USB transfers.
+Jason.
 
-   Utter nonsense, CPPI 4.1 is hardware abstract DMA engine. It's used for
-Ethernet transfers on out-of-tree platforms like mach-avalanche/.
-
->> It's just the way the driver was written that it used both sets of registers but
->> this needs to be changed into more abstacted accesses to the USB-specific part,
->> to cope with it being different on different platfroms, like AM35x. The driver
->> as it was last posted, just needs rework now.
-
-> are you saying you will do the work ?
-
-   My efforts stopped to be funded by MV back in 2010. Hell, I'm not even
-working in MV as I used to, hanging on the verge of my current contract being
-terminated.
-
->>>>    Don't know, I was quite content with the abstraction when writing CPPI 4.1
->>>> driver for MUSB...
-
->>> look closer. The whole:
-
->>> if (is_cppi())
->>> 	foo();
->>> else if (is_inventra())
->>> 	bar();
->>> else if (is_omap_sdma())
->>> 	baz();
-
->>> is bogus.
-
->>    That part -- yes. There were attempt to get rid of this, but without changing
->> the DMA API. It was left halfway done after my only critical comment, IIRC. Will
->> we ever see the continuation of this effort?
-
-> patches are welcome
-
-   There was a patch, it only needed comments addressed. I think the author was
-Heikki Krogerus. As for me, my time is very limited, so be thankful even for
-those scarce patches I'm sending out now -- I'm doing them in my copious free time.
-
-WBR, Sergei
-
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_jan

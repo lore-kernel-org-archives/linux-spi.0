@@ -1,132 +1,49 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
- arm/common
-Date: Mon, 4 Feb 2013 18:47:12 +0200
-Message-ID: <20130204164712.GB4269@arwen.pp.htv.fi>
-References: <1359742975-10421-2-git-send-email-mporter@ti.com>
- <5022f635a527470dbd0be932063e9cd2@DFLE72.ent.ti.com>
- <20130201184915.GP2244@beef>
- <510C1D0E.6030401@mvista.com>
- <20130201185820.GE29898@arwen.pp.htv.fi>
- <510C2A47.1090607@mvista.com>
- <20130201205600.GA31762@arwen.pp.htv.fi>
- <20130201213003.GW2637@n2100.arm.linux.org.uk>
- <20130204154153.GA18237@arwen.pp.htv.fi>
- <510FF1A6.403@mvista.com>
-Reply-To: <balbi@ti.com>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in Armada
+	370/XP
+Date: Mon, 4 Feb 2013 13:51:20 -0300
+Message-ID: <20130204165119.GA2440@localhost>
+References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dTy3Mrz/UPE2dbVg"
-Cc: <balbi@ti.com>, Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Matt Porter <mporter@ti.com>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Chris Ball <cjb@laptop.org>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel Lis
-To: Sergei Shtylyov <sshtylyov@mvista.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <510FF1A6.403@mvista.com>
-Sender: linux-doc-owner@vger.kernel.org
+In-Reply-To: <1359995888-2385-1-git-send-email-ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---dTy3Mrz/UPE2dbVg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Mon, Feb 04, 2013 at 08:36:38PM +0300, Sergei Shtylyov wrote:
-> > opted out of it. From the top of my head we have CPPI 3.x, CPPI 4.1,
-> > Inventra DMA, OMAP sDMA and ux500 DMA engines supported by the driver.
->=20
-> > Granted, CPPI 4.1 makes some assumptions about the fact that it's
-> > handling USB tranfers,
->=20
->    What CPPI 4.1 code makes this assumptions? MUSB DMA driver? Then it's =
-just
-
-HW makes the asumptions
-
-> > but nevertheless, the IP can be, and in fact is,
-> > used with many different DMA engines and driver needs to cope with it.
->=20
->    What IP, CPPI 4.1 or MUSB?
-
-MUSB
-
-> > Current DMA abstraction is quite poor, for example there's no way to
-> > compile support for multiple DMA engines. Code also makes certain, IMO
-> > unnecessary, assumptions about the underlying DMA engine (abstraction is
-> > poor, as said above but it we could follow MUSB's programming guide when
-> > it comes to programming DMA transfers).
->=20
->    Don't know, I was quite content with the abstraction when writing CPPI=
- 4.1
-> driver for MUSB...
-
-look closer. The whole:
-
-if (is_cppi())
-	foo();
-else if (is_inventra())
-	bar();
-else if (is_omap_sdma())
-	baz();
-
-is bogus.
-
-> > Considering all of the above, it's far better to use DMA engine and get
-> > rid of all the mess.
->=20
->    In my eyes, getting rid of the mess doesn't justify breaking the rules=
- that
-> Russell formulated above.
-
-MUSB is no PCI, there is no single, standard interface to the DMA
-engine (unlike Synopsys' dwc-usb3 and dwc-usb2, where we don't use DMA
-engine), every DMA engine comes with its own set of registers, its own
-programming model and so forth.
-
---=20
-balbi
-
---dTy3Mrz/UPE2dbVg
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRD+YQAAoJEIaOsuA1yqREBdEQAIdS03SIpNCILhGxYd5xrVgC
-pWFFJc/tQ4bWPqyYZsN/emeqBfX2kOlbDOmVw1Uj0V/nkKnPH1TmA7GRVmughaiH
-R6yKgYlU/2hi0ilqW+DJ/74XCtncdXEmUCFilaxhkyP1npfLN8dmjX7tgHdHwva8
-vQHUBs2H5c7+dqGQCTNi3smE4i1dgVeTb+ckP3Ery8IiTZgSFoEoJpLWJACUk39i
-4hrAMTuYCYWnxOK/XfRhs+M6qID6VLQTAkxu6ndRHmOEaAuE4KJBU/QmTSfOD7wu
-Mx3cEPguamEgf4DytrqZpKZ7m5qjB/W+wC30SYVdQtGMihqCDCdFxVGGgMbQj64/
-fuiZHftzKwCCY8OJAbVTNPYJ6y/vf8aQl8ft/Fal07c/pdNXhkJA84DHT/1Abo4r
-/seD8ZAk1iyduKaXFtubmd3Iq27KV6/s0A7hgyQUwkKhN8V+klxGMszvoIjlrTds
-eO5XfPIx0MMXzKn3gUADMjcKLTNh3GcM/boxzG8/ySacZr+guvWCPnDlXTuQsZFt
-oSRVPgXOdKy+m+z6AQtsb3LH1QNbuOd1dgVKJYlC7rULeUmgQJCOxsdsaJFg557J
-ookEDb7W/oYwvKjM7cBpNEYnIlc4PPqBM8XdyImoFlau7FSanv9+6wUhDM6a5UVl
-jECLvstr45ncnhjrTyg1
-=T5H9
------END PGP SIGNATURE-----
-
---dTy3Mrz/UPE2dbVg--
+SGksCgpUaGlzIHBhdGNoc2V0IGFkZHMgc3VwcG9ydCBmb3IgdGhlIFNQSSBjb250cm9sbGVyCmF2
+YWlsYWJsZSBpbiBBcm1hZGEgMzcwIGFuZCBBcm1hZGEgWFAgU29DLgoKVGhlIHBhdGNoZXMgYXJl
+IGJhc2VkIGluIEphc29uIENvb3BlcidzIG12ZWJ1L2R0IGJyYW5jaC4KCkZlZWwgZnJlZSB0byB0
+ZXN0IGFuZC9vciBwcm92aWRlIGZlZWRiYWNrLgoKRXplcXVpZWwgR2FyY2lhICgyKToKIEFSTTog
+bXZlYnU6IFVwZGF0ZSBkZWZjb25maWcgdG8gc2VsZWN0IFNQSSBzdXBwb3J0CiBBUk06IG12ZWJ1
+OiBBZGQgc3VwcG9ydCBmb3IgU1BJIGNvbnRyb2xsZXIgaW4gQXJtYWRhIDM3MC9YUAoKIGFyY2gv
+YXJtL2Jvb3QvZHRzL2FybWFkYS0zNzAteHAuZHRzaSB8ICAgMjIgKysrKysrKysrKysrKysrKysr
+KysrKwogYXJjaC9hcm0vY29uZmlncy9tdmVidV9kZWZjb25maWcgICAgIHwgICAgMiArKwogMiBm
+aWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKVGhhbmtzLAoK
+LS0gCkV6ZXF1aWVsIEdhcmPDrWEsIEZyZWUgRWxlY3Ryb25zCkVtYmVkZGVkIExpbnV4LCBLZXJu
+ZWwgYW5kIEFuZHJvaWQgRW5naW5lZXJpbmcKaHR0cDovL2ZyZWUtZWxlY3Ryb25zLmNvbQoKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMuIFNvIGRvIHdl
+LgpNYWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93bmxvYWQgQXBw
+RHluYW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3NmdS9hcHBkeW5f
+ZDJkX2phbgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

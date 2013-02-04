@@ -1,58 +1,83 @@
-From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH V2 0/2] spi/bcm63xx: fix multi transfer messages
-Date: Mon, 04 Feb 2013 14:29:00 +0100
-Message-ID: <510FB79C.8040801@openwrt.org>
-References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
+Date: Mon, 04 Feb 2013 15:27:09 +0100
+Message-ID: <7655522.SvRnLo3eyU@wuerfel>
+References: <1359742975-10421-1-git-send-email-mporter@ti.com>
+ <20130201213003.GW2637@n2100.arm.linux.org.uk> <510C58DF.3010103@mvista.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359900913-4472-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>,
+ Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+ Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
+ Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+ Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+ Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <510C58DF.3010103-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 02/03/2013 03:15 PM, Jonas Gorski wrote:
-> The bcm63xx SPI controller does not support keeping CS up after doing a
-> transfer. Since this is problematic for most typical use cases, this
-> patchset introduces a workaround by combining small enough messages
-> to one transfer, rejecting anything that can't be fulfilled with the
-> hardware.
->
-> Patch one properly rejects anything impossible to transfer with these
-> limitations.
-> Patch two introduces logic for combining transfers to one to be able to
-> use it for typical use cases (register accesses and flash access).
->
-> Build and run tested on a BCM6368 with a SPI controlled switch attached
-> requiring write-then-read with CS asserted.
->
-> Changes V1 -> V2:
->   * split into two patches
->   * fixed return type of bcm63xx_txrx_bufs()
->   * slightly reworked bcm63xx_txrx_bufs, obsoleting one local variable
->   * added a bit more comments in the code
->   * added error messages indicated why transfers were rejected
+On Saturday 02 February 2013 04:07:59 Sergei Shtylyov wrote:
+> On 02-02-2013 1:30, Russell King - ARM Linux wrote:
 
-Looks good, thanks!
+> >> because it doesn't make sense to support multiple DMA APIs. We can check
+> >> from MUSB's registers if it was configured with Inventra DMA support and
+> >> based on that we can register MUSB's own DMA Engine to dmaengine API.
+> 
+> > Hang on.  This is one of the DMA implementations which is closely
+> > coupled with the USB and only the USB?  If it is...
+> 
+> > I thought this had been discussed _extensively_ before.  I thought the
+> > resolution on it was:
+> > 1. It would not use the DMA engine API.
+> > 2. It would not live in arch/arm.
+> > 3. It would be placed nearby the USB driver it's associated with.
+> 
+> > (1) because we don't use APIs just for the hell of it - think.  Do we
+> > use the DMA engine API for PCI bus mastering ethernet controllers?  No.
+> > Do we use it for PCI bus mastering SCSI controllers?  No.  Because the
+> > DMA is integral to the rest of the device.
+> 
+> > The DMA engine API only makes sense if the DMA engine is a shared
+> > system resource.
+> 
+>     Thanks for such extensive wording in the support of my point. 
 
-Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
---
-Florian
+Actually there is another problem with the musb driver, which is that
+you can only have one DMA controller configured at build time, and
+that currently prevents us from building a kernel that supports both
+the Inventra and TUSB variants together. With multiplatform coming
+up for both ux500 and omap2, we will also have to make a decision
+about ux500 vs omap being supported in DMA mode.
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_jan
+I can see two ways out of this: either we extend the musb driver to
+have run-time registration of the DMA controller, which duplicates
+infrastructure that already exists in the dmaengine API, or we
+make the dmaengine back-end for musb the default and require all
+platforms to use that if they want to coexist with other platforms
+and also use DMA support in musb.
+
+Note that the ux500_dma code in musb already uses dmaengine. It could
+probably be extended to support any platform that has a dmaengine
+driver for the DMA controller used in MUSB.
+
+	Arnd

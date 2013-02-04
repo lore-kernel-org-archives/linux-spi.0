@@ -1,24 +1,26 @@
-From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in Armada
-	370/XP
-Date: Mon, 4 Feb 2013 16:33:16 -0300
-Message-ID: <20130204193315.GB2456@localhost>
+From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Subject: Re: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in
+	Armada 370/XP
+Date: Mon, 4 Feb 2013 14:47:14 -0500
+Message-ID: <20130204194714.GN14746@titan.lakedaemon.net>
 References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130204165119.GA2440@localhost> <20130204190326.GA20212@lunn.ch>
+	<20130204165119.GA2440@localhost>
+	<20130204183733.GM14746@titan.lakedaemon.net>
+	<20130204192914.GA2456@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
 	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20130204190326.GA20212-g2DYL2Zd6BY@public.gmane.org>
+In-Reply-To: <20130204192914.GA2456@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,26 +31,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-QW5kcmV3LAoKT24gTW9uLCBGZWIgMDQsIDIwMTMgYXQgMDg6MDM6MjZQTSArMDEwMCwgQW5kcmV3
-IEx1bm4gd3JvdGU6Cj4gT24gTW9uLCBGZWIgMDQsIDIwMTMgYXQgMDE6NTE6MjBQTSAtMDMwMCwg
-RXplcXVpZWwgR2FyY2lhIHdyb3RlOgo+ID4gSGksCj4gPiAKPiA+IFRoaXMgcGF0Y2hzZXQgYWRk
-cyBzdXBwb3J0IGZvciB0aGUgU1BJIGNvbnRyb2xsZXIKPiA+IGF2YWlsYWJsZSBpbiBBcm1hZGEg
-MzcwIGFuZCBBcm1hZGEgWFAgU29DLgo+IAo+IEhpIEV6ZXF1aWVsCj4gCj4gRG8gYW55IG9mIHRo
-ZSBib2FyZHMgd2UgaGF2ZSB3aXRoIG1haW5saW5lIHN1cHBvcnQgaGF2ZSBhbnkgZGV2aWNlcyBv
-bgo+IHRoZSBTUEkgYnVzc2VzPyBJdHMgaGFyZCB0byB0ZXN0IG90aGVyd2lzZS4KPiAKCk1tbS4u
-LiB2ZXJ5IHRydWUuCgpSZWNlbnRseSBhZGRlZCBBcm1hZGEgWFAgR1AgYm9hcmQgYXMgYW4gU1BJ
-IGZsYXNoLgpQcm9iYWJseSBvdGhlciBldmFsdWF0aW9uIGJvYXJkcyBhbHNvIGhhcyBzaW1pbGFy
-IFNQSSBmbGFzaGVzLApidXQgSSBzaG91bGQgY2hlY2sgdGhhdC4KCkknbGwgcHJlcGFyZSBhIHBh
-dGNoIGZvciBHUCBib2FyZCB0b21vcnJvdywKYmFzZWQgb24gR3JlZ29yeSdzIHBhdGNoZXMgZm9y
-IHRoYXQgYm9hcmQsCnNvIHlvdSBjYW4gdGVzdCB0aGF0LgpBbHNvLCBJIGhvcGUgdG8gcHJlcGFy
-ZSBwYXRjaGVzIGZvciB0aGUgb3RoZXIKZXZhbHVhdGlvbiBib2FyZHMgc29vbi4KClJlZ2FyZHMs
-CgotLSAKRXplcXVpZWwgR2FyY8OtYSwgRnJlZSBFbGVjdHJvbnMKRW1iZWRkZWQgTGludXgsIEtl
-cm5lbCBhbmQgQW5kcm9pZCBFbmdpbmVlcmluZwpodHRwOi8vZnJlZS1lbGVjdHJvbnMuY29tCgot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8g
-d2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBB
-cHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5
-bl9kMmRfamFuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+Ezequiel,
+
+On Mon, Feb 04, 2013 at 04:29:15PM -0300, Ezequiel Garcia wrote:
+> On Mon, Feb 04, 2013 at 01:37:33PM -0500, Jason Cooper wrote:
+> > On Mon, Feb 04, 2013 at 01:51:20PM -0300, Ezequiel Garcia wrote:
+> > > The patches are based in Jason Cooper's mvebu/dt branch.
+> > 
+> > It probably doesn't matter for this series (I haven't tried to apply it
+> > yet), but please base future work off of a mainline tag (eg v3.8-rc6).
+> > It makes merge conflicts easier to resolve.
+> > 
+> > Feel free to test-merge against the mvebu/ branches and let me know of
+> > any conflicts.
+> > 
+> 
+> Ah, I see.
+> 
+> I was mistakenly assuming you wanted against that branch;
+> I'll base the patches on mainline in the future.
+
+Nope, the branches are organized that way to sanely merge in with all
+the other arm-soc code.  While I make every effort to keep them stable
+(ie, not rebased), they may change at anytime if I need to fix things.
+
+tags are stable, and if all patches are based on tags, then merge
+conflicts follow a predictable pattern.  Anything else devolves into
+chaos.
+
+> > Also, your patch series appears to be out of order, did you use git
+> > send-email once per file?
+> 
+> I always send the cover letter manually. This time I did it after the patches.
+> I'm in the process of automating this in my workflow,
+> but feel free to make a suggestion.
+
+if format-patch is called properly (I know from experience how to call
+it improperly ;-) ), you can just do
+
+$ git send-email ... /path/to/patches/*.patch
+
+and it'll get the order correct.  It will also ask for confirmation
+before sending each email.
+
+Dry-run sending a series just to yourself lets you see how it will
+appear once it goes out to the list.
+
+hth,
+
+Jason.
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_jan

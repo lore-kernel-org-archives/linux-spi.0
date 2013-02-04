@@ -1,13 +1,18 @@
-From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH] spi: orion: Use module_platform_driver()
-Date: Mon,  4 Feb 2013 09:26:26 -0300
-Message-ID: <1359980786-4606-1-git-send-email-ezequiel.garcia@free-electrons.com>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH V2 0/2] spi/bcm63xx: fix multi transfer messages
+Date: Mon, 04 Feb 2013 14:29:00 +0100
+Message-ID: <510FB79C.8040801@openwrt.org>
+References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1359900913-4472-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,55 +23,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch reduces and simplifies initalization code by
-using module_platform_driver().
-With this change it's necessary to remove the __init annotation
-to avoid section mismatch warnings.
+On 02/03/2013 03:15 PM, Jonas Gorski wrote:
+> The bcm63xx SPI controller does not support keeping CS up after doing a
+> transfer. Since this is problematic for most typical use cases, this
+> patchset introduces a workaround by combining small enough messages
+> to one transfer, rejecting anything that can't be fulfilled with the
+> hardware.
+>
+> Patch one properly rejects anything impossible to transfer with these
+> limitations.
+> Patch two introduces logic for combining transfers to one to be able to
+> use it for typical use cases (register accesses and flash access).
+>
+> Build and run tested on a BCM6368 with a SPI controlled switch attached
+> requiring write-then-read with CS asserted.
+>
+> Changes V1 -> V2:
+>   * split into two patches
+>   * fixed return type of bcm63xx_txrx_bufs()
+>   * slightly reworked bcm63xx_txrx_bufs, obsoleting one local variable
+>   * added a bit more comments in the code
+>   * added error messages indicated why transfers were rejected
 
-Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- drivers/spi/spi-orion.c |   15 +++------------
- 1 files changed, 3 insertions(+), 12 deletions(-)
+Looks good, thanks!
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index b7e7182..d8cbf20 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -396,7 +396,7 @@ static int orion_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int __init orion_spi_probe(struct platform_device *pdev)
-+static int orion_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
- 	struct orion_spi *spi;
-@@ -513,20 +513,11 @@ static struct platform_driver orion_spi_driver = {
- 		.owner	= THIS_MODULE,
- 		.of_match_table = of_match_ptr(orion_spi_of_match_table),
- 	},
-+	.probe		= orion_spi_probe,
- 	.remove		= __exit_p(orion_spi_remove),
- };
- 
--static int __init orion_spi_init(void)
--{
--	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
--}
--module_init(orion_spi_init);
--
--static void __exit orion_spi_exit(void)
--{
--	platform_driver_unregister(&orion_spi_driver);
--}
--module_exit(orion_spi_exit);
-+module_platform_driver(orion_spi_driver);
- 
- MODULE_DESCRIPTION("Orion SPI driver");
- MODULE_AUTHOR("Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>");
--- 
-1.7.8.6
-
+Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+--
+Florian
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

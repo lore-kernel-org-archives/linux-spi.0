@@ -1,110 +1,61 @@
-From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
-Date: Mon, 4 Feb 2013 14:22:26 -0500
-Message-ID: <51100A72.6030909@ti.com>
-References: <20130201184915.GP2244@beef> <510C1D0E.6030401@mvista.com>
- <20130201185820.GE29898@arwen.pp.htv.fi> <510C2A47.1090607@mvista.com>
- <20130201205600.GA31762@arwen.pp.htv.fi>
- <20130201213003.GW2637@n2100.arm.linux.org.uk>
- <20130204154153.GA18237@arwen.pp.htv.fi> <510FF1A6.403@mvista.com>
- <20130204164712.GB4269@arwen.pp.htv.fi> <510FF5C9.3030600@mvista.com>
- <20130204170216.GC4269@arwen.pp.htv.fi>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 0/2] ARM: mvebu: Add support for SPI controller in Armada
+	370/XP
+Date: Mon, 4 Feb 2013 16:29:15 -0300
+Message-ID: <20130204192914.GA2456@localhost>
+References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
+	<20130204165119.GA2440@localhost>
+	<20130204183733.GM14746@titan.lakedaemon.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>,
- Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
- Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "Nair, Sandeep" <sandeep_n-l0cyMroinI0@public.gmane.org>,
- Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Matt Porter <mporter-l0cyMroinI0@public.gmane.org>,
- Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
- Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
- Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
- Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
- Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
- Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: <balbi-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <20130204170216.GC4269-S8G//mZuvNWo5Im9Ml3/Zg@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20130204183733.GM14746-u4khhh1J0LxI1Ri9qeTfzeTW4wlIGRCZ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/04/2013 12:02 PM, Felipe Balbi wrote:
-> Hi,
->
-> On Mon, Feb 04, 2013 at 08:54:17PM +0300, Sergei Shtylyov wrote:
->>> On Mon, Feb 04, 2013 at 08:36:38PM +0300, Sergei Shtylyov wrote:
->>>>> opted out of it. From the top of my head we have CPPI 3.x, CPPI 4.1,
->>>>> Inventra DMA, OMAP sDMA and ux500 DMA engines supported by the driver.
->>
->>>>> Granted, CPPI 4.1 makes some assumptions about the fact that it's
->>>>> handling USB tranfers,
->>
->>>>     What CPPI 4.1 code makes this assumptions? MUSB DMA driver? Then it's just
->>
->>> HW makes the asumptions
->>
->>     Not true at all. There is a separate set of registers (at offset 0) which
->> copes with USB specifics, but CPPI 4.1 itself doesn't know about USB anything.
->
-> CPPI 4.1 was made for USB transfers.
->
-
-I have been dealing with CPPI hardware on KeyStone platforms (CPPI 4.2). 
-  Our experiences with this DMA hardware may help with CPPI 4.1 on 
-earlier generations.
-
-CPPI 4.2 serves as a truly common interface to a number of hardware 
-blocks on KeyStone SoCs - including Ethernet, RapidIO, Crypto 
-accelerators, and a bunch of other accelerator thingies.  Given the 
-commonality across subsystems, we've built a shared CPPI 4.2 DMA-Engine 
-implementation.  You can take a sneak peek at this implementation at [1].
-
-Based on our experience with fitting multiple subsystems on top of this 
-DMA-Engine driver, I must say that the DMA-Engine interface has proven 
-to be a less than ideal fit for the network driver use case.
-
-The first problem is that the DMA-Engine interface expects to "push" 
-completed traffic up into the upper layer as a part of its callback. 
-This doesn't fit cleanly with NAPI, which expects to "pull" completed 
-traffic from below in the NAPI poll.  We've somehow kludged together a 
-solution around this, but it isn't very elegant.
-
-The second problem is one of binding fixed DMA resources to fixed users. 
-  AFAICT, the stock DMA-Engine mechanism works best when one DMA 
-resource is as good as any other.  To get over this problem, we've added 
-support for named channels, and drivers specifically request for a DMA 
-resource by name.  Again, this is less than ideal.
-
-We found that virtio devices offer a more elegant solution to this 
-problem.  First, the virtqueue interface is a much better fit into NAPI 
-(callback --> napi schedule, napi poll --> get_buf), and this eliminates 
-the need for aforementioned kludges in the code.  Second, the virtio 
-device infrastructure nicely uses the device model to solve the problem 
-of binding DMA users to specific DMA resources.
-
-These patches haven't (yet) been posted on the MLs, but you can peek at 
-[2].  While we are on the topic, I'd certainly appreciate feedback on 
-the concept of using virtqueues as an interface to peripheral 
-independent packet oriented DMA hardware. :-)
-
-Cheers
--- Cyril
-
-[1] - 
-http://arago-project.org/git/projects/?p=linux-keystone.git;a=shortlog;h=refs/heads/rebuild/23-drivers-dmaengine
-[2] - 
-http://arago-project.org/git/projects/?p=linux-keystone.git;a=shortlog;h=refs/heads/rebuild/21-drivers-virtio
+SmFzb24sCgpPbiBNb24sIEZlYiAwNCwgMjAxMyBhdCAwMTozNzozM1BNIC0wNTAwLCBKYXNvbiBD
+b29wZXIgd3JvdGU6Cj4gVGhpcyBzZXJpZXMgbG9va3MgZ29vZC4gIGp1c3QgYSBmZXcgY29tbWVu
+dHM6Cj4gCj4gT24gTW9uLCBGZWIgMDQsIDIwMTMgYXQgMDE6NTE6MjBQTSAtMDMwMCwgRXplcXVp
+ZWwgR2FyY2lhIHdyb3RlOgo+ID4gSGksCj4gPiAKPiA+IFRoaXMgcGF0Y2hzZXQgYWRkcyBzdXBw
+b3J0IGZvciB0aGUgU1BJIGNvbnRyb2xsZXIKPiA+IGF2YWlsYWJsZSBpbiBBcm1hZGEgMzcwIGFu
+ZCBBcm1hZGEgWFAgU29DLgo+ID4gCj4gPiBUaGUgcGF0Y2hlcyBhcmUgYmFzZWQgaW4gSmFzb24g
+Q29vcGVyJ3MgbXZlYnUvZHQgYnJhbmNoLgo+IAo+IEl0IHByb2JhYmx5IGRvZXNuJ3QgbWF0dGVy
+IGZvciB0aGlzIHNlcmllcyAoSSBoYXZlbid0IHRyaWVkIHRvIGFwcGx5IGl0Cj4geWV0KSwgYnV0
+IHBsZWFzZSBiYXNlIGZ1dHVyZSB3b3JrIG9mZiBvZiBhIG1haW5saW5lIHRhZyAoZWcgdjMuOC1y
+YzYpLgo+IEl0IG1ha2VzIG1lcmdlIGNvbmZsaWN0cyBlYXNpZXIgdG8gcmVzb2x2ZS4KPiAKPiBG
+ZWVsIGZyZWUgdG8gdGVzdC1tZXJnZSBhZ2FpbnN0IHRoZSBtdmVidS8gYnJhbmNoZXMgYW5kIGxl
+dCBtZSBrbm93IG9mCj4gYW55IGNvbmZsaWN0cy4KPiAKCkFoLCBJIHNlZS4KCkkgd2FzIG1pc3Rh
+a2VubHkgYXNzdW1pbmcgeW91IHdhbnRlZCBhZ2FpbnN0IHRoYXQgYnJhbmNoOwpJJ2xsIGJhc2Ug
+dGhlIHBhdGNoZXMgb24gbWFpbmxpbmUgaW4gdGhlIGZ1dHVyZS4KClRoYW5rcyBmb3IgdGhlIGFk
+dmljZS4KCj4gQWxzbywgeW91ciBwYXRjaCBzZXJpZXMgYXBwZWFycyB0byBiZSBvdXQgb2Ygb3Jk
+ZXIsIGRpZCB5b3UgdXNlIGdpdAo+IHNlbmQtZW1haWwgb25jZSBwZXIgZmlsZT8KPiAKCkkgYWx3
+YXlzIHNlbmQgdGhlIGNvdmVyIGxldHRlciBtYW51YWxseS4gVGhpcyB0aW1lIEkgZGlkIGl0IGFm
+dGVyIHRoZSBwYXRjaGVzLgpJJ20gaW4gdGhlIHByb2Nlc3Mgb2YgYXV0b21hdGluZyB0aGlzIGlu
+IG15IHdvcmtmbG93LApidXQgZmVlbCBmcmVlIHRvIG1ha2UgYSBzdWdnZXN0aW9uLgoKVGhhbmtz
+LAoKLS0gCkV6ZXF1aWVsIEdhcmPDrWEsIEZyZWUgRWxlY3Ryb25zCkVtYmVkZGVkIExpbnV4LCBL
+ZXJuZWwgYW5kIEFuZHJvaWQgRW5naW5lZXJpbmcKaHR0cDovL2ZyZWUtZWxlY3Ryb25zLmNvbQoK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMuIFNvIGRv
+IHdlLgpNYWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93bmxvYWQg
+QXBwRHluYW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3NmdS9hcHBk
+eW5fZDJkX2phbgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
+bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

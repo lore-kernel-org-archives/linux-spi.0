@@ -1,10 +1,11 @@
-From: Loving Deals <yourdailydeal-jTnBELs2aHhWk0Htik3J/w@public.gmane.org>
-Subject: Tradition des Vosges, DERNIERES DEMARQUES!
-Date: Mon, 4 Feb 2013 17:02:25 +1000
-Message-ID: <56e650e0f15f4f1b7ab0341dd3f43fdf@www.loveitup.com.au>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] spi: orion: Use module_platform_driver()
+Date: Mon,  4 Feb 2013 09:26:26 -0300
+Message-ID: <1359980786-4606-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Cc: shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,47 +18,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-[http://mtrc1.digital-metric.com/clic.php?params=487ca8c0dccc05b9a2fc24e0c75e0c7d]
-Votre linge de maison dans la plus pure	tradition des Vosges	
+This patch reduces and simplifies initalization code by
+using module_platform_driver().
+With this change it's necessary to remove the __init annotation
+to avoid section mismatch warnings.
 
-[http://mtrc1.digital-metric.com/clic.php?params=ff8eed2511327d6171383151443894a8]
-[http://mtrc1.digital-metric.com/clic.php?params=3db809180f94f91cb266a87f1687d698]
-[http://mtrc1.digital-metric.com/clic.php?params=bf975899e7685647be648c40ce824d49]
-[http://mtrc1.digital-metric.com/clic.php?params=1fa1efe38e235bb9a0ff0e8ad8a6beee]
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ drivers/spi/spi-orion.c |   15 +++------------
+ 1 files changed, 3 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index b7e7182..d8cbf20 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -396,7 +396,7 @@ static int orion_spi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static int __init orion_spi_probe(struct platform_device *pdev)
++static int orion_spi_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+ 	struct orion_spi *spi;
+@@ -513,20 +513,11 @@ static struct platform_driver orion_spi_driver = {
+ 		.owner	= THIS_MODULE,
+ 		.of_match_table = of_match_ptr(orion_spi_of_match_table),
+ 	},
++	.probe		= orion_spi_probe,
+ 	.remove		= __exit_p(orion_spi_remove),
+ };
+ 
+-static int __init orion_spi_init(void)
+-{
+-	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
+-}
+-module_init(orion_spi_init);
+-
+-static void __exit orion_spi_exit(void)
+-{
+-	platform_driver_unregister(&orion_spi_driver);
+-}
+-module_exit(orion_spi_exit);
++module_platform_driver(orion_spi_driver);
+ 
+ MODULE_DESCRIPTION("Orion SPI driver");
+ MODULE_AUTHOR("Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>");
+-- 
+1.7.8.6
 
-[http://mtrc1.digital-metric.com/clic.php?params=9773a7158d46cdacbec3a50d25f20324]
-
-[http://mtrc1.digital-metric.com/clic.php?params=086152502abfb6866aa4931327a6fb73]
-
-[http://mtrc1.digital-metric.com/clic.php?params=ca4218e42dac36917d26f20059e014d7]
-
-[http://mtrc1.digital-metric.com/clic.php?params=019024ed88c6666c5241b28338e42eec]
-
-
-[http://mtrc1.digital-metric.com/clic.php?params=b9415fa740c6d5877622cee8fdc6f9e4]
-OSS2013 [http://mtrc1.digital-metric.com/clic.php?params=81763b93d8efc6afdbc1d773074037eb]
-
-
-[http://mtrc1.digital-metric.com/clic.php?params=fc2f228bdd16b81771d6ff360929aafd]
-
-[http://mtrc1.digital-metric.com/clic.php?params=8fc648f6b783482859c43d2035b8be93]
-
-
-Parure de lit en pur coton	Gant de toilette en coton modal	Peignoir capuche enfant microfibre	
-[http://mtrc1.digital-metric.com/clic.php?params=d7011abb853c01a99c63052f24c640a0]
-[http://mtrc1.digital-metric.com/clic.php?params=5eb8860509ffc6b8a955f6cd67abf68f]
-[http://mtrc1.digital-metric.com/clic.php?params=bcdbea0f57c0d3b46830f83d731b2ac6]
-
-
-[http://mtrc1.digital-metric.com/clic.php?params=ece20a62e59c1362f773df1b2feba9d1]
-[http://mtrc1.digital-metric.com/clic.php?params=7dc3b4ef62cec05fbec77b3acdb8620d]
-[http://mtrc1.digital-metric.com/clic.php?params=216e887ccef5fcddbf49ad51222475fa]
-[http://mtrc1.digital-metric.com/clic.php?params=e2738cdac38c5821defefd74e239d06b]
-[http://mtrc1.digital-metric.com/clic.php?params=d4c9de0c0f9e2cfe0c64f5a7923a300a]
-
-
-Offre valable jusqu'au 12/02/2013	La Soci&eacute;t&eacute; des Textiles de Granges sur Vologne est sp&eacute;cialis&eacute;e dans la conception et la distribution d'articles de Linge de Maison. Nos productions utilisent des mati&egrave;res textiles aussi riches que vari&eacute;es (coton 57 fils, satin de coton peign&eacute;, percale, lin,.) et b&eacute;n&eacute;ficient des proc&eacute;d&eacute;s de teinture et d'impression les plus avant-gardistes.
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

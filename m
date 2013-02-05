@@ -1,20 +1,21 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] driver-core: constify data for class_find_device()
-Date: Tue, 05 Feb 2013 13:36:38 +0000
-Message-ID: <20130205133638.9ED2F3E0E27@localhost>
-References: <4cba0646c55f8beb9e290492e499be209ca6f20d.1359746656.git.mirq-linux@rere.qmqm.pl>
-Content-Type: multipart/mixed; boundary="===============3106524905348920757=="
-Cc: rtc-linux-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-scsi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-zigbee-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Benny Halevy <bhalevy-4/WYdZTkCtzQT0dZR+AlfA@public.gmane.org>, osd-dev-yNzVSZO3znNg9hUCZPvPmw@public.gmane.org,
-	Boaz Harrosh <bharrosh-C4P08NqkoRlBDgjK7y7TUQ@public.gmane.org>, linux-nfc-hn68Rpc1hR1g9hUCZPvPmw@public.gmane.org,
+From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 1/2] ARM: mvebu: Add support for SPI controller in Armada
+	370/XP
+Date: Tue, 05 Feb 2013 14:57:02 +0100
+Message-ID: <51110FAE.4070700@free-electrons.com>
+References: <1359995888-2385-1-git-send-email-ezequiel.garcia@free-electrons.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	open-iscsi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-pm-u79uwXL29TavoUN+ObpdWA@public.gmane.org
-To: Michał Mirosław <mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org>, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <4cba0646c55f8beb9e290492e499be209ca6f20d.1359746656.git.mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org>
+In-Reply-To: <1359995888-2385-1-git-send-email-ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,51 +26,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3106524905348920757==
+Hi Ezequiel,
 
-On Fri,  1 Feb 2013 20:40:17 +0100 (CET), Michał Mirosław <mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org> wrote:
-> All in-kernel users of class_find_device() don't really need mutable
-> data for match callback.
+On 02/04/2013 05:38 PM, Ezequiel Garcia wrote:
+> The Armada 370 and Armada XP SoC has an SPI controller.
+> This patch adds support for this controller in Armada 370
+> and Armada XP SoC common device tree files.
 > 
-> In two places (kernel/power/suspend_test.c, drivers/scsi/osd/osd_uld.c)
-> this patch changes match callbacks to use const search data.
-> 
-> The const is propagated to rtc_class_open() and power_supply_get_by_name()
-> parameters.
-> 
-> Note that there's a dev reference leak in suspend_test.c that's not
-> touched in this patch.
-> 
-> Signed-off-by: Michał Mirosław <mirq-linux-CoA6ZxLDdyEEUmgCuDUIdw@public.gmane.org>
+> Cc: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 > ---
+>  arch/arm/boot/dts/armada-370-xp.dtsi |   22 ++++++++++++++++++++++
+>  1 files changed, 22 insertions(+), 0 deletions(-)
 > 
-> patch against https://github.com/torvalds/linux.git master
+> diff --git a/arch/arm/boot/dts/armada-370-xp.dtsi b/arch/arm/boot/dts/armada-370-xp.dtsi
+> index 28276fe..22340d5 100644
+> --- a/arch/arm/boot/dts/armada-370-xp.dtsi
+> +++ b/arch/arm/boot/dts/armada-370-xp.dtsi
+> @@ -145,6 +145,28 @@
+>  			clocks = <&gateclk 17>;
+>  			status = "disabled";
+>  		};
+> +
+> +		spi0: spi@d0010600 {
+> +			compatible = "marvell,orion-spi";
+> +			reg = <0xd0010600 0x50>;
 
-Acked-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> for the GPIO and SPI
-bits.
+Currently the driver only use the 5th first register. All of the other
+mvebu platform declare the last register at offset 0x28. The Armada
+370 SoC have also the last register at offset 0x28. Only for the
+Armada XP SoC there are more registers and we have a the last register
+at offset 0x50. Obviously the driver won't use these extra register.
+
+So I think that the best for now is to declare:
+			reg = <0xd0010600 0x28>;
+
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			cell-index = <0>;
+> +			interrupts = <30>;
+> +			clocks = <&coreclk 0>;
+> +			status = "disabled";
+> +		};
+> +
+> +		spi1: spi@d0010680 {
+> +			compatible = "marvell,orion-spi";
+> +			reg = <0xd0010680 0x50>;
+and here:
+			reg = <0xd0010680 0x28>;
+
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			cell-index = <1>;
+> +			interrupts = <92>;
+> +			clocks = <&coreclk 0>;
+> +			status = "disabled";
+> +		};
+>  	};
+>  };
+>  
+> 
+
+Once it will be fixed, for this patch you can add my
+
+Acked-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
 
-
---===============3106524905348920757==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Regards,
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer
 Buy your Sophos next-gen firewall before the end March 2013 
 and get the hardware for free! Learn more.
 http://p.sf.net/sfu/sophos-d2d-feb
---===============3106524905348920757==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3106524905348920757==--

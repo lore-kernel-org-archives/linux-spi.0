@@ -1,50 +1,63 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH V2 0/2] spi/bcm63xx: fix multi transfer messages
-Date: Tue, 05 Feb 2013 17:14:08 +0000
-Message-ID: <20130205171408.3C60F3E1427@localhost>
-References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
-	<20130205143040.208603E1265@localhost>
-	<20130205150441.GC4720@opensource.wolfsonmicro.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
+ arm/common
+Date: Tue, 5 Feb 2013 10:28:49 -0800
+Message-ID: <20130205182848.GJ25185@atomide.com>
+References: <1359742975-10421-1-git-send-email-mporter@ti.com>
+ <1359742975-10421-2-git-send-email-mporter@ti.com>
+ <5022f635a527470dbd0be932063e9cd2@DFLE72.ent.ti.com>
+ <20130201184915.GP2244@beef>
+ <510C1D0E.6030401@mvista.com>
+ <20130201185820.GE29898@arwen.pp.htv.fi>
+ <510C2A47.1090607@mvista.com>
+ <20130201205600.GA31762@arwen.pp.htv.fi>
+ <20130201213003.GW2637@n2100.arm.linux.org.uk>
+ <20130204154153.GA18237@arwen.pp.htv.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130205150441.GC4720-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	Sergei Shtylyov <sshtylyov@mvista.com>,
+	Matt Porter <mporter@ti.com>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Chris Ball <cjb@laptop.org>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Rob Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-a
+To: Felipe Balbi <balbi@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130204154153.GA18237@arwen.pp.htv.fi>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 5 Feb 2013 15:04:41 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Tue, Feb 05, 2013 at 02:30:40PM +0000, Grant Likely wrote:
+* Felipe Balbi <balbi@ti.com> [130204 07:46]:
 > 
-> > Another option is to allow longer transfers if a GPIO is used for the CS
-> > line. A lot of SPI controllers need to do that.
+> Current DMA abstraction is quite poor, for example there's no way to
+> compile support for multiple DMA engines. Code also makes certain, IMO
+> unnecessary, assumptions about the underlying DMA engine (abstraction is
+> poor, as said above but it we could follow MUSB's programming guide when
+> it comes to programming DMA transfers).
 > 
-> > That isn't a critique of this patch because it is essentially a bug fix,
-> > but rather a way you can work around the limitation.
-> 
-> Yeah, I did suggest that to them originally but apparently the hardware
-> is sufficient fail that the pins can't be put into GPIO mode for the
-> affected boards.
+> Considering all of the above, it's far better to use DMA engine and get
+> rid of all the mess.
 
-Hahaha.
+How about just disable MUSB DMA support if ARCH_MULTIPLATFORM for now?
+That way MUSB can be fixed up first to support ARCH_MULTIPLATFORM
+using PIO while sorting out the DMA related issues.
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+Regards,
 
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+Tony

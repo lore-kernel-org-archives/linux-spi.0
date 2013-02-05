@@ -1,42 +1,20 @@
-From: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
-Date: Mon, 4 Feb 2013 17:30:51 -0500
-Message-ID: <5110369B.9060901@ti.com>
-References: <20130201184915.GP2244@beef> <510C1D0E.6030401@mvista.com>
-	<20130201185820.GE29898@arwen.pp.htv.fi>
-	<510C2A47.1090607@mvista.com>
-	<20130201205600.GA31762@arwen.pp.htv.fi>
-	<20130201213003.GW2637@n2100.arm.linux.org.uk>
-	<20130204154153.GA18237@arwen.pp.htv.fi> <510FF1A6.403@mvista.com>
-	<20130204164712.GB4269@arwen.pp.htv.fi>
-	<510FF5C9.3030600@mvista.com>
-	<20130204170216.GC4269@arwen.pp.htv.fi> <51100A72.6030909@ti.com>
-	<CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
+Date: Tue,  5 Feb 2013 08:24:33 -0300
+Message-ID: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Sergei Shtylyov <sshtylyov-Igf4POYTYCDQT0dZR+AlfA@public.gmane.org>,
-	Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, "Nair,
-	Sandeep" <sandeep_n-l0cyMroinI0@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Matt Porter <mporter-l0cyMroinI0@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>, "Cousson,
-	Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	balbi-l0cyMroinI0@public.gmane.org, Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Linux,
-	Linux SPI Deve
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -47,84 +25,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/04/2013 03:29 PM, Linus Walleij wrote:
-> On Mon, Feb 4, 2013 at 8:22 PM, Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org> wrote:
->
->> Based on our experience with fitting multiple subsystems on top of this
->> DMA-Engine driver, I must say that the DMA-Engine interface has proven
->> to be a less than ideal fit for the network driver use case.
->>
->> The first problem is that the DMA-Engine interface expects to "push"
->> completed traffic up into the upper layer as a part of its callback.
->> This doesn't fit cleanly with NAPI, which expects to "pull" completed
->> traffic from below in the NAPI poll.  We've somehow kludged together a
->> solution around this, but it isn't very elegant.
->
-> I cannot understand the actual technical problem from the above
-> paragraphs though. dmaengine doesn't have a concept of pushing
-> nor polling, it basically copies streams of words from A to B, where
-> A/B can be a device or a buffer, nothing else.
->
+This patch adds an SPI master device node for Armada XP-GP board.
+This master node is an SPI flash controller 'n25q128a13'.
 
-NAPI needs to switch between polled and interrupt driven modes of 
-operation.  Further, in a given poll, it needs to be able to limit the 
-amount of traffic processed to a specified budget.
+Since there is no 'partitions' node declared, one full sized
+partition named as the device will be created.
 
-> The thing you're looking for sounds more like an adapter on top
-> of dmaengine, which can surely be constructed, some
-> drivers/dma/dmaengine-napi.c or whatever.
->
+Cc: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+This patch depends on:
 
-I'm not debating the possibility of duct-taping a network driver on top 
-of the dma-engine interface.  That is very much doable, and we have done 
-this already.
+ 1. Gregory's patch for Armada XP GP board:
+      arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)
 
-Starting with a stock dma-engine driver, our first approach was to use 
-dmaengine_pause() and dmaengine_resume() in the network driver to 
-throttle completion callbacks per NAPI's needs.  This worked, but it was 
-ugly because the completion callback was now being used in a 
-multi-purpose fashion - (a) as an interrupt notifier [to do a 
-napi_schedule()], and (b) as a hand over mechanism for completed packets 
-[within a napi_poll()].  The network driver needed to maintain a nasty 
-little state machine for this, and this ended up being quite non-trivial 
-after we'd fixed up most of the issues.
+ 2. My previous patch for SPI on Armada 370/XP:
+      arm: mvebu: Add support for SPI controller in Armada 370/XP
 
-Having learned our lessons from the first attempt, the second step was 
-to add a separate notification callback from the dma-engine layer - a 
-notification independent of any particular descriptor.  With this 
-callback in place, we got rid of some of the state machine crap in the 
-network driver.
+And don't forget to compile the SPI flash driver, CONFIG_MTD_M25P80=y
 
-The third step was to add a dmaengine_poll() call instead of constantly 
-bouncing a channel between paused and running states.  This further 
-cleaned up some of the network driver code, but now the dma-engine 
-driver looks like crap if it needs to support both the traditional and 
-new (i.e. notify + poll) modes.  This is where we are at today.
+ arch/arm/boot/dts/armada-xp-gp.dts |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
-Even with the addition of these extensions, the interaction between the 
-network driver and the dma-engine driver is clumsy and involves multiple 
-back and forth calls per packet.  This is not elegant, and certainly not 
-efficient.  In comparison, the virtqueue interface is a natural fit with 
-the network driver, and is free of the aforementioned problems.
+diff --git a/arch/arm/boot/dts/armada-xp-gp.dts b/arch/arm/boot/dts/armada-xp-gp.dts
+index 3eea531..1c8afe2 100644
+--- a/arch/arm/boot/dts/armada-xp-gp.dts
++++ b/arch/arm/boot/dts/armada-xp-gp.dts
+@@ -97,5 +97,17 @@
+ 			phy = <&phy3>;
+ 			phy-mode = "rgmii-id";
+ 		};
++
++		spi0: spi@d0010600 {
++			status = "okay";
++
++			spi-flash@0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "n25q128a13";
++				reg = <0>; /* Chip select 0 */
++				spi-max-frequency = <108000000>;
++			};
++		};
+ 	};
+ };
+-- 
+1.7.8.6
 
-[...]
-> Surely the way to look up resources cannot be paramount in this
-> discussion, I think the real problem must be your specific networking
-> usecase, so we need to drill into that.
->
-
-Agreed.  The dma resource to driver binding is certainly a lesser 
-problem than the first.  There are a variety of schemes that we could 
-cook up here (filter functions, named lookups, etc.).  However, I think 
-that these schemes offer advantages when the binding between the dma 
-resource and the dma user is somewhat dynamic.
-
-On the other hand, when the binding between a dma resource and user is 
-fixed by hardware and/or configuration, the driver model approach works 
-better, IMHO.
-
-Thanks
--- Cyril.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

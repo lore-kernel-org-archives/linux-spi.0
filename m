@@ -1,28 +1,17 @@
-From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Tue, 5 Feb 2013 16:46:10 -0300
-Message-ID: <20130205194609.GA3670@localhost>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130205123827.GG20242@lunn.ch>
-	<20130205124833.GS14746@titan.lakedaemon.net>
-	<20130205142720.GB2481@localhost>
-	<20130205153135.GU14746@titan.lakedaemon.net>
-	<20130205171701.4fcb1304@skate>
-	<51113132.6000500@free-electrons.com>
-	<20130205180705.5231effd@skate>
+From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 1/6] spi/ath79: add delay between SCK changes
+Date: Tue, 05 Feb 2013 20:52:06 +0100
+Message-ID: <511162E6.4050607@openwrt.org>
+References: <1356601349-23617-1-git-send-email-juhosg@openwrt.org>
+	<1356601349-23617-2-git-send-email-juhosg@openwrt.org>
+	<20130205125719.878EE3E0E27@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20130205180705.5231effd@skate>
+In-Reply-To: <20130205125719.878EE3E0E27@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -33,22 +22,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gVHVlLCBGZWIgMDUsIDIwMTMgYXQgMDY6MDc6MDVQTSArMDEwMCwgVGhvbWFzIFBldGF6em9u
-aSB3cm90ZToKPiBEZWFyIEdyZWdvcnkgQ0xFTUVOVCwKPiAKPiBPbiBUdWUsIDA1IEZlYiAyMDEz
-IDE3OjIwOjAyICswMTAwLCBHcmVnb3J5IENMRU1FTlQgd3JvdGU6Cj4gCj4gPiBTbyB0aGF0IG1l
-YW5zIHdlIHNob3VsZCBlbmFibGUgdGhlIGRyaXZlcnMgZm9yIGFsbCB0aGUgZGV2aWNlcyBwcmVz
-ZW50Cj4gPiBvbiBhbGwgdGhlIGJvYXJkcz8KPiAKPiBZZXMuIEZvciBleGFtcGxlIG15IG12c2Rp
-byBwYXRjaCBzZXQgZW5hYmxlcyBzb21lIFdpZmkgZHJpdmVyIHRoYXQKPiBjb3JyZXNwb25kcyB0
-byBhIHBhcnRpY3VsYXIgU0RJTyBXaWZpIGRldmljZSB0aGF0IGlzIHByZXNlbnQgaW4gdGhlCj4g
-TWlyYWJveC4gQnV0IG5vdCBvbiBvdGhlciBib2FyZHMuCj4gCgpPa2V5LCBJJ2xsIGFkZCBldmVy
-eXRoaW5nIG5lZWRlZCB0byBhY2Nlc3MgYW5kIHRlc3QgdGhlIFNQSSBmbGFzaCwKaW5jbHVkaW5n
-IE1URF9DSEFSLgoKVGhhbmtzLAoKLS0gCkV6ZXF1aWVsIEdhcmPDrWEsIEZyZWUgRWxlY3Ryb25z
-CkVtYmVkZGVkIExpbnV4LCBLZXJuZWwgYW5kIEFuZHJvaWQgRW5naW5lZXJpbmcKaHR0cDovL2Zy
-ZWUtZWxlY3Ryb25zLmNvbQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkZyZWUgTmV4dC1HZW4gRmly
-ZXdhbGwgSGFyZHdhcmUgT2ZmZXIKQnV5IHlvdXIgU29waG9zIG5leHQtZ2VuIGZpcmV3YWxsIGJl
-Zm9yZSB0aGUgZW5kIE1hcmNoIDIwMTMgCmFuZCBnZXQgdGhlIGhhcmR3YXJlIGZvciBmcmVlISBM
-ZWFybiBtb3JlLgpodHRwOi8vcC5zZi5uZXQvc2Z1L3NvcGhvcy1kMmQtZmViCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
-aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
-Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi Grant,
+
+> On Thu, 27 Dec 2012 10:42:24 +0100, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
+>> The driver uses the "as fast as it can" approach
+>> to drive the SCK signal. However this does not
+>> work with certain low speed SPI chips (e.g. the
+>> PCF2123 RTC chip).
+>>
+>> The patch adds per-bit slowdowns in order to be
+>> able to use the driver with such chips as well.
+>>
+>> Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> 
+> I've applied this, but please take a second look to make sure you're not
+> doing something unintended. The ndelay call will spin until it
+> completes. If the current context is interrupted or scheduled out then
+> it will still spin when it gets back. You may be wasting more time than
+> is necessary. It would be better to check the wall time over a loop
+> iteration. And if the delay required is large, then it should sleep.
+
+Thank for the review!
+
+Unfortunately, at the moment I don't have access to the board which uses that
+PCF2123 chip but I will try to improve the code.
+
+-Gabor
+
+
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

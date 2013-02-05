@@ -1,21 +1,31 @@
 From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Tue, 05 Feb 2013 21:17:02 +0100
-Message-ID: <511168BE.1000803@free-electrons.com>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<5111331F.7090900@free-electrons.com>
+Subject: [PATCH 1/2] arm: mvebu: Add SPI flash on Armada XP-DB board
+Date: Tue,  5 Feb 2013 21:54:54 +0100
+Message-ID: <1360097695-32663-2-git-send-email-gregory.clement@free-electrons.com>
+References: <1360097695-32663-1-git-send-email-gregory.clement@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Ike Pan <ike.pan-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, David Marlin <dmarlin-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Yehuda Yitschak <yehuday-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Tawfik Bayouk <tawfik-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Dan Frazier <dann.frazier-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>,
+	Eran Ben-Avi <benavi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Leif Lindholm <leif.lindholm-5wv7dgnIgG8@public.gmane.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Jon Masters <jcm-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Chris Van Hoof <vanhoof-Z7WLFzj8eWMS+FvcfC7Uqw@public.gmane.org>, Nicolas Pitre <nico-vtqb6HGKxmzR7s880joybQ@public.gmane.org>,
+	Maen Suleiman <maen-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5ug@public.gmane.org
+To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5111331F.7090900-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <1360097695-32663-1-git-send-email-gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,80 +36,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/05/2013 05:28 PM, Gregory CLEMENT wrote:
-> Hi Ezequiel,
-> 
-> On 02/05/2013 12:24 PM, Ezequiel Garcia wrote:
->> This patch adds an SPI master device node for Armada XP-GP board.
->> This master node is an SPI flash controller 'n25q128a13'.
->>
->> Since there is no 'partitions' node declared, one full sized
->> partition named as the device will be created.
->>
->> Cc: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
->> Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
->> Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
->> Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
->> ---
->> This patch depends on:
->>
->>  1. Gregory's patch for Armada XP GP board:
->>       arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)
->>
->>  2. My previous patch for SPI on Armada 370/XP:
->>       arm: mvebu: Add support for SPI controller in Armada 370/XP
->>
->> And don't forget to compile the SPI flash driver, CONFIG_MTD_M25P80=y
->>
->>  arch/arm/boot/dts/armada-xp-gp.dts |   12 ++++++++++++
->>  1 files changed, 12 insertions(+), 0 deletions(-)
->>
->> diff --git a/arch/arm/boot/dts/armada-xp-gp.dts b/arch/arm/boot/dts/armada-xp-gp.dts
->> index 3eea531..1c8afe2 100644
->> --- a/arch/arm/boot/dts/armada-xp-gp.dts
->> +++ b/arch/arm/boot/dts/armada-xp-gp.dts
->> @@ -97,5 +97,17 @@
->>  			phy = <&phy3>;
->>  			phy-mode = "rgmii-id";
->>  		};
->> +
->> +		spi0: spi@d0010600 {
->> +			status = "okay";
->> +
->> +			spi-flash@0 {
->> +				#address-cells = <1>;
->> +				#size-cells = <1>;
->> +				compatible = "n25q128a13";
->> +				reg = <0>; /* Chip select 0 */
->> +				spi-max-frequency = <108000000>;
+This patch add support for the SPI flash M25P64 which is present on
+the Armada XP DB board. This flash stores the bootloader and its
+environment.
 
-I had a remark about it, according to the datasheet, 108MHz is the
-maximum frequency for the all the instructions but the READ
-instruction. For the READ the maximum frequency is 54MHz. So I wonder
-if we shouldn't use 54000000 here.
+Signed-off-by: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ arch/arm/boot/dts/armada-xp-db.dts |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-
-
->> +			};
->> +		};
->>  	};
->>  };
->>
-> 
-> I applied, compiled and try this patch it worked well, at least
-> for reading, I didn't try to write on the flash where my boolader
-> is stored. So you can add my:
-> 
-> Tested-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> 
-> 
-
-
+diff --git a/arch/arm/boot/dts/armada-xp-db.dts b/arch/arm/boot/dts/armada-xp-db.dts
+index c7035c5..e5dfb4f 100644
+--- a/arch/arm/boot/dts/armada-xp-db.dts
++++ b/arch/arm/boot/dts/armada-xp-db.dts
+@@ -97,5 +97,17 @@
+ 			status = "okay";
+ 			/* No CD or WP GPIOs */
+ 		};
++
++		spi0: spi@d0010600 {
++			status = "okay";
++
++			spi-flash@0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "m25p64";
++				reg = <0>; /* Chip select 0 */
++				spi-max-frequency = <20000000>;
++			};
++		};
+ 	};
+ };
 -- 
-Gregory Clement, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+1.7.9.5
+
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

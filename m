@@ -1,62 +1,54 @@
-From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Tue, 5 Feb 2013 18:07:05 +0100
-Message-ID: <20130205180705.5231effd@skate>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130205123827.GG20242@lunn.ch>
-	<20130205124833.GS14746@titan.lakedaemon.net>
-	<20130205142720.GB2481@localhost>
-	<20130205153135.GU14746@titan.lakedaemon.net>
-	<20130205171701.4fcb1304@skate>
-	<51113132.6000500@free-electrons.com>
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
+	arm/common
+Date: Tue, 5 Feb 2013 17:06:28 +0000
+Message-ID: <20130205170628.GD17852@n2100.arm.linux.org.uk>
+References: <20130204154153.GA18237@arwen.pp.htv.fi> <510FF1A6.403@mvista.com> <20130204164712.GB4269@arwen.pp.htv.fi> <510FF5C9.3030600@mvista.com> <20130204170216.GC4269@arwen.pp.htv.fi> <51100A72.6030909@ti.com> <CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com> <5110369B.9060901@ti.com> <CACRpkda8xBB35CwuBH76xXcC341TeRs1ZuwzDD0LtuXc4ifQTw@mail.gmail.com> <20130205164705.GG4720@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <51113132.6000500-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Cyril Chemparathy <cyril@ti.com>, balbi@ti.com,
+	Sergei Shtylyov <sshtylyov@mvista.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Lindgren <tony@atomide.com>, Vinod Koul <vinod.koul@intel.com>,
+	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
+	Matt Porter <mporter@ti.com>, Arnd Bergmann <arnd@arndb.de>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SPI Devel List
+	<spi-devel-
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130205164705.GG4720@opensource.wolfsonmicro.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Gregory CLEMENT,
+On Tue, Feb 05, 2013 at 04:47:05PM +0000, Mark Brown wrote:
+> On Tue, Feb 05, 2013 at 05:21:48PM +0100, Linus Walleij wrote:
+> 
+> > For IRQ mode, use the completion callback to push each cookie
+> > to NAPI, and thus let the IRQ drive the traffic.
+> 
+> The whole purpose of NAPI is to avoid taking interrupts for completion
+> of transfers.  Anything that generates interrupts when NAPI is in
+> polling mode is defeating the point.
 
-On Tue, 05 Feb 2013 17:20:02 +0100, Gregory CLEMENT wrote:
+Yes, but you're missing one very important point.  If your DMA engine
+is decoupled from the network device, and the DMA engine relies upon
+interrupts to queue further transfers to move data into RAM, then you
+have two options:
 
-> So that means we should enable the drivers for all the devices present
-> on all the boards?
-
-Yes. For example my mvsdio patch set enables some Wifi driver that
-corresponds to a particular SDIO Wifi device that is present in the
-Mirabox. But not on other boards.
-
-Of course, it doesn't make sense to have drivers for pluggable devices
-like PCIe devices that are not soldered, USB devices and things like
-that. But for all the rest, I would say it should be in the defconfig.
-
-Best regards,
-
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
-
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+1. Receive these interrupts so you can update the DMA engine for
+   further data transfer.
+2. Don't receive these interrupts, and cause the network device to
+   error out with a FIFO overrun because its DMA requests have not
+   been serviced. (which may raise an interrupt.)
